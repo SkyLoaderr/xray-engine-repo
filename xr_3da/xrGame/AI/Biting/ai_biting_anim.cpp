@@ -535,11 +535,12 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // JUMPS
 
-void CMotionManager::AddJump(EMotionAnim ma, TTime time, TTime time_start, float min_d, float max_d, float angle)
+void CMotionManager::AddJump(EMotionAnim ma, float vel, TTime time, TTime time_start, float min_d, float max_d, float angle)
 {
 	SJump jump;
 
 	jump.anim				= ma;
+	jump.velocity			= vel;
 	jump.jump_time			= time;
 	jump.time_start_jump	= time_start;
 	jump.min_dist			= min_d;
@@ -600,12 +601,17 @@ void CMotionManager::ProcessJump()
 	// проверить, следует ли вызывать физический прыжок
 	if (!bPhysicalJump) {	
 		if (cur_jump_it->time_start_jump + jump_started < cur_time) {
-			pMonster->Movement.Jump(jump_to_pos, cur_jump_it->jump_time);
+			float dist = pMonster->Position().distance_to(jump_to_pos);
+			u32 time = u32((dist / cur_jump_it->velocity) * 1000);
+			Msg("Jump to Pos: [%f, %f, %f], Time = [%i], dist = [%f]", VPUSH(jump_to_pos), time, dist); 
+			pMonster->Movement.Jump(jump_to_pos, time);
 			bPhysicalJump = true;
 		}
 	}
 	// проверить на завершение прыжка
 	if ((cur_jump_it->jump_time + jump_started < cur_time) && !pMonster->Movement.JumpState()) {
+		Msg("Jump stopped: jump time = [%i]  res_pos = [%f, %f, %f]", cur_time - jump_started, VPUSH(pMonster->Position()));
+
 		bPhysicalJump = false;
 		bJumpState	  = false;
 	}

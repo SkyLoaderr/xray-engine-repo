@@ -171,6 +171,8 @@ struct SJump {
 
 	TTime		jump_time;			// время прыжка
 	TTime		time_start_jump;	// время после активации прыжка, через которое выполнять физ. прыжок
+	
+	float		velocity;			// скорость прыжка (м/с)
 
 	float		min_dist;			// мин. дистанция, возможная для прыжка
 	float		max_dist;			// макс. дистанция возможная для прыжка
@@ -259,7 +261,7 @@ public:
 	// -------------------------------------
 
 	// Добавить в вектор параметры прыжка
-	void		AddJump					(EMotionAnim ma, TTime time, TTime time_start, float min_d, float max_d, float angle);
+	void		AddJump					(EMotionAnim ma, float vel, TTime time, TTime time_start, float min_d, float max_d, float angle);
 	// Проверка на возможность прыжка. Возвращает 'true' если прыжок активирован
 	void		CheckJump				(Fvector from_pos, Fvector to_pos);
 	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
