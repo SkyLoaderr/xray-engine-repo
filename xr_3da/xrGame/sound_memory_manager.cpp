@@ -12,7 +12,13 @@
 #include "visual_memory_manager.h"
 #include "memory_manager.h"
 #include "ai/script/ai_script_monster.h"
-//#include "actor.h"
+
+//#define SAVE_OWN_SOUNDS
+//#define SAVE_OWN_ITEM_SOUNDS
+#define SAVE_NON_ALIVE_OBJECT_SOUNDS
+#define SAVE_FRIEND_ITEM_SOUNDS
+#define SAVE_FRIEND_SOUNDS
+//#define SAVE_VISIBLE_OBJECT_SOUNDS
 
 CSoundMemoryManager::CSoundMemoryManager		()
 {
@@ -79,8 +85,6 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	
 	sound_power				*= 1;//ffGetStartVolume(ESoundTypes(eType));
 	
-//	if (dynamic_cast<CActor*>(object))
-//		Msg					("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
 	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		// this is fake!
 		sound_power			= 1.f;
@@ -102,42 +106,45 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 	CObject					*self_object = dynamic_cast<CObject*>(this);
 	VERIFY					(self_object);
 
+#ifdef SAVE_OWN_SOUNDS
 	// we do not want to save our own sounds
 	if (object && (self_object->ID() == object->ID()))
 		return;
+#endif
 
+#ifdef SAVE_OWN_ITEM_SOUNDS
 	// we do not want to save the sounds which was from the items we own
 	if (object && object->H_Parent() && (object->H_Parent()->ID() == self_object->ID()))
 		return;
+#endif
 
+#ifdef SAVE_NON_ALIVE_OBJECT_SOUNDS
 	// we do not want to save sounds from the non-alive objects (?!)
 	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(this);
-
-	//if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<CEntityAlive*>(object->H_Parent()))
-	//return;
 	if (object && memory_manager && !memory_manager->enemy() && !dynamic_cast<const CEntityAlive*>(object))
 		return;
+#endif
 
+#ifdef SAVE_FRIEND_ITEM_SOUNDS
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= dynamic_cast<CEntityAlive*>(this);
-//	if (object && object->H_Parent() && (dynamic_cast<const CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
 	if (object && object->H_Parent() && (me->tfGetRelationType(dynamic_cast<const CEntityAlive*>(object->H_Parent())) == ALife::eRelationTypeFriend))
 		return;
+#endif
 
+#ifdef SAVE_FRIEND_SOUNDS
 	// we do not want ot save sounds from the teammates
 	const CEntityAlive	*entity_alive	= dynamic_cast<const CEntityAlive*>(object);
 	if (entity_alive && me && (me->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
+#endif
 
+#ifdef SAVE_VISIBLE_OBJECT_SOUNDS
 	// we do not save sounds from the objects we see (?!)
-	CVisualMemoryManager	*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(this);
+	CVisualMemoryManager			*visual_memory_manager = dynamic_cast<CVisualMemoryManager*>(this);
 	if (visual_memory_manager && visual_memory_manager->visible_now(entity_alive))
 		return;
-
-	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
-	CGameObject *self			= dynamic_cast<CGameObject*>(this);
-	if (!game_object || (visual_memory_manager && !visual_memory_manager->visible_now(game_object)))
-		return;
+#endif
 
 #ifndef SILENCE
 	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
