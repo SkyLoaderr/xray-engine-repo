@@ -21,15 +21,15 @@ namespace PAPI{
 // static variables
 float ParticleAction::dt;
 _ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
-_ParticleState::LPParticleActionVec	_ParticleState::alist_vec;
+_ParticleState::ParticleActionsVec	_ParticleState::alist_vec;
 
 // This is the global state.
-_ParticleState 	__ps;
-_ParticleState&	_GetPState		()						{return __ps;}
+_ParticleState 		__ps;
+_ParticleState&		_GetPState		()						{return __ps;}
 
 // Get a pointer to the particles in gp memory
-ParticleEffect* _GetEffectPtr	(int p_effect_num)		{return __ps.GetEffectPtr(p_effect_num);}
-PAVec*			_GetListPtr		(int action_list_num)	{return __ps.GetListPtr(action_list_num);}
+ParticleEffect*		_GetEffectPtr	(int p_effect_num)		{return __ps.GetEffectPtr(p_effect_num);}
+ParticleActions*	_GetListPtr		(int action_list_num)	{return __ps.GetListPtr(action_list_num);}
 
 _ParticleState::_ParticleState()
 {
@@ -67,10 +67,10 @@ ParticleEffect *_ParticleState::GetEffectPtr(int p_effect_num)
 	return effect_vec[p_effect_num];
 }
 
-PAVec* _ParticleState::GetListPtr(int a_list_num)
+ParticleActions* _ParticleState::GetListPtr(int a_list_num)
 {
 	R_ASSERT(a_list_num>=0&&a_list_num<(int)alist_vec.size());
-	return &alist_vec[a_list_num];
+	return alist_vec[a_list_num];
 }
 
 // Return an index into the list of particle effects where
@@ -110,7 +110,7 @@ int _ParticleState::GenerateLists(int list_count)
 	
 	for(int i=0; i<(int)alist_vec.size(); i++)
 	{
-		if(!alist_vec[i].empty())
+		if(!alist_vec[i]->actions.empty())
 		{
 			num_empty = 0;
 			first_empty = -1;
@@ -128,7 +128,7 @@ int _ParticleState::GenerateLists(int list_count)
 	// Couldn't find a big enough gap. Allocate.
 	first_empty = alist_vec.size();
     for (int k=0; k<list_count; k++)
-		alist_vec.push_back(PAVec());
+		alist_vec.push_back(xr_new<ParticleActions>());
 	
 	return first_empty;
 }
@@ -210,7 +210,7 @@ ParticleAction* pCreateAction(PActionEnum type, ParticleAction* src)
 
 ////////////////////////////////////////////////////////
 // Auxiliary calls
-void _pCallActionList(PAVec* pa, ParticleEffect *pe)
+void _pCallActionList(ParticleActions* pa, ParticleEffect *pe)
 {
 	// All these require a particle effect, so check for it.
 	if(pe == NULL)
@@ -240,7 +240,7 @@ void _pAddActionToList(ParticleAction *S)
 	if(_ps.pact == NULL)   	return; // ERROR
 	if(_ps.list_id < 0)		return; // ERROR
 
-	_ps.pact->push_back		(S);
+	_ps.pact->append		(S);
 }
 
 PARTICLEDLL_API void pAddActionToList(ParticleAction* S)
@@ -383,13 +383,8 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 
 	if(_ps.in_new_list)
 		return -1; // ERROR
-	
-	int ind = _ps.GenerateLists(action_list_count);
-	
-	for(int i=ind; i<ind+action_list_count; i++)
-		_ps.alist_vec[i].reserve(8);
 
-	return ind;
+	return _ps.GenerateLists(action_list_count);
 }
 
 PARTICLEDLL_API void pNewActionList(int action_list_num)
@@ -404,9 +399,7 @@ PARTICLEDLL_API void pNewActionList(int action_list_num)
 	_ps.list_id 		= action_list_num;
 	_ps.in_new_list 	= TRUE;
 
-    for (PAVecIt it=_ps.pact->begin(); it!=_ps.pact->end(); it++) 
-    	xr_delete		(*it);
-    _ps.pact->clear		();
+	_ps.pact->clear		();
 }
 
 PARTICLEDLL_API void pEndActionList()
@@ -418,8 +411,8 @@ PARTICLEDLL_API void pEndActionList()
 	
 	_ps.in_new_list = FALSE;
 	
-	_ps.pact = NULL;
-	_ps.list_id = -1;
+	_ps.pact		= NULL;
+	_ps.list_id		= -1;
 }
 
 PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_count)
@@ -436,12 +429,7 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 		return; // ERROR
 
 	for(int i = action_list_num; i < action_list_num + action_list_count; i++)
-	{
-        PAVec& lst				= _ps.alist_vec[i];
-	    for (PAVecIt it=lst.begin(); it!=lst.end(); it++)
-            xr_delete			(*it);
-	    lst.clear				();
-	}
+		xr_delete	(_ps.alist_vec[i]);
 }
 
 void _pSendAction(ParticleAction *S);
@@ -462,7 +450,7 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 	else
 	{
 		// Execute the specified action list.
-		PAVec* pa			= _ps.GetListPtr(action_list_num);
+		ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 		
 		if((pa==NULL)||pa->empty())	return; // ERROR
 		
@@ -484,7 +472,7 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 	if(_ps.in_new_list) return; // ERROR
 
 	// Execute the specified action list.
-	PAVec* pa			= _ps.GetListPtr(action_list_num);
+	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 
 	if(pa == NULL)		return; // ERROR
 
@@ -513,7 +501,7 @@ PARTICLEDLL_API void pStopPlaying(int action_list_num)
 	_ParticleState &_ps = _GetPState();
 	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
-	PAVec* pa			= _ps.GetListPtr(action_list_num);
+	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
@@ -530,7 +518,7 @@ PARTICLEDLL_API void pStartPlaying(int action_list_num)
 	_ParticleState &_ps = _GetPState();
 	if(_ps.in_new_list) return; // ERROR
 	// Execute the specified action list.
-	PAVec* pa			= _ps.GetListPtr(action_list_num);
+	ParticleActions* pa	= _ps.GetListPtr(action_list_num);
 	if(pa == NULL)		return; // ERROR
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
@@ -571,9 +559,9 @@ PARTICLEDLL_API void pDeleteParticleEffects(int p_effect_num, int p_effect_count
 	if(p_effect_num < 0)
 		return; // ERROR
 
-	_ParticleState &_ps = _GetPState();
+	_ParticleState& _ps = _GetPState();
 
-	if(p_effect_num + p_effect_count > (int)_ps.effect_vec.size())
+	if((p_effect_num + p_effect_count) > (int)_ps.effect_vec.size())
 		return; // ERROR
 	
 	for(int i = p_effect_num; i < p_effect_num + p_effect_count; i++)

@@ -502,6 +502,42 @@ namespace PAPI
 	};
 
     DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
+	struct ParticleActions{
+		PAVec			actions;
+	public:
+						ParticleActions()
+		{
+			actions.reserve(4);
+		}
+						~ParticleActions()
+		{
+			for (PAVecIt it=actions.begin(); it!=actions.end(); it++)
+				xr_delete(*it);
+			actions.clear();
+		}
+		IC void			clear(){
+			for (PAVecIt it=actions.begin(); it!=actions.end(); it++) 
+				xr_delete(*it);
+			actions.clear();
+		}
+		IC void			append(ParticleAction* pa)
+		{
+			actions.push_back(pa);
+		}
+		IC bool			empty()
+		{
+			return		actions.empty();
+		}
+		IC PAVecIt		begin()
+		{
+			return		actions.begin();
+		}
+		IC PAVecIt		end()
+		{
+			return		actions.end();
+		}
+	};
+
 	// Global state _vector
 	struct _ParticleState
 	{
@@ -512,14 +548,14 @@ namespace PAPI
 		int 			effect_id;
 		int 			list_id;
 		ParticleEffect*	peff;
-		PAVec*			pact;
+		ParticleActions*pact;
 
 		// These are static because all threads access the same effects.
 		// All accesses to these should be locked.
 		DEFINE_VECTOR(ParticleEffect*,ParticleEffectVec,ParticleEffectVecIt);
-		DEFINE_VECTOR(PAVec,LPParticleActionVec,LPParticleActionVecIt);
+		DEFINE_VECTOR(ParticleActions*,ParticleActionsVec,ParticleActionsVecIt);
 		static ParticleEffectVec	effect_vec;
-		static LPParticleActionVec	alist_vec;
+		static ParticleActionsVec	alist_vec;
 
 		// state part
 		Flags32			flags;
@@ -540,7 +576,7 @@ namespace PAPI
 		int				GenerateEffects	(int p_effect_count);
 		int				GenerateLists	(int alist_count);
 		ParticleEffect*	GetEffectPtr	(int p_effect_num);
-		PAVec*			GetListPtr		(int action_list_num);
+		ParticleActions*GetListPtr		(int action_list_num);
 		// 
 		void			ResetState		();
 	};
@@ -549,7 +585,7 @@ namespace PAPI
 	// For the non-MP case this is practically a no-op.
 	PARTICLEDLL_API		_ParticleState& _GetPState		();
 	PARTICLEDLL_API		ParticleEffect*	_GetEffectPtr	(int p_effect_num);
-	PARTICLEDLL_API		PAVec*			_GetListPtr		(int action_list_num);
+	PARTICLEDLL_API		ParticleActions*_GetListPtr		(int action_list_num);
 	#pragma pack( pop ) // push 4
 
 	PARTICLEDLL_API ParticleAction* pCreateAction	(PActionEnum type, ParticleAction* src=0);
