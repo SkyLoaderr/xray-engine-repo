@@ -160,7 +160,9 @@ function action_wait:execute ()
       			self.object:set_item(object.idle, self.object:best_weapon())
 	       	end
 		-- озвучка на проверку
-		globals.set_sound(self.object, self.sound_wait, false)
+		if self.a.evn:ruleExist("silence") ~= true then
+			globals.set_sound(self.object, self.sound_wait, false)
+		end
 	end
 	if self.check == false then
 		-- просто стоим смотрим
@@ -172,7 +174,9 @@ function action_wait:execute ()
 			self.object:add_animation("prisluh_8_2", false)
 		end		
 		-- озвучка на поиск
-		globals.set_sound(self.object, self.sound_search, false)
+		if self.a.evn:ruleExist("silence") ~= true then
+			globals.set_sound(self.object, self.sound_search, false)
+		end
 	end
 	end
 
@@ -189,6 +193,12 @@ function action_wait:execute ()
 	if self.a.isVisual and self.a.isVisual >= 1 then
 		self.finish = true
 		self.a.evn:markAsUsed(self.a.id)
+
+		-- Если мы обнаружили труп, то нужно сказать фразу и отметить его как труп
+		if self.a.evn:isCorpse(self.a.id) == true then
+			-- фразы
+			self.a.evn:markCorpse(self.a.id)
+		end
 	else
 		self.finish = false
 	end
@@ -256,6 +266,7 @@ function events:__init(npc)
 	self.arhive = {} -- массив дескрипторов раздражителей
 	self.used = {} -- обработанные объекты, некоторое время раздражители по ним учитываться не будут
 	self.watch = {}	-- раздражители, за которыми мы следим
+	self.corpse = {} -- найденные трупы
 	self.hear = {} 	-- звуки, которые мы слышали менее чем x секунду назад. Так как один и тот же звук может приходить несколько раз 
 			-- то таким образом мы обрубаем повторное включение одного и того же звука
 
@@ -266,11 +277,11 @@ function events:__init(npc)
 			object_type = nil,
 			point = nil,
 			time = nil,
-			stalker = { corpse = nil,
-				    relation = nil },
-			monstr	= { corpse = nil,
-				    power = nil },
-			item 	= { power = nil }
+			stalker = { relation = nil },
+			monstr	= { power = nil },
+			item 	= { power = nil },
+			corpse 	= { type = nil,
+				    relation = nil }
 			}
 
 	self.stype3 = { snd_type.weapon,
@@ -309,6 +320,7 @@ function events:__init(npc)
 	"no_item" 	- игнорирует итемя
 	"no_check" 	- не ходит проверять
 	"ignore" 	- игнорирует все раздражители
+	"silence"	- не издают звука
 ]]
 end
 function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
@@ -352,6 +364,10 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 
 		if self.used[so:id()] ~= nil then
+			continue = false
+		end
+
+		if self.corpse[so:id()] ~= nil then
 			continue = false
 		end
 
@@ -417,11 +433,12 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 							object_type = self.descr.object_type,
 							point = self.descr.point,
 							time = self.descr.time,
-							stalker = { corpse = self.descr.stalker.corpse,
-								    relation = self.descr.stalker.relation},
-							monstr	= { corpse = self.descr.monstr.corpse,
-								    power = self.descr.monstr.power},
-							item 	= { power = self.descr.item.power}}
+							stalker = { relation = self.descr.stalker.relation},
+							monstr	= { power = self.descr.monstr.power},
+							item 	= { power = self.descr.item.power},
+							corpse	= { type = self.descr.corpse.type,
+								    relation = self.descr.corpse.relation}}
+
 			end
 			-- указываем, что нам о нем известно
 			self.arhive[so:id()].sound_kat 		= ll
@@ -440,6 +457,10 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local continue = true
 
 		if self.used[vo:id()] ~= nil then
+			continue = false
+		end
+
+		if self.corpse[vo:id()] ~= nil then
 			continue = false
 		end
 
@@ -483,11 +504,11 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 							object_type = self.descr.object_type,
 							distance = self.descr.distance,
 							time = self.descr.time,
-							stalker = { corpse = self.descr.stalker.corpse,
-								    relation = self.descr.stalker.relation},
-							monstr	= { corpse = self.descr.monstr.corpse,
-								    power = self.descr.monstr.power},
-							item 	= { power = self.descr.item.power}}
+							stalker = { relation = self.descr.stalker.relation},
+							monstr	= { power = self.descr.monstr.power},
+							item 	= { power = self.descr.item.power},
+							corpse	= { type = self.descr.corpse.type,
+								    relation = self.descr.corpse.relation}}
 			end
 			-- указываем, что нам о нем известно
 			self.arhive[vo:id()].point 		= vo:level_vertex_id()
@@ -497,13 +518,16 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 				self.arhive[vo:id()].object_type = self:type(vo)
 
 				if self.arhive[vo:id()].object_type == "stalker" then
-					self.arhive[vo:id()].stalker.corpse = not vo:alive()
 					self.arhive[vo:id()].stalker.relation = self.npc:relation(vo)
 				elseif self.arhive[vo:id()].object_type == "monstr" then
-					self.arhive[vo:id()].monstr.corpse = not vo:alive()
 					self.arhive[vo:id()].monstr.power = self:monstr_power(vo)
 				elseif self.arhive[vo:id()].object_type == "item" then
 					self.arhive[vo:id()].item.power = self:item_power(vo)
+				elseif self.arhive[vo:id()].object_type == "item" then
+					self.arhive[vo:id()].corpse.type = self:corpseType(vo)
+					if self.arhive[vo:id()].corpse.type == "stalker" then
+						self.arhive[vo:id()].corpse.relation = self.npc:relation(vo)
+					end
 				end
 			end
 		end
@@ -545,6 +569,13 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 			end
 		end
 
+		for k,v in self.corpse do
+			if key == k then
+				cc = true
+				break
+			end
+		end
+
 		-- Проверяем есть ли у нас лучший
 		if not cc and prior == nil then 
 			prior = key
@@ -553,12 +584,10 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 
 		-- проверка по приоритету: нетруп(неитем) - труп - итем
 		local is_this_item = value.object_type == "item"
-		local is_this_corpse = (value.object_type == "stalker" and value.stalker.corpse == true) or
-				       (value.object_type == "monstr" and value.monstr.corpse == true)
+		local is_this_corpse = value.object_type == "corpse"
 
 		local is_prior_item = self.arhive[prior].object_type == "item"
-		local is_prior_corpse = (self.arhive[prior].object_type == "stalker" and self.arhive[prior].stalker.corpse == true) or
-				      	(self.arhive[prior].object_type == "monstr" and self.arhive[prior].monstr.corpse == true)
+		local is_prior_corpse = self.arhive[prior].object_type == "corpse"
 
 		if not cc and (is_this_corpse and is_prior_item) or
 		   (not is_this_item and not is_this_corpse and
@@ -569,7 +598,11 @@ function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 
 		-- проверка по приоритету: сталкер - монстр (только если не итем)
 		if not cc and not is_this_item and not is_prior_item then
-			if value.object_type == "stalker" and self.arhive[prior].object_type == "monstr" then
+			if value.object_type == "stalker" and self.arhive[prior].object_type ~= "stalker" then
+				prior = key
+				cc = true
+			end
+			if value.object_type == "monstr" and self.arhive[prior].object_type == "corpse" then
 				prior = key
 				cc = true
 			end
@@ -647,6 +680,28 @@ function events:removeFromWatch(npc)
 		table.remove(self.watch, npc)	
 	end
 end
+function events:markCorpse(npc)
+	if npc ~= nil then
+		if self.corpse[npc] ~= nil then 
+			self.corpse[npc] = device():time_global()
+		else
+			table.insert(self.corpse, npc, device():time_global())
+		end
+	end
+end
+function events:removeCorpse(npc)
+	if self.corpse[npc] ~= nil then
+		table.remove(self.corpse, npc)	
+	end
+end
+function events:isCorpse(id)
+	if self.arhive[id] ~= nil and
+	   self.arhive[id].object_type == "corpse" then
+		return true
+	else
+		return false
+	end
+end
 function events:isEvents()
 	local tt = false
 	for key,value in self.arhive do 
@@ -680,17 +735,17 @@ function events:print()
 		if value.object_type then 	printf("Object type: %s", value.object_type)
 					else 	printf("Object type: nil") end
 		-- stalker print
-		if value.stalker.corpse == true then	printf("Corpse") end
 		if value.stalker.relation == game_object.friend then		printf("Relation: Friend") 
 		elseif value.stalker.relation == game_object.neutral then	printf("Relation: Neutral") 
 		elseif value.stalker.relation == game_object.enemy then		printf("Relation: Enemy") end
 
 		-- monstr print
-		if value.monstr.corpse == true then	printf("Corpse") end
 		if value.monstr.power == true then	printf("Powerfull") end
 
 		-- item print
 		if value.item.power == true then	printf("Powerfull") end
+
+		-- corpse print
 
         	-- watched print
 		for k,v in self.watch do
@@ -703,13 +758,14 @@ function events:print()
 end
 function events:type(obj)
 	local otype = obj:clsid()
+	local type
 
 	if 	otype == clsid.actor or
   	   	otype == clsid.soldier or
 	   	otype == clsid.stalker or
 	   	otype == clsid.trader
 	then 
-		return "stalker"
+		type = "stalker"
 	elseif 	otype == clsid.crow or
 		otype == clsid.rat or
 		otype == clsid.rat_group or
@@ -726,7 +782,7 @@ function events:type(obj)
 		otype == clsid.dog_black or
 		otype == clsid.pseudo_gigant
 	then 
-		return "monstr"
+		type = "monstr"
 	elseif	otype == clsid.wpn_fn2000 or
 		otype == clsid.wpn_ak74 or
 		otype == clsid.wpn_lr300 or
@@ -773,10 +829,52 @@ function events:type(obj)
 		otype == clsid.wpn_ammo_og7b or
 		otype == clsid.wpn_ammo_m209
 	then 
-		return "item"
+		type = "item"
 	else
-		return "none"
+		type = "none"
 	end
+
+	-- проверяем не труп ли это
+	if type == "stalker" or
+	   type == "monstr" then
+		if obj:alive() == false then
+			type = "corpse"
+		end
+	end
+
+	return type
+end
+function events:corpseType(obj)
+	local otype = obj:clsid()
+	local type
+
+	if 	otype == clsid.actor or
+  	   	otype == clsid.soldier or
+	   	otype == clsid.stalker or
+	   	otype == clsid.trader
+	then 
+		type = "stalker"
+	elseif 	otype == clsid.crow or
+		otype == clsid.rat or
+		otype == clsid.rat_group or
+		otype == clsid.zombie or
+		otype == clsid.flesh or
+		otype == clsid.controller or
+		otype == clsid.bloodsucker or
+		otype == clsid.burer or
+		otype == clsid.chimera or
+		otype == clsid.boar or
+		otype == clsid.idol or
+		otype == clsid.flesh_group or
+		otype == clsid.dog_red or
+		otype == clsid.dog_black or
+		otype == clsid.pseudo_gigant
+	then 
+		type = "monstr"
+	else
+		type = "none"
+	end
+	return type
 end
 function events:monstr_power(obj)
 	local otype = obj:clsid()
