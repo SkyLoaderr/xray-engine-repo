@@ -46,12 +46,9 @@ class CAI_Zombie : public CCustomMonster
 			CMotionDef* tpaAttack[2];
 			CMotionDef* tpIdle;
 			SAnimState  tWalk;
-		}SNormalGlobalAnimations;
-
-		typedef struct tagSNormalLegsAnimations{
 			CMotionDef *tpTurnLeft;
 			CMotionDef *tpTurnRight;
-		}SNormalLegsAnimations;
+		}SNormalGlobalAnimations;
 
 		typedef struct tagSNormalTorsoAnimations{
 			CMotionDef *tpDamageLeft;
@@ -62,7 +59,6 @@ class CAI_Zombie : public CCustomMonster
 		typedef struct tagSNormalAnimations{
 			SNormalGlobalAnimations tGlobal;
 			SNormalTorsoAnimations tTorso;
-			SNormalLegsAnimations tLegs;
 		}SNormalAnimations;
 
 		////////////////////////////////////////////////////////////////////////////

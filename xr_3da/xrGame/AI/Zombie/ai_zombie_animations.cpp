@@ -76,8 +76,8 @@ void CAI_Zombie::vfLoadAnimations()
 
 	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 	
-	tZombieAnimations.tNormal.tLegs.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
-	tZombieAnimations.tNormal.tLegs.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
+	tZombieAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
+	tZombieAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
 	tZombieAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_FX("norm_damage_ls");
 	tZombieAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
@@ -114,19 +114,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	}
 	else
 		if (speed<0.2f) {
-			switch (m_cBodyState) {
-				case BODY_STATE_STAND : {
-					//if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
-					//	tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
-					break;
-				}
-				case BODY_STATE_CROUCH : {
-					break;
-				}
-				case BODY_STATE_LIE : {
-					break;
-				}
-			}
 			switch (eCurrentState) {
 				/**/
 				case aiZombieAttackFire : {
@@ -154,18 +141,23 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 				}
 				/**/
 				default : {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
+					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+						if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+							if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnRight;
+							else
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
+						else
 							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
+					else
+						if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+							if (r_torso_target.yaw > r_torso_current.yaw)
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
+							else
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpTurnRight;
+						else
+							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
+					
 					break;
 				}
 			}
