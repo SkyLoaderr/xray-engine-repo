@@ -14,6 +14,7 @@
 #include "alife_simulator.h"
 #include "alife_story_registry.h"
 #include "xrServer_Objects_ALife.h"
+#include "script_engine.h"
 
 #include "ui\uixmlinit.h"
 
@@ -194,9 +195,12 @@ void CInfoPortion::load_shared	(LPCSTR)
 				
 				if (story_id != -1 && ai().get_alife())
 				{
-					CSE_ALifeDynamicObject	*object	= ai().alife().story_objects().object(ALife::_STORY_ID(story_id));
-					THROW(object);
-
+					CSE_ALifeDynamicObject	*object	= ai().alife().story_objects().object(ALife::_STORY_ID(story_id),true);
+					if (!object) {
+						ai().script_engine().script_log(eLuaMessageTypeError,"! Cannot find story object with id %d!",story_id);
+						map_location.attached_to_object = false;
+						map_location.object_id = 0xffff;
+					}
 					map_location.attached_to_object = true;
 					map_location.object_id = object->ID;
 				}

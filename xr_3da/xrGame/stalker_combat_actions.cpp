@@ -216,8 +216,10 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 	object().m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
 	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CMovementRestrictor(m_object,false));
-	if (!point)
+	if (!point) {
+		object().m_ce_far->setup		(mem_object.m_object_params.m_position,0.f,300.f);
 		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CMovementRestrictor(m_object,false));
+	}
 
 	if (point) {
 		object().movement().set_level_dest_vertex			(point->level_vertex_id());
