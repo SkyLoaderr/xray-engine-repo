@@ -1,8 +1,8 @@
-module( "monsters" )
+module("monsters")
 local trader = nil
 
 function init()
-	trader = this.Trader ( "escape_trader", "trader_zone", script_name())
+	trader = Trader ( "escape_trader", "trader_zone", script_name())
 end
 
 function execute()
@@ -14,7 +14,7 @@ local spinka     = 1
 local idle       = 2
 local chitaet    = 3
 
-local pause_time = 20000   --Время, через которое торговец говорит, что-то игроку, который не ушел
+local pause_time = 20000   //'Время, через которое торговец говорит, что-то игроку, который не ушел
 
 
 local Trader_Hello1  = "\script_replics\\trader\\trader_script1a_1"
@@ -50,19 +50,19 @@ local Come_To_Mee2    = "\script_replics\\trader\\trader1b"
 local Story1          = "\script_replics\\trader\\trader_monolog1"
 local Story2          = "\script_replics\\trader\\trader_monolog2"
 
-local Get_Weapon1      = "\script_replics\\trader\\trader3a"   --Куда ты без оружия
-local Get_Weapon2      = "\script_replics\\trader\\trader3b"   --Подойди, я тебе что-то подкину
-local Get_Weapon3      = "\script_replics\\trader\\trader3c"   --Проветришся, заходи
+local Get_Weapon1      = "\script_replics\\trader\\trader3a"   //'Куда ты без оружия
+local Get_Weapon2      = "\script_replics\\trader\\trader3b"   //'Подойди, я тебе что-то подкину
+local Get_Weapon3      = "\script_replics\\trader\\trader3c"   //'Проветришся, заходи
 
---Событие
+//'Событие
 local non            = 0
 local actor_enter    = 1
 local actor_exit     = 2
 local end_trade      = 3
 
 
---Вещи которые принесли
-local box_with_post  = 1     		--Коробка с блокпоста
+//'Вещи которые принесли
+local box_with_post  = 1     		//'Коробка с блокпоста
 
 
 class "Trader"
@@ -77,7 +77,7 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
     					state         = idle,
     					new_state     = idle,
                         event         = non,
-                        bring         = non,               -- ЗАпоминает тут что стоещее принес актер во время обмена
+                        bring         = non,               //'ЗАпоминает тут что стоещее принес актер во время обмена
     					last_anim     = "idle",
     					anim_snd      = nil,
                         repeats       = 0,
@@ -87,7 +87,7 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
     					exchange      = false,
     					exit_time     = device():time_global() - 20000,
                         enter_time    = device():time_global(),
-                        time          = device():time_global()-8000,   --Использутеся для различных целей
+                        time          = device():time_global()-8000,   //'Использутеся для различных целей
                         need_reset    = false,
                         need_reselect = true
                         }
@@ -108,7 +108,7 @@ function Trader:on_enter( zone, obj )
         self.mem.time       = self.mem.enter_time
         self.mem.repeats    = 0
         self.mem.event      = actor_enter
---        reset_action( self.npc, self.script_name )
+//'     reset_action( self.npc, self.script_name )
     end
 end
 
@@ -142,7 +142,7 @@ function Trader:on_trade( obj, type )
 	self.mem.exchange   = true
 end
 
---Проверка не перешли ли мы в InLine( OffLien)
+//'Проверка не перешли ли мы в InLine( OffLien)
 function Trader:is_on_line()
     if( self.on_line ) then
         if( level.object( self.npc_name ) ~= nil and level.object( self.zone_name ) ~= nil ) then return end
@@ -158,8 +158,8 @@ function Trader:is_on_line()
         self.zone     = level.object( self.zone_name )
         self.zone:set_callback( self, "on_enter", true )
         self.zone:set_callback( self, "on_exit", false )
-        self.npc:set_callback ( self, "start_trade",true)    -- start
-        self.npc:set_callback ( self,"end_trade",false)    -- end
+        self.npc:set_callback ( self, "start_trade",true)    //' start
+        self.npc:set_callback ( self,"end_trade",false)      //' end
         self.npc:set_trade_callback ( self, "on_trade" )
     end
 end
@@ -192,17 +192,17 @@ end
 function Trader:animation()
     if( self.npc:action() ) then return end
 
---    printf( "New animation" )
+//'    printf( "New animation" )
 
-     --Если тело торговца для новой анимации не надо двигать, то проигруем анимацию, в противном случае двигаем тело
+     //'Если тело торговца для новой анимации не надо двигать, то проигруем анимацию, в противном случае двигаем тело
     if( self.mem.state == self.mem.new_state ) then
 
-        if( self.mem.anim_snd == nil ) then                 --Проигруем анимацию без звука
-            this.action2( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
---            printf( "Anim   %s", self.mem.last_anim )
+        if( self.mem.anim_snd == nil ) then                 //'Проигруем анимацию без звука
+            action( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
+//'            printf( "Anim   %s", self.mem.last_anim )
             self.mem.repeats = self.mem.repeats - 1
-        else                                           --Проигруем анимацию со звуком
-	        if( self.mem.all_anim ) then                        --Анимация, где двигается все тело
+        else                                           //'Проигруем анимацию со звуком
+	        if( self.mem.all_anim ) then                        //'Анимация, где двигается все тело
     	        action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
         		                                                    cond( cond.sound_end ) )
             	self.mem.all_anim = false
@@ -212,12 +212,12 @@ function Trader:animation()
      		end
 
             self.mem.anim_snd = nil
-            self.mem.repeats = 0                           --После звука выбираем новую анимацию, старую не повторяем
---            printf( "Play anim with sound. Phrase %s", self.mem.anim_snd )
+            self.mem.repeats = 0                           //'После звука выбираем новую анимацию, старую не повторяем
+//'            printf( "Play anim with sound. Phrase %s", self.mem.anim_snd )
             printf( "Play anim with sound. Anim   %s", self.mem.last_anim )
         end
     else
-     --Устанавливаем торговца в нужное положение
+     //'Устанавливаем торговца в нужное положение
         if( self.mem.state == spinka ) then
             action( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
@@ -229,8 +229,8 @@ function Trader:animation()
                 action( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
                 self.mem.state = chitaet
             end
-        else          --state == chitaet
-            this.action2( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
+        else          //'state == chitaet
+            action( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         end
     end
@@ -239,12 +239,12 @@ end
 
 function Trader:select_state()
 	if( monsters.ini.trader_start ) then
-    	self.curState = this.t_OnStart( self.mem, self.npc:position() )
+    	self.curState = t_OnStart( self.mem, self.npc:position() )
         return
     end
 
     self.curState = nil
-    self.curState = this.t_Life( self.mem, self.npc:position() )
+    self.curState = t_Life( self.mem, self.npc:position() )
 end
 
 
@@ -314,9 +314,9 @@ function t_OnStart:sound()
 end
 
 function t_OnStart:select_state()
-    --Оружие взяли
+    //'Оружие взяли
     if( self.mem.event == end_trade and monsters.ini.trader_start ) then
-        monsters.ini.trader_start = false   --Запоминаем, уже работали( Для того, чтоб когда скрипт заново был загружен, не работал сначала
+        monsters.ini.trader_start = false   //'Запоминаем, уже работали( Для того, чтоб когда скрипт заново был загружен, не работал сначала
         self.take_weapon = true
     end
 
@@ -337,11 +337,11 @@ function t_OnStart:set_anim()
             self.mem.repeats    = 3
         else
 	        self.mem.repeats    = 0
-            if( self.mem.all_anim == false ) then						--Если не проигруем специфическую анимацию
+            if( self.mem.all_anim == false ) then						//'Если не проигруем специфическую анимацию
                 self.mem.last_anim  = "idle_non_stop"
             end
             self.mem.need_reset = true
-            --printf(" Non stop animation. Sound =  %s", self.mem.anim_snd )
+            //'printf(" Non stop animation. Sound =  %s", self.mem.anim_snd )
         end
    	    self.mem.new_state  = idle
 	end
@@ -393,17 +393,17 @@ end
 
 local rnd = 0
 function t_Life:set_anim()
-    if( self.mem.entered ) then                           --Актер вошел
-        --Уже проиграли нужное количество раз анимацию, выбираем новую
-      if( self:sound_with_anim() == false ) then   --Функция sound_with_anim возвращает true если она сама установила
+    if( self.mem.entered ) then                           //'Актер вошел
+        //'Уже проиграли нужное количество раз анимацию, выбираем новую
+      if( self:sound_with_anim() == false ) then   //'Функция sound_with_anim возвращает true если она сама установила
          if( self.mem.trade ) then
          	self.mem.last_anim = "idle"
             self.mem.new_state = idle
             self.mem.repeats = 3
             return true
 		end
-         if( self.mem.repeats < 1 ) then             --нуждую анимацию и звук, в противном случае false,  и нам надо установить анимацию
-            --Актер уже целую минуту тут
+         if( self.mem.repeats < 1 ) then             //'нуждую анимацию и звук, в противном случае false,  и нам надо установить анимацию
+            //'Актер уже целую минуту тут
             printf( "Device time = %d  enter_time %d", device():time_global(), self.mem.enter_time + 60000 )
             if( device():time_global() > self.mem.enter_time + 60000 ) then
 
@@ -421,7 +421,7 @@ function t_Life:set_anim()
             else
                 if( self.choise ~= 1 ) then
                      self.mem.last_anim = "idle"
-                     self.mem.repeats   = math.random( 1, 2 )    --cheshit, palci, zatylok
+                     self.mem.repeats   = math.random( 1, 2 )    //'cheshit, palci, zatylok
                      self.mem.new_state = idle
                      self.choise = 1
                 else
@@ -434,7 +434,7 @@ function t_Life:set_anim()
                     self.choise    = 2
                 	if( rnd == 1 ) then
                     	self.mem.last_anim = "idle_0"
-                     	self.mem.repeats   = 1    --cheshit, palci, zatylok
+                     	self.mem.repeats   = 1    //'cheshit, palci, zatylok
                      	self.mem.new_state = idle
                 	elseif( rnd == 2 ) then
                      	self.mem.last_anim = "cheshit"
@@ -449,15 +449,15 @@ function t_Life:set_anim()
                      	self.mem.repeats   = 1
                      	self.mem.new_state = idle
                 	end
-                end  --self.choise ~= 1
-      	 	end --device():time_global() > self.mem.enter_time + 60000
-		end --self.mem.repeats < 1
+                end  //'self.choise ~= 1
+      	 	end //'device():time_global() > self.mem.enter_time + 60000
+		end //'self.mem.repeats < 1
       else
-            self.choise         = 2            --Это надо для того, чтоб после слов он сразу не начинал чесатся
-      end --self:sound_with_anim() == false
-    else                                              --Актер еще не вошел
+            self.choise         = 2            //'Это надо для того, чтоб после слов он сразу не начинал чесатся
+      end //'self:sound_with_anim() == false
+    else                                              //'Актер еще не вошел
     if( self:sound_with_anim() == false ) then
-    --Уже проиграли нужное количество раз анимацию, выбираем новую
+    //'Уже проиграли нужное количество раз анимацию, выбираем новую
         if( self.mem.repeats < 1 ) then
             self.choise = math.random( 1, 3 )
             if( self.choise == 1 ) then
@@ -482,13 +482,13 @@ end
 
 function t_Life:sound_with_anim()
 
-    --Если идет торговля, то ничего не говорим
+    //'Если идет торговля, то ничего не говорим
     if( self.mem.trade ) then return false end
 
     if( self.mem.entered == false ) then return false end
 
     if( self.mem.event == actor_enter and self.position:distance_to( get_actor():position() ) < 4.5 ) then
-    --Приветствие
+    //'Приветствие
 --         if( self.mem.last_anim == "idle" ) then self.mem.need_reset  = true  end
          printf( "Hello" )
 
@@ -502,9 +502,9 @@ function t_Life:sound_with_anim()
          return true
     end
 
-    --Если что-то принесли стоящее, говорим нужную фразу
+    //'Если что-то принесли стоящее, говорим нужную фразу
     if( monsters.ini.bring_trader ~= non ) then
-    	if( monsters.ini.bring_trader == box_with_post ) then               --Принесли ящик с блок поста
+    	if( monsters.ini.bring_trader == box_with_post ) then               //'Принесли ящик с блок поста
         	self.mem.anim_snd 		  = Story2
 	        self.mem.last_anim    	  = "vstuplenie_2"
             self.mem.all_anim     	  = true
@@ -517,7 +517,7 @@ function t_Life:sound_with_anim()
         self.mem.new_state    = idle
     end
 
-    --После торговли говорим некоторую фрузу
+    //'После торговли говорим некоторую фрузу
     if( self.mem.event == end_trade ) then
          if( self.mem.exchange ) then
          	self.mem.anim_snd  = random_choice( Trader_Trade1,  Trader_Trade2, Trader_Trade3, Trader_Trade4, Trader_Trade5, Trader_Trade7, Trader_Trade8 )
@@ -535,7 +535,7 @@ function t_Life:sound_with_anim()
          return true
     end
 
-	--Сколько можно тут стоять
+	//'Сколько можно тут стоять
     if( device():time_global() > self.mem.time + pause_time ) then
          self.mem.anim_snd   = random_choice( Trader_Wait1, Trader_Wait2, Trader_Wait3, Trader_Wait4, Trader_Wait5, Trader_Wait6 )
          self.mem.repeats    = 1
