@@ -252,6 +252,14 @@ namespace ALife {
 		eTakeTypeRest,
 	};
 
+	enum EWeaponPriorityType {
+		eWeaponPriorityTypeKnife = u32(0),
+		eWeaponPriorityTypeSecondary,
+		eWeaponPriorityTypePrimary,
+		eWeaponPriorityTypeGrenade,
+		eWeaponPriorityTypeDummy = u32(-1),
+	};
+
 	enum ECombatType {
 		eCombatTypeMonsterMonster = u32(0),
 		eCombatTypeMonsterAnomaly,

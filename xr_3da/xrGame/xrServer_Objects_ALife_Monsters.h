@@ -245,19 +245,27 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,	ITEM_P_VECTOR &tpItemVector);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_VECTOR &tpItemVector);
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			OBJECT_VECTOR	&tpObjectVector);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,					float			&fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
+	virtual	void					vfAttachItems			(ETakeType				tTakeType = eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeInventoryItem	*tpALifeInventoryItem);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,int iGroupIndex, bool bMutualDetection);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,		int				iGroupIndex,		bool bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
 	virtual	void					vfDetachAll				();
+			void					vfChooseEquipment		();
+			void					vfChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType);
+			void					vfChooseFood			();
+			void					vfChooseMedikit			();
+			void					vfChooseDetector		();
+			void					vfChooseValuables		();
+			bool					bfChooseFast			();
+			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

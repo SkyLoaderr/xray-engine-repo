@@ -113,7 +113,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #ifdef ALIFE_LOG
 				Msg						("[LSS] : %s interacted with ",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
-				vfPerformCommunication	(l_tpALifeHumanAbstract,l_tpALifeHumanAbstract2);
+				vfPerformCommunication	();
 				break;
 			}
 			case eMeetActionTypeIgnore : {
