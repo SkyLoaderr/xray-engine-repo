@@ -274,9 +274,6 @@
 		<Filter
 			Name="AI"
 			Filter="">
-			<File
-				RelativePath=".\ai_debug.h">
-			</File>
 			<Filter
 				Name="AComponents"
 				Filter="">
@@ -459,16 +456,16 @@
 							<File
 								RelativePath=".\abstract_location_selector_inline.h">
 							</File>
-							<Filter
-								Name="EnemyLocationPredictor"
-								Filter="">
-								<File
-									RelativePath=".\enemy_location_predictor.cpp">
-								</File>
-								<File
-									RelativePath=".\enemy_location_predictor.h">
-								</File>
-							</Filter>
+						</Filter>
+						<Filter
+							Name="EnemyLocationPredictor"
+							Filter="">
+							<File
+								RelativePath=".\enemy_location_predictor.cpp">
+							</File>
+							<File
+								RelativePath=".\enemy_location_predictor.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="GameLocationSelector"
@@ -647,6 +644,13 @@
 						</File>
 					</Filter>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="ADebug"
+				Filter="">
+				<File
+					RelativePath=".\ai_debug.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="AEval"
@@ -1116,6 +1120,41 @@
 									RelativePath=".\object_state_base_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="ObjectStateShow"
+								Filter="">
+								<File
+									RelativePath=".\object_state_show.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="ObjectStateHide"
+								Filter="">
+								<File
+									RelativePath=".\object_state_hide.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="ObjectStateFirePrimary"
+								Filter="">
+								<File
+									RelativePath=".\object_state_fire_primary.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="ObjectStateReload"
+								Filter="">
+								<File
+									RelativePath=".\object_state_reload.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="ObjectStateEmpty"
+								Filter="">
+								<File
+									RelativePath=".\object_state_empty.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -1396,6 +1435,9 @@
 					</File>
 					<File
 						RelativePath=".\graph_manager_inline.h">
+					</File>
+					<File
+						RelativePath=".\graph_manager_interface.h">
 					</File>
 				</Filter>
 				<Filter
@@ -1957,6 +1999,16 @@
 							</File>
 							<File
 								RelativePath="PhysicObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="ParticlesPlayer"
+							Filter="">
+							<File
+								RelativePath=".\ParticlesPlayer.cpp">
+							</File>
+							<File
+								RelativePath=".\ParticlesPlayer.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -4166,6 +4218,24 @@
 			<Filter
 				Name="Monsters"
 				Filter="">
+				<File
+					RelativePath=".\M_Bloodsucker.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Boar.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Chimera.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Dog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Flesh.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Pseudodog.ltx">
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
