@@ -533,7 +533,11 @@ function action_enemy:execute ()
     local enemy = self.object:best_enemy ()
     if distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
        self.object:set_sight (look.fire_point, enemy:position (), 0)
-       self.object:set_item (object.fire1, self.object:best_weapon ()) 
+       if enemy:alive () == true then 
+          self.object:set_item (object.fire1, self.object:best_weapon ()) 
+       else   
+          self.object:set_item (object.activate, self.object:best_weapon ()) 
+       end   
        if self.object:active_sound_count () ~= 0 then
           return 
        end     
