@@ -99,7 +99,7 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 				SetFlag		(flShowFragList,TRUE);	
 				return true;
 			}break;
-		case DIK_RETURN:
+		case DIK_B:
 			{
 				StartStopMenu(pBuyMenu);
 			}break;

@@ -180,9 +180,9 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 		}break;
 	case GAME_PHASE_INPROGRESS:
 		{
-			LPCSTR	options			=	get_name_id	(id);
+//			LPCSTR	options			=	get_name_id	(id);
 			game_PlayerState*	ps	=	get_id	(id);
-			Msg		("* [%s] respawned ",get_option_s(options,"name","Player"));
+			
 			//------------------------------------------------------------
 			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
 			if (!xrCData || !xrCData->owner) break;
@@ -277,6 +277,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	}
 	else
 	{	
+		/*
 		xr_vector<u16>*	C				=	get_children(id_who);
 
 		if (C)
@@ -294,8 +295,10 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 				S->Perform_destroy				(what,net_flags(TRUE, TRUE));
 			}
 		};
+		*/
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 		S->Perform_destroy				(from,net_flags(TRUE, TRUE));
+		
 	}
 //	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
 };
@@ -363,6 +366,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 			}
 		};
 	
+	Msg		("* %s respawned as %s",get_option_s(options,"name","Player"), (0 == pA) ? "spectator" : "actor");
 	spawn_end				(E,id);
 
 	ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
