@@ -35,7 +35,7 @@ end
 function main_menu:InitControls()
 	printf("hello bill gates")
 	----- DATA ----
-	local indent          = 50
+	local indent          = 40
 	local button_indent   = 7
 	local screen          = {width = 1024,height = 768}	
 	local main_rect       = {x = 0,
