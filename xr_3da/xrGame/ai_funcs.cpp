@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_funcs.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
 
 CPatternFunction::CPatternFunction()
@@ -56,7 +56,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 
 	FILE *fTestParameters = fopen(caPath,"rb");
 	if (!fTestParameters) {
-		Msg("Evaluation function : File not found \"%s\"",caPath);
+		Msg("! Evaluation function : File not found \"%s\"",caPath);
 		R_ASSERT(false);
 		return;
 	}
@@ -64,7 +64,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	fread(&m_tEFHeader,1,sizeof(SEFHeader),fTestParameters);
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		fclose(fTestParameters);
-		Msg("Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
+		Msg("! Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
 		R_ASSERT(false);
 		return;
 	}
@@ -146,7 +146,7 @@ float CPatternFunction::ffGetValue()
 	for ( i=0; i<m_dwVariableCount; i++)
 		j += sprintf(caString + j," %3d",m_dwaVariableValues[i] + 1);
 	sprintf(caString + j,") = %7.2f",m_fLastValue);
-	Msg("%s",caString);
+	Msg("- %s",caString);
 	return(m_fLastValue);
 #endif
 }

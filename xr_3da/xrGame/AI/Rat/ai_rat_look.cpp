@@ -73,7 +73,7 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 				m_fMorale += m_fMoraleDeathQuant/fDistance;
 			else
 				if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-					m_fMorale += m_fMoraleFearQuant/fDistance;
+					m_fMorale += m_fMoraleFearQuant;///fDistance;
 				else
 					if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)
 						m_fMorale += m_fMoraleSuccessAttackQuant/fDistance;

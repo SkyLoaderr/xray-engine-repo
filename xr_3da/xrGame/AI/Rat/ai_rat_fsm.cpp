@@ -174,9 +174,9 @@ void CAI_Rat::FreeHuntingActive()
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
-		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
-		CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 2*m_fMoraleNullRadius),aiRatReturnHome);
+		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < 3*m_fMoraleNullRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMoraleNullRadius))
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
@@ -266,32 +266,29 @@ void CAI_Rat::FreeHuntingPassive()
 	
 	if (!g_Alive()) {
 		vfAddActiveMember(true);
-		SWITCH_TO_NEW_STATE(aiRatDie);
+		bStopThinking = false;
+		return;
 	}
 
 	SelectEnemy(m_Enemy);
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 2*m_fMoraleNullRadius),aiRatReturnHome);
-
 	if (m_Enemy.Enemy) {
-		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
+		bStopThinking = false;
+		return;
 	}
 
 	if (m_fMorale < m_fMoraleNormalValue) {
 		vfAddActiveMember(true);
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+		bStopThinking = false;
+		return;
 	}
 	
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
-		if (m_tLastSound.tpEntity)
-			m_tSavedEnemy = m_tLastSound.tpEntity;
-		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-		m_dwLostEnemyTime = Level().timeServer();
 		vfAddActiveMember(true);
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
+		bStopThinking = false;
+		return;
 	}
 	
 	m_fSpeed = 0.f;
@@ -359,8 +356,6 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 2*m_fMoraleNullRadius),aiRatReturnHome);
-
 	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
@@ -413,8 +408,6 @@ void CAI_Rat::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 2*m_fMoraleNullRadius),aiRatReturnHome);
-
 	ERatStates eState = ERatStates(dwfChooseAction(ACTION_REFRESH_RATE,MIN_PROBABILITY,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
@@ -423,9 +416,11 @@ void CAI_Rat::AttackRun()
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 3*m_fMoraleNullRadius),aiRatReturnHome);
+
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);// || !m_Enemy.Enemy->g_Alive())
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) > 3*m_fMoraleNullRadius, aiRatReturnHome);
+//	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) > 3*m_fMoraleNullRadius, aiRatReturnHome);
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -611,9 +606,9 @@ void CAI_Rat::FreeRecoil()
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatAttackRun);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue);
 
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
 		m_dwLostEnemyTime = Level().timeServer();
@@ -659,7 +654,7 @@ void CAI_Rat::ReturnRecoil()
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < 2*m_fMoraleNullRadius)),aiRatAttackRun);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE((m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < 2*m_fMoraleNullRadius)));
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale >= m_fMoraleNormalValue);
 
@@ -709,7 +704,7 @@ void CAI_Rat::ReturnHome()
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
-
+//
 //	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatReturnRecoil);
 //	
 //	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
