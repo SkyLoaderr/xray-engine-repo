@@ -25,7 +25,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	if (RImplementation.b_nv3x)
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
-		rt_Deffer					= Device.Shader._CreateRT	(r2_RT_DEFFER,	w,h,MAKEFOURCC('N','V','E','3'));
+		rt_Deffer					= Device.Shader._CreateRT	(r2_RT_DEFFER,	w,h,(D3DFORMAT)MAKEFOURCC('N','V','E','3'));
 		R_ASSERT					(rt_Deffer);
 	} 
 	else
