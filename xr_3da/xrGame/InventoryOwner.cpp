@@ -77,9 +77,9 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 //достать PDA из специального слота инвентаря
 CPda* CInventoryOwner::GetPDA()
 {
-	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(this);
+//	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(this);
 	
-	if(!pEntityAlive->g_Alive() || !pEntityAlive->g_Alive()) return NULL; 
+//	if(!pEntityAlive || !pEntityAlive->g_Alive()) return NULL; 
 	
 	return (CPda*)m_inventory.m_slots[PDA_SLOT].m_pIItem;
 }
