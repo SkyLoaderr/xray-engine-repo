@@ -20,7 +20,9 @@
 bool CActorTools::EngineModel::UpdateGeometryStream(CEditableObject* source)
 {
 	m_GeometryStream.clear();
-	return (source&&source->PrepareSVGeometry(m_GeometryStream));
+    if (!source) return false;
+    if (source->IsSkeleton())	return (source->PrepareSVGeometry(m_GeometryStream));
+    else						return (source->PrepareOGF(m_GeometryStream));
 }
 
 bool CActorTools::EngineModel::UpdateMotionsStream(CEditableObject* source)
@@ -31,17 +33,25 @@ bool CActorTools::EngineModel::UpdateMotionsStream(CEditableObject* source)
 
 bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGeom, bool bUpdMotions)
 {
-	if (bUpdGeom) 		UpdateGeometryStream(source);
-	if (bUpdMotions) 	UpdateMotionsStream(source);
-	if (!m_GeometryStream.size()||!m_MotionsStream.size()) return false;
+	bool bRes = true;
 	CFS_Memory F;
-    F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
-    F.write(m_MotionsStream.pointer(),m_MotionsStream.size());
+	if (source->IsSkeleton()){
+        if (bUpdGeom)	bRes = UpdateGeometryStream(source);        if (!bRes) return false;
+        if (bUpdMotions)bRes = UpdateMotionsStream(source);         if (!bRes) return false;
+        if (!m_GeometryStream.size()||!m_MotionsStream.size()) 		return false;
+        F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
+        F.write(m_MotionsStream.pointer(),m_MotionsStream.size());
+    }else{
+        bool bRes = true;
+        if (bUpdGeom) 	bRes = UpdateGeometryStream(source);        if (!bRes) return false;
+        if (!m_GeometryStream.size()) return false;
+        F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
+    }
     CStream R(F.pointer(), F.size());
-	Device.Models.Delete(m_pVisual);
+    Device.Models.Delete(m_pVisual);
     m_pVisual = Device.Models.Create(&R);
     m_pBlend = 0;
-    return true;
+    return bRes;
 }
 //---------------------------------------------------------------------------
 
@@ -177,7 +187,7 @@ void __fastcall CActorTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
 	FOLDER::TextDraw(((TextValue*)sender)->val,*(AnsiString*)draw_val);
 }
 //------------------------------------------------------------------------------
-
+                        
 void CActorTools::FillMotionProperties()
 {
 	R_ASSERT(m_pEditObject);

@@ -99,7 +99,7 @@ void CExportObjectOGF::SSplit::Save(CFS_Base& F)
     F.open_chunk		(OGF_HEADER);
     ogf_header			H;
     H.format_version	= xrOGF_FormatVersion;
-    H.type				= (I_Current>=0)?MT_SKELETON_PART:MT_SKELETON_PART_STRIPPED;
+    H.type				= (I_Current>=0)?MT_PROGRESSIVE:MT_NORMAL;
     H.flags				= 0;
     F.write				(&H,sizeof(H));
     F.close_chunk		();
@@ -112,14 +112,16 @@ void CExportObjectOGF::SSplit::Save(CFS_Base& F)
 
     // Vertices
     m_Box.invalidate	();
+    DWORD dwFVF			= D3DFVF_XYZ|D3DFVF_NORMAL|(1<<D3DFVF_TEXCOUNT_SHIFT);
     F.open_chunk		(OGF_VERTICES);
-    F.Wdword			(0x12071980);
+    F.Wdword			(dwFVF);
     F.Wdword			(m_Verts.size());
     for (OGFVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
         SOGFVert& pV 	= *v_it;
-        F.write(&(pV.P),sizeof(float)*3);		// position (offset)
-        F.write(&(pV.N),sizeof(float)*3);		// normal
-        F.Wfloat(pV.UV.x); F.Wfloat(pV.UV.y);		// tu,tv
+        F.write			(&(pV.P),sizeof(float)*3);		// position (offset)
+        F.write			(&(pV.N),sizeof(float)*3);		// normal
+        F.Wfloat		(pV.UV.x); F.Wfloat(pV.UV.y);	// tu,tv
+		m_Box.modify	(pV.P);
     }
     F.close_chunk();
 
