@@ -440,6 +440,9 @@
 				RelativePath=".\w_ak74.ltx">
 			</File>
 			<File
+				RelativePath=".\w_ak74u.ltx">
+			</File>
+			<File
 				RelativePath=".\w_beretta.ltx">
 			</File>
 			<File
@@ -453,6 +456,9 @@
 			</File>
 			<File
 				RelativePath=".\w_colt1911.ltx">
+			</File>
+			<File
+				RelativePath=".\w_desert_eagle.ltx">
 			</File>
 			<File
 				RelativePath=".\w_f1.ltx">
@@ -574,6 +580,9 @@
 					RelativePath=".\M_controller.ltx">
 				</File>
 				<File
+					RelativePath=".\M_Crow.ltx">
+				</File>
+				<File
 					RelativePath=".\M_Dog.ltx">
 				</File>
 				<File
@@ -593,6 +602,9 @@
 				</File>
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Rat.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Snork.ltx">
