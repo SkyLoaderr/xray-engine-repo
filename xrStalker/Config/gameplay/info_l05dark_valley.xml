@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <game_information_portions>
 
+<!-- Нападение на игрока около входа на уровень -->
+<info_portion id="val_t1_ambush_started"></info_portion>
+
 <!-- Сцена 2 - кровосос падает с обрыва -->
 <info_portion id="val_bs_deactivate"></info_portion>
 <info_portion id="val_bs_start"></info_portion>

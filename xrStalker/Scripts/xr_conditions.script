@@ -19,6 +19,10 @@ function talking_or_tutor(actor, npc)
 	return actor:is_talking() or actor:has_info("esc_trader_experienced") or actor:has_info("esc_trader_newbie")
 end
 
+function see_actor(actor, npc)
+	return npc:see(actor)
+end
+
 function actor_enemy(actor, npc)
 	local t = db.storage[npc:id()].death
 	return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())

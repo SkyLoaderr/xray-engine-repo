@@ -961,6 +961,30 @@
 					RelativePath=".\Config\scripts\test_hit_in_actor_dir2.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\val_ambush_t1_s1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t1_s2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t1_s3.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t2_s1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t2_s2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t2_s3.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t3_s1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_ambush_t3_s2.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\val_bs_killer1.ltx">
 				</File>
 				<File
