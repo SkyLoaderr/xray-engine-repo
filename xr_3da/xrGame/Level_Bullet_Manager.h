@@ -30,11 +30,11 @@ struct SBullet
 	u32				frame_num;
 	
 	enum EBulletFlags {
-		RICOCHET_FLAG				= u16(1 << 0),	//пуля срекошетила
+		RICOCHET_FLAG				= u16(1 << 0),	//пуля срикошетила
 		PARTICLES_FLAG				= u16(1 << 1),
 		LIFE_TIME_FLAG				= u16(1 << 2),
 		TRACER_FLAG					= u16(1 << 3),
-		RICOCHET_ENABLED_FLAG		= u16(1 << 4)	//разрешить рекошет
+		RICOCHET_ENABLED_FLAG		= u16(1 << 4)	//разрешить рикошет
 	};
 	
 	Flags16			flags;
@@ -67,8 +67,10 @@ struct SBullet
 	float			pierce_k;
 	float			wallmark_size;
 
-	//максимальная длина трассера для данной пули
+    //максимальная длина трассера для данной пули
 	float			tracer_max_length;
+
+	u16				bullet_material_idx;
 
 	//тип наносимого хита
 	ALife::EHitType hit_type;
@@ -99,6 +101,10 @@ public:
 	void Update		();
 
 	void Render		();
+
+
+	//default материал для пули и осколков (инициализируется в CLevel::Load)
+	static u16 bullet_material_idx;
 
 protected:
 
@@ -131,8 +137,6 @@ protected:
 	//остаток времени, который не был учтен на предыдущем кадре
 	u32	m_dwTimeRemainder;
 
-	//материал для пули и осколков (инициализируется в CLevel::Load)
-	u16 bullet_material_idx;
 
 	//отрисовка трассеров от пуль
 	CTracer tracers;

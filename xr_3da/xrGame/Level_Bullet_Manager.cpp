@@ -11,6 +11,7 @@
 #define WALLMARK_SIZE 0.04f
 
 float CBulletManager::m_fMinBulletSpeed = 3.f;
+u16	  CBulletManager::bullet_material_idx = (u16)-1;
 
 
 SBullet::SBullet()
@@ -61,6 +62,8 @@ void SBullet::Init(const Fvector& position,
 	wallmark_size	= cartridge.fWallmarkSize;
 
 	tracer_max_length = tracer_length;
+
+	bullet_material_idx = cartridge.bullet_material_idx;
 
 	flags.set(TRACER_FLAG, cartridge.m_tracer);
 	flags.set(RICOCHET_ENABLED_FLAG, cartridge.m_ricochet);
@@ -249,7 +252,8 @@ void CBulletManager::Render	()
 	for(BulletVecIt it = m_Bullets.begin(); it!=m_Bullets.end(); it++){
 		SBullet* bullet = &(*it);
 
-		if(!bullet->flags.is(SBullet::TRACER_FLAG)) return;
+		if(!bullet->flags.is(SBullet::TRACER_FLAG)) 
+			continue;
 
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);

@@ -62,7 +62,7 @@ BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LP
 
 void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material, Fvector& vNormal)
 {
-	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet_material_idx, target_material);
+	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
 
 	Fvector particle_dir;
 
