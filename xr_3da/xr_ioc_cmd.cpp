@@ -114,7 +114,7 @@ public:
 //-----------------------------------------------------------------------
 class CCC_Start : public CConsoleCommand
 {
-	void	parse		(LPSTR dest, args, LPCSTR name)
+	void	parse		(LPSTR dest, LPCSTR args, LPCSTR name)
 	{
 		dest[0]	= 0;
 		if (strstr(args,name))
@@ -301,9 +301,8 @@ void CCC_Register()
 	// General
 	CMD1(CCC_Help,		"help"					);
 	CMD1(CCC_Quit,		"quit"					);
-	CMD1(CCC_Server,	"server"				);
+	CMD1(CCC_Start,		"start"					);
 	CMD1(CCC_ServerLoad,"server_load"			);
-	CMD1(CCC_Client,	"client"				);
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
