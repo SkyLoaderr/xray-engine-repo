@@ -400,7 +400,7 @@
 		<actor_dialog>bar_svoboda_volkodav_request_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_give_quest_dp</actor_dialog>
 		<actor_dialog>bar_svoboda_volkodav_info_dp</actor_dialog>
-
+		<actor_dialog>bar_svoboda_volkodav_noquest</actor_dialog>
 	</specific_character>
 
 <!-- ******************* SVOBODA AMBUSH ********************** -->
