@@ -40,6 +40,17 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector4& o_pos)
 
 void CGameObject::Sector_Detect	()
 {
+	// We was moved - so find new AI-Node
+	if (AI_Node)
+	{
+		Fvector		Pos;
+		pVisual->bv_BBox.getcenter	(Pos);
+		Pos.add		(vPosition);
+		AI_NodeID	= pCreator->AI.q_Node	(AI_NodeID,vPosition);
+		AI_Node		= pCreator->AI.Node		(AI_NodeID);
+	}
+	
+	// Perform sector detection
 	if (0==AI_Node) {
 		CObject::Sector_Detect();	// undefined sector
 	} else {

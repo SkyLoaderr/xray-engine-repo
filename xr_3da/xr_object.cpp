@@ -165,15 +165,6 @@ void CObject::Update	( DWORD T )
 		// cfmodel
 		if (cfModel)	cfModel->OnMove();
 
-		// ai space
-		{
-			Fvector		Pos;
-			pVisual->bv_BBox.getcenter	(Pos);
-			Pos.add		(vPosition);
-			AI_NodeID	= pCreator->AI.q_Node			(AI_NodeID,vPosition);
-			AI_Node		= pCreator->AI.Node				(AI_NodeID);
-		}
-
 		// sector
 		if (SectorMode!=EPM_AT_LOAD)	Sector_Detect	();
 	}
