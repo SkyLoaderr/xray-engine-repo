@@ -47,30 +47,29 @@ void CPHCommander::remove_call(PHCALL_I i)
 void CPHCommander::clear	()
 {
 	while (m_calls.size())	{
-		xr_delete			(m_calls.back());
-		m_calls.pop_back	();
+		remove_call(m_calls.end()-1);
 	}
 }
 void CPHCommander::update	()
 {
-	PHCALL_I	i=m_calls.begin();
-	for(;m_calls.end()!=i;)
+	for(u32 i=0; i<m_calls.size(); i++)
 	{
 		try
 		{
-			(*i)->check();
+			m_calls[i]->check();
 		} 
 		catch(...)
 		{
-			remove_call(i);
+			remove_call(m_calls.begin()+i);
+			i--;
 			continue;
 		}
 
-		if((*i)->obsolete())
+		if(m_calls[i]->obsolete())
 		{
-			remove_call(i);
+			remove_call(m_calls.begin()+i);
+			i--;
 			continue;
 		}
-		++i;
 	}
 }
