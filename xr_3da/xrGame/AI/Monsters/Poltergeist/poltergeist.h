@@ -34,12 +34,40 @@ public:
 		
 	// FireBall
 
-					
-			void	StartFireball		();
-			void	StopFireball		();
+			void	LoadFlame			(LPCSTR section);
+			void	StartFlame			();
+			void	FireFlame			();
+			
+			struct {
+				ref_sound	sound;
+				LPCSTR		particle;
+			} m_flame_prepare, m_flame_fire, m_flame_finalize;
 
-			ref_str m_firball_sound_prepare;
-			ref_str m_firball_sound_fire;
-			ref_str m_firball_sound_finalize;
+			Fvector m_flame_position;
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
