@@ -803,7 +803,7 @@ bool CSE_ALifeItemBolt::can_switch_offline	() const
 
 bool CSE_ALifeItemBolt::can_save			() const
 {
-	return						(!bfAttached());
+	return						(false);//!bfAttached());
 }
 
 #ifdef _EDITOR

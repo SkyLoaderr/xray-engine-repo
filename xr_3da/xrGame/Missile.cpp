@@ -106,6 +106,7 @@ void CMissile::net_Destroy()
 	inherited::net_Destroy();
 	m_pInventory = 0;
 	DestroySound(sndPlaying);
+	m_fake_missile = 0;
 }
 
 void CMissile::OnH_B_Chield() 
