@@ -31,11 +31,11 @@ void CUIListItemEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	{
 	case LIST_ITEM_SELECT:
 		this->SetColor(m_dwSelectionColor);	
-		this->Draw();
+//		this->Draw();
 		break;
 	case LIST_ITEM_UNSELECT:
 		this->SetColor(color_argb(0, 0, 0, 0));
-		this->Draw();
+//		this->Draw();
 		break;
 	}
 }
