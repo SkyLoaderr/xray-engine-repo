@@ -412,8 +412,9 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 void CAI_Stalker::update_object_handler	()
 {
-	VERIFY							(g_Alive());
-	
+	if (!g_Alive())
+		return;
+
 	try {
 		try {
 			CObjectHandler::update	();
@@ -440,7 +441,8 @@ void CAI_Stalker::update_object_handler	()
 
 void CAI_Stalker::update_sight_manager	()
 {
-	VERIFY				(g_Alive());
+	if (!g_Alive())
+		return;
 
 	try {
 		sight().update	();
