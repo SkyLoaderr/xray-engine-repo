@@ -6,16 +6,16 @@ CHelicopterMovementManager::check_mask					(u32 mask, u32 test) const
 	return					((mask & test) == test);
 }
 */
-IC float 
-CHelicopterMovementManager::_lerp(float src, float dst, float t)
+IC float CHelicopterMovementManager::_lerp(float src, 
+										   float dst, 
+										   float t)
 {
 	return src*(1.f-t) + dst*t;
 }
 
-IC	void 
-CHelicopterMovementManager::compute_circles(
-	STrajectoryPoint	&point, 
-	SCirclePoint		*circles
+IC	void CHelicopterMovementManager::compute_circles(
+											STrajectoryPoint	&point, 
+											SCirclePoint		*circles
 	)
 {
 	VERIFY				(!fis_zero(point.angular_velocity));
@@ -29,28 +29,26 @@ CHelicopterMovementManager::compute_circles(
 }
 
 
-IC	void 
-CHelicopterMovementManager::adjust_point(
-	const Fvector2		&source, 
-	float				yaw, 
-	float				magnitude, 
-	Fvector2			&dest
-	) const
+IC	void CHelicopterMovementManager::adjust_point(
+											const Fvector2		&source, 
+											float				yaw, 
+											float				magnitude, 
+											Fvector2			&dest
+											) const
 {
 	dest.x				= -_sin(yaw);
 	dest.y				= _cos(yaw);
 	dest.mad			(source,dest,magnitude);
 }
 
-IC	void 
-CHelicopterMovementManager::assign_angle(
-	float					&angle, 
-	const float				start_yaw, 
-	const float				dest_yaw, 
-	const bool				positive,
-	const EDirectionType	direction_type,
-	const bool				start
-	) const
+IC	void CHelicopterMovementManager::assign_angle(
+											float					&angle, 
+											const float				start_yaw, 
+											const float				dest_yaw, 
+											const bool				positive,
+											const EDirectionType	direction_type,
+											const bool				start
+											) const
 {
 	if (positive)
 		if (dest_yaw >= start_yaw)

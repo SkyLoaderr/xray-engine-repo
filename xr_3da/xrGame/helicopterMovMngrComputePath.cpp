@@ -25,16 +25,14 @@ IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
 	return				(cosa*cosb - sina*sinb);
 }
 
-bool 
-CHelicopterMovementManager::compute_path(
+bool CHelicopterMovementManager::compute_path(
 									  STrajectoryPoint			&_start,
 									  STrajectoryPoint			&_dest,
 									  xr_vector<STravelPathPoint>	*m_tpTravelLine,
 									  const xr_vector<STravelParamsIndex> &start_params,
 									  const xr_vector<STravelParamsIndex> &dest_params,
 									  const u32					straight_line_index,
-									  const u32					straight_line_index_negative
-									  )
+									  const u32					straight_line_index_negative )
 {
 	STrajectoryPoint			start = _start;
 	STrajectoryPoint			dest = _dest;
@@ -97,17 +95,15 @@ CHelicopterMovementManager::compute_path(
 	return					(true);
 }
 
-bool 
-CHelicopterMovementManager::compute_trajectory(
-	STrajectoryPoint			&start,
-	STrajectoryPoint			&dest,
-	xr_vector<STravelPathPoint>	*path,
-	float						&time,
-	const u32					velocity1,
-	const u32					velocity2,
-	const u32					velocity3,
-	const EDirectionType		direction_type
-	)
+bool CHelicopterMovementManager::compute_trajectory(
+						STrajectoryPoint			&start,
+						STrajectoryPoint			&dest,
+						xr_vector<STravelPathPoint>	*path,
+						float						&time,
+						const u32					velocity1,
+						const u32					velocity2,
+						const u32					velocity3,
+						const EDirectionType		direction_type )
 {
 	SCirclePoint				start_circles[2], dest_circles[2];
 	compute_circles				(start,start_circles);
@@ -132,15 +128,13 @@ CHelicopterMovementManager::compute_trajectory(
 		(build_trajectory(start,dest,tangent_points,tangent_count,path,time,velocity1,velocity2,velocity3));
 }
 
-bool 
-CHelicopterMovementManager::compute_tangent(
-	const STrajectoryPoint	&start, 
-	const SCirclePoint		&start_circle, 
-	const STrajectoryPoint	&dest, 
-	const SCirclePoint		&dest_circle, 
-	SCirclePoint			*tangents,
-	const EDirectionType	direction_type
-	)
+bool CHelicopterMovementManager::compute_tangent(
+						const STrajectoryPoint	&start, 
+						const SCirclePoint		&start_circle, 
+						const STrajectoryPoint	&dest, 
+						const SCirclePoint		&dest_circle, 
+						SCirclePoint			*tangents,
+						const EDirectionType	direction_type )
 {
 	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, yaw1, yaw2;
 	Fvector2			direction, temp;
@@ -243,16 +237,14 @@ CHelicopterMovementManager::compute_tangent(
 	return				(true);
 }
 
-
-bool //second
-CHelicopterMovementManager::build_trajectory(
-	const STrajectoryPoint		&start, 
-	const STrajectoryPoint		&dest, 
-	xr_vector<STravelPathPoint>	*path,
-	const u32					velocity1,
-	const u32					velocity2,
-	const u32					velocity3
-	)
+//second
+bool CHelicopterMovementManager::build_trajectory(
+						const STrajectoryPoint		&start, 
+						const STrajectoryPoint		&dest, 
+						xr_vector<STravelPathPoint>	*path,
+						const u32					velocity1,
+						const u32					velocity2,
+						const u32					velocity3 )
 {
 	STravelPathPoint lastAdded;
 	if (!build_circle_trajectory(start, path, velocity1, lastAdded, true))
@@ -266,18 +258,17 @@ CHelicopterMovementManager::build_trajectory(
 	return				(true);
 }
 
-bool //first
-CHelicopterMovementManager::build_trajectory(
-	STrajectoryPoint			&start, 
-	STrajectoryPoint			&dest, 
-	const SCirclePoint			tangents[4][2], 
-	const u32					tangent_count,
-	xr_vector<STravelPathPoint>	*path,
-	float						&time,
-	const u32					velocity1,
-	const u32					velocity2,
-	const u32					velocity3
-	)
+//first
+bool CHelicopterMovementManager::build_trajectory(
+						STrajectoryPoint			&start, 
+						STrajectoryPoint			&dest, 
+						const SCirclePoint			tangents[4][2], 
+						const u32					tangent_count,
+						xr_vector<STravelPathPoint>	*path,
+						float						&time,
+						const u32					velocity1,
+						const u32					velocity2,
+						const u32					velocity3 )
 {
 	time			= flt_max;
 	SDist			dist[4];
@@ -315,14 +306,12 @@ CHelicopterMovementManager::build_trajectory(
 }
 
 
-bool 
-CHelicopterMovementManager::build_circle_trajectory(
-	const STrajectoryPoint		&position, 
-	xr_vector<STravelPathPoint>	*path,
-	const u32					velocity,
-	STravelPathPoint&			lastAddedPoint, 
-	bool fromCenter
-	)
+bool CHelicopterMovementManager::build_circle_trajectory(
+					const STrajectoryPoint		&position, 
+					xr_vector<STravelPathPoint>	*path,
+					const u32					velocity,
+					STravelPathPoint&			lastAddedPoint, 
+					bool fromCenter )
 {
 	const float			min_dist = .1f;
 	STravelPathPoint	t;
@@ -439,13 +428,12 @@ bool CHelicopterMovementManager::build_line_trajectory(
 	return true;
 }
 
-void 
-CHelicopterMovementManager::validate_vertex_position(STrajectoryPoint &point) const
-{
-}
+void CHelicopterMovementManager::validate_vertex_position(STrajectoryPoint &point) const
+{}
 
-void 
-CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, bool bUseDestOrientation )
+void CHelicopterMovementManager::build_smooth_path (int startKeyIdx, 
+													bool bClearOld, 
+													bool bUseDestOrientation )
 {
 	m_failed							= true;
 	u32									straight_line_index, straight_line_index_negative;
@@ -557,15 +545,13 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 	}
 }
 
-bool 
-CHelicopterMovementManager::init_build(	int startKeyIdx, 
+bool CHelicopterMovementManager::init_build(	int startKeyIdx, 
 										STrajectoryPoint &start,
 										STrajectoryPoint &dest,
 										float& startH, 
 										float& destH,
 										u32 &straight_line_index,
-										u32	&straight_line_index_negative
-									   )
+										u32	&straight_line_index_negative )
 {
 	u32 idxP1,idxP2;
 	idxP1 = startKeyIdx;
@@ -661,36 +647,3 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 	return								(true);
 }
 
-bool	
-CHelicopterMovementManager::build_attack_circle(	const Fvector& center_point, 
-													const Fvector& start_point, 
-													xr_vector<STravelPathPoint>& path)
-{
-	float radius = center_point.distance_to_xz(start_point);
-	float _ax,_ay;
-	Fvector().sub(start_point,center_point).normalize_safe().getHP(_ax, _ay);
-	
-	int Cnt = 100;
-	float k = PI_MUL_2/(float)(Cnt);
-
-	STravelPathPoint p;
-
-	for(int i=0; i<Cnt; ++i)
-	{
-		p.angularVelocity = PI_DIV_6;
-		p.position.setHP(_ax, _ay);
-		p.position.mul(radius);
-		p.position.add(center_point);
-		Fvector().sub(center_point,p.position).normalize_safe().getHP(p.xyz.y, _ay);
-		p.xyz.x =  helicopter()->velocity()*HELI_PITCH_K ;
-		p.xyz.z =  -computeB(p.angularVelocity) ;
-
-		p.position.y = start_point.y;
-		path.push_back(p);
-
-		_ax+=k;
-	}
-
-
-	return true;
-}

@@ -19,27 +19,23 @@ CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 }
 
 
-const Fmatrix&	
-CHelicopter::ParticlesXFORM() const
+const Fmatrix& CHelicopter::ParticlesXFORM() const
 {
 	return m_fire_bone_xform;
 }
 
-IRender_Sector*	
-CHelicopter::Sector()
+IRender_Sector* CHelicopter::Sector()
 {
 	return 0;
 }
 
-const Fvector&	
-CHelicopter::CurrentFirePoint()
+const Fvector&	CHelicopter::CurrentFirePoint()
 {
 	return m_fire_pos;
 }
 
 
-void 
-CHelicopter::UpdateFire()
+void CHelicopter::UpdateFire()
 {
 
 	fTime -= Device.fTimeDelta;
@@ -61,8 +57,7 @@ CHelicopter::UpdateFire()
 	}
 
 }
-void 
-CHelicopter::OnShot		()
+void CHelicopter::OnShot		()
 {
 	FireBullet(CurrentFirePoint(),m_fire_dir, 
 		fireDispersionBase,
@@ -76,21 +71,18 @@ CHelicopter::OnShot		()
 
 }
 
-void 
-CHelicopter::FireStart()
+void CHelicopter::FireStart()
 {
 	CShootingObject::FireStart();
 }
 
-void 
-CHelicopter::FireEnd()
+void CHelicopter::FireEnd()
 {
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
 }
 
-void					
-CHelicopter::updateMGunDir()
+void CHelicopter::updateMGunDir()
 {
 //	if(!m_destEnemy)	return;
 
@@ -115,8 +107,7 @@ CHelicopter::updateMGunDir()
 	}
 }
 
-void							
-CHelicopter::startRocket(u16 idx)
+void CHelicopter::startRocket(u16 idx)
 {
 	if((getRocketCount()>=1)&&m_use_rocket_on_attack)
 	{

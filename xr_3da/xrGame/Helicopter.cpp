@@ -14,8 +14,7 @@ CHelicopter::~CHelicopter()
 {
 }
 
-void							
-CHelicopter::setState(CHelicopter::EHeliState s)
+void CHelicopter::setState(CHelicopter::EHeliState s)
 {
 	m_curState = s;
 	
@@ -67,8 +66,7 @@ CHelicopter::setState(CHelicopter::EHeliState s)
 
 
 //CAI_ObjectLocation
-void				
-CHelicopter::init()
+void CHelicopter::init()
 {
 	m_time_delay_before_start	= 1000;//1 sec
 	m_time_patrol_period		= 60000;//1 min
@@ -114,16 +112,14 @@ CHelicopter::init()
 
 }
 
-void		
-CHelicopter::reinit()
+void CHelicopter::reinit()
 {
 	inherited::reinit	();
 }
 
 
 //CGameObject
-void		
-CHelicopter::Load(LPCSTR section)
+void CHelicopter::Load(LPCSTR section)
 {
 	inherited::Load			(section);
 	CShootingObject::Load	(section);
@@ -161,14 +157,12 @@ CHelicopter::Load(LPCSTR section)
 
 }
 
-void		
-CHelicopter::reload(LPCSTR section)
+void CHelicopter::reload(LPCSTR section)
 {
 	inherited::reload	(section);
 }
 
-BOOL		
-CHelicopter::net_Spawn(LPVOID	DC)
+BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
@@ -247,30 +241,25 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	return				(TRUE);
 }
 
-void		
-CHelicopter::net_Destroy()
+void CHelicopter::net_Destroy()
 {
 	inherited::net_Destroy();
 }
 
-void		
-CHelicopter::net_Export(NET_Packet &P)
+void CHelicopter::net_Export(NET_Packet &P)
 {
 }
 
-void		
-CHelicopter::net_Import (NET_Packet &P)
+void CHelicopter::net_Import (NET_Packet &P)
 {
 }
 
-void		
-CHelicopter::renderable_Render()
+void CHelicopter::renderable_Render()
 {
 	inherited::renderable_Render();
 }
 
-void		
-CHelicopter::UpdateCL()
+void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
 	
@@ -325,8 +314,7 @@ CHelicopter::UpdateCL()
 	angle_lerp	(m_cur_y_rot, m_tgt_y_rot, PI, Device.fTimeDelta);
 }
 
-void		
-CHelicopter::shedule_Update(u32	time_delta)
+void CHelicopter::shedule_Update(u32 time_delta)
 {
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
@@ -392,14 +380,13 @@ CHelicopter::shedule_Update(u32	time_delta)
 		}
 }
 
-void		
-CHelicopter::Hit(	float P, 
-					Fvector &dir, 
-					CObject* who, 
-					s16 element, 
-					Fvector position_in_bone_space, 
-					float impulse,  
-					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
+void CHelicopter::Hit(	float P, 
+						Fvector &dir, 
+						CObject* who, 
+						s16 element, 
+						Fvector position_in_bone_space, 
+						float impulse,  
+						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
 /*
 	bonesIt It = m_hitBones.find(element);
@@ -442,8 +429,7 @@ CHelicopter::Hit(	float P,
 
 }
 
-void					
-CHelicopter::doHunt(CObject* dest)
+void CHelicopter::doHunt(CObject* dest)
 {
 	if( m_curState==CHelicopter::eInitiateHunt				|| 
 		m_curState==CHelicopter::eMovingByAttackTraj		||
@@ -465,8 +451,8 @@ CHelicopter::doHunt(CObject* dest)
 	setState(CHelicopter::eInitiateHunt);
 }
 
-void 
-CHelicopter::OnEvent(NET_Packet& P, u16 type) 
+void CHelicopter::OnEvent(	NET_Packet& P, 
+							u16 type) 
 {
 	inherited::OnEvent(P,type);
 	u16 id;
@@ -482,8 +468,7 @@ CHelicopter::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
-void		
-CHelicopter::Die()
+void CHelicopter::Die()
 {
 //	PPhysicsShell()=P_build_Shell	(this,false);
 //	setState(CHelicopter::eInitiateWaitBetweenPatrol);

@@ -9,8 +9,8 @@ bool dice()
 
 #define KEY_MAX_DIST  50.0f
 
-void		
-CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints)
+void CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, 
+															 xr_vector<Fvector>& keyPoints)
 {
 	Fvector		keyPoint;
 	Fvector		down_dir;
@@ -74,13 +74,73 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 	
 }
 
-Fvector		
-CHelicopterMovementManager::makeIntermediateKey(Fvector& start, Fvector& dest, float k)
+Fvector	CHelicopterMovementManager::makeIntermediateKey(Fvector& start, 
+														Fvector& dest, 
+														float k)
 {
 	Fvector point;
 	point.lerp(start, dest, k);
 	float h = point.y;
 	point.add( Fvector().random_dir().mul(10.0f) );
+	point.y = h;
+	return point;
+}
+
+//////////////////////////////////////////////////////
+void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, float fromTime, 
+														Fvector fromPos, 
+														xr_vector<Fvector>& keys )
+{
+	Fvector					keyPoint;
+	Fvector					down_dir;
+	bool					useXBound;
+	bool					min_max;
+	Collide::rq_result		cR;
+
+	down_dir.set(0.0f, -1.0f, 0.0f);
+
+	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+	keys.push_back(fromPos);
+	for(u32 i = 0; i<keyCount; ++i)	{
+		useXBound	= dice();
+		min_max		= dice();
+
+		if(useXBound){
+			(min_max)?keyPoint.x = levelBox.min.x:keyPoint.x = levelBox.max.x;
+			keyPoint.z = ::Random.randF(levelBox.min.z, levelBox.max.z);
+		}else{
+			(min_max)?keyPoint.z = levelBox.min.z:keyPoint.z = levelBox.max.z;
+			keyPoint.x = ::Random.randF(levelBox.min.x, levelBox.max.x);
+		}
+
+		keyPoint.y = levelBox.max.y;
+		Level().ObjectSpace.RayPick(keyPoint, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);
+
+		keyPoint.y = keyPoint.y-cR.range+m_baseAltitude;
+		//промежуточные точки
+		if( keys.size() )
+		{
+			Fvector& prevPoint = keys.back();
+			float dist = prevPoint.distance_to(keyPoint);
+			float k = (dist / m_maxKeyDist) - 1.0f;
+			for( float i=1; i<k; ++i )
+			{
+				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
+			}
+		}
+		keys.push_back(keyPoint);
+	};
+
+}
+
+Fvector CHelicopterMovManager::makeIntermediateKey(Fvector& start, 
+												   Fvector& dest, 
+												   float k)
+{
+	Fvector point;
+	point.lerp(start, dest, k);
+	float h = point.y; // RayPick !!!
+	point.add( Fvector().random_dir().mul(m_intermediateKeyRandFactor) );
 	point.y = h;
 	return point;
 }

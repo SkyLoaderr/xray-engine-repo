@@ -20,8 +20,7 @@ CHelicopterMovementManager::~CHelicopterMovementManager()
 }
 #ifdef DEBUG
 
-void 
-CHelicopterMovementManager::OnRender()
+void CHelicopterMovementManager::OnRender()
 {
 /*
 float path_box_size = .105f;
@@ -63,8 +62,7 @@ RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRG
 
 
 
-void		
-CHelicopterMovementManager::init(CHelicopter* heli)
+void CHelicopterMovementManager::init(CHelicopter* heli)
 {
 	m_pHelicopter = heli;
 #ifdef DEBUG
@@ -72,16 +70,15 @@ CHelicopterMovementManager::init(CHelicopter* heli)
 #endif
 }
 
-void		
-CHelicopterMovementManager::deInit()
+void CHelicopterMovementManager::deInit()
 {
 	#ifdef DEBUG
 		Device.seqRender.Remove(this);
 	#endif
 }
 
-void		
-CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
+void CHelicopterMovementManager::onFrame(Fmatrix& xform, 
+										 float fTimeDelta)
 {
 
 	switch ( helicopter()->state() )
@@ -117,12 +114,11 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 }
 
 
-bool	
-CHelicopterMovementManager::getPathPosition(u32 timeCurr, 
-										float fTimeDelta, 
-										const Fvector& src, 
-										Fvector& pos, 
-										Fvector& xyz)
+bool CHelicopterMovementManager::getPathPosition(	u32 timeCurr, 
+													float fTimeDelta, 
+													const Fvector& src, 
+													Fvector& pos, 
+													Fvector& xyz)
 {
 	if(!m_path.size())
 	{
@@ -190,8 +186,7 @@ CHelicopterMovementManager::getPathPosition(u32 timeCurr,
 }
 
 
-void	
-CHelicopterMovementManager::addCurrentPosToTrajectory(u32 time)
+void CHelicopterMovementManager::addCurrentPosToTrajectory(u32 time)
 {
 	if(time==0)
 	{
@@ -211,8 +206,7 @@ CHelicopterMovementManager::addCurrentPosToTrajectory(u32 time)
 }
 
 
-void		
-CHelicopterMovementManager::shedule_Update(u32 time_delta)
+void CHelicopterMovementManager::shedule_Update(u32 time_delta)
 {
 	if ( helicopter()->state()==CHelicopter::eWaitForStart )
 	{
@@ -376,8 +370,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 	
 }
 
-float	
-CHelicopterMovementManager::computeB(float angVel)
+float CHelicopterMovementManager::computeB(float angVel)
 {
 //	float dv = 1-(angVel-MIN_ANGULAR_VELOCITY);
 //	float res = MIN_ANGULAR_VELOCITY*dv + MAX_ANGULAR_VELOCITY*angVel;
@@ -386,9 +379,8 @@ CHelicopterMovementManager::computeB(float angVel)
 }
 
 ////////////////////////////////////////////////////
-/*
-void	
-CHelicopterMovManager::onTime(float t)
+
+void CHelicopterMovManager::onTime(float t)
 {
 	Fvector P,R;
 	_Evaluate(t,P,R);
@@ -396,105 +388,25 @@ CHelicopterMovManager::onTime(float t)
 	m_XFORM.translate_over(P);
 }
 
-void 
-CHelicopterMovManager::onFrame()
+void CHelicopterMovManager::onFrame()
 {
 	float t = Level().timeServer()/1000.0f;
 	
 	onTime(t);
 }
 
-void	
-CHelicopterMovManager::getPathPosition(float time, float fTimeDelta, Fmatrix& dest)
+void CHelicopterMovManager::getPathPosition(float time, 
+											float fTimeDelta, 
+											Fmatrix& dest)
 {
 	onTime(time);
 	dest.set(m_XFORM);
 }
 
-bool 
-CHelicopterMovManager::dice()
-{
-	return (::Random.randF(-1.0f, 1.0f) > 0.0f);
-}
-
-void	
-CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, Fvector fromDir)
-{
-	xr_vector<Fvector>		keyPoints;
-	Fvector					keyPoint;
-	Fvector					down_dir;
-	bool					useXBound;
-	bool					min_max;
-	Collide::rq_result		cR;
-
-	down_dir.set(0.0f, -1.0f, 0.0f);
-
-	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
-	keyPoints.push_back(fromPos);
-	for(u32 i = 0; i<keyCount; ++i)	{
-		useXBound	= dice();
-		min_max		= dice();
-
-		if(useXBound){
-			(min_max)?keyPoint.x = levelBox.min.x:keyPoint.x = levelBox.max.x;
-			keyPoint.z = ::Random.randF(levelBox.min.z, levelBox.max.z);
-		}else{
-			(min_max)?keyPoint.z = levelBox.min.z:keyPoint.z = levelBox.max.z;
-			keyPoint.x = ::Random.randF(levelBox.min.x, levelBox.max.x);
-		}
-
-		keyPoint.y = levelBox.max.y;
-		Level().ObjectSpace.RayPick(keyPoint, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);
-
-		keyPoint.y = keyPoint.y-cR.range+m_baseAltitude;
-		//промежуточные точки
-		if( keyPoints.size() )
-		{
-			Fvector& prevPoint = keyPoints.back();
-			float dist = prevPoint.distance_to(keyPoint);
-			float k = (dist / m_maxKeyDist) - 1.0f;
-			for( float i=1; i<k; ++i )
-			{
-				keyPoints.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
-			}
-		}
-		keyPoints.push_back(keyPoint);
-	};
-
-	float	d;
-	float	t;
-	Fvector P;
-	Fvector R;
-	R.set(0.0f,0.0f,1.0f);
-	u32 sz = keyPoints.size();
-
-	for(u32 i=0; i<sz; ++i)
-	{
-		const Fvector& P = keyPoints[i];
-		if( i != 0 )
-		{
-			d  = P.distance_to( keyPoints[i-1] );
-			t += m_basePatrolSpeed * d;
-		}else
-			t = fromTime;
-
-		COMotion::CreateKey(t, P, R);
-	}
-}
-
-Fvector		
-CHelicopterMovManager::makeIntermediateKey(Fvector& start, Fvector& dest, float k)
-{
-	Fvector point;
-	point.lerp(start, dest, k);
-	float h = point.y; // or RayPick ????
-	point.add( Fvector().random_dir().mul(m_intermediateKeyRandFactor) );
-	point.y = h;
-	return point;
-}
-
-void				
-CHelicopterMovManager::buildHPB(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res)
+void CHelicopterMovManager::buildHPB(const Fvector& p_prev, 
+									 const Fvector& p0, 
+									 const Fvector& p_next, 
+									 Fvector& p0_phb_res)
 {
 	float s1 = p_prev.distance_to (p0);
 	float s2 = p0.distance_to (p_next);
@@ -509,7 +421,7 @@ CHelicopterMovManager::buildHPB(const Fvector& p_prev, const Fvector& p0, const 
 	float sk;
 	sk = s1+s2/s1;	
 	//y
-	p0_phb_res.y = lerp(p1, p2, sk);
+	p0_phb_res.y = _flerp(p1, p2, sk);
 
 
 	//z
@@ -518,4 +430,36 @@ CHelicopterMovManager::buildHPB(const Fvector& p_prev, const Fvector& p0, const 
 	p0_phb_res.z = cp.y;
 
 }
-*/
+
+void	CHelicopterMovManager::insertKeyPoints(float from_time, 
+											   xr_vector<Fvector>& keys)
+{
+// 1-зафиксировать текущую позицию, чтобы не повлияло на ближайший кусок пути
+// 2-удалить ключи > from_time
+
+	float	t;
+	
+//	if( COMotion::KeyCount()>0 )
+//		t = COMotion::
+
+	float	d;
+	Fvector P;
+	Fvector R;
+	R.set(0.0f,0.0f,1.0f);
+	u32 sz = keys.size();
+
+	for(u32 i=0; i<sz; ++i)
+	{
+	const Fvector& P = keys[i];
+	if( i != 0 )
+	{
+		d  = P.distance_to( keys[i-1] );
+		t += m_basePatrolSpeed * d;
+	}else
+		t = from_time;
+
+	// !!!		COMotion::CreateKey(t, P, R);
+	}
+
+
+}

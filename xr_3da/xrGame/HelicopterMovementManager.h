@@ -3,7 +3,6 @@
 class CHelicopter;
 
 
-
 class CHelicopterMovementManager
 								#ifdef DEBUG
 									:public pureRender
@@ -11,20 +10,20 @@ class CHelicopterMovementManager
 {
 public:
 	struct STravelParams {
-		float			linear_velocity;
-		float			angular_velocity; 
-		float			real_angular_velocity; 
+		float				linear_velocity;
+		float				angular_velocity; 
+		float				real_angular_velocity; 
 
-		STravelParams(){}
-		STravelParams(float l, float a) : linear_velocity(l), angular_velocity(a), real_angular_velocity(a) {}
-		STravelParams(float l, float a, float ra) : linear_velocity(l), angular_velocity(a), real_angular_velocity(ra) {}
+		STravelParams		(){}
+		STravelParams		(float l, float a) : linear_velocity(l), angular_velocity(a), real_angular_velocity(a) {}
+		STravelParams		(float l, float a, float ra) : linear_velocity(l), angular_velocity(a), real_angular_velocity(ra) {}
 	};
 
 	struct STravelParamsIndex : public STravelParams {
-		u32				index;
+		u32					index;
 
-		STravelParamsIndex(){}
-		STravelParamsIndex(float l, float a, u32 i) : STravelParams(l,a), index(i) {}
+		STravelParamsIndex	(){}
+		STravelParamsIndex	(float l, float a, u32 i) : STravelParams(l,a), index(i) {}
 	};
 
 	struct STravelPathPoint {
@@ -38,48 +37,40 @@ public:
 	};
 
 	struct STravelPoint {
-		Fvector2		position;
-		u32				vertex_id;
+		Fvector2			position;
+		u32					vertex_id;
 	};
 
 	struct SPathPoint : public STravelParams, public STravelPoint {
-		Fvector2		direction;
+		Fvector2			direction;
 	};
 
 	struct SCirclePoint {
-		Fvector2		center;
-		float			radius;
-		Fvector2		point;
-		float			angle;
+		Fvector2			center;
+		float				radius;
+		Fvector2			point;
+		float				angle;
 	};
 
 	struct STrajectoryPoint :
 		public SPathPoint,
-		public SCirclePoint
-	{
+		public SCirclePoint{
 	};
 
 
 	struct SDist {
-		u32		index;
-		float	time;
-		bool operator<(const SDist &d1) const {return (time < d1.time);}
+		u32					index;
+		float				time;
+		bool operator<		(const SDist &d1) const {return (time < d1.time);}
 	};
 	struct SWayPoint{
-		Fvector		position;
-		Fvector		direction;
-		SWayPoint(Fvector& p, Fvector& d):position(p),direction(d){};
-		SWayPoint(Fvector& p):position(p){direction.set(0.0f, 0.0f,0.0f);};
+		Fvector				position;
+		Fvector				direction;
+		SWayPoint			(Fvector& p, Fvector& d):position(p),direction(d){};
+		SWayPoint			(Fvector& p):position(p){direction.set(0.0f, 0.0f,0.0f);};
 	};
 
-/*	enum EMovementState {
-		eIdleState		= u32(0),
-		eMovingByPath	= u32(1),
-		eMovingToEnemy	= u32(2)
-	}; 
-*/
 private:
-//	EMovementState					m_curState;
 	CHelicopter*					m_pHelicopter;
 
 	xr_vector<STravelPathPoint>		m_path;
@@ -89,7 +80,6 @@ private:
 	xr_vector<STravelPathPoint>		m_tempPath;
 
 	bool							m_failed;
-//	bool							m_useDestOrientation;
 	bool							m_cyclePath;
 	bool							m_tryMinTime;
 
@@ -106,15 +96,12 @@ private:
 		eDirectionTypePN = eDirectionTypeFP | eDirectionTypeSN, // the first linear velocity is positive, the second one - negative
 		eDirectionTypeNP = eDirectionTypeFN | eDirectionTypeSP, // the first linear velocity is negative, the second one - positive
 	};
-	Fvector v3d(const Fvector2 &vector2d) const
-	{	return			(Fvector().set(vector2d.x,0.f,vector2d.y));	}
 
-	Fvector2 v2d(const Fvector &vector3d) const
-	{return			(Fvector2().set(vector3d.x,vector3d.z));}
-	IC float _lerp(float src, float dst, float t);
+	Fvector v3d						(const Fvector2 &vector2d) const {return (Fvector().set(vector2d.x,0.f,vector2d.y));	}
+	Fvector2 v2d					(const Fvector &vector3d) const	{return (Fvector2().set(vector3d.x,vector3d.z));}
 
-	bool is_negative(float a)
-	{		return				(!fis_zero(a) && (a < 0.f));	}
+	IC float _lerp					(float src, float dst, float t);
+	bool is_negative				(float a){return(!fis_zero(a) && (a < 0.f));	}
 
 protected:
 	xr_map<u32,STravelParams>		m_movementParams;
@@ -124,7 +111,6 @@ protected:
 	Fvector							m_lastXYZ;
 
 
-	bool	build_attack_circle(const Fvector& center_point, const Fvector& start_point, xr_vector<STravelPathPoint>& path);
 	//smooth path
 	bool	init_build				(int startKeyIdx, STrajectoryPoint &start, STrajectoryPoint &dest, float& startH, float& destH, u32 &straight_line_index, u32 &straight_line_index_negative);
 	bool	compute_path			(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<STravelPathPoint> *m_tpTravelLine, const xr_vector<STravelParamsIndex> &m_start_params, const xr_vector<STravelParamsIndex> &m_dest_params, const u32 straight_line_index, const u32 straight_line_index_negative);
@@ -139,59 +125,64 @@ protected:
 	bool	build_circle_trajectory	(const STrajectoryPoint &position, xr_vector<STravelPathPoint>	*path, const u32 velocity, STravelPathPoint& lastAddedPoint, bool fromCenter);
 	bool	build_line_trajectory	(const STravelPathPoint &start, const STrajectoryPoint &dest, xr_vector<STravelPathPoint> *path, const u32 velocity, STravelPathPoint& lastAddedPoint);
 	//end smooth path
-	float	computeB(float angVel);
-	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
+	float	computeB				(float angVel);
+	bool	getPathPosition			(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
 
 	void	addCurrentPosToTrajectory(u32 time = 0);
 
-	CHelicopter*	helicopter(){return m_pHelicopter;};
+	CHelicopter*	helicopter		(){return m_pHelicopter;};
 
 public:
-	CHelicopterMovementManager();
+	CHelicopterMovementManager		();
 	virtual ~CHelicopterMovementManager();
-	void		init(CHelicopter* heli);
-	void		deInit();
-	bool		failed() {return m_failed;};
-	void		shedule_Update(u32 timeDelta);
-	void		build_smooth_path(int startKeyIdx, bool bClearOld, bool bUseDestOrientation);
-	void		onFrame(Fmatrix& xform, float fTimeDelta);
+	void		init				(CHelicopter* heli);
+	void		deInit				();
+	bool		failed				() {return m_failed;};
+	void		shedule_Update		(u32 timeDelta);
+	void		build_smooth_path	(int startKeyIdx, bool bClearOld, bool bUseDestOrientation);
+	void		onFrame				(Fmatrix& xform, float fTimeDelta);
 
 #ifdef DEBUG
-	virtual void OnRender();
+	virtual void OnRender			();
 #endif
 
 	void		createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
-	Fvector		makeIntermediateKey(Fvector& start, Fvector& dest, float k);
+	Fvector		makeIntermediateKey	(Fvector& start, Fvector& dest, float k);
 
 
-	void		buildHuntPath(Fvector& enemyPos);
+	void		buildHuntPath		(Fvector& enemyPos);
 };
 
 #include "HelicopterMovementManager_inl.h"
-/*
+
 #include "motion.h"
 class CHelicopterMovManager :public COMotion
 {
-	bool				m_bLoop;
-	SAnimParams			m_MParam;
-	Fmatrix				m_XFORM;
+	bool							m_bLoop;
+	Fmatrix							m_XFORM;
 
-	float				m_baseAltitude;
-	float				m_basePatrolSpeed;
-	float				m_maxKeyDist;
-	float				m_intermediateKeyRandFactor;
+	float							m_baseAltitude;
+	float							m_basePatrolSpeed;
+	float							m_maxKeyDist;
+	float							m_intermediateKeyRandFactor;
 	
-	void				buildHPB(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
+	void	 buildHPB				(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
+	
+	//service functions
+	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
+	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
+
+	void	createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, xr_vector<Fvector>& keys );
+	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
+	void	buildHuntPath			(Fvector& enemyPos);
+	void	onFrame					();
+	void	onTime					(float t);
+	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys);
+
 public:
-	CHelicopterMovManager();
-	virtual ~CHelicopterMovManager();
+	CHelicopterMovManager			();
+	virtual ~CHelicopterMovManager	();
 
-	void	onFrame();
-	void	onTime(float t);
-	void	createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, Fvector fromDir);
-	Fvector	makeIntermediateKey(Fvector& start, Fvector& dest, float k);
-	bool	dice();
-	void	getPathPosition(float time, float fTimeDelta, Fmatrix& dest);
-	void	buildHuntPath(Fvector& enemyPos);
+	void	getPathPosition			(float time, float fTimeDelta, Fmatrix& dest);
 
-};*/
+};

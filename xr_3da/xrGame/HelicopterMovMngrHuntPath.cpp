@@ -3,8 +3,7 @@
 #include "Helicopter.h"
 
 
-void		
-CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
+void CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
 {
 	Fvector curPoint	= helicopter()->XFORM().c;
 	
