@@ -34,12 +34,12 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	ctable.merge			(&vs->constants);
 
 	// Standart constant-binding
-	r2_Constant				("m_W",		binder_w);
-	r2_Constant				("m_V",		binder_v);
-	r2_Constant				("m_P",		binder_p);
-	r2_Constant				("m_WV",	binder_wv);
-	r2_Constant				("m_VP",	binder_vp);
-	r2_Constant				("m_WVP",	binder_wvp);
+	r2_Constant				("m_W",		&binder_w);
+	r2_Constant				("m_V",		&binder_v);
+	r2_Constant				("m_P",		&binder_p);
+	r2_Constant				("m_WV",	&binder_wv);
+	r2_Constant				("m_VP",	&binder_vp);
+	r2_Constant				("m_WVP",	&binder_wvp);
 }
 
 void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)
