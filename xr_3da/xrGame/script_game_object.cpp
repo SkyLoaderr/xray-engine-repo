@@ -1348,3 +1348,14 @@ bool CScriptGameObject::is_body_turning		() const
 	}
 	return				(!!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
 }
+
+
+void CScriptGameObject::ChangeTeam(u8 team, u8 squad, u8 group)
+{
+	CCustomMonster				*custom_monster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+	if (!custom_monster)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CCustomMonster: cannot access class member ChangeTeam!");
+	else
+		custom_monster->ChangeTeam(team,squad,group);
+}
+

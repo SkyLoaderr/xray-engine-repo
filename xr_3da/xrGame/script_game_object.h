@@ -147,12 +147,17 @@ public:
 			bool				CheckTypeVisibility	(const char *section_name);
 			LPCSTR				WhoHitName			();
 			LPCSTR				WhoHitSectionName	();
+
+			void				ChangeTeam			(u8 team, u8 squad, u8 group);
+
 	// CAI_Stalker
 			void				UseObject			(const CScriptGameObject *tpLuaGameObject);
 			CScriptGameObject	*GetCurrentWeapon	() const;
 			CScriptGameObject	*GetCurrentEquipment() const;
 			CScriptGameObject	*GetFood			() const;
 			CScriptGameObject	*GetMedikit			() const;
+
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// CInventoryOwner
