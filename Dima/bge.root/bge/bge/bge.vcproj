@@ -1615,6 +1615,18 @@
 					<Filter
 						Name="classic"
 						>
+						<File
+							RelativePath=".\board_classic_othello.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\board_classic_othello.h"
+							>
+						</File>
+						<File
+							RelativePath=".\board_classic_othello_inline.h"
+							>
+						</File>
 					</Filter>
 					<Filter
 						Name="bitboard"
