@@ -115,6 +115,7 @@ extern "C" {
 }
 
 #ifndef CREATEDX_EXPORTS
+	#undef D3DXCompileShaderFromFile
 	#define D3DXGetDriverLevel						D3DX_GetDriverLevel
 	#define D3DXGetImageInfoFromFileInMemory		D3DX_GetImageInfoFromFileInMemory
 	#define D3DXCreateCubeTextureFromFileInMemoryEx	D3DX_CreateCubeTextureFromFileInMemoryEx
