@@ -14,7 +14,7 @@ void CAI_Zombie::SetDirectionLook()
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -68,7 +68,7 @@ void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, floa
 			m_tLastSound.fPower			= power;
 			m_tLastSound.tSavedPosition = Position;
 			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
-			//float fDistance = (Position.distance_to(vPosition) < 1.f ? 1.f : Position.distance_to(vPosition));
+			//float fDistance = (Position.distance_to(Position()) < 1.f ? 1.f : Position.distance_to(Position()));
 //			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
 //				m_fMorale += m_fMoraleDeathQuant;///fDistance;
 //			else

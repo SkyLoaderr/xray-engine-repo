@@ -12,7 +12,7 @@
 
 float CAI_Stalker::HitScale	(int element)
 {
-	CKinematics* V		= PKinematics(pVisual);			VERIFY(V);
+	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
 	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
 	return				(m_fHitFactor*scale);
 }
@@ -20,7 +20,7 @@ float CAI_Stalker::HitScale	(int element)
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
-		clCenter(P);
+		Center(P);
 		D.setHP(-r_current.yaw,-r_current.pitch);
 		D.normalize_safe();
 	}
@@ -78,7 +78,7 @@ bool CAI_Stalker::bfCheckIfCanKillMember()
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
+	XFORM().transform_dir(D,vLocalDir);
 		
 	if (g_Alive()) {
 		// Save event
@@ -102,7 +102,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		}
 		float	yaw, pitch;
 		D.getHP(yaw,pitch);
-		CKinematics *tpKinematics = PKinematics(pVisual);
+		CKinematics *tpKinematics = PKinematics(Visual());
 #pragma todo("forward-back bone impulse direction has been determined incorrectly!")
 		CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_torso_current.yaw,-yaw,PI_DIV_2) ? 0 : 1))];
 		float power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
@@ -170,12 +170,12 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	Fvector tDirection;
-	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),vPosition);
+	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),Position());
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
 	if (getAI().bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
-		return(getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
+		return(getAI().bfCheckNodeInDirection(AI_NodeID,Position(),dwNodeID));
 	else
 		return(false);
 }
@@ -197,7 +197,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 	u32 dwStartFireAmmo, dwFireDelayMin = 0, dwFireDelayMax = 0;
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined && m_tEnemy.Enemy) {
-		float fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
+		float fDistance = Position().distance_to(m_tEnemy.Enemy->Position());
 		float fDistance1 = tpWeaponMagazined->m_fMaxRadius, fDistance2 = (tpWeaponMagazined->m_fMaxRadius + 0*tpWeaponMagazined->m_fMinRadius)/2,fDistance3 = 0*tpWeaponMagazined->m_fMinRadius;
 		u32 dwFuzzyDistance;
 		if (_abs(fDistance - fDistance1) <	_abs(fDistance - fDistance2))

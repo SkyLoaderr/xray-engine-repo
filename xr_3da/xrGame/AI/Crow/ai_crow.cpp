@@ -61,7 +61,7 @@ void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
 
 void CAI_Crow::OnHitEndPlaying(CBlend* B)
 {
-	PKinematics(pVisual)->PlayCycle	(m_Anims.m_death_idle.GetRandom());
+	PKinematics(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
 }
 
 CAI_Crow::CAI_Crow()
@@ -116,7 +116,7 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 	AI_Node		= 0;
 
 	// animations
-	CKinematics*	M			= PKinematics(pVisual); R_ASSERT(M);
+	CKinematics*	M			= PKinematics(Visual()); R_ASSERT(M);
 	m_Anims.m_death.Load		(M,"norm_death");
 	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
 	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
@@ -129,22 +129,22 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 // crow update
 void CAI_Crow::switch2_FlyUp()
 {
-	PKinematics(pVisual)->PlayCycle	(m_Anims.m_fly.GetRandom());
+	PKinematics(Visual())->PlayCycle	(m_Anims.m_fly.GetRandom());
 }
 void CAI_Crow::switch2_FlyIdle()
 {
-	PKinematics(pVisual)->PlayCycle	(m_Anims.m_idle.GetRandom());
+	PKinematics(Visual())->PlayCycle	(m_Anims.m_idle.GetRandom());
 }
 void CAI_Crow::switch2_DeathDead()
 {
-	PKinematics(pVisual)->PlayCycle	(m_Anims.m_death_dead.GetRandom());
+	PKinematics(Visual())->PlayCycle	(m_Anims.m_death_dead.GetRandom());
 }
 void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
 	V.mul(mRotate.k,fSpeed);
 //	Movement.SetVelocity(V);
-	PKinematics(pVisual)->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
+	PKinematics(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 void CAI_Crow::Update(u32 DT)
 {
@@ -170,10 +170,10 @@ void CAI_Crow::Update(u32 DT)
 
 	switch (st_current){
 	case eFlyIdle:
-		if (vPosition.y>vOldPosition.y) st_target = eFlyUp;
+		if (Position().y>vOldPosition.y) st_target = eFlyUp;
 		break;
 	case eFlyUp:
-		if (vPosition.y<=vOldPosition.y) st_target = eFlyIdle;
+		if (Position().y<=vOldPosition.y) st_target = eFlyIdle;
 		break;
 	case eDeathFall:
 		state_DeathFall();
@@ -194,11 +194,11 @@ void CAI_Crow::Update(u32 DT)
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			//if (st_current==eFlyIdle)
-			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),Position());
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}
-	m_Sounds.m_idle.SetPosition(vPosition);
+	m_Sounds.m_idle.SetPosition(Position());
 }
 
 void CAI_Crow::state_Flying()
@@ -210,7 +210,7 @@ void CAI_Crow::state_Flying()
 
 	// Tweak orientation based on last position and goal
 	Fvector vOffset;
-	vOffset.sub(vGoalDir,vPosition);
+	vOffset.sub(vGoalDir,Position());
 
 	// First, tweak the pitch
 	if( vOffset.y > 1.0){			// We're too low
@@ -244,10 +244,8 @@ void CAI_Crow::state_Flying()
 	mRotate.setHPB(vHPB.x,vHPB.y,vHPB.z);
 
 	// Update position
-	vOldPosition.set(vPosition);
-	vPosition.mad(vDirection,fSpeed*Device.fTimeDelta);
-
-	UpdateTransform();
+	vOldPosition.set(Position());
+	Position().mad	(vDirection,fSpeed*Device.fTimeDelta);
 }
 
 static Fvector vV={0,0,0};
@@ -255,12 +253,10 @@ void CAI_Crow::state_DeathFall()
 {
 	Fvector tAcceleration;
 	tAcceleration.set(0,-10.f,0);
-	//Movement.SetPosition(vPosition);
+	//Movement.SetPosition(Position());
 	//Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
-	//Movement.GetPosition(vPosition);
+	//Movement.GetPosition(Position());
 
-	UpdateTransform();
-	
 	if (m_pPhysicsShell)
 	{
 		Fvector velocity;
@@ -343,7 +339,7 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16
 		Die();
 		st_target = eDeathFall;
 	}
-	else PKinematics(pVisual)->PlayCycle(m_Anims.m_death_dead.GetRandom());
+	else PKinematics(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
 //---------------------------------------------------------------------
 void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir)
@@ -367,7 +363,7 @@ void CAI_Crow::CreateSkeleton()
 	m_pPhysicsShell->add_Element(E);
 	m_pPhysicsShell->setMass(0.3f);
 	m_pPhysicsShell->SetMaterial("creatures\\crow");
-	m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	
 }
 
@@ -375,14 +371,8 @@ void CAI_Crow::UpdatePhysicsShell()
 {
 	if(!m_pPhysicsShell) return;
 
-		m_pPhysicsShell->Update();
-		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
-		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
-		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
-		mRotate.c.set(0,0,0);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		UpdateTransform();
-
+	m_pPhysicsShell->Update	();
+	XFORM().set				(m_pPhysicsShell->mXFORM);
 }
 
 void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse)

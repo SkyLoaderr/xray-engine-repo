@@ -46,7 +46,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	//r_torso_current.yaw			= r_torso_target.yaw	= -tpTrader->o_Angle.y;
 	//r_torso_current.pitch			= r_torso_target.pitch	= 0;
 	
-	m_tAnimation					= PKinematics(pVisual)->ID_Cycle("trade");
+	m_tAnimation					= PKinematics(Visual())->ID_Cycle("trade");
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
@@ -85,7 +85,7 @@ void CAI_Trader::SelectAnimation		(const Fvector& _view, const Fvector& _move, f
 {
 	if (g_Alive()) 
 		if (!m_bPlaying) {
-				PKinematics(pVisual)->PlayCycle	(m_tAnimation,TRUE,AnimCallback,this);
+				PKinematics(Visual())->PlayCycle	(m_tAnimation,TRUE,AnimCallback,this);
 				m_bPlaying	= true;
 		}
 }
@@ -185,17 +185,17 @@ void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
 	}
 }
 
-void CAI_Trader::OnVisible	()
+void CAI_Trader::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 	if(m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->OnVisible();
+		m_inventory.ActiveItem()->renderable_Render();
 }
 
 void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive() && m_inventory.ActiveItem()) {
-		clCenter(P);
+		Center(P);
 		D.setHP(0,0);
 		D.normalize_safe();
 	}
@@ -203,5 +203,5 @@ void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)
 
 void CAI_Trader::Think()
 {
-	SelectAnimation(clTransform.k,mRotate.k,0);
+	SelectAnimation(XFORM().k,mRotate.k,0);
 }

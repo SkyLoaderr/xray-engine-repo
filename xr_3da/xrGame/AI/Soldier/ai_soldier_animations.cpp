@@ -14,11 +14,11 @@
 // bones
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 {
-	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	int head_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_head"));
+	PKinematics(Visual())->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
 	
-//	int legs_bone = PKinematics(pVisual)->LL_BoneID(ini->r_string(section,"bone_legs"));
-//	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(LegsSpinCallback,this);
+//	int legs_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_legs"));
+//	PKinematics(Visual())->LL_GetInstance(head_bone).set_callback(LegsSpinCallback,this);
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
@@ -68,7 +68,7 @@ void CAI_Soldier::vfLoadSounds()
 // animations
 void CAI_Soldier::vfLoadAnimations()
 {
-	CKinematics* tpVisualObject = PKinematics(pVisual);
+	CKinematics* tpVisualObject = PKinematics(Visual());
 	
 	// loading normal animations
 	tSoldierAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death_0");
@@ -213,7 +213,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	//R_ASSERT(fsimilar(_view.magnitude(),1));
 	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
-	CKinematics* tpVisualObject = PKinematics(pVisual);
+	CKinematics* tpVisualObject = PKinematics(Visual());
 	
 	CMotionDef*	tpLegsAnimation=0;
 	CMotionDef*	tpTorsoAnimation=0;
@@ -274,7 +274,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //							//Msg("Jump begin");
 //						}
 //						else
-//							//if ((ps_Size() < 2) || (ps_Element(ps_Size() - 1).vPosition.y - ps_Element(ps_Size() - 2).vPosition.y > -EPS_L)) {
+//							//if ((ps_Size() < 2) || (ps_Element(ps_Size() - 1).Position().y - ps_Element(ps_Size() - 2).Position().y > -EPS_L)) {
 //							if (m_tpCurrentLegsBlend->playing) {
 //								tpLegsAnimation = m_tpCurrentLegsAnimation;
 //								//Msg("Jump continueing");

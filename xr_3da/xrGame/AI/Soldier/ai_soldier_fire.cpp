@@ -84,7 +84,7 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16
 {
 	// Save event
 	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
+	XFORM().transform_dir(D,vLocalDir);
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();
@@ -109,16 +109,16 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16
 		if (tpEntity)
 			vfAddHurtToList(tpEntity);
 //		if (::Random.randI(0,2))
-//			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft,1.f);
+//			PKinematics(Visual())->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft,1.f);
 //		else
-//			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight,1.f);
+//			PKinematics(Visual())->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight,1.f);
 		
 		// Play hit-sound
 		sound& S	= sndHit[Random.randI(SND_HIT_COUNT)];
 		
 		if (S.feedback)			
 			return;
-		::Sound->play_at_pos(S,this,vPosition);
+		::Sound->play_at_pos(S,this,Position());
 	}
 }
 
@@ -941,9 +941,9 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	/**
 	Fvector tMyDirection;
 	SRotation tMyRotation,tEnemyRotation;
-	tMyDirection.sub(tSavedEnemyPosition,vPosition);
+	tMyDirection.sub(tSavedEnemyPosition,Position());
 	mk_rotation(tMyDirection,tMyRotation);
-	tMyDirection.sub(tSavedEnemy->Position(),vPosition);
+	tMyDirection.sub(tSavedEnemy->Position(),Position());
 	mk_rotation(tMyDirection,tEnemyRotation);
 	if (tEnemyRotation.yaw > tMyRotation.yaw) {
 		if (tEnemyRotation.yaw - tMyRotation.yaw > PI)
@@ -1198,12 +1198,12 @@ float CAI_Soldier::ffGetDistanceToNearestMember()
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	if (Leader != this)
-		fDistance = _min(fDistance,vPosition.distance_to(Leader->Position()));
+		fDistance = _min(fDistance,Position().distance_to(Leader->Position()));
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i] != this) {
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Group.Members[i]);
 			if (!tpCustomMonster || (tpCustomMonster->AI_Path.fSpeed < EPS_L))
-				fDistance = _min(fDistance,vPosition.distance_to(Group.Members[i]->Position()));
+				fDistance = _min(fDistance,Position().distance_to(Group.Members[i]->Position()));
 		}
 	return(fDistance);
 }

@@ -29,18 +29,18 @@ objQualifier* CAI_Stalker::GetQualifier	()
 	return(&StalkerQualifier);
 }
 
-void CAI_Stalker::OnVisible	()
+void CAI_Stalker::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 	if(m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->OnVisible();
+		m_inventory.ActiveItem()->renderable_Render();
 }
 
 bool CAI_Stalker::bfIf_I_SeePosition(Fvector tPosition)
 {
 	float	yaw, pitch;
 	Fvector	tVector;
-	tVector.sub(tPosition,vPosition);
+	tVector.sub(tPosition,Position());
 	tVector.getHP(yaw,pitch);
 	yaw		= angle_normalize_signed(-yaw);
 	pitch	= angle_normalize_signed(-pitch);
@@ -60,9 +60,9 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	float fResult = 0.f;
 //	
 //	// computing maximum viewable distance in the specified direction
-//	float fDistance = vPosition.distance_to(tpEntity->Position()), yaw, pitch;
+//	float fDistance = Position().distance_to(tpEntity->Position()), yaw, pitch;
 //	Fvector tDirection;
-//	tDirection.sub(tpEntity->Position(),vPosition);
+//	tDirection.sub(tpEntity->Position(),Position());
 //	tDirection.getHP(yaw,pitch);
 //
 //	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - r_current.yaw),angle_normalize_signed(pitch - r_current.pitch)));
@@ -76,7 +76,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	if (tpEntity->ps_Size() > 1) {
 //		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 //		if (dwTime < m_dwMovementIdleTime) {
-//			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition.distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition)/dwTime;
+//			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position().distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position())/dwTime;
 //			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
 //		}
 //	}
@@ -453,7 +453,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						bFound	= true;
 					}
 				}
-				if (bFound && bfCheckIfCanKillTarget(tpEntity,vPosition,yaw1,pitch1)) {//,5.f/180.f*PI)) {
+				if (bFound && bfCheckIfCanKillTarget(tpEntity,Position(),yaw1,pitch1)) {//,5.f/180.f*PI)) {
 					SHurt tHurt;
 					tHurt.tpEntity = tpEntity;
 					tHurt.dwTime = Level().timeServer();
@@ -485,7 +485,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].dwUpdateCount++;
 						m_tpaDynamicSounds[j].tSavedPosition	= Position;
 						m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
-						m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
+						m_tpaDynamicSounds[j].tMySavedPosition	= Position();
 						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
 						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : -1;
@@ -508,7 +508,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 							m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
 							m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
 							m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
-							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= vPosition;
+							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= Position();
 							m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
 							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
 							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
@@ -525,7 +525,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						tDynamicSound.dwUpdateCount		= 1;
 						tDynamicSound.tSavedPosition	= Position;
 						tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
-						tDynamicSound.tMySavedPosition	= vPosition;
+						tDynamicSound.tMySavedPosition	= Position();
 						tDynamicSound.tMyOrientation	= r_torso_current;
 						tDynamicSound.tpEntity			= tpEntity;
 						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;

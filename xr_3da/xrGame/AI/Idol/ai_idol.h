@@ -47,5 +47,5 @@ public:
 	virtual	void		feel_touch_new	(CObject* O);
 	virtual	void		DropItemSendMessage(CObject *O);
 	virtual void		Update			(u32 dt);
-	virtual void		OnVisible		();
+	virtual void		renderable_Render		();
 };

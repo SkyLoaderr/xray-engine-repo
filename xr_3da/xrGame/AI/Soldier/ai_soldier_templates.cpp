@@ -247,12 +247,12 @@ void CAI_Soldier::vfSetMovementType(EMovementTypes cMovementType,float fMultplie
 	/**/
 	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
 	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
-		::Sound->play_at_pos(sndSteps[m_cStep ^= char(1)],this,vPosition);
+		::Sound->play_at_pos(sndSteps[m_cStep ^= char(1)],this,Position());
 		m_fDistanceWent = 0.f;		
 	}
 	/**/
 
-	Fvector view = clTransform.k, move;
+	Fvector view = XFORM().k, move;
 	AI_Path.Direction(move); 
 	move.y = view.y = 0; 
 	view.normalize_safe();

@@ -27,7 +27,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	Fvector tCurrentWatchDirection, tTemp;
 	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
 	tCurrentWatchDirection.normalize();
-	tTemp.sub(tpEntity->Position(),vPosition);
+	tTemp.sub(tpEntity->Position(),Position());
 	if (tTemp.magnitude() > EPS_L)
 		tTemp.normalize();
 	else
@@ -39,14 +39,14 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
 	
 	// computing distance weight
-	tTemp.sub(vPosition,tpEntity->Position());
+	tTemp.sub(Position(),tpEntity->Position());
 	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
 	
 	// computing movement speed weight
 	if (tpEntity->ps_Size() > 1) {
 		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
+			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position(),tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position());
 			float fSpeed = tTemp.magnitude()/dwTime;
 			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
 		}
@@ -85,7 +85,7 @@ void CAI_Soldier::SetDirectionLook()
 	int i = ps_Size	();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -104,7 +104,7 @@ void CAI_Soldier::SetDirectionLook()
 
 void CAI_Soldier::SetLook(Fvector tPosition)
 {
-	Fvector tCurrentPosition = vPosition;
+	Fvector tCurrentPosition = Position();
 	tWatchDirection.sub(tPosition,tCurrentPosition);
 	if (tWatchDirection.magnitude() > EPS_L) {
 		tWatchDirection.normalize();
@@ -120,7 +120,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
 		if (tWatchDirection.square_magnitude() > 0.000001) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -211,16 +211,16 @@ objQualifier* CAI_Soldier::GetQualifier	()
 	return(&SoldierQualifier);
 }
 
-void CAI_Soldier::OnVisible()
+void CAI_Soldier::renderable_Render()
 {
-	inherited::OnVisible();
+	inherited::renderable_Render();
 }
 
 Fvector tfGetDirection(CEntity *tpEntity)
 {
 	Fvector tDirection;
 	if (tpEntity->ps_Size() > 1)
-		tDirection.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition);
+		tDirection.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position(),tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position());
 	else
 		tDirection.set(1,0,0);
 	return(tDirection);
@@ -341,7 +341,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 						tpaDynamicSounds[j].dwUpdateCount++;
 						tpaDynamicSounds[j].tSavedPosition = Position;
 						tpaDynamicSounds[j].tOrientation = tfGetOrientation(tpEntity);
-						tpaDynamicSounds[j].tMySavedPosition = vPosition;
+						tpaDynamicSounds[j].tMySavedPosition = Position();
 						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
 						tpaDynamicSounds[j].tpEntity = tpEntity;
 					}
@@ -360,7 +360,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 							tpaDynamicSounds[dwIndex].dwUpdateCount = 1;
 							tpaDynamicSounds[dwIndex].tSavedPosition = Position;
 							tpaDynamicSounds[dwIndex].tOrientation = tfGetOrientation(tpEntity);
-							tpaDynamicSounds[dwIndex].tMySavedPosition = vPosition;
+							tpaDynamicSounds[dwIndex].tMySavedPosition = Position();
 							tpaDynamicSounds[dwIndex].tMyOrientation = r_torso_current;
 							tpaDynamicSounds[dwIndex].tpEntity = tpEntity;
 						}
@@ -373,7 +373,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 						tDynamicSound.dwUpdateCount = 1;
 						tDynamicSound.tSavedPosition = Position;
 						tDynamicSound.tOrientation = tfGetOrientation(tpEntity);
-						tDynamicSound.tMySavedPosition = vPosition;
+						tDynamicSound.tMySavedPosition = Position();
 						tDynamicSound.tMyOrientation = r_torso_current;
 						tDynamicSound.tpEntity = tpEntity;
 						tpaDynamicSounds.push_back(tDynamicSound);
@@ -431,7 +431,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 		fEyeFov = ffGetFov() + 20.f;
 	}
 	
-	tDirection.sub(vPosition,tpEntity->Position());
+	tDirection.sub(Position(),tpEntity->Position());
 	float fDistance = tDirection.magnitude();
 	if (fDistance > fEyeRange + EPS_L)
 		return(false);
@@ -586,7 +586,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //
 //	tMyDirection.setHP(r_torso_current.yaw,r_torso_current.pitch);
 //
-//	tDirection.sub(tNodePosition,vPosition);
+//	tDirection.sub(tNodePosition,Position());
 //	float fDistance = tDirection.magnitude();
 //	if (fDistance > fEyeRange + EPS_L)
 //		return(false);
@@ -603,7 +603,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	float fEyeRange = ffGetRange();
 	NodeCompressed *tpNode = getAI().Node(iTestNode);
 
-	tDirection.sub(vPosition,tNodePosition);
+	tDirection.sub(Position(),tNodePosition);
 	float fDistance = tDirection.magnitude();
 	if (fDistance > fEyeRange + EPS_L)
 		return(false);
@@ -612,7 +612,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
 	float fResult = ffGetCoverInDirection(tRotation.yaw,tpNode);
-	tDirection.sub(tNodePosition,vPosition);
+	tDirection.sub(tNodePosition,Position());
 	tDirection.normalize_safe();
 	mk_rotation(tDirection,tRotation);
 //	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_Node);
@@ -649,7 +649,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //	Fvector tPosition = getAI().tfGetNodeCenter(dwNodeID), tDirection;
 //	
 ////	if (bIfRayPick) {
-////		tDirection.sub(tPosition,vPosition);
+////		tDirection.sub(tPosition,Position());
 ////		tDirection.normalize_safe();
 ////		mk_rotation(tDirection,tRotation);
 ////		
@@ -672,7 +672,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 ////	}
 ////	else 
 //	{
-//		tDirection.sub(tPosition,vPosition);
+//		tDirection.sub(tPosition,Position());
 //		float fDistance = tDirection.magnitude();
 //		if ((fDistance >= 15.f) || (_abs(tDirection.y) > 1.5f))
 //			return(false);
@@ -692,7 +692,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 //		if ((tRotation.yaw >= r_current.yaw - fEyeFov) && (tRotation.yaw <= r_current.yaw + fEyeFov)) {
 //			float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
 //			
-//			tDirection.sub(vPosition,tPosition);
+//			tDirection.sub(Position(),tPosition);
 //			tDirection.normalize_safe();
 //			mk_rotation(tDirection,tRotation);
 //			
@@ -715,12 +715,12 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 bool CAI_Soldier::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
 	Fvector tDirection;
-	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),vPosition);
+	tDirection.sub(getAI().tfGetNodeCenter(dwNodeID),Position());
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
 	if (getAI().bfTooSmallAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
-		return(getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
+		return(getAI().bfCheckNodeInDirection(AI_NodeID,Position(),dwNodeID));
 	else
 		return(false);
 }

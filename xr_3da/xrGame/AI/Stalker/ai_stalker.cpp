@@ -117,11 +117,11 @@ void CAI_Stalker::Die				()
 
 	Fvector	dir;
 	AI_Path.Direction				(dir);
-	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
+	SelectAnimation					(XFORM().k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 
 	sound							&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
-	S.play_at_pos					(this,vPosition);
+	S.play_at_pos					(this,Position());
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
@@ -251,7 +251,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	//	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
 	//	vfAddStateToList				(m_eCurrentState);
 
-	CStalkerAnimations::Load		(PKinematics(pVisual));
+	CStalkerAnimations::Load		(PKinematics(Visual()));
 	vfAssignBones					(pSettings,cNameSect());
 
 	setEnabled						(true);
@@ -260,7 +260,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
 #endif
-	Movement.SetPosition	(vPosition);
+	Movement.SetPosition	(Position());
 	Movement.SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
@@ -275,9 +275,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			if (0==strcmp(it->first,"default")){
 				m_fHitFactor	= (float)atof(it->second);
 			}else{
-				int bone	= PKinematics(pVisual)->LL_BoneID(it->first); 
+				int bone	= PKinematics(Visual())->LL_BoneID(it->first); 
 				R_ASSERT2(bone!=BONE_NONE,it->first);
-				CBoneInstance& B = PKinematics(pVisual)->LL_GetInstance(bone);
+				CBoneInstance& B = PKinematics(Visual())->LL_GetInstance(bone);
 				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
 				B.set_param(1,(float)atoi(_GetItem(it->second,1,buf)));
 			}
@@ -322,9 +322,9 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 
 	float							f1;
 	if (m_tCurGP != u16(-1)) {
-		f1							= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
 		P.w							(&f1,						sizeof(f1));
-		f1							= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		f1							= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
 		P.w							(&f1,						sizeof(f1));
 	}
 	else {
@@ -377,20 +377,19 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 void CAI_Stalker::Exec_Movement		(float dt)
 {
-	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);
+	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
 }
 
 void CAI_Stalker::CreateSkeleton()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition(vPosition);
-	//vPosition.y+=.1f;
-	UpdateTransform();
+	Movement.GetDeathPosition	(Position());
+	//Position().y+=.1f;
 	//#else
-	//vPosition.y+=0.1f;
+	//Position().y+=0.1f;
 #endif
 
-	if (!pVisual)
+	if (!Visual())
 		return;
 	Fmatrix ident;
 	float density=100.f*skel_density_factor;
@@ -433,7 +432,7 @@ void CAI_Stalker::CreateSkeleton()
 	m6._21=1.f;
 
 	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(M);
 	CPhysicsJoint*		joint;
@@ -816,7 +815,7 @@ void CAI_Stalker::CreateSkeleton()
 	Fmatrix m;
 	m.set(mRotate);
 
-	m.c.set(vPosition);
+	m.c.set(Position());
 	//Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	m_pPhysicsShell->mXFORM.set(m);
@@ -832,7 +831,7 @@ void CAI_Stalker::UpdateCL(){
 	inherited::UpdateCL();
 	if(m_pPhysicsShell)
 	{
-		clTransform.set(m_pPhysicsShell->mXFORM);
+		XFORM().set(m_pPhysicsShell->mXFORM);
 
 	}
 	else
@@ -924,7 +923,7 @@ void CAI_Stalker::Update	( u32 DT )
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_current;
-			uNext.p_pos				= vPosition;
+			uNext.p_pos				= Position();
 			uNext.fHealth			= fHealth;
 			NET.push_back			(uNext);
 		}
@@ -938,7 +937,7 @@ void CAI_Stalker::Update	( u32 DT )
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;
 				uNext.o_torso		= r_current;
-				uNext.p_pos			= vPosition;
+				uNext.p_pos			= Position();
 				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
@@ -947,7 +946,7 @@ void CAI_Stalker::Update	( u32 DT )
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;
 				uNext.o_torso		= r_current;
-				uNext.p_pos			= vPosition;
+				uNext.p_pos			= Position();
 				uNext.fHealth		= fHealth;
 				NET.push_back		(uNext);
 			}
@@ -999,11 +998,11 @@ void CAI_Stalker::Update	( u32 DT )
 		float	s_k			= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((m_tBodyState == eBodyStateCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
 		float	s_vol		= s_k*((m_tMovementType == eMovementTypeRun) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		if (m_tpSoundStep[0].feedback)		{
-			m_tpSoundStep[0].set_position	(vPosition);
+			m_tpSoundStep[0].set_position	(Position());
 			m_tpSoundStep[0].set_volume	(s_vol);
 		}
 		if (m_tpSoundStep[1].feedback)		{
-			m_tpSoundStep[1].set_position	(vPosition);
+			m_tpSoundStep[1].set_position	(Position());
 			m_tpSoundStep[1].set_volume	(s_vol);
 		}
 	}
@@ -1020,10 +1019,7 @@ void CAI_Stalker::Update	( u32 DT )
 			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
 			m_saved_impulse=0.f;
 		}
-		mRotate.set(m_pPhysicsShell->mXFORM);
-		mRotate.c.set(0,0,0);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		UpdateTransform();
+		XFORM().set	(m_pPhysicsShell->mXFORM);
 
 		if(skel_ddelay==0)
 		{
@@ -1043,10 +1039,10 @@ void CAI_Stalker::Update	( u32 DT )
 		///mRotate.set(m_pPhysicsShell->mXFORM);
 		//mRotate.c.set(0,0,0);
 		//UpdateTransform					();
-		//vPosition.set(m_pPhysicsShell->mXFORM.c);
-		//svTransform.set(m_pPhysicsShell->mXFORM);
+		//Position().set(m_pPhysicsShell->mXFORM.c);
+		//XFORM().set(m_pPhysicsShell->mXFORM);
 		//UpdateTransform();		
-		//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+		//	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 		//	int id=M->LL_BoneID("bip01_pelvis");
 		//	CBoneInstance& instance=M->LL_GetInstance				(id);
 		//	instance.mTransform.set(m_pPhysicsShell->mXFORM);

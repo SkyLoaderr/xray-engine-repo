@@ -41,7 +41,7 @@ void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntit
 	
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= AI_NodeID;
-	S.m_tStartPosition	= vPosition;
+	S.m_tStartPosition	= Position();
 }
 
 void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
@@ -56,7 +56,7 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 		
 		if (AI_Path.DestNode != u32(-1)) {
 			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
-			tNodeEvaluator.m_fDistance		= vPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
+			tNodeEvaluator.m_fDistance		= Position().distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
 			fOldCost						= tNodeEvaluator.ffEvaluateNode();
 //			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
 		}
@@ -70,7 +70,7 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 		Device.Statistic.AI_Range.Begin();
 
 //		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
-//		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(vPosition),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
+//		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(Position()),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
 //		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
 		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
@@ -130,7 +130,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 	Device.Statistic.TEST1.Begin();
 	
 	if (m_tPathType == ePathTypeCriteria) {
-		AI_Path.BuildTravelLine	(vPosition);
+		AI_Path.BuildTravelLine	(Position());
 		m_tPathState			= ePathStateSearchNode;
 		AI_Path.TravelStart		= 0;
 	}
@@ -149,9 +149,9 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			Device.Statistic.TEST1.End();
 			return;
 		}
-		Fvector						tStartPosition = vPosition;
+		Fvector						tStartPosition = Position();
 		u32							dwCurNode = AI_NodeID;
-		m_tpaPoints.push_back		(vPosition);
+		m_tpaPoints.push_back		(Position());
 		m_tpaPointNodes.push_back	(dwCurNode);
 
 		for (u32 i=1; i<=N; i++)
@@ -250,7 +250,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 	
 	if (N) {
 		tStartPosition						= m_tpaTempPath[N - 1];
-		tStartPosition.sub					(vPosition);
+		tStartPosition.sub					(Position());
 		float								yaw, pitch;
 		tStartPosition.getHP				(yaw,pitch);
 		
@@ -643,7 +643,7 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 		else {
 			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
 			m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
-			m_tSelectorRetreat.m_tMyPosition = vPosition;
+			m_tSelectorRetreat.m_tMyPosition = Position();
 			m_tSelectorRetreat.m_tpMyNode = AI_Node;
 			vfChoosePointAndBuildPath(&m_tSelectorRetreat);
 			m_iCurrentSuspiciousNodeIndex = -1;
@@ -666,7 +666,7 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 			else {
 				m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
 				m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
-				m_tSelectorRetreat.m_tMyPosition = vPosition;
+				m_tSelectorRetreat.m_tMyPosition = Position();
 				m_tSelectorRetreat.m_tpMyNode = AI_Node;
 				vfChoosePointAndBuildPath(&m_tSelectorRetreat);
 				m_iCurrentSuspiciousNodeIndex = -1;

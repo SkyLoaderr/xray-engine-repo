@@ -132,7 +132,7 @@ class CAI_Zombie : public CCustomMonster
 		SSimpleSound		m_tLastSound;
 		
 		// VISIBILITY
-		objSET				m_tpaVisibleObjects;
+		xr_vector<CObject*>	m_tpaVisibleObjects;
 		
 		// ENEMY
 		SEnemySelected		m_Enemy;
@@ -323,7 +323,6 @@ class CAI_Zombie : public CCustomMonster
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Movement(float dt);
 		virtual void  Exec_Action(float dt);
-		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int type, Fvector& Position, float power);
 };
 		

@@ -45,8 +45,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 ////			tPoint1.getHP(yaw1,pitch1);
 ////			tPoint2.getHP(yaw2,pitch2);
 //			if (ps_Size() > 2) {
-//				tPoint1.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 3).vPosition);
-//				tPoint2.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+//				tPoint1.sub(ps_Element(ps_Size() - 2).Position(),ps_Element(ps_Size() - 3).Position());
+//				tPoint2.sub(ps_Element(ps_Size() - 1).Position(),ps_Element(ps_Size() - 2).Position());
 //				tPoint1.getHP(yaw1,pitch1);
 //				tPoint2.getHP(yaw2,pitch2);
 //				//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
@@ -145,7 +145,7 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		}
 		case eLookTypeFirePoint : {
 			Fvector tTemp;
-			clCenter(tTemp);
+			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
@@ -174,7 +174,7 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			if (bLookChanged)
 				m_dwLookChangedTime = Level().timeServer();
 			Fvector tTemp;
-			clCenter(tTemp);
+			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
@@ -206,10 +206,10 @@ void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)
 	if (m_tpItemsToTake.empty())
 		return;
 	tpItemToTake = m_tpItemsToTake[0];
-	float fDistSqr = vPosition.distance_to_sqr(tpItemToTake->Position());
+	float fDistSqr = Position().distance_to_sqr(tpItemToTake->Position());
 	for (int i=1, n = (int)m_tpItemsToTake.size(); i<n; i++)
-		if (!m_tpItemsToTake[i]->H_Parent() && (vPosition.distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr)) {
-			fDistSqr = vPosition.distance_to_sqr(m_tpItemsToTake[i]->Position());
+		if (!m_tpItemsToTake[i]->H_Parent() && (Position().distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr)) {
+			fDistSqr = Position().distance_to_sqr(m_tpItemsToTake[i]->Position());
 			tpItemToTake = m_tpItemsToTake[i];
 		}
 }
@@ -330,12 +330,12 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				continue;
 		}
 		
-		if (tPosition.distance_to(vPosition) > fRange)
+		if (tPosition.distance_to(Position()) > fRange)
 			continue;
 
-		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/tPosition.distance_to(vPosition))))/2.f);
+		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/tPosition.distance_to(Position()))))/2.f);
 		fPitchFov		= angle_normalize_signed(fYawFov*1.f);
-		tPosition.sub	(vPosition);
+		tPosition.sub	(Position());
 		tPosition.mul	(-1);
 		tPosition.getHP	(yaw2,pitch2);
 		yaw1			= angle_normalize_signed(yaw1);

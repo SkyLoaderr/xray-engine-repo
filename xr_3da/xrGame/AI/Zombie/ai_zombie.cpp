@@ -62,10 +62,10 @@ void CAI_Zombie::Die()
 	
 	///Fvector	dir;
 	//AI_Path.Direction(dir);
-	//SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	//SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 
 	
-	::Sound->play_at_pos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,vPosition);
+	::Sound->play_at_pos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,Position());
 
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
@@ -81,7 +81,7 @@ void CAI_Zombie::Load(LPCSTR section)
 	inherited::Load(section);
 	
 	// initialize start position
-	Fvector	P						= vPosition;
+	Fvector	P						= Position();
 	P.x								+= ::Random.randF();
 	P.z								+= ::Random.randF();
 	
@@ -152,7 +152,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 
 	m_fCurSpeed						= m_fMaxSpeed;
 
-	m_tOldPosition.set(vPosition);
+	m_tOldPosition.set(Position());
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
 	m_tStateStack.push(m_eCurrentState = aiZombieFreeHuntingActive);
@@ -172,7 +172,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 
 void CAI_Zombie::Exec_Movement	( float dt )
 {
-	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,dt);
 }
 
 void CAI_Zombie::net_Export(NET_Packet& P)

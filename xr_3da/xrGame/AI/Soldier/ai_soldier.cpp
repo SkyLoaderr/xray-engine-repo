@@ -89,10 +89,10 @@ void CAI_Soldier::Die()
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 	
 	// Play sound
-	::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 }
 
 void CAI_Soldier::vfLoadSelectors(LPCSTR section)
@@ -119,7 +119,7 @@ void CAI_Soldier::Load				(LPCSTR section)
 	inherited::Load					(section);
 	
 	// initialize start position
-	Fvector							P = vPosition;
+	Fvector							P = Position();
 	P.x								+= ::Random.randF();
 	P.z								+= ::Random.randF();
 	
@@ -161,7 +161,7 @@ BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
-	//tSavedEnemyPosition = vPosition;
+	//tSavedEnemyPosition = Position();
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract						*O = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
 	r_torso_current.yaw				= r_torso_target.yaw	= -O->o_Angle.y;
@@ -181,34 +181,34 @@ void CAI_Soldier::Update(u32 DT)
 
 void CAI_Soldier::Exec_Movement	( float dt )
 {
-	if (_abs(vPosition.x) > 10000.f) {
+	if (_abs(Position().x) > 10000.f) {
 		if (ps_Size() > 1)
-			vPosition = ps_Element(ps_Size() - 2).vPosition;
+			Position() = ps_Element(ps_Size() - 2).Position();
 		Msg("%s",cName());
 	}
-	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,dt);
 	/**
 	if (m_eCurrentState != aiSoldierJumping)
-		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+		AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,dt);
 	else {
 		UpdateTransform();
 		if (m_bActionStarted) {
 			m_bActionStarted = false;
 			Fvector tAcceleration, tVelocity;
 			tVelocity.set(0,1,0);
-			Movement.SetPosition(vPosition);
+			Movement.SetPosition(Position());
 			Movement.SetVelocity(tVelocity);
 			tAcceleration.set(0,0,0);
-			Movement.SetPosition(vPosition);
+			Movement.SetPosition(Position());
 			Movement.Calculate	(tAcceleration,0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,dt > .1f ? .1f : dt,false);
-			Movement.GetPosition(vPosition);
+			Movement.GetPosition(Position());
 		}
 		else {
 			Fvector tAcceleration;
 			tAcceleration.set(0,m_cBodyState == BODY_STATE_STAND ? m_fJumpSpeed : m_fJumpSpeed*.8f,0);
-			Movement.SetPosition(vPosition);
+			Movement.SetPosition(Position());
 			Movement.Calculate	(tAcceleration,0,0,dt > .1f ? .1f : dt,false);
-			Movement.GetPosition(vPosition);
+			Movement.GetPosition(Position());
 		}
 		UpdateTransform	();
 	}

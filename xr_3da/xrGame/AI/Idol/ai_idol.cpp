@@ -46,7 +46,7 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string32						I;
 	for (u32 i=0; i<N; i++)
-		m_tpaAnims.push_back		(PKinematics(pVisual)->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
+		m_tpaAnims.push_back		(PKinematics(Visual())->ID_Cycle(_GetItem(tpIdol->m_caAnimations,i,I)));
 
 	return							TRUE;
 }
@@ -60,14 +60,14 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 		switch (m_dwAnyPlayType) {
 			case 0 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI((int)m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= PKinematics(Visual())->PlayCycle	(m_tpaAnims[::Random.randI((int)m_tpaAnims.size())],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 				}
 				break;
 			}
 			case 1 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= PKinematics(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 					m_dwCurrentAnimationIndex = (m_dwCurrentAnimationIndex + 1) % m_tpaAnims.size();
 				}
@@ -75,7 +75,7 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 			}
 			case 2 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= PKinematics(Visual())->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 					if (m_dwCurrentAnimationIndex < m_tpaAnims.size() - 1)
 						m_dwCurrentAnimationIndex++;
@@ -179,17 +179,17 @@ void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)
 	}
 }
 
-void CAI_Idol::OnVisible	()
+void CAI_Idol::renderable_Render	()
 {
-	inherited::OnVisible	();
+	inherited::renderable_Render	();
 	if(m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->OnVisible();
+		m_inventory.ActiveItem()->renderable_Render();
 }
 
 void CAI_Idol::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive() && m_inventory.ActiveItem()) {
-		clCenter(P);
+		Center(P);
 		D.setHP(0,0);
 		D.normalize_safe();
 	}

@@ -76,7 +76,7 @@ private:
 	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;
 	svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>			m_tpaDynamicSounds;
 	svector<SHurt,			MAX_HURT_COUNT>				m_tpaHurts;
-	objSET					m_tpaVisibleObjects;
+	xr_vector<CObject*>		m_tpaVisibleObjects;
 	u32						m_dwMaxDynamicObjectsCount;
 	u32						m_dwMaxDynamicSoundsCount;
 	float					m_fSensetivity;
@@ -317,8 +317,7 @@ private:
 		
 		CObject::SavedPosition	tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tDirection.magnitude() < EPS_L)
-			return;
+		if (tDirection.magnitude() < EPS_L)	return;
 		tDirection.getHP		(yaw,pitch);
 	}
 
@@ -328,14 +327,14 @@ private:
 //		Fvector					tDirection;
 //		
 //		if (!AI_Path.TravelPath.empty() && (AI_Path.TravelStart <= (AI_Path.TravelPath.size() - 1)) && (AI_Path.TravelStart >= 0))
-//			if (vPosition.distance_to(AI_Path.TravelPath[AI_Path.TravelStart].P) > EPS_L) {
-//				tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart].P);
+//			if (Position().distance_to(AI_Path.TravelPath[AI_Path.TravelStart].P) > EPS_L) {
+//				tDirection.sub(Position(),AI_Path.TravelPath[AI_Path.TravelStart].P);
 //				if (tDirection.magnitude() < EPS_L)
 //					GetDirectionAnglesByPrevPositions(yaw,pitch);
 //			}
 //			else
-//				if ((AI_Path.TravelStart < (AI_Path.TravelPath.size() - 1)) && (vPosition.distance_to(AI_Path.TravelPath[AI_Path.TravelStart + 1].P) > EPS_L)) {
-//					tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
+//				if ((AI_Path.TravelStart < (AI_Path.TravelPath.size() - 1)) && (Position().distance_to(AI_Path.TravelPath[AI_Path.TravelStart + 1].P) > EPS_L)) {
+//					tDirection.sub(Position(),AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
 //					if (tDirection.magnitude() < EPS_L)
 //						GetDirectionAnglesByPrevPositions(yaw,pitch);
 //				}
@@ -382,7 +381,7 @@ private:
 		m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
 		m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
 		m_dwLostEnemyTime		= Level().timeServer();
-		m_tMySavedPosition		= vPosition;
+		m_tMySavedPosition		= Position();
 		m_dwMyNodeID			= AI_NodeID;
 		vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 	}
@@ -399,7 +398,6 @@ public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker						();
 	virtual					~CAI_Stalker					();
-	virtual objQualifier*	GetQualifier					();
 	virtual void			Death							();
 	virtual void			Load							(LPCSTR	section );				
 	virtual void			HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
@@ -415,7 +413,7 @@ public:
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void			OnEvent							(NET_Packet& P, u16 type);
 	virtual void			feel_touch_new					(CObject* O);
-	virtual void			OnVisible						();
+	virtual void			renderable_Render						();
 	virtual void			Exec_Movement					(float dt);
 	virtual void			Exec_Look						(float dt);
 	virtual void			Update							(u32 dt);

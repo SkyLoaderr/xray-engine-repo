@@ -61,7 +61,7 @@ void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 {
 	// Save event
 	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
+	XFORM().transform_dir(D,vLocalDir);
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();
@@ -75,7 +75,7 @@ void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 			return;
 		if (Random.randI(2))
 			return;
-		::Sound->play_at_pos		(S,this,vPosition);
+		::Sound->play_at_pos		(S,this,Position());
 	}
 }
 

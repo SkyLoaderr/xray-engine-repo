@@ -27,7 +27,7 @@
 		else {\
 			Msg("* Visible objects (%d) :",m_tpaVisibleObjects.size());\
 			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)\
-				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),vPosition.distance_to(m_tpaVisibleObjects[i]->Position()));\
+				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),Position().distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
 	m_bStopThinking = true;\
@@ -89,14 +89,14 @@ void CAI_Zombie::Think()
 //		AI_Path.TravelPath.resize(3);
 //		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
 //		AI_Path.TravelPath[0].P = m_tOldPosition;
-//		AI_Path.TravelPath[1].P = vPosition;
+//		AI_Path.TravelPath[1].P = Position();
 //		Fvector tTemp;
 //		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 //		tTemp.normalize_safe();
 //		tTemp.mul(10.f);
-//		AI_Path.TravelPath[2].P.add(vPosition,tTemp);
+//		AI_Path.TravelPath[2].P.add(Position(),tTemp);
 //		AI_Path.TravelStart = 0;
-//		vPosition = m_tOldPosition;
+//		Position() = m_tOldPosition;
 //	}
 //	else {
 //		AI_Path.TravelPath.clear();
@@ -112,8 +112,6 @@ void CAI_Zombie::Death()
 	vfSetFire(false,Group);
 	
 	AI_Path.TravelPath.clear();
-
-	UpdateTransform();
 
 	if (m_fFood <= 0) {
 		if (m_dwLastRangeSearch <= m_dwDeathTime)
@@ -136,15 +134,17 @@ void CAI_Zombie::Death()
 		}
 	}
 
-	SelectAnimation(clTransform.k,mRotate.k,0);
+	SelectAnimation(XFORM().k,mRotate.k,0);
 }
 
 void CAI_Zombie::Turn()
 {
 	WRITE_TO_LOG("Turning...");
 
-	mRotate.setHPB(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
-	UpdateTransform();
+	Fmatrix mXFORM;
+	mXFORM.setHPB	(m_tHPB.x = -r_torso_current.yaw,m_tHPB.y,m_tHPB.z);
+	mXFORM.c.set	(Position()	);
+	XFORM().set		(mXFORM		);
 
 	CHECK_IF_GO_TO_PREV_STATE(getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
@@ -177,7 +177,7 @@ void CAI_Zombie::FreeHuntingActive()
 		m_tpSoundBeingPlayed = &(m_tpaSoundNotice[::Random.randI(SND_NOTICE_COUNT)]);
 		::Sound->play_at_pos		(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		m_fGoalChangeTime = 0;
-		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
+		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
 
@@ -197,8 +197,8 @@ void CAI_Zombie::FreeHuntingActive()
 		vfChooseNewSpeed();
 
 	if (bfCheckIfGoalChanged()) {
-		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > m_fStableDistance) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
-			if (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)
+		if (m_bStateChanged || (Position().distance_to(m_tSpawnPosition) > m_fStableDistance) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
+			if (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)
 				m_fSpeed = m_fSafeSpeed = m_fMaxSpeed;
 			else
 				vfChooseNewSpeed();
@@ -214,7 +214,7 @@ void CAI_Zombie::FreeHuntingActive()
 
 //	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
 //		m_dwLastRangeSearch = Level().timeServer();
-//		PKinematics(pVisual)->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
+//		PKinematics(Visual())->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
 //	}
 	
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
@@ -270,8 +270,6 @@ void CAI_Zombie::FreeHuntingPassive()
 	
 	m_fSpeed = 0.f;
 
-	UpdateTransform();
-
 	vfAddActiveMember();
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
@@ -296,10 +294,10 @@ void CAI_Zombie::AttackFire()
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive());
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > m_fAttackDistance),aiZombieAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(Position()) > m_fAttackDistance),aiZombieAttackRun)
 
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+	tTemp.sub(m_Enemy.Enemy->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
@@ -352,12 +350,12 @@ void CAI_Zombie::AttackRun()
 	tDistance.sub(Position(),m_Enemy.Enemy->Position());
 	
 	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+	tTemp.sub(m_Enemy.Enemy->Position(),Position());
 	vfNormalizeSafe(tTemp);
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+	if (m_Enemy.Enemy->Position().distance_to(Position()) <= m_fAttackDistance) {
 		if (getAI().bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
 			GO_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackFire);
 		}
@@ -460,7 +458,7 @@ void CAI_Zombie::ReturnHome()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
 	}
  
-	CHECK_IF_GO_TO_PREV_STATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
+	CHECK_IF_GO_TO_PREV_STATE(Position().distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;

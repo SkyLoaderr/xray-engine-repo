@@ -1388,18 +1388,7 @@ extern "C" {
 #  define DVAL_LOOKAHEAD    0
 #endif
 
-#if !defined(DVAL_ASSERT)
-#if defined(__LZO_HASH_INCREMENTAL) && !defined(NDEBUG)
-	static void DVAL_ASSERT(lzo_uint32 dv, const lzo_byte *p)
-	{
-		lzo_uint32 df;
-		DVAL_FIRST(df,(p));
-		assert(DINDEX(dv,p) == DINDEX(df,p));
-	}
-#else
 #  define DVAL_ASSERT(dv,p) ((void) 0)
-#endif
-#endif
 
 #if defined(LZO_DICT_USE_PTR)
 #  define DENTRY(p,in)                          (p)

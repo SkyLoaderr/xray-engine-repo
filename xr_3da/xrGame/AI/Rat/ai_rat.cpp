@@ -59,15 +59,15 @@ void CAI_Rat::Die()
 {
 	inherited::Die( );
 	m_eCurrentState = aiRatDie;
-	
+
 	Fvector	dir;
 	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
-	
-	::Sound->play_at_pos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+
+	::Sound->play_at_pos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,Position());
 
 	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
-	
+
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
@@ -82,24 +82,24 @@ void CAI_Rat::Load(LPCSTR section)
 	inherited::Load(section);
 
 	/*
-	IVisual*	temp;
+	IRender_Visual*	temp;
 	temp = ::Render->model_Create("aaa");	::Render->model_Delete(temp);
 	temp = ::Render->model_Create("bbb");	::Render->model_Delete(temp);
 	temp = ::Render->model_Create("ccc");	::Render->model_Delete(temp);
 	*/
 
 	// initialize start position
-	Fvector	P						= vPosition;
+	Fvector	P						= Position();
 	P.x								+= ::Random.randF();
 	P.z								+= ::Random.randF();
-	
+
 	vfLoadSounds();
-	
+
 	// sounds
 	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
 	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
 	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
-	
+
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->r_float (section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->r_s32   (section,"PassiveScheduleMin");
@@ -208,7 +208,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	m_fCurSpeed						= m_fMaxSpeed;
 
-	m_tOldPosition.set				(vPosition);
+	m_tOldPosition.set				(Position());
 	m_tSpawnPosition.set			(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
 	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
@@ -254,9 +254,9 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	float					f1;
-	f1						= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
 	P.w						(&f1,						sizeof(f1));
-	f1						= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
 	P.w						(&f1,						sizeof(f1));
 }
 
@@ -286,8 +286,8 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	setEnabled				(TRUE);
 }
 void CAI_Rat::CreateSkeleton(){
-	
-	if (!pVisual)
+
+	if (!Visual())
 		return;
 	CPhysicsElement* element=P_create_Element();
 	Fobb box;
@@ -303,13 +303,13 @@ void CAI_Rat::CreateSkeleton(){
 	element->SetMaterial("creatures\\rat");
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
-	m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
 	if(m_saved_impulse!=0.f){
 
 		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
 	}
 	/*
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(M);
 	//get bone instance
@@ -333,7 +333,7 @@ void CAI_Rat::CreateSkeleton(){
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);
-	m.c.set(vPosition);
+	m.c.set(Position());
 	m_pPhysicsShell->mXFORM.set(m);
 	*/
 }
@@ -341,31 +341,26 @@ void CAI_Rat::CreateSkeleton(){
 void CAI_Rat::Update(u32 dt){
 
 	inherited::Update( dt);
-	if(m_pPhysicsShell){
-		m_pPhysicsShell->Update();
-		mRotate.set(m_pPhysicsShell->mXFORM);
-		mRotate.c.set(0,0,0);
-		UpdateTransform					();
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		svTransform.set(m_pPhysicsShell->mXFORM);
-		
-	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-	//	int id=M->LL_BoneID("bip01_pelvis");
-	//	CBoneInstance& instance=M->LL_GetInstance				(id);
-	//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
-			
+	if(m_pPhysicsShell)
+	{
+		m_pPhysicsShell->Update	();
+		XFORM().set				(m_pPhysicsShell->mXFORM);
+
+		//	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
+		//	int id=M->LL_BoneID("bip01_pelvis");
+		//	CBoneInstance& instance=M->LL_GetInstance				(id);
+		//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
+
 	}
-	
-	
 }
 
 void CAI_Rat::UpdateCL(){
 
-	 inherited::UpdateCL();
+	inherited::UpdateCL();
 	if(m_pPhysicsShell){
 		m_pPhysicsShell->Update();
-		clTransform.set(m_pPhysicsShell->mXFORM);
-		
+		XFORM().set(m_pPhysicsShell->mXFORM);
+
 	}
 	else
 		if (fHealth <= 0)

@@ -16,7 +16,7 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			::Sound->play_at_pos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
+			::Sound->play_at_pos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,Position());
 			u32 dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
@@ -50,7 +50,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 elem
 {
 	// Save event
 	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
+	XFORM().transform_dir(D,vLocalDir);
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();
@@ -64,12 +64,12 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 elem
 			return;
 		if (Random.randI(2))
 			return;
-		::Sound->play_at_pos		(S,this,vPosition);
+		::Sound->play_at_pos		(S,this,Position());
 	}
 	if (g_Health() - amount <= 0) {
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
 			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+				m_tpCurrentGlobalBlend = PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 	}
 }
 
@@ -133,7 +133,7 @@ float CAI_Rat::CorpHeuristics(CEntity* E)
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
 		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpseInterval) && (tpEntityAlive->m_fFood > 0) && (m_bEatMemberCorpses || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
 //			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime)/1000.f*(tpEntityAlive->m_fFood*tpEntityAlive->m_fFood);
-			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*vPosition.distance_to(E->Position());
+			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*Position().distance_to(E->Position());
 		else
 			return flt_max;
 	}
@@ -187,7 +187,7 @@ void CAI_Rat::vfUpdateMorale()
 		m_fMorale = m_fMoraleMaxValue;
 	if (dwCurTime - m_dwMoraleLastUpdateTime > m_dwMoraleRestoreTimeInterval) {
 		m_dwMoraleLastUpdateTime = dwCurTime;
-		float fDistance = vPosition.distance_to(m_tSafeSpawnPosition);
+		float fDistance = Position().distance_to(m_tSafeSpawnPosition);
 		fDistance = fDistance < 1.f ? 1.f : fDistance;
 		switch (m_eCurrentState) {
 			case aiRatFreeHuntingActive :

@@ -376,7 +376,7 @@ class CAI_Soldier : public CCustomMonster
 		Fvector					m_tHitPosition;
 		
 		// visual data
-		objSET					tpaVisibleObjects;
+		xr_vector<CObject*>		tpaVisibleObjects;
 		
 		// saved enemy
 		SEnemySelected			Enemy;
@@ -638,7 +638,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfTooBigDistance(Fvector tPosition, float fDistance)
 		{
-			return(tPosition.distance_to(vPosition) > fDistance);
+			return(tPosition.distance_to(Position()) > fDistance);
 		}
 	IC	bool bfTooFarToEnemy(CEntity *tpEntity, float fDistance)
 		{
@@ -736,10 +736,9 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 //		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
-		virtual void  OnVisible(); 
+		virtual void  renderable_Render(); 
 		virtual void  Exec_Movement(float dt);
 		virtual void  OnEvent(EVENT E, u64 P1, u64 P2);
 		virtual BOOL  net_Spawn(LPVOID DC);
-		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);
 };
