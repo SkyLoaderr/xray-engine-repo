@@ -218,7 +218,8 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
-	for (int i = 0; i < UIWeaponsTabControl.GetTabsCount(); ++i)
+//	for (int i = 0; i < UIWeaponsTabControl.GetTabsCount(); ++i)
+	for (int i = 1; i < 20; ++i)
 	{
 		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
 		R_ASSERT(pNewDDList);
@@ -403,6 +404,7 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 //в рюкзак
 bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
+	if (!pList->GetParent()) return false;
 	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
@@ -1200,7 +1202,6 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 	if (!UITopList[SlotNum].GetDragDropItemsList().empty())
 	{
 		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*UITopList[SlotNum].GetDragDropItemsList().begin());
-		if (pDDItemMP)
 		// Берем текущее оружие в слоте...
 		pDDItemMP->MoveOnNextDrop();
 		// ...убираем все аддоны...
