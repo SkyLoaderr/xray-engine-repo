@@ -392,12 +392,17 @@ void CCustomMonster::UpdateCL	()
 	}
 }
 
-BOOL __fastcall	Qualifier				(CObject* O, void* P)
+static BOOL __fastcall Qualifier				(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			return FALSE;
 	CEntity* E = dynamic_cast<CEntity*>		(O);
 	if (E->g_Team() == int(*LPDWORD(P)))	return FALSE;
 	return TRUE;
+}
+
+objQualifier* CCustomMonster::GetQualifier	()
+{
+	return(&Qualifier);
 }
 
 void CCustomMonster::GetVisible			(objVisible& R)
@@ -436,7 +441,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	R_ASSERT			(pSector);
 	objSET				seen;
 	seen.clear			();
-	pSector->GetObjects	(Frustum,seen,Qualifier,&id_Team);
+	pSector->GetObjects	(Frustum,seen,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End	();
 
 	// 4. Visibility processing

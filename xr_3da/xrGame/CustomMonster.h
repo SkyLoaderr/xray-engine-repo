@@ -160,9 +160,13 @@ public:
 
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
- IC virtual bool		bfExecMovement			(){return(false);};
+	virtual bool		bfExecMovement			(){return(false);};
  IC			void		Squat(){m_bCrouched = true;};
  IC			void		StandUp(){m_bCrouched = false;};
+	
+public:
+	//typedef BOOL (*QualifierFunction)(CObject*, void*);
+	virtual objQualifier* GetQualifier	();
 };
 
 namespace AI{
