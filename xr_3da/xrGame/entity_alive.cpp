@@ -377,7 +377,7 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 		CKinematics* V = smart_cast<CKinematics*>(Visual());
 
 		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
-		//VERIFY(BI_NONE != particle_bone);
+		VERIFY(particle_bone  < 64 || BI_NONE == particle_bone);
 
 		pWound->SetParticleBoneNum(particle_bone);
 		pWound->SetParticleName((*m_pFireParticlesVector)[::Random.randI(0,m_pFireParticlesVector->size())]);
