@@ -204,18 +204,18 @@ public:
 	};
 
 	struct STravelPoint {
-		Fvector			position;
+		Fvector2		position;
 		u32				vertex_id;
 	};
 
 	struct SPathPoint : public STravelParams, public STravelPoint {
-		Fvector			direction;
+		Fvector2		direction;
 	};
 
 	struct SCirclePoint {
-		Fvector			center;
+		Fvector2		center;
 		float			radius;
-		Fvector			point;
+		Fvector2		point;
 		float			angle;
 	};
 
@@ -224,6 +224,7 @@ public:
 		public SCirclePoint
 	{
 	};
+
 private:
 	STrajectoryPoint	start, dest;
 public:
@@ -235,7 +236,6 @@ public:
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
 			void	draw_travel_line			() const;
 			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;
-			bool	compute_path				(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<CLevelGraph::STravelParams>	&start_set, xr_vector<CLevelGraph::STravelParams> &dest_set, xr_vector<Fvector> *m_tpTravelLine);
 			void	build_detail_path			();
 			void	draw_dynamic_obstacles		() const;
 #endif
