@@ -20,33 +20,38 @@
 
 CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 {
-	string256			S;
-	m_bActive			= false;
-	m_script_name		= xr_strdup(caNamespaceName);
+	try {
+		string256			S;
+		m_bActive			= false;
+		m_script_name		= xr_strdup(caNamespaceName);
 
-	ai().script_engine().add_file(caNamespaceName);
-	ai().script_engine().process();
+		ai().script_engine().add_file(caNamespaceName);
+		ai().script_engine().process();
 
-	m_virtual_machine	= lua_newthread(ai().script_engine().lua());
-	VERIFY2				(lua(),"Cannot create new Lua thread");
-	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
-	
+		m_virtual_machine	= lua_newthread(ai().script_engine().lua());
+		VERIFY2				(lua(),"Cannot create new Lua thread");
+		m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
+		
 #ifdef DEBUG
-#ifdef USE_DEBUGGER
-	if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() )
-#endif
-		lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
-#ifdef USE_DEBUGGER
-	else
-		lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
-#endif
+#	ifdef USE_DEBUGGER
+		if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() )
+#	endif
+			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+#	ifdef USE_DEBUGGER
+		else
+			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
+#	endif
 #endif
 
-	sprintf				(S,"%s.main()",caNamespaceName);
-	if (!ai().script_engine().load_buffer(lua(),S,xr_strlen(S),"@_thread_main"))
-		return;
+		sprintf				(S,"%s.main()",caNamespaceName);
+		if (!ai().script_engine().load_buffer(lua(),S,xr_strlen(S),"@_thread_main"))
+			return;
 
-	m_bActive			= true;
+		m_bActive			= true;
+	}
+	catch(...) {
+		m_bActive			= false;
+	}
 }
 
 CScriptThread::~CScriptThread()
@@ -54,8 +59,12 @@ CScriptThread::~CScriptThread()
 #ifdef DEBUG
 	Msg						("* Destroying script thread %s",m_script_name);
 #endif
-	luaL_unref				(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
-	xr_delete				(m_script_name);
+	try {
+		luaL_unref			(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
+		xr_delete			(m_script_name);
+	}
+	catch(...) {
+	}
 }
 
 bool CScriptThread::Update()
@@ -63,32 +72,35 @@ bool CScriptThread::Update()
 	if (!m_bActive)
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
 	
-	ai().script_engine().set_current_thread	(this);
-	
-	int					l_iErrorCode = lua_resume(lua(),0);
-	
-	if (l_iErrorCode) {
-		if (!ai().script_engine().print_output(lua(),m_script_name,l_iErrorCode))
-			ai().script_engine().print_error(lua(),l_iErrorCode);
+	try {
+		ai().script_engine().set_current_thread	(this);
+		
+		int					l_iErrorCode = lua_resume(lua(),0);
+		
+		if (l_iErrorCode) {
+			ai().script_engine().print_output(lua(),m_script_name,l_iErrorCode);
+			m_bActive		= false;
+		}
+		else
+			if (!(lua()->ci->state & CI_YIELD)) {
+				m_bActive	= false;
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
+			}
+			else {
+	#ifdef USE_DEBUGGER
+				if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
+	#endif
+				{
+					VERIFY		(m_current_stack_level);
+					--m_current_stack_level;
+				}
+				VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
+			}
+		
+		ai().script_engine().set_current_thread	(0);
+	}
+	catch(...) {
 		m_bActive		= false;
 	}
-	else
-		if (!(lua()->ci->state & CI_YIELD)) {
-			m_bActive	= false;
-			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
-		}
-		else {
-#ifdef USE_DEBUGGER
-			if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
-#endif
-			{
-				VERIFY		(m_current_stack_level);
-				--m_current_stack_level;
-			}
-			VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
-		}
-	
-	ai().script_engine().set_current_thread	(0);
-	
 	return				(m_bActive);
 }

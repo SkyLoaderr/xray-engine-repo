@@ -70,10 +70,7 @@ void CScriptProcess::run_strings()
 			err_code = LUA_ERRRUN;
 		}
 
-		if (err_code) {
-			if (!ai().script_engine().print_output(ai().script_engine().lua(),"console_string",err_code))
-				ai().script_engine().print_error(ai().script_engine().lua(),err_code);
-		}
+		ai().script_engine().print_output(ai().script_engine().lua(),"console_string",err_code);
 		xr_free		(I);
 		m_strings_to_run.pop_back();
 	}

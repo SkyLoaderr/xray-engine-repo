@@ -122,9 +122,9 @@ int CScriptStorage::vscript_log			(ScriptStorage::ELuaMessageType tLuaMessageTyp
 	strcpy	(S2,SS);
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,marker);
+	strcat	(S2,"\n");
 
 #ifndef ENGINE_BUILD
-	ai().script_engine().m_output.w_stringZ("\n");
 	ai().script_engine().m_output.w_stringZ(S2);
 #endif
 
@@ -226,8 +226,7 @@ setfenv(1, this) \
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!print_output(L,caScriptName,l_iErrorCode))
-			print_error	(L,l_iErrorCode);
+		print_output(L,caScriptName,l_iErrorCode);
 #endif
 		return			(false);
 	}
@@ -245,7 +244,7 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	if (!load_buffer(lua(),static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName,caNameSpaceName)) {
 		VERIFY		(lua_gettop(lua()) >= 4);
 		lua_pop		(lua(),4);
-		VERIFY		(lua_gettop(lua()) == start - 3);
+//		VERIFY		(lua_gettop(lua()) == start - 3);
 		FS.r_close	(l_tpFileReader);
 		return		(false);
 	}
@@ -267,7 +266,6 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 
 #ifdef DEBUG
 			print_output(lua(),caScriptName,l_iErrorCode);
-			print_error	(lua(),l_iErrorCode);
 #endif
 			lua_settop	(lua(),start);
 			return	(false);
@@ -389,11 +387,11 @@ luabind::object CScriptStorage::name_space(LPCSTR namespace_name)
 
 bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName, int iErorCode)
 {
-	if (!lua_isstring(L,-1))
-		return			(false);
-
 	if (iErorCode)
 		print_error		(L,iErorCode);
+
+	if (!lua_isstring(L,-1))
+		return			(false);
 
 	LPCSTR				S = lua_tostring(L,-1);
 	if (!xr_strcmp(S,"cannot resume dead coroutine")) {

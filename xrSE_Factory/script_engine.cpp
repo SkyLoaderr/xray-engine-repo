@@ -50,9 +50,7 @@ void CScriptEngine::unload				()
 
 int CScriptEngine::lua_panic			(CLuaVirtualMachine *L)
 {
-	script_log		(eLuaMessageTypeError,"PANIC");
-	if (!print_output(L,"unknown script"))
-		print_error(L,LUA_ERRRUN);
+	print_output	(L,"PANIC",LUA_ERRRUN);
 	return			(0);
 }
 
@@ -63,7 +61,7 @@ void CScriptEngine::lua_hook_call		(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug
 
 void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 {
-	print_error				(L,LUA_ERRRUN);
+	print_output			(L,"",LUA_ERRRUN);
 
 #ifndef XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
@@ -75,7 +73,7 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 
 int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 {
-	print_error				(L,LUA_ERRRUN);
+	print_output			(L,"",LUA_ERRRUN);
 	
 #ifndef XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
@@ -88,7 +86,7 @@ int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 
 void lua_cast_failed					(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 {
-	CScriptEngine::print_error	(L,LUA_ERRRUN);
+	CScriptEngine::print_output	(L,"",LUA_ERRRUN);
 
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
