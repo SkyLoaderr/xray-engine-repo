@@ -64,7 +64,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 	function		(tpLuaVirtualMachine,	"log",	LuaLog);
 
-	module(tpLuaVirtualMachine,"Game")
+	module(tpLuaVirtualMachine,"game")
 	[
 		// declarations
 		def("time",								get_time)
@@ -72,7 +72,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 //		def("get_object_by_name",				Game::get_object_by_name),
 	];
 
-	namespace_("Level")
+	module(tpLuaVirtualMachine,"level")
 	[
 		// declarations
 		def("object",							get_object_by_name)
@@ -285,7 +285,118 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<>())
 			.def(								constructor<const CLuaHit *>()),
 
-		class_<CLuaGameObject>("CGameObject")
+		class_<CMovementAction>("move")
+			.enum_("body")
+			[
+				value("crouch",					int(StalkerSpace::eBodyStateCrouch)),
+				value("standing",				int(StalkerSpace::eBodyStateStand))
+			]
+			.enum_("move")
+			[
+				value("walk",					int(StalkerSpace::eMovementTypeWalk)),
+				value("run",					int(StalkerSpace::eMovementTypeRun)),
+				value("stand",					int(StalkerSpace::eMovementTypeStand))
+			]
+			.enum_("path")
+			[
+				value("line",					int(StalkerSpace::ePathTypeStraight)),
+				value("dodge",					int(StalkerSpace::ePathTypeDodge)),
+				value("criteria",				int(StalkerSpace::ePathTypeCriteria)),
+				value("curve",					int(StalkerSpace::ePathTypeStraightDodge)),
+				value("curve_criteria",			int(StalkerSpace::ePathTypeDodgeCriteria))
+			]
+
+			.def(								constructor<>())
+			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,CLuaGameObject*>())
+			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,LPCSTR>())
+			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,const Fvector &>())
+			.def("body",						&CMovementAction::SetBodyState)
+			.def("move",						&CMovementAction::SetMovementType)
+			.def("path",						&CMovementAction::SetPathType)
+			.def("object",						&CMovementAction::SetObjectToGo)
+			.def("patrol",						&CMovementAction::SetPatrolPath)
+			.def("position",					&CMovementAction::SetPosition),
+
+		class_<CWatchAction>("look")
+			.enum_("look")
+			[
+				value("direction",				int(StalkerSpace::eLookTypeDirection)),
+				value("search",					int(StalkerSpace::eLookTypeSearch)),
+				value("danger",					int(StalkerSpace::eLookTypeDanger)),
+				value("point",					int(StalkerSpace::eLookTypePoint)),
+				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint))
+			]
+			.def(								constructor<>())
+			.def(								constructor<CLuaGameObject*>())
+			.def(								constructor<StalkerSpace::ELookType>())
+			.def(								constructor<const Fvector &>())
+			.def("object",						&CWatchAction::SetWatchObject)		// time
+			.def("direction",					&CWatchAction::SetWatchDirection)		// time
+			.def("type",						&CWatchAction::SetWatchType),
+
+		class_<CAnimationAction>("anim")
+			.enum_("type")
+			[
+				value("free",					int(StalkerSpace::eMentalStateFree)),
+				value("danger",					int(StalkerSpace::eMentalStateDanger)),
+				value("asleep",					int(StalkerSpace::eMentalStateAsleep)),
+				value("zombied",				int(StalkerSpace::eMentalStateZombied)),
+				value("dummy",					int(StalkerSpace::eMentalStateDummy))
+			]
+			.def(								constructor<>())
+			.def(								constructor<LPCSTR>())
+			.def(								constructor<StalkerSpace::EMentalState>())
+			.def("anim",						&CAnimationAction::SetAnimation)
+			.def("type",						&CAnimationAction::SetMentalState),
+
+		class_<CSoundAction>("sound")
+			.def(								constructor<>())
+			.def(								constructor<LPCSTR>())
+			.def("set",							&CSoundAction::SetSound),
+
+		class_<CObjectAction>("object")
+			.enum_("state")
+			[
+				value("idle",					int(StalkerSpace::eWeaponStateIdle)),
+				value("primary_fire",			int(StalkerSpace::eWeaponStatePrimaryFire)),
+				value("secondary_fire"			,int(StalkerSpace::eWeaponStateSecondaryFire))
+			]
+			.def(								constructor<>())
+				.def(								constructor<CLuaGameObject*,CObjectAction::EObjectActionType>())
+			.def("action",						&CObjectAction::SetObjectAction)
+			.def("object",						&CObjectAction::SetObject),
+			
+		class_<CActionCondition>("cond")
+			.enum_("cond")
+			[
+				value("move_end",				int(CActionCondition::MOVEMENT_FLAG	)),
+				value("look_end",				int(CActionCondition::WATCH_FLAG)),
+				value("anim_end",				int(CActionCondition::ANIMATION_FLAG)),
+				value("sound_end",				int(CActionCondition::SOUND_FLAG)),
+				value("object_end",				int(CActionCondition::OBJECT_FLAG)),
+				value("time_end",				int(CActionCondition::TIME_FLAG))
+			]
+			.def(								constructor<>())
+			.def(								constructor<u32>())
+			.def(								constructor<u32,double>()),
+
+		class_<CEntityAction>("entity_action")
+			.def(								constructor<>())
+			.def("set_action",					(void (CEntityAction::*)(const CMovementAction	&tMovementAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CWatchAction		&tWatchAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CAnimationAction &tAnimationAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CSoundAction		&tSoundAction))		(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CObjectAction	&tObjectAction))	(CEntityAction::SetAction))
+			.def("set_action",					(void (CEntityAction::*)(const CActionCondition &tActionCondition))	(CEntityAction::SetAction))
+			.def("move",						&CEntityAction::CheckIfMovementCompleted)
+			.def("look",						&CEntityAction::CheckIfWatchCompleted)
+			.def("anim",						&CEntityAction::CheckIfAnimationCompleted)
+			.def("sound",						&CEntityAction::CheckIfSoundCompleted)
+			.def("object",						&CEntityAction::CheckIfObjectCompleted)
+			.def("wait",						(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted)),
+
+
+		class_<CLuaGameObject>("object")
 			.enum_("relation")
 			[
 				value("friend",					int(ALife::eRelationTypeFriend)),
@@ -293,6 +404,15 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("enemy",					int(ALife::eRelationTypeEnemy)),
 				value("dummy",					int(ALife::eRelationTypeDummy))
 			]
+			.enum_("rank")
+			[
+				value("novice",					int(ALife::eStalkerRankNovice)),
+				value("experienced",			int(ALife::eStalkerRankExperienced)),
+				value("veteran",				int(ALife::eStalkerRankVeteran)),
+				value("master",					int(ALife::eStalkerRankMaster)),
+				value("dummy",					int(ALife::eStalkerRankDummy))
+			]
+
 			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
 			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
 			.property("health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
@@ -324,121 +444,15 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("fov",							&CLuaGameObject::GetFOV)
 			.def("range",						&CLuaGameObject::GetRange)
 			.def("relation",					&CLuaGameObject::GetRelationType)
-			.def("set_script",					&CLuaGameObject::SetScriptControl)
+			.def("script",						&CLuaGameObject::SetScriptControl)
 			.def("get_script",					&CLuaGameObject::GetScriptControl)
 			.def("get_script_name",				&CLuaGameObject::GetScriptControlName)
 			.def("see",							&CLuaGameObject::CheckObjectVisibility)
-			.def("add_action",					&CLuaGameObject::AddAction)
-			.enum_("rank")
-			[
-				value("novice",					int(ALife::eStalkerRankNovice)),
-				value("experienced",			int(ALife::eStalkerRankExperienced)),
-				value("veteran",				int(ALife::eStalkerRankVeteran)),
-				value("master",					int(ALife::eStalkerRankMaster)),
-				value("dummy",					int(ALife::eStalkerRankDummy))
-			]
 			.def("use",							&CLuaGameObject::UseObject)				// time
 			.def("rank",						&CLuaGameObject::GetRank)
-			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo),
-		
-		class_<CMovementAction>("move")
-			.enum_("body")
-			[
-				value("crouch",					int(StalkerSpace::eBodyStateCrouch)),
-				value("standing",				int(StalkerSpace::eBodyStateStand))
-			]
-			.enum_("move")
-			[
-				value("walk",					int(StalkerSpace::eMovementTypeWalk)),
-				value("run",					int(StalkerSpace::eMovementTypeRun)),
-				value("stand",					int(StalkerSpace::eMovementTypeStand))
-			]
-			.enum_("path")
-			[
-				value("line",					int(StalkerSpace::ePathTypeStraight)),
-				value("dodge",					int(StalkerSpace::ePathTypeDodge)),
-				value("criteria",				int(StalkerSpace::ePathTypeCriteria)),
-				value("curve",					int(StalkerSpace::ePathTypeStraightDodge)),
-				value("curve_criteria",			int(StalkerSpace::ePathTypeDodgeCriteria))
-			]
-			.def(								constructor<>())
-			.def("body",						&CMovementAction::SetBodyState)
-			.def("move",						&CMovementAction::SetMovementType)
-			.def("path",						&CMovementAction::SetPathType)
-			.def("object",						&CMovementAction::SetObjectToGo)
-			.def("patrol",						&CMovementAction::SetPatrolPath)
-			.def("position",					&CMovementAction::SetPosition),
-
-		class_<CWatchAction>("look")
-			.enum_("look")
-			[
-				value("direction",				int(StalkerSpace::eLookTypeDirection)),
-				value("search",					int(StalkerSpace::eLookTypeSearch)),
-				value("danger",					int(StalkerSpace::eLookTypeDanger)),
-				value("point",					int(StalkerSpace::eLookTypePoint)),
-				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint))
-			]
-			.def(								constructor<>())
-			.def("object",						&CWatchAction::SetWatchObject)		// time
-			.def("direction",					&CWatchAction::SetWatchDirection)		// time
-			.def("type",						&CWatchAction::SetWatchType),
-
-		class_<CAnimationAction>("anim")
-			.enum_("type")
-			[
-				value("free",					int(StalkerSpace::eMentalStateFree)),
-				value("danger",					int(StalkerSpace::eMentalStateDanger)),
-				value("asleep",					int(StalkerSpace::eMentalStateAsleep)),
-				value("zombied",				int(StalkerSpace::eMentalStateZombied)),
-				value("dummy",					int(StalkerSpace::eMentalStateDummy))
-			]
-			.def(								constructor<>())
-			.def("anim",						&CAnimationAction::SetAnimation)
-			.def("type",						&CAnimationAction::SetMentalState),
-
-		class_<CSoundAction>("sound")
-			.def(								constructor<>())
-			.def("set",							&CSoundAction::SetSound),
-
-		class_<CObjectAction>("object")
-			.enum_("state")
-			[
-				value("idle",					int(StalkerSpace::eWeaponStateIdle)),
-				value("primary_fire",			int(StalkerSpace::eWeaponStatePrimaryFire)),
-				value("secondary_fire"			,int(StalkerSpace::eWeaponStateSecondaryFire))
-			]
-			.def(								constructor<>())
-			.def("action",						&CObjectAction::SetObjectAction)
-			.def("object",						&CObjectAction::SetObject),
-			
-		class_<CActionCondition>("cond")
-			.enum_("cond")
-			[
-				value("move_end",				int(CActionCondition::MOVEMENT_FLAG	)),
-				value("look_end",				int(CActionCondition::WATCH_FLAG)),
-				value("anim_end",				int(CActionCondition::ANIMATION_FLAG)),
-				value("sound_end",				int(CActionCondition::SOUND_FLAG)),
-				value("object_end",				int(CActionCondition::OBJECT_FLAG)),
-				value("time_end",				int(CActionCondition::TIME_FLAG))
-			]
-			.def(								constructor<>())
-			.def(								constructor<u32>())
-			.def(								constructor<u32,double>()),
-
-		class_<CEntityAction>("CEntityAction")
-			.def(								constructor<>())
-			.def("set_action",					(void (CEntityAction::*)(const CMovementAction	&tMovementAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CWatchAction		&tWatchAction))		(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CAnimationAction &tAnimationAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CSoundAction		&tSoundAction))		(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CObjectAction	&tObjectAction))	(CEntityAction::SetAction))
-			.def("set_action",					(void (CEntityAction::*)(const CActionCondition &tActionCondition))	(CEntityAction::SetAction))
-			.def("move",						&CEntityAction::CheckIfMovementCompleted)
-			.def("look",						&CEntityAction::CheckIfWatchCompleted)
-			.def("anim",						&CEntityAction::CheckIfAnimationCompleted)
-			.def("sound",						&CEntityAction::CheckIfSoundCompleted)
-			.def("object",						&CEntityAction::CheckIfObjectCompleted)
-			.def("wait",						(bool (CEntityAction::*)())(CEntityAction::CheckIfActionCompleted))
+			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
+			.def("command",						&CLuaGameObject::AddAction)
+			.def("action",						&CLuaGameObject::GetCurrentAction)
 	];
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);

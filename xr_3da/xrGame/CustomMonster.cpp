@@ -712,6 +712,12 @@ void CCustomMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptN
 {
 	m_bScriptControl	= bScriptControl;
 	strcpy				(m_caScriptName,caSciptName);
+#ifdef DEBUG
+	if (bScriptControl)
+		Msg				("* Script %s set object %s under its control",caSciptName,cName());
+	else
+		Msg				("* Script %s freed object %s from its control",caSciptName,cName());
+#endif
 }
 
 bool CCustomMonster::GetScriptControl() const
@@ -733,20 +739,4 @@ bool CCustomMonster::CheckObjectVisibility(const CObject *tpObject)
 		if (tpObject == dynamic_cast<CObject*>(*I))
 			return		(true);
 	return				(false);
-}
-
-void CCustomMonster::SetAnimation(LPCSTR caAnimationName)
-{
-	m_tpScriptAnimation = PKinematics(Visual())->ID_Cycle(caAnimationName);
-}
-
-void CCustomMonster::SetSound(LPCSTR caSoundName)
-{
-	string256			l_caFileName;
-	if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".wav"))
-		::Sound->create	(*(m_tpScriptSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
-	else {
-		Log				("* [LUA] File not found \"%s\"!",l_caFileName);
-		m_tpScriptSound	= 0;
-	}
 }

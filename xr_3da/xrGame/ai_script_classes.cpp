@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_script_classes.h"
+#include "ai_script_actions.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -25,3 +26,35 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	m_tpGameObject->u_EventSend(P);
 }
 
+CMovementAction::CMovementAction(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo)
+{
+	SetBodyState		(tBodyState);
+	SetMovementType		(tMovementType);
+	SetPathType			(tPathType);
+	SetObjectToGo		(tpObjectToGo);
+	m_bCompleted		= false;
+}
+
+void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
+{
+	m_tpObjectToGo		= tpObjectToGo->operator CObject*();
+	m_tGoalType			= eGoalTypeObject;
+}
+
+void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
+{
+	m_tpObjectToWatch	= tpObjectToWatch->operator CObject*();
+	m_tGoalType			= eGoalTypeObject;
+}
+
+void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
+{
+	m_tpObject			= tpLuaGameObject->operator CObject*();
+}
+
+#pragma todo("Dima to Dima : find out why user defined conversion operators work incorrect")
+
+CLuaGameObject::operator CObject*()
+{
+	return			(dynamic_cast<CObject*>(m_tpGameObject));
+}

@@ -464,4 +464,6 @@ public:
 	virtual CInventoryItem		*GetFood				() const;
 	virtual	void				AddAction				(const CEntityAction	*tpEntityAction);
 	virtual void				ProcessScripts			();
+			const CEntityAction *GetCurrentAction		();
+			void				ResetScriptData			();
 };

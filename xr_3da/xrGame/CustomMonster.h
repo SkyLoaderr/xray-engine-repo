@@ -266,16 +266,12 @@ protected:
 	bool						m_bScriptControl;
 	string64					m_caScriptName;
 	xr_vector<CObject*>			m_tpaVisibleObjects;
-	ref_sound					*m_tpScriptSound;
-	CMotionDef					*m_tpScriptAnimation;
 public:
 //	Scripts
 	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
 	virtual bool				CheckObjectVisibility	(const CObject		*tpObject);
-	virtual void				SetAnimation			(LPCSTR				caAnimationName);
-	virtual void				SetSound				(LPCSTR				caSoundName);
 	virtual bool				CheckIfCompleted		() const										{return false;};
 };
 

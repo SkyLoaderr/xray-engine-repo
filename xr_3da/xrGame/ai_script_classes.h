@@ -237,16 +237,13 @@ public:
 	{
 	}
 
-							operator CObject*	() const
-	{
-		return			(dynamic_cast<CObject*>(m_tpGameObject));
-	}
-
-							operator CWeapon*	() const
-	{
-		return			(dynamic_cast<CWeapon*>(m_tpGameObject));
-	}
-
+							operator CObject*	();
+//
+//							operator CWeapon*	() const
+//	{
+//		return			(dynamic_cast<CWeapon*>(m_tpGameObject));
+//	}
+//
 	IC		CLuaGameObject	*Parent				() const
 	{
 		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(m_tpGameObject->H_Parent());
@@ -330,6 +327,7 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
 	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
 	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CAI_Stalker,	AddAction,			const CEntityAction *,				const CEntityAction *);
+	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CAI_Stalker,	GetCurrentAction,	const CEntityAction *,				0);
 	
 	IC		CLuaGameObject	*GetCurrentWeapon() const
 	{

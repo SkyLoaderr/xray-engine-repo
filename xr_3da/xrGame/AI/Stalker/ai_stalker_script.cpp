@@ -56,12 +56,40 @@ void CAI_Stalker::AddAction(const CEntityAction *tpEntityAction)
 	m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
 }
 
+const CEntityAction *CAI_Stalker::GetCurrentAction()
+{
+	if (m_tpActionQueue.empty())
+		return(0);
+	else
+		return(m_tpActionQueue.back());
+}
+
+void CAI_Stalker::ResetScriptData()
+{
+	vfSetParameters	(0,0,false,eWeaponStateIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tStateType,m_tLookType);
+}
+
 void CAI_Stalker::ProcessScripts()
 {
+	CEntityAction	*l_tpEntityAction = 0;
+	while (!m_tpActionQueue.empty()) {
+		l_tpEntityAction= m_tpActionQueue.back();
+//		R_ASSERT	(l_tpEntityAction);
+		if (!l_tpEntityAction->CheckIfActionCompleted())
+			break;
+		m_tpActionQueue.erase(m_tpActionQueue.begin());
+	}
 	if (m_tpActionQueue.empty()) {
 		Msg			("* Object %s has an empty script queue!",cName());
+		ResetScriptData();
 		return;
 	}
-	CEntityAction	*tpEntityAction = m_tpActionQueue.back();
-	vfSetParameters	(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeNormal,eLookTypeDirection,Fvector().set(0,0,0),0);
+	CMovementAction	&l_tMovementAction = l_tpEntityAction->m_tMovementAction;
+
+	l_tMovementAction.m_bCompleted = false;
+	CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
+//	R_ASSERT2		(l_tpGameObject);
+	AI_Path.DestNode= l_tpGameObject->AI_NodeID;
+
+	vfSetParameters	(0,&Fvector(l_tpGameObject->Position()),false,eWeaponStateIdle,l_tMovementAction.m_tPathType,l_tMovementAction.m_tBodyState,l_tMovementAction.m_tMovementType,eStateTypeNormal,eLookTypeDirection,Fvector().set(0,0,0),0);
 }

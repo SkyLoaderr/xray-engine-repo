@@ -57,7 +57,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		LL_CheckTextures					();
 
 		// Sync
-		pApp->LoadTitle						("CLIENT: Syncronising...");
+		pApp->LoadTitle						("CLIENT: Synchronising...");
 		Device.PreCache						(30);
 
 		// if (strstr(Path.Current,"escape"))	Engine.Event.Signal	("level.weather.rain.start");

@@ -69,7 +69,7 @@ void CBitingAttack::Init()
 void CBitingAttack::Run()
 {
 	// ≈сли враг изменилс€, инициализировать состо€ние
-	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
+//	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
 
