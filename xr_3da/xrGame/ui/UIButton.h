@@ -62,6 +62,7 @@ IC	virtual void	DrawHighlightedText();
 
 	//подсвечен ли текст на кнопке
 	virtual bool	IsHighlightText();
+	void	HighlightText(bool bHighlight) {m_bEnableTextHighlighting = bHighlight;}
 	// принудительна€ подсветка
 	virtual void	HighlightItem(bool bHighlight) { m_bCursorOverWindow = bHighlight; }
 	// ÷вет подсветки

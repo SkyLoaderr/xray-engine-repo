@@ -12,10 +12,15 @@
 #include "../MainUI.h"
 
 CUI3tButton::CUI3tButton(){
-	this->m_bTextureEnable = false;
-	this->m_bUseDisabledTextColor = true;
-	this->m_dwDisabledTextColor = 0xFFAAAAAA;
-	this->m_dwEnabledTextColor  = 0xFFFFFFFF;
+	m_bTextureEnable = false;
+	m_bUseTextColorD = true;
+	m_bUseTextColorH = false;
+	m_bUseTextColorT = false;	
+
+	m_dwTextColorE = 0xFFFFFFFF;
+	m_dwTextColorD = 0xFFAAAAAA;
+	m_dwTextColorH = 0xFFFFFFFF;
+	m_dwTextColorT = 0xFFFFFFFF;
 
 	AttachChild(&m_background);
 }
@@ -25,24 +30,8 @@ CUI3tButton::~CUI3tButton(){
 }
 
 void CUI3tButton::Init(int x, int y, int width, int height){
-	m_eButtonState = BUTTON_NORMAL;
-	m_ePressMode = NORMAL_PRESS;
-	m_bButtonClicked = false;
-	m_bCursorOverWindow = false;
 	m_background.Init(0, 0, width, height);
-
-    CUIWindow::Init(x, y, width, height);
-}
-
-void CUI3tButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
-{
-	m_eButtonState = BUTTON_NORMAL;
-	m_ePressMode = NORMAL_PRESS;
-	m_bButtonClicked = false;
-	m_bCursorOverWindow = false;
-
-	this->Init(x, y, width, height);
-	this->InitTexture(tex_name);
+    CUIButton::Init(x, y, width, height);
 }
 
 void CUI3tButton::InitTexture(LPCSTR tex_name){
@@ -78,91 +67,52 @@ void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR te
 	this->m_bTextureEnable = true;
 }
 
-void CUI3tButton::SetColor(u32 color_enabled, u32 color_disabled, u32 color_touched){
-	;
-	;
-	;
+void CUI3tButton::InitTextureEnabled(LPCSTR texture){
+    m_background.InitEnabledState(texture);
+	m_bTextureEnable = true;
+}
+
+void CUI3tButton::InitTextureDisabled(LPCSTR texture){
+    m_background.InitDisabledState(texture);
+}
+
+void CUI3tButton::InitTextureHighlighted(LPCSTR texture){
+    m_background.InitHighlightedState(texture);
+}
+
+void CUI3tButton::InitTextureTouched(LPCSTR texture){
+    m_background.InitTouchedState(texture);
 }
 
 void CUI3tButton::SetTextColor(u32 color){
-    this->m_dwEnabledTextColor = color;
+    this->m_dwTextColorE = color;
 }
 
-void CUI3tButton::SetDisabledTextColor(u32 color){
-	this->m_dwDisabledTextColor = color;
+void CUI3tButton::SetTextColorD(u32 color){
+	m_dwTextColorD = color;
+	m_bUseTextColorD = true;
+}
+
+void CUI3tButton::SetTextColorH(u32 color){
+	m_dwTextColorH = color;
+	m_bUseTextColorH = true;
+}
+
+void CUI3tButton::SetTextColorT(u32 color){
+	m_dwTextColorT = color;
+	m_bUseTextColorT = true;
+}
+
+void CUI3tButton::SetTextureOffset(int x, int y){
+	this->m_background.SetTextureOffset(x, y);
 }
 
 void CUI3tButton::Draw(){
-	Irect rect = GetAbsoluteRect();
+	CUIButton::Draw();
+}
 
+void CUI3tButton::DrawTexture(){
 	m_background.Draw();
-
-	if (GetFont())
-	{
-		UpdateTextAlign();
-		GetFont()->SetAligment(GetTextAlign());
-
-		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
-		{
-			CGameFont* F = GetFont();
-			Irect clip_rect = GetSelfClipRect();
-			F->SetColor(m_HighlightColor);
-
-			UI()->OutText(F, clip_rect, 
-				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  + 1  +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect, 
-				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect,
-				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect, 
-				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect,
-				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  + 0 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect,
-				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  - 0 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect,
-				(float)rect.left  - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, clip_rect,
-				(float)rect.left  + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
-				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-		}
-
-		// set text color
-		if (this->m_bUseDisabledTextColor && !this->m_bIsEnabled)
-		{
-			R_ASSERT2(m_dwDisabledTextColor,"UITabButton::Draw() - m_dwDisabledTextColor == NULL");
-            GetFont()->SetColor(m_dwDisabledTextColor);
-		}
-		else
-			GetFont()->SetColor(this->m_dwEnabledTextColor);
-
-		if (!m_bNewRenderMethod)
-		{
-			if(m_str && xr_strlen(m_str)>0)
-				UI()->OutText(GetFont(), GetSelfClipRect(), 
-				(float)rect.left   +  m_iTextOffsetX, 
-				(float)rect.top   + m_iTextOffsetY,
-				m_str);
-			GetFont()->OnRender();
-		}
-		else
-			CUIStatic::DrawString(rect);		
-	}
 }
 
 void CUI3tButton::Update(){
@@ -171,15 +121,29 @@ void CUI3tButton::Update(){
 	if(m_bTextureEnable)
 	{
 		if (!m_bIsEnabled)
-			m_background.SetState(S_Disabled);
+            m_background.SetState(S_Disabled);
 		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
 			m_background.SetState(S_Touched);
-		else if (this->IsHighlightText())
+		else if (m_bCursorOverWindow)
 			m_background.SetState(S_Highlighted);		
 		else
 			m_background.SetState(S_Enabled);		
-	}	
+	}
+
+	u32 textColor;
+
+	if (!m_bIsEnabled)
+		textColor = m_bUseTextColorD ? m_dwTextColorD : m_dwTextColorE;
+	else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+		textColor = m_bUseTextColorT ? m_dwTextColorT : m_dwTextColorE;
+	else if (m_bCursorOverWindow)
+		textColor = m_bUseTextColorH ? m_dwTextColorH : m_dwTextColorE;
+	else
+		textColor = m_dwTextColorE;
+
+	CUIStatic::SetTextColor(textColor);
 }
+
 
 void CUI3tButton::SendMessage(CUIWindow *pWnd, s16 msg, void *pData){
 	CUIButton::SendMessage(pWnd, msg, pData);
