@@ -30,7 +30,7 @@ void 	EnableReceiveCommands()
 {
 	bAllowReceiveCommand = TRUE;
 }
-SECommand::SESubCommand* FindCommandByShortcut(const xr_shortcut& val)
+SESubCommand* FindCommandByShortcut(const xr_shortcut& val)
 {
     ECommandVec& cmds		= GetEditorCommands();
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
@@ -38,7 +38,7 @@ SECommand::SESubCommand* FindCommandByShortcut(const xr_shortcut& val)
         if (CMD&&CMD->editable){
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
-            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+            	SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
                 if (SUB_CMD->shortcut.similar(val)) return SUB_CMD;
             }
         }
@@ -47,10 +47,10 @@ SECommand::SESubCommand* FindCommandByShortcut(const xr_shortcut& val)
 }
 u32 	ExecCommand		(const xr_shortcut& val)
 {
-	SECommand::SESubCommand* CMD = FindCommandByShortcut(val);
+	SESubCommand* CMD 	= FindCommandByShortcut(val);
     u32 res 			= false;
     if (CMD){
-	    CMD->parent->command(CMD->index,0,res);
+	    CMD->parent->command(CMD->p0,CMD->p1,res);
     	res				= true;
     }
     return res;
@@ -78,14 +78,22 @@ void	RegisterCommand (u32 cmd, SECommand* cmd_impl)
     }
     CMD	   			= cmd_impl;
 }
+void	RegisterSubCommand(SECommand* cmd_impl, LPCSTR desc, u32 p0, u32 p1)
+{
+    VERIFY		(cmd_impl);
+    cmd_impl->AppendSubCommand(desc,p0,p1);
+}
 BOOL	LoadShortcuts(CInifile* ini)
 {
     for (u32 cmd_idx=0; cmd_idx<ECommands.size(); cmd_idx++){
     	SECommand*& CMD		= ECommands[cmd_idx];
         if (CMD&&CMD->editable){
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
-            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
-                string128 nm; 	sprintf(nm,"%s.%s",CMD->Name(),SUB_CMD->Desc());
+            	SESubCommand*& SUB_CMD 	= CMD->sub_commands[sub_cmd_idx];
+                string256 nm; 	
+                LPCSTR _desc = SUB_CMD->Desc();
+                if (_desc&&_desc[0])sprintf(nm,"%s.\"%s\".%d_%d",CMD->Name(),SUB_CMD->Desc(),SUB_CMD->p0,SUB_CMD->p1);
+                else				sprintf(nm,"%s",CMD->Name());
                 if (ini->line_exist("shortcuts",nm))
                 	SUB_CMD->shortcut.hotkey=ini->r_u16("shortcuts",nm);
             }
@@ -99,8 +107,11 @@ BOOL	SaveShortcuts(CInifile* ini)
     	SECommand*& CMD		= ECommands[cmd_idx];
         if (CMD&&CMD->editable){
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
-            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
-                string128 nm; 	sprintf(nm,"%s.%s",CMD->Name(),SUB_CMD->Desc());
+            	SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                string256 nm; 	
+                LPCSTR _desc = SUB_CMD->Desc();
+                if (_desc&&_desc[0])sprintf(nm,"%s.\"%s\".%d_%d",CMD->Name(),SUB_CMD->Desc(),SUB_CMD->p0,SUB_CMD->p1);
+                else				sprintf(nm,"%s",CMD->Name());
                 ini->w_u16		("shortcuts",nm,SUB_CMD->shortcut.hotkey);
             }
         }
@@ -342,40 +353,51 @@ void 	CommandMuteSound(u32 p1, u32 p2, u32& res)
 
 void TUI::RegisterCommands()
 {
-	REGISTER_CMD_S	(COMMAND_INITIALIZE,			CommandInitialize);
-	REGISTER_CMD_S	(COMMAND_DESTROY,        		CommandDestroy);
-	REGISTER_CMD_SE	(COMMAND_EXIT,               	"Exit",					CommandExit);
-	REGISTER_CMD_S	(COMMAND_QUIT,           		CommandQuit);
-	REGISTER_CMD_SE	(COMMAND_EDITOR_PREF,    		"Editor Preference",	CommandEditorPrefs);
-	REGISTER_CMD_SEn(COMMAND_CHANGE_ACTION,  		"Change Action",      	"Select,Add,Move,Rotate,Scale",	CommandChangeAction);
-	REGISTER_CMD_SEn(COMMAND_CHANGE_AXIS,    		"Change Axis",			"X,Y,Z,XZ",						CommandChangeAxis);
-	REGISTER_CMD_S	(COMMAND_SET_SETTINGS,			CommandSetSettings);
-	REGISTER_CMD_S	(COMMAND_SOUND_EDITOR,   		CommandSoundEditor);
-	REGISTER_CMD_S	(COMMAND_SYNC_SOUNDS,    		CommandSyncSounds);
-    REGISTER_CMD_S	(COMMAND_IMAGE_EDITOR,   		CommandImageEditor);
-	REGISTER_CMD_S	(COMMAND_CHECK_TEXTURES,     	CommandCheckTextures);
-	REGISTER_CMD_S	(COMMAND_REFRESH_TEXTURES,   	CommandRefreshTextures);	
-	REGISTER_CMD_S	(COMMAND_RELOAD_TEXTURES,    	CommandReloadTextures);
-	REGISTER_CMD_S	(COMMAND_CHANGE_SNAP,        	CommandChangeSnap);
-    REGISTER_CMD_S	(COMMAND_UNLOAD_TEXTURES,    	CommandUnloadTextures);
-    REGISTER_CMD_S	(COMMAND_EVICT_OBJECTS,      	CommandEvictObjects);
-    REGISTER_CMD_S	(COMMAND_EVICT_TEXTURES,     	CommandEvictTextures);
-    REGISTER_CMD_S	(COMMAND_CHECK_MODIFIED,     	CommandCheckModified);
-	REGISTER_CMD_S	(COMMAND_SHOW_PROPERTIES,    	CommandShowProperties);
-	REGISTER_CMD_S	(COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
-	REGISTER_CMD_S	(COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
-	REGISTER_CMD_S	(COMMAND_ZOOM_EXTENTS,       	CommandZoomExtents);
-    REGISTER_CMD_S	(COMMAND_RENDER_WIRE,        	CommandRenderWire);
-    REGISTER_CMD_C	(COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
-	REGISTER_CMD_C	(COMMAND_BREAK_LAST_OPERATION,	this,TUI::CommandBreakLastOperation);
-    REGISTER_CMD_S	(COMMAND_TOGGLE_SAFE_RECT,   	CommandToggleSafeRect);
-	REGISTER_CMD_C	(COMMAND_RENDER_RESIZE,      	this,TUI::CommandRenderResize);
-    REGISTER_CMD_S	(COMMAND_TOGGLE_GRID,        	CommandToggleGrid);
-	REGISTER_CMD_S	(COMMAND_UPDATE_GRID,        	CommandUpdateGrid);
-    REGISTER_CMD_S	(COMMAND_GRID_NUMBER_OF_SLOTS,	CommandGridNumberOfSlots);
-    REGISTER_CMD_S	(COMMAND_GRID_SLOT_SIZE,     	CommandGridSlotSize);
-    REGISTER_CMD_S	(COMMAND_CREATE_SOUND_LIB,   	CommandCreateSoundLib);
-    REGISTER_CMD_S	(COMMAND_MUTE_SOUND,         	CommandMuteSound);
+	REGISTER_CMD_S		(COMMAND_INITIALIZE,			CommandInitialize);
+	REGISTER_CMD_S		(COMMAND_DESTROY,        		CommandDestroy);
+	REGISTER_CMD_SE		(COMMAND_EXIT,               	"Exit",					CommandExit);
+	REGISTER_CMD_S		(COMMAND_QUIT,           		CommandQuit);
+	REGISTER_CMD_SE		(COMMAND_EDITOR_PREF,    		"Editor Preference",	CommandEditorPrefs);
+	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_ACTION,  		"Change Action",      	CommandChangeAction);
+    	APPEND_SUB_CMD	("Select",						etaSelect,	0);
+    	APPEND_SUB_CMD	("Add",							etaAdd,		0);
+    	APPEND_SUB_CMD	("Move",						etaMove,	0);
+    	APPEND_SUB_CMD	("Rotate",						etaRotate,	0);
+    	APPEND_SUB_CMD	("Scale",						etaScale,	0);
+    REGISTER_SUB_CMD_END;
+	REGISTER_SUB_CMD_SE	(COMMAND_CHANGE_AXIS,    		"Change Axis",			CommandChangeAxis);
+        APPEND_SUB_CMD	("X",					        etAxisX,	0);
+        APPEND_SUB_CMD	("Y",					        etAxisY,	0);
+        APPEND_SUB_CMD	("Z",					        etAxisZ,	0);
+        APPEND_SUB_CMD	("ZX",					        etAxisZX,	0);
+    REGISTER_SUB_CMD_END;
+	REGISTER_CMD_S	    (COMMAND_SET_SETTINGS,			CommandSetSettings);
+	REGISTER_CMD_S	    (COMMAND_SOUND_EDITOR,   		CommandSoundEditor);
+	REGISTER_CMD_S	    (COMMAND_SYNC_SOUNDS,    		CommandSyncSounds);
+    REGISTER_CMD_S	    (COMMAND_IMAGE_EDITOR,   		CommandImageEditor);
+	REGISTER_CMD_S	    (COMMAND_CHECK_TEXTURES,     	CommandCheckTextures);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_TEXTURES,   	CommandRefreshTextures);	
+	REGISTER_CMD_S	    (COMMAND_RELOAD_TEXTURES,    	CommandReloadTextures);
+	REGISTER_CMD_S	    (COMMAND_CHANGE_SNAP,        	CommandChangeSnap);
+    REGISTER_CMD_S	    (COMMAND_UNLOAD_TEXTURES,    	CommandUnloadTextures);
+    REGISTER_CMD_S	    (COMMAND_EVICT_OBJECTS,      	CommandEvictObjects);
+    REGISTER_CMD_S	    (COMMAND_EVICT_TEXTURES,     	CommandEvictTextures);
+    REGISTER_CMD_S	    (COMMAND_CHECK_MODIFIED,     	CommandCheckModified);
+	REGISTER_CMD_S	    (COMMAND_SHOW_PROPERTIES,    	CommandShowProperties);
+	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
+	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
+	REGISTER_CMD_S	    (COMMAND_ZOOM_EXTENTS,       	CommandZoomExtents);
+    REGISTER_CMD_S	    (COMMAND_RENDER_WIRE,        	CommandRenderWire);
+    REGISTER_CMD_C	    (COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
+	REGISTER_CMD_C	    (COMMAND_BREAK_LAST_OPERATION,	this,TUI::CommandBreakLastOperation);
+    REGISTER_CMD_S	    (COMMAND_TOGGLE_SAFE_RECT,   	CommandToggleSafeRect);
+	REGISTER_CMD_C	    (COMMAND_RENDER_RESIZE,      	this,TUI::CommandRenderResize);
+    REGISTER_CMD_S	    (COMMAND_TOGGLE_GRID,        	CommandToggleGrid);
+	REGISTER_CMD_S	    (COMMAND_UPDATE_GRID,        	CommandUpdateGrid);
+    REGISTER_CMD_S	    (COMMAND_GRID_NUMBER_OF_SLOTS,	CommandGridNumberOfSlots);
+    REGISTER_CMD_S	    (COMMAND_GRID_SLOT_SIZE,     	CommandGridSlotSize);
+    REGISTER_CMD_S	    (COMMAND_CREATE_SOUND_LIB,   	CommandCreateSoundLib);
+    REGISTER_CMD_S	    (COMMAND_MUTE_SOUND,         	CommandMuteSound);
 }                                                                        
 
 //---------------------------------------------------------------------------
@@ -400,18 +422,7 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
-            // simple press
-        	if (Key=='S')			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
-        	else if (Key=='A')		COMMAND1(COMMAND_CHANGE_ACTION, etaAdd)
-        	else if (Key=='T')		COMMAND1(COMMAND_CHANGE_ACTION, etaMove)
-        	else if (Key=='Y')		COMMAND1(COMMAND_CHANGE_ACTION, etaRotate)
-        	else if (Key=='H')		COMMAND1(COMMAND_CHANGE_ACTION, etaScale)
-        	else if (Key=='Z')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisX)
-        	else if (Key=='X')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisY)
-        	else if (Key=='C')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisZ)
-        	else if (Key=='V')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisZX)
-        	else if (Key=='P')		COMMAND0(COMMAND_EDITOR_PREF)
-            else if (Key==VK_OEM_4)	COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
+            if (Key==VK_OEM_4)		COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
             else if (Key==VK_OEM_6)	COMMAND1(COMMAND_GRID_SLOT_SIZE,true)
         	else if (Key=='W')		COMMAND1(COMMAND_RENDER_WIRE, !(Device.dwFillMode==D3DFILL_WIREFRAME))
         }

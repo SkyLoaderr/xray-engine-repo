@@ -396,6 +396,7 @@ void TUI::Redraw(){
 void TUI::Idle()         
 {
 	VERIFY(m_bReady);
+    Device.bActive  = Application->Active;
 	// input
     pInput->OnFrame();
     Sleep(1);

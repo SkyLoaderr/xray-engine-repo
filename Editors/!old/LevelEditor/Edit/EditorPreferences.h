@@ -58,6 +58,7 @@ public:
     // objects
     Flags32	object_flags;
 private:
+	void 	OnKeyboardCommonFileClick	(PropValue* value, bool& bModif, bool& bSafe);
 	void 	__stdcall  OnClose	();
     void	ApplyValues			();
 

@@ -83,11 +83,34 @@ void CheckValidate(ShortcutValue* val, const xr_shortcut& new_val, bool& result)
         if (CMD&&CMD->editable){
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
-            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+            	SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
                 if (SUB_CMD->shortcut.similar(new_val)){ result = false; return;}
             }
         }
     }
+}
+
+void CEditorPreferences::OnKeyboardCommonFileClick(PropValue* value, bool& bModif, bool& bSafe)
+{
+	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
+    bModif = false;
+	std::string fn;
+	switch(B->btn_num){
+    case 0:
+        if(EFS.GetOpenName("$import$", fn, false, NULL, 6)){
+            CInifile* 	I 	= xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
+		    LoadShortcuts	(I);
+            xr_delete		(I);
+        }
+    break;
+    case 1:
+        if(EFS.GetSaveName("$import$", fn, NULL, 6)){
+		    CInifile* 	I 	= xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
+		    SaveShortcuts	(I);
+            xr_delete		(I);
+        }
+    break;
+	}
 }
 
 void CEditorPreferences::Edit()
@@ -134,14 +157,15 @@ void CEditorPreferences::Edit()
     PHelper().CreateAngle	(props,"Viewport\\FOV",		  				    &view_fov,			deg2rad(0.1f), deg2rad(170.f));
     PHelper().CreateColor	(props,"Viewport\\Clear Color",		           	&scene_clear_color	);
     
-    PHelper().CreateButton	(props,"Keyboard\\Common\\File",				"Load,Save", 0);
+    ButtonValue* B = PHelper().CreateButton	(props,"Keyboard\\Common\\File","Load,Save", 0);
+    B->OnBtnClickEvent.bind	(this,&CEditorPreferences::OnKeyboardCommonFileClick);
     ECommandVec& cmds		= GetEditorCommands();
     for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
     	SECommand*& CMD		= cmds[cmd_idx];
         if (CMD&&CMD->editable){
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
-            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+            	SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
                 string128 nm; 		sprintf(nm,"%s%s%s",CMD->Desc(),xr_strlen(SUB_CMD->Desc())?"\\":"",SUB_CMD->Desc());
                 ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Commands",nm), &SUB_CMD->shortcut);
                 V->OnValidateResultEvent.bind(&CheckValidate);
