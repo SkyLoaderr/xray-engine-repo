@@ -13,9 +13,9 @@
 // pool
 static	poolSS<R_constant,64>		g_constant_allocator;
 
-R_constant_table::~R_constant_table	()			{	Device.Resources->_DeleteConstantTable(this);	}
+R_constant_table::~R_constant_table	()	{	Device.Resources->_DeleteConstantTable(this);	}
 
-void	R_constant_table::fatal		(LPCSTR S)
+void	R_constant_table::fatal			(LPCSTR S)
 {
 	Debug.fatal	(S);
 }
