@@ -77,8 +77,10 @@ void CSoundPlayer::load				(xr_vector<ref_sound*> &sounds, LPCSTR prefix, u32 ma
 bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 {
 	xr_map<u32,CSoundCollection>::const_iterator	J = m_sounds.find(internal_type);
-	VERIFY								(m_sounds.end() != J);
-	const CSoundCollection				&sound = (*J).second;
+	VERIFY							(m_sounds.end() != J);
+	const CSoundCollection			&sound = (*J).second;
+	if (sound.m_synchro_mask & m_sound_mask)
+		return						(false);
 
 	xr_vector<CSoundSingle>::const_iterator	I = m_playing_sounds.begin();
 	xr_vector<CSoundSingle>::const_iterator	E = m_playing_sounds.end();
