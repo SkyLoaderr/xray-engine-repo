@@ -7,7 +7,7 @@
 #include "phrasedialog.h"
 #include "phrasedialogmanager.h"
 #include "gameobject.h"
-
+#include "ai_debug.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -128,9 +128,13 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 
 			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1, *phrase_dialog->m_DialogId, (int)phrase_id)){
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
-				LPCSTR phrase_text = next_phrase_vertex->data()->GetText();
-				int iii = next_phrase_vertex->data()->GetIndex();
-				Msg("----added phrase text [%s]phrase_id=[%d] index=[%d] to dialog [%s]",phrase_text,phrase_id,iii,*phrase_dialog->m_DialogId);
+#ifdef DEBUG
+				if(psAI_Flags.test(aiDialogs)){
+					LPCSTR phrase_text = next_phrase_vertex->data()->GetText();
+					int iii = next_phrase_vertex->data()->GetIndex();
+					Msg("----added phrase text [%s]phrase_id=[%d] index=[%d] to dialog [%s]",phrase_text,phrase_id,iii,*phrase_dialog->m_DialogId);
+				}
+#endif
 			}
 
 		}
