@@ -8,10 +8,13 @@ module("ui_base_dialog")
 module("ui_load_dialog")
 module("ui_save_dialog")
 module("ui_new_game_dialog")
-
-
-
-
+module("ui_multiplayer_dialog")
+module("ui_multiplayer_base_tab")
+module("ui_multiplayer_find")
+module("ui_multiplayer_options_tab")
+module("ui_multiplayer_gametype_tab")
+module("ui_multiplayer_map_tab")
+module("ui_multiplayer_create")
 
 function main()
 	local dlg = ui_main_menu.main_menu()
