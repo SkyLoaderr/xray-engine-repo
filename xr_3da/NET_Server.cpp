@@ -510,3 +510,13 @@ void	IPureServer::ClearStatistic	()
 		net_Players[I]->stats.Clear();
 	}
 };
+
+bool			IPureServer::DisconnectClient	(IClient* C)
+{
+	if (!C) return false;
+
+	string64 Reason = "Disconnected by server";
+	HRESULT res = NET->DestroyClient(C->ID.value(), Reason, xr_strlen(Reason), 0);
+	CHK_DX(res);
+	return true;
+};

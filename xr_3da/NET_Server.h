@@ -115,4 +115,5 @@ public:
 	BOOL					HasBandwidth		(IClient* C);
 
 	IC int					GetPort				()			{ return psNET_Port; };
+	virtual bool			DisconnectClient	(IClient* C);
 };
