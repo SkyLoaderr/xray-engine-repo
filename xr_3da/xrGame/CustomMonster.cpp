@@ -672,21 +672,18 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 	if (ai().get_level_graph() && UsedAI_Locations() && (e->ID_Parent == 0xffff)) {
 		if (ai().game_graph().valid_vertex_id(E->m_tGraphID))
-			set_game_vertex		(E->m_tGraphID);
+			set_game_vertex			(E->m_tGraphID);
 
-		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID)) {
-			if (accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
-				set_game_dest_vertex	(E->m_tNextGraphID);
-			else {
-				if (accessible(level_vertex_id()))
-					set_level_dest_vertex	(level_vertex_id());
-				else {
-					Fvector					dest_position;
-					u32						level_vertex_id = accessible_nearest(Position(),dest_position);
-					set_level_dest_vertex	(level_vertex_id);
-					set_dest_position		(dest_position);
-				}
-			}
+		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID) && accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
+			set_game_dest_vertex	(E->m_tNextGraphID);
+
+		if (accessible(level_vertex_id()))
+			set_level_dest_vertex	(level_vertex_id());
+		else {
+			Fvector					dest_position;
+			u32						level_vertex_id = accessible_nearest(Position(),dest_position);
+			set_level_dest_vertex	(level_vertex_id);
+			set_dest_position		(dest_position);
 		}
 	}
 
