@@ -37,7 +37,7 @@ end
 
 -- запускает на выполнение функцию проверки и перехода
 -- в  новое состояние 
-function FSM:check_condition(to_state_num, to_state_num1, cond_func)
+function FSM:check_condition(to_state_num, cond_func)
 
 	printf("check_condition %d", to_state_num1)
 
@@ -54,7 +54,15 @@ function FSM:run()
 		log	("run1")
 		local transition_vector = self.transition_matrix[self.current_state]
 		log	("run2")
-		table.foreach(transition_vector, self.check_condition)
+		table.foreach(transition_vector, 
+					  function(k,v) 
+							printf("check_condition %d", k)
+							if cond_func(self.npc) == true then
+								self.current_state = k
+								return true
+							end
+							return nil
+					  end)
 		log	("run3")
 		wait()
 	end
