@@ -361,34 +361,18 @@ IC	void CProblemSolverAbstract::solve			()
 	m_solution_changed			= true;
 	m_current_state.clear		();
 	
-	if (reverse_search) {
-		m_failed				= !
-			ai().graph_engine().search(
-				*this,
-				target_state(),
-				current_state(),
-				&m_solution,
-				GraphEngineSpace::CSolverBaseParameters(
-					GraphEngineSpace::_solver_dist_type(-1),
-					GraphEngineSpace::_solver_condition_type(-1),
-					8000
-				)
-			);
-	}
-	else {
-		m_failed				= !
-			ai().graph_engine().search(
-				*this,
-				current_state(),
-				target_state(),
-				&m_solution,
-				GraphEngineSpace::CSolverBaseParameters(
-					GraphEngineSpace::_solver_dist_type(-1),
-					GraphEngineSpace::_solver_condition_type(-1),
-					8000
-				)
-			);
-	}
+	m_failed					= !
+		ai().graph_engine().search(
+			*this,
+			reverse_search ? target_state() : current_state(),
+			reverse_search ? current_state() : target_state(),
+			&m_solution,
+			GraphEngineSpace::CSolverBaseParameters(
+				GraphEngineSpace::_solver_dist_type(-1),
+				GraphEngineSpace::_solver_condition_type(-1),
+				8000
+			)
+		);
 #endif
 }
 
