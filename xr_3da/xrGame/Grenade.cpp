@@ -329,6 +329,7 @@ void CGrenade::net_Import			(NET_Packet& P)
 	net_update			N;
 
 	P.r_u32					( N.dwTimeStamp );
+	return;
 	N.CurPhStep				= ph_world->m_steps_num;
 	P.r_u64					(N.RPhStep);
 
@@ -362,6 +363,7 @@ void CGrenade::net_Import			(NET_Packet& P)
 void CGrenade::net_Export			(NET_Packet& P) 
 {
 	P.w_u32				(Level().timeServer());
+	return;
 	P.w_u64				(ph_world->m_steps_num);
 //	P.w_vec3			(Position()	);
 

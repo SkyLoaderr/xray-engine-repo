@@ -614,6 +614,7 @@ void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 
 	tNetPacket.r_u32			(m_dwTimeStamp);
+	/*
 	tNetPacket.r_u64			(m_RPhStep);
 
 	tNetPacket.r_vec3				( State.angular_vel);
@@ -636,6 +637,7 @@ void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_float				( State.previous_quaternion.w );
 
 	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
+	*/
 }
 
 void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -643,6 +645,7 @@ void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 
 	tNetPacket.w_u32			(m_dwTimeStamp);
+	/*
 	tNetPacket.w_u64			(m_RPhStep);
 
 	tNetPacket.w_vec3				( State.angular_vel);
@@ -665,6 +668,7 @@ void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float				( State.previous_quaternion.w );
 
 	tNetPacket.w_u8					( State.enabled );
+	*/
 }
 
 #ifdef _EDITOR
