@@ -73,6 +73,28 @@ void	callback_vertex_hemi	(Vertex* V)
 	V->C._set				(vC);
 }
 
+void SaveAsSMF					(LPCSTR fname)
+{
+	IWriter* W			= FS.w_open	(fname);
+	// vertices
+	for (u32 v_idx=0; v_idx<g_vertices.getVS(); v_idx++){
+		Fvector* v		= CL.getV()+v_idx;
+		ref_str 		tmp;
+		tmp.sprintf		("v %f %f %f",v->x,v->y,-v->z);
+		W->w_string		(tmp.c_str());
+	}
+	// transfer faces
+	for (u32 f_idx=0; f_idx<CL.getTS(); f_idx++){
+		CDB::TRI* t		= CL.getT()+f_idx;
+		ref_str 		tmp;
+		tmp.sprintf		("f %d %d %d",t->verts[0]+1,t->verts[2]+1,t->verts[1]+1);
+		W->w_string		(tmp.c_str());
+	}
+	W->w_string	("bind c vertex");
+	
+	FS.w_close	(W);
+}
+
 void CBuild::xrPhase_AdaptiveHT	()
 {
 	CDB::COLLIDER	DB;
