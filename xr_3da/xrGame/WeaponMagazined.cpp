@@ -177,12 +177,12 @@ void CWeaponMagazined::TryReload()
 bool CWeaponMagazined::IsAmmoAvailable()
 {
 	if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[m_ammoType],!dynamic_cast<CActor*>(H_Parent()))))
-		return(true);
+		return	(true);
 	else
 		for(u32 i = 0; i < m_ammoTypes.size(); i++)
 			if (dynamic_cast<CWeaponAmmo*>(m_pInventory->Get(m_ammoTypes[i],!dynamic_cast<CActor*>(H_Parent()))))
-				return(true);
-	return(false);
+				return	(true);
+	return		(false);
 }
 
 void CWeaponMagazined::OnMagazineEmpty() 
