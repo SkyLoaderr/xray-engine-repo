@@ -34,3 +34,11 @@ function val_punch_ambush(first_speaker, second_speaker)
 	db.storage[second_speaker:id()].punch.enabled = true
 	-- xr_punch.put_actor_to_sleep_instantly()
 end
+
+function val_suicide_give_artefact(npc, actor)
+	printf("_bp: val_suicide_give_artefact: npc='%s'", npc:name())
+	local obj = helper:object("af_electra_moonlight")
+	if obj then
+		dialogs.relocate_item(npc, obj, "in")   
+	end
+end

@@ -68,6 +68,8 @@
 <info_portion id="val_suicide_quest_start">
 	<task>val_suicide_find_lost_stalker</task>
 </info_portion>
-<info_portion id="val_suicide_artefact_given"></info_portion>
+<info_portion id="val_suicide_artefact_given">
+	<task>val_suicide_artefact_quest</task>
+</info_portion>
 
 </game_information_portions>
