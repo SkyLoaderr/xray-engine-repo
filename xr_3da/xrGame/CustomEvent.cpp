@@ -80,9 +80,12 @@ CCustomEvent::CCustomEvent()
 //	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
-CCustomEvent::~CCustomEvent()
+CCustomEvent::~CCustomEvent		()
 {
 //	Device.seqRender.Remove(this);
+	_FREE						(ObjectName);
+	OnEnter.Destroy				();
+	OnExit.Destroy				();
 }
 
 void CCustomEvent::Load(CInifile* ini, const char * section)

@@ -408,8 +408,15 @@ void CKinematics::Release()
 		free(B->first);
 
 	// free partition
-	for (int i=0; i<MAX_PARTS; i++)
+	for (DWORD i=0; i<MAX_PARTS; i++)
 		_FREE((*partition)[i].Name);
+	
+	// free bones
+	for (i=0; i<bones->size(); i++)
+	{
+		CBoneData* &B = (*bones)[i];
+		_DELETE(B);
+	}
 
 	// destroy shared data
 	_DELETE(bones);
