@@ -94,12 +94,16 @@ public:
 			{
 				RESULT& R = *dest->r_begin();
 				if (r<R.range)	{
-					R.id	= prim;
-					R.range	= r;
-					R.u		= u;
-					R.v		= v;
-					rRange	= r;
-					rRange2	= r*r;
+					R.id		= prim;
+					R.range		= r;
+					R.u			= u;
+					R.v			= v;
+					R.verts	[0]	= verts[tris[prim].verts[0]];
+					R.verts	[1]	= verts[tris[prim].verts[1]];
+					R.verts	[2]	= verts[tris[prim].verts[2]];
+					R.dummy		= tris[prim].dummy;
+					rRange		= r;
+					rRange2		= r*r;
 				}
 			} else {
 				RESULT& R	= dest->r_add();
@@ -107,6 +111,10 @@ public:
 				R.range		= r;
 				R.u			= u;
 				R.v			= v;
+				R.verts	[0]	= verts[tris[prim].verts[0]];
+				R.verts	[1]	= verts[tris[prim].verts[1]];
+				R.verts	[2]	= verts[tris[prim].verts[2]];
+				R.dummy		= tris[prim].dummy;
 				rRange		= r;
 				rRange2		= r*r;
 			}
@@ -116,6 +124,10 @@ public:
 			R.range		= r;
 			R.u			= u;
 			R.v			= v;
+			R.verts	[0]	= verts[tris[prim].verts[0]];
+			R.verts	[1]	= verts[tris[prim].verts[1]];
+			R.verts	[2]	= verts[tris[prim].verts[2]];
+			R.dummy		= tris[prim].dummy;
 		}
 	}
 	void			_stab		(const AABBNoLeafNode* node)
