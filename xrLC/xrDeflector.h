@@ -37,14 +37,17 @@ struct R_Light
 class CDeflector
 {
 public:
-	vector<UVtri>	tris;
-	Fvector			N;
-	b_texture		lm;
-	Fvector*		lm_rad;
+	vector<UVtri>		tris;
+	Fvector				N;
+	b_texture			lm;
+	Fvector*			lm_rad;
 
-	Fvector			Center;
-	float			Radius;
-	int				iArea;
+	typedef pair<WORD,WORD>	span;
+	span*				lm_spans;
+
+	Fvector				Center;
+	float				Radius;
+	int					iArea;
 
 	vector<R_Light>		LightsSelected;
 	RAPID::XRCollide	DB;
