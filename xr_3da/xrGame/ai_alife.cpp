@@ -203,8 +203,8 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 				}
 			if (!bOk)
 				m_tpSpawnPoints[ii].wGroupID = wGroupID++;
-			//j = ::Random.randI(dwpModelCounts[I - B]);
-			//memcpy(m_tpSpawnPoints[ii].caModel,cppModels[I - B][j],(1 + strlen(cppModels[I - B][j])))*sizeof(char));
+			j = ::Random.randI(dwpModelCounts[I - B]);
+			memcpy(m_tpSpawnPoints[ii].caModel,cppModels[I - B][j],(1 + strlen(cppModels[I - B][j]))*sizeof(char));
 			m_tpSpawnPoints[ii].ucTeam					= (u8)::Random.randI(255);
 			m_tpSpawnPoints[ii].ucSquad					= (u8)::Random.randI(255);
 			m_tpSpawnPoints[ii].ucGroup					= (u8)::Random.randI(255);
