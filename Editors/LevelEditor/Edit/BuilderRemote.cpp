@@ -196,6 +196,17 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         	bResult 		= FALSE; 
             break; 
         }
+        SGameMtl* M = GMLib.GetMaterialByID(gm_id);
+        if (0==M){
+        	ELog.DlgMsg		(mtError,"Surface: '%s' contains undefined game material.",surf->_Name());
+        	bResult 		= FALSE; 
+            break; 
+        }
+        if (M->Flags.is(SGameMtl::flDynamic)){
+        	ELog.DlgMsg		(mtError,"Surface: '%s' contains non-static game material.",surf->_Name());
+        	bResult 		= FALSE; 
+            break; 
+        }
 		u32 dwTexCnt 		= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
         if (dwTexCnt!=1){ 
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains more than 1 texture refs.",surf->_Name());

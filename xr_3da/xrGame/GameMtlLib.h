@@ -209,7 +209,9 @@ public:
 	{
 	    material_index 		= 0;
 	    material_pair_index = 0;
+#ifndef _EDITOR
         material_count	    = 0;
+#endif
     }
 	~CGameMtlLibrary	()
 	{
@@ -221,8 +223,10 @@ public:
     }
 	IC void				Unload			()
 	{
+#ifndef _EDITOR
 		material_count	= 0;
 		material_pairs_rt.clear();
+#endif
 		for (GameMtlIt m_it=materials.begin(); materials.end() != m_it; ++m_it)
 			xr_delete	(*m_it);
 		materials.clear();
@@ -258,7 +262,11 @@ public:
 	// editor
 	SGameMtl*			AppendMaterial	(SGameMtl* parent);
 	void				RemoveMaterial	(LPCSTR name);
-	SGameMtl*			GetMaterialByID	(int ID);
+	IC SGameMtl*		GetMaterialByID	(int ID)
+    {
+	    GameMtlIt it=GetMaterialItByID(ID);
+    	return materials.end() != it?*it:0;
+    }
 	IC SGameMtl*		GetMaterial		(LPCSTR name)
     {
 	    GameMtlIt it=GetMaterialIt(name);

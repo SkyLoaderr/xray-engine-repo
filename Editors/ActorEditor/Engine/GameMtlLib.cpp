@@ -45,7 +45,6 @@ void CGameMtlLibrary::Load()
     	return;
     }
 
-   	R_ASSERT			(material_pairs_rt.empty());
     R_ASSERT			(material_pairs.empty());
     R_ASSERT			(materials.empty());
     		
