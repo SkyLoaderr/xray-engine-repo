@@ -637,6 +637,8 @@ bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()
 
 void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
 {
+	inherited::OnCreate(id_who);
+
 	CSE_Abstract	*pEntity	= get_entity_from_eid(id_who);
 	if (!pEntity) return;
 	CSE_ALifeItemArtefact* pIArtefact	=	smart_cast<CSE_ALifeItemArtefact*> (pEntity);

@@ -13,6 +13,28 @@
 
 #define DELAYED_ROUND_TIME	7000
 
+game_sv_Deathmatch::game_sv_Deathmatch()
+{
+	type = GAME_DEATHMATCH;
+};
+
+game_sv_Deathmatch::~game_sv_Deathmatch()
+{
+	for (u32 i=0; i<m_AnomalySetsList.size(); i++)
+	{
+		m_AnomalySetsList[i].clear();
+	};
+
+	for (i=0; i<m_AnomalyIDSetsList.size(); i++)
+	{
+		m_AnomalyIDSetsList[i].clear();
+	};
+
+	m_AnomalyIDSetsList.clear();
+	m_AnomalySetsList.clear();
+	m_AnomalySetID.clear();
+};
+
 void	game_sv_Deathmatch::Create					(shared_str& options)
 {
 	inherited::Create						(options);
@@ -69,6 +91,8 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
+	LoadAnomalySets();
+	/////////////////////////////
 	m_delayedRoundEnd = false;
 	pWinnigPlayerName = "";
 	m_dwLastAnomalySetID	= 1001;
@@ -101,7 +125,6 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		SpawnPlayer(get_it_2_id(it), "spectator");
 	}
 	///////////////////////////////////////////	
-	LoadAnomalySets();
 }
 
 void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
@@ -1245,6 +1268,11 @@ void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 
 void	game_sv_Deathmatch::LoadAnomalySets			()
 {
+	for (u32 i=0; i<m_AnomalyIDSetsList.size(); i++)
+	{
+		m_AnomalyIDSetsList[i].clear();
+	};
+	m_AnomalyIDSetsList.clear();
 	//-----------------------------------------------------------
 	if (!m_AnomalySetsList.empty()) return;
 	//-----------------------------------------------------------
@@ -1252,9 +1280,11 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 
 	string256 SetName, AnomaliesNames, AnomalyName;
 	ANOMALIES		AnomalySingleSet;
+	ANOMALIES_ID	AnomalyIDSingleSet;
 	for (u32 i=0; i<20; i++)
 	{
 		AnomalySingleSet.clear();
+		AnomalyIDSingleSet.clear();
 
 		sprintf(SetName, "set%i", i);
 		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
@@ -1272,7 +1302,31 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 
 		if (AnomalySingleSet.empty()) continue;
 		m_AnomalySetsList.push_back(AnomalySingleSet);
+		m_AnomalyIDSetsList.push_back(AnomalyIDSingleSet);
 	};
+};
+
+void	game_sv_Deathmatch::Send_EventPack_for_AnomalySet	(u32 AnomalySet, u8 Event)
+{
+	if (m_AnomalyIDSetsList.size() <= AnomalySet) return;
+	//-----------------------------------
+	NET_Packet	EventPack;
+	EventPack.w_begin	(M_EVENT_PACK);
+	//-----------------------------------
+	ANOMALIES_ID* Anomalies = &(m_AnomalyIDSetsList[AnomalySet]);
+	if (Anomalies->empty()) return;
+	for (u32 i=0; i<Anomalies->size(); i++)
+	{
+		u16 ID = (*Anomalies)[i];
+		//-----------------------------------
+		NET_Packet P;
+		u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID);
+		P.w_u8			(u8(Event)); //eZoneStateDisabled
+		//-----------------------------------
+		EventPack.w_u8(u8(P.B.count));
+		EventPack.w(&P.B.data, P.B.count);
+	};
+	u_EventSend(EventPack);
 };
 
 void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
@@ -1299,6 +1353,8 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 	///////////////////////////////////////////////////
 	if (m_dwLastAnomalySetID < m_AnomalySetsList.size())
 	{
+		Send_EventPack_for_AnomalySet(m_dwLastAnomalySetID, 4); //Disable
+		/*
 		ANOMALIES* OldAnomalies = &(m_AnomalySetsList[m_dwLastAnomalySetID]);
 		for (u32 i=0; i<OldAnomalies->size(); i++)
 		{
@@ -1308,6 +1364,7 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 //			if (pZone->IsEnabled())
 				pZone->ZoneDisable();
 		};
+		*/
 	};
 	///////////////////////////////////////////////////
 	if (AnomalySet != -1 && AnomalySet < (int)m_AnomalySetsList.size())
@@ -1318,6 +1375,8 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 	else
 		m_dwLastAnomalySetID = NewAnomalySetID;
 
+	Send_EventPack_for_AnomalySet(m_dwLastAnomalySetID, 0); //Idle
+	/*
 	ANOMALIES* NewAnomalies = &(m_AnomalySetsList[m_dwLastAnomalySetID]);
 	for (u32 i=0; i<NewAnomalies->size(); i++)
 	{
@@ -1327,6 +1386,7 @@ void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 //		if (!pZone->IsEnabled())
 			pZone->ZoneEnable();
 	};
+	*/
 	m_dwLastAnomalyStartTime = Level().timeServer();
 #ifdef DEBUG
 	Msg("Anomaly Set %d Activated", m_dwLastAnomalySetID);
@@ -1575,7 +1635,7 @@ bool	game_sv_Deathmatch::check_for_Anomalies()
 					const char *pName = ((*Anomalies)[i]).c_str();
 					CCustomZone* pZone = smart_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
 					if (!pZone) continue;
-					pZone->ZoneDisable();
+//					pZone->ZoneDisable();
 				};
 			};
 		}
@@ -1591,3 +1651,69 @@ bool	game_sv_Deathmatch::check_for_Anomalies()
 	StartAnomalies(); 
 	return true;
 }
+
+void game_sv_Deathmatch::OnCreate				(u16 eid_who)
+{
+	inherited::OnCreate(eid_who);
+
+	CSE_Abstract	*pEntity	= get_entity_from_eid(eid_who);
+	if (!pEntity) return;
+	CSE_ALifeCustomZone* pCustomZone	=	smart_cast<CSE_ALifeCustomZone*> (pEntity);
+	if (!pCustomZone) return;
+	
+	if (!m_AnomalySetsList.empty())
+	{
+		for (u32 j=0; j<m_AnomalySetsList.size(); j++)
+		{
+			ANOMALIES* Anomalies = &(m_AnomalySetsList[j]);
+			for (u32 i=0; i<Anomalies->size(); i++)
+			{
+				const char *pName = ((*Anomalies)[i]).c_str();
+				if (xr_strcmp(pName, pCustomZone->name_replace())) continue;
+				
+				NET_Packet P;
+				u_EventGen		(P,GE_ZONE_STATE_CHANGE,eid_who);
+				P.w_u8			(u8(4)); //eZoneStateDisabled
+				u_EventSend(P);
+
+				m_AnomalyIDSetsList[j].push_back(eid_who);
+				return;
+			};
+		};
+	}
+};
+
+void	game_sv_Deathmatch::Send_Anomaly_States		(ClientID id_who)
+{
+	if (m_AnomalyIDSetsList.empty()) return;
+	//-----------------------------------
+	NET_Packet	EventPack;
+	EventPack.w_begin	(M_EVENT_PACK);
+	//-----------------------------------
+	for (u32 j=0; j<m_AnomalyIDSetsList.size(); j++)
+	{
+		u8 AnomalyState = (m_dwLastAnomalySetID == j) ? 0 : 4;
+
+		ANOMALIES_ID* Anomalies = &(m_AnomalyIDSetsList[j]);
+		if (Anomalies->empty()) return;
+		for (u32 i=0; i<Anomalies->size(); i++)
+		{
+			u16 ID = (*Anomalies)[i];
+			//-----------------------------------
+			NET_Packet P;
+			u_EventGen		(P,GE_ZONE_STATE_CHANGE,ID);
+			
+			P.w_u8			(u8(AnomalyState));
+			//-----------------------------------
+			EventPack.w_u8(u8(P.B.count));
+			EventPack.w(&P.B.data, P.B.count);
+		};
+	};
+//	u_EventSend(EventPack);
+	m_server->SendTo(id_who, EventPack, net_flags(TRUE, TRUE));
+};
+
+void	game_sv_Deathmatch::OnPlayerConnectFinished	(ClientID id_who)
+{
+	Send_Anomaly_States(id_who);
+};

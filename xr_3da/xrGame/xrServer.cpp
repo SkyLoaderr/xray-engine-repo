@@ -265,6 +265,7 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 			{
 				CL->net_Ready	= TRUE;
 				CL->ps->DeathTime = Device.dwTimeGlobal;
+				game->OnPlayerConnectFinished(sender);
 			};
 			game->signal_Syncronize	();
 			VERIFY					(verify_entities());

@@ -47,6 +47,11 @@ protected:
 	u32								m_dwLastAnomalySetID;
 	u32								m_dwLastAnomalyStartTime;	
 	bool							m_bAnomaliesEnabled;
+
+	DEF_VECTOR(ANOMALIES_ID, u16);
+	DEF_VECTOR(ANOMALY_SETS_ID, ANOMALIES_ID);
+
+	ANOMALY_SETS_ID					m_AnomalyIDSetsList;
 	//--------------------------------------------------
 	bool							m_bSpectatorMode;
 	u32								m_dwSM_SwitchDelta;
@@ -64,6 +69,8 @@ protected:
 	virtual		bool				checkForRoundStart		();
 	virtual		bool				checkForRoundEnd		();
 	virtual		bool				check_for_Anomalies		();
+				void				Send_Anomaly_States		(ClientID id_who);
+				void				Send_EventPack_for_AnomalySet	(u32 AnomalySet, u8 Event);
 
 //	virtual		void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
 //	virtual		void				OnPlayerWantsDie		(ClientID id_who);
@@ -78,7 +85,8 @@ protected:
 
 	virtual		void				check_Player_for_Invincibility	(game_PlayerState* ps);
 public:
-									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
+									game_sv_Deathmatch		();
+									~game_sv_Deathmatch		();
 	virtual		void				Create					(shared_str &options);
 
 	virtual		LPCSTR				type_name				() const { return "deathmatch";};
@@ -98,12 +106,15 @@ public:
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
+	virtual		void				OnCreate				(u16 eid_who);
 
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		void				OnPlayerReady			(ClientID id_who);
 	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
 				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
+	virtual		void				OnPlayerConnectFinished	(ClientID id_who);
+
 	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
