@@ -7,6 +7,27 @@
 
 #include "Blender.h"
 
+void CBlender_DESC::Setup	(LPCSTR N)
+{
+	// Name
+	VERIFY(strlen(N)<128);
+	VERIFY(0==strchr(N,'.'));
+	strcpy(cName,N);
+	strlwr(cName);
+	
+	// Computer
+	const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
+	char	buf	[comp];
+	DWORD	sz = comp;
+	GetComputerName(buf,&sz);
+	if (sz > 31) sz=31;
+	buf[sz] = 0;
+	strcpy(cComputer,buf);
+	
+	// Time
+	_tzset(); time( (long*)&cTime );
+};
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

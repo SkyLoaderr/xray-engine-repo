@@ -14,8 +14,8 @@ class ENGINE_API CBlender_DESC
 {
 public:
 	CLASS_ID	CLS;
-	char		cName		[128];
-	char		cComputer	[32];
+	string128	cName;
+	string32	cComputer;
 	DWORD		cTime;
 	WORD		version;
 	
@@ -28,26 +28,7 @@ public:
 		version		= 0;
 	}
 
-	void					Setup	(LPCSTR N)
-	{
-		// Name
-		VERIFY(strlen(N)<128);
-		VERIFY(0==strchr(N,'.'));
-		strcpy(cName,N);
-		strlwr(cName);
-
-		// Computer
-		const DWORD comp = MAX_COMPUTERNAME_LENGTH + 1;
-		char	buf	[comp];
-		DWORD	sz = comp;
-		GetComputerName(buf,&sz);
-		if (sz > 31) sz=31;
-		buf[sz] = 0;
-		strcpy(cComputer,buf);
-
-		// Time
-		_tzset(); time( (long*)&cTime );
-	};
+	void					Setup	(LPCSTR N);
 };
 #pragma pack(push,4)
 
