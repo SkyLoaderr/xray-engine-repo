@@ -297,7 +297,7 @@ function action_dead_hook:initialize()
     self.a.dead_hook = true
 
     -- отослать партнёра в безопасную точку
-    if self.a.partner:alive() then
+    if self.a.partner and self.a.partner:alive() then
         local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
         pa.way_safe     = patrol( "way_factory_bandits_safe" )
         pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
