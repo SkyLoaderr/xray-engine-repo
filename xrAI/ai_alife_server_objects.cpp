@@ -24,12 +24,12 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
-	if (m_ucVersion == 1) {
-		tNetPacket.r_u8				(m_ucProbability);
-		tNetPacket.r_u32			(m_dwSpawnGroup);
-		tNetPacket.r_u16			(m_wCount);
-		tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
-		tNetPacket.r_float			(m_fDistance);
+	if (m_wVersion == 1) {
+		tNetPacket.r_u8			(m_ucProbability);
+		tNetPacket.r_u32		(m_dwSpawnGroup);
+		tNetPacket.r_u16		(m_wCount);
+		tNetPacket.r			(&m_tGraphID,sizeof(m_tGraphID));
+		tNetPacket.r_float		(m_fDistance);
 	}
 }
 
