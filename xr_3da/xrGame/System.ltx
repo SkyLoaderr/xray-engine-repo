@@ -429,7 +429,7 @@ visual                   = monsters\crow\crow.ogf
 speed                    = 6.0	
 angular_speed            = 0.1	
 goal_change_delta        = 5.0
-min_height	             = 15
+min_height	             = 25
 goal_variability	 = 10.0, 15.0, 200.0
 idle_sound_delta	 = 60.f
 ; movement params
@@ -1301,8 +1301,8 @@ flame			         = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	     = 200
 
 ; ttc
-hit_power                = 30 		;//WAS "60"!!!
-hit_impulse		         = 140
+hit_power                = 40 		;//WAS "60"!!!
+hit_impulse		         = 60
 fire_distance            = 600
 rpm                      = 600
 ; end ttc
@@ -1391,7 +1391,7 @@ rpm_empty_click 	     = 200
 
 ; ttc
 hit_power                = 40 		;//WAS "60"!!!
-hit_impulse		         = 120
+hit_impulse		         = 60
 fire_distance            = 600
 rpm                      = 600
 ; end ttc
@@ -1478,8 +1478,8 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 15
-hit_impulse		 = 150
+hit_power                = 45
+hit_impulse		 = 70
 fire_distance            = 300
 rpm                      = 500
 ; end ttc
@@ -1565,7 +1565,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 40
-hit_impulse		 = 120
+hit_impulse		 = 70
 fire_distance            = 300
 rpm                      = 600
 ; end ttc
@@ -1654,8 +1654,8 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 
 ; ttc
-hit_power                = 15
-hit_impulse		 		 = 120
+hit_power                = 45
+hit_impulse		 		 = 70
 fire_distance            = 300
 rpm                      = 600
 ; end ttc
@@ -1746,7 +1746,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 45
-hit_impulse		 		 = 160
+hit_impulse		 		 = 70
 fire_distance            = 300
 rpm                      = 600
 ; end ttc
@@ -1835,7 +1835,7 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 30
-hit_impulse		 		 = 150
+hit_impulse		 		 = 75
 fire_distance            = 150
 rpm                      = 120
 ; end ttc
@@ -1923,7 +1923,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 30
-hit_impulse		 		 = 120
+hit_impulse		 		 = 80
 fire_distance            = 120
 rpm                      = 120
 ; end ttc
@@ -2012,7 +2012,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 40
-hit_impulse		 		 = 160
+hit_impulse		 		 = 80
 fire_distance            = 120
 rpm                      = 120
 ; end ttc
@@ -2102,7 +2102,7 @@ rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 35
-hit_impulse		 		 = 180
+hit_impulse		 		 = 80
 fire_distance            = 120
 rpm                      = 120
 ; end ttc
@@ -2339,7 +2339,7 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3,
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 30
-hit_impulse		 		 = 120
+hit_impulse		 		 = 60
 fire_distance            = 150
 rpm                      = 120
 ; end ttc
@@ -2548,7 +2548,7 @@ flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 50
-hit_impulse		 = 250
+hit_impulse		 = 150
 fire_distance            = 50
 rpm                      = 350
 ; end ttc
@@ -2643,8 +2643,8 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 25
-hit_impulse		 = 220
+hit_power                = 65
+hit_impulse		 = 120
 fire_distance            = 800
 rpm                      = 120
 ; end ttc
@@ -2728,8 +2728,8 @@ flame_size               = 0.04
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 rpm_empty_click 	 = 200
 ; ttc
-hit_power                = 25
-hit_impulse		 = 210
+hit_power                = 65
+hit_impulse		 = 110
 fire_distance            = 600
 rpm                      = 300
 ; end ttc
@@ -3692,6 +3692,8 @@ AttackSuccessProbability = 0.5f;
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            30.0,                 1000.0,                 10.0,               10000.0,               1000.0,               0.0,      
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      20.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
 
 terrain				 = 255,255,255,255,30,40
 
@@ -3709,6 +3711,6 @@ Ani_StandWalk		 = lie_eat_0, lie_eat_1, lie_eat_2, lie_eat_3
     schedule_min         = 1                ; milliseconds
     schedule_max         = 999              ; milliseconds
     process_time         = 900              ; microseconds
-    online_distance      = 150.0            ; metres
+    online_distance      = 15.0             ; metres
     switch_delay         = 1000             ; milliseconds
     time_factor          = 1.0              ; 
