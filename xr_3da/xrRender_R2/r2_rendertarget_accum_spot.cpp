@@ -120,6 +120,19 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_c				("m_shadow",		m_Shadow	);
 		RCache.set_c				("m_lmap",			m_Lmap		);
 
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
+		draw_volume					(L);
+	}
+	// CHK_DX	(Q->Issue	(D3DISSUE_END));
+	// DWORD	pixels	= 0;
+	// CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
+	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
+
+	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
+	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
+}
+
+/*
 		// Shader + constants
 		float circle				= ps_r2_ls_ssm_kernel / RImplementation.LR.S_size;
 		Fvector4 J; float scale		= circle/11.f;
@@ -134,14 +147,4 @@ void CRenderTarget::accum_spot	(light* L)
 			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y, J.w, J.z);
 		}
 
-		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
-		draw_volume					(L);
-	}
-	// CHK_DX	(Q->Issue	(D3DISSUE_END));
-	// DWORD	pixels	= 0;
-	// CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
-	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
-
-	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
-	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
-}
+ */
