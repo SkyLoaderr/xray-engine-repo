@@ -733,7 +733,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	S.E[1]				= _CreateElement	(C);
 
 	// Compile element
-	C.iElement			= 0;
+	C.iElement			= 2;
 	C.bDetail			= FALSE;
 	S.E[2]				= _CreateElement	(C);
 
@@ -783,7 +783,7 @@ Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	S.E[1]				= _CreateElement	(C);
 
 	// Compile element
-	C.iElement			= 0;
+	C.iElement			= 2;
 	C.bDetail			= FALSE;
 	S.E[2]				= _CreateElement	(C);
 
