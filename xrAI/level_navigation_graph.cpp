@@ -467,7 +467,7 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 
 		CCellVertex					&cell = m_cross[vertex_id];
 		cell.m_dirs[index]			= (u16)i;
-		cell.m_computed_dirs[index] = 0;
+		cell.m_all_computed_dirs	= 0;
 
 		current_vertex_id			= vertex_id;
 	}
@@ -549,8 +549,8 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 			break;
 	}
 
-	v->m_computed_right		= right;
-	v->m_computed_down		= down;
+	v->m_computed_right		= u16(right);
+	v->m_computed_down		= u16(down);
 }
 
 IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
