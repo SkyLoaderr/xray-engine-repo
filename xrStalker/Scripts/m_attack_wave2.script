@@ -322,7 +322,7 @@ function main ()
 		         stalkers[a]:process ()
   		      end
 		  end	
-		  wait ()
+		  wait (200)
 	end
 
 
