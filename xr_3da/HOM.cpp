@@ -61,7 +61,7 @@ void CHOM::Load			()
 	{
 		HOM_poly			P;
 		S().Read			(&P,sizeof(P));
-		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,P.flags,EPS_L);
+		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,P.flags,0.01f);
 	}
 	
 	// Determine adjacency
@@ -133,7 +133,7 @@ void CHOM::Render_DB	(CFrustum& base)
 
 	// Build frustum with near plane only
 	CFrustum	clip;
-	clip.CreateFromMatrix(XF,FRUSTUM_P_ALL);
+	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
 	sPoly		src,dst;
 	
 	// Perfrom selection, sorting, culling
