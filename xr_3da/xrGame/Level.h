@@ -29,7 +29,6 @@ class	CAutosaveManager;
 class	CPHCommander;
 class	CLevelDebug;
 
-DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
 
 const int maxRP					= 64;
