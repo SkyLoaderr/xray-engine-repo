@@ -10,3 +10,8 @@ end
 function talking(actor, npc)
 	return actor:is_talking()
 end
+
+function talking_or_tutor(actor, npc)
+	return actor:is_talking() or actor:has_info("esc_trader_experienced") or actor:has_info("esc_trader_newbie")
+end
+
