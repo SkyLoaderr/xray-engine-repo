@@ -168,7 +168,7 @@ void CActorCondition::Awoke()
 {
 	if(!IsSleeping()) return;
 
-	Awoke();
+	CEntityCondition::Awoke();
 
 	Level().Server->game->SetGameTimeFactor(object().m_fOldTimeFactor);
 
