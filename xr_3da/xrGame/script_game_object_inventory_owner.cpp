@@ -490,7 +490,7 @@ void construct_restriction_vector(shared_str restrictions, xr_vector<ALife::_OBJ
 	}
 }
 
-void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
+void CScriptGameObject::add_restrictions		(LPCSTR out, LPCSTR in)
 {
 	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
 	if (!restricted_object) {
@@ -507,7 +507,7 @@ void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
 	restricted_object->add_restrictions		(temp0,temp1);
 }
 
-void CScriptGameObject::remove_restrictions		(LPCSTR in, LPCSTR out)
+void CScriptGameObject::remove_restrictions		(LPCSTR out, LPCSTR in)
 {
 	CRestrictedObject	*restricted_object = smart_cast<CRestrictedObject*>(m_tpGameObject);
 	if (!restricted_object) {

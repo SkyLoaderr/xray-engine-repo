@@ -383,8 +383,8 @@ public:
 			bool				active_zone_contact		(u16 id);
 
 			///
-			void				add_restrictions		(LPCSTR in, LPCSTR out);
-			void				remove_restrictions		(LPCSTR in, LPCSTR out);
+			void				add_restrictions		(LPCSTR out, LPCSTR in);
+			void				remove_restrictions		(LPCSTR out, LPCSTR in);
 			void				remove_all_restrictions	();
 			LPCSTR				in_restrictions			();
 			LPCSTR				out_restrictions		();
