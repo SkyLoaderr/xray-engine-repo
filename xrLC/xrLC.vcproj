@@ -293,10 +293,10 @@
 				Name="Log"
 				Filter="">
 				<File
-					RelativePath=".\log.cpp">
+					RelativePath="cl_log.cpp">
 				</File>
 				<File
-					RelativePath=".\log.h">
+					RelativePath="cl_log.h">
 				</File>
 			</Filter>
 		</Filter>
