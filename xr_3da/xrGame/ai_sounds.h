@@ -6,8 +6,8 @@
 //	Description : Sounds for AI personalities
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_SOUNDS__
-#define __XRAY_AI_SOUNDS__
+#ifndef ai_soundsH
+#define ai_soundsH
 
 enum ESoundTypes {
 	SOUND_TYPE_NO_SOUND					= 0x00000000ui32,
