@@ -135,7 +135,7 @@ void CRender::Render		()
 
 	//******* Directional light
 	/*
-	if (ps_r2_ls_flags.test(R2FLAG_SUN) )
+	if (0 && ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{
@@ -173,10 +173,11 @@ void CRender::Render		()
 		Target.phase_accumulator				();
 		Target.accum_direct						();
 	}
+	*/
 
 	// $$$
-	// Target.phase_accumulator				();
-	// Target.accum_direct					();
+	Target.phase_accumulator			();
+	Target.accum_direct					();
 
 	// Point/spot lighting (unshadowed)
 	if (1)
@@ -256,11 +257,9 @@ void CRender::Render		()
 			}
 		}
 	}
-	*/
 
 	// Postprocess
 	// Target.phase_bloom					();
-	Target.phase_accumulator				();
 	Target.phase_combine					();
 	
 	// HUD
