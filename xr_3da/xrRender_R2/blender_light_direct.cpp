@@ -29,6 +29,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		C.r2_Pass				("null",		"r2_accum_direct_L",FALSE,FALSE,TRUE,	D3DBLEND_DESTCOLOR,		D3DBLEND_ZERO);
 		C.r2_Sampler_rtf		("s_position",	r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",	r2_RT_N_H);
+		C.r2_Sampler			("s_material",	r2_material, D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r2_End				();
 		break;
 	}
