@@ -1,4 +1,4 @@
-// 3DSound.cpp: implementation of the C3DSound class.
+// 3DSound.cpp: implementation of the CSound class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ const	float			fOcclusionSpeed	= 1.f;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-C3DSound::C3DSound()
+CSound::CSound	(BOOL b_3D)
 {
 	fName		= 0;
 	fVolume		= 1.f;
@@ -35,34 +35,42 @@ C3DSound::C3DSound()
 	bNeedUpdate	= true;
 	bMustPlay	= false;
 	bMustLoop	= false;
-	bCtrlFreq	= false;
 	iLoopCount	= 0;
+
+	_3D			= b_3D;
+	_Freq		= false;
 
 	owner		= 0;
 }
 
-C3DSound::~C3DSound	()
+CSound::~CSound	()
 {
 	_RELEASE			( pExtensions	);
 	_RELEASE			( pBuffer3D		);
 	_RELEASE			( pBuffer		);
-	_FREE				( fName );
+	_FREE				( fName			);
 }
 
 // Update params
-void C3DSound::Update_Params()
+void CSound::Update_Params()
 {
 	if (bNeedUpdate) 
 	{
 		bNeedUpdate		= false;
-		if (bCtrlFreq) pBuffer->SetFrequency( dwFreq );
-		pBuffer3D->SetAllParameters			( ps.d3d(), DS3D_DEFERRED );
+		if (_Freq)		pBuffer->SetFrequency			( dwFreq );
+		if (_3D)		pBuffer3D->SetAllParameters		( ps.d3d(), DS3D_DEFERRED );
+		else			{
+			int	hw_volume		= iFloor(float(DSBVOLUME_MIN)*(1-fVolume*psSoundVEffects));
+			pBuffer->SetVolume	( hw_volume );
+		}
 	}
 }
 
 // Update volume
-BOOL C3DSound::Update_Volume()
+BOOL CSound::Update_Volume()
 {
+	if (!_3D)			return	TRUE;
+
 	float	dist		= Device.vCameraPosition.distance_to(ps.vPosition);
 	if (dist>ps.flMaxDistance)	return FALSE;
 	else {
@@ -87,8 +95,10 @@ BOOL C3DSound::Update_Volume()
 	}
 }
 
-void C3DSound::Update_Occlusion()
+void CSound::Update_Occlusion	()
 {
+	if (!_3D)			return;
+
 	if (pSounds->IsOccluded(ps.vPosition,1.f,occluder))	{
 		fBaseVolume -=	Device.fTimeDelta*fOcclusionSpeed;
 		clamp		(fBaseVolume,0.f,1.f);
@@ -98,7 +108,7 @@ void C3DSound::Update_Occlusion()
 	}
 }
 
-void C3DSound::PropagadeEvent()
+void CSound::PropagadeEvent()
 {
 	dwTimeToPropagade		+= soundEventPulse;
 	if (0==owner)			return;
@@ -134,7 +144,7 @@ void C3DSound::PropagadeEvent()
 	}
 }
 
-void C3DSound::OnMove		()
+void CSound::OnMove		()
 {
 	DWORD	dwTime			= Device.TimerAsync	();
 
@@ -232,26 +242,26 @@ void C3DSound::OnMove		()
 	Update_Params		();
 }
 
-void C3DSound::SetPosition	(const Fvector &pos)
+void CSound::SetPosition	(const Fvector &pos)
 {
 	ps.vPosition.set	(pos);
 	bNeedUpdate			= true;
 }
 
-void C3DSound::SetFrequency	(DWORD freq)
+void CSound::SetFrequency	(DWORD freq)
 {
 	dwFreq				= freq;
 	bNeedUpdate			= true;
 }
 
-void C3DSound::SetMinMax	(float min, float max)
+void CSound::SetMinMax		(float min, float max)
 {
 	ps.flMinDistance	= min;
 	ps.flMaxDistance	= max;
 	bNeedUpdate			= true;
 }
 
-void C3DSound::Play			(sound3D* P, BOOL bLoop, int LoopCount)
+void CSound::Play			(sound* P, BOOL bLoop, int LoopCount)
 {
 	R_ASSERT	(dwState == stStopped);
 	owner		= P;
@@ -260,7 +270,7 @@ void C3DSound::Play			(sound3D* P, BOOL bLoop, int LoopCount)
 	bMustLoop	= bLoop?((1==LoopCount)?FALSE:TRUE):FALSE;
 }
 
-void C3DSound::Stop			()
+void CSound::Stop			()
 {
 	bMustPlay					= false;
 	pBuffer->Stop				();
@@ -271,7 +281,7 @@ void C3DSound::Stop			()
 	bNeedUpdate					= true;
 }
 
-void C3DSound::Rewind		()
+void CSound::Rewind		()
 {
 	pBuffer->SetCurrentPosition	(0);
 	DWORD dwTime				= Device.TimerAsync();

@@ -1,4 +1,4 @@
-// 3DSoundRender.h: interface for the C3DSoundRender class.
+// 3DSoundRender.h: interface for the CSoundRender class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -9,11 +9,11 @@
 #include "xr_snd_defs.h"
 
 // refs
-class ENGINE_API C3DSound;
+class ENGINE_API CSound;
 class ENGINE_API CInifile;
 
 // CLASS
-class ENGINE_API C3DSoundRender
+class ENGINE_API CSoundRender
 {
 private:
 	struct SListener 
@@ -34,25 +34,25 @@ private:
 	SListener					Listener;
 	
 	// Containers
-	vector <vector<C3DSound*> >	sounds;
+	vector <vector<CSound*> >	sounds;
 	vector <int>				refcounts;
 private:
-	C3DSound*					GetFreeSound		(int hSound);
-	int							FindByName			(LPCSTR name, BOOL bFreq);
+	CSound*					GetFreeSound		(int hSound);
+	int							FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq);
 	int							FindEmptySlot		();
-	int							Append				(C3DSound *p);
+	int							Append				(CSound *p);
 public:
-	int							CreateSound			(LPCSTR name, BOOL bCtrlFreq=FALSE, BOOL bNotClip=FALSE );
+	int							CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq=FALSE, BOOL bNotClip=FALSE );
 	int							CreateSound			(CInifile *pIni, LPCSTR section);
 	void						DeleteSound			(int& hSound);
-	void						Play				(int  hSound, sound3D* P, BOOL bLoop=false, int iLoopCnt=0);
+	void						Play				(int  hSound, sound* P, BOOL bLoop=false, int iLoopCnt=0);
 
 	void						Reload				();
 
 	void						OnMove				(void);
 
-	C3DSoundRender();
-	~C3DSoundRender();
+	CSoundRender();
+	~CSoundRender();
 };
 
 #endif // !defined(AFX_3DSOUNDRENDER_H__1D9A4469_E055_453C_8E18_8C5A23820A1A__INCLUDED_)

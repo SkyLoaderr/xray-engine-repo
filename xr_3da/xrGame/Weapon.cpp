@@ -60,7 +60,7 @@ CWeapon::~CWeapon()
 	if (hWallmark) Device.Shader.Delete(hWallmark);
 }
 
-void CWeapon::SoundCreate(sound3D& dest, LPCSTR s_name, int iType)
+void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
@@ -77,11 +77,11 @@ void CWeapon::SoundCreate(sound3D& dest, LPCSTR s_name, int iType)
 	}
 	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());
 }
-void CWeapon::SoundDestroy(	sound3D& dest)
+void CWeapon::SoundDestroy	(	sound& dest)
 {
-	pSounds->Delete3D	(dest);
+	pSounds->Delete			(dest);
 }
-void CWeapon::ShaderCreate(Shader* &dest, LPCSTR S, LPCSTR T)
+void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 {
 	if (dest)	return;
 	string256	name,temp;

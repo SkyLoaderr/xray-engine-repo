@@ -34,7 +34,7 @@ CCreator::~CCreator	( )
 	bReady						= false;
 	_DELETE						( pLevel );
 
-	if (Sounds_Ambience>=0)		pSounds->Delete2D(Sounds_Ambience);
+	if (Sounds_Ambience>=0)		pSounds->Delete(Sounds_Ambience);
 
 	// Render-level unload
 	Render->OnDeviceDestroy		( );
@@ -43,12 +43,12 @@ CCreator::~CCreator	( )
 
 	// Unload sounds
 	for (DWORD i=0; i<Sounds.size(); i++)
-		pSounds->Delete3D(Sounds[i]);
+		pSounds->Delete	(Sounds[i]);
 	Sounds.clear();
 
 	// Unregister
-	Device.seqRender.Remove(this);
-	Device.seqFrame.Remove(this);
+	Device.seqRender.Remove		(this);
+	Device.seqFrame.Remove		(this);
 }
 
 BOOL CCreator::net_Server		( LPCSTR name_of_level	)
@@ -133,15 +133,15 @@ BOOL CCreator::Load(DWORD dwNum)
 			string128			fname;
 			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			if (0==stricmp(fname,"ambient"))	continue;
-			Sounds.push_back	(sound3D());
-			pSounds->Create3D	(Sounds.back(),fname);
-			pSounds->Play3DAtPos(Sounds.back(),0,pos,true);
+			Sounds.push_back	(sound());
+			pSounds->Create		(Sounds.back(),fname);
+			pSounds->PlayAtPos	(Sounds.back(),0,pos,true);
 		}
 		if (pLevel->LineExists("static_sounds","ambient"))
 		{
 			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
-			Sounds_Ambience		= pSounds->Create2D(fname);
-			pSounds->Play2D		(Sounds_Ambience,true);
+			Sounds_Ambience		= pSounds->Create(fname);
+			pSounds->Play		(Sounds_Ambience,true);
 		} 
 	}
 	{
@@ -150,8 +150,8 @@ BOOL CCreator::Load(DWORD dwNum)
 			CInifile::Sect& S		= pLevel->ReadSection("random_sounds");
 			Sounds_Random.reserve	(S.size());
 			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-				Sounds_Random.push_back	(sound3D());
-				pSounds->Create3D		(Sounds_Random.back(),I->second);
+				Sounds_Random.push_back	(sound());
+				pSounds->Create		(Sounds_Random.back(),I->second);
 			}
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}
@@ -205,6 +205,6 @@ void CCreator::OnFrame	( void )
 		pos.normalize			();
 		pos.mul					(::Random.randF(10,50));
 		pos.add					(Device.vCameraPosition);
-		pSounds->Play3DAtPos	(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
+		pSounds->PlayAtPos		(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
 	}
 }

@@ -40,8 +40,8 @@ protected:
 	CObject*					pCurrentViewEntity;
 
 	// Static sounds
-	vector<sound3D>				Sounds;
-	vector<sound3D>				Sounds_Random;
+	vector<sound>				Sounds;
+	vector<sound>				Sounds_Random;
 	DWORD						Sounds_dwNextTime;
 	int							Sounds_Ambience;
 public:

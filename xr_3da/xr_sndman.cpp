@@ -5,11 +5,11 @@
 #include "xr_ini.h"
 #include "xr_streamsnd.h"
 #include "xr_cda.h"
-#include "3DSoundRender.h"
-#include "2DSoundRender.h"
 #include "MusicStream.h"
 
 #include "3dsound.h"
+#include "3DSoundRender.h"
+
 #include "cl_intersect.h"
 
 CSoundManager*		pSounds = NULL;
@@ -39,7 +39,6 @@ CSoundManager::CSoundManager(BOOL bCDA )
 	// Clear all
 	pCDA			= NULL;
 	pSoundRender	= NULL;
-	p2DSounds		= NULL;
 	pMusicStreams	= NULL;
 	
 	if (bPresent) {
@@ -50,10 +49,7 @@ CSoundManager::CSoundManager(BOOL bCDA )
 		}
 		
 		// 3D Sounds
-		pSoundRender	= new C3DSoundRender( );
-		
-		// 2D Sounds
-		p2DSounds		= new C2DSoundRender( );
+		pSoundRender	= new CSoundRender( );
 		
 		// Streams Sounds
 		pMusicStreams	= new CMusicStream	( );
@@ -289,7 +285,6 @@ void CSoundManager::OnFrame( )
 		if (fMusicVolume	!= psSoundVMusic)	SetVMusic	();
 
 		pMusicStreams->OnMove	();
-		p2DSounds->OnMove		();
 		pSoundRender->OnMove	();
 		if (pCDA) pCDA->OnMove	();
 	}
@@ -297,39 +292,39 @@ void CSoundManager::OnFrame( )
 }
 
 //-----------------------------------------------------------------------------
-void	CSoundManager::Create3D			( sound3D& S, CInifile* ini, LPCSTR section, int type )
+void	CSoundManager::Create			( sound& S, CInifile* ini, LPCSTR section, int type )
 {
 	if (!bPresent) return;
 	FILE_NAME	fn;
 	strcpy		(fn,ini->ReadSTRING(section, "fname"));
 	char*		E = strext(fn);
 	if (E)		*E = 0;
-	S.handle	= pSoundRender->CreateSound(fn);
+	S.handle	= pSoundRender->CreateSound(fn,TRUE);
 	S.g_type	= type;
 }
-void	CSoundManager::Create3D			( sound3D& S, const char* fName, BOOL bCtrlFreq, int type )
+void	CSoundManager::Create			( sound& S, const char* fName, BOOL bCtrlFreq, int type )
 {
 	if (!bPresent) return;
 	FILE_NAME	fn;
 	strcpy		(fn,fName);
 	char*		E = strext(fn);
 	if (E)		*E = 0;
-	S.handle	= pSoundRender->CreateSound(fn,bCtrlFreq);
+	S.handle	= pSoundRender->CreateSound(fn,TRUE,bCtrlFreq);
 	S.g_type	= type;
 }
-void	CSoundManager::Play3D			( sound3D& S, CObject* O, BOOL bLoop, int iLoopCnt)
+void	CSoundManager::Play				( sound& S, CObject* O, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	S.g_object		= O;
 	if (S.feedback)	S.feedback->Rewind	();
 	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
 }
-void	CSoundManager::Play3D_Unlimited	( sound3D& S, CObject* O, BOOL bLoop, int iLoopCnt)
+void	CSoundManager::Play_Unlimited	( sound& S, CObject* O, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	pSoundRender->Play	(S.handle,0,bLoop,iLoopCnt);
 }
-void	CSoundManager::Play3DAtPos		( sound3D& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
+void	CSoundManager::PlayAtPos		( sound& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	S.g_object		= O;
@@ -337,13 +332,13 @@ void	CSoundManager::Play3DAtPos		( sound3D& S, CObject* O, const Fvector &pos, B
 	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
 	S.feedback->SetPosition				(pos);
 }
-void	CSoundManager::Play3DAtPos_Unlimited	( sound3D& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
+void	CSoundManager::PlayAtPos_Unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	pSoundRender->Play		(S.handle,0,bLoop,iLoopCnt);
 	S.feedback->SetPosition	(pos);
 }
-void	CSoundManager::Delete3D			( sound3D& S )
+void	CSoundManager::Delete			( sound& S )
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) {
 		S.handle	= SND_UNDEFINED;
@@ -352,27 +347,6 @@ void	CSoundManager::Delete3D			( sound3D& S )
 	}
 	if (S.feedback)	S.feedback->Stop();
 	pSoundRender->DeleteSound(S.handle);
-}
-//-----------------------------------------------------------------------------
-int		CSoundManager::Create2D				( CInifile* ini, LPCSTR section )
-{
-	if (!bPresent) return SND_UNDEFINED;
-	return p2DSounds->CreateSound(ini,section);
-}
-int		CSoundManager::Create2D				( LPCSTR fName )
-{
-	if (!bPresent) return SND_UNDEFINED;
-	return p2DSounds->CreateSound(fName);
-}
-void	CSoundManager::Delete2D(int &h)
-{
-	if (!bPresent || h<0)	return;
-	p2DSounds->DeleteSound(h);
-}
-C2DSound* CSoundManager::Play2D( int  hSound, BOOL bLoop, int iLoopCnt)
-{
-	if (!bPresent || hSound<0) return NULL;
-	return p2DSounds->Play(hSound,bLoop,iLoopCnt);
 }
 //-----------------------------------------------------------------------------
 CSoundStream* CSoundManager::CreateStream	( CInifile* ini, LPCSTR section )

@@ -1,4 +1,4 @@
-// 3DSoundRender.cpp: implementation of the C3DSoundRender class.
+// 3DSoundRender.cpp: implementation of the CSoundRender class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@ float	psSoundDoppler			= 0.3f;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-C3DSoundRender::C3DSoundRender()
+CSoundRender::CSoundRender()
 {
 	pListener					= NULL;
 	pExtensions					= NULL;
@@ -42,19 +42,19 @@ C3DSoundRender::C3DSoundRender()
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 }
 
-C3DSoundRender::~C3DSoundRender()
+CSoundRender::~CSoundRender()
 {
 	_RELEASE		( pExtensions );
 	_RELEASE		( pListener );
 }
 
-void C3DSoundRender::OnMove()
+void CSoundRender::OnMove()
 {
 	for (DWORD i=0; i<sounds.size(); i++) 
 	{
 		for (DWORD j=0; j<sounds[i].size(); j++) 
 		{
-			C3DSound *pSnd = sounds[i][j];
+			CSound *pSnd = sounds[i][j];
 			pSnd->OnMove		();
 			if (pSnd->isPlaying	()) 
 			{
@@ -84,16 +84,17 @@ void C3DSoundRender::OnMove()
 	pListener->CommitDeferredSettings	();
 }
 
-int C3DSoundRender::FindByName			(LPCSTR name, BOOL bFreq) {
+int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
-			if ((strcmp(sounds[i][0]->fName,name)==0)&&(bFreq==sounds[i][0]->bCtrlFreq))  return i;
+			if ((strcmp(sounds[i][0]->fName,name)==0)&&(_3D==sounds[i][0]->_3D)&&(_Freq==sounds[i][0]->_Freq))  
+				return i;
 		}
 	}
 	return -1;
 }
 
-int C3DSoundRender::FindEmptySlot		()
+int CSoundRender::FindEmptySlot		()
 {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()==0) return i;
@@ -101,10 +102,10 @@ int C3DSoundRender::FindEmptySlot		()
 	return -1;
 }
 
-int	C3DSoundRender::Append				(C3DSound *p)
+int	CSoundRender::Append				(CSound *p)
 {
 	// empty slot not found - expand lists
-	vector <C3DSound *>	pv;
+	vector <CSound *>	pv;
 	sounds.push_back( pv );
 	refcounts.push_back(1);
 	int i = sounds.size()-1;
@@ -112,17 +113,17 @@ int	C3DSoundRender::Append				(C3DSound *p)
 	return i;
 }
 
-int	C3DSoundRender::CreateSound			(LPCSTR name, BOOL bCtrlFreq, BOOL bNotClip)
+int	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotClip)
 {
 	int fnd;
-	if ((fnd=FindByName(name,bCtrlFreq))>=0) {
-		refcounts[fnd]+=1;
+	if ((fnd=FindByName(name,_3D, _Freq))>=0) {
+		refcounts[fnd]	+=1;
 		return fnd;
 	}
 
 	// sound not found - create new
-	C3DSound *pSnd = new C3DSound;
-	pSnd->Load(name,bCtrlFreq);
+	CSound *pSnd	= new CSound(_3D);
+	pSnd->Load		(name,_Freq);
 
 	// search for empty slot
 	if ((fnd=FindEmptySlot())>=0) {
@@ -134,21 +135,22 @@ int	C3DSoundRender::CreateSound			(LPCSTR name, BOOL bCtrlFreq, BOOL bNotClip)
 	return Append(pSnd);
 }
 
-int	C3DSoundRender::CreateSound			(CInifile *pIni, LPCSTR section)
+int	CSoundRender::CreateSound			(CInifile *pIni, LPCSTR section)
 {
 	FILE_NAME	fn;
 	strcpy(fn,pIni->ReadSTRING(section, "fname"));
-	BOOL bCtrlFreq	= pIni->LineExists(section, "ctrl_freq");
+	BOOL _3D	= pIni->LineExists(section, "ctrl_3d");
+	BOOL _Freq	= pIni->LineExists(section, "ctrl_freq");
 	
 	int fnd;
-	if ((fnd=FindByName(fn,bCtrlFreq))>=0) {
+	if ((fnd=FindByName(fn,_3D,_Freq))>=0) {
 		refcounts[fnd]+=1;
 		return fnd;
 	}
 
 	// sound not found - create new
-	C3DSound *pSnd = new C3DSound;
-	pSnd->Load(pIni,section);
+	CSound *pSnd = new CSound		(_3D);
+	pSnd->Load							(pIni,section);
 
 	// search for empty slot
 	if ((fnd=FindEmptySlot())>=0) {
@@ -160,7 +162,7 @@ int	C3DSoundRender::CreateSound			(CInifile *pIni, LPCSTR section)
 	return Append(pSnd);
 }
 
-void C3DSoundRender::DeleteSound		(int& hSound) 
+void CSoundRender::DeleteSound		(int& hSound) 
 {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
@@ -177,7 +179,7 @@ void C3DSoundRender::DeleteSound		(int& hSound)
 	hSound = -1;
 }
 
-C3DSound* C3DSoundRender::GetFreeSound(int hSound) 
+CSound* CSoundRender::GetFreeSound(int hSound) 
 {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
@@ -187,19 +189,19 @@ C3DSound* C3DSoundRender::GetFreeSound(int hSound)
 			return sounds[hSound][i];
 	}
 	// free sound not found - create duplicate
-	C3DSound *pSnd = new C3DSound;
-	pSnd->Load(sounds[hSound][0]);
-	sounds[hSound].push_back(pSnd);
+	CSound *pSnd = new CSound	(sounds[hSound].front()->_3D);
+	pSnd->Load						(sounds[hSound].front());
+	sounds[hSound].push_back		(pSnd);
 	return pSnd;
 }
 
-void C3DSoundRender::Play(int hSound, sound3D* P, BOOL bLoop, int iLoopCnt)
+void CSoundRender::Play(int hSound, sound* P, BOOL bLoop, int iLoopCnt)
 {
 	P->feedback			= GetFreeSound	(hSound);
 	P->feedback->Play	(P, bLoop, iLoopCnt);
 }
 
-void C3DSoundRender::Reload()
+void CSoundRender::Reload()
 {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {

@@ -17,12 +17,12 @@ private:
 	typedef CWeapon inherited;
 protected:
 	// Media :: sounds
-	sound3D			sndShow;
-	sound3D			sndHide;
-	sound3D			sndShot;
-	sound3D			sndEmptyClick;
-	sound3D			sndReload;
-	sound3D			sndRicochet		[SND_RIC_COUNT];
+	sound			sndShow;
+	sound			sndHide;
+	sound			sndShot;
+	sound			sndEmptyClick;
+	sound			sndReload;
+	sound			sndRicochet		[SND_RIC_COUNT];
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;

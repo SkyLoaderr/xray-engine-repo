@@ -152,11 +152,16 @@ CActor::~CActor()
 	_DELETE(Weapons);
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
-	// sounds
-	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	// sounds 2D
 	pSounds->Delete2D(sndStep[0]);
 	pSounds->Delete2D(sndStep[1]);
+	pSounds->Delete2D(sndLanding);
+	pSounds->Delete2D(sndZoneHeart);
+	pSounds->Delete2D(sndZoneDetector);
+
+	// sounds 3D
+	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 	pSounds->Delete3D(sndRespawn);
 	pSounds->Delete3D(sndWeaponChange);
 }
@@ -187,6 +192,8 @@ void CActor::Load(CInifile* ini, const char* section )
 	sndStep[0]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepL"));
 	sndStep[1]			= pSounds->Create2D	(strconcat(buf,cName(),"\\stepR"));
 	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
+	sndZoneHeart		= pSounds->Create2D	("\\heart\\1");
+	sndZoneDetector		= pSounds->Create2D	("\\detectors\\geiger");
 	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
 	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
 	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\hurt1"));

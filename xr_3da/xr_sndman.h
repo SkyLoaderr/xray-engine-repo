@@ -6,10 +6,8 @@
 class ENGINE_API CSoundManager : public pureFrame
 {
 	friend class			CSoundStream;
-	friend class			C3DSoundRender;
-	friend class			C3DSound;
-	friend class			C2DSoundRender;
-	friend class			C2DSound;
+	friend class			CSoundRender;
+	friend class			CSound;
 private:	
 	BOOL					bPresent;
 	
@@ -21,8 +19,7 @@ private:
 	
 	// Chields
 	CCDA*					pCDA;
-	C3DSoundRender*			pSoundRender;
-	C2DSoundRender*			p2DSounds;
+	CSoundRender*			pSoundRender;
 	CMusicStream*			pMusicStreams;
 	
 	// DirectSound interface
@@ -36,9 +33,6 @@ private:
 	void					Initialize				( );
 	
 	void					SetVMusic				( );
-//	void					SetFreq					( );
-//	void					SetModel				( );
-	
 public:
 	CSoundManager			( BOOL bCDA = false );
 	~CSoundManager			( );
@@ -53,20 +47,14 @@ public:
 	void					PlayCDTrack				( );
 	void					StopCDTrack				( );
 	
-	// 2D interface
-	int						Create2D				( CInifile* ini, LPCSTR section );
-	int						Create2D				( LPCSTR fName	);
-	void					Delete2D				( int &h );
-	C2DSound*				Play2D					( int handle, BOOL bLoop=false, int iLoopCnt=0);
-	
-	// 3D interface
-	void					Create3D				( sound3D& S, CInifile* ini,	LPCSTR section,			int		type=0);
-	void					Create3D				( sound3D& S, LPCSTR fName,		BOOL bCtrlFreq=FALSE,	int		type=0);
-	void					Play3D					( sound3D& S, CObject* O,		BOOL bLoop=false,		int		iLoopCnt=0);
-	void					Play3D_Unlimited		( sound3D& S, CObject* O,		BOOL bLoop=false,		int		iLoopCnt=0);
-	void					Play3DAtPos				( sound3D& S, CObject* O,		const Fvector &pos,		BOOL	bLoop=false, int iLoopCnt=0);
-	void					Play3DAtPos_Unlimited	( sound3D& S, CObject* O,		const Fvector &pos,		BOOL	bLoop=false, int iLoopCnt=0);
-	void					Delete3D				( sound3D& S);
+	// Sound interface
+	void					Create					( sound& S, BOOL _3D=TRUE,	CInifile* ini,	LPCSTR section,			int		type=0);
+	void					Create					( sound& S, BOOL _3D=TRUE,	LPCSTR fName,	BOOL bCtrlFreq=FALSE,	int		type=0);
+	void					Play					( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0);
+	void					Play_Unlimited			( sound& S, CObject* O,								BOOL bLoop=false,	int	iLoopCnt=0);
+	void					PlayAtPos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false,	int iLoopCnt=0);
+	void					PlayAtPos_Unlimited		( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false,	int iLoopCnt=0);
+	void					Delete					( sound& S);
 	void					SetGeometry				( CDB::MODEL* M )	{ pGeometry=M; }
 	CDB::MODEL* 			GetGeometry				( )					{ return pGeometry;	}
 	BOOL					IsOccluded				( Fvector& P, float R, soundOccluder& occ );

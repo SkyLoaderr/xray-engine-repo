@@ -1,4 +1,4 @@
-// 3DSound.h: interface for the C3DSound class.
+// 3DSound.h: interface for the CSound class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -10,9 +10,9 @@
 
 class ENGINE_API CInifile;
 
-class ENGINE_API C3DSound
+class ENGINE_API CSound
 {
-	friend class C3DSoundRender;
+	friend class CSoundRender;
 public:
 	char*					fName;
 
@@ -27,7 +27,7 @@ public:
 		stFORCEDWORD	= DWORD(-1)
 	};
 private:
-	sound3D*				owner;
+	sound*					owner;
 
 	float 					fVolume;				// USER
 	float					fBaseVolume;			// CLIPPING
@@ -52,22 +52,24 @@ private:
 	BOOL					bMustLoop;
 	int						iLoopCount;
 
-	BOOL					bCtrlFreq;
+	BOOL					_3D;
+	BOOL					_Freq;
 	DWORD					dwFreq;
 
 	DWORD					dwLastTimeActive;
 private:
 	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name,	BOOL bCtrlFreq);
-	void					Load					(CInifile *,	LPCSTR sect);				// wav+params
+	LPDIRECTSOUNDBUFFER		LoadWaveAs2D			(LPCSTR name,	BOOL bCtrlFreq);
 	void					Load					(LPCSTR,		BOOL bCtrlFreq=FALSE);		// wav-file
-	void					Load					(const C3DSound *);							// clone
+	void					Load					(CInifile *,	LPCSTR sect);				// wav+params
+	void					Load					(const CSound *);							// clone
 
 	void					PropagadeEvent			();
 	void					internalStopOrComplete	();
 public:
 	BOOL					isPlaying				(void)	{ return (dwState!=stStopped) || bMustPlay; }
 
-	void					Play					(sound3D* P, BOOL bLoop=false, int lcnt=0);
+	void					Play					(sound* P, BOOL bLoop=false, int lcnt=0);
 	void					Rewind					();
 	void					Stop					(void);
 	void					SetPosition				(const Fvector &pos);
@@ -80,8 +82,8 @@ public:
 	void					Update_Occlusion		(void);
 	BOOL					Update_Volume			(void);			// returns TRUE if "audible"
 
-	C3DSound();
-	~C3DSound();
+	CSound					(BOOL b_3D);
+	~CSound					();
 };
 
 #endif // !defined(AFX_3DSOUND_H__4CEA9FC5_4F0D_441A_AED2_8027C1395B54__INCLUDED_)

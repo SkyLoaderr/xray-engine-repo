@@ -57,8 +57,7 @@ private:
 	Particle*			particle_idle;
 
 	// Sounds
-	int					snd_Ambient;
-	C2DSound*			snd_Ambient_control;
+	sound				snd_Ambient_control;
 	float				snd_Ambient_volume;
 
 	// Utilities
