@@ -207,7 +207,9 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 					}
 				}
 			}
+			l_this->m_pPhysicsShell->set_ObjectContactCallback(NULL);
 			l_this->Contact(l_pos, vUp);
+
 		}
 	} else {}
 }
@@ -391,8 +393,8 @@ void CCustomRocket::UpdateEngine				()
 	if( !m_pPhysicsShell )
 		Msg("! CCustomRocket::UpdateEngine called, but 0==m_pPhysicsShell");
 
-//	if( !getVisible() )
-//		Msg("! CCustomRocket::UpdateEngine called, but false==getVisible()");
+	if( !getVisible() )
+		Msg("! CCustomRocket::UpdateEngine called, but false==getVisible()");
 
 	if (m_dwEngineTime <= 0) 
 	{
