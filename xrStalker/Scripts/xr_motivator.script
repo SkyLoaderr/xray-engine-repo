@@ -1,0 +1,364 @@
+----------------------------------------------------------------------------------------------------------------------
+--	Общая схема принятия решений
+--	автор: Диденко Руслан (Stohe)
+--	TODO:
+----------------------------------------------------------------------------------------------------------------------
+storage = {}
+trade_arhive = {}
+
+class "motivation_action1" (motivation_action)
+function motivation_action1:__init(value) super(value)
+end
+
+class "action_base1" (action_base)
+function action_base1:__init(value) super(value)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Motivations
+----------------------------------------------------------------------------------------------------------------------
+--Alive
+class "motivation_alive"	(motivation)
+function motivation_alive:__init(motivations, storage, trade_arhive) super()
+	self.motivations	= motivations
+	self.a			= storage
+	self.b 			= trade_arhive
+end
+function motivation_alive:evaluate(motivation_id)
+	if self.motivations["normal"] == motivation_id then
+		if self.b:best_trader() == nil and self.a.Buyer == nil then
+			return 1.0
+		else
+			return 0.0
+		end
+	end
+	if self.motivations["trade_init"] == motivation_id then
+		if self.b:best_trader() ~= nil and self.a.Buyer == nil then
+			return 1.0
+		else
+			return 0.0
+		end
+	end
+	if self.motivations["trade_finished"] == motivation_id then
+		if self.a.Buyer ~= nil then
+			return 1.0
+		else
+			return 0.0
+		end
+	end
+	return 0.0
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Motivator binder
+----------------------------------------------------------------------------------------------------------------------
+class "motivator_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:reinit()
+	object_binder.reinit(self)
+	self.object:disable_talk()
+	self.object:set_pda_callback(this.pda_call_back)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:net_destroy()
+	object_binder.net_destroy(self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function motivator_binder:reload (section)
+	object_binder.reload(self, section)
+
+	local char_ini = self.object:spawn_ini()
+
+	local motivations = {}
+	local operators	= {}
+	local properties = {}
+	local manager = self.object:motivation_action_manager()
+	local goal = world_state()	
+
+	motivations["solve_zone_puzzle"]= stalker_ids.motivation_solve_zone_puzzle
+
+	motivations["normal"]		= stalker_ids.motivation_script + 1
+	motivations["trade_init"]	= stalker_ids.motivation_script + 2
+	motivations["trade_finished"]	= stalker_ids.motivation_script + 3
+
+	properties["alive"]		= stalker_ids.property_alive
+	properties["dead"]		= stalker_ids.property_already_dead
+	properties["solved"]		= stalker_ids.property_puzzle_solved
+	properties["trade_init"]	= xr_evaluators_id.final_trade_init
+	properties["trade_finished"]	= xr_evaluators_id.final_trade_processed
+
+	operators["dead"]		= stalker_ids.action_dead
+	operators["free"]		= stalker_ids.action_free
+
+        xr_motivator.storage[self.object:id()] = { tradeseller = {} }
+	xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
+
+-- Настройка реакций
+xr_motivator.storage[self.object:id()].reactions = {
+        	enabled = true,
+		evn = xr_reactions.events(self.object)
+	}
+-- Хранение трейдселлера
+xr_motivator.storage[self.object:id()].tradeseller = 
+	{ 	Buyer = nil,
+	      	Seller = self.object,
+      		trade_position = { vertex_id = nil,
+				position = vector():set(0,0,0) },
+	 	-- Началась торговля или нет
+		trade_begin = false,
+		-- Последнее время торговли
+  		last_trade_time = { idle = 60,
+	      		begin = nil },
+		-- Допуск, на сколько подавец может отойти от позиции. Строго больше нуля
+		dist = 3,
+		-- Задается время ожидания в секундах
+		begin_wait_to_see = { time = 300,
+				    begin = nil },
+		-- Задается время ожидания начала торговли
+		begin_wait_to_trade = { time = 100,
+				      begin = nil },
+		-- Время торговли (сколько высвечивать экран) в секундах
+		trade_time = 180,
+		-- Расстояние, при котором мы начинаем более тесное общение
+		distance = 20,
+		-- Расситояние, при котором мы открываем огонь (если другой с оружием близко к нам)
+		shoot_distance = 10,
+		-- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
+		enabled = false
+	}
+	if char_ini:section_exist ("tradeseller") == true then
+		if char_ini:line_exist("tradeseller", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
+		end   
+	end    
+
+-- Хранение лагеря у костра
+xr_motivator.storage[self.object:id()].kamp = 
+	{	-- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
+		enabled = false,
+		-- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
+		center_point = nil,
+		-- максимальный радиус, в котором рассаживаются люди вокруг центра лагеря
+		max_rad = 2,
+		-- Идентификатор следующего действия.
+		-- 0 - нет действия
+		-- 1 - пойти обойти территорию
+		action = 0,
+		-- Последний выполненный нами экшн, чтобы не повторяться
+		last_action = 0,
+		-- Патрульные пути, по которым будут сталкеры обходить лагерь
+		patrol_path = {},
+		-- ID позиции, в которую он сядет
+		pos_id = -1,                                                     
+		-- Положение тела. 0 - стоит, остальное - разные варианты сидения
+		body_state = 0,
+		-- Время между повторением действий
+		timer = { act1 = {begin = nil, time = 120},
+                      	  act4 = {begin = nil, time = 60}}
+	}
+    	if char_ini:section_exist ("kamp") == true then
+		if char_ini:line_exist("kamp", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
+	  	end   
+		if char_ini:line_exist("kamp", "center_point") == true then	
+	    		xr_motivator.storage[self.object:id()].kamp.center_point = char_ini:r_string("kamp", "center_point")
+		else
+			xr_motivator.storage[self.object:id()].kamp.enabled = false
+		end
+		local i = 1
+		while char_ini:line_exist("kamp", "patrol_path_"..i) == true do 
+			xr_motivator.storage[self.object:id()].kamp.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
+			i = i + 1
+		end
+	end    
+-- Хранение часовых
+xr_motivator.storage[self.object:id()].guard = {
+		enabled = false,
+    		path_main = nil,
+    		path_hideout = nil
+	}
+    	if char_ini:section_exist ("guard") == true then
+		if char_ini:line_exist("guard", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].guard.enabled = char_ini:r_bool("guard", "enabled")
+	  	end   
+		if char_ini:line_exist("guard", "path_main") == true then	
+	    		xr_motivator.storage[self.object:id()].guard.path_main = char_ini:r_string("guard", "path_main")
+		else
+			xr_motivator.storage[self.object:id()].guard.enabled = false
+		end
+		if char_ini:line_exist("guard", "path_hideout") == true then	
+	    		xr_motivator.storage[self.object:id()].guard.path_hideout = char_ini:r_string("guard", "path_hideout")
+		else
+			xr_motivator.storage[self.object:id()].guard.enabled = false
+		end
+	end    
+-- Настройка встречи
+xr_motivator.storage[self.object:id()].meet = {
+		enabled = false,
+    		nearest = nil,
+		done = false,
+		distance = 15, -- расстояние, в пределах которого мы реагируем
+		shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
+	}
+    	if char_ini:section_exist ("meet") == true then
+		if char_ini:line_exist("meet", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
+	  	end   
+	end    
+-- Настройка патруля
+xr_motivator.storage[self.object:id()].patrol = {
+		enabled = false,
+		patrol_path = nil,
+		escape_path = nil,
+		followers = {}
+	}
+    	if char_ini:section_exist ("patrol") == true then
+		if char_ini:line_exist("patrol", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
+	  	end   
+		if char_ini:line_exist("patrol", "patrol_path") == true then	
+	    		xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
+		else
+			xr_motivator.storage[self.object:id()].patrol.enabled = false
+	  	end   
+		if char_ini:line_exist("patrol", "escape_path") == true then	
+	    		xr_motivator.storage[self.object:id()].patrol.escape_path = char_ini:r_string("patrol", "escape_path")
+		else
+			xr_motivator.storage[self.object:id()].patrol.escape_path = xr_motivator.storage[self.object:id()].patrol.patrol_path
+	  	end   
+	end    
+-- Настройка follower 
+xr_motivator.storage[self.object:id()].follower = {
+		enabled = false,
+		leader_name = nil,
+		leader = nil,
+		direction = vector():set(0,0,1),
+		distance = 2,
+		state = 0,
+		leader_command = 0
+	}
+    	if char_ini:section_exist ("follower") == true then
+		if char_ini:line_exist("follower", "enabled") == true then	
+	    		xr_motivator.storage[self.object:id()].follower.enabled = char_ini:r_bool("follower", "enabled")
+	  	end   
+		if char_ini:line_exist("follower", "leader_name") == true then	
+	    		xr_motivator.storage[self.object:id()].follower.leader_name = char_ini:r_string("follower", "leader_name")
+		else
+			xr_motivator.storage[self.object:id()].follower.leader_name = nil
+	  	end   
+	end    
+
+
+	--Evaluators
+	manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
+	manager:add_evaluator (properties["trade_finished"], xr_evaluators.evaluator_trade_finished(xr_motivator.storage[self.object:id()].tradeseller))
+
+	--Motivations
+	manager:remove_motivation (motivations["solve_zone_puzzle"])
+	
+	manager:add_motivation (motivations["solve_zone_puzzle"], this.motivation_alive(motivations, 
+									    xr_motivator.storage[self.object:id()].tradeseller,
+									    xr_motivator.trade_arhive[self.object:id()]))
+
+	goal:clear ()
+	goal:add_property (world_property(properties["solved"], true))
+	manager:add_motivation (motivations["normal"], this.motivation_action1(goal))
+
+	goal:clear ()
+	goal:add_property (world_property(properties["trade_init"], true))
+	manager:add_motivation (motivations["trade_init"], this.motivation_action1(goal))
+
+	goal:clear ()
+	goal:add_property (world_property(properties["trade_finished"], true))
+	manager:add_motivation (motivations["trade_finished"], this.motivation_action1(goal))
+
+	-- Connections
+	manager:add_connection (motivations["solve_zone_puzzle"], motivations["normal"])
+	manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_init"])
+	manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_finished"])
+
+	-- Bind other scripts
+	self.object:disable_talk()
+	
+	xr_reactions.add_to_binder(self.object)
+	xr_meet.add_to_binder(self.object)
+	xr_tradeseller.add_to_binder(self.object)
+	xr_kamp.add_to_binder(self.object)
+	xr_commander.add_to_binder(self.object)
+	xr_guard.add_to_binder(self.object)
+	xr_patrol.add_to_binder(self.object)
+	xr_follower.add_to_binder(self.object)
+end
+----------------------------------------------------------------------------------------------------------------------
+function pda_call_back(recepient, who, msg, info_index)
+	if msg == game_object.trade_pda_msg then
+		xr_motivator.trade_arhive[recepient:id()]:save(who)
+	else
+		recepient:send_pda_message(4, who)
+	end	
+end
+----------------------------------------------------------------------------------------------------------------------
+function AddToMotivator(npc)
+	npc:bind_object(this.motivator_binder(npc))
+end                                                  
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+class "pda_storage"
+function pda_storage:__init()
+	self.arhive = {}
+end
+--сохраняет запрос на торговлю в таблицу. Передается тип, который послал запрос
+--сохраняются только последние запросы от каждого игрока
+function pda_storage:save(npc)
+	local tt = { who = npc,
+		     time = device():time_global()/1000 }
+
+	--удаляем все старые запросы от этого актора
+	for a = 1, table.getn(self.arhive), 1 do
+		if self.arhive[a].who:id() == npc:id() then
+			table.remove(self.arhive, a)
+		end
+	end
+
+	--добавляем новый
+	table.insert(self.arhive, tt)
+
+	self:remove_old()
+end
+--проверяет на наличие устаревших запросов и удаляет их.
+function pda_storage:remove_old()
+	local old = 3000 --удаляются все старше 3000 секунд
+	                                          
+	for a = 1, table.getn(self.arhive), 1 do
+		if device():time_global()/1000 - self.arhive[a].time > old then
+			table.remove(self.arhive, a)
+		end
+	end
+end
+--Удаляет запрос выбранного чудика
+function pda_storage:remove(npc)
+	for a = 1, table.getn(self.arhive), 1 do
+		if self.arhive[a].who:id() == npc:id() then
+			table.remove(self.arhive, a)
+		end
+	end
+end
+--возвращает лучшего торговца. Возвращает торговца, запрос которого пришел последним.
+function pda_storage:best_trader()
+	self:remove_old()
+	local tt = nil
+
+	for a = 1, table.getn(self.arhive), 1 do
+		if tt == nil or self.arhive[a].time < tt.time then
+				tt = self.arhive[a]
+		end
+	end
+
+	if tt == nil then return nil end
+
+	return tt.who
+end
