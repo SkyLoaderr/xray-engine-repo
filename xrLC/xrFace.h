@@ -23,7 +23,7 @@ class base_color
 
 	void					scale		(int samples)	
 	{
-		float	s			=	1/samples;
+		float	s			=	1.f/float(samples);
 		rgb.mul				(s);
 		hemi				*=	s;
 		sun					*=	s;
