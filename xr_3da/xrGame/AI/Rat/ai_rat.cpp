@@ -40,6 +40,7 @@ CAI_Rat::CAI_Rat()
 	m_tLastSound.dwTime		= 0;
 	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
 	m_bNoWay				= false;
+	m_dwLastMoraleUpdateTime = 0;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -84,9 +85,17 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceInterval");
 	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	
-	//fire
+	// fire
 	m_fHitPower			= (float)pSettings->ReadINT(section,"HitPower");
 	m_dwHitInterval		= pSettings->ReadINT(section,"HitInterval");
+
+	// morale
+	m_fDecreaseMoraleQuant			= (float)pSettings->ReadINT(section,"DecreaseMoraleQuant");
+	m_fIncreaseMoraleQuant			= (float)pSettings->ReadINT(section,"IncreaseMoraleQuant");
+	m_fRestoreMoraleQuant			= (float)pSettings->ReadINT(section,"RestoreMoraleQuant");
+	m_fMinMoraleValue				= (float)pSettings->ReadINT(section,"MinMoraleValue");
+	m_fMaxMoraleValue				= (float)pSettings->ReadINT(section,"MaxMoraleValue");
+	m_dwRestoreMoraleTimeInterval	= pSettings->ReadINT(section,"RestoreMoraleTimeInterval");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)

@@ -142,6 +142,15 @@ class CAI_Rat : public CCustomMonster
 		Fvector				m_tOldPosition;
 		bool				m_bNoWay;
 
+		// Morale
+		float				m_fDecreaseMoraleQuant;
+		float				m_fIncreaseMoraleQuant;
+		float				m_fRestoreMoraleQuant;
+		float				m_fMinMoraleValue;
+		float				m_fMaxMoraleValue;
+		DWORD				m_dwRestoreMoraleTimeInterval;
+		DWORD				m_dwLastMoraleUpdateTime;
+
 		// FSM
 		stack<ERatStates>	tStateStack;
 		ERatStates			eCurrentState;
@@ -199,6 +208,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
+		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
 		void	vfLoadSounds();
 		void	vfLoadAnimations();
@@ -207,7 +217,7 @@ class CAI_Rat : public CCustomMonster
 		void	vfSaveEnemy();
 		void	vfSetFire(bool bFire, CGroup &Group);
 		void	vfSetMovementType(char cBodyState, float fSpeed);
-		void	vfUpdateDynamicObjects() {};		
+		void	vfUpdateDynamicObjects() {};
 		//////////////////////////
 		// FSM STATES
 		//////////////////////////

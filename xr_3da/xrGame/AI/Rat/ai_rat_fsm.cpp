@@ -14,6 +14,7 @@ using namespace NAI_Rat_Constants;
 
 void CAI_Rat::Think()
 {
+	vfUpdateMorale();
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;

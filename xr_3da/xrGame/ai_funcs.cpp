@@ -177,7 +177,7 @@ float CPersonalMoraleFunction::ffGetValue()
 		return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	return(m_fLastValue = m_fMaxResultValue);
+	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->m_fMorale);
 };
 
 float CPersonalCreatureTypeFunction::ffGetValue()

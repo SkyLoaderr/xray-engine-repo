@@ -128,3 +128,14 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 		}
 	}
 }
+
+void CAI_Rat::vfUpdateMorale()
+{
+	DWORD dwCurTime = Level().timeServer();
+	if (dwCurTime - m_dwLastMoraleUpdateTime > m_dwRestoreMoraleTimeInterval) {
+		m_dwLastMoraleUpdateTime = dwCurTime;
+		m_fMorale += m_fRestoreMoraleQuant;
+		if (m_fMorale > m_fMaxMoraleValue)
+			m_fMorale = m_fMaxMoraleValue;
+	}
+}
