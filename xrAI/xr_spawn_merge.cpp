@@ -97,7 +97,7 @@ public:
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
 					if (!strlen(tpALifeObject->m_caGroupControl))
-						tpALifeObject->m_dwSpawnGroup = (*dwGroupOffset)++;
+						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
 					else {
 						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
 						if (I == l_tpSpawnGroupObjectsMap.end()) {
@@ -113,7 +113,7 @@ public:
 				else {
 					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(E);
 					if (l_tpSpawnGroup) {
-						l_tpSpawnGroup->m_dwSpawnGroup = *dwGroupOffset++;
+						l_tpSpawnGroup->m_dwSpawnGroup = ++*dwGroupOffset;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
 					}
 					else {
@@ -190,10 +190,10 @@ public:
 	};
 	virtual 					~CSpawn()
 	{
-		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++)
-			xr_delete(m_tpSpawnPoints[i]);
-		xr_delete(m_tpAI_Map);
-		xr_delete(m_tpCrossTable);
+		delete_data				(m_tpLevelSpawnPoints);
+		delete_data				(m_tpSpawnPoints);
+		delete_data				(m_tpAI_Map);
+		delete_data				(m_tpCrossTable);
 	};
 
 	void						Execute()
