@@ -14,7 +14,8 @@ function HeliManager:Init()
    self.m_stay_point = self.m_heli:position()
    self.m_heli:AddEventCallback(CHelicopter.on_point,self,"HeliOnPoint")
    self.m_heli:AddEventCallback(CHelicopter.on_hit,self,"HeliOnHit")
-   self.m_heli.use_rocket_on_attack = false
+   self.m_heli.use_rocket_on_attack = true
+   self.m_heli.use_mgun_on_attack = false
    
 end
 
