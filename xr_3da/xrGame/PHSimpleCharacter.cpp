@@ -1405,7 +1405,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 
 	if(is_control&&!b_lose_control||b_jumping){
-		if(c->geom.g1==m_wheel||c->geom.g2==m_wheel)
+		if(c->geom.g1==m_wheel||c->geom.g2==m_wheel&&!bClimable)
 		{
 			c->surface.mu = 0.f;//0.00f;
 			c->surface.mode|=dContactFDir1|dContactMotion1;

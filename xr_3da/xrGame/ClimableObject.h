@@ -1,6 +1,7 @@
 #pragma once
 #include "physicsshellholder.h"
 class CPHStaticGeomShell;
+class CPHCharacter;
 class CClimableObject: public CPhysicsShellHolder 
 #ifdef DEBUG
 ,public pureRender
@@ -23,4 +24,7 @@ public:
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif
+	float			DistLoverEdge		(CPHCharacter	*actor);
+	float			DistApperEdge		(CPHCharacter	*actor);
+	void			DefineClimbState	(CPHCharacter	*actor);
 };
