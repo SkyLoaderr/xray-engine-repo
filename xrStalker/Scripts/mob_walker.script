@@ -30,6 +30,9 @@ end
 
 function mob_walker:update(delta)
 	--printf("__bp: mob_walker update: %d", device():time_global())
+	printf("__bp: mob_walker update: %d: has_enemy() = %s", device():time_global(),
+		if_then_else(self.object:get_enemy() ~= nil, "true", "false"))
+
 	if not xr_logic.is_active(self.object, self.st) then
 		return
 	end

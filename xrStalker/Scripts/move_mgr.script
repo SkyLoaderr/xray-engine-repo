@@ -174,22 +174,6 @@ function move_mgr:arrived_to_first_waypoint()
 	return self.last_index ~= nil
 end
 
---[[ WORKAROUND
-function move_mgr:simulate_callback_if_neccessary()
-	-- FIXME - переделать на вертексы
-	local pos = self.object:position()
-	local ptr = patrol(self.path_walk)
-	local num_points = ptr:count()
-	for i = 0, num_points - 1 do
-		if utils.stalker_at_waypoint(self.object, ptr, i) then
-			--printf("simulating callback")
-			self:waypoint_callback(self.object, nil, i)
-			break
-		end
-	end
-end
---]]
-
 function move_mgr:look_at_waypoint(pt)
 	if not self.patrol_look then
 		return
@@ -231,8 +215,7 @@ function move_mgr:update_sound()
 end
 
 function move_mgr:get_lowest_highest_sync_val()
-	local ptr = patrol(self.path_walk)
-	local num_points = ptr:count()
+	local num_points = self.patrol_walk:count()
 	local v
 	local lowest = 100000000
 	local highest = -1
@@ -448,18 +431,26 @@ function move_mgr:update(no_dialog_mgr_update)
 		-- Очищать анимации, только если собираемся идти дальше по пути...
 		-- Не очищать, если дальше будем стоять, т.к. иначе будут рывки
 		local patrol_walk_count = self.patrol_walk:count()
-		if patrol_walk_count ~= 1 then
+		if patrol_walk_count == 1 then
+			if utils.stalker_at_waypoint(self.object, self.patrol_walk, 0) then
+				self.state = state_moving
+				self:waypoint_callback(self.object, nil, self.last_index)
+			else
+				-- Кто-то сдвинул нас с точки, вернуться путем сброса схемы
+				-- (нельзя просто продолжить движение, потому что сталкерный move manager попытается
+				-- идти к следующей точке, которой нет)
+				self:reset(self.path_walk, self.path_walk_info, self.path_look, self.path_look_info, self.team,
+					{ crouch = self.crouch, running = self.running, danger = self.danger },
+					{ obj = self.move_cb_obj, func = self.move_cb_func })
+			end
+		else
 			if self.object:animation_count() ~= 0 then
+				self.object:clear_animations() -- FIXME: заплатка, на самом деле надо дождаться окончания анимации
 				xr_state.anim_update(nil, self.object)
 				-- self:update_standing_state() -- anim_update сбивает crouch -- не надо! все равно дальше пойдем
 			end
-		end
+			self.state = state_moving
 
-		self.state = state_moving
-
-		if patrol_walk_count == 1 then
-			self:waypoint_callback(self.object, nil, self.last_index)
-		else
 			self:reset_sl() -- отпустить прожектор
 			self.last_look_index = nil
 			self:update_movement_state() -- идти дальше
