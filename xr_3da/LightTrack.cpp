@@ -106,7 +106,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		P.mad				(pos,P,traceR);
 		
 		// Direction/range	
-		if (L->flags.type==IRender_Light::DIRECT)
+		if (xrL->flags.type==IRender_Light::DIRECT)
 		{
 			// direct
 			D.invert			(xrL->direction);
