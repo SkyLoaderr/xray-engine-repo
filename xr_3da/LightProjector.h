@@ -12,7 +12,7 @@ class ENGINE_API	CObject;
 
 class ENGINE_API	CLightProjector  : public pureDeviceCreate, public pureDeviceDestroy
 {
-	friend class pred_casters;
+	friend class			pred_sorter;
 private:
 	//
 	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		

@@ -199,17 +199,19 @@ void CLightShadows::calculate	()
 			}
 			
 			// calculate projection-matrix
-			Fmatrix		mProject;
+			Fmatrix		mProject,mProjectR;
 			float		p_dist	=	C.C.distance_to(Lpos);
 			float		p_R		=	C.O->Radius();
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;									
+			float		p_nearR	=	p_dist-eps;									
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			p_near	= eps;
 			if (p_far<(p_near+eps))	p_far	= p_near+eps;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
+			mProjectR.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
@@ -224,8 +226,9 @@ void CLightShadows::calculate	()
 			Device.set_xform_view	(mView);
 			
 			// combine and build frustum
-			Fmatrix		mCombine;
+			Fmatrix		mCombine,mCombineR;
 			mCombine.mul			(mProject,mView);
+			mCombineR.mul			(mProjectR,mView);
 			
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;
@@ -246,7 +249,7 @@ void CLightShadows::calculate	()
 			shadows.push_back	(shadow());
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
-			shadows.back().M	=	mCombine;
+			shadows.back().M	=	mCombineR;
 			shadows.back().L	=	&L.L;
 			slot_id	++;
 		}

@@ -13,8 +13,11 @@
 
 const	int		P_rt_size	= 512;
 const	int		P_size		= 32;
+const	int		P_o_line	= P_rt_size/P_size;
+const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
 const	float	P_distance2	= P_distance*P_distance;
+const	float	P_cam_dist	= 20;
 
 /*
 int		psSH_Blur			= 1;
@@ -81,7 +84,7 @@ void CLightProjector::OnDeviceDestroy	()
 
 void CLightProjector::set_object	(CObject* O)
 {
-	if (0==O)	current		= 0;
+	if ((0==O) || (id.size()>=P_o_line))	current		= 0;
 	else 
 	{
 		Fvector		C;
@@ -108,98 +111,86 @@ void CLightProjector::add_element	(NODE* N)
 }
 
 //
+class	pred_sorter
+{
+	CLightProjector*		S;
+public:
+	pred_sorter(CLightProjector* _S) : S(_S) {};
+	IC bool operator () (int c1, int c2)
+	{ return S->receivers[c1].D<S->receivers[c2].D; }
+};
+//
 void CLightProjector::calculate	()
 {
 	if (id.empty())	return;
-
+	
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
-	Device.Shader.set_RT		(RT_temp->pRT,0);
+	Device.Shader.set_RT		(RT_temp->pRT,HW.pTempZB);
 	
 	// sort by distance
-	std::sort	(id.begin(),id.end(),pred_casters(this));
+	std::sort	(id.begin(),id.end(),pred_sorter(this));
 	
 	// iterate on objects
 	int	slot_id		= 0;
-	int slot_line	= S_rt_size/S_size;
-	int slot_max	= slot_line*slot_line;
-	const float	eps = 2*EPS_L;
 	for (int o_it=0; o_it<id.size(); o_it++)
 	{
-		caster&	C	= casters[id[o_it]];
+		recv&	C	= receivers	[id[o_it]];
 		if (C.nodes.empty())	continue;
+
+		// calculate projection-matrix
+		Fmatrix		mProject;
+		float		p_dist	=	P_cam_dist;
+		float		p_R		=	C.O->Radius();
+		float		p_hat	=	p_R/p_dist;
+		float		p_asp	=	1.f;
+		float		p_near	=	p_dist-EPS_L;									
+		float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
+		if (p_near<EPS_L)			p_near	= eps;
+		if (p_far<(p_near+EPS_L))	p_far	= p_near+eps;
 		
-		// Select lights and calc importance
-		CLightTrack* LT			= C.O->Lights();
-		vector<CLightTrack::Light>& lights = LT->lights;
+		mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
+		Device.set_xform_project		(mProject);
 		
-		// iterate on lights
-		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
+		// calculate view-matrix
+		Fmatrix		mView;
+		Fvector		v_D,v_N,v_R;
+		v_D.sub					(C.C,Lpos);;
+		if(1-fabsf(v_D.y)<EPS)	v_N.set(1,0,0);
+		else            		v_N.set(0,1,0);
+		v_R.crossproduct		(v_N,v_D);
+		v_N.crossproduct		(v_D,v_R);
+		mView.build_camera		(Lpos,C.C,v_N);
+		Device.set_xform_view	(mView);
+		
+		// combine and build frustum
+		Fmatrix		mCombine;
+		mCombine.mul			(mProject,mView);
+		
+		// Select slot and set viewport
+		int		s_x			=	slot_id%slot_line;
+		int		s_y			=	slot_id/slot_line;
+		D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
+		CHK_DX					(HW.pDevice->SetViewport(&VP));
+		
+		// Build bbox out of sphere
+		float		p_R		=	C.O->Radius();
+		
+		// Render object-parts
+		for (int n_it=0; n_it<C.nodes.size(); n_it++)
 		{
-			CLightTrack::Light&	L	=	lights[l_it];
-			if (L.energy<S_level)	continue;
-			
-			// calculate light center
-			Fvector		Lpos	= L.L.position;
-			float		Lrange	= L.L.range;
-			if (L.L.type==D3DLIGHT_DIRECTIONAL)
-			{
-				Lpos.mul	(L.L.direction,-100);
-				Lpos.add	(C.C);
-				Lrange		= 120;
-			}
-			
-			// calculate projection-matrix
-			Fmatrix		mProject;
-			float		p_dist	=	C.C.distance_to(Lpos);
-			float		p_R		=	C.O->Radius();
-			float		p_hat	=	p_R/p_dist;
-			float		p_asp	=	1.f;
-			float		p_near	=	p_dist-p_R-eps;									
-			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
-			if (p_near<eps)			p_near	= eps;
-			if (p_far<(p_near+eps))	p_far	= p_near+eps;
-			
-			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
-			Device.set_xform_project		(mProject);
-			
-			// calculate view-matrix
-			Fmatrix		mView;
-			Fvector		v_D,v_N,v_R;
-			v_D.sub					(C.C,Lpos);;
-			if(1-fabsf(v_D.y)<EPS)	v_N.set(1,0,0);
-			else            		v_N.set(0,1,0);
-			v_R.crossproduct		(v_N,v_D);
-			v_N.crossproduct		(v_D,v_R);
-			mView.build_camera		(Lpos,C.C,v_N);
-			Device.set_xform_view	(mView);
-			
-			// combine and build frustum
-			Fmatrix		mCombine;
-			mCombine.mul			(mProject,mView);
-			
-			// Select slot and set viewport
-			int		s_x			=	slot_id%slot_line;
-			int		s_y			=	slot_id/slot_line;
-			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
-			CHK_DX					(HW.pDevice->SetViewport(&VP));
-			
-			// Render object-parts
-			for (int n_it=0; n_it<C.nodes.size(); n_it++)
-			{
-				NODE& N			=	C.nodes[n_it];
-				CVisual *V		=	N.val.pVisual;
-				Device.set_xform_world	(N.val.Matrix);
-				V->Render				(-1.0f);
-			}
-			
-			// register shadow and increment slot
-			shadows.push_back	(shadow());
-			shadows.back().slot	=	slot_id;
-			shadows.back().C	=	C.C;
-			shadows.back().M	=	mCombine;
-			shadows.back().L	=	&L.L;
-			slot_id	++;
+			NODE& N			=	C.nodes[n_it];
+			CVisual *V		=	N.val.pVisual;
+			Device.set_xform_world	(N.val.Matrix);
+			V->Render				(-1.0f);
 		}
+		
+		// register shadow and increment slot
+		shadows.push_back	(shadow());
+		shadows.back().slot	=	slot_id;
+		shadows.back().C	=	C.C;
+		shadows.back().M	=	mCombine;
+		shadows.back().L	=	&L.L;
+		slot_id	++;
 	}
 	casters.clear	();
 	id.clear		();
@@ -247,7 +238,7 @@ void CLightProjector::calculate	()
 	}
 	
 	// Finita la comedia
-	Device.Statistic.RenderDUMP_Scalc.End	();
+	Device.Statistic.RenderDUMP_Pcalc.End	();
 	
 	Device.set_xform_project	(Device.mProject);
 	Device.set_xform_view		(Device.mView);

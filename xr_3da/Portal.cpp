@@ -71,14 +71,23 @@ void CSector::Render(CFrustum &F)
 		::Render->add_Lights	(Lights);
 		::Render->add_Geometry	(pRoot);
 		
+		// 1 sorting-pass on objects
+		for (int s=0; s<int(Objects.size())-1; s++)
+		{
+			Fvector		C;
+			Objects[s+0]->clCenter(C);	float	D1 = Device.vCameraPosition.distance_to_sqr(C);
+			Objects[s+1]->clCenter(C);	float	D2 = Device.vCameraPosition.distance_to_sqr(C);
+			if (D2<D1)	swap(Objects[s+0],Objects[s+1]);
+		}
+
 		// Persistant models
 		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) {
 			CObject* O = *I;
 			if (O->getVisible()) 
 			{
-				CVisual*	pV = O->Visual();
-				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
+				CVisual*	pV = O->Visual	();
+				O->clXFORM().transform_tiny	(Tpos, pV->bv_Position);
 				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
 				{
 					::Render->set_Object	(O);
