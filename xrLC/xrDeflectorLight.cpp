@@ -304,7 +304,7 @@ VOID CDeflector::Light()
 		
 		// Test for equality
 		DWORD	bCompress	= TRUE;
-		const DWORD rms		= 10;
+		const DWORD rms		= 8;
 		{
 			for (DWORD y=0; y<s_y; y++)
 			{
