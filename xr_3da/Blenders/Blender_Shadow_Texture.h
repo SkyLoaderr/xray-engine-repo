@@ -1,5 +1,5 @@
-#ifndef BLENDER_EDITOR_WIRE_H
-#define BLENDER_EDITOR_WIRE_H
+#ifndef BLENDER_SHADOW_TEX_H
+#define BLENDER_SHADOW_TEX_H
 #pragma once
 
 #include "Blender.h"
@@ -18,4 +18,4 @@ public:
 	virtual ~CBlender_ShTex();
 };
 
-#endif //BLENDER_EDITOR_WIRE_H
+#endif //BLENDER_SHADOW_TEX_H
