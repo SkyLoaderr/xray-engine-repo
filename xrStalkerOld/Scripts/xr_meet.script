@@ -364,7 +364,7 @@ function attack(npc, st)
 		if npc:active_sound_count() == 0 then
 			xr_sound.sound_update(npc, sound_f)		
 		end
-		npc:set_relation(game_object.enemy, st.actor)
+		--'npc:set_relation(game_object.enemy, st.actor) FIXME
 	end
 end
 function disable_meet(npc)
