@@ -457,7 +457,6 @@ void CActor::Update	(DWORD DT)
 		{
 			// BAD.	extrapolation
 			DWORD	delta				= dwTime-N.dwTimeStamp;
-			if (delta>500)				return;	// no extrapolation more than 500 msec
 
 			if (NET_WasInterpolating)
 			{
@@ -477,7 +476,6 @@ void CActor::Update	(DWORD DT)
 			g_Orientate					(NET_Last.mstate,dt);
 			g_Physics					(NET_Last.p_accel,Jump,dt);
 			g_SetAnimation				(NET_Last.mstate);
-
 		} else {
 			// OK.	interpolation
 
