@@ -68,7 +68,7 @@ template<class SHARED_TYPE, class KEY_TYPE> class CSharedClass {
 	SHARED_TYPE							*_sd;
 	CSharedObj<SHARED_TYPE, KEY_TYPE>	*pSharedObj;
 public:
-					CSharedClass	() {pSharedObj	= CSharedObj<SHARED_TYPE,KEY_TYPE>::Instance();}
+					CSharedClass	():_sd(NULL) {pSharedObj	= CSharedObj<SHARED_TYPE,KEY_TYPE>::Instance();}
 	virtual			~CSharedClass	() {pSharedObj->FreeInst();}
 
 	void			load_shared		(KEY_TYPE key, LPCSTR section) {

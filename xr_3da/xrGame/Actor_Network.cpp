@@ -587,9 +587,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
 
-	if (!inherited::net_Spawn(DC))	return FALSE;
-	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if (!inherited::net_Spawn(DC))	return FALSE;
 
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
