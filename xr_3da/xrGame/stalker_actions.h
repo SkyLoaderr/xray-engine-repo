@@ -202,4 +202,19 @@ public:
 	virtual void				finalize				();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetSafeLocation
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetSafeLocation : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGetSafeLocation	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		execute							();
+	virtual void		finalize						();
+};
+
 #include "stalker_actions_inline.h"

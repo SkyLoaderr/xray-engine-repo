@@ -240,6 +240,7 @@ public:
 			bool				ready_to_kill					();
 			bool				kill_distance					();
 			void				update_best_item_info			();
+			CCoverPoint			*best_cover_point				(const Fvector &self_position, const Fvector &enemy_position, const ECoverType &cover_type, float radius, float deviation, float min_enemy_distance, float max_enemy_distance);
 
 public:
 	u32							m_last_best_item_frame;
@@ -248,6 +249,7 @@ public:
 	CInventoryItem				*m_best_ammo;
 	const CInventoryItem		*m_best_found_item_to_kill;
 	const CInventoryItem		*m_best_found_ammo;
+	xr_vector<CCoverPoint*>		m_nearest;
 };
 
 #include "ai_stalker_inline.h"

@@ -70,4 +70,11 @@ namespace StalkerSpace {
 		eStateFreeNoAlife	= u32(0),
 		eStateDummy			= u32(-1),
 	};
+
+	enum ECoverType {
+		eCoverTypeCloseToEnemy	= u32(0),
+		eCoverTypeFarFromEnemy,
+		eCoverTypeBest,
+		eCoverTypeDummy			= u32(-1),
+	};
 };

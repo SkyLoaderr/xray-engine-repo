@@ -12,6 +12,8 @@
 #include "../../ai_script_actions.h"
 #include "../../inventory.h"
 #include "../../ef_storage.h"
+#include "../../cover_manager.h"
+#include "../../cover_point.h"
 
 float CAI_Stalker::HitScale	(int element)
 {
@@ -224,4 +226,61 @@ bool CAI_Stalker::ready_to_kill			()
 bool CAI_Stalker::kill_distance			()
 {
 	return					(true);
+}
+
+CCoverPoint	*CAI_Stalker::best_cover_point	(
+		const Fvector		&self_position,
+		const Fvector		&enemy_position,
+		const ECoverType	&cover_type,
+		float				radius,
+		float				deviation,
+		float				min_enemy_distance,
+		float				max_enemy_distance
+	)
+{
+	Fvector										direction;
+	direction.sub								(enemy_position,Position());
+
+	ai().cover_manager().covers().nearest		(Position(),radius,m_nearest);
+	float										best_value = flt_max;
+	float										current_distance = self_position.distance_to(enemy_position);
+	CCoverPoint									*best_point = 0;
+	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
+	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
+	for ( ; I != E; ++I) {
+		Fvector			direction;
+		float			y,p;
+		direction.sub	(enemy_position,(*I)->position());
+		direction.getHP	(y,p);
+		float			cover_value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
+		float			enemy_distance = enemy_position.distance_to((*I)->position());
+		float			my_distance = self_position.distance_to((*I)->position());
+
+		if ((cover_value >= best_value) || (enemy_distance <= min_enemy_distance) || (my_distance >= max_enemy_distance))
+			continue;
+
+		bool			choosed = false;
+		switch (cover_type) {
+			case eCoverTypeCloseToEnemy : {
+				choosed = (enemy_distance <= current_distance + deviation);
+				break;
+			}
+			case eCoverTypeFarFromEnemy : {
+				choosed = (enemy_distance >= current_distance - deviation);
+				break;
+			}
+			case eCoverTypeBest : {
+				choosed = true;
+				break;
+			}
+			default : NODEFAULT;
+		}
+
+		if (choosed) {
+			best_value	= cover_value;
+			best_point	= *I;
+		}
+	}
+
+	return				(best_point);
 }
