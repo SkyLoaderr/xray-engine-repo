@@ -372,6 +372,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor)
 	sprintf(buf, "%dx", int(m_fScale));
 	l_pF->Out(float(BASE_LEFT + 12), 
 		float(map_center.y + map_radius - l_pF->CurrentHeight()),  buf);
+
+
+	Msg("entity zone map %d", entity.size());
 }
 //--------------------------------------------------------------------
 

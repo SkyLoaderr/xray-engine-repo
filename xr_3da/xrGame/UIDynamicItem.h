@@ -29,6 +29,7 @@ public:
 	void			Clear			(){item_cnt=0;}
 	void			Render			();
 	void			Render			(float angle);
+	u32				size			(){return item_cnt;}
 };
 
 #endif //__XR_UIDYNAMICITEM_H__

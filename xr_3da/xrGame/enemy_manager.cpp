@@ -15,7 +15,7 @@
 
 #include "level.h"
 #include "actor.h"
-
+#include "ai/stalker/ai_stalker.h"
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {
@@ -95,22 +95,20 @@ void CEnemyManager::update					()
 {
 	inherited::update			();
 
-	CGameObject* pThis = dynamic_cast<CGameObject*>(this); VERIFY(pThis);
-	
 	if(selected())
 	{
 		if(m_actor_enemy && selected()->ID() != m_actor_enemy->ID())
 		{
-			Level().RemoveMapLocationByID(pThis->ID());
+			Level().RemoveMapLocationByID(m_self_entity_alive->ID());
 		}
-		else
+		else if(!m_actor_enemy)
 		{
 			m_actor_enemy = dynamic_cast<const CActor*>(selected());
-			if(m_actor_enemy)
+			if(m_actor_enemy && dynamic_cast<const CAI_Stalker*>(m_self_entity_alive))
 			{
 				SMapLocation map_location;
 				map_location.attached_to_object = true;
-				map_location.object_id = pThis->ID();
+				map_location.object_id = m_self_entity_alive->ID();
 				map_location.icon_width = map_location.icon_height = 0;	
 				map_location.icon_color = 0xFFFF0000;
 
@@ -122,6 +120,6 @@ void CEnemyManager::update					()
 	}
 	else if(!m_actor_enemy)
 	{
-		Level().RemoveMapLocationByID(pThis->ID());
+		Level().RemoveMapLocationByID(m_self_entity_alive->ID());
 	}
 }
