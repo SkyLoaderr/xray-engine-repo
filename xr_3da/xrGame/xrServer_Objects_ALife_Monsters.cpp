@@ -192,7 +192,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if ((m_wVersion > 81) && (m_wVersion < 96)) {
 			int tmp;		
 			tNetPacket.r_s32	(tmp);
-#ifdef XRGAME_EXPORTS
+#ifndef AI_COMPILER
 			m_sCharacterProfile	= CCharacterInfo::IndexToId(tmp);
 #else
 			m_sCharacterProfile	= "default";
