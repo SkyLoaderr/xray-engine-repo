@@ -111,6 +111,9 @@
 	<character id="ecolog">
 		<team>Ecolog_general</team>
 	</character>
+	<character id="ecolog_guard">
+		<team>Ecolog_guard</team>
+	</character>
 	
 	<character id="escape_trader">
 		<team>Trader</team>
