@@ -1253,6 +1253,9 @@
 						Name="Monster"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\mob_eluder.script">
+						</File>
+						<File
 							RelativePath=".\scripts\mob_remark.script">
 						</File>
 						<File
