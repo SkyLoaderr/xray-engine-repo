@@ -25,7 +25,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire			= 0;
 	iHitPower			= 0;
-	STATE				= NEXT_STATE		= 0;
+	STATE				= NEXT_STATE		= eHidden;
 
 	SetDefaults			();
 	m_pHUD				= xr_new<CWeaponHUD> ();
@@ -66,6 +66,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 	light_render				= ::Render->light_create();
 	light_render->set_shadow	(true);
+	m_shotLight = true;
 }
 
 CWeapon::~CWeapon		()
@@ -330,13 +331,16 @@ void CWeapon::Load		(LPCSTR section)
 	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
 
 	// light
-	Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
-	light_base_color.set(clr.x,clr.y,clr.z,1);
-	light_base_range	= pSettings->r_float		(section,"light_range"		);
-	light_var_color		= pSettings->r_float		(section,"light_var_color"	);
-	light_var_range		= pSettings->r_float		(section,"light_var_range"	);
-	light_lifetime		= pSettings->r_float		(section,"light_time"		);
-	light_time			= -1.f;
+	if(m_shotLight) {
+		Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
+		light_base_color.set(clr.x,clr.y,clr.z,1);
+		light_base_range	= pSettings->r_float		(section,"light_range"		);
+		light_var_color		= pSettings->r_float		(section,"light_var_color"	);
+		light_var_range		= pSettings->r_float		(section,"light_var_range"	);
+		light_lifetime		= pSettings->r_float		(section,"light_time"		);
+		light_time			= -1.f;
+	}
+
 	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
 	if(pSettings->line_exist(section,"hit_impulse")) fHitImpulse = pSettings->r_float(section,"hit_impulse");
 	else fHitImpulse = 1.f;
@@ -375,7 +379,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	}
 	
 	//if(Local()) OnStateSwitch					(E->state);
-	STATE = NEXT_STATE = E->state;
+	//STATE = NEXT_STATE = E->state;
 
 	setVisible						(true);
 	setEnabled						(true);
@@ -503,7 +507,7 @@ void CWeapon::OnH_B_Chield		()
 
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
 
-	if(Local()) OnStateSwitch(eShowing);
+	if(Local()) OnStateSwitch(eHiding);
 
 	/*
 	if (Local() && (0xffff!=respawnPhantom)) 
@@ -558,7 +562,7 @@ void CWeapon::UpdateCL		()
 	float dt				= Device.fTimeDelta;
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
-	if (light_time>0)		{
+	if (m_shotLight && light_time>0)		{
 		light_time -= dt;
 		if (light_time<=0)
 			light_render->set_active(false);
@@ -633,7 +637,7 @@ void CWeapon::SwitchState(u32 S)
 
 void CWeapon::renderable_Render		()
 {
-	if (light_time>0) 
+	if (m_shotLight && light_time>0) 
 	{
 		UpdateFP	();
 		Light_Render(vLastFP);
@@ -767,7 +771,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	}
 
 	// light
-	Light_Start();
+	if(m_shotLight) Light_Start();
 	
 	// Ammo
 	if(Local()) {

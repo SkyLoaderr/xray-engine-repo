@@ -171,7 +171,7 @@ void CMissile::UpdateCL() {
 			if(m_force > m_maxForce) m_force = m_maxForce;
 		}
 	}
-	if(getVisible() && m_pPhysicsShell) {
+	if(!H_Parent() && getVisible() && m_pPhysicsShell) {
 		if(m_destroyTime <= Device.dwTimeDelta) {
 			m_destroyTime = 0xffffffff;
 			R_ASSERT(!m_pInventory);
@@ -275,9 +275,11 @@ void CMissile::Destroy() {
 void CMissile::OnAnimationEnd() {
 	switch(State()) {
 		case MS_HIDING : {
+			setVisible(FALSE);
 			State(MS_HIDDEN);
 		} break;
 		case MS_SHOWING : {
+			setVisible(TRUE);
 			State(MS_IDLE);
 		} break;
 		case MS_THREATEN : {

@@ -333,6 +333,8 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 void CGrenade::OnAnimationEnd() {
 	switch(inherited::State()) {
 		case MS_END : {
+			if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+			xr_delete(m_pPhysicsShell);
 			m_pInventory->Ruck(this); 
 			m_destroyTime = 0;
 			NET_Packet P;

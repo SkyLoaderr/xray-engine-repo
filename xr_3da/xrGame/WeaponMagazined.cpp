@@ -414,8 +414,7 @@ void CWeaponMagazined::OnShot		()
 	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 #pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
 #pragma todo("Vitya to Oles: Is this correct?")
-	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-Game().start_time-ps_Element(0).dwTime)/1000.f);
-#pragma todo("Oles to Vitya: NO ! Use Level().timeServer()")
+	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
@@ -456,12 +455,13 @@ void CWeaponMagazined::OnEmptyClick	()
 void CWeaponMagazined::OnAnimationEnd() {
 	switch(STATE) {
 		case eReload:	ReloadMagazine();		break;	// End of reload animation
-		case eHiding:	SwitchState(eHidden);	break;	// End of Hide
+		case eHiding:	SwitchState(eHidden); setVisible(false);	break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
 void CWeaponMagazined::switch2_Idle	()
 {
+	setVisible(true);
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponMagazined::switch2_Fire	()
@@ -490,6 +490,7 @@ void CWeaponMagazined::switch2_Hiding()
 void CWeaponMagazined::switch2_Hidden()
 {
 	signal_HideComplete		();
+	setVisible(false);
 }
 void CWeaponMagazined::switch2_Showing()
 {

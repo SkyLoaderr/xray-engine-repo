@@ -3,12 +3,16 @@
 #include "WeaponKnife.h"
 #include "WeaponHUD.h"
 #include "xr_weapon_list.h"
+#include "Entity.h"
+#include "Actor.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE")
-{
+CWeaponKnife::CWeaponKnife() : CWeapon("KNIFE") {
+	m_attackStart = false;
+	m_shotLight = false;
+
 }
 
 CWeaponKnife::~CWeaponKnife()
@@ -25,21 +29,24 @@ void CWeaponKnife::Load	(LPCSTR section)
 	animGet				(mhud_idle,		"idle");
 	animGet				(mhud_show,		"draw");
 	animGet				(mhud_hide,		"hide");
-	animGet				(mhud_attack,	"shoot1");	
-	animGet				(mhud_attack2,	"shoot2");	
+	animGet				(mhud_attack,	"shoot1_start");	
+	animGet				(mhud_attack2,	"shoot2_start");	
+	animGet				(mhud_attack_e,	"shoot1_end");	
+	animGet				(mhud_attack2_e,	"shoot2_end");	
 }
 
 void CWeaponKnife::renderable_Render()
 {
 	inherited::renderable_Render	();
 	UpdateXForm						();
-	if (hud_mode && m_pHUD)
+	CActor *l_pA = dynamic_cast<CActor*>(H_Parent());
+	if (l_pA && l_pA->HUDview() && m_pHUD)
 	{ 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
-	else
+	else if(!l_pA || !l_pA->HUDview())
 	{
 		// Actor render
 		::Render->set_Transform		(&XFORM());
@@ -71,6 +78,7 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 		break;
 	}
 	STATE = S;
+	NEXT_STATE = S;
 }
 	
 void CWeaponKnife::UpdateCL	()
@@ -116,9 +124,31 @@ void CWeaponKnife::OnAnimationEnd()
 	switch (STATE)
 	{
 	case eHiding:	SwitchState(eHidden);	break;	// End of Hide
+	case eFire: {
+		if(m_attackStart) {
+			m_attackStart = false;
+			m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], FALSE, this);
+			Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
+			if(H_Parent()) dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
+			else break;
+			CCartridge l_cartridge; l_cartridge.Load(m_ammoTypes[m_ammoType]);
+			while(m_magazine.size() < 2) m_magazine.push(l_cartridge);
+			FireTrace(p1,vLastFP,d);
+		} else SwitchState(eIdle);
+	} break;
+	case eFire2: {
+		if(m_attackStart) {
+			m_attackStart = false;
+			m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], FALSE, this);
+			Fvector					p1, d; p1.set(vLastFP); d.set(vLastFD);
+			if(H_Parent()) dynamic_cast<CEntity*>(H_Parent())->g_fireParams(p1,d);
+			else break;
+			CCartridge l_cartridge; l_cartridge.Load(m_ammoTypes[m_ammoType]);
+			while(m_magazine.size() < 2) m_magazine.push(l_cartridge);
+			FireTrace(p1,vLastFP,d);
+		} else SwitchState(eIdle);
+	} break;
 	case eShowing:									// End of Show
-	case eFire:										
-	case eFire2:
 	case eIdle:	
 		SwitchState(eIdle);		break;	
 	}
@@ -130,22 +160,24 @@ void CWeaponKnife::state_Attacking	(float dt)
 
 void CWeaponKnife::switch2_Attacking	()
 {
-	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())]);
+	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())], FALSE, this);
+	m_attackStart = true;
 }
 
 void CWeaponKnife::switch2_Attacking2	()
 {
-	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())]);
+	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())], FALSE, this);
+	m_attackStart = true;
 }
 
 
 void CWeaponKnife::switch2_Idle	()
 {
-	switch (STATE)
-	{
-	case eFire: 
-		break;
-	}
+	//switch (STATE)
+	//{
+	//case eFire: 
+	//	break;
+	//}
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 

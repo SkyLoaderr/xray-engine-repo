@@ -102,6 +102,7 @@ protected:
 	float					light_lifetime;
 	u32						light_frame;
 	float					light_time;
+	bool					m_shotLight;
 
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
