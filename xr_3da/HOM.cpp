@@ -50,7 +50,7 @@ void CHOM::Load			()
 	{
 		HOM_poly			P;
 		S().Read			(&P,sizeof(P));
-		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,0,EPS_L);
+		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,P.flags,EPS_L);
 	}
 	
 	// Determine adjacency
@@ -65,6 +65,7 @@ void CHOM::Load			()
 		rT.adjacent[0]	= (CDB::edge_open==clT.IDadj()[0])?0xffffffff:(m_pTris+clT.IDadj()[0]);
 		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?0xffffffff:(m_pTris+clT.IDadj()[1]);
 		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?0xffffffff:(m_pTris+clT.IDadj()[2]);
+		rT.flags		= clT.dummy;
 	}
 
 	// Create AABB-tree
