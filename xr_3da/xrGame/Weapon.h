@@ -53,14 +53,20 @@ protected:
 	float			tracerWidth;
 	
 	CLightPPA		light_base;
+	CLightPPA		light_build;
 	CLightPPA		light_render;
 	float			light_var_color;
 	float			light_var_range;
+	float			light_lifetime;
 	DWORD			light_frame;
+	float			light_time;
 
-	BOOL			FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
+	void			Light_Start		();
+	void			Light_Render	();
+
+	virtual BOOL	FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual void	FireShotmark	(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);
-	void			UpdatePosition	(const Fmatrix& transform);
+	virtual void	UpdatePosition	(const Fmatrix& transform);
 
 	void			signal_HideComplete		();
 public:

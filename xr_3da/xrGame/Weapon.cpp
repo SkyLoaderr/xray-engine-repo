@@ -189,7 +189,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 void CWeapon::Update		(float dt, BOOL bHUDView)
 {
 	fireDispersion_Current	-= fireDispersion_Dec*dt;
-	clamp				(fireDispersion_Current,0.f,1.f);
+	clamp					(fireDispersion_Current,0.f,1.f);
 }
 
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
@@ -227,16 +227,29 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
 
 	// light
-	if (Device.dwFrame	!= light_frame)
-	{
-		light_frame		= Device.dwFrame;
-		
-		light_render.SetPosition	(Peff);
-		light_render.SetColor		(Random.randFs(light_var_color,light_base.color.r),Random.randFs(light_var_color,light_base.color.g),Random.randFs(light_var_color,light_base.color.b));
-		light_render.SetRange		(Random.randFs(light_var_range,light_base.sphere.R));
-
-		::Render.Lights_Dynamic.Add	(&light_render);
-	}
+	Light_Start			();
 
 	return				bResult;
+}
+
+void CWeapon::Light_Start	()
+{
+	if (Device.dwFrame	!= light_frame)
+	{
+		light_frame					= Device.dwFrame;
+		light_time					= light_lifetime;
+		
+		light_build.SetColor		(Random.randFs(light_var_color,light_base.color.r),Random.randFs(light_var_color,light_base.color.g),Random.randFs(light_var_color,light_base.color.b));
+		light_build.SetRange		(Random.randFs(light_var_range,light_base.sphere.R));
+	}
+}
+
+void CWeapon::Light_Render	(Fvector& P)
+{
+	float light_scale			= light_time/light_lifetime;
+	light_render.SetPosition	(P);
+	light_render.SetColor		(light_build.color.r*light_scale,light_build.color.g*light_scale,light_build.color.b*light_scale);
+	light_render.SetRange		(light_build.sphere.R*light_scale);
+	
+	::Render.Lights_Dynamic.Add	(&light_render);
 }

@@ -46,7 +46,15 @@ public:
 	void			Initialize		();
 	void			Destroy			();
 
-	IC void			Add				(CLightPPA* L)	{ container.push_back(L);	}
+	IC void			Add				(CLightPPA* L)	
+	{ 
+		const float	clip	= 8.f / 255.f;
+		if (L->sphere.R<0.1f)		return;
+		if (L->color.r<clip)		return;
+		if (L->color.g<clip)		return;
+		if (L->color.b<clip)		return;
+		container.push_back	(L);	
+	}
 	void			Render			();
 };
 
