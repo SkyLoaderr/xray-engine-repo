@@ -97,7 +97,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		// this condition _must_ guarantee xrAI since it sorts spawn points during 'game.spawn' generation
 		// we assume that zones in the spawn groups are generated in a row 
 		// therefore they _must_ have their IDs in a row, since we starts their ID generation with a fullfilled
-		// ID deque id_free in the class xrServer
+		// ID structure (look id_generator.h for details)
 		// here we use this information by iterating on vector m_tpSpawnPoints and map m_tObjectRegistry 
 		// (because this map is ordered by ID in ascending order)
 		// if this condition is _not_ guaranteed we have to rewrite this piece of code
