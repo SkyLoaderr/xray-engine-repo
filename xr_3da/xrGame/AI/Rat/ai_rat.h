@@ -364,7 +364,7 @@ class CAI_Rat : public CCustomMonster
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();
-		virtual BOOL  renderable_ShadowReceive	()			{ return FALSE;	}
+		virtual BOOL  renderable_ShadowReceive	()			{ return TRUE;	}
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual void  net_Destroy();
 		virtual void  net_Export(NET_Packet& P);

@@ -66,9 +66,13 @@ void CLightProjector::OnDeviceDestroy	()
 void CLightProjector::set_object	(IRenderable* O)
 {
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
-	else 
+	else  
 	{
-		if (!O->renderable_ShadowReceive())	return;
+		if (!O->renderable_ShadowReceive())	
+		{
+			current		= 0;
+			return;
+		}
 
 		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		float		R	= O->renderable.visual->vis.sphere.R;
