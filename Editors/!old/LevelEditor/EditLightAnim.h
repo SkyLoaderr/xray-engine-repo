@@ -36,20 +36,20 @@ class TfrmEditLightAnim : public TForm
 __published:	// IDE-managed Components
 	TPanel *paItemProps;
 	TFormStorage *fsStorage;
-	TPanel *paColor;
-	TPanel *Panel3;
+	TPanel *paListAndButtons;
 	TPanel *Panel2;
 	TExtBtn *ebAddAnim;
 	TExtBtn *ebDeleteAnim;
-	TBevel *Bevel1;
 	TExtBtn *ebSave;
 	TExtBtn *ebReload;
+	TPanel *paItems;
+	TPanel *paColorAndControls;
+	TPanel *paPropsGroup;
+	TPanel *paProps;
 	TPaintBox *pbG;
-	TMultiObjSpinEdit *sePointer;
-	TStaticText *stStartFrame;
-	TStaticText *stEndFrame;
-	TExtBtn *ebDeleteKey;
-	TExtBtn *ebCreateKey;
+	TPanel *paColor;
+	TMxLabel *lbCurFrame;
+	TPanel *Panel1;
 	TExtBtn *ebPrevKey;
 	TExtBtn *ebFirstKey;
 	TExtBtn *ebNextKey;
@@ -58,9 +58,11 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMoveKeyRight;
 	TExtBtn *ebFirstFrame;
 	TExtBtn *ebLastFrame;
-	TMxLabel *lbCurFrame;
-	TPanel *paProps;
-	TPanel *paItems;
+	TMultiObjSpinEdit *sePointer;
+	TStaticText *stStartFrame;
+	TStaticText *stEndFrame;
+	TExtBtn *ebDeleteKey;
+	TExtBtn *ebCreateKey;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

@@ -1,12 +1,13 @@
 object frmEditLightAnim: TfrmEditLightAnim
-  Left = 447
-  Top = 480
+  Left = -934
+  Top = 453
+  Width = 650
+  Height = 258
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsToolWindow
   Caption = 'Light Animation Library'
-  ClientHeight = 154
-  ClientWidth = 525
   Color = 10528425
+  Constraints.MinHeight = 250
+  Constraints.MinWidth = 650
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -25,10 +26,10 @@ object frmEditLightAnim: TfrmEditLightAnim
   PixelsPerInch = 96
   TextHeight = 13
   object paItemProps: TPanel
-    Left = 164
+    Left = 183
     Top = 0
-    Width = 361
-    Height = 154
+    Width = 459
+    Height = 231
     Align = alClient
     BevelOuter = bvNone
     Color = 10528425
@@ -40,346 +41,375 @@ object frmEditLightAnim: TfrmEditLightAnim
     ParentFont = False
     TabOrder = 0
     Visible = False
-    object Bevel1: TBevel
-      Left = 230
-      Top = 1
-      Width = 128
-      Height = 73
-    end
-    object pbG: TPaintBox
-      Left = 3
-      Top = 102
-      Width = 357
-      Height = 30
-      Color = clBlack
-      ParentColor = False
-      OnMouseDown = pbGMouseDown
-      OnMouseMove = pbGMouseMove
-      OnMouseUp = pbGMouseUp
-      OnPaint = pbGPaint
-    end
-    object ebDeleteKey: TExtBtn
-      Left = 75
-      Top = 135
-      Width = 67
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = 'Delete Key'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebDeleteKeyClick
-    end
-    object ebCreateKey: TExtBtn
-      Left = 3
-      Top = 135
-      Width = 67
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = 'Create Key'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebCreateKeyClick
-    end
-    object ebPrevKey: TExtBtn
-      Left = 121
-      Top = 82
-      Width = 21
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '<'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebPrevKeyClick
-    end
-    object ebFirstKey: TExtBtn
-      Left = 100
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'First Key'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '|<<'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebFirstKeyClick
-    end
-    object ebNextKey: TExtBtn
-      Left = 222
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'Next Key'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '>'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebNextKeyClick
-    end
-    object ebLastKey: TExtBtn
-      Left = 243
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'Last Key'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '>>|'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebLastKeyClick
-    end
-    object ebMoveKeyLeft: TExtBtn
-      Left = 76
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'Move Key Left'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '<-'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebMoveKeyLeftClick
-    end
-    object ebMoveKeyRight: TExtBtn
-      Left = 267
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'Move Key Right'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '->'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebMoveKeyRightClick
-    end
-    object ebFirstFrame: TExtBtn
-      Left = 3
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'First Frame'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '|<<'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebFirstFrameClick
-    end
-    object ebLastFrame: TExtBtn
-      Left = 338
-      Top = 82
-      Width = 21
-      Height = 15
-      Hint = 'Last Frame'
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = '>>|'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebLastFrameClick
-    end
-    object paColor: TPanel
-      Left = 232
-      Top = 2
-      Width = 125
-      Height = 70
+    object paColorAndControls: TPanel
+      Left = 257
+      Top = 0
+      Width = 202
+      Height = 231
+      Align = alRight
       BevelOuter = bvNone
-      Color = 10526880
-      TabOrder = 1
-      object lbCurFrame: TMxLabel
-        Left = 114
-        Top = 1
-        Width = 8
-        Height = 13
-        Alignment = taRightJustify
-        Caption = '7'
-        Color = clWhite
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = 15790320
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentColor = False
-        ParentFont = False
-        ShadowColor = 5460819
-        ShadowPos = spRightBottom
-        Transparent = True
+      ParentColor = True
+      TabOrder = 0
+      object paColor: TPanel
+        Left = 0
+        Top = 0
+        Width = 202
+        Height = 197
+        Align = alClient
+        BevelInner = bvLowered
+        Color = 10526880
+        TabOrder = 0
+        object lbCurFrame: TMxLabel
+          Left = 3
+          Top = 3
+          Width = 8
+          Height = 13
+          Caption = '7'
+          Color = clWhite
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = 15790320
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentColor = False
+          ParentFont = False
+          ShadowColor = 5460819
+          ShadowPos = spRightBottom
+          Transparent = True
+        end
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 197
+        Width = 202
+        Height = 34
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 1
+        object ebPrevKey: TExtBtn
+          Left = 44
+          Top = 18
+          Width = 21
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '<'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebPrevKeyClick
+        end
+        object ebFirstKey: TExtBtn
+          Left = 23
+          Top = 18
+          Width = 21
+          Height = 15
+          Hint = 'First Key'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '|<<'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebFirstKeyClick
+        end
+        object ebNextKey: TExtBtn
+          Left = 137
+          Top = 18
+          Width = 21
+          Height = 15
+          Hint = 'Next Key'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '>'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebNextKeyClick
+        end
+        object ebLastKey: TExtBtn
+          Left = 158
+          Top = 18
+          Width = 21
+          Height = 15
+          Hint = 'Last Key'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '>>|'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebLastKeyClick
+        end
+        object ebMoveKeyLeft: TExtBtn
+          Left = 1
+          Top = 18
+          Width = 21
+          Height = 15
+          Hint = 'Move Key Left'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '<-'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebMoveKeyLeftClick
+        end
+        object ebMoveKeyRight: TExtBtn
+          Left = 180
+          Top = 18
+          Width = 21
+          Height = 15
+          Hint = 'Move Key Right'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '->'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebMoveKeyRightClick
+        end
+        object ebFirstFrame: TExtBtn
+          Left = 1
+          Top = 1
+          Width = 21
+          Height = 15
+          Hint = 'First Frame'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '|<<'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebFirstFrameClick
+        end
+        object ebLastFrame: TExtBtn
+          Left = 180
+          Top = 1
+          Width = 21
+          Height = 15
+          Hint = 'Last Frame'
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '>>|'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebLastFrameClick
+        end
+        object ebDeleteKey: TExtBtn
+          Left = 101
+          Top = 18
+          Width = 35
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '-'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebDeleteKeyClick
+        end
+        object ebCreateKey: TExtBtn
+          Left = 66
+          Top = 18
+          Width = 35
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '+'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebCreateKeyClick
+        end
+        object sePointer: TMultiObjSpinEdit
+          Left = 66
+          Top = 0
+          Width = 70
+          Height = 17
+          Hint = 'Current Frame'
+          LWSensitivity = 0.01
+          BtnColor = 10526880
+          ButtonKind = bkDiagonal
+          ButtonWidth = 16
+          MaxValue = 100000
+          AutoSize = False
+          Color = 12582911
+          Ctl3D = False
+          ParentCtl3D = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+          OnBottomClick = sePointerExit
+          OnTopClick = sePointerExit
+          OnChange = sePointerChange
+          OnExit = sePointerExit
+          OnKeyDown = sePointerKeyDown
+        end
+        object stStartFrame: TStaticText
+          Left = 23
+          Top = 1
+          Width = 42
+          Height = 15
+          AutoSize = False
+          BevelInner = bvNone
+          BevelOuter = bvNone
+          BorderStyle = sbsSingle
+          Caption = '0'
+          Color = 10526880
+          ParentColor = False
+          TabOrder = 1
+        end
+        object stEndFrame: TStaticText
+          Left = 137
+          Top = 1
+          Width = 42
+          Height = 15
+          AutoSize = False
+          BorderStyle = sbsSingle
+          Caption = '0'
+          Color = 10526880
+          ParentColor = False
+          TabOrder = 2
+        end
       end
     end
-    object sePointer: TMultiObjSpinEdit
-      Left = 142
-      Top = 80
-      Width = 79
-      Height = 17
-      Hint = 'Current Frame'
-      LWSensitivity = 0.01
-      ButtonKind = bkDiagonal
-      ButtonWidth = 16
-      MaxValue = 100000
-      AutoSize = False
-      Color = 12582911
-      Ctl3D = True
-      ParentCtl3D = False
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 0
-      OnBottomClick = sePointerExit
-      OnTopClick = sePointerExit
-      OnChange = sePointerChange
-      OnExit = sePointerExit
-      OnKeyDown = sePointerKeyDown
-    end
-    object stStartFrame: TStaticText
-      Left = 25
-      Top = 82
-      Width = 38
-      Height = 15
-      AutoSize = False
-      BorderStyle = sbsSunken
-      Caption = '0'
-      Color = 10526880
-      ParentColor = False
-      TabOrder = 2
-    end
-    object stEndFrame: TStaticText
-      Left = 300
-      Top = 82
-      Width = 38
-      Height = 15
-      AutoSize = False
-      BorderStyle = sbsSunken
-      Caption = '0'
-      Color = 10526880
-      ParentColor = False
-      TabOrder = 3
-    end
-    object paProps: TPanel
+    object paPropsGroup: TPanel
       Left = 0
-      Top = 1
-      Width = 229
-      Height = 73
-      BevelOuter = bvLowered
-      Color = 10528425
-      TabOrder = 4
+      Top = 0
+      Width = 257
+      Height = 231
+      Align = alClient
+      BevelOuter = bvNone
+      ParentColor = True
+      TabOrder = 1
+      object pbG: TPaintBox
+        Left = 0
+        Top = 196
+        Width = 257
+        Height = 35
+        Align = alBottom
+        Color = clBlack
+        ParentColor = False
+        OnMouseDown = pbGMouseDown
+        OnMouseMove = pbGMouseMove
+        OnMouseUp = pbGMouseUp
+        OnPaint = pbGPaint
+      end
+      object paProps: TPanel
+        Left = 0
+        Top = 0
+        Width = 257
+        Height = 196
+        Align = alClient
+        BevelOuter = bvLowered
+        Color = 10528425
+        TabOrder = 0
+      end
     end
   end
-  object Panel3: TPanel
+  object paListAndButtons: TPanel
     Left = 0
     Top = 0
-    Width = 164
-    Height = 154
+    Width = 183
+    Height = 231
     Align = alLeft
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
     object Panel2: TPanel
       Left = 0
-      Top = 116
-      Width = 164
-      Height = 38
+      Top = 212
+      Width = 183
+      Height = 19
       Align = alBottom
       BevelOuter = bvNone
       Color = 10528425
@@ -387,7 +417,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       object ebAddAnim: TExtBtn
         Left = 1
         Top = 1
-        Width = 81
+        Width = 45
         Height = 17
         Align = alNone
         BevelShow = False
@@ -399,9 +429,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebAddAnimClick
       end
       object ebDeleteAnim: TExtBtn
-        Left = 83
+        Left = 46
         Top = 1
-        Width = 81
+        Width = 45
         Height = 17
         Align = alNone
         BevelShow = False
@@ -413,9 +443,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebDeleteAnimClick
       end
       object ebSave: TExtBtn
-        Left = 1
-        Top = 19
-        Width = 81
+        Left = 92
+        Top = 1
+        Width = 45
         Height = 17
         Align = alNone
         BevelShow = False
@@ -427,9 +457,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebSaveClick
       end
       object ebReload: TExtBtn
-        Left = 83
-        Top = 19
-        Width = 81
+        Left = 137
+        Top = 1
+        Width = 45
         Height = 17
         Align = alNone
         BevelShow = False
@@ -444,9 +474,9 @@ object frmEditLightAnim: TfrmEditLightAnim
     object paItems: TPanel
       Left = 0
       Top = 0
-      Width = 164
-      Height = 116
-      Align = alTop
+      Width = 183
+      Height = 212
+      Align = alClient
       BevelOuter = bvLowered
       ParentColor = True
       TabOrder = 1
