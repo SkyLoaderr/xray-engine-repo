@@ -10,7 +10,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CGameObject::CGameObject()
+CGameObject::CGameObject		()
 {
 	AI_NodeID	= 0;
 	AI_Node		= 0;
@@ -20,7 +20,7 @@ CGameObject::CGameObject()
 #endif
 }
 
-CGameObject::~CGameObject()
+CGameObject::~CGameObject		()
 {
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
@@ -37,7 +37,7 @@ void CGameObject::net_Destroy	()
 	Sector_Move									(0);
 }
 
-void CGameObject::OnEvent(NET_Packet& P, u16 type)
+void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 {
 	switch (type)
 	{

@@ -86,6 +86,7 @@ bool CUIBuyMenu::OnKeyboardPress(int dik)
 		R_ASSERT(menu);
 		if (menu->HasChildren())menu_active = menu;
 		else menu->Execute();
+		return true;
 	}
 	return false;
 }
