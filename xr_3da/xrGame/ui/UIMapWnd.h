@@ -21,14 +21,16 @@
 #include "UICharacterInfo.h"
 #include "UIWndCallback.h"
 
+class CUIMapWnd;
 
 class CUICustomMap : public CUIStatic, public CUIWndCallback{
 	
 	shared_str		m_name;
 	Frect			m_BoundRect;// real map size (meters)
 	float			m_zoom_factor;
+	CUIMapWnd*		m_mapWnd;
 public:
-					CUICustomMap		();
+					CUICustomMap		(CUIMapWnd*	pMapWnd);
 	virtual			~CUICustomMap		();
 
 	virtual void	Init				(shared_str name, CInifile& gameLtx);
@@ -39,6 +41,9 @@ public:
 	const Frect&    BoundRect			()const					{return m_BoundRect;};
 	virtual void	OptimalFit			(const Irect& r);
 	virtual	void	MoveWndDelta		(const Ivector2& d);
+
+	CUIMapWnd*		MapWnd				() {return m_mapWnd;}
+	shared_str		MapName				() {return m_name;}
 };
 
 
@@ -60,10 +65,11 @@ class CUIGlobalMap: public CUICustomMap{
 public:
 	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-					CUIGlobalMap		();
+					CUIGlobalMap		(CUIMapWnd*	pMapWnd);
 	virtual			~CUIGlobalMap		();
 	
 	virtual void	Init				(shared_str name, CInifile& gameLtx);
+	virtual void	Draw					();
 };
 
 class CUILevelMap;
@@ -89,7 +95,7 @@ class CUILevelMap: public CUICustomMap{
 	Frect				m_GlobalRect;			// virtual map size (meters)
 	CUIGlobalMapSpot	m_globalMapSpot;		//rect on the global map
 public:
-						CUILevelMap			();
+						CUILevelMap			(CUIMapWnd*	pMapWnd);
 	virtual				~CUILevelMap		();
 	virtual void		Init				(shared_str name, CInifile& gameLtx);
 	const Frect&		GlobalRect			() const								{return m_GlobalRect;}

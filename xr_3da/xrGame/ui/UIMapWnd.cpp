@@ -29,8 +29,9 @@ const u32			inactiveSmallLocalMapColor	= 0x00000000;
 const u32			ourLevelMapColor			= 0xffffffff;
 
 
-CUICustomMap::CUICustomMap ()
+CUICustomMap::CUICustomMap (CUIMapWnd*	pMapWnd)
 {
+	m_mapWnd				= pMapWnd;
 	m_BoundRect.set			(0,0,0,0);
 	m_zoom_factor			=1.f;
 }
@@ -106,7 +107,8 @@ void CUICustomMap::OptimalFit(const Irect& r)
 }
 
 
-CUIGlobalMap::CUIGlobalMap()
+CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
+:inherited(pMapWnd)
 {
 	m_MinimizedSize.set	(0,0);
 	m_NormalSize.set	(0,0);
@@ -188,6 +190,13 @@ void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
 		}
 		m_State					= new_state;
 
+		bool bEnable = (m_State != stMinimized);
+			WINDOW_LIST& wl = GetChildWndList();
+			for( WINDOW_LIST_it it = wl.begin(); it!= wl.end(); ++it ){
+				CUIGlobalMapSpot* msp = smart_cast<CUIGlobalMapSpot*>(*it);
+				if(msp)
+					msp->Show(bEnable);
+			}
 	}
 }
 
@@ -208,10 +217,17 @@ void CUIGlobalMap::OnBtnMaximizedClick()
 	case stMaximized:								break;
 	}
 }
+
+void CUIGlobalMap::Draw					()
+{
+	inherited::Draw();
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 
-CUILevelMap::CUILevelMap()
-:m_globalMapSpot(this)
+CUILevelMap::CUILevelMap(CUIMapWnd*	pMapWnd)
+:m_globalMapSpot(this),inherited(pMapWnd)
 {
 }
 
@@ -286,7 +302,7 @@ void CUIMapWnd::Init()
 	FS.update_path		(gameLtxPath, CONFIG_PATH, "game.ltx");
 	CInifile gameLtx	(gameLtxPath);
 
-	m_GlobalMap				= xr_new<CUIGlobalMap>();
+	m_GlobalMap				= xr_new<CUIGlobalMap>(this);
 	m_GlobalMap->SetAutoDelete(true);
 	m_GlobalMap->Init	("global_map",gameLtx);
 	m_UILevelFrame.AttachChild (m_GlobalMap);
@@ -301,7 +317,7 @@ void CUIMapWnd::Init()
 			R_ASSERT2	(m_GameMaps.end() == m_GameMaps.find(it->first), "Duplicate level name not allowed");
 			CUILevelMap*& l = m_GameMaps[it->first];
 
-			l = xr_new<CUILevelMap>();
+			l = xr_new<CUILevelMap>(this);
 			l->Init(it->first, gameLtx);
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
@@ -329,7 +345,7 @@ void CUIMapWnd::Show(bool status)
 void CUIMapWnd::SetActiveMap			(shared_str level_name)
 {
 	if(m_activeLevelMap)
-		DetachChild				(m_activeLevelMap);
+		m_UILevelFrame.DetachChild		(m_activeLevelMap);
 
 	GameMapsPairIt it			= m_GameMaps.find(level_name);
 	if( m_GameMaps.end()==it)	return;
@@ -425,6 +441,7 @@ CUIGlobalMapSpot::CUIGlobalMapSpot		(CUILevelMap* m)
 CUIGlobalMapSpot::~CUIGlobalMapSpot		()
 {}
 
+
 void CUIGlobalMapSpot::Draw		()
 {
 	UIBorder.Render();
@@ -445,7 +462,7 @@ void CUIGlobalMapSpot::OnMouse	(int x, int y, EUIMessages mouse_action)
 
 				}break;
 			case WINDOW_LBUTTON_DOWN:{
-
+				((CUIGlobalMap*)GetParent())->MapWnd()->SetActiveMap( m_map->MapName() );
 				}break;
 		}
 }

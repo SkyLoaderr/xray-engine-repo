@@ -46,7 +46,8 @@ void CScriptGameObject::script_register(lua_State *L)
 			value("action_animation",		int(GameObject::eActionTypeAnimation)),
 			value("action_sound",			int(GameObject::eActionTypeSound)),
 			value("action_particle",		int(GameObject::eActionTypeParticle)),
-			value("action_object",			int(GameObject::eActionTypeObject))
+			value("action_object",			int(GameObject::eActionTypeObject)),
+			value("action_actor_sleep",		int(GameObject::eActorSleep))
 		]
 
 	];
