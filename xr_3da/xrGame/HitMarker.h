@@ -2,7 +2,7 @@
 #define __XR_HITMARKER_H__
 #pragma once
 
-class CHitMarker	: public pureDeviceDestroy, public pureDeviceCreate
+class CHitMarker
 {
 public:
 	float					fHitMarks[4];
@@ -14,9 +14,6 @@ public:
 
 	void					Render		();
 	void					Hit			(int id);
-
-	virtual void			OnDeviceDestroy	();
-	virtual void			OnDeviceCreate	();
 };
 
 #endif // __XR_HITMARKER_H__
