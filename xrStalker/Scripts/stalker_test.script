@@ -23,19 +23,19 @@ function main ()
     action				(
 		stalker,
 		object			(vodka,object.activate),
-		cond			(object.object_end)
+		cond			(cond.object_end)
     )
     
     action				(
 		stalker,
 		object			(vodka,object.fire),
-		cond			(object.object_end)
+		cond			(cond.object_end)
     )
     
     action				(
 		stalker,
 		object			(vodka,object.reload),
-		cond			(object.object_end)
+		cond			(cond.object_end)
     )
     
     while stalker:action() do
