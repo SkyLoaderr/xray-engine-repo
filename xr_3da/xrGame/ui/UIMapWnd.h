@@ -36,6 +36,7 @@ public:
 	void			FitToWidth			(u32 width);
 	void			FitToHeight			(u32 height);
 	const Frect&    BoundRect			()const					{return m_BoundRect;};
+	void			ClampMoveByParent	();
 };
 
 

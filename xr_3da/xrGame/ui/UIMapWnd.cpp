@@ -34,14 +34,25 @@ CUICustomMap::~CUICustomMap ()
 
 void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 {
-	m_name = name;
+	m_name				= name;
 
-	LPCSTR tex	= gameLtx.r_string(name,"texture");
-	Fvector4 tmp = gameLtx.r_fvector4(name,"bound_rect");
-	m_BoundRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
-	CUIStatic::Init(tex, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
-	SetStretchTexture(true);
-	ClipperOn();
+	LPCSTR tex			= gameLtx.r_string(name,"texture");
+	Fvector4 tmp		= gameLtx.r_fvector4(name,"bound_rect");
+	m_BoundRect.set		(tmp.x, tmp.y, tmp.z, tmp.w);
+	CUIStatic::Init		(tex, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
+	SetStretchTexture	(true);
+	ClipperOn			();
+}
+
+void CUICustomMap::ClampMoveByParent()
+{
+	Irect clip			= GetClipRect();
+	Irect r				= GetWndRect();
+	if (r.x2<clip.width())	r.x1 = clip.width()-r.width();
+	if (r.y2<clip.height())	r.y1 = clip.height()-r.height();
+	if (r.x1>0)				r.x1 = 0;
+	if (r.y1>0)				r.y1 = 0;
+	SetWndPos			(r.x1, r.y1);
 }
 
 Irect CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
@@ -249,7 +260,7 @@ void CUIMapWnd::Init()
 	m_GlobalMap				= xr_new<CUIGlobalMap>();
 	m_GlobalMap->SetAutoDelete(true);
 	m_GlobalMap->Init	("global_map",gameLtx);
-	AttachChild			(m_GlobalMap);
+	m_UILevelFrame.AttachChild (m_GlobalMap);
 
 
 	// initialize local maps
@@ -263,7 +274,8 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			l->Init(it->first, gameLtx);
-			l->FitToWidth( m_UILevelFrame.GetWidth()	);
+//			l->FitToWidth( m_UILevelFrame.GetWidth()	);
+			l->FitToHeight( m_UILevelFrame.GetHeight()	);
 		}
 	}
 }
@@ -294,7 +306,7 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	
 	m_activeLevelMap = it->second;
 	m_UILevelFrame.AttachChild(m_activeLevelMap);
-	BringToTop(m_GlobalMap);
+	m_UILevelFrame.BringToTop(m_GlobalMap);
 }
 
 void CUIMapWnd::Draw()
@@ -315,15 +327,8 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 		switch (mouse_action){
 			case WINDOW_MOUSE_MOVE:
 				if(m_flags.test(lmMouseHold)){
-						m_activeLevelMap->MoveWndDelta( GetUICursor()->GetPosDelta() );
-						Irect clip = m_activeLevelMap->GetClipRect();
-						Irect r = m_activeLevelMap->GetWndRect();
-						if(r.x1>0)
-							r.x1=0;
-						if(r.y1>0)
-							r.y1=0;
-						m_activeLevelMap->SetWndPos(r.x1, r.y1);
-
+					m_activeLevelMap->MoveWndDelta		(GetUICursor()->GetPosDelta());
+					m_activeLevelMap->ClampMoveByParent	();
 				}break;
 
 			case WINDOW_LBUTTON_DOWN:{
