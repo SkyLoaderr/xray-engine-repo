@@ -42,9 +42,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	DWORD			mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
-	P.w_begin				(M_SV_CONFIG_GAME);
-	game->net_Export_State	(P);
-	SendBroadcast			(0xffffffff,P,mode);
+	Perform_game_export		();
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();

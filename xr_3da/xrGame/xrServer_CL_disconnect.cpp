@@ -26,8 +26,6 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 		}
 	}
 
-	// Game config (all, info includes new player)
-	P.w_begin				(M_SV_CONFIG_GAME);
-	game->net_Export_State	(P);
-	SendBroadcast			(0xffffffff,P,mode);
+	// Game config (all, info excludes deleted player)
+	Perform_game_export		();
 }

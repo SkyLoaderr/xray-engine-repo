@@ -36,6 +36,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		u32				ID;
 		Player			IP;
 		P.r_u32			(ID);
+		P.r_u8			(flags);
 		P.r_string		(IP.name);
 		P.r				(&IP,sizeof(game_PlayerState));
 		players.insert	(make_pair(ID,IP));

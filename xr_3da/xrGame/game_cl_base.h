@@ -8,6 +8,7 @@ public:
 	struct Player : public game_PlayerState 
 	{
 		string64	name;
+		u8			flags;
 	};
 	map<u32,Player>		players;
 public:

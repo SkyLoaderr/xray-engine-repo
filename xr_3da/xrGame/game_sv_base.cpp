@@ -72,7 +72,7 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 
 
 // Network
-void game_sv_GameState::net_Export_State						(NET_Packet& P)
+void game_sv_GameState::net_Export_State						(NET_Packet& P, DWORD to)
 {
 	// Generic
 	P.w_s32			(type);
@@ -91,12 +91,14 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P)
 	Lock			();
 	u32	p_count		= get_count();
 	P.w_u16			(u16(p_count));
+	game_PlayerState*	Base	= get_id(to);
 	for (u32 p_it=0; p_it<p_count; p_it++)
 	{
 		string64*	p_name	=	get_name_it		(p_it);
-		P.w_u32					(get_it_2_id	(p_it));
-		P.w_string				(*p_name);
 		game_PlayerState* A	=	get_it			(p_it);
+		P.w_u32					(get_it_2_id	(p_it));
+		P.w_u8					((Base==A) ? M_GAME_PLAYER_LOCAL : 0);
+		P.w_string				(*p_name);
 		P.w						(A,sizeof(*A));
 	}
 	Unlock			();

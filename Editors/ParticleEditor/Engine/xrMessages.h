@@ -47,6 +47,13 @@ enum
 
 enum
 {
+	M_GAME_PLAYER_LOCAL			= (1<<0),
+
+	M_GAME_FORCEDWORD			= DWORD(-1)
+};
+
+enum
+{
 	M_UPDATE_WEAPON_wfWorking	= (1<<0),
 	M_UPDATE_WEAPON_wfVisible	= (1<<1),
 

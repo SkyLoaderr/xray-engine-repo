@@ -1200,6 +1200,9 @@
 				RelativePath="xrServer_balance.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_perform_GameExport.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_perform_IDgen.cpp">
 			</File>
 			<File
