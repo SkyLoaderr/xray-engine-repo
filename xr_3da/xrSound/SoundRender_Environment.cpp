@@ -179,7 +179,7 @@ void CSoundRender_Environment::load			(IReader* fs)
     }
 }
 
-void CSoundRender_Environment::save			(IWriter* fs)
+void CSoundRender_Environment::save	(IWriter* fs)
 {
 	fs->w_u32 	                    (sdef_env_version);
 	fs->w_stringZ                   (name);
