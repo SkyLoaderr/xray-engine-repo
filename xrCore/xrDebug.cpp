@@ -10,6 +10,7 @@
 #ifdef __BORLANDC__
 	#include "d3d9.h"
 	#include "d3dx9.h"
+	#include "D3DX_Wrapper.h"
 	#pragma comment		(lib,"EToolsB.lib")
 	static BOOL			bException	= TRUE;
 #else
