@@ -122,7 +122,7 @@ public:
 	bool		operator()		(CDB::RESULT* _1, CDB::RESULT* _2)	{
 		occTri&	t0	= m_pTris	[_1->id];
 		occTri&	t1	= m_pTris	[_2->id];
-		return	camera.distance_to_sqr(t0) < camera.distance_to_sqr(t1);
+		return	camera.distance_to_sqr(t0.center) < camera.distance_to_sqr(t1.center);
 	}
 };
 
