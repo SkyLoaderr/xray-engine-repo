@@ -121,7 +121,6 @@ function main()
 			wait(3000)			
 		break
 		end
-	wait()
 	end
 
 
@@ -131,7 +130,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -140,7 +138,6 @@ function main()
 			wait(2000)			
 		break
 		end
-	wait()
 	end
 
 
@@ -150,7 +147,6 @@ function main()
 			wait(6000)			
 		break
 		end
-	wait()
 	end
 
 	while true do
@@ -159,7 +155,6 @@ function main()
 			wait(4000)			
 		break
 		end
-	wait()
 	end
 
 
