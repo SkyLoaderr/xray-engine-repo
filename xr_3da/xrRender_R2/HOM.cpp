@@ -167,7 +167,7 @@ void CHOM::Render_DB			(CFrustum& base)
 	{
 		// Control skipping
 		occTri& T			= m_pTris	[it->id];
-		if (T.skip<_frame)	continue;
+		if (T.skip>_frame)	continue;
 		u32	next			= _frame + ::Random.randI(3,10);
 
 		// Test for good occluder - should be improved :)
