@@ -3,11 +3,18 @@
 #include "object_factory.h"
 #include "ai/ai_monster_squad_manager.h"
 #include "string_table.h"
-#include "InfoPortion.h"
+
 #include "entity_alive.h"
 #include "profiler.h"
 #include "ui/UIInventoryUtilities.h"
 #include "UI/UIXmlInit.h"
+
+#include "InfoPortion.h"
+#include "PhraseDialog.h"
+#include "GameTask.h"
+#include "encyclopedia_article.h"
+#include "character_info.h"
+#include "specific_character.h"
 
 void clean_game_globals()
 {
@@ -24,8 +31,14 @@ void clean_game_globals()
 
 	InventoryUtilities::DestroyShaders	();
 
-	//info portions static data
-	CInfoPortion::DeleteIdToIndexData	();
+	//XML indexes
+	CInfoPortion::DeleteIdToIndexData			();
+	CEncyclopediaArticle::DeleteIdToIndexData	();
+	CCharacterInfo::DeleteIdToIndexData			();
+	CSpecificCharacter::DeleteIdToIndexData		();
+	CPhraseDialog::DeleteIdToIndexData			();
+
+
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks	();
 	CEntityAlive::UnloadFireParticles	();
