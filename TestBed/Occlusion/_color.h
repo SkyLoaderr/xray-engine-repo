@@ -76,16 +76,6 @@ public:
 		g = grey + s * (in.g - grey);
 		b = grey + s * (in.b - grey);
 	};
-	IC	void	adjust_hue(float s)
-	{
-/*		float grey = r2 * 0.2125f + g2 * 0.7154f + b2 * 0.0721f;
-
-		r1= (r2 - grey + s*grey)/s;
-		g1= (g2 - grey + s*grey)/s;
-		b1= (b2 - grey + s*grey)/s;
-		s*grey = (r2 - grey + s*grey) * 0.2125f + (g2 - grey + s*grey) * 0.7154f +  (b2 - grey + s*grey) * 0.0721f;
-		s*grey-s*grey*0.2125f = (r2-grey)*0.2125f
-*/	};
 	IC	void	modulate(_color &in)
 	{
 		r*=in.r;

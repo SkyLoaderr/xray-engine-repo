@@ -109,7 +109,7 @@ IC int iCeil (float x)
 // Validity checks
 IC BOOL fis_gremlin		( const float &f ) 
 {
-	u8		value = ((*(int*)&f & 0x7f800000)>>23)-0x20;
+	u8		value = u8(((*(int*)&f & 0x7f800000)>>23)-0x20);
     return	value > 0xc0;
 }
 IC BOOL fis_denormal	( const float &f ) 
