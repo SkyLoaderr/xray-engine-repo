@@ -688,6 +688,7 @@ void	CalcGauss	(
 	{
 		w.push_back		(expf(-float(i*i)/(2*r*r)));	// weight
 
+		if (i>0)		continue;						// exploit symmetry : offsets
 		float offset	= bs*float(i); 
 		H.push_back		(scale*D3DXVECTOR4(offset,0,0,0));
 		V.push_back		(scale*D3DXVECTOR4(0,offset,0,0));
@@ -697,6 +698,8 @@ void	CalcGauss	(
 	float mag				= 0;
 	for (i=0; i<w.size(); i++)	mag		+= w[i];
 	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
+
+	// ex
 }
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
