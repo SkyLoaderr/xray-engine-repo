@@ -553,6 +553,7 @@ function fract:setJob(npc, job)
 		end
 	end
 	if job.group ~= nil then
+		printf("Team %d Squad %d Group %d", job.object:team(), job.object:squad(), job.group)
 		job.object:change_team(job.object:team(), job.object:squad(), job.group)
 	end
 end
