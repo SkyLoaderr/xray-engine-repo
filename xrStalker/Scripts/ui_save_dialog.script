@@ -311,6 +311,7 @@ function save_dialog:AddItemToList(item)
 	
 	local new_item = CUIListItemEx()
 	new_item:SetFont(GetFontLetterica25())
+	new_item:SetPerformTextLimit(true)
 	new_item:SetText(item)
 
 	
