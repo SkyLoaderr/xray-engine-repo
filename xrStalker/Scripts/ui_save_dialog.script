@@ -144,7 +144,7 @@ function save_dialog:InitControls()
     -- txt_list:ClipperOn()
     main_frame:AttachChild(txt_list) 
 
-    local list_wnd = CUIListWnd()
+    local list_wnd = CUIListWndEx()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
     list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
