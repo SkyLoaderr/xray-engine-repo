@@ -14,7 +14,7 @@
 bool CSpaceRestrictionBase::inside			(u32 level_vertex_id, float radius)
 {
 	const Fvector					&position = ai().level_graph().vertex_position(level_vertex_id);
-	float							offset = ai().level_graph().header().cell_size()*.5f - EPS;
+	float							offset = ai().level_graph().header().cell_size()*.5f - 3*flt_eps;
 	return							(
 		inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) || 
 		inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) || 
@@ -62,7 +62,7 @@ u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector 
 	VERIFY	(ai().level_graph().valid_vertex_id(selected));
 	{
 		Fvector		center = ai().level_graph().vertex_position(selected);
-		float		offset = ai().level_graph().header().cell_size()*.5f - EPS;
+		float		offset = ai().level_graph().header().cell_size()*.5f - 3*flt_eps;
 		bool		found = false;
 		min_dist_sqr = flt_max;
 		for (u32 i=0; i<5; ++i) {
