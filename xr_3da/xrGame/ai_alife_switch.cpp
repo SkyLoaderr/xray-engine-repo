@@ -58,8 +58,10 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 			tpItem->m_bOnline		= true;
 		}
 	}
-	if (bRemoveFromScheduled)
+	if (bRemoveFromScheduled) {
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+	}
 }
 
 void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bAddToScheduled)
@@ -88,8 +90,10 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 			tpItem->m_bOnline		= false;
 		}
 	}
-	if (bAddToScheduled)
+	if (bAddToScheduled) {
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
+		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+	}
 #ifdef DEBUG_LOG
 	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 #endif
