@@ -261,18 +261,20 @@ public:
 					l_dwaNodes.push_back(i);
 		}
 
-		u32		n = l_dwaNodes.size(), m = iFloor(.1f*n);//64;
-		float	f = float(m)/float(n);
-		dwDeathPointCount		= tpLevelPoints->size();
-		for (u32 i=0; (i<n) && (m); i++)
-			if ((n - i <= m) || (::Random.randF(1.f) <= f)) {
-				SLevelPoint	l_tLevelPoint;
-				l_tLevelPoint.tNodeID = l_dwaNodes[i];
-				l_tLevelPoint.tPoint = tpAI_Map->tfGetNodeCenter(l_dwaNodes[i]);
-				tpLevelPoints->push_back(l_tLevelPoint);
-				m--;
-			}
-		dwDeathPointCount		= tpLevelPoints->size() - dwDeathPointCount;
+		random_shuffle			(l_dwaNodes.begin(),l_dwaNodes.end());
+
+		u32		m = iFloor(.1f*l_dwaNodes.size()), l_dwStartIndex = tpLevelPoints->size();
+		tpLevelPoints->resize	(l_dwStartIndex + m);
+		xr_vector<SLevelPoint>::iterator I = tpLevelPoints->begin() + l_dwStartIndex;
+		xr_vector<SLevelPoint>::iterator E = tpLevelPoints->end();
+		xr_vector<u32>::iterator		 i = l_dwaNodes.begin();
+
+		dwDeathPointCount		= m;
+
+		for ( ; I != E; I++, i++) {
+			(*I).tNodeID	= *i;
+			(*I).tPoint		= tpAI_Map->tfGetNodeCenter(*i);
+		}
 	}
 
 };
