@@ -44,7 +44,7 @@ void CCustomEvent::Load			(LPCSTR section)
 	// General stuff
 	pVisualName					= NULL;
 	pVisual						= NULL;
-	bVisible					= FALSE;
+	setVisible					(FALSE);
 	
 	// Sheduler
 	shedule_Min					= 300;

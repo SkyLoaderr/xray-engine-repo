@@ -193,7 +193,7 @@ void CWeaponMagazined::Update			(DWORD T)
 	case eFire:			state_Fire		(dt);	break;
 	case eMagEmpty:		state_MagEmpty	(dt);	break;
 	}
-	bVisible			= TRUE;
+	setVisible			(TRUE);
 	bPending			= FALSE;
 	
 	// sound fire loop

@@ -21,7 +21,7 @@ CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire		= 0;
 	iHitPower		= 0;
-	bVisible		= FALSE;
+
 	SetDefaults		();
 	m_pHUD			= new CWeaponHUD();
 	m_WpnName		= strupr(xr_strdup(name));
@@ -312,7 +312,7 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
 	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
 
-	bVisible			= FALSE;
+	setVisible			(FALSE);
 }
 
 BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -374,11 +374,10 @@ void CWeapon::Update		(DWORD dT)
 
 	if (0==H_Parent()) 
 	{
-		//
-		bVisible				= TRUE;
-		bEnabled				= TRUE;
+		setVisible				(true);
+		setEnabled				(true);
 	} else {
-		bEnabled				= FALSE;
+		setEnabled				(false);
 	}
 }
 
@@ -422,13 +421,13 @@ void CWeapon::Hide				()
 
 void CWeapon::signal_HideComplete()
 {
-	bVisible		= FALSE;
+	setVisible		(FALSE);
 }
 
 void CWeapon::Show		()
 {
-	OnShow				();
-	bVisible		= TRUE;
+	OnShow			();
+	setVisible		(TRUE);
 }
 
 void CWeapon::SetDefaults()

@@ -34,24 +34,24 @@ void	CCustomItem::SetState(EItemState e)
 	state = e;
 	switch(state){
 	case esShowing:
-		vScale.set(SC,SC,SC);
-		UpdateTransform();
-		bVisible = true;
-		fStateTime = SHOWING_TIME; 
+		vScale.set			(SC,SC,SC);
+		UpdateTransform		();
+		setVisible			(true);
+		fStateTime			= SHOWING_TIME; 
 		break;
 	case esShow:	
-		bVisible = true;
+		setVisible			(true);
 		break;
 	case esHidding:	
-		pSounds->PlayAtPos(sndTake,this,vPosition);
-		vScale.set(SM,SM,SM);
-		UpdateTransform();
-		bVisible = true;
-		fStateTime = HIDDING_TIME; 
+		pSounds->PlayAtPos	(sndTake,this,vPosition);
+		vScale.set			(SM,SM,SM);
+		UpdateTransform		();
+		setVisible			(true);
+		fStateTime			= HIDDING_TIME; 
 		break;
 	case esHide:	
-		bVisible = false;
-		fStateTime = TIME_TO_SHOW;
+		setVisible			(false);
+		fStateTime			= TIME_TO_SHOW;
 		break;
 	}
 }

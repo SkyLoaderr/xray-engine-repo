@@ -1071,8 +1071,8 @@ void CAI_Soldier::Die()
 
 	vfAddStateToList(aiSoldierDie);
 	
-	bActive = false;
-	bEnabled = false;
+	setActive	(false);
+	setEnabled	(false);
 }
 
 void CAI_Soldier::OnTurnOver()

@@ -174,8 +174,8 @@ void CAI_Rat::net_Import(NET_Packet& P)
 		NET_WasInterpolating	= TRUE;
 	}
 
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 }
 
 void CAI_Rat::Exec_Movement	( float dt )

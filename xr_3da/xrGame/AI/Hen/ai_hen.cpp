@@ -478,10 +478,10 @@ void CAI_Hen::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	bActive = false;
-	bEnabled = false;
+	setActive		(false);
+	setEnabled		(false);
 	
-	bStopThinking = true;
+	bStopThinking	= true;
 }
 
 void CAI_Hen::FollowMe()

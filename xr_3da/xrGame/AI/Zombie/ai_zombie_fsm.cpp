@@ -25,11 +25,10 @@ void CAI_Zombie::Die()
 	AI_Path.TravelPath.clear();
 	
 	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	AI_Path.Direction	(dir);
+	SelectAnimation		(clTransform.k,dir,AI_Path.fSpeed);
 
-	//bActive = false;
-	bEnabled = false;
+	setEnabled			(false);
 }
 
 void CAI_Zombie::Jumping()

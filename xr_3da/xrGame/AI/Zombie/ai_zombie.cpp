@@ -163,8 +163,8 @@ void CAI_Zombie::net_Import(NET_Packet& P)
 		NET_WasInterpolating	= TRUE;
 	}
 
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
+	setVisible				(true);
+	setEnabled				(true);
 }
 
 void CAI_Zombie::Exec_Movement	( float dt )

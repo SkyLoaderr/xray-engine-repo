@@ -117,7 +117,7 @@ void CEntity::Load		(LPCSTR section)
 {
 	inherited::Load		(section);
 
-	bVisible			= FALSE;
+	setVisible			(FALSE);
 	CLS_ID				= CLSID_ENTITY;
 	iHealth				= iArmor = 100;
 

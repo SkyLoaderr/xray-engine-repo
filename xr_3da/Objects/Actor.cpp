@@ -107,8 +107,8 @@ void CActor::net_Import(NET_Packet& P)					// import from server
 		NET_WasInterpolating	= TRUE;
 	}
 
-	bVisible						= TRUE;
-	bEnabled						= TRUE;
+	setVisible					(TRUE);
+	setEnabled					(TRUE);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -236,7 +236,6 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
 
 	bAlive				= TRUE;
-	bEnabled			= bLocal?TRUE:FALSE;
 	
 	Weapons->Reset		();
 	
@@ -252,7 +251,8 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
 
-	bActive				= TRUE;
+	setEnabled			(bLocal);
+	setActive			(TRUE);
 
 	patch_frame			= 0;
 	patch_position.set	(vPosition);
@@ -449,7 +449,7 @@ void CActor::ZoneEffect	(float z_amount)
 
 void CActor::Update	(DWORD DT)
 {
-	if (!bEnabled)	return;
+	if (!getEnabled())	return;
 
 	// patch
 	if (patch_frame<patch_frames)	{
@@ -575,7 +575,7 @@ void CActor::Update	(DWORD DT)
 		if (pCamBobbing)						{ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
 	}
 
-	bVisible				= !HUDview	();
+	setVisible				(!HUDview	());
 
 	Weapons->Update			(dt,HUDview());
 

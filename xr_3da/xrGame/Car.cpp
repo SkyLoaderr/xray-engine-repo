@@ -115,7 +115,7 @@ void	CCar::Load					( LPCSTR section )
 BOOL	CCar::net_Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
 	BOOL R = inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
-	bVisible						= TRUE;
+	setVisible						(TRUE);
 	//o_pos.y=1;
 	//o_pos.z=-10;
 	//o_pos.x=0;

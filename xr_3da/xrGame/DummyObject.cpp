@@ -55,7 +55,7 @@ BOOL CDummyObject::net_Spawn(BOOL bLocal, int server_id, Fvector& o_pos, Fvector
 {
 	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
-	bVisible				= TRUE;
+	setVisible				(TRUE);
 
 	UpdateTransform			();
 	clTransform.set			(svTransform);

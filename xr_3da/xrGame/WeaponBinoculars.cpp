@@ -55,7 +55,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
 	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
 
-	bVisible			= FALSE;
+	setVisible			(FALSE);
 
 	// Sounds
 	SoundCreate			(sndShow,		"draw");
@@ -194,7 +194,7 @@ void CWeaponBinoculars::Update			(DWORD T)
 		break;
 	}
 
-	bVisible			= TRUE;
+	setVisible			(TRUE);
 	bPending			= FALSE;
 	
 	// sound fire loop

@@ -28,7 +28,7 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	bEnabled = false;
+	setEnabled	(false);
 	
 	if (m_bFiring) {
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);

@@ -270,8 +270,8 @@ void CCustomMonster::net_Import(NET_Packet& P)
 		NET_WasInterpolating	= TRUE;
 	}
 
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 }
 
 void CCustomMonster::Exec_Physics( float dt )
@@ -460,9 +460,11 @@ void CCustomMonster::eye_pp_s1			( )
 	mFull.mul								(mProject,mView);
 	Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	eye_pp_seen.clear						();
-	pSector->GetObjects						(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
+	CSector* S								= Sector();
+	if (S)	S->GetObjects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End		();
 }
+
 void CCustomMonster::eye_pp_s2			( )
 {
 	eye_pp_stage						++;
@@ -478,7 +480,7 @@ void CCustomMonster::eye_pp_s2			( )
 
 void CCustomMonster::Exec_Visibility	( )
 {
-	if (0==pSector) return;
+	if (0==Sector())				return;
 
 	Device.Statistic.AI_Vis.Begin	();
 	switch (eye_pp_stage%3)	
@@ -634,8 +636,8 @@ BOOL CCustomMonster::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvec
 		N.dwTimeStamp	+= NET_Latency;
 		NET.push_back	(N);
 
-		bVisible		= TRUE;
-		bEnabled		= TRUE;
+		setVisible				(TRUE);
+		setEnabled				(TRUE);
 	} else {
 
 	}
