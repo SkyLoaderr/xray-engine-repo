@@ -62,16 +62,22 @@ void CEditableObject::Render(Fmatrix& parent, int priority, bool strictB2F){
     }
 }
 
-void CEditableObject::RenderSingle(Fmatrix& parent){
-	Render(parent, 0, false);
-	Render(parent, 0, true);
-	Render(parent, 1, false);
+void CEditableObject::RenderSkeletonSingle(Fmatrix& parent)
+{
+	RenderSingle(parent);
+//	for (int i=0; i<4; i++){
+//		Render(parent, 0, false);
+//		Render(parent, 0, true);
+//    }
     if (fraBottomBar->miDrawObjectBones) RenderBones(precalc_identity);
-	Render(parent, 1, true);
-	Render(parent, 2, false);
-	Render(parent, 2, true);
-	Render(parent, 3, false);
-	Render(parent, 3, true);
+}
+
+void CEditableObject::RenderSingle(Fmatrix& parent)
+{
+	for (int i=0; i<4; i++){
+		Render(parent, i, false);
+		Render(parent, i, true);
+    }
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
@@ -96,23 +102,10 @@ void CEditableObject::RenderAnimation(const Fmatrix& parent){
 
 void CEditableObject::RenderBones(const Fmatrix& parent){
 	if (IsSkeleton()){
-		BoneVec& lst = m_Bones;
-    	if (IsSMotionActive()){
-            Fvector R,T;
-            int i=0;
-            for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++, i++){
-	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
-                (*b_it)->Update(T,R);
-            }
-            m_SMParam.Update(Device.fTimeDelta);
-        }else{
-		    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
-        }
-        CalculateAnimation();
-
         // render
         Device.SetTransform(D3DTS_WORLD,parent);
-        Device.SetShader(Device.m_WireShader);
+        Device.SetShader(Device.m_WireShader);      
+		BoneVec& lst = m_Bones;
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
             Fmatrix& M = (*b_it)->LTransform();
             Fvector p1;

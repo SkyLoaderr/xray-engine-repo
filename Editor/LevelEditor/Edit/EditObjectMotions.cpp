@@ -58,6 +58,21 @@ void CEditableObject::RTL_Update( float dT ){
         m_OMParam.Update(dT);
 */
     }
+	if (IsSkeleton()){
+		BoneVec& lst = m_Bones;
+    	if (IsSMotionActive()){
+            Fvector R,T;
+            int i=0;
+            for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++, i++){
+	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
+                (*b_it)->Update(T,R);
+            }
+            m_SMParam.Update(Device.fTimeDelta);
+        }else{
+		    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
+        }
+        CalculateAnimation();
+    }
 }
 
 void CEditableObject::ResetAnimation(bool upd_t){
@@ -126,6 +141,7 @@ void CEditableObject::ClearOMotions(){
 
 void CEditableObject::LoadOMotions(const char* fname){
 	CFileStream F(fname);
+    ClearOMotions();
     // object motions
     m_OMotions.resize(F.Rdword());
 	SetActiveOMotion(0);
@@ -201,22 +217,24 @@ void CEditableObject::SetActiveSMotion(CSMotion* mot){
 #endif
 }
 
-void CEditableObject::RemoveSMotion(const char* name){
+bool CEditableObject::RemoveSMotion(const char* name){
     SMotionVec& lst = m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
         	if (m_ActiveSMotion==*m) SetActiveSMotion(0);
             _DELETE(*m);
         	lst.erase(m);
-            break;
+            return true;
         }
+    return false;
 }
 
-CSMotion* CEditableObject::AppendSMotion(const char* fname){
+CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
 	VERIFY(IsSkeleton());
 	CSMotion* M = LoadSMotion(fname);
     if (M){
 	  	if (CheckBoneCompliance(M)){
+        	M->SetName(name);
 	     	m_SMotions.push_back(M);
         }else{
         	ELog.DlgMsg(mtError,"Motion file '%s' has different bone names. Append failed.",fname);
@@ -249,8 +267,9 @@ void CEditableObject::ClearSMotions(){
     m_SMotions.clear();
 }
 
-void CEditableObject::LoadSMotions(const char* fname){
+bool CEditableObject::LoadSMotions(const char* fname){
 	CFileStream F(fname);
+    ClearSMotions();
     // object motions
     m_SMotions.resize(F.Rdword());
 	SetActiveSMotion(0);
@@ -260,22 +279,24 @@ void CEditableObject::LoadSMotions(const char* fname){
             ELog.DlgMsg(mtError,"Motions has different version. Load failed.");
             _DELETE(*m_it);
             m_SMotions.clear();
-            break;
+            return false;
         }
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
             ELog.DlgMsg(mtError,"Motions file '%s' has different bone names. Load failed.",fname);
             _DELETE(m_it);
-            return;
+            return false;
         }
     }
+	return true;
 }
 
-void CEditableObject::SaveSMotions(const char* fname){
+bool CEditableObject::SaveSMotions(const char* fname){
 	CFS_Memory F;
     F.Wdword		(m_SMotions.size());
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++) (*m_it)->Save(F);
     F.SaveTo		(fname,0);
+    return true;
 }
 
 bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name){

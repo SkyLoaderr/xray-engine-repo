@@ -2,6 +2,7 @@
 #ifndef UIToolsH
 #define UIToolsH
 
+#include "eltree.hpp"
 // refs
 class TfrmProperties;
 class CEditableObject;
@@ -24,8 +25,6 @@ enum EAxis{
 
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
-    TfrmProperties*		m_Props;
-
 	CEditableObject*	m_EditObject;
     bool				m_bModified;
     bool				m_bReady;
@@ -42,6 +41,12 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateCenter;
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
+
+    TElTreeItem*		m_pCycleNode;
+    TElTreeItem*		m_pFXNode;
+	void __fastcall		OnMotionTypeChange	(LPVOID data);
+public:
+    TfrmProperties*		m_Props;
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
@@ -58,13 +63,21 @@ public:
 
     CEditableObject*	CurrentObject		(){return m_EditObject;}
     void				SetCurrentMotion	(LPCSTR name);
-    void				FillPropertiesList	();
+    void				FillBaseProperties	();
+	void				FillMotionProperties();
+    void				PlayMotion			();
+    void				StopMotion			();
+    void				PauseMotion			();
 
     void				ZoomObject			();
     void				ChangeAction		(EAction action);
 
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name);
+    bool				LoadMotions			(LPCSTR name);
+    bool				SaveMotions			(LPCSTR name);
+    bool				AppendMotion		(LPCSTR name, LPCSTR fn);
+    bool				RemoveMotion		(LPCSTR name);
     void				Reload				();
     void				ApplyChanges		();
 

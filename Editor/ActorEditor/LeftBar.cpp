@@ -10,6 +10,8 @@
 #include "FolderLib.h"
 #include "EditObject.h"
 #include "Motion.h"
+#include "PropertiesList.h"
+#include "BonePart.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -58,6 +60,61 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     DragItem = 0;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
+
+    for (int i=5; i>=0; i--)
+    {
+		AnsiString recent_fn= fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
+        if (!recent_fn.IsEmpty()) AppendRecentFile(recent_fn.c_str());
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::AppendRecentFile(LPCSTR name)
+{
+	R_ASSERT(miRecentFiles->Count<=5);
+
+	for (int i = 0; i < miRecentFiles->Count; i++)
+    	if (miRecentFiles->Items[i]->Caption==name){
+        	miRecentFiles->Items[i]->MenuIndex = 0;
+            return;
+		}
+
+	if (miRecentFiles->Count==5) miRecentFiles->Remove(miRecentFiles->Items[4]);
+
+    TMenuItem *MI = new TMenuItem(0);
+    MI->Caption = name;
+    MI->OnClick = miRecentFilesClick;
+    MI->Tag		= 0x1001;
+    miRecentFiles->Insert(0,MI);
+
+    miRecentFiles->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
+{
+	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
+    AnsiString fn = MI->Caption;
+    if (FS.Exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(DWORD)fn.c_str());
+    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
+{
+    Tools.m_Props->SaveColumnWidth(fsStorage);
+	for (int i = 0; i < miRecentFiles->Count; i++)
+	{
+		TMenuItem* MI = miRecentFiles->Items[i];
+		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),MI->Caption);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
+{
+    Tools.m_Props->RestoreColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -127,7 +184,7 @@ void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderFileMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebActorMotionsFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	ShowPPMenu(pmEngineShadersFile,Sender);
@@ -195,18 +252,18 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
 {
-/*    TElTreeItem* pNode = tvParticles->Selected;
+    TElTreeItem* pNode = tvMotions->Selected;
     if (pNode){
 		AnsiString full_name;
     	if (FOLDER::IsFolder(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) Tools.RemovePS(full_name.c_str());
+                	if (FOLDER::IsObject(item)) Tools.RemoveMotion(full_name.c_str());
                 }
-				Tools.ResetCurrentPS();
+//				Tools.ResetCurrentPS();
 	            pNode->Delete();
                 Tools.Modified();
         	}
@@ -214,8 +271,8 @@ void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
     	if (FOLDER::IsObject(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				FOLDER::MakeName(pNode,0,full_name,false);
-	            Tools.RemovePS(full_name.c_str());
-				Tools.ResetCurrentPS();
+	            Tools.RemoveMotion(full_name.c_str());
+//				Tools.ResetCurrentPS();
 	            pNode->Delete();
                 Tools.Modified();
         	}
@@ -223,7 +280,16 @@ void __fastcall TfraLeftBar::ebParticleShaderRemoveClick(TObject *Sender)
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
-*/
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebMotionsClearClick(TObject *Sender)
+{
+	if (Tools.CurrentObject()){
+    	CEditableObject* object=Tools.CurrentObject();
+    	object->ClearSMotions();
+        UpdateMotionList();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -239,7 +305,7 @@ void __fastcall TfraLeftBar::tvMotionsItemFocused(TObject *Sender)
 void __fastcall TfraLeftBar::tvMotionsKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-	if (Key==VK_DELETE) ebParticleShaderRemoveClick(Sender);
+	if (Key==VK_DELETE) ebMotionsRemoveClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -282,13 +348,21 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebPSCreateClick(TObject *Sender)
+void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
 {
-/*    AnsiString folder;
-	FOLDER::MakeName(tvParticles->Selected,0,folder,true);
-    PS::SDef* S = Tools.AppendPS(folder.IsEmpty()?0:folder.c_str(),0);
-	Tools.SetCurrentPS(S);
-*/	Tools.Modified();
+    AnsiString folder,nm,fn,full_name;
+    if (FS.GetOpenName(FS.m_SMotion,fn)){
+	    TElTreeItem* node=0;
+    	if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
+    		node = tvMotions->Selected;
+        FOLDER::MakeName(node,0,folder,true);
+        FOLDER::GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(fn),"").c_str());
+        full_name = folder+nm;
+        if (Tools.AppendMotion(full_name.c_str(),fn.c_str())){
+        	tvMotions->Selected = FOLDER::AppendObject(tvMotions,full_name.c_str());
+    	    Tools.Modified();
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -306,7 +380,7 @@ void __fastcall TfraLeftBar::tvMotionsDragOver(TObject *Sender,
 {
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
 	TElTreeItem* tgt;
-    TElTreeItem* src=DragItem;
+    TElTreeItem* src=DragItem;          
     TSTItemPart IP;
     int HCol;
     if (!DragItem) Accept = false;
@@ -390,29 +464,45 @@ void TfraLeftBar::UpdateMotionList()
     	for (SMotionIt it=lst.begin(); it!=lst.end(); it++)
         	FOLDER::AppendObject(tvMotions,(*it)->Name());
     }
+    UpdateProperties();
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::UpdateMotionProperties()
+void TfraLeftBar::UpdateProperties()
 {
 	if (Tools.CurrentObject()){
     	paProperties->Enabled = true;
-        Tools.FillPropertiesList();
+        Tools.FillBaseProperties();
+        Tools.FillMotionProperties();
     }else{
     	paProperties->Enabled = false;
     }
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebCurrentPSPlayClick(TObject *Sender)
+void TfraLeftBar::UpdateMotionProperties()
 {
-//	Tools.PlayCurrentPS();
+	if (Tools.CurrentObject()){
+        Tools.FillMotionProperties();
+    }
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebCurrentPSStopClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebCurrentPlayClick(TObject *Sender)
 {
-//	Tools.StopCurrentPS();
+	Tools.PlayMotion();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCurrentStopClick(TObject *Sender)
+{
+	Tools.StopMotion();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebCurrentPauseClick(TObject *Sender)
+{
+	Tools.PauseMotion();
 }
 //---------------------------------------------------------------------------
 
@@ -425,7 +515,6 @@ void __fastcall TfraLeftBar::Import1Click(TObject *Sender)
 void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_LOAD );
-    UpdateMotionList();
 }
 //---------------------------------------------------------------------------
 
@@ -440,4 +529,24 @@ void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 	UI.Command( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
+
+
+void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
+{
+	frmBonePart->Run(Tools.CurrentObject());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::LoadClick(TObject *Sender)
+{
+	UI.Command( COMMAND_LOAD_MOTIONS );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::miSaveMotionsClick(TObject *Sender)
+{
+	UI.Command( COMMAND_SAVE_MOTIONS );
+}
+//---------------------------------------------------------------------------
+
 

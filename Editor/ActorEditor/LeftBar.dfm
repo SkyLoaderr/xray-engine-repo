@@ -2,14 +2,14 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 654
+  Height = 662
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
   VertScrollBar.Style = ssHotTrack
   VertScrollBar.Tracking = True
   Align = alClient
-  Color = clBtnFace
+  Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 654
+    Height = 662
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -30,6 +30,15 @@ object fraLeftBar: TfraLeftBar
     Constraints.MaxWidth = 212
     Constraints.MinWidth = 212
     TabOrder = 0
+    object Splitter1: TSplitter
+      Left = 1
+      Top = 308
+      Width = 210
+      Height = 3
+      Cursor = crVSplit
+      Align = alBottom
+      Beveled = True
+    end
     object paScene: TPanel
       Left = 1
       Top = 1
@@ -152,7 +161,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 192
+      Height = 197
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -174,13 +183,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 161
+        Height = 166
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 160
+          Top = 165
           Width = 208
           Height = 1
           Align = alBottom
@@ -188,7 +197,7 @@ object fraLeftBar: TfraLeftBar
         end
         object Bevel1: TBevel
           Left = 0
-          Top = 34
+          Top = 49
           Width = 208
           Height = 1
           Align = alTop
@@ -196,9 +205,9 @@ object fraLeftBar: TfraLeftBar
         end
         object tvMotions: TElTree
           Left = 0
-          Top = 35
+          Top = 50
           Width = 208
-          Height = 125
+          Height = 115
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -288,14 +297,14 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 0
           Width = 208
-          Height = 34
+          Height = 49
           Align = alTop
           BevelOuter = bvNone
           Color = 10528425
           TabOrder = 1
-          object ebEngineShaderRemove: TExtBtn
+          object ebMotionsRemove: TExtBtn
             Left = 69
-            Top = 18
+            Top = 34
             Width = 69
             Height = 15
             Align = alNone
@@ -311,11 +320,11 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
-            OnClick = ebParticleShaderRemoveClick
+            OnClick = ebMotionsRemoveClick
           end
-          object ebEngineShaderClone: TExtBtn
+          object ebMotionsClear: TExtBtn
             Left = 138
-            Top = 18
+            Top = 34
             Width = 69
             Height = 15
             Align = alNone
@@ -331,8 +340,9 @@ object fraLeftBar: TfraLeftBar
             Font.Style = []
             Margin = 13
             ParentFont = False
+            OnClick = ebMotionsClearClick
           end
-          object ebEngineShaderFile: TExtBtn
+          object ebActorMotionsFile: TExtBtn
             Left = 1
             Top = 2
             Width = 205
@@ -362,11 +372,11 @@ object fraLeftBar: TfraLeftBar
             Margin = 3
             ParentFont = False
             Spacing = 3
-            OnMouseDown = ebEngineShaderFileMouseDown
+            OnMouseDown = ebActorMotionsFileMouseDown
           end
-          object ebCShaderCreate: TExtBtn
+          object ebMotionsAppend: TExtBtn
             Left = 1
-            Top = 18
+            Top = 34
             Width = 68
             Height = 15
             Align = alNone
@@ -385,13 +395,36 @@ object fraLeftBar: TfraLeftBar
             Margin = 13
             ParentFont = False
             Spacing = 3
-            OnClick = ebPSCreateClick
+            OnClick = eMotionsAppendClick
+          end
+          object ebBonePart: TExtBtn
+            Left = 1
+            Top = 18
+            Width = 205
+            Height = 15
+            Align = alNone
+            BevelShow = False
+            HotTrack = True
+            HotColor = 15790320
+            CloseButton = False
+            CloseWidth = 24
+            Caption = 'Bone Parts'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            Kind = knMinimize
+            Margin = 13
+            ParentFont = False
+            Spacing = 3
+            OnClick = ebBonePartClick
           end
         end
       end
       object paAction: TPanel
         Left = 1
-        Top = 175
+        Top = 180
         Width = 208
         Height = 16
         Align = alBottom
@@ -422,14 +455,13 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 303
+      Top = 311
       Width = 210
       Height = 350
-      Hint = 'Scene commands'
       Align = alBottom
       Color = 10528425
       ParentShowHint = False
-      ShowHint = True
+      ShowHint = False
       TabOrder = 2
       object Label2: TLabel
         Left = 1
@@ -475,11 +507,19 @@ object fraLeftBar: TfraLeftBar
         Align = alBottom
         Shape = bsLeftLine
       end
-      object paPSProps: TPanel
+      object Bevel3: TBevel
         Left = 1
         Top = 14
         Width = 208
-        Height = 334
+        Height = 1
+        Align = alTop
+        Shape = bsLeftLine
+      end
+      object paPSProps: TPanel
+        Left = 1
+        Top = 15
+        Width = 208
+        Height = 333
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -488,12 +528,14 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 261
+      Top = 266
       Width = 210
       Height = 42
       Hint = 'Scene commands'
       Align = alBottom
       Color = 10528425
+      Constraints.MaxHeight = 42
+      Constraints.MinHeight = 42
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
@@ -533,10 +575,10 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object ebCurrentPSPlay: TExtBtn
+      object ebCurrentPlay: TExtBtn
         Left = 2
         Top = 19
-        Width = 31
+        Width = 25
         Height = 19
         Align = alNone
         BevelShow = False
@@ -550,26 +592,26 @@ object fraLeftBar: TfraLeftBar
           C2010000424DC20100000000000036000000280000000C0000000B0000000100
           1800000000008C010000120B0000120B00000000000000000000FFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFEBEBEBA7A7A7E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFBABABA0000005050508E8E8EEDEDEDFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFA7A7A7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFBABABA0000005050508E8E8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFBABABA0000000000000000004F4F4F7B7B7BFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000000000000000000008080828
           2828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA000000000000000000000000
           0000000000001212121F1F1FC6C6C6FFFFFFFFFFFFBABABA0000000000000000
           00000000080808282828898989FFFFFFFFFFFFFFFFFFFFFFFFBABABA00000000
           00000000004F4F4F7B7B7BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBABABA
-          0000005050508E8E8EEDEDEDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFEBEBEBA7A7A7E0E0E0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          0000005050508E8E8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFA7A7A7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFF}
         ParentFont = False
         FlatAlwaysEdge = True
-        OnClick = ebCurrentPSPlayClick
+        OnClick = ebCurrentPlayClick
       end
-      object ebCurrentPSStop: TExtBtn
-        Left = 33
+      object ebCurrentStop: TExtBtn
+        Left = 52
         Top = 19
-        Width = 31
+        Width = 25
         Height = 19
         Align = alNone
         BevelShow = False
@@ -583,7 +625,7 @@ object fraLeftBar: TfraLeftBar
           9E010000424D9E0100000000000036000000280000000C0000000A0000000100
           18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFDDDDDDA5A5A5ADADADADADADADADADADADADA5A5A5DDDDDDFFFFFFFF
+          FFFFFFFFFFFFFFA5A5A5ADADADADADADADADADADADADA5A5A5FFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFF969696000000000000000000000000000000000000969696
           FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000000000000000000000000000
           00969696FFFFFFFFFFFFFFFFFFFFFFFF96969600000000000000000000000000
@@ -591,17 +633,17 @@ object fraLeftBar: TfraLeftBar
           000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF9696960000000000
           00000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF96969600
           0000000000000000000000000000000000969696FFFFFFFFFFFFFFFFFFFFFFFF
-          DDDDDDA5A5A5ADADADADADADADADADADADADA5A5A5DDDDDDFFFFFFFFFFFFFFFF
+          FFFFFFA5A5A5ADADADADADADADADADADADADA5A5A5FFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFF}
         ParentFont = False
         FlatAlwaysEdge = True
-        OnClick = ebCurrentPSStopClick
+        OnClick = ebCurrentStopClick
       end
       object lbCurFrames: TMxLabel
-        Left = 113
+        Left = 129
         Top = 15
-        Width = 95
+        Width = 79
         Height = 13
         AutoSize = False
         Caption = '...'
@@ -614,9 +656,9 @@ object fraLeftBar: TfraLeftBar
         ShadowColor = 10528425
       end
       object lbCurFPS: TMxLabel
-        Left = 113
+        Left = 129
         Top = 28
-        Width = 95
+        Width = 79
         Height = 13
         AutoSize = False
         Caption = '...'
@@ -629,7 +671,7 @@ object fraLeftBar: TfraLeftBar
         ShadowColor = 10528425
       end
       object RxLabel2: TMxLabel
-        Left = 65
+        Left = 81
         Top = 28
         Width = 25
         Height = 13
@@ -643,7 +685,7 @@ object fraLeftBar: TfraLeftBar
         ShadowColor = 10528425
       end
       object RxLabel1: TMxLabel
-        Left = 65
+        Left = 81
         Top = 15
         Width = 39
         Height = 13
@@ -656,6 +698,38 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         ShadowColor = 10528425
       end
+      object ebCurrentPause: TExtBtn
+        Left = 27
+        Top = 19
+        Width = 25
+        Height = 19
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          9E010000424D9E0100000000000036000000280000000B0000000A0000000100
+          18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+          FFFFFFFFA5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF00
+          0000FFFFFF969696000000000000969696FFFFFF969696000000000000969696
+          FFFFFF000000FFFFFF969696000000000000969696FFFFFF9696960000000000
+          00969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF96969600
+          0000000000969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF
+          969696000000000000969696FFFFFF000000FFFFFF9696960000000000009696
+          96FFFFFF969696000000000000969696FFFFFF000000FFFFFF96969600000000
+          0000969696FFFFFF969696000000000000969696FFFFFF000000FFFFFFFFFFFF
+          A5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF000000FFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        ParentFont = False
+        FlatAlwaysEdge = True
+        OnClick = ebCurrentPauseClick
+      end
     end
   end
   object fsStorage: TFormStorage
@@ -663,13 +737,16 @@ object fraLeftBar: TfraLeftBar
     Options = []
     RegistryRoot = prLocalMachine
     Version = 4
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
       'paParticles.Tag'
       'paParticles.Height'
       'paCurrentPS.Tag'
-      'paCurrentPS.Height')
+      'paCurrentPS.Height'
+      'paProperties.Height')
     StoredValues = <>
     Left = 65529
     Top = 65526
@@ -689,15 +766,18 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 86
-    object Save1: TMenuItem
+    object miLoadMotions: TMenuItem
       Caption = 'Load'
+      OnClick = LoadClick
     end
-    object Reload1: TMenuItem
+    object miSaveMotions: TMenuItem
       Caption = 'Save'
+      OnClick = miSaveMotionsClick
     end
   end
   object pmPreviewObject: TMxPopupMenu
     Alignment = paCenter
+    AutoHotkeys = maManual
     AutoPopup = False
     TrackButton = tbLeftButton
     MarginStartColor = 13158600
@@ -724,6 +804,13 @@ object fraLeftBar: TfraLeftBar
       OnClick = SaevAs1Click
     end
     object N5: TMenuItem
+      Caption = '-'
+    end
+    object miRecentFiles: TMenuItem
+      Caption = 'Open Recent'
+      Enabled = False
+    end
+    object N2: TMenuItem
       Caption = '-'
     end
     object Import1: TMenuItem

@@ -10,7 +10,6 @@
 #include "main.h"
 #include "UI_Tools.h"
 #include "Library.h"
-#include "PSLibrary.h"
 #include "D3DUtils.h"
 
 #include "UI_Main.h"
@@ -30,7 +29,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    fraTopBar   		= new TfraTopBar(0);
 		//----------------
         if (UI.OnCreate()){
-            PSLib.OnCreate	();
             if (!Tools.OnCreate()){
                 bRes=false;
             	break;
@@ -46,7 +44,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	}break;
 	case COMMAND_DESTROY:
 		Tools.OnDestroy	();
-		PSLib.OnDestroy	();
 		Lib.OnDestroy	();
         UI.OnDestroy	();
 		//----------------
@@ -61,6 +58,27 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->ShowModal();
         break;
+	case COMMAND_LOAD_MOTIONS:{
+    	if (!Tools.CurrentObject()){
+        	ELog.DlgMsg(mtError,"Load any object before.");
+        	bRes=false;
+        	break;
+        }
+		AnsiString fn;
+		if (FS.GetOpenName(FS.m_SMotions,fn)){
+        	Tools.LoadMotions(fn.c_str());
+            fraLeftBar->UpdateMotionList();
+        }
+        }break;
+	case COMMAND_SAVE_MOTIONS:{
+    	if (!Tools.CurrentObject()){
+        	ELog.DlgMsg(mtError,"Load any object before.");
+        	bRes=false;
+        	break;
+        }
+		AnsiString fn;
+		if (FS.GetSaveName(FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
+        }break;
     case COMMAND_SAVEAS:{
 		AnsiString fn = m_LastFileName;
 		if (FS.GetSaveName(FS.m_Objects,fn)) Command(COMMAND_SAVE, (DWORD)fn.c_str());
@@ -101,6 +119,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             	break;
             }
 			strcpy(m_LastFileName,fn.c_str());
+			fraLeftBar->AppendRecentFile(m_LastFileName);
+		    fraLeftBar->UpdateMotionList();
+        	Command(COMMAND_UPDATE_CAPTION);
         }
     	}break;
 	case COMMAND_CLEAR:
@@ -181,6 +202,7 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
 		if (Key=='S') 				Command(COMMAND_SAVE);
+        else if (Key=='O')			Command(COMMAND_LOAD);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
@@ -206,6 +228,7 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
         if (Key=='S')				Command(COMMAND_SAVE);
+        else if (Key=='O')			Command(COMMAND_LOAD);
     }
     if (Key==VK_OEM_3)		  		Command(COMMAND_RENDER_FOCUS);
 }

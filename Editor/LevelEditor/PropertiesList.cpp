@@ -10,6 +10,7 @@
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
 #include "ChoseForm.h"
+#include "FolderLib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -17,12 +18,21 @@
 
 const LPSTR BOOLString[2]={"False","True"};
 
+LPCSTR 	TokenValue::GetValue	(int id){
+	for(int i=0; token[i].name; i++) if (token[i].id==id) return token[i].name;
+	return 0;
+}
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title)
+void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
 	bFillMode=true;
 	tvProperties->IsUpdating = true;
-    tvProperties->Items->Clear();
+    if (section){
+    	TElTreeItem* node = FOLDER::FindFolder(tvProperties,section);
+        if (node) node->Delete();
+    }else{
+	    tvProperties->Items->Clear();
+    }
     Caption = title;
 }
 //---------------------------------------------------------------------------
@@ -39,7 +49,7 @@ void __fastcall TfrmProperties::ClearProperties()
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
     tvProperties->IsUpdating = false;
-    for (LPVOIDIt it=m_Params.begin(); it!=m_Params.end(); it++)
+    for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
     	_DELETE(*it);
 	m_Params.clear();
 }
@@ -93,14 +103,6 @@ void __fastcall TfrmProperties::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-LPCSTR GetToken2(xr_token* token_list, int id)
-{
-	for(int i=0; token_list[i].name; i++)
-    	if (token_list[i].id==id) return token_list[i].name;
-    return 0;
-}
-
-
 TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPVOID value){
 	R_ASSERT(bFillMode);
     TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
@@ -111,11 +113,12 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
 
     switch (type){
     case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_TYPE:		CS->CellType = sftUndef;	TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
+    case PROP_MARKER2:	CS->CellType = sftUndef;	TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
     case PROP_WAVE:		CS->CellType = sftUndef;	TI->ColumnText->Add("[Wave]");	CS->Style = ElhsOwnerDraw; break;
     case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add(BOOLString[*(LPDWORD)value]);	CS->Style = ElhsOwnerDraw; break;
     case PROP_FLAG:{	CS->CellType = sftUndef;	FlagValue* F=(FlagValue*)value; TI->ColumnText->Add(BOOLString[!!((*F->val)&F->mask)]); CS->Style = ElhsOwnerDraw; }break;
-    case PROP_TOKEN:{	CS->CellType = sftUndef;	TokenValue*T=(TokenValue*)value;TI->ColumnText->Add(GetToken2(T->token,*T->val));		CS->Style = ElhsOwnerDraw; }break;
+    case PROP_TOKEN:{	CS->CellType = sftUndef;	TokenValue*T=(TokenValue*)value;TI->ColumnText->Add(T->GetValue(*T->val));		CS->Style = ElhsOwnerDraw; }break;
+    case PROP_LIST:{	CS->CellType = sftUndef;	ListValue*T=(ListValue*)value;TI->ColumnText->Add(T->val);		CS->Style = ElhsOwnerDraw; }break;
     case PROP_FLOAT:{  	CS->CellType = sftFloating;	FloatValue*F=(FloatValue*)value;
     					AnsiString s,fmt; fmt.sprintf("%%.%df",F->dec); s.sprintf(fmt.c_str(),*F->val);
                         TI->ColumnText->Add(s); CS->Style = ElhsOwnerDraw; }break;
@@ -164,7 +167,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_SH_ENGINE:
         case PROP_SH_COMPILE:
         case PROP_WAVE:{
-            R.Right	-=	10;
+            R.Right	-=	1;
             R.Left 	+= 	1;
             AnsiString name = Item->ColumnText->Strings[0];
     		DrawText	(Surface->Handle, name.IsEmpty()?"[none]":name.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
@@ -182,6 +185,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         }break;
         case PROP_FLAG:
 		case PROP_TOKEN:
+        case PROP_LIST:
         case PROP_BOOL:
             R.Right	-=	10;
             R.Left 	+= 	1;
@@ -243,6 +247,17 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+		case PROP_LIST:{
+            pmEnum->Items->Clear();
+            ListValue* T = (ListValue*)item->Data;
+            AStringVec& lst = T->items;
+			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
+                TMenuItem* mi = new TMenuItem(0);
+                mi->Caption = *it;
+                mi->OnClick = PMItemClick;
+                pmEnum->Items->Add(mi);
+            }
+        }break;
         case PROP_WAVE: 	CustomClick(item); 	break;
         case PROP_COLOR: 	ColorClick(item); 	break;
         case PROP_TEXTURE: 	TextureClick(item);	break;
@@ -258,6 +273,7 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         };
         switch(type){
         case PROP_TOKEN:
+        case PROP_LIST:
         case PROP_FLAG:
 		case PROP_BOOL:
             TPoint P; P.x = X; P.y = Y;
@@ -299,6 +315,17 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
             if (*V->val	!= token_list[mi->MenuIndex].id){
 	            item->ColumnText->Strings[0]= mi->Caption;
     	        *V->val		= token_list[mi->MenuIndex].id;
+                if (V->OnAfterOperation) V->OnAfterOperation(V);
+		    	bModified 	= true;
+            }
+        }break;
+		case PROP_LIST:{
+        	ListValue* V				= (ListValue*)item->Data;
+            AStringVec& lst				= V->items;
+            if (strcmp(V->val,lst[mi->MenuIndex].c_str())){
+	            item->ColumnText->Strings[0]= mi->Caption;
+    	        strcpy(V->val, lst[mi->MenuIndex].c_str());
+                if (V->OnAfterOperation) V->OnAfterOperation(V);
 		    	bModified 	= true;
             }
         }break;
@@ -372,7 +399,7 @@ void __fastcall TfrmProperties::ShaderCompileClick(TElTreeItem* item)
 
 void __fastcall TfrmProperties::STextureClick(TElTreeItem* item)
 {
-	VERIFY(PROP_TEXTURE==item->Tag);
+	VERIFY(PROP_S_TEXTURE==item->Tag);
     AnsiString& tex = *(AnsiString*)item->Data;
     LPCSTR name = TfrmChoseItem::SelectTexture(false,tex.c_str());
     if (name&&name[0]&&strcmp(tex.c_str(),name)!=0){
@@ -385,7 +412,7 @@ void __fastcall TfrmProperties::STextureClick(TElTreeItem* item)
 
 void __fastcall TfrmProperties::SShaderEngineClick(TElTreeItem* item)
 {
-	VERIFY(PROP_SH_ENGINE==item->Tag);
+	VERIFY(PROP_S_SH_ENGINE==item->Tag);
     AnsiString& sh = *(AnsiString*)item->Data;
     LPCSTR name = TfrmChoseItem::SelectShader(sh.c_str());
     if (name&&name[0]&&strcmp(sh.c_str(),name)!=0){
@@ -398,7 +425,7 @@ void __fastcall TfrmProperties::SShaderEngineClick(TElTreeItem* item)
 
 void __fastcall TfrmProperties::SShaderCompileClick(TElTreeItem* item)
 {
-	VERIFY(PROP_SH_COMPILE==item->Tag);
+	VERIFY(PROP_S_SH_COMPILE==item->Tag);
     AnsiString& sh = *(AnsiString*)item->Data;
     LPCSTR name = TfrmChoseItem::SelectShaderXRLC(sh.c_str());
     if (name&&name[0]&&strcmp(sh.c_str(),name)!=0){
@@ -480,6 +507,7 @@ void TfrmProperties::ApplyLWNumber()
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
             if (*V->val != seNumber->Value){
                 *V->val 	= seNumber->Value;
+                if (V->OnAfterOperation) V->OnAfterOperation(V);
                 bModified 	= true;
             }
             item->ColumnText->Strings[0] = seNumber->Text;
@@ -488,6 +516,7 @@ void TfrmProperties::ApplyLWNumber()
 	        FloatValue* V 	= (FloatValue*)item->Data; VERIFY(V);
 		    if (!fsimilar(*V->val,seNumber->Value)){
                 *V->val 	= seNumber->Value;
+                if (V->OnAfterOperation) V->OnAfterOperation(V);
         	    bModified = true;
 		    }
             item->ColumnText->Strings[0] = seNumber->Text;
@@ -531,7 +560,7 @@ void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance
     DWORD type;
     char key[255];
     TElTreeItem* M=0;
-    TElTreeItem* node;
+    TElTreeItem* node;  
 /*
     while (!data.Eof()){
         int sz=0;

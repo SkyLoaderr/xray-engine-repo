@@ -102,9 +102,7 @@ USEUNIT("UI_MainExtern.cpp");
 USEUNIT("Editor\ImageThumbnail.cpp");
 USEUNIT("Editor\ImageManager.cpp");
 USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
-USEUNIT("Editor\PSLibrary.cpp");
 USEUNIT("Engine\xrParticlesLib.cpp");
-USEUNIT("Editor\PSObject.cpp");
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("Editor\TLSPRITE.CPP");
 USEUNIT("Editor\CustomObject.cpp");
@@ -119,6 +117,7 @@ USEOBJ("Intermediate\_math.obj");
 USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
 USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
+USEFORM("BonePart.cpp", frmBonePart);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -144,6 +143,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title = "Actor Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
 		frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);

@@ -168,6 +168,7 @@ DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
+DEFINE_VECTOR(LPCSTR,LPCSTRVec,LPCSTRIt);
 DEFINE_VECTOR(string64,string64Vec,string64It);
 
 #include "FS.h"

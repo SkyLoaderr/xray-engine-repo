@@ -167,12 +167,21 @@ TElTreeItem* FOLDER::AppendObject(TElTree* tv, LPCSTR full_name)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name)
+void FOLDER::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
 {
-	name = "folder";
+	name = pref;
     int cnt = 0;
     while (FindItemInFolder(TYPE_FOLDER,tv,node,name))
-    	name.sprintf("%s_%02d","folder",cnt++);
+    	name.sprintf("%s_%02d",pref,cnt++);
+}
+//---------------------------------------------------------------------------
+
+void FOLDER::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
+{
+	name = pref;
+    int cnt = 0;
+    while (FindItemInFolder(TYPE_OBJECT,tv,node,name))
+    	name.sprintf("%s_%02d",pref,cnt++);
 }
 //---------------------------------------------------------------------------
 

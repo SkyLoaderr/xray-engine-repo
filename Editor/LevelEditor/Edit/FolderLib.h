@@ -18,7 +18,8 @@ namespace FOLDER{
 	TElTreeItem*		AppendObject		(TElTree* tv, LPCSTR full_name);
     TElTreeItem* 		FindObject			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     TElTreeItem* 		FindFolder			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
-    void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name);
+    void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name,LPCSTR pref="folder");
+	void 				GenerateObjectName	(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref="object");
 	LPCSTR		 		GetFolderName		(const AnsiString& full_name, AnsiString& dest);
 	LPCSTR		 		GetObjectName		(const AnsiString& full_name, AnsiString& dest);
 }

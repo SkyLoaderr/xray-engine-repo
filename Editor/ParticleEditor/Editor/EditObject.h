@@ -187,6 +187,7 @@ public:
     IC void			SkeletonPlay 			()	{m_SMParam.Play();}
     IC void			SkeletonStop 			()	{m_SMParam.Stop();}
     IC void			SkeletonPause 			()	{m_SMParam.Pause();}
+
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 	IC bool 		IsDynamic     			()	{return (m_DynamicObject!=0); }
@@ -219,7 +220,8 @@ public:
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(Fmatrix& parent);
-                                                                             
+	void 			RenderSkeletonSingle	(Fmatrix& parent);
+
     // update methods
 	void 			RTL_Update				(float dT);
 	void 			UpdateBox				();
@@ -244,13 +246,13 @@ public:
     void			LoadOMotions			(const char* fname);
     void			SaveOMotions			(const char* fname);
 
-    void			RemoveSMotion			(const char* name);
+    bool			RemoveSMotion			(const char* name);
     bool			RenameSMotion			(const char* old_name, const char* new_name);
-    CSMotion*		AppendSMotion			(const char* fname);
+    CSMotion*		AppendSMotion			(LPCSTR name, LPCSTR fname);
     bool			ReloadSMotion			(CSMotion* M, const char* fname);
     void			ClearSMotions			();
-    void			LoadSMotions			(const char* fname);
-    void			SaveSMotions			(const char* fname);
+    bool			LoadSMotions			(const char* fname);
+    bool			SaveSMotions			(const char* fname);
 
     // load/save methods
 	void 			LoadMeshDef				(FSChunkDef *chunk);
