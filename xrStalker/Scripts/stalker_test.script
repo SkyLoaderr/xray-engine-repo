@@ -13,11 +13,13 @@ end
 function main ()
     stalker				= get_level_object ("m_stalker_e0000")
     actor				= get_actor()
+    torch				= get_level_object ("device_torch0000")
 
     stalker:script		(true,stalker_test:script_name());
     
     action				(
 		stalker,
+		object(torch,object.activate),
 		move(move.standing,move.walk,move.line,patrol("way0000")),
 		anim(anim.danger),
 		look(look.path_dir),
