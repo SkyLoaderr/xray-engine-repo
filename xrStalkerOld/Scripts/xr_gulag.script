@@ -1,5 +1,9 @@
 fraction = {}
 
+local i
+
+local gulag_tasks_ltx = ini_file("misc\\gulag_tasks.ltx")
+
 class "fract"
 function fract:__init(name, type, squad, groups)
 	self.name   = name
@@ -55,6 +59,11 @@ function fract:checkNpc(npc)
 		return true
 	end
 
+	if self.type == "test"
+	then
+		return true
+	end
+
 	return false
 end
 
@@ -78,7 +87,7 @@ function fract:calculate()
 	end
 
 	if self.calculateStates ~= nil then 
-		self:changeState(self.calculateStates(self.Object))
+		self:changeState(self.calculateStates(self))
 	end		
 
 	--' Апдейт матюгальника
@@ -104,26 +113,34 @@ function fract:updateJob()
 	end
 
 	for k,v in self.Job do
-		-- проверка на доступность при текущем стейте
+		-- проверка на доступность работы при текущем стейте
 		if availState(v.state, self.state) ~= true then
 			v.object = nil
 		else
 			if v.object == nil and
         	   (v.begin == nil or
 			   game.time() - v.begin > v.idle)	
-			then			
+			then
+				-- назначить на работу свободного человека
+				local f = false
 				for kk,vv in self.Object do
-					if self:getJob(vv) == nil then
+					if ((v.predicate == nil or v.predicate(vv) == true) and self:getJob(vv) == nil) then
 						self:setJob(vv, v) 
-						return
+						f = true
+						break
+						--return
 					end
 				end
-				for i = table.getn(self.Job), k, -1 do
-					if self.Job[i].object ~= nil and
-						self.Job[i].prior < v.prior
-					then 
-						self:setJob(self.Job[i].object, v) 
-						return
+				-- если свободных нету, снять кого-то с наименее важной работы и поставить на эту работу
+				if not f then
+					for i = table.getn(self.Job), k, -1 do
+						if self.Job[i].object ~= nil and self.Job[i].prior < v.prior then 
+							if v.predicate == nil or v.predicate(self.Job[i].object) == true then
+								self:setJob(self.Job[i].object, v)
+								break
+								--return
+							end
+						end
 					end			
 				end				
 			end
@@ -172,7 +189,11 @@ function fract:get_population()
 end
 function fract:setJob(npc, job) 
 	self:clearAllJob(npc)
-	if job.name == "guard" then
+	job.object = npc
+	job.begin  = game.time()
+
+	xr_logic.gulag_activate(npc, gulag_tasks_ltx, job.section, self.name)
+--[[	if job.name == "guard" then
 		job.object = npc
 		job.begin = game.time()
 	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
@@ -214,7 +235,7 @@ function fract:setJob(npc, job)
 		job.object = npc
 		job.begin = game.time()
 			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
-	end
+	end]]
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
@@ -225,7 +246,7 @@ function fract:getJob(npc)
 	if npc == nil then return nil end
 	for k,v in self.Job do
 		if v.object ~= nil and v.object:id() == npc:id() then
-			return v.name
+			return v
 		end
 	end
 	return nil
@@ -236,7 +257,7 @@ function fract:clearAllJob(npc)
 			v.object = nil
 		end
 	end
-	for k,v in xr_motivator.storage[npc:id()] do
+--[[	for k,v in xr_motivator.storage[npc:id()] do
 		if k == "sleeper" or
 		   k == "camper" or
 		   k == "scout" or
@@ -250,7 +271,7 @@ function fract:clearAllJob(npc)
 		then
 			v.enabled = false
 		end
-	end
+	end]]
 end
 function fract:stalkerExist(npc)
 	if self.Object[npc:id()] ~= nil then

@@ -1461,6 +1461,27 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)
 
 	end
+------------------------------------------------------------------------------------
+	if type == "test" then
+		t = { section = "walker1",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "",
+		}
+		table.insert(sj, t)
+		t = { section = "walker2",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "",
+		}
+		table.insert(sj, t)
+		t = { section = "walker3",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "",
+		}
+		table.insert(sj, t)
+	end
 end
 
 function loadStates(gname, type)
@@ -1482,6 +1503,7 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
+
 	if type == "dolg_kamp" then
 		return function()
 			if garbage_monster_attack.raid_proceed() then
@@ -1491,26 +1513,31 @@ function loadStates(gname, type)
 			end
 		end
 	end
+
 	if type == "bandits_camp" then
 		return function()
 			return 0
 		end
 	end
+
 	if type == "dolg_hq" then
 		return function()
 			return 0
 		end
 	end
+
 	if type == "agro_baza" then
 		return function(gulag)
 			return gulag.state
 		end
 	end	
+
 	if type == "mil_merc" then
 		return function(gulag)
 			return gulag.state
 		end
 	end
+
 	if type == "monolith_hq" then
 		return function(gulag)
 			if level.get_time_hours() >= 8 and level.get_time_hours() <= 21 then
@@ -1519,8 +1546,19 @@ function loadStates(gname, type)
 				return 0
 			end
 		end
-	end	
+	end
 
+	if type == "heli_hunt" then
+		return function(gulag)
+			return 0
+		end
+	end
+
+	if type == "test" then
+		return function(gulag)
+			return 0
+		end
+	end
 end
 
 function get_megafone(type, name)
