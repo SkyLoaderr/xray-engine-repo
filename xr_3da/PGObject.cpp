@@ -23,17 +23,21 @@ CPGObject::CPGObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 		R_ASSERT3	(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",ps_name);
 	}
 
-	// registry
-	spatial.sector	= S;
+	// spatial
+	spatial.type			= 0;
+	spatial.sector			= S;
 
 	// sheduled
 	shedule.t_min			= 20;
 	shedule.t_max			= 50;
+	shedule_register		();
 }
 
 //----------------------------------------------------
 CPGObject::~CPGObject()
 {
+	spatial_unregister		();
+	shedule_unregister		();
 }
 
 LPCSTR CPGObject::dbg_ref_name()
@@ -67,12 +71,28 @@ void CPGObject::play_at_pos(const Fvector& pos)
 void CPGObject::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
+
+	// visual
 	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
 	V->OnFrame			(dt);
+
+	// spatial
+	spatial.center		= V->vis.sphere.P;
+	spatial.radius		= V->vis.sphere.R;
+	if (0==spatial.type)	{
+		spatial.type		= STYPE_RENDERABLE;
+		spatial_register	();
+	} else {
+		spatial_move		();
+	}
+
+	// remove???
+	if (m_bAutoRemove && m_iLifeTime<=0)
+		xr_delete(this);
 }
 
-static const Fvector zero_vel	= {0.f,0.f,0.f};
-void CPGObject::SetTransform(const Fmatrix& m)
+static const Fvector zero_vel		= {0.f,0.f,0.f};
+void CPGObject::SetTransform		(const Fmatrix& m)
 {
 	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual);	R_ASSERT(V);
 	V->UpdateParent		(m,zero_vel);

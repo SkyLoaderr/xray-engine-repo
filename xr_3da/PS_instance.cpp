@@ -8,17 +8,17 @@
 
 CPS_Instance::CPS_Instance			()
 {
-	m_iLifeTime				= int_max;
-	m_bAutoRemove			= TRUE;
+	m_iLifeTime					= int_max;
+	m_bAutoRemove				= TRUE;
 }
 //----------------------------------------------------
 
 CPS_Instance::~CPS_Instance			()
 {
-	Render->model_Delete	(renderable.visual);
+	Render->model_Delete		(renderable.visual);
 }
 //----------------------------------------------------
 void CPS_Instance::shedule_Update	(u32 dt)
 {
-	m_iLifeTime		-= dt;
+	m_iLifeTime					-= dt;
 }
