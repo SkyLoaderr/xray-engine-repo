@@ -357,8 +357,6 @@ void CCustomMonster::UpdateCL	()
 { 
 	if	(NET.empty())	return;
 
-//	Log("- CAI: UpdateCL");
-
 	// distinguish interpolation/extrapolation
 	DWORD	dwTime		= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();

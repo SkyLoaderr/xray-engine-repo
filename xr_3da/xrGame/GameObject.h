@@ -26,6 +26,7 @@ public:
 	virtual void			Sector_Detect		();
 	virtual void			OnVisible			();
 	virtual float			Ambient				();
+	virtual void			UpdateCL			();
 
 	// State flags
 	virtual BOOL			net_Relevant		()	{ return net_Local && getActive();	}	// send messages only if active and local

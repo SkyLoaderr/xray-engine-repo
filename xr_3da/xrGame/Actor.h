@@ -22,10 +22,6 @@ class CEffectorBobbing;
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch
-
-#ifdef DEBUG
-	,public pureRender
-#endif
 {
 private:
 	typedef CEntityAlive	inherited;
