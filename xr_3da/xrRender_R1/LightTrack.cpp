@@ -103,7 +103,7 @@ void	CROS_impl::update	(IRenderable* O)
 	VERIFY				(dynamic_cast<CROS_impl*>(O->renderable.ROS));
 
 	// select sample
-	Fvector	position;	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);
+	Fvector	position;	O->renderable.xform.transform_tiny	(position,O->renderable.visual->vis.sphere.P);
 	float	radius;		radius = O->renderable.visual->vis.sphere.R;
 
 	// sun-tracing
@@ -136,14 +136,14 @@ void	CROS_impl::update	(IRenderable* O)
 	if		((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	bTraceLights = FALSE;
 	if		(bTraceLights)	{
 		// Select nearest lights
-		Fvector					bb_size	=	{fRadius,fRadius,fRadius};
+		Fvector					bb_size	=	{radius,radius,radius};
 		g_SpatialSpace->q_box				(RImplementation.lstSpatial,0,STYPE_LIGHTSOURCE,pos,bb_size);
 		for (u32 o_it=0; o_it<RImplementation.lstSpatial.size(); o_it++)	{
 			ISpatial*	spatial		= RImplementation.lstSpatial[o_it];
 			light*		source		= (light*)	(spatial->dcast_Light());
 			VERIFY		(source);	// sanity check
-			float	R				= fRadius+source->range;
-			if (pos.distance_to(source->position) < R)	add		(source);
+			float	R				= radius+source->range;
+			if (position.distance_to(source->position) < R)		add	(source);
 		}
 
 		// Trace visibility
