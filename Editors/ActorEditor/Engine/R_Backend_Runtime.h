@@ -68,7 +68,7 @@ IC void CBackend::set_Textures			(STextureList* _T)
 		T	= _T;
 		for (u32 it=0; it<T->size(); it++)
 		{
-			CTexture*	surf = (*T)[it];
+			CTexture*	surf = &*((*T)[it]);
 			if (textures[it]!=surf)	{
 				stat.textures	++;
 				textures[it]	=surf;
@@ -91,7 +91,7 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 		if (M)	{
 			for (u32 it=0; it<M->size(); it++)
 			{
-				CMatrix*	mat = (*M)[it];
+				CMatrix*	mat = &*((*M)[it]);
 				if (mat && matrices[it]!=mat)
 				{
 					matrices	[it]	= mat;
@@ -209,7 +209,7 @@ IC void CBackend::set_Shader			(Shader* S, u32 pass)
 
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {
-	set_Format			(_geom->dcl);
+	set_Format			(_geom->dcl._get());
 	set_Vertices		(_geom->vb, _geom->vb_stride);
 	set_Indices			(_geom->ib);
 }

@@ -40,15 +40,7 @@ public:
 		const_float.set(c);
 		const_dword		= c;
 	}
-	IC void			Calculate	()
-	{
-		if (dwFrame==Device.dwFrame)	return;
-		dwFrame		= Device.dwFrame;
-		if (modeProgrammable==dwMode)	return;
-
-		float	t	= Device.fTimeGlobal;
-		set_float	(_R.Calculate(t),_G.Calculate(t),_B.Calculate(t),_A.Calculate(t));
-	}
+	void			Calculate	();
 	IC	BOOL		Similar		(CConstant& C)		// comare by modes and params
 	{
 		if (dwMode!=C.dwMode)	return FALSE;

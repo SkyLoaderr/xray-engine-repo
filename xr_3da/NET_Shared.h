@@ -2,7 +2,6 @@
 
 #include "net_utils.h"
 #include "net_messages.h"
-#include "xrSyncronize.h"
 
 class ENGINE_API IClientStatistic
 {
