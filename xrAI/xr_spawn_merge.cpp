@@ -67,7 +67,7 @@ public:
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
 		strcat					(fName,"\\");
 		m_tpAI_Map				= xr_new<CLevelGraph>(fName);
-		// loading cross table
+		// loading cross table 
 		strcat					(fName,CROSS_TABLE_NAME);
 		m_tpCrossTable			= xr_new<CGameLevelCrossTable>(fName);
 		// loading spawn points
@@ -236,6 +236,7 @@ public:
 				m_tpSpawnPoints[i]->o_Position	= new_position;
 			}
 			u32 dwBest = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).game_vertex_id();
+			VERIFY				(tpGraph->vertex(dwBest)->level_id() == m_dwLevelID);
 			float fCurrentBestDistance = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).distance();
 			if (dwBest == u32(-1)) {
 				string4096 S1;

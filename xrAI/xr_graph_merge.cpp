@@ -365,7 +365,17 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 			Msg			("There is no cross table for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
 			continue;
 		}
-		levels.insert	(CLevelInfo(Ini->r_s32(N,"id"),Ini->r_string(N,"name"),Ini->r_fvector3(N,"offset")));
+		
+		u32				id = Ini->r_s32(N,"id");
+		LPCSTR			S = Ini->r_string(N,"name");
+		{
+			xr_set<CLevelInfo>::const_iterator	I = levels.begin();
+			xr_set<CLevelInfo>::const_iterator	E = levels.end();
+			for ( ; I != E; ++I) {
+				VERIFY3	((*I).id != id,"Duplicated level id in the game.ltx",S);
+			}
+		}
+		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset")));
 	}
 }
 
