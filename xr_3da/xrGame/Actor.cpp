@@ -564,27 +564,22 @@ void CActor::Update	(u32 DT)
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
 			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
-			if (!Local()){
-				Msg("Name: '%s'. STEP play",cName);
-			}
 		}
 		m_fTimeToStep -= dt;
 	}
 
 	// sounds update
-	float	s_k			=	(mstate_real&mcCrouch)?0.75f:1.f;
-	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.75f);
+	float	s_k			=	(mstate_real&mcCrouch)?0.85f:1.f;
+	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.85f);
 	Fvector	s_pos		=	Position	();
 	s_pos.y				+=	.5f;
 	if (sndStep[0].feedback)		{
 		sndStep[0].feedback->SetPosition(Position());
 		sndStep[0].feedback->SetVolume	(s_vol);
-		if (!Local())	Msg("Name: '%s'. LSTEP pos, vol(%f)",cName,s_vol);
 	}
 	if (sndStep[1].feedback)		{
 		sndStep[1].feedback->SetPosition(Position());
 		sndStep[1].feedback->SetVolume	(s_vol);
-		if (!Local())	Msg("Name: '%s'. RSTEP pos, vol(%f)",cName,s_vol);
 	}
 }
 
