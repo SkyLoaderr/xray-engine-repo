@@ -105,9 +105,9 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 // calculating transformation matrix(es) addresses
 // ------------------------------------------------------------------
-	mul			eax,TYPE CBoneInstance			;
+	imul		eax,TYPE CBoneInstance			;
 	add			eax,Bones						;
-	mul			ebx,TYPE CBoneInstance			;
+	imul		ebx,TYPE CBoneInstance			;
 	add			ebx,Bones						;
 // ------------------------------------------------------------------
 // preparing data for lerps
@@ -243,7 +243,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	add			edi,TYPE vertRender				;	// advance dest
 	dec			ecx								;	// ecx = ecx - 1
 	jnz			new_dot							;	// ecx==0 ? exit : goto new_dot
-	jmp short	exit							;
+	jmp short	exit_loop						;
 
 // ------------------------------------------------------------------
 	ALIGN		16								;
@@ -251,7 +251,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 // calculating transformation matrix 0 addresses
 // ------------------------------------------------------------------
-	mul			eax,TYPE CBoneInstance			;
+	imul		eax,TYPE CBoneInstance			;
 	add			eax,Bones						;
 // ------------------------------------------------------------------
 // transform tiny m 0
@@ -317,5 +317,5 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	dec			ecx								;	// ecx = ecx - 1
 	jnz			new_dot							;	// ecx==0 ? exit : goto new_dot
 // ------------------------------------------------------------------
-	exit:
+	exit_loop:
 }}
