@@ -24,7 +24,7 @@ public:
 	void RemoveAll();
 	HTREEITEM AddProjectFile(CString strName, long lParam);
 	void AddRoot(CString strProject);
-
+	void ExpandFiles();
 protected:
 	CTreeCtrl* m_pTree;
 	HTREEITEM m_hRoot, m_hFilesFolder;

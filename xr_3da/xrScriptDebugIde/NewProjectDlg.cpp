@@ -40,10 +40,12 @@ END_MESSAGE_MAP()
 CString CNewProjectDlg::GetProjectName(void)
 {
 	CString res;
-
-	if(m_folder.Find(".lpr")!=m_folder.GetLength()-4)
-		m_folder = m_folder + "\\";
-
+	int sz = m_folder.GetLength();
+	if (sz!=0){
+		int p = m_folder.Find("\\", sz-1 );
+		if(p != sz-1 )
+			m_folder = m_folder + "\\";
+	}
 	CString src = m_folder + m_project_name;
 	if(src.Find(".lpr")!=src.GetLength()-4)
 		res = src + ".lpr";

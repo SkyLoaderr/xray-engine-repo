@@ -68,6 +68,8 @@ void CProject::RedrawFilesTree()
 	int nFiles = m_files.GetSize();
 	for ( int i=0; i<nFiles; ++i )
 		pTree->AddProjectFile(m_files[i]->GetNameExt(), (long)m_files[i]);
+
+	pTree->ExpandFiles();
 }
 
 
@@ -133,12 +135,13 @@ void CProject::RemoveFile(CProjectFile *pPF)
 	for ( int i=0; i<nSize; ++i )
 		if ( m_files[i] == pPF )
 		{
+			delete m_files.GetAt(i);
 			m_files.RemoveAt(i);
 			break;
 		}
 
 	SetModifiedFlag(TRUE);
-	RedrawFilesTree();
+//	RedrawFilesTree();
 }
 
 void CProject::RemoveProjectFiles()
@@ -188,7 +191,7 @@ BOOL CProject::New(CString sFileName)
 BOOL CProject::New()
 {
 	SaveModified();
-
+	Close();
 	DWORD				sz_user	= 64;
 	char				UserName[64];
 

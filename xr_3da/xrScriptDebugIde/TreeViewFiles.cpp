@@ -240,3 +240,8 @@ void CTreeViewFiles::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 
 	*pResult = 0;
 }
+
+void CTreeViewFiles::ExpandFiles()
+{
+	GetTreeCtrl().Expand(m_hRoot, TVE_EXPAND );
+}
