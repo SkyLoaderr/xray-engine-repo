@@ -182,6 +182,8 @@ void	CSoundRender_Target::update			()
 	u32				r_cursor	= (calc_interval(cursor_write)+1)%sdef_target_count;
 
 	if (r_write==r_cursor)	fill_block	();
+
+//    Msg				("write: 0x%8x",cursor_write);
 }
 
 void	CSoundRender_Target::fill_parameters()
