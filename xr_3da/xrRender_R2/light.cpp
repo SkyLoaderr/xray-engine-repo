@@ -132,6 +132,13 @@ void	light::spatial_move			()
 			}
 		}
 		break;
+	case IRender_Light::OMNIPART	:
+		{
+			// is it optimal? seems to be...
+			spatial.center.mad			(position,direction,range);
+			spatial.radius				= range;
+		}
+		break;
 	}
 	ISpatial::spatial_move			();
 
