@@ -361,7 +361,10 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 			begin				(dwCurNode,I,E);
 			bool				bOk = false;
 			for ( ; I != E; ++I) {
-				CLevelGraph::CVertex *tpLastNode = vertex(node_id = value(dwCurNode,I));
+				node_id			= value(dwCurNode,I);
+				if (!valid_vertex_id(node_id))
+					continue;
+				CLevelGraph::CVertex *tpLastNode = vertex(node_id);
 				if (inside(tpLastNode,finish_point)) {
 					SContour			tNextContour;
 					SSegment			tNextSegment;
