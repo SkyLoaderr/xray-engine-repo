@@ -66,7 +66,14 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		fhandles.push_back	(vhandles[f.IDvert(0)]);
 		fhandles.push_back	(vhandles[f.IDvert(1)]);
 		fhandles.push_back	(vhandles[f.IDvert(2)]);
-		mesh.face			(mesh.add_face(fhandles)).set_props	(f.dummy);
+		mesh.add_face		(fhandles);
+	}
+	{
+		_mesh::FaceIter		fit=mesh.faces_begin();
+		for (u32 f_it=0; f_it<CL.getTS(); f_it++,fit++)		{
+			CDB::TRI&	f		= CL.getT()[f_it];
+			fit->set_props		(f.dummy);
+		}
 	}
 	Status		("Building base mesh : normals...");
 	mesh.request_vertex_normals	();
@@ -89,11 +96,16 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	_mesh::FaceIter		fit=mesh.faces_begin(),fend=mesh.faces_end();
 	for (; fit!=fend; fit++)
 	{
+		// get vertex-handles
+		fhandles.clear	();
+		for (_mesh::CFVIter fv_it=mesh.cfv_iter(fit); fv_it; ++fv_it)
+			fhandles.push_back	(fv_it.handle());
+
 		CL.add_face_D	(
-			fit->vertex_handle()
-			T->v[0]->P, T->v[1]->P, T->v[2]->P,
-			T->dwMaterialGame, materials[T->dwMaterial].sector
+			reinterpret_cast<Fvector&>(mesh.point	(fhandles[0])),
+			reinterpret_cast<Fvector&>(mesh.point	(fhandles[1])),
+			reinterpret_cast<Fvector&>(mesh.point	(fhandles[2])),
+			fit->props	()
 			);
-		Progress(p_total+=p_cost);		// progress
 	}
 }
