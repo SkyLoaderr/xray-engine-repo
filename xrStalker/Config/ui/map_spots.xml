@@ -2,16 +2,17 @@
 <map_spots>
 
 #include "ui\map_spots_escape.xml"
-
+<aaa></aaa>
 #include "ui\map_spots_garbage.xml"
-
+<bbb></bbb>
 #include "ui\map_spots_agroprom.xml"
-
+<ccc></ccc>
 #include "ui\map_spots_rostok.xml"
-
+<ddd></ddd>
 #include "ui\map_spots_military.xml"
-
+<eee></eee>
 #include "ui\map_spots_radar.xml"
+<fff></fff>
 
 
 
