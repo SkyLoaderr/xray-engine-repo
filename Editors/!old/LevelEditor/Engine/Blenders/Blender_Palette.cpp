@@ -40,6 +40,7 @@ void		IBlender::CreatePalette(xr_vector<IBlender*> &palette)
 	palette.push_back(Create(B_MODEL_EbB));
 	palette.push_back(Create(B_DETAIL));
 	palette.push_back(Create(B_TREE));
+	palette.push_back(Create(B_PARTICLE));
 
 	// Remove duplicated classes (some of them are really the same in different renderers)
 	for (u32 i=0; i<palette.size(); i++)
@@ -94,6 +95,7 @@ void		IBlender::Destroy	(IBlender*& B)
 #include "blender_model_ebb.h"
 #include "blender_detail_still.h"
 #include "blender_tree.h"
+#include "blender_particle.h"
 
 IBlender*	IBlender::Create	(CLASS_ID cls)
 {	
@@ -118,6 +120,7 @@ IBlender*	IBlender::Create	(CLASS_ID cls)
 	case B_MODEL_EbB:		return xr_new<CBlender_Model_EbB>();	
 	case B_DETAIL:			return xr_new<CBlender_Detail_Still>();	
 	case B_TREE:			return xr_new<CBlender_Tree>();	
+	case B_PARTICLE:		return xr_new<CBlender_Particle>();	
 	}
 	return 0;
 }

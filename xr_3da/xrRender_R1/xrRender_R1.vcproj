@@ -465,6 +465,12 @@
 				RelativePath="Blender_Model_EbB.h">
 			</File>
 			<File
+				RelativePath=".\Blender_Particle.cpp">
+			</File>
+			<File
+				RelativePath=".\Blender_Particle.h">
+			</File>
+			<File
 				RelativePath="Blender_Screen_GRAY.cpp">
 			</File>
 			<File

@@ -13,6 +13,8 @@
 #define		B_B				MK_CLSID('B','m','m','D',' ',' ',' ',' ')
 #define		B_BmmD			MK_CLSID('B','m','m','D','o','l','d',' ')
 
+#define		B_PARTICLE		MK_CLSID('P','A','R','T','I','C','L','E')
+
 // Screen space blenders
 #define		B_SCREEN_SET	MK_CLSID('S','_','S','E','T',' ',' ',' ')
 #define		B_SCREEN_GRAY	MK_CLSID('S','_','G','R','A','Y',' ',' ')
