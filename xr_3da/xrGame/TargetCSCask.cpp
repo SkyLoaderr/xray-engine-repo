@@ -15,7 +15,7 @@ IC BOOL BE(BOOL A, BOOL B)
 
 void CTargetCSCask::OnEvent(NET_Packet& P, u16 type) 
 {
-	__super::OnEvent(P,type);
+	inherited::OnEvent(P,type);
 	u16 id;
 	switch (type) {
 		case GE_OWNERSHIP_TAKE : {
@@ -45,4 +45,10 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			}
 		} break;
 	}
+}
+
+void CTargetCSCask::OnDeviceCreate() {
+	inherited::OnDeviceCreate();
+	CKinematics* V = PKinematics(Visual());
+	if(V) V->PlayCycle("open");
 }
