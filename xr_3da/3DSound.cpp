@@ -294,6 +294,15 @@ void C3DSound::Update()
 
 void C3DSound::OnMove()
 {
+	DWORD	mode;
+	pBuffer3D->GetMode(&mode);
+	switch (mode)
+	{
+	case DS3DMODE_DISABLE:		Log("disable"); break;
+	case DS3DMODE_HEADRELATIVE: Log("headrel"); break;
+	case DS3DMODE_NORMAL:		Log("normal");	break;
+	}
+
 	DWORD old_Status	= dwStatus;
 	pBuffer->GetStatus	(&dwStatus);
 	if ( dwStatus & DSBSTATUS_PLAYING ) {
