@@ -32,7 +32,7 @@
 
 #define ROWS	300
 #define COLUMNS 300
-typedef float		_dist_type;
+typedef float	_dist_type;
 
 typedef CAI_Map																CGraph;
 //typedef CSE_ALifeGraph														CGraph;
@@ -41,8 +41,9 @@ typedef CAI_Map																CGraph;
 //typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
-typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
+//typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
+typedef CDataStorageBucketList<32,_dist_type,u32,u32,true,24,8>				CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
@@ -57,7 +58,7 @@ void path_test(LPCSTR caLevelName)
 	else
 		strcpy				(fName,caLevelName);
 	CGraph					*graph			= xr_new<CGraph>				(fName);
-	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
+	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count(),20.f,2000.f);
 	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	
@@ -78,8 +79,8 @@ void path_test(LPCSTR caLevelName)
 	Msg						("%d times",_min((int)a.size(),TEST_COUNT));
 
 	u64						start, finish;
-	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	start					= CPU::GetCycleCount();
 //	for (int i=0, n = graph->get_node_count(); i<n; ++i) {
