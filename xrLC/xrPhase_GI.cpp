@@ -3,12 +3,12 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-#define	GI_THREADS		4
-const	u32				gi_num_photons		= 512;
+#define	GI_THREADS		1
+const	u32				gi_num_photons		= 32;
 const	float			gi_optimal_range	= 15.f;
-const	float			gi_reflect			= .99f;
-const	float			gi_clip				= 0.001f;
-const	u32				gi_maxlevel			= 5;
+const	float			gi_reflect			= 0.9f;
+const	float			gi_clip				= 0.01f;
+const	u32				gi_maxlevel			= 4;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
@@ -55,8 +55,8 @@ Fvector		GetPixel_7x7		(CDB::RESULT& rpinf)
 		}
 	}
 	R.div	(49.f);
-	R.add	(1.f);	// make it appear more like white material
-	R.div	(2.f);
+	//R.add	(1.f);	// make it appear more like white material
+	//R.div	(2.f);
 	return	R;
 }
 
@@ -87,7 +87,7 @@ public:
 				src					= (*task)[task_it];
 				if (0==src.level)	src.range	*= 1.5f;
 				dst					= src;
-				// if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				//if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type			= LT_SECONDARY;
 				dst.level			++;
 				task_it				++;
@@ -99,11 +99,18 @@ public:
 			// analyze
 			CRandom				random;
 			random.seed			(0x12071980);
-			float	factor		= _sqrt(src.range / gi_optimal_range);		// smaller lights get smaller amount of photons
-			if (LT_SECONDARY == src.type)	factor *= (1 / (dst.level+1));	// secondary lights get half the photons
-					factor		*= _sqrt(src.energy);						// 2.f is optimal energy = baseline
+			float	factor		=  _sqrt(src.range / gi_optimal_range);			// smaller lights get smaller amount of photons
+					if (factor>1)	factor=1;
+			if (LT_SECONDARY == src.type)	factor /= powf(2.f,float(src.level));// secondary lights get half the photons
+					factor		*= _sqrt(src.energy);							// 2.f is optimal energy = baseline
+					//factor	= _sqrt (factor);								// move towards 1.0 (one)
 			int		count		= iCeil( factor * float(gi_num_photons) );
+					//count		= gi_num_photons;
 			float	_clip		= (_sqrt(src.energy)/20.f + gi_clip)/2.f;
+			float	_scale		= 1.f / _sqrt(factor);
+			//clMsg	("src_LER[%d/%f/%f] -> factor(%f), count(%d), clip(%f)",
+			//	src.level, src.energy, src.range, factor, count, _clip
+			//	);
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
 				switch	(src.type)		{
@@ -125,7 +132,7 @@ public:
 				dst.position.mad		(src.position,dir,R->range);
 				dst.position.mad		(TN,0.01f);		// 1cm away from surface
 				dst.direction.reflect	(dir,TN);
-				dst.energy				= src.energy * dot * gi_reflect * (1-R->range/src.range);
+				dst.energy				= src.energy * dot * gi_reflect * (1-R->range/src.range) * _scale;
 				if (dst.energy < _clip)	continue;
 
 				// color bleeding
@@ -145,13 +152,17 @@ public:
 				float	_r1			= src.range * _sqrt(dst.energy / src.energy);
 				float	_r2			= (dst.energy - _clip)/_clip;
 				float	_r3			= src.range;
-				dst.range			= 20.f * ( (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f );	// empirical
+				dst.range			= 1 * ( (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f );	// empirical
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer
-				task_cs.Enter		();
-				task->push_back		(dst);
-				task_cs.Leave		();
+				if (dst.energy > gi_clip/4)	
+				{
+					//clMsg	("dst_ER[%f/%f]", dst.energy, dst.range);
+					task_cs.Enter		();
+					task->push_back		(dst);
+					task_cs.Leave		();
+				}
 			}
 		}
 	}
@@ -190,7 +201,7 @@ void	CBuild::xrPhase_Radiosity	()
 			else						{ task->erase	(task->begin()+l); l--; }
 		}
 	}
-	float	_scale			= 1*_energy_before / _energy_after;
+	float	_scale			= 1.f*_energy_before / _energy_after;
 	for (int l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
@@ -198,6 +209,7 @@ void	CBuild::xrPhase_Radiosity	()
 	}
 
 	// info
-	clMsg					("old setup [%d], new setup[%d]",setup_old,setup_new);
-	clMsg					("old energy [%f], new energy[%f]",_energy_before,_energy_after);
+	clMsg				("old setup [%d], new setup[%d]",setup_old,setup_new);
+	clMsg				("old energy [%f], new energy[%f]",_energy_before,_energy_after);
+	FlushLog			();
 }
