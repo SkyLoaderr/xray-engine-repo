@@ -102,6 +102,7 @@ using namespace std;
 
 #define xr_malloc malloc
 #define xr_free free
+#define xr_realloc realloc
 #define xr_strdup strdup
 
 
