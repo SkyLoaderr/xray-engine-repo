@@ -35,7 +35,7 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float
 	{
 		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<r_dtex_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
 	}
-	return pVisual->hShader->E[id]._get();
+	return pVisual->shader->E[id]._get();
 }
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
@@ -45,7 +45,7 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 	{
 		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<r_dtex_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
 	}
-	return pVisual->hShader->E[id]._get();
+	return pVisual->shader->E[id]._get();
 }
 static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {

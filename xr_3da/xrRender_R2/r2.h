@@ -9,7 +9,6 @@
 #include "r2_rendertarget.h"
 
 #include "hom.h"
-#include "portal.h"
 #include "detailmanager.h"
 #include "modelpool.h"
 #include "wallmarksengine.h"
@@ -18,7 +17,6 @@
 #include "light_db.h"
 #include "light_render_direct.h"
 #include "LightTrack.h"
-#include "common_binders.h"
 
 #include "../irenderable.h"
 #include "../fmesh.h"
