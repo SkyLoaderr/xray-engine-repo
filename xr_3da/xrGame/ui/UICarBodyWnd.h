@@ -74,6 +74,9 @@ protected:
 	CUICharacterInfo	UICharacterInfoLeft;
 	CUICharacterInfo	UICharacterInfoRight;
 
+	//  нопка "вз€ть всЄ"
+	CUIButton			UITakeAll;
+
 	//функции, выполн€ющие согласование отображаемых окошек
 	//с реальным инвентарем
 	static bool OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
@@ -100,5 +103,8 @@ protected:
 	CUIDragDropItem* m_pCurrentDragDropItem;
 
 	//устанавливает текущий предмет
-	void SetCurrentItem(CInventoryItem* pItem);
+	void		SetCurrentItem(CInventoryItem* pItem);
+
+	// ¬з€ть все
+	void		TakeAll();
 };

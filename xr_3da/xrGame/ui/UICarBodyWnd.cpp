@@ -20,6 +20,8 @@
 #include "UIInventoryUtilities.h"
 #include "../level.h"
 
+//////////////////////////////////////////////////////////////////////////
+
 using namespace InventoryUtilities;
 
 const char * const CAR_BODY_XML		= "carbody_new.xml";
@@ -37,10 +39,14 @@ CUICarBodyWnd::CUICarBodyWnd()
 	SetFont(HUD().pFontMedium);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUICarBodyWnd::~CUICarBodyWnd()
 {
 	ClearDragDrop(m_vDragDropItems);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Init()
 {
@@ -113,7 +119,12 @@ void CUICarBodyWnd::Init()
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 	UIStaticDesc.SetText(NULL);
+
+	AttachChild(&UITakeAll);
+	xml_init.InitButton(uiXml, "take_all_btn", 0, &UITakeAll);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 								CInventory* pOthersInv, CGameObject* pOthersObject)
@@ -140,6 +151,8 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 
 	UpdateLists();
 }  
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::UpdateLists()
 {
@@ -241,11 +254,10 @@ void CUICarBodyWnd::UpdateLists()
 	}
 }
 
-
-
-
-//------------------------------------------------
+//////////////////////////////////////////////////////////////////////////
 //как только подняли элемент, сделать его текущим
+//////////////////////////////////////////////////////////////////////////
+
 void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 
@@ -272,15 +284,22 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		else
 			R_ASSERT2(false, "wrong parent for car_body wnd");
 	}
-
+	else if (BUTTON_CLICKED == msg && &UITakeAll == pWnd)
+	{
+		TakeAll();
+	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Draw()
 {
 	inherited::Draw();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::Update()
 {
@@ -302,12 +321,14 @@ void CUICarBodyWnd::Update()
 	inherited::Update();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUICarBodyWnd::Show() 
 { 
 	inherited::Show();
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 
 //при вызове проверки необходимо помнить 
 //иерархию окон, чтоб знать какой именно из
@@ -336,6 +357,8 @@ bool CUICarBodyWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
 	CUICarBodyWnd* this_car_body_wnd =  dynamic_cast<CUICarBodyWnd*>(pList->GetParent()->GetParent());
@@ -361,6 +384,7 @@ bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 bool CUICarBodyWnd::ToOurBag()
 {
@@ -375,6 +399,9 @@ bool CUICarBodyWnd::ToOurBag()
 
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 bool CUICarBodyWnd::ToOthersBag()
 {
 	if(!OthersBagProc(m_pCurrentDragDropItem, 
@@ -388,17 +415,23 @@ bool CUICarBodyWnd::ToOthersBag()
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::DisableAll()
 {
 	UIOurBagWnd.Enable(false);
 	UIOthersBagWnd.Enable(false);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUICarBodyWnd::EnableAll()
 {
 	UIOurBagWnd.Enable(true);
 	UIOthersBagWnd.Enable(true);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 {
@@ -409,4 +442,15 @@ void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
 	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
 	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUICarBodyWnd::TakeAll()
+{
+	for (DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin();
+		 it != UIOthersBagList.GetDragDropItemsList().end();)
+	{
+		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, NULL);
+	}
 }
