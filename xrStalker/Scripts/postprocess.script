@@ -21,7 +21,7 @@ function main()
 
 	wait			()
 	
-	local effect	= pp_effector(4,device().time_global + 10000,params,4000)
+	local effect	= pp_effector(4,device().time_global() + 10000,params,4000)
 	
 	effect:start	()
 

@@ -17,8 +17,8 @@ function wait(time_to_wait)
 	if (time_to_wait == nil) then
 		coroutine.yield()
 	else
-		local time_to_stop = device().time_global + time_to_wait
-		while device().time_global <= time_to_stop do
+		local time_to_stop = device().time_global() + time_to_wait
+		while device().time_global() <= time_to_stop do
 			coroutine.yield()
 		end
 	end
@@ -69,7 +69,7 @@ end
 function pp_effector:process(pp)
 	effector.process(self,pp)
 
-	local curr_time	= device().time_global
+	local curr_time	= device().time_global()
 	local d			= 0.0
 
 	if curr_time < self.start_time then
@@ -108,7 +108,7 @@ function pp_effector:process(pp)
 end
 
 function pp_effector:finished()
-	return			self.stop_time < device().time_global
+	return			self.stop_time < device().time_global()
 end
 
 function get_level_object(obj_name)
