@@ -7,7 +7,6 @@
 
 #include "CustomObject.h"
 #include "ui_main.h"
-#include "scene.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_GROUPINDEX	0xF901
