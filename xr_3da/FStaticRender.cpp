@@ -432,9 +432,6 @@ void	CRender::Render		()
 	pCreator->pHUD->Render	();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
-	// Lines
-	mapLines.traverseANY	(lines_L1);
-
 	// Patches
 	if (vecPatches.size())  {
 		flush_Patches	();
