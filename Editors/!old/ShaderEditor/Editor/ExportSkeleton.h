@@ -148,7 +148,6 @@ protected:
 	SplitVec			m_Splits;
     Fbox 				m_Box;
 //----------------------------------------------------
-	void 				ComputeOBB			(Fobb &B, FvectorVec& V);
     int     			FindSplit			(LPCSTR shader, LPCSTR texture);
     void				ComputeBounding	()
     {
@@ -174,5 +173,7 @@ public:
     virtual bool    	ExportMotionKeys	(IWriter& F);
     virtual bool    	ExportMotionDefs	(IWriter& F);
 };
+
+void ECORE_API 			ComputeOBB			(Fobb &B, FvectorVec& V);
 
 #endif

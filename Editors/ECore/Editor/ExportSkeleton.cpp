@@ -13,7 +13,7 @@
 #include "motion.h"
 
 #include "MgcCont3DBox.h"         
-//#include "MgcCont3DMinBox.h"         
+#include "MgcCont3DMinBox.h"         
 
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
@@ -412,7 +412,7 @@ CExportSkeleton::CExportSkeleton(CEditableObject* object)
 }
 //----------------------------------------------------
 
-void CExportSkeletonCustom::ComputeOBB	(Fobb &B, FvectorVec& V)
+void ComputeOBB	(Fobb &B, FvectorVec& V)
 {
     if (V.size()<3) { B.invalidate(); return; }
     Mgc::Box3	BOX		= Mgc::ContOrientedBox(V.size(), (const Mgc::Vector3*) V.begin());
@@ -426,6 +426,21 @@ void CExportSkeletonCustom::ComputeOBB	(Fobb &B, FvectorVec& V)
     
     B.m_translate.set	(BOX.Center());
     B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+
+    if (!_valid(B.m_rotate)||!_valid(B.m_translate)||!_valid(B.m_halfsize)){
+        BOX					= Mgc::MinBox(V.size(), (const Mgc::Vector3*) V.begin());
+        B.m_rotate.i.set	(BOX.Axis(0));
+        B.m_rotate.j.set	(BOX.Axis(1));
+        B.m_rotate.k.set	(BOX.Axis(2));
+
+        // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
+        B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
+        B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
+    
+        B.m_translate.set	(BOX.Center());
+        B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+    }
+    VERIFY (_valid(B.m_rotate)&&_valid(B.m_translate)&&_valid(B.m_halfsize));
 }
 //----------------------------------------------------
 
@@ -458,8 +473,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
     BOOL b2Link = FALSE;
 
-    SPBItem* pb = UI->PBStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
-    UI->PBInc(pb);
+    SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
+    pb->Inc		();
 
     BoneVec& bones 			= m_Source->Bones();
     xr_vector<FvectorVec>	bone_points;
@@ -471,7 +486,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-	    UI->PBInc(pb);
+        pb->Inc		();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst = sp_it->second;
@@ -515,7 +530,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         MESH->UnloadSVertices();
         MESH->UnloadPNormals();
         MESH->UnloadFNormals();
-	    UI->PBInc(pb);
+        pb->Inc		();
     }
     UI->SetStatus("Make progressive...");
     // fill per bone vertices
@@ -527,9 +542,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 		    bone_points[sv_it->B0].push_back(sv_it->O);
             bones[sv_it->B0]->_RITransform().transform_tiny(bone_points[sv_it->B0].back());
         }
-		UI->PBInc(pb);
+        pb->Inc		();
     }
-	UI->PBInc(pb);
+    pb->Inc		();
 
     // coumpute bounding
     ComputeBounding	();
@@ -561,11 +576,11 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 	    F.close_chunk();
     }
     F.close_chunk();
-    UI->PBInc(pb);
+    pb->Inc		();
 
 
     UI->SetStatus("Compute bounding volume...");
-	UI->PBInc(pb);
+    pb->Inc		();
 
     // BoneNames
     F.open_chunk(OGF_S_BONE_NAMES);
@@ -593,8 +608,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.close_chunk();
     }
 
-	UI->PBInc(pb);
-    UI->PBEnd(pb);
+    pb->Inc		();
+    UI->ProgressEnd(pb);
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -610,8 +625,8 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
      	return !!m_Source->m_SMotionRefs.size();
     }
 
-	SPBItem* pb = UI->PBStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
-    UI->PBInc(pb);
+	SPBItem* pb = UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
+    pb->Inc		();
 
     // mem active motion
     CSMotion* active_motion=m_Source->ResetSAnimation();
@@ -739,10 +754,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         xr_free(_keysT);
 
         F.close_chunk();
-	    UI->PBInc(pb);
+    pb->Inc		();
     }
     F.close_chunk();
-	UI->PBEnd(pb);
+	UI->ProgressEnd(pb);
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -758,14 +773,14 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 
     bool bRes=true;
 
-	SPBItem* pb = UI->PBStart(3,"Export skeleton motions defs...");
-    UI->PBInc			(pb);
+	SPBItem* pb = UI->ProgressStart(3,"Export skeleton motions defs...");
+    pb->Inc		();
 
     if (m_Source->m_SMotionRefs.size()){
 	    F.open_chunk	(OGF_S_MOTION_REFS);
     	F.w_stringZ		(m_Source->m_SMotionRefs);
 	    F.close_chunk	();
-        UI->PBInc		(pb);
+	    pb->Inc		();
     }else{
         // save smparams
         F.open_chunk	(OGF_S_SMPARAMS);
@@ -794,7 +809,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             F.w_u16(m_Source->BoneCount());
             for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
         }
-        UI->PBInc			(pb);
+	    pb->Inc		();
         // motion defs
         SMotionVec& sm_lst	= m_Source->SMotions();
         F.w_u16(sm_lst.size());
@@ -820,11 +835,11 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
                 F.w_float	(motion->fFalloff);
             }
         }
-        UI->PBInc			(pb);
+	    pb->Inc		();
         F.close_chunk();
     }
     
-	UI->PBEnd(pb);
+	UI->ProgressEnd(pb);
     return bRes;
 }
 

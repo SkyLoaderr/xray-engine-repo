@@ -421,7 +421,7 @@ void TUI::Idle()
     TfrmImageLib::OnFrame();
     TfrmSoundLib::OnFrame();
     // Progress
-    PBDraw			();
+    ProgressDraw	();
     // test quit
     if (m_Flags.is(flNeedQuit))	RealQuit();
 }
@@ -529,51 +529,52 @@ void TUI::OnDestroy()
     
 }
 
-SPBItem* TUI::PBStart			(float max_val, LPCSTR text)
+SPBItem* TUI::ProgressStart		(float max_val, LPCSTR text)
 {
 	VERIFY(m_bReady);
 	SPBItem* item 				= xr_new<SPBItem>(text,"",max_val);
     m_ProgressItems.push_back	(item);
     ELog.Msg					(mtInformation,text);
-    PBDraw						();
+    ProgressDraw				();
 	return item;
 }
-void TUI::PBEnd					(SPBItem*& pbi)
+void TUI::ProgressEnd			(SPBItem*& pbi)
 {
 	VERIFY(m_bReady);
     if (pbi){
         PBVecIt it=std::find(m_ProgressItems.begin(),m_ProgressItems.end(),pbi); VERIFY(it!=m_ProgressItems.end());
         m_ProgressItems.erase	(it);
         xr_delete				(pbi);
-        PBDraw					();
+        ProgressDraw			();
     }
 }
-void TUI::PBInfo				(SPBItem* pbi, LPCSTR text, bool bWarn)
+
+void SPBItem::GetInfo			(AnsiString& txt, float& p, float& m)
 {
-	VERIFY(m_bReady);
-	if (pbi&&text&&text[0]){
-    	pbi->info				= text;
+    if (info.size())txt.sprintf("%s (%s)",text.c_str(),info.c_str());
+    else			txt.sprintf("%s",text.c_str());
+    p				= progress;
+    m				= max;
+}  
+void SPBItem::Inc				(LPCSTR info, bool bWarn)
+{
+    Info						(info,bWarn);
+    Update						(progress+1.f);
+}
+void SPBItem::Update			(float val)
+{
+    progress					= val;
+    UI->ProgressDraw			();
+}
+void SPBItem::Info				(LPCSTR text, bool bWarn)
+{
+	if (text&&text[0]){
+    	info					= text;
         AnsiString 				txt;
         float 					p,m;
-        pbi->GetInfo			(txt,p,m);
+        GetInfo					(txt,p,m);
 	    ELog.Msg				(bWarn?mtError:mtInformation,txt.c_str());
-	    PBDraw					();
-    }
-}
-void TUI::PBUpdate				(SPBItem* pbi, float val)
-{
-	VERIFY(m_bReady);
-    if (pbi){
-        pbi->progress			= val;
-        PBDraw					();
-    }
-}
-void TUI::PBInc					(SPBItem* pbi, LPCSTR info, bool bWarn)
-{
-	VERIFY(m_bReady);
-    if (pbi){
-        PBInfo					(pbi,info,bWarn);
-        PBUpdate				(pbi,pbi->progress+1.f);
+	    UI->ProgressDraw		();
     }
 }
 

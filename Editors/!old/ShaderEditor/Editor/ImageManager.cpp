@@ -262,7 +262,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
 	SPBItem* pb=0;
-    if (bProgress) pb = UI->PBStart(M_BASE.size(),"Synchronize textures...");
+    if (bProgress) pb = UI->ProgressStart(M_BASE.size(),"Synchronize textures...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -317,12 +317,13 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 		if (THM) xr_delete(THM);
 		if (UI->NeedAbort()) break;
         
-        if (bProgress) UI->PBInc(pb,bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
+        if (bProgress) 
+		    pb->Inc(bUpdated?std::string(base_name+(bFailed?" - FAILED":" - UPDATED.")).c_str():base_name.c_str(),bUpdated);
     }
 
     xr_delete(ltx_ini);
     
-    if (bProgress) 	UI->PBEnd(pb);
+    if (bProgress) 	UI->ProgressEnd(pb);
     // lock rescanning
     FS.unlock_rescan	();
 }
@@ -442,7 +443,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
 }
 void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 {
-	SPBItem* pb = UI->PBStart(files.size(),"Check texture compliance: ");
+	SPBItem* pb = UI->ProgressStart(files.size(),"Check texture compliance: ");
     FS_QueryPairIt it	= files.begin();
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
@@ -452,10 +453,10 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
         compl.insert			(mk_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
-    	UI->PBInc				(pb,it->first.c_str());
+	    pb->Inc					();
 		if (UI->NeedAbort()) break;
     }
-	UI->PBEnd(pb);
+	UI->ProgressEnd(pb);
 }
 
 IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
@@ -838,9 +839,11 @@ public:
         float t_angle		= sample_factor*PI_DIV_2/float(dst_width);
         float d_angle		= t_angle/d_size;
         float h_angle		= t_angle/2;
+        SPBItem* PB			= UI->ProgressStart(CUBE_SIDE_COUNT*dst_height*dst_width,"Cube Map: scale image...");
         for (ECubeSide side=CUBE_POSITIVE_X; side<CUBE_SIDE_COUNT; side++){
         	for (u32 y_dst=0; y_dst<dst_height; y_dst++){
 	        	for (u32 x_dst=0; x_dst<dst_width; x_dst++){
+				    PB->Inc	();
 		        	vector_from_point		(normal,side,x_dst,y_dst,dst_width,dst_height);
                     u32& out				= pixel_from_side(dst_data,dst_width,dst_height,side,x_dst,y_dst);
                     Fcolor sum, sample_color;
@@ -875,6 +878,7 @@ public:
                 }
             }
         }
+        UI->ProgressEnd(PB);
     }
 };           
 
@@ -917,10 +921,4 @@ BOOL CImageManager::CreateSmallerCubeMap(LPCSTR src_name, LPCSTR dst_name)
     }
     return FALSE;
 }
-
-
-
-
-
-
 

@@ -201,25 +201,10 @@ int CEditableObject::GetSelectedBones(BoneVec& sel_bones)
     return sel_bones.size();
 }
 
-#include "MgcCont3DBox.h"
-void ComputeOBB(Fobb &B, FvectorVec& V)
-{
-    if (V.size()<3) { B.invalidate(); return; }
-    Mgc::Box3	BOX		= Mgc::ContOrientedBox(V.size(), (const Mgc::Vector3*) V.begin());
-    B.m_rotate.i.set	(BOX.Axis(0));
-    B.m_rotate.j.set	(BOX.Axis(1));
-    B.m_rotate.k.set	(BOX.Axis(2));
-
-    // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
-    B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
-    B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
-
-    B.m_translate.set	(BOX.Center());
-    B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
-}
 //----------------------------------------------------
 
 #include "MgcCont3DMinSphere.h"
+#include "ExportSkeleton.h"
 BOOL	f_valid		(float f)
 {
 	return _finite(f) && !_isnan(f);

@@ -75,7 +75,8 @@ ETextureThumbnail* TfrmImageLib::FindUsedTHM(LPCSTR name)
 void TfrmImageLib::SaveUsedTHM()
 {
 	for (THMIt t_it=m_THM_Used.begin(); t_it!=m_THM_Used.end(); t_it++)
-		(*t_it)->Save(0,bImportMode?_import_:0);
+    	if (modif_map.find((*t_it)->SrcName())!=modif_map.end()) 
+        	(*t_it)->Save(0,bImportMode?_import_:0);
 }
 //---------------------------------------------------------------------------
 
@@ -249,17 +250,17 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
     string256 fn;
     FS_QueryPairIt it		= texture_map.begin();
     FS_QueryPairIt _E		= texture_map.end();
-	SPBItem* pb = UI->PBStart(texture_map.size(),"Export association");
+	SPBItem* pb = UI->ProgressStart(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
         ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
-	    UI->PBInc			(pb,it->first.c_str());
+	    pb->Inc				(it->first.c_str());
         AnsiString base_name= ChangeFileExt(it->first.c_str(),"");
         ImageLib.WriteAssociation	(ini,base_name.c_str(),m_Thm->_Format());
         xr_delete			(m_Thm);
 		if (UI->NeedAbort()){ bRes=false; break; }
     }
-	UI->PBEnd(pb);
+	UI->ProgressEnd(pb);
 
 	UnlockForm();
 

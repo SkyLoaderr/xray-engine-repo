@@ -310,8 +310,8 @@ bool CExportObjectOGF::Export(IWriter& F)
     if( m_Source->MeshCount() == 0 ) return false;
 
     AnsiString capt = AnsiString	("Build OGF: '")+m_Source->GetName()+"'";
-    SPBItem* pb		= UI->PBStart	(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
-    UI->PBInc		(pb);
+    SPBItem* pb		= UI->ProgressStart	(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
+	pb->Inc			();    
 
     CTimer tm;
     tm.Start();
@@ -382,16 +382,16 @@ bool CExportObjectOGF::Export(IWriter& F)
                     }
                 }
             }while(elapsed_faces>0);
-		    UI->PBInc(pb);
+			pb->Inc		();
         }
         // mesh fin
         MESH->UnloadPNormals();
         MESH->UnloadFNormals();
-	    UI->PBInc(pb);
+		pb->Inc		();
     }
 
     if (!bResult){	
-	    UI->PBEnd		(pb);
+	    UI->ProgressEnd		(pb);
     	return 			false;
     }
     
@@ -400,10 +400,10 @@ bool CExportObjectOGF::Export(IWriter& F)
 	if (m_Source->m_Flags.is(CEditableObject::eoProgressive)){
         for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
             (*split_it)->MakeProgressive();
-            UI->PBInc	(pb);
+			pb->Inc		();
         }
     }
-    UI->PBInc			(pb);
+    pb->Inc				();
 
 	// Compute bounding...
     ComputeBounding		();
@@ -434,9 +434,9 @@ bool CExportObjectOGF::Export(IWriter& F)
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++)
         (*split_it)->Save(F,chunk);
     F.close_chunk	();
-    UI->PBInc		(pb);
+    pb->Inc			();
 
-    UI->PBEnd		(pb);
+    UI->ProgressEnd	(pb);
 
     tm.Stop			();
     ELog.Msg		(mtInformation,"Build time: %3.2f sec",float(tm.GetElapsed_ms())/1000.f);

@@ -21,19 +21,17 @@ enum EEditorState{
     esBuildLevel
 };
 
-struct SPBItem{
+struct ECORE_API SPBItem{
 	shared_str	text;
     shared_str	info;
     float 		max;
     float 		progress;
+public:
                 SPBItem				(LPCSTR txt, LPCSTR inf, float mx):text(txt),info(inf),max(mx){}
-    void		GetInfo				(AnsiString& txt, float& p, float& m)
-    {
-        if (info.size())txt.sprintf("%s (%s)",text.c_str(),info.c_str());
-        else			txt.sprintf("%s",text.c_str());
-        p				= progress;
-        m				= max;
-	}    
+    void		GetInfo				(AnsiString& txt, float& p, float& m);
+    void		Inc					(LPCSTR info=0, bool bWarn=false);
+    void		Update				(float val);
+	void 		Info				(LPCSTR text, bool bWarn=false);
 };
 
 typedef xr_vector<EEditorState> EStateList;
@@ -218,14 +216,11 @@ protected:
 // progress bar
     DEFINE_VECTOR	(SPBItem*,PBVec,PBVecIt);
     PBVec			m_ProgressItems;
-    SPBItem*		PBLast				(){return m_ProgressItems.empty()?0:m_ProgressItems.back();}
 public:
-	SPBItem*		PBStart				(float max_val, LPCSTR text);
-	void 			PBEnd				(SPBItem*&);
-	void 			PBInfo				(SPBItem*, LPCSTR text, bool bWarn=false);
-	void 			PBUpdate			(SPBItem*, float val);
-    void 			PBInc				(SPBItem*, LPCSTR info=0, bool bWarn=false);
-    virtual void	PBDraw				()=0;
+	SPBItem*		ProgressStart		(float max_val, LPCSTR text);
+	void 			ProgressEnd			(SPBItem*&);
+    virtual void	ProgressDraw		()=0;
+    SPBItem*		ProgressLast		(){return m_ProgressItems.empty()?0:m_ProgressItems.back();}
 };
 //---------------------------------------------------------------------------
 extern ECORE_API TUI* UI;  
