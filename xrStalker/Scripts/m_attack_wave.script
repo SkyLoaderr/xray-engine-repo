@@ -199,7 +199,7 @@ function main ()
 
 	t[2]:set_callback (m_attack_wave.boar_callback, game_object.movement)
 
-	wait (10000)
+	wait (60000)
 
 
 	for a = 1, 19, 1 do
