@@ -71,6 +71,14 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	PerformRP				(E);
 	E->s_RP					= 0xFE;	// Use supplied
 
+	// Parent-Connect
+	if (E->ID_Parent!=0xffff)
+	{
+		xrServerEntity*		e_parent	= ID_to_entity(E->ID_Parent);
+		R_ASSERT						(e_parent);
+		e_parent->children.push_back	(E->ID);
+	}
+
 	// create packet and broadcast packet to everybody
 	NET_Packet				Packet;
 	if (CL) 

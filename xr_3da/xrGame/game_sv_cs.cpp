@@ -448,7 +448,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 
 	// check if has money to pay
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if(ps_who->money_total < cost)	return;
+	if(ps_who->money_total < cost)	{ F_entity_Destroy(E); return; }
 	ps_who->money_total		= ps_who->money_total - s16(cost);
 
 	// Spawn item
