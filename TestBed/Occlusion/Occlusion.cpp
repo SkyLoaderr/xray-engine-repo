@@ -96,7 +96,7 @@ int __cdecl main	(int argc, char* argv[])
 	InitMath		();
 	printf			("\n");
 	Raster.clear	();
-	//SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	for (int test=offset; test<=offset; test	+= 1)
 	{
 		float		a0	= rad(p_a);
@@ -139,7 +139,7 @@ int __cdecl main	(int argc, char* argv[])
 		total += TM.GetElapsed();
 		count += 2*100;
 	}
-	//SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
 	DWORD tpms				= DWORD(u64(u64(CPU::cycles_per_second) / u64(cycles_per_tri)));
 	Msg("Cycles: %d\nTpMS:   %d\nTpS:    %d\n",cycles_per_tri,tpms/1000,tpms);
@@ -154,7 +154,7 @@ int __cdecl main	(int argc, char* argv[])
 		{
 			float	A	= *(Raster.get_depth(0) + y*occ_dim_0 + x);	if (A<0) A=0; else if (A>1) A=1;
 			DWORD  gray	= iFloor(A*255.f);
-			DWORD  mask	= (*(Raster.get_frame() + y*occ_dim_0 + x)) ? 255 : 0;
+			DWORD  mask	= 0; //(*(Raster.get_frame() + y*occ_dim_0 + x)) ? 255 : 0;
 			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
 			
 			for (int by=0; by<scale; by++)
