@@ -82,6 +82,4 @@ enum ESoundTypes {
 
 extern xr_token anomaly_type_token[];
 
-extern float ffGetStartVolume(ESoundTypes eType);
-
 #endif
