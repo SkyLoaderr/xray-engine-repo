@@ -244,6 +244,7 @@ bool game_cl_Deathmatch::CanBeReady				()
 	return true;
 };
 
+
 char*	game_cl_Deathmatch::getTeamSection(int Team)
 {
 	return "deathmatch_team0";
