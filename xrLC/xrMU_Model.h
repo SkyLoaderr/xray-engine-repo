@@ -84,7 +84,7 @@ public:
 	v_faces					m_faces;
 	v_subdivs				m_subdivs;
 
-	xr_vector<base_color>	color;
+	base_color*				color;
 private:
 	_face*					load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*				load_create_vertex	(Fvector& P);
@@ -108,7 +108,7 @@ public:
     Flags32					flags;
 	u16						sector;
 
-	xr_vector<base_color>	color;
+	base_color*				color;
 
 	base_color_c			c_scale;
 	base_color_c			c_bias;
