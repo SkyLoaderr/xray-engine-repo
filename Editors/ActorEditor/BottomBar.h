@@ -66,6 +66,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miShowHint;
 	TMenuItem *N1;
 	TMenuItem *miDrawObjectsPivot;
+	TMenuItem *miDrawSafeRect;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -73,6 +74,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebStatClick(TObject *Sender);
 	void __fastcall ebOptionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall pmOptionsPopup(TObject *Sender);
 private:	// User declarations
 public:
 	float fStatusProgress;

@@ -16,8 +16,8 @@
 //---------------------------------------------------------------------------
 void TUI::Redraw(){
 	VERIFY(m_bReady);               
-    if (!(psDeviceFlags&rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
-	if (m_Flags.is(flResize)){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE); }
+    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
+	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // fog
@@ -36,7 +36,7 @@ void TUI::Redraw(){
 	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
     // filter
     for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
-        if( psDeviceFlags&rsFilterLinear){
+        if( psDeviceFlags.is(rsFilterLinear)){
             Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
@@ -47,8 +47,8 @@ void TUI::Redraw(){
         }
     }
 	// ligthing
-    if (psDeviceFlags&rsLighting) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
-    else                			Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
+    if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
+    else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
         Device.Begin();
@@ -59,13 +59,17 @@ void TUI::Redraw(){
 		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
     // draw grid
-    	if (psDeviceFlags&rsDrawGrid){
+    	if (psDeviceFlags.is(rsDrawGrid)){
 	        DU::DrawGrid();
     	    DU::DrawPivot(m_Pivot);
         }
 
         Tools.Render();
 
+	// draw safe rect
+        if (psDeviceFlags.is(rsDrawSafeRect)){
+        	DU::DrawSafeRect();
+        }
     // draw selection rect
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
 

@@ -11,12 +11,11 @@
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"
-#include "sceneobject.h"
 
-#define SCENEOBJECT_CHUNK_PARAMS 		0xF900
-#define SCENEOBJECT_CHUNK_LOCK	 		0xF902
-#define SCENEOBJECT_CHUNK_TRANSFORM		0xF903
-#define SCENEOBJECT_CHUNK_GROUP			0xF904
+#define CUSTOMOBJECT_CHUNK_PARAMS 		0xF900
+#define CUSTOMOBJECT_CHUNK_LOCK	 		0xF902
+#define CUSTOMOBJECT_CHUNK_TRANSFORM	0xF903
+#define CUSTOMOBJECT_CHUNK_GROUP		0xF904
 //----------------------------------------------------
 
 CCustomObject::~CCustomObject()
@@ -68,15 +67,15 @@ void CCustomObject::OnShowHint(AStringVec& dest)
 
 bool CCustomObject::Load(CStream& F)
 {
-    R_ASSERT(F.FindChunk(SCENEOBJECT_CHUNK_PARAMS));
+    R_ASSERT(F.FindChunk(CUSTOMOBJECT_CHUNK_PARAMS));
 	m_bSelected 	= F.Rword();
 	m_bVisible   	= F.Rword();
 	F.RstringZ		(FName);
 
-	if(F.FindChunk(SCENEOBJECT_CHUNK_LOCK))
+	if(F.FindChunk(CUSTOMOBJECT_CHUNK_LOCK))
 		m_bLocked	= F.Rword();
 
-	if(F.FindChunk(SCENEOBJECT_CHUNK_TRANSFORM)){
+	if(F.FindChunk(CUSTOMOBJECT_CHUNK_TRANSFORM)){
         F.Rvector	(FPosition);
         F.Rvector	(FRotation);
         F.Rvector	(FScale);
@@ -91,17 +90,17 @@ bool CCustomObject::Load(CStream& F)
 
 void CCustomObject::Save(CFS_Base& F)
 {
-	F.open_chunk	(SCENEOBJECT_CHUNK_PARAMS);
+	F.open_chunk	(CUSTOMOBJECT_CHUNK_PARAMS);
 	F.Wword			(m_bSelected);
 	F.Wword			(m_bVisible);
 	F.WstringZ		(FName);
 	F.close_chunk	();
 
-	F.open_chunk	(SCENEOBJECT_CHUNK_LOCK);
+	F.open_chunk	(CUSTOMOBJECT_CHUNK_LOCK);
 	F.Wword			(m_bLocked);
 	F.close_chunk	();
 
-	F.open_chunk	(SCENEOBJECT_CHUNK_TRANSFORM);
+	F.open_chunk	(CUSTOMOBJECT_CHUNK_TRANSFORM);
     F.Wvector		(FPosition);
     F.Wvector		(FRotation);
     F.Wvector		(FScale);

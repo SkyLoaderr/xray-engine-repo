@@ -125,11 +125,9 @@ object fraBottomBar: TfraBottomBar
           Width = 34
           Height = 15
           Align = alNone
-          AllowAllUp = True
           BevelShow = False
           HotColor = 15790320
           CloseButton = False
-          GroupIndex = 1
           Caption = 'Stat'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -248,6 +246,7 @@ object fraBottomBar: TfraBottomBar
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
     TrackButton = tbLeftButton
+    OnPopup = pmOptionsPopup
     MarginStartColor = 13158600
     MarginEndColor = 1644825
     BKColor = 10528425
@@ -392,6 +391,10 @@ object fraBottomBar: TfraBottomBar
     end
     object N4: TMenuItem
       Caption = '-'
+      GroupIndex = 4
+    end
+    object miDrawSafeRect: TMenuItem
+      Caption = 'Draw Safe Rect'
       GroupIndex = 4
     end
     object miDrawGrid: TMenuItem
