@@ -332,6 +332,7 @@ void CCharacterPhysicsSupport::ActivateShell			(CObject* who)
 	b_death_anim_on=false;
 	m_eState=esDead;
 	b_skeleton_in_shell=true;
+	m_pPhysicsShell->SetPrefereExactIntegration	();
 }
 void CCharacterPhysicsSupport::in_ChangeVisual()
 {

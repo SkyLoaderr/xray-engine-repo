@@ -32,7 +32,7 @@ const dReal			default_k_l										= 0.0002f;//square resistance !!
 const dReal			default_k_w										= 0.05f;
 
 const dReal			mass_limit										= 10000.f;//some conventional value used as evaluative param (there is no code restriction on mass)
-extern const u16	max_joint_allowed_for_exeact_integration		= 20;
+extern const u16	max_joint_allowed_for_exeact_integration		= 30;
 
 #ifndef  ODE_SLOW_SOLVER
 const dReal 		world_cfm										= 1.1363636e-6f;//1.1363636e-06f;///1.e-36f;//
