@@ -1,1 +1,115 @@
---
+
+local animations = {
+                   "stoya_ruje_ 0",
+                   "vishka_3",                   
+                   "norm_torso_2_idle_1",
+                   "norm_torso_2_idle_2",
+                   "norm_torso_2_idle_3",
+                   "norm_torso_2_idle_4",
+                   "norm_torso_2_idle_5",
+                   "norm_torso_2_idle_6"
+
+                   }
+                   
+local themes    = {
+                  {name = "theme_1", single = false},
+                  {name = "theme_2", single = false},
+                  {name = "theme_3", single = true},
+                  {name = "theme_4", single = true}
+                  }                    
+
+
+----------------------------------------------------------------------------
+class "evaluator_complete" (property_evaluator)
+-------------------
+function evaluator_complete:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_complete:evaluate ()
+    return not (self.a.enabled == true)
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "action_bar" (action_base)
+-------------------
+function action_bar:__init (name, storage) super (nil, name)
+    self.current_animation = 1
+    self.interlocutor = nil
+    self.talk_enabled = false
+    self.a = storage
+end
+-------------------
+function action_bar:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations ()
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    --self.object:set_item                  (object.hide, self.object:best_weapon ())
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_mental_state          (anim.free)
+    self.current_animation = math.random  (1, table.getn (animations))
+    self.talk_enabled = false
+end    
+-------------------
+function action_bar:execute ()
+    action_base.execute (self)
+    
+    if self.interlocutor == nil and self.a.interlocutor ~= nil then
+       self.interlocutor = level.object (self.a.interlocutor)
+       self.talk_enabled = true
+    end   
+    
+    if self.object:animation_count () < 2 then
+       self:set_animation ()
+    end
+    
+    
+        
+end    
+-------------------
+function action_bar:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end    
+-------------------
+function action_bar:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation], false)
+    printf ("Add animation %s", animations[self.current_animation])
+end
+
+
+
+----------------------------------------------------------------------------
+function add_to_binder (npc)
+    local manager = npc:motivation_action_manager ()
+    
+    local property = {}
+    local operators = {}
+    
+    property["complete"] = xr_evaluators_id.sidor_bar
+    operators["bar"] = xr_actions_id.sidor_act_bar
+    
+    manager:add_evaluator (property["complete"], this.evaluator_complete (xr_motivator.storage[npc:id()].bar_stalker, "property_complete"))
+    
+    local action = this.action_bar ("action_bar", xr_motivator.storage[npc:id()].bar_stalker)
+    action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition         (world_property (property["complete"],        false))
+   	action:add_effect               (world_property (property["complete"],        true))
+   	manager:add_action              (operators["bar"], action)
+   	     	   
+    action = manager:action (stalker_ids.action_puzzle_solver)
+   	action:add_precondition (world_property (property["complete"],  true))
+    
+end
