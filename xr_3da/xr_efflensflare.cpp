@@ -150,14 +150,14 @@ CLensFlare::~CLensFlare()
 }
 
 #ifndef _EDITOR
-struct STranspParam	{
-	const Fvector&				P;
-	const Fvector&				D;
-	float						f;
-	CLensFlare*					parent;
-	float						vis;
-	float						vis_threshold;
-	STranspParam	(CLensFlare* p, const Fvector& _P, const Fvector& _D, float _f, float _vis_threshold):P(_P),D(_D),f(_f),parent(p),vis(1.f),vis_threshold(_vis_threshold){}
+struct STranspParam		{
+	const Fvector		P;
+	const Fvector		D;
+	float				f;
+	CLensFlare*			parent;
+	float				vis;
+	float				vis_threshold;
+	STranspParam		(CLensFlare* p, const Fvector& _P, const Fvector& _D, float _f, float _vis_threshold):P(_P),D(_D),f(_f),parent(p),vis(1.f),vis_threshold(_vis_threshold){}
 };
 IC BOOL __stdcall material_callback(collide::rq_result& result, LPVOID params)
 {
