@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\render.h"
+//#include "..\render.h"
  
 #include "hudmanager.h"
 #include "Entity.h"
@@ -24,12 +24,14 @@ CEntity::CEntity()
 	
 	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
 	eHealthLost_End		= Engine.Event.Handler_Attach	("level.entity.healthlost.end",		this);
+	m_tpEventSay		= Engine.Event.Handler_Attach	("level.entity.say",				this);
 }
 
 CEntity::~CEntity()
 {
 	Engine.Event.Handler_Detach	(eHealthLost_Begin,	this);
 	Engine.Event.Handler_Detach	(eHealthLost_End,	this);
+	Engine.Event.Handler_Detach (m_tpEventSay,this);
 }
 
 void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
@@ -49,6 +51,13 @@ void CEntity::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 		if (0==P2 || DWORD(this)==P2)	
 		{
 			eHealthLost_Enabled		= FALSE;
+		}
+	}
+	if (E == m_tpEventSay) {
+		if (0==P2 || DWORD(this)==P2) {
+			string512 Test;
+			Test = (string512)(P1);
+			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
 		}
 	}
 }

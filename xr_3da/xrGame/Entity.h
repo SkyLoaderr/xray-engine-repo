@@ -33,6 +33,7 @@ protected:
 	// EVENT: health lost 
 	EVENT				eHealthLost_Begin;
 	EVENT				eHealthLost_End;
+	EVENT				m_tpEventSay;
 	
 	BOOL				eHealthLost_Enabled;
 	float				eHealthLost_speed;
