@@ -6,17 +6,17 @@ class VertexCache
 {
 
 public:
-  VertexCache	(int size);
-  VertexCache	();
-  ~VertexCache	();
+	VertexCache	(int size);
+	VertexCache	();
+	~VertexCache	();
 
-  bool			InCache	(int entry);
-  int			AddEntry(int entry);
-  void			Clear	();
+	bool			InCache	(int entry);
+	int			AddEntry(int entry);
+	void			Clear	();
 
-  void			Copy	(VertexCache* inVcache);
-  int			At		(int index);
-  void			Set		(int index, int value);
+	void			Copy	(VertexCache* inVcache);
+	int			At		(int index);
+	void			Set		(int index, int value);
 
 private:
 	vector<int>	entries;
@@ -24,36 +24,36 @@ private:
 
 inline bool VertexCache::InCache(int entry)
 {
-  bool returnVal = false;
+	bool returnVal = false;
 
-  for(int i = 0; i < numEntries; i++)
-  {
-    if(entries[i] == entry)
-    {
-      returnVal = true;
-      break;
-    }
-  }
+	for(int i = 0; i < entries.size(); i++)
+	{
+		if(entries[i] == entry)
+		{
+			returnVal = true;
+			break;
+		}
+	}
 
-  return returnVal;
+	return returnVal;
 }
 
 
 inline int VertexCache::AddEntry(int entry)
 {
-  int removed;
+	int removed;
 
-  removed = entries[numEntries - 1];
+	removed = entries[entries.size() - 1];
 
-  //push everything right one
-  for(int i = numEntries - 2; i >= 0; i--)
-  {
-    entries[i + 1] = entries[i];
-  }
+	//push everything right one
+	for(int i = entries.size() - 2; i >= 0; i--)
+	{
+		entries[i + 1] = entries[i];
+	}
 
-  entries[0] = entry;
+	entries[0] = entry;
 
-  return removed;
+	return removed;
 }
 
 

@@ -9,45 +9,37 @@ VertexCache::VertexCache()
 
 VertexCache::VertexCache(int size)
 {
-  numEntries = size;
-
-  entries = new int[numEntries];
-
-  for(int i = 0; i < numEntries; i++)
-    entries[i] = -1;
+	entries.assign	(size,-1);
 }
 
 
 VertexCache::~VertexCache()
 {
-  delete[] entries;
+	entries.clear	();
 }
 
 
-int VertexCache::At(int index)
+int VertexCache::At	(int index)
 {
   return entries[index];
 }
 
-
 void VertexCache::Set(int index, int value)
 {
-  entries[index] = value;
+	entries[index] = value;
 }
 
 
 void VertexCache::Clear()
 {
-  for(int i = 0; i < numEntries; i++)
-    entries[i] = -1;
+	for(int i = 0; i < entries.size(); i++)
+		entries[i] = -1;
 }
 
 void VertexCache::Copy(VertexCache* inVcache)
 {
-  for(int i = 0; i < numEntries; i++)
-  {
-    inVcache->Set(i, entries[i]);
-  }
+	for(int i = 0; i < entries.size(); i++)
+	{
+		inVcache->Set(i, entries[i]);
+	}
 }
-
-  
