@@ -119,10 +119,9 @@ void CreateLog(LogCallback cb)
     VerifyPath			(logFName);
 
 	FILE *f;
-	f = fopen(logFName, "wt");
-	if (f==NULL) abort();
-	fprintf(f,"\n");
-	fclose(f);
+	f		= fopen(logFName, "wt");
+	if		(f==NULL) abort();
+	fclose	(f);
 
 	// Calculating build
 	long Time;
@@ -137,8 +136,7 @@ void CreateLog(LogCallback cb)
 	}
 	for (mcnt=6; mcnt<mnum; mcnt++) build+=day_in_month[mcnt];
 	build+=dnum;
-	Msg("\"%s\" build %d\nCompilation date: %s\n",
-		"XRay Engine",build+(ynum-1999)*365, __DATE__);
+	Msg("'%s' build %d\nCompilation date: %s\n","xrCore",build+(ynum-1999)*365, __DATE__);
 }
 
 void CloseLog(void)
