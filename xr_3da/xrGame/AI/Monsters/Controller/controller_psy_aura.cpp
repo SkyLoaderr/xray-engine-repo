@@ -8,6 +8,7 @@ CPsyAuraController::CPsyAuraController()
 {
 	set_radius(30.f);
 	set_auto_activate();
+	set_auto_deactivate();
 	m_effector.SetRadius(get_radius());
 }
 
@@ -17,7 +18,8 @@ CPsyAuraController::~CPsyAuraController()
 
 void CPsyAuraController::reload(LPCSTR section)
 {
-	inherited::reload(section);
+	inherited::reload(section, "PsyAura_");
+	
 	m_effector.Load(pSettings->r_string(section,"PsyAura_Postprocess_Section"));
 	::Sound->create(m_sound,TRUE, pSettings->r_string(section,"PsyAura_HeadSound"), SOUND_TYPE_WORLD);
 
@@ -40,12 +42,6 @@ void CPsyAuraController::on_activate()
 
 void CPsyAuraController::on_deactivate()
 {
-	//if (m_actor) {
-	//	if (m_current_radius > get_radius()) {
-	//		
-	//	}
-	//	m_current_radius = m_actor->Position().distance_to(get_object()->Position());
-	//}
 }
 
 void CPsyAuraController::schedule_update()
@@ -77,8 +73,6 @@ void CPsyAuraController::schedule_update()
 
 void CPsyAuraController::frame_update() 
 {
-	inherited::frame_update();
-
 	bool b_updated = false;
 	
 	if (is_active()) {

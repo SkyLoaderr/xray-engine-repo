@@ -1,13 +1,17 @@
 #pragma once
 #include "../../biting/ai_biting.h"
 #include "../../telekinesis.h"
+#include "../../energy_holder.h"
 
 class CPhysicsShellHolder;
+class CStateManagerPoltergeist;
 
 class CPoltergeist :	public CAI_Biting ,
-						public CTelekinesis {
+						public CTelekinesis,
+						public CEnergyHolder {
 	
-	typedef		CAI_Biting	inherited;
+	typedef		CAI_Biting		inherited;
+	typedef		CEnergyHolder	Energy;
 
 	CParticlesObject	*m_particles_object;
 
@@ -16,6 +20,8 @@ class CPoltergeist :	public CAI_Biting ,
 
 	LPCSTR				m_particles_hidden;
 
+	CStateManagerPoltergeist *StateMan;
+
 public:
 					CPoltergeist		();
 	virtual			~CPoltergeist		();	
@@ -23,7 +29,6 @@ public:
 	virtual void	Load				(LPCSTR section);
 	virtual void	reload				(LPCSTR section);
 	virtual void	reinit				();
-	virtual void	StateSelector		();
 
 	virtual void	net_Destroy			();
 	virtual void	UpdateCL			();
@@ -33,9 +38,14 @@ public:
 
 	virtual void	ForceFinalAnimation	();
 
-			void	Hide				();
-			void	Show				();
-		
+	virtual bool	UpdateStateManager	();
+
+	virtual	void	on_activate			();
+	virtual	void	on_deactivate		();
+
+
+			bool	is_hidden			() {return m_hidden;}
+
 	// FireBall
 
 			void	LoadFlame				(LPCSTR section);
@@ -94,7 +104,11 @@ public:
 			float	target_height;
 
 			void	UpdateHeight			();
-			
+
+private:
+			void	Hide					();
+			void	Show					();
+
 };
 
 

@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "poltergeist.h"
+#include "poltergeist_state_manager.h"
 #include "../../../PHMovementControl.h"
 #include "../../../PhysicsShellHolder.h"
 #include "../../ai_monster_debug.h"
 #include "../../ai_monster_utils.h"
+
 
 #define HEIGHT_CHANGE_VELOCITY	0.1f
 #define HEIGHT_CHANGE_MIN_TIME	3000
@@ -14,18 +16,15 @@
 
 CPoltergeist::CPoltergeist()
 {
-	stateRest			= xr_new<CBitingRest>(this);
-
-	CurrentState		= stateRest;
-	CurrentState->Reset	();
-	
 	m_particles_object	= 0;
 	m_hidden			= false;
+
+	StateMan = xr_new<CStateManagerPoltergeist>(this);
 }
 
 CPoltergeist::~CPoltergeist()
 {
-	xr_delete		(stateRest);
+	xr_delete		(StateMan);
 }
 
 void CPoltergeist::Load(LPCSTR section)
@@ -71,12 +70,14 @@ void CPoltergeist::Load(LPCSTR section)
 void CPoltergeist::reload(LPCSTR section)
 {
 	inherited::reload(section);
+	Energy::reload(section,"Invisible_");
 }
 
 void CPoltergeist::reinit()
 {
 	inherited::reinit();
-	
+	Energy::reinit();
+
 	m_current_position = Position();
 
 	time_tele_start		= 0;
@@ -84,11 +85,10 @@ void CPoltergeist::reinit()
 
 	target_height		= 1.f;
 	time_height_updated = 0;
-}
 
-void CPoltergeist::StateSelector()
-{	
-	SetState(stateRest);
+	Energy::set_auto_activate();
+	Energy::set_auto_deactivate();
+
 }
 
 void CPoltergeist::Hide()
@@ -142,7 +142,8 @@ void CPoltergeist::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	CTelekinesis::schedule_update();
-	
+	Energy::schedule_update();
+
 	UpdateFlame();
 	UpdateTelekinesis();
 	UpdateHeight();
@@ -176,3 +177,20 @@ void CPoltergeist::UpdateHeight()
 		target_height		= Random.randF(HEIGHT_MIN, HEIGHT_MAX);		
 	}
 }
+
+bool CPoltergeist::UpdateStateManager()
+{
+	StateMan->execute	();
+	return true;
+}
+
+void CPoltergeist::on_activate()
+{
+	Hide();
+}
+
+void CPoltergeist::on_deactivate()
+{
+	Show();
+}
+
