@@ -205,10 +205,13 @@ void	CRenderTarget::OnDeviceCreate	()
 	s_occq.create					(b_occq,		"r2\\occq");
 
 	// DIRECT (spot)
+	D3DFORMAT						depth_format;
+	if	(RImplementation.o.depth16)	depth_format	= D3DFMT_D16;
+	else							depth_format	= D3DFMT_D24X8;
 	if (RImplementation.o.HW_smap)
 	{
 		u32	size					=RImplementation.o.smapsize;
-		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,D3DFMT_D24X8	);
+		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,depth_format	);
 		rt_smap_surf.create			(r2_RT_smap_surf,			size,size,D3DFMT_R5G6B5	);
 		rt_smap_ZB					= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
@@ -219,7 +222,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	size					=RImplementation.o.smapsize;
 		rt_smap_surf.create			(r2_RT_smap_surf,			size,size,D3DFMT_R32F);
 		rt_smap_depth				= NULL;
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,depth_format,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
