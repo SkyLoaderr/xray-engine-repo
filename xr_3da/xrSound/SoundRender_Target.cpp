@@ -115,17 +115,18 @@ void	CSoundRender_Target::start			(CSoundRender_Emitter* E)
 	// 5. Deferred-play-signal (emitter-exist, rendering-false)
 	pEmitter		= E;
 	pos_write		= 0;
-	fill_parameters	();
-	fill_block		();
-	fill_block		();
 	rendering		= FALSE;
 }
 
 void	CSoundRender_Target::render			()
 {
-	R_CHK	(pBuffer->SetCurrentPosition	(0));
-	R_CHK	(pBuffer->Play(0,0,DSBPLAY_LOOPING));
-	rendering = TRUE;
+	fill_parameters	();
+	fill_block		();
+	fill_block		();
+
+	R_CHK			(pBuffer->SetCurrentPosition	(0));
+	R_CHK			(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	rendering		= TRUE;
 }
 
 void	CSoundRender_Target::stop			()
