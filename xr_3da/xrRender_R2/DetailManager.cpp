@@ -212,13 +212,10 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					float	scale			= Item.scale*alpha_i;
 					float	radius			= R*scale;
 					float	ssa				= radius*radius*dist_sq_rcp;
-
 					if (ssa < r_ssaDISCARD) continue;
-					u32	vis_id				= Item.vis_ID;
-					if (ssa < r_ssaCHEAP)	vis_id=0;
 
 					Item.scale_calculated	= scale;
-					visible[vis_id][sp.id].push_back	(*siIT);
+					visible[(ssa < r_ssaCHEAP) ? 0 : Item.vis_ID][sp.id].push_back	(*siIT);
 				}
 			}
 		}
