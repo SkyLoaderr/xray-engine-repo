@@ -189,17 +189,16 @@ void CBuild::LightVertex()
 		C.set		(0,0,0,0);
 		for (int v=0; v<VL.size(); v++)
 		{
-			C.r += VL[v]->Color.r;
-			C.g += VL[v]->Color.g;
-			C.b += VL[v]->Color.b;
+			C.r = _max(C.r,VL[v]->Color.r);
+			C.g = _max(C.g,VL[v]->Color.g);
+			C.b = _max(C.b,VL[v]->Color.b);
 		}
-		C.mul_rgb	(1.f/float(VL.size()));
 
 		// Calculate final vertex color
 		for (v=0; v<VL.size(); v++)
 		{
 			Fcolor				R;
-			R.lerp				(VL[v]->Color,C,1.f);
+			R.lerp				(VL[v]->Color,C,.5f);
 			R.r					= _max(R.r,VL[v]->Color.r);
 			R.g					= _max(R.g,VL[v]->Color.g);
 			R.b					= _max(R.b,VL[v]->Color.b);
