@@ -127,11 +127,12 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 {
 	CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 	VERIFY(tpALifeTraderParams);
-	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
+	//DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+	//DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	bool bOk = false;
-	for ( ; I != E; I++) {
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.find((*I)->m_tObjectID);
+	for (int I=0; I<(int)m_tpGraphObjects[tGraphID].tpObjects.size(); I++) {
+		u16 wID = m_tpGraphObjects[tGraphID].tpObjects[I]->m_tObjectID;
+		OBJECT_PAIR_IT	i = m_tObjectRegistry.find(wID);
 		VERIFY(i != m_tObjectRegistry.end());
 		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
 		VERIFY(tpALifeDynamicObject);
@@ -141,8 +142,8 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 			if (tpALifeTraderParams->m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 				if (randF(1.0f) < fProbability) {
 					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
-					//return(true);
 					bOk = true;
+					I--;
 					continue;
 				}
 			}
@@ -168,6 +169,7 @@ bool CAI_ALife::bfProcessItems(xrServerEntity &tServerEntity, _GRAPH_ID tGraphID
 					vfAttachItem(tServerEntity,tpALifeItem,tGraphID);
 					//return(true);
 					bOk = true;
+					I--;
 					continue;
 				}
 				else

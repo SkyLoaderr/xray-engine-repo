@@ -284,16 +284,22 @@ public:
 	{
 		ALIFE_ENTITY_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
+		bool							bOk = false;
 		for ( ; I != E; I++)
 			if ((*I) == tpALifeDynamicObject) {
 				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
+				bOk = true;
 				break;
 			}
+		VERIFY							(bOk);
+		Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
 	};
 	
 	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 	{
 		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
+		tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
+		Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
 	};
 
 	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
