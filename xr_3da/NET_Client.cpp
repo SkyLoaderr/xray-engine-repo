@@ -689,7 +689,7 @@ void	IPureClient::Sync_Average	()
 //	Msg("* CLIENT: d(%d), dc(%d), s(%d)",net_TimeDelta,net_TimeDelta_Calculated,size);
 }
 
-void __cdecl		sync_thread(void* P)
+void 				sync_thread(void* P)
 {
 	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	IPureClient*	C	= (IPureClient*)P;

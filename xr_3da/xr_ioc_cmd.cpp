@@ -170,7 +170,7 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-void __cdecl	crashthread			( void* )
+void 			crashthread			( void* )
 {
 	Sleep		(1000);
 	Msg			("! crash thread activated");
