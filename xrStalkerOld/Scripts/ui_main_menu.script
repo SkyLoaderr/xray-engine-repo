@@ -93,7 +93,7 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
-	tab:AddItem(btn)
+
 	
 	--------->> LOAD Game	
 	btn = CUIButton()
