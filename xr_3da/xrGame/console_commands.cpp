@@ -31,6 +31,9 @@
 #include "mt_config.h"
 #ifdef DEBUG
 #include "PHDebug.h"
+#include "ui/UIDebugFonts.h" 
+#include "hudmanager.h"
+
 #endif
 
 extern void show_smart_cast_stats		();
@@ -1435,7 +1438,15 @@ public:
 			A->DumpInfo();
 	}
 };
-#endif
+
+class CCC_DebugFonts : public IConsole_Command {
+public:
+	CCC_DebugFonts (LPCSTR N) : IConsole_Command(N) {bEmptyArgsHandled = true; }
+	virtual void Execute				(LPCSTR args) {
+		HUD().GetUI()->StartStopMenu( xr_new<CUIDebugFonts>(), true);		
+	}
+};
+#endif // DEBUG
 
 class CCC_PostprocessTest : public IConsole_Command {
 public:
@@ -1793,6 +1804,7 @@ void CCC_RegisterCommands()
 
 
 	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
+	CMD1(CCC_DebugFonts,		"debug_fonts");
 #endif // DEBUG
 	
 
@@ -1876,7 +1888,6 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
 
 	CMD1(CCC_DumpInfos,				"dump_infos");
-	
 #endif
 
 	CMD1(CCC_KickPlayer,	"sv_kick"					);		
