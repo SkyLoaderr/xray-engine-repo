@@ -133,7 +133,27 @@ void CRenderTarget::accum_direct_blend	()
 	// blend-copy
 	if (!RImplementation.o.fp16_blend)	{
 		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+
+		// Common calc for quad-rendering
+		u32		Offset;
+		u32		C					= color_rgba	(255,255,255,255);
+		float	_w					= float			(Device.dwWidth);
+		float	_h					= float			(Device.dwHeight);
+		Fvector2					p0,p1;
+		p0.set						(.5f/_w, .5f/_h);
+		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+		float	d_Z	= EPS_S, d_W = 1.f;
+
+		// Fill vertex buffer
+		FVF::TL2uv* pv				= (FVF::TL2uv*) RCache.Vertex.Lock	(4,g_combine_2UV->vb_stride,Offset);
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y, j0.x, j1.y);	pv++;
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y, j0.x, j0.y);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y, j1.x, j1.y);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y, j1.x, j0.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
+		RCache.set_Geometry			(g_combine_2UV);
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_2D]	);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2	);
 	}
 	Target->dwLightMarkerID				+= 2;
