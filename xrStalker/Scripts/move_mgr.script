@@ -26,7 +26,7 @@ function move_mgr:__init(npc)
 		utils.abort("move_mgr:__init() - npc is nil, please update the script")
 	end
 	self.object = npc
-	self.dialog_mgr = xr_dialogs.dialog_mgr()
+	--self.dialog_mgr = xr_dialogs.dialog_mgr() UNCOMMENT ME
 end
 
 function move_mgr:initialize(npc)
@@ -160,7 +160,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		s[self.object:id()] = -1
 	end
 
-	self.dialog_mgr:reset(self.object, team)
+	-- self.dialog_mgr:reset(self.object, team) UNCOMMENT ME
 
 	self.last_index = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
@@ -217,9 +217,9 @@ end
 
 function move_mgr:update_sound()
 	if self.sound then
-		if self.dialog_mgr:active() == nil then
+		-- if self.dialog_mgr:active() == nil then UNCOMMENT ME
 			xr_sound.sound_update(self.object, self.sound)
-		end
+		-- end UNCOMMENT ME
 		if self.play_once then
 			self.sound = nil
 		end
@@ -334,7 +334,7 @@ function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
 	if not no_dialog_mgr_update then
-		self.dialog_mgr:update()
+		-- self.dialog_mgr:update() -- UNCOMMENT ME
 	end
 
 	if not utils.is_day() and self.sl and self.sl:action() == nil then
@@ -466,7 +466,7 @@ function move_mgr:update(no_dialog_mgr_update)
 end
 
 function move_mgr:finalize(npc)
-	self.dialog_mgr:finalize()
+	-- self.dialog_mgr:finalize() UNCOMMENT ME
 
 	self.object:clear_callback(game_object.movement)
 
@@ -565,9 +565,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
 		if not self.play_sound_after_anim_start then
-			if self.dialog_mgr:active() == nil then
+			-- if self.dialog_mgr:active() == nil then UNCOMMENT ME
 				self:update_sound()
-			end
+			-- end
 		end
 	else
 		self.sound = nil
@@ -576,11 +576,11 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 	local suggested_dlg = self.path_walk_info[index]["ds"]
 	if suggested_dlg then
-		self.dialog_mgr:enable(parse_names(suggested_dlg))
+		-- self.dialog_mgr:enable(parse_names(suggested_dlg)) UNCOMMENT ME
 	else
-		self.dialog_mgr:disable()
+		-- self.dialog_mgr:disable() UNCOMMENT ME
 	end
-	self.dialog_mgr:update()
+	-- self.dialog_mgr:update() UNCOMMENT ME
 
 	local suggested_crouch = self.path_walk_info[index]["c"]
 	if suggested_crouch == "true" then
