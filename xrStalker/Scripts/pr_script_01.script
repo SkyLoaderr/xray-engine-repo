@@ -23,9 +23,6 @@ function main()
 --  создаем глоб. переменную содержащую id зоны объект который доступен по переменной event 
 	event_zone_id = event:id()
  
-	local stalker1	= get_level_object("m_stalker_e0000")
-	local stalker2	= get_level_object("m_stalker_e0001")
-
 	local actor   	= get_actor()
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
