@@ -199,6 +199,7 @@ void CBuild::Run()
 	Phase			("Optimizing...");
 	mem_Compact		();
 	PreOptimize		();
+	IsolateVertices	();
 
 	FPU::m64r		();
 	Phase			("Checking T-Junctions...");
@@ -209,7 +210,8 @@ void CBuild::Run()
 	Phase			("Building normals...");
 	mem_Compact		();
 	CalcNormals		();
-
+	IsolateVertices	();
+	
 	FPU::m64r();
 	Phase			("Building collision database...");
 	mem_Compact		();
@@ -234,12 +236,14 @@ void CBuild::Run()
 	Phase			("Build UV mapping...");
 	mem_Compact		();
 	xrPhase_UVmap	();
+	IsolateVertices	();
 	
 	FPU::m64r		();
 	Phase			("Subdividing geometry...");
 	mem_Compact		();
-	xrPhase_Subdivide			();
-
+	xrPhase_Subdivide();
+	IsolateVertices	();
+	
 	FPU::m64r		();
 	Phase			("Soften lights...");
 	mem_Compact		();
