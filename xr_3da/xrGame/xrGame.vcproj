@@ -2199,6 +2199,32 @@
 							RelativePath=".\inventory_space.h">
 						</File>
 						<Filter
+							Name="AttachableItem"
+							Filter="">
+							<File
+								RelativePath=".\attachable_item.cpp">
+							</File>
+							<File
+								RelativePath=".\attachable_item.h">
+							</File>
+							<File
+								RelativePath=".\attachable_item_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="AttachmentOwner"
+							Filter="">
+							<File
+								RelativePath=".\attachment_owner.cpp">
+							</File>
+							<File
+								RelativePath=".\attachment_owner.h">
+							</File>
+							<File
+								RelativePath=".\attachment_owner_inline.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="EatableItem"
 							Filter="">
 							<File
@@ -2235,16 +2261,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="Trade"
-							Filter="">
-							<File
-								RelativePath="trade.cpp">
-							</File>
-							<File
-								RelativePath="trade.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="PhysicItem"
 							Filter="">
 							<File
@@ -2258,29 +2274,13 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="AttachableItem"
+							Name="Trade"
 							Filter="">
 							<File
-								RelativePath=".\attachable_item.cpp">
+								RelativePath="trade.cpp">
 							</File>
 							<File
-								RelativePath=".\attachable_item.h">
-							</File>
-							<File
-								RelativePath=".\attachable_item_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="AttachmentOwner"
-							Filter="">
-							<File
-								RelativePath=".\attachment_owner.cpp">
-							</File>
-							<File
-								RelativePath=".\attachment_owner.h">
-							</File>
-							<File
-								RelativePath=".\attachment_owner_inline.h">
+								RelativePath="trade.h">
 							</File>
 						</Filter>
 					</Filter>
