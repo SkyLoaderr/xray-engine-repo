@@ -96,7 +96,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	float	yaw, pitch;
 	D.getHP(yaw,pitch);
 	CKinematics *tpKinematics = PKinematics(pVisual);
-#pragma todo("Forward - Back bone impulse direction has being determined incorrect!")
+#pragma todo("forward-back bone impulse direction has been determined incorrectly!")
 	CMotionDef *tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_torso_current.yaw,-yaw,PI_DIV_2) ? 0 : 1)];
 	float power_factor = amount/100.f; clamp(power_factor,0.f,1.f);
 	tpKinematics->PlayFX(tpMotionDef,power_factor);
