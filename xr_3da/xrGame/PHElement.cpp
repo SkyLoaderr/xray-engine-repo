@@ -218,9 +218,13 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
+
+
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
+	VERIFY2(dV_valid(m_safe_position),"not valide safe position");
+	VERIFY2(dV_valid(m_safe_velocity),"not valide safe velocity");
 }
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
@@ -824,6 +828,7 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
 	if(!bActive||m_flags.test(flFixed)) return;
+	VERIFY2(_valid(velocity),"not valid arqument velocity");
 	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 }
@@ -1006,6 +1011,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 	dMassSetZero(&m_mass);
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;++i_geom)(*i_geom)->add_self_mass(m_mass,mc,density);
+	VERIFY2(dMass_valide(&m_mass),"non valide mass obtained!");
 }
 
 float CPHElement::getRadius()
