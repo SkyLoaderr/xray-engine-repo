@@ -14,6 +14,8 @@
 #include "dcTriListCollider.h"
 #include "../dCylinder/dCylinder.h"
 #include "../ExtendedGeom.h"
+#include "../xrCDB.h"
+#include "aabb_tri.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
 
 

@@ -335,12 +335,14 @@ const	dReal k_d=1000.f;
 }
 /////////
 void CPHJeep::Destroy(){
-//	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
-//	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
-//	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
-//	dGeomDestroy(GeomsGroup);
 	for(UINT i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
 	DynamicData.Destroy();
+	/*
+	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
+	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
+	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
+	dGeomDestroy(GeomsGroup);
+*/
 
 }
 
@@ -1158,8 +1160,8 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
-						dBodyDisable(m_body);
+					//if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
+					//	dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
 					{

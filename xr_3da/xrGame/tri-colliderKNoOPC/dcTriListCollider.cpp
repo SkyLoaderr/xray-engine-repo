@@ -34,7 +34,7 @@ int dCollideBP (const dxGeom* o1, const dxGeom* o2, int flags, dContactGeom *con
 
 
 static 	vector<Triangle> pos_tries;
-static 	vector<Triangle> neg_tries;
+//static 	vector<Triangle> neg_tries;
 /*
 static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
 static bool pushing_neg=false,pushing_b_neg=false;
@@ -46,7 +46,8 @@ extern "C" int dSortTriBoxCollide (
 								int flags, dContactGeom *contact, int skip,
 								CDB::RESULT*    R_begin,
 								CDB::RESULT*    R_end ,
-								CDB::TRI*       T_array
+								CDB::TRI*       T_array,
+								Fvector AABB
 								)
 {
 //	Log("in dSortTriBoxCollide");
@@ -62,7 +63,7 @@ extern "C" int dSortTriBoxCollide (
 	bool* pushing_neg=&data->pushing_neg;
 	bool* pushing_b_neg=&data->pushing_b_neg;
 	pos_tries.clear	();
-	neg_tries.clear	();
+	//neg_tries.clear	();
 	//pos_dist=dInfinity,
 	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
 	//dReal max_proj=-dInfinity,proj;
@@ -143,6 +144,7 @@ extern "C" int dSortTriBoxCollide (
 		tri.side1[0]=tri.v2[0]-tri.v1[0];
 		tri.side1[1]=tri.v2[1]-tri.v1[1];
 		tri.side1[2]=tri.v2[2]-tri.v1[2];
+		
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
 		dReal sidePr=
@@ -153,8 +155,10 @@ extern "C" int dSortTriBoxCollide (
 		tri.pos=dDOT(tri.v0,tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
+		Point vertices[3]={Point(tri.v0),Point(tri.v1),Point(tri.v2)};
 		if(tri.dist<0.f){
 		 if(!(dDOT(last_pos,tri.norm)-tri.pos<0.f))
+			 if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 		 {
 			if(TriContainPoint(tri.v0,tri.v1,tri.v2,
 				tri.norm,tri.side0,
@@ -305,7 +309,7 @@ return dSortTriBoxCollide (Box,
 						Geometry,
 						3,
 						CONTACT(Contacts, OutTriCount * Stride),   Stride,
-						R_begin,R_end,T_array
+						R_begin,R_end,T_array,AABB
 				);
 		
 /*
@@ -575,6 +579,6 @@ void dcTriListCollider::OnRender()
 {
 	Fvector C;
 	C.set(0,0,0);
-//	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
+	Device.Primitive.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
 }
 #endif
