@@ -9,6 +9,7 @@ xrClientData* xrServer::SelectBestClientToMigrateTo	(xrServerEntity* E, BOOL bFo
 		{
 			if (E->owner!=net_Players[it])	return (xrClientData*)net_Players[it];
 		}
+		return 0;
 	} else {
 		// DUMB SELECTION
 		if (E->owner)	return E->owner;
