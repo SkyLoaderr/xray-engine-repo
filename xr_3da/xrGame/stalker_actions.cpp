@@ -148,7 +148,7 @@ void CStalkerActionFreeNoALife::execute		()
 //	m_object->set_desired_position	(&actor->Position());
 //	m_object->set_level_dest_vertex	(actor->level_vertex_id());
 //	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	Fvector							look_pos = actor->Position();
+	Fvector							look_pos = Fvector().set(0.f,0.f,1.f);//actor->Position();
 	look_pos.y						+= .8f;
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
