@@ -269,8 +269,6 @@ IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSub
 	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) && ((tCenter.x <= tpSubNode.tRightUp.x) && (tCenter.z <= tpSubNode.tRightUp.z)));
 }
 
-#define min(x,y) ((x) < (y) ? (x) : (y))
-
 #define EPSILON 0.001
 
 IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode)
