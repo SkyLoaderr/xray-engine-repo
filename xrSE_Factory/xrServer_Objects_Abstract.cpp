@@ -111,8 +111,8 @@ void CSE_Visual::FillProps		(LPCSTR pref, PropItemVec &items)
 	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
 	ChooseValue *V 				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Model\\Visual"),		&visual_name,		smVisual);
 	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
-	V							= PHelper().CreateChoose(items,	PrepareKey(pref,abstract->name(),"Model\\Animation"),	&startup_animation, smSkeletonAnims,0,visual_name);
-	V->OnChangeEvent.bind		(this,&CSE_ALifeObjectPhysic::OnChangeAnim);
+	V							= PHelper().CreateChoose(items,	PrepareKey(pref,abstract->name(),"Model\\Animation"),	&startup_animation, smSkeletonAnims,0,(void*)*visual_name);
+	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeAnim);
 }
 
 ////////////////////////////////////////////////////////////////////////////
