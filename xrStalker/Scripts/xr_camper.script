@@ -141,6 +141,10 @@ function action_kill:execute ()
 			end
 		end
 	end
+	if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+		return
+	end
+	
 end
 function action_kill:finalize ()
     action_base.finalize(self)
@@ -166,8 +170,7 @@ function action_retreat:initialize()
 			state_mgr.set_state(self.object, "sneak")
 		else
 			printf("ERROR: RETREAT NODE NOT ACCESIBLE")
-		end
-						
+		end						
     end
 end
 function action_retreat:execute()
@@ -188,7 +191,9 @@ function action_retreat:execute()
 			end			
 		end
 	end
-	
+	if xr_logic.try_switch_to_another_section (self.object, self.a, db.actor) then
+		return
+	end    	
 end
 function action_retreat:finalize()
     action_base.finalize(self)
