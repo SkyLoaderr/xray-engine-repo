@@ -43,6 +43,7 @@ string g_sSerial;
 //---------------------------------------------------------------------------
 // User defined function prototype
 //---------------------------------------------------------------------------
+prototype 				CreateUninstallShortcut		(); 
 prototype 				ClearFolder					(byval string);
 prototype BOOL 			CheckAdminRights			();
 // SQL server management function
@@ -65,6 +66,30 @@ export prototype 		MSDE_2000_UnInstalled		();
 
 //---------------------------------------------------------------------------
 // User defined function
+//---------------------------------------------------------------------------
+function CreateUninstallShortcut()   
+string strCmdLine;  
+LIST lstPath; 
+begin   
+	 // For an InstallScript installation:
+	 strCmdLine = DISK1TARGET ^ "Setup.exe";    
+	 // For an InstallScript MSI installation:
+	 strCmdLine = UNINSTALL_STRING;    
+ 
+	 // The path has to be handled differently if you are running   
+	 // an InstallScript MSI installation on Windows 9X.  
+ 	if ( SYSINFO.WIN9X.bWin9X ) then   
+	 	lstPath = ListCreate( STRINGLIST );  
+		StrGetTokens( lstPath, UNINSTALL_STRING, "/" );    
+	
+		ListGetFirstString( lstPath, strCmdLine );  
+		LongPathToQuote( strCmdLine, TRUE );    
+	
+		strCmdLine = strCmdLine + " /M" + PRODUCT_GUID; 
+	endif;  
+	// Create the shortcut. 
+	AddFolderIcon(SHELL_OBJECT_FOLDER, "Удаление КАС",strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+end;
 //---------------------------------------------------------------------------
 function ClearFolder(folder)
 begin
@@ -580,26 +605,109 @@ begin
 //	ClearFolder	(TARGETDIR);
 end;
 //---------------------------------------------------------------------------
-// OnEnd
+// OnUninstall
 //
-// The OnEnd event is called at the end of the setup. This event is not
-// called if the setup is aborted.
+// The OnUninstall event is called when the setup is run with the -uninst
+// switch, in this case this is the only event that will be called.
 //---------------------------------------------------------------------------
-function OnEnd()
-    STRING sTitle, sMsg1, sMsg2;
-    NUMBER nDefOption, nReserved;
-begin                                 
-    // Set up variables to pass as parameters to SdFinishReboot.
-    sTitle   	= "";
-    sMsg1    	= ""; 
-    
-    // nDefOption - Specifies a default radio button option selection.
-    // SYS_BOOTMACHINE - Reboot the computer when the setup is finished.
-    // 0 - Do not reboot the computer. 
-    nDefOption  = SYS_BOOTMACHINE;
-    sMsg2    	= "";
-    nReserved 	= 0;
+function OnUninstall()
+string szIgnore, szMsg;
+number nResult, nRootKey;
+BOOL bOpt1, bOpt2;
+begin
 
-    // Display the SdFinishReboot dialog.
-    SdFinishReboot (sTitle, sMsg1, nDefOption, sMsg2, nReserved);
+    // Hide the initial progress dialog.
+    Disable( DIALOGCACHE );
+	
+	// Show Uninstall Confirmation Dialog
+	if( MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO ) != IDYES ) then
+        abort;
+    endif;
+
+    // Remove all features.
+	FeatureRemoveAllInMediaAndLog();
+
+    // Show Status
+	SetStatusWindow( 0, "" );
+	Enable( STATUSEX );
+	StatusUpdate( ON, 100 );
+
+    // Uninstall
+	nResult = FeatureTransferData( MEDIA );
+
+    // Handle move data error and abort if error occured.
+	if( nResult < ISERR_SUCCESS ) then
+		OnComponentError();
+		abort;
+	endif;
+
+    // Disable Status
+	Disable( STATUSEX );
+
+	// remove registry keys
+	nRootKey 				= HKEY_LOCAL_MACHINE;
+	RegDBSetDefaultRoot		(nRootKey);
+	RegDBDeleteKey 			("Software\\KASClient");
+//.
+	nRootKey 				= HKEY_CURRENT_USER;
+	RegDBSetDefaultRoot		(nRootKey);
+	RegDBDeleteKey 			("Software\\KASClient");
+//.
+    // Show final dialog.
+    if ( BATCH_INSTALL ) then
+        SdFinishReboot( SdLoadString(IFX_SDFINISH_REMOVE_TITLE), SdLoadString(IFX_SDFINISH_REMOVE_MSG2), SYS_BOOTMACHINE, "", 0 );
+    else    
+        SdFinish( SdLoadString(IFX_SDFINISH_REMOVE_TITLE), SdLoadString(IFX_SDFINISH_REMOVE_MSG1), "", "" , "", bOpt1 , bOpt2 );
+    endif;
+ 
 end;
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
+    NUMBER bvOpt1, bvOpt2;
+	NUMBER bShowUpdateServiceDlg;
+begin
+	CreateUninstallShortcut();
+
+    ShowObjWizardPages(NEXT);
+    
+    szTitle = "";
+    szMsg1 = ""; 
+    szMsg2 = "";
+    szOpt1 = "";
+    szOpt2 = "";
+	bvOpt1   = FALSE;
+    bvOpt2   = FALSE;    
+
+	// Set this to true if you have the update service enabled, and if you want to check for updates.
+	// Note: the ISUS Starter Edition does not support checking for updates programatically.  So, 
+	// only set this to true if you have at least the ISUS Professional Edition.
+	bShowUpdateServiceDlg = FALSE;
+    
+    //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
+    
+    if ( BATCH_INSTALL ) then
+    	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
+    else
+		
+		// If the update service is enabled, show finish dialog that includes
+		// update check option.
+		if( bShowUpdateServiceDlg && ( ENABLED_ISERVICES & SERVICE_ISUPDATE ) ) then
+
+			if( SdFinishUpdateEx( szTitle, szMsg1, szMsg2, szOpt1, szOpt2, TRUE ) ) then
+
+				// Don't check for updates in silent mode.
+				if( MODE != SILENTMODE ) then
+					UpdateServiceCheckForUpdates( "", FALSE );
+				endif;
+
+			endif;
+
+		else
+			SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
+		endif;
+
+    endif;
+    //}}IS_SCRIPT_TAG(Dlg_SdDinishEx)	
+end;
+//---------------------------------------------------------------------------

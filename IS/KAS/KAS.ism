@@ -607,6 +607,7 @@
 		<col def="I4">Attributes</col>
 		<col def="S255">CertPassword</col>
 		<row><td>Release 1</td><td>Media</td><td/><td/><td>{97B1C350-F747-4366-A433-FF17B7056211}</td><td/><td/><td/><td/><td>-1</td><td/><td>-1</td><td/><td/><td/><td/><td/><td/><td/><td>14336</td><td/></row>
+		<row><td>Release 2</td><td>Media</td><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISReleaseProDataAsFiles">
@@ -946,6 +947,7 @@ GgQQBCEEIAA6BDsEOAQ1BD0EQgQ=
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
+		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISPROJECTDIR&gt;\source\setup\KAS.exe</td><td>0</td></row>
 		<row><td>NewShortcut11_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
 		<row><td>NewShortcut12_867BB14B66E1432CBE7B35ADEBE68D68.exe</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
 		<row><td>NewShortcut13_867BB14B66E1432CBE7B35ADEBE68D68.chm</td><td/><td>&lt;TARGETDIR&gt;\MDISplit.ico</td><td/></row>
@@ -1030,6 +1032,7 @@ UgBlAGwAZQBhAHMAZQAgADEAAQBNAGUAZABpAGEA
 		<col def="L0">Value</col>
 		<col def="S255">ISComments</col>
 		<row><td>ARPNOMODIFY</td><td>1</td><td/></row>
+		<row><td>ARPPRODUCTICON</td><td>ARPPRODUCTICON.exe</td><td/></row>
 		<row><td>ARPURLINFOABOUT</td><td/><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
 		<row><td>DWUSLINK</td><td>CEFC90FFDE8B27D8E9ACF7C8F9FC978F9E1BC08FCEBBB08FCEEC50AFDE1CE798E93C90486EAC</td><td/></row>
