@@ -37,6 +37,10 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 						  y = edit_rect.y + edit_rect.height + self.indent,
 						  width = edit_rect.width,
 						  height = self.btn_rect.height}
+	local btn_del_rect = {x = edit_rect.x,
+						  y = btn_add_rect.y + btn_add_rect.height + self.indent,
+						  width = edit_rect.width,
+						  height = self.btn_rect.height}						  
 	local lst_rect     = {x = info_rect.x,
 						  y = info_rect.y + info_rect.height + self.indent,
 						  width = 0,
@@ -80,6 +84,13 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	frame:SetAutoDelete(true)
 	frame:SetWindowName("btn_add")
 	frame:Init("ui\\ui_frame_very_small", btn_add_rect.x, btn_add_rect.y, btn_add_rect.width, btn_add_rect.height)
+	self.main_frame:AttachChild(frame)
+	
+	-- DEL BUTTON
+	frame = CUIFrameWindow()
+	frame:SetAutoDelete(true)
+	frame:SetWindowName("btn_del")
+	frame:Init("ui\\ui_frame_very_small", btn_del_rect.x, btn_del_rect.y, btn_del_rect.width, btn_del_rect.height)
 	self.main_frame:AttachChild(frame)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
