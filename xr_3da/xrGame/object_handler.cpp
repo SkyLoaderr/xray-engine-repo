@@ -660,9 +660,9 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionSwitch2,id),		uid(eObjectActionAim2,id),		1);
 		add_transition	(uid(eObjectActionAim2,id),			uid(eObjectActionSwitch1,id),	1);
 		add_transition	(uid(eObjectActionMisfire1,id),		uid(eObjectActionReload1,id),	1);
-		add_transition	(uid(eObjectActionMisfire1,id),		uid(eObjectActionHide,id),		1);
+		add_transition	(uid(eObjectActionMisfire1,id),		uid(eObjectActionHide,id),		10);
 		add_transition	(uid(eObjectActionEmpty1,id),		uid(eObjectActionReload1,id),	1);
-		add_transition	(uid(eObjectActionEmpty1,id),		uid(eObjectActionHide,id),		1);
+		add_transition	(uid(eObjectActionEmpty1,id),		uid(eObjectActionHide,id),		10);
 
 		state(uid(eObjectActionIdle,id)).set_inertia_time(0);
 		state(uid(eObjectActionAim1,id)).set_inertia_time(1000);
