@@ -232,6 +232,13 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 
 void	game_sv_TeamDeathmatch::LoadTeams			()
 {
+	m_sBaseWeaponCostSection._set("teamdeathmatch_base_cost");
+	if (!pSettings->section_exist(m_sBaseWeaponCostSection))
+	{
+		R_ASSERT2(0, "No section for base weapon cost for this type of the Game!");
+		return;
+	};
+
 	LoadTeamData("teamdeathmatch_team0");
 	LoadTeamData("teamdeathmatch_team1");
 	LoadTeamData("teamdeathmatch_team2");

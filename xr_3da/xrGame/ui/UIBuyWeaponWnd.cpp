@@ -1755,7 +1755,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 			CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it2);
 			R_ASSERT(pDDItemMP);
 
-			if (pDDItemMP->GetCost() < GetMoneyAmount())
+			if (pDDItemMP->GetCost() <= GetMoneyAmount())
 			{
 				// Если эта вещь была при актере во время вызова меню покупки, то ее цвет - полупрозрачный
 				if (pDDItemMP->m_bHasRealRepresentation)
@@ -1811,7 +1811,7 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 			// Если эта вещь принесена игроком, то деньги не отнимаем
 			if (!pDDItemMP->m_bHasRealRepresentation)
 			{
-				if (pDDItemMP->GetCost() < GetMoneyAmount())
+				if (pDDItemMP->GetCost() <= GetMoneyAmount())
 					SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
 				else
 				{
@@ -1845,7 +1845,7 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 
 		if (!pDDItemMP->m_bHasRealRepresentation)
 		{
-			if (pDDItemMP->GetCost() < GetMoneyAmount())
+			if (pDDItemMP->GetCost() <= GetMoneyAmount())
 			{
 				SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
 				(*it)->SetColor(cAbleToBuy);
@@ -2006,9 +2006,9 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 
 void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
 {
+	m_iMoneyAmount = moneyAmount;
 	if (!m_bIgnoreMoney)
 	{
-		m_iMoneyAmount = moneyAmount;
 		CheckBuyAvailabilityInShop();
 	}
 }

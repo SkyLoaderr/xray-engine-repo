@@ -489,9 +489,6 @@ void		CUIGameDM::SetBuyMenuItems		()
 {
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
-	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
-	//---------------------------------------------------------
-	ClearBuyMenu			();
 	//---------------------------------------------------------
 	xr_vector <s16>			TmpPresetItems;
 	PRESET_ITEMS_it		It = pCurPresetItems->begin();
@@ -501,14 +498,16 @@ void		CUIGameDM::SetBuyMenuItems		()
 		TmpPresetItems.push_back(*It);
 	};
 	//---------------------------------------------------------
+	ClearBuyMenu			();
+	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(true);
-
+	//---------------------------------------------------------
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
 		TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
 		TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
-		pCurBuyMenu->IgnoreMoney(true);
+		
 		for ( ; I != E; ++I) 
 		{
 			PIItem pItem = (*I);
@@ -545,7 +544,6 @@ void		CUIGameDM::SetBuyMenuItems		()
 			}
 		};
 	};
-	pCurBuyMenu->IgnoreMoney(false);
 	//---------------------------------------------------------
 	It = TmpPresetItems.begin();
 	Et = TmpPresetItems.end();
@@ -556,6 +554,8 @@ void		CUIGameDM::SetBuyMenuItems		()
 		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
 	};
 	//---------------------------------------------------------
+	pCurBuyMenu->IgnoreMoney(false);
+
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 	pCurBuyMenu->CheckBuyAvailabilityInSlots();
 };
