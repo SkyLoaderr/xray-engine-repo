@@ -135,5 +135,6 @@ public:
 
 
 IC CMonsterSquadManager &monster_squad();
+extern CMonsterSquadManager *g_monster_squad;
 
 #include "ai_monster_group_inline.h"

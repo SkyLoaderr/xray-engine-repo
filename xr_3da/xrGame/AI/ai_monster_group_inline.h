@@ -2,6 +2,7 @@
 
 IC	CMonsterSquadManager &monster_squad()
 {
-	static CMonsterSquadManager  monster_squad_man;
-	return						(monster_squad_man);
+	if (!g_monster_squad)
+		g_monster_squad = xr_new<CMonsterSquadManager>();
+	return (*g_monster_squad);
 }

@@ -91,5 +91,6 @@ void CController::UpdateControlled()
 
 	// обновить цели подконтрольных монстров
 	// [...]
+
 }
 
