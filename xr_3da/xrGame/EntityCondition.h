@@ -56,6 +56,7 @@ public:
 	
 	virtual void GoSleep();
 	virtual void Awoke();
+	virtual bool IsSleeping() {return m_bIsSleeping;}
 	
 	//скорость потери крови из всех открытых ран 
 	virtual float BleedingSpeed();

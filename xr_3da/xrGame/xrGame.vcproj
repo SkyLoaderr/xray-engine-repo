@@ -3141,34 +3141,6 @@
 									Name="Grenades &amp; Missiles"
 									Filter="">
 									<File
-										RelativePath=".\explode_effector.cpp">
-									</File>
-									<File
-										RelativePath=".\explode_effector.h">
-									</File>
-									<File
-										RelativePath=".\Explosive.cpp">
-									</File>
-									<File
-										RelativePath=".\Explosive.h">
-										<FileConfiguration
-											Name="Debug|Win32">
-											<Tool
-												Name="VCCustomBuildTool"/>
-										</FileConfiguration>
-										<FileConfiguration
-											Name="Mixed|Win32">
-											<Tool
-												Name="VCCustomBuildTool"/>
-										</FileConfiguration>
-										<FileConfiguration
-											Name="Release|Win32"
-											ExcludedFromBuild="TRUE">
-											<Tool
-												Name="VCCustomBuildTool"/>
-										</FileConfiguration>
-									</File>
-									<File
 										RelativePath="Grenade.cpp">
 									</File>
 									<File
@@ -3759,8 +3731,36 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="ExplosiveItem"
+							Name="Explosives"
 							Filter="">
+							<File
+								RelativePath=".\explode_effector.cpp">
+							</File>
+							<File
+								RelativePath=".\explode_effector.h">
+							</File>
+							<File
+								RelativePath=".\Explosive.cpp">
+							</File>
+							<File
+								RelativePath=".\Explosive.h">
+								<FileConfiguration
+									Name="Debug|Win32">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Mixed|Win32">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+							</File>
 							<File
 								RelativePath=".\ExplosiveItem.cpp">
 							</File>
@@ -4897,6 +4897,12 @@
 						RelativePath=".\ui\UIOutfitSlot.h">
 					</File>
 					<File
+						RelativePath=".\ui\UISleepWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISleepWnd.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIWpnDragDropItem.cpp">
 					</File>
 					<File
@@ -5037,6 +5043,16 @@
 					</File>
 					<File
 						RelativePath=".\UIZoneMap.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Multiplayer"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIBuyWeaponWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIBuyWeaponWnd.h">
 					</File>
 				</Filter>
 			</Filter>

@@ -1054,6 +1054,12 @@ void CWeapon::AddShotEffector		()
 	S->Shot					(camDispersion);
 }
 
+void  CWeapon::RemoveShotEffector	()
+{
+	if (Local()) 
+		Level().Cameras.RemoveEffector	(cefShot);
+}
+
 bool CWeapon::NeedToDestroyObject()	
 {
 	if (Game().type == GAME_SINGLE) return false;

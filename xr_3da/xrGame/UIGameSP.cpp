@@ -32,6 +32,10 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&MapMenu);
 		return true;
 		break;*/
+	case DIK_B:
+		StartStopMenu(&UIBuyWeaponWnd);
+		return true;
+		break;
 	case DIK_ESCAPE:
 		if(m_pUserMenu)
 		{

@@ -25,7 +25,9 @@ public:
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);
+	
 	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual void net_Destroy		();
 
 	virtual	void Hit				(float P, Fvector &dir,	
 										CObject* who, s16 element,

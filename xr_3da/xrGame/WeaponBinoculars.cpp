@@ -231,7 +231,8 @@ void CWeaponBinoculars::switch2_Hiding	()
 	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
 
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
-	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
+
+	RemoveShotEffector();
 
 	//switch2_Idle			();
 	//Sound->play_at_pos		(sndHide,H_Root(),vLastFP);

@@ -520,7 +520,7 @@ void CWeaponMagazined::switch2_Hiding()
 	PlayAnimHide();
 	m_bPending = true;
 
-	if (Local()) Level().Cameras.RemoveEffector	(cefShot);
+	RemoveShotEffector();
 }
 void CWeaponMagazined::switch2_Hidden()
 {

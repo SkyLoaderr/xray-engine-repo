@@ -249,6 +249,7 @@ public:
 	// обработка визуализации выстрела
 	virtual void			OnShot				(){};
 	virtual void			AddShotEffector		();
+	virtual void			RemoveShotEffector	();
 	
 	   BOOL					IsMisfire			() const;
 	   BOOL					CheckForMisfire		();

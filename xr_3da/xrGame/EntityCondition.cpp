@@ -480,6 +480,8 @@ void CEntityCondition::UpdateEntityMorale()
 
 void CEntityCondition::GoSleep()
 {
+	m_bIsSleeping = true;
+
 	m_fCurrentSleepHealth =  m_fK_SleepHealth;
 	m_fCurrentSleepPower =  m_fK_SleepPower;
 	m_fCurrentSleepSatiety =  m_fK_SleepSatiety;
@@ -488,6 +490,8 @@ void CEntityCondition::GoSleep()
 
 void CEntityCondition::Awoke()
 {
+	m_bIsSleeping = false;
+
 	m_fCurrentSleepHealth =  1.0f;
 	m_fCurrentSleepPower =  1.0f;
 	m_fCurrentSleepSatiety =  1.0f;

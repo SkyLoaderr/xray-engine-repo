@@ -87,9 +87,20 @@ BOOL CBastArtifact::net_Spawn(LPVOID DC)
 
 	m_bStrike = false;
 	m_AttakingEntity = NULL;
+	m_pHitedEntity = NULL;
 	m_AliveList.clear();
 
 	return TRUE;
+}
+
+void CBastArtifact::net_Destroy		()
+{
+	inherited::net_Destroy();
+
+	m_bStrike = false;
+	m_AttakingEntity = NULL;
+	m_pHitedEntity = NULL;
+	m_AliveList.clear();
 }
 
 void CBastArtifact::Load(LPCSTR section) 

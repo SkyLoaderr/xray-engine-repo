@@ -9,11 +9,13 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-
 #include "../actor.h"
+#include "../uigamesp.h"
+#include "../hudmanager.h"
+
+
 #include "../WeaponAmmo.h"
 #include "../CustomOutfit.h"
-#include "../hudmanager.h"
 #include "../ArtifactMerger.h"
 
 #include "../weapon.h"
@@ -96,7 +98,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIArtifactMergerWnd);
 	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
 	UIArtifactMergerWnd.Hide();
-	
+
 	AttachChild(&UIDescWnd);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
 	UIDescWnd.AttachChild(&UIStaticDesc);
@@ -140,6 +142,15 @@ void CUIInventoryWnd::Init()
 
 
 	//кнопки внизу
+	AttachChild(&UISleepButton);
+	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
+
+
+	//окошко для диалога параметров сна
+	AttachChild(&UISleepWnd);
+	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
+	UISleepWnd.Hide();
+	
 /*	AttachChild(&UIButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
 	AttachChild(&UIButton2);
@@ -218,6 +229,7 @@ void CUIInventoryWnd::InitInventory()
 	
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
+	UISleepWnd.Hide();
 
 	m_pInv = pInv;
 
@@ -593,8 +605,49 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		StopArtifactMerger();
 	}
+	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::PERFORM_BUTTON_CLICKED)
+	{
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor) return;
+		
+		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+		if(!pGameSP) return;
+		
+		pActor->GoSleep(1000*3600*5);
+		StopSleepWnd();
+		pGameSP->StartStopMenu(this);
+
+		return;
+	}
+	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::CLOSE_BUTTON_CLICKED)
+	{
+		StopSleepWnd();
+	}
 
 	//кнопки cheats
+	else if(pWnd == &UISleepButton && msg == CUIButton::BUTTON_CLICKED)
+	{
+		if(UISleepWnd.IsShown())
+			StopSleepWnd();
+		else
+			StartSleepWnd();
+			/*
+			 	
+			 if(!pActor->IsSleeping())
+			{
+				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				if(!pGameSP) return;
+				
+				pActor->GoSleep();
+
+				pGameSP->StartStopMenu(this);
+
+				return;
+			}
+			else
+				pActor->Awoke();
+				*/
+	}
 	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
@@ -1085,4 +1138,22 @@ void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
 	UIItemInfo.InitItem(m_pCurrentItem);
+}
+/////////////////////////////////////////////////
+//запуск и остановка диалога параметров сна
+void  CUIInventoryWnd::StartSleepWnd()
+{
+	UISleepWnd.InitSleepWnd();
+	UISleepWnd.Show();
+	UISleepButton.Enable(false);
+	UISleepButton.Show(false);
+
+}
+void  CUIInventoryWnd::StopSleepWnd()
+{
+	UISleepWnd.Hide();
+
+	UISleepButton.Reset();
+	UISleepButton.Enable(true);
+	UISleepButton.Show(true);
 }

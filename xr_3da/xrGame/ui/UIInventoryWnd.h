@@ -19,6 +19,7 @@ class CInventory;
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
 #include "UIArtifactMergerWnd.h"
+#include "UISleepWnd.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
@@ -65,6 +66,9 @@ protected:
 	CUIFrameWindow		UIDescWnd;
 	CUIFrameWindow		UIPersonalWnd;
 
+	//конпка активации окошка сна
+	CUIButton			UISleepButton;
+
 	CUIButton			UIButton1;
 	CUIButton			UIButton2;
 	CUIButton			UIButton3;
@@ -98,9 +102,13 @@ protected:
 	CUIProgressBar		UIProgressBarRadiation;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
-	CUIPropertiesBox UIPropertiesBox;
+	CUIPropertiesBox	UIPropertiesBox;
 	//менюшка для работы с устройством производства артефактов
-	CUIArtifactMerger UIArtifactMergerWnd;
+	CUIArtifactMerger	UIArtifactMergerWnd;
+	//окошко для параметров сна
+	CUISleepWnd			UISleepWnd;
+	
+	
 	//информация о персонаже
 	CUICharacterInfo UICharacterInfo;
 	//информация о предмете
@@ -158,6 +166,10 @@ protected:
 	//запуск и остановка меню работы с артефактами
 	void StartArtifactMerger();
 	void StopArtifactMerger();
+
+	//запуск и остановка меню работы с артефактами
+	void StartSleepWnd();
+	void StopSleepWnd();
 
 	//присоединение/отсоединение аддонов к оружию
 	void AttachAddon();

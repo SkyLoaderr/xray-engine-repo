@@ -9,8 +9,9 @@
 #include "../effectorPP.h"
 #include "../effector.h"
 
+
 //////////////////////////////////////////////////////////////////////////
-// CMonsterEffector
+// CSleepEffector
 //////////////////////////////////////////////////////////////////////////
 class CSleepEffectorPP : public CEffectorPP {
 	typedef CEffectorPP inherited;	
@@ -23,23 +24,14 @@ class CSleepEffectorPP : public CEffectorPP {
 public:
 	CSleepEffectorPP	(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f);
 	virtual	BOOL	Process					(SPPInfo& pp);
-};
 
-//////////////////////////////////////////////////////////////////////////
-// CMonsterEffectorHit
-//////////////////////////////////////////////////////////////////////////
-class CSleepEffector : public CEffector {
-	typedef CEffector inherited;	
+	//флажок, который показывает эффектору, что мы еще спим
+	//и поэтому никаких обновлений не происходит
+	bool	m_bSleeping;
 
-	float total;
-	float max_amp;
-	float period_number;
-	float power;
-
-	Fvector offset;
-public:
-	CSleepEffector	(float time, float amp, float periods, float power);
-	virtual	BOOL	Process					(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
+	//устанавливается эффектором в true на стадии затухания
+	//экрана
+	bool	m_bFallAsleep;
 };
 
 
@@ -48,10 +40,4 @@ struct SSleepEffector {
 	float	time;
 	float	time_attack;
 	float	time_release;
-
-	// camera effects
-	float	ce_time;
-	float	ce_amplitude;
-	float	ce_period_number;
-	float	ce_power;
 };

@@ -27,7 +27,10 @@ class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
 class CVehicleCustom;
+
 struct SShootingEffector;
+struct SSleepEffector;
+class  CSleepEffectorPP;
 
 class CActor: 
 	public CEntityAlive, 
@@ -238,10 +241,18 @@ private:
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
 
-	void					LoadShootingEffector	();
+	void					LoadShootingEffector	(LPCSTR section);
 	SShootingEffector*		m_pShootingEffector;
 
+	void					LoadSleepEffector		(LPCSTR section);
+	SSleepEffector*			m_pSleepEffector;
+	CSleepEffectorPP*		m_pSleepEffectorPP;
 
+	//Sleep params
+	//время когда актера надо разбудить
+	ALife::_TIME_ID			m_dwWakeUpTime;
+	float					m_fOldTimeFactor;
+	float					m_fSleepTimeFactor;
 
 	////////////////////////////////////////////
 	// для взаимодействия с другими персонажами 
@@ -492,18 +503,24 @@ public:
 #endif
 
 
-	//by Dandy
+	//////////////////////////////////////////////////////////////////////////
 	//Actor condition
+	//////////////////////////////////////////////////////////////////////////
 	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
-	virtual void UpdateCondition();
+	virtual void	UpdateCondition();
+
+	//сон
+	virtual void	GoSleep(u32	sleep_time);
+	virtual void	Awoke();
+			void	UpdateSleep();
 
 	//information receive
-	virtual void OnReceiveInfo(int info_index);
-	virtual void ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index);
+	virtual void OnReceiveInfo		(int info_index);
+	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, int info_index);
 
-	virtual void reinit	();
-	virtual void reload	(LPCSTR section);
-	virtual bool		use_bolts				() const;
+	virtual void reinit			();
+	virtual void reload			(LPCSTR section);
+	virtual bool use_bolts		() const;
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

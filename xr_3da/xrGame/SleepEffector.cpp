@@ -7,13 +7,13 @@
 #include "stdafx.h"
 #include "SleepEffector.h"
 
-#define SHOOTING_EFFECTOR_TYPE_ID 7
+#define SLEEP_EFFECTOR_TYPE_ID 8
 
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector
 //////////////////////////////////////////////////////////////////////////
 CSleepEffectorPP::CSleepEffectorPP(const SPPInfo &ppi, float life_time, float attack_time, float release_time) 
-: CEffectorPP(EEffectorPPType(SHOOTING_EFFECTOR_TYPE_ID), life_time)
+: CEffectorPP(EEffectorPPType(SLEEP_EFFECTOR_TYPE_ID), life_time)
 {
 	state		= ppi;
 	m_total		= life_time;
@@ -23,6 +23,10 @@ CSleepEffectorPP::CSleepEffectorPP(const SPPInfo &ppi, float life_time, float at
 
 	VERIFY(!fsimilar(m_release, 1.0f));
 	VERIFY(!fis_zero(m_attack));
+
+
+	m_bSleeping  = false;
+	m_bFallAsleep = true;
 }
 
 BOOL CSleepEffectorPP::Process(SPPInfo& pp)
@@ -31,13 +35,25 @@ BOOL CSleepEffectorPP::Process(SPPInfo& pp)
 
 	// amount of time passed in percents
 	float time_past_perc = (m_total - fLifeTime) / m_total;
-
+    
 	float factor;
+
+	m_bFallAsleep = false;
+	
 	if (time_past_perc < m_attack) 
+	{
 		factor = time_past_perc / m_attack;
+		m_bFallAsleep = true;
+	}
+	else if (m_bSleeping)
+	{
+		//не изменять значение fLifeTime пока спим
+		fLifeTime = m_attack*m_total;
+		factor = 1.0f;
+	}
 	else if ((time_past_perc >= m_attack) && (time_past_perc <= m_release)) 
 		factor = 1.0f;
-	else 
+	else
 		factor = (1.0f - time_past_perc) / (1.0f - m_release);
 
 	clamp(factor,0.01f,1.0f);
@@ -72,58 +88,3 @@ BOOL CSleepEffectorPP::Process(SPPInfo& pp)
 
 	return TRUE;
 }
-
-
-//////////////////////////////////////////////////////////////////////////
-// CMonsterEffectorHit
-//////////////////////////////////////////////////////////////////////////
-
-CSleepEffector::CSleepEffector(float time, float amp, float periods, float power) 
-: CEffector(EEffectorType(SHOOTING_EFFECTOR_TYPE_ID), time, FALSE)
-{
-	total			= time;
-
-	max_amp			= amp * power;
-	period_number	= periods;
-	this->power		= power;
-
-	offset.set		(Random.randF(1,2),Random.randF(1,6),Random.randF(1,6));
-}
-
-BOOL CSleepEffector::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
-{
-	fLifeTime -= Device.fTimeDelta; if(fLifeTime<0) return FALSE;
-
-	// процент оставшегося времени
-	float time_left_perc = fLifeTime / total;
-
-	// Инициализация
-	Fmatrix	Mdef;
-	Mdef.identity		();
-	Mdef.j.set			(n);
-	Mdef.k.set			(d);
-	Mdef.i.crossproduct	(n,d);
-	Mdef.c.set			(p);
-
-	float period_all	= period_number * PI_MUL_2;		// макс. значение цикла
-	float cur_amp		= max_amp * (PI / 180) * time_left_perc;
-
-
-	Fvector dangle;
-	dangle.x = cur_amp/offset.x	* _sin(period_all/offset.x	* (1.0f - time_left_perc));
-	dangle.y = cur_amp/offset.y	* _cos(period_all/offset.y	* (1.0f - time_left_perc));
-	dangle.z = cur_amp/offset.z	* _sin(period_all/offset.z	* (1.0f - time_left_perc));
-
-	// Установить углы смещения
-	Fmatrix		R;
-	R.setHPB	(dangle.x,dangle.y,dangle.z);
-
-	Fmatrix		mR;
-	mR.mul		(Mdef,R);
-
-	d.set		(mR.k);
-	n.set		(mR.j);
-
-	return TRUE;
-}
-
