@@ -60,12 +60,14 @@ void CWeaponList::FireStart()
 	CWeapon* W = m_Weapons[m_iActiveWeapon];
 	if (W->IsValid()) W->FireStart();
 }
+
 void CWeaponList::FireEnd()
 { 
 	if (m_iActiveWeapon==-1) return;
 	CWeapon* W = m_Weapons[m_iActiveWeapon];
 	W->FireEnd();
 }
+
 BOOL CWeaponList::isWorking()
 {
 	if (m_iActiveWeapon==-1) return false;
@@ -119,6 +121,7 @@ BOOL CWeaponList::ActivateWeapon(CLASS_ID cls)
 	}
 	return false;
 }
+
 BOOL CWeaponList::ActivateWeaponID(int id)
 {
 	return WeaponChange(id);
@@ -170,7 +173,8 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	return pWeapon;
 }
 
-BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
+BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
+{
 	int idx = -1;
 	BOOL bTakeWeapon = false;
 	switch (cls){
