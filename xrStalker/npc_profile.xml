@@ -83,7 +83,6 @@
 		<visual>string_name2</visual>
 		<rank>veteran</rank>
 		<team>Lonewolf</team>
-		<start_dialog>job_medkit</start_dialog>
 	</character>
 
 
