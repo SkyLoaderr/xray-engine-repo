@@ -1,6 +1,3 @@
-module ("xr_actions_id")
-module ("xr_evaluators_id")
-
 --property
 local wounded_property          =   xr_evaluators_id.sidor_wounded_base
 local see_mutant_property       =   wounded_property + 1
