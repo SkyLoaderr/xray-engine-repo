@@ -15,13 +15,13 @@ function main ()
 	n				= a:count();
 	i				= 0;
 	while i<n do
-		c			= a:point(i);
-		printf		("[%f][%f][%f]",c.x,c.y,c.z)
+		a:point(i);
+		printf		("[%f][%f][%f]",a:point(i).x,a:point(i).y,a:point(i).z)
 		i			= i + 1
 	end
 
-	c				= a:point(a:point(get_level_object("localhost/dima"):position()));
-	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
+--	c				= a:point(a:point(get_level_object("localhost/dima"):position()));
+--	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
 	
 	action(
 	    stalker,                                                                                                      
