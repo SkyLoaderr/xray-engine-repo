@@ -55,7 +55,7 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			msg.Reset();
 			msg.w_int(DMSG_GET_STACKTRACE_LEVEL);
 			SendMailslotMessage(IDE_MAIL_SLOT, msg);
-			int sl = WaitForReply(DMSG_GET_STACKTRACE_LEVEL);
+			int sl = (int)WaitForReply(DMSG_GET_STACKTRACE_LEVEL);
 			m_callStack.GotoStackTraceLevel(sl);
 			}
 		}break;
@@ -336,6 +336,7 @@ LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 			return res;
 	}break;
 	default:
+		return 0;
 		break;
 	}
 
@@ -392,18 +393,17 @@ bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
 	string256 sFileName;
 	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
 	char ext[_MAX_EXT];
 
 	_splitpath( fileName, drive, dir, sFileName, ext );
 
 
 
-	for(s32 i=0; i< m_breakPoints.size(); ++i)
+	for(u32 i=0; i< m_breakPoints.size(); ++i)
 	{
 		SBreakPoint bp(m_breakPoints[i]);
 		if(bp.nLine == lineNum)
-			if( strlen(bp.fileName) == strlen(sFileName) )
+			if( xr_strlen(bp.fileName) == xr_strlen(sFileName) )
 			{
 				if( strstr(bp.fileName, sFileName)==bp.fileName )
 					return true;
@@ -417,7 +417,6 @@ void CScriptDebugger::FillBreakPointsIn(CMailSlotMsg* msg)
 	m_breakPoints.clear();
 	s32 nCount = 0;
 	msg->r_int(nCount);
-	string256 fName;
 	for(s32 i=0; i<nCount; ++i){
 		SBreakPoint bp;
 		msg->r_string(bp.fileName);
