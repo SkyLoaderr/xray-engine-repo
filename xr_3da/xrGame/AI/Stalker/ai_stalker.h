@@ -18,20 +18,41 @@ private:
 	typedef CCustomMonster inherited;
 	
 	enum EStalkerStates {
-		eStalkerStateDie = 0,
-		eStalkerStateAccomplishingTask,
-		eStalkerStateAttack,
-		eStalkerStateDefend,
-		eStalkerStateRetreatKnown,
-		eStalkerStateRetreatUnknown,
-		eStalkerStatePursuitKnown,
-		eStalkerStatePursuitUnknown,
-		eStalkerStateSearchCorp,
+		eStalkerStateCHI = 0,
+		eStalkerStateCHnI,
+		eStalkerStateCnHI,
+		eStalkerStateCnHnI,
 		
-		eStalkerStateRecharge,
-		eStalkerStateHolsterItem,
-		eStalkerStateTakeItem,
-		eStalkerStateDropItem,
+		eStalkerStateDHI,
+		eStalkerStateDHnI,
+		eStalkerStateDnHI,
+		eStalkerStateDnHnI,
+		
+		eStalkerStateEHI,
+		eStalkerStateEHnI,
+		eStalkerStateEnHI,
+		eStalkerStateEnHnI,
+		
+		eStalkerStateFHI,
+		eStalkerStateFHnI,
+		eStalkerStateFnHI,
+		eStalkerStateFnHnI,
+		
+		eStalkerStateGHI,
+		eStalkerStateGHnI,
+		eStalkerStateGnHI,
+		eStalkerStateGnHnI,
+		
+		eStalkerStateAnKnHnL,
+		eStalkerStateAnKHnL,
+		eStalkerStateAnKnHL,
+		eStalkerStateAnKHL,
+		
+		eStalkerStateBnKnHnL,
+		eStalkerStateBnKHnL,
+		eStalkerStateBnKnHL,
+		eStalkerStateBnKHL,
+		eStalkerStateAccomplishingTask,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -86,6 +107,10 @@ private:
 	u32						m_dwStartFireAmmo;
 	u32						m_dwNoFireTime;
 	float					m_fAddWeaponAngle;
+	float					m_fAttackSuccessProbability0;
+	float					m_fAttackSuccessProbability1;
+	float					m_fAttackSuccessProbability2;
+	float					m_fAttackSuccessProbability3;
 	
 	// fire  constants
 	u32						m_dwFireRandomMin;
@@ -275,6 +300,7 @@ private:
 			int				ifFindDynamicObject				(CEntity *tpEntity);
 			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
 			bool			bfCheckIfSound					();
+			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L);
 
 			// physics
 			void			CreateSkeleton					();
