@@ -932,11 +932,29 @@ function mob_captured(mob)
 	return mob:get_script()
 end
 
+function save_logic(obj, packet)
+	local npc_id = obj:id()
+	local cur_tm = device():time_global()
+	
+ 	packet:w_s32(db.storage[npc_id].activation_time - cur_tm)
+end
+
+function load_logic(obj, reader)
+	local npc_id = obj:id()
+	local cur_tm = device():time_global()
+	
+	db.storage[npc_id].activation_time = reader:r_s32() + cur_tm
+end
+
 function save_obj(obj, packet)
 	printf("save_obj: obj:name()='%s'", obj:name())
 	
 	local npc_id = obj:id()
 	local st = db.storage[npc_id]
+
+	if st.active_scheme then
+		issue_event(obj, db.storage[npc_id][st.active_scheme], "save")
+	end
 
 	printf("save_obj: ini_filename='%s'", utils.to_str(st.ini_filename))
 	printf("save_obj: section_logic='%s'", utils.to_str(st.section_logic))
@@ -975,6 +993,8 @@ function save_obj(obj, packet)
 	end
 
 	--packet:w_s32(st.stype)
+	
+	save_logic(obj, packet)
 end
 
 function load_obj(obj, reader)
@@ -1023,6 +1043,8 @@ function load_obj(obj, reader)
 	printf("load_obj: active_section='%s'", utils.to_str(st.loaded_active_section))
 	--printf("load_obj: active_scheme='%s'", utils.to_str(st.loaded_active_scheme))
 	printf("load_obj: gulag_name='%s'", utils.to_str(st.loaded_gulag_name))
+	
+	load_logic(obj, reader)
 end
 
 function initialize_obj(obj, st, loaded, actor, stype)
@@ -1037,6 +1059,9 @@ function initialize_obj(obj, st, loaded, actor, stype)
 		local ini = utils.get_customdata_or_ini_file(obj, ini_filename)
 		ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
 		xr_logic.activate_by_section(obj, ini, st.loaded_active_section)
+		if st.active_scheme then
+			issue_event(obj, db.storage[obj:id()][st.active_scheme], "load")
+		end
 	end
 end
 
