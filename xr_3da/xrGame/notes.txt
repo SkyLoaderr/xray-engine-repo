@@ -1,64 +1,6 @@
-Fvector down_vec	={0.f,-1.f,0.f};
-Fvector left_vec	={-1.f,0.f,0.f};
-Fvector right_vec={1.f,0.f,0.f};
-Fvector fwd_vec	={0.f,0.f,1.f};
-Fvector back_vec	={0.f,0.f,-1.f};
+level.weather.rain.start
+level.weather.rain.stop
 
-		bbox.grow		(EPS_L);
-    	Fplane			frustum_planes[4];
-		frustum_planes[0].build(bbox.min,left_vec);
-		frustum_planes[1].build(bbox.min,back_vec);
-		frustum_planes[2].build(bbox.max,right_vec);
-		frustum_planes[3].build(bbox.max,fwd_vec);
-
-        CFrustum frustum;
-        frustum.CreateFromPlanes(frustum_planes,4);
-
-
-
-
-
-
-
-
-
-
-	// Shader
-	FILE_NAME		fnT,fnS;
-	S->RstringZ		(fnS);
-	S->RstringZ		(fnT);
-//	strcpy			(fnS,"grass");
-	shader			= Device.Shader.Create(fnS,fnT);
-
-	// Params
-	flags			= S->Rdword	();
-	number_vertices	= S->Rdword	();
-	number_indices	= S->Rdword	();
-	R_ASSERT		(0==(number_vertices%3));
-
-	// Vertices
-	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
-	S->Read			(vertices,size_vertices);
-	
-	// Indices
-	DWORD			size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
-	S->Read			(indices,size_indices);
-
-	// Calc BB & SphereRadius
-	Fbox bb;
-	bb.invalidate	();
-	for (DWORD i=0; i<number_vertices; i++)
-		bb.modify	(vertices[i].P);
-	radius			= bb.getradius();
-
-//------------------------------------------------------------------------------
-	struct fvfVertexIn
-	{
-		Fvector P;
-		float	u,v;
-	};
 //------------------------------------------------------------------------------
 
 4906140

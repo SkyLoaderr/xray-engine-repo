@@ -23,10 +23,20 @@ private:
 		stStopping
 	};
 private:
-	EVENT			control;
+	EVENT			control_start;
+	EVENT			control_stop;
 	vector<Item>	items;
-	BOOL			bWorking;
+	States			state;
+
+	// Sounds
+	int				snd_Ambient;
+	C2DSound*		snd_Ambient_control;
+	float			snd_Ambient_volume;
+
+	void			Born		(Item& dest, float radius, float height);
 public:
+	virtual void	OnEvent		(EVENT E, DWORD P1, DWORD P2);
+
 	void			Render		();
 
 	CEffect_Rain	();
