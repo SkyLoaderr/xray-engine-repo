@@ -69,7 +69,7 @@ void CPHSkeleton::Update(u32 dt)
 		PHSplit();
 	}
 
-	if(b_removing&&(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time) 
+	if(b_removing&&(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time&&m_unsplited_shels.empty()) 
 	{
 		NET_Packet			P;
 		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
