@@ -44,11 +44,11 @@ void CLight_DB::Load			(IReader *fs)
 		{
 			Flight		Ldata;
 			light*		L				= xr_new<light>		();
-			L->flags.type				= IRender_Light::POINT;
+			L->flags.type				= IRender_Light::SPOT;
 			L->flags.bStatic			= true;
 			L->flags.bShadow			= true;
 			L->flags.bActive			= true;
-			L->direction.set			(0,-1,0);
+			L->direction.set			(-.5f,-1,0);L->direction.normalize	();
 			L->cone						= deg2rad	(60.f);
 			F->r						(&L->controller,4);
 			F->r						(&Ldata,sizeof(Flight));

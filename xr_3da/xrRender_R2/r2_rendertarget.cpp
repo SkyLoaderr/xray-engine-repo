@@ -3,6 +3,7 @@
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
 #include "blender_light_point_uns.h"
+#include "blender_light_spot.h"
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
 
@@ -16,6 +17,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
 	b_accum_point_s					= xr_new<CBlender_accum_point>			();
 	b_accum_point_uns				= xr_new<CBlender_accum_point_uns>		();
+	b_accum_spot_s					= xr_new<CBlender_accum_spot>			();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_combine						= xr_new<CBlender_combine>				();
 
@@ -49,6 +51,14 @@ void	CRenderTarget::OnDeviceCreate	()
 
 		accum_point_geom_create		();
 		g_accum_point				= Device.Shader.CreateGeom	(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
+	}
+
+	// SPOT
+	{
+		u32 size = SSM_size;
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_s_ZB,NULL));
+		rt_smap_s					= Device.Shader._CreateRT	(r2_RT_smap_s,				size,size,D3DFMT_R32F);
+		s_accum_spot_s				= Device.Shader.Create_B	(b_accum_point_s,			"r2\\accum_spot_s");
 	}
 
 	// BLOOM
