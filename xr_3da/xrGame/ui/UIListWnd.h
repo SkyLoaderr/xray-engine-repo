@@ -46,6 +46,7 @@ public:
 							 int value = 0, int insertBeforeIdx = -1);
 
 	virtual bool AddText_script (LPCSTR str, int shift, u32 color, CGameFont* pFont, bool doPreProcess);
+	virtual bool AddItem_script(CUIListItem* item);
 
 	template <class Element>
 	bool AddParsedItem		(const CUIString &str, const int shift,
