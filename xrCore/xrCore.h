@@ -160,6 +160,7 @@ using namespace std;
 #pragma warning (disable : 4127 )		// conditional expression is constant
 #pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
 #pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
+#pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 
 // Our headers
 #ifdef XRCORE_EXPORTS
