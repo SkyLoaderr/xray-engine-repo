@@ -283,14 +283,6 @@ SOURCE=.\FTimer.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Image.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Image.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\light.h
 # End Source File
 # Begin Source File
