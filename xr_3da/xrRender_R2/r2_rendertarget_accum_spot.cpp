@@ -23,6 +23,11 @@ void CRenderTarget::accum_spot	(light* L)
 		{
 			// full-screen -> do nothing
 		} else {
+			// test if light-volume intersects scissor-rectangle
+			// if it does - do nothing, if doesn't - we look on light through portal
+			Fplane		P;
+
+
 			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
 			CHK_DX		(HW.pDevice->SetScissorRect(&R));
 		}

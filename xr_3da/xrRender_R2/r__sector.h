@@ -9,6 +9,11 @@
 class	CPortal;
 class	CSector;
 
+struct	_scissor					: public Fbox2
+{
+	float	depth;
+};
+
 // Connector
 class	CPortal						: public IRender_Portal
 {
@@ -41,13 +46,13 @@ protected:
 	xr_vector<CPortal*>				m_portals;
 public:
 	xr_vector<CFrustum>				r_frustums;
-	xr_vector<Fbox2>				r_scissors;
+	xr_vector<_scissor>				r_scissors;
 	Fbox2							r_scissor_merged;
 	u32								r_marker;
 public:
 	// Main interface
 	IRender_Visual*					root			()				{ return m_root; }
-	void							traverse		(CFrustum& F,	Fbox2& R);
+	void							traverse		(CFrustum& F,	_scissor& R);
 	void							load			(IReader& fs);
 
 	CSector							()				{ m_root = NULL;	}
