@@ -110,8 +110,6 @@ void CScriptMonster::vfUpdateSounds()
 	LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
 	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
-	else
-		Msg ("SOUND : no feedback");
 }
 
 void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
@@ -197,8 +195,6 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 			}
 			else
 				l_tSoundAction.m_bCompleted = true;
-		else
-			Msg("SOUND : NO FEEDBACK!");
 	}
 	else {
 		if (strlen(l_tSoundAction.m_caSoundToPlay))
