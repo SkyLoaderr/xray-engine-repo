@@ -58,8 +58,9 @@ void CAI_Biting::Think()
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 
-
-		if (C && H && I)			SetState(statePanic);
+	
+		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
+		if (C && H && I)		SetState(statePanic);
 		else if (C && H && !I)		SetState(statePanic);
 		else if (C && !H && I)		SetState(statePanic);
 		else if (C && !H && !I) 	SetState(statePanic);
@@ -74,14 +75,17 @@ void CAI_Biting::Think()
 		else if (F && H && I) 		SetState(stateAttack); 		
 		else if (F && H && !I)  	SetState(stateAttack); 
 		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateHide);	
-		else if (A && !K && !H)		SetState(stateExploreDNE); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreDE); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
-		else if (B && !K && !H)		SetState(stateExploreNDE); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateExploreNDE); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (F && !H && !I) 	SetState(stateHide);
+		else if (A && !K && !H)		SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+		else if (A && !K && H)		SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
+		else if (A && !K && H)		SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+		else if (B && !K && H)		
+			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
 									SetState(stateEat);
 		else						SetState(stateRest); 
+		
 		//---
 		
 		CurrentState->Execute(m_dwCurrentUpdate);

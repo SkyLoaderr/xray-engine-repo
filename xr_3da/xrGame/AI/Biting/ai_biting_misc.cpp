@@ -80,9 +80,9 @@ void CAI_Biting::vfUpdateParameters()
 	// определить, видит ли меня враг
 	I = false;
 
-	VisionElem ve;
+	SEnemy ve;
 	if (GetEnemy(ve)) {
-		//VisibleEnemies.insert(ve.obj);
+		VisibleEnemies.insert(ve.obj);
 
 		// определить, видит ли меня враг
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
@@ -130,9 +130,9 @@ void CAI_Biting::vfUpdateParameters()
 //	CObject *obj;
 //	for (u32 i=0; i<VisibleEnemies.size(); i++) {
 //		obj = VisibleEnemies[i].key;
-//		CAI_Rat *r = dynamic_cast<CAI_Rat *>(obj);
+//		//CAI_Rat *r = dynamic_cast<CAI_Rat *>(obj);
 //		CActor *a = dynamic_cast<CActor *>(obj);
-//		if (r) Msg("Enemy %i - rat",i+1);
+//		//if (r) Msg("Enemy %i - rat",i+1);
 //		if (a) Msg("Enemy %i - actor",i+1);
 //	}
 
@@ -169,31 +169,62 @@ void CAI_Biting::vfUpdateParameters()
 				H = true;
 	}
 
-	// temp - выгоден
-//	if (ve.obj) {
-//		D = C = false;
-//		E = true;
-//	}
 	H = true;
+
+	// Fill flags, properties and vars for attack mode
+	flagEnemyDie				= false;
+	flagEnemyLostSight			= false;
+
+	flagEnemyGoCloser			= false;
+	flagEnemyGoFarther			= false;
+	flagEnemyGoCloserFast		= false;
+	flagEnemyGoFartherFast		= false;
+	flagEnemyStanding			= false;
+	flagEnemyDoesntKnowAboutMe	= false;
+	flagEnemyHiding				= false;			// todo
+	flagEnemyRunAway			= false;			// todo
+
+	// Set current enemy
+	m_tEnemy = ve;
+	
+	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_dwCurrentUpdate)) {
+		flagEnemyLostSight = true;
+	}
+	
+	if (m_tEnemyPrevFrame.obj && !m_tEnemyPrevFrame.obj->g_Alive()) {
+		flagEnemyDie = true;
+	}
+	
+	float dist_now, dist_prev;
+	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj)) {
+		dist_now	= m_tEnemy.position.distance_to(Position());
+		dist_prev	= m_tEnemyPrevFrame.position.distance_to(Position());
+		
+		if (_abs(dist_now - dist_prev) < 0.2f) flagEnemyStanding	= true;
+		else {
+			if (dist_now < dist_prev) flagEnemyGoCloser = true;
+			else flagEnemyGoFarther = true;
+
+			if (_abs(dist_now - dist_prev) < 1.2f) {
+				if (dist_now < dist_prev)  flagEnemyGoCloserFast = true;
+				else flagEnemyGoFartherFast = true;
+			}
+		}
+
+		if (flagEnemyStanding && !I) flagEnemyDoesntKnowAboutMe = true;
+	}
+	
+	// Save current enemy (only if valid)
+	if (m_tEnemy.obj)
+		m_tEnemyPrevFrame = m_tEnemy;
 }
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Temp!!!
+// Test stuff
 void CAI_Biting::SetText()
 {
-#ifdef DEBUG
-//	if (CurrentBlend) {
-//		HUD().pFontSmall->OutSet (300,420);	
-//		HUD().pFontSmall->OutNext("frame [%i]		time current = [%.4f] time total = [%.4f]",
-//			CurrentBlend->dwFrame, CurrentBlend->timeCurrent, CurrentBlend->timeTotal);
-//	} else {
-//		HUD().pFontSmall->OutSet (300,420);	
-//		HUD().pFontSmall->OutNext("NO CURRENT BLEND");
-//	}
-
-#endif
 }
 
 

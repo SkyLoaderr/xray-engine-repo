@@ -125,7 +125,7 @@ void CBitingRest::Run()
 void CBitingRest::Replanning()
 {
 	// Test
-	///Msg("_ Rest replanning _");
+	Msg("_ Rest replanning _");
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
@@ -207,7 +207,7 @@ void CBitingAttack::Reset()
 	m_dwFaceEnemyLastTime	= 0;
 	m_dwFaceEnemyLastTimeInterval = 1200;
 	
-	nStartStop = nDoDamage	= 0;
+	nStartStop = 0;
 	m_dwSuperMeleeStarted	= 0;
 }
 
@@ -216,8 +216,7 @@ void CBitingAttack::Init()
 	IState::Init();
 
 	// ѕолучить врага
-	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->SaveEnemy();
+	m_tEnemy = pMonster->m_tEnemy;
 
 	// ќпределение класса врага
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(m_tEnemy.obj);
@@ -232,41 +231,38 @@ void CBitingAttack::Init()
 		m_fDistMin = 2.4f;
 		m_fDistMax = 3.8f;
 	}
-	if (m_bAttackRat) pMonster->SetMemoryTimeDef();
-	else pMonster->SetMemoryTime(3000);
+	
+	pMonster->SetMemoryTimeDef();
 
 	// Test
-	//Msg("_ Attack Init _");
+	Msg("_ Attack Init _");
 }
 
 void CBitingAttack::Run()
 {
 	// ≈сли враг изменилс€, инициализировать состо€ние
-	VisionElem ve;
-	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
-	if (m_tEnemy.obj != ve.obj) {
+	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
+	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) {
 		Reset();
 		Init();
-	} else m_tEnemy = ve;
+	} else m_tEnemy = pMonster->m_tEnemy;
 
 	// ¬ыбор состо€ни€
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
-	if (bAttackMelee && (m_tEnemy.position.distance_to(pMonster->Position()) < m_fDistMax)) 
+	if (bAttackMelee && (m_tEnemy.obj->Position().distance_to(pMonster->Position()) < m_fDistMax)) 
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
-		m_tAction = ((m_tEnemy.position.distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+		m_tAction = ((m_tEnemy.obj->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 
-	// вычисление частоты старт-стопов
+	// вычисление частоты старт-стопов 
 	if (bAttackMelee && m_tAction == ACTION_RUN) {
 		nStartStop++;
 	}
-	if (nStartStop > nDoDamage*2) {
-		if (nDoDamage != 0) {
-			nStartStop = nDoDamage = 0;
-			m_fDistMin -= 0.3f;
-		} else nDoDamage = 1;
-	}
+//	if (nStartStop > 3) {
+//		nStartStop = 0;
+//		m_fDistMin -= 0.3f;
+//	}
 	
 	// задержка дл€ построени€ пути
 	u32 delay;
@@ -278,11 +274,29 @@ void CBitingAttack::Run()
 		}
 	}
 
+//	// если враг не виден более 3 сек, не перестраивать путь и перейти в состо€ние поиска врага
+//	if (m_dwEnemyLostSightTime + 3000 > m_dwCurrentTime) {
+//		m_tAction = ACTION_FIND_ENEMY;
+//	} 
+//
+//	// todo: Add selector for enemy find	
+//
+//	if (pMonster->flagEnemyLostSight) m_dwEnemyLostSightTime = m_dwCurrentTime;
+//	else m_dwEnemyLostSightTime = 0;
+
+	if (pMonster->flagEnemyLostSight) pMonster->SetMemoryTime(3000);
+
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
-			//delay = ((m_tEnemy.position.distance_to(pMonster->Position()) < (m_fDistMax+4))? 0:300);
+			
+//			if (!pMonster->flagEnemyLostSight) {
+//				pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+//				pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
+//			}
+	
+			
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
 
@@ -304,9 +318,10 @@ void CBitingAttack::Run()
 			} else m_dwSuperMeleeStarted = 0;
 			
 			
+			// —мотреть на врага 
 			float yaw, pitch;
 			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
-				// —мотреть на врага 
+				
 				m_dwFaceEnemyLastTime = m_dwCurrentTime;
 				pMonster->AI_Path.TravelPath.clear();
 				
@@ -322,25 +337,14 @@ void CBitingAttack::Run()
 				yaw = angle_normalize(yaw);
 			} else yaw = pMonster->r_torso_target.yaw;
 
+//			// set motion params
 			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);			
+			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
 			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfBitingAttackFastRSpeed,m_cfBitingRunAttackMinAngle);
-
-			if (pMonster->AttackMelee(m_tEnemy.obj,false)) {
-				//pMonster->DoDamage(pEnemy);
-				nDoDamage++; 
-			}
 
 			break;
 	}
 }
-
-bool CBitingAttack::CheckCompletion() 
-{
-//// если враг убит
-//	if (!pEnemy || !pEnemy->g_Alive()) return true;
-	return false;
-}	
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,11 +434,6 @@ void CBitingEat::Run()
 			break;
 	}
 }
-
-bool CBitingEat::CheckCompletion() 
-{
-	return false;
-}	
 
 
 
@@ -537,6 +536,7 @@ void CBitingDetour::Run()
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = 15;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + 3.f;
 	
+
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0, 2000);
 
 	// ”становить параметры движени€
@@ -622,7 +622,7 @@ void CBitingExploreDNE::Reset()
 void CBitingExploreDNE::Init()
 {
 	// Test
-	//Msg("_ ExploreDNE Init _");
+	Msg("_ ExploreDNE Init _");
 
 	inherited::Init();
 
@@ -682,7 +682,7 @@ void CBitingExploreDE::Reset()
 void CBitingExploreDE::Init()
 {
 	// Test
-	//Msg("_ ExploreDE Init _");
+	Msg("_ ExploreDE Init _");
 
 	inherited::Init();
 
@@ -746,7 +746,7 @@ void CBitingExploreNDE::Reset()
 void CBitingExploreNDE::Init()
 {
 	// Test
-	//Msg("_ ExploreNDE Init _");
+	Msg("_ ExploreNDE Init _");
 
 	inherited::Init();
 
@@ -771,6 +771,54 @@ void CBitingExploreNDE::Run()
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CFindEnemy class  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CFindEnemy::CFindEnemy(CAI_Biting *p)
+{
+	pMonster = p;
+	Reset();
+	SetNormalPriority();
+}
+
+void CFindEnemy::Reset()
+{
+	inherited::Reset();
+
+	m_dwReplanTime		= 1000;			
+	m_dwLastPlanTime	= 0;
+	bLookLeft			= true;
+
+}
+
+void CFindEnemy::Init()
+{
+	// Test
+	Msg("_ FindEnemy Init _");
+	
+	inherited::Init();
+	SetInertia(2000);
+}
+
+void CFindEnemy::Run()
+{
+	// посмотреть по сторонам
+	if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) {
+		m_dwLastPlanTime = m_dwCurrentTime;
+		
+		if (bLookLeft) 
+			pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);	
+		else 
+			pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw - PI);
+
+		bLookLeft = !bLookLeft;
+	}
+	
+	pMonster->Motion.m_tParams.SetParams(eMotionFastTurnLeft,0,m_cfBitingAttackFastRSpeed2, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Clear();
+}
 
 
 //---------------------------------------------------------------------------------------------------------

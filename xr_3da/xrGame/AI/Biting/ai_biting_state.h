@@ -29,6 +29,8 @@ const float m_cfBitingRunRSpeed				=	PI_DIV_2;
 const float m_cfBitingRunAttackMinAngle		=   PI_DIV_6;
 const float m_cfBitingAttackFastRSpeed		=	3*PI_DIV_4;
 
+const float m_cfBitingAttackFastRSpeed2		=	PI;
+
 const float m_cfBitingScaredRSpeed			=	3*PI_DIV_4;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +95,7 @@ class CBitingAttack : public IState {
 	enum {
 		ACTION_RUN,
 		ACTION_ATTACK_MELEE,
+		ACTION_FIND_ENEMY
 	} m_tAction;
 
 	VisionElem		m_tEnemy;
@@ -107,20 +110,19 @@ class CBitingAttack : public IState {
 
 	// регулировка приближением во время атаки
 	u32				nStartStop;						//!< количество	старт-стопов
-	u32				nDoDamage;						//!< Количество нанесённых повреждений
 
 	TTime			m_dwSuperMeleeStarted;
 
+	typedef	IState inherited;
 public:
-	CBitingAttack(CAI_Biting *p);
+					CBitingAttack	(CAI_Biting *p);
 
-	void Reset();
-	bool CheckCompletion();
+	virtual	void	Reset			();
 
 private:
-	void Init();
-	void Run();
-	void Replanning();
+	virtual	void	Init			();
+	virtual void	Run				();
+			
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,14 +145,13 @@ class CBitingEat : public IState {
 	TTime			m_dwEatInterval;
 
 public:
-	CBitingEat(CAI_Biting *p);
+					CBitingEat		(CAI_Biting *p);
 
-	void Reset();
-	bool CheckCompletion();
+	virtual	void	Reset			();
 
 private:
-	void Init();
-	void Run();
+	virtual void	Init			();
+	virtual void	Run				();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,3 +275,25 @@ private:
 	virtual void	Init				();
 	virtual void	Run					();
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CFindEnemy // враг потерян из вида - искать врага
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CFindEnemy : public IState {
+	CAI_Biting		*pMonster;
+	
+	TTime			m_dwReplanTime;			//!< время через, которое делать планирование
+	TTime			m_dwLastPlanTime;		//!< последнее время планирования
+	bool			bLookLeft;
+
+	typedef IState inherited;
+public:
+					CFindEnemy 			(CAI_Biting *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+

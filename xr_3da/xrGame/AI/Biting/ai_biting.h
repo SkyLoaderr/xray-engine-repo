@@ -16,6 +16,8 @@
 #include "..\\ai_monster_mem.h"
 
 
+typedef VisionElem SEnemy;
+
 class CAI_Biting : public CCustomMonster, 
 				   public CBitingAnimations,
 				   public CMonsterMemory
@@ -279,6 +281,7 @@ private:
 	CBitingExploreDNE	*stateExploreDNE;
 	CBitingExploreDE	*stateExploreDE;
 	CBitingExploreNDE	*stateExploreNDE;
+	CFindEnemy			*stateFindEnemy;
 
 	friend	class CBitingMotion;
 	
@@ -292,7 +295,7 @@ private:
 	friend	class CBitingExploreDNE;
 	friend	class CBitingExploreDE;
 	friend	class CBitingExploreNDE;
-
+	friend	class CFindEnemy;
 
 	void SetState(IState *pS, bool bSkipInertiaCheck = false);
 	
@@ -300,16 +303,26 @@ private:
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 
-	// Animations
-	//EMotionAnim		m_tAnim;
 	EMotionAnim		m_tAnimPrevFrame;
 	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 
-	SAttackAnimation	m_tAttack;
+	SAttackAnimation	m_tAttack;		
 	void				FillAttackStructure(u32, TTime);
 	void				vfBuildTravelLine(const Fvector &tpDestinationPosition, const Fvector& current_pos);
 
-	void	UnpackContour(AI::PContour& C, u32 ID);
-	BOOL	SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvector& v4);
+	SEnemy				m_tEnemy;
+	SEnemy				m_tEnemyPrevFrame;
+
+	// combat flags 
+	bool	flagEnemyDie;
+	bool	flagEnemyLostSight;
+	bool	flagEnemyGoCloser;
+	bool	flagEnemyGoFarther;
+	bool	flagEnemyGoCloserFast;
+	bool	flagEnemyGoFartherFast;
+	bool	flagEnemyStanding;
+	bool	flagEnemyDoesntKnowAboutMe;
+	bool	flagEnemyHiding;
+	bool	flagEnemyRunAway;
 
 };

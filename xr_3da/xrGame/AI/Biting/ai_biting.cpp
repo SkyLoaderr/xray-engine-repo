@@ -27,6 +27,7 @@ CAI_Biting::CAI_Biting()
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
+	stateFindEnemy		= xr_new<CFindEnemy>		(this);
 	CurrentState		= stateRest;
 
 	Init();
@@ -43,6 +44,7 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
+	xr_delete(stateFindEnemy);
 
 	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
 	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);

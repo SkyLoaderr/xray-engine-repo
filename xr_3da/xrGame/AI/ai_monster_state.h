@@ -174,20 +174,20 @@ public:
 	IC	virtual	bool	CheckCompletion	() {return false;}						//!< возвращает true, если задание выполнено
 		virtual void	Reset			();										//!< инициализирует все значения по-умолчанию 
 
-				void	Activate		() {m_tState = STATE_INIT;}				//!< Перейти в данное состояние
+	IC			void	Activate		() {m_tState = STATE_INIT;}				//!< Перейти в данное состояние
 	IC			bool	Active			() {return (m_tState != STATE_NOT_ACTIVE);}
 
 		virtual void	Init			();									//!< Стадия инициализации состояния
 		virtual void	Run				();									//!< Стадия выполнения состояния
 		virtual void	Done			();									//!< Стадия завершения выполнения состояния
 
-				void	SetNextThink	(TTime next_think) {m_dwNextThink = next_think + m_dwCurrentTime;}
+	IC			void	SetNextThink	(TTime next_think) {m_dwNextThink = next_think + m_dwCurrentTime;}
 
 
 	/* сохранение и восстановление времени при активации критических состояний (kinda StandUp) */
 				void	LockState		();				
 		virtual	TTime	UnlockState		(TTime cur_time);					//!< возвращает dt=(текущее время - сохранённое)
-				bool	IsLocked		() {return m_bLocked;}
+	IC			bool	IsLocked		() {return m_bLocked;}
 
 	/* определение приоритета состояния (реализация инерции) */ 
 	IC			void	SetLowPriority	() {m_tPriority = PRIORITY_LOW;}
