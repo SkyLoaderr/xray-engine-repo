@@ -17,6 +17,7 @@ enum	BPID
 	BPID_MATRIX,	// really only name(stringZ) is written into stream
 	BPID_CONSTANT,	// really only name(stringZ) is written into stream
 	BPID_TEXTURE,	// really only name(stringZ) is written into stream
+	BPID_OBJECT,	// really only name(stringZ) is written into stream
 	BPID_INTEGER,
 	BPID_FLOAT,
 	BPID_BOOL,
