@@ -5,9 +5,14 @@
 void	game_sv_CS::Create			(LPCSTR options)
 {
 	__super::Create					(options);
+
+	R_ASSERT2						(rpoints[0].size(), "No respawn point for team 0");
+	R_ASSERT2						(rpoints[1].size(), "No respawn point for team 1");
+	R_ASSERT2						(rpoints[2].size(), "No respawn point for artifacts");
+
 	teams.resize					(2); // @@@ WT
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	switch_Phase(GAME_PHASE_PENDING);
+	switch_Phase					(GAME_PHASE_PENDING);
 }
 
 void	game_sv_CS::OnRoundStart	()
