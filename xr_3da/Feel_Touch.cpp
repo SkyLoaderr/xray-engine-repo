@@ -3,7 +3,7 @@
 #include "xr_creator.h"
 using namespace Feel;
 
-void CTouch::feel_touch_process	(Fvector& C, float R)
+void Touch::feel_touch_update	(Fvector& C, float R)
 {
 	// Find nearest objects
 	pCreator->ObjectSpace.GetNearest					(C,R);

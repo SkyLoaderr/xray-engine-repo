@@ -7,6 +7,7 @@
 #include "xr_sndman.h"
 #include "xr_creator.h"
 #include "xr_object.h"
+#include "feel_sound.h"
 
 extern	DWORD			psSoundModel;
 extern	DWORD			psSoundFreq;
@@ -130,7 +131,7 @@ void CSound::PropagadeEvent()
 	for (; it!=end; it++)
 	{
 		CObject*	O		= *it;
-		soundListener* L	= dynamic_cast<soundListener*>(O);
+		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(O);
 		if (0==L)			continue;
 
 		// Energy and signal
@@ -140,7 +141,7 @@ void CSound::PropagadeEvent()
 		float A				= ps.flMinDistance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 		clamp				(A,0.f,1.f);
 		float Power			= A*fVolume;
-		if (Power>EPS_S)	L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
+		if (Power>EPS_S)	L->feel_sound_new	(owner->g_object,owner->g_type,ps.vPosition,Power);
 	}
 }
 
