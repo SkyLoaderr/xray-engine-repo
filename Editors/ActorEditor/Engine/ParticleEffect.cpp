@@ -245,8 +245,8 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 	if (m_Def && m_Flags.is(flPlaying)){
 		m_MemDT			+= frame_dt;
 		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
-			if (!m_Flags.is(flDefferedStop)){
-                if (m_Def->m_Flags.is(CPEDef::dfTimeLimit)){ 
+            if (m_Def->m_Flags.is(CPEDef::dfTimeLimit)){ 
+				if (!m_Flags.is(flDefferedStop)){
                     m_ElapsedLimit 	-= uDT_STEP;
                     if (m_ElapsedLimit<0){
                         m_ElapsedLimit 	= m_Def->m_TimeLimit;
