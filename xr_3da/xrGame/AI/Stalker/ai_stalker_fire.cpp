@@ -301,7 +301,7 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		if (my_distance >= max_enemy_distance)
 			continue;
 
-		if (my_distance >= current_distance)
+		if ((cover_type != eCoverTypeBest) && (my_distance >= current_distance))
 			continue;
 
 //		if (my_distance*(cover_value + 1.f) > best_distance*(best_value + 1.f))

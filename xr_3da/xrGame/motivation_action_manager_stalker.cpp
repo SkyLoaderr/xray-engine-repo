@@ -14,6 +14,10 @@
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 
+#ifdef DEBUG
+extern EStalkerBehaviour	g_stalker_behaviour;
+#endif
+
 using namespace StalkerDecisionSpace;
 
 CMotivationActionManagerStalker::CMotivationActionManagerStalker	()
@@ -27,6 +31,9 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 
 void CMotivationActionManagerStalker::init				()
 {
+#ifdef DEBUG
+	m_stalker_behaviour		= g_stalker_behaviour;
+#endif
 }
 
 #ifdef LOG_ACTION
@@ -83,7 +90,15 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 			(*I).get_operator()->m_use_log = m_use_log;
 	}
 #endif
+#ifdef DEBUG
+	if (m_stalker_behaviour!=g_stalker_behaviour) {
+		CSActionPlanner::m_actuality	= false;
+	}
+#endif
 	inherited::update		(time_delta);
+#ifdef DEBUG
+	m_stalker_behaviour		= g_stalker_behaviour;
+#endif
 }
 
 void CMotivationActionManagerStalker::add_motivations	()

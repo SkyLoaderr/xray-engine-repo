@@ -20,6 +20,7 @@ extern Flags32					psAI_Flags;
 #define aiGOAP					(1<<7)
 #define aiCover					(1<<8)
 
+#ifdef DEBUG
 enum EStalkerBehaviour {
 	eStalkerBehaviourVeryAggressive = u32(0),
 	eStalkerBehaviourAggressive,
@@ -28,4 +29,4 @@ enum EStalkerBehaviour {
 	eStalkerBehaviourRetreat,
 	eStalkerBehaviourDummy			= u32(-1),
 };
-
+#endif

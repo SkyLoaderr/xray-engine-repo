@@ -15,7 +15,9 @@
 
 using namespace StalkerDecisionSpace;
 
+#ifdef DEBUG
 EStalkerBehaviour	g_stalker_behaviour = eStalkerBehaviourAggressive;
+#endif
 
 typedef CStalkerActionBase::_edge_value_type _edge_value_type;
 
@@ -540,7 +542,23 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::setup					(SightManager::eSightTypeCurrentDirection);
+	if (m_object->enemy()) {
+		Fvector							temp = m_object->enemy()->Position();
+		temp.y							+= 1.8f;
+		m_object->CSightManager::setup	(SightManager::eSightTypePosition,&temp,0);
+	}
+	else {
+		CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
+		if (mem_object.m_object) {
+			Fvector							temp = mem_object.m_object_params.m_position;
+			temp.y							+= 1.8f;
+			m_object->CSightManager::setup	(SightManager::eSightTypeCurrentDirection);
+		}
+		else {
+			m_object->CSightManager::setup	(SightManager::eSightTypeCover);
+		}
+	}
+
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 #ifdef OLD_OBJECT_HANDLER
 		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
@@ -686,7 +704,15 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	}
 	else {
 		m_object->set_movement_type	(eMovementTypeStand);
-		m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
+		CMemoryInfo							mem_object = m_object->memory(m_object->enemy());
+		if (mem_object.m_object) {
+			Fvector							temp = mem_object.m_object_params.m_position;
+			temp.y							+= 1.8f;
+			m_object->CSightManager::setup	(SightManager::eSightTypeCurrentDirection);
+		}
+		else {
+			m_object->CSightManager::setup	(SightManager::eSightTypeCover);
+		}
 	}
 
 	m_object->set_desired_direction	(0);
@@ -1281,8 +1307,8 @@ void CStalkerActionCamp::execute	()
 		mem_object.m_self_params.m_position,
 		mem_object.m_self_params.m_position,
 		StalkerSpace::eCoverTypeBest,
-		30.f,
-		30.f,
+		10.f,
+		10.f,
 		0.f,
 		30.f
 	);
@@ -1291,12 +1317,12 @@ void CStalkerActionCamp::execute	()
 		m_object->set_desired_position	(&point->position());
 		m_object->set_movement_type		(eMovementTypeRun);
 		m_object->set_body_state		(eBodyStateStand);
-		m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+		m_object->setup					(CSightAction(SightManager::eSightTypeCover,true,false));//,&position);
 	}
 	else {
 		m_object->set_movement_type		(eMovementTypeStand);
 		m_object->set_body_state		(eBodyStateCrouch);
-		m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+		m_object->setup					(CSightAction(SightManager::eSightTypeCover,true,false));//,&position);
 	}
 
 	m_object->set_path_type				(CMovementManager::ePathTypeLevelPath);

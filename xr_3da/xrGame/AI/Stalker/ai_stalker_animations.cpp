@@ -589,6 +589,9 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 	CSkeletonAnimated		&tVisualObject		=	*(PSkeletonAnimated(stalker->Visual()));
 
 	if (!m_script_animations.empty()) {
+		m_tpCurrentGlobalAnimation	= 0;
+		m_tpCurrentTorsoAnimation	= 0;
+		m_tpCurrentLegsAnimation	= 0;
 		bool				_continue = false;
 		if (m_current_script_animation) {
 			VERIFY			(m_current_script_animation == m_script_animations.front().m_motion);

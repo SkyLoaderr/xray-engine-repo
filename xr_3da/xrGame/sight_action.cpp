@@ -42,18 +42,10 @@ void CSightAction::execute		()
 			break;
 		}
 		case SightManager::eSightTypeCover : {
-			if (m_path) {
-				if (m_torso_look)
-					m_object->SetLessCoverLook(m_object->level_vertex(),PI,true);
-				else
-					m_object->SetLessCoverLook(m_object->level_vertex(),true);
-			}
-			else {
-				if (m_torso_look)
-					m_object->SetLessCoverLook(m_object->level_vertex(),PI,true);
-				else
-					m_object->SetLessCoverLook(m_object->level_vertex(),true);
-			}
+			if (m_torso_look)
+				m_object->SetLessCoverLook(m_object->level_vertex(),PI,m_path);
+			else
+				m_object->SetLessCoverLook(m_object->level_vertex(),m_path);
 			break;
 		}
 		case SightManager::eSightTypeSearch : {

@@ -8,7 +8,9 @@
 
 #include "ai/monsters/burer/burer.h"
 
+#ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
+#endif
 
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
@@ -126,6 +128,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 //			m_bSynchronization	= false;
 //		}
 		return;
+#ifdef DEBUG
 	case DIK_G:
 		g_stalker_behaviour = eStalkerBehaviourVeryAggressive;
 		return;
@@ -141,6 +144,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case DIK_L:
 		g_stalker_behaviour = eStalkerBehaviourRetreat;
 		break;
+#endif
 #endif
 	}
 

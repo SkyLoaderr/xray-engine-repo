@@ -119,7 +119,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			fBestAngle = fSingleIncrement;
 	}
 
-	m_object->m_head.target.yaw = fBestAngle;
+	m_object->m_head.target.yaw = angle_normalize_signed(fBestAngle + PI);
 	VERIFY					(_valid(m_object->m_head.target.yaw));
 }
 
@@ -217,8 +217,8 @@ void CSightManager::update			(u32 time_delta)
 	
 	if	(
 			(m_object->speed() < EPS_L) && 
-			(angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6) &&
-			fsimilar(m_object->m_head.target.yaw,m_object->m_head.current.yaw)
+			(angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_6)// &&
+//			fsimilar(m_object->m_head.target.yaw,m_object->m_head.current.yaw)
 		)
 		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
 }
