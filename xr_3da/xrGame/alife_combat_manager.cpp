@@ -359,7 +359,7 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 					register_object								(l_tpALifeMonsterAbstract);
 					CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
 					if (l_tpALifeInventoryItem)
-						m_temp_item_vector.push_back				(l_tpALifeInventoryItem);
+						m_temp_item_vector.push_back			(l_tpALifeInventoryItem);
 					--l_tpALifeGroupAbstract->m_wCount;
 					--I;
 					--N;
