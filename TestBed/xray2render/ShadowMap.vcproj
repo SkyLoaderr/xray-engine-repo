@@ -338,6 +338,9 @@
 			RelativePath="VS_Constants.h">
 		</File>
 		<File
+			RelativePath="r_constants.cpp">
+		</File>
+		<File
 			RelativePath="r_constants.h">
 		</File>
 		<File
