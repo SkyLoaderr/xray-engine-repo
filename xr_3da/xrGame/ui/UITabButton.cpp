@@ -33,20 +33,20 @@ void CUITabButton::ShowAssociatedWindow(bool bShow){
 }
 
 void CUITabButton::OnMouse(int x, int y, EUIMessages mouse_action){
-	CUI3tButton::OnMouse(x, y, mouse_action);
+	CUIWindow::OnMouse(x, y, mouse_action);
+
+	if (WINDOW_LBUTTON_DOWN == mouse_action)
+	{
+		Msg("-- TAB_CHANGED for this=%o", this);
+		GetMessageTarget()->SendMessage(this, TAB_CHANGED);		
+		return;
+	}
+
+	
 //	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
     
 	// we ends capturing if cursor is out of window
-    GetParent()->SetCapture(this, m_bCursorOverWindow);	
-
-	switch (mouse_action)
-	{
-	case WINDOW_LBUTTON_DOWN:
-		GetMessageTarget()->SendMessage(this, TAB_CHANGED);
-		break;
-	default:
-		break;
-	}
+//    GetParent()->SetCapture(this, m_bCursorOverWindow);	
 }
 
 void CUITabButton::Update(){
@@ -62,13 +62,16 @@ void CUITabButton::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	case TAB_CHANGED:
 		if (this == pWnd)
 		{
-            m_eButtonState = BUTTON_PUSHED;
+            m_eButtonState = BUTTON_PUSHED;			
 			ShowAssociatedWindow(true);
+			Msg("-- BUTTON_PUSHED for this=%o", this);
+			OnClick();
 		}
 		else		
 		{
 			m_eButtonState = BUTTON_NORMAL;
 			ShowAssociatedWindow(false);
+			Msg ("-- BUTTON_NORMAL for this=%o", this);			
 		}
 		break;
 	default:

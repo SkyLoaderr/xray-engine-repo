@@ -95,9 +95,14 @@ void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			{
 				m_iPushedIndex = i;
 				if (m_iPrevPushedIndex == m_iPushedIndex)
+				{
+					Msg ("-- Prev and Cur indexes are equal... going to return");
 					return; // return if nothing was changed
-
+				}
+                
+				Msg ("-- Going to call OnTabchange() method");
 				OnTabChange(m_iPushedIndex, m_iPrevPushedIndex);
+				Msg ("-- evaluate **m_iPrevPushedIndex = m_iPushedIndex**");
 				m_iPrevPushedIndex = m_iPushedIndex;							
 				break;
 			}
