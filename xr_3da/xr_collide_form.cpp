@@ -164,7 +164,7 @@ void CCF_Skeleton::BuildState()
 	
 	if (K->LL_VisibleBoneCount() != models.size())
 	{
-		u64 F			= K->LL_GetBonesVisible()&((u64(1)<<u64(K->LL_BoneCount()))-1); 
+		//u64 F			= K->LL_GetBonesVisible()&((u64(1)<<u64(K->LL_BoneCount()))-1); 
 		models.resize	(K->LL_VisibleBoneCount());
 		base_box.set	(K->vis.box);
 		bv_box.set		(K->vis.box);
