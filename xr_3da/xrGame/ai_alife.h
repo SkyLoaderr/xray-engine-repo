@@ -10,6 +10,8 @@
 
 #include "ai_alife_registries.h"
 
+#define DEBUG_LOG
+
 class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
 	public CSE_ALifeGameTime,

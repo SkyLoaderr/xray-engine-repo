@@ -187,7 +187,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
 			I->m_tNodeID = getAI().q_Node(I->m_tNodeID,I->o_Position);
 			_GRAPH_ID tGraphID = getAI().m_tpaCrossTable[I->m_tNodeID].tGraphIndex;
-			if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff))
+			if ((tGraphID != I->m_tGraphID) && (I->ID_Parent == 0xffff) && !I->m_bOnline)
 				vfChangeObjectGraphPoint(I,I->m_tGraphID,tGraphID);
 			I->m_fDistance = getAI().m_tpaCrossTable[I->m_tNodeID].fDistance;
 		}

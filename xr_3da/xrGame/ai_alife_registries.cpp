@@ -88,6 +88,10 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 
 void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
+	if (m_tObjectRegistry.find(tpALifeDynamicObject->ID) != m_tObjectRegistry.end()) {
+		R_ASSERT2				((*(m_tObjectRegistry.find(tpALifeDynamicObject->ID))).second == tpALifeDynamicObject,"The specified object is already presented in the Object Registry!");
+		R_ASSERT2				((*(m_tObjectRegistry.find(tpALifeDynamicObject->ID))).second != tpALifeDynamicObject,"Object with the specified ID is already presented in the Object Registry!");
+	}
 	m_tObjectRegistry.insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
@@ -159,6 +163,10 @@ void CSE_ALifeEventRegistry::Load(IReader	&tFileStream)
 
 void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
 {
+	if (m_tEventRegistry.find(tpEvent->m_tEventID) != m_tEventRegistry.end()) {
+		R_ASSERT2				((*(m_tEventRegistry.find(tpEvent->m_tEventID))).second == tpEvent,"The specified event is already presented in the Event Registry!");
+		R_ASSERT2				((*(m_tEventRegistry.find(tpEvent->m_tEventID))).second != tpEvent,"Event with the specified ID is already presented in the Event Registry!");
+	}
 	m_tEventRegistry.insert		(std::make_pair(tpEvent->m_tEventID = m_tEventID++,tpEvent));
 }
 
@@ -193,6 +201,10 @@ void CSE_ALifeTaskRegistry::Load(IReader	&tFileStream)
 
 void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
 {
+	if (m_tTaskRegistry.find(tpTask->m_tTaskID) != m_tTaskRegistry.end()) {
+		R_ASSERT2				((*(m_tTaskRegistry.find(tpTask->m_tTaskID))).second == tpTask,"The specified task is already presented in the Task Registry!");
+		R_ASSERT2				((*(m_tTaskRegistry.find(tpTask->m_tTaskID))).second != tpTask,"Task with the specified ID is already presented in the Task Registry!");
+	}
 	m_tTaskRegistry.insert		(std::make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
 }
 
@@ -259,16 +271,8 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 	}
 
 	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
-	if (tpALifeItem) {
-		if (!tpALifeItem->bfAttached())
-			m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
-		return;
-	}
-	else
+	if ((!tpALifeItem && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) || (tpALifeItem && !tpALifeItem->bfAttached()))
 		vfAddObjectToGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-
-	if (!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
-		m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 }
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -288,6 +292,9 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObje
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
 {
+	if (dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
+		return;
+
 	ALIFE_ENTITY_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 	ALIFE_ENTITY_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	bool							bOk = false;
@@ -297,7 +304,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 			bOk = true;
 			break;
 		}
-	VERIFY							(bOk);
+	R_ASSERT2						(bOk,"Specified object not foudn on the given graph point");
 #ifdef DEBUG_LOG
 	Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
 #endif
@@ -439,7 +446,7 @@ void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *t
 void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
-	if (!tpALifeMonsterAbstract)
+	if (!tpALifeMonsterAbstract || (tpALifeMonsterAbstract->fHealth <= 0))
 		return;
 
 	ALIFE_MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID), J = I;
