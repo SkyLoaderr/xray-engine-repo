@@ -171,22 +171,22 @@ int get_sound_type(const CSoundObject &sound_object)
 	return			((int)sound_object.m_sound_type);
 }
 
-u32 bit_and(u32 i, u32 j)
+int bit_and(int i, int j)
 {
 	return			(i & j);
 }
 
-u32 bit_or(u32 i, u32 j)
+int bit_or(int i, int j)
 {
 	return			(i | j);
 }
 
-u32 bit_xor(u32 i, u32 j)
+int bit_xor(int i, int j)
 {
 	return			(i ^ j);
 }
 
-u32 bit_not(u32 i)
+int bit_not(int i)
 {
 	return			(~i);
 }

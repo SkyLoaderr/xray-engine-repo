@@ -72,6 +72,10 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
 	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
 	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	if (l_tMovementAction.m_tMovementType == eMovementTypeStand) {
+		set_level_dest_vertex(level_vertex_id());
+		set_dest_position(Position());
+	}
 
 	vfSetParameters	(
 		0,
