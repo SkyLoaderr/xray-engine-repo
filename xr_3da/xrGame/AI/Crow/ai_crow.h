@@ -85,13 +85,13 @@ protected:
 	float			fGoalChangeTime;
 	float			fIdleSoundTime;
 
-	void			switch2_FlyUp	();
-	void			switch2_FlyIdle	();
-	void			switch2_DeathFall();
-	void			switch2_DeathDead();
+	void			switch2_FlyUp				();
+	void			switch2_FlyIdle				();
+	void			switch2_DeathFall			();
+	void			switch2_DeathDead			();
 
-	void			state_DeathFall	();
-	void			state_Flying	();
+	void			state_DeathFall				();
+	void			state_Flying				(u32 dt);
 
 	void			CreateSkeleton();
 	

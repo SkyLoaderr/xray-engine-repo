@@ -13,7 +13,7 @@
 #include "../../level.h"
 #include "../../../skeletonanimated.h"
 
-void CAI_Crow::SAnim::Load(CSkeletonAnimated* visual, LPCSTR prefix)
+void CAI_Crow::SAnim::Load	(CSkeletonAnimated* visual, LPCSTR prefix)
 {
 	const MotionID		&M = visual->ID_Cycle_Safe(prefix);
 	if (M)				m_Animations.push_back(M);
@@ -26,7 +26,7 @@ void CAI_Crow::SAnim::Load(CSkeletonAnimated* visual, LPCSTR prefix)
 	R_ASSERT			(m_Animations.size());
 }
 
-void CAI_Crow::SSound::Load(LPCSTR prefix)
+void CAI_Crow::SSound::Load	(LPCSTR prefix)
 {
 	string256	fn;
 	if (FS.exist(fn,"$game_sounds$",prefix,".ogg")){
@@ -44,14 +44,14 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 	R_ASSERT(m_Sounds.size());
 }
 
-void CAI_Crow::SSound::SetPosition(const Fvector& pos)
+void CAI_Crow::SSound::SetPosition	(const Fvector& pos)
 {
 	for (int i=0; i<(int)m_Sounds.size(); ++i)
 		if (m_Sounds[i].feedback)
 			m_Sounds[i].set_position(pos);
 }
 
-void CAI_Crow::SSound::Unload()
+void CAI_Crow::SSound::Unload		()
 {
 	for (int i=0; i<(int)m_Sounds.size(); ++i)
 		::Sound->destroy	(m_Sounds[i]);
@@ -62,17 +62,17 @@ void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
 	((CAI_Crow*)B->CallbackParam)->OnHitEndPlaying(B);
 }
 
-void CAI_Crow::OnHitEndPlaying(CBlend* /**B/**/)
+void CAI_Crow::OnHitEndPlaying				(CBlend* /**B/**/)
 {
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
 }
 
-CAI_Crow::CAI_Crow()
+CAI_Crow::CAI_Crow		()
 {
 	init				();
 }
 
-CAI_Crow::~CAI_Crow()
+CAI_Crow::~CAI_Crow		()
 {
 	// removing all data no more being neded 
 	m_Sounds.m_idle.Unload		();
@@ -180,12 +180,13 @@ void CAI_Crow::switch2_DeathFall()
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 
-void CAI_Crow::state_Flying()
+void CAI_Crow::state_Flying		(u32 dt)
 {
-	// Update position and orientation of the planes
-	float fAT = fASpeed * Device.fTimeDelta;
+	float	fdt		= float(dt)/1000.f;
 
-	Fvector& vDirection = XFORM().k;
+	// Update position and orientation of the planes
+	float fAT = fASpeed * fdt		;
+	Fvector& vDirection = XFORM().k	;
 
 	// Tweak orientation based on last position and goal
 	Fvector vOffset;
@@ -223,7 +224,7 @@ void CAI_Crow::state_Flying()
 	// Update position
 	vOldPosition.set(Position());
 	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
-	Position().mad	(vOldPosition,vDirection,fSpeed*Device.fTimeDelta);
+	Position().mad	(vOldPosition,vDirection,fSpeed*fdt);
 }
 
 static Fvector vV={0,0,0};
@@ -239,23 +240,23 @@ void CAI_Crow::state_DeathFall()
 	}
 }
 
-void CAI_Crow::Die	()
+void CAI_Crow::Die	(CObject* who)
 {
 	inherited::Die	(who)	;
 	CreateSkeleton	()		;
 	processing_activate	()	;	// enable UpdateCL for dead crows - especially for physics support
 };
-void CAI_Crow::UpdateWorkload	()
+void CAI_Crow::UpdateWorkload	(u32 dt)
 {
 	if (o_workload_frame	==	Device.dwFrame)	return;
 	o_workload_frame		=	Device.dwFrame	;
 	switch (st_current)		{
 	case eFlyIdle	:
 	case eFlyUp		:
-		state_Flying();
+		state_Flying		(dt);
 		break;
 	case eDeathFall	:
-		state_DeathFall();
+		state_DeathFall		();
 		break;
 	}
 }
