@@ -31,7 +31,7 @@ CUI::CUI(CHUDManager* p){
 	bShift			= false;
 	ResetSelected	();
 
-	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alTop);
+	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
 }
 //--------------------------------------------------------------------
 
