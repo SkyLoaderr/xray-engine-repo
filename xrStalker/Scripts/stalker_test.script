@@ -2,6 +2,12 @@ function movement_callback(obj,action_type,index)
 	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
 end
 
+class "test_callback"
+
+function test_callback:callback(obj,action_type,index)
+	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
+end
+
 function main ()
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -37,7 +43,10 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker:set_callback(stalker_test.movement_callback,game_object.movement)
+--	stalker:set_callback(stalker_test.movement_callback,game_object.movement)
+	
+	local test		= stalker_test.test_callback()
+	stalker:set_callback(test,"callback",game_object.movement)
 	
 	action (
 		stalker, 
