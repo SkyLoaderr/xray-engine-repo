@@ -84,8 +84,8 @@ void		CTeleWhirlwindObject::		release					()
 	
 
 	// включить гравитацию
-	Fvector zer;zer.set(0,0,0);
-	object->m_pPhysicsShell->set_LinearVel(zer);
+	//Fvector zer;zer.set(0,0,0);
+	//object->m_pPhysicsShell->set_LinearVel(zer);
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 /////////////////////////////////////
 	float impulse=0.f;
@@ -137,17 +137,21 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			float mag=diff.magnitude();
 			
 			float accel=k/mag/mag/mag;//*E->getMass()
+			Fvector dir;
 			if(mag<mag_eps)
 			{
 				accel=k/mag_eps/mag_eps/mag_eps;
 				//Fvector zer;zer.set(0,0,0);
 				//E->set_LinearVel(zer);
+				dir.set(0.f,-1.f,0.f);
 			}
-	
+			else
+			{
+				dir.set(diff);dir.mul(1.f/mag);
+			}
 			Fvector vel;
 			E->get_LinearVel(vel);
 			float delta_v=accel*fixed_step;
-			Fvector dir;dir.set(diff);dir.mul(1.f/mag);
 			Fvector delta_vel; delta_vel.set(dir);delta_vel.mul(delta_v);
 			Fvector predict_vel;predict_vel.add(vel,delta_vel);
 			Fvector delta_pos;delta_pos.set(predict_vel);delta_pos.mul(fixed_step);
