@@ -201,7 +201,6 @@
 		<col def="S255">ISFeatureCabName</col>
 		<col def="S255">ISProFeatureName</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>##IDS_SERVER_FEATURE_NAME##</td><td/><td>6</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ServerFeature</td></row>
-		<row><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New MDAC 2.8 (ODBC, OLEDB, ADO, RDS) 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MDAC 2.8 (ODBC, OLEDB, ADO, RDS)</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>New MSDE 2000 Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MSDE_2000_Object</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New Merge Module Holder Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>Microsoft Additional Components Holder</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td>##IDS_VLIENT_FEATURE_NAME##</td><td/><td>4</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ClientFeature</td></row>
@@ -243,6 +242,7 @@
 		<row><td>mdisplit.ico</td><td>DefaultComponent</td><td>MDISplit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MDISplit.ico</td><td>1</td><td/></row>
 		<row><td>searchdb_data.mdf</td><td>ServerComponent</td><td>searchdb_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>searchdb_log.ldf</td><td>ServerComponent</td><td>searchdb_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>sql_config.dll</td><td>ServerComponent</td><td>sql_config.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\sql_config.dll</td><td>1</td><td/></row>
 		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
 		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
 		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
@@ -304,8 +304,8 @@
 		<col key="yes" def="s72">ISDisk1File</col>
 		<col def="s255">ISBuildSourcePath</col>
 		<col def="I4">Disk</col>
-		<row><td>NewDisk1File1</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\sql_config.dll</td><td>1</td></row>
 		<row><td>NewDisk1File2</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\setupMSDE.ini</td><td>1</td></row>
+		<row><td>NewDisk1File3</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDAC_TYP.EXE</td><td>1</td></row>
 	</table>
 
 	<table name="ISDynamicFile">
@@ -331,9 +331,8 @@
 		<col def="S255">Password</col>
 		<col def="S50">CDRomFolder</col>
 		<col def="S50">Moniker</col>
-		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>NewMSDE2000Object1_Installed</td><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
-		<row><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:4055284D-E31E-4AA5-A687-9AAA8E17EE5F</td></row>
-		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>MSDE_2000_Installed</td><td>MSDE_2000_UnInstalling</td><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td>MSDE_2000_Object_UnInstalling</td><td>MSDE_2000_Object_UnInstalled</td><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
@@ -471,11 +470,10 @@
 		<col key="yes" def="s72">Feature_</col>
 		<col key="yes" def="s72">Property</col>
 		<col def="L0">Value</col>
-		<row><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td><td>StatusText</td><td>""</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AllowXDBChaining</td><td>0,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AutomaticPackageSelection</td><td>-1,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Collation</td><td>""</td></row>
-		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Datadir</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Datadir</td><td>"&lt;PROGRAMFILES&gt;\\Microsoft SQL Server\\Mssql$KAS\\Data\\"</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>DeleteMSDEFiles</td><td>-1,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceName</td><td>""</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceNameWizard</td><td>""</td></row>
@@ -694,7 +692,6 @@
 
 	<table name="ISScriptFile">
 		<col key="yes" def="s255">ISScriptFile</col>
-		<row><td>&lt;ISPROJECTDIR&gt;\script files\msde_config.rul</td></row>
 		<row><td>&lt;ISProjectDataFolder&gt;\Script Files\Setup.Rul</td></row>
 	</table>
 
@@ -728,19 +725,16 @@
 	<table name="ISSetupTypeFeatures">
 		<col key="yes" def="s38">ISSetupType_</col>
 		<col key="yes" def="s38">Feature_</col>
-		<row><td>Client</td><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td></row>
 		<row><td>Client</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>Client</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Client</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>Client</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
-		<row><td>ClientServer</td><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td></row>
 		<row><td>ClientServer</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>ClientServer</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>ClientServer</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>ClientServer</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>Server</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
-		<row><td>Server</td><td>{2C04659B-EF44-4758-A426-81A91B2DC75E}</td></row>
 		<row><td>Server</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>Server</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Server</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
