@@ -18,6 +18,7 @@
 #endif
 
 #define SNDENV_FILENAME "sEnvironment.xr"
+#define OGG_COMMENT_VERSION 		0x0001 
 
 // refs
 class	CObject;
