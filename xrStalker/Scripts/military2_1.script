@@ -91,7 +91,7 @@ function main ()
     reset_action (stalker3, military2_1.script_name ())
     action (stalker3, anim ("stalker_1_up"), cond (cond.anim_end))
     action (stalker3, object (torch, object.activate), cond (cond.time_end, 200))
-    action (stalker3, object (weapon, object.activate), anim (anim.danger), look (look.point, pos), cond (cond.time_end, 1000))
+    action (stalker3, object (weapon, object.activate), anim (anim.danger), look (look.point, pos), cond (cond.time_end, 2000))
 
     while stalker3:action () do wait () end
 
