@@ -4,104 +4,27 @@
 -- Updated:	21 dec 2004	
 --------------------------------------------------------------------------------
 
-local	last_index		= 0
-local	callback_var	= 0
-local	cur_action_id	= 1
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-function action_one(npc) 
-	action	( npc,
-			move	(move.run_fwd, patrol("way", patrol.next, patrol.continue)), 
-			cond	(cond.move_end)
-	)
-end
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-function action_two(npc) 
-	action	( npc,
-			anim	(anim.stand_idle), cond	(cond.time_end, 2000)
-	)
+function set_action(obj)
+	action (obj, look(patrol("way"):point(0), 0.6, 0.6), cond (cond.look_end))
+	action (obj, look(patrol("way"):point(1), 0.6, 0.6), cond (cond.look_end)) 
 end
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
 
-function execute_action(npc)
-	if (cur_action_id == 1) then
-		action_one(npc)
-		cur_action_id = 2
-	elseif (cur_action_id == 2) then
-		action_two(npc)
-		cur_action_id = 1
-	end
-end
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-function callback1(obj, action_type, index)
-	last_index		= index
-	callback_var	= 1
-
-	printf			("callback!!!")
-end
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
 function main()
+	local obj			= get_level_object("searcher")
 
-	local monster			= get_level_object("monster")
-
-	monster:set_callback	(callback1, game_object.movement)
-
-	monster:script			( true, script_name() )
+	obj:script			( true, script_name() )
 	
 	while true do
 		
-		execute_action		(monster)
+		set_action(obj)
 
-		while monster:action() do 
-			
-			if (callback_var == 1) then
-				
-				callback_var	= 0
-				monster:script	( false,	script_name() )
-				monster:script	( true,		script_name() )
-				
-				
-			end
-
+		while obj:action() do 
 			wait() 
 		end
 			
 	end
 
-	monster:script( false, script_name() )
-
+	obj:script( false, script_name() )
 end
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-//monster:switch_animation_state(BONE_PART_ALL);
-//monster:switch_animation_state(BONE_PART_TORSO_HEAD);
-
-////								name		id		group									
-//monster:add_torso_animation("idle_non_stop", 0,		0)
-//monster:add_torso_animation("idle_non_stop", 1,		0)
-//monster:add_torso_animation("idle_non_stop", 2,		0)
-//monster:add_torso_animation("idle_non_stop", 3,		0)
-//monster:add_torso_animation("idle_non_stop", 4,		0)
-
-//monster:add_torso_animation("idle_non_stop", 0,		1)
-//monster:add_torso_animation("idle_non_stop", 1,		1)
-//monster:add_torso_animation("idle_non_stop", 2,		1)
-//monster:add_torso_animation("idle_non_stop", 3,		1)
-//monster:add_torso_animation("idle_non_stop", 4,		1)
-//
-////								trans anim   from group		to group
-//monster:add_torso_transition("anim_trans1",	 0,				1)
-//monster:add_torso_transition("anim_trans2",	 1,				0)
