@@ -78,10 +78,17 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// interpolate
 	float Z		= startZ + (minX - startX)/(endX - startX) * (endZ - startZ);	// interpolate Z to this start of boundary
 	float dZ	= (endZ-startZ)/(endX-startX);									// incerement in Z / pixel wrt dX
-	int initX	= int(minX), finalX = int(maxX), i = curY*occ_dim0+initX;		// trunc the 0.5 in pixel coords to int, setup starting conditons
+	int X		= minT;
+	int	i		= curY*occ_dim0+X;
+	
+	// left connector
+	for (; X<minX; X++, i++, Z+=dZ)
+	{
+
+	}
 
 	// compute the scanline
-	for (; initX<finalX; initX++, i++, Z+=dZ) 
+	for (; X<maxX; X++, i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i]) 
 		{	
@@ -89,6 +96,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 			pFrame[i]	= T;
 			pDepth[i]	= Z;
 		}
+	}
+
+	// right connector
+	for (; X<=maxT; X++, i++, Z+=dZ)
+	{
+		
 	}
 }
 
@@ -185,7 +198,11 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
 	for (; startY<=endY; startY++) 
 	{
-		i_scan	(OCC, T, int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ);
+		float	minT	= minp(leftX-lhx,leftX+lhx);
+		float	maxT	= maxp(rightX-rhx,rightX+rhx);
+		float	minX	= maxp(leftX-lhx,leftX+lhx);
+		float	maxX	= minp(rightX-rhx,rightX+rhx);
+		i_scan	(OCC, T, int(startY), minT,maxT,minX,maxX, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
