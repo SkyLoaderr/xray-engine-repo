@@ -3,147 +3,188 @@
 <xml>
 	<character id="default">
 		<team>Stalker_general</team>
+		<class>Stalker_general</class>
 	</character>
 	
 	<!-- Stalker  -->	
 	<character id="stalker">
 		<team>Stalker_general</team>
+		<class>Stalker_general</class>
 	</character>
 	<character id="stalker_novice">
 		<team>Stalker_novice</team>
+		<class>Stalker_novice</class>
 	</character>
 	<character id="stalker_general">
 		<team>Stalker_general</team>
+		<class>Stalker_general</class>
 	</character>
 	<character id="stalker_veteran">
 		<team>Stalker_veteran</team>
+		<class>Stalker_veteran</class>
 	</character>
 	<character id="stalker_master">
 		<team>Stalker_master</team>
+		<class>Stalker_master</class>
 	</character>
 
 	<!-- Bandit  -->	
 	<character id="bandit">
 		<team>Bandit_general</team>
+		<class>Bandit_general</class>
 	</character>
 	<character id="bandit_novice">
 		<team>Bandit_novice</team>
+		<class>Bandit_novice</class>
 	</character>
 	<character id="bandit_general">
 		<team>Bandit_general</team>
+		<class>Bandit_general</class>
 	</character>
 	<character id="bandit_veteran">
 		<team>Bandit_veteran</team>
+		<class>Bandit_veteran</class>
 	</character>
 	<character id="bandit_master">
 		<team>Bandit_master</team>
+		<class>Killer_master</class>
 	</character>
 
 	<!-- Soldier  -->
 	<character id="soldier">
 		<team>Soldier_general</team>
+		<class>Soldier_general</class>
 	</character>
 	<character id="soldier_novice">
 		<team>Soldier_novice</team>
+		<class>Soldier_novice</class>
 	</character>
 	<character id="soldier_general">
 		<team>Soldier_general</team>
+		<class>Soldier_general</class>
 	</character>
 	<character id="soldier_veteran">
 		<team>Soldier_veteran</team>
+		<class>Soldier_veteran</class>
 	</character>
 	<character id="soldier_master">
 		<team>Soldier_master</team>
+		<class>Soldier_master</class>
 	</character>
 
 	<!-- Dolg  -->
 	<character id="dolg">
 		<team>Dolg_general</team>
+		<class>Dolg_general</class>
 	</character>
 	<character id="dolg_novice">
 		<team>Dolg_novice</team>
+		<class>Dolg_novice</class>
 	</character>
 	<character id="dolg_general">
 		<team>Dolg_general</team>
+		<class>Dolg_general</class>
 	</character>
 	<character id="dolg_veteran">
 		<team>Dolg_veteran</team>
+		<class>Dolg_veteran</class>
 	</character>
 	<character id="dolg_master">
 		<team>Dolg_master</team>
+		<class>Dolg_master</class>
 	</character>
 
 	<!-- Svoboda -->
 	<character id="svoboda">
 		<team>Svoboda_general</team>
+		<class>Svoboda_general</class>
 	</character>
 	<character id="svoboda_novice">
 		<team>Svoboda_novice</team>
+		<class>Svoboda_novice</class>
 	</character>
 	<character id="svoboda_general">
 		<team>Svoboda_general</team>
+		<class>Svoboda_general</class>
 	</character>
 	<character id="svoboda_veteran">
 		<team>Svoboda_veteran</team>
+		<class>Svoboda_veteran</class>
 	</character>
 	<character id="svoboda_master">
 		<team>Svoboda_master</team>
+		<class>Svoboda_master</class>
 	</character>
 
 	<!-- Monolit -->
 	<character id="monolit">
 		<team>Monolit_general</team>
+		<class>Monolit_general</class>
 	</character>
 	<character id="monolit_novice">
 		<team>Monolit_novice</team>
+		<class>Monolit_novice</class>
 	</character>
 	<character id="monolit_general">
 		<team>Monolit_general</team>
+		<class>Killer_master</class>
 	</character>
 	<character id="monolit_veteran">
 		<team>Monolit_veteran</team>
+		<class>Monolit_veteran</class>
 	</character>
 	<character id="monolit_master">
 		<team>Monolit_master</team>
+		<class>Monolit_master</class>
 	</character>
 
 	<!-- Killer -->
 	<character id="killer">
 		<team>Killer_general</team>
+		<class>Killer_general</class>
 	</character>
 	<character id="killer_novice">
 		<team>Killer_novice</team>
+		<class>Killer_novice</class>
 	</character>
 	<character id="killer_general">
 		<team>Killer_general</team>
+		<class>Killer_general</class>
 	</character>
 	<character id="killer_veteran">
 		<team>Killer_veteran</team>
+		<class>Killer_veteran</class>
 	</character>
 	<character id="killer_master">
 		<team>Killer_master</team>
+		<class>Killer_master</class>
 	</character>
 
 	<!-- Ecolog -->
 	<character id="ecolog">
 		<team>Ecolog_general</team>
+		<class>Ecolog_general</class>
 	</character>
 	<character id="ecolog_guard">
 		<team>Ecolog_guard</team>
+		<class>Ecolog_guard</class>
 	</character>
 	
 	<character id="escape_trader">
 		<team>Trader</team>
+		<class>Trader</class>
 		<specific_character>escape_trader</specific_character>
 	</character>
 
 	<character id="rostok_barman">
 		<team>Barman</team>
+		<class>Barman</class>
 		<specific_character>rostok_barman</specific_character>
 	</character>
 		
 	<character id="actor">
 		<team>Actor</team>
+		<class>Actor</class>
 		<specific_character>actor</specific_character>
 	</character>
 </xml>
