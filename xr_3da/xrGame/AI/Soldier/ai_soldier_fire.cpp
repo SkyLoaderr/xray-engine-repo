@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_misc.cpp
+//	Module 		: ai_soldier_fire.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
 //	Author		: Dmitriy Iassenev

@@ -54,7 +54,7 @@
 	#define CHECK_IF_GO_TO_NEW_STATE(a,b)\
 		if (a)\
 			GO_TO_NEW_STATE(b)
-
+	/**
 	#define CHECK_FOR_DEATH \
 		CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		/**
@@ -100,6 +100,21 @@
 			SetDirectionLook();\
 		\
 		vfSetFire(a,Group);\
+		\
+		vfSetMovementType(b,c);
+
+	#define SET_LOOK_MOVEMENT(b,c)\
+		if (!(Group.m_bLessCoverLook)) {\
+			Group.m_bLessCoverLook = m_bLessCoverLook = true;\
+			Group.m_dwLastViewChange = dwCurTime;\
+		}\
+		else\
+			if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))\
+				Group.m_bLessCoverLook = m_bLessCoverLook = false;\
+		if (m_bLessCoverLook)\
+			SetLessCoverLook(AI_Node);\
+		else\
+			SetDirectionLook();\
 		\
 		vfSetMovementType(b,c);
 
@@ -204,7 +219,10 @@
 		if (A >= PI_MUL_2 - EPS_L)\
 			A -= PI_MUL_2;
 	
+	#define CUBE(x)	((x)*(x)*(x))
+
 void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, bool bLooped, bool bUseDeviations = true, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = 0.5f, float fRadiusMax = 1.5f, float fSuitableAngle = PI_DIV_8*.25f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
 void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped);
+float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
 
 #endif

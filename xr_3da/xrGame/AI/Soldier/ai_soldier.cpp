@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier_fsm.cpp
+//	Module 		: ai_soldier.cpp
 //	Created 	: 25.04.2002
 //  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev

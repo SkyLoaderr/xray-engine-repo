@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_soldier.cpp
+//	Module 		: ai_soldier_fsm.cpp
 //	Created 	: 25.04.2002
 //  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : Fuzzy State Machine for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -19,7 +19,7 @@ void CAI_Soldier::AttackFire()
 {
 	WRITE_TO_LOG("Shooting enemy...");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -67,7 +67,7 @@ void CAI_Soldier::AttackRun()
 {
 	WRITE_TO_LOG("Attack enemy");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -116,7 +116,7 @@ void CAI_Soldier::Defend()
 {
 	WRITE_TO_LOG("Defend from enemy");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 }
 
 void CAI_Soldier::Die()
@@ -139,7 +139,7 @@ void CAI_Soldier::FindEnemy()
 {
 	WRITE_TO_LOG("Looking for enemy");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -177,7 +177,7 @@ void CAI_Soldier::FollowLeader()
 {
 	WRITE_TO_LOG("Following leader");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		
 	SelectEnemy(Enemy);
 	
@@ -220,7 +220,7 @@ void CAI_Soldier::FreeHunting()
 {
 	WRITE_TO_LOG("Free hunting");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		
 	SelectEnemy(Enemy);
 	
@@ -258,7 +258,7 @@ void CAI_Soldier::Injuring()
 {
 	WRITE_TO_LOG("Feeling pain...");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 }
 
@@ -272,7 +272,7 @@ void CAI_Soldier::Jumping()
 		else
 			WRITE_TO_LOG("Jumping(unknown)...")
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	if (m_bStateChanged) {
 		m_dwLastRangeSearch = Level().timeServer();
@@ -303,7 +303,7 @@ void CAI_Soldier::StandingUp()
 {
 	WRITE_TO_LOG("Standing up...");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	//if (m_cBodyState == BODY_STATE_LIE)
 	//	m_tpCurrentGlobalAnimation = m_tpCurrentTorsoAnimation = m_tpCurrentHandsAnimation = m_tpCurrentLegsAnimation = 0;
@@ -321,7 +321,7 @@ void CAI_Soldier::Sitting()
 {
 	WRITE_TO_LOG("Sitting...");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	vfSetMovementType(BODY_STATE_CROUCH,0);
 	
@@ -336,7 +336,7 @@ void CAI_Soldier::LyingDown()
 {
 	WRITE_TO_LOG("Lying down...");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	vfSetMovementType(BODY_STATE_LIE,0);
 	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
@@ -351,7 +351,7 @@ void CAI_Soldier::MoreDeadThanAlive()
 {
 	WRITE_TO_LOG("More dead than alive");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 }
 
@@ -359,7 +359,7 @@ void CAI_Soldier::NoWeapon()
 {
 	WRITE_TO_LOG("Searching for weapon");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		
 	SelectEnemy(Enemy);
 	
@@ -392,7 +392,7 @@ void CAI_Soldier::PatrolUnderFire()
 {
 	WRITE_TO_LOG("Patrol under fire");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	SelectEnemy(Enemy);
 
@@ -454,7 +454,7 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	// if no more health then soldier is dead
 	WRITE_TO_LOG("Patrol hurt aggressive under fire");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	SelectEnemy(Enemy);
 
@@ -491,7 +491,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 {
 	WRITE_TO_LOG("Patrol hurt non-aggressive under fire");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	SelectEnemy(Enemy);
 
@@ -538,7 +538,7 @@ void CAI_Soldier::PatrolHurt()
 {
 	WRITE_TO_LOG("Patrol hurt");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
 	
@@ -564,7 +564,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 {
 	WRITE_TO_LOG("Following leader patrol");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -700,7 +700,7 @@ void CAI_Soldier::Patrol()
 {
 	WRITE_TO_LOG("Patrol detour...");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -783,7 +783,7 @@ void CAI_Soldier::PatrolReturn()
 {
 	WRITE_TO_LOG("Patrol return to route...");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -865,7 +865,7 @@ void CAI_Soldier::Pursuit()
 {
 	WRITE_TO_LOG("Pursuiting");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	SelectEnemy(Enemy);
 	
@@ -913,7 +913,7 @@ void CAI_Soldier::Reload()
 {
 	WRITE_TO_LOG("Recharging...");
 	
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
 	
@@ -985,7 +985,7 @@ void CAI_Soldier::UnderFire()
 {
 	WRITE_TO_LOG("Under fire...");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
 	SelectEnemy(Enemy);
 
@@ -1683,7 +1683,7 @@ void CAI_Soldier::TurnOver()
 {
 	WRITE_TO_LOG("Turning over...");
 
-	CHECK_FOR_DEATH
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 		
 	SelectEnemy(Enemy);
 	

@@ -113,7 +113,6 @@ class CAI_Soldier : public CCustomMonster
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
 		#define	FIRE_SAFETY_ANGLE				PI/10
-		#define CUBE(x)							((x)*(x)*(x))
 		#define LEFT_NODE(Index)				((Index + 3) & 3)
 		#define RIGHT_NODE(Index)				((Index + 5) & 3)
 		#define FN(i)							(float(tNode->cover[(i)])/255.f)
