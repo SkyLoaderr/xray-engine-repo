@@ -41,7 +41,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	// set bone id
 	R_ASSERT				(Visual()&&PKinematics(Visual()));
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(Visual())->LL_BoneID(lamp->spot_bone):-1;
-	R_ASSERT2				(BONE_NONE != light_bone_idx, lamp->spot_bone);
+	R_ASSERT2				(BI_NONE != light_bone_idx, lamp->spot_bone);
 	clr.set					(lamp->color);			clr.a = 1.f;
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
