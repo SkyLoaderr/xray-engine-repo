@@ -123,6 +123,14 @@ public:
 		r_u16		(type);
 		return		timeReceive;
 	}
+
+	IC void r_seek	(u32 pos)
+	{
+		VERIFY		(pos < B.count);
+		r_pos		= pos;
+	}
+	IC u32		r_tell			()	{ return r_pos; }
+
 	IC void		r				( void* p, u32 count)
 	{
 		VERIFY		(p && count);
