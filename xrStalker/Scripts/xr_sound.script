@@ -38,6 +38,8 @@ snd_files = {
 	talk_abuse_soldier             = "script_sound\\talk\\abuse\\soldier\\soldier_abuse_",
 	trade_yes_soldier              = "script_sound\\talk\\trade\\yes\\soldier\\soldier_trade_",
 	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_",
+	wounded_get_help               = "script_sound\\help\\soldier\\soldier_help_",
+	wounded_enemy                  = "script_sound\\help\\soldier\\soldier_help_",
 ------------------ сюжетные --------------------
 ------ ESCAPE --------
 	-- бандиты на заводе
@@ -85,7 +87,7 @@ function load_sound(obj)
 	theme["state"].types["fatique"] = { exec = npc_class, types = {}}
 	theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier")
 	theme["state"].types["starvation"] = { exec = npc_class, types = {}}
-	theme["state"].types["starvation"].types["soldier"] = load_theme("state_starvation_soldier")
+	theme["state"].types["starvation"].types["soldie7r"] = load_theme("state_starvation_soldier")
 	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
 	theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier")
 	theme["state"].types["idle"] = { exec = npc_class, types = {}}
@@ -150,6 +152,12 @@ function load_sound(obj)
 	theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
 	theme["trade_no"] = { exec = npc_class, types = {}}
 	theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
+	
+	--раненый
+	theme["wounded_help"] = { exec = npc_class, types = {}}
+	theme["wounded_help"].types["soldier"] = load_theme("wounded_get_help")
+	theme["wounded_enemy"] = { exec = npc_class, types = {}}
+	theme["wounded_enemy"].types["soldier"] = load_theme("wounded_enemy")
 
 ----- сюжетные/одноразовые темы
 ------ ESCAPE --------
