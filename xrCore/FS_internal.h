@@ -62,7 +62,7 @@ private:
 public:
 	CVirtualFileReader(const char *cFileName) {
 		// Open the file
-		hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ,
+		hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE,
 			0, OPEN_EXISTING, 0, 0);
 		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
 		Size = (int)GetFileSize(hSrcFile, NULL);
