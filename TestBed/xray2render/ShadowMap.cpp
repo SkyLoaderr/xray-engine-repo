@@ -79,7 +79,10 @@ class CMyD3DApplication : public CD3DApplication
 	D3DXMATRIX						dm_model2world2view;
 	D3DXMATRIX						dm_model2world2view2projection;
 
-	D3DXMATRIX						dm_world2view;
+	D3DXMATRIX						dm_2world;
+	D3DXMATRIX						dm_2view;
+	D3DXMATRIX						dm_2projection;
+
 	D3DXMATRIX						dm_world2view2projection;
 
 	// Shaders
@@ -635,43 +638,24 @@ HRESULT CMyD3DApplication::RenderScene	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderFAT	()
 {
-	m_pd3dDevice->Clear					(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
 
-	m_pd3dDevice->SetTexture			(0, m_pShadowMap);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
-	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetTexture				(0, m_pShadowMap);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
-	// Vertex Shader
-	m_pd3dDevice->SetPixelShader		(s_Scene2fat.ps);
-	m_pd3dDevice->SetVertexShader		(s_Scene2fat.vs);
-	m_pd3dDevice->SetVertexDeclaration	(m_pVertDecl);
-	cc.set								(s_Scene2fat.constants.get("m_model2view"),);
-	cc.set								(s_Scene2fat.constants.get("m_model2view2projection),);
-
-	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
-	D3DXVECTOR4	vZBias = D3DXVECTOR4(0.1f, -0.01f, 1.0f, 0.0f);
-	m_pd3dDevice->SetVertexShaderConstantF	(32, vZBias, 1);
-	D3DXVECTOR4	vRange = D3DXVECTOR4(1.0f / DEPTH_RANGE, 0.0f, 0.0f, 0.0f);
-	m_pd3dDevice->SetVertexShaderConstantF	(12, vRange, 1);
-
-	// Render floor
-	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matFloorMVP, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(4, m_matShadowFloorMVP, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(8, m_matShadowFloorTex, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(30, m_vecLightDirFloor, 1);
-	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseFloor, 1);
-	m_pd3dDevice->SetStreamSource			(0, m_pFloorVB, 0, sizeof(VERTEX));
-	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
+	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
+	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
+	cc.set									(s_Scene2fat.constants.get("m_model2view"),				dm_model2world2view);
+	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	dm_model2world2view2projection);
+	cc.flush								();
 
 	// Render model
-	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matModelMVP, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(4, m_matShadowModelMVP, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(8, m_matShadowModelTex, 4);
-	m_pd3dDevice->SetVertexShaderConstantF	(30, m_vecLightDirModel, 1);
-	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
 	m_pd3dDevice->SetIndices				(m_pModelIB);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
@@ -725,9 +709,16 @@ HRESULT CMyD3DApplication::UpdateTransform()
     D3DXMatrixPerspectiveFovLH	(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
 	D3DXMatrixMultiply			(&mat, &matView, &matProj);
 
+	dm_2view					= matView;
+	dm_2projection				= matProj;
+	dm_world2view2projection	= mat;
+
 	D3DXMATRIX matTranslate;
 	D3DXMatrixTranslation		(&matTranslate, vModelOffs.x, vModelOffs.y, vModelOffs.z);
 	D3DXMatrixMultiply			(&matWorldModel, m_ArcBall.GetRotationMatrix(), &matTranslate);
+	dm_model2world				= matWorldModel;
+	D3DXMatrixMultiply			(dm_model2world2view,			&dm_model2world, &dm_2view);
+	D3DXMatrixMultiply			(dm_model2world2view2projection,&dm_model2world, &dm_world2view2projection);
 	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel, &mat);
 
 	D3DXMatrixIdentity			(&matWorldFloor);
