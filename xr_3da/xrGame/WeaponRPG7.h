@@ -66,9 +66,11 @@ public:
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();
 	virtual bool Action(s32 cmd, u32 flags);
+	virtual void	FireStart	();
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
 	bool m_hideGrenade;
 	CWeaponRPG7Grenade *m_pGrenade;
+	Fvector *m_pGrenadePoint;
 };

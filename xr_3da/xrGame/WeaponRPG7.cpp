@@ -315,8 +315,8 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
-		CWeapon *l_pW = dynamic_cast<CWeapon*>(E);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(m_pos);
+		CWeaponRPG7 *l_pW = dynamic_cast<CWeaponRPG7*>(E);
+		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(*l_pW->m_pGrenadePoint);
 		Fvector a_vel; a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
 		svTransform.set(m_pPhysicsShell->mXFORM);
@@ -380,6 +380,7 @@ CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7") {
 	m_slot = 2;
 	m_hideGrenade = false;
 	m_pGrenade = NULL;
+	m_pGrenadePoint = &vLastFP;
 }
 
 CWeaponRPG7::~CWeaponRPG7(void) {
@@ -455,6 +456,23 @@ void CWeaponRPG7::ReloadMagazine() {
 	}
 }
 
+void CWeaponRPG7::FireStart()
+{
+	if(m_pGrenade) {
+		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+		if (E) E->g_fireParams		(p1,d);
+		m_pGrenade->m_pos.set(p1);
+		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
+		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
+		NET_Packet P;
+		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16(u16(m_pGrenade->ID()));
+		u_EventSend(P);
+		inherited::FireStart();
+	}
+}
+
 void CWeaponRPG7::switch2_Fire	()
 {
 	if (fTime<=0)
@@ -466,13 +484,13 @@ void CWeaponRPG7::switch2_Fire	()
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
 
-		m_pGrenade->m_pos.set(p1);
-		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
-		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
-		NET_Packet P;
-		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(u16(m_pGrenade->ID()));
-		u_EventSend(P);
+		//m_pGrenade->m_pos.set(p1);
+		//m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
+		//m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
+		//NET_Packet P;
+		//u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+		//P.w_u16(u16(m_pGrenade->ID()));
+		//u_EventSend(P);
 
 		bFlame						=	TRUE;
 		OnShot						();
