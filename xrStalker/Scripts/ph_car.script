@@ -102,21 +102,8 @@ function action_car:reset_scheme()
 end
 
 function action_car:get_nearest_waypoint()
-	local pt_chosen = nl
-	local min_dist = nil
-	local dist
-	for i = 0, self.patrol_walk_count - 1 do
-		dist = self.object:position():distance_to(self.patrol_walk:point(i))
-		if not min_dist or dist < min_dist then
-			min_dist = dist
-			pt_chosen = i
-		end
-	end
-	if not pt_chosen then
-		utils.abort("object '%s': path '%s': action_car: unable to choose a nearest waypoint (path has no waypoints?)",
-			self.object:name(), self.st.path_walk)
-	end
-	return pt_chosen
+	return utils.get_nearest_waypoint(self.object, self.st.path_walk,
+		 self.patrol_walk, self.patrol_walk_count)
 end
 
 function action_car:get_next_waypoint()
