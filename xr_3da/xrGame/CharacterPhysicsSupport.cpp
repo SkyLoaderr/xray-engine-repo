@@ -63,7 +63,7 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	hinge_force_factor2				= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
 	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
-	if(pSettings->line_exist(section,"shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"shot_up_factor");
+	if(pSettings->line_exist(section,"shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_shot_up_factor");
 }
 
 void CCharacterPhysicsSupport::in_NetSpawn()
