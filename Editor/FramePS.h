@@ -22,18 +22,17 @@ __published:	// IDE-managed Components
     TLabel *Label5;
 	TExtBtn *ebSelectByRefs;
 	TExtBtn *ebDeselectByRefs;
-    TPanel *paAddObject;
-    TExtBtn *ebSelect;
-	TLabel *label2;
-	TExtBtn *ExtBtn1;
 	TLabel *Label;
 	TExtBtn *ExtBtn3;
-	TLabel *lbSelectObjectName;
+	TPanel *Panel1;
+	TExtBtn *ebCurObj;
+	TLabel *APHeadLabel2;
+	TExtBtn *ExtBtn2;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
-    void __fastcall ebSelectClick(TObject *Sender);
+	void __fastcall ebCurObjClick(TObject *Sender);
 private:	// User declarations
     void __fastcall SelByRef (bool flag);
     void __fastcall OutCurrentName();

@@ -38,7 +38,7 @@ public:
     void 				UnloadObject		(LPCSTR N);
 
     void				SetCurrentObject	(LPCSTR T);
-    LPCSTR				GetCurrentObject	(){return m_Current.c_str();}
+    LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
     CEditableObject*	GetEditObject		(LPCSTR name);
 
 	int 				ObjectCount        	();

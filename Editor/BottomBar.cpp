@@ -17,11 +17,11 @@
 TfraBottomBar *fraBottomBar=0;
 //---------------------------------------------------------------------------
 void TUI::SetStatus(LPSTR s){
-    if (g_bEditorValid){
-        fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
-    }
+	VERIFY(m_bReady);
+    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
 }
 void TUI::ProgressStart(float max_val, const char* text){
+	VERIFY(m_bReady);
 	fraBottomBar->paStatus->Caption=text;
     fraBottomBar->paStatus->Repaint();
 	fraBottomBar->fMaxVal=max_val;
@@ -30,11 +30,13 @@ void TUI::ProgressStart(float max_val, const char* text){
 	fraBottomBar->cgProgress->Visible=true;
 }
 void TUI::ProgressEnd(){
+	VERIFY(m_bReady);
 	fraBottomBar->paStatus->Caption="";
     fraBottomBar->paStatus->Repaint();
 	fraBottomBar->cgProgress->Visible=false;
 }
 void TUI::ProgressUpdate(float val){
+	VERIFY(m_bReady);
 	fraBottomBar->fStatusProgress=val;
     if (fraBottomBar->fMaxVal>=0){
     	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
@@ -45,6 +47,7 @@ void TUI::ProgressUpdate(float val){
     }
 }
 void TUI::ProgressInc(){
+	VERIFY(m_bReady);
 	fraBottomBar->fStatusProgress++;
     if (fraBottomBar->fMaxVal>=0){
     	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
@@ -56,29 +59,26 @@ void TUI::ProgressInc(){
 }
 //---------------------------------------------------------------------------
 void TUI::OutCameraPos(){
-    if (g_bEditorValid){
-    	AnsiString s;
-        const Fvector& c = Device.m_Camera.GetPosition();
-        s.sprintf(" Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
-        fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
-    }
+	VERIFY(m_bReady);
+    AnsiString s;
+    const Fvector& c = Device.m_Camera.GetPosition();
+    s.sprintf(" Cam: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+    fraBottomBar->paCameraPos->Caption=s; fraBottomBar->paCameraPos->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutUICursorPos(){
-    if (g_bEditorValid){
-        AnsiString s; POINT pt;
-        GetCursorPos(&pt);
-        s.sprintf("Cursor: %d, %d",pt.x,pt.y);
-        fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
-    }
+	VERIFY(m_bReady);
+    AnsiString s; POINT pt;
+    GetCursorPos(&pt);
+    s.sprintf("Cursor: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
 }
 //---------------------------------------------------------------------------
 void TUI::OutGridSize(){
-    if (g_bEditorValid){
-        AnsiString s;
-        s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
-        fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
-    }
+	VERIFY(m_bReady);
+    AnsiString s;
+    s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+    fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
 }
 //---------------------------------------------------------------------------
 __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)

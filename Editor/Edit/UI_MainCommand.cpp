@@ -24,7 +24,8 @@
 #include "UI_Tools.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
-	char filebuffer[MAX_PATH]="";
+	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
+    char filebuffer[MAX_PATH]="";
 
     bool bRes = true;
 
@@ -32,6 +33,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_INITIALIZE:{
 		FS.OnCreate			();
 		InitMath			();
+        // make interface
+	    fraBottomBar		= new TfraBottomBar(0);
+    	fraLeftBar  		= new TfraLeftBar(0);
+	    fraTopBar   		= new TfraTopBar(0);
+		//----------------
         if (UI.OnCreate()){
             Tools.OnCreate	();
 			Scene.OnCreate	();
@@ -54,6 +60,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Scene.OnDestroy	();
 		Tools.OnDestroy	();
         UI.OnDestroy	();
+		//----------------
+        _DELETE(fraLeftBar);
+	    _DELETE(fraTopBar);
+    	_DELETE(fraBottomBar);
+		//----------------
     	break;
     case COMMAND_CHECK_MODIFIED:
     	bRes = Scene.IsModified();
@@ -170,10 +181,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			filebuffer[0] = 0;
 			if( FS.GetSaveName( &FS.m_Maps, filebuffer ) ){
 	            BeginEState(esSceneLocked);
+                SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );
+                SetStatus("");
+                Scene.m_Modified = false;
 				strcpy(m_LastFileName,filebuffer);
-	            EndEState();
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
+	            EndEState();
 			}else
             	bRes = false;
 		} else {
@@ -445,7 +459,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible&&g_bEditorValid)
+		if (frmMain->Visible&&m_bReady)
         	m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:
@@ -542,7 +556,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_GRID_SLOT_SIZE:{
     	float step = frmEditorPreferences->seGridSquareSize->Increment;
-        float& val = frmEditorPreferences->seGridSquareSize->Value;
+        float val = frmEditorPreferences->seGridSquareSize->Value;
     	if (p1){
 	    	if (val<1) step/=10.f;
         	frmEditorPreferences->seGridSquareSize->Value += step;
@@ -563,6 +577,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Key==VK_ESCAPE)   		Command(COMMAND_CHANGE_ACTION, eaSelect);
     if (Shift.Contains(ssCtrl)){
         if (Key=='V')    		Command(COMMAND_PASTE);
@@ -618,6 +633,7 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
 void TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
         if (Key=='S'){
             if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);

@@ -180,3 +180,13 @@ void CGlow::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
+void CGlow::OnDeviceCreate(){
+	// создать заново shaders
+	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
+}
+
+void CGlow::OnDeviceDestroy(){
+	// удалить shaders
+	if (m_GShader) Device.Shader.Delete(m_GShader);
+}
+

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 585
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1426,12 +1426,18 @@ object fraLeftBar: TfraLeftBar
     Top = 65526
   end
   object pmSceneFile: TMxPopupMenu
-    Alignment = paRight
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 16
     object Clear1: TMenuItem
@@ -1452,11 +1458,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmSceneCompile: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 32
     object Options1: TMenuItem
@@ -1481,11 +1494,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmSceneCommands: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 98
     object Refresh1: TMenuItem
@@ -1506,11 +1526,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmToolsEdit: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 178
     object Cut1: TMenuItem
@@ -1540,11 +1567,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmToolsSelection: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 194
     object Invert1: TMenuItem
@@ -1561,11 +1595,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmToolsVisibility: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 210
     object HideSelected1: TMenuItem
@@ -1589,11 +1630,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmToolsLocking: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 226
     object LockSelection1: TMenuItem
@@ -1625,11 +1673,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmToolsGrouping: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 274
     object Create1: TMenuItem
@@ -1650,11 +1705,18 @@ object fraLeftBar: TfraLeftBar
     end
   end
   object pmSnapListCommand: TMxPopupMenu
+    Alignment = paCenter
     AutoPopup = False
     TrackButton = tbLeftButton
-    MarginEndColor = clBlack
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 85
     Top = 519
     object MenuItem3: TMenuItem
@@ -1673,10 +1735,16 @@ object fraLeftBar: TfraLeftBar
   object pmObjectContext: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
-    MenuAnimation = [maTopToBottom]
-    MarginEndColor = clBlack
-    LeftMargin = 15
-    Style = msBtnLowered
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
     Left = 125
     Top = 1
     object miVisibility: TMenuItem

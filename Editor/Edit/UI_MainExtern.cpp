@@ -19,6 +19,7 @@
 
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap){
+	VERIFY(m_bReady);
     // pick object geometry
     if ((bSnap==-1)||(fraTopBar->ebOSnap->Down&&(bSnap==1))){
         bool bPickObject;
@@ -69,6 +70,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 //----------------------------------------------------
 
 bool TUI::SelectionFrustum(CFrustum& frustum){
+	VERIFY(m_bReady);
     Fvector st,d,p[4];
     Ipoint pt[4];
 
@@ -112,6 +114,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 //----------------------------------------------------
 
 void TUI::Redraw(){
+	VERIFY(m_bReady);
 	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -172,6 +175,7 @@ void TUI::Redraw(){
 //---------------------------------------------------------------------------
 void TUI::Idle()
 {
+	VERIFY(m_bReady);
     pInput->OnFrame();
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
@@ -205,15 +209,14 @@ void TUI::RealUpdateScene(){
 
 void TUI::ShowContextMenu(int cls)
 {
-    if (g_bEditorValid){
-        POINT pt;
-        GetCursorPos(&pt);
-		fraLeftBar->miProperties->Enabled = false;
-        if (Scene.SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
-        RedrawScene(true);
-	    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
-        fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
-    }
+	VERIFY(m_bReady);
+    POINT pt;
+    GetCursorPos(&pt);
+    fraLeftBar->miProperties->Enabled = false;
+    if (Scene.SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
+    RedrawScene(true);
+    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
+    fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
 }
 
 void ResetActionToSelect()
@@ -233,6 +236,7 @@ static THintWindow* pHintWindow=0;
 static AnsiString LastHint="";
 
 bool TUI::ShowHint(const AStringVec& SS){
+	VERIFY(m_bReady);
     if (SS.size()){
         AnsiString S=ListToSequence2(SS);
         if (S==LastHint) return false;
@@ -252,12 +256,14 @@ bool TUI::ShowHint(const AStringVec& SS){
 //---------------------------------------------------------------------------
 
 void TUI::HideHint(){
+	VERIFY(m_bReady);
     bHintShowing = false;
     _DELETE(pHintWindow);
 }
 //---------------------------------------------------------------------------
 
 void TUI::ShowObjectHint(){
+	VERIFY(m_bReady);
     if (!fraBottomBar->miShowHint->Checked) return;
 
     GetCursorPos(&pt);

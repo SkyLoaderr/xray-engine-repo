@@ -61,19 +61,16 @@ void __fastcall TfraPS::SelByRef( bool flag ){
 //----------------------------------------------------
 void __fastcall TfraPS::OutCurrentName(){
 	PS::SDef* PS = PSLib.GetCurrentPS();
-    if (PS) lbSelectObjectName->Caption = PS->m_Name;
-    else	lbSelectObjectName->Caption = "...";
+	ebCurObj->Caption = (PS)?PS->m_Name:"<none>";
 }
 
 //---------------------------------------------------------------------------
 // Add new
 //---------------------------------------------------------------------------
-void __fastcall TfraPS::ebSelectClick(TObject *Sender)
+void __fastcall TfraPS::ebCurObjClick(TObject *Sender)
 {
 	PSLib.ChoosePS();
     OutCurrentName();
 }
 //---------------------------------------------------------------------------
-
-
 

@@ -52,6 +52,8 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
 	    N = Lib.GetCurrentObject();
 
     }
+    if(!N) return false;
+
     CEditableObject* ref = Lib.GetEditObject(Lib.GetCurrentObject());
 	if(ref){
         if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){

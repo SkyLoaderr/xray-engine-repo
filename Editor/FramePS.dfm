@@ -1,7 +1,7 @@
 object fraPS: TfraPS
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -17,7 +17,7 @@ object fraPS: TfraPS
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 123
     Height = 32
     Align = alTop
     ParentColor = True
@@ -68,7 +68,7 @@ object fraPS: TfraPS
     object Label: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -102,46 +102,46 @@ object fraPS: TfraPS
       OnClick = PaneMinClick
     end
   end
-  object paAddObject: TPanel
+  object Panel1: TPanel
     Left = 0
     Top = 32
-    Width = 443
-    Height = 47
+    Width = 123
+    Height = 32
     Align = alTop
     ParentColor = True
     TabOrder = 1
-    object ebSelect: TExtBtn
+    object ebCurObj: TExtBtn
       Left = 2
-      Top = 30
+      Top = 16
       Width = 120
-      Height = 15
+      Height = 14
       Align = alNone
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = 'Select'
+      Caption = '...'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
-      Font.Style = []
+      Font.Style = [fsUnderline]
       ParentFont = False
       Transparent = False
-      OnClick = ebSelectClick
+      OnClick = ebCurObjClick
     end
-    object label2: TLabel
+    object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Add'
+      Caption = 'Current PS'
       Color = clGray
       ParentColor = False
       OnClick = ExpandClick
     end
-    object ExtBtn1: TExtBtn
+    object ExtBtn2: TExtBtn
       Left = 110
       Top = 2
       Width = 11
@@ -164,20 +164,6 @@ object fraPS: TfraPS
         0000}
       ParentFont = False
       OnClick = PaneMinClick
-    end
-    object lbSelectObjectName: TLabel
-      Left = 1
-      Top = 15
-      Width = 120
-      Height = 15
-      AutoSize = False
-      Caption = 'no object'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
     end
   end
 end

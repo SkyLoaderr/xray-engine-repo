@@ -35,8 +35,13 @@ bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_PS); return false;}
 	Fvector p;
 	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)) return false;
+
+    TfraPS* fraPS = (TfraPS*)parent_tool->pFrame; VERIFY(fraPS);
     PS::SDef* PS = PSLib.GetCurrentPS();
-    if(!PS) PS = PSLib.ChoosePS();
+    if(!PS){
+    	fraPS->ebCurObjClick(0);
+        PS = PSLib.GetCurrentPS();
+    }
     if(!PS) return false;
 
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){

@@ -243,14 +243,20 @@ void TUI::OnMouseMove(int x, int y){
 void TUI::OnAppActivate()
 {
 	VERIFY(m_bReady);
-	if (pInput) pInput->OnAppActivate();
+	if (pInput){
+        m_ShiftState.Clear();
+     	pInput->OnAppActivate();
+    }
 }
 //---------------------------------------------------------------------------
 
 void TUI::OnAppDeactivate()
 {
 	VERIFY(m_bReady);
-	if (pInput) pInput->OnAppDeactivate();
+	if (pInput){
+		pInput->OnAppDeactivate();
+        m_ShiftState.Clear();
+    }
 }
 //---------------------------------------------------------------------------
 

@@ -35,6 +35,10 @@ public:
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
 	virtual bool    GetBox      ( Fbox& box );
+
+    // device dependent routine
+	void 			OnDeviceCreate 			();
+	void 			OnDeviceDestroy			();
 };
 
 #endif /*_INCDEF_Glow_H_*/
