@@ -21,7 +21,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	CKinematics* V = PKinematics(Visual());
-	if(V) V->PlayCycle("idle");
+	if(V) V->PlayCycle("idle1");
 	//setVisible					(true);
 	//setEnabled					(true);
 
@@ -86,7 +86,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		Level().Cameras.unaffected_Matrix(trans);
 		//Fvector l_fw; l_fw.set(trans.k);
 		//Fvector l_up; l_up.set(svTransform.j); l_up.mul(2.f);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*-.5); l_p1.mul(trans, l_r); l_p1.c.set(m_pos);
+		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(trans, l_r); l_p1.c.set(m_pos);
 		//l_p1.set(svTransform); l_p1.c.add(l_up); l_up.mul(1.2f);
 		//l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(1.f); l_p2.c.add(l_fw);
 		Fvector a_vel; a_vel.set(0, 0, 0);
