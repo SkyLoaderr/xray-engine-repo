@@ -23,11 +23,13 @@ void CBuild::xrPhase_TangentBasis()
 	output.push_back(NVMeshMender::VertexAttribute());	// tangent
 	output.push_back(NVMeshMender::VertexAttribute());	// binormal
 	output.push_back(NVMeshMender::VertexAttribute());	// *** faces
+	output.push_back(NVMeshMender::VertexAttribute());	// position, needed for mender
 
 	output[0].Name_= "tex0";	
 	output[1].Name_= "tangent";	
 	output[2].Name_= "binormal";
 	output[3].Name_= "indices";	
+	output[4].Name_= "position";
 
 	// ************************************* Build vectors + expand TC if nessesary
 	Status						("Building inputs...");
@@ -82,22 +84,28 @@ void CBuild::xrPhase_TangentBasis()
 	if (!mender.Munge(
 		input,										// input attributes
 		output,										// outputs attributes
-		deg2rad(89.f),								// tangent space smooth angle
+		deg2rad(61.f),								// tangent space smooth angle
 		0,											// no texture matrix applied to my texture coordinates
 		NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
 		NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
 		NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 		))
 	{
-		Debug.fatal	("NVMeshMender failed");
+		Debug.fatal	("NVMeshMender failed (%s)",mender.GetLastError().c_str());
 	}
 
 	// ************************************* Bind declarators
+	// bind
 	vector<float>&	o_tc		= output[0].floatVector_;	R_ASSERT(output[0].Name_=="tex0");
-	vector<float>&	o_tangent	= output[1].floatVector_;	R_ASSERT(output[0].Name_=="tangent");
-	vector<float>&	o_binormal	= output[2].floatVector_;	R_ASSERT(output[0].Name_=="binormal");
-	vector<int>&	o_indices	= output[3].intVector_;		R_ASSERT(output[0].Name_=="indices");
-	R_ASSERT		(3*g_faces.size() == o_indices.size());
+	vector<float>&	o_tangent	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="tangent");
+	vector<float>&	o_binormal	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="binormal");
+	vector<int>&	o_indices	= output[3].intVector_;		R_ASSERT(output[3].Name_=="indices");
+
+	// verify
+	R_ASSERT		(3*g_faces.size()	== o_indices.size());
+	R_ASSERT		(o_tc.size()		== o_tangent.size());
+	R_ASSERT		(o_tangent.size()	== o_binormal.size());
+	R_ASSERT		(o_tc.size()		>= v_tc.size());
 
 	// ************************************* Retreive data
 	Status						("Retreiving basis...");
@@ -107,6 +115,7 @@ void CBuild::xrPhase_TangentBasis()
 		for (u32 v=0; v<3; v++)
 		{
 			u32	id							=	o_indices	[f*3+v];	// vertex index
+			R_ASSERT						(id*3 < o_tc.size());
 			F->tc.front().uv[v].set			(o_tc		[id*3+0],	o_tc		[id*3+1]);
 			F->basis_tangent[v].set			(o_tangent	[id*3+0],	o_tangent	[id*3+1],	o_tangent	[id*3+2]);
 			F->basis_binormal[v].set		(o_binormal	[id*3+0],	o_binormal	[id*3+1],	o_binormal	[id*3+2]);
