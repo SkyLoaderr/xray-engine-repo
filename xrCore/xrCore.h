@@ -14,8 +14,9 @@
 	#if defined(_CPPUNWIND)
 		#error Please disable exceptions...
 	#endif
-	#define _HAS_EXCEPTIONS		0	// STL
+	#define _HAS_EXCEPTIONS		1	// STL
 	#define XRAY_EXCEPTIONS		0	// XRAY
+	#pragma warning(disable:4530)
 #endif
 
 #if !defined(_MT)
@@ -25,12 +26,14 @@
 
 #	include "xrCore_platform.h"
 
+/*
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
 // #define _STLP_NO_EXCEPTIONS	1
-#if XRAY_EXCEPTIONS
+// #if XRAY_EXCEPTIONS
  	#define _HAS_EXCEPTIONS		1	// force STL again
-#endif
+// #endif
+*/
 
 // *** try to minimize code bloat of STLport
 #ifdef __BORLANDC__
@@ -42,6 +45,9 @@
 	#define _STLP_USE_DECLSPEC		1	// no exceptions, import allocator and common stuff
 	#endif
 #endif
+
+// #include <exception>
+// using std::exception;
 
 #include <stdio.h>
 #include <stdlib.h>
