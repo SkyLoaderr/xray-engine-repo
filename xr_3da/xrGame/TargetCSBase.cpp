@@ -34,8 +34,8 @@ void CTargetCSBase::OnDeviceCreate()
 	cfModel->OnMove								();
 }
 
-void						feel_touch_new			(CObject* O) {
+void CTargetCSBase::feel_touch_new			(CObject* O) {
 }
 
-void						feel_touch_delete		(CObject* O) {
+void CTargetCSBase::feel_touch_delete		(CObject* O) {
 }
