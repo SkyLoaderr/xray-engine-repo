@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
+#define NO_PHYSICS_IN_AI_MOVE
 #ifdef LOG_PARAMETERS
 FILE *ST_VF = 0;
 #endif
@@ -366,7 +367,10 @@ void CAI_Stalker::CreateSkeleton()
 	Movement.GetDeathPosition(vPosition);
 	//vPosition.y+=.1f;
 	UpdateTransform();
+//#else
+	//vPosition.y+=0.1f;
 #endif
+
 	if (!pVisual)
 		return;
 	Fmatrix ident;
@@ -798,7 +802,7 @@ void CAI_Stalker::CreateSkeleton()
 	
 
 }
-#define NO_PHYSICS_IN_AI_MOVE
+
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
