@@ -125,7 +125,7 @@ void xrLoad(LPCSTR name)
 	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
-		CVirtualFileReader	FS(N);
+		IReader*			FS(N);
 		
 		R_ASSERT			(FS.find_chunk(0));
 		hdrCFORM			H;
@@ -161,11 +161,11 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		IReader*	F			= xr_new<CFileReader> (N);
+		IReader*	F			= xr_new<IReader> (N);
 		F->r		(&id,8);
 		if (0==strcmp(id,ID))	{
 			xr_delete			(F);
-			F					= xr_new<CCompressedReader> (N,ID);
+			F					= xr_new<IReader> (N,ID);
 		}
 		IReader&				FS	= *F;
 
@@ -238,7 +238,7 @@ void xrLoad(LPCSTR name)
 				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 				strlwr			(N);
 				char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-				CCompressedReader THM	(th_name,THM_SIGN);
+				IReader* THM	(th_name,THM_SIGN);
 
 				// analyze thumbnail information
 				R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
