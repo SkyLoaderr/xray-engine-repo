@@ -232,6 +232,8 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 //	u64								start = CPU::GetCycleCount();
 	Fvector							center;
 	Center							(center);
+	center.x						= Position().x;
+	center.z						= Position().z;
 	u32								l_dwNewLevelVertexID = ai().level_graph().vertex(level_vertex_id(),center);
 //	u64								stop = CPU::GetCycleCount();
 
