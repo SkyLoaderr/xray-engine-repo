@@ -169,10 +169,12 @@ void CLightProjector::calculate	()
 	RCache.set_xform_world		(Fidentity);
 
 	// iterate on objects
+	// Msg	("---------------------------------");
 	for (u32 o_it=0; o_it<receivers.size(); o_it++)
 	{
 		recv&	C	= receivers	[o_it];
 
+		// Msg					("[%f,%f,%f]-%f",C.C.x,C.C.y,C.C.z,C.O->renderable.visual->vis.sphere.R);
 		// calculate projection-matrix
 		Fmatrix		mProject;
 		float		p_R		=	C.O->renderable.visual->vis.sphere.R;
@@ -220,9 +222,11 @@ void CLightProjector::calculate	()
 		C.UVclamp.set		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,fSlotX+fSlotSize-fTexelOffs,fSlotY+fSlotSize-fTexelOffs);
 
 		// Clear color to ambience
-		//float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
-		//int	c_i			=	iFloor(c_a)/2;
-		//CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
+		/*
+		float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
+		int		c_i			=	iFloor(c_a)/2;
+		CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
+		*/
 		
 		// Build bbox and render
 		Fvector				min,max;
