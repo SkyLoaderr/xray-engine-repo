@@ -348,6 +348,7 @@ void	CRender::Render()
 
 	Fvector	P;
 	P.direct			(Device.vCameraPosition,Device.vCameraDirection,1);
+	TEST.SetPosition	(P);
 	TEST.SetRange		(4.f);
 	TEST.SetColor		(1,1,1);
 	Lights_Dynamic.Add	(&TEST);
