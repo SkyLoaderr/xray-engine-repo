@@ -202,7 +202,6 @@ end
 -- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б дбе нярюкэмше
 ------------------------------------------------------------------------------------------------------------
 function load_generic_schemes(npc, stype)
---[[
 	if stype == modules.stype_stalker then
 		module(schemes["combat"])
 		module(schemes["death"])
@@ -214,7 +213,6 @@ function load_generic_schemes(npc, stype)
 		module(schemes["mob_death"])
 		module(schemes["mob_trade"])
 	end
---]]
 end
 
 ------------------------------------------------------------------------------------------------------------

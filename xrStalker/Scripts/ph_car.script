@@ -16,8 +16,23 @@ function action_car:reset_scheme()
 	printf("_bp: action_car:reset_scheme: self.object:name()='%s'", self.object:name())
 	
 	xr_logic.mob_capture(self.object, true)
-	
-	action(self.object, move(move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
+
+	--action(self.object, move(move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
+		
+	action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
+	action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
+
+	action(self.object, move(move.on + move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
+
+--[[
+	action(self.object,
+		move(move.on + move.up + move.fwd, 20.1),
+		object("right_light", object.activate),
+		object ("left_light", object.activate),
+		cond(cond.time_end, 8200))
+	action(self.object, move(move.right + move.on + move.fwd, 20.1), cond(cond.time_end, 655))
+	action(self.object, move(move.on + move.up + move.fwd, 20.1), cond(cond.time_end, 14750))
+--]]
 end
 
 function action_car:update(delta)
