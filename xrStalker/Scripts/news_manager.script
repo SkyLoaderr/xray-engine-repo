@@ -21,7 +21,7 @@ function send_news(actor, news_id)
 		snd_obj:play(actor, 0, sound_object.s2d)
 	end
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
-	actor:set_news_show_time(news_id, 5)
+	--actor:set_news_show_time(news_id, 5)
 end
 function send_tip(actor, news_id)
 	if actor == nil or news_id == nil then return false end
@@ -39,7 +39,7 @@ function send_tip(actor, news_id)
 		snd_obj:play(actor, 0, sound_object.s2d)
 	end
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50)
-	actor:set_news_show_time(news_id, 5)	
+	--actor:set_news_show_time(news_id, 5)	
 end
 function send_help(actor)
 	if actor == nil then return false end

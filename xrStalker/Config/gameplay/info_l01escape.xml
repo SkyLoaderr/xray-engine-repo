@@ -184,22 +184,25 @@
 
 
 	<info_portion id="escape_dynamite_start">
+		<task>esc_dinamit_to_volk</task>
+	</info_portion>
+	<info_portion id="escape_dynamite_meet">
+		<location>
+			<level>l01_escape</level>
+			<x>4</x>
+			<y>-13</y>
+			<icon name="" big_icon="1" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Встретиться с ребятами Волка.</text>
+		</location>
+	</info_portion>
+	<info_portion id="escape_dynamite_gain">
 		<location>
 			<level>l01_escape</level>
 			<object>007</object>
 			<icon name="Динамит" big_icon="1" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Достать динамит для Волка.</text>
 		</location>
-		<task>esc_dinamit_to_volk</task>
-	</info_portion>
-	<info_portion id="escape_dynamite_meet">
-		<location>
-			<level>l01_escape</level>
-			<x>10</x>
-			<y>-26</y>
-			<icon name="" big_icon="1" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Встретиться с ребятами Волка.</text>
-		</location>
+		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_have">
 		<location>
@@ -208,11 +211,13 @@
 			<icon name="Волк" big_icon="1" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Принести динамит для Волку.</text>
 		</location>
-		<disable>escape_dynamite_start</disable>
+		<disable>escape_dynamite_gain</disable>
 		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_done">
-		<disable>escape_dynamite_start</disable>
+		<disable>escape_dynamite_done</disable>
+		<disable>escape_dynamite_gain</disable>
+		<disable>escape_dynamite_meet</disable>	
 	</info_portion>
 
 	<!-- Порядок фраз торговца -->
@@ -259,6 +264,8 @@
 	<info_portion id="escape_factory_assault_say_hello">
 	</info_portion>
 	<info_portion id="sniper_dead">
+	</info_portion>
+	<info_portion id="assault_have_vodka">
 	</info_portion>
 	
 
