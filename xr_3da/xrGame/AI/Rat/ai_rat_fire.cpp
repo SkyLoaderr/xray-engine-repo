@@ -225,7 +225,7 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 			j++;
 			continue;
 		}
-		float fProbability = Level().m_tpAI_DDD->pfAttackSuccessProbability.ffGetValue();
+		float fProbability = Level().m_tpAI_DDD->pfAttackSuccessProbability.ffGetValue()/100.f;
 		if (bMySide) {
 			if (fCurrentMemberProbability*fProbability < MIN_PROBABILITY) {
 				if (bStarted)
@@ -242,15 +242,14 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 		}
 		if (!bMySide) {
 			if (fCurrentEnemyProbability*(1.0f - fProbability) > MIN_PROBABILITY) {
-				if (bStarted)
-					bMySide = true;
-				fCurrentMemberProbability = fProbability;
-				j++;
+				fCurrentEnemyProbability *= (1.0f - fProbability);
+				i++;
 				continue;
 			}
 			else {
-				fCurrentMemberProbability *= fProbability;
+				bMySide = true;
 				i++;
+				j++;
 				continue;
 			}
 		}

@@ -235,6 +235,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue = 16;
 			break;
 		}
+		case CLSID_OBJECT_ACTOR			: 
 		case CLSID_AI_STALKER			: {
 			m_fLastValue = 17;
 			break;
@@ -260,7 +261,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			break;
 		}
 	}
-	return(m_fLastValue);
+	return(m_fLastValue -= 1.f);
 };
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
@@ -384,6 +385,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
 		}
+		case CLSID_OBJECT_ACTOR			: 
 		case CLSID_AI_STALKER			: {
 			m_fLastValue =  ffGetTheBestWeapon();
 			break;
@@ -409,7 +411,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			break;
 		}
 	}
-	return(m_fLastValue);
+	return(m_fLastValue -= 1.f);
 };
 	
 float CEnemyHealthFunction::ffGetValue()
