@@ -192,11 +192,11 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				b_death_anim_on=true;
 			}
 
-			if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
-			{
-				m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element,m_saved_hit_type);
-				m_saved_impulse=0.f;
-			}
+			//if(!fsimilar(0.f,m_saved_impulse) && !m_pPhysicsShell->bActivating)
+			//{
+			//	m_pPhysicsShell->applyHit(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element,m_saved_hit_type);
+			//	m_saved_impulse=0.f;
+			//}
 
 			if(skel_ddelay==0)
 			{
