@@ -31,7 +31,11 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		aiSoldierJumping,
+		
+		aiSoldierStandingUp,
+		aiSoldierSitting,
 		aiSoldierLyingDown,
+
 		aiSoldierMoreDeadThanAlive,
 		aiSoldierNoWeapon,
 		
@@ -78,7 +82,6 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -91,21 +94,22 @@ class CAI_Soldier : public CCustomMonster
 		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 		#define EYE_WEAPON_DELTA				(0*PI/30.f)
 		#define TORSO_ANGLE_DELTA				(PI/20.f)
+		#define NEXT_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
+		#define PREV_POINT(m_iCurrentPoint)		(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
+		#define MAX_PATROL_DISTANCE				6.f
+		#define MIN_PATROL_DISTANCE				1.f
+		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
+		#define ASSIGN_SPINE_BONE				r_spine_target.yaw = fabsf(r_torso_target.yaw - r_target.yaw - PI_DIV_6) < MIN_SPINE_TURN_ANGLE ? r_target.yaw : (2*r_torso_target.yaw + r_target.yaw)/3;
+				
 		#define INIT_SQUAD_AND_LEADER \
 			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 			CEntity* Leader = Squad.Leader;\
 			if (Leader->g_Health() <= 0)\
 				Leader = this;\
 			R_ASSERT (Leader);
-		#define NEXT_POINT(m_iCurrentPoint) (m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
-		#define PREV_POINT(m_iCurrentPoint) (m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
+		
+		#define WRITE_LOG
 
-		#define MAX_PATROL_DISTANCE		6.f
-		#define MIN_PATROL_DISTANCE		1.f
-
-		#define MIN_SPINE_TURN_ANGLE	PI_DIV_6
-		#define ASSIGN_SPINE_BONE		r_spine_target.yaw = fabsf(r_torso_target.yaw - r_target.yaw - PI_DIV_6) < MIN_SPINE_TURN_ANGLE ? r_target.yaw : (2*r_torso_target.yaw + r_target.yaw)/3;
-				
 		#ifdef WRITE_LOG
 			#define WRITE_TO_LOG(S) \
 				Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
@@ -115,6 +119,57 @@ class CAI_Soldier : public CCustomMonster
 				bStopThinking = true;
 		#endif
 
+		#define TEST_MICRO_ACTION(A) \
+			if (Level().iGetKeyState(DIK_##A)) {\
+				if (!m_b##A) {\
+					m_b##A = true;\
+					tStateStack.push(eCurrentState);\
+					eCurrentState = aiSoldierTest##A;\
+					return;\
+				}\
+			}\
+			else\
+				m_b##A = false;
+				
+		#define CASE_MICRO_ACTION(A) \
+			case aiSoldierTest##A : {\
+				Test##A();\
+				break;\
+			}
+				
+		#define ADJUST_ANGLE(A) \
+			if (A >= PI_MUL_2 - EPS_L)\
+				A -= PI_MUL_2;\
+			else\
+				if (A <= -EPS_L)\
+					A += PI_MUL_2;
+				
+		#define ADJUST_BONE(A) \
+			ADJUST_ANGLE(A.yaw);\
+			ADJUST_ANGLE(A.pitch);
+				
+		#define ADJUST_BONE_ANGLES \
+			ADJUST_BONE(r_target);\
+			ADJUST_BONE(r_current);\
+			ADJUST_BONE(r_torso_target);\
+			ADJUST_BONE(r_torso_current);\
+			ADJUST_BONE(r_spine_target);\
+			ADJUST_BONE(r_spine_current);
+				
+		#define SUB_ANGLE(A,B)\
+			A -= B;\
+			if (A <= -EPS_L )\
+				A += PI_MUL_2;
+				
+		#define ADD_ANGLE(A,B)\
+			A += B;\
+			if (A >= PI_MUL_2 - EPS_L)\
+				A -= PI_MUL_2;
+		
+		#define DECLARE_MICRO_ACTION(A)\
+			void Test##A();\
+			bool m_b##A;
+		
 		#define CHECK_FOR_STATE_TRANSITIONS(S) \
 			WRITE_TO_LOG(S);\
 			\
@@ -333,6 +388,9 @@ class CAI_Soldier : public CCustomMonster
 		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
 		
+		// action data
+		bool			m_bActionStarted;
+		
 		// hit data
 		DWORD			dwHitTime;
 		Fvector			tHitDir;
@@ -362,11 +420,6 @@ class CAI_Soldier : public CCustomMonster
 		float			m_fAggressiveness;
 		float			m_fTimorousness;
 		
-		// firing
-		bool			m_bFiring;
-		DWORD			m_dwStartFireAmmo;
-		DWORD			m_dwNoFireTime;
-		
 		// visibility constants
 		DWORD			m_dwMovementIdleTime;
 		float			m_fMaxInvisibleSpeed;
@@ -377,6 +430,11 @@ class CAI_Soldier : public CCustomMonster
 		float			m_fCrouchVisibilityMultiplier;
 		float			m_fLieVisibilityMultiplier;
 		float			m_fVisibilityThreshold;
+		
+		// firing
+		bool			m_bFiring;
+		DWORD			m_dwStartFireAmmo;
+		DWORD			m_dwNoFireTime;
 		
 		// fire  constants
 		DWORD			m_dwFireRandomMin;
@@ -426,10 +484,13 @@ class CAI_Soldier : public CCustomMonster
 		void FreeHunting();
 		void Injuring();
 		void Jumping();
-		void LyingDown();
 		void MoreDeadThanAlive();
 		void NoWeapon();
-		
+
+		void StandingUp();
+		void Sitting();
+		void LyingDown();
+
 		void Patrol();
 		void PatrolReturn();
 		void PatrolHurt();
@@ -446,48 +507,28 @@ class CAI_Soldier : public CCustomMonster
 		
 		// test
 		void TestMicroActions();
-		void TestA();
-		void TestD();
-		void TestQ();
-		void TestE();
-		void TestZ();
-		void TestC();
-		void TestW();
-		void TestS();
-		void TestX();
-		void TestR();
-		void TestF();
-		void TestV();
-		void TestT();
-		void TestG();
-		void TestB();
-		void TestY();
-		void TestH();
-		void TestN();
-		void TestU();
-		void TestJ();
-		void TestM();
-		bool m_bA;
-		bool m_bD;
-		bool m_bQ;
-		bool m_bE;
-		bool m_bZ;
-		bool m_bC;
-		bool m_bW;
-		bool m_bS;
-		bool m_bX;
-		bool m_bR;
-		bool m_bF;
-		bool m_bV;
-		bool m_bT;
-		bool m_bG;
-		bool m_bB;
-		bool m_bY;
-		bool m_bH;
-		bool m_bN;
-		bool m_bU;
-		bool m_bJ;
-		bool m_bM;
+		
+		DECLARE_MICRO_ACTION(A);
+		DECLARE_MICRO_ACTION(D);
+		DECLARE_MICRO_ACTION(Q);
+		DECLARE_MICRO_ACTION(E);
+		DECLARE_MICRO_ACTION(Z);
+		DECLARE_MICRO_ACTION(C);
+		DECLARE_MICRO_ACTION(W);
+		DECLARE_MICRO_ACTION(S);
+		DECLARE_MICRO_ACTION(X);
+		DECLARE_MICRO_ACTION(R);
+		DECLARE_MICRO_ACTION(F);
+		DECLARE_MICRO_ACTION(V);
+		DECLARE_MICRO_ACTION(T);
+		DECLARE_MICRO_ACTION(G);
+		DECLARE_MICRO_ACTION(B);
+		DECLARE_MICRO_ACTION(Y);
+		DECLARE_MICRO_ACTION(H);
+		DECLARE_MICRO_ACTION(N);
+		DECLARE_MICRO_ACTION(U);
+		DECLARE_MICRO_ACTION(J);
+		DECLARE_MICRO_ACTION(M);
 		
 		// miscellanious funtions	
 		bool bfCheckForVisibility(CEntity* tpEntity);
@@ -527,7 +568,8 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual void  OnVisible(); 
-		virtual objQualifier* GetQualifier	();
+		virtual void  Exec_Movement( float dt );
+		virtual objQualifier* GetQualifier();
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2);
 };

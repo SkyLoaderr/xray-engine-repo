@@ -436,6 +436,82 @@ void CAI_Soldier::Jumping()
 {
 	WRITE_TO_LOG("Jumping...");
 	
+	if (m_bStateChanged) {
+		m_dwLastRangeSearch = Level().timeServer();
+		m_bActionStarted = true;
+	}
+	else {
+		switch (m_cBodyState) {
+			case BODY_STATE_STAND : {
+				if ((m_tpCurrentLegsAnimation == tSoldierAnimations.tNormal.tGlobal.tpJumpIdle) && (m_tpCurrentLegsBlend)) {
+				//if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
+					eCurrentState = tStateStack.top();
+					tStateStack.pop();
+				}
+				break;
+			}
+			case BODY_STATE_CROUCH : {
+				if ((m_tpCurrentLegsAnimation == tSoldierAnimations.tCrouch.tGlobal.tpJumpIdle) && (m_tpCurrentLegsBlend)) {
+				//if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
+					eCurrentState = tStateStack.top();
+					tStateStack.pop();
+				}
+				break;
+			}
+			case BODY_STATE_LIE : {
+				eCurrentState = tStateStack.top();
+				tStateStack.pop();
+				break;
+			}
+		}
+	}
+
+	return;
+}
+
+void CAI_Soldier::StandingUp()
+{
+	WRITE_TO_LOG("Standing up...");
+	
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		return;
+	}
+
+	//if (m_cBodyState == BODY_STATE_LIE)
+	//	m_tpCurrentGlobalAnimation = m_tpCurrentTorsoAnimation = m_tpCurrentHandsAnimation = m_tpCurrentLegsAnimation = 0;
+
+	vfSetMovementType(BODY_STATE_STAND,0);
+	
+	AI_Path.TravelPath.clear();
+	
+	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		
+		return;
+	//}
+}
+
+void CAI_Soldier::Sitting()
+{
+	WRITE_TO_LOG("Sitting...");
+	
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		return;
+	}
+
+	vfSetMovementType(BODY_STATE_CROUCH,0);
+	
+	AI_Path.TravelPath.clear();
+	
+	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		
+		return;
+	//}
 }
 
 void CAI_Soldier::LyingDown()
@@ -444,7 +520,6 @@ void CAI_Soldier::LyingDown()
 	
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		
 		return;
 	}
 
@@ -459,8 +534,6 @@ void CAI_Soldier::LyingDown()
 		
 		return;
 	}
-
-	
 }
 
 void CAI_Soldier::MoreDeadThanAlive()
@@ -1147,7 +1220,9 @@ void CAI_Soldier::Reload()
 			vfBuildPathToDestinationPoint(0);
 		else
 			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
+		
 		tWatchDirection.sub(Enemy.Enemy->Position(),Position());
+		
 		if (tWatchDirection.magnitude() > 0.0001f)
 			SetSmartLook(AI_Node,tWatchDirection);
 		else
@@ -1265,55 +1340,6 @@ void CAI_Soldier::UnderFire()
 		
 }
 
-#define TEST_MICRO_ACTION(A) \
-	if (Level().iGetKeyState(DIK_##A)) {\
-		if (!m_b##A) {\
-			m_b##A = true;\
-			tStateStack.push(eCurrentState);\
-			eCurrentState = aiSoldierTest##A;\
-			return;\
-		}\
-	}\
-	else\
-		m_b##A = false;
-
-#define CASE_MICRO_ACTION(A) \
-	case aiSoldierTest##A : {\
-	Test##A();\
-	break;\
-}
-
-/**/
-#define ADJUST_ANGLE(A) \
-	if (A >= PI_MUL_2 - EPS_L)\
-		A -= PI_MUL_2;\
-	else\
-		if (A <= -EPS_L)\
-			A += PI_MUL_2;
-
-#define ADJUST_BONE(A) \
-	ADJUST_ANGLE(A.yaw);\
-	ADJUST_ANGLE(A.pitch);\
-	
-#define ADJUST_BONE_ANGLES \
-	ADJUST_BONE(r_target);\
-	ADJUST_BONE(r_current);\
-	ADJUST_BONE(r_torso_target);\
-	ADJUST_BONE(r_torso_current);\
-	ADJUST_BONE(r_spine_target);\
-	ADJUST_BONE(r_spine_current);
-
-/**/
-#define SUB_ANGLE(A,B)\
-	A -= B;\
-	if (A <= -EPS_L )\
-		A += PI_MUL_2;
-
-#define ADD_ANGLE(A,B)\
-	A += B;\
-	if (A >= PI_MUL_2 - EPS_L)\
-		A -= PI_MUL_2;
-
 void CAI_Soldier::TestMicroActions()
 {
 	bStopThinking = true;
@@ -1351,6 +1377,7 @@ void CAI_Soldier::TestA()
 	SUB_ANGLE(r_target.yaw,PI_DIV_2);
 	SUB_ANGLE(r_spine_target.yaw,PI_DIV_2);
 	ADJUST_BONE_ANGLES;
+
 	q_look.o_look_speed = r_spine_speed = r_torso_speed;
 		
 	eCurrentState = tStateStack.top();
@@ -1427,10 +1454,13 @@ void CAI_Soldier::TestW()
 {
 	WRITE_TO_LOG("stand up");
 	
-	vfSetMovementType(BODY_STATE_STAND,0);
-		
-	eCurrentState = tStateStack.top();
-	tStateStack.pop();
+	if (m_cBodyState != BODY_STATE_STAND)
+		eCurrentState = aiSoldierStandingUp;
+	else {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+	}
+
 	return;
 }
 
@@ -1438,10 +1468,13 @@ void CAI_Soldier::TestS()
 {
 	WRITE_TO_LOG("sit down");
 	
-	vfSetMovementType(BODY_STATE_CROUCH,0);
-		
-	eCurrentState = tStateStack.top();
-	tStateStack.pop();
+	if (m_cBodyState != BODY_STATE_CROUCH)
+		eCurrentState = aiSoldierSitting;
+	else {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+	}
+
 	return;
 }
 
@@ -1449,98 +1482,157 @@ void CAI_Soldier::TestX()
 {
 	WRITE_TO_LOG("lie down");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
-	
+	if (m_cBodyState != BODY_STATE_LIE)
+		eCurrentState = aiSoldierLyingDown;
+	else {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+	}
+
 	return;
 }
 
 void CAI_Soldier::TestR()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("recharge");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	if (Weapons->ActiveWeapon()) {
+		if (m_bStateChanged) {
+			if (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize())
+				Weapons->ActiveWeapon()->AddAmmo(-1);
+			Weapons->ActiveWeapon()->Reload();
+		}
+		else {
+			if (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()) {
+				eCurrentState = tStateStack.top();
+				tStateStack.pop();
+			}
+		}
+	}
+	else {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+	}
 	
 	return;
 }
 
 void CAI_Soldier::TestF()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("fire one shot");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
-	
+	if (m_bStateChanged)
+		q_action.setup(AI::AIC_Action::FireBegin);
+	else {
+		q_action.setup(AI::AIC_Action::FireEnd);
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+	}
+				
 	return;
 }
 
 void CAI_Soldier::TestV()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("aim 0");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAim[0];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestT()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("aim 1");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAim[1];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestG()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("attack 0");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[0];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestB()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("attack 1");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[1];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestY()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("idle 0");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaIdle[0];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestH()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("idle 1");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			m_tpCurrentTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaIdle[1];
+			break;
+		}
+	}
+	eCurrentState = tStateStack.top();
+	tStateStack.pop();
 	
 	return;
 }
 
 void CAI_Soldier::TestN()
 {
-	WRITE_TO_LOG("lie down");
+	WRITE_TO_LOG("jump");
 	
-	vfSetMovementType(BODY_STATE_LIE,0);
-	eCurrentState = aiSoldierLyingDown;
+	eCurrentState = aiSoldierJumping;
 	
 	return;
 }
@@ -1617,6 +1709,14 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
+			case aiSoldierStandingUp : {
+				StandingUp();
+				break;
+			}
+			case aiSoldierSitting : {
+				Sitting();
+				break;
+			}
 			case aiSoldierLyingDown : {
 				LyingDown();
 				break;
@@ -1681,27 +1781,27 @@ void CAI_Soldier::Think()
 				TestMicroActions();
 				break;
 			}
-			CASE_MICRO_ACTION(A)
-			CASE_MICRO_ACTION(D)
-			CASE_MICRO_ACTION(Q)
-			CASE_MICRO_ACTION(E)
-			CASE_MICRO_ACTION(Z)
-			CASE_MICRO_ACTION(C)
-			CASE_MICRO_ACTION(W)
-			CASE_MICRO_ACTION(S)
-			CASE_MICRO_ACTION(X)
-			CASE_MICRO_ACTION(R)
-			CASE_MICRO_ACTION(F)
-			CASE_MICRO_ACTION(V)
-			CASE_MICRO_ACTION(T)
-			CASE_MICRO_ACTION(G)
-			CASE_MICRO_ACTION(B)
-			CASE_MICRO_ACTION(Y)
-			CASE_MICRO_ACTION(H)
-			CASE_MICRO_ACTION(N)
-			CASE_MICRO_ACTION(U)
-			CASE_MICRO_ACTION(J)
-			CASE_MICRO_ACTION(M)
+			CASE_MICRO_ACTION(A);
+			CASE_MICRO_ACTION(D);
+			CASE_MICRO_ACTION(Q);
+			CASE_MICRO_ACTION(E);
+			CASE_MICRO_ACTION(Z);
+			CASE_MICRO_ACTION(C);
+			CASE_MICRO_ACTION(W);
+			CASE_MICRO_ACTION(S);
+			CASE_MICRO_ACTION(X);
+			CASE_MICRO_ACTION(R);
+			CASE_MICRO_ACTION(F);
+			CASE_MICRO_ACTION(V);
+			CASE_MICRO_ACTION(T);
+			CASE_MICRO_ACTION(G);
+			CASE_MICRO_ACTION(B);
+			CASE_MICRO_ACTION(Y);
+			CASE_MICRO_ACTION(H);
+			CASE_MICRO_ACTION(N);
+			CASE_MICRO_ACTION(U);
+			CASE_MICRO_ACTION(J);
+			CASE_MICRO_ACTION(M);
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}

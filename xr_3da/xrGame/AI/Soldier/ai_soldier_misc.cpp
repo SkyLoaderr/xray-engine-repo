@@ -32,6 +32,15 @@ CAI_Soldier::CAI_Soldier()
 	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
 	m_bLessCoverLook = false;
 	q_look.o_look_speed = _FB_look_speed;
+	m_tpCurrentGlobalAnimation = 
+	m_tpCurrentTorsoAnimation = 
+	m_tpCurrentHandsAnimation = 
+	m_tpCurrentLegsAnimation = 0;
+	m_tpCurrentGlobalBlend = 
+	m_tpCurrentTorsoBlend = 
+	m_tpCurrentHandsBlend = 
+	m_tpCurrentLegsBlend = 0;
+	m_bActionStarted = false;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -137,5 +146,32 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 			Test = (char *)P1;
 			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
 		}
+	}
+}
+
+void CAI_Soldier::Exec_Movement	( float dt )
+{
+	if (eCurrentState != aiSoldierJumping)
+		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	else {
+		UpdateTransform	();
+		if (m_bActionStarted) {
+			m_bActionStarted = false;
+			Fvector tAcceleration, tVelocity;
+			tVelocity.set(0,1,0);
+			Movement.SetPosition(vPosition);
+			Movement.SetVelocity(tVelocity);
+			tAcceleration.set(0,0,0);
+			Movement.Calculate	(tAcceleration,0,1,dt,false);
+			Movement.GetPosition(vPosition);
+		}
+		else {
+			Fvector tAcceleration;
+			tAcceleration.set(0,5,0);
+			Movement.SetPosition(vPosition);
+			Movement.Calculate	(tAcceleration,0,0,dt,false);
+			Movement.GetPosition(vPosition);
+		}
+		UpdateTransform	();
 	}
 }
