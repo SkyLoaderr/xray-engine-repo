@@ -12,10 +12,9 @@
 
 xrServer::xrServer()
 {
-	for (u32 id=0; id<=0xffff; id++)
-	{
-		id_free.push_back	(id);
-	}
+	id_free.resize	(0xffff);
+	u16 id			= 0;
+	for (deque<u16>::iterator I=id_free.begin(); I!=id_free.end(); *I++ = id++);
 }
 
 xrServer::~xrServer()
