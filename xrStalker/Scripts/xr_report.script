@@ -102,7 +102,7 @@ function action_report_soldier:initialize ()
     action_base.initialize (self)
     
     self.leader = level.object (self.leader_name)
-    
+    self.object:clear_animations () 
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
@@ -259,6 +259,7 @@ end
 ----------------------
 function action_report_leader:initialize ()
     action_base.initialize (self)
+    self.object:clear_animations () 
     self.npc = self.object:motivation_action_manager ():evaluator (properties["leader_report"]).npc
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
