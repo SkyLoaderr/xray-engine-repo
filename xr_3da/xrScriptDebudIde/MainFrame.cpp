@@ -604,16 +604,11 @@ void CMainFrame::UpdateFrameTitleForDocument(LPCTSTR lpszDocName)
 		}else
 			lstrcpy(szText, m_strTitle);
 
-/*		if ( m_nAppMode==modeDebug )
-			lstrcat(szText, _T(" [run] "));
-		else if ( m_nAppMode==modeDebugBreak )
-			lstrcat(szText, _T(" [break] "));
-*/
-		if(m_needAnswer)
+/*		if(m_needAnswer)
 			lstrcat(szText, _T(" [DEBUG BREAK] "));
 		else
 			lstrcat(szText, _T(" [NOT ACTIVE] "));
-
+*/
 
 		if (lpszDocName != NULL)
 		{
