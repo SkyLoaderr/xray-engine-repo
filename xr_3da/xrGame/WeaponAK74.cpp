@@ -170,7 +170,8 @@ void CWeaponAK74::FireEnd			()
 }
 void CWeaponAK74::OnMagazineEmpty	()
 {
-	
+	st_target	=	eMagazineEmpty;
+	fTime		=	fTimeToEmptyClick;
 }
 void CWeaponAK74::Update(float dt, BOOL bHUDView)
 {
@@ -192,6 +193,11 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 			UpdateFP		(bHUDView);
 			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
+			break;
+		case eMagazineEmpty:
+			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
+			if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
+			bFlame			= FALSE;
 			break;
 		}
 		st_current=st_target;
@@ -222,13 +228,25 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 					if (S)			S->Shot();
 				}
 
-				UpdateFP		(bHUDView);
 				FireTrace		(p1,vLastFP,d);
 				m_pHUD->Shoot	();
 			}
 
 			// sound fire loop
 			if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
+		}
+		break;
+	case eMagazineEmpty:
+		{
+			UpdateFP	(bHUDView);
+			fTime		-=dt;
+
+			while		(fTime<0)
+			{
+				fTime			+=  fTimeToEmptyClick;
+				
+				FireTrace		(p1,vLastFP,d);
+			}
 		}
 		break;
 	}
@@ -239,7 +257,7 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 void CWeaponAK74::Render(BOOL bHUDView)
 {
 	inherited::Render		(bHUDView);
-	UpdateXForm	(bHUDView);
+	UpdateXForm				(bHUDView);
 	if (bHUDView)
 	{ 
 		// Interpolate lighting

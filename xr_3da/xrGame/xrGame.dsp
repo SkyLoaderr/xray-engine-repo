@@ -245,6 +245,14 @@ SOURCE=.\WeaponHUD.cpp
 
 SOURCE=.\WeaponHUD.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\WeaponMagazined.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponMagazined.h
+# End Source File
 # End Group
 # Begin Group "Weapon M134"
 

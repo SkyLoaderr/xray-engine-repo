@@ -16,77 +16,39 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAK74::CWeaponAK74() : CWeapon("AK74")
+CWeaponMagazined::CWeaponMagazined(LPCSTR name) : CWeapon(name)
 {
-	pSounds->Create3D(sndFireLoop,	 "weapons\\AK74_fire");
-	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
-	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
-	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
-	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
-	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
-	
-	iFlameDiv		= 0;
-	fFlameLength	= 0;
-	fFlameSize		= 0;
-	
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 	
 	fTime			= 0;
 }
 
-CWeaponAK74::~CWeaponAK74()
+CWeaponMagazined::~CWeaponMagazined()
 {
-	FlameUNLOAD		();
-	
-	// sounds
-	pSounds->Delete3D(sndFireLoop);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	MediaUNLOAD		();
 }
 
-void CWeaponAK74::Load(CInifile* ini, const char* section){
-	inherited::Load(ini, section);
-	R_ASSERT		(m_pHUD);
-	
-	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
-	
-	iFlameDiv		= ini->ReadINT	(section,"flame_div");
-	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
-	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
+void CWeaponMagazined::Load(CInifile* ini, const char* section)
+{
+	inherited::Load	(ini, section);
 	bFlame			= FALSE;
 }
 
-void CWeaponAK74::FlameLOAD()
-{
-	// flame textures
-	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
-	DWORD scnt		= _GetItemCount(S);
-	string256 name;
-	for (DWORD i=0; i<scnt; i++)
-		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
-}
-
-void CWeaponAK74::FlameUNLOAD()
-{
-	for (DWORD i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
-	hFlames.clear();
-}
-
-void CWeaponAK74::OnDeviceCreate()
+void CWeaponMagazined::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	inherited::OnDeviceCreate	();
-	FlameLOAD	();
+	MediaLOAD	();
 }
 
-void CWeaponAK74::OnDeviceDestroy()
+void CWeaponMagazined::OnDeviceDestroy()
 {
 	inherited::OnDeviceDestroy	();
-	FlameUNLOAD	();
+	MediaUNLOAD	();
 }
 
-void CWeaponAK74::UpdateXForm(BOOL bHUDView)
+void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
 	{
@@ -118,7 +80,7 @@ void CWeaponAK74::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponAK74::UpdateFP(BOOL bHUDView)
+void CWeaponMagazined::UpdateFP(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
@@ -151,15 +113,15 @@ void CWeaponAK74::UpdateFP(BOOL bHUDView)
 	}
 }
 
-void CWeaponAK74::FireStart			()
+void CWeaponMagazined::FireStart		()
 {
 	if (!IsWorking() && IsValid()){ 
-		CWeapon::FireStart();
-		st_target	= eFire;
+		CWeapon::FireStart	();
+		st_target			= eFire;
 	}
 }
 
-void CWeaponAK74::FireEnd			()
+void CWeaponMagazined::FireEnd			()
 {
 	if (IsWorking())
 	{
@@ -168,16 +130,19 @@ void CWeaponAK74::FireEnd			()
 		st_target			= eIdle;
 	}
 }
-void CWeaponAK74::OnMagazineEmpty	()
+
+void CWeaponMagazined::OnMagazineEmpty	()
 {
 	st_target	=	eMagazineEmpty;
 	fTime		=	fTimeToEmptyClick;
 }
-void CWeaponAK74::Update(float dt, BOOL bHUDView)
-{
-	BOOL bShot = false;
 
-	inherited::Update(dt,bHUDView);
+void CWeaponMagazined::Update(float dt, BOOL bHUDView)
+{
+	BOOL bShot			= false;
+
+	inherited::Update	(dt,bHUDView);
+	VERIFY				(m_pParent);
 	
 	// on state change
 	if (st_target!=st_current)
@@ -185,58 +150,49 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 		switch(st_target)
 		{
 		case eIdle:
-			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
-			if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 			bFlame			= FALSE;
+			switch2_Idle	(bHUDView);
 			break;
 		case eFire:
-			UpdateFP		(bHUDView);
-			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
-			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
+			switch2_Fire	(bHUDView);
 			break;
-		case eMagazineEmpty:
-			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
-			if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
+		case eMagEmpty:
 			bFlame			= FALSE;
+			switch2_Empty	(bHUDView);
+			break;
+		case eReload:
+			switch2_Reload	(bHUDView);
 			break;
 		}
-		st_current=st_target;
+		st_current = st_target;
 	}
 
 	// cycle update
 	switch (st_current)
 	{
 	case eIdle:
-		fTime	-= dt;
+		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
 	case eFire:
 		{
-			UpdateFP	(bHUDView);
-			VERIFY		(m_pParent);
-			fTime		-=dt;
-			Fvector		p1, d;
-			m_pParent->g_fireParams(p1,d);
+			UpdateFP				(bHUDView);
+			fTime					-=dt;
+			Fvector					p1, d;
+			m_pParent->g_fireParams	(p1,d);
 			
 			while (fTime<0)
 			{
-				bFlame			= TRUE;
-				fTime			+=fTimeToFire;
+				bFlame			=	TRUE;
+				fTime			+=	fTimeToFire;
 
-				if (bHUDView)	{
-					CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
-					if (S)			S->Shot();
-				}
-
+				OnShot			(bHUDView);
 				FireTrace		(p1,vLastFP,d);
 				m_pHUD->Shoot	();
 			}
-
-			// sound fire loop
-			if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
 		}
 		break;
-	case eMagazineEmpty:
+	case eMagEmpty:
 		{
 			UpdateFP	(bHUDView);
 			fTime		-=dt;
@@ -244,17 +200,16 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 			while		(fTime<0)
 			{
 				fTime			+=  fTimeToEmptyClick;
-				
-				FireTrace		(p1,vLastFP,d);
+				OnEmptyClick	();
 			}
 		}
 		break;
 	}
 
-	m_pHUD->UpdateAnimation();
+	m_pHUD->UpdateAnimation	();
 }
 
-void CWeaponAK74::Render(BOOL bHUDView)
+void CWeaponMagazined::Render(BOOL bHUDView)
 {
 	inherited::Render		(bHUDView);
 	UpdateXForm				(bHUDView);
@@ -283,57 +238,28 @@ void CWeaponAK74::Render(BOOL bHUDView)
 		if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 
 		UpdateFP	(bHUDView);
-
-		// fire flash
-		Fvector P = vLastFP;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; i++){
-			f*=0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
-			P.add(D);
-		}
+		OnDrawFlame	(bHUDView);
 	}
 }
 
-void CWeaponAK74::SetDefaults	()
+void CWeaponMagazined::SetDefaults	()
 {
 	CWeapon::SetDefaults		();
 	iAmmoElapsed				= 0;
 }
 
-void CWeaponAK74::Hide			()
+void CWeaponMagazined::Hide		()
 {
 	inherited::Hide				();
 	signal_HideComplete			();
 }
-void CWeaponAK74::Show			()
+void CWeaponMagazined::Show		()
 {
 	inherited::Show				();
 }
 
-void CWeaponAK74::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
+void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	inherited::FireShotmark	(vDir, vEnd, R);
-	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
-	
-	// particles
-	Fvector N,D;
-	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
-	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
-	D.reflect			(vDir,N);
-
-	CSector* S			= ::Render.getSector(pTri->sector);
-
-	// stones
-	CPSObject* PS		= new CPSObject("stones",S,true);
-	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
-
-	// smoke
-	PS					= new CPSObject("smokepuffs_1",S,true);
-	PS->m_Emitter.m_ConeDirection.set(D);
-	PS->PlayAtPos		(vEnd);
+	inherited::FireShotmark		(vDir, vEnd, R);
+	OnShotmark					(vDir, vEnd, R);
 }

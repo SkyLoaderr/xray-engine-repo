@@ -24,6 +24,7 @@ private:
 
 	sound3D			sndFireLoop;
 	sound3D			sndRicochet		[SND_RIC_COUNT];
+	sound3D			sndEmptyClick;
 
 	vector<Shader*>	hFlames;
 

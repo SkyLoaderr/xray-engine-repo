@@ -1,56 +1,53 @@
-#ifndef __XR_WEAPON_AK74_H__
-#define __XR_WEAPON_AK74_H__
+#ifndef __XR_WEAPON_MAG_H__
+#define __XR_WEAPON_MAG_H__
 #pragma once
 
 #include "weapon.h"
 
 #define SND_RIC_COUNT 5
  
-class CWeaponAK74: public CWeapon
+class CWeaponMagazined: public CWeapon
 {
-	enum EAK74State
+private:
+	typedef CWeapon inherited;
+public:
+	enum EState
 	{
 		eIdle,
 		eFire,
-		eMagazineEmpty,
+		eMagEmpty,
 		eReload
 	};
-	typedef CWeapon inherited;
-
 private:
 	// General
 	float			fTime;
 	BOOL			bFlame;
-
-	sound3D			sndFireLoop;
-	sound3D			sndRicochet		[SND_RIC_COUNT];
-	sound3D			sndEmptyClick;
-
-	vector<Shader*>	hFlames;
 
 	Fvector			vFirePoint;
 
 	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
-	int				iFlameDiv;
-	float			fFlameLength;
-	float			fFlameSize;
-	
-	EAK74State		st_current, st_target;
+	EState			st_current, st_target;
+protected:
+	virtual void	OnMagazineEmpty	();
 
-	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	void			FlameLOAD		();
-	void			FlameUNLOAD		();
-	
+	virtual void	MediaLOAD		();
+	virtual void	MediaUNLOAD		();
+	virtual void	switch2_Idle	(BOOL bHUDView)	{};
+	virtual void	switch2_Fire	(BOOL bHUDView)	{};
+	virtual void	switch2_Empty	(BOOL bHUDView)	{};
+	virtual void	switch2_Reload	(BOOL bHUDView)	{};
+	virtual void	OnShot			(BOOL bHUDView)	{};
+	virtual void	OnEmptyClick	(BOOL bHUDView)	{};
+	virtual void	OnDrawFlame		(BOOL bHUDView)	{};
+	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
-	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
-	virtual void	OnMagazineEmpty	();
 public:
-					CWeaponAK74		();
-	virtual			~CWeaponAK74	();
+					CWeaponMagazined	(LPCSTR name);
+	virtual			~CWeaponMagazined	();
 
 	virtual void	Load			(CInifile* ini, const char* section);
 
@@ -68,4 +65,4 @@ public:
 	virtual void	OnDeviceDestroy	();
 };
 
-#endif //__XR_WEAPON_AK74_H__
+#endif //__XR_WEAPON_MAG_H__
