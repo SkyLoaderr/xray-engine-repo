@@ -90,7 +90,7 @@ void CLevelGraph::render()
 
 		// если включён ai_dbg_frustum раскрасить ноды по light
 		// иначе раскрашивать по cover
-		bool b_light = psAI_Flags.test(aiFrustum);
+		bool b_light = !!psAI_Flags.test(aiFrustum);
 		
 		for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
 		{
