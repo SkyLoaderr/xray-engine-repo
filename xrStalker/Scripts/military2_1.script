@@ -2,6 +2,7 @@ local actor_entered = false
 
 function on_enter (zone, object)
     if object:id () == get_actor ():id () then actor_entered = true end
+	printf ("PLAYER ENTERED")
 end
 
 function check (stalker)
@@ -44,6 +45,7 @@ function main ()
 
     while actor_entered == false do wait () end
 
+	printf ("PLAYER ENTERED")
 
     --phrase 1
     reset_action (stalker1, military2_1.script_name ())
