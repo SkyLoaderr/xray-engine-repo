@@ -122,6 +122,7 @@ Oles:
 Sanya:
 	. BUG:  Run, Press Jump (don't release), after landing - release, try to jump again :)
 	. BUG:	Turn sometimes cycles in continuesly
+	. BUG:	При умирании игрок продолжает двигаться
 	. BUG:  Координаты строк сообщений выводить в соответствии с разрешением
 	. BUG:	SetHPB(-,-,+)
 	+ BUG:	RayPick -- не всегда выбирает монстрика (FillLine...)

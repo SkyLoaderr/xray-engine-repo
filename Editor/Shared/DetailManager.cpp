@@ -559,8 +559,9 @@ void CDetailManager::UpdateCache	(int limit)
 				gray255[1]		= 255.f*float(c_pal->a1)/15.f;
 				gray255[2]		= 255.f*float(c_pal->a2)/15.f;
 				gray255[3]		= 255.f*float(c_pal->a3)/15.f;
-				DWORD c_dw		= iFloor(Interpolate(gray255,x,z,d_size)+.5f);
-				Item.C			= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,0);
+				int c_dw		= iFloor(Interpolate(gray255,x,z,d_size)+.5f);
+				clamp			(c_dw,0,255);
+				Item.C			= D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
 				
 				// Save it
 				D.G[index].items.push_back(Item);
