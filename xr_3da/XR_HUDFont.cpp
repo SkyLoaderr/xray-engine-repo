@@ -23,4 +23,5 @@ CFontHUD::CFontHUD()
 	Color(0xFFFFFFFF);
 	Size (1.f);
 	Interval(0.75f,1.f);
+	SetScale(1.f);
 }
