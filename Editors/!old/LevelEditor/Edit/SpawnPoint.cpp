@@ -123,16 +123,6 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
     if (m_Data->motion()){
     	m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
     }
-/*    
-    CShapeData* cform = dynamic_cast<CShapeData*>(m_Data);
-//    if (cform) cform->shapes.push_back(xrSE_CFormed::shape_def());
-    if (cform){
-    	cform->shapes.reserve		(128);
-//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
-//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
-//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
-    }
-*/
     if (m_Data){
         if (pSettings->line_exist(entity_ref,"$player")){
             if (pSettings->r_bool(entity_ref,"$player")){
