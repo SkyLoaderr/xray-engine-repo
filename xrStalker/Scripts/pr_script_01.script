@@ -24,6 +24,8 @@ function main()
 	event_zone_id = event:id()
  
 	local actor   	= get_actor()
+	local trader	= get_level_object("m_trader0000")
+
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
 	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
