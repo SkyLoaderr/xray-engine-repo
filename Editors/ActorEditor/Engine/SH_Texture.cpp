@@ -100,7 +100,7 @@ void CTexture::Load()
 			xr_delete(pAVI);
 			Debug.fatal("Can't open video stream");
 		} else {
-			dwMemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
+			flags.MemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
 
 			// Now create texture
 			IDirect3DTexture9*	pTexture = 0;
@@ -158,7 +158,7 @@ void CTexture::Load()
 				if (pSurface)	{
 					pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
-					dwMemoryUsage			+= M;
+					flags.MemoryUsage			+= M;
 				}
 			}
 		}
@@ -185,25 +185,25 @@ void CTexture::Load()
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			pSurface->SetPriority	(PRIORITY_NORMAL);
-			dwMemoryUsage			=	M;
+			flags.MemoryUsage			=	M;
 		}
 	}
 }
 
-void CTexture::Unload()
+void CTexture::Unload	()
 {
-	if (!seqDATA.empty())
-	{
+	flags.bLoaded			= FALSE;
+	if (!seqDATA.empty())	{
 		for (u32 I=0; I<seqDATA.size(); I++)
 			_RELEASE(seqDATA[I]);
 		seqDATA.clear();
 		pSurface	= 0;
 	}
-	_RELEASE	(pSurface);
+	_RELEASE		(pSurface);
 	xr_delete		(pAVI);
 }
 
-void CTexture::desc_update()
+void CTexture::desc_update	()
 {
 	desc_cache	= pSurface;
 	if (pSurface && (D3DRTYPE_TEXTURE == pSurface->GetType()))

@@ -263,7 +263,7 @@ void	CResourceManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u
 	map_Texture::iterator E = m_textures.end	();
 	for (; I!=E; I++)
 	{
-		u32 m = I->second->dwMemoryUsage;
+		u32 m = I->second->flags.MemoryUsage;
 		if (strstr(I->first,"lmap"))
 		{
 			c_lmaps	++;
