@@ -13,6 +13,7 @@
 #include "ScintillaCtrl.h"
 #include "FindReplaceDlg.h"
 
+class CLuaDoc;
 class CLuaView : public CView
 {
 	CProjectFile* m_projFile;

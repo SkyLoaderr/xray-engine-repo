@@ -19,6 +19,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+CWordListArray				g_wordArray;
+CFuncListArray				g_funcArray;
+CBreakpointListArray		g_breakpointsArray;
 /////////////////////////////////////////////////////////////////////////////
 // CLuaEditor
 
@@ -670,6 +674,7 @@ void CLuaEditor::setupLexer_ex()
    Sci(SCI_SETTABINDENTS,7,0);
    Sci(SCI_SETINDENT,4,0);
 
+   Sci(SCI_AUTOCSETSEPARATOR, 30);
 }
 
 void	CLuaEditor::AdjustCurrTabIndent()

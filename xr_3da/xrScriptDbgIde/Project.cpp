@@ -418,3 +418,10 @@ void CProject::AddFolder()
 	pTree->AddFolder(f_name);
 	SetModifiedFlag(TRUE);
 }
+
+void CProject::CreateBreakPointList(CString& str)
+{
+	int nFiles = m_files.GetSize();
+	for ( int i=0; i<nFiles; ++i )
+		m_files[i]->CreateBreakPointList(str);
+}

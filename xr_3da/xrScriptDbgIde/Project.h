@@ -53,13 +53,13 @@ public:
 	void FillBreakPoints(CMailSlotMsg* msg);
 
 	CString							m_ss_working_folder;
-
+	CProjectFileArray	m_files;
+	void CreateBreakPointList(CString& str);
 protected:
 	BOOL Load(CArchive& ar);
 
 	BOOL m_bModified;
 
-	CProjectFileArray	m_files;
 	CString m_strName;
 
 	CString m_command;

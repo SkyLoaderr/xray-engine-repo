@@ -44,7 +44,7 @@ public:
 	void		FillBreakPoints(CMailSlotMsg*);
 	BOOL		HasBreakPoint(){return m_breakPoints.GetSize();};
 
-
+	void		CreateBreakPointList(CString& str);
 	
 	EVSSStatus		GetSS_status		();
 	void			UpdateSS_status		();

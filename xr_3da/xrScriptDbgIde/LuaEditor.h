@@ -16,6 +16,44 @@
 class CProjectFile;
 class CLuaView;
 
+enum lists_types{
+	eWordList=1,
+	eFuncList,
+	eBreakPointList
+};
+
+struct word_list_struct
+{
+	int				line_num;
+	int				pos;
+	CProjectFile*	pf;
+};
+
+struct func_list_struct
+{
+	int				line_num;
+	CProjectFile*	pf;
+};
+
+struct breakpoint_list_struct
+{
+	breakpoint_list_struct():line_num(0),pf(0){}
+	int				line_num;
+	CProjectFile*	pf;
+};
+typedef CTypedPtrArray<CPtrArray, word_list_struct*> CWordListArray;
+typedef CTypedPtrArray<CPtrArray, func_list_struct*> CFuncListArray;
+typedef CTypedPtrArray<CPtrArray, breakpoint_list_struct*> CBreakpointListArray;
+
+extern CWordListArray			g_wordArray;
+extern CFuncListArray			g_funcArray;
+extern CBreakpointListArray		g_breakpointsArray;
+
+template<class T>
+void free(T& arr)
+{	for(int i=0; i<arr.GetSize();++i) delete(arr[i]);
+	arr.RemoveAll();}
+
 class CLuaEditor : public CWnd
 {
 // Construction
@@ -91,8 +129,8 @@ public:
 	void	CompleteWord(const char* word);
 	void	createFunctionList(CMenu& mnu);
 	bool	createWordList(CMenu& mnu);
-	bool	createBreakPointList(CMenu& mnu);
 	long	GetWordStart(long end);
+
 //lexer
 	void	SetLexer(int lexer, BOOL bDirect = TRUE);
 	void	SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect = TRUE);
@@ -112,6 +150,8 @@ public:
 	void GotoLineDlg();
 	void FindText(CString str);
 	CLuaView*	m_lua_view;
+	int Sci(int nCmd, int wParam=0, int lParam=0);
+
 protected:
 	int (*m_fnScintilla)(void*,int,int,int);
 	void *m_ptrScintilla;
@@ -119,7 +159,6 @@ protected:
 	BOOL m_bShowCalltips;
 	CString m_strCallTip;
 
-	int Sci(int nCmd, int wParam=0, int lParam=0);
 
 	// Generated message map functions
 protected:

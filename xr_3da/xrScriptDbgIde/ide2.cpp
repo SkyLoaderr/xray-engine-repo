@@ -136,6 +136,10 @@ CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
 
 int CIdeApp::ExitInstance() 
 {
+	free(g_breakpointsArray);
+	free(g_wordArray);
+	free(g_funcArray);
+
 	if ( m_hScintilla )
 		FreeLibrary(m_hScintilla);		
 	return CWinApp::ExitInstance();
@@ -183,8 +187,11 @@ CLuaView* CIdeApp::OpenProjectFilesView(CProjectFile *pPF, int nLine)
 		g_mainFrame->GetWorkspaceWnd()->GetTreeViewFiles()->VSSUpdateStatus(itm);
 		if ( nLine>=0 )
 			pView->GetEditor()->GotoLine(nLine);
+
+		pPF->SetLuaView(pView);
+		pPF->Check_view();
 	}
-	
+
 	return pView;
 }
 

@@ -442,12 +442,12 @@ void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult)
 	if ( pPF )
 	{
 		CLuaView* pView = theApp.OpenProjectFilesView(pPF);
-		if(pView){
+/*		if(pView){
 			pPF->SetLuaView(pView);
 			pPF->Check_view();
 			pView->Activate();
 			VSSUpdateStatus(hItem);
-		}
+		}*/
 	}
 
 	*pResult = 0;

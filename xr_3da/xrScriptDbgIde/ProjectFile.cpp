@@ -446,3 +446,38 @@ const CString&	CProjectFile::getWorkingFolder()
 {
 	return g_mainFrame->GetProject()->m_ss_working_folder;
 }
+
+void CProjectFile::CreateBreakPointList(CString& str)
+{
+		POSITION pos = m_breakPoints.GetStartPosition();
+		int nLine, nTemp;
+		char str_line[1024];
+		char trim[] = "\t\n\r";
+		int line_length;
+		while (pos != NULL)
+		{
+			m_breakPoints.GetNextAssoc( pos, nLine, nTemp );
+
+			if(str.GetLength())
+				str.AppendChar(30);
+			
+			if(GetLuaView()){
+					GetLuaView()->GetEditor()->Sci(SCI_GETLINE,nLine-1,(int)&str_line[0]);
+					line_length = GetLuaView()->GetEditor()->Sci(SCI_LINELENGTH,nLine-1);
+					str_line[line_length] = 0;
+					StrTrim(str_line,trim);
+
+			}else
+				sprintf(str_line,"not loaded");
+
+			CString buff;
+			buff.Format("%s, line %d, text:%s",GetName(),nLine,str_line);
+			
+			str.Append(buff);
+
+			breakpoint_list_struct* s = new breakpoint_list_struct();
+			s->line_num = nLine;
+			s->pf = this;
+			g_breakpointsArray.Add(s);
+		}
+}

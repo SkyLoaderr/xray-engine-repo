@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "LuaEditor.h"
+#include "LuaView.h"
+#include "ProjectFile.h"
 
 
 CString CLuaEditor::GetSelText()
@@ -114,28 +116,6 @@ void CLuaEditor::createFunctionList(CMenu& mnu)
 	}
 }
 
-bool CLuaEditor::createBreakPointList(CMenu& mnu)
-{
-	int line = 0;
-	int line_length;
-	bool bAdded = false;
-	char str_line[1024];
-	char trim[] = "\t\n\r";
-
-	while(true){
-		line = Sci(SCI_MARKERNEXT,line,1);
-		if ( line == -1 )
-			return bAdded;
-
-
-		Sci(SCI_GETLINE,line,(int)&str_line[0]);
-		line_length = Sci(SCI_LINELENGTH,line);
-		str_line[line_length] = 0;
-		StrTrim(str_line,trim);
-		mnu.AppendMenu(MF_STRING,line+1,str_line);
-		++line;
-	}
-}
 
 bool CLuaEditor::createWordList(CMenu& mnu)
 {

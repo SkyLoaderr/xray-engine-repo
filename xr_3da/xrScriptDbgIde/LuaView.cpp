@@ -181,6 +181,7 @@ BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	if (lpnmhdr->hwndFrom == m_editor.m_hWnd)
 	{
 		*pResult = OnSci((SCNotification*)lParam);
+		
 		return TRUE;
 	}
 	return CView::OnNotify(wParam, lParam, pResult);
@@ -190,8 +191,24 @@ int CLuaView::OnSci(SCNotification* pNotify)
 {
 	CPoint pt;
 	int nLine;
+
 	switch (pNotify->nmhdr.code)
 	{
+		case SCN_USERLISTSELECTION:{
+			int type = pNotify->wParam;
+			int idx = pNotify->lParam;
+			switch (type){
+		case eWordList:{
+					   }break;
+		case eFuncList:{
+					   }break;
+		case eBreakPointList:{
+			theApp.OpenProjectFilesView(g_breakpointsArray[idx]->pf);
+			g_breakpointsArray[idx]->pf->GetLuaView()->GetEditor()->GotoLine(g_breakpointsArray[idx]->line_num);
+						}break;
+			}
+
+		}break;
 		case SCN_MARGINCLICK:
 			if ( GetDocument()->IsInProject() )
 			{
@@ -200,10 +217,9 @@ int CLuaView::OnSci(SCNotification* pNotify)
 				nLine = m_editor.LineFromPoint(pt);
 				
 				ToggleBreakPoint(nLine);
-			}
-		break;
+			}break;
 
-		case SCI_SETSAVEPOINT:
+//		case SCI_SETSAVEPOINT:
 		case SCN_SAVEPOINTREACHED:
 			GetDocument()->SetModifiedFlag(FALSE);
 		break;
@@ -805,6 +821,16 @@ void CLuaView::OnFunctionList()
 
 void CLuaView::OnBreakPointList()
 {
+	free(g_breakpointsArray);
+
+	CString buff;
+	g_mainFrame->GetProject()->CreateBreakPointList(buff);
+
+	if(buff.GetLength() )
+		GetEditor()->Sci(SCI_USERLISTSHOW, eBreakPointList, (int)buff.GetBuffer());
+
+	return;
+/*
 	CMenu mnu;
 	mnu.CreatePopupMenu();
 	GetEditor()->createBreakPointList(mnu);
@@ -819,7 +845,7 @@ void CLuaView::OnBreakPointList()
 	if( 0 != idx ){
 		GetEditor()->GotoLine(idx);
 	}
-	
+*/	
 }
 
 void CLuaView::OnActivateView(  BOOL bActivate,  CView* pActivateView,  CView* pDeactiveView )
