@@ -15,8 +15,9 @@ function main ()
 	action (stalker1, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			anim ("sidya_kurit_2"), cond (cond.anim_end))
 
-	action (stalker2, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("sidya_boltaet_ 0"), cond (cond.time_end, 10000000))
+	action (stalker2, --move (move.standing, move.stand, move.line, patrol ("way_sh")),	anim ("sidya_boltaet_ 0"), 
+			cond (cond.time_end, 10000000),
+            sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true))
 
 	action (stalker3, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			anim ("spit_ 0"), cond (cond.time_end, 10000000))
