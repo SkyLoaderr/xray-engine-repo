@@ -153,10 +153,6 @@ void Fvisual::Render		(float LOD)
 	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
-void Fvisual::Render_Fast	(float LOD)
-{
-	Render	(LOD);
-}
 
 #define PCOPY(a)	a = pFrom->a
 void	Fvisual::Copy			(IRender_Visual *pSrc)
