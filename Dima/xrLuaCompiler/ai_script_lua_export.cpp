@@ -399,7 +399,7 @@ void CScriptEngine::export_actions()
 			.def("level_vertex_id",				&CPatrolPathParams::level_vertex_id)
 			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))
 			.def("index",						(u32			(CPatrolPathParams::*)(LPCSTR)			const)	(CPatrolPathParams::point))
-			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))
+			.def("get_nearest",					(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))
 			.def("flag",						&CPatrolPathParams::flag),
 
 		class_<CScriptMovementAction>("move")
