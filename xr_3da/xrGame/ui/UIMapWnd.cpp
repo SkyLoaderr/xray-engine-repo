@@ -287,20 +287,25 @@ void CUIMapWnd::InitGlobalMap()
 
 	UIGlobalMapBackground.InitMapBackground();
 
+	// Инициализируем обжективы
+	InitGlobalMapLocationObjectives();
+
 	// Инициализируем параметры локальных карт
 	int globalMapLocations = pSettings->line_count(GLOBAL_MAP_LOCATIONS_LTX);
 	for (int i = 0; i < globalMapLocations; ++i)
 	{
 		LPCSTR name, value;
 		pSettings->r_line(GLOBAL_MAP_LOCATIONS_LTX, i, &name, &value);
-		if(m_MapLocations.find(name) == m_MapLocations.end())
+
+		// Если для карты уже есть задания, то инициализируем ее.
+		// Если нет, то удаляем ее вместе с заданиями
+		MapLocations_it it = m_MapLocations.find(name);
+		if(it != m_MapLocations.end())
 		{
 			Ivector4 v = pSettings->r_ivector4(GLOBAL_MAP_LOCATIONS_LTX, name);
 			AddGlobalMapLocation(name, v);
 		}
 	}
-
-	InitGlobalMapLocationObjectives();
 }
 
 //////////////////////////////////////////////////////////////////////////
