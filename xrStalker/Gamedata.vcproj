@@ -635,6 +635,9 @@
 			RelativePath=".\game.ltx">
 		</File>
 		<File
+			RelativePath=".\items.ltx">
+		</File>
+		<File
 			RelativePath=".\System.ltx">
 		</File>
 	</Files>
