@@ -11,6 +11,11 @@ CRenderTarget::CRenderTarget()
 	pRT			= 0;
 	pBaseRT		= 0;
 	pBaseZB		= 0;
+
+	pTexture	= 0;
+	pShaderSet	= 0;
+	pShaderGray	= 0;
+	pStream		= 0;
 }
 
 BOOL CRenderTarget::Create	()
