@@ -127,6 +127,8 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 
 void CCustomEvent::Update (DWORD dt)
 {
+	if (Remote())	return;
+	
 	if (!Contacted.empty()) {
 		CCF_Shape* M = dynamic_cast<CCF_Shape*> (CFORM()); R_ASSERT	(M);
 		for (DWORD i=0; i<Contacted.size(); i++) 
@@ -154,6 +156,8 @@ void CCustomEvent::Update (DWORD dt)
 
 void CCustomEvent::OnNear( CObject* O )
 {
+	if (Remote())	return;
+
 	// check if not contacted before
 	if (find(Contacted.begin(),Contacted.end(),O)!=Contacted.end()) return;
 	
