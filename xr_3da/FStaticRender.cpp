@@ -49,7 +49,7 @@ void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
 	SceneGraph::_PatchItem& P = vecPatches.back();
-	P.S		= S;
+	P.S		= S->lod0;
 	P.P		= P1;
 	P.size	= s;
 	P.angle = a;
@@ -279,9 +279,9 @@ void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 
 void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 {
-	Device.Shader.set_Shader(N->key);
-	N->val.traverseLR		(matrix_L2);
-	N->val.clear			();
+	Device.Shader.set_Element	(N->key);
+	N->val.traverseLR			(matrix_L2);
+	N->val.clear				();
 }
 
 // ALPHA
@@ -307,7 +307,7 @@ void CRender::flush_Patches	()
 	DWORD						vOffset;
 	FVF::TL*					V = (FVF::TL*)vsPatches->Lock(vecPatches.size()*4,vOffset);
 	svector<int,max_patches>	groups;
-	Shader*						cur_S=vecPatches[0].S;
+	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
 	for (DWORD i=0; i<vecPatches.size(); i++)
 	{
@@ -357,9 +357,9 @@ void CRender::flush_Patches	()
 	int current=0;
 	for (DWORD g=0; g<groups.size(); g++)
 	{
-		int p_count				= groups[g];
-		Device.Shader.set_Shader(vecPatches[current].S);
-		Device.Primitive.Draw	(vsPatches,4*p_count,2*p_count,vOffset,Device.Streams_QuadIB);
+		int p_count					= groups[g];
+		Device.Shader.set_Element	(vecPatches[current].S);
+		Device.Primitive.Draw		(vsPatches,4*p_count,2*p_count,vOffset,Device.Streams_QuadIB);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;
 	}

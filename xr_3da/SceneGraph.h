@@ -14,10 +14,11 @@ namespace SceneGraph
 		CVisual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
+		float			lod;
 		BOOL			nearer;
 	};
 	struct _PatchItem	{
-		Shader*			S;
+		ShaderElement*	S;
 		Fvector			P;
 		float			size;
 		float			angle;
@@ -56,16 +57,16 @@ namespace SceneGraph
 	typedef FixedMAP<DWORD,mapNormalTextures>		mapNormalCodes;
 
 	// Higher level - MATRIX
-	typedef FixedMAP<float,_MatrixItem>		mapMatrixItem;
+	typedef FixedMAP<float,_MatrixItem>				mapMatrixItem;
 
 	// Top level
-	typedef mapNormalCodes					mapNormal_T		[8];
+	typedef mapNormalCodes							mapNormal_T		[8];
 
-	typedef FixedMAP<Shader*,mapMatrixItem>	mapMatrix_T;
-	typedef mapMatrix_T::TNode				mapMatrix_Node;
+	typedef FixedMAP<ShaderElement*,mapMatrixItem>	mapMatrix_T;
+	typedef mapMatrix_T::TNode						mapMatrix_Node;
 
-	typedef FixedMAP<float,_MatrixItem>		mapSorted_T;
-	typedef mapSorted_T::TNode				mapSorted_Node;
+	typedef FixedMAP<float,_MatrixItem>				mapSorted_T;
+	typedef mapSorted_T::TNode						mapSorted_Node;
 
-	typedef std::vector<_PatchItem>				vecPatches_T;
+	typedef std::vector<_PatchItem>					vecPatches_T;
 };
