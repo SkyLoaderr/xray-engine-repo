@@ -298,6 +298,8 @@ void CLevel::ProcessGameEvents		()
 
 void CLevel::OnFrame	()
 {
+	SoundEvent_Dispatch			( );
+
 	// Client receive
 	if (net_isDisconnected())	
 	{
@@ -318,9 +320,9 @@ void CLevel::OnFrame	()
 	if (!ai().get_alife())
 		Device.Statistic.TEST2.End();
 
-	MapManager().Update();
+	MapManager().Update		();
 	// Inherited update
-	inherited::OnFrame					();
+	inherited::OnFrame		();
 
 	// Draw client/server stats
 	CGameFont* F = HUD().Font().pFontDI;
