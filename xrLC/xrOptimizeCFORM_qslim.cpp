@@ -30,7 +30,8 @@ void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
 struct face_props	{
 	u16		material;
 	u16		sector;
-	void	set		(u16 mtl, u16 sect){material=mtl;sector=sect;}
+	Fvector	norm;
+	void	set		(u16 mtl, u16 sect, const Fvector& n){material=mtl;sector=sect;norm.set(n);}
 };
 DEFINE_VECTOR(face_props,FPVec,FPVecIt);
 
@@ -38,8 +39,8 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 {
 	FPVec FPs;
 
-	u32 base_verts_cnt		= CL.getVS();
-	u32 base_faces_cnt		= CL.getTS();
+	u32 base_verts_cnt		= u32(CL.getVS());
+	u32 base_faces_cnt		= u32(CL.getTS());
 
 	// save source SMF
 	string_path				fn;
@@ -58,7 +59,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	for (u32 f_idx=0; f_idx<base_faces_cnt; f_idx++){
 		CDB::TRI* t			= CL.getT()+f_idx;
 		mdl->add_face		(t->verts[0],t->verts[1],t->verts[2]);
-		FPs[f_idx].set		(t->material,t->sector);
+		FPs[f_idx].set		(t->material,t->sector,Fvector().mknormal(*(CL.getV()+t->verts[0]),*(CL.getV()+t->verts[1]),*(CL.getV()+t->verts[2])));
 	}
 	CL.clear				();
 
@@ -75,29 +76,38 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	Ivector2 f_rm[3]={{0,1}, {1,2}, {2,0}};
 	for (f_idx=0; f_idx<slim->valid_faces; f_idx++){
 		if (mdl->face_is_valid(f_idx)){
-			MxFace& F					= mdl->face(f_idx);
+			MxFace& base_f				= mdl->face(f_idx);
 			for (u32 edge_idx=0; edge_idx<3; edge_idx++){
 				int K;
 				u32 I					= f_rm[edge_idx].x;
 				u32 J					= f_rm[edge_idx].y;
-				const MxFaceList& N0	= mdl->neighbors(F[I]);
-				const MxFaceList& N1	= mdl->neighbors(F[J]);
+				const MxFaceList& N0	= mdl->neighbors(base_f[I]);
+				const MxFaceList& N1	= mdl->neighbors(base_f[J]);
 				for(K=0; K<N1.length(); K++) mdl->face_mark(N1[K], 0);
 				for(K=0; K<N0.length(); K++) mdl->face_mark(N0[K], 1);
 				for(K=0; K<N1.length(); K++) mdl->face_mark(N1[K], mdl->face_mark(N1[K])+1);
 				const MxFaceList& N		= (N0.size()<N1.size())?N0:N1;
 				face_props& base_t		= FPs[f_idx];
 				if (N.size()){
+					u32 cnt_pos=0, cnt_neg=0;
+					bool need_constraint= false;
 					for(K=0; K<N.length(); K++){
 						u32 fff			= N[K];
+						MxFace& cur_f	= mdl->face(fff);
 						unsigned char mk= mdl->face_mark(fff);
 						if((f_idx!=N[K])&&(mdl->face_mark(N[K])==2)){
 							face_props& cur_t	= FPs[N[K]];
 							if ((cur_t.material!=base_t.material)||(cur_t.sector!=base_t.sector)){
-								slim->constraint_manual	(F[I],F[J],f_idx);
+								need_constraint	= true;
 								break;
 							}
+							float dot=base_t.norm.dotproduct(cur_t.norm);
+							if		(fsimilar(dot,-1.f,EPS))	cnt_neg++;
+							else if (fsimilar(dot,1.f,EPS))		cnt_pos++;
 						}
+					}
+					if (need_constraint||((0==cnt_pos)&&(1==cnt_neg))){
+						slim->constraint_manual	(base_f[I],base_f[J],f_idx);
 					}
 				}
 			}
@@ -130,52 +140,3 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	xr_delete				(mdl);
 }
 
-/*
-bool compare_faces		(MxFace& F0, MxFace& F1)
-{
-	MxVertexID v0[3]	= {F0[0],F0[1],F0[2]};	std::sort(v0,v0+3);
-	MxVertexID v1[3]	= {F1[0],F1[1],F1[2]};	std::sort(v1,v1+3);
-
-	return ((v0[0]==v1[0])&&(v0[1]==v1[1])&&(v0[2]==v1[2]));
-}
-	Ivector2 f_rm[3]={{0,1}, {1,2}, {2,0}};
-	for (f_idx=0; f_idx<slim->valid_faces; f_idx++){
-		if (mdl->face_is_valid(f_idx)){
-			MxFace& base_f				= mdl->face(f_idx);
-			for (u32 edge_idx=0; edge_idx<3; edge_idx++){
-				int K;
-				u32 I					= f_rm[edge_idx].x;
-				u32 J					= f_rm[edge_idx].y;
-				const MxFaceList& N0	= mdl->neighbors(base_f[I]);
-				const MxFaceList& N1	= mdl->neighbors(base_f[J]);
-				for(K=0; K<N1.length(); K++) mdl->face_mark(N1[K], 0);
-				for(K=0; K<N0.length(); K++) mdl->face_mark(N0[K], 1);
-				for(K=0; K<N1.length(); K++) mdl->face_mark(N1[K], mdl->face_mark(N1[K])+1);
-				const MxFaceList& N		= (N0.size()<N1.size())?N0:N1;
-				face_props& base_t		= FPs[f_idx];
-				if (N.size()){
-					u32 cnt_pos=0, cnt_neg=0;
-					bool need_constraint= false;
-					for(K=0; K<N.length(); K++){
-						u32 fff			= N[K];
-						MxFace& cur_f	= mdl->face(fff);
-						unsigned char mk= mdl->face_mark(fff);
-						if(!compare_faces(base_f,cur_f)&&(mdl->face_mark(N[K])==2)){
-							face_props& cur_t	= FPs[N[K]];
-							if ((cur_t.material!=base_t.material)||(cur_t.sector!=base_t.sector)){
-								need_constraint	= true;
-								break;
-							}
-							float dot=base_t.N.dotproduct(cur_t.N);
-							if		(fsimilar(dot,-1.f,EPS))	cnt_neg++;
-							else if (fsimilar(dot,1.f,EPS))		cnt_pos++;
-						}
-					}
-					if (need_constraint||(cnt_neg!=cnt_pos)){
-						slim->constraint_manual	(base_f[I],base_f[J],f_idx);
-					}
-				}
-			}
-		}
-	}
-*/
