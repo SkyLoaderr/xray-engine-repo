@@ -22,7 +22,9 @@ void CActor::cam_Update(float dt, float fFOV)
 {
 	if(m_holder)
 	{
-		m_holder->cam_Update(dt);
+        m_holder->cam_Update(dt);
+		EffectorManager().Update(m_holder->Camera());
+		EffectorManager().ApplyDevice();
 		return;
 	}
 	
