@@ -60,7 +60,7 @@ void					CRender::create					()
 	else										o.distortion = FALSE;
 	if (strstr(Core.Params,"-nodistort"))		o.distortion = FALSE;
 	Msg				("* distortion: %s, dev(%d),need(%d)",o.distortion?"used":"unavailable",v_dev,v_need);
-	m_skinning					= 0;
+	m_skinning					= -1;
 
 	// disasm
 	o.disasm					= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;

@@ -45,6 +45,7 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 // Just two static storage
 void					CRender::create					()
 {
+	m_skinning			= -1;
 	// hardware
 	o.smapsize			= 2048;
 	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
