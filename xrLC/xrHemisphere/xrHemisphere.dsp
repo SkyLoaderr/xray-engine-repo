@@ -33,14 +33,14 @@ RSC=rc.exe
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
-# PROP BASE Output_Dir "Release"
+# PROP BASE Output_Dir "x:\"
 # PROP BASE Intermediate_Dir "Release"
-# PROP BASE Target_Dir ""
+# PROP BASE Target_Dir "x:\"
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 0
-# PROP Output_Dir "Release"
+# PROP Output_Dir "x:\"
 # PROP Intermediate_Dir "Release"
-# PROP Target_Dir ""
+# PROP Target_Dir "x:\"
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /c
 # ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -58,14 +58,14 @@ LINK32=link.exe
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
-# PROP BASE Output_Dir "Debug"
+# PROP BASE Output_Dir "x:\"
 # PROP BASE Intermediate_Dir "Debug"
-# PROP BASE Target_Dir ""
+# PROP BASE Target_Dir "x:\"
 # PROP Use_MFC 0
 # PROP Use_Debug_Libraries 1
-# PROP Output_Dir "Debug"
+# PROP Output_Dir "x:\"
 # PROP Intermediate_Dir "Debug"
-# PROP Target_Dir ""
+# PROP Target_Dir "x:\"
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "XRHEMISPHERE_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
