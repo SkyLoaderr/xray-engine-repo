@@ -273,6 +273,7 @@ protected:
 	int					z3;
 	float				square_size_y;
 	float				m_sqr_distance_xz;
+	_Graph::CVertex		*best_node;
 
 public:
 	virtual				~CPathManager	()
@@ -355,6 +356,17 @@ public:
 	IC	bool		is_metric_euclidian() const
 	{
 		return					(true);
+	}
+
+	IC		void		begin			(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
+	{
+		best_node				= graph->vertex(vertex_id);
+		graph->begin			(best_node,begin,end);
+	}
+
+	IC		u32			get_value		(const_iterator &i) const
+	{
+		return					(graph->value(best_node,i));
 	}
 };
 
