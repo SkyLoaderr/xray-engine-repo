@@ -114,24 +114,6 @@ void CSoundRender_Environment::save	(IWriter* fs)
     fs->w_float	                    (AirAbsorptionHF     );
 }
 
-void CSoundRender_Environment::fill_eax(EAXLISTENERPROPERTIES& props)
-{
-    props.lRoom						= iFloor(Room)					;	// room effect level at low frequencies
-    props.lRoomHF					= iFloor(RoomHF)				;   // room effect high-frequency level re. low frequency level
-    props.flRoomRolloffFactor		= RoomRolloffFactor				;   // like DS3D flRolloffFactor but for room effect
-    props.flDecayTime				= DecayTime						;   // reverberation decay time at low frequencies
-    props.flDecayHFRatio			= DecayHFRatio					;   // high-frequency to low-frequency decay time ratio
-    props.lReflections				= iFloor(Reflections)			;   // early reflections level relative to room effect
-    props.flReflectionsDelay		= ReflectionsDelay				;   // initial reflection delay time
-    props.lReverb					= iFloor(Reverb)	 			;   // late reverberation level relative to room effect
-    props.flReverbDelay				= ReverbDelay					;   // late reverberation delay time relative to initial reflection
-    props.dwEnvironment				= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
-    props.flEnvironmentSize			= EnvironmentSize				;  	// environment size in meters
-    props.flEnvironmentDiffusion	= EnvironmentDiffusion			; 	// environment diffusion
-    props.flAirAbsorptionHF			= AirAbsorptionHF				;	// change in level per meter at 5 kHz
-    props.dwFlags					= 0								;	// modifies the behavior of properties
-}
-
 //////////////////////////////////////////////////////////////////////////
 void	SoundEnvironment_LIB::Load	(LPCSTR name)
 {

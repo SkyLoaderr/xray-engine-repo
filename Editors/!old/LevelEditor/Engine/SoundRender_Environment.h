@@ -3,8 +3,6 @@
 #pragma once
 
 // refs
-struct  EAXLISTENERPROPERTIES;
-
 class XRSOUND_EDITOR_API		CSoundRender_Environment		: public CSound_environment
 {
 public:
@@ -32,7 +30,6 @@ public:
 	void			lerp			            (CSoundRender_Environment& A, CSoundRender_Environment& B, float f);
 	void			load			            (IReader* fs);
 	void			save			            (IWriter* fs);
-    void			fill_eax					(EAXLISTENERPROPERTIES& props);
 };
 
 class XRSOUND_EDITOR_API		SoundEnvironment_LIB

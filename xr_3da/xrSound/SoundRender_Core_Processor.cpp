@@ -118,7 +118,20 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
             e_current.lerp					(e_current,e_target,dt);
 
             EAXLISTENERPROPERTIES eax_props;
-            e_current.fill_eax				(eax_props);
+            eax_props.lRoom					= iFloor(e_current.Room)		;	// room effect level at low frequencies
+            eax_props.lRoomHF				= iFloor(e_current.RoomHF)		;   // room effect high-frequency level re. low frequency level
+            eax_props.flRoomRolloffFactor	= e_current.RoomRolloffFactor	;   // like DS3D flRolloffFactor but for room effect
+            eax_props.flDecayTime			= e_current.DecayTime			;   // reverberation decay time at low frequencies
+            eax_props.flDecayHFRatio		= e_current.DecayHFRatio		;   // high-frequency to low-frequency decay time ratio
+            eax_props.lReflections			= iFloor(e_current.Reflections)	;   // early reflections level relative to room effect
+            eax_props.flReflectionsDelay	= e_current.ReflectionsDelay	;   // initial reflection delay time
+            eax_props.lReverb				= iFloor(e_current.Reverb)	 	;   // late reverberation level relative to room effect
+            eax_props.flReverbDelay			= e_current.ReverbDelay			;   // late reverberation delay time relative to initial reflection
+            eax_props.dwEnvironment			= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
+            eax_props.flEnvironmentSize		= e_current.EnvironmentSize		;  	// environment size in meters
+            eax_props.flEnvironmentDiffusion= e_current.EnvironmentDiffusion; 	// environment diffusion
+            eax_props.flAirAbsorptionHF		= e_current.AirAbsorptionHF		;	// change in level per meter at 5 kHz
+            eax_props.dwFlags				= 0								;	// modifies the behavior of properties
             R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
         }
 
