@@ -125,13 +125,12 @@ bool CAI_Stalker::bfCheckIfCanKillEnemy()
 		return(false);
 
 	Fvector fire_pos, fire_dir;
-	Weapons->GetFireParams(fire_pos,fire_dir);
+	Weapons->GetFireParams(vPosition,fire_dir);
 	fire_pos.sub(m_tEnemy.Enemy->Position(),fire_pos);
-	fire_pos.normalize_safe();
-	float fAlpha = fire_dir.dotproduct(fire_pos);
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	return(fAlpha < PI_DIV_4);
+	float yaw1,yaw2,pitch1,pitch2;
+	fire_pos.getHP(yaw1,pitch1);
+	fire_dir.getHP(yaw2,pitch2);
+	return(getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_4) && getAI().bfTooSmallAngle(pitch1,pitch2,PI_DIV_4));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillMember()

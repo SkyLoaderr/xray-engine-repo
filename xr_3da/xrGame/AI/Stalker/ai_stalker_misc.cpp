@@ -207,7 +207,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCa
 		vfBuildPathToDestinationPoint	(0,bCanStraighten);
 	else {
 		vfInitSelector					(tSelector,Squad,Leader);
-		vfSearchForBetterPosition		(m_tSelectorFreeHunting,Squad,Leader);
+		vfSearchForBetterPosition		(tSelector,Squad,Leader);
 	}
 }
 
@@ -302,14 +302,14 @@ void CAI_Stalker::vfSetFire(bool bFire, CGroup &Group)
 							q_action.setup(AI::AIC_Action::FireEnd);
 							m_bFiring = false;
 						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
+					else {
+						q_action.setup(AI::AIC_Action::FireEnd);
+						m_bFiring = false;
+					}
+				else {
+					q_action.setup(AI::AIC_Action::FireEnd);
+					m_bFiring = false;
+				}
 			}
 			else {
 				q_action.setup(AI::AIC_Action::FireEnd);

@@ -40,7 +40,7 @@ void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
 	
-	DropItem();
+	DropItemSendMessage();
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
@@ -92,33 +92,33 @@ void CAI_Stalker::SearchCorp()
 {
 	WRITE_TO_LOG("Searching corp");
 	
-	vfStopFire();
-
-	SelectEnemy(m_tEnemy);
-
-	// I see enemy
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
-
-	vfCheckForItems();
-
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
-
-	if (AI_Path.DestNode != m_dwSavedEnemyNodeID) {
-		AI_Path.DestNode = m_dwSavedEnemyNodeID;
-		vfBuildPathToDestinationPoint(0,false,&m_tSavedEnemy->Position());
-	}
-
-	if (vPosition.distance_to(m_tSavedEnemy->Position()) < EPS_L) {
-		m_tSavedEnemy = 0;
-		GO_TO_PREV_STATE_THIS_UPDATE;
-	}
-	
-	Fvector						tTemp;
-	m_tSavedEnemy->svCenter		(tTemp);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tTemp);
-	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+//	vfStopFire();
+//
+//	SelectEnemy(m_tEnemy);
+//
+//	// I see enemy
+//	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
+//
+//	vfCheckForItems();
+//
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
+//
+//	if (AI_Path.DestNode != m_dwSavedEnemyNodeID) {
+//		AI_Path.DestNode = m_dwSavedEnemyNodeID;
+//		vfBuildPathToDestinationPoint(0,false,&m_tSavedEnemy->Position());
+//	}
+//
+//	if (vPosition.distance_to(m_tSavedEnemy->Position()) < EPS_L) {
+//		m_tSavedEnemy = 0;
+//		GO_TO_PREV_STATE_THIS_UPDATE;
+//	}
+//	
+//	Fvector						tTemp;
+//	m_tSavedEnemy->svCenter		(tTemp);
+//	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tTemp);
+//	
+//	if (m_fCurSpeed < EPS_L)
+//		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::HolsterItem()
