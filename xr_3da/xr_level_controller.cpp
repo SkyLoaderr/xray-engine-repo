@@ -53,6 +53,7 @@ _keybind  keybind[] = {
 	{ "wpn_zoom",		kWPN_ZOOM	},
 	{ "wpn_reload",		kWPN_RELOAD	},
 	
+	{ "drop",			kDROP		},	
 	{ "use",			kUSE		},	
 	{ "scores",			kSCORES		},	
 	{ "chat",			kCHAT		},	
