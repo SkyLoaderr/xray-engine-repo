@@ -150,6 +150,12 @@ function add_to_binder(npc, char_ini)
 	local operators  = {}
 	local properties = {}
 	
+	xr_motivator.storage[npc:id()].assistance = {
+			actor = nil,
+			desired_distance = 5,
+			assist_point = nil
+	}	
+	
 	local manager = npc:motivation_action_manager()
 
 	properties["state_end"]				= xr_evaluators_id.state_change
@@ -174,9 +180,7 @@ function add_to_binder(npc, char_ini)
 	action:add_precondition (world_property(properties["need_assistance"],      false))
 end
 function set_assistance(object, victim)
-	local st = xr_motivator.storage[object:id()].assistance	
-	printf("SET ASSISTANCE: %s %s", object:name(), victim:name())
-	st.actor = victim
+	xr_motivator.storage[object:id()].assistance.actor = victim
 end
 
 -----------------------------------------------------------------
