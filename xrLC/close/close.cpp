@@ -52,10 +52,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		char		dest[128],msg[128];
 		sscanf		(lpCmdLine,"%s %s",dest,msg);
 
-		for (int i=0; i<10; i++) 
+		for (int i=0; i<100; i++) 
 		{
 			WriteSlot	("*",dest,msg);
-			Sleep		(1);
+			Sleep		(10);
 		}
 	}
 
