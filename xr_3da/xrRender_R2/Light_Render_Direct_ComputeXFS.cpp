@@ -21,6 +21,7 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 	else	{
 		// ssa is quadratic
 		S_size					= _sqrt(ssa) * DSM_size;
+		if (S_size<16)	S_size	= 16;
 	}
 }
 
