@@ -116,11 +116,11 @@ public:
 	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
 
 	// Name management
-	IC ref_str							cName				()			const	{ return *NameObject;				}
+	IC ref_str							cName				()			const	{ return NameObject;				}
 	void								cName_set			(ref_str N);
-	IC ref_str							cNameSect			()			const	{ return *NameSection;				}
+	IC ref_str							cNameSect			()			const	{ return NameSection;				}
 	void								cNameSect_set		(ref_str N);
-	IC ref_str							cNameVisual			()			const	{ return *NameVisual;				}
+	IC ref_str							cNameVisual			()			const	{ return NameVisual;				}
 	void								cNameVisual_set		(ref_str N);
 	
 	// Properties
