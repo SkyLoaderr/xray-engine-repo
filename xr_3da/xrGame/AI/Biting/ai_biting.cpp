@@ -198,6 +198,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
 
 	vfSetFireBones				(pSettings,section);
+
+	// prefetching
+	cNameVisual_set					("monsters\\flesh\\flesh_ik1");
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
