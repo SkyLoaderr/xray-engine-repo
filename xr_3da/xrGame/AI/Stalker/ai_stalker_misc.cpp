@@ -119,7 +119,7 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		default : NODEFAULT;
 	}
 	
-	if (m_fCurSpeed < EPS_L)
+	if (AI_Path.fSpeed < EPS_L)
 		if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_target.yaw,2*PI_DIV_6))
 			r_torso_target.yaw = r_target.yaw;
 	
@@ -163,9 +163,21 @@ void CAI_Stalker::vfUpdateSearchPosition()
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
 {
 	// sound
-	SelectSound			(m_iSoundIndex);
-	A					= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
-	B					= (m_iSoundIndex > -1) && !A;
+	int					iIndex;
+	SelectSound			(iIndex);
+	
+	A					= (iIndex > -1) && ((m_tpaDynamicSounds[iIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
+	B					= (iIndex > -1) && !A;
+	bool _A				= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
+	bool _B				= (m_iSoundIndex > -1) && !A;
+	
+	if ((A || !_A) && (B || !_B))
+		m_iSoundIndex = iIndex;
+	else {
+		m_iSoundIndex = iIndex;
+		//A = _A;
+		//B = _B;
+	}
 	J					= A || B;
 	
 	// victory probability

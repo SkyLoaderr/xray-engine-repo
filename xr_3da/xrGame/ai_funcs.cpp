@@ -11,7 +11,7 @@
 #include "ai_space.h"
 #include "inventory.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
 
 #ifndef DEBUG

@@ -11,12 +11,12 @@
 #include "..\\ai_monsters_misc.h"
 
 /**
-	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 /**/
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\
+	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
 
@@ -323,7 +323,13 @@ void CAI_Stalker::Think()
 		D = _D;
 		F = _F;
 		G = _G;
+		H = _H;
+		I = _I;
 	}
+
+	if (!A && _A  && (Level().timeServer() - m_tpaDynamicObjects[m_iSoundIndex].dwTime < m_dwInertion))
+		A = _A;
+
 	if (m_tEnemy.Enemy && (_K != K))
 		AI_Path.TravelPath.clear();
 
@@ -380,12 +386,14 @@ void CAI_Stalker::Think()
 	}
 	else
 	if (C && H && I) {
+		m_dwRandomFactor	= 50;
 		Panic			();
 	} else
 	if (C && H && !I) {
 		Hide();
 	} else
 	if (C && !H && I) {
+		m_dwRandomFactor	= 50;
 		Panic			();
 	} else
 	if (C && !H && !I) {
@@ -393,12 +401,14 @@ void CAI_Stalker::Think()
 	} else
 	
 	if (D && H && I) {
+		m_dwRandomFactor	= 50;
 		BackCover	(true);
 	} else
 	if (D && H && !I) {
 		Hide		();
 	} else
 	if (D && !H && I) {
+		m_dwRandomFactor	= 50;
 		BackCover	(false);
 	} else
 	if (D && !H && !I) {
@@ -450,24 +460,28 @@ void CAI_Stalker::Think()
 	} else
 	
 	if (A && !K && !H && !L) {
+		m_dwInertion			= 20000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && H && !L) {
+		m_dwInertion			= 20000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && !H && L) {
+		m_dwInertion			= 20000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && H && L) {
+		m_dwInertion			= 20000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
@@ -475,24 +489,28 @@ void CAI_Stalker::Think()
 	} else
 	
 	if (B && !K && !H && !L) {
+		m_dwInertion			= 10000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (B && !K && H && !L) {
+		m_dwInertion			= 10000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (B && !K && !H && L) {
+		m_dwInertion			= 10000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (B && !K && H && L) {
+		m_dwInertion			= 10000;
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
