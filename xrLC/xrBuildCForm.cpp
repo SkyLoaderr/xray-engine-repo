@@ -100,7 +100,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 			getTriByEdge(T->v[0],T->v[1],T,*cfFaces),
 			getTriByEdge(T->v[1],T->v[2],T,*cfFaces),
 			getTriByEdge(T->v[2],T->v[0],T,*cfFaces),
-			0,materials[T->dwMaterial].sector,0
+			0,materials[T->dwMaterial].sector,T->dwMaterialGame
 			);
 		Progress(p_total+=p_cost);		// progress
 	}
