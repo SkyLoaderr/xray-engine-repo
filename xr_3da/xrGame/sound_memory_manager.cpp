@@ -45,8 +45,6 @@ void CSoundMemoryManager::reinit				()
 	m_priorities.clear		();
 	m_last_sound_time		= 0;
 	m_sound_threshold		= m_min_sound_threshold;
-	m_sound_decrease_quant	= 250;
-	m_decrease_factor		= .95f;
 	m_selected_sound		= 0;
 }
 
@@ -54,10 +52,10 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 {
 	m_min_sound_threshold	= 0.05f;
 	m_self_sound_factor		= 0.f;
-	if (pSettings->line_exist(section,"sound_threshold"))
-		m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
-	if (pSettings->line_exist(section,"self_sound_factor"))
-		m_self_sound_factor		= pSettings->r_float(section,"self_sound_factor");
+	m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
+	m_self_sound_factor		= pSettings->r_float(section,"self_sound_factor");
+	m_sound_decrease_quant	= pSettings->r_u32	(section,"self_decrease_quant");
+	m_decrease_factor		= pSettings->r_float(section,"self_decrease_factor");
 }
 
 #define SILENCE
