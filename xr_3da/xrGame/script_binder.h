@@ -27,6 +27,7 @@ public:
 	virtual void				shedule_Update	(u32 time_delta);
 	virtual void				save			(NET_Packet &output_packet);
 	virtual void				load			(IReader &input_packet);
+	virtual BOOL				net_SaveRelevant();
 			void				set_object		(CScriptBinderObject *object);
 	IC		CScriptBinderObject	*object			();
 };

@@ -31,6 +31,7 @@ public:
 	virtual void		shedule_Update		(u32 time_delta);
 	virtual void		save				(NET_Packet *output_packet);
 	virtual void		load				(IReader	*input_packet);
+	virtual bool		net_SaveRelevant	();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptBinderObject)

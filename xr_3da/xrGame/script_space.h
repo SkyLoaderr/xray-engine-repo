@@ -23,6 +23,12 @@
 #include <luabind/luabind.hpp>
 #include <luabind/object.hpp>
 
+template <typename T1, typename T2>
+IC	T1 *_dynamic_cast(T2 *p2)
+{
+	return			(smart_cast<T1*>(p2));
+}
+
 extern	string4096	g_ca_stdout;
 
 #pragma warning(pop)

@@ -16,6 +16,8 @@ using namespace luabind;
 void CSE_ALifeTraderAbstract::script_register(lua_State *L)
 {
 	module(L)[
+		def("cast_alife_object_to_creature",&_dynamic_cast<CSE_ALifeCreatureAbstract,CSE_ALifeObject>),
+
 		class_<CSE_ALifeTraderAbstract>
 			("cse_alife_trader_abstract")
 //			.def(		constructor<LPCSTR>())

@@ -104,3 +104,10 @@ void CScriptBinder::load			(IReader &input_packet)
 	if (m_object)
 		m_object->load				(&input_packet);
 }
+
+BOOL CScriptBinder::net_SaveRelevant()
+{
+	if (m_object)
+		return						(m_object->net_SaveRelevant());
+	return							(FALSE);
+}

@@ -110,3 +110,13 @@ void CScriptBinderObjectWrapper::load_static			(CScriptBinderObject *script_bind
 {
 	script_binder_object->CScriptBinderObject::load		(input_packet);
 }
+
+bool CScriptBinderObjectWrapper::net_SaveRelevant		()
+{
+	return							(luabind::call_member<bool>(this,"net_save_relevant"));
+}
+
+bool CScriptBinderObjectWrapper::net_SaveRelevant		(CScriptBinderObject *script_binder_object)
+{
+	return							(script_binder_object->CScriptBinderObject::net_SaveRelevant());
+}
