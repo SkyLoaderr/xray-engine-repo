@@ -4,7 +4,7 @@ function action_one( npc )
 end
 
 function action_two( npc )
-	action( npc, anim("spinka_idle"), cond(cond.anim_end));
+	action( npc, anim("spinka_idle"), cond(cond.time_end,2000));
 end
 
 
