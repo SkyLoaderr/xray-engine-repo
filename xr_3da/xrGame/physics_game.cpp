@@ -146,7 +146,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				}
 				else
 				{
-					if(data->ph_ref_object)
+					if(data->ph_ref_object&&!mtl_pair->CollideSounds.empty())
 					{
 						CPHSoundPlayer* sp=NULL;
 						sp=data->ph_ref_object->ph_sound_player();
