@@ -29,8 +29,6 @@ function main ()
     local pos
     local checktime
     
-    --printf ("Chasers started")
-    --printf ("Number monsters - %d", table.getn (monsters))
     
     wait (30000)
     
