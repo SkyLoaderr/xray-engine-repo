@@ -34,8 +34,8 @@ protected:
 	ref_str						m_class_registrators;
 
 protected:
-#ifdef XRGAME_EXPORTS
 			void				export_globals				();
+#ifdef XRGAME_EXPORTS
 			void				export_fvector				();
 			void				export_fmatrix				();
 			void				export_game					();

@@ -91,8 +91,8 @@ void CScriptEngine::export()
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 
-#ifdef XRGAME_EXPORTS
 	export_globals						();
+#ifdef XRGAME_EXPORTS
 	export_fvector						();
 	export_fmatrix						();
 	export_game							();
