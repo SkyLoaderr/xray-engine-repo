@@ -9,8 +9,6 @@
 //#include "lwo2.h"
 #include "LW_SHADERDEF.h"
 #include "EditMesh.h"
-//#include "Texture.h"
-#include "ResourceManager.h"
 
 extern "C" {
 #include "lwo2.h"

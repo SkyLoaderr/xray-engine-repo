@@ -25,15 +25,12 @@ struct	SXRShaderData;
 #ifndef _EDITOR
 	class PropValue;
 	class SSceneSummary;
+	#define ref_shader LPVOID
 #endif
 
 #ifdef _LW_IMPORT
 	#include <lwobjimp.h>
 	#include <lwsurf.h>
-#endif
-
-#ifdef _MAX_EXPORT
-	#define ref_shader LPVOID
 #endif
 
 #define LOD_SHADER_NAME 	"def_shaders\\lod"

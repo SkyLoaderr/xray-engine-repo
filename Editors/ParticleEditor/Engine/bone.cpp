@@ -45,8 +45,8 @@ void CBone::Save(IWriter& F)
 {
 #ifdef _LW_EXPORT
 	extern char* ReplaceSpace(char* s);
-	ReplaceSpace(name);		strlwr(name);
-	ReplaceSpace(parent);	strlwr(parent);
+	ReplaceSpace(name);			strlwr(name);
+	ReplaceSpace(parent_name);	strlwr(parent_name);
 #endif
 	F.open_chunk	(BONE_CHUNK_VERSION);
     F.w_u16			(BONE_VERSION);
