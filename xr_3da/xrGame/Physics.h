@@ -474,14 +474,17 @@ IC void own_axis(const Fmatrix& m,Fvector& axis){
 IC void own_axis_angle(const Fmatrix& m,Fvector& axis,float& angle){
 	own_axis(m,axis);
 	Fvector ort1,ort2;
-	if(axis.x!=1.f){
-	ort1.set(0.f,-axis.z,axis.y);
-	ort2.crossproduct(axis,ort2);
-	}
+	if(!(axis.z==0.f&&axis.y==0.f)){
+		ort1.set(0.f,-axis.z,axis.y);
+		ort2.crossproduct(axis,ort1);
+		}
 	else{
-	ort1.set(0.f,1.f,0.f);
-	ort2.set(0.f,0.f,1.f);
-	}
+		ort1.set(0.f,1.f,0.f);
+		ort2.crossproduct(axis,ort1);
+		}
+	ort1.normalize();
+	ort2.normalize();
+
 	Fvector ort1_t;
 	m.transform_dir(ort1_t,ort1);
 
@@ -495,14 +498,14 @@ IC void own_axis_angle(const Fmatrix& m,Fvector& axis,float& angle){
 IC void axis_angleB(const Fmatrix& m, const Fvector& axis,float& angle){
 
 	Fvector ort1,ort2;
-	if(axis.x!=1.f){
+	if(!(axis.z==0.f&&axis.y==0.f)){
 	ort1.set(0.f,-axis.z,axis.y);
-	ort2.crossproduct(axis,ort2);
+	ort2.crossproduct(axis,ort1);
 	}
 	else{
 		ort1.set(0.f,1.f,0.f);
-		ort2.set(0.f,0.f,1.f);
-	}
+		ort2.crossproduct(axis,ort1);
+		}
 	ort1.normalize();
 	ort2.normalize();
 	Fvector ort1_t;
@@ -511,10 +514,12 @@ IC void axis_angleB(const Fmatrix& m, const Fvector& axis,float& angle){
 	float pr1,pr2;
 	pr1=ort1.dotproduct(ort1_t);
 	pr2=ort2.dotproduct(ort1_t);
+	if(pr1==0.f&&pr2==0.f){angle=0.f;return;}
 	ort_r.set(pr1*ort1.x+pr2*ort2.x,
 			  pr1*ort1.y+pr2*ort2.y,
 			  pr1*ort1.z+pr2*ort2.z);
 
+	ort_r.normalize();
 	float cosinus=ort1.dotproduct(ort_r);
 	float sinus=ort2.dotproduct(ort_r);
 	angle=acosf(cosinus);
@@ -527,13 +532,13 @@ IC void axis_angleA(const Fmatrix& m, const Fvector& axis,float& angle){
 
 	Fvector ort1,ort2,axis_t;
 	m.transform_dir(axis_t,axis);
-	if(axis_t.x!=1.f){
+	if(!(axis_t.z==0.f&&axis_t.y==0.f)){
 	ort1.set(0.f,-axis_t.z,axis_t.y);
-	ort2.crossproduct(axis_t,ort2);
+	ort2.crossproduct(axis_t,ort1);
 	}
 	else{
 		ort1.set(0.f,1.f,0.f);
-		ort2.set(0.f,0.f,1.f);
+		ort2.crossproduct(axis_t,ort1);
 	}
 	ort1.normalize();
 	ort2.normalize();
@@ -543,14 +548,18 @@ IC void axis_angleA(const Fmatrix& m, const Fvector& axis,float& angle){
 	float pr1,pr2;
 	pr1=ort1.dotproduct(ort1_t);
 	pr2=ort2.dotproduct(ort1_t);
+	if(pr1==0.f&&pr2==0.f){angle=0.f;return;}
 	ort_r.set(pr1*ort1.x+pr2*ort2.x,
 			  pr1*ort1.y+pr2*ort2.y,
 			  pr1*ort1.z+pr2*ort2.z);
 
+	ort_r.normalize();
 	float cosinus=ort1.dotproduct(ort_r);
 	float sinus=ort2.dotproduct(ort_r);
 	angle=acosf(cosinus);
 	if(sinus<0.f) angle= -angle;
+	//if(angle>M_PI) angle=angle-2.f*M_PI;
+	//if(angle<-M_PI) angle=angle+2.f*M_PI;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #endif PHYSICS_H

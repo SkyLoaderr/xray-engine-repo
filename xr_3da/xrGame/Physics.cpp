@@ -1695,37 +1695,58 @@ void CPHJoint::CreateHinge()
 
 m_joint=dJointCreateHinge(phWorld,0);
 Fvector pos;
-Fmatrix location;
+Fmatrix first_matrix,second_matrix;
 Fvector axis;
 CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+first->InterpolateGlobalTransform(&first_matrix);
+second->InterpolateGlobalTransform(&second_matrix);
 
 switch(vs_anchor){
-
-case vs_first :first->InterpolateGlobalTransform(&location); break;
-case vs_second:second->InterpolateGlobalTransform(&location); break;
-case vs_global:											break;
+case vs_first :first_matrix.transform_tiny(pos,anchor); break;
+case vs_second:second_matrix.transform_tiny(pos,anchor); break;
+case vs_global:					
+default:pos.set(anchor);	
 }
 
-location.transform_tiny(pos,anchor);
+
 
 switch(axes[0].vs){
 
-case vs_first :first->InterpolateGlobalTransform(&location); break;
-case vs_second:second->InterpolateGlobalTransform(&location); break;
-case vs_global:											break;
+case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
+case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
+case vs_global:
+default:		axis.set(axes[0].direction);							
 }
 
 
+first_matrix.invert();
 
-location.transform_dir(axis,axes[0].direction);
+Fmatrix rotate;
+rotate.mul(first_matrix,second_matrix);
+float shift_angle;
+axis_angleA(rotate,axes[0].direction,shift_angle);
+shift_angle-=axes[0].zero;
+if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
 
 
 dJointAttach(m_joint,first->get_body(),second->get_body());
 dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
-dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].low);
-dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
+
+float lo=axes[0].low+shift_angle;
+float hi=axes[0].high+shift_angle;
+if(lo<-M_PI) 
+			lo=-M_PI;
+if(lo>0.f) 
+			lo=0.f;
+if(hi>M_PI)  
+			hi=M_PI;
+if(hi<0.f) 
+			hi=0.f;
+dJointSetHingeParam(m_joint,dParamLoStop ,lo);
+dJointSetHingeParam(m_joint,dParamHiStop ,hi);
 }
 
 
@@ -1861,8 +1882,26 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 														break;
 	}
 
+
+			Fvector axis;
+			switch(axes[ax].vs){
+			case vs_first :pFirst_element->mXFORM.transform_dir(axis,axes[ax].direction);	break;
+			case vs_second:pSecond_element->mXFORM.transform_dir(axis,axes[ax].direction); break;
+			case vs_global:
+			default:		axis.set(axes[0].direction);							
+			}
+
 			axes[ax].low=low;
-			axes[ax].high=high;	
+			axes[ax].high=high;
+			Fmatrix m1,m2;
+			m1.set(pFirst_element->mXFORM);
+			m1.invert();
+			m2.mul(m1,pSecond_element->mXFORM);
+			float zer;
+			//axis_angleA(m2,axis,zer);
+			axis_angleA(m2,axes[ax].direction,zer);
+			axes[ax].zero=zer;
+
 }
 
 

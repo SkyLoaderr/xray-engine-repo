@@ -1260,7 +1260,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
+	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);//
 	m_phSkeleton->add_Joint(joint);
 
 	parent=element;
@@ -1276,7 +1276,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
+	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
 	
 
@@ -1309,7 +1309,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);//box.m_halfsize.y box.m_halfsize.x*2.f
 	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
+	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
 
 	parent=element;
@@ -1324,7 +1324,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/2.f,0);
+	joint->SetLimits(-M_PI/3.f,M_PI/2.2f,0);
 	m_phSkeleton->add_Joint(joint);
 
 	parent=element;
@@ -1370,7 +1370,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
+	joint->SetLimits(-M_PI/3.f,M_PI/4.f,0);
 	m_phSkeleton->add_Joint(joint);
 
 	parent=element;
@@ -1385,7 +1385,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(-M_PI/2.f,M_PI/3.f,0);
+	joint->SetLimits(-M_PI/2.2f,M_PI/3.f,0);
 	m_phSkeleton->add_Joint(joint);
 
 	parent=element;
@@ -1431,7 +1431,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(-M_PI*1/3.f,0,0);
+	joint->SetLimits(-M_PI*1/3.5f,0,0);
 	m_phSkeleton->add_Joint(joint);
 
 
@@ -1477,7 +1477,7 @@ void CActor::create_Skeleton(){
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(0,M_PI*1/3.f,0);
+	joint->SetLimits(0,M_PI*1/3.5f,0);
 	m_phSkeleton->add_Joint(joint);
 
 
