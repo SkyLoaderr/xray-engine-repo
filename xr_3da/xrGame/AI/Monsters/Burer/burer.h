@@ -9,6 +9,9 @@ class CBurer :	public CAI_Biting,
 				public CTelekinesis {
 
 	typedef		CAI_Biting					inherited;
+
+	u32			last_hit_frame;
+
 public:
 	typedef		CTelekinesis				TTelekinesis;
 
