@@ -90,12 +90,6 @@ p2f 	p_main	( v2p_in IN )
   // Sample normal and rotate it by matrix
   half3 N	= tex2D		(s_nmap,	IN.tc0);
   half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3),N);
-	/*
-							IN.M1.x,IN.M1.y,IN.M1.z,
-							IN.M2.x,IN.M2.y,IN.M2.z,
-							IN.M3.x,IN.M3.y,IN.M3.z),
-							N);
-	*/							
   half3 NeN	= normalize	(Ne);
   OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
   return OUT;
