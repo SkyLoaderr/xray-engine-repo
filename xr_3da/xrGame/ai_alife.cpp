@@ -316,6 +316,7 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 	fwrite(tpaGraph,1,Level().AI.m_tpGraphVFS->Length(),F);
 	fclose(F);
 }
+
 // end of temporary
 void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
 {

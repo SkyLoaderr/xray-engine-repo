@@ -243,4 +243,9 @@ IC void _matrix<T>::mk_xform	(const _quaternion &Q, const Tvector &V) {
 	_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
 	_41 = V.x;					_42 = V.y;					_43 = V.z;					_44 = 1;
 }
+
+//----------------------------------------------------------------------------------------------
+// Deprecate some features
+#pragma deprecated(min,"MIN",max,"MAX",abs,"ABS",sqrt,sqrtf,malloc,free,calloc,realloc,memcpy,memmove)
+
 #endif
