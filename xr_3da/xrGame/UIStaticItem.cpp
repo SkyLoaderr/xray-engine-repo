@@ -114,7 +114,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 //который задается VisRect
 
 void CUIStaticItem::Render(float x1, float y1, float x2, float y2, 
-						   float x3, float y3, float x4, float y4, Shader* sh)
+						   float x3, float y3, float x4, float y4, const ref_shader& sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
 	RCache.set_Shader		(sh?sh:hShader());
