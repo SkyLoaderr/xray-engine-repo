@@ -34,26 +34,41 @@ CHelicopter::setState(CHelicopter::EHeliState s)
 	case CHelicopter::eInitiateHunt:
 		str = "eInitiateHunt";
 		break;
-	case CHelicopter::eMovingToAttackTraj:
+/*	case CHelicopter::eMovingToAttackTraj:
 		str = "eMovingToAttackTraj";
-		break;
+		break;*/
 	case CHelicopter::eMovingByAttackTraj:
 		str = "eMovingByAttackTraj";
 		break;
 	case CHelicopter::eInitiatePatrolZone:
 		str = "eInitiatePatrolZone";
 		break;
-	case CHelicopter::eInitiateAttackTraj:
+/*	case CHelicopter::eInitiateAttackTraj:
 		str = "eInitiateAttackTraj";
-		break;
+		break;*/
 
+	case CHelicopter::eWaitForStart:
+		str = "eWaitForStart";
+		break;
+		
+	case CHelicopter::eWaitBetweenPatrol:
+		str = "eWaitBetweenPatrol";
+		break;
+			
+	case CHelicopter::eInitiateWaitBetweenPatrol:
+		str = "eInitiateWaitBetweenPatrol";
+		break;
+			
+	case CHelicopter::eMovingToWaitPoint:
+		str = "eMovingToWaitPoint";
+		break;
 
 	default:
 		str = "unknown";
 		break;
 	};
 
-	Msg("---CHelicopter::state==(%s)", str);
+	Msg("---CHelicopter::state[%d]==(%s)", Device.dwTimeGlobal, str);
 }
 
 
@@ -74,8 +89,18 @@ CHelicopter::init()
 	m_maxFireDist = 100.0f;
 	m_allow_fire= FALSE;
 	m_movementMngr.init(this);
-	setState(CHelicopter::eInitiatePatrolZone);
+	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
+
+	m_stayPos.set(-200.0f, 30.0f, -200.0f);
+
+
+	m_time_delay_before_start	= 1000;//1 sec
+	m_time_patrol_period		= 60000;//1 min
+	m_time_delay_between_patrol	= 20000;//20 sec
+
+	m_time_last_patrol_start	= 0;
+	m_time_last_patrol_end		= 0;
 
 //	FireStart();
 }
@@ -110,6 +135,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
+
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
@@ -169,7 +195,8 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	setVisible			(true);
 	setEnabled			(true);
 
-
+	setState			(eWaitForStart);
+	m_stayPos			= XFORM().c;
 	return				(TRUE);
 }
 
@@ -225,10 +252,12 @@ CHelicopter::UpdateCL()
 	UpdateFire();
 
 	if( state()==CHelicopter::eMovingByAttackTraj	|| 
-		state()==CHelicopter::eInitiateHunt			||
+		state()==CHelicopter::eInitiateHunt			/*||
 		state()==CHelicopter::eInitiateAttackTraj	||
-		state()==CHelicopter::eMovingToAttackTraj		)
+		state()==CHelicopter::eMovingToAttackTraj		*/)
 	{
+		updateMGunDir();
+
 		if(!m_destEnemy || m_destEnemy->getDestroy() )
 		{
 			m_destEnemy = 0;
@@ -249,7 +278,6 @@ CHelicopter::shedule_Update(u32	time_delta)
 	if( GetfHealth() >= 0.0f )
 	{
 		m_movementMngr.shedule_Update(time_delta);
-//		updateMGunDir();
 	};
 
 	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
@@ -277,7 +305,6 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-	Log("----Helicopter::Hit().");
 	if(hit_type != ALife::eHitTypeFireWound)
 		return;
 
@@ -291,7 +318,7 @@ CHelicopter::Hit(	float P,
 	}else
 //		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 	{
-		SetfHealth(GetfHealth()-P*0.1f);
+		SetfHealth(GetfHealth()-P*0.05f);
 //		SetfHealth(-0.5f);
 		float h= GetfHealth();
 		Log("----Helicopter::Hit(). health=%f",h);
@@ -314,7 +341,7 @@ void
 CHelicopter::doHunt(CObject* dest)
 {
 	if( state()==CHelicopter::eInitiateHunt || 
-		state()==CHelicopter::eMovingToAttackTraj ||
+		/*state()==CHelicopter::eMovingToAttackTraj ||*/
 		state()==CHelicopter::eMovingByAttackTraj)
 		return;
 

@@ -19,13 +19,17 @@ class CHelicopter :
 	typedef CGameObject inherited;
 public:
 	enum EHeliState {
-		eIdleState					= u32(0),
-		eInitiatePatrolZone,
-		eMovingByPatrolZonePath,
-		eInitiateHunt,
-		eMovingToAttackTraj,
-		eInitiateAttackTraj,
-		eMovingByAttackTraj
+		eIdleState							= u32(0),
+		eInitiatePatrolZone,				// ->eMovingByPatrolZonePath
+		eMovingByPatrolZonePath,			//->eInitiatePatrolZone, eInitiateWaitBetweenPatrol
+		eInitiateHunt,						// ->eMovingByAttackTraj,eInitiatePatrolZone
+//		eMovingToAttackTraj,
+//		eInitiateAttackTraj,
+		eMovingByAttackTraj,				// ->eInitiatePatrolZone
+		eWaitForStart,						// ->eInitiatePatrolZone
+		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
+		eInitiateWaitBetweenPatrol,			// ->eMovingToWaitPoint
+		eMovingToWaitPoint					// ->eWaitBetweenPatrol
 	}; 
 protected:
 	
@@ -60,11 +64,21 @@ protected:
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos;
 
+
+
+
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
+	u32								m_time_delay_before_start;
+	u32								m_time_patrol_period;
+	u32								m_time_delay_between_patrol;
+	u32								m_time_last_patrol_start;
+	u32								m_time_last_patrol_end;
+	Fvector							m_stayPos;
+
 	CHelicopter();
 	virtual				~CHelicopter();
 	
