@@ -20,6 +20,7 @@ class CStatGraph:public pureRender, public pureDeviceCreate, public pureDeviceDe
 	Ivector2 		grid;
 	u32				grid_color;
 	u32				rect_color;
+	u32				back_color;
 	ref_geom 		hGeom; 
 public:
 	enum EStyle{
@@ -38,11 +39,12 @@ public:
     {
     	style		= s;
     }
-    IC	void		SetRect		(int l, int t, int w, int h, u32 rect_clr)
+    IC	void		SetRect		(int l, int t, int w, int h, u32 rect_clr, u32 back_clr)
     {
         lt.set		(l,t);
         rb.set		(l+w,t+h);
         rect_color	= rect_clr;
+		back_color	= back_clr;
     }
     IC	void		SetGrid		(int w_div, int h_div, u32 clr)
     {

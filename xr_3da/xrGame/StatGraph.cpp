@@ -41,6 +41,7 @@ void CStatGraph::OnDeviceDestroy()
 void CStatGraph::OnRender()
 {
 	RCache.OnFrameEnd();
+	// draw lines
 	u32			dwOffset,dwCount;
     FVF::TL0uv* pv_start	= (FVF::TL0uv*)RCache.Vertex.Lock(elements.size()*2+8,hGeom->vb_stride,dwOffset);
     FVF::TL0uv* pv			= pv_start;
@@ -92,11 +93,28 @@ void CStatGraph::OnRender()
         }break;
         }
     }
-
+	
+	// render
     dwCount 				= u32(pv-pv_start);
     RCache.Vertex.Unlock	(dwCount,hGeom->vb_stride);
-    
     RCache.set_Geometry		(hGeom);
     RCache.Render	   		(D3DPT_LINELIST,dwOffset,dwCount/2);
+
+	// draw poly
+	pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(elements.size()*2+8,hGeom->vb_stride,dwOffset);
+	pv						= pv_start;
+	// base rect
+	pv->set					(lt.x,lt.y,back_color); pv++; 	// 0
+	pv->set					(rb.x,lt.y,back_color); pv++;	// 0
+	pv->set					(rb.x,rb.y,back_color); pv++;   // 0
+	pv->set					(lt.x,lt.y,back_color); pv++; 	// 1
+	pv->set					(rb.x,rb.y,back_color); pv++;   // 1
+	pv->set					(lt.x,rb.y,back_color); pv++;   // 1
+
+	// render
+	dwCount 				= u32(pv-pv_start);
+	RCache.Vertex.Unlock	(dwCount,hGeom->vb_stride);
+	RCache.set_Geometry		(hGeom);
+	RCache.Render	   		(D3DPT_TRIANGLELIST,dwOffset,dwCount/3);
 }
 
