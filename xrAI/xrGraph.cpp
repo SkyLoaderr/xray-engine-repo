@@ -44,7 +44,7 @@ stack<u32>					dwaStack;		// stack
 u32							*dwaSortOrder;  // edge sort order
 u32							*dwaEdgeOwner;  // edge owners
 
-void vfLoadAIPoints(LPCSTR name)
+void vfLoadGraphPoints(LPCSTR name)
 {
 	string256								fName;
 	strconcat								(fName,name,"level.spawn");
@@ -80,6 +80,7 @@ void vfLoadAIPoints(LPCSTR name)
 			Status							("Vertexes being read : %d",i);
 	}
 	O->close								();
+	R_ASSERT2								(!tpaGraph.empty(),"There are no graph points!");
 	//xr_delete								(pSettings);
 	Status									("Vertexes being read : %d",i);
 }
@@ -342,12 +343,12 @@ void xrBuildGraph(LPCSTR name)
 	
 	tpaGraph.clear();
 
-	Phase("Loading AI points");
-	vfLoadAIPoints(name);
-	u32 dwAIPoints;
-	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
+	Phase("Loading graph points");
+	vfLoadGraphPoints(name);
+	u32 dwGraphPoints;
+	Msg("%d vertexes loaded",int(dwGraphPoints = tpaGraph.size()));
 
-	Phase("Removing duplicate AI points");
+	Phase("Removing duplicate graph points");
 	vfRemoveDuplicateAIPoints();
 
 	Phase("Searching AI map for corresponding nodes");
