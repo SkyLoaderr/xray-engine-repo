@@ -413,23 +413,23 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 
 ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 (
-		const char *		fRName,
-		ETexturePF			Algorithm,
-		ETextureMipgen		Mipgen,
-		u32				Quality,
-		float				fContrast,
-		BOOL				bGrayscale,
-		BOOL				bSharpen,
+ u32&				mem,
+ const char *		fRName,
+ ETexturePF			Algorithm,
+ ETextureMipgen		Mipgen,
+ u32				Quality,
+ float				fContrast,
+ BOOL				bGrayscale,
+ BOOL				bSharpen,
 
-		// return values
-		D3DFORMAT&			fmt,
-		u32&				dwWidth,
-		u32&				dwHeight
-		)
+ // return values
+ D3DFORMAT&			fmt,
+ u32&				dwWidth,
+ u32&				dwHeight
+ )
 {
 	CImage					Image;
 	u32						dwMipCount		= 9;
-//	IDirect3DBaseTexture9*	pTexture		= NULL;
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	FILE_NAME				fn;
@@ -445,254 +445,127 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
 #ifdef M_BORLAND
 	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
-	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
 	ELog.Msg(mtError,"Can't find texture '%s'",fname);
 #else
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".dds"))	goto _DDS;
-	if (Engine.FS.Exist(fn,Path.Current,fname,	".tga"))	goto _TGA;
-	if (Engine.FS.Exist(fn,Path.Textures,fname,	".tga"))	goto _TGA;
 	Debug.fatal("Can't find texture '%s'",fname);
 #endif
- 	return 0;
+	return 0;
 
 _DDS:
 	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		CStream* S				= Engine.FS.Open	(fn);
+		mem						= S->Length			();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
 		else														goto _DDS_2D;
 
 _DDS_CUBE:
-	{
-		R_CHK(D3DXCreateCubeTextureFromFileInMemoryEx(
-			HW.pDevice,
-			S->Pointer(),S->Length(),
-			D3DX_DEFAULT,
-			IMG.MipLevels,0,
-			IMG.Format,
-			D3DPOOL_MANAGED,
-			D3DX_DEFAULT,
-			D3DX_DEFAULT,
-			0,&IMG,0,
-			&pTextureCUBE
-			));
-		Engine.FS.Close			(S);
-
-		// Log
-#ifdef DEBUG
-		Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
-#endif
-		// OK
-		dwWidth					= IMG.Width;
-		dwHeight				= IMG.Height;
-		fmt						= IMG.Format;
-		return					pTextureCUBE;
-	}
-_DDS_2D:
-	{
-		// Check for LMAP and compress if needed
-		strlwr					(fn);
-		if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))	
 		{
-			IMG.Format			= D3DFMT_DXT1;
-		}
-
-		// Load   SYS-MEM-surface, bound to device restrictions
-		IDirect3DTexture9*		T_sysmem;
-		R_CHK(D3DXCreateTextureFromFileInMemoryEx( 
-			HW.pDevice,
-			S->Pointer(),S->Length(),
-			D3DX_DEFAULT,D3DX_DEFAULT,
-			IMG.MipLevels,0,
-			IMG.Format,
-			D3DPOOL_SYSTEMMEM,
-			D3DX_DEFAULT,
-			D3DX_DEFAULT,
-			0,&IMG,0,
-			&T_sysmem
-			));
-		Engine.FS.Close			(S);
-
-		// Calculate levels & dimensions
-		D3DSURFACE_DESC			T_sysmem_desc0;
-		R_CHK					(T_sysmem->GetLevelDesc	(0,&T_sysmem_desc0));
-		int levels_2_skip		= psTextureLOD;
-		int levels_exist		= T_sysmem->GetLevelCount();
-		int top_width			= T_sysmem_desc0.Width;
-		int top_height			= T_sysmem_desc0.Height;
-		D3DFORMAT F				= T_sysmem_desc0.Format;
-		Reduce					(top_width,top_height,levels_exist,levels_2_skip);
-
-		// Create HW-surface
-		R_CHK					(D3DXCreateTexture(
-			HW.pDevice,
-			top_width,top_height,
-			levels_exist,0,F,
-			D3DPOOL_MANAGED,&pTexture2D
-			));
-
-		// Copy surfaces & destroy temporary
-		IDirect3DTexture9* T_src= T_sysmem;
-		IDirect3DTexture9* T_dst= pTexture2D;
-
-		int		L_src			= T_src->GetLevelCount	()-1;
-		int		L_dst			= T_dst->GetLevelCount	()-1;
-		for (; L_dst>=0; L_src--,L_dst--)
-		{
-			// Get surfaces
-			IDirect3DSurface9		*S_src, *S_dst;
-			R_CHK	(T_src->GetSurfaceLevel	(L_src,&S_src));
-			R_CHK	(T_dst->GetSurfaceLevel	(L_dst,&S_dst));
-
-			// Copy
-			R_CHK	(D3DXLoadSurfaceFromSurface(S_dst,NULL,NULL,S_src,NULL,NULL,D3DX_FILTER_NONE,0));
-
-			// Release surfaces
-			_RELEASE				(S_src);
-			_RELEASE				(S_dst);
-		}
-
-		_RELEASE				(T_sysmem);
-
-		// Log
-#ifdef DEBUG
-		Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,CTexture::MemUsage(pTexture2D)/1024,fn);
-#endif
-		// OK
-		dwWidth					= top_width;
-		dwHeight				= top_height;
-		fmt						= F;
-		return					pTexture2D;
-	}
-    }
-_TGA:
-	Image.LoadTGA(fn);
-
-	if (_abs(fContrast-.5f)>.06f)	Image.Contrast(fContrast);
-	if (bGrayscale)					Image.Grayscale();
-
-	// find optimal format
-	if (pSettings->LineExists("textures",fname))
-	{
-		xr_token				token		[ ]	=	{
-			{ "16",					tpf16			},
-			{ "32",					tpf32			},
-			{ "DXTC",				tpfCompressed	},
-			{ 0,					0				}
-		};
-
-		Algorithm = (ETexturePF)pSettings->ReadTOKEN("textures",fname,token);
-	}
-
-	switch (Algorithm) {
-	case tpf16:
-		fmt = Image.bAlpha?D3DFMT_A4R4G4B4:D3DFMT_R5G6B5;
-		break;
-	case tpf32:
-	case tpfLM:
-		fmt = Image.bAlpha?D3DFMT_A8R8G8B8:D3DFMT_X8R8G8B8;
-		if (Algorithm==tpfLM) TUSelectFMT_LM(&fmt);
-		break;
-	case tpfDefault:
-	case tpfCompressed:
-	default:
-		fmt = Image.bAlpha?D3DFMT_DXT3:D3DFMT_DXT1;
-		break;
-	}
-	/*
-	if (fmt==D3DFMT_DXT1 && HW.Caps.bForceDXT3)
-		fmt = D3DFMT_DXT3;
-	*/
-	
-	dwWidth = Image.dwWidth;
-	dwHeight= Image.dwHeight;
-	if (Mipgen!=tmDisable)
-		TUSelectMipLevel(&dwWidth,&dwHeight,Quality);
-
-	// correct for device & create surface
-	if (Mipgen==tmDisable)
-	{
-		R_CHK(HW.pDevice->CreateTexture(
-			dwWidth,dwHeight,1,0,fmt,D3DPOOL_MANAGED,&pTexture2D,0
-			));
-	} else {
-		R_CHK(D3DXCreateTexture( 
-			HW.pDevice,dwWidth,dwHeight,
-			D3DX_DEFAULT,
-			0,fmt,D3DPOOL_MANAGED,&pTexture2D));
-	}
-	VERIFY2(pTexture2D,fname);
-
-	// fill texture with data from BGRA
-	dwMipCount = pTexture2D->GetLevelCount();
-	if (dwMipCount<=1)
-	{
-		// no mip-maps
-		IDirect3DSurface9*	pTMP;
-		R_CHK(pTexture2D->GetSurfaceLevel(0,&pTMP));
-
-		RECT RC = {0,0,dwWidth,dwHeight};
-		R_CHK(D3DXLoadSurfaceFromMemory(
-			pTMP,0,0,
-			Image.pData,
-			Image.bAlpha?D3DFMT_A8R8G8B8:D3DFMT_X8R8G8B8,
-			Image.dwWidth*4,
-			0,
-			&RC,
-			D3DX_FILTER_TRIANGLE | D3DX_FILTER_DITHER,
-			0
-			));
-		_RELEASE				(pTMP);
-	} else {
-		// dwMipCount sometimes returned incorrectly
-		// if (dwMipCount==0) dwMipCount=GetPowerOf2Plus1(_MIN(dwWidth,dwHeight));
-
-		// 'cause of quality reducing we have to skip some levels :(
-		u32 dwP			= Image.dwWidth*4;
-		u32 dwW			= Image.dwWidth;
-		u32 dwH			= Image.dwHeight;
-		u32 *pImagePixels	= (u32 *)xr_malloc(dwH*dwP);
-		u32 *pNewPixels	= NULL;
-
-		Memory.mem_copy		(pImagePixels,Image.pData,dwH*dwP);
-		while (dwWidth!=dwW) {
-			pNewPixels=TUBuild32MipLevel(Mipgen,dwW,dwH,dwP,pImagePixels);
-			xr_free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
-		}
-
-		// NOW:
-		//		pImagePixels	- contains data for the first mip-level of texture
-		//		pNewPixels		- NULL
-		//		dwW,dwH,dwP		- are correct
-		for (u32 i=0; i<dwMipCount; i++) {
-			IDirect3DSurface9*	pTMP;
-			R_CHK(pTexture2D->GetSurfaceLevel(i,&pTMP));
-			RECT RC = {0,0,dwW,dwH};
-			R_CHK(D3DXLoadSurfaceFromMemory(
-				pTMP,0,0,
-				pImagePixels,
-				Image.bAlpha?D3DFMT_A8R8G8B8:D3DFMT_X8R8G8B8,
-				dwP,
-				0,
-				&RC,
-				D3DX_FILTER_NONE,
-				0
+			R_CHK(D3DXCreateCubeTextureFromFileInMemoryEx(
+				HW.pDevice,
+				S->Pointer(),S->Length(),
+				D3DX_DEFAULT,
+				IMG.MipLevels,0,
+				IMG.Format,
+				D3DPOOL_MANAGED,
+				D3DX_DEFAULT,
+				D3DX_DEFAULT,
+				0,&IMG,0,
+				&pTextureCUBE
 				));
-			_RELEASE				(pTMP);
-			
-			if  (dwW>1 && dwH>1) {
-				// not the last level
-				pNewPixels=TUBuild32MipLevel(Mipgen, dwW,dwH,dwP,pImagePixels);
-				xr_free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;
-			}
-		}
-		// in the most cases it is not freed now
-		xr_free(pImagePixels);
-	}
+			Engine.FS.Close			(S);
 
+			// Log
+#ifdef DEBUG
+			Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
+#endif
+			// OK
+			dwWidth					= IMG.Width;
+			dwHeight				= IMG.Height;
+			fmt						= IMG.Format;
+			return					pTextureCUBE;
+		}
+_DDS_2D:
+		{
+			// Check for LMAP and compress if needed
+			strlwr					(fn);
+			if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))	
+			{
+				IMG.Format			= D3DFMT_DXT1;
+			}
+
+			// Load   SYS-MEM-surface, bound to device restrictions
+			IDirect3DTexture9*		T_sysmem;
+			R_CHK(D3DXCreateTextureFromFileInMemoryEx( 
+				HW.pDevice,
+				S->Pointer(),S->Length(),
+				D3DX_DEFAULT,D3DX_DEFAULT,
+				IMG.MipLevels,0,
+				IMG.Format,
+				D3DPOOL_SYSTEMMEM,
+				D3DX_DEFAULT,
+				D3DX_DEFAULT,
+				0,&IMG,0,
+				&T_sysmem
+				));
+			Engine.FS.Close			(S);
+
+			// Calculate levels & dimensions
+			D3DSURFACE_DESC			T_sysmem_desc0;
+			R_CHK					(T_sysmem->GetLevelDesc	(0,&T_sysmem_desc0));
+			int levels_2_skip		= psTextureLOD;
+			int levels_exist		= T_sysmem->GetLevelCount();
+			int top_width			= T_sysmem_desc0.Width;
+			int top_height			= T_sysmem_desc0.Height;
+			D3DFORMAT F				= T_sysmem_desc0.Format;
+			Reduce					(top_width,top_height,levels_exist,levels_2_skip);
+
+			// Create HW-surface
+			R_CHK					(D3DXCreateTexture(
+				HW.pDevice,
+				top_width,top_height,
+				levels_exist,0,F,
+				D3DPOOL_MANAGED,&pTexture2D
+				));
+
+			// Copy surfaces & destroy temporary
+			IDirect3DTexture9* T_src= T_sysmem;
+			IDirect3DTexture9* T_dst= pTexture2D;
+
+			int		L_src			= T_src->GetLevelCount	()-1;
+			int		L_dst			= T_dst->GetLevelCount	()-1;
+			for (; L_dst>=0; L_src--,L_dst--)
+			{
+				// Get surfaces
+				IDirect3DSurface9		*S_src, *S_dst;
+				R_CHK	(T_src->GetSurfaceLevel	(L_src,&S_src));
+				R_CHK	(T_dst->GetSurfaceLevel	(L_dst,&S_dst));
+
+				// Copy
+				R_CHK	(D3DXLoadSurfaceFromSurface(S_dst,NULL,NULL,S_src,NULL,NULL,D3DX_FILTER_NONE,0));
+
+				// Release surfaces
+				_RELEASE				(S_src);
+				_RELEASE				(S_dst);
+			}
+
+			_RELEASE				(T_sysmem);
+
+			// Log
+#ifdef DEBUG
+			Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,CTexture::MemUsage(pTexture2D)/1024,fn);
+#endif
+			// OK
+			dwWidth					= top_width;
+			dwHeight				= top_height;
+			fmt						= F;
+			return					pTexture2D;
+		}
+	}
 	return pTexture2D;
 }
