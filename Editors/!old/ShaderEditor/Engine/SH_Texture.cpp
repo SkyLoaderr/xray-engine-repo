@@ -3,7 +3,8 @@
 
 #include "ResourceManager.h"
 #include "render.h"
-#include "xr_avi.h"
+//#include "xr_avi.h"
+#include "tntQAVI.h"
 
 #define		PRIORITY_HIGH	12
 #define		PRIORITY_NORMAL	8
@@ -64,8 +65,12 @@ void CTexture::Apply	(u32 dwStage)
 		// AVI
 		D3DLOCKED_RECT R;
 		R_CHK	(T2D->LockRect(0,&R,NULL,0));
-		R_ASSERT(R.Pitch == int(pAVI->dwWidth*4));
-		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
+		R_ASSERT(R.Pitch == int(pAVI->m_dwWidth*4));
+//		R_ASSERT(pAVI->DecompressFrame((u32*)(R.pBits)));
+		BYTE* ptr; pAVI->GetFrame(&ptr);
+		CopyMemory(R.pBits,ptr,pAVI->m_dwWidth*pAVI->m_dwHeight*4);
+//		R_ASSERT(pAVI->GetFrame((BYTE*)(&R.pBits)));
+
 		R_CHK	(T2D->UnlockRect(0));
 	} else if (!seqDATA.empty()) {
 		// SEQ
@@ -141,12 +146,12 @@ void CTexture::Load		()
 			xr_delete(pAVI);
 			Debug.fatal("Can't open video stream");
 		} else {
-			flags.MemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
+			flags.MemoryUsage	= pAVI->m_dwWidth*pAVI->m_dwHeight*4;
 
 			// Now create texture
 			IDirect3DTexture9*	pTexture = 0;
 			HRESULT hrr = HW.pDevice->CreateTexture(
-				pAVI->dwWidth,pAVI->dwHeight,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,
+				pAVI->m_dwWidth,pAVI->m_dwHeight,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,
 				&pTexture,NULL
 				);
 			pSurface	= pTexture;

@@ -27,6 +27,7 @@ public:
 	typedef vecCMD::iterator						vecCMD_IT;
 	enum			{ MAX_LEN = 256 };
 private:
+	u32				last_mm_timer;
 	float			cur_time;
 	float			rep_time;
 	float			fAccel;

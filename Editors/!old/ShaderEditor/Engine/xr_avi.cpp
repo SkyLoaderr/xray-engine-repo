@@ -3,12 +3,12 @@
 
 #include "xr_avi.h"
 
-CAviPlayerCustom::CAviPlayerCustom( )
+_CAviPlayerCustom::_CAviPlayerCustom( )
 {
 	ZeroMemory(this,sizeof(*this));
 }
 //---------------------------------
-BOOL CAviPlayerCustom::Load (char* fn)
+BOOL _CAviPlayerCustom::Load (char* fn)
 {
 	// ******** Analyze header
     AVIFileInit		();
@@ -61,7 +61,7 @@ BOOL CAviPlayerCustom::Load (char* fn)
 }
 
 
-CAviPlayerCustom::~CAviPlayerCustom( )
+_CAviPlayerCustom::~_CAviPlayerCustom( )
 {
 	if( aviStream ){
 		AVIStreamRelease( aviStream );
@@ -78,7 +78,7 @@ CAviPlayerCustom::~CAviPlayerCustom( )
     AVIFileExit	();
 }
 
-BOOL CAviPlayerCustom::DecompressFrame(u32* pDest)
+BOOL _CAviPlayerCustom::DecompressFrame(u32* pDest)
 {
 	R_ASSERT( pDest );
 

@@ -7,6 +7,7 @@ void CRenderDevice::Initialize()
 {
 	Log("Initializing Engine...");
 	TimerGlobal.Start			();
+	TimerMM.Start				();
 
 	// Unless a substitute hWnd has been specified, create a window to render into
     if( m_hWnd == NULL)

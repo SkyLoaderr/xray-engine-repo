@@ -2,7 +2,7 @@
 #define __XR_AVI_H__
 #include "vfw.h"
 
-class ENGINE_API		CAviPlayerCustom
+class ENGINE_API		_CAviPlayerCustom
 {
 public:
 	u32					dwBufferSize;
@@ -22,8 +22,8 @@ public:
 	u32					CalcFrame()
 	{	return iFloor(Device.fTimeGlobal*fRate)%dwFrameTotal; }
 public:
-						CAviPlayerCustom	( );
-						~CAviPlayerCustom	( );
+						_CAviPlayerCustom	( );
+						~_CAviPlayerCustom	( );
 
 	BOOL				Load				( char* fn     );
 	BOOL				DecompressFrame		( u32* pDest );

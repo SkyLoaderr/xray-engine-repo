@@ -50,7 +50,7 @@ void CConsole::Initialize()
 	bVisible		= false;
 	rep_time		= 0;
 	pFont			= 0;
-
+	last_mm_timer	= 0;
 	// Commands
 	extern void CCC_Register();
 	CCC_Register	();
@@ -67,10 +67,21 @@ void CConsole::Destroy	()
 
 void CConsole::OnFrame	()
 {
+	u32 mm_timer = Device.TimerAsyncMM();
+	float fDelta = (mm_timer - last_mm_timer)/1000.0f;
+	if (fDelta>.06666f) fDelta=.06666f;
+	last_mm_timer = mm_timer;
+
+	cur_time+=fDelta;
+	rep_time+=fDelta*fAccel;
+	if (cur_time>0.1f) { cur_time-=0.1f; bCursor=!bCursor;	}
+	if (rep_time>0.2f) { rep_time-=0.2f; bRepeat=true;	fAccel+=0.2f;	}
+/*
 	cur_time+=Device.fTimeDelta;
 	rep_time+=Device.fTimeDelta*fAccel;
 	if (cur_time>0.1f) { cur_time-=0.1f; bCursor=!bCursor;	}
 	if (rep_time>0.2f) { rep_time-=0.2f; bRepeat=true;	fAccel+=0.2f;	}
+*/
 }
 
 void CConsole::OnRender	()

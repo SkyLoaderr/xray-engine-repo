@@ -277,7 +277,7 @@ void CRenderDevice::FrameMove()
 	Statistic.EngineTOTAL.End	();
 }
 
-void	CRenderDevice::Pause							(bool bOn)
+void	CRenderDevice::Pause							(BOOL bOn)
 {
 	if (!g_bBenchmark)	g_pauseMngr.Pause(bOn);
 }

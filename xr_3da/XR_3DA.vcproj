@@ -1131,6 +1131,12 @@
 						Name="Textures"
 						Filter="">
 						<File
+							RelativePath=".\tntQAVI.cpp">
+						</File>
+						<File
+							RelativePath=".\tntQAVI.h">
+						</File>
+						<File
 							RelativePath=".\xr_avi.cpp">
 						</File>
 						<File

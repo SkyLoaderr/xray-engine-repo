@@ -140,7 +140,7 @@ void	IGame_Level::OnFrame		( )
 	// Update all objects
 	::Sound->update_events		( );
 	VERIFY						(bReady);
-	Engine.Sheduler.Update		( );
+//	Engine.Sheduler.Update		( );
 	Objects.Update				( );
 	pHUD->OnFrame				( );
 

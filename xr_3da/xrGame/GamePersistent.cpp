@@ -108,6 +108,8 @@ void CGamePersistent::OnFrame		()
 {
 	__super::OnFrame	();
 
+	Engine.Sheduler.Update		( );
+
 	if	(0==pDemoFile)	return;
 	
 	if	(Device.dwTimeGlobal>uTime2Change)
@@ -127,6 +129,7 @@ void CGamePersistent::OnFrame		()
 		Engine.Event.Defer	("GAME:demo",	size_t(xr_strdup(_Trim(o_demo))), u64(o_time));
 		uTime2Change		= 0xffffffff;	// Block changer until Event received
 	}
+
 }
 
 void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)

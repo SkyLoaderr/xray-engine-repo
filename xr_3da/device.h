@@ -31,6 +31,7 @@ private:
 	u32										Timer_MM_Delta;
 	CTimer_paused							Timer;
 	CTimer_paused							TimerGlobal;
+	CTimer									TimerMM;
 	
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
@@ -110,7 +111,7 @@ public:
 #endif
 		
 	};
-	void	Pause							(bool bOn);
+	void	Pause							(BOOL bOn);
 	IC BOOL	Pause							(){return g_pauseMngr.Paused();};
 	// Scene control
 	void PreCache							(u32 frames);
@@ -132,7 +133,8 @@ public:
 	}
 	u32	 TimerAsyncMM						(void)
 	{
-		return TimerAsync()+Timer_MM_Delta;
+		return u32((TimerMM.GetElapsed_clk()*u64(1000))/CPU::cycles_per_second) +Timer_MM_Delta;
+//		return TimerAsync()+Timer_MM_Delta;
 	}
 
 	// Creation & Destroying
