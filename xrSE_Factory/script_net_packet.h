@@ -9,7 +9,7 @@
 #pragma once
 
 #include "script_export_space.h"
-struct NET_Packet;
+class NET_Packet;
 
 typedef class_exporter<NET_Packet> CScriptNetPacket;
 add_to_type_list(CScriptNetPacket)
