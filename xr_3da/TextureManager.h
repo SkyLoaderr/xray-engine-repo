@@ -12,10 +12,12 @@ class ENGINE_API CShaderManager
 {
 private:
 	// data
-	vector<CShader*>				shaders;
-	vector<CTexture *>				textures;
-	vector<CConstant*>				constants;
-	vector<CMatrix*>				matrices;
+	map<LPSTR,CShader*>				shaders;
+	map<LPSTR,CTexture *>			textures;
+
+	map<LPSTR,CConstant*>			constants;
+	map<LPSTR,CMatrix*>				matrices;
+	map<LPSTR,CBlender*>			blenders;
 
 	vector<CTextureArray*>			comb_textures;
 	vector<CConstantArray*>			comb_constants;
@@ -45,6 +47,7 @@ public:
 	CConstant*						_CreateConstant (LPCSTR Name);
 	CMatrix*						_CreateMatrix	(LPCSTR Name);
 	DWORD							_GetMemoryUsage	();
+	void							_CompileShaders ();
 
 	DWORD							dwPassesRequired;
 

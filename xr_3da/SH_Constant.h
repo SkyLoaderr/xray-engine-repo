@@ -7,7 +7,6 @@ class	ENGINE_API	CConstant
 public:
 	enum { modeProgrammable=0, modeWaveForm	};
 public:
-	LPSTR			name;
 	Fcolor			const_float;
 	DWORD			const_dword;
 

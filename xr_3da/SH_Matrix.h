@@ -12,7 +12,6 @@ public:
 		tcmFORCE32		= DWORD(-1)
 	};
 public:
-	LPSTR			name;
 	Fmatrix			xform;
 
 	DWORD			dwFrame;

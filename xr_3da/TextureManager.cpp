@@ -133,39 +133,6 @@ void CShaderManager::Delete(Shader* &S)
 	S=NULL;
 }
 
-void	CShaderManager::xrStartUp	()
-{
-	// load library
-	vector<SH_ShaderDef>	LIB;
-	shLibrary_Load			("shaders.xr",LIB);
-	shaders.resize			(LIB.size());
-	for (DWORD i=0; i<LIB.size(); i++)
-	{
-		shaders[i] = new CXRShader;
-		shaders[i]->CompileInit(LIB[i]);
-	}
-
-	// load "NULL" shader
-	Create					();
-}
-
-void	CShaderManager::xrShutDown	()
-{
-	// destroy "NULL" shader
-	Shader*	hNull	= Create();
-	Shader*	hCopy	= hNull;
-	Delete			(hNull);
-	Delete			(hCopy);
-
-	// destroy library
-	for (DWORD i=0; i<shaders.size(); i++)
-		_DELETE(shaders[i]);
-	shaders.clear();
-
-	// Unload "cached" textures
-	TexturesUnload	();
-}
-
 void	CShaderManager::OnDeviceDestroy(void) 
 {
 	if (Device.bReady) return;

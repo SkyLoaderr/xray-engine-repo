@@ -648,6 +648,10 @@ SOURCE=.\TextureManager.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\TextureManager_Loader.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TextureManager_Runtime.cpp
 # End Source File
 # Begin Source File
