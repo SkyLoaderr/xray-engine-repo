@@ -149,7 +149,8 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
-	
+	virtual		void				OnPlayerKilled			(u32 id_killed);
+
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
 

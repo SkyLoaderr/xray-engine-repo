@@ -99,4 +99,5 @@ public:
 				bool				ArtefactSpawn_Allowed	();
 	//-------------------------------------------------------------------------------
 	virtual		void				RespawnAllNotAlivePlayers	();
+	virtual		bool				CheckAlivePlayersInTeam		(s16 Team);
 };

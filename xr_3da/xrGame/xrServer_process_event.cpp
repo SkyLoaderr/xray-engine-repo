@@ -235,7 +235,11 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
 			//
-			
+			if (e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+			{
+				game->OnPlayerKilled		(c_dest->ID);
+			};
+
 			if (e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
 				game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
 			}

@@ -98,16 +98,26 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	m_CorpseList.clear();
 }
 
+void	game_sv_Deathmatch::OnPlayerKilled			(u32 id_killed)
+{
+	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+	if (!ps_killed) return;
+
+	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	ps_killed->deaths				+=	1;
+
+};
+
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
 	if (!ps_killed || !ps_killer) return;
 	
-	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+//	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 //	ps_killed->flags				&= ~GAME_PLAYER_FLAG_READY;
+//	ps_killed->deaths				+=	1;
 
-	ps_killed->deaths				+=	1;
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 	if (ps_killer == ps_killed)	
 	{
@@ -528,7 +538,7 @@ void	game_sv_Deathmatch::SpawnPlayer				(u32 id, LPCSTR N)
 		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(pA);
 		SetSkin(E, pA->s_team, ps_who->skin);
-		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD | GAME_PLAYER_FLAG_CS_SPECTATOR);
 		ps_who->RespawnTime = Device.dwTimeGlobal;
 	}
 	else

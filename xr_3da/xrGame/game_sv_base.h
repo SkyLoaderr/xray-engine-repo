@@ -69,6 +69,7 @@ public:
 //	virtual		void				OnPlayerWantsDie		(u32 id_who)							{};
 	virtual		void				OnPlayerBuy				(u32 id_who, u16 eid_who, LPCSTR what)	{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
+	virtual		void				OnPlayerKilled			(u32 id_killed)	= 0;
 	virtual		void				OnCreate				(u16 id_who)					{}
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied

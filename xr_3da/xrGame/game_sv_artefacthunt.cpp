@@ -94,8 +94,8 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
 	if (!ps_killed || !ps_killer) return;
 
-	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-	ps_killed->deaths				+=	1;
+//	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+//	ps_killed->deaths				+=	1;
 
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 
@@ -124,6 +124,11 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 			else
 				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
 
+		if (m_iReinforcementTime<0 && !CheckAlivePlayersInTeam(ps_killed->team))
+		{
+			int x=0;
+			x=x;
+		}
 	}
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
@@ -817,3 +822,19 @@ void				game_sv_ArtefactHunt::CheckForAnyAlivePlayer()
 	// no alive players found
 	RespawnAllNotAlivePlayers();
 }
+
+bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
+{
+	u32		cnt		= get_count	();
+	u32		cnt_alive = 0;
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= &l_pC->ps;
+
+		if (ps->team != Team) continue;
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD || ps->Skip)	continue;
+		cnt_alive++;
+	};
+	return cnt_alive != 0;
+};

@@ -29,6 +29,7 @@ public:
 	virtual		void				OnTeamScore				(u32 /**team/**/)				{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	;//{};
+	virtual		void				OnPlayerKilled			(u32 id_killed)	{};
 
 	virtual		void				OnCreate				(u16 id_who);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
