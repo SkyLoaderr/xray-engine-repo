@@ -264,6 +264,8 @@ public:
 					l_dwaNodes.push_back(i);
 		}
 
+		R_ASSERT2				(!l_dwaNodes.empty(),"Can't create at least one death point for specified graph point");
+
 		random_shuffle			(l_dwaNodes.begin(),l_dwaNodes.end());
 
 		u32						m = _min(iFloor(.1f*l_dwaNodes.size()),255), l_dwStartIndex = m_tpLevelPoints.size();
