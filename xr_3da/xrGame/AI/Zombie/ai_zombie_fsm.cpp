@@ -243,7 +243,7 @@ void CAI_Zombie::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.square_magnitude() <= 2.f),aiZombieAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= 2.f),aiZombieAttackFire);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -260,6 +260,8 @@ void CAI_Zombie::AttackRun()
 	
 	vfAimAtEnemy();
 	
+	vfSetFire(false,Group);
+
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 }
 

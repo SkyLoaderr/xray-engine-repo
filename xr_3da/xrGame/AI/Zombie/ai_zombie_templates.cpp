@@ -468,10 +468,14 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 {
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
+	bool bInsideNode = false;
+	int iMySubNode = -1;
 	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
 		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
-		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
-		VERIFY(iMySubNode >= 0);
+		iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		bInsideNode = iMySubNode >= 0;
+	}
+	if (bInsideNode) {
 		// filling the subnodes with the moving objects
 		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
