@@ -9,6 +9,7 @@
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
 class ENGINE_API CEnvironment;
+class ENGINE_API CPS_Instance;
 
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API	IGame_Level		: 
@@ -29,9 +30,9 @@ protected:
 	CObject*					pCurrentViewEntity;
 
 	// Static sounds
-	ref_sound						Sounds_Ambience;
-	xr_vector<ref_sound>			Sounds;
-	xr_vector<ref_sound>			Sounds_Random;
+	ref_sound					Sounds_Ambience;
+	xr_vector<ref_sound>		Sounds;
+	xr_vector<ref_sound>		Sounds_Random;
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
@@ -43,6 +44,9 @@ public:
 
 	CInifile*					pLevel;
 	CCustomHUD*					pHUD;
+
+	xr_vector<CPS_Instance*>	ps_active;
+	xr_vector<CPS_Instance*>	ps_destoy;
 public:
 	// Main, global functions
 	IGame_Level					();

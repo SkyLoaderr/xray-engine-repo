@@ -7,6 +7,7 @@
 #include "gamefont.h"
 #include "xrLevel.h"
 #include "environment.h"
+#include "ps_instance.h"
 
 ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
 
@@ -24,6 +25,15 @@ IGame_Level::IGame_Level	()
 
 IGame_Level::~IGame_Level	()
 {
+	// Cleanup particles, some of them can be still active
+	while (ps_active.size())
+	{
+		CPS_Instance*	psi						= ps_active.back	();
+		ps_active.pop_back						();
+		xr_delete								(psi);
+	}
+
+	// 
 	xr_delete					( Environment	);
 	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
@@ -193,6 +203,17 @@ void IGame_Level::OnFrame		( )
 	Environment->OnFrame		( );
 	Objects.Update				( );
 	pHUD->OnFrame				( );
+
+	// Destroy inactive particle systems
+	while (ps_destoy.size())
+	{
+		CPS_Instance*	psi						= ps_destoy.back	();
+		xr_vector<CPS_Instance*>::iterator it	= find(ps_active.begin(),ps_active.end(),psi);
+		R_ASSERT								(it!=ps_active.end());
+		ps_active.erase							(it);
+		ps_destoy.pop_back						();
+		xr_delete								(psi);
+	}
 
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))

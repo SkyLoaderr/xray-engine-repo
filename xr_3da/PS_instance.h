@@ -6,7 +6,6 @@
 #include "irenderable.h"
 
 class ENGINE_API CPS_Instance	:
-	public IEventReceiver,
 	public ISpatial,
 	public ISheduled,
 	public IRenderable
@@ -25,7 +24,6 @@ public:
 	IC void				PSI_SetLifeTime	(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
 
 	virtual void		shedule_Update	(u32 dt);
-	virtual void		OnEvent			(EVENT E, u64 P1, u64 P2)	{};
 };
 
 #endif

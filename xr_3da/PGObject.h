@@ -15,7 +15,6 @@ public:
 	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		renderable_Render	();
-	virtual void		OnEvent				(EVENT E, u64 P1, u64 P2);
 
 	Fvector&			Position			();
 	void				SetTransform		(const Fmatrix& m);
