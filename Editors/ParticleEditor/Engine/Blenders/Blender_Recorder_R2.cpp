@@ -89,14 +89,14 @@ void	CBlender_Compile::i_Filter			(u32 s, u32 _min, u32 _mip, u32 _mag)
 }
 u32		CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
-	stage					= i_Sampler	(_name);
+	Stage					= i_Sampler	(_name);
 	i_Texture				(Stage,texture);
 
 	// Sampler states
-	i_Address				(stage,address);
-	i_Filter				(stage,fmin,fmip,fmag);
+	i_Address				(Stage,address);
+	i_Filter				(Stage,fmin,fmip,fmag);
 	i_Projective			(b_ps1x_ProjectiveDivide);
-	RS.SetSAMP				(stage,D3DSAMP_ELEMENTINDEX,element);
+	RS.SetSAMP				(Stage,D3DSAMP_ELEMENTINDEX,element);
 	return	stage;
 }
 
