@@ -82,6 +82,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 		M				= m_pHUD->animGet(sh_anim);
 		if (M)			lst.push_back(M);
 	}
+	R_ASSERT2(!lst.empty(),prefix);
 }
 
 void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
