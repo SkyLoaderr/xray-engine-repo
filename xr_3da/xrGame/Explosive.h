@@ -7,7 +7,7 @@
 #define SND_RIC_COUNT 5
 
 #include "missile.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 class CExplosive
 {
