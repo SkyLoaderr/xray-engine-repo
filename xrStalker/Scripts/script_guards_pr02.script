@@ -143,6 +143,27 @@ function main()
 			guard_see_actor = 5
 			guard01:script	(false,script_guards_pr02.script_name())
 			guard02:script	(false,script_guards_pr02.script_name())
+			wait(1000)			
+			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
+			wait(3000)			
+			final_guard04:script	(false,script_guards_pr02.script_name())
+			final_guard05:script	(false,script_guards_pr02.script_name())
+			action(
+				final_guard04,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
+			action(
+				final_guard05,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000000)
+			)
+			siren:play_at_pos		(actor,actor:position(),0);
+			wait(1000)			
+			nemedlenno:play_at_pos		(actor,actor:position(),0);
+			wait(2000)			
 		break
 		end
 	    wait	()
@@ -161,6 +182,20 @@ function main()
 		end
 	    wait	()
 	end
+
+	while final_guard04:action() and final_guard05:action() do
+		if final_guard04:see(actor) or final_guard05:see(actor) then
+			wait(1000)			
+			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
+			wait(1000)			
+			final_guard04:script			(false,script_guards_pr02.script_name())
+			final_guard05:script			(false,script_guards_pr02.script_name())
+			rainbow_monstri:play_at_pos		(final_guard02,final_guard02:position(),0);
+		break
+		end
+	    wait	()
+	end
+
 
 	while true do
 		if guard01.health <= 0 or guard02.health <= 0 then
