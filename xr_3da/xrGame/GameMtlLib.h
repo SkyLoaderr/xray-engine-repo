@@ -316,6 +316,8 @@ public:
 	void				Save				();
 };
 
+#define SELECT_RANDOM1(a_vector)			(a_vector[Random.randI(a_vector.size())])
+
 #define SELECT_RANDOM(_res_, _mtl_pair_, _a_vector_)\
 	{ VERIFY2(!_mtl_pair_##->_a_vector_.empty(),_mtl_pair_->dbg_Name());\
 	_res_=(_mtl_pair_##->_a_vector_[Random.randI(_mtl_pair_##->_a_vector_.size())]);\
