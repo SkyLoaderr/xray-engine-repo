@@ -55,8 +55,8 @@
 #include <stdarg.h>
 #include <math.h>
 #include <string.h>
-#include <process.h>
 #include <typeinfo.h>
+//#include <process.h>
 
 #ifndef DEBUG
 	#ifdef _DEBUG

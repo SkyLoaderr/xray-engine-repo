@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <process.h>
+
 // mmsystem.h
 #define MMNOSOUND
 #define MMNOMIDI
