@@ -532,8 +532,8 @@ function action_robber_activity:fsm_step()
 		if time_global >= self.expiration_time --[[and time_global - self.expiration_time < 150]] then
 			local anim_count = self.object:animation_count()
 			if anim_count > 0 and self.object:position():distance_to(actor:position()) < 2 then
-				--printf("SLEEP")
-				actor:actor_sleep(2, 30)
+				printf("SLEEP")
+				actor:actor_sleep(0, 30)
 
 				--local h = hit()
 				--h.power = 1000
