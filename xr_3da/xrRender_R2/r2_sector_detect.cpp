@@ -3,9 +3,22 @@
 
 IRender_Sector* CRender::detectSector(Fvector& P)
 {
-	XRC.ray_options	(CDB::OPT_ONLYNEAREST);
-	Fvector dir; dir.set(0,-1,0);
+	IRender_Sector*	S	= NULL;	
+	Fvector			dir; 
+	XRC.ray_options		(CDB::OPT_ONLYNEAREST);
 
+	dir.set				(0,-1,0);
+	S					= detectSector(P,dir);
+	if (NULL==S)		
+	{
+		dir.set				(0,1,0);
+		S					= detectSector(P,dir);
+	}
+	return S;
+}
+
+IRender_Sector* CRender::detectSector(Fvector& P, Fvector& dir)
+{
 	// Portals model
 	int		id1		= -1;
 	float	range1	= 500.f;

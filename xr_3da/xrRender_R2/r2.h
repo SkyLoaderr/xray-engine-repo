@@ -94,6 +94,7 @@ private:
 	void							flush_Models				();
 	void							flush_LODs					();
 
+	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
 public:
 	void							render_scenegraph			();
 	void							render_hud					();
