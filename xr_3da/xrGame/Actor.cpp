@@ -722,7 +722,8 @@ void CActor::UpdateCL()
 		}
 
 		//if(eacFirstEye == cam_active)
-		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+//		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			float only_weapon_fire_disp = pWeapon->GetFireDispersion();
 			HUD().SetCrosshairDisp(only_weapon_fire_disp);
@@ -731,7 +732,8 @@ void CActor::UpdateCL()
 	}
 	else
 	{
-		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+//		if(this == dynamic_cast<CActor*>(Level().CurrentEntity()))
+		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			HUD().SetCrosshairDisp(0.f);
 			HUD().ShowCrosshair(false);
