@@ -198,7 +198,7 @@ void CSheduler::ProcessStep			()
 #endif
 
 		T.Object->shedule.b_locked	= TRUE;
-		T.Object->shedule_Update	(clampr(Elapsed,1,_max(T.Object->shedule.t_max,1000)));
+		T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
 		T.Object->shedule.b_locked	= FALSE;
 
 		// Calc next update interval
