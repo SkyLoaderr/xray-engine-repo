@@ -1,0 +1,36 @@
+function main ()
+	local stalker_pes = get_level_object("m_stalker_pes")
+	local wpn_pes = get_level_object("wpn_pes")
+	local actor = get_actor()
+
+	stalker_pes:script(true, zmey_gameplay_2_nt.script_name())
+
+	action(stalker_pes,
+	       look(look.fire_point, actor),
+	       anim(anim.danger),
+	       object(wpn_pes, object.fire1),
+	       move(move.standing, move.run, move.line, actor),
+	       cond(cond.time_end, time_infinite)
+	)
+
+	while stalker_pes:action() do
+		wait()
+	end
+
+	stalker_pes:script(false, zmey_gameplay_2_nt.script_name())
+
+
+
+
+	--planner0				= s_test.setup	("m_stalker_e0000","m_stalker_e0001","way0000")
+	--planner1				= s_test.setup	("m_stalker_e0001","m_stalker_e0000","way0001")
+
+	-- update cycle
+	--while true do
+	--	planner0:update		(1000)
+	--	planner1:update		(1000)
+	--	wait				(10)
+	--end
+	
+	-- the end
+end
