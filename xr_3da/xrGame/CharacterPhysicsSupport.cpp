@@ -58,8 +58,11 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 void CCharacterPhysicsSupport::in_NetSpawn()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
+	if(m_EntityAlife.g_Alive())
+	{
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(&m_EntityAlife);
+	}
 #endif
 }
 void CCharacterPhysicsSupport::in_NetDestroy()

@@ -223,8 +223,8 @@ void CPHJoint::CreateUniversalHinge()
 
 void CPHJoint::CreateWelding()
 {
-	dynamic_cast<CPHElement*>(pFirst_element)
-		->DynamicAttach(dynamic_cast<CPHElement*>(pSecond_element));
+	//dynamic_cast<CPHElement*>(pFirst_element)
+	//	->DynamicAttach(dynamic_cast<CPHElement*>(pSecond_element));
 
 }
 #ifdef  ODE_SLOW_SOLVER

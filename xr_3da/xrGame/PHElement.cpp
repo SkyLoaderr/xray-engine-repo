@@ -31,223 +31,40 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
-void CPHElement::			add_Box		(const Fobb&		V){
+void CPHElement::			add_Box		(const Fobb&		V)
+{
 	Fobb box;
 	box=V;
 	if(box.m_halfsize.x<0.005f) box.m_halfsize.x=0.005f;
 	if(box.m_halfsize.y<0.005f) box.m_halfsize.y=0.005f;
 	if(box.m_halfsize.z<0.005f) box.m_halfsize.z=0.005f;
-	m_boxes_data.push_back(box);
+	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CBoxGeom>(box)));
 }
 
-void CPHElement::			create_Box	(const Fobb&		V){
-	dGeomID geom,trans;
-
-	dVector3 local_position={
-		V.m_translate.x-m_mass_center.x,
-			V.m_translate.y-m_mass_center.y,
-			V.m_translate.z-m_mass_center.z};
-
-		if(m_group){
-			geom=dCreateBox(0,
-				V.m_halfsize.x*2.f,
-				V.m_halfsize.y*2.f,
-				V.m_halfsize.z*2.f);
-
-			m_geoms.push_back(geom);
-			dGeomSetPosition(geom,
-				local_position[0],
-				local_position[1],
-				local_position[2]);
-			dMatrix3 R;
-			PHDynamicData::FMX33toDMX(V.m_rotate,R);
-			dGeomSetRotation(geom,R);
-			trans=dCreateGeomTransform(0);
-			dGeomSetData(trans,0);
-			dGeomTransformSetGeom(trans,geom);
-			dGeomSetBody(trans,m_body);
-			m_trans.push_back(trans);
-			/////////////////////////////////////////////////////////
-			dGeomGroupAdd(m_group,trans);
-			/////////////////////////////////////////////////////////
-			dGeomTransformSetInfo(trans,1);
-			dGeomCreateUserData(geom);
-			dGeomGetUserData(geom)->material=ul_material;
-			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
-		}
-		else{
-			geom=dCreateBox(0,
-				V.m_halfsize.x*2.f,
-				V.m_halfsize.y*2.f,
-				V.m_halfsize.z*2.f);
-
-			m_geoms.push_back(geom);
-
-
-			dGeomSetPosition(geom,
-				local_position[0],
-				local_position[1],
-				local_position[2]);
-
-			dMatrix3 R;
-			PHDynamicData::FMX33toDMX(V.m_rotate,R);
-			dGeomSetRotation(geom,R);
-
-
-			trans=dCreateGeomTransform(0);
-			dGeomSetData(trans,0);
-			dGeomTransformSetInfo(trans,1);
-			dGeomTransformSetGeom(trans,geom);
-			dGeomSetBody(trans,m_body);
-			m_trans.push_back(trans);
-
-			dGeomCreateUserData(geom);
-			dGeomGetUserData(geom)->material=ul_material;
-
-			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
-		}
-
-
-}
-
-void CPHElement::			add_Sphere	(const Fsphere&	V){
-	m_spheras_data.push_back(V);
-}
-
-void CPHElement::			create_Sphere	(const Fsphere&	V){
-	dGeomID geom,trans;
-	dVector3 local_position={
-		V.P.x-m_mass_center.x,
-			V.P.y-m_mass_center.y,
-			V.P.z-m_mass_center.z};
+void CPHElement::			build_Geom	(CODEGeom& geom)
+{
+		
+		geom.build(m_mass_center);
+		geom.set_body(m_body);
+		geom.set_material(ul_material);
+		if(contact_callback)geom.set_contact_cb(contact_callback);
+		if(object_contact_callback)geom.set_obj_contact_cb(object_contact_callback);
+		if(m_phys_ref_object) geom.set_ref_object(m_phys_ref_object);
 		if(m_group)
 		{
-			geom=dCreateSphere(0,V.R);
-			m_geoms.push_back(geom);
-			dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
-			trans=dCreateGeomTransform(0);
-			dGeomSetData(trans,0);
-			dGeomTransformSetGeom(trans,geom);
-			dGeomSetBody(trans,m_body);
-			m_trans.push_back(trans);
-			dGeomGroupAdd(m_group,trans);
-			dGeomTransformSetInfo(trans,1);		
-			dGeomCreateUserData(geom);
-			//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
-			dGeomGetUserData(geom)->material=ul_material;
-			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
+			geom.add_to_space((dSpaceID)m_group);
 		}
-		else
-		{
-			geom=dCreateSphere(0,V.R);
-			m_geoms.push_back(geom);
-			dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
-			trans=dCreateGeomTransform(0);
-			dGeomSetData(trans,0);
-			dGeomTransformSetGeom(trans,geom);
-			dGeomSetBody(trans,m_body);
-			m_trans.push_back(trans);
-			//dGeomGroupAdd(m_group,trans);
-			dGeomTransformSetInfo(trans,1);		
-			dGeomCreateUserData(geom);
-			//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
-			dGeomGetUserData(geom)->material=ul_material;
-			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
-		}
-};
+}
+void CPHElement::			add_Sphere	(const Fsphere&	V)
+{
+	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CSphereGeom>(V)));
+}
+
 void CPHElement::add_Cylinder	(const Fcylinder& V)
 {
-	m_cylinders_data.push_back(V);
+	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CCylinderGeom>(V)));
 }
 
-void CPHElement::create_Cylinder(const Fcylinder& V)
-{
-	dGeomID geom,trans;
-	dVector3 local_position=
-	{
-
-		V.m_center.x-m_mass_center.x,
-			V.m_center.y-m_mass_center.y,
-			V.m_center.z-m_mass_center.z
-	};
-
-	if(m_group){
-		geom=dCreateCylinder
-			(
-			0,
-			V.m_radius,
-			V.m_height
-			);
-
-		m_geoms.push_back(geom);
-		dGeomSetPosition(geom,
-			local_position[0],
-			local_position[1],
-			local_position[2]);
-		dMatrix3 R;
-		Fmatrix33 m33;
-		m33.j.set(V.m_direction);
-		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
-		PHDynamicData::FMX33toDMX(m33,R);
-		dGeomSetRotation(geom,R);
-		trans=dCreateGeomTransform(0);
-		dGeomSetData(trans,0);
-		dGeomTransformSetGeom(trans,geom);
-		dGeomSetBody(trans,m_body);
-		m_trans.push_back(trans);
-		/////////////////////////////////////////////////////////
-		dGeomGroupAdd(m_group,trans);
-		/////////////////////////////////////////////////////////
-		dGeomTransformSetInfo(trans,1);
-		dGeomCreateUserData(geom);
-		dGeomGetUserData(geom)->material=ul_material;
-		if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-		if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
-	}
-	else{
-		geom=dCreateCylinder
-			(
-			0,
-			V.m_radius,
-			V.m_height
-
-			);
-
-		m_geoms.push_back(geom);
-
-
-		dGeomSetPosition(geom,
-			local_position[0],
-			local_position[1],
-			local_position[2]);
-
-		dMatrix3 R;
-		Fmatrix33 m33;
-		m33.j.set(V.m_direction);
-		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
-		PHDynamicData::FMX33toDMX(m33,R);
-		dGeomSetRotation(geom,R);
-
-
-		trans=dCreateGeomTransform(0);
-		dGeomSetData(trans,0);
-		dGeomTransformSetInfo(trans,1);
-		dGeomTransformSetGeom(trans,geom);
-		dGeomSetBody(trans,m_body);
-		m_trans.push_back(trans);
-
-		dGeomCreateUserData(geom);
-		dGeomGetUserData(geom)->material=ul_material;
-
-		if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-		if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
-
-	}
-}
 void CPHElement::			build	(dSpaceID space){
 
 	m_body=dBodyCreate(phWorld);
@@ -259,34 +76,16 @@ void CPHElement::			build	(dSpaceID space){
 
 	dBodySetMass(m_body,&m_mass);
 
-	if(m_spheras_data.size()+m_boxes_data.size()>1)
-		//m_group=dCreateGeomGroup(space);
-		m_group=dCreateGeomGroup(0);
-
-	Fvector mc;//=get_mc_data();
-	mc.set(m_mass_center);
-	//m_start=mc;
+	if(m_geoms.size()>1)m_group=dCreateGeomGroup(0);
 
 	m_inverse_local_transform.identity();
-	m_inverse_local_transform.c.set(mc);
+	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
-	dBodySetPosition(m_body,mc.x,mc.y,mc.z);
+	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<Fobb>::iterator i_box;
-	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
-		create_Box(*i_box);
-	}
-	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<Fsphere>::iterator i_sphere;
-	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
-		create_Sphere(*i_sphere);
-	}
-	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<Fcylinder>::iterator i_cylinder;
-	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
-		create_Cylinder(*i_cylinder);
-	}
-	/////////////////////////////////////////////////////////////////////////////////////////
+	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;i_geom++) build_Geom(**i_geom);
+	
 }
 
 void CPHElement::RunSimulation()
@@ -294,122 +93,61 @@ void CPHElement::RunSimulation()
 	if(push_untill)
 		push_untill+=Device.dwTimeGlobal;
 
-	if(m_phys_ref_object)
-	{
-		xr_vector<dGeomID>::iterator i;
-		for(i=m_geoms.begin();i!=m_geoms.end();i++)
-			dGeomUserDataSetPhysicsRefObject(*i,m_phys_ref_object);
-	}
-
 	if(m_group)
 		dSpaceAdd(m_shell->GetSpace(),m_group);
 	else
-		dSpaceAdd(m_shell->GetSpace(),*m_trans.begin());
-
+		(*m_geoms.begin())->add_to_space(m_shell->GetSpace());
 	dBodyEnable(m_body);
 }
 
-void CPHElement::destroy	(){
-	m_attached_elements.clear();
+void CPHElement::destroy	()
+{
 	dJointGroupDestroy(m_saved_contacts);
-	xr_vector<dGeomID>::iterator i;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
 
 
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+	for(;i!=e;i++)
 	{
-		dGeomDestroyUserData(*i);
-		dGeomDestroy(*i);
-	}
-	for(i=m_trans.begin();i!=m_trans.end();i++)
-	{
-		dGeomDestroyUserData(*i);
-		dGeomDestroy(*i);
-
+		(*i)->destroy();
 	}
 
-	if(m_body && !attached)
+	if(m_body)
 	{
 		dBodyDestroy(m_body);
 		m_body=NULL;
 	}
 
-
-
-
 	if(m_group){
 		dGeomDestroy(m_group);
 		m_group=NULL;
 	}
-
-
-	m_geoms.clear();
-	m_trans.clear();
 }
 
 Fvector CPHElement::			get_mc_data	(){
-	Fvector mc,s;
-	float pv,volume=0.f;
-	mc.set(0,0,0);
-	xr_vector<Fobb>::iterator i_box;
-	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
-		pv=(*i_box).m_halfsize.x*(*i_box).m_halfsize.y*(*i_box).m_halfsize.z*8;
-		s.mul((*i_box).m_translate,pv);
-		volume+=pv;
-		mc.add(s);
+	Fvector s;
+	float pv;
+	m_mass_center.set(0,0,0);
+	m_volume=0.f;
+	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;i_geom++)
+	{
+		pv=(*i_geom)->volume();
+		s.mul((*i_geom)->local_center(),pv);
+		m_volume+=pv;
+		m_mass_center.add(s);
 	}
-	xr_vector<Fsphere>::iterator i_sphere;
-	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
-		pv=(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*4/3*M_PI;
-		s.mul((*i_sphere).P,pv);
-		volume+=pv;
-		mc.add(s);
-	}
-
-
-	xr_vector<Fcylinder>::iterator i_cylider;
-	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
-		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_height;
-		s.mul((*i_cylider).m_center,pv);
-		volume+=pv;
-		mc.add(s);
-	}
-
-	m_volume=volume;
-	mc.mul(1.f/volume);
-	m_mass_center=mc;
-	return mc;
+	m_mass_center.mul(1.f/m_volume);
+	return m_mass_center;
 }
 
-void CPHElement::			calc_volume_data	(){
-
-	float pv,volume=0.f;
-
-	xr_vector<Fobb>::iterator i_box;
-	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
-		pv=(*i_box).m_halfsize.x*(*i_box).m_halfsize.y*(*i_box).m_halfsize.z*8;
-
-		volume+=pv;
-
+void CPHElement::			calc_volume_data	()
+{
+	m_volume=0.f;
+	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;i_geom++)
+	{
+		m_volume+=(*i_geom)->volume();
 	}
-	xr_vector<Fsphere>::iterator i_sphere;
-	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
-		pv=(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*4/3*M_PI;
-
-		volume+=pv;
-
-	}
-
-
-	xr_vector<Fcylinder>::iterator i_cylider;
-	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
-		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_height;
-
-		volume+=pv;
-
-	}
-
-	m_volume=volume;
-
 }
 
 Fvector CPHElement::			get_mc_geoms	(){
@@ -431,113 +169,18 @@ void CPHElement::set_BoxMass(const Fobb& box, float mass)
 
 }
 
-void CPHElement::calculate_it_data(const Fvector& mc,float mas){
-	dMass m;
-	dMassSetZero(&m_mass);
-	xr_vector<Fobb>::iterator i_box;
-	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
-		Fvector& hside=(*i_box).m_halfsize;
-		Fvector& pos=(*i_box).m_translate;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
-		dMassAdjust(&m,hside.x*hside.y*hside.z*8.f/m_volume*mas);
-		dMatrix3 DMatx;
-		PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
-		dMassRotate(&m,DMatx);
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-
-	xr_vector<Fsphere>::iterator i_sphere;
-	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
-		Fvector& pos=(*i_sphere).P;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetSphere(&m,mas/m_volume,(*i_sphere).R);
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-
-	xr_vector<Fcylinder>::iterator i_cylinder;
-	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
-		Fvector& pos=(*i_cylinder).m_center;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetCylinder(&m,mas/m_volume,2,(*i_cylinder).m_radius,(*i_cylinder).m_height);
-		dMatrix3 DMatx;
-		Fmatrix33 m33;
-		m33.j.set((*i_cylinder).m_direction);
-		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
-		PHDynamicData::FMX33toDMX(m33,DMatx);
-		dMassRotate(&m,DMatx);
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-	//dMassSetCylinder()
+void CPHElement::calculate_it_data(const Fvector& mc,float mas)
+{
+	float density=mas/m_volume;
+	calculate_it_data_use_density(mc,density);
 }
 
 
-void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
-
-	//	xr_vector<Fobb>::iterator i_box=m_boxes_data.begin();
-	//	if(m_boxes_data.size()==1,m_spheras_data.size()==0){
-	//	Fvector& hside=(*i_box).m_halfsize;
-
-	//	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
-	//	dMassAdjust(&m_mass,hside.x*hside.y*hside.z*8.f*density);
-
-	//	return;
-	//	}
-
-	dMass m;
+void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
+{
 	dMassSetZero(&m_mass);
-	xr_vector<Fobb>::iterator i_box;
-	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
-		Fvector& hside=(*i_box).m_halfsize;
-		Fvector& pos=(*i_box).m_translate;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
-		dMassAdjust(&m,hside.x*hside.y*hside.z*8.f*density);
-		dMatrix3 DMatx;
-		PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
-		dMassRotate(&m,DMatx);	
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-
-	xr_vector<Fsphere>::iterator i_sphere;
-	for(i_sphere=m_spheras_data.begin();i_sphere!=m_spheras_data.end();i_sphere++){
-		Fvector& pos=(*i_sphere).P;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetSphere(&m,1,(*i_sphere).R);
-		dMassAdjust(&m,4.f/3.f*M_PI*(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*density);
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-
-	xr_vector<Fcylinder>::iterator i_cylinder;
-	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
-		Fvector& pos=(*i_cylinder).m_center;
-		Fvector l;
-		l.sub(pos,mc);
-		dMassSetCylinder(&m,1.f,2,(*i_cylinder).m_radius,(*i_cylinder).m_height);
-		dMassAdjust(&m,M_PI*(*i_cylinder).m_radius*(*i_cylinder).m_radius*(*i_cylinder).m_height*density);
-		dMatrix3 DMatx;
-		PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
-		dMassRotate(&m,DMatx);	
-		dMassTranslate(&m,l.x,l.y,l.z);
-		dMassAdd(&m_mass,&m);
-
-	}
-
+	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
 
 
@@ -569,15 +212,14 @@ void		CPHElement::	setMassMC		(float M,const Fvector& mass_center)
 
 
 
-void		CPHElement::Start(){
-
+void		CPHElement::Start()
+{
 	build(m_space);
 	RunSimulation();
-
-
 }
 
-void		CPHElement::Deactivate(){
+void		CPHElement::Deactivate()
+{
 	if(!bActive) return;
 	if(push_untill)
 	{
@@ -589,6 +231,7 @@ void		CPHElement::Deactivate(){
 	bActive=false;
 	bActivating=false;
 }
+
 void CPHElement::SetTransform(const Fmatrix &m0){
 	VERIFY2(_valid(m0),"invalid_form_in_set_transform");
 	Fvector mc;
@@ -604,11 +247,12 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 }
 
 
-CPHElement::~CPHElement	(){
+CPHElement::~CPHElement	()
+{
 	Deactivate();
-	m_boxes_data.clear();
-	m_spheras_data.clear();
-	m_cylinders_data.clear();
+	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;i_geom++)xr_delete(*i_geom);
+	m_geoms.clear();
 }
 
 void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
@@ -727,12 +371,6 @@ void CPHElement::PhDataUpdate(dReal step){
 	//UpdateInterpolation				();
 	//return;
 	if(! bActive)return;
-	///////////////skip body effecting update for attached elements////////////////
-	if(attached) {
-		if( !dBodyIsEnabled(m_body)) return;
-		UpdateInterpolation				();
-		return;
-	}
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
@@ -1008,18 +646,7 @@ void CPHElement::Disable(){
 	if(m_group)
 		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
 	else 
-		SaveContacts(ph_world->GetMeshGeom(),m_trans[0],m_saved_contacts);
-
-	xr_list<CPHElement*>::iterator i;
-	for(i=m_attached_elements.begin();i!=m_attached_elements.end();i++){
-
-
-		if((*i)->m_group)
-			SaveContacts(ph_world->GetMeshGeom(),(*i)->m_group,m_saved_contacts);
-		else 
-			SaveContacts(ph_world->GetMeshGeom(),(*i)->m_trans[0],m_saved_contacts);
-
-	}
+		SaveContacts(ph_world->GetMeshGeom(),m_geoms[0]->geometry_transform(),m_saved_contacts);
 
 	dBodyDisable(m_body);
 }
@@ -1077,78 +704,6 @@ void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 	//v->add(*((Fvector*)dBodyGetPosition(m_body)),tv);
 	v->set((*(Fvector*)dBodyGetPosition(m_body)));
 }
-
-void CPHElement::DynamicAttach(CPHElement* E)
-{
-	dVector3 p1;
-	dMatrix3 R1;
-	Memory.mem_copy(p1,dBodyGetPosition(m_body),sizeof(dVector3));
-	const dReal* p2=dBodyGetPosition(E->m_body);
-	Memory.mem_copy( R1,dBodyGetRotation(m_body),sizeof(dMatrix3));
-	const dReal* R2=dBodyGetRotation(E->m_body);
-	dVector3 pp={p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2]};
-	dMatrix3 RR;
-	dMULTIPLY1_333(RR,R1,R2);
-	dVector3 ppr;
-	dMULTIPLY1_331(ppr,R1,pp);
-	xr_vector<dGeomID>::iterator i;
-	Fmatrix RfRf;
-	PHDynamicData::DMXPStoFMX(RR,ppr,RfRf);
-	E->m_inverse_local_transform.mulA(RfRf);
-	//E->fixed_position.set(RfRf);
-	for(i=E->m_trans.begin();i!=E->m_trans.end();i++){
-		//	if(!m_group) {
-		//		m_group=dCreateGeomGroup(0);
-		//		dSpaceRemove (ph_world->GetSpace(), m_trans[0]);
-		//		dGeomGroupAdd(m_group,m_trans[0]);
-		//	}
-		//	dSpaceRemove (ph_world->GetSpace(), *i);
-		//	dGeomGroupAdd(m_group,*i);
-		dGeomID geom=dGeomTransformGetGeom(*i);
-		const dReal* pos=dGeomGetPosition(geom);
-		const dReal* rot=dGeomGetRotation(geom);
-		dMatrix3 rr;
-		dMULTIPLY0_333(rr,RR,rot);
-
-		dGeomSetRotation(geom,rr);
-		dGeomSetPosition(geom,pos[0]+ppr[0],pos[1]+ppr[1],pos[2]+ppr[2]);
-
-		dGeomSetBody(*i,m_body);
-		dBodySetPosition(m_body,p1[0],p1[1],p1[2]);
-		dBodySetRotation(m_body,R1);
-
-	}
-	for(i=E->m_geoms.begin();i!=E->m_geoms.end();i++)
-		if(dGeomGetBody(*i)){
-			dGeomID trans=dCreateGeomTransform(0);
-			dGeomSetBody((*i),0);
-			dGeomSetPosition((*i),pp[0],pp[1],pp[2]);
-			dGeomSetRotation((*i),RR);
-			dGeomTransformSetGeom(trans,(*i));
-			dGeomTransformSetInfo(trans,1);
-			dGeomSetBody(trans,m_body);
-			dBodySetPosition(m_body,p1[0],p1[1],p1[2]);
-			dBodySetRotation(m_body,R1);
-			E->m_trans.push_back(trans);
-		}
-
-
-
-		dMass m1,m2;
-		dBodyGetMass(E->m_body,&m1);
-		dBodyGetMass(m_body,&m2);
-		dMassAdd(&m1,&m2);
-		dBodySetMass(m_body,&m1);
-		dBodyDestroy(E->m_body);
-		E->m_body=m_body;
-		E->m_body_interpolation.SetBody(m_body);
-		E->attached=true;
-		m_attached_elements.push_back(E);
-		E->attached_list_i=(--m_attached_elements.end());
-		//E->m_body;
-
-}
-
 
 void CPHElement::Activate(bool place_current_forms,bool disable){
 
@@ -1284,7 +839,6 @@ void CPHElement::CallBack(CBoneInstance* B){
 
 	if(m_parent_element){
 		InterpolateGlobalTransform(&mXFORM);
-
 		parent.set(m_shell->mXFORM);
 		parent.invert();
 		mXFORM.mulA(parent);
@@ -1369,53 +923,34 @@ void CPHElement::CallBack1(CBoneInstance* B)
 void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)
 {
 	m_phys_ref_object=ref_object;
-	if(!bActive)
-	{
-		return;
-	}
-	xr_vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
-	{
-		dGeomUserDataSetPhysicsRefObject(*i,ref_object);
-	}
+	if(!bActive) return;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++) (*i)->set_ref_object(ref_object);
 }
 
 
 void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	object_contact_callback= callback;
-	if(!bActive)
-	{
-		return;
-	}
-	xr_vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
-	{
-		dGeomUserDataSetObjectContactCallback(*i,callback);
-	}
+	if(!bActive)return;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++) (*i)->set_obj_contact_cb(callback);
 }
 
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
 	contact_callback=callback;
 	push_untill=0;
-	if(!bActive)
-	{
-		return;
-	}
-	xr_vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
-	{
-		dGeomUserDataSetContactCallback(*i,callback);
-	}
+	if(!bActive)return;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++) (*i)->set_contact_cb(callback);
 }
 
 void CPHElement::SetPhObjectInGeomData(CPHObject* O)
 {
 	if(!bActive) return;
-	xr_vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
-		dGeomGetUserData(*i)->ph_object=O;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++) (*i)->set_ph_object(O);
 }
 
 
@@ -1424,9 +959,8 @@ void CPHElement::SetMaterial(u32 m)
 {
 	ul_material=m;
 	if(!bActive) return;
-	xr_vector<dGeomID>::iterator i;
-	for(i=m_geoms.begin();i!=m_geoms.end();i++)
-		dGeomGetUserData(*i)->material=m;
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	for(;i!=e;i++) (*i)->set_material(m);
 }
 
 
@@ -1613,13 +1147,8 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 }
 float CPHElement::getRadius()
 {
-	if(m_spheras_data.size()!=0) return m_spheras_data.back().R;
-
-	if(m_boxes_data.size()!=0) return m_boxes_data.back().m_halfsize.x;
-
-	if(m_cylinders_data.size()!=0)return m_cylinders_data.back().m_radius;
-
-	return 0.f;
+	if(m_geoms.size()!=0) return m_geoms.back()->radius();
+	else				  return 0.f;
 }
 
 void CPHElement::set_DynamicLimits(float l_limit,float w_limit)
@@ -1717,16 +1246,15 @@ void GetTransformedGeometryExtensions(dGeomID geom_transform,const dReal* axis,f
 void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
 {
 	lo_ext=dInfinity;hi_ext=-dInfinity;
-	xr_vector<dGeomID>::iterator i=m_trans.begin(),e=m_trans.end();
+	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++)
 	{
 		float temp_lo_ext,temp_hi_ext;
-		GetTransformedGeometryExtensions(*i,(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
+		GetTransformedGeometryExtensions((*i)->geometry_transform(),(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
 		if(lo_ext>temp_lo_ext)lo_ext=temp_lo_ext;
 		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
 	}
 	
-
 }
 
 const Fvector& CPHElement::mass_Center()

@@ -2,6 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////Implemetation//for//CPhysicsElement//////////////////
 ////////////////////////////////////////////////////////////////////////////////
+#include "Geometry.h"
 //using namespace std;
 #ifndef PH_ELEMENT
 #define PH_ELEMENT
@@ -13,12 +14,7 @@ typedef		void	__stdcall	PushOutCallbackFun		(bool& do_colide,dContact& c);
 
 class CPHElement	:  public CPhysicsElement 
 {
-	xr_vector <dGeomID>		m_geoms;
-	xr_vector <dGeomID>		m_trans;
-	xr_vector <Fsphere>		m_spheras_data;
-	xr_vector <Fobb>		m_boxes_data;
-	xr_vector <Fcylinder>	m_cylinders_data;
-
+	xr_vector <CODEGeom*>	m_geoms;
 	float					m_start_time;
 	float					m_volume;
 	Fvector					m_mass_center;
@@ -32,10 +28,6 @@ class CPHElement	:  public CPhysicsElement
 	dReal					m_disw_param;
 	dReal					m_disl_param;
 	CPhysicsRefObject*		m_phys_ref_object;
-	///////////////////////////////
-	xr_list<CPHElement*>	m_attached_elements;
-	xr_list<CPHElement*>::iterator attached_list_i;
-	bool					attached;
 	CPHElement				*m_parent_element;
 	CPHShell				*m_shell;
 	CPHInterpolation		m_body_interpolation;
@@ -74,10 +66,7 @@ public:
 
 	////////////////////////////
 private:
-	void					create_Sphere					(const Fsphere&		V);
-	void					create_Box						(const Fobb&		V);
-	void					create_Cylinder					(const Fcylinder&	V);
-
+	void					build_Geom						(CODEGeom&	V);
 	void					calculate_it_data				(const Fvector& mc,float mass);
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);
 	void					Disabling						();
@@ -93,7 +82,6 @@ public:
 	void					ReEnable						();
 	void					ResetDisable					();
 	void					Enable							();
-	void					DynamicAttach					(CPHElement * E);
 	virtual void			SetAirResistance				(dReal linear=0.0002f, dReal angular=0.05f) {
 		k_w= angular;
 		k_l=linear;
@@ -210,8 +198,6 @@ public:
 		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
-		attached=false;
-		//m_attached_element=NULL;
 	};
 	//CPHElement(){ m_space=ph_world->GetSpace();};
 	virtual ~CPHElement	();

@@ -23,10 +23,25 @@ void CODEGeom::get_mass(dMass& m,const Fvector& ref_point, float density)
 	dMassTranslate(&m,l.x,l.y,l.z);
 }
 
+void CODEGeom::get_mass(dMass& m,const Fvector& ref_point)
+{
+	get_mass(m);
+	Fvector l;
+	l.sub(local_center(),ref_point);
+	dMassTranslate(&m,l.x,l.y,l.z);
+}
+
 void CODEGeom::add_self_mass(dMass& m,const Fvector& ref_point, float density)
 {
 	dMass self_mass;
 	get_mass(self_mass,ref_point,density);
+	dMassAdd(&m,&self_mass);
+}
+
+void CODEGeom::add_self_mass(dMass& m,const Fvector& ref_point)
+{
+	dMass self_mass;
+	get_mass(self_mass,ref_point);
 	dMassAdd(&m,&self_mass);
 }
 
@@ -125,7 +140,22 @@ void CODEGeom::set_ref_object(CPhysicsRefObject* ro)
 	else
 	{
 		VERIFY(dGeomGetUserData(m_geom_transform));
-		dGeomUserDataSetPhysicsRefObject(geom(),ro);
+		dGeomUserDataSetPhysicsRefObject(m_geom_transform,ro);
+	}
+}
+
+void CODEGeom::set_ph_object(CPHObject* o)
+{
+	if(!m_geom_transform) return;
+	if(geom())
+	{
+		VERIFY(dGeomGetUserData(geom()));
+		dGeomGetUserData(geom())->ph_object=o;
+	}
+	else
+	{
+		VERIFY(dGeomGetUserData(m_geom_transform));
+		dGeomGetUserData(m_geom_transform)->ph_object=o;
 	}
 }
 void CODEGeom::destroy()
@@ -161,9 +191,20 @@ float CBoxGeom::volume()
 	return m_box.m_halfsize.x*m_box.m_halfsize.y*m_box.m_halfsize.z*8.f;
 }
 
+float CBoxGeom::radius()
+{
+	return m_box.m_halfsize.x;
+}
 const Fvector& CBoxGeom::local_center()
 {
 	return m_box.m_translate;
+}
+void CBoxGeom::get_local_form(Fmatrix& form)
+{
+	form.i.set(m_box.m_rotate.i);
+	form.j.set(m_box.m_rotate.j);
+	form.k.set(m_box.m_rotate.k);
+	form.c.set(m_box.m_translate);
 }
 void CBoxGeom::build(const Fvector& ref_point)
 {
@@ -206,11 +247,21 @@ float CSphereGeom::volume()
 	return 4.f*M_PI*m_sphere.R*m_sphere.R*m_sphere.R/3.f;
 }
 
+float CSphereGeom::radius()
+{
+	return m_sphere.R;
+}
+
 const Fvector& CSphereGeom::local_center()
 {
 	return m_sphere.P;
 }
 
+void CSphereGeom::get_local_form(Fmatrix& form)
+{
+	form.identity();
+	form.c.set(m_sphere.P);
+}
 void CSphereGeom::build(const Fvector& ref_point)
 {
 	dGeomID geom;
@@ -248,11 +299,22 @@ float CCylinderGeom::volume()
 	return M_PI*m_cylinder.m_radius*m_cylinder.m_radius*m_cylinder.m_height;
 }
 
+float CCylinderGeom::radius()
+{
+	return m_cylinder.m_radius;
+}
+
 const Fvector& CCylinderGeom::local_center()
 {
 	return m_cylinder.m_center;
 }
 
+void CCylinderGeom::get_local_form(Fmatrix& form)
+{
+	form.j.set(m_cylinder.m_direction);
+	Fvector::generate_orthonormal_basis(form.j,form.k,form.i);
+	form.c.set(m_cylinder.m_center);
+}
 void CCylinderGeom::build(const Fvector& ref_point)
 {
 	dGeomID geom;
