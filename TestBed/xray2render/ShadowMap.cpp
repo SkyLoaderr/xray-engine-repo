@@ -206,15 +206,14 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 CMyD3DApplication::CMyD3DApplication()
 {
 	// Override base class members
-	m_strWindowTitle					= _T	("xray2 : render");
-	m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
-	m_d3dEnumeration.AppMinStencilBits	= 1;
-	m_d3dEnumeration.AppRequiresFullscreen = TRUE;
-	m_d3dEnumeration.AppMinFullscreenWidth = OUT_WIDTH;
-	m_d3dEnumeration.AppMinFullscreenHeight = OUT_HEIGHT;
-
-	m_dwCreationWidth					= OUT_WIDTH;
-	m_dwCreationHeight					= OUT_HEIGHT;
+	m_strWindowTitle							= _T	("xray2 : render");
+	m_d3dEnumeration.AppUsesDepthBuffer			= TRUE;
+	m_d3dEnumeration.AppMinStencilBits			= 1;
+	m_d3dEnumeration.AppRequiresFullscreen		= TRUE;
+	m_d3dEnumeration.AppMinFullscreenWidth		= OUT_WIDTH;
+	m_d3dEnumeration.AppMinFullscreenHeight		= OUT_HEIGHT;
+	m_dwCreationWidth							= OUT_WIDTH;
+	m_dwCreationHeight							= OUT_HEIGHT;
 
 	m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
 
