@@ -108,7 +108,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 			m_pPhysicsShell->add_Element(E);
 			m_pPhysicsShell->setMass(m_mass);
 			if(!H_Parent())
-				m_pPhysicsShell->Activate(XFORM(),0,XFORM());
+				m_pPhysicsShell->Activate(XFORM(),0,XFORM(),!po->flags.and(CSE_ALifeObjectPhysic::flActive).get());
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
 		} break;
