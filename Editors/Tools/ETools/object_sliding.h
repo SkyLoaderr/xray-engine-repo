@@ -42,6 +42,7 @@ class OMSlidingWindow: public OptimisedMesh
 {
 	Object *pObj;
 
+public:
 	int										iNumVerts;			// Number of verts at full rez.
 	int										iNumCollapses;		// Total number of collapses.
 	int										iNumLevels;			// Total number of levels.
@@ -49,7 +50,6 @@ class OMSlidingWindow: public OptimisedMesh
 
 	BOOL									bOptimised;			// Have the tris been reordered optimally?
 
-public:
 	xr_vector<ETOOLS::QSVert>				vertices;
 	xr_vector<ETOOLS::QSFace>				indices;
 public:

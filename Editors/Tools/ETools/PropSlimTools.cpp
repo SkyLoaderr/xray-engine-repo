@@ -9,7 +9,7 @@ ETOOLS_API void ContractionClear		(QSContraction*& dst_conx)
 	xr_delete				(dst_conx);
 }
 
-void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorTolerance=0.1f)
+void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorTolerance=1.f)
 {
 	while (true){
 		// Find the best collapse you can.
@@ -31,6 +31,7 @@ void CalculateAllCollapses(Object* m_pObject, float m_fSlidingWindowErrorToleran
 		m_pObject->FindCollapseError		( NULL, NULL, FALSE );
 
 		for ( ppt = m_pObject->CurPtRoot.ListNext(); ppt != NULL; ppt = ppt->ListNext() ){
+			if (0==ppt->FirstEdge())	continue;
 			// Disallow any pts that are on an edge - shouldn't be collapsing them.
 			BOOL bAllowed = TRUE;
 			for ( pedge = ppt->FirstEdge(); pedge != NULL; pedge = ppt->NextEdge() ){
@@ -152,29 +153,31 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 	
 	SM->Update				();
 
-	xr_delete				(SM);
+	// Find the record.
+	int iLoD = 700;
+	if ( iLoD < 0 )						iLoD = 0;
+	else if ( iLoD > SM->iNumCollapses )iLoD = SM->iNumCollapses;
+	SlidingWindowRecord *pswr = SM->swrRecords.Item ( iLoD );
 
-
-/*
 	// write SMF
 	IWriter* W			= FS.w_open("x:\\import\\original.smf");
 	string256 tmp;
 	// vertices
-	for (u32 v_idx=0; v_idx<mdl->vert_count(); v_idx++){
-		sprintf			(tmp,"v %f %f %f",mdl->vertex(v_idx)[0],mdl->vertex(v_idx)[1],-mdl->vertex(v_idx)[2]);
+	for (u32 v_idx=0; v_idx<SM->vertices.size(); v_idx++){
+		ETOOLS::QSVert& v = SM->vertices[v_idx];
+		sprintf			(tmp,"v %f %f %f",v.pt.x,v.pt.y,-v.pt.z);
 		W->w_string		(tmp);
 	}
 	// transfer faces
-	for (u32 f_idx=0; f_idx<mdl->face_count(); f_idx++){
-		if (mdl->face_is_valid(f_idx)){
-			MxFace& F		= mdl->face(f_idx);
-			sprintf			(tmp,"f %d %d %d",F.v[2]+1,F.v[1]+1,F.v[0]+1);
-			W->w_string		(tmp);
-		}
+	for (u32 f_idx=0; f_idx<pswr->wNumTris; f_idx++){
+		ETOOLS::QSFace& F = SM->indices[f_idx+pswr->dwFirstIndexOffset/3];
+		sprintf			(tmp,"f %d %d %d",F.v[2]+1,F.v[1]+1,F.v[0]+1);
+		W->w_string		(tmp);
 	}
 	FS.w_close	(W);
-*/
+
 	// -----
+	xr_delete				(SM);
 	xr_delete				(m_pObject);
 
 	return TRUE;

@@ -12,6 +12,7 @@
 
 #include "object.h"
 #include "MxQMetric.h"
+#include "quad.h"
 
 #define QUAD_SIZE 5
 
@@ -452,7 +453,7 @@ void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
 
 float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult /*= FALSE*/ )
 {
-	if (1){
+	if (0){
 		static MeshPt		*pptLast;
 		static MxQuadric	qLast(QUAD_SIZE);
 		if ( pptBinned == NULL )
@@ -486,7 +487,6 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 
 		return qSum.evaluate(pos);
 	}else{
-/*
 		static MeshPt *pptLast;
 		static Quad qLast;
 
@@ -519,6 +519,5 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 
 		// And find the error once the collapse has happened.
 		return qSum.FindError ( pptKept->mypt.vPos );
-*/
 	}
 }

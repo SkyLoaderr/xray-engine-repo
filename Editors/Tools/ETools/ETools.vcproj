@@ -234,6 +234,9 @@
 				RelativePath=".\PropSlimTools.h">
 			</File>
 			<File
+				RelativePath=".\quad.h">
+			</File>
+			<File
 				RelativePath=".\TomsLib.h">
 			</File>
 		</Filter>

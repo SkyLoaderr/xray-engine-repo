@@ -10,8 +10,6 @@
 #ifndef quadH
 #define quadH
 
-#include "D3dx8core.h"
-
 // This Quad only records the error due to the vertex positions.
 // A real implementation needs to use smarter QEMs that take account of
 // other vertex attrbiutes such as normals, texture coords, vertex colours,
@@ -43,22 +41,22 @@ struct Quad
 	}
 
 	// Create a quad from a triangle (numbered clockwise).
-	Quad ( const D3DXVECTOR3 &vec1, const D3DXVECTOR3 &vec2, const D3DXVECTOR3 &vec3 )
+	Quad ( const Fvector3 &vec1, const Fvector3 &vec2, const Fvector3 &vec3 )
 	{
-		D3DXVECTOR3 vec12 = vec2 - vec1;
-		D3DXVECTOR3 vec13 = vec3 - vec1;
+		Fvector3 vec12; vec12.sub(vec2,vec1);
+		Fvector3 vec13; vec13.sub(vec3,vec1);
 
-		D3DXVECTOR3 vNorm;
-		D3DXVec3Cross ( &vNorm, &vec12, &vec13 );
-		float fArea = D3DXVec3Length ( &vNorm );
-		vNorm = vNorm / fArea;
+		Fvector3 vNorm;
+		vNorm.crossproduct(vec12,vec13);
+		float fArea = vNorm.magnitude();
+		vNorm.div(vNorm,fArea);
 		// Use the area of the tri, not the parallelogram.
 		fArea *= 0.5f;
 
 		// Find the distance of the origin from the plane, so that
 		// P*N + D = 0
 		// => D = -P*N
-		float fDist = - D3DXVec3Dot ( &vNorm, &vec1 );
+		float fDist = - vNorm.dotproduct(vec1);
 
 		// And now form the Quadric.
 		// A = NNt (and bin the lower half, since it is symmetrical).
@@ -77,7 +75,7 @@ struct Quad
 		C   = fArea * fDist   * fDist;
 	}
 
-	const float FindError ( const D3DXVECTOR3 &vec )
+	const float FindError ( const Fvector3 &vec )
 	{
 		return (
 			A00 * vec.x * vec.x +
