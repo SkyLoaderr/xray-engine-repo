@@ -315,6 +315,14 @@ SOURCE=.\EffectorRecoil.cpp
 
 SOURCE=.\EffectorRecoil.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\EffectorShot.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\EffectorShot.h
+# End Source File
 # End Group
 # Begin Source File
 
