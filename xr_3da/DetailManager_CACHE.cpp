@@ -130,6 +130,7 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 	}
 
 	// Task performer
+	if (cache_task.size() == dm_cache_size)	limit = dm_cache_size;
 	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++)
 	{
 		u32	best_id		= 0;
