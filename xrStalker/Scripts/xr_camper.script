@@ -39,13 +39,35 @@ end
 class "evaluator_close_combat" (property_evaluator)
 function evaluator_close_combat:__init(name, storage) super (nil, name)
 	self.a = storage
+	self.close_combat = false
 end
 function evaluator_close_combat:evaluate()
 	if not xr_logic.is_active(self.object, self.a) then
 		return true
 	end
+
 	local best_enemy = self.object:best_enemy()
-	return best_enemy ~= nil and distance_between(self.object, self.object:best_enemy()) < self.a.radius
+	if best_enemy == nil then return true end
+--printf("%s %s %s", self.a.radius, self.a.big_radius, distance_between(self.object, self.object:best_enemy()))
+--printf("%s", utils.to_str(self.close_combat))
+
+	if self.close_combat == false then
+		self.close_combat = distance_between(self.object, self.object:best_enemy()) < self.a.radius
+	end
+
+	if self.close_combat == true then
+		local a = self.object:memory(self.object:best_enemy())
+		if a then
+--			printf("%s - %s ? %s", device():time_global(), a.level_time, 20000)
+			if device():time_global() - a.level_time > 20000 then
+				self.close_combat = false
+			end
+		else			
+			self.close_combat = false
+		end
+	end
+
+	return self.close_combat
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -104,6 +126,7 @@ function action_kill:__init (npc_name,action_name,storage) super (nil,action_nam
 end
 function action_kill:initialize ()
     action_base.initialize(self)    
+    self.enemy_position = nil
 end
 function action_kill:execute ()
 	action_base.execute(self)
@@ -133,11 +156,12 @@ function action_kill:execute ()
 			else
 				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
 			end
+			self.enemy_position = self.enemy:position()
 		else
 			if self.a.suggested_state.campering then
-				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
+				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			else
-				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy:position()})
+				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			end
 		end
 	end
@@ -181,9 +205,9 @@ function action_retreat:execute()
 			end
 		else
 			if self.a.suggested_state.moving then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
+				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.object:best_enemy()})
 			else
-				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy(), look_position = self.object:best_enemy():position()})
+				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy()})
 			end			
 		end
 	end
@@ -250,6 +274,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
+	st.big_radius = utils.cfg_get_number(ini, section, "big_radius", npc, false)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
@@ -260,5 +285,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	if st.radius == nil then
 		st.radius = 20
+	end
+	if st.big_radius == nil then
+		st.big_radius = st.radius + 10
 	end
 end

@@ -85,9 +85,15 @@ end
 class "eva_state_mgr_end" (property_evaluator)
 function eva_state_mgr_end:__init(name, st) super (nil, name)
 	self.st = st
+	self.mgr = nil
 end
 function eva_state_mgr_end:evaluate()
-	if self.object:best_enemy() == nil then
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
+	end
+
+--	if self.object:best_enemy() == nil then
+	if self.mgr:initialized() and self.mgr:current_action_id() ~= stalker_ids.action_combat_planner then
 		self.st.combat = false
 	end
 	return false
