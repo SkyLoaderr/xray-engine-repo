@@ -133,7 +133,7 @@ void CRenderTarget::calc_tc_duality_ss	(Fvector2& r0, Fvector2& r1, Fvector2& l0
 
 BOOL CRenderTarget::Perform		()
 {
-	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1));
+	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1) || (frame_distort==(Device.dwFrame-1)));
 }
 
 void CRenderTarget::Begin		()
@@ -221,6 +221,7 @@ void CRenderTarget::End		()
 
 void	CRenderTarget::phase_distortion	()
 {
+	frame_distort								= Device.dwFrame;
 	RCache.set_RT								(RT_distort->pRT);
 	RCache.set_ZB								(ZB);
 	RCache.set_CullMode							(CULL_CCW);
