@@ -11,7 +11,9 @@ function disable_talk_victim(first_speaker, second_speaker)
 end
 
 function kickass(first_speaker, second_speaker)
-	xr_punch.punch[first_speaker:id()] = second_speaker
+	--utils.abort("KICK ASS !!!!")
+	--xr_punch.punch[first_speaker:id()] = second_speaker
+	db.storage[second_speaker:id()].punch.enabled = true
 end
 
 function get_money_then_leave(first_speaker, second_speaker)

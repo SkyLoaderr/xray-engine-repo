@@ -64,7 +64,7 @@ function motivator_binder:reinit()
 	self.st.state_mgr = state_mgr.bind_manager(self.object)
 	
     --' удар в морду
-    xr_punch.add_to_binder (self.object)   
+    --xr_punch.add_to_binder (self.object)   
 
     --' Настройка схемы реакции
 	self.st.reactions = {
@@ -252,6 +252,7 @@ function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
 end
 
+-- Эвалюаторы, которые имеют высший приоритет, и, соответственно, перебивают остальные скрипты собой
 function addCommonPrecondition(action)
 	--action:add_precondition (world_property(xr_evaluators_id.reaction,			false))
 	action:add_precondition (world_property(xr_evaluators_id.assistance + 1,	false))
@@ -259,4 +260,6 @@ function addCommonPrecondition(action)
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 3,false))
 	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 1,  false))
 	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))		
+	action:add_precondition (world_property(xr_evaluators_id.zmey_punch_base + 1, false))		
 end
+

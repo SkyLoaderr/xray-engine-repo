@@ -206,6 +206,7 @@ function disable_generic_schemes(npc, stype)
 		xr_wounded.disable_scheme(npc, "wounded")
 		xr_heli_hunter.disable_scheme(npc, "heli_hunter")
 		xr_combat_ignore.disable_scheme(npc, "combat_ignore")
+		xr_punch.disable_scheme(npc, "punch")
 	elseif stype == modules.stype_mobile then
 		mob_combat.disable_scheme(npc, "mob_combat")
 		mob_death.disable_scheme(npc, "mob_death")
@@ -255,9 +256,12 @@ function enable_generic_schemes(ini, npc, stype, section)
 
 		local combat_ignore_section = utils.cfg_get_string(ini, section, "combat_ignore", npc, false, "")
 		if combat_ignore_section then
-			printf( "combat_ignore_section= '%s'", combat_ignore_section )
+			printf("combat_ignore_section= '%s'", combat_ignore_section )
 			xr_combat_ignore.set_combat_ignore_checker(npc, ini, "combat_ignore", combat_ignore_section)
 		end
+
+		local punch_section = utils.cfg_get_string (ini, section, "punch", npc, false, "")
+		xr_punch.set_scheme(npc, ini, "punch", punch_section)
 
 	elseif stype == modules.stype_mobile then
 		local combat_section = utils.cfg_get_string(ini, section, "on_combat", npc, false, "")

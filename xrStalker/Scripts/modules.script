@@ -33,6 +33,7 @@ load_scheme("xr_wounded",     "wounded",     stype_stalker)
 load_scheme("xr_rest",        "rest",        stype_stalker)
 load_scheme("xr_meet",        "actor_dialogs",stype_stalker)
 load_scheme("xr_combat_ignore", "combat_ignore", stype_stalker)
+load_scheme("xr_punch",       "punch",       stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:

@@ -7,24 +7,19 @@ punch = {}
 class "evaluator_need_punch" (property_evaluator)
 
 function evaluator_need_punch:__init(storage, name) super (nil, name)
-	self.a = storage
+	self.st = storage
 end
 
 function evaluator_need_punch:evaluate ()
 	--printf("evaluator_need_punch:evaluate()")
-	local whom = this.punch[self.object:id()]
-	if whom then
-		return true
-	end
-
-	return false
+	return self.st.enabled
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_punch_activity" (action_base)
 
 function action_punch_activity:__init(npc_name, action_name, storage) super (nil, action_name)
-	self.a = storage
+	self.st = storage
 
 	self.state_none = 0
 	self.state_approaching = 1
@@ -39,46 +34,43 @@ function action_punch_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
+	local whom = db.actor
+	whom:stop_talk()
+	self.object:set_path_type(game_object.level_path)
 	self.object:set_detail_path_type(move.line)
-	self.object:set_body_state(move.standing)
-        self.object:set_movement_type(move.stand)
-	self.object:set_sight(look.danger, nil, 0)
-	self.object:set_mental_state(anim.danger)
-
-	local whom = this.punch[self.object:id()]
-	if whom then
-		whom:stop_talk()
-		self.object:set_path_type(game_object.level_path)
-		self.object:set_desired_direction(whom:direction())
-		self.object:set_dest_level_vertex_id(whom:level_vertex_id())
-		self.object:set_movement_type(move.run)
-	end
+	self.object:set_desired_direction(whom:direction())
+	self.object:set_dest_level_vertex_id(whom:level_vertex_id())
+	state_mgr.set_state(self.object, "run",
+		nil,
+		nil,
+		{ look_object = db.actor }, 
+		{animation = true})
 	self.state = self.state_approaching
 
-	xr_reactions.add_rule(self.object, "ignore")
-
-	self.object:clear_animations()
+	--xr_reactions.add_rule(self.object, "ignore")
 end
 
 function action_punch_activity:execute()
+	action_base.execute(self)
+
 	--printf("exec!")
-	local whom = this.punch[self.object:id()]
-	if not whom then
-		return
-	end
+	local whom = db.actor
 
 	if not whom:alive() then
-		this.punch[self.object:id()] = nil
+		self.st.enabled = false
 		return
 	end
-
-	self.object:set_item(object.deactivate, self.object:best_weapon())
 
 	if self.state == self.state_approaching then
 		--printf("approaching")
 		if self.object:position():distance_to(whom:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
-			self.object:add_animation("udar_0", true)
+			state_mgr.set_state(self.object, "guard",
+				nil,
+				nil,
+				{ look_object = db.actor }, 
+				{animation = true})
+			--self.object:add_animation("udar_0", true)
 			self.expiration_time = device():time_global() + 700
 			self.state = self.state_punch
 		else
@@ -91,8 +83,9 @@ function action_punch_activity:execute()
 	if self.state == self.state_punch then
 		--printf("punch")
 		if device():time_global() >= self.expiration_time then
-			local anim_count = self.object:animation_count()
-			if anim_count > 0 and self.object:position():distance_to(whom:position()) < 2 then
+			--local anim_count = self.object:animation_count()
+			--if anim_count > 0 and self.object:position():distance_to(whom:position()) < 2 then
+				--[[
 				local h = hit()
 				h.power = 1000
 				h.direction:set(1, 0, 0)
@@ -101,24 +94,24 @@ function action_punch_activity:execute()
 				h.impulse = 10
 				h.type = hit.wound
 				whom:hit(h)
+				--]]
+				whom:actor_sleep(0, 30)
 
 				self.state = self.state_none
-			elseif anim_count == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_desired_direction(whom:direction())
-				self.object:set_dest_level_vertex_id(whom:level_vertex_id())
-				self.object:set_movement_type(move.run)
-				self.state = self.state_approaching
-			end
+			--elseif anim_count == 0 then
+			--	self.object:set_path_type(game_object.level_path)
+			--	self.object:set_desired_direction(whom:direction())
+			--	self.object:set_dest_level_vertex_id(whom:level_vertex_id())
+			--	self.object:set_movement_type(move.run)
+			--	self.state = self.state_approaching
+			--end
+			self.st.enabled = false
 		end
 		return
 	end
 end
 
 function action_punch_activity:finalize()
-	--printf("_bp: FINALIZE")
-	self.object:clear_animations()
-
 	action_base.finalize(self)
 end
 
@@ -147,12 +140,17 @@ function add_to_binder(npc)
 	new_action:add_precondition(world_property(properties["need_punch"], false))
 end
 
--- функции
-function vector_copy_by_val(vec)
-	local newvec = vector()
-	newvec.x = vec.x
-	newvec.y = vec.y
-	newvec.z = vec.z
-	return newvec
+function set_scheme(object, ini, scheme, section)
+	local st = xr_logic.assign_storage_and_bind(object, ini, scheme, section)
+
+	st.enabled = false
 end
+
+function disable_scheme(npc, scheme)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		st.enabled = false
+	end
+end
+
 
