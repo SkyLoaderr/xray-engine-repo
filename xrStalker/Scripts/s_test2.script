@@ -127,11 +127,13 @@ function Defender:process ()
 	   printf ("Stalker freed 2")
 	   return
 	end
+	
 	--найдем врага
 	local dist = 10000000
 	local enemy = nil
 	for a = 1, table.getn (self.monsters), 1 do
 	    local monster = self.monsters[a]
+	    printf ("Monster : %s", monster.npc:name ())
 	    if monster.npc:alive () == true then
 	       local tdist = distance_between (monster.npc, self.npc)
 	       printf ("Distance from stalker to monster - %f", tdist)
@@ -176,7 +178,7 @@ function main ()
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test2.zone_callback, true)
 
-    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, true)
+    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, false)
 	
 	wait (10000)		
 	
