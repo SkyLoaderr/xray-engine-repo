@@ -131,4 +131,6 @@ void CScript::vfExportToLua()
 {
 	using namespace luabind;
 	open			(m_tpLuaVirtualMachine);
+	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,int))(Log));
+//	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,...))(Msg));
 }
