@@ -13,7 +13,7 @@ max_radius               	= 50
 ef_main_weapon_type			= 1
 ef_weapon_type				= 7
 
-tri_state_reload			= off
+tri_state_reload			= on
 
 cost					 	= 400	;1000
 weapon_class			 	= shotgun
@@ -121,9 +121,9 @@ snd_empty					= weapons\generic_empty
 snd_reload					= weapons\toz34_reload
 snd_shoot_duplet			= weapons\toz34_shoot_both
 
-snd_open_weapon				= weapons\toz34_shoot
-snd_add_cartridge			= weapons\toz34_shoot
-snd_close_weapon			= weapons\toz34_shoot
+snd_open_weapon				= weapons\pistol_empty		;change me
+snd_add_cartridge			= weapons\gen_grenload		;change me
+snd_close_weapon			= weapons\pistol_empty		;change me
  
 [wpn_spas12_hud]
 shell_point		 			= 0.0, 0.0, 0.0
@@ -143,9 +143,9 @@ anim_shoot_both 			= shoot
 anim_idle_aim				= idle_aim
 
 
-anim_open_weapon			= draw
-anim_add_cartridge			= draw
-anim_close_weapon			= draw
+anim_open_weapon			= reload1
+anim_add_cartridge			= reload2
+anim_close_weapon			= reload3
 
 ;смещения HUD для режима приближения
 zoom_offset					= -0.123200,0.049300,-0.002000
