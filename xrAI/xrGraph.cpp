@@ -39,7 +39,7 @@ typedef struct tagRPoint {
 CALifeGraph::SGraphHeader	tGraphHeader;
 CALifeGraph::SGraphEdge		*tpaEdges;		// graph edges
 CALifeGraph::SGraphEdge		*tpaFullEdges;	// graph edges
-vector<SDynamicGraphVertex>	tpaGraph;		// graph
+xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
 stack<u32>					dwaStack;		// stack
 u32							*dwaSortOrder;  // edge sort order
 u32							*dwaEdgeOwner;  // edge owners
@@ -280,8 +280,8 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	tGraph.w_u32				(tGraphHeader.dwVersion);
 	tGraph.w_u32				(tGraphHeader.dwVertexCount);
 	tGraph.w_u32				(tGraphHeader.dwLevelCount);
-	vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-	vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+	xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+	xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 	for ( ; I != E; I++) {
 		tGraph.w_stringZ((*I).caLevelName);
 		tGraph.w_fvector3((*I).tOffset);

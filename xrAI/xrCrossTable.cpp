@@ -16,7 +16,7 @@
 DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
 
-void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, vector<bool> &tMarks, u32 dwStartNodeID, float fValue)
+void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID, float fValue)
 {
 	if (tDistances[dwStartNodeID] < fValue)
 		return;
@@ -34,7 +34,7 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, vector<bool> &
 	tMarks[dwStartNodeID] = false;
 }
 
-void					vfRecurseMark(CAI_Map& tMap, vector<bool> &tMarks, u32 dwStartNodeID)
+void					vfRecurseMark(CAI_Map& tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
 {
 	NodeCompressed		*tpNode = tMap.Node(dwStartNodeID);
 	NodeLink			*I = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));;
@@ -62,7 +62,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	FLOAT_VECTOR_VECTOR	tDistances;
 	int					iVertexCount	= tGraph.m_tGraphHeader.dwVertexCount;
 	int					iNodeCount		= tMap.m_header.count;
-	vector<bool>		tMarks;
+	xr_vector<bool>		tMarks;
 	tMarks.resize		(tMap.m_header.count);
 	tMarks.assign		(tMap.m_header.count,false);
 	{

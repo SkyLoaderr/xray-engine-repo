@@ -26,7 +26,7 @@ private:
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 public:
 	hdrNODES					m_header;		// m_header
-	vector<bool>				q_mark_bit;		// temporal usage mark for queries
+	xr_vector<bool>				q_mark_bit;		// temporal usage mark for queries
 	float						m_fSize2;
 	float						m_fYSize2;
 

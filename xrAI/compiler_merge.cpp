@@ -29,7 +29,7 @@ BOOL	NodeSimilar(Node&	N1, Node&	N2)
 
 DEF_VECTOR(vecDW,DWORD);
 
-vector<vecDW>	BestQuad;
+xr_vector<vecDW>	BestQuad;
 DWORD			BestQuad_Count;
 
 void ProcessOne		(DWORD Base, DWORD limit=8)
@@ -88,8 +88,8 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 		{
 			// now we have range [left,right]
 			// expand it up and down
-			vector<vecDW>	stack_up;
-			vector<vecDW>	stack_down;
+			xr_vector<vecDW>	stack_up;
+			xr_vector<vecDW>	stack_down;
 			
 			//			Msg("[%2d,%2d], %d",	left,right,BaseLine.size());
 			

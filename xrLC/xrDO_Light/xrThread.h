@@ -30,7 +30,7 @@ public:
 
 class ENGINE_API CThreadManager
 {
-	vector<CThread*>	threads;
+	xr_vector<CThread*>	threads;
 public:
 	void				start	(CThread*	T);
 	void				wait	(DWORD		sleep_time=1000);

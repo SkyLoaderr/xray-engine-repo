@@ -26,7 +26,7 @@ typedef struct tagSDynamicGraphVertex {
 DEFINE_VECTOR(SDynamicGraphVertex,		GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
 DEFINE_VECTOR(CALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
-extern vector<SDynamicGraphVertex>	tpaGraph;		// graph
+extern xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
 extern CALifeGraph::SGraphHeader	tGraphHeader;
 
 void xrBuildGraph(LPCSTR name);

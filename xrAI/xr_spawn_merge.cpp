@@ -66,7 +66,7 @@ public:
 		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
-		map<u32,vector<CALifeObject*> >	tpSGMap;
+		map<u32,xr_vector<CALifeObject*> >	tpSGMap;
 		while (0!=(S = SP->open_chunk(S_id)))
 		{
 			P.B.count			= S->length();
@@ -90,9 +90,9 @@ public:
 				CALifeObject	*tpALifeObject = dynamic_cast<CALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					map<u32,vector<CALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
+					map<u32,xr_vector<CALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
 					if (I == tpSGMap.end()) {
-						vector<CALifeObject*> tpTemp;
+						xr_vector<CALifeObject*> tpTemp;
 						tpTemp.clear();
 						tpTemp.push_back(tpALifeObject);
 						tpSGMap.insert(make_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
@@ -111,7 +111,7 @@ public:
 		ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
-			map<u32,vector<CALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
+			map<u32,xr_vector<CALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
 			if (J != tpSGMap.end()) {
 				if ((*I)->m_dwSpawnGroup > 0) {
 					for (u32 i=0; i<(*J).second.size(); i++)
@@ -229,7 +229,7 @@ void xrMergeSpawns(LPCSTR name)
 	tSpawnHeader.dwLevelCount	= 0;
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
-	vector<CSpawn *>			tpLevels;
+	xr_vector<CSpawn *>			tpLevels;
 	CALifeGraph::SLevel			tLevel;
     LPCSTR						N,V;
 	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");

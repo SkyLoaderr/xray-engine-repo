@@ -114,12 +114,12 @@ private:
 	// search and path parameters
 	u32						m_dwLastRangeSearch;		// время последнего поиска узла
 	bool					m_bIfSearchFailed;			// если поиск ничего не нашёл
-	vector<Fvector>			m_tpaPoints;
-	vector<Fvector>			m_tpaTravelPath;
-	vector<u32>				m_tpaPointNodes;
-	vector<Fvector>			m_tpaLine;
-	vector<u32>				m_tpaNodes;
-	vector<Fvector>			m_tpaTempPath;
+	xr_vector<Fvector>			m_tpaPoints;
+	xr_vector<Fvector>			m_tpaTravelPath;
+	xr_vector<u32>				m_tpaPointNodes;
+	xr_vector<Fvector>			m_tpaLine;
+	xr_vector<u32>				m_tpaNodes;
+	xr_vector<Fvector>			m_tpaTempPath;
 	u32						m_dwPathTypeRandomFactor;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
 

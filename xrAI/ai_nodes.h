@@ -138,7 +138,7 @@ class CGraphThread : public CThread
 	SIndexNode			*m_tpIndexes;
 	float				m_fMaxDistance;
 	xrCriticalSection	*m_tpCriticalSection;
-	vector<u32>			tpaNodes;
+	xr_vector<u32>			tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 	const CAI_Map		*m_tpAI_Map;
 

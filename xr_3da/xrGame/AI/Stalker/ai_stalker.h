@@ -168,8 +168,6 @@ private:
 	Fvector					m_tNextGraphPoint;
 	
 	// FSM
-	xr_stack<EStalkerStates>	m_tStateStack;
-	svector<SStalkerStates,MAX_STATE_LIST_SIZE>	m_tStateList;
 	u32						m_dwLastUpdate;
 	u32						m_dwCurrentUpdate;
 	u32						m_dwUpdateCount;

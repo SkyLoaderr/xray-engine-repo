@@ -205,7 +205,7 @@ public:
 		CDB::COLLIDER DB;
 		DB.ray_options	(CDB::OPT_ONLYFIRST);
 		
-		vector<RC>		cache;
+		xr_vector<RC>		cache;
 		{
 			RC				rc;	
 			rc.C[0].set		(0,0,0); 

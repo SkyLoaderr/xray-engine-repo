@@ -88,7 +88,7 @@ public:
 		CDB::COLLIDER DB;
 		DB.ray_options	(CDB::OPT_ONLYFIRST);
 
-		vector<R_Light>	Lights = g_lights;
+		xr_vector<R_Light>	Lights = g_lights;
 
 		Fvector			P,D,PLP;
 		D.set			(0,1,0);

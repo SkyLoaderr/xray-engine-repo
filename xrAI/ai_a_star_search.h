@@ -56,7 +56,7 @@ public:
 			float		fMaxValue, 
 			Fvector		tStartPosition, 
 			Fvector		tFinishPosition, 
-			vector<u32> &tpaNodes,
+			xr_vector<u32> &tpaNodes,
 			u32			&dwMaxCount)
 	{
 		// initialization
@@ -110,8 +110,8 @@ public:
 				tpTemp = tpTemp1->tpBack;
 
 				{
-					vector<u32>::reverse_iterator	I = tpaNodes.rbegin();
-					vector<u32>::reverse_iterator	E = tpaNodes.rend();
+					xr_vector<u32>::reverse_iterator	I = tpaNodes.rbegin();
+					xr_vector<u32>::reverse_iterator	E = tpaNodes.rend();
 					for (I++ ; tpTemp; tpTemp = tpTemp->tpBack, I++)
 						*I = tpTemp->iIndex;
 				}
@@ -119,8 +119,8 @@ public:
 				float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
 				Fvector tPosition = tStartPosition;
 				
-				vector<u32>::iterator	I = tpaNodes.begin();
-				vector<u32>::iterator	E = tpaNodes.end();
+				xr_vector<u32>::iterator	I = tpaNodes.begin();
+				xr_vector<u32>::iterator	E = tpaNodes.end();
 				u32 dwNode = *I;
 				for (I++; I != E; I++) {
 					fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(*I),fMaxValue);

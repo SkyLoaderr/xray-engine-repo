@@ -53,7 +53,7 @@ public:
 		{
 			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
 			CALifeCrossTable	*tpCrossTable = xr_new<CALifeCrossTable>(caFileName);
-			vector<CALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
+			xr_vector<CALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
 			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
 			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
 				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
@@ -280,8 +280,8 @@ void xrMergeGraphs(LPCSTR name)
 	F.w_u32					(tGraphHeader.dwVertexCount);
 	F.w_u32					(tGraphHeader.dwLevelCount);
 	{
-		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			F.w_stringZ	((*I).caLevelName);
 			F.w_fvector3((*I).tOffset);
@@ -295,8 +295,8 @@ void xrMergeGraphs(LPCSTR name)
 //		GRAPH_P_PAIR_IT				E = tpGraphs.end();
 //		for ( ; I != E; I++)
 //			(*I).second->vfSaveVertices	(F,dwOffset);
-		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
 			R_ASSERT				(i != tpGraphs.end());
@@ -304,8 +304,8 @@ void xrMergeGraphs(LPCSTR name)
 		}
 	}
 	{
-		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
 			R_ASSERT				(i != tpGraphs.end());

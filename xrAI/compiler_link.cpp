@@ -21,7 +21,7 @@ void xrConvertAndLink()
 		NodeMerged& N = g_merged[it];
 		
 		// build node
-		vector<Fvector>	points;
+		xr_vector<Fvector>	points;
 		N.plane.n.set	(0,0,0);
 		float			light=0;
 		N.cover[0]		=0;
@@ -74,7 +74,8 @@ void xrConvertAndLink()
 		}
 
 		// build neibourhoods list
-		Marks		m_used	(g_merged.size(),false);
+		Marks		m_used;
+		m_used.assign(g_merged.size(),false);
 		for (L=0; L<N.contains.size(); L++) {
 			DWORD	ID	= N.contains[L];
 			Node&	E	= g_nodes[ID];

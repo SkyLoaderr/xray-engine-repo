@@ -54,7 +54,7 @@ IC float classifyPoint(const Fvector& point, const Fvector& planeO, const Fvecto
 // ----------------------------------------------------------------------
 // Name  : intersectRayPlane()
 // Input : rOrigin - origin of ray in world space
-//         rVector - vector describing direction of ray in world space
+//         rVector - xr_vector describing direction of ray in world space
 //         pOrigin - Origin of plane 
 //         pNormal - Normal to plane
 // Notes : Normalized directional vectors expected
@@ -66,7 +66,7 @@ IC float intersectRayPlane(	const Fvector& rayOrigin,	const Fvector& rayDirectio
 	float numer = classifyPoint(rayOrigin,planeOrigin,planeNormal);
 	float denom = planeNormal.dotproduct(rayDirection);
 	
-	if (denom == 0)  // normal is orthogonal to vector, cant intersect
+	if (denom == 0)  // normal is orthogonal to xr_vector, cant intersect
 		return (-1.0f);
 	
 	return -(numer / denom);	
@@ -83,7 +83,7 @@ IC float intersectRayPlane(	const Fvector& rayOrigin,	const Fvector& rayDirectio
 IC void closestPointOnLine(Fvector& res, const Fvector& a, const Fvector& b, const Fvector& p) 
 {
 	
-	// Determine t (the length of the vector from ‘a’ to ‘p’)
+	// Determine t (the length of the xr_vector from ‘a’ to ‘p’)
 	Fvector c; c.sub(p,a);
 	Fvector V; V.sub(b,a); 
 	
@@ -105,7 +105,7 @@ IC void closestPointOnEdge(Fvector& res,						// result
 						   const Fvector& ED, float elen,		// edge direction (b-a) and length
 						   const Fvector& P)					// query point
 {
-	// Determine t (the length of the vector from ‘a’ to ‘p’)
+	// Determine t (the length of the xr_vector from ‘a’ to ‘p’)
 	Fvector c; c.sub(P,a);
 	float t = ED.dotproduct(c);
 	
@@ -151,7 +151,7 @@ IC void closestPointOnTriangle(Fvector& result, const cl_tri& T, const Fvector& 
 // ----------------------------------------------------------------------
 // Name  : intersectRaySphere()
 // Input : rO - origin of ray in world space
-//         rV - vector describing direction of ray in world space
+//         rV - xr_vector describing direction of ray in world space
 //         sO - Origin of sphere 
 //         sR - radius of sphere
 // Notes : Normalized directional vectors expected
@@ -250,7 +250,7 @@ void msimulator_CheckCollision(SCollisionData& cl)
 			}
 			else
 			{ 
-				// shoot ray along the velocity vector
+				// shoot ray along the velocity xr_vector
 				bInsideTri = CDB::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
@@ -432,7 +432,7 @@ Fvector msimulator_CollideWithWorld(SCollisionData& cl, Fvector position, Fvecto
 		Fvector newDestinationPoint;
 		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
-		// Generate the slide vector, which will become our _new velocity vector
+		// Generate the slide xr_vector, which will become our _new velocity xr_vector
 		// for the next iteration
 		Fvector newVelocityVector;
 		newVelocityVector.sub(newDestinationPoint, cl.vNearestPolygonIntersectionPoint);
