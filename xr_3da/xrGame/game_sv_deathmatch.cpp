@@ -210,6 +210,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 		u16		eid						= (*i);
 		
 		CSE_Abstract*		what		= S->ID_to_entity(eid);
+		if (!what) continue;
 		S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
 	}
 	CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
