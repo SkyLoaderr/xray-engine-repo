@@ -32,7 +32,8 @@ class CObjectHandlerGOAP :
 {
 public:
 	enum EWorldProperties {
-		eWorldPropertyHidden		= u32(0),
+		eWorldPropertyItemID		= u32(0),
+		eWorldPropertyHidden,
 		eWorldPropertyStrapping,
 		eWorldPropertyStrapped,
 		eWorldPropertyUnstrapping,
@@ -55,10 +56,15 @@ public:
 		eWorldPropertyDropped,
 		eWorldPropertyQueueWait1,
 		eWorldPropertyQueueWait2,
-		eWorldPropertyItemID,
-		eWorldPropertyNoItems		= (eWorldPropertyItemID << 16) | u16(-1),
-		eWorldPropertyNoItemsIdle	= (eWorldPropertyIdle << 16) | u16(-1),
-		eWorldPropertyDummy			= u32(-1),
+		
+		eWorldPropertyThrowStarted,
+		eWorldPropertyThrowIdle,
+		eWorldPropertyThrow,
+		eWorldPropertyThreaten,
+
+		eWorldPropertyNoItems				= u32((u16(-1) << 16) | eWorldPropertyItemID),
+		eWorldPropertyNoItemsIdle			= u32((u16(-1) << 16) | eWorldPropertyIdle),
+		eWorldPropertyDummy					= u32(-1),
 	};
 
 	enum EWorldOperators {
@@ -79,7 +85,13 @@ public:
 		eWorldOperatorSwitch2,
 		eWorldOperatorQueueWait1,
 		eWorldOperatorQueueWait2,
-		eWorldOperatorNoItemsIdle	= (eWorldOperatorIdle << 16) | u16(-1),
+
+		eWorldOperatorThrowStart,
+		eWorldOperatorThrowIdle,
+		eWorldOperatorThrow,
+		eWorldOperatorThreaten,
+
+		eWorldOperatorNoItemsIdle	= u32((u16(-1) << 16) | eWorldOperatorIdle),
 		eWorldOperatorDummy			= u32(-1),
 	};
 
@@ -91,6 +103,7 @@ protected:
 private:
 	bool						m_aimed1;
 	bool						m_aimed2;
+	bool						m_threaten;
 
 protected:
 	bool						m_bHammerIsClutched;

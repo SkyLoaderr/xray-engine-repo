@@ -15,7 +15,7 @@ IC	bool CObjectHandlerGOAP::firing		() const
 	return					(m_bFiring);
 }
 
-IC	CObjectHandlerGOAP::_condition_type CObjectHandlerGOAP::uid(const u32 id1, const u32 id0) const
+IC	CObjectHandlerGOAP::_condition_type CObjectHandlerGOAP::uid(const u32 id0, const u32 id1) const
 {
 	VERIFY				(!((id0 << 16) & id1));
 	return				((id0 << 16) | id1);
@@ -23,7 +23,7 @@ IC	CObjectHandlerGOAP::_condition_type CObjectHandlerGOAP::uid(const u32 id1, co
 
 IC	bool CObjectHandlerGOAP::object_action	(u32 action_id, CObject *object)
 {
-	return				((action_id & 0xffff) == object->ID());
+	return				((action_id >> 16) == object->ID());
 }
 
 IC	u32	CObjectHandlerGOAP::current_action_object_id	() const
@@ -38,12 +38,12 @@ IC	u32	CObjectHandlerGOAP::current_action_state_id	() const
 
 IC	u32	CObjectHandlerGOAP::action_object_id		(_condition_type action_id) const
 {
-	return				(action_id & 0xffff);
+	return				(action_id >> 16);
 }
 
 IC	u32	CObjectHandlerGOAP::action_state_id			(_condition_type action_id) const
 {
-	return				(action_id >> 16);
+	return				(action_id & 0xffff);
 }
 
 IC	bool CObjectHandlerGOAP::goal_reached			() const

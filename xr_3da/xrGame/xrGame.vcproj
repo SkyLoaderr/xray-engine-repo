@@ -537,6 +537,16 @@
 									RelativePath=".\object_action_drop.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="threaten"
+								Filter="">
+								<File
+									RelativePath=".\object_action_threaten.cpp">
+								</File>
+								<File
+									RelativePath=".\object_action_threaten.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="properties"
@@ -619,6 +629,16 @@
 								</File>
 								<File
 									RelativePath=".\object_property_evaluator_no_items.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="missile"
+								Filter="">
+								<File
+									RelativePath=".\object_property_evaluator_missile.cpp">
+								</File>
+								<File
+									RelativePath=".\object_property_evaluator_missile.h">
 								</File>
 							</Filter>
 						</Filter>

@@ -21,6 +21,7 @@
 #include "object_property_evaluator_empty.h"
 #include "object_property_evaluator_ready.h"
 #include "object_property_evaluator_no_items.h"
+#include "object_property_evaluator_missile.h"
 #include "object_action_command.h"
 #include "object_action_show.h"
 #include "object_action_hide.h"
@@ -32,6 +33,7 @@
 #include "object_action_queue_wait.h"
 #include "object_action_switch.h"
 #include "object_action_drop.h"
+#include "object_action_threaten.h"
 
 CObjectHandlerGOAP::CObjectHandlerGOAP	()
 {
@@ -68,16 +70,20 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit			(object,true);
 	CInventoryOwner::reinit		();
-	m_aimed1					= false;
-	m_aimed2					= false;
-	add_evaluator				(eWorldPropertyNoItems,		xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
-	add_evaluator				(eWorldPropertyNoItemsIdle,	xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
-	CSObjectActionBase			*action = xr_new<CSObjectActionBase>(m_object,m_object,"no items idle");
-	action->add_condition		(CWorldProperty(eWorldPropertyNoItems,		true));
-	action->add_effect			(CWorldProperty(eWorldPropertyNoItemsIdle,	true));
-	add_operator				(eWorldOperatorNoItemsIdle,action);
-	set_goal					(eObjectActionIdle);
-	set_current_action			(eWorldOperatorNoItemsIdle);
+	CActionBase<CAI_Stalker>	*action;
+
+	m_aimed1			= false;
+	m_aimed2			= false;
+	m_threaten			= false;
+	add_evaluator		(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
+	add_evaluator		(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(m_object,m_object,false));
+	action				= xr_new<CSObjectActionBase>(m_object,m_object,"no items idle");
+	add_condition		(action,0xffff,eWorldPropertyItemID,true);
+	add_effect			(action,0xffff,eWorldPropertyIdle,	true);
+	add_operator		(u32(eWorldOperatorNoItemsIdle),action);
+
+	set_goal			(eObjectActionIdle);
+	set_current_action	(u32(eWorldOperatorNoItemsIdle));
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
@@ -221,15 +227,15 @@ void CObjectHandlerGOAP::remove_operators	(CObject *object)
 LPCSTR action2string(const u32 id)
 {
 	static	string4096 S;
-	if ((id & 0xffff) != 0xffff)
-		if (Level().Objects.net_Find(id & 0xffff))
-			strcpy	(S,*Level().Objects.net_Find(id & 0xffff)->cName());
+	if ((id >> 16) != 0xffff)
+		if (Level().Objects.net_Find(id >> 16))
+			strcpy	(S,*Level().Objects.net_Find(id >> 16)->cName());
 		else
 			strcpy	(S,"no_items");
 	else
 		strcpy	(S,"no_items");
 	strcat		(S,":");
-	switch (id >> 16) {
+	switch (id & 0xffff) {
 		case CObjectHandlerGOAP::eWorldOperatorShow			: {strcat(S,"Show");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
@@ -247,7 +253,11 @@ LPCSTR action2string(const u32 id)
 		case CObjectHandlerGOAP::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
 		case CObjectHandlerGOAP::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");	break;}
-		default							: NODEFAULT;
+		case CObjectHandlerGOAP::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");	break;}
+		case CObjectHandlerGOAP::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");	break;}
+		case CObjectHandlerGOAP::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
+		case CObjectHandlerGOAP::eWorldOperatorThreaten		: {strcat(S,"Threaten");	break;}
+		default												: NODEFAULT;
 	}
 	return		(S);
 }
@@ -255,15 +265,15 @@ LPCSTR action2string(const u32 id)
 LPCSTR property2string(const u32 id)
 {
 	static	string4096 S;
-	if ((id & 0xffff) != 0xffff)
-		if (Level().Objects.net_Find(id & 0xffff))
-			strcpy	(S,*Level().Objects.net_Find(id & 0xffff)->cName());
+	if ((id >> 16) != 0xffff)
+		if (Level().Objects.net_Find(id >> 16))
+			strcpy	(S,*Level().Objects.net_Find(id >> 16)->cName());
 		else
 			strcpy	(S,"no_items");
 	else
 		strcpy	(S,"no_items");
 	strcat		(S,":");
-	switch (id >> 16) {
+	switch (id & 0xffff) {
 		case CObjectHandlerGOAP::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
@@ -287,8 +297,12 @@ LPCSTR property2string(const u32 id)
 		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
-		default							: NODEFAULT;
+		default												: NODEFAULT;
 	}
 	return		(S);
 }
@@ -329,22 +343,22 @@ void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
 
 void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 {
-	u16					id = weapon->ID();
+	u16					id = weapon->ID(), ff = 0xffff;
 	CActionBase<CAI_Stalker>	*action;
 	
 	// show
 	action				= xr_new<CObjectActionShow>(weapon,m_object,"show");
 	add_condition		(action,id,eWorldPropertyHidden,	true);
-	action->add_condition(CWorldProperty(eWorldPropertyNoItems,true));
-	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,false));
+	add_condition		(action,ff,eWorldPropertyItemID,	true);
+	add_effect			(action,ff,eWorldPropertyItemID,	false);
 	add_effect			(action,id,eWorldPropertyHidden,	false);
 	add_operator		(uid(id,eWorldOperatorShow),		action);
 
 	// hide
 	action				= xr_new<CObjectActionHide>(weapon,m_object,"hide");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
-	action->add_condition(CWorldProperty(eWorldPropertyNoItems,false));
-	action->add_effect	(CWorldProperty(eWorldPropertyNoItems,true));
+	add_condition		(action,ff,eWorldPropertyItemID,	false);
+	add_effect			(action,ff,eWorldPropertyItemID,	true);
 	add_effect			(action,id,eWorldPropertyHidden,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_effect			(action,id,eWorldPropertyAimed2,	false);
@@ -490,10 +504,85 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 
 void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
 {
+	u16					id = missile->ID();
+	// dynamic state properties
+	add_evaluator		(uid(id,eWorldPropertyHidden)		,xr_new<CObjectPropertyEvaluatorMissile>(missile,m_object,MS_HIDDEN));
+	add_evaluator		(uid(id,eWorldPropertyThrowStarted)	,xr_new<CObjectPropertyEvaluatorMissile>(missile,m_object,MS_THREATEN));
+	add_evaluator		(uid(id,eWorldPropertyThrowIdle)	,xr_new<CObjectPropertyEvaluatorMissile>(missile,m_object,MS_THROW));
+	add_evaluator		(uid(id,eWorldPropertyThrow)		,xr_new<CObjectPropertyEvaluatorMissile>(missile,m_object,MS_END));
+
+	// const properties
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(missile,m_object,false));
 }
 
 void CObjectHandlerGOAP::add_operators		(CMissile *missile)
 {
+	u16					id = missile->ID(), ff = u16(-1);
+	CActionBase<CAI_Stalker>	*action;
+
+	// show
+	action				= xr_new<CObjectActionShow>(missile,m_object,"show");
+	add_condition		(action,id,eWorldPropertyHidden,	true);
+	add_condition		(action,ff,eWorldPropertyItemID,	true);
+	add_effect			(action,ff,eWorldPropertyItemID,	false);
+	add_effect			(action,id,eWorldPropertyHidden,	false);
+	add_operator		(uid(id,eWorldOperatorShow),		action);
+
+	// hide
+	action				= xr_new<CObjectActionHide>(missile,m_object,"hide");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,ff,eWorldPropertyItemID,	false);
+	add_effect			(action,ff,eWorldPropertyItemID,	true);
+	add_effect			(action,id,eWorldPropertyHidden,	true);
+	add_operator		(uid(id,eWorldOperatorHide),		action);
+
+	// drop
+	action				= xr_new<CObjectActionDrop>(missile,m_object,"drop");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyDropped,	true);
+	add_operator		(uid(id,eWorldOperatorDrop),		action);
+
+	// idle
+	action				= xr_new<CSObjectActionBase>(missile,m_object,"idle");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyThrowStarted,false);
+	add_condition		(action,id,eWorldPropertyThrowIdle,	false);
+	add_condition		(action,id,eWorldPropertyFiring1,	false);
+	add_effect			(action,id,eWorldPropertyIdle,		true);
+	add_operator		(uid(id,eWorldOperatorIdle),		action);
+
+	// fire start
+	action				= xr_new<CObjectActionFire>(missile,m_object,0,"throw start");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyThrowStarted,false);
+	add_effect			(action,id,eWorldPropertyThrowStarted,true);
+	add_operator		(uid(id,eWorldOperatorThrowStart),	action);
+
+	// fire idle
+	action				= xr_new<CObjectActionThreaten>(m_object,m_object,&m_threaten,"throw idle");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyThrowStarted,true);
+	add_condition		(action,id,eWorldPropertyThrowIdle,	false);
+	add_effect			(action,id,eWorldPropertyThrowIdle,	true);
+	add_operator		(uid(id,eWorldOperatorThrowIdle),	action);
+
+	// fire throw
+	action				= xr_new<CSObjectActionBase>(missile,m_object,"throwing");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyThrowIdle,	true);
+	add_condition		(action,id,eWorldPropertyThrow,		false);
+	add_effect			(action,id,eWorldPropertyThrow,		true);
+	add_operator		(uid(id,eWorldOperatorThrow),		action);
+
+	action				= xr_new<CSObjectActionBase>(missile,m_object,"threaten");
+	add_condition		(action,id,eWorldPropertyThrow,		true);
+	add_condition		(action,id,eWorldPropertyFiring1,	false);
+	add_effect			(action,id,eWorldPropertyFiring1,	true);
+	add_operator		(uid(id,eWorldOperatorThreaten),action);
+	
+	this->action(uid(id,eWorldOperatorThrowIdle)).set_inertia_time	(2000);
 }
 
 void CObjectHandlerGOAP::add_evaluators		(CEatableItem *eatable_item)
@@ -512,7 +601,7 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 	if (game_object && (eWorldPropertyNoItemsIdle != goal))
 		condition_id		= uid(game_object->ID(), goal);
 	else
-		condition_id		= eWorldPropertyNoItemsIdle;
+		condition_id		= u32(eWorldPropertyNoItemsIdle);
 
 #ifdef LOG_ACTION
 	Msg						("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
@@ -526,7 +615,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 {
 	inherited::update			(time_delta);
 #ifdef LOG_ACTION
-	if (!solution().empty()) {
+//	if (!solution().empty()) {
 //		// printing current world state
 //		{
 //			Msg						("%6d : Current world state",Level().timeServer());
@@ -535,9 +624,10 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 //			for ( ; I != E; ++I) {
 //				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
 //				char				temp = '?';
-//				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
+//				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 //					temp				= (*J).value() ? '+' : '-';
-//				Msg					("%5c : %s",temp,property2string((*I).first));
+//					Msg					("%5c : %s",temp,property2string((*I).first));
+//				}
 //			}
 //		}
 //		// printing target world state
@@ -548,15 +638,16 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 //			for ( ; I != E; ++I) {
 //				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
 //				char				temp = '?';
-//				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first))
+//				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 //					temp				= (*J).value() ? '+' : '-';
-//				Msg					("%5c : %s",temp,property2string((*I).first));
+//					Msg					("%5c : %s",temp,property2string((*I).first));
+//				}
 //			}
 //		}
 		// printing solution
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
 			Msg					("%s",action2string(solution()[i]));
-	}
+//	}
 #endif
 }

@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: object_action_show.h
+//	Module 		: object_action_aim.h
 //	Created 	: 14.03.2004
 //  Modified 	: 14.03.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Object show command
+//	Description : Object aim command
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once

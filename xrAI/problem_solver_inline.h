@@ -247,8 +247,22 @@ TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::solve			()
 {
 #ifndef AI_COMPILER
-	if (m_actuality)
-		return;
+	if (m_actuality) {
+		bool			actual = true;
+		xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
+		xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
+		for ( ; I != E; ++I) {
+			EVALUATOR_MAP::const_iterator J = evaluators().find((*I).condition());
+			VERIFY			(evaluators().end() != J);
+			if ((*J).second->evaluate() != (*I).value()) {
+				actual	= false;
+				break;
+			}
+		}
+		if (actual)
+			return;
+	}
+
 	m_current_state.clear		();
 	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
 	m_actuality					= successful;

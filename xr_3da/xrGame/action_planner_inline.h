@@ -101,8 +101,6 @@ void CPlanner::reload				(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CPlanner::update				(u32 time_delta)
 {
-	m_actuality					= false;
-
 	solve						();
 
 	VERIFY						(!solution().empty());
