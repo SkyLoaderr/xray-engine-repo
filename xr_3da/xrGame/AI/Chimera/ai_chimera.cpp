@@ -127,7 +127,7 @@ void CAI_Chimera::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"HitPower");
 	// temp
-	//m_fHitPower						= 1.f;
+	// m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
 }
@@ -267,20 +267,6 @@ void CAI_Chimera::shedule_Update(u32 dt)
 			//	skel_ddelay--;
 
 
-
-		}
-
-	}
-	else if (!g_Alive())
-	{
-
-		CreateSkeleton();
-#ifndef NO_PHYSICS_IN_AI_MOVE
-
-		Movement.DestroyCharacter();
-		PHSetPushOut();
-#endif
-	}
 
 }
 

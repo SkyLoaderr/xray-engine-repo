@@ -91,7 +91,6 @@ float CAI_Chimera::CorpHeuristics(CEntity* E)
 
 void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
 {
-	
 	m_tAttack.i_anim		= i;
 	m_tAttack.time_started	= t;
 	m_tAttack.b_fire_anyway = false;
@@ -101,46 +100,48 @@ void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
 
 	switch (m_tAttack.i_anim) {
 		case 0:
-			m_tAttack.time_from = 700;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 2.f;
+			m_tAttack.time_from = 800;
+			m_tAttack.time_to	= 900;
+			m_tAttack.dist		= 3.f;
+			
 			Center(m_tAttack.TraceFrom);
 			break;
 		case 1:
-			m_tAttack.time_from = 600;
-			m_tAttack.time_to	= 800;
+			m_tAttack.time_from = 500;
+			m_tAttack.time_to	= 600;
 			m_tAttack.dist		= 2.5f;
 			Center(m_tAttack.TraceFrom);
+			tempV.set(0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
 			break;
 		case 2:
-			m_tAttack.time_from = 1300;
-			m_tAttack.time_to	= 1400;
-			m_tAttack.dist		= 1.5f;
+			m_tAttack.time_from = 800;
+			m_tAttack.time_to	= 900;
+			m_tAttack.dist		= 3.5f;
 			Center(m_tAttack.TraceFrom);
-			tempV.set(0.1f,0.f,0.f);
-			m_tAttack.TraceFrom.add(tempV);
 			break;
 		case 3:
-			m_tAttack.time_from = 1300;
-			m_tAttack.time_to	= 1400;
-			m_tAttack.dist		= 0.6f;
+			m_tAttack.time_from = 800;
+			m_tAttack.time_to	= 900;
+			m_tAttack.dist		= 1.0f;
+			
 			Center(m_tAttack.TraceFrom);
-			tempV.set(0.1f,0.f,0.f);
-			m_tAttack.TraceFrom.sub(tempV);
+			tempV.set(-0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
 			break;
 		case 4:
-			m_tAttack.time_from = 600;
-			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 2.6f;
-			Center(m_tAttack.TraceFrom);
-			tempV.set(-0.5f,0.f,0.5f);
-			m_tAttack.TraceFrom.add(tempV);
-			m_tAttack.b_attack_rat = true;
+			m_tAttack.time_started = 0;
 			break;
 		case 5:
-			m_tAttack.time_from = 1000;
-			m_tAttack.time_to	= 1200;
-			m_tAttack.b_fire_anyway = true;
+			m_tAttack.time_from = 1500;
+			m_tAttack.time_to	= 1600;
+			m_tAttack.dist		= 3.0f;
+			Center(m_tAttack.TraceFrom);
+			tempV.set(0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
+			break;
+		case 6:
+			m_tAttack.time_started = 0;
 			break;
 	}
 }
