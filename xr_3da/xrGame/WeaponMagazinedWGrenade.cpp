@@ -25,8 +25,9 @@ CWeaponFakeGrenade::CWeaponFakeGrenade()
 	m_jump = 0;
 }
 
-CWeaponFakeGrenade::~CWeaponFakeGrenade() {
-	if(hWallmark) Device.Shader.Delete(hWallmark);
+CWeaponFakeGrenade::~CWeaponFakeGrenade	()
+{
+	hWallmark.destroy();
 	::Render->light_destroy(m_pLight);
 	xr_delete(m_pPhysicsShell);
 	SoundDestroy(sndExplode);
@@ -297,7 +298,7 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 }
 
 void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) {
-	if (0==hWallmark)	return;
+	if (0==hWallmark())	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -313,7 +314,7 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	} else {
 		R_ASSERT(R.element >= 0);
 		::Render->add_Wallmark	(
-			hWallmark,
+			hWallmark(),
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
