@@ -408,9 +408,9 @@ function add_to_binder (npc, ini, scheme, section, storage)
     
     local manager = npc:motivation_action_manager()
 
-    manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("patrol_enabled", storage))
-    manager:add_evaluator (properties["escape"], this.evaluator_escape ("escape_enabled", storage))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("raid_enabled", storage))
+    manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("comm_ptr_enabled", storage))
+    manager:add_evaluator (properties["escape"], this.evaluator_escape ("comm_ptr_escape_enabled", storage))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("comm_ptr_raid_enabled", storage))
     
     local action = this.action_patrol ("patrol", storage)
     action:add_precondition (world_property(stalker_ids.property_alive, true))
