@@ -87,7 +87,7 @@ function load_dialog:InitControls()
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(txt_caption)
 	
-	-- EDIT box --
+	-- INFO box --
 	local frame_edit = CUIFrameWindow()  --background for ListView
     frame_edit:SetAutoDelete(true)
     frame_edit:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
