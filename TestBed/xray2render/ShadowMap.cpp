@@ -1413,6 +1413,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Switch to BLOOM-2
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
 
+	std::rotate
 
 
 	// Cleanup
