@@ -83,7 +83,7 @@
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->
     <dragdrop_list x="30" y="35" width="400" height="350"
-            cell_width = "40" cell_height="40"
+            cell_width = "41" cell_height="41"
             rows_num="18" cols_num="7" rows_num_view="10"></dragdrop_list>
 
     <!-- SLOTS LISTS -->
