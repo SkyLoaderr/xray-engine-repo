@@ -35,26 +35,27 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	switch (key_binding[dik])
 	{
 	case kINVENTORY: 
-		m_game->StartStopMenu(&InventoryMenu,true);
-		return true;
-		break;
+		if( !MainInputReceiver() || MainInputReceiver()==&InventoryMenu){
+			m_game->StartStopMenu(&InventoryMenu,true);
+			return true;
+		}break;
 
 	case kACTIVE_JOBS:
-		if( !MainInputReceiver() ){
+		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
 			PdaMenu.SetActiveSubdialog(epsActiveJobs);
 			m_game->StartStopMenu(&PdaMenu,true);
 			return true;
 		}break;
 
 	case kMAP:
-		if( !MainInputReceiver() ){
+		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
 			PdaMenu.SetActiveSubdialog(epsMap);
 			m_game->StartStopMenu(&PdaMenu,true);
 			return true;
 		}break;
 
 	case kCONTACTS:
-		if( !MainInputReceiver() ){
+		if( !MainInputReceiver() || MainInputReceiver()==&PdaMenu){
 			PdaMenu.SetActiveSubdialog(epsContacts);
 			m_game->StartStopMenu(&PdaMenu,true);
 			return true;
