@@ -99,5 +99,6 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 		L.index				=	r_index;
 		L.cls				=	r_type;
 	}
-	return TRUE;
+	std::sort	(table.begin(),table.end(),S,p_sort);
+	return		TRUE;
 }
