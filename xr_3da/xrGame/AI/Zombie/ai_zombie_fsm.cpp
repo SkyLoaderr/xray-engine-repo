@@ -79,7 +79,7 @@ void CAI_Zombie::FreeHunting()
 	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
 		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
 		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
-		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
+		SWITCH_TO_NEW_STATE(aiZombieUnderFire);
 	}
 	
 	INIT_SQUAD_AND_LEADER;
@@ -103,7 +103,7 @@ void CAI_Zombie::FreeHunting()
 		else
 			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
 		SelectorFreeHunting.m_tDirection.normalize_safe();
-		vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 		vfBuildPathToDestinationPoint(0);
 	}
 	else
@@ -111,7 +111,7 @@ void CAI_Zombie::FreeHunting()
 			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 500) {
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				SelectorFreeHunting.m_tDirection.normalize_safe();
-				vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+				vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 				vfBuildPathToDestinationPoint(0);
 			}
 			else {
@@ -120,7 +120,7 @@ void CAI_Zombie::FreeHunting()
 				if (tDistance.magnitude() < .01f) {
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 					SelectorFreeHunting.m_tDirection.normalize_safe();
-					vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+					vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 					vfBuildPathToDestinationPoint(0);
 				}
 			}
@@ -324,7 +324,7 @@ void CAI_Zombie::Pursuit()
 	if ((m_iSoundIndex != -1) && (dwCurTime - tpaDynamicSounds[m_iSoundIndex].dwTime < 300)) {
 		tHitDir.sub(tpaDynamicSounds[m_iSoundIndex].tSavedPosition,vPosition);
 		dwHitTime = tpaDynamicSounds[m_iSoundIndex].dwTime;
-		SWITCH_TO_NEW_STATE(,aiZombieUnderFire);
+		SWITCH_TO_NEW_STATE(aiZombieUnderFire);
 	}
 	
 	INIT_SQUAD_AND_LEADER;
@@ -338,7 +338,7 @@ void CAI_Zombie::Pursuit()
 			SelectorFreeHunting.m_tDirection = tHitDir;
 			SelectorFreeHunting.m_tDirection.normalize_safe();
 			SelectorFreeHunting.m_tDirection.invert();
-			vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+			vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 			vfBuildPathToDestinationPoint(0);
 		}
 		else {

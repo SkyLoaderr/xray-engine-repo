@@ -13,8 +13,8 @@
 #include "..\\..\\xr_weapon_list.h"
 
 // macroses
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	5000.f
-#define MAX_TIME_RANGE_SEARCH			10000.f
+#define MIN_RANGE_SEARCH_TIME_INTERVAL	 500.f
+#define MAX_TIME_RANGE_SEARCH			2000.f
 #define	FIRE_ANGLE						PI/10
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define	AMMO_NEED_RELOAD				6
