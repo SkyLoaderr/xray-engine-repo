@@ -29,7 +29,7 @@ private:
 	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBL			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
-
+	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space);
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact*c){};

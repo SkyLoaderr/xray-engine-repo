@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include <ode\ode.h>
+#include "PHInterpolation.h"
 #if !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)
 #define AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_
 
@@ -18,6 +19,7 @@ dMatrix3 R;
 Fmatrix BoneTransform;
 private:
 dBodyID body;
+CPHInterpolation body_interpolation;
 dGeomID geom;
 dGeomID transform;
 PHDynamicData* Childs;
@@ -25,6 +27,11 @@ PHDynamicData* Childs;
 unsigned int numOfChilds;
 Fmatrix ZeroTransform;
 public:
+	inline void UpdateInterpolation(){
+		body_interpolation.UpdatePositions();
+		body_interpolation.UpdateRotations();
+	}
+	
 	PHDynamicData& operator [] (unsigned int i) {return Childs[i];};
 	void Destroy();
 	void Create(unsigned int numOfchilds,dBodyID Body);

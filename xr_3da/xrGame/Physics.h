@@ -6,6 +6,7 @@
 #include "PHObject.h"
 #include "PHInterpolation.h"
 ///////////////////////////////////////////////////////////////////////////////
+const dReal fixed_step=0.02f;
 class CPHMesh {
 	dGeomID Geom;
 public:
@@ -29,6 +30,11 @@ class CPHJeep {
 public:
 	CPHJeep(){weels_limited=true;}
 
+	void applyImpulseTrace		(int part,const Fvector& pos, const Fvector& dir, float val){
+	val/=fixed_step;
+	if(part<0||part>NofBodies-1) return;
+	dBodyAddForceAtRelPos       (Bodies[part], dir.x*val,dir.y*val,dir.z*val,pos.x, pos.y, pos.z);
+	}
 	void Create(dSpaceID space, dWorldID world);
 	void Create1(dSpaceID space, dWorldID world);
 	void Destroy();
@@ -113,7 +119,6 @@ public:
 
 };
 ////////////////////////////////////////////////////////////////////////////
-const dReal fixed_step=0.02f;
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
 	__int64 m_steps_num;

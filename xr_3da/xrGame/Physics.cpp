@@ -1146,8 +1146,7 @@ void CPHShell::PhDataUpdate(dReal step){
 //////////////////////////////////////////////////////////////////////
 ////limit velocity of the main body/////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-				m_body_interpolation.UpdatePositions();
-				m_body_interpolation.UpdateRotations();
+
 
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
@@ -1314,7 +1313,9 @@ void CPHShell::PhDataUpdate(dReal step){
 	
 				const dReal k_l=1.8f;
 				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
-
+				
+				m_body_interpolation.UpdatePositions();
+				m_body_interpolation.UpdateRotations();
 
 }
 

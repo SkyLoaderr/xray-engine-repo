@@ -346,3 +346,15 @@ void CCar::OnDeviceCreate()
 	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
 	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
+
+void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space){
+	switch(element){
+	case 0: m_jeep.applyImpulseTrace(0,p_in_object_space,dir,P*100.f); break;
+	case 1: m_jeep.applyImpulseTrace(2,p_in_object_space,dir,P*100.f); break;
+	case 2: m_jeep.applyImpulseTrace(1,p_in_object_space,dir,P*100.f); break;
+	case 3: m_jeep.applyImpulseTrace(4,p_in_object_space,dir,P*100.f); break;
+	case 4: m_jeep.applyImpulseTrace(3,p_in_object_space,dir,P*100.f); break;
+
+	}
+inherited::Hit(P,dir,who,element,p_in_object_space);
+}
