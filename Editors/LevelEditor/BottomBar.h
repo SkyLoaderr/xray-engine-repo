@@ -63,8 +63,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawDOSlotBoxes;
 	TMenuItem *miDOBase;
 	TMenuItem *miDODrawObjects;
-	TMenuItem *Glow1;
-	TMenuItem *miGlowTestVisibility;
 	TMenuItem *miDrawObjectsPivot;
 	TMenuItem *miDrawDOBaseTexture;
 	TMenuItem *miDrawDOBlended;

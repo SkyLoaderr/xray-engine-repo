@@ -252,7 +252,7 @@ void EScene::OnDeviceDestroy()
 
 void EScene::OnShowHint(AStringVec& dest)
 {
-    CCustomObject* obj = RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
+    CCustomObject* obj = RayPickObject(flt_max,UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
     if (obj) obj->OnShowHint(dest);
 }
 //------------------------------------------------------------------------------
@@ -274,7 +274,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     for (; t_it!=t_end; t_it++){
         if (t_it->second){
         	if (!t_it->second->Validate()){
-				ELog.Msg(mtError,"ERROR: Validate '%s' failed!",t_it);
+				ELog.Msg(mtError,"ERROR: Validate '%s' failed!",t_it->second->ClassDesc());
                 bRes = false;
             }
         }

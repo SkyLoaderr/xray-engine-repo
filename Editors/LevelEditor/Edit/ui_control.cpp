@@ -106,7 +106,7 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 {
 	if (fraLeftBar->ebSnapListMode->Down){
-	    CCustomObject* O=Scene.RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
+	    CCustomObject* O=Scene.RayPickObject(flt_max,UI.m_CurrentRStart,UI.m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
         if (Scene.FindObjectInSnapList(O)){
 			if (Shift.Contains(ssAlt)){
             	Scene.DelFromSnapList(O);
@@ -136,7 +136,7 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene.SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene.RayPickObject( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, 0);
+    CCustomObject *obj = Scene.RayPickObject( flt_max, UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, 0);
     bBoxSelection    = (obj && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !obj;
 
     if( bBoxSelection ){

@@ -127,7 +127,7 @@ void __fastcall TfrmChoseItem::FillEntity()
     	LPCSTR val;
     	if (it->line_exist("$spawn",&val))
 //			if (CInifile::IsBOOL(val))	
-            AppendItem(it->Name);
+            AppendItem(*it->Name);
     }
 }
 //---------------------------------------------------------------------------

@@ -109,7 +109,7 @@ void CLight::Render(int priority, bool strictB2F)
             	VERIFY(m_FuzzyData);
 			    for (FvectorIt it=m_FuzzyData->m_Positions.begin(); it!=m_FuzzyData->m_Positions.end(); it++){
                 	Fvector tmp; _Transform().transform_tiny(tmp,*it);
-		            DU.DrawPointLight(tmp,VIS_RADIUS/2, clr);
+		            DU.DrawPointLight(tmp,VIS_RADIUS/6, clr);
 	            }
 			}
         break;
@@ -124,7 +124,12 @@ void CLight::Render(int priority, bool strictB2F)
         default: THROW;
         }
     	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
-        if (lt->m_LFlags.is(ESceneLightTools::flShowControlName)) DU.DrawText (PPosition,AnsiString().sprintf(" %s",GetLControlName()).c_str(),0xffffffff,0xff000000);
+        if (lt->m_Flags.is(ESceneLightTools::flShowControlName)){ 
+            Fvector D;	D.sub(Device.vCameraPosition,PPosition);
+            float dist 	= D.normalize_magn();
+        	if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+	        	DU.DrawText (PPosition,AnsiString().sprintf(" %s",GetLControlName()).c_str(),0xffffffff,0xff000000);
+        }
     }else if ((1==priority)&&(true==strictB2F)){
         Device.SetShader		(Device.m_SelectionShader);
         RCache.set_xform_world	(Fidentity);
@@ -254,6 +259,9 @@ bool CLight::Load(IReader& F)
     if (F.find_chunk(LIGHT_CHUNK_FUZZY_DATA)){
         m_FuzzyData	= xr_new<SFuzzyData>();
         m_FuzzyData->Load(F);
+		m_Flags.set(CLight::flPointFuzzy,TRUE);
+    }else{
+		m_Flags.set(CLight::flPointFuzzy,FALSE);
     }
     
 	UpdateTransform	();

@@ -1,10 +1,11 @@
 object fraAIMap: TfraAIMap
   Left = 376
   Top = 312
-  Width = 206
-  Height = 277
   VertScrollBar.Visible = False
   Align = alClient
+  BorderStyle = bsNone
+  ClientHeight = 250
+  ClientWidth = 198
   Color = 10528425
   Constraints.MaxWidth = 206
   Constraints.MinWidth = 206

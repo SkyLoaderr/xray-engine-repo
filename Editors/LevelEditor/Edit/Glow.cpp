@@ -12,6 +12,7 @@
 #include "render.h"
 #include "PropertiesListHelper.h"
 #include "scene.h"
+#include "ESceneGlowTools.h"
 
 #define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
@@ -73,20 +74,19 @@ void CGlow::Render(int priority, bool strictB2F)
 {
     if ((1==priority)&&(true==strictB2F)){
     	if (!m_bDefLoad) OnDeviceCreate();
-    	// определяем параметры для RayPick
-    	Fvector D;
-        SRayPickInfo pinf;
-        D.sub(Device.m_Camera.GetPosition(),PPosition);
-        pinf.inf.range = D.magnitude();
-        if (pinf.inf.range) D.div(pinf.inf.range);
-        // тестируем находится ли во фрустуме glow
-		RCache.set_xform_world(Fidentity);
-        // рендерим Glow
-        if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPickObject(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,0))||
-            !fraBottomBar->miGlowTestVisibility->Checked){
-            if (m_GShader){	Device.SetShader(m_GShader);
-            }else{			Device.SetShader(Device.m_WireShader);}
-            m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
+        ESceneGlowTools* gt = dynamic_cast<ESceneGlowTools*>(ParentTools); VERIFY(gt);
+        if (gt->m_Flags.is(ESceneGlowTools::flTestVisibility)){ 
+            Fvector D;	D.sub(Device.vCameraPosition,PPosition);
+            float dist 	= D.normalize_magn();
+            if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0)){
+                if (m_GShader){	Device.SetShader(m_GShader);
+                }else{			Device.SetShader(Device.m_WireShader);}
+                m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
+            }else{
+                // рендерим bounding sphere
+                Device.SetShader(Device.m_WireShader);
+                DU.DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
+            }
         }else{
             // рендерим bounding sphere
             Device.SetShader(Device.m_WireShader);

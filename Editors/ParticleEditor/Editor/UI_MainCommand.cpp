@@ -123,15 +123,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_ZOOM_EXTENTS:
 		Tools.ZoomObject(p1);
     	break;
-    case COMMAND_SET_NUMERIC_POSITION:
-    	Tools.SetNumPosition((CCustomObject*)p1);
-    	break;
-    case COMMAND_SET_NUMERIC_ROTATION:
-    	Tools.SetNumRotation((CCustomObject*)p1);
-    	break;
-    case COMMAND_SET_NUMERIC_SCALE:
-    	Tools.SetNumScale((CCustomObject*)p1);
-    	break;
     case COMMAND_RENDER_WIRE:
     	if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else 	Device.dwFillMode 	= D3DFILL_SOLID;

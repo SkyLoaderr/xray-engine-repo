@@ -25,8 +25,6 @@ void ESceneLightTools::Clear(bool bSpecific)
 {
 	inherited::Clear(bSpecific);
 
-    m_LFlags.zero		();
-    
     m_HemiQuality		= 1;
     m_SunShadowQuality	= 1;
     m_SunShadowDir.set	(-PI_DIV_6,PI_MUL_2-PI_DIV_4);
@@ -75,7 +73,7 @@ void ESceneLightTools::BeforeRender()
                 	AppendFrameLight(l);
         }
     	// set sun
-		if (m_LFlags.is(flShowSun)){
+		if (m_Flags.is(flShowSun)){
             Flight L;
             Fvector C;
             if (psDeviceFlags.is(rsEnvironment)){
@@ -106,7 +104,7 @@ void ESceneLightTools::BeforeRender()
 
 void ESceneLightTools::AfterRender()
 {
-    if (m_LFlags.is(flShowSun))
+    if (m_Flags.is(flShowSun))
         Device.LightEnable(frame_light.size(),FALSE); // sun - last light!
     for (u32 i=0; i<frame_light.size(); i++)
 		Device.LightEnable(i,FALSE);
@@ -120,7 +118,7 @@ void ESceneLightTools::AfterRender()
 void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 {
 	inherited::OnRender(priority, strictB2F);
-    if (m_LFlags.is(flShowSun)){
+    if (m_Flags.is(flShowSun)){
         if ((true==strictB2F)&&(1==priority)){
             Device.SetShader		(Device.m_WireShader);
             RCache.set_xform_world	(Fidentity);
@@ -170,12 +168,12 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
     // hemisphere
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),		&m_HemiQuality,		1,2);
     // sun
-    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),		&m_LFlags,			flShowSun);
+    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),		&m_Flags,			flShowSun);
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Quality"),		&m_SunShadowQuality,1,2);
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),	&m_SunShadowDir.x,	-PI_DIV_2,0);
     PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),	&m_SunShadowDir.y,	0,PI_MUL_2);
     // light controls
-    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),		&m_LFlags,		flShowControlName);
+    PHelper.CreateFlag32(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),		&m_Flags,			flShowControlName);
     PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Common\\Controls\\Count"),			lcontrols.size());
     ButtonValue*	B 	= 0;
 //	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
@@ -225,10 +223,12 @@ ATokenIt ESceneLightTools::FindLightControlIt(LPCSTR name)
 }
 //------------------------------------------------------------------------------
 
-void ESceneLightTools::AppendLightControl(LPCSTR name, u32* idx)
+void ESceneLightTools::AppendLightControl(LPCSTR nm, u32* idx)
 {
-	if (FindLightControl(name)) return;
-	lcontrols.push_back	(xr_a_token(name,idx?*idx:lcontrol_last_idx++));
+	AnsiString name = nm; _Trim(name);
+    if (name.IsEmpty()) return;
+	if (FindLightControl(name.c_str())) return;
+	lcontrols.push_back	(xr_a_token(name.c_str(),idx?*idx:lcontrol_last_idx++));
 }
 //------------------------------------------------------------------------------
 

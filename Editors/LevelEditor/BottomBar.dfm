@@ -272,7 +272,6 @@ object fraBottomBar: TfraBottomBar
       'miShowHint.Checked'
       'miDrawDOSlotBoxes.Checked'
       'miDODrawObjects.Checked'
-      'miGlowTestVisibility.Checked'
       'miDrawObjectsPivot.Checked'
       'miDrawDOBaseTexture.Checked'
       'miDrawDOBlended.Checked'
@@ -476,14 +475,6 @@ object fraBottomBar: TfraBottomBar
       object miDODrawObjects: TMenuItem
         Caption = 'Draw Objects'
         Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object Glow1: TMenuItem
-      Caption = 'Glow'
-      GroupIndex = 4
-      object miGlowTestVisibility: TMenuItem
-        Caption = 'Test Visibility'
         OnClick = ClickOptionsMenuItem
       end
     end

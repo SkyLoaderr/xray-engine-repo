@@ -112,10 +112,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miCopy;
 	TMenuItem *miPaste2;
 	TMenuItem *miCut;
-	TMenuItem *Numeric1;
-	TMenuItem *Position1;
-	TMenuItem *Rotation1;
-	TMenuItem *Scale1;
 	TMenuItem *N4;
 	TMenuItem *miProperties;
 	TMenuItem *N3;
@@ -252,9 +248,6 @@ __published:	// IDE-managed Components
 	void __fastcall RefreshObjects1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
-	void __fastcall Position1Click(TObject *Sender);
-	void __fastcall Rotation1Click(TObject *Sender);
-	void __fastcall Scale1Click(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
 	void __fastcall RefreshLibrary1Click(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);

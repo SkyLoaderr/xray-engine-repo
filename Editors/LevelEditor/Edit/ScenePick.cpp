@@ -93,11 +93,10 @@ int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, CDB::MODEL* mode
 }
 //------------------------------------------------------------------------------
 
-CCustomObject *EScene::RayPickObject(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list)
+CCustomObject *EScene::RayPickObject(float nearest_dist, const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list)
 {
 	if(!valid()) return 0;
 
-	float nearest_dist = pinf?pinf->inf.range+EPS_L:flt_max;
 	CCustomObject *nearest_object = 0;
     if (from_list){
         for(ObjectIt _F=from_list->begin();_F!=from_list->end();_F++)
@@ -141,7 +140,7 @@ int EScene::GetQueryObjects(ObjectList& lst, EObjClass classfilter, int iSel, in
 int EScene::RaySelect(int flag, EObjClass classfilter)
 {
 	if( !valid() ) return 0;
-	CCustomObject *nearest_object = RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,classfilter,0,0);
+	CCustomObject *nearest_object = RayPickObject(flt_max,UI.m_CurrentRStart,UI.m_CurrentRNorm,classfilter,0,0);
     if (nearest_object) nearest_object->Select(flag);
     UI.RedrawScene();
     return nearest_object?1:0;

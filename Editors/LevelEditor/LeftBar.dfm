@@ -3113,22 +3113,6 @@ object fraLeftBar: TfraLeftBar
         OnClick = ebCutClick
       end
     end
-    object Numeric1: TMenuItem
-      Caption = 'Numeric Set'
-      GroupIndex = 1
-      object Position1: TMenuItem
-        Caption = 'Position'
-        OnClick = Position1Click
-      end
-      object Rotation1: TMenuItem
-        Caption = 'Rotation'
-        OnClick = Rotation1Click
-      end
-      object Scale1: TMenuItem
-        Caption = 'Scale'
-        OnClick = Scale1Click
-      end
-    end
     object N4: TMenuItem
       Caption = '-'
       GroupIndex = 1

@@ -598,24 +598,6 @@ void __fastcall TfraLeftBar::ebUseSnapListClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::Position1Click(TObject *Sender)
-{
-    UI.Command(COMMAND_SET_NUMERIC_POSITION);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::Rotation1Click(TObject *Sender)
-{
-    UI.Command(COMMAND_SET_NUMERIC_ROTATION);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::Scale1Click(TObject *Sender)
-{
-    UI.Command(COMMAND_SET_NUMERIC_SCALE);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 {
     UI.Command(COMMAND_SHOW_PROPERTIES);

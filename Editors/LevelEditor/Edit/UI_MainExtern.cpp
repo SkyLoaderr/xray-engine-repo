@@ -589,13 +589,6 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key==VK_OEM_MINUS)	COMMAND1(COMMAND_HIDE_SEL, FALSE)              
             else if (Key==VK_OEM_PLUS)	COMMAND1(COMMAND_HIDE_UNSEL, FALSE)            
             else if (Key==VK_OEM_5)		COMMAND1(COMMAND_HIDE_ALL, TRUE)               
-            else if (Key=='N'){
-                switch (Tools.GetAction()){
-                case eaMove: 			COMMAND0(COMMAND_SET_NUMERIC_POSITION); break;
-                case eaRotate: 			COMMAND0(COMMAND_SET_NUMERIC_ROTATION); break;
-                case eaScale: 			COMMAND0(COMMAND_SET_NUMERIC_SCALE);	break;
-                }
-            }
         }
     }
     return bExec;
@@ -634,7 +627,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         	bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf);
         }break;
         case esEditScene:{
-        	bPickObject = !!Scene.RayPickObject(start,direction,OBJCLASS_SCENEOBJECT,&pinf,Scene.GetSnapList(false)); break;
+        	bPickObject = !!Scene.RayPickObject(pinf.inf.range, start,direction,OBJCLASS_SCENEOBJECT,&pinf,Scene.GetSnapList(false)); break;
         }
         default: return false;
         }
@@ -707,7 +700,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditPrefs->cbBoxPickLimitedDepth->Checked){
 			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
-            if (Scene.RayPickObject(st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
+            if (Scene.RayPickObject(pinf.inf.range, st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }

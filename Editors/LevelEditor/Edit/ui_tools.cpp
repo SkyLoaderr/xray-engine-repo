@@ -197,18 +197,6 @@ void __fastcall TUI_Tools::ChangeTarget(EObjClass tgt, bool forced)
     	SetTarget(tgt,forced);
 }
 //---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){
-//.	if (pCurTools) pCurTools->SetNumPosition(O);
-}
-//---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumRotation(CCustomObject* O){
-//.	if (pCurTools) pCurTools->SetNumRotation(O);
-}
-//---------------------------------------------------------------------------
-void __fastcall	TUI_Tools::SetNumScale(CCustomObject* O){
-//.	if (pCurTools) pCurTools->SetNumScale(O);
-}
-//---------------------------------------------------------------------------
 
 EObjClass TUI_Tools::CurrentClassID()
 {
@@ -265,7 +253,8 @@ void TUI_Tools::RealUpdateProperties()
             SceneToolsMapPairIt _I 	= Scene.FirstTools();
             SceneToolsMapPairIt _E	= Scene.LastTools();
             for (; _I!=_E; _I++)
-                if (_I->second)		_I->second->FillProp(_I->second->ClassDesc(),items);
+                if (_I->second&&(_I->first!=OBJCLASS_DUMMY))	
+                	_I->second->FillProp(_I->second->ClassDesc(),items);
         }else{
             ESceneCustomMTools* mt	= Scene.GetMTools(cls_id);
             if (mt) mt->FillProp	(mt->ClassDesc(),items);

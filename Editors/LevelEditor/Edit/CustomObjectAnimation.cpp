@@ -91,8 +91,8 @@ void CCustomObject::AnimationDrawPath()
         for (KeyIt k_it=E->keys.begin(); k_it!=E->keys.end(); k_it++){
             m_Motion->_Evaluate	((*k_it)->time,T,r);
             if (Device.m_Camera.GetPosition().distance_to_sqr(T)<50.f*50.f){
-                DU.DrawCross		(T,0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr,false);
-                DU.DrawTextA		(T,AnsiString().sprintf("K: %3.3f",(*k_it)->time).c_str(),0xffffffff,0x00000000);
+                DU.DrawCross	(T,0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr,false);
+                DU.DrawText		(T,AnsiString().sprintf("K: %3.3f",(*k_it)->time).c_str(),0xffffffff,0x00000000);
             }
         }
     }

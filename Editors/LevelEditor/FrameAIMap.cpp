@@ -22,10 +22,6 @@
 __fastcall TfraAIMap::TfraAIMap(TComponent* Owner, ESceneAIMapTools* _tools)
         : TForm(Owner)
 {   
-/* TODO 5 -oAlexMX -cTODO: TEST text */
-/* DONE 5 -oAlexMX -cTODO: TEST text */
-//TODO 1 -oBoss: Resolve must fix bugs
-
 	tools = _tools;  R_ASSERT(tools);         
 }
 //---------------------------------------------------------------------------

@@ -48,7 +48,7 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N)
     pinf.pt.set(src);
     Fvector pick_dir;
     pick_dir.set(0,-1,0);
-    if(Scene.RayPickObject(start, pick_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
+    if(Scene.RayPickObject(pinf.inf.range, start, pick_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
         dst.set(pinf.pt);
         if (N){
 			Fvector verts[3];
@@ -126,7 +126,7 @@ bool C3DCursor::PrepareBrush(){
     GetCursorPos(&start_pt); start_pt=UI.GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(iFloor(start_pt.x),iFloor(start_pt.y));
     Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
-    bPickObject 			= !!Scene.RayPickObject(brush_start, brush_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false));
+    bPickObject 			= !!Scene.RayPickObject(pinf.inf.range,brush_start, brush_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false));
     if (!bPickObject) bPickGround = UI.PickGround(pinf.pt, brush_start, brush_dir);
     if (bPickObject||bPickGround){
         N.set(0,1,0); D.set(0,0,1);

@@ -96,10 +96,6 @@ public:
     void __fastcall 	ChangeAction	(int act, bool forced=false);
     void __fastcall 	OnObjectsUpdate	();
 
-    void __fastcall		SetNumPosition	(CCustomObject* O);
-    void __fastcall		SetNumRotation	(CCustomObject* O);
-    void __fastcall		SetNumScale		(CCustomObject* O);
-
     void				OnShowHint		(AStringVec& ss);
 
     bool __fastcall 	MouseStart  	(TShiftState Shift);

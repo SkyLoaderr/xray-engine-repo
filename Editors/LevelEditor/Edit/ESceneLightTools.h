@@ -21,10 +21,9 @@ class ESceneLightTools: public ESceneCustomOTools
     friend class 		CLight;
 protected:
 	enum{
-    	flShowSun			= (1<<0),
-        flShowControlName	= (1<<1),
+    	flShowSun			= (1<<31),
+        flShowControlName	= (1<<30),
     };
-	Flags32				m_LFlags;
 	// hemisphere
 	u8					m_HemiQuality;
     // sun

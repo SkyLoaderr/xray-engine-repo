@@ -50,7 +50,7 @@ bool CSceneObject::Load(IReader& F)
             break;
         }
         if(!CheckVersion())
-            ELog.Msg( mtError, "CSceneObject: '%s' different file version! Some objects will work incorrectly.", buf );
+            ELog.Msg( mtError, "CSceneObject: '%s' different file version!", buf );
 
         // flags
         if (F.find_chunk(SCENEOBJ_CHUNK_FLAGS)){

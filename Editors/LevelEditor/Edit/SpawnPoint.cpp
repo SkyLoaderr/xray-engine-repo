@@ -14,6 +14,7 @@
 #include "scene.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "BodyInstance.h"
+#include "ESceneSpawnTools.h"
 
 #include "eshape.h"
 #include "sceneobject.h"
@@ -305,7 +306,14 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     default: THROW2("CSpawnPoint:: Unknown Type");
                     }
                 }
-                DU.DrawText		(PPosition,s_name.c_str(),0xffffffff,0xff000000);
+                
+                ESceneSpawnTools* st = dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
+                if (st->m_Flags.is(ESceneSpawnTools::flShowSpawnType)){ 
+                    Fvector D;	D.sub(Device.vCameraPosition,PPosition);
+                    float dist 	= D.normalize_magn();
+                    if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
+                }
             }
             if(Selected()){
                 RCache.set_xform_world(Fidentity);

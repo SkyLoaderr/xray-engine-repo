@@ -29,10 +29,6 @@ bool ESceneLightTools::Load(IReader& F)
 
 	if (!inherited::Load(F)) return false;
 
-    if (F.find_chunk(CHUNK_FLAGS)){
-     	m_LFlags.set		(F.r_u32());
-    }
-
     if (F.find_chunk(CHUNK_HEMI)){
      	m_HemiQuality		= F.r_u8();
     }
@@ -65,10 +61,6 @@ void ESceneLightTools::Save(IWriter& F)
 	inherited::Save	(F);
 
 	F.w_chunk		(CHUNK_VERSION,(u16*)&LIGHT_TOOLS_VERSION,sizeof(LIGHT_TOOLS_VERSION));
-
-	F.open_chunk	(CHUNK_FLAGS);
-    F.w_u32			(m_LFlags.get());
-    F.close_chunk	();
 
 	F.open_chunk	(CHUNK_HEMI);
     F.w_u8			(m_HemiQuality);

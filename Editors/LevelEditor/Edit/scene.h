@@ -187,7 +187,7 @@ public:
     void 			UpdateSnapList 	   	();
 	ObjectList* 	GetSnapList			(bool bIgnoreUse);
 
-	CCustomObject*	RayPickObject 		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
+	CCustomObject*	RayPickObject 		(float dist, const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
 	int 			BoxPickObjects		(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* from_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
