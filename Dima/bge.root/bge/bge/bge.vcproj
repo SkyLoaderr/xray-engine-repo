@@ -173,6 +173,30 @@
 		<Filter
 			Name="core"
 			>
+			<File
+				RelativePath=".\stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\stdafx.h"
+				>
+			</File>
 			<Filter
 				Name="hardware"
 				>
@@ -438,104 +462,52 @@
 			Name="games"
 			>
 			<Filter
-				Name="connect_four"
-				>
-			</Filter>
-			<Filter
 				Name="othello"
 				>
 				<Filter
-					Name="8x8"
+					Name="boards"
 					>
 					<Filter
-						Name="boards"
-						>
-						<Filter
-							Name="classic"
-							>
-						</Filter>
-						<Filter
-							Name="bitboard"
-							>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="evaluation"
+						Name="classic"
 						>
 					</Filter>
 					<Filter
-						Name="moves"
-						>
-					</Filter>
-					<Filter
-						Name="mobility"
-						>
-					</Filter>
-					<Filter
-						Name="game"
-						>
-					</Filter>
-					<Filter
-						Name="midgame"
-						>
-					</Filter>
-					<Filter
-						Name="endgame"
-						>
-					</Filter>
-					<Filter
-						Name="opening_book"
-						>
-					</Filter>
-					<Filter
-						Name="endgame_book"
+						Name="bitboard"
 						>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="6x6"
+					Name="opening_book"
 					>
 				</Filter>
 				<Filter
-					Name="10x10"
-					>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="chess"
-				>
-			</Filter>
-			<Filter
-				Name="checkers"
-				>
-				<Filter
-					Name="8x8"
+					Name="endgame"
 					>
 				</Filter>
 				<Filter
-					Name="10x10"
-					>
-				</Filter>
-			</Filter>
-			<Filter
-				Name="go"
-				>
-				<Filter
-					Name="11x11"
+					Name="endgame_book"
 					>
 				</Filter>
 				<Filter
-					Name="15x15"
+					Name="evaluation"
 					>
 				</Filter>
 				<Filter
-					Name="19x19"
+					Name="game"
 					>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="rendzu"
-				>
+				<Filter
+					Name="midgame"
+					>
+				</Filter>
+				<Filter
+					Name="mobility"
+					>
+				</Filter>
+				<Filter
+					Name="moves"
+					>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
