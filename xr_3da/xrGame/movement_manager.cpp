@@ -41,6 +41,11 @@ void CMovementManager::Init			()
 	CLevelPathManager::set_evaluator(m_base_level_selector);
 }
 
+void CMovementManager::Load			(LPCSTR caSection)
+{
+	CGameLocationSelector::Load		(caSection);
+}
+
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	Fvector				motion;

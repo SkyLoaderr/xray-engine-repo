@@ -53,6 +53,7 @@ public:
 	IC						CBaseLocationSelector	();
 	IC	virtual				~CBaseLocationSelector	();
 	IC	virtual void		Init					(const _Graph *graph = 0);
+		virtual void		Load					(LPCSTR caSection);
 	IC			void		set_selection_type		(const ESelectionType selection_type);
 	IC			void		get_selection_type		() const;
 				void		select_location			(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);

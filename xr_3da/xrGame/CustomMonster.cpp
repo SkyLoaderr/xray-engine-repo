@@ -75,6 +75,7 @@ void CCustomMonster::Load		(LPCSTR section)
 {
 //////////////////////////////////////////////////////////////////////////
 	inherited::Load		(section);
+	CMovementManager::Load(section);
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)		{
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
