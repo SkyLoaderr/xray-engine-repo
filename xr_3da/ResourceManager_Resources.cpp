@@ -20,6 +20,32 @@ BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 }
 
 //--------------------------------------------------------------------------------------------------------------
+class	includer				: public ID3DXInclude
+{
+	xr_vector<IReader*>			_2close;
+public:
+	HRESULT Open	(LPCSTR		pName, LPCVOID *ppData, UINT *pBytes )
+	{
+		IReader*	R			= FS.r_open	("$game_shaders$",pName);
+		_2close.push_back		(R);
+		*ppData					= R->pointer();
+		*pBytes					= R->length();
+	}
+	HRESULT Close	(LPCVOID	pData)
+	{
+		for (xr_vector<IReader*>::iterator	I=_2close.begin(); I!=_2close.end(); I++)
+		{
+			if (*I->pointer() == pData)
+			{
+				FS.r_close		(*I);
+				_2close.erase	(I);
+				return;
+			}
+		}
+	}
+};
+
+//--------------------------------------------------------------------------------------------------------------
 SState*		CResourceManager::_CreateState		(SimulatorStates& state_code)
 {
 	// Search equal state-code 
