@@ -338,6 +338,9 @@
 				RelativePath="..\..\..\include\ode\common.h">
 			</File>
 			<File
+				RelativePath="..\..\..\include\ode\compatibility.h">
+			</File>
+			<File
 				RelativePath="..\..\..\include\ode\config.h">
 			</File>
 			<File
