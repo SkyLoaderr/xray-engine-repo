@@ -18,16 +18,20 @@ CGameObject::CGameObject		()
 	AI_Node		= 0;
 	setActive	(FALSE);
 	m_pPhysicsShell = NULL;
+	/******* Oles
 #ifdef DEBUG
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 #endif
+	*/
 }
 
 CGameObject::~CGameObject		()
 {
+	/******* Oles
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
 #endif
+	*/
 	if (this == Level().CurrentEntity())	Level().SetEntity(0);
 }
 

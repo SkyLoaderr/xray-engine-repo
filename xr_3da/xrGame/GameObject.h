@@ -8,9 +8,11 @@
 
 class CPhysicsShell;
 class CGameObject : public CObject  
+	/******* Oles
 #ifdef DEBUG
 	, public pureRender
 #endif
+	*/
 {
 	typedef CObject inherited;
 public:

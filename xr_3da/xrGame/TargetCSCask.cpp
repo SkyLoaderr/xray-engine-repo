@@ -63,7 +63,7 @@ void CTargetCSCask::OnVisible() {
 
 void CTargetCSCask::Load	(LPCSTR section)
 {
-	Load(section);
+	inherited::Load(section);
 
 	CKinematics* V	= PKinematics	(Visual());
 	if(V)			V->PlayCycle	("open");
