@@ -306,8 +306,8 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
-		RenderCombine				(CM_NORMAL);
 		RenderCombine_Bloom			();
+		RenderCombine				(CM_NORMAL);
 		RenderOverlay				();
 
 		// Output statistics
