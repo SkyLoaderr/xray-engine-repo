@@ -597,21 +597,13 @@ void CDetailPathManager::add_patrol_point()
 	m_last_patrol_point					= m_path.size() - 1;
 	if ((m_path.size() > 1) && m_state_patrol_path) {
 		STravelPathPoint				t;
-		bool							ok = false;
 		Fvector							v;
-		for (u32 i=m_path.size()-1; i>0; --i)
-			if (!m_path.back().position.similar(m_path[i-1].position,.01f)) {
-				v.sub					(m_path.back().position,m_path[i-1].position);
-				ok						= true;
-				break;
-			}
-		if (!ok)
-			return;
+		v.sub							(m_path.back().position,m_path[m_last_patrol_point - 1].position);
 		v.y								= 0.f;
-		if (v.square_magnitude() > EPS_L)
+		if (v.square_magnitude() > EPS_S)
 			v.normalize					();
 		else
-			v.set						(0,0,1);
+			return;
 
 		v.mul							(2.f);
 		t								= m_path.back();

@@ -536,7 +536,7 @@ void CCustomMonster::OnRender()
 	*/
 	{
 	
-	for (int I=0; I<(int)CDetailPathManager::path().size() - 1; ++I)
+	for (int I=0, N = (int)CDetailPathManager::path().size(); I<N - 1; ++I)
 	{
 		Fvector P1 = CDetailPathManager::path()[I].position;		P1.y+=0.1f;
 		Fvector P2 = CDetailPathManager::path()[I + 1].position;	P2.y+=0.1f;
@@ -546,7 +546,7 @@ void CCustomMonster::OnRender()
 			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
 			Fmatrix						V = Fidentity;
 			V.c							= P1;
-			V.c.y						+= r;
+			V.c.y						+= r + float(I)/100.f;
 			V.i.x						= .05f;//r;
 			V.j.y						= .05f;//r;
 			V.k.z						= .05f;//r;
@@ -558,7 +558,7 @@ void CCustomMonster::OnRender()
 			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
 			Fmatrix						V = Fidentity;
 			V.c							= P2;
-			V.c.y						+= r;
+			V.c.y						+= r + float(I + 1)/100.f;
 			V.i.x						= .05f;//r;
 			V.j.y						= .05f;//r;
 			V.k.z						= .05f;//r;

@@ -32,6 +32,24 @@
 
 void CLevelGraph::render()
 {
+	// draw patrol paths
+	{
+		xr_map<LPCSTR,CLevel::SPath,pred_str>::const_iterator	I = Level().m_PatrolPaths.begin();
+		xr_map<LPCSTR,CLevel::SPath,pred_str>::const_iterator	E = Level().m_PatrolPaths.end();
+		for ( ; I != E; ++I) {
+			if (strcmp("way0000",(*I).first))
+				continue;
+			xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin();
+			xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();
+			for ( ; i != e; ++i) {
+				Fvector				P = (*i).tWayPoint;
+				const float			edge = .25f;
+				P.y					+= edge;
+				RCache.dbg_DrawAABB	(P,edge,edge,edge,D3DCOLOR_XRGB(0,255,0));
+			}
+		}
+	}
+	
 	if (bDebug && psAI_Flags.test(aiDebug)) {
 		CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
 		Fvector	POSITION	= O->Position();
