@@ -1107,7 +1107,7 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
             TokenValue4::Item& val	= level_ids.back();
             LPCSTR					S;
 			float					fDummy;
-			sscanf(V,"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S)
+			sscanf(V,"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S);
 			val.str					= S;
             val.ID					= atoi(N);
         }
