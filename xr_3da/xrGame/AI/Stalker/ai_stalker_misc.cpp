@@ -13,6 +13,7 @@
 
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 2000
 #define TIME_TO_SEARCH					60000
+#define DODGE_AMPLITUDE					.5f
 
 void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
@@ -111,20 +112,26 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 				yaw += PI_DIV_2;
 				tStartPosition.setHP(yaw,pitch);
 				tStartPosition.normalize_safe();
-				tStartPosition.mul(1.f);
 				tLeft = tStartPosition;
 				yaw += PI;
 				tStartPosition.setHP(yaw,pitch);
 				tStartPosition.normalize_safe();
-				tStartPosition.mul(1.f);
 				tRight = tStartPosition;
 			}
 			for ( i=1; i<N; i++) {
-				if ((i % 4) == 1)
-					AI_Path.TravelPath[i].P.add(tLeft);
+				if ((i % 4) == 1) {
+					float fDistance = DODGE_AMPLITUDE*AI_Path.TravelPath[i].P.distance_to(AI_Path.TravelPath[i - 1].P);
+					Fvector tPoint = tLeft;
+					tPoint.mul	(fDistance);
+					AI_Path.TravelPath[i].P.add(tPoint);
+				}
 				else
-					if ((i % 4) == 3)
-						AI_Path.TravelPath[i].P.add(tRight);
+					if ((i % 4) == 3) {
+						float fDistance = DODGE_AMPLITUDE*AI_Path.TravelPath[i].P.distance_to(AI_Path.TravelPath[i - 1].P);
+						Fvector tPoint = tRight;
+						tPoint.mul	(fDistance);
+						AI_Path.TravelPath[i].P.add(tPoint);
+					}
 			}
 			AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 	//		vector<Fvector>		tpaPoints(0);
@@ -170,7 +177,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool b
 
 void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
-	if ((!m_dwLastRangeSearch) || (AI_Path.TravelStart > AI_Path.TravelPath.size() - 3) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
+	if ((!m_dwLastRangeSearch) || (AI_Path.TravelStart > AI_Path.TravelPath.size() - 4) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
 		
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		vfInitSelector(S,Squad,Leader);
@@ -437,6 +444,7 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 		}
 		default : NODEFAULT;
 	}
+	m_fCurSpeed = 6.5f;
 }
 
 void CAI_Stalker::vfCheckForItems()

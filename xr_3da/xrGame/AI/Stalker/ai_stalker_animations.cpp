@@ -394,8 +394,10 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
 
-	if ((tpGlobalAnimation) && (m_tpCurrentGlobalAnimation != tpGlobalAnimation))
-		tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+	if (tpGlobalAnimation) {
+		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
+			tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+	}
 	else {
 		CMotionDef				*tpTorsoAnimation	=	0;
 		CMotionDef				*tpLegsAnimation	=	0;

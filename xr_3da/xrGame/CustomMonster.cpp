@@ -455,7 +455,7 @@ void CCustomMonster::eye_pp_s1			( )
 	Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	eye_pp_seen.clear						();
 	IRender_Sector* S						= Sector();
-	if (S)	S->get_objects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
+	if (S)	S->GetObjects					(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End		();
 }
 
@@ -614,13 +614,18 @@ void CCustomMonster::Death	()
 
 void CCustomMonster::Die	()
 {
-
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.DestroyCharacter();
+#endif
 
 }
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.CreateCharacter();
+#endif
 
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);

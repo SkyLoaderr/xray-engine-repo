@@ -107,6 +107,7 @@ void CAI_Stalker::SetDirectionLook()
 	GetDirectionAngles(r_target.yaw,r_target.pitch);
 	r_target.yaw *= -1;
 	r_target.pitch *= -1;
+	r_torso_target = r_target;
 }
 
 void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, bool bDifferenceLook)
