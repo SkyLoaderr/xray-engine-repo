@@ -550,6 +550,12 @@ function action_camper:select_look_point()
 	--Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
 	for i = 3, 20 do
 --        printf("point %d  bit %d", self.camper_point, i)
+        printf("camper_point %d", self.camper_point)
+        if(self.a.point_path:flag(self.camper_point, 3)) then
+        	printf("flag 3 enabled")
+        else
+        	printf("flag 3 disabled")
+        end
         printf("i = %d", i)
         if(self.a.point_path:flag(self.camper_point, i)) then
         	self.look_point	= this.point_with_bit(self.a.point_path, i, self.camper_point)
