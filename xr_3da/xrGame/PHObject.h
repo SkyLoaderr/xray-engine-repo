@@ -83,6 +83,7 @@ public:
 		IC	bool			is_active						()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void			deactivate						()										;
 virtual		void			Collide							()										;
+virtual		void			near_callback					(CPHObject* obj)						{;}
 virtual		void			RMotionsQuery					(qResultVec	&res)						{;}
 virtual		CPHMoveStorage*	MoveStorage						()										{return NULL;}
 virtual		ECastType		CastType						(){return tpNotDefinite;}

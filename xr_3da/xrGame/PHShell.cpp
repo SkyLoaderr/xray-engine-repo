@@ -315,6 +315,7 @@ void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
 
 void CPHShell::SetTransform	(const Fmatrix& m0){
 
+	mXFORM.set(m0);
 	ELEMENT_I i=elements.begin();
 	for( ;elements.end() != i; ++i)
 	{

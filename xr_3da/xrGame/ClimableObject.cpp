@@ -23,14 +23,14 @@ class CPHLeaderGeomShell: public CPHStaticGeomShell
 CClimableObject		*m_pClimable;
 public:
 						CPHLeaderGeomShell		(CClimableObject* climable);
-	virtual		void	EnableObject			(CPHObject* obj);
+void					near_callback			(CPHObject* obj);
 };
 
 CPHLeaderGeomShell::CPHLeaderGeomShell(CClimableObject* climable)
 {
 	m_pClimable=climable;
 }
-void CPHLeaderGeomShell:: EnableObject(CPHObject* obj)
+void CPHLeaderGeomShell::near_callback	(CPHObject* obj)
 {
 	if(obj && obj->CastType()==CPHObject::tpCharacter)
 	{
