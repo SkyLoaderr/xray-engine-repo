@@ -36,20 +36,13 @@ sidor_bar                           =   sidor_evaluator + 90
 sidor_chaser                        =   sidor_evaluator + 100
 
 -- эвалуаторы Чугай
-chugai_evaluators    = stalker_ids.property_script + 3000
-
-ambush_never_true    = chugai_evaluators + 0
-ambush_attack        = chugai_evaluators + 1
-ambush_in_position   = chugai_evaluators + 2
-ambush_can_sleep     = chugai_evaluators + 3
-ambush_dead_hook     = chugai_evaluators + 4
-ambush_toilet        = chugai_evaluators + 5
-
+chugai_evaluators                   = stalker_ids.property_script + 3000
 chugai_commander_base               = chugai_evaluators + 20
 chugai_scout_base                   = chugai_evaluators + 30
 chugai_military_commander_base      = chugai_evaluators + 40
 chugai_escape_factory_bandits_base  = chugai_evaluators + 50
 chugai_barman_base                  = chugai_evaluators + 60
+chugai_ambush_base                  = chugai_evaluators + 70
 
 -- эвалуаторы Змея
 zmey_evaluators = stalker_ids.property_script + 4000
@@ -61,17 +54,17 @@ zmey_sleeper_base    = zmey_evaluators + 400
 zmey_talker_base     = zmey_evaluators + 500
 
 --  эвалуоторы Жени
-jon_evaluators       	= stalker_ids.property_script + 5000
-jon_stalker_zombie   	= jon_evaluators + 0
-jon_stalker_novice   	= jon_evaluators + 1
-jon_stalker_novice2  	= jon_evaluators + 2
-jon_stalker_novice3  	= jon_evaluators + 3
-jon_stalker_attack   	= jon_evaluators + 4
+jon_evaluators          = stalker_ids.property_script + 5000
+jon_stalker_zombie      = jon_evaluators + 0
+jon_stalker_novice      = jon_evaluators + 1
+jon_stalker_novice2     = jon_evaluators + 2
+jon_stalker_novice3     = jon_evaluators + 3
+jon_stalker_attack      = jon_evaluators + 4
 
-jon_scientist        	= jon_evaluators + 5
-jon_security         	= jon_evaluators + 6
+jon_scientist           = jon_evaluators + 5
+jon_security            = jon_evaluators + 6
 
-jon_sniper_enabled     	= jon_evaluators + 10			--5029
-jon_sniper_see_monster 	= jon_evaluators + 11           --5030
-jon_sniper_see_enemy   	= jon_evaluators + 12           --5031
-jon_sniper_enemy_near  	= jon_evaluators + 13           --5032
+jon_sniper_enabled      = jon_evaluators + 10           --5029
+jon_sniper_see_monster  = jon_evaluators + 11           --5030
+jon_sniper_see_enemy    = jon_evaluators + 12           --5031
+jon_sniper_enemy_near   = jon_evaluators + 13           --5032
