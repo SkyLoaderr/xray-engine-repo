@@ -1433,6 +1433,9 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\Config\ui\motion_icon.xml">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
