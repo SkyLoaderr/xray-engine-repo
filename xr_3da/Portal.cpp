@@ -225,6 +225,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 		for (; I!=E; I++) 
 		{
 			CObject*	O	= *I;
+			if (!O->getVisible())					continue;
 			if (!oQuery.Qualifier(O,oQuery.Param))	continue;
 
 			Fvector		Pos;

@@ -269,7 +269,26 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	spawn_end				(A,id_who);
 }
 
-u8 game_sv_CS::AutoTeam() {
+void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
+{
+	__super::OnPlayerBuy	(id_who,eid_who,what);
+
+	// cost
+	int cost				= get_option_i	(what,"cost",0);
+	R_ASSERT				(cost);
+	
+	// check if has money to pay
+	// ???
+
+	// spawn it right in hands
+	string64				name;
+	strcpy					(name,what);
+	if ( strchr(name,'/') )	*strchr(name,'/') = 0;
+
+}
+
+u8 game_sv_CS::AutoTeam() 
+{
 	u32	cnt = get_count(), l_teams[2] = {0,0};
 	for(u32 it=0; it<cnt; it++)	{
 		game_PlayerState* ps = get_it(it);
