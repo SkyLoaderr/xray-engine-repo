@@ -186,7 +186,7 @@ void CActor::Load(CInifile* ini, const char* section )
 {
 	Msg("Loading actor: %s",section);
 
-	inherited::Load(ini,section);
+	inherited::Load		(ini,section);
 
 	m_fWalkAccel		= ini->ReadFLOAT(section,"walk_accel");	
 	m_fJumpSpeed		= ini->ReadFLOAT(section,"jump_speed");
@@ -204,7 +204,7 @@ void CActor::Load(CInifile* ini, const char* section )
 	Weapons->Init		();
 	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
-//	Weapons->TakeItem	(CLSID_OBJECT_W_EMSRIFLE,0);
+	Weapons->TakeItem	(CLSID_OBJECT_W_PROTECTA,0);
 
 	// sounds
 	char buf[256];
