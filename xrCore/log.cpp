@@ -140,7 +140,8 @@ void CreateLog			(BOOL nl)
 {
     no_log				= nl;
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
-	FS.update_path		(logFName,"$logs$",logFName);
+	if (FS.path_exist("$logs$"))
+		FS.update_path	(logFName,"$logs$",logFName);
 	if (!no_log){
         IWriter *f		= FS.w_open	(logFName);
         if (f==NULL)	abort();
