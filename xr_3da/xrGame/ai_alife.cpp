@@ -454,24 +454,6 @@ void CSE_ALifeSimulator::vfNewGame()
 	Save						();
 }
 
-void CSE_ALifeSimulator::vfPerformSurge()
-{
-	vfGenerateAnomalousZones	();
-	vfGenerateAnomalyMap		();
-	TRADER_P_IT					I = m_tpTraders.begin();
-	TRADER_P_IT					E = m_tpTraders.end();
-	for ( ; I != E; I++) {
-		vfSellArtefacts			(**I);
-		vfUpdateArtefactOrders	(**I);
-		vfBuySupplies			(**I);
-		vfAssignPrices			(**I);
-		vfGiveMilitariesBribe	(**I);
-	}
-	vfUpdateOrganizations		();
-	vfKillCreatures				();
-	vfBallanceCreatures			();
-}
-
 void CSE_ALifeSimulator::vfBallanceCreatures()
 {
 	// filling array of the survived creatures
@@ -715,8 +697,8 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
-	m_tpTraderArtefacts.clear();
 	// filling temporary map with the purchased artefacts
+	m_tpTraderArtefacts.clear();
 	{
 		xr_vector<u16>::iterator	i = tTrader.children.begin();
 		xr_vector<u16>::iterator	e = tTrader.children.end();
@@ -737,42 +719,87 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 				(*k).second++;
 		}
 	}
-	
+		
 	// iterating on all the trader artefacts
 	ARTEFACT_COUNT_PAIR_IT		i = m_tpTraderArtefacts.begin();
 	ARTEFACT_COUNT_PAIR_IT		e = m_tpTraderArtefacts.end();
 	for ( ; i != e; i++) {
 		m_tpSoldArtefacts.clear	();
 		// iterating on all the organizations
-		ORGANIZATION_P_PAIR_IT	I = m_tOrganizationRegistry.begin();
-		ORGANIZATION_P_PAIR_IT	E = m_tOrganizationRegistry.end();
-		for ( ; I != E; I++) {
-			// checking if our rank is enough for the organization
-			// and the organization in the appropriate state
-			if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
-				// iterating on all the organization artefact orders
-				ARTEFACT_ORDER_IT	ii = (*I).second->m_tpOrderedArtefacts.begin();
-				ARTEFACT_ORDER_IT	ee = (*I).second->m_tpOrderedArtefacts.end();
-				for ( ; ii != ee; ii++)
-					if (!strcmp((*ii).m_caSection,(*i).first)) {
-						SOrganizationOrder l_tOrganizationOrder;
-						l_tOrganizationOrder.m_tpALifeOrganization = (*I).second;
-						l_tOrganizationOrder.m_dwCount = (*ii).m_dwCount;
-						m_tpSoldArtefacts.insert(std::make_pair((*ii).m_dwPrice,l_tOrganizationOrder));
-					}
+		{
+			ORGANIZATION_P_PAIR_IT	I = m_tOrganizationRegistry.begin();
+			ORGANIZATION_P_PAIR_IT	E = m_tOrganizationRegistry.end();
+			for ( ; I != E; I++) {
+				// checking if our rank is enough for the organization
+				// and the organization in the appropriate state
+				if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
+					// iterating on all the organization artefact orders
+					ARTEFACT_ORDER_IT	ii = (*I).second->m_tpOrderedArtefacts.begin();
+					ARTEFACT_ORDER_IT	ee = (*I).second->m_tpOrderedArtefacts.end();
+					for ( ; ii != ee; ii++)
+						if (!strcmp((*ii).m_caSection,(*i).first)) {
+							SOrganizationOrder							l_tOrganizationOrder;
+							l_tOrganizationOrder.m_tpALifeOrganization	= (*I).second;
+							l_tOrganizationOrder.m_dwCount				= (*ii).m_dwCount;
+							m_tpSoldArtefacts.insert					(std::make_pair((*ii).m_dwPrice,l_tOrganizationOrder));
+							break;
+						}
+				}
+			}
+		}
+		// iterating on all the orders in descending order in order to get the maximum profit
+		{
+			ORGANIZATION_ORDER_PAIR_IT	I = m_tpSoldArtefacts.begin();
+			ORGANIZATION_ORDER_PAIR_IT	E = m_tpSoldArtefacts.end();
+			for ( ; I != E; I++) {
+				// checking if organization has already bought these artefacts
+				ARTEFACT_COUNT_PAIR_IT	j = (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.find((*i).first);
+				if (j == (*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.end())
+					(*I).second.m_tpALifeOrganization->m_tpPurchasedArtefacts.insert(std::make_pair((*i).first,(*I).second.m_dwCount));
+				else
+					(*j).second			+= (*I).second.m_dwCount;
+				// adding money to trader
+				tTrader.m_dwMoney		+= (*I).first;
 			}
 		}
 	}
-}
-
-void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
-{
 }
 
 void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 {
 }
 
+void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
+{
+	
+}
+
 void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
 {
+}
+
+void CSE_ALifeSimulator::vfPerformSurge()
+{
+	vfGenerateAnomalousZones	();
+	vfGenerateAnomalyMap		();
+	{
+		TRADER_P_IT					I = m_tpTraders.begin();
+		TRADER_P_IT					E = m_tpTraders.end();
+		for ( ; I != E; I++) {
+			vfSellArtefacts			(**I);
+			vfBuySupplies			(**I);
+		}
+	}
+	vfUpdateOrganizations		();
+	{
+		TRADER_P_IT					I = m_tpTraders.begin();
+		TRADER_P_IT					E = m_tpTraders.end();
+		for ( ; I != E; I++) {
+			vfUpdateArtefactOrders	(**I);
+			vfAssignPrices			(**I);
+			vfGiveMilitariesBribe	(**I);
+		}
+	}
+	vfKillCreatures				();
+	vfBallanceCreatures			();
 }
