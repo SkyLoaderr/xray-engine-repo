@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- NORMAL -->
-	<normal x="0" y="0" width="100" height="100" align="rb">
-		<texture	x="0" y="0" width="64" height="64" >ui\ui_motion_icon</texture>
+	<normal x="0" y="0" width="0" height="0" align="rb">
+		<texture	x="0" y="0" width="0" height="0" >ui\ui_motion_icon</texture>
 	</normal>
 	<power_bar_normal x="0" y="0" length="64" broad="64" horz="0" min="0" max="100" pos="0">
 		<background	x="0" y="0"		width="64" height="64" >ui\ui_motion_icon</background>
