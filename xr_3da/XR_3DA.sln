@@ -1,0 +1,72 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XR_3DA", "XR_3DA.vcproj", "{2578C6D8-660D-48AE-9322-7422F8664F06}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCPU_Pipe", "xrCPU_Pipe\xrCPU_Pipe.vcproj", "{CA0649DD-D089-423A-981C-46B57A884EB9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGame", "xrGame\xrGame.vcproj", "{200652A6-043E-4634-8837-87983B3BD5E0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrSound", "..\xrSound\xrSound.vcproj", "{CCCA7859-EB86-493E-9B53-C4235F45B3C5}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 5
+		SccProjectUniqueName0 = XR_3DA.vcproj
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SccProjectUniqueName1 = xrCPU_Pipe\\xrCPU_Pipe.vcproj
+		SccProjectName1 = \u0022$/xr_3da/xrCPU_Pipe\u0022,\u0020ZTDAAAAA
+		SccLocalPath1 = xrCPU_Pipe
+		CanCheckoutShared = true
+		SccProjectUniqueName2 = xrGame\\xrGame.vcproj
+		SccProjectName2 = \u0022$/xr_3da/xrGame\u0022,\u0020LSDAAAAA
+		SccLocalPath2 = xrGame
+		CanCheckoutShared = true
+		SccLocalPath3 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
+		SccProjectUniqueName4 = ..\\xrSound\\xrSound.vcproj
+		SccProjectName4 = \u0022$/xr_3da/xrSound\u0022,\u0020OJJAAAAA
+		SccLocalPath4 = ..\\xrSound
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Mixed
+		ConfigName.2 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.1 = {CA0649DD-D089-423A-981C-46B57A884EB9}
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.Build.0 = Debug|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.ActiveCfg = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Mixed.Build.0 = Mixed|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.ActiveCfg = Release|Win32
+		{2578C6D8-660D-48AE-9322-7422F8664F06}.Release.Build.0 = Release|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Debug.ActiveCfg = Debug|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Debug.Build.0 = Debug|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Mixed.ActiveCfg = Mixed|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Mixed.Build.0 = Mixed|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Release.ActiveCfg = Release|Win32
+		{CA0649DD-D089-423A-981C-46B57A884EB9}.Release.Build.0 = Release|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.ActiveCfg = Debug|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Debug.Build.0 = Debug|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.ActiveCfg = Mixed|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Mixed.Build.0 = Mixed|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.ActiveCfg = Release|Win32
+		{200652A6-043E-4634-8837-87983B3BD5E0}.Release.Build.0 = Release|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Debug.ActiveCfg = Debug|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Debug.Build.0 = Debug|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed.ActiveCfg = Release|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed.Build.0 = Release|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.ActiveCfg = Release|Win32
+		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
