@@ -126,7 +126,7 @@ IC int get_token_ID(xr_token* token_list, LPCSTR name){
 
 IC bool get_domain_type(LPCSTR src, var& val)
 {
-    val = (PDomainEnum)get_token_ID(domain_token,src);
+	val = (PDomainEnum)get_token_ID(domain_token,src);
     return (int)val>=0;
 }
 
@@ -134,6 +134,7 @@ IC bool get_domain_type(LPCSTR src, var& val)
 static const int BAD_COMMAND	= 0;
 static const int FEW_PARAMS 	= 1;
 static const int BAD_PARAM	 	= 2;
+static const int STA_MISSING 	= 3;
 
 void ErrMsg(int c, int l, int v, LPCSTR line)
 {
@@ -141,6 +142,7 @@ void ErrMsg(int c, int l, int v, LPCSTR line)
     case BAD_COMMAND: 	ELog.DlgMsg(mtError,"[Error] (%d): Unrecognized command: '%s'",l+1,line); break;
     case FEW_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Too few parameters in call to '%s'",line); break;
     case BAD_PARAM: 	ELog.DlgMsg(mtError,"[Error] (%d): Bad parameter '%d' - '%s'",l+1,v,line); break;
+    case STA_MISSING:	ELog.DlgMsg(mtError,"[Error] (%d): Statement missing ';'",l+1,line); break;
     }
 }
 
@@ -149,7 +151,7 @@ class PFunction{
 public:
 	CPGDef*				parent;
 	// command
-	string64 			command;
+	AnsiString 			command;
     // type
 	enum Type{
     	ftState,
@@ -159,17 +161,15 @@ public:
     // params
 	struct Param{
         PParamType		type;
-        string64	    hint;
-        string64		s_data;
+        AnsiString	    hint;
+        AnsiString		s_data;
         var				data;
-        Param(){hint[0]=0;s_data[0]=0;data=0;}
+        Param(){hint="";s_data="";data=0;}
     };
     
     int 				req_params;
     DEFINE_VECTOR(Param,ParamVec,ParamIt);
     ParamVec			params;
-
-    void*				function;
 
     LPCSTR				src;
 public:    
@@ -177,73 +177,72 @@ public:
 	bool				LoadTemplate(LPCSTR line)
     {
     	src				= line;
-        string512 		pms;
+        AnsiString 		pms;
         _GetItem		(line,0,command,'(');
         _GetItem		(line,1,pms,'(');
-        _GetItem		(pms,0,pms,')');
+        _GetItem		(pms.c_str(),0,pms,')');
         bool bRes		= true;
-        int p_cnt 		= _GetItemCount(pms);
+        int p_cnt 		= _GetItemCount(pms.c_str());
         for (int k=0; k<p_cnt; k++){
-	        string64 	pm={0},t={0},v={0};
+	        AnsiString 	pm,t,v;
         	params.push_back(Param());
             Param& P	= params.back();
-        	_GetItem	(pms,k,pm);
-            _GetItem	(pm,0,t,' ');	R_ASSERT(t&&t[0]);
-            P.type 		= (PParamType)get_token_ID(type_token,t);	
+        	_GetItem	(pms.c_str(),k,pm);
+            _GetItem	(pm.c_str(),0,t,' ');	R_ASSERT(!t.IsEmpty());
+            P.type 		= (PParamType)get_token_ID(type_token,t.c_str());	
             R_ASSERT2(P.type!=ptUnknown,"Unknown PParamType!");
-            _GetItems	(pm,1,1000,v,' ');
-            if (_GetItemCount(v,'=')==2){
-	            _GetItem	(v,0,P.hint,'=');
-    	        _GetItem	(v,1,P.s_data,'=');
+            _GetItems	(pm.c_str(),1,1000,v,' ');
+            if (_GetItemCount(v.c_str(),'=')==2){
+	            _GetItem(v.c_str(),0,P.hint,'=');
+    	        _GetItem(v.c_str(),1,P.s_data,'=');
             }else{
-	            strcpy	(P.hint,v);
+	            P.hint	= v;
             }
-            if (P.s_data&&P.s_data[0]){
+            if (!P.s_data.IsEmpty()){
                 switch(P.type){
-                case ptDomain:	bRes=get_domain_type(P.s_data,P.data);	break;
-                case ptBOOL:    bRes=get_bool(P.s_data,P.data);  		break;
-                case ptFloat:	bRes=get_float(P.s_data,P.data); 		break;
+                case ptDomain:	bRes=get_domain_type(P.s_data.c_str(),P.data);	break;
+                case ptBOOL:    bRes=get_bool(P.s_data.c_str(),P.data);  		break;
+                case ptFloat:	bRes=get_float(P.s_data.c_str(),P.data); 		break;
                 case ptInt:
                 case ptWORD:
-                case ptDWORD:	bRes=get_int(P.s_data,P.data);			break;
-                case ptString:	bRes=get_string(P.s_data,P.data);		break;
+                case ptDWORD:	bRes=get_int(P.s_data.c_str(),P.data);			break;
+                case ptString:	bRes=get_string(P.s_data.c_str(),P.data);		break;
                 }
             }else{
             	req_params = k+1;
             }
             if (!bRes){ 
-            	ErrMsg(BAD_PARAM,0,k,P.s_data);
+            	ErrMsg(BAD_PARAM,0,k,P.s_data.c_str());
             	break;
             }
         }
-        function = ;
         return bRes;
     }
     bool				Parse		(int l, LPCSTR line)
     {
-        string512 		pms,pm;
+        AnsiString 		pms,pm;
         _GetItem		(line,1,pms,'(');
-        _GetItem		(pms,0,pms,')');
+        _GetItem		(pms.c_str(),0,pms,')');
         bool bRes		= true;
-        int p_cnt 		= _GetItemCount(pms);
+        int p_cnt 		= _GetItemCount(pms.c_str());
         if (p_cnt<req_params){
         	ErrMsg		(FEW_PARAMS,l,0,line);
         	return false;
         }
         for (int k=0; k<p_cnt; k++){
             Param& P	= params[k];
-        	_GetItem	(pms,k,pm);
+        	_GetItem	(pms.c_str(),k,pm);
             switch(P.type){
-            case ptDomain:	bRes=get_domain_type(pm,P.data);	break;
-            case ptBOOL:    bRes=get_bool(pm,P.data);			break;
-            case ptFloat:	bRes=get_float(pm,P.data); 			break;
+            case ptDomain:	bRes=get_domain_type(pm.c_str(),P.data);	break;
+            case ptBOOL:    bRes=get_bool(pm.c_str(),P.data);			break;
+            case ptFloat:	bRes=get_float(pm.c_str(),P.data); 			break;
             case ptInt:
             case ptWORD:
-            case ptDWORD:	bRes=get_int(pm,P.data); 			break;
-            case ptString:	bRes=get_string(pm,P.data);			break;
+            case ptDWORD:	bRes=get_int(pm.c_str(),P.data); 			break;
+            case ptString:	bRes=get_string(pm.c_str(),P.data);			break;
             }
             if (!bRes){ 
-            	ErrMsg(BAD_PARAM,l,k,pm);
+            	ErrMsg(BAD_PARAM,l,k,pm.c_str());
             	break;
             }
         }
@@ -269,56 +268,55 @@ public:
         #define P15 P14,p(14)
 
     	// state
-		if (0==strcmp(command,"pColor"))				pColor			(P4);
-        else if (0==strcmp(command,"pColorD"))			pColorD			(P11);
-        else if (0==strcmp(command,"pVelocity"))	 	pVelocity		(P3);
-		else if (0==strcmp(command,"pVelocityD"))		pVelocityD		(P10);
-        else if (0==strcmp(command,"pVertexB"))			pVertexB		(P3);
-        else if (0==strcmp(command,"pVertexBD"))	  	pVertexBD		(P10);
-        else if (0==strcmp(command,"pVertexBTracks")) 	pVertexBTracks	(P1);
-        else if (0==strcmp(command,"pSize"))		  	pSize			(P3);
-        else if (0==strcmp(command,"pSizeD"))		  	pSizeD   		(P10);
-        else if (0==strcmp(command,"pRotate"))			pRotate			(P3);
-        else if (0==strcmp(command,"pRotateD"))			pRotateD 		(P10);
-        else if (0==strcmp(command,"pStartingAge"))		pStartingAge   	(P2);
-        else if (0==strcmp(command,"pTimeStep"))	  	pTimeStep	   	(P1);
-        else if (0==strcmp(command,"pSetMaxParticles"))	pSetMaxParticles(P1);
-        else if (0==strcmp(command,"pSprite"))        	parent->pSprite	(P2);
-        else if (0==strcmp(command,"pFrame"))		  	parent->pFrame	(P6);
-        else if (0==strcmp(command,"pTimeLimit"))		parent->pTimeLimit(P1);
-        else if (0==strcmp(command,"pParentMotion"))  	pParentMotion	(P1);
+		if 		(command=="pColor")	   			pColor			(P4);
+        else if (command=="pColorD")			pColorD			(P11);
+        else if (command=="pVelocity")	 		pVelocity		(P3);
+		else if (command=="pVelocityD")			pVelocityD		(P10);
+        else if (command=="pVertexB")			pVertexB		(P3);
+        else if (command=="pVertexBD")	  		pVertexBD		(P10);
+        else if (command=="pVertexBTracks") 	pVertexBTracks	(P1);
+        else if (command=="pSize")		  		pSize			(P3);
+        else if (command=="pSizeD")		  		pSizeD   		(P10);
+        else if (command=="pRotate")			pRotate			(P3);
+        else if (command=="pRotateD")			pRotateD 		(P10);
+        else if (command=="pStartingAge")		pStartingAge   	(P2);
+        else if (command=="pTimeStep")	  		pTimeStep	   	(P1);
+        else if (command=="pSetMaxParticles")	pSetMaxParticles(P1);
+        else if (command=="pSprite")        	parent->pSprite	(P2);
+        else if (command=="pFrame")		  		parent->pFrame	(P6);
+        else if (command=="pTimeLimit")			parent->pTimeLimit(P1);
+        else if (command=="pParentMotion")  	pParentMotion	(P1);
         // actions
-        else if (0==strcmp(command,"pAnimate"))			parent->pAnimate(P2);		
-        else if (0==strcmp(command,"pAvoid"))		  	pAvoid			(P15);
-        else if (0==strcmp(command,"pBounce"))			pBounce			(P15);
-//        else if (0==strcmp(command,"pCallActionList"))	pCallActionList	();
-        else if (0==strcmp(command,"pCopyVertexB"))	  	pCopyVertexB	(P2);
-        else if (0==strcmp(command,"pDamping"))			pDamping		(P5);
-        else if (0==strcmp(command,"pExplosion"))		pExplosion		(P10);
-        else if (0==strcmp(command,"pFollow"))			pFollow			(P3);
-        else if (0==strcmp(command,"pGravitate"))		pGravitate		(P3);
-        else if (0==strcmp(command,"pGravity"))			pGravity		(P5);
-        else if (0==strcmp(command,"pJet"))				pJet			(P8);
-        else if (0==strcmp(command,"pKillOld"))			pKillOld		(P2);
-        else if (0==strcmp(command,"pMatchVelocity"))	pMatchVelocity	(P3);
-        else if (0==strcmp(command,"pMove"))			pMove			();
-        else if (0==strcmp(command,"pOrbitLine"))		pOrbitLine		(P11);
-        else if (0==strcmp(command,"pOrbitPoint"))		pOrbitPoint		(P8);
-        else if (0==strcmp(command,"pRandomAccel"))		pRandomAccel	(P12);
-        else if (0==strcmp(command,"pRandomDisplace"))	pRandomDisplace	(P12);
-        else if (0==strcmp(command,"pRandomVelocity"))	pRandomVelocity	(P12);
-        else if (0==strcmp(command,"pRestore"))			pRestore		(P1);
-        else if (0==strcmp(command,"pSink"))			pSink			(P13);
-        else if (0==strcmp(command,"pSinkVelocity"))	pSinkVelocity	(P13);
-        else if (0==strcmp(command,"pSource"))			pSource			(P13);
-        else if (0==strcmp(command,"pSpeedLimit"))		pSpeedLimit		(P2);
-        else if (0==strcmp(command,"pTargetColor"))		pTargetColor	(P5);
-        else if (0==strcmp(command,"pTargetSize"))		pTargetSize		(P6);
-        else if (0==strcmp(command,"pTargetRotate"))	pTargetRotate	(P4);
-        else if (0==strcmp(command,"pTargetRotateD"))	pTargetRotateD	(P11);
-        else if (0==strcmp(command,"pTargetVelocity"))	pTargetVelocity	(P6);
-        else if (0==strcmp(command,"pTargetVelocityD"))	pTargetVelocityD(P13);
-        else if (0==strcmp(command,"pVortex"))			pVortex			(P11);
+        else if (command=="pAnimate")			parent->pAnimate(P2);		
+        else if (command=="pAvoid")		  		pAvoid			(P15);
+        else if (command=="pBounce")			pBounce			(P15);
+        else if (command=="pCopyVertexB")	  	pCopyVertexB	(P2);
+        else if (command=="pDamping")			pDamping		(P5);
+        else if (command=="pExplosion")			pExplosion		(P10);
+        else if (command=="pFollow")			pFollow			(P3);
+        else if (command=="pGravitate")			pGravitate		(P3);
+        else if (command=="pGravity")			pGravity		(P5);
+        else if (command=="pJet")				pJet			(P8);
+        else if (command=="pKillOld")			pKillOld		(P2);
+        else if (command=="pMatchVelocity")		pMatchVelocity	(P3);
+        else if (command=="pMove")				pMove			();
+        else if (command=="pOrbitLine")			pOrbitLine		(P11);
+        else if (command=="pOrbitPoint")		pOrbitPoint		(P8);
+        else if (command=="pRandomAccel")		pRandomAccel	(P12);
+        else if (command=="pRandomDisplace")	pRandomDisplace	(P12);
+        else if (command=="pRandomVelocity")	pRandomVelocity	(P12);
+        else if (command=="pRestore")			pRestore		(P1);
+        else if (command=="pSink")				pSink			(P13);
+        else if (command=="pSinkVelocity")		pSinkVelocity	(P13);
+        else if (command=="pSource")			pSource			(P13);
+        else if (command=="pSpeedLimit")		pSpeedLimit		(P2);
+        else if (command=="pTargetColor")		pTargetColor	(P5);
+        else if (command=="pTargetSize")		pTargetSize		(P6);
+        else if (command=="pTargetRotate")		pTargetRotate	(P4);
+        else if (command=="pTargetRotateD")		pTargetRotateD	(P11);
+        else if (command=="pTargetVelocity")	pTargetVelocity	(P6);
+        else if (command=="pTargetVelocityD")	pTargetVelocityD(P13);
+        else if (command=="pVortex")			pVortex			(P11);
         else THROW2("Unknown Command.");
 		#undef p
         #undef P1
@@ -340,16 +338,11 @@ public:
 };
 }
 
-DEFINE_MAP_PRED(LPSTR,PFunction,PFuncMap,PFuncPairIt,str_pred);
+DEFINE_MAP(AnsiString,PFunction,PFuncMap,PFuncPairIt);
 DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 
 static PFuncMap CommandTemplates;
-/*
-struct PFCommand{
-	LPCSTR	params;
-	void*	function;
-};
-*/
+
 static LPCSTR PStateCommands[]={
 	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",
@@ -420,29 +413,19 @@ bool InitCommandTemplates()
         for (k=0; PStateCommands[k]; k++){
             PS::PFunction F; F.type = PFunction::ftState;
             if (!(bRes=F.LoadTemplate(PStateCommands[k]))) break;
-            ct.insert(mk_pair(xr_strdup(F.command),F));
+            ct.insert(mk_pair(F.command,F));
         }
 	    if (!bRes) break;
 		// load action commands
         for (k=0; PActionCommands[k]; k++){
             PFunction F; F.type = PS::PFunction::ftAction;
             if (!(bRes=F.LoadTemplate(PActionCommands[k]))) break;
-            ct.insert(mk_pair(xr_strdup(F.command),F));
+            ct.insert(mk_pair(F.command,F));
         }
     }while(0);
     if (!bRes) ct.clear();
     return bRes;
 }
-
-struct SPGAutoCall{
-    ~SPGAutoCall()
-    {
-        for (PFuncPairIt b=CommandTemplates.begin(); b!=CommandTemplates.end(); b++)
-            xr_free((char*)b->first);
-    }
-};
-
-static SPGAutoCall pg_auto;
 
 #include <Menus.hpp>
 const AnsiString GetFunctionTemplate(const AnsiString& command)
@@ -498,10 +481,10 @@ PFunction* CPGDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
 	// load templates
 	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
 
-    string64		command;
+    AnsiString		command;
     _GetItem		(src,0,command,'(');
     // comment
-    if (command==strstr(command,"//")){ dest=0; return 0; }
+    if (command==strstr(command.c_str(),"//")){ dest=0; return 0; }
     // find command in templates
     PFuncPairIt pfp_it = CommandTemplates.find(command);
     if (pfp_it==CommandTemplates.end())	return 0;
@@ -516,11 +499,9 @@ void CPGDef::Compile()
 	// load templates
 	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
 
-    Device.Shader.Delete(m_CachedShader);
-    
     // parse
     LPSTRVec 			lst;
-    _SequenceToList		(lst,m_SourceText.c_str(),';');
+    _SequenceToList		(lst,m_SourceText.c_str(),'\r');  // 0x0d 0x0a \n \r
 
     // reset flags
 	m_Flags.zero		();
@@ -531,12 +512,19 @@ void CPGDef::Compile()
     bool bRes=true;
 	for (int i_line=0; i_line<(int)lst.size(); i_line++){
 		LPSTRIt it		= lst.begin() + i_line;
-        string64		command;
+        AnsiString		command,line;
         _GetItem		(*it,0,command,'(');
         // comment
-        if (command==strstr(command,"//")) continue;
+        if (command==strstr(command.c_str(),"//")) continue;
+        // check ';' found
+        _GetItem		(*it,1,line,')');
+        if (line!=strstr(line.c_str(),";")){
+        	ErrMsg		(STA_MISSING,i_line,0,*it);
+            bRes		= false;
+            break;
+        }
         // find command in templates
-    	PFuncPairIt pfp_it = CommandTemplates.find(command);
+    	PFuncPairIt pfp_it = CommandTemplates.find(command.c_str());
         if (pfp_it==CommandTemplates.end()){
         	ErrMsg		(BAD_COMMAND,i_line,0,*it);
             bRes		= false;
@@ -555,6 +543,9 @@ void CPGDef::Compile()
 
     if (!bRes) return;
 
+    // destroy shader (may be changed)
+    Device.Shader.Delete(m_CachedShader);
+    
     // create temporary handles
 	int group_handle 		= pGenParticleGroups(1, 1);
     int action_list_handle	= pGenActionLists();
