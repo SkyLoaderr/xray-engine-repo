@@ -193,7 +193,7 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 xrSE_DECLARE_END
 
 //xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
-xrSE_DECLARE_BEGIN(xrSE_Rat,CALifeMonsterGroup)
+xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
 	// model
 	string64				caModel;
 	
