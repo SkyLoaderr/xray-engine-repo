@@ -108,8 +108,9 @@
 // 89 - CSE_AlifeCreatureActor			appended with m_holderID
 // 90 - CSE_ALifeItemPDA				appended with m_specific_character, m_info_portion
 // 91 - CSE_ALifeHumanStalker			appended with property demo_mode
+// 92 - CSE_AlifeCreatureActor			added base class CSE_PHSkeleton
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(91)
+#define SPAWN_VERSION	u16(92)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

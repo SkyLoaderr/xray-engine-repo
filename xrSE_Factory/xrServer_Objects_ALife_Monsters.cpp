@@ -1122,7 +1122,7 @@ bool CSE_ALifeMonsterAbstract::need_update	(CSE_ALifeDynamicObject *object)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureActor
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection)
+CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection),CSE_PHSkeleton(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
@@ -1172,7 +1172,10 @@ void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion < 32)
 			visual_read			(tNetPacket);
 	}
-
+	if(m_wVersion>91)
+	{
+		inherited3::STATE_Read(tNetPacket,size);
+	}
 	if(m_wVersion>88)
 	{
 		m_holderID=tNetPacket.r_u16();
@@ -1183,12 +1186,14 @@ void CSE_ALifeCreatureActor::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	inherited3::STATE_Write		(tNetPacket);
 	tNetPacket.w_u16(m_holderID);
 };
 
 void CSE_ALifeCreatureActor::load(NET_Packet &tNetPacket)
 {
 	inherited1::load(tNetPacket);
+	inherited3::load(tNetPacket);
 	m_holderID=tNetPacket.r_u16();
 }
 void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)

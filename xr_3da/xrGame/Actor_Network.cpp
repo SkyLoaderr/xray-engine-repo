@@ -22,6 +22,7 @@
 #include "alife_registry_wrappers.h"
 #include "../skeletonanimated.h"
 #include "client_spawn_manager.h"
+#include "CharacterPhysicsSupport.h"
 //static u32	g_dwStartTime		= 0;
 //static u32	g_dwLastUpdateTime	;
 //static u32	g_dwNumUpdates		= 0;
@@ -607,7 +608,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
-
+	m_pPhysics_support->in_NetSpawn	(e);
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 	m_PhysicMovementControl->ActivateBox	(0);
@@ -756,11 +757,12 @@ void CActor::net_Destroy	()
 		m_pPhysicsShell->Deactivate();
 		xr_delete<CPhysicsShell>(m_pPhysicsShell);
 	};
+	m_pPhysics_support->in_NetDestroy	();
 
 	xr_delete	(pStatGraph);
 	xr_delete	(m_pActorEffector);
 	pCamBobbing = NULL;
-
+	
 #ifdef DEBUG	
 	LastPosS.clear();
 	LastPosH.clear();
@@ -1557,6 +1559,7 @@ void		CActor::Check_Weapon_ShowHideState	()
 void CActor::net_Save(NET_Packet& P)
 {
 	inherited::net_Save(P);
+	m_pPhysics_support->in_NetSave(P);
 	P.w_u16(m_holderID);
 }
 

@@ -94,11 +94,12 @@ void CSE_ALifeMonsterAbstract::script_register(lua_State *L)
 void CSE_ALifeCreatureActor::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_creature2(
+		luabind_class_creature3(
 			CSE_ALifeCreatureActor,
 			"cse_alife_creature_actor",
 			CSE_ALifeCreatureAbstract,
-			CSE_ALifeTraderAbstract
+			CSE_ALifeTraderAbstract,
+			CSE_PHSkeleton
 		)
 	];
 }

@@ -65,7 +65,7 @@
 #include "../skeletonanimated.h"
 
 #include "artifact.h"
-
+#include "CharacterPhysicsSupport.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -77,10 +77,7 @@ static float ICoincidenced = 0;
 
 //skeleton
 
-float	CActor::skel_airr_lin_factor;
-float	CActor::skel_airr_ang_factor;
-float	CActor::hinge_force_factor1;
-float	CActor::skel_fatal_impulse_factor;
+
 
 static Fbox		bbStandBox;
 static Fbox		bbCrouchBox;
@@ -140,11 +137,12 @@ CActor::CActor() : CEntityAlive()
 //	self_gmtl_id			=	GAMEMTL_NONE;
 //	last_gmtl_id			=	GAMEMTL_NONE;
 	m_pPhysicsShell			=	NULL;
-	bDeathInit				=	false;
-	m_saved_dir.set(0,0,0);
-	m_saved_impulse=0.f;
+
+
+
 	m_holder				=	NULL;
 	m_holderID				=	u16(-1);
+	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::actor);
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
@@ -201,17 +199,13 @@ CActor::~CActor()
 	for (i=0; i<SND_HIT_COUNT; ++i) ::Sound->destroy(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; ++i) ::Sound->destroy(sndDie[i]);
 
-	if(m_pPhysicsShell) {
-		m_pPhysicsShell->Deactivate();
-		xr_delete<CPhysicsShell>(m_pPhysicsShell);
-	}
-
 	xr_delete(m_pActorEffector);
 
 	xr_delete(m_pShootingEffector);
 	xr_delete(m_pSleepEffector);
 	//-----------------------------------------------------------
 	hFriendlyIndicator.destroy();
+	xr_delete						(m_pPhysics_support);
 }
 
 void CActor::reinit	()
@@ -221,6 +215,7 @@ void CActor::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CMaterialManager::reinit();
+	m_pPhysics_support->in_Init		();
 	m_pUsableObject=NULL;
 }
 
@@ -295,11 +290,8 @@ void CActor::Load	(LPCSTR section )
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
 	m_fClimbFactor				= pSettings->r_float(section,"climb_coef");
 	m_fSprintFactor				= pSettings->r_float(section,"sprint_koef");
-	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor1 		= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay					= pSettings->r_s32	(section,"ph_skeleton_ddelay");
-	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+
+
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl		->SetJumpUpVelocity(m_fJumpSpeed);
 	float AirControlParam		= pSettings->r_float	(section,"air_control_param"	);
@@ -308,6 +300,7 @@ void CActor::Load	(LPCSTR section )
 	m_fPickupInfoRadius	= pSettings->r_float(section,"pickup_info_radius");
 	m_fSleepTimeFactor	= pSettings->r_float(section,"sleep_time_factor");
 
+	m_pPhysics_support->in_Load		(section);
 	//actor condition variables
 //	CActorCondition::LoadCondition(section);
 
@@ -361,16 +354,13 @@ void CActor::Load	(LPCSTR section )
 
 void CActor::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)
 {
-
-	if(m_pPhysicsShell) 
-		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-	else m_PhysicMovementControl->ApplyImpulse(dir,impulse);
+	m_pPhysics_support->in_Hit(P,dir,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
 
 
-	BOOL was_alive=g_Alive();
+
 
 #ifndef _DEBUG
 	if(Level().CurrentEntity() == this) {
@@ -408,15 +398,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		break;
 	}
 
-	if (was_alive&&!g_Alive() && !(hit_type == ALife::eHitTypeWound||hit_type == ALife::eHitTypeFireWound || hit_type == ALife::eHitTypeStrike))
-	{
 
-		m_saved_dir.set(dir);
-		m_saved_position.set(position_in_bone_space);
-		m_saved_impulse=impulse*skel_fatal_impulse_factor;
-		m_saved_element=element;
-		m_saved_hit_type=hit_type;
-	}
 }
 
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element)
@@ -582,36 +564,8 @@ void CActor::Die	(CObject* who)
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
-	if (!g_Alive())	{
 
-		if(m_pPhysicsShell)
-			if(m_pPhysicsShell->bActive && !fsimilar(0.f,m_saved_impulse))
-			{
-				m_pPhysicsShell->applyHit(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element,m_saved_hit_type);
-				m_saved_impulse=0.f;
-			}
-			if(m_pPhysicsShell)
-			{
-				XFORM().set	(m_pPhysicsShell->mXFORM);
-				if(skel_ddelay==0)
-				{
-					m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
-					m_pPhysicsShell->Enable();
-				}
-				--skel_ddelay;
-			}
-			else
-			{if(bDeathInit)
-			{
-				//create_Skeleton();
-				bDeathInit=false;
-				return;
-			}
-			bDeathInit=true;
-			}
-			return;
-	}
-
+	
 	// Correct accel
 	Fvector		accel;
 	accel.set					(_accel);
@@ -629,10 +583,12 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	//m_PhysicMovementControl->vExternalImpulse.div(dt);
 
 	//m_PhysicMovementControl->SetPosition		(Position());
-
+	if(g_Alive())
+	{
 	m_PhysicMovementControl->Calculate			(accel,cameras[cam_active]->vDirection,0,jump,dt,false);
 	m_PhysicMovementControl->GetPosition		(Position());
 	m_PhysicMovementControl->bSleep				=false;
+	}
 	///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////Update m_PhysicMovementControl///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -687,23 +643,13 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 void CActor::UpdateCL()
 {
 	inherited::UpdateCL();
-
-	if (!g_Alive())	
-	{
-		if(m_pPhysicsShell)
-		{
-			XFORM().set(m_pPhysicsShell->mXFORM);
-		}
-	}
-	else
+	m_pPhysics_support->in_UpdateCL	();
+	if (g_Alive()) 
 	{
 		//update the fog of war
 		Level().FogOfWar().UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 		//-------------------------------------------------------------------------------
-	};
 
-	if (g_Alive()) 
-	{
 		//if(m_PhysicMovementControl->CharacterExist())
 		//			m_PhysicMovementControl->InterpolatePosition(Position());
 		//обновить информацию о предметах лежащих рядом с актером
@@ -972,6 +918,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	//для свойст артефактов, находящихся на поясе
 	UpdateArtefactsOnBelt();
+	m_pPhysics_support->in_shedule_Update(DT);
 }
 
 void CActor::renderable_Render	()

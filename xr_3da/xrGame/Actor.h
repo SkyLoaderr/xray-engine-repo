@@ -29,7 +29,7 @@ class CKnownContactsRegistryWrapper;
 class CEncyclopediaRegistryWrapper;
 class CGameTaskRegistryWrapper;
 class CGameNewsRegistryWrapper;
-
+class CCharacterPhysicsSupport;
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -75,6 +75,7 @@ public:
 	virtual CActor*						cast_actor				()						{return this;}
 	virtual CGameObject*				cast_game_object		()						{return this;}
 	virtual IInputReceiver*				cast_input_receiver		()						{return this;}
+	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
 public:
 
 	virtual void						Load				( LPCSTR section );
@@ -121,7 +122,7 @@ public:
 	CEncyclopediaRegistryWrapper	*encyclopedia_registry;
 	CGameTaskRegistryWrapper		*game_task_registry;
 	CGameNewsRegistryWrapper		*game_news_registry;
-	
+	CCharacterPhysicsSupport		*m_pPhysics_support;
 	//игровое имя 
 	virtual LPCSTR	Name        () const {return CInventoryOwner::Name();}
 
@@ -197,7 +198,7 @@ protected:
 
 	// Death
 	float					hit_slowmo;
-	bool					bDeathInit;
+
 
 	// media
 	ref_sound				sndHit[SND_HIT_COUNT];
@@ -251,12 +252,6 @@ protected:
 protected:
 	BOOL					m_bAnimTorsoPlayed;
 	static void				AnimTorsoPlayCallBack(CBlend* B);
-
-	// skeleton
-	static	float			skel_airr_lin_factor;
-	static	float			skel_airr_ang_factor;
-	static	float			hinge_force_factor1;
-	static	float			skel_fatal_impulse_factor;
 
 	// Rotation
 	SRotation				r_torso;
@@ -571,15 +566,6 @@ public:
 	virtual void			OnChangeVisual			();
 
 	virtual void			RenderIndicator			(Fvector dpos, float r1, float r2, ref_shader IndShader);
-
-protected:
-	int						skel_ddelay;
-
-	Fvector					m_saved_dir;
-	Fvector					m_saved_position;
-	float					m_saved_impulse;
-	ALife::EHitType			m_saved_hit_type;
-	s16						m_saved_element;
 
 	//////////////////////////////////////////////////////////////////////////
 	// Controlled Routines

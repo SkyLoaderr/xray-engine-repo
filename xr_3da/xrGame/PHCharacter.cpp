@@ -63,6 +63,10 @@ void CPHCharacter::get_State(SPHNetState& state)
 	GetVelocity(state.linear_vel);
 	getForce(state.force);
 
+	state.angular_vel.set(0.f,0.f,0.f);
+	state.quaternion.identity();
+	state.previous_quaternion.identity();
+	state.torque.set(0.f,0.f,0.f);
 //	state.accel = GetAcceleration();
 //	state.max_velocity = GetMaximumVelocity();
 
