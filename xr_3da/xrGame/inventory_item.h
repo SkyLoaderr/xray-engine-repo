@@ -91,9 +91,9 @@ public:
 public:
 	// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	CInventory*		m_pInventory;
-	shared_str			m_name;
-	shared_str			m_nameShort;
-	char			m_nameComplex[255];
+	shared_str		m_name;
+	shared_str		m_nameShort;
+	shared_str		m_nameComplex;
 	bool			m_drop;
 	//текущее положение вещи в инвентаре
 	EItemPlace		m_eItemPlace;
