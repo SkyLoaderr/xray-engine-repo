@@ -30,9 +30,9 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CAISelectorBase *S)
 {
 	// building a path from and to
 	if (S)
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S->m_tpEnemyNode),S->fOptEnemyDistance);
+		Level().AI.vfFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
 	else
-		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+		Level().AI.vfFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
 	if (AI_Path.Nodes.size() > 0) {
 		// if path is long enough then build travel line

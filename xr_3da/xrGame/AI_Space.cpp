@@ -111,69 +111,6 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-
-//	vector<u32>	tpPath;
-//	float		fDistance;
-//	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,1,2,1000.f,fDistance,tpPath);
-//	Msg("%7.2f",fDistance);
-//	for (int i=0; i<(int)tpPath.size(); i++)
-//		Msg("* %d",tpPath[i]);
-
-//	AI::Path		tPath;
-//	//vector<u32>		tpPath1;
-//	vector<u32>		tpPath2;
-//	float			fDistance;
-//	vfLoadSearch();
-//	//vfFindTheXestPath(77,2103,tpPath1);
-//	vfFindTheXestPath(77,2103,tPath);
-//	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-//	Sleep				(1);
-//	u64 t1 = CPU::GetCycleCount();
-//	{
-//	for (int i=0; i<10000; i++)
-//		//vfFindTheXestPath(77,2103,tpPath1);
-//		vfFindTheXestPath(77,2103,tPath);
-//	}
-//	u64 t2 = CPU::GetCycleCount();
-//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-//	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-//	t2 -= t1;
-//	vfUnloadSearch();
-//	SAIMapDataL tData;
-//	tData.dwFinishNode = 2103;
-//	tData.tpAI_Space = this;
-//	tData.fLight		= DEFAULT_LIGHT_WEIGHT;
-//	tData.fCover		= DEFAULT_COVER_WEIGHT;
-//	tData.fDistance		= DEFAULT_DISTANCE_WEIGHT;
-//	m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
-//	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-//	Sleep				(1);
-//	u64 t1x = CPU::GetCycleCount();
-//	{
-//	for (int i=0; i<10000; i++)
-//		m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,77,2103,1000.f,fDistance,tpPath2);
-//	}
-//	u64 t2x = CPU::GetCycleCount();
-//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-//	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
-//	t2x -= t1x;
-////	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
-////	if (tpPath1.size() != tpPath2.size())
-////		Msg("different sizes!");
-////	else
-////		for (int i=0; i<(int)tpPath1.size(); i++)
-////			if (tpPath1[i] != tpPath2[i])
-////				Msg("%d : %d -> %d",i,tpPath1[i],tpPath2[i]);
-//	Msg("A star times : %11I64u -> %11I64u",t2, t2x);
-//	if (tPath.Nodes.size() != tpPath2.size())
-//		Msg("different sizes!");
-//	else
-//		for (int i=0; i<(int)tpPath2.size(); i++)
-//			if (tPath.Nodes[i] != tpPath2[i])
-//				Msg("%d : %d -> %d",i,tPath.Nodes[i],tpPath2[i]);
-//
 }
 
 void CAI_Space::Render()
@@ -584,6 +521,88 @@ IC float CAIMapEnemyPathNode::ffAnticipate()
 	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }
 
+//////////////////////////////////////////////////////////////////////////
+// CAIMapEnemyPositionPathNode
+//////////////////////////////////////////////////////////////////////////
+
+CAIMapEnemyPositionPathNode::CAIMapEnemyPositionPathNode(SAIMapDataF &tAIMapData)
+{
+	tData					= tAIMapData;
+	m_dwLastBestNode		= u32(-1);
+	{
+		x4						= tData.tEnemyPosition.x;
+		y4						= tData.tEnemyPosition.y;
+		z4						= tData.tEnemyPosition.z;
+	}
+	NodeCompressed &tNode1	= *tData.tpAI_Space->Node(tData.dwFinishNode);
+	x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+	y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+	z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+	float fCover			= 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+	float fLight			= (float)(tNode1.light)/255.f;
+	m_fSum					= fCover + fLight + tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance);
+}
+
+IC void CAIMapEnemyPositionPathNode::begin(u32 dwNode, CAIMapTemplateNode::iterator &tIterator, CAIMapTemplateNode::iterator &tEnd)
+{
+	tEnd = (tIterator = (NodeLink *)((BYTE *)tData.tpAI_Space->Node(dwNode) + sizeof(NodeCompressed))) + tData.tpAI_Space->Node(dwNode)->links;
+}
+
+IC u32 CAIMapEnemyPositionPathNode::get_value(CAIMapTemplateNode::iterator &tIterator)
+{
+	return(tData.tpAI_Space->UnpackLink(*tIterator));
+}
+
+IC float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+{
+	if (m_dwLastBestNode != dwStartNode) {
+		NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode), &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+		
+		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+	else {
+		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
+		
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+
+		float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+
+		float fLight = (float)(tNode1.light)/255.f;
+		
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+	}
+}
+
+IC float CAIMapEnemyPositionPathNode::ffAnticipate(u32 dwStartNode)
+{
+	NodeCompressed &tNode0 = *tData.tpAI_Space->Node(dwStartNode);
+	
+	x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
+	
+	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}		   
+		   
+IC float CAIMapEnemyPositionPathNode::ffAnticipate()
+{		   
+	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+}
+
 //	{
 //		tData						= tAIMapData;
 //		m_dwLastBestNode			= u32(-1);
@@ -622,4 +641,57 @@ IC float CAIGraphShortestPathNode::ffAnticipate(u32 dwStartNode)
 IC float CAIGraphShortestPathNode::ffAnticipate()
 {
 	return(tData.tpAI_Space->m_tpaGraph[m_dwLastBestNode].tPoint.distance_to(tData.tpAI_Space->m_tpaGraph[tData.dwFinishNode].tPoint));
+}
+
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)
+{
+	SAIMapDataL			tData;
+	float				fDistance;
+	tData.dwFinishNode	= dwGoalNode;
+	tData.tpAI_Space	= this;
+	tData.fLight		= fLightWeight;
+	tData.fCover		= fCoverWeight;
+	tData.fDistance		= fDistanceWeight;
+	m_tpLCDPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	return(fDistance);
+}
+
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+{
+	SAIMapDataE			tData;
+	float				fDistance;
+	tData.dwFinishNode	= dwGoalNode;
+	tData.tpAI_Space	= this;
+	tData.fLight		= fLightWeight;
+	tData.fCover		= fCoverWeight;
+	tData.fDistance		= fDistanceWeight;
+	tData.dwEnemyNode	= dwEnemyNode;
+	tData.fEnemyDistance = fOptimalEnemyDistance;
+	tData.fEnemyView	= fEnemyViewWeight;
+	m_tpEnemyPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	return(fDistance);
+}
+
+float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight)
+{
+	SAIMapDataF			tData;
+	float				fDistance;
+	tData.fLight		= fLightWeight;
+	tData.fCover		= fCoverWeight;
+	tData.fDistance		= fDistanceWeight;
+	tData.tEnemyPosition = tEnemyPosition;
+	tData.fEnemyDistance = fOptimalEnemyDistance;
+	tData.fEnemyView	= fEnemyViewWeight;
+	m_tpEnemyPositionPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	return(fDistance);
+}
+
+float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result)
+{
+	SAIMapData			tData;
+	float				fDistance;
+	tData.dwFinishNode	= dwGoalNode;
+	tData.tpAI_Space	= this;
+	m_tpMapPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,Result.Nodes);
+	return(fDistance);
 }

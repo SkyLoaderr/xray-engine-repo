@@ -9,7 +9,6 @@
 //#include "virtualvector.h"
 #include "..\xrLevel.h"
 #include "ai_a_star_search.h"
-//#include "ai_a_star_templates.h"
 
 namespace AI {
 	typedef struct tagSGraphEdge {
@@ -57,6 +56,10 @@ namespace AI {
 	public:
 		vector<u32>	Nodes;
 	};
+	#define	DEFAULT_LIGHT_WEIGHT		  5.f 
+	#define	DEFAULT_COVER_WEIGHT		 10.f 
+	#define	DEFAULT_DISTANCE_WEIGHT		 40.f
+	#define	DEFAULT_ENEMY_VIEW_WEIGHT	100.f
 };
 
 class CAI_Space;
@@ -84,6 +87,17 @@ typedef struct tagSAIMapDataE {
 	float		fEnemyDistance;
 	float		fEnemyView;
 } SAIMapDataE;
+
+typedef struct tagSAIMapDataF {
+	CAI_Space	*tpAI_Space;
+	u32			dwFinishNode;
+	Fvector		tEnemyPosition;
+	float		fLight;
+	float		fCover;
+	float		fDistance;
+	float		fEnemyDistance;
+	float		fEnemyView;
+} SAIMapDataF;
 
 class CAIMapTemplateNode {
 public:
@@ -157,6 +171,21 @@ public:
 	IC float	ffAnticipate			();
 };
 
+class CAIMapEnemyPositionPathNode : public CAIMapTemplateNode {
+public:
+	float		x4;
+	float		y4;
+	float		z4;
+	SAIMapDataF	tData;
+	float		m_fSum;
+				CAIMapEnemyPositionPathNode	(SAIMapDataF &tAIMapData);
+	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	IC u32		get_value				(iterator &tIterator);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffAnticipate			(u32 dwStartNode);
+	IC float	ffAnticipate			();
+};
+
 class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
 public:
 	SAIMapData	tData;
@@ -210,19 +239,15 @@ public:
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData>		m_tpMapPath;
 	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>			m_tpLCDPath;
 	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>		m_tpEnemyPath;
+	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>		m_tpEnemyPositionPath;
 	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>	m_tpGraphPath;
-//	// yet another A* search
-	#define DEFAULT_LIGHT_WEIGHT		  5.f 
-	#define DEFAULT_COVER_WEIGHT		 10.f 
-	#define DEFAULT_DISTANCE_WEIGHT		 40.f
-	#define DEFAULT_ENEMY_VIEW_WEIGHT	100.f
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
-	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpResult);
-	void			vfLoadSearch();
-	void			vfUnloadSearch();
-	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
+	float vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result);
+	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT);
+	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT);
+	float vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
+	void  vfLoadSearch();
+	void  vfUnloadSearch();
+	int	  q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions
 	IC	const hdrNODES&		Header()		{ return m_header; }

@@ -1548,23 +1548,6 @@
 				RelativePath=".\AI_qRange.cpp">
 			</File>
 			<File
-				RelativePath=".\ai_a_star.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\ai_a_star.h">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCustomBuildTool"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="ai_a_star_search.h">
 			</File>
 			<File
