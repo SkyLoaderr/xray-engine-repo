@@ -4,8 +4,8 @@
 <!---------------------------KILLER NOVICE----------------------->
 	<specific_character id="killer_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="27" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_novice</team>
@@ -22,8 +22,8 @@
 <!---------------------------KILLER GENERAL---------------------->
 	<specific_character id="killer_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="2" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_general</team>
@@ -40,8 +40,8 @@
 <!---------------------------KILLER VETERAN---------------------->
 	<specific_character id="killer_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="29" y="6"></icon>
+		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_veteran</team>
@@ -58,8 +58,8 @@
 <!---------------------------KILLER MASTER----------------------->
 	<specific_character id="killer_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="12" y="0"></icon>
+		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_master</team>
