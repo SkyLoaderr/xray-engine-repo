@@ -47,8 +47,7 @@ end
 function FSM:run()
 	while true do
 		local transition_vector = self.transition_matrix[self.current_state]
-		transition_vector.foreach(transition_vector, 
-								  self.check_condition)
+		table.foreach(transition_vector, self.check_condition)
 		wait()
 	end
 end
@@ -87,6 +86,8 @@ function main()
 	printf("a %d", a[0])
 	a[0] = 2
 	printf("a %d", a[0])
+	table.foreachi(a, log)
+
 --	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
 --	fsm_stalker:add_transition(0, 2, if_see_actor1)
