@@ -138,7 +138,11 @@ void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB:
 {
 	//Msg		("! NotImplemented: CRender::add_Wallmark");
 }
-void					CRender::set_Object			(IRenderable*	O )	
+void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
+{
+	HOM.occlude			(bb_screenspace);
+}
+void					CRender::set_Object				(IRenderable*	O )	
 { 
 	val_pObject				= O;
 }

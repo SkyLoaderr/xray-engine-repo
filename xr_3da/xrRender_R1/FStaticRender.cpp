@@ -133,6 +133,10 @@ void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB:
 {
 	Wallmarks->AddWallmark	(T,verts,P,&*S,s);
 }
+void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
+{
+	HOM.occlude			(bb_screenspace);
+}
 void					CRender::set_Object				(IRenderable*		O )	
 {
 	val_pObject				= O;		// NULL is OK, trust me :)

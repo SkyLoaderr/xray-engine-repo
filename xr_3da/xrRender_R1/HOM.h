@@ -13,14 +13,15 @@ private:
 	occTri*					m_pTris;
 	BOOL					bEnabled;
 
-	void					Render_DB	(CFrustum& base);
+	void					Render_DB	(CFrustum&	base);
 public:
 	void					Load		();
 	void					Unload		();
-	void					Render		(CFrustum& base);
+	void					Render		(CFrustum&	base);
 	void					Render_ZB	();
 	void					Debug		();
 
+	void					occlude		(Fbox2&		space) { }
 	void					Disable		();
 	void					Enable		();
 
