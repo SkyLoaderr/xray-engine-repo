@@ -90,7 +90,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\mine_field"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.2;0.5 ;0.1
+hit_impulse_scale	= 0.5;0.5 ;0.1
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= 
 
@@ -116,17 +116,17 @@ blowout_particles	= explosions\explosion_mine
 ;idle_sound			= 
 blowout_sound		= weapons\f1_explode	;во время выброса(удара) в центре аномалии	
 hit_sound			= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получает хит
-;entrance_sound		= 	;при попадании объекта в аномалию
+entrance_sound		= weapons\generic_checkout	;при попадании объекта в аномалию
 
 
-awaking_time		= 20
-blowout_time		= 300	
+awaking_time		= 100
+blowout_time		= 600	
 accamulate_time		= 200000 ;200
 
-blowout_light_time		= 100
-blowout_explosion_time	= 100
-blowout_particles_time	= 100
-blowout_sound_time  	= 100
+blowout_light_time		= 200
+blowout_explosion_time	= 300
+blowout_particles_time	= 300
+blowout_sound_time  	= 200
 
 disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -137,9 +137,9 @@ ignore_small		= true
 ignore_artefacts	= true
 
 blowout_light		= on
-light_color		    = 0.5,0.4,0.3
+light_color		    = 0.9,0.9,0.8
 light_range		    = 30.0
-light_time 		    = 0.9;0.35
+light_time 		    = 0.3;0.35
 light_height		= 1.5			;подъем источника света на высоту
 
 
@@ -162,7 +162,7 @@ blowout_wind		= on
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 50
 blowout_wind_time_end		= 99
-blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+blowout_wind_power			= 1			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
 
