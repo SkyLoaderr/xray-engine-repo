@@ -360,6 +360,7 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 
 	D.BB.min.set			(sx*slot_size,			DS.y_min,	sz*slot_size);
 	D.BB.max.set			(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
+	D.BB.grow				(EPS_L);
 
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
