@@ -41,12 +41,14 @@ CHUDCursor::~CHUDCursor()
 
 void CHUDCursor::OnDeviceDestroy()
 {
+	Log			("- CHUDCursor");
 	Device.Shader.Delete(hShader);
 }
 void CHUDCursor::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	Stream		= Device.Streams.Create	(FVF::F_TL,4);
+	Log			("+ CHUDCursor");
 	hShader		= Device.Shader.Create	("hud\\cursor","ui\\cursor",FALSE);
 }
 

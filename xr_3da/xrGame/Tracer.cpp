@@ -30,11 +30,13 @@ CTracer::~CTracer()
 void	CTracer::OnDeviceCreate()
 {
 	REQ_CREATE	();
+	Log			("+ CTracer::OnDeviceCreate()");
 	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
 	VS			= Device.Streams.Create	(FVF::F_V, MAX_TRACERS*4);
 }
 void	CTracer::OnDeviceDestroy()
 {
+	Log			("- CTracer::OnDeviceCreate()");
 	Device.Shader.Delete	(sh_Tracer);
 }
 

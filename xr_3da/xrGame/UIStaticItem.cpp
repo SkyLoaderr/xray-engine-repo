@@ -15,12 +15,14 @@ CUIStaticItem::CUIStaticItem()
 
 CUIStaticItem::~CUIStaticItem()
 {
+	Log			("- CUIStaticItem::Init");
 	if (hShader) Device.Shader.Delete(hShader);
 }
 //--------------------------------------------------------------------
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, float left, float top, float tx_width, float tx_height, DWORD align){
 	Init		(left,top,tx_width,tx_height,align);
+	Log			("+ CUIStaticItem::Init");
 	hShader		= Device.Shader.Create	(sh,tex,FALSE);
 }
  

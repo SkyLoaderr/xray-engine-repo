@@ -56,6 +56,7 @@ CEffect_Rain::~CEffect_Rain()
 void	CEffect_Rain::OnDeviceDestroy	()
 {
 	REQ_DESTROY			();
+	Log			("- CEffect_Rain::OnDeviceCreate");
 	Device.Shader.Delete(SH_Rain);
 	p_destroy			();
 	DM_Drop.Unload		();
@@ -71,6 +72,7 @@ void	CEffect_Rain::OnDeviceCreate	()
 	DM_Drop.Load		(fs);
 	Engine.FS.Close		(fs);
 
+	Log			("+ CEffect_Rain::OnDeviceCreate");
 	SH_Rain				= Device.Shader.Create	("effects\\rain","fx\\rain");
 	VS_Rain				= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
 	VS_Drops			= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, particles_cache*DM_Drop.number_vertices );
