@@ -83,7 +83,7 @@ p2f 	p_main	( v2p_in IN )
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.z			= dot		(sC,one);
   
-  float	 shadow	= (sA.x + sA.y + sA.z)/12;
+  float	 shadow	= dot		(sA,float3(1,1,1))/12;
   
   // Normal
   float3 N		= float3	(_N.x,_N.y,_N.z);
