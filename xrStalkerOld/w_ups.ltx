@@ -31,7 +31,7 @@ animation_slot				= 1		; type of the animation that will be used
 
 inv_name					= USP45
 inv_name_short				= USP45
-inv_weight					= .5
+inv_weight					= .7
 
 inv_grid_width				= 1
 inv_grid_height				= 1
@@ -52,7 +52,7 @@ cam_max_angle_horz			= 10.0	;(degree) maximum shot horizontal degree
 cam_step_angle_horz			= 1.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+misfire_probability 		= 0.01	;вероятность осечки при максимальном износе 
 condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
@@ -69,12 +69,12 @@ shell_particles	 			= weapons\generic_shells
 rpm_empty_click 	 		= 200
 
 ; ttc
-hit_power                	= 55;45
+hit_power                	= 62.5;45
 hit_impulse		 		 	= 105
 hit_type = fire_wound
 
-fire_distance            	= 100
-bullet_speed			 	= 250			;начальная скорость пули
+fire_distance            	= 150
+bullet_speed			 	= 270			;начальная скорость пули
 rpm                      	= 300
 ; end ttc
 
