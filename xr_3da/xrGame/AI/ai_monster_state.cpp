@@ -3,7 +3,7 @@
 //	Created 	: 06.07.2003
 //  Modified 	: 06.07.2003
 //	Author		: Serge Zhem
-//	Description : FSM states and motion
+//	Description : FSM states
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -14,7 +14,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 IState::IState() 
 {
-	m_tPriority			= PRIORITY_NONE;
+	m_Priority			= PRIORITY_NONE;
+	Reset				();
 }
 
 void IState::Reset()
@@ -55,12 +56,9 @@ void IState::Init()
 	m_tState				= STATE_RUN;
 	m_dwStateStartedTime	= m_dwCurrentTime;
 }
-void IState::Run()
-{
-
-}
 
 void IState::Done()
 {
 	Reset();
 }
+

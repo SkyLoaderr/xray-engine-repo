@@ -2,7 +2,6 @@
 
 typedef u32 TTime;
 
-
 // Logging
 // Using multiparam macros: 
 // e.g. LOG_EX2("X = [%u], vector = [%f,%f,%f]", *"*/ m_dwCurrentTime, VPUSH(Position())  /*"*);

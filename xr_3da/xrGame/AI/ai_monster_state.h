@@ -8,7 +8,6 @@
 
 #pragma once 
 
-#include "ai_monster_mem.h"
 #include "ai_monster_defs.h"
 
 #define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
@@ -30,22 +29,25 @@ class IState {
 		STATE_DONE
 	} m_tState;											
 
-	enum EPriority {
-		PRIORITY_NONE,
-		PRIORITY_LOW,
-		PRIORITY_NORMAL,
-		PRIORITY_HIGH
-	} m_tPriority;										//!< Инерционный приоритет
-
-
 protected:
+	enum {
+		PRIORITY_NONE	 = 0,
+		PRIORITY_LOWEST	 = 5,
+		PRIORITY_LOW	 = 10,
+		PRIORITY_NORMAL	 = 15,
+		PRIORITY_HIGH	 = 20,
+		PRIORITY_HIGHEST = 25,
+	};
+	
+	
 	TTime			m_dwCurrentTime;					//!< текущее время
 	TTime			m_dwStateStartedTime;				//!< время перехода в это состояние
 	TTime			m_dwNextThink;						//!< время следующего выполнения состояния
 	TTime			m_dwTimeLocked;						//!< время заблокировки состояния
 	
-	TTime			m_dwInertia;						//!< Инерция
-	
+	TTime			m_dwInertia;						//!< инерция
+	u8				m_Priority;							//!< приоритет состояния
+
 public:
 						IState			();
 
@@ -58,18 +60,18 @@ public:
 	IC			bool	Active			() {return (STATE_NOT_ACTIVE != m_tState);}
 
 		virtual void	Init			();									//!< Стадия инициализации состояния
-		virtual void	Run				();									//!< Стадия выполнения состояния
+		virtual void	Run				() = 0;								//!< Стадия выполнения состояния
 		virtual void	Done			();									//!< Стадия завершения выполнения состояния
 
 	IC			void	SetNextThink	(TTime next_think) {m_dwNextThink = next_think + m_dwCurrentTime;}
 
 
 	/* определение приоритета состояния (реализация инерции) */ 
-	IC			void	SetLowPriority	() {m_tPriority = PRIORITY_LOW;}
-	IC			void	SetNormalPriority() {m_tPriority = PRIORITY_NORMAL;}
-	IC			void	SetHighPriority	() {m_tPriority = PRIORITY_HIGH;}
+				void	SetPriority		(u8 new_priority) {m_Priority = new_priority;}
+
 	IC			void	SetInertia		(TTime inertia) {m_dwInertia = inertia + m_dwCurrentTime;}
-	IC			bool 	IsInertia		() {return ((PRIORITY_NONE != m_tPriority) && (m_dwInertia > m_dwCurrentTime));}
-	IC		EPriority	GetPriority		() {return m_tPriority;}
+	IC			bool 	IsInertia		() {return ((PRIORITY_NONE != m_Priority) && (m_dwInertia > m_dwCurrentTime));}
+	
+	IC			u8		GetPriority		() {return m_Priority;}
 };
 

@@ -321,9 +321,10 @@ void CMotionManager::ProcessAction()
 				FixBadState();
 			}
 		}
-	} 
-
-	else if (seq_playing) cur_anim = *seq_it;
+	} else if (seq_playing) {
+		cur_anim = *seq_it;
+		pMonster->enable_movement(false);
+	}
 
 	ApplyParams();
 
@@ -357,33 +358,33 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-	bool is_moving_action = IsMoving();
-	bool is_action_changed = prev_action != m_tAction;
-	TTime cur_time = Level().timeServer();
-
-	// если конец пути и монстр идёт - исправить
-	if (!pMonster->valid() && is_moving_action) {
-		cur_anim = eAnimStandIdle;
-		return;
-	}
-
-	// исправления сосояния 'бега на месте'
-	if (is_action_changed) {
-		time_start_stand = 0;
-	}
-
-	// если только начинаем стоять, проигрывая анимацию движения
-	if (is_moving_action && (0 == time_start_stand)) {
-		time_start_stand	= cur_time;
-	}
-
-	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
-		cur_anim = eAnimStandIdle;	
-
-		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
-	}
-
-	prev_action = m_tAction;
+//	bool is_moving_action = IsMoving();
+//	bool is_action_changed = prev_action != m_tAction;
+//	TTime cur_time = Level().timeServer();
+//
+//	// если конец пути и монстр идёт - исправить
+//	if (!pMonster->valid() && is_moving_action) {
+//		cur_anim = eAnimStandIdle;
+//		return;
+//	}
+//
+//	// исправления сосояния 'бега на месте'
+//	if (is_action_changed) {
+//		time_start_stand = 0;
+//	}
+//
+//	// если только начинаем стоять, проигрывая анимацию движения
+//	if (is_moving_action && (0 == time_start_stand)) {
+//		time_start_stand	= cur_time;
+//	}
+//
+//	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
+//		cur_anim = eAnimStandIdle;	
+//
+//		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
+//	}
+//
+//	prev_action = m_tAction;
 }
 
 void CMotionManager::CheckReplacedAnim()
