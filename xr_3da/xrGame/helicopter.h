@@ -88,11 +88,6 @@ public:
 		eDead,
 		eForce = u32(-1)
 	}; 
-	enum EHeliEvents{
-	EV_ON_POINT,
-	EV_ON_HIT,
-	EV_FORCE32 = u32(-1)
-	};
 	SHeliShared						m_data;
 
 	bool							m_use_rocket_on_attack;

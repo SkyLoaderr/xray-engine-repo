@@ -17,6 +17,7 @@
 #include "agent_manager.h"
 #include "agent_member_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "game_object_space.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;

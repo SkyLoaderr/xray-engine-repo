@@ -11,6 +11,8 @@
 #include "clsid_game.h"
 #include "../skeletonanimated.h"
 #include "script_game_object.h"
+#include "script_callback_ex.h"
+#include "game_object_space.h"
 
 #define BOUND_DIST 20000.0f
 
@@ -607,16 +609,20 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	float dist = GetDistanceToDestPosition();
 	if( (m_last_point_range_dist < m_on_point_range_dist) ||
 		(dist < m_on_point_range_dist)								)
-		{//GENARATE EVENT	
-			NET_Packet P;
-			P.write_start();
-			P.w_float(dist);
-			P.w_vec3(XFORM().c);
-			s16 curr_idx = -1;
-			if(m_movMngr->m_currPatrolVertex)
-				curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
-			P.w_s16(curr_idx);
-			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+		{
+			// GENERATE EVENT	
+//			NET_Packet P;
+//			P.write_start();
+//			P.w_float(dist);
+//			P.w_vec3(XFORM().c);
+//			s16 curr_idx = -1;
+//			if(m_movMngr->m_currPatrolVertex)
+//				curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
+//			P.w_s16(curr_idx);
+//
+//			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+			
+			callback(GameObject::eHelicopterOnPoint)(dist,Position(), m_movMngr->m_currPatrolVertex ? m_movMngr->m_currPatrolVertex->vertex_id() : -1);
 		}
 
 		if( (state()!=eMovingByPatrolPath)&&( !fsimilar(m_last_point_range_dist,BOUND_DIST,EPS_L) )  )//fake
@@ -674,15 +680,16 @@ if(who==this)
 			case CLSID_OBJECT_ACTOR:
 			case CLSID_AI_STALKER:{
 
-			NET_Packet P_;
-			P_.write_start();
-			P_.w_float(P);
-			P_.w_float(impulse);
-			P_.w_u32(hit_type);
-			P_.w_stringZ(*who->cName());
+//			NET_Packet P_;
+//			P_.write_start();
+//			P_.w_float(P);
+//			P_.w_float(impulse);
+//			P_.w_u32(hit_type);
+//			P_.w_stringZ(*who->cName());
+//
+//			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_HIT,P_);
 
-			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_HIT,P_);
-
+			callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,*who->cName());
 		}break;
 		default:
 			break;
@@ -690,10 +697,12 @@ if(who==this)
 	}
 
 }
+
 void CHelicopter::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(!g_Alive())inherited::PHHit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
+
 void CHelicopter::doHunt(CObject* dest)
 {
 	VERIFY(this != dest);

@@ -26,6 +26,7 @@
 #include "relation_registry.h"
 #include "ai_object_location.h"
 #include "script_callback_ex.h"
+#include "game_object_space.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 

@@ -13,7 +13,6 @@
 #include "script_export_space.h"
 #include "xr_time.h"
 #include "character_info_defs.h"
-#include "game_object_space.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -58,6 +57,10 @@ namespace MonsterSpace {
 	struct SBoneRotation;
 };
 
+namespace GameObject {
+	enum ECallbackType;
+};
+
 class CGameObject;
 class CScriptHit;
 class CScriptEntityAction;
@@ -82,15 +85,7 @@ public:
 	virtual					~CScriptGameObject		();
 							operator CObject*		();
 
-	IC		CGameObject		&object					() const;
-	typedef xr_map<s16,ScriptCallbackInfo*>	CALLBACKS;
-	typedef CALLBACKS::iterator				CALLBACK_IT;
-	CALLBACKS							m_callbacks;
-	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function);
-	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function, const luabind::object &lua_object);
-	void								RemoveEventCallback			(s16 event);
-	void								OnEventRaised(s16 event, NET_Packet& P);
-
+	IC		CGameObject			&object				() const;
 			CScriptGameObject	*Parent				() const;
 			void				Hit					(CScriptHit *tLuaHit);
 			int					clsid				() const;

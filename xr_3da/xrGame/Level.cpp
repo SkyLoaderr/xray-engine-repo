@@ -188,10 +188,12 @@ CLevel::~CLevel()
 	ai().unload					();
 
 #ifdef DEBUG
-	xr_delete		(pSettings);
-	string256		file_name;
-	FS.update_path	(file_name,"$game_config$","system.ltx");
-	pSettings		= xr_new<CInifile>(file_name);
+	CInifile					*old_settings = pSettings, *new_settings;
+	string256					file_name;
+	FS.update_path				(file_name,"$game_config$","system.ltx");
+	new_settings				= xr_new<CInifile>(file_name);
+	pSettings					= new_settings;
+	xr_delete					(old_settings);
 #endif
 
 	//-----------------------------------------------------------	

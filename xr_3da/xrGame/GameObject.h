@@ -12,7 +12,6 @@
 #include "alife_space.h"
 #include "UsableScriptObject.h"
 #include "script_binder.h"
-#include "game_object_space.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -34,6 +33,10 @@ class CScriptEntity;
 class CAI_ObjectLocation;
 class CWeapon;
 class CExplosive;
+
+namespace GameObject {
+	enum ECallbackType;
+};
 
 template <typename _return_type>
 class CScriptCallbackEx;

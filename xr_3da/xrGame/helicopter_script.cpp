@@ -9,11 +9,6 @@ void CHelicopter::script_register(lua_State *L)
 	module(L)
 		[
 			class_<CHelicopter>("CHelicopter")
-			.enum_("events")
-			[
-				value("on_point",			int(CHelicopter::EV_ON_POINT)),
-				value("on_hit",				int(CHelicopter::EV_ON_HIT))
-			]
 			.enum_("state")
 				[
 					value("eIdleState",						int(CHelicopter::eIdleState)),
