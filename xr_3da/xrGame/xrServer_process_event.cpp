@@ -134,6 +134,15 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
+
+			// Everything OK, so perform entity-destroy
+			entity_Destroy		(e_dest);
+			P.w_begin			(M_DESTROY);
+			P.w_u16				(1);
+			P.w_u16				(id_dest);
+			entities.erase		(id_dest);
+
+			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;
 	default:
