@@ -117,8 +117,8 @@ public:
 	void					SetWndPos			(int x, int y)						{int w = GetWidth();
 																					int h = GetHeight();
 																					m_WndRect.set(x,y,x+w,y+h);}
-	void					MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
-	void					MoveWndDelta		(int dx, int dy)					{	m_WndRect.x1+=dx;
+	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
+	virtual void			MoveWndDelta		(int dx, int dy)					{	m_WndRect.x1+=dx;
 																						m_WndRect.x2+=dx;
 																						m_WndRect.y1+=dy;
 																						m_WndRect.y2+=dy;}
