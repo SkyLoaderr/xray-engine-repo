@@ -262,7 +262,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
-		RenderCombine				(CM_DBG_NORMALS);
+		RenderCombine				(CM_DBG_ACCUMULATOR);
 		// RenderOverlay				();
 
 		// Output statistics
@@ -390,7 +390,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			0,										// no texture matrix applied to my texture coordinates
 			NVMeshMender::FixTangents,				// fix degenerate bases & texture mirroring
 			NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
-			NVMeshMender::WeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
+			NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
 			fprintf(stderr, "NVMeshMender failed\n");
