@@ -26,6 +26,7 @@
 #define FLARE_CHUNK_SOURCE				0x1010
 #define FLARE_CHUNK_GRADIENT			0x1011
 #define FLARE_CHUNK_FLARES2				0x1013
+#define FLARE_CHUNK_GRADIENT2			0x1014
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -286,9 +287,11 @@ CEditFlare::CEditFlare()
 	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"fx\\fx_flare1.tga"); it++;
 	// source
     strcpy(m_Source.texture,"fx\\fx_sun.tga");
-    m_Source.fRadius = 0.15f;
+    m_Source.fRadius 	= 0.15f;
     // gradient
-    m_fGradientDensity = 0.6f;
+    strcpy(m_Gradient.texture,"fx\\fx_gradient.tga");
+    m_Gradient.fOpacity = 0.9f;
+    m_Gradient.fRadius 	= 4.f;
 }
 
 void CEditFlare::Load(CStream& F){
@@ -301,8 +304,14 @@ void CEditFlare::Load(CStream& F){
     F.RstringZ		(m_Source.texture);
     m_Source.fRadius= F.Rfloat();
 
-    R_ASSERT(F.FindChunk(FLARE_CHUNK_GRADIENT));
-    m_fGradientDensity = F.Rfloat();
+    if (F.FindChunk(FLARE_CHUNK_GRADIENT2)){
+	    F.RstringZ	(m_Gradient.texture);
+	    m_Gradient.fOpacity = F.Rfloat();
+	    m_Gradient.fRadius  = F.Rfloat();
+    }else{
+		R_ASSERT(F.FindChunk(FLARE_CHUNK_GRADIENT));
+	    m_Gradient.fOpacity = F.Rfloat();
+    }
 
     // flares
     if (F.FindChunk(FLARE_CHUNK_FLARES2)){
@@ -326,8 +335,10 @@ void CEditFlare::Save(CFS_Base& F)
     F.Wfloat		(m_Source.fRadius);
 	F.close_chunk	();
 
-	F.open_chunk	(FLARE_CHUNK_GRADIENT);
-    F.Wfloat		(m_fGradientDensity);
+	F.open_chunk	(FLARE_CHUNK_GRADIENT2);
+    F.WstringZ		(m_Gradient.texture);
+    F.Wfloat		(m_Gradient.fOpacity);
+    F.Wfloat		(m_Gradient.fRadius);
 	F.close_chunk	();
 
 	F.open_chunk	(FLARE_CHUNK_FLARES2);
@@ -339,7 +350,7 @@ void CEditFlare::Save(CFS_Base& F)
 
 void CEditFlare::Render()  
 {
-	CLensFlare::Render(m_Flags.bSource,m_Flags.bFlare);
+	CLensFlare::Render(m_Flags.bSource,m_Flags.bFlare,m_Flags.bGradient);
 }
 //----------------------------------------------------
 
