@@ -1078,7 +1078,9 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         Fcolor edit_val		= V->GetValue();
         prop->BeforeEdit<ColorValue,Fcolor>(edit_val);
         u32 ev 				= edit_val.get();
+        u32 a 				= color_get_A(ev);
         if (SelectColor(&ev)){
+        	ev		= subst_alpha(ev,a);
 	        edit_val.set	(ev);
             if (prop->AfterEdit<ColorValue,Fcolor>(edit_val))
                 if (prop->ApplyValue<ColorValue,Fcolor>(edit_val)){
@@ -1107,7 +1109,9 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
 		U32Value* V			= dynamic_cast<U32Value*>(prop->GetFrontValue()); R_ASSERT(V);
         u32 edit_val		= V->GetValue();
         prop->BeforeEdit<U32Value,u32>(edit_val);
+        u32 a 				= color_get_A(edit_val);
         if (SelectColor(&edit_val)){
+        	edit_val		= subst_alpha(edit_val,a);
             if (prop->AfterEdit<U32Value,u32>(edit_val))
                 if (prop->ApplyValue<U32Value,u32>(edit_val)){
                     item->RedrawItem(true);
