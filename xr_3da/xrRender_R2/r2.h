@@ -25,6 +25,7 @@ public:
 
 	vector<SceneGraph::mapNormalVS::TNode*>					lstVS;
 	vector<SceneGraph::mapNormalPS::TNode*>					lstPS;
+	vector<SceneGraph::mapNormalCS::TNode*>					lstCS;
 	vector<SceneGraph::mapNormalStates::TNode*>				lstStates;
 	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures;
 	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;

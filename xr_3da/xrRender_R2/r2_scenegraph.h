@@ -26,7 +26,8 @@ namespace SceneGraph
 	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalItems>	{	float	ssa;	};
 	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVB>					{	float	ssa;	};
 	struct mapNormalStates		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{	float	ssa;	};
-	struct mapNormalPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalStates>	{	float	ssa;	};
+	struct mapNormalCS			: public	FixedMAP<R_constant_table*,mapNormalStates>			{	float	ssa;	};
+	struct mapNormalPS			: public	FixedMAP<IDirect3DPixelShader9*, mapNormalCS>		{	float	ssa;	};
 	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalPS>		{	};
 
 	// Higher level - MATRIX

@@ -68,6 +68,7 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 			SceneGraph::mapNormal_T&				map		= mapNormal;		//	[sh->Flags.iPriority];
 			SceneGraph::mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
 			SceneGraph::mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+			SceneGraph::mapNormalCS::TNode*			Ncs		= Nvs->val.insert	(pass.constants);
 			SceneGraph::mapNormalStates::TNode*		Nstate	= Nps->val.insert	(pass.state);
 			SceneGraph::mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
 			SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
@@ -80,9 +81,12 @@ void CRender::InsertSG_Static	(IVisual *pVisual)
 					Ntex->val.ssa = SSA;
 					if (SSA>Nstate->val.ssa) {
 						Nstate->val.ssa = SSA;
-						if (SSA>Nps->val.ssa) {
-							Nps->val.ssa = SSA;
-							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
+						if (SSA>Ncs->val.ssa)	{
+							Ncs->val.ssa = SSA;
+							if (SSA>Nps->val.ssa) {
+								Nps->val.ssa = SSA;
+								if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
+							}
 						}
 					}
 				}
