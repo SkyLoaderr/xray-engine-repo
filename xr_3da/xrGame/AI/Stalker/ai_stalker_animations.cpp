@@ -233,7 +233,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				break;
 			}
 			case CLSID_OBJECT_W_RPG7		: {
-				dwCurrentAniSlot = 4;
+				dwCurrentAniSlot = 3;//4;
 				break;
 			}
 		}
