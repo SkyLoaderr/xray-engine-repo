@@ -3,7 +3,7 @@
 #include "xrPhase_MergeLM_Rect.h"
 
 static	BYTE	surface			[lmap_size*lmap_size];
-const	u32	alpha_ref		= 254-BORDER;
+const	u32		alpha_ref		= 254-BORDER;
 
 // Initialization
 void _InitSurface	()
