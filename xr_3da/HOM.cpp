@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "HOM.h"
 #include "occRasterizer.h"
+#include "cl_collector.h"
 
 int a[2][2][2] = { 0,0,0,0,0,0,0,0 };
 
@@ -36,7 +37,7 @@ void CHOM::Load			(CStream* S)
 	while (!S->Eof())
 	{
 		HOM_poly			P;
-		S->Read				(&P);
+		S->Read				(&P,sizeof(P));
 		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,0,EPS_L);
 	}
 }
