@@ -1,5 +1,3 @@
---sidya_kurit_1
---sidya_kurit_2
 -- сталкеры у костра
 function main ()
 
@@ -28,15 +26,15 @@ function main ()
     wait (3000)
     
     printf ("Bazar2 start")
-    update_action (stalker1, military3_2.script_name, 
-                   sound ("scripts\\rolik\\hm", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+    --update_action (stalker1, military3_2.script_name, 
+      --             sound ("scripts\\rolik\\hm", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
                    
     wait (2000)
     printf ("Bazar2 end")
     
     printf ("Bazar3 start")
-    update_action (stalker3, military3_2.script_name,                    
-                   sound ("scripts\\rolik\\crazy_man", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+    --update_action (stalker3, military3_2.script_name,                    
+      --             sound ("scripts\\rolik\\crazy_man", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
 
     printf ("Bazar3 end")
 
