@@ -103,6 +103,7 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
 			.def_readwrite("grain",				&SPPInfo::SNoise::grain)
 			.def_readwrite("color",				&SPPInfo::SNoise::color)
+			.def_readwrite("fps",				&SPPInfo::SNoise::fps)
 			.def(								constructor<>()),
 
 		class_<SPPInfo>("effector_params")
@@ -110,6 +111,7 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("gray",				&SPPInfo::gray)
 			.def_readwrite("dual",				&SPPInfo::duality)
 			.def_readwrite("noise",				&SPPInfo::noise)
+			.def_readwrite("blend_color",		&SPPInfo::blend_color)
 			.def(								constructor<>()),
 
 		class_<CLuaEffector, CLuaEffectorWrapper>("effector")

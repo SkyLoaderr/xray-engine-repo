@@ -71,10 +71,27 @@ void CStateFreeNoAlife::execute			()
 //		eMovementTypeStand,
 //		eMentalStateDanger
 //	);
-	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
 //	m_object->CSightManager::update				(eLookTypePathDirection);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
 //	m_object->play								(eStalkerSoundHumming,60000,10000);
+
+//	CGameObject	*current_entity = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	VERIFY		(current_entity);
+//	m_object->set_level_dest_vertex				(current_entity->level_vertex_id());
+//	m_object->CStalkerMovementManager::update	(
+//		0,
+//		0,
+//		&current_entity->Position(),
+//		CMovementManager::ePathTypeLevelPath,
+//		CMovementManager::eDetailPathTypeSmooth,
+//		eBodyStateStand,
+//		eMovementTypeWalk,
+//		eMentalStateFree
+//	);
+//
+//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
 }
 
 void CStateFreeNoAlife::finalize		()
