@@ -39,6 +39,13 @@
 
 void CLevelGraph::render()
 {
+//	{
+//		xr_vector<u8>::const_iterator	I = m_ref_counts.begin();
+//		xr_vector<u8>::const_iterator	E = m_ref_counts.end();
+//		for ( ; I != E; ++I) {
+//			VERIFY(*I <= 1);
+//		}
+//	}
 //	// draw patrol paths
 //	{
 //		xr_map<LPCSTR,CLevel::SPath,pred_str>::const_iterator	I = Level().m_PatrolPaths.begin();
