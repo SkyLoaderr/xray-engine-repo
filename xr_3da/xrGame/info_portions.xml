@@ -75,6 +75,7 @@
 	</info_portion>
 	
 	<info_portion id="job_medkit_finished">
+	<disable_info>is_medkit_present</disable_info> 
 	</info_portion>
 
 	
