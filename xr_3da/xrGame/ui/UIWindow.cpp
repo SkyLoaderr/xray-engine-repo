@@ -143,9 +143,12 @@ Irect CUIWindow::GetAbsoluteRect()
 
 void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	
+	Irect	wndRect = GetWndRect();
+
 	cursor_pos.x = x;
 	cursor_pos.y = y;
-	Irect	wndRect = GetWndRect();
+
+
 	bool cursor_on_window;
 
 	cursor_on_window = (x>=0 && x<GetWidth() && y>=0 && y<GetHeight());
@@ -192,6 +195,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	// handle any action
 	switch (mouse_action){
+		case WINDOW_MOUSE_MOVE:
+			OnMouseMove();							break;
 		case WINDOW_MOUSE_WHEEL_DOWN:
 			OnMouseScroll(WINDOW_MOUSE_WHEEL_DOWN); break;
 		case WINDOW_MOUSE_WHEEL_UP:
@@ -229,6 +234,10 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 						   cursor_pos.y -(*it)->GetWndRect().top, mouse_action);
 		}
 	}
+}
+
+void CUIWindow::OnMouseMove(){
+	// do nothing 
 }
 
 void CUIWindow::OnMouseScroll(int iDirection){
