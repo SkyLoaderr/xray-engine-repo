@@ -101,14 +101,14 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	else				{ limLeft=minX; limRight=maxX;	}
 	
 	// interpolate
-	float lenR	= endR - startR;
-	float Zlen	= endZ - startZ;
-	float Zstart= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
-	float Zend	= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
-	float dZ	= (Zend-Zstart)/(maxT-minT);				// incerement in Z / pixel wrt dX
-	int X		= minT;
-	float Z		= Zstart;
-	int	i		= curY*occ_dim0+X;
+	float lenR		= endR - startR;
+	float Zlen		= endZ - startZ;
+	float Zstart	= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
+	float Zend		= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
+	float dZ		= (Zend-Zstart)/(maxT-minT);				// incerement in Z / pixel wrt dX
+	int X			= minT;
+	float Z			= Zstart;
+	int	i			= curY*occ_dim0+X;
 	
 	// left connector
 	for (; X<limLeft; X++, i++, Z+=dZ)
