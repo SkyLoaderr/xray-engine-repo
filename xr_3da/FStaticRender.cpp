@@ -316,7 +316,10 @@ IC	bool	cmp_constants	(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::ma
 void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
+
+	if (Target.Available())	Target.Begin	();
 	
+	// Details
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 	Details.Render			(Device.vCameraPosition);
 	
@@ -403,6 +406,8 @@ void	CRender::Render		()
 
 	// Glows
 	Glows.Render			();
+
+	if (Target.Available())	Target.End		(1.f);
 
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
