@@ -95,7 +95,9 @@ void CScriptEngine::setup_callbacks		()
 	if (!debugger() || !debugger()->Active() ) 
 #endif
 	{
+#ifndef DEBUG
 		luabind::set_error_callback		(CScriptEngine::lua_error);
+#endif
 		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
 	}
 
