@@ -107,16 +107,6 @@ void CALifeUpdateManager::init_ef_storage() const
 	ai().ef_storage().m_tpGameObject	= 0;
 }
 
-void CALifeUpdateManager::update_parent_data	(CSE_ALifeObject *parent, CSE_ALifeObject *child)
-{
-	parent->m_tGraphID			= child->m_tGraphID;
-	parent->m_tNodeID			= child->m_tNodeID;
-	parent->o_Position			= child->o_Position;
-	parent->o_Angle				= child->o_Angle;
-//	if (parent->ID_Parent != 0xffff)
-//		update_parent_data		(objects().object(parent->ID_Parent),child);
-}
-
 bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 {
 	if (m_changing_level)
@@ -131,22 +121,47 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	Fvector						safe_position			= graph().actor()->o_Position;
 	Fvector						safe_angles				= graph().actor()->o_Angle;
 	
+	ALife::_GRAPH_ID			holder_safe_graph_vertex_id = ALife::_GRAPH_ID(-1);
+	u32							holder_safe_level_vertex_id = u32(-1);
+	Fvector						holder_safe_position = Fvector().set(flt_max,flt_max,flt_max);
+	Fvector						holder_safe_angles = Fvector().set(flt_max,flt_max,flt_max);
+	CSE_ALifeObject				*holder = 0;
+
 	net_packet.r				(&graph().actor()->m_tGraphID,sizeof(graph().actor()->m_tGraphID));
 	net_packet.r				(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
 	net_packet.r_vec3			(graph().actor()->o_Position);
 	net_packet.r_vec3			(graph().actor()->o_Angle);
 
-	if (graph().actor()->m_holderID != 0xffff)
-		update_parent_data		(objects().object(graph().actor()->m_holderID),graph().actor());
+	if (graph().actor()->m_holderID != 0xffff) {
+		holder						= objects().object(graph().actor()->m_holderID);
 
-	save						();
+		holder_safe_graph_vertex_id	= holder->m_tGraphID;
+		holder_safe_level_vertex_id	= holder->m_tNodeID;
+		holder_safe_position		= holder->o_Position;
+		holder_safe_angles			= holder->o_Angle;
 
-	graph().actor()->m_tGraphID	= safe_graph_vertex_id;
-	graph().actor()->m_tNodeID	= safe_level_vertex_id;
-	graph().actor()->o_Position	= safe_position;
-	graph().actor()->o_Angle	= safe_angles;
+		holder->m_tGraphID			= graph().actor()->m_tGraphID;
+		holder->m_tNodeID			= graph().actor()->m_tNodeID;
+		holder->o_Position			= graph().actor()->o_Position;
+		holder->o_Angle				= graph().actor()->o_Angle;
+	}
 
-	return						(true);
+	save							();
+
+	graph().actor()->m_tGraphID		= safe_graph_vertex_id;
+	graph().actor()->m_tNodeID		= safe_level_vertex_id;
+	graph().actor()->o_Position		= safe_position;
+	graph().actor()->o_Angle		= safe_angles;
+
+	if (graph().actor()->m_holderID != 0xffff) {
+		VERIFY						(holder);
+		holder->m_tGraphID			= holder_safe_graph_vertex_id;
+		holder->m_tNodeID			= holder_safe_level_vertex_id;
+		holder->o_Position			= holder_safe_position;
+		holder->o_Angle				= holder_safe_angles;
+	}
+
+	return							(true);
 }
 
 void CALifeUpdateManager::update(bool switch_objects)
