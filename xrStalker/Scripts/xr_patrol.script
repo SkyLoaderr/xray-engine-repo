@@ -88,32 +88,6 @@ function PrintTable ()
 end
 
 
-----------------------------------------------------------------------------------------------------------------------
---Motivation global
-----------------------------------------------------------------------------------------------------------------------
-class "motivation_global"	(motivation)
-----------------------------------------------------------------------------------------------------------------------
-function motivation_global:__init(motivations) super()
-	self.motivations = motivations
-end
-----------------------------------------------------------------------------------------------------------------------
-function motivation_global:evaluate(motivation_id)
-	if self.motivations["alive"] == motivation_id then
-		if self.object:alive() == true then
-			return			1.0
-		else
-			return			0.0
-		end
-	else
-		if self.object:alive() == false then
-			return			1.0
-		else
-			return			0.0
-		end
-	end
-end
-----------------------------------------------------------------------------------------------------------------------
-
 
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -148,6 +122,9 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------------
+-- Action path
+----------------------------------------------------------------------------------------------------------------------
+
 --Action alive
 ----------------------------------------------------------------------------------------------------------------------
 class "action_alive"			(action_base)
@@ -203,17 +180,10 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:reload (section)
 	object_binder.reload	(self, section)
-	local					motivations	= {}
 	local					operators = {}
 	local					properties = {}
 	local					manager	= self.object:motivation_action_manager ()
 	local					goal = world_state ()
-	
-	manager:clear			()
-
-	motivations["global"]	= 0
-	motivations["dead"]		= 1
-	motivations["alive"]	= 2
 
 	properties["alive"]		= 0
 	properties["dead"]		= 1
@@ -222,27 +192,14 @@ function patrol_binder:reload (section)
 	operators["dead"]		= 0
 	operators["free"]		= 1
 
-	-- // motivations
-	manager:add_motivation	(motivations["global"],		this.motivation_global(motivations))
-
-	goal:clear				()
-	goal:add_property		(world_property(properties["dead"],	true))
-	manager:add_motivation	(motivations["dead"],		motivation_action(goal))
-
-	goal:clear				()
-	goal:add_property		(world_property(properties["solved"],true))
-	manager:add_motivation	(motivations["alive"],		motivation_action(goal))
-
-	manager:add_connection	(motivations["global"],		motivations["dead"])
-	manager:add_connection	(motivations["global"],		motivations["alive"])
-
+	goal:clear ()
 	-- // evaluators
 	manager:add_evaluator	(properties["alive"],		this.evaluator_alive	())
 	manager:add_evaluator	(properties["dead"],		this.evaluator_const	(false))
 	manager:add_evaluator	(properties["solved"],		this.evaluator_const	(false))
 
 	-- // operators/actions
-	local					action = action_base()
+	local action = action_base()
 	action:add_precondition	(world_property(properties["alive"],	false))
 	action:add_precondition	(world_property(properties["dead"],		false))
 	action:add_effect		(world_property(properties["dead"],		true))
