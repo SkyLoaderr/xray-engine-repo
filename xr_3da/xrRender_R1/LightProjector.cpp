@@ -41,6 +41,11 @@ CLightProjector::CLightProjector()
 	// Debug
 	sh_Screen.create	("effects\\screen_set",RTname);
 	geom_Screen.create	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+
+	// ref-str for faster const-search
+	c_xform				= "m_plmap_xform";
+	c_clamp				= "m_plmap_clamp";
+	c_factor			= "m_plmap_factor";
 }
 
 CLightProjector::~CLightProjector()
@@ -95,11 +100,11 @@ void CLightProjector::setup		(int id)
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
-	float			dist	= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
-	float			factor	= _sqr(dist/P_distance);
-	RCache.set_c	("m_plmap_xform",	receivers[id].UVgen);
-	RCache.set_c	("m_plmap_clamp",	receivers[id].UVclamp);
-	RCache.set_c	("m_plmap_factor",	factor,factor,factor,factor);
+	float			dist		= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
+	float			factor		= _sqr(dist/P_distance);
+	RCache.set_c	(c_xform,	receivers[id].UVgen);
+	RCache.set_c	(c_clamp,	receivers[id].UVclamp);
+	RCache.set_c	(c_factor,	factor,factor,factor,factor);
 }
 
 /*

@@ -33,6 +33,10 @@ private:
 	ref_geom				geom_Blur;
 	ref_shader				sh_Screen;
 	ref_geom				geom_Screen;
+
+	ref_str					c_xform;
+	ref_str					c_clamp;
+	ref_str					c_factor;
 public:
 	void					set_object		(IRenderable*	O);
 	BOOL					shadowing		()			{ return current!=0; }
