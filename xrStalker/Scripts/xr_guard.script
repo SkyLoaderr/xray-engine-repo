@@ -326,3 +326,78 @@ function vector_copy_by_val(vec)
   newvec.z = vec.z
   return newvec
 end
+
+-- включение лагеря
+function set_guard(object, enable, path_main, path_hideout, search_light)
+	-- enable - будет ли работать схема в принципе
+	-- path_main - основной патрульный путь
+	-- path_hideout - патрульный путь во время дождя
+	-- search_light - прожектор
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].guard
+
+	if enable == nil then
+	    	if char_ini:section_exist ("guard") == true then
+        		if char_ini:line_exist("guard", "enabled") == true then
+                		st.enabled = char_ini:r_bool("guard", "enabled")
+			else
+				st.enabled = false
+		        end
+		else
+			st.enabled = false
+		end
+	else
+		st.enabled = enable		
+	end	
+
+	if st.enabled == true then
+		if path_main == nil then
+		    	if char_ini:section_exist ("guard") == true then
+	        		if char_ini:line_exist("guard", "path_main") == true then
+		        	        st.path_main = char_ini:r_string("guard", "path_main")
+	        		else
+		        	    	st.enabled = false
+			        end
+			else
+				st.enabled = false
+			end
+		else
+			st.path_main = path_main
+		end
+	end
+
+	if st.enabled == true then
+		if path_hideout == nil then
+		    	if char_ini:section_exist ("guard") == true then
+	        		if char_ini:line_exist("guard", "path_hideout") == true then
+		        	        st.path_hideout = char_ini:r_string("guard", "path_hideout")
+	        		else
+		        	    	st.enabled = false
+			        end
+			else
+				st.enabled = false
+			end
+		else
+			st.path_hideout = path_hideout
+		end
+	end
+
+	if st.enabled == true then
+		if search_light == nil then
+		    	if char_ini:section_exist ("guard") == true then
+	        		if char_ini:line_exist("guard", "search_light") == true then
+		        	        st.projector_name = char_ini:r_string("guard", "search_light")
+	        		else
+		        	    	st.enabled = false
+			        end
+			else
+				st.enabled = false
+			end
+		else
+			st.projector_name = search_light
+		end
+	end
+
+	xr_motivator.checkStorage(object)
+end
+
