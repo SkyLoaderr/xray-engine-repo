@@ -1362,18 +1362,22 @@ void CActor::AnimTorsoPlayCallBack(CBlend* B)
 void CActor::UpdateMotionIcon(u32 mstate_rl)
 {
 	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd.MotionIcon();
-	if(mstate_rl&mcCrouch)
+	if(mstate_rl&mcClimb)
 	{
-//		if(mstate_rl&mcAccel)
-		if (!isAccelerated(mstate_rl))
-			motion_icon.ShowState(CUIMotionIcon::stCreep);
-		else
-			motion_icon.ShowState(CUIMotionIcon::stCrouch);
-	}
-	else if(mstate_rl&mcClimb)
 		motion_icon.ShowState(CUIMotionIcon::stClimb);
+	}
 	else
-		motion_icon.ShowState(CUIMotionIcon::stNormal);
+	{
+		if(mstate_rl&mcCrouch)
+		{
+			if (!isAccelerated(mstate_rl))
+				motion_icon.ShowState(CUIMotionIcon::stCreep);
+			else
+				motion_icon.ShowState(CUIMotionIcon::stCrouch);
+		}
+		else 
+			motion_icon.ShowState(CUIMotionIcon::stNormal);
+	}
 }
 
 

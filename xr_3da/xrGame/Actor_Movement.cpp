@@ -34,14 +34,6 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
-	// изменилось состояние
-	if (mstate_wf != mstate_real){
-		if ((mstate_real&mcCrouch)&&(0==(mstate_wf&mcCrouch))){
-			if (ActivateBox(0)){
-				mstate_real &= ~mcCrouch;
-			}
-		}
-	}
 	// Lookout
 	if (mstate_real&mcAnyAction){
 		mstate_real			&= ~mcLookout;
@@ -108,6 +100,15 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		}
 		mstate_real				&=~mcClimb;		
 	};
+
+	// изменилось состояние
+	if (mstate_wf != mstate_real){
+		if ((mstate_real&mcCrouch)&&((0==(mstate_wf&mcCrouch)) || mstate_real&mcClimb)){
+			if (ActivateBox(0)){
+				mstate_real &= ~mcCrouch;
+			}
+		}
+	}
 
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
 	{
