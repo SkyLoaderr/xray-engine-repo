@@ -53,8 +53,7 @@ end
 --///////////////////////////////////////////////////
 class "action_alive"			(action_base)
 
-function action_alive:__init(object,name) super(object,name)
-	self.name				= name
+function action_alive:__init() super()
 end
 
 function action_alive:initialize()
