@@ -37,7 +37,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 		
 		// ok - perform lighting
 		Fcolor	C; C.set(0,0,0,0);
-		Fvector	P; P.direct(v1,vdir,time);
+		Fvector	P; P.mad(v1,vdir,time);
 		LightPoint	(DB, C, P, N, LightsSelected->begin(), LightsSelected->end(),skip);
 		
 		Fcolor		R;

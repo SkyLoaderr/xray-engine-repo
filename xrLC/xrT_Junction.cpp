@@ -20,7 +20,7 @@ IC float	SqrDistance2Segment(const Fvector& P, const Fvector& A, const Fvector& 
 	
 	// Return the point between ‘a’ and ‘b’
 	// set length of V to t. V is normalized so this is easy
-	Fvector	R;	R.direct(A,V,t);
+	Fvector	R;	R.mad		(A,V,t);
 	return P.distance_to_sqr(R);
 }
 

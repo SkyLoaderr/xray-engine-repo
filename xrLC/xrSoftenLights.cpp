@@ -155,7 +155,7 @@ void CBuild::SoftenLights()
 					if (XRC.r_count())	dist = XRC.r_begin()->range;
 					
 					// calculate point
-					T.position.direct		(RL.position,R,dist*.5f);
+					T.position.mad	(RL.position,R,dist*.5f);
 					dest->push_back	(T);
 				}
 			} else {

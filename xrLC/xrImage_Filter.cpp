@@ -44,7 +44,7 @@ void imf_ProcessKernel	(Fvector* dest, Fvector* src, int w, int h, float* kern, 
 				if (x2<0) x2+=w; else if (x2>=w) x2-=w;
 				if (y2<0) y2+=h; else if (y2>=h) y2-=h;
 				
-				total.direct	(total,src[y2*w+x2],*kp);
+				total.mad	(total,src[y2*w+x2],*kp);
 				kp++;
 			}
 			dest->set(total);
