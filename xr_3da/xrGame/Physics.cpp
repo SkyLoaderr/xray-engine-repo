@@ -505,7 +505,7 @@ void CPHWorld::Create(){
 	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate();
 	ContactGroup = dJointGroupCreate(0);		
-	dWorldSetGravity(phWorld, 0, -9.81f, 0);
+	dWorldSetGravity(phWorld, 0, -2.f*9.81f, 0);
 	Mesh.Create(Space,phWorld);
 	Jeep.Create(Space,phWorld);
 	Gun.Create(Space);
