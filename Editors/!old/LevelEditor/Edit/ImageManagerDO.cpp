@@ -107,17 +107,24 @@ struct SrcItem{
     int 		LongestEdge()const 	{return (w>h)?w:h;}
     int			Area()const			{return w*h;}
 };
+IC bool operator == (const SrcItem& a, const AnsiString& nm){return a.tname==nm;}
 DEFINE_VECTOR(SrcItem,SrcItemVec,SrcItemIt);
 extern bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a);
 
-bool item_sort_pred(const SrcItem& item0, const SrcItem& item1){return ((item0.Area()>item1.Area())||(item0.LongestEdge()>item1.LongestEdge()));}
+bool item_area_sort_pred(const SrcItem& item0, const SrcItem& item1){return ((item0.Area()>item1.Area())||(item0.LongestEdge()>item1.LongestEdge()));}
 
-int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate)
+int CImageManager::CreateMergedTexture(const AStringVec& _names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& dest_remap)
 {
-	if (src_names.empty()) return -1;
+	if (_names.empty()) return -1;
+
     dest_offset.clear	();
     dest_scale.clear	();
     dest_rotate.clear	();
+
+    AStringVec src_names= _names;
+    dest_remap.resize	(src_names.size());
+    std::sort			(src_names.begin(),src_names.end());
+    src_names.erase		(std::unique(src_names.begin(),src_names.end()),src_names.end());
     
 	U32Vec 	dest_pixels	(dest_width*dest_height,0); 
 	U8Vec 	dest_mask	(dest_width*dest_height,0); 
@@ -140,7 +147,14 @@ int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, 
         s_it->tname		= *n_it;
     }
 
-    std::sort			(src_items.begin(),src_items.end(),item_sort_pred);
+    std::sort			(src_items.begin(),src_items.end(),item_area_sort_pred);
+
+    for (u32 k=0; k<_names.size(); k++){
+    	AnsiString nm	= _names[k];
+        s_it			= std::find(src_items.begin(),src_items.end(),nm); VERIFY(s_it!=src_items.end());
+    	dest_remap[k]	= s_it-src_items.begin();
+    }
+    
     for (s_it = src_items.begin(); s_it!=src_items.end(); s_it++){
 		Irect R;		R.set(0,0, s_it->w-1,s_it->h-1);
         BOOL bRotated;
@@ -159,22 +173,24 @@ int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, 
     }
 
     // all right. make texture.
-    src_names.clear		();
-    for (s_it = src_items.begin(); s_it!=src_items.end(); s_it++)
-    	src_names.push_back		(s_it->tname);
-    
     AnsiString fn		= ChangeFileExt	(dest_name,".dds");
     MakeGameTexture		(fn.c_str(),dest_pixels.begin(),dest_width,dest_height,fmt,true);
 
     return 1;
 }
 
-int	CImageManager::CreateMergedTexture	(AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate)
+int	CImageManager::CreateMergedTexture	(const AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& remap)
 {
-    int res;
-    for (int w=dest_width_min; w<=dest_width_max; w*=2)
-	    for (int h=dest_height_min; h<=dest_height_max; h*=2)
-		    if (0!=(res=ImageLib.CreateMergedTexture(src_names,dest_name,fmt,w,h,dest_offset,dest_scale,dest_rotate))) return res;
+	BOOL WH	= FALSE;
+    int res	= 0;
+    int w	= dest_width_min;
+	int h	= dest_height_min;
+    do{
+		res	= ImageLib.CreateMergedTexture(src_names,dest_name,fmt,w,h,dest_offset,dest_scale,dest_rotate,remap);
+        if (WH) w *= 2;
+        else	h *= 2;
+        WH	= !WH;
+    }while((0==res)&&(w<=dest_width_max)&&(h<=dest_height_max));
     return res;
 }
 

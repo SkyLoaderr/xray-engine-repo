@@ -1,3 +1,4 @@
+/*
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -644,10 +645,8 @@ u32 CParticleEffect::ParticlesCount()
 
 void CParticleEffect::ApplyExplosion()
 {
-/*
 //    pExplosion			(0,0,0, 1, 1, 0.1f, EPS_L, 1);
-	pExplosion			(0,0,0, 1, 8, 3, 0.1, 1.0f);
-*/
+//	pExplosion			(0,0,0, 1, 8, 3, 0.1, 1.0f);
     pCurrentEffect		(m_HandleEffect);
 
     action_list_handle	= pGenActionLists();
@@ -657,7 +656,7 @@ void CParticleEffect::ApplyExplosion()
 }
 
 //------------------------------------------------------------------------------
-/*
+/*/
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -1281,6 +1280,7 @@ u32 CParticleEffect::ParticlesCount()
 }
 
 void CParticleEffect::ApplyExplosion()
+{
     pCurrentEffect		(m_HandleEffect);
 
     action_list_handle	= pGenActionLists();
@@ -1288,4 +1288,4 @@ void CParticleEffect::ApplyExplosion()
 	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
 	pEndActionList		();
 }
-*/
+//*/

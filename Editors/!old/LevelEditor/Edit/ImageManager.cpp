@@ -291,7 +291,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                 AnsiString game_name=AnsiString(base_name)+".dds";
                 FS.update_path			(_game_textures_,game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
-                u32 ddd = FS.get_file_age(game_name.c_str());
+                FS.get_file_age(game_name.c_str());
                 FS.set_file_age(game_name.c_str(), it->second.modif);
                 if (sync_list) sync_list->push_back(base_name);
                 if (modif_map) modif_map->insert(*it);
@@ -649,6 +649,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;
         FS.update_path			(src_name,_textures_,fname);
+        src_name				= ChangeFileExt(src_name,".tga");
         if (FS.exist(src_name.c_str())){
             AnsiString base_name= ChangeFileExt(fname,"");
             AnsiString thm_name = ChangeFileExt(fname,".thm");

@@ -63,7 +63,6 @@ void CCustomObject::AnimationOnFrame()
 }
 
 static FvectorVec path_points;
-static FvectorVec path_key_points;
 void CCustomObject::AnimationDrawPath()
 {
     // motion path
@@ -77,7 +76,6 @@ void CCustomObject::AnimationDrawPath()
         Fvector 				T,r;
         u32 clr					= 0xffffffff;
         path_points.clear		();
-        path_key_points.clear	();
         for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=1/30.f){
             m_Motion->_Evaluate	(t,T,r);
             path_points.push_back(T);

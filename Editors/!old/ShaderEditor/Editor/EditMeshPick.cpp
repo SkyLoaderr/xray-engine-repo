@@ -165,7 +165,7 @@ void CEditableMesh::GetTiesFaces(int start_id, U32Vec& fl, float fSoftAngle, boo
     	for (int k=0; k<3; k++)
         	fl.insert(fl.end(),m_Adjs[m_Faces[start_id].pv[k].pindex].begin(),m_Adjs[m_Faces[start_id].pv[k].pindex].end());
         std::sort(fl.begin(),fl.end());
-        std::unique(fl.begin(),fl.end());
+        fl.erase(std::unique(fl.begin(),fl.end()),fl.end());
     }
 }
 //----------------------------------------------------

@@ -50,7 +50,7 @@ ref_shader	CRender::getShader	(int id){ return 0; }//VERIFY(id<int(Shaders.size(
 BOOL CRender::occ_visible(Fbox&	B)
 {
 	u32 mask		= 0xff;
-	return ViewBase.testAABB(B.min,B.max,mask);
+	return ViewBase.testAABB(B.data(),mask);
 }
 
 BOOL CRender::occ_visible(sPoly& P)
