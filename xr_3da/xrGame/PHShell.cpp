@@ -94,6 +94,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	//SetPhObjectInElements();
 	if(m_spliter_holder)m_spliter_holder->Activate();
 	bActive=true;
+	bActivating=true;
 }
 
 
@@ -117,6 +118,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 	//SetPhObjectInElements();
 	if(m_spliter_holder)m_spliter_holder->Activate();
 	bActive=true;
+	bActivating=true;
 }
 
 

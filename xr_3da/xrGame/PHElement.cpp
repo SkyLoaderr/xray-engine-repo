@@ -342,19 +342,6 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	mXFORM.set(m0);
 	Start();
 	SetTransform(m0);
-	//i=elements.begin();
-	//m_body=(*i)->get_body();
-	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
-	//Fmatrix33 m33;
-	//Fmatrix m,m1;
-	//m1.set(m0);
-	//m1.identity();
-	//m1.invert();
-	//m.mul(m1,m2);
-	//m.mul(1.f/dt01);
-	//m33.set(m);
-	//dMatrix3 R;
-	//PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 
 
@@ -381,6 +368,7 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
 	bActive=true;
+	bActivating=true;
 }
 
 void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
@@ -428,6 +416,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
 	bActive=true;
+	bActivating=true;
 }
 
 void CPHElement::Update(){
@@ -1074,6 +1063,8 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+
+
 
 	if(!m_parent_element)
 	{

@@ -731,10 +731,7 @@ void CWeapon::UpdateCL		()
 
 	if (0==H_Parent() && m_pPhysicsShell)		
 	{
-		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		Position().set			(XFORM().c);
+			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	}
 
 	//нарисовать партиклы

@@ -269,7 +269,7 @@ bool CCar::attach_Actor(CActor* actor)
 }
 
 
-bool CCar::is_Door(u32 id,xr_map<u32,SDoor>::iterator& i)
+bool CCar::is_Door(u16 id,xr_map<u16,SDoor>::iterator& i)
 {
 	i	= m_doors.find(id);
 	if (i == m_doors.end()) 
@@ -284,10 +284,20 @@ bool CCar::is_Door(u32 id,xr_map<u32,SDoor>::iterator& i)
 			return false;
 	}
 }
+bool CCar::is_Door(u16 id)
+{
+	xr_map<u16,SDoor>::iterator i;
+	i	= m_doors.find(id);
+	if (i == m_doors.end()) 
+	{
+		return false;
+	}
+	return true;
+}
 
 bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
-	xr_map<u32,SDoor>::iterator i,e;
+	xr_map<u16,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
 	Fvector enter_pos;
@@ -302,7 +312,7 @@ bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 
 bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 {
-	xr_map<u32,SDoor>::iterator i,e;
+	xr_map<u16,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
 	for(;i!=e;++i)
@@ -439,7 +449,7 @@ void CCar::Init()
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
 	{
-		xr_map<u32,SWheel>::iterator i,e;
+		xr_map<u16,SWheel>::iterator i,e;
 		i=m_wheels_map.begin();
 		e=m_wheels_map.end();
 		for(;i!=e;++i)
@@ -479,7 +489,7 @@ void CCar::Init()
 	}
 
 	{
-		xr_map<u32,SDoor>::iterator i,e;
+		xr_map<u16,SDoor>::iterator i,e;
 		i=m_doors.begin();
 		e=m_doors.end();
 		for(;i!=e;++i)
@@ -909,7 +919,7 @@ void CCar::ClearExhausts()
 
 bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
-	xr_map<u32,SDoor>::iterator i;
+	xr_map<u16,SDoor>::iterator i;
 
 	if(!m_owner)
 	{
@@ -924,7 +934,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		for (int k=0; k<y; ++k)
 		{
 			Collide::rq_result* I = R.r_begin()+k;
-			if(is_Door(I->element,i)) 
+			if(is_Door((u16)I->element,i)) 
 			{
 				i->second.Use();
 				return false;
@@ -938,10 +948,10 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 	return false;
 
 }
-bool CCar::DoorUse(u32 id)
+bool CCar::DoorUse(u16 id)
 {
 
-	xr_map<u32,SDoor>::iterator i;
+	xr_map<u16,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
 		i->second.Use();
@@ -954,9 +964,9 @@ bool CCar::DoorUse(u32 id)
 
 }
 
-bool CCar::DoorSwitch(u32 id)
+bool CCar::DoorSwitch(u16 id)
 {
-	xr_map<u32,SDoor>::iterator i;
+	xr_map<u16,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
 		i->second.Switch();
@@ -967,10 +977,10 @@ bool CCar::DoorSwitch(u32 id)
 		return false;
 	}
 }
-bool CCar::DoorClose(u32 id)
+bool CCar::DoorClose(u16 id)
 {
 
-	xr_map<u32,SDoor>::iterator i;
+	xr_map<u16,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
 		i->second.Close();
@@ -982,10 +992,10 @@ bool CCar::DoorClose(u32 id)
 	}
 }
 
-bool CCar::DoorOpen(u32 id)
+bool CCar::DoorOpen(u16 id)
 {
 
-	xr_map<u32,SDoor>::iterator i;
+	xr_map<u16,SDoor>::iterator i;
 	if(is_Door(id,i)) 
 	{
 		i->second.Open();

@@ -53,25 +53,49 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 		return((l_tObjectAction.m_bCompleted = true) == false);
 
 	s16	l_sBoneID = PKinematics(Visual())->LL_BoneID(*l_tObjectAction.m_caBoneName);
-	switch(l_tObjectAction.m_tGoalType) {
-		case MonsterSpace::eObjectActionActivate : {
-			if (!DoorOpen(l_sBoneID))
-				return((l_tObjectAction.m_bCompleted = true) == false);
-			break;
+	if (is_Door(l_sBoneID)) {
+		switch(l_tObjectAction.m_tGoalType) {
+			case MonsterSpace::eObjectActionActivate : {
+				if (!DoorOpen(l_sBoneID))
+					return((l_tObjectAction.m_bCompleted = true) == false);
+				break;
+			}
+			case MonsterSpace::eObjectActionDeactivate : {
+				if (!DoorClose(l_sBoneID))
+					return((l_tObjectAction.m_bCompleted = true) == false);
+				break;
+			}
+			case MonsterSpace::eObjectActionUse : {
+				if (!DoorSwitch(l_sBoneID))
+					return((l_tObjectAction.m_bCompleted = true) == false);
+				break;
+			}
+			default : 
+				return	((l_tObjectAction.m_bCompleted = true) == false);
 		}
-		case MonsterSpace::eObjectActionDeactivate : {
-			if (!DoorClose(l_sBoneID))
-				return((l_tObjectAction.m_bCompleted = true) == false);
-			break;
-		}
-		case MonsterSpace::eObjectActionUse : {
-			if (!DoorSwitch(l_sBoneID))
-				return((l_tObjectAction.m_bCompleted = true) == false);
-			break;
-		}
-		default : 
-			return	((l_tObjectAction.m_bCompleted = true) == false);
+		return		(false);
 	}
+/*
+	if (light_bone(l_sBoneID)) {
+		switch(l_tObjectAction.m_tGoalType) {
+			case MonsterSpace::eObjectActionActivate : {
+				light_on	(l_sBoneID);
+				return		((l_tObjectAction.m_bCompleted = true) == false);
+			}
+			case MonsterSpace::eObjectActionDeactivate : {
+				light_off	(l_sBoneID);
+				return		((l_tObjectAction.m_bCompleted = true) == false);
+			}
+			case MonsterSpace::eObjectActionUse : {
+				light_switch(l_sBoneID);
+				return		((l_tObjectAction.m_bCompleted = true) == false);
+			}
+			default : 
+				return	((l_tObjectAction.m_bCompleted = true) == false);
+		}
+		return		(false);
+	}
+	*/
 	return			(false);
 }
 
@@ -100,6 +124,7 @@ void CCar::IR_OnKeyboardPress(int cmd)
 	case kL_STRAFE:	PressLeft();				if (m_owner) m_owner->steer_Vehicle(-1);break;
 	case kJUMP:		PressBreaks();				break;
 	case kWPN_FIRE: SwitchEngine();				break;
+	case kTORCH:	m_lights.SwitchHeadLights();break;
 	case kUSE:									break;
 	};
 

@@ -65,7 +65,7 @@ public:
 	float m_fuel_consumption;
 	struct SWheel 
 	{
-		u32 bone_id;
+		u16 bone_id;
 		bool inited;
 		float radius;
 		dJointID joint;
@@ -122,7 +122,7 @@ public:
 
 	struct SExhaust
 	{
-		u32					bone_id;
+		u16					bone_id;
 		Fmatrix				transform;
 		CParticlesObject*	p_pgobject;
 		CPhysicsElement*	pelement;
@@ -145,7 +145,7 @@ public:
 	struct SDoor;
 	struct SDoor 
 	{
-		u32 bone_id;
+		u16 bone_id;
 		CCar* pcar;
 		bool  update;
 		CPhysicsJoint*  joint;
@@ -242,13 +242,13 @@ private:
 	friend struct SWheel;
 	friend struct SDoor;
 
-	xr_map   <u32,SWheel>	m_wheels_map;
+	xr_map   <u16,SWheel>	m_wheels_map;
 	xr_vector <SWheelDrive> m_driving_wheels;
 	xr_vector <SWheelSteer> m_steering_wheels;
 	xr_vector <SWheelBreak> m_breaking_wheels;
 	xr_vector <SExhaust>	m_exhausts;
 	ref_str					m_exhaust_particles;
-	xr_map	  <u32,SDoor>	m_doors;
+	xr_map	  <u16,SDoor>	m_doors;
 	xr_vector <SDoor*>		m_doors_update;
 	xr_vector <Fvector>		m_gear_ratious;
 	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
@@ -371,11 +371,12 @@ public:
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
-	bool					is_Door				(u32 id,xr_map<u32,SDoor>::iterator& i);
-	bool					DoorOpen			(u32 id);
-	bool					DoorClose			(u32 id);
-	bool					DoorUse				(u32 id);
-	bool					DoorSwitch			(u32 id);
+	bool					is_Door				(u16 id,xr_map<u16,SDoor>::iterator& i);
+	bool					is_Door				(u16 id);
+	bool					DoorOpen			(u16 id);
+	bool					DoorClose			(u16 id);
+	bool					DoorUse				(u16 id);
+	bool					DoorSwitch			(u16 id);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
 	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
@@ -431,7 +432,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			u32 bone_id	=				pKinematics->LL_BoneID(S1);
+			u16 bone_id	=				pKinematics->LL_BoneID(S1);
 
 			type_wheels.push_back		(T());
 			T& twheel				= type_wheels.back();
@@ -462,7 +463,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			u32 bone_id	=				pKinematics->LL_BoneID(S1);
+			u16 bone_id	=				pKinematics->LL_BoneID(S1);
 
 			exhausts.push_back		(SExhaust(this));
 			SExhaust& exhaust				= exhausts.back();
@@ -476,7 +477,7 @@ private:
 
 		}
 	}
-	IC void fill_doors_map(LPCSTR S,xr_map<u32,SDoor>& doors)
+	IC void fill_doors_map(LPCSTR S,xr_map<u16,SDoor>& doors)
 	{
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
@@ -485,7 +486,7 @@ private:
 		{
 			_GetItem					(S,i,S1);
 
-			u32 bone_id	=				pKinematics->LL_BoneID(S1);
+			u16 bone_id	=				pKinematics->LL_BoneID(S1);
 			SDoor						door(this);
 			door.bone_id=				bone_id;
 			doors.insert				(mk_pair(bone_id,door));
