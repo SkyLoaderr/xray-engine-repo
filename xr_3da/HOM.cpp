@@ -163,6 +163,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		}
 	}
 }
+
 void CHOM::Render		(CFrustum& base)
 {
 	if (0==m_pModel)	return;
