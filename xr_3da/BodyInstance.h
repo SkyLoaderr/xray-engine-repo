@@ -309,7 +309,7 @@ public:
 	virtual void				Release			();
 	virtual						~CKinematics	();
 };
-typedef CKinematics* PKinematics;
+IC CKinematics* PKinematics		(FBasicVisual* V) { return dynamic_cast<CKinematics*>(V); }
 
 
 #endif // !defined(AFX_BODYINSTANCE_H__68A83E66_CEC3_4207_84A0_B7997A253B87__INCLUDED_)
