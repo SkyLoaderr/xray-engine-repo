@@ -12,8 +12,11 @@
 
 void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
-	if (!m_bLoaded)
+	Device.Statistic.TEST3.Begin();
+	if (!m_bLoaded) {
+		Device.Statistic.TEST3.End();
 		return;
+	}
 	
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
@@ -32,6 +35,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				ALIFE_ENTITY_P_PAIR_IT	I;
 				for (I = B ; I != E; I++)
 					vfFurlObjectOffline((*I).second);
+				Device.Statistic.TEST3.End();
 				return;
 			}
 			u64							qwStartTime	= CPU::GetCycleCount();
@@ -57,6 +61,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 #ifdef DEBUG_LOG
 						Msg("Not enough time (0)[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
 #endif
+						Device.Statistic.TEST3.End();
 						return;
 					}
 				}
@@ -67,6 +72,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 #ifdef DEBUG_LOG
 						Msg("Not enough time (1)[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
 #endif
+						Device.Statistic.TEST3.End();
 						return;
 					}
 				}
@@ -74,6 +80,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 #ifdef DEBUG_LOG
 					Msg("Not enough time (2)[%d : %d] !",m_tpCurrentLevel->size(),m_tpCurrentLevel->size());
 #endif
+					Device.Statistic.TEST3.End();
 					return;
 				}
 			}
@@ -93,6 +100,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 					vfProcessNPC		((*I).second);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+						Device.Statistic.TEST3.End();
 						return;
 					}
 				}
@@ -100,6 +108,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 					vfProcessNPC		((*I).second);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+						Device.Statistic.TEST3.End();
 						return;
 					}
 				}
@@ -108,6 +117,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 		}
 		default : NODEFAULT;
 	}
+	Device.Statistic.TEST3.End();
 }
 
 void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
