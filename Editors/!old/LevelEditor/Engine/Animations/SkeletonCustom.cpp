@@ -219,7 +219,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     if (IKD){
         for (u32 i=0; i<bones->size(); i++) {
             CBoneData*	B 	= (*bones)[i];
-            u16 vers		= IKD->r_u32();
+            u16 vers		= (u16)IKD->r_u32();
             IKD->r_stringZ	(B->game_mtl_name);
             IKD->r			(&B->shape,sizeof(SBoneShape));
             B->IK_data.Import(*IKD,vers);
@@ -353,3 +353,18 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
 	}
 }
 
+IC static void RecursiveBindTransform(CKinematics* K, xr_vector<Fmatrix>& matrices, u16 bone_id, const Fmatrix& parent)
+{
+	CBoneData& BD			= K->LL_GetData	(bone_id);
+	Fmatrix& BM				= matrices[bone_id];
+	// Build matrix
+	BM.mul_43				(parent,BD.bind_transform);
+    for (xr_vector<CBoneData*>::iterator C=BD.children.begin(); C!=BD.children.end(); C++)
+		RecursiveBindTransform(K,matrices,(*C)->SelfID,BM);	
+}
+
+void CKinematics::LL_GetBindTransform(xr_vector<Fmatrix>& matrices)
+{
+	matrices.resize			(LL_BoneCount());
+	RecursiveBindTransform	(this,matrices,iRoot,Fidentity);
+}
