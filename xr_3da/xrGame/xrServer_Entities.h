@@ -55,9 +55,9 @@ public:
 #endif
 	string64						visual_name;
 public:
-									xrSE_Visualed		()
+									xrSE_Visualed		(LPCSTR name=0)
     {
-	    visual_name[0]	= 0;
+    	strcpy			(visual_name,name?name:"");
 #ifdef _EDITOR
 		visual			= 0;
 #endif
@@ -103,6 +103,17 @@ xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
     float							spot_brightness;
 									xrSE_HangingLamp	(LPCSTR caSection);
     virtual							~xrSE_HangingLamp	();
+xrSE_DECLARE_END
+
+xrSE_DECLARE_BEGIN2(xrSE_DeviceTorch,CALifeItem,xrSE_Visualed)
+	u32								color;
+	string64						animator;
+	string64						spot_texture;
+	float							spot_range;
+	float							spot_cone_angle;
+    float							spot_brightness;
+									xrSE_DeviceTorch	(LPCSTR caSection);
+    virtual							~xrSE_DeviceTorch	();
 xrSE_DECLARE_END
 
 // Physyc Object ////////////////////////////////////////////////////

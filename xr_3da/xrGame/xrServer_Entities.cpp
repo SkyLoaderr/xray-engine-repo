@@ -1431,8 +1431,8 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp		(pref,values);
 	xrSE_Visualed::FillProp	(PHelper.PrepareKey(pref,s_name),values);
 	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
-	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Light animator"),	animator,			sizeof(animator));
-	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Spot bone"),		spot_bone,			sizeof(spot_bone));
+	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
+	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			sizeof(spot_bone));
 	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
@@ -1440,6 +1440,55 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+xrSE_DeviceTorch::xrSE_DeviceTorch(LPCSTR caSection) : CALifeItem(caSection), xrSE_Visualed("lights\\lights_torch")
+{
+	strcpy					(spot_texture,"");
+	strcpy					(animator,"");
+	spot_range				= 10.f;
+	spot_cone_angle			= PI_DIV_3;
+	color					= 0xffffffff;
+    spot_brightness			= 1.f;
+}
+xrSE_DeviceTorch::~xrSE_DeviceTorch()
+{
+}
+void xrSE_DeviceTorch::STATE_Read		(NET_Packet& P, u16 size)
+{
+	visual_read				(P);
+	// model
+	P.r_u32					(color);
+	P.r_string				(animator);
+	P.r_string				(spot_texture);
+	P.r_float				(spot_range);
+	P.r_angle8				(spot_cone_angle);
+	P.r_float				(spot_brightness);
+}
+void xrSE_DeviceTorch::STATE_Write		(NET_Packet& P)
+{
+	visual_write			(P);
+	// model
+	P.w_u32					(color);
+	P.w_string				(animator);
+	P.w_string				(spot_texture);
+	P.w_float				(spot_range);
+	P.w_angle8				(spot_cone_angle);
+	P.w_float				(spot_brightness);
+}
+void xrSE_DeviceTorch::UPDATE_Read		(NET_Packet& P)	{};
+void xrSE_DeviceTorch::UPDATE_Write		(NET_Packet& P)	{};
+#ifdef _EDITOR
+void	xrSE_DeviceTorch::FillProp		(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp		(pref,values);
+	xrSE_Visualed::FillProp	(PHelper.PrepareKey(pref,s_name),values);
+	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
+	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+    PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+}
+#endif
 //--------------------------------------------------------------------
 
 //***** Physic Object
@@ -1554,7 +1603,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_GRENADE_F1:			return xr_new<CALifeItem>			(caSection);
 	case CLSID_OBJECT_G_RPG7:		return xr_new<xrSE_TempObject>		(caSection);
 	case CLSID_GRENADE_RGD5:		return xr_new<CALifeItem>			(caSection);
-	case CLSID_DEVICE_TORCH:		return xr_new<CALifeItem>			(caSection);
+	case CLSID_DEVICE_TORCH:		return xr_new<xrSE_DeviceTorch>		(caSection);
 	case CLSID_OBJECT_W_VAL:		return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_VINTOREZ:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_WALTHER:	return xr_new<xrSE_Weapon>			(caSection);
