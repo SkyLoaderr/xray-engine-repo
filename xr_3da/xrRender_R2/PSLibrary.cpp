@@ -24,17 +24,12 @@ void CPSLibrary::OnCreate()
     }else{
     	Msg("Can't find file: '%s'",fn);
     }
-	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
-			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
 	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
     	(*e_it)->CreateShader();
 }
  
 void CPSLibrary::OnDestroy()
 {
-	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-		s_it->m_CachedShader.destroy	();
 	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
     	(*e_it)->DestroyShader();
 
