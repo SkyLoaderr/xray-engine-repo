@@ -203,11 +203,8 @@ float	simple_optimize				(xr_vector<float>& A, xr_vector<float>& B, float& scale
 	float	error	= flt_max;
 	float	elements= float(A.size());
 	u32		count	= 0;
-	clMsg	("---");
 	for (;;)
 	{
-		clMsg			("%d : %f",count,error);
-
 		count++;
 		if (count>64)	return error;
 
@@ -286,14 +283,7 @@ void xrMU_Reference::calc_lighting	()
 		float*	_s=(float*)&c_scale;
 		float*	_b=(float*)&c_bias;
 		for (u32 index=0; index<5; index++)
-			o_test	(4/*hemi*/,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
-
-		clMsg				("	scale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
-								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
-								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
-							);
-	}
-}
+			o_test	(4,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
 
 		/*
 		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
@@ -302,19 +292,19 @@ void xrMU_Reference::calc_lighting	()
 		xr_vector<REAL>					D;
 		for (u32 it=0; it<color.size(); it++)
 		{
-			base_color&		__A		= model->color	[it];
-			A[it].push_back		(__A.hemi);
-			A[it].push_back		(__A.hemi);
-			A[it].push_back		(__A.hemi);
-			A[it].push_back		(__A.hemi);
-			A[it].push_back		(__A.hemi);
+		base_color&		__A		= model->color	[it];
+		A[it].push_back		(__A.hemi);
+		A[it].push_back		(__A.hemi);
+		A[it].push_back		(__A.hemi);
+		A[it].push_back		(__A.hemi);
+		A[it].push_back		(__A.hemi);
 
-			base_color&		__B		= color			[it];
-			B[it].push_back		(__B.rgb.x);
-			B[it].push_back		(__B.rgb.y);
-			B[it].push_back		(__B.rgb.z);
-			B[it].push_back		(__B.hemi);
-			B[it].push_back		(__B.sun);
+		base_color&		__B		= color			[it];
+		B[it].push_back		(__B.rgb.x);
+		B[it].push_back		(__B.rgb.y);
+		B[it].push_back		(__B.rgb.z);
+		B[it].push_back		(__B.hemi);
+		B[it].push_back		(__B.sun);
 		}
 		vfOptimizeParameters	(A,B,C,D,REAL(0.000001));
 
@@ -331,3 +321,10 @@ void xrMU_Reference::calc_lighting	()
 		c_bias.hemi			= D[3];
 		c_bias.sun			= D[4];
 		*/
+
+		clMsg				("	scale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
+								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
+								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
+							);
+	}
+}

@@ -26,7 +26,7 @@ REAL dfComputeEvalResults(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<
 			
 			daEvalResults[i][j] = dfEvaluation(A[i][j],C[j],D[j]);
 			REAL dTemp			= B[i][j] - daEvalResults[i][j];
-			dResult				+= dTemp*dTemp;
+			dResult				+= _abs(dTemp); //*dTemp
 		}
 	}
 	return					(dResult);
