@@ -47,6 +47,7 @@ public:
 	IC		const CHitObject *hit				() const;
 	IC		void	set_squad_objects			(xr_vector<CHitObject> *squad_objects);
 	IC		bool	hit							(const CEntityAlive *object) const;
+	IC		void	enable						(const CObject *object, bool enable);
 };
 
 #include "hit_memory_manager_inline.h"

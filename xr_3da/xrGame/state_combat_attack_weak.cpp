@@ -73,6 +73,8 @@ void CStateAttackWeak::execute			()
 		Fvector			direction;
 		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
 		m_object->CSightManager::update				(eLookTypeDirection,&direction);
+
+//		m_object->CMemoryManager::enable			()
 	}
 
 	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {

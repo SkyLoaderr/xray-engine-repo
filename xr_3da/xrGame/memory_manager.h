@@ -36,6 +36,7 @@ public:
 	IC		const CEntityAlive	*enemy				() const;
 	IC		const CGameObject	*item				() const;
 			const CMemoryInfo	memory				(const CObject *object) const;
+	IC		void			enable					(const CObject *object, bool enable);
 };
 
 #include "memory_manager_inline.h"

@@ -36,3 +36,10 @@ IC	const CEntityAlive *CMemoryManager::enemy	() const
 {
 	return					(CEnemyManager::selected());
 }
+
+IC	void CMemoryManager::enable		(const CObject *object, bool enable)
+{
+	CVisualMemoryManager::enable	(object,enable);
+	CSoundMemoryManager::enable		(object,enable);
+	CHitMemoryManager::enable		(object,enable);
+}

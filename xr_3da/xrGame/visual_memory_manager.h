@@ -78,6 +78,7 @@ public:
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);
 	IC		bool	visible_now						(const CGameObject *game_object) const;
 			bool	see								(const CEntityAlive *object0, const CEntityAlive *object1) const;
+	IC		void	enable							(const CObject *object, bool enable);
 };
 
 #include "visual_memory_manager_inline.h"

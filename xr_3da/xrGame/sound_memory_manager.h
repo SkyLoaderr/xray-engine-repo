@@ -45,6 +45,7 @@ public:
 	IC		const xr_vector<CSoundObject>		&sound_objects	() const;
 	IC		const CSoundObject					*sound			() const;
 	IC		void	set_squad_objects			(xr_vector<CSoundObject> *squad_objects);
+	IC		void	enable							(const CObject *object, bool enable);
 };
 
 #include "sound_memory_manager_inline.h"

@@ -29,9 +29,17 @@ IC	void CHitMemoryManager::set_squad_objects	(xr_vector<CHitObject> *squad_objec
 	m_hits				= squad_objects;
 }
 
-IC	bool CHitMemoryManager::hit	(const CEntityAlive *object) const
+IC	bool CHitMemoryManager::hit				(const CEntityAlive *object) const
 {
 	VERIFY				(m_hits);
 	xr_vector<CHitObject>::const_iterator	I = std::find_if(m_hits->begin(),m_hits->end(),CHitObjectPredicate(object));
 	return				(m_hits->end() != I);
+}
+
+IC	void CHitMemoryManager::enable			(const CObject *object, bool enable)
+{
+	xr_vector<CHitObject>::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(object));
+	if (J == m_hits->end())
+		return;
+	(*J).m_enabled		= enable;
 }

@@ -73,6 +73,8 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 	xr_vector<T>::const_iterator	I = objects.begin();
 	xr_vector<T>::const_iterator	E = objects.end();
 	for ( ; I != E; ++I) {
+		if (!(*I).m_enabled)
+			continue;
 		const CEntityAlive			*entity_alive = dynamic_cast<const CEntityAlive*>((*I).m_object);
 		if (!entity_alive || !CEnemyManager::add(entity_alive))
 			CItemManager::add		((*I).m_object);

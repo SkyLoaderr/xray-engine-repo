@@ -39,9 +39,17 @@ namespace MemorySpace {
 		ALife::_TIME_ID				m_game_time;
 		u32							m_level_time;
 		u32							m_update_count;
+		bool						m_enabled;
 
-						SMemoryObject				() : m_update_count(0)
+						SMemoryObject				() : 
+							m_update_count(0),
+							m_enabled(true)
 		{
+		}
+
+		IC		void	fill						()
+		{
+			m_enabled				= true;
 		}
 	};
 
@@ -65,6 +73,7 @@ namespace MemorySpace {
 			m_level_time			= Level().timeServer();
 			m_object_params.fill	(game_object);
 			m_self_params.fill		(self);
+			SMemoryObject::fill		();
 		}
 	};
 

@@ -58,3 +58,11 @@ IC	void CSoundMemoryManager::set_squad_objects			(xr_vector<CSoundObject> *squad
 {
 	m_sounds			= squad_objects;
 }
+
+IC	void CSoundMemoryManager::enable		(const CObject *object, bool enable)
+{
+	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
+	if (J == m_sounds->end())
+		return;
+	(*J).m_enabled		= enable;
+}
