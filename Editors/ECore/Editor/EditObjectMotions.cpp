@@ -321,8 +321,11 @@ void CEditableObject::PrepareBones()
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         (*b_it)->index 		= b_it-m_Bones.begin();
-        BoneIt parent		= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
-        (*b_it)->parent 	= (parent==m_Bones.end())?0:*parent;
+        LPCSTR parent		= (*b_it)->ParentName();
+        if (parent&&parent[0]){
+            BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
+            (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
+        }
     }
     CalculateBindPose		();
 }
