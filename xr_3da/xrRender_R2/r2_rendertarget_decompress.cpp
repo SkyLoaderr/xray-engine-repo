@@ -42,6 +42,7 @@ void	CRenderTarget::phase_decompress		()
 		RCache.set_Element			(s_decompress->E[2]);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	} else {
+//		Msg							("----------------");
 		struct v_dc		{
 			Fvector4	p;
 			Fvector2	uv0;
@@ -54,20 +55,33 @@ void	CRenderTarget::phase_decompress		()
 				float	sy		= VIEWPORT_NEAR * tanf(deg2rad(yfov)*0.5f);
 				float	sx		= sy / (Device.fHeight_2 / Device.fWidth_2);
 				uv1.set	(u1*sx,v1*sy,VIEWPORT_NEAR,0);
-			}
+//				Msg		("[%+1.3f]-[%+1.3f] : dx(%f),dy(%f),dz(%f)",u1,v1,uv1.x,uv1.y,uv1.z);
+			}                                                                                                                                                                                                           
 		};
 		VERIFY						(g_decompress->vb_stride == sizeof(v_dc));
-		float			w1			= 1.f/Device.dwWidth;
-		float			h1			= 1.f/Device.dwHeight;
+		float			w1			= 1.f/Device.dwWidth;		w1=0; -w1;
+		float			h1			= 1.f/Device.dwHeight;		h1=0; -h1;
+		float			ws			= 1; //float(Device.dwWidth-1)	/float(Device.dwWidth);
+		float			hs			= 1; //float(Device.dwHeight-1)	/float(Device.dwHeight);
 
 		// Fill vertex buffer
 		v_dc* pv					= (v_dc*) RCache.Vertex.Lock	(4,g_decompress->vb_stride,Offset);
-		pv->set						(EPS_S,				float(_h+EPS_S),	p0.x, p1.y, -1,		-1);	pv++;
-		pv->set						(EPS_S,				EPS_S,				p0.x, p0.y, -1,		+1-h1);	pv++;
-		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	p1.x, p1.y, +1-w1,	-1);	pv++;
-		pv->set						(float(_w+EPS_S),	EPS_S,				p1.x, p0.y, +1-w1,	+1-h1);	pv++;
+		pv->set						(EPS_S,				float(_h+EPS_S),	p0.x, p1.y, -1*ws+w1,	-1*hs+h1);	pv++;
+		pv->set						(EPS_S,				EPS_S,				p0.x, p0.y, -1*ws+w1,	+1*hs+h1);	pv++;
+		pv->set						(float(_w+EPS_S),	float(_h+EPS_S),	p1.x, p1.y, +1*ws+w1,	-1*hs+h1);	pv++;
+		pv->set						(float(_w+EPS_S),	EPS_S,				p1.x, p0.y, +1*ws+w1,	+1*hs+h1);	pv++;
 		RCache.Vertex.Unlock		(4,g_decompress->vb_stride);
 		RCache.set_Geometry			(g_decompress);
+
+		Fvector test;	
+		test.set		(-0.589866,0.491592,0.640621);	test.mul(VIEWPORT_NEAR/test.z);			
+		Msg				("[0,0]      : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
+		test.set		(0.589143,0.491897,0.641052);	test.mul(VIEWPORT_NEAR/test.z);
+		Msg				("[1023,0]   : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
+		test.set		(-0.590263,-0.490583,0.641029);	test.mul(VIEWPORT_NEAR/test.z);
+		Msg				("[0,767]    : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
+		test.set		(0.589506,-0.490919,0.641468);	test.mul(VIEWPORT_NEAR/test.z);
+		Msg				("[1023,767] : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
 
 		// Decompress
 		// Fmatrix		mUnwarp;

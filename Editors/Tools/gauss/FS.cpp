@@ -31,10 +31,14 @@ void VerifyPath(LPCSTR path)
 void* __stdcall FileDownload(LPCSTR fn, u32* pdwSize)
 {
 	int		hFile;
-	u32	size;
+	u32		size;
 	void*	buf;
 
 	hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
+	if (hFile<=0)	{
+		Sleep	(1);
+		hFile	= open(fn,O_RDONLY|O_BINARY|O_SEQUENTIAL);
+	}
 	R_ASSERT2(hFile>0,fn);
 	size	= filelength(hFile);
 
