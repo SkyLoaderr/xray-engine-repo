@@ -7,7 +7,7 @@
 #include "camerafirsteye.h"
 #include "ai_script_actions.h"
 
-void	CCar::IR_OnMouseMove(int dx, int dy)
+void	CCar::OnMouseMove(int dx, int dy)
 {
 	if (Remote())					return;
 
@@ -102,12 +102,12 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 void CCar::vfProcessInputKey	(int iCommand, bool bPressed)
 {
 	if (bPressed)
-		IR_OnKeyboardPress	(iCommand);
+		OnKeyboardPress			(iCommand);
 	else
-		IR_OnKeyboardRelease(iCommand);
+		OnKeyboardRelease		(iCommand);
 }
 
-void CCar::IR_OnKeyboardPress(int cmd)
+void CCar::OnKeyboardPress(int cmd)
 {
 	if (Remote())								return;
 
@@ -130,7 +130,7 @@ void CCar::IR_OnKeyboardPress(int cmd)
 
 }
 
-void	CCar::IR_OnKeyboardRelease(int cmd)
+void	CCar::OnKeyboardRelease(int cmd)
 {
 	if (Remote())								return;
 	switch (cmd)	
@@ -145,7 +145,7 @@ void	CCar::IR_OnKeyboardRelease(int cmd)
 	};
 }
 
-void	CCar::IR_OnKeyboardHold(int cmd)
+void	CCar::OnKeyboardHold(int cmd)
 {
 	if (Remote())								return;
 

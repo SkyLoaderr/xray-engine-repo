@@ -121,11 +121,11 @@ CActor::CActor() : CEntityAlive()
 	//разрешить использование пояса в inventory
 	inventory().SetBeltUseful(true);
 
-	m_pPersonWeLookingAt = NULL;
-	m_pCarWeLookingAt = NULL;
-	m_bPickupMode = false;
+	m_pPersonWeLookingAt	= NULL;
+	m_pVehicleWeLookingAt	= NULL;
+	m_bPickupMode			= false;
 
-	NET_I_NeedReculc = FALSE;
+	NET_I_NeedReculc		= FALSE;
 
 }
 
@@ -1092,14 +1092,14 @@ void CActor::shedule_Update	(u32 DT)
 	
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
-		inventory().m_pTarget = dynamic_cast<PIItem>(RQ.O);
-		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(RQ.O);
-		m_pCarWeLookingAt = dynamic_cast<CCar*>(RQ.O);
+		inventory().m_pTarget	= dynamic_cast<PIItem>(RQ.O);
+		m_pPersonWeLookingAt	= dynamic_cast<CInventoryOwner*>(RQ.O);
+		m_pVehicleWeLookingAt	= dynamic_cast<CVehicleCustom*>(RQ.O);
 	}
 	else 
 	{
-		inventory().m_pTarget = NULL;
-		m_pPersonWeLookingAt = NULL;
+		inventory().m_pTarget	= NULL;
+		m_pPersonWeLookingAt	= NULL;
 	}
 
 	setEnabled(true);

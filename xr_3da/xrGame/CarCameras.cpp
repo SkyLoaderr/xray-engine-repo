@@ -26,7 +26,7 @@ void	CCar::cam_Update			(float /**dt/**/)
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
 
-	if(m_owner)	m_owner->setEnabled(true);
+	if(m_owner)	m_owner->setEnabled	(true);
 }
 
 void	CCar::OnCameraChange		(int type)

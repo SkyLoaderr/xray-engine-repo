@@ -62,20 +62,20 @@ void CActor::IR_OnKeyboardPress(int cmd)
 												 dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
-		else if(m_pCarWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
+		else if(m_pVehicleWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 			//только если находимся в режиме single
 			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
-											 m_pCarWeLookingAt->GetInventory(),
-											 dynamic_cast<CGameObject*>(m_pCarWeLookingAt));
+											 m_pVehicleWeLookingAt->GetInventory(),
+											 dynamic_cast<CGameObject*>(m_pVehicleWeLookingAt));
 
 		}
 	}
 
 	if(m_vehicle && kUSE != cmd)
 	{
-		m_vehicle->IR_OnKeyboardPress(cmd);
+		m_vehicle->OnKeyboardPress(cmd);
 		return;
 	}
 
@@ -148,7 +148,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 
 		if(m_vehicle)
 		{
-			m_vehicle->IR_OnKeyboardRelease(cmd);
+			m_vehicle->OnKeyboardRelease(cmd);
 			return;
 		}
 
@@ -177,7 +177,7 @@ void CActor::IR_OnKeyboardHold(int cmd)
 
 	if(m_vehicle)
 	{
-		m_vehicle->IR_OnKeyboardHold(cmd);
+		m_vehicle->OnKeyboardHold(cmd);
 		return;
 	}
 
@@ -200,7 +200,7 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 
 	if(m_vehicle) 
 	{
-		m_vehicle->IR_OnMouseMove(dx,dy);
+		m_vehicle->OnMouseMove(dx,dy);
 		return;
 	}
 

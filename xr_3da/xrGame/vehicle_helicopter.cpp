@@ -10,6 +10,9 @@
 #include "vehicle_helicopter.h"
 #include "../objectanimator.h"
 #include "xrserver_objects_alife.h"
+#include "cameralook.h"
+#include "camerafirsteye.h"
+#include "actor.h"
 
 CVehicleHelicopter::CVehicleHelicopter		()
 {
@@ -91,13 +94,15 @@ void CVehicleHelicopter::UpdateCL			()
 {
 	inherited::UpdateCL	();
 	m_animator->OnFrame	();
-	XFORM().set			(m_animator->XFORM());
 	m_engine_sound.set_position(XFORM().c);
+
+	if (m_animator->IsPlaying())			XFORM().set	(m_animator->XFORM());
 }
 
-void CVehicleHelicopter::shedule_Update		(u32 time_delta)
+void CVehicleHelicopter::shedule_Update(u32 DT)
 {
-	inherited::shedule_Update(time_delta);
+	if (!getEnabled())	return;
+	inherited::shedule_Update	(DT);
 
 	Fvector				center;
 	float				radius;		

@@ -5,6 +5,7 @@
 #include "ai/script/ai_script_monster.h"
 #include "CarLights.h"
 #include "phobject.h"
+#include "vehicle_custom.h"
 
 // refs
 class ENGINE_API			CBoneInstance;
@@ -18,7 +19,8 @@ class CEntityAction;
 class CCar : 
 	public CEntity, 
 	public CScriptMonster,
-	public CPHObject
+	public CPHObject,
+	public CVehicleCustom
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void PhDataUpdate(dReal step);
@@ -367,7 +369,7 @@ private:
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
 public:
-	Fvector&				ExitPosition		(){return m_exit_position;}
+	virtual const Fvector&	ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
@@ -398,13 +400,13 @@ public:
 	virtual BOOL			UsedAI_Locations	();
 
 	// Input
-	virtual void			IR_OnMouseMove			(int x, int y);
-	virtual void			IR_OnKeyboardPress		(int dik);
-	virtual void			IR_OnKeyboardRelease	(int dik);
-	virtual void			IR_OnKeyboardHold		(int dik);
-	virtual void			vfProcessInputKey		(int iCommand, bool bPressed);
-	virtual void			OnEvent					( NET_Packet& P, u16 type);
-	virtual void			ResetScriptData			(void *P=0);
+	virtual void			OnMouseMove			(int x, int y);
+	virtual void			OnKeyboardPress		(int dik);
+	virtual void			OnKeyboardRelease	(int dik);
+	virtual void			OnKeyboardHold		(int dik);
+	virtual void			vfProcessInputKey	(int iCommand, bool bPressed);
+	virtual void			OnEvent				( NET_Packet& P, u16 type);
+	virtual void			ResetScriptData		(void *P=0);
 
 	// Hits
 	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};

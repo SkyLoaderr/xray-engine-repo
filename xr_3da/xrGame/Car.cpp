@@ -177,15 +177,12 @@ void	CCar::UpdateCL				( )
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-	// Camera
-	if (m_owner&&IsMyCamera())				
-		cam_Update	(Device.fTimeDelta);
 
 	Fvector lin_vel;
 	m_pPhysicsShell->get_LinearVel(lin_vel);
 	// Sound
 	Fvector		C,V;
-	Center	(C);
+	Center		(C);
 	V.set		(lin_vel);
 
 	m_car_sound->Update();

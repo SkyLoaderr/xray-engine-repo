@@ -24,7 +24,7 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
-class CCar;
+class CVehicleCustom;
 
 class CActor: 
 	public CEntityAlive, 
@@ -88,7 +88,7 @@ protected:
 	///CPhysicsShell*			m_phSkeleton;
 
 	//vehicle (not luxury)
-	CCar*					m_vehicle;
+	CVehicleCustom*			m_vehicle;
 
 	// media
 	BOOL					bStep;
@@ -199,10 +199,10 @@ protected:
 	int						skel_ddelay;
 	
 	///////////////////////////////////////////////////
-	static void	__stdcall	SpinCallback	(CBoneInstance*);
-	static void	__stdcall	ShoulderCallback(CBoneInstance*);
-	static void	__stdcall	HeadCallback	(CBoneInstance*);
-	static void __stdcall	CarHeadCallback	(CBoneInstance*);
+	static void	__stdcall	SpinCallback		(CBoneInstance*);
+	static void	__stdcall	ShoulderCallback	(CBoneInstance*);
+	static void	__stdcall	HeadCallback		(CBoneInstance*);
+	static void __stdcall	VehicleHeadCallback	(CBoneInstance*);
 private:
 	// Motions
 	u32						mstate_wishful;	
@@ -240,8 +240,8 @@ private:
 
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
-	// Car or lorry we're looking at
-	CCar*					m_pCarWeLookingAt;
+	// Vehicle or lorry we're looking at
+	CVehicleCustom*			m_pVehicleWeLookingAt;
 	//режим подбирания предметов
 	bool					m_bPickupMode;
 
@@ -310,7 +310,7 @@ private:
 	void					cam_Update				(float dt, float fFOV);
 	void					create_Skeleton			();
 	void					create_Skeleton1		();
-	void					attach_Vehicle			(CCar* vehicle);
+	void					attach_Vehicle			(CVehicleCustom* vehicle);
 	bool					use_Vehicle				(CGameObject* object);
 	CGameObject*			pick_Object				(u16& element);
 	void					ActorUse				();

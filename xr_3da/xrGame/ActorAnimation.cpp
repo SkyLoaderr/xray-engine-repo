@@ -52,7 +52,7 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	B->mTransform.mulA_43(spin);
 	B->mTransform.c		= c;
 }
-void __stdcall CActor::CarHeadCallback(CBoneInstance* B)
+void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;

@@ -3033,34 +3033,35 @@
 						Name="Vehicles"
 						Filter="">
 						<Filter
-							Name="Car"
+							Name="VehicleCustom"
 							Filter="">
 							<File
-								RelativePath="Car.cpp">
+								RelativePath=".\vehicle_custom.cpp">
 							</File>
 							<File
-								RelativePath="Car.h">
+								RelativePath=".\vehicle_custom.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="helicopter"
+							Filter="">
+							<File
+								RelativePath=".\vehicle_helicopter.cpp">
 							</File>
 							<File
-								RelativePath=".\CarCameras.cpp">
+								RelativePath=".\vehicle_helicopter.h">
 							</File>
 							<File
-								RelativePath=".\CarDoors.cpp">
+								RelativePath=".\vehicle_helicopter_cameras.cpp">
 							</File>
 							<File
-								RelativePath=".\CarInput.cpp">
+								RelativePath=".\vehicle_helicopter_inline.h">
 							</File>
 							<File
-								RelativePath=".\CarLights.cpp">
+								RelativePath=".\vehicle_helicopter_input.cpp">
 							</File>
 							<File
-								RelativePath=".\CarLights.h">
-							</File>
-							<File
-								RelativePath=".\CarSound.cpp">
-							</File>
-							<File
-								RelativePath=".\CarWheels.cpp">
+								RelativePath=".\vehicle_helicopter_movement.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -3134,16 +3135,34 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="helicopter"
+							Name="Car"
 							Filter="">
 							<File
-								RelativePath=".\vehicle_helicopter.cpp">
+								RelativePath="Car.cpp">
 							</File>
 							<File
-								RelativePath=".\vehicle_helicopter.h">
+								RelativePath="Car.h">
 							</File>
 							<File
-								RelativePath=".\vehicle_helicopter_inline.h">
+								RelativePath=".\CarCameras.cpp">
+							</File>
+							<File
+								RelativePath=".\CarDoors.cpp">
+							</File>
+							<File
+								RelativePath=".\CarInput.cpp">
+							</File>
+							<File
+								RelativePath=".\CarLights.cpp">
+							</File>
+							<File
+								RelativePath=".\CarLights.h">
+							</File>
+							<File
+								RelativePath=".\CarSound.cpp">
+							</File>
+							<File
+								RelativePath=".\CarWheels.cpp">
 							</File>
 						</Filter>
 					</Filter>

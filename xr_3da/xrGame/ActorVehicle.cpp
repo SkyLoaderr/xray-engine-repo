@@ -2,9 +2,9 @@
 #pragma hdrstop
 
 #include "actor.h"
-#include "Car.h"
+#include "vehicle_custom.h"
 #include "../CameraBase.h"
-void CActor::attach_Vehicle(CCar* vehicle)
+void CActor::attach_Vehicle(CVehicleCustom* vehicle)
 {
 	if(!vehicle) return;
 
@@ -12,9 +12,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 
 	m_vehicle=vehicle;
 
-
-	CSkeletonAnimated* V		= PSkeletonAnimated(Visual());
-	R_ASSERT			(V);
+	CSkeletonAnimated* V		= PSkeletonAnimated(Visual()); R_ASSERT(V);
 	
 	if(!m_vehicle->attach_Actor(this)){
 		m_vehicle=NULL;
@@ -28,7 +26,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	u16 head_bone		= V->LL_BoneID("bip01_head");
 	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(NULL,NULL);
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
-	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(VehicleHeadCallback,this);
 
 	m_PhysicMovementControl->DestroyCharacter();
 	//PIItem iitem=inventory().ActiveItem();
@@ -63,7 +61,7 @@ void CActor::detach_Vehicle()
 bool CActor::use_Vehicle(CGameObject* object)
 {
 	
-	CCar* vehicle=dynamic_cast<CCar*>(object);
+	CVehicleCustom* vehicle=dynamic_cast<CVehicleCustom*>(object);
 	Fvector center;
 	Center(center);
 	if(m_vehicle){
