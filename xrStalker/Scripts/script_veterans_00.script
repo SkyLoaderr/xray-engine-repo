@@ -225,6 +225,29 @@ function main()
 		break
 	end
 
+	while true do
+		if stalker_veteran01.health <= 0 and stalker_veteran02.health > 0 then
+			wait(2000)			
+			prof_ti_ubil_sivogo:play_at_pos		(stalker_veteran01,stalker_veteran01:position(),0);
+			stalker_veteran01:script						(false,  script_veterans_00.script_name())
+			wait(3000)			
+		break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker_veteran02.health <= 0 and stalker_veteran01.health > 0 then
+			wait(2000)			
+			rainbow_suka_ti_cherta_ubil:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
+			stalker_veteran02:script						(false,  script_veterans_00.script_name())
+			wait(3000)			
+		break
+		end
+		wait()			
+	end
+
+
 	stalker_veteran01:script	(false, script_veterans_00.script_name())
 	stalker_veteran02:script	(false, script_veterans_00.script_name())
 
