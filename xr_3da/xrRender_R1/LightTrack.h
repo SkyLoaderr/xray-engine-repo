@@ -49,8 +49,8 @@ public:
 	float					ambient;
 	u32						dwFrame;
 public:
-	u32						Shadowed_dwFrame;
 	u32						Shadowgen_dwFrame;
+	u32						Shadowed_dwFrame;
 	int						Shadowed_Slot;
 	//CShadowGeomCache		ShadowGeomCache;			
 
