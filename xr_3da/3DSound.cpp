@@ -51,9 +51,9 @@ void C3DSound::Update_Params()
 //	if (dwStatus&DSBSTATUS_BUFFERLOST) pBuffer->Restore();
 	if (bNeedUpdate) 
 	{
-		if (bCtrlFreq) pBuffer->SetFrequency(dwFreq);
-		pBuffer3D->SetAllParameters	( ps.d3d(), DS3D_DEFERRED );
-		bNeedUpdate = false;
+		bNeedUpdate		= false;
+		if (bCtrlFreq) pBuffer->SetFrequency( dwFreq );
+		pBuffer3D->SetAllParameters			( ps.d3d(), DS3D_DEFERRED );
 	}
 }
 
