@@ -50,6 +50,9 @@ end
 
 
 function main()
+end
+
+function bk_main()
 	local dlg = test_avi_dlg()
 	
 	local snd = sound_object(
