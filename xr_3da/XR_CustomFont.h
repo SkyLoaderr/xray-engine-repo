@@ -55,6 +55,8 @@ public:
 	virtual void			OnDeviceCreate	();
 	virtual void			OnDeviceDestroy	();
 
+	virtual void			OnInitialize	() = 0;
+
 	IC	void				Clear	()  { strings.clear(); }
 };
 

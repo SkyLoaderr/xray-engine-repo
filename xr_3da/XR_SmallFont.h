@@ -11,7 +11,7 @@
 class ENGINE_API CFontSmall : public CFontBase
 {
 public:
-	virtual	void	OnDeviceCreate	();
+	virtual	void	OnInitialize	();
 };
 
 #endif // !defined(AFX_XR_SMALLFONT_H__B05FFB40_D595_11D3_B4E3_4854E82A090D__INCLUDED_)

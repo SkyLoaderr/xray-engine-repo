@@ -7,7 +7,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void CFontSmall::OnDeviceCreate()
+void CFontSmall::OnInitialize()
 {
 	if (!Device.bReady)	return;
 	

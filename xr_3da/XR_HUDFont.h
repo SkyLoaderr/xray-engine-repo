@@ -14,7 +14,7 @@ protected:
 	virtual	float	GetRealHeight(float sz)		{return (sz*TextureSize.y/iNumber)*scale;}
 	virtual	float	GetCurrentSize()			{return fCurrentSize*TextureSize.y/iNumber;}
 public:
-	virtual	void	OnDeviceCreate	();
+	virtual	void	OnInitialize	();
 
 	void			SetScale		(float sc)	{scale=sc;		}
 	float			GetScale		()			{return scale;	}

@@ -12,7 +12,7 @@ CFontBase::CFontBase()
 	Stream			= Device.Streams.Create(FVF::F_TL,MAX_CHARS*4);
 	iNumber			= 0;
 	pShader			= 0;
-	this->OnDeviceCreate	();
+	OnDeviceCreate	();
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 
@@ -23,11 +23,13 @@ CFontBase::~CFontBase()
 {
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
-	this->OnDeviceDestroy	();
+	OnDeviceDestroy	();
 }
 
 void CFontBase::OnDeviceCreate()
 {
+	REQ_CREATE		();
+	OnInitialize	();
 }
 void CFontBase::OnDeviceDestroy()
 {
