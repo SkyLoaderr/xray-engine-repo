@@ -158,9 +158,8 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	if (Known.size()==0)	return;
 
 	// Get visible list
-	objSET				Visible;
-	ai_Track.o_get		(Visible);
-	std::sort			(Visible.begin(),Visible.end());
+	ai_Track.o_get	(tpaVisibleObjects);
+	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
 
 	// Iterate on known
 	for (DWORD i=0; i<Known.size(); i++)
@@ -169,8 +168,8 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			// Calculate local visibility
-			CObject**	ins	 = lower_bound(Visible.begin(),Visible.end(),(CObject*)E);
-			bool	bVisible = (ins==Visible.end())?FALSE:((E==*ins)?TRUE:FALSE);
+			CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
+			bool	bVisible = (ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE);
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
 			if (cost<S.fCost)	{
 				S.Enemy		= E;
@@ -181,15 +180,14 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	}
 }
 
-IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) {
+IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
+{
 	Fvector tMemberDirection;
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	//return(fAlpha < PI/10);
-	
-	
-	return(false);
+	return(fAlpha < PI/10);
+	//return(false);
 }
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
@@ -393,6 +391,19 @@ void CAI_Soldier::vfAimAtEnemy()
 	q_look.o_look_speed=_FB_look_speed;
 }
 
+static BOOL __fastcall SoldierQualifier				(CObject* O, void* P)
+{
+	if (O->CLS_ID!=CLSID_ENTITY)			
+		return FALSE;
+	else
+		return TRUE;
+}
+
+objQualifier* CAI_Soldier::GetQualifier	()
+{
+	return(&SoldierQualifier);
+}
+
 bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 {
 	// setting up an action
@@ -401,19 +412,17 @@ bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 	tFireVector.y = tMyPosition.y - tEnemyPosition.y;
 	tFireVector.z = tMyPosition.z - tEnemyPosition.z;
 	vfNormalizeSafe(tFireVector);
-
+	
 	bool bCanKillMember = false;
-	if (Leader)
-		if ((Leader->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,Leader->Position())))
-			bCanKillMember = true;
-	if (!bCanKillMember)
-		for (int i=0; i<S.taMemberPositions.size(); i++)
-			if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
+
+	for (int i=0, iTeam = g_Team(); i<tpaVisibleObjects.size(); i++) {
+		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
+			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
 				bCanKillMember = true;
 				break;
 			}
-
-	//return(false);
+	}
 	return(bCanKillMember);
 }
 
