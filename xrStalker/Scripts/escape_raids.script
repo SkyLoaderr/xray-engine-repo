@@ -130,6 +130,7 @@ end
 function switch_online (a, b)
     --if npc == nil or npc:alive () == false then return end
     if sim ~= nil then
+       printf ("ALIFE SIMULATOR FOUNDED") 
        sim:set_switch_offline (patrols[a][b].id, false)
        sim:set_switch_online  (patrols[a][b].id, true) 
     else
@@ -144,8 +145,10 @@ function switch_online (a, b)
 end
 -------------------------------------------------------------------------------------------
 function switch_offline (npc, a, b)
+
     if npc == nil or npc:alive () == false then return end
     if sim ~= nil then
+       printf ("ALIFE SIMULATOR FOUNDED") 
        sim:set_switch_online  (patrols[a][b].id, false) 
        sim:set_switch_offline (patrols[a][b].id, true)
     else
