@@ -20,6 +20,8 @@ protected:
 	void				LoadMotions		(LPCSTR fname);
 	void				SetActiveMotion	(COMotion* mot);
 	COMotion*			FindMotionByName(LPCSTR name);
+
+	void				Clear			();
 public:
 						CObjectAnimator	();
 	virtual				~CObjectAnimator();

@@ -18,6 +18,11 @@ CObjectAnimator::CObjectAnimator()
 
 CObjectAnimator::~CObjectAnimator()
 {	
+	Clear				();
+}
+
+void CObjectAnimator::Clear()
+{
 	for(MotionIt m_it=m_Motions.begin(); m_it!=m_Motions.end(); m_it++)
 		xr_delete		(*m_it);
 	m_Motions.clear		();
@@ -39,6 +44,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
             
     LPCSTR  ext			= strext(full_path);
     if (ext){
+		Clear			();
     	if (0==xr_strcmp(ext,".anm")){
             COMotion* M	= xr_new<COMotion> ();
             if (M->LoadMotion(full_path)) m_Motions.push_back(M);
