@@ -120,7 +120,13 @@ function action_zoneguard_activity:execute()
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
 		if see_actor and self.st.zone_guard_obj:active_zone_contact(actor:id()) then
-			if self.object:relation(actor) ~= game_object.enemy then
+			local rel = self.object:relation(actor)
+			if rel ~= game_object.enemy and
+			   -- ОБИЖАЕМСЯ ЕСЛИ: 1) ignore_friends == false
+			   -- 		2) ignore_friends == true and rel ~= game_object.friend
+			   -- Т.Е.:
+			   (not self.st.ignore_friends or rel ~= game_object.friend) then
+			   	-- Обиделись:
 				self.object:set_relation(game_object.enemy, actor)
 			end
 		end
@@ -128,7 +134,9 @@ function action_zoneguard_activity:execute()
 
 	if self.state == state_walking then
 		if actor:alive() and see_actor and self.st.zone_warn_obj:active_zone_contact(actor:id()) and
-				teams[self.st.team].triggered == nil then
+		   teams[self.st.team].triggered == nil and
+		   (not self.st.ignore_friends or self.object:relation(actor) ~= game_object.friend)
+		then
 			xr_state.anim_update(nil, self.object)
 			--local mental_state = if_then_else(self.object:relation(actor) == game_object.friend,
 			--	anim.free, anim.danger)
@@ -266,6 +274,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.no_move = utils.cfg_get_bool(ini, section, "no_move", object, false)
 	st.snd_greet = utils.cfg_get_string(ini, section, "snd_greet", object, false, "")
 	st.enable_dialog = utils.cfg_get_bool(ini, section, "enable_dialog", object, false)
+	st.ignore_friends = utils.cfg_get_bool(ini, section, "ignore_friends", object, false)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
