@@ -649,6 +649,7 @@ bool CScriptMonster::bfScriptAnimation()
 
 void CScriptMonster::UpdateCL		()
 {
+	inherited::UpdateCL				();
 	bfScriptAnimation				();
 }
 
