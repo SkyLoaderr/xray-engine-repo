@@ -10,23 +10,29 @@
 
 #include "script_space.h"
 
-#define comma							,
-#define make_param(a)					_##a __##a
-#define macros_specialization(c,b,a)	c a b
-#define abstract_body(r,c,a,b) \
-	try {					\
-		if (m_functor) {\
-			if (m_object)\
-				r ((*m_functor)(*m_object c a));\
-			else\
-				r ((*m_functor)(b));\
+#define comma						,
+#define concatenizer(a,b)			a##b
+#define left_comment				concatenizer(/,*)
+#define right_comment				concatenizer(*,/)
+#define param_generator(a,b,c,d)	a##b##c d##b
+#define function_body(_1,_2,_3,_4,_5,_6) \
+	_1 _3 _2\
+	IC return_type operator() (_4)\
+	{\
+		try {					\
+			if (m_functor) {\
+				if (m_object)\
+					macros_return_operator ((*m_functor)(*m_object _5 _6));\
+				else\
+					macros_return_operator ((*m_functor)(_6));\
+			}\
 		}\
-	}\
-	catch (...) {\
-		clear			();\
-	}			\
-	r (0);\
-}
+		catch (...) {\
+			clear			();\
+		}			\
+		macros_return_operator (0);\
+	}
+
 
 template <typename _return_type>
 class CScriptCallbackEx_ {
@@ -62,6 +68,8 @@ public:
 #include "script_callback_ex_void.h"
 
 #undef comma
-#undef make_param
-#undef macros_specialization
-#undef abstract_body
+#undef concatenizer
+#undef left_comment
+#undef right_comment
+#undef param_generator
+#undef function_body
