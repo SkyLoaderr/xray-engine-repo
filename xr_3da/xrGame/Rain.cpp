@@ -13,8 +13,8 @@ const int	desired_items	= 2000;
 const float	drop_length		= 1.5f;
 const float drop_width		= 0.025f;
 const float drop_angle		= 3.f;
-const float drop_speed_min	= 20.f;
-const float drop_speed_max	= 40.f;
+const float drop_speed_min	= 40.f;
+const float drop_speed_max	= 80.f;
 const int	max_particles	= 300;
 const int	particles_update= 50;
 
@@ -224,7 +224,7 @@ void	CEffect_Rain::Render	()
 	
 	// Born new if needed
 	float	b_radius		= 30.f;	// Need to ask from heightmap
-	float	b_height		= 50.f;
+	float	b_height		= 40.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
 		items.reserve	(desired_items);
 		while (items.size()<desired_items)	{
