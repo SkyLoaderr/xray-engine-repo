@@ -108,7 +108,7 @@ IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 {
 	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
 	D.x	= ((S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w+1.f)*dim_2;
-	D.y	= ((S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w+1.f)*dim_2;
+	D.y	= (-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w+1.f)*dim_2;
 	D.z	= (S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
 }
 
@@ -180,7 +180,7 @@ void CHOM::Debug		()
 	
 	// Fill vertex buffer
 	DWORD Offset, C=0xffffffff;
-	DWORD _w = 64, _h = 64;
+	DWORD _w = 128, _h = 128;
 	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
@@ -199,14 +199,15 @@ BOOL CHOM::Visible		(Fbox& B)
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fbox		rect;
 	Fvector		test,src;
-	B.getpoint(0,src);	XF.transform(test,src); rect.set	(test,test);
-	B.getpoint(1,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(2,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(3,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(4,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(5,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(6,src);	XF.transform(test,src); rect.modify	(test);
-	B.getpoint(7,src);	XF.transform(test,src); rect.modify	(test);
+	float		D		= occ_dim_0/2;
+	B.getpoint(0,src);	xform(XF,test,src,D);	rect.set	(test,test);
+	B.getpoint(1,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(2,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(3,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(4,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(5,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(6,src);	xform(XF,test,src,D);	rect.modify	(test);
+	B.getpoint(7,src);	xform(XF,test,src,D);	rect.modify	(test);
 	
 	return Raster.test	(rect.min.x+1,rect.min.y+1,rect.max.x+1,rect.max.y+1,rect.min.z);
 }
