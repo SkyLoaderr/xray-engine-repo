@@ -85,21 +85,76 @@ void CAI_Zombie::FreeHunting()
 
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
-	if (AI_Path.bNeedRebuild)
+	/**/
+	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
+		if (ps_Size() > 1)
+			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+			else {
+				Fvector tDistance;
+				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				if (tDistance.magnitude() < .01f)
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+				else
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			}
+		else
+			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
+		SelectorFreeHunting.m_tDirection.normalize_safe();
+		vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
 		vfBuildPathToDestinationPoint(0);
-	else {
-		if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
-			if (ps_Size() > 1) {
+	}
+	else
+		if (ps_Size() > 1)
+			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 500) {
 				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				SelectorFreeHunting.m_tDirection.normalize_safe();
+				vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+				vfBuildPathToDestinationPoint(0);
 			}
+			else {
+				Fvector tDistance;
+				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				if (tDistance.magnitude() < .01f) {
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+					SelectorFreeHunting.m_tDirection.normalize_safe();
+					vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+					vfBuildPathToDestinationPoint(0);
+				}
+			}
+	/**
+	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
+		if (ps_Size() > 1) {
+			float fTime = .001f*(ps_Element(ps_Size() - 1).dwTime - ps_Element(0).dwTime);
+			Fvector tDistance;
+			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(0).vPosition);
+			if ((fTime > .5f) || ((tDistance.magnitude() > .3f) && (tDistance.magnitude() / fTime < m_fCurSpeed*.5f)))
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 			else
-				SelectorFreeHunting.m_tDirection.set(1,0,0);
-			vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 		}
-	}
+		else
+			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
 
-	//SetLessCoverLook(AI_Node);
+		SelectorFreeHunting.m_tDirection.normalize_safe();
+		vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+		vfBuildPathToDestinationPoint(0);
+	}
+	else 
+		if (ps_Size() > 1) {
+			float fTime = .001f*(ps_Element(ps_Size() - 1).dwTime - ps_Element(0).dwTime);
+			Fvector tDistance;
+			tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(0).vPosition);
+			if ((fTime > .5f) || ((tDistance.magnitude() > .3f) && (tDistance.magnitude() / fTime < m_fCurSpeed*.5f))) {
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				SelectorFreeHunting.m_tDirection.normalize_safe();
+				vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+				vfBuildPathToDestinationPoint(0);
+			}
+		}
+	/**/
+
 	SetDirectionLook();
 
 	vfSetFire(false,Group);
