@@ -29,6 +29,7 @@
 #include "motivation_action_manager.h"
 #include "PhysicsShell.h"
 #include "helicopter.h"
+#include "HangingLamp.h"
 #include "script_zone.h"
 #include "relation_registry.h"
 
@@ -215,6 +216,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		//HELICOPTER
 
 		.def("get_helicopter",              &CScriptGameObject::get_helicopter)
+		.def("get_helicopter",              &CScriptGameObject::get_hanging_lamp)
 		.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
 
 		//usable object

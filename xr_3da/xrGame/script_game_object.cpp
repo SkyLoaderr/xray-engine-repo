@@ -24,6 +24,7 @@
 #include "script_ini_file.h"
 #include "script_callback.h"
 #include "../skeletoncustom.h"
+#include "HangingLamp.h"
 
 class CScriptBinderObject;
 
@@ -216,6 +217,15 @@ CHelicopter* CScriptGameObject::get_helicopter	()
 	return helicopter;
 }
 
+CHangingLamp* CScriptGameObject::get_hanging_lamp()
+{
+	CHangingLamp*	lamp = smart_cast<CHangingLamp*>(object());
+	if (!lamp) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : it is not a lamp!");
+		NODEFAULT;
+	}
+	return lamp;
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

@@ -69,6 +69,7 @@ class CCoverPoint;
 class CScriptIniFile;
 class CPhysicsShell;
 class CHelicopter;
+class CHangingLamp;
 
 struct ScriptCallbackInfo{
 	CScriptCallback		m_callback;
@@ -418,7 +419,9 @@ public:
 	
 			// HELICOPTER
 			CHelicopter*		get_helicopter			();
-
+			//LAMP
+			CHangingLamp*		get_hanging_lamp		();
+			
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;
