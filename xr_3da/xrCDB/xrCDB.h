@@ -11,6 +11,11 @@
 #define XRCDB_API __declspec(dllimport)
 #endif
 
+// forward declarations
+class Fvector;
+class Fmatrix;
+class CFrustum;
+
 namespace CDB
 {
 	enum {
@@ -20,23 +25,26 @@ namespace CDB
 	};
 	
 	class XRCDB_API MODEL;
-		
+
 	class XRCDB_API COLLIDER 
 	{
-		DWORD	ray_mode;
-		DWORD	box_mode;
-		DWORD	frustum_mode;
+		DWORD			ray_mode;
+		DWORD			box_mode;
+		DWORD			frustum_mode;
 	public:
-		CDB		();
-		~CDB	();
+		CList<int>		result;
+
+		CDB				();
+		~CDB			();
 		
-		void	ray_mode		(DWORD f)	{	ray_mode = f;		}
-		void	ray_query		(const Fmatrix* parent, const Model *o, const Fvector& start,  const Fvector& dir, float max_range = 10000.f);
+		void			ray_mode		(DWORD f)	{	ray_mode = f;		}
+		void			ray_query		(const Model *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
 		
-		void	box_mode		(DWORD f)	{	box_mode = f;		}
+		void			box_mode		(DWORD f)	{	box_mode = f;		}
+		void			box_query		(const Model *m_def, const Fvector& b_center, const Fvector& b_dim);
 		
-		
-		void	frustum_mode	(DWORD f)	{	frustum_mode = f;	}
+		void			frustum_mode	(DWORD f)	{	frustum_mode = f;	}
+		void			frustum_query	(const Model *m_def, const CFrustum& F);
 	};
 };
 
