@@ -26,5 +26,9 @@
 	<auto_static x="410" y="77" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</auto_static>
+	<!-- UPPER HORIZONTAL LINE -->
+	<auto_static x="14" y="78" width="405" height="2" stretch="1">
+		<texture>ui\ui_pda_horizontal_line</texture>
+	</auto_static>
 
 </window>
