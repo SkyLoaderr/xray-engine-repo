@@ -11,9 +11,9 @@ function main()
 	monster:script( true, script_name() )
 
 	while true do
-		action(monster,
+		action( monster,
 			move	(move.run_fwd), 
-			patrol	("way", patrol.next, patrol.continue)
+			patrol	("way", patrol.next, patrol.continue),
 			cond	(cond.move_end)
 		)
 
