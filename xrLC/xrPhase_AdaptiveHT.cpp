@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_max_edge	= 4.0f;			// 2 m
-const	float	aht_min_edge	= 1.0f;			// 20 cm
+const	float	aht_max_edge	= 2.0f;			// 2 m
+const	float	aht_min_edge	= .2f;			// 20 cm
 const	float	aht_min_err		= 16.f/255.f;	// ~10% error
 
 bool	is_CCW	(int _1, int _2)
