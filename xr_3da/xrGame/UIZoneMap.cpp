@@ -9,7 +9,7 @@
 #define COLOR_ENEMY		0xffff0000
 #define COLOR_FRIEND	0xffffffff
 #define COLOR_SELF		0xff00ff00
-#define COLOR_TARGET	0x80FF00A2
+#define COLOR_TARGET	0xFFFF00A2
 
 #define BASE_LEFT		9
 #define BASE_TOP		6
@@ -112,7 +112,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 			}
 		}
 		for(u32 i=0; i<Game().targets.size(); i++) {
-			ConvertToLocal(LM,Game().targets[i]->Position(),P);
+			CObject* T = Game().targets[i];
+			if (T->H_Parent()) T = T->H_Parent();
+			ConvertToLocal(LM,T->Position(),P);
 			entity.Out	(P.x,P.y,COLOR_TARGET);
 		}
 	}
