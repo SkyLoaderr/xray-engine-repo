@@ -288,18 +288,18 @@ xr_motivator.storage[self.object:id()].follower = {
 
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
-	time_wait = 60000, -- 60 секунд ждем повтора
+    time_wait = 60000, -- 60 секунд ждем повтора
         evn = xr_reactions.events(self.object),
-	-- позицию раздражителя
-	position = nil,
-	-- id раздражителя
-	id = nil,
-	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
-	watched = nil,
-	-- время раздражителя
-	time = nil,
-	-- визуальный или звуковой
-	isVisual = nil
+    -- позицию раздражителя
+    position = nil,
+    -- id раздражителя
+    id = nil,
+    -- указатель, что мы получили раздражитель от объекта, за которым мы следим
+    watched = nil,
+    -- время раздражителя
+    time = nil,
+    -- визуальный или звуковой
+    isVisual = nil
     }
 
     --Evaluators
