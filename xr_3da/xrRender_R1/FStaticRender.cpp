@@ -167,7 +167,7 @@ void CRender::Calculate				()
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height());
-	g_fLOD							=	QualityControl.fGeometryLOD*g_fLOD_scale;
+	g_fLOD							=	g_fLOD_scale;
 	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)/g_fSCREEN;
 	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)/g_fSCREEN;
