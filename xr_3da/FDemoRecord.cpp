@@ -54,9 +54,11 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,lif
 		
 		m_vT.set(0,0,0);
 		m_vR.set(0,0,0);
-		m_bMakeCubeMap = FALSE;
+		m_bMakeCubeMap		= FALSE;
+		m_bMakeScreenshot	= FALSE;
 	} else {
-		pCreator->Cameras.RemoveEffector(cefDemo);
+		fLifeTime = -1;
+		//pCreator->Cameras.RemoveEffector(cefDemo);
 	}
 }
 
@@ -75,8 +77,25 @@ static Fvector cmDir[6]		= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1
 static Flags32	s_hud_flag	= {0};
 static u32		s_idx;
 
+void CDemoRecord::MakeScreenshotFace()
+{
+	switch (s_idx){
+	case 0:
+		s_hud_flag.set	(psHUD_Flags);
+		psHUD_Flags.set	(0);
+	break;
+	case 1:
+		Render->Screenshot	();
+		psHUD_Flags.set	(s_hud_flag);
+		m_bMakeScreenshot= FALSE;
+	break;
+	}
+	s_idx++;
+}
+
 void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 {
+	string32 buf;
 	switch (s_idx){
 	case 0:
 		N.set		(cmNorm[s_idx]);
@@ -91,10 +110,10 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 	case 5:
 		N.set		(cmNorm[s_idx]);
 		D.set		(cmDir[s_idx]);
-		Render->Screenshot	(TRUE);
+		Render->Screenshot	(itoa(s_idx,buf,10),TRUE);
 	break;
 	case 6:
-		Render->Screenshot	(TRUE);
+		Render->Screenshot	(itoa(s_idx,buf,10),TRUE);
 		N.set		(m_Camera.j);
 		D.set		(m_Camera.k);
 		psHUD_Flags.set(s_hud_flag);
@@ -108,7 +127,13 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 {
 	if (hFile<=0)	return TRUE;
 
-	if (m_bMakeCubeMap){
+	if (m_bMakeScreenshot){
+		MakeScreenshotFace();
+		// update camera
+		N.set(m_Camera.j);
+		D.set(m_Camera.k);
+		P.set(m_Camera.c);
+	}else if (m_bMakeCubeMap){
 		MakeCubeMapFace(D,N);
 		P.set(m_Camera.c);
 		fAspect = 1.f;
@@ -120,7 +145,7 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 			pApp->pFontSystem->OutSet	(0,+.05f);
 			pApp->pFontSystem->OutNext	("%s","RECORDING");
 			pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
-			pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, ESC=Quit)");
+			pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, F12=ScreenShot, ESC=Quit)");
 		}
 
 
@@ -176,11 +201,13 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
 	if (dik == DIK_BACK)	MakeCubemap();
-	if (dik == DIK_ESCAPE)	pCreator->Cameras.RemoveEffector(cefDemo);
+	if (dik == DIK_F12)		MakeScreenshot();
+	if (dik == DIK_ESCAPE)	fLifeTime = -1; //pCreator->Cameras.RemoveEffector(cefDemo);
 	if (dik == DIK_RETURN){	
 		if (pCreator->CurrentEntity()){
 			pCreator->CurrentEntity()->ForceTransform(m_Camera);
-			pCreator->Cameras.RemoveEffector(cefDemo);
+			//pCreator->Cameras.RemoveEffector(cefDemo);
+			fLifeTime		= -1; 
 		}
 	}
 }
@@ -241,5 +268,11 @@ void CDemoRecord::RecordKey			()
 void CDemoRecord::MakeCubemap		()
 {
 	m_bMakeCubeMap = TRUE;
+	s_idx = 0;
+}
+
+void CDemoRecord::MakeScreenshot	()
+{
+	m_bMakeScreenshot = TRUE;
 	s_idx = 0;
 }

@@ -11,8 +11,8 @@
 #include "effector.h"
 
 class ENGINE_API CDemoRecord :
-	public CController,
-	public CEffector
+	public CEffector,
+	public CController
 {
 private:
 	int			iCount;
@@ -27,10 +27,13 @@ private:
 	Fvector		m_vAngularVelocity;
 
 	BOOL		m_bMakeCubeMap;
+	BOOL		m_bMakeScreenshot;
 
 	void		MakeCubeMapFace			(Fvector &D, Fvector &N);
+	void		MakeScreenshotFace		();
 	void		RecordKey				();
 	void		MakeCubemap				();
+	void		MakeScreenshot			();
 public:
 				CDemoRecord				(const char *name, float life_time=60*60*1000);
 	virtual		~CDemoRecord();
