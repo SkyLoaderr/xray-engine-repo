@@ -667,11 +667,13 @@ protected:
 
 	virtual		bool			Check_for_BackStab_Bone			(u16 element);
 public:
-	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element);
+	virtual void				SetHitInfo						(CObject* who, CObject* weapon, s16 element);
 
 	virtual	void				OnCriticalHitHealthLoss			();
 	virtual	void				OnCriticalWoundHealthLoss		();
 	virtual void				OnCriticalRadiationHealthLoss	();
+public:	//. hack for MP test
+	ref_light					dbgmp_light						;
 };
 
 IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);

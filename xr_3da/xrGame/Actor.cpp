@@ -98,6 +98,13 @@ Flags32			psActorFlags={0};
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
+	//.
+	dbgmp_light				= ::Render->light_create				();
+	dbgmp_light->set_type	(IRender_Light::POINT);
+	dbgmp_light->set_range	(10.f);
+	dbgmp_light->set_color	(.5f,1.f,.5f);
+	//.
+
 	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
 	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
 	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
@@ -192,6 +199,8 @@ CActor::CActor() : CEntityAlive()
 
 CActor::~CActor()
 {
+	dbgmp_light.destroy		();	//.
+
 	xr_delete				(contacts_registry);
 	xr_delete				(encyclopedia_registry);
 	xr_delete				(game_task_registry);
@@ -733,13 +742,36 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	}	
 }
 
-void CActor::UpdateCL()
+BOOL	g_bEnableMPL	= FALSE;	//.
+void CActor::UpdateCL	()
 {
 	VERIFY2								(_valid(renderable.xform),*cName());
 	inherited::UpdateCL();
 	VERIFY2								(_valid(renderable.xform),*cName());
 	m_pPhysics_support->in_UpdateCL	();
 	VERIFY2								(_valid(renderable.xform),*cName());
+
+	//. *** dbgmp
+	BOOL				_show_mpl		= FALSE;
+	if (g_bEnableMPL && g_Alive() && Level().CurrentEntity())	_show_mpl = TRUE	;
+	if (_show_mpl && this->ID()==Level().CurrentEntity()->ID())	_show_mpl = FALSE	;
+	dbgmp_light->set_active		(!!_show_mpl);
+	if (_show_mpl)		{
+		Fvector			C;
+		Center			(C);
+		dbgmp_light->set_rotation(XFORM().k,XFORM().i);
+		dbgmp_light->set_position(C);
+		
+		string256		name;	strcpy	(name,Level().CurrentEntity()->cName().c_str());
+		strlwr					(name);
+		BOOL					bRed	= FALSE;
+		if (strstr(name,"prof"))		bRed	= TRUE;
+		if (strstr(name,"rainbow"))		bRed	= TRUE;
+		if (bRed)						dbgmp_light->set_color	(2* 1.f, 2*0.5f,2*.5f);
+		else 							dbgmp_light->set_color	(2* .5f, 2*1.f, 2*.5f);
+	}
+	//. *** dbgmp end
+
 	if (g_Alive()) 
 	{
 		//update the fog of war

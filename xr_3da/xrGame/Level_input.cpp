@@ -34,8 +34,24 @@ void CLevel::IR_OnMouseWheel( int direction )
 }
 
 // Обработка нажатия клавиш
-void CLevel::IR_OnKeyboardPress(int key)
+extern	BOOL	g_bEnableMPL;	//.
+void CLevel::IR_OnKeyboardPress	(int key)
 {
+	//. dbgmp
+	if (DIK_NUMPADENTER==key)
+	{
+		if (g_bEnableMPL)	{
+			// turn off
+			Console->Execute("r1_dlights_clip 30");
+			g_bEnableMPL	= FALSE	;
+		} else {
+			// turn on
+			Console->Execute("r1_dlights_clip 150");
+			g_bEnableMPL	= TRUE	;
+		}
+	}
+	//. dbgmp end
+
 	if (DIK_F12 == key)
 	{
 		Render->Screenshot();
