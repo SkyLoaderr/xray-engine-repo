@@ -20,6 +20,7 @@ public:
 	virtual					~CAttachmentOwner	();
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
+	virtual void			net_Destroy			();
 	virtual void			renderable_Render	();
 			void			attach				(CInventoryItem *inventory_item);
 			void			detach				(CInventoryItem *inventory_item);

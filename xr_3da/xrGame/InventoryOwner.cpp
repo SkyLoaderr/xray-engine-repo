@@ -134,6 +134,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	return TRUE;
 }
 
+void CInventoryOwner::net_Destroy()
+{
+	inherited::net_Destroy		();
+}
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 {

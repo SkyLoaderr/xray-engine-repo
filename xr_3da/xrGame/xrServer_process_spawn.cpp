@@ -88,7 +88,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 		CSE_Abstract*		e_parent	= ID_to_entity(E->ID_Parent);
 		R_ASSERT						(e_parent);
 
-		if (game->OnTouch(E->ID_Parent,E->ID))
+		if (!ai().get_alife() && game->OnTouch(E->ID_Parent,E->ID))
 			e_parent->children.push_back(E->ID);
 	}
 

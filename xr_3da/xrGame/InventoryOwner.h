@@ -19,6 +19,7 @@ public:
 	virtual			~CInventoryOwner			();
 
 	virtual BOOL	net_Spawn					(LPVOID DC);
+	virtual void	net_Destroy					();
 			void	Init						();
 	virtual void	Load						(LPCSTR section);
 	virtual void	reinit						();

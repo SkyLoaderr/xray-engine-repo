@@ -40,7 +40,13 @@ void CAttachmentOwner::reload				(LPCSTR section)
 
 void CAttachmentOwner::reinit	()
 {
-	VERIFY				(m_attached_objects.empty());
+	VERIFY						(m_attached_objects.empty());
+}
+
+void CAttachmentOwner::net_Destroy()
+{
+	while (!attached_objects().empty())
+		detach					(*attached_objects().begin())
 }
 
 void CAttachmentOwner::renderable_Render		()
