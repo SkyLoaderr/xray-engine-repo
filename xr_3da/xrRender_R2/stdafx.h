@@ -16,6 +16,7 @@
 #define		R_R2	2
 #define		RENDER	R_R2
 
+#include "..\resourcemanager.h"
 #include "..\vis_common.h"
 #include "..\render.h"
 #include "..\_d3d_extensions.h"
