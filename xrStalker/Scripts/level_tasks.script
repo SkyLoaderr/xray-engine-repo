@@ -228,6 +228,25 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
 	end 
 
+	if	actor:has_info("bar_kill_svoboda_leader_start") and
+ 		actor:dont_has_info("mil_kill_svoboda_leader_killed") and
+		actor:object("mil_svoboda_leader_pda") ~= nil
+	then		
+		actor:give_info_portion("mil_kill_svoboda_leader_killed")
+		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 1)
+	end 
+
+	if	actor:has_info("bar_kill_svoboda_leader_start") and
+ 		actor:has_info("mil_kill_svoboda_leader_killed") and
+ 		actor:has_info("bar_kill_svoboda_leader_voronin") and
+ 		actor:dont_has_info("bar_kill_svoboda_leader_done") 
+	then		
+		actor:give_info_portion("bar_kill_svoboda_leader_done")
+		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
+	end 
+
+
+
 	if	actor:has_info("bar_decoding_start") and 
  		actor:dont_has_info("yan_decoding_gain") and
 		actor:object("bar_decoding_documents") ~= nil 
