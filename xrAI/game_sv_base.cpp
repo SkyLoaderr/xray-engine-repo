@@ -201,13 +201,10 @@ void game_sv_GameState::OnRoundStart			()
 	switch_Phase	(GAME_PHASE_INPROGRESS);
 	++round;
 //---------------------------------------------------
-	if (teams.size())
+	for (u32 i=0; i<teams.size(); i++)
 	{
-		for (int i=0; i<teams.size(); i++)
-		{
-			teams[i].score			= 0;
-			teams[i].num_targets	= 0;
-		}
+		teams[i].score			= 0;
+		teams[i].num_targets	= 0;
 	}
 //---------------------------------------------------
 	// clear "ready" flag
