@@ -212,7 +212,6 @@ function sound_update(npc, sound, now)
 			if path == nil then return nil end
 			if path.exec == nil then
 				if path.max > 0 then
-					printf("*LOAD SOUNDS*: MAX = %s", path.max)
 					tt[path.id] = path.max
 				end
 			else
