@@ -82,6 +82,7 @@ bool CSpaceRestrictionManager::accessible					(ALife::_OBJECT_ID id, u32 level_v
 
 CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	(shared_str out_restrictors, shared_str in_restrictors)
 {
+	string4096					m_temp;
 	if (!xr_strlen(out_restrictors) && !xr_strlen(in_restrictors))
 		return					(0);
 
@@ -89,7 +90,7 @@ CSpaceRestrictionManager::CRestrictionPtr	CSpaceRestrictionManager::restriction	
 	in_restrictors				= normalize_string(in_restrictors);
 
 	strconcat					(m_temp,*out_restrictors,"\x01",*in_restrictors);
-	shared_str						space_restrictions = m_temp;
+	shared_str					space_restrictions = m_temp;
 	
 	SPACE_RESTRICTIONS::const_iterator	I = m_space_restrictions.find(space_restrictions);
 	if (I != m_space_restrictions.end())
@@ -109,6 +110,7 @@ u32	CSpaceRestrictionManager::accessible_nearest			(ALife::_OBJECT_ID id, const 
 
 IC	bool CSpaceRestrictionManager::restriction_presented	(shared_str restrictions, shared_str restriction) const
 {
+	string4096					m_temp;
 	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
 		if (!xr_strcmp(restriction,_GetItem(*restrictions,i,m_temp)))
 			return				(true);
@@ -118,6 +120,8 @@ IC	bool CSpaceRestrictionManager::restriction_presented	(shared_str restrictions
 template <bool add>
 IC	void CSpaceRestrictionManager::update_restrictions		(shared_str &restrictions, shared_str update)
 {
+	string4096					m_temp1;
+	string4096					m_temp2;
 //	if (add) {
 //		strcpy						(m_temp2,*restrictions);
 //		for (u32 i=0, n=_GetItemCount(*update), count = xr_strlen(m_temp2); i<n; ++i)
@@ -173,6 +177,7 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ALife::_OBJECT_ID id, sh
 
 IC	bool CSpaceRestrictionManager::no_default_restrictions	(shared_str restrictions)
 {
+	string4096					m_temp;
 	for (u32 i=0, n=_GetItemCount(*restrictions); i<n; ++i)
 		if (restriction(_GetItem(*restrictions,i,m_temp))->default_restrictor())
 			return				(false);

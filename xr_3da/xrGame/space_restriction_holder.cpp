@@ -43,6 +43,7 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 
 void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::ERestrictorTypes &restrictor_type)
 {
+	string4096					m_temp_string;
 	shared_str					space_restrictors = space_restrictor->cName();
 	if (restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone) {
 		shared_str				*temp = 0, temp1;

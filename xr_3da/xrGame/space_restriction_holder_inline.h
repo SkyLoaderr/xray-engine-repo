@@ -16,11 +16,11 @@ IC	CSpaceRestrictionHolder::CSpaceRestrictionHolder	()
 
 IC	shared_str	CSpaceRestrictionHolder::normalize_string	(shared_str space_restrictors)
 {
+	string4096				m_temp_string;
 	u32						n = _GetItemCount(*space_restrictors);
 	if (n < 2)
 		return				(space_restrictors);
 
-	string1024				m_temp_string;
 	m_temp.resize			(n);
 	for (u32 i=0; i<n ;++i)
 		m_temp[i]			= shared_str(_GetItem(*space_restrictors,i,m_temp_string));
