@@ -40,6 +40,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 	// Select shader
 	ShaderElement*		sh		= rimp_select_sh_dynamic(pVisual,distSQ);
+	if (!pmask[sh->Flags.iPriority/2])		return;
 
 	// Create common node
 	// NOTE: Invisible elements exist only in R1
@@ -98,6 +99,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 
 	// Select shader
 	ShaderElement*		sh		= rimp_select_sh_static(pVisual,distSQ);
+	if (!pmask[sh->Flags.iPriority/2])		return;
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {

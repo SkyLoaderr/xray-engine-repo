@@ -23,6 +23,8 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float
 #elif	RENDER==R_R2
 	return pVisual->hShader->E[RImplementation.phase]._get();
 #endif
+	//todo
+	//??? Select shader based on phase
 }
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
@@ -32,6 +34,8 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 #elif	RENDER==R_R2
 	return pVisual->hShader->E[RImplementation.phase]._get();
 #endif
+	//todo
+	//??? Select shader based on phase
 }
 
 //////////////////////////////////////////////////////////////////////////
