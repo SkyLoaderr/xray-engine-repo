@@ -1046,7 +1046,7 @@ bool CSE_ALifeSchedulable::need_update		(CSE_ALifeDynamicObject *object)
 // CSE_ALifeHelicopter
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion() 
+CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)/*, CSE_Motion() */
 {
 	m_flags.set					(flUseSwitches,		FALSE);
 	m_flags.set					(flSwitchOffline,	FALSE);
@@ -1059,22 +1059,22 @@ CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
 
 void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited1::STATE_Read		(tNetPacket,size);
-    CSE_Motion::motion_read		(tNetPacket);
+	inherited::STATE_Read		(tNetPacket,size);
+//    CSE_Motion::motion_read		(tNetPacket);
     
     tNetPacket.r_string			(startup_animation);
 	tNetPacket.r_string			(engine_sound);
 
 #ifdef _EDITOR    
 	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
-	CSE_Motion::PlayMotion		();
+//	CSE_Motion::PlayMotion		();
 #endif
 }
 
 void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited1::STATE_Write		(tNetPacket);
-    CSE_Motion::motion_write	(tNetPacket);
+	inherited::STATE_Write		(tNetPacket);
+//    CSE_Motion::motion_write	(tNetPacket);
 
     tNetPacket.w_string			(startup_animation);
     tNetPacket.w_string			(engine_sound);
@@ -1082,12 +1082,12 @@ void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Read		(tNetPacket);
+	inherited::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Write		(tNetPacket);
+	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
@@ -1108,7 +1108,7 @@ void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
 
 void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProp		(pref,	 values);
+	inherited::FillProp		(pref,	 values);
 
     // motions
     if (visual && PSkeletonAnimated(visual))
