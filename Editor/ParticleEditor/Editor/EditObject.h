@@ -78,10 +78,20 @@ struct st_AnimParam{
     float			t;
     float			min_t;
     float			max_t;
+    bool			bPlay;
     void			Set		(CCustomMotion* M);
     float			Frame	()			{ return t;}
     void			Update	(float dt);
+    void			Play	(){bPlay=true;}
+    void			Stop	(){bPlay=false; t=min_t;}
+    void			Pause	(){bPlay=!bPlay;}
 };
+
+struct SBonePart{
+	AnsiString 		alias;
+    AStringVec 		bones;
+};
+DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
 class CEditableObject{
 	friend class CSceneObject;
@@ -98,13 +108,14 @@ class CEditableObject{
 
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
-	BoneVec			m_Bones;
-	SMotionVec		m_SMotions;
-	OMotionVec		m_OMotions;
 
+	OMotionVec		m_OMotions;
     COMotion*		m_ActiveOMotion;
     st_AnimParam	m_OMParam;
-
+	// skeleton
+	BoneVec			m_Bones;
+	SMotionVec		m_SMotions;
+    BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
     st_AnimParam	m_SMParam;
 protected:
@@ -154,6 +165,15 @@ public:
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
+    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
+    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
+    IC int			OMotionCount 			()	{return m_OMotions.size();}
+
+    // skeleton
+    IC BPIt			FirstBonePart			()	{return m_BoneParts.begin();}
+    IC BPIt			LastBonePart			()	{return m_BoneParts.end();}
+	IC BPVec&		BoneParts				()	{return m_BoneParts;}
+    IC int			BonePartCount			()	{return m_BoneParts.size();}
     IC BoneIt		FirstBone				()	{return m_Bones.begin();}
     IC BoneIt		LastBone				()	{return m_Bones.end();}
 	IC BoneVec&		Bones					()	{return m_Bones;}
@@ -164,10 +184,9 @@ public:
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
 	SMotionVec&		SMotions				()	{return m_SMotions;}
     IC int			SMotionCount 			()	{return m_SMotions.size();}
-    IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
-    IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
-    IC int			OMotionCount 			()	{return m_OMotions.size();}
-
+    IC void			SkeletonPlay 			()	{m_SMParam.Play();}
+    IC void			SkeletonStop 			()	{m_SMParam.Stop();}
+    IC void			SkeletonPause 			()	{m_SMParam.Pause();}
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 	IC bool 		IsDynamic     			()	{return (m_DynamicObject!=0); }
@@ -288,6 +307,7 @@ public:
 #define EOBJ_CHUNK_SMOTIONS			0x0916
 #define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
+#define EOBJ_CHUNK_BONEPARTS		0x0919
 //----------------------------------------------------
 
 #endif /*_INCDEF_EditObject_H_*/

@@ -182,6 +182,18 @@ bool CEditableObject::Load(CStream& F){
             }
         }
 
+        // bone parts
+        if (F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
+            m_BoneParts.resize(F.Rdword());
+	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+    	        F.RstringZ	(buf); bp_it->alias=buf;
+	            bp_it->bones.resize(F.Rdword());
+        	    for (AStringIt as_it=bp_it->bones.begin(); as_it!=bp_it->bones.end(); as_it++){
+                 	F.RstringZ(buf); *as_it=buf; 
+                }
+	        }
+    	}
+
         ResetAnimation(false);
 		if (F.FindChunk	(EOBJ_CHUNK_ACTIVE_OMOTION)){
         	F.RstringZ	(buf);
@@ -242,22 +254,41 @@ void CEditableObject::Save(CFS_Base& F){
     F.close_chunk	();
 
     // bones
-    F.open_chunk	(EOBJ_CHUNK_BONES);
-    F.Wdword		(m_Bones.size());
-    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
-    F.close_chunk	();
+    if (!m_Bones.empty()){
+	    F.open_chunk	(EOBJ_CHUNK_BONES);
+    	F.Wdword		(m_Bones.size());
+	    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
+    	F.close_chunk	();
+    }
 
     // object motions
-    F.open_chunk	(EOBJ_CHUNK_OMOTIONS);
-    F.Wdword		(m_OMotions.size());
-    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
-    F.close_chunk	();
+    if (!m_OMotions.empty()){
+	    F.open_chunk	(EOBJ_CHUNK_OMOTIONS);
+    	F.Wdword		(m_OMotions.size());
+	    for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++) (*o_it)->Save(F);
+    	F.close_chunk	();
+    }
 
     // skeleton motions
-    F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
-    F.Wdword		(m_SMotions.size());
-    for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
-    F.close_chunk	();
+    if (!m_SMotions.empty()){
+        F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
+        F.Wdword		(m_SMotions.size());
+        for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
+        F.close_chunk	();
+    }
+
+    // bone parts
+    if (!m_BoneParts.empty()){
+        F.open_chunk	(EOBJ_CHUNK_BONEPARTS);
+        F.Wdword		(m_BoneParts.size());
+        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+            F.WstringZ	(bp_it->alias.c_str());
+            F.Wdword	(bp_it->bones.size());
+            for (AStringIt as_it=bp_it->bones.begin(); as_it!=bp_it->bones.end(); as_it++) F.WstringZ(as_it->c_str());
+        }
+        F.close_chunk	();
+    }
+
 
     if (m_ActiveOMotion){
 	    F.open_chunk	(EOBJ_CHUNK_ACTIVE_OMOTION);

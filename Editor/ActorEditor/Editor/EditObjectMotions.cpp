@@ -31,8 +31,10 @@ void st_AnimParam::Set(CCustomMotion* M){
 	t=0;
     min_t=(float)M->FrameStart()/M->FPS();
     max_t=(float)M->FrameEnd()/M->FPS();
+    bPlay=false;
 }
 void st_AnimParam::Update(float dt){
+	if (!bPlay) return;
 	t+=dt;
     if (t>max_t){ 
 #ifdef _EDITOR
