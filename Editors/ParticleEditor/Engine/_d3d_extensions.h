@@ -2,7 +2,8 @@
 #define _D3D_EXT_internal
 
 #ifndef NO_XR_LIGHT
-struct Flight {
+struct Flight 
+{
 public:
     u32           type;             /* Type of light source */
     Fcolor          diffuse;          /* Diffuse color of light */
@@ -36,9 +37,11 @@ public:
     }
 };
 
+/*
 #if sizeof(Flight)!=sizeof(D3DLIGHT9)
 #error Different structure size
 #endif
+*/
 
 #endif
 
@@ -81,9 +84,11 @@ public:
 	}
 };
 
-#if (sizeof(Fmaterial)!=sizeof(D3DMATERIAL9)) 
+/*
+#if sizeof(Fmaterial)!=sizeof(D3DMATERIAL9) 
 #error Different structure size
 #endif
+*/
 
 #endif
 

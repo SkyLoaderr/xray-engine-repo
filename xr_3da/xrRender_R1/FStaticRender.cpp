@@ -43,7 +43,7 @@ IRender_Visual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)
 }
 IRender_Visual*				CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	source		= PSystems.FindPE	(name);
+	PS::CPEDef*	source		= PSystems.FindPED	(name);
 	VERIFY					(source);
 	return Models.CreatePE	(source);
 }
