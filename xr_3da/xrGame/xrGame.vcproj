@@ -3995,6 +3995,9 @@
 					<File
 						RelativePath=".\script_lua_export_ini.cpp">
 					</File>
+					<File
+						RelativePath=".\script_lua_export_server_entities.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ScriptProcessor"
