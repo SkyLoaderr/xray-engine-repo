@@ -159,8 +159,8 @@ public:
 	virtual void		Execute	()
 	{
 		R_ASSERT				(DATA);
-		ImplicitDeflector& defl = *DATA;
-		xr_vector<R_Light>			Lights	= pBuild->L_layers.front().lights;
+		ImplicitDeflector&		defl	= *DATA;
+		xr_vector<R_Light>		Lights	= pBuild->L_layers.front().lights;
 		CDB::COLLIDER			DB;
 		
 		// Setup variables
@@ -241,11 +241,11 @@ public:
 					Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 					Lumel.a		= 1.f;
 					
-					ImplicitLumel& L = defl.Lumel(U,V);
-					L.color.x	= Lumel.r;
-					L.color.y	= Lumel.g;
-					L.color.z	= Lumel.b;
-					L.marker	= 255;
+					ImplicitLumel& L	= defl.Lumel(U,V);
+					L.color.x			= Lumel.r;
+					L.color.y			= Lumel.g;
+					L.color.z			= Lumel.b;
+					L.marker			= 255;
 				} else {
 					defl.Lumel	(U,V).marker=0;
 				}
