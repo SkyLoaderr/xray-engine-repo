@@ -76,7 +76,7 @@ void CObjectAnimator::OnFrame()
 		Fvector R,P;
 		m_Current->_Evaluate(m_MParam.Frame(),P,R);
 		m_MParam.Update	(Device.fTimeDelta,1.f,bLoop);
-		m_XFORM.setXYZi	(R.y,R.x,R.z);
+		m_XFORM.setXYZi	(R.x,R.y,R.z);
         m_XFORM.translate_over(P);
 	}
 }
