@@ -543,15 +543,16 @@ void CActorTools::FillObjectProperties()
 	m_ObjectProps->AssignItems(items,false);
 }
                                
-void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
+void CActorTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
-	s_fog		= ZFar();
-	e_fog		= ZFar();
+	s_fog		= UI.ZFar();
+	e_fog		= UI.ZFar();
 	fog_color	= DEFAULT_CLEARCOLOR;
 }
 
-LPCSTR void TUI_Tools::GetInfo()
+LPCSTR CActorTools::GetInfo()
 {
+	return 0;
 }
 
 

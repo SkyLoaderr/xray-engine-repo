@@ -192,8 +192,8 @@ public:
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
 
-    void				ShowProperties		();
-    void				UpdateProperties	();
+    void				ShowProperties		(){;}
+    void				UpdateProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);
 };

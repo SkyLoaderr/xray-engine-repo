@@ -18,6 +18,144 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	bool bRes = true;
 	string256 filebuffer;
 	switch (_Command){
+    case COMMAND_MAKE_PREVIEW:  
+    	Tools.MakePreview();
+    	break;
+	case COMMAND_LOAD_MOTIONS:{
+    	if (!Tools.CurrentObject()){
+        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
+        	bRes=false;
+        	break;
+        }
+		AnsiString fn;
+		if (Engine.FS.GetOpenName(Engine.FS.m_SMotions,fn)){
+        	Tools.LoadMotions(fn.c_str());
+            fraLeftBar->UpdateMotionList();
+        }
+        }break;
+	case COMMAND_SAVE_MOTIONS:{
+    	if (!Tools.CurrentObject()){
+        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
+        	bRes=false;
+        	break;
+        }
+		AnsiString fn;
+		if (Engine.FS.GetSaveName(Engine.FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
+        }break;
+    case COMMAND_SAVE_BACKUP:{
+    	AnsiString fn = AnsiString(Engine.FS.m_UserName)+"_backup.object";
+        Engine.FS.m_Objects.Update(fn);
+    	Command(COMMAND_SAVEAS,(int)fn.c_str());
+    }break;
+    case COMMAND_SAVEAS:{
+		AnsiString fn = m_LastFileName;
+		if (p1||Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)){ 
+        	if (p1) fn= (LPCSTR)p1;
+        	bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
+        }
+        if (bRes){
+			// unlock
+   	        Engine.FS.UnlockFile(0,m_LastFileName);
+        	strcpy(m_LastFileName,fn.c_str());
+        	Command(COMMAND_UPDATE_CAPTION);
+            Engine.FS.LockFile(0,m_LastFileName);
+            fraLeftBar->AppendRecentFile(m_LastFileName);
+        }
+    	}break;
+	case COMMAND_SAVE:{
+    	AnsiString fn;
+        if (p1)	fn = (char*)p1;
+        else	fn = m_LastFileName;
+        Engine.FS.UnlockFile(0,m_LastFileName);
+		if (Tools.Save(fn.c_str())){
+        	Command(COMMAND_UPDATE_CAPTION);
+			fraLeftBar->AppendRecentFile(fn.c_str());
+        }else{
+        	bRes=false;
+        }
+        Engine.FS.LockFile(0,m_LastFileName);
+    	}break;
+    case COMMAND_IMPORT:{
+    	AnsiString fn;
+    	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn)){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
+            }
+			Command( COMMAND_CLEAR );
+	    	if (!Tools.Load(fn.c_str())){
+            	bRes=false;
+            	break;
+            }
+			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
+			if (Command( COMMAND_SAVEAS )){
+	            Engine.FS.MarkFile(fn.c_str(),true);
+			    fraLeftBar->UpdateMotionList();
+            }else{
+            	Command( COMMAND_CLEAR );
+            }
+        }
+    	}break;
+    case COMMAND_EXPORT_SKELETON:{
+    	AnsiString fn;
+    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
+            if (Tools.ExportSkeleton(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
+    case COMMAND_EXPORT_OBJECT:{
+    	AnsiString fn;
+    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
+            if (Tools.ExportObject(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
+    case COMMAND_LOAD:{
+    	AnsiString fn;
+        if (p1)	fn = (char*)p1;
+        else	fn = m_LastFileName;
+        if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Objects, fn ) ){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
+            }
+            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),false,true)){
+                bRes=false;
+                break;
+            }
+            if ((0==stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),true,false)){
+                Engine.FS.UnlockFile(0,fn.c_str());
+            }
+			Command( COMMAND_CLEAR );
+	    	if (!Tools.Load(fn.c_str())){
+            	bRes=false;
+            	break;
+            }
+			strcpy(m_LastFileName,fn.c_str());
+			fraLeftBar->AppendRecentFile(m_LastFileName);
+		    fraLeftBar->UpdateMotionList();
+        	Command(COMMAND_UPDATE_CAPTION);
+			// lock
+			Engine.FS.LockFile(0,m_LastFileName);
+        }
+    	}break;
+	case COMMAND_CLEAR:
+		{
+            if (!Tools.IfModified()) return false;
+			// unlock
+			Engine.FS.UnlockFile(0,m_LastFileName);
+			m_LastFileName[0]=0;
+			Device.m_Camera.Reset();
+            Tools.Clear();
+			Command(COMMAND_UPDATE_CAPTION);
+		}
+		break;
+    case COMMAND_PREVIEW_OBJ_PREF:
+    	Tools.SetPreviewObjectPrefs();
+    	break;
+    case COMMAND_SELECT_PREVIEW_OBJ:
+		Tools.SelectPreviewObject(p1);
+    	break;
+    case COMMAND_RESET_ANIMATION:
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -32,8 +170,8 @@ char* TUI::GetCaption()
 
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
-/*
 	bool bExec = false;
+/*
     if (Shift.Contains(ssCtrl)){
         if (Key==VK_F5)    				{Command(COMMAND_BUILD);                		bExec=true;}
         else if (Key==VK_F7)    		{Command(COMMAND_OPTIONS);                      bExec=true;}
@@ -72,16 +210,15 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             }
         }
     }
-    return bExec;
 */
+    return bExec;
 }
 //---------------------------------------------------------------------------
 
 bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
-/*
 	bool bExec = false;
-    if (Shift.Contains(ssCtrl)){
+/*    if (Shift.Contains(ssCtrl)){
         if (Key=='S'){
             if (Shift.Contains(ssAlt))  {Command(COMMAND_SAVEAS);               bExec=true;}
             else                        {Command(COMMAND_SAVE);                 bExec=true;}
@@ -95,80 +232,35 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
         else if (Key=='Y')    			{Command(COMMAND_REDO);                 bExec=true;}
 		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
     }
+*/
     return bExec;
-*/
-}
-//---------------------------------------------------------------------------
-/*
-//---------------------------------------------------------------------------
-void TUI::Redraw(){
-	VERIFY(m_bReady);               
-    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
-	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
-// set render state
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
-    // fog
-	float fog_start	= ZFar();
-	float fog_end	= ZFar();
-	Device.SetRS( D3DRS_FOGCOLOR,		DEFAULT_CLEARCOLOR	);
-	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
-	if (HW.Caps.bTableFog)	{
-		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR 	);
-		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE	 	);
-	} else {
-		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE	 	);
-		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR	);
-	}
-	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
-	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
-    // filter
-    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
-        if( psDeviceFlags.is(rsFilterLinear)){
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
-        } else {
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_POINT);
-        }
-    }
-	// ligthing
-    if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
-    else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
-
-    try{
-        Device.Begin();
-        Device.UpdateView();
-		Device.ResetMaterial();
-
-        Device.SetRS(D3DRS_FILLMODE, Device.dwFillMode);
-		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
-
-    // draw grid
-    	if (psDeviceFlags.is(rsDrawGrid)){
-	        DU::DrawGrid();
-    	    DU::DrawPivot(m_Pivot);
-        }
-
-        Tools.Render();
-
-    // draw selection rect
-		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
-
-    // draw axis
-        DU::DrawAxis(Device.m_Camera.GetTransform());
-
-    // end draw
-        Device.End();
-    }catch(...){
-		_clear87();
-		FPU::m24r();
-    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
-        Device.End();
-		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
-    }
 }
 //---------------------------------------------------------------------------
 
+void TUI::ShowContextMenu(int cls)
+{
+/*	VERIFY(m_bReady);
+    POINT pt;
+    GetCursorPos(&pt);
+    fraLeftBar->miProperties->Enabled = false;
+    if (Scene.SelectionCount( true, (EObjClass)cls )) fraLeftBar->miProperties->Enabled = true;
+    RedrawScene(true);
+    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
+    fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
 */
+}
+//---------------------------------------------------------------------------
+
+void TUI::RealUpdateScene()
+{
+/*	if (GetEState()==esEditScene){
+	    Scene.OnObjectsUpdate();
+    	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами
+	    RedrawScene();
+    }
+    m_Flags.set(flUpdateScene,FALSE);
+*/
+}
+//---------------------------------------------------------------------------
+
+

@@ -65,7 +65,7 @@
       Intermediate\Blender_Model_EbB.obj Intermediate\GameMtlLib.obj 
       Intermediate\PSLibrary.obj Intermediate\Blender_B.obj 
       Intermediate\PropertiesListHelper.obj Intermediate\c_dinput.obj 
-      Intermediate\UI_MainCommand.obj"/>
+      Intermediate\UI_MainCommand.obj Intermediate\xrParticlesLib.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -247,6 +247,7 @@
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

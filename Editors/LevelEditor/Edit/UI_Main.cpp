@@ -93,6 +93,9 @@ bool TUI::OnCreate(){
     Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
     
     CreateMailslot	();
+
+	BeginEState		(esEditScene);
+
     return true;
 }
 
