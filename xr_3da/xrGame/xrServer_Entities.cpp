@@ -230,7 +230,7 @@ void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{}
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateObject());
+	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PROP::CreateLibObject(sizeof(s_Model)));
 }
 #endif
 //
