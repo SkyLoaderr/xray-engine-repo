@@ -66,6 +66,7 @@ void CPhysicObject::UpdateCL	()
 	inherited::UpdateCL		();
 	if(m_pPhysicsShell)
 	{
+		//PKinematics(Visual())->Calculate();
 		if(m_type==epotBox) m_pPhysicsShell->Update();
 		XFORM().set			(m_pPhysicsShell->mXFORM);
 	}

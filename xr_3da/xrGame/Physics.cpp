@@ -390,7 +390,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_1->fFlotationFactor);
 				}
-				if(material_1->Flags.is(SGameMtl::flPassable)) continue;
+				if(material_1->Flags.is(SGameMtl::flPassable)) 
+															continue;
 			}
 			if(is_tri_2)
 			{
@@ -401,7 +402,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_2->fFlotationFactor);
 				}
-				if(material_2->Flags.is(SGameMtl::flPassable)) continue;
+				if(material_2->Flags.is(SGameMtl::flPassable)) 
+															continue;
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(pushing_neg) 
