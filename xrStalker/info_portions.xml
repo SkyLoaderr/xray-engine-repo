@@ -33,6 +33,9 @@
 		<dialog>job_box</dialog>
 	</info_portion>
 
+	<info_portion index="3" id="trader_start3">
+		<dialog>job_box</dialog>
+	</info_portion>
 
 
 </game_information_portions>
