@@ -71,7 +71,7 @@ void xrSaveNodes(LPCSTR N)
 	Status			("Saving header...");
 	hdrNODES		H;
 	H.version		= XRAI_CURRENT_VERSION;
-	H.count			= g_nodes.size()+1;
+	H.count			= g_nodes.size();
 	H.size			= g_params.fPatchSize;
 	H.size_y		= CalculateHeight(H.aabb);
 	fs->w			(&H,sizeof(H));
@@ -80,22 +80,14 @@ void xrSaveNodes(LPCSTR N)
 	for (u32 j=0; j<g_covers_palette.size(); ++j)
 		fs->w		(&g_covers_palette[j],sizeof(g_covers_palette[j]));
 
-	// Dummy node
-	NodeCompressed	NC;
-	ZeroMemory		(&NC,sizeof(NC));
-	fs->w			(&NC,sizeof(NC));
-
 	// All nodes
 	Status			("Saving nodes...");
-	for (u32 i=0; i<g_nodes.size(); i++)
-	{
-		vertex&		N	= g_nodes[i];
-
+	for (u32 i=0; i<g_nodes.size(); i++) {
+		vertex			&N	= g_nodes[i];
+		NodeCompressed	NC;
 		Compress		(NC,N,H);
-		
 		fs->w			(&NC,sizeof(NC));
-
-		Progress(float(i)/float(g_nodes.size()));
+		Progress		(float(i)/float(g_nodes.size()));
 	}
 
 	// Stats

@@ -39,34 +39,22 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 	m_palette_size				= m_reader->r_u32();
 	m_cover_palette				= (Cover*)m_reader->pointer();
 	m_reader->advance			(m_palette_size*sizeof(Cover));
-	m_nodes						= (u8*)m_reader->pointer();
-
-	// dispatch table
-	m_nodes_ptr					= (CVertex**)xr_malloc(header().vertex_count()*sizeof(void*));
-	{
-		for (u32 i=0; i<header().vertex_count(); ++i) {
-			m_nodes_ptr[i]		= (CVertex*)m_reader->pointer();
-			CVertex		vertex;
-			m_reader->r			(&vertex,sizeof(vertex));
-		}
-	}
-
+	m_nodes						= (CVertex*)m_reader->pointer();
 	m_ref_counts.assign			(header().vertex_count(),0);
 
-	for (u32 i=1; i<header().vertex_count(); ++i) {
+	for (u32 i=0; i<header().vertex_count(); ++i) {
 		const_iterator			I, E;
 		begin					(i,I,E);
 		for ( ; I != E; ++I)
 			if (valid_vertex_id(value(i,I)))
 				if (vertex_position(value(i,I)).distance_to_xz(vertex_position(i)) > header().cell_size() + EPS_L) {
-					I = I;
+					vertex_position(value(i,I)).distance_to_xz(vertex_position(i));
 				}
 	}
 }
 
 CLevelGraph::~CLevelGraph		()
 {
-	xr_free						(m_nodes_ptr);
 	xr_delete					(m_reader);
 }
 

@@ -15,13 +15,24 @@ IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 
 IC bool CLevelGraph::valid_vertex_id	(u32 id) const
 {
-	return				(id && (id < header().vertex_count()));
+	return				(id < header().vertex_count());
 }
 
 IC	CLevelGraph::CVertex	*CLevelGraph::vertex(u32 id) const
 {
 	VERIFY				(valid_vertex_id(id));
-	return				(m_nodes_ptr[id]);
+	return				(m_nodes + id);
+}
+
+IC	u32	CLevelGraph::vertex	(const CVertex *vertex_p) const
+{
+	VERIFY				((vertex_p > m_nodes) && valid_vertex_id(u32(vertex_p - m_nodes)));
+	return				(u32(vertex_p - m_nodes));
+}
+
+IC	u32	CLevelGraph::vertex	(const CVertex &vertex_r) const
+{
+	return				(vertex(&vertex_r));
 }
 
 IC u8	CLevelGraph::ref_add		(u32 id)	

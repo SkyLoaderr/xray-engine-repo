@@ -54,8 +54,7 @@ private:
 	CHeader				m_header;		// level graph header
 	u32					m_palette_size;
 	Cover				*m_cover_palette;
-	u8					*m_nodes;		// nodes array
-	CVertex				**m_nodes_ptr;	// pointers to vertex's data
+	CVertex				*m_nodes;		// nodes array
 	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
 	u32					m_level_id;		// unique level identifier
 	u32					m_row_length;
@@ -111,6 +110,8 @@ public:
 	template <typename T>
 	IC		void	unpack_xz					(const CLevelGraph::CVertex *vertex, T &x, T &z) const;
 	IC		CVertex	*vertex						(u32 vertex_id) const;
+	IC		u32		vertex						(const CVertex *vertex_p) const;
+	IC		u32		vertex						(const CVertex &vertex_r) const;
 	IC		const	Fvector						vertex_position(const CLevelGraph::CPosition &source_position) const;
 	IC		const	Fvector						&vertex_position(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const;
 	IC		const	CLevelGraph::CPosition		&vertex_position(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const;
