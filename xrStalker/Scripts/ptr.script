@@ -47,7 +47,7 @@ function SPatrol:process ()
              local sname = self.sounds[math.random (1, table.getn (self.sounds))]
              local s = sound_object (sname)
              self.snd_len = s:length () + ctime
-             printf ("Set sound %s, length %d, time %d", sname, s:length (), ctime)
+             printf ("Set sound %s, snd_end %d, time %d", sname, self.snd_len, ctime)
              update_action (self.npc, self.script, sound (sname, "bip01_head", 
                             vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
           end
