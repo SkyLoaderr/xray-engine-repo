@@ -186,7 +186,8 @@ public:
 	virtual void	OnDeviceDestroy	();
 };
 
-static CAI_Space *tpAI_Space = 0;
+extern CAI_Space *tpAI_Space;
+
 IC CAI_Space& getAI()
 {
 	if (!tpAI_Space)
