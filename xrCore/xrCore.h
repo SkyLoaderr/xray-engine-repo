@@ -78,16 +78,6 @@
 #define IC				__forceinline
 #endif
 
-// Warnings
-#pragma warning (disable : 4786 )		// too long names
-#pragma warning (disable : 4503 )		// decorated name length exceeded
-#pragma warning (disable : 4251 )		// object needs DLL interface
-#pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
-#pragma warning (disable : 4100 )		// unreferenced formal parameter
-#pragma warning (disable : 4127 )		// conditional expression is constant
-#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
-#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
-
 // stl
 #define _STLP_NO_EXCEPTIONS
 #include <algorithm>
@@ -98,6 +88,16 @@
 #include <set>
 #include <map>
 using namespace std;
+
+// Warnings
+#pragma warning (disable : 4786 )		// too long names
+#pragma warning (disable : 4503 )		// decorated name length exceeded
+#pragma warning (disable : 4251 )		// object needs DLL interface
+#pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
+#pragma warning (disable : 4100 )		// unreferenced formal parameter
+#pragma warning (disable : 4127 )		// conditional expression is constant
+#pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
+#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
 
 #define ALIGN(a) __declspec(align(a))
 
