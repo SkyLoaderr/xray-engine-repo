@@ -81,6 +81,120 @@ namespace Game {
 //
 //};
 //
+//void vfOld()
+//{
+//	lua_State*	luaVM	= lua_open();
+//	if (NULL == luaVM)	{ printf("Error Initializing lua\n"); return -1; }
+//
+//	luaopen_base	(luaVM);
+//	luaopen_table	(luaVM);
+//	luaopen_io		(luaVM);
+//	luaopen_string	(luaVM);
+//	luaopen_math	(luaVM);
+//	luaopen_debug	(luaVM);
+//
+//	open			(luaVM);
+//	function		(luaVM,"log",(void (*)(LPCSTR))(Log));
+//
+//	//	lua_newtable	(luaVM);
+//	//	lua_pushstring	(luaVM, "core");
+//	//	lua_pushvalue	(luaVM, -2);
+//	//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+//
+//	//	luaL_newmetatable(luaVM, "core");
+//	//	lua_pushliteral	(luaVM, "__index");
+//	//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
+//	//	lua_rawset		(luaVM, -3);
+//	//	lua_pop			(luaVM,1);
+//	//	lua_setfenv		(luaVM, lua_setmetatable(luaVM,LUA_GLOBALSINDEX));
+//
+//
+//
+//
+//
+//	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+//		lua_error	(luaVM);
+//
+//	//	if (lua_dofile(luaVM, "x:\\extension.lua"))
+//	//		lua_error	(luaVM);
+//
+//	//	lua_newtable	(luaVM);
+//	//	lua_pushstring	(luaVM, "core");
+//	//	lua_pushvalue	(luaVM, -2);
+//	//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+//
+//	//	lua_setfenv		(luaVM, -2);
+//
+//	//	lua_call		(luaVM, 0, 0);
+//	/////////////////////////////////////////////////////////////////
+//	lua_newtable	(luaVM);
+//	int methods = lua_gettop(luaVM);
+//
+//	luaL_newmetatable(luaVM, "core");
+//	int metatable = lua_gettop(luaVM);
+//
+//	// store method table in globals so that
+//	// scripts can add functions written in Lua.
+//	lua_pushvalue	(luaVM, methods);
+//	set				(luaVM, LUA_GLOBALSINDEX, "core");
+//
+//	// hide metatable from Lua getmetatable()
+//	lua_pushvalue	(luaVM, methods);
+//	set				(luaVM, metatable, "__metatable");
+//
+//	lua_pushvalue	(luaVM, methods);
+//	set				(luaVM, metatable, "__index");
+//
+//	lua_pushstring	(luaVM,"_G");
+//	lua_gettable	(luaVM,LUA_GLOBALSINDEX);
+//	//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
+//	set				(luaVM, metatable, "__index");
+//
+//	lua_newtable	(luaVM);                // mt for method table
+//
+//	lua_setmetatable(luaVM, methods);
+//
+//	lua_pop			(luaVM, 1);  // drop metatable and method table
+//
+//	lua_setfenv		(luaVM, -2);
+//
+//	lua_call		(luaVM, 0, 0);
+//
+//	lua_setfenv		(luaVM, 0);
+//
+//	//	if (lua_dofile(luaVM, "x:\\extension.lua"))
+//	//		lua_error	(luaVM);
+//
+//
+//	//	lua_setfenv		(luaVM, -2);
+//	//	lua_call		(luaVM, 0, 0);
+//
+//	//	lua_pushstring	(luaVM, "core");
+//	//	lua_gettable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+//	//	luaL_newmetatable(luaVM, "core");
+//	//	lua_pushliteral	(luaVM, "__newindex");
+//	//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
+//	//	lua_rawset		(luaVM, -3);
+//	//	lua_pop			(luaVM,1);
+//
+//	vfPrintTable	(luaVM,"_G");
+//	vfPrintTable	(luaVM,"os");
+//	vfPrintTable	(luaVM,"coroutine");
+//	vfPrintTable	(luaVM,"_LOADED");
+//	vfPrintTable	(luaVM,"table");
+//	vfPrintTable	(luaVM,"io");
+//	vfPrintTable	(luaVM,"string");
+//	vfPrintTable	(luaVM,"math");
+//	vfPrintTable	(luaVM,"debug");
+//	vfPrintTable	(luaVM,"core");
+//
+//	lua_dofile		(luaVM, "x:\\test1.lua");
+//
+//	// close lua
+//	lua_close		(luaVM);
+//	return 0;
+//}
+
 void export2lua		(lua_State *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
@@ -263,117 +377,78 @@ static void set(lua_State *L, int table_index, const char *key) {
 	lua_settable	(L, table_index);
 }
 
+void print_stack(lua_State *luaVM)
+{
+	printf("\n");
+	for (int i=0; lua_type(luaVM, -i-1); i++)
+		printf("%2d : %s\n",-i-1,lua_typename(luaVM, lua_type(luaVM, -i-1)));
+//	for (int i=0; lua_type(luaVM, i); i++)
+//		printf("%2d : %s\n",i,lua_typename(luaVM, lua_type(luaVM, i)));
+}
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
-	lua_State*	luaVM	= lua_open();
-	if (NULL == luaVM)	{ printf("Error Initializing lua\n"); return -1; }
-
-	luaopen_base	(luaVM);
-	luaopen_table	(luaVM);
-	luaopen_io		(luaVM);
-	luaopen_string	(luaVM);
-	luaopen_math	(luaVM);
-	luaopen_debug	(luaVM);
-
-	open			(luaVM);
-	function		(luaVM,"log",(void (*)(LPCSTR))(Log));
-
-//	lua_newtable	(luaVM);
-//	lua_pushstring	(luaVM, "core");
-//	lua_pushvalue	(luaVM, -2);
-//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
-	
-//	luaL_newmetatable(luaVM, "core");
-//	lua_pushliteral	(luaVM, "__index");
-//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
-//	lua_rawset		(luaVM, -3);
-//	lua_pop			(luaVM,1);
-//	lua_setfenv		(luaVM, lua_setmetatable(luaVM,LUA_GLOBALSINDEX));
-	
-	
-	
-	
-	
-	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+	lua_State		*luaVM = lua_open();
+	if (!luaVM)
 		lua_error	(luaVM);
 
-//	if (lua_dofile(luaVM, "x:\\extension.lua"))
-//		lua_error	(luaVM);
+//	luaopen_base	(luaVM);
+	print_stack		(luaVM);
+	luaopen_string	(luaVM);	// S = String
+	print_stack		(luaVM);
+	luaopen_math	(luaVM);	// S = Math, String
 
-//	lua_newtable	(luaVM);
-//	lua_pushstring	(luaVM, "core");
-//	lua_pushvalue	(luaVM, -2);
-//	lua_settable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
+//	print_stack		(luaVM);
+//	lua_pop			(luaVM,2);
+	print_stack		(luaVM);
+	if (luaL_loadfile(luaVM, "x:\\extension.lua"))
+		lua_error	(luaVM);	// S = Extension, Math, String
+	print_stack		(luaVM);
 
-//	lua_setfenv		(luaVM, -2);
+//	luaopen_base	(luaVM);
+//	luaopen_string	(luaVM);
+//	luaopen_math	(luaVM);
 
-//	lua_call		(luaVM, 0, 0);
-/////////////////////////////////////////////////////////////////
-	lua_newtable	(luaVM);
-	int methods = lua_gettop(luaVM);
+	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_pushstring	(luaVM,"core");	// S = "core", NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
 
-	luaL_newmetatable(luaVM, "core");
-	int metatable = lua_gettop(luaVM);
+	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
 
-	// store method table in globals so that
-	// scripts can add functions written in Lua.
-	lua_pushvalue	(luaVM, methods);
-	set				(luaVM, LUA_GLOBALSINDEX, "core");
+	lua_call		(luaVM,0,0);
+	print_stack		(luaVM);
 
-	// hide metatable from Lua getmetatable()
-	lua_pushvalue	(luaVM, methods);
-	set				(luaVM, metatable, "__metatable");
+	if (luaL_loadfile(luaVM, "x:\\test1.lua"))
+		lua_error	(luaVM);	// S = Extension, Math, String
 
-	lua_pushvalue	(luaVM, methods);
-	set				(luaVM, metatable, "__index");
-	
-	lua_pushstring	(luaVM,"_G");
-	lua_gettable	(luaVM,LUA_GLOBALSINDEX);
-//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
-	set				(luaVM, metatable, "__index");
+	print_stack		(luaVM);
+//	luaopen_base	(luaVM);
+//	luaopen_string	(luaVM);
+//	luaopen_math	(luaVM);
 
-	lua_newtable	(luaVM);                // mt for method table
-	
-	lua_setmetatable(luaVM, methods);
-	
-	lua_pop			(luaVM, 1);  // drop metatable and method table
+	lua_newtable	(luaVM);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_pushstring	(luaVM,"test1");	// S = "core", NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_pushvalue	(luaVM,-2);	// S = NewTable, "core", NewTable, Extension, Math, String
+	print_stack		(luaVM);
+	lua_settable	(luaVM,LUA_GLOBALSINDEX);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
 
-	lua_setfenv		(luaVM, -2);
-	
-	lua_call		(luaVM, 0, 0);
+	lua_setfenv		(luaVM,-2);	// S = NewTable, Extension, Math, String
+	print_stack		(luaVM);
 
-	lua_setfenv		(luaVM, 0);
+	lua_call		(luaVM,0,0);
+	print_stack		(luaVM);
 
-//	if (lua_dofile(luaVM, "x:\\extension.lua"))
-//		lua_error	(luaVM);
+//	lua_dofile		(luaVM,"x:\\test1.lua");
 
-
-//	lua_setfenv		(luaVM, -2);
-//	lua_call		(luaVM, 0, 0);
-
-//	lua_pushstring	(luaVM, "core");
-//	lua_gettable	(luaVM, LUA_GLOBALSINDEX); /* register it with given name */
-//	luaL_newmetatable(luaVM, "core");
-//	lua_pushliteral	(luaVM, "__newindex");
-//	lua_pushvalue	(luaVM, LUA_GLOBALSINDEX);
-//	lua_rawset		(luaVM, -3);
-//	lua_pop			(luaVM,1);
-
-	vfPrintTable	(luaVM,"_G");
-	vfPrintTable	(luaVM,"os");
-	vfPrintTable	(luaVM,"coroutine");
-	vfPrintTable	(luaVM,"_LOADED");
-	vfPrintTable	(luaVM,"table");
-	vfPrintTable	(luaVM,"io");
-	vfPrintTable	(luaVM,"string");
-	vfPrintTable	(luaVM,"math");
-	vfPrintTable	(luaVM,"debug");
-	vfPrintTable	(luaVM,"core");
-
-	lua_dofile		(luaVM, "x:\\test1.lua");
-
-	// close lua
 	lua_close		(luaVM);
-	return 0;
 }

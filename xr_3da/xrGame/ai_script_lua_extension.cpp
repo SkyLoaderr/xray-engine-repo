@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_script_lua_extension.h"
 #include "ParticlesObject.h"
-#include "GameObject.h"
+#include "ai_script_classes.h"
 
 using namespace Script;
 
@@ -23,28 +23,13 @@ double get_time()
 	return((double)Device.TimerAsync());
 }
 
-class CSearchByNamePredicate {
-	LPCSTR				m_caObjectName;
-public:
-					CSearchByNamePredicate(LPCSTR caObjectName)
-	{
-		m_caObjectName = caObjectName;
-	}
-
-	const bool operator()(CObject *tpObject) const
-	{
-		return(!strcmp(tpObject->cName(),m_caObjectName));
-	}
-};
-
-CGameObject *get_object_by_name(LPCSTR caObjectName)
+CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
-	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
-	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
-	for ( ; I != E; I++)
-		if (!strcmp(caObjectName,(*I)->cName()))
-			return(dynamic_cast<CGameObject*>(*I));
-	return(0);
+	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
+	if (l_tpGameObject)
+		return		(xr_new<CLuaGameObject>(l_tpGameObject));
+	else
+		return		(0);
 }
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -213,12 +198,24 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(constructor<const char *, bool>())
 			.def("Position",					&CParticlesObject::Position)
 			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
-			.def("Stop",						&CParticlesObject::Stop),
+			.def("Stop",						&CParticlesObject::Stop)
 
-		class_<CGameObject>("CGameObject")
-			.def(constructor<>())
-			.def("Position",					(Fvector & (CGameObject::*)())(CGameObject::Position))
-			.def("cName",						(void	   (CGameObject::*)())(CGameObject::cName))
+//		class_<CLuaGameObject>("CGameObject")
+//			.def(constructor<LPCSTR>())
+//			.def(constructor<const CLuaGameObject *>())
+//			.def("Position",					&CLuaGameObject::Position)
+//			.def("Class",						&CLuaGameObject::Visible),
+//			.def("Section",						&CLuaGameObject::Visible),
+//			.def("Name",						&CLuaGameObject::cName)
+//			.def("Parent",						&CLuaGameObject::Parent)
+//			.def("Enabled",						&CLuaGameObject::Enabled)
+//			.def("Visible",						&CLuaGameObject::Visible),
+//
+//		class_<CLuaGameItem,"CGameObject">("CGameItem")
+//			.def("Mass",						&CLuaGameItem::Mass)
+//			.def("Cost",						&CLuaGameItem::Cost)
+//			.def("HealthValue",					&CLuaGameItem::HealthValue)
+//			.def("FoodValue",					&CLuaGameItem::FoodValue)
 	];
 	
 	module(tpLuaVirtualMachine,"Game")
@@ -231,12 +228,34 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 		namespace_("Level")
 		[
 //			// declarations
-//			def("get_weather",					Level::get_weather)
 			def("get_object_by_name",			get_object_by_name)
+//			def("get_weather",					Level::get_weather)
 		]
 
 	];
 
+//class CItemObject {
+//public:
+//	Active();
+//	Visible(); // only for NPC
+//	Condition();
+//	get_parent();
+//	get_mass();
+//	get_cost();
+//};
+//
+//class CAliveObject {
+//public:
+//	rank();
+//	health();
+//	activeweapon();
+//	equipment();
+//	asleep();
+//	zombied();
+//	checkifobjectvisible();
+//
+//};
+//
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }
 

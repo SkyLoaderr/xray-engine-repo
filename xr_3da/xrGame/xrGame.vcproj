@@ -2557,6 +2557,12 @@
 						RelativePath=".\ai_script.h">
 					</File>
 					<File
+						RelativePath=".\ai_script_classes.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_classes.h">
+					</File>
+					<File
 						RelativePath=".\ai_script_lua_debug.cpp">
 					</File>
 					<File
