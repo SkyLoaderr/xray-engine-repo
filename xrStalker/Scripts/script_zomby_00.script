@@ -1,6 +1,5 @@
 function main()
 
-	local actor   	= get_actor()
 	local stalker_zomby	= get_level_object("m_stalker_e0002")
 
 	local prof_zomby = sound_object("scripts\\stalker_prof\\prof_zomby")
@@ -13,7 +12,7 @@ function main()
 	action(
 		stalker_zomby,
 		  	move	(move.crouch, move.walk,move.line,patrol("way0006")),
-			anim	(anim.free),
+			anim	(anim.danger),
 			cond	(cond.time_end,10000000)
 		)
 	wait()

@@ -5,10 +5,10 @@ stalkers_already_saw_actor = false
 function main()
 
 
-	local stalker1	= get_level_object("m_stalker_e0000")
-	local stalker2	= get_level_object("m_stalker_e0001")
+	stalker1	= get_level_object("m_stalker_e0000")
+	stalker2	= get_level_object("m_stalker_e0001")
 
-	local actor   	= get_actor()
+	actor   	= get_actor()
 
 	local prof_kgm4 = sound_object("scripts\\stalker_prof\\prof_kgm4")
 	local prof_nashel_taynik_a = sound_object("scripts\\stalker_prof\\prof_nashel_taynik_a") 
