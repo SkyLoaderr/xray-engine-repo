@@ -123,7 +123,7 @@ extern "C" {
 		case CLSID_LEVEL:				P = new CLevel();				break;
 		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
 		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
-		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
+//		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
 //		case CLSID_EVENT:				P = new CCustomEvent();			break;
 		case CLSID_AI_HEN:				P = new CAI_Hen();				break;
 		case CLSID_AI_RAT:				P = new CAI_Rat();				break;

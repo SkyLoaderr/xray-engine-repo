@@ -151,6 +151,8 @@ void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 	P.w_u8				(s_squad);
 	P.w_u8				(s_group);
 }
+void	xrSE_Teamed::UPDATE_Read		(NET_Packet& P)	{};
+void	xrSE_Teamed::UPDATE_Write		(NET_Packet& P)	{};
 #ifdef _EDITOR
 void	xrSE_Teamed::FillProp			(LPCSTR pref, PropValueVec& values)
 {
