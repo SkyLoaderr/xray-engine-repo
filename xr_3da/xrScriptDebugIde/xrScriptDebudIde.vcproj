@@ -16,7 +16,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\..\..\executable\Release"
+			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="2"
@@ -44,12 +44,12 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CJ60Lib.lib core.lib standard.lib shlwapi.lib"
-				OutputFile="..\..\executable\Release/LuaIDE.exe"
+				AdditionalDependencies="cj60lib.lib"
+				OutputFile="x:\xrScriptDbgIde.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="..\..\library\release"
-				ProgramDatabaseFile=".\..\..\executable\Release/LuaIDE.pdb"
+				ProgramDatabaseFile="x:\xrScriptDbgIde.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool
@@ -110,13 +110,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="CJ60Libd.lib"
+				AdditionalDependencies="cj60lib.lib"
 				OutputFile="x:\xrScriptDbgIde.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=".\libs"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug\xrScriptDbgIde.pdb"
+				ProgramDatabaseFile="x:\xrScriptDbgIde.pdb"
 				SubSystem="2"
 				TargetMachine="1"/>
 			<Tool

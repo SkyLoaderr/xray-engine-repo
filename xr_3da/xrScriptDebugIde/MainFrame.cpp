@@ -207,7 +207,7 @@ BOOL CMainFrame::InitDockingWindows()
 	}
 
 	if (!m_wndWatches.Create(this, ID_VIEW_WATCHES,
-		_T("Local Variables"), CSize(200,100), CBRS_BOTTOM))
+		_T("Watches"), CSize(200,100), CBRS_BOTTOM))
 	{
 		TRACE0("Failed to create dialog bar m_wndWatches\n");
 		return -1;		// fail to create

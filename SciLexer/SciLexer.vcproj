@@ -24,7 +24,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include,..\src"
+				AdditionalIncludeDirectories=".\include"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -80,7 +80,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\../bin"
+			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -90,7 +90,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\include,..\src"
+				AdditionalIncludeDirectories=".\include"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SCI_LEXER"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -108,11 +108,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib imm32.lib comctl32.lib"
-				OutputFile=".\../bin/SciLexer.dll"
+				OutputFile="x:\SciLexer.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile=".\../bin/SciLexer.pdb"
-				ImportLibrary=".\../bin/SciLexer.lib"
+				ProgramDatabaseFile="x:\SciLexer.pdb"
+				ImportLibrary="x:\SciLexer.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
