@@ -33,6 +33,8 @@ float ffGetStartVolume(ESoundTypes eType)
 				return(.06f);
 			else if ((eType & SOUND_TYPE_MONSTER_TALKING) == SOUND_TYPE_MONSTER_TALKING)
 				return(.10f);
+			else if ((eType & SOUND_TYPE_MONSTER_ATTACKING_ANIMAL) == SOUND_TYPE_MONSTER_ATTACKING_ANIMAL)
+				return(.3f);
 		}
 		else
 			if ((eType & SOUND_TYPE_WORLD) == SOUND_TYPE_WORLD) {

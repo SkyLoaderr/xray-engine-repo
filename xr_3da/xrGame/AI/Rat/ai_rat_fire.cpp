@@ -18,7 +18,7 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
+			pSounds->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
 			DWORD dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
