@@ -112,14 +112,19 @@ void Startup(LPSTR     lpCmdLine)
 					if (xr_strlen(name))
 						name[xr_strlen(name) - 1] = 0;
 					char				*output = strstr(cmd,"-out");
+					string256			temp0, temp1;
 					if (output) {
 						output			+= xr_strlen("-out");
-						_TrimLeft		(output);
+						sscanf			(output,"%s",temp0);
+						_TrimLeft		(temp0);
+						output			= temp0;
 					}
 					char				*start = strstr(cmd,"-start");
 					if (start) {
 						start			+= xr_strlen("-start");
-						_TrimLeft		(start);
+						sscanf			(start,"%s",temp1);
+						_TrimLeft		(temp1);
+						start			= temp1;
 					}
 					xrMergeSpawns		(name,output,start);
 				}
