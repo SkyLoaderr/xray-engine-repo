@@ -37,7 +37,7 @@ extern "C" {
 
 		// generic
 		T->skin1W	= xrSkin1W_x86;
-		T->skin2W	= NULL;
+		T->skin2W	= xrSkin2W_x86;
 		T->blerp	= xrBoneLerp_x86;
 		T->m44_mul	= xrM44_Mul_x86;
 		T->transfer = xrTransfer_x86;
