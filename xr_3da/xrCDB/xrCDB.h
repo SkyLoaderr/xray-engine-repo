@@ -1,4 +1,4 @@
-
+#pragma once
 // The following ifdef block is the standard way of creating macros which make exporting 
 // from a DLL simpler. All files within this DLL are compiled with the XRCDB_EXPORTS
 // symbol defined on the command line. this symbol should not be defined on any project
@@ -15,20 +15,68 @@
 class CFrustum;
 class OPCODE_Model;
 
+#pragma pack(push,4)
 namespace CDB
 {
-	enum {
-		OPT_CULL		= (1<<0),
-		OPT_ONLYFIRST	= (1<<1),
-		OPT_ONLYNEAREST	= (1<<2)
+	// Allocators / Deallocators
+	template <class T>
+	IC T*	cl_alloc	(u32 count)
+	{
+		return (T*) HeapAlloc	(GetProcessHeap(),HEAP_GENERATE_EXCEPTIONS,count*sizeof(T));
+	}
+	template <class T>
+	IC void cl_free		(T* P)
+	{
+		HeapFree	(GetProcessHeap(),0,P);
+	}
+
+	// Triangle
+	class XRCDB_API TRI
+	{
+	public:
+		Fvector*	verts	[3];	// 3*4 = 12b
+		tri*		adj		[3];	// 3*4 = 12b	(24b)
+		WORD		material;		// 2b			(26b)
+		WORD		sector;			// 2b			(28b)
+		DWORD		dummy;			// 4b			(32b)
+		
+	public:		
+		IC Fvector&	V(int id)		{ return *(verts[id]); }
+		
+		IC DWORD*	IDverts()	{ return (DWORD*)	verts;	}
+		IC DWORD*	IDadj()		{ return (DWORD*)	adj;	}
+		IC void		convert_I2P(Fvector* pBaseV, tri* pBaseTri)	
+		{
+			DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
+			verts[0] = pBaseV+pVertsID[0];
+			verts[1] = pBaseV+pVertsID[1];
+			verts[2] = pBaseV+pVertsID[2];
+			DWORD*	pAdjID	= (DWORD*)	adj;	// as indexed form (take care about open-edges)
+			adj	 [0] = (0xffffffff==pAdjID[0])?0:pBaseTri+pAdjID[0];
+			adj	 [1] = (0xffffffff==pAdjID[1])?0:pBaseTri+pAdjID[1];
+			adj	 [2] = (0xffffffff==pAdjID[2])?0:pBaseTri+pAdjID[2];
+		}
+		IC void		convert_P2I(Fvector* pBaseV, tri* pBaseTri)	
+		{
+			DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
+			pVertsID[0] = verts[0]-pBaseV;
+			pVertsID[1] = verts[1]-pBaseV;
+			pVertsID[2] = verts[2]-pBaseV;
+			DWORD*	pAdjID	= (DWORD*)	adj;	// as indexed form (take care about open-edges)
+			pAdjID	[0]	= (adj[0])?adj[0]-pBaseTri:0xffffffff;
+			pAdjID	[1]	= (adj[1])?adj[1]-pBaseTri:0xffffffff;
+			pAdjID	[2]	= (adj[2])?adj[2]-pBaseTri:0xffffffff;
+		}
 	};
-	
+
+	// Model definition
 	class XRCDB_API MODEL
 	{
 		OPCODE_Model*	tree;
 	public:
 	};
 
+	// Collider result
 	class XRCDB_API RESULT
 	{
 	public:
@@ -37,6 +85,14 @@ namespace CDB
 		float		u,v;
 	};
 
+	// Collider Options
+	enum {
+		OPT_CULL		= (1<<0),
+		OPT_ONLYFIRST	= (1<<1),
+		OPT_ONLYNEAREST	= (1<<2)
+	};
+
+	// Collider itself
 	class XRCDB_API COLLIDER 
 	{
 		DWORD			ray_mode;
@@ -68,3 +124,4 @@ namespace CDB
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
 };
+#pragma pack(pop)	
