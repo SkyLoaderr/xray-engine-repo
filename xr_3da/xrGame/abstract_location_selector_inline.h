@@ -46,6 +46,8 @@ IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 	m_path					= 0;
 	dest_vertex_id			= 0;
 	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+	m_selector_manager		= dynamic_cast<CSelectorManager*>(this);
+	VERIFY					(m_selector_manager);
 }	
 
 TEMPLATE_SPECIALIZATION
@@ -61,9 +63,7 @@ IC	void CSelectorTemplate::set_evaluator	(_VertexEvaluator *evaluator)
 	m_evaluator				= evaluator;
 	if (!evaluator)
 		return;
-	CSelectorManager		*selector_manager = dynamic_cast<CSelectorManager*>(this);
-	VERIFY					(selector_manager);
-	selector_manager->init_selector(*evaluator);
+	m_selector_manager->init_selector(*evaluator);
 }
 
 TEMPLATE_SPECIALIZATION
