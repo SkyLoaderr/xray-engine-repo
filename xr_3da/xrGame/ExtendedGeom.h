@@ -1,7 +1,9 @@
 #ifndef EXTENDED_GEOM
 #define EXTENDED_GEOM
 #include "PHObject.h"
+#pragma warning(disable:4995)
 #include <ode/ode.h>
+#pragma warning(default:4995)
 
 enum Material 
 {

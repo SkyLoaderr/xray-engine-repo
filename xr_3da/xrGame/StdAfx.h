@@ -18,6 +18,7 @@
 
 #pragma warning( 4 : 4018 )
 #pragma warning( 4 : 4244 )
+#pragma warning(disable:4201)
 
 #include "clsid_game.h"
 
@@ -41,7 +42,9 @@
 //#define FUNCCALL __cdecl
 //#define _CALLING __cdecl
 
+#pragma warning(disable:4995)
 #include <ode/ode.h>
+#pragma warning(default:4995)
 
 #include "Level.h"
 #include "GameMtlLib.h"
