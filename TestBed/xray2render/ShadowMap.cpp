@@ -1424,6 +1424,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetPixelShader			(s_Filter_Bloom.ps);
 	m_pd3dDevice->SetVertexShader			(s_Filter_Bloom.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 
 	// Switch to BLOOM-2
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
@@ -1433,7 +1434,6 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	cc.flush								(m_pd3dDevice);
 
 	// Filter over-bright information to BLOOM-2
-	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
