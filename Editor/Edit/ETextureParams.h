@@ -87,30 +87,10 @@ struct STextureParams{
 };
 #pragma pack( pop )
 
-xr_token					tparam_token							[ ]={
-	{ "Box",				STextureParams::dMIPFilterBox				},
-	{ "Cubic",				STextureParams::dMIPFilterCubic				},
-	{ "Full DFT",			STextureParams::dMIPFilterFullDFT			},
-	{ "Kaiser",				STextureParams::dMIPFilterKaiser			},
-	{ "Linear light Kaiser",STextureParams::dMIPFilterLinearLightKaiser	},
-	{ "Advanced",			STextureParams::dMIPFilterAdvanced			},
-	{ 0,					0											}
-};
+xr_token	tparam_token[];
+xr_token	tfmt_token[];
 
-xr_token					tfmt_token						[ ]={
-	{ "DXT1",				STextureParams::tfDXT1				},
-	{ "DXT1 Alpha",			STextureParams::tfADXT1				},
-	{ "DXT3",				STextureParams::tfDXT3				},
-	{ "DXT5",				STextureParams::tfDXT5				},
-	{ "16 bit (4:4:4:4)",	STextureParams::tf4444				},
-	{ "16 bit (1:5:5:5)",	STextureParams::tf1555				},
-	{ "16 bit (5:6:5)",		STextureParams::tf565				},
-	{ "24 bit (8:8:8)",		STextureParams::tfRGB				},
-	{ "32 bit (8:8:8:8)",	STextureParams::tfRGBA				},
-	{ 0,					0									}
-};
-
-//----------------------------------------------------
+	//----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0011
 //----------------------------------------------------
 #define THM_CHUNK_VERSION				0x0810
