@@ -234,56 +234,55 @@ public:
 	virtual void						net_Export			( NET_Packet& P);				// export to server
 	virtual void						net_Import			( NET_Packet& P);				// import from server
 	virtual BOOL						net_Relevant		()	{ return getLocal(); };		// relevant for export to server
-	virtual	void						net_Relcase			( CObject* O );					//
+	virtual	void						net_Relcase			( CObject* O ) {};				//
 
-	virtual void			Die					( );
-	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
-	virtual void			HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
-	virtual	float			HitScale			(int element);
+	virtual void						Die					( );
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who);
+	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
+	virtual	float						HitScale			(int element);
 
-	virtual	float			ffGetFov			()			{ return 90.f;		}	
-	virtual	float			ffGetRange			()			{ return 500.f;		}
+	virtual	float						ffGetFov			()			{ return 90.f;		}	
+	virtual	float						ffGetRange			()			{ return 500.f;		}
 
 	// misc
-	virtual CWeaponList*	GetItemList			(){return Weapons;}
+	virtual CWeaponList*				GetItemList			(){return Weapons;}
 
 	// Fire control
-	virtual void			g_fireParams		(Fvector& P, Fvector& D);
-	virtual void			g_fireStart			( );
-	virtual void			g_fireEnd			( );
-	virtual BOOL			g_State				(SEntityState& state)
+	virtual void						g_fireParams		(Fvector& P, Fvector& D);
+	virtual void						g_fireStart			( );
+	virtual void						g_fireEnd			( );
+	virtual BOOL						g_State				(SEntityState& state)
 	{
 		state.bJump			= !!(mstate_real&mcJump);
 		state.bCrouch		= !!(mstate_real&mcCrouch);
 		state.fVelocity		= Movement.GetVelocityActual();
 		return TRUE;
 	}
-	virtual void			g_PerformDrop		( );
-	virtual void			g_WeaponBones		( int& L, int& R);
+	virtual void						g_PerformDrop		( );
+	virtual void						g_WeaponBones		( int& L, int& R);
 	
-	SRotation				Orientation()		{ return r_torso; };
+	SRotation							Orientation()		{ return r_torso; };
 
-	virtual void			OnMouseMove			(int x, int y);
-	virtual void			OnKeyboardPress		(int dik);
-	virtual void			OnKeyboardRelease	(int dik);
-	virtual void			OnKeyboardHold		(int dik);
+	virtual void						OnMouseMove			(int x, int y);
+	virtual void						OnKeyboardPress		(int dik);
+	virtual void						OnKeyboardRelease	(int dik);
+	virtual void						OnKeyboardHold		(int dik);
 
-	virtual void			Update				( u32 T ); 
-	virtual void			UpdateCL			( );
-	virtual void			OnVisible			( );
-	virtual void			OnEvent				( NET_Packet& P, u16 type		);
-	virtual void			OnDeviceCreate		( );
+	virtual void						Update				( u32 T ); 
+	virtual void						UpdateCL			( );
+	virtual void						OnVisible			( );
+	virtual void						OnEvent				( NET_Packet& P, u16 type		);
+	virtual void						OnDeviceCreate		( );
 
-	void					ZoneEffect			(float z_amount);
-
-	void					Statistic			( );
+	void								ZoneEffect			(float z_amount);
+	void								Statistic			( );
 
 	// HUD
-	virtual void			OnHUDDraw			(CCustomHUD* hud);
-	CWeaponList				*tpfGetWeapons		(){return Weapons;}
+	virtual void						OnHUDDraw			(CCustomHUD* hud);
+	CWeaponList*						tpfGetWeapons		()	{return Weapons;}
 
 #ifdef DEBUG
-	virtual void			OnRender			();
+	virtual void						OnRender			();
 #endif
 };
 
