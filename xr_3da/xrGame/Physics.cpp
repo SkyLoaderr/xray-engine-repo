@@ -1004,6 +1004,7 @@ dBodyEnable(m_body);
 }
 
 void CPHElement::			destroy	(){
+	dJointGroupDestroy(m_saved_contacts);
 	vector<dGeomID>::iterator i;
 
 
