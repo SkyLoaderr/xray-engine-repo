@@ -6,8 +6,8 @@ class ENGINE_API CEntity;
 #include "..\portal.h"
 
 namespace AI {
-	const float fuzzy_update_vis	= 2.0f;		// speed of fuzzy-logic desisions
-	const float fuzzy_update_novis	= 1.5f;		// speed of fuzzy-logic desisions
+	const float fuzzy_update_vis	= 1.0f;		// speed of fuzzy-logic desisions
+	const float fuzzy_update_novis	= 0.1f;		// speed of fuzzy-logic desisions
 	const float fuzzy_guaranteed	= 4.f;		// distance which is supposed 100% visible
 
 	class VisiTrack 

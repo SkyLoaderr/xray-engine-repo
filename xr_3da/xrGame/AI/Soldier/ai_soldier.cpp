@@ -207,14 +207,15 @@ bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 	
 	bool bCanKillMember = false;
 
-	for (int i=0, iTeam = g_Team(); i<tpaVisibleObjects.size(); i++) {
+	for (int i=0, iTeam = g_Team(), iSquad = g_Squad(), iGroup = g_Group(); i<tpaVisibleObjects.size(); i++) {
 		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
-		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
 			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
 				bCanKillMember = true;
 				break;
 			}
 	}
+	return(false);
 	return(bCanKillMember);
 }
 
@@ -223,11 +224,10 @@ IC bool CAI_Soldier::bfCheckIfCanKillEnemy()
 	Fvector tMyLook;
 	tMyLook.direct(r_current.yaw,r_current.pitch);
 	Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
-	tFireVector.x = tMyPosition.x - tEnemyPosition.x;
-	tFireVector.y = tMyPosition.y - tEnemyPosition.y;
-	tFireVector.z = tMyPosition.z - tEnemyPosition.z;
+	tFireVector.sub(tMyPosition,tEnemyPosition);
 	vfNormalizeSafe(tFireVector);
 	float fAlpha = acosf(tFireVector.dotproduct(tMyLook));
+	return(true);
 	return(fAlpha < FIRE_ANGLE);
 }
 
@@ -426,13 +426,13 @@ void CAI_Soldier::vfAimAtEnemy()
 	q_look.setup(
 		AI::AIC_Look::Look, 
 		AI::t_Object, 
-		&Enemy,
+		&Enemy.Enemy,
 		1000);
 	//setting turn speed
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-static BOOL __fastcall SoldierQualifier				(CObject* O, void* P)
+static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
@@ -456,13 +456,20 @@ void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
 			if (bfCheckIfCanKillEnemy())
 				if (!bfCheckIfCanKillMember(S,Leader))
 					q_action.setup(AI::AIC_Action::FireBegin);
-				else
+				else {
 					q_action.setup(AI::AIC_Action::FireEnd);
-			else
+					//Weapons->ActiveWeapon()->Reload();
+				}
+			else {
 				q_action.setup(AI::AIC_Action::FireEnd);
+				//Weapons->ActiveWeapon()->Reload();
+			}
 	}
-	else
+	else {
 		q_action.setup(AI::AIC_Action::FireEnd);
+		if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < 10))
+			Weapons->ActiveWeapon()->Reload();
+	}
 }
 
 void CAI_Soldier::vfSetMovementType(bool bCrouched, float fSpeed)
@@ -520,6 +527,8 @@ void CAI_Soldier::Attack()
 	}
 	if (Enemy.bVisible) {
 		
+		//Msg("soldier %d sees actor (time %d)",this,Level().timeServer());
+		
 		INIT_SQUAD_AND_LEADER;
 		
 		vfInitSelector(SelectorAttack,Squad,Leader);
@@ -572,9 +581,9 @@ void CAI_Soldier::Attack()
 		
 		vfAimAtEnemy();
 		
-		vfSetFire(true,SelectorFindEnemy,Leader);
+		vfSetFire(false,SelectorFindEnemy,Leader);
 		
-		vfSetMovementType(false,m_fMaxSpeed);
+		vfSetMovementType(true,m_fMaxSpeed);
 
 		bStopThinking = true;
 		return;

@@ -100,6 +100,7 @@ namespace AI {
 				I->fuzzy+=fuzzy_update_vis*dt;
 			}
 			clamp(I->fuzzy,-1.f,1.f);
+			//Msg("%s %2.5f",parent->cName(),I->fuzzy);
 		}
 		//o_dump();
 	}
