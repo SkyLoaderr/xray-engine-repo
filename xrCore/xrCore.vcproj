@@ -396,6 +396,9 @@
 					RelativePath="clsid.h">
 				</File>
 				<File
+					RelativePath=".\fastdelegate.h">
+				</File>
+				<File
 					RelativePath="xr_trims.cpp">
 				</File>
 				<File
