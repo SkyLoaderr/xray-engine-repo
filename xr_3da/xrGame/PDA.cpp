@@ -8,6 +8,7 @@
 #include "pda.h"
 #include "hudmanager.h"
 #include "PhysicsShell.h"
+#include "Entity.h"
 
 CPda::CPda(void) 
 {
@@ -73,6 +74,8 @@ void CPda::Load(LPCSTR section)
 	inherited::Load(section);
 
 	m_fRadius = pSettings->r_float(section,"radius");
+
+//	m_fRadius = 200.f;
 		
 }
 
@@ -152,8 +155,11 @@ void CPda::feel_touch_delete(CObject* O)
 BOOL CPda::feel_touch_contact(CObject* O) 
 {
 	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(O);
+	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
 
-	if(pInvOwner && pInvOwner->IsActivePDA() && pInvOwner->GetPDA()!=this) 
+	if(pInvOwner && pEntityAlive->g_Alive() && !pEntityAlive->getDestroy() &&
+	   pInvOwner->IsActivePDA() && pInvOwner->GetPDA()!=this &&
+	   !pInvOwner->GetPDA()->getDestroy()) 
 		return TRUE;
 	else
 		return FALSE;
