@@ -104,10 +104,18 @@
     
     
 	<!-- ECOLOG FLASH QUEST -->
-	<info_portion id="bar_get_research_start"></info_portion>    
-	<info_portion id="bar_get_research_gain"></info_portion>    
-	<info_portion id="bar_get_research_done"></info_portion>    
+	<info_portion id="bar_resque_research_start">
+		<task>bar_resque_information</task>
+	</info_portion> 
+	<info_portion id="bar_resque_research_gain"></info_portion>
+	<info_portion id="bar_resque_research_done"></info_portion>
+	<info_portion id="bar_resque_research_fail"></info_portion>
     
+    <!-- FREEDOM FLASH QUEST -->
+	<info_portion id="bar_get_research_start"></info_portion> 
+	<info_portion id="bar_get_research_gain"></info_portion>
+	<info_portion id="bar_get_research_done"></info_portion>
+	<info_portion id="bar_get_research_fail"></info_portion>
     
     
     

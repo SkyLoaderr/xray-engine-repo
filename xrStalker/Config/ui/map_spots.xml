@@ -47,6 +47,28 @@
 		<mini_map  spot="esc_wolf_spot" pointer="quest_pointer"></mini_map>
 	</esc_wolf_location>
 	
+<!-- bar rostok locations and spots -->
+	<bar_hunter_toz_location hint="bar_hunter_toz">
+		<level_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></mini_map>
+	</bar_hunter_toz_location>
+
+	<bar_ecolog_crush_location hint="bar_ecolog_crush_professor">
+		<level_map spot="bar_ecolog_crush_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_ecolog_crush_spot" pointer="quest_pointer"></mini_map>
+	</bar_ecolog_crush_location>
+
+	<!-- spots -->
+	<bar_hunter_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_hunter_rifle_spot>
+	
+	<bar_ecolog_crush_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="192" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_ecolog_crush_spot>
+
+
+
 	
 <!-- military locations and spots-->
 	<mil_max_location hint="mil_max">
@@ -75,6 +97,7 @@
     <mil_secret_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="128" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_secret_spot>
+
 
 	<mil_rg6_location hint="mil_rg6">
 		<level_map spot="mil_rg6_spot" pointer="quest_pointer"></level_map>
@@ -293,18 +316,5 @@
 	<mp_af_friend_mini_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="255" g="255" b="0"> ui\ui_map_arrow_02</texture>
 	</mp_af_friend_mini_pointer>	
-<!-- bar locations -->
-	<bar_hunter_toz_location hint="hunter's_rifle">
-		<level_map spot="hunter_rifle_spot" pointer="quest_pointer"></level_map>
-		<mini_map spot="hunter_rifle_spot" pointer="quest_pointer"></mini_map>
-        </bar_hunter_toz_location>
-
-
-
-<!-- bar spots -->
-	<hunter_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
-                <texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
-        </hunter_rifle_spot>
-
 
 </map_spots>
