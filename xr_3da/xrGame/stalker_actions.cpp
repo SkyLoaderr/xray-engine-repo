@@ -394,6 +394,15 @@ void CStalkerActionGetEnemySeen::execute	()
 #else
 		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 #endif
+
+	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
+		if (m_object->Position().similar(mem_object.m_object_params.m_position,.5f))
+			m_object->CMemoryManager::enable	(m_object->enemy(),false);
+	}
+	else
+		if ((mem_object.m_object_params.m_level_vertex_id == m_object->level_vertex_id()) || 
+			 (m_object->Position().distance_to_xz(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id)) < ai().level_graph().header().cell_size() * 1.5f))
+				m_object->CMemoryManager::enable	(m_object->enemy(),false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -410,7 +419,7 @@ void CStalkerActionGetItemToKill::initialize	()
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
 	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,5000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_item_to_kill->Position(),false)));
 	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
@@ -443,7 +452,7 @@ void CStalkerActionGetItemToKill::execute	()
 //	m_object->setup					(SightManager::eSightTypeSearch);
 
 	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
-	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->enemy()->Position());
+	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);
 #else
