@@ -30,10 +30,11 @@ private:
 	u64								m_qwMaxProcessTime;
 	float							m_fOnlineDistance;
 	u32								m_dwSwitchDelay;
+	xrServer						*m_tpServer;
+	bool							m_bActorEnabled;
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
-	xrServer						*m_tpServer;
 
 	// temporary buffer for object being switched offline children
 	OBJECT_VECTOR					m_tpChildren;
@@ -45,7 +46,7 @@ private:
 	void							vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	// surge
 	void							vfGenerateAnomalousZones	();
-	void							vfGenerateArtefacts			();
+	void							vfGenerateAnomalyMap		();
 	void							vfSellArtefacts				(CSE_ALifeTrader			&tTrader);
 	void							vfUpdateArtefactOrders		(CSE_ALifeTrader			&tTrader);
 	void							vfGiveMilitariesBribe		(CSE_ALifeTrader			&tTrader);
@@ -85,6 +86,7 @@ public:
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfReleaseObject				(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfNewGame					();
+			void					vfPerformSurge				();
 			void					vfRemoveObject				(CSE_Abstract				*tpSE_Abstract);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

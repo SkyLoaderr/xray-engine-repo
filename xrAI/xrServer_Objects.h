@@ -21,21 +21,21 @@
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
-// 10 - xrSE_ALifeObjectPhysic		append 	'fixed_bone'
-// 11 - xrSE_ALifeObjectHangingLamp	append 	'spot_brightness'
-// 12 - xrSE_ALifeObjectHangingLamp	append 	'flags'
-// 13 - xrSE_ALifeObjectHangingLamp	append 	'mass'
-// 14 - xrSE_ALifeObjectPhysic		append 	inherited from CSE_ALifeObject
-// 15 - xrSE_ALifeAnomalousZone		append 	inherited calls from CSE_ALifeDynamicObject
-// 16 - xrSE_ALifeObjectPhysic		append 	inherited from CSE_ALifeDynamicObject
-// 17 - xrSE_...					append 	inherited from CSE_Visual for smart Level Editor
-// 18 - xrSE_ALifeObjectHangingLamp  append 	'startup_animation'
+// 10 - xrSE_ALifeObjectPhysic		appended 'fixed_bone'
+// 11 - xrSE_ALifeObjectHangingLamp	appended 'spot_brightness'
+// 12 - xrSE_ALifeObjectHangingLamp	appended 'flags'
+// 13 - xrSE_ALifeObjectHangingLamp	appended 'mass'
+// 14 - xrSE_ALifeObjectPhysic		appended inherited from CSE_ALifeObject
+// 15 - xrSE_ALifeAnomalousZone		appended inherited calls from CSE_ALifeDynamicObject
+// 16 - xrSE_ALifeObjectPhysic		appended inherited from CSE_ALifeDynamicObject
+// 17 - xrSE_...					appended inherited from CSE_Visual for smart Level Editor
+// 18 - xrSE_ALifeObjectHangingLamp appended 'startup_animation'
 // 19 - xrSE_Teamed					didn't save health parameter
 // 20 - xrSE_ALife...				saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
 // 21 -	GLOBAL CLASS HIERARCHY UPDATE
-// 22 - CSE_AnomalousZone			append artefact spawns
-// 23 - CSE_ALifeObject				append spawn ID
-// 24 - CSE_ALifeObject				append group control
+// 22 - CSE_AnomalousZone			appended artefact spawns
+// 23 - CSE_ALifeObject				appended spawn ID
+// 24 - CSE_ALifeObject				appended group control
 // 25 - CSE_ALifeObject				changed type of the property probability from u8 to float
 //------------------------------------------------------------------------------
 

@@ -312,3 +312,34 @@ void CSE_ALifeItemDetector::FillProp		(LPCSTR pref, PropItemVec& items)
   	inherited::FillProp			(pref,items);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemDetector
+////////////////////////////////////////////////////////////////////////////
+void CSE_ALifeItemArtefact::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeItemArtefact::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemArtefact::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeItemArtefact::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+	PHelper.CreateFLOAT			(items, PHelper.PrepareKey(pref, s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
+}
+#endif

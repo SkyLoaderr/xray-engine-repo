@@ -135,7 +135,7 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	for (u32 i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = getAI().fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);

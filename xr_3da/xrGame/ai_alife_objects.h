@@ -21,11 +21,12 @@ public:
 	_TIME_ID						m_tNextSurgeTime;
 	u32								m_dwStartTime;
 	float							m_fTimeFactor;
+	u64								m_qwStartProcessorCycle;
 
 	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		m_tGameTime					= tfGetGameTime();
-		m_dwStartTime				= Device.dwTimeGlobal;
+		m_dwStartTime				= Device.TimerAsync();
 		tMemoryStream.open_chunk	(GAME_TIME_CHUNK_DATA);
 		tMemoryStream.w				(&m_tGameTime,		sizeof(m_tGameTime));
 		tMemoryStream.w				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
@@ -39,21 +40,22 @@ public:
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.r				(&m_tLastSurgeTime,	sizeof(m_tLastSurgeTime));
 		m_fTimeFactor				= tFileStream.r_float();
-		m_dwStartTime				= Device.dwTimeGlobal;
+		m_qwStartProcessorCycle		= CPU::GetCycleCount();
+		m_dwStartTime				= Device.TimerAsync();
 	};
 	
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 	IC void							vfSetTimeFactor(float fTimeFactor)
 	{
 		m_tGameTime					= tfGetGameTime();
-		m_dwStartTime				= Device.dwTimeGlobal;
+		m_dwStartTime				= Device.TimerAsync();
 		m_fTimeFactor				= fTimeFactor;
 	};
 #endif
 
 	IC _TIME_ID						tfGetGameTime()
 	{
-		return						(m_tGameTime + iFloor(m_fTimeFactor*float(Device.dwTimeGlobal - m_dwStartTime)));
+		return						(m_tGameTime + iFloor(m_fTimeFactor*float(Device.TimerAsync() - m_dwStartTime)));
 	};
 };
 

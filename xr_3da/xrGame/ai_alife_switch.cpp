@@ -14,6 +14,7 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 {
 	NET_Packet						tNetPacket;
 	
+	m_tpServer->entity_Destroy		(tpALifeDynamicObject);
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
 	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
@@ -30,6 +31,7 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 			if (!tpItem)
 				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
+			m_tpServer->entity_Destroy(tpItem);
 //.			Msg("ALife : Spawning item %s",tpItem->s_name_replace);
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
@@ -42,6 +44,7 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 {
 	//VERIFY(tpALifeDynamicObject->ID_Parent == 0xffff);
 	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
+	m_tpServer->PerformIDgen		(tpALifeDynamicObject->ID);
 	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
 		m_tpChildren				= tpALifeDynamicObject->children;
@@ -53,6 +56,9 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 				continue;
 //.			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
 			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
+			_OBJECT_ID				l_tObjectID = tpItem->ID;
+			tpItem->ID				= m_tpServer->PerformIDgen(tpItem->ID);
+			R_ASSERT2				(tpItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
 			tpItem->m_bOnline		= false;
 		}
 		//tpALifeDynamicObject->children = m_tpChildren;
@@ -86,7 +92,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 		vfCreateObject					(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= true;
-//.	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+//.	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -110,7 +116,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 				tpALifeMonsterAbstract->m_tNextGraphID	= tpALifeMonsterAbstract->m_tGraphID;
 				u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tNeighbourCount;
 				CSE_ALifeGraph::SGraphEdge			*tpaEdges		= (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
-				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[::Random.randI(0,wNeighbourCount)].dwVertexNumber);
+				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[randI(0,wNeighbourCount)].dwVertexNumber);
 			}
 			vfReleaseObject			((*J).second);
 			I++;
@@ -125,7 +131,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 		vfReleaseObject				(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= false;
-//.	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+//.	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
@@ -145,7 +151,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
 				if (!tpALifeAbstractGroup) {
 					if (m_tpActor->o_Position.distance_to(I->o_Position) > m_fOnlineDistance) {
-						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+						if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
 							vfSwitchObjectOffline(I);
 					}
 					else
@@ -172,7 +178,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 									dwCount++;
 					}
 					if (tpALifeAbstractGroup->m_tpMembers.size() && (dwCount == tpALifeAbstractGroup->m_tpMembers.size())) {
-						if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+						if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
 							vfSwitchObjectOffline(I);
 					}
 					else
@@ -180,7 +186,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				}
 			}
 			else
-				I->m_dwLastSwitchTime = Device.dwTimeGlobal;
+				I->m_dwLastSwitchTime = Device.TimerAsync();
 		}
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
@@ -198,14 +204,14 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 					return;
 				
 				if (m_tpActor->o_Position.distance_to(I->o_Position) <= m_fOnlineDistance) {
-					if (Device.dwTimeGlobal -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+					if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
 						vfSwitchObjectOnline(I);
 				}
 				else
 					I->m_dwLastSwitchTime = 0;
 			}
 			else
-				I->m_dwLastSwitchTime = Device.dwTimeGlobal;
+				I->m_dwLastSwitchTime = Device.TimerAsync();
 		}
 		else {
 			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
@@ -228,9 +234,9 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0)) {
 		ALIFE_MONSTER_P_IT	i = m_tpScheduledObjects.begin();
 		ALIFE_MONSTER_P_IT	e = m_tpScheduledObjects.end();
-		_OBJECT_ID			tObjectID = tpALifeMonsterAbstract->m_tObjectID;
+		_OBJECT_ID			tObjectID = tpALifeMonsterAbstract->ID;
 		for ( ; i != e; i++)
-			if ((*i)->m_tObjectID == tObjectID) {
+			if ((*i)->ID == tObjectID) {
 				if ((m_tpScheduledObjects.begin() + m_dwObjectsBeingProcessed) == m_tpScheduledObjects.end())
 					m_dwObjectsBeingProcessed--;
 				m_tpScheduledObjects.erase(i);

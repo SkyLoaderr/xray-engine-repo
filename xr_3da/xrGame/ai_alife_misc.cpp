@@ -57,7 +57,7 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 					if (getAI().bfCheckMask(tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
 						tpALifeMonsterAbstract->m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 						tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
-						//m_dwTimeToChange	= Level().timeServer() + ::Random.randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
+						//m_dwTimeToChange	= Level().timeServer() + randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
 						bOk = true;
 						break;
 					}
@@ -66,7 +66,7 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 			}
 		}
 		else {
-			int iChosenBranch = ::Random.randI(0,iBranches);
+			int iChosenBranch = randI(0,iBranches);
 			iBranches = 0;
 			for (int i=0; i<wNeighbourCount; i++)
 				if (tpaEdges[i].dwVertexNumber != tpALifeMonsterAbstract->m_tPrevGraphID) {
@@ -75,7 +75,7 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 							if (iBranches == iChosenBranch) {
 								tpALifeMonsterAbstract->m_tNextGraphID	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
 								tpALifeMonsterAbstract->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
-								//m_dwTimeToChange	= Level().timeServer() + ::Random.randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
+								//m_dwTimeToChange	= Level().timeServer() + randI(tpaTerrain[j].dwMinTime,tpaTerrain[j].dwMaxTime);
 								bOk = true;
 								break;
 							}
@@ -131,7 +131,7 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &CSE_Abstract, _GRAPH_ID tG
 	//DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	bool bOk = false;
 	for (int I=0; I<(int)m_tpGraphObjects[tGraphID].tpObjects.size(); I++) {
-		u16 wID = m_tpGraphObjects[tGraphID].tpObjects[I]->m_tObjectID;
+		u16 wID = m_tpGraphObjects[tGraphID].tpObjects[I]->ID;
 		OBJECT_PAIR_IT	i = m_tObjectRegistry.find(wID);
 		VERIFY(i != m_tObjectRegistry.end());
 		CSE_ALifeDynamicObject *tpALifeDynamicObject = (*i).second;
@@ -206,7 +206,7 @@ void CSE_ALifeSimulator::vfCommunicateWithTrader(CSE_ALifeHumanAbstract *tpALife
 //	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //	if (!tpTrader->m_tpTaskIDs.size()) {
-//		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2),true);
+//		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + randI(m_tpSpawnPoints.size() - 2),true);
 //		vfCreateNewTask				(tpTrader);
 //	}
 //	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

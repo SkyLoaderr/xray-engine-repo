@@ -83,4 +83,13 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 	};
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
+	float							m_fAnomalyValue;
+
+									CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+	{
+		m_fAnomalyValue				= 100.f;
+	};
+SERVER_ENTITY_DECLARE_END
+
 #endif

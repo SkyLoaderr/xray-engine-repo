@@ -6,6 +6,7 @@ void	game_sv_Single::Create			(LPCSTR options)
 	m_bALife			= !!strstr(options,"/alife");
 	switch_Phase		(GAME_PHASE_PENDING);
 }
+
 CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
 {
 	if (m_tpALife) {

@@ -19,18 +19,7 @@ void CSE_ALifeSimulator::Update			(u32 dt)
 	
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
-			vfGenerateArtefacts			();
-			TRADER_P_IT					I = m_tpTraders.begin();
-			TRADER_P_IT					E = m_tpTraders.end();
-			for ( ; I != E; I++) {
-				vfSellArtefacts			(**I);
-				vfUpdateArtefactOrders	(**I);
-				vfGiveMilitariesBribe	(**I);
-				vfBuySupplies			(**I);
-				vfAssignPrices			(**I);
-			}
-			vfBallanceCreatures			();
-			vfUpdateCreatures			();
+			vfPerformSurge				();
 			Save						();
 			m_tLastSurgeTime			= tfGetGameTime();
 			m_tNextSurgeTime			= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds

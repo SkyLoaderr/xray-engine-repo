@@ -10,6 +10,7 @@ game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
+
 game_PlayerState*	game_sv_GameState::get_id					(u32 id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
@@ -303,7 +304,7 @@ void				game_sv_GameState::spawn_end				(CSE_Abstract* E, u32 id)
 void game_sv_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 {
 	P.w_begin	(M_EVENT);
-	P.w_u32		(Device.dwTimeGlobal);
+	P.w_u32		(Device.TimerAsync());
 	P.w_u16		(type);
 	P.w_u16		(dest);
 }

@@ -15,18 +15,18 @@
 
 float CDistanceFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = getAI().m_tpCurrentMember->Position().distance_to(getAI().m_tpCurrentEnemy->Position()));
 }
 
 float CPersonalHealthFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	m_fMaxResultValue = getAI().m_tpCurrentMember->g_MaxHealth();
 	return(m_fLastValue = getAI().m_tpCurrentMember->g_Health());
@@ -34,18 +34,18 @@ float CPersonalHealthFunction::ffGetValue()
 
 float CPersonalMoraleFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = getAI().m_tpCurrentMember->m_fMorale);
 }
 
 float CPersonalCreatureTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
 		case CLSID_AI_RAT				: {
@@ -194,9 +194,9 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 
 float CPersonalWeaponTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	switch (getAI().m_tpCurrentMember->SUB_CLS_ID) {
 		case CLSID_AI_RAT				: {
@@ -296,45 +296,45 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 
 float CPersonalAccuracyFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = getAI().m_tpCurrentMember->m_fAccuracy);
 }
 
 float CPersonalIntelligenceFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
 }
 
 float CPersonalRelationFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = 0);
 }
 
 float CPersonalGreedFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = 0);
 }
 
 float CPersonalAggressivenessFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentMember;
 	return(m_fLastValue = 0);
 }
@@ -342,9 +342,9 @@ float CPersonalAggressivenessFunction::ffGetValue()
 // enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
@@ -355,9 +355,9 @@ float CEnemyHealthFunction::ffGetValue()
 
 float CEnemyCreatureTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
@@ -368,9 +368,9 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 
 float CEnemyWeaponTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_dwLastUpdate = Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
@@ -381,9 +381,9 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 
 float CEnemyEquipmentCostFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_dwLastUpdate	= Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	m_fLastValue	= 0;
 	return			(m_fLastValue);
@@ -391,9 +391,9 @@ float CEnemyEquipmentCostFunction::ffGetValue()
 
 float CEnemyRukzakWeightFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_dwLastUpdate	= Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	CInventoryOwner* tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpLastMonster);
 	if (tpInventoryOwner)
@@ -405,9 +405,9 @@ float CEnemyRukzakWeightFunction::ffGetValue()
 
 float CEnemyAnomalityFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.TimerAsync()) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_dwLastUpdate	= Device.TimerAsync();
 	m_tpLastMonster = getAI().m_tpCurrentEnemy;
 	m_fLastValue	= 0;
 	return			(m_fLastValue);

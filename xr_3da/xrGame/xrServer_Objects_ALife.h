@@ -77,7 +77,7 @@ class CSE_ALifeObject : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
 	_CLASS_ID						m_tClassID;
-	_OBJECT_ID						m_tObjectID;
+	_OBJECT_ID						ID;
 	_GRAPH_ID						m_tGraphID;
 	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;
@@ -93,7 +93,7 @@ public:
 		m_bOnline					= false;
 		m_fDistance					= 0.0f;
 		m_tClassID					= _CLASS_ID(-1);
-		m_tObjectID					= _OBJECT_ID(-1);
+		ID							= _OBJECT_ID(-1);
 		m_tGraphID					= _GRAPH_ID(-1);
 		m_tGraphID					= _SPAWN_ID(-1);
 		m_fProbability				= 1.f;
@@ -247,6 +247,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	u16								m_wItemCount;
 	u32								*m_dwaWeights;
 	string64						*m_cppArtefactSections;
+	u16								m_wArtefactSpawnCount;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();

@@ -82,7 +82,7 @@ public:
 			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 			tpALifeDynamicObject->Init(tpALifeDynamicObject->s_name);
 
-			m_tObjectRegistry.insert(std::make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
+			m_tObjectRegistry.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 		}
 	};
 
@@ -103,7 +103,7 @@ public:
 				}
 				case eTaskTypeSearchForItemOL :
 				case eTaskTypeSearchForItemOG : {
-					if (m_tObjectRegistry[*I]->m_tObjectID == tPersonalTask.m_tObjectID)
+					if (m_tObjectRegistry[*I]->ID == tPersonalTask.m_tObjectID)
 						return(true);
 					break;
 				}
@@ -410,12 +410,26 @@ public:
 	typedef CSE_ALifeSpawnHeader inherited;
 	
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
+	FVECTOR_VECTOR					m_tpArtefactSpawnPositions;
+	FVECTOR_VECTOR					m_tpMonsterDeathPositions;
+
+									CSE_ALifeSpawnRegistry()
+	{
+		m_tpSpawnPoints.clear		();
+		m_tpArtefactSpawnPositions.clear();
+		m_tpMonsterDeathPositions.clear();
+	}
 	
 	virtual							~CSE_ALifeSpawnRegistry()
 	{
 		free_vector					(m_tpSpawnPoints);
 	};
 	
+	virtual void					Init()
+	{
+		free_vector					(m_tpSpawnPoints);
+	}
+
 	virtual void					Load(IReader	&tFileStream)
 	{
 		inherited::Load				(tFileStream);
@@ -452,6 +466,30 @@ public:
 
 			R_ASSERT2				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY),"Invalid game type!");
 			R_ASSERT2				((*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)) != 0,"Non-ALife object in the 'game.spawn'");
+		}
+		{
+			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
+			u16						n = S->r_u16();
+			m_tpArtefactSpawnPositions.resize(n);
+			FVECTOR_IT				I = m_tpArtefactSpawnPositions.begin();
+			FVECTOR_IT				E = m_tpArtefactSpawnPositions.end();
+			for ( ; I != E; I++) {
+				(*I).x				= S->r_float();
+				(*I).y				= S->r_float();
+				(*I).z				= S->r_float();
+			}
+		}
+		{
+			R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find monster death points chunk in the 'game.spawn'");
+			u16						n = S->r_u16();
+			m_tpMonsterDeathPositions.resize(n);
+			FVECTOR_IT				I = m_tpMonsterDeathPositions.begin();
+			FVECTOR_IT				E = m_tpMonsterDeathPositions.end();
+			for ( ; I != E; I++) {
+				(*I).x				= S->r_float();
+				(*I).y				= S->r_float();
+				(*I).z				= S->r_float();
+			}
 		}
 	};
 };
