@@ -199,15 +199,17 @@ void			CLight_DB::Update()
 //	sun_color.lerp			(sun_color,sun_color_base,.5f);
 
 	// move point lights
-	float t					= Device.fTimeGlobal;
-	for (u32 l=0; l<v_static.size(); l++)
 	{
-		light*  T	= v_static[ID];
-		if (0==T)	continue;
+		float t					= Device.fTimeGlobal;
+		for (u32 l=0; l<v_static.size(); l++)
+		{
+			light*  T	= v_static[ID];
+			if (0==T)	continue;
 
-		Fvector move;
-		move.set		(_sin(t*.1f),_sin(t*.5f),_cos(t*.1f));
-		move.mul		(.05f);
-		T->sphere.P.add	(move);
+			Fvector move;
+			move.set		(_sin(t*.1f),_sin(t*.5f),_cos(t*.1f));
+			move.mul		(.05f);
+			T->sphere.P.add	(move);
+		}
 	}
 }
