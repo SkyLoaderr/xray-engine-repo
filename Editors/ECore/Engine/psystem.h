@@ -22,8 +22,8 @@
 	#define P_MAXINT	0x7fffffff
 #endif
 
-#define drand48() (((float) rand())/((float) RAND_MAX))
-#define srand48(x) srand(x)
+#define drand48()		::Random.randF()
+//#define srand48(x)	srand(x)
 
 namespace PAPI{
 	class pVector	: public Fvector
