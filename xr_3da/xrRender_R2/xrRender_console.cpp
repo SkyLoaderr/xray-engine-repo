@@ -43,7 +43,8 @@ float		ps_r2_ssaHZBvsTEX			= 256.f;
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_FASTBLOOM | R2FLAG_AA };	// r2-only
 float		ps_r2_df_parallaxh			= 0.02f;
 float		ps_r2_ls_dynamic_range		= 2.f;	// r2-only
-float		ps_r2_ls_bloom_kernel		= 3.3f;	// r2-only
+float		ps_r2_ls_bloom_kernel_g		= 3.3f;	// r2-only
+float		ps_r2_ls_bloom_kernel_b		= .6f;	// r2-only
 float		ps_r2_ls_dsm_kernel			= .7f;	// r2-only
 float		ps_r2_ls_psm_kernel			= .7f;	// r2-only
 float		ps_r2_ls_ssm_kernel			= .7f;	// r2-only
@@ -126,10 +127,9 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ls_spower",			&ps_r2_ls_spower,			1.f,	512.f	);
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN		);
 	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY		);
-	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF	);
 
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
-	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
+	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.3f,	0.7f	);
 
 	CMD3(CCC_Mask,		"r2_gi",				&ps_r2_ls_flags,			R2FLAG_GI);
 	CMD4(CCC_Float,		"r2_gi_clip",			&ps_r2_GI_clip,				EPS_L,	0.1f	);
