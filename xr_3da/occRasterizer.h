@@ -26,10 +26,6 @@ private:
 	float			bufDepth1	[occ_dim1][occ_dim1];
 	float			bufDepth2	[occ_dim2][occ_dim2];
 	float			bufDepth3	[occ_dim3][occ_dim3];
-private:
-	void			i_order		(float* a, float* b, float* c);
-	// void			i_scan		(int curY, float startX, float endX, float startZ, float endZ, occTri* T);
-	// void			i_section	(float* a, float* b, float* c, occTri* T, int id);
 public:
 	void			clear		();
 	void			propagade	();
@@ -41,5 +37,7 @@ public:
 	occRasterizer	();
 	~occRasterizer	();
 };
+
+extern occRasterizer	Raster;
 
 #endif // !defined(AFX_OCCRASTERIZER_H__3739AF97_E2A7_4740_B8C2_6EEB0F8CB66D__INCLUDED_)

@@ -3,7 +3,7 @@
 
 const int BOTTOM = 0, TOP = 1;
 
-void occRasterizer::i_order	(float* A, float* B, float* C)
+void i_order	(float* A, float* B, float* C)
 {
 	float *min, *max, *mid;
 	float t1[3],t2[3],t3[3];
