@@ -18,7 +18,7 @@ function artifact_merge(merger)
 	if merger:get_mercury_ball_num()==2 and 
 	   merger:get_black_drops_num()==1  then
 			merger:destroy_mercury_ball(2)
-			destroy_black_drops_num()(1)
+			merger:destroy_black_drops_num(1)
 	end 
 end
 
