@@ -8,11 +8,6 @@
 
 #include "stdafx.h"
 #include "level_graph.h"
-#ifndef AI_COMPILER
-	#include "ai_space.h"
-#endif
-
-#include "graph_engine.h"
 
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
@@ -77,6 +72,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
+#endif
 
 	u32						id;
 
@@ -86,7 +82,9 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #ifdef _DEBUG
 			//Msg					("%6d No search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
 #endif
+#ifndef AI_COMPILER
 			Device.Statistic.AI_Node.End();
+#endif
 			return				(current_node_id);
 		}
 
@@ -98,7 +96,9 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #endif
 		u32						_vertex_id = vertex_id(position);
 		if (valid_vertex_id(_vertex_id)) {
+#ifndef AI_COMPILER
 			Device.Statistic.AI_Node.End();
+#endif
 			return				(_vertex_id);
 		}
 	}
@@ -111,7 +111,9 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #endif
 		id					= vertex(position);
 		VERIFY				(valid_vertex_id(id));
+#ifndef AI_COMPILER
 		Device.Statistic.AI_Node.End();
+#endif
 		return				(id);
 	}
 	// so, our position is outside the level graph bounding box
@@ -122,11 +124,11 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 #ifdef _DEBUG
 	//Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
 #endif
-	SContour			contour;
+	SContour			_contour;
 	Fvector				point;
 	u32					best_vertex_id = current_node_id;
-	ai().level_graph().contour(contour,current_node_id);
-	ai().level_graph().nearest(point,position,contour);
+	contour				(_contour,current_node_id);
+	nearest				(point,position,_contour);
 	float				best_distance_sqr = position.distance_to_sqr(point);
 	const_iterator		i,e;
 	begin				(current_node_id,i,e);
@@ -135,8 +137,8 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		if (!valid_vertex_id(level_vertex_id))
 			continue;
 
-		ai().level_graph().contour(contour,level_vertex_id);
-		ai().level_graph().nearest(point,position,contour);
+		contour			(_contour,level_vertex_id);
+		nearest			(point,position,_contour);
 		float			distance_sqr = position.distance_to_sqr(point);
 		if (best_distance_sqr > distance_sqr) {
 			best_distance_sqr	= distance_sqr;
@@ -144,11 +146,10 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		}
 	}
 
+#ifndef AI_COMPILER
 	Device.Statistic.AI_Node.End();
-	return					(best_vertex_id);
-#else
-	return					(current_node_id);
 #endif
+	return					(best_vertex_id);
 }
 
 struct SSortNodesPredicate1 {
