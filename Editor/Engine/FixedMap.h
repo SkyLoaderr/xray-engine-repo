@@ -1,3 +1,6 @@
+#ifndef _FIXEDMAP_H
+#define _FIXEDMAP_H
+
 #pragma once
 
 #ifndef SG_REALLOC_ADVANCE
@@ -234,3 +237,4 @@ public:
 			CB(nodes+i);
 	}
 };
+#endif
