@@ -114,5 +114,8 @@ void	CBuild::xrPhase_UVmap()
 	}
 	Msg("%d subdivisions...",g_XSplit.size());
 
-
+	// Memory compact
+	vec2Face	temp	= g_XSplit;
+	g_XSplit.clear		();
+	g_XSplit			= temp;
 }
