@@ -25,6 +25,9 @@ resource		= 6000
 cam_relax_speed          = 8
 cam_dispersion           = 2
 cam_max_angle		     = 5
+cam_horz_prob				= 0.25	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
+cam_horz_factor				= 1		;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
+
 
 fire_dispersion_base	 = 0.12
 
@@ -44,8 +47,6 @@ inv_grid_x			= 12
 inv_grid_y			= 2
 
 
-;cam_relax               = 0.37
-;cam_dispersion          = 2
 direction                = 0, 0, 1
 shell_point				 = 0.05, 0.14, 0.07
 fire_point               = 0.0, 0.2, 0.83
