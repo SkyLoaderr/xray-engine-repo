@@ -97,11 +97,6 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
 			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
-#ifndef _EDITOR
-			C.r_Constant		("L_dynamic_pos",	&RImplementation.r1_dlight_binder_PR);
-			C.r_Constant		("L_dynamic_color",	&RImplementation.r1_dlight_binder_color);
-			C.r_Constant		("L_dynamic_xform",	&RImplementation.r1_dlight_binder_xform);
-#endif
 			C.r_End				();
 			break;
 		case SE_R1_LMODELS:

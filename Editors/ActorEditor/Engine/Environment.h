@@ -102,7 +102,7 @@ public:
     void					OnDeviceDestroy		();
 
     void					SetWeather			(LPCSTR name);
-    LPCSTR					GetWeather			(){return CurrentWeatherName;}
+    LPCSTR					GetWeather			(){return *CurrentWeatherName;}
 
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
