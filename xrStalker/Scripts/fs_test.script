@@ -1,7 +1,8 @@
 
 function main()
 
-	local fs_list = getFS():file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.*")
+	local f = getFS()
+	local fs_list = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.*")
 	local sz = fs_list:Size()
 	
 	printf("---not sorted")
