@@ -1,5 +1,20 @@
-function main ()
 
+function add_random_phrases(npc)
+	npc:add_random_phrase(
+		[[monsters\Stalker\Humming\em1_humming1]], 14000,
+		[[monsters\Stalker\Humming\em1_humming2]], 6000,
+		[[monsters\Stalker\Humming\em1_humming3]], 7000,
+		[[monsters\Stalker\Humming\em1_humming4]], 4000,
+		[[monsters\Stalker\Humming\em1_humming5]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle1]], 7000,
+		[[monsters\Stalker\Humming\em1_whistle2]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle3]], 3000,
+		[[monsters\Stalker\Humming\em1_whistle4]], 7000,
+		[[monsters\Stalker\Humming\em1_whistle5]], 4000)
+	npc:set_phrase_interval(5000, 10000)
+end
+
+function main ()
 	printf ("call military3_7");
 	local anim_razv = classes.AnimationSet (1)
 	anim_razv:add_animation ("stoya_ruje_ 0", true)
@@ -24,6 +39,15 @@ function main ()
 	local bredun7 = classes.SinglePatrol (get_level_object ("stalker_ptr24"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 	local bredun8 = classes.SinglePatrol (get_level_object ("stalker_ptr25"), military3_7.script_name (), "patrol_way1", anim_razv, anim_end)
 
+	add_random_phrases(bredun1)
+	add_random_phrases(bredun2)
+	add_random_phrases(bredun3)
+	add_random_phrases(bredun4)
+	add_random_phrases(bredun5)
+	add_random_phrases(bredun6)
+	add_random_phrases(bredun7)
+	add_random_phrases(bredun8)
+	
 	local old_time = game.time ()
 	local played = false
 
