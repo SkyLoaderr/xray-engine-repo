@@ -14,6 +14,7 @@ CUI_Camera::CUI_Camera(){
 	m_Zfar = 1500.f;
     m_HPB.set(0,0,0);
     m_Position.set(0,0,0);
+    m_Target.set(0,0,0);
     m_CamMat.identity();
 
 	m_FlySpeed = 5.f;
@@ -23,6 +24,23 @@ CUI_Camera::CUI_Camera(){
 }
 
 CUI_Camera::~CUI_Camera(){
+}
+
+void CUI_Camera::SetStyle(ECameraStyle new_style){
+	if (new_style!=m_Style){
+    	if (new_style==cs3DArcBall){
+		    Fvector dir;
+            dir.sub(m_Target,m_Position);
+	        // parse heading
+    	    Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
+	        if (DYaw.x>=0)	m_HPB.x = acosf(DYaw.z);
+    	    else			m_HPB.x = 2*PI-acosf(DYaw.z);
+	        // parse pitch
+    	    dir.normalize_safe	();
+	        m_HPB.y			= asinf(dir.y);
+        }
+		m_Style=new_style;
+    }
 }
 
 void CUI_Camera::Reset(){
@@ -70,8 +88,8 @@ static const Fvector dir={0.f,-1.f,0.f};
 
 void CUI_Camera::Update(float dt){
 	if (UI&&m_bMoving){
-    	bool bLeftDn = m_Shift.Contains(ssLeft);
-    	bool bRightDn = m_Shift.Contains(ssRight);
+    	BOOL bLeftDn = m_Shift.Contains(ssLeft);
+    	BOOL bRightDn = m_Shift.Contains(ssRight);
 		if ((m_Style==csFreeFly)&&(bLeftDn||bRightDn)&&!(bLeftDn&&bRightDn)){
 			Fvector vmove;
 	        vmove.set( m_CamMat.k );
@@ -174,6 +192,9 @@ bool CUI_Camera::Process(TShiftState Shift){
 //                if (Shift.Contains(ssLeft)) Rotate (d.x,d.y);
 //                else if (Shift.Contains(ssRight)) Scale(d.y);
             break;
+            case cs3DArcBall:
+            	ArcBall(Shift,d.x,d.y);
+            break;
             }
 		    UI->RedrawScene();
         }
@@ -237,6 +258,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
 	D.mul(m_CamMat.k,-1);
     H = 2*R*tanf(m_FOV/m_Aspect*0.5f);
     m_Position.direct(C,D,H);
+	m_Target.set(C);
 
 	BuildCamera();
 /*
@@ -250,4 +272,41 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
      camera.posz:=minz-s;
 */
 }
+
+void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
+	float dist = m_Position.distance_to(m_Target);
+	if (Shift.Contains(ssCtrl)){
+        dist -= dx*m_SM;
+    }else if (Shift.Contains(ssAlt)){
+		if (Shift.Contains(ssLeft)){
+            Fvector vmove;
+            vmove.set( m_CamMat.k );  vmove.y = 0;
+            vmove.normalize_safe();
+            vmove.mul( dy*-m_SM );
+            m_Target.add( vmove );
+
+            vmove.set( m_CamMat.i );  vmove.y = 0;
+            vmove.normalize_safe();
+            vmove.mul( dx*m_SM );
+            m_Target.add( vmove );
+        }else if(Shift.Contains(ssRight)){
+            Fvector vmove;
+            vmove.set( 0.f, dy, 0.f );
+            vmove.y *= -m_SM;
+            m_Target.add( vmove );
+        }
+    }else{
+        m_HPB.x-=m_SR*dx;
+        m_HPB.y-=m_SR*dy*m_Aspect;
+    }
+
+    Fvector D;
+    D.direct		(m_HPB.x,m_HPB.y);
+
+    m_Position.mul	(D,-dist);
+    m_Position.add	(m_Target);
+
+	BuildCamera		();
+}
+
 

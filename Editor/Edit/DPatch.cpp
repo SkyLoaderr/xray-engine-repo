@@ -108,7 +108,7 @@ void CDPatchSystem::Render( ){
             if (Device.m_Frustum.testSphere(i->m_Position,i->m_Range))
                 if( i->m_Selected ) m_RenderSprite.Render(i->m_Position,i->m_Range);
     }
-	Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+	Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
     Device.SetRS(D3DRS_CLIPPING, TRUE);
 }
 

@@ -12,7 +12,7 @@
 
 CRenderDevice Device;
 
-DWORD psDeviceFlags 	= rsClearBB|rsNoVSync|rsStatistic;
+DWORD psDeviceFlags 	= rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
 DWORD dwClearColor		= 0x00555555;
 
 //---------------------------------------------------------------------------
@@ -37,6 +37,9 @@ CRenderDevice::CRenderDevice(){
 	fTimeGlobal		= 0;
 	dwTimeDelta		= 0;
 	dwTimeGlobal	= 0;
+
+	dwFillMode		= D3DFILL_SOLID;
+    dwShadeMode		= D3DSHADE_GOURAUD;
 }
 
 CRenderDevice::~CRenderDevice(){
@@ -112,16 +115,17 @@ void CRenderDevice::OnDeviceCreate(){
 	HW.Caps.Update();
 	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
 	{
-		if (psDeviceFlags&rsAnisotropic)	{
-			Device.SetTSS(i,D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC	);
-			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC );
-			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
-			Device.SetTSS(i, D3DTSS_MAXANISOTROPY, 16				);
-		} else {
-			Device.SetTSS(i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		);
-			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		);
-			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
-		}
+//		if (psDeviceFlags&rsAnisotropic)	{
+//			Device.SetTSS(i,D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC	);
+//			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC );
+//			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
+//			Device.SetTSS(i, D3DTSS_MAXANISOTROPY, 16				);
+//		} else
+//		{
+//			Device.SetTSS(i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		);
+//			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		);
+//			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
+//		}
 		float fBias = -1.f;
 		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
@@ -200,8 +204,8 @@ void CRenderDevice::UpdateFog(){
 	//Fog parameters
     st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
     Fcolor& FogColor 	= E.m_FogColor;
-    float Fogness		= (UI->bRenderFog)?E.m_Fogness:0;
-    float view_dist		= (UI->bRenderFog)?E.m_ViewDist:UI->ZFar();
+    float Fogness		= (psDeviceFlags&rsFog)?E.m_Fogness:0;
+    float view_dist		= (psDeviceFlags&rsFog)?E.m_ViewDist:UI->ZFar();
 	SetRS( D3DRS_FOGCOLOR,	FogColor.get());
 	float start	= (1.0f - Fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
@@ -261,8 +265,7 @@ void CRenderDevice::Begin( ){
 
 	CHK_DX(HW.pDevice->BeginScene());
 	CHK_DX(HW.pDevice->Clear(0,0,
-		D3DCLEAR_ZBUFFER|
-		((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
+		D3DCLEAR_ZBUFFER|D3DCLEAR_TARGET|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
 		dwClearColor,1,0
 		));

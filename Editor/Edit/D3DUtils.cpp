@@ -68,8 +68,8 @@ static CVertexStream* TLStream=0;
 static CVertexStream* LITStream=0;
 
 static FLvertexVec 	m_GridPoints;
-static WORDVec 		m_GridIndices;
 
+DWORD m_ColorAxis	= 0xff000000;
 DWORD m_ColorGrid	= 0xff969696;
 DWORD m_ColorGridTh = 0xffb4b4b4;
 DWORD m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
@@ -99,9 +99,7 @@ void UpdateGrid(){
 				right.p.x = left.p.x;
 				left.color = (i%m_GridSubDiv[0]) ? m_ColorGrid : m_ColorGridTh;
 				right.color = left.color;
-				m_GridIndices.push_back( m_GridPoints.size() );
 				m_GridPoints.push_back( left );
-				m_GridIndices.push_back( m_GridPoints.size() );
 				m_GridPoints.push_back( right );
 			}
 		}
@@ -113,9 +111,7 @@ void UpdateGrid(){
 				right.p.z = left.p.z;
 				left.color = (i%m_GridSubDiv[1]) ? m_ColorGrid : m_ColorGridTh;
 				right.color = left.color;
-				m_GridIndices.push_back( m_GridPoints.size() );
 				m_GridPoints.push_back( left );
-				m_GridIndices.push_back( m_GridPoints.size() );
 				m_GridPoints.push_back( right );
 			}
 		}
@@ -123,13 +119,6 @@ void UpdateGrid(){
 }
 
 void InitUtilLibrary(){
-//	for(int i=0; i<(LINE_DIVISION-1); i++){
-//		lineindices[i*2] = i;
-//		lineindices[i*2+1] = i+1;
-//	}
-//	lineindices[LINE_DIVISION*2-2] = LINE_DIVISION-1;
-//	lineindices[LINE_DIVISION*2-1] = 0;
-
 	for(int i=0;i<LINE_DIVISION;i++){
 		float angle = M_PI * 2.f * (i / (float)LINE_DIVISION);
         float _sin, _cos;
@@ -346,7 +335,7 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
 	// and Render it as triangle list
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
     Device.DIP		(D3DPT_LINELIST,LStream,vBase,boxvertcount,is,iBase,boxindexcount/2);
-    Device.SetRS	(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
 }
 
 void DrawIdentBox(bool bSolid, bool bWire, DWORD* c){
@@ -523,7 +512,7 @@ void DrawAxis(){
 	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
 	Device.Shader.Set(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,TLStream,vBase,3);
-	Device.SetRS(D3DRS_SHADEMODE,UI->dwRenderShadeMode);
+	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 }
 
 void DrawGrid(){
@@ -533,15 +522,10 @@ void DrawGrid(){
 	FVF::L* pv = (FVF::L*)LStream->Lock(m_GridPoints.size(),vBase);
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
 	LStream->Unlock(m_GridPoints.size());
-	// fill IB
-    CIndexStream* IS = Device.Streams.Get_IB();
-	WORD* i = IS->Lock(m_GridIndices.size(),iBase);
-    for (WORDIt i_it=m_GridIndices.begin(); i_it!=m_GridIndices.end(); i_it++,i++) *i = *i_it;
-	IS->Unlock(m_GridIndices.size());
 	// Render it as triangle list
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
 	Device.Shader.Set(Device.m_WireShader);
-    Device.DIP(	D3DPT_LINELIST,LStream,vBase,m_GridPoints.size(),IS,iBase,m_GridIndices.size()/2);
+    Device.DP(D3DPT_LINELIST,LStream,vBase,m_GridPoints.size()/2);
 }
 
 void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd){

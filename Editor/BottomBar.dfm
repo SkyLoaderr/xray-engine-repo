@@ -369,7 +369,7 @@ object fraBottomBar: TfraBottomBar
         GroupIndex = 4
       end
       object miRenderHWTransform: TMenuItem
-        Caption = 'HW Transform (need restart)'
+        Caption = 'Used Only 8 Lights'
         Checked = True
         GroupIndex = 4
         OnClick = ClickOptionsMenuItem

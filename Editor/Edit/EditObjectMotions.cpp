@@ -37,7 +37,7 @@ void st_AnimParam::Update(float dt){
 
 void CEditableObject::RTL_Update( float dT ){
     if (IsOMotionActive()){
-    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
+///    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
 /*        Fvector R,T,r;
         m_ActiveOMotion->Evaluate(m_OMParam.Frame(),T,r);
         R.set(r.y,r.x,r.z);
@@ -52,7 +52,7 @@ void CEditableObject::RTL_Update( float dT ){
 void CEditableObject::ResetAnimation(bool upd_t){
 	SetActiveOMotion(0,false);
 	SetActiveSMotion(0);
-	ELog.DlgMsg(mtError,"TODO: CEditableObject::ResetAnimation");
+///	ELog.DlgMsg(mtError,"TODO: CEditableObject::ResetAnimation");
 ///    if (upd_t) UpdateTransform();
 }
 
@@ -62,7 +62,7 @@ void CEditableObject::ResetAnimation(bool upd_t){
 void CEditableObject::SetActiveOMotion(COMotion* mot, bool upd_t){
 	m_ActiveOMotion=mot;
     if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion);
-	ELog.DlgMsg(mtError,"TODO: CEditableObject::SetActiveOMotion");
+///	ELog.DlgMsg(mtError,"TODO: CEditableObject::SetActiveOMotion");
 ///    if (upd_t) UpdateTransform();
     UI->RedrawScene();
 }

@@ -18,22 +18,26 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 {
+	if (!m_CurrentObject) return;
 // Set up info
-    stNumericSet->Enabled 	= true;
-
-    paMatrix->Visible = true;
     paBB->Visible = true;
 
     AnsiString n;
     int i;
-    const Fvector& P=m_CurrentObject->TPosition();
-    for (i=0; i<3; i++) sgTransform->Cells[i+1][0]=n.sprintf("%.3f", P[i]);
-    const Fvector& R=m_CurrentObject->TRotate();
-    for (i=0; i<3; i++) sgTransform->Cells[i+1][1]=n.sprintf("%.1f", rad2deg(R[i]));
-    const Fvector& S=m_CurrentObject->TScale();
-    for (i=0; i<3; i++) sgTransform->Cells[i+1][2]=n.sprintf("%.3f", S[i]);
+    const Fvector& P=m_EditObject->t_vPosition;
+    sePositionX->Value = P.x;
+    sePositionY->Value = P.y;
+    sePositionZ->Value = P.z;
+    const Fvector& R=m_EditObject->t_vRotate;
+    sePositionX->Value = R.x;
+    sePositionY->Value = R.y;
+    sePositionZ->Value = R.z;
+    const Fvector& S=m_EditObject->t_vScale;
+    sePositionX->Value = S.x;
+    sePositionY->Value = S.y;
+    sePositionZ->Value = S.z;
 
-    Fbox& BB = m_CurrentObject->GetBox();
+    Fbox& BB = m_EditObject->GetBox();
     for (int col=1; col<5; col++){
         Fvector p;
         switch(col){

@@ -63,17 +63,6 @@ TUI::TUI()
     fHintHideTime   = 0.f;
     bHintShowing    = false;
 
-	dwRenderFillMode= D3DFILL_SOLID;
-	dwRenderShadeMode=D3DSHADE_FLAT;
-    dwRenderHWTransform=D3DX_DEFAULT;
-    bRenderTextures = true;
-    bRenderLights   = true;
-    bRenderFilter   = true;
-    bRenderEdgedFaces=false;
-	bRenderRealTime	= false;
-    bRenderFog		= true;
-    bDrawGrid		= true;
-
 // create base class
     ELog.Create		("ed.log");
     FS.Init			();
@@ -283,7 +272,7 @@ void TUI::Redraw(){
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // filter
     for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
-        if( bRenderFilter ){
+        if( psDeviceFlags&rsFilterLinear){
             Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
             Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
@@ -294,8 +283,8 @@ void TUI::Redraw(){
         }
     }
 	// ligthing
-    if (bRenderLights)	Device.SetRS(D3DRS_AMBIENT,0x00000000);
-    else                Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
+    if (psDeviceFlags&rsLighting) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
+    else                			Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
 	    if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
@@ -304,11 +293,11 @@ void TUI::Redraw(){
         Device.UpdateView();
 		Device.ResetMaterial();
 
-        Device.SetRS(D3DRS_FILLMODE, dwRenderFillMode);
-		Device.SetRS(D3DRS_SHADEMODE,dwRenderShadeMode);
+        Device.SetRS(D3DRS_FILLMODE, Device.dwFillMode);
+		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
     // draw grid
-    	if (bDrawGrid){
+    	if (psDeviceFlags&rsDrawGrid){
 	        DU::DrawGrid();
     	    DU::DrawPivot(m_Pivot);
         }
@@ -338,7 +327,7 @@ void TUI::Redraw(){
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
 
-    if (!bRenderRealTime) bRedraw = false;
+    if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 
     fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene->SelectionCount(true,UI->CurrentClassID())));
 }
@@ -348,17 +337,16 @@ void TUI::Idle()
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(5);
+	Device.UpdateTimer();
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditShaders)||(est==esEditParticles)||(est==esEditImages)){
     	switch(est){
         case esEditShaders: 	if (frmEditShaders) frmEditShaders->OnIdle(); break;
-    	case esEditLibrary: 	if (frmEditLibrary) frmEditLibrary->OnIdle(); break;
     	case esEditParticles: 	TfrmEditParticles::OnIdle(); break;
     	case esEditImages: 		TfrmImageLib::OnIdle(); break;
         }
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
-			Device.UpdateTimer();
             Scene->Update(Device.fTimeDelta);
         	Redraw();
         }
@@ -499,6 +487,19 @@ void TUI::OnMousePress(int btn){
     // camera activate
     if(!Device.m_Camera.MoveStart(Shift)){
         if( Scene->locked() ){
+		    EEditorState est = GetEState();
+            switch(est){
+            case esEditLibrary:{
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                m_StartCp = m_CurrentCp;
+                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
+                frmEditLibrary->RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm);
+            }break;
+            case esEditShaders:		break;
+            case esEditParticles: 	break;
+            case esEditImages: 		break;
+            }
 		// ELog.DlgMsg( mtError, "Scene sharing violation..." );
             return;
         }

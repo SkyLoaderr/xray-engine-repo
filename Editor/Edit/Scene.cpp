@@ -750,7 +750,7 @@ void EScene::ZoomExtents( BOOL bSel ){
 	BOOL bAllCat = fraLeftBar->ebIgnoreTarget->Down;
 	Fbox BB;
 	Fbox bb;
-    BB.set(0,0,0,0,0,0);
+    BB.set(-5,-5,-5,5,5,5);
     bool bFirstInit = true;
 	if (bAllCat){
         for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
@@ -767,8 +767,8 @@ void EScene::ZoomExtents( BOOL bSel ){
             if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
 				if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
     }
-    if (!bFirstInit) Device.m_Camera.ZoomExtents(BB);
-    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
+    Device.m_Camera.ZoomExtents(BB);
+//    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
 }
 //--------------------------------------------------------------------------------------------------
 void EScene::UpdateGroups(){

@@ -177,7 +177,7 @@ void COccluder::Render( ERenderPriority flag ){
                 DU::DrawSelectionBox(m_3DPoints.m_Points[*it],S);
         }
     }
-    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
 }
 
 void COccluder::UpdatePoints3D(){

@@ -58,6 +58,7 @@ CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const
     if (O){
     	float dist=flt_max;
     	O->RayPick(dist,start,direction,precalc_identity,pinf);
+        if (pinf) TfrmPropertiesObject::Pick(*pinf);
         return O;
     }
     return 0;
@@ -72,11 +73,6 @@ void __fastcall TfrmEditLibrary::OnRender(){
             if (fraBottomBar->miDrawObjectBones->Checked) O->RenderBones(precalc_identity);
 	    }
     }
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::OnIdle(){
-	if (m_SelectedObject&&cbPreview->Checked)
-	    if (TfrmPropertiesObject::Visible()) TfrmPropertiesObject::OnIdle();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ZoomObject(){
@@ -128,15 +124,12 @@ void TfrmEditLibrary::CloseEditLibrary(bool bReload){
     if (ebSave->Enabled){
     	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
 		if (res==mrCancel) return;
-		if (res==mrYes)
-            ebSaveClick(0);
-        else{
-            if (bReload){
-		        UI->SetStatus("Library reloading...");
-				UI->Command(COMMAND_RELOAD_LIBRARY);
-		        UI->SetStatus("");
-            }
-        }
+		if (res==mrYes) ebSaveClick(0);
+    }
+    if (bReload){
+        UI->SetStatus("Library reloading...");
+        UI->Command(COMMAND_RELOAD_LIBRARY);
+        UI->SetStatus("");
     }
     Close();
 }
@@ -151,6 +144,13 @@ void TfrmEditLibrary::FinalClose(){
 //---------------------------------------------------------------------------
 void TfrmEditLibrary::OnModified(){
     ebSave->Enabled = true;
+    // test name changing
+    if (m_SelectedObject){
+    	TElTreeItem* node = FindObject(m_SelectedObject);
+        VERIFY(node);
+		if (strcmp(m_SelectedObject->GetName(),node->Text.c_str())!=0)
+        	node->Text = m_SelectedObject->GetName();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -160,13 +160,18 @@ void TfrmEditLibrary::OnModified(){
 void __fastcall TfrmEditLibrary::tvObjectsItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
-	m_SelectedObject = 0;
+	if (Item==tvObjects->Selected) return;
+
+    CLibObject* new_selection=0;
     ebMakeThm->Enabled = false;
-    if (cbPreview->Checked&&Item->Data&&UI->ContainEState(esEditLibrary)){
-        m_SelectedObject = (CLibObject*)Item->Data;
-        m_SelectedObject->Refresh();
+    if (Item->Data&&UI->ContainEState(esEditLibrary)){
+        new_selection = (CLibObject*)Item->Data;
+        new_selection->Refresh();
 	    ebMakeThm->Enabled = true;
     }
+	TfrmPropertiesObject::SetCurrent(new_selection);
+    m_SelectedObject = new_selection;
+
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -268,21 +273,12 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 {
-    CLibObject* _pT;
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode && pNode->Data){
-        _pT = (CLibObject*) pNode->Data;
-        if (_pT){
-	        _pT->Refresh();
-            CEditableObject* O = _pT->GetReference();
-            if (!O){
-            	ELog.DlgMsg(mtError, "Object '%s.object' can't found in \\Meshes directory.", _pT->GetName());
-                return;
-            }
-            TfrmPropertiesObject::ShowProperties();
-        }else{
-            ELog.DlgMsg(mtInformation,"Select object to edit.");
-        }
+    if (m_SelectedObject){
+        m_SelectedObject->Refresh();
+        TfrmPropertiesObject::SetCurrent(m_SelectedObject);
+        TfrmPropertiesObject::ShowProperties();
+    }else{
+        ELog.DlgMsg(mtInformation,"Select object to edit.");
     }
 }
 //---------------------------------------------------------------------------
@@ -513,7 +509,8 @@ void __fastcall TfrmEditLibrary::ebSaveObjectOGFClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebSaveObjectSkeletonOGFClick(TObject *Sender){
+void __fastcall TfrmEditLibrary::ebSaveObjectSkeletonOGFClick(TObject *Sender)
+{
     CEditableObject* _pT = 0;
     TElTreeItem* pNode = tvObjects->Selected;
     if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
@@ -606,9 +603,7 @@ void __fastcall TfrmEditLibrary::pcItemTypeClick(TObject *Sender)
 
 extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
 
-void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender,
-      char &Key)
-{
+void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 	TElTreeItem* node = tvObjects->Items->LookForItemEx(tvObjects->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvObjects->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     if (node){

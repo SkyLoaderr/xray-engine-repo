@@ -169,7 +169,7 @@ void CEditableObject::Render(Fmatrix& parent, ERenderPriority flag){
     }
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if(UI->bRenderEdgedFaces&&(flag==rpNormal))
+    if(psDeviceFlags&rsEdgedFaces&&(flag==rpNormal))
         RenderEdge(parent);
 
     Device.SetTransform(D3DTS_WORLD,parent);

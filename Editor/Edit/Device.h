@@ -41,6 +41,9 @@ public:
     int 					m_RealWidth, m_RealHeight;
     float					m_RenderArea;
     float 					m_ScreenQuality;
+
+	DWORD 					dwFillMode;
+    DWORD					dwShadeMode;
 public:
     HANDLE 					m_hWnd;
     HANDLE 					m_hRenderWnd;
@@ -152,18 +155,16 @@ extern ENGINE_API CRenderDevice Device;
 
 // video
 enum {
-	rsFullscreen		= (1ul<<0ul),
-	rsTriplebuffer		= (1ul<<1ul),
-	rsClearBB			= (1ul<<2ul),
-	rsNoVSync			= (1ul<<3ul),
-	rsWireframe			= (1ul<<4ul),
-	rsAntialias			= (1ul<<5ul),
-	rsNormalize			= (1ul<<6ul),
-	rsOverdrawView		= (1ul<<7ul),
-	rsOcclusion			= (1ul<<8ul),
-	rsDepthEnhance		= (1ul<<9ul),
-	rsAnisotropic		= (1ul<<10ul),
-	rsStatistic			= (1ul<<11ul),
+    rsFilterLinear		= (1ul<<0ul),
+    rsEdgedFaces		= (1ul<<1ul),
+	rsRenderTextures	= (1ul<<2ul),
+	rsLighting			= (1ul<<3ul),
+    rsFog				= (1ul<<4ul),
+    rsRenderRealTime	= (1ul<<5ul),
+    rsDrawGrid			= (1ul<<6ul),
+	rsStatistic			= (1ul<<7ul),
+    rsForceHWTransform	= (1ul<<8ul),
+
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)
 };

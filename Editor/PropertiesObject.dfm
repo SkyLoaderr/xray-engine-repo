@@ -1,7 +1,8 @@
 object frmPropertiesObject: TfrmPropertiesObject
   Left = 369
   Top = 357
-  BorderStyle = bsDialog
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'Object properties'
   ClientHeight = 365
   ClientWidth = 372
@@ -11,6 +12,7 @@ object frmPropertiesObject: TfrmPropertiesObject
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   KeyPreview = True
   OldCreateOrder = False
   Position = poScreenCenter
@@ -33,7 +35,7 @@ object frmPropertiesObject: TfrmPropertiesObject
       Top = 0
       Width = 372
       Height = 342
-      ActivePage = tsMainOptions
+      ActivePage = tsInfo
       Align = alClient
       MultiLine = True
       TabOrder = 0
@@ -102,14 +104,6 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Bounding Box:'
           ShadowColor = 15263976
         end
-        object RxLabel10: TRxLabel
-          Left = 32
-          Top = 58
-          Width = 144
-          Height = 13
-          Caption = 'Noa available in multiselection'
-          ShadowColor = 15263976
-        end
         object RxLabel11: TRxLabel
           Left = 48
           Top = 154
@@ -118,74 +112,29 @@ object frmPropertiesObject: TfrmPropertiesObject
           Caption = 'Noa available in multiselection'
           ShadowColor = 15263976
         end
-        object paMatrix: TPanel
-          Left = 3
-          Top = 25
-          Width = 222
-          Height = 64
-          BevelOuter = bvLowered
-          TabOrder = 0
-          object sgTransform: TStringGrid
-            Left = 1
-            Top = 18
-            Width = 222
-            Height = 46
-            BorderStyle = bsNone
-            Color = 15263976
-            ColCount = 4
-            DefaultColWidth = 49
-            DefaultRowHeight = 14
-            FixedCols = 0
-            RowCount = 3
-            FixedRows = 0
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clGray
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = []
-            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
-            ParentFont = False
-            ScrollBars = ssNone
-            TabOrder = 0
-            ColWidths = (
-              69
-              49
-              49
-              49)
-          end
-          object ElHeader2: TElHeader
-            Left = 1
-            Top = 1
-            Width = 220
-            Height = 17
-            Color = clBtnFace
-            ActiveFilterColor = clBlack
-            Flat = True
-            Sections.Data = {
-              F8FFFFFF0400000028DD850600000000FFFFFFFF000001000000000046000000
-              0000000010270000000001000000000000000000000000000000010000000000
-              00000000000100000200000023000100000000000000000000000028DD850600
-              000000FFFFFFFF00000100000000003200000000000000102700000000010001
-              0000000000000000000000000001000000000000000000000100000200000058
-              000100000000000000000000000028DD850600000000FFFFFFFF000001000000
-              0000320000000000000010270000000001000200000000000000000000000000
-              0100000000000000000000010000020000005900010000000000000000000000
-              0028DD850600000000FFFFFFFF00000100000000003200000000000000102700
-              0000000100030000000000000000000000000001000000000000000000000100
-              00020000005A0001000000000000000000000000}
-            Tracking = True
-            AllowDrag = True
-            Align = alTop
-            DockOrientation = doNoOrient
-            DoubleBuffered = False
-            MoveOnDrag = False
-            FilterColor = clBtnText
-            LockHeight = False
-            ResizeOnDrag = False
-            RightAlignedText = False
-            RightAlignedOrder = False
-            StickySections = False
-          end
+        object RxLabel10: TRxLabel
+          Left = 10
+          Top = 29
+          Width = 42
+          Height = 13
+          Caption = 'Position:'
+          ShadowColor = 15263976
+        end
+        object RxLabel13: TRxLabel
+          Left = 10
+          Top = 48
+          Width = 45
+          Height = 13
+          Caption = 'Rotation:'
+          ShadowColor = 15263976
+        end
+        object RxLabel25: TRxLabel
+          Left = 10
+          Top = 67
+          Width = 32
+          Height = 13
+          Caption = 'Scale:'
+          ShadowColor = 15263976
         end
         object paBB: TPanel
           Left = 3
@@ -193,7 +142,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Width = 262
           Height = 64
           BevelOuter = bvLowered
-          TabOrder = 1
+          TabOrder = 0
           object sgBB: TStringGrid
             Left = 1
             Top = 18
@@ -231,18 +180,18 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF05000000B432D50300000000FFFFFFFF000001000000000014000000
+              F8FFFFFF0500000014F2821000000000FFFFFFFF000001000000000014000000
               0000000010270000000000000400000000000000000000000000010000000000
-              0000000000010000010000000001000000000000000000000000B432D5030000
+              000000000001000001000000000100000000000000000000000014F282100000
               0000FFFFFFFF00000100000000003C0000000000000010270000000001000000
               0000000000000000000000000100000000000000000000010000080000004D69
-              6E696D756D0001000000000000000000000000B432D50300000000FFFFFFFF00
+              6E696D756D000100000000000000000000000014F2821000000000FFFFFFFF00
               000100000000003C000000000000001027000000000100010000000000000000
               00000000000100000000000000000000010000080000004D6178696D756D0001
-              000000000000000000000000B432D50300000000FFFFFFFF0000010000000000
+              00000000000000000000000014F2821000000000FFFFFFFF0000010000000000
               3C00000000000000102700000000010002000000000000000000000000000100
               0000000000000000000100000500000053697A65000100000000000000000000
-              0000B432D50300000000FFFFFFFF00000100000000003C000000000000001027
+              000014F2821000000000FFFFFFFF00000100000000003C000000000000001027
               0000000001000300000000000000000000000000010000000000000000000001
               00000700000043656E7465720001000000000000000000000000}
             Tracking = True
@@ -259,24 +208,122 @@ object frmPropertiesObject: TfrmPropertiesObject
             StickySections = False
           end
         end
-        object stNumericSet: TStaticText
-          Left = 231
-          Top = 25
-          Width = 93
-          Height = 16
-          Alignment = taCenter
+        object sePositionX: TMultiObjSpinEdit
+          Left = 57
+          Top = 27
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          ValueType = vtFloat
           AutoSize = False
-          BorderStyle = sbsSunken
-          Caption = 'Numeric Set...'
-          Enabled = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlue
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          ParentFont = False
+          TabOrder = 1
+        end
+        object sePositionY: TMultiObjSpinEdit
+          Left = 123
+          Top = 27
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          ValueType = vtFloat
+          AutoSize = False
           TabOrder = 2
-          OnMouseDown = ebNumericSetMouseDown
+        end
+        object sePositionZ: TMultiObjSpinEdit
+          Left = 189
+          Top = 27
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          ValueType = vtFloat
+          AutoSize = False
+          TabOrder = 3
+        end
+        object seScaleX: TMultiObjSpinEdit
+          Left = 57
+          Top = 65
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          MaxValue = 100
+          MinValue = 0.01
+          ValueType = vtFloat
+          Value = 1
+          AutoSize = False
+          TabOrder = 4
+        end
+        object seScaleY: TMultiObjSpinEdit
+          Left = 123
+          Top = 65
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          MaxValue = 100
+          MinValue = 0.01
+          ValueType = vtFloat
+          Value = 1
+          AutoSize = False
+          TabOrder = 5
+        end
+        object seScaleZ: TMultiObjSpinEdit
+          Left = 189
+          Top = 65
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Increment = 0.01
+          MaxValue = 100
+          MinValue = 0.01
+          ValueType = vtFloat
+          Value = 1
+          AutoSize = False
+          TabOrder = 6
+        end
+        object seRotateX: TMultiObjSpinEdit
+          Left = 57
+          Top = 46
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.01
+          ButtonKind = bkLightWave
+          MaxValue = 180
+          MinValue = -180
+          AutoSize = False
+          TabOrder = 7
+        end
+        object seRotateY: TMultiObjSpinEdit
+          Left = 123
+          Top = 46
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.01
+          ButtonKind = bkLightWave
+          MaxValue = 180
+          MinValue = -180
+          AutoSize = False
+          TabOrder = 8
+        end
+        object seRotateZ: TMultiObjSpinEdit
+          Left = 189
+          Top = 46
+          Width = 66
+          Height = 18
+          LWSensitivity = 0.01
+          ButtonKind = bkLightWave
+          MaxValue = 180
+          MinValue = -180
+          AutoSize = False
+          TabOrder = 9
         end
       end
       object tsMeshes: TTabSheet
@@ -2230,25 +2277,6 @@ object frmPropertiesObject: TfrmPropertiesObject
       FlatAlwaysEdge = True
       OnClick = ebOkClick
     end
-    object ebCancel: TExtBtn
-      Left = 290
-      Top = 3
-      Width = 82
-      Height = 18
-      Align = alNone
-      BevelShow = False
-      CloseButton = False
-      Caption = 'Cancel'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebCancelClick
-    end
     object ebDropper: TExtBtn
       Left = 2
       Top = 2
@@ -2278,6 +2306,25 @@ object frmPropertiesObject: TfrmPropertiesObject
       ParentFont = False
       Transparent = False
       FlatAlwaysEdge = True
+    end
+    object ebCancel: TExtBtn
+      Left = 290
+      Top = 3
+      Width = 82
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Cancel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebCancelClick
     end
     object ebApply: TExtBtn
       Left = 126

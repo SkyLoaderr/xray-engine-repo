@@ -20,6 +20,7 @@ class CUI_Camera{
     Fmatrix			m_CamMat;
     Fvector			m_HPB;
     Fvector			m_Position;
+    Fvector			m_Target;
 protected:
 	friend class	CRenderDevice;
 	friend class	TUI;
@@ -33,6 +34,7 @@ protected:
     void 			Pan			(float X, float Z);
     void 			Scale		(float Y);
     void 			Rotate		(float X, float Y);
+    void			ArcBall		(TShiftState Shift, float X, float Y);
 public:
 					CUI_Camera	();
     				~CUI_Camera	();
@@ -40,7 +42,7 @@ public:
 	void			BuildCamera	();
 	void			Reset		();
     void 			Update		(float dt);
-    void			SetStyle	(ECameraStyle style){ m_Style=style; }
+    void			SetStyle	(ECameraStyle style);
 
     bool			MoveStart	(TShiftState Shift);
     bool			MoveEnd		(TShiftState Shift);

@@ -25,6 +25,7 @@ protected:
 	void			LoadObject				();
 protected:
     AnsiString		m_Name;
+    AnsiString		m_FileName;
 	AnsiString		m_FolderName;
 	AnsiString		m_SrcName;
 public:
@@ -46,7 +47,7 @@ public:
     IC void			Refresh					()	{m_bLoadingError=false;}
     IC CEditableObject*	GetReference		()	{if (!m_bLoadingError&&!IsLoaded()) LoadObject(); return m_EditObject;}
 
-    void			Modified				()	{m_bNeedSave=true;}
+    void			Modified				(bool bFlag=true){m_bNeedSave=bFlag;}
 
     bool			ImportFrom				(LPCSTR name);
     void			SaveObject				();

@@ -25,7 +25,7 @@
 #include "multi_edit.hpp"
 #include "Placemnt.hpp"
 
-class CEditableObject;
+class CLibObject;
 class ETextureCore;
 class CEditMesh;
 struct st_Surface;
@@ -37,7 +37,6 @@ class TfrmPropertiesObject : public TForm
 __published:	// IDE-managed Components
     TPanel *Panel1;
     TExtBtn *ebOk;
-    TExtBtn *ebCancel;
     TOpenDialog *odMesh;
     TPageControl *pcObjects;
     TTabSheet *tsScript;
@@ -48,9 +47,6 @@ __published:	// IDE-managed Components
 	TTabSheet *tsSurfaces;
     TTabSheet *tsMeshes;
 	TElTree *tvSurfaces;
-    TPanel *paMatrix;
-	TStringGrid *sgTransform;
-    TElHeader *ElHeader2;
     TPanel *paBB;
     TStringGrid *sgBB;
     TElHeader *ElHeader1;
@@ -59,7 +55,6 @@ __published:	// IDE-managed Components
     TMultiObjCheck *cbMakeDynamic;
     TRxLabel *RxLabel2;
     TBevel *Bevel2;
-    TRxLabel *RxLabel10;
     TRxLabel *RxLabel11;
     TPanel *paBottom;
     TElTree *tvMeshes;
@@ -74,7 +69,6 @@ __published:	// IDE-managed Components
 	TRxLabel *lbVertices;
 	TRxLabel *lbFaces;
 	TExtBtn *ebDropper;
-	TStaticText *stNumericSet;
 	TTabSheet *tsOAnimation;
 	TTabSheet *tsSAnimation;
 	TGroupBox *gbOMotion;
@@ -185,6 +179,19 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seSMotionPower;
 	TMultiObjCheck *cbSMotionStopAtEnd;
 	TExtBtn *ebSReloadMotion;
+	TExtBtn *ebCancel;
+	TRxLabel *RxLabel10;
+	TMultiObjSpinEdit *sePositionX;
+	TMultiObjSpinEdit *sePositionY;
+	TMultiObjSpinEdit *sePositionZ;
+	TRxLabel *RxLabel13;
+	TRxLabel *RxLabel25;
+	TMultiObjSpinEdit *seScaleX;
+	TMultiObjSpinEdit *seScaleY;
+	TMultiObjSpinEdit *seScaleZ;
+	TMultiObjSpinEdit *seRotateX;
+	TMultiObjSpinEdit *seRotateY;
+	TMultiObjSpinEdit *seRotateZ;
 	TExtBtn *ebApply;
     void __fastcall ebEditMeshClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -253,13 +260,13 @@ __published:	// IDE-managed Components
 private:	// User declarations
     ETextureCore* 			tx_selected;
     st_Surface* 			surf_selected;
-    DEFINE_VECTOR(AnsiString,SH_NamesList,SH_NamesIt);
-    SH_NamesList 			SH_Names;
 
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;
     AnsiString   			last_name;
     TElTreeItem* 			FEditNode;
+
+    bool 					bLoadMode;
 
 	// object motion
 	void __fastcall 		ebOResetActiveMotion(TElTreeItem* ignore_item);
@@ -269,7 +276,8 @@ private:	// User declarations
     TElTreeItem* 			FindSMotionItem(const char* name);
 
     // static part
-	static CEditableObject* m_CurrentObject;
+	static CLibObject* 		m_CurrentObject;
+	static CEditableObject* m_EditObject;
 	static 	TfrmPropertiesObject* form;
 
     // object init&save
@@ -280,10 +288,10 @@ public:		// User declarations
     static void __fastcall 	ShowProperties();
     static void __fastcall 	HideProperties();
     static bool __fastcall 	Visible(){return !!form;}
-    static void	SetCurrent	(CEditableObject* object);
+    static void	SetCurrent	(CLibObject* object);
     static void	Reset		(){m_CurrentObject=0;}
-    static bool	IsModified	(){return form?form->ebApply->Enabled:false;}
-    static void	OnIdle		();
+    static bool	IsModified	(){return form?form->ebOk->Enabled:false;}
+    static void	Pick		(const SRayPickInfo& pinf);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -75,6 +75,7 @@ protected:
 	// bounding volume
 	Fbox 			m_Box;
 
+public:
     // temp variables for transformation
 	Fvector 		t_vPosition;
     Fvector			t_vScale;
@@ -206,19 +207,6 @@ public:
     CSMotion* 		FindSMotionByName		(const char* name, const CSMotion* Ignore=0);
     void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
     void			GenerateSMotionName		(char* buffer, const char* start_name, const CSMotion* M);
-
-    // transformation
-    IC Fvector& 	TPosition				(){return t_vPosition;}
-    IC Fvector& 	TRotate					(){return t_vRotate;}
-    IC Fvector& 	TScale					(){return t_vScale;}
-
-    bool 			GetTPosition			(Fvector& pos){pos.set(t_vPosition); return true; }
-    bool 			GetTRotate				(Fvector& rot){rot.set(t_vRotate); return true; }
-    bool 			GetTScale				(Fvector& scale){scale.set(t_vScale); return true; }
-
-    void 			SetTPosition			(Fvector& pos){t_vPosition.set(pos);}
-    void 			SetTRotate				(Fvector& rot){t_vRotate.set(rot);}
-    void 			SetTScale				(Fvector& scale){t_vScale.set(scale);}
 
     // device dependent routine
 	void 			OnDeviceCreate 			();

@@ -228,8 +228,8 @@ bool ETextureCore::CreateDDSurface(){
 void ETextureCore::Bind(int stage){
     if (!m_Surface&&!m_bNullTex)
         if(!m_bLoadFailed) m_bLoadFailed=!DDInit();
-	if (UI->bRenderTextures)Device.SetTexture( stage, m_Surface );
-    else                  	Device.SetTexture( stage, 0 );
+	if (psDeviceFlags&rsRenderTextures) Device.SetTexture( stage, m_Surface );
+    else                  				Device.SetTexture( stage, 0 );
 }
 
 STextureParams* ETextureCore::GetTextureParams(){

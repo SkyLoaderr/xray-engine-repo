@@ -187,7 +187,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
     }
 
 	if (RB_cnt)	DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
-    if (bEdge)  Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    if (bEdge)  Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
 	Device.ResetNearer();
 }
 //----------------------------------------------------
@@ -212,7 +212,7 @@ void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 		}
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
-    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
     Device.ResetNearer();
 }
 //----------------------------------------------------

@@ -17,21 +17,22 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
 {
+	if (!m_CurrentObject) return;
 // Set up meshes
     AnsiString name;
 
 	tvMeshes->Items->Clear();
 
-    EditMeshIt m_it = m_CurrentObject->m_Meshes.begin();
+    EditMeshIt m_it = m_EditObject->m_Meshes.begin();
 
     // root (object name)
-	name.sprintf("%s",m_CurrentObject->GetName());
+	name.sprintf("%s",m_EditObject->GetName());
 
     TElTreeItem* root = tvMeshes->Items->AddObject(0,name,(TObject*)m_CurrentObject);
     root->ParentStyle = false;
     root->Bold = true;
 
-    for(;m_it!=m_CurrentObject->m_Meshes.end();m_it++){
+    for(;m_it!=m_EditObject->m_Meshes.end();m_it++){
         name = (*m_it)->GetName();
         tvMeshes->Items->AddChildObject(root,name,(TObject*)(*m_it));
     }

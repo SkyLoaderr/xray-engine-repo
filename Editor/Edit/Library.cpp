@@ -44,7 +44,7 @@ void CLibObject::LoadObject(){
 	if (!m_EditObject){
 		m_bLoadingError = true;
     	m_EditObject = new CEditableObject(this);
-        AnsiString fn=m_Name;
+        AnsiString fn=m_FileName;
         fn += ".object";
 		FS.m_Objects.Update(fn);
 	    if (FS.Exist(fn.c_str(), true))
@@ -60,9 +60,9 @@ void CLibObject::LoadObject(){
 void CLibObject::SaveObject(){
     CEditableObject* obj = GetReference();
     // check need to transform to world
-    const Fvector& P = obj->TPosition();
-    const Fvector& S = obj->TScale();
-    const Fvector& R = obj->TRotate();
+    const Fvector& P = obj->t_vPosition;
+    const Fvector& S = obj->t_vScale;
+    const Fvector& R = obj->t_vRotate;
     if ((P.x!=0)||(P.y!=0)||(P.z!=0)|| (S.x!=1)||(S.y!=1)||(S.z!=1)|| (R.x!=0)||(R.y!=0)||(R.z!=0)){
     	Fmatrix mRotate, mScale, mTranslate, mTransform;
         // update transform matrix
@@ -74,10 +74,16 @@ void CLibObject::SaveObject(){
         mTransform.mul			(mScale);
         obj->TranslateToWorld	(mTransform);
     }
-
-    // save object
+    // mark as delete
     AnsiString fn;
-    fn=m_Name+AnsiString(".object");
+    fn=m_FileName+AnsiString(".object");
+    FS.m_Objects.Update(fn);
+	FS.MarkFile(fn);
+
+    // update new file name
+    m_FileName = m_Name;
+    // save object
+    fn=m_FileName+AnsiString(".object");
     FS.m_Objects.Update(fn);
 
     obj->m_ObjVer.f_age = DateTimeToFileDate(Now());
@@ -91,6 +97,7 @@ void CLibObject::Load(CStream& F){
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_NAMES));
     F.RstringZ	(buf); m_Name=buf;
+    m_FileName = m_Name;
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_FOLDER));
     F.RstringZ	(buf); m_FolderName=buf;

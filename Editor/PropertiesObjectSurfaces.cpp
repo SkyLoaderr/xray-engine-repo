@@ -19,6 +19,7 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
 {
+	if (!m_CurrentObject) return;
 // Set up surfaces&textures
     bool bEq;
     AnsiString name;
@@ -31,7 +32,7 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
     root->Bold = true;
     root->Underlined = true;
 
-    for (SurfaceIt s_it=m_CurrentObject->m_Surfaces.begin(); s_it!=m_CurrentObject->m_Surfaces.end(); s_it++){
+    for (SurfaceIt s_it=m_EditObject->m_Surfaces.begin(); s_it!=m_EditObject->m_Surfaces.end(); s_it++){
         TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->name,(TObject*)(*s_it));
         pNode->ParentStyle = false;
         pNode->Bold = true;
@@ -39,7 +40,7 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
             tvSurfaces->Items->AddChild(pNode,*n_it);
     }
     tvSurfaces->FullExpand();
-    
+
     tvSurfaces->Sort(true);
 }
 //---------------------------------------------------------------------------

@@ -103,17 +103,6 @@ public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 public:
-	DWORD dwRenderFillMode;
-	DWORD dwRenderShadeMode;
-	DWORD dwRenderHWTransform;
-    bool  bRenderTextures;
-    bool  bRenderLights;
-    bool  bRenderFilter;
-    bool  bRenderEdgedFaces;
-    bool  bRenderRealTime;
-    bool  bRenderFog;
-    bool  bDrawGrid;
-public:
     TUI();
     virtual ~TUI();
     IC HANDLE GetHWND()					{   return m_D3DWindow->Handle; }

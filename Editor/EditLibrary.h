@@ -102,7 +102,6 @@ private:	// User declarations
     TElTreeItem* AddObject(TElTreeItem* node, const char* name, void* obj);
     TElTreeItem* FDragItem;
     TElTreeItem* FEditNode;
-    void OnModified();
     CLibObject* m_SelectedObject;
 //    CEditObject* m_SelectedObject;
 //    CEditObject* m_EditObject;
@@ -115,8 +114,8 @@ public:		// User declarations
     void FinalClose();
     void __fastcall EditLibrary();
     void __fastcall OnRender();
-    void __fastcall OnIdle();
     void __fastcall ZoomObject();
+    void __fastcall OnModified();
 	CEditableObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
 };
 //---------------------------------------------------------------------------
