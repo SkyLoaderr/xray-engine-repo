@@ -91,6 +91,13 @@ struct b_lod
 	u32					dwMaterial;
 };
 
+/*
+	name
+	vert_count
+	vertices[]
+	face_count
+	faces[]
+*/
 struct b_mu_model
 {
 	string128			name;
@@ -100,6 +107,9 @@ struct b_mu_model
     b_face*				faces;
 };
 
+/*
+	self-describing
+*/
 struct b_mu_reference
 {
 	u32					model_index;
