@@ -268,6 +268,10 @@ SOURCE=.\xrCDB.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrCDB_box.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrCDB_ray.cpp
 
 !IF  "$(CFG)" == "xrCDB - Win32 Release"
