@@ -70,7 +70,6 @@ struct CRemoveSlotAndCellItemsPredicate {
 		return						(false);
 	}
 };
-
 void CSE_ALifeHumanAbstract::spawn_supplies	()
 {
 	inherited1::spawn_supplies	();

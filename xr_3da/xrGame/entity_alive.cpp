@@ -59,8 +59,8 @@ void CEntityAlive::init			()
 void CEntityAlive::Load		(LPCSTR section)
 {
 	CEntity::Load					(section);
-	CEntityCondition::LoadCondition	(section);
-	CEntityCondition::LoadImmunities(section);
+	LoadCondition					(section);
+	LoadImmunities					(section);
 
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
@@ -178,11 +178,12 @@ void CEntityAlive::shedule_Update(u32 dt)
 	inherited::shedule_Update	(dt);
 
 	//condition update with the game time pass
+	UpdateConditionTime	();
 	UpdateCondition		();
 	//Обновление партиклов огня
 	UpdateFireParticles	();
 	//обновить раны
-	CEntityCondition::UpdateWounds		();
+	UpdateWounds		();
 	//капли крови
 	UpdateBloodDrops	();
 

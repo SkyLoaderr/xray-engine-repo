@@ -73,7 +73,9 @@ void CWound::AddHit(float hit_power, ALife::EHitType hit_type)
 {
 	m_Wounds[hit_type] += hit_power;
 }
-void CWound::Incarnation	(float percent)
+
+
+void CWound::Incarnation	(float percent, float min_wound_size)
 {
 	float total_size = TotalSize();
 
@@ -87,8 +89,8 @@ void CWound::Incarnation	(float percent)
 	//заживить все раны пропорционально их размеру
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 	{
-		m_Wounds[i] -= percent*m_Wounds[i]/total_size;
-		if(m_Wounds[i]<0) 
+		m_Wounds[i] -= percent*m_Wounds[i];
+		if(m_Wounds[i]<min_wound_size)
 			m_Wounds[i] = 0;
 	}
 }

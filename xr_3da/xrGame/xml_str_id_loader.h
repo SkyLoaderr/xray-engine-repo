@@ -46,11 +46,19 @@ public:
 	CXML_IdToIndex							();
 	virtual	~CXML_IdToIndex					();
 	
-	static const ITEM_DATA&		GetById		(const T_ID& str_id);
-	static const ITEM_DATA&		GetByIndex	(T_INDEX index);
+	static const ITEM_DATA*		GetById		(const T_ID& str_id, bool no_assert = false);
+	static const ITEM_DATA*		GetByIndex	(T_INDEX index, bool no_assert = false);
 
-	static const T_INDEX&		IdToIndex	(const T_ID& str_id) {return GetById(str_id).index;}
-	static const T_ID&			IndexToId	(T_INDEX index)		 {return GetByIndex(index).id;}
+	static const T_INDEX		IdToIndex	(const T_ID& str_id, T_INDEX default_index = T_INDEX(-1), bool no_assert = false)
+	{
+		const ITEM_DATA* item = GetById(str_id, no_assert);
+		return item?item->index:default_index;
+	}
+	static const T_ID			IndexToId	(T_INDEX index, T_ID default_id = NULL, bool no_assert = false)
+	{
+		const ITEM_DATA* item = GetByIndex(index, no_assert);
+		return item?item->id:default_id;
+	}
 
 	static const T_INDEX		GetMaxIndex	()					 {return ItemDataVector().size()-1;}
 
@@ -81,27 +89,38 @@ CSXML_IdToIndex::~CSXML_IdToIndex()
 
 
 TEMPLATE_SPECIALIZATION
-const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetById (const T_ID& str_id)
+const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID& str_id, bool no_assert)
 {
 	T_INIT::InitXmlIdToIndex();
 		
 	for(T_VECTOR::iterator it = ItemDataVector().begin();
 		ItemDataVector().end() != it; it++)
 	{
-#pragma todo("Oles to Yura: Really dumb and slow code. 'shared_str' designed for sharing only!!!")
 		if((*it).id == str_id)
 			break;
 	}
 
-	R_ASSERT3(ItemDataVector().end() != it, "item not found, id", *shared_str(str_id));
-	return *it;
+	if(ItemDataVector().end() == it)
+	{
+		R_ASSERT3(no_assert, "item not found, id", *str_id);
+		return NULL;
+	}
+		
+
+	return &(*it);
 }
 
 TEMPLATE_SPECIALIZATION
-const typename CSXML_IdToIndex::ITEM_DATA& CSXML_IdToIndex::GetByIndex(T_INDEX index)
+const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetByIndex(T_INDEX index, bool no_assert)
 {
 	T_INIT::InitXmlIdToIndex();
-	return ItemDataVector()[index];
+
+	if((size_t)index>=ItemDataVector().size())
+	{
+		R_ASSERT3(no_assert, "item by index not found in files", file_str);
+		return NULL;
+	}
+	return &ItemDataVector()[index];
 }
 
 TEMPLATE_SPECIALIZATION

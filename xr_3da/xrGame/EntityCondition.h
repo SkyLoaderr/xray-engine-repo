@@ -53,6 +53,7 @@ public:
 	//обновления состояния с течением времени
 	virtual void UpdateCondition	();
 	virtual void UpdateWounds		();
+	virtual void UpdateConditionTime();
 
 	//временно! сон часов
 	virtual void Sleep(float hours);
@@ -156,6 +157,7 @@ protected:
 	float m_fV_Bleeding;
 	//скорость заживания раны
 	float m_fV_WoundIncarnation;
+	float m_fMinWoundSize;
 
 
 	//части хита, затрачиваемые на уменьшение здоровья и силы

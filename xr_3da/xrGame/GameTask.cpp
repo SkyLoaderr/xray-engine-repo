@@ -80,7 +80,7 @@ void CGameTask::Load	(TASK_INDEX  index)
 
 void CGameTask::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_TaskIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_TaskIndex);
 
 	CUIXml uiXml;
 	string_path xml_file_full;

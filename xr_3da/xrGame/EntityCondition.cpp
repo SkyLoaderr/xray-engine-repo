@@ -52,6 +52,7 @@ CEntityCondition::CEntityCondition(void)
 
 	m_fV_Bleeding = 0.09f;
 	m_fV_WoundIncarnation = 0.001f;
+	m_fMinWoundSize = 0.00001f;
 
 	
 	m_fHealthHitPart = 1.0f;
@@ -111,6 +112,7 @@ void CEntityCondition::LoadCondition(LPCSTR entity_section)
 	m_fV_RadiationHealth = pSettings->r_float(section,"radiation_health_v");
 	m_fV_Bleeding = pSettings->r_float(section,"bleeding_v");
 	m_fV_WoundIncarnation = pSettings->r_float(section,"wound_incarnation_v");
+	m_fMinWoundSize = pSettings->r_float(section,"min_wound_size");
 	m_fV_EntityMorale = pSettings->r_float(section,"morale_v");
 	
 	m_fHealthHitPart = pSettings->r_float(section,"health_hit_part");
@@ -194,10 +196,12 @@ void CEntityCondition::ChangeEntityMorale(float value)
 
 void CEntityCondition::ChangeBleeding(float percent)
 {
-	//затянуть раны на заданное кол-во процентов
+	//затянуть раны
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		(*it)->Incarnation(percent);
+		(*it)->Incarnation(percent, m_fMinWoundSize);
+		if(0 == (*it)->TotalSize())
+			(*it)->SetDestroy(true);
 	}
 }
 bool RemoveWoundPred(CWound* pWound)
@@ -217,11 +221,8 @@ void  CEntityCondition::UpdateWounds		()
 	m_WoundVector.erase(last_it, m_WoundVector.end());
 }
 
-//вычисление параметров с ходом игрового времени
-void CEntityCondition::UpdateCondition()
+void CEntityCondition::UpdateConditionTime()
 {
-	if(GetHealth()<=0) return;
-
 	u64 cur_time = Level().GetGameTime();
 
 	if(m_bTimeValid)
@@ -246,6 +247,12 @@ void CEntityCondition::UpdateCondition()
 	}
 
 	m_iLastTimeCalled = cur_time;
+}
+
+//вычисление параметров с ходом игрового времени
+void CEntityCondition::UpdateCondition()
+{
+	if(GetHealth()<=0) return;
 
 	UpdateHealth();
 	UpdatePower();
@@ -354,15 +361,14 @@ CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u1
 	if (it == m_WoundVector.end())
 	{
 		pWound = xr_new<CWound>(element);
-		pWound->AddHit(hit_power*m_fV_Bleeding*
-							::Random.randF(0.5f,1.5f), hit_type);
+		pWound->AddHit(hit_power*::Random.randF(0.5f,1.5f), hit_type);
 		m_WoundVector.push_back(pWound);
 	}
 	//старая 
 	else
 	{
 		pWound = *it;
-		pWound->AddHit(hit_power*m_fV_Bleeding*::Random.randF(0.5f,1.5f), hit_type);
+		pWound->AddHit(hit_power*::Random.randF(0.5f,1.5f), hit_type);
 	}
 
 	VERIFY(pWound);
@@ -427,21 +433,12 @@ float CEntityCondition::BleedingSpeed()
 }
 
 
-
-
 void CEntityCondition::UpdateHealth()
 {
 	float delta_time = float(m_iDeltaTime)/1000.f;
-	m_fDeltaHealth -= BleedingSpeed() * delta_time;
+	m_fDeltaHealth -= BleedingSpeed() * delta_time * m_fV_Bleeding;
 	VERIFY(_valid(m_fDeltaHealth));
-
-	//затянуть раны
-	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
-	{
-		(*it)->Incarnation( m_fV_WoundIncarnation * delta_time);
-		if(0 == (*it)->TotalSize())
-			(*it)->SetDestroy(true);
-	}
+	ChangeBleeding(m_fV_WoundIncarnation * delta_time);
 }
 void CEntityCondition::UpdatePower()
 {

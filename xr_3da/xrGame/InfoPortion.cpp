@@ -55,7 +55,7 @@ void CInfoPortion::Load	(INFO_INDEX info_index)
 
 void CInfoPortion::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_InfoIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_InfoIndex);
 
 	CUIXml uiXml;
 	string128 xml_file_full;

@@ -1087,10 +1087,9 @@ void CActor::UpdateCondition()
 	if (psActorFlags.test(AF_GODMODE)) return;
 	if (Remote()) return;
 
-	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
+	if((mstate_real&mcAnyMove))
 	{
-	   ConditionAccel((inventory().TotalWeight()+GetMass())/
-						(inventory().GetMaxWeight()+GetMass()));
+	   ConditionWalk(inventory().TotalWeight()/inventory().GetMaxWeight(), isAccelerated(mstate_real));
 	}
 	
 	CActorCondition::UpdateCondition();
@@ -1209,6 +1208,12 @@ void	CActor::SetZoomRndSeed		(s32 Seed)
 {
 	if (0 != Seed) m_ZoomRndSeed = Seed;
 	else m_ZoomRndSeed = s32(Level().timeServer_Async());
+};
+
+void	CActor::SetShotRndSeed		(s32 Seed)
+{
+	if (0 != Seed) m_ShotRndSeed = Seed;
+	else m_ShotRndSeed = s32(Level().timeServer_Async());
 };
 
 void	CActor::SetShotRndSeed		(s32 Seed)

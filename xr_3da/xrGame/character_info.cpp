@@ -109,7 +109,7 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 void CCharacterInfo::load_shared	(LPCSTR)
 {
 	CUIXml uiXml;
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_iProfileIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_iProfileIndex);
 
 	string128 xml_file_full;
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");

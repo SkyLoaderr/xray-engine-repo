@@ -203,7 +203,7 @@ void CPhraseDialog::Load(PHRASE_DIALOG_INDEX dialog_index)
 
 void CPhraseDialog::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_DialogIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_DialogIndex);
 
 	string128 xml_file_full;
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");

@@ -24,7 +24,7 @@ public:
 	void	AddHit		(float hit_power, ALife::EHitType hit_type);
 	
 	//заживление раны
-	void	Incarnation	(float percent);
+	void	Incarnation	(float percent, float min_wound_size);
 	u16		GetBoneNum	() {return m_iBoneNum;}
 	void 	SetBoneNum	(u16 bone_num) {m_iBoneNum = bone_num;}
 

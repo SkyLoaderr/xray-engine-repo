@@ -33,7 +33,7 @@ void CEncyclopediaArticle::Load	(ARTICLE_INDEX  index)
 
 void CEncyclopediaArticle::load_shared	(LPCSTR)
 {
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_ArticleIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_ArticleIndex);
 
 	CUIXml		uiXml;
 	CUIXmlInit	xml_init;

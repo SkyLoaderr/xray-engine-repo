@@ -68,7 +68,7 @@ void CSpecificCharacter::Load(PROFILE_INDEX index)
 void CSpecificCharacter::load_shared	(LPCSTR)
 {
 	CUIXml uiXml;
-	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_iOwnIndex);
+	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_iOwnIndex);
 
 	string_path xml_file_full;
 	strconcat	(xml_file_full, *shared_str(item_data.file_name), ".xml");

@@ -9,6 +9,13 @@
 #include "../CameraBase.h"
 #include "xrMessages.h"
 
+#include "level.h"
+#include "HUDManager.h"
+#include "UI.h"
+#include "ui/UIMainIngameWnd.h"
+#include "string_table.h"
+
+
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
@@ -131,7 +138,10 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}
 	}
 
-	if(!CanMove()) return;
+	if(!CanMove()) 
+	{
+		return;
+	}
 
 	// update player accel
 	if (mstate_wf&mcFwd)		vControlAccel.z +=  1;
@@ -155,8 +165,8 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 			//уменьшить силу игрока из-за выполненого прыжка
 			if (!psActorFlags.test(AF_GODMODE))	
-				ConditionJump((inventory().TotalWeight()+GetMass())/
-				(inventory().GetMaxWeight() + GetMass()));
+				ConditionJump(inventory().TotalWeight()/
+				inventory().GetMaxWeight());
 		}
 
 		/*
@@ -406,8 +416,23 @@ bool	CActor::CanJump				()
 	return can_Jump;
 }
 
+#define CANT_WALK "cant_walk"
+#define SHOW_CANT_WALK_TIME 5.f
+
 bool	CActor::CanMove				()
 {
+	if(IsCantWalk())
+	{
+		static float m_fSignTime = 0.f;
+
+		if(mstate_wishful&mcAnyMove && Device.fTimeGlobal - m_fSignTime > SHOW_CANT_WALK_TIME)
+		{
+			HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(*CStringTable()(CANT_WALK));
+			m_fSignTime = Device.fTimeGlobal;
+		}
+		return false;
+	}
+
 	if(IsTalking())
 		return false;
 	else
