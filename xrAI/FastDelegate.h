@@ -3,8 +3,8 @@
 
 #pragma pack(push,4)
 
-#define xr_stdcall 
-//#define xr_stdcall __stdcall
+//#define xr_stdcall 
+#define xr_stdcall __stdcall
 //#define xr_stdcall __cdecl
 
 //						FastDelegate.h 
