@@ -16,6 +16,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 
+#pragma warning(disable:4530)
 #include "limits"
 #include "list"
 
