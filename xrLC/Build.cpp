@@ -257,6 +257,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	CopyMemory(&g_params,&Params,sizeof(b_params));
 	g_params.m_SS_DedicateCached	= 8;
 	g_params.m_bConvertProgressive	= FALSE;
+
+	// 
+	Msg	("* sizes: V(%d),F(%d)",sizeof(Vertex),sizeof(Face));
 }
 
 CBuild::~CBuild()
