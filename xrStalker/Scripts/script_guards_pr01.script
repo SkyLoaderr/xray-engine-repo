@@ -1,6 +1,78 @@
 guard_see_actor = 0
 hrom_prishli_rebyat = 0
 
+
+-- функция перехода в первое состояние из нулевого
+function if_see_actor_tell_warning(npc, fsm)
+	if npc:see(actor) == true and not stalker_already_saw_actor then
+		-- да, условие выполнено, FSM перейдет в состояние 
+		-- как только мы сделаем return true
+		log("i saw a fucking actor")
+
+		-- при переходе из нулевого состояния всегда 
+		-- незабываем взять контроль скрипта над FSM
+		fsm:set_script_control()
+
+		log("setting action")
+
+
+		--	задаем новое состояние сталкера
+		-- "стрелять буду"	
+		action(                                                                                                       
+	    		npc,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000)
+		)
+
+		-- мы уже видели актера, больше предупреждать не нужно	
+		stalker_already_saw_actor = true
+
+		return true
+	end
+	-- нет, условие не сработало, все оталось как есть
+	return false
+end
+
+function if_actor_is_dead(npc, fsm)
+		log("actor is not dead")
+	if actor.health <= 0 and not stalker_already_say_baran then
+		-- да, условие выполнено, FSM перейдет в состояние 
+		-- как только мы сделаем return true
+		-- при переходе из нулевого состояния всегда 
+		-- незабываем взять контроль скрипта над FSM
+
+		fsm:set_script_control()
+
+		log("actor is dead")
+
+
+		--	задаем новое состояние сталкера
+		-- "стрелять буду"	
+
+		sound_baran:play_at_pos		(npc,npc:position(),0);
+		stalker_already_say_baran = true
+
+		return true
+	end
+	-- нет, условие не сработало, все оталось как есть
+	return false
+end
+
+
+-- функция перехода из первого состояние в нулевое
+function finished_talking(npc, fsm)
+	if not npc:action() then
+		log("i lost a trace of this fucking actor")
+		return true
+	end
+
+	return false
+end
+
+
 function main()
 
 	actor   	= get_actor()
@@ -24,22 +96,22 @@ function main()
 
 	wait(1000)			
 
-	guard01:script	(true,script_guards_pr00.script_name())
-	guard02:script	(true,script_guards_pr00.script_name())
-	guard03:script	(true,script_guards_pr00.script_name())
+	guard01:script	(true,script_guards_pr01.script_name())
+	guard02:script	(true,script_guards_pr01.script_name())
+	guard03:script	(true,script_guards_pr01.script_name())
 
-	final_guard01:script	(true,script_guards_pr00.script_name())
-	final_guard02:script	(true,script_guards_pr00.script_name())
-	final_guard03:script	(true,script_guards_pr00.script_name())
-	final_guard04:script	(true,script_guards_pr00.script_name())
-	final_guard05:script	(true,script_guards_pr00.script_name())
+	final_guard01:script	(true,script_guards_pr01.script_name())
+	final_guard02:script	(true,script_guards_pr01.script_name())
+	final_guard03:script	(true,script_guards_pr01.script_name())
+	final_guard04:script	(true,script_guards_pr01.script_name())
+	final_guard05:script	(true,script_guards_pr01.script_name())
 
-	guard_wait01:script	(true,script_guards_pr00.script_name())
-	guard_wait02:script	(true,script_guards_pr00.script_name())
-	guard_wait03:script	(true,script_guards_pr00.script_name())
+	guard_wait01:script	(true,script_guards_pr01.script_name())
+	guard_wait02:script	(true,script_guards_pr01.script_name())
+	guard_wait03:script	(true,script_guards_pr01.script_name())
 
-	trader_guard01:script	(true,script_guards_pr00.script_name())
-	trader_guard02:script	(true,script_guards_pr00.script_name())
+	trader_guard01:script	(true,script_guards_pr01.script_name())
+	trader_guard02:script	(true,script_guards_pr01.script_name())
 
 			action(
 				guard01,
@@ -118,7 +190,6 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
-
 			action(
 				trader_guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
@@ -134,215 +205,15 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
+	-- инициализация FSM сталкера
+	local fsm_stalker = FSM(script_guards_pr00.script_name(), trader_guard01)
 
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 30 then
-			prof_oba:play_at_pos						(guard01,guard01:position(),0);
-			wait(1000)			
-			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
-			wait(1000)			
-			guard_see_actor = 1
-		break
-		end
-	    wait	()
-	end
+	-- установка функций перехода 
+	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
+	fsm_stalker:set_transition(1, 0, this.finished_talking)
+	fsm_stalker:set_transition(0, 2, this.if_actor_is_dead)
+	fsm_stalker:set_transition(2, 0, this.finished_talking)
 
-	while guard03:action() do
-		if guard03:see("actor") and distance_between(guard03,actor) <= 30 then
-			prof_oba:play_at_pos						(guard03,guard03:position(),0);
-			wait(1000)			
-			prof_hmm_kto_eto:play_at_pos						(guard03,guard03:position(),0);
-			wait(1000)			
-			guard_see_actor = 1
-		break
-		end
-	    wait	()
-	end
-
-
---	while guard01:action() and guard02:action() do
---		if (guard01:see(actor) == false or guard02:see(actor) == false) and guard_see_actor ~= 0 then
---			printf("see = true2!")
---			flush()
---			wait(7000)		
---			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
---			wait(2000)		
---		break
---		end
---	    wait	()
---	end
-
-	while guard03:action() do
-		if guard03:see("actor") and distance_between(guard03,actor) <= 20 then
-			printf("see = true2!")
-			flush()
-			wait(2000)		
-			prof_eto_territoriya_svobodi:play_at_pos			(guard03,guard03:position(),0);
-			wait(2000)		
-			guard_see_actor = 2
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 then
-			printf("see = true2!")
-			flush()
-			wait(2000)		
-			prof_eto_territoriya_svobodi:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)		
-			guard_see_actor = 2
-		break
-		end
-	    wait	()
-	end
-
-
-	while guard01:action() and guard02:action() and guard01.health >= 100 and guard02.health >= 100 do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 15 then
-			wait(1000)			
-			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
-			wait(3000)			
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01.health < 95 or guard02.health < 95 then
-			wait(1000)			
-			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
-			guard01:script	(false,script_guards_pr00.script_name())
-			guard02:script	(false,script_guards_pr00.script_name())
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 10 then
-			prof_sam_naprosilsya:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)			
-		break
-		end
-	    wait	()
-	end
-
-	while guard03:action() do
-		if guard03:see("actor") and distance_between(guard01,actor) <= 20 then
-			wait(2000)			
-			prof_sam_naprosilsya:play_at_pos			(guard03,guard03:position(),0);
-			wait(1000)			
-			rainbow_hrom_u_nas_problema:play_at_pos		(guard03,guard03:position(),0);
-			wait(1000)			
-			guard03:script		(false,script_guards_pr00.script_name())
-			guard_wait01:script	(false,script_guards_pr00.script_name())
-			guard_wait02:script	(false,script_guards_pr00.script_name())
-			guard_wait03:script	(false,script_guards_pr00.script_name())
-			siren:play_at_pos		(actor,actor:position(),0);
-			wait(1000)			
-			nemedlenno:play_at_pos		(actor,actor:position(),0);
-			wait(2000)			
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 and guard_see_actor == 2 then
-			rainbow_ti_chto_gluhoy:play_at_pos			(guard02,guard02:position(),0);
-			wait(2000)			
-			guard_see_actor = 3
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 and guard_see_actor == 3 then
-			prof_chert:play_at_pos			(guard01,guard01:position(),0);
-			wait(1000)			
-			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
-			wait(500)			
-			guard01:script	(false,script_guards_pr00.script_name())
-			guard02:script	(false,script_guards_pr00.script_name())
-		break
-		end
-	    wait	()
-	end
-
-	while true do
-		if guard01.health <= 0 and guard02.health > 0 then
-			wait(2000)			
-			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
-			guard02:script						(false,  script_guards_pr00.script_name())
-			wait(3000)			
-			final_guard04:script	(false,script_guards_pr00.script_name())
-			final_guard05:script	(false,script_guards_pr00.script_name())
-			siren:play_at_pos		(actor,actor:position(),0);
-			wait(1000)			
-			nemedlenno:play_at_pos		(actor,actor:position(),0);
-			wait(2000)			
-		break
-		end
-		wait()			
-	end
-
-	while true do
-		if guard02.health <= 0 and guard01.health > 0 then
-		wait(2000)			
-			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
-			guard01:script						(false,  script_guards_pr00.script_name())
-			wait(3000)			
-			rainbow_hrom_u_nas_problema:play_at_pos		(guard02,guard02:position(),0);
-			wait(2000)			
-			final_guard04:script	(false,script_guards_pr00.script_name())
-			final_guard05:script	(false,script_guards_pr00.script_name())
-			siren:play_at_pos		(actor,actor:position(),0);
-			wait(1000)			
-			nemedlenno:play_at_pos		(actor,actor:position(),0);
-			wait(2000)			
-		break
-		end
-		wait()			
-	end
-
-	while true do
-		if final_guard01:see(actor) or final_guard02:see(actor) or final_guard03:see(actor) then
-			wait(1000)			
-			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
-			wait(1000)			
-			final_guard01:script			(false,script_guards_pr00.script_name())
-			final_guard02:script			(false,script_guards_pr00.script_name())
-			final_guard03:script			(false,script_guards_pr00.script_name())
-			rainbow_monstri:play_at_pos		(final_guard02,final_guard02:position(),0);
-		break
-		end
-	    wait	()
-	end
-
-	while true do
-		if actor.health <= 0 then
-			guard01:script	(true,script_guards_pr00.script_name())
-			guard02:script	(true,script_guards_pr00.script_name())
-			action(
-				guard01,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000000)
-			)
-			action(
-				guard02,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000000)
-			)
-			wait(2000)
-			prof_hrom_pust_trup_uberet:play_at_pos			(guard01,guard01:position(),0);
-		break
-		end
-	    wait	()
-	end
-
+	-- запуск бесконечного цикла для одного FSM
+	fsm_stalker:run_loop()
 end
