@@ -866,6 +866,9 @@
 					RelativePath=".\Config\weapons\w_sig220.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\weapons\w_sig550.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weapons\w_spas12.ltx">
 				</File>
 				<File
