@@ -85,7 +85,7 @@ _ParticleState::_ParticleState()
 
 void _ParticleState::ResetState()
 {
-	flags.set		(PASource::flVertexB_tracks,TRUE);
+	flags.set		(u32(PASource::flVertexB_tracks),TRUE);
 	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
 	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
 	VertexB			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
@@ -384,7 +384,7 @@ PARTICLEDLL_API void pVertexBTracks(BOOL trackVertex)
 {
 	_ParticleState &_ps = _GetPState();
 
-	_ps.flags.set(PASource::flVertexB_tracks,trackVertex);
+	_ps.flags.set(u32(PASource::flVertexB_tracks),trackVertex);
 }
 
 PARTICLEDLL_API void pParentMotion(float scale)
