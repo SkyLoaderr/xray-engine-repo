@@ -343,7 +343,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 		pKinematics->CalculateBones_Invalidate();
 		pKinematics->CalculateBones();
 	}
-
+//. Kostya!!!
 	if (guid_physic_bone){
 		Fmatrix InvET;
 		InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
