@@ -55,7 +55,7 @@ public:
 		eWorldPropertyDropped,
 		eWorldPropertyQueueWait1,
 		eWorldPropertyQueueWait2,
-		eWorldPropertyNoItemsIdle	= eWorldPropertyIdle | u16(-1),
+		eWorldPropertyNoItemsIdle	= (eWorldPropertyIdle << 16) | u16(-1),
 		eWorldPropertyDummy			= u32(-1),
 	};
 
@@ -77,7 +77,7 @@ public:
 		eWorldOperatorSwitch2,
 		eWorldOperatorQueueWait1,
 		eWorldOperatorQueueWait2,
-		eWorldOperatorNoItemsIdle	= eWorldOperatorIdle | u16(-1),
+		eWorldOperatorNoItemsIdle	= (eWorldOperatorIdle << 16) | u16(-1),
 		eWorldOperatorDummy			= u32(-1),
 	};
 

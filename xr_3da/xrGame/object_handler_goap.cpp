@@ -434,6 +434,46 @@ LPCSTR action2string(const u32 id)
 	}
 	return		(S);
 }
+
+LPCSTR property2string(const u32 id)
+{
+	static	string4096 S;
+	if ((id & 0xffff) != 0xffff)
+		if (Level().Objects.net_Find(id & 0xffff))
+			strcpy	(S,*Level().Objects.net_Find(id & 0xffff)->cName());
+		else
+			strcpy	(S,"no_items");
+	else
+		strcpy	(S,"no_items");
+	strcat		(S,":");
+	switch (id >> 16) {
+		case CObjectHandlerGOAP::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyUnstrapping	: {strcat(S,"Unstrapping");	break;}
+		case CObjectHandlerGOAP::eWorldPropertySwitch1		: {strcat(S,"Switch1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertySwitch2		: {strcat(S,"Switch2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAimed1		: {strcat(S,"Aimed1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAimed2		: {strcat(S,"Aimed2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAiming1		: {strcat(S,"Aiming1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAiming2		: {strcat(S,"Aiming2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyEmpty1		: {strcat(S,"Empty1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyEmpty2		: {strcat(S,"Empty2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyReady1		: {strcat(S,"Ready1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyReady2		: {strcat(S,"Ready2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyFiring1		: {strcat(S,"Firing1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyFiring2		: {strcat(S,"Firing2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyIdle			: {strcat(S,"Idle");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyIdleStrap	: {strcat(S,"IdleStrap");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
+		default							: NODEFAULT;
+	}
+	return		(S);
+}
 #endif
 
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
@@ -459,6 +499,33 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 	inherited::update			(time_delta);
 #ifdef LOG_ACTION
 	if (!solution().empty()) {
+		// printing current world state
+		{
+			Msg						("%6d : Current world state",Level().timeServer());
+			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+			for ( ; I != E; ++I) {
+				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
+				char					temp = '?';
+				if ((J != current_state().conditions().end()) && ((*J).condition() != (*I).first))
+					temp				= (*J).value() ? '+' : '-';
+				Msg					("%2c : %s",temp,property2string((*I).first));
+			}
+		}
+		// printing target world state
+		{
+			Msg						("%6d : Target world state",Level().timeServer());
+			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+			for ( ; I != E; ++I) {
+				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
+				char					temp = '?';
+				if ((J != target_state().conditions().end()) && ((*J).condition() != (*I).first))
+					temp				= (*J).value() ? '+' : '-';
+				Msg					("%2c : %s",temp,property2string((*I).first));
+			}
+		}
+		// printing solution
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
 			Msg					("%s",action2string(solution()[i]));
