@@ -5,7 +5,7 @@
 		<location>
 			<level>l02_garbage</level>
 			<object>100</object>
-			<icon name="" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<icon name="" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Встретиться с Серым.</text>
 		</location>
 		<task>garbage_meet_stalker</task>	
