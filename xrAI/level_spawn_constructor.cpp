@@ -351,6 +351,12 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 		if (!zone)
 			continue;
 
+//		if (!level_graph().valid_vertex_position(zone->o_Position)) {
+//			zone->m_wArtefactSpawnCount	= 0;
+//			zone->m_dwStartIndex		= m_level_points.size();
+//			continue;
+//		}
+
 		zone->m_tNodeID						= level_graph().vertex(zone->m_tNodeID,zone->o_Position);
 		if (!level_graph().valid_vertex_position(zone->o_Position) || !level_graph().inside(zone->m_tNodeID,zone->o_Position))
 			zone->m_tNodeID					= level_graph().vertex(u32(-1),zone->o_Position);
