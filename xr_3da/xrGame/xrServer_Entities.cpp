@@ -1418,6 +1418,8 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
     	P.r_u16				(flags.flags);
     if (m_wVersion>12)
     	P.r_float			(mass);
+	// internal
+	strlwr					(spot_bone);
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 {
@@ -1523,6 +1525,8 @@ void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size)
     if (m_wVersion>9){
 		P.r_string			(fixed_bone);
     }
+	// internal
+	strlwr					(fixed_bone);
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
