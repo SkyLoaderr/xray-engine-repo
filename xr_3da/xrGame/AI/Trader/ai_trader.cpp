@@ -18,8 +18,8 @@
 #include "../../xrserver.h"
 #include "../../../skeletonanimated.h"
 #include "../../alife_artefact_order.h"
-
 #include "../../relation_registry.h"
+#include "../../object_broker.h"
 
 CAI_Trader::CAI_Trader()
 {

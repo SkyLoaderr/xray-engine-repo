@@ -32,6 +32,7 @@
 #include "space_restriction.h"
 #include "space_restrictor.h"
 #include "space_restriction_base.h"
+#include "detail_path_manager.h"
 
 void CLevelGraph::on_render1()
 {
@@ -980,7 +981,7 @@ void CLevelGraph::build_detail_path()
 
 	m_tpTravelLine.clear					();
 //	ai().m_visited_nodes.clear				();
-	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
+	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,GraphEngineSpace::CBaseParameters()))
 		return;
 
 #ifndef AI_COMPILER
@@ -1255,8 +1256,8 @@ void CLevelGraph::on_render5	()
 		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
-			if (!tpCustomMonster->CDetailPathManager::path().empty()) {
-				Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].position;
+			if (!tpCustomMonster->detail_path_manager().path().empty()) {
+				Fvector temp = tpCustomMonster->detail_path_manager().path()[tpCustomMonster->detail_path_manager().path().size() - 1].position;
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}
@@ -1319,8 +1320,8 @@ void CLevelGraph::on_render6	()
 		CCustomMonster *tpCustomMonster = smart_cast<CCustomMonster*>(*I);
 		if (tpCustomMonster) {
 			tpCustomMonster->OnRender();
-			if (!tpCustomMonster->CDetailPathManager::path().empty()) {
-				Fvector temp = tpCustomMonster->CDetailPathManager::path()[tpCustomMonster->CDetailPathManager::path().size() - 1].position;
+			if (!tpCustomMonster->detail_path_manager().path().empty()) {
+				Fvector temp = tpCustomMonster->detail_path_manager().path()[tpCustomMonster->detail_path_manager().path().size() - 1].position;
 				RCache.dbg_DrawAABB(temp,1.f,1.f,1.f,D3DCOLOR_XRGB(0,0,255));
 			}
 		}

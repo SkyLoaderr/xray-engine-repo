@@ -7,6 +7,7 @@
 #include "../../../../skeletonanimated.h"
 #include "../critical_action_info.h"
 #include "../ai_monster_jump.h"
+#include "../../../detail_path_manager.h"
 
 
 void CBaseMonster::reload	(LPCSTR section)
@@ -182,14 +183,14 @@ BOOL CBaseMonster::net_Spawn (LPVOID DC)
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
-	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunAttack,	STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real)));
+	detail_path_manager().add_velocity(eVelocityParameterStand,			CDetailPathManager::STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterWalkNormal,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterRunNormal,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterWalkDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterRunDamaged,	CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterSteal,			CDetailPathManager::STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterDrag,			CDetailPathManager::STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterRunAttack,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real));
 	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 

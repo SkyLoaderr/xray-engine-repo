@@ -30,6 +30,7 @@
 #include "../../stalker_animation_manager.h"
 #include "../../motivation_action_manager_stalker.h"
 #include "../../script_game_object.h"
+#include "../../detail_path_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -148,7 +149,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 
 void CAI_Stalker::Die				(CObject* who)
 {
-	SelectAnimation					(XFORM().k,direction(),speed());
+	SelectAnimation					(XFORM().k,detail_path_manager().direction(),speed());
 
 	set_sound_mask					(0);
 	play							(eStalkerSoundDie);

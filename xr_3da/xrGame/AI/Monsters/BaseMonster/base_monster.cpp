@@ -19,6 +19,7 @@
 #include "../../../phdestroyable.h"
 #include "../../../../skeletoncustom.h"
 #include "../critical_action_info.h"
+#include "../../../detail_path_manager.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -368,8 +369,8 @@ void CBaseMonster::TranslateActionToPathParams()
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		set_velocity_mask	(vel_mask);	
-		set_desirable_mask	(des_mask);
+		detail_path_manager().set_velocity_mask	(vel_mask);	
+		detail_path_manager().set_desirable_mask	(des_mask);
 		enable_path			();		
 	} else {
 		disable_path		();

@@ -6,6 +6,7 @@
 #include "../../../skeletonanimated.h"
 #include "custom_events.h"
 #include "critical_action_info.h"
+#include "../../detail_path_manager.h"
 
 CJumpingAbility::CJumpingAbility()
 {
@@ -98,7 +99,7 @@ void CJumpingAbility::update_frame()
 	if (!m_active) return;
 	
 	if (!m_object->MotionMan.TA_IsActive())	stop();
-	if (m_velocity_bounced && m_object->CMonsterMovement::enabled() && m_object->CDetailPathManager::completed(m_object->Position())) stop();
+	if (m_velocity_bounced && m_object->CMonsterMovement::enabled() && m_object->detail_path_manager().completed(m_object->Position())) stop();
 
 	if (is_landing()) pointbreak();
 	

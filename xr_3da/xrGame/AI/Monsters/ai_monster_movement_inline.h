@@ -43,12 +43,6 @@ IC bool CMonsterMovement::actual_params()
 	return m_actual;
 }
 
-IC void CMonsterMovement::detour_graph_points()
-{
-	set_path_type		(MovementManager::ePathTypeGamePath);
-	set_selection_type	(eSelectionTypeRandomBranching);
-}
-
 IC void CMonsterMovement::set_generic_parameters()
 {
 	CMonsterMovement::set_rebuild_time			(5000);

@@ -15,6 +15,7 @@
 #include "../../weapon.h"
 #include "../../weaponmagazined.h"
 #include "../../../skeletoncustom.h"
+#include "../../script_engine.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {

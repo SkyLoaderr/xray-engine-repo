@@ -8,6 +8,9 @@
 
 #include "stdafx.h"
 #include "movement_manager.h"
+#include "patrol_path_manager.h"
+#include "level_path_manager.h"
+#include "detail_path_manager.h"
 
 void CMovementManager::process_patrol_path()
 {
@@ -15,11 +18,11 @@ void CMovementManager::process_patrol_path()
 	for (;;) {
 		switch (m_path_state) {
 			case ePathStateSelectPatrolPoint : {
-				CPatrolPathManager::select_point(Position(),CLevelPathManager::m_dest_vertex_id);
-				if (CPatrolPathManager::failed())
+				patrol_path_manager().select_point(Position(),level_path_manager().m_dest_vertex_id);
+				if (patrol_path_manager().failed())
 					break;
 
-				if (CPatrolPathManager::completed()) {
+				if (patrol_path_manager().completed()) {
 					m_path_state	= ePathStatePathCompleted;
 					break;
 				}
@@ -29,33 +32,30 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-				CLevelPathManager::build_path(level_vertex_id(),level_dest_vertex_id());
-				if (CLevelPathManager::failed())
+				level_path_manager().build_path(level_vertex_id(),level_dest_vertex_id());
+				if (level_path_manager().failed())
 					break;
 				m_path_state		= ePathStateContinueLevelPath;
 				if (time_over())
 					break;
 			}
 			case ePathStateContinueLevelPath : {
-				CLevelPathManager::select_intermediate_vertex();
+				level_path_manager().select_intermediate_vertex();
 				m_path_state		= ePathStateBuildDetailPath;
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildDetailPath : {
-//				Device.Statistic.TEST2.Begin();
-				CDetailPathManager::set_state_patrol_path(true);
-				CDetailPathManager::set_start_position(Position());
-				CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
-				CDetailPathManager::set_dest_position(CPatrolPathManager::destination_position());
-				CDetailPathManager::build_path(
-					CLevelPathManager::path(),
-					CLevelPathManager::intermediate_index()
+				detail_path_manager().set_state_patrol_path(true);
+				detail_path_manager().set_start_position(Position());
+				detail_path_manager().set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
+				detail_path_manager().set_dest_position(patrol_path_manager().destination_position());
+				detail_path_manager().build_path(
+					level_path_manager().path(),
+					level_path_manager().intermediate_index()
 				);
 				
-//				Device.Statistic.TEST2.End();
-				
-				if (CDetailPathManager::failed()) {
+				if (detail_path_manager().failed()) {
 					m_path_state	= ePathStateBuildLevelPath;
 					break;
 				}
@@ -66,27 +66,27 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStatePathVerification : {
-				if (!CPatrolPathManager::actual())
+				if (!patrol_path_manager().actual())
 					m_path_state	= ePathStateSelectPatrolPoint;
 				else
-				if (!CLevelPathManager::actual())
+				if (!level_path_manager().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-				if (!CDetailPathManager::actual())
+				if (!detail_path_manager().actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-					if (CDetailPathManager::completed(Position(),!state_patrol_path())) {
+					if (detail_path_manager().completed(Position(),!detail_path_manager().state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;
-						if (CLevelPathManager::completed()) {
+						if (level_path_manager().completed()) {
 							m_path_state	= ePathStateSelectPatrolPoint;
-							if (CPatrolPathManager::completed()) 
+							if (patrol_path_manager().completed()) 
 								m_path_state	= ePathStatePathCompleted;
 						}
 					}
 				break;
 			}
 			case ePathStatePathCompleted : {
-				if (!CPatrolPathManager::actual())
+				if (!patrol_path_manager().actual())
 					m_path_state	= ePathStateSelectPatrolPoint;
 				break;
 			}

@@ -44,53 +44,6 @@
 using namespace GraphEngineSpace;
 
 class CGraphEngine {
-public:
-	typedef SBaseParameters<
-				_solver_dist_type,
-				_solver_index_type,
-				_iteration_type
-			>		CSolverBaseParameters;
-	typedef SBaseParameters<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CBaseParameters;
-	typedef SFlooder<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CFlooder;
-	typedef SObstacleParams<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstacleParams;
-	typedef SObstaclesLightCover<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstaclesLightCover;
-	typedef SObstaclesLightCoverEnemy<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CObstaclesLightCoverEnemy;
-	typedef SPosition<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CPositionParameters;
-	typedef SStraightLineParams<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CStraightLineParams;
-	typedef SGameLevel<
-				_dist_type,
-				_index_type,
-				_iteration_type
-			>		CGameLevelParams;
-
 protected:
 //	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;
 //	typedef CDataStorageSingleLinkedList<true>				CPriorityQueue;

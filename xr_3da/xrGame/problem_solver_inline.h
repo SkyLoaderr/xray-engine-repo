@@ -351,9 +351,9 @@ IC	void CProblemSolverAbstract::solve			()
 	m_current_state.clear		();
 	bool						successful = 
 		!reverse_search ? 
-		ai().graph_engine().search(*this,current_state(),target_state(),&m_solution,CGraphEngine::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000))
+		ai().graph_engine().search(*this,current_state(),target_state(),&m_solution,GraphEngineSpace::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000))
 		:
-		ai().graph_engine().search(*this,target_state(),current_state(),&m_solution,CGraphEngine::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000));
+		ai().graph_engine().search(*this,target_state(),current_state(),&m_solution,GraphEngineSpace::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000));
 	m_failed					= !successful;
 #endif
 }

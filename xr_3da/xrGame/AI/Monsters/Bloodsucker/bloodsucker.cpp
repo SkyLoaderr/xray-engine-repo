@@ -5,6 +5,7 @@
 #include "../ai_monster_effector.h"
 #include "bloodsucker_state_manager.h"
 #include "../../../../skeletoncustom.h"
+#include "../../../detail_path_manager.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -30,7 +31,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
-	m_movement_params.insert(std::make_pair(eVelocityParameterInvisible,STravelParams(invisible_vel.linear, invisible_vel.angular)));
+	detail_path_manager().add_velocity(eVelocityParameterInvisible,CDetailPathManager::STravelParams(invisible_vel.linear, invisible_vel.angular));
 
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 

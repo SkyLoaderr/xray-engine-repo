@@ -140,7 +140,7 @@ void CSE_ALifeHumanAbstract::vfGoToCustomer()
 {
 	// go to customer to get something to accomplish task
 	if (m_tpPath.empty()) {
-		ai().graph_engine().search(ai().game_graph(),m_tGraphID,ai().alife().objects().object(ai().alife().tasks().task(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,CGraphEngine::CBaseParameters());
+		ai().graph_engine().search(ai().game_graph(),m_tGraphID,ai().alife().objects().object(ai().alife().tasks().task(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,&m_tpPath,GraphEngineSpace::CBaseParameters());
 		m_dwCurNode					= 0;
 		m_tNextGraphID				= m_tGraphID;
 		m_fCurSpeed					= m_fGoingSpeed;
@@ -175,7 +175,7 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 	m_fCurSpeed		= m_fGoingSpeed;
 	m_detect_probability	= m_fGoingSuccessProbability; 
 	if (m_tpPath.empty()) {
-		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tDestGraphPointIndex,&m_tpPath,CGraphEngine::CBaseParameters());
+		ai().graph_engine().search(ai().game_graph(),m_tGraphID,m_tDestGraphPointIndex,&m_tpPath,GraphEngineSpace::CBaseParameters());
 		m_dwCurNode				= 0;
 		m_tNextGraphID			= m_tGraphID;
 	}

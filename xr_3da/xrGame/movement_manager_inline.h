@@ -5,63 +5,10 @@ IC	bool CMovementManager::actual() const
 	return				(m_path_actuality);
 }
 
-bool CMovementManager::actual_all() const
-{
-	if (!m_path_actuality)
-		return			(false);
-	switch (m_path_type) {
-		case ePathTypeGamePath : 
-			return			(
-				CGamePathManager::actual() && 
-				CLevelPathManager::actual() &&
-				CDetailPathManager::actual()
-			);
-		case ePathTypeLevelPath :
-			return			(
-				CLevelPathManager::actual() &&
-				CDetailPathManager::actual()
-			);
-		case ePathTypeEnemySearch :
-			return			(
-//				CEnemyLocationPredictor::actual() && 
-				CLevelPathManager::actual() &&
-				CDetailPathManager::actual()
-			);
-		case ePathTypePatrolPath :
-			return			(
-				CPatrolPathManager::actual() && 
-				CLevelPathManager::actual() &&
-				CDetailPathManager::actual()
-			);
-		case ePathTypeNoPath :
-			return			(
-				CDetailPathManager::actual()
-			);
-		default : NODEFAULT;
-	}
-#ifdef DEBUG
-	return					(true);
-#endif
-}
-
 IC	void CMovementManager::set_path_type(EPathType path_type)
 {
 	m_path_actuality		= m_path_actuality && (m_path_type == path_type);
 	m_path_type				= path_type;
-}
-
-IC	void CMovementManager::set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id)
-{
-//	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(ai().game_graph().vertex(game_vertex_id)->level_point()));
-	CGamePathManager::set_dest_vertex(game_vertex_id);
-	m_path_actuality		= m_path_actuality && CGamePathManager::actual();
-}
-
-IC	void CMovementManager::set_level_dest_vertex(const u32 level_vertex_id)
-{
-	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(level_vertex_id));
-	CLevelPathManager::set_dest_vertex(level_vertex_id);
-	m_path_actuality		= m_path_actuality && CLevelPathManager::actual();
 }
 
 IC	void CMovementManager::time_start()
@@ -95,22 +42,6 @@ IC	bool CMovementManager::path_completed() const
 	return					((m_path_state == ePathStatePathCompleted) && actual());
 }
 
-IC	MovementManager::EPathType CMovementManager::path_type() const
-{
-	VERIFY					(m_path_type != ePathTypeDummy);
-	return					(m_path_type);
-}
-
-IC	ALife::_GRAPH_ID CMovementManager::game_dest_vertex_id() const
-{
-	return					(ALife::_GRAPH_ID(CGamePathManager::dest_vertex_id()));
-}
-
-IC	u32	 CMovementManager::level_dest_vertex_id() const
-{
-	return					(CLevelPathManager::dest_vertex_id());
-}
-
 IC	void CMovementManager::use_selector_path	(bool selector_path_usage)
 {
 	m_selector_path_usage	= selector_path_usage;
@@ -131,29 +62,14 @@ IC	void CMovementManager::set_desirable_speed		(float speed)
 	m_old_desirable_speed	= speed;
 }
 
-IC	const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() const
-{
-	return					(CDetailPathManager::path());
-}
-
-IC	void CMovementManager::set_body_orientation(const MonsterSpace::SBoneRotation &orientation)
+IC	void CMovementManager::set_body_orientation(const CBoneRotation &orientation)
 {
 	m_body				= orientation;
 }
 
-IC	const MonsterSpace::SBoneRotation &CMovementManager::body_orientation() const
+IC	const CMovementManager::CBoneRotation &CMovementManager::body_orientation() const
 {
 	return				(m_body);
-}
-
-IC	CGraphEngine::CBaseParameters	*CMovementManager::base_game_selector()
-{
-	return				(m_base_game_selector);
-}
-
-IC	CGraphEngine::CBaseParameters	*CMovementManager::base_level_selector()
-{
-	return				(m_base_level_selector);
 }
 
 IC	void CMovementManager::set_refresh_rate		(u32 refresh_rate)
@@ -186,4 +102,56 @@ IC	bool CMovementManager::extrapolate_path		() const
 IC	void CMovementManager::set_build_path_at_once()
 {
 	m_build_at_once			= true;
+}
+
+IC	CMovementManager::CBaseParameters	*CMovementManager::base_game_selector() const
+{
+	return					(m_base_game_selector);
+}
+
+IC	CMovementManager::CBaseParameters	*CMovementManager::base_level_selector() const
+{
+	return					(m_base_level_selector);
+}
+
+IC	CMovementManager::CGameLocationSelector		&CMovementManager::game_location_selector	() const
+{
+	VERIFY					(m_game_location_selector);
+	return					(*m_game_location_selector);
+}
+
+IC	CMovementManager::CGamePathManager			&CMovementManager::game_path_manager		() const
+{
+	VERIFY					(m_game_path_manager);
+	return					(*m_game_path_manager);
+}
+
+IC	CMovementManager::CLevelLocationSelector	&CMovementManager::level_location_selector	() const
+{
+	VERIFY					(m_level_location_selector);
+	return					(*m_level_location_selector);
+}
+
+IC	CMovementManager::CLevelPathManager			&CMovementManager::level_path_manager		() const
+{
+	VERIFY					(m_level_path_manager);
+	return					(*m_level_path_manager);
+}
+
+IC	CDetailPathManager		&CMovementManager::detail_path_manager		() const
+{
+	VERIFY					(m_detail_path_manager);
+	return					(*m_detail_path_manager);
+}
+
+IC	CPatrolPathManager		&CMovementManager::patrol_path_manager		() const
+{
+	VERIFY					(m_patrol_path_manager);
+	return					(*m_patrol_path_manager);
+}
+
+IC	CEnemyLocationPredictor	&CMovementManager::enemy_location_predictor	() const
+{
+	VERIFY					(m_enemy_location_predictor);
+	return					(*m_enemy_location_predictor);
 }

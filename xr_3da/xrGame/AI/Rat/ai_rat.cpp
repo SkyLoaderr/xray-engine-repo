@@ -15,6 +15,7 @@
 #include "../../xrserver_objects_alife_monsters.h"
 #include "ai_rat_space.h"
 #include "../../../skeletoncustom.h"
+#include "../../detail_path_manager.h"
 
 using namespace RatSpace;
 
@@ -82,7 +83,7 @@ void CAI_Rat::Die(CObject* who)
 	inherited::Die(who);
 	m_eCurrentState = aiRatDie;
 
-	SelectAnimation(XFORM().k,direction(),speed());
+	SelectAnimation(XFORM().k,detail_path_manager().direction(),speed());
 
 	CSoundPlayer::play		(eRatSoundDie);
 

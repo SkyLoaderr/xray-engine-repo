@@ -25,6 +25,62 @@ template <
 >
 class COperatorAbstract;
 
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SBaseParameters;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SFlooder ;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SObstacleParams;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SObstaclesLightCover;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SObstaclesLightCoverEnemy;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SPosition;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SStraightLineParams;
+
+template <
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>
+struct SGameLevel;
+
 namespace GraphEngineSpace {
 	typedef float		_dist_type;
 	typedef u32			_index_type;
@@ -54,4 +110,52 @@ namespace GraphEngineSpace {
 
 	typedef CWorldState	_solver_index_type;
 	typedef u32			_solver_edge_type;
+
+	typedef SBaseParameters<
+				_solver_dist_type,
+				_solver_index_type,
+				_iteration_type
+			>		CSolverBaseParameters;
+	typedef SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CBaseParameters;
+
+	typedef SFlooder<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CFlooder;
+	typedef SObstacleParams<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstacleParams;
+	typedef SObstaclesLightCover<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstaclesLightCover;
+	typedef SObstaclesLightCoverEnemy<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstaclesLightCoverEnemy;
+	typedef SPosition<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CPositionParameters;
+	typedef SStraightLineParams<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CStraightLineParams;
+	typedef SGameLevel<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CGameLevelParams;
 };
+

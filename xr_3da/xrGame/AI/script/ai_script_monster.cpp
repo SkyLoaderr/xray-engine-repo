@@ -16,6 +16,13 @@
 #include "../../script_game_object.h"
 #include "../../script_space.h"
 #include "../../../skeletonanimated.h"
+#include "../../script_engine.h"
+#include "../../movement_manager_space.h"
+#include "../../detail_path_manager.h"
+#include "../../patrol_path_manager.h"
+#include "../../patrol_path_manager_space.h"
+#include "../../level_path_manager.h"
+#include "../../level_location_selector.h"
 
 void __stdcall ActionCallback(CKinematics *tpKinematics);
 
@@ -431,24 +438,24 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			R_ASSERT		(l_tpGameObject);
 			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
-			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
+			l_tpMovementManager->detail_path_manager().set_dest_position(l_tpGameObject->Position());
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePatrolPath : {
 			l_tpMovementManager->set_path_type	(MovementManager::ePathTypePatrolPath);
-			l_tpMovementManager->set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
-			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
-			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
-			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);
+			l_tpMovementManager->patrol_path_manager().set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
+			l_tpMovementManager->patrol_path_manager().set_start_type	(l_tMovementAction.m_tPatrolPathStart);
+			l_tpMovementManager->patrol_path_manager().set_route_type	(l_tMovementAction.m_tPatrolPathStop);
+			l_tpMovementManager->patrol_path_manager().set_random		(l_tMovementAction.m_bRandom);
 			if (l_tMovementAction.m_previous_patrol_point != u32(-1)) {
-				l_tpMovementManager->set_previous_point(l_tMovementAction.m_previous_patrol_point);
+				l_tpMovementManager->patrol_path_manager().set_previous_point(l_tMovementAction.m_previous_patrol_point);
 			}
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePathPosition : {
 			l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
-			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
+			l_tpMovementManager->detail_path_manager().set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
 //			u64					start = CPU::GetCycleCount();
 			u32					vertex_id;
@@ -461,20 +468,20 @@ bool CScriptMonster::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 //			Msg					("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*cName(),float(s64(stop - start))*CPU::cycles2seconds);
 #endif
 			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
-			l_tpMovementManager->CLevelPathManager::set_dest_vertex(vertex_id);
-			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
+			l_tpMovementManager->level_path_manager().set_dest_vertex(vertex_id);
+			l_tpMovementManager->level_location_selector().set_evaluator(0);
 			break;
 		}
 		case CScriptMovementAction::eGoalTypeNoPathPosition : {
 			if (l_tpMovementManager) {
 				l_tpMovementManager->set_path_type(MovementManager::ePathTypeLevelPath);
-				if (l_tpMovementManager->CDetailPathManager::path().empty() || (l_tpMovementManager->CDetailPathManager::path()[l_tpMovementManager->CDetailPathManager::path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
-					l_tpMovementManager->CDetailPathManager::m_path.resize(2);
-					l_tpMovementManager->CDetailPathManager::m_path[0].position = Position();
-					l_tpMovementManager->CDetailPathManager::m_path[1].position = l_tMovementAction.m_tDestinationPosition;
-					l_tpMovementManager->CDetailPathManager::m_current_travel_point	= 0;
+				if (l_tpMovementManager->detail_path_manager().path().empty() || (l_tpMovementManager->detail_path_manager().path()[l_tpMovementManager->detail_path_manager().path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+					l_tpMovementManager->detail_path_manager().m_path.resize(2);
+					l_tpMovementManager->detail_path_manager().m_path[0].position = Position();
+					l_tpMovementManager->detail_path_manager().m_path[1].position = l_tMovementAction.m_tDestinationPosition;
+					l_tpMovementManager->detail_path_manager().m_current_travel_point	= 0;
 				}
-				if (l_tpMovementManager->CDetailPathManager::m_path[1].position.similar(Position(),.2f))
+				if (l_tpMovementManager->detail_path_manager().m_path[1].position.similar(Position(),.2f))
 					l_tMovementAction.m_bCompleted = true;
 			}
 			break;

@@ -2,6 +2,8 @@
 #include "ai_monster_movement.h"
 #include "BaseMonster/base_monster.h"
 #include "critical_action_info.h"
+#include "../../detail_path_manager.h"
+#include "../../level_location_selector.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Init Movement
@@ -9,8 +11,8 @@ void CMonsterMovement::Update_Initialize()
 {
 	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
-	CLevelLocationSelector::set_evaluator			(0);
-	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
+	level_location_selector().set_evaluator			(0);
+	detail_path_manager().set_path_type				(eDetailPathTypeSmooth);
 	b_try_min_time									= true;
 	b_enable_movement								= true;
 	set_path_targeted								(false);
@@ -26,8 +28,8 @@ void CMonsterMovement::Update_Execute()
 {	
 	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
-	CDetailPathManager::set_try_min_time			(b_try_min_time); 
-	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
+	detail_path_manager().set_try_min_time			(b_try_min_time); 
+	detail_path_manager().set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
 	
 	update_target_point								();

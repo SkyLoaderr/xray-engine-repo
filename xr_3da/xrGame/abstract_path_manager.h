@@ -31,19 +31,12 @@ protected:
 	CRestrictedObject							*m_restricted_object;
 
 protected:
-	IC	_vertex_id_type	dest_vertex_id				() const;
 	IC	_vertex_id_type	intermediate_vertex_id		() const;
 	IC			u32		intermediate_index			() const;
-	IC			void	set_evaluator				(_VertexEvaluator *evaluator);
-	IC			void	set_dest_vertex				(const _vertex_id_type vertex_id);
 
-	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
-	IC	virtual	bool	completed					() const;
-	IC			bool	failed						() const;
 	IC	const xr_vector<_vertex_id_type> &path		() const;
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
-	IC	virtual	void	select_intermediate_vertex	();
 	IC	const _VertexEvaluator	*evaluator			() const;
 	IC			void	make_inactual				();
 	IC	virtual	void	before_search				(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
@@ -53,8 +46,14 @@ protected:
 public:
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
-	IC	virtual	void	init						();
-	IC			void	reinit						(const _Graph *graph = 0);
+	IC			void	reinit						(CRestrictedObject *object, const _Graph *graph = 0);
+	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
+	IC			void	set_evaluator				(_VertexEvaluator *evaluator);
+	IC			void	set_dest_vertex				(const _vertex_id_type vertex_id);
+	IC	_vertex_id_type	dest_vertex_id				() const;
+	IC	virtual	bool	completed					() const;
+	IC			bool	failed						() const;
+	IC	virtual	void	select_intermediate_vertex	();
 
 	friend class CMovementManager;
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_monster_motion.h"
 #include "BaseMonster/base_monster.h"
+#include "../../detail_path_manager.h"
 
 void CMotionManager::accel_init()
 {
@@ -127,10 +128,10 @@ bool CMotionManager::accel_check_braking(float before_interval)
 
 	// проверить точки пути, где необходимо остановиться
 	float dist = 0.f;	// дистанция до найденной точки	
-	for (u32 i=pMonster->curr_travel_point_index()+1; i < pMonster->CDetailPathManager::path().size(); i++) {
-		dist += pMonster->CDetailPathManager::path()[i].position.distance_to(pMonster->CDetailPathManager::path()[i-1].position);
+	for (u32 i=pMonster->detail_path_manager().curr_travel_point_index()+1; i < pMonster->detail_path_manager().path().size(); i++) {
+		dist += pMonster->detail_path_manager().path()[i].position.distance_to(pMonster->detail_path_manager().path()[i-1].position);
 
-		if ((pMonster->CDetailPathManager::path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
+		if ((pMonster->detail_path_manager().path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
 			return true;
 		}
 	}

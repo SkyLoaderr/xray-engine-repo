@@ -17,6 +17,8 @@ class CAI_Stalker;
 
 class CStalkerMovementManager : virtual public CMovementManager {
 public:
+	typedef DetailPathManager::EDetailPathType EDetailPathType;
+public:
 	struct CMovementParams {
 		Fvector						m_desired_position;
 		Fvector						m_desired_direction;

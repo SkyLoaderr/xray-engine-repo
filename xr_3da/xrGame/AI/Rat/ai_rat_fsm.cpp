@@ -13,6 +13,7 @@
 #include "../../game_graph.h"
 #include "ai_rat_space.h"
 #include "../../../skeletonanimated.h"
+#include "../../detail_path_manager.h"
 
 using namespace RatSpace;
 
@@ -108,7 +109,7 @@ void CAI_Rat::Death()
 
 	vfSetFire		(false);
 	
-	SelectAnimation	(XFORM().k,direction(),0);
+	SelectAnimation	(XFORM().k,detail_path_manager().direction(),0);
 
 	if (m_fFood <= 0) {
 		if (m_previous_query_time <= GetLevelDeathTime())

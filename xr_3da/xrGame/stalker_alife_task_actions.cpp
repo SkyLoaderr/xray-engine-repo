@@ -20,6 +20,9 @@
 #include "cover_manager.h"
 #include "cover_evaluators.h"
 #include "cover_point.h"
+#include "movement_manager_space.h"
+#include "detail_path_manager_space.h"
+#include "game_location_selector.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -84,7 +87,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 	m_object->set_path_evaluator		(0);
 	m_object->set_desired_position		(0);
 	m_object->set_desired_direction		(0);
-	m_object->set_selection_type		(eSelectionTypeMask);
+	m_object->game_location_selector().set_selection_type		(eSelectionTypeMask);
 	m_object->set_path_type				(MovementManager::ePathTypeGamePath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state			(eBodyStateStand);
@@ -97,7 +100,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 void CStalkerActionReachTaskLocation::finalize	()
 {
 	inherited::finalize					();
-	m_object->set_selection_type		(eSelectionTypeRandomBranching);
+	m_object->game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachTaskLocation::execute		()
@@ -206,7 +209,7 @@ void CStalkerActionReachCustomerLocation::initialize	()
 	m_object->set_path_evaluator		(0);
 	m_object->set_desired_position		(0);
 	m_object->set_desired_direction		(0);
-	m_object->set_selection_type		(eSelectionTypeMask);
+	m_object->game_location_selector().set_selection_type		(eSelectionTypeMask);
 	m_object->set_path_type				(MovementManager::ePathTypeGamePath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state			(eBodyStateStand);
@@ -219,7 +222,7 @@ void CStalkerActionReachCustomerLocation::initialize	()
 void CStalkerActionReachCustomerLocation::finalize	()
 {
 	inherited::finalize					();
-	m_object->set_selection_type		(eSelectionTypeRandomBranching);
+	m_object->game_location_selector().set_selection_type		(eSelectionTypeRandomBranching);
 }
 
 void CStalkerActionReachCustomerLocation::execute		()

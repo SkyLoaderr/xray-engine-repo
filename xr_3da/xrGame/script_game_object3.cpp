@@ -22,6 +22,7 @@
 #include "inventory.h"
 
 #include "customzone.h"
+#include "patrol_path_manager.h"
 
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
 {
@@ -187,7 +188,7 @@ LPCSTR CScriptGameObject::GetPatrolPathName()
 			return		(script_monster->GetPatrolPathName());
 	}
 	else
-		return			(*stalker->path_name());
+		return			(*stalker->patrol_path_manager().path_name());
 }
 
 void CScriptGameObject::add_animation			(LPCSTR animation, bool hand_usage)
@@ -277,7 +278,7 @@ void CScriptGameObject::set_patrol_path		(LPCSTR path_name, const PatrolPathMana
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
-		stalker->set_path		(path_name,patrol_start_type,patrol_route_type,random);
+		stalker->patrol_path_manager().set_path		(path_name,patrol_start_type,patrol_route_type,random);
 }
 
 void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)

@@ -22,7 +22,7 @@ void CEnemyLocationPredictor::init						()
 {
 }
 
-void CEnemyLocationPredictor::reinit					()
+void CEnemyLocationPredictor::reinit					(CRestrictedObject *object)
 {
 }
 

@@ -38,13 +38,13 @@ IC	void CGameLocationSelector::init			()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::reinit			(const CGameGraph *graph)
+IC	void CGameLocationSelector::reinit			(CRestrictedObject *object, const CGameGraph *graph)
 {
-	inherited::reinit				(graph);
+	inherited::reinit				(object,graph);
 	CAI_ObjectLocation::reinit		();
 	
 	m_selection_type				= eSelectionTypeRandomBranching;
-	m_location_manager				= smart_cast<CLocationManager*>(this);
+	m_location_manager				= smart_cast<CLocationManager*>(object);
 	VERIFY							(m_location_manager);
 	m_time_to_change				= 0;
 	if (graph)
@@ -104,7 +104,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 						if (!accessible((*i).vertex_id()))
 							continue;
 						dest_vertex_id		= (*i).vertex_id();
-						m_time_to_change	= Level().timeServer() + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
+						m_time_to_change	= Device.dwTimeGlobal + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
 						++iBranches;
 						break;
 					}
@@ -123,7 +123,7 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 						continue;
 					if (iBranches == iChosenBranch) {
 						dest_vertex_id		= (*i).vertex_id();
-						m_time_to_change	= Level().timeServer() + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
+						m_time_to_change	= Device.dwTimeGlobal + ::Random.randI(m_location_manager->vertex_types()[j].dwMinTime,m_location_manager->vertex_types()[j].dwMaxTime);
 						bOk = true;
 						break;
 					}

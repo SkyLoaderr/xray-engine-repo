@@ -5,6 +5,7 @@
 #include "ai_monster_utils.h"
 #include "ai_monster_jump.h"
 #include "custom_events.h"
+#include "../../detail_path_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -83,11 +84,11 @@ void CMotionManager::SelectVelocities()
 
 	if (b_moving) {
 
-		u32 cur_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index()].velocity;
+		u32 cur_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index()].velocity;
 
 		u32 next_point_velocity_index = u32(-1);
-		if (pMonster->CDetailPathManager::path().size() > pMonster->curr_travel_point_index() + 1) 
-			next_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index() + 1].velocity;
+		if (pMonster->detail_path_manager().path().size() > pMonster->detail_path_manager().curr_travel_point_index() + 1) 
+			next_point_velocity_index = pMonster->detail_path_manager().path()[pMonster->detail_path_manager().curr_travel_point_index() + 1].velocity;
 
 		// если сейчас стоит на месте и есть след точка (т.е. должен быть в движении),
 		// то реализовать поворот на месте, а дальше форсировать скорость со следующей точки
@@ -96,7 +97,7 @@ void CMotionManager::SelectVelocities()
 				cur_point_velocity_index = next_point_velocity_index;
 		} 
 
-		const CDetailPathManager::STravelParams &current_velocity = pMonster->CDetailPathManager::velocity(cur_point_velocity_index);
+		const CDetailPathManager::STravelParams &current_velocity = pMonster->detail_path_manager().velocity(cur_point_velocity_index);
 		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.real_angular_velocity);
 	}
 

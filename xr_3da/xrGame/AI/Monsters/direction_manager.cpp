@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "direction_manager.h"
 #include "basemonster/base_monster.h"
+#include "../../detail_path_manager.h"
 
 void CDirectionManager::reinit()
 {
@@ -30,7 +31,7 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 void CDirectionManager::use_path_direction(bool reversed)
 {
 	float yaw,pitch;
-	m_object->CDetailPathManager::direction().getHP	(yaw,pitch);
+	m_object->detail_path_manager().direction().getHP	(yaw,pitch);
 
 	if (fsimilar(yaw,0.f,EPS_S)) return;
 

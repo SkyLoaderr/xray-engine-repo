@@ -10,12 +10,8 @@
 #include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 #include "../states/state_look_point.h"
-
 #include "../states/state_test_look_actor.h"
-
 #include "../critical_action_info.h"
-
-
 
 CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 {

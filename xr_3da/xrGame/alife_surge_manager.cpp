@@ -294,7 +294,7 @@ void CALifeSurgeManager::update_tasks()
 				TRADER_SET::const_iterator	ii = (*I).second.begin();
 				TRADER_SET::const_iterator	ee = (*I).second.end(), jj = ee;
 				for ( ; ii != ee; ++ii) {
-					bool		successful = ai().graph_engine().search(ai().game_graph(),(*ii)->m_tGraphID,(*II)->game_vertex_id(),&m_tpTempPath,CGraphEngine::CBaseParameters());
+					bool		successful = ai().graph_engine().search(ai().game_graph(),(*ii)->m_tGraphID,(*II)->game_vertex_id(),&m_tpTempPath,GraphEngineSpace::CBaseParameters());
 					if (!successful)
 						continue;
 					float		l_fDistance = distance(m_tpTempPath);

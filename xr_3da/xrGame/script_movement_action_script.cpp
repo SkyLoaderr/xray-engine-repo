@@ -10,7 +10,11 @@
 #include "script_movement_action.h"
 #include "script_space.h"
 #include "script_game_object.h"
-#include "patrol_path_manager.h"
+#include "patrol_path_manager_space.h"
+#include "detail_path_manager_space.h"
+#include "ai_monster_space.h"
+#include "patrol_path_params.h"
+#include "patrol_path.h"
 
 using namespace luabind;
 

@@ -25,6 +25,7 @@
 #include "script_callback.h"
 #include "../skeletoncustom.h"
 #include "HangingLamp.h"
+#include "patrol_path_manager.h"
 
 class CScriptBinderObject;
 
@@ -289,7 +290,7 @@ void CScriptGameObject::set_previous_point	(int point_index)
 	if (!movement_manager)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_previous_point!");
 	else
-		movement_manager->set_previous_point(point_index);
+		movement_manager->patrol_path_manager().set_previous_point(point_index);
 }
 
 void CScriptGameObject::set_start_point	(int point_index)
@@ -298,7 +299,7 @@ void CScriptGameObject::set_start_point	(int point_index)
 	if (!movement_manager)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_start_point!");
 	else
-		movement_manager->set_start_point(point_index);
+		movement_manager->patrol_path_manager().set_start_point(point_index);
 }
 
 //////////////////////////////////////////////////////////////////////////

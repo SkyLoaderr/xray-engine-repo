@@ -10,6 +10,7 @@
 #include "sight_manager.h"
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
+#include "detail_path_manager.h"
 
 //#define SIGHT_DEBUG
 
@@ -84,7 +85,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 	CLevelGraph::CVertex	*tpNextNode = 0;
 	u32						node_id;
 	bool bOk = false;
-	if (bDifferenceLook && !m_object->CDetailPathManager::path().empty() && (m_object->CDetailPathManager::path().size() - 1 > m_object->CDetailPathManager::curr_travel_point_index())) {
+	if (bDifferenceLook && !m_object->detail_path_manager().path().empty() && (m_object->detail_path_manager().path().size() - 1 > m_object->detail_path_manager().curr_travel_point_index())) {
 		CLevelGraph::const_iterator	i, e;
 		ai().level_graph().begin(tpNode,i,e);
 		for ( ; i != e; ++i) {
@@ -92,7 +93,7 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float f
 			if (!ai().level_graph().valid_vertex_id(node_id))
 				continue;
 			tpNextNode = ai().level_graph().vertex(node_id);
-			if (ai().level_graph().inside(tpNextNode,m_object->CDetailPathManager::path()[m_object->CDetailPathManager::curr_travel_point_index() + 1].position)) {
+			if (ai().level_graph().inside(tpNextNode,m_object->detail_path_manager().path()[m_object->detail_path_manager().curr_travel_point_index() + 1].position)) {
 				bOk = true;
 				break;
 			}
@@ -244,11 +245,11 @@ void CSightManager::update			()
 
 void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 {
-	if (!m_object->path().empty() && (m_object->curr_travel_point_index() + 1 < m_object->path().size())) {
+	if (!m_object->path().empty() && (m_object->detail_path_manager().curr_travel_point_index() + 1 < m_object->detail_path_manager().path().size())) {
 		Fvector				t;
 		t.sub					(
-			m_object->path()[m_object->curr_travel_point_index() + 1].position,
-			m_object->path()[m_object->curr_travel_point_index()].position
+			m_object->path()[m_object->detail_path_manager().curr_travel_point_index() + 1].position,
+			m_object->path()[m_object->detail_path_manager().curr_travel_point_index()].position
 		);
 		t.getHP				(yaw,pitch);
 		return;

@@ -9,7 +9,21 @@
 #pragma once
 
 #include "control_action.h"
-#include "movement_manager.h"
+
+namespace MovementManager {
+	enum EPathType;
+};
+
+namespace DetailPathManager {
+	enum EDetailPathType;
+};
+
+namespace MonsterSpace {
+	enum EBodyState;
+	enum EMovementType;
+};
+
+class CAbstractVertexEvaluator;
 
 class CMovementAction : public CControlAction {
 protected:
@@ -24,7 +38,7 @@ protected:
 	CAbstractVertexEvaluator			*m_path_evaluator;
 
 public:
-	IC					CMovementAction			();
+						CMovementAction			();
 	IC					CMovementAction			(const MovementManager::EPathType &path_type, const DetailPathManager::EDetailPathType &detail_path_type, const MonsterSpace::EBodyState &body_state, const MonsterSpace::EMovementType &movement_type, u32 level_vertex_id = u32(-1), Fvector *desired_position = 0, Fvector *desired_direction = 0, CAbstractVertexEvaluator *node_evaluator = 0, CAbstractVertexEvaluator *path_evaluator = 0);
 			void		execute					();
 			void		finalize				();

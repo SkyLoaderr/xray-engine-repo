@@ -12,7 +12,7 @@
 #include "script_space.h"
 #include "restricted_object.h"
 
-void CPatrolPathManager::reinit				()
+void CPatrolPathManager::reinit				(CRestrictedObject *object)
 {
 	CAI_ObjectLocation::reinit();
 	m_path					= 0;
@@ -25,7 +25,7 @@ void CPatrolPathManager::reinit				()
 	m_prev_point_index		= u32(-1);
 	m_start_point_index		= u32(-1);
 	m_callback				= 0;
-	m_restricted_object		= smart_cast<CRestrictedObject*>(this);
+	m_restricted_object		= object;
 	VERIFY					(m_restricted_object);
 }
 

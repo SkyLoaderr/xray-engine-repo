@@ -4,7 +4,9 @@
 #include "../../cover_manager.h"
 #include "../../cover_evaluators.h"
 #include "BaseMonster/base_monster.h"
-
+#include "../../detail_path_manager.h"
+#include "../../level_location_selector.h"
+#include "../../level_path_manager.h"
 
 #define MAX_COVER_DISTANCE		50.f
 #define MAX_SELECTOR_DISTANCE	10.f
@@ -109,7 +111,7 @@ void CMonsterMovement::set_parameters()
 {
 	// известна нода - устанавливаем параметры
 	if (m_intermediate.node != u32(-1)) {
-		set_dest_position		(m_intermediate.position);
+		detail_path_manager().set_dest_position		(m_intermediate.position);
 		set_level_dest_vertex	(m_intermediate.node);
 		return;
 	}
@@ -121,15 +123,15 @@ void CMonsterMovement::set_parameters()
 		if (point) {
 			m_intermediate.node		= point->m_level_vertex_id;
 			m_intermediate.position	= point->m_position;	
-			set_dest_position		(m_intermediate.position);
+			detail_path_manager().set_dest_position		(m_intermediate.position);
 			set_level_dest_vertex	(m_intermediate.node);
 			return;
 		}
 	}
 
 	// находим с помощью селектора
-	CLevelLocationSelector::set_evaluator		(m_selector_approach);
-	CLevelLocationSelector::set_query_interval	(0);
+	level_location_selector().set_evaluator		(m_selector_approach);
+	level_location_selector().set_query_interval	(0);
 	InitSelector								(*m_selector_approach, m_intermediate.position);
 	use_selector_path							(true);		// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
 }
@@ -234,18 +236,18 @@ bool CMonsterMovement::check_build_conditions()
 		return false;
 	}
 	
-	if (m_intermediate.position.similar(m_target.position) || CDetailPathManager::actual()) {
+	if (m_intermediate.position.similar(m_target.position) || detail_path_manager().actual()) {
 		m_path_end	= true;
 		return		true;
 	}
 
-	if (CLevelPathManager::failed()) {
+	if (level_path_manager().failed()) {
 		m_failed	= true;
 		return		false;
 	}
 
 	// если путь ещё не построен - выход
-	if (!CDetailPathManager::actual() && (time_path_built() < m_last_time_path_update)) return false;
+	if (!detail_path_manager().actual() && (detail_path_manager().time_path_built() < m_last_time_path_update)) return false;
 
 	return true;
 }

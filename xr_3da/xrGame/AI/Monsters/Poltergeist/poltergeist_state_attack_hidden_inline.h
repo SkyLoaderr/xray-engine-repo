@@ -22,7 +22,7 @@ TEMPLATE_SPECIALIZATION
 void CStatePoltergeistAttackHiddenAbstract::execute()
 {
 	// проверить на завершение пути
-	if (object->CDetailPathManager::time_path_built() > time_state_started) {
+	if (object->detail_path_manager().time_path_built() > time_state_started) {
 		if (object->IsPathEnd(DIST_TO_PATH_END)) select_target_point();
 	}
 	

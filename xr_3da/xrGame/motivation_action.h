@@ -9,8 +9,9 @@
 #pragma once
 
 #include "motivation.h"
-#include "graph_engine.h"
+#include "graph_engine_space.h"
 #include "script_export_space.h"
+#include "condition_state.h"
 
 class CScriptGameObject;
 

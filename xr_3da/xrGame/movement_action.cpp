@@ -9,8 +9,23 @@
 #include "stdafx.h"
 #include "movement_action.h"
 #include "ai/stalker/ai_stalker.h"
+#include "movement_manager_space.h"
+#include "detail_path_manager_space.h"
 
-void CMovementAction::execute	()
+CMovementAction::CMovementAction	()
+{
+	m_path_type					= MovementManager::ePathTypeNoPath;
+	m_detail_path_type			= DetailPathManager::eDetailPathTypeSmooth;
+	m_body_state				= MonsterSpace::eBodyStateStand;
+	m_movement_type				= MonsterSpace::eMovementTypeStand;
+	m_level_dest_vertex_id		= u32(-1);
+	m_desired_position			= 0;
+	m_desired_direction			= 0;
+	m_node_evaluator			= 0;
+	m_path_evaluator			= 0;
+}
+
+void CMovementAction::execute		()
 {
 	m_object->set_path_type			(m_path_type);
 	m_object->set_detail_path_type	(m_detail_path_type);

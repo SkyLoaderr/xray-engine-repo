@@ -6,10 +6,19 @@
 #include "../../phmovementcontrol.h"
 #include "ai_monster_debug.h"
 #include "../../cover_evaluators.h"
+#include "../../game_location_selector.h"
+#include "../../level_location_selector.h"
+#include "../../detail_path_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Construction / Destruction
 //////////////////////////////////////////////////////////////////////////
+
+void CMonsterMovement::detour_graph_points()
+{
+	set_path_type		(MovementManager::ePathTypeGamePath);
+	game_location_selector().set_selection_type	(eSelectionTypeRandomBranching);
+}
 
 CMonsterMovement::CMonsterMovement()
 {
@@ -82,7 +91,7 @@ void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_
 
 bool CMonsterMovement::IsMoveAlongPathFinished()
 {
-	return (CDetailPathManager::completed(Position()));
+	return (detail_path_manager().completed(Position()));
 }
 
 bool CMonsterMovement::IsMovingOnPath()
@@ -94,17 +103,17 @@ bool CMonsterMovement::IsMovingOnPath()
 
 bool CMonsterMovement::IsPathEnd(u32 n_points)
 {
-	if (CDetailPathManager::path().empty() || !IsMovingOnPath() || (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) return true;
+	if (detail_path_manager().path().empty() || !IsMovingOnPath() || (detail_path_manager().curr_travel_point_index() + n_points >= detail_path_manager().path().size())) return true;
 	return false;
 }
 
 bool CMonsterMovement::IsPathEnd(float dist_to_end)
 {
-	if (CDetailPathManager::path().size() < 2) return true;
+	if (detail_path_manager().path().size() < 2) return true;
 
 	float cur_dist_to_end = 0.f;
-	for (u32 i=CDetailPathManager::curr_travel_point_index(); i<CDetailPathManager::path().size()-1; i++) {
-		cur_dist_to_end += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
+	for (u32 i=detail_path_manager().curr_travel_point_index(); i<detail_path_manager().path().size()-1; i++) {
+		cur_dist_to_end += detail_path_manager().path()[i].position.distance_to(detail_path_manager().path()[i+1].position);
 		if (cur_dist_to_end > dist_to_end) break;
 	}
 
@@ -134,7 +143,7 @@ bool CMonsterMovement::ObjectNotReachable(const CEntity *entity)
 void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos)
 {
 	set_level_dest_vertex(dest_vertex_id);
-	set_dest_position(dest_pos);
+	detail_path_manager().set_dest_position(dest_pos);
 	set_path_type (MovementManager::ePathTypeLevelPath);
 }
 
@@ -168,7 +177,7 @@ void CMonsterMovement::update_velocity()
 
 void CMonsterMovement::set_dest_direction(const Fvector &dir)
 {
-	CDetailPathManager::set_dest_direction(dir);
+	detail_path_manager().set_dest_direction(dir);
 }
 
 void CMonsterMovement::stop_now()
@@ -195,17 +204,17 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 	
 	enable_movement									(true);
 	
-	set_velocity_mask								(vel_mask);	
-	set_desirable_mask								(vel_mask);
+	detail_path_manager().set_velocity_mask			(vel_mask);	
+	detail_path_manager().set_desirable_mask		(vel_mask);
 
-	CDetailPathManager::set_try_min_time			(false); 
-	CDetailPathManager::set_use_dest_orientation	(false);
+	detail_path_manager().set_try_min_time			(false); 
+	detail_path_manager().set_use_dest_orientation	(false);
 	
-	CLevelLocationSelector::set_evaluator			(0);
-	CDetailPathManager::set_path_type				(eDetailPathTypeSmooth);
+	level_location_selector().set_evaluator			(0);
+	detail_path_manager().set_path_type				(eDetailPathTypeSmooth);
 	set_path_type									(MovementManager::ePathTypeLevelPath);
 
-	set_dest_position								(target);
+	detail_path_manager().set_dest_position			(target);
 	set_level_dest_vertex							(node);
 	
 	set_build_path_at_once							();
@@ -221,14 +230,14 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 
 float CMonsterMovement::get_path_angle()
 {
-	if (CDetailPathManager::path().size() < 3) return 0.f;
+	if (detail_path_manager().path().size() < 3) return 0.f;
 
 	Fvector		dir;
 	float		h1,h2,p;
 
-	dir.sub		(CDetailPathManager::path()[1].position, CDetailPathManager::path()[0].position);
+	dir.sub		(detail_path_manager().path()[1].position, detail_path_manager().path()[0].position);
 	dir.getHP	(h1,p);
-	dir.sub		(CDetailPathManager::path()[CDetailPathManager::path().size() - 1].position, CDetailPathManager::path()[0].position);
+	dir.sub		(detail_path_manager().path()[detail_path_manager().path().size() - 1].position, detail_path_manager().path()[0].position);
 	dir.getHP	(h2,p);
 
 	return	(angle_difference(h1,h2));
@@ -236,22 +245,22 @@ float CMonsterMovement::get_path_angle()
 
 bool CMonsterMovement::is_path_built()
 {
-	return (!CMovementManager::path_completed() && (CDetailPathManager::time_path_built() >= Level().timeServer()));
+	return (!CMovementManager::path_completed() && (detail_path_manager().time_path_built() >= Level().timeServer()));
 }
 
 void CMonsterMovement::set_velocity_from_path() 
 {
 	if (!IsMovingOnPath()) return;
 	
-	u32 cur_point_velocity_index	= CDetailPathManager::path()[curr_travel_point_index()].velocity;
+	u32 cur_point_velocity_index	= detail_path_manager().path()[detail_path_manager().curr_travel_point_index()].velocity;
 	u32 next_point_velocity_index	= u32(-1);
 
-	if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
-		next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
+	if (detail_path_manager().path().size() > detail_path_manager().curr_travel_point_index() + 1) 
+		next_point_velocity_index = detail_path_manager().path()[detail_path_manager().curr_travel_point_index() + 1].velocity;
 
-	const CDetailPathManager::STravelParams &current_velocity	= CDetailPathManager::velocity(cur_point_velocity_index);
+	const CDetailPathManager::STravelParams &current_velocity	= detail_path_manager().velocity(cur_point_velocity_index);
 	if (fis_zero(current_velocity.linear_velocity) && (next_point_velocity_index != u32(-1))) {
-		const CDetailPathManager::STravelParams &next_velocity	= CDetailPathManager::velocity(next_point_velocity_index);
+		const CDetailPathManager::STravelParams &next_velocity	= detail_path_manager().velocity(next_point_velocity_index);
 		m_velocity_linear.target	= _abs(next_velocity.linear_velocity);
 		m_velocity_angular			= next_velocity.real_angular_velocity;
 	} else {

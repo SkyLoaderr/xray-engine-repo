@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../movement_manager.h"
+#include "../movement_manager_space.h"
 #include "ai_monster_defs.h"
 #include "ai_monster_motion_stats.h"
 
@@ -139,7 +140,7 @@ public:
 		void		fix_position			(const Fvector &pos, u32 node, Fvector &res_pos);
 
 
-	IC	void		detour_graph_points		();
+		void		detour_graph_points		();
 	IC	void		set_generic_parameters	();
 
 	//////////////////////////////////////////////////////////////////////////

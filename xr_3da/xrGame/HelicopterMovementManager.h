@@ -2,7 +2,7 @@
 
 
 #include "HelicopterMotion.h"
-#include "Patrol_path_manager.h"
+#include "patrol_path.h"
 
 class CHelicopter;
 

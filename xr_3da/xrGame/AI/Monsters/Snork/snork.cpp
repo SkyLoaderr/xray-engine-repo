@@ -3,6 +3,8 @@
 #include "snork_state_manager.h"
 #include "snork_jump.h"
 #include "../ai_monster_debug.h"
+#include "../../../detail_path_manager_space.h"
+#include "../../../detail_path_manager.h"
 
 CSnork::CSnork() 
 {
@@ -76,8 +78,8 @@ void CSnork::reinit()
 {
 	inherited::reinit	();
 	
-	m_movement_params.insert(std::make_pair(eVelocityParameterJumpOne,	STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterJumpTwo,	STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real)));
+	detail_path_manager().add_velocity(eVelocityParameterJumpOne,	CDetailPathManager::STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real));
+	detail_path_manager().add_velocity(eVelocityParameterJumpTwo,	CDetailPathManager::STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real));
 }
 
 void CSnork::UpdateCL()

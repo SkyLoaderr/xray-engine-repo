@@ -905,6 +905,9 @@
 							<File
 								RelativePath=".\detail_path_manager_smooth.cpp">
 							</File>
+							<File
+								RelativePath=".\detail_path_manager_space.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="GamePathManager"

@@ -32,29 +32,9 @@ IC	void CStalkerMovementManager::set_desired_direction(const Fvector *desired_di
 	}
 }
 
-IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular, float angular)
-{
-	m_movement_params.insert	(std::make_pair(mask,STravelParams(linear,compute_angular,angular)));
-}
-
 IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular)
 {
 	add_velocity				(mask,linear,compute_angular,compute_angular);
-}
-
-IC	float CStalkerMovementManager::path_direction_angle	()
-{
-	if (!path().empty() && (path().size() > curr_travel_point_index() + 1)) {
-		Fvector					t;
-		t.sub					(
-			path()[curr_travel_point_index() + 1].position,
-			path()[curr_travel_point_index()].position
-		);
-		float					y,p;
-		t.getHP					(y,p);
-		return					(angle_difference(-y,m_body.current.yaw));
-	}
-	return						(0.f);
 }
 
 IC	bool CStalkerMovementManager::turn_in_place			() const

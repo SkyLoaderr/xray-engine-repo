@@ -12,6 +12,11 @@
 #include "script_entity_action.h"
 #include "ai/stalker/ai_stalker.h"
 #include "sight_manager.h"
+#include "detail_path_manager.h"
+#include "level_location_selector.h"
+#include "level_path_manager.h"
+#include "movement_manager_space.h"
+#include "detail_path_manager_space.h"
 
 using namespace StalkerMovement;
 
@@ -23,6 +28,26 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 	}
 	else
 		m_head.speed			= 3*PI_DIV_2;
+}
+
+IC	void CStalkerMovementManager::add_velocity		(int mask, float linear, float compute_angular, float angular)
+{
+	detail_path_manager().add_velocity(mask,CDetailPathManager::STravelParams(linear,compute_angular,angular));
+}
+
+IC	float CStalkerMovementManager::path_direction_angle	()
+{
+	if (!path().empty() && (path().size() > detail_path_manager().curr_travel_point_index() + 1)) {
+		Fvector					t;
+		t.sub					(
+			path()[detail_path_manager().curr_travel_point_index() + 1].position,
+			path()[detail_path_manager().curr_travel_point_index()].position
+		);
+		float					y,p;
+		t.getHP					(y,p);
+		return					(angle_difference(-y,m_body.current.yaw));
+	}
+	return						(0.f);
 }
 
 void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
@@ -42,11 +67,11 @@ void CStalkerMovementManager::set_desired_position(const Fvector *desired_positi
 
 IC	void CStalkerMovementManager::setup_body_orientation	()
 {
-	if (!path().empty() && (path().size() > curr_travel_point_index() + 1)) {
+	if (!path().empty() && (path().size() > detail_path_manager().curr_travel_point_index() + 1)) {
 		Fvector					t;
 		t.sub					(
-			path()[curr_travel_point_index() + 1].position,
-			path()[curr_travel_point_index()].position
+			path()[detail_path_manager().curr_travel_point_index() + 1].position,
+			path()[detail_path_manager().curr_travel_point_index()].position
 		);
 		float					y,p;
 		t.getHP					(y,p);
@@ -165,8 +190,8 @@ void CStalkerMovementManager::reinit				()
 	m_current.m_body_state				= eBodyStateStand;
 	m_current.m_movement_type			= eMovementTypeStand;
 	m_current.m_mental_state			= eMentalStateDanger;
-	m_current.m_path_type				= ePathTypeNoPath;
-	m_current.m_detail_path_type		= eDetailPathTypeSmooth;
+	m_current.m_path_type				= MovementManager::ePathTypeNoPath;
+	m_current.m_detail_path_type		= DetailPathManager::eDetailPathTypeSmooth;
 
 	m_target							= m_current;
 
@@ -193,25 +218,25 @@ void CStalkerMovementManager::setup_movement_params	()
 {
 	m_current											= m_target;
 	CMovementManager::set_path_type						(path_type());
-	CDetailPathManager::set_path_type					(detail_path_type());
-	CLevelLocationSelector::set_evaluator				(node_evaluator());
-	CMovementManager::CLevelPathManager::set_evaluator	(path_evaluator() ? path_evaluator() : base_level_selector());
+	detail_path_manager().set_path_type					(detail_path_type());
+	level_location_selector().set_evaluator				(node_evaluator());
+	level_path_manager().set_evaluator					(path_evaluator() ? path_evaluator() : base_level_selector());
 
 	if (use_desired_position()) {
-		VERIFY											(valid(desired_position()));
-		CDetailPathManager::set_dest_position			(desired_position());
+		VERIFY											(_valid(desired_position()));
+		detail_path_manager().set_dest_position			(desired_position());
 	}
 	else
-		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath)  && (path_type() != ePathTypeNoPath))
-			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
+		if ((path_type() != MovementManager::ePathTypePatrolPath) && (path_type() != MovementManager::ePathTypeGamePath)  && (path_type() != MovementManager::ePathTypeNoPath))
+			detail_path_manager().set_dest_position		(ai().level_graph().vertex_position(level_path_manager().dest_vertex_id()));
 
 	if (use_desired_direction()) {
-		VERIFY											(valid(desired_direction()));
-		CDetailPathManager::set_dest_direction			(desired_direction());
-		CDetailPathManager::set_use_dest_orientation	(true);
+		VERIFY											(_valid(desired_direction()));
+		detail_path_manager().set_dest_direction		(desired_direction());
+		detail_path_manager().set_use_dest_orientation	(true);
 	}
 	else
-		CDetailPathManager::set_use_dest_orientation	(false);
+		detail_path_manager().set_use_dest_orientation	(false);
 }
 
 void CStalkerMovementManager::setup_velocities		()
@@ -279,16 +304,16 @@ void CStalkerMovementManager::setup_velocities		()
 
 	// setup all the possible velocities
 	if (velocity_mask & eVelocityDanger) {
-		set_desirable_mask		(velocity_mask);
-		set_velocity_mask	(
+		detail_path_manager().set_desirable_mask		(velocity_mask);
+		detail_path_manager().set_velocity_mask	(
 			velocity_mask | 
 			eVelocityStanding
 		);
 	}
 	else {
-		set_try_min_time		(true);
-		set_desirable_mask		(velocity_mask | eVelocityStanding);
-		set_velocity_mask	(
+		detail_path_manager().set_try_min_time		(true);
+		detail_path_manager().set_desirable_mask		(velocity_mask | eVelocityStanding);
+		detail_path_manager().set_velocity_mask	(
 			velocity_mask | 
 			eVelocityWalk | 
 			eVelocityStanding
@@ -298,7 +323,7 @@ void CStalkerMovementManager::setup_velocities		()
 
 void CStalkerMovementManager::parse_velocity_mask	()
 {
-	if (path().empty() || (curr_travel_point_index() != m_last_turn_index))
+	if (path().empty() || (detail_path_manager().curr_travel_point_index() != m_last_turn_index))
 		m_last_turn_index				= u32(-1);
 
 	m_stalker->CSightManager::enable	(true);
@@ -308,7 +333,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_body.target.yaw			= m_head.current.yaw;
 	}
 
-	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= curr_travel_point_index())) {
+	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail_path_manager().curr_travel_point_index())) {
 		m_stalker->m_fCurSpeed			= 0;
 		if (mental_state() != eMentalStateDanger)
 			m_stalker->m_body.speed		= 1*PI_DIV_2;
@@ -319,20 +344,20 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		return;
 	}
 
-	DetailPathManager::STravelPathPoint	point = path()[curr_travel_point_index()];
-	CDetailPathManager::STravelParams	current_velocity = velocity(point.velocity);
+	DetailPathManager::STravelPathPoint	point = path()[detail_path_manager().curr_travel_point_index()];
+	CDetailPathManager::STravelParams	current_velocity = detail_path_manager().velocity(point.velocity);
 
 	if (fis_zero(current_velocity.linear_velocity)) {
 		if (mental_state() != eMentalStateDanger) {
 			setup_body_orientation			();
 			m_stalker->CSightManager::enable(false);
 		}
-		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == curr_travel_point_index())) {
-			m_last_turn_index			= curr_travel_point_index();
+		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail_path_manager().curr_travel_point_index())) {
+			m_last_turn_index			= detail_path_manager().curr_travel_point_index();
 			m_stalker->CSightManager::enable(true);
-			if (curr_travel_point_index() + 1 < path().size()) {
-				point				= path()[curr_travel_point_index() + 1];
-				current_velocity	= velocity(point.velocity);
+			if (detail_path_manager().curr_travel_point_index() + 1 < path().size()) {
+				point				= path()[detail_path_manager().curr_travel_point_index() + 1];
+				current_velocity	= detail_path_manager().velocity(point.velocity);
 			}
 		}
 	}

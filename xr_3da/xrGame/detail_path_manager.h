@@ -11,40 +11,7 @@
 #include "level_graph.h"
 #include "ai_object_location.h"
 #include "restricted_object.h"
-
-namespace DetailPathManager {
-	enum EDetailPathType {
-		eDetailPathTypeSmooth,
-		eDetailPathTypeSmoothDodge,
-		eDetailPathTypeSmoothCriteria,
-	};
-
-	struct STravelPathPoint {
-		Fvector				position;
-		u32					vertex_id;
-		u32					velocity;
-
-		IC	void set_position	(const Fvector &pos)
-		{
-			position		= pos;
-		}
-
-		IC	void set_vertex_id	(const u32 _vertex_id)
-		{
-			vertex_id		= _vertex_id;
-		}
-
-		IC	Fvector &get_position	()
-		{
-			return			(position);
-		}
-
-		IC	u32		get_vertex_id	()
-		{
-			return			(vertex_id);
-		}
-	};
-};
+#include "detail_path_manager_space.h"
 
 using namespace DetailPathManager;
 
@@ -171,20 +138,10 @@ private:
 
 protected:
 			void	build_path					(const xr_vector<u32> &level_path, u32 intermediate_index);
-	IC		void	set_start_position			(const Fvector &start_position);
-	IC		void	set_start_direction			(const Fvector &start_direction);
-	IC		void	set_dest_position			(const Fvector &dest_position);
-	IC		void	set_dest_direction			(const Fvector &dest_direction);
-	IC		void	set_path_type				(const EDetailPathType path_type);
-	IC		void	set_velocity_mask			(const u32 mask);
-	IC		void	set_desirable_mask			(const u32 mask);
-	IC		void	set_try_min_time			(const bool try_min_time);
-	IC		void	set_use_dest_orientation	(const bool use_dest_orientation);
-	IC		void	set_state_patrol_path		(const bool state_patrol_path);
-	IC		bool	state_patrol_path			() const;
 
 	friend class CScriptMonster;
 	friend class CMovementManager;
+	friend class CPoltergeist;
 #ifdef DEBUG
 	friend class CLevelGraph;
 	friend class CCustomMonster;
@@ -194,7 +151,7 @@ public:
 					CDetailPathManager			();
 	virtual			~CDetailPathManager			();
 			void	init						();
-	virtual	void	reinit						();
+	virtual	void	reinit						(CRestrictedObject *object);
 			bool	valid						() const;
 			Fvector direction					() const;
 			bool	actual						() const;
@@ -215,7 +172,19 @@ public:
 	IC		const bool							try_min_time			() const;
 	IC		const bool							use_dest_orientation	() const;
 	IC		const u32							time_path_built			() const;
-	IC		const STravelParams					&velocity				(const u32 velocity_id) const;
+	IC		const STravelParams					&velocity				(const u32 &velocity_id) const;
+	IC		void								add_velocity			(const u32 &velocity_id, const STravelParams &params);
+	IC		void								set_start_position		(const Fvector &start_position);
+	IC		void								set_start_direction		(const Fvector &start_direction);
+	IC		void								set_dest_position		(const Fvector &dest_position);
+	IC		void								set_dest_direction		(const Fvector &dest_direction);
+	IC		void								set_path_type			(const EDetailPathType path_type);
+	IC		void								set_velocity_mask		(const u32 mask);
+	IC		void								set_desirable_mask		(const u32 mask);
+	IC		void								set_try_min_time		(const bool try_min_time);
+	IC		void								set_use_dest_orientation(const bool use_dest_orientation);
+	IC		void								set_state_patrol_path	(const bool state_patrol_path);
+	IC		bool								state_patrol_path		() const;
 };
 
 #include "detail_path_manager_inline.h"

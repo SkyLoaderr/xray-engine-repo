@@ -17,6 +17,8 @@
 #include "cover_manager.h"
 #include "missile.h"
 #include "stalker_movement_restriction.h"
+#include "movement_manager_space.h"
+#include "detail_path_manager_space.h"
 
 using namespace StalkerDecisionSpace;
 

@@ -317,7 +317,7 @@ void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
 {
 	const CGameGraph::SLevel		&level = ai().game_graph().header().level(level_name);
 	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
-	CGraphEngine::CGameLevelParams	evaluator(level.id());
+	GraphEngineSpace::CGameLevelParams	evaluator(level.id());
 	bool							failed = !ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,ALife::_GRAPH_ID(-1),0,evaluator);
 	if (failed) {
 		Msg							("! Cannot build path via game graph from the current level to the level %s!",level_name);

@@ -17,10 +17,10 @@
 #define CGameManagerTemplate CBasePathManager<CGameGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameManagerTemplate::reinit(const CGameGraph *graph)
+IC	void CGameManagerTemplate::reinit(CRestrictedObject *object, const CGameGraph *graph)
 {
-	inherited::reinit	(graph);
-	CAI_ObjectLocation::reinit();
+	inherited::reinit			(object,graph);
+	CAI_ObjectLocation::reinit	();
 }
 
 TEMPLATE_SPECIALIZATION

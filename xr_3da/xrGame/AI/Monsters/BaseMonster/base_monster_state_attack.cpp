@@ -11,6 +11,7 @@
 
 #include "../../../WeaponMagazined.h"
 #include "../../../inventory.h"
+#include "../../../detail_path_manager.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -442,12 +443,12 @@ bool CBaseMonsterAttack::CheckSteal()
 		
 		// Вычислить отклонение по пути
 		float path_angle = 0.f;
-		if (pMonster->IsMovingOnPath() && (pMonster->CDetailPathManager::curr_travel_point_index() < pMonster->CDetailPathManager::path().size()-3)) {
-			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->CDetailPathManager::path();
+		if (pMonster->IsMovingOnPath() && (pMonster->detail_path_manager().curr_travel_point_index() < pMonster->detail_path_manager().path().size()-3)) {
+			const xr_vector<DetailPathManager::STravelPathPoint> &path = pMonster->detail_path_manager().path();
 
 			float prev_yaw, prev_h;
-			pMonster->CDetailPathManager::direction().getHP(prev_yaw,prev_h);
-			for (u32 i=pMonster->CDetailPathManager::curr_travel_point_index()+1; i<path.size()-1;i++) {
+			pMonster->detail_path_manager().direction().getHP(prev_yaw,prev_h);
+			for (u32 i=pMonster->detail_path_manager().curr_travel_point_index()+1; i<path.size()-1;i++) {
 				float h,p;
 				Fvector().sub(path[i+1].position, path[i].position).getHP(h,p);
 
