@@ -66,10 +66,28 @@ void				OGF_Base::CalcBounds	()
 	// select best one
 	if (B1 && (S1.R<S2.R))
 	{
-		C.set	(S1.P);
-		R	=	S1.R;
+		// miniball or FM
+		if (B3 && (S3.R<S1.R))
+		{
+			// FM wins
+			C.set	(S3.P);
+			R	=	S3.R;
+		} else {
+			// MiniBall wins
+			C.set	(S1.P);
+			R	=	S1.R;
+		}
 	} else {
-		C.set	(S2.P);
-		R	=	S2.R;
+		// base or FM
+		if (B3 && (S3.R<S2.R))
+		{
+			// FM wins
+			C.set	(S3.P);
+			R	=	S3.R;
+		} else {
+			// Base wins :)
+			C.set	(S2.P);
+			R	=	S2.R;
+		}
 	}
 }
