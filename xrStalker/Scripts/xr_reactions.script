@@ -311,11 +311,11 @@ function add_to_binder(object, char_ini)
 
     if char_ini:section_exist ("reactions") == true then
         if char_ini:line_exist("reactions", "enabled") == true then
-                xr_motivator.storage[self.object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
+                xr_motivator.storage[object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
         end
     local i = 1
         while char_ini:line_exist("reactions", "rule_"..i) == true do
-        table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
+        table.insert(xr_motivator.storage[object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
             i = i + 1
         end
     end
