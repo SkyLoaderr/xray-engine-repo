@@ -535,13 +535,15 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                                     );
                     lbInfo->Caption	= temp;
                     lbInfo->Hint	= temp;
-                }else				paImage->Repaint();
+                }else{
+					lbInfo->Caption	= "";
+                }
                 ::Render->model_Delete(visual);
             }else{
 				lbInfo->Caption		= "";
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".ogg\"";
+			lbFileName->Caption		= "\""+Item->Text+".ogf\"";
         }break;
         default:
 			lbItemName->Caption = "\""+Item->Text+"\"";

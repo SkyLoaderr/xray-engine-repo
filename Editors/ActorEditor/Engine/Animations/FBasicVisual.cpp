@@ -89,4 +89,7 @@ void	IRender_Visual::Copy(IRender_Visual *pFrom)
 	PCOPY(hShader);
 	PCOPY(hGeom);
 	PCOPY(vis);
+#ifdef _EDITOR
+	PCOPY(desc);
+#endif
 }

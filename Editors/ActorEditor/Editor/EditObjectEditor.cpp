@@ -130,10 +130,8 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 	            RenderEdge(parent,0,0x00000000);
                 Device.SetShader(Device.m_WireShader);
                 for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                    if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
-                        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                            (*_M)->Render(parent,*s_it);
-                    }
+                    for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+                        (*_M)->Render(parent,*s_it);
                 }
             }
         }else{
