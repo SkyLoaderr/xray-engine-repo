@@ -73,11 +73,11 @@ public:
 
 	u32					mem_usage			(){ return sizeof(*this);}
 };
-struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
+struct accel_str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
 	IC bool operator()(const shared_str& x, const shared_str& y) const	{	return xr_strcmp(x,y)<0;	}
 };
-typedef xr_map<shared_str,u16,str_pred>			accel_map;
-typedef xr_map<shared_str,CMotionDef,str_pred>	mdef;
+typedef xr_map<shared_str,u16,accel_str_pred>			accel_map;
+typedef xr_map<shared_str,CMotionDef,accel_str_pred>	mdef;
 DEFINE_VECTOR			(CMotion,MotionVec,MotionVecIt);
 
 // partition

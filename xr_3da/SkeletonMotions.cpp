@@ -16,6 +16,7 @@ u16 find_bone_id(vecBones* bones, shared_str nm)
 		if (bones->at(i)->name==nm) return i;
 	return BI_NONE;
 }
+/*
 CMotionDef* find_motiondef(mdef* mots, u16 mid)
 {
 	mdef::const_iterator I,E;
@@ -33,6 +34,7 @@ bool find_bone_in_part(CPartition* parts, u16 part_id, u16 bid)
 		if (P.bones[i]==bid) return true;
 	return false;
 }
+*/
 
 //-----------------------------------------------------------------------
 BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
@@ -75,9 +77,9 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		}
 
 #ifdef _EDITOR
-		if (part_bone_cnt!=(u16)bone_count){
+		if (part_bone_cnt!=(u16)bones->size()){
 			bRes = false;
-			Msg("!Different bone count [Object: '%d' <-> Motions: '%d']",bone_count,part_bone_cnt);
+			Msg("!Different bone count [Object: '%d' <-> Motions: '%d']",bones->size(),part_bone_cnt);
 		}
 #else
 		VERIFY3(part_bone_cnt==(u16)bones->size(),"Different bone count '%s'",N);
