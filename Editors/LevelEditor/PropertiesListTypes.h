@@ -75,7 +75,7 @@ public:
     virtual void		InitNext		(LPVOID value)=0;
     virtual void		ResetValue		()=0;
     bool				IsDiffValues	(){return bDiff;}
-    void				SetName			(LPCSTR name){key=strdup(name);}
+    void				SetName			(LPCSTR name){key=xr_strdup(name);}
 //    TElTreeItem*		GetParentItem	(){return parent?parent->item:0;}
 };
 //------------------------------------------------------------------------------
