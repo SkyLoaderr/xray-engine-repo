@@ -1336,12 +1336,6 @@
 				RelativePath=".\pure.h">
 			</File>
 			<File
-				RelativePath=".\ReferenceCount.cpp">
-			</File>
-			<File
-				RelativePath=".\ReferenceCount.h">
-			</File>
-			<File
 				RelativePath=".\std_classes.h">
 			</File>
 			<Filter
