@@ -112,7 +112,7 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 						RS.Stage_Texture	(oT2_Name,		L_textures);
 						RS.Stage_Matrix		(oT2_xform,		L_matrices,0);
-						RS.Stage_Constant	(oT2_Constant,	L_constants);
+						RS.Stage_Constant	("$null",		L_constants);
 					}
 					RS.StageEnd			();
 				}
