@@ -14,7 +14,7 @@ function main ()
 	printf ("Best weapon for stalker %s is %s", st[2]:name (), st[2]:best_weapon ():name ())
 	printf ("Best weapon for stalker %s is %s", st[3]:name (), st[3]:best_weapon ():name ())
 
-	wait (30000)
+	wait (120000)
 
 	for a = 1, table.getn (st), 1 do
 		reset_action (st[a], military43.script_name ())
