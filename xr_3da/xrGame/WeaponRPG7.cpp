@@ -123,8 +123,10 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 
 void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 	m_engineTime = 0xffffffff;
-	m_expoldeTime = 500;
+	m_expoldeTime = 5000;
 	setVisible(false);
+	list<CPGObject*>::iterator l_it;
+	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 	Sound->play_at_pos(sndExplode, 0, vPosition, false);
 	Fvector l_dir; f32 l_dst;
 	m_blasted.clear();
@@ -134,7 +136,8 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 	list<Fvector> l_bs_positions;
 	while(m_blasted.size()) {
 		CGameObject *l_pGO = *m_blasted.begin();
-		l_dir.sub(l_pGO->Position(), vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
+		Fvector l_goPos; if(l_pGO->Visual()) l_pGO->clCenter(l_goPos); else l_goPos.set(l_pGO->Position());
+		l_dir.sub(l_goPos, vPosition); l_dst = l_dir.magnitude(); l_dir.div(l_dst); l_dir.y += .2f;
 		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		if(l_impuls > .001f) {
 			setEnabled(false);
@@ -381,9 +384,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 			list<CPGObject*>::iterator l_it;
-			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) {
-				(*l_it)->UpdateParent(svTransform);
-			}
+			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform);
+		} else {
+			list<CPGObject*>::iterator l_it;
+			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 		}
 	}
 }
