@@ -101,10 +101,13 @@ function garbage_monster_death (actor, npc)
           printf ("Return GULAG to start state")
        end   
     end
-    if counter > 3 then
-       printf ("INFOPORTIONS AFTER RUSH IS SET")
+    if counter >= 10 then
        actor:give_info_portion ("gar_dolg_help_kill_rush")
        actor:give_info_portion ("gar_dolg_access_rostok")
+    elseif counter >= 20 then
+       actor:give_info_portion ("gar_dolg_access_rostok_friend")
+    elseif counter >= 30 then
+       actor:give_info_portion ("gar_dolg_access_rostok_superfriend")
     end    
     
 end
