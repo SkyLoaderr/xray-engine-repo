@@ -33,6 +33,8 @@ CLightProjector::CLightProjector()
 	c_xform				= "m_plmap_xform";
 	c_clamp				= "m_plmap_clamp";
 	c_factor			= "m_plmap_factor";
+
+	cache.resize		(P_o_count);
 }
 
 CLightProjector::~CLightProjector()
@@ -68,7 +70,7 @@ void CLightProjector::set_object	(IRenderable* O)
 // 
 void CLightProjector::setup		(int id)
 {
-	if (id>=int(receivers.size()))	{
+	if (id>=int(receivers.size()) || id<0)	{
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
@@ -96,8 +98,8 @@ void CLightProjector::calculate	()
 		CLightTrack*		LT		= (CLightTrack*)O->renderable.ROS;
 		int					slot	= LT->Shadowed_Slot;
 		if (slot<0 || slot>=P_o_count)		bValid = FALSE;	// invalid slot
-		if (cache[slot].O!=O)				bValid = FALSE;	// not the same object
-		if (bValid)					{
+		else if (cache[slot].O!=O)			bValid = FALSE;	// not the same object
+		else {
 			Fbox				bb;
 			bb.xform			(O->renderable.visual->vis.box,O->renderable.xform);
 			if (!cache[slot].BB.contains(bb))	bValid	= FALSE;
