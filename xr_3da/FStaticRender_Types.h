@@ -18,3 +18,4 @@ extern	_FpsController		QualityControl;
 typedef vector<CVisual*>	vecGEO;
 typedef vecGEO::iterator	vecGEOIT;
 
+const float					fLightSmoothFactor = 4.f;

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "effectorshot.h"
 #include "..\bodyinstance.h"
-#include "..\render.h"
+#include "..\portal.h"
 #include "..\PSObject.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
@@ -288,12 +288,14 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			PS->PlayAtPos		(vEnd);
 		}
 	} else {
+		/*
 		::Render.Wallmarks.AddWallmark(
 			pCreator->ObjectSpace.GetStaticTris()+R.element,
 			vEnd,
 			hWallmark,
 			fWallmarkSize
 			);
+		*/
 	}
 }
 

@@ -4,8 +4,6 @@
 
 #include "light.h"
 
-const float fLightSmoothFactor = 4.f;
-
 DEF_VECTOR(vecI,int);
 
 class ENGINE_API CStream;

@@ -366,9 +366,9 @@ void CWeaponM134::Render	(BOOL bHUDView)
 	else
 	{
 		// Actor render
-		::Render.set_Transform		(&svTransform);
-		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
-		::Render.add_leafs_Dynamic	(Visual());
+		::Render->set_Transform		(&svTransform);
+		::Render->set_LightLevel	(iFloor(m_pParent->AI_Lighting));
+		::Render->add_leafs_Dynamic	(Visual());
 	}
 	if (st_current==eM134Fire) 
 	{
@@ -404,7 +404,7 @@ void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collid
 	N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 	D.reflect			(vDir,N);
 
-	CSector* S			= ::Render.getSector(pTri->sector);
+	CSector* S			= ::Render->getSector(pTri->sector);
 
 	// stones or sparks
 	LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";

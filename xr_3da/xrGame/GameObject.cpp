@@ -69,7 +69,7 @@ void CGameObject::Sector_Detect	()
 	} else {
 		if (AI_Node->sector == 255)	CObject::Sector_Detect();	// undefined sector
 		else	{
-			CSector*	P = ::Render.getSector(AI_Node->sector);
+			CSector*	P = ::Render->getSector(AI_Node->sector);
 			Sector_Move	(P);
 		}
 	}
@@ -82,9 +82,9 @@ void CGameObject::OnVisible	()
 	float&	LL		= AI_Lighting;
 	float	CL		= AI_Node?float(AI_Node->light):255;
 	LL				= l_i*LL + l_f*CL;
-	::Render.set_Transform		(&clTransform);
-	::Render.set_LightLevel		(iFloor(LL));
-	::Render.add_leafs_Dynamic	(Visual());
+	::Render->set_Transform		(&clTransform);
+	::Render->set_LightLevel	(iFloor(LL));
+	::Render->add_Visual		(Visual());
 }
 
 CObject::SavedPosition CGameObject::ps_Element(DWORD ID)

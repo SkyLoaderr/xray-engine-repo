@@ -94,9 +94,9 @@ void CHUDManager::Render_Affected()
 		for (DWORD i=0; i<Models.size(); i++) 
 		{
 			Model& M = Models[i];
-			::Render.set_Transform		(&M.M);
-			::Render.set_LightLevel		(M.iLightLevel);
-			::Render.add_leafs_Dynamic	(M.V);
+			::Render->set_Transform		(&M.M);
+			::Render->set_LightLevel	(M.iLightLevel);
+			::Render->add_leafs_Dynamic	(M.V);
 		}
 		
 		// Render with ZB hack :)

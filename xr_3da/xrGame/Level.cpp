@@ -483,7 +483,7 @@ void CLevel::OnKeyboardPress(int key)
 		bDebug	= !bDebug;
 		return;
 	case DIK_F12:
-		Render.MakeScreenshot		();
+		Render.Screenshot			();
 		return;
 	case DIK_LALT:
 		pHUD->UIActivate			();
