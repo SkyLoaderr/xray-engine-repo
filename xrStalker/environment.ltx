@@ -88,12 +88,12 @@ flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
 flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
 flare_shader			= effects\flare
 flares                   = off
-gradient                 = off
+gradient                 = on
 gradient_opacity         = 0.75
 gradient_radius          = 1.000
 gradient_texture         = fx\fx_gradient.tga
 gradient_shader          = effects\flare
-source                   = off
+source                   = on
 source_radius            = 0.150
 source_texture           = fx\fx_sun.tga
 source_shader            = effects\sun
@@ -258,13 +258,13 @@ sun_dir			=	-3.0, 292
 
 
 ;05:00:00			=	e_05
-;06:00:00			=	e_06
+06:00:00			=	e_06
 06:30:00			=	e_07
 07:45:00			=	e_071
 07:00:00			=	e_072
 07:15:00			=	e_073
 07:30:00			=	e_074
-;08:00:00			=	e_08
+08:00:00			=	e_08
 ;09:00:00			=	e_09
 ;10:00:00			=	e_10
 ;11:00:00			=	e_11
@@ -325,7 +325,7 @@ sun_color		=	1.000, 0.384, 0.196
 sun_dir			=	-10.0, 292
 
 [e_07]
-flares			=	flares_default
+flares			=	flares_default10
 sky_texture		=	sky\sky_2_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -346,7 +346,7 @@ sun_color		=	1.000,  0.875,  0.576
 sun_dir			=	-13.0, 292
 
 [e_071]
-flares			=	flares_default
+flares			=	
 sky_texture		=	sky\sky_2_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -363,11 +363,11 @@ wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	1.90,	1.90,	2.0
-sun_color		=	1.000,  0.875,  0.576
+sun_color		=	0,  0,  0
 sun_dir			=	-14.50, 292
 
 [e_072]
-flares			=	flares_default
+flares			=	flares_default10
 sky_texture		=	sky\sky_2_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -388,7 +388,7 @@ sun_color		=	1.000,  0.875,  0.576
 sun_dir			=	-16.0, 292
 
 [e_073]
-flares			=	flares_default
+flares			=	
 sky_texture		=	sky\sky_2_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
@@ -405,7 +405,7 @@ wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
 lmap_color		=	1.0,	1.0,	1.0
 hemi_color		=	1.90,	1.90,	2.0
-sun_color		=	1.000,  0.875,  0.576
+sun_color		=	0,  0,  0
 sun_dir			=	-17.50, 292
 
 [e_074]
@@ -430,7 +430,7 @@ sun_color		=	1.000,  0.875,  0.576
 sun_dir			=	-19.0, 292
 
 [e_08]
-flares			=	flares_default	
+flares			=	flares_default10	
 sky_texture		=	sky\sky_1_cube
 sky_rotation	=	0
 sky_color		=	1.0,    1.0,  	1.0
