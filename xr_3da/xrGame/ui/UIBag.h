@@ -77,9 +77,9 @@ protected:
 			bool	SetMenuLevel(MENU_LEVELS level);
 			void	ShowSectionEx(int iSection);
 			void	EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable = true);			
-			void	OnItemSelect();
-			//void	OnItemClick(CUIDragDropItemMP* pDDItem);
+			void	OnItemSelect();			
 			void	OnItemDrop(CUIDragDropItemMP* pItem);
+			void	OnBackClick();
     		int		GetMoneyAmount();
 
 	// INIT Functions
@@ -95,6 +95,7 @@ protected:
 CUIDragDropList*	GetCurrentGroup();
 			int		GetCurrentGroupIndex();
 
+	CUI3tButton					m_btnBack;
 	shared_str					m_StrSectionName;
 	shared_str					m_StrPricesSection;
 	int							m_iMoneyAmount;

@@ -143,10 +143,6 @@ protected:
 	int			m_iMoneyAmount;
 	bool		m_bIgnoreMoney;
 
-    // Detailed info about outfit
-	CUIOutfitInfo UIOutfitInfo;
-
-	
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 	int			m_iIconTextureX, m_iIconTextureY;
 	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);

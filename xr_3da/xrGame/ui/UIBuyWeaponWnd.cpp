@@ -168,10 +168,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName, LPCSTR strPricesSection)
 	UIOutfitIcon.SetStretchTexture(true);
 	UIOutfitIcon.ClipperOn();
 
-	UIPersonalWnd.AttachChild(&UIOutfitInfo);
-	xml_init.InitStatic(uiXml, "outfit_info_window",0, &UIOutfitInfo);
-	UIOutfitInfo.SetText(string_table);
-
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
 }
@@ -658,21 +654,6 @@ void CUIBuyWeaponWnd::Update()
 
 	if (!UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty())
 		flag = true;
-
-	// update current outfit
-	CUIDragDropItemMP* pDDItemOutfit = NULL;
-	static CUIDragDropItemMP* pOldDDItemOutfit = NULL;
-	shared_str section_name;
-	DRAG_DROP_LIST ddList = UITopList[OUTFIT_SLOT].GetDragDropItemsList();
-	if (!ddList.empty())
-        pDDItemOutfit = (CUIDragDropItemMP*)(*ddList.begin());	
-	if (pDDItemOutfit)
-		section_name = pDDItemOutfit->GetSectionName();
-	if (pOldDDItemOutfit != pDDItemOutfit || pDDItemOutfit == NULL)
-	{
-        UIOutfitInfo.Update(section_name);
-		pOldDDItemOutfit = pDDItemOutfit;
-	}
 
 	CUIWindow::Update();
 }
