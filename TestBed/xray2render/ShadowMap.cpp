@@ -134,7 +134,8 @@ class CMyD3DApplication : public CD3DApplication
 	D3DXMATRIX						dm_model2world2view2projection_light;
 
 	// Shaders
-	R_shader						s_Scene2fat;
+	R_shader						s_Scene2fat_base;
+	R_shader						s_Scene2fat_bump;
 	R_shader						s_Scene2smap_direct;
 	R_shader						s_CombineDBG_Normals;
 	R_shader						s_CombineDBG_Accumulator;
