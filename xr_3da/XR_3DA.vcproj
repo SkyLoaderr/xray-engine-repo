@@ -1141,8 +1141,7 @@
 						<File
 							RelativePath=".\ResourceManager_Scripting.cpp">
 							<FileConfiguration
-								Name="Mixed|Win32"
-								ExcludedFromBuild="TRUE">
+								Name="Mixed|Win32">
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>

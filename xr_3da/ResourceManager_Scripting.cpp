@@ -16,7 +16,7 @@ class	adopt_sampler
 	u32						stage;
 public:
 	adopt_sampler			(CBlender_Compile*	_C, u32 _stage)		: C(_C), stage(_stage)		{ }
-	adopt_sampler			(adopt_sampler&	_C)						: C(_C.C), stage(_C.Stage)	{ }
+	adopt_sampler			(adopt_sampler&	_C)						: C(_C.C), stage(_C.stage)	{ }
 
 	adopt_sampler&			_texture		(LPCSTR texture)						{ C->i_Texture	(stage,texture);			return *this;	}
 	adopt_sampler&			_projective		(bool _b)								{ C->i_Projective(stage,_b);				return *this;	}
@@ -52,7 +52,7 @@ public:
 	adopt_compiler&			_ZB				(BOOL	_test,	BOOL _write)			{	C->PassSET_ZB		(_test,_write);	return	*this;			}
 	adopt_compiler&			_blend			(BOOL	_blend, u32 abSRC, u32 abDST)	{	C->PassSET_ablend_mode(_blend,abSRC,abDST);	return 	*this;	}
 	adopt_compiler&			_aref			(BOOL	_aref,  u32 aref)				{	C->PassSET_ablend_aref(_aref,aref);	return 	*this;			}
-	adopt_sampler&			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
+	adopt_sampler			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
 };
 
 // export
@@ -66,7 +66,6 @@ void	export	(lua_State*	LS)
 		.def("clamp",						&adopt_sampler::_clamp			)
 		.def("wrap",						&adopt_sampler::_wrap			)
 		.def("mirror",						&adopt_sampler::_mirror			)
-
 		.def("f_anisotropic",				&adopt_sampler::_f_anisotropic	)
 		.def("f_trilinear",					&adopt_sampler::_f_trilinear	)
 		.def("f_bilinear",					&adopt_sampler::_f_bilinear		)
@@ -80,5 +79,16 @@ void	export	(lua_State*	LS)
 		.def("fmip_linear",					&adopt_sampler::_fmip_linear	)
 		.def("fmag_none",					&adopt_sampler::_fmag_none		)
 		.def("fmag_point",					&adopt_sampler::_fmag_point		)
-		.def("fmag_linear",					&adopt_sampler::_fmag_linear	);
+		.def("fmag_linear",					&adopt_sampler::_fmag_linear	)
+		;
+
+	class_<adopt_compiler>("_compiler")
+		.def(								constructor<adopt_compiler&>())
+		.def("pass",						&adopt_compiler::_pass			)
+		.def("fog",							&adopt_compiler::_fog			)
+		.def("zb",							&adopt_compiler::_ZB			)
+		.def("blend",						&adopt_compiler::_blend			)
+		.def("aref",						&adopt_compiler::_aref			)
+		.def("sampler",						&adopt_compiler::_sampler		)
+		;
 }
