@@ -27,6 +27,7 @@ public:
 	adopt_sampler&			_f_anisotropic	()										{ C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_ANISOTROPIC);	return *this;	}
 	adopt_sampler&			_f_trilinear	()										{ C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_LINEAR);		return *this;	}
 	adopt_sampler&			_f_bilinear		()										{ C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_POINT, D3DTEXF_LINEAR);		return *this;	}
+	adopt_sampler&			_f_linear		()										{ C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_NONE,  D3DTEXF_LINEAR);		return *this;	}
 	adopt_sampler&			_f_none			()										{ C->i_Filter	(stage,D3DTEXF_POINT, D3DTEXF_NONE,  D3DTEXF_POINT);		return *this;	}
 	adopt_sampler&			_fmin_none		()										{ C->i_Filter_Min(stage,D3DTEXF_NONE);		return *this;	}
 	adopt_sampler&			_fmin_point		()										{ C->i_Filter_Min(stage,D3DTEXF_POINT);		return *this;	}
@@ -94,6 +95,7 @@ void	CResourceManager::LS_Load			()
 			.def("f_anisotropic",				&adopt_sampler::_f_anisotropic	)
 			.def("f_trilinear",					&adopt_sampler::_f_trilinear	)
 			.def("f_bilinear",					&adopt_sampler::_f_bilinear		)
+			.def("f_linear",					&adopt_sampler::_f_linear		)
 			.def("f_none",						&adopt_sampler::_f_none			)
 			.def("fmin_none",					&adopt_sampler::_fmin_none		)
 			.def("fmin_point",					&adopt_sampler::_fmin_point		)
