@@ -39,10 +39,10 @@ function add (npc, action)
        return
     --end    
     
-    local comm = npc:character_community ()
-    for a = 1, table.getn (communities), 1 do
-        if communities[a] == comm then
-           action:add_precondition (world_property (xr_evaluators_id.sidor_military_radio, true))
-        end   
-    end       
+    --local comm = npc:character_community ()
+    --for a = 1, table.getn (communities), 1 do
+        --if communities[a] == comm then
+           --action:add_precondition (world_property (xr_evaluators_id.sidor_military_radio, true))
+        --end   
+    --end       
 end
