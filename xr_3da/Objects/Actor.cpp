@@ -188,14 +188,10 @@ void CActor::Load(CInifile* ini, const char* section )
 	sndLanding			= pSounds->Create2D	(strconcat(buf,cName(),"\\landing"));
 	pSounds->Create3D	(sndWeaponChange,	strconcat(buf,cName(),"\\weaponchange"));
 	pSounds->Create3D	(sndRespawn,		strconcat(buf,cName(),"\\respawn"));
-	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\bhit_flesh-1"));
-	pSounds->Create3D	(sndHit[1],			strconcat(buf,cName(),"\\bhit_flesh-2"));
-	pSounds->Create3D	(sndHit[2],			strconcat(buf,cName(),"\\bhit_flesh-3"));
-	pSounds->Create3D	(sndHit[3],			strconcat(buf,cName(),"\\bhit_helmet-1"));
-	pSounds->Create3D	(sndHit[4],			strconcat(buf,cName(),"\\bullet_hit1"));
-	pSounds->Create3D	(sndHit[5],			strconcat(buf,cName(),"\\bullet_hit2"));
-	pSounds->Create3D	(sndHit[6],			strconcat(buf,cName(),"\\ric_conc-1"));
-	pSounds->Create3D	(sndHit[7],			strconcat(buf,cName(),"\\ric_conc-2"));
+	pSounds->Create3D	(sndHit[0],			strconcat(buf,cName(),"\\hurt1"));
+	pSounds->Create3D	(sndHit[1],			strconcat(buf,cName(),"\\hurt2"));
+	pSounds->Create3D	(sndHit[2],			strconcat(buf,cName(),"\\hurt3"));
+	pSounds->Create3D	(sndHit[3],			strconcat(buf,cName(),"\\hurt4"));
 	pSounds->Create3D	(sndDie[0],			strconcat(buf,cName(),"\\die0"));
 	pSounds->Create3D	(sndDie[1],			strconcat(buf,cName(),"\\die1"));
 	pSounds->Create3D	(sndDie[2],			strconcat(buf,cName(),"\\die2"));

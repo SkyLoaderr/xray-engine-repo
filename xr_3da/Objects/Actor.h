@@ -21,7 +21,7 @@ class CEffectorBobbing;
 class CActor: public CEntity, public pureRender
 {
 	enum ESoundCcount {
-		SND_HIT_COUNT=8,
+		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4
 	};
 	enum EActorCameras {

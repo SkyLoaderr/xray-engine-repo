@@ -236,8 +236,8 @@ void CApplication::LoadTitle(char *S, char *S2)
 	// Draw logo
 	DWORD	Offset;
 	DWORD	C	= 0xffffffff;
-	DWORD	_w	= Device.dwWidth-1;
-	DWORD	_h	= Device.dwHeight-1;
+	DWORD	_w	= Device.dwWidth;
+	DWORD	_h	= Device.dwHeight;
 	FVF::TL* pv = (FVF::TL*) ll_pStream->Lock(4,Offset);
 	pv->set(0, float(_h), 1, 1, C, 0, 1);			pv++;
 	pv->set(0, 0, 1, 1, C, 0, 0);					pv++;
