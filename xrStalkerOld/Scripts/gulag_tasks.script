@@ -124,14 +124,24 @@ function loadJob(sj, gname, type, squad, groups)
 	
 	if type == "blockpost" then
 	end
+
+	if type == "test1" then
+		t = { section = "sleeper@test1",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 end
 
 function loadStates(gname, type)
-	if type == "test" then
+	if type == "test" or type == "test1" then
 		return function(gulag)
 			return 0
 		end
 	end
+
 	if type == "blockpost" then
 		return function(gulag)
 			return 0

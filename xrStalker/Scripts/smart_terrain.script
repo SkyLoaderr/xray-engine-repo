@@ -1,9 +1,11 @@
 --[[------------------------------------------------------------------------------------------------------------------
 Smart Terrain (места, где сталкеры могут оседать на некоторое время и заниматься чем-то)
 Чугай Саша
-без симуляции не работает
+!без симуляции не работает!
 
 Сделать:
+	+ npc community в offline
+	+ флажок в custom data "offline=true/false"
 	- сталкеры должны ходить в офлайн/онлайн под гулагом
 	- проверка умерших в offline
 	+ переделать gulag на id и client_spawn_manager
@@ -11,22 +13,36 @@ Smart Terrain (места, где сталкеры могут оседать на некоторое время и заниматься
 	+ затычка gulag для офлайна
 	+ доделать и переименовать онлайновую часть
 	+ printf
-	- передача параметров offline->online
-	- передача параметров online->offline
+	+ передача параметров offline->online
+	+ передача параметров online->offline
 	+ [zone] перерименовать [smart_terrain], "зона" -> "smart terrain"
 	+ spawn_ini у серверного сталкера
 	+ установка squad, group у серверного
-	- сохранение и восстановление серверного объекта
+	+ сохранение и восстановление серверного объекта
 	+ the_actor при reload
 	- script_version
 
 	- монстры
+
+Идеи:
+	- дополнительные условия начала, конца smart_terrain. Например, ночь и день
+	- дополнительные условия ухода сталкеров
+	- специальные диалоги
+
 --------------------------------------------------------------------------------------------------------------------]]
 
 local h2ms = 60 * 60 * 1000
-local check_period = 300000
 
-local the_actor, n, ini, sect, g, gi, ggi, o, o_id, sim
+local check_period, CTime_0
+
+if not editor() then
+	check_period = game.CTime()
+	check_period:setHMSms( 0, 0, 0, 50000 )
+
+	CTime_0 = game.CTime()
+end
+
+local the_actor, n, ini, sect, g, gi, ggi, o, o_id, sim, t
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
@@ -47,12 +63,12 @@ function parse_names( s )
 	return t
 end
 
--- парсит строку вида "n1, n2, n3..." в таблицу { n1, n2, n3, ... } где n1, n2, n3... - целые числа
+-- парсит строку вида "n1, n2, n3..." в таблицу { n1, n2, n3, ... } где n1, n2, n3... - дробные числа
 -- Чугай
 function parse_nums( s )
 	local t = {}
 
-	for entry in string.gfind( s, "([%w_\\]+)%p*" ) do
+	for entry in string.gfind( s, "([%d%.]+)%,*" ) do
 		table.insert( t, tonumber( entry ) )
 	end
 
@@ -79,7 +95,7 @@ end
 function r_nums( spawn_ini, section, line, ... )
 	if spawn_ini:line_exist( section, line ) then
 		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
-		local t = parse_names( spawn_ini:r_string( section, line ) )
+		local t = parse_nums( spawn_ini:r_string( section, line ) )
 		local n = table.getn( t )
 
 		if n == 0 then
@@ -96,6 +112,37 @@ function r_nums( spawn_ini, section, line, ... )
 	end
 end
 
+-- запись CTime в пакет. если t=nil, то запишет один нулевой байт
+function w_CTime( p, t )
+	if t and not (t == CTime_0) then
+		local Y, M, D, h, m, s, ms = 0, 0, 0, 0, 0, 0, 0
+		Y, M, D, h, m, s, ms = t:get( Y, M, D, h, m, s, ms )
+
+		p:w_u8 ( Y - 2000 )
+		p:w_u8 ( M )
+		p:w_u8 ( D )
+		p:w_u8 ( h )
+		p:w_u8 ( m )
+		p:w_u8 ( s )
+		p:w_u16( ms )
+	else
+		p:w_u8 ( 0 )
+	end
+end
+
+-- чтение CTime из пакета
+function r_CTime( p )
+	local Y = p:r_u8()
+
+	if Y ~= 0 then
+		local t = game.CTime()
+		t:set( Y, p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u8(), p:r_u16() )
+		return t
+	else
+		return CTime_0
+	end
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Класс "se_smart_terrain". Обеспечивает поддержку smart terrain в ОФЛАЙНЕ.
 -- Унаследован от скриптовой зоны.
@@ -106,7 +153,6 @@ function se_smart_terrain:update()
 --	log( "se_smart_terrain::update called!" )
 	cse_alife_smart_zone.update( self )
 	update( self )
-	self:print()
 end
 
 function se_smart_terrain:detect_probability()
@@ -130,16 +176,35 @@ function se_smart_terrain:__finalize()
 	log( "se_smart_terrain::~se_smart_terrain called!" )
 end
 
+function se_smart_terrain:print()
+	printf( "Stalkers:" )
+	if self.stalkers then
+		for id, v in self.stalkers do
+			printf( "    %d", id )
+		end
+	end
+end
+
 -- сохранение
 function se_smart_terrain:STATE_Write( packet )
 	log( "se_smart_terrain::STATE_Write called!" )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 
---[[	packet:w_u8 ( self.gulagN or 0 )
-	packet:w_u32( self.duration_end or 0 )
-	packet:w_u32( self.idle_end or 0 )
+	self:print()
 
-	packet:w_u8 ( table.getn( self.stalkers ) )
+	packet:w_u8  ( self.gulagN or 0 )
+
+--	packet:w_u32 ( if_then_else( self.duration_end,  )
+--	packet:w_u32 ( self.idle_end or 0 )
+	w_CTime( packet, self.duration_end )
+	w_CTime( packet, self.idle_end )
+
+	n = 0
+	for id, v in self.stalkers do
+		n = n + 1
+	end
+
+	packet:w_u8( n )
 
 	for id, v in self.stalkers do
 		packet:w_u16  ( id )
@@ -147,16 +212,8 @@ function se_smart_terrain:STATE_Write( packet )
 		packet:w_u8   ( v.squad )
 		packet:w_bool ( v.move_offline )
 		packet:w_bool ( v.switch_offline )
-		packet:w_u32  ( v.stay_end )
-	end]]
-end
-
-function se_smart_terrain:print()
-	printf( "Stalkers:" )
-	if self.stalkers then
-		for id, v in self.stalkers do
-			printf( "    %d", id )
-		end
+--		packet:w_u32  ( v.stay_end )
+		w_CTime( packet, stay_end )
 	end
 end
 
@@ -170,13 +227,19 @@ function se_smart_terrain:STATE_Read( packet, size )
 
 	read_ini( self ) -- прочитать custom_data
 
---[[	self.gulagN = packet:r_u8()
+	if editor() then
+		return
+	end
+
+	self.gulagN = packet:r_u8()
 	if self.gulagN == 0 then
 		self.gulagN = nil
 	end
 
-	self.duration_end = packet:r_u32()
-	self.idle_end     = packet:r_u32()
+--	self.duration_end = packet:r_u32()
+--	self.idle_end     = packet:r_u32()
+	self.duration_end = r_CTime( packet )
+	self.idle_end     = r_CTime( packet )
 
 	n = packet:r_u8()
 
@@ -189,8 +252,18 @@ function se_smart_terrain:STATE_Read( packet, size )
 		o.squad          = packet:r_u8()
 		o.move_offline   = packet:r_bool()
 		o.switch_offline = packet:r_bool()
-		o.stay_end       = packet:r_u32()
-	end]]
+--		o.stay_end       = packet:r_u32()
+		o.stay_end       = r_CTime( packet )
+	end
+
+	-- если гулаг был, то заполнить переменные-заглушки
+	if self.gulagN then
+		self.gparams = self.gulags[self.gulagN]
+		self.gulag   = self:setGulag()
+	else
+		self.gparams = nil
+		self.gulag   = nil
+	end
 
 	printf( "after read" )
 	self:print()
@@ -203,10 +276,22 @@ function se_smart_terrain:FillProps( pref, items )
 --	local prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
 end
 
-function se_smart_terrain:createGulag()
+-- установка имитации гулага
+function se_smart_terrain:setGulag()
 	-- сам этот класс и будет якобы гулагом
-	self.Object = self.stalkers
+	self.Object     = self.stalkers
+	self.check_time = CTime_0
 	return self
+end
+
+-- создание гулага
+function se_smart_terrain:createGulag()
+	-- если выбранный тип гулага может образоваться в offline
+	if self.gparams.offline then
+		return self:setGulag()
+	else
+		return nil
+	end
 end
 
 function se_smart_terrain:destroyGulag()
@@ -217,7 +302,7 @@ function se_smart_terrain:free_stalker( obj_id )
 end
 
 function se_smart_terrain:checkNpc( obj )
-	return xr_gulag.checkNpc( obj:section_name(), self.gparams.type )
+	return xr_gulag.checkNpc( nil, self.gparams.type )
 end
 
 function se_smart_terrain:obj_id( obj )
@@ -237,6 +322,7 @@ function se_smart_terrain:addObject()
 end
 
 function se_smart_terrain:calculate()
+	self:print()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -256,20 +342,30 @@ function cl_smart_terrain:__init( se_obj, ini )
 	self.idle_end           = se_obj.idle_end
 	self.duration_end       = se_obj.duration_end
 
+--	printf( utils.to_str( self.gulagN ) )
+--	printf( if_then_else( self.gulags, "GULAGS", "GULAGS=NIL" ) )
+--	printf( if_then_else( self.gparams, "GPARAMS", "GPARAMS=NIL" ) )
+	
+	
 	-- если в офлайне был гулаг-затычка, то создать настоящий такого же типа
 	if se_obj.gulag then
 		self.gulag = self:createGulag()
 
 		for id, v in self.stalkers do
-			self.gulag.addObjectID( id )
+			self.gulag:addObjectID( id )
 		end
 	end
+end
+
+function cl_smart_terrain:destroy()
+	printf( "smart terrain client destroy" )
+	self:destroyGulag()
 end
 
 -- сохранение клиентского объекта, обновляем серверный
 function cl_smart_terrain:save()
 	printf( "smart terrain client save" )
---[[	sim = alife()
+	sim = alife()
 	o   = sim:object( self.id )
 
 	o.stalkers     = self.stalkers
@@ -279,12 +375,12 @@ function cl_smart_terrain:save()
 
 	if self.gulag then
 		o.gparams = o.gulags[self.gulagN]
-		o.gulag   = o:createGulag()
+		o.gulag   = o:setGulag()
 	else
 		o.gparams = nil
 	end
 
-	o:print()]]
+	o:print()
 	printf( "//smart terrain client save" )
 end
 
@@ -309,23 +405,23 @@ function cl_smart_terrain:update()
 end
 
 function cl_smart_terrain:createGulag()
+	self.check_time = CTime_0
 	return xr_gulag.createGulag( self.id, self:name(), self.gparams.type, self.gparams.squad, self.gparams.groups )
 end
 
-function cl_smart_terrain:destroyGulag( name )
-	xr_gulag.destroyGulag( name )
+function cl_smart_terrain:destroyGulag()
+	xr_gulag.destroyGulag( self:name() )
 end
 
 function cl_smart_terrain:free_stalker( obj_id )
 	o = self.gulag.Object[obj_id]
 	n = type( o )
 	-- если объект уже порождён в онлайн, то вернуть его изначальные параметры.
-	if n == "object" then
+	if n == "userdata" then
 		self.gulag:removeObject( obj_id )
 
-		n = self.stalkers[obj_id]
-		o:change_team( o:team(), n.squad, n.group )
-
+--		n = self.stalkers[obj_id]
+--		o:change_team( o:team(), n.squad, n.group )
 		return true
 	-- если объекта в гулаге уже нету, значит он мёртв и его можно удалять
 	elseif n == "nil" then
@@ -337,7 +433,7 @@ function cl_smart_terrain:free_stalker( obj_id )
 end
 
 function cl_smart_terrain:checkNpc( obj )
-	return xr_gulag.checkNpc( obj:section(), self.gparams.type )
+	return xr_gulag.checkNpc( obj:character_community(), self.gparams.type )
 end
 
 function cl_smart_terrain:obj_id( obj )
@@ -371,13 +467,24 @@ function read_ini( self )
 		if ini:line_exist( sect, "type" ) then
 			ggi.type                            = ini:r_string( sect, "type" )
 			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
-			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
+			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   10000, 10001 )
 			ggi.capacity                        = r_num ( ini, sect, "capacity",   100 )
-			ggi.stay_min, ggi.stay_max          = r_nums( ini, sect, "stay",       100000, 100001 )
 			ggi.probability                     = r_num ( ini, sect, "p",          100 )
 			ggi.squad                           = r_num ( ini, sect, "squad" )
 			ggi.groups                          = r_str ( ini, sect, "groups" )
 			ggi.preconditions                   = r_str ( ini, sect, "preconditions" )
+
+			if ini:line_exist( sect, "offline" ) then
+				ggi.offline                     = ini:r_string( sect, "offline" )
+			else
+				ggi.offline                     = true
+			end
+
+			if ggi.type == "heli_hunt" then
+				ggi.stay_min, ggi.stay_max      = r_nums( ini, sect, "stay",       0.00415 * 10, 0.0083 * 10 )
+			else
+				ggi.stay_min, ggi.stay_max      = r_nums( ini, sect, "stay",       10000, 10001 )
+			end
 		else
 			table.remove( g, gi )
 			break
@@ -399,6 +506,8 @@ function read_ini( self )
 	else
 		self.ini_ok = true
 	end
+
+	printf( "READ INI OK" )
 end
 
 -- добавить сталкера в гулаг
@@ -411,13 +520,21 @@ function add_stalker( self, obj )
 		sim = alife()
 		o = sim:object( o_id )
 
+		o = cast_alife_object_to_creature( o )
+
 		self.stalkers[o_id] = {
-			group          = o.group,
-			squad          = o.squad,
+			group          = o:g_group(),
+			squad          = o:g_squad(),
 			move_offline   = o:move_offline(),
 			switch_offline = o:can_switch_offline(),
-			stay_end       = math.random( self.gparams.stay_min, self.gparams.stay_max ) * h2ms + game.time()
+			stay_end       = game.CTime()
 		}
+
+		--printf( "squad=%s group=%s", utils.to_str ( self.stalkers[o_id].squad ), utils.to_str ( self.stalkers[o_id].group ) )
+
+		t = self.stalkers[o_id].stay_end
+		t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
+		t:add( game.get_game_time() )
 
 		o:move_offline( false )
 		sim:set_switch_offline( o_id, false )
@@ -443,6 +560,10 @@ function free_stalker( self, obj_id )
 		self.stalkers[obj_id] = nil
 
 		printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), o:name(), self.gparams.type )
+
+		return true
+	else
+		return false
 	end
 end
 
@@ -476,14 +597,23 @@ function create_gulag( self )
 		self.gulagN  = avail[math.random( 1, table.getn( avail ) )]
 		self.gparams = self.gulags[self.gulagN]  -- ссылка на настройки текущего гулага
 
-		self.duration_end  = math.random( self.gparams.duration_min, self.gparams.duration_max ) * h2ms + game.time()
-		self.check_time    = game.time() + check_period
+		self.duration_end = game.CTime()
+		self.duration_end:setHMSms( 0, 0, 0, math.random( self.gparams.duration_min * h2ms, self.gparams.duration_max * h2ms ) )
+		self.duration_end:add( game.get_game_time() )
 
-		self.gulag         = self:createGulag()
+		self.gulag = self:createGulag()
 
-		printf( "[smart_terrain %s] creating gulag of type %s", self:name(), self.gparams.type )
+		if self.gulag then
+			printf( "[smart_terrain %s] creating gulag of type %s", self:name(), self.gparams.type )
 
-		return true
+			return true
+		else
+			self.gulag    = nil
+			self.gulagN   = nil
+			self.gparams  = nil
+
+			return false
+		end
 	else
 		return false
 	end
@@ -499,29 +629,29 @@ function remove_gulag( self )
 
 	-- если все успешно освобождены, то можно уничтожать гулаг
 	if o then
-		self:destroyGulag( self:name() )
+		self.idle_end = game.CTime()
+		self.idle_end:setHMSms( 0, 0, 0, math.random( self.gparams.idle_min * h2ms, self.gparams.idle_max * h2ms ) )
+		self.idle_end:add( game.get_game_time() )
+
+		self:destroyGulag()
+
+		printf( "[smart_terrain %s] removing gulag type=%s", self:name(), self.gparams.type )
+
 		self.gulag    = nil
 		self.gulagN   = nil
 		self.gparams  = nil
-		self.idle_end = math.random( self.gparams.idle_min, self.gparams.idle_max ) * h2ms + game.time()
-
-		printf( "[smart_terrain %s] removing gulag type=%s", self:name(), self.gparams.type )
 	end
 end
 
 -- обработка входа сталкера в smart terrain
 function on_touch( self, obj )
 	if obj:clsid() == clsid.stalker then
-		ini = obj:spawn_ini()
-
-		if ini and ini:section_exist( "zones" ) then
-			if self.gulag then
-				add_stalker( self, obj )
-			else
-				if not self.idle_end or self.idle_end < game.time() then
-					if create_gulag( self ) then
-						add_stalker( self, obj )
-					end
+		if self.gulag then
+			add_stalker( self, obj )
+		else
+			if not self.idle_end or self.idle_end < game.get_game_time() then
+				if create_gulag( self ) then
+					add_stalker( self, obj )
 				end
 			end
 		end
@@ -534,28 +664,28 @@ function update( self )
 --		if self.duration_end < game.time() then
 --			self:remove_gulag()
 --		else
-			-- периодически проверять, не собрался ли кто-то к этому времени уже уходить
-			if self.check_time < game.time() then
-				self.check_time = game.time() + check_period
+			if self.check_time < game.get_game_time() then
+				self.check_time = game.get_game_time() + check_period
 
-				n = 0
-
+				-- проверять, не собрался ли кто-то к этому времени уже уходить
+				sn = 0
 				for id, v in self.gulag.Object do
-					if self.stalkers[id].stay_end < game.time() then
-						free_stalker( self, id )
-					else
-						n = n + 1
-					end
+--[[					if self.stalkers[id].stay_end < game.get_game_time() then
+						-- попытка освободить сталкера. если неудачно, то он всё ещё числится
+						if not free_stalker( self, id ) then
+							sn = sn + 1
+						end
+					else]]
+						sn = sn + 1
+--					end
 				end
 
 				-- если мужиков в гулаге больше не осталось, убрать гулаг
-				if n == 0 then
+				if sn == 0 then
 					remove_gulag( self )
 				else
 					self.gulag:calculate()
 				end
-			else
-				self.gulag:calculate()
 			end
 --		end
 	end

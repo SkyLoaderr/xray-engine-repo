@@ -1,3 +1,6 @@
+-- Автор:     Диденко Руслан (Stohe)
+-- Доделка:   Чугай Александр (Chugai)
+
 fraction = {}
 
 local i
@@ -5,7 +8,8 @@ local i
 local gulag_tasks_ltx = ini_file("misc\\gulag_tasks.ltx")
 
 class "fract"
-function fract:__init(name, type, squad, groups)
+function fract:__init(smrttrn_id, name, type, squad, groups)
+	self.smrttrn_id = smrttrn_id
 	self.name   = name
 	self.type   = type
 	self.squad  = squad
@@ -16,9 +20,9 @@ function fract:__init(name, type, squad, groups)
 
 	self.casualities = 0  	
 
-	self.Object = {}        
-	self.Job = {}           
---	self.States = {}	
+	self.Object = {}
+	self.Job = {}
+--	self.States = {}
 	--' Функция для просчета состояний
 --	self.calculateStates = nil
 
@@ -29,42 +33,41 @@ function fract:__init(name, type, squad, groups)
 	self.calculateStates = gulag_tasks.loadStates(name, type)
 end
 function fract:addObject(npc)
-	if self:checkNpc(npc) == true then
-		if self.Object[npc:id()] == nil then
-			self.Object[npc:id()] = npc
-			return true
+	self.Object[npc:id()] = npc
+end
+function fract:addObjectID( obj_id )
+	-- пометить, что объект ожидается
+	self.Object[obj_id] = true
+	-- подписаться на объект
+	level.client_spawn_manager():add( obj_id, self.smrttrn_id, self, "spawn_callback" )
+end
+function fract:spawn_callback( id, obj )
+	if obj then
+		self.Object[id] = obj
+		self:calculate()
+	end
+end
+function fract:removeObject( npc_id )
+	self:clearAllJob( npc_id )
+	self.Object[npc_id] = nil
+end
+function fract:all_spawned()
+	for k,v in self.Object do
+		-- если есть ещё хоть один не породившийся
+		if v == true then
+			return false
 		end
-	else
-		return false
-	end
-end
-function fract:checkNpc(npc)
-	printf("COMM %s !! %s", npc:character_community(), self.type)
-	if self.type == "blockpost"
-	then
-		return npc:character_community() == "military"
-	end
-	
-	if self.type == "gar_bandits" then
-		return npc:character_community() == "bandit"
-	end
-	if self.type == "gar_stalkers" then
-		return npc:character_community() == "stalker"
 	end
 
-	if self.type == "test"
-	then
-		return true
-	end
-
-	return false
-end
-
-function fract:removeObject(npc)
-	self:clearAllJob(npc)
-	self.Object[npc:id()] = nil
+	return true
 end
 function fract:calculate() 
+--	printf( "calculate called" )
+	if not self:all_spawned() then
+		return
+	end
+--	printf( "all spawned" )
+
 	--' Изменение потерь в лагере
 	for k,v in self.Object do
 		if v:alive() ~= true then
@@ -72,6 +75,7 @@ function fract:calculate()
 			self.Object[k] = nil
 		end
 	end
+
 	--' Обнуление работ с несуществующими персонажами
 	for k,v in self.Job do
 		if v.object ~= nil and self.Object[v.object:id()] == nil then
@@ -87,9 +91,9 @@ function fract:calculate()
 	if self.music ~= nil then
 		self.music:update()
 	end
-	
+
 	self:updateJob()
-	--self:print()
+	self:print()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
@@ -118,13 +122,13 @@ function fract:updateJob()
 				local f = false
 				for kk,vv in self.Object do
 					if ((v.predicate == nil or v.predicate(vv) == true) and self:getJob(vv) == nil) then
-						self:setJob(vv, v) 
+						self:setJob(vv, v)
 						f = true
 						break
 						--return
 					end
 				end
-				-- если свободных нету, снять кого-то с наименее важной работы и поставить на эту работу
+				-- если свободных нету, снять кого-то с наименее выжной работы и поставить на эту работу
 				if not f then
 					for i = table.getn(self.Job), k, -1 do
 						if self.Job[i].object ~= nil and self.Job[i].prior < v.prior then 
@@ -148,7 +152,7 @@ function fract:print()
 	end
 	printf("Jobs:")
 	for k,v in self.Job do
-		printf("name: %s, prior %d", v.section, v.prior)
+		printf("section: %s, prior %d", v.section, v.prior)
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
@@ -180,8 +184,9 @@ function fract:get_population()
 	end
 	return i
 end
-function fract:setJob(npc, job) 
-	self:clearAllJob(npc)
+function fract:setJob(npc, job)
+	self:clearAllJob(npc:id())
+
 	job.object = npc
 	job.begin  = game.time()
 
@@ -202,14 +207,19 @@ function fract:getJob(npc)
 	end
 	return nil
 end
-function fract:clearAllJob(npc)
+
+function fract:clearAllJob(npc_id)
 	for k,v in self.Job do
-		if v.object ~= nil and v.object:id() == npc:id() then	
+		if v.object ~= nil and v.object:id() == npc_id then	
 			v.object = nil
 		end
 	end
 
-	xr_logic.gulag_activate(npc, gulag_tasks_ltx, "nil")
+	-- если сталкер в онлайне, то сбросить его схему поведения
+	local t = self.Object[npc_id]
+	if t ~= nil and t ~= true then
+		xr_logic.gulag_activate(t, gulag_tasks_ltx, "nil")
+	end
 end
 function fract:stalkerExist(npc)
 	if self.Object[npc:id()] ~= nil then
@@ -237,9 +247,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
-function createGulag(name, type, squad, groups)
+function createGulag(smrttrn_id, name, type, squad, groups)
 	if xr_gulag.fraction[name] == nil then
-		xr_gulag.fraction[name] = xr_gulag.fract(name, type, squad, groups)
+		xr_gulag.fraction[name] = xr_gulag.fract(smrttrn_id, name, type, squad, groups)
 	end
 	return xr_gulag.fraction[name]
 end
@@ -257,8 +267,11 @@ function isUnderFraction(npc)
 end
 function resetJob(name, npc)
 	if xr_gulag.fraction[name] ~= nil then
-		xr_gulag.fraction[name]:clearAllJob(npc)
-		xr_gulag.fraction[name]:updateJob()
+		xr_gulag.fraction[name]:clearAllJob(npc:id())
+
+		if xr_gulag.fraction[name]:all_spawned() then
+			xr_gulag.fraction[name]:updateJob()
+		end
 	end
 end
 
@@ -281,4 +294,28 @@ function changeCasualities(fraction, delta)
 	if xr_gulag.fraction[fraction] ~= nil then
 		xr_gulag.fraction[fraction]:changeCasualities(delta)
 	end
+end
+
+function checkNpc(npc_community, gulag_type)
+	printf("COMM %s !! %s", npc_community, gulag_type)
+
+	if gulag_type == "blockpost"
+	then
+		return npc_community == "military"
+	end
+	
+	if gulag_type == "gar_bandits" then
+		return npc_community == "bandit"
+	end
+
+	if gulag_type == "gar_stalkers" then
+		return npc_community == "stalker"
+	end
+
+	if gulag_type == "test" or gulag_type == "test1"
+	then
+		return true
+	end
+
+	return false
 end
