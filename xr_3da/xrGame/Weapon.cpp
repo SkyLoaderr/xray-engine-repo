@@ -1002,11 +1002,13 @@ void CWeapon::PH_A_CrPr			()
 void CWeapon::reinit			()
 {
 	CShootingObject::reinit		();
+	CHudItem::reinit			();
 }
 
 void CWeapon::reload			(LPCSTR section)
 {
 	CShootingObject::reload		(section);
+	CHudItem::reload			(section);
 }
 
 void CWeapon::create_physic_shell()
