@@ -1947,6 +1947,9 @@
 					RelativePath="ai_alife_space.h">
 				</File>
 				<File
+					RelativePath=".\ai_alife_surge.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_switch.cpp">
 				</File>
 				<File
