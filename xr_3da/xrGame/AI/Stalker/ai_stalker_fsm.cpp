@@ -175,7 +175,7 @@ void CAI_Stalker::Recharge()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 
 	if (m_tEnemy.Enemy) {
-		vfChoosePointAndBuildPath	(m_tSelectorReload);
+		vfChoosePointAndBuildPath	(m_tSelectorAttack);
 		vfSetMovementType		(eBodyStateStand,eMovementTypeRun,eLookTypePoint, m_tEnemy.Enemy->Position());
 	}
 	else
