@@ -226,8 +226,8 @@ void CSector::Load(CStream& fs)
 	DWORD size	= fs.FindChunk(fsP_Portals); R_ASSERT(0==(size&1));
 	DWORD count	= size/2;
 	while (count) {
-		WORD ID = fs.Rword();
-		CPortal* P = ::Render.getPortal(ID);
+		WORD ID		= fs.Rword();
+		CPortal* P	= ::Render.getPortal(ID);
 		Portals.push_back(P);
 		count--;
 	}

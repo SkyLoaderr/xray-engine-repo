@@ -20,8 +20,8 @@ class ENGINE_API CPortal
 private:
 	vector<Fvector>			poly;
 	CSector					*pFace,*pBack;
-	Fplane					P;
 public:
+	Fplane					P;
 	DWORD					dwFrame;
 	DWORD					dwFrameObject;
 	BOOL					bDualRender;
