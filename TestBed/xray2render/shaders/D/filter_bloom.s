@@ -75,7 +75,9 @@ p2f 	p_main	( v2p_in IN )
 		samples[11]	*weight[0].w + 
 		samples[12]	*weight[0].z + 
 		samples[13]	*weight[0].y + 
-		samples[14]	*weight[0].x + 
+		samples[14]	*weight[0].x;
 
-	return OUT;
+	OUT.C	= float4(final.x,final.y,final.z,0);
+
+	return	OUT;
 }
