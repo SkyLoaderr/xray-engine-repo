@@ -118,6 +118,7 @@ void CStats::Show()
 		F.OutNext	("  Shadows:   %2.2fms",RenderDUMP_Shads.result);
 		F.OutNext	("  Wallmarks: %2.2fms",RenderDUMP_WM.result);
 		F.OutNext	("  Glows:     %2.2fms",RenderDUMP_Glows.result);	
+		F.OutNext	("  Lights:    %2.2fms",RenderDUMP_Lights.result,RenderDUMP_Lights.count);
 		F.OutNext	("  HUD:       %2.2fms",RenderDUMP_HUD.result);	
 		F.OutSkip	();
 		F.OutNext	("*** SOUND:   %2.2fms",Sound.result);
