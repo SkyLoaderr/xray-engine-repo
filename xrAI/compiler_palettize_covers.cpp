@@ -402,5 +402,27 @@ void xrPalettizeCovers()
 				(*I).cover[i]	= network[I - B][i];
 	}
 
+	for (int i=0; i<(int)N; ++i) {
+		Msg		(
+			"[%3d][%3d][%3d][%3d] -> [%3d][%3d][%3d][%3d] : %7.3f",
+			g_nodes[i].cover[0],
+			g_nodes[i].cover[1],
+			g_nodes[i].cover[2],
+			g_nodes[i].cover[3],
+			g_covers_palette[g_nodes[i].cover_index].cover[0],
+			g_covers_palette[g_nodes[i].cover_index].cover[1],
+			g_covers_palette[g_nodes[i].cover_index].cover[2],
+			g_covers_palette[g_nodes[i].cover_index].cover[3],
+			_sqrt(
+				float(
+					_sqr(int(g_nodes[i].cover[0]) - int(g_covers_palette[g_nodes[i].cover_index].cover[0])) + 
+					_sqr(int(g_nodes[i].cover[1]) - int(g_covers_palette[g_nodes[i].cover_index].cover[1])) + 
+					_sqr(int(g_nodes[i].cover[2]) - int(g_covers_palette[g_nodes[i].cover_index].cover[2])) + 
+					_sqr(int(g_nodes[i].cover[3]) - int(g_covers_palette[g_nodes[i].cover_index].cover[3]))
+				)
+			)
+		);
+	}
+
 	xr_free			(data);
 }
