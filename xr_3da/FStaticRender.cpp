@@ -158,12 +158,10 @@ IC		void		gm_SetLighting		(CObject* O)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
-	PSystems.xrStartUp			();
 }
 
 CRender::~CRender()
 {
-	PSystems.xrShutDown			();
 }
 
 void CRender::Calculate()
@@ -566,6 +564,7 @@ void CRender::OnDeviceCreate()
 	L_Shadows.OnDeviceCreate	();
 	L_Projector.OnDeviceCreate	();
 
+	PSystems.xrStartUp			();
 	PSystems.OnDeviceCreate		();
 	level_Load					();
 	L_Dynamic.Initialize		();
@@ -579,6 +578,7 @@ void CRender::OnDeviceDestroy()
 	L_Dynamic.Destroy			();
 	level_Unload				();
 	PSystems.OnDeviceDestroy	();
+	PSystems.xrShutDown			();
 
 	L_Projector.OnDeviceDestroy	();
 	L_Shadows.OnDeviceDestroy	();
