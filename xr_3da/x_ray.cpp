@@ -100,6 +100,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	Startup					();
 	
+	Core._destroy			();
+
 	// check for need to execute something external
 	if (strstr(lpCmdLine,"-exec ")) 
 	{
