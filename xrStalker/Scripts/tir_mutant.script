@@ -26,9 +26,9 @@ function main ()
         monsters[a]:script (true, tir_mutant.script_name ())
         if ways[a] ~= nil then
            if math.random (1, 100) > 50 then 
-              action (monsters[a], move (move.act_run, move.force_type, ways[a], cond (cond.move_end))
+              action (monsters[a], move (move.act_run, move.force_type, ways[a]), cond (cond.move_end))
            else
-              action (monsters[a], move (move.act_walk_fwd, move.force_type, ways[a], cond (cond.move_end))
+              action (monsters[a], move (move.act_walk_fwd, move.force_type, ways[a]), cond (cond.move_end))
            end
         else
            action (monsters[a], move (move.act_stand_idle, move.default, monsters[a]:position ()), cond (cond.time_end, time_infinite))    
