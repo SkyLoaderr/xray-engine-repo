@@ -153,4 +153,7 @@
 	<info_portion id="esc_raid1_start"></info_portion>
 	<info_portion id="esc_raid2_start"></info_portion>
 
+	<!-- infoportions for restrictor -->
+	<info_portion id="esc_flesh_in_anomaly"></info_portion>
+
 </game_information_portions>
