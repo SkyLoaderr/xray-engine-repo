@@ -45,7 +45,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_STALKER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);			// Visualed
 		case CLSID_AI_IDOL:				return xr_new<CSE_ALifeObjectIdol>				(caSection);			// Visualed
 		case CLSID_EVENT:				return xr_new<CSE_Event>						(caSection);
-		case CLSID_CAR_NIVA:			return xr_new<CSE_ALifeCar>						(caSection);			// Visualed
+		case CLSID_CAR:					return xr_new<CSE_ALifeCar>						(caSection);			// Visualed
 		case CLSID_VEHICLE_HELICOPTER:	return xr_new<CSE_ALifeHelicopter>				(caSection);			// Visualed
 		case CLSID_SPECTATOR:			return xr_new<CSE_Spectator>					(caSection);
 		case CLSID_AI_TRADER:			return xr_new<CSE_ALifeTrader>					(caSection); 

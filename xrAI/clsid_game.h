@@ -46,7 +46,7 @@
 #define CLSID_AI_IDOL				MK_CLSID('A','I','_','I','D','O','L',' ')
 
 // vehicles
-#define CLSID_CAR_NIVA				MK_CLSID('C','_','N','I','V','A',' ',' ')
+#define CLSID_CAR					MK_CLSID('C','_','N','I','V','A',' ',' ')
 #define CLSID_VEHICLE_HELICOPTER	MK_CLSID('C','_','H','L','C','P','T','R')
 
 #define CLSID_EVENT					MK_CLSID('E','V','E','N','T',' ',' ',' ')

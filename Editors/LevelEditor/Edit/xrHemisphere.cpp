@@ -1,22 +1,7 @@
-// xrHemisphere.cpp : Defines the entry point for the DLL application.
-//
-
 #include "stdafx.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#pragma hdrstop
+
 #include "xrHemisphere.h"
-
-#pragma comment(lib,"x:\\xrCore.lib")
-
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       u32  ul_reason_for_call, 
-                       LPVOID lpReserved
-					 )
-{
-    return TRUE;
-}
-
 
 #define HEMI1_LIGHTS	26
 #define HEMI1_LIGHTS_F	42
@@ -360,81 +345,44 @@ const double hemi_2F[HEMI2_LIGHTS_F][3] =
 	{0.65544	,-0.14904	,-0.74040}
 };
 
-extern "C"
+void xrHemisphereBuild	(int quality, float energy, xrHemisphereIterator* iterator, LPVOID param)
 {
-	// Returns TRUE only if everything O},K.
-	XRHS_API void	xrHemisphereBuild
-		(
-		int						quality,
-		BOOL					ground,
-		float					ground_scale,
-		float					energy,
-		xrHemisphereIterator*	iterator,
-		LPVOID					param
-		)
-	{
-		// SELECT table
-		int		h_count, h_table[3];
-		const double (*hemi)[3] = 0;
-		switch (quality)
-		{
-		case 1:	// LOW quality
-			if (ground)	
-			{
-				h_count		= HEMI1_LIGHTS_F;
-				h_table[0]	= 0;
-				h_table[1]	= 2;
-				h_table[2]	= 1;
-				hemi		= hemi_1F;
-			} else {
-				h_count		= HEMI1_LIGHTS;
-				h_table[0]	= 0;
-				h_table[1]	= 1;
-				h_table[2]	= 2;
-				hemi		= hemi_1;
-			}
-			break;
-		case 2:	// HIGH quality
-			if (ground)
-			{
-				h_count		= HEMI2_LIGHTS_F;
-				h_table[0]	= 0;
-				h_table[1]	= 2;
-				h_table[2]	= 1;
-				hemi		= hemi_2F;
-			} else {
-				h_count		= HEMI2_LIGHTS;
-				h_table[0]	= 0;
-				h_table[1]	= 2;
-				h_table[2]	= 1;
-				hemi		= hemi_2;
-			}
-			break;
-		default:// NO 	
-			return;
-		}
+    // SELECT table
+    int		h_count, h_table[3];
+    const double (*hemi)[3] = 0;
+    switch (quality)
+    {
+    case 1:	// LOW quality
+        h_count		= HEMI1_LIGHTS;
+        h_table[0]	= 0;
+        h_table[1]	= 1;
+        h_table[2]	= 2;
+        hemi		= hemi_1;
+    break;
+    case 2:	// HIGH quality
+        h_count		= HEMI2_LIGHTS;
+        h_table[0]	= 0;
+        h_table[1]	= 2;
+        h_table[2]	= 1;
+        hemi		= hemi_2;
+    break;
+    default:// NO 	
+        return;
+    }
 		
-		// Calculate energy
-		float total = 0;
-		for (int i=0; i<h_count; i++)
-		{
-			float y		=	-float(hemi[i][h_table[1]]);
-			float E		=	(y<0)?ground_scale:1;
-			total		+=	E;
-		}
+    // Calculate energy
+    float total = h_count;
+    float E		= 1.f/total;
 		
-		// Iterate
-		for (i=0; i<h_count; i++)
-		{
-			float x		=	-float	(hemi[i][h_table[0]]);
-			float y		=	-float	(hemi[i][h_table[1]]);
-			float z		=	-float	(hemi[i][h_table[2]]);
-			float mag	=	_sqrt	(x*x + y*y + z*z);
-			x /= mag;	y /= mag;	z /= mag;
+    // Iterate
+    for (int i=0; i<h_count; i++)
+    {
+        float x		=	-float	(hemi[i][h_table[0]]);
+        float y		=	-float	(hemi[i][h_table[1]]);
+        float z		=	-float	(hemi[i][h_table[2]]);
+        float mag	=	_sqrt	(x*x + y*y + z*z);
+        x /= mag;	y /= mag;	z /= mag;
+        iterator	(x,y,z,E*energy,param);
+    }
+}
 
-			float E		=	((y<0)?ground_scale:1)/total;
-
-			iterator	(x,y,z,E*energy,param);
-		}
-	}
-};

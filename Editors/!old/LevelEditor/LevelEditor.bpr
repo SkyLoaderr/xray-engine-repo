@@ -77,7 +77,8 @@
       intermediate\ESceneDOTools_Controls.obj 
       intermediate\ESceneDOTools_Generate.obj intermediate\ObjectAnimator.obj 
       intermediate\ELight_props.obj intermediate\ELight_IO.obj 
-      intermediate\ESceneObjectToolsExportBreakable.obj"/>
+      intermediate\ESceneObjectToolsExportBreakable.obj 
+      intermediate\xrHemisphere.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -270,6 +271,7 @@
       <FILE FILENAME="Edit\ELight_IO.cpp" FORMNAME="" UNITNAME="ELight_IO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ELight_def.h" FORMNAME="" UNITNAME="ELight_def.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneObjectToolsExportBreakable.cpp" FORMNAME="" UNITNAME="ESceneObjectToolsExportBreakable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
