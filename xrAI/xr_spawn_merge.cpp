@@ -257,6 +257,7 @@ void xrMergeSpawns()
 	float						fDummy;
 	u32							dwLevelID;
 	for (dwLevelID = 0; pIni->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
+		Msg("Reading level %d...",dwLevelID);
 		sscanf(pIni->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S1);
 		Memory.mem_copy(tLevel.caLevelName,S1,strlen(S1) + 1);
 		tpLevels.push_back(xr_new<CSpawn>(tLevel,dwLevelID));
@@ -266,8 +267,8 @@ void xrMergeSpawns()
 	CThreadManager				tThreadManager;		// multithreading
 
 	Phase						("Searching for corresponding graph vertices");
-	for (u32 thID=0, N = tpLevels.size(); thID<N; thID++)
-		tThreadManager.start(tpLevels[thID]);
+	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+		tThreadManager.start(tpLevels[i]);
 	tThreadManager.wait();
 	
 	Phase						("Merging spawn files");
