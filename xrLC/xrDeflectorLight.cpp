@@ -399,7 +399,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH
 		RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 		Fbox2			bounds;
 		Bounds_Summary	(bounds);
-		H.initialize	(bounds);
+		H.initialize	(bounds,UVpolys.size());
 		for (DWORD fid=0; fid<UVpolys.size(); fid++)
 		{
 			UVtri* T	= &(UVpolys[fid]);

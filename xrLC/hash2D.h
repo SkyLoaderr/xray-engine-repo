@@ -9,7 +9,11 @@ class hash2D
 public:
 	hash2D()
 	{
-		ZeroMemory(this,sizeof(*this));
+		ZeroMemory	(this,sizeof(*this));
+	}
+	~hash2D()
+	{
+		clear		();
 	}
 
 	void		initialize	(Fbox2& R, DWORD faces)
