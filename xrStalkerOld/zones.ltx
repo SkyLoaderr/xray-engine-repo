@@ -33,17 +33,17 @@ hit_sound			= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получае
 entrance_sound		= anomaly\anomaly_gravy_hit1								;при попадании объекта в аномалию
 
 
-awaking_time		= 50;100
-blowout_time		= 600	
+awaking_time		= 100;100
+blowout_time		= 500	
 accamulate_time		= 10 ;200
 
-blowout_light_time		= 300
-blowout_explosion_time	= 300
-blowout_particles_time	= 300
-blowout_sound_time  	= 200
+blowout_light_time		= 200
+blowout_explosion_time	= 200
+blowout_particles_time	= 200
+blowout_sound_time  	= 100
 
-disable_time		= -1		;врем€ игнорировани€ неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= -1		;врем€ игнорировани€ маленького неживого объекта в зоне (-1 если не нужно)
+disable_time		= 10000		;врем€ игнорировани€ неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= 10000		;врем€ игнорировани€ маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000		;врем€ отключени€ idle партиклов
 
 ignore_nonalive		= false
@@ -82,7 +82,7 @@ blowout_wind		= on
 
 blowout_wind_time_start     = 0
 blowout_wind_time_peak      = 300
-blowout_wind_time_end		= 601; 899
+blowout_wind_time_end		= 501; 899
 blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 [zone_mine_field]
@@ -1004,7 +1004,7 @@ throw_in_atten				= 		3;8			;коэфф. зат€гивани€ (чем меньше, тем плавнее зат€гив
 blowout_radius_percent		= 		0.8		;радиус (в процентах от всего радиуса) непосредственно выброса
 actor_blowout_radius_percent=		0.5
 
-tele_height				= 5;	3.5	;высота подъема телекинеза 
+tele_height				= 0.5;	3.5	;высота подъема телекинеза 
 time_to_tele			= 5000		;врем€ деражани€ объекта в воздухе
 tele_pause				= 5000		;пауза перед тем как снова подн€ть упавший объект
 
