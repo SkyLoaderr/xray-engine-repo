@@ -65,7 +65,8 @@
       Intermediate\Frustum.obj Intermediate\xrSkin2W.obj 
       Intermediate\SoundManager.obj Intermediate\UI_MainMail.obj 
       Intermediate\defines.obj Intermediate\hw.obj Intermediate\GameFont.obj 
-      Intermediate\Blender_Model_EbB.obj"/>
+      Intermediate\Blender_Model_EbB.obj Intermediate\GameMtlLib.obj 
+      Intermediate\PSLibrary.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -259,6 +260,8 @@
       <FILE FILENAME="Engine\hw.cpp" FORMNAME="" UNITNAME="hw" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

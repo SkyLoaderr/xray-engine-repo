@@ -63,9 +63,8 @@ void CActorTools::PreviewModel::Clear()
 }
 void CActorTools::PreviewModel::SelectObject()
 {
-    LPCSTR fn=m_LastObjectName.c_str();
-    fn=TfrmChoseItem::SelectObject(false,0,fn);
-    if (!fn) return;
+    LPCSTR fn;
+    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_LastObjectName.c_str())) return;
     Lib.RemoveEditObject(m_pObject);
     m_pObject = Lib.CreateEditObject(fn);
     if (!m_pObject)	ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
@@ -557,8 +556,8 @@ void CActorTools::FillObjectProperties()
 	PropValueVec values;
 
     FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PHelper.CreateFlag	(CEditableObject::eoProgressive));
-    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,0,OnChangeTransform));
+    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PHelper.CreateVector(-10000,	10000,0.1,1,0,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
     m_pEditObject->FillPropSurf		(0,values,OnChangeShader);
     m_pEditObject->FillPropSummary	(0,values);

@@ -206,19 +206,19 @@ void CActorTools::FillMotionProperties()
     if (SM){
 		PropValueVec values;
         PropValue* P=0;
-    	FILL_PROP(values, "Name",		&SM->Name(),  	P=PHelper.CreateText	(sizeof(SM->Name()),FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
+    	FILL_PROP(values, "Name",		&SM->Name(),  	P=PHelper.CreateText	(sizeof(SM->Name()),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
         P->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->tag);
     	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
     	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
     	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
 
-        FlagValue* TV = PHelper.CreateFlag(esmFX,0,0,0,MotionOnChange);
+        FlagValue* TV = PHelper.CreateFlag(esmFX,0,0,0,0,MotionOnChange);
         FILL_PROP(values, "Type FX", 	&SM->m_dwFlags, TV);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PHelper.CreateToken2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
+            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PHelper.CreateToken2(&lst,0,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
             FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PHelper.CreateFlag(esmStopAtEnd));
             FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PHelper.CreateFlag(esmNoMix));
         }
