@@ -16,6 +16,7 @@ class IReader;
 class IWriter;
 class COMotion;
 class CCustomMotion;
+class SAnimParams;
 struct SSceneSummary;
 
 struct SExportStreamItem{
@@ -33,28 +34,12 @@ struct SExportStreams{
 	SExportStreamItem	pe_static;
 };
 
-struct st_AnimParams{
-    float			t;
-    float			min_t;
-    float			max_t;
-    BOOL			bPlay;
-public:
-					st_AnimParams(){bPlay=false;}
-    void			Set		(CCustomMotion* M);
-	void 			Set		(float start_frame, float end_frame, float fps);
-    float			Frame	()			{ return t;}
-    void			Update	(float dt, float speed, bool loop);
-    void			Play	(){bPlay=true; t=min_t;}
-    void			Stop	(){bPlay=false; t=min_t;}
-    void			Pause	(){bPlay=!bPlay;}
-};
-
 class CCustomObject {
 	EObjClass 		FClassID;
 
     BOOL			m_bUpdateTransform;
 
-	st_AnimParams	m_MotionParams;
+	SAnimParams*	m_MotionParams;
     COMotion*		m_Motion;
 
     // private animation methods

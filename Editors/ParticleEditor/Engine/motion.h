@@ -157,4 +157,21 @@ public:
 	void			ParseBoneMotion	(LWItemID bone);
 #endif
 };
+
+struct SAnimParams{
+    float			t;
+    float			min_t;
+    float			max_t;
+    BOOL			bPlay;
+public:
+					SAnimParams(){bPlay=false;}
+    void			Set		(CCustomMotion* M);
+	void 			Set		(float start_frame, float end_frame, float fps);
+    float			Frame	()			{ return t;}
+    void			Update	(float dt, float speed, bool loop);
+    void			Play	(){bPlay=true; t=min_t;}
+    void			Stop	(){bPlay=false; t=min_t;}
+    void			Pause	(){bPlay=!bPlay;}
+};
+
 #endif
