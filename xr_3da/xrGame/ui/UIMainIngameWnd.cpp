@@ -614,7 +614,7 @@ void CUIMainIngameWnd::Update()
 			value = 1 - m_pActor->conditions().GetPower();
 			break;
 		case ewiInvincible:
-			value = (GodMode()) ? 1.0f : float(Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
+			value = (GodMode()||(!Game().local_player)) ? 1.0f : float(Game().local_player->testFlag(GAME_PLAYER_FLAG_INVINCIBLE));
 			break;
 		default:
 			R_ASSERT(!"Unknown type of warning icon");
