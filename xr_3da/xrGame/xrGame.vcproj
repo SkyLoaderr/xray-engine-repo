@@ -19,8 +19,7 @@
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			CompilerName="Microsoft">
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -84,8 +83,7 @@
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			CompilerName="Microsoft">
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="2"
@@ -148,8 +146,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE"
-			CompilerName="Microsoft">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -240,103 +237,141 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\StdAfx.h"/>
+				RelativePath=".\StdAfx.h">
+			</File>
 			<File
-				RelativePath=".\WayPointDef.h"/>
+				RelativePath=".\WayPointDef.h">
+			</File>
 			<File
-				RelativePath=".\clsid_game.h"/>
+				RelativePath=".\clsid_game.h">
+			</File>
 			<File
-				RelativePath=".\xrGame.cpp"/>
+				RelativePath=".\xrGame.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Objects"
 			Filter="">
 			<File
-				RelativePath=".\Group.cpp"/>
+				RelativePath=".\Group.cpp">
+			</File>
 			<File
-				RelativePath=".\Group.h"/>
+				RelativePath=".\Group.h">
+			</File>
 			<File
-				RelativePath=".\Level.cpp"/>
+				RelativePath=".\Level.cpp">
+			</File>
 			<File
-				RelativePath=".\Level.h"/>
+				RelativePath=".\Level.h">
+			</File>
 			<Filter
 				Name="Basic"
 				Filter="">
 				<File
-					RelativePath=".\Entity.cpp"/>
+					RelativePath=".\Entity.cpp">
+				</File>
 				<File
-					RelativePath=".\Entity.h"/>
+					RelativePath=".\Entity.h">
+				</File>
 				<File
-					RelativePath=".\GameObject.cpp"/>
+					RelativePath=".\GameObject.cpp">
+				</File>
 				<File
-					RelativePath=".\GameObject.h"/>
+					RelativePath=".\GameObject.h">
+				</File>
 				<File
-					RelativePath=".\MovementControl.cpp"/>
+					RelativePath=".\MovementControl.cpp">
+				</File>
 				<File
-					RelativePath=".\MovementControl.h"/>
+					RelativePath=".\MovementControl.h">
+				</File>
 				<File
-					RelativePath=".\SoundHelper.h"/>
+					RelativePath=".\SoundHelper.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="AI_Entity"
 				Filter="">
 				<File
-					RelativePath=".\AI_Console.h"/>
+					RelativePath=".\AI_Console.h">
+				</File>
 				<File
-					RelativePath=".\AI_PathNodes.cpp"/>
+					RelativePath=".\AI_PathNodes.cpp">
+				</File>
 				<File
-					RelativePath=".\AI_PathNodes.h"/>
+					RelativePath=".\AI_PathNodes.h">
+				</File>
 				<File
-					RelativePath=".\CustomMonster.cpp"/>
+					RelativePath=".\CustomMonster.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomMonster.h"/>
+					RelativePath=".\CustomMonster.h">
+				</File>
 				<File
-					RelativePath=".\CustomMonster_VCPU.cpp"/>
+					RelativePath=".\CustomMonster_VCPU.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomMonster_VisTrack.cpp"/>
+					RelativePath=".\CustomMonster_VisTrack.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomMonster_VisTrack.h"/>
+					RelativePath=".\CustomMonster_VisTrack.h">
+				</File>
 				<File
-					RelativePath=".\ai_commands.h"/>
+					RelativePath=".\ai_commands.h">
+				</File>
 				<File
-					RelativePath=".\ai_goals.h"/>
+					RelativePath=".\ai_goals.h">
+				</File>
 				<File
-					RelativePath=".\dbg_draw_frustum.cpp"/>
+					RelativePath=".\dbg_draw_frustum.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="Weapons"
 				Filter="">
 				<File
-					RelativePath=".\xr_weapon_list.cpp"/>
+					RelativePath=".\xr_weapon_list.cpp">
+				</File>
 				<File
-					RelativePath=".\xr_weapon_list.h"/>
+					RelativePath=".\xr_weapon_list.h">
+				</File>
 				<Filter
 					Name="Custom Weapon"
 					Filter="">
 					<File
-						RelativePath=".\Weapon.cpp"/>
+						RelativePath=".\Weapon.cpp">
+					</File>
 					<File
-						RelativePath=".\Weapon.h"/>
+						RelativePath=".\Weapon.h">
+					</File>
 					<File
-						RelativePath=".\WeaponAutoRifle.cpp"/>
+						RelativePath=".\WeaponAutoRifle.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponAutoRifle.h"/>
+						RelativePath=".\WeaponAutoRifle.h">
+					</File>
 					<File
-						RelativePath=".\WeaponHUD.cpp"/>
+						RelativePath=".\WeaponHUD.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponHUD.h"/>
+						RelativePath=".\WeaponHUD.h">
+					</File>
 					<File
-						RelativePath=".\WeaponMagazined.cpp"/>
+						RelativePath=".\WeaponMagazined.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponMagazined.h"/>
+						RelativePath=".\WeaponMagazined.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Weapon M134"
 					Filter="">
 					<File
-						RelativePath=".\WeaponM134.cpp"/>
+						RelativePath=".\WeaponM134.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponM134.h"/>
+						RelativePath=".\WeaponM134.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Weapon Rail"
@@ -363,7 +398,8 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\WeaponRail.h"/>
+						RelativePath=".\WeaponRail.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Weapon Protecta"
@@ -390,241 +426,321 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\WeaponProtecta.h"/>
+						RelativePath=".\WeaponProtecta.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Effectors"
 					Filter="">
 					<File
-						RelativePath=".\EffectorNoise.cpp"/>
+						RelativePath=".\EffectorNoise.cpp">
+					</File>
 					<File
-						RelativePath=".\EffectorNoise.h"/>
+						RelativePath=".\EffectorNoise.h">
+					</File>
 					<File
-						RelativePath=".\EffectorRecoil.cpp"/>
+						RelativePath=".\EffectorRecoil.cpp">
+					</File>
 					<File
-						RelativePath=".\EffectorRecoil.h"/>
+						RelativePath=".\EffectorRecoil.h">
+					</File>
 					<File
-						RelativePath=".\EffectorShot.cpp"/>
+						RelativePath=".\EffectorShot.cpp">
+					</File>
 					<File
-						RelativePath=".\EffectorShot.h"/>
+						RelativePath=".\EffectorShot.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Weapon AK74"
 					Filter="">
 					<File
-						RelativePath=".\WeaponAK74.cpp"/>
+						RelativePath=".\WeaponAK74.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponAK74.h"/>
+						RelativePath=".\WeaponAK74.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="LR300"
 					Filter="">
 					<File
-						RelativePath=".\WeaponLR300.cpp"/>
+						RelativePath=".\WeaponLR300.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponLR300.h"/>
+						RelativePath=".\WeaponLR300.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="FN2000"
 					Filter="">
 					<File
-						RelativePath=".\WeaponFN2000.cpp"/>
+						RelativePath=".\WeaponFN2000.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponFN2000.h"/>
+						RelativePath=".\WeaponFN2000.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="HPSA"
 					Filter="">
 					<File
-						RelativePath=".\WeaponHPSA.cpp"/>
+						RelativePath=".\WeaponHPSA.cpp">
+					</File>
 					<File
-						RelativePath=".\WeaponHPSA.h"/>
+						RelativePath=".\WeaponHPSA.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
 				Name="_door"
 				Filter="">
 				<File
-					RelativePath=".\CustomDoor.cpp"/>
+					RelativePath=".\CustomDoor.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomDoor.h"/>
+					RelativePath=".\CustomDoor.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="_item"
 				Filter="">
 				<File
-					RelativePath=".\CustomItem.cpp"/>
+					RelativePath=".\CustomItem.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomItem.h"/>
+					RelativePath=".\CustomItem.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="_lift"
 				Filter="">
 				<File
-					RelativePath=".\CustomLift.cpp"/>
+					RelativePath=".\CustomLift.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomLift.h"/>
+					RelativePath=".\CustomLift.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="Events"
 				Filter="">
 				<File
-					RelativePath=".\CustomEvent.cpp"/>
+					RelativePath=".\CustomEvent.cpp">
+				</File>
 				<File
-					RelativePath=".\CustomEvent.h"/>
+					RelativePath=".\CustomEvent.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="_actor"
 				Filter="">
 				<File
-					RelativePath=".\Actor.cpp"/>
+					RelativePath=".\Actor.cpp">
+				</File>
 				<File
-					RelativePath=".\Actor.h"/>
+					RelativePath=".\Actor.h">
+				</File>
 				<File
-					RelativePath=".\ActorAnimation.cpp"/>
+					RelativePath=".\ActorAnimation.cpp">
+				</File>
 				<File
-					RelativePath=".\ActorAnimation.h"/>
+					RelativePath=".\ActorAnimation.h">
+				</File>
 				<File
-					RelativePath=".\ActorCameras.cpp"/>
+					RelativePath=".\ActorCameras.cpp">
+				</File>
 				<File
-					RelativePath=".\ActorInput.cpp"/>
+					RelativePath=".\ActorInput.cpp">
+				</File>
 				<File
-					RelativePath=".\Actor_Flags.h"/>
+					RelativePath=".\Actor_Flags.h">
+				</File>
 				<File
-					RelativePath=".\EffectorBobbing.cpp"/>
+					RelativePath=".\EffectorBobbing.cpp">
+				</File>
 				<File
-					RelativePath=".\EffectorBobbing.h"/>
+					RelativePath=".\EffectorBobbing.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="_actor_demo"
 				Filter="">
 				<File
-					RelativePath=".\DemoActor.cpp"/>
+					RelativePath=".\DemoActor.cpp">
+				</File>
 				<File
-					RelativePath=".\DemoActor.h"/>
+					RelativePath=".\DemoActor.h">
+				</File>
 				<File
-					RelativePath=".\DemoActorCameras.cpp"/>
+					RelativePath=".\DemoActorCameras.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="_dummy"
 				Filter="">
 				<File
-					RelativePath=".\DummyObject.cpp"/>
+					RelativePath=".\DummyObject.cpp">
+				</File>
 				<File
-					RelativePath=".\DummyObject.h"/>
+					RelativePath=".\DummyObject.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="_helicopter"
 				Filter="">
 				<File
-					RelativePath=".\Flyer.cpp"/>
+					RelativePath=".\Flyer.cpp">
+				</File>
 				<File
-					RelativePath=".\Flyer.h"/>
+					RelativePath=".\Flyer.h">
+				</File>
 				<File
-					RelativePath=".\FlyerCameras.cpp"/>
+					RelativePath=".\FlyerCameras.cpp">
+				</File>
 				<File
-					RelativePath=".\FlyerInput.cpp"/>
+					RelativePath=".\FlyerInput.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="AI_Monsters"
 				Filter="">
 				<File
-					RelativePath=".\AI\ai_monsters.cpp"/>
+					RelativePath=".\AI\ai_monsters.cpp">
+				</File>
 				<File
-					RelativePath=".\AI\ai_monsters.h"/>
+					RelativePath=".\AI\ai_monsters.h">
+				</File>
 				<File
-					RelativePath=".\AI\ai_monsters_misc.cpp"/>
+					RelativePath=".\AI\ai_monsters_misc.cpp">
+				</File>
 				<File
-					RelativePath=".\AI\ai_monsters_misc.h"/>
+					RelativePath=".\AI\ai_monsters_misc.h">
+				</File>
 				<File
-					RelativePath="ai_sounds.cpp"/>
+					RelativePath="ai_sounds.cpp">
+				</File>
 				<File
-					RelativePath="ai_sounds.h"/>
+					RelativePath="ai_sounds.h">
+				</File>
 				<Filter
 					Name="ai_hen"
 					Filter="">
 					<File
-						RelativePath=".\AI\Hen\ai_hen.cpp"/>
+						RelativePath=".\AI\Hen\ai_hen.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Hen\ai_hen.h"/>
+						RelativePath=".\AI\Hen\ai_hen.h">
+					</File>
 					<File
-						RelativePath=".\AI\Hen\ai_hen_selectors.cpp"/>
+						RelativePath=".\AI\Hen\ai_hen_selectors.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Hen\ai_hen_selectors.h"/>
+						RelativePath=".\AI\Hen\ai_hen_selectors.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_rat"
 					Filter="">
 					<File
-						RelativePath="AI\Rat\ai_rat.cpp"/>
+						RelativePath="AI\Rat\ai_rat.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat.h"/>
+						RelativePath="AI\Rat\ai_rat.h">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_animations.cpp"/>
+						RelativePath="AI\Rat\ai_rat_animations.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_fire.cpp"/>
+						RelativePath="AI\Rat\ai_rat_fire.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_fsm.cpp"/>
+						RelativePath="AI\Rat\ai_rat_fsm.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_look.cpp"/>
+						RelativePath="AI\Rat\ai_rat_look.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_selectors.cpp"/>
+						RelativePath="AI\Rat\ai_rat_selectors.cpp">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_selectors.h"/>
+						RelativePath="AI\Rat\ai_rat_selectors.h">
+					</File>
 					<File
-						RelativePath="AI\Rat\ai_rat_templates.cpp"/>
+						RelativePath="AI\Rat\ai_rat_templates.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_soldier"
 					Filter="">
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier.h"/>
+						RelativePath=".\AI\Soldier\ai_soldier.h">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_animations.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_animations.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_fire.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_fire.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_fsm.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_fsm.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_look.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_look.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_selectors.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_selectors.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_selectors.h"/>
+						RelativePath=".\AI\Soldier\ai_soldier_selectors.h">
+					</File>
 					<File
-						RelativePath=".\AI\Soldier\ai_soldier_templates.cpp"/>
+						RelativePath=".\AI\Soldier\ai_soldier_templates.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_crow"
 					Filter="">
 					<File
-						RelativePath=".\AI\Crow\ai_crow.cpp"/>
+						RelativePath=".\AI\Crow\ai_crow.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Crow\ai_crow.h"/>
+						RelativePath=".\AI\Crow\ai_crow.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_zombie"
 					Filter="">
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie.h"/>
+						RelativePath=".\AI\Zombie\ai_zombie.h">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_animations.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_animations.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_fire.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_fire.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_fsm.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_fsm.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_look.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_look.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_selectors.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_selectors.cpp">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_selectors.h"/>
+						RelativePath=".\AI\Zombie\ai_zombie_selectors.h">
+					</File>
 					<File
-						RelativePath=".\AI\Zombie\ai_zombie_templates.cpp"/>
+						RelativePath=".\AI\Zombie\ai_zombie_templates.cpp">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -652,92 +768,127 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\TestPhysics.h"/>
+					RelativePath=".\TestPhysics.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="HUD"
 			Filter="">
 			<File
-				RelativePath=".\ContextMenu.cpp"/>
+				RelativePath=".\ContextMenu.cpp">
+			</File>
 			<File
-				RelativePath=".\ContextMenu.h"/>
+				RelativePath=".\ContextMenu.h">
+			</File>
 			<File
-				RelativePath=".\HUDCursor.cpp"/>
+				RelativePath=".\HUDCursor.cpp">
+			</File>
 			<File
-				RelativePath=".\HUDCursor.h"/>
+				RelativePath=".\HUDCursor.h">
+			</File>
 			<File
-				RelativePath=".\HUDManager.cpp"/>
+				RelativePath=".\HUDManager.cpp">
+			</File>
 			<File
-				RelativePath=".\HUDManager.h"/>
+				RelativePath=".\HUDManager.h">
+			</File>
 			<File
-				RelativePath=".\HitMarker.cpp"/>
+				RelativePath=".\HitMarker.cpp">
+			</File>
 			<File
-				RelativePath=".\HitMarker.h"/>
+				RelativePath=".\HitMarker.h">
+			</File>
 			<Filter
 				Name="UI"
 				Filter="">
 				<File
-					RelativePath=".\UI.cpp"/>
+					RelativePath=".\UI.cpp">
+				</File>
 				<File
-					RelativePath=".\UI.h"/>
+					RelativePath=".\UI.h">
+				</File>
 				<File
-					RelativePath=".\UICursor.cpp"/>
+					RelativePath=".\UICursor.cpp">
+				</File>
 				<File
-					RelativePath=".\UICursor.h"/>
+					RelativePath=".\UICursor.h">
+				</File>
 				<File
-					RelativePath=".\UICustomItem.cpp"/>
+					RelativePath=".\UICustomItem.cpp">
+				</File>
 				<File
-					RelativePath=".\UICustomItem.h"/>
+					RelativePath=".\UICustomItem.h">
+				</File>
 				<File
-					RelativePath=".\UIDynamicItem.cpp"/>
+					RelativePath=".\UIDynamicItem.cpp">
+				</File>
 				<File
-					RelativePath=".\UIDynamicItem.h"/>
+					RelativePath=".\UIDynamicItem.h">
+				</File>
 				<File
-					RelativePath=".\UIGroup.cpp"/>
+					RelativePath=".\UIGroup.cpp">
+				</File>
 				<File
-					RelativePath=".\UIGroup.h"/>
+					RelativePath=".\UIGroup.h">
+				</File>
 				<File
-					RelativePath=".\UIHealth.cpp"/>
+					RelativePath=".\UIHealth.cpp">
+				</File>
 				<File
-					RelativePath=".\UIHealth.h"/>
+					RelativePath=".\UIHealth.h">
+				</File>
 				<File
-					RelativePath=".\UIStaticItem.cpp"/>
+					RelativePath=".\UIStaticItem.cpp">
+				</File>
 				<File
-					RelativePath=".\UIStaticItem.h"/>
+					RelativePath=".\UIStaticItem.h">
+				</File>
 				<File
-					RelativePath=".\UIWeapon.cpp"/>
+					RelativePath=".\UIWeapon.cpp">
+				</File>
 				<File
-					RelativePath=".\UIWeapon.h"/>
+					RelativePath=".\UIWeapon.h">
+				</File>
 				<File
-					RelativePath=".\UIZoneMap.cpp"/>
+					RelativePath=".\UIZoneMap.cpp">
+				</File>
 				<File
-					RelativePath=".\UIZoneMap.h"/>
+					RelativePath=".\UIZoneMap.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Network"
 			Filter="">
 			<File
-				RelativePath=".\xrMessages.h"/>
+				RelativePath=".\xrMessages.h">
+			</File>
 			<File
-				RelativePath=".\xrServer.cpp"/>
+				RelativePath=".\xrServer.cpp">
+			</File>
 			<File
-				RelativePath=".\xrServer.h"/>
+				RelativePath=".\xrServer.h">
+			</File>
 			<File
-				RelativePath=".\xrServer_Entities.cpp"/>
+				RelativePath=".\xrServer_Entities.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Effects"
 			Filter="">
 			<File
-				RelativePath=".\Rain.cpp"/>
+				RelativePath=".\Rain.cpp">
+			</File>
 			<File
-				RelativePath=".\Rain.h"/>
+				RelativePath=".\Rain.h">
+			</File>
 			<File
-				RelativePath=".\Tracer.cpp"/>
+				RelativePath=".\Tracer.cpp">
+			</File>
 			<File
-				RelativePath=".\Tracer.h"/>
+				RelativePath=".\Tracer.h">
+			</File>
 			<Filter
 				Name="Core"
 				Filter="">
@@ -763,26 +914,34 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\DynamicHeightMap.h"/>
+					RelativePath=".\DynamicHeightMap.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="AI Core"
 			Filter="">
 			<File
-				RelativePath=".\AI_Space.cpp"/>
+				RelativePath=".\AI_Space.cpp">
+			</File>
 			<File
-				RelativePath=".\AI_Space.h"/>
+				RelativePath=".\AI_Space.h">
+			</File>
 			<File
-				RelativePath=".\AI_Utilities.cpp"/>
+				RelativePath=".\AI_Utilities.cpp">
+			</File>
 			<File
-				RelativePath=".\AI_qNode.cpp"/>
+				RelativePath=".\AI_qNode.cpp">
+			</File>
 			<File
-				RelativePath=".\AI_qRange.cpp"/>
+				RelativePath=".\AI_qRange.cpp">
+			</File>
 			<File
-				RelativePath=".\ai_a_star.cpp"/>
+				RelativePath=".\ai_a_star.cpp">
+			</File>
 			<File
-				RelativePath=".\ai_a_star.h"/>
+				RelativePath=".\ai_a_star.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Spawn Process"
@@ -809,7 +968,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Spawn.h"/>
+				RelativePath=".\Spawn.h">
+			</File>
 			<File
 				RelativePath=".\Spawn_Event.cpp">
 				<FileConfiguration
@@ -832,30 +992,39 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\Spawn_Event.h"/>
+				RelativePath=".\Spawn_Event.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Physics"
 			Filter="">
 			<File
-				RelativePath="PHDynamicData.cpp"/>
+				RelativePath="PHDynamicData.cpp">
+			</File>
 			<File
-				RelativePath="PHDynamicData.h"/>
+				RelativePath="PHDynamicData.h">
+			</File>
 			<File
-				RelativePath="Physics.cpp"/>
+				RelativePath="Physics.cpp">
+			</File>
 			<File
-				RelativePath="Physics.h"/>
+				RelativePath="Physics.h">
+			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
 				<File
-					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp"/>
+					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+				</File>
 				<File
-					RelativePath="tri-colliderKNoOPC\dTriCollideK.h"/>
+					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
+				</File>
 				<File
-					RelativePath="tri-colliderKNoOPC\dTriList.cpp"/>
+					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+				</File>
 				<File
-					RelativePath="tri-colliderKNoOPC\dTriList.h"/>
+					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
 				<File
 					RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
 					<FileConfiguration
@@ -878,19 +1047,48 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h"/>
+					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
+				</File>
 				<File
-					RelativePath="tri-colliderKNoOPC\dxTriList.h"/>
+					RelativePath="tri-colliderKNoOPC\dxTriList.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="dRay"
+				Filter="">
+				<File
+					RelativePath="dRay\dRay.cpp">
+				</File>
+				<File
+					RelativePath="dRay\dRay_Box.cpp">
+				</File>
+				<File
+					RelativePath="dRay\dRay_CCylinder.cpp">
+				</File>
+				<File
+					RelativePath="dRay\dRay_Plane.cpp">
+				</File>
+				<File
+					RelativePath="dRay\dRay_Sphere.cpp">
+				</File>
+				<File
+					RelativePath="dRay\dxRay.h">
+				</File>
 			</Filter>
 		</Filter>
 		<File
-			RelativePath=".\Shedule.txt"/>
+			RelativePath=".\Shedule.txt">
+		</File>
 		<File
-			RelativePath="X:\game\engine.log"/>
+			RelativePath="X:\game\engine.log">
+		</File>
 		<File
-			RelativePath=".\notes.txt"/>
+			RelativePath=".\notes.txt">
+		</File>
 		<File
-			RelativePath=".\todo.txt"/>
+			RelativePath=".\todo.txt">
+		</File>
 	</Files>
-	<Globals/>
+	<Globals>
+	</Globals>
 </VisualStudioProject>
