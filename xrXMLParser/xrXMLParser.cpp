@@ -62,6 +62,7 @@ bool CUIXml::Init(LPCSTR path, LPCSTR  xml_filename)
 	CMemoryWriter W;
 	W.w(F->pointer(),F->length());
 	W.w_stringZ("");
+	FS.r_close(F);
 
 	m_Doc.Parse((LPCSTR )W.pointer());
 	if (m_Doc.Error()) R_ASSERT3(false, m_Doc.Value(), m_Doc.ErrorDesc());
