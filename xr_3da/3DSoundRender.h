@@ -14,10 +14,22 @@ class ENGINE_API CInifile;
 class ENGINE_API C3DSoundRender
 {
 private:
+	struct SListener 
+	{
+		DWORD			dwSize;
+		Fvector			vPosition;
+		Fvector			vVelocity;
+		Fvector			vOrientFront;
+		Fvector			vOrientTop;
+		float			fDistanceFactor;
+		float			fRolloffFactor;
+		float			fDopplerFactor;
+	};
+private:
 	LPDIRECTSOUND3DLISTENER		pListener;
-	F3dlistener					Listener;
 	LPKSPROPERTYSET				pExtensions;
-
+	SListener					Listener;
+	
 	vector <vector<C3DSound*> >	sounds;
 	vector <int>				refcounts;
 

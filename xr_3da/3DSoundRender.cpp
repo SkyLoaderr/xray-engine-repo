@@ -19,8 +19,19 @@ C3DSoundRender::C3DSoundRender()
 	pExtensions		= NULL;
 
     // Get listener interface.
+	R_ASSERT		(pSounds);
+	R_ASSERT		(pSounds->lpPrimaryBuf);
     pSounds->lpPrimaryBuf->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
-	Listener.Init	( );
+
+	// Initialize listener data
+	Listener.dwSize				= sizeof(DS3DLISTENER);
+	Listener.vPosition.set		( 0.0f, 0.0f, 0.0f );
+	Listener.vVelocity.set		( 0.0f, 0.0f, 0.0f );
+	Listener.vOrientFront.set	( 0.0f, 0.0f, 1.0f );
+	Listener.vOrientTop.set		( 0.0f, 1.0f, 0.0f );
+	Listener.fDistanceFactor	= 1.0f;
+	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
+	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 }
 
 C3DSoundRender::~C3DSoundRender()

@@ -736,6 +736,9 @@ SOURCE=.\Stats.h
 # Begin Group "Sound"
 
 # PROP Default_Filter ""
+# Begin Group "2D"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\2DSound.cpp
@@ -752,6 +755,10 @@ SOURCE=.\2DSoundRender.cpp
 
 SOURCE=.\2DSoundRender.h
 # End Source File
+# End Group
+# Begin Group "3D"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\3DSound.cpp
@@ -768,6 +775,10 @@ SOURCE=.\3DSoundRender.cpp
 
 SOURCE=.\3DSoundRender.h
 # End Source File
+# End Group
+# Begin Group "2D streamed"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\MusicStream.cpp
@@ -776,6 +787,15 @@ SOURCE=.\MusicStream.cpp
 
 SOURCE=.\MusicStream.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\xr_streamsnd.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xr_streamsnd.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\xr_cda.cpp
@@ -795,14 +815,6 @@ SOURCE=.\xr_sndman.cpp
 # Begin Source File
 
 SOURCE=.\xr_sndman.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_streamsnd.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xr_streamsnd.h
 # End Source File
 # End Group
 # Begin Group "Input"
