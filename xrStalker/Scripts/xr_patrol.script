@@ -314,6 +314,8 @@ function add_to_binder(obj)
     obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
     obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
     
+    printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
+    
 	properties["complete"]           = xr_evaluators_id.sidor_patrol_base_property + 0
 
  	operators["single_patrol"]       = xr_actions_id.sidor_act_patrol + 0

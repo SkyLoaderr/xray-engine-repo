@@ -372,6 +372,7 @@ function  add_to_binder(obj)
 	local operators		= {}
 	local properties	= {}
 	
+    printf ("FOLLOWER_EVA_BASE = %d", xr_evaluators_id.sidor_follower_base)
     obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
     obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
     obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
@@ -391,7 +392,7 @@ function  add_to_binder(obj)
     manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
     manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
     manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
-    
+        
     local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
