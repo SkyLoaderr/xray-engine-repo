@@ -53,8 +53,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Command				(COMMAND_CLEAR);
         LALib.OnDestroy		();
     	PSLib.OnDestroy		();
-		Lib.OnDestroy		();
 		Tools.OnDestroy		();
+		Lib.OnDestroy		();
         UI.OnDestroy		();
 		Engine.Destroy		();
 		//----------------
