@@ -29,8 +29,12 @@ void	CBlender_Compile::SetMapping	()
 void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
 	RS.Invalidate			();
+	ctable.clear			();
 	passTextures.clear		();
+	passMatrices.clear		();
+	passConstants.clear		();
 	dwStage					= 0;
+
 
 	// Setup FF-units (Z-buffer, blender)
 	PassSET_ZB				(bZtest,bZwrite);

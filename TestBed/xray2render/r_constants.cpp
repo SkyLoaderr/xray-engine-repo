@@ -178,3 +178,10 @@ void R_constant_table::merge(R_constant_table* T)
 	// Sort
 	std::sort		(table.begin(),table.end(),p_sort);
 }
+
+void R_constant_table::clear	()
+{
+	for (u32 it=0; it<table.size(); it++)
+		g_constant_allocator.destroy(table[it]);
+	table.clear();
+}
