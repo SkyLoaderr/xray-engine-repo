@@ -1,23 +1,14 @@
-local a=0
-
 function main ()
 
-  wait  (3000)
+    local niva = get_level_object ("niva")
 
-  a = a + 1
-printf ("%d", a)
-  local actor = get_actor ()
+    niva:script (true, s_test.script_name ())
 
-  while true do
-            h = hit()
-            h.power      = 10
-            h.direction:set  (1,1,1)
-            h:bone      ("bip01_head")
-            h.draftsman    = actor
-            h.impulse    = 2000
-            h.type      = hit.strike
-            actor:hit    (h)
-            wait (1000)
-            end
 
+    action (niva, move (move.on + move.up + move.fwd, 0.1), object ("right_light", object.activate),
+            object ("left_light", object.activate), cond (cond.time_end, 8200))
+
+    while niva:action () do wait () end
+
+    niva:script (false, s_test.script_name ())
 end

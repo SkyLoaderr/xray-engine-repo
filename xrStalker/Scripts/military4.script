@@ -10,30 +10,38 @@ function main ()
 
     wait (5000)
 
-    action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 8200))
-    action (niva, move (move.right + move.on + move.fwd, 20.1), cond (cond.time_end, 800))
-    action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 12500))
+    action (niva, move (move.on + move.up + move.fwd, 20.1), object ("right_light", object.activate),
+            object ("left_light", object.activate), cond (cond.time_end, 8200))
+    action (niva, move (move.right + move.on + move.fwd, 20.1), cond (cond.time_end, 650))
+    action (niva, move (move.on + move.up + move.fwd, 20.1), cond (cond.time_end, 14500))
 
     while niva:action () do wait () end
 
     reset_action (niva, military4.script_name ())
+    reset_action (hero, military4.script_name ())
+
+    local pos = path:point (0)
 
     action (niva, move (move.off, 0), cond (cond.time_end, 2000))
-    action (niva, object ("phy_door_right", object.activate), cond (cond.time_end, 2000))
+    action (niva, object ("left_door", object.activate), cond (cond.time_end, 2000))
 
-    reset_action (hero, military4.script_name ())
-    niva:script (false, military4.script_name ())
-
-	local pos = path:point (0) 
     action (hero, anim ("mashina_1"), cond (cond.anim_end))
-    action (hero, move (pos, 1.5), anim ("mashina_2"), cond (cond.anim_end))
+    action (hero, move (pos, 0.8),
+            anim ("mashina_2"), cond (cond.anim_end))
     action (hero, anim ("mashina_3"), cond (cond.anim_end))
     action (hero, anim ("mashina_4"), cond (cond.anim_end))
+
+--    while hero:action () do wait () end
+--    printf ("Before wait")
+--    wait (2000)
+
+--    reset_action (hero, military4.script_name ())
     action (hero, anim ("mashina_5"), cond (cond.anim_end))
 
-    while niva:action () or hero:action () do wait () end
+    while hero:action () do wait () end
 
 
+    niva:script (false, military4.script_name ())
     hero:script (false, military4.script_name ())
 
 end
