@@ -276,10 +276,7 @@ public:
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
 				sscanf(args ,"%d",&id1);
-//				if (id1 >= tpGame->m_tpALife->ID)
-//					Msg("Invalid object ID! (%d)",id1);
-//				else
-					tpGame->m_tpALife->vfObjectInfo(id1);
+				tpGame->m_tpALife->vfObjectInfo(id1);
 			}
 			else
 				Log("!ALife simulator is not loaded!");
