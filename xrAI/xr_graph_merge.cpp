@@ -43,10 +43,14 @@ public:
 u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 {
 	LPCSTR				N,V;
-	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
+	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+		R_ASSERT3		(Ini->section_exist(N),"Fill section properly!",N);
+		R_ASSERT3		(Ini->line_exist(N,"caption"),"Fill section properly!",N);
+		R_ASSERT3		(Ini->line_exist(N,"id"),"Fill section properly!",N);
 		if (!xr_strcmp(Ini->r_string_wb(N,"caption"),caLevelName))
-			return(Ini->r_u32(N,"id"));
-	return(u32(-1));
+			return		(Ini->r_u32(N,"id"));
+	}
+	return				(u32(-1));
 }
 
 DEFINE_MAP		(u32,	::CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
@@ -370,7 +374,9 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 	LPCSTR				N,V;
 	string256			caFileName, file_name;
 	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-		R_ASSERT		(Ini->section_exist(N));
+		R_ASSERT3		(Ini->section_exist(N),"Fill section properly!",N);
+		R_ASSERT3		(Ini->line_exist(N,"name"),"Fill section properly!",N);
+		R_ASSERT3		(Ini->line_exist(N,"id"),"Fill section properly!",N);
 		// ai
 		strconcat		(caFileName,Ini->r_string(N,"name"),"\\level.ai");
 		FS.update_path	(file_name,"$game_levels$",caFileName);
