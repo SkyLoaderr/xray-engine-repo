@@ -282,7 +282,7 @@
 				<give_info>job_box_finished</give_info>
 			</phrase>
 			<phrase id="1">
-				<text>Отлично, ты хорошо поработал. Вот твои деньги.</text>
+				<text>Отлично, ты хорошо поработал. Вот твои деньги. /n          [получено 500 рублей]</text>
 				<action>trader_job.give_box_to_trader</action>
 			</phrase>
 		</phrase_list>
@@ -298,7 +298,7 @@
 				<give_info>job_box02_finished</give_info>
 			</phrase>
 			<phrase id="1">
-				<text>Отлично, ты хорошо поработал. Вот твои деньги.</text>
+				<text>Отлично, ты хорошо поработал. Вот твои деньги./n          [получено 1500 рублей]</text>
 				<action>trader_job.give_box02_to_trader</action>
 			</phrase>
 		</phrase_list>
