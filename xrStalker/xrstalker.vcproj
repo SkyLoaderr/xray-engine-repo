@@ -1088,6 +1088,9 @@
 					RelativePath=".\Scripts\ui_main_new_tab.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ui_numpad.script">
+				</File>
+				<File
 					RelativePath=".\scripts\ui_registrator.script">
 				</File>
 				<File
