@@ -728,6 +728,25 @@ IC	bool build_circle_trajectory(
 )
 {
 	TIMER_START(BuildCircleTrajectory)
+	const float			min_dist = .1f;
+	if (position.radius*_abs(position.angle) <= min_dist) {
+		if (!path) {
+			if (vertex_id)
+				*vertex_id	= position.vertex_id;
+			TIMER_STOP(BuildCircleTrajectory)
+			return			(true);
+		}
+		if (vertex_id) {
+			*vertex_id		= position.vertex_id;
+			if (path) {
+				Fvector			t = level_graph.v3d(position.position);
+				t.y				= level_graph.vertex_plane_y(level_graph.vertex(position.vertex_id),position.position.x,position.position.y);
+				path->push_back	(t);
+			}
+		}
+		TIMER_STOP(BuildCircleTrajectory)
+		return			(true);
+	}
 	Fvector2			direction;
 	Fvector				curr_pos;
 	u32					curr_vertex_id;
@@ -744,9 +763,10 @@ IC	bool build_circle_trajectory(
 		direction.set	(1.f,0.f);
 
 	float				sina, cosa, sinb, cosb, sini, cosi, temp;
-	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
+	u32					m = _min(iFloor(_abs(angle)/position.angular_velocity*10.f + 1.5f),iFloor(position.radius*_abs(angle)/min_dist + 1.5f));
 	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
 	int					k = vertex_id ? 0 : -1;
+
 	if (path)
 		path->reserve	(size + n + k);
 
@@ -995,37 +1015,37 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-//	start.angular_velocity	= PI_MUL_2;
-//	start.linear_velocity	= 0.f;//0.0001f;
+	start.angular_velocity	= PI_MUL_2;
+	start.linear_velocity	= 0.11f*PI_MUL_2;//0.01f;//0.0001f;
+	start_set.push_back		(start);
+
+//	start.angular_velocity	= PI;
+//	start.linear_velocity	= 2.15f;
 //	start_set.push_back		(start);
 
-	start.angular_velocity	= PI;
-	start.linear_velocity	= 2.15f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 4.5f;
+//	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_DIV_4;
+//	start.linear_velocity	= 6.f;
+//	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 6.f;
-	start_set.push_back		(start);
+	dest.angular_velocity	= PI_MUL_2;
+	dest.linear_velocity	= 0.01f;
+	dest_set.push_back		(dest);
 
-//	dest.angular_velocity	= PI_MUL_2;
-//	dest.linear_velocity	= 0.f;
+//	dest.angular_velocity	= PI;
+//	dest.linear_velocity	= 2.15f;
 //	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI;
-	dest.linear_velocity	= 2.15f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 4.5f;
+//	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
-	dest_set.push_back		(dest);
-
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 6.f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_DIV_4;
+//	dest.linear_velocity	= 6.f;
+//	dest_set.push_back		(dest);
 }
 
 void CLevelGraph::build_detail_path(
