@@ -88,6 +88,7 @@ public:
 		u32 l_team = 2;
 		sscanf(args, "%d", &l_team);
 		CObject *l_pObj = Level().CurrentEntity();
+		/*
 		CActor *l_pActor = dynamic_cast<CActor*>(l_pObj);
 		if(l_pActor) {
 			if(l_pActor->g_Team() == s32(l_team)) return;
@@ -110,6 +111,7 @@ public:
 				//P.w_u32			(0);
 				//l_pActor->u_EventSend		(P);
 		}
+		*/
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
 			NET_Packet		P;

@@ -9,6 +9,7 @@ protected:
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
 	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
+	void							KillPlayer				(u32 id_who);
 public:
 	virtual		void				Create					(LPSTR &options);
 
@@ -25,6 +26,7 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
+	virtual		void				OnPlayerChangeTeam		(u32 id_who, s16 team);
 
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
