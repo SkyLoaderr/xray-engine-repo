@@ -1118,6 +1118,12 @@
 					Name="LabX18"
 					Filter="">
 					<File
+						RelativePath=".\config\scripts\dar\dar_burer_checker.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_burer_checker2.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\dar\dar_burer_master.ltx">
 					</File>
 					<File
@@ -1134,6 +1140,9 @@
 					</File>
 					<File
 						RelativePath=".\config\scripts\dar\dar_monster_holder.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\dar\dar_sound_zone.ltx">
 					</File>
 				</Filter>
 			</Filter>
