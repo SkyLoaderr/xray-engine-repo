@@ -114,7 +114,7 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 bool CSE_ALifeMonsterAbstract::bfActive()
 {
 	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
-	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (fHealth > 0));
+	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (!l_tpALifeAbstractGroup && (fHealth > 0)));
 }
 
 CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
@@ -126,6 +126,6 @@ CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()
 		if (!l_tpALifeAbstractGroup->m_wCount)
 			return				(0);
 		else
-			return					(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
+			return				(m_tpALife->tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[0]));
 	}
 }
