@@ -58,6 +58,7 @@ extern ECORE_API float			ps_r2_GI_clip;				// EPS
 extern ECORE_API float			ps_r2_GI_refl;				// .9f
 extern ECORE_API float			ps_r2_ls_depth_scale;		// 1.0f
 extern ECORE_API float			ps_r2_ls_depth_bias;		// -0.0001f
+extern ECORE_API float			ps_r2_ls_squality;			// 1.0f
 
 enum
 {
