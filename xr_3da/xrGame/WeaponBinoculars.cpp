@@ -113,7 +113,6 @@ void CWeaponBinoculars::OnStateSwitch	(DWORD S)
 void CWeaponBinoculars::UpdateCL	()
 {
 	inherited::UpdateCL	();
-	VERIFY				(H_Parent());
 
 	float dt			= Device.fTimeDelta;
 	
