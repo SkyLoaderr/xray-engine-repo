@@ -8,9 +8,9 @@ LPVOID					fiber_thread	= 0;
 
 CSheduled::CSheduled	()	
 {
-	shedule_Min			= 20;
-	shedule_Max			= 1000;
-	shedule_Locked		= FALSE;
+	shedule.t_min		= 20;
+	shedule.t_max		= 1000;
+	shedule.b_locked	= FALSE;
 	shedule_Register	();
 }
 
@@ -54,19 +54,19 @@ void CSheduler::Register		(CSheduled* O, BOOL RT)
 	{
 		// Fill item structure
 		Item						TNext;
-		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule.t_min;
 		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
 		TNext.Object				= O;
-		O->shedule_RT				= TRUE;
+		O->shedule.b_RT				= TRUE;
 
 		ItemsRT.push_back			(TNext);
 	} else {
 		// Fill item structure
 		Item						TNext;
-		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule_Min;
+		TNext.dwTimeForExecute		= Device.dwTimeGlobal+O->shedule.t_min;
 		TNext.dwTimeOfLastExecute	= Device.dwTimeGlobal;
 		TNext.Object				= O;
-		O->shedule_RT				= FALSE;
+		O->shedule.b_RT				= FALSE;
 
 		// Insert into priority Queue
 		Push						(TNext);
@@ -75,7 +75,7 @@ void CSheduler::Register		(CSheduled* O, BOOL RT)
 
 void CSheduler::Unregister		(CSheduled* O)
 {
-	if (O->shedule_RT)
+	if (O->shedule.b_RT)
 	{
 		for (u32 i=0; i<ItemsRT.size(); i++)
 		{
@@ -97,7 +97,7 @@ void CSheduler::Unregister		(CSheduled* O)
 
 void CSheduler::EnsureOrder	(CSheduled* Before, CSheduled* After)
 {
-	VERIFY(Before->shedule_RT && After->shedule_RT);
+	VERIFY(Before->shedule.b_RT && After->shedule.b_RT);
 
 	for (u32 i=0; i<ItemsRT.size(); i++)
 	{
@@ -133,13 +133,13 @@ void CSheduler::ProcessStep			()
 	{
 		// Update
 		Item	T					= Top	();
-		u32	Elapsed				= dwTime-T.dwTimeOfLastExecute;
+		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
 
 		// Calc next update interval
-		u32	dwMin				= T.Object->shedule_Min;
-		u32	dwMax				= T.Object->shedule_Max;
-		float	scale				= T.Object->shedule_Scale(); 
-		u32	dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
+		u32		dwMin				= T.Object->shedule.t_min;
+		u32		dwMax				= T.Object->shedule.t_max;
+		float	scale				= T.Object->shedule_Scale	(); 
+		u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,dwMin,dwMax);
 
 		// Fill item structure
@@ -154,9 +154,9 @@ void CSheduler::ProcessStep			()
 
 		// Real update call
 		if (T.Object->Ready())		{
-			T.Object->shedule_Locked	= TRUE;
+			T.Object->shedule.b_locked	= TRUE;
 			T.Object->Update			(Elapsed);
-			T.Object->shedule_Locked	= FALSE;
+			T.Object->shedule.b_locked	= FALSE;
 		}
 
 		Slice						();

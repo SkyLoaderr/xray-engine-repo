@@ -176,7 +176,7 @@ CApplication::~CApplication()
 	Engine.Event.Handler_Detach	(eQuit,this);
 }
 
-void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
+void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 	if (E==eQuit)	{
 		PostQuitMessage	(0);

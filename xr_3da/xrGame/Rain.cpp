@@ -75,7 +75,7 @@ void	CEffect_Rain::OnDeviceDestroy	()
 	p_destroy				();
 }
 
-void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
+void	CEffect_Rain::OnEvent	(EVENT E, u64 P1, u64 P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
 		state					= stStarting;

@@ -29,7 +29,7 @@ public:
 	virtual		void		Render_Direct			(){;}
 	
 	virtual		void		OnFrame					(){;}
-	virtual		void		OnEvent					(EVENT E, u32 P1, u32 P2){;}
+	virtual		void		OnEvent					(EVENT E, u64 P1, u64 P2){;}
 
 	virtual		void		Hit						(int idx){;}
 

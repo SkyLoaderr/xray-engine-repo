@@ -174,7 +174,7 @@ public:
 	virtual void						OnH_A_Independent	();
 	
 	// Device dependance
-	virtual void						OnEvent				(EVENT E, u32 P1, u32 P2) {};
+	virtual void						OnEvent				(EVENT E, u64 P1, u64 P2) {};
 
 	virtual void						ForceTransform		(const Fmatrix& m)	{};
 };

@@ -28,8 +28,8 @@ CPGObject::CPGObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	if (S) m_pCurSector->tempAdd(this);
 
 	// sheduled
-	shedule_Min			= 20;
-	shedule_Max			= 50;
+	shedule.t_min			= 20;
+	shedule.t_max			= 50;
 }
 
 //----------------------------------------------------

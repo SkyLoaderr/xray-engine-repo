@@ -155,7 +155,7 @@ void CHUDManager::Render_Direct	()
 }
 
 //--------------------------------------------------------------------
-void CHUDManager::OnEvent(EVENT E, u32 P1, u32 P2)
+void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }
 //--------------------------------------------------------------------

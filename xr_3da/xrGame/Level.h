@@ -116,7 +116,7 @@ public:
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count );
 
 	// Events
-	virtual void				OnEvent					( EVENT E, u32 P1, u32 P2 );
+	virtual void				OnEvent					( EVENT E, u64 P1, u64 P2 );
 	virtual void				OnFrame					( void );
 	virtual void				OnRender				( );
 
