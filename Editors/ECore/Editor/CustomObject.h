@@ -33,6 +33,7 @@ struct SExportStreams{
 	SExportStreamItem	sound_static;
 	SExportStreamItem	sound_env_geom;
 	SExportStreamItem	pe_static;
+	SExportStreamItem	envmodif;
 };
 
 class CCustomObject {
