@@ -24,7 +24,8 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
-		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), m_default_bone_part, TRUE, vfPlayEndCallBack, this);
+		info.blend							= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), m_default_bone_part, TRUE, vfPlayEndCallBack, this);
+		CStepManager::on_animation_start	(info.name, info.blend);
 	}
 
 	// установить скорость текущей анимации

@@ -119,8 +119,6 @@ bool CMotionManager::PrepareAnimation()
 	m_cur_anim.speed.current	= -1.f;
 	m_cur_anim.speed.target		= -1.f;
 
-	pMonster->on_animation_start(m_cur_anim.name);
-
 	return true;
 }
 

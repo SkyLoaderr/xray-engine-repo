@@ -3,7 +3,6 @@
 #include "../../../CharacterPhysicsSupport.h"
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
-#include "../../../hudmanager.h"
 #include "../../../../skeletonanimated.h"
 #include "../critical_action_info.h"
 #include "../ai_monster_jump.h"
@@ -193,8 +192,6 @@ BOOL CBaseMonster::net_Spawn (LPVOID DC)
 	detail_path_manager().add_velocity(eVelocityParameterRunAttack,		CDetailPathManager::STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real));
 	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
-
-	//HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
 
 	return(TRUE);
 }

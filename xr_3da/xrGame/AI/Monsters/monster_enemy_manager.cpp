@@ -177,5 +177,11 @@ bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAl
 	return			(false);
 }
 
+bool CMonsterEnemyManager::is_enemy(const CEntityAlive *obj) 
+{
+	return ((monster->g_Team() != obj->g_Team()) && ((monster->tfGetRelationType(obj) == ALife::eRelationTypeEnemy) || (monster->tfGetRelationType(obj) == ALife::eRelationTypeWorstEnemy)) && obj->g_Alive());
+}
+
+
 
 

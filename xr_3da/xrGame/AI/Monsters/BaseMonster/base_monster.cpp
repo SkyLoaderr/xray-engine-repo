@@ -20,6 +20,7 @@
 #include "../../../../skeletoncustom.h"
 #include "../critical_action_info.h"
 #include "../../../detail_path_manager.h"
+#include "../../../hudmanager.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -68,7 +69,10 @@ CBaseMonster::CBaseMonster()
 	Morale.init_external			(this);
 
 	m_jumping						= 0;
+
+	m_first_update_initialized		= false;
 }
+
 
 CBaseMonster::~CBaseMonster()
 {
@@ -126,6 +130,11 @@ void CBaseMonster::shedule_Update(u32 dt)
 	Morale.update_schedule		(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
+
+	if (!m_first_update_initialized) {
+		on_first_update();
+		m_first_update_initialized	= true;
+	}
 }
 
 
@@ -205,16 +214,6 @@ float CBaseMonster::get_custom_pitch_speed(float def_speed)
 	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
 
 	return cur_speed;
-}
-
-float CBaseMonster::get_current_animation_time()
-{
-	return MotionMan.GetCurAnimTime();
-}
-
-void CBaseMonster::on_animation_start(shared_str anim)
-{
-	CStepManager::on_animation_start(anim);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -392,4 +391,11 @@ void CBaseMonster::on_kill_enemy(const CEntity *obj)
 	
 	// удалить всю информацию о хитах
 	HitMemory.remove_hit_info	(entity);
+}
+
+
+void CBaseMonster::on_first_update()
+{
+	// HUD уже загружен, подгрузить дополнительные данные
+	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect ("monster", "controller\\controller_blood_01");
 }

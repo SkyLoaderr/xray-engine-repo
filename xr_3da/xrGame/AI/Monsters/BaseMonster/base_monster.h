@@ -198,8 +198,6 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	virtual void			event_on_step					() {}
-	virtual float			get_current_animation_time		();
-	virtual	void			on_animation_start				(shared_str anim);
 	// ---------------------------------------------------------------------------------
 	
 	// Other
@@ -314,11 +312,17 @@ IC	void					wake_up				(){m_bSleep = false;}
 
 	CJumping				*m_jumping;
 
+	virtual void			on_first_update		();
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	virtual void	OnRender();
 #endif
+
+
+private:
+	bool					m_first_update_initialized;
+
 
 };
 

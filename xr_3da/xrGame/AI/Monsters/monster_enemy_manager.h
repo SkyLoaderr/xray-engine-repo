@@ -49,4 +49,6 @@ public:
 
 	void				add_enemy				(const CEntityAlive *);
 	bool				is_faced				(const CEntityAlive *object0, const CEntityAlive *object1);
+	
+	bool				is_enemy				(const CEntityAlive *obj);
 };

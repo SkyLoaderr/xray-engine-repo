@@ -30,7 +30,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
-	if (m_self_entity_alive && ((m_self_entity_alive->ID() == entity_alive->ID()) || (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy)))
+	if (m_self_entity_alive && ((m_self_entity_alive->ID() == entity_alive->ID()) || ((m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy) && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeWorstEnemy) )))
 		return				(false);
 
 	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->level_vertex_id()))

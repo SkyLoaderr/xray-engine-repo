@@ -48,9 +48,10 @@ void CStepManager::reinit()
 	reload_foot_bones	();
 	
 	m_time_anim_started	= 0;
+	m_blend				= 0;
 }
 
-void CStepManager::on_animation_start(shared_str anim)
+void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 {
 	m_time_anim_started = Level().timeServer(); 
 
@@ -65,27 +66,31 @@ void CStepManager::on_animation_start(shared_str anim)
 	m_step_info.params		= it->second;
 	m_step_info.cur_cycle	= 1;					// all cycles are 1-based
 
-	for (u32 i=0; i<MAX_LEGS_COUNT; i++) {
+	for (u32 i=0; i<m_legs_count; i++) {
 		m_step_info.activity[i].handled	= false;
 		m_step_info.activity[i].cycle	= m_step_info.cur_cycle;
 	}
+
+	m_blend					= blend;
+	VERIFY					(m_blend);
 }
 
 
 void CStepManager::update()
 {
-	if (m_step_info.disable) return;
+	if (m_step_info.disable)	return;
 
-	SGameMtlPair* mtl_pair	= m_object->CMaterialManager::get_current_pair();
-	if (!mtl_pair) return;
+	SGameMtlPair* mtl_pair		= m_object->CMaterialManager::get_current_pair();
+	if (!mtl_pair)				return;
 
 	// получить параметры шага
 	SStepParam	&step		= m_step_info.params;
-	u32		cur_time	= Level().timeServer();
+	u32		cur_time		= Level().timeServer();
 
 	// время одного цикла анимации
-	float cycle_anim_time	= get_current_animation_time() / step.cycles;
+	float cycle_anim_time	= get_blend_time() / step.cycles;
 
+	// пройти по всем ногам и проверить время
 	for (u32 i=0; i<m_legs_count; i++) {
 
 		// если событие уже обработано для этой ноги, то skip
@@ -93,7 +98,6 @@ void CStepManager::update()
 
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
 		u32 offset_time = m_time_anim_started + u32(1000 * (cycle_anim_time * (m_step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
-
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 
 			// Играть звук
@@ -104,7 +108,10 @@ void CStepManager::update()
 
 				SELECT_RANDOM(m_step_info.activity[i].sound, mtl_pair, StepSounds);
 				m_step_info.activity[i].sound.play_at_pos	(m_object, sound_pos);
-
+				
+				const CSound_params *sound_params = m_step_info.activity[i].sound.get_params();
+				VERIFY(sound_params);
+				m_step_info.activity[i].sound.set_volume(sound_params->volume * m_step_info.params.step[i].power);
 			}
 
 			// Играть партиклы
@@ -147,6 +154,19 @@ void CStepManager::update()
 			sound_pos.y += 0.5;
 			m_step_info.activity[i].sound.set_position	(sound_pos);
 			//m_step_info.activity[i].sound.set_volume	(m_step_info.params.step[i].power);
+		}
+	}
+
+	// если анимация циклическая...
+	u32 time_anim_end = m_time_anim_started + u32(get_blend_time() * 1000);		// время завершения работы анимации
+	if (!m_blend->stop_at_end && (time_anim_end < cur_time)) {
+		
+		m_time_anim_started		= time_anim_end;
+		m_step_info.cur_cycle	= 1;
+
+		for (u32 i=0; i<m_legs_count; i++) {
+			m_step_info.activity[i].handled	= false;
+			m_step_info.activity[i].cycle	= m_step_info.cur_cycle;
 		}
 	}
 }
@@ -205,3 +225,7 @@ void CStepManager::reload_foot_bones()
 	VERIFY(count == m_legs_count);
 }
 
+float CStepManager::get_blend_time()
+{
+	return 	(m_blend->timeTotal / m_blend->speed);
+}

@@ -40,7 +40,7 @@ void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCa
 	m_actual				= true;
 
 	if (m_step_dependence)
-		object->CStepManager::on_animation_start(animation()->name());
+		object->CStepManager::on_animation_start(animation()->name(),blend());
 
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))

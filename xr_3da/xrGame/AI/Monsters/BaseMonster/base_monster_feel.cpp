@@ -18,29 +18,31 @@
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
-	if (!g_Alive()) return;
+	if (!g_Alive())		return;
 
-	// ignore sounds from team
-	CEntityAlive* E = smart_cast<CEntityAlive*> (who);
-	if (E && (E->g_Team() == g_Team()) || (this == who)) return;
+	// ignore my sounds
+	if (this == who)	return;
 	
+	// ignore sounds if not from enemies
+	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
+	if (entity && (!EnemyMan.is_enemy(entity))) return;
+
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 
 	// ignore distant sounds
-	if (this->Position().distance_to(Position) > get_sd()->m_max_hear_dist) return;
+	if (this->Position().distance_to(Position) > get_sd()->m_max_hear_dist)	return;
+	
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) power = 1.f;
 
-	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = 1.f;
-
+	// execute callback
 	CScriptMonster	*script_monster = smart_cast<CScriptMonster*>(this);
 	if (script_monster)
 		script_monster->sound_callback(who,eType,Position,power);
 	
+	// register in sound memory
 	if (power >= get_sd()->m_fSoundThreshold) {
-		if (this != who) {
-			SoundMemory.HearSound(who,eType,Position,power,m_current_update);
-		}
+		SoundMemory.HearSound(who,eType,Position,power,m_current_update);
  	}
 }
 
@@ -65,7 +67,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		pEntityNC->Hit(fDamage,hit_dir,this, smart_cast<CKinematics*>(pEntityNC->Visual())->LL_GetBoneRoot(),position_in_bone_space,impulse);
 
 		if (smart_cast<CActor *>(pEntityNC)) {
-			//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
+			HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
 			SetAttackEffector									();
 		}
 
@@ -80,16 +82,17 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 {
-	if (CLSID_ENTITY!=O->CLS_ID) return FALSE;
+	if (!g_Alive())					return FALSE;
+	if (CLSID_ENTITY != O->CLS_ID)	return FALSE;
 	
 	if ((O->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI) return FALSE;
 	
 	// если спит, то ничего не видит
 	if (m_bSleep) return FALSE;
-
-	CEntityAlive* E = smart_cast<CEntityAlive*> (O);
-	if (!E) return FALSE;
-	if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
+	
+	// если не враг, не видит
+	CEntityAlive* entity = smart_cast<CEntityAlive*> (O);
+	if (entity && !EnemyMan.is_enemy(entity)) return FALSE;
 
 	return TRUE;
 }
