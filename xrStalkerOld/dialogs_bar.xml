@@ -3062,6 +3062,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_bar_barmen_jobs_room_decoding_done">
+	<precondition>bar_dialogs.have_decoding_documents</precondition>
         <has_info>bar_barman_stay_room</has_info>
         <has_info>bar_decoding_start</has_info>
         <dont_has_info>bar_decoding_done</dont_has_info>
@@ -3090,7 +3091,8 @@
     </dialog>
     <dialog id="bar_bar_barmen_jobs_room_darklabdoc_done">
         <has_info>bar_darklab_document_start</has_info>
-        <dont_has_info>bar_darklab_document_done</dont_has_info>
+        <precondition>bar_dialogs.have_darklab_documents</precondition>
+	<dont_has_info>bar_darklab_document_done</dont_has_info>
         <phrase_list>
             <phrase id="11">
                 <text>bar_bar_barmen_jobs_room_darklabdoc_done_11</text>
