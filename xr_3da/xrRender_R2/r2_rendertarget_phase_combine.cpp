@@ -51,7 +51,6 @@ void	CRenderTarget::phase_combine	()
 	BOOL	bDistort	= RImplementation.b_distortion;
 	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
-	phase_luminance		( );
 
 	// Combine everything + perform AA
 	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
@@ -99,7 +98,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil		(FALSE);
 
 	// ********************* Debug
-	if (0)		{
+	if (1)		{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
 		float	_h					= float(Device.dwHeight)/2;

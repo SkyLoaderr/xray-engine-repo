@@ -53,7 +53,7 @@ void CRenderTarget::phase_bloom	()
 	u32		Offset;
 
 	// Targets
-	u_setrt								(rt_Bloom_1,NULL,NULL,NULL);		// No need for ZBuffer at all
+	u_setrt									( rt_Bloom_1,NULL,NULL,NULL );		// No need for ZBuffer at all
 	
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
@@ -103,6 +103,9 @@ void CRenderTarget::phase_bloom	()
 		RCache.set_Geometry			(g_bloom_build		);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
+
+	// Capture luminance values
+	phase_luminance					( );
 
 	if (ps_r2_ls_flags.test(R2FLAG_FASTBLOOM))
 	{
