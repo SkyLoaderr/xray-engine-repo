@@ -237,7 +237,7 @@ public:
 	
 									CALifeItem(LPCSTR caSection) : CALifeDynamicObject(caSection)
 	{
-		m_fMass						= pSettings->r_float(caSection, "ph_mass");
+		m_fMass						= pSettings->r_float(caSection, "inv_weight");
 		m_dwCost					= pSettings->r_u32(caSection, "cost");
 		if (pSettings->line_exist	(caSection, "health_value"))
 			m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
