@@ -172,7 +172,7 @@ void CMonsterMovement::find_target()
 		return;
 	}
 	
-	VERIFY	(m_target_found.node == u32(-1));
+	//VERIFY	(m_target_found.node == u32(-1));
 	
 	// II. Выбрана позиция, ищем ноду
 	
