@@ -121,7 +121,7 @@ TElTreeItem* CFolderHelper::FindItem(TElTree* tv, AnsiString full_name, TElTreeI
         TElTreeItem* node = 0;
         TElTreeItem* last_node = 0;
         do{
-            _GetItem(full_name.c_str(),itm++,fld,'\\');
+            _GetItem(full_name.c_str(),itm++,fld,'\\',"",false);
             last_node = node;
             node = FindItemInFolder(tv,node,fld);
         }while (node&&(itm<cnt));
@@ -151,7 +151,7 @@ TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, AnsiString full_name, TElTre
 	TElTreeItem* node = 0;
     TElTreeItem* last_node = 0;
     do{
-    	_GetItem(full_name.c_str(),itm++,fld,'\\');
+    	_GetItem(full_name.c_str(),itm++,fld,'\\',"",false);
         last_node = node;
         node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
     }while (node&&(itm<cnt));
@@ -176,7 +176,7 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTre
     TElTreeItem* last_node = 0;
     if (cnt){
         do{
-            _GetItem(full_name.c_str(),itm++,fld,'\\');
+            _GetItem(full_name.c_str(),itm++,fld,'\\',"",false);
             last_node = node;
             node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
         }while (node&&(itm<cnt));
@@ -188,7 +188,7 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTre
     }else{
     	// find object item if needed
         AnsiString obj;
-        _GetItem(full_name.c_str(),cnt,obj,'\\');
+        _GetItem(full_name.c_str(),cnt,obj,'\\',"",false);
         last_node = node;
         node = FindItemInFolder(TYPE_OBJECT,tv,node,obj);
         if (!node){
@@ -213,7 +213,7 @@ TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name, bool
 	int cnt = _GetItemCount(full_name.c_str(),'\\');
 	node = last_node;
     for (int itm=idx; itm<cnt; itm++){
-    	_GetItem(full_name.c_str(),itm,fld,'\\');
+    	_GetItem(full_name.c_str(),itm,fld,'\\',"",false);
         node	= LL_CreateFolder(tv,node,fld,force_icon);
     }
 	return node;
@@ -234,12 +234,12 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool
     if (!fld_node){
 	    fld_node = last_node;
     	for (int itm=idx; itm<fld_cnt; itm++){
-    		_GetItem(full_name.c_str(),itm,fld,'\\');
+    		_GetItem(full_name.c_str(),itm,fld,'\\',"",false);
 	        fld_node	= LL_CreateFolder(tv,fld_node,fld,force_icon);
     	}
     }
 	AnsiString obj;
-	_GetItem(full_name.c_str(),fld_cnt,obj,'\\');
+	_GetItem(full_name.c_str(),fld_cnt,obj,'\\',"",false);
     if (!allow_duplicate&&FindItemInFolder(TYPE_OBJECT,tv,fld_node,obj)) return 0;
 	return LL_CreateObject(tv,fld_node,obj);
 }

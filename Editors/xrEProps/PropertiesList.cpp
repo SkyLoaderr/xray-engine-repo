@@ -271,7 +271,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
         CS->OwnerProps 		= true;
         CS->CellType 		= sftUndef;
         CS->Style 			= ElhsOwnerDraw;
-        prop->Item()->ColumnText->Add(prop->GetText().c_str());
+        prop->Item()->ColumnText->Add(prop->GetDrawText().c_str());
     }
     if (m_Flags.is(plFullExpand)||miAutoExpand->Checked) tvProperties->FullExpand();
     if (m_Flags.is(plFullSort)){
@@ -374,7 +374,7 @@ void __fastcall TProperties::OnFolderFocused(TElTreeItem* item)
     if (lfsi.Length()){
 		AnsiString 	lfsi_new,new_part;
         int cnt		= _GetItemCount(s.c_str(),'\\');
-        if (cnt)	_GetItem(s.c_str(),cnt-1,new_part,'\\');
+        if (cnt)	_GetItem(s.c_str(),cnt-1,new_part,'\\',"",false);
         _ReplaceItem(lfsi.c_str(),0,new_part.c_str(),lfsi_new,'\\');
 	    SelectItem	(lfsi_new);
 	}
@@ -407,7 +407,7 @@ void TProperties::OutBOOL(BOOL val, TCanvas* Surface, TRect& R, bool bEnable)
     }
 }
 
-void TProperties::OutText(shared_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g, bool bArrow)
+void TProperties::OutText(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g, bool bArrow)
 {
 	if (bEnable&&(g||bArrow)){
 	    R.Right	-=	g->Width+2;
@@ -416,7 +416,7 @@ void TProperties::OutText(shared_str text, TCanvas* Surface, TRect& R, bool bEna
         R.Right-= 1;
         R.Left += 1;
     }
-    DrawText	(Surface->Handle, text.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
+    DrawText	(Surface->Handle, text, -1, &R, DT_LEFT | DT_SINGLELINE);
 	if (bEnable){
         if (g){
             R.Left 	= 	R.Right;
@@ -449,7 +449,6 @@ void DrawButton(TRect R, TCanvas* Surface, LPCSTR caption, bool bDown, bool bSel
 	Surface->Brush->Style 	= bsSolid;
 	Surface->Brush->Color 	= bSelected?TColor(0x00858585):TColor(0x00808080);
 	Surface->FillRect		(R);
-//.	Surface->Font->Color 	= clBlack;
     DrawText				(Surface->Handle, caption, -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 }
 void DrawButtons(TRect R, TCanvas* Surface, RStringVec& lst, int down_btn, bool bSelected)
@@ -466,9 +465,9 @@ void DrawButtons(TRect R, TCanvas* Surface, RStringVec& lst, int down_btn, bool 
     }
 }
 
-int DrawText(HDC hDC, shared_str text, LPRECT R, UINT uFormat)
+int DrawText(HDC hDC, LPCSTR text, LPRECT R, UINT uFormat)
 {
-	return DrawText(hDC,text.c_str(),-1,R,uFormat);
+	return DrawText(hDC,text,-1,R,uFormat);
 }
 
 void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
@@ -510,7 +509,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             Surface->Brush->Style	= S;
             R.Right-= 1;
             R.Left += 1;
-            DrawText	(Surface->Handle, prop->GetText(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            DrawText	(Surface->Handle, prop->GetDrawText().c_str(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         }else{
             TRect src_rect 	= R;
             prop->draw_rect.set(R.left,R.top,R.Right,R.Bottom);
@@ -523,7 +522,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->Font->Color 	= clSilver;
                 R.Right-= 1;
                 R.Left += 1;
-                DrawText	(Surface->Handle, prop->GetText(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                DrawText	(Surface->Handle, prop->GetDrawText().c_str(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             break;
             case PROP_CANVAS:{
                 Surface->Font->Color 	= clSilver;
@@ -532,7 +531,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 CanvasValue* val = dynamic_cast<CanvasValue*>(prop->GetFrontValue()); R_ASSERT(val);
                 if (!val->OnDrawCanvasEvent.empty())
 	                val->OnDrawCanvasEvent(val,Surface,Irect().set(R.left,R.top,R.right,R.bottom));
-                DrawText	(Surface->Handle, prop->GetText(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                DrawText	(Surface->Handle, prop->GetDrawText().c_str(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }break;
             case PROP_FCOLOR:{
                 Surface->Brush->Style = bsSolid;
@@ -574,7 +573,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG:{
                 FlagValueCustom*  V	= dynamic_cast<FlagValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
-                if (V->HaveCaption())	OutText	(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                if (V->HaveCaption())	OutText	(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 else	        		OutBOOL	(V->m_Flags.is(FlagValueCustom::flInvertedDraw)?!V->GetValueEx():V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
@@ -583,33 +582,33 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_CHOOSE:{
 				ChooseValue* V		= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); R_ASSERT(V);
-                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked&&prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
                     R.top			+=	tvProperties->LineHeight-4;
                     R.left 			= 	R.Right-(R.bottom-R.top);
                     if (!V->OnDrawThumbnailEvent.empty())
-                    	V->OnDrawThumbnailEvent(*prop->GetText(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
+                    	V->OnDrawThumbnailEvent(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
             }break;
             case PROP_TEXTURE2:{
-                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
                     R.top			+=	tvProperties->LineHeight-4;
                     R.left 			= 	R.Right-(R.bottom-R.top);
                     SChooseEvents* E= TfrmChoseItem::GetEvents(smTexture); 
                     if (E&&!E->on_thm.empty())
-                    	E->on_thm(*prop->GetText(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
+                    	E->on_thm(prop->GetDrawText().c_str(),Surface->Handle,Irect().set(R.left,R.top,R.right,R.bottom));
                 }
             }break;
             case PROP_WAVE:
-                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TOKEN:
             case PROP_RTOKEN:
             case PROP_SH_TOKEN:
             case PROP_RLIST:
             case PROP_CLIST:
-                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TIME:{
                 FloatValue* V = dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -617,15 +616,16 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_CTEXT:
             case PROP_RTEXT:
+            case PROP_STEXT:
                 if (edText->Tag!=(int)Item)
-                    OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                    OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_VECTOR:
-                OutText(prop->GetText(),Surface,R,prop->Enabled());
+                OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled());
             break;
             case PROP_NUMERIC:
                 if (seNumber->Tag!=(int)Item)
-                    OutText(prop->GetText(),Surface,R,prop->Enabled());
+                    OutText(prop->GetDrawText().c_str(),Surface,R,prop->Enabled());
             break;
             default:
                 Debug.fatal("Unknown prop type");
@@ -939,7 +939,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (bRes){
                 Modified			();
             }
-			item->ColumnText->Strings[0]= prop->GetText().c_str();
+			item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
         }break;
 		case PROP_RTOKEN:{
 			RTokenValueCustom* V	= dynamic_cast<RTokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -952,7 +952,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (bRes){
                 Modified			();
             }
-			item->ColumnText->Strings[0]= prop->GetText().c_str();
+			item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
         }break;
 		case PROP_SH_TOKEN:{
 			TokenValueSH* V			= dynamic_cast<TokenValueSH*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -961,7 +961,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
                 if (prop->ApplyValue<TokenValueSH,u32>(new_val)){
                     Modified			();
                 }
-			item->ColumnText->Strings[0]= prop->GetText().c_str();
+			item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
         }break;
 		case PROP_RLIST:{
 			RListValue* V			= dynamic_cast<RListValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -970,21 +970,21 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
                 if (prop->ApplyValue<RListValue,shared_str>(new_val)){
                     Modified			();
                 }
-			item->ColumnText->Strings[0]= prop->GetText().c_str();
+			item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
         }break;
 		case PROP_CLIST:{
 			CListValue* V			= dynamic_cast<CListValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            shared_str new_val			= V->items[mi->Tag];
-            if (prop->AfterEdit<CListValue,shared_str>(new_val))
+            std::string new_val		= V->items[mi->Tag];
+            if (prop->AfterEdit<CListValue,std::string>(new_val))
                 if (prop->ApplyValue<CListValue,LPCSTR>(new_val.c_str())){
                     Modified			();
                 }
-			item->ColumnText->Strings[0]= prop->GetText().c_str();
+			item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
         }break;
 		case PROP_TEXTURE2:{
 			CTextValue* T			= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(T);
-			shared_str edit_val	 	= T->GetValue();
-		    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
+			std::string edit_val	 = T->GetValue();
+		    prop->BeforeEdit<CTextValue,std::string>(edit_val);
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
@@ -994,10 +994,10 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             }
             if (bRes){
                 edit_val		 	= new_val;
-                if (prop->AfterEdit<CTextValue,shared_str>(edit_val)){
+                if (prop->AfterEdit<CTextValue,std::string>(edit_val)){
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))  
                         Modified		();
-                    item->ColumnText->Strings[0]= prop->GetText().c_str();
+                    item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
                 }
             }
         }break;
@@ -1019,7 +1019,7 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
             if (prop->ApplyValue<WaveValue,WaveForm>(edit_val)){
                 Modified		();
             }
-        item->ColumnText->Strings[0]= prop->GetText().c_str();
+        item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
     }
 }
 //---------------------------------------------------------------------------
@@ -1113,7 +1113,7 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
             if (prop->ApplyValue<ChooseValue,shared_str>(edit_val)){
                 Modified   	();
             }
-        item->ColumnText->Strings[0]= prop->GetText().c_str();
+        item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
     }
 }
 //---------------------------------------------------------------------------
@@ -1204,7 +1204,7 @@ void TProperties::ApplyLWNumber()
         if (bRes){
             Modified			();
         }
-		item->ColumnText->Strings[0] = prop->GetText().c_str();
+		item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
     }
 }
 
@@ -1249,8 +1249,8 @@ void TProperties::PrepareLWText(TElTreeItem* item)
     switch (prop->type){
     case PROP_CTEXT:{
 		CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        shared_str edit_val	= V->GetValue();
-	    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
+        std::string edit_val= V->GetValue();
+	    prop->BeforeEdit<CTextValue,std::string>(edit_val);
         edText->EditMask	= "";
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= V->lim;
@@ -1295,12 +1295,12 @@ void TProperties::ApplyLWText()
 	    switch (prop->type){
         case PROP_CTEXT:{
 			CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			shared_str new_val		= AnsiString(edText->Text).c_str();
-            if (prop->AfterEdit<CTextValue,shared_str>(new_val))
+			std::string new_val		= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<CTextValue,std::string>(new_val))
                 if (prop->ApplyValue<CTextValue,LPCSTR>(new_val.c_str())){
                     Modified();
                 }
-            item->ColumnText->Strings[0] = prop->GetText().c_str();
+            item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
         }break;
         case PROP_RTEXT:{
 			RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -1309,7 +1309,7 @@ void TProperties::ApplyLWText()
                 if (prop->ApplyValue<RTextValue,shared_str>(new_val)){
                     Modified();
                 }
-            item->ColumnText->Strings[0] = prop->GetText().c_str();
+            item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
         }break;
         case PROP_TIME:{
 			FloatValue* V		= dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -1369,15 +1369,15 @@ void TProperties::ExecTextEditor(PropItem* prop)
 	    switch (prop->type){
     	case PROP_CTEXT:{
             CTextValue* V	= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            shared_str edit_val= V->GetValue();
-		    prop->BeforeEdit<CTextValue,shared_str>(edit_val);
+            std::string edit_val= V->GetValue();
+		    prop->BeforeEdit<CTextValue,std::string>(edit_val);
             AnsiString tmp	= edit_val.c_str();
             if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
             	edit_val	= tmp.c_str();
-			    if (prop->AfterEdit<CTextValue,shared_str>(edit_val))
+			    if (prop->AfterEdit<CTextValue,std::string>(edit_val))
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))
                         Modified();
-                prop->Item()->ColumnText->Strings[0] = prop->GetText().c_str();
+                prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
             }
         }break;
     	case PROP_RTEXT:{
@@ -1390,7 +1390,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
 			    if (prop->AfterEdit<RTextValue,shared_str>(edit_val))
                     if (prop->ApplyValue<RTextValue,shared_str>(edit_val))
                         Modified();
-                prop->Item()->ColumnText->Strings[0] = prop->GetText().c_str();
+                prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
             }
         }break;
     	}
@@ -1548,7 +1548,7 @@ void __fastcall TProperties::tvPropertiesShowLineHint(TObject *Sender,
     PropItem* prop 				= (PropItem*)Item->Tag;
     if (prop){
 //    	HintWindow->Brush->Color= clGray;
-		Text					= prop->GetText().c_str();
+		Text					= prop->GetDrawText().c_str();
     }
 }
 //---------------------------------------------------------------------------

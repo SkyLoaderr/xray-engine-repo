@@ -174,10 +174,10 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 	if (bMultiSel){
 	    string256 T;
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection.LowerCase().c_str(),i,T),0,0);//,bIgnoreExt);
+            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection.LowerCase().c_str(),i,T,',',"",false),0,0);//,bIgnoreExt);
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
-				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection.c_str(),i,T),(void*)TYPE_OBJECT);
+				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection.c_str(),i,T,',',"",false),(void*)TYPE_OBJECT);
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
                 fld_node=itm_node->Parent;

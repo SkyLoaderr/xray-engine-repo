@@ -16,17 +16,18 @@ public:
 // predefind event routines
     virtual void 				__stdcall 	FvectorRDOnAfterEdit(PropValue* sender, Fvector& edit_val, bool& accepted);
     virtual void 				__stdcall 	FvectorRDOnBeforeEdit(PropValue* sender,Fvector& edit_val);
-    virtual void 				__stdcall 	FvectorRDOnDraw		(PropValue* sender, shared_str& draw_val);
-    virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender,  float& edit_val, bool& accepted);
-    virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender,  float& edit_val);
-    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender,  shared_str& draw_val);
+    virtual void 				__stdcall 	FvectorRDOnDraw		(PropValue* sender, std::string& draw_val);
+    virtual void 				__stdcall 	floatRDOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
+    virtual void 				__stdcall 	floatRDOnBeforeEdit	(PropValue* sender, float& edit_val);
+    virtual void 				__stdcall 	floatRDOnDraw		(PropValue* sender, std::string& draw_val);
 // R-name edit
     virtual void				__stdcall  	NameBeforeEdit		(PropValue* sender, shared_str& edit_val);
     virtual void 				__stdcall  	NameAfterEdit		(PropValue* sender, shared_str& edit_val, bool& accepted);
-    virtual void 				__stdcall  	NameDraw			(PropValue* sender, shared_str& draw_val);
+    virtual void 				__stdcall  	NameDraw			(PropValue* sender, std::string& draw_val);
 // C-name edit
-    virtual void 				__stdcall  	CNameAfterEdit		(PropValue* sender, shared_str& edit_val, bool& accepted);
-    virtual void 				__stdcall  	CNameDraw			(PropValue* sender, shared_str& draw_val);
+    virtual void				__stdcall  	CNameBeforeEdit		(PropValue* sender, std::string& edit_val);
+    virtual void 				__stdcall  	CNameAfterEdit		(PropValue* sender, std::string& edit_val, bool& accepted);
+    virtual void 				__stdcall  	CNameDraw			(PropValue* sender, std::string& draw_val);
 public:
     virtual CaptionValue*  		__stdcall	CreateCaption	    (PropItemVec& items, shared_str key, shared_str val);
     virtual CanvasValue*		__stdcall	CreateCanvas	    (PropItemVec& items, shared_str key, shared_str val, int height);
@@ -55,6 +56,7 @@ public:
     virtual ColorValue*			__stdcall	CreateFColor	    (PropItemVec& items, shared_str key, Fcolor* val);
     virtual VectorValue*		__stdcall	CreateVColor	    (PropItemVec& items, shared_str key, Fvector* val);
 	virtual RTextValue* 		__stdcall	CreateRText		    (PropItemVec& items, shared_str key, shared_str* val);
+	virtual STextValue* 		__stdcall	CreateSText		    (PropItemVec& items, shared_str key, std::string* val);
 	virtual WaveValue* 			__stdcall	CreateWave		    (PropItemVec& items, shared_str key, WaveForm* val);
     virtual FloatValue* 		__stdcall	CreateTime		    (PropItemVec& items, shared_str key, float* val, float mn=0.f, float mx=86400.f);
 
@@ -65,7 +67,7 @@ public:
 
 	// obsolette    
     virtual CTextValue* 		__stdcall	CreateCText			(PropItemVec& items, shared_str key, LPSTR val, u32 sz);
-	virtual CListValue* 	 	__stdcall	CreateCList		    (PropItemVec& items, shared_str key, LPSTR val, u32 sz, shared_str* lst, u32 cnt);
+	virtual CListValue* 	 	__stdcall	CreateCList		    (PropItemVec& items, shared_str key, LPSTR val, u32 sz, std::string* lst, u32 cnt);
     virtual CTextValue* 		__stdcall	CreateCName		    (PropItemVec& items, shared_str key, LPSTR val, u32 sz, ListItem* owner);
 	virtual TokenValueSH*   	__stdcall	CreateTokenSH	    (PropItemVec& items, shared_str key, u32* val, const TokenValueSH::Item* lst, u32 cnt);
     virtual CTextValue* 		__stdcall	CreateTexture		(PropItemVec& items, shared_str key, LPSTR val, u32 sz);
