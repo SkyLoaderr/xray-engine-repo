@@ -1820,6 +1820,66 @@
 									RelativePath=".\ai\corpse_cover.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Abilities"
+								Filter="">
+								<Filter
+									Name="Telekinesis"
+									Filter="">
+									<File
+										RelativePath=".\ai\telekinesis.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\telekinesis.h">
+									</File>
+									<File
+										RelativePath=".\ai\telekinetic_object.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\telekinetic_object.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Invisibility"
+									Filter="">
+									<File
+										RelativePath=".\ai\ai_monster_invisibility.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\ai_monster_invisibility.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Jump"
+									Filter="">
+									<File
+										RelativePath=".\ai\ai_monster_jump.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\ai_monster_jump.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Scan"
+									Filter="">
+									<File
+										RelativePath=".\ai\scanning_ability.h">
+									</File>
+									<File
+										RelativePath=".\ai\scanning_ability_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Controlled"
+									Filter="">
+									<File
+										RelativePath=".\ai\controlled_entity.h">
+									</File>
+									<File
+										RelativePath=".\ai\controlled_entity_inline.h">
+									</File>
+								</Filter>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2127,6 +2187,12 @@
 								RelativePath=".\ai\biting\ai_biting_state_attack.h">
 							</File>
 							<File
+								RelativePath=".\ai\biting\ai_biting_state_controlled.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\biting\ai_biting_state_controlled.h">
+							</File>
+							<File
 								RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
 							</File>
 							<File
@@ -2330,56 +2396,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Abilities"
-						Filter="">
-						<Filter
-							Name="Telekinesis"
-							Filter="">
-							<File
-								RelativePath=".\ai\telekinesis.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\telekinesis.h">
-							</File>
-							<File
-								RelativePath=".\ai\telekinetic_object.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\telekinetic_object.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Invisibility"
-							Filter="">
-							<File
-								RelativePath=".\ai\ai_monster_invisibility.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\ai_monster_invisibility.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Jump"
-							Filter="">
-							<File
-								RelativePath=".\ai\ai_monster_jump.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\ai_monster_jump.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Scan"
-							Filter="">
-							<File
-								RelativePath=".\ai\scanning_ability.h">
-							</File>
-							<File
-								RelativePath=".\ai\scanning_ability_inline.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="Burer"
 						Filter="">
 						<File
@@ -2437,6 +2453,34 @@
 						<File
 							RelativePath=".\ai\Monsters\Controller\controller.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_state_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Controller\controller_state_manager.h">
+						</File>
+						<Filter
+							Name="State Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_control_hit_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_expose.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_expose_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Chimera"
@@ -2483,28 +2527,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_rest_walk_graph_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="Attack"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack_melee.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack_melee_inline.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack_run.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\States\monster_state_attack_run_inline.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2631,6 +2653,28 @@
 									RelativePath=".\ai\Monsters\States\state_custom_action_inline.h">
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_melee.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_melee_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_run.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_run_inline.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

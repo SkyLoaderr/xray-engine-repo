@@ -25,7 +25,6 @@
 
 #include "ai_biting_state.h"
 
-
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
 class CAnimTriple;
@@ -153,10 +152,10 @@ public:
 	// ---------------------------------------------------------------------------------
 	// Process FSM
 	virtual bool			UpdateStateManager				() {return false;}
-
+	virtual void            StateSelector					() {}  
 	// ---------------------------------------------------------------------------------
 
-	virtual void			ProcessTurn						() {}
+	virtual void			ProcessTurn						();
 	virtual void			AA_CheckHit						();
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
@@ -249,7 +248,6 @@ public:
 
 	// -----------------------------------------------------------------------
 	// FSM
-	virtual void            StateSelector					() = 0;  // should be pure 
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	IState				*stateRest;

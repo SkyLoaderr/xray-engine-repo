@@ -14,6 +14,10 @@ public:
 
 	virtual void		initialize				();
 	virtual	void		execute					();
+
+	virtual bool 		check_completion		();
+	virtual bool 		check_start_conditions	();
+
 };
 
 #include "monster_state_attack_run_inline.h"

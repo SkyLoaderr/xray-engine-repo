@@ -619,3 +619,29 @@ void CAI_Biting::ChangeTeam(int team, int squad, int group)
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 
+
+void CAI_Biting::ProcessTurn()
+{
+	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
+	if (delta_yaw < deg(1)) return;
+
+	EMotionAnim anim = MotionMan.GetCurAnim();
+
+	bool turn_left = true;
+	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
+
+	switch (anim) {
+		case eAnimStandIdle: 
+			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			return;
+		default:
+			if (delta_yaw > deg(30)) {
+				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			}
+			return;
+	}
+
+}
+
+
+

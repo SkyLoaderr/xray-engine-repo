@@ -29,18 +29,6 @@ enum ELeaderState {
 	LS_DEFENCE
 };
 
-struct SEntityState {
-	CEntity *pEnemy;		// текущий враг. обновляется со стороны NPC
-	Fvector target;			// результирующая позиция обновляется со стороны Squad (или вектор целевого направления)
-	u32		last_updated;	// время последнего обновления pEnemy со стороны NPC
-	u32		last_repos;		// время последнего обновления target со стороны Squad (если 0 - то не брать target)
-};
-
-struct SMemberEnemy {
-	CEntity *member;
-	CEntity *enemy;
-};
-
 // Задача
 struct GTask {
 	struct {
@@ -51,42 +39,24 @@ struct GTask {
 	} state;
 
 	struct {
-		Fvector				pos;
-		CObject				*entity;
+		Fvector				position;
 		u32					node;
+		CObject				*entity;
 	} target;
+};
+
+struct SMemberEnemy {
+	CEntity *member;
+	CEntity *enemy;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // MonsterSquad Class
 class CMonsterSquad {
-	DEFINE_VECTOR		(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
-	DEFINE_MAP			(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
-
-	DEFINE_VECTOR		(SMemberEnemy, MEMBER_ENEMY_VEC, MEMBER_ENEMY_VEC_IT);
 
 	CEntity				*leader;
 	ELeaderState		leader_state;
 	
-	
-// decentralized members	
-	ENTITY_STATE_MAP	states;
-
-
-// internal members
-	MEMBER_ENEMY_VEC	vect_copy;
-	MEMBER_ENEMY_VEC	general_enemy;		
-	ENTITY_VEC			members;
-
-	struct _elem {
-		CEntity *pE;
-		Fvector p_from;
-		float	yaw;
-	};
-
-	xr_vector<_elem>	lines;
-
-
 public:
 				CMonsterSquad() : leader(0) {}
 				~CMonsterSquad() {}
@@ -104,21 +74,44 @@ public:
 	CEntity		*GetLeader			() {return leader;}
 	void		SetLeaderState		(ELeaderState ls) {leader_state = ls;}
 
-	// -----------------------------------------------------------------
+	///////////////////////////////////////////////////////////////////////////////////////
+	//  Атака группой монстров
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	// Децентрализованное управление
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
 	void		UpdateDecentralized	();
 	Fvector		GetTargetPoint		(CEntity *pE, u32 &time);
-
-private:
 	
+	struct SEntityState {
+		CEntity *pEnemy;		// текущий враг. обновляется со стороны NPC
+		Fvector target;			// результирующая позиция обновляется со стороны Squad (или вектор целевого направления)
+		u32		last_updated;	// время последнего обновления pEnemy со стороны NPC
+		u32		last_repos;		// время последнего обновления target со стороны Squad (если 0 - то не брать target)
+	};
 
-private:
-	// decentralized
+	DEFINE_VECTOR		(CEntity*, ENTITY_VEC,	ENTITY_VEC_IT);
+	DEFINE_MAP			(CEntity*, SEntityState, ENTITY_STATE_MAP, ENTITY_STATE_MAP_IT);
+	DEFINE_VECTOR		(SMemberEnemy, MEMBER_ENEMY_VEC, MEMBER_ENEMY_VEC_IT);
+
+	ENTITY_STATE_MAP	states;
+	MEMBER_ENEMY_VEC	vect_copy;
+	MEMBER_ENEMY_VEC	general_enemy;		
+	ENTITY_VEC			members;
+
+	struct _elem {
+		CEntity *pE;
+		Fvector p_from;
+		float	yaw;
+	};
+
+	xr_vector<_elem>	lines;
+
+
 	void		SetupMemeberPositions_Deviation (MEMBER_ENEMY_VEC &members, CEntity *enemy);
 	void		SetupMemeberPositions_TargetDir (MEMBER_ENEMY_VEC &members, CEntity *enemy);
 
+
+	//////////////////////////////////////////////////////////////////////////////////////
 };
 
 

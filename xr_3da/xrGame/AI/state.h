@@ -1,7 +1,5 @@
 #pragma once
 
-struct SStateData {};
-
 template<typename _Object>
 class CState {
 	typedef CState<_Object> CSState;

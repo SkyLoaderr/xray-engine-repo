@@ -14,6 +14,8 @@
 
 void CAI_Biting::Think()
 {
+	bool BRITPOP_RULEZ= false;
+	R_ASSERT2(BRITPOP_RULEZ,"Listen to RAIOHEAD");
 	if (!g_Alive())		return;
 	if (getDestroy())	return;
 
@@ -64,18 +66,6 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
-	//static u32 next_bridge	= 10000;
-
-	//if (next_bridge < m_current_update) {
-	//	next_bridge = m_current_update + 5000;
-	//	
-	//	if (g_Team() == 0)
-	//		ChangeTeam(1,1,0);
-	//	else 
-	//		ChangeTeam(0,0,0);
-	//} 
-
-	//Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

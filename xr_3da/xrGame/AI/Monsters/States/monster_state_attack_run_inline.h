@@ -50,3 +50,25 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->MotionMan.accel_set_braking			(false);
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackRunAbstract::check_completion()
+{
+	float m_fDistMin, m_fDistMax, dist;
+	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+
+	if (dist < m_fDistMin)	return true;
+
+	return false;
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackRunAbstract::check_start_conditions()
+{
+	float m_fDistMin, m_fDistMax, dist;
+	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	
+	if (dist > m_fDistMax)	return true;
+
+	return false;
+}
+

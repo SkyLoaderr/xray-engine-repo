@@ -11,6 +11,9 @@ public:
 	virtual				~CStateMonsterAttackMelee	();
 
 	virtual	void		execute						();
+
+	virtual bool 		check_completion			();
+	virtual bool 		check_start_conditions		();
 };
 
 #include "monster_state_attack_melee_inline.h"

@@ -15,11 +15,14 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateSearchEnemy	= xr_new<CBitingSearchEnemy>(this);
+	stateControlled		= xr_new<CBitingControlled>	(this);
 
 	CurrentState		= stateRest;
 	CurrentState->Reset();
 	
 	m_fEyeShiftYaw		= PI_DIV_6;
+
+	controlled::init_external(this);
 }
 
 CAI_Flesh::~CAI_Flesh()
@@ -119,6 +122,12 @@ void CAI_Flesh::Load(LPCSTR section)
 
 void CAI_Flesh::StateSelector()
 {
+	if (is_under_control()) {
+		SetState(stateControlled);
+		return;
+	}
+	
+	
 	TTime last_hit_time = 0;
 	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
 

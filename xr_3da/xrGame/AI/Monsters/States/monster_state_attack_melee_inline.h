@@ -25,3 +25,24 @@ void CStateMonsterAttackMeleeAbstract::execute()
 	object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 }
 
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackMeleeAbstract::check_start_conditions()
+{
+	float m_fDistMin, m_fDistMax, dist;
+	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	
+	if (dist < m_fDistMax)	return true;
+	return false;
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateMonsterAttackMeleeAbstract::check_completion()
+{
+	float m_fDistMin, m_fDistMax, dist;
+	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+
+	if (dist > m_fDistMax)	return true;
+	return false;
+}
+
+

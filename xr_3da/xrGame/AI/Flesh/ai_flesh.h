@@ -1,9 +1,13 @@
 #pragma once
 #include "../biting/ai_biting.h"
+#include "../controlled_entity.h"
 
-class CAI_Flesh : public CAI_Biting {
+class CAI_Flesh : public CAI_Biting,
+				  public CControlledEntity<CAI_Flesh> {
 
-	typedef		CAI_Biting	inherited;
+	typedef		CAI_Biting						inherited;
+	typedef		CControlledEntity<CAI_Flesh>	controlled;
+
 public:
 							CAI_Flesh		();
 	virtual					~CAI_Flesh		();	
@@ -26,12 +30,11 @@ public:
 #endif
 
 	CBitingSearchEnemy	*stateSearchEnemy;
+	IState				*stateControlled;
 
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
 									Fvector SphereCenter, float SphereRadius);
 };
-
-
 
 

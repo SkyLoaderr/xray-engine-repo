@@ -1,48 +1,26 @@
 #include "stdafx.h"
 #include "controller.h"
 #include "../../ai_monster_utils.h"
+#include "controller_state_manager.h"
+#include "../../controlled_entity.h"
 
 CController::CController()
 {
-	stateRest			= xr_new<CBitingRest>(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
-	stateNull			= xr_new<CBitingNull>		();
-
-	CurrentState		= stateRest;
-
-	Init();
+	StateMan = xr_new<CStateManagerController>(this);
 }
 
 CController::~CController()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
-	xr_delete(statePanic);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateNull);
-}
-
-
-void CController::Init()
-{
-	inherited::Init();
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
+	xr_delete(StateMan);
 }
 
 void CController::Load(LPCSTR section)
 {
 	inherited::Load	(section);
+
+	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
+	m_controlled_objects.resize		(m_max_controlled_number);
+
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
@@ -81,48 +59,36 @@ void CController::Load(LPCSTR section)
 	MotionMan.finish_load_shared();
 }
 
-
-void CController::StateSelector()
-{	
-	IState *state = 0;
-
-	if (EnemyMan.get_enemy()) {
-		switch (EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = statePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = stateAttack; break;
-		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			state = stateExploreNDE;		
-		if (hear_interesting_sound)			state = stateExploreNDE;	
-	} else									state = stateRest; 
-
-	SetState(state);
+bool CController::UpdateStateManager()
+{
+	UpdateControlled	();
+	StateMan->execute	();
+	return true;
 }
 
-void CController::ProcessTurn()
+
+void CController::UpdateControlled()
 {
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) {
-		//m_body.current.yaw = m_body.target.yaw;
-		return;
-	}
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+	// если есть враг, проверить может ли быть враг взят под контроль
+	if (EnemyMan.get_enemy()) {
+		CControlledEntityBase *entity = dynamic_cast<CControlledEntityBase *>(const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
+		if (entity) {
+			if (!entity->is_under_control() && (m_controlled_objects.size() < m_max_controlled_number)) {
+				entity->set_under_control	(this);
+				entity->set_task_follow		(this);
 			}
-			return;
+		}
 	}
+
+	// удалить мертвые объекты
+	for (u32 i=m_controlled_objects.size()-1; i>=0;i--) {
+		if (!m_controlled_objects[i]->g_Alive()) {
+			m_controlled_objects[i] = m_controlled_objects.back();
+			m_controlled_objects.pop_back();
+		}
+	}
+
+	// обновить цели подконтрольных монстров
+	// [...]
 }
 

@@ -20,6 +20,8 @@ class CAI_Biting;
 #include "ai_biting_state_panic.h"
 #include "ai_biting_state_misc.h"
 #include "ai_biting_run_away.h"
+#include "ai_biting_state_controlled.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
