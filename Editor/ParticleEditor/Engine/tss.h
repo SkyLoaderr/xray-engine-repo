@@ -37,6 +37,11 @@ public:
 			break;
 		}
 	}
+	IC void SetColor3	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2, DWORD A3)
+	{
+		SetColor		(container,S,A1,OP,A2);
+		Set				(container,S,D3DTSS_COLORARG0,A3);
+	}
 	IC void SetAlpha	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2)
 	{
 		Set(container,S,D3DTSS_ALPHAOP,	OP);
@@ -55,6 +60,11 @@ public:
 			Set(container,S,D3DTSS_ALPHAARG2,	A2);
 			break;
 		}
+	}
+	IC void SetAlpha3	(SimulatorStates& container, DWORD S, DWORD A1, DWORD OP, DWORD A2, DWORD A3)
+	{
+		SetAlpha		(container,S,A1,OP,A2);
+		Set				(container,S,D3DTSS_ALPHAARG0,A3);
 	}
 };
 
@@ -84,8 +94,10 @@ public:
 						CSimulator	()							{ Invalidate(); }
 	IC void				Invalidate	()							{ TSS.Invalidate(); RS.Invalidate(); container.clear(); }
 	IC void				SetTSS		(DWORD S, DWORD N, DWORD V) { TSS.Set(container,S,N,V);	}
-	IC void				SetColor	(DWORD S, DWORD a, DWORD b, DWORD c) {TSS.SetColor(container,S,a,b,c);}
-	IC void				SetAlpha	(DWORD S, DWORD a, DWORD b, DWORD c) {TSS.SetAlpha(container,S,a,b,c);}
+	IC void				SetColor	(DWORD S, DWORD a, DWORD b, DWORD c)			{TSS.SetColor(container,S,a,b,c);}
+	IC void				SetColor3	(DWORD S, DWORD a, DWORD b, DWORD c, DWORD d)	{TSS.SetColor3(container,S,a,b,c,d);}
+	IC void				SetAlpha	(DWORD S, DWORD a, DWORD b, DWORD c)			{TSS.SetAlpha(container,S,a,b,c);}
+	IC void				SetAlpha3	(DWORD S, DWORD a, DWORD b, DWORD c, DWORD d)	{TSS.SetAlpha3(container,S,a,b,c,d);}
 	IC void				SetRS		(DWORD N, DWORD V)			{ RS.Set(container,N,V);	}
 	IC SimulatorStates&	GetContainer()							{ return container; }
 };

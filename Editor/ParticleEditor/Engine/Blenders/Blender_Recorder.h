@@ -50,6 +50,7 @@ public:
 	void				StageSET_Address	(DWORD adr);
 	void				StageSET_XForm		(DWORD tf, DWORD tc);
 	void				StageSET_Color		(DWORD a1, DWORD op, DWORD a2);
+	void				StageSET_Color3		(DWORD a1, DWORD op, DWORD a2, DWORD a3);
 	void				StageSET_Alpha		(DWORD a1, DWORD op, DWORD a2);
 	void				StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_channel);
 	void				Stage_Texture		(LPCSTR name);

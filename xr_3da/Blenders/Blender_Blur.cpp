@@ -36,14 +36,26 @@ void CBlender_Blur::Compile	(CBlender_Compile& C)
 		C.PassSET_Blend_SET	();
 		C.PassSET_LightFog	(FALSE, FALSE);
 
-		// Stage0 - Base texture
+		// Stage0 - B0*F
 		C.StageBegin		();
-		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,	D3DTA_DIFFUSE);
-		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,	D3DTA_DIFFUSE);
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,	D3DTA_TFACTOR);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,D3DTA_TFACTOR);
 		C.Stage_Texture		("$base0");
 		C.Stage_Matrix		("$null",0);
 		C.Stage_Constant	("$null");
 		C.StageEnd			();
+
+		// Stage1 - B1*F + current
+		C.StageBegin		();
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,	D3DTA_DIFFUSE);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,	D3DTA_DIFFUSE);
+		C.Stage_Texture		("$base0");
+		C.Stage_Matrix		("$null",0);
+		C.Stage_Constant	("$null");
+		C.StageEnd			();
+		
+		// 
+		C.R().SetRS			(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(127,127,127,127));
 	}
 	C.PassEnd			();
 }

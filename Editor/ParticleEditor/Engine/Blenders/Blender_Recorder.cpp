@@ -101,6 +101,10 @@ void	CBlender_Compile::StageSET_Color	(DWORD a1, DWORD op, DWORD a2)
 {
 	RS.SetColor	(Stage(),a1,op,a2);
 }
+void	CBlender_Compile::StageSET_Color3	(DWORD a1, DWORD op, DWORD a2, DWORD a3)
+{
+	RS.SetColor3(Stage(),a1,op,a2,a3);
+}
 void	CBlender_Compile::StageSET_Alpha	(DWORD a1, DWORD op, DWORD a2)
 {
 	RS.SetAlpha	(Stage(),a1,op,a2);
