@@ -40,7 +40,8 @@ private:
 	Shader*					sh_Texture;
 	Shader*					sh_World;
 	Shader*					sh_Screen;
-	CVertexStream*			pStream;
+	CVertexStream*			vs_World;
+	CVertexStream*			vs_Screen;
 private:
 public:
 	void					set_object		(CObject*	O);

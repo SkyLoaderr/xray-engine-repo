@@ -12,6 +12,7 @@ const	float	S_distance	= 32;
 const	float	S_level		= .1f;
 const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
+const	int		S_polys		= 128;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -35,9 +36,10 @@ void CLightShadows::OnDeviceCreate	()
 	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
+	vs_World	= Device.Streams.Create		(FVF::F_L, S_polys*3);
 
 	// Debug
-	pStream		= Device.Streams.Create		(FVF::F_TL,4);
+	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
 }
 
@@ -185,11 +187,27 @@ void CLightShadows::calculate	()
 
 void CLightShadows::render	()
 {
-	/*
-	CFrustum	F;
-	F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
-	*/
+	// Gain access to collision-DB
+	CDB::MODEL*		DB	= pCreator->ObjectSpace.GetStaticModel();
+	
+	// Render shadows
+	for (int s_it=0; s_it<shadows.size(); s_it++)
+	{
+		shadows&	S	= shadows[s_it];
+		
+		// Frustum
+		CFrustum	F;
+		F.CreateFromMatrix	(S.M,FRUSTUM_P_ALL);
+
+		// Query
+		XRC.frustum_options	(0);
+		XRC.frustum_query	(DB,F);
+		
+		// Rendering
+		FVF::L
+	}
 	shadows.clear	();
+	
 	
 	// UV
 	Fvector2		p0,p1;
@@ -198,15 +216,15 @@ void CLightShadows::render	()
 	
 	// Fill vertex buffer
 	DWORD Offset, C=0xffffffff;
-	DWORD _w = S_rt_size, _h = S_rt_size;
-	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
+	DWORD _w = S_rt_size/2, _h = S_rt_size/2;
+	FVF::TL* pv = (FVF::TL*) vs_Screen->Lock(4,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	pStream->Unlock			(4);
+	vs_Screen->Unlock			(4);
 	
 	// Actual rendering
 	Device.Shader.set_Shader(sh_Screen);
-	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
+	Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
 }
