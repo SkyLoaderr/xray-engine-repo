@@ -47,7 +47,7 @@ void		CShaderManager::_DeleteState	(IDirect3DStateBlock9*& state)
 	}
 
 	// Fail
-	Msg("! ERROR: Failed to find compiled shader or stateblock");
+	Msg	("! ERROR: Failed to find compiled shader or stateblock");
 }
 
 SPass*							CShaderManager::_CreatePass			(SPass& P)
