@@ -34,9 +34,9 @@ void CRender::Render	()
 		mapSorted.clear							();
 	}
 
-	if (0 && ps_r2_ls_flags.test(R2FLAG_SUN) )
+	if (1 || ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
-		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
+		for (u32 dls_phase=0; dls_phase<1; dls_phase++)
 		{
 			//******* Direct lighting+shadow		::: Calculate
 			Device.Statistic.RenderCALC.Begin		();
@@ -69,13 +69,15 @@ void CRender::Render	()
 		}
 
 		// Multiply by lighting contribution
+		/*
 		Target.phase_accumulator				();
 		Target.accum_direct						();
+		*/
 	}
 
 	//$$$
-	Target.phase_accumulator			();
-	Target.accum_direct					();
+	//Target.phase_accumulator			();
+	//Target.accum_direct				();
 
 	// Point lighting (unshadowed)
 	if (0)
