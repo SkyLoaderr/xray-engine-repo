@@ -22,14 +22,14 @@ USEFORM("Editor\ImageEditor.cpp", frmImageLib);
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-		Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog();
-
         frmSplash = xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show();
         frmSplash->Repaint();
 
         frmSplash->SetStatus("Initializing");
+
+		Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
+        TfrmLog::CreateLog();
 
         Application->Initialize();
 

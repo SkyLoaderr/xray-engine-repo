@@ -24,7 +24,7 @@ CSHSoundEnvTools::~CSHSoundEnvTools()
 
 void CSHSoundEnvTools::OnActivate()
 {
-	m_PreviewSnd->Play(TRUE);
+	m_PreviewSnd->Play();
 	PropItemVec items;
     m_PreviewSnd->FillProp	("Sound",items);
     Ext.m_PreviewProps->AssignItems(items,true);
