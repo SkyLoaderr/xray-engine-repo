@@ -11,7 +11,7 @@ void	CBlender_combine::Compile(CBlender_Compile& C)
 	CBlender::Compile		(C);
 
 	C.r2_Pass				("null",			"r2_combine",	FALSE,	FALSE);
-	C.r2_Sampler			("s_color",			r2_RT_D_G);
-	C.r2_Sampler			("s_accumulator",	r2_RT_accum);
+	C.r2_Sampler			("s_color",			r2_RT_D_G,		D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
+	C.r2_Sampler			("s_accumulator",	r2_RT_accum,	D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
 	C.r2_End				();
 }
