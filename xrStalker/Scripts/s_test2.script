@@ -102,6 +102,8 @@ end
 
 function Defender:process ()
 	if self.npc == nil or self.npc:alive () == false or self.freed == true then return end
+	
+	printf ("Defender in process")
 	--если еще идем, то вперед
 	if self.state == on_move then
 	   if self.npc:action () then 
