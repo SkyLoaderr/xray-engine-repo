@@ -70,14 +70,14 @@ class CAI_Zombie : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<EZombieStates>	tStateStack;
-		EZombieStates			eCurrentState;
-		EZombieStates			m_ePreviousState;
+		stack<EZombieStates>tStateStack;
+		EZombieStates		eCurrentState;
+		EZombieStates		m_ePreviousState;
 		bool				bStopThinking;
 		bool				m_bStateChanged;
 
 		// ANIMATIONS
-		SZombieAnimations		m_tZombieAnimations;
+		SZombieAnimations	m_tZombieAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CBlend*				m_tpCurrentGlobalBlend;
 		
@@ -90,7 +90,7 @@ class CAI_Zombie : public CCustomMonster
 		u32					m_dwLastSoundRefresh;
 		float				m_fMinVoiceIinterval;
 		float				m_fMaxVoiceIinterval;
-		float				m_fVoiceRefreshZombiee;
+		float				m_fVoiceRefreshRate;
 		u32					m_dwLastVoiceTalk;
 		
 		// ATTACK
@@ -176,7 +176,7 @@ class CAI_Zombie : public CCustomMonster
 		float				m_fMaxHomeRadius;
 
 		// DDD
-		u32					m_dwActionRefreshZombiee;
+		u32					m_dwActionRefreshRate;
 		float				m_fAttackSuccessProbability;
 
 		// former constants

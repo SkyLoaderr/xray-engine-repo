@@ -247,7 +247,7 @@ void CAI_Zombie::FreeHuntingActive()
 			m_tpSoundBeingPlayed = 0;
 			m_dwLastVoiceTalk = dwCurTime;
 		}
-		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshZombiee) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
+		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
 			m_dwLastSoundRefresh = dwCurTime;
 			// Play voice-sound
 			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
@@ -374,7 +374,7 @@ void CAI_Zombie::AttackFire()
 	
 	SelectEnemy(m_Enemy);
 	
-	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshZombiee,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
+	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
@@ -424,7 +424,7 @@ void CAI_Zombie::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshZombiee,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
+	EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiZombieRetreat));
 	if (eState != eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
@@ -511,7 +511,7 @@ void CAI_Zombie::Retreat()
 
 	if (m_Enemy.Enemy) {
 		vfSaveEnemy();
-		EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshZombiee,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiZombieAttackRun,aiZombieAttackRun,aiZombieRetreat));
+		EZombieStates eState = EZombieStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiZombieAttackRun,aiZombieAttackRun,aiZombieRetreat));
 		if (eState != eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();
