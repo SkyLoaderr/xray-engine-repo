@@ -36,12 +36,16 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 		bDontDelete = TRUE;
 	} else {
 		if (data->FindChunk(OGF_CHIELDS)) {
-			FILE_NAME	fn;
+			string32	c_drv;
+			string256	c_dir;
+			string256	fn,fn_full;
+			_splitpath	(N,c_drv,c_dir,0,0);
 			int			cnt = data->Rdword();
 			chields.reserve(cnt);
 			for (int i=0; i<cnt; i++) {
-				data->RstringZ(fn);
-				chields.push_back(::Render.Models.Create(fn));
+				data->RstringZ		(fn);
+				strconcat			(fn_full,c_drv,c_dir,fn);
+				chields.push_back	(::Render.Models.Create(fn_full));
 			}
 			bDontDelete = FALSE;
 		} else {
