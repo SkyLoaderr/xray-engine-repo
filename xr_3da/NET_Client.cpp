@@ -381,7 +381,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 		break;
 	default:
 		{
-#ifdef DEBUG
+#if	0
 			LPSTR	msg;	
 			switch (dwMessageType)
 			{
