@@ -40,6 +40,7 @@ enum	EKeyBinding
 	kWPN_ZOOM		,
 
 	kUSE			,
+	kDROP			,
 	kSCORES			,
 	kCHAT			,
 	kSCREENSHOT		,
