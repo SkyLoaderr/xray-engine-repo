@@ -4,7 +4,7 @@
 #include "..\FBasicVisual.h"
 #include "ParticleSystem.h"
 
-class CPSVisual: public IRender_Visual
+class CPSVisual			: public IRender_Visual
 {
 protected:
 	PS::Particles	  	m_Particles;

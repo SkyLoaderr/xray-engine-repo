@@ -161,11 +161,11 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 void CPSVisual::Render		(float LOD)
 {
 	u32			vOffset;
-	FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(m_Particles.size()*4,hGeom->vb_stride,vOffset);
+	FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(m_Particles.size()*4,geom->vb_stride,vOffset);
 	u32			dwCount		= RenderTO(pv);
-	RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
+	RCache.Vertex.Unlock(dwCount,geom->vb_stride);
 	if (dwCount)    {
-		RCache.set_Geometry		(hGeom);
+		RCache.set_Geometry		(geom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
 	}
 }
@@ -273,7 +273,7 @@ void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
 	VERIFY				(source);
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
-	hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	geom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// set default emitter data
 	VERIFY				(E);

@@ -61,8 +61,8 @@ void FProgressive::Render	(float LOD)
 	}
 	VERIFY			(lod_id>=0 && lod_id<int(pSWI->count));
 	FSlideWindow& SW= pSWI->sw[lod_id];
-	RCache.set_Geometry(hGeom);
-	RCache.Render	(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
+	RCache.set_Geometry	(geom);
+	RCache.Render		(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
 }
 
 #define PCOPY(a)	a = pFrom->a
