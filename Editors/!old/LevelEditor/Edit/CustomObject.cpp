@@ -209,4 +209,11 @@ bool CCustomObject::FrustumSelect(int flag, const CFrustum& frustum){
 	return false;
 };
 
+bool CCustomObject::GetSummaryInfo(SSceneSummary* inf)
+{
+	Fbox bb; 
+    if (GetBox(bb))
+		inf->bbox.merge(bb);
+    return true;
+}
 

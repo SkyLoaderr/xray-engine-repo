@@ -98,55 +98,48 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name		= map_name;
     
-    CMemoryWriter F;
+	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
+    if (!bUndo) EFS.MarkFile		(full_name.c_str(),false);
 
-//	Msg("0: %d",F.tell());
-    F.open_chunk	(CHUNK_VERSION);
-    F.w_u32			(CURRENT_FILE_VERSION);
-    F.close_chunk	();
+    IWriter* F		= FS.w_open		(full_name.c_str());
 
-//	Msg("1: %d",F.tell());
-    F.open_chunk	(CHUNK_LEVELOP);
-	m_LevelOp.Save	(F);
-	F.close_chunk	();
+    F->open_chunk	(CHUNK_VERSION);
+    F->w_u32			(CURRENT_FILE_VERSION);
+    F->close_chunk	();
 
-//	Msg("2: %d",F.tell());
-    F.open_chunk	(CHUNK_OBJECT_COUNT);
-    F.w_u32		(ObjCount());
-	F.close_chunk	();
+    F->open_chunk	(CHUNK_LEVELOP);
+	m_LevelOp.Save	(*F);
+	F->close_chunk	();
+
+    F->open_chunk	(CHUNK_OBJECT_COUNT);
+    F->w_u32		(ObjCount());
+	F->close_chunk	();
 
     SceneToolsMapPairIt _I = m_SceneTools.begin();
     SceneToolsMapPairIt _E = m_SceneTools.end();
     for (; _I!=_E; _I++)
         if (_I->second&&_I->second->IsNeedSave()){
-        	F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
-         	_I->second->Save(F);
-        	F.close_chunk	();
+        	F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+         	_I->second->Save(*F);
+        	F->close_chunk	();
         }
         
-//	Msg("4: %d",F.tell());
     if (!bUndo){
-		F.open_chunk	(CHUNK_CAMERA);
-        F.w_fvector3	(Device.m_Camera.GetHPB());
-        F.w_fvector3	(Device.m_Camera.GetPosition());
-        F.close_chunk	();
+		F->open_chunk	(CHUNK_CAMERA);
+        F->w_fvector3	(Device.m_Camera.GetHPB());
+        F->w_fvector3	(Device.m_Camera.GetPosition());
+        F->close_chunk	();
     }
 
-//	Msg("5: %d",F.tell());
 	// snap list
-    F.open_chunk	(CHUNK_SNAPOBJECTS);
-    F.w_u32			(m_ESO_SnapObjects.size());
+    F->open_chunk	(CHUNK_SNAPOBJECTS);
+    F->w_u32			(m_ESO_SnapObjects.size());
     for(ObjectIt _F=m_ESO_SnapObjects.begin();_F!=m_ESO_SnapObjects.end();_F++)
-        F.w_stringZ	((*_F)->Name);
-    F.close_chunk	();
+        F->w_stringZ	((*_F)->Name);
+    F->close_chunk	();
 
-//	Msg("6: %d",F.tell());
-
-	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
-    // back up previous
-    if (!bUndo) EFS.MarkFile		(full_name.c_str(),false);
     // save data
-    F.save_to						(full_name.c_str());
+    FS.w_close		(F);
 	if (!bUndo) EFS.LockFile		(0,full_name.c_str(),false);
     if (!bUndo) m_RTFlags.set		(flRT_Unsaved,FALSE);
 }
@@ -338,29 +331,29 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
     if (initial)	FS.update_path	(full_name,initial,fname);
     else			full_name 		= fname;
 
-    CMemoryWriter F;
+    IWriter* F		= FS.w_open(full_name.c_str());
 
-    F.open_chunk	(CHUNK_VERSION);
-    F.w_u32			(CURRENT_FILE_VERSION);
-    F.close_chunk	();
+    F->open_chunk	(CHUNK_VERSION);
+    F->w_u32	   	(CURRENT_FILE_VERSION);
+    F->close_chunk	();
 
     if (OBJCLASS_DUMMY==classfilter){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
             if (_I->second&&_I->second->IsNeedSave()){
-                F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
-                _I->second->SaveSelection(F);
-                F.close_chunk	();
+                F->open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+                _I->second->SaveSelection(*F);
+                F->close_chunk	();
             }
     }else{
     	ESceneCustomMTools* mt = GetMTools(classfilter); VERIFY(mt);
-        F.open_chunk	(CHUNK_TOOLS_OFFSET+classfilter);
-        mt->SaveSelection(F);
-        F.close_chunk	();
+        F->open_chunk	(CHUNK_TOOLS_OFFSET+classfilter);
+        mt->SaveSelection(*F);
+        F->close_chunk	();
     }
         
-    F.save_to		(full_name.c_str());
+    FS.w_close		(F);
 }
 
 //----------------------------------------------------

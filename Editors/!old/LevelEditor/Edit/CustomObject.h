@@ -120,7 +120,7 @@ public:
     virtual bool	Validate		(){return true;}
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			AnimationFillProp(LPCSTR pref, PropItemVec& items);
-	virtual bool 	GetSummaryInfo	(SSceneSummary* inf){return false;}
+	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

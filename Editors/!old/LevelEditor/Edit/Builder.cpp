@@ -57,6 +57,7 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume","");
             VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors","");
             VERIFY_COMPILE(CompileStatic(),				"Failed static remote build","");
+            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource","");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description","");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game","");
             VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic","");

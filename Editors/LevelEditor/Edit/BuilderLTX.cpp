@@ -36,11 +36,11 @@ BOOL SceneBuilder::BuildLTX()
     	EFS.MarkFile(ltx_filename.c_str(),true);
 
 	// -- defaults --           
-    CMemoryWriter F;          
-    F.w_string( "; level script file");
-	if( Scene->m_LevelOp.m_BOPText.size() )
-		F.w_stringZ( Scene->m_LevelOp.m_BOPText );
-	F.save_to(ltx_filename.c_str());
+    IWriter* F	= FS.w_open(ltx_filename.c_str());
+    F->w_string( "; level script file");
+	if(Scene->m_LevelOp.m_BOPText.size())
+		F->w_stringZ( Scene->m_LevelOp.m_BOPText );
+    FS.w_close	(F);
 
 	return bResult;
 }

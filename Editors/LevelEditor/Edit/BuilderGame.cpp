@@ -25,7 +25,7 @@ BOOL SceneBuilder::BuildGame()
 
     // save game
     {
-        CMemoryWriter GAME;
+        CMemoryWriter GAME; 
         GAME.w_chunk(WAY_PATROLPATH_CHUNK,	F.patrolpath.stream.pointer(),	F.patrolpath.stream.size());
         GAME.w_chunk(RPOINT_CHUNK,			F.rpoint.stream.pointer(),		F.rpoint.stream.size());
         std::string lev_game 				= MakeLevelPath("level.game");

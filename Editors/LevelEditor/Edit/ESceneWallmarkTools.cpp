@@ -311,27 +311,27 @@ void ESceneWallmarkTools::SaveSelection(IWriter& F)
 
 bool ESceneWallmarkTools::Export(LPCSTR path)
 {
-	CMemoryWriter	F;
+    AnsiString fn		= AnsiString(path)+"level.wallmarks";
+	IWriter*	F		= FS.w_open(fn.c_str());
                              
-    F.open_chunk	(0);
-    F.w_u32			(marks.size());
+    F->open_chunk		(0);
+    F->w_u32			(marks.size());
     for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
         wm_slot* slot= *slot_it;	
-        F.w_u32		(slot->items.size());
+        F->w_u32		(slot->items.size());
         if (slot->items.size()){
-            F.w_stringZ	(slot->tex_name);
+            F->w_stringZ(slot->tex_name);
             for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
                 wallmark* W	= *w_it;
-                F.w		(&W->bounds,sizeof(W->bounds));
-                F.w_u32	(W->verts.size());
-                F.w		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+                F->w	(&W->bounds,sizeof(W->bounds));
+                F->w_u32(W->verts.size());
+                F->w	(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
             }
         }
     }
-    F.close_chunk	();
+    F->close_chunk	();
 
-    AnsiString fn	= AnsiString(path)+"level.wallmarks";
-    F.save_to		(fn.c_str());
+    FS.w_close		(F);
     
 	return true;
 }                

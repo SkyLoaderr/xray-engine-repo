@@ -316,6 +316,8 @@ void CEditableObject::EvictObject(){
 	for(;m!=m_Meshes.end();m++){
     	(*m)->UnloadCForm();
     	(*m)->UnloadPNormals();
+        (*m)->UnloadSVertices();
+        (*m)->UnloadFNormals();
     }
     DefferedUnloadRP	();
 }

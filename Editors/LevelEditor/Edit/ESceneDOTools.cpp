@@ -176,9 +176,9 @@ void EDetailManager::OnObjectRemove(CCustomObject* O)
 
 void EDetailManager::ExportColorIndices(LPCSTR fname)
 {
-	CMemoryWriter F;
-    SaveColorIndices(F);
-    F.save_to(fname);
+	IWriter* F 	= FS.w_open(fname);
+    SaveColorIndices(*F);
+    FS.w_close	(F);
 }
 
 bool EDetailManager::ImportColorIndices(LPCSTR fname)

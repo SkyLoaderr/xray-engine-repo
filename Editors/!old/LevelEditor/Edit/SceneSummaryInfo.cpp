@@ -14,6 +14,8 @@ void SSceneSummary::FillProp(PropItemVec& items)
 {
     // fill items
     PHelper().CreateCaption(items,"Level Name",					Scene->m_LevelOp.m_FNLevelPath.c_str());
+    PHelper().CreateCaption(items,"Geometry\\Bounding\\Min", 	ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(bbox.min)));
+    PHelper().CreateCaption(items,"Geometry\\Bounding\\Max", 	ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(bbox.max)));
     PHelper().CreateCaption(items,"Geometry\\Total Faces",     	ref_str().sprintf("%d",face_cnt));
     PHelper().CreateCaption(items,"Geometry\\Total Vertices",  	ref_str().sprintf("%d",vert_cnt));
     PHelper().CreateCaption(items,"Geometry\\MU Objects",	   	ref_str().sprintf("%d",mu_objects.size()));

@@ -27,10 +27,12 @@ struct SSceneSummary{
     int			portal_cnt;
     int 		sound_source_cnt;
     int 		pe_static_cnt;
+    Fbox		bbox;
 
     			SSceneSummary(){ Clear(); }
     void		FillProp	(PropItemVec& items);
     void		Clear(){
+    				bbox.invalidate		();
                     textures.clear		();
                     do_textures.clear	();
                     det_textures.clear	();
