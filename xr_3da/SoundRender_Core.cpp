@@ -213,22 +213,24 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 
 void						CSoundRender_Core::set_user_environment		( CSound_environment* E)
 {
+	if (0==E && !bUserEnvironment)	return;
+
 	if (E)
 	{
 		s_user_environment	= *((CSoundRender_Environment*)E);
 		bUserEnvironment	= TRUE;
-
-		// Force all sounds to change their environment
-		// (set their positions to signal changes in environment)
-		for (u32 it=0; it<s_emitters.size(); it++)
-		{
-			CSoundRender_Emitter*	pEmitter	= s_emitters[it];
-			const CSound_params*	pParams		= pEmitter->get_params	();
-			pEmitter->set_position	(pParams->position);
-		}
 	}
 	else 
 	{
 		bUserEnvironment	= FALSE;
+	}
+
+	// Force all sounds to change their environment
+	// (set their positions to signal changes in environment)
+	for (u32 it=0; it<s_emitters.size(); it++)
+	{
+		CSoundRender_Emitter*	pEmitter	= s_emitters[it];
+		const CSound_params*	pParams		= pEmitter->get_params	();
+		pEmitter->set_position	(pParams->position);
 	}
 }
