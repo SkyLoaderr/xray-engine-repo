@@ -966,22 +966,6 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
-#ifdef _EDITOR
-void xrSE_NPC::FillProp(LPCSTR pref, PropValueVec& values)
-{
-   	inherited::FillProp(pref, values);
-	// model
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"NPC namne",					&caModel,					PHelper.CreateGameObject(sizeof(caModel)));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Group ID",					&wGroupID,					PHelper.CreateU16	(0,65535,1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Count",						&wCount,					PHelper.CreateU16	(0,65535,1));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Birth radius",				&fBirthRadius,				PHelper.CreateFloat	(0,1000.f,1.f));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Birth probability",			&fBirthProbability,			PHelper.CreateFloat	(0,1.f,.1f));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Increase Coefficient",		&fIncreaseCoefficient,		PHelper.CreateFloat	(0,1.f,.05f));
-   	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Anomaly death probability",	&fAnomalyDeathProbability,	PHelper.CreateFloat	(0,1.f,.1f));
-	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Route points",				&caRouteGraphPoints,		PHelper.CreateGameObject(sizeof(caRouteGraphPoints)));
-}
-#endif
-
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
