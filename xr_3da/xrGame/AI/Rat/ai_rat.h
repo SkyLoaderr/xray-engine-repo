@@ -41,9 +41,33 @@ class CAI_Rat : public CCustomMonster
 		int						m_iSoundIndex;
 		DWORD					m_dwLastUpdate;
 		////////////////////////////////////////////////////////////////////////////
+		// Test propeties
+		////////////////////////////////////////////////////////////////////////////
+		Fvector			m_tOldPosition;
+		// parameters block
+		Fvector			m_tGoalDir;
+		Fvector			m_tCurrentDir;
+		Fvector			m_tHPB;
+		float			m_fDHeading;
+		// constants
+		float			m_fGoalChangeDelta;
+		float			m_fSpeed;
+		float			m_fASpeed;
+		float			m_fMinHeight;
+		Fvector			m_tVarGoal;
+		float			m_fIdleSoundDelta;
+		// variables
+		float			m_fGoalChangeTime;
+		//
+		Fvector			m_tSpawnPosition;
+		DWORD			m_dwStandLookTime;
+		////////////////////////////////////////////////////////////////////////////
+		// end of test properties
+		////////////////////////////////////////////////////////////////////////////
+		
+		////////////////////////////////////////////////////////////////////////////
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
-
 		// global animations
 		typedef struct tagSNormalGlobalAnimations{
 			CMotionDef* tpaDeath[2];
@@ -224,6 +248,7 @@ class CAI_Rat : public CCustomMonster
 		int  ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		void GoToPointViaSubnodes(Fvector &tLeaderPosition);
 		void vfUpdateDynamicObjects();
+		void FreeState();
 
 	public:
 					   CAI_Rat();

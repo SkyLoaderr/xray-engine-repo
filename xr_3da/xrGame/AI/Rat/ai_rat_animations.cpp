@@ -73,6 +73,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else
+			/**
 			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
@@ -109,6 +110,44 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						//else
 						//	tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			/**/
+			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
+					else
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
+				else
+					if (m_fSpeed < 0.2f) {
+						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime))
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					}
+					else
+						if (fabsf(m_fSpeed - m_fMaxSpeed) < EPS_L) 
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			else
+				if (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
+					if (r_torso_target.yaw > r_torso_current.yaw)
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnLeft;
+					else
+						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
+				else
+					if (m_fSpeed < 0.2f) {
+						if ((ps_Size() > 1) && (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > m_dwStandLookTime))
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					}
+					else
+						if (fabsf(m_fSpeed - m_fMaxSpeed) < EPS_L) 
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
+						else
+							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

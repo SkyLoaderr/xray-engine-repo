@@ -28,7 +28,7 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	setEnabled	(false);
+	//setEnabled	(false);
 	
 	if (m_bFiring) {
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
@@ -330,6 +330,86 @@ void CAI_Rat::Turn()
 	vfSetMovementType(BODY_STATE_STAND,0);
 }
 
+void CAI_Rat::FreeState()
+{
+	//m_fTimeUpdateDelta = Device.fTimeDelta;
+	AI_Path.TravelPath.clear();
+	if(m_fGoalChangeTime<=0){
+		m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
+		Fvector vP;
+		vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);
+		m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
+		m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
+		m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
+		int iRandom = ::Random.randI(0,3);
+		switch (iRandom) {
+			case 0 : {
+				m_fSpeed = m_fMaxSpeed;
+				break;
+			}
+			case 1 : {
+				m_fSpeed = m_fMinSpeed;
+				break;
+			}
+			case 2 : {
+				if (::Random.randI(0,4) == 0)
+					m_fSpeed = 0.f;
+				break;
+			}
+		}
+	}
+	m_fGoalChangeTime -= m_fTimeUpdateDelta;
+	// Update position and orientation of the planes
+	float fAT = m_fASpeed * m_fTimeUpdateDelta;
+
+	Fvector& tDirection = mRotate.k;
+
+	// Tweak orientation based on last position and goal
+	Fvector tOffset;
+	tOffset.sub(m_tGoalDir,vPosition);
+
+	// First, tweak the pitch
+	if( tOffset.y > 1.0){			// We're too low
+		m_tHPB.y += fAT;
+		if( m_tHPB.y > 0.8f )	m_tHPB.y = 0.8f;
+	}else if( tOffset.y < -1.0){	// We're too high
+		m_tHPB.y -= fAT;
+		if( m_tHPB.y < -0.8f )m_tHPB.y = -0.8f;
+	}else							// Add damping
+		m_tHPB.y *= 0.95f;
+
+	// Now figure out yaw changes
+	tOffset.y           = 0.0f;
+	tDirection.y		= 0.0f;
+
+	tDirection.normalize();
+	tOffset.normalize	();
+
+	float fDot = tDirection.dotproduct(tOffset);
+	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
+
+	tOffset.crossproduct(tOffset,tDirection);
+
+	if( tOffset.y > 0.01f )		m_fDHeading = ( m_fDHeading * 9.0f + fDot ) * 0.1f;
+	else if( tOffset.y < 0.01f )m_fDHeading = ( m_fDHeading * 9.0f - fDot ) * 0.1f;
+
+	m_tHPB.x  +=  m_fDHeading;
+	m_tHPB.z  = -m_fDHeading * 9.0f;
+
+	// Build the local matrix for the pplane
+	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+
+	// Update position
+	m_tOldPosition.set(vPosition);
+	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+
+	SetDirectionLook();
+
+	UpdateTransform();
+	bStopThinking = true;
+}
+
 void CAI_Rat::Think()
 {
 	bStopThinking = false;
@@ -341,11 +421,13 @@ void CAI_Rat::Think()
 				break;
 			}
 			case aiRatFreeHunting : {
-				FreeHunting();
+				//FreeHunting();
+				FreeState();
 				break;
 			}
 			case aiRatFollowLeader : {
-				FollowLeader();
+				//FollowLeader();
+				FreeState();
 				break;
 			}
 			case aiRatAttackFire : {

@@ -42,6 +42,18 @@ CAI_Rat::CAI_Rat()
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
 	m_tpPath = 0;
+	// test parameters
+	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
+	m_tCurrentDir.set		(0,0,1);
+	m_tHPB.set				(0,0,0);
+	m_fDHeading				= 0;
+	m_fGoalChangeDelta		= 10.f;
+	m_fGoalChangeTime		= 0.f;
+	m_fSpeed				= m_fMaxSpeed;
+	m_fASpeed				= .2f;
+	m_fMinHeight			= 0.f;
+	m_tVarGoal.set			(10.0,0.0,20.0);
+	m_dwStandLookTime		= 5000;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -112,6 +124,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
+	m_tSpawnPosition.set(vPosition);
 	INIT_SQUAD_AND_LEADER;
 
 	if (Leader == this)
