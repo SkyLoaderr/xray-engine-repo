@@ -449,25 +449,9 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 }
 
 #ifdef _EDITOR
-xr_token TokenAnomalyType[]={
-	{ "Gravi",			eAnomalousZoneTypeGravi			},
-	{ "Fog",			eAnomalousZoneTypeFog			},
-	{ "Radioactive",	eAnomalousZoneTypeRadio			},
-	{ "Plant",			eAnomalousZoneTypePlant			},
-	{ "Gelatine",		eAnomalousZoneTypeGelatine		},
-	{ "Fluff",			eAnomalousZoneTypeFluff			},
-	{ "Rusty Hair",		eAnomalousZoneTypeRustyHair		},
-	{ "RustyWhistlers",	eAnomalousZoneTypeRustyWhistlers},
-	{ 0,				0}
-};
-
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	PHelper.CreateToken<u8>		(items,FHelper.PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
-	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; ++i)
 		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
