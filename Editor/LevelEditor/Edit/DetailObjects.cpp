@@ -437,8 +437,8 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
             if (sRes){
             	for (DWORD k=0; k<sRes->size(); k++){
                 	float H = (*sRes)[k].y;
-                    if (H>slot.y_max) slot.y_max = H;
-                    if (H<slot.y_min) slot.y_min = H;
+                    if (H>slot.y_max) slot.y_max = H+0.03f;
+                    if (H<slot.y_min) slot.y_min = H-0.03f;
                 }
             }
 	    }
@@ -571,7 +571,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         for (int v=P[part].y1; v<P[part].y2; v++){
             for (int u=P[part].x1; u<P[part].x2; u++){
                 DWORD clr;
-                if (GetColor(clr,u,v)){
+                if (GetColor(clr,v,u)){
                     Fcolor C;
                     C.set(clr);
                     CalcClosestCount(part,C,best);
@@ -743,82 +743,14 @@ void CDetailManager::AppendIndexObject(DWORD color,LPCSTR name, bool bTestUnique
     }
 }
 
-bool CDetailManager::Load_V1(CStream& F){
-	// header
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_HEADER,&m_Header));
-    m_Header.offs_x		= 0;
-    m_Header.offs_z		= 0;
-    m_Header.size_x		= 0;
-    m_Header.size_z		= 0;
-
-    // objects
-    CStream* OBJ 		= F.OpenChunk(DETMGR_CHUNK_OBJECTS);
-    if (OBJ){
-        CStream* O   	= OBJ->OpenChunk(0);
-        for (int count=1; O; count++) {
-            CDetail* DO = new CDetail();
-            if (DO->Load(*O)){
-                m_Objects.push_back(DO);
-            }else{
-                ELog.Msg(mtError,"Can't load detail object.");
-                _DELETE(DO);
-            }
-            O->Close();
-            O = OBJ->OpenChunk(count);
-        }
-        OBJ->Close();
-    }
-
-    // slots - not read another format!!!!
-
-    // internal
-    // bbox
-    R_ASSERT			(F.ReadChunk(DETMGR_CHUNK_BBOX,&m_BBox));
-	// base texture
-    char buf[255];
-	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.RstringZ		(buf);
-    	m_pBase			= new SBase(buf);
-	    m_pBaseShader 	= Device.Shader.Create("editor\\do_base",buf);
-    }
-    // color index map
-    R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
-    int cnt				= F.Rbyte();
-    DWORD index;
-    int ref_cnt;
-    for (int k=0; k<cnt; k++){
-		index			= F.Rdword();
-        ref_cnt			= F.Rbyte();
-		for (int j=0; j<ref_cnt; j++){
-        	F.RstringZ	(buf);
-            CDetail* DO	= FindObjectByName(buf);
-            if (DO) 	m_ColorIndices[index].push_back(DO);
-        }
-    }
-
-	// snap objects
-    if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
-		cnt 			= F.Rdword(); VERIFY(cnt);
-        for (int i=0; i<cnt; i++){
-        	F.RstringZ	(buf);
-            CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
-            if (!O)		ELog.Msg(mtError,"DetailManager: Can't find snap object '%s'.",buf);
-            else		m_SnapObjects.push_back(O);
-        }
-    }else{
-    	m_SnapObjects	= Scene.m_SnapObjects;
-    }
-
-    InvalidateCache		();
-
-    return true;
+void CDetailManager::RemoveFromSnapList(CCustomObject* O)
+{
+	m_SnapObjects.remove(O);
 }
 
 bool CDetailManager::Load(CStream& F){
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_VERSION));
 	DWORD version		= F.Rdword();
-
-    if (version==1) return Load_V1(F);
 
     if (version!=DETMGR_VERSION){
     	ELog.Msg(mtError,"CDetailManager: unsupported version.");

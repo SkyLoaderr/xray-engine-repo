@@ -180,7 +180,6 @@ public:
 						CDetailManager			();
     virtual 			~CDetailManager			();
 
-    bool				Load_V1					(CStream&);
     bool				Load            		(CStream&);
     void				Save            		(CFS_Base&);
     void				Export          		(LPCSTR fn);
@@ -213,6 +212,8 @@ public:
 	int 				SelectionCount          (bool testflag);
 
     bool				Valid					(){return !!m_Slots.size()||!!m_Objects.size();}
+
+    void				RemoveFromSnapList		(CCustomObject* O);
 
 	virtual void		OnDeviceCreate			();
 	virtual void		OnDeviceDestroy			();

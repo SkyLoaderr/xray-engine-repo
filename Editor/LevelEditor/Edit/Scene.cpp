@@ -146,8 +146,11 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
     // remove object from Snap List if exists
-    if ((object->ClassID()==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty())
+    if ((object->ClassID()==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty()){
     	m_SnapObjects.remove(object);
+		if (m_DetailObjects) m_DetailObjects->RemoveFromSnapList(object);
+		UpdateSnapList();
+    }
     // remove from scene list
     lst.remove( object );
     if (object->IsInGroup()) m_Groups[object->GetGroupIndex()].objects.remove(object);

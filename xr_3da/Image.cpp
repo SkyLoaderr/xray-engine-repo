@@ -180,9 +180,9 @@ void CImage::LoadTGA(LPCSTR name)
 	TGA.Read(&hdr,sizeof(TGAHeader));
 
 #ifdef ENGINE_BUILD
-	if (hdr.imgtype!=2)			Device.Fatal("Invalid texture format (%s)",name);
+	if (!((hdr.imgtype==2)||(hdr.imgtype==10)))			Device.Fatal("Invalid texture format (%s)",name);
 #endif
-	R_ASSERT(hdr.imgtype==2);							// Uncompressed
+	R_ASSERT((hdr.imgtype==2)||(hdr.imgtype==10));		// Uncompressed
 	R_ASSERT((hdr.pixsize==24) || (hdr.pixsize==32));	// 24bpp/32bpp
 	R_ASSERT(btwIsPow2(hdr.width));
 	R_ASSERT(btwIsPow2(hdr.height));
@@ -192,7 +192,7 @@ void CImage::LoadTGA(LPCSTR name)
 	if (hdr.cmlen)	TGA.Advance(hdr.cmlen*((hdr.cmes+7)/8));
 
 	hflip		= (hdr.desc & 0x10) ? TRUE : FALSE;		// Need hflip
-	vflip		= (hdr.desc & 0x20) ? FALSE: TRUE;		// Need vflip
+	vflip		= (hdr.desc & 0x20) ? TRUE : FALSE;		// Need vflip
 
 	dwWidth		= hdr.width;
 	dwHeight	= hdr.height;
@@ -200,6 +200,44 @@ void CImage::LoadTGA(LPCSTR name)
 	// Alloc memory
 	pData		= (DWORD*)malloc(dwWidth*dwHeight*4);
 
+    DWORD pixel;
+	DWORD*	ptr	= pData;
+    for( int y=0; y<hdr.height; y++ ){
+        DWORD dwOffset = y*hdr.width;
+
+        if( 0 == ( hdr.desc & 0x0010 ) ) dwOffset = (hdr.height-y-1)*hdr.width;
+        for( int x=0; x<hdr.width; ){
+            if( hdr.imgtype == 10 ){
+                BYTE PacketInfo; TGA.Read(&PacketInfo,1);
+                WORD PacketType = 0x80 & PacketInfo;
+                WORD PixelCount = ( 0x007f & PacketInfo ) + 1;
+                if( PacketType ){
+                    pixel = 0xffffffff;
+                    if(hdr.pixsize==32) TGA.Read(&pixel,4);
+                    else                TGA.Read(&pixel,3);
+                    while( PixelCount-- ){
+                    	*(ptr+dwOffset+x)=pixel;
+                        x++;
+                    }
+                }else{
+                    while( PixelCount-- ){
+                        pixel = 0xffffffff;
+                        if(hdr.pixsize==32) TGA.Read(&pixel,4);
+                        else                TGA.Read(&pixel,3);
+                    	*(ptr+dwOffset+x)=pixel;
+                        x++;
+                    }
+                }
+            }else{
+                pixel = 0xffffffff;
+                if(hdr.pixsize==32) TGA.Read(&pixel,4);
+                else                TGA.Read(&pixel,3);
+				*(ptr+dwOffset+x)	=pixel;
+                x++;
+            }
+        }
+    }
+/*
 	if (hdr.pixsize==24)
 	{	// 24bpp
 		bAlpha = FALSE;
@@ -208,12 +246,10 @@ void CImage::LoadTGA(LPCSTR name)
 		for(int iy = 0; iy<hdr.height; ++iy) {
 			for(int ix=0; ix<hdr.width; ++ix) {
 				TGA.Read(&pixel,3); *ptr++=pixel;
-				/*
-				DWORD R = RGBA_GETRED	(pixel)/2;
-				DWORD G = RGBA_GETGREEN	(pixel)/2;
-				DWORD B = RGBA_GETBLUE	(pixel)/2;
-				*ptr++ = D3DCOLOR_XRGB(R,G,B);
-				*/
+//				DWORD R = RGBA_GETRED	(pixel)/2;
+//				DWORD G = RGBA_GETGREEN	(pixel)/2;
+//				DWORD B = RGBA_GETBLUE	(pixel)/2;
+//				*ptr++ = D3DCOLOR_XRGB(R,G,B);
 			}
 		}
 	}
@@ -222,6 +258,8 @@ void CImage::LoadTGA(LPCSTR name)
 		bAlpha = TRUE;
 		TGA.Read(pData,hdr.width*hdr.height*4);
 	}
+*/
+
 	if (vflip) Vflip();
 	if (hflip) Hflip();
 }
