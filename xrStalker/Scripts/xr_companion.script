@@ -98,10 +98,10 @@ function action_companion_activity:execute()
 end
 
 function action_companion_activity:finalize()
-	local enemy = self.object:best_enemy()
-	if enemy then
-		xr_sound.sound_update(self.object, get_sound_for_enemy(enemy))
-	end
+	--local enemy = self.object:best_enemy()
+	--if enemy then
+	--	xr_sound.sound_update(self.object, get_sound_for_enemy(enemy))
+	--end
 
 	action_base.finalize(self)
 end
@@ -162,6 +162,8 @@ function select_position(npc, st)
 	end
 end
 
+--[[
+œŒ“≈Õ÷»¿À‹ÕŒ ”—“¿–≈ÀŒ
 function get_sound_for_enemy(enemy)
 	local otype = enemy:clsid()
 
@@ -193,6 +195,7 @@ function get_sound_for_enemy(enemy)
 
 	return sound
 end
+--]]
 
 function vector_rotate_y (v, angle)
     angle = angle * 0.017453292519943295769236907684886
