@@ -611,10 +611,10 @@ namespace PAPI{
 
 		// These are static because all threads access the same groups.
 		// All accesses to these should be locked.
-		static ParticleGroup **group_list;
-		static PAHeader **alist_list;
-		static int group_count;
-		static int alist_count;
+		DEFINE_VECTOR(ParticleGroup*,ParticleGroupVec,ParticleGroupVecIt);
+		DEFINE_VECTOR(PAHeader*,PAHeaderVec,PAHeaderVecIt);
+		static ParticleGroupVec	group_vec;
+		static PAHeaderVec		alist_vec;
 
 		// state part
 		Flags32	flags;
