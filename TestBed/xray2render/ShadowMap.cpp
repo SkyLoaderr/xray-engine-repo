@@ -868,6 +868,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
 
+	m_pd3dDevice->SetRenderState			( D3DRS_CULLMODE,	D3DCULL_NONE);
+
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct_smap.ps);
 	m_pd3dDevice->SetVertexShader			(s_Light_Direct_smap.vs);
@@ -884,7 +886,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
-	Fvector J; float scale					= 4.f / SHADOW_MAP_SIZE;
+	Fvector4 J; float scale					= (1.f / SHADOW_MAP_SIZE)/27.f;
 	J.set(11,0,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,0,J.x,J.y,0,0);
 	J.set(19,3,0);	J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,1,J.x,J.y,0,0);
 	J.set(22,11,0); J.sub(11); J.div(22); J.mul(scale);	cc.seta	(C,2,J.x,J.y,0,0);
@@ -901,7 +903,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	// Render Quad
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
