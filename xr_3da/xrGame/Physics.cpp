@@ -571,7 +571,7 @@ void CPHWorld::Create(){
 	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
-	Gun.Create(Space);
+	//Gun.Create(Space);
 	///dCreatePlane(Space,0,1,0,5);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
@@ -587,7 +587,7 @@ void CPHWorld::Create(){
 void CPHWorld::Destroy(){
 	Mesh.Destroy();
 	//Jeep.Destroy();
-	Gun.Destroy();
+	//Gun.Destroy();
 	//vector<CPHElement*>::iterator i;
 	//for(i=elements.begin();i!=elements.end();i++){
 	//delete(*i);
