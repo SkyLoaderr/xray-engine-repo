@@ -200,7 +200,7 @@ IC bool				pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 void CRender::Calculate()
 {
 	Device.Statistic.RenderCALC.Begin();
-
+	/*
 	float	aX		= ::Random.randF(PI_MUL_2);
 	float	aY		= ::Random.randF(PI_MUL_2);
 	float	aZ		= ::Random.randF(PI_MUL_2);
@@ -214,6 +214,7 @@ void CRender::Calculate()
 	res1.mul		(mY,temp);
 
 	res2.setXYZ		(-aX,-aY,-aZ);
+	*/
 
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
