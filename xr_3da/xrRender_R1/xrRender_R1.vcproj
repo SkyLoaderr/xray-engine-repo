@@ -303,6 +303,9 @@
 			<File
 				RelativePath=".\r__dsgraph_types.h">
 			</File>
+			<File
+				RelativePath=".\Texture.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"

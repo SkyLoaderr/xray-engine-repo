@@ -241,6 +241,9 @@
 			<File
 				RelativePath=".\r__dsgraph_types.h">
 			</File>
+			<File
+				RelativePath=".\Texture.cpp">
+			</File>
 			<Filter
 				Name="R_Target"
 				Filter="">

@@ -37,7 +37,7 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (h<1)	h=1;
 }
 
-ENGINE_API IDirect3DTexture9*	TW_LoadTextureFromTexture
+IDirect3DTexture9*	TW_LoadTextureFromTexture
 (
 	IDirect3DTexture9*		t_from,
 	D3DFORMAT&				t_dest_fmt,
