@@ -14,8 +14,8 @@ struct xr_token;
 #endif
 
 ENGINE_API int				_GetItemCount			( LPCSTR , char separator=',');
-ENGINE_API LPCSTR			_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="" );
-ENGINE_API LPCSTR			_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
+ENGINE_API LPSTR			_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="" );
+ENGINE_API LPSTR			_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
 ENGINE_API LPCSTR			_SetPos					( LPCSTR src, u32 pos, char separator=',' );
 ENGINE_API LPCSTR			_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );
 ENGINE_API LPSTR			_Trim					( LPSTR str );
