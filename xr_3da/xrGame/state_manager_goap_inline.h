@@ -128,9 +128,9 @@ void CGOAPStateManager::update_transitions(CState &state)
 		// we do not want to have vertex loops
 		if (&(*I).data().m_state == &state)
 			continue;
-		if (!condition_contardiction((*I).data().m_state,state))
+		if (!condition_contradiction((*I).data().m_state,state))
 			add_edge		((*I).data().m_state,state,1);
-		if (!condition_contardiction(state,(*I).data().m_state))
+		if (!condition_contradiction(state,(*I).data().m_state))
 			add_edge		(state,(*I).data().m_state,1);
 	}
 }
