@@ -523,20 +523,27 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float _w	= w-1, _h = h-1;
+		const float thw = .5f/w;
+		const float thh = .5f/h;
+
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
 		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
 		pDstT[0].p	= D3DXVECTOR4(0, _h,	0.001f, 1.0f);
-		pDstT[0].tu = 0.0f;
-		pDstT[0].tv = 1.0f;
+		pDstT[0].tu = 0.0f+thw;
+		pDstT[0].tv = 1.0f+thh;
+
 		pDstT[1].p	= D3DXVECTOR4(_w, _h,	0.001f, 1.0f);
-		pDstT[1].tu = 1.0f;
-		pDstT[1].tv = 1.0f;
+		pDstT[1].tu = 1.0f+thw;
+		pDstT[1].tv = 1.0f+thh;
+
 		pDstT[2].p	= D3DXVECTOR4(0, 0,		0.001f, 1.0f);
-		pDstT[2].tu = 0.0f;
-		pDstT[2].tv = 0.0f;
+		pDstT[2].tu = 0.0f+thw;
+		pDstT[2].tv = 0.0f+thh;
+
 		pDstT[3].p	= D3DXVECTOR4(_w, 0,	0.001f, 1.0f);
-		pDstT[3].tu = 1.0f;
-		pDstT[3].tv = 0.0f;
+		pDstT[3].tu = 1.0f+thw;
+		pDstT[3].tv = 0.0f+thh;
+
 		m_pQuadVB->Unlock					();
 	}
 
