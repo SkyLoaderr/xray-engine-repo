@@ -197,11 +197,13 @@ void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
 
 	if( pDialog->IsShown() ){
+		
 		if( bDoHideIndicators && pDialog==MainInputReceiver() ){
 			ShowIndicators();
 			if(m_bCrosshair) 
 				psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 		};
+
 	}else{
 		if(bDoHideIndicators){
 			HideIndicators();
