@@ -632,7 +632,7 @@ void CAI_Stalker::CreateSkeleton()
 
 void CAI_Stalker::UpdateCL(){
 
-	 inherited::UpdateCL();
+	inherited::UpdateCL();
 	if(m_pPhysicsShell){
 		//m_pPhysicsShell->Update();
 		clTransform.set(m_pPhysicsShell->mXFORM);

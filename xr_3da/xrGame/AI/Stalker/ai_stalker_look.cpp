@@ -107,10 +107,9 @@ void CAI_Stalker::SetDirectionLook()
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
+			mk_rotation(tWatchDirection,r_target);
 		}
 	}
-	r_target.yaw = r_torso_target.yaw;
 }
 
 void CAI_Stalker::SetLook(Fvector tPosition)
@@ -119,9 +118,8 @@ void CAI_Stalker::SetLook(Fvector tPosition)
 	tWatchDirection.sub(tPosition,tCurrentPosition);
 	if (tWatchDirection.magnitude() > EPS_L) {
 		tWatchDirection.normalize();
-		mk_rotation(tWatchDirection,r_torso_target);
+		mk_rotation(tWatchDirection,r_target);
 	}
-	r_target.yaw = r_torso_target.yaw;
 }
 
 void CAI_Stalker::SetLessCoverLook()
@@ -135,7 +133,7 @@ void CAI_Stalker::SetLessCoverLook()
 				float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,AI_Node);
 				if (fSquare0 > fMaxSquare) {
 					fMaxSquare = fSquare0;
-					r_torso_target.yaw = r_target.yaw = fIncrement;
+					r_target.yaw = fIncrement;
 				}
 			}
 		}
@@ -183,7 +181,7 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.square_magnitude() > 0.000001) {
 			tWatchDirection.normalize();
-			mk_rotation(tWatchDirection,r_torso_target);
+			mk_rotation(tWatchDirection,r_target);
 			
 			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
 			
@@ -223,13 +221,15 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
 	// validating angles
+//	Msg("Before : [TT=%f][TC=%f]",r_torso_current.yaw,r_torso_target.yaw);
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
+//	Msg("After  : [TT=%f][TC=%f]",r_torso_current.yaw,r_torso_target.yaw);
 
 	// updating torso angles
-//	float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
-//	float					fSpeedFactor = 1;//fAngleDifference < PI_DIV_2 ? fAngleDifference/PI_DIV_2/3 : 1.f;
-	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
+	//float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
+	float					fSpeedFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f/6.f : 1.f;
+	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,fSpeedFactor*r_torso_speed,dt);
 	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
 	
 	// updating head angles
