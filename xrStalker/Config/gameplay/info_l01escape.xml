@@ -42,6 +42,8 @@
 	</info_portion>
 	<info_portion id="tutorial_flesh_die">
 	</info_portion>
+	<info_portion id="tutorial_flesh_die_processed">
+	</info_portion>
 	<info_portion id="tutorial_alarm_start">
 	</info_portion>
 	<info_portion id="tutorial_alarm_played">
