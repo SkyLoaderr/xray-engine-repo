@@ -131,14 +131,16 @@ void	CROS_impl::update	(IRenderable* O)
 	
 	// hemi-tracing
 	if	(MODE & IRender_ObjectSpecific::TRACE_HEMI)	{
-		u32	sample		= 0					;
-		if	(result_count<lt_hemisamples)	{ sample=result_count; result_count++;							}
-		else								{ sample=(result_iterator%lt_hemisamples); result_iterator++;	}
+		for (u32 it=0; it<3;	it++)		{	// three samples per one frame
+			u32	sample		= 0					;
+			if	(result_count<lt_hemisamples)	{ sample=result_count; result_count++;							}
+			else								{ sample=(result_iterator%lt_hemisamples); result_iterator++;	}
 
-		// take sample
-		Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
-		result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
-//		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
+			// take sample
+			Fvector	direction;	direction.set	(hdir[sample][0],hdir[sample][1],hdir[sample][2]).normalize	();
+			result[sample]	=	!g_pGameLevel->ObjectSpace.RayTest(position,direction,500.f,collide::rqtBoth,&cache[sample]);
+			//		Msg				("%d:-- %s",sample,result[sample]?"true":"false");
+		}
 	}
 
 	// hemi & sun: update and smooth
