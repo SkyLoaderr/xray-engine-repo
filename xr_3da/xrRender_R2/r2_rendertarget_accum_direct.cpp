@@ -101,9 +101,8 @@ void CRenderTarget::accum_direct()
 
 	// Constants
 	Fvector		L_dir,L_clr;	float L_spec;
-	L_clr.set					(RImplementation.Lights.sun_color);
-	L_clr.set					(1,1,1);
-	L_clr.div					(ps_r2_ls_dynamic_range);
+	Fcolor		L_sunc			= RImplementation.Lights.sun->color;
+	L_clr.set					(L_sunc.r,L_sunc.g,L_sunc.b).div(ps_r2_ls_dynamic_range);
 	L_spec						= L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
