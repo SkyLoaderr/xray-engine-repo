@@ -223,6 +223,8 @@ dReal previous_dev;
 dReal previous_v;
 UINT dis_count_f;
 UINT dis_count_f1;
+dReal k_w;
+dReal k_l;//1.8f;
 public:
 
 /////////////////////////////////////////////////////////////////////////////
@@ -236,7 +238,9 @@ private:
 	void			Disable						();
 public:
 
-
+	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) {
+													k_w= angular;
+													k_l=linear;}
 	void					CallBack				(CBoneInstance* B);
 	void					PhDataUpdate			(dReal step);
 	virtual void			set_ParentElement		(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
@@ -286,6 +290,8 @@ public:
 		m_shell=NULL;
 		m_group=NULL;
 		ul_material=GMLib.GetMaterialIdx("materials\\box_default");
+		k_w=0.05f;
+		k_l=0.0002f;//1.8f;
 	};
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
@@ -320,7 +326,7 @@ SPHAxis(){
 	//erp=ERP(world_spring/5.f,world_damping*5.f);
 	//cfm=CFM(world_spring/5.f,world_damping*5.f);
 	erp=0.8f;
-	cfm=0.000001f;
+	cfm=0.00001f;
 	direction.set(0,0,1);
 	vs=vs_first;
 	}
@@ -412,6 +418,12 @@ public:
 
 	};
 
+	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f){
+														vector<CPHElement*>::iterator i;
+														for(i=elements.begin();i!=elements.end();i++)
+																						(*i)->SetAirResistance(linear,angular);
+								}
+
 	virtual	void			add_Joint				(CPhysicsJoint* J)					{
 																						joints.push_back((CPHJoint*)J);
 																						};
@@ -426,9 +438,11 @@ public:
 	virtual void			setMass					(float M)									;
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{
+																								if(!bActive) return;
 																								(*elements.begin())->applyForce				( dir, val);
 																								};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{
+																								if(!bActive) return;
 																								(*elements.begin())->applyImpulse			( dir, val);
 																								};
 	virtual	void PhDataUpdate(dReal step);

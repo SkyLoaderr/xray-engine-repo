@@ -20,6 +20,7 @@ public:
 	
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
+	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) = 0;
 	
 	virtual ~CPhysicsBase	()																	{};
 };

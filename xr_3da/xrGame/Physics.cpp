@@ -1330,10 +1330,9 @@ void CPHElement::PhDataUpdate(dReal step){
 				Disable();
 
 	
-				const dReal k_w=0.05f;
+				//const dReal k_w=0.05f;
+				//const dReal k_l=0.0002f;//1.8f;
 				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
-	
-				const dReal k_l=0.0002f;//1.8f;
 				dMass mass;
 				dBodyGetMass(m_body,&mass);
 				dReal l_air=mag*k_l;
@@ -1497,10 +1496,12 @@ if( !dBodyIsEnabled(m_body)) return;
 }
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
+	if(!bActive) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val);
 }
 
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
+
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
 	Fvector body_pos;
@@ -1726,40 +1727,61 @@ first_matrix.invert();
 
 Fmatrix rotate;
 rotate.mul(first_matrix,second_matrix);
+//rotate.mul(second_matrix,first_matrix);
+//rotate.mulB(axes[0].zero_transform);
+//rotate.mulA(axes[0].zero_transform);
+
+//rotate.transform_dir(axis);
 float shift_angle;
 axis_angleA(rotate,axes[0].direction,shift_angle);
+//axis_angleB(rotate,axis,shift_angle);
 shift_angle-=axes[0].zero;
+
+//Fvector own_ax;
+//own_axis_angle(rotate,own_ax,shift_angle);
+
 if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
 if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
 
 
+
+
+
+float lo=axes[0].low+shift_angle;
+float hi=axes[0].high+shift_angle;
+if(lo<-M_PI){ 
+			hi-=(lo+M_PI);
+			lo=-M_PI;
+			}
+if(lo>0.f) {
+			hi-=lo;
+			lo=0.f;
+			}
+if(hi>M_PI) {
+			lo-=(hi-M_PI);
+			hi=M_PI;
+			}
+if(hi<0.f) {
+			lo-=hi;
+			hi=0.f;
+			}
+
+
+
+//Fvector the_own_axes;
+//float angle;
+
+//own_axis_angle(rotate,the_own_axes,angle);
+//the_own_axes.normalize();
+//float dotpr=the_own_axes.dotproduct(axis);
+//axis_angleA(rotate,axis,angle);
+//axis_angleB(rotate,axis,angle);
+
+//rotate.transform_dir(the_own_axes);
 dJointAttach(m_joint,first->get_body(),second->get_body());
 dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
 
-float lo=axes[0].low+shift_angle;
-float hi=axes[0].high+shift_angle;
-if(lo<-M_PI) 
-			lo=-M_PI;
-if(lo>0.f) 
-			lo=0.f;
-if(hi>M_PI)  
-			hi=M_PI;
-if(hi<0.f) 
-			hi=0.f;
-
-rotate.mulB(axes[0].zero_transform);
-Fvector the_own_axes;
-float angle;
-/*
-own_axis_angle(rotate,the_own_axes,angle);
-the_own_axes.normalize();
-angle=the_own_axes.dotproduct(axis);
-axis_angleA(rotate,axis,angle);
-axis_angleB(rotate,axis,angle);
-
-rotate.transform_dir(the_own_axes);
-*/
 dJointSetHingeParam(m_joint,dParamLoStop ,lo);
 dJointSetHingeParam(m_joint,dParamHiStop ,hi);
 }
@@ -1779,6 +1801,8 @@ void CPHJoint::CreateShoulder2()
 
 void CPHJoint::CreateUniversalHinge()
 {
+
+
 }
 
 void CPHJoint::SetAnchor(const float x,const float y,const float z)
@@ -1912,11 +1936,14 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 			m1.set(pFirst_element->mXFORM);
 			m1.invert();
 			m2.mul(m1,pSecond_element->mXFORM);
+			//m2.mul(pSecond_element->mXFORM,m1);
+
 			
 			
 			float zer;
-			//axis_angleA(m2,axis,zer);
+			//axis_angleB(m2,axis,zer);
 			axis_angleA(m2,axes[ax].direction,zer);
+	
 			axes[ax].zero=zer;
 			m2.invert();
 			axes[ax].zero_transform.set(m2);

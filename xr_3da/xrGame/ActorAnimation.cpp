@@ -162,9 +162,20 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			mstate_real			= 0;
 			m_current_legs		= 0;
 			m_current_torso		= 0;
-			PKinematics	(pVisual)->PlayCycle(ST->death,false);
+			//PKinematics	(pVisual)->PlayCycle(ST->death,false);
+			//ST=&m_crouch;
 		
-//		PKinematics	(pVisual)->PlayCycle("death_init",false);
+			//PKinematics	(pVisual)->PlayCycle(ST->death,false);
+			PKinematics	(pVisual)->PlayCycle(ST->death);
+			///////////////////////////
+			//Render->model_Delete			(pVisual);
+			//pVisual = Render->model_Create  ("box_bone");
+			//xr_delete                       (cfModel);
+			//cfModel = xr_new<CCF_Skeleton> (this);
+			//cfModel->OnMove();
+			//PKinematics	(pVisual)->PlayCycle("x90",false);
+			////////////////////
+		//PKinematics	(pVisual)->PlayCycle("death_init",false);
 		}
 	}
 #ifdef _DEBUG

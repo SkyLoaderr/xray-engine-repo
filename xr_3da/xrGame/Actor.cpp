@@ -416,6 +416,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		{if(bDeathInit)
 		{
 			create_Skeleton();
+		//	create_Skeleton1();
 			bDeathInit=false;
 			return;
 		}
@@ -1178,7 +1179,7 @@ float CActor::HitScale	(int element)
 
 void CActor::create_Skeleton(){
 	Fmatrix ident;
-	float density=200.f;
+	float density=100.f;
 	//u32 material=0;
 	LPCSTR material="actor";
 	ident.identity();
@@ -1361,7 +1362,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m3);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
+	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1426,7 +1427,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m5);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
+	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1435,7 +1436,6 @@ void CActor::create_Skeleton(){
 	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
-
 
 	parent=root;
 	id=M->LL_BoneID("bip01_r_thigh");
@@ -1452,7 +1452,6 @@ void CActor::create_Skeleton(){
 	joint->SetLimits(-M_PI*1/3.5f,0,0);
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
-
 
 	parent=element;
 	id=M->LL_BoneID("bip01_r_calf");
@@ -1502,10 +1501,6 @@ void CActor::create_Skeleton(){
 	m_phSkeleton->add_Joint(joint);
 	element->SetMaterial(material);
 
-
-
-
-
 	parent=element;
 	id=M->LL_BoneID("bip01_l_calf");
 	element=P_create_Element				();
@@ -1544,8 +1539,121 @@ void CActor::create_Skeleton(){
 	m.set(mRotate);
 	ph_Movement.GetDeathPosition(m.c);
 	m_phSkeleton->mXFORM.set(m);
+	m_phSkeleton->SetAirResistance(0.0003f,0.4f);
 
 }
+
+
+
+void CActor::create_Skeleton1(){
+	Fmatrix ident;
+	float density=100.f;
+	//u32 material=0;
+	LPCSTR material="actor";
+	ident.identity();
+
+	Fmatrix m1;
+	m1.set(ident);
+
+
+	Fmatrix m2;
+	/*
+	m2._11=	0.80434370f;
+	m2._12=	-0.59369904f;
+	m2._13=	0.00000000f;
+
+	m2._14=	0.00000000f;
+
+	m2._21=	0.59369904f;
+	m2._22=	0.80434370f;
+	m2._23=	0.00000000f;
+
+	m2._24=	0.00000000f;
+
+	m2._31=	0.00000000f;
+	m2._32=	0.00000000f;
+	m2._33=	1.0000000f;
+
+	m2._34=	0.00000000f;
+*/
+
+	m2._11=	0.0f;
+	m2._12=	-1.0f;
+	m2._13=	0.00000000f;
+
+	m2._14=	0.00000000f;
+
+	m2._21=	1.0f;
+	m2._22=	0.0f;
+	m2._23=	0.00000000f;
+
+	m2._24=	0.00000000f;
+
+	m2._31=	0.00000000f;
+	m2._32=	0.00000000f;
+	m2._33=	1.0000000f;
+
+	m2._34=	0.00000000f;
+
+
+
+	//create shell
+	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	m_phSkeleton		= P_create_Shell();
+	CPhysicsJoint*		joint;
+	//get bone instance
+	int id=M->LL_BoneID("bone01");
+	CBoneInstance& instance=M->LL_GetInstance				(id);
+
+	//create root element
+	CPhysicsElement* element=P_create_Element				();
+	element->mXFORM.set(m1);
+	instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	//Fsphere sphere;
+	//sphere.P.set(0,0,0);
+	//sphere.R=0.3f;
+	//pelvis->add_Sphere(sphere);
+	element->setMass(density);
+	m_phSkeleton->add_Element(element);
+	element->SetMaterial(material);
+
+	CPhysicsElement* parent=element;
+
+
+	//spine
+	id=M->LL_BoneID("bone02");
+	element=P_create_Element				();
+	element->mXFORM.set(m1);
+	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	element->setMass(density);
+	element->set_ParentElement(parent);
+	m_phSkeleton->add_Element(element);
+	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint->SetAnchorVsSecondElement(0,0,0);
+	joint->SetAxisVsSecondElement(0,0,1,0);
+	joint->SetLimits(0,M_PI*1.f/2.f,0);
+	m_phSkeleton->add_Joint(joint);
+	element->SetMaterial(material);
+	//Fquaternion k;
+	//k.get_axis_angle
+	//Fmatrix m;
+	
+	
+
+
+
+
+
+	//set shell start position
+	Fmatrix m;
+	m.set(mRotate);
+	ph_Movement.GetDeathPosition(m.c);
+	m_phSkeleton->mXFORM.set(m);
+
+}
+
 
 void CActor::SetPhPosition(const Fmatrix &pos)
 {

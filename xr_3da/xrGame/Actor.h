@@ -216,6 +216,7 @@ private:
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);
 	void					create_Skeleton			();
+	void					create_Skeleton1		();
 public:
 							CActor					( );
 	virtual					~CActor					( );
