@@ -18,14 +18,14 @@ function main ()
 --	stalker:script (false, s_test.script_name ())
 
 	local door = get_level_object ("door")
-	local bones = {"bone01", "bone02", "bone03"}
+	local bones = {"bone16", "bone22", "bone18"}
 
 	while true do
 		  wait (500)
 		  local h = hit ()	
           h.power = 1
           h.direction:set (-1, 0, 0)
-          h:bone (bones[math.random (1, table.getn (bones))])
+          h:bone (bones[math.random (1, table.getn (bones) + 1)])
           h.draftsman = get_actor ()
           h.impulse = math.random (3000, 4000)
           h.type  = hit.strike
