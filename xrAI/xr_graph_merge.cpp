@@ -92,9 +92,11 @@ public:
 		for ( ; I != E; I++) {
 			(*I).tLocalPoint		= m_tpaGraph[I - B].tLocalPoint;
 			(*I).tGlobalPoint.add	(m_tpaGraph[I - B].tGlobalPoint,m_tLevel.tOffset);
-			Memory.mem_copy			((*I).tVertexTypes,m_tpaGraph[I - B].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			(*I).tLevelID			= dwLevelID;
+			(*I).tNodeID			= m_tpaGraph[I - B].tNodeID;
+			Memory.mem_copy			((*I).tVertexTypes,m_tpaGraph[I - B].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
+			
 			(*I).tpaEdges			= (SGraphEdge *)xr_malloc((*I).tNeighbourCount*sizeof(SGraphEdge));
 			SGraphEdge				*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[I - B].dwEdgeOffset);
 			for (int i=0; i<(int)(*I).tNeighbourCount; i++) {

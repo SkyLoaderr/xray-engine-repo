@@ -64,15 +64,15 @@ void vfLoadAIPoints(LPCSTR name)
 		E->Spawn_Read						(P);
 		xrGraphPoint						*tpGraphPoint = dynamic_cast<xrGraphPoint*>(E);
 		if (tpGraphPoint) {
-			SDynamicGraphVertex				tDynamicGraphVertex;
+			SDynamicGraphVertex					tDynamicGraphVertex;
 			tDynamicGraphVertex.tLocalPoint		= tpGraphPoint->o_Position;
-			tDynamicGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tLocalPoint;
+			tDynamicGraphVertex.tGlobalPoint	= tDynamicGraphVertex.tLocalPoint;
 			tDynamicGraphVertex.tNodeID			= 0;
 			tDynamicGraphVertex.tNeighbourCount	= 0;
-			Memory.mem_copy					(tDynamicGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
-			tDynamicGraphVertex.tLevelID			= 0;
-			tDynamicGraphVertex.tpaEdges			= 0;
-			tpaGraph.push_back				(tDynamicGraphVertex);
+			Memory.mem_copy						(tDynamicGraphVertex.tVertexTypes,tpGraphPoint->m_tLocations,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			tDynamicGraphVertex.tLevelID		= 0;
+			tDynamicGraphVertex.tpaEdges		= 0;
+			tpaGraph.push_back					(tDynamicGraphVertex);
 			i++;
 		}
 		xr_delete							(E);
