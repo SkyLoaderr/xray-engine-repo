@@ -420,5 +420,5 @@ void	CSoundManager::DeleteStream			( CSoundStream* pSnd )
 
 BOOL CSoundManager::IsOccluded(	Fvector& P, float R )
 {
-
+	return FALSE;
 }
