@@ -347,6 +347,9 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 
 CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
 {
+	//максимальное число косточек 64
+	VERIFY(element<64);
+
 	//запомнить кость по которой ударили и силу удара
 	WOUND_VECTOR_IT it = m_WoundVector.begin();
 	for(;it != m_WoundVector.end(); it++)
