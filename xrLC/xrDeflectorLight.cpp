@@ -338,11 +338,17 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms)
 	DWORD	w=0, h=0;
 	if (lm.dwWidth>=2)	{
 		w = lm.dwWidth/2;
-		if (!rms_test(lm,w,lm.dwHeight,rms))	w=0;
+		if (!rms_test(lm,w,lm.dwHeight,rms))	{
+			w = (lm.dwWidth*3)/4;
+			if (!rms_test(lm,w,lm.dwHeight,rms))	w = 0;
+		}
 	}
 	if (lm.dwHeight>=2)	{
 		h = lm.dwHeight/2;
-		if (!rms_test(lm,lm.dwWidth,h,rms))		h=0;
+		if (!rms_test(lm,lm.dwWidth,h,rms))		{
+			h = (lm.dwHeight*3)/4;
+			if (!rms_test(lm,lm.dwWidth,h,rms))		h = 0;
+		}
 	}
 	if (w || h)	{
 		if (0==w)	w = lm.dwWidth;
