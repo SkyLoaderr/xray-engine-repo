@@ -37,7 +37,7 @@ PARTICLEDLL_API void pAvoid(float magnitude, float epsilon, float look_ahead,
 			 PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
-			 float a6, float a7, float a8, BOOL allow_parent)
+			 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAAvoid S;
 	
@@ -46,7 +46,8 @@ PARTICLEDLL_API void pAvoid(float magnitude, float epsilon, float look_ahead,
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
 	S.look_ahead	= look_ahead;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 
 	_pSendAction(&S, PAAvoidID, sizeof(PAAvoid));
 }
@@ -55,7 +56,7 @@ PARTICLEDLL_API void pBounce(float friction, float resilience, float cutoff,
 			 PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
-			 float a6, float a7, float a8, BOOL allow_parent)
+			 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PABounce S;
 	
@@ -64,7 +65,8 @@ PARTICLEDLL_API void pBounce(float friction, float resilience, float cutoff,
 	S.oneMinusFriction = 1.0f - friction;
 	S.resilience	= resilience;
 	S.cutoffSqr		= _sqr(cutoff);
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PABounceID, sizeof(PABounce));
 }
@@ -92,7 +94,7 @@ PARTICLEDLL_API void pDamping(float damping_x, float damping_y, float damping_z,
 }
 
 PARTICLEDLL_API void pExplosion(float center_x, float center_y, float center_z, float velocity,
-				float magnitude, float stdev, float epsilon, float age, BOOL allow_parent)
+				float magnitude, float stdev, float epsilon, float age, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAExplosion S;
 
@@ -103,7 +105,8 @@ PARTICLEDLL_API void pExplosion(float center_x, float center_y, float center_z, 
 	S.stdev			= stdev;
 	S.epsilon		= epsilon;
 	S.age			= age;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	if(S.epsilon < 0.0f)
 		S.epsilon = P_EPS;
@@ -133,19 +136,20 @@ PARTICLEDLL_API void pGravitate(float magnitude, float epsilon, float max_radius
 	_pSendAction(&S, PAGravitateID, sizeof(PAGravitate));
 }
 
-PARTICLEDLL_API void pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_parent)
+PARTICLEDLL_API void pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAGravity S;
 	
 	S.directionL	= pVector(dir_x, dir_y, dir_z);
 	S.direction		= S.directionL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
-	
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
+
 	_pSendAction(&S, PAGravityID, sizeof(PAGravity));
 }
 
 PARTICLEDLL_API void pJet(float center_x, float center_y, float center_z,
-		 float magnitude, float epsilon, float max_radius, BOOL allow_parent)
+		 float magnitude, float epsilon, float max_radius, BOOL allow_translate, BOOL allow_rotate)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -158,7 +162,8 @@ PARTICLEDLL_API void pJet(float center_x, float center_y, float center_z,
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
 	S.max_radius	= max_radius;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PAJetID, sizeof(PAJet));
 }
@@ -193,7 +198,7 @@ PARTICLEDLL_API void pMove()
 
 PARTICLEDLL_API void pOrbitLine(float p_x, float p_y, float p_z,
 				float axis_x, float axis_y, float axis_z,
-				float magnitude, float epsilon, float max_radius, BOOL allow_parent)
+				float magnitude, float epsilon, float max_radius, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAOrbitLine S;
 	
@@ -205,13 +210,14 @@ PARTICLEDLL_API void pOrbitLine(float p_x, float p_y, float p_z,
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
 	S.max_radius	= max_radius;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PAOrbitLineID, sizeof(PAOrbitLine));
 }
 
 PARTICLEDLL_API void pOrbitPoint(float center_x, float center_y, float center_z,
-				 float magnitude, float epsilon, float max_radius, BOOL allow_parent)
+				 float magnitude, float epsilon, float max_radius, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAOrbitPoint S;
 	
@@ -220,7 +226,8 @@ PARTICLEDLL_API void pOrbitPoint(float center_x, float center_y, float center_z,
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
 	S.max_radius	= max_radius;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PAOrbitPointID, sizeof(PAOrbitPoint));
 }
@@ -228,13 +235,14 @@ PARTICLEDLL_API void pOrbitPoint(float center_x, float center_y, float center_z,
 PARTICLEDLL_API void pRandomAccel(PDomainEnum dtype,
 				 float a0, float a1, float a2,
 				 float a3, float a4, float a5,
-				 float a6, float a7, float a8, BOOL allow_parent)
+				 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PARandomAccel S;
 	
 	S.gen_accL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.gen_acc		= S.gen_accL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PARandomAccelID, sizeof(PARandomAccel));
 }
@@ -242,13 +250,14 @@ PARTICLEDLL_API void pRandomAccel(PDomainEnum dtype,
 PARTICLEDLL_API void pRandomDisplace(PDomainEnum dtype,
 					 float a0, float a1, float a2,
 					 float a3, float a4, float a5,
-					 float a6, float a7, float a8, BOOL allow_parent)
+					 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PARandomDisplace S;
 	
 	S.gen_dispL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.gen_disp		= S.gen_dispL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PARandomDisplaceID, sizeof(PARandomDisplace));
 }
@@ -256,13 +265,14 @@ PARTICLEDLL_API void pRandomDisplace(PDomainEnum dtype,
 PARTICLEDLL_API void pRandomVelocity(PDomainEnum dtype,
 					 float a0, float a1, float a2,
 					 float a3, float a4, float a5,
-					 float a6, float a7, float a8, BOOL allow_parent)
+					 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PARandomVelocity S;
 	
 	S.gen_velL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.gen_vel		= S.gen_velL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PARandomVelocityID, sizeof(PARandomVelocity));
 }
@@ -279,14 +289,15 @@ PARTICLEDLL_API void pRestore(float time_left)
 PARTICLEDLL_API void pSink(BOOL kill_inside, PDomainEnum dtype,
 		  float a0, float a1, float a2,
 		  float a3, float a4, float a5,
-		  float a6, float a7, float a8, BOOL allow_parent)
+		  float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PASink S;
 	
 	S.kill_inside	= kill_inside;
 	S.positionL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.position		= S.positionL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PASinkID, sizeof(PASink));
 }
@@ -294,14 +305,15 @@ PARTICLEDLL_API void pSink(BOOL kill_inside, PDomainEnum dtype,
 PARTICLEDLL_API void pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 				  float a0, float a1, float a2,
 				  float a3, float a4, float a5,
-				  float a6, float a7, float a8, BOOL allow_parent)
+				  float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	PASinkVelocity S;
 	
 	S.kill_inside	= kill_inside;
 	S.velocityL		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.velocity		= S.velocityL;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PASinkVelocityID, sizeof(PASinkVelocity));
 }
@@ -309,7 +321,7 @@ PARTICLEDLL_API void pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 PARTICLEDLL_API void pSource(float particle_rate, PDomainEnum dtype,
 			 float a0, float a1, float a2,
 			 float a3, float a4, float a5,
-			 float a6, float a7, float a8, BOOL allow_parent)
+			 float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -330,7 +342,8 @@ PARTICLEDLL_API void pSource(float particle_rate, PDomainEnum dtype,
 	S.parent_vel	= pVector(0,0,0);
 	S.parent_motion	= _ps.parent_motion;
 	S.flags.zero	();
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 
 	_pSendAction(&S, PASourceID, sizeof(PASource));
 }
@@ -396,14 +409,15 @@ PARTICLEDLL_API void pTargetRotateD(float scale, PDomainEnum dtype,
 	_pSendAction(&S, PATargetRotateDID, sizeof(PATargetRotate));
 }
 
-PARTICLEDLL_API void pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_parent)
+PARTICLEDLL_API void pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_translate, BOOL allow_rotate)
 {
 	PATargetVelocity S;
 	
 	S.velocityL		= pVector(vel_x, vel_y, vel_z);
 	S.velocity		= S.velocityL;
 	S.scale			= scale;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PATargetVelocityID, sizeof(PATargetVelocity));
 }
@@ -411,7 +425,7 @@ PARTICLEDLL_API void pTargetVelocity(float vel_x, float vel_y, float vel_z, floa
 PARTICLEDLL_API void pTargetVelocityD(float scale, PDomainEnum dtype,
 												float a0, float a1, float a2,
 												float a3, float a4, float a5,
-												float a6, float a7, float a8, BOOL allow_parent)
+												float a6, float a7, float a8, BOOL allow_translate, BOOL allow_rotate)
 {
 	// generate random target velocity
 	pVector v;
@@ -423,7 +437,8 @@ PARTICLEDLL_API void pTargetVelocityD(float scale, PDomainEnum dtype,
 	S.velocityL		= pVector(v.x, v.y, v.z);
 	S.velocity		= S.velocityL;
 	S.scale			= scale;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 
 	_pSendAction(&S, PATargetVelocityDID, sizeof(PATargetVelocity));
 }
@@ -459,7 +474,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 
 PARTICLEDLL_API void pVortex(float center_x, float center_y, float center_z,
 			float axis_x, float axis_y, float axis_z,
-			float magnitude, float epsilon, float max_radius, BOOL allow_parent)
+			float magnitude, float epsilon, float max_radius, BOOL allow_translate, BOOL allow_rotate)
 {
 	PAVortex S;
 	
@@ -471,7 +486,8 @@ PARTICLEDLL_API void pVortex(float center_x, float center_y, float center_z,
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
 	S.max_radius	= max_radius;
-	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
+	S.flags.set		(ParticleAction::ALLOW_TRANSLATE,allow_translate);
+	S.flags.set		(ParticleAction::ALLOW_ROTATE,allow_rotate);
 	
 	_pSendAction(&S, PAVortexID, sizeof(PAVortex));
 }

@@ -588,7 +588,7 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 	}
 }
 
-PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& vel)
+PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix& full, const Fvector& vel)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -603,10 +603,15 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 
 	int num_act = pa->count-1; pa++;
 
+	Fmatrix mR=full;	mR.c.set(0,0,0);
+	Fmatrix mT;			mT.translate(full.c);
+
 	// Step through all the actions in the action list.
-	for(int act = 0; act < num_act; act++, pa++)
-	{
-		if (!pa->flags.is(ParticleAction::ALLOW_PARENT)) continue;
+	for(int act = 0; act < num_act; act++, pa++){
+		BOOL t = pa->flags.is(ParticleAction::ALLOW_TRANSLATE);
+		BOOL r = pa->flags.is(ParticleAction::ALLOW_ROTATE);
+		if ((!t)&&(!r)) continue;
+		const Fmatrix& m = t&&r?full:(t?mT:mR);
 		switch(pa->type)
 		{
 		case PAAvoidID:

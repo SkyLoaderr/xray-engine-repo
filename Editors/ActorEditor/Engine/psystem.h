@@ -304,7 +304,8 @@ namespace PAPI{
 	struct ParticleAction
 	{
 		enum{
-			ALLOW_PARENT	= (1<<0)
+			ALLOW_TRANSLATE	= (1<<0),
+			ALLOW_ROTATE	= (1<<1)
 		};
 		static float	dt;	// This is copied to here from global state.
 		Flags32			flags;
@@ -742,13 +743,13 @@ namespace PAPI{
 		PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pBounce(float friction, float resilience, float cutoff,
 		PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);
 
@@ -756,16 +757,16 @@ namespace PAPI{
 		float vlow = 0.0f, float vhigh = P_MAXFLOAT);
 
 	PARTICLEDLL_API void pExplosion(float center_x, float center_y, float center_z, float velocity,
-		float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f, BOOL allow_parent=TRUE);
+		float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
 	PARTICLEDLL_API void pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
-	PARTICLEDLL_API void pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_parent=TRUE);
+	PARTICLEDLL_API void pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f,
-		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_parent=TRUE);
+		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pKillOld(float age_limit, BOOL kill_less_than = FALSE);
 
@@ -776,43 +777,43 @@ namespace PAPI{
 
 	PARTICLEDLL_API void pOrbitLine(float p_x, float p_y, float p_z,
 		float axis_x, float axis_y, float axis_z, float magnitude = 1.0f,
-		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_parent=TRUE);
+		float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pOrbitPoint(float center_x, float center_y, float center_z,
 		float magnitude = 1.0f, float epsilon = P_EPS,
-		float max_radius = P_MAXFLOAT, BOOL allow_parent=TRUE);
+		float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pRandomAccel(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pRandomDisplace(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pRandomVelocity(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pRestore(float time);
 
 	PARTICLEDLL_API void pSink(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pSinkVelocity(BOOL kill_inside, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pSource(float particle_rate, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);
 
@@ -829,18 +830,18 @@ namespace PAPI{
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_parent=TRUE);
+	PARTICLEDLL_API void pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pTargetVelocityD(float scale, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_parent=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pVertex(float x, float y, float z);
 
 	PARTICLEDLL_API void pVortex(float center_x, float center_y, float center_z,
 		float axis_x, float axis_y, float axis_z,
 		float magnitude = 1.0f, float epsilon = P_EPS,
-		float max_radius = P_MAXFLOAT, BOOL allow_parent=TRUE);
+		float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 }
 #endif //PSystemH
