@@ -20,7 +20,9 @@ function main ()
 --	action (stalker, object (ak, object.take), cond (cond.object_end))
 --	ak:set_queue_size (2)
 	action (stalker, move (move.standing, move.walk, move.line, patrol ("boar_way")),
-			anim (anim.danger), look (look.fire_point, get_actor ()), object (ak, object.fire1, 3), cond (cond.move_end))
+			anim ("prisluh"), 
+			--look (look.fire_point, get_actor ()), object (ak, object.fire1, 3), 
+			cond (cond.move_end))
 
 	while stalker:action () do wait () end
 
