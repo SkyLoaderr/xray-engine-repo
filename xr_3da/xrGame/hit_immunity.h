@@ -17,6 +17,7 @@ public:
 	virtual ~CHitImmunity();
 
 	virtual void LoadImmunities (LPCSTR section);
+	virtual void InitImmunities (LPCSTR section);
 
 protected:
 	//коэффициенты на которые домножается хит

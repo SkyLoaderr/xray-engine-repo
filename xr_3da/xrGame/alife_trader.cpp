@@ -25,7 +25,7 @@ void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 #pragma warning(disable:4238)
 	CInifile					ini(
 		&IReader				(
-		(void*)(*(ini_string)),
+		(void*)(ini_string),
 		xr_strlen(ini_string)
 		)
 		);
@@ -59,10 +59,14 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 	CSE_Abstract				*abstract = dynamic_object->alife().spawn_item("device_pda",base()->o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,base()->ID);
 	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	pda->m_original_owner		= base()->ID;
-	
-	CSpecificCharacter spec_char;
-	spec_char.Load(m_iSpecificCharacter);
-	dynamic_object->spawn_supplies(spec_char.SupplySpawn());	
+
+
+	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter)
+	{
+		CSpecificCharacter selected_char;
+		selected_char.Load(m_iSpecificCharacter);
+		dynamic_object->spawn_supplies(selected_char.SupplySpawn());
+	}
 }
 
 void CSE_ALifeTraderAbstract::vfInitInventory()

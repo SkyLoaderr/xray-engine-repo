@@ -17,18 +17,12 @@ CHitImmunity::CHitImmunity()
 CHitImmunity::~CHitImmunity()
 {
 }
-
-void CHitImmunity::LoadImmunities(LPCSTR section)
+void CHitImmunity::InitImmunities(LPCSTR imm_sect)
 {
-	LPCSTR imm_sect = section;
-	
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 		m_HitTypeK[i] = 1.0f;
 
-	if(pSettings->line_exist(section, "immunities_sect"))
-	{
-		imm_sect = pSettings->r_string(section, "immunities_sect");
-	}
+	R_ASSERT2(pSettings->section_exist(imm_sect), imm_sect);
 
 	if(pSettings->line_exist(imm_sect,"burn_immunity"))
 		m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(imm_sect,"burn_immunity");
@@ -48,5 +42,17 @@ void CHitImmunity::LoadImmunities(LPCSTR section)
 		m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(imm_sect,"fire_wound_immunity");
 	if(pSettings->line_exist(imm_sect,"explosion_immunity"))
 		m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(imm_sect,"explosion_immunity");
+}
+
+void CHitImmunity::LoadImmunities(LPCSTR section)
+{
+	LPCSTR imm_sect = section;
+	
+	if(pSettings->line_exist(section, "immunities_sect"))
+	{
+		imm_sect = pSettings->r_string(section, "immunities_sect");
+	}
+
+	InitImmunities (imm_sect);
 }
 

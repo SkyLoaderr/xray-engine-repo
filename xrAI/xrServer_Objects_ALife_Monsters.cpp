@@ -175,8 +175,12 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 			CSE_Visual* visual = smart_cast<CSE_Visual*>(base()); VERIFY(visual);
 			if(xr_strlen(selected_char.Visual())>0)
 				visual->set_visual(selected_char.Visual());
-		}
 
+/*
+			CSE_ALifeDynamicObject*	 dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(base()); VERIFY(dynamic_object);
+			dynamic_object->spawn_supplies(selected_char.SupplySpawn());
+*/
+		}
 		return m_iSpecificCharacter;
 	}
 }

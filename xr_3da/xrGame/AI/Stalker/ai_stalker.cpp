@@ -227,7 +227,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		if(ini->section_exist("immunities"))
 		{
 			LPCSTR imm_sect = ini->r_string("immunities", "immunities_sect");
-			LoadImmunities(imm_sect);
+			InitImmunities(imm_sect);
 		}
 	}
 

@@ -129,7 +129,21 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_sGameName		= uiXml.Read("name", 0, "");
 	data()->m_sBioText		= uiXml.Read("bio", 0, "");
 	data()->m_sVisual		= uiXml.Read("visual", 0, "");
+	
 	data()->m_sSupplySpawn	= uiXml.Read("supplies", 0, "");
+	
+
+	if(!data()->m_sSupplySpawn.empty())
+	{
+		std::string &str = data()->m_sSupplySpawn;
+		std::string::size_type pos = str.find("\\n");
+
+		while (std::string::npos != pos)
+		{
+			str.replace(pos, 2, "\n");
+			pos = str.find("\\n", pos + 1);
+		}
+	}
 
 	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
 	R_ASSERT3(data()->m_Community != NO_COMMUNITY, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
