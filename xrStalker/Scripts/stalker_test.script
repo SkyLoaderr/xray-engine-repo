@@ -20,6 +20,7 @@ end
 
 function random_evaluator:evaluate()
 	printf					("evaluator is asked for the value!")
+	printf					("%f",math.random())
 	if (math.random() < 0.5) then
 		return				(true)
 	else
