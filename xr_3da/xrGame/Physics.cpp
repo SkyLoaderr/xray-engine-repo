@@ -1692,10 +1692,25 @@ Fmatrix location;
 Fvector axis;
 CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
-first->InterpolateGlobalTransform(&location);
+
+switch(vs_anchor){
+
+case vs_first :first->InterpolateGlobalTransform(&location); break;
+case vs_second:second->InterpolateGlobalTransform(&location); break;
+case vs_global:											break;
+}
 
 location.transform_tiny(pos,anchor);
-//location.transform_tiny(axis,axes[0].direction);
+
+switch(axes[0].vs){
+
+case vs_first :first->InterpolateGlobalTransform(&location); break;
+case vs_second:second->InterpolateGlobalTransform(&location); break;
+case vs_global:											break;
+}
+
+
+
 location.transform_dir(axis,axes[0].direction);
 
 
@@ -1840,6 +1855,7 @@ void CPHJoint::Deactivate()
 {
 if(!bActive) return;
 dJointDestroy(m_joint);
+bActive=false;
 }
 
 

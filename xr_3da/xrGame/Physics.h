@@ -353,6 +353,7 @@ void CreateUniversalHinge();
 public:
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
+						if(bActive) Deactivate();
 						axes.clear();
 
 						};
