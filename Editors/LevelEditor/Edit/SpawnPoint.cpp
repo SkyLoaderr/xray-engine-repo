@@ -129,6 +129,18 @@ void CSpawnPoint::SSpawnData::Destroy()
     xr_delete			(m_Visual);
     xr_delete			(m_Motion);
 }
+void CSpawnPoint::SSpawnData::get_bone_xform	(LPCSTR name, Fmatrix& xform)
+{
+	xform.identity		();
+	if (m_Visual&&m_Visual->visual){
+    	CKinematics* P 	= PKinematics(m_Visual->visual);
+    	if (P){
+        	u16 id 		= P->LL_BoneID(name);
+            if (id!=BI_NONE)
+	        	xform 	= P->LL_GetTransform(id);
+        }    	
+    }
+}
 void CSpawnPoint::SSpawnData::Save(IWriter& F)
 {
     F.open_chunk		(SPAWNPOINT_CHUNK_ENTITYREF);
@@ -199,6 +211,9 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
     	::Render->model_Render	(m_Visual->visual,parent,priority,strictB2F,1.f);
     if (m_Motion&&m_Motion->animator&&bSelected&&(1==priority)&&(false==strictB2F))
         m_Motion->animator->DrawPath();
+    RCache.set_xform_world		(Fidentity);
+	Device.SetShader			(Device.m_WireShader);
+    m_Data->on_render			(&DU,this,bSelected,parent,priority,strictB2F);
 }
 void CSpawnPoint::SSpawnData::OnFrame()
 {
@@ -422,12 +437,12 @@ void CSpawnPoint::OnFrame()
 
 void CSpawnPoint::Render( int priority, bool strictB2F )
 {
-	inherited::Render(priority, strictB2F);
-    Scene->SelectLightsForObject(this);
+	inherited::Render			(priority, strictB2F);
+	Scene->SelectLightsForObject(this);
     // render attached object
     if (m_AttachedObject) 		m_AttachedObject->Render(priority, strictB2F);
 	if (m_SpawnData.Valid())    m_SpawnData.Render(Selected(),FTransformRP,priority, strictB2F);
-    // render spawn point
+	// render spawn point
     if (1==priority){
         if (strictB2F){
             RCache.set_xform_world(FTransformRP);
