@@ -155,6 +155,14 @@
 			};
 		};
 
+		template <typename T1, template <typename _1> class T2>
+		struct is_derived_from_template1 {
+			template <typename P> static object_type_traits::detail::yes select(T2<P>*);
+			static object_type_traits::detail::no select(...);
+
+			enum { value = sizeof(object_type_traits::detail::yes) == sizeof(select((T1*)0))};
+		};
+
 		declare_has(iterator);
 		declare_has(const_iterator);
 		declare_has(reference);

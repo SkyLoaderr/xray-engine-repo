@@ -27,8 +27,18 @@ intrusive_ptr foo(intrusive_ptr ptr)
 	return ptr;
 }
 
+template <typename C>
+struct B{};
+
+struct A : public B<A> {
+};
+
+struct C{};
+
 void time_smart_ptr_test()
 {
+	printf						("%s\n",is_derived_from_template<A,B>::value ? "TRUE" : "FALSE");
+	printf						("%s\n",is_derived_from_template<C,B>::value ? "TRUE" : "FALSE");
 	std::vector<intrusive_ptr>	test;
 	CTest						*t = new CTest();
 //	intrusive_ptr				a = t, b = t;
