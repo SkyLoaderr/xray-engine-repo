@@ -9,6 +9,7 @@
 const int	dhm_matrix		= 9;		// 8x8 array
 const float dhm_size		= 4.f;		// 4m per slot
 const int	dhm_precision	= 32;		// 32x32 subdivs per slot
+const int	dhm_total		= dhm_matrix*dhm_matrix;
 
 class CHM_Static
 {
@@ -17,22 +18,23 @@ class CHM_Static
 		BOOL		bReady;
 		float		data	[dhm_precision][dhm_precision];
 	};
-	Slot*			matrix	[dhm_matrix][dhm_matrix];
-	int				c_x,c_z;// center of heighmap
+	Slot*						data	[dhm_matrix][dhm_matrix];	// database
+	int							c_x,c_z;							// center of heighmap
+	svector<Slot*,dhm_total>	task;
 public: 
-	void			Update		();
+	void						Update		();
 
-	CHM_Static		();
-	~CHM_Static		();
+	CHM_Static					();
+	~CHM_Static					();
 };
 
 class CHM_Dynamic
 {
 public:
-	void			Update		();
+	void						Update		();
 
-	CHM_Dynamic		();
-	~CHM_Dynamic	();
+	CHM_Dynamic					();
+	~CHM_Dynamic				();
 };
 
 class CHeightMap
