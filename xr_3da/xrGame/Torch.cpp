@@ -228,7 +228,6 @@ void CTorch::net_Destroy()
 	SwitchNightVision		(false);
 
 	inherited::net_Destroy	();
-	xr_delete				(collidable.model);
 }
 
 void CTorch::OnH_A_Chield() 

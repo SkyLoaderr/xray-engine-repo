@@ -189,7 +189,7 @@ void CGamePersistent::OnAppActivate		()
 void CGamePersistent::OnAppDeactivate		()
 {
 	bRestorePause = FALSE;
-	if (!g_pGameLevel || (g_pGameLevel && GameID()== GAME_SINGLE) )
+	if (!g_pGameLevel || (g_pGameLevel && Level().game && GameID()== GAME_SINGLE) )
 	{
 		bRestorePause = Device.Pause();
 		Device.Pause(TRUE);
