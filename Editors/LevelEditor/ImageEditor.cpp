@@ -245,32 +245,29 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
             char key[255];
             TElTreeItem* M=0;
-/*
-//p
-            ImageProps->BeginFillMode("Image properties");
-            ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
-            M = ImageProps->AddItem(0,PROP_MARKER,"MipMaps");
-            ImageProps->AddItem(M,PROP_FLAG,"Enabled",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
-            ImageProps->AddItem(M,PROP_TOKEN,"Filter",			ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
-            M = ImageProps->AddItem(0,PROP_MARKER,"Fade");
-            ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
-            ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
-            ImageProps->AddItem(M,PROP_INTEGER,"Amount",		ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
-            ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.fade_color);
-            M = ImageProps->AddItem(0,PROP_MARKER,"Border");
-            ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
-            ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
-            ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.border_color);
-            M = ImageProps->AddItem(0,PROP_MARKER,"Flags");
-            ImageProps->AddItem(M,PROP_FLAG,"Binary Alpha",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flBinaryAlpha));
-            ImageProps->AddItem(M,PROP_FLAG,"Normal Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flNormalMap));
-            ImageProps->AddItem(M,PROP_FLAG,"Du Dv Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDuDvMap));
-            ImageProps->AddItem(M,PROP_FLAG,"Dither",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherColor));
-            ImageProps->AddItem(M,PROP_FLAG,"Dither Each MIP",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherEachMIPLevel));
-            ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
-            ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
-            ImageProps->EndFillMode();
-*/
+            ImageProps->BeginFillMode	("Image properties");
+            ImageProps->AddTokenItem	(0,"Format",(LPDWORD)&fmt.fmt,tfmt_token);
+            M=ImageProps->AddMarkerItem	(0,"MipMaps")->item;
+            ImageProps->AddFlagItem		(M,"Enabled",		&fmt.flag,STextureParams::flGenerateMipMaps);
+            ImageProps->AddTokenItem	(M,"Filter",		&fmt.mip_filter,tparam_token);
+            M=ImageProps->AddMarkerItem	(0,"Fade")->item;
+            ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flFadeToColor);
+            ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flFadeToAlpha);
+            ImageProps->AddDWORDItem	(M,"Amount",		&fmt.fade_amount,1000,1);
+            ImageProps->AddColorItem	(M,"Color",			&fmt.fade_color);
+            M=ImageProps->AddMarkerItem	(0,"Border")->item;
+            ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flColorBorder);
+            ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flAlphaBorder);
+            ImageProps->AddColorItem	(M,"Color",			&fmt.border_color);
+            M=ImageProps->AddMarkerItem	(0,"Flags")->item;
+            ImageProps->AddFlagItem		(M,"Binary Alpha",	&fmt.flag,STextureParams::flBinaryAlpha);
+            ImageProps->AddFlagItem		(M,"Normal Map",	&fmt.flag,STextureParams::flNormalMap);
+            ImageProps->AddFlagItem		(M,"Du Dv Map",		&fmt.flag,STextureParams::flDuDvMap);
+            ImageProps->AddFlagItem		(M,"Dither",		&fmt.flag,STextureParams::flDitherColor);
+            ImageProps->AddFlagItem		(M,"Dither Each MIP",&fmt.flag,STextureParams::flDitherEachMIPLevel);
+            ImageProps->AddFlagItem		(M,"Grayscale",		&fmt.flag,STextureParams::flGreyScale);
+            ImageProps->AddFlagItem		(M,"Implicit Lighted",&fmt.flag,STextureParams::flImplicitLighted);
+            ImageProps->EndFillMode		();
             m_LastSelection = m_SelectedName;
         }
     }else{

@@ -257,7 +257,8 @@ PropItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, L
     case PROP_ANSI_TEXTURE:
     case PROP_ANSI_SH_ENGINE:
     case PROP_ANSI_SH_COMPILE:
-    case PROP_INTEGER:{		prop->item->ColumnText->Add(prop->GetText()); }break;
+    case PROP_INTEGER:
+    case PROP_DWORD:{		prop->item->ColumnText->Add(prop->GetText()); }break;
     default: THROW2("PROP_????");
     }
     return prop;
@@ -354,15 +355,15 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         case PROP_ANSI_TEXT:
         case PROP_TEXT:
         	if (edText->Tag!=(int)Item){
-                R.Right	-=	12;
-                R.Left 	+= 	1;
-                DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                R.Left 	= 	R.Right;
-                Surface->CopyMode = cmSrcAnd;
-                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
-//                R.Right-= 1;
-//                R.Left += 1;
-//                DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+//                R.Right	-=	12;
+//                R.Left 	+= 	1;
+//                DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+//                R.Left 	= 	R.Right;
+//                Surface->CopyMode = cmSrcAnd;
+//                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
+                R.Right-= 1;
+                R.Left += 1;
+                DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }else{
             	if (!edText->Visible) ShowLWText(R);
             }
@@ -372,6 +373,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Left += 1;
             DrawText(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         break;
+        case PROP_DWORD:
         case PROP_INTEGER:
         case PROP_FLOAT:
         	if (seNumber->Tag!=(int)Item){
@@ -474,6 +476,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_ANSI_TEXTURE:
         case PROP_ANSI_SH_ENGINE:
         case PROP_ANSI_SH_COMPILE:	CustomAnsiTextClick(item);	break;
+        case PROP_DWORD:
         case PROP_INTEGER:
         case PROP_FLOAT:
         	PrepareLWNumber(item);
@@ -703,6 +706,18 @@ void TProperties::PrepareLWNumber(TElTreeItem* item)
 {
 	DWORD type 		= item->Tag;
     switch (type){
+	case PROP_DWORD:{
+        DWORDValue* V 		= (DWORDValue*)item->Data; VERIFY(V);
+        int edit_val        = V->GetValue();
+        if (V->OnBeforeEdit) V->OnBeforeEdit(item,V,&edit_val);
+		seNumber->MinValue 	= 0;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= edit_val;
+    }break;
     case PROP_INTEGER:{
         IntValue* V 		= (IntValue*)item->Data; VERIFY(V);
         int edit_val        = V->GetValue();
@@ -748,6 +763,15 @@ void TProperties::ApplyLWNumber()
 		DWORD type = item->Tag;
         seNumber->Update();
 	    switch (type){
+    	case PROP_DWORD:{
+	        DWORDValue* V 	= (DWORDValue*)item->Data; VERIFY(V);
+            int old_val		= V->GetValue();
+            int new_val		= seNumber->Value;
+			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
+			V->ApplyValue	(new_val);
+            if (old_val != new_val)	Modified();
+            item->ColumnText->Strings[0] = V->GetText();
+        }break;
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
             int old_val		= V->GetValue();

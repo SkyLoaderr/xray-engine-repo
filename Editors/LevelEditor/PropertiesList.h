@@ -231,7 +231,7 @@ public:		// User declarations
         return (IntValue*)	AddItem 		(parent,PROP_INTEGER,key,MakeIntValue(value,mn,mx,inc,after,before,draw));
     }
     IC DWORDValue* 			AddDWORDItem	(TElTreeItem* parent, LPCSTR key, LPDWORD value, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
-        return (DWORDValue*)AddItem 		(parent,PROP_INTEGER,key,MakeDWORDValue(value,mx,inc,after,before,draw));
+        return (DWORDValue*)AddItem 		(parent,PROP_DWORD,key,MakeDWORDValue(value,mx,inc,after,before,draw));
     }
     IC FloatValue* 			AddFloatItem	(TElTreeItem* parent, LPCSTR key, float* value, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
         return (FloatValue*)AddItem 		(parent,PROP_FLOAT,key,MakeFloatValue(value,mn,mx,inc,decim,after,before,draw));
@@ -261,7 +261,7 @@ public:		// User declarations
     	return (ListValue*)	AddItem	    	(parent,PROP_LIST,key,MakeListValueA(value,cnt,lst,after,before,draw));
     }
     IC DWORDValue* 			AddColorItem	(TElTreeItem* parent, LPCSTR key, LPDWORD value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
-        return (DWORDValue*)AddItem 		(parent,PROP_INTEGER,key,MakeDWORDValue(value,0xffffffff,1,after,before,draw));
+        return (DWORDValue*)AddItem 		(parent,PROP_COLOR,key,MakeDWORDValue(value,0xffffffff,1,after,before,draw));
     }
 	IC TextValue* 			AddTextItem		(TElTreeItem* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
     	return (TextValue*)	AddItem	    	(parent,PROP_TEXT,key,MakeTextValue(value,lim,after,before,draw));
