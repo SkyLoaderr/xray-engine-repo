@@ -11,8 +11,9 @@ class CUITDMFragList:public CUIDMFragList
 private:
 	u8				m_CurTeam;
 public:
-	void			Init			(u8 Team);
-	virtual void	UpdateItemsList	();
+	void				Init			(u8 Team);
+	virtual void		UpdateItemsList	();
+//	virtual void		Update();
 };
 
 #endif //__XR_UITDMFRAGLIST_H__

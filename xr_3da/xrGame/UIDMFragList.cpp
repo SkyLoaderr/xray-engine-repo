@@ -7,12 +7,14 @@
 
 CUIDMFragList::CUIDMFragList()
 {
+//	for (int i=0; i<32; i++)
+//		AddItem();
 }
 
 CUIDMFragList::~CUIDMFragList()
 {
 }
-
+/*
 void	CUIDMFragList::Show()
 {
 	inherited::Show();
@@ -22,6 +24,7 @@ void	CUIDMFragList::Show()
 
 	inherited::Enable(false);
 };
+*/
 
 //--------------------------------------------------------------------
 CUIStatsListItem*		CUIDMFragList::GetItem			(int index)
@@ -43,24 +46,22 @@ void	CUIDMFragList::UpdateItemsList ()
 	items.clear			();
 	for (;I!=E;++I)		items.push_back(&I->second);
 	std::sort			(items.begin(),items.end(),pred_player);
-
-	UpdateItemsNum();
 }
 
-void	CUIDMFragList::UpdateItemsNum	()
+bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 {
-	HighlightItem(0xffffffff);
-	SelectItem(0xffffffff);
+	if (ItemID>= items.size()) return false;
 
-	while (GetItemCount() < items.size())
-	{
-		AddItem();
-	};
+	game_cl_GameState::Player* P = (game_cl_GameState::Player*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
 
-	while (GetItemCount() > items.size())
-	{
-		RemoveItem(0);  
-	};
+	if (P->flags&GAME_PLAYER_FLAG_LOCAL) SelectItem(ItemID);
+
+	char Text[1024];
+	pItem->FieldsVector[0]->SetText(P->name);
+	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
+	sprintf(Text, "%d", P->ping); pItem->FieldsVector[2]->SetText(Text);
+
+	return true;
 };
 
 void	CUIDMFragList::Update()
@@ -69,9 +70,31 @@ void	CUIDMFragList::Update()
 
 	UpdateItemsList();
 
-	char Text[1024];
-	int ItemIDX = 0;	
-	
+	HighlightItem(0xffffffff);
+	SelectItem(0xffffffff);
+	//---------------------------------------
+	while (items.size() < GetItemCount())
+	{
+		RemoveItem(0);
+	};
+	//---------------------------------------
+	while (items.size() > GetItemCount())
+	{
+		AddItem();
+	};
+	//---------------------------------------
+
+	for (u32 i=0; i<GetItemCount(); i++)
+	{
+		CUIStatsListItem *pItem = GetItem(i);
+		if (!pItem) continue;
+		if (SetItemData(i, pItem)) continue;
+
+		pItem->FieldsVector[0]->SetText(NULL);
+		pItem->FieldsVector[1]->SetText(NULL);
+		pItem->FieldsVector[2]->SetText(NULL);
+	};
+	/*
 	for (ItemIt mI=items.begin(); items.end() != mI; ++mI)
 	{
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
@@ -85,6 +108,7 @@ void	CUIDMFragList::Update()
 		sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
 		sprintf(Text, "%d", P->ping); pItem->FieldsVector[2]->SetText(Text);
 	}
+	*/
 };
 //--------------------------------------------------------------------
 /*

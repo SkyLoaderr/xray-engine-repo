@@ -11,8 +11,9 @@ class CUIDMPlayerList:public CUIDMFragList
 public:
 //	void			Init			();
 //	virtual void	OnFrame			();
-	virtual void Update				();
-	virtual void Show				();
+//	virtual void Update				();
+//	virtual void Show				();
+	virtual bool					SetItemData		(u32 ItemID, CUIStatsListItem *pItem);
 };
 
 #endif //__XR_UIDMPLAYERLIST_H__

@@ -4,6 +4,24 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+bool	CUIDMPlayerList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
+{
+	if (ItemID>= items.size()) return false;
+
+	game_cl_GameState::Player* P = (game_cl_GameState::Player*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
+
+	if (P->flags&GAME_PLAYER_FLAG_LOCAL) SelectItem(ItemID);
+
+	char Text[1024];
+	pItem->FieldsVector[0]->SetText(P->name);
+	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
+	if (P->flags&GAME_PLAYER_FLAG_READY)
+		pItem->FieldsVector[2]->SetText("READY");
+	else
+		pItem->FieldsVector[2]->SetText("");
+	return true;
+};
+/*
 void	CUIDMPlayerList::Update()
 {
 	CUIStatsWnd::Update();
@@ -32,7 +50,8 @@ void	CUIDMPlayerList::Update()
 			pItem->FieldsVector[2]->SetText("");
 	}
 };
-
+*/
+/*
 void	CUIDMPlayerList::Show()
 {
 	CUIStatsWnd::Show();
@@ -42,6 +61,7 @@ void	CUIDMPlayerList::Show()
 
 	CUIStatsWnd::Enable(false);
 };
+*/
 /*
 CUIDMPlayerList::CUIDMPlayerList()
 {

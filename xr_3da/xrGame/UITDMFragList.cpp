@@ -32,32 +32,20 @@ void	CUITDMFragList::UpdateItemsList ()
 		items.push_back(&I->second);
 	};
 	std::sort			(items.begin(),items.end(),pred_player);
-
-	UpdateItemsNum();
 };
 /*
 void	CUITDMFragList::Update()
 {
-	CUIStatsWnd::Update();
+	inherited::Update();
 
-	UpdateItemsList();
+	CUIStatsListItem *pItem = GetItem(GetItemCount()-1);
+	if (!pItem) return;
+
+	pItem->FieldsVector[0]->SetText("TOTAL");
 
 	char Text[1024];
-	int ItemIDX = 0;
-
-	for (ItemIt mI=items.begin(); items.end() != mI; ++mI)
-	{
-		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
-
-		if (P->flags&GAME_PLAYER_FLAG_LOCAL) SelectItem(ItemIDX);
-
-		CUIStatsListItem *pItem = GetItem(ItemIDX++);
-		if (!pItem) continue;
-
-		pItem->FieldsVector[0]->SetText(P->name);
-		sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
-		sprintf(Text, "%d", P->ping); pItem->FieldsVector[2]->SetText(Text);
-	}
-}
+	sprintf(Text, "%d", Game().teams[m_CurTeam-1].score); pItem->FieldsVector[1]->SetText(Text);
+};
 */
+
 //--------------------------------------------------------------------
