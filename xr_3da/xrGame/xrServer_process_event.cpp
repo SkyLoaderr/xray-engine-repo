@@ -103,7 +103,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination, id_src;
 			P.r_u16				(id_src);
-			xrServerEntity*		e_dest		= ID_to_entity	(id_dest);		// кто повредился
+			/*xrServerEntity*	e_dest		= ID_to_entity	(id_dest);*/	// кто повредился
 			xrServerEntity*		e_src		= ID_to_entity	(id_src	);		// благодаря кому
 			xrClientData*		c_src		= e_src->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
