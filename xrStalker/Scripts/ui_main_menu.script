@@ -46,7 +46,7 @@ function main_menu:InitControls()
 	main_rect.y = (screen.height - main_rect.height)/2
 	--local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
 	local captiontxt_rect = {x = 60,
-							 y = -40,
+							 y = -35,
 							 width = 500,
 							 height = 0}
 	     --->> BUTTONS
