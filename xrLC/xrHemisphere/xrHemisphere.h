@@ -17,7 +17,7 @@ extern "C"
 			BOOL					ground,
 			float					ground_scale,
 			float					energy,
-			xrHemisphereIterator*	iterator,
+			xrHemisphereIterator*	it,
 			LPVOID					param
 		);
 };

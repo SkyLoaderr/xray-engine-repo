@@ -1,6 +1,22 @@
 #include "stdafx.h"
 #include "build.h"
+#include "xrHemisphere.h"
 
+// hemi
+struct		hemi_data
+{
+	vector<R_Light>*	dest;
+	R_Light				T;
+};
+void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
+{
+	hemi_data*	H		= (hemi_data*)P;
+	H->T.energy			= E;
+	H->T.direction.set	(x,y,z);
+	H->dest->push_back	(H->T);
+}
+
+// 
 void CBuild::SoftenLights()
 {
 	Status	("Jittering lights...");
@@ -111,39 +127,11 @@ void CBuild::SoftenLights()
 			// Build area-lights
 			if (g_params.area_quality)	
 			{
-				int		h_count, h_table[3];
-				const double (*hemi)[3] = 0;
-				if	(g_params.area_quality==1)
-				{
-					h_count = HEMI1_LIGHTS;
-					h_table[0]	= 0;
-					h_table[1]	= 1;
-					h_table[2]	= 2;
-					hemi	= hemi_1;
-				} else {
-					h_count = HEMI2_LIGHTS;
-					h_table[0]	= 0;
-					h_table[1]	= 2;
-					h_table[2]	= 1;
-					hemi	= hemi_2;
-				}
-
-				T.energy				= (g_params.area_energy_summary)/float(h_count);
-				Fcolor	cLight;
-				cLight.normalize_rgb	(L->diffuse);
-				
-				Fvector		base		= RL.direction;
-				base.normalize			();
-				for (int i=0; i<h_count; i++)
-				{
-					T.direction.set			(float(hemi[i][h_table[0]]),float(hemi[i][h_table[1]]),float(hemi[i][h_table[2]]));
-					T.direction.invert		();
-					T.direction.normalize	();
-					
-					T.diffuse.set			(g_params.area_color);
-					
-					dest->push_back	(T);
-				}
+				hemi_data				h_data;
+				h_data.dest				= dest;
+				h_data.T				= RL;
+				h_data.T.diffuse.set	(g_params.area_color);
+				xrHemisphereBuild		(g_params.area_quality,TRUE,0.5f,g_params.area_energy_summary,hemi_callback,&h_data);
 			}
 		} else {
 			RL.type			= LT_POINT;
