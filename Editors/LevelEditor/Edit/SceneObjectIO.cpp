@@ -25,7 +25,9 @@
 #define SCENEOBJ_CHUNK_PLACEMENT     	0x0904
 #define SCENEOBJ_CHUNK_FLAGS			0x0905
 #define SCENEOBJ_CHUNK_OMOTIONS			0xF914
-#define SCENEOBJ_CHUNK_ACTIVE_OMOTIONS	0xF915
+#define SCENEOBJ_CHUNK_ACTIVE_OMOTION	0xF915
+#define SCENEOBJ_CHUNK_SOUNDS			0xF920
+#define SCENEOBJ_CHUNK_ACTIVE_SOUND		0xF921
 //----------------------------------------------------
 COMotion* CSceneObject::LoadOMotion(const char* fname){
 	if (Engine.FS.Exist(fname)){
@@ -88,12 +90,23 @@ bool CSceneObject::Load(CStream& F){
                     break;
                 }
             }
-            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_OMOTIONS)){
+            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_OMOTION)){
             	string256 buf; F.RstringZ(buf);
                 SetActiveOMotion(FindOMotionByName(buf));
             }
         }
 
+        // object sounds
+        if (F.FindChunk(SCENEOBJ_CHUNK_SOUNDS)){
+            m_Sounds.resize(F.Rdword());
+            for (AStringIt s_it=m_Sounds.begin(); s_it!=m_Sounds.end(); s_it++){
+            	string256 buf; F.RstringZ(buf); *s_it = buf;
+            }
+            if (F.FindChunk(SCENEOBJ_CHUNK_ACTIVE_SOUND)){
+            	string256 buf; F.RstringZ(buf);
+                SetActiveSound(buf);
+            }
+        }
         if (!bRes) break;
     }while(0);
 
@@ -125,12 +138,25 @@ void CSceneObject::Save(CFS_Base& F){
     	F.close_chunk	();
 
         if (IsOMotionActive()){
-	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_OMOTIONS);
+	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_OMOTION);
     	    F.WstringZ		(m_ActiveOMotion->Name());
     		F.close_chunk	();
         }
     }
 
+    if (IsSoundable()){
+	    F.open_chunk	(SCENEOBJ_CHUNK_SOUNDS);
+    	F.Wdword		(m_Sounds.size());
+	    for (AStringIt s_it=m_Sounds.begin(); s_it!=m_Sounds.end(); s_it++)
+			F.WstringZ	(s_it->c_str());
+    	F.close_chunk	();
+
+        if (IsOMotionActive()){
+	        F.open_chunk	(SCENEOBJ_CHUNK_ACTIVE_SOUND);
+    	    F.WstringZ		(m_ActiveSound.c_str());
+    		F.close_chunk	();
+        }
+    }
 }
 //----------------------------------------------------
 
@@ -154,24 +180,30 @@ bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
         u32	position		= Packet.w_tell	();
         Packet.w_u16		(0);
         // spawn info
-        Packet.w_u8 		((1<<0)|(1<<1)|(1<<3));
+        // esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
+        Packet.w_u8 		((IsOMotionable()?(1<<0):0)|
+        					 (1<<1)|
+                             (IsSoundable()?(1<<3):0));
 		// verify path
 		// esAnimated
-        string256 anm_name;	strconcat(anm_name,Name,".anms");
-        Packet.w_string		(anm_name);
-        strconcat			(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
-        Engine.FS.VerifyPath(anm_name);
-        SaveOMotions		(anm_name);
+        if (IsOMotionable()){
+	        string256 anm_name;	strconcat(anm_name,Name,".anms");
+    	    Packet.w_string	(anm_name);
+        	strconcat		(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
+	        Engine.FS.VerifyPath(anm_name);
+    	    SaveOMotions	(anm_name);
+        }
 		// esModel
         string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
         Packet.w_string		(mdl_name);
         strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
+		Engine.FS.VerifyPath(mdl_name);
         if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
 		// esSound
-        string256 snd_name;	strconcat(snd_name,Name,".wav");
-        Packet.w_string		(snd_name);
-        strconcat			(snd_name,Builder.m_LevelPath.m_Path,Name,".wav");
-		Engine.FS.CreateNullFile(snd_name);
+        if (IsSoundable()){
+	        string256 snd_name;	strconcat(snd_name,Name,".wav");
+    	    Packet.w_string		(m_Sounds.front().c_str());
+        }
         // data size
         u16 size			= u16(Packet.w_tell()-position);
         Packet.w_seek		(position,&size,sizeof(u16));

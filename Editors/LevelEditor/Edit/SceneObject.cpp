@@ -249,6 +249,41 @@ void CSceneObject::OnFrame(){
 //S	SetActiveOMotion(0,false);
 
 //----------------------------------------------------
+// Object sound
+//----------------------------------------------------
+void CSceneObject::SetActiveSound(LPCSTR snd)
+{
+	m_ActiveSound = snd;
+}
+
+bool CSceneObject::AppendSound(LPCSTR fname)
+{
+	if (find(m_Sounds.begin(),m_Sounds.end(),AnsiString(fname))!=m_Sounds.end()){
+    	return false;
+    }else{
+    	m_Sounds.push_back(fname);
+        return true;
+    }
+}
+
+void CSceneObject::RemoveSound(LPCSTR name)
+{
+    AStringVec& lst = m_Sounds;
+    for(AStringIt m=lst.begin(); m!=lst.end(); m++)
+        if ((stricmp(m->c_str(),name)==0)){
+        	if (m_ActiveSound==*m) SetActiveSound(0);
+        	lst.erase(m);
+            break;
+        }
+}
+
+void CSceneObject::ClearSounds()
+{
+	ResetActiveSound();
+    m_Sounds.clear();
+}
+
+//----------------------------------------------------
 // Object motion
 //----------------------------------------------------
 void CSceneObject::ResetAnimation(bool upd_t)

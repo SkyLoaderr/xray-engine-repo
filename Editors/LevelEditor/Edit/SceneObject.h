@@ -26,6 +26,18 @@ public:
     IC void			SetFlag					(DWORD flag){m_dwFlags|=flag;}
     IC void			ResetFlag				(DWORD flag){m_dwFlags&=~flag;}
 public:
+	// sounds
+    AStringVec		m_Sounds;
+    AnsiString		m_ActiveSound;
+    IC bool			IsSoundable				()	{return !m_Sounds.empty();}
+    IC bool			IsSoundActive			()	{return IsSoundable()&&!m_ActiveSound.IsEmpty(); }
+    void			RemoveSound				(LPCSTR name);
+    void			ClearSounds				();
+    bool			AppendSound				(const char* fname);
+
+	void			SetActiveSound			(LPCSTR snd);
+	void			ResetActiveSound		(){SetActiveSound("");}
+
 	// motions
     st_AnimParam	m_OMParam;
 	OMotionVec		m_OMotions;

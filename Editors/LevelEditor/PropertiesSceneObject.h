@@ -73,6 +73,27 @@ __published:	// IDE-managed Components
 	TGroupBox *gbDynamicFlags;
 	TMultiObjCheck *cbDummy;
 	TGroupBox *GroupBox1;
+	TElTabSheet *tsSounds;
+	TPanel *Panel2;
+	TBevel *Bevel2;
+	TElTree *tvSounds;
+	TPanel *Panel3;
+	TExtBtn *ebSoundAppend;
+	TExtBtn *ExtBtn2;
+	TExtBtn *ebSoundDelete;
+	TExtBtn *ebSoundClear;
+	TExtBtn *ExtBtn5;
+	TExtBtn *ExtBtn6;
+	TGroupBox *GroupBox2;
+	TLabel *Label2;
+	TLabel *lbSoundCount;
+	TLabel *Label4;
+	TLabel *lbSoundActive;
+	TGroupBox *GroupBox4;
+	TLabel *Label6;
+	TLabel *lbSoundCurrentName;
+	TLabel *Label8;
+	TLabel *lbSoundCurrentLenght;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -107,11 +128,18 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall cbDummyClick(TObject *Sender);
+	void __fastcall ebSoundAppendClick(TObject *Sender);
+	void __fastcall ebSoundDeleteClick(TObject *Sender);
+	void __fastcall ebSoundClearClick(TObject *Sender);
+	void __fastcall tvSoundsItemChange(TObject *Sender, TElTreeItem *Item,
+          TItemChangeMode ItemChangeMode);
+	void __fastcall tsSoundsShow(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSceneObject* form;
     bool 					bLoadMode;
     CSceneObject* 			m_EditObject;
     vector<COMotion*>		m_OMotions;
+    AStringVec				m_Sounds;
     COMotion*				m_ActiveOMotion;
     list<CCustomObject*>* 	m_Objects;
     void GetObjectsInfo     ();
@@ -124,7 +152,8 @@ private:	// User declarations
     IC bool IsMultiSelection(){return (m_Objects->size()!=1);}
 	void __fastcall OnRenameItem(LPCSTR p0, LPCSTR p1);
 	void __fastcall OnRemoveItem(LPCSTR name);
-	void __fastcall ebOResetActiveMotion(TElTreeItem* ignore_item);
+	void __fastcall OnRemoveSoundItem(LPCSTR name);
+	void __fastcall ebResetActive(TElTree* tv, TElTreeItem* ignore_item);
 public:		// User declarations
     __fastcall TfrmPropertiesSceneObject(TComponent* Owner);
     static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);

@@ -96,6 +96,8 @@ void TfrmPropertiesSceneObject::SaveObjectsInfo()
 		ClearObjectsInfo();
     	for (OMotionIt it=m_EditObject->m_OMotions.begin(); it!=m_EditObject->m_OMotions.end(); it++)
         	m_OMotions.push_back(new COMotion(*it));
+    	for (AStringIt s_it=m_EditObject->m_Sounds.begin(); s_it!=m_EditObject->m_Sounds.end(); s_it++)
+        	m_Sounds.push_back(*s_it);
     }
 }
 
@@ -105,6 +107,7 @@ void TfrmPropertiesSceneObject::ClearObjectsInfo()
     	for (OMotionIt it=m_OMotions.begin(); it!=m_OMotions.end(); it++)
         	_DELETE(*it);
      	m_OMotions.clear();
+     	m_Sounds.clear();
     }
 }
 
@@ -114,6 +117,8 @@ void TfrmPropertiesSceneObject::RestoreObjectsInfo()
 		m_EditObject->ClearOMotions();
     	for (OMotionIt it=m_OMotions.begin(); it!=m_OMotions.end(); it++)
         	m_EditObject->m_OMotions.push_back(new COMotion(*it));
+    	for (AStringIt s_it=m_Sounds.begin(); s_it!=m_Sounds.end(); s_it++)
+        	m_EditObject->m_Sounds.push_back(*s_it);
     }
 }
 
@@ -264,6 +269,7 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionAppendClick(
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
             tvOMotions->Selected = Item;
+            tvOMotions->EnsureVisible(Item);
 
         	ELog.DlgMsg(mtInformation,"Motion '%s' appended.",M->Name());
     		lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
@@ -288,10 +294,9 @@ void __fastcall TfrmPropertiesSceneObject::ebOMotionDeleteClick(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesSceneObject::ebOResetActiveMotion(TElTreeItem* ignore_item){
+void __fastcall TfrmPropertiesSceneObject::ebResetActive(TElTree* tv, TElTreeItem* ignore_item){
 	if (m_EditObject){
-//		lbActiveOMotion->Caption 		= "...";
-	    for ( TElTreeItem* node = tvOMotions->Items->GetFirstNode(); node; node = node->GetNext())
+	    for ( TElTreeItem* node = tv->Items->GetFirstNode(); node; node = node->GetNext())
     	    if (node->Checked&&(ignore_item!=node)){ node->Checked = false; break; }
     }
 }
@@ -311,7 +316,7 @@ void __fastcall TfrmPropertiesSceneObject::tvOMotionsItemChange(
 		    	lbActiveOMotion->Caption	= "...";
     		    m_EditObject->SetActiveOMotion(0);
             }
-			ebOResetActiveMotion(Item);
+			ebResetActive(tvOMotions,Item);
 			OnModified(Sender);
         }
     break;
@@ -447,6 +452,106 @@ void __fastcall TfrmPropertiesSceneObject::fsStorageRestorePlacement(
 void __fastcall TfrmPropertiesSceneObject::cbDummyClick(TObject *Sender)
 {
 	OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::OnRemoveSoundItem(LPCSTR name)
+{
+	m_EditObject->RemoveSound(name);
+	lbSoundCount->Caption = m_EditObject->m_Sounds.size();
+    OnModified(0);
+}
+
+void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(
+      TObject *Sender)
+{
+    LPCSTR N=0;
+    if (N=TfrmChoseItem::SelectSound(false,0,true)){
+    	if (m_EditObject->AppendSound(N)){
+            // append to list
+            TElTreeItem* Item = FOLDER::AppendObject(tvSounds,N);
+            Item->ShowCheckBox = true;
+            Item->CheckBoxType = ectCheckBox;
+            Item->CheckBoxEnabled = true;
+            tvSounds->Selected = Item;
+            tvSounds->EnsureVisible(Item);
+
+        	ELog.DlgMsg(mtInformation,"Sound '%s' appended.",N);
+    		lbSoundCount->Caption = m_EditObject->m_Sounds.size();
+		    OnModified(Sender);
+        }else
+        	ELog.DlgMsg(mtError,"Append failed.");
+    }
+}                                                
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::ebSoundDeleteClick(
+      TObject *Sender)
+{
+    if (tvSounds->Selected)
+		FOLDER::RemoveItem(tvSounds,tvSounds->Selected,OnRemoveSoundItem);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::ebSoundClearClick(
+      TObject *Sender)
+{
+    tvSounds->Items->Clear();
+	m_EditObject->ClearSounds();
+	OnModified(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::tvSoundsItemChange(
+      TObject *Sender, TElTreeItem *Item, TItemChangeMode ItemChangeMode)
+{
+	switch(ItemChangeMode){
+	case icmCheckState:
+    	if (m_EditObject){
+            if (Item->Checked){
+		        AnsiString fn; FOLDER::MakeFullName(Item,0,fn);
+    		    m_EditObject->SetActiveSound(fn.c_str());
+		    	lbSoundActive->Caption	= Item->Text;
+            }else{
+		    	lbSoundActive->Caption	= "...";
+    		    m_EditObject->SetActiveSound(0);
+            }
+			ebResetActive(tvSounds,Item);
+			OnModified(Sender);
+        }
+    break;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesSceneObject::tsSoundsShow(TObject *Sender)
+{
+// Set up surfaces&textures
+    AnsiString name;
+    tvSounds->Items->Clear();
+    if (!IsMultiSelection()){
+        // create root tree node (object name)
+        for (AStringIt m_it=m_EditObject->m_Sounds.begin(); m_it!=m_EditObject->m_Sounds.end(); m_it++){
+        	TElTreeItem *Item = FOLDER::AppendObject(tvSounds,m_it->c_str());
+            Item->ShowCheckBox = true;
+            Item->CheckBoxType = ectCheckBox;
+            Item->CheckBoxEnabled = true;
+        }
+        tvSounds->FullExpand();
+
+        lbSoundCount->Caption 	= m_EditObject->m_Sounds.size();
+		lbSoundActive->Caption 	= "...";
+        if (!m_EditObject->m_ActiveSound.IsEmpty()){
+	        TElTreeItem* Item 		= FOLDER::FindObject(tvSounds,m_EditObject->m_ActiveSound.c_str());
+            Item->Checked 			= true;
+	    	lbSoundActive->Caption	= Item->Text;
+        }
+    }
+
+    tvSounds->Sort(true);
+
+//    FEditNode = 0;
+//    selected_omotion = 0;
 }
 //---------------------------------------------------------------------------
 
