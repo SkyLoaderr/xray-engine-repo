@@ -33,7 +33,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	}
 
 	// Start client
-	bResult							= net_Start_client("op_client");
+	bResult							= net_Start_client(op_client);
 
 	pApp->LoadEnd					();
 
