@@ -28,6 +28,8 @@ BOOL CRestrictedObject::net_Spawn			(LPVOID data)
 	CSE_Abstract				*abstract	= (CSE_Abstract*)(data);
 	CSE_ALifeMonsterAbstract	*monster	= smart_cast<CSE_ALifeMonsterAbstract*>(abstract);
 	VERIFY						(monster);
+	m_applied					= false;
+	m_removed					= true;
 	
 	Level().space_restriction_manager().restrict	(ID(),monster->m_out_space_restrictors,monster->m_in_space_restrictors);
 
@@ -62,25 +64,42 @@ void CRestrictedObject::remove_restrictions	(ref_str out_restrictions, ref_str i
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, float radius) const
 {
-	if (accessible(start_vertex_id))
+	VERIFY						(!m_applied);
+	VERIFY						(m_removed);
+	m_removed					= false;
+	if (accessible(start_vertex_id)) {
+		m_applied				= true;
 		Level().space_restriction_manager().add_border(ID(),start_vertex_id,radius);
+	}
 }
 
 void CRestrictedObject::add_border			(const Fvector &start_position, const Fvector &dest_position) const
 {
-	if (accessible(start_position))
+	VERIFY						(!m_applied);
+	VERIFY						(m_removed);
+	m_removed					= false;
+	if (accessible(start_position)) {
+		m_applied				= true;
 		Level().space_restriction_manager().add_border(ID(),start_position,dest_position);
+	}
 }
 
 void CRestrictedObject::add_border			(u32 start_vertex_id, u32 dest_vertex_id) const
 {
-	if (accessible(start_vertex_id))
+	VERIFY						(!m_applied);
+	VERIFY						(m_removed);
+	m_removed					= false;
+	if (accessible(start_vertex_id)) {
+		m_applied				= true;
 		Level().space_restriction_manager().add_border(ID(),start_vertex_id,dest_vertex_id);
+	}
 }
 
 void CRestrictedObject::remove_border		() const
 {
-	if (applied())
+	VERIFY						(!m_removed);
+	m_removed					= true;
+	if (m_applied)
 		Level().space_restriction_manager().remove_border(ID());
 }
 

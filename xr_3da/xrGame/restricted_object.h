@@ -14,6 +14,10 @@ class CRestrictedObject : virtual public CGameObject {
 private:
 	typedef CGameObject inherited;
 
+private:
+	mutable bool		m_applied;
+	mutable bool		m_removed;
+
 public:
 	IC					CRestrictedObject		();
 	virtual				~CRestrictedObject		();
