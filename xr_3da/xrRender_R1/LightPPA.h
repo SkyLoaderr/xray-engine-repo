@@ -18,11 +18,7 @@ struct	CLightR_Vertex
 
 class	CLightR_Manager
 {
-	ref_shader						hShader;
-	ref_geom						hGeom;
-	shared_str							hPPAcolor;
 	xrXRC							xrc;
-
 	xr_vector<light*>				selected_point;
 	xr_vector<light*>				selected_spot;
 public:

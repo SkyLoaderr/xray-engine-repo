@@ -297,13 +297,8 @@ void CLightR_Manager::add			(light* L)
 
 CLightR_Manager::CLightR_Manager	()
 {
-	hPPAcolor						= "L_dynamic_color";
-	hShader.create					("ppalight","internal\\internal_light_att,internal\\internal_light_att");
-	hGeom.create					(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
 CLightR_Manager::~CLightR_Manager	()
 {
-	hGeom.destroy					();
-	hShader.destroy					();
 }

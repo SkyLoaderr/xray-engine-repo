@@ -127,7 +127,7 @@ void			CLight_DB::add_light		(light* L)
 	L->frame_render							=	Device.dwFrame;
 	if (L->flags.bStatic)					return;	// skip static lighting, 'cause they are in lmaps
 
-	RImplementation.L_Dynamic->add	(L);
+	RImplementation.L_Dynamic->add			(L);
 }
 #endif
 
