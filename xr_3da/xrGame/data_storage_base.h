@@ -61,9 +61,9 @@ public:
 		neighbour.back			= parent;
 	}
 
-	IC		void		update_successors(_GraphNode &tpNeighbour)
+	IC		void		update_successors(_GraphNode &/**tpNeighbour/**/)
 	{
-		VERIFY					(false);
+		NODEFAULT;
 	}
 
 	IC		_index_type	get_max_node_count()
@@ -244,7 +244,7 @@ public:
 		return					(node_count);
 	}
 
-	IC		_GraphNode	&create_node	(const _index_type vertex_id)
+	IC		_GraphNode	&create_node	(const _index_type /**vertex_id/**/)
 	{
 		return					(*(nodes + node_count++));
 	}

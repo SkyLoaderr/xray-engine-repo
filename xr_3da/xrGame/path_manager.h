@@ -312,7 +312,7 @@ public:
 		y3						= (float)(tNode2.position().y());
 	}
 
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	IC	_dist_type	evaluate		(const _index_type /**node_index1/**/, const _index_type node_index2, const _Graph::const_iterator &/**i/**/)
 	{
 		VERIFY					(graph);
 		
@@ -323,7 +323,7 @@ public:
 		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
 
-	IC	_dist_type	estimate		(const _index_type node_index) const
+	IC	_dist_type	estimate		(const _index_type /**node_index/**/) const
 	{
 		VERIFY					(graph);
 		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
@@ -358,7 +358,7 @@ public:
 		return					(true);
 	}
 
-	IC		void		begin			(const _index_type vertex_id, const_iterator &begin, const_iterator &end)
+	IC		void		begin			(const _index_type /**vertex_id/**/, const_iterator &begin, const_iterator &end)
 	{
 		graph->begin			(best_node,begin,end);
 	}

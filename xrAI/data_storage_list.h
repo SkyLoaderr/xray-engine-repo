@@ -1295,7 +1295,7 @@ public:
 		verify_buckets			();
 	}
 
-	IC		void		decrease_opened	(CGraphNode &vertex, const _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &vertex, const /**_dist_type value/**/)
 	{
 		VERIFY					(!is_opened_empty());
 		u32						node_bucket_id = compute_bucket_id(vertex);
