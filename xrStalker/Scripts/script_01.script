@@ -25,11 +25,6 @@ function main()
 	)
 
 	while stalker1:action() do		
-		if stalker1:cond.time_end == 0 then
-			printf("script 2!")
-			flush()
-			stalker1:script	(false, stalker_01.script_name())
-			stalker1:script	(true,  stalker_01.script_name())
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
@@ -40,7 +35,6 @@ function main()
 			)
 			wait		(1500)			
                 	break		
-		end
 		wait()			
 	end
 
