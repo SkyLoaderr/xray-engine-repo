@@ -447,7 +447,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         	BOOLValue* V				= (BOOLValue*)prop->GetValue();
             BOOL new_val 				= !V->GetValue();
 			prop->OnAfterEdit			(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){
+            if (prop->ApplyValue(&new_val)){
 				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
@@ -457,7 +457,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         	FlagValue*	V 				= (FlagValue*)prop->GetValue();
             BOOL new_val 				= !V->GetValue();
 			prop->OnAfterEdit			(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){
+            if (prop->ApplyValue(&new_val)){
 				prop->OnChange			();
                 Modified				();
 	            RefreshForm				();
@@ -596,7 +596,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             xr_token* token_list   	= V->token;
             DWORD new_val			= token_list[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){	
+            if (prop->ApplyValue(&new_val)){	
 				prop->OnChange		();
             	Modified			();
             }
@@ -605,7 +605,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN2:{
             DWORD new_val			= mi->Tag;
 			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){	
+            if (prop->ApplyValue(&new_val)){	
 				prop->OnChange		();
             	Modified			();
             }
@@ -615,7 +615,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         	TokenValue3* V			= (TokenValue3*)prop->GetValue();
             DWORD new_val			= V->items[mi->Tag].ID;
 			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){	
+            if (prop->ApplyValue(&new_val)){	
 				prop->OnChange		();
             	Modified			();
             }
@@ -626,7 +626,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             AStringVec& lst		 	= V->items;
             string256 new_val;	strcpy(new_val,lst[mi->Tag].c_str());
 			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){	
+            if (prop->ApplyValue(new_val)){	
 				prop->OnChange		();
 	            Modified			();
             }
@@ -669,7 +669,7 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
 
 	if (TfrmShaderFunction::Run(&edit_val)==mrOk){
         prop->OnAfterEdit	(&edit_val);
-        if (prop->ApplyValue(*(LPVOID*)&edit_val)){
+        if (prop->ApplyValue(&edit_val)){
 			prop->OnChange	();
         	Modified		();
         }
@@ -691,7 +691,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         if (SelectColor(&ev)){
 	        edit_val.set	(ev);
             prop->OnAfterEdit(&edit_val);
-            if (prop->ApplyValue(*(LPVOID*)&edit_val)){
+            if (prop->ApplyValue(&edit_val)){
 				prop->OnChange	();
                 item->RedrawItem(true);
                 Modified		();
@@ -705,7 +705,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
 
         if (SelectColor(&edit_val)){
             prop->OnAfterEdit(&edit_val);
-            if (prop->ApplyValue((LPVOID)edit_val)){	
+            if (prop->ApplyValue(&edit_val)){	
 				prop->OnChange	();
                 item->RedrawItem(true);
                 Modified		();
@@ -726,7 +726,7 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 	prop->OnBeforeEdit(&edit_val);
 	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&V->lim_mn,&V->lim_mx)){
         prop->OnAfterEdit(&edit_val);
-        if (prop->ApplyValue(*(LPVOID*)&edit_val)){
+        if (prop->ApplyValue(&edit_val)){
 			prop->OnChange	();
 			item->RedrawItem(true);
             Modified		();
@@ -791,7 +791,7 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt)){
         edit_val				= new_val;
         prop->OnAfterEdit	(&edit_val);
-        if (prop->ApplyValue(*(LPVOID*)&edit_val)){ 
+        if (prop->ApplyValue(&edit_val)){ 
 			prop->OnChange	();
         	Modified();
         }
@@ -927,7 +927,7 @@ void TProperties::ApplyLWNumber()
 	        U8Value* V 			= (U8Value*)prop->GetValue(); VERIFY(V);
             u8 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -936,7 +936,7 @@ void TProperties::ApplyLWNumber()
 	        U16Value* V 		= (U16Value*)prop->GetValue(); VERIFY(V);
             u16 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -945,7 +945,7 @@ void TProperties::ApplyLWNumber()
 	        U32Value* V 		= (U32Value*)prop->GetValue(); VERIFY(V);
             u32 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -954,7 +954,7 @@ void TProperties::ApplyLWNumber()
 	        S8Value* V 			= (S8Value*)prop->GetValue(); VERIFY(V);
             s8 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -963,7 +963,7 @@ void TProperties::ApplyLWNumber()
 	        S16Value* V 		= (S16Value*)prop->GetValue(); VERIFY(V);
             s16 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -972,7 +972,7 @@ void TProperties::ApplyLWNumber()
 	        S32Value* V 		= (S32Value*)prop->GetValue(); VERIFY(V);
             s32 new_val			= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue((LPVOID)new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -981,7 +981,7 @@ void TProperties::ApplyLWNumber()
 	        FloatValue* V 		= (FloatValue*)prop->GetValue(); VERIFY(V);
             float new_val		= seNumber->Value;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue(*(LPVOID*)&new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified		();
             }
@@ -1067,7 +1067,7 @@ void TProperties::ApplyLWText()
 			AnsiString new_val	= edText->Text;
             edText->MaxLength	= 0;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue(*(LPVOID*)&new_val)){ 
+            if (prop->ApplyValue(&new_val)){ 
 				prop->OnChange	();
             	Modified();
             }

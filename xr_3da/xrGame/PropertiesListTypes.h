@@ -53,6 +53,7 @@ typedef void 	__fastcall (__closure *TBeforeEdit)		(PropValue* sender, LPVOID ed
 typedef void 	__fastcall (__closure *TAfterEdit)		(PropValue* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnChange)		(PropValue* sender);
+typedef void 	__fastcall (__closure *TOnClick)		(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnCloseEvent)	(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
@@ -70,9 +71,9 @@ public:
     TBeforeEdit			BeforeEditEvent;
     TOnDrawValue		DrawValueEvent;
     TOnChange			ChangeEvent;
+    TOnClick			OnClickEvent;
 public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):
-                        				m_Owner(0),AfterEditEvent(after),BeforeEditEvent(before),DrawValueEvent(draw),ChangeEvent(change){;}
+						PropValue		():m_Owner(0),AfterEditEvent(0),BeforeEditEvent(0),DrawValueEvent(0),ChangeEvent(0),OnClickEvent(0){;}
     virtual LPCSTR		GetText			()=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
@@ -167,7 +168,7 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 class CaptionValue: public PropValue{
 	AnsiString			value;
 public:
-						CaptionValue	(LPCSTR val):PropValue(TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0),TOnChange(0)){value=val;}
+						CaptionValue	(LPCSTR val){value=val;}
     virtual LPCSTR		GetText			(){return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}
@@ -179,7 +180,7 @@ class TextValue: public PropValue{
 	LPSTR				value;
 public:
 	int					lim;
-						TextValue		(LPSTR val, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(val),lim(_lim),PropValue(after,before,draw,change){};
+						TextValue		(LPSTR val, int _lim):value(val),init_value(val),lim(_lim){};
     virtual LPCSTR		GetText			();
     virtual bool		Equal			(PropValue* prop){ return (0==strcmp((LPSTR)value,((TextValue*)prop)->value)); }
     virtual bool		ApplyValue		(LPVOID val)
@@ -199,13 +200,13 @@ class ATextValue: public PropValue{
 	AnsiString			init_value;
 	AnsiString*			value;
 public:
-						ATextValue		(AnsiString* val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),PropValue(after,before,draw,change){};
+						ATextValue		(AnsiString* val):value(val),init_value(*val){};
     virtual LPCSTR		GetText			();
     virtual bool		Equal			(PropValue* prop){ return (*value==*((ATextValue*)prop)->value); }
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (*value!=(const AnsiString&)val){
-            *value		= (const AnsiString&)val;
+        if (*value!=*(AnsiString*)val){
+            *value		= *(AnsiString*)val;
             return 		true;
         }
         return 			false;
@@ -219,13 +220,13 @@ class WaveValue: public PropValue{
 	WaveForm			init_value;
 	WaveForm*			value;
 public:
-						WaveValue		(WaveForm* val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),PropValue(after,before,draw,change){};
+						WaveValue		(WaveForm* val):value(val),init_value(*val){};
     virtual LPCSTR		GetText			(){return "[Wave]";}
     virtual bool		Equal			(PropValue* prop){ return (value->Similar(*((WaveValue*)prop)->value)); }
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (value->Similar((const WaveForm&)val)){
-            *value		= (const WaveForm&)val;
+        if (value->Similar(*(WaveForm*)val)){
+            *value		= *(WaveForm*)val;
             return 		true;
         }
         return 			false;
@@ -234,6 +235,7 @@ public:
     virtual void		ResetValue		(){*value=init_value;}
 };
 //------------------------------------------------------------------------------
+
 
 template <class T>
 class NumericValue
@@ -280,60 +282,60 @@ public:
 
 class U8Value: public PropValue, public NumericValue<u8> {
 public:
-						U8Value			(u8* val, u8 mn, u8 mx, u8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<u8>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						U8Value			(u8* val, u8 mn, u8 mx, u8 increm):NumericValue<u8>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((U8Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((u8)val);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(u8*)val);}
     u8 					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 class U16Value: public PropValue, public NumericValue<u16> {
 public:
-						U16Value	 	(u16* val, u16 mn, u16 mx, u16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<u16>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						U16Value	 	(u16* val, u16 mn, u16 mx, u16 increm):NumericValue<u16>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((U16Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((u16)value);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(u16*)value);}
     u16					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 class U32Value: public PropValue, public NumericValue<u32> {
 public:
-						U32Value  		(u32* val, u32 mn, u32 mx, u32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<u32>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						U32Value  		(u32* val, u32 mn, u32 mx, u32 increm):NumericValue<u32>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((U32Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((u32)value);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(u32*)value);}
     u32					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 class S8Value: public PropValue, public NumericValue<s8> {
 public:
-						S8Value			(s8* val, s8 mn, s8 mx, s8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<s8>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						S8Value			(s8* val, s8 mn, s8 mx, s8 increm):NumericValue<s8>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((S8Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)   	{ return _ApplyValue((s8)value);}
+    virtual bool		ApplyValue		(LPVOID val)   	{ return _ApplyValue(*(s8*)value);}
     s8 					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 class S16Value: public PropValue, public NumericValue<s16> {
 public:
-						S16Value	 	(s16* val, s16 mn, s16 mx, s16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<s16>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						S16Value	 	(s16* val, s16 mn, s16 mx, s16 increm):NumericValue<s16>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((S16Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((s16)value);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(s16*)value);}
     s16					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 class S32Value: public PropValue, public NumericValue<s32> {
 public:
-						S32Value  		(s32* val, s32 mn, s32 mx, s32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<s32>(val,mn,mx,increm),PropValue(after,before,draw,change){};
+						S32Value  		(s32* val, s32 mn, s32 mx, s32 increm):NumericValue<s32>(val,mn,mx,increm){};
     virtual LPCSTR		GetText			()				{ return _GetText(this,DrawValueEvent); }
     virtual bool		Equal           (PropValue* prop){return _Equal(((S32Value*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((s32)value);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(s32*)value);}
     s32					GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
@@ -341,10 +343,10 @@ public:
 
 class BOOLValue: public PropValue, public NumericValue<BOOL>{
 public:
-						BOOLValue		(LPBOOL val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<BOOL>(val),PropValue(after,before,draw,change){};
+						BOOLValue		(LPBOOL val):NumericValue<BOOL>(val){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual bool		Equal           (PropValue* prop){return _Equal(((BOOLValue*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue((BOOL)value);}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(BOOL*)value);}
     BOOL				GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
@@ -353,7 +355,7 @@ public:
 class FloatValue: public PropValue, public NumericValue<float>{
 public:
     int 				dec;
-    					FloatValue		(float* val, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<float>(val,mn,mx,increment),dec(decimal),PropValue(after,before,draw,change){};
+    					FloatValue		(float* val, float mn, float mx, float increment, int decimal):NumericValue<float>(val,mn,mx,increment),dec(decimal){};
     virtual LPCSTR		GetText			()
     {
     	float draw_val 	= GetValue();
@@ -364,39 +366,48 @@ public:
 		return draw_text.c_str();
     }
     virtual bool		Equal           (PropValue* prop){return _Equal(((FloatValue*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*((float*)&val));}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(float*)val);}
     float				GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 
-IC bool operator == (const Fcolor& A, const Fcolor& B)	// note: inverse operator
-{	return A.similar_rgba(B); }
-
 class ColorValue: public PropValue, public NumericValue<Fcolor>{
 public:
-						ColorValue		(Fcolor* val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<Fcolor>(val),PropValue(after,before,draw,change){};
+						ColorValue		(Fcolor* val):NumericValue<Fcolor>(val){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual bool		Equal           (PropValue* prop){return _Equal(((ColorValue*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*((Fcolor*)&val));}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(Fcolor*)val);}
     const Fcolor		GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 
-IC bool operator == (const Fvector& A, const Fvector& B)	// note: inverse operator
-{	return A.similar(B); }
+IC bool operator != (const Fvector& A, const Fvector& B)
+{	return !A.similar(B); }
+
+IC void clamp(Fvector& V, Fvector& mn, const Fvector& mx)
+{
+    clamp(V.x,mn.x,mx.x); 
+    clamp(V.y,mn.y,mx.y); 
+    clamp(V.z,mn.z,mx.z); 
+}
 
 class VectorValue: public PropValue, public NumericValue<Fvector>{
 public:
-	float	dec;
-						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):NumericValue<Fvector>(val),dec(decimal),PropValue(after,before,draw,change)
+	int	dec;
+						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val),dec(decimal)
     {
     	lim_mn.set		(mn,mn,mn);
     	lim_mx.set		(mx,mx,mx);
         inc.set			(increment,increment,increment);
-        clamp			(*value,lim_mn,lim_mx); 
     };
+    virtual void		_Clamp			(Fvector* val)
+    {
+        clamp			(value->x,lim_mn.x,lim_mx.x); 
+        clamp			(value->y,lim_mn.y,lim_mx.y); 
+        clamp			(value->z,lim_mn.z,lim_mx.z); 
+    }
     virtual LPCSTR		GetText			()
     {
 		Fvector draw_val 	= GetValue();
@@ -406,8 +417,8 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
 		return draw_text.c_str();
     }
-    virtual bool		Equal           (PropValue* prop){return _Equal(((VectorValue*)prop)->value);}
-    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*((Fvector*)&val));}
+    virtual bool		Equal           (PropValue* prop){return false;/*_Equal(((VectorValue*)prop)->value);*/}
+    virtual bool		ApplyValue		(LPVOID val)	{ return _ApplyValue(*(Fvector*)val);}
     const Fvector		GetValue		()				{ return _GetValue(); }
     virtual void		ResetValue		()    			{ _ResetValue(); }
 };
@@ -418,12 +429,12 @@ class FlagValue: public PropValue{
 	Flags32*			value;
 public:
 	u32					mask;
-						FlagValue		(Flags32* val, u32 _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),mask(_mask),PropValue(after,before,draw,change){};
+						FlagValue		(Flags32* val, u32 _mask):value(val),init_value(*val),mask(_mask){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual bool		Equal			(PropValue* prop){return value->equal(*((FlagValue*)prop)->value,mask);}
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if ((bool)val!=value->is(mask)){
+        if (*(BOOL*)val!=value->is(mask)){
         	value->set	(mask,(bool)val);
             return 		true;
         }
@@ -440,13 +451,13 @@ class TokenValue: public PropValue{
     int 				p_size;
 public:
 	xr_token* 			token;
-						TokenValue		(u32* val, xr_token* _token, int p_sz, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),token(_token),p_size(p_sz),PropValue(after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
+						TokenValue		(u32* val, xr_token* _token, int p_sz):value(val),init_value(*val),token(_token),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			();
 	virtual bool		Equal			(PropValue* prop){return (0==memcmp(value,((TokenValue*)prop)->value,p_size));}
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (0!=memcmp(&val,value,p_size)){
-            CopyMemory(value,&val,p_size);
+        if (0!=memcmp(val,value,p_size)){
+            CopyMemory(value,val,p_size);
             return		true;
         }
         return 			false;
@@ -461,13 +472,13 @@ class TokenValue2: public PropValue{
 	u32*				value;
 public:
 	AStringVec 			items;
-						TokenValue2		(u32* val, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),items(*_items),PropValue(after,before,draw,change){};
+						TokenValue2		(u32* val, AStringVec* _items):value(val),init_value(*val),items(*_items){};
 	virtual LPCSTR 		GetText			();
 	virtual bool		Equal			(PropValue* prop){return *value==*((TokenValue2*)prop)->value;}
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (*value!=(u32)val){
-            *value 		= (u32)val;
+        if (*value!=*(u32*)val){
+            *value 		= *(u32*)val;
             return 		true;
         }
         return 			false;
@@ -487,13 +498,13 @@ public:
 	};
 	u32				cnt;
     const Item*			items;
-						TokenValue3		(u32* val, u32 _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),cnt(_cnt),items(_items),PropValue(after,before,draw,change){};
+						TokenValue3		(u32* val, u32 _cnt, const Item* _items):value(val),init_value(*val),cnt(_cnt),items(_items){};
 	virtual LPCSTR 		GetText			();
 	virtual bool		Equal			(PropValue* prop){return *value==*((TokenValue3*)prop)->value;}
     virtual bool		ApplyValue		(LPVOID val)
     {
-        if (*value!=(u32)val){
-            *value 		= (u32)val;
+        if (*value!=*(u32*)val){
+            *value 		= *(u32*)val;
             return 		true;
         }
         return 			false;
@@ -508,8 +519,8 @@ class ListValue: public PropValue{
 	LPSTR				value;
 public:
 	AStringVec 			items;
-						ListValue		(LPSTR val, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),items(*_items),PropValue(after,before,draw,change){};
-						ListValue		(LPSTR val, u32 cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):value(val),init_value(*val),PropValue(after,before,draw,change){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(LPSTR val, AStringVec* _items):value(val),init_value(*val),items(*_items){};
+						ListValue		(LPSTR val, u32 cnt, LPCSTR* _items):value(val),init_value(*val){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
 	virtual bool		Equal			(PropValue* prop){return (0==strcmp(value,((ListValue*)prop)->value));}
     virtual bool		ApplyValue		(LPVOID val)
