@@ -90,8 +90,7 @@ void CStats::Show()
 		F.OutNext	("VERT:        %d/%d",dwVert,dwVert/dwCalls);
 		F.OutNext	("POLY:        %d/%d",dwPoly,dwPoly/dwCalls);
 		F.OutNext	("DIP/DP:      %d",dwCalls);
-		F.OutNext	("SH Changes:  %d",dwShader_Changes);
-		F.OutNext	("TEX Changes: %d",dwTexture_Changes);
+		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
 		F.OutSkip	();
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
 		F.OutNext	("uSheduled:   %2.2fms",UpdateSheduled.result);
@@ -168,6 +167,7 @@ void CStats::Show()
 
 		TEST.FrameStart				();
 	}
-	dwVert = dwPoly = dwCalls = dwShader_Changes = dwTexture_Changes = 0;
+	dwVert = dwPoly = dwCalls = 0;
 	dwSND_Played = dwSND_Allocated = 0;
+	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
 }

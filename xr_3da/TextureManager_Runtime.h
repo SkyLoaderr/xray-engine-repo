@@ -14,8 +14,10 @@ IC void	CShaderManager::set_Code		(DWORD dwCode)
 	{
 		cache.pass.dwStateBlock=dwCode;
 		CHK_DX(HW.pDevice->ApplyStateBlock(dwCode));
+		Device.Statistic.dwShader_Codes++;
 	}
 }
+
 IC void CShaderManager::set_Textures	(STextureList* T)
 {
 	if (cache.pass.T != T)
@@ -27,6 +29,7 @@ IC void CShaderManager::set_Textures	(STextureList* T)
 			if (cache.surfaces[it]!=surf)	{
 				cache.surfaces[it]=surf;
 				surf->Apply	(it);
+				Device.Statistic.dwShader_Textures++;
 			}
 		}
 		DWORD last				= T->size();
@@ -36,6 +39,7 @@ IC void CShaderManager::set_Textures	(STextureList* T)
 		}
 	}
 }
+
 IC void CShaderManager::set_Matrices	(SMatrixList* M)
 {
 	if (cache.pass.M != M)
@@ -49,6 +53,7 @@ IC void CShaderManager::set_Matrices	(SMatrixList* M)
 					cache.matrices[it]=mat;
 					mat->Calculate	();
 					CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d()));
+					Device.Statistic.dwShader_Matrices++;
 				}
 			}
 		}
@@ -74,6 +79,7 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 				c->Calculate	();
 				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,c->const_dword));
 			}
+			Device.Statistic.dwShader_Constants++;
 		}
 	}
 }

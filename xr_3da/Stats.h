@@ -44,8 +44,10 @@ public:
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	DWORD		dwPoly, dwVert;
 	DWORD		dwCalls;			// Number of primitive-render calls
-	DWORD		dwShader_Changes;	// Number of times the shader changes
-	DWORD		dwTexture_Changes;
+	DWORD		dwShader_Codes;		// Number of times the shader-code changes
+	DWORD		dwShader_Textures;	// Number of times the shader-tex changes
+	DWORD		dwShader_Matrices;	// Number of times the shader-xform changes
+	DWORD		dwShader_Constants;	// Number of times the shader-consts changes
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
 
 	CStatTimer	EngineTOTAL;		// 
