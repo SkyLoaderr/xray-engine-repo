@@ -216,7 +216,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	bRes = Tools.IsModified();
 		break;
     case COMMAND_CHANGE_ACTION:
-    	Tools.ChangeAction(p1);
+    	Tools.ChangeAction(EAction(p1));
     	break;
 	case COMMAND_CHANGE_AXIS:
     	fraTopBar->ChangeAxis(p1);
@@ -224,6 +224,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_UNDO:
     case COMMAND_REDO:
     	// fake
+    	break;
+    case COMMAND_LOAD_FIRSTRECENT:
+    	if (fraLeftBar->FirstRecentFile()){
+        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
+        }
     	break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
@@ -239,7 +244,9 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
 		if (Key=='S') 				Command(COMMAND_SAVE);
+        else if (Key=='N')			Command(COMMAND_CLEAR);
         else if (Key=='O')			Command(COMMAND_LOAD);
+		else if (Key=='R')			Command(COMMAND_LOAD_FIRSTRECENT);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
