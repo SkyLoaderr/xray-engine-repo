@@ -622,33 +622,19 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 	m_PhysicMovementControl->ActivateBox	(0);
 
-	if (GameID() != GAME_SINGLE)
-	{
-		E->o_model = E->o_Angle.y;
-		E->o_torso.yaw = E->o_Angle.y;
-		E->o_torso.pitch = -E->o_Angle.x;
-		E->o_torso.roll = E->o_Angle.z;
-	}
-/*	else
-	{
-		E->o_Angle.y = E->o_model;
-		E->o_Angle.y = E->o_torso.yaw;
-		E->o_Angle.x = -E->o_torso.pitch;
-	}*/
-
 	r_torso_tgt_roll		= 0;
 
-	r_model_yaw				= E->o_model;
-	r_torso.yaw				= E->o_torso.yaw;
-	r_torso.pitch			= E->o_torso.pitch;
-	r_torso.roll			= E->o_torso.roll;
+	r_model_yaw				= E->o_Angle.y;
+	r_torso.yaw				= E->o_Angle.y;
+	r_torso.pitch			= E->o_Angle.x;
+	r_torso.roll			= E->o_Angle.z;
 
 	unaffected_r_torso.yaw	= r_torso.yaw;
 	unaffected_r_torso.pitch= r_torso.pitch;
 	unaffected_r_torso.roll	= r_torso.roll;
 
-	cam_Set	(eacFirstEye);
-	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,E->o_torso.roll);		// set's camera orientation
+	cam_Set					(eacFirstEye);
+	cam_Active()->Set		(-E->o_Angle.y,E->o_Angle.x,E->o_Angle.z);
 
 	// *** movement state - respawn
 	mstate_wishful			= 0;
@@ -748,7 +734,9 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 		m_HeavyBreathSnd.stop();
 		m_bHeavyBreathSndPlaying = false;
 	}
+	
 	Level().client_spawn_manager().add(E->m_holderID,ID(),this);
+
 	return					TRUE;
 }
 
