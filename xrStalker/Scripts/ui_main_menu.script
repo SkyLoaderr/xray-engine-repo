@@ -235,9 +235,9 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	local bind = dik_to_bind(dik)
 	
 	if bind == key_bindings.kQUIT then
---		if level.present() then
---			self:GetHolder():start_stop_menu(dlg, true)
---		end
+		if level.present() then
+			self:GetHolder():start_stop_menu(dlg, true)
+		end
 	end
 	
   	if bind == key_bindings.kCONSOLE then
