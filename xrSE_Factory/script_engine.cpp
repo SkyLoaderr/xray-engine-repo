@@ -121,7 +121,7 @@ int auto_load				(lua_State *L)
 		return		(1);
 	}
 
-	ai().script_engine().process_file(lua_tostring(L,2));
+	ai().script_engine().process_file_if_exists(lua_tostring(L,2),false);
 	lua_rawget		(L,1);
 	return			(1);
 }
@@ -211,13 +211,13 @@ void CScriptEngine::load_common_scripts()
 	xr_delete			(l_tpIniFile);
 }
 
-void CScriptEngine::process_file	(LPCSTR file_name)
+void CScriptEngine::process_file_if_exists	(LPCSTR file_name, bool warn_if_not_exist)
 {
 	string256				S,S1;
 	bool					global_script_loaded = (!*file_name || !xr_strcmp(file_name,"_G"));
 	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
 		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
-		if (!FS.exist(S))
+		if (!warn_if_not_exist && !FS.exist(S))
 			return;
 		Msg					("* loading script %s",S1);
 		m_reload_modules	= false;
@@ -225,10 +225,15 @@ void CScriptEngine::process_file	(LPCSTR file_name)
 	}
 }
 
+void CScriptEngine::process_file	(LPCSTR file_name)
+{
+	process_file_if_exists	(file_name,true);
+}
+
 void CScriptEngine::process_file	(LPCSTR file_name, bool reload_modules)
 {
 	m_reload_modules		= reload_modules;
-	process_file			(file_name);
+	process_file_if_exists	(file_name,true);
 	m_reload_modules		= false;
 }
 

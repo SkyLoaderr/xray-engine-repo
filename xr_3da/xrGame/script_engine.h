@@ -57,6 +57,7 @@ public:
 	IC		void				add_script_process			(LPCSTR process_name, CScriptProcess *script_process);
 			void				remove_script_process		(LPCSTR process_name);
 			void				setup_auto_load				();
+			void				process_file_if_exists		(LPCSTR file_name, bool warn_if_not_exist);
 			void				process_file				(LPCSTR file_name);
 			void				process_file				(LPCSTR file_name, bool reload_modules);
 			void				script_export				();
