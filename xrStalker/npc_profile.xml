@@ -10,7 +10,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<rank>none</rank>
 		<team>none</team>
-		<start_dialog>none</start_dialog>
+		<start_dialog></start_dialog>
 	</character>
 
 	
