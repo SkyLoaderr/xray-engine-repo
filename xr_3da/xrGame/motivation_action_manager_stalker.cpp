@@ -164,17 +164,6 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyItems,		false);
 	add_operator			(eWorldOperatorGatherItems,			action);
 
-	action					= xr_new<CStalkerActionKillEnemy>	(m_object,"kill_enemy");
-	add_condition			(action,eWorldPropertyAlive,		true);
-	add_condition			(action,eWorldPropertyEnemy,		true);
-	add_condition			(action,eWorldPropertySeeEnemy,		true);
-	add_condition			(action,eWorldPropertyKillDistance,	true);
-	add_condition			(action,eWorldPropertyReadyToKill,	true);
-	add_condition			(action,eWorldPropertyItemToKill,	true);
-	add_condition			(action,eWorldPropertyItemCanKill,	true);
-	add_effect				(action,eWorldPropertyEnemy,		false);
-	add_operator			(eWorldOperatorKillEnemy,			action);
-
 	action					= xr_new<CStalkerActionGetKillDistance>	(m_object,"get_kill_distance");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
@@ -183,14 +172,6 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyKillDistance,	false);
 	add_effect				(action,eWorldPropertyKillDistance,	true);
 	add_operator			(eWorldOperatorGetKillDistance,		action);
-
-	action					= xr_new<CStalkerActionGetReadyToKill>	(m_object,"get_ready_to_kill");
-	add_condition			(action,eWorldPropertyAlive,		true);
-	add_condition			(action,eWorldPropertyItemToKill,	true);
-	add_condition			(action,eWorldPropertyItemCanKill,	true);
-	add_condition			(action,eWorldPropertyReadyToKill,	false);
-	add_effect				(action,eWorldPropertyReadyToKill,	true);
-	add_operator			(eWorldOperatorGetReadyToKill,		action);
 
 	action					= xr_new<CStalkerActionGetEnemy>	(m_object,"get_enemy");
 	add_condition			(action,eWorldPropertyAlive,		true);
@@ -235,4 +216,86 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyFoundAmmo,		false);
 	add_effect				(action,eWorldPropertyFoundAmmo,		true);
 	add_operator			(eWorldOperatorFindAmmo,				action);
+
+	action					= xr_new<CStalkerActionGetReadyToKillVeryAggressive>	(m_object,"get_ready_to_kill_very_aggressive");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	false);
+	add_effect				(action,eWorldPropertyReadyToKill,	true);
+	add_operator			(eWorldOperatorGetReadyToKillVeryAggressive,action);
+
+	action					= xr_new<CStalkerActionKillEnemyVeryAggressive>	(m_object,"kill_enemy_very_aggressive");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorKillEnemyVeryAggressive,	action);
+
+	action					= xr_new<CStalkerActionGetReadyToKillAggressive>(m_object,"get_ready_to_kill_aggressive");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	false);
+	add_effect				(action,eWorldPropertyReadyToKill,	true);
+	add_operator			(eWorldOperatorGetReadyToKillAggressive,action);
+
+	action					= xr_new<CStalkerActionKillEnemyAggressive>	(m_object,"kill_enemy_aggressive");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorKillEnemyAggressive,	action);
+
+	action					= xr_new<CStalkerActionGetReadyToKillModerate>(m_object,"get_ready_to_kill_moderate");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	false);
+	add_effect				(action,eWorldPropertyReadyToKill,	true);
+	add_operator			(eWorldOperatorGetReadyToKillModerate,action);
+
+	action					= xr_new<CStalkerActionKillEnemyModerate>	(m_object,"kill_enemy_moderate");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorKillEnemyModerate,	action);
+
+	action					= xr_new<CStalkerActionGetReadyToKillAvoid>(m_object,"get_ready_to_kill_avoid");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	false);
+	add_effect				(action,eWorldPropertyReadyToKill,	true);
+	add_operator			(eWorldOperatorGetReadyToKillAvoid,action);
+
+	action					= xr_new<CStalkerActionKillEnemyAvoid>	(m_object,"kill_enemy_avoid");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_condition			(action,eWorldPropertySeeEnemy,		true);
+	add_condition			(action,eWorldPropertyKillDistance,	true);
+	add_condition			(action,eWorldPropertyReadyToKill,	true);
+	add_condition			(action,eWorldPropertyItemToKill,	true);
+	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorKillEnemyAvoid,		action);
+
+	action					= xr_new<CStalkerActionRetreatFromEnemy>	(m_object,"retreat_from_enemy");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemy,		true);
+	add_effect				(action,eWorldPropertyEnemy,		false);
+	add_operator			(eWorldOperatorRetreatFromEnemy,	action);
 }

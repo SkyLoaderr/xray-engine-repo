@@ -203,16 +203,23 @@ void CScriptEngine::export_motivation_management()
 				value("action_free_no_alife",		StalkerDecisionSpace::eWorldOperatorFreeNoALife),
 				value("action_free",				StalkerDecisionSpace::eWorldOperatorFreeALife),
 				value("action_gather_items",		StalkerDecisionSpace::eWorldOperatorGatherItems),
-				value("action_kill_enemy",			StalkerDecisionSpace::eWorldOperatorKillEnemy),
 				value("action_get_kill_distance",	StalkerDecisionSpace::eWorldOperatorGetKillDistance),
-				value("action_get_ready_to_kill",	StalkerDecisionSpace::eWorldOperatorGetReadyToKill),
 				value("action_get_enemy",			StalkerDecisionSpace::eWorldOperatorGetEnemy),
 				value("action_get_enemy_seen",		StalkerDecisionSpace::eWorldOperatorGetEnemySeen),
 				value("action_get_item_to_kill",	StalkerDecisionSpace::eWorldOperatorGetItemToKill),
 				value("action_find_item_to_kill",	StalkerDecisionSpace::eWorldOperatorFindItemToKill),
 				value("action_make_item_killing",	StalkerDecisionSpace::eWorldOperatorMakeItemKilling),
 				value("action_find_ammo",			StalkerDecisionSpace::eWorldOperatorFindAmmo),
-				value("action_script",				StalkerDecisionSpace::eWorldOperatorScript)
+				value("action_script",				StalkerDecisionSpace::eWorldOperatorScript),
+				value("action_get_ready_to_kill_very_aggressive",	StalkerDecisionSpace::eWorldOperatorGetReadyToKillVeryAggressive),
+				value("action_kill_enemy_very_aggressive",			StalkerDecisionSpace::eWorldOperatorKillEnemyVeryAggressive),
+				value("action_get_ready_to_kill_aggressive",		StalkerDecisionSpace::eWorldOperatorGetReadyToKillAggressive),
+				value("action_kill_enemy_aggressive",				StalkerDecisionSpace::eWorldOperatorKillEnemyAggressive),
+				value("action_get_ready_to_kill_moderate",			StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
+				value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorKillEnemyModerate),
+				value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
+				value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
+				value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy)
 			]
 	];
 }

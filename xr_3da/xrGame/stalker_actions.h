@@ -68,21 +68,6 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionKillEnemy
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionKillEnemy : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-public:
-						CStalkerActionKillEnemy		(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
-};
-
-//////////////////////////////////////////////////////////////////////////
 // CStalkerActionGetKillDistance
 //////////////////////////////////////////////////////////////////////////
 
@@ -95,21 +80,6 @@ public:
 	virtual void		initialize						();
 	virtual void		execute							();
 	virtual void		finalize						();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionGetReadyToKill
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionGetReadyToKill : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-public:
-						CStalkerActionGetReadyToKill(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -203,18 +173,147 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionGetSafeLocation
+// CStalkerActionGetReadyToKillVeryAggressive
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerActionGetSafeLocation : public CStalkerActionBase {
+class CStalkerActionGetReadyToKillVeryAggressive : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
 public:
-						CStalkerActionGetSafeLocation	(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize						();
-	virtual void		execute							();
-	virtual void		finalize						();
+						CStalkerActionGetReadyToKillVeryAggressive(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyVeryAggressive
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillEnemyVeryAggressive : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionKillEnemyVeryAggressive(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetReadyToKillAggressive
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetReadyToKillAggressive : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGetReadyToKillAggressive(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyAggressive
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillEnemyAggressive : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionKillEnemyAggressive(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetReadyToKillModerate
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetReadyToKillModerate : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGetReadyToKillModerate(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyModerate
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillEnemyModerate : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionKillEnemyModerate(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetReadyToKillAvoid
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetReadyToKillAvoid : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGetReadyToKillAvoid(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyAvoid
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillEnemyAvoid : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionKillEnemyAvoid(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionRetreatFromEnemy
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionRetreatFromEnemy : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionRetreatFromEnemy(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 #include "stalker_actions_inline.h"
