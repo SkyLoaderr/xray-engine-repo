@@ -27,6 +27,11 @@ void xrServer::Process_event_destroy	(NET_Packet& P, DPNID sender, u32 time, u16
 	R_ASSERT						(c_dest == c_from);							// assure client ownership of event
 	u16								parent_id = e_dest->ID_Parent;
 
+	// check if we have children 
+	while (!e_dest->children.empty())
+		Process_event_destroy		(P,sender,time,*e_dest->children.begin());
+
+	// check if we have parent and we can be detached from it
 	if ((0xffff == parent_id) || !Process_event_reject(P,sender,time,parent_id,ID,false)) {
 		SendBroadcast				(0xffffffff,P,MODE);
 	}
