@@ -10,6 +10,7 @@ function loadJob(sj, gname, type)
 			squad = 0, group = 1,
 			in_rest = "", out_rest = "",
 			patrol_path = gname.."_patrol_0",
+			path_look = gname.."_plook_0",
 			escape_path = gname.."_escape_0" }
 		table.insert(sj, t)			
 		t = { name = "follower",
