@@ -12,6 +12,7 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 
 void CRender::render_main	()
 {
+	// Msg		("---------------------------");
 	marker									++;
 	phase									= PHASE_NORMAL;
 

@@ -53,5 +53,5 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
 	if (L->X.S.size<SMAP_adapt_min)		L->X.S.size	= SMAP_adapt_min;
 	if (L->X.S.size>SMAP_adapt_max)		L->X.S.size	= SMAP_adapt_max;
-	//Msg		("%8X : ssa(%f), size(%d)",u32(L),ssa,S_size);
+	Msg		("%8X : factor(%f), size(%d)",u32(L),factor,L->X.S.size);
 }
