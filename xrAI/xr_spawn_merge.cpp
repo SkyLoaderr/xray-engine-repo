@@ -166,7 +166,8 @@ public:
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
-				R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpGraph->m_tpaGraph[i].tLocalPoint))!=-1);
+				m_tpGraphNodes[i] = tpGraph->m_tpaGraph[i].tNodeID;
+				//R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpGraph->m_tpaGraph[i].tLocalPoint))!=-1);
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
@@ -185,6 +186,7 @@ public:
 		R_ASSERT				(B != E);
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation)) {
 			R_ASSERT((m_tpSpawnNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) != -1);
+			m_tpSpawnPoints[i]->m_tNodeID = m_tpSpawnNodes[i];
 			sort(B,E,CSpawnComparePredicate(m_tpSpawnNodes[i],*m_tpAI_Map));
 			DWORD_IT			I = B;
 			float				fCurrentBestDistance = MAX_DISTANCE_TO_CONNECT;
@@ -218,14 +220,14 @@ public:
 					dwBest = I - BB;
 				}
 			}
-			//R_ASSERT(dwBest != -1);
-			if (dwBest == u32(-1)) {
-				Msg("Level ID    : %d",m_dwLevelID);
-				Msg("Spawn index : %d",i);
-				Msg("Spawn node  : %d",m_tpSpawnNodes[i]);
-				Msg("Spawn point : [%7.2f][%7.2f][%7.2f]",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
-				R_ASSERT(false);
-			}
+			R_ASSERT(dwBest != -1);
+//			if (dwBest == u32(-1)) {
+//				Msg("Level ID    : %d",m_dwLevelID);
+//				Msg("Spawn index : %d",i);
+//				Msg("Spawn node  : %d",m_tpSpawnNodes[i]);
+//				Msg("Spawn point : [%7.2f][%7.2f][%7.2f]",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
+//				R_ASSERT(false);
+//			}
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 			thProgress						= 1.0f;
