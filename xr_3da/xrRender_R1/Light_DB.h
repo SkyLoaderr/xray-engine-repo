@@ -12,9 +12,9 @@ public:
 	light*					sun_adapted;
 	light_Package			package;
 public:
-	void					add_light			(light*		L);
+	void					add_light			(light*		L	);
 
-	void					Load				(IReader*	fs);
+	void					Load				(IReader*	fs	);
 	void					Unload				();
 
 	light*					Create				();
