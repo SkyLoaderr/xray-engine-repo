@@ -41,6 +41,7 @@ public:
 
 	u16						ID;				// internal ID
 	u16						ID_Parent;		// internal ParentID, 0xffff means no parent
+	u16						ID_Phantom;		// internal PhantomID, 0xffff means no phantom
 	xrClientData*			owner;
 
 	// spawn data
@@ -78,6 +79,7 @@ public:
 		net_Ready			= FALSE;
 		ID					= 0xffff;
         ID_Parent			= 0xffff;
+		ID_Phantom			= 0xffff;
 		owner				= 0;
 		s_gameid			= 0;
 		s_RP				= 0xFE;			// Use supplied coords

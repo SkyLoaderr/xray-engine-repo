@@ -74,6 +74,7 @@ M_SPAWN
 
 	u16			server_id;			// 0xffff = Unknown/None/Invalid
 	u16			server_id_parent;	// 0xffff = Unknown/None/Invalid
+	u16			server_id_phantom;	// for respawn, for example :)
 	u16			flags;
 	
 	u16			data_size;

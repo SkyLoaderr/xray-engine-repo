@@ -25,6 +25,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_vec3			(o_Angle		);
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
+	P.w_u16				(ID_Phantom		);
 	if (bLocal)			P.w_u16(u16(s_flags|M_SPAWN_OBJECT_LOCAL) );
 	else				P.w_u16(u16(s_flags));
 
@@ -50,6 +51,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_vec3			(o_Angle		);
 	P.r_u16				(ID				);
 	P.r_u16				(ID_Parent		);
+	P.r_u16				(ID_Phantom		);
 	P.r_u16				(s_flags		); 
 	s_flags				&= ~M_SPAWN_OBJECT_LOCAL;
 

@@ -37,8 +37,9 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	// Read definition
 	char		s_name[128],s_replace[128];
 	u8			s_rp,s_game;
-	u16			s_server_id,s_server_parent_id,s_data_size,s_flags;
+	u16			s_server_id,s_server_parent_id,s_server_phantom_id,s_data_size,s_flags,s_respawn;
 	Fvector		o_pos,o_angle;
+	P.r_u16		(s_respawn);
 	P.r_string	(s_name);
 	P.r_string	(s_replace);
 	P.r_u8		(s_game);
@@ -47,6 +48,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	P.r_vec3	(o_angle);
 	P.r_u16		(s_server_id);
 	P.r_u16		(s_server_parent_id);
+	P.r_u16		(s_server_phantom_id);
 	P.r_u16		(s_flags);
 	P.r_u16		(s_data_size);
 
