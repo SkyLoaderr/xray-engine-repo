@@ -187,9 +187,9 @@ public:
 protected:
 			bool			frame_check			(u32 &frame)
 			{
-				if (Device.dwFrame == frame)	return		(false);
-				frame			= Device.dwFrame;
-				return			(true);
+				if (Device.dwFrame == frame)	return	(false);
+				frame		= Device.dwFrame	;
+				return		(true);
 			}
 	virtual	void			spawn_supplies		();
 };
