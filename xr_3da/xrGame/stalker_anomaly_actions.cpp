@@ -92,10 +92,7 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 	if (object().movement().accessible(object().Position()))
 		return;
 
-	Fvector								dest_pos = object().Position();
-	u32 dest_vertex_id					= object().movement().restrictions().accessible_nearest(object().Position(),dest_pos);
-	object().movement().set_level_dest_vertex		(dest_vertex_id);
-	object().movement().set_desired_position		(&dest_pos);
+	object().movement().set_nearest_accessible_position();
 }
 
 //////////////////////////////////////////////////////////////////////////

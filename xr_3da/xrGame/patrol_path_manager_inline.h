@@ -15,10 +15,6 @@ IC	CPatrolPathManager::CPatrolPathManager			(CRestrictedObject *object, CGameObj
 	m_game_object			= game_object;
 }
 
-IC	CPatrolPathManager::~CPatrolPathManager			()
-{
-}
-
 IC	bool CPatrolPathManager::actual					() const
 {
 	return					(m_actuality);
@@ -77,11 +73,6 @@ IC	void CPatrolPathManager::set_route_type			(const EPatrolRouteType patrol_rout
 IC	void CPatrolPathManager::set_random				(bool random)
 {
 	m_random				= random;
-}
-
-IC	void CPatrolPathManager::set_callback			(CScriptCallback &callback)
-{
-	m_callback				= &callback;
 }
 
 IC	void CPatrolPathManager::make_inactual			()

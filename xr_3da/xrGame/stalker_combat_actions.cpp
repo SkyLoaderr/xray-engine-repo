@@ -63,18 +63,6 @@ IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
 	object().agent_manager().member(m_object).cover(last_cover);
 }
 
-IC	void CStalkerActionCombatBase::set_nearest_accessible_position()
-{
-	Fvector								desired_position = object().Position();
-	u32									level_vertex_id = object().ai_location().level_vertex_id();
-
-	if (!object().movement().restrictions().accessible(object().Position()))
-		level_vertex_id					= object().movement().restrictions().accessible_nearest(object().Position(),desired_position);
-
-	object().movement().set_level_dest_vertex		(level_vertex_id);
-	object().movement().set_desired_position		(&desired_position);
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionGetItemToKill
 //////////////////////////////////////////////////////////////////////////
@@ -264,7 +252,7 @@ void CStalkerActionGetReadyToKill::initialize	()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	set_nearest_accessible_position		();
+	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeStand);
 	object().movement().set_mental_state			(eMentalStateDanger);
@@ -333,7 +321,7 @@ void CStalkerActionKillEnemy::initialize		()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	set_nearest_accessible_position		();
+	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateCrouch);
 	object().movement().set_movement_type			(eMovementTypeStand);
 	object().movement().set_mental_state			(eMentalStateDanger);
@@ -442,7 +430,7 @@ void CStalkerActionTakeCover::execute		()
 		object().movement().set_desired_position	(&point->position());
 	}
 	else
-		set_nearest_accessible_position	();
+		object().movement().set_nearest_accessible_position	();
 
 	if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().can_kill_enemy())
 		object().CObjectHandler::set_goal	(eObjectActionFire1,object().best_weapon());
@@ -519,19 +507,12 @@ void CStalkerActionLookOut::execute		()
 	object().sight().setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	if (current_cover(m_object) >= 3.f) {
-		set_nearest_accessible_position	();
+		object().movement().set_nearest_accessible_position	();
 		m_storage->set_property			(eWorldPropertyLookedOut,true);
 		return;
 	}
 
-	Fvector								desired_position = mem_object.m_object_params.m_position;
-	u32									level_vertex_id = mem_object.m_object_params.m_level_vertex_id;
-
-	if (!object().movement().restrictions().accessible(mem_object.m_object_params.m_position))
-		level_vertex_id					= object().movement().restrictions().accessible_nearest(mem_object.m_object_params.m_position,desired_position);
-
-	object().movement().set_level_dest_vertex		(level_vertex_id);
-	object().movement().set_desired_position		(&desired_position);
+	object().movement().set_nearest_accessible_position(mem_object.m_object_params.m_position,mem_object.m_object_params.m_level_vertex_id);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -551,7 +532,7 @@ void CStalkerActionHoldPosition::initialize		()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	set_nearest_accessible_position		();
+	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateCrouch);
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateDanger);
@@ -642,7 +623,7 @@ void CStalkerActionDetourEnemy::execute			()
 			object().movement().set_desired_position	(&point->position());
 		}
 		else
-			set_nearest_accessible_position	();
+			object().movement().set_nearest_accessible_position	();
 
 		if (object().movement().path_completed())
 			m_storage->set_property			(eWorldPropertyEnemyDetoured,true);
@@ -703,7 +684,7 @@ void CStalkerActionSearchEnemy::execute			()
 			object().movement().set_desired_position	(&point->position());
 		}
 		else
-			set_nearest_accessible_position	();
+			object().movement().set_nearest_accessible_position	();
 
 //		if (object().movement().path_completed())
 //			object().memory().enable(object().memory().enemy().selected(),false);

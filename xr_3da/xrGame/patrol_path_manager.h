@@ -14,6 +14,9 @@
 #include "patrol_path.h"
 #include "patrol_path_manager_space.h"
 
+template <typename _return_type>
+class CScriptCallbackEx;
+
 class CRestrictedObject;
 class CScriptCallback;
 class CGameObject;
@@ -22,7 +25,7 @@ using namespace PatrolPathManager;
 
 class CPatrolPathManager {
 	friend struct CAccessabilityEvaluator;
-
+	typedef CScriptCallbackEx<bool>	CExtrapolateCallback;
 private:
 	const CPatrolPath			*m_path;
 	shared_str					m_path_name;
@@ -39,6 +42,7 @@ private:
 	CScriptCallback				*m_callback;
 	CRestrictedObject			*m_object;
 	CGameObject					*m_game_object;
+	CExtrapolateCallback		*m_extrapolate_callback;
 
 protected:
 	IC			bool				random					() const;
@@ -48,9 +52,10 @@ protected:
 
 public:
 	IC								CPatrolPathManager		(CRestrictedObject *object, CGameObject *game_object);
-	IC	virtual						~CPatrolPathManager		();
+		virtual						~CPatrolPathManager		();
 		virtual	void				reinit					();
-	IC	virtual	void				set_callback			(CScriptCallback &callback);
+				void				set_callback			(CScriptCallback &callback);
+				void				set_extrapolate_callback(CExtrapolateCallback &callback);
 	IC			void				make_inactual			();
 	IC			const CPatrolPath	*get_path				() const;
 	IC			void				set_path				(const CPatrolPath *path, shared_str path_name);
@@ -69,6 +74,7 @@ public:
 	IC			const Fvector		&destination_position	() const;
 	IC			u32					get_current_point_index	() const;
 	IC			CRestrictedObject	&object					() const;
+				bool				extrapolate_path		();
 
 private:
 				u32					get_next_point			(u32 prev_point_index);

@@ -28,7 +28,6 @@ public:
 	virtual void		initialize					();
 	virtual void		finalize					();
 	IC		void		last_cover					(CCoverPoint *last_cover);
-	IC		void		set_nearest_accessible_position	();
 };
 
 //////////////////////////////////////////////////////////////////////////

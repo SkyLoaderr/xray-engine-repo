@@ -238,7 +238,7 @@ int	CScriptGameObject::animation_count		() const
 Flags32 CScriptGameObject::get_actor_relation_flags () const
 {
 	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
-	VERIFY(stalker);
+	THROW(stalker);
 
 	return stalker->m_actor_relation_flags;
 }
@@ -246,7 +246,7 @@ Flags32 CScriptGameObject::get_actor_relation_flags () const
 void CScriptGameObject::set_actor_relation_flags (Flags32 flags)
 {
 	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
-	VERIFY(stalker);
+	THROW(stalker);
 	stalker->m_actor_relation_flags = flags;
 }
 
@@ -308,7 +308,7 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 #endif
 			return;
 		}
-		VERIFY2							(stalker->movement().restrictions().accessible(level_vertex_id),*stalker->cName());
+		THROW2							(stalker->movement().restrictions().accessible(level_vertex_id),*stalker->cName());
 		stalker->movement().set_level_dest_vertex	(level_vertex_id);
 	}
 }
@@ -339,7 +339,7 @@ void CScriptGameObject::set_desired_position	(const Fvector *desired_position)
 	if (!stalker)
 		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else {
-		VERIFY2							(stalker->movement().restrictions().accessible(*desired_position),*stalker->cName());
+		THROW2							(stalker->movement().restrictions().accessible(*desired_position),*stalker->cName());
 		stalker->movement().set_desired_position	(desired_position);
 	}
 }
@@ -364,7 +364,7 @@ void  CScriptGameObject::set_desired_direction	(const Fvector *desired_direction
 
 void  CScriptGameObject::set_body_state			(EBodyState body_state)
 {
-	VERIFY						((body_state == eBodyStateStand) || (body_state == eBodyStateCrouch));
+	THROW						((body_state == eBodyStateStand) || (body_state == eBodyStateCrouch));
 	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
@@ -587,13 +587,13 @@ CScriptGameObject	*CScriptGameObject::GetObjectByIndex	(int iIndex) const
 
 void CScriptGameObject::EnableAnomaly()
 {
-	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); VERIFY(zone);
+	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); THROW(zone);
 	zone->ZoneEnable();
 }
 
 void CScriptGameObject::DisableAnomaly()
 {
-	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); VERIFY(zone);
+	CCustomZone		*zone = smart_cast<CCustomZone*>(&object()); THROW(zone);
 	zone->ZoneDisable();
 }
 

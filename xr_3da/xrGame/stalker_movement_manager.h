@@ -93,6 +93,8 @@ public:
 	IC		void	set_detail_path_type	(EDetailPathType detail_path_type);
 	IC		void	set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
 	IC		void	set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
+			void	set_nearest_accessible_position	();
+			void	set_nearest_accessible_position	(Fvector desired_position, u32 level_vertex_id);
 
 public:
 	IC		float	crouch_factor			() const;

@@ -257,14 +257,7 @@ void CStalkerActionReachCustomerLocation::execute		()
 
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 
-	Fvector								dest_position = customer->o_Position;
-	u32									level_vertex_id = customer->m_tNodeID;
-
-	if (!object().movement().restrictions().accessible(customer->o_Position))
-		level_vertex_id					= object().movement().restrictions().accessible_nearest(customer->o_Position,dest_position);
-
-	object().movement().set_level_dest_vertex		(level_vertex_id);
-	object().movement().set_desired_position		(&dest_position);
+	object().movement().set_nearest_accessible_position(customer->o_Position,customer->m_tNodeID);
 
 	if (object().movement().path_completed())
 		m_storage->set_property			(eWorldPropertyReachedCustomerLocation,true);

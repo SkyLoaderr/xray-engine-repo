@@ -16,6 +16,7 @@
 #include "script_engine.h"
 #include "ai_object_location.h"
 #include "script_entity_space.h"
+#include "script_callback_ex.h"
 
 #ifdef DEBUG
 #	include "space_restriction_manager.h"
@@ -30,7 +31,34 @@ bool show_restrictions(CRestrictedObject *object)
 }
 #endif
 
-void CPatrolPathManager::reinit				()
+CPatrolPathManager::~CPatrolPathManager			()
+{
+	xr_delete				(m_callback);
+	xr_delete				(m_extrapolate_callback);
+}
+
+void CPatrolPathManager::set_callback			(CScriptCallback &callback)
+{
+	xr_delete				(m_callback);
+	m_callback				= xr_new<CScriptCallback>(callback);
+}
+
+void CPatrolPathManager::set_extrapolate_callback(CExtrapolateCallback &callback)
+{
+	xr_delete				(m_extrapolate_callback);
+	m_extrapolate_callback	= xr_new<CExtrapolateCallback>(callback);
+}
+
+bool CPatrolPathManager::extrapolate_path		()
+{
+	VERIFY					(m_path && m_path->vertex(m_curr_point_index));
+	if (!m_extrapolate_callback)
+		return				(true);
+	
+	return					((*m_extrapolate_callback)(m_curr_point_index));
+}
+
+void CPatrolPathManager::reinit					()
 {
 	m_path					= 0;
 	m_start_type			= ePatrolStartTypeDummy;
@@ -42,6 +70,7 @@ void CPatrolPathManager::reinit				()
 	m_prev_point_index		= u32(-1);
 	m_start_point_index		= u32(-1);
 	m_callback				= 0;
+	m_extrapolate_callback	= 0;
 }
 
 IC	bool CPatrolPathManager::accessible	(const Fvector &position) const

@@ -62,17 +62,8 @@ void CStalkerMovementManager::initialize()
 	set_movement_type		(eMovementTypeStand);
 	set_mental_state		(eMentalStateDanger);
 	set_desired_direction	(0);
-
 	restrictions().remove_all_restrictions();
-	
-	Fvector					desired_position = object().Position();
-	u32						level_vertex_id = object().ai_location().level_vertex_id();
-
-	if (!restrictions().accessible(object().Position()))
-		level_vertex_id		= restrictions().accessible_nearest(object().Position(),desired_position);
-
-	set_level_dest_vertex	(object().ai_location().level_vertex_id());
-	set_desired_position	(&object().Position());
+	set_nearest_accessible_position();
 }
 
 void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
@@ -447,4 +438,19 @@ void CStalkerMovementManager::update(u32 time_delta)
 		update_path				();
 
 	parse_velocity_mask			();
+}
+
+
+void CStalkerMovementManager::set_nearest_accessible_position()
+{
+	set_nearest_accessible_position(object().Position(),object().ai_location().level_vertex_id());
+}
+
+void CStalkerMovementManager::set_nearest_accessible_position(Fvector desired_position, u32 level_vertex_id)
+{
+	if (!restrictions().accessible(desired_position))
+		level_vertex_id			= restrictions().accessible_nearest(Fvector().set(desired_position),desired_position);
+
+	set_level_dest_vertex		(level_vertex_id);
+	set_desired_position		(&desired_position);
 }

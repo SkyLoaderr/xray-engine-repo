@@ -5003,6 +5003,25 @@
 							RelativePath=".\base_client_classes_wrappers.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptCallbackEx"
+						Filter="">
+						<File
+							RelativePath=".\script_callback_ex.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_ex_generators.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_ex_inline.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_ex_nonvoid.h">
+						</File>
+						<File
+							RelativePath=".\script_callback_ex_void.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
