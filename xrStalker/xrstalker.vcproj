@@ -968,6 +968,9 @@
 					RelativePath=".\scripts\agroprom2.script">
 				</File>
 				<File
+					RelativePath=".\scripts\agroprom_dialog.script">
+				</File>
+				<File
 					RelativePath=".\scripts\agroprom_factory_combat.script">
 				</File>
 				<File
