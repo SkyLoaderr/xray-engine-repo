@@ -561,8 +561,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	{
 		const float	 w		= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float	 bw		= float(m_d3dsdBackBuffer.Width/2),	bh = float(m_d3dsdBackBuffer.Height/2);
-		const float	 _bw	= bw-1,	_bh = bh-1;
-		const float  eps	= 0.03f;
+		const float	 _bw	= bw,	_bh = bh;
+		const float  eps	= 0.00f;
 
 		// uv-offsets
 		D3DXVECTOR2		one	= D3DXVECTOR2(1.f/w,1.f/h);
@@ -612,8 +612,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Full-screen-quad VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float  eps= 0.03f;
-		const float _w	= w-1.f, _h = h-1.f;
+		const float  eps= 0.00f;
+		const float _w	= w, _h = h;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
 
@@ -641,8 +641,8 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Bloom-filter VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width/2),	h = float(m_d3dsdBackBuffer.Height/2);
-		const float  eps= 0.03f;
-		const float _w	= w-1.f, _h = h-1.f;
+		const float  eps= 0.00f;
+		const float _w	= w, _h = h;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
 
@@ -672,8 +672,10 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		return E_FAIL;
 	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2D, &m_pDeclVert2D)))
 		return E_FAIL;
+	/*
 	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2Dbloom, &m_pDeclVert2Dbloom)))
 		return E_FAIL;
+	*/
 
 	return S_OK;
 }
