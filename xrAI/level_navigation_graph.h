@@ -36,9 +36,16 @@ public:
 
 private:
 	CSectorGraph				*m_sectors;
-	u32							m_global_count;
+
+// temporary structures for building sector hierarchy
+private:
 	MARK_TABLE					m_marks;
 	CROSS_TABLE					m_cross;
+
+private:
+#ifdef DEBUG
+	u32							m_global_count;
+#endif
 
 public:
 #ifndef AI_COMPILER
