@@ -81,7 +81,8 @@ public:
 
 	// Parentness
 	IC CObject*							H_Parent			()					{ return Parent;		}
-	IC CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
+	IC CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;		}
+	virtual CObject*					H_SetParent			(CObject* O)		{ CObject* S = Parent; Parent=O; return S;	}
 
 	// Geometry xform
 	void								UpdateTransform		(void);
