@@ -14,7 +14,7 @@ void xrLauncherControl::Init()
 }
 
 
-// sound page----------------------------------------------
+//------sound-page----------------------------------------------
 #define SND_VOLUME_EFFECT		"snd_volume_eff"
 #define SND_VOLUME_MUSIC		"snd_volume_music"
 #define SND_ACCEL				"snd_acceleration"
@@ -74,8 +74,8 @@ void xrLauncherControl::ApplySoundPage()
 	con.SetInteger(SND_TARGETS, ival);
 
 }
-// mod page----------------------------------------
 
+//----modpage----------------------------------------
 
 void xrLauncherControl::InitModPage()
 {
@@ -123,6 +123,12 @@ void xrLauncherControl::InitModPage()
 				pStr = ini.r_string("general","www");
 				strcpy(info.m_www, pStr);
 			};
+
+			if(ini.line_exist("general","command_line")){
+				pStr = ini.r_string("general","command_line");
+				strcpy(info.m_cmd_line, pStr);
+			};
+
 		};
     }
 
@@ -136,7 +142,7 @@ System::Void xrLauncherControl::modList_SelectedIndexChanged(System::Object *  s
 	modShortDescrLbl->Text	= S"Short description: ";
 	modLongDescrLbl->Text	= S"Long description: ";
 	modLinkLbl->Text		= S"Website: ";
-
+	modVersionLbl->Text		= S"Version: ";
 	int index = modList->SelectedIndex;
 	  if (-1 == index)
 		  return;
@@ -145,4 +151,29 @@ System::Void xrLauncherControl::modList_SelectedIndexChanged(System::Object *  s
 	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(info.m_descr_short) );
 	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(info.m_descr_long) );
 	modLinkLbl->Text = String::Concat(modLinkLbl->Text, new String(info.m_www) );
+	modVersionLbl->Text = String::Concat(modVersionLbl->Text, new String(info.m_version) );
+
+	
+	modRunBtn->Enabled = xr_strlen(info.m_cmd_line)>0;
+}
+
+System::Void xrLauncherControl::modRunBtn_Click(System::Object *  sender, System::EventArgs *  e)
+{
+	int index = modList->SelectedIndex;
+	  if (-1 == index)
+		  return;
+
+    SmodInfo& info = m_mod_info->at(index);
+	CConsoleWrapper con;
+	con.Execute(info.m_cmd_line);
+	Close();
+}
+
+
+//----stalker_page
+System::Void xrLauncherControl::runStalker_Click(System::Object *  sender, System::EventArgs *  e)
+{
+	CConsoleWrapper con;
+	con.Execute("start server(andy_test/single) client(localhost)");
+	Close();
 }
