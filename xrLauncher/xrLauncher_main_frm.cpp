@@ -154,10 +154,24 @@ System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System
 		FS.update_path(pack_path,"$server_root$",*(info.m_archieves->at(i)));
 		FS.register_archieve(pack_path);
 	}
-//	CConsole* con = ::Console;
-//	con->Execute(*info.m_cmd_line);
+	CConsole* con = ::Console;
+	con->Execute("cfg_save tmp_launcher.ltx");
+
+	LPCSTR	c_name		= con->ConfigFile;
+	SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
+	IReader* R			= FS.r_open(c_name);
+	IReader* R2			= FS.r_open("tmp_launcher.ltx");
+	IWriter* W			= FS.w_open(c_name);
+	W->w(R->pointer(), R->length() );
+	W->w(R2->pointer(), R2->length() );
+	
+
+	FS.w_close			(W);
+	FS.r_close			(R2);
+	FS.r_close			(R);
+
 	strcpy(Core.Params,*info.m_cmd_line);
-	Close();
+	_Close(0);
 }
 
 System::Void xrLauncher_main_frm::aboutBtn_Click(System::Object *  sender, System::EventArgs *  e)
