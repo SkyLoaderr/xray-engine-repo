@@ -49,12 +49,12 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				precision = 1.f;
 #endif
 
-	if (!enabled() || CDetailPathManager::m_path.empty() || (CDetailPathManager::m_path.size() - 1 <= CDetailPathManager::m_current_travel_point))	{
+	if (!enabled() || path_completed() || (CDetailPathManager::path().size() - 1 <= CDetailPathManager::curr_travel_point_index()))	{
 		m_speed			= 0.f;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
 			motion.set	(0,0,0);
-			movement_control->Calculate(CDetailPathManager::m_path,0.f,CDetailPathManager::m_current_travel_point,precision);
+			movement_control->Calculate(CDetailPathManager::path(),0.f,CDetailPathManager::curr_travel_point_index(),precision);
 			movement_control->GetPosition(dest_position);
 		}
 
@@ -70,7 +70,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if (time_delta < EPS)
 		return;
 #pragma todo("Dima to Kostia : Please change this piece of code to support paths with multiple desired velocities")
-	float				speed		=	2.15f;//CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed
+	float				speed		=	2.15f;//CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed
 	float				dist		=	speed*time_delta;
 	float				dist_save	=	dist;
 
@@ -78,28 +78,28 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 	// move full steps
 	Fvector				mdir,target;
-	target.set			(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].m_position);
+	target.set			(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position);
 	mdir.sub			(target, dest_position);
 	float				mdist =	mdir.magnitude();
 	
 	while (dist>mdist) {
 		dest_position.set	(target);
 
-		if (CDetailPathManager::m_current_travel_point + 1 >= CDetailPathManager::m_path.size())
+		if (CDetailPathManager::curr_travel_point_index() + 1 >= CDetailPathManager::path().size())
 			break;
 		else {
 			dist			-= mdist;
 			++CDetailPathManager::m_current_travel_point;
-			if ((CDetailPathManager::m_current_travel_point+1) >= CDetailPathManager::m_path.size())
+			if ((CDetailPathManager::curr_travel_point_index()+1) >= CDetailPathManager::path().size())
 				break;
-			target.set	(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].m_position);
+			target.set	(CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position);
 			mdir.sub	(target, dest_position);
 			mdist		= mdir.magnitude();
 		}
 	}
 
 	if (mdist < EPS_L) {
-		CDetailPathManager::m_current_travel_point = CDetailPathManager::m_path.size() - 1;
+		CDetailPathManager::curr_travel_point_index() = CDetailPathManager::path().size() - 1;
 		m_speed			= 0.f;
 		return;
 	}
@@ -120,8 +120,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	if ((tpNearestList.empty())) {
 		if(!movement_control->TryPosition(dest_position)) {
-//			movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
-			movement_control->Calculate(CDetailPathManager::m_path,speed,CDetailPathManager::m_current_travel_point,precision);
+//			movement_control->Calculate(CDetailPathManager::path(),CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed,CDetailPathManager::curr_travel_point_index(),precision);
+			movement_control->Calculate(CDetailPathManager::path(),speed,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
 			if (!fsimilar(0.f,movement_control->gcontact_HealthLost))
 				Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
@@ -130,8 +130,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->b_exect_position=true;
 	}
 	else {
-//		movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
-		movement_control->Calculate(CDetailPathManager::m_path,speed,CDetailPathManager::m_current_travel_point,precision);
+//		movement_control->Calculate(CDetailPathManager::path(),CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed,CDetailPathManager::curr_travel_point_index(),precision);
+		movement_control->Calculate(CDetailPathManager::path(),speed,CDetailPathManager::curr_travel_point_index(),precision);
 		movement_control->GetPosition(dest_position);
 		if (!fsimilar(0.f,movement_control->gcontact_HealthLost))
 			Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
@@ -188,7 +188,7 @@ void CMovementManager::process_game_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectGameVertex : {
-			CGameLocationSelector::select_location(game_vertex_id(),m_game_dest_vertex_id);
+			CGameLocationSelector::select_location(game_vertex_id(),game_dest_vertex_id());
 			if (CGameLocationSelector::failed())
 				break;
 			m_path_state	= ePathStateBuildGamePath;
@@ -197,7 +197,7 @@ void CMovementManager::process_game_path()
 		}
 		case ePathStateBuildGamePath : {
 			Device.Statistic.TEST0.Begin();
-			CGamePathManager::build_path(game_vertex_id(),m_game_dest_vertex_id);
+			CGamePathManager::build_path(game_vertex_id(),game_dest_vertex_id());
 			if (CGamePathManager::failed()) {
 				Device.Statistic.TEST0.End();
 				break;
@@ -238,11 +238,12 @@ void CMovementManager::process_game_path()
 		}
 		case ePathStateBuildDetailPath : {
 			Device.Statistic.TEST2.Begin();
-			CDetailPathManager::m_start_position = Position();
-			m_detail_dest_position  = 
+			CDetailPathManager::set_start_position(Position());
+			CDetailPathManager::set_dest_position( 
 				ai().level_graph().vertex_position(
 					CLevelPathManager::intermediate_vertex_id()
-				);
+				)
+			);
 			CDetailPathManager::build_path(
 				CLevelPathManager::path(),
 				CLevelPathManager::intermediate_index(),
@@ -263,7 +264,7 @@ void CMovementManager::process_game_path()
 			if (!CGameLocationSelector::actual(game_vertex_id()))
 				m_path_state	= ePathStateSelectGameVertex;
 			else
-			if (!CGamePathManager::actual(game_vertex_id(),m_game_dest_vertex_id))
+			if (!CGamePathManager::actual(game_vertex_id(),game_dest_vertex_id()))
 				m_path_state	= ePathStateBuildGamePath;
 			else
 				if (!CLevelPathManager::actual(
@@ -298,7 +299,7 @@ void CMovementManager::process_level_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
-			CLevelLocationSelector::select_location(level_vertex_id(),m_level_dest_vertex_id);
+			CLevelLocationSelector::select_location(level_vertex_id(),level_dest_vertex_id());
 			if (CLevelLocationSelector::failed())
 				break;
 			m_path_state		= ePathStateBuildLevelPath;
@@ -306,7 +307,7 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStateBuildLevelPath : {
-			CLevelPathManager::build_path(level_vertex_id(),m_level_dest_vertex_id);
+			CLevelPathManager::build_path(level_vertex_id(),level_dest_vertex_id());
 			if (CLevelPathManager::failed())
 				break;
 			m_path_state		= ePathStateContinueLevelPath;
@@ -333,7 +334,7 @@ void CMovementManager::process_level_path()
                 CDetailPathManager::build_path(
 					CLevelPathManager::path(),
 					CLevelPathManager::intermediate_index(),
-					m_detail_dest_position
+					dest_position()
 				);
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
@@ -352,7 +353,7 @@ void CMovementManager::process_level_path()
 			if (!CLevelLocationSelector::actual(level_vertex_id()))
 				m_path_state	= ePathStateSelectLevelVertex;
 			else
-			if (!CLevelPathManager::actual(level_vertex_id(),m_level_dest_vertex_id))
+			if (!CLevelPathManager::actual(level_vertex_id(),level_dest_vertex_id()))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::actual())
@@ -392,7 +393,7 @@ void CMovementManager::process_enemy_search()
 				break;
 		}
 		case ePathStateBuildLevelPath : {
-			CLevelPathManager::build_path(level_vertex_id(),m_level_dest_vertex_id);
+			CLevelPathManager::build_path(level_vertex_id(),level_dest_vertex_id());
 			if (CLevelPathManager::failed())
 				break;
 			m_path_state		= ePathStateContinueLevelPath;
@@ -428,7 +429,7 @@ void CMovementManager::process_enemy_search()
 			if (!CEnemyLocationPredictor::enemy_prediction_actual())
 				m_path_state	= ePathStatePredictEnemyVertices;
 			else
-			if (!CLevelPathManager::actual(level_vertex_id(),m_level_dest_vertex_id))
+			if (!CLevelPathManager::actual(level_vertex_id(),level_dest_vertex_id()))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CDetailPathManager::actual())

@@ -30,6 +30,11 @@ IC	const xr_vector<CDetailPathManager::STravelPoint> &CDetailPathManager::path()
 
 IC	const CDetailPathManager::STravelPoint &CDetailPathManager::curr_travel_point() const
 {
+	return					(m_path[curr_travel_point_index()]);
+}
+
+IC	u32	 CDetailPathManager::curr_travel_point_index() const
+{
 	VERIFY					(!m_path.empty() && (m_current_travel_point < m_path.size()));
-	return					(m_path[m_current_travel_point]);
+	return					(m_current_travel_point);
 }

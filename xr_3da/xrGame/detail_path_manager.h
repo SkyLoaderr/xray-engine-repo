@@ -66,6 +66,11 @@ protected:
 			bool	valid					(const Fvector &position) const;
 	IC		const xr_vector<STravelPoint> &path() const;
 	IC		const STravelPoint &curr_travel_point() const;
+	IC		u32		curr_travel_point_index	() const;
+
+#ifdef DEBUG
+	friend class CLevelGraph;
+#endif
 
 public:
 					CDetailPathManager		();
