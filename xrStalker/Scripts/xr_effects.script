@@ -334,7 +334,9 @@ function bar_ecolog_spam(actor, npc)
 	local t = math.random(1,4)
 	news_manager.send_tip(actor, "bar_ecolog_spam_"..t, nil, "ecolog")
 end
-
+function bar_freedom_angry_actor(actor,npc)
+	npc:set_relation(game_object.enemy, actor)
+end
 
 
 function military_max_dead (actor, npc)
