@@ -274,5 +274,8 @@ bool CAI_Stalker::bfAssignAnimation(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignAnimation(tpEntityAction))
 		return			(false);
 
+	if (xr_strlen(tpEntityAction->m_tAnimationAction.m_caAnimationToPlay))
+		m_tpCurrentTorsoAnimation = m_tpCurrentLegsAnimation = 0;
+
 	return				(true);
 }

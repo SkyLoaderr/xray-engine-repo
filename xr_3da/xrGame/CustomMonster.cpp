@@ -404,7 +404,6 @@ void CCustomMonster::UpdateCL	()
 				Fmatrix				l_tSavedTransform = XFORM();
 				m_fTimeUpdateDelta	= Device.fTimeDelta;
 				l_tpRat->bfComputeNewPosition(l_tpRat->m_bCanAdjustSpeed,l_tpRat->m_bStraightForward);
-//				Think();
 				float				y,p,b;
 				XFORM().getHPB		(y,p,b);
 				NET_Last.p_pos		= Position();
@@ -412,7 +411,8 @@ void CCustomMonster::UpdateCL	()
 				NET_Last.o_torso.yaw= -y;
 				NET_Last.o_torso.pitch= -p;
 				XFORM()				= l_tSavedTransform;
-				bfScriptAnimation	();
+				if (!bfScriptAnimation())
+					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
 			}
 			else
 				if (!bfScriptAnimation())
@@ -796,6 +796,7 @@ bool CCustomMonster::bfScriptAnimation()
 		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
+		Msg					("[%8d] Script animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
@@ -803,6 +804,7 @@ bool CCustomMonster::bfScriptAnimation()
 		return		(true);
 	}
 	else {
+		Msg					("[%8d] No script animation!",Level().timeServer());
 		m_tpScriptAnimation	= 0;
 		return		(false);
 	}

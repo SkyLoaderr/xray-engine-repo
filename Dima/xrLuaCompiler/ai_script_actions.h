@@ -29,7 +29,7 @@ public:
 
 class CPatrolPathParams {
 public:
-	ref_str									m_caPatrolPathToGo;
+	const CLevel::SPath						*m_path;
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	bool									m_bRandom;
@@ -37,7 +37,7 @@ public:
 							CPatrolPathParams	(LPCSTR caPatrolPathToGo, const CPatrolPathManager::EPatrolStartType tPatrolPathStart = CPatrolPathManager::ePatrolStartTypeNearest, const CPatrolPathManager::EPatrolRouteType tPatrolPathStop = CPatrolPathManager::ePatrolRouteTypeContinue, bool bRandom = true)
 	{
 		VERIFY2				(Level().m_PatrolPaths.find(caPatrolPathToGo) != Level().m_PatrolPaths.end(),caPatrolPathToGo);
-		m_caPatrolPathToGo	= caPatrolPathToGo;
+		m_path				= &(Level().m_PatrolPaths.find(caPatrolPathToGo)->second);
 		m_tPatrolPathStart	= tPatrolPathStart;
 		m_tPatrolPathStop	= tPatrolPathStop;
 		m_bRandom			= bRandom;
@@ -49,25 +49,19 @@ public:
 
 	IC	u32					count				() const
 	{
-		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
-		VERIFY				(I != Level().m_PatrolPaths.end());
-		return				((*I).second.tpaWayPoints.size());
+		return				(m_path->tpaWayPoints.size());
 	}
 
 	IC	const Fvector		&point				(u32 index) const
 	{
-		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
-		VERIFY				(I != Level().m_PatrolPaths.end());
-		VERIFY				((*I).second.tpaWayPoints.size() > index);
-		return				((*I).second.tpaWayPoints[index].tWayPoint);
+		VERIFY				(m_path->tpaWayPoints.size() > index);
+		return				(m_path->tpaWayPoints[index].tWayPoint);
 	}
 
 	IC	u32					point				(LPCSTR name) const
 	{
-		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
-		VERIFY				(I != Level().m_PatrolPaths.end());
-		xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin(), b = i;
-		xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();
+		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;
+		xr_vector<CLevel::SWayPoint>::const_iterator	e = m_path->tpaWayPoints.end();
 		for ( ; i != e; ++i)
 			if (!strcmp(name,*(*i).name))
 				return		(u32(i - b));
@@ -76,18 +70,22 @@ public:
 
 	IC	u32					point				(const Fvector &point) const
 	{
-		CLevel::SPathPairIt	I = Level().m_PatrolPaths.find(*m_caPatrolPathToGo);
-		VERIFY				(I != Level().m_PatrolPaths.end());
 		u32					best_index = u32(-1);
 		float				min_dist = flt_max;
-		xr_vector<CLevel::SWayPoint>::const_iterator	i = (*I).second.tpaWayPoints.begin(), b = i;
-		xr_vector<CLevel::SWayPoint>::const_iterator	e = (*I).second.tpaWayPoints.end();
+		xr_vector<CLevel::SWayPoint>::const_iterator	i = m_path->tpaWayPoints.begin(), b = i;
+		xr_vector<CLevel::SWayPoint>::const_iterator	e = m_path->tpaWayPoints.end();
 		for ( ; i != e; ++i)
 			if ((*i).tWayPoint.distance_to(point) < min_dist) {
 				min_dist	= (*i).tWayPoint.distance_to(point);
 				best_index	= u32(i - b);
 			}
 		return				(u32(best_index));
+	}
+
+	IC	BOOL				flag				(u32 index, u8 flag_index) const
+	{
+		VERIFY				((m_path->tpaWayPoints.size() > index) && (flag_index < 32));
+		return				(!!(m_path->tpaWayPoints[index].dwFlags & (u32(1) << flag_index)));
 	}
 };
 
@@ -122,7 +120,7 @@ public:
 	MonsterSpace::EMovementType		m_tMovementType;
 	CDetailPathManager::EDetailPathType		m_tPathType;
 	CObject							*m_tpObjectToGo;
-	ref_str							m_caPatrolPathToGo;
+	const CLevel::SPath				*m_path;
 	CPatrolPathManager::EPatrolStartType	m_tPatrolPathStart;
 	CPatrolPathManager::EPatrolRouteType	m_tPatrolPathStop;
 	Fvector							m_tDestinationPosition;
@@ -139,7 +137,7 @@ public:
 		SetBodyState		(MonsterSpace::eBodyStateStand);
 		SetMovementType		(MonsterSpace::eMovementTypeStand);
 		SetPathType			(CDetailPathManager::eDetailPathTypeSmooth);
-		SetPatrolPath		("");
+		SetPatrolPath		(0);
 		SetPatrolStart		(CPatrolPathManager::ePatrolStartTypeNearest);
 		SetPatrolStop		(CPatrolPathManager::ePatrolRouteTypeContinue);
 		SetPatrolRandom		(true);
@@ -163,7 +161,7 @@ public:
 		SetBodyState		(tBodyState);
 		SetMovementType		(tMovementType);
 		SetPathType			(tPathType);
-		SetPatrolPath		(*tPatrolPathParams.m_caPatrolPathToGo);
+		SetPatrolPath		(tPatrolPathParams.m_path);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
@@ -202,7 +200,7 @@ public:
 							CMovementAction		(MonsterSpace::EActState tActState, const CPatrolPathParams &tPatrolPathParams)
 	{
 		SetAct				(tActState);
-		SetPatrolPath		(*tPatrolPathParams.m_caPatrolPathToGo);
+		SetPatrolPath		(tPatrolPathParams.m_path);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
@@ -234,9 +232,9 @@ public:
 
 			void			SetObjectToGo		(CLuaGameObject *tpObjectToGo);
 
-			void			SetPatrolPath		(LPCSTR caPatrolPath)
+			void			SetPatrolPath		(const CLevel::SPath *path)
 	{
-		m_caPatrolPathToGo	= caPatrolPath;
+		m_path				= path;
 		m_tGoalType			= eGoalTypePatrolPath;
 		m_bCompleted		= false;
 	}

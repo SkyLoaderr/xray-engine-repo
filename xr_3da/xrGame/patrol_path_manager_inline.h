@@ -19,7 +19,7 @@ IC	CPatrolPathManager::~CPatrolPathManager		()
 
 IC	void CPatrolPathManager::Init				()
 {
-	m_path_name				= 0;
+	m_path					= 0;
 	m_start_type			= ePatrolStartTypeDummy;
 	m_route_type			= ePatrolRouteTypeDummy;
 	m_actuality				= true;
@@ -55,13 +55,11 @@ IC	const Fvector &CPatrolPathManager::destination_position	() const
 	return					(m_dest_position);
 }
 
-IC	void CPatrolPathManager::set_path	(ref_str patrol_path_name)
+IC	void CPatrolPathManager::set_path	(const CLevel::SPath *path)
 {
-	if (m_path_name.equal(patrol_path_name))
+	if (m_path == path)
 		return;
-	CLevel::SPathPairIt		I = Level().m_PatrolPaths.find(*patrol_path_name);
-	VERIFY					(I != Level().m_PatrolPaths.end());
-	m_path_name				= patrol_path_name;
+	m_path					= path;
 	m_actuality				= false;
 }
 

@@ -372,7 +372,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("count",						&CPatrolPathParams::count)
 			.def("point",						(const Fvector &(CPatrolPathParams::*)(u32)				const)	(CPatrolPathParams::point))
 			.def("index",						(u32			(CPatrolPathParams::*)(LPCSTR)			const)	(CPatrolPathParams::point))
-			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point)),
+			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))
+			.def("flag",						&CPatrolPathParams::flag),
 
 			class_<CMovementAction>("move")
 			.enum_("body")
@@ -635,7 +636,9 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("use",							&CLuaGameObject::UseObject)				// time
 			.def("rank",						&CLuaGameObject::GetRank)
 			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
-			.def("command",						&CLuaGameObject::AddAction)
+//			.def("command",						(void (CLuaGameObject::*)(const CEntityAction*))(CLuaGameObject::AddAction))
+//			.def("command",						(void (CLuaGameObject::*)(const CEntityAction*, BOOL))(CLuaGameObject::AddAction))
+			.def("command",						CLuaGameObject::AddAction)
 			.def("action",						&CLuaGameObject::GetCurrentAction)
 			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))

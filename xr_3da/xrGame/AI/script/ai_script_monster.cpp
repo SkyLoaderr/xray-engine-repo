@@ -89,9 +89,18 @@ void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
 #pragma todo("Dima to Dima : Use object specified by script")
 }
 
-void CScriptMonster::AddAction(const CEntityAction *tpEntityAction)
+void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPriority)
 {
-	m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
+	if (!bHighPriority || m_tpActionQueue.empty())
+		m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
+	else {
+		VERIFY			(m_tpActionQueue.front());
+		CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>(*m_tpActionQueue.front());
+		vfFinishAction	(m_tpActionQueue.front());
+		xr_delete		(m_tpActionQueue.front());
+		m_tpActionQueue.front() = l_tpEntityAction;
+		m_tpActionQueue.insert(m_tpActionQueue.begin(),xr_new<CEntityAction>(*tpEntityAction));
+	}
 }
 
 CEntityAction *CScriptMonster::GetCurrentAction()
@@ -142,7 +151,7 @@ void CScriptMonster::ProcessScripts()
 {
 	CEntityAction	*l_tpEntityAction = 0;
 	while (!m_tpActionQueue.empty()) {
-		l_tpEntityAction= *m_tpActionQueue.begin();
+		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
@@ -268,7 +277,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		}
 		case CMovementAction::eGoalTypePatrolPath : {
 			l_tpMovementManager->set_path_type	(CMovementManager::ePathTypePatrolPath);
-			l_tpMovementManager->set_path		(l_tMovementAction.m_caPatrolPathToGo);
+			l_tpMovementManager->set_path		(l_tMovementAction.m_path);
 			l_tpMovementManager->set_start_type	(l_tMovementAction.m_tPatrolPathStart);
 			l_tpMovementManager->set_route_type	(l_tMovementAction.m_tPatrolPathStop);
 			l_tpMovementManager->set_random		(l_tMovementAction.m_bRandom);

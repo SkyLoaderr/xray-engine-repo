@@ -39,7 +39,7 @@ public:
 
 	virtual bool				CheckIfCompleted		() const										{return false;};
 	virtual	CEntityAction		*GetCurrentAction		();
-	virtual	void				AddAction				(const CEntityAction*tpEntityAction);
+	virtual	void				AddAction				(const CEntityAction*tpEntityAction, bool bHighPriority = false);
 	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
 	virtual	void				ResetScriptData			(void				*P = 0);

@@ -319,8 +319,17 @@ public:
 	BIND_FUNCTION02	(m_tpGameObject,	SetScriptControl,	CScriptMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					LPCSTR);
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CScriptMonster,	GetScriptControl,	bool,								false);
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
-	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CScriptMonster,	AddAction,			const CEntityAction *,				const CEntityAction *);
+//	BIND_FUNCTION02	(m_tpGameObject,	AddAction,			CScriptMonster,	AddAction,			const CEntityAction *,				bool,					const CEntityAction *,	bool);
 	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
+
+	IC		void			AddAction	(const CEntityAction *tpEntityAction, bool bHighPriority = false)
+	{
+		CScriptMonster		*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut		(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member AddAction!");
+		else
+			l_tpScriptMonster->AddAction(tpEntityAction, bHighPriority);
+	}
 
 	// CCustomMonster
 //	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
