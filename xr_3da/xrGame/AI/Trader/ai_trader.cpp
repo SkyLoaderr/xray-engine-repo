@@ -351,7 +351,7 @@ void CAI_Trader::clear_trade_callback()
 
 void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
 {
-	if (m_tpOnTrade) (*m_tpOnTrade)(xr_new<CLuaGameObject>(O),bSell);
+	if (m_tpOnTrade) (*m_tpOnTrade)(O->lua_game_object(),bSell);
 }
 
 bool CAI_Trader::can_attach				(const CInventoryItem *inventory_item) const

@@ -24,6 +24,7 @@ public:
 	IC						CActionScriptBase	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual					~CActionScriptBase	();
 	virtual	void			reinit				(_object_type *object, CPropertyStorage *storage, bool clear_all);
+	virtual	void			reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
 };
 
 #include "action_script_base_inline.h"

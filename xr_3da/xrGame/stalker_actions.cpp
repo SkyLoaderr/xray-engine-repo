@@ -49,8 +49,6 @@ void CStalkerActionFreeNoALife::execute		()
 {
 	inherited::execute		();
 	m_object->play			(eStalkerSoundHumming,60000,10000);
-	CStalkerMovementManager	*cast = dynamic_cast<CStalkerMovementManager*>(m_object);
-	VERIFY					(cast);
 
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);

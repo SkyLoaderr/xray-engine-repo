@@ -27,11 +27,13 @@ protected:
 	typedef CMotivationAction<_object_type>						CSMotivationAction;
 
 public:
+	IC				CMotivationActionManager	();
 	virtual			~CMotivationActionManager	();
 	virtual void	reinit						(_object_type *object, bool clear_all = false);
 	virtual void	Load						(LPCSTR section);
 	virtual void	reload						(LPCSTR section);
 	virtual void	update						(u32 time_delta);
+	virtual void	clear						();
 };
 
 #include "motivation_action_manager_inline.h"

@@ -17,6 +17,12 @@
 #define CSMotivationActionManager CMotivationActionManagerScript<_object_type,_motivation_type>
 
 TEMPLATE_SPECIALIZATION
+IC	CSMotivationActionManager::CMotivationActionManagerScript	()
+{
+	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
 CSMotivationActionManager::~CMotivationActionManagerScript	()
 {
 }

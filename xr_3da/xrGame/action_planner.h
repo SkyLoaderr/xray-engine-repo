@@ -62,6 +62,7 @@ public:
 	IC		bool			initialized				() const;
 	IC		void			add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void			add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
+	virtual void			clear					();
 };
 
 #include "action_planner_inline.h"

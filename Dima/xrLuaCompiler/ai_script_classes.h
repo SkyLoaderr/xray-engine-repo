@@ -11,7 +11,6 @@
 #include "ai_script_space.h"
 #include "ai_script_bind.h"
 #include "ai_script_actions.h"
-#include "ai/stalker/ai_stalker.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
 #include "weapon.h"
@@ -23,9 +22,15 @@
 #include "missile.h"
 #include "script_binder.h"
 #include "motivation_action_manager.h"
+#ifdef OLD_OBJECT_HANDLER
+	#include "object_handler.h"
+#else
+	#include "object_handler_goap.h"
+#endif
 
 class CInventoryItem;
 class CLuaHit;
+class CAI_Stalker;
 
 class CLuaGameObject {
 	CGameObject			*m_tpGameObject;
@@ -248,8 +253,6 @@ public:
 			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member UseObject!");
 	}
 
-	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								ALife::eStalkerRankDummy);
-	
 			CLuaGameObject	*GetCurrentWeapon	() const;
 			CLuaGameObject	*GetCurrentEquipment() const;
 			CLuaGameObject	*GetFood			() const;
@@ -501,13 +504,13 @@ public:
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
 
-	IC		void				set_object			(const luabind::object &object)
+	IC		void				set_object			(CScriptBinderObject *object)
 	{
 		CScriptBinder			*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
 		if (!binder)
-			LuaOut					(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member set_object!");
+			LuaOut				(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member set_object!");
 		else
-			binder->set_lua_object	(object);
+			binder->set_object	(object);
 	}
 
 	IC		CMotivationActionManager<CLuaGameObject>	*motivation_action_manager()
@@ -521,138 +524,20 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
-	IC		void		set_desired_position	(const Fvector *desired_position)
-	{
-		CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_desired_position	(desired_position);
-	}
-
-	IC		void		set_desired_direction	(const Fvector *desired_direction)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_desired_direction	(desired_direction);
-	}
-
-	IC		void		set_body_state			(EBodyState body_state)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_body_state	(body_state);
-	}
-
-	IC		void		set_movement_type		(EMovementType movement_type)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_movement_type	(movement_type);
-	}
-
-	IC		void		set_mental_state		(EMentalState mental_state)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_mental_state	(mental_state);
-	}
-
-	IC		void		set_path_type			(CMovementManager::EPathType path_type)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_path_type	(path_type);
-	}
-
-	IC		void		set_detail_path_type	(CMovementManager::EDetailPathType detail_path_type)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_detail_path_type	(detail_path_type);
-	}
-
-	IC		void		set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_node_evaluator	(node_evaluator);
-	}
-
-	IC		void		set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
-	{
-		CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker)
-			LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-		else
-			stalker->set_path_evaluator	(path_evaluator);
-	}
-
-	IC		void	add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
-	{
-		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-		if (!sound_player)
-			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
-		else
-			sound_player->add		(prefix,max_count,type,priority,mask,internal_type,bone_name);
-	}
-
-	IC		void	remove_sound	(u32 internal_type)
-	{
-		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-		if (!sound_player)
-			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
-		else
-			sound_player->remove	(internal_type);
-	}
-
-	IC		void	play_sound		(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1))
-	{
-		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-		if (!sound_player)
-			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
-		else
-			sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time,id);
-	}
-
-	IC		void	set_sound_mask	(u32 sound_mask)
-	{
-		CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
-		if (!sound_player)
-			LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
-		else
-			sound_player->set_sound_mask(sound_mask);
-	}
-
-	IC		void	set_sight		(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1))
-	{
-		CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
-		if (!sight_manager)
-			LuaOut					(Lua::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
-		else
-			sight_manager->update	(tLookType,tPointToLook,dwLookOverDelay);
-	}
-
-	IC		void	set_item		(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0)
-	{
-		CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
-		if (!object_handler)
-			LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-		else
-			object_handler->set_goal(object_action,game_object);
-	}
+			void				set_desired_position	(const Fvector *desired_position);
+			void				set_desired_direction	(const Fvector *desired_direction);
+			void				set_body_state			(EBodyState body_state);
+			void				set_movement_type		(EMovementType movement_type);
+			void				set_mental_state		(EMentalState mental_state);
+			void				set_path_type			(CMovementManager::EPathType path_type);
+			void				set_detail_path_type	(CMovementManager::EDetailPathType detail_path_type);
+			void				set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
+			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
+			void				add_sound				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
+			void				remove_sound			(u32 internal_type);
+			void				play_sound				(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1));
+			void				set_sound_mask			(u32 sound_mask);
+			void				set_sight				(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));
+			void				set_item				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
+			u32					GetRank					();
 };

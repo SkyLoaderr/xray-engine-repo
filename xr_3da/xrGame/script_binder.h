@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "ai_script_space.h"
+class CScriptBinderObject;
 
 class CScriptBinder : virtual public CGameObject {
 protected:
 	typedef CGameObject inherited;
 
 protected:
-	luabind::object		*m_lua_instance;
+	CScriptBinderObject	*m_object;
 
 public:
 						CScriptBinder	();
@@ -28,5 +28,5 @@ public:
 	virtual void		net_Destroy		();
 	virtual void		net_Import		(NET_Packet &net_packet);
 	virtual void		net_Export		(NET_Packet &net_packet);
-			void		set_lua_object	(const luabind::object &object);
+			void		set_object		(CScriptBinderObject *object);
 };

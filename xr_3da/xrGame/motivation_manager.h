@@ -47,6 +47,7 @@ public:
 	virtual void					Load				(LPCSTR section);
 	virtual void					reload				(LPCSTR section);
 	virtual void					update				(u32 time_delta);
+	virtual void					clear				();
 
 public:
 	IC		void					add_motivation		(u32 motivation_id, CSMotivation *motivation);

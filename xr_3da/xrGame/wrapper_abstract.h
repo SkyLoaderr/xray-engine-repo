@@ -28,6 +28,7 @@ public:
 	IC				CWrapperAbstract	(T1 t1, T2 t2, T3 t3);
 	virtual			~CWrapperAbstract	();
 	virtual void	reinit				(_object_type *object);
+	virtual void	reinit				(CLuaGameObject *object);
 };
 
 class CPropertyStorage;
@@ -52,6 +53,7 @@ public:
 	IC				CWrapperAbstract2	(T1 t1, T2 t2, T3 t3);
 	virtual			~CWrapperAbstract2	();
 	virtual void	reinit				(_object_type *object, CPropertyStorage *storage);
+	virtual void	reinit				(CLuaGameObject *object, CPropertyStorage *storage);
 };
 
 #include "wrapper_abstract_inline.h"

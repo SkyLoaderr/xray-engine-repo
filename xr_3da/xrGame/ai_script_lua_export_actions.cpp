@@ -26,6 +26,7 @@
 #include "script_motivation_action_wrapper.h"
 #include "script_motivation_manager_wrapper.h"
 #include "script_motivation_action_manager_wrapper.h"
+#include "script_binder_object_wrapper.h"
 
 using namespace luabind;
 using namespace Script;
@@ -96,7 +97,8 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
-			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition)),
+			.def("set_goal_world_state",		(void (CScriptActionPlanner::*)(const CScriptActionPlanner::CState &))(CScriptActionPlanner::add_condition))
+			.def("clear",						&CScriptActionPlanner::clear),
 
 		class_<CScriptActionPlannerAction,CScriptActionPlannerActionWrapper,bases<CScriptActionPlanner,CScriptAction> >("planner_action")
 			.def(								constructor<>())
@@ -132,7 +134,8 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 			.def("reinit",						&CScriptMotivationManagerWrapper::reinit_static)
 			.def("load",						&CScriptMotivationManagerWrapper::Load_static)
 			.def("reload",						&CScriptMotivationManagerWrapper::reload_static)
-			.def("update",						&CScriptMotivationManagerWrapper::update_static),
+			.def("update",						&CScriptMotivationManagerWrapper::update_static)
+			.def("clear",						&CScriptMotivationManager::clear),
 
 		class_<CScriptMotivationActionManager,CScriptMotivationActionManagerWrapper,bases<CScriptMotivationManager,CScriptActionPlanner> >("motivation_action_manager")
 			.def(								constructor<>())
@@ -140,6 +143,17 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 			.def("load",						&CScriptMotivationActionManagerWrapper::Load_static)
 			.def("reload",						&CScriptMotivationActionManagerWrapper::reload_static)
 			.def("update",						&CScriptMotivationActionManagerWrapper::update_static)
+			.def("clear",						&CScriptMotivationActionManager::clear),
 
+		class_<CScriptBinderObject,CScriptBinderObjectWrapper>("object_binder")
+			.def_readonly("object",				&CScriptBinderObject::m_object)
+			.def(								constructor<CLuaGameObject*>())
+			.def("reinit",						&CScriptBinderObjectWrapper::reinit_static)
+			.def("reload",						&CScriptBinderObjectWrapper::reload_static)
+			.def("net_spawn",					&CScriptBinderObjectWrapper::net_Spawn_static)
+			.def("net_destroy",					&CScriptBinderObjectWrapper::net_Destroy_static)
+			.def("net_import",					&CScriptBinderObjectWrapper::net_Import_static)
+			.def("net_export",					&CScriptBinderObjectWrapper::net_Export_static)
+			
 	];
 }

@@ -2613,6 +2613,26 @@
 						<File
 							RelativePath=".\script_binder.h">
 						</File>
+						<Filter
+							Name="ScriptBinderObject"
+							Filter="">
+							<File
+								RelativePath=".\script_binder_object.cpp">
+							</File>
+							<File
+								RelativePath=".\script_binder_object.h">
+							</File>
+							<Filter
+								Name="ScriptBinderObjectWrapper"
+								Filter="">
+								<File
+									RelativePath=".\script_binder_object_wrapper.cpp">
+								</File>
+								<File
+									RelativePath=".\script_binder_object_wrapper.h">
+								</File>
+							</Filter>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ScriptClasses"

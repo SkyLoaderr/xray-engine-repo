@@ -10,6 +10,7 @@
 #include "script_binder.h"
 #include "ai_script_lua_extension.h"
 #include "xrServer_Objects_ALife.h"
+#include "script_binder_object.h"
 
 CScriptBinder::CScriptBinder		()
 {
@@ -18,19 +19,19 @@ CScriptBinder::CScriptBinder		()
 
 CScriptBinder::~CScriptBinder		()
 {
-	VERIFY					(!m_lua_instance);
+	VERIFY					(!m_object);
 }
 
 void CScriptBinder::init			()
 {
-	m_lua_instance			= 0;
+	m_object				= 0;
 }
 
 void CScriptBinder::reinit			()
 {
 	inherited::reinit		();
-	if (m_lua_instance)
-		luabind::call_member<void>	(*m_lua_instance,"reinit");
+	if (m_object)
+		m_object->reinit	();
 }
 
 void CScriptBinder::Load			(LPCSTR section)
@@ -41,7 +42,7 @@ void CScriptBinder::Load			(LPCSTR section)
 void CScriptBinder::reload			(LPCSTR section)
 {
 	inherited::reload		(section);
-	VERIFY					(!m_lua_instance);
+	VERIFY					(!m_object);
 	if (!pSettings->line_exist(section,"script_binding"))
 		return;
 	
@@ -74,8 +75,8 @@ void CScriptBinder::reload			(LPCSTR section)
 	luabind::functor<void>	lua_function	= luabind::object_cast<luabind::functor<void> >(lua_namespace[function]);
 	lua_function			(lua_game_object());
 	
-	if (m_lua_instance)
-		luabind::call_member<void>	(*m_lua_instance,"reload",section);
+	if (m_object)
+		m_object->reload	(section);
 }
 
 BOOL CScriptBinder::net_Spawn		(LPVOID DC)
@@ -84,9 +85,7 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 		return				(FALSE);
 
 //	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
-
-//	if (m_lua_instance && !luabind::call_member<bool>(*m_lua_instance,"net_spawn",abstract))
-	if (m_lua_instance && !luabind::call_member<bool>(*m_lua_instance,"net_spawn",0))
+	if (m_object && !m_object->net_Spawn(0))//DC))
 		return				(FALSE);
 
 	return					(TRUE);
@@ -95,24 +94,24 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 void CScriptBinder::net_Destroy		()
 {
 	inherited::net_Destroy	();
-	if (m_lua_instance)
-		luabind::call_member<void>	(*m_lua_instance,"net_destroy");
-	xr_delete				(m_lua_instance);
+	if (m_object)
+		m_object->net_Destroy	();
+	xr_delete				(m_object);
 }
 
 void CScriptBinder::net_Import		(NET_Packet &net_packet)
 {
-	if (m_lua_instance)
-		luabind::call_member<void>	(*m_lua_instance,"net_import",0);//net_packet);
+	if (m_object)
+		m_object->net_Import(*(int*)((void*)&net_packet));
 }
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
-	if (m_lua_instance)
-		luabind::call_member<void>	(*m_lua_instance,"net_export",0);//net_packet);
+	if (m_object)
+		m_object->net_Export(*(int*)((void*)&net_packet));
 }
 
-void CScriptBinder::set_lua_object	(const luabind::object &object)
+void CScriptBinder::set_object		(CScriptBinderObject *object)
 {
-	m_lua_instance			= xr_new<luabind::object>(object);
+	m_object				= object;
 }

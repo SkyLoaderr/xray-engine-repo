@@ -229,5 +229,16 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	}
 }
 
+TEMPLATE_SPECIALIZATION
+void CSMotivationManager::clear	()
+{
+	xr_vector<CSGraphAbstract::CVertex>::iterator	I = m_graph->vertices().begin();
+	xr_vector<CSGraphAbstract::CVertex>::iterator	E = m_graph->vertices().end();
+	for ( ; I != E; ++I)
+		xr_delete			((*I).data());
+	xr_delete				(m_graph);
+	m_graph					= xr_new<CSGraphAbstract>();
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSMotivationManager

@@ -52,6 +52,15 @@ void CWrapper::reinit				(_object_type *object)
 	m_object				= object;
 }
 
+TEMPLATE_SPECIALIZATION
+void CWrapper::reinit				(CLuaGameObject *object)
+{
+	VERIFY					(object);
+	inherited::reinit		(object);
+	m_object				= dynamic_cast<_object_type*>(object->object());
+	VERIFY					(m_object);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // CWrapperAbstract2
 //////////////////////////////////////////////////////////////////////////
@@ -89,6 +98,15 @@ void CWrapper2::reinit				(_object_type *object, CPropertyStorage *storage)
 	VERIFY					(object);
 	inherited::reinit		(object->lua_game_object(),storage);
 	m_object				= object;
+}
+
+TEMPLATE_SPECIALIZATION
+void CWrapper2::reinit				(CLuaGameObject *object, CPropertyStorage *storage)
+{
+	VERIFY					(object);
+	inherited::reinit		(object,storage);
+	m_object				= dynamic_cast<_object_type*>(object->object());
+	VERIFY					(m_object);
 }
 
 #undef TEMPLATE_SPECIALIZATION

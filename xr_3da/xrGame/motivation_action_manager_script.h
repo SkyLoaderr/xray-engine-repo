@@ -23,6 +23,7 @@ protected:
 	_object_type	*m_object;
 
 public:
+	IC				CMotivationActionManagerScript	();
 	virtual			~CMotivationActionManagerScript	();
 	virtual void	reinit							(_object_type *object, bool clear_all = false);
 };

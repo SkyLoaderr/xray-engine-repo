@@ -59,8 +59,6 @@ void CStateFreeNoAlife::initialize		()
 void CStateFreeNoAlife::execute			()
 {
 	m_object->play					(eStalkerSoundHumming,60000,10000);
-	CStalkerMovementManager			*cast = dynamic_cast<CStalkerMovementManager*>(m_object);
-	VERIFY							(cast);
 	m_object->set_path_type			(CMovementManager::ePathTypeGamePath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);

@@ -177,5 +177,24 @@ IC	void CPlanner::add_effect		(_world_operator *action, _condition_type conditio
 	action->add_effect		(CWorldProperty(condition_id,condition_value));
 }
 
+TEMPLATE_SPECIALIZATION
+void CPlanner::clear				()
+{
+	{
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
+		for ( ; I != E; ++I)
+			xr_delete				((*I).m_operator);
+	}
+	{
+		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+		EVALUATOR_MAP::iterator		E = m_evaluators.end();
+		for ( ; I != E; ++I)
+			xr_delete				((*I).second);
+	}
+	m_operators.clear				();
+	m_evaluators.clear				();
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner

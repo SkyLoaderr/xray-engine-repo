@@ -17,6 +17,12 @@
 #define CSMotivationActionManager CMotivationActionManager<_object_type,_motivation_type>
 
 TEMPLATE_SPECIALIZATION
+IC	CSMotivationActionManager::CMotivationActionManager	()
+{
+	m_object			= 0;
+}
+
+TEMPLATE_SPECIALIZATION
 CSMotivationActionManager::~CMotivationActionManager	()
 {
 }
@@ -53,6 +59,13 @@ void CSMotivationActionManager::update	(u32 time_delta)
 	CSActionPlanner::set_target_state	(action->goal());
 
 	CSActionPlanner::update				(time_delta);
+}
+
+TEMPLATE_SPECIALIZATION
+void CSMotivationActionManager::clear	()
+{
+	CSMotivationManager::clear			();
+	CSActionPlanner::clear				();
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -38,5 +38,14 @@ void CScriptBaseAction::reinit		(_object_type *object, CPropertyStorage *storage
 	m_object			= object;
 }
 
+TEMPLATE_SPECIALIZATION
+void CScriptBaseAction::reinit		(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
+{
+	VERIFY				(object);
+	inherited::reinit	(object,storage,clear_all);
+	m_object			= dynamic_cast<_object_type*>(object->object());
+	VERIFY				(m_object);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CScriptBaseAction
