@@ -14,7 +14,7 @@ class ENGINE_API Shader
 {
 public:
 	DWORD				dwRefCount;
-	CXRShader*			shader;
+	CShader*			shader;
 	tex_handles			H;
 
 	BOOL	isEqual(Shader *S) {

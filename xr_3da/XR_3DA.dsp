@@ -522,6 +522,48 @@ SOURCE=.\Blender.h
 SOURCE=.\Blender_Params.h
 # End Source File
 # End Group
+# Begin Group "OLD generation"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\XRShader.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\XRShader.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\XRShaderDef.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrShaderLib.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrShaderLib.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\Shader.cpp
@@ -537,26 +579,6 @@ SOURCE=.\Shader_TSS.cpp
 # Begin Source File
 
 SOURCE=.\Shader_TSS.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XRShader.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\XRShader.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\XRShaderDef.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderLib.h
 # End Source File
 # Begin Source File
 
