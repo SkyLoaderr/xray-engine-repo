@@ -66,8 +66,9 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	{
 		CTexture *T		= new CTexture;
 		T->dwReference	= 1;
-		textures.insert	(make_pair(strdup(Name),T));
-		if (Device.bReady && !bDeferredLoad) T->Load(Name);
+        LPSTR nm		= strdup(Name); char* N	= strext(nm); if (N) *N=0;
+		textures.insert	(make_pair(nm,T));
+		if (Device.bReady && !bDeferredLoad) T->Load(nm);
 		return		T;
 	}
 }
