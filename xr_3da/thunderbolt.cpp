@@ -105,11 +105,11 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 	if (E)				E->setEnabled		(TRUE);
     if (bRes) dist	 	= RQ.range;
     else{
-        Fvector N={0.f,-1.f,0.f};
-        Fvector P={0.f,0.f,0.f};
+        Fvector N	={0.f,-1.f,0.f};
+        Fvector P	={0.f,0.f,0.f};
         Fplane PL; PL.build(P,N);
-        float d;
-        if (PL.intersectRayDist(start,dir,d)&&(d<=dist)){dist=d; return true;}else return false;
+        float dst	=dist;
+        if (PL.intersectRayDist(s,d,dst)&&(dst<=dist)){dist=dst; return true;}else return false;
     }
 #endif
     return bRes;
