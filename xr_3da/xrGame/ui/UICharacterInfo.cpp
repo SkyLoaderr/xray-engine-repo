@@ -173,10 +173,11 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefix
 	VERIFY(pInvOwner);
 	InitCharacter(&pInvOwner->CharacterInfo(), withPrefixes);
 
-	CActor *m_pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+	CEntityAlive	*entity_alive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+	VERIFY			(entity_alive);
 
 	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(pInvOwner);
-	SetRelation(ContactEA->tfGetRelationType(m_pActor));
+	SetRelation(ContactEA->tfGetRelationType(entity_alive));
 }
 
 //////////////////////////////////////////////////////////////////////////
