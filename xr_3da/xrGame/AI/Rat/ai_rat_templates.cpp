@@ -239,11 +239,11 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	const CLevelGraph::CVertex *tpNewNode = level_vertex();
 	CLevelGraph::CPosition	QueryPos;
 	ai().level_graph().vertex_position	(QueryPos,Position());
-	if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
+	if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
 		dwNewNode = ai().level_graph().vertex(level_vertex_id(),Position());
 		tpNewNode = ai().level_graph().vertex(dwNewNode);
 	}
-	if (dwNewNode && ai().level_graph().inside(*tpNewNode,QueryPos)) {
+	if (ai().level_graph().valid_vertex_id(dwNewNode) && ai().level_graph().inside(*tpNewNode,QueryPos)) {
 		Position().y = ai().level_graph().vertex_plane_y(*tpNewNode,Position().x,Position().z);
 		m_tOldPosition.set(tSavedPosition);
 		m_bNoWay		= false;

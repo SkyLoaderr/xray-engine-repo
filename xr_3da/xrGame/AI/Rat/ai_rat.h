@@ -136,7 +136,7 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		CEntity*			m_tSavedEnemy;
 		Fvector				m_tSavedEnemyPosition;
 		u32					m_dwLostEnemyTime;
-		const CLevelGraph::CVertex* 	m_tpSavedEnemyNode;
+		const CLevelGraph::CVertex	*m_tpSavedEnemyNode;
 		u32					m_dwSavedEnemyNodeID;
 		
 		// PERFORMANCE
@@ -326,11 +326,11 @@ public:
 			const CLevelGraph::CVertex *tpNewNode = level_vertex();
 			CLevelGraph::CPosition	QueryPos;
 			ai().level_graph().vertex_position(QueryPos,tTemp1);
-			if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
+			if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
 				dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1);
 				tpNewNode = ai().level_graph().vertex(dwNewNode);
 			}
-			return(!dwNewNode || !ai().level_graph().inside(*tpNewNode,QueryPos));
+			return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,QueryPos));
 		};
 
 		//////////////////////////

@@ -170,12 +170,12 @@ void CScriptMonster::ProcessScripts()
 	bfAssignMovement(l_tpEntityAction);
 }
 
-bool CScriptMonster::bfAssignWatch(CEntityAction * /**tpEntityAction/**/)
+bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
 {
-	return			(true);//GetCurrentAction() && !GetCurrentAction()->m_tWatchAction.m_bCompleted);
+	return			(true);
 }
 
-bool CScriptMonster::bfAssignAnimation(CEntityAction * /**tpEntityAction/**/)
+bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
 {
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted);
 }

@@ -140,13 +140,17 @@ void CAI_Stalker::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMa
 {
 	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = m_head.target.yaw;
 	
-	CLevelGraph::CVertex *tpNextNode = 0;
+	CLevelGraph::CVertex	*tpNextNode = 0;
+	u32						node_id;
 	bool bOk = false;
 	if (bDifferenceLook && !CDetailPathManager::path().empty() && (CDetailPathManager::path().size() - 1 > CDetailPathManager::curr_travel_point_index())) {
 		CLevelGraph::const_iterator	i, e;
 		ai().level_graph().begin(tpNode,i,e);
 		for ( ; i != e; ++i) {
-			tpNextNode = ai().level_graph().vertex(ai().level_graph().value(tpNode,i));
+			node_id			= ai().level_graph().value(tpNode,i);
+			if (!ai().level_graph().valid_vertex_id(node_id))
+				continue;
+			tpNextNode = ai().level_graph().vertex(node_id);
  			if (ai().level_graph().inside(tpNextNode,CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].m_position)) {
 				bOk = true;
 				break;

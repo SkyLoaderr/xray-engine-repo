@@ -281,9 +281,9 @@ protected:
 			u32 dwNewNode = level_vertex_id();
 			const CLevelGraph::CVertex *tpNewNode = level_vertex();
 			CLevelGraph::CPosition QueryPos;
-			if (!level_vertex_id() || !ai().level_graph().inside(*level_vertex(),ai().level_graph().vertex_position(QueryPos,tTemp1)))
+			if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),ai().level_graph().vertex_position(QueryPos,tTemp1)))
 				tpNewNode = ai().level_graph().vertex(dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1));
-			return(!dwNewNode || !ai().level_graph().inside(*tpNewNode,ai().level_graph().vertex_position(QueryPos,tTemp1)));
+			return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,ai().level_graph().vertex_position(QueryPos,tTemp1)));
 		};
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
