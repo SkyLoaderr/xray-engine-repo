@@ -145,15 +145,15 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	switch (cls)
 	{
 	case CLSID_OBJECT_W_M134:
-		pWeapon = new CWeaponM134(); 
+//		pWeapon = new CWeaponM134(); 
 		strcpy(sect_name,"wpn_m134");
 		break;
 	case CLSID_OBJECT_W_M134_en:
-		pWeapon = new CWeaponM134(); 
+//		pWeapon = new CWeaponM134(); 
 		strcpy(sect_name,"wpn_m134en");
 		break;
 	case CLSID_OBJECT_W_GROZA:
-		pWeapon = new CWeaponGroza(); 
+//		pWeapon = new CWeaponGroza(); 
 		strcpy(sect_name,"wpn_groza");
 		break;
 	case CLSID_OBJECT_W_AK74:

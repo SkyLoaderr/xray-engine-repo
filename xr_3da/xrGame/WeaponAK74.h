@@ -11,8 +11,9 @@ class CWeaponAK74: public CWeapon
 	enum EAK74State
 	{
 		eIdle,
-		eReload,
-		eFire
+		eFire,
+		eMagazineEmpty,
+		eReload
 	};
 	typedef CWeapon inherited;
 
@@ -45,6 +46,7 @@ protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
+	virtual void	OnMagazineEmpty	();
 public:
 					CWeaponAK74		();
 	virtual			~CWeaponAK74	();

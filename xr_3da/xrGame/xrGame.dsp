@@ -252,6 +252,17 @@ SOURCE=.\WeaponHUD.h
 # Begin Source File
 
 SOURCE=.\WeaponM134.cpp
+
+!IF  "$(CFG)" == "xrGame - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -264,6 +275,17 @@ SOURCE=.\WeaponM134.h
 # Begin Source File
 
 SOURCE=.\WeaponGroza.cpp
+
+!IF  "$(CFG)" == "xrGame - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

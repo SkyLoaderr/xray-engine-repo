@@ -86,24 +86,6 @@ void CWeaponAK74::OnDeviceDestroy()
 	FlameUNLOAD	();
 }
 
-void CWeaponAK74::FireStart()
-{
-	if (!IsWorking() && IsValid()){ 
-		CWeapon::FireStart();
-		st_target	= eFire;
-	}
-}
-
-void CWeaponAK74::FireEnd	()
-{
-	if (IsWorking())
-	{
-		CWeapon::FireEnd	();
-		m_pHUD->FireEnd		();
-		st_target			= eIdle;
-	}
-}
-
 void CWeaponAK74::UpdateXForm(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwXF_Frame)
@@ -169,6 +151,27 @@ void CWeaponAK74::UpdateFP(BOOL bHUDView)
 	}
 }
 
+void CWeaponAK74::FireStart			()
+{
+	if (!IsWorking() && IsValid()){ 
+		CWeapon::FireStart();
+		st_target	= eFire;
+	}
+}
+
+void CWeaponAK74::FireEnd			()
+{
+	if (IsWorking())
+	{
+		CWeapon::FireEnd	();
+		m_pHUD->FireEnd		();
+		st_target			= eIdle;
+	}
+}
+void CWeaponAK74::OnMagazineEmpty	()
+{
+	
+}
 void CWeaponAK74::Update(float dt, BOOL bHUDView)
 {
 	BOOL bShot = false;
