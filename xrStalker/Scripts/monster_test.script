@@ -5,9 +5,12 @@
 --------------------------------------------------------------------------------
 
 function set_action(obj)
+	action (obj, object(object.turn_off), cond(cond.time_end, 100))
 	action (obj, look(patrol("way"):point(0), 0.6, 0.6), cond (cond.look_end))
+	action (obj, object(object.turn_on), cond(cond.time_end, 100))
 	action (obj, look(patrol("way"):point(1), 0.6, 0.6), cond (cond.look_end)) 
 	action (obj, look(level.actor():position(), 0.6, 0.6), cond (cond.look_end)) 
+	action (obj, object(object.turn_off), cond(cond.time_end, 100))
 end
 
 
