@@ -15,8 +15,26 @@
 #include "xrServer_Entities.h"
 #include "xr_spawn_merge.h"
 
+DEFINE_VECTOR(u32,				DWORD_VECTOR,			DWORD_IT);
+DEFINE_VECTOR(xrServerEntity *, SERVER_ENTITY_P_VECTOR, SERVER_ENTITY_P_IT);
+
 CVirtualFileStream				*tpGraphVFS = 0;
 SCompressedGraphVertex			*tpaGameGraph;
+
+class CSpawnComparePredicate {
+private:
+	u32							m_dwStartNode;
+public:
+	CSpawnComparePredicate(u32 dwStartNode)
+	{
+		m_dwStartNode = dwStartNode;
+	}
+
+	IC bool operator()(u32 dwNode1, u32 dwNode2) const 
+	{
+		return(ffGetDistanceBetweenNodeCenters(m_dwStartNode,dwNode1) < ffGetDistanceBetweenNodeCenters(m_dwStartNode,dwNode2));
+	};
+};
 
 class CSpawn {
 public:
@@ -25,7 +43,7 @@ public:
 	hdrNODES					m_header;		// m_header
 	BYTE*						m_nodes;		// virtual nodes DATA array
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
-	vector<xrServerEntity *>	m_tpSpawnPoints;
+	SERVER_ENTITY_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	u32							m_dwStart;
 	u32							m_dwEnd;
@@ -33,11 +51,13 @@ public:
 	SNode						*m_tpHeap;
 	SNode						**m_tppHeap;
 	SIndexNode					*m_tpIndexes;
-	float						m_fMaxDistance;
 	vector<u32>					m_tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 	SAIMapData					m_tData;
 	u32							m_dwMaxNodeCount;
+	DWORD_VECTOR				m_tpSpawnNodes;
+	DWORD_VECTOR				m_tpGraphNodes;
+	DWORD_VECTOR				m_tpResultNodes;
 
 								CSpawn(SLevel &tLevel, u32 dwLevelID)
 	{
@@ -69,7 +89,6 @@ public:
 			vfs->Advance		(L*sizeof(NodeLink));
 		}
 		m_dwMaxNodeCount		= m_header.count + 2;
-		m_fMaxDistance			= MAX_DISTANCE_TO_CONNECT;
 
 		// loading spawn points
 		fName[0]				= 0;
@@ -99,41 +118,101 @@ public:
 			S_id++;
 		}
 	};
-							~CSpawn()
+								~CSpawn()
 	{
 		xr_delete(vfs);
 	};
 
-	void					vfAssignCorrespondingVertices()
+	u32							dwfFindCorrespondingNode(Fvector &tLocalPoint)
 	{
-//		float				fDistance;
-//		m_tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;
-//		m_tpMapPath.vfFindOptimalPath(
-//			m_tppHeap,
-//			m_tpHeap,
-//			m_tpIndexes,
-//			m_dwAStarStaticCounter,
-//			m_tData,
-//			tCurrentGraphVertex.tNodeID,
-//			tNeighbourGraphVertex.tNodeID,
-//			fDistance,
-//			m_fMaxDistance,
-//			m_tpaNodes,
-//			m_dwMaxNodeCount);
+		NodePosition	P;
+		PackPosition	(P,tLocalPoint);
+		short min_dist	= 32767;
+		int selected	= -1;
+		for (int i=0; i<(int)m_header.count; i++) {
+			NodeCompressed& N = *m_nodes_ptr[i];
+			if (u_InsideNode(N,P)) {
+				Fvector	DUP, vNorm, v, v1, P0;
+				DUP.set(0,1,0);
+				pvDecompress(vNorm,N.plane);
+				Fplane PL; 
+				UnpackPosition(P0,N.p0);
+				PL.build(P0,vNorm);
+				v.set(tLocalPoint.x,P0.y,tLocalPoint.z);	
+				PL.intersectRayPoint(v,DUP,v1);
+				int dist = iFloor((v1.y - tLocalPoint.y)*(v1.y - tLocalPoint.y));
+				if (dist < min_dist) {
+					min_dist = (short)dist;
+					selected = i;
+				}
+			}
+		}
+		return(selected);
+	}
+
+	void						vfAssignCorrespondingVertices()
+	{
+		m_tpGraphNodes.resize	(tGraphHeader.dwVertexCount);
+		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
+		m_tpResultNodes.resize	(m_tpSpawnPoints.size());
+		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount;
+		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
+			if (tpaGameGraph[i].tLevelID == m_dwLevelID) {
+				m_tpGraphNodes[i] = dwfFindCorrespondingNode(tpaGameGraph[i].tLocalPoint);
+				if (dwStart > (u32)i)
+					dwStart = (u32)i;
+			}
+			else {
+				m_tpGraphNodes[i] = -1;
+				if ((dwStart <= (u32)i) && (dwFinish > (u32)i))
+					dwFinish = i;
+			}
+		DWORD_IT				BB = m_tpGraphNodes.begin();
+		DWORD_IT				B = BB + dwStart;
+		DWORD_IT				E = m_tpGraphNodes.begin() + dwFinish;
+		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++) {
+			R_ASSERT((m_tpSpawnNodes[i] = dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) != -1);
+			sort(B,E,CSpawnComparePredicate(m_tpSpawnNodes[i]));
+			DWORD_IT			I = B;
+			float				fCurrentBestDistance = MAX_DISTANCE_TO_CONNECT;
+			u32					dwBest = u32(-1);
+			for ( ; I != E; I++) {
+				if (ffGetDistanceBetweenNodeCenters(m_tpSpawnNodes[i],*I) >= fCurrentBestDistance)
+					break;
+				m_tData.dwFinishNode	= *I;
+				float			fDistance;
+				m_tpMapPath.vfFindOptimalPath(
+					m_tppHeap,
+					m_tpHeap,
+					m_tpIndexes,
+					m_dwAStarStaticCounter,
+					m_tData,
+					m_tpSpawnNodes[i],
+					*I,
+					fDistance,
+					fCurrentBestDistance,
+					m_tpSpawnPoints[i]->o_Position,
+					tpaGameGraph[I - BB].tLocalPoint,
+					m_tpaNodes,
+					m_dwMaxNodeCount);
+			}
+			m_tpResultNodes[i] = dwBest;
+		}
 	}
 	
 };
 
 class CSpawnThread : public CThread {
 private:
-
+	CSpawn					*m_tpSpawn;
 public:
 	CSpawnThread(u32 ID, CSpawn *tpSpawn) : CThread(ID)
 	{
-		tpSpawn->vfAssignCorrespondingVertices();
+		m_tpSpawn			= tpSpawn;
 	}
 	virtual void			Execute()
 	{
+		m_tpSpawn->vfAssignCorrespondingVertices();
 	};
 };
 
@@ -145,6 +224,7 @@ void vfLoadGameGraph()
 	tGraphHeader.dwVertexCount		= tpGraphVFS->Rdword();
 	tGraphHeader.dwLevelCount		= tpGraphVFS->Rdword();
 	tGraphHeader.tpLevels.resize	(tGraphHeader.dwLevelCount);
+	R_ASSERT						(tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
 	{
 		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
@@ -153,7 +233,6 @@ void vfLoadGameGraph()
 			tpGraphVFS->Rvector		((*I).tOffset);
 		}
 	}
-	R_ASSERT						(tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
 	tpaGameGraph					= (SCompressedGraphVertex *)tpGraphVFS->Pointer();
 }
 
@@ -187,5 +266,6 @@ void xrMergeSpawns()
 		tThreadManager.start(xr_new<CSpawnThread>(thID,tpLevels[thID]));
 	tThreadManager.wait();
 	
+	Phase						("Merging span files");
 	Phase						("Freeing resources being allocated");
 }

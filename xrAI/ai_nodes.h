@@ -233,7 +233,7 @@ class CGraphThread : public CThread
 	float				m_fMaxDistance;
 	xrCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
-	CAStarGeometricSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
+	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
 public:
 	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection) : CThread(ID)
