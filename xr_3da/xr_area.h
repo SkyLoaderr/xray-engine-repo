@@ -73,8 +73,8 @@ private:
 	IC int 					TransA			( float d ) { return iFloor(d*CL_INV_SLOT_SIZE); }
 	IC int 					TransX			( float d ) { return TransA(d+Static_Shift.x); }
 	IC int 					TransZ			( float d ) { return TransA(d+Static_Shift.z); }
-	IC void					InvTrans		( Fvector2& v, int x, int z) {v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
-	IC void					InvTrans		( Fvector& v, int x, int z) {v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
+	IC void					InvTrans		( Fvector2& v, int x, int z)	{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
+	IC void					InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 
 	// safe translate auxilary routines
 	CList<Collide::tri>		clContactedT;
