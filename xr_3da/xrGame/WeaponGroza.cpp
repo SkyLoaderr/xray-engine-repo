@@ -240,10 +240,10 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 }
 
-void CWeaponGroza::SetDefaults()
+void CWeaponGroza::SetDefaults	()
 {
-	CWeapon::SetDefaults();
-	iAmmoElapsed = 0;
+	CWeapon::SetDefaults		();
+	iAmmoElapsed				= 0;
 }
 
 void CWeaponGroza::Hide			()
