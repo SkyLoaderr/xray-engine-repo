@@ -196,6 +196,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_CREATE_SOUND_LIB:
     	SndLib		= xr_new<CSoundManager>();
     	break;
+    case COMMAND_MUTE_SOUND:
+    	SndLib->MuteSounds(p1);
+    	break;
  	default:
     	bRes = CommandExt(_Command,p1,p2);
 	}

@@ -39,6 +39,8 @@ enum{
     COMMAND_RESTORE_UI_BAR,
     COMMAND_SAVE_UI_BAR,
 
+    COMMAND_MUTE_SOUND,
+
     // имеют разную реализацию
     COMMAND_CLEAR,
     COMMAND_LOAD,
