@@ -29,6 +29,7 @@ void	smapvis::begin		()
 		testQ_V							= 0;
 		testQ_id						= 0;
 		mark							();
+		RImplementation.clear_Counters	();
 		RImplementation.set_Feedback	(this,test_current);
 		break;
 	case state_usingTC:
