@@ -13,14 +13,9 @@
 #define DEST_POSITIONS
 #define ATTACK_HIT_REACTION_TIME	30000
 
-IC float ffGetDistance(Fvector P1, Fvector P2)
-{
-	return(float(sqrt(float(SQR(P2.x - P1.x) + SQR(P2.z - P1.z) + SQR(P2.y - P1.y)))));
-}
-
 IC void vfNormalizeSafe(Fvector& Vector)
 {
-	float fMagnitude = (float)sqrt(SQR(Vector.x) + SQR(Vector.y) + SQR(Vector.z));
+	float fMagnitude = Vector.magnitude(); 
 	if (fMagnitude > MAGNITUDE_EPSILON) {
 		Vector.x /= fMagnitude;
 		Vector.y /= fMagnitude;
@@ -365,7 +360,7 @@ void CAISelectorBase::vfComputeSurroundEnemy()
 void CAISelectorBase::vfAddSurroundEnemyCost()
 {
 	vfNormalizeSafe(m_tEnemySurroundDirection);
-	m_fResult += fEnemySurround*sqrt(SQR(m_tEnemySurroundDirection.x) + SQR(m_tEnemySurroundDirection.y) + SQR(m_tEnemySurroundDirection.z));
+	m_fResult += fEnemySurround*m_tEnemySurroundDirection.magnitude();
 }
 
 void CAISelectorBase::vfCheckForEpsilon(BOOL &bStop)

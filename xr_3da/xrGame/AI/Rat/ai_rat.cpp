@@ -328,10 +328,10 @@ IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNo
 
 IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode)
 {
-	float fDist0 = SQR(tCenter.x - tpSubNode.tLeftDown.x) + SQR(tCenter.z - tpSubNode.tLeftDown.z);
-	float fDist1 = SQR(tCenter.x - tpSubNode.tLeftDown.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
-	float fDist2 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tLeftDown.z);
-	float fDist3 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
+	float fDist0 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tLeftDown.z);
+	float fDist1 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tRightUp.z);
+	float fDist2 = _sqr(tCenter.x - tpSubNode.tRightUp.x) + _sqr(tCenter.z - tpSubNode.tLeftDown.z);
+	float fDist3 = _sqr(tCenter.x - tpSubNode.tRightUp.x) + _sqr(tCenter.z - tpSubNode.tRightUp.z);
 	return(_min(fDist0,_min(fDist1,_min(fDist2,fDist3))) <= fRadius*fRadius + EPSILON);
 }
 
@@ -357,7 +357,7 @@ IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighb
 	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
 	//tCurrentSubNode.y = (tCurrentNeighbour.tLeftDown.y + tCurrentNeighbour.tRightUp.y)/2.f;
 	tCurrentSubNode.z = (tCurrentNeighbour.tLeftDown.z + tCurrentNeighbour.tRightUp.z)/2.f;
-	return(SQR(sqrt(SQR(tLeaderPosition.x - tCurrentSubNode.x) + /**0*SQR(tLeaderPosition.y - tCurrentSubNode.y)/**/ + SQR(tLeaderPosition.z - tCurrentSubNode.z)) - fMinDistance));
+	return	(_sqr(sqrt(_sqr(tLeaderPosition.x - tCurrentSubNode.x) + /**0*_sqr(tLeaderPosition.y - tCurrentSubNode.y)/**/ + _sqr(tLeaderPosition.z - tCurrentSubNode.z)) - fMinDistance));
 }
 
 IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
@@ -696,7 +696,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 		//Fvector tLeaderPosition = Leader->Position();
 		DWORD dwTime = Level().timeServer();
 		int iBestI = -1;
-		float fBestCost = SQR(sqrt(SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z)) - fMinDistance);
+		float fBestCost = _sqr(sqrt(_sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z)) - fMinDistance);
 		bool bMobility = false;
 		for ( i=0; i<tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
