@@ -389,7 +389,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 								    monstr_power = self.descr.corpse.monstr_power }}
 			end
 			-- указываем, что нам о нем известно
-			self.arhive[so:id()].point 		= vo:level_vertex_id()
+			self.arhive[so:id()].point 		= so:level_vertex_id()
 			self.arhive[so:id()].time		= game.time()
 		end
 	end
