@@ -21,6 +21,30 @@
 #include "PHElement.h"
 #include "PHShell.h"
 
+CPHShell::~CPHShell				()							
+{
+	if(bActive) Deactivate();
+
+	xr_vector<CPHElement*>::iterator i;
+	for(i=elements.begin();elements.end()!=i;++i)
+		xr_delete(*i);
+	elements.clear();
+
+	xr_vector<CPHJoint*>::iterator j;
+	for(j=joints.begin();joints.end()!=j;++j)
+		xr_delete(*j);
+	joints.clear();
+	if(m_spliter_holder)xr_delete(m_spliter_holder);
+}
+CPHShell::CPHShell()
+{
+	bActive=false;
+	bActivating=false;
+	m_space=NULL;
+	m_pKinematics=NULL;
+	m_spliter_holder=NULL;
+	m_object_in_root.identity();
+}
 void CPHShell::setDensity(float M){
 	ELEMENT_I i;
 	//float volume=0.f;

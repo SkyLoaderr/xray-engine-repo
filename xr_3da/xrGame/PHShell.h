@@ -20,34 +20,9 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	CPHShellSplitterHolder* m_spliter_holder;
 public:
 	Fmatrix					m_object_in_root;
-
-	CPHShell				()							
-	{
-		bActive=false;
-		bActivating=false;
-		m_space=NULL;
-		m_pKinematics=NULL;
-		m_spliter_holder=NULL;
-		m_object_in_root.identity();
-	};
-
-	virtual ~CPHShell				()							
-	{
-		if(bActive) Deactivate();
-
-		xr_vector<CPHElement*>::iterator i;
-		for(i=elements.begin();elements.end()!=i;++i)
-			xr_delete(*i);
-		elements.clear();
-
-		xr_vector<CPHJoint*>::iterator j;
-		for(j=joints.begin();joints.end()!=j;++j)
-			xr_delete(*j);
-		joints.clear();
-		if(m_spliter_holder)xr_delete(m_spliter_holder);
-	}
-
-	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
+	CPHShell								();							
+	virtual ~CPHShell						();
+	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
