@@ -10,6 +10,7 @@ class "Trader"
 function Trader:__init (npc, zone, script_name)
     self.npc = npc
     self.zone = zone
+    
     self.zone:set_callback (self, "on_enter", true)
     self.zone:set_callback (self, "on_exit", false)
     --self.npc:set_callback (self, "on_start_trade", true)
@@ -48,6 +49,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:on_enter (zone, obj)
 
+    printf ("Stalker %s enter to trader %s", obj:name (), self.npc:name ())
     self.entered = true
     self.need_interrupt = true
     self.enter_time = device ():time_global ()
@@ -56,7 +58,7 @@ function Trader:on_enter (zone, obj)
     self.waiter:initialize (1000)
     self.first = true
 
-    if self.last_npc ~= nil then
+    if self.last_npc == nil then
        self.last_npc = obj
        self.already = true
        return
@@ -72,6 +74,7 @@ function Trader:on_enter (zone, obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:on_exit (zone, obj)
+    printf ("Stalker %s exit from trader %s", obj:name (), self.npc:name ())
     self.entered = false
     self.exit_time = device ():time_global ()
     self.need_interrupt = false
