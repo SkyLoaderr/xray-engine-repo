@@ -160,13 +160,13 @@ function action_follow:execute ()
           self.object:set_detail_path_type (move.line)
           self.object:set_path_type (game_object.level_path)
           if vdist > 20 then
-             state_mgr.set_state (self.object, self.st.animation_move)
+             state_mgr.set_state (self.object, self.st.animation_sprint)
              --printf ("FOLLOWER %s IS SPRINTED", self.object:name ())
           elseif vdist < 3 then
              state_mgr.set_state (self.object, self.st.animation_move)
              --printf ("FOLLOWER %s IS MOVED", self.object:name ())
           elseif vdist > 5 then
-             state_mgr.set_state (self.object, self.st.animation_move)
+             state_mgr.set_state (self.object, self.st.animation_run)
              --printf ("FOLLOWER %s IS RUNNING", self.object:name ())
           end   
        else
