@@ -24,24 +24,28 @@ class	includer				: public ID3DXInclude
 {
 	xr_vector<IReader*>			_2close;
 public:
-	HRESULT Open	(LPCSTR		pName, LPCVOID *ppData, UINT *pBytes )
+	HRESULT __stdcall	Open	(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
 	{
-		IReader*	R			= FS.r_open	("$game_shaders$",pName);
+		IReader*		R		= FS.r_open	("$game_shaders$",pFileName);
+		if (0==R)				return			E_FAIL;
 		_2close.push_back		(R);
 		*ppData					= R->pointer();
 		*pBytes					= R->length();
+		return	D3D_OK;
 	}
-	HRESULT Close	(LPCVOID	pData)
+	HRESULT __stdcall	Close	(LPCVOID	pData)
 	{
 		for (xr_vector<IReader*>::iterator	I=_2close.begin(); I!=_2close.end(); I++)
 		{
-			if (*I->pointer() == pData)
+			IReader*	R		= *I;
+			if (R->pointer() == pData)
 			{
 				FS.r_close		(*I);
 				_2close.erase	(I);
-				return;
+				return			D3D_OK;
 			}
 		}
+		return			E_FAIL;
 	}
 };
 
@@ -150,6 +154,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 			return _vs;
 		}
 
+		includer					Includer;
 		LPD3DXBUFFER				pShaderBuf	= NULL;
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
@@ -165,7 +170,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 
 		// vertex
 		IReader*					fs			= FS.r_open(cname);
-		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 
 		if (SUCCEEDED(_hr))
@@ -222,6 +227,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		}
 
 		// Open file
+		includer					Includer;
 		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
 		IReader*					fs			= FS.r_open(cname);
@@ -242,7 +248,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
-		_hr = D3DXCompileShader		(text,text_size, NULL, NULL, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		_hr = D3DXCompileShader		(text,text_size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 		if (SUCCEEDED(_hr))
 		{

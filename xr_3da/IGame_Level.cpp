@@ -88,7 +88,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	hdrLEVEL					H;
 	fs.r_chunk_safe				(fsL_HEADER,&H,sizeof(H));
 	R_ASSERT2					(XRCL_PRODUCTION_VERSION==H.XRLC_version,"Incompatible level version.");
-	pApp->LoadTitle				("Description string: ",H.name);
 
 	// Textures
 	chunk = fs.open_chunk		(fsL_STRINGS);
