@@ -248,6 +248,8 @@ class "NPC"
 -- Maintained by: Zmey
 
 function NPC:__init(script_name, npc, wpn)
+	printf("_bp: NPC:__init called");
+	printf("_bp: NPC:__init: script_name=%s", if_then_else(script_name ~= nil, script_name, "<nil>"))
 	self.script_name = script_name
 	self.npc = npc
 	self.wpn = wpn
@@ -285,23 +287,6 @@ function NPC:is_looking()
 end
 
 function NPC:shoot_then_reload_actions(whom)
-	pos = self.npc:position()
-	action(self.npc,
-	       look(look.fire_point, pos),
-	       anim(anim.danger),
-	       move(move.standing, move.stand, move.line, whom),
-	       cond(cond.time_end, 500)
-	)
-	action(self.npc,
-	       look(look.fire_point, pos),
-	       anim(anim.danger),
-	       move(move.standing, move.stand, move.line, whom),
-	       object(self.wpn, object.fire1),
-	       cond(cond.time_end, 100)
-	)
-
-	if true then return end
-
 	for i = 1, 30 do
 		--[[
 		action(self.npc,
@@ -551,7 +536,10 @@ class "Camper"
 -- Тип монстра с поведением "кемпер".
 -- Maintained by: Zmey
 
-function Camper:__init(c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+function Camper:__init(script_name, c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+	printf("Camper: __init: creating")
+	
+	self.script_name = script_name
 	self.c_npc = c_npc
 	self.c_enemy = c_enemy
 	
@@ -579,7 +567,7 @@ function Camper:nothing_happened_yet()
 
 	--printf("Camper: nothing_happened_yet: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
-		printf("Campler: nothing_happened_yet: npc sees enemy")
+		printf("Camper: nothing_happened_yet: npc sees enemy")
 		interrupt_action(self.c_npc.npc, self.script_name)
 		self.dlg_see_enemy:reset()
 		self.c_npc:set_dialogue(self.dlg_see_enemy)
