@@ -380,14 +380,15 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 //---------------------------------------------------------------------
 void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
+	bool				first_time = !!g_Alive();
 	
 	fEntityHealth		= 0;
 	set_death_time		();
 	if (eDeathDead!=st_current) 
 	{	
-		if (g_Alive())
-			Die(who);
-		st_target = eDeathFall;
+		if (first_time)
+			Die			(who);
+		st_target		= eDeathFall;
 	}
 	else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
