@@ -6,7 +6,9 @@
 #include "../effectorfall.h"
 #include "CameraLook.h"
 #include "CameraFirstEye.h"
-
+#include "EffectorBobbing.h"
+#include "EffectorPPHit.h"
+#include "EffectorHit.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -41,9 +43,14 @@
 
 #include "inventory.h"
 
+#include "Physics.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
+
+static float IReceived = 0;
+static float ICoincidenced = 0;
 
 
 //skeleton
@@ -128,9 +135,9 @@ CActor::CActor() : CEntityAlive()
 	m_pVehicleWeLookingAt	= NULL;
 	m_bPickupMode			= false;
 
-	NET_I_NeedReculc		= FALSE;
-
-
+	////////////////////////////////////
+	pStatGraph = NULL;
+	dDesyncVec.set(0, 0, 0);
 }
 
 
@@ -295,13 +302,15 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
 //	R_ASSERT			(Local());
+//	Msg			("[%6d] %s",P.r_pos,cName());
 
 	u8					flags = 0;
 	P.w_float_q16		(g_Health(),-1000,1000);
 
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
-	P.w_vec3			(Position());
+	Fvector				p = Position();
+	P.w_vec3			(p);//Position());
 	P.w_angle8			(r_model_yaw);
 	P.w_angle8			(r_torso.yaw);
 	P.w_angle8			(r_torso.pitch);
@@ -312,19 +321,60 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 	P.w_u16				(u16(mstate_real));
 	P.w_sdir			(NET_SavedAccel);
-	P.w_sdir			(m_PhysicMovementControl->GetVelocity());
+	Fvector				v = m_PhysicMovementControl->GetVelocity();
+	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
 	P.w_float_q16		(fArmor,-1000,1000);
 
-	int w_id = -1;//Weapons->ActiveWeaponID	();
-	if (w_id<0)			P.w_u8(0xff);
-	else				P.w_u8(u8(w_id&0xff));
+	P.w_u8				(u8(inventory().GetActiveSlot()));
+
+	/////////////////////////////////////////////////
+	u16 NumItems = PHGetSyncItemsNumber();
+	if (H_Parent() || GameID() == 1) NumItems = 0;
+
+	P.w_u16				(NumItems);
+	if (!NumItems) return;
+
+	SPHNetState	State;
+	State.enabled = false;
+	u32 Time0, Time1;
+
+	if (SMemoryPosStack.empty())
+	{
+		CPHSynchronize* pSyncObj = NULL;
+		pSyncObj = PHGetSyncItem(0);
+		if (pSyncObj) pSyncObj->get_State(State);
+		Time0 = Time1 = Level().timeServer();
+	}
+	else
+	{
+		State = SMemoryPosStack.back().SState;
+		Time0 = SMemoryPosStack.back().dwTime0;
+		Time1 = SMemoryPosStack.back().dwTime1;
+	};
+
+	P.w_u8					( State.enabled );
+
+	P.w_vec3				( State.angular_vel);
+	P.w_vec3				( State.linear_vel);
+
+	P.w_vec3				( State.force);
+	P.w_vec3				( State.torque);
+
+	P.w_vec3				( State.position);
+
+	P.w_float				( State.quaternion.x );
+	P.w_float				( State.quaternion.y );
+	P.w_float				( State.quaternion.z );
+	P.w_float				( State.quaternion.w );
+
+	P.w_u32					( Time0 );
+	P.w_u32					( Time1 );
 }
 
-void CActor::net_Import		(NET_Packet& P)					// import from server
-{
-	// import
-//	R_ASSERT			(Remote());
+float g_fMaxDesyncLen = 1.0f;
 
+void		CActor::net_Import_Base				( NET_Packet& P)
+{
 	net_update			N;
 
 	u8					flags;
@@ -353,64 +403,294 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	P.r_sdir			(N.p_velocity	);
 	P.r_float_q16		(fArmor,-1000,1000);
 
-	u8					wpn;
-	P.r_u8				(wpn);
-	if (0xff==wpn)		N.weapon		= -1;
-	else				N.weapon		= (int)(wpn);
+	u8					ActiveSlot;
+	P.r_u8				(ActiveSlot);
+	if (ActiveSlot == 0xff) inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+	else inventory().Activate(u32(ActiveSlot));
+	//-------------------------------------------------
+	if (!NET.empty() && N.dwTimeStamp <= NET.back().dwTimeStamp) return;
+	NET.push_back			(N);
+	if (NET.size()>5) NET.pop_front();
+	//-----------------------------------------------
+	net_Import_Base_proceed	();
+	//-----------------------------------------------
+};
 
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-		NET_WasInterpolating	= TRUE;
-	}
-
+void	CActor::net_Import_Base_proceed		( )
+{
 	setVisible					(TRUE);
 	setEnabled					(TRUE);
+	//---------------------------------------------
+	if (Remote()) return;
 
-	if (!Local()) return;
+	net_update N		= NET.back();
 
-	u32 NumI2R = 0;
-	for (u32 I = 0; I<NET_I.size(); I++)
+	if (pStatGraph) 
 	{
-		if (NET_I[I].m_dwTimeStamp < N.dwTimeStamp) NumI2R++;
-		else break;
+		pStatGraph->SetMinMax(0, 1.0f, 300);
+		pStatGraph->SetGrid(0, 0.0f, 10, 0.2f, 0xff808080, 0xffffffff);
+		pStatGraph->SetStyle(CStatGraph::stBar);
+		pStatGraph->SetStyle(CStatGraph::stCurve, 1);
+		pStatGraph->SetStyle(CStatGraph::stCurve, 2);
+
+		pStatGraph->AppendItem(g_fMaxDesyncLen, 0xffff00ff, 1);
 	};
-	if (NumI2R) 
+	//---------------------------------------------
+	SMemoryPos* pMemPos = FindMemoryPos(N.dwTimeStamp);
+	if (pMemPos)
 	{
-		NET_I.erase(NET_I.begin(), NET_I.begin() + NumI2R);
-	};	
+		u32 Time = (N.dwTimeStamp < pMemPos->dwTime0) ? pMemPos->dwTime0 : N.dwTimeStamp;
+		float factor = float (Time - pMemPos->dwTime0) / float (pMemPos->dwTime1 - pMemPos->dwTime0);
+		Fvector rPos;
+		rPos.lerp(pMemPos->SState.previous_position, pMemPos->SState.position, factor);
+		dDesyncVec.sub(rPos, N.p_pos);
 
-	NET_I_NeedReculc = TRUE;
+		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xff00ff00);
+	}
+	else
+	{
+		dDesyncVec.sub(Position(), N.p_pos);
+
+		if (pStatGraph)pStatGraph->AppendItem(dDesyncVec.magnitude(), 0xffff0000);
+	};
+	//---------------------------------------------
+	if (dDesyncVec.magnitude() >= g_fMaxDesyncLen)
+	{
+		CPHSynchronize* pSyncObj = NULL;
+		pSyncObj = PHGetSyncItem(0);
+		if (pSyncObj) 
+		{
+			SPHNetState		State;
+			pSyncObj->get_State(State);
+			State.position.sub(dDesyncVec);
+			pSyncObj->set_State(State);
+		};
+	};
+};
+
+void		CActor::net_Import_Physic			( NET_Packet& P)
+{
+	net_update_A			N_A;
+
+	N_A.dwTimeStamp			= NET.back().dwTimeStamp;
+	P.r_u8					( *((u8*)&(N_A.State.enabled)) );
+
+	P.r_vec3				( N_A.State.angular_vel);
+	P.r_vec3				( N_A.State.linear_vel);
+
+	P.r_vec3				( N_A.State.force);
+	P.r_vec3				( N_A.State.torque);
+
+	P.r_vec3				( N_A.State.position);
+
+	P.r_float				( N_A.State.quaternion.x );
+	P.r_float				( N_A.State.quaternion.y );
+	P.r_float				( N_A.State.quaternion.z );
+	P.r_float				( N_A.State.quaternion.w );
+
+	P.r_u32					( N_A.dwTime0 );
+	P.r_u32					( N_A.dwTime1 );
+
+	N_A.State.previous_position	= N_A.State.position;
+	N_A.State.previous_quaternion = N_A.State.quaternion;
+	//-----------------------------------------------
+	if (!NET_A.empty() && N_A.dwTime1 <= NET_A.back().dwTime1) return;
+
+	if (!NET_A.empty()) m_bInterpolate = true;
+
+	NET_A.push_back			(N_A);
+	if (NET_A.size()>5) NET_A.pop_front();
+	//-----------------------------------------------
+	net_Import_Physic_proceed();
+	//-----------------------------------------------
+};
+
+
+static u32		g_dwDTime;
+
+void	CActor::net_Import_Physic_proceed	( )
+{
+	net_update N		= NET.back();
+	net_update_A N_A	= NET_A.back();
+
+	if (Remote())
+	{
+		m_bHasUpdate = true;
+
+		Set_Level_CrPr(long(Level().timeServer()) - (NET.back().dwTimeStamp));
+	}
+	else
+	{
+		if (NET_InputStack.empty()) return;
+
+		//----------------------------------------------
+		u32 dTime = 0;
+		if (Level().timeServer() > N.dwTimeStamp) dTime = Level().timeServer() - N.dwTimeStamp;
+		
+		xr_deque<net_input>::iterator	B = NET_InputStack.begin();
+		xr_deque<net_input>::iterator	E = NET_InputStack.end();
+		xr_deque<net_input>::iterator	I = std::lower_bound(B,E,N_A.dwTime0 - dTime);
+
+		float NumRemained = 0;
+		net_input N_I = NET_InputStack.back();
+		if (I != E) 
+		{
+			NumRemained = float(E - I);
+			NET_InputStack.erase(B, I);
+			N_I = *I;
+		};
+
+		if (NumRemained)
+		{
+			m_bHasUpdate = true;
+
+			Set_Level_CrPr(long(Level().timeServer()) - long(N.dwTimeStamp));
+
+			NetInput_Save();
+		};
+	};
+
+};
+
+static u32 g_dwStartTime = 0;
+static u32 g_dwLastUpdateTime;
+static u32 g_dwNumUpdates = 0;
+static float g_fNumUpdates = 0;
+
+void CActor::net_Import		(NET_Packet& P)					// import from server
+{	
+	if (Level().timeServer() != g_dwLastUpdateTime)
+	{
+		g_dwNumUpdates++;
+		g_dwLastUpdateTime = Level().timeServer();
+		if (g_dwStartTime == 0)
+			g_dwStartTime = g_dwLastUpdateTime;
+		else
+		{
+			u32 CurTime = g_dwLastUpdateTime;
+			float CurDTime = float(CurTime - g_dwStartTime) / 1000.0f;
+			g_fNumUpdates = float(g_dwNumUpdates)/CurDTime ;
+		};
+	};
+
+	// import
+//	R_ASSERT			(Remote());
+	//-----------------------------------------------
+	net_Import_Base(P);
+	//-----------------------------------------------
+	u16	NumItems = 0;
+	P.r_u16					( NumItems);
+	if (!NumItems) return;
+	//-----------------------------------------------
+	net_Import_Physic(P);
+	//-----------------------------------------------
 }
+
+void CActor::Set_Level_CrPr (long dTime)
+{
+	if (!m_bHasUpdate) return;
+	
+	if (dTime < 0) dTime = 0;
+	u32 NumSteps = 0;
+	if (dTime < (fixed_step*500))
+		NumSteps = 0;
+	else
+		NumSteps = ph_world->CalcNumSteps(dTime);
+
+	Level().SetNumCrSteps ( NumSteps );
+};
+
+void CActor::NetInput_Save()
+{
+	net_input	NI;
+
+	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
+
+		//Store Input
+	NI.m_dwTimeStamp		= Level().timeServer();
+	NI.mstate_wishful		= mstate_wishful;
+
+	NI.cam_mode				= u8(cam_active);
+	NI.cam_yaw				= cam_Active()->yaw;
+	NI.cam_pitch			= cam_Active()->pitch;
+	
+	if (!NET_InputStack.empty() && NET_InputStack.back().m_dwTimeStamp == NI.m_dwTimeStamp)
+		NET_InputStack.pop_back();
+
+	NET_InputStack.push_back(NI);
+}
+
+void	CActor::NetInput_Send()
+{
+	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
+	//Send Input
+	NET_Packet		NP;
+	net_input		NI = NET_InputStack.back();
+
+	NP.w_begin		(M_CL_INPUT);
+
+	NP.w_u16		(u16(ID()));
+	NP.w_u32		(NI.m_dwTimeStamp);
+	NP.w_u32		(NI.mstate_wishful);
+
+	NP.w_u8			(NI.cam_mode	);
+	NP.w_float		(NI.cam_yaw		);
+	NP.w_float		(NI.cam_pitch	);
+
+	if (Level().net_HasBandwidth()) 
+	{ 
+		u_EventSend(NP);
+	};
+};
+
 
 void CActor::net_ImportInput	(NET_Packet &P)
 {
-	u32	xTimeStamp;
+	net_input NI;
 
-	P.r_u32				(xTimeStamp);
-	P.r_u32				(mstate_wishful);
+	P.r_u32				(NI.m_dwTimeStamp);
+	P.r_u32				(NI.mstate_wishful);
 
-	u8	CamMode;
-	P.r_u8				(CamMode);
-	cam_Set	(EActorCameras(CamMode));
+	P.r_u8				(NI.cam_mode);
 
-	P.r_angle8		(cam_Active()->yaw);
-	P.r_angle8		(cam_Active()->pitch);
-	Fvector			rD;
-	P.r_vec3		(rD);
+	P.r_float			(NI.cam_yaw);
+	P.r_float			(NI.cam_pitch);
+	//-----------------------------------
+	NetInput_Apply(&NI);
+};
 
-	//	Fvector			t;
-	//	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
-	Fvector	vP, vD, vN;
-	cam_Active()->Get(vP, vD, vN);
-	cam_Active()->Set(vP, rD, vN);
+void CActor::NetInput_Apply			(net_input* pNI)
+{
+	mstate_wishful = pNI->mstate_wishful;
+	cam_Set	(EActorCameras(pNI->cam_mode));
+	cam_Active()->yaw = pNI->cam_yaw;
+	cam_Active()->pitch = pNI->cam_pitch;
+
+	if (OnClient())
+	{
+		float Jump = 0;
+		float dt = 0;
+		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
+		g_cl_Orientate			(mstate_real,dt);
+		g_Orientate				(mstate_real,dt);
+
+		g_Physics				(NET_SavedAccel,Jump,dt);
+		g_cl_ValidateMState		(dt,mstate_wishful);
+		g_SetAnimation			(mstate_real);
+	}
 };
 
 BOOL CActor::net_Spawn		(LPVOID DC)
 {
+	if (m_pPhysicsShell)
+	{
+		m_pPhysicsShell->Deactivate();
+		xr_delete(m_pPhysicsShell);
+	};
 	//force actor to be local on server client
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);	
-	if (Level().Server->client_Count())
+	if (OnServer())
 	{
 		E->s_flags.set(M_SPAWN_OBJECT_LOCAL, TRUE);
 	};
@@ -430,6 +710,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
 	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
+	cam_Set	(eacFirstEye);
 
 	// *** movement state - respawn
 	mstate_wishful			= 0;
@@ -470,9 +751,29 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	// load damage params
 	CDamageManager::Load	(*cNameSect());
-
+	//----------------------------------
 	m_bAllowDeathRemove = false;
 
+	m_bHasUpdate = false;
+	m_bInInterpolation = false;
+	m_bInterpolate = false;
+	/*
+	if (OnClient() && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
+	{
+		if (!pStatGraph)
+		{
+			pStatGraph = xr_new<CStatGraph>();
+			pStatGraph->SetRect(0, 650, 1024, 100, 0xff000000, 0xff000000);
+			pStatGraph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
+			pStatGraph->SetMinMax(-PI, PI, 300);
+
+			pStatGraph->SetStyle(CStatGraph::stBar);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
+			pStatGraph->AppendSubGraph(CStatGraph::stCurve);
+		};
+	};
+	//*/
+	//----------------------------------
 	return					TRUE;
 }
 
@@ -493,8 +794,12 @@ void CActor::net_Destroy	()
 	for (it=0; it<SND_DIE_COUNT; ++it)	::Sound->destroy	(sndDie[it]);
 	m_PhysicMovementControl->DestroyCharacter();
 	if(m_pPhysicsShell) 
+	{
 		m_pPhysicsShell->Deactivate();
+		xr_delete<CPhysicsShell>(m_pPhysicsShell);
+	};
 
+	xr_delete(pStatGraph);
 }
 
 
@@ -616,7 +921,43 @@ void CActor::Die	( )
 {
 	inherited::Die();
 
-	inventory().DropAll();
+	//// Dima
+	//b_DropActivated			= TRUE;
+	//g_PerformDrop			();
+	// @@@ WT
+//	inventory().DropAll();
+	//-------------------------------------
+	xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
+	xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
+	for ( ; I != E; ++I)
+		if ((I - B) == (int)inventory().GetActiveSlot()) 
+			(*I).m_pIItem->Drop();
+		else
+			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
+	///!!!
+	TIItemList &l_list = inventory().m_ruck;
+	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
+	{
+		CArtifact* pArtifact = dynamic_cast<CArtifact*>(*l_it);
+		if(pArtifact)
+			pArtifact->Drop();
+	}
+
+	if (OnServer() && Game().type != GAME_SINGLE)
+	{
+		//if we are on server and actor has PDA - destroy PDA
+		TIItemList &l_list = inventory().m_ruck;
+		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
+		{
+			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
+			{
+				NET_Packet P;
+				u_EventGen(P,GE_DESTROY,(*l_it)->ID());
+				u_EventSend(P, TRUE);
+			}
+		};
+	};
+	//-------------------------------------
 	// Play ref_sound
 	::Sound->play_at_pos		(sndDie[Random.randI(SND_DIE_COUNT)],this,Position());
 	cam_Set					(eacFreeLook);
@@ -661,7 +1002,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			return;
 	}
 
-	if (patch_frame<patch_frames)	return;
+//	if (patch_frame<patch_frames)	return;
 
 	// Correct accel
 	Fvector		accel;
@@ -840,7 +1181,7 @@ void CActor::shedule_Update	(u32 DT)
 {
 //	Msg			("Actor position : [%f][%f][%f]",VPUSH(Position()));
 
-	setSVU(Level().Server->client_Count() != 0);
+	setSVU(OnServer());
 
 	if(m_vehicle)
 	{
@@ -851,12 +1192,14 @@ void CActor::shedule_Update	(u32 DT)
 	if (!Ready())		return;
 
 	// patch
+	/*
 	if (patch_frame<patch_frames)	{
 		Position().set		(patch_position);
 		if(!m_pPhysicsShell)
 			m_PhysicMovementControl->SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
+	*/
 	cam_shift				= 0.f;
 	cam_gray				= 0.f;
 
@@ -866,23 +1209,23 @@ void CActor::shedule_Update	(u32 DT)
 
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
-	if (Local())	{
-
-		if (NET_I_NeedReculc)
-		{
-			R_ASSERT (NET.size());
-			NetUpdate_Apply(NET.back(), dt);
-		};
-
+	if (Local())	
+//	if (this == Level().CurrentEntity())
+	{
+		//-----------------------------------
 		NetInput_Save			( );
 
+		NetInput_Send			( );
+		//-----------------------------------
+		
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
 		g_cl_Orientate			(mstate_real,dt);
-		g_Orientate				(mstate_real,dt);		
+		g_Orientate				(mstate_real,dt);
 
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
+
 
 		// Check for game-contacts
 		Fvector C; float R;		
@@ -902,6 +1245,17 @@ void CActor::shedule_Update	(u32 DT)
 	}
 	else 
 	{
+		if (NET.size())
+		{
+//			NET_Last = NET.back();
+			g_sv_Orientate				(NET_Last.mstate,dt			);
+			g_Orientate					(NET_Last.mstate,dt			);
+			g_Physics					(NET_Last.p_accel,Jump,dt	);
+			g_cl_ValidateMState			(dt,mstate_wishful);
+			g_SetAnimation				(NET_Last.mstate);
+		};
+//------------------------------------
+/*	
 		// distinguish interpolation/extrapolation
 		u32	dwTime			= Level().timeServer()-NET_Latency;
 		u32 size			= NET.size();
@@ -971,7 +1325,12 @@ void CActor::shedule_Update	(u32 DT)
 		};
 
 		mstate_real			= NET_Last.mstate;
+*/
 	}
+	make_Interpolation();
+
+	//------------------------------------------------	
+
 
 	// generic stuff
 	inherited::shedule_Update	(DT);
@@ -1237,7 +1596,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	}else{
 		//		mstate_real			&=~ mcAnyMove;
 	}
-
+	
 	// transform local dir to world dir
 	Fmatrix				mOrient;
 	mOrient.rotateY		(-r_model_yaw);
@@ -1433,6 +1792,16 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 	case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
 	}
 	HUD().pFontSmall->OutNext	(buf);
+
+	if (IReceived != 0)
+	{
+		float Size = 0;
+		Size = HUD().pFontSmall->GetSize();
+		HUD().pFontSmall->SetSize(Size*2);
+		HUD().pFontSmall->SetColor	(0xffff0000);
+		HUD().pFontSmall->OutNext ("Input :		[%3.2f]", ICoincidenced/IReceived * 100.0f);
+		HUD().pFontSmall->SetSize(Size);
+	};
 #endif
 }
 
@@ -1461,6 +1830,54 @@ void CActor::ForceTransform(const Fmatrix& m)
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()
 {
+	if (Local())// && Level().CurrentEntity() != this)
+	{
+	};
+	if (Remote())
+	{
+		if (NET_A.size())
+		{
+/*			
+			float size = 0.3f;
+			Fvector Pos;
+
+			Pos = IEndPos;
+			Pos.y += size;
+			RCache.dbg_DrawAABB	(Pos, size, size, size, 0xff0000ff);
+
+			Pos = NET_A.back().State.position;
+			Pos.y += size;
+			RCache.dbg_DrawAABB	(Pos, size, size, size, 0xffff0000);
+
+			Pos = Position();
+			Pos.y += size;
+			RCache.dbg_DrawAABB	(Pos, size, size, size, 0x80ffffff);
+*/
+		};
+
+		////////////////////////////////////
+		CPHSynchronize* pSyncObj = NULL;
+		pSyncObj = PHGetSyncItem(0);
+		if (!pSyncObj) return;
+		////////////////////////////////////
+		SPHNetState		CurState;
+		pSyncObj->get_State(CurState);
+
+		HUD().pFontSmall->OutSet	(170,630);
+		HUD().pFontSmall->SetSize	(16.0f);
+		HUD().pFontSmall->SetColor	(0xffff0000);
+		HUD().pFontSmall->OutNext	("NumUpdates:      [%.2f]",g_fNumUpdates);
+		if (!Level().InterpolationDisabled())
+			HUD().pFontSmall->OutNext	("Intepolation:      [%d]",Level().GetInterpolationSteps());
+		else
+			HUD().pFontSmall->OutNext	("Intepolation:      [Disabled]");
+		
+
+//		HUD().pFontSmall->OutNext	("Accel:    [%3.2f, %3.2f, %3.2f]",VPUSH(CurState.accel));
+
+		HUD().pFontSmall->SetSize	(8.0f);
+	};
+
 	if (!bDebug)				return;
 
 	m_PhysicMovementControl->dbg_Draw	();
@@ -1540,67 +1957,212 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 }
 
 
-void CActor::NetInput_Save()
+static u32 g_dwTime0;
+static u32 g_dwTime1;
+
+void CActor::NetInput_Update	(u32 Time)
 {
-	if (getSVU()) return; //don't need to store/send input on server
-	
-	//Store Input
-	net_input	NI;
+	g_dwTime0 = Time;
+	g_dwTime1 = g_dwTime0 + u32(fixed_step*1000);
 
-	NI.m_dwTimeStamp		= Level().timeServer();
-	NI.mstate_wishful		= mstate_wishful;
-
-	NI.cam_mode				= u8(cam_active);
-	NI.cam_yaw				= cam_Active()->yaw;
-	NI.cam_pitch			= cam_Active()->pitch;
-
-	NET_I.push_back(NI);
-	//Send Input
-	NET_Packet		NP;
-
-	NP.w_begin		(M_CL_INPUT);
-
-	NP.w_u16		(u16(ID()));
-	NP.w_u32		(NI.m_dwTimeStamp);
-	NP.w_u32		(NI.mstate_wishful);
-
-	NP.w_u8			(NI.cam_mode	);
-	NP.w_angle8		(NI.cam_yaw		);
-	NP.w_angle8		(NI.cam_pitch	);
-
-	Fvector		vP, vD, vN;
-	cam_Active()->Get(vP, vD, vN);
-	NP.w_vec3		(vD);
-
-	if (Level().net_HasBandwidth()) 
+	xr_deque<net_input>::iterator I = NET_InputStack.begin();
+	while (I != NET_InputStack.end())
 	{
-		u_EventSend(NP);
+		if (I->m_dwTimeStamp >= g_dwTime0 && I->m_dwTimeStamp < g_dwTime1)
+			NetInput_Apply(&(*I));
+		I++;
 	};
 };
 
-void CActor::NetUpdate_Apply(net_update &NetUpdate, float dt)
+
+void CActor::PH_B_CrPr		()	// actions & operations before physic correction-prediction steps
 {
-	float Jump = 0;
-	NET_Last				= NetUpdate;
+	//just set last update data for now
+	if (!m_bHasUpdate) return;
 
-	m_PhysicMovementControl->SetVelocity	(NET_Last.p_velocity);
-	m_PhysicMovementControl->SetVelocity	(NET_Last.p_velocity);
-	Position().set			(NET_Last.p_pos);
-	if(!m_pPhysicsShell)
-		m_PhysicMovementControl->SetPosition	(NET_Last.p_pos);
+	IStartPos = Position();
+	///////////////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	///////////////////////////////////////////////
+	
+	if (Local())
+	{
+		PHUnFreeze();
 
-	g_sv_Orientate				(NET_Last.mstate,dt			);
-	g_Orientate					(NET_Last.mstate,dt			);
-	g_Physics					(NET_Last.p_accel,Jump,dt	);
-//	g_SetAnimation				(NET_Last.mstate			);
+		pSyncObj->set_State(NET_A.back().State);
 
-	mstate_real	= NET_Last.mstate;
+		NetInput_Update(NET_A.back().dwTime0 - g_dwDTime);
+	}
+	else
+	{
+		net_update_A N_A = NET_A.back();
+		net_update N = NET.back();
+
+		NET_Last.o_model = N.o_model;
+		NET_Last.o_torso = N.o_torso;
+		NET_Last.mstate = N.mstate;
+		NET_Last.p_accel = N.p_accel;
+		///////////////////////////////////////////////
+		if (!N_A.State.enabled) 
+		{
+			pSyncObj->set_State(N_A.State);
+		}
+		else
+		{
+			PHUnFreeze();
+
+			pSyncObj->set_State(N_A.State);
+		};
+		///////////////////////////////////////////////
+		if (Level().InterpolationDisabled())
+		{
+			m_bHasUpdate = false;
+		};
+		///////////////////////////////////////////////
+	};
+	m_bInInterpolation = false;
+};	
+
+
+void CActor::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
+{
+	//store recalculated data, then we able to restore it after small future prediction
+	if (!m_bHasUpdate) return;
+	////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	////////////////////////////////////
+	pSyncObj->get_State(RecalculatedState);
+
+	if (Local())
+	{
+		NetInput_Update(g_dwTime1);
+	};
+}; 
+
+void CActor::PH_A_CrPr		()
+{
+	//restore recalculated data and get data for interpolation	
+	if (!m_bHasUpdate) return;
+	m_bHasUpdate = false;
+	////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	////////////////////////////////////
+	pSyncObj->get_State(PredictedState);
+	if (Local())
+	{
+		xr_deque<net_input>::iterator	B = NET_InputStack.begin();
+		xr_deque<net_input>::iterator	E = NET_InputStack.end();
+		xr_deque<net_input>::iterator I = std::lower_bound(B,E,g_dwTime1-1);
+		while (I!= E)
+		{
+			NetInput_Apply(&(*I));
+			I++;
+		};		
+	};
+	////////////////////////////////////
+	pSyncObj->set_State(RecalculatedState);
+	////////////////////////////////////
+	if (!m_bInterpolate) return;
+	
+	IEndPos = PredictedState.position;
+
+	m_bInInterpolation = true;
+	m_dwIStartTime = m_dwLastUpdateTime;
+	m_dwIEndTime = Level().timeServer() + u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
 };
 
-bool CActor::use_bolts				() const
+int		actInterpType = 0;
+void CActor::make_Interpolation	()
+{
+	m_dwLastUpdateTime = Level().timeServer();
+	if (!m_bInInterpolation) return;
+	
+//	if (Local())
+	{
+	}
+//	else 
+	{
+		if(!H_Parent() /*&& getVisible()*/ && g_Alive()) 
+		{
+			u32 CurTime = m_dwLastUpdateTime;
+
+			if (CurTime >= m_dwIEndTime)
+			{
+				m_bInInterpolation = false;
+
+				CPHSynchronize* pSyncObj = NULL;
+				pSyncObj = PHGetSyncItem(0);
+				if (!pSyncObj) return;
+				pSyncObj->set_State(PredictedState);//, PredictedState.enabled);
+				Position().set(PredictedState.position);
+			}
+			else
+			{
+				float factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+
+				Position().lerp(IStartPos, IEndPos, factor);
+
+				g_Orientate					(NET_Last.mstate,0			);
+
+				cam_Active()->Set		(-r_torso.yaw,r_torso.pitch,0);		// set's camera orientation
+			};
+		};
+	};
+};
+
+bool		CActor::use_bolts				() const
 {
 	if (Game().type != GAME_SINGLE) return false;
 	return CInventoryOwner::use_bolts();
+};
+
+void		CActor::UpdatePosStack	( u32 Time0, u32 Time1 )
+{
+		//******** Storing Last Position in stack ********
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+
+	SPHNetState		State;
+	pSyncObj->get_State(State);
+
+	if (!SMemoryPosStack.empty() && SMemoryPosStack.back().u64WorldStep >= ph_world->m_steps_num)
+	{
+		xr_deque<SMemoryPos>::iterator B = SMemoryPosStack.begin();
+		xr_deque<SMemoryPos>::iterator E = SMemoryPosStack.end();
+		xr_deque<SMemoryPos>::iterator I = std::lower_bound(B,E,u64(ph_world->m_steps_num-1));
+		if (I != E) 
+		{
+			I->SState = State;
+			I->u64WorldStep = ph_world->m_steps_num;
+		};
+	}
+	else		
+	{
+		SMemoryPosStack.push_back(SMemoryPos(Time0, Time1, ph_world->m_steps_num, State));
+		if (SMemoryPosStack.front().dwTime0 < (Level().timeServer() - 2000)) SMemoryPosStack.pop_front();
+	};
+};
+
+CActor::SMemoryPos*				CActor::FindMemoryPos (u32 Time)
+{
+	if (SMemoryPosStack.empty()) return NULL;
+
+	if (Time > SMemoryPosStack.back().dwTime1) return NULL;
+	
+	xr_deque<SMemoryPos>::iterator B = SMemoryPosStack.begin();
+	xr_deque<SMemoryPos>::iterator E = SMemoryPosStack.end();
+	xr_deque<SMemoryPos>::iterator I = std::lower_bound(B,E,Time);
+
+	if (I==E) return NULL;
+
+	return &(*I);
 };
 
 
@@ -1613,14 +2175,18 @@ bool  CActor::NeedToDestroyEntity()
 	else //if(this != Level().CurrentEntity())
 	{
 		if(TimePassedAfterDeath()>m_dwBodyRemoveTime && m_bAllowDeathRemove)
+		{
 			return true;
+		}
 		else
+		{
 			return false;
+		}
 	}
 }
 void CActor::DestroyEntity()
 {
-	inventory().DropAll();
+//	inventory().DropAll();
 	inherited::DestroyEntity();
 }
 

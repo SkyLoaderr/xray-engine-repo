@@ -48,6 +48,8 @@ extern	int					phFPS;
 extern	int					phIterations;
 extern	float				phTimefactor;
 extern	int					lvInterp;
+extern	float				g_fMaxDesyncLen;
+extern	bool				g_bUnlimitedAmmo;
 
 // console commands
 class CCC_Spawn : public CConsoleCommand
@@ -716,6 +718,18 @@ public:
 	}
 };
 
+class CCC_Net_CL_Resync : public CConsoleCommand {
+public:
+	CCC_Net_CL_Resync(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		Level().net_Syncronize();
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"resyncronize client"); 
+	}
+};
+
 class CCC_Script : public CConsoleCommand {
 public:
 	CCC_Script(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
@@ -859,6 +873,9 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		// Mad Max
 		// Net Interpolation
 		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);
+		CMD4(CCC_Float,				"net_cl_maxdesync",				&g_fMaxDesyncLen,		0, 10);
+		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
+		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
 
 		// keyboard binding
 		CCC_RegisterInput			();

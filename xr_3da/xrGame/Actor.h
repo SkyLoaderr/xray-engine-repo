@@ -15,6 +15,8 @@
 #include "ActorCondition.h"
 #include "damage_manager.h"
 #include "material_manager.h"
+#include "StatGraph.h"
+
 
 // refs
 class ENGINE_API CCameraBase;
@@ -165,10 +167,11 @@ public:
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
 
+	CStatGraph				*pStatGraph;
+
 	bool					m_bAllowDeathRemove; //разрешения на удаление трупа актера 
 												 //после того как контролирующий его игрок зареспавнился заново. 
 												 //устанавливается в game
-
 protected:
 	// skeleton
 
@@ -208,7 +211,7 @@ protected:
 private:
 	// Motions
 	u32						mstate_wishful;	
-	u32						mstate_real;	
+	u32						mstate_real;
 
 	BOOL					m_bJumpKeyPressed;
 
@@ -257,9 +260,6 @@ private:
 	void					PickupModeOff();
 	void					PickupModeUpdate();
 	void					PickupInfoDraw		(CObject* object);
-
-
-	
 	//------------------------------
 	struct				net_update 		
 	{
@@ -280,6 +280,7 @@ private:
 			p_accel.set		(0,0,0);
 			p_velocity.set	(0,0,0);
 		}
+
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
 	xr_deque<net_update>	NET;
@@ -287,9 +288,76 @@ private:
 	net_update				NET_Last;
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
 	u32						NET_Time;				// server time of last update
+	///////////////////////////////////////////////////////
+	// апдайт с данными физики
+	struct					net_update_A
+	{
+		u32					dwTimeStamp;
+		u32					dwTime0;
+		u32					dwTime1;
+		SPHNetState			State;
+	};
+	xr_deque<net_update_A>	NET_A;
 
-	void					NetUpdate_Apply			( net_update &NetUpdate, float dt);
-	//------------------------------
+	void					Set_Level_CrPr			( long dTime );
+	//---------------------------------------------
+	bool					m_bHasUpdate;	
+	
+	SPHNetState				RecalculatedState;
+	SPHNetState				PredictedState;
+
+	Fvector					IStartPos;
+	Fvector					IEndPos;
+	
+	bool					m_bInInterpolation;
+	u32						m_dwLastUpdateTime;
+	u32						m_dwIStartTime;
+	u32						m_dwIEndTime;
+	bool					m_bInterpolate;
+	//---------------------------------------------
+	virtual void			make_Interpolation ();
+public:
+	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps
+	virtual void			UpdatePosStack	( u32 Time0, u32 Time1 );
+private:
+	//---------------------------------------------
+	void					net_Import_Base				( NET_Packet& P);
+	void					net_Import_Physic			( NET_Packet& P);
+	void					net_Import_Base_proceed		( );
+	void					net_Import_Physic_proceed	( );
+
+	//буфер сохраненных данных физики по актеру
+	struct SMemoryPos
+	{
+		u32					dwTime0;
+		u32					dwTime1;
+		u64					u64WorldStep;
+		SPHNetState			SState;
+		
+			SMemoryPos (u32 Time0, u32 Time1, u64 WorldStep, SPHNetState State):
+			dwTime0(Time0),
+			dwTime1(Time1),
+			u64WorldStep(WorldStep),
+			SState(State)
+		{
+		};
+			bool operator < (const u32 Time)
+		{
+			return dwTime1 < Time;
+		};
+			bool operator < (const u64 Step)
+		{
+			return u64WorldStep < Step;
+		};
+	};
+
+	xr_deque<SMemoryPos>	SMemoryPosStack;
+	Fvector					dDesyncVec;
+	SMemoryPos*				FindMemoryPos (u32 Time);
+	//---------------------------------------------
+	// ввод с клавиатуры и мыши
 	struct					net_input
 	{
 		u32					m_dwTimeStamp;
@@ -299,10 +367,17 @@ private:
 		u8					cam_mode;
 		float				cam_yaw;
 		float				cam_pitch;
+
+		bool operator < (const u32 Time)
+		{
+			return m_dwTimeStamp < Time;
+		};
 	};
-	xr_deque<net_input>		NET_I;
-	BOOL					NET_I_NeedReculc;
+	xr_deque<net_input>		NET_InputStack;
 	void					NetInput_Save			( );
+	void					NetInput_Send			( );
+	void					NetInput_Apply			(net_input* pNI);
+	void					NetInput_Update			( u32 Time );
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
 	void					g_cl_ValidateMState		(float dt, u32 mstate_wf);

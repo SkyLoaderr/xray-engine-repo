@@ -173,6 +173,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	Fvector							velocity;
 	float							fArmor;
 	u8								weapon;
+	///////////////////////////////////////////
+	u16								m_u16NumItems;
+	u32								m_dwTime0;
+	u32								m_dwTime1;
+	SPHNetState						State;
+	///////////////////////////////////////////
 									CSE_ALifeCreatureActor	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureActor	();
 SERVER_ENTITY_DECLARE_END

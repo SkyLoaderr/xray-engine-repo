@@ -40,10 +40,7 @@ CInventoryItem::CInventoryItem()
 
 	m_iXPos = 0;
 	m_iYPos = 0;
-	////////////////////////////////////
-	m_bHasUpdate = false;
-	m_bInInterpolation = false;
-	
+	////////////////////////////////////	
 	m_inventory_mask = u64(-1);
 
 	m_name = m_nameShort = NULL;
@@ -336,7 +333,13 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 	if (!frame_check(m_dwFrameSpawn))
 		return	(TRUE);
 
-	return		(inherited::net_Spawn(DC));
+	BOOL res = inherited::net_Spawn(DC);
+
+	m_bHasUpdate = false;
+	m_bInInterpolation = false;
+	m_bInterpolate	= false;
+
+	return		res;
 }
 
 void CInventoryItem::net_Destroy		()
@@ -375,25 +378,25 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 	N.State.previous_position	= N.State.position;
 	N.State.previous_quaternion = N.State.quaternion;
 
-	if (NET_IItem.empty() || (NET_IItem.back().dwTimeStamp<N.dwTimeStamp))
+	if (!NET_IItem.empty() && (NET_IItem.back().dwTimeStamp>=N.dwTimeStamp)) return;
+
+	if (!NET_IItem.empty()) m_bInterpolate = true;
+
+	long dTime = Level().timeServer() - N.dwTimeStamp;
+	u32 NumSteps = 0;
+	if (dTime < (fixed_step*500))
+		NumSteps = 0;
+	else
+		NumSteps = ph_world->CalcNumSteps(dTime);
+
+	m_bHasUpdate = true;
+	Level().SetNumCrSteps(NumSteps);
+
+	NET_IItem.push_back			(N);
+	while (NET_IItem.size() > 2)
 	{
-		long dTime = Level().timeServer() - N.dwTimeStamp;
-		u32 NumSteps = 0;
-		if (dTime < (fixed_step*500))
-			NumSteps = 0;
-		else
-			NumSteps = ph_world->CalcNumSteps(dTime);
-
-		m_bHasUpdate = true;
-		Level().m_bNeed_CrPr = true;
-		Level().m_dwNumSteps = NumSteps;
-
-		NET_IItem.push_back			(N);
-		while (NET_IItem.size() > 2)
-		{
-			NET_IItem.pop_front();
-		};
-	}
+		NET_IItem.pop_front();
+	};
 };
 
 void CInventoryItem::net_Export			(NET_Packet& P) 
@@ -405,12 +408,9 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	
 	u16 NumItems = PHGetSyncItemsNumber();
 	if (H_Parent() || GameID() == 1) NumItems = 0;
-//	if (H_Parent()) NumItems = 0;
 
 	P.w_u16				(NumItems);
 	if (!NumItems) return;
-
-//	Msg("CInventoryItem net_export %s - Items %d", *cName(), NumItems);
 
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
@@ -447,6 +447,9 @@ void CInventoryItem::PH_B_CrPr		()
 	pSyncObj = PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	///////////////////////////////////////////////
+	IStartPos.set(Position());
+	IStartRot.set(XFORM());
+
 	m_bInInterpolation = false;
 	net_update_IItem N_I = NET_IItem.back();
 	if (!N_I.State.enabled) 
@@ -491,23 +494,22 @@ void CInventoryItem::PH_A_CrPr		()
 	pSyncObj = PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
-//	SPHNetState		PredictedState;
 	pSyncObj->get_State(PredictedState);
-	
+	////////////////////////////////////
+	pSyncObj->set_State(RecalculatedState);
+	////////////////////////////////////
+
+	if (!m_bInterpolate) return;
+
 	Fmatrix xformX;
 	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
 
 	IEndRot.set(xformX);
 	IEndPos.set(xformX.c);
 
-	IStartPos.set(Position());
-	IStartRot.set(XFORM());
-
 	m_bInInterpolation = true;
 	m_dwIStartTime = m_dwILastUpdateTime;
 	m_dwIEndTime = Level().timeServer() + u32((fixed_step - ph_world->m_frame_time)*1000)+ Level().GetInterpolationSteps()*u32(fixed_step*1000);
-	////////////////////////////////////
-	pSyncObj->set_State(RecalculatedState);
 };
 
 void CInventoryItem::make_Interpolation	()

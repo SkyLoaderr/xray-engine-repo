@@ -154,10 +154,11 @@ protected:
 	SPHNetState		RecalculatedState;
 	SPHNetState		PredictedState;
 
-	bool			m_bInInterpolation;
-	u32				m_dwIStartTime;
-	u32				m_dwIEndTime;
-	u32				m_dwILastUpdateTime;
+	bool			m_bInInterpolation		;
+	bool			m_bInterpolate			;
+	u32				m_dwIStartTime			;
+	u32				m_dwIEndTime			;
+	u32				m_dwILastUpdateTime		;
 
 private:
 	u64				m_inventory_mask;

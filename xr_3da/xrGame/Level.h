@@ -76,15 +76,19 @@ protected:
 	EVENT						eEntitySpawn;
 public:
 	////////////// network ////////////////////////
-	BOOL						m_bNeed_CrPr;
-	u32							m_dwNumSteps;
 	u32							GetInterpolationSteps ();
 	void						SetInterpolationSteps (u32 InterpSteps);
 	bool						InterpolationDisabled ();
 
 
 	void						ReculcInterpolationSteps ();
+
+	void						SetNumCrSteps		( u32 NumSteps );
+
+	static void __stdcall		PhisStepsCallback	( u32 Time0, u32 Time1 );
 private:
+	BOOL						m_bNeed_CrPr;
+	u32							m_dwNumSteps;
 	void						make_NetCorrectionPrediction	();
 
 	u32							m_dwDeltaUpdate ;
@@ -267,6 +271,7 @@ public:
 	IC u8 GetDayTime() { 
 		return ((u8) ((GetGameTime() / 3600000) % 24 )); 
 	}
+
 	//by Mad Max 
 	IC bool	IsServer ()
 	{
@@ -282,10 +287,9 @@ IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return Level().game;					}
 IC u32					GameID()	{ return Game().type;					}
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
-//by Mad Max 
+	//by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}
 IC bool					OnClient()	{ return Level().IsClient();				}
-
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;
