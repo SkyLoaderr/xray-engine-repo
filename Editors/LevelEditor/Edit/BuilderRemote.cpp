@@ -514,7 +514,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     case D3DLIGHT_DIRECTIONAL: 	return BuildSun			(&L,e->m_Flags,lpSectors);
     case D3DLIGHT_POINT:		return BuildPointLight	(&L,e->m_Flags,lpSectors,0);
     default:
-    	THROW2("Invalid case.");
+    	THROW2("Invalid light type.");
 	    return FALSE;
     }
 }

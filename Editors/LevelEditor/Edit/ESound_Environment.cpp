@@ -143,8 +143,8 @@ void ESoundEnvironment::Scale(Fvector& amount)
 
 const Fmatrix& ESoundEnvironment::get_box()
 {
-	xrSE_CFormed::shape_def& shape = m_Shape->get_shape(0);
-    R_ASSERT(shape.type==xrSE_CFormed::cfBox);
+	CSE_Shape::shape_def& shape = m_Shape->get_shape(0);
+    R_ASSERT(shape.type==CSE_Shape::cfBox);
     Fmatrix M			= shape.data.box;
     M.mulA				(m_Shape->_Transform());
 }

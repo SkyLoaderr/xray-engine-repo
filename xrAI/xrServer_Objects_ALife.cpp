@@ -7,8 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "xrServer_Objects_ALife.h"
 #include "game_base.h"
+#include "BodyInstance.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint
@@ -408,7 +411,7 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	inherited2::FillProp		(PHelper.PrepareKey(pref,s_name),values);
+	inherited2::FillProp		(PHelper.PrepareKey(pref,s_name),items);
 }
 #endif
 
@@ -455,7 +458,6 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-	inherited2::FillProp		(pref,items);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,0.f,1000.f);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,100.f);
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"), &m_period,20,10000);

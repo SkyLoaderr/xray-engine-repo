@@ -413,7 +413,6 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp		(pref,items);
     PropValue* V=0;
 	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->SetEvents(0,0,ReferenceChange);
-//	PHelper.CreateFlag32		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
 }
 
 bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)

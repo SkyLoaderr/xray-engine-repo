@@ -13,7 +13,6 @@ class CSceneObject : public CCustomObject {
 	void __fastcall ReferenceChange			(PropValue* sender);
 public:
 	enum{
-		flDummy 	= (1<<0),
 		flFORCE32	= u32(-1)
     };
 private:

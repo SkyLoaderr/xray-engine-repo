@@ -12,7 +12,7 @@
 #include "gamefont.h"
 #include "bottombar.h"
 #include "scene.h"
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "BodyInstance.h"
 
 #include "eshape.h"
@@ -45,7 +45,7 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 {
     m_Data 	= F_entity_Create(entity_ref);
 
-    xrSE_CFormed* cform = dynamic_cast<xrSE_CFormed*>(m_Data);
+    CSE_Shape* cform = dynamic_cast<CSE_Shape*>(m_Data);
 //    if (cform) cform->shapes.push_back(xrSE_CFormed::shape_def());
     if (cform){
     	cform->shapes.reserve		(128);
@@ -104,7 +104,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     m_Data->o_Angle.set			(owner->PRotation);
 
     // export cform (if needed)
-    xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
+    CSE_Shape* cform 			= dynamic_cast<CSE_Shape*>(m_Data);
 // SHAPE
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
 		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
@@ -132,18 +132,18 @@ void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 }
 void CSpawnPoint::SSpawnData::Render(const Fmatrix& parent,int priority, bool strictB2F)
 {
-    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
 	if (V&&V->visual)			Device.Models.Render(V->visual,parent,priority,strictB2F,1.f);
 }
 void CSpawnPoint::SSpawnData::OnFrame()
 {
-    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
 	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->Calculate();
 }
 void CSpawnPoint::SSpawnData::OnDeviceCreate()
 {
     // if visualed
-    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
 	if (V)						V->OnChangeVisual(0);
 }
 //----------------------------------------------------
@@ -151,7 +151,7 @@ void CSpawnPoint::SSpawnData::OnDeviceCreate()
 void CSpawnPoint::SSpawnData::OnDeviceDestroy()
 {
     // if visualed
-    xrSE_Visualed* V			= dynamic_cast<xrSE_Visualed*>(m_Data);
+    CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
 	if (V&&V->visual)			Device.Models.Delete(V->visual);
 }
 //----------------------------------------------------
@@ -215,7 +215,7 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
     if (m_SpawnData.Valid()){
     	switch(obj->ClassID){    
         case OBJCLASS_SHAPE:
-	    	bAllowed = !!dynamic_cast<xrSE_CFormed*>(m_SpawnData.m_Data);
+	    	bAllowed = !!dynamic_cast<CSE_Shape*>(m_SpawnData.m_Data);
         break;
 //        case OBJCLASS_SCENEOBJECT:
 //	    	bAllowed = !!dynamic_cast<xrSE_Visualed*>(m_SpawnData.m_Data);

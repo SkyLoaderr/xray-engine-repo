@@ -5,7 +5,7 @@
 #ifndef SpawnPointH
 #define SpawnPointH
 
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "LevelGameDef.h"
 
 #define RPOINT_SIZE 0.5f
@@ -19,7 +19,7 @@ class CSpawnPoint : public CCustomObject {
 public:                           
 	struct SSpawnData{
 		CLASS_ID		m_ClassID;
-		xrServerEntity*	m_Data;
+		CSE_Abstract*	m_Data;
         SSpawnData	()
         {
 			m_ClassID	= 0;

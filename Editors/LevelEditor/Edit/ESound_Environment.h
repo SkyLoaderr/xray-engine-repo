@@ -5,7 +5,7 @@
 
 #include "CustomObject.h"
 #include "EShape.h"
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_Alife_All.h"
 
 class ESoundEnvironment: public CCustomObject
 {

@@ -83,13 +83,13 @@
       intermediate\Blender_Blur.obj intermediate\Blender_Model.obj 
       intermediate\xrSkin1W.obj intermediate\ExportObjectOGF.obj 
       intermediate\SoundManager.obj intermediate\tga.obj 
-      intermediate\xrServer_Entities.obj intermediate\SpawnPoint.obj 
-      intermediate\PropertiesListTypes.obj intermediate\DetailManager.obj 
-      intermediate\DetailManager_soft.obj intermediate\Frustum.obj 
-      intermediate\DetailModel.obj intermediate\DetailObjectsGenerate.obj 
-      intermediate\DetailManager_VS.obj intermediate\render.obj 
-      intermediate\xrSkin2W.obj intermediate\EditObjectExportLWO.obj 
-      intermediate\UI_MainMail.obj intermediate\DetailManager_Decompress.obj 
+      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj 
+      intermediate\DetailManager.obj intermediate\DetailManager_soft.obj 
+      intermediate\Frustum.obj intermediate\DetailModel.obj 
+      intermediate\DetailObjectsGenerate.obj intermediate\DetailManager_VS.obj 
+      intermediate\render.obj intermediate\xrSkin2W.obj 
+      intermediate\EditObjectExportLWO.obj intermediate\UI_MainMail.obj 
+      intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_CACHE.obj intermediate\HW.obj 
       intermediate\defines.obj intermediate\GameFont.obj 
       intermediate\Blender_Model_EbB.obj intermediate\GameMtlLib.obj 
@@ -97,24 +97,28 @@
       intermediate\EShape.obj intermediate\UI_ShapeTools.obj 
       intermediate\FrameShape.obj intermediate\du_box.obj 
       intermediate\PropertiesListHelper.obj intermediate\SceneObject.obj 
-      intermediate\c_dinput.obj intermediate\xrServer_Entity_Custom.obj 
-      intermediate\ai_alife_server_objects.obj intermediate\PSLibrary.obj 
-      intermediate\ParticleGroup.obj intermediate\PSLibraryEditor.obj 
-      intermediate\R_Backend_DBG.obj intermediate\R_Backend_Runtime.obj 
-      intermediate\r_constants.obj intermediate\r_constants_cache.obj 
-      intermediate\R_DStreams.obj intermediate\R_Backend.obj 
-      intermediate\Blender_detail_still.obj intermediate\Blender_tree.obj 
-      intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound_Source.obj 
-      intermediate\ESound_Environment.obj intermediate\SoundManager_LE.obj 
-      intermediate\xrRender_console.obj intermediate\Blender_Palette.obj 
-      intermediate\EParticlesObject.obj intermediate\ParticleGroupEditor.obj 
-      intermediate\SceneSummaryInfo.obj intermediate\Custom2DProjector.obj 
-      intermediate\R_Backend_xform.obj intermediate\Blender_Recorder_R2.obj 
-      intermediate\ESceneAIMapTools.obj intermediate\FrameAIMap.obj 
-      intermediate\UI_AIMapTools.obj intermediate\DetailObjectsPick.obj 
+      intermediate\c_dinput.obj intermediate\ai_alife_server_objects.obj 
+      intermediate\PSLibrary.obj intermediate\ParticleGroup.obj 
+      intermediate\PSLibraryEditor.obj intermediate\R_Backend_DBG.obj 
+      intermediate\R_Backend_Runtime.obj intermediate\r_constants.obj 
+      intermediate\r_constants_cache.obj intermediate\R_DStreams.obj 
+      intermediate\R_Backend.obj intermediate\Blender_detail_still.obj 
+      intermediate\Blender_tree.obj intermediate\ELog.obj intermediate\FS2.obj 
+      intermediate\ESound_Source.obj intermediate\ESound_Environment.obj 
+      intermediate\SoundManager_LE.obj intermediate\xrRender_console.obj 
+      intermediate\Blender_Palette.obj intermediate\EParticlesObject.obj 
+      intermediate\ParticleGroupEditor.obj intermediate\SceneSummaryInfo.obj 
+      intermediate\Custom2DProjector.obj intermediate\R_Backend_xform.obj 
+      intermediate\Blender_Recorder_R2.obj intermediate\ESceneAIMapTools.obj 
+      intermediate\FrameAIMap.obj intermediate\UI_AIMapTools.obj 
+      intermediate\DetailObjectsPick.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\motion_simulator.obj intermediate\ESceneAIMapTools_Render.obj 
-      intermediate\AIMapExport.obj intermediate\du_cone.obj"/>
+      intermediate\AIMapExport.obj intermediate\du_cone.obj 
+      intermediate\xrServer_Objects_ALife_Monsters.obj 
+      intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
+      intermediate\xrServer_Objects_ALife.obj 
+      intermediate\xrServer_Objects_ALife_Items.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -335,7 +339,6 @@
       <FILE FILENAME="edit\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Entities.cpp" FORMNAME="" UNITNAME="xrServer_Entities" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.h" FORMNAME="" UNITNAME="PropertiesListTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -366,7 +369,6 @@
       <FILE FILENAME="PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Entity_Custom.cpp" FORMNAME="" UNITNAME="xrServer_Entity_Custom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\ai_alife_server_objects.cpp" FORMNAME="" UNITNAME="ai_alife_server_objects" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -401,6 +403,11 @@
       <FILE FILENAME="edit\ESceneAIMapTools_Render.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\AIMapExport.cpp" FORMNAME="" UNITNAME="AIMapExport" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\du_cone.cpp" FORMNAME="" UNITNAME="du_cone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Monsters.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Monsters.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Factory.cpp" FORMNAME="" UNITNAME="xrServer_Factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

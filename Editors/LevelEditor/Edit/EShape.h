@@ -3,9 +3,9 @@
 #ifndef EShapeH
 #define EShapeH
 
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 //---------------------------------------------------------------------------
-class CEditShape: public CCustomObject, xrSE_CFormed{
+class CEditShape: public CCustomObject, CSE_Shape{
 	typedef CCustomObject inherited;
 private:
 // bounds

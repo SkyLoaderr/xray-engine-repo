@@ -12,7 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 // export spawn
-#include "xrServer_Entities.h"
+#include "xrServer_Objects_ALife_All.h"
 #include "net_utils.h"
 #include "xrMessages.h"
 #include "builder.h"
@@ -165,47 +165,6 @@ void CSceneObject::Save(IWriter& F){
 
 bool CSceneObject::ExportGame(SExportStreams& F)
 {
-    if (IsDynamic()&&m_Flags.is(flDummy)){
-    	R_ASSERT(m_pReference);
-    	// export spawn packet
-        xrSE_Dummy			dummy("m_dummy");
-        strcpy(dummy.s_name_replace,Name);
-        dummy.o_Position.set(PPosition);
-        dummy.o_Angle.set	(PRotation);
-        dummy.s_flags.set	(M_SPAWN_OBJECT_ACTIVE);
-        // esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
-        dummy.s_style		= (IsOMotionable()?(1<<0):0)|
-        					 (1<<1)|
-                             (IsSoundable()?(1<<3):0);
-		// verify path
-		// esAnimated
-        if (IsOMotionable()){
-	        string256 anm_name;	strconcat(anm_name,Name,".anms");
-            dummy.s_Animation = xr_strdup(anm_name);
-        	strconcat		(anm_name,Builder.m_LevelPath.c_str(),Name,".anms");
-	        VerifyPath		(anm_name);
-    	    SaveOMotions	(anm_name);
-        }
-		// esModel
-        string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
-        dummy.s_Model 		= xr_strdup(mdl_name);
-        strconcat			(mdl_name,Builder.m_LevelPath.c_str(),Name,".ogf");
-		VerifyPath			(mdl_name);
-        m_pReference->ExportOGF(mdl_name);
-		// esSound
-        if (IsSoundable()){
-	        string256 snd_name;	strconcat(snd_name,Name,".wav");
-	        dummy.s_Sound		= xr_strdup(m_Sounds.front().c_str());
-        }
-
-        NET_Packet Packet;
-        dummy.Spawn_Write	(Packet,TRUE);
-
-	    F.spawn.stream.open_chunk	(F.spawn.chunk++);
-        F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-        F.spawn.stream.close_chunk	();
-    	return true;
-    }
     return false;
 }
 //----------------------------------------------------
