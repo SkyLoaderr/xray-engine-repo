@@ -81,7 +81,10 @@ public:
 class xrMU_Reference
 {
 public:
-
+	xrMU_Model*			model;
+    Fmatrix				xform;
+    Flags32				flags;
+	u16					sector;
 public:
 	void				Load	(CStream& FS);
 };

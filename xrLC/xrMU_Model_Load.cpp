@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "xrMU_Model.h"
 
+void xrMU_Reference::Load(CStream& F)
+{
+	b_mu_reference		R;
+	F.Read				(&R,sizeof(R));
+	model				= pBuild->mu_models[R]
+}
+
 void xrMU_Model::Load(CStream& F)
 {
 	F.RstringZ			(m_name);
