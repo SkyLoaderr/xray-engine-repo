@@ -15,111 +15,8 @@
 
 #ifdef _EDITOR
 	#include "BodyInstance.h"
-#endif
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeGraphPoint
-////////////////////////////////////////////////////////////////////////////
-#ifdef _EDITOR
-	#include "BodyInstance.h"
 	static TokenValue4::ItemVec locations[4];
 	static TokenValue4::ItemVec	level_ids;
-#endif
-
-CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-	s_gameid					= GAME_DUMMY;
-	m_caConnectionPointName[0]	= 0;
-	m_tLevelID					= 0;
-	m_tLocations[0]				= 0;
-	m_tLocations[1]				= 0;
-	m_tLocations[2]				= 0;
-	m_tLocations[3]				= 0;
-}
-
-void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
-{
-	tNetPacket.r_string			(m_caConnectionPointName);
-	tNetPacket.r_u32			(m_tLevelID);
-	tNetPacket.r_u8				(m_tLocations[0]);
-	tNetPacket.r_u8				(m_tLocations[1]);
-	tNetPacket.r_u8				(m_tLocations[2]);
-	tNetPacket.r_u8				(m_tLocations[3]);
-	if (!tNetPacket.r_eof()) {
-		tNetPacket.r_pos		-= 4;
-		u32						dwTemp;
-		tNetPacket.r_u32		(dwTemp);
-		m_tLocations[0]			= (u8)dwTemp;
-		tNetPacket.r_u32		(dwTemp);
-		m_tLocations[1]			= (u8)dwTemp;
-	}
-};
-
-void CSE_ALifeGraphPoint::STATE_Write		(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_string			(m_caConnectionPointName);
-	tNetPacket.w_u32			(m_tLevelID);
-	tNetPacket.w_u8				(m_tLocations[0]);
-	tNetPacket.w_u8				(m_tLocations[1]);
-	tNetPacket.w_u8				(m_tLocations[2]);
-	tNetPacket.w_u8				(m_tLocations[3]);
-};
-void CSE_ALifeGraphPoint::UPDATE_Read		(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
-{
-}
-
-#ifdef _EDITOR              
-void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
-{
-    CInifile					*Ini = 0;
-    
-	if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
-	    string256				gm_name;
-        FS.update_path			(gm_name,_game_data_,"game.ltx");
-    	R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
-		Ini						= xr_new<CInifile>(gm_name);
-    }
-    
-	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
-		if(locations[i].empty()) {
-			string256			caSection, T;
-			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
-			R_ASSERT			(Ini->section_exist(caSection));
-			LPCSTR				N,V;
-			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++) {
-   				locations[i].push_back	(TokenValue4::Item());
-				TokenValue4::Item		&val = locations[i].back();
-				val.str					= V;
-				val.ID					= atoi(N);
-			}
-		}
-	
-	if(level_ids.empty()) {
-		R_ASSERT				(Ini->section_exist("levels"));
-        LPCSTR					N,V;
-        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-			R_ASSERT			(Ini->section_exist(N));
-   			level_ids.push_back	(TokenValue4::Item());
-            TokenValue4::Item	&val = level_ids.back();
-			LPCSTR				S = Ini->r_string(N,"caption");
-			val.str				= S;
-            val.ID				= Ini->r_u32(N,"id");
-        }
-    }
-    if (Ini)
-		xr_delete				(Ini);
-	
-	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
-	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
-	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
-	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
-	PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
-	PHelper.CreateText			(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
-}
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
@@ -158,6 +55,7 @@ void CSE_ALifeEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePersonalEvent
 ////////////////////////////////////////////////////////////////////////////
@@ -194,6 +92,7 @@ void CSE_ALifePersonalEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTask
 ////////////////////////////////////////////////////////////////////////////
@@ -278,6 +177,7 @@ void CSE_ALifeTask::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePersonalTask
 ////////////////////////////////////////////////////////////////////////////
@@ -309,6 +209,106 @@ void CSE_ALifePersonalTask::FillProp	(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp			(pref,values);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeGraphPoint
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	s_gameid					= GAME_DUMMY;
+	m_caConnectionPointName[0]	= 0;
+	m_tLevelID					= 0;
+	m_tLocations[0]				= 0;
+	m_tLocations[1]				= 0;
+	m_tLocations[2]				= 0;
+	m_tLocations[3]				= 0;
+}
+
+void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	tNetPacket.r_string			(m_caConnectionPointName);
+	tNetPacket.r_u32			(m_tLevelID);
+	tNetPacket.r_u8				(m_tLocations[0]);
+	tNetPacket.r_u8				(m_tLocations[1]);
+	tNetPacket.r_u8				(m_tLocations[2]);
+	tNetPacket.r_u8				(m_tLocations[3]);
+	if (!tNetPacket.r_eof()) {
+		tNetPacket.r_pos		-= 4;
+		u32						dwTemp;
+		tNetPacket.r_u32		(dwTemp);
+		m_tLocations[0]			= (u8)dwTemp;
+		tNetPacket.r_u32		(dwTemp);
+		m_tLocations[1]			= (u8)dwTemp;
+	}
+};
+
+void CSE_ALifeGraphPoint::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_string			(m_caConnectionPointName);
+	tNetPacket.w_u32			(m_tLevelID);
+	tNetPacket.w_u8				(m_tLocations[0]);
+	tNetPacket.w_u8				(m_tLocations[1]);
+	tNetPacket.w_u8				(m_tLocations[2]);
+	tNetPacket.w_u8				(m_tLocations[3]);
+};
+void CSE_ALifeGraphPoint::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+}
+
+#ifdef _EDITOR              
+void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+	CInifile					*Ini = 0;
+
+	if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
+		string256				gm_name;
+		FS.update_path			(gm_name,_game_data_,"game.ltx");
+		R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
+		Ini						= xr_new<CInifile>(gm_name);
+	}
+
+	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+		if(locations[i].empty()) {
+			string256			caSection, T;
+			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
+			R_ASSERT			(Ini->section_exist(caSection));
+			LPCSTR				N,V;
+			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++) {
+				locations[i].push_back	(TokenValue4::Item());
+				TokenValue4::Item		&val = locations[i].back();
+				val.str					= V;
+				val.ID					= atoi(N);
+			}
+		}
+
+		if(level_ids.empty()) {
+			R_ASSERT				(Ini->section_exist("levels"));
+			LPCSTR					N,V;
+			for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+				R_ASSERT			(Ini->section_exist(N));
+				level_ids.push_back	(TokenValue4::Item());
+				TokenValue4::Item	&val = level_ids.back();
+				LPCSTR				S = Ini->r_string(N,"caption");
+				val.str				= S;
+				val.ID				= Ini->r_u32(N,"id");
+			}
+		}
+		if (Ini)
+			xr_delete				(Ini);
+
+		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+		PHelper.CreateToken4		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+		PHelper.CreateText			(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////

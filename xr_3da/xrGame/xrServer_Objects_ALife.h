@@ -12,14 +12,6 @@
 #include "xrServer_Objects.h"
 #include "ai_alife_templates.h"
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
-public:
-	string32						m_caConnectionPointName;
-	u32								m_tLevelID;
-	u8								m_tLocations[LOCATION_TYPE_COUNT];
-									CSE_ALifeGraphPoint(LPCSTR caSection);
-SERVER_ENTITY_DECLARE_END
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,IPureServerObject)
 	_EVENT_ID						m_tEventID;
 	_TIME_ID						m_tTimeID;
@@ -71,6 +63,14 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalTask,CSE_ALifeTask)
 	{
 		m_dwTryCount				= 0;
 	};
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
+public:
+	string32						m_caConnectionPointName;
+	u32								m_tLevelID;
+	u8								m_tLocations[LOCATION_TYPE_COUNT];
+	CSE_ALifeGraphPoint(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeObject : virtual public CSE_Abstract {
