@@ -77,7 +77,7 @@ void CBoardClassicOthello::show				() const
 }
 
 template <int increment, CBoardClassicOthello::cell_type _color_to_move, CBoardClassicOthello::cell_type opponent_color>
-void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &difference)
+IC	void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &difference)
 {
     cell_type *current_cell = start_cell + increment;
 	if (*current_cell == opponent_color) {
