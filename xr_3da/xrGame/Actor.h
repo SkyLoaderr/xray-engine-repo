@@ -270,7 +270,7 @@ private:
 		float				Jump;
 		BOOL				m_bJumpKeyPressed;
 	};
-//	xr_deque<net_input>		NET_Input;
+	xr_deque<net_input>		NET_Input;
 //	void					Save_NetInput			( );
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
