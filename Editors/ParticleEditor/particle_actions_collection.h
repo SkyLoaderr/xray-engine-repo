@@ -175,6 +175,17 @@ namespace PAPI{
         _METHODS;
 	};
 
+	struct PAScatter : public ParticleAction
+	{
+		pVector	centerL;	// Center of the fan (in local space)
+		pVector	center;		// Center of the fan
+		float magnitude;	// Scales acceleration
+		float epsilon;		// Softening parameter
+		float max_radius;	// Only influence particles within max_radius
+
+        _METHODS;
+	};
+
 	struct PASink : public ParticleAction
 	{
 		BOOL kill_inside;	// True to dispose of particles *inside* domain

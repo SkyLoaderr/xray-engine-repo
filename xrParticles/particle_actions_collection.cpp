@@ -724,25 +724,25 @@ void PADamping::Transform(const Fmatrix&){;}
 // Exert force on each particle away from explosion center
 void PAExplosion::Execute(ParticleEffect *effect, float dt)
 {
-	float radius = velocity * age;
-	float magdt = magnitude * dt;
-	float oneOverSigma = 1.0f / stdev;
-	float inexp = -0.5f*_sqr(oneOverSigma);
-	float outexp = ONEOVERSQRT2PI * oneOverSigma;
+	float radius 		= velocity * age;
+	float magdt 		= magnitude * dt;
+	float oneOverSigma 	= 1.0f / stdev;
+	float inexp 		= -0.5f*_sqr(oneOverSigma);
+	float outexp 		= ONEOVERSQRT2PI * oneOverSigma;
 	
 	for(u32 i = 0; i < effect->p_count; i++)
 	{
 		Particle &m = effect->particles[i];
 		
 		// Figure direction to particle.
-		pVector dir(m.pos - center);
-		float distSqr = dir.length2();
-		float dist = _sqrt(distSqr);
+		pVector dir		(m.pos - center);
+		float distSqr 	= dir.length2();
+		float dist 		= _sqrt(distSqr);
 		float DistFromWaveSqr = _sqr(radius - dist);
 		
-		float Gd = expf(DistFromWaveSqr * inexp) * outexp;
+		float Gd 		= expf(DistFromWaveSqr * inexp) * outexp;
 		
-		m.vel += dir * (Gd * magdt / (dist * (distSqr + epsilon)));
+		m.vel 			+= dir * (Gd * magdt / ((dist+EPS) * (distSqr + epsilon)));
 	}
 	
 	age += dt;
@@ -917,8 +917,66 @@ void PAJet::Execute(ParticleEffect *effect, float dt)
 }
 void PAJet::Transform(const Fmatrix& m)
 {
-	m.transform_tiny	(center,center);
+	m.transform_tiny	(center,centerL);
 	acc.transform_dir	(accL,m);
+}
+//-------------------------------------------------------------------------------------------------
+
+// Accelerate particles form center
+void PAScatter::Execute(ParticleEffect *effect, float dt)
+{
+/*
+	float magdt = magnitude * dt;
+	float max_radiusSqr = max_radius * max_radius;
+	
+	if(max_radiusSqr < P_MAXFLOAT)
+	{
+		for(u32 i = 0; i < effect->p_count; i++)
+		{
+			Particle &m = effect->particles[i];
+			
+			// Figure direction to particle.
+			pVector dir(m.pos - center);
+			
+			// Distance to jet (force drops as 1/r^2)
+			// Soften by epsilon to avoid tight encounters to infinity
+			float rSqr = dir.length2();
+			
+			if(rSqr < max_radiusSqr)
+			{
+				pVector accel;
+				acc.Generate(accel);
+				
+				// Step velocity with acceleration
+				m.vel += accel * (magdt / (rSqr + epsilon));
+			}
+		}
+	}
+	else
+	{
+		for(u32 i = 0; i < effect->p_count; i++)
+		{
+			Particle &m = effect->particles[i];
+			
+			// Figure direction to particle.
+			pVector dir(m.pos - center);
+			
+			// Distance to jet (force drops as 1/r^2)
+			// Soften by epsilon to avoid tight encounters to infinity
+			float rSqr = dir.length2();
+			
+			pVector accel;
+			acc.Generate(accel);
+			
+			// Step velocity with acceleration
+			m.vel += accel * (magdt / (rSqr + epsilon));
+		}
+	}
+*/    
+}
+void PAScatter::Transform(const Fmatrix& m)
+{
+	m.transform_tiny	(center,centerL);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1066,7 +1124,7 @@ void PAOrbitLine::Execute(ParticleEffect *effect, float dt)
 void PAOrbitLine::Transform(const Fmatrix& m)
 {
 	m.transform_tiny(p,pL);
-	m.transform_dir(axis,axis);
+	m.transform_dir(axis,axisL);
 }
 //-------------------------------------------------------------------------------------------------
 
