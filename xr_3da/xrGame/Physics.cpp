@@ -415,7 +415,7 @@ void CPHJeep::Steer(const char& steering)
 
 }
 ////////////////////////////////////////////////////////////////
-void CPHJeep::Drive(const char& velocity)
+void CPHJeep::Drive(const char& velocity,dReal force)
 {
 
 	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
@@ -439,11 +439,13 @@ void CPHJeep::Drive(const char& velocity)
 			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 		break;
 	}
+	for(i=0;i<4;i++)
+			dJointSetHinge2Param(Joints[i], dParamFMax2, force);
 }
 //////////////////////////////////////////////////////////
 void CPHJeep::Revert(){
-dBodyAddForce(Bodies[0], 0, 800, 0);
-dBodyAddRelTorque(Bodies[0], 70, 0, 0);
+dBodyAddForce(Bodies[0], 0, 33600, 0);
+dBodyAddRelTorque(Bodies[0], 700, 0, 0);
 }
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////

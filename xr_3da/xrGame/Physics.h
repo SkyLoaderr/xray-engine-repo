@@ -30,7 +30,7 @@ public:
 	void Destroy();
 	void Steer1(const char& velocity, const char& steering);
 	void Steer(const char& steering);
-	void Drive(const char& velocity);
+	void Drive(const char& velocity,dReal force=500.f);
 	void JointTune(dReal step);
 	void Revert();
 	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
@@ -55,7 +55,7 @@ public:
 	PHDynamicData DynamicData;
 	dVector3 jeepBox;
 	dVector3 cabinBox;
-	UINT VelocityRate;
+	dReal VelocityRate;
 };
 
 //////////////////////////////////////////////////////////////////////////////////

@@ -192,7 +192,7 @@ void	CCar::OnKeyboardPress		(int cmd)
 					break;
 	case kBACK:		ph_world->Jeep.Drive(-1);//vPosition.z-=1; 
 					break;
-	//default:        ph_world->Jeep.Steer(0,0);
+	
 	};
 
 }
@@ -208,9 +208,9 @@ void	CCar::OnKeyboardRelease		(int cmd)
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x-=1;
 					break;
-	case kFWD:		ph_world->Jeep.Drive(0);//vPosition.z+=1; 
+	case kFWD:		ph_world->Jeep.Drive(1,300);//vPosition.z+=1; 
 					break;
-	case kBACK:		ph_world->Jeep.Drive(0);//vPosition.z-=1; 
+	case kBACK:		ph_world->Jeep.Drive(-1,300);//vPosition.z-=1; 
 					break;
 	//default:        ph_world->Jeep.Steer(0,0);
 	};
@@ -222,6 +222,8 @@ void	CCar::OnKeyboardHold		(int cmd)
 
 	switch(cmd)
 	{
+	case kACCEL:	ph_world->Jeep.VelocityRate=0.5f;
+	break;
 	case kUP:
 	case kDOWN: 
 	case kCAM_ZOOM_IN: 
@@ -230,6 +232,9 @@ void	CCar::OnKeyboardHold		(int cmd)
 	case kLEFT:
 	case kRIGHT:
 		camera->Move(cmd); break;
+	case kREPAIR:	ph_world->Jeep.Revert(); break;
+	case kJUMP:  ph_world->Jeep.Drive(0); break; 
+
 	}
 }
 
