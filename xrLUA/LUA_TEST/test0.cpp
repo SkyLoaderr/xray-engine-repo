@@ -1147,6 +1147,7 @@ void test_object2(luabind::object a, luabind::object b)
 }
 
 struct MI0 {
+	int a;
 	virtual ~MI0(){}
 };
 
@@ -1220,13 +1221,15 @@ struct vB : virtual public vA{virtual ~vB(){}};
 #define y(x) z(x)
 #define x y(__LINE__)
 
+extern void print_help(lua_State *);
+
 void test1()
 {
 //	printf("%s",y(__LINE__));
 //	aa(z(x));
 //	test0();
 //	box_collision_test	();
-	directx_test		();
+//	directx_test		();
 
 	string4096		SSS;
 	strcpy			(SSS,"");
@@ -1259,6 +1262,7 @@ void test1()
 			.def("get",&CInternalStorage::get),
 
 		class_<MI0>("mi0")
+			.def_readonly("a",&MI0::a)
 			.def(constructor<>()),
 
 		class_<MI1>("mi1")
@@ -1281,6 +1285,8 @@ void test1()
 		def("test_object",&test_object2),
 		def("get_internals",&get_internals)
 	];
+
+	print_help		(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
 	lua_dofile		(L,"x:\\beta7_rc4_test.script");

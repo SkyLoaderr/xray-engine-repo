@@ -27,6 +27,7 @@
 #include "luabind/out_value_policy.hpp"
 #include "luabind/discard_result_policy.hpp"
 #include "luabind/iterator_policy.hpp"
+#include <luabind/operator.hpp>
 #pragma warning(default:4244)
 #pragma warning(default:4995)
 #pragma warning(default:4530)
@@ -1524,6 +1525,18 @@ void setup_table(LPCSTR namespace_name, luabind::object table)
 //	for ( ; I != E; ++I)
 }
 
+template <int i>
+struct CLuabindClass {
+	bool foo(int a, LPCSTR b/**, CLuabindClass *c, CLuabindClass &d, const CLuabindClass *e, const CLuabindClass &f/**/){return true;};
+	bool foo1(int a, LPCSTR b, CLuabindClass *c, float &d){return true;};
+	bool operator == (const CLuabindClass<i> &) const
+	{
+		return true;
+	}
+};
+
+void print_help(lua_State *L);
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
@@ -1561,9 +1574,28 @@ int __cdecl main(int argc, char* argv[])
 
 	open			(L);
 	
-	printf			("Stack level %d",lua_gettop(L));
+	printf			("Stack level %d\n",lua_gettop(L));
 
 	function		(L,"setup_table",&setup_table);
+
+	module(L)
+	[
+		class_<CLuabindClass<0> >("CLuabindClass0")
+			.def(constructor<>())
+			.def("foo",&CLuabindClass<0>::foo)
+			.def("foo",&CLuabindClass<0>::foo1),
+
+		class_<CLuabindClass<1> >("CLuabindClass1")
+			.def(constructor<>())
+			.def(const_self == other<CLuabindClass<1> >())
+			.def("foo",&CLuabindClass<1>::foo)
+			.def("foo",&CLuabindClass<1>::foo1)
+			.enum_("something")
+			[
+				value("_1",1),
+				value("_2",2)
+			]
+	];
 
 //	vfPrintTable	(L,"_G",true);
 //	function		(L,"this",lua_this);
@@ -1584,41 +1616,224 @@ int __cdecl main(int argc, char* argv[])
 //			if (b)
 //				printf	("0 syntax errors\n");
 //	}
-	luaL_loadfile		(L,"x:\\test_test.script");
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
-	}
-	lua_pcall			(L,0,0,0);
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
-	}
-	lua_dostring		(L,"a.main()");
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
-	}
-	lua_dostring		(L,"a.b.main()");
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
-	}
-	vfPrintTable	(L,"_G",true);
+//	luaL_loadfile		(L,"x:\\test_test.script");
+//	if (xr_strlen(SSS)) {
+//		printf		("\n%s\n",SSS);
+//		strcpy		(SSS,"");
+//	}
+//	lua_pcall			(L,0,0,0);
+//	if (xr_strlen(SSS)) {
+//		printf		("\n%s\n",SSS);
+//		strcpy		(SSS,"");
+//	}
+//	lua_dostring		(L,"a.main()");
+//	if (xr_strlen(SSS)) {
+//		printf		("\n%s\n",SSS);
+//		strcpy		(SSS,"");
+//	}
+//	lua_dostring		(L,"a.b.main()");
+//	if (xr_strlen(SSS)) {
+//		printf		("\n%s\n",SSS);
+//		strcpy		(SSS,"");
+//	}
+//	vfPrintTable	(L,"_G",true);
+//
+//	printf			("Stack level %d\n",lua_gettop(L));
+//	
+//	print_stack		(L);
+//	
+//	printf			("%s\n",lua_tostring(L,1));
+//	printf			("%s\n",lua_tostring(L,2));
+//	printf			("%s\n",lua_tostring(L,3));
+//	printf			("%s\n",lua_tostring(L,4));
+//	printf			("%s\n",lua_tostring(L,5));
 
-	printf			("Stack level %d\n",lua_gettop(L));
-	
-	print_stack		(L);
-	
-	printf			("%s\n",lua_tostring(L,1));
-	printf			("%s\n",lua_tostring(L,2));
-	printf			("%s\n",lua_tostring(L,3));
-	printf			("%s\n",lua_tostring(L,4));
-	printf			("%s\n",lua_tostring(L,5));
+	print_help		(L);
 
 	lua_close		(L);
 
 //	check if we are yielded
 
 //	L->ci->state & CI_YIELD
+}
+
+#ifndef BOOST_NO_STRINGSTREAM
+#	include <sstream>
+#else
+#	include <strstream>
+#endif
+
+std::string to_string(luabind::object const& o)
+{
+	using namespace luabind;
+	if (o.type() == LUA_TSTRING) return object_cast<std::string>(o);
+	lua_State* L = o.lua_state();
+	LUABIND_CHECK_STACK(L);
+
+#ifdef BOOST_NO_STRINGSTREAM
+	std::strstream s;
+#else
+	std::stringstream s;
+#endif
+
+	if (o.type() == LUA_TNUMBER)
+	{
+		s << object_cast<float>(o);
+		return s.str();
+	}
+
+	s << "<" << lua_typename(L, o.type()) << ">";
+#ifdef BOOST_NO_STRINGSTREAM
+	s << std::ends;
+#endif
+	return s.str();
+}
+
+void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
+{
+	LPSTR	A;
+	int		S_len = xr_strlen(S);
+	while (!!(A = strstr(str.c_str(),S)))
+		str.replace(A - str.c_str(),S_len,N);
+}
+
+std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
+{
+#if !defined(LUABIND_NO_ERROR_CHECKING)
+    using namespace luabind;
+	lua_State* L = e.lua_state();
+	LUABIND_CHECK_STACK(L);
+
+	if (e.type() == LUA_TFUNCTION)
+	{
+		e.pushvalue();
+		detail::stack_pop p(L, 1);
+
+		{
+			if (lua_getupvalue(L, -1, 3) == 0) return to_string(e);
+			detail::stack_pop p2(L, 1);
+			if (lua_touserdata(L, -1) != reinterpret_cast<void*>(0x1337)) return to_string(e);
+		}
+
+#ifdef BOOST_NO_STRINGSTREAM
+		std::strstream s;
+#else
+		std::stringstream s;
+#endif
+		{
+			lua_getupvalue(L, -1, 2);
+			detail::stack_pop p2(L, 1);
+		}
+
+		{
+			lua_getupvalue(L, -1, 1);
+			detail::stack_pop p2(L, 1);
+			detail::method_rep* m = static_cast<detail::method_rep*>(lua_touserdata(L, -1));
+
+			for (std::vector<detail::overload_rep>::const_iterator i = m->overloads().begin();
+				i != m->overloads().end(); ++i)
+			{
+				std::string str, temp;
+				i->get_signature(L, str);
+				strreplaceall	(str,"custom [","");
+				strreplaceall	(str,"]","");
+				strreplaceall	(str,"float","number");
+				strreplaceall	(str,"lua_State*, ","");
+				strreplaceall	(str," ,lua_State*","");
+				s << function_signature << str << ";\n";
+			}
+		}
+#ifdef BOOST_NO_STRINGSTREAM
+		s << std::ends;
+#endif
+		return s.str();
+	}
+
+    return to_string(e);
+#else
+    return "";
+#endif
+}
+
+void print_class(lua_State *L, luabind::detail::class_rep *crep)
+{
+	// print class and bases
+	{
+		printf			("class %s",crep->name());
+		typedef std::vector<luabind::detail::class_rep::base_info> BASES;
+		const BASES &bases = crep->bases();
+		BASES::const_iterator	I = bases.begin(), B = I;
+		BASES::const_iterator	E = bases.end();
+		if (B != E)
+			printf(" : ");
+		for ( ; I != E; ++I) {
+			if (I != B)
+				printf	(",");
+			printf("%s",(*I).base->name());
+		}
+		printf			("\n");
+	}
+	// print class constants
+	{
+		const luabind::detail::class_rep::STATIC_CONSTANTS	&constants = crep->static_constants();
+		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	I = constants.begin();
+		luabind::detail::class_rep::STATIC_CONSTANTS::const_iterator	E = constants.end();
+		for ( ; I != E; ++I)
+			printf		("    const %s = %d;\n",(*I).first,(*I).second);
+		if (!constants.empty())
+			printf		("    \n");
+	}
+	// print class properties
+	{
+		typedef std::map<const char*, luabind::detail::class_rep::callback, luabind::detail::ltstr> PROPERTIES;
+		const PROPERTIES &properties = crep->properties();
+		PROPERTIES::const_iterator	I = properties.begin();
+		PROPERTIES::const_iterator	E = properties.end();
+		for ( ; I != E; ++I)
+			printf	("    property %s;\n",(*I).first);
+		if (!properties.empty())
+			printf		("    \n");
+	}
+	// print class constructors
+	{
+		const std::vector<luabind::detail::construct_rep::overload_t>	&constructors = crep->constructors().overloads;
+		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	I = constructors.begin();
+		std::vector<luabind::detail::construct_rep::overload_t>::const_iterator	E = constructors.end();
+		for ( ; I != E; ++I) {
+			std::string S;
+			(*I).get_signature(L,S);
+			printf		("    %s %s;\n",crep->name(),S.c_str());
+		}
+		if (!constructors.empty())
+			printf		("    \n");
+	}
+	// print class methods
+	{
+		crep->get_table	(L);
+		luabind::object	table(L);
+		table.set		();
+		for (luabind::object::iterator i = table.begin(); i != table.end(); ++i) {
+			luabind::object	object = *i;
+			std::string	S;
+			S			= "    function ";
+			S.append	(to_string(i.key()).c_str());
+
+			strreplaceall	(S,"function __add","operator +");
+			strreplaceall	(S,"function __sub","operator -");
+			strreplaceall	(S,"function __mul","operator *");
+			strreplaceall	(S,"function __div","operator /");
+			strreplaceall	(S,"function __pow","operator ^");
+			strreplaceall	(S,"function __lt","operator <");
+			strreplaceall	(S,"function __le","operator <=");
+			strreplaceall	(S,"function __eq","operator ==");
+			printf			("%s",member_to_string(object,S.c_str()).c_str());
+		}
+	}
+	printf			("\n");
+}
+
+void print_help(lua_State *L)
+{
+	printf					("\n\nList of the classes exported to LUA\n\n");
+	detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
 }
