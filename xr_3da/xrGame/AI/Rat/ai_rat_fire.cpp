@@ -128,7 +128,7 @@ float CAI_Rat::CorpHeuristics(CEntity* E)
 	if (!E->g_Alive()) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
 		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpInterval) && (m_bEatMemberCorps || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
-			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime);
+			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime)*(tpEntityAlive->g_Health() < m_iEatenValue);
 		else
 			return flt_max;
 	}

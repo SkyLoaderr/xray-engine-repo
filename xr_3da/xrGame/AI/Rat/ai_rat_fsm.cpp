@@ -118,6 +118,7 @@ void CAI_Rat::Death()
 {
 	//WRITE_TO_LOG("Dying...");
 	bStopThinking = true;
+	Msg("%s [health : %3.f]",cName(),fHealth);
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -178,10 +179,7 @@ void CAI_Rat::FreeHuntingActive()
 
 	SelectEnemy(m_Enemy);
 	
-	if ((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)))
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
-
-	SelectCorp(m_Enemy);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))),aiRatAttackRun);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
 	
@@ -192,7 +190,12 @@ void CAI_Rat::FreeHuntingActive()
 		m_dwLostEnemyTime = Level().timeServer();
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
-    m_tSpawnPosition.set(m_tSafeSpawnPosition);
+    
+	SelectCorp(m_Enemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatEatCorp);
+	
+	m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
 	m_fASpeed				= m_fAngleSpeed;
@@ -727,22 +730,17 @@ void CAI_Rat::EatCorp()
 {
 	WRITE_TO_LOG("Eating a corp");
 
-	CHECK_IF_GO_TO_NEW_STATE(g_Alive(),aiRatDie)
+	CHECK_IF_GO_TO_NEW_STATE(!g_Alive(),aiRatDie)
 
 	SelectEnemy(m_Enemy);
-	
-	if (m_Enemy.Enemy) {
-		m_fGoalChangeTime = 0;
-		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
-			if (m_Enemy.Enemy->g_Alive()) {
-				GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
-			}
-	}
-	else {
-		GO_TO_PREV_STATE_THIS_UPDATE;
-	}
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.Enemy);
+
+	SelectCorp(m_Enemy);
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy || (m_fMorale < m_fMoraleNormalValue));
+
+	vfSaveEnemy();
 	
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
 		if (m_tLastSound.tpEntity)

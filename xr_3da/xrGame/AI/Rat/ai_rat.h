@@ -196,6 +196,7 @@ class CAI_Rat : public CCustomMonster
 		BOOL				m_bEatMemberCorps;
 		BOOL				m_bCannibalism;
 		u32					m_dwEatCorpInterval;
+		int					m_iEatenValue;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

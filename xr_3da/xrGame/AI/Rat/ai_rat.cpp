@@ -132,6 +132,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_bEatMemberCorps				= pSettings->ReadBOOL  (section,"EatMemberCorps");
 	m_bCannibalism					= pSettings->ReadBOOL  (section,"Cannibalism");
 	m_dwEatCorpInterval				= pSettings->ReadINT   (section,"EatCorpInterval");
+	m_iEatenValue					= pSettings->ReadINT   (section,"CorpEatenValue");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
