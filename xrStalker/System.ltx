@@ -3070,7 +3070,7 @@ shell_point				= 0.05, 0.22, 0.06
 shell_particles			= weapons\generic_shells
 snd_shoot				= weapons\fn2000_shoot
 
-rocket_class			= wpn_fake_missile1 ;wpn_rpg7_missile
+rocket_class			= helicopter_missile ;wpn_rpg7_missile
 launch_speed			= 500
 
 burn_immunity			= 0.0 ;0.8	;коэффициенты иммунитета 
@@ -3082,6 +3082,97 @@ telepatic_immunity		= 0.0 ;1.0
 chemical_burn_immunity	= 0.0 ;0.9
 fire_wound_immunity		= 0.05 ;0.05
 explosion_immunity		= 0.7 ;0.7
+
+[helicopter_missile]
+visual                  = weapon\ammo\ammo_vog-25p.ogf
+cform                    = skeleton
+class                    = G_FAKE
+
+inv_weight				= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cost				= 100
+
+blast				= 350
+blast_r				= 8
+blast_impulse		= 350
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 40
+frags_r				= 40
+frag_hit			= 50
+frag_hit_impulse	= 50
+
+hit_type_blast		= explosion
+hit_type_frag		= fire_wound
+
+up_throw_factor		= 1.5
+
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.1
+
+;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+explode_particles	= explosions\explosion_01d
+
+
+light_color		         = 0.6,0.5,0.3
+light_range		         = 30.0
+light_time 		         = 0.5
+
+
+ph_mass			 = 5
+;engine_f			= 530
+;engine_u			= 90
+
+jump_height = 0
+
+;трассы от осколков
+tracer_head_speed	     = 100
+tracer_max_length		 = 3
+
+;!!!do be delete
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.01
+tracer_distance		 = 0.01
+
+
+;звуки
+snd_explode = weapons\f1_explode
+
+
+;свойства которые читаются, но не используются
+inv_name		= "VOG-25"
+inv_name_short	= "VOG-25"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 9
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Свойства CustomRocket
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+engine_present		= false		;присутствует ли в ракете двигатель
+;lights_enabled		= false		;свет вокруг ракеты, во время полета
+lights_enabled = true			;свет вокруг ракеты, во время полета
+trail_light_color = 0.6,0.5,0.3
+trail_light_range = 30.0
+
+;engine_particles = weapons\rpg_trail_01
+fly_particles	 = weapons\rpg_trail_01
+
+
 
 
 [hand_radio]
