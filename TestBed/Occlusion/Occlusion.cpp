@@ -130,11 +130,29 @@ template <>					int f<1> ()			{	return 1;										}
 template <int N>			struct factorial	{	enum { value = N * factorial<N-1>::value };		};
 template <>					struct factorial<1>	{	enum { value = 1 };								};
 
-template <class T, int N>	struct ptest		{	static const T value = N * ptest<T,N-1>::value;	};
-template <class T>			struct ptest<T,1>	{	static const T value = 1;						};
+template <class T, int N>	struct ptest			{	static const T value = N * ptest<T,N-1>::value;	};
+template <class T>			struct ptest<T,1>		{	static const T value = 1;						};
 
+/*
 template <class T, int N>	T	ptest2			()	{	return N * ptest2<T,N-1>();						};
 template <class T>			T	ptest2<T,1>		()	{	return 1;										};
+*/
+
+//
+template <class T, class C>
+class		aptr
+{
+public:		// import everything from creator
+	using	::C;
+public:		// types
+	typedef	aptr<T,C>	self;
+public:		// data
+	T*		p;
+public:		// methods
+	self&	operator = (T*		_p)		{ p=_p;		}
+	self&	operator = (self&	_p)		{ p=_p.p;	}
+};
+
 
 extern void t_test	();
 int __cdecl main	(int argc, char* argv[])
@@ -142,7 +160,7 @@ int __cdecl main	(int argc, char* argv[])
 	int xf			= f<10>();
 	int x			= factorial<10>::value;
 	u32 a			= ptest<u32,10>::value;
-	u32 b			= ptest2<u32,10> ();
+//	u32 b			= ptest2<u32,10> ();
 
 	DDD				t;
 	t.a				(1);
