@@ -11,8 +11,9 @@ module("pripyat_football")
 module("monster_gameplay")
 
 function bind(obj)
-	xr_motivator.storage[obj:id()] = { }
+	printf("_bp: monster bind: name='%s'", obj:name())
 
+	-- Old schemes support
 	local char_ini = obj:spawn_ini()
 	if not char_ini then
 		return
@@ -33,57 +34,108 @@ function bind(obj)
 	// Читер на ростке(кровосос)
 	if(char_ini:section_exist("rostok_bloodsuceker")) then
 		obj:bind_object(bloodsucker.CRostokBloodSucker(obj))
+		return
 	end
 	
 	// Собака доктора
 	if(char_ini:section_exist("outcast_dog")) then
 		obj:bind_object(monster_bind.COutcastDog(obj))
+		return
 	end
 
 	// Монстр, который после смерти пинает труп
 	if(char_ini:section_exist("play_with_corpse")) then
 		obj:bind_object(monster_bind.CNecrophil(obj))
+		return
 	end
 	
 	// Монтры, которые играю в футбол
 	if(char_ini:section_exist("play_football")) then
 		obj:bind_object(pripyat_football.CFootballPlayer(obj))
+		return
 	end
 
 	// Контролер, тренер монстров игроков
 	if(char_ini:section_exist("controler_trainer")) then
 		obj:bind_object(pripyat_football.CControlerTrainer(obj))
+		return
 	end
 	
 	// Сюжетные и не только скрипты
 	if(char_ini:section_exist("gameplay")) then
 		monster_gameplay.bind(obj, char_ini)
+		return
 	end
 
 	----------------------------------------------------------------------------------------
 	-- Новые схемы
 	----------------------------------------------------------------------------------------
-
-	xr_logic.stalker_enable_scripts(obj, char_ini)
+	printf("_bp: ...binding to new scheme (name='%s')", obj:name())
+	local new_binder = generic_object_binder(obj, char_ini)
+	obj:bind_object(new_binder)
 end
-	
+
+---------------------------------------------------------------------------------------------
+-- Общий биндер всех монстров
+---------------------------------------------------------------------------------------------
+class "generic_object_binder" (object_binder)
+function generic_object_binder:__init(obj, char_ini) super(obj)
+	self.ini = char_ini
+end 
+
+function generic_object_binder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function generic_object_binder:reinit()
+	object_binder.reinit(self)
+
+	printf("generic_object_binder:reinit()")
+
+	printf("_bp: generic_object_binder: %s", self.object:name())
+	xr_motivator.storage[self.object:id()] = { }
+
+	self.st = xr_motivator.storage[self.object:id()]
+
+	----------------------------------------------------------------------------------------
+	-- Новые схемы
+	----------------------------------------------------------------------------------------
+	--xr_logic.enable_scripts(self.object, self.ini, xr_logic.stype_mobile) --xTEST
+
+--TEST-------------------------------------------------------------
+	--reset_action(self.object, script_name())
+--TEST-------------------------------------------------------------
+end
+
+function generic_object_binder:update(delta)
+	object_binder.update(self, delta)
+
+	--xr_logic.non_goap_update_actions_event(self.st) --xTEST
+--TEST-------------------------------------------------------------
+	reset_action(self.object, script_name())
+--TEST-------------------------------------------------------------
+end
+
+function generic_object_binder:net_destroy()
+	object_binder.net_destroy(self)
+end 
 
 
 //-------------------------------------------------------------------------------------------
 // Шаблон для скриптов, где монстр будет биндится
 //-------------------------------------------------------------------------------------------
-class "template" (object_binder)
-function template:__init(obj) super(obj)
-end 
+--class "template" (object_binder)
+--function template:__init(obj) super(obj)
+--end 
 
-function template:reload(section)
-	object_binder.reload(self, section)
-end
+--function template:reload(section)
+--	object_binder.reload(self, section)
+--end
 
-function template:update(delta)
-	object_binder.update(self, delta)
-end
+--function template:update(delta)
+--	object_binder.update(self, delta)
+--end
 
-function template:net_destroy()
-	object_binder.net_destroy(self)
-end 
+--function template:net_destroy()
+--	object_binder.net_destroy(self)
+--end 
