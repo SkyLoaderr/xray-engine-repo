@@ -60,7 +60,7 @@ CSoundManager::CSoundManager(BOOL bCDA )
 		mmr = mixerGetLineControls((HMIXEROBJ)hMixer, &mxlc, MIXER_GETLINECONTROLSF_ONEBYTYPE);
 
 		if (mmr==MMSYSERR_NOERROR){
-			bVolume			= true;
+//			bVolume							= true;
 			master_detail.cbStruct			= sizeof(master_detail);
 			master_detail.dwControlID		= mxctrl.dwControlID;
 			master_detail.cChannels			= 1;//1-для всех каналов; mxl.cChannels;
