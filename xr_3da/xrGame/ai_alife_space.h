@@ -23,7 +23,7 @@
 #define TASK_CHUNK_DATA				0x0004
 
 class CALifeMonsterGroup;
-class CALifeItem;
+class CALifeDynamicObject;
 class CALifeMonster;
 
 namespace ALife {
@@ -47,7 +47,7 @@ namespace ALife {
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,	LOCATION_COUNT,	GRAPH_VECTOR_SVECTOR, GRAPH_VECTOR_IT);
 	
-	DEFINE_MAP		(_OBJECT_ID,	CALifeItem *,	OBJECT_MAP,	OBJECT_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,	CALifeDynamicObject *,	OBJECT_MAP,	OBJECT_PAIR_IT);
 
 	enum EInjureType {
 		eInjureTypeEat = u32(0),
@@ -96,8 +96,6 @@ namespace ALife {
 		_TIME_ID					tTimeID;
 		_GRAPH_ID					tGraphID;
 		EBattleResult				tBattleResult;
-		u8							ucMonster1CountAfter;
-		u8							ucMonster2CountAfter;
 		CALifeMonsterGroup			*tpMonsterGroup1;
 		CALifeMonsterGroup			*tpMonsterGroup2;
 	} SEvent;
@@ -149,3 +147,4 @@ namespace ALife {
 	DEFINE_MAP		(_EVENT_ID,		SEvent,			EVENT_MAP,	EVENT_PAIR_IT);
 	DEFINE_MAP		(_TASK_ID,		STask,			TASK_MAP,	TASK_PAIR_IT);
 };
+

@@ -10,14 +10,14 @@
 
 using namespace ALife;
 
-class CALifeObject {
+class IPureALifeObject {
 public:
 	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
 	virtual void					Load(CStream	&tFileStream)	= 0;
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints) = 0;
 };
 
-class CALifeMonsterGroup : public CALifeObject {
+class CALifeObject : public IPureALifeObject {
 public:
 	_CLASS_ID						m_tClassID;
 	_OBJECT_ID						m_tObjectID;
@@ -45,45 +45,94 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		m_tClassID	= _CLASS_ID(pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class"));
-		m_tGraphID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tSpawnID	= tSpawnID;
-		m_wCount	= tpSpawnPoints[tSpawnID].wCount;
-	}
+		m_tClassID			= _CLASS_ID(pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class"));
+		m_tGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tSpawnID			= tSpawnID;
+		m_wCount			= tpSpawnPoints[tSpawnID].wCount;
+	};
 };
 
-class CALifeItem : public CALifeMonsterGroup {
+class CALifeMonsterGroup : public CALifeObject {
 public:
-	typedef	CALifeMonsterGroup inherited;
+	typedef	CALifeObject inherited;
+	u16								m_wCountAfter;
+	
+	virtual	void					Save(CFS_Memory	&tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		tMemoryStream.write	(&m_wCountAfter,sizeof(m_wCountAfter));
+	};
+
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		tFileStream.Read	(&m_wCountAfter,sizeof(m_wCountAfter));
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_wCountAfter		= m_wCount;
+	};
+};
+
+class CALifeDynamicObject : public CALifeObject {
+public:
+	typedef	CALifeObject inherited;
 	
 	_TIME_ID						m_tTimeID;
-	float							m_fMass;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.write	(&m_tTimeID,	sizeof(m_tTimeID));
-		tMemoryStream.Wfloat(m_fMass);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
 		tFileStream.Read	(&m_tTimeID,	sizeof(m_tTimeID));
-		m_fMass				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init		(tSpawnID,tpSpawnPoints);
 		m_tTimeID			= 0;
-		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
-	}
+	};
 };
 
-class CALifeCorp : public CALifeItem {
+class CALifeItem : public CALifeDynamicObject {
 public:
-	typedef	CALifeItem inherited;
+	typedef	CALifeDynamicObject inherited;
+	
+	float							m_fMass;
+	float							m_fPrice;
+	
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		tMemoryStream.Wfloat(m_fMass);
+		tMemoryStream.Wfloat(m_fPrice);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		m_fMass				= tFileStream.Rfloat();
+		m_fPrice			= tFileStream.Rfloat();
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
+		m_fPrice			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "price");
+	};
+};
+
+class CALifeCorp : public CALifeDynamicObject {
+public:
+	typedef	CALifeDynamicObject inherited;
 
 	EInjureType						m_tInjureType;
 	
@@ -103,12 +152,12 @@ public:
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tInjureType		= eInjureTypeDummy;
-	}
+	};
 };
 
-class CALifeMonster : public CALifeItem {
+class CALifeMonster : public CALifeDynamicObject {
 public:
-	typedef	CALifeItem inherited;
+	typedef	CALifeDynamicObject inherited;
 	
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
@@ -156,7 +205,7 @@ public:
 		m_fDistanceFromPoint= 0.0f;
 		m_fDistanceToPoint	= 0.0f;
 		m_iHealth			= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
-	}
+	};
 };
 
 class CALifeHuman : public CALifeMonster {
@@ -207,6 +256,7 @@ public:
 				tMemoryStream.write	(it,sizeof(*it));
 		}
 		tMemoryStream.Wfloat		(m_fItemMass);
+		tMemoryStream.Wfloat		(m_fMaxItemMass);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -247,6 +297,7 @@ public:
 				tFileStream.Read	(it,sizeof(*it));
 		}
 		m_fItemMass					= tFileStream.Rfloat();
+		m_fMaxItemMass				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -257,13 +308,14 @@ public:
 		m_tpTaskIDs.clear			();
 		m_fItemMass					= 0.0f;
 		m_fMaxItemMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "MaxItemMass");
-	}
+	};
 };
 
-class CRemovePredicate {
+class CRemovePersonalEventPredicate {
+private:
 	EVENT_MAP	*m_tpMap;
 public:
-	CRemovePredicate(EVENT_MAP &tpMap)
+	CRemovePersonalEventPredicate(EVENT_MAP &tpMap)
 	{
 		m_tpMap = &tpMap;
 	};
@@ -271,5 +323,28 @@ public:
 	IC bool operator()(const SPersonalEvent &tPersonalEvent)  const
 	{
 		return(m_tpMap->find(tPersonalEvent.tEventID) == m_tpMap->end());
+	};
+};
+
+class CSortItemPrdicate {
+private:
+	OBJECT_MAP	*m_tpMap;
+public:
+	CSortItemPrdicate(OBJECT_MAP &tpMap)
+	{
+		m_tpMap = &tpMap;
+	};
+
+	IC bool operator()(const _OBJECT_ID &tObjectID1, const _OBJECT_ID &tObjectID2)  const
+	{
+		OBJECT_PAIR_IT it1 = m_tpMap->find(tObjectID1);
+		VERIFY(it1 != m_tpMap->end());
+		OBJECT_PAIR_IT it2 = m_tpMap->find(tObjectID2);
+		VERIFY(it2 != m_tpMap->end());
+		CALifeItem *tpItem1 = dynamic_cast<CALifeItem *>((*it1).second);
+		VERIFY(tpItem1);
+		CALifeItem *tpItem2 = dynamic_cast<CALifeItem *>((*it2).second);
+		VERIFY(tpItem2);
+		return(tpItem1->m_fPrice/tpItem1->m_fMass > tpItem2->m_fPrice/tpItem2->m_fMass);
 	};
 };

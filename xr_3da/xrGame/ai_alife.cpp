@@ -286,17 +286,17 @@ void CAI_ALife::Generate()
 				break;
 			}
 		}
-		CALifeItem	*tpALifeObject;
+		CALifeDynamicObject	*tpALifeDynamicObject;
 		if (pSettings->ReadBOOL(k->caModel, "Scheduled"))
 			if (pSettings->ReadBOOL(k->caModel, "Human"))
-				tpALifeObject	= new CALifeHuman;
+				tpALifeDynamicObject	= new CALifeHuman;
 			else
-				tpALifeObject	= new CALifeMonster;
+				tpALifeDynamicObject	= new CALifeMonster;
 		else
-			tpALifeObject		= new CALifeItem;
+			tpALifeDynamicObject		= new CALifeItem;
 
-		tpALifeObject->Init(_SPAWN_ID(k - B),m_tpSpawnPoints);
-		m_tObjectRegistry.Add(tpALifeObject);
+		tpALifeDynamicObject->Init(_SPAWN_ID(k - B),m_tpSpawnPoints);
+		m_tObjectRegistry.Add(tpALifeDynamicObject);
 		it = m;	
 	}
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
@@ -423,7 +423,7 @@ void CAI_ALife::vfCheckForTheBattle(CALifeMonster	*tpALifeMonster)
 
 void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
 {
-	PERSONAL_EVENT_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePredicate(m_tEventRegistry.m_tpMap));
+	PERSONAL_EVENT_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry.m_tpMap));
 	tpALifeHuman->m_tpEvents.erase(it,tpALifeHuman->m_tpEvents.end());
 }
 
@@ -434,19 +434,28 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 	for( ; it != E; it++) {
 		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*it);
 		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
-		CALifeItem *tpALifeItem = (*i).second;
-		VERIFY(tpALifeItem);
-		CALifeCorp *tpALifeCorp = dynamic_cast<CALifeCorp *>(tpALifeItem);
-		if (!tpALifeCorp) {
-			CALifeMonster *tpALifeMonster = dynamic_cast<CALifeMonster *>(tpALifeItem);
-			if (!tpALifeMonster) {
-				if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
-					tpALifeHuman->m_tpItemIDs.push_back(*it);
-					m_tpGraphObjects[tpALifeHuman->m_tGraphID].erase(it);
+		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
+		VERIFY(tpALifeDynamicObject);
+		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
+		if (tpALifeItem) {
+			if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
+				tpALifeHuman->m_tpItemIDs.push_back(*it);
+				m_tpGraphObjects[tpALifeHuman->m_tGraphID].erase(it);
+			}
+			else {
+				sort(tpALifeHuman->m_tpItemIDs.begin(),tpALifeHuman->m_tpItemIDs.end(),CSortItemPrdicate(m_tObjectRegistry.m_tppMap));
+				OBJECT_IT	I = tpALifeHuman->m_tpItemIDs.end();
+				OBJECT_IT	S = tpALifeHuman->m_tpItemIDs.begin();
+				for ( ; I != S; I--) {
+					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
+					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
+					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
+					tpALifeHuman->m_fItemMass -= tpALifeItemIn->m_fMass;
+					if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass)
+						break;
 				}
-				else {
-
-				}
+				tpALifeHuman->m_tpItemIDs.erase		(I,tpALifeHuman->m_tpItemIDs.end());
+				tpALifeHuman->m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
 			}
 		}
 	}

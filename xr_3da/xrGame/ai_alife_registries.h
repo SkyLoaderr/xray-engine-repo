@@ -50,30 +50,30 @@ public:
 		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			CALifeItem *tpALifeItem = 0;
+			CALifeDynamicObject *tpALifeDynamicObject = 0;
 			switch (tFileStream.Rbyte()) {
 				case 0 : {
-					tpALifeItem = new CALifeItem;
+					tpALifeDynamicObject = new CALifeItem;
 					break;
 				}
 				case 1 : {
-					tpALifeItem = new CALifeMonster;
+					tpALifeDynamicObject = new CALifeMonster;
 					break;
 				}
 				case 2 : {
-					tpALifeItem = new CALifeHuman;
+					tpALifeDynamicObject = new CALifeHuman;
 					break;
 				}
 				default : NODEFAULT;
 			};
-			tpALifeItem->Load(tFileStream);
-			m_tppMap.insert			(make_pair(tpALifeItem->m_tObjectID,tpALifeItem));
+			tpALifeDynamicObject->Load(tFileStream);
+			m_tppMap.insert			(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
-	virtual	void					Add	(CALifeItem *tpALifeItem)
+	virtual	void					Add	(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		m_tppMap.insert				(make_pair(tpALifeItem->m_tObjectID = m_tObjectID++,tpALifeItem));
+		m_tppMap.insert				(make_pair(tpALifeDynamicObject->m_tObjectID = m_tObjectID++,tpALifeDynamicObject));
 	};
 
 };
@@ -106,8 +106,6 @@ public:
 			tMemoryStream.write		(&tEvent.tTimeID,		sizeof(tEvent.tTimeID		));
 			tMemoryStream.write		(&tEvent.tGraphID,		sizeof(tEvent.tGraphID		));
 			tMemoryStream.write		(&tEvent.tBattleResult,	sizeof(tEvent.tBattleResult	));
-			tMemoryStream.Wbyte		(tEvent.ucMonster1CountAfter);
-			tMemoryStream.Wbyte		(tEvent.ucMonster2CountAfter);
 			tEvent.tpMonsterGroup1->Save(tMemoryStream);
 			tEvent.tpMonsterGroup2->Save(tMemoryStream);
 		}
@@ -123,8 +121,6 @@ public:
 			tFileStream.Read		(&tEvent.tTimeID,		sizeof(tEvent.tTimeID		));
 			tFileStream.Read		(&tEvent.tGraphID,		sizeof(tEvent.tGraphID		));
 			tFileStream.Read		(&tEvent.tBattleResult,	sizeof(tEvent.tBattleResult	));
-			tEvent.ucMonster1CountAfter	= tFileStream.Rbyte();
-			tEvent.ucMonster2CountAfter	= tFileStream.Rbyte();
 			tEvent.tpMonsterGroup1	= new CALifeMonsterGroup;
 			tEvent.tpMonsterGroup2	= new CALifeMonsterGroup;
 			tEvent.tpMonsterGroup1->Load(tFileStream);
