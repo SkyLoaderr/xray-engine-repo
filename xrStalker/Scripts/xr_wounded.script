@@ -40,7 +40,7 @@ function evaluator_medikit:__init (name, storage) super (nil, name)
 end
 ------------
 function evaluator_medikit:evaluate ()
-    return self.object:object ("medkit") ~= nil
+    return self.object:object ("medkit") ~= nil or self.object:object ("bandage") ~= nil
 end
 ------------------------------------------------------------------------------------------
 
@@ -432,6 +432,13 @@ function action_stand:initialize ()
     if self.a.on_medikit ~= nil then
        xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
     end   
+    
+    if self.object:object ("medkit") ~= nil then
+       self.object:eat (self.object:object ("medkit"))
+    elseif self.object:object ("bandage") ~= nil then
+       self.object:eat (self.object:object ("bandage"))
+    end   
+    
 end
 ------------
 function action_stand:execute ()
@@ -462,8 +469,7 @@ function action_stand:execute ()
     if self.object:is_talking () == true then
        printf ("STAGE 3")
        xr_state.anim_update ("idle", self.object) 
-    else 
-       self.object:eat (self.object:object ("medkit"))    
+--    else 
     end   
 end    
 ------------
@@ -551,7 +557,11 @@ end
 ------------
 function action_medkit:execute ()
     action_base.execute (self)
-    self.object:eat (self.object:object ("medkit"))
+    if self.object:object ("medkit") ~= nil then
+       self.object:eat (self.object:object ("medkit"))
+    elseif self.object:object ("bandage") ~= nil then
+       self.object:eat (self.object:object ("bandage"))
+    end   
 end
 ------------
 function action_medkit:finalize ()    
