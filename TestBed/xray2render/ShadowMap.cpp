@@ -682,14 +682,37 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Transfer gloss-map
 	{
-		D3DLOCKED_RECT					Rsrc,Rdst;
+		LPDIRECT3DTEXTURE9			tDest	= t_Normals;
+		LPDIRECT3DTEXTURE9			tSrc	= height;
+		DWORD mips							= tDest->GetLevelCount();
 
-		height->LockRect				(0,&R,0, 0);
-		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array.begin(),size);
-		T->UnlockRect					(0);
+		for (DWORD i = 0; i < mips; i++)
+		{
+			D3DLOCKED_RECT				Rsrc,Rdst;
+			float						w,h;
+			D3DSURFACE_DESC				desc;
 
-		T->LockRect						(0,&R,0, 0);
-		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array.begin(),size);
+			tDest->GetLevelDesc			(i, &ddsdDesc);
+
+			tDest->LockRect				(i,&Rdst,0,0);
+			tSrc->LockRect				(i,&Rsrc,0,0);
+			m_pCubeTexture->LockRect	((D3DCUBEMAP_FACES)i, 0, &Locked, 0, 0);
+
+			for (u32 y = 0; y < ddsdDesc.Height; y++)
+			{
+			h = (float)y / ((float)(ddsdDesc.Height - 1));
+			h *= 2.0f;
+			h -= 1.0f;
+
+			for (u32 x = 0; x < ddsdDesc.Width; x++)
+			{
+				w = (float)x / ((float)(ddsdDesc.Width - 1));
+				w *= 2.0f;
+				w -= 1.0f;
+
+				D3DXFLOAT16* pBits = (D3DXFLOAT16*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
+				pBits		+= 4*x;
+
 		T->UnlockRect					(0);
 		
 	}
