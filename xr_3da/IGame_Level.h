@@ -66,9 +66,10 @@ public:
 	virtual void				OnRender				( void );
 
 	// Main interface
-	CObject*					CurrentEntity			( void ) const							{ return pCurrentEntity; }
-	CObject*					CurrentViewEntity		( void ) const							{ return pCurrentViewEntity; }
-	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O; }
+	CObject*					CurrentEntity			( void ) const							{ return pCurrentEntity;				}
+	CObject*					CurrentViewEntity		( void ) const							{ return pCurrentViewEntity;			}
+	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O;	}
+	void						SetViewEntity			( CObject* O  )							{ pCurrentViewEntity=O;					}
 	void						SoundEvent				( ref_sound* S, float range );
 
 	// Loader interface
