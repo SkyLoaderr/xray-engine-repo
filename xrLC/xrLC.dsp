@@ -576,6 +576,19 @@ SOURCE=.\xrDeflectorL_Radiosity.cpp
 
 SOURCE=.\xrDeflectorLight.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\xrImage_Resampler.cpp
+
+!IF  "$(CFG)" == "xrLC - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrLC - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
 # End Group
 # Begin Group "Shaders"
 
