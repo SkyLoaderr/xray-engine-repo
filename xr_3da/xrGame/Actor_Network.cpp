@@ -812,8 +812,6 @@ void CActor::net_Destroy	()
 	CInventoryOwner::net_Destroy();
 	cam_UnsetLadder();
 	u32 it;
-//	for (it=0; it<SND_HIT_COUNT; ++it)	::Sound->destroy	(sndHit[it]);
-//	for (it=0; it<SND_DIE_COUNT; ++it)	::Sound->destroy	(sndDie[it]);
 	m_PhysicMovementControl->DestroyCharacter();
 	if(m_pPhysicsShell)			{
 		m_pPhysicsShell->Deactivate();
