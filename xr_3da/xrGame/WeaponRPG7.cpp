@@ -81,6 +81,10 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	pstrWallmark = xr_strdup(name);
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
+	m_mass = pSettings->r_float(section,"ph_mass");
+	m_engine_f = pSettings->r_float(section,"engine_f");
+	m_engine_u = pSettings->r_float(section,"engine_u");
+
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
@@ -245,7 +249,8 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell						= P_create_Shell	();
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setDensity			(8000.f);
+		//m_pPhysicsShell->setDensity			(8000.f);
+		m_pPhysicsShell->setMass			(m_mass);
 		//m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
 		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
@@ -370,10 +375,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
-			float l_force = 5300.f * Device.dwTimeDelta / 1000.f;
+			float l_force = m_engine_f * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
 			l_dir.set(0, 1.f, 0);
-			l_force = 1100.f/*1360.f*/ * Device.dwTimeDelta / 1000.f;
+			l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 			list<CPGObject*>::iterator l_it;
 			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) {

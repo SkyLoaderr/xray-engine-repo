@@ -47,6 +47,7 @@ public:
 	Fcolor m_lightColor;
 	f32 m_lightRange;
 	u32 m_lightTime;
+	f32 m_mass, m_engine_f, m_engine_u;
 
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
 };
