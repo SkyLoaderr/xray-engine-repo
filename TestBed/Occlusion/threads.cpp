@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ftimer.h"
+//#include "ftimer.h"
 #include "process.h"
 
 LPVOID	fiber_sheduler		= 0;

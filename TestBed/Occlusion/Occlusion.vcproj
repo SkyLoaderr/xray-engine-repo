@@ -211,9 +211,6 @@
 				RelativePath="threads.cpp">
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\FTimer.h">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

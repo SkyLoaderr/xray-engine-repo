@@ -3,7 +3,7 @@
 
 #include	"stdafx.h"
 #include	"occRasterizer.h"
-#include	"ftimer.h"
+//#include	"ftimer.h"
 
 #pragma comment(lib,"x:\\xrCore.lib")
 
