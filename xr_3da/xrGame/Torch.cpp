@@ -95,7 +95,8 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 
 void CTorch::net_Destroy() 
 {
-	inherited::net_Destroy();
+	inherited::net_Destroy	();
+	xr_delete				(collidable.model);
 }
 
 void CTorch::OnH_A_Chield() 

@@ -64,7 +64,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	tNetPacket.r_begin			(id);
 	i->UPDATE_Read				(tNetPacket);
 	
-	R_ASSERT3					(ai().level_graph().valid_vertex_id(i->m_tNodeID),"Invalid vertex for object ",i->s_name_replace);
+//	R_ASSERT3					(ai().level_graph().valid_vertex_id(i->m_tNodeID),"Invalid vertex for object ",i->s_name_replace);
+	R_ASSERT3					(i->m_tNodeID != u32(-1),"Invalid vertex for object ",i->s_name_replace);
 
 	i->m_tSpawnID				= tSpawnID;
 	if (!m_tpActor && dynamic_cast<CSE_ALifeCreatureActor*>(i))
