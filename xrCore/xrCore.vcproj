@@ -547,6 +547,12 @@
 			</File>
 			<File
 				RelativePath=".\rt_lzo.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\rt_lzo.h">
