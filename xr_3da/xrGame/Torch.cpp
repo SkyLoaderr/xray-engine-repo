@@ -118,6 +118,8 @@ void CTorch::OnH_A_Chield()
 	VERIFY					(inventory_owner);
 	if (inventory_owner->use_torch())
 		setVisible			(true);
+
+	Switch					(false);
 }
 
 void CTorch::OnH_B_Independent() 
