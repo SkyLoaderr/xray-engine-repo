@@ -167,6 +167,8 @@ public:
     void						update_path		(std::string& dest, LPCSTR initial, LPCSTR src);
 	void						lock_rescan		();
 	void						unlock_rescan	();
+
+	void						register_archieve(LPCSTR path);
 };
 
 extern XRCORE_API	CLocatorAPI*			xr_FS;

@@ -951,3 +951,8 @@ void CLocatorAPI::check_pathes()
     	rescan_pathes();
 }
 
+void CLocatorAPI::register_archieve(LPCSTR path)
+{
+	ProcessArchive(path);
+}
+
