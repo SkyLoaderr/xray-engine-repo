@@ -206,14 +206,14 @@ void CWeaponBinoculars::state_Zooming	(float dt)
 		sndGyro.set_position(vLastFP);
 		float k = _sqrt(fGyroSpeed);
 		clamp(k,0.f,1.f); k = 0.6f*k+0.4f;
-		sndGyro.feedback->SetFrequencyScale(k);
+		sndGyro.set_frequency(k);
 	}
 }
 
 void CWeaponBinoculars::switch2_Zooming	()
 {
-	Sound->play_at_pos			(sndZoomIn,H_Root(),vLastFP);
-	Sound->play_at_pos			(sndGyro,H_Root(),vLastFP,true);
+	sndZoomIn.play_at_pos		(H_Root(),vLastFP);
+	sndGyro.play_at_pos			(H_Root(),vLastFP);
 }
 
 void CWeaponBinoculars::switch2_Idle	()
@@ -221,8 +221,8 @@ void CWeaponBinoculars::switch2_Idle	()
 	switch (STATE)
 	{
 	case eZooming: 
-		Sound->play_at_pos			(sndZoomOut,H_Root(),vLastFP);
-		if (sndGyro.feedback)		sndGyro.feedback->Stop();
+		sndZoomOut.play_at_pos	(H_Root(),vLastFP);
+		sndGyro.stop			();
 		break;
 	}
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);

@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
-#include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\a_star.h"
 

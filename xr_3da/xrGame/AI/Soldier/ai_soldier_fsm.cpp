@@ -11,7 +11,6 @@
 #include "ai_soldier_selectors.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
-#include "..\\..\\..\\xr_trims.h"
 #include "..\\..\\a_star.h"
 
 #define MAX_PATROL_DISTANCE				6.f
@@ -1078,7 +1077,7 @@ void CAI_Soldier::Die()
 	WRITE_TO_LOG("die");
 
 	if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-		m_tpSoundBeingPlayed->feedback->Stop();
+		m_tpSoundBeingPlayed->stop();
 
 //	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfStopFire();
@@ -1564,7 +1563,7 @@ void CAI_Soldier::OnPatrolRoute()
 		}
 		else
 			if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+				m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 	}
 	else {
 		if ((!m_dwLastRangeSearch) || (m_dwCurrentUpdate - m_dwLastRangeSearch >= 5000)) {

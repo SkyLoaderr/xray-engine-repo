@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
-#include "..\\..\\..\\xr_trims.h"
 
 CAI_Stalker::CAI_Stalker			()
 {

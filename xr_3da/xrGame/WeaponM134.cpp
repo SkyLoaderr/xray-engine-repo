@@ -241,7 +241,7 @@ void CWeaponM134::Update	(u32 T)
 			break;
 		case eM134Brake:
 			// sound fire loop
-			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
+			sndFireLoop.stop();
 
 			// play end fire sound
 			if (st_current==eM134Fire)
@@ -251,7 +251,7 @@ void CWeaponM134::Update	(u32 T)
 		case eM134Idle:
 			bPending		= FALSE;
 			if (st_current==eM134Brake) {
-				if (sndServo.feedback) sndServo.feedback->Stop();
+				sndServo.stop();
 			}
 			break;
 		case eM134Fire:
@@ -259,7 +259,7 @@ void CWeaponM134::Update	(u32 T)
 			{
 				m_pHUD->animPlay		(mhud_fire);
 				pSounds->play_at_pos	(sndFireLoop,this,vLastFP,true);
-				if (sndServo.feedback) sndServo.feedback->Stop();
+				sndServo.stop			();
 			}
 			break;
 		}
@@ -278,7 +278,7 @@ void CWeaponM134::Update	(u32 T)
 			sndServo.set_position(vLastFP);
 			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
-			sndServo.feedback->SetFrequency(freq);
+			sndServo.set_frequency(freq);
 		}
 		if (fRotateSpeed>=fRotateMaxSpeed){
 			fRotateSpeed = fRotateMaxSpeed;
@@ -291,7 +291,7 @@ void CWeaponM134::Update	(u32 T)
 			sndServo.set_position(vLastFP);
 			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
-			sndServo.feedback->SetFrequency(freq);
+			sndServo.set_frequency(freq);
 		}
 		if (fRotateSpeed<=0){
 			st_target		= eM134Idle;

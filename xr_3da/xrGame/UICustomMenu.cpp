@@ -15,7 +15,7 @@ CUICustomMenuItem* UIParseMenu	(CUICustomMenu* owner, CInifile* ini, CUICustomMe
 	CUICustomMenuItem* I=0;
 	string256	buf,buf1;
 	string64	buf2;
-	int ln_cnt = ini->LineCount(sect);
+	int ln_cnt = ini->line_count(sect);
 	if (ln_cnt){
 		if (!root)	root		= xr_new<CUICustomMenuItem> (owner,(CUICustomMenuItem *)NULL,"root",(LPCSTR)NULL,(LPCSTR)NULL,(OnExecuteEvent)NULL,(OnItemDrawEvent)NULL);
 		if (ini->line_exist(sect,"title"))	root->SetTitle(ini->r_string(sect,"title"));

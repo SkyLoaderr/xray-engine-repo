@@ -84,7 +84,7 @@ void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
 		Sound->play			(snd_Ambient,0,TRUE);
-		snd_Ambient.feedback->set_volume	(snd_Ambient_volume);
+		snd_Ambient.set_volume	(snd_Ambient_volume);
 	} else if ((E==control_stop) && (state!=stIdle))	{
 		state				= stStopping;
 	}
@@ -227,9 +227,9 @@ void	CEffect_Rain::Render	()
 	case stIdle:		return;
 	case stStarting:	
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
-		snd_Ambient.feedback->set_volume		(snd_Ambient_volume);
-		sndP.mad							(Device.vCameraPosition,Device.vCameraDirection,.1f);
-		snd_Ambient.feedback->set_position	(sndP);
+		snd_Ambient.set_volume		(snd_Ambient_volume);
+		sndP.mad					(Device.vCameraPosition,Device.vCameraDirection,.1f);
+		snd_Ambient.set_position	(sndP);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
@@ -238,9 +238,9 @@ void	CEffect_Rain::Render	()
 		break;
 	case stStopping:
 		snd_Ambient_volume	-= snd_fade*Device.fTimeDelta;
-		snd_Ambient.feedback->set_volume	(snd_Ambient_volume);
+		snd_Ambient.set_volume		(snd_Ambient_volume);
 		if (snd_Ambient_volume < 0)	{
-			snd_Ambient.feedback->stop	();
+			snd_Ambient.stop	();
 			state=stIdle;
 		}
 		bBornNewItems	= FALSE;

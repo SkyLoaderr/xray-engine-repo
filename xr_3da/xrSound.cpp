@@ -77,7 +77,7 @@ void	CSoundManager::Delete				( sound& S )
 		S.feedback	= 0;
 		return;
 	}
-	if (S.feedback)	S.feedback->Stop();
+	if (S.feedback)	S.stop();
 	pSoundRender->DeleteSound(S.handle);
 }
 //-----------------------------------------------------------------------------

@@ -12,11 +12,11 @@
 // sounds
 void CAI_Dog::vfLoadSounds()
 {
-	::Sound->Create(m_tpaSoundHit[0],TRUE,"monsters\\dog\\dog_1",0,SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->Create(m_tpaSoundDie[0],TRUE,"monsters\\dog\\dog_2",0,SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->Create(m_tpaSoundAttack[0],TRUE,"monsters\\dog\\dog_2",0,SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->Create(m_tpaSoundVoice[0],TRUE,"monsters\\dog\\dog_1",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->Create(m_tpaSoundVoice[1],TRUE,"monsters\\dog\\dog_2",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\dog\\dog_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\dog\\dog_2",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\dog\\dog_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\dog\\dog_1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\dog\\dog_2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
 // animations

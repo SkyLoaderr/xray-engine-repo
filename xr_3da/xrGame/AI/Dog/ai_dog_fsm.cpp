@@ -235,12 +235,12 @@ void CAI_Dog::FreeHuntingActive()
 			if (!m_tpSoundBeingPlayed->feedback)
 				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
-				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+				m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 		}
 	}
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+			m_tpSoundBeingPlayed->feedback->set_position(eye_matrix.c);
 }
 
 void CAI_Dog::FreeHuntingPassive()

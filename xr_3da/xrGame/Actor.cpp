@@ -103,12 +103,12 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
 
 	// sounds 2D
-	::Sound->Delete(sndZoneHeart);
-	::Sound->Delete(sndZoneDetector);
+	::Sound->destroy(sndZoneHeart);
+	::Sound->destroy(sndZoneDetector);
 
 	// sounds 3D
-	for (i=0; i<SND_HIT_COUNT; i++) ::Sound->Delete(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) ::Sound->Delete(sndDie[i]);
+	for (i=0; i<SND_HIT_COUNT; i++) ::Sound->destroy(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) ::Sound->destroy(sndDie[i]);
 
 	if(m_phSkeleton) {
 		m_phSkeleton->Deactivate();
@@ -191,16 +191,16 @@ void CActor::Load		(LPCSTR section )
 	sndStep[0].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
 	sndStep[1].g_type	= SOUND_TYPE_MONSTER_WALKING_HUMAN;
 	sndLanding.g_type	= SOUND_TYPE_MONSTER_FALLING_HUMAN;
-	::Sound->Create		(sndZoneHeart,		TRUE,	"heart\\4");
-	::Sound->Create		(sndZoneDetector,	TRUE,	"detectors\\geiger",	TRUE);
-	::Sound->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4");
+	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger");
+	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	ph_Movement.ActivateBox	(0);
 	ph_Movement.ActivateBox	(0);
@@ -393,12 +393,12 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	::Sound->Delete			(sndZoneHeart);
-	::Sound->Delete			(sndZoneDetector);
+	::Sound->destroy			(sndZoneHeart);
+	::Sound->destroy			(sndZoneDetector);
 
 	u32 it;
-	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->Delete	(sndHit[it]);
-	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->Delete	(sndDie[it]);
+	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->destroy	(sndHit[it]);
+	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->destroy	(sndDie[it]);
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
@@ -660,11 +660,8 @@ void CActor::ZoneEffect	(float z_amount)
 	Fvector				P;
 	clCenter			(P);
 	if (0==sndZoneHeart.feedback)		::Sound->play_at_pos	(sndZoneHeart,		this,Position(),true);
-//	if (0==sndZoneDetector.feedback)	::Sound->play_at_pos	(sndZoneDetector,	this,Position(),true);
-	sndZoneHeart.feedback->SetVolume			(z_amount);
+	sndZoneHeart.set_volume				(z_amount);
 	sndZoneHeart.set_position			(P);
-//	sndZoneDetector.feedback->SetFrequencyScale	(.1f+z_amount);
-//	sndZoneDetector.set_position		(P);
 }
 
 void CActor::UpdateCL()
@@ -874,11 +871,11 @@ void CActor::Update	(u32 DT)
 	s_pos.y				+=	.15f;
 	if (sndStep[0].feedback)		{
 		sndStep[0].set_position(s_pos);
-		sndStep[0].feedback->SetVolume	(s_vol);
+		sndStep[0].set_volume	(s_vol);
 	}
 	if (sndStep[1].feedback)		{
 		sndStep[1].set_position(s_pos);
-		sndStep[1].feedback->SetVolume	(s_vol);
+		sndStep[1].set_volume	(s_vol);
 	}
 
 	// landing sounds

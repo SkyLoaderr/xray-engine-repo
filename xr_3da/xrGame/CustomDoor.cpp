@@ -11,7 +11,7 @@ CCustomDoor::CCustomDoor()
 
 CCustomDoor::~CCustomDoor()
 {	
-	::Sound->Delete(sndOpenClose);
+	::Sound->destroy(sndOpenClose);
 }
 
 void CCustomDoor::Load			(LPCSTR section)
@@ -24,7 +24,7 @@ void CCustomDoor::Load			(LPCSTR section)
 	if (pSettings->line_exist(section,"sound"))
 	{
 		LPCSTR N	= pSettings->r_string(section,"sound");
-		::Sound->Create(sndOpenClose,TRUE,N);
+		::Sound->create(sndOpenClose,TRUE,N);
 	}
 }
 

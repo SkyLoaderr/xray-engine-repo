@@ -45,24 +45,24 @@ void __stdcall CAI_Soldier::LegsSpinCallback(CBoneInstance* B)
 // sounds
 void CAI_Soldier::vfLoadSounds()
 {
-	::Sound->Create(sndHit[0],TRUE,"monsters\\Soldier\\Injured\\01",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create(sndHit[1],TRUE,"monsters\\Soldier\\Injured\\02",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create(sndHit[2],TRUE,"monsters\\Soldier\\Injured\\03",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create(sndHit[3],TRUE,"monsters\\Soldier\\Injured\\04",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->Create(sndDie[0],TRUE,"monsters\\Soldier\\Injured\\05",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create(sndDie[1],TRUE,"monsters\\Soldier\\Injured\\06",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create(sndDie[2],TRUE,"monsters\\Soldier\\Injured\\07",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create(sndDie[3],TRUE,"monsters\\Soldier\\Injured\\08",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\vo1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
-	::Sound->Create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
-	::Sound->Create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
-	::Sound->Create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	::Sound->create(sndHit[0],TRUE,"monsters\\Soldier\\Injured\\01",SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create(sndHit[1],TRUE,"monsters\\Soldier\\Injured\\02",SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create(sndHit[2],TRUE,"monsters\\Soldier\\Injured\\03",SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create(sndHit[3],TRUE,"monsters\\Soldier\\Injured\\04",SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->create(sndDie[0],TRUE,"monsters\\Soldier\\Injured\\05",SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create(sndDie[1],TRUE,"monsters\\Soldier\\Injured\\06",SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create(sndDie[2],TRUE,"monsters\\Soldier\\Injured\\07",SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create(sndDie[3],TRUE,"monsters\\Soldier\\Injured\\08",SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\vo1",SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	::Sound->create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2",SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	::Sound->create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3",SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	::Sound->create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1",SOUND_TYPE_MONSTER_TALKING_HUMAN);
 //	if (g_Squad() == MEGAPHONE_SQUAD) {
-//		Sound->Delete(sndRadio[0]);
-//		Sound->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\megafon_1m",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+//		::Sound->destroy(sndRadio[0]);
+//		Sound->create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\megafon_1m",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 //	}
-	::Sound->Create(sndSteps[0],TRUE,"Actor\\StepL",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	::Sound->Create(sndSteps[1],TRUE,"Actor\\StepR",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->create(sndSteps[0],TRUE,"Actor\\StepL",SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->create(sndSteps[1],TRUE,"Actor\\StepR",SOUND_TYPE_MONSTER_WALKING_HUMAN);
 }	
 
 // animations

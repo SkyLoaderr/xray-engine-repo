@@ -23,7 +23,7 @@ CDummyObject::CDummyObject	()
 
 CDummyObject::~CDummyObject	()
 {
-	::Sound->Delete			(s_sound);
+	::Sound->destroy			(s_sound);
 	::Render->model_Delete	(s_particles);
 	xr_delete				(s_animator);
 	xr_delete				(m_pPhysicsShell);
@@ -44,7 +44,7 @@ void CDummyObject::Load		(LPCSTR section)
 	if (pSettings->line_exist(section,"sound"))
 	{
 		LPCSTR N = pSettings->r_string(section,"sound");
-		::Sound->Create(sndDummy,TRUE,N);
+		::Sound->create(sndDummy,TRUE,N);
 	}
 
 	Sector_Detect();
@@ -85,7 +85,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	}
 	if (style&esSound)			{
 		// Load sound
-		::Sound->Create			(s_sound,TRUE,E->s_Sound);
+		::Sound->create			(s_sound,TRUE,E->s_Sound);
 		::Sound->play_at_pos		(s_sound,0,Position(),true);
 	}
 
@@ -153,7 +153,7 @@ void CDummyObject::UpdateCL		()
 	if (s_sound.feedback)
 	{
 		s_sound.set_position	(Position());
-		s_sound.feedback->SetMinMax		(10,1000);
+		s_sound.set_range		(10,1000);
 	}
 }
 

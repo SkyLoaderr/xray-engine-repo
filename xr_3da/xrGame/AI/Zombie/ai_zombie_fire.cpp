@@ -27,7 +27,7 @@ void CAI_Zombie::Exec_Action(float dt)
 			if (!bOk)
 				::Sound->play_at_pos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,eye_matrix.c);
 			else
-				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+				m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 			u32 dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\xr_tokens.h"
 #include "..\PSObject.h"
-#include "..\xr_trims.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"

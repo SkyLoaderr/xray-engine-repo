@@ -30,14 +30,14 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 	string128 fn;
 	if (FS.exist(fn,Path.Sounds,prefix,".wav")){
 		m_Sounds.push_back(sound());
-		::Sound->Create(m_Sounds.back(),TRUE,prefix,false,0);
+		::Sound->create(m_Sounds.back(),TRUE,prefix,0);
 	}
 	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
 		if (FS.exist(fn,Path.Sounds,name,".wav")){
 			m_Sounds.push_back(sound());
-			::Sound->Create(m_Sounds.back(),TRUE,name,false,0);
+			::Sound->create(m_Sounds.back(),TRUE,name,0);
 		}
 	}
 	R_ASSERT(m_Sounds.size());
@@ -46,13 +46,13 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 void CAI_Crow::SSound::SetPosition(const Fvector& pos)
 {
 	for (int i=0; i<(int)m_Sounds.size(); i++)
-		if (m_Sounds[i].feedback) m_Sounds[i].set_position(pos);
+		m_Sounds[i].set_position(pos);
 }
 
 void CAI_Crow::SSound::Unload()
 {
 	for (int i=0; i<(int)m_Sounds.size(); i++)
-		::Sound->Delete	(m_Sounds[i]);
+		::Sound->destroy	(m_Sounds[i]);
 }
 
 void __stdcall	cb_OnHitEndPlaying			(CBlend* B)

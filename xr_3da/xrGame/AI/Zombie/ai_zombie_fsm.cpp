@@ -231,12 +231,12 @@ void CAI_Zombie::FreeHuntingActive()
 			if (!m_tpSoundBeingPlayed->feedback)
 				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
-				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+				m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 		}
 	}
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+			m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
@@ -395,12 +395,12 @@ void CAI_Zombie::AttackRun()
 			if (!m_tpSoundBeingPlayed->feedback)
 				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			else
-				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+				m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 		}
 	}
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+			m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 }
 
 void CAI_Zombie::Pursuit()
@@ -497,11 +497,11 @@ void CAI_Zombie::Resurrect()
 		if (!m_tpSoundBeingPlayed->feedback)
 			::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		else
-			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+			m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 	}
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+			m_tpSoundBeingPlayed->set_position(eye_matrix.c);
 	
 	for (int i=0; i<3; i++)
 		if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i]) {

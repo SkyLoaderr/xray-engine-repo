@@ -148,14 +148,14 @@ BOOL CCustomDetector::feel_touch_contact(CObject* O) {
 void CCustomDetector::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256 temp;
 	if (FS.exist(temp,Path.Sounds,s_name)) {
-		Sound->Create(dest,TRUE,s_name,bCtrlFreq,iType);
+		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
 	Debug.fatal	("Can't find sound '%s'",s_name,cName());
 }
 
 void CCustomDetector::SoundDestroy(sound& dest) {
-	Sound->Delete			(dest);
+	::Sound->destroy			(dest);
 }
 
 void CCustomDetector::OnH_A_Chield() {

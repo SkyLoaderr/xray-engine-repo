@@ -120,7 +120,7 @@ f32 CCustomZone::Power(f32 dist) {
 void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256 temp;
 	if (FS.exist(temp,Path.Sounds,s_name)) {
-		Sound->Create(dest,TRUE,s_name,bCtrlFreq,iType);
+		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
 	Debug.fatal	("Can't find sound '%s'",s_name,cName());

@@ -10,7 +10,6 @@
 
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
-#include "..\\..\\..\\xr_trims.h"
 
 CAI_Rat::CAI_Rat()
 {

@@ -23,7 +23,7 @@ CCustomItem::CCustomItem() : CObject()
 
 CCustomItem::~CCustomItem()
 {
-	::Sound->Delete	(sndTake);
+	::Sound->destroy	(sndTake);
 }
 
 void	CCustomItem::SetState(EItemState e)
@@ -63,7 +63,7 @@ void	CCustomItem::Load	(LPCSTR section)
 	clsid_target	= TEXT2CLSID(pSettings->r_string(section, "target"));
 	iValue			= pSettings->r_s32(section, "value");
 	start_pos.set	(vPosition);
-	::Sound->Create	(sndTake, TRUE, pSettings->r_string(section, "snd_take"));
+	::Sound->create	(sndTake, TRUE, pSettings->r_string(section, "snd_take"));
 }
 
 void	CCustomItem::OnMove()

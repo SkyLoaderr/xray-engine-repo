@@ -212,7 +212,7 @@ class CBaseFunction;
 
 	#define DELETE_SOUNDS(a,b) {\
 		for (int i=0; i<(a); i++)\
-			::Sound->Delete((b)[i]);\
+			::Sound->destroy((b)[i]);\
 	}
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
