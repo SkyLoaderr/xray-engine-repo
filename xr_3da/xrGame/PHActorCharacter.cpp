@@ -111,6 +111,7 @@ void SPHCharacterRestrictor::Destroy()
 		dGeomDestroyUserData(m_restrictor_transform);
 		m_restrictor_transform=NULL;
 	}
+	m_character=NULL;
 }
 void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
