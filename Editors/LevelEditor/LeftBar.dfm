@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 504
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1598,17 +1598,27 @@ object fraLeftBar: TfraLeftBar
     object N8: TMenuItem
       Caption = '-'
     end
-    object Build: TMenuItem
-      Caption = 'Build'
-      OnClick = ebBuildClick
-    end
-    object MakeGame: TMenuItem
-      Caption = 'Make Game'
-      OnClick = ebMakeGameClick
-    end
-    object MakeDetails: TMenuItem
-      Caption = 'Make Details'
-      OnClick = MakeDetailsClick
+    object Make1: TMenuItem
+      Caption = 'Compile'
+      object Build: TMenuItem
+        Caption = 'Build'
+        OnClick = ebBuildClick
+      end
+      object N23: TMenuItem
+        Caption = '-'
+      end
+      object MakeDetails: TMenuItem
+        Caption = 'Make Details'
+        OnClick = MakeDetailsClick
+      end
+      object MakeGame: TMenuItem
+        Caption = 'Make Game'
+        OnClick = ebMakeGameClick
+      end
+      object MakeHOM1: TMenuItem
+        Caption = 'Make HOM'
+        OnClick = MakeHOM1Click
+      end
     end
     object N9: TMenuItem
       Caption = '-'

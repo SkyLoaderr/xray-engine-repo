@@ -164,14 +164,16 @@ void TfrmObjectList::UpdateState()
 
 void TfrmObjectList::UpdateSelection()
 {
-	bLockUpdate = true;
+	if (tvItems->Items->Count){
+        bLockUpdate = true;
     
-	Scene.SelectObjects( false, (EObjClass)cur_cls );
-    for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
-        if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
-    UI.RedrawScene();
+        Scene.SelectObjects( false, (EObjClass)cur_cls );
+        for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
+            if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
+        UI.RedrawScene();
     
-	bLockUpdate = false;
+        bLockUpdate = false;
+    }
 }
 //---------------------------------------------------------------------------
 

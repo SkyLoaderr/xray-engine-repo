@@ -126,6 +126,7 @@ public:
 	BOOL	Compile            		();
 	BOOL 	MakeGame				();
     BOOL 	MakeDetails				();
+    BOOL 	MakeHOM					();
 };
 
 extern SceneBuilder Builder;

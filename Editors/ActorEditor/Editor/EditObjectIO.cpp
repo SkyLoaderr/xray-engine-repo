@@ -33,6 +33,8 @@ bool CEditableObject::LoadObject(const char* fname){
     if (strcmp(MARK,"OBJECT")==0){
         xr_delete(F);
         F = xr_new<CCompressedStream>(fname,"OBJECT");
+    }else{
+    	F->Seek(0);
     }
     CStream* OBJ = F->OpenChunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);

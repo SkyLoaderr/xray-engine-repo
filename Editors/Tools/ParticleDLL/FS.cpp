@@ -30,13 +30,20 @@ void CFS_Memory::write	(const void* ptr, u32 count)
 	if (position>file_size) file_size=position;
 }
 
+static const u32 mb_sz = 0x1000000;
 void	CFS_Memory::SaveTo	(const char* fn, const char* sign)
 {
 	if (sign) FileCompress(fn,sign,pointer(),size());
 	else {
 		int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
 		R_ASSERT(H>0);
-		_write(H,pointer(),size());
+        LPBYTE ptr 		= pointer();
+        for (int req_size = size(); req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
+			int W = _write(H,ptr,mb_sz);
+			R_ASSERT2(W>0,"Can't write mem block to file.");
+        }
+        int W = _write(H,ptr,req_size);
+		R_ASSERT2(W>0,"Can't write mem block to file.");
 		_close(H);
 	}
 }

@@ -456,7 +456,8 @@ void TUI::Redraw(){
     if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
     else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
-    try{
+//    try
+    {
     	Device.Statistic.RenderDUMP_RT.Begin();
         Device.Begin			();
         Device.UpdateView		();
@@ -484,7 +485,7 @@ void TUI::Redraw(){
         Device.End();
     	Device.Statistic.RenderDUMP_RT.End();
     }
-    catch(...)
+/*    catch(...)
     {
 		_clear87();
 		FPU::m24r();
@@ -492,7 +493,7 @@ void TUI::Redraw(){
         Device.End();
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
-
+*/
 	fraBottomBar->paSel->Caption = Tools.GetInfo();
 }
 //---------------------------------------------------------------------------

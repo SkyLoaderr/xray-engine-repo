@@ -162,6 +162,9 @@ __published:	// IDE-managed Components
 	TMenuItem *miClearErrorList;
 	TMenuItem *N22;
 	TMenuItem *miSceneSummary;
+	TMenuItem *MakeHOM1;
+	TMenuItem *Make1;
+	TMenuItem *N23;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -240,6 +243,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebIgnoreModeClick(TObject *Sender);
 	void __fastcall miClearErrorListClick(TObject *Sender);
 	void __fastcall miSceneSummaryClick(TObject *Sender);
+	void __fastcall MakeHOM1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

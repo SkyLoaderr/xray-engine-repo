@@ -586,8 +586,8 @@ General:
 - create static lib (device)
 - все проперти через диалог
 -?для библиотеки фолдеров сделать отсоротирванную загрузку (без поисков) map->TElTree
-- PropertiesList multi item
-- проверять чтобы окна не вылазили за пределы экрана
++ PropertiesList multi item
++ проверять чтобы окна не вылазили за пределы экрана
 
 - mail messenger
 - удаленный quit 

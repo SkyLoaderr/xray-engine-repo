@@ -383,6 +383,12 @@ void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MakeHOM1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_MAKE_HOM );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebSceneFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -586,5 +592,6 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
+
 
 

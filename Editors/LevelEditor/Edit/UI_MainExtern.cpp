@@ -304,12 +304,22 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
     case COMMAND_MAKE_DETAILS:
 		if( !Scene.locked() ){
-            Builder.MakeDetails();
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make details?"))
+	            Builder.MakeDetails();
         }else{
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
+	case COMMAND_MAKE_HOM:
+		if( !Scene.locked() ){
+			if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to make HOM?"))
+	            Builder.MakeHOM();
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;        
 	case COMMAND_INVERT_SELECTION_ALL:
 		if( !Scene.locked() ){
 			Scene.InvertSelection(Tools.CurrentClassID());

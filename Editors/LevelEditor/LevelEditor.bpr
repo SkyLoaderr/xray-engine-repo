@@ -109,7 +109,8 @@
       intermediate\r_shader.obj intermediate\R_Backend_DBG.obj 
       intermediate\R_Backend_Runtime.obj intermediate\r_constants.obj 
       intermediate\r_constants_cache.obj intermediate\R_DStreams.obj 
-      intermediate\R_Backend.obj intermediate\Blender_detail_still.obj"/>
+      intermediate\R_Backend.obj intermediate\Blender_detail_still.obj 
+      intermediate\Blender_tree.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -391,6 +392,7 @@
       <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend.cpp" FORMNAME="" UNITNAME="R_Backend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
