@@ -49,6 +49,7 @@
 #define CLSID_OBJECT_W_PM			MK_CLSID('W','_','P','M',' ',' ',' ',' ')
 #define CLSID_OBJECT_W_FORT			MK_CLSID('W','_','F','O','R','T',' ',' ')
 #define CLSID_OBJECT_W_BINOCULAR	MK_CLSID('W','_','B','I','N','O','C',' ')
+#define CLSID_OBJECT_W_SHOTGUN		MK_CLSID('W','_','S','H','O','T','G','N')
 
 // Weapons Ammo
 #define CLSID_OBJECT_A_M134			MK_CLSID('A','_','M','1','3','4',' ',' ')
