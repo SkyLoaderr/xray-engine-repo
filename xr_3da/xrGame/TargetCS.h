@@ -1,5 +1,6 @@
 #pragma once
 #include "customtarget.h"
+#include "PhysicsShell.h"
 
 class CTargetCS :
 	public CCustomTarget
@@ -15,4 +16,7 @@ public:
 	virtual void OnDeviceDestroy();
 
 	virtual BOOL			net_Spawn			(LPVOID DC);
+	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
+
+	CPhysicsShell*						m_pPhysicsShell;
 };

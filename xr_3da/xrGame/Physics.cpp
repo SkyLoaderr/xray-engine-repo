@@ -1148,7 +1148,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	m33.set(m);
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
-	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
+	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
 	bActive=true;
 
