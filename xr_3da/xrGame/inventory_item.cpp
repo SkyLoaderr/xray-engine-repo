@@ -738,8 +738,8 @@ void CInventoryItem::renderable_Render	()
 
 void CInventoryItem::reload		(LPCSTR section)
 {
-	m_affected_holder_range	= READ_IF_EXISTS(pSettings,r_float,section,"affected_holder_range",1.f);
-	m_affected_holder_fov	= READ_IF_EXISTS(pSettings,r_float,section,"affected_holder_fov",1.f);
+	m_holder_range_modifier	= READ_IF_EXISTS(pSettings,r_float,section,"holder_range_modifier",1.f);
+	m_holder_fov_modifier	= READ_IF_EXISTS(pSettings,r_float,section,"holder_fov_modifier",1.f);
 }
 
 void CInventoryItem::reinit		()
@@ -922,8 +922,8 @@ DLL_Pure *CInventoryItem::_construct	()
 	return		(m_object);
 }
 
-void CInventoryItem::fill_eye_params	(float &range, float &fov) const
+void CInventoryItem::modify_holder_params	(float &range, float &fov) const
 {
-	range		*= m_affected_holder_range;
-	fov			*= m_affected_holder_fov;
+	range		*= m_holder_range_modifier;
+	fov			*= m_holder_fov_modifier;
 }

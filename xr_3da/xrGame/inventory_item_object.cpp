@@ -206,7 +206,7 @@ void CInventoryItemObject::OnRender			()
 }
 #endif
 
-void CInventoryItemObject::fill_eye_params	(float &range, float &fov) const
+void CInventoryItemObject::modify_holder_params	(float &range, float &fov) const
 {
-	CInventoryItem::fill_eye_params		(range,fov);
+	CInventoryItem::modify_holder_params		(range,fov);
 }

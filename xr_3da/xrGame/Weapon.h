@@ -436,11 +436,11 @@ public:
 protected:
 	// This is because when scope is attached we can't ask scope for these params
 	// therefore we should hold them by ourself :-((
-	float					m_addon_affected_holder_range;
-	float					m_addon_affected_holder_fov;
+	float					m_addon_holder_range_modifier;
+	float					m_addon_holder_fov_modifier;
 
 public:
-	virtual	void			fill_eye_params		(float &range, float &fov) const;
+	virtual	void			modify_holder_params		(float &range, float &fov) const;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

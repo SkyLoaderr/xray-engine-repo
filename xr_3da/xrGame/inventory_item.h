@@ -262,11 +262,11 @@ public:
 	virtual void			on_activate_physic_shell() = 0;
 
 protected:
-	float			m_affected_holder_range;
-	float			m_affected_holder_fov;
+	float			m_holder_range_modifier;
+	float			m_holder_fov_modifier;
 
 public:
-	virtual	void			fill_eye_params	(float &range, float &fov) const;
+	virtual	void			modify_holder_params	(float &range, float &fov) const;
 };
 
 #include "inventory_item_inline.h"

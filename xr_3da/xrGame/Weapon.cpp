@@ -1048,12 +1048,12 @@ void CWeapon::reload			(LPCSTR section)
 		m_can_be_strapped		= false;
 
 	if (m_eScopeStatus == ALife::eAddonAttachable) {
-		m_addon_affected_holder_range	= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"affected_holder_range",m_affected_holder_range);
-		m_addon_affected_holder_fov		= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"affected_holder_fov",m_affected_holder_fov);
+		m_addon_holder_range_modifier	= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"holder_range_modifier",m_holder_range_modifier);
+		m_addon_holder_fov_modifier		= READ_IF_EXISTS(pSettings,r_float,m_sScopeName,"holder_fov_modifier",m_holder_fov_modifier);
 	}
 	else {
-		m_addon_affected_holder_range	= m_affected_holder_range;
-		m_addon_affected_holder_fov		= m_affected_holder_fov;
+		m_addon_holder_range_modifier	= m_holder_range_modifier;
+		m_addon_holder_fov_modifier		= m_holder_fov_modifier;
 	}
 
 
@@ -1260,12 +1260,12 @@ bool CWeapon::IsNecessaryItem	    (CInventoryItem* item)
 	return (std::find(m_ammoTypes.begin(), m_ammoTypes.end(), item->object().cNameSect()) != m_ammoTypes.end() );
 }
 
-void CWeapon::fill_eye_params		(float &range, float &fov) const
+void CWeapon::modify_holder_params		(float &range, float &fov) const
 {
 	if (!IsScopeAttached()) {
-		inherited::fill_eye_params	(range,fov);
+		inherited::modify_holder_params	(range,fov);
 		return;
 	}
-	range	*= m_addon_affected_holder_range;
-	fov		*= m_addon_affected_holder_fov;
+	range	*= m_addon_holder_range_modifier;
+	fov		*= m_addon_holder_fov_modifier;
 }
