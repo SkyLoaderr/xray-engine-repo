@@ -47,6 +47,6 @@ p2f 	p_main	( v2p_in IN )
   
   half4 C	= D*L;							// rgb.gloss * light(rgb.specular)
   half4 S	= half4		(C.w,C.w,C.w,C.w);	// replicated specular
-  OUT.C 	= C; // + S;
+  OUT.C 	= C + S;
   return OUT;
 }
