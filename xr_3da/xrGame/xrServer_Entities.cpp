@@ -1416,28 +1416,32 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 //***** Physic Object
 xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : xrServerEntity(caSection) {
 	type = epotBox;
+	mass = 10.f;
 }
 xrSE_PhysicObject::~xrSE_PhysicObject() {
 }
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) {
 	visual_read				(P);
 	P.r_u32					(type);
+	//P.w_float				(mass);
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
 	visual_write			(P);
 	P.w_u32					(type);
+	P.w_float				(mass);
 }
 void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
 #ifdef _EDITOR
 xr_token po_types[]={
-	{ "Box",		epotBox					},
-	{ "Fixed chain",		epotFixedChain	}
+	{ "Box",			epotBox			},
+	{ "Fixed chain",	epotFixedChain	}
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
-	inherited::FillProp		(pref,values);
-	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
+	inherited::FillProp(pref,values);
+	PHelper.CreateToken(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
+	PHelper.CreateFloat(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 }
 #endif
 

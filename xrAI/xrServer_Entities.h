@@ -96,9 +96,10 @@ enum EPOType {
 	epotFixedChain
 };
 xrSE_DECLARE_BEGIN2(xrSE_PhysicObject,xrServerEntity,xrSE_Visualed)
-	u32								type;
-									xrSE_PhysicObject	(LPCSTR caSection);
-    virtual							~xrSE_PhysicObject	();
+	xrSE_PhysicObject	(LPCSTR caSection);
+    virtual ~xrSE_PhysicObject	();
+	u32 type;
+	f32 mass;
 xrSE_DECLARE_END
 /////////////////////////////////////////////////////////////////////
 
