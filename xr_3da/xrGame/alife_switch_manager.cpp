@@ -141,7 +141,10 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			}
 		}
 	}
-	
+	else {
+		object->children.clear		();
+	}
+
 	if (update_registries) {
 		scheduled().add		(object);
 		graph().add			(object,object->m_tGraphID,false);
