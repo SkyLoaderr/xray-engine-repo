@@ -14,6 +14,17 @@
 //#	define OPTIMAL_GRAPH
 #endif
 
+#ifdef OPTIMAL_GRAPH
+//#	define USE_HASH_SET
+#	ifdef USE_HASH_SET
+#		pragma warning(push)
+#		pragma warning(disable:4995)
+#		pragma warning(disable:4996)
+#		include <hash_set>
+#		pragma warning(pop)
+#	endif
+#endif
+
 namespace LevelNavigationGraph {
 	struct CCellVertex;
 #ifdef OPTIMAL_GRAPH
@@ -21,6 +32,8 @@ namespace LevelNavigationGraph {
 #endif
 	class  CSector;
 };
+
+#include "level_navigation_graph_space.h"
 
 template <typename, typename, typename> class CGraphAbstractSerialize;
 
@@ -91,6 +104,20 @@ protected:
 
 #else
 
+struct sort_cells_predicate {
+	ICF	bool	operator()	(const LevelNavigationGraph::CCellVertexEx *v0, const LevelNavigationGraph::CCellVertexEx *v1) const
+	{
+		u32					s0 = v0->m_down*v0->m_right;
+		u32					s1 = v1->m_down*v1->m_right;
+		if (s0 > s1)
+			return			(true);
+		else
+			if (s0 < s1)
+				return		(false);
+		return				(v0 < v1);
+	}
+};
+
 class CLevelNavigationGraph : public CLevelGraph {
 private:
 	typedef CLevelGraph									inherited;
@@ -107,7 +134,18 @@ public:
 
 public:
 	typedef xr_vector<CCellVertex>						CROSS_TABLE;
-	typedef xr_vector<CCellVertex*>						CROSS_PTABLE;
+#ifdef USE_HASH_SET
+	typedef std::hash_set<
+				CCellVertex*,
+				std::hash_compare<
+					CCellVertex*,
+					sort_cells_predicate
+				>,
+				xr_allocator_t<CCellVertex*>
+			>	CROSS_PTABLE;
+#else
+	typedef xr_set<CCellVertex*,sort_cells_predicate>	CROSS_PTABLE;
+#endif
 
 private:
 	CSectorGraph				*m_sectors;
@@ -116,9 +154,7 @@ private:
 private:
 	CROSS_TABLE					m_cross;
 	CROSS_PTABLE				m_temp;
-	CROSS_PTABLE				m_temp1;
-	xr_vector<u32>				m_counter;							
-
+	
 #ifdef DEBUG
 private:
 	u32							m_global_count;
@@ -165,6 +201,7 @@ public:
 protected:
 	IC		CSectorGraph		&sectors				();
 };
+
 #endif
 
 #include "level_navigation_graph_inline.h"
