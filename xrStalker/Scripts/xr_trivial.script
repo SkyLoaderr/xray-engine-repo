@@ -639,14 +639,16 @@ function stalker_novice3_action:state_actor()
     	if(self.object:active_sound_count() == 0 and self.object:is_body_turning() ) then
             xr_sounds.play_sound_rnd    (self.object, 5000, 6000, "trivial", 4,2)
             self.a.curState    = wait_actor
+            self.b.speak_time  = device():time_global() + 5000
         end
     end
 
     if(self.a.curState == wait_actor and self.b.talk == false) then
     	--Изредка зовем актера
-        if(self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
-            xr_sounds.play_sound_rnd    (self.object, 5000, 6000, "trivial", 4,2)
+        if(device():time_global() > self.b.speak_time and self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
+            xr_sounds.play_sound_rnd    (self.object, 1000, 1500, "trivial", 4,2)
             self.a.curState    = wait_actor
+            self.b.speak_time  = device():time_global() + 5000
 		end
     end
 
@@ -735,7 +737,7 @@ function novice3_attack:execute ()
 	end
 
     self.object:set_mental_state     ( anim.danger )
-    self.object:set_item             ( object.idle, self.object:best_weapon() )
+    self.object:set_item             ( object.activate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
