@@ -82,7 +82,7 @@ void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
 		break;
 	case RM_SINGLE:	
 		{
-			Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform(u16(RMS_boneid)));
+			Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform_R	(u16(RMS_boneid)));
 			RCache.set_xform_world	(W);
 			RCache.set_Geometry		(hGeom);
 			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,pCount);
@@ -95,7 +95,7 @@ void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
 			R_constant*				array	= RCache.get_c				(sbones_array);
 			u32						count	= RMS_bonecount;
 			for (u32 mid = 0; mid<count; mid++)	{
-				Fmatrix&	M				= Parent->LL_GetTransform	(u16(mid));
+				Fmatrix&	M				= Parent->LL_GetTransform_R				(u16(mid));
 				u32			id				= mid*3;
 				RCache.set_ca	(array,id+0,M._11,M._21,M._31,M._41);
 				RCache.set_ca	(array,id+1,M._12,M._22,M._32,M._42);
