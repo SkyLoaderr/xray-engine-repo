@@ -20,19 +20,20 @@
 
 #include "xrServer_Objects_ALife_Items.h"
 
+
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeItem
+// CSE_ALifeInventoryItem
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_fMass						= pSettings->r_float(caSection, "inv_weight");
 	m_dwCost					= pSettings->r_u32(caSection, "cost");
-	
+
 	if (pSettings->line_exist(caSection, "health_value"))
 		m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
 	else
 		m_iHealthValue			= 0;
-	
+
 	if (pSettings->line_exist(caSection, "food_value"))
 		m_iFoodValue			= pSettings->r_s32(caSection, "food_value");
 	else
@@ -48,38 +49,73 @@ CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(ca
 		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 }
 
+void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
+{
+}
+
+void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
+{
+}
+
+void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
+{
+};
+
+void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
+{
+};
+
+#ifdef _EDITOR
+void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,	 values);
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItem
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+{
+}
+
 void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeItem::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket, size);
+	inherited1::STATE_Read		(tNetPacket, size);
 	if ((m_tClassID == CLSID_OBJECT_W_BINOCULAR) && (m_wVersion < 37)) {
 		tNetPacket.r_u16		();
 		tNetPacket.r_u16		();
 		tNetPacket.r_u8			();
 	}
+	inherited2::STATE_Read		(tNetPacket, size);
 }
 
 void CSE_ALifeItem::UPDATE_Write			(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
-
+	inherited1::UPDATE_Write	(tNetPacket);
+	inherited2::UPDATE_Write	(tNetPacket);
 };
 
 void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 };
 
 #ifdef _EDITOR
 void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,	 values);
+	inherited1::FillProp		(pref,	 values);
+	inherited2::FillProp		(pref,	 values);
 }
 #endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemTorch
 ////////////////////////////////////////////////////////////////////////////

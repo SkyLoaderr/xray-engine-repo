@@ -11,7 +11,8 @@
 
 #include "xrServer_Objects_ALife.h"
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
+class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
+public:
 	float							m_fMass;
 	int								m_iVolume;
 	u32								m_dwCost;
@@ -22,11 +23,15 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	int								m_iGridHeight;
 	u64								m_qwGridBitMask;
 
-									CSE_ALifeItem	(LPCSTR caSection);
+									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	IC	bool						bfAttached		()
 	{
 		return						(ID_Parent < 0xffff);
 	}
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
+									CSE_ALifeItem	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
