@@ -27,7 +27,7 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
 		}
 	}
 }
-void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
+void	CLightDB_Static::Select		(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {
 	// for all dynamic objects we apply not only dynamic but static lights too.
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)

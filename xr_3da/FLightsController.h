@@ -34,7 +34,7 @@ public:
 
 	void	UnselectAll		(void);			// Disables all lights
 
-	void	Select			(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
+	void	Select			(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
 	void	Select			(Fvector &pos, float fRadius);
 
 	void	Load			(CStream *fs);
