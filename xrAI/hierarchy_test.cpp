@@ -148,8 +148,8 @@ IC	void fill_mark(
 {
 	++group_id;
 	cell_vertex.m_mark			= group_id;
-	cross[cell_vertex.m_vertex_id]	= &cell_vertex;
 	cell_vertex.m_use			= left | up;
+	cross[cell_vertex.m_vertex_id]	= &cell_vertex;
 	CCellVertex					v = cell_vertex, v1;
 
 	VERTEX_VECTOR1				&vi = table[i];
