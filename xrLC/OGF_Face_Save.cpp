@@ -166,14 +166,13 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 {
 //	clMsg			("- saving: normal or clod");
 
-	// Declarator
-	VDeclarator			D;
-	D.set				(r2_decl);
-
 	// Vertices
 	u32 ID,Start;
 	if (b_R2)
 	{
+		VDeclarator		D;
+		D.set			(r2_decl);
+
 		u32 t;
 		g_VB.Begin		(D);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
