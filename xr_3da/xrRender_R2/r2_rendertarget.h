@@ -11,8 +11,9 @@ private:
 	CRT*				rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 private:
 	SGeometry*			g_combine;
-	Shader*				s_combine_dbg_Color;
+	Shader*				s_combine_dbg_Position;
 	Shader*				s_combine_dbg_Normal;
+	Shader*				s_combine_dbg_Color;
 	Shader*				s_combine_dbg_Accumulator;
 private:
 	float				param_blur;
