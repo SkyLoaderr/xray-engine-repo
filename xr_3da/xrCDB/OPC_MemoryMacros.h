@@ -12,30 +12,6 @@
 #ifndef __ICEMEMORYMACROS_H__
 #define __ICEMEMORYMACROS_H__
 
-#undef ZeroMemory
-#undef CopyMemory
-#undef MoveMemory
-#undef FillMemory
-
-	//!	Clears a buffer.
-	//!	\param		addr	[in] buffer address
-	//!	\param		size	[in] buffer length
-	//!	\see		FillMemory
-	//!	\see		StoreDwords
-	//!	\see		CopyMemory
-	//!	\see		MoveMemory
-	inline_ void ZeroMemory(void* addr, udword size)					{ memset(addr, 0, size);		}
-
-	//!	Fills a buffer with a given byte.
-	//!	\param		addr	[in] buffer address
-	//!	\param		size	[in] buffer length
-	//!	\param		val		[in] the byte value
-	//!	\see		StoreDwords
-	//!	\see		ZeroMemory
-	//!	\see		CopyMemory
-	//!	\see		MoveMemory
-	inline_ void FillMemory(void* dest, udword size, ubyte val)			{ memset(dest, val, size);		}
-
 	//!	Fills a buffer with a given dword.
 	//!	\param		addr	[in] buffer address
 	//!	\param		nb		[in] number of dwords to write
@@ -65,26 +41,6 @@
 		_asm pop ecx
 		_asm pop eax
 	}
-
-	//!	Copies a buffer.
-	//!	\param		addr	[in] destination buffer address
-	//!	\param		addr	[in] source buffer address
-	//!	\param		size	[in] buffer length
-	//!	\see		ZeroMemory
-	//!	\see		FillMemory
-	//!	\see		StoreDwords
-	//!	\see		MoveMemory
-	inline_ void CopyMemory(void* dest, const void* src, udword size)	{ memcpy(dest, src, size);		}
-
-	//!	Moves a buffer.
-	//!	\param		addr	[in] destination buffer address
-	//!	\param		addr	[in] source buffer address
-	//!	\param		size	[in] buffer length
-	//!	\see		ZeroMemory
-	//!	\see		FillMemory
-	//!	\see		StoreDwords
-	//!	\see		CopyMemory
-	inline_ void MoveMemory(void* dest, const void* src, udword size)	{ memmove(dest, src, size);		}
 
 	#define SIZEOFOBJECT		sizeof(*this)									//!< Gives the size of current object. Avoid some mistakes (e.g. "sizeof(this)").
 	//#define CLEAROBJECT		{ memset(this, 0, SIZEOFOBJECT);	}			//!< Clears current object. Laziness is my business. HANDLE WITH CARE.

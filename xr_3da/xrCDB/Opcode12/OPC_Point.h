@@ -203,14 +203,14 @@
 		//! this = trans(rotpos) * (r - linpos)
 		inline_	Point&			InvTransform(const Point& r, const Matrix3x3& rotpos, const Point& linpos);
 
-		//! Returns MIN(x, y, z);
-		inline_	float			Min()				const		{ return MIN(x, MIN(y, z));												}
-		//! Returns MAX(x, y, z);
-		inline_	float			Max()				const		{ return MAX(x, MAX(y, z));												}
+		//! Returns _min(x, y, z);
+		inline_	float			Min()				const		{ return _min(x, _min(y, z));												}
+		//! Returns _max(x, y, z);
+		inline_	float			Max()				const		{ return _max(x, _max(y, z));												}
 		//! Sets each element to be componentwise minimum
-		inline_	Point&			Min(const Point& p)				{ x = MIN(x, p.x); y = MIN(y, p.y); z = MIN(z, p.z);	return *this;	}
+		inline_	Point&			Min(const Point& p)				{ x = _min(x, p.x); y = _min(y, p.y); z = _min(z, p.z);	return *this;	}
 		//! Sets each element to be componentwise maximum
-		inline_	Point&			Max(const Point& p)				{ x = MAX(x, p.x); y = MAX(y, p.y); z = MAX(z, p.z);	return *this;	}
+		inline_	Point&			Max(const Point& p)				{ x = _max(x, p.x); y = _max(y, p.y); z = _max(z, p.z);	return *this;	}
 
 		//! Clamps each element
 		inline_	Point&			Clamp(float min, float max)
@@ -224,7 +224,7 @@
 		//! Computes square magnitude
 		inline_	float			SquareMagnitude()	const		{ return x*x + y*y + z*z;												}
 		//! Computes magnitude
-		inline_	float			Magnitude()			const		{ return sqrtf(x*x + y*y + z*z);										}
+		inline_	float			Magnitude()			const		{ return _sqrt(x*x + y*y + z*z);										}
 		//! Computes volume
 		inline_	float			Volume()			const		{ return x * y * z;														}
 
@@ -263,7 +263,7 @@
 									float M = x*x + y*y + z*z;
 									if(M)
 									{
-										M = 1.0f / sqrtf(M);
+										M = 1.0f / _sqrt(M);
 										x *= M;
 										y *= M;
 										z *= M;
@@ -284,7 +284,7 @@
 		//! Computes distance to another point
 		inline_	float			Distance(const Point& b)			const
 								{
-									return sqrtf((x - b.x)*(x - b.x) + (y - b.y)*(y - b.y) + (z - b.z)*(z - b.z));
+									return _sqrt((x - b.x)*(x - b.x) + (y - b.y)*(y - b.y) + (z - b.z)*(z - b.z));
 								}
 
 		//! Computes square distance to another point
