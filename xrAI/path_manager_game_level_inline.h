@@ -53,7 +53,6 @@ IC	void CGameVertexTypePathManager::setup			(
 		parameters
 	);
 	m_evaluator		= &parameters;
-	path			= m_evaluator->m_path;
 	m_evaluator->m_vertex_id = _index_type(-1);
 }
 
