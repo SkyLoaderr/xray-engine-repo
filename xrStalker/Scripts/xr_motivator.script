@@ -357,6 +357,7 @@ xr_motivator.storage[self.object:id()].novice3 = {
                             path     = nil,         --Путь, по которому ходить
                             enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
                             enemy    = nil,
+							say_kill = false,       --Ни разу не говорил, что убьет бандитов
                             enabled  = false
                             }
     if( char_ini:section_exist ("novice3") == true ) then
@@ -533,7 +534,7 @@ xr_motivator.storage[self.object:id()].reactions = {
         xr_follower.set_follower (self.object)
     xr_commander.set_commander(self.object)
     end
-    
+
     escape.raid_init (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
