@@ -58,6 +58,7 @@ public:
 	   Irect		GetOriginalRectScaled	();
 	
 	   void			SetHeadingPivot			(const Ivector2& p)		{iHeadingPivot=p; uFlags|=flValidHeadingPivot;}
+	   Ivector2		GetHeadingPivot			()						{return iHeadingPivot;}
 	   
 
 	void			Render					(FVF::TL*& Pointer, const Ivector2& pos, u32 color, 

@@ -3,7 +3,7 @@
 
 #include "hudmanager.h"
 
-#include "levelFogOfWar.h"
+//#include "levelFogOfWar.h"
 
 #include "InfoPortion.h"
 #include "Pda.h"
@@ -55,7 +55,7 @@ void CUIZoneMap::Init()
 	m_activeMap->Init(Level().name(),gameLtx);
 	m_clipFrame.AttachChild(m_activeMap);
 	m_activeMap->SetClipRect( m_clipFrame.GetAbsoluteRect() );
-	m_activeMap->SetZoomFactor( 10.0f*float(m_clipFrame.GetWndRect().width())/100.0f );
+	m_activeMap->SetZoomFactor( float(m_clipFrame.GetWndRect().width())/100.0f );
 	m_activeMap->EnableHeading(true);  
 	xml_init.InitStatic(uiXml, "minimap:compass", 0, &m_compass);
 	m_compass.EnableHeading(true);

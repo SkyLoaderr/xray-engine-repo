@@ -1,7 +1,7 @@
 // CUIMapBackground.h:  перемещаемая картинка (сам ландшафт)
 //						интерактивной карты
 //////////////////////////////////////////////////////////////////////
-
+/*
 #pragma once
 
 #include "UIStatic.h"
@@ -85,3 +85,4 @@ public:
 	void			ConvertToTexture		(const Fvector& src, Fvector2& dest);
 	void			ConvertToTexture		(float x, float y, Fvector2& dest);
 };
+*/

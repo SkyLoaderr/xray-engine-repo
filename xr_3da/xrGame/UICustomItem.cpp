@@ -242,28 +242,31 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	}else
 		RS = iHeadingPivot;
 
+	RS.x = UI()->ClientToScreenScaledX(RS.x,0);
+	RS.y = UI()->ClientToScreenScaledY(RS.y,0);
+
 	Ivector2 LTp,RTp,LBp,RBp;
 
-	LTp.x = iVisRect.x1;
-	LTp.y = iVisRect.y1;
+	LTp.x = iVisRect.x1*scX;
+	LTp.y = iVisRect.y1*scY;
 	LTp.sub(RS);
 	rotation(LTp.x,LTp.y,angle,LTp.x,LTp.y);
 	LTp.add(RS);
 
-	RBp.x = iVisRect.x2;
-	RBp.y = iVisRect.y2;
+	RBp.x = iVisRect.x2*scX;
+	RBp.y = iVisRect.y2*scY;
 	RBp.sub(RS);
 	rotation(RBp.x,RBp.y,angle,RBp.x,RBp.y);
 	RBp.add(RS);
 
-	RTp.x = iVisRect.x2;
-	RTp.y = iVisRect.y1;
+	RTp.x = iVisRect.x2*scX;
+	RTp.y = iVisRect.y1*scY;
 	RTp.sub(RS);
 	rotation(RTp.x,RTp.y,angle,RTp.x,RTp.y);
 	RTp.add(RS);
 
-	LBp.x = iVisRect.x1;
-	LBp.y = iVisRect.y2;
+	LBp.x = iVisRect.x1*scX;
+	LBp.y = iVisRect.y2*scY;
 	LBp.sub(RS);
 	rotation(LBp.x,LBp.y,angle,LBp.x,LBp.y);
 	LBp.add(RS);

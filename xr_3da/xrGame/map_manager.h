@@ -40,7 +40,6 @@ DEFINE_VECTOR (SLocationKey, Locations, Locations_it);
 class CMapManager
 {
 	Locations				m_locations;
-	void					force_clean(Locations_it& it);
 public:
 
 							CMapManager					();

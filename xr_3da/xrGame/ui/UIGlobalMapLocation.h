@@ -5,10 +5,7 @@
 //	---------------------------------------------------------------------------
 //  Класс cлужит для отображения прямоугольничка локальной карты на глобальной
 //=============================================================================
-
-#ifndef UI_GLOBAL_MAP_LOCATION_H_
-#define UI_GLOBAL_MAP_LOCATION_H_
-
+/*
 #pragma once
 
 #include "UIFrameWindow.h"
@@ -34,5 +31,4 @@ protected:
 	CUIFrameWindow	UIBorder;
 };
 
-
-#endif //UI_GLOBAL_MAP_LOCATION_H_
+*/

@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+/*
 #include "UIMapSpot.h"
 #include "UIMapBackground.h"
 
@@ -155,17 +156,6 @@ Fvector CUIMapSpot::MapPos()
 	
 
 		
-	/*		float dx = src.x - pObject->Position().x;
-		float dz = src.z - pObject->Position().z;
-
-		dx = dx;
-		dz = dz;
-		
-		src.x = pObject->Position().x;
-		src.y = 0;
-		src.z = pObject->Position().z;
-	}
-*/
 
 	return src;
 }	
@@ -219,3 +209,4 @@ void CUIMapSpot::DynamicManifestation(bool value)
 		m_MapSpotAnimation.SetColorAnimation(NULL);
 	}
 }
+*/

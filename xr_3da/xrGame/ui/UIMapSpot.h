@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #pragma once
-
+/*
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIColorAnimatorWrapper.h"
@@ -32,7 +32,7 @@ public:
 
 	virtual void			Draw		();
 	virtual void			Update		();
-	virtual void			SendMessage	(CUIWindow* pWnd, s16 msg, void* pData /* = NULL */);
+	virtual void			SendMessage	(CUIWindow* pWnd, s16 msg, void* pData );
 
 	//возвращает позицию отметки на карте в мировых координатах
 	virtual Fvector			MapPos		();
@@ -86,3 +86,4 @@ public:
 	// Установть цветовую анимацию для мапспота
 	void					SetColorAnimation	(const shared_str &animationName) { m_MapSpotAnimation.SetColorAnimation(animationName); }
 };
+*/

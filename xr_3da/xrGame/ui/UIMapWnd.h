@@ -15,7 +15,6 @@
 #include "UIFrameLineWnd.h"
 
 #include "UIMapSpot.h"
-//#include "UIMapBackground.h"
 #include "UIGlobalMapLocation.h"
 
 #include "UICharacterInfo.h"
@@ -24,20 +23,23 @@
 class CUIMapWnd;
 class CUIGlobalMapSpot;
 
-class CUICustomMap : public CUIStatic, public CUIWndCallback, public ISheduled{
+class CUICustomMap : public CUIStatic, public CUIWndCallback{
 	
 	shared_str		m_name;
 	Frect			m_BoundRect;// real map size (meters)
 	float			m_zoom_factor;
+	
 public:
 					CUICustomMap					();
 	virtual			~CUICustomMap					();
 	virtual void	SetActivePoint					(const Fvector &vNewPoint);
-	virtual	void	BeforeActivate					();
-	virtual	void	AfterDeactivate					()									{};
 
 	virtual void	Init							(shared_str name, CInifile& gameLtx);
 	Ivector2		ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
+	Ivector2		ConvertRealToLocalNoTransform	(const Fvector2& src);// meters->pixels (relatively own left-top pos)
+
+	bool			GetPointerTo					(const Ivector2& src, int item_radius, Ivector2& pos, float& heading);//position and heading for drawing pointer to src pos
+
 	void			FitToWidth						(u32 width);
 	void			FitToHeight						(u32 height);
 	float			GetCurrentZoom					(){return m_zoom_factor;}
@@ -49,12 +51,12 @@ public:
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		() {return NULL;}
 	virtual LPCSTR	GetHint							(); 
 
-	virtual float	shedule_Scale					()	{return 1.0f;};
-	virtual void	shedule_Update					(u32 dt);
 	virtual void	SetZoomFactor					(float z);
 
 	virtual void	Draw							();
+	virtual void	Update							();
 
+			bool	IsRectVisible					(Irect r);
 protected:
 	virtual void	UpdateSpots						() {};
 };
@@ -126,7 +128,6 @@ class CUILevelMap: public CUICustomMap{
 public:
 								CUILevelMap			();
 	virtual						~CUILevelMap		();
-	virtual	void				AfterDeactivate		();
 	virtual void				Init				(shared_str name, CInifile& gameLtx);
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return &m_globalMapSpot;}
@@ -141,7 +142,6 @@ class CUIMiniMap: public CUICustomMap{
 public:
 								CUIMiniMap			();
 	virtual						~CUIMiniMap			();
-	virtual	void				AfterDeactivate		();
 	virtual void				Init				(shared_str name, CInifile& gameLtx);
 	virtual	void				MoveWndDelta		(const Ivector2& d);
 protected:

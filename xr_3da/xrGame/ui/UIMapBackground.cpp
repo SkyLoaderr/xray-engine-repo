@@ -4,6 +4,7 @@
 
 
 #include "stdafx.h"
+/*
 #include "UIMapBackground.h"
 #include "UIGlobalMapLocation.h"
 
@@ -420,7 +421,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 
 				if (NULL == focusHolder || pSpot == focusHolder)
 				{
-					if ( r.in(p)/*PtInRect(&r, p)*/)
+					if ( r.in(p))
 					{
 						if (NULL == focusHolder)
 						{
@@ -598,3 +599,4 @@ void CUIMapBackground::RemoveAllSpots()
 
 	m_vMapSpots.clear();
 }
+*/

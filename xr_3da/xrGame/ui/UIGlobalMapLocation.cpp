@@ -7,6 +7,7 @@
 //=============================================================================
 
 #include "StdAfx.h"
+/*
 #include "UIGlobalMapLocation.h"
 #include "UIMapWnd.h"
 
@@ -39,4 +40,4 @@ void CUIGlobalMapLocation::Init(int width, int height, Irect clipRect, LPCSTR fr
 void CUIGlobalMapLocation::Draw()
 {
 	CUIWindow::Draw();
-}
+}*/

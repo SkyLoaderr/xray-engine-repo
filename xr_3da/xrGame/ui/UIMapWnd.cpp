@@ -34,17 +34,15 @@ CUICustomMap::CUICustomMap ()
 {
 	m_BoundRect.set			(0,0,0,0);
 	m_zoom_factor			=1.f;
-	shedule_register	();
 }
 
 CUICustomMap::~CUICustomMap ()
 {
-	shedule_unregister	();
 }
 
-void CUICustomMap::shedule_Update(u32 dt)
+void CUICustomMap::Update()
 {
-	ISheduled::shedule_Update(dt);
+	CUIStatic::Update();
 	UpdateSpots();
 }
 
@@ -68,10 +66,6 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 	SetWindowName(*name);
 }
 
-void CUICustomMap::BeforeActivate()
-{
-	UpdateSpots();
-}
 
 void CUICustomMap::MoveWndDelta(const Ivector2& d)
 {
@@ -87,7 +81,32 @@ void CUICustomMap::MoveWndDelta(const Ivector2& d)
 
 }
 
+void rotation_(int x, int y, const float angle, int& x_, int& y_)
+{
+	x_= iFloor(float(x)*_cos(angle)+float(y)*_sin(angle));
+	y_= iFloor(float(y)*_cos(angle)-float(x)*_sin(angle));
+}
+
 Ivector2 CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
+{
+	Ivector2 res;
+	if( !Heading() ){
+		res.x = iFloor( (src.x-m_BoundRect.lt.x) * m_zoom_factor);
+		res.y = iFloor( (m_BoundRect.height()-(src.y-m_BoundRect.lt.y)) * m_zoom_factor);
+		return res;
+	}else
+	{
+		Ivector2 heading_pivot = GetStaticItem()->GetHeadingPivot();
+	
+		res = ConvertRealToLocalNoTransform(src);
+		res.sub(heading_pivot);
+		rotation_(res.x, res.y, GetHeading(), res.x, res.y);
+		res.add(heading_pivot);
+		return res;
+	};
+}
+
+Ivector2 CUICustomMap::ConvertRealToLocalNoTransform  (const Fvector2& src)// meters->pixels (relatively own left-top pos)
 {
 	Ivector2 res;
 	res.x = iFloor( (src.x-m_BoundRect.lt.x) * m_zoom_factor);
@@ -95,6 +114,44 @@ Ivector2 CUICustomMap::ConvertRealToLocal  (const Fvector2& src)// meters->pixel
 
 	return res;
 }
+
+//position and heading for drawing pointer to src pos
+bool CUICustomMap::GetPointerTo(const Ivector2& src, int item_radius, Ivector2& pos, float& heading)
+{
+	Irect		clip_rect_abs			= GetClipperRect(); //absolute rect coords
+	Irect		map_rect_abs			= GetAbsoluteRect();
+
+	Irect		rect;
+	BOOL res = rect.intersection(clip_rect_abs, map_rect_abs);
+	VERIFY(res);
+	
+	rect = clip_rect_abs;
+	rect.sub(map_rect_abs.lt.x,map_rect_abs.lt.y);
+
+	Fbox2 f_clip_rect_local;
+	f_clip_rect_local.set(rect.x1, rect.y1, rect.x2, rect.y2);
+
+	Fvector2 f_center;
+	f_clip_rect_local.getcenter(f_center);
+
+	Fvector2 f_dir, f_src;
+
+	f_src.set(src.x, src.y);
+	f_dir.sub(f_center, f_src );
+	f_dir.normalize_safe();
+	Fvector2 f_intersect_point;
+	res = f_clip_rect_local.Pick2(f_src,f_dir,f_intersect_point);
+	VERIFY(res);
+
+
+	heading = -f_dir.getH();
+
+	f_intersect_point.mad(f_intersect_point,f_dir,item_radius);
+
+	pos.set( iFloor(f_intersect_point.x), iFloor(f_intersect_point.y) );
+	return true;
+}
+
 
 void CUICustomMap::FitToWidth	(u32 width)
 {
@@ -141,7 +198,7 @@ void CUICustomMap::SetActivePoint(const Fvector &vNewPoint)
 	Frect bound = BoundRect();
 	if( FALSE==bound.in(pos) )return;
 
-	Ivector2	pos_on_map		= ConvertRealToLocal(pos);
+	Ivector2	pos_on_map		= ConvertRealToLocalNoTransform(pos);
 	Irect		map_abs_rect	= GetAbsoluteRect();
 	Ivector2	pos_abs;
 
@@ -174,9 +231,19 @@ LPCSTR	CUICustomMap::GetHint()
 
 	return hint;
 }
+
 void CUICustomMap::Draw()
 {
 	CUIStatic::Draw();
+}
+
+bool CUICustomMap::IsRectVisible(Irect r)
+{
+	Irect map_visible_rect = GetClipperRect();
+	Ivector2 pos = GetAbsolutePos();
+	r.add(pos.x,pos.y);
+
+	return !!map_visible_rect.intersected(r);
 }
 
 
@@ -338,36 +405,19 @@ void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
 	inherited::Init(name, gameLtx);
 
 	Fvector4 tmp = gameLtx.r_fvector4(name,"global_rect");
-	m_GlobalRect.set(tmp.x, tmp.y, tmp.z, tmp.w);
+	m_GlobalRect.set(tmp.x, tmp.w, tmp.z, tmp.y);
 
 	m_globalMapSpot.Init(inactiveLocalMapColor);
 }
 
 
-void CUILevelMap::AfterDeactivate()
-{
-	inherited::DetachAll();
-}
 
 void CUILevelMap::UpdateSpots		()
 {
-//first. detach out-of level spots
-	WINDOW_LIST v;
-	WINDOW_LIST& wl = GetChildWndList();
-	WINDOW_LIST_it it = wl.begin();
-	for(;it!=wl.end();++it){
-		CMapSpot* spot = (CMapSpot*)(*it);
-		if( spot->MapLocation()->LevelName()!=MapName() )
-			v.push_back(*it);
-	}
-	while(v.size())
-		DetachChild( v.back() );
-
-//find new locations and attach it
+	DetachAll();
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
-		if( !IsChild((*it).location->LevelSpot()) && ((*it).location->LevelName()==MapName()) )
-			AttachChild((*it).location->LevelSpot() );
+		(*it).location->UpdateLevelMap(this);
 	}
 }
 
@@ -378,10 +428,6 @@ CUIMiniMap::~CUIMiniMap()
 {}
 
 
-void CUIMiniMap::AfterDeactivate()
-{
-	inherited::DetachAll();
-}
 
 void CUIMiniMap::Init(shared_str name, CInifile& gameLtx)
 {
@@ -393,23 +439,10 @@ void CUIMiniMap::MoveWndDelta(const Ivector2& d)
 }
 void CUIMiniMap::UpdateSpots()
 {
-//first. detach out-of level spots
-	WINDOW_LIST v;
-	WINDOW_LIST& wl = GetChildWndList();
-	WINDOW_LIST_it it = wl.begin();
-	for(;it!=wl.end();++it){
-		CMapSpot* spot = (CMapSpot*)(*it);
-		if( spot->MapLocation()->LevelName()!=MapName() )
-			v.push_back(*it);
-	}
-	while(v.size())
-		DetachChild( v.back() );
-
-//find new locations and attach it
+	DetachAll();
 	Locations& ls =Level().MapManager().Locations();
 	for(Locations_it it=ls.begin(); it!=ls.end(); ++it){
-		if( !IsChild((*it).location->ZoneMapSpot()) && ((*it).location->LevelName()==MapName()) )
-			AttachChild((*it).location->ZoneMapSpot() );
+		(*it).location->UpdateMiniMap(this);
 	}
 
 }
@@ -525,8 +558,6 @@ void CUIMapWnd::Show(bool status)
 
 void CUIMapWnd::SetActiveMap			(shared_str level_name)
 {
-	if(m_activeLevelMap)
-			m_activeLevelMap->AfterDeactivate();
 
 	if(m_activeLevelMap	&& m_activeLevelMap!=m_GlobalMap)
 		m_UILevelFrame.DetachChild		(m_activeLevelMap);
@@ -540,7 +571,6 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 		
 		m_activeLevelMap						= it->second;
 		m_UILevelFrame.AttachChild				(m_activeLevelMap);
-		m_activeLevelMap->BeforeActivate		();
 	};
 
 	m_UILevelFrame.BringToTop	(m_GlobalMap);

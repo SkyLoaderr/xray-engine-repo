@@ -209,7 +209,15 @@ void CWeaponShotgun::UpdateSounds()
 bool CWeaponShotgun::Action(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-	
+
+
+	if(	m_bTriStateReload && STATE==eReload &&
+		cmd==kWPN_FIRE && flags&CMD_START &&
+		m_sub_state==eSubstateReloadInProcess		)//остановить перезагрузку
+	{
+		m_sub_state = eSubstateReloadEnd;
+		return true;
+	}
 	//если оружие чем-то занято, то ничего не делать
 	if(IsPending()) return false;
 
@@ -261,6 +269,7 @@ void CWeaponShotgun::Reload()
 
 void CWeaponShotgun::TriStateReload()
 {
+	if( !HaveCartridgeInInventory() )return;
 	m_sub_state			= eSubstateReloadBegin;
 	SwitchState			(eReload);
 }
