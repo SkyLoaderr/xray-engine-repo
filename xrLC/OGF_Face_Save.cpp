@@ -192,8 +192,8 @@ void OGF_Reference::Save	(IWriter &fs)
 	// Special
 	fs.open_chunk		(OGF_TREEDEF2);
 	fs.w				(&xform,	sizeof(xform));
-	fs.w				(&c_scale,	sizeof(c_scale));
-	fs.w				(&c_bias,	sizeof(c_bias));
+	fs.w				(&c_scale,	5*sizeof(float));
+	fs.w				(&c_bias,	5*sizeof(float));
 	fs.close_chunk		();
 
 	// Header
