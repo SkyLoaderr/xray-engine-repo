@@ -70,11 +70,11 @@ string make_time(DWORD sec)
 void __cdecl Status	(const char *format, ...)
 {
 	csLog.Enter			();
-	va_list mark;
-	va_start( mark, format );
-	vsprintf( status, format, mark );
-	bStatusChange = TRUE;
-	Msg					("-status-: %s",status);
+	va_list				mark;
+	va_start			( mark, format );
+	vsprintf			( status, format, mark );
+	bStatusChange		= TRUE;
+	Msg					("---: %s",status);
 	csLog.Leave			();
 }
 
