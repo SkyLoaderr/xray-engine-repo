@@ -173,7 +173,9 @@ function spawn_dialog:OnButton_load_clicked()
 		
 	local item  = list:GetItem(index)
 	local fname = item:GetText()
-	
+
+	console:execute("disconnect")
+	console:execute("main_menu off")
 	console:execute("start server(" .. fname .. "/single/alife) client(localhost)")	
 end
 
