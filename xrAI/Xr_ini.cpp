@@ -64,7 +64,7 @@ BOOL	CInifile::Sect::LineExists( LPCSTR L, LPCSTR* val )
 }
 //------------------------------------------------------------------------------
 
-CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
+CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd, BOOL ConvertToLower )
 {
 	fName		= szFileName?xr_strdup(szFileName):0;
     bReadOnly	= ReadOnly;
@@ -113,7 +113,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
                     Current.clear	();
                 }
                 int L = strlen(str); str[L-1] = 0;
-                Current.Name = strlwr(xr_strdup(str+1));
+				Current.Name = ConvertToLower?strlwr(xr_strdup(str+1)):xr_strdup(str+1);
             } else {
                 if (0==Current.Name)	{
                     _FREE(comment);

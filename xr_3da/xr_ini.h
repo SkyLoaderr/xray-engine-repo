@@ -61,7 +61,7 @@ private:
 public:
     BOOL		bSaveAtEnd;
 public:
-				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);
+				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE, BOOL ConvertToLower=TRUE);
 	virtual 	~CInifile		( );
     void		SaveAs          ( LPCSTR new_fname=0 );
 
