@@ -5,7 +5,7 @@
 #include "eltree.hpp"
 #include "mxplacemnt.hpp"
 // refs
-class TfrmProperties;
+class TProperties;
 class CEditableObject;
 class PropValue;
 class TfrmKeyBar;
@@ -33,7 +33,7 @@ class CSMotion;
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
     class PreviewModel{
-	    TfrmProperties*	m_Props;
+	    TProperties*	m_Props;
 		CEditableObject*m_pObject;
         float			m_fSpeed;
         float			m_fSegment;
@@ -122,8 +122,8 @@ public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
 
-    TfrmProperties*		m_ObjectProps;
-    TfrmProperties*		m_MotionProps;
+    TProperties*		m_ObjectProps;
+    TProperties*		m_MotionProps;
 
     TfrmKeyBar* 		m_KeyBar;
 public:

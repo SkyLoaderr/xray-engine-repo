@@ -12,6 +12,7 @@
 #include "Library.h"
 #include "D3DUtils.h"
 #include "ImageEditor.h"
+#include "SceneClassList.h"
 
 #include "UI_Main.h"
 
@@ -52,6 +53,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    _DELETE(fraTopBar);
     	_DELETE(fraBottomBar);
 		//----------------
+    	break;
+    case COMMAND_EVICT_TEXTURES:
+    	Device.Shader.Evict();
     	break;
 	case COMMAND_EXIT:
     	bRes = Tools.IfModified();
@@ -175,7 +179,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
 
     case COMMAND_CHECK_TEXTURES:
-    	TfrmImageLib::CheckImageLib();
+    	TfrmImageLib::ImportTextures();
     	break;
 
 	case COMMAND_IMAGE_EDITOR:

@@ -49,12 +49,12 @@ void CActorTools::PreviewModel::SaveParams(TFormStorage* s)
 
 void CActorTools::PreviewModel::OnDestroy()
 {
-	TfrmProperties::DestroyProperties(m_Props);
+	TProperties::DestroyForm(m_Props);
 }
 
 void CActorTools::PreviewModel::OnCreate()
 {
-    m_Props = TfrmProperties::CreateProperties(0,alNone);
+    m_Props = TProperties::CreateForm(0,alNone);
 }
 
 void CActorTools::PreviewModel::Clear()
@@ -82,12 +82,12 @@ xr_token		sa_token					[ ]={
 
 void CActorTools::PreviewModel::SetPreferences()
 {
-    m_Props->BeginFillMode("Preview prefs");
-	m_Props->AddItem	(0,PROP_FLAG,	"Scroll",		m_Props->MakeFlagValue(&m_dwFlags,pmScroll));
-	m_Props->AddItem	(0,PROP_FLOAT, 	"Speed (m/c)",	m_Props->MakeFloatValue(&m_fSpeed, -10000.f,10000.f,0.01f,2));
-	m_Props->AddItem	(0,PROP_FLOAT, 	"Segment (m)",	m_Props->MakeFloatValue(&m_fSegment, -10000.f,10000.f,0.01f,2));
-    m_Props->AddItem	(0,PROP_TOKEN,	"Scroll axis",	m_Props->MakeTokenValue(&m_ScrollAxis,sa_token));
-    m_Props->EndFillMode();
+	PropValueVec values;
+	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PROP::CreateFlagValue	(pmScroll));
+	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PROP::CreateFloatValue	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PROP::CreateFloatValue	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateTokenValue	(sa_token));
+	m_Props->AssignValues(values,true,"Preview prefs");
     m_Props->ShowProperties();
 }
 void CActorTools::PreviewModel::Render()
@@ -138,8 +138,8 @@ bool CActorTools::OnCreate(){
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectProps = TfrmProperties::CreateProperties(fraLeftBar->paObjectProps,alClient,ObjectModified);
-    m_MotionProps = TfrmProperties::CreateProperties(fraLeftBar->paMotionProps,alClient,MotionModified);
+    m_ObjectProps = TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,ObjectModified);
+    m_MotionProps = TProperties::CreateForm(fraLeftBar->paMotionProps,alClient,MotionModified);
     m_PreviewObject.OnCreate();
 
     // key bar
@@ -160,8 +160,8 @@ void CActorTools::OnDestroy(){
     m_bReady			= false;
 
 	// unlock
-	TfrmProperties::DestroyProperties(m_ObjectProps);
-	TfrmProperties::DestroyProperties(m_MotionProps);
+	TProperties::DestroyForm(m_ObjectProps);
+	TProperties::DestroyForm(m_MotionProps);
     m_PreviewObject.OnDestroy();
 
     m_PreviewObject.Clear();
@@ -458,14 +458,14 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
 		m_pEditObject->a_vPosition.add(amount);
-        m_ObjectProps->RefreshProperties();
+        m_ObjectProps->RefreshForm();
         ObjectModified();
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
         m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
-        m_ObjectProps->RefreshProperties();
+        m_ObjectProps->RefreshForm();
         ObjectModified();
     }break;
     case eaScale:{
@@ -560,35 +560,17 @@ void __fastcall CActorTools::OnAfterTextureEdit(TElTreeItem* item, PropValue* se
 void CActorTools::FillObjectProperties()
 {
 	R_ASSERT(m_pEditObject);
-    m_ObjectProps->BeginFillMode();
-    TElTreeItem* M=0;
-    TElTreeItem* N=0;
-	m_ObjectProps->AddItem(0,PROP_FLAG,	"Make progressive",	m_ObjectProps->MakeFlagValue(&m_pEditObject->GetFlags(),CEditableObject::eoProgressive));
-    M = m_ObjectProps->AddItem(0,PROP_MARKER,	"Transformation");
-    {
-		m_ObjectProps->AddItem	(M,PROP_VECTOR,	"Position",	m_ObjectProps->MakeVectorValue(&m_pEditObject->a_vPosition,	-10000,	10000,0.01,2,OnAfterTransformation));
-		m_ObjectProps->AddItem	(M,PROP_VECTOR,	"Rotation",	m_ObjectProps->MakeVectorValue(&m_pEditObject->a_vRotate,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-    }
-    // surfaces
-    M = m_ObjectProps->AddItem(0,PROP_MARKER,		"Surfaces");
-    for (SurfaceIt s_it=m_pEditObject->FirstSurface(); s_it!=m_pEditObject->LastSurface(); s_it++){
-        CSurface* SURF=*s_it;
-        N=m_ObjectProps->AddItem(M,PROP_MARKER,SURF->_Name(),SURF);
-        m_ObjectProps->AddItem(N,PROP_ANSI_SH_ENGINE,	"Shader",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_ShaderName, 	OnAfterShaderEdit));
-//        m_ObjectProps->AddItem(N,PROP_ANSI_SH_COMPILE,	"Compile",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_ShaderXRLCName));
-        m_ObjectProps->AddItem(N,PROP_ANSI_TEXTURE,		"Texture",	m_ObjectProps->MakeAnsiTextValue(&SURF->m_Texture,		OnAfterTextureEdit));
-    }
-    // geometry
-    M = m_ObjectProps->AddItem	(0,PROP_MARKER,	"Summary");
-    AnsiString t; t.sprintf("V: %d, F: %d",m_pEditObject->GetVertexCount(),m_pEditObject->GetFaceCount());
-    m_ObjectProps->AddItem		(M,PROP_MARKER2,"Object",t.c_str());
-    M = m_ObjectProps->AddItem	(M,PROP_MARKER,	"Meshes");
-    for (EditMeshIt m_it=m_pEditObject->FirstMesh(); m_it!=m_pEditObject->LastMesh(); m_it++){
-        CEditableMesh* MESH=*m_it;
-        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-        m_ObjectProps->AddItem(M,PROP_MARKER2,MESH->GetName(),t.c_str());
-    }
-	m_ObjectProps->EndFillMode(false);
+
+	PropValueVec values;
+
+    FILL_PROP(values, "Flags\\Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlagValue(CEditableObject::eoDynamic));
+    FILL_PROP(values, "Transform\\Position",			&m_pEditObject->a_vPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
+    FILL_PROP(values, "Transform\\Rotation",			&m_pEditObject->a_vRotate, 		PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+
+    m_pEditObject->FillPropSurf		(values,OnAfterShaderEdit,OnAfterTextureEdit);
+    m_pEditObject->FillPropSummary	(values);
+    
+	m_ObjectProps->AssignValues(values,false);
 }
                                
 

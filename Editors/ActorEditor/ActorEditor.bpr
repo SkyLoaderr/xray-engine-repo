@@ -61,7 +61,7 @@
       Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\xrSkin1W.obj 
       Intermediate\TextForm.obj Intermediate\ExportObjectOGF.obj 
       Intermediate\ImageEditor.obj Intermediate\ETextureParams.obj 
-      Intermediate\ShaderFunction.obj"/>
+      Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -76,7 +76,7 @@
     <LIBRARIES value="editor.lib elpackB6.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine;Editor;Editor;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine;Engine;Editor;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;Editor;Editor;Editor;Editor;Editor"/>
+    <PATHCPP value=".;editor;engine;lib;Engine\BLENDERS;Engine\Animations"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -247,6 +247,8 @@
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\SceneClassList.h" FORMNAME="" UNITNAME="SceneClassList.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

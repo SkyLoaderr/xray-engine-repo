@@ -71,7 +71,7 @@ object fraBottomBar: TfraBottomBar
         Color = 10528425
         TabOrder = 1
       end
-      object paCameraPos: TPanel
+      object paCamera: TPanel
         Left = 86
         Top = 0
         Width = 130

@@ -91,11 +91,11 @@ void TfrmPropertiesEObject::FillBasicProps()
 	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoHOM));
 	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoUsingLOD));
 
-		O->FillPropSummary(values);
-
 	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
     	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVectorValue(0.01,	10000,0.01,2,OnAfterTransformation));
+
+		O->FillPropSummary(values);
 
         m_BasicProp->AssignValues(values,true);
     }else{

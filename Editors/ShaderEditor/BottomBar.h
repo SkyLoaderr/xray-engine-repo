@@ -37,7 +37,7 @@ __published:	// IDE-managed Components
     TMenuItem *N4;
     TPanel *paStatus;
 	TPanel *paStatusLabel;
-	TPanel *paCameraPos;
+	TPanel *paCamera;
 	TMenuItem *Objects1;
 	TPanel *paButtons;
 	TExtBtn *ebLog;
@@ -77,6 +77,7 @@ private:	// User declarations
 public:
 	float fStatusProgress;
     float fMaxVal;
+    AnsiString sProgressTitle;
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
 };
