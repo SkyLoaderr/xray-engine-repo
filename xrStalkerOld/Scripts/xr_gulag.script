@@ -43,7 +43,7 @@ function fract:loadObject( obj_id, jobN )
 	self.ObjectJob[obj_id] = jobN
 
 	-- подписаться на объект
-	level.client_spawn_manager():add( obj_id, self.smrttrn_id, self, "spawn_callback" )
+	level.client_spawn_manager():add( obj_id, self.smrttrn_id, fract.spawn_callback, self )
 end
 function fract:spawn_callback( id, obj )
 	if obj then
@@ -401,14 +401,6 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
-	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
-		return npc_community == "military"
-	end
-
-	if gulag_type == "rad_antena" then
-		return npc_community == "monolith"
-	end
-
 	if gulag_garbage.checkStalker(npc_community, gulag_type) then
 		return true
 	end
@@ -416,7 +408,15 @@ function checkStalker(npc_community, gulag_type)
 	if gulag_bar.checkStalker(npc_community, gulag_type) then
 		return true
 	end
-	
+
+	if gulag_radar.checkStalker(npc_community, gulag_type) then
+		return true
+	end
+
+	if gulag_agroprom.checkStalker(npc_community, gulag_type) then
+		return true
+	end
+
 	return false
 end
 
