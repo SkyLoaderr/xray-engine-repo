@@ -127,7 +127,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 		}
 		else {
-			Fvector				nPos	= vPosition;
+			Fvector				nPos	= Position();
 			int node					= getAI().q_LoadSearch(nPos);
 
 			if (node<0)			{
@@ -142,11 +142,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 		}
 	}
-	else 
-	{
-		Fvector				nPos	= Position();
-		int node					= getAI().q_LoadSearch(nPos);
 
+#pragma todo("Incorrect spawning")
 	if ((a_obj->ID_Parent != 0xffff) && !Parent) {
 		Parent						= this;
 		inherited::net_Spawn		(DC);
@@ -154,7 +151,6 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 	else
 		inherited::net_Spawn		(DC);
-
 
 	//Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
 
