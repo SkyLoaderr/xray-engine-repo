@@ -105,6 +105,8 @@ public:
 	CPersonalRelationFunction				*m_pfPersonalRelation;
 	CPersonalGreedFunction					*m_pfPersonalGreed;
 	CPersonalAggressivenessFunction			*m_pfPersonalAggressiveness;
+	CEyeRange								*m_pfEyeRange;
+	CMaxMonsterHealth						*m_pfMaxMonsterHealth;
 
 	CEnemyHealthFunction					*m_pfEnemyHealth;
 	CEnemyCreatureTypeFunction				*m_pfEnemyCreatureType;

@@ -175,6 +175,8 @@ CAI_DDD::CAI_DDD()
 	m_fpaBaseFunctions[27]				= m_pfPersonalRelation		= xr_new<CPersonalRelationFunction>		();		
 	m_fpaBaseFunctions[28]				= m_pfPersonalGreed			= xr_new<CPersonalGreedFunction>		();			
 	m_fpaBaseFunctions[29]				= m_pfPersonalAggressiveness= xr_new<CPersonalAggressivenessFunction>();	
+	m_fpaBaseFunctions[31]				= m_pfEyeRange				= xr_new<CEyeRange>						();	
+	m_fpaBaseFunctions[30]				= m_pfMaxMonsterHealth		= xr_new<CMaxMonsterHealth>				();	
 										  
 	m_fpaBaseFunctions[41]				= m_pfEnemyHealth			= xr_new<CEnemyHealthFunction>			();			
 	m_fpaBaseFunctions[42]				= m_pfEnemyCreatureType		= xr_new<CEnemyCreatureTypeFunction>	();		
@@ -192,9 +194,9 @@ CAI_DDD::CAI_DDD()
 	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.efd",				this);
 	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.efd",				this);
 	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.efd",	this);
-//	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.efd",				this);
-//	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.efd",			this);
-//	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.efd",		this);
+	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.efd",				this);
+	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.efd",				this);
+	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.efd",		this);
 }
 
 CAI_DDD::~CAI_DDD()
