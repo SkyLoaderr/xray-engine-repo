@@ -1,0 +1,15 @@
+function set_switch_online(story_id,value)
+	alife():set_switch_online(alife():story_object(story_id):id(),value)
+end
+
+function set_switch_offline(story_id,value)
+	alife():set_switch_offline(alife():story_object(story_id):id(),value)
+end
+
+function set_interactive(story_id,value)
+	alife():set_interactive(alife():story_object(story_id):id(),value)
+end
+
+function check_if_on_level(object_id)
+	return alife():object(object_id).online
+end
