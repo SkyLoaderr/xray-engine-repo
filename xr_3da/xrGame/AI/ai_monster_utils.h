@@ -49,4 +49,14 @@ IC bool	is_angle_between(float yaw, float yaw_from, float yaw_to)
 	else return false;
 }
 
+IC void velocity_lerp(float &_cur, float _target, float _accel, float _dt)
+{
+	if (fsimilar(_cur, _target)) return;
 
+	if (_target > _cur) 
+		_cur += _accel * _dt;
+	else 
+		_cur -= _accel * _dt;
+
+	clamp(_cur, 0.f, _target);
+}

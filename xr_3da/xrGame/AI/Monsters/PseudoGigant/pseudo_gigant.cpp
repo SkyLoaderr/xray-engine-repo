@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "ai_chimera.h"
-#include "../../CharacterPhysicsSupport.h"
-#include "../../phmovementcontrol.h"
-#include "../../xrserver_objects_alife_monsters.h"
+#include "pseudo_gigant.h"
+#include "../../../CharacterPhysicsSupport.h"
+#include "../../../phmovementcontrol.h"
+#include "../../../xrserver_objects_alife_monsters.h"
 
 
-CAI_Chimera::CAI_Chimera() 
+CMonsterPseudoGigant::CMonsterPseudoGigant() 
 {
 	Init							();
 
@@ -14,47 +14,40 @@ CAI_Chimera::CAI_Chimera()
 
 }
 
-CAI_Chimera::~CAI_Chimera()
+CMonsterPseudoGigant::~CMonsterPseudoGigant()
 {
 	xr_delete						(m_pPhysics_support);
 }
 
 
-void CAI_Chimera::Init()
+void CMonsterPseudoGigant::Init()
 {
 	inherited::Init();
-	
+
 }
 
-void CAI_Chimera::reinit()
+void CMonsterPseudoGigant::reinit()
 {
 	inherited::reinit();
-	m_pPhysics_support->in_Init();
+	m_pPhysics_support->in_NetSpawn	();
 
 	cur_anim	= 0;
-
-	CChimeraMovementManager::reinit();
 }
 
-void CAI_Chimera::Load(LPCSTR section)
+void CMonsterPseudoGigant::Load(LPCSTR section)
 {
-	inherited::Load					(section);
-	CChimeraMovementManager::Load	(section);
-	
+	inherited::Load(section);
+
 	m_pPhysics_support->in_Load		(section);
-
 }
 
-void CAI_Chimera::reload(LPCSTR	section)
+void CMonsterPseudoGigant::reload(LPCSTR	section)
 {
-	inherited::reload				(section);
-	CChimeraMovementManager::reload	(section);
-
-
+	inherited::reload(section);
 }
 
 
-BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
+BOOL CMonsterPseudoGigant::net_Spawn (LPVOID DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
@@ -62,64 +55,40 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract		*tpMonster = dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 	R_ASSERT						(tpMonster);
-	
-	// note, in_NetSpawn should precede 
-	m_pPhysics_support->in_NetSpawn			();
+
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
+
 
 	return TRUE;
 }
 
-void CAI_Chimera::UpdateCL()
+void CMonsterPseudoGigant::UpdateCL()
 {
 	inherited::UpdateCL();
-	
+
 	m_pPhysics_support->in_UpdateCL();
 }
 
-void CAI_Chimera::net_Destroy()
+void CMonsterPseudoGigant::net_Destroy()
 {
 	inherited::net_Destroy	();
 	m_pPhysics_support->in_NetDestroy();
 }
 
-void CAI_Chimera::shedule_Update(u32 dt)
+void CMonsterPseudoGigant::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
 	m_pPhysics_support->in_shedule_Update(dt);
 }
 
-void CAI_Chimera::Think()
+void CMonsterPseudoGigant::Think()
 {
-	if (!g_Alive()) return;
-	
-	CChimeraMovementManager::update();
 
-	if (!CDetailPathManager::completed(Position()) && CMovementManager::enabled()) {
-		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
-		u32 next_point_velocity_index = u32(-1);
-		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
-			next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
-
-		if ((cur_point_velocity_index == eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
-				cur_point_velocity_index = next_point_velocity_index;
-			}
-		}
-
-		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(cur_point_velocity_index);
-		R_ASSERT(it != m_movement_params.end());
-
-		m_fCurSpeed		= _abs((*it).second.linear_velocity);
-		m_body.speed	= (*it).second.angular_velocity;
-	} else m_fCurSpeed = 0;
-	
-	set_desirable_speed						(m_fCurSpeed);
 }
 
-void CAI_Chimera::Die()
+void CMonsterPseudoGigant::Die()
 {
 	inherited::Die();
 }
@@ -127,12 +96,12 @@ void CAI_Chimera::Die()
 
 static void __stdcall AnimEndCallback(CBlend* B)
 {
-	CAI_Chimera *pC = (CAI_Chimera*)B->CallbackParam;
+	CMonsterPseudoGigant *pC = (CMonsterPseudoGigant*)B->CallbackParam;
 	pC->cur_anim = 0;
 }
 
 
-void CAI_Chimera::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
+void CMonsterPseudoGigant::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	if (cur_anim == 0) {
 		cur_anim = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_idle_0");
@@ -140,7 +109,7 @@ void CAI_Chimera::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	}
 }
 
-BOOL CAI_Chimera::feel_vision_isRelevant(CObject* O)
+BOOL CMonsterPseudoGigant::feel_vision_isRelevant(CObject* O)
 {
 	if (CLSID_ENTITY!=O->CLS_ID) return FALSE;
 
@@ -153,7 +122,7 @@ BOOL CAI_Chimera::feel_vision_isRelevant(CObject* O)
 
 
 
-void CAI_Chimera::net_Export(NET_Packet& P) 
+void CMonsterPseudoGigant::net_Export(NET_Packet& P) 
 {
 	R_ASSERT				(Local());
 
@@ -186,7 +155,7 @@ void CAI_Chimera::net_Export(NET_Packet& P)
 	}
 }
 
-void CAI_Chimera::net_Import(NET_Packet& P)
+void CMonsterPseudoGigant::net_Import(NET_Packet& P)
 {
 	R_ASSERT				(Remote());
 	net_update				N;
@@ -228,5 +197,3 @@ void CAI_Chimera::net_Import(NET_Packet& P)
 	}
 
 }
-
-

@@ -15,6 +15,7 @@
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../ai_monster_jump.h"
+#include "../ai_monster_utils.h"
 
 CAI_Biting::CAI_Biting()
 {
@@ -59,7 +60,8 @@ void CAI_Biting::Init()
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
 
-
+	m_velocity.current				= 0.f;
+	m_velocity.target				= 0.f;
 }
 
 void CAI_Biting::reinit()
@@ -135,16 +137,13 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
 	_sd->m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
 
-	_sd->m_fsTurnNormalAngular			= pSettings->r_float(section,"TurnNormalAngular");
-	_sd->m_fsWalkFwdNormal				= pSettings->r_float(section,"WalkFwdNormal");
-	_sd->m_fsWalkFwdDamaged				= pSettings->r_float(section,"WalkFwdDamaged");
-	_sd->m_fsWalkBkwdNormal				= pSettings->r_float(section,"WalkBkwdNormal");
- 	_sd->m_fsWalkAngular				= pSettings->r_float(section,"WalkAngular");
-	_sd->m_fsRunFwdNormal				= pSettings->r_float(section,"RunFwdNormal");
-	_sd->m_fsRunFwdDamaged				= pSettings->r_float(section,"RunFwdDamaged");
-	_sd->m_fsRunAngular					= pSettings->r_float(section,"RunAngular");
-	_sd->m_fsDrag						= pSettings->r_float(section,"Drag");
-	_sd->m_fsSteal						= pSettings->r_float(section,"Steal");
+	_sd->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
+	_sd->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
+	_sd->m_fsVelocityWalkFwdDamaged.Load(section,"Velocity_WalkFwdDamaged");
+	_sd->m_fsVelocityRunFwdNormal.Load	(section,"Velocity_RunFwdNormal");
+	_sd->m_fsVelocityRunFwdDamaged.Load (section,"Velocity_RunFwdDamaged");
+	_sd->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
+	_sd->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
 
 	_sd->m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
 	_sd->m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
@@ -244,13 +243,13 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	}
 
 
-	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(0.f,						_sd->m_fsTurnNormalAngular	)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular		)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular			)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsWalkFwdDamaged,	_sd->m_fsWalkAngular		)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(_sd->m_fsVelocityStandTurn.velocity.linear,		_sd->m_fsVelocityStandTurn.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsVelocityWalkFwdNormal.velocity.linear,	_sd->m_fsVelocityWalkFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsVelocityRunFwdNormal.velocity.linear,	_sd->m_fsVelocityRunFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsVelocityWalkFwdDamaged.velocity.linear,	_sd->m_fsVelocityWalkFwdDamaged.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsVelocityRunFwdDamaged.velocity.linear,	_sd->m_fsVelocityRunFwdDamaged.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsVelocitySteal.velocity.linear,			_sd->m_fsVelocitySteal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsVelocityDrag.velocity.linear,			_sd->m_fsVelocityDrag.velocity.angular)));
 
 	return(TRUE);
 }
@@ -365,6 +364,9 @@ void CAI_Biting::UpdateCL()
 
 
 	m_pPhysics_support->in_UpdateCL();
+
+	velocity_lerp	(m_velocity.current, m_velocity.target, 1.5f, Device.fTimeDelta);
+	m_fCurSpeed		= m_velocity.current;
 
 #ifdef DEBUG
 	HDebug->M_Update	();

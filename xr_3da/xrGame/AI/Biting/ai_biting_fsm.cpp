@@ -134,10 +134,10 @@ void CAI_Biting::UpdateVelocityWithPath()
 		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(cur_point_velocity_index);
 		R_ASSERT(it != m_movement_params.end());
 
-		m_fCurSpeed		= _abs((*it).second.linear_velocity);
-		m_body.speed	= (*it).second.angular_velocity;
+		m_velocity.target	= _abs((*it).second.linear_velocity);
+		m_body.speed		= (*it).second.angular_velocity;
 
-	} else m_fCurSpeed	= 0;
+	} else m_velocity.target = 0;
 }
 
 

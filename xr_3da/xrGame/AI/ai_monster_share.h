@@ -76,6 +76,17 @@ public:
 	bool	IsLoaded		() {return _sd->IsLoaded();}
 	void	Prepare			(CLASS_ID cls_id)	{_sd = pSharedObj->get_shared(cls_id);}
 	void	Finish			()	{_sd->SetLoad();}
+
+	
+	void	load_shared		(CLASS_ID cls_id, LPCSTR section) {
+		_sd = pSharedObj->get_shared(cls_id);
+		if (!_sd->IsLoaded()) {
+			load_shared(section);
+			_sd->SetLoad();
+		}
+	}
+
+	virtual void load_shared (LPCSTR section) {}
 };
 
 

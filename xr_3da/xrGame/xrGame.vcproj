@@ -961,6 +961,20 @@
 					<File
 						RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
 					</File>
+					<Filter
+						Name="Movement Manager"
+						Filter="">
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_movement.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\chimera\ai_chimera_movement.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="StateManager"
+						Filter="">
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_crow"
@@ -1112,6 +1126,9 @@
 					</File>
 					<File
 						RelativePath=".\Ai\ai_monster_state.h">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_types.h">
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_utils.cpp">
@@ -1567,6 +1584,21 @@
 					</File>
 					<File
 						RelativePath="AI\Zombie\ai_zombie_templates.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="PseudoGigant"
+					Filter="">
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 			</Filter>

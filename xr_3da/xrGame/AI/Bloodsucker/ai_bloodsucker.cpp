@@ -68,27 +68,26 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,										0,										PS_LIE);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, inherited::_sd->m_fsWalkFwdNormal,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, inherited::_sd->m_fsWalkFwdDamaged,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, inherited::_sd->m_fsWalkBkwdNormal,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	inherited::_sd->m_fsRunFwdNormal,		inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	inherited::_sd->m_fsRunFwdDamaged,		inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, 0,										0,										PS_SIT);
-	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,										inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,										0,										PS_SIT);
-	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,										0,										PS_SIT);
-	MotionMan.AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, 0,										0,										PS_SIT);
-	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,				inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, 0,										0,										PS_STAND);	
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::_sd->m_fsVelocityWalkFwdNormal,		PS_STAND);
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &inherited::_sd->m_fsVelocityWalkFwdDamaged,	PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND);
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&inherited::_sd->m_fsVelocityRunFwdDamaged,		PS_STAND);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::_sd->m_fsVelocitySteal,				PS_STAND);
+	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimMiscAction_00,	"stand_to_aggressive_",	-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);	
 	
 	// define transitions
 //	MotionMan.AddTransition(PS_STAND,			eAnimThreaten,	eAnimMiscAction_00,	false);

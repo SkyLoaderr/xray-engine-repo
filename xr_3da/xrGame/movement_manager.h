@@ -91,7 +91,8 @@ private:
 	float									m_speed;
 	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
-	u32										m_dwCurrentFrame;
+	u32										m_dwFrameReinit;
+	u32										m_dwFrameReload;
 	u32										m_refresh_rate;
 	u32										m_last_update;
 

@@ -13,7 +13,8 @@ CMovementManager::CMovementManager	()
 {
 	m_base_game_selector			= xr_new<CGraphEngine::CBaseParameters>();
 	m_base_level_selector			= xr_new<CGraphEngine::CBaseParameters>();
-	m_dwCurrentFrame				= u32(-1);
+	m_dwFrameReinit					= u32(-1);
+	m_dwFrameReload					= u32(-1);
 	Init							();
 }
 
@@ -33,11 +34,8 @@ void CMovementManager::Load			(LPCSTR section)
 
 void CMovementManager::reinit		()
 {
-	if (m_dwCurrentFrame == Device.dwFrame)
+	if (!frame_check(m_dwFrameReinit))
 		return;
-
-	m_dwCurrentFrame						= Device.dwFrame;
-	
 	m_time_work								= 30000*CPU::cycles_per_microsec;
 	m_speed									= 0.f;
 	m_path_type								= ePathTypeNoPath;
@@ -65,10 +63,8 @@ void CMovementManager::reinit		()
 
 void CMovementManager::reload		(LPCSTR section)
 {
-	if (m_dwCurrentFrame == Device.dwFrame)
+	if (!frame_check(m_dwFrameReload))
 		return;
-
-	m_dwCurrentFrame		= Device.dwFrame;
 }
 
 void CMovementManager::update_path()

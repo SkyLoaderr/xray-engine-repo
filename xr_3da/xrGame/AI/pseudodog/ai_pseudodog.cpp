@@ -50,7 +50,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	CJumping::Load	(section);
 
 
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::_sd->m_fsRunAngular);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::_sd->m_fsVelocityRunFwdNormal.velocity.angular);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
@@ -58,33 +58,30 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, 0,									inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, 0,									inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,									0,										PS_LIE);
-	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,									0,										PS_LIE);
-	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,									0,										PS_SIT);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,									inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, inherited::_sd->m_fsWalkBkwdNormal,	inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, inherited::_sd->m_fsWalkFwdDamaged,	inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, inherited::_sd->m_fsRunFwdDamaged,	inherited::_sd->m_fsRunAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, inherited::_sd->m_fsDrag,			inherited::_sd->m_fsWalkAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, 0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, 0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, 0,									0,									PS_STAND);
-
-	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,									0,										PS_SIT);
-	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,									0,										PS_STAND);	
-	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,									0,										PS_SIT);
-	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	0,									0,										PS_LIE);
-	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, 0,									0,										PS_LIE);
-
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::_sd->m_fsVelocityWalkFwdNormal,		PS_STAND);
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &inherited::_sd->m_fsVelocityWalkFwdDamaged,	PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND);
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, &inherited::_sd->m_fsVelocityRunFwdDamaged,		PS_STAND);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &inherited::_sd->m_fsVelocityDrag,				PS_STAND);
+	MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, &inherited::_sd->m_fsVelocitySteal,				PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);	
+	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_SIT);
+	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]

@@ -2,11 +2,13 @@
 
 #include "../../CustomMonster.h"
 #include "../../state_internal.h"
+#include "ai_chimera_movement.h"
 
 class CCharacterPhysicsSupport;
 
-class CAI_Chimera : 	public CCustomMonster { 
-						//public CStateInternal<CAI_Chimera>  {
+class CAI_Chimera : 	public CCustomMonster,
+						public CChimeraMovementManager,
+						public CStateInternal<CAI_Chimera>  {
 
 	typedef CCustomMonster		inherited;
 
@@ -38,5 +40,20 @@ public:
 	virtual BOOL			feel_vision_isRelevant		(CObject *O);
 	
 	virtual void			HitSignal					(float amount, Fvector& vLocalDir, CObject* who, s16 element) {}
+	virtual void			Hit							(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound) {}
+
+	virtual void			OnHUDDraw					(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
+	virtual void			OnEvent						(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}
+	virtual u16				PHGetSyncItemsNumber		()							{return inherited::PHGetSyncItemsNumber();}
+	virtual CPHSynchronize*	PHGetSyncItem				(u16 item)					{return inherited::PHGetSyncItem(item);}
+	virtual void			PHUnFreeze					()							{return inherited::PHUnFreeze();}
+	virtual void			PHFreeze					()							{return inherited::PHFreeze();}
+	virtual BOOL			UsedAI_Locations			()							{return inherited::UsedAI_Locations();}
+	virtual const SRotation	Orientation					() const					{return inherited::Orientation();}
+	virtual void			renderable_Render			()							{return inherited::renderable_Render();} 
+
+#ifdef DEBUG
+	virtual void			OnRender					() {}
+#endif
 };
 

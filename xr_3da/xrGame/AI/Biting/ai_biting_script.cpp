@@ -36,6 +36,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 //
 //	HDebug->SetActive();
 
+	Msg("Cur speed = [%f]", m_fCurSpeed);
 	return			(true);		
 }
 

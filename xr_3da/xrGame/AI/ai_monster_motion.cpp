@@ -43,7 +43,7 @@ void CMotionManager::Init (CAI_Biting	*pM)
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
-void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s)
+void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s)
 {
 	CHECK_SHARED_LOADED();
 	
@@ -51,8 +51,7 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 
 	new_item.target_name	= tn;
 	new_item.spec_id		= s_id;
-	new_item.speed.linear	= speed;
-	new_item.speed.angular	= r_speed;
+	new_item.velocity		= vel;
 	new_item.pos_state		= p_s;
 
 	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
@@ -350,8 +349,9 @@ void CMotionManager::ApplyParams()
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
 	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
-	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
-	if (!b_forced_velocity) pMonster->CMovementManager::m_body.speed = item_it->second.speed.angular;
+	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
+	pMonster->m_velocity.target	= item_it->second.velocity->velocity.linear;
+	if (!b_forced_velocity) pMonster->CMovementManager::m_body.speed = item_it->second.velocity->velocity.angular;
 }
 
 // Callback на завершение анимации
@@ -366,9 +366,9 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-	if (!pMonster->MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->IsMovingOnPath())) {
-		cur_anim = eAnimStandIdle;
-	}
+//	if (!pMonster->MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->IsMovingOnPath())) {
+//		cur_anim = eAnimStandIdle;
+//	}
 }
 
 void CMotionManager::CheckReplacedAnim()

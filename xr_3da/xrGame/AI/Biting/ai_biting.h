@@ -20,27 +20,6 @@
 
 #include "../ai_monster_movement.h"
 
-// Enemy flags
-#define FLAG_ENEMY_DIE					( 1 << 0 )
-#define FLAG_ENEMY_LOST_SIGHT			( 1 << 1 )
-#define FLAG_ENEMY_GO_CLOSER			( 1 << 2 )
-#define FLAG_ENEMY_GO_FARTHER			( 1 << 3 )
-#define FLAG_ENEMY_GO_CLOSER_FAST		( 1 << 4 )
-#define FLAG_ENEMY_GO_FARTHER_FAST		( 1 << 5 )
-#define FLAG_ENEMY_STANDING				( 1 << 6 )
-#define FLAG_ENEMY_HIDING				( 1 << 7 )
-#define FLAG_ENEMY_RUN_AWAY				( 1 << 8 )
-#define FLAG_ENEMY_DOESNT_KNOW_ABOUT_ME	( 1 << 9 )
-#define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
-#define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
-
-#define SOUND_ATTACK_HIT_MIN_DELAY	1000
-#define MORALE_NORMAL				0.5f
-
-#define STANDART_ATTACK -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
-#define SIMPLE_ENEMY_HIT_TEST
-//#define TEST_EAT_STATE
-
 
 class CCharacterPhysicsSupport;
 
@@ -167,17 +146,11 @@ public:
 	
 	// Other
 			void			vfUpdateParameters				();
-		
 			void			HitEntity						(const CEntity *pEntity, float fDamage, Fvector &dir);
-
-	
-
 
 	// Other 
 			void			SetDirectionLook				(bool bReversed = false);
 	
-
-
 			
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);
@@ -274,8 +247,12 @@ public:
 	
 
 	void	UpdateVelocities	(STravelParams cur_velocity);
-
 	xr_vector<STravelParams> velocities;
+
+	struct {
+		float current;
+		float target;
+	} m_velocity;
 
 
 #ifdef 	DEEP_TEST_SPEED

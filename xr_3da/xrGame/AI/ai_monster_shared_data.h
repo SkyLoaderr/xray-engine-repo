@@ -1,54 +1,18 @@
 #pragma once 
 #include "ai_monster_share.h"
-
-
-
-#define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
-#define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
-
-#define SHARE_ON_LOAD(pmt) {							\
-	pmt::Prepare(SUB_CLS_ID);						\
-	if (!pmt::IsLoaded()) LoadShared(section);		\
-	pmt::Finish();									\
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// StepSounds
-struct SStepSound {
-	float	vol;
-	float	freq;
-};
-DEFINE_MAP(EMotionAnim, SStepSound, STEP_SOUND_MAP, STEP_SOUND_MAP_IT);
-//////////////////////////////////////////////////////////////////////////
-
-struct SAttackEffector {
-	SPPInfo	ppi;
-	float	time;
-	float	time_attack;
-	float	time_release;
-
-	// camera effects
-	float	ce_time;
-	float	ce_amplitude;
-	float	ce_period_number;
-	float	ce_power;
-};
-
+#include "ai_monster_defs.h"
 
 class _biting_shared : public CSharedResource {
 public:
 	// float speed factors
-	float					m_fsTurnNormalAngular;
-	float					m_fsWalkFwdNormal;
-	float					m_fsWalkFwdDamaged;
-	float					m_fsWalkBkwdNormal;
-	float 					m_fsWalkAngular;
-	float 					m_fsRunFwdNormal;
-	float 					m_fsRunFwdDamaged;
-	float 					m_fsRunAngular;
-	float					m_fsDrag;
-	float					m_fsSteal;
+	SVelocityParam			m_fsVelocityNone;
+	SVelocityParam			m_fsVelocityStandTurn;
+	SVelocityParam			m_fsVelocityWalkFwdNormal;
+	SVelocityParam			m_fsVelocityWalkFwdDamaged;
+	SVelocityParam			m_fsVelocityRunFwdNormal;
+	SVelocityParam			m_fsVelocityRunFwdDamaged;
+	SVelocityParam 			m_fsVelocityDrag;
+	SVelocityParam 			m_fsVelocitySteal;
 
 	u32						m_dwProbRestWalkFree;
 	u32						m_dwProbRestStandIdle;
@@ -99,6 +63,19 @@ public:
 	u8						m_bUsedSquadAttackAlg;
 
 	SAttackEffector			m_attack_effector;
+};
+
+class _motion_shared : public CSharedResource {
+public:
+	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
+	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
+	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
+	ATTACK_ANIM				aa_all;				// список атак
+
+	t_fx_index				default_fx_indexes;
+	FX_MAP_STRING			fx_map_string;
+	FX_MAP_U16				fx_map_u16;
+	bool					map_converted;
 };
 
 
