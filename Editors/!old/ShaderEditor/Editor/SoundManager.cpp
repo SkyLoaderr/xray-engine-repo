@@ -182,6 +182,7 @@ void CSoundManager::MakeGameSound(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR 
     F.w_u32			(OGG_COMMENT_VERSION);
     F.w_float		(THM->m_fMinDist);
     F.w_float		(THM->m_fMaxDist);
+    F.w_float		(THM->m_fVolume);
     F.w_u32			(THM->m_uGameType);
 	if (!ogg_enc(src_name,game_name, THM->m_fQuality,F.pointer(),F.size())){
     	FS.file_delete(game_name);

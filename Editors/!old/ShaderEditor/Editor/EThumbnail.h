@@ -120,6 +120,7 @@ private:
 	float			m_fQuality;
     float			m_fMinDist;
     float			m_fMaxDist;
+    float			m_fVolume;
     u32				m_uGameType;
 public:
 					ESoundThumbnail	(LPCSTR src_name, bool bLoad=true);

@@ -1,11 +1,11 @@
-object ItemList: TItemList
-  Left = 493
-  Top = 303
-  Width = 320
-  Height = 422
+object Properties: TProperties
+  Left = 553
+  Top = 379
+  Width = 424
+  Height = 329
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Item list'
+  Caption = 'Shader Properties'
   Color = clGray
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,19 +18,40 @@ object ItemList: TItemList
   ParentBiDiMode = False
   Scaled = False
   OnClose = FormClose
+  OnDestroy = FormDestroy
+  OnDeactivate = FormDeactivate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object tvItems: TElTree
+  object Bevel1: TBevel
     Left = 0
     Top = 0
-    Width = 312
-    Height = 378
+    Width = 416
+    Height = 1
+    Align = alTop
+    Shape = bsFrame
+  end
+  object spFolders: TSplitter
+    Left = 0
+    Top = 1
+    Width = 2
+    Height = 282
+    Cursor = crHSplit
+    Color = 4934475
+    ParentColor = False
+    Visible = False
+  end
+  object tvProperties: TElTree
+    Left = 2
+    Top = 1
+    Width = 414
+    Height = 282
     Cursor = crDefault
     LeftPosition = 0
     HeaderPopupMenu = pmSystem
     DragCursor = crDrag
     Align = alClient
+    AlwaysKeepSelection = False
     AutoCollapse = False
     AutoLineHeight = False
     DockOrientation = doNoOrient
@@ -89,9 +110,8 @@ object ItemList: TItemList
     Color = clWhite
     CustomCheckboxes = True
     CustomPlusMinus = True
-    DragAllowed = True
     DrawFocusRect = False
-    DragTrgDrawMode = dtdDownColorLine
+    ExpandOnDblClick = False
     ExplorerEditMode = True
     FilteredVisibility = True
     FocusedSelectColor = 10526880
@@ -107,12 +127,17 @@ object ItemList: TItemList
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF0100000064671901002A0000FFFFFFFF0000010100002062C3000000
-      00000000102700000001016F4014FF04000000000100616CFFFFFFFF00000167
-      0000000000000000000100000000000074656D73566563262076616C7565732C
-      20626F6F6C2066756C6C5F657870616E642C20626F6F6C2066756C6C5F736F72
-      743D66616C7365293B0D0A20202020626F6F6C20060000004974656D73000100
-      0000000000000000000000}
+      F4FFFFFF0200000084BDF40600000000FFFFFFFF0000010001006F727D000000
+      32000000102700000000000014B295040000000000006465000000000000012E
+      00000000000000000001000000000000633A5C7261645C626F726C616E645C43
+      4255494C447E325C680000002F000000000000001D0000002E3B633A5C726164
+      5C626F726C616E645C434255494C447E325C6C69040000004B65790001000000
+      00000000000000000084BDF40600000000FFFFFFFF0000010101006F72590000
+      00320000001027000000000000ECB69504010000000000646500000000000001
+      2E00000000000000000001000000000000633A5C7261645C626F726C616E645C
+      434255494C447E325C680000002F000000000000001D0000002E3B633A5C7261
+      645C626F726C616E645C434255494C447E325C6C690600000056616C75650001
+      000000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
@@ -128,7 +153,6 @@ object ItemList: TItemList
     HorzScrollBarStyles.UseXPThemes = False
     IgnoreEnabled = False
     IncrementalSearch = False
-    InplaceEditorDelay = 0
     ItemIndent = 14
     KeepSelectionWithinLevel = False
     LineBorderActiveColor = clBlack
@@ -146,6 +170,7 @@ object ItemList: TItemList
       E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
       8080808080808080808080808080808080808080808080808080}
     MouseFrameSelect = True
+    MultiSelect = False
     OwnerDrawMask = '~~@~~'
     ParentFont = False
     ParentShowHint = False
@@ -164,11 +189,11 @@ object ItemList: TItemList
     ShowColumns = True
     ShowCheckboxes = True
     ShowHint = False
+    ShowImages = False
     ShowLeafButton = False
     ShowLines = False
     SortType = stCustom
     StoragePath = '\Tree'
-    SortUseCase = False
     StripedOddColor = clGray
     StripedEvenColor = 8158332
     StripedItems = True
@@ -177,6 +202,7 @@ object ItemList: TItemList
     Tracking = False
     TrackColor = 10526880
     VertDivLinesColor = 7368816
+    VerticalLines = True
     VertScrollBarStyles.ShowTrackHint = True
     VertScrollBarStyles.Width = 16
     VertScrollBarStyles.ButtonSize = 16
@@ -186,41 +212,167 @@ object ItemList: TItemList
     UseXPThemes = False
     TextColor = clBtnText
     BkColor = clGray
-    OnHeaderResize = tvItemsHeaderResize
-    OnAfterSelectionChange = tvItemsAfterSelectionChange
-    OnItemChange = tvItemsItemChange
-    OnItemDraw = tvItemsItemDraw
-    OnResize = tvItemsResize
-    OnCompareItems = tvItemsCompareItems
-    OnClick = tvItemsClick
-    OnDragDrop = tvItemsDragDrop
-    OnMouseDown = tvItemsMouseDown
-    OnMouseMove = tvItemsMouseMove
-    OnMouseUp = tvItemsMouseUp
-    OnKeyDown = tvItemsKeyDown
+    OnHeaderColumnResize = tvPropertiesHeaderColumnResize
+    OnItemChange = tvPropertiesItemChange
+    OnItemDraw = tvPropertiesItemDraw
+    OnItemFocused = tvPropertiesItemFocused
+    OnShowLineHint = tvPropertiesShowLineHint
+    OnCompareItems = tvPropertiesCompareItems
+    OnClick = tvPropertiesClick
+    OnMouseDown = tvPropertiesMouseDown
+    OnMouseMove = tvPropertiesMouseMove
+    OnMouseUp = tvPropertiesMouseUp
   end
-  object paStatus: TPanel
-    Left = 0
-    Top = 378
-    Width = 312
+  object seNumber: TMultiObjSpinEdit
+    Left = 196
+    Top = 19
+    Width = 74
     Height = 17
-    Align = alBottom
-    Alignment = taLeftJustify
-    BevelOuter = bvNone
-    Caption = ' Items count: '
-    ParentColor = True
+    LWSensitivity = 0.01
+    BtnColor = 12171705
+    ButtonKind = bkLightWave
+    ButtonWidth = 15
+    ValueType = vtFloat
+    AutoSize = False
+    BorderStyle = bsNone
+    Color = 10526880
+    Ctl3D = True
+    ParentCtl3D = False
     TabOrder = 1
+    Visible = False
+    OnExit = seNumberExit
+    OnKeyDown = seNumberKeyDown
+  end
+  object pbExtBtn: TElPopupButton
+    Left = 270
+    Top = 19
+    Width = 16
+    Height = 17
+    DrawDefaultFrame = False
+    DisableAutoPopup = True
+    NumGlyphs = 1
+    ShowFocus = False
+    ShowGlyph = False
+    Caption = 'E'
+    TabOrder = 2
+    Color = 12171705
+    ParentColor = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    Visible = False
+    OnClick = pbExtBtnClick
+    DockOrientation = doNoOrient
+    DoubleBuffered = False
+  end
+  object paButtons: TPanel
+    Left = 0
+    Top = 283
+    Width = 416
+    Height = 19
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = 10528425
+    TabOrder = 3
+    Visible = False
     object Bevel2: TBevel
       Left = 0
       Top = 0
-      Width = 312
-      Height = 2
+      Width = 416
+      Height = 1
       Align = alTop
-      Shape = bsTopLine
-      Style = bsRaised
+    end
+    object ebOK: TExtBtn
+      Left = 2
+      Top = 2
+      Width = 63
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Ok'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebOKClick
+    end
+    object ebCancel: TExtBtn
+      Left = 65
+      Top = 2
+      Width = 63
+      Height = 17
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      BtnColor = 10528425
+      CloseButton = False
+      Caption = 'Cancel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebCancelClick
     end
   end
+  object edText: TMaskEdit
+    Left = 197
+    Top = 42
+    Width = 88
+    Height = 15
+    BorderStyle = bsNone
+    Color = 10526880
+    TabOrder = 4
+    Visible = False
+    OnDblClick = edTextDblClick
+    OnExit = edTextExit
+    OnKeyDown = edTextKeyDown
+  end
+  object paFolders: TPanel
+    Left = -8
+    Top = 1
+    Width = 121
+    Height = 112
+    BevelOuter = bvNone
+    ParentColor = True
+    TabOrder = 5
+    Visible = False
+  end
+  object pmEnum: TMxPopupMenu
+    Alignment = paCenter
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Top = 55
+  end
   object fsStorage: TFormStorage
+    OnSavePlacement = fsStorageSavePlacement
+    OnRestorePlacement = fsStorageRestorePlacement
+    StoredProps.Strings = (
+      'paFolders.Width'
+      'paFolders.Height')
     StoredValues = <>
     Left = 65525
     Top = 65521
@@ -236,16 +388,19 @@ object ItemList: TItemList
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 112
-    Top = 16
-    object N3: TMenuItem
+    Top = 24
+    object N1: TMenuItem
       Caption = '-'
     end
-    object RefreshForm1: TMenuItem
-      Caption = 'Refresh Form'
-      OnClick = RefreshForm1Click
+    object ExpandSelected1: TMenuItem
+      Caption = 'Expand Selected'
+      OnClick = ExpandSelected1Click
     end
-    object N1: TMenuItem
+    object CollapseSelected1: TMenuItem
+      Caption = 'Collapse Selected'
+      OnClick = CollapseSelected1Click
+    end
+    object N3: TMenuItem
       Caption = '-'
     end
     object ExpandAll1: TMenuItem
@@ -276,47 +431,6 @@ object ItemList: TItemList
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 112
-    Top = 48
-  end
-  object InplaceEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvItems
-    Types = [sftText]
-    OnAfterOperation = InplaceEditAfterOperation
-    OnValidateResult = InplaceEditValidateResult
-    Left = 112
-    Top = 80
-  end
-  object pmEdit: TMxPopupMenu
-    Alignment = paCenter
-    MarginStartColor = 10921638
-    MarginEndColor = 2763306
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 144
-    Top = 48
-    object MenuItem1: TMenuItem
-      Caption = '-'
-    end
-    object MenuItem2: TMenuItem
-      Caption = 'Create Folder'
-      OnClick = miCreateFolderClick
-    end
-    object MenuItem3: TMenuItem
-      Caption = '-'
-    end
-    object MenuItem4: TMenuItem
-      Caption = 'Rename'
-      OnClick = Rename1Click
-    end
-    object MenuItem5: TMenuItem
-      Caption = 'Remove'
-      OnClick = Delete1Click
-    end
+    Top = 88
   end
 end

@@ -8,14 +8,16 @@
 #define THM_SOUND_VERSION				0x0014
 //------------------------------------------------------------------------------
 #define THM_CHUNK_SOUNDPARAM			0x1000
+#define THM_CHUNK_SOUNDPARAM2			0x1001
 //------------------------------------------------------------------------------
 ESoundThumbnail::ESoundThumbnail(LPCSTR src_name, bool bLoad):ECustomThumbnail(src_name,ETSound)
 {
-    m_fQuality 	= 0.f;
-    m_fMinDist 	= 1.f;
-    m_fMaxDist	= 300.f;
-    m_uGameType	= 0;
-    if (bLoad) 	Load();
+    m_fQuality 		= 0.f;
+    m_fMinDist 		= 1.f;
+    m_fMaxDist		= 300.f;
+    m_fVolume  		= 1.f;
+    m_uGameType		= 0;
+    if (bLoad) 		Load();
 }
 //------------------------------------------------------------------------------
 
@@ -49,6 +51,9 @@ bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
     m_fMinDist		= F->r_float();
     m_fMaxDist		= F->r_float();
     m_uGameType		= F->r_u32();
+
+    if (F->find_chunk(THM_CHUNK_SOUNDPARAM2))
+		m_fVolume	= F->r_float();
 	
     m_Age 			= FS.get_file_age(fn.c_str());
 
@@ -78,12 +83,16 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
     F.w_u32			(m_uGameType);
     F.close_chunk	();
 
+    F.open_chunk	(THM_CHUNK_SOUNDPARAM2);
+    F.w_float		(m_fVolume);
+    F.close_chunk	();
+    
 	AnsiString fn 	= m_Name;
     if (path) 		FS.update_path(path,fn);
     else			FS.update_path(_sounds_,fn);
     F.save_to		(fn.c_str());
 
-    int gf 			= FS.get_file_age(fn.c_str());
+//	int gf 			= FS.get_file_age(fn.c_str());
 
     FS.set_file_age	(fn.c_str(),age?age:m_Age);
 }
@@ -96,6 +105,7 @@ void ESoundThumbnail::FillProp(PropItemVec& items)
     PHelper.CreateFloat			(items, "Quality", 	&m_fQuality);
     PHelper.CreateFloat			(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
     PHelper.CreateFloat			(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
+    PHelper.CreateFloat			(items, "Volume",	&m_fVolume, 0.f,2.f);
     PHelper.CreateToken<u32>	(items, "Game Type",&m_uGameType, anomaly_type_token);
 }
 //------------------------------------------------------------------------------
@@ -105,6 +115,7 @@ void ESoundThumbnail::FillInfo(PropItemVec& items)
     PHelper.CreateCaption		(items, "Quality", 	m_fQuality);
     PHelper.CreateCaption		(items, "Min Dist", m_fMinDist);
     PHelper.CreateCaption		(items, "Max Dist",	m_fMaxDist);
+    PHelper.CreateCaption		(items, "Volume",	m_fVolume);
     PHelper.CreateCaption		(items, "Game Type",anomaly_type_token[m_uGameType].name);
 }
 //------------------------------------------------------------------------------

@@ -386,14 +386,16 @@ void __fastcall TItemList::FormShow(TObject *Sender)
 void __fastcall TItemList::tvItemsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
 {
-	if (Item&&(icmCheckState==ItemChangeMode)){
-		ListItem* prop 			= (ListItem*)Item->Tag;
-	    if (prop){
-        	prop->m_Flags.set	(ListItem::flCBChecked,Item->Checked);
-//			prop->OnChange		();
-//			Modified			();
-    	}
-	    tvItems->Refresh	();
+	if (Item){
+    	if (icmCheckState==ItemChangeMode){
+            ListItem* prop 			= (ListItem*)Item->Tag;
+            if (prop){
+                prop->m_Flags.set	(ListItem::flCBChecked,Item->Checked);
+    //			prop->OnChange		();
+    //			Modified			();
+            }
+	        tvItems->Refresh		();
+	    }
     }
 }
 //---------------------------------------------------------------------------
@@ -477,7 +479,10 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
         bool bRes						= FHelper.RenameItem(tvItems,IE->Item,new_text,RenameItem); 
         if (bRes){
 	        if (tvItems->OnAfterSelectionChange)tvItems->OnAfterSelectionChange(0);
-            if (OnModifiedEvent)				OnModifiedEvent();
+            if (OnModifiedEvent)		OnModifiedEvent();
+            // ensure visible
+            IE->Item->Text				= new_text;
+			tvItems->EnsureVisible		(IE->Item); 
         }
     }
 }
