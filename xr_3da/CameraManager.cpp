@@ -134,7 +134,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	fFov						= fFov*dst + fFOV_Dest*src;
 	fFar						= fFar*dst + fFAR_Dest*src;
 	Device.fFOV					= fFov;
-	Device.mProject.build_projection(deg2rad(fFov*aspect), aspect, VIEWPORT_NEAR, fFar);
+	Device.mProject.build_projection(deg2rad(fFov*aspect), aspect, VIEWPORT_NEAR, 50.f /*fFar*/);
 }
 
 void CCameraManager::Dump()
