@@ -17,7 +17,11 @@
 
 #define MAX_PATROL_DISTANCE				6.f
 #define MIN_PATROL_DISTANCE				1.f
-/**
+#define	AMMO_NEED_RELOAD				6
+#define MIN_COVER_MOVE					120
+#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
+#define EYE_WEAPON_DELTA				(0*PI/30.f)
+/**/
 void CAI_Soldier::AttackFire()
 {
 	WRITE_TO_LOG("Shooting enemy...");
@@ -135,7 +139,7 @@ void CAI_Soldier::Die()
 	bEnabled = false;
 }
 
-/**
+/**/
 void CAI_Soldier::FindEnemy()
 {
 	WRITE_TO_LOG("Looking for enemy");
@@ -152,9 +156,7 @@ void CAI_Soldier::FindEnemy()
 	}
 	
 	CHECK_IF_GO_TO_PREV_STATE(Enemy.bVisible)
-	CHECK_IF_SWITCH_TO_NEW_STATE(
-		(Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD),
-		aiSoldierRecharge)
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD),aiSoldierRecharge)
 		
 	INIT_SQUAD_AND_LEADER;
 	
@@ -301,7 +303,7 @@ void CAI_Soldier::Jumping()
 	}
 }
 
-/**
+/**/
 void CAI_Soldier::StandingUp()
 {
 	WRITE_TO_LOG("Standing up...");
@@ -351,7 +353,7 @@ void CAI_Soldier::LyingDown()
 	CHECK_IF_GO_TO_PREV_STATE((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500))
 }
 
-/**
+/**/
 void CAI_Soldier::MoreDeadThanAlive()
 {
 	WRITE_TO_LOG("More dead than alive");
@@ -393,7 +395,7 @@ void CAI_Soldier::NoWeapon()
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 }
-/**
+/**/
 
 void CAI_Soldier::PatrolUnderFire()
 {
@@ -920,7 +922,7 @@ void CAI_Soldier::PatrolReturn()
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,Leader != this ? m_fMaxSpeed : m_fMinSpeed)
 }
 
-/**
+/**/
 void CAI_Soldier::Pursuit()
 {
 	WRITE_TO_LOG("Pursuiting");
@@ -1026,7 +1028,7 @@ void CAI_Soldier::Recharge()
 	// stop processing more rules
 	
 }
-/**
+/**/
 
 void CAI_Soldier::Retreat()
 {
@@ -1145,7 +1147,7 @@ void CAI_Soldier::Think()
 	do {
 		m_ePreviousState = eCurrentState;
 		switch(eCurrentState) {
-			/**
+			/**/
 			case aiSoldierAttackRun : {
 				AttackRun();
 				break;

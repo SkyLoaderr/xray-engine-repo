@@ -23,7 +23,7 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	enum ESoldierStates 	{
-		/**
+		/**/
 		aiSoldierAttackRun = 0,
 		aiSoldierAttackFire,
 		aiSoldierDefend,
@@ -309,7 +309,7 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		/**
+		/**/
 		void AttackRun();
 		void AttackFire();
 		
