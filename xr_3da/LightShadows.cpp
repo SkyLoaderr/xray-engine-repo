@@ -79,8 +79,8 @@ void CLightShadows::calculate	()
 		// iterate on lights
 		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
 		{
-			xrLIGHT*	L	= lights[l_it];
-			float	level	= L->diffuse.magnitude_rgb	();
+			xrLIGHT*	L		=	lights[l_it];
+			float	level		=	L->diffuse.magnitude_rgb	();
 			if (level<S_level)	continue;
 			
 			// calculate projection-matrix
@@ -105,8 +105,11 @@ void CLightShadows::calculate	()
 			
 			// combine and build frustum
 			Fmatrix		mCombine;
-			
+			mCombine.mul			(mProject,mView);
+			CFrustum	F;
+			F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 
+			// Render object
 			int		s_x		= slot_id%slot_line;
 			int		s_y		= slot_id/slot_line;
 		}
