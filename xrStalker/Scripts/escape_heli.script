@@ -276,7 +276,7 @@ end
 
 function main()
 	actor       = get_actor()
-	wounded_tip = get_zone( "esc_tip_vagon_medikit" )
+	wounded_tip = get_zone( "esc_vagon_dummy" )
 
 --	local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
 --	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
