@@ -19,38 +19,39 @@
 
 CWeapon::CWeapon(LPCSTR name)
 {
-	fTimeToFire		= 0;
-	iHitPower		= 0;
-	STATE			= 0;
+	fTimeToFire			= 0;
+	iHitPower			= 0;
+	STATE				= 0;
 
-	SetDefaults		();
-	m_pHUD			= new CWeaponHUD();
-	m_WpnName		= strupr(xr_strdup(name));
-	m_Offset.identity();
+	SetDefaults			();
+	m_pHUD				= new CWeaponHUD();
+	m_WpnName			= strupr(xr_strdup(name));
+	m_Offset.identity	();
 
-	pstrWallmark	= 0;
-	hUIIcon			= 0;
-	hWallmark		= 0;
+	pstrWallmark		= 0;
+	hUIIcon				= 0;
+	hWallmark			= 0;
 
-	vLastFP.set		(0,0,0);
-	vLastFD.set		(0,0,0);
-	vLastSP.set		(0,0,0);
+	vLastFP.set			(0,0,0);
+	vLastFD.set			(0,0,0);
+	vLastSP.set			(0,0,0);
 
-	iFlameDiv		= 0;
-	fFlameLength	= 0;
-	fFlameSize		= 0;
-	fFlameTime		= -1;
+	iFlameDiv			= 0;
+	fFlameLength		= 0;
+	fFlameSize			= 0;
+	fFlameTime			= -1;
 
-	dispVelFactor	= 0.2f;
-	dispJumpFactor	= 4.f;
-	dispCrouchFactor= 0.75f;
+	dispVelFactor		= 0.2f;
+	dispJumpFactor		= 4.f;
+	dispCrouchFactor	= 0.75f;
 
-	iAmmoLimit		= -1;
-	iAmmoCurrent	= -1;
-	iAmmoElapsed	= -1;
-	iMagazineSize	= -1;
+	iAmmoLimit			= -1;
+	iAmmoCurrent		= -1;
+	iAmmoElapsed		= -1;
+	iMagazineSize		= -1;
 
-	hud_mode		= FALSE;
+	m_pPhysicsShell		= 0;
+	hud_mode			= FALSE;
 }
 
 CWeapon::~CWeapon		()
@@ -58,9 +59,9 @@ CWeapon::~CWeapon		()
 	_FREE				(m_WpnName);
 	_DELETE				(pVisual);
 	_DELETE				(m_pHUD);
-	
+	_DELETE				(m_pPhysicsShell);
 	_FREE				(pstrWallmark);
-	
+
 	Device.Shader.Delete(hUIIcon);
 	if (hWallmark)		Device.Shader.Delete(hWallmark);
 }
@@ -318,14 +319,33 @@ void CWeapon::Load		(LPCSTR section)
 
 BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	BOOL bResult			= inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL bResult					= inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
-	u16						current,elapsed;
-	P.r_u16					(current);	iAmmoCurrent	= current;
-	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
+	u16								current,elapsed;
+	P.r_u16							(current);	iAmmoCurrent	= current;
+	P.r_u16							(elapsed);	iAmmoElapsed	= elapsed;
 
-	setVisible				(true);
-	setEnabled				(true);
+	setVisible						(true);
+	setEnabled						(true);
+
+	// Physics (Box)
+	Fobb								obb;
+	Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
+	obb.m_rotate.identity				();
+
+	// Physics (Elements)
+	CPhysicsElement* E					= P_create_Element	();
+	R_ASSERT							(E);
+	E->add_Box							(obb);
+
+	// Physics (Shell)
+	m_pPhysicsShell						= P_create_Shell	();
+	R_ASSERT							(m_pPhysicsShell);
+	m_pPhysicsShell->add_Element		(E);
+	m_pPhysicsShell->setMass			(10.f);
+	m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+	m_pPhysicsShell->mDesired.identity	();
+	m_pPhysicsShell->fDesiredStrength	= 0.f;
 
 	return bResult;
 }
@@ -397,6 +417,12 @@ void CWeapon::Update		(DWORD dT)
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;
 
+	// svMatrix
+	if (0==H_Parent())		{
+		svTransform.set		(m_pPhysicsShell->mXFORM);
+		vPosition.set		(svTransform.c);
+	}
+
 	// Inherited
 	inherited::Update		(dT);
 }
@@ -408,6 +434,7 @@ void CWeapon::OnH_B_Independent	()
 	setEnabled					(true);
 	hud_mode					= FALSE;
 	UpdateXForm					();
+	m_pPhysicsShell->Activate	(svXFORM(),0,svXFORM());
 }
 
 void CWeapon::OnH_B_Chield		()
@@ -415,6 +442,7 @@ void CWeapon::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
+	m_pPhysicsShell->Deactivate	();
 }
 
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
@@ -435,6 +463,11 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
+
+	if (0==H_Parent())		{
+		m_pPhysicsShell->Update	();
+		clTransform.set			(m_pPhysicsShell->mXFORM);
+	}
 
 	if (Remote() && NET.size())
 	{

@@ -23,8 +23,6 @@ public:
 	virtual void			applyForce				(Fvector& dir, float val)					= 0;
 	virtual void			applyImpulse			(Fvector& dir, float val)					= 0;
 
-	virtual void			Update					()											= 0;
-
 	virtual ~CPhysicsBase	()																	= 0;
 };
 
@@ -46,6 +44,8 @@ public:
 	virtual	void			add_Element				(CPhysicsElement* E)						= 0;
 	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)			= 0;
 	virtual void			applyImpulseTrace		(Fvector& pos, Fvector& dir, float val)		= 0;
+
+	virtual void			Update					()											= 0;
 };
 
 // Implementation creator

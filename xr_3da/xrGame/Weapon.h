@@ -8,6 +8,7 @@
 
 #include "..\lightPPA.h"
 #include "GameObject.h"
+#include "PhysicsShell.h"
 
 // refs
 class CEntity;
@@ -42,6 +43,7 @@ protected:
 
 	void					animGet					(MotionSVec& lst, LPCSTR prefix);
 protected:
+	CPhysicsShell*			m_pPhysicsShell;
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
 							
