@@ -35,7 +35,10 @@ void	game_sv_CS::OnRoundStart	()
 			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
 				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
 				if(!l_pWeapon) continue;
+				u16 id_save = l_pWeapon->ID;			// save wpn entity ID 
+				l_pWeapon->ID = 0xffff;					// set 0xffff to get new gen ID
 				l_pWeapon->Spawn_Write(l_packet, true);
+				l_pWeapon->ID = id_save;				// restore wpn entity ID 
 				l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 			}
 		}
