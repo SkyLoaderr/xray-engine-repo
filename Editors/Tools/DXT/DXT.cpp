@@ -148,7 +148,7 @@ int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
     nvOpt.bFadeColor		= !!(fmt->flags.is(STextureParams::flFadeToColor));
     nvOpt.bFadeAlpha		= FALSE;//fmt->flag.bFadeToAlpha;
     nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
-    nvOpt.FadeAmount		= 0;//fmt->fade_amount;
+    nvOpt.FadeAmount		= 100;//fmt->fade_amount;
     nvOpt.bDitherColor		= !!(fmt->flags.is(STextureParams::flDitherColor));
 	nvOpt.bDitherMIP0		= !!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
     nvOpt.bGreyScale		= !!(fmt->flags.is(STextureParams::flGreyScale));
