@@ -104,9 +104,13 @@ public:
 
 	void							cache_Initialize();
 	void							cache_Update	(int sx, int sz, Fvector& view, int limit);
-	void							cache_Task		(int sx, int sz, Slot* D);
+	void							cache_Task		(int gx, int gz, Slot* D);
 	Slot*							cache_Query		(int sx, int sz);
 	void							cache_Decompress(Slot* D);
+	int								cg2w_X			(int x)			{ return cache_cx-dm_size+x;					}
+	int								cg2w_Z			(int z)			{ return cache_cz-dm_size+(dm_cache_line-1-z);	}
+	int								w2cg_X			(int x)			{ return x-cache_cx+dm_size;					}
+	int								w2cg_Z			(int z)			{ return cache_cz-dm_size+(dm_cache_line-1-z);	}
 	
 	void							Load			();
 	void							Unload			();
