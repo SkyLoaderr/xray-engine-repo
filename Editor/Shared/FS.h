@@ -132,7 +132,11 @@ public:
 	{
     	if (sign) FileCompress(fn,sign,pointer(),size());
         else {
+        #ifdef _EDITOR
+        	int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+        #else
         	int H = _open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+        #endif
             R_ASSERT(H>0);
             _write(H,pointer(),size());
             _close(H);

@@ -3,7 +3,6 @@
 
 #include "ui_tools.h"
 #include "FrameDetObj.h"
-#include "Light.h"
 #include "Scene.h"
 #include "ui_main.h"
 #include "ChoseForm.h"

@@ -222,7 +222,7 @@ bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 {
     if (_Shift.Contains(ssLeft)){
-        float amount = UI->m_DeltaCpH.y * UI->m_MouseSR;
+        float amount = -UI->m_DeltaCpH.x * UI->m_MouseSR;
 
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI->anglesnap());
 

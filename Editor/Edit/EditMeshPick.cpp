@@ -76,7 +76,7 @@ bool CEditMesh::Pick(float& distance, Fvector& start, Fvector& direction, Fmatri
     if (!m_CFModel) GenerateCFModel();
     float m_r = pinf?pinf->rp_inf.range:UI->ZFar();
 
-    XRC.RayPick(parent, m_CFModel, start, direction, m_r);
+    XRC.RayPick(&parent, m_CFModel, start, direction, m_r);
     float new_dist;
     if (XRC.GetMinRayPickDistance(new_dist)){
     	if (new_dist<distance){

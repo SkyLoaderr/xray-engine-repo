@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 600
+  Height = 748
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -856,8 +856,8 @@ object fraLeftBar: TfraLeftBar
         OnClick = TargetClick
       end
       object ebTargetDPatch: TExtBtn
-        Left = 2
-        Top = 91
+        Left = 3
+        Top = 196
         Width = 120
         Height = 15
         Align = alNone
@@ -865,7 +865,7 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         CloseButton = False
         GroupIndex = 1
-        Caption = '6. Detail Patch'
+        Caption = '^3. Detail Patch'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1313,7 +1313,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebTargetDO: TExtBtn
         Left = 2
-        Top = 196
+        Top = 91
         Width = 120
         Height = 15
         Align = alNone
@@ -1321,7 +1321,7 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         CloseButton = False
         GroupIndex = 1
-        Caption = '^3. Detail Objects'
+        Caption = '6. Detail Objects'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11

@@ -492,13 +492,13 @@ void CEditObject::Rotate(Fvector& center, Fvector& axis, float angle){
     UI->UpdateScene();
 
 	Fmatrix m;
-	m.rotation(axis, angle);
+	m.rotation(axis, -angle);
 
 	vPosition.sub( center );
     m.transform_tiny(vPosition);
 	vPosition.add( center );
 
-    vRotate.direct(vRotate,axis,angle);
+    vRotate.direct(vRotate,axis,axis.z?-angle:angle);
 
     UpdateTransform();
 }

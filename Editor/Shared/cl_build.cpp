@@ -164,7 +164,11 @@ namespace RAPID {
 		// null the model pointer
 		RAPID_building_model = 0;
 		
+	#ifdef _EDITOR
+		Log->Msg(mtInformation,"* Alloc: %d, Init: %d, TPL: %d",num_boxes_alloced,RAPID_boxes_inited,build_opt_num_tris_per_leaf);
+	#else
 		Msg("* Alloc: %d, Init: %d, TPL: %d",num_boxes_alloced,RAPID_boxes_inited,build_opt_num_tris_per_leaf);
+	#endif
 
 		return TRUE;
 	}

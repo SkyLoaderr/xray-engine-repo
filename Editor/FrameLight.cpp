@@ -3,7 +3,7 @@
 
 #include "ui_tools.h"
 #include "FrameLight.h"
-#include "Light.h"
+#include "ELight.h"
 #include "Scene.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------

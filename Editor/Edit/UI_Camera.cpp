@@ -116,25 +116,10 @@ void CUI_Camera::Scale(float dy){
 }
 
 void CUI_Camera::Rotate(float dx, float dy){
-	m_HPB.x+=m_SR*dx;
-	m_HPB.y+=m_SR*dy*m_Aspect;
+	m_HPB.x-=m_SR*dx;
+	m_HPB.y-=m_SR*dy*m_Aspect;
 
     BuildCamera();
-/*    Fvector vr;
-    Fmatrix rmatrix;
-
-    vr.set( 0, 1, 0 );
-
-    rmatrix.rotation( vr, m_SR * dx );
-    rmatrix.transform_dir(m_Camera.i);
-    rmatrix.transform_dir(m_Camera.j);
-    rmatrix.transform_dir(m_Camera.k);
-
-    rmatrix.rotation( m_Camera.i, m_SR * dy * m_Aspect);
-    rmatrix.transform_dir(m_Camera.i);
-    rmatrix.transform_dir(m_Camera.j);
-    rmatrix.transform_dir(m_Camera.k);
-*/
 }
 
 bool CUI_Camera::MoveStart(TShiftState Shift){

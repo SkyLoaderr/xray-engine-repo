@@ -3,7 +3,7 @@
 #pragma hdrstop
 
 #include "PropertiesLight.h"
-#include "Light.h"
+#include "ELight.h"
 #include "SceneClassList.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
@@ -85,11 +85,13 @@ void __fastcall TfrmPropertiesLight::DrawGraph()
     temp.sprintf("Range = %.2f",v); lbRange->Caption = temp;
     LG->Canvas->MoveTo(-1,h/2);
     LG->Canvas->Pen->Color = clLime;
-    for (int d=1; d<w; d++){
-        float R = d*d_cost;
-        float b = seBrightness->Value/(seA0->Value+seA1->Value*R+seA2->Value*R*R);
-        float bb = h-((h/(seBrightness->MaxValue*2))*b + h/2);
-        LG->Canvas->LineTo(d-2,bb);
+    if (!(fis_zero(seA0->Value)&&fis_zero(seA1->Value)&&fis_zero(seA2->Value))){
+        for (int d=1; d<w; d++){
+            float R = d*d_cost;
+            float b = seBrightness->Value/(seA0->Value+seA1->Value*R+seA2->Value*R*R);
+            float bb = h-((h/(seBrightness->MaxValue*2))*b + h/2);
+            LG->Canvas->LineTo(d-2,bb);
+        }
     }
 }
 

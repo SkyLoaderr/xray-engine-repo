@@ -8,7 +8,7 @@
 #include "Scene.h"
 #include "ui_tools.h"
 #include "EditObject.h"
-#include "Light.h"
+#include "ELight.h"
 #include "Sound.h"
 #include "Occluder.h"
 #include "glow.h"

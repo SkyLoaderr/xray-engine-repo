@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ObjectList.h"
-#include "Light.h"
+#include "ELight.h"
 #include "SceneClassList.h"
 #include "ui_main.h"
 #include "UI_Tools.h"

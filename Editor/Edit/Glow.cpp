@@ -130,7 +130,7 @@ void CGlow::Rotate( Fvector& center, Fvector& axis, float angle ){
         return;
     }
 	Fmatrix m;
-	m.rotation			(axis, angle);
+	m.rotation			(axis, -angle);
 	m_Position.sub		(center);
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);

@@ -32,7 +32,7 @@ __fastcall TUI_ControlAITPointAdd::TUI_ControlAITPointAdd(int st, int act, TUI_C
 
 bool __fastcall TUI_ControlAITPointAdd::Start(TShiftState Shift){
 	CAITPoint* obj = (CAITPoint*)DefaultAddObject(Shift);
-	if (Shift.Contains(ssAlt))
+	if (obj&&Shift.Contains(ssAlt))
 		if (((TfraAITPoint*)parent_tool->pFrame)->ebAutoLink->Down){
         	if (last_obj) obj->AddLink(last_obj);
         	last_obj = obj;

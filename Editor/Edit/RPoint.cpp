@@ -110,7 +110,7 @@ void CRPoint::LocalRotate( Fvector& axis, float angle ){
     	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    m_fHeading			+= axis.y*angle;
+    m_fHeading			-= axis.y*angle;
     UI->UpdateScene		();
 }
 //----------------------------------------------------
@@ -121,11 +121,11 @@ void CRPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
         return;
     }
 	Fmatrix m;
-	m.rotation			(axis, angle);
+	m.rotation			(axis, -angle);
 	m_Position.sub		(center);
 	m.transform_tiny	(m_Position);
 	m_Position.add		(center);
-    m_fHeading			+= axis.y*angle;
+    m_fHeading			-= axis.y*angle;
     UI->UpdateScene		();
 }
 //----------------------------------------------------

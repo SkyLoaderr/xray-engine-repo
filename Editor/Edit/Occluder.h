@@ -66,7 +66,7 @@ public:
     virtual bool 	GetScale	(Fvector& scale){scale.set(m_vPlaneSize.x,0,m_vPlaneSize.y); return true; }
 
     virtual void 	SetPosition	(Fvector& pos){m_vCenter.set(pos);}
-    virtual void 	SetRotate	(Fvector& rot){m_vRotate.set(rot.x,rot.y,0);}
+    virtual void 	SetRotate	(Fvector& rot){m_vRotate.set(rot.x,rot.y,rot.z);}
     virtual void 	SetScale	(Fvector& scale){m_vPlaneSize.set(scale.x,scale.z);}
 };
 

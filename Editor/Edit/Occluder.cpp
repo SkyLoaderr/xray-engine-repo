@@ -293,13 +293,13 @@ void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
         return;
     }
 	Fmatrix m;
-	m.rotation(axis, angle);
+	m.rotation(axis, -angle);
 
 	m_vCenter.sub( center );
     m.transform_tiny(m_vCenter);
 	m_vCenter.add( center );
 
-    m_vRotate.direct(m_vRotate,axis,angle);
+    m_vRotate.direct(m_vRotate,axis,axis.z?-angle:angle);
 }
 
 void COccluder::LocalRotate( Fvector& axis, float angle ){

@@ -11,7 +11,7 @@
 #include "SceneClassList.h"
 #include "EditObject.h"
 #include "Sound.h"
-#include "Light.h"
+#include "ELight.h"
 #include "RPoint.h"
 #include "Event.h"
 #include "AITraffic.h"

@@ -67,8 +67,8 @@ bool SceneBuilder::BuildObjectDO( CFS_Base& F, CEditObject *O, const char* name,
     for (int f=0; f<l_faces_cnt; f++){
     	b_face& F = l_faces[f];
 		v_it->P.set(l_vertices[F.v[0]]); v_it->u=F.t[0][0].tu; v_it->v=F.t[0][0].tv; v_it++;
-		v_it->P.set(l_vertices[F.v[0]]); v_it->u=F.t[0][1].tu; v_it->v=F.t[0][1].tv; v_it++;
-		v_it->P.set(l_vertices[F.v[0]]); v_it->u=F.t[0][2].tu; v_it->v=F.t[0][2].tv; v_it++;
+		v_it->P.set(l_vertices[F.v[1]]); v_it->u=F.t[0][1].tu; v_it->v=F.t[0][1].tv; v_it++;
+		v_it->P.set(l_vertices[F.v[2]]); v_it->u=F.t[0][2].tu; v_it->v=F.t[0][2].tv; v_it++;
     }
 
     // write data

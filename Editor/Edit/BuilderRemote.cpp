@@ -3,7 +3,7 @@
 
 #include "Builder.h"
 #include "SceneClassList.h"
-#include "Light.h"
+#include "ELight.h"
 #include "EditObject.h"
 #include "occluder.h"
 #include "Communicate.h"

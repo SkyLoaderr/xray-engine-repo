@@ -16,7 +16,7 @@
 #include "SceneObject.h"
 #include "CloseBtn.hpp"
 
-#include "Light.h"
+#include "ELight.h"
 #include "multi_check.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"

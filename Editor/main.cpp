@@ -196,7 +196,7 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
 					            else                        UI->Command(COMMAND_SAVE);}
        	else if (Key=='1') 	 	UI->Command(COMMAND_CHANGE_TARGET, etEvent);
 		else if (Key=='2')		UI->Command(COMMAND_CHANGE_TARGET, etPS);
-        else if (Key=='3')		UI->Command(COMMAND_CHANGE_TARGET, etDO);
+        else if (Key=='3')		UI->Command(COMMAND_CHANGE_TARGET, etDPatch);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
@@ -205,7 +205,7 @@ void __fastcall TfrmMain::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key=='3')  UI->Command(COMMAND_CHANGE_TARGET, etSound);
         	else if (Key=='4')  UI->Command(COMMAND_CHANGE_TARGET, etOccluder);
         	else if (Key=='5')  UI->Command(COMMAND_CHANGE_TARGET, etGlow);
-        	else if (Key=='6')  UI->Command(COMMAND_CHANGE_TARGET, etDPatch);
+        	else if (Key=='6')  UI->Command(COMMAND_CHANGE_TARGET, etDO);
         	else if (Key=='7')  UI->Command(COMMAND_CHANGE_TARGET, etRPoint);
         	else if (Key=='8')  UI->Command(COMMAND_CHANGE_TARGET, etAITPoint);
         	else if (Key=='9')  UI->Command(COMMAND_CHANGE_TARGET, etSector);
