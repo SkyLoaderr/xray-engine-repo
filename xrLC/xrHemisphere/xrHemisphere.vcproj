@@ -57,6 +57,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
+				LargeAddressAware="2"
 				ImportLibrary="x:/xrHemisphere.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -126,6 +127,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
+				LargeAddressAware="2"
 				ImportLibrary="x:/xrHemisphere.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -205,6 +207,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
+				LargeAddressAware="0"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="x:/xrHemisphere.lib"/>

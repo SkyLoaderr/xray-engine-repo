@@ -65,7 +65,8 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
-				SubSystem="2"/>
+				SubSystem="2"
+				LargeAddressAware="2"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -134,7 +135,8 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
-				SubSystem="2"/>
+				SubSystem="2"
+				LargeAddressAware="2"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -219,6 +221,7 @@
 				GenerateMapFile="TRUE"
 				MapExports="FALSE"
 				SubSystem="2"
+				LargeAddressAware="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"/>
 			<Tool
