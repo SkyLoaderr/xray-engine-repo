@@ -139,6 +139,12 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebSoundCommandsMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmSounds,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 {
@@ -223,6 +229,16 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
     Tools.m_ItemProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
+                                                  
+void __fastcall TfraLeftBar::MenuItem3Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SOUND_EDITOR );
+}
+//---------------------------------------------------------------------------
 
-
+void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SYNC_SOUNDS );
+}
+//---------------------------------------------------------------------------
 

@@ -3,7 +3,6 @@
 
 #include "UI_Main.h"
 #include "topbar.h"
-#include "editorpref.h"
 #include "CustomObject.h"
 
 void CCustomObject::OnShowHint(AStringVec& dest)

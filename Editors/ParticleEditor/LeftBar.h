@@ -74,6 +74,12 @@ __published:	// IDE-managed Components
 	TPanel *paItemList;
 	TSplitter *Splitter1;
 	TMenuItem *Merge1;
+	TMxPopupMenu *pmSounds;
+	TMenuItem *MenuItem1;
+	TMenuItem *MenuItem3;
+	TMenuItem *MenuItem4;
+	TMenuItem *MenuItem5;
+	TExtBtn *ebSoundCommands;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -99,6 +105,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebPGCreateClick(TObject *Sender);
 	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
 	void __fastcall Merge1Click(TObject *Sender);
+	void __fastcall ebSoundCommandsMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall MenuItem3Click(TObject *Sender);
+	void __fastcall MenuItem5Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
