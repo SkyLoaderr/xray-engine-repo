@@ -45,7 +45,6 @@ float		ps_r2_ls_ssm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_bloom_threshold= .3f;	// r2-only
 float		ps_r2_ls_spower			= 64.f;
 Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_SPOT_UNMASK };	// r2-only
-Fvector		ps_r2_ls_hemi			= { 1,1,1};											// r2-only
 Fvector		ps_r2_aa_barier			= { .8f, .1f, 0};	// r2-only
 Fvector		ps_r2_aa_weight			= { .25f,.25f,0};	// r2-only
 float		ps_r2_aa_kernel			= .9f;				// r2-only
@@ -110,8 +109,5 @@ void		xrRender_initconsole	()
 
 	tw_min.set			(0,0,0);	tw_max.set			(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_weight",			&ps_r2_aa_weight,			tw_min, tw_max	);
-
-	tw_min.set			(0,0,0);	tw_max.set			(2,2,2);
-	CMD4(CCC_Vector3,	"r2_ls_hemi",			&ps_r2_ls_hemi,				tw_min, tw_max	);
 }
 #endif
