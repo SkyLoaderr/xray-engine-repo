@@ -120,7 +120,6 @@ protected:
 	static float m_fBloodMarkSizeMax;
 	static float m_fBloodMarkSizeMin;
 	static float m_fBloodMarkDistance;
-	static float m_fBloodMarkDispersion;
 	static float m_fNominalHit;
 
 

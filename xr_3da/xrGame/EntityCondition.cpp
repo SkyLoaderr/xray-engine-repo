@@ -387,7 +387,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 		hit_power *= m_HitTypeK[hit_type];
 		break;
 	case ALife::eHitTypeRadiation:
-		hit_power *= m_HitTypeK[hit_type];
+		/*hit_power *= m_HitTypeK[hit_type];*/
 		m_fDeltaRadiation += hit_power;
 		return NULL;
 		break;

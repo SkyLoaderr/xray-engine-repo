@@ -20,7 +20,6 @@ bool CEntityAlive::m_BloodyWallmarksLoaded = false;
 float CEntityAlive::m_fBloodMarkSizeMin = 0.f;
 float CEntityAlive::m_fBloodMarkSizeMax = 0.f;
 float CEntityAlive::m_fBloodMarkDistance = 0.f;
-float CEntityAlive::m_fBloodMarkDispersion = 0.f;
 float CEntityAlive::m_fNominalHit = 0.f;
 
 //капание крови
@@ -98,7 +97,6 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 	m_fBloodMarkSizeMin = pSettings->r_float(section, "min_size"); 
 	m_fBloodMarkSizeMax = pSettings->r_float(section, "max_size"); 
 	m_fBloodMarkDistance = pSettings->r_float(section, "dist"); 
-	m_fBloodMarkDispersion = pSettings->r_float(section, "dispersion"); 
 	m_fNominalHit = pSettings->r_float(section, "nominal_hit"); 
 
 

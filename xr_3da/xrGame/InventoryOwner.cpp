@@ -88,6 +88,12 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CGameObject			*pThis = dynamic_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 
+	//-------------------------------------
+	known_info_registry.init(pThis->ID());
+	CharacterInfo().relation_registry.init(pThis->ID());
+	//-------------------------------------
+
+
 
 	CSE_Abstract* E	= (CSE_Abstract*)(DC);
 	CSE_ALifeTraderAbstract* pTrader = NULL;
@@ -122,11 +128,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(E);
 	VERIFY					(dynamic_object);
 #endif
-
-
-	//-------------------------------------
-	known_info_registry.init(pThis->ID());
-	CharacterInfo().relation_registry.init(pThis->ID());
 
 	return TRUE;
 }

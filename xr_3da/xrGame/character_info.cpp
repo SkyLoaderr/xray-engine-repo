@@ -110,7 +110,7 @@ void CCharacterInfo::SetSpecificCharacter ()
 	{
 		//запомнить, то что мы использовали индекс
 		int a = 1;
-		ai().alife().registry(specific_characters).add(m_iSpecificCharacterIndex, a, false);
+		ai().alife().registry(specific_characters).add(m_iSpecificCharacterIndex, a, true);
 	}
 }
 
@@ -196,6 +196,12 @@ void CCharacterInfo::load_shared	(LPCSTR)
 	data()->m_Community		= uiXml.Read("team", 0, NO_COMMUNITY);
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
+
+	 LPCSTR spec_char = uiXml.Read("specific_character", 0, NULL);
+	 if(!spec_char)
+         data()->m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
+	 else
+		 data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
 }
 
 
