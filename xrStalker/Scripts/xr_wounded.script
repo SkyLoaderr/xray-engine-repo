@@ -126,6 +126,7 @@ function action_cover:__init (name, storage) super (nil, name)
     self.pos = vector ():set (0, 0, 0)
     self.vid = -1
     self.stage = 0
+    self.dir = vector ():set (0, 0, 0)
 end
 ------------
 function action_cover:initialize ()
@@ -165,6 +166,7 @@ function action_cover:execute ()
           end   
           self.stage = 1
           local dir = self.object:direction ()
+          self.dir = dir
           dir.x = -dir.x
           dir.y = -dir.y
           dir.z = -dir.z
@@ -173,8 +175,9 @@ function action_cover:execute ()
        end    
     end
     
-    if self.stage == 1 then   
-       if self.object:is_body_turning () == false then
+    if self.stage == 1 then
+       if yaw_degree (self.dir, self.object:direction ()) < 5 then
+       --if self.object:is_body_turning () == false then
           self.a.cover = true
        end
     end      

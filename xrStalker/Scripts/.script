@@ -10,14 +10,14 @@ module ("xr_storyline")
 
 module ("debug_info")
 module ("utils")
-module ("move_mgr")
+module ("move_mgr")   
 
 module ("gramofon")
 module ("escape_bobik")
 
 module ("xr_motivator")
 module ("xr_sounds")
-module ("xr_zones")
+module ("xr_zones") 
 
 module ("xr_reactions")
 module ("xr_state")
@@ -782,6 +782,9 @@ function yaw( v1, v2 )
     return  math.acos( ( (v1.x*v2.x) + (v1.z*v2.z ) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z ) * math.sqrt(v2.x*v2.x + v2.z*v2.z ) ) )
 end
 
+function yaw_degree( v1, v2 )
+    return  (math.acos( ( (v1.x*v2.x) + (v1.z*v2.z ) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z ) * math.sqrt(v2.x*v2.x + v2.z*v2.z ) ) ) * 57.2957)
+end
 
 -- очистка таблицv
 function clear_table (t)
