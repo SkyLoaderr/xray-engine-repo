@@ -335,6 +335,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
+	OnStateSwitch					(E->state);
 
 	setVisible						(true);
 	setEnabled						(true);
