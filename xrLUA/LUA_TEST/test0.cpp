@@ -1145,22 +1145,22 @@ void test_object2(luabind::object a, luabind::object b)
 	a[b] = 5;
 }
 
-//struct MI0 {
-//	virtual ~MI0(){}
-//};
-//
+struct MI0 {
+	virtual ~MI0(){}
+};
+
 struct MI2;
 
 struct MI1 {
-//	virtual ~MI1(){}
+	virtual ~MI1(){}
 	void add(MI2 *obj)
 	{
 		obj;
 	}
 };
 
-struct MI2 : public MI1 {//, public MI0 {
-//	virtual ~MI2(){};
+struct MI2 : public MI1, public MI0 {
+	virtual ~MI2(){};
 	virtual void vf(int a)
 	{
 		a = a + 1;
@@ -1234,8 +1234,8 @@ void test1()
 	];
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-//	lua_dofile		(L,"x:\\beta7_rc4_test.script");
-	lua_dofile		(L,"x:\\heritage_test.script");
+	lua_dofile		(L,"x:\\beta7_rc4_test.script");
+//	lua_dofile		(L,"x:\\heritage_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
