@@ -111,6 +111,9 @@ IC	void CAbstractGraph::load			(IReader &stream)
 	chunk0->close				();
 
 	chunk0						= stream.open_chunk(2);
+	if (!chunk0)
+		return;
+
 	const_vertex_iterator		I = m_vertices.begin(), B = I;
 	const_vertex_iterator		E = m_vertices.end();
 	for ( ; I != E; ++I) {

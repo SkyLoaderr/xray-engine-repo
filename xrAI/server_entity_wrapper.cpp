@@ -53,6 +53,9 @@ void CServerEntityWrapper::load				(IReader &stream)
 
 	net_packet.B.count		= chunk->r_u16();
 	chunk->r				(net_packet.B.data,net_packet.B.count);
+
+	chunk->close			();
+
 	net_packet.r_begin		(ID);
 	R_ASSERT2				(M_SPAWN == ID,"Invalid packet ID (!= M_SPAWN)!");
 
@@ -68,6 +71,9 @@ void CServerEntityWrapper::load				(IReader &stream)
 	
 	net_packet.B.count		= chunk->r_u16();
 	chunk->r				(net_packet.B.data,net_packet.B.count);
+	
+	chunk->close			();
+
 	net_packet.r_begin		(ID);
 	R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 	m_object->UPDATE_Read	(net_packet);
