@@ -73,11 +73,11 @@ public:
 	{
 		library.clear		();
 	}
-	int						GetID	(LPCSTR name)
+	u32						GetID	(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (0==stricmp(name,it->Name)) return it-library.begin();
-		return -1;
+			if (0==stricmp(name,it->Name)) return u32(it-library.begin());
+		return u32(-1);
 	}
 	Shader_xrLC*			Get		(LPCSTR name)
 	{
