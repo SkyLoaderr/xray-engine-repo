@@ -33,7 +33,7 @@ public:
 	CCar*	PCar				()								{return m_pcar;}
 	void	SwitchHeadLights	()								;
 	bool	IsLight				(u16 bone_id)					;
-	bool	findLight			(u16 bone_id,SCarLight* light);
+	bool	findLight			(u16 bone_id,SCarLight* &light);
 			CCarLights			()								;
 			~CCarLights			()								;
 protected:
