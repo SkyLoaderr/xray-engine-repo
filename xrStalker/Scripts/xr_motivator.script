@@ -21,7 +21,7 @@ end
 function motivator_binder:extrapolate_callback(cur_pt)
 	if self.st.active_section ~= nil then
 		--printf("___ACTIVE_SECTION___")
-		xr_logic.extrapolate_callback_event(self.object, self.st[self.st.active_scheme])
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "extrapolate_callback")
 	end
 	
 	--printf("_bp: motivator_binder: extrapolate_callback: cur_pt = %d", cur_pt)

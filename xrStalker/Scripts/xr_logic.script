@@ -68,17 +68,6 @@ function activate_by_section(npc, ini, section)
 Предназначение:
 	Активирует указанную секцию. Если в данный момент какая-либо секция уже активирована, сообщает об ошибке.
 
-function reset_actions_event(npc, st)
-Предназначение:
-	Вызывает у всех классов, подписанных на события, метод reset_scheme.
-	
-function non_goap_update_actions_event(npc, st, delta)
-Предназначение:
-	Вызывает у всех монстров и физических объектов, подписанных на события, метод update.
-	Для сталкеров эта функция не вызывается из xr_logic, поскольку у них updates обеспечивает GOAP.
-
-function extrapolate_callback_event(npc, st)
-
 function switch_to_section(npc, st, section)
 Предназначение:
 	Выполняет переключение с одной секции на другую, если новая секция не nil. Если же она nil, остается
@@ -331,7 +320,7 @@ function activate_by_section(npc, ini, section)
 		db.storage[npc_id]["active_section"] = section
 		db.storage[npc_id]["active_scheme"] = scheme
 
-		reset_actions_event(npc, db.storage[npc_id][scheme])
+		issue_event(npc, db.storage[npc_id][scheme], "reset_scheme")
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -401,62 +390,18 @@ function subscribe_action_for_events(npc, storage, new_action)
 end
 
 -- st - storage активной схемы
-function reset_actions_event(npc, st)
-	--printf("DEBUG: reset_actions_event")
+function issue_event(npc, st, event_fn, ...)
+	--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
 	if not st.actions then
 		local global_st = db.storage[npc:id()]
-		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
+		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
-		if action_ptr.reset_scheme then
-			action_ptr:reset_scheme()
-		end
-	end
-end
-
-function non_goap_update_actions_event(npc, st, delta)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(db.storage[npc:id()].active_section))
-	
-	if not st.actions then
-		local global_st = db.storage[npc:id()]
-		printf("WARNING: non_goap_update_actions_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", global_st.active_scheme, global_st.active_section)
-		return
-	end
-	for action_ptr, is_active in pairs(st.actions) do
-		action_ptr:update(delta)
-	end
-end
-
-function non_goap_waypoint_callback_event(npc, st, action_type, index)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(db.storage[npc:id()].active_section))
-	
-	if not st.actions then
-		local global_st = db.storage[npc:id()]
-		printf("WARNING: non_goap_waypoint_callback_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
-			"subscribed for events", global_st.active_scheme, global_st.active_section)
-		return
-	end
-	for action_ptr, is_active in pairs(st.actions) do
-		if action_ptr.waypoint_callback then
-			action_ptr:waypoint_callback(npc, action_type, index)
-		end
-	end
-end
-
-function extrapolate_callback_event(npc, st)
-	if not st.actions then
-		local global_st = db.storage[npc:id()]
-		printf("WARNING: extrapolate_callback_event: scheme '%s', section '%s': at least one action in a scheme " ..
-			"must be subscribed for events", global_st.active_scheme, global_st.active_section)
-		return
-	end
-	for action_ptr, is_active in pairs(st.actions) do
-		if action_ptr.extrapolate_callback then
-			--printf("___ISSUING EXTRAPOLATE CALLBACK EVENT___")
-			action_ptr:extrapolate_callback(npc)
+		if action_ptr[event_fn] then
+			--printf("DEBUG: event issued")
+			action_ptr[event_fn](action_ptr, unpack(arg))
 		end
 	end
 end

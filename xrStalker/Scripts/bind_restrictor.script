@@ -73,7 +73,7 @@ function restrictor_binder:actor_update()
 	end
 
 	if self.st.active_section ~= nil then
-		xr_logic.non_goap_update_actions_event(self.object, self.st[self.st.active_scheme])
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "update")
 	end
 end
 
