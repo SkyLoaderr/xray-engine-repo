@@ -32,11 +32,16 @@ void CObject::cNameVisual_set	(LPCSTR N)
 	// check if equal
 	if (N && *NameVisual)
 		if (0==stricmp(N,*NameVisual))	return;
-	NameVisual	= N; 
 
 	// replace model
 	::Render->model_Delete	(renderable.visual);
-	if (N && NameVisual[0]) renderable.visual	= Render->model_Create	(*NameVisual);
+	if (N && N[0]) 
+	{
+		NameVisual			= N;
+		renderable.visual	= Render->model_Create	(N);
+	} else {
+		NameVisual			= 0;
+	}
 }
 
 // flagging
@@ -117,6 +122,8 @@ BOOL CObject::net_Spawn			(LPVOID data)
 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
 			LPCSTR cf			= pSettings->r_string	(cNameSect(), "cform");
+
+			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",cName());
 
 			if (strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
 			else {
