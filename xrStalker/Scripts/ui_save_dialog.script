@@ -17,32 +17,9 @@ function save_dialog:InitControls()
 	local screen_height = 768
 	local screen_width  = 1024
 	
-	--[[
-	local txt_main   = CUIStatic()
-	txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
-	txt_main:SetWindowName("static_0")
-	txt_main:SetText("Save Dialog")
-	txt_main:SetTextAlign(CGameFont.alCenter)
-	txt_main:Init("ui\\ui_inv_info_over_b",0,0,257,271) --init texture and position relatively parent
-    --textures name, root is Gamedata\Textures folder
-	txt_main:ClipperOn() --clip texture by window region
-	self:AttachChild(txt_main)
-	]]
-	------------LIST EXAMPLE-----------------
---[[       local txt_list   = CUIStatic()  --background for ListView
-       txt_list:SetAutoDelete(true)
-       txt_list:Init("ui\\hud_map_back",512,0,154,148)
-       txt_list:ClipperOn()
-       txt_base:AttachChild(txt_list) 
 
-    local list_wnd = CUIListWnd()
-    list_wnd:SetAutoDelete(true)
-    list_wnd:SetWindowName("list_window")
-    list_wnd:Init(0,0,154,148)
-    list_wnd:SetItemHeight(15)
-    list_wnd:EnableScrollBar(true)
-    txt_list:AttachChild(list_wnd)
-	]]
+	------------LIST EXAMPLE-----------------
+
 --------------------------------------- 
     local btn   = CUIButton()
 	btn:SetAutoDelete(true) 
