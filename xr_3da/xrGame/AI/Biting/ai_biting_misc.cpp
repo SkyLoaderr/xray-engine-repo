@@ -11,6 +11,8 @@
 #include "..\\..\\actor.h"
 #include "..\\..\\hudmanager.h"
 
+#include "..\\..\\ai_script_actions.h"
+
 // A - я слышу опасный звук
 // B - я слышу неопасный звук
 // С - я вижу очень опасного врага
@@ -170,31 +172,13 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	if (!CScriptMonster::bfAssignMovement(tpEntityAction))
 		return		(false);
 
-//	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-//	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
-//	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
-//	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
+	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 
+	//
+	// build path to the point
+	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
 	
-//	// setup action
-//	// MotionMan.m_tAction = ;
-//
-//	// build path to the point
-//	AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-//	vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
-//
-//	vfSetParameters	(0,
-//		&l_tMovementAction.m_tDestinationPosition,
-//		false,
-//		l_tObjectAction.m_tGoalType,
-//		l_tMovementAction.m_tPathType,
-//		l_tMovementAction.m_tBodyState,
-//		l_tMovementAction.m_tMovementType,
-//		l_tAnimationAction.m_tMentalState,
-//		l_tWatchAction.m_tWatchType,
-//		l_tWatchAction.m_tWatchVector,
-//		0
-//		);
+	//MotionMan.ProcessAction();
 
 	return			(true);		
 }

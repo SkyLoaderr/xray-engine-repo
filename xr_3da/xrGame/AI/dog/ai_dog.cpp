@@ -99,14 +99,14 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
-	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
+	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
