@@ -181,8 +181,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		size		= dwVertCount*sizeof(vertBoned1W);
 		crc			= crc32	(data->pointer(),size);
 		Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
-		for (it=0; it<dwVertCount; it++)
-		{
+		for (it=0; it<dwVertCount; it++)	{
 			bids.insert	(Vertices1W[it].matrix);
 			if (Vertices1W[it].matrix>sw_bones)	sw_bones = Vertices1W[it].matrix;
 		}
@@ -201,8 +200,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		size		= dwVertCount*sizeof(vertBoned2W);
 		crc			= crc32	(data->pointer(),size);
 		Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
-		for (it=0; it<dwVertCount; it++)
-		{
+		for (it=0; it<dwVertCount; it++)	{
 			if (Vertices2W[it].matrix0>sw_bones)	sw_bones = Vertices2W[it].matrix0;
 			if (Vertices2W[it].matrix1>sw_bones)	sw_bones = Vertices2W[it].matrix1;
 		}
