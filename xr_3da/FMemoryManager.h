@@ -7,8 +7,6 @@ void mmgrDone				(void);
 void mmgrMessage			(const char *logMSG, const char *dop = NULL);
 
 ENGINE_API LPSTR	_STRDUP	(LPCSTR string);
-#define strdup(a)			_STRDUP(a)
-
 
 #ifdef DEBUG
 // rewritten routines for debugging
