@@ -11,14 +11,14 @@
 
 IC	bool CALifeSpawnRegistry::redundant			(CSE_Abstract &abstract)
 {
-	return									(false);
+	return									(!!abstract.m_spawn_flags.test(flSpawnDestroyOnSpawn));
 }
 
 void CALifeSpawnRegistry::fill_redundant_spawns	(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns, bool parent_redundant)
 {
 	VERIFY									(vertex);
 
-	bool									redundance = redundant(vertex->data()->object());
+	bool									redundance = parent_redundant || redundant(vertex->data()->object());
 	if (vertex->edges().empty()) {
 		if (redundance)
 			spawns.push_back				(vertex->data()->object().m_tSpawnID);
