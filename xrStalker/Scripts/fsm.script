@@ -45,3 +45,14 @@ function FSM:run()
 								  self.check_condition)
 	end
 end
+
+
+function main()
+	log	("script don't want to work!")
+	local stalker1	= get_level_object("m_stalker_e0001")
+	
+	local fsm1 = FSM(stalker1)
+
+	wait()
+end
+
