@@ -42,15 +42,15 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
+		PSLib.OnDestroy	();
+		Lib.OnDestroy	();
+		Tools.OnDestroy	();
+        UI.OnDestroy	();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);
     	_DELETE(fraBottomBar);
 		//----------------
-		PSLib.OnDestroy	();
-		Lib.OnDestroy	();
-		Tools.OnDestroy	();
-        UI.OnDestroy	();
     	break;
 	case COMMAND_EXIT:
     	bRes = Tools.IfModified();
