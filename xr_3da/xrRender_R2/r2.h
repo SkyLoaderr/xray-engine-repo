@@ -17,7 +17,7 @@
 #include "smap_allocator.h"
 #include "light_db.h"
 #include "light_render_direct.h"
-
+#include "LightTrack.h"
 #include "common_binders.h"
 #include "../fmesh.h"
 
