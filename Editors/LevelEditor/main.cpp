@@ -39,7 +39,7 @@ TfrmMain *frmMain;
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
-	TfrmChoseItem::fill_events	= FillChooseEvents;
+    FillChooseEvents						();
 // forms
     fraBottomBar	= xr_new<TfraBottomBar>	((TComponent*)0);
     fraTopBar   	= xr_new<TfraTopBar>	((TComponent*)0);

@@ -13,8 +13,6 @@ class CSE_Motion;
 class CObjectAnimator;
 class ISE_Abstract;
 
-DEFINE_MAP(AnsiString,ref_shader,ShaderMap,ShaderPairIt);
-
 class CSpawnPoint : public CCustomObject {
 	typedef CCustomObject inherited;
 
@@ -90,10 +88,6 @@ public:
             u32		m_EM_LMapColor;
         };
     };
-
-    static ShaderMap m_Icons;
-    static ref_shader 	CreateIcon(LPCSTR name);
-    static ref_shader 	GetIcon(LPCSTR name);
 
     bool 			OnAppendObject	(CCustomObject* object);
 protected:

@@ -38,6 +38,7 @@ ESceneSpawnTools::ESceneSpawnTools	():ESceneCustomOTools(OBJCLASS_SPAWNPOINT)
 ESceneSpawnTools::~ESceneSpawnTools()
 {
 	FreeLibrary		(hXRSE_FACTORY);
+    m_Icons.clear	();
 }
 
 void ESceneSpawnTools::CreateControls()
@@ -62,4 +63,25 @@ void ESceneSpawnTools::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp	(pref, items);
 }
 //------------------------------------------------------------------------------
+
+ref_shader ESceneSpawnTools::CreateIcon(ref_str name)
+{
+    ref_shader S;
+    if (pSettings->line_exist(name,"$ed_icon")){
+	    LPCSTR tex_name = pSettings->r_string(name,"$ed_icon");
+    	S.create("editor\\spawn_icon",tex_name);
+        m_Icons[name] = S;
+    }else{
+        S = 0;
+    }
+    return S;
+}
+
+ref_shader ESceneSpawnTools::GetIcon(ref_str name)
+{
+	ShaderPairIt it = m_Icons.find(name);
+	if (it==m_Icons.end())	return CreateIcon(name);
+	else					return it->second;
+}
+//----------------------------------------------------
 

@@ -17,6 +17,12 @@ protected:
     	flShowSpawnType	= (1<<31),
     };
     Flags32				m_Flags;
+
+    // icon list
+    DEFINE_MAP			(ref_str,ref_shader,ShaderMap,ShaderPairIt);
+    ShaderMap 			m_Icons;
+    ref_shader 			CreateIcon	(ref_str name);
+    ref_shader 			GetIcon		(ref_str name);
 public:
 						ESceneSpawnTools		();
 	virtual				~ESceneSpawnTools		();

@@ -48,9 +48,6 @@
 const u32 RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
 //----------------------------------------------------
 
-ShaderMap CSpawnPoint::m_Icons;
-//----------------------------------------------------
-
 //------------------------------------------------------------------------------
 // CLE_Visual
 //------------------------------------------------------------------------------
@@ -435,7 +432,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
             RCache.set_xform_world(FTransformRP);
             if (m_SpawnData.Valid()){
                 // render icon
-                ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->name());
+                ESceneSpawnTools* st= dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
+                ref_shader s 	   	= st->GetIcon(m_SpawnData.m_Data->name());
                 DU.DrawEntity		(0xffffffff,s);
             }else{
                 switch (m_Type){
@@ -713,32 +711,9 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-ref_shader CSpawnPoint::CreateIcon(LPCSTR name)
-{
-    ref_shader S;
-    if (pSettings->line_exist(name,"$ed_icon")){
-	    LPCSTR tex_name = pSettings->r_string(name,"$ed_icon");
-    	S.create("editor\\spawn_icon",tex_name);
-        m_Icons[name] = S;
-    }else{
-        S = 0;
-    }
-    return S;
-}
-
-ref_shader CSpawnPoint::GetIcon(LPCSTR name)
-{
-	ShaderPairIt it = m_Icons.find(name);
-	if (it==m_Icons.end())	return CreateIcon(name);
-	else					return it->second;
-}
-//----------------------------------------------------
-
 bool CSpawnPoint::OnChooseQuery(LPCSTR specific)
 {
 	return (m_SpawnData.Valid()&&(0==strcmp(m_SpawnData.m_Data->name(),specific)));
 }
-
-
 ///-----------------------------------------------------------------------------
 
