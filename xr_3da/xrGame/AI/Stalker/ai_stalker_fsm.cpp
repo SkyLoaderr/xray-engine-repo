@@ -24,6 +24,7 @@
 
 void CAI_Stalker::Think()
 {
+	vfUpdateSearchPosition();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
@@ -134,12 +135,32 @@ void CAI_Stalker::Searching()
 {
 	WRITE_TO_LOG("Searching");
 
-	vfChoosePointAndBuildPath(m_tSelectorFreeHunting);
+	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.TravelPath.size() - 1] != AI_Path.DestNode))
+		vfBuildPathToDestinationPoint		(0);
 
-	Fvector tDummy;
-	u32		dwTime = Level().timeServer();
-	tDummy.setHP(angle_normalize_signed(2*PI*dwTime/20000),0);
-	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tDummy);
+	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw = r_target.yaw;
+}
+
+void CAI_Stalker::vfUpdateSearchPosition()
+{
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
+		if (tpLeader) {
+			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
+				m_eCurrentState = eStalkerStateSearching;
+			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+		}
+	}
+	else {
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			Msg("Next graph point %d",m_tNextGP);
+		}
+
+	}
 }

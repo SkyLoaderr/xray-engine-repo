@@ -1201,14 +1201,13 @@ void xrSE_Human::STATE_Write(NET_Packet& P)
 void xrSE_Human::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-	if (m_wVersion >= 2)
+	if ((m_wVersion >= 2) && (m_wVersion <= 5))
 		P.r_float (fHealth);
 }
 
 void xrSE_Human::UPDATE_Write(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
-	P.w_float (fHealth);
 }
 
 #ifdef _EDITOR

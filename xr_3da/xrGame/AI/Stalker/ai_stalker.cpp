@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "..\\..\\..\\xr_trims.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -69,6 +70,21 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fWalkFactor					= pSettings->ReadFLOAT(section,"WalkFactor");
 	m_fRunFactor					= pSettings->ReadFLOAT(section,"RunFactor");
 
+	m_tpaTerrain.clear				();
+	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");
+	u32								N = _GetItemCount(S);
+	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	STerrainPlace					tTerrainPlace;
+	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
+	string16						I;
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
+		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
+		m_tpaTerrain.push_back(tTerrainPlace);
+	}
+	m_fGoingSpeed					= pSettings->ReadFLOAT	(section, "going_speed");
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
@@ -80,6 +96,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	cNameVisual_set					(tpHuman->caModel);
 	
 	fHealth							= tpHuman->fHealth;
+	m_tCurGP						= tpHuman->m_tGraphID;
+	m_tNextGP						= tpHuman->m_tNextGraphID;
 
 	m_tStateStack.push				(m_eCurrentState = eStalkerStateLookingOver);
 	vfAddStateToList				(m_eCurrentState);
@@ -100,6 +118,16 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
 	P.w_float						(N.fHealth);
+	
+	P.w								(&m_tNextGP,				sizeof(m_tNextGP));
+	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
+	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	P.w								(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	float							f1;
+	f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
+	P.w								(&f1,						sizeof(f1));
+	f1								= vPosition.distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+	P.w								(&f1,						sizeof(f1));
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
@@ -115,6 +143,9 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_angle8						(N.o_torso.yaw);
 	P.r_angle8						(N.o_torso.pitch);
 	P.r_float						(N.fHealth);
+
+	P.r								(&m_tNextGP,		sizeof(m_tNextGP));
+	P.r								(&m_tCurGP,			sizeof(m_tCurGP));
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back				(N);

@@ -292,7 +292,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
+		D->ID				=	0xfffd;
 		D->ID_Parent		=	E->ID;
 		D->ID_Phantom		=	0xffff;
 		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);

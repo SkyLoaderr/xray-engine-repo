@@ -63,6 +63,14 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	// Graph
+	_GRAPH_ID				m_tCurGP;
+	_GRAPH_ID				m_tNextGP;
+	u32						m_dwTimeToChange;
+	float					m_fGoingSpeed;
+	TERRAIN_VECTOR			m_tpaTerrain;
+	Fvector					m_tNextGraphPoint;
+	// FSM
 	stack<EStalkerStates>	m_tStateStack;
 	svector<SStalkerStates,MAX_STATE_LIST_SIZE>	m_tStateList;
 	u32						m_dwLastUpdate;
@@ -134,6 +142,8 @@ private:
 			void			vfSetMovementType				(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
 			// miscellanious
 			void			DropItem						();
+			void			vfUpdateSearchPosition			();
+			void			vfChooseNextGraphPoint			();
 	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
 	{
 		yaw						= pitch = 0;
