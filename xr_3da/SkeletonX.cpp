@@ -97,7 +97,7 @@ void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount)
 	R_ASSERT(data->FindChunk(OGF_VERTICES));
 			
 	DWORD dwVertType;
-	dwVertType	= data->Rdword(); R_ASSERT(dwVertType=0x12071980);
+	dwVertType	= data->Rdword(); R_ASSERT(dwVertType==0x12071980);
 	dwVertCount	= data->Rdword();
 	
 	Vertices = new vertBoned1W[dwVertCount];

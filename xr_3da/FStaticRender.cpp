@@ -77,7 +77,7 @@ static	int			gm_Lcount	= 0;
 
 IC		void		gm_SetLevel			(int iLevel)
 {
-	if (_abs(gm_Level-s32(iLevel))>2) {
+	if (_abs(s32(gm_Level)-s32(iLevel))>2) {
 		gm_Level	= iLevel;
 		float c		= 0.1f+float(gm_Level)/255.f;
 		gm_Data.diffuse.set				(c,c,c,c);
