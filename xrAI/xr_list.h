@@ -96,10 +96,11 @@ public:
 	}
 
 	IC	T&			operator[]				( int i )			{ VERIFY(i>=0 && i<_count); return data[i]; };
-	IC	T*			begin					( )					{ return data; }
-	IC	T*			end						( )					{ return data+_count; }
-	IC	DWORD		size					( )					{ return _count;	}
-	IC	bool		empty					( )					{ return 0==_count;	}
+	IC	T*			begin					( )					{ return data;			}
+	IC	T*			end						( )					{ return data+_count;	}
+	IC	DWORD		size					( )					{ return _count;		}
+	IC	bool		empty					( )					{ return 0==_count;		}
+	IC  T&			front					( )					{ return (*this)[0];	}
 	IC	T&			back					( )					{ VERIFY(_count>0); return data[_count-1]; }
 };
 
