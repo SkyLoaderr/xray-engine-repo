@@ -221,7 +221,7 @@ void CEntity::Update	(DWORD dt)
 		{
 			Fvector vdir; vdir.set	(0,1,0);
 			eHealthLost_cumulative	-= eHealthLost_granularity;
-			Hit						(iFloor(eHealthLost_granularity),vdir,0);
+			Hit						(iFloor(eHealthLost_granularity),vdir,this);
 		}
 
 	}
