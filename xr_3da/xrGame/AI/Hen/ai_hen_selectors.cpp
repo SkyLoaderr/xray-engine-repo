@@ -11,7 +11,7 @@
 #include "..\\..\\CustomMonster.h"
 #include "ai_hen_selectors.h"
 
-//#define OLD_COVER_COST
+#define OLD_COVER_COST
 
 #define MAGNITUDE_EPSILON 0.01
 #define SQR(x) ((x)*(x))
