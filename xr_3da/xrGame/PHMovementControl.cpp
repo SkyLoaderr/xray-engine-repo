@@ -69,7 +69,6 @@ void CPHMovementControl::AddControlVel	(const Fvector& vel)
 {
 	vExternalImpulse.add(vel);
 	bExernalImpulse=true;
-	Log("add external",vel);
 }
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
