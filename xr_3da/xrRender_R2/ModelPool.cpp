@@ -190,7 +190,8 @@ void CModelPool::Destroy()
 
 CModelPool::CModelPool()
 {
-	bLogging	= TRUE;
+	bLogging		= TRUE;
+    bForceDiscard 	= FALSE;
 }
 
 CModelPool::~CModelPool()
@@ -261,18 +262,24 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 	// 1. Search for already loaded model
 	IRender_Visual* Model	= Instance_Find(low_name);
 
-	// 2. If found - return reference
-	if (0!=Model)			return Instance_Duplicate(Model);
+	if (0!=Model){	
+		// 2. If found - return reference
+    	Model 				= Instance_Duplicate(Model);
+        Registry.insert		(mk_pair(Model,xr_strdup(low_name)));
+    }else{
+        // 3. If not found
+        Model 				= Instance_Duplicate(Instance_Load(name,data));
+    }
 
-	// 3. If not found
-	return					Instance_Duplicate(Instance_Load(name,data));
+    Registry.insert			(mk_pair(Model,xr_strdup(low_name)));
+    return Model;
 }
 
 void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
 {
-	if (bDiscard)			Discard(V); 
-	else 
-	{
+	if (bDiscard||bForceDiscard){
+    	Discard(V); 
+	}else{
 		//
 		REGISTRY_IT	it		= Registry.find	(V);
 		if (it!=Registry.end())
@@ -304,9 +311,11 @@ void	CModelPool::Discard	(IRender_Visual* &V)
             	VERIFY(I->refs>0);
             	I->refs--; 
                 if (0==I->refs){
+                	bForceDiscard	= TRUE;
 	            	I->model->Release();
 					xr_delete		(I->model);	
 					Models.erase	(I);
+                    bForceDiscard	= FALSE;
                 }
 				break;
 			}

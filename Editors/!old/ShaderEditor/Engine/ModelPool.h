@@ -38,6 +38,7 @@ private:
 	REGISTRY				Registry;			// Just pairing of pointer / Name
 	POOL					Pool;				// Unused / Inactive
 	BOOL					bLogging;
+    BOOL					bForceDiscard;
 
 	void					Destroy	();
 public:
