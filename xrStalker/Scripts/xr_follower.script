@@ -294,7 +294,10 @@ function action_follow:update_stage_2 ()
     if self.a.leader_command == leader_move then
        self.stage = 0
        self.object:clear_animations ()
-    end   
+    end 
+    if self.object:animation_count () == 1 then
+       self:set_animation ()
+    end    
     self.object:set_movement_type (move.stand)
     if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then return end
     self.object:set_sight (look.direction, self.a.look_dir, 0)
