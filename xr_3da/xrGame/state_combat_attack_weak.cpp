@@ -61,7 +61,7 @@ void CStateAttackWeak::execute			()
 	//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
 	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
 
-	m_object->CStalkerMovementManager::update	(0,0,0,
+	m_object->CStalkerMovementManager::update	(0,0,0,0,
 		CMovementManager::ePathTypeGamePath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
