@@ -21,7 +21,7 @@ function fract:__init(name, char_ini)
 	self.Guest = {}		-- список гостей, находящихся на территории группировки
 
 	self:loadJob(name)
-	table.sort(self.Job, function(a,b) return a.prior < b.prior end)
+	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self:loadStates(name)
 
 	if self.name == "blockpost" then
