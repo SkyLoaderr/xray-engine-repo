@@ -1,0 +1,14 @@
+
+function main ()
+    stalker = get_level_object ("stalker1")
+
+    stalker:script (true, s_test.script_name ())
+
+    action (stalker, move (move.standing, move.stand, move.line, patrol ("way_stalker")),
+            look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+
+    while true do wait () end
+
+    stalker:script (false, s_test.script_name ())
+
+end
