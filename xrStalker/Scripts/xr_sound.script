@@ -159,7 +159,7 @@ function load_sound(obj)
 	this.theme["trade_no"] = { exec = this.npc_class, types = {}}
 	this.theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier", id())
 	         
-	print_table(this.theme)
+--	print_table(this.theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
 -----------------------------------------------------------------------------------------------------------------------------------
