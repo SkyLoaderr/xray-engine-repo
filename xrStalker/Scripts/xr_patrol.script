@@ -146,7 +146,7 @@ function action_single_patrol:initialize ()
        self.path_type = patrol.start
        self.mental_state = anim.danger
        self.move_type = move.run
-       printf ("PATROL PATH IS %s", self.a.patrol_path)
+       printf ("PATROL PATH IS %s, for object ", self.a.patrol_path, self.object:name ())
     else  
        self.path_type = patrol.nearest 
     end 
@@ -231,9 +231,9 @@ function action_single_patrol:execute ()
        self.object:set_movement_type (self.move_type)  
        self.object:set_mental_state  (self.mental_state)
        --printf ("ACTION_SINGLE_PATROL, STAGE 0, TIME %d", device ():time_global ())
-       if self.move_type == move.walk then printf ("ACTION_SINGLE_PATROL - MOVE_WALK") end
-       if self.move_type == move.stand then printf ("ACTION_SINGLE_PATROL - MOVE_STAND") end
-       if self.move_type == move.run then printf ("ACTION_SINGLE_PATROL - MOVE_RUN") end
+       if self.move_type == move.walk then printf ("ACTION_SINGLE_PATROL - MOVE_WALK, OBJECT %s", self.object:name ()) end
+       if self.move_type == move.stand then printf ("ACTION_SINGLE_PATROL - MOVE_STAND, OBJECT %s", self.object:name ()) end
+       if self.move_type == move.run then printf ("ACTION_SINGLE_PATROL - MOVE_RUN, OBJECT %s", self.object:name ()) end
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
