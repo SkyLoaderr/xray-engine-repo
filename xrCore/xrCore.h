@@ -18,6 +18,11 @@
 	#define XRAY_EXCEPTIONS		0	// XRAY
 #endif
 
+#if !defined(_MT)
+	// multithreading disabled
+	#error Please enable multi-threaded library...
+#endif
+
 #	include "xrCore_platform.h"
 
 // stl-config
