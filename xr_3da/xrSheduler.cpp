@@ -198,17 +198,6 @@ void CSheduler::ProcessStep			()
 		LPCSTR		_obj_name		= T.Object->shedule_Name().c_str();
 #endif
 
-		try {
-			T.Object->shedule.b_locked	= TRUE;
-			T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
-			T.Object->shedule.b_locked	= FALSE;
-		} catch (...) {
-#ifdef DEBUG
-			Msg		("! xrSheduler: object '%s' raised an exception", _obj_name);
-			throw	;
-#endif
-		}
-
 		// Calc next update interval
 		u32		dwMin				= _max(u32(30),T.Object->shedule.t_min);
 		u32		dwMax				= (1000+T.Object->shedule.t_max)/2;
@@ -216,8 +205,20 @@ void CSheduler::ProcessStep			()
 		u32		dwUpdate			= dwMin+iFloor(float(dwMax-dwMin)*scale);
 		clamp	(dwUpdate,u32(_max(dwMin,u32(20))),dwMax);
 
+
+		try {
+			//T.Object->shedule.b_locked	= TRUE;
+			T.Object->shedule_Update	(clampr(Elapsed,u32(1),u32(_max(u32(T.Object->shedule.t_max),u32(1000)))) );
+			//T.Object->shedule.b_locked	= FALSE;
+		} catch (...) {
+#ifdef DEBUG
+			Msg		("! xrSheduler: object '%s' raised an exception", _obj_name);
+			throw	;
+#endif
+		}
+
 		// Fill item structure
-		Item	TNext;
+		Item						TNext;
 		TNext.dwTimeForExecute		= dwTime+dwUpdate;
 		TNext.dwTimeOfLastExecute	= dwTime;
 		TNext.Object				= T.Object;
