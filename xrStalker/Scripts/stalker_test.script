@@ -26,7 +26,7 @@ function main ()
 	
 	action(
 	    stalker,                                                                                                      
-		move		(move.standing, move.run, move.line, patrol ("way0000")),
+		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 		look		(look.fire_point, get_level_object("localhost/dima")),
 		anim		(anim.danger),
 		cond		(cond.move_end)
