@@ -409,8 +409,10 @@ function anims:cycled_idle(animslot)
 end
 function anims:update_idle()
 	-- ќпредел€ем нужно ли добавл€ть анимацию или ждать
-	if self.anim.begin == nil or
-	   device():time_global() - self.anim.begin > self.anim.idle then
+	if (self.anim.begin == nil or
+	   device():time_global() - self.anim.begin > self.anim.idle) and
+	   self.npc:animation_count() == nil	   
+	then
 		-- ќпределение промежутков времени между анимаци€ми
 		self.anim.begin = device():time_global()
 		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
