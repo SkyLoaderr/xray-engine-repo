@@ -262,7 +262,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 // Wallmarks
 //-----------------------------------------------------------------------------------------------------
 #include "cl_intersect.h"
-void CSkeletonX::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
+void CSkeletonX_ext::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 {
 	u16* indices		= 0;
 	//.	R_CHK				(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
@@ -329,7 +329,7 @@ void CSkeletonX_PM::AfterLoad(CKinematics* parent, u16 child_idx)
 	inherited2::_CollectBoneFaces	(this,iBase+SW.offset,SW.num_tris*3);
 }
 
-BOOL CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
+BOOL CSkeletonX_ext::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
 {
 	VERIFY				(*Vertices1W);
 	bool intersect		= FALSE;
@@ -350,7 +350,7 @@ BOOL CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S
 	}
 	return intersect;
 }
-BOOL CSkeletonX::_PickBoneSoft2W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
+BOOL CSkeletonX_ext::_PickBoneSoft2W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
 {
 	VERIFY				(*Vertices2W);
 	bool intersect		= FALSE;
@@ -375,7 +375,7 @@ BOOL CSkeletonX::_PickBoneSoft2W	(Fvector& normal, float& dist, const Fvector& S
 	}
 	return intersect;
 }
-BOOL CSkeletonX::_PickBoneHW1W		(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)
+BOOL CSkeletonX_ext::_PickBoneHW1W		(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)
 {
 	vertHW_1W* vertices;
 	R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
@@ -398,7 +398,7 @@ BOOL CSkeletonX::_PickBoneHW1W		(Fvector& normal, float& dist, const Fvector& S,
 	R_CHK				(V->pVertices->Unlock());
 	return intersect;
 }
-BOOL CSkeletonX::_PickBoneHW2W		(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)
+BOOL CSkeletonX_ext::_PickBoneHW2W		(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)
 {
 	vertHW_2W* vertices;
 	R_CHK				(V->pVertices->Lock(V->vBase,V->vCount,(void**)&vertices,D3DLOCK_READONLY));
