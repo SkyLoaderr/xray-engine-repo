@@ -45,19 +45,19 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// NOTE: Invisible elements exist only in R1
 	_MatrixItem		item	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform};
 #if RENDER==R_R1
-	if (!RI.val_bHUD)		RI.L_Shadows->add_element	(item);
+	if (!RI.val_bHUD)		RI.L_Shadows->add_element		(item);
 	if (RI.val_bInvisible)	return;
 #endif
 
 	// HUD rendering
 	if (RI.val_bHUD)			{
-		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
+		mapHUD_Node* N			= mapHUD.insertInAnyWay		(distSQ);
 		N->val					= item;
 	} else 
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {
-		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
 		N->val					= item;
 	} else
 
