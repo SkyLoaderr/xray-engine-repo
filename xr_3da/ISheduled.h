@@ -11,7 +11,6 @@ public:
 	}	shedule;
 
 	ISheduled			();
-	virtual ~ISheduled	();
 
 	void								shedule_register	();
 	void								shedule_unregister	();

@@ -12,6 +12,8 @@ IRenderable::IRenderable()
 }
 IRenderable::~IRenderable()
 {
-	Render->model_Delete			(renderable.visual);
-	Render->ros_destroy				(renderable.ROS);
+	Render->model_Delete				(renderable.visual);
+	Render->ros_destroy					(renderable.ROS);
+	renderable.visual					= NULL;
+	renderable.ROS						= NULL;
 }

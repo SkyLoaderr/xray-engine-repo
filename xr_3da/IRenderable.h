@@ -14,7 +14,7 @@ public:
 	}	renderable;
 public:
 	IRenderable();
-	virtual ~IRenderable();
+	~IRenderable();
 	virtual	void						renderable_Render			()	= 0;
 	virtual	BOOL						renderable_ShadowGenerate	()	{ return FALSE; };
 	virtual	BOOL						renderable_ShadowReceive	()	{ return FALSE; };

@@ -69,7 +69,7 @@ public:
 	virtual		void			spatial_move		();
 
 	ISpatial					();
-	virtual ~ISpatial			();
+	~ISpatial					();
 };
 
 //////////////////////////////////////////////////////////////////////////

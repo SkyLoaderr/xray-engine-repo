@@ -8,10 +8,6 @@ ISheduled::ISheduled	()
 	shedule.b_locked	= FALSE;
 }
 
-ISheduled::~ISheduled	()
-{
-}
-
 void	ISheduled::shedule_register			()
 {
 	Engine.Sheduler.Register				(this);
