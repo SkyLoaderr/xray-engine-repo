@@ -97,6 +97,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
+	virtual	void					vfDetachAll				(_GRAPH_ID				tGraphID)	{};
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -225,11 +226,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
+	virtual	void					vfAttachItems			(_GRAPH_ID				tGraphID,			ETakeType tTakeType = eTakeTypeAll);
 			bool					bfCanGetItem			(CSE_ALifeItem *tpALifeItem);
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
+	virtual	void					vfDetachAll				(_GRAPH_ID				tGraphID);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

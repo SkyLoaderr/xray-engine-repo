@@ -10,9 +10,6 @@
 
 #include "ai_alife_registries.h"
 
-#define OFFLINE_LOG
-#define DEBUG_LOG
-
 class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
 	public CSE_ALifeGameTime,
@@ -117,7 +114,7 @@ public:
 	// miscellanious
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
-			void					vfAppendItemList			(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList);
+			void					vfAppendItemVector			(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList);
 			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
 			ERelationType			tfGetRelationType			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract*tpALifeMonsterAbstract2);
 	// console commands support

@@ -34,12 +34,12 @@ public:
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower) = 0;
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float		&fHitPower) = 0;
 	virtual bool					bfPerformAttack			()											{return(true);};
 	virtual	void					vfUpdateWeaponAmmo		()											{};
 	virtual	void					vfProcessItems			()											{};
-	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll)		{};
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection) = 0;
+	virtual	void					vfAttachItems			(_GRAPH_ID				tGraphID,			ETakeType	tTakeType = eTakeTypeAll)		{};
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable,	int			iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
 #endif

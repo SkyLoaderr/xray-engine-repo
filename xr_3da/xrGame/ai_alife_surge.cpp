@@ -69,7 +69,6 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bALifeControl			= true;
 			CSE_ALifeObjectRegistry::Add(k);
 			vfUpdateDynamicData			(k);
-			//m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
 }

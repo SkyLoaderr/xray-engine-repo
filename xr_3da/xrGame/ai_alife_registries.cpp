@@ -283,9 +283,13 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 			bOk = true;
 			break;
 		}
-	R_ASSERT3						(bOk,"Specified object (%s) not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
-#ifdef DEBUG_LOG
-	Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
+
+	if (!bOk) {
+		FlushLog();
+	}
+	R_ASSERT3						(bOk,"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
+#ifdef ALIFE_LOG
+	Msg("[LSS] : removing object [%s][%d] from graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tGraphID);
 #endif
 }
 
@@ -293,8 +297,8 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 {
 	m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
-#ifdef DEBUG_LOG
-	Msg("ALife : adding object %s to graph point %d",tpALifeDynamicObject->s_name_replace,tNextGraphPointID);
+#ifdef ALIFE_LOG
+	Msg("[LSS] : adding object [%s][%d] to graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tNextGraphPointID);
 #endif
 }
 
@@ -338,8 +342,14 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 
 void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	if (bALifeRequest)
-		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
+#ifdef ALIFE_LOG
+	Msg							("[LSS] : Attaching item [%s][%d] to [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
+#endif
+	if (bALifeRequest) {
+		vfRemoveObjectFromGraphPoint	(tpALifeItem,tGraphID);
+		//if (getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tLevelID == m_tCurrentLevelID)
+		//	vfRemoveObjectFromCurrentLevel	(tpALifeItem);
+	}
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
@@ -356,7 +366,12 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 
 void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
+#ifdef ALIFE_LOG
+	Msg							("[LSS] : Detaching item [%s][%d] from [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
+#endif
 	vfAddObjectToGraphPoint		(tpALifeItem,tGraphID);
+//	if (getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tLevelID == m_tCurrentLevelID)
+//		m_tpCurrentLevel->insert(std::make_pair(tpALifeItem->ID,tpALifeItem));
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
@@ -468,7 +483,7 @@ void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *t
 
 void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
-	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
+//	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
 	
 	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 	if (!l_tpALifeSchedulable)

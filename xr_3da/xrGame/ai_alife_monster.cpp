@@ -89,15 +89,16 @@ void CSE_ALifeMonsterAbstract::Update		()
 		}
 		m_tpALife->vfCheckForInteraction(this);
 	}
-	while (bContinue && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
+	while (bContinue && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeMonsterAbstract::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
 {
+	m_tpCurrentBestWeapon		= 0;
 	fHitPower					= m_fHitPower;
 	tHitType					= m_tHitType;
-	return						(0);
+	return						(m_tpCurrentBestWeapon);
 }
 
 EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
@@ -114,7 +115,7 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 bool CSE_ALifeMonsterAbstract::bfActive()
 {
 	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
-	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (!l_tpALifeAbstractGroup && (fHealth > 0)));
+	return						((l_tpALifeAbstractGroup && (l_tpALifeAbstractGroup->m_wCount > 0)) || (!l_tpALifeAbstractGroup && (fHealth > EPS_L)));
 }
 
 CSE_ALifeDynamicObject *CSE_ALifeMonsterAbstract::tpfGetBestDetector()

@@ -18,11 +18,12 @@ void CSE_ALifeAnomalousZone::Update()
 
 CSE_ALifeItemWeapon	*CSE_ALifeAnomalousZone::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
 {
+	m_tpCurrentBestWeapon		= 0;
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
 	fHitPower					= m_maxPower;
 	tHitType					= m_tHitType;
-	return						(0);
+	return						(m_tpCurrentBestWeapon);
 }
 
 EMeetActionType	CSE_ALifeAnomalousZone::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)

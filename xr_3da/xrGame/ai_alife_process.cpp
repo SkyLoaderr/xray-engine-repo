@@ -21,13 +21,14 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 	D_OBJECT_P_PAIR_IT		B = m_tpCurrentLevel->begin();
 	D_OBJECT_P_PAIR_IT		E = m_tpCurrentLevel->end();
 	D_OBJECT_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
+	R_ASSERT				(M != E);
 	int i=1;
 	for (I = M ; I != E; I++, i++) {
 		ProcessOnlineOfflineSwitches((*I).second);
 		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 			m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
-#ifdef DEBUG_LOG
-			Msg("OOS0[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
+#ifdef ALIFE_LOG
+			Msg("[LSS][OOS0][%d : %d]",i - 1, m_tpCurrentLevel->size() - i);
 #endif
 			return;
 		}
@@ -36,8 +37,8 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 		ProcessOnlineOfflineSwitches((*I).second);
 		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 			m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
-#ifdef DEBUG_LOG
-			Msg("OOS1[%d : %d] !",i - 1, m_tpCurrentLevel->size() - i);
+#ifdef ALIFE_LOG
+			Msg("[LSS][OOS1][%d : %d]",i - 1, m_tpCurrentLevel->size() - i);
 #endif
 			return;
 		}
@@ -57,6 +58,9 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			(*I).second->Update();
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 				m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+#ifdef ALIFE_LOG
+				Msg("[LSS][U0][%d : %d]",i - 1, m_tpCurrentLevel->size() - i);
+#endif
 				Device.Statistic.TEST3.End();
 				return;
 			}
@@ -65,6 +69,9 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			(*I).second->Update();
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 				m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
+#ifdef ALIFE_LOG
+				Msg("[LSS][U1][%d : %d]",i - 1, m_tpCurrentLevel->size() - i);
+#endif
 				Device.Statistic.TEST3.End();
 				return;
 			}

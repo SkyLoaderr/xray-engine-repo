@@ -51,7 +51,7 @@ BOOL CSE_ALifeSimulator::shedule_Ready()
 
 LPCSTR CSE_ALifeSimulator::cName()
 {
-	return("ALife Simulator");
+	return("[LSS] Simulator");
 }; 
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)

@@ -13,6 +13,9 @@
 
 void CSE_ALifeHumanAbstract::Update			()
 {
+	if (ID == 106) {
+		ID = ID;
+	}
 	if (fHealth <= 0)
 		return;
 #ifdef OLD_BEHAVIOUR
@@ -66,7 +69,7 @@ void CSE_ALifeHumanAbstract::Update			()
 		m_tpALife->vfCheckForInteraction(this);
 		vfCheckForDeletedEvents	();
 	}
-	while (bOk && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
+	while (bOk && bfActive() && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));
 #endif
 	m_tTimeID					= m_tpALife->tfGetGameTime();
 }
