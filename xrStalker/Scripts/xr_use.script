@@ -11,14 +11,7 @@ function action_process_use:__init(obj, storage)
 end
 
 function action_process_use:use_callback(victim, who)
-	printf("[%s] used by [%s]", victim:name(), who:name())
-
-	if self.object:is_talk_enabled() == false then
-		if self.object:active_sound_count() == 0 then
-			xr_sound.set_sound_play(self.object, "threat_back")		
-		end
-	end
-
+	--printf("[%s] used by [%s]", victim:name(), who:name())
 	if db.storage[self.object:id()].active_scheme then
 		if db.actor then
 			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
@@ -28,6 +21,16 @@ function action_process_use:use_callback(victim, who)
 	end
 end
 
+
+function notify_on_use(victim, who)
+	--printf("NOTIFY [%s] used by [%s]", victim:name(), who:name())
+
+	if victim:is_talk_enabled() == false then
+		if victim:active_sound_count() == 0 then
+			xr_sound.set_sound_play(victim, "threat_back")		
+		end
+	end
+end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
@@ -39,10 +42,12 @@ end
 function set_use_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	npc:set_callback(callback.use_object, st.action.use_callback, st.action)
+	xr_logic.subscribe_action_for_events(npc, st, st.action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.use_object, nil)
+	local st = db.storage[npc:id()][scheme]
+	if st then
+		xr_logic.unsubscribe_action_from_events(npc, st, st.action)
+	end
 end
-

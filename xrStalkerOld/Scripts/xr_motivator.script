@@ -133,6 +133,13 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 	end
 end
 
+function motivator_binder:use_callback(obj, who)
+	xr_use.notify_on_use(obj, who)
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "use_callback", obj, who)
+	end
+end
+
 function motivator_binder:update(delta)
 	object_binder.update(self, delta)
 	
@@ -143,6 +150,9 @@ function motivator_binder:update(delta)
 		-- Все CALLBACK-и ставить здесь:
 		self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
 		self.object:set_callback(callback.hit, motivator_binder.hit_callback, self)
+		self.object:set_callback(callback.use_object, motivator_binder.use_callback, self)
+		
+		
 		--self.object:set_callback(callback.sound, motivator_binder.hear_callback, self)
 	end
 
