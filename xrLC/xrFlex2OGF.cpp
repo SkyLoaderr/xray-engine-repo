@@ -54,7 +54,7 @@ void CBuild::Flex2OGF()
 			try {
 				for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
 				{
-					OGF_Vertex	V1,V2,V3;
+					static OGF_Vertex	V1,V2,V3;
 					
 					Face*	FF = *Fit;
 					R_ASSERT(FF);
@@ -75,6 +75,7 @@ void CBuild::Flex2OGF()
 					
 					// build face
 					TRY(pOGF->_BuildFace(V1,V2,V3));
+					V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
 				}
 			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
 		} catch (...)
