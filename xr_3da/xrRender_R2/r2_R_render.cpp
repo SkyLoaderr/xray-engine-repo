@@ -100,7 +100,7 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection)
 						// track lighting environment
 						VERIFY				(renderable->renderable.ROS);
 						CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
-						T->update			(renderable);
+						if (T)			T->update	(renderable);
 					}
 					set_Object						(renderable);
 					renderable->renderable_Render	();
