@@ -10,7 +10,7 @@
 #include "GlowManager.h"
 
 #define FADE_SCALE			1024.f
-#define MAX_GlowsDist1		float(g_pGamePersistent->Environment.Current.far_plane)
+#define MAX_GlowsDist1		float(g_pGamePersistent->Environment.CurrentEnv.far_plane)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
 //////////////////////////////////////////////////////////////////////
@@ -41,9 +41,8 @@ void CGlowManager::Load		(IReader* fs)
 		fs->r				(&G->spatial.center,3*sizeof(float));
 		fs->r				(&G->spatial.radius,1*sizeof(float));
 
-		u32 T				= fs->r_u32();
-		u32 S				= fs->r_u32();
-		G->hShader			= g_pGameLevel->LL_CreateShader(S,T,-1,-1);
+		u16 S				= fs->r_u16();
+		G->hShader			= ::Render->getShader(S);
 
 		G->fade				= 255.f;
 		G->dwFrame			= 0x0;

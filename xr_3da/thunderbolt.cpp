@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma once
 
+#include "render.h"
 #include "Thunderbolt.h"
 #include "igame_persistent.h"
 
@@ -9,6 +10,9 @@
 		#include "ui_tools.h"
     #endif
 #else
+	#include "igame_level.h"
+	#include "xr_area.h"
+	#include "xr_object.h"
 #endif
 
 CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
@@ -24,7 +28,7 @@ CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
     LPCSTR m_name;
 	m_name				= pSettings->r_string(sect,"lightning_model");
 	F					= FS.r_open("$game_meshes$",m_name); R_ASSERT2(F,"Empty 'lightning_model'.");
-    l_model				= Render->model_CreateDM(F);
+	l_model				= ::Render->model_CreateDM(F);
     FS.r_close			(F);
     m_name				= pSettings->r_string(sect,"glow_model");
 	F					= m_name?FS.r_open("$game_meshes$",m_name):0;

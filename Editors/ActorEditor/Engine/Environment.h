@@ -58,47 +58,46 @@ class ENGINE_API	CEnvironment
 		{	return strcmp(*x,*y)<0;	}
 	};
 public:
-	DEFINE_VECTOR	(CEnvDescriptor*,EnvVec,EnvIt);
-	DEFINE_MAP_PRED	(ref_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
+	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
+	DEFINE_MAP_PRED			(ref_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
 	// Environments
-	CEnvDescriptor	CurrentEnv;
-	CEnvDescriptor*	CurrentA;
-	CEnvDescriptor*	CurrentB;
-    float			ABlength;
-    float			ABcurrent;
-
-    float			ABspeed;
+	CEnvDescriptor			CurrentEnv;
+	CEnvDescriptor*			CurrentA;
+	CEnvDescriptor*			CurrentB;
+    float					ABlength;
+    float					ABcurrent;
+	float					fTimeFactor;
     
-    EnvVec*			CurrentWeather;
-    LPCSTR			CurrentWeatherName;
-	WeatherMap		Weathers;
-	ref_shader		sh_2sky;
-	ref_geom		sh_2geom;
-	CEffect_Rain*	eff_Rain;
-	CLensFlare*		eff_LensFlare;
-	CEffect_Thunderbolt* eff_Thunderbolt;
+    EnvVec*					CurrentWeather;
+    LPCSTR					CurrentWeatherName;
+	WeatherMap				Weathers;
+	ref_shader				sh_2sky;
+	ref_geom				sh_2geom;
+	CEffect_Rain*			eff_Rain;
+	CLensFlare*				eff_LensFlare;
+	CEffect_Thunderbolt*	eff_Thunderbolt;
 
-    void			SelectEnv			();
+    void					SelectEnv			();
 public:
-					CEnvironment		();
-					~CEnvironment		();
+							CEnvironment		();
+							~CEnvironment		();
 
-	void			load				();
-    void			unload				();
+	void					load				();
+    void					unload				();
 
-	void			OnFrame				();
+	void					OnFrame				();
 
-	void			RenderFirst			();
-	void			RenderLast			();
+	void					RenderFirst			();
+	void					RenderLast			();
 
-    void			OnDeviceCreate		();
-    void			OnDeviceDestroy		();
+    void					OnDeviceCreate		();
+    void					OnDeviceDestroy		();
 
-    void			SetWeather			(LPCSTR name);
-    LPCSTR			GetWeather			(){return CurrentWeatherName;}
+	void					SetTimeFactor		(float _time_factor);
+    void					SetWeather			(LPCSTR name);
+    LPCSTR					GetWeather			(){return CurrentWeatherName;}
 
-    void			ED_Reload			();
-    void			ED_SetSpeed			(float w_speed){ABspeed=w_speed;}
+    void					ED_Reload			();
 };
 
 ENGINE_API extern Flags32	psEnvFlags;

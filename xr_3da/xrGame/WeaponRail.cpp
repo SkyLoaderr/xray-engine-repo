@@ -73,7 +73,7 @@ void CWeaponRail::OnMove()
 
 			Fvector p1,d;
 			m_pParent->g_fireParams(p1,d);
-			float	dist=g_pGameLevel->Environment.Current.Far;
+			float	dist=g_pGameLevel->Environment.CurrentEnv.Far;
 
 		//	sounds
 			Fvector r_pos; r_pos.mad(p1,d,2);
@@ -91,7 +91,7 @@ void CWeaponRail::OnMove()
 					}
 				}
 			} else {
-				RQ.range	= g_pGameLevel->Environment.Current.Far;
+				RQ.range	= g_pGameLevel->Environment.CurrentEnv.Far;
 				SetRail		(p1,d,RQ,FALSE);
 			}
 			m_pParent->bEnabled = true;

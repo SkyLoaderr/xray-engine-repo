@@ -74,9 +74,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	LL_Stream					= FS.r_open	("$level$","level");
 	IReader	&fs					= *LL_Stream;
 
-	IReader *	chunk			= 0;
-	u32			count, i;
-
 	// HUD + Environment
 	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
 
@@ -109,20 +106,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	Device.seqFrame.Add			(this);
 
 	return TRUE;
-}
-
-ref_shader	IGame_Level::LL_CreateShader	(int S, int T, int M, int C)
-{
-	ref_shader	temp;
-	temp.create	(getString(S),getString(T),getString(M),getString(C));
-	return		temp;
-}
-
-LPCSTR		IGame_Level::getString			(int id)	
-{
-	if (id<0)	return 0;
-	R_ASSERT	(id<int(LL_strings.size()));
-	return LL_strings[id];
 }
 
 void IGame_Level::OnRender		( ) 

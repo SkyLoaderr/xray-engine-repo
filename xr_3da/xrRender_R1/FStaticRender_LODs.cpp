@@ -14,7 +14,7 @@ extern float r_ssaLOD_B;
 
 IC u32	color		(u32 rgbh, u8 sun, u32 Alpha)
 {
-	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.Current;
+	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector						c_sun,c_ambient,c_lmap,c_hemi;
 	c_sun.set					(desc.sun_color.x,	desc.sun_color.y,	desc.sun_color.z);
 	c_lmap.set					(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);

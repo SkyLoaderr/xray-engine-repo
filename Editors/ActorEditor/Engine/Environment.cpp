@@ -98,7 +98,7 @@ void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 	Ivector3 tm				={0,0,0};
 	sscanf					(exec_tm,"%d:%d:%d",&tm.x,&tm.y,&tm.z);
     R_ASSERT3				((tm.x>=0)&&(tm.x<24)&&(tm.y>=0)&&(tm.y<60)&&(tm.z>=0)&&(tm.z<60),"Incorrect weather time",S);
-	exec_time				= tm.x*3600+tm.y*60+tm.z;
+	exec_time				= tm.x*3600.f+tm.y*60.f+tm.z;
 	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	far_plane				= pSettings->r_float	(S,"far_plane");
@@ -154,11 +154,11 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 // environment
 CEnvironment::CEnvironment	()
 {
+	fTimeFactor				= 1;
 	CurrentA				= 0;
 	CurrentB				= 0;
 	ABcurrent				= 0.f;
     ABlength				= 0.f;
-    ABspeed					= 1.f;
     CurrentWeather			= 0;
     CurrentWeatherName		= 0;
 	eff_Rain				= 0;
@@ -169,6 +169,10 @@ CEnvironment::CEnvironment	()
 CEnvironment::~CEnvironment	()
 {
 	OnDeviceDestroy			();
+}
+void	CEnvironment::SetTimeFactor		(float _time_factor)
+{
+	fTimeFactor				= _time_factor;
 }
 
 IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
@@ -265,14 +269,10 @@ void CEnvironment::SelectEnv()
 
 void CEnvironment::OnFrame()
 {
-#ifdef _EDITOR
-	ABcurrent			+= Device.fTimeDelta*ABspeed;
-#else
-	ABcurrent			+= Device.fTimeDelta*Level().GetGameTimeFactor();
-#endif
+	ABcurrent			+= Device.fTimeDelta*fTimeFactor;
     if (ABcurrent>ABlength)	SelectEnv();
 
-    VERIFY(CurrentA&&CurrentB);
+    VERIFY					(CurrentA&&CurrentB);
     float t_fact			= ABcurrent/ABlength; VERIFY(t_fact<1.f);
 	CurrentEnv.lerp			(*CurrentA,*CurrentB,t_fact);
     int id					= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
