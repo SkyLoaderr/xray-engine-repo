@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "soundrender_core.h"
 #include "soundrender_source.h"
 
 CSoundRender_Source::CSoundRender_Source	()
@@ -12,4 +13,6 @@ CSoundRender_Source::CSoundRender_Source	()
 CSoundRender_Source::~CSoundRender_Source	()
 {
 	xr_free	(wave);
+
+	SoundRender.cache.cat_destroy			(CAT);
 }
