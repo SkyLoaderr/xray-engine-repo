@@ -32,11 +32,16 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 	
+	// Bullet trace
+	sh_BulletTracer	= Device.Shader.Create	("bullet_tracer","bullet_tracer");
+
 	fTime			= 0;
 }
 
 CWeaponGroza::~CWeaponGroza()
 {
+	Device.Shader.Delete(sh_BulletTracer);
+
 	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 
@@ -47,7 +52,7 @@ CWeaponGroza::~CWeaponGroza()
 
 void CWeaponGroza::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
-	R_ASSERT(m_pHUD);
+	R_ASSERT		(m_pHUD);
 	
 	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	
