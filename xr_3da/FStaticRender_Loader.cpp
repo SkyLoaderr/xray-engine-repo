@@ -134,7 +134,6 @@ void CRender::LoadBuffers(CStream *fs)
 		R_CHK(VB[i]->Lock(0,0,&pData,0));
 
 		PSGP.memCopy	(pData,fs->Pointer(),vCount*vSize);
-		//CopyMemory	(pData,fs->Pointer(),vCount*vSize);
 
 		VB[i]->Unlock();
 

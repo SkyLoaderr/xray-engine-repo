@@ -129,7 +129,7 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 		if (!conv)				{_FREE(pFormat); return NULL; }
 
 		// Secondly convert to best format for 3D
-		CopyMemory				(pFormat,&wfxdest,sizeof(wfxdest));
+		PSGP.memCopy			(pFormat,&wfxdest,sizeof(wfxdest));
 		pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 		wfxdest.nChannels		= 1;
 		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
@@ -160,9 +160,9 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 
         if (SUCCEEDED(pBuf->Lock(0, 0, &pMem1, &dwSize1, &pMem2, &dwSize2, DSBLOCK_ENTIREBUFFER)))
         {
-            CopyMemory(pMem1, converted, dwSize1);
+            PSGP.memCopy(pMem1, converted, dwSize1);
             if ( 0 != dwSize2 )
-                CopyMemory(pMem2, (char*)converted+dwSize1, dwSize2);
+                PSGP.memCopy(pMem2, (char*)converted+dwSize1, dwSize2);
             pBuf->Unlock(pMem1, dwSize1, pMem2, dwSize2);
 
 			dwTimeTotal		= 1000 * dwLen / wfxdest.nAvgBytesPerSec;

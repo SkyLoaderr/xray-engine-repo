@@ -144,10 +144,11 @@ void mmgrMessage(const char *logMSG, const char *dop)
 
 char * _STRDUP(const char * string)
 {
-	VERIFY(string);
+	VERIFY	(string);
 	int		len		= strlen(string)+1;
 	char *	memory	= (char *) malloc( len );
-	VERIFY(memory);
-	CopyMemory(memory,string,len);
+	VERIFY	(memory);
+	if (PSGP.memCopy)	PSGP.memCopy	(memory,string,len);
+	else				CopyMemory		(memory,string,len);
 	return memory;
 }

@@ -22,13 +22,12 @@ CEngine::~CEngine()
 	
 }
 
-void CEngine::Initialize(void)
+void CEngine::Initialize	(void)
 {
 	// Mathematics & PSI detection
 	InitMath							( );
 	
 	// Bind PSGP
-	Log("Loading PSGP: xrCPU_Pipe.dll");
 	hPSGP		= LoadLibrary("xrCPU_Pipe.dll");
 	R_ASSERT	(hPSGP);
 	

@@ -39,7 +39,7 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 			FCached& V	=	*(cache[I]);
 			
 			// Transfer vertices
-			CopyMemory	(verts,V.pVertices,V.vCount*Stride);
+			PSGP.memCopy	(verts,V.pVertices,V.vCount*Stride);
 			
 			// Transfer indices (in 32bit lines)
 			VERIFY	(iOffset<65535);

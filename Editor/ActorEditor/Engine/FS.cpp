@@ -18,8 +18,8 @@ void CFS_Memory::write	(const void* ptr, DWORD count)
 		while (mem_size <= (position+count)) mem_size*=2;
 		data = (BYTE*) realloc(data,mem_size);
 	}
-	CopyMemory(data+position,ptr,count);
-	position+=count;
+	PSGP.memCopy	(data+position,ptr,count);
+	position		+=count;
 	if (position>file_size) file_size=position;
 }
 

@@ -24,11 +24,11 @@ void FDetailPatch::Load(const char* N, CStream* fs, DWORD dwFlags)
 {
 	CVisual::Load(N,fs,dwFlags);
 
-	DWORD size	= fs->FindChunk(OGF_DPATCH);	
-	R_ASSERT(size && (size%sizeof(DPatch) == 0));
-	DWORD count = size/sizeof(DPatch);
-	patches.resize(count);
-	CopyMemory(patches.begin(),fs->Pointer(),size);
+	DWORD size		= fs->FindChunk(OGF_DPATCH);	
+	R_ASSERT		(size && (size%sizeof(DPatch) == 0));
+	DWORD count		= size/sizeof(DPatch);
+	patches.resize	(count);
+	PSGP.memCopy	(patches.begin(),fs->Pointer(),size);
 
 	Stream = Device.Streams.Create(FVF::F_TL,count*4);
 }

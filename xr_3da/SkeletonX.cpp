@@ -117,7 +117,7 @@ void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags)
 	DWORD	dwCount = data->Rdword();
 	R_ASSERT(dwCount%3 == 0);
 	indices = LPWORD(malloc(dwCount*2));
-	CopyMemory(indices,data->Pointer(),dwCount*2);
+	PSGP.memCopy(indices,data->Pointer(),dwCount*2);
 	dwPrimsCount = dwCount/3;
 
 	P.IB_Create	(0,dwPrimsCount*3,D3DUSAGE_WRITEONLY,indices);

@@ -562,7 +562,7 @@ _TGA:
 		DWORD *pImagePixels	= (DWORD *)malloc(dwH*dwP);
 		DWORD *pNewPixels	= NULL;
 
-		CopyMemory			(pImagePixels,Image.pData,dwH*dwP);
+		PSGP.memCopy		(pImagePixels,Image.pData,dwH*dwP);
 		while (dwWidth!=dwW) {
 			pNewPixels=TUBuild32MipLevel(Mipgen,dwW,dwH,dwP,pImagePixels);
 			free(pImagePixels); pImagePixels=pNewPixels; pNewPixels=NULL;

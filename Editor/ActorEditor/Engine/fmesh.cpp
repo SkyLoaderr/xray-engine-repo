@@ -42,7 +42,7 @@ void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSour
 
 	// avoid redundant processing
 	if (dwTypeDest==dwTypeSrc) {
-		CopyMemory(pDest,pSource,dwSizeDest*dwCount*4);
+		PSGP.memCopy	(pDest,pSource,dwSizeDest*dwCount*4);
 		return;
 	}
 

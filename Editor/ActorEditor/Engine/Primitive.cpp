@@ -78,8 +78,8 @@ void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID*
 		&pIndices
 		));
 	if (pData){
-		CopyMemory(IB_Lock(),pData,dwCount*2);
-		IB_Unlock();
+		PSGP.memCopy(IB_Lock(),pData,dwCount*2);
+		IB_Unlock	();
 	}
 }
 WORD*	CPrimitive::IB_Lock				(DWORD dwFlags)
