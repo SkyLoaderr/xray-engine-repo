@@ -82,7 +82,7 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
 	pstrWallmark		= strdup(name);
 	if (0==pstrWallmark)hWallmark = 0; 
-	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWalmark);
+	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWallmark);
 	fWallmarkSize		= ini->ReadFLOAT	(section,"wm_size");
 
 	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
