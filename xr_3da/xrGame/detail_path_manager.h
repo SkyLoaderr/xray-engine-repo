@@ -126,18 +126,14 @@ private:
 	EDetailPathType								m_path_type;
 
 private:
-	xr_vector<STravelPathPoint>					m_path;
 	Fvector										m_start_position;
 	Fvector										m_start_direction;
 	Fvector										m_dest_position;
 	Fvector										m_dest_direction;
 
-protected:
-	xr_vector<STravelPoint>						m_key_points;
-	xr_vector<STravelPoint>						m_key_points1;
-	xr_vector<STravelPathPoint>					m_path1;
-
 private:
+	xr_vector<STravelPathPoint>					m_path;
+	xr_vector<STravelPoint>						m_key_points;
 	xr_vector<STravelParamsIndex>				m_start_params;
 	xr_vector<STravelParamsIndex>				m_dest_params;
 	xr_vector<STravelPathPoint>					m_temp_path;
@@ -152,6 +148,8 @@ private:
 	u32											m_time_path_built;
 
 private:
+	IC	STravelPoint compute_better_key_point	(const STravelPoint		&point0,	const STravelPoint					&point1,		const STravelPoint					&point2);
+	IC		bool	better_key_point			(const STravelPoint		&point0,	const STravelPoint					&point2,		const STravelPoint					&point10,			const STravelPoint					&point11);
 	IC		bool	check_mask					(u32					mask,			  u32							test) const;
 	IC		void	adjust_point				(const Fvector2			&source,		  float							yaw,				  float							magnitude,				  Fvector2						&dest) const;
 	IC		void	assign_angle				(float					&angle,		const float							start_yaw,		const float							dest_yaw,			const bool							positive,			const EDirectionType				direction_type,				const bool				start = true) const;
@@ -169,7 +167,6 @@ private:
 			void	add_patrol_point			();
 			void	postprocess_key_points		(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest,xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_path_via_key_points	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
-			void	build_path_via_key_points2	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_smooth_path			(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
 
 protected:
@@ -190,6 +187,7 @@ protected:
 	friend class CMovementManager;
 #ifdef DEBUG
 	friend class CLevelGraph;
+	friend class CCustomMonster;
 #endif
 
 public:

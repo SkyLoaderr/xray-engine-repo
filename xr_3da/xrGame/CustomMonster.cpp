@@ -515,8 +515,8 @@ void CCustomMonster::OnRender()
 
 	RCache.OnFrameEnd				();
 	for (int i=0; i<1; ++i) {
-		const xr_vector<STravelPoint>		&keys	= !i ? m_key_points					: m_key_points1;
-		const xr_vector<STravelPathPoint>	&path	= !i ? CDetailPathManager::path()	: m_path1;
+		const xr_vector<STravelPoint>		&keys	= !i ? m_key_points					: m_key_points;
+		const xr_vector<STravelPathPoint>	&path	= !i ? CDetailPathManager::path()	: CDetailPathManager::path();
 		u32									color0	= !i ? D3DCOLOR_XRGB(0,255,0)		: D3DCOLOR_XRGB(0,0,255);
 		u32									color1	= !i ? D3DCOLOR_XRGB(255,0,0)		: D3DCOLOR_XRGB(255,255,0);
 		u32									color2	= !i ? D3DCOLOR_XRGB(0,0,255)		: D3DCOLOR_XRGB(0,255,255);

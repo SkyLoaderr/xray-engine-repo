@@ -10,8 +10,6 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
-//#define OLD_BEHAVIOUR
-
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 {
@@ -572,168 +570,10 @@ bool CDetailPathManager::fill_key_points(
 	return								(true);
 }
 
-void CDetailPathManager::build_path_via_key_points(
-	STrajectoryPoint		&start,
-	STrajectoryPoint		&dest,
-	xr_vector<STravelParamsIndex> &finish_params,
-	const u32				straight_line_index,
-	const u32				straight_line_index_negative
-)
-{
-	STrajectoryPoint					s,d,p;
-	s 									= start;
-//	m_dest_params						= m_start_params;
-	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), P = I;
-	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
-	for ( ; I != E; ++I) {
-		VERIFY							(ai().level_graph().inside((*I).vertex_id,(*I).position));
-
-		if ((I + 1) != E) {
-			(STravelPoint&)d = *I;
-			d.direction.sub				((I + 1)->position,d.position);
-			VERIFY						(!fis_zero(d.direction.magnitude()));
-			d.direction.normalize		();
-		}
-		else
-			d							= dest;
-
-		if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
-			if (I == P) {
-				m_path.clear			();
-				return;
-			}
-
-			p							= d;
-			(STravelPoint&)d			= *(I - 1);
-			d.direction.sub				((*I).position,d.position);
-			VERIFY						(!fis_zero(d.direction.magnitude()));
-			d.direction.normalize		();
-			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
-				compute_path			(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
-				compute_path			(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
-				m_path.clear			();
-				return;
-			}
-			P							= I - 1;
-
-			s							= d;
-
-			VERIFY						(m_path.size() > 1);
-			s.direction.sub				(
-				ai().level_graph().v2d(m_path[m_path.size() - 1].position),
-				ai().level_graph().v2d(m_path[m_path.size() - 2].position)
-			);
-			
-			VERIFY						(!fis_zero(s.direction.magnitude()));
-			s.direction.normalize		();
-			m_path.pop_back				();
-
-			d							= p;
-			if (!m_path.empty()) {
-				if (is_negative(velocity(m_path.back().velocity).linear_velocity))
-					s.direction.mul		(-1.f);
-			}
-
-			VERIFY						(!fis_zero(s.direction.magnitude()));
-			if (!compute_path(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
-				m_path.clear			();
-				return;
-			}
-		}
-	}
-
-	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
-		m_path.clear					();
-		return;
-	}
-
-	add_patrol_point					();
-	ai().level_graph().assign_y_values	(m_path);
-	m_failed							= false;
-}
-
-void CDetailPathManager::add_patrol_point()
-{
-	m_last_patrol_point					= m_path.size() - 1;
-	if ((m_path.size() > 1) && m_state_patrol_path) {
-		STravelPathPoint				t;
-		Fvector							v;
-		v.sub							(m_path.back().position,m_path[m_last_patrol_point - 1].position);
-		v.y								= 0.f;
-		if (v.magnitude() > EPS_S)
-			v.normalize					();
-		else
-			return;
-
-		v.mul							(4.f);
-		t								= m_path.back();
-		t.position.add					(v);
-		ai().level_graph().create_straight_path<false>(
-			m_path.back().vertex_id,
-			ai().level_graph().v2d(m_path.back().position),
-			ai().level_graph().v2d(t.position),
-			m_path,
-			m_path.back(),
-			false,
-			false
-		);
-	}
-}
-
-void CDetailPathManager::build_smooth_path		(
-	const xr_vector<u32>	&level_path, 
-	u32						intermediate_index
-)
-{
-	Device.Statistic.AI_Range.Begin		();
-	
-	m_failed							= true;
-	
-	if (level_path.size() == 1) {
-		m_path.clear					();
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-
-	u32									straight_line_index, straight_line_index_negative;
-	STrajectoryPoint					start,dest;
-
-	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index,straight_line_index_negative)) {
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-
-	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
-
-#ifdef OLD_BEHAVIOUR
-	if (compute_path(start,dest,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
-		add_patrol_point();
-		ai().level_graph().assign_y_values(m_path);
-		m_failed						= false;
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-#endif
-	
-	if (!fill_key_points(level_path,intermediate_index,start,dest)) {
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-
-#ifdef OLD_BEHAVIOUR
-	build_path_via_key_points			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
-#else
-	postprocess_key_points				(level_path,intermediate_index,start,dest,finish_params,straight_line_index,straight_line_index_negative);
-	build_path_via_key_points2			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
-#endif
-
-	Device.Statistic.AI_Range.End		();
-}
-
-IC	CDetailPathManager::STravelPoint compute_better_key_point(
-	const CDetailPathManager::STravelPoint	&point0, 
-	const CDetailPathManager::STravelPoint	&point1, 
-	const CDetailPathManager::STravelPoint	&point2 
+IC	CDetailPathManager::STravelPoint CDetailPathManager::compute_better_key_point(
+	const STravelPoint	&point0, 
+	const STravelPoint	&point1, 
+	const STravelPoint	&point2 
 )
 {
 	CDetailPathManager::STravelPoint		result = point1;
@@ -774,11 +614,11 @@ IC	CDetailPathManager::STravelPoint compute_better_key_point(
 	return						(result);
 }
 
-IC	bool better_key_point(
-	const CDetailPathManager::STravelPoint	&point0, 
-	const CDetailPathManager::STravelPoint	&point2, 
-	const CDetailPathManager::STravelPoint	&point10, 
-	const CDetailPathManager::STravelPoint	&point11 
+IC	bool CDetailPathManager::better_key_point(
+	const STravelPoint	&point0, 
+	const STravelPoint	&point2, 
+	const STravelPoint	&point10, 
+	const STravelPoint	&point11 
 )
 {
 	Fvector2				direction100 = Fvector2().sub(point0.position,point10.position);
@@ -794,7 +634,7 @@ IC	bool better_key_point(
 	return					(cos_alpha0 < cos_alpha1);
 }
 
-void CDetailPathManager::build_path_via_key_points2(
+void CDetailPathManager::build_path_via_key_points(
 	STrajectoryPoint		&start,
 	STrajectoryPoint		&dest,
 	xr_vector<STravelParamsIndex> &finish_params,
@@ -868,7 +708,6 @@ void CDetailPathManager::postprocess_key_points(
 	u32						straight_line_index_negative
 )
 {
-//	m_key_points1			= m_key_points;
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
 		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1]);
 		STravelPoint		key_point1 = compute_better_key_point(m_key_points[i+1],m_key_points[i],m_key_points[i-1]);
@@ -878,13 +717,69 @@ void CDetailPathManager::postprocess_key_points(
 			m_key_points[i]	= key_point1;
 		VERIFY				(!m_key_points[i].position.similar(m_key_points[i-1].position));
 	}
-//	build_path_via_key_points2	(start,dest,finish_params,straight_line_index,straight_line_index_negative);
-//	if (m_path.empty())
-//		Msg					("! Cannot build path!");
-//	m_path1					= m_path;
-//	m_path.clear			();
-//	
-//	xr_vector<STravelPoint>	temp = m_key_points;
-//	m_key_points			= m_key_points1;
-//	m_key_points1			= temp;
+}
+
+void CDetailPathManager::add_patrol_point()
+{
+	m_last_patrol_point					= m_path.size() - 1;
+	if ((m_path.size() > 1) && m_state_patrol_path) {
+		STravelPathPoint				t;
+		Fvector							v;
+		v.sub							(m_path.back().position,m_path[m_last_patrol_point - 1].position);
+		v.y								= 0.f;
+		if (v.magnitude() > EPS_S)
+			v.normalize					();
+		else
+			return;
+
+		v.mul							(4.f);
+		t								= m_path.back();
+		t.position.add					(v);
+		ai().level_graph().create_straight_path<false>(
+			m_path.back().vertex_id,
+			ai().level_graph().v2d(m_path.back().position),
+			ai().level_graph().v2d(t.position),
+			m_path,
+			m_path.back(),
+			false,
+			false
+		);
+	}
+}
+
+void CDetailPathManager::build_smooth_path		(
+	const xr_vector<u32>	&level_path, 
+	u32						intermediate_index
+)
+{
+	Device.Statistic.AI_Range.Begin		();
+	
+	m_failed							= true;
+	
+	if (level_path.size() == 1) {
+		m_path.clear					();
+		Device.Statistic.AI_Range.End	();
+		return;
+	}
+
+	u32									straight_line_index, straight_line_index_negative;
+	STrajectoryPoint					start,dest;
+
+	if (!init_build(level_path,intermediate_index,start,dest,straight_line_index,straight_line_index_negative)) {
+		Device.Statistic.AI_Range.End	();
+		return;
+	}
+
+	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
+
+	if (!fill_key_points(level_path,intermediate_index,start,dest)) {
+		Device.Statistic.AI_Range.End	();
+		return;
+	}
+
+	postprocess_key_points				(level_path,intermediate_index,start,dest,finish_params,straight_line_index,straight_line_index_negative);
+
+	build_path_via_key_points			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
+
+	Device.Statistic.AI_Range.End		();
 }
