@@ -201,7 +201,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Gathering lighting information...");
-	for (int iteration=0; iteration<2; iteration++)
+	for (int iteration=0; iteration<3; iteration++)
 	{
 		// Gather
 		xr_vector<base_color>	colors;
