@@ -912,7 +912,7 @@ void CCustomZone::AffectObjects()
 	xr_set<CObject*>::iterator it;
 	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 	{
-		Affect(*it);
+		if(!(*it)->getDestroy())Affect(*it);
 	}
 }
 
