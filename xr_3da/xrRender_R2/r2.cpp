@@ -3,6 +3,8 @@
 #include "..\fbasicvisual.h"
 #include "..\xr_object.h"
 #include "..\CustomHUD.h"
+#include "..\igame_persistent.h"
+#include "..\environment.h"
  
 CRender										RImplementation;
 
@@ -34,9 +36,9 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 
 static class cl_encodeZ01		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
-	float		far	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
+	float		f	= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 	Fvector3	enc = {1,256,65536};
-	enc.div			(far);
+	enc.div			(f);
 	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
 }}	binder_encodeZ01;
 //////////////////////////////////////////////////////////////////////////
