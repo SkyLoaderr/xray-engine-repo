@@ -120,7 +120,7 @@ extern "C" {
 		case CLSID_AI_CROW:				P = new CAI_Crow();				break;
 		case CLSID_CAR_NIVA:			P = new CCar();					break;
 
-		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
+//		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
 		case CLSID_OBJECT_W_FN2000:		P = new CWeaponFN2000();		break;
 		case CLSID_OBJECT_W_AK74:		P = new CWeaponAK74();			break;
 		case CLSID_OBJECT_W_LR300:		P = new CWeaponLR300();			break;

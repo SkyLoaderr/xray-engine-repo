@@ -208,6 +208,7 @@ public:
 		state.fVelocity		= Movement.GetVelocityActual();
 		return TRUE;
 	}
+	virtual void			g_WeaponBones		( int& L, int& R);
 	
 	SRotation				Orientation()		{return r_torso;};
 

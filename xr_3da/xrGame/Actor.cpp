@@ -792,6 +792,13 @@ void CActor::g_fireEnd	( )
 	Weapons->FireEnd	( );
 }
 
+void CActor::g_WeaponBones	(int& L, int& R)
+{
+	VERIFY	(Weapons);
+	L		=	Weapons->m_iACTboneL;
+	R		=	Weapons->m_iACTboneR;
+}
+
 void CActor::Statistic	( )
 {
 	//-------------------------------------------------------------------

@@ -18,11 +18,12 @@ class CAI_Crow : public CEntityAlive
 		eFlyIdle,
 		eFlyUp
 	};
-// constants and types
+
+	// constants and types
 	enum			{ MAX_ANIM_COUNT = 8	};
 	enum			{ MAX_SND_COUNT = 8		};
 
-// animations
+	// animations
 	struct SAnim
 	{
 		typedef			svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
@@ -30,6 +31,7 @@ class CAI_Crow : public CEntityAlive
 		CMotionDef*		GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
 		void			Load		(CKinematics* visual, LPCSTR prefix);
 	};
+
 	struct SSound
 	{
 		typedef			svector<sound,MAX_SND_COUNT>		MotionSVec;
@@ -40,7 +42,7 @@ class CAI_Crow : public CEntityAlive
 		void			Unload		();
 	};
 public:
-	void			OnHitEndPlaying(CBlend* B);
+	void				OnHitEndPlaying(CBlend* B);
 protected:
 	struct SCrowAnimations
 	{
@@ -96,7 +98,9 @@ public:
 	virtual void	net_Export		(NET_Packet* P);
 	virtual void	net_Import		(NET_Packet* P);
 
-	virtual void	g_fireParams	(Fvector& P, Fvector& D){};
+	virtual void	g_fireParams	(Fvector& P, Fvector& D)	{};
+	virtual void	g_WeaponBones	(int& L, int& R)			{};
+
 	virtual void	HitSignal		(int HitAmount, Fvector& local_dir, CEntity* who);
 	virtual void	HitImpulse		(Fvector& vWorldDir, Fvector& vLocalDir, float amount){};
 	virtual void	Die				(){};

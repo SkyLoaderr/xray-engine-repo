@@ -117,7 +117,7 @@ void CCustomMonster::Load		(LPCSTR section)
 
 void CCustomMonster::g_WeaponBones	(int& L, int& R)
 {
-	R_ASSERT	(Weapons);
+	VERIFY	(Weapons);
 	L		=	Weapons->m_iACTboneL;
 	R		=	Weapons->m_iACTboneR;
 }
