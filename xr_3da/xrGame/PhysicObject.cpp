@@ -49,7 +49,9 @@ void CPhysicObject::UpdateCL	()
 {
 	inherited::UpdateCL		();
 	if(m_pPhysicsShell){
-		m_pPhysicsShell->Update();
+		if(m_type==epotBox) m_pPhysicsShell->Update();
+		
+		
 		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
 		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
 		mRotate.k.set(m_pPhysicsShell->mXFORM.k);

@@ -2090,6 +2090,7 @@ void CPHShell::PhTune(dReal step){
 }
 
 void CPHShell::Update(){
+	if(!bActive) return;
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Update();
@@ -2097,6 +2098,7 @@ void CPHShell::Update(){
 }
 
 void CPHElement::Update(){
+if(!bActive) return;
 if( !dBodyIsEnabled(m_body)) return;
 				
 		//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
