@@ -79,6 +79,7 @@ public:
 	virtual	void	reinit					();
 	virtual	void	reload					(LPCSTR section);
 	virtual	void	update					(u32 time_delta);
+			void	initialize				();
 	IC		float	path_direction_angle	();
 	IC		bool	turn_in_place			() const;
 

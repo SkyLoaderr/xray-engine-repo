@@ -168,16 +168,16 @@ bool CSightManager::need_correction	(float x1, float x2, float x3)
 void CSightManager::Exec_Look		(float dt)
 {
 	// normalizing torso angles
-	object().movement().m_body.current.yaw	= angle_normalize_signed	(object().movement().m_body.current.yaw);
+	object().movement().m_body.current.yaw		= angle_normalize_signed	(object().movement().m_body.current.yaw);
 	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
 	object().movement().m_body.target.yaw		= angle_normalize_signed	(object().movement().m_body.target.yaw);
-	object().movement().m_body.target.pitch	= angle_normalize_signed	(object().movement().m_body.target.pitch);
+	object().movement().m_body.target.pitch		= angle_normalize_signed	(object().movement().m_body.target.pitch);
 
 	// normalizing head angles
-	object().movement().m_head.current.yaw	= angle_normalize_signed	(object().movement().m_head.current.yaw);
+	object().movement().m_head.current.yaw		= angle_normalize_signed	(object().movement().m_head.current.yaw);
 	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
 	object().movement().m_head.target.yaw		= angle_normalize_signed	(object().movement().m_head.target.yaw);
-	object().movement().m_head.target.pitch	= angle_normalize_signed	(object().movement().m_head.target.pitch);
+	object().movement().m_head.target.pitch		= angle_normalize_signed	(object().movement().m_head.target.pitch);
 
 	// updating torso angles
 	float							fSpeedFactor = 1.f;

@@ -18,6 +18,7 @@
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
 #include "entitycondition.h"
+#include "ai_object_location.h"
 
 using namespace StalkerMovement;
 
@@ -49,6 +50,20 @@ IC	float CStalkerMovementManager::path_direction_angle	()
 		return					(angle_difference(-y,m_body.current.yaw));
 	}
 	return						(0.f);
+}
+
+void CStalkerMovementManager::initialize()
+{
+	set_node_evaluator		(0);
+	set_path_evaluator		(0);
+	set_path_type			(MovementManager::ePathTypeLevelPath);
+	set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	set_body_state			(eBodyStateStand);
+	set_movement_type		(eMovementTypeStand);
+	set_mental_state		(eMentalStateDanger);
+	set_desired_direction	(0);
+	set_level_dest_vertex	(object().ai_location().level_vertex_id());
+	set_desired_position	(&object().Position());
 }
 
 void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)

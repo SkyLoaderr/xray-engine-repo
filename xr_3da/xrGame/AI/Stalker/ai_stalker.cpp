@@ -198,10 +198,10 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	
 	m_dwMoney						= tpHuman->m_dwMoney;
 
-	animation().reload		(this);
+	animation().reload				(this);
 
-	movement().m_head.current.yaw = movement().m_head.target.yaw = movement().m_body.current.yaw = movement().m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
-	movement().m_body.current.pitch			= movement().m_body.target.pitch	= 0;
+	movement().m_head.current.yaw	= movement().m_head.target.yaw = movement().m_body.current.yaw = movement().m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
+	movement().m_body.current.pitch	= movement().m_body.target.pitch	= 0;
 
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
 		ai_location().game_vertex	(tpHuman->m_tGraphID);
@@ -398,19 +398,28 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 void CAI_Stalker::UpdateCL()
 {
-	if (g_Alive())
-		CObjectHandler::update		();
+	if (g_Alive()) {
+		try {
+			CObjectHandler::update	();
+		}
+		catch(...) {
+			CObjectHandler::set_goal(eObjectActionIdle);
+			CObjectHandler::update	();
+		}
+	}
 
 	inherited::UpdateCL				();
 	m_pPhysics_support->in_UpdateCL	();
 
 	if (g_Alive()) {
 		VERIFY						(!m_pPhysicsShell);
-//		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
-//		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
-//		float						step_time = !fis_zero(movement().speed()) ? .725f/movement().speed() : 1.f;
-//		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
-		sight().update				();
+		try {
+			sight().update			();
+		}
+		catch(...) {
+			sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
+			sight().update			();
+		}
 		Exec_Look					(Device.fTimeDelta);
 		CStepManager::update		();
 	}
@@ -647,8 +656,23 @@ void CAI_Stalker::Think			()
 		brain().setup			(this);
 		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
 	}
-	movement().update			(Level().timeServer() - m_dwLastUpdateTime);
-	setup().update				();
+
+	try {
+		movement().update		(Level().timeServer() - m_dwLastUpdateTime);
+	}
+	catch(...) {
+		
+		movement().initialize	();
+		movement().update		(Level().timeServer() - m_dwLastUpdateTime);
+	}
+
+	try {
+		setup().update			();
+	}
+	catch(...) {
+		setup().clear			();
+		setup().update			();
+	}
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)
