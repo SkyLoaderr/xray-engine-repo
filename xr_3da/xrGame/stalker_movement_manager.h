@@ -140,6 +140,7 @@ public:
 						PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator,
 						PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator,
 						Fvector									*tpDesiredPosition,
+						Fvector									*tpDesiredDirection,
 						EPathType								tGlobalPathType,
 						EDetailPathType							tPathType,
 						EBodyState								tBodyState,

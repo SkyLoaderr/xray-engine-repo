@@ -105,6 +105,7 @@ void CStalkerMovementManager::update(
 	PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator,
 	PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator,
 	Fvector									*tpDesiredPosition,
+	Fvector									*tpDesiredDirection,
 	EPathType								tGlobalPathType,
 	EDetailPathType							tPathType,
 	EBodyState								tBodyState,
@@ -119,6 +120,19 @@ void CStalkerMovementManager::update(
 	m_tBodyState										= tBodyState;
 	m_tMovementType										= tMovementType;
 	m_tMentalState										= tMentalState;
+	
+	if (tpDesiredPosition)
+		CDetailPathManager::set_dest_position			(*tpDesiredPosition);
+	else
+		if (tGlobalPathType != ePathTypePatrolPath)
+			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
+
+	if (tpDesiredDirection) {
+		CDetailPathManager::set_dest_direction			(*tpDesiredDirection);
+		CDetailPathManager::set_use_dest_orientation	(true);
+	}
+	else
+		CDetailPathManager::set_use_dest_orientation	(false);
 
 	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(this);
 	VERIFY					(script_monster);
@@ -193,7 +207,6 @@ void CStalkerMovementManager::update(
 		set_velocity_mask			(velocity_mask | eMovementParameterWalk | eMovementParameterRun | eMovementParameterStanding | eMovementParameterNegativeVelocity);
 	if ((velocity_mask & eMovementParameterStanding) != eMovementParameterStanding)
 		set_desirable_mask			(velocity_mask);
-	set_use_dest_orientation		(false);
 
 	update_path						();
 

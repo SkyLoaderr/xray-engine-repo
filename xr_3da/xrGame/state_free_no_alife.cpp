@@ -70,28 +70,32 @@ void CStateFreeNoAlife::execute			()
 //		eBodyStateStand,
 //		eMovementTypeStand,
 //		eMentalStateDanger
-//	);
+//		);
 //	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-//	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
+////	m_object->CSightManager::update				(eLookTypePathDirection);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
 //	m_object->play								(eStalkerSoundHumming,60000,10000);
 
-//	CGameObject	*current_entity = dynamic_cast<CGameObject*>(Level().CurrentEntity());
-//	VERIFY		(current_entity);
-//	m_object->set_level_dest_vertex				(current_entity->level_vertex_id());
-//	m_object->CStalkerMovementManager::update	(
-//		0,
-//		0,
-//		&current_entity->Position(),
-//		CMovementManager::ePathTypeLevelPath,
-//		CMovementManager::eDetailPathTypeSmooth,
-//		eBodyStateStand,
-//		eMovementTypeWalk,
-//		eMentalStateFree
-//	);
-//
-//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
+	CGameObject	*current_entity = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+	VERIFY		(current_entity);
+	m_object->set_level_dest_vertex					(current_entity->level_vertex_id());
+	Fvector											dd;
+	SRotation										r = current_entity->Orientation();
+	dd.setHP										(r.yaw,r.pitch);
+	m_object->CStalkerMovementManager::update	(
+		0,
+		0,
+		&current_entity->Position(),
+		&dd,
+		CMovementManager::ePathTypeLevelPath,
+		CMovementManager::eDetailPathTypeSmooth,
+		eBodyStateStand,
+		eMovementTypeWalk,
+		eMentalStateFree
+	);
+
+	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
 }
 
 void CStateFreeNoAlife::finalize		()

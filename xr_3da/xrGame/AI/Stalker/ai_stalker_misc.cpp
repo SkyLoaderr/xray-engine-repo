@@ -50,6 +50,7 @@ void CAI_Stalker::vfSetParameters(
 		tpNodeEvaluator,
 		tpPathEvaluator,
 		tpDesiredPosition,
+		0,
 		tGlobalPathType,
 		tPathType,
 		tBodyState,
