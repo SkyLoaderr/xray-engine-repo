@@ -12,8 +12,6 @@ float ffGetStartVolume(ESoundTypes eType)
 			return(.1f);																		
 		else if ((eType & SOUND_TYPE_WEAPON_HIDING) == SOUND_TYPE_WEAPON_HIDING)
 			return(.1f);
-		else if ((eType & SOUND_TYPE_WEAPON_CHANGING) == SOUND_TYPE_WEAPON_CHANGING)
-			return(.1f);
 		else if ((eType & SOUND_TYPE_WEAPON_EMPTY_CLICKING) == SOUND_TYPE_WEAPON_EMPTY_CLICKING)
 			return(.1f);
 		else if ((eType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)
@@ -38,11 +36,7 @@ float ffGetStartVolume(ESoundTypes eType)
 		}
 		else
 			if ((eType & SOUND_TYPE_WORLD) == SOUND_TYPE_WORLD) {
-				if ((eType & SOUND_TYPE_WORLD_DOOR_OPENING) == SOUND_TYPE_WORLD_DOOR_OPENING)
-					return(.3f);
-				else if ((eType & SOUND_TYPE_WORLD_DOOR_CLOSING) == SOUND_TYPE_WORLD_DOOR_CLOSING)
-					return(.5f);
-				else if ((eType & SOUND_TYPE_WORLD_OBJECT_BREAKING) == SOUND_TYPE_WORLD_OBJECT_BREAKING)
+				if ((eType & SOUND_TYPE_WORLD_OBJECT_BREAKING) == SOUND_TYPE_WORLD_OBJECT_BREAKING)
 					return(.8f);
 				else if ((eType & SOUND_TYPE_WORLD_OBJECT_FALLING) == SOUND_TYPE_WORLD_OBJECT_FALLING)
 					return(.7f);
