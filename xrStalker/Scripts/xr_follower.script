@@ -349,7 +349,7 @@ end
 function action_follow:update_stage_0 ()
 
 	if self.a.leader_command == leader_speak then
-       self.object:set_sound_mask (2147483647)
+       self.object:set_sound_mask (-1)
        self.object:set_sound_mask (0)
        self.a.leader_command = 0
     end   
@@ -357,9 +357,10 @@ function action_follow:update_stage_0 ()
 	if self.a.leader_command == leader_speak_enable then
 	   self.current_phrase = self.current_phrase + 1 
 	   if self.current_phrase >= num_phrases then self.current_phrase = 0 end
-       self.object:set_sound_mask (2147483647)
-       self.object:set_sound_mask (0)
-       self.object:play_sound (soldiers_idle_snd, 1, 0, 1, 0, self.current_phrase)
+       --self.object:set_sound_mask (2147483647)
+       --self.object:set_sound_mask (0)
+       xr_sounds.play_sound (self.object, 0, "commander_patrol", 1, 2, self.current_phrase)
+       --self.object:play_sound (soldiers_idle_snd, 1, 0, 1, 0, self.current_phrase)
        self.a.leader_command = 0
     end   
 	   
@@ -624,11 +625,6 @@ function  add_to_binder(obj, char_ini)
 	local properties	= {}
 	
 	printf ("FOLLOWER_EVA_BASE = %d", xr_evaluators_id.sidor_follower_base)
-    	obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
-    	obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
-    	obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
 
 	local manager = obj:motivation_action_manager ()
 
