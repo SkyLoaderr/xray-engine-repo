@@ -52,11 +52,13 @@ void CPHInterpolation::InterpolateRotation(Fmatrix& rot){
 
 void CPHInterpolation::ResetPositions()
 {
+	VERIFY2(dBodyStateValide(m_body),"Invalid body state");
 	qPositions.fill_in(*((Fvector*) dBodyGetPosition(m_body)));
 }
 
 void CPHInterpolation::ResetRotations()
 {
+	VERIFY2(dBodyStateValide(m_body),"Invalid body state");
 	const dReal* dQ=dBodyGetQuaternion(m_body);
 	Fquaternion fQ;
 	fQ.set(-dQ[0],dQ[1],dQ[2],dQ[3]);

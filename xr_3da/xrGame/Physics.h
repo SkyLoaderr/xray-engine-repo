@@ -31,6 +31,13 @@ IC BOOL dM_valid			(const dReal* m)
 		_valid(m[8])&&_valid(m[9])&&_valid(m[10]);
 }
 
+IC BOOL dBodyStateValide(const dBodyID body)
+{
+	return dM_valid(dBodyGetRotation(body)) &&
+			dV_valid(dBodyGetPosition(body))&&
+			dV_valid(dBodyGetLinearVel(body))&&
+			dV_valid(dBodyGetAngularVel(body));
+}
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
 

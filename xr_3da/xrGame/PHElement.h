@@ -32,31 +32,19 @@ class CPHElement	:
 
 	dReal					m_l_scale;					// ->to shell ??	//bl
 	dReal					m_w_scale;					// ->to shell ??	//bl
-	dReal					m_disw_param;				// ->to shell ??	//bl
-	dReal					m_disl_param;				// ->to shell ??	//bl
-
 	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??		//bl
 	CPHElement				*m_parent_element;			//bool !			//bl
 	CPHShell				*m_shell;					//e					//bl
 	CPHInterpolation		m_body_interpolation;		//e					//bl
 	CPHFracturesHolder		*m_fratures_holder;			//e					//bl
 	bool					was_enabled_before_freeze;
-	/////disable///////////////////////
-	//dVector3 mean_w;
-	//dVector3 mean_v;
+
 	dReal						m_w_limit ;				//->to shell ??		//bl
 	dReal						m_l_limit ;				//->to shell ??		//bl
 
 	dVector3					m_safe_position;		//e					//st
 	dVector3					m_safe_velocity;		//e					//st
 ///////////////////////////////////////////////////////////////////////////////////
-	dVector3					m_sumLinDev;			//
-	dVector3					m_sumAngDev;			//
-	dVector3					m_sumLinVDev;			//
-	dVector3					m_sumAngVDev;			//
-
-	dVector3					m_prevPos;			//
-	dVector3					m_prevAngPos;			//
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +85,7 @@ private:
 	}
 IC	void					UpdateInterpolation				()																				//interpolation called from ph update visual influent
 	{
+		VERIFY(dBodyStateValide(m_body));
 		m_body_interpolation.UpdatePositions();
 		m_body_interpolation.UpdateRotations();
 		bUpdate=true;
@@ -186,6 +175,7 @@ public:
 
 	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}										//aux
 	virtual	dBodyID			get_body				()		{return m_body;};																//aux
+	virtual	const dBodyID	get_bodyConst			()const	{return m_body;};																//aux
 	virtual const Fvector&	mass_Center				()						;																//aux
 	virtual const Fvector&	local_mass_Center		()		{return m_mass_center;}															//aux
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);					//some isues not to be aux

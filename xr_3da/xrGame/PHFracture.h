@@ -55,9 +55,10 @@ bool				PhDataUpdate	(CPHElement* element);										//collect joints and extern
 
 IC	void sub_diapasones(u16 &from1,u16 &to1,const u16 &from0,const u16 &to0)
 {
-	if(from1==to1 || from0==to0 || to1<from0) return;
-	R_ASSERT(to1-from1>=to0-from0);
-	to1-=(to0-from0);
+	if(from0==to0 ||from1==to1|| to1<=from0||to1==u16(-1)) return;
+	R_ASSERT(from0>=from1&&to0<=to1);
+	u16 dip=to0-from0;
+	to1=to1-dip;
 }
 
 class CShellSplitInfo 

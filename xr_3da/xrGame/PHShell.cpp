@@ -1045,6 +1045,7 @@ void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 		dGeomID spaced_geom=(*i)->dSpacedGeometry();
 		dSpaceRemove (m_space,spaced_geom );
 		dSpaceAdd(dest->m_space,spaced_geom);
+		VERIFY(_valid(dest->mXFORM));
 		(*i)->SetShell(dest);
 	}
 	dest->elements.insert(dest->elements.end(),i_from,e);

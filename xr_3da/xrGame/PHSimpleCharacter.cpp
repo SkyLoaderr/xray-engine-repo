@@ -298,17 +298,7 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
 
 void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	///////////////////
-	if( !dBodyIsEnabled(m_body)) {
-	
-		return;
-	}
-	if(is_contact&&!is_control)
-		Disabling();
 
-	if( !dBodyIsEnabled(m_body)) {
-
-		return;
-	}
 	///////////////////////
 	b_external_impulse=false;
 	was_contact=is_contact;
@@ -318,7 +308,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_any_contacts=false;
 	b_valide_ground_contact=false;
 	b_valide_wall_contact=false;
-	if(!dBodyIsEnabled(m_body)) return;
+
 	b_climb=false;
 	b_pure_climb=true;
 	b_was_on_object=b_on_object;
@@ -331,16 +321,31 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 
 
 
-	const dReal* pos=dBodyGetPosition(m_body);
+	const dReal		*pos					=dBodyGetPosition(m_body);
+	
 	if(!dV_valid(pos))
 		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
-
 	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetPosition(m_body),sizeof(dVector3));
 
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+	if(!dV_valid(linear_velocity))
+		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
 
+	Memory.mem_copy(m_safe_velocity,linear_velocity,sizeof(dVector3));
+
+	if( !dBodyIsEnabled(m_body)) {
+
+		return;
+	}
+	if(is_contact&&!is_control)
+		Disabling();
+
+	if( !dBodyIsEnabled(m_body)) {
+
+		return;
+	}
 
 	dMatrix3 R;
 	dRSetIdentity (R);
@@ -348,7 +353,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	dBodySetRotation(m_body,R);
 
 	dMass mass;
-	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+
 	dReal			linear_velocity_mag		=_sqrt(dDOT(linear_velocity,linear_velocity));
 	dBodyGetMass(m_body,&mass);
 	dReal l_air=linear_velocity_mag*default_k_l;//force/velocity !!!

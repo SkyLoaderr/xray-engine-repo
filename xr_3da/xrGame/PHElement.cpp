@@ -48,17 +48,6 @@ CPHElement::CPHElement()																															//aux
 	m_body=NULL;
 	bActive=false;
 	bActivating=false;
-
-
-	m_sumLinDev[0]=0.f;			//
-	m_sumAngDev;			//
-	m_sumLinVDev;			//
-	m_sumAngVDev;			//
-	
-	m_prevPos;			//
-	m_prevAngPos;			//
-
-
 	m_parent_element=NULL;
 	m_shell=NULL;
 	m_group=NULL;
@@ -308,6 +297,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
+	VERIFY2(_valid(mc),"invalid mc in_set_transform");
 	dBodySetPosition(m_body,mc.x,mc.y+0.0f,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
@@ -460,16 +450,9 @@ void CPHElement::PhDataUpdate(dReal step){
 	{
 		return;
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	if(dBodyIsEnabled(m_body)) Disabling();
-	if(!dBodyIsEnabled(m_body)) return;
-
-
-	//////////////////////////////////base pointers/////////////////////////////////////////////////
+//////////////////////////////////base pointers/////////////////////////////////////////////////
 	const dReal* linear_velocity	=	dBodyGetLinearVel(m_body)	;
 	const dReal* angular_velocity	=	dBodyGetAngularVel(m_body)	;
 
@@ -573,6 +556,12 @@ void CPHElement::PhDataUpdate(dReal step){
 		}
 
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	if(dBodyIsEnabled(m_body)) Disabling();
+	if(!dBodyIsEnabled(m_body)) return;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////air resistance/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -866,6 +855,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 {
 	Fmatrix parent;
 	if(! bActive)return;
+	VERIFY(_valid(m_shell->mXFORM));
 	if(bActivating)
 	{
 		//if(!dBodyIsEnabled(m_body))
@@ -878,6 +868,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		//if(m_parent_element)
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
+		VERIFY(dBodyStateValide(m_body));
 		FillInterpolation();
 		bActivating=false;
 		if(!m_parent_element) 
@@ -887,6 +878,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 			m_shell->bActivating=false;
 		}
 		B->Callback_overwrite=TRUE;
+		VERIFY(dBodyStateValide(m_body));
 		return;
 	}
 
@@ -897,14 +889,16 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	if(!m_parent_element)
 	{
+			VERIFY(dBodyStateValide(m_body));
 			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
+			VERIFY(_valid(m_shell->mXFORM));
 	}
 	
 	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
 
 	{
 		InterpolateGlobalTransform(&mXFORM);
-
+		VERIFY(_valid(m_shell->mXFORM));
 		parent.set(m_shell->mXFORM);
 		parent.invert();
 		mXFORM.mulA(parent);
@@ -1393,12 +1387,12 @@ void CPHElement::PresetActive()
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////
 	//////////////////////////////////////////////////////////////
-
+	VERIFY(dBodyStateValide(m_body));
 	m_body_interpolation.SetBody(m_body);
 	FillInterpolation();
 	bActive=true;
 	RunSimulation();
-	
+	VERIFY(dBodyStateValide(m_body));
 }
 
 

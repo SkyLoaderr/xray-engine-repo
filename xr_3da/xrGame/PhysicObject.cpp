@@ -5,7 +5,7 @@
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;
-	
+	b_recalculate=false;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -319,10 +319,11 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 void CPhysicObject::UnsplitSingle(CGameObject* O)
 {
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
-	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
-	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
+	VERIFY2(m_unsplited_shels.size(),"NO_SHELLS !!");
+	VERIFY2(!O->m_pPhysicsShell,"this has shell already!!!");
 	CPhysicsShell* newPhysicsShell=m_unsplited_shels.front().first;
 	O->m_pPhysicsShell=newPhysicsShell;
+	VERIFY(_valid(newPhysicsShell->mXFORM));
 	CKinematics *newKinematics=PKinematics(O->Visual());
 	CKinematics *pKinematics  =PKinematics(Visual());
 
@@ -330,24 +331,25 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	u16 split_bone=m_unsplited_shels.front().second;
 	mask1.set(pKinematics->LL_GetBonesVisible());//source bones mask
 	pKinematics->LL_SetBoneVisible(split_bone,FALSE,TRUE);
-
 	mask0.set(pKinematics->LL_GetBonesVisible());//first part mask
-	R_ASSERT2(mask0.flags,"mask0 -Zero");
+	VERIFY2(mask0.flags,"mask0 -Zero");
 	mask0.invert();
 	mask1.and(mask0.flags);//second part mask
-	R_ASSERT2(mask1.flags,"mask1 -Zero");
-
 	newPhysicsShell->set_Kinematics(newKinematics);
+	VERIFY(_valid(newPhysicsShell->mXFORM));
 	newPhysicsShell->ResetCallbacks(split_bone,mask1);
-	newKinematics->Calculate();
+	VERIFY(_valid(newPhysicsShell->mXFORM));
+
 	newPhysicsShell->ObjectInRoot().identity();
+
 	newKinematics->LL_SetBoneRoot		(split_bone);
+	VERIFY2(mask1.flags,"mask1 -Zero");
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-	
+		
 	newPhysicsShell->set_PhysicsRefObject(O);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
-
+	newKinematics->Calculate();
 	NET_Packet P;
 	O->u_EventGen(P, GE_OWNERSHIP_REJECT,ID());
 	P.w_u16(u16(O->ID()));
@@ -357,6 +359,11 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 BOOL CPhysicObject::UsedAI_Locations()
 {
 	return					(FALSE);
+}
+
+void CPhysicObject::OnH_A_Independent()
+{
+	PKinematics(Visual())->Calculate();
 }
 //////////////////////////////////////////////////////////////////////////
 /*

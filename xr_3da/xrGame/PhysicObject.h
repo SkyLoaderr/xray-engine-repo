@@ -8,6 +8,7 @@ class CPhysicObject :
 	typedef CGameObject inherited;
 	EPOType				m_type;
 	float				m_mass;
+	bool				b_recalculate;
 	PHSHELL_PAIR_VECTOR m_unsplited_shels;
 	void			CreateSkeleton  (CSE_ALifeObjectPhysic	*po);
 	void			CreateBody		(CSE_ALifeObjectPhysic	*po);
@@ -28,4 +29,5 @@ public:
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);
 	virtual BOOL	UsedAI_Locations();
+	virtual void	OnH_A_Independent();
 };
