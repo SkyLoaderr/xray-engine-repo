@@ -47,7 +47,7 @@ void	Surface_Init()
 	Msg("* ImageLibrary version: %s",FreeImage_GetVersion());
 
     formats.format_register("tga");
-	Surface_FormatExt(FIF_BMP);
+	Surface_FormatExt(FIF_BMP);      
 	Surface_FormatExt(FIF_ICO);
 	Surface_FormatExt(FIF_JPEG);
 	Surface_FormatExt(FIF_JNG);
