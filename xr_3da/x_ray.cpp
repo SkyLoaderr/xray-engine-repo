@@ -36,13 +36,12 @@ void Startup()
 	
 	// Execute script
 	strcpy						(Console.ConfigFile,"user.ltx");
-	Console.ExecuteScript		("GameData\\startup.ltx");
 	if (strstr(Engine.Params,"-ltx ")) {
 		string64				c_name;
 		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%s",c_name);
 		strcpy					(Console.ConfigFile,c_name);
-		Console.ExecuteScript	(c_name);
 	}
+	Console.ExecuteScript		(Console.ConfigFile);
 
 	// Creation
 	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
