@@ -86,8 +86,18 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 
 		// We have determined all valuable info, search if constant already created
 		R_constant*	C		=	get(name);
-		if (0==C)	C		=	g_constant_allocator.create();
-		
+		if (0==C)	{
+			C					=	g_constant_allocator.create();
+			strcpy				(C->name,name);
+		}
+
+		// fill
+		C->destination		|=	destination;
+		C->type				=	type;
+		if (destination&1)
+		{
+			// ps
+		}
 	}
 	return TRUE;
 }
