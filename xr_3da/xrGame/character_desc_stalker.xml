@@ -12,7 +12,7 @@
 		
 		<rank>30</rank>
 		<reputation>0</reputation>
-
+ 
 		<visual>actors\neytral\stalker_neytral_balon_1</visual>
 		<supplies>
 			[spawn] \n
@@ -149,7 +149,7 @@
 			device_torch \n
 		</supplies>
 					
-		<start_dialog>gar_seriy_start</start_dialog>
+		<start_dialog>gar_dramm_novice_start</start_dialog>
 		<actor_dialog>gar_seriy_help</actor_dialog>
 	</specific_character>	
 
