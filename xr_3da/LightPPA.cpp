@@ -34,23 +34,18 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
 
 	// Create clipper
-	CFrustum	clipper;
-//	clipper.
-Fvector down_vec	={0.f,-1.f,0.f};
-Fvector left_vec	={-1.f,0.f,0.f};
-Fvector right_vec	={1.f,0.f,0.f};
-Fvector fwd_vec		={0.f,0.f,1.f};
-Fvector back_vec	={0.f,0.f,-1.f};
+	CFrustum			clipper;
+	Fplane				P;
+	Fvector down_vec;	down_vec.set	(0.f,-1.f,0.f);
+	Fvector left_vec;	left_vec.set	(-1.f,0.f,0.f);
+	Fvector right_vec;	right_vec.set	(1.f,0.f,0.f);
+	Fvector fwd_vec;	fwd_vec.set		(0.f,0.f,1.f);
+	Fvector back_vec;	back_vec.set	(0.f,0.f,-1.f);
 
-		bbox.grow		(EPS_L);
-    	Fplane			frustum_planes[4];
-		frustum_planes[0].build(bbox.min,left_vec);
-		frustum_planes[1].build(bbox.min,back_vec);
-		frustum_planes[2].build(bbox.max,right_vec);
-		frustum_planes[3].build(bbox.max,fwd_vec);
-
-        CFrustum frustum;
-        frustum.CreateFromPlanes(frustum_planes,4);
+	P.build	(BB.min,left_vec);			clipper._add(P);
+	P.build	(BB.min,back_vec);			clipper._add(P);
+	P.build	(BB.max,right_vec);			clipper._add(P);
+	P.build	(BB.max,fwd_vec);			clipper._add(P);
 
 	// Clip and triangulate polygons
 	Fvector	cam = Device.vCameraPosition;
