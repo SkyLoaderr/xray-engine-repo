@@ -148,7 +148,7 @@ private:
 	u32											m_time_path_built;
 
 private:
-	IC	STravelPoint compute_better_key_point	(const STravelPoint		&point0,	const STravelPoint					&point1,		const STravelPoint					&point2);
+	IC	STravelPoint compute_better_key_point	(const STravelPoint		&point0,	const STravelPoint					&point1,		const STravelPoint					&point2,				bool								reverse_order);
 	IC		bool	better_key_point			(const STravelPoint		&point0,	const STravelPoint					&point2,		const STravelPoint					&point10,			const STravelPoint					&point11);
 	IC		bool	check_mask					(u32					mask,			  u32							test) const;
 	IC		void	adjust_point				(const Fvector2			&source,		  float							yaw,				  float							magnitude,				  Fvector2						&dest) const;

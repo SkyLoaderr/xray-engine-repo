@@ -573,7 +573,8 @@ bool CDetailPathManager::fill_key_points(
 IC	CDetailPathManager::STravelPoint CDetailPathManager::compute_better_key_point(
 	const STravelPoint	&point0, 
 	const STravelPoint	&point1, 
-	const STravelPoint	&point2 
+	const STravelPoint	&point2,
+	bool				reverse_order
 )
 {
 	CDetailPathManager::STravelPoint		result = point1;
@@ -598,12 +599,25 @@ IC	CDetailPathManager::STravelPoint CDetailPathManager::compute_better_key_point
 		if (!ai().level_graph().valid_vertex_position(ai().level_graph().v3d(direction21)))
 			return				(point1);
 
-		vertex_id				= ai().level_graph().check_position_in_direction(point0.vertex_id,point0.position,direction21);
+		if (!reverse_order)
+			vertex_id			= ai().level_graph().check_position_in_direction(point0.vertex_id,point0.position,direction21);
+		else
+			vertex_id			= ai().level_graph().check_position_in_direction(point2.vertex_id,point2.position,direction21);
 		if (ai().level_graph().valid_vertex_id(vertex_id)) {
 			VERIFY				(ai().level_graph().inside(vertex_id,direction21));
-			a					= c;
-			result.position		= direction21;
-			result.vertex_id	= vertex_id;
+			u32					test_vertex_id;
+			if (!reverse_order)
+				test_vertex_id	= ai().level_graph().check_position_in_direction(vertex_id,direction21,point2.position);
+			else
+				test_vertex_id	= ai().level_graph().check_position_in_direction(vertex_id,direction21,point0.position);
+			if (!ai().level_graph().valid_vertex_id(test_vertex_id)) {
+				b				= c;
+			}
+			else {
+				a				= c;
+				result.position	= direction21;
+				result.vertex_id= vertex_id;
+			}
 		}
 		else
 			b					= c;
@@ -715,8 +729,8 @@ void CDetailPathManager::postprocess_key_points(
 		m_key_points.pop_back();
 
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
-		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1]);
-		STravelPoint		key_point1 = compute_better_key_point(m_key_points[i+1],m_key_points[i],m_key_points[i-1]);
+		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1],false);
+		STravelPoint		key_point1 = compute_better_key_point(m_key_points[i+1],m_key_points[i],m_key_points[i-1],true);
 		if (better_key_point(m_key_points[i-1],m_key_points[i+1],key_point0,key_point1))
 			m_key_points[i]	= key_point0;
 		else
