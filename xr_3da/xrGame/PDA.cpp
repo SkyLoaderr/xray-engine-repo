@@ -150,7 +150,7 @@ void CPda::feel_touch_new(CObject* O)
 
 	if(pInvOwner && pInvOwner->IsActivePDA() && this != pInvOwner->GetPDA()) 
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,*cName(),"_new_ PDA detected");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
 		m_PDAList.push_back(pInvOwner->GetPDA());
 
 		m_NewPDAList.push_back(pInvOwner->GetPDA());
@@ -166,7 +166,7 @@ void CPda::feel_touch_delete(CObject* O)
 
 		if(pInvOwner->GetPDA())
 		{
-			if(bDebug) HUD().outMessage(0xffffffff,*cName(),"a PDA left radius of sight");
+			if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
 			m_PDAList.erase(std::find(m_PDAList.begin(), 
 										m_PDAList.end(), 
 										pInvOwner->GetPDA()));

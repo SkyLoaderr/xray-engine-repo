@@ -257,14 +257,14 @@ void CActor::Load	(LPCSTR section )
 	sndLanding.g_type	= SOUND_TYPE_WORLD_OBJECT_COLLIDING;
 	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4",						SOUND_TYPE_MONSTER_STEP);
 	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger",			SOUND_TYPE_MONSTER_STEP);
-	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,*cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,*cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,*cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,*cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,*cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,*cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING);
 
 //	m_PhysicMovementControl.ActivateBox	(0);
 	//m_PhysicMovementControl.ActivateBox	(0);
@@ -472,7 +472,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// load damage params
-	CDamageManager::Load	(cNameSect());
+	CDamageManager::Load	(*cNameSect());
 
 	//. temporary
 	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());

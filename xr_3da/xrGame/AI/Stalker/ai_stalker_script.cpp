@@ -298,7 +298,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionTake : {
-			if (inventory().GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+			if (inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
 				LuaOut(Lua::eLuaMessageTypeError,"item is already in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
@@ -307,7 +307,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionDrop : {
-			if (!inventory().GetItemFromInventory(l_tObjectAction.m_tpObject->cName())) {
+			if (!inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
 				LuaOut(Lua::eLuaMessageTypeError,"item is not in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}

@@ -230,7 +230,7 @@ void CCustomZone::shedule_Update(u32 dt)
 
 void CCustomZone::feel_touch_new(CObject* O) 
 {
-	if(bDebug) HUD().outMessage(0xffffffff,*O->cName(),"entering a zone.");
+	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) 
 					m_pLocalActor = dynamic_cast<CActor*>(O);
@@ -265,7 +265,7 @@ void CCustomZone::feel_touch_new(CObject* O)
 
 void CCustomZone::feel_touch_delete(CObject* O) 
 {
-	if(bDebug) HUD().outMessage(0xffffffff,*O->cName(),"leaving a zone.");
+	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
 	
 	m_inZone.erase(O);
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
@@ -368,7 +368,7 @@ void CCustomZone::Affect(CObject* O)
 	
 	char l_pow[255]; 
 	sprintf(l_pow, "zone hit. %.1f", Power(pGameObject->Position().distance_to(P)));
-	if(bDebug) HUD().outMessage(0xffffffff,*pGameObject->cName(), l_pow);
+	if(bDebug) HUD().outMessage(0xffffffff,pGameObject->cName(), l_pow);
 	
 	Fvector hit_dir; 
 	hit_dir.set(::Random.randF(-.5f,.5f), 

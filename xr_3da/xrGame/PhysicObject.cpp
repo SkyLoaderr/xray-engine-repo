@@ -249,7 +249,7 @@ void CPhysicObject::shedule_Update(u32 dt)
 void CPhysicObject::SpawnCopy()
 {
 	if(Local()) {
-		CSE_Abstract*				D	= F_entity_Create(cNameSect());
+		CSE_Abstract*				D	= F_entity_Create(*cNameSect());
 		R_ASSERT					(D);
 		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 		R_ASSERT					(l_tpALifeDynamicObject);
@@ -257,7 +257,7 @@ void CPhysicObject::SpawnCopy()
 		R_ASSERT					(l_tpALifePhysicObject);
 		
 		l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
-		l_tpALifePhysicObject->set_visual(cNameVisual());
+		l_tpALifePhysicObject->set_visual(*cNameVisual());
 		l_tpALifePhysicObject->type=u32(m_type);
 		//char mask=0;
 		//mask&= (1>>1);
@@ -265,7 +265,7 @@ void CPhysicObject::SpawnCopy()
 		//l_tpALifePhysicObject->flags.set(mask);
 		// Fill
 
-		strcpy				(D->s_name,cNameSect());
+		strcpy				(D->s_name,*cNameSect());
 		strcpy				(D->s_name_replace,"");
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;

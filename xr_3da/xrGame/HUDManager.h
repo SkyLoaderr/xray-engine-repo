@@ -77,6 +77,7 @@ public:
 	int						ClientToScreenY		(int top, u32 align);
 	
 	void __cdecl 			outMessage			(u32 C, LPCSTR from, LPCSTR msg, ...);
+	void __cdecl 			outMessage			(u32 C, const ref_str& from, LPCSTR msg, ...);
 };
 
 #endif // __XR_HUDMANAGER_H__

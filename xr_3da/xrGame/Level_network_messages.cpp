@@ -53,7 +53,7 @@ void CLevel::ClientReceive()
 				CObject*	O	= Objects.net_Find		(ID);
 				if (0 == O)		break;
 				O->net_MigrateInactive	(*P);
-				Log("! MIGRATE_DEACTIVATE",O->cName());
+				if (bDebug)		Log("! MIGRATE_DEACTIVATE",*O->cName());
 			}
 			break;
 		case M_MIGRATE_ACTIVATE:	// TO:   Changing server, full state
@@ -62,7 +62,7 @@ void CLevel::ClientReceive()
 				CObject*	O	= Objects.net_Find		(ID);
 				if (0 == O)		break;
 				O->net_MigrateActive	(*P);
-				Log("! MIGRATE_ACTIVATE",O->cName());
+				if (bDebug)		Log("! MIGRATE_ACTIVATE",*O->cName());
 			}
 			break;
 		case M_CHAT:

@@ -217,10 +217,6 @@ void CVisionMemory::UpdateVision(TTime dt)
 	timeCurrent	= dt;
 
 	
-	string128 name;
-	strcpy(name,pMonster->cName());
-
-
 	// получить список видимых объектов
 	VisionElem ve;
 	{

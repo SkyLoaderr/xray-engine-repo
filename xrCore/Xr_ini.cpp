@@ -251,7 +251,7 @@ BOOL	CInifile::line_exist( LPCSTR S, LPCSTR L )
 	return (A!=I.end() && xr_strcmp(*A->first,L)==0);
 }
 
-u32	CInifile::line_count(LPCSTR Sname)
+u32		CInifile::line_count(LPCSTR Sname)
 {
 	Sect&	S = r_section(Sname);
 	SectIt	I = S.begin();
@@ -262,10 +262,10 @@ u32	CInifile::line_count(LPCSTR Sname)
 
 
 //--------------------------------------------------------------------------------------
-CInifile::Sect&	r_section		( const ref_str& S	)					{ return	r_section(*S);		}
-BOOL			line_exist		( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
-u32				line_count		( const ref_str& S	)					{ return	line_count(*S);		}
-BOOL			section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
+CInifile::Sect&	CInifile::r_section		( const ref_str& S	)					{ return	r_section(*S);		}
+BOOL			CInifile::line_exist	( const ref_str& S, const ref_str& L )	{ return	line_exist(*S,*L);	}
+u32				CInifile::line_count	( const ref_str& S	)					{ return	line_count(*S);		}
+BOOL			CInifile::section_exist	( const ref_str& S	)					{ return	section_exist(*S);	}
 
 //--------------------------------------------------------------------------------------
 // Read functions

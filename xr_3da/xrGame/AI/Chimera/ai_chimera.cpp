@@ -143,7 +143,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	vfAssignBones(pSettings,cNameSect());
+	vfAssignBones(pSettings,*cNameSect());
 	
 	return TRUE;
 }

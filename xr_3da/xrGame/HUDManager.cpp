@@ -203,14 +203,27 @@ void CHUDManager::OnDeviceCreate()
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 {
-	char		buffer[128];
+	char		buffer	[256];
 
 	va_list		p;
 	va_start	(p,msg);
 	vsprintf	(buffer,msg,p);
-	R_ASSERT	(xr_strlen(buffer)<128);
+	R_ASSERT	(xr_strlen(buffer)<256);
 	va_end		(p);
 
 	GetUI()->AddMessage	(from,buffer,C);
+	Msg			("- %s: %s",from,buffer);
+}
+void __cdecl CHUDManager::outMessage(u32 C, const ref_str& from, LPCSTR msg, ...)
+{
+	char		buffer	[256];
+
+	va_list		p;
+	va_start	(p,msg);
+	vsprintf	(buffer,msg,p);
+	R_ASSERT	(xr_strlen(buffer)<256);
+	va_end		(p);
+
+	GetUI()->AddMessage	(*from,buffer,C);
 	Msg			("- %s: %s",from,buffer);
 }

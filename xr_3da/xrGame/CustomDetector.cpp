@@ -224,7 +224,7 @@ void CCustomDetector::feel_touch_new(CObject* O)
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ) 
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,*cName(),"started to feel a zone.");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_zones.push_back(l_pZ);
 		m_times[l_pZ] = 0;
 	}
@@ -235,7 +235,7 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 	CCustomZone *l_pZ = dynamic_cast<CCustomZone*>(O);
 	if(l_pZ)
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,*cName(),"stoped to feel a zone.");
+		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_zones.erase(std::find(m_zones.begin(), m_zones.end(), l_pZ));
 	}
 }

@@ -82,7 +82,7 @@ LPCSTR to_string(const u32 id)
 	static	string4096 S;
 	if ((id & 0xffff) != 0xffff)
 		if (Level().Objects.net_Find(id & 0xffff))
-			strcpy	(S,Level().Objects.net_Find(id & 0xffff)->cName());
+			strcpy	(S,*Level().Objects.net_Find(id & 0xffff)->cName());
 		else
 			strcpy	(S,"no_items");
 	else

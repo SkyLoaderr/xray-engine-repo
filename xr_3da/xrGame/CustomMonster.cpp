@@ -643,7 +643,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))
 		return					(FALSE);
 	
-	CDamageManager::Load		(cNameSect());
+	CDamageManager::Load		(*cNameSect());
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
@@ -680,6 +680,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	return TRUE;
 }
 
+#ifdef DEBUG
 void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
 {
 	HUD().pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
@@ -705,6 +706,7 @@ void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
 	DumpStream			(&q_action);
 	*/
 }
+#endif
 
 //void CCustomMonster::feel_touch_new				(CObject* O)
 //{

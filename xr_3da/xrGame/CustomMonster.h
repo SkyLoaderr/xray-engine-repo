@@ -140,10 +140,9 @@ public:
 	// debug
 #ifdef DEBUG
 	virtual void		OnRender				( );
+	virtual void		OnHUDDraw				(CCustomHUD* hud);
 #endif
 
-	// HUD
-	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
 
 	IC	int						ifGetMemberIndex		();

@@ -151,7 +151,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		cNameVisual_set				(l_tpVisual->get_visual());
 
 	reinit							();
-	reload							(cNameSect());
+	reload							(*cNameSect());
 
 	setDestroy						(FALSE);	// @@@ WT
 
