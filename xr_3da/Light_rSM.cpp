@@ -15,29 +15,36 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV,
 	// R,N,D,P = i,j,k,c
 	Fvector	sPts	[4];  // silhouette points (corners of window)
 	Fvector	Offset,	T;
-	Offset.add		(mView.k,mView.c);
-	sPts[0].mul		(mView.i,wR);		T.mad(Offset,mView.j,wT);	sPts[0].add(T);
-	sPts[1].mul		(mView.i,wL);		T.mad(Offset,mView.j,wT);	sPts[1].add(T);
-	sPts[2].mul		(mView.i,wL);		T.mad(Offset,mView.j,wB);	sPts[2].add(T);
-	sPts[3].mul		(mView.i,wR);		T.mad(Offset,mView.j,wB);	sPts[3].add(T);
+	Offset.add			(mView.k,mView.c);
+	sPts[0].mul			(mView.i,wR);		T.mad(Offset,mView.j,wT);	sPts[0].add(T);
+	sPts[1].mul			(mView.i,wL);		T.mad(Offset,mView.j,wT);	sPts[1].add(T);
+	sPts[2].mul			(mView.i,wL);		T.mad(Offset,mView.j,wB);	sPts[2].add(T);
+	sPts[3].mul			(mView.i,wR);		T.mad(Offset,mView.j,wB);	sPts[3].add(T);
 
 	// find projector direction vectors (from cop through silhouette pts)
 	Fvector ProjDirs[4];
-	ProjDirs[0].sub	(sPts[0],mView.c);	ProjDirs[0].normalize();
-	ProjDirs[1].sub	(sPts[1],mView.c);	ProjDirs[1].normalize();
-	ProjDirs[2].sub	(sPts[2],mView.c);	ProjDirs[2].normalize();
-	ProjDirs[3].sub	(sPts[3],mView.c);	ProjDirs[3].normalize();
+	ProjDirs[0].sub		(sPts[0],mView.c);	ProjDirs[0].normalize();
+	ProjDirs[1].sub		(sPts[1],mView.c);	ProjDirs[1].normalize();
+	ProjDirs[2].sub		(sPts[2],mView.c);	ProjDirs[2].normalize();
+	ProjDirs[3].sub		(sPts[3],mView.c);	ProjDirs[3].normalize();
 
-	// that's all 5 cornet points, excluding "near" plane
+	// that's all 5 corner points, excluding "near" plane
 	Fvector _F[5];
-	_F[0].mad		(mView.c, ProjDirs[0], p_FAR);
-	_F[1].mad		(mView.c, ProjDirs[1], p_FAR);
-	_F[2].mad		(mView.c, ProjDirs[2], p_FAR);
-	_F[3].mad		(mView.c, ProjDirs[3], p_FAR);
-	_F[5].set		(mView.c);
+	_F[0].mad			(mView.c, ProjDirs[0], p_FAR);
+	_F[1].mad			(mView.c, ProjDirs[1], p_FAR);
+	_F[2].mad			(mView.c, ProjDirs[2], p_FAR);
+	_F[3].mad			(mView.c, ProjDirs[3], p_FAR);
+	_F[5].set			(mView.c);
 
-	// Build L-view matrix
-	Fvector			L_dir,L_up,L_right;
-	L_dir.set		(1,-2,1);	L_dir.normalize();
+	// Build L-view vectors
+	Fvector				L_dir,L_up,L_right,L_pos;
+	L_dir.set			(1,-2,1);		L_dir.normalize	();
+	L_up.set			(0,1,0);		L_up.normalize	();
+	L_right.crossproduct(L_up,L_dir);
+	L_up.crossproduct	(L_dir,L_right);
+	L_pos.mad			(Device.vCameraPosition, L_dir, -30);
 
+	// L-view matrix
+	Fmatrix				L_view;
+	L_view.build_camera_dir	(L_pos,L_dir,L_up);
 }
