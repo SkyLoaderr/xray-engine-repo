@@ -4,6 +4,7 @@ full_scale_icon_x	= 0			;иконка сталкера в без костюма в полный рост
 full_scale_icon_y	= 11
 
 
+
 [bandit_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -59,52 +60,34 @@ bones_koeff_protection = bandit_outfit_bones
 [bandit_outfit_bones]
 default				= 1.0
 
-bip01_pelvis 		 = 0.3
+bip01_pelvis 		 = 0.1
 bip01_spine 		 = 0.3
 bip01_spine1 		 = 0.3
-bip01_neck 			 = 0.5
-bip01_head 			 = 0.5
-eyelid_1 			 = 0.5
-eye_left 			 = 0.5
-eye_right 			 = 0.5
-jaw_1 		 		 = 0.5
+bip01_neck 			 = 0.1
+bip01_head 			 = 0.1
+eyelid_1 			 = 0.0
+eye_left 			 = 0.0
+eye_right 			 = 0.0
+jaw_1 		 		 = 0.0
 
 bip01_l_clavicle	 = 0.1
 bip01_l_upperarm	 = 0.05
 bip01_l_forearm	 	 = 0.05
 bip01_l_hand	 	 = 0.0
-bip01_l_finger0	 	 = 0.0
-bip01_l_finger01	 = 0.0
-bip01_l_finger02	 = 0.0
-bip01_l_finger1	 	 = 0.0
-bip01_l_finger11	 = 0.0
-bip01_l_finger12	 = 0.0
-bip01_l_finger2	 	 = 0.0
-bip01_l_finger21	 = 0.0
-bip01_l_finger22	 = 0.0
 
 bip01_r_clavicle	 = 0.1
 bip01_r_upperarm	 = 0.05
 bip01_r_forearm	 	 = 0.05
 bip01_r_hand	 	 = 0.0
-bip01_r_finger0	 	 = 0.0
-bip01_r_finger01	 = 0.0
-bip01_r_finger02	 = 0.0
-bip01_r_finger1	 	 = 0.0
-bip01_r_finger11	 = 0.0
-bip01_r_finger12	 = 0.0
-bip01_r_finger2	 	 = 0.0
-bip01_r_finger21	 = 0.0
-bip01_r_finger22	 = 0.0
 
 bip01_l_thigh	 	 = 0.1
 bip01_l_calf	 	 = 0.05
 bip01_l_foot	 	 = 0.02
-bip01_l_toe0	 	 = 0.0
+
 bip01_r_thigh	 	 = 0.1
 bip01_r_calf	 	 = 0.05
 bip01_r_foot	 	 = 0.02
-bip01_r_toe0	 	 = 0.0
+
 
 [soldier_outfit]
 GroupControlSection	= spawn_group
@@ -151,6 +134,37 @@ chemical_burn_protection = 0.9
 explosion_protection = 0.8
 fire_wound_protection  = 0.85
 
+bones_koeff_protection = soldier_outfit_bones
+
+[soldier_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.35
+bip01_spine1 		 = 0.35
+bip01_neck 			 = 0.1
+bip01_head 			 = 0.1
+eyelid_1 			 = 0.0
+eye_left 			 = 0.0
+eye_right 			 = 0.0
+jaw_1 		 		 = 0.0
+
+bip01_l_clavicle	 = 0.1
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.0
+
+bip01_r_clavicle	 = 0.1
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.0
+
+bip01_l_thigh	 	 = 0.1
+bip01_l_calf	 	 = 0.05
+bip01_l_foot	 	 = 0.02
+
+bip01_r_thigh	 	 = 0.1
+bip01_r_calf	 	 = 0.05
+bip01_r_foot	 	 = 0.02
 
 [stalker_outfit]
 GroupControlSection	= spawn_group
@@ -197,6 +211,39 @@ chemical_burn_protection = 0.9
 explosion_protection = 1.0
 fire_wound_protection  = 0.8
 
+power_loss = 0.87
+
+bones_koeff_protection = stalker_outfit_bones
+
+[stalker_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.35
+bip01_spine1 		 = 0.35
+bip01_neck 			 = 0.1
+bip01_head 			 = 0.1
+eyelid_1 			 = 0.0
+eye_left 			 = 0.0
+eye_right 			 = 0.0
+jaw_1 		 		 = 0.0
+
+bip01_l_clavicle	 = 0.1
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.0
+
+bip01_r_clavicle	 = 0.1
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.0
+
+bip01_l_thigh	 	 = 0.1
+bip01_l_calf	 	 = 0.05
+bip01_l_foot	 	 = 0.02
+
+bip01_r_thigh	 	 = 0.1
+bip01_r_calf	 	 = 0.05
+bip01_r_foot	 	 = 0.02
 
 [svoboda_light_outfit]
 GroupControlSection	= spawn_group
@@ -243,6 +290,39 @@ chemical_burn_protection = 0.8
 explosion_protection = 1.0
 fire_wound_protection  = 0.8
 
+power_loss = 0.77
+
+bones_koeff_protection = svobodalight_outfit_bones
+
+[svobodalight_outfit_bones]
+
+bip01_pelvis 		 = 0.1
+bip01_spine 		 = 0.325
+bip01_spine1 		 = 0.325
+bip01_neck 			 = 0.1
+bip01_head 			 = 0.1
+eyelid_1 			 = 0.0
+eye_left 			 = 0.0
+eye_right 			 = 0.0
+jaw_1 		 		 = 0.0
+
+bip01_l_clavicle	 = 0.1
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.0
+
+bip01_r_clavicle	 = 0.1
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.0
+
+bip01_l_thigh	 	 = 0.1
+bip01_l_calf	 	 = 0.05
+bip01_l_foot	 	 = 0.02
+
+bip01_r_thigh	 	 = 0.1
+bip01_r_calf	 	 = 0.05
+bip01_r_foot	 	 = 0.02
 
 [killer_outfit]
 GroupControlSection	= spawn_group
@@ -288,6 +368,39 @@ telepatic_protection = 0.8
 chemical_burn_protection = 0.8
 explosion_protection = 0.8
 fire_wound_protection  = 0.75
+
+bones_koeff_protection = killer_outfit_bones
+
+[killer_outfit_bones]
+
+bip01_pelvis 		 = 0.1
+bip01_spine 		 = 0.375
+bip01_spine1 		 = 0.375
+bip01_neck 			 = 0.3
+bip01_head 			 = 0.3
+eyelid_1 			 = 0.1
+eye_left 			 = 0.1
+eye_right 			 = 0.1
+jaw_1 		 		 = 0.1
+
+bip01_l_clavicle	 = 0.1
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.0
+
+bip01_r_clavicle	 = 0.1
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.0
+
+bip01_l_thigh	 	 = 0.1
+bip01_l_calf	 	 = 0.05
+bip01_l_foot	 	 = 0.02
+
+bip01_r_thigh	 	 = 0.1
+bip01_r_calf	 	 = 0.05
+bip01_r_foot	 	 = 0.02
+
 
 
 [svoboda_heavy_outfit]
@@ -335,6 +448,38 @@ chemical_burn_protection = 0.8
 explosion_protection = 0.8
 fire_wound_protection  = 0.65
 
+bones_koeff_protection = svobodaheavy_outfit_bones
+
+[svobodaheavy_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.4
+bip01_spine1 		 = 0.4
+bip01_neck 			 = 0.3
+bip01_head 			 = 0.3
+eyelid_1 			 = 0.1
+eye_left 			 = 0.1
+eye_right 			 = 0.1
+jaw_1 		 		 = 0.1
+
+bip01_l_clavicle	 = 0.15
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.0
+
+bip01_r_clavicle	 = 0.15
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.0
+
+bip01_l_thigh	 	 = 0.15
+bip01_l_calf	 	 = 0.05
+bip01_l_foot	 	 = 0.02
+
+bip01_r_thigh	 	 = 0.15
+bip01_r_calf	 	 = 0.05
+bip01_r_foot	 	 = 0.02
+
 
 [dolg_outfit]
 GroupControlSection	= spawn_group
@@ -381,6 +526,37 @@ chemical_burn_protection = 0.8
 explosion_protection = 0.8
 fire_wound_protection  = 0.75
 
+bones_koeff_protection = dolg_outfit_bones
+
+[dolg_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.4
+bip01_spine1 		 = 0.4
+bip01_neck 			 = 0.3
+bip01_head 			 = 0.3
+eyelid_1 			 = 0.1
+eye_left 			 = 0.1
+eye_right 			 = 0.1
+jaw_1 		 		 = 0.1
+
+bip01_l_clavicle	 = 0.15
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.15
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.15
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.15
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
 
 [monolit_outfit]
 GroupControlSection	= spawn_group
@@ -426,6 +602,38 @@ telepatic_protection = 0.5
 chemical_burn_protection = 0.4
 explosion_protection = 0.8
 fire_wound_protection  = 0.65
+
+bones_koeff_protection = monolith_outfit_bones
+
+[monolith_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.5
+bip01_spine1 		 = 0.5
+bip01_neck 			 = 0.4
+bip01_head 			 = 0.4
+eyelid_1 			 = 0.5
+eye_left 			 = 0.5
+eye_right 			 = 0.5
+jaw_1 		 		 = 0.5
+
+bip01_l_clavicle	 = 0.15
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.15
+bip01_r_upperarm	 = 0.05
+bip01_r_forearm	 	 = 0.05
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.15
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.15
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
 
 
 [specops_outfit]
@@ -473,6 +681,37 @@ chemical_burn_protection = 0.8
 explosion_protection = 0.8
 fire_wound_protection  = 0.65
 
+bones_koeff_protection = specops_outfit_bones
+
+[specops_outfit_bones]
+
+bip01_pelvis 		 = 0.2
+bip01_spine 		 = 0.75
+bip01_spine1 		 = 0.75
+bip01_neck 			 = 0.7
+bip01_head 			 = 0.7
+eyelid_1 			 = 0.5
+eye_left 			 = 0.5
+eye_right 			 = 0.5
+jaw_1 		 		 = 0.0
+
+bip01_l_clavicle	 = 0.25
+bip01_l_upperarm	 = 0.25
+bip01_l_forearm	 	 = 0.15
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.25
+bip01_r_upperarm	 = 0.25
+bip01_r_forearm	 	 = 0.15
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.25
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.25
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
 
 [protection_outfit]
 GroupControlSection	= spawn_group
@@ -518,6 +757,39 @@ telepatic_protection = 0.3
 chemical_burn_protection = 0.3
 explosion_protection = 0.8
 fire_wound_protection  = 0.8
+
+bones_koeff_protection = protect_outfit_bones
+
+[protect_outfit_bones]
+
+bip01_pelvis 		 = 0.5
+bip01_spine 		 = 0.375
+bip01_spine1 		 = 0.375
+bip01_neck 			 = 0.5
+bip01_head 			 = 0.5
+eyelid_1 			 = 0.5
+eye_left 			 = 0.5
+eye_right 			 = 0.5
+jaw_1 		 		 = 0.5
+
+bip01_l_clavicle	 = 0.1
+bip01_l_upperarm	 = 0.05
+bip01_l_forearm	 	 = 0.05
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.1
+bip01_r_upperarm	 = 0.5
+bip01_r_forearm	 	 = 0.5
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.1
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.1
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
+
 
 
 [ecolog_outfit]
@@ -565,6 +837,7 @@ chemical_burn_protection = 0.3
 explosion_protection = 0.8
 fire_wound_protection  = 0.8
 
+bones_koeff_protection = protect_outfit_bones
 
 [exo_outfit]
 GroupControlSection	= spawn_group
@@ -613,6 +886,38 @@ fire_wound_protection  = 0.55
 
 power_loss = 0.67
 
+bones_koeff_protection = exo_outfit_bones
+
+[exo_outfit_bones]
+
+bip01_pelvis 		 = 0.5
+bip01_spine 		 = 0.375
+bip01_spine1 		 = 0.375
+bip01_neck 			 = 0.5
+bip01_head 			 = 0.5
+eyelid_1 			 = 0.5
+eye_left 			 = 0.5
+eye_right 			 = 0.5
+jaw_1 		 		 = 0.5
+
+bip01_l_clavicle	 = 0.5
+bip01_l_upperarm	 = 0.5
+bip01_l_forearm	 	 = 0.5
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.5
+bip01_r_upperarm	 = 0.5
+bip01_r_forearm	 	 = 0.5
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.5
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.5
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
+
 
 [military_stalker_outfit]
 GroupControlSection	= spawn_group
@@ -658,6 +963,39 @@ telepatic_protection = 0.6
 chemical_burn_protection = 0.6
 explosion_protection = 0.6
 fire_wound_protection  = 0.5
+
+bones_koeff_protection = military_outfit_bones
+
+[military_outfit_bones]
+
+bip01_pelvis 		 = 0.5
+bip01_spine 		 = 0.5
+bip01_spine1 		 = 0.5
+bip01_neck 			 = 0.5
+bip01_head 			 = 0.75
+eyelid_1 			 = 0.75
+eye_left 			 = 0.75
+eye_right 			 = 0.75
+jaw_1 		 		 = 0.5
+
+bip01_l_clavicle	 = 0.5
+bip01_l_upperarm	 = 0.5
+bip01_l_forearm	 	 = 0.5
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.5
+bip01_r_upperarm	 = 0.5
+bip01_r_forearm	 	 = 0.5
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.5
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.5
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
+
 
 
 [military_commander_outfit]
@@ -705,6 +1043,39 @@ chemical_burn_protection = 0.6
 explosion_protection = 0.6
 fire_wound_protection  = 0.45
 
+bones_koeff_protection =commander_outfit_bones
+
+[commander_outfit_bones]
+
+bip01_pelvis 		 = 0.55
+bip01_spine 		 = 0.55
+bip01_spine1 		 = 0.55
+bip01_neck 			 = 0.55
+bip01_head 			 = 0.75
+eyelid_1 			 = 0.75
+eye_left 			 = 0.75
+eye_right 			 = 0.75
+jaw_1 		 		 = 0.5
+
+bip01_l_clavicle	 = 0.5
+bip01_l_upperarm	 = 0.5
+bip01_l_forearm	 	 = 0.5
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.5
+bip01_r_upperarm	 = 0.5
+bip01_r_forearm	 	 = 0.5
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.5
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.5
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
+
+
 
 [scientific_outfit]
 GroupControlSection	= spawn_group
@@ -750,3 +1121,35 @@ telepatic_protection = 0.1
 chemical_burn_protection = 0.3
 explosion_protection = 0.6
 fire_wound_protection  = 0.5
+
+bones_koeff_protection =scien_outfit_bones
+
+[scien_outfit_bones]
+
+bip01_pelvis 		 = 0.55
+bip01_spine 		 = 0.55
+bip01_spine1 		 = 0.55
+bip01_neck 			 = 0.65
+bip01_head 			 = 0.85
+eyelid_1 			 = 0.85
+eye_left 			 = 0.85
+eye_right 			 = 0.85
+jaw_1 		 		 = 0.75
+
+bip01_l_clavicle	 = 0.5
+bip01_l_upperarm	 = 0.5
+bip01_l_forearm	 	 = 0.5
+bip01_l_hand	 	 = 0.5
+
+bip01_r_clavicle	 = 0.5
+bip01_r_upperarm	 = 0.5
+bip01_r_forearm	 	 = 0.5
+bip01_r_hand	 	 = 0.5
+
+bip01_l_thigh	 	 = 0.5
+bip01_l_calf	 	 = 0.5
+bip01_l_foot	 	 = 0.2
+
+bip01_r_thigh	 	 = 0.5
+bip01_r_calf	 	 = 0.5
+bip01_r_foot	 	 = 0.2
