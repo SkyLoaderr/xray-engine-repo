@@ -103,7 +103,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	// Done
 	pApp->LoadTitle				("Syncronizing...");
 	bReady						= true;
-	IR_Capture					( );
+	if (!g_pGamePersistent->bDedicatedServer)	IR_Capture();
 	Device.seqRender.Add		(this);
 	Device.seqFrame.Add			(this);
 
