@@ -39,7 +39,7 @@ void CBitingEat::Init()
 
 	// Получить инфо о трупе
 	const CEntityAlive *p_corpse = pMonster->CorpseMan.get_corpse();
-	if (!p_corpse) R_ASSERT(false);
+	if (!p_corpse) VERIFY(false);
 	pCorpse = const_cast<CEntityAlive *>(p_corpse);
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
@@ -80,7 +80,7 @@ void CBitingEat::Run()
 
 	// Определить позицию ближайшей боны у трупа
 	Fvector nearest_bone_pos;
-	if (pCorpse->m_pPhysicsShell == NULL) {
+	if ((pCorpse->m_pPhysicsShell == NULL) || (!pCorpse->m_pPhysicsShell->bActive)) {
 		nearest_bone_pos	= pCorpse->Position(); 
 	} else nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(pCorpse);
 	
