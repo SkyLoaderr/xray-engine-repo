@@ -33,6 +33,7 @@ void CAI_Stalker::Think()
 	
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
+	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
 	m_dwUpdateCount++;
 	m_ePreviousState		= m_eCurrentState;
 	
@@ -197,7 +198,7 @@ void CAI_Stalker::ForwardCover()
 {
 	WRITE_TO_LOG("Back cover");
 	
-	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+	SelectEnemy					(m_tEnemy);
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
 
@@ -266,7 +267,6 @@ void CAI_Stalker::ForwardStraight()
 	WRITE_TO_LOG("Forward straight");
 	
 	SelectEnemy					(m_tEnemy);
-	//m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
 	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
@@ -278,38 +278,40 @@ void CAI_Stalker::ForwardStraight()
 		m_tSelectorFreeHunting.m_fOptEnemyDistance = tpWeapon->m_fMinRadius + 3.f;
 	}
 
-//	Fvector						tNextPosition = m_tEnemy.Enemy->Position();
-//	tNextPosition.sub			(vPosition);
-//	tNextPosition.mul			(m_tSelectorFreeHunting.m_fSearchRange/fDistance);
-//	tNextPosition.add			(vPosition);
-//	m_tSelectorNode.m_fSearchRange		= m_tSelectorFreeHunting.m_fSearchRange + 5.f;
-//	m_tSelectorNode.m_dwStartNode		= AI_NodeID;
-//	m_tSelectorNode.m_tStartPosition	= tNextPosition;
-//	m_tSelectorNode.vfShallowGraphSearch(getAI().q_mark_bit);
-//	
-//	if ((m_tSelectorNode.m_fBestCost <= m_tSelectorNode.m_fSearchRange) && (getAI().bfInsideNode(getAI().Node(m_tSelectorNode.m_dwBestNode),tNextPosition))) {
-//		//AI_Path.DestNode		= m_tSelectorNode.m_dwBestNode;
-//		tNextPosition.y			= getAI().ffGetY(*getAI().Node(m_tSelectorNode.m_dwBestNode),tNextPosition.x,tNextPosition.z);
-//		m_tEnemy.Enemy			= 0;
-//		m_tSavedEnemyPosition	= tNextPosition;
-//		vfSetParameters				(
-//			&m_tSelectorFreeHunting,
-//			&tNextPosition,
-//			eWeaponStatePrimaryFire,
-//			ePathTypeStraight,
-//			eBodyStateStand,
-//			eMovementTypeRun,
-//			eLookTypeFirePoint,
-//			tPoint);
-//	}
-//	else
-		vfSetParameters				(
-			&m_tSelectorFreeHunting,
-			0,
-			eWeaponStatePrimaryFire,
-			ePathTypeStraight,
-			eBodyStateStand,
-			eMovementTypeRun,
-			eLookTypeFirePoint,
-			tPoint);
+	vfSetParameters				(
+		&m_tSelectorFreeHunting,
+		0,
+		eWeaponStatePrimaryFire,
+		ePathTypeStraight,
+		eBodyStateStand,
+		eMovementTypeRun,
+		eLookTypeFirePoint,
+		tPoint);
+}
+
+void CAI_Stalker::ForwardDodge()
+{
+	WRITE_TO_LOG("Forward dodge");
+	
+	SelectEnemy					(m_tEnemy);
+	Fvector						tPoint;
+	m_tEnemy.Enemy->svCenter	(tPoint);
+	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
+
+	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (tpWeapon) {
+		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = tpWeapon->m_fMinRadius;
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = tpWeapon->m_fMinRadius + 3.f;
+	}
+
+	vfSetParameters				(
+		&m_tSelectorFreeHunting,
+		0,
+		eWeaponStatePrimaryFire,
+		ePathTypeDodge,
+		eBodyStateStand,
+		eMovementTypeRun,
+		eLookTypeFirePoint,
+		tPoint);
 }

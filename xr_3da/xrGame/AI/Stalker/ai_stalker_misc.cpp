@@ -168,7 +168,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		if (tpCustomMonster) {
 			yaw1		= tpCustomMonster->r_current.yaw;
 			pitch1		= tpCustomMonster->r_current.pitch;
-			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f/2);
+			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
 			fRange		= tpCustomMonster->ffGetRange();
 		}
 		else {
@@ -176,7 +176,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 			if (tpActor) {
 				yaw1	= tpActor->Orientation().yaw;
 				pitch1	= tpActor->Orientation().pitch;
-				fYawFov	= angle_normalize_signed(tpActor->ffGetFov()*PI/180.f/2);
+				fYawFov	= angle_normalize_signed(tpActor->ffGetFov()*PI/180.f);
 				fRange	= tpActor->ffGetRange();
 			}
 			else
@@ -186,8 +186,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		if (tPosition.distance_to(vPosition) > fRange)
 			continue;
 
+		fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(.5f/tPosition.distance_to(vPosition))))/2.f);
 		fPitchFov		= angle_normalize_signed(fYawFov*.75f);
 		tPosition.sub	(vPosition);
+		tPosition.mul	(-1);
 		tPosition.getHP	(yaw2,pitch2);
 		yaw1			= angle_normalize_signed(yaw1);
 		pitch1			= angle_normalize_signed(pitch1);

@@ -216,9 +216,11 @@ private:
 //			void			TakeItem						();
 //			void			DropItem						();
 
+			void			BackStraight					();
 			void			BackDodge						();
 			void			BackCover						();
 			void			ForwardCover					();
+			void			ForwardDodge					();
 			void			ForwardStraight					();
 
 			// selectors

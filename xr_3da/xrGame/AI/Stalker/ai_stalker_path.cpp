@@ -60,14 +60,14 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
 			tNodeEvaluator.m_fDistance		= vPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
 			fOldCost						= tNodeEvaluator.ffEvaluateNode();
-			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
+//			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
 		}
 
 		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
 		tNodeEvaluator.vfShallowGraphSearch(getAI().q_mark_bit);
 		
-		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
+//		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
 //		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(vPosition),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
 		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;

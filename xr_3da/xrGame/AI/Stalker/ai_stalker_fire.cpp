@@ -209,22 +209,22 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			m_bFiring = false;
 		}
 			
-	switch(tpWeapon->STATE) {
-		case CWeapon::eIdle		: Msg("%s : idle",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eFire		: Msg("%s : fire",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eFire2	: Msg("%s : fire 2",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eReload	: Msg("%s : recharge",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eShowing	: Msg("%s : show",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eHiding	: Msg("%s : hide",tpWeapon->cNameSect());
-			break;
-		case CWeapon::eHidden	: Msg("%s : hidden",tpWeapon->cNameSect());
-			break;
-	}
+//	switch(tpWeapon->STATE) {
+//		case CWeapon::eIdle		: Msg("%s : idle",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eFire		: Msg("%s : fire",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eFire2	: Msg("%s : fire 2",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eReload	: Msg("%s : recharge",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eShowing	: Msg("%s : show",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eHiding	: Msg("%s : hide",tpWeapon->cNameSect());
+//			break;
+//		case CWeapon::eHidden	: Msg("%s : hidden",tpWeapon->cNameSect());
+//			break;
+//	}
 	
 	CWeaponMagazined *tpWeaponMagazined = dynamic_cast<CWeaponMagazined*>(tpWeapon);
 	if (tpWeaponMagazined) {
