@@ -20,8 +20,9 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFirstEye]	= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 	cameras[eacLookAt]		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
+	cameras[eacFreeFly]		= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 
-	cam_active				= eacFirstEye;
+	cam_active				= eacFirstEye;//eacFreeFly
 	look_idx				= 0;
 }
 
@@ -38,20 +39,22 @@ void CSpectator::UpdateCL()
 			cam_Update		(0);
 		}else{
 			game_cl_GameState::Player* P = Game().local_player;
-			CTeam& T		= Level().Teams[P->team];
-			int idx			= 0;
-			for (u32 i=0; i<T.Squads.size(); i++){
-				CSquad& S = T.Squads[i];
-				for (u32 j=0; j<S.Groups.size(); j++){
-					CGroup& G = S.Groups[j];
-					for (u32 k=0; k<G.Members.size(); k++){
-						CActor* A = dynamic_cast<CActor*>(G.Members[k]);
-						if (A){
-							if(idx==look_idx){
-								cam_Update(A->cam_Active());
-								return;
+			if ((P->team>=0)&&(P->team<Level().Teams.size())){
+				CTeam& T		= Level().Teams[P->team];
+				int idx			= 0;
+				for (u32 i=0; i<T.Squads.size(); i++){
+					CSquad& S = T.Squads[i];
+					for (u32 j=0; j<S.Groups.size(); j++){
+						CGroup& G = S.Groups[j];
+						for (u32 k=0; k<G.Members.size(); k++){
+							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
+							if (A){
+								if(idx==look_idx){
+									cam_Update(A->cam_Active());
+									return;
+								}
+								idx++;
 							}
-							idx++;
 						}
 					}
 				}
