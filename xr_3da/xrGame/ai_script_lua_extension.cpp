@@ -23,7 +23,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCS
 	string16		I;
 	for (u32 i=0; i<N; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-		vfLoadFileIntoNamespace(tpLuaVirtualMachine,S,true);
+		vfLoadFile	(tpLuaVirtualMachine,S,true);
 	}
 	xr_delete		(l_tpIniFile);
 
@@ -53,30 +53,38 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 	vfLoadStandardScripts(tpLuaVirtualMachine,caScriptName);
 }
 
-void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
+void Script::vfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
 {
-	string256		l_caScriptName;
-	_splitpath		(caScriptName,0,0,l_caScriptName,0);
-	R_ASSERT3		(strlen(l_caScriptName),"Invalid script name ",caScriptName);
+	string256		l_caNamespaceName;
+	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
+	if (!strlen(l_caNamespaceName))
+		vfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall);
+	else
+		vfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall);
+}
+
+void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+{
 	lua_newtable	(tpLuaVirtualMachine);
-	lua_pushstring	(tpLuaVirtualMachine,l_caScriptName);
+	lua_pushstring	(tpLuaVirtualMachine,caNamespaceName);
 	lua_pushvalue	(tpLuaVirtualMachine,-2);
 	lua_settable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
 	lua_newtable	(tpLuaVirtualMachine);
 	lua_pushstring	(tpLuaVirtualMachine,"_G");
 	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
 	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
+	while (lua_next(tpLuaVirtualMachine,-2) != 0) {
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine, 1);
+		lua_pop			(tpLuaVirtualMachine,1);
 	}
 
+	string256		l_caLuaFileName;
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
 	R_ASSERT		(l_tpFileReader);
-	strconcat		(l_caScriptName,"@",caScriptName);
-	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caScriptName);
+	strconcat		(l_caLuaFileName,"@",caScriptName);
+	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName);
 	FS.r_close		(l_tpFileReader);
 
 #ifdef DEBUG
@@ -88,17 +96,11 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 	
 	if (bCall)
 		lua_call		(tpLuaVirtualMachine,0,0);
-	else {
-		lua_pushvalue	(tpLuaVirtualMachine,-4);
-		lua_pushvalue	(tpLuaVirtualMachine,-4);
-		lua_pushvalue	(tpLuaVirtualMachine,-4);
-		lua_remove		(tpLuaVirtualMachine,-5);
-		lua_remove		(tpLuaVirtualMachine,-5);
-		lua_remove		(tpLuaVirtualMachine,-5);
-	}
+	else
+		lua_insert		(tpLuaVirtualMachine,-4);
 
 	lua_pushnil		(tpLuaVirtualMachine);
-	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
+	while (lua_next(tpLuaVirtualMachine,-2) != 0) {
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_gettable	(tpLuaVirtualMachine,-5);
 		if (lua_isnil(tpLuaVirtualMachine,-1)) {
@@ -114,7 +116,7 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 			lua_pop			(tpLuaVirtualMachine,1);
 			lua_pushvalue	(tpLuaVirtualMachine,-2);
 			lua_gettable	(tpLuaVirtualMachine,-4);
-			if (lua_equal(tpLuaVirtualMachine,-1,-2)) {
+			if (!lua_equal(tpLuaVirtualMachine,-1,-2)) {
 				lua_pushvalue	(tpLuaVirtualMachine,-3);
 				lua_pushvalue	(tpLuaVirtualMachine,-2);
 				lua_settable	(tpLuaVirtualMachine,-7);
@@ -127,7 +129,7 @@ void Script::vfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
 		lua_pushnil		(tpLuaVirtualMachine);
 		lua_settable	(tpLuaVirtualMachine,-6);
-		lua_pop			(tpLuaVirtualMachine, 1);
+		lua_pop			(tpLuaVirtualMachine,1);
 	}
 	
 	lua_pop			(tpLuaVirtualMachine,3);

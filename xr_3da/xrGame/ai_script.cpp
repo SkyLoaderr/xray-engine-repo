@@ -37,7 +37,7 @@ CScript::CScript(LPCSTR caFileName)
 	Msg				("* Loading design script %s",caFileName);
 
 	CLuaVirtualMachine		*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
-	vfLoadFileIntoNamespace	(l_tpThread,caFileName,false);
+	vfLoadFile				(l_tpThread,caFileName,false);
 	m_tpThreads.push_back	(l_tpThread);
 }
 
