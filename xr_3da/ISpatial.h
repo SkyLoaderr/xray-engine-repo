@@ -85,7 +85,7 @@ private:
 
 public:
 	ISpatial_NODE*					m_root;
-	vector<ISpatial*>				q_result;
+	xr_vector<ISpatial*>			q_result;
 	u32								stat_nodes;
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
