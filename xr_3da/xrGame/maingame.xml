@@ -122,4 +122,6 @@
 	<motion_icon x="0" y="685" width="100" height="100" align="rb"></motion_icon>
 	<!-- artefact panel -->
 	<artefact_panel x="70" y="710" width="400" height="50" scale="0.75"></artefact_panel>
+	<!-- pickup item icon-->
+	<pick_up_item x="437" y="400" width="150" height="100"></pick_up_item>
 </window>

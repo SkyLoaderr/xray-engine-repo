@@ -379,6 +379,8 @@ protected:
 	void					PickupModeOff		();
 	void					PickupModeUpdate	();
 	void					PickupInfoDraw		(CObject* object);
+	void					PickupModeUpdate_COD ();
+
 
 
 	//////////////////////////////////////////////////////////////////////////

@@ -425,7 +425,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				sprintf (KillerText, "%sby %s%s ",
 						Color_Main,
 						pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
-						pKiller ? pKiller->name : *(pOKiller->cName()));
+						pKiller ? pKiller->name : *(pOKiller->cNameSect()));
 				std::strcat(Text, KillerText);
 			};
 			if (HeadShot)

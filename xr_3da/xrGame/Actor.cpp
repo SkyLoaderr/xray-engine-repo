@@ -702,6 +702,8 @@ void CActor::UpdateCL()
 		//обновить информацию о предметах лежащих рядом с актером
 		PickupModeUpdate	();	
 
+		PickupModeUpdate_COD	();
+
 		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
 		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
 		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);

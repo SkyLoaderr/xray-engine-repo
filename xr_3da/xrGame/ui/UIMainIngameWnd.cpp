@@ -133,6 +133,17 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 3, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
 	UIWeaponIcon.ClipperOn();
+	//---------------------------------------------------------
+	AttachChild(&UIPickUpItemIcon);
+	xml_init.InitStatic(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
+	UIPickUpItemIcon.SetShader(GetEquipmentIconsShader());
+	UIPickUpItemIcon.ClipperOn();
+
+	m_iPickUpItemIconWidth = UIPickUpItemIcon.GetWidth();
+	m_iPickUpItemIconHeight = UIPickUpItemIcon.GetHeight();
+	m_iPickUpItemIconX = UIPickUpItemIcon.GetWndRect().left;
+	m_iPickUpItemIconY = UIPickUpItemIcon.GetWndRect().top;
+	//---------------------------------------------------------
 
 	//запомнить оригинальный размер для иконки оружия, 
 	//так как она будет масштабироваться и центрироваться
@@ -659,6 +670,8 @@ void CUIMainIngameWnd::Update()
 	UIContactsAnimation.Update();
 	UIPdaOnline.SetTextColor(subst_alpha(UIPdaOnline.GetTextColor(), color_get_A(UIContactsAnimation.GetColor())));
 	m_ClawsAnimation.Update();
+
+	UpdatePickUpItem();
 
 	CUIWindow::Update();
 }
@@ -1419,3 +1432,50 @@ void CUIMainIngameWnd::SetBatteryCharge(float value)
 ////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+void CUIMainIngameWnd::UpdatePickUpItem	()
+{
+	if (!m_pPickUpItem) 
+	{
+		UIPickUpItemIcon.Show(false);
+		return;
+	};
+
+	shared_str sect_name	= m_pPickUpItem->object().cNameSect();
+
+	//properties used by inventory menu
+	int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
+	int m_iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+
+	int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
+	int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+
+	float scale_x = float(m_iPickUpItemIconWidth)/
+		float(m_iGridWidth*INV_GRID_WIDTH);
+
+	float scale_y = float(m_iPickUpItemIconHeight)/
+		float(m_iGridHeight*INV_GRID_HEIGHT);
+
+	scale_x = (scale_x>1) ? 1.0f : scale_x;
+	scale_y = (scale_y>1) ? 1.0f : scale_y;
+
+	float scale = scale_x<scale_y?scale_x:scale_y;
+
+	UIPickUpItemIcon.GetUIStaticItem().SetOriginalRect(
+		m_iXPos * INV_GRID_WIDTH * scale,
+		m_iYPos * INV_GRID_HEIGHT * scale,
+		m_iGridWidth * INV_GRID_WIDTH * scale,
+		m_iGridHeight * INV_GRID_HEIGHT * scale);
+
+	UIPickUpItemIcon.SetTextureScaleXY(scale, scale);
+	UIPickUpItemIcon.SetStretchTexture(true);
+
+	UIPickUpItemIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
+	UIPickUpItemIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale));
+
+	UIPickUpItemIcon.SetWndPos(m_iPickUpItemIconX + 
+		(m_iPickUpItemIconWidth - UIPickUpItemIcon.GetWidth())/2,
+		m_iPickUpItemIconY + 
+		(m_iPickUpItemIconHeight - UIPickUpItemIcon.GetHeight())/2);
+
+	UIPickUpItemIcon.Show(true);
+};

@@ -128,6 +128,65 @@ void CActor::PickupModeUpdate()
 		if (CanPickItem(frustum,Device.vCameraPosition,*it)) PickupInfoDraw(*it);
 }
 
+#include "CameraBase.h"
+BOOL	g_b_COD_PickUpMode = FALSE;
+void	CActor::PickupModeUpdate_COD	()
+{
+	if (!g_b_COD_PickUpMode || eacFirstEye != cam_active || Level().CurrentViewEntity() != this) 
+	{
+		HUD().GetUI()->UIMainIngameWnd.SetPickUpItem(NULL);
+		return;
+	};
+
+
+	CFrustum frustum;
+	frustum.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+
+	BOOL Enabled = getEnabled();
+	setEnabled(FALSE);
+	//---------------------------------------------------------------------------
+	xr_vector<ISpatial*>	ISpatialResult;
+	g_SpatialSpace->q_frustum(ISpatialResult, 0, STYPE_COLLIDEABLE, frustum);
+	//---------------------------------------------------------------------------
+	setEnabled(Enabled);
+
+	float maxlen = 1000.0f;
+	CInventoryItem* pNearestItem = NULL;
+	for (u32 o_it=0; o_it<ISpatialResult.size(); o_it++)
+	{
+		ISpatial*		spatial	= ISpatialResult[o_it];
+		CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (spatial->dcast_CObject        ());
+		if (0 == pIItem) continue;
+		
+		Fvector A, B, tmp; 
+		pIItem->object().Center			(A);
+		if (A.distance_to_sqr(Position())>4) continue;
+
+		tmp.sub(A, cam_Active()->vPosition);
+		B.mad(cam_Active()->vPosition, cam_Active()->vDirection, tmp.dotproduct(cam_Active()->vDirection));
+		float len = B.distance_to_sqr(A);
+		if (len > 1) continue;
+
+		if (maxlen>len)
+		{
+			maxlen = len;
+			pNearestItem = pIItem;
+		};
+	}
+	HUD().GetUI()->UIMainIngameWnd.SetPickUpItem(pNearestItem);
+
+	if (pNearestItem && m_bPickupMode)
+	{
+		//подбирание объекта
+		NET_Packet P;
+		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
+		P.w_u16(pNearestItem->object().ID());
+		u_EventSend(P);
+
+		PickupModeOff();
+	}
+};
+
 void CActor::PickupInfoDraw(CObject* object)
 {
 	LPCSTR draw_str = NULL;

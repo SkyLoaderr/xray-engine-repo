@@ -257,4 +257,17 @@ public:
 	void				ShowBattery(bool on);
 	CUICarPanel&		CarPanel(){return UICarPanel;};
 	CUIMotionIcon&		MotionIcon(){return UIMotionIcon;}
+protected:
+	CInventoryItem*		m_pPickUpItem;
+	CUIStatic			UIPickUpItemIcon;
+
+	int					m_iPickUpItemIconX;
+	int					m_iPickUpItemIconY;
+	int					m_iPickUpItemIconWidth;
+	int					m_iPickUpItemIconHeight;
+
+    void				UpdatePickUpItem();
+public:
+	void				SetPickUpItem	(CInventoryItem* PickUpItem) {m_pPickUpItem = PickUpItem;};
+
 };
