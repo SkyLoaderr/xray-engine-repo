@@ -2,6 +2,7 @@
 
 #include "..\ispatial.h"
 #if RENDER==R_R2
+	#include "light_package.h"
 	#include "light_smapvis.h"
 	#include "light_GI.h"
 #endif
