@@ -324,7 +324,7 @@ void CRenderTarget::accum_direct_lum	()
 			Fvector4	uv4;
 			Fvector4	uv5;
 		};
-		float	smooth				= .5f;
+		float	smooth				= 0.6f;
 		float	ddw					= smooth/_w;
 		float	ddh					= smooth/_h;
 
@@ -339,7 +339,7 @@ void CRenderTarget::accum_direct_lum	()
 		RCache.set_Geometry			(g_aa_AA);
 
 		// setup
-		RCache.set_Element			(s_accum_direct->E[sub_phase]);
+		RCache.set_Element			(s_accum_direct->E[SE_SUN_LUMINANCE]);
 		RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0		);
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 
