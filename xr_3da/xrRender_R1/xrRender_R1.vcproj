@@ -298,12 +298,6 @@
 				RelativePath="FStaticRender_Volume.cpp">
 			</File>
 			<File
-				RelativePath=".\ParticleEffect.cpp">
-			</File>
-			<File
-				RelativePath=".\ParticleEffect.h">
-			</File>
-			<File
 				RelativePath=".\PSLibrary.cpp">
 			</File>
 			<File
@@ -575,10 +569,22 @@
 					RelativePath="FTreeVisual.h">
 				</File>
 				<File
+					RelativePath=".\ParticleEffect.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleEffect.h">
+				</File>
+				<File
 					RelativePath=".\ParticleGroup.cpp">
 				</File>
 				<File
 					RelativePath=".\ParticleGroup.h">
+				</File>
+				<File
+					RelativePath=".\psvisual.cpp">
+				</File>
+				<File
+					RelativePath=".\psvisual.h">
 				</File>
 			</Filter>
 		</Filter>

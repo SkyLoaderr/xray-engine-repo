@@ -876,18 +876,6 @@
 					<File
 						RelativePath=".\ParticleCustom.h">
 					</File>
-					<File
-						RelativePath=".\psvisual.cpp">
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\psvisual.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="Skeleton"
