@@ -1,14 +1,17 @@
-// Rain.cpp: implementation of the CEffect_Rain class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-#include "xr_area.h"
-#include "igame_level.h"
+#pragma once
+
+#include "Rain.h"
 #include "igame_persistent.h"
 #include "environment.h"
-#include "xr_object.h"
-#include "Rain.h"
+#include "render.h"
+
+#ifdef _EDITOR
+	#include "scene.h"
+#else
+	#include "xr_area.h"
+	#include "xr_object.h"
+#endif
 
 const int	max_desired_items	= 2500;
 const float	drop_length			= 1.5f;
@@ -31,9 +34,9 @@ CEffect_Rain::CEffect_Rain()
 	
 	Sound->create					(snd_Ambient,TRUE,"amb_rain");
 
-	IReader*	 fs					= FS.r_open("$game_meshes$","dm\\rain.dm");
-	DM_Drop							= ::Render->model_CreateDM		(fs);
-	FS.r_close						(fs);
+    string256 nm;
+    FS.update_path					(nm,"$game_meshes$","dm\\rain.dm");
+	DM_Drop							= ::Render->model_CreateDM		(nm);
 
 	//
 	SH_Rain.create					("effects\\rain","fx\\rain");
@@ -70,6 +73,19 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 // Raytrace
 void	CEffect_Rain::RayTest	(Item& dest, float height)
 {
+#ifdef _EDITOR
+	SRayPickInfo pinf;
+    pinf.inf.range		= height*2;
+	if (Scene.RayPickObject(dest.P,dest.D,OBJCLASS_SCENEOBJECT,&pinf,0)){
+		dest.fTime_Life	= pinf.inf.range/dest.fSpeed;
+		dest.fTime_Hit	= pinf.inf.range/dest.fSpeed;
+		dest.Phit.mad	(dest.P,dest.D,pinf.inf.range);
+    }else{
+		dest.fTime_Life	= (height*2)/dest.fSpeed;
+		dest.fTime_Hit	= (height*3)/dest.fSpeed;
+		dest.Phit.set	(dest.P);
+    }
+#else
 	Collide::ray_query	RQ;
 	CObject* E = g_pGameLevel->CurrentViewEntity();
 	E->setEnabled	(FALSE);
@@ -84,6 +100,7 @@ void	CEffect_Rain::RayTest	(Item& dest, float height)
 		dest.Phit.set	(dest.P);
 	}
 	E->setEnabled	(TRUE);
+#endif
 }
 
 // initialize particles pool

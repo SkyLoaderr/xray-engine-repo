@@ -2,11 +2,11 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_)
-#define AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_
+#ifndef RainH
+#define RainH
 #pragma once
 
-#include "..\render.h"
+//#include "..\render.h"
 
 class CEffect_Rain
 {
@@ -74,4 +74,4 @@ public:
 	~CEffect_Rain					();
 };
 
-#endif // !defined(AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_)
+#endif //RainH
