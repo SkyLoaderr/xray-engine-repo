@@ -436,7 +436,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
 
 				// Position (Y)
-				float y		= D.BB.min.y;
+				float y		= D.BB.min.y-1;
 				Fvector	dir; dir.set(0,-1,0);
 
 				float		r_u,r_v,r_range;
@@ -451,6 +451,7 @@ void CDetailManager::UpdateCache	(int limit)
 						}
 					}
 				}
+				if (y<D.BB.min.y)	continue;
 				Item.P.y	= y;
 
 				
@@ -483,11 +484,11 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	DS.r_yaw				= 0xaaaaaaaa;
 	DS.r_scale				= 0xaaaaaaaa;
 
-	DS.items[0].id			= 3;
-	DS.items[0].palette.a0	= 7;
-	DS.items[0].palette.a1	= 0;
-	DS.items[0].palette.a2	= 0;
-	DS.items[0].palette.a3	= 0;
+	DS.items[0].id			= 1;
+	DS.items[0].palette.a0	= 15;
+	DS.items[0].palette.a1	= 15;
+	DS.items[0].palette.a2	= 15;
+	DS.items[0].palette.a3	= 15;
 
 	DS.items[1].id			= 0xff;
 	DS.items[2].id			= 0xff;
