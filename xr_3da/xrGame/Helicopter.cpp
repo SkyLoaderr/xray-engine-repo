@@ -269,9 +269,9 @@ void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
 	
-//	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
+	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
-	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
+//	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 /*	if( PPhysicsShell()&&(GetfHealth() < 99.97f) )
 	{
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
@@ -328,8 +328,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	
 //	if( GetfHealth() >= 0.0f )
 //	{
-//		m_movementMngr.shedule_Update(time_delta);
-		m_movMngr.shedule_Update (time_delta, this);
+		m_movementMngr.shedule_Update(time_delta);
+//		m_movMngr.shedule_Update (time_delta, this);
 //	};
 
 //	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
