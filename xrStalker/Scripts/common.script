@@ -3,6 +3,8 @@ class 'Guardian'
 function Guardian:__init (npc_object, script_name)
     self.npc = npc_object
     self.script_name = script_name
+	printf ("Constructor called")
+	flush ()
 end
 
 function Guardian:start ()
@@ -10,3 +12,6 @@ function Guardian:start ()
 end
 
     
+function Guardian:stop ()
+	self.npc:script (false, self.script_name)
+end
