@@ -44,7 +44,7 @@ void CDamageManager::reload				(LPCSTR section)
 	{
 		CBoneInstance			&bone_instance = PKinematics(object->Visual())->LL_GetBoneInstance(i);
 		bone_instance.set_param	(0,1.f);
-		bone_instance.set_param	(1,-1);
+		bone_instance.set_param	(1,1.f);
 		bone_instance.set_param	(2,1.f);
 	}
 
