@@ -107,6 +107,8 @@ function update()
 				sim:set_switch_online( wounded_id, true )
 			end
 
+			actor:give_info_portion( "tutorial_wounded_start" )
+
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
 			heli_mgr.not_die = false
