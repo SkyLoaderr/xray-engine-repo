@@ -9,9 +9,10 @@
 XRCORE_API	xrDebug		Debug;
 
 // Dialog support
-static const char * dlgExpr = NULL;
-static const char * dlgFile = NULL;
-static char			dlgLine	[16];
+static const char * dlgExpr		= NULL;
+static const char * dlgFile		= NULL;
+static char			dlgLine		[16];
+static BOOL			bException	= FALSE;
 
 static BOOL CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
@@ -74,7 +75,8 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	switch (res) 
 	{
 	case IDC_STOP:
-		TerminateProcess(GetCurrentProcess(),3);
+		if (bException)		TerminateProcess(GetCurrentProcess(),3);
+		else				RaiseException	(0, 0, 0, NULL);
 		break;
 	case IDC_DEBUG:
 		__asm { int 3 };
@@ -175,6 +177,7 @@ void	timestamp	(string64& dest)
 LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 {
 	LONG retval		= EXCEPTION_CONTINUE_SEARCH;
+	bException		= TRUE;
 
 	// firstly see if dbghelp.dll is around and has the function we need
 	// look next to the EXE first, as the one in System32 might be old 
