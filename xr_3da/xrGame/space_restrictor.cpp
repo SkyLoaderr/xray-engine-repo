@@ -16,7 +16,17 @@ CSpaceRestrictor::~CSpaceRestrictor	()
 {
 }
 
-BOOL CSpaceRestrictor::net_Spawn		(LPVOID data)
+void CSpaceRestrictor::Center		(Fvector& C) const
+{
+	XFORM().transform_tiny		(C,CFORM()->getSphere().P);
+}
+
+float CSpaceRestrictor::Radius		() const
+{
+	return CFORM()->getRadius	();
+}
+
+BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
 	CShapeData						*se_shape = dynamic_cast<CShapeData*>(abstract);
