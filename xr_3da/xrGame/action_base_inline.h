@@ -41,6 +41,7 @@ void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 #ifdef LOG_ACTION
 	m_use_log			= false;
 	m_action_name		= action_name;
+	m_switched			= false;
 //	if (xr_strlen(m_action_name))
 //		debug_log		(eActionStateConstructed);
 #endif
