@@ -187,7 +187,7 @@ function fract:setJob(npc, job)
 	if job.name == "walker" then
 		job.object = npc
 		job.begin = game.time()
-	    xr_walker.set_walker(npc, true, job.path_main, job.path_look)
+	    xr_walker.set_walker(npc, true, job.path_walk, job.path_look)
 	end
 	if job.name == "bodyguard" then
 		job.object = npc
