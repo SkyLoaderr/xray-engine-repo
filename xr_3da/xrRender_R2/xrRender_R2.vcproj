@@ -149,6 +149,9 @@
 				RelativePath="r2.h">
 			</File>
 			<File
+				RelativePath="r2_scenegraph.h">
+			</File>
+			<File
 				RelativePath="r2_types.h">
 			</File>
 		</Filter>
