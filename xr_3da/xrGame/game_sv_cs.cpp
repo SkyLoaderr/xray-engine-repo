@@ -649,7 +649,10 @@ void game_sv_CS::OnPlayerChangeTeam(u32 id_who, s16 team) {
 		s16 l_old_team = get_id(id_who)->team;
 		get_id(id_who)->team = team;
 		get_id(id_who)->flags &= ~GAME_PLAYER_FLAG_CS_SPECTATOR;
-		if(get_alive_count(l_old_team) == 0) OnRoundEnd("????");
+		if(get_alive_count(l_old_team) == 0) {
+			OnTeamScore((l_old_team+1)%2);
+			OnRoundEnd("????");
+		}
 	} else {
 		get_id(id_who)->flags |= GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 		if(get_alive_count(0)+get_alive_count(1) == 0) OnRoundEnd("????");
