@@ -90,3 +90,8 @@ CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
 	SP.dwTime					+=	Level().timeServer_Delta();
 	return SP;
 }
+
+void CGameObject::net_Event	(NET_Packet& P)
+{
+	net_Events.insert		(P);
+}

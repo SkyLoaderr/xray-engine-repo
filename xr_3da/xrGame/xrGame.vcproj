@@ -421,6 +421,9 @@
 					RelativePath=".\ActorInput.cpp">
 				</File>
 				<File
+					RelativePath="Actor_Events.cpp">
+				</File>
+				<File
 					RelativePath=".\Actor_Flags.h">
 				</File>
 				<File

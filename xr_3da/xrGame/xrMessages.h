@@ -210,7 +210,6 @@ GE_TRANSFER_AMMO
 {
 	u16			from;
 	u16			to;
-	u16			amount;
 }
 GE_HIT									// попадание (пулей)
 {

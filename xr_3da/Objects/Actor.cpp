@@ -298,7 +298,6 @@ void CActor::feel_touch_new				(CObject* O)
 
 			P.w_u16		(W->ID());
 			P.w_u16		(T->ID());
-			P.w_u16		(0);
 			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
 		} else {
@@ -318,14 +317,6 @@ void CActor::feel_touch_new				(CObject* O)
 	// 
 }
 
-/*
-if (W->Local())	T->Ammo_add	(W->Ammo_eject());
-else			
-{
-Device.Fatal	("Ammo eject from non local weapon not implemented");
-}
-*/
-
 void CActor::feel_touch_delete		(CObject* O)
 {
 }
@@ -335,33 +326,6 @@ IC BOOL BE	(BOOL A, BOOL B)
 	bool a = !!A;
 	bool b = !!B;
 	return a==b;
-}
-void CActor::net_OwnershipTake		(CObject* O)
-{
-	// Test for weapon
-	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-	if (W) 
-	{
-		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-		W->H_SetParent						(this);
-		int id	= Weapons->weapon_add		(W);
-		Weapons->ActivateWeaponID			(id);
-		return;
-	}
-}
-
-void CActor::net_OwnershipReject	(CObject* O)
-{
-	// Test for weapon
-	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-	if (W) 
-	{
-		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-		W->H_SetParent						(0);
-		int id	= Weapons->weapon_remove	(W);
-		Weapons->ActivateWeaponHistory		(id-1);
-		return;
-	}
 }
 
 void CActor::g_Physics				(Fvector& accel, float jump, float dt)

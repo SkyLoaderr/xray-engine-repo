@@ -30,15 +30,15 @@ public:
 		P.w_u16			(destination);
 		P.w				(data.begin(),data.size());
 	}
-	void				implication	(NET_Packet& P)
+	void				implication	(NET_Packet& P) const
 	{
 		PSGP.memCopy	(P.B.data,data.begin(),data.size());
 		P.B.count		= data.size();
 		P.r_pos			= 0;
 	}
-
-	IC bool operator < (NET_Event& A)	{ return timestamp<A.timestamp; }
 };
+
+IC bool operator < (const NET_Event& A, const NET_Event& B)	{ return A.timestamp<B.timestamp; }
 
 class	NET_Queue_Event
 {
@@ -48,19 +48,20 @@ public:
 	{
 		NET_Event		E;
 		E.import		(P);
+		queue.insert	(E);
 	}
 	IC BOOL				available	(DWORD T)
 	{
-		if (queue.empty() || (T<queue.front().timestamp))	return FALSE;
+		if (queue.empty() || (T<queue.begin()->timestamp))	return FALSE;
 		else												return TRUE;
 	}
 	IC u16				get			(NET_Packet& P)
 	{
-		NET_Event& E	= *queue.begin();
-		u16 type		= E.type;
-		E.implication	(P);
-		queue.erase		(queue.begin());
-		return			type;
+		const NET_Event& E	= *queue.begin();
+		u16 type			= E.type;
+		E.implication		(P);
+		queue.erase			(queue.begin());
+		return				type;
 	}
 };
 
