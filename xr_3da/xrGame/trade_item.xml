@@ -2,28 +2,28 @@
 <!-- ITEM INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- NAME -->
-	<s	<static x="20" y="15" width="240" height="25">
+	<s	<static x="20" y="15" width="140" height="25">
 text x="0" y="0" font="letterica25" r="238" g="155" b="23"></text>
 	</static>
 
 	<!-- WEIGHT -->
-	<s	<static x="20" y="45" width="240" height="18">
+	<s	<static x="160" y="15" width="140" height="18">
 text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- COST -->
-	<s	<static x="20" y="63" width="240" height="18">
+	<s	<static x="160" y="33" width="240" height="18">
 text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 	
 	<!-- CONDITION -->
-	<s	<static x="20" y="81" width="240" height="18">
+	<s	<static x="160" y="51" width="240" height="18">
 text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- DESCRIPTION -->
-	<d	<descr_list x="20" y="100" width="285" height="100" item_height="17">
-		<font font="letterica16" r="240" g="217" b="182"/>
+	<d	<descr_list x="20" y="56" width="285" height="100" item_height="17">
+		<font font="small" r="240" g="217" b="182"/>
 descr_list>
    indow>
 
