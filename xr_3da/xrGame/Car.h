@@ -423,10 +423,11 @@ public:
 	CInventory*				GetInventory		(){return inventory;}
 protected:
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}												;
+	virtual void					SpawnInitPhysics	(CSE_Abstract	*D)																;
 	virtual void					net_Save			(NET_Packet& P)																	;
 	virtual	BOOL					net_SaveRelevant	()																				;
 			void					SaveNetState		(NET_Packet& P)																	;
-			void					RestoreNetState		(CSE_ALifePHSkeletonObject* po)													;
+	virtual	void					RestoreNetState		(CSE_ALifePHSkeletonObject* po)													;
 			void					SetDefaultNetState	(CSE_ALifePHSkeletonObject* po)																				;
 public:
 	CCar(void);

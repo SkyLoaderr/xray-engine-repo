@@ -96,25 +96,24 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	Log("car spawn");
 #endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
-	CSE_ALifeCar					*po = dynamic_cast<CSE_ALifeCar*>(e);
-	CSE_ALifePHSkeletonObject		*so = dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
-	R_ASSERT						(po);
 	BOOL							R = inherited::net_Spawn(DC);
-
-	if(!CPHSkeleton::Spawn(so))
-	{
-		ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
-		CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
-		PKinematics(Visual())->CalculateBones	();
-		Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
-		SetDefaultNetState				(po);
-		RestoreNetState					(po);
-		CPHUpdateObject::Activate       ();
-		setEnabled						(TRUE);
-		setVisible						(TRUE);
-	}
+	CPHSkeleton::Spawn(e);
+	setEnabled						(TRUE);
+	setVisible						(TRUE);
 	m_fSaveMaxRPM					= m_max_rpm;
 	return							(CScriptMonster::net_Spawn(DC) && R);
+}
+
+void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
+{
+	CSE_ALifePHSkeletonObject		*so = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+	R_ASSERT						(so);
+	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
+	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
+	PKinematics(Visual())->CalculateBones	();
+	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+	SetDefaultNetState				(so);
+	CPHUpdateObject::Activate       ();
 }
 
 void	CCar::net_Destroy()

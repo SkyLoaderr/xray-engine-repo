@@ -21,20 +21,20 @@ CPhysicsSkeletonObject::~CPhysicsSkeletonObject()
 BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract			  *e	= (CSE_Abstract*)(DC);
-	CSE_ALifePHSkeletonObject *po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
-	R_ASSERT				(po);
+
 	inherited::net_Spawn	(DC);
 	xr_delete(collidable.model);
 	collidable.model = xr_new<CCF_Skeleton>(this);
-
-	if(!CPHSkeleton::Spawn(po))
-	{
-		CreatePhysicsShell(e);
-		PKinematics(Visual())->CalculateBones	();
-		CPHSkeleton::RestoreNetState			(po);
-	}
-	
+	CPHSkeleton::Spawn(e);
+	setVisible(true);
+	setEnabled(true);
 	return TRUE;
+}
+
+void	CPhysicsSkeletonObject::SpawnInitPhysics	(CSE_Abstract	*D)
+{
+	CreatePhysicsShell(D);
+	PKinematics(Visual())->CalculateBones	();
 }
 
 void CPhysicsSkeletonObject::net_Destroy()

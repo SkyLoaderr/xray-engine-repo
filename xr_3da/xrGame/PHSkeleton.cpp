@@ -38,11 +38,15 @@ void CPHSkeleton::Init()
 	m_startup_anim=NULL;
 }
 
-bool CPHSkeleton::Spawn(CSE_ALifePHSkeletonObject *po)
+bool CPHSkeleton::Spawn(CSE_Abstract *D)
 {
+	
+	CSE_ALifePHSkeletonObject *po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+	R_ASSERT				(po);
+
 	m_flags					= po->flags;
 	m_startup_anim			= po->startup_animation;
-
+	
 
 
 	if(po->flags.test(CSE_ALifePHSkeletonObject::flSpawnCopy))
@@ -57,6 +61,7 @@ bool CPHSkeleton::Spawn(CSE_ALifePHSkeletonObject *po)
 	else 
 	{
 		CPhysicsShellHolder* obj=PPhysicsShellHolder();
+
 		if (obj->Visual())
 		{
 			CKinematics* K= PKinematics(obj->Visual());
@@ -66,6 +71,8 @@ bool CPHSkeleton::Spawn(CSE_ALifePHSkeletonObject *po)
 				K->LL_SetBonesVisible(po->saved_bones.bones_mask);
 			}
 		}
+		SpawnInitPhysics(D);
+		RestoreNetState(po);
 	}
 	return false;
 }

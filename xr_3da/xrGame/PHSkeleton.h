@@ -31,18 +31,22 @@ private:
 	void	SetAutoRemove		()																				;
 
 protected:
-	void	SaveNetState		(NET_Packet& P)																	;
+
 	void	LoadNetState		(NET_Packet& P)																	;
-	void	RestoreNetState		(CSE_ALifePHSkeletonObject* po);
+	
 	void	UnsplitSingle		(CPHSkeleton* SO)														;
 
 protected:
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder	()													=0;
-	virtual	void	InitServerObject	(CSE_Abstract	*D)														;
-			void	RespawnInit			()																		;
-			bool	Spawn				(CSE_ALifePHSkeletonObject* po)											;
-			void	Update				(u32 dt)																;
-			void	Load				(LPCSTR section)														;
+	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)														=0;
+	virtual void	SaveNetState		(NET_Packet& P)															;
+	virtual	void	RestoreNetState		(CSE_ALifePHSkeletonObject* po)											;
+
+	virtual	void	InitServerObject	(CSE_Abstract	*D)														;//
+			void	RespawnInit			()																		;//net_Destroy
+			bool	Spawn				(CSE_Abstract	*D)											;//net_spawn
+			void	Update				(u32 dt)																;//shedule update
+			void	Load				(LPCSTR section)														;//client load
 public:
 	CPHSkeleton			()																						;
 	virtual	~CPHSkeleton		()																				;

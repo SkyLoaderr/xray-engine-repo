@@ -26,13 +26,9 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectPhysic	*po	= dynamic_cast<CSE_ALifeObjectPhysic*>(e);
 	R_ASSERT				(po);
-
-
 	m_type					= EPOType(po->type);
 	m_mass					= po->mass;
 	inherited::net_Spawn	(DC);
-
-
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -42,41 +38,40 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		default: NODEFAULT; 
 	}
 
-	if(!CPHSkeleton::Spawn(po))
-	{
-		CreatePhysicsShell(e);
-		if(Visual()&&PKinematics(Visual()))
-		{
-
-			CSkeletonAnimated*	pSkeletonAnimated=NULL;
-			R_ASSERT			(Visual()&&PKinematics(Visual()));
-			pSkeletonAnimated	=PSkeletonAnimated(Visual());
-			if(pSkeletonAnimated)
-			{
-				R_ASSERT2					(*po->startup_animation,"no startup animation");
-				pSkeletonAnimated->PlayCycle(*po->startup_animation);
-			}
-			PKinematics(Visual())->CalculateBones	();
-		}
-
-		RestoreNetState(po);
-		setVisible(true);
-		setEnabled(true);
-	}
-
+	CPHSkeleton::Spawn(e);
+	setVisible(true);
+	setEnabled(true);
 	return TRUE;
 }
 
+void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
+{
+	CreatePhysicsShell(D);
+
+	if(Visual()&&PKinematics(Visual()))
+	{
+		CSE_ALifePHSkeletonObject	*po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+		CSkeletonAnimated*	pSkeletonAnimated=NULL;
+		R_ASSERT			(Visual()&&PKinematics(Visual()));
+		pSkeletonAnimated	=PSkeletonAnimated(Visual());
+		if(pSkeletonAnimated)
+		{
+			R_ASSERT2					(*po->startup_animation,"no startup animation");
+			pSkeletonAnimated->PlayCycle(*po->startup_animation);
+		}
+		PKinematics(Visual())->CalculateBones	();
+	}
+}
 void CPhysicObject::net_Destroy()
 {
-	RespawnInit();
+	CPHSkeleton::RespawnInit();
 	inherited::net_Destroy();
 }
 
 void CPhysicObject::net_Save(NET_Packet& P)
 {
 	inherited::net_Save(P);
-	SaveNetState	   (P);
+	CPHSkeleton::SaveNetState(P);
 }
 void CPhysicObject::CreatePhysicsShell(CSE_Abstract* e)
 {
