@@ -1,0 +1,26 @@
+local s_walk	= 7
+
+class "CStateWalk"
+function CStateWalk:__init(_data, _mem, sWalk)
+	self.data	= _data
+	self.memory = _mem
+	self.path	= nil
+end
+
+function CStateWalk:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.path	= self.data.npc:spawn_ini():r_string("monster", "walk_path")
+end
+
+function CStateWalk:execute()
+	if(self.data.npc:action() == nil) then	
+		action(self.data.npc, move(move.walk_fwd, patrol(self.path)), sound(sound.idle), cond(cond.move_end))
+	end
+end
+
+function CStateWalk:id()
+	return s_walk
+end
+
+function CStateWalk:finalize()
+end

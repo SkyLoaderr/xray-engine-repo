@@ -1,0 +1,40 @@
+local s_hit			= 2
+local time_update	= 5000
+
+class "CStateHit"
+function CStateHit:__init(_data, _mem)
+	self.data		= _data
+	self.memory		= _mem
+	self.hit_time	= 0
+end
+
+function CStateHit:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.hit_time	= self.memory.hit.time
+end
+
+function CStateHit:execute()
+	if(self:hit_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, act(act.panic, self.memory.hit.who), cond(cond.time_end, 60000))
+	end
+end
+
+function CStateHit:hit_changed()
+	if(self.memory.hit.time > self.hit_time + time_update) then
+		self.hit_time	= self.memory.hit.time
+		return true
+	end
+	
+	return false
+end
+
+function CStateHit:id()
+	return s_hit
+end
+
+function CStateHit:finalize()
+end

@@ -1,0 +1,59 @@
+local s_attack	= 1
+
+class "CStateAttack"
+function CStateAttack:__init(_data, _mem)
+	self.data		= _data
+	self.memory		= _mem
+	self.enemy_id	= -1
+end
+
+function CStateAttack:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.enemy_id	= self.memory.enemy:id()
+end
+
+function CStateAttack:execute()
+	if(self:enemy_changed()) then
+		reset_action(self.data.npc, self.data.script_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 60000))
+	end
+end
+
+function CStateAttack:enemy_changed()
+	if(self.memory.enemy:id() ~= self.enemy_id) then
+		self.enemy_id	= self.memory.enemy:id()
+		return true
+	end
+	
+	return false
+end
+
+function CStateAttack:id()
+	return s_attack
+end
+
+function CStateAttack:finalize()
+end
+
+//----------------------------------------------------------------------------------------------------------
+// State Attack Coward
+//----------------------------------------------------------------------------------------------------------
+
+class "CStateAttackCoward" (CStateAttack)
+function CStateAttackCoward:__init(_data, _mem) super(_data, _mem)
+end
+
+function CStateAttackCoward:execute()
+	if(self:enemy_changed()) then
+		reset_action(self.data.npc, self.data.script_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, act(act.panic, self.memory.enemy), cond(cond.time_end, 60000))
+	end
+end
+
+

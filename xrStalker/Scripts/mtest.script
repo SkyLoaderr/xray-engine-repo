@@ -1,0 +1,17 @@
+module("monsterAi")
+module("manager")
+
+function main()
+	local scene	= manager.CManager()
+	
+	scene:insert(monsterai.CMonsterBase("dog", nil, stateattack.CStateAttackCoward))
+	scene:insert(monsterai.CMonsterBase("dog1", nil, stateattack.CStateAttackCoward))	
+	
+	scene:initialize()
+	
+	while(scene:execute()) do
+		wait()
+	end
+	
+	scene:finalize()
+end

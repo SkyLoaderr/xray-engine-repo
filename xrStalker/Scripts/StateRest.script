@@ -1,0 +1,79 @@
+module("StateEat")
+module("StateWalk")
+
+local s_rest	= 5
+local s_eat		= 6
+local s_walk	= 7
+
+class "CStateRest"
+function CStateRest:__init(_data, _mem, sWalk)
+	self.data	= _data
+	self.memory = _mem
+	self.stateEat	= stateeat.CStateEat(self.data, self.memory)
+	
+	if(sWalk) then
+		self.stateWalk	= statewalk.sWalk(self.data, self.memory)
+	else
+		self.stateWalk	= statewalk.CStateWalk(self.data, self.memory)
+	end
+	//написать код, который читает из кастом даты следующие : может ли монстр кушать
+	self.can_eat	= true
+	self.curState	= nil
+end
+
+function CStateRest:initialize()
+end
+
+function CStateRest:execute()
+	self:select_state()
+	self.curState:execute()
+end
+
+function CStateRest:select_state()
+	if(self.data.npc.satiety < 0.3) then
+		if(self.memory.corpse ~= nil) then 
+			self:set_state(s_eat)
+			return
+		end			
+		self:set_state(s_walk)
+	else
+		if(self.curState and self.curState:id() ~= s_eat) then
+			self:set_state(s_walk)
+		elseif(self.data.npc.satiety < 0.9) then				//Еще не наелись
+			self:set_state(s_eat)
+		else	
+			self:set_state(s_walk)
+		end
+	end
+end
+
+function CStateRest:set_state(new_state)
+	if(self.curState) then
+		if(self.curState:id() == new_state) then  return  end
+		self.curState:finalize()
+	end
+	
+	if(new_state == s_eat) then
+		self.curState	= self.stateEat
+	elseif(new_state == s_walk) then
+		self.curState	= self.stateWalk
+	else
+		printf("Eroor %d")
+	end
+
+	//if(new_state == s_eat) then
+	//	printf("corpse start id", self.memory.corpse:id())
+	//end
+	self.curState:initialize()
+end
+
+function CStateRest:id()
+	return s_rest
+end
+
+function CStateRest:finalize()
+	if(self.curState) then
+		self.curState:finalize()
+		self.curState	= nil
+	end
+end

@@ -1,0 +1,79 @@
+local s_dsound		= 3
+
+local time_update	= 5000
+local distance_run	= 30
+
+class "CStateDangerSound"
+function CStateDangerSound:__init(_data, _mem)
+	self.data		= _data
+	self.memory		= _mem
+	self.sound_time	= 0
+end
+
+function CStateDangerSound:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.sound_time	= self.memory.sound.time
+end
+
+function CStateDangerSound:execute()
+	if(self:sound_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, move(move.run_fwd, self:point_to_run(), 1, move.force), sound(sound.panic), 
+							  cond(cond.move_end))
+	end
+end
+
+function CStateDangerSound:sound_changed()
+	if(self.memory.sound.time > self.sound_time + time_update) then
+		self.sound_time	= self.memory.sound.time
+		return true
+	end
+	
+	return false
+end
+
+function CStateDangerSound:point_to_run()
+	local point = nil
+	point	= level.vertex_position( level.vertex_in_direction(self.data.npc:level_vertex_id(), self.data.npc:direction(), distance_run) )
+	if(self.data.npc:position():distance_to(point) > distance_run / 3) then
+		local pos = self.data.npc:position()
+		printf("Position [%f %f %f]   New point[%f %f %f]", pos.x, pos.y, pos.z, point.x, point.y, point.z)
+		return point
+	end
+	
+	local dir		= self.data.npc:direction()
+	local new_dir	= vector()
+	local angel		= 0.3
+	local i			= 0
+	
+	//Вращаем вектор направления и выбираем точку
+	repeat
+		new_dir.x	= dir.x * math.cos(angel) - dir.y * math.sin(angel)
+		new_dir.y	= dir.x * math.sin(angel) + dir.y * math.cos(angel)
+
+		dir			= new_dir
+		i			= i + 1
+		
+		point	= level.vertex_position( level.vertex_in_direction(self.data.npc:level_vertex_id(), self.data.npc:direction(), distance_run) )
+
+		if(self.data.npc:position():distance_to(point) > distance_run / 3) then
+			
+			return point
+		end
+		
+		if(i == 21) then						//Это сделано, для того, чтобы все таки выйти из цикла
+			distance_run	= distance_run/2
+			i				= 0
+		end
+	until(false)
+end
+
+function CStateDangerSound:id()
+	return s_dsound
+end
+
+function CStateDangerSound:finalize()
+end
