@@ -8,8 +8,6 @@ function on_enter(zone,object)
 	if event_zone_id == zone:id() and actor_id == object:id() then 
 		printf("actor entering in our zone")
 		is_actor_entered = true
-	else
-		is_actor_entered = false
 	end
 end
 
