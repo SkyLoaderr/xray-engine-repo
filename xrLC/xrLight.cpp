@@ -103,9 +103,9 @@ void CBuild::Light()
 extern BOOL	hasImplicitLighting		(Face* F);
 
 typedef	xr_multimap<float,vecVertex>	mapVert;
-typedef	mapVert::iterator			mapVertIt;
-mapVert*							g_trans;
-xrCriticalSection					g_trans_CS;
+typedef	mapVert::iterator				mapVertIt;
+mapVert*								g_trans;
+xrCriticalSection						g_trans_CS;
 
 void	g_trans_register_internal	(Vertex* V)
 {
@@ -123,7 +123,6 @@ void	g_trans_register_internal	(Vertex* V)
 	while (it!=g_trans->begin() && ((it->first+eps2)>key)) it--;
 	while (it2!=g_trans->end() && ((it2->first-eps2)<key)) it2++;
 	if (it2!=g_trans->end())	it2++;
-	// clMsg		("K:%f, L:%f, U:%f",key,it->first,it2->first);
 	
 	// Search
 	for (; it!=it2; it++)

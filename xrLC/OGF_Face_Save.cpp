@@ -44,15 +44,14 @@ D3DVERTEXELEMENT9		r2_decl			[] =	// 36
 	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
-D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 28
+D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 12+4+8	= 24
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
-	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
-	{0, 20, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	{0, 16, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
-D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 24
+D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
@@ -64,7 +63,6 @@ D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 24
 struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
-	u32			C;
 	u16			tc0x,tc0y;
 	u16			tc1x,tc1y;
 
@@ -72,8 +70,7 @@ struct  r1v_lmap	{
 	{
 		_N.normalize	();
 		P				= _P;
-		N				= u8_vec4		(_N);
-		C				= color_rgba	(0,0,0,u8_clr(_C.hemi));
+		N				= u8_vec4		(_N,u8_clr(_C.hemi));
 		tc0x			= s16_tc_base	(tc_base.x);
 		tc0y			= s16_tc_base	(tc_base.y);
 		tc1x			= s16_tc_lmap	(tc_lmap.x);
@@ -90,8 +87,8 @@ struct  r1v_vert	{
 	{
 		_N.normalize	();
 		P				= _P;
-		N				= u8_vec4		(_N,u8_clr(_C.sun));
-		C				= color_rgba	(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.hemi));
+		N				= u8_vec4		(_N,u8_clr(_C.hemi));
+		C				= color_rgba	(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.sun));
 		tc0x			= s16_tc_base	(tc_base.x);
 		tc0y			= s16_tc_base	(tc_base.y);
 	}
