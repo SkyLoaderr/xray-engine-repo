@@ -443,7 +443,7 @@ void SAnimParams::Update(float dt, float speed, bool loop)
 //.#ifdef _EDITOR
 		if (loop){ 
         	float len = max_t-min_t;
-        	float k = iFloor((t-min_t)/len);
+        	float k = float(iFloor((t-min_t)/len));
         	t	= t-k*len; 
         }
 //.		else
