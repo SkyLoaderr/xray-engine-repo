@@ -12,38 +12,38 @@ class						CActor;
 
 
 class CCar : public CEntity,
-		     public CPHObject
+	public CPHObject
 {
-static BONE_P_MAP bone_map; //interface for PhysicsShell
+	static BONE_P_MAP bone_map; //interface for PhysicsShell
 
-xr_list<CPHObject*>::iterator m_ident;
-virtual void PhDataUpdate(dReal step){};
-virtual void PhTune(dReal step);
-virtual void InitContact(dContact* c){};
-virtual void StepFrameUpdate(dReal step){};
+	xr_list<CPHObject*>::iterator m_ident;
+	virtual void PhDataUpdate(dReal step){};
+	virtual void PhTune(dReal step);
+	virtual void InitContact(dContact* c){};
+	virtual void StepFrameUpdate(dReal step){};
 public:
-bool rsp,lsp,fwp,bkp,brp;
-Fmatrix m_root_transform;
-enum eStateDrive
-{
-drive,
-neutral
-};
+	bool rsp,lsp,fwp,bkp,brp;
+	Fmatrix m_root_transform;
+	enum eStateDrive
+	{
+		drive,
+		neutral
+	};
 
-eStateDrive e_state_drive;
+	eStateDrive e_state_drive;
 
-enum eStateSteer
-{
-right,
-idle,
-left
-};
+	enum eStateSteer
+	{
+		right,
+		idle,
+		left
+	};
 
-eStateSteer e_state_steer;
-bool b_wheels_limited;
-bool b_exhausts_plaing;
-struct SWheel 
-{
+	eStateSteer e_state_steer;
+	bool b_wheels_limited;
+	bool b_exhausts_plaing;
+	struct SWheel 
+	{
 		int bone_id;
 		bool inited;
 		float radius;
@@ -57,99 +57,99 @@ struct SWheel
 			joint=NULL;
 			inited=false;
 		}
-};
-struct SWheelDrive  
-{
-	SWheel* pwheel;
-	float	pos_fvd;
-	float gear_factor;
-	void Init();
-	void Drive();
-	void Neutral();
-};
-struct SWheelSteer 
-{
-	SWheel* pwheel;
-	float pos_right;
-	float lo_limit;
-	float hi_limit;
-	float steering_velocity;
-	float steering_torque;
-	bool  limited;			//zero limited for idle steering drive
-	float GetSteerAngle()
+	};
+	struct SWheelDrive  
 	{
-		return -pos_right*dJointGetHinge2Angle1 (pwheel->joint);
-	}
-	void Init();
-	void SteerRight();
-	void SteerLeft();
-	void SteerIdle();
-	void Limit();
-};
-struct SWheelBreak 
-{
-	SWheel* pwheel;
-	float break_torque;
-	void Init();
-	void Break();
-	void Neutral();
-};
-
-struct SExhaust
-{
-	int					bone_id;
-	Fmatrix				transform;
-	CPGObject*			p_pgobject;
-	CPhysicsElement*	pelement;
-	CCar*				pcar;
-	void Init();
-	void Play();
-	void Stop();
-	void Update();
-	void Clear ();
-	SExhaust(CCar* acar)
+		SWheel* pwheel;
+		float	pos_fvd;
+		float gear_factor;
+		void Init();
+		void Drive();
+		void Neutral();
+	};
+	struct SWheelSteer 
 	{
-		bone_id=-1;
-		pcar=acar;
-		p_pgobject=NULL;
-		pelement=NULL;
-	}
-	~SExhaust();
-};
-struct SDoor;
-struct SDoor 
-{
-int bone_id;
-CCar* pcar;
-xr_list<SDoor>::iterator list_iterator;
-CPhysicsJoint* joint;
-float			torque;
-float			a_vel;
-float			pos_open;
-void Use();
-void Init();
-void Open();
-void Close();
-void Update();
-enum eState
-{
-opening,
-closing,
-opened,
-closed
-};
-eState state;
-SDoor(CCar* acar)
-{
-	bone_id=-1;
-	pcar=acar;
-	joint=NULL;
-	state=closed;
-	torque=100.f;
-	a_vel=M_PI;
-}
+		SWheel* pwheel;
+		float pos_right;
+		float lo_limit;
+		float hi_limit;
+		float steering_velocity;
+		float steering_torque;
+		bool  limited;			//zero limited for idle steering drive
+		float GetSteerAngle()
+		{
+			return -pos_right*dJointGetHinge2Angle1 (pwheel->joint);
+		}
+		void Init();
+		void SteerRight();
+		void SteerLeft();
+		void SteerIdle();
+		void Limit();
+	};
+	struct SWheelBreak 
+	{
+		SWheel* pwheel;
+		float break_torque;
+		void Init();
+		void Break();
+		void Neutral();
+	};
 
-};
+	struct SExhaust
+	{
+		int					bone_id;
+		Fmatrix				transform;
+		CPGObject*			p_pgobject;
+		CPhysicsElement*	pelement;
+		CCar*				pcar;
+		void Init();
+		void Play();
+		void Stop();
+		void Update();
+		void Clear ();
+		SExhaust(CCar* acar)
+		{
+			bone_id=-1;
+			pcar=acar;
+			p_pgobject=NULL;
+			pelement=NULL;
+		}
+		~SExhaust();
+	};
+	struct SDoor;
+	struct SDoor 
+	{
+		int bone_id;
+		CCar* pcar;
+		xr_list<SDoor>::iterator list_iterator;
+		CPhysicsJoint* joint;
+		float			torque;
+		float			a_vel;
+		float			pos_open;
+		void Use();
+		void Init();
+		void Open();
+		void Close();
+		void Update();
+		enum eState
+		{
+			opening,
+			closing,
+			opened,
+			closed
+		};
+		eState state;
+		SDoor(CCar* acar)
+		{
+			bone_id=-1;
+			pcar=acar;
+			joint=NULL;
+			state=closed;
+			torque=100.f;
+			a_vel=M_PI;
+		}
+
+	};
 private:
 	typedef CEntity			inherited;
 private:
@@ -159,75 +159,75 @@ private:
 	CCameraBase*			active_camera;
 	CActor*					m_owner;
 	Fvector					m_vCamDeltaHP;
-////////////////////////////////////////////////////
-friend struct SWheel;
-friend struct SDoor;
+	////////////////////////////////////////////////////
+	friend struct SWheel;
+	friend struct SDoor;
 
-xr_map   <int,SWheel>	m_wheels_map;
-xr_vector <SWheelDrive> m_driving_wheels;
-xr_vector <SWheelSteer> m_steering_wheels;
-xr_vector <SWheelBreak> m_breaking_wheels;
-xr_vector <SExhaust>	m_exhausts;
-xr_map	  <int,SDoor>	m_doors;
-xr_list	  <SDoor>		m_doors_update;
-xr_list   <SDoor>		m_doors_opened;
-xr_vector <float>		m_gear_ratious;
-xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
-float					m_current_gear_ratio;
-float					m_power;
-float					m_axle_friction;
-float					m_max_rpm;
-float					m_min_rpm;
-float					m_idling_rpm;
-float					m_steering_speed;
-float					m_ref_radius;
-float					m_break_torque;
-size_t					m_current_transmission_num;
+	xr_map   <int,SWheel>	m_wheels_map;
+	xr_vector <SWheelDrive> m_driving_wheels;
+	xr_vector <SWheelSteer> m_steering_wheels;
+	xr_vector <SWheelBreak> m_breaking_wheels;
+	xr_vector <SExhaust>	m_exhausts;
+	xr_map	  <int,SDoor>	m_doors;
+	xr_list	  <SDoor>		m_doors_update;
+	xr_list   <SDoor>		m_doors_opened;
+	xr_vector <float>		m_gear_ratious;
+	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
+	float					m_current_gear_ratio;
+	float					m_power;
+	float					m_axle_friction;
+	float					m_max_rpm;
+	float					m_min_rpm;
+	float					m_idling_rpm;
+	float					m_steering_speed;
+	float					m_ref_radius;
+	float					m_break_torque;
+	size_t					m_current_transmission_num;
 
-////////////////////////////////////////////////////
-float GetSteerAngle();
-void LimitWheels();
-void Drive();
+	////////////////////////////////////////////////////
+	float GetSteerAngle();
+	void LimitWheels();
+	void Drive();
 
-void NeutralDrive();
-void SteerRight();
-void SteerLeft();
-void SteerIdle();
-void Transmision(size_t num);
-void CircleSwitchTransmission();
-void PressRight();
-void PressLeft();
-void PressForward();
-void PressBack();
-void PressBreaks();
+	void NeutralDrive();
+	void SteerRight();
+	void SteerLeft();
+	void SteerIdle();
+	void Transmision(size_t num);
+	void CircleSwitchTransmission();
+	void PressRight();
+	void PressLeft();
+	void PressForward();
+	void PressBack();
+	void PressBreaks();
 
-void ReleaseRight();
-void ReleaseLeft();
-void ReleaseForward();
-void ReleaseBack();
-void ReleaseBreaks();
+	void ReleaseRight();
+	void ReleaseLeft();
+	void ReleaseForward();
+	void ReleaseBack();
+	void ReleaseBreaks();
 
-void Revert();
-void Break();
-void Unbreak();
-void ParseDefinitions				();
-void CreateSkeleton					();//creates m_pPhysicsShell
-void InitWheels						();
+	void Revert();
+	void Break();
+	void Unbreak();
+	void ParseDefinitions				();
+	void CreateSkeleton					();//creates m_pPhysicsShell
+	void InitWheels						();
 
-void PlayExhausts					();
-void StopExhausts					();
-void UpdateExhausts					();
-void ClearExhausts					();
-////////////////////////////////////////////////////
+	void PlayExhausts					();
+	void StopExhausts					();
+	void UpdateExhausts					();
+	void ClearExhausts					();
+	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
-	
+
 
 
 	ref_sound					snd_engine;
 
 	bool					HUDview				( ) { return IsFocused(); }
-	
+
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse);
 public:
@@ -246,7 +246,7 @@ public:
 #endif
 
 	virtual void			renderable_Render			( ); 
-	
+
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server
 	virtual void			net_Import			(NET_Packet& P);				// import from server
@@ -290,7 +290,7 @@ private:
 			{
 				bone_map.insert(mk_pair(bone_id,physicsBone()));
 
-				
+
 				SWheel& wheel			=	(m_wheels_map.insert(mk_pair(bone_id,SWheel(this)))).first->second;
 				wheel.bone_id			=	bone_id;
 				twheel.pwheel			=	&wheel;
@@ -315,7 +315,7 @@ private:
 			exhausts.push_back		(SExhaust(this));
 			SExhaust& exhaust				= exhausts.back();
 			exhaust.bone_id						= bone_id;
-			
+
 			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
 			if (J == bone_map.end()) 
 			{

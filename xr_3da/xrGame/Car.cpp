@@ -62,7 +62,7 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
 	Fmatrix m;
 	m.rotateZ(C->m_steering_wheels.begin()->GetSteerAngle());
-	
+
 	B->mTransform.mulB	(m);
 }
 
@@ -127,7 +127,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	m_ident=ph_world->AddObject(dynamic_cast<CPHObject*>(this));
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
-	
+
 	return R;
 }
 
@@ -368,7 +368,7 @@ bool CCar::attach_Actor(CActor* actor)
 {
 	if(m_owner) return false;
 	m_owner=actor;
-	
+
 	CKinematics* K= PKinematics(Visual());
 	CInifile* ini = K->LL_UserData();
 	int id;
@@ -411,14 +411,14 @@ void CCar::ParseDefinitions()
 	CInifile* ini = pKinematics->LL_UserData();
 	if(! ini) return;
 
-///////////////////////////car definition///////////////////////////////////////////////////
+	///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
 	fill_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
 	//fill_exhaust_vector			(ini->r_string	("car_definition","exhausts"),m_exhausts);
 	fill_doors_map				(ini->r_string	("car_definition","doors"),m_doors);
 
-///////////////////////////car properties///////////////////////////////
+	///////////////////////////car properties///////////////////////////////
 	m_power				=		ini->r_float("car_definition","engine_power");
 	m_power				*=		(0.8f*1000.f);
 	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
@@ -429,17 +429,17 @@ void CCar::ParseDefinitions()
 	m_steering_speed	=		ini->r_float("car_definition","steering_speed");
 	m_break_torque		=		ini->r_float("car_definition","break_torque");
 
-/////////////////////////transmission////////////////////////////////////////////////////////////////////////
+	/////////////////////////transmission////////////////////////////////////////////////////////////////////////
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
 	m_gear_ratious.push_back(-ini->r_float("transmission_gear_ratio","R"));
 	string32 rat_num;
 	for(int i=1;true;i++)
 	{
-	sprintf(rat_num,"N%d",i);
-	if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
-	m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
+		sprintf(rat_num,"N%d",i);
+		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
+		m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
 	}
-///////////////////////////////steer/////////////////////////////////////////////////////////////////
+	///////////////////////////////steer/////////////////////////////////////////////////////////////////
 
 
 
@@ -465,58 +465,58 @@ void CCar::CreateSkeleton()
 
 void CCar::InitWheels()
 {
-//get reference wheel radius
-CKinematics* pKinematics=PKinematics(Visual());
-CInifile* ini = pKinematics->LL_UserData();
-SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
-if(ini->line_exist("car_definition","steer"))
-	pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
-ref_wheel.Init();
-m_ref_radius=ref_wheel.radius;
-m_power/=m_driving_wheels.size();
-m_root_transform.set(bone_map.find(0)->second.element->mXFORM);
-m_current_transmission_num=0;
-m_pPhysicsShell->set_DynamicScales(1.f,1.f);
+	//get reference wheel radius
+	CKinematics* pKinematics=PKinematics(Visual());
+	CInifile* ini = pKinematics->LL_UserData();
+	SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+	if(ini->line_exist("car_definition","steer"))
+		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
+	ref_wheel.Init();
+	m_ref_radius=ref_wheel.radius;
+	m_power/=m_driving_wheels.size();
+	m_root_transform.set(bone_map.find(0)->second.element->mXFORM);
+	m_current_transmission_num=0;
+	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
-{
-	xr_map<int,SWheel>::iterator i,e;
-	i=m_wheels_map.begin();
-	e=m_wheels_map.end();
-	for(;i!=e;i++)
-		i->second.Init();
-}
+	{
+		xr_map<int,SWheel>::iterator i,e;
+		i=m_wheels_map.begin();
+		e=m_wheels_map.end();
+		for(;i!=e;i++)
+			i->second.Init();
+	}
 
-{
-xr_vector<SWheelDrive>::iterator i,e;
-i=m_driving_wheels.begin();
-e=m_driving_wheels.end();
-for(;i!=e;i++)
-i->Init();
-}
+	{
+		xr_vector<SWheelDrive>::iterator i,e;
+		i=m_driving_wheels.begin();
+		e=m_driving_wheels.end();
+		for(;i!=e;i++)
+			i->Init();
+	}
 
-{
-	xr_vector<SWheelBreak>::iterator i,e;
-	i=m_breaking_wheels.begin();
-	e=m_breaking_wheels.end();
-	for(;i!=e;i++)
-		i->Init();
-}
+	{
+		xr_vector<SWheelBreak>::iterator i,e;
+		i=m_breaking_wheels.begin();
+		e=m_breaking_wheels.end();
+		for(;i!=e;i++)
+			i->Init();
+	}
 
-{
-	xr_vector<SWheelSteer>::iterator i,e;
-	i=m_steering_wheels.begin();
-	e=m_steering_wheels.end();
-	for(;i!=e;i++)
-		i->Init();
-}
+	{
+		xr_vector<SWheelSteer>::iterator i,e;
+		i=m_steering_wheels.begin();
+		e=m_steering_wheels.end();
+		for(;i!=e;i++)
+			i->Init();
+	}
 
-{
-	xr_vector<SExhaust>::iterator i,e;
-	i=m_exhausts.begin();
-	e=m_exhausts.end();
-	for(;i!=e;i++)
-		i->Init();
-}
+	{
+		xr_vector<SExhaust>::iterator i,e;
+		i=m_exhausts.begin();
+		e=m_exhausts.end();
+		for(;i!=e;i++)
+			i->Init();
+	}
 }
 
 void CCar::Revert()
@@ -536,7 +536,7 @@ void CCar::NeutralDrive()
 	e=m_driving_wheels.end();
 	for(;i!=e;i++)
 		i->Neutral();
-		e_state_drive=neutral;
+	e_state_drive=neutral;
 }
 void CCar::Unbreak()
 {
@@ -558,7 +558,7 @@ void CCar::Drive()
 	for(;i!=e;i++)
 		i->Drive();
 	e_state_drive=drive;
-	
+
 }
 
 void CCar::SteerRight()
@@ -680,15 +680,15 @@ void CCar::ReleaseLeft()
 }
 void CCar::ReleaseForward()
 {
-if(bkp)
-{
-	Transmision(0);
-	Drive();
-}
-else
-	NeutralDrive();
+	if(bkp)
+	{
+		Transmision(0);
+		Drive();
+	}
+	else
+		NeutralDrive();
 
-fwp=false;
+	fwp=false;
 }
 void CCar::ReleaseBack()
 {
@@ -711,20 +711,20 @@ void CCar::ReleaseBreaks()
 
 void CCar::Transmision(size_t num)
 {
-if(num<m_gear_ratious.size())
-{
-m_current_transmission_num=num;
-m_current_gear_ratio=m_gear_ratious[num];
-}
+	if(num<m_gear_ratious.size())
+	{
+		m_current_transmission_num=num;
+		m_current_gear_ratio=m_gear_ratious[num];
+	}
 }
 void CCar::CircleSwitchTransmission()
 {
-if(m_current_transmission_num==0)return;
-m_current_transmission_num++;
-m_current_transmission_num=m_current_transmission_num%m_gear_ratious.size();
-m_current_transmission_num==0 ? m_current_transmission_num++ : m_current_transmission_num;
-Transmision(m_current_transmission_num);
-Drive();
+	if(m_current_transmission_num==0)return;
+	m_current_transmission_num++;
+	m_current_transmission_num=m_current_transmission_num%m_gear_ratious.size();
+	m_current_transmission_num==0 ? m_current_transmission_num++ : m_current_transmission_num;
+	Transmision(m_current_transmission_num);
+	Drive();
 }
 void CCar::PhTune(dReal step)
 {
@@ -750,7 +750,7 @@ void CCar::StopExhausts()
 	i=m_exhausts.begin();
 	e=m_exhausts.end();
 	for(;i!=e;i++)
-			i->Stop();
+		i->Stop();
 	b_exhausts_plaing=false;
 }
 
@@ -775,23 +775,23 @@ void CCar::ClearExhausts()
 
 void CCar::SWheel::Init()
 {
-if(inited) return;
-(bone_map.find(bone_id))->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
-radius=(bone_map.find(bone_id))->second.element->getRadius();
-joint=(bone_map.find(bone_id))->second.joint->GetDJoint();
-dJointSetHinge2Param(joint, dParamFMax2,0.f);//car->m_axle_friction
-dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	if(inited) return;
+	(bone_map.find(bone_id))->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
+	radius=(bone_map.find(bone_id))->second.element->getRadius();
+	joint=(bone_map.find(bone_id))->second.joint->GetDJoint();
+	dJointSetHinge2Param(joint, dParamFMax2,0.f);//car->m_axle_friction
+	dJointSetHinge2Param(joint, dParamVel2, 0.f);
 }
 
 
 
 void CCar::SWheelDrive::Init()
 {
-pwheel->Init();
-gear_factor=pwheel->radius/pwheel->car->m_ref_radius;
-CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
-switch(bone_data.IK_data.type)
-{
+	pwheel->Init();
+	gear_factor=pwheel->radius/pwheel->car->m_ref_radius;
+	CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
+	switch(bone_data.IK_data.type)
+	{
 	case jtWheelXZ:	
 	case jtWheelYZ:
 		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.i);
@@ -805,53 +805,53 @@ switch(bone_data.IK_data.type)
 		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.i);
 		break;
 	default: NODEFAULT;
-}
+	}
 
-pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
+	pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
 
 
 }
 void CCar::SWheelDrive::Drive()
 {
-float cur_speed=pwheel->car->m_max_rpm/gear_factor/pwheel->car->m_current_gear_ratio;
-dJointSetHinge2Param(pwheel->joint, dParamVel2, pos_fvd*cur_speed);
-(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
-dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_power/cur_speed);
+	float cur_speed=pwheel->car->m_max_rpm/gear_factor/pwheel->car->m_current_gear_ratio;
+	dJointSetHinge2Param(pwheel->joint, dParamVel2, pos_fvd*cur_speed);
+	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_power/cur_speed);
 
 }
 
 void CCar::SWheelDrive::Neutral()
 {
-dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_axle_friction);
-dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_axle_friction);
+	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
 }
 
 void CCar::SWheelSteer::Init()
 {
-pwheel->Init();
-(bone_map.find(pwheel->bone_id))->second.joint->GetLimits(lo_limit,hi_limit,0);
-CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
-switch(bone_data.IK_data.type)
-{
-case jtWheelXZ:	
-case jtWheelXY:
-	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
-	break;
-case jtWheelYZ:	
-case jtWheelYX:
-	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.dotproduct(pwheel->car->m_root_transform.j);
-	break;
-case jtWheelZY:	
-case jtWheelZX:
-	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.j);
-	break;
-default: NODEFAULT;
-}
+	pwheel->Init();
+	(bone_map.find(pwheel->bone_id))->second.joint->GetLimits(lo_limit,hi_limit,0);
+	CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
+	switch(bone_data.IK_data.type)
+	{
+	case jtWheelXZ:	
+	case jtWheelXY:
+		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+		break;
+	case jtWheelYZ:	
+	case jtWheelYX:
+		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.dotproduct(pwheel->car->m_root_transform.j);
+		break;
+	case jtWheelZY:	
+	case jtWheelZX:
+		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.j);
+		break;
+	default: NODEFAULT;
+	}
 
-pos_right=pos_right>0.f ? -1.f : 1.f;
-dJointSetHinge2Param(pwheel->joint, dParamFMax, 1000.f);
-dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
-limited=false;
+	pos_right=pos_right>0.f ? -1.f : 1.f;
+	dJointSetHinge2Param(pwheel->joint, dParamFMax, 1000.f);
+	dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
+	limited=false;
 }
 
 void CCar::SWheelSteer::SteerRight()
@@ -859,15 +859,15 @@ void CCar::SWheelSteer::SteerRight()
 	limited=true;						//no need to limit wheels when steering
 	if(pos_right>0)
 	{
-	
-	dJointSetHinge2Param(pwheel->joint, dParamHiStop, hi_limit);
-	dJointSetHinge2Param(pwheel->joint, dParamVel, pwheel->car->m_steering_speed);
+
+		dJointSetHinge2Param(pwheel->joint, dParamHiStop, hi_limit);
+		dJointSetHinge2Param(pwheel->joint, dParamVel, pwheel->car->m_steering_speed);
 
 	}
 	else
 	{
-	dJointSetHinge2Param(pwheel->joint, dParamLoStop, lo_limit);
-	dJointSetHinge2Param(pwheel->joint, dParamVel, -pwheel->car->m_steering_speed);
+		dJointSetHinge2Param(pwheel->joint, dParamLoStop, lo_limit);
+		dJointSetHinge2Param(pwheel->joint, dParamVel, -pwheel->car->m_steering_speed);
 	}
 }
 void CCar::SWheelSteer::SteerLeft()
@@ -919,29 +919,29 @@ void CCar::SWheelSteer::SteerIdle()
 			dJointSetHinge2Param(pwheel->joint, dParamVel, -pwheel->car->m_steering_speed);
 		}
 	}
-	
+
 }
 
 void CCar::SWheelSteer::Limit()
 {
-if(!limited)
-{
-	dJointID joint=pwheel->joint;
-	dReal angle = dJointGetHinge2Angle1(joint);
-	if(dFabs(angle)<M_PI/180.f)
+	if(!limited)
 	{
-		dJointSetHinge2Param(joint, dParamHiStop, 0);
-		dJointSetHinge2Param(joint, dParamLoStop, 0);///
-		dJointSetHinge2Param(joint, dParamVel, 0);
-		limited=true;
+		dJointID joint=pwheel->joint;
+		dReal angle = dJointGetHinge2Angle1(joint);
+		if(dFabs(angle)<M_PI/180.f)
+		{
+			dJointSetHinge2Param(joint, dParamHiStop, 0);
+			dJointSetHinge2Param(joint, dParamLoStop, 0);///
+			dJointSetHinge2Param(joint, dParamVel, 0);
+			limited=true;
+		}
 	}
-}
-pwheel->car->b_wheels_limited=pwheel->car->b_wheels_limited&&limited;
+	pwheel->car->b_wheels_limited=pwheel->car->b_wheels_limited&&limited;
 }
 void CCar::SWheelBreak::Init()
 {
-pwheel->Init();
-break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
+	pwheel->Init();
+	break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
 
 }
 
@@ -1020,29 +1020,29 @@ void CCar::SDoor::Init()
 void CCar::SDoor::Open()
 {
 
-if(!joint)
-{
-	state=opened;
-
-	return;
-}
-
-
-if(state!=closing)
+	if(!joint)
 	{
-	pcar->m_doors_update.push_back(*this);
-	list_iterator=(--pcar->m_doors_update.end());
+		state=opened;
+
+		return;
 	}
-else
+
+
+	if(state!=closing)
 	{
-	
-	joint->PSecond_element();
-	joint->Activate();
+		pcar->m_doors_update.push_back(*this);
+		list_iterator=(--pcar->m_doors_update.end());
+	}
+	else
+	{
+
+		joint->PSecond_element();
+		joint->Activate();
 
 	}
-state=opening;
-dJointSetHingeParam(joint->GetDJoint(),dParamFMax,torque);
-dJointSetHingeParam(joint->GetDJoint(),dParamVel,a_vel*pos_open);
+	state=opening;
+	dJointSetHingeParam(joint->GetDJoint(),dParamFMax,torque);
+	dJointSetHingeParam(joint->GetDJoint(),dParamVel,a_vel*pos_open);
 }
 
 void CCar::SDoor::Close()
@@ -1062,15 +1062,15 @@ void CCar::SDoor::Update()
 
 void CCar::SDoor::Use()
 {
-switch(state) {
+	switch(state) {
 case opened:
 case opening: 
-	 Close();
+	Close();
 	break;
 case closed: 
 case closing:
-	 Open();
+	Open();
 	break;
 default:	return;
-}
+	}
 }
