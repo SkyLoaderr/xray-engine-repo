@@ -16,7 +16,6 @@ class CUIWeapon
 	ref_shader		cur_shader;
 public:
 					CUIWeapon		();
-#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 					~CUIWeapon		();
 	void			Render			();
 	void			Out				(CWeapon* wpn);

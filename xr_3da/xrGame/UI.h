@@ -54,7 +54,6 @@ struct SUIMessage
 		life_time	= iFloor	(lt*1000);
 		color		= clr;
 	}
-#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 	~SUIMessage()
 	{
 		xr_free(sender);

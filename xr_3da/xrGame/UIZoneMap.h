@@ -29,7 +29,6 @@ class CUIZoneMap
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
 public:
 					CUIZoneMap		();
-#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 					~CUIZoneMap		();
 	void			Render			();
 	void			SetHeading		(float angle);
