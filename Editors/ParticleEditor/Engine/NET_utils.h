@@ -138,21 +138,21 @@ public:
 	IC void		r_u8			(u8&  A)		{ r(&A,1);						} // byte (1b)
 	IC void		r_s8			(s8&  A)		{ r(&A,1);						} // byte (1b)
 	
-	IC void		r_float_q16		(float& A, float min, float max)
+	IC void		r_float_q16		(float& A, float min, float max, BOOL h_error=FALSE)
 	{
-		u16			val;
-		r_u16		(val);
-		float h_err	= ((max-min)/65535.f)/2.f;
-		A			= (float(val)/65535.f)*(max-min) + min + h_err;
-		VERIFY		(A>=min && A<=max);
+		u16				val;
+		r_u16			(val);
+		A				= (float(val)/65535.f)*(max-min) + min;
+		VERIFY			(A>=min && A<=max);
+		if (h_error)	A += ((max-min)/65535.f)/2.f;
 	}
-	IC void		r_float_q8		(float& A, float min, float max)
+	IC void		r_float_q8		(float& A, float min, float max, BOOL h_error=FALSE)
 	{
-		u8			val;
-		r_u8		(val);
-		float h_err	= ((max-min)/255.f)/2.f;
-		A			= (float(val)/255.f)*(max-min) + min + h_err;
-		VERIFY		(A>=min && A<=max);
+		u8				val;
+		r_u8			(val);
+		A				= (float(val)/255.f)*(max-min) + min;
+		VERIFY			(A>=min && A<=max);
+		if (h_error)	A += ((max-min)/255.f)/2.f;
 	}
 	IC void		r_angle16		(float& A)		{ r_float_q16	(A,0,PI_MUL_2);	}
 	IC void		r_angle8		(float& A)		{ r_float_q8	(A,0,PI_MUL_2);	}
