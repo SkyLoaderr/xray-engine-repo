@@ -120,7 +120,7 @@
 		
 		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
 		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
-			<animation anim="fade" period="1" cyclic="0"></animation>
+			<animation anim="fade" period="10" cyclic="0"></animation>
 		</phrase>
 	</money_mt_static>
 
