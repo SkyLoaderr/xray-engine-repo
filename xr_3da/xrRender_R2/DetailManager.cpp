@@ -191,8 +191,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
 
 			// Calc fade factor	(for slot)
-			float	dist_sq		= EYE.distance_to_sqr(S.vis.sphere.P);
-			if		(dist_sq>fade_limit)	continue;
+			float	dist_sq		= EYE.distance_to_sqr	(S.vis.sphere.P);
+			if		(dist_sq>fade_limit)				continue;
 			float	alpha		= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 			float	alpha_i		= 1.f - alpha;
 			float	dist_sq_rcp	= 1.f / dist_sq;
