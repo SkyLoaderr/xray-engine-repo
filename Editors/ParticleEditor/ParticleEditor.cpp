@@ -23,6 +23,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     	Core._initialize		("particle",ELogCallback);
 
         Application->Initialize	();
+        Application->Icon		= frmSplash->Icon;
                                        
         frmSplash->SetStatus	("Loading...");
 

@@ -70,16 +70,19 @@ bool __fastcall PS::CPEDef::FindActionByName(LPCSTR new_name)
     return false;
 }
 
+IC __fastcall void PS::CPEDef::FillActionList(ChooseItemVec& items)
+{
+    for(int i=0; actions_token[i].name; i++)
+        items.push_back(SChooseItem(actions_token[i].name,actions_token[i].info));
+}
+
 void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0:{
-    	ChooseItemVec	items;
-        for(int i=0; actions_token[i].name; i++)
-        	items.push_back(SChooseItem(actions_token[i].name,actions_token[i].info));
     	LPCSTR 		nm;
-	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,&items)&&nm){
+	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,FillActionList)&&nm){
             for(int i=0; actions_token[i].name; i++){
                 if (0==strcmp(actions_token[i].name,nm)){
                     EParticleAction* A = pCreateEAction(actions_token[i].id);
