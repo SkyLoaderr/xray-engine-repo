@@ -69,6 +69,7 @@ void	CBlender::Load(	CStream& FS )
 #include "blender_vertex.h"
 #include "blender_vertex_aref.h"
 #include "blender_screen_set.h"
+#include "blender_screen_gray.h"
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
@@ -78,6 +79,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_VERT:			return new CBlender_Vertex;			break;
 	case B_VERT_AREF:		return new CBlender_Vertex_aref;	break;
 	case B_SCREEN_SET:		return new CBlender_Screen_SET;		break;
+	case B_SCREEN_GRAY:		return new CBlender_Screen_GRAY;	break;
 	default:				return 0;
 	}
 }
@@ -89,4 +91,5 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_VERT));
 	palette.push_back(Create(B_VERT_AREF));
 	palette.push_back(Create(B_SCREEN_SET));
+	palette.push_back(Create(B_SCREEN_GRAY));
 }
