@@ -46,7 +46,7 @@ function action_move:execute ()
     action_base.execute (self)
 end    
 ----------------------
-function action_base:finalize ()
+function action_move:finalize ()
     action_base.finalize (self)
 end
 ----------------------------------------------------------------------------------------------------------------------
