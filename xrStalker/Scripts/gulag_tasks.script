@@ -21,276 +21,11 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
-	if type == "gar_bandits" then
-		t = { section = "walker1@gar_bandits",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker2@gar_bandits",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker3@gar_bandits",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_bandits",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_bandits",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_bandits",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_bandits",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_bandits",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker1@gar_bandits_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker2@gar_bandits_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker3@gar_bandits_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker4@gar_bandits_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker5@gar_bandits_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-	end
-	if type == "gar_stalkers" then
-		t = { section = "walker1@gar_stalkers",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker2@gar_stalkers",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker3@gar_stalkers",
-			idle = 0,
-			prior = 3, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_stalkers",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-		t = { section = "kamp1@gar_stalkers",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_stalkers",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_stalkers",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_stalkers",
-			idle = 0,
-			prior = 1, state = {0,1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker1@gar_stalkers_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker2@gar_stalkers_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker3@gar_stalkers_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker4@gar_stalkers_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "walker5@gar_stalkers_attack",
-			idle = 0,
-			prior = 5, state = {1},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-	end
-----------------------------------------------------------------------------	
--- Garbage DOLG blockpost	
-----------------------------------------------------------------------------	
-	if type == "gar_dolg" then
-		t = { section = "walker1@gar_dolg",
-			idle = 0,
-			prior = 3, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)		
-		t = { section = "walker2@gar_dolg",
-			idle = 0,
-			prior = 3, state = {1},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)		
-		t = { section = "walker3@gar_dolg",
-			idle = 0,
-			prior = 3, state = {1},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)		
-		t = { section = "kamp1@gar_dolg",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)
-		t = { section = "kamp1@gar_dolg",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_dolg",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_dolg",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)				
-		t = { section = "kamp1@gar_dolg",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg"
-		}
-		table.insert(sj, t)		
-		t = { section = "patrol1@gar_dolg",
-			idle = 2 * 1000 * 60 * 60,
-			prior = 8, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		t = { section = "follower1@gar_dolg",
-			idle = 2 * 1000 * 60 * 60,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = "",
-			leader = "patrol1@gar_dolg"
-		}
-		table.insert(sj, t)		
-		t = { section = "follower1@gar_dolg",
-			idle = 2 * 1000 * 60 * 60,
-			prior = 4, state = {0},
-			in_rest = "", out_rest = "",
-			leader = "patrol1@gar_dolg"
-		}
-		table.insert(sj, t)		
-		t = { section = "zoneguard1@gar_dolg",
-			idle = 0,
-			prior = 10, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		
-		
-    end	    
-----------------------------------------------------------------------------	
--- Garbage DOLG blockpost end
-----------------------------------------------------------------------------	
-	
-	
-	if type == "blockpost" then
-		--t = { section = "patrol1@blockpost",
-			--idle = 2 * 1000 * 60 * 60,
-			--prior = 4, state = {0},
-			--in_rest = "", out_rest = ""
-		--}
-		--table.insert(sj, t)		
-		--t = { section = "follower1@blockpost",
-			--idle = 2 * 1000 * 60 * 60,
-			--prior = 4, state = {0},
-			--in_rest = "", out_rest = "",
-			--leader = self:nameStalker(patrol1@blockpost)
-		--}
-		--table.insert(sj, t)		
-	end
 
-	if type == "test1" then
-		t = { section = "sleeper@test1",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)
-	end
-
+--'--------------------------------------------------------------------------	
+--' ESCAPE
+--'--------------------------------------------------------------------------	
+	--' Escape novice camp
 	if type == "esc_lager" then
 		-- Волк
 		t = { section = "walker@esc_lager_wolf",
@@ -376,7 +111,7 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
-
+	--' Бандиты на фабрике
 	if type == "esc_fabrika_bandit" then
 		-- снайпер, охраняющий лестницу на чердак
 		t = { section = "camper@esc_fabrika_bandit",
@@ -437,6 +172,257 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
+
+--'--------------------------------------------------------------------------	
+--' GARBAGE
+--'--------------------------------------------------------------------------	
+	--' Garbage bandits
+	if type == "gar_bandits" then
+		t = { section = "walker1@gar_bandits",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_bandits",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_bandits",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_bandits",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker1@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker4@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker5@gar_bandits_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+	end
+	--' Garbage stalkers
+	if type == "gar_stalkers" then
+		t = { section = "walker1@gar_stalkers",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_stalkers",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_stalkers",
+			idle = 0,
+			prior = 3, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_stalkers",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "kamp1@gar_stalkers",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_stalkers",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_stalkers",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_stalkers",
+			idle = 0,
+			prior = 1, state = {0,1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker1@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker4@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker5@gar_stalkers_attack",
+			idle = 0,
+			prior = 5, state = {1},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+	end
+	--' Garbage DOLG blockpost	
+	if type == "gar_dolg" then
+		t = { section = "walker1@gar_dolg",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_dolg",
+			idle = 0,
+			prior = 3, state = {1},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_dolg",
+			idle = 0,
+			prior = 3, state = {1},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "patrol1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "follower1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 4, state = {0},
+			in_rest = "", out_rest = "",
+			leader = "patrol1@gar_dolg"
+		}
+		table.insert(sj, t)		
+		t = { section = "follower1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 4, state = {0},
+			in_rest = "", out_rest = "",
+			leader = "patrol1@gar_dolg"
+		}
+		table.insert(sj, t)		
+		t = { section = "zoneguard1@gar_dolg",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		
+    end	    
+
+
+--'--------------------------------------------------------------------------	
+--' AGROPROM
+--'--------------------------------------------------------------------------	
+
 end
 
 function loadStates(gname, type)
