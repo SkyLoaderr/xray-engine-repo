@@ -33,8 +33,6 @@ void CAI_Chimera::reinit()
 
 	cur_anim	= 0;
 
-	TTelekinesis::InitExtern(this, 3.f, 1.5f, 10000);
-
 	CChimeraMovementManager::reinit();
 }
 
@@ -91,8 +89,6 @@ void CAI_Chimera::net_Destroy()
 void CAI_Chimera::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-
-	TTelekinesis::UpdateSched();
 
 	m_pPhysics_support->in_shedule_Update(dt);
 }
@@ -239,17 +235,6 @@ void CAI_Chimera::net_Import(NET_Packet& P)
 	}
 
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Phisics cheating
-//////////////////////////////////////////////////////////////////////////
-void CAI_Chimera::PhDataUpdate(dReal step)
-{
-	TTelekinesis::UpdateCL(step);	
-
-	//Msg("ph_data_update...");
-}
-
 
 
 

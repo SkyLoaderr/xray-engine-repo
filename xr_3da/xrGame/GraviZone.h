@@ -10,12 +10,11 @@
 #include "ai/telekinesis.h"
 
 class CGraviZone : public CCustomZone,
-				   public CPHUpdateObject,
-				   public CTelekinesis<CGraviZone>
+				   public CTelekinesis
 {
 private:
 	typedef		CCustomZone					inherited;
-	typedef		CTelekinesis<CGraviZone>	TTelekinesis;
+	typedef		CTelekinesis				TTelekinesis;
 public:
 	CGraviZone(void);
 	virtual ~CGraviZone(void);
@@ -25,9 +24,6 @@ public:
 
 	//воздействие зоной на объект
 	virtual void	Affect(CObject* O);
-
-	virtual void 	PhDataUpdate		(dReal step);
-	virtual void 	PhTune				(dReal step) {}
 
 	virtual void	shedule_Update		(u32 dt);
 };

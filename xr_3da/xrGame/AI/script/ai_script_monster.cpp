@@ -354,6 +354,10 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	CScriptSoundAction	&l_tSoundAction = tpEntityAction->m_tSoundAction;
 	if (l_tSoundAction.m_bCompleted)
 		return		(false);
+	
+	if (l_tSoundAction.m_monster_sound != MonsterSpace::eMonsterSoundDummy) return true;
+
+
 	if (m_current_sound) {
 		if (!m_current_sound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {

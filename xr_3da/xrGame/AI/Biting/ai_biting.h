@@ -13,12 +13,13 @@
 #include "../ai_monster_shared_data.h"
 #include "../ai_monster_movement.h"
 
-#include "../monster_vision_memory.h"
+#include "../monster_enemy_memory.h"
 #include "../monster_corpse_memory.h"
 #include "../monster_sound_memory.h"
 #include "../monster_hit_memory.h"
-#include "../monster_enemy_manager.h"
 
+#include "../monster_enemy_manager.h"
+#include "../monster_corpse_manager.h"
 
 
 #include "ai_biting_state.h"
@@ -136,6 +137,7 @@ public:
 	virtual	bool			bfAssignWatch					(CEntityAction	*tpEntityAction);
 	virtual bool			bfAssignAnimation				(CEntityAction  *tpEntityAction);
 	virtual	bool			bfAssignMonsterAction			(CEntityAction	*tpEntityAction);
+	virtual bool			bfAssignSound					(CEntityAction *tpEntityAction);
 	
 	virtual void			ProcessScripts					();
 
@@ -252,9 +254,11 @@ public:
 	
 	CMonsterEnemyMemory		EnemyMemory;
 	CMonsterSoundMemory		SoundMemory;
-	CMonsterEnemyManager	EnemyMan;
 	CMonsterCorpseMemory	CorpseMemory;
 	CMonsterHitMemory		HitMemory;
+
+	CMonsterEnemyManager	EnemyMan;
+	CMonsterCorpseManager	CorpseMan;
 
 	bool					hear_dangerous_sound;
 	bool					hear_interesting_sound;

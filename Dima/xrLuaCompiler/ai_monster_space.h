@@ -130,6 +130,11 @@ namespace MonsterSpace {
 		eGA_None				= u32(-1)
 	};
 
+	enum EScriptSoundAnim {
+		eAnimSoundCustom		= u32(0),
+		eAnimSoundDefault,
+	};
+
 
 	enum EMonsterSounds {
 		eMonsterSoundIdle		= u32(0),

@@ -1797,6 +1797,12 @@
 						RelativePath=".\AI\ai_monsters_misc.h">
 					</File>
 					<File
+						RelativePath=".\ai\monster_corpse_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\monster_corpse_manager.h">
+					</File>
+					<File
 						RelativePath=".\ai\monster_enemy_manager.cpp">
 					</File>
 					<File
@@ -1835,6 +1841,12 @@
 								RelativePath=".\ai\monster_corpse_memory.h">
 							</File>
 							<File
+								RelativePath=".\ai\monster_enemy_memory.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\monster_enemy_memory.h">
+							</File>
+							<File
 								RelativePath=".\ai\monster_hit_memory.cpp">
 							</File>
 							<File
@@ -1845,12 +1857,6 @@
 							</File>
 							<File
 								RelativePath=".\ai\monster_sound_memory.h">
-							</File>
-							<File
-								RelativePath=".\ai\monster_vision_memory.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\monster_vision_memory.h">
 							</File>
 						</Filter>
 						<Filter
@@ -2135,10 +2141,16 @@
 						Name="Telekinesis"
 						Filter="">
 						<File
+							RelativePath=".\ai\telekinesis.cpp">
+						</File>
+						<File
 							RelativePath=".\ai\telekinesis.h">
 						</File>
 						<File
-							RelativePath=".\ai\telekinesis_inline.h">
+							RelativePath=".\ai\telekinetic_object.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\telekinetic_object.h">
 						</File>
 					</Filter>
 					<Filter

@@ -23,7 +23,6 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
-	//Msg("Action Movement executed!");
 	CMonsterMovement::set_path_targeted();
 		
 	return			(true);		
@@ -76,9 +75,8 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 			break;
 	}
 
-//	Msg("Action Watch executed!");
 
-	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < EPS_L)
+	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < deg(2))
 		l_tWatchAction.m_bCompleted = true;
 	else
 		l_tWatchAction.m_bCompleted = false;
@@ -106,10 +104,37 @@ bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
 	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
 	case eAA_Turn:			MotionMan.m_tAction = ACT_TURN;			break;
 	}
-//	Msg("Action Animation executed!");
 
 	return				(true);
 }
+
+bool CAI_Biting::bfAssignSound(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignSound(tpEntityAction))
+		return			(false);
+
+	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
+	if (l_tAction.completed()) return false;
+
+
+	switch (l_tAction.m_monster_sound) {
+	case	eMonsterSoundIdle:			CSoundPlayer::play(eMonsterSoundIdle,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundEat:			CSoundPlayer::play(eMonsterSoundEat,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwEatSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundAttack:		CSoundPlayer::play(eMonsterSoundAttack,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay	: l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundAttackHit:		CSoundPlayer::play(eMonsterSoundAttackHit);		break;
+	case	eMonsterSoundTakeDamage:	CSoundPlayer::play(eMonsterSoundTakeDamage);	break;
+	case	eMonsterSoundDie:			CSoundPlayer::play(eMonsterSoundDie);			break;
+	case	eMonsterSoundThreaten:		CSoundPlayer::play(eMonsterSoundThreaten,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundSteal:			CSoundPlayer::play(eMonsterSoundSteal,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundPanic:			CSoundPlayer::play(eMonsterSoundPanic,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundGrowling:		CSoundPlayer::play(eMonsterSoundGrowling,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	}
+
+	return				(true);
+}
+
+
+
 
 bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 {
@@ -124,19 +149,18 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 			break;
 		case eGA_Eat:		
 			SetState(stateEat, true);	
-			//SetForcedCorpse(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			CorpseMan.force_corpse(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
 			break;
 		case eGA_Attack:
 			SetState(stateAttack, true);	
-			//SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			EnemyMan.force_enemy(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
 			break;
 		case eGA_Panic:		
 			SetState(statePanic, true);
-			//SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			EnemyMan.force_enemy(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
 			break;
 	}
 
-//	Msg("Action MonsterAction executed!");
 	b_script_state_must_execute = true;
 	return (!l_tAction.m_bCompleted);
 }
@@ -160,7 +184,7 @@ void CAI_Biting::ProcessScripts()
 	// обновить мир (память, враги, объекты)
 	vfUpdateParameters							();
 	
-
+	
 	MotionMan.accel_deactivate					();
 
 	// если из скрипта выбрано действие по универсальной схеме, выполнить его
@@ -179,7 +203,8 @@ void CAI_Biting::ProcessScripts()
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
-	//ClearForcedEntities							();
+	EnemyMan.unforce_enemy();
+	CorpseMan.unforce_corpse();
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()
@@ -189,11 +214,7 @@ CEntity *CAI_Biting::GetCurrentEnemy()
 }
 CEntity *CAI_Biting::GetCurrentCorpse()
 {
-//	if (!GetEnemy(ve)) {
-//		GetCorpse(ve);
-//		return (const_cast<CEntity *>(ve.obj));
-//	} else return (0);
-
+	if (CorpseMan.get_corpse()) return (const_cast<CEntity *>(dynamic_cast<const CEntity*>(CorpseMan.get_corpse())));
 	return (0);
 }
 

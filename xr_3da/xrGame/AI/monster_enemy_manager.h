@@ -43,8 +43,5 @@ public:
 	// вернуть количество врагов
 	u32					get_enemies_count		();
 
-	// выбрать другого врага, который есть в память
-	//void				select_another_enemy	(const CEntityAlive *enemy);
-
 
 };

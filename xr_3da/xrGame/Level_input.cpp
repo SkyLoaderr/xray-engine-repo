@@ -183,7 +183,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		if (monster) {
 			switch (key) {
 		case DIK_1:
-			monster->TTelekinesis::Activate();
+			monster->TTelekinesis::Activate(monster->Position());
 			break;
 		case DIK_2:
 			monster->TTelekinesis::Deactivate();

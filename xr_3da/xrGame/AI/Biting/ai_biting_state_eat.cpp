@@ -38,7 +38,7 @@ void CBitingEat::Init()
 	IState::Init();
 
 	// Получить инфо о трупе
-	const CEntityAlive *p_corpse = pMonster->CorpseMemory.get_corpse();
+	const CEntityAlive *p_corpse = pMonster->CorpseMan.get_corpse();
 	if (!p_corpse) R_ASSERT(false);
 	pCorpse = const_cast<CEntityAlive *>(p_corpse);
 
@@ -74,7 +74,7 @@ void CBitingEat::Init()
 void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
-	const CEntityAlive *cur_corpse = pMonster->CorpseMemory.get_corpse();
+	const CEntityAlive *cur_corpse = pMonster->CorpseMan.get_corpse();
 	if (!cur_corpse || !pCorpse->m_pPhysicsShell) {Done(); return;}
 	if (pCorpse != const_cast<CEntityAlive *>(cur_corpse)) Init();
 

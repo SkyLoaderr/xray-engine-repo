@@ -455,7 +455,7 @@ void CScriptEngine::export_actions()
 				value("direction",				int(SightManager::eSightTypeDirection))
 			]
 			.def(								constructor<>())
-				.def(							constructor<SightManager::ESightType>())
+			.def(								constructor<SightManager::ESightType>())
 			.def(								constructor<SightManager::ESightType, const Fvector &>())
 			.def(								constructor<SightManager::ESightType, CLuaGameObject*>())
 			.def(								constructor<SightManager::ESightType, CLuaGameObject*, LPCSTR>())
@@ -505,6 +505,20 @@ void CScriptEngine::export_actions()
 			.def("completed",					(bool (CScriptAnimationAction::*)())(CScriptAnimationAction::completed)),
 
 		class_<CScriptSoundAction>("sound")
+			.enum_("type")
+			[
+				value("idle",					int(MonsterSpace::eMonsterSoundIdle)),
+				value("eat",					int(MonsterSpace::eMonsterSoundEat)),
+				value("attack",					int(MonsterSpace::eMonsterSoundAttack)),
+				value("attack_hit",				int(MonsterSpace::eMonsterSoundAttackHit)),
+				value("take_damage",			int(MonsterSpace::eMonsterSoundTakeDamage)),
+				value("die",					int(MonsterSpace::eMonsterSoundDie)),
+				value("threaten",				int(MonsterSpace::eMonsterSoundThreaten)),
+				value("steal",					int(MonsterSpace::eMonsterSoundSteal)),
+				value("panic",					int(MonsterSpace::eMonsterSoundPanic)),
+				value("growling",				int(MonsterSpace::eMonsterSoundGrowling))
+			]
+
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR,LPCSTR>())
 			.def(								constructor<LPCSTR,LPCSTR,const Fvector &>())
@@ -519,6 +533,11 @@ void CScriptEngine::export_actions()
 			.def(								constructor<CLuaSound&,const Fvector &>())
 			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &>())
 			.def(								constructor<CLuaSound&,const Fvector &,const Fvector &,bool>())
+
+			// monster specific
+			.def(								constructor<MonsterSpace::EMonsterSounds>())
+			.def(								constructor<MonsterSpace::EMonsterSounds,int>())
+
 			.def("set_sound",					(void (CScriptSoundAction::*)(LPCSTR))(CScriptSoundAction::SetSound))
 			.def("set_sound",					(void (CScriptSoundAction::*)(const CLuaSound &))(CScriptSoundAction::SetSound))
 			.def("set_sound_type",				&CScriptSoundAction::SetSoundType)

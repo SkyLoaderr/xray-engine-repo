@@ -490,6 +490,10 @@ public:
 	Fvector							m_tSoundPosition;
 	Fvector							m_tSoundAngles;
 	ESoundTypes						m_sound_type;
+	
+	MonsterSpace::EMonsterSounds	m_monster_sound;
+	int								m_monster_sound_delay;
+
 
 							CScriptSoundAction		()
 	{
@@ -501,6 +505,7 @@ public:
 		m_tSoundPosition.set(0,0,0);
 		m_tSoundAngles.set	(0,0,0);
 		m_bCompleted		= true;
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
 
 							CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -511,6 +516,7 @@ public:
 		SetAngles			(tAngleOffset);
 		SetSound			(caSoundToPlay);
 		SetSoundType		(sound_type);
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
 
 							CScriptSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -520,6 +526,7 @@ public:
 		SetPosition			(tPosition);
 		SetAngles			(tAngleOffset);
 		SetSoundType		(sound_type);
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
 
 							CScriptSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -530,6 +537,7 @@ public:
 		SetAngles			(tAngleOffset);
 		SetSound			(sound);
 		SetSoundType		(sound_type);
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
 
 							CScriptSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -539,7 +547,29 @@ public:
 		SetPosition			(tPosition);
 		SetAngles			(tAngleOffset);
 		SetSoundType		(sound_type);
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////////
+	// Monster Specific
+	///////////////////////////////////////////////////////////////////////////////////
+							
+							CScriptSoundAction		(MonsterSpace::EMonsterSounds sound_type)
+	{
+		m_monster_sound			= sound_type;
+		m_monster_sound_delay	= int (-1);
+		m_bCompleted			= false;
+	}
+
+							CScriptSoundAction		(MonsterSpace::EMonsterSounds sound_type, int delay)
+	{
+		m_monster_sound			= sound_type;
+		m_monster_sound_delay	= delay;
+		m_bCompleted			= false;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////
+
 
 	virtual					~CScriptSoundAction		()
 	{

@@ -14,13 +14,17 @@
 // Зрение, слух, вероятность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
+	// Обновить память
 	EnemyMemory.update			();
-	EnemyMan.update				();	
 	SoundMemory.UpdateHearing	();	
 	CorpseMemory.update			();
 	HitMemory.update			();
-
+	
+	// обновить менеджеры врагов и трупов
+	EnemyMan.update				();	
+	CorpseMan.update			();
 		
+	
 	hear_dangerous_sound = hear_interesting_sound = false;
 	SoundElem se;
 	

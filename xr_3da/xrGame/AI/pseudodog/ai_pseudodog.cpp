@@ -180,14 +180,14 @@ void CAI_PseudoDog::StateSelector()
 		} else if (hear_dangerous_sound || hear_interesting_sound) {
 			if (hear_dangerous_sound)			SetState(stateExploreNDE);		
 			if (hear_interesting_sound)			SetState(stateExploreNDE);	
-		} else if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
+		} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
 												SetState(stateEat);	
 		else									SetState(stateRest);
 	} else {
 		// враг является актером или сталкером
 		if (enemy) m_bGrowling = true;
 		
-		if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow)) SetState(stateEat);	
+		if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow)) SetState(stateEat);	
 		else SetState(stateRest);
 	}
 

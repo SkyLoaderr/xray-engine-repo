@@ -7,12 +7,11 @@ class CCharacterPhysicsSupport;
 
 class CBurer :	public CAI_Biting,
 				public CStateManagerBurer,
-				public CTelekinesis<CBurer>,
-				public CPHUpdateObject /* make this object update physics correctly */ {
+				public CTelekinesis {
 
 	typedef		CAI_Biting					inherited;
 public:
-	typedef		CTelekinesis<CBurer>		TTelekinesis;
+	typedef		CTelekinesis				TTelekinesis;
 
 public:
 					CBurer				();
@@ -32,8 +31,7 @@ public:
 
 	virtual bool	UpdateStateManager	();
 
-	virtual void 	PhDataUpdate		(dReal step);
-	virtual void 	PhTune				(dReal step);
 	virtual u8		get_legs_number		() {return BIPEDAL;}
+
 };
 

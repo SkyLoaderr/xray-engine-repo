@@ -138,7 +138,7 @@ void CAI_Flesh::StateSelector()
 	} else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			SetState(statePanic);		
 		if (hear_interesting_sound)			SetState(stateExploreNDE);	
-	} else if (CorpseMemory.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
+	} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
 											SetState(stateEat);	
 	else									SetState(stateRest);
 

@@ -69,10 +69,12 @@ void CAI_Biting::Init()
 	state_invisible					= false;
 
 	EnemyMemory.init_external		(this, 20000);
-	EnemyMan.init_external			(this);
 	SoundMemory.init_external		(this, 20000);
 	CorpseMemory.init_external		(this, 20000);
 	HitMemory.init_external			(this, 50000);
+
+	EnemyMan.init_external			(this);
+	CorpseMan.init_external			(this);
 
 	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
 }
