@@ -425,8 +425,8 @@ void CCustomZone::feel_touch_new(CObject* O)
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
-	CPhysicsShellHolder* pGameObject =dynamic_cast<CPhysicsShellHolder*>(O);
-	CEntityAlive* pEntityAlive =dynamic_cast<CEntityAlive*>(pGameObject);
+	CGameObject*	pGameObject =dynamic_cast<CGameObject*>(O);
+	CEntityAlive*	pEntityAlive =dynamic_cast<CEntityAlive*>(pGameObject);
 	
 	SZoneObjectInfo object_info;
 	
