@@ -241,8 +241,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	hit_slowmo				= 0.f;
 	hit_factor				= 1.f;
-	die_bWantRespawn		= FALSE;
-	die_bRespawned			= TRUE;
 
 	m_pArtifact				= 0;
 	return					TRUE;
@@ -319,10 +317,6 @@ void CActor::Die	( )
 	if (Local())			Weapons->weapon_die	();
 
 	die_hide				= 1.f;
-	die_bWantRespawn		= FALSE;
-	die_bRespawned			= FALSE;
-	die_respawn_delay		= respawn_delay;
-	die_respawn_auto		= respawn_auto;
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -436,25 +430,6 @@ void CActor::UpdateCL()
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
 				u_EventSend			(P);
-			}
-		}
-
-		if (Local() && !die_bRespawned)
-		{
-			// Request respawn (?)
-			die_respawn_delay	-=	dt;
-			die_respawn_auto	-=	dt;
-
-			if (die_bWantRespawn && (die_respawn_delay<0))
-			{
-				// Manual respawn
-				die_bRespawned		= TRUE;
-				Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
-			} else if (die_respawn_auto<0)
-			{
-				// Auto-respawn
-				die_bRespawned		= TRUE;
-				Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
 			}
 		}
 	}

@@ -59,13 +59,8 @@ protected:
 	CWeaponList*			Weapons;
 	CTargetCS*				m_pArtifact;
 
-	// Respawning after DIE
-	BOOL					die_bWantRespawn;
-	BOOL					die_bRespawned;
+	// Death
 	float					die_hide;
-	float					die_respawn_delay;
-	float					die_respawn_auto;
-
 	float					hit_slowmo;
 	float					hit_factor;
 

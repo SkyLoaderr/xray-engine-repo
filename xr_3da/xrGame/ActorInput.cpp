@@ -84,10 +84,6 @@ void CActor::OnKeyboardRelease(int cmd)
 
 		case kDROP:		g_PerformDrop();				break;
 		}
-	} else if (kWPN_FIRE == cmd)
-	{
-		// We want to respawn
-		die_bWantRespawn	= TRUE;
 	}
 }
 
