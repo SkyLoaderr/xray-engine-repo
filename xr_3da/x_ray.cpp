@@ -224,13 +224,11 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		R_ASSERT	(pCreator->net_Start(Name,TRUE));
 		_FREE		(Name);
 
-		// start demo if exist
-		if (strstr(Engine.Params,"-demo ")) {
-			string64				cmd;
-			string64				pDemoName;
-			sscanf					(strstr(Engine.Params,"-demo ")+6,"%[^ ] ",pDemoName);
-			strconcat				(cmd,"demo_play ",pDemoName);
-			Console.Execute			(cmd);
+		// start any console command
+		if (strstr(Engine.Params,"-$")) {
+			string64			cmd;
+			sscanf				(strstr(Engine.Params,"-$")+2,"%[^,] ",cmd);
+			Console.Execute		(cmd);
 		}
 	} else if (E==eStartClient) {
 		Console.Hide();
