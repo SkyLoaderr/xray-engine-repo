@@ -5,7 +5,7 @@
 #include "..\cameralook.h"
 #include "..\camerafirsteye.h"
 #include "..\xr_level_controller.h"
-
+#include "Actor.h"
 enum ECarCamType{
 	ectFirst	= 0,
 	ectChase,
@@ -27,6 +27,7 @@ CCar::CCar(void)
 	m_jeep.Create	(ph_world->GetSpace(),phWorld);
 	ph_world->AddObject((CPHObject*)this);
 	m_repairing		=false;
+	m_owner			=NULL;
 }
 
 CCar::~CCar(void)
@@ -123,7 +124,7 @@ void	CCar::cam_Update			(float dt)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
-	
+	if(m_owner)	m_owner->setEnabled(false);
 	float yaw_dest,pitch_dest,bank_dest;
 	clXFORM().getHPB				(yaw_dest,pitch_dest,bank_dest);
 
@@ -148,6 +149,7 @@ void	CCar::cam_Update			(float dt)
 
 	active_camera->Update			(P,Da);
 	Level().Cameras.Update			(active_camera);
+	if(m_owner)	m_owner->setEnabled(true);
 }
 
 // Core events
@@ -180,7 +182,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	//
 	CKinematics*	M				= PKinematics(pVisual);
 	R_ASSERT						(M);
-	M->PlayCycle					("init");
+	M->PlayCycle					("idle");
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
@@ -204,12 +206,21 @@ void	CCar::Update				( u32 T )
 	m_jeep.DynamicData.InterpolateTransform(b_t);
 	/////////////////
 	//mRotate.mul		(m_jeep.DynamicData.BoneTransform,mY);
-	mRotate.mul		(b_t,mY);
-	mRotate.c.set	(0,0,0);
+
 	//svTransform.mul	(m_jeep.DynamicData.BoneTransform,mY);
 	svTransform.mul	(b_t,mY);
-	vPosition.set	(b_t.c);
+	mRotate.set		(svTransform);
+	mRotate.c.set	(0,0,0);
+	vPosition.set	(svTransform.c);
 	UpdateTransform					();
+	if(m_owner)
+	{
+
+		m_owner->Position().set(vPosition);
+		m_owner->Rotation().set(mRotate);
+		m_owner->UpdateTransform();
+		//if(m_owner->IsMyCamera()) cam_Update	(Device.fTimeDelta);
+	}
 }
 
 void	CCar::UpdateCL				( )
@@ -235,7 +246,19 @@ void	CCar::UpdateCL				( )
 	snd_engine.set_frequency		(scale);
 
 	// Camera
-	if (IsMyCamera())				cam_Update	(Device.fTimeDelta);
+	if (IsMyCamera())				
+		cam_Update	(Device.fTimeDelta);
+	if(m_owner)
+	{
+	
+	m_owner->Position().set(clTransform.c);
+	m_owner->Rotation().set(clTransform);
+	m_owner->Rotation().c.set(0,0,0);
+	m_owner->UpdateTransform();
+	if(m_owner->IsMyCamera()) 
+		cam_Update	(Device.fTimeDelta);
+	}
+
 }
 
 void	CCar::OnVisible				( )
@@ -283,6 +306,8 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kJUMP:		m_jeep.Breaks=true;
 					m_jeep.Drive();
 					break;
+	case kUSE:
+					detach_Actor();
 	
 	};
 
@@ -386,4 +411,18 @@ void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object
 
 	}
 	inherited::Hit(P,dir,who,element,p_in_object_space, 0);
+}
+
+void CCar::detach_Actor()
+{
+if(!m_owner) return;
+m_owner->detach_Vehicle();
+m_owner=NULL;
+}
+
+bool CCar::attach_Actor(CActor* actor)
+{
+if(m_owner) return false;
+m_owner=actor;
+return true;
 }

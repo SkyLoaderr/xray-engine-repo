@@ -5,7 +5,6 @@
 #include "..\xr_input.h"
 #include "..\xr_creator.h"
 #include "..\CameraBase.h"
-
 void CActor::OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
@@ -22,7 +21,13 @@ void CActor::OnKeyboardPress(int cmd)
 		return;
 	}
 	if (!g_Alive())												return;
-	if(m_inventory.Action(cmd, CMD_START)) return;
+	if(m_inventory.Action(cmd, CMD_START))						return;
+
+	if(m_vehicle)
+	{
+									   m_vehicle->OnKeyboardPress(cmd);
+																return;
+	}
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
@@ -57,6 +62,7 @@ void CActor::OnKeyboardPress(int cmd)
 		//Weapons->Reload			();
 		break;
 	case kUSE:
+		use_Vehicle();
 		break;
 	case kDROP:
 		b_DropActivated			= TRUE;
@@ -72,6 +78,13 @@ void CActor::OnKeyboardRelease(int cmd)
 	if (g_Alive())	
 	{
 		if(m_inventory.Action(cmd, CMD_STOP)) return;
+
+		if(m_vehicle)
+		{
+			m_vehicle->OnKeyboardRelease(cmd);
+			return;
+		}
+
 		switch(cmd)
 		{
 		case kACCEL:	mstate_wishful &=~mcAccel;		break;
@@ -94,6 +107,12 @@ void CActor::OnKeyboardRelease(int cmd)
 void CActor::OnKeyboardHold(int cmd)
 {
 	if (Remote() || !g_Alive())		return;
+
+	if(m_vehicle)
+	{
+		m_vehicle->OnKeyboardHold(cmd);
+		return;
+	}
 
 	switch(cmd)
 	{

@@ -95,6 +95,7 @@ CActor::CActor() : CEntityAlive()
 	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
+	m_vehicle				=	NULL;
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
@@ -676,8 +677,12 @@ void CActor::ZoneEffect	(float z_amount)
 
 void CActor::UpdateCL()
 {
-
 	inherited::UpdateCL();
+if(m_vehicle)
+{
+	m_vehicle->UpdateCL();
+	return;
+}
 	if (!g_Alive())			
 	
 		if(m_phSkeleton){
@@ -718,6 +723,12 @@ void CActor::UpdateCL()
 
 void CActor::Update	(u32 DT)
 {
+	if(m_vehicle)
+	{
+	m_vehicle->Update(DT);
+	//inherited::Update		(DT);
+	return;
+	}
 	if (!getEnabled())	return;
 	if (!Ready())		return;
 
@@ -1218,6 +1229,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	//CWeapon* W			= Weapons->ActiveWeapon();
 	//if (W)				W->OnVisible		();
 	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
+
 	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->OnVisible();
 
 
@@ -1852,6 +1864,61 @@ void CActor::ForceTransform(const Fmatrix& m)
 	ph_Movement.SetPosition(m.c);
 
 }
+
+
+void CActor::attach_Vehicle(CCar* vehicle)
+{
+	if(m_vehicle) return;
+	m_vehicle=dynamic_cast<CCar*>(vehicle);
+	if(!m_vehicle) return;
+	if(!m_vehicle->attach_Actor(this))
+	{
+		m_vehicle=NULL;
+		return;
+	}
+	
+	ph_Movement.DestroyCharacter();
+}
+void CActor::detach_Vehicle()
+{
+	if(!m_vehicle) return;
+	//m_vehicle->detach_Actor();//calling by detach_Actor()
+	ph_Movement.CreateCharacter();
+	ph_Movement.SetPosition(vPosition);
+	m_vehicle=NULL;
+}
+
+CObject* CActor::pick_Object()
+{
+	
+	setEnabled(false);
+	Collide::ray_query	l_rq;
+	l_rq.O=NULL;
+	pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
+	setEnabled(true);
+
+	return l_rq.O;
+}
+
+void CActor::use_Vehicle()
+{
+	if(m_vehicle)	
+	{
+					detach_Vehicle();
+
+	}
+	else
+	{
+					if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+					attach_Vehicle(dynamic_cast<CCar*>(pick_Object()));
+	}
+
+
+
+
+
+}
+
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CActor::OnRender	()

@@ -12,6 +12,11 @@ void CActor::cam_Set	(EActorCameras style)
 
 void CActor::cam_Update(float dt, float fFOV)
 {
+	if(m_vehicle)
+	{
+		m_vehicle->cam_Update(dt);
+		return;
+	}
 	Fvector point, dangle;
 	
 	// get calc eye point 90% from player height

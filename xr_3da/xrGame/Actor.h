@@ -12,6 +12,7 @@
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "inventory.h"
+#include "Car.h"
 // refs
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
@@ -21,7 +22,6 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
-
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
@@ -73,9 +73,12 @@ protected:
 	bool					bDeathInit;
 	u32						self_gmtl_id;
 	u32						last_gmtl_id;
-	
+	//
 	//Death physics			
 	CPhysicsShell*			m_phSkeleton;
+
+	//vehicle (not luxury)
+	CCar*					m_vehicle;
 
 	// media
 	BOOL					bStep;
@@ -228,6 +231,11 @@ private:
 	void					cam_Update				(float dt, float fFOV);
 	void					create_Skeleton			();
 	void					create_Skeleton1		();
+	void					attach_Vehicle			(CCar* vehicle);
+	void					use_Vehicle				();
+	CObject*				pick_Object				();
+public:
+	void					detach_Vehicle			();
 public:
 							CActor					( );
 	virtual					~CActor					( );
@@ -240,7 +248,7 @@ public:
 	}
 	IC BOOL					HUDview				( ) 
 	{ 
-		return IsFocused()&&(cam_active==eacFirstEye); 
+		return IsFocused()&&(cam_active==eacFirstEye)&&(!m_vehicle); 
 	}
 
 	IC CCameraBase*						cam_Active			() {return cameras[cam_active];}

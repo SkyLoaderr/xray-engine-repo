@@ -4,10 +4,12 @@
 #include "Physics.h"
 // refs
 class ENGINE_API			CBoneInstance;
-
+class						CActor;
 // defs
 class CCar :				public CEntity,public CPHObject
 {
+public:
+	
 private:
 	typedef CEntity			inherited;
 private:
@@ -15,11 +17,12 @@ private:
 	bool					m_repairing;
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
+	CActor*					m_owner;
 	Fvector					m_vCamDeltaHP;
 
 	void					OnCameraChange		(int type);
 	
-	void					cam_Update			(float dt);
+
 
 	sound					snd_engine;
 
@@ -35,13 +38,17 @@ private:
 	virtual void InitContact(dContact*c){};
 	virtual void StepFrameUpdate(dReal step){};
 public:
+
+	void					cam_Update			(float dt);
+	void					detach_Actor		();
+	bool					attach_Actor		(CActor* actor);
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			Update				( u32 T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			OnVisible			( ); 
-
+	
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server
 	virtual void			net_Import			(NET_Packet& P);				// import from server
