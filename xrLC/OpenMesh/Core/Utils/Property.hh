@@ -90,10 +90,10 @@ public:
 public: // synchronized array interface
 
   /// Reserve memory for n elements.
-  virtual void reserve(unsigned int _n)                  = 0;
+  virtual void reserve(size_t _n)			             = 0;
 
   /// Resize storage to hold n elements.
-  virtual void resize(unsigned int _n)                   = 0;
+  virtual void resize(size_t _n)		                 = 0;
 
   /// Extend the number of elements by one.
   virtual void push_back()                               = 0;
@@ -116,7 +116,7 @@ public: // I/O support
 
   /// Enable or disable persistency. Self must be a named property to enable
   /// persistency.
-  virtual void set_persistent( bool _yn )                = 0;
+  virtual void			set_persistent( bool _yn )       = 0;
 
   /// Number of elements in property
   virtual size_t       n_elements() const                = 0;
