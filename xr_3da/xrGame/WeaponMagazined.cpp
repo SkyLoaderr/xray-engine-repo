@@ -182,6 +182,8 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 	switch (st_current)
 	{
 	case eIdle:
+	case eShowing:
+	case eHiding:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
