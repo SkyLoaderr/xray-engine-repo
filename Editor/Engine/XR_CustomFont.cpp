@@ -13,6 +13,7 @@ CFontBase::CFontBase()
 	OnDeviceCreate	();
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
+	pShader = 0;
 }
 
 CFontBase::~CFontBase()
