@@ -233,6 +233,7 @@ enum{
 protected:
 	virtual void					data_load				(NET_Packet &tNetPacket);
 	virtual void					data_save				(NET_Packet &tNetPacket);
+	virtual CSE_Abstract			*cast_abstract			() {return 0;}
 public:
 SERVER_ENTITY_DECLARE_END
 		add_to_type_list(CSE_PHSkeleton)

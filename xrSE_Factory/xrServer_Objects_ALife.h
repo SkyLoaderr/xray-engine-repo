@@ -240,6 +240,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVis
 	virtual bool					can_save				() const;
 	virtual bool					used_ai_locations		() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
 public:
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifePHSkeletonObject)
@@ -301,6 +302,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_save				() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
 //	virtual	void					load					(IReader& r){inherited::load(r);}
 //	using inherited::load(IReader&);
 
@@ -353,6 +355,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
 	virtual bool					match_configuration			() const;
 	virtual bool		__stdcall	validate					();
 	virtual void 		__stdcall	on_render					(CDUInterface* du, ISE_AbstractLEOwner* owner, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F);
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectHangingLamp)
 #define script_type_list save_type_list(CSE_ALifeObjectHangingLamp)
@@ -372,6 +375,7 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	virtual	void					load						(NET_Packet &tNetPacket);
 	virtual bool					used_ai_locations			() const;
 	virtual CSE_Motion*	__stdcall	motion						();
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
 
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)
@@ -398,6 +402,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual,CSE_PHSke
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
+	virtual CSE_Abstract			*cast_abstract			() {return this;}
 protected:
 	virtual void					data_load				(NET_Packet &tNetPacket);
 	virtual void					data_save				(NET_Packet &tNetPacket);

@@ -253,6 +253,10 @@
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(ISE_Shape,		CSE_Abstract)
 
+	DECLARE_SPECIALIZATION	(CSE_Abstract,	CSE_PHSkeleton,	cast_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_Abstract,	CSE_PHSkeleton)
+
 	DECLARE_SPECIALIZATION	(CSE_ALifeObject,	CSE_Abstract,			cast_alife_object);
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeObject,	CSE_Abstract)
