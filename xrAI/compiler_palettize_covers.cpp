@@ -383,19 +383,19 @@ void xrPalettizeCovers()
 
 	g_covers_palette.resize(netsize);
 	{
-		Msg		("Palette");
+//		Msg		("Palette");
 		xr_vector<SCover>::iterator					I = g_covers_palette.begin(), B = I;
 		xr_vector<SCover>::iterator					E = g_covers_palette.end();
 		for ( ; I != E; ++I) {
 			for (int i=0; i<dimension; ++i)
 				(*I).cover[i]	= network[I - B][i];
-			Msg	(
-				"[%.3f][%.3f][%.3f][%.3f]",
-				float((*I).cover[0])/255.f,
-				float((*I).cover[1])/255.f,
-				float((*I).cover[2])/255.f,
-				float((*I).cover[3])/255.f
-			);
+//			Msg	(
+//				"[%.3f][%.3f][%.3f][%.3f]",
+//				float((*I).cover[0])/255.f,
+//				float((*I).cover[1])/255.f,
+//				float((*I).cover[2])/255.f,
+//				float((*I).cover[3])/255.f
+//			);
 		}
 	}
 
@@ -412,26 +412,26 @@ void xrPalettizeCovers()
 			_sqr(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
 			_sqr(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
 			_sqr(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f);
-		Msg		(
-			"[%.3f][%.3f][%.3f][%.3f] -> [%.3f][%.3f][%.3f][%.3f] : %7.3f",
-			g_nodes[i].cover[0],
-			g_nodes[i].cover[1],
-			g_nodes[i].cover[2],
-			g_nodes[i].cover[3],
-			float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f,
-			float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f,
-			float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f,
-			float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f,
-			_sqrt(
-				_sqr(g_nodes[i].cover[0] - float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f) + 
-				_sqr(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
-				_sqr(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
-				_sqr(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f)
-			)
-		);
+//		Msg		(
+//			"[%.3f][%.3f][%.3f][%.3f] -> [%.3f][%.3f][%.3f][%.3f] : %7.3f",
+//			g_nodes[i].cover[0],
+//			g_nodes[i].cover[1],
+//			g_nodes[i].cover[2],
+//			g_nodes[i].cover[3],
+//			float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f,
+//			float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f,
+//			float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f,
+//			float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f,
+//			_sqrt(
+//				_sqr(g_nodes[i].cover[0] - float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f) + 
+//				_sqr(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
+//				_sqr(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
+//				_sqr(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f)
+//			)
+//		);
 	}
-	Msg				("Total absoulte error : %f",l_sum);
-	Msg				("Total squared  error : %f",l_sum_sqr);
+	Msg				("Total absoulte error : %f (%f)",l_sum,l_sum/float(N));
+	Msg				("Total squared  error : %f (%f)",l_sum_sqr,l_sum_sqr/float(N));
 
 	xr_free			(data);
 }
