@@ -115,6 +115,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\setupMSDE.ini">
+		</File>
+		<File
 			RelativePath=".\sql_config.cpp">
 			<FileConfiguration
 				Name="Debug|Win32">
