@@ -52,7 +52,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
 				if(pGameSP && pArtifact)
 				{
-					if(pGameSP->m_pUserMenu == &pGameSP->InventoryMenu &&
+					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu &&
 						pGameSP->InventoryMenu.IsArtifactMergeShown())
 					{
 						pGameSP->InventoryMenu.AddArtifactToMerger(pArtifact);
@@ -67,7 +67,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				//добавить отсоединенный аддон в инвентарь
 				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
 				{
-					if(pGameSP->m_pUserMenu == &pGameSP->InventoryMenu)
+					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu)
 					{
 						pGameSP->InventoryMenu.AddItemToBag(dynamic_cast<CInventoryItem*>(O));
 					}
