@@ -108,6 +108,10 @@ Velocity_RunFwdDamaged	= 2.5,  	3.2,			3.2,		0.4,	1
 Velocity_Drag			= 0.6,		3.0,			3.0,		1,		1
 Velocity_Steal			= 1.5,		3.0,			3.0,		1,		1
 
+; Speed factors while invisible
+Velocity_Invisible_Linear		= 9.0 
+Velocity_Invisible_Angular		= 3.0
+
 ; acceleration
 Accel_Generic			= 1.5
 Accel_Calm				= 2.5
@@ -237,7 +241,7 @@ damage					= m_poltergeist_damage
 
 flame_sound			= monsters\bloodsucker\idle_0		
 flame_particles		= monsters\polter_flame_fire 
-flame_fire_delay	= 2000
+flame_fire_delay	= 2000							; don't change - for programmers only
 flame_length		= 15.0 ;5.0
 flame_hit_value		= 250
 
@@ -249,6 +253,21 @@ Invisible_Energy_Critical_Value					= 0.05
 Invisible_Energy_Activate_Value					= 0.95
 Invisible_Energy_Aggressive_Restore_Velocity	= 0.4
 
+;-- Delays -------------------
+
+Delay_Flame_Min			= 6000
+Delay_Flame_Normal		= 10000
+Delay_Flame_Aggressive	= 8000
+
+Delay_Tele_Min			= 500
+Delay_Tele_Normal		= 2000
+Delay_Tele_Aggressive	= 1000
+
+Delay_Scare_Min			= 100
+Delay_Scare_Normal		= 1000
+Delay_Scare_Aggressive	= 500
+
+;---------------------------
 
 ;species of monster
 species					= poltergeist
