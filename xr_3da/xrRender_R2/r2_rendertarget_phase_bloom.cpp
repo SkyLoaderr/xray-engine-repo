@@ -100,7 +100,7 @@ void CRenderTarget::phase_bloom	()
 		float s						= .25f;	// scale
 		float sp					= .5f;	// speed
 		RCache.set_Element			(s_bloom->E[0]);
-		RCache.set_c				("b_speed", s,s,s,sp);
+		RCache.set_c				("b_params", s,s,s,sp);
 		RCache.set_Geometry			(g_bloom_build		);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
