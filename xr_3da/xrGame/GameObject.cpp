@@ -173,8 +173,6 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// if we have a parent
 	if (0xffff != E->ID_Parent) {
 		
-		// setup_parent_ai_locations();
-
 		if (!Parent) {
 			// we need this to prevent illegal ref_dec/ref_add
 			Parent				= this;

@@ -22,6 +22,7 @@ CMissile::~CMissile(void)
 
 void CMissile::reinit		()
 {
+	inherited::reinit	();
 	m_state				= MS_HIDDEN;
 	m_throw				= false;
 	m_fThrowForce				= 0;
