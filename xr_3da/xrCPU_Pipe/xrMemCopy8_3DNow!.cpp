@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void	__stdcall xrMemCopy_x86					(LPVOID dest, const void* src, DWORD n)
+void	__stdcall xrMemCopy_x86					(LPVOID dest, const void* src, u32 n)
 {
 	CopyMemory(dest,src,n);
 }
@@ -26,7 +26,7 @@ void	__stdcall xrMemCopy_x86					(LPVOID dest, const void* src, DWORD n)
 //one address per cache line,for a series of cache lines,in a short loop.
 //This is faster than using software prefetch.The technique is great for
 //getting maximum read bandwidth,especially in DDR memory systems.
-void __stdcall xrMemCopy_MMXSSE3DNow			(LPVOID dest, const void* src, DWORD n)
+void __stdcall xrMemCopy_MMXSSE3DNow			(LPVOID dest, const void* src, u32 n)
 {
 	__asm {
 		mov ecx,[n ];							// number of bytes to copy

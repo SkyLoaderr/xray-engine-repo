@@ -4,7 +4,7 @@
 block fill:fill a number of DWORDs at DWORD aligned destination
 with DWORD initializer using cacheable stores
 */
-void	__stdcall	xrMemFill32_MMX		(LPVOID dest,  DWORD count, DWORD value)
+void	__stdcall	xrMemFill32_MMX		(LPVOID dest,  u32 count, u32 value)
 {
 	__asm {
 		MOV EDI,[dest];								// pointer to dst,DWORD aligned

@@ -28,7 +28,7 @@
 // ------------------------------------------------------------------
 void __stdcall xrSkin1W_SSE(	vertRender*		D,
 								vertBoned1W*	S,
-								DWORD vCount,
+								u32				vCount,
 								CBoneInstance*	Bones) 
 {__asm
 {

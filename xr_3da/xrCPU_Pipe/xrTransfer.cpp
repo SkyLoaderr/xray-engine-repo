@@ -2,8 +2,8 @@
 
 #define GeomBytes		24	// pos+norm
 
-void	__stdcall	xrTransfer_x86	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
-									 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
+void	__stdcall	xrTransfer_x86	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
+									 LPWORD iDest, LPWORD iSrc, u32 iCount, u32 iOffset,
 									 Fmatrix* xform)
 {
 	// Transfer vertices

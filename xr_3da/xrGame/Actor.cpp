@@ -482,7 +482,7 @@ void CActor::Update	(u32 DT)
 	cam_gray				= 0.f;
 
 	// 
-	clamp					(DT,0ul,100ul);
+	clamp					(DT,0u,100u);
 	float	dt				= float(DT)/1000.f;
 
 	// Check controls, create accel, prelimitary setup "mstate_real"

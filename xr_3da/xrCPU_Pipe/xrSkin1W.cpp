@@ -9,10 +9,10 @@
  	#include "..\bodyinstance.h"
 #endif
 
-void __stdcall xrSkin1W_x86(	vertRender* D,
-								vertBoned1W* S,
-								DWORD vCount,
-								CBoneInstance* Bones) 
+void __stdcall xrSkin1W_x86(	vertRender*		D,
+								vertBoned1W*	S,
+								u32				vCount,
+								CBoneInstance*	Bones) 
 {
 //	return;
 	// Prepare
