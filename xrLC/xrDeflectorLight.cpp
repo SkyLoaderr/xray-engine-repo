@@ -566,6 +566,7 @@ void CDeflector::Save()
 		p.height		= temp.dwHeight;
 		p.data			= temp.pSurface;
 		p.maketga		(temp.name);
+		_FREE			(temp.pSurface);
 	}
 	
 	// Borders correction
