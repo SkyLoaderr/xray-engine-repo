@@ -11,6 +11,7 @@ public:
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);
+	virtual		void				OnDelayedRoundEnd		(LPCSTR reason);
 
 	virtual		void				OnTeamScore				(u32 team);								// команда выиграла
 	virtual		void				OnTeamsInDraw			();										// ничья
@@ -30,4 +31,7 @@ public:
 	virtual		void				Update					();
 
 	u8 AutoTeam();
+
+	BOOL m_delayedRoundEnd;
+	u32 m_roundEndDelay;
 };

@@ -14,10 +14,12 @@ void	game_sv_CS::Create			(LPCSTR options)
 	teams.resize					(2); // @@@ WT
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 	switch_Phase					(GAME_PHASE_PENDING);
+	m_delayedRoundEnd = false;
 }
 
 void	game_sv_CS::OnRoundStart	()
 {
+	m_delayedRoundEnd = false;
 	NET_Packet l_packet;
 	vector<CFS_Memory> l_memAr;
 	if(round!=-1) {							// ≈сли раунд не первый сохран€ем игроков и их оружие
@@ -173,6 +175,12 @@ void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 	__super::OnRoundEnd(reason);
 }
 
+void	game_sv_CS::OnDelayedRoundEnd		(LPCSTR reason)
+{
+	m_delayedRoundEnd = true;
+	m_roundEndDelay = Device.TimerAsync() + 10000;
+}
+
 void	game_sv_CS::OnTeamScore		(u32 team)
 {
 	// Increment/decrement money
@@ -217,7 +225,7 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	u32 alive					=	get_alive_count	(ps_killed->team);
 	if (0==alive) {
 		OnTeamScore(ps_killer->team);
-		OnRoundEnd("ENEMY_quelled");
+		OnDelayedRoundEnd("ENEMY_quelled");
 	}
 
 	xrServer*	S					=	Level().Server;
@@ -332,7 +340,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 						game_PlayerState* ps = get_it(it);
 						if(ps->team == ps_who->team) ps->money_for_round += 1000;
 					}											//
-					OnRoundEnd("MISSION_complete");
+					OnDelayedRoundEnd("MISSION_complete");
 				}
 				signal_Syncronize();
 				return false;
@@ -401,6 +409,7 @@ void	game_sv_CS::Update			()
 	switch(phase) 	{
 		case GAME_PHASE_INPROGRESS : {
 			if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
 		} break;
 		case GAME_PHASE_PENDING : {
 			if ((Device.TimerAsync()-start_time)>u32(20*1000)) OnRoundStart();
