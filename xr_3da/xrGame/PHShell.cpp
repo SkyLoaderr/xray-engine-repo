@@ -158,6 +158,7 @@ void CPHShell::AfterSetActive()
 void CPHShell::PureActivate()
 {
 	if(bActive)	return;
+	bActive=true;
 	CPHObject::Activate();
 	if(m_spliter_holder)m_spliter_holder->Activate();
 	m_object_in_root.identity();
@@ -788,7 +789,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
-			B.set_callback(0,(CPHElement*)elements[element]);
+			B.set_callback(0,dynamic_cast<CPhysicsElement*>(elements[element]));
 		}
 		else
 		{
@@ -796,7 +797,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 				element++;
 				R_ASSERT2(element<elements.size(),"Out of elements!!");
 				//if(elements.size()==element)	return;
-				CPHElement* E=(CPHElement*)(elements[element]);
+				CPhysicsElement* E=dynamic_cast<CPhysicsElement*>(elements[element]);
 				B.set_callback(BonesCallback1,E);
 				B.Callback_overwrite=TRUE;
 		}
