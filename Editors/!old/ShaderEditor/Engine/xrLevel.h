@@ -174,6 +174,7 @@ public:
 
 	friend class CLevelGraph;
 	friend struct CNodeCompressed;
+	friend class CNodeRenumberer;
 };									// 2+5+1+11 = 19b
 #endif
 

@@ -72,9 +72,52 @@ float	CalculateHeight(Fbox& BB)
 	return BB.max.y-BB.min.y+EPS_L;
 }
 
+xr_vector<NodeCompressed>	compressed_nodes;
+
+class CNodeRenumberer {
+	struct SSortNodesPredicate {
+
+		IC	bool	operator()			(const NodeCompressed &vertex0, const NodeCompressed &vertex1) const
+		{
+			return		(vertex0.p.xz() < vertex1.p.xz());
+		}
+
+
+		IC	bool	operator()			(u32 vertex_id0, const u32 vertex_id1) const
+		{
+			return		(compressed_nodes[vertex_id0].p.xz() < compressed_nodes[vertex_id1].p.xz());
+		}
+	};
+
+	xr_vector<NodeCompressed>	&m_nodes;
+	xr_vector<u32>				m_sorted;
+
+public:
+					CNodeRenumberer(xr_vector<NodeCompressed> &nodes) :
+						m_nodes(nodes)
+	{
+		for (u32 i=0; i<(int)m_nodes.size(); ++i)
+			m_sorted.push_back(i);
+
+		std::sort	(m_sorted.begin(),m_sorted.end(),SSortNodesPredicate());
+
+		for (u32 i=0; i<(int)m_nodes.size(); ++i) {
+			for (u32 j=0; j<4; ++j) {
+				xr_vector<u32>::iterator I = std::lower_bound(m_sorted.begin(),m_sorted.end(),m_nodes[i].link(j));
+				VERIFY		(m_sorted.end() != I);
+				m_nodes[i].link(j,u32(I - m_sorted.begin()));
+			}
+		}
+
+		std::sort	(m_nodes.begin(),m_nodes.end(),SSortNodesPredicate());
+	}
+};
+
 void xrSaveNodes(LPCSTR N)
 {
 	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(vertex),sizeof(CLevelGraph::CVertex),100*float(sizeof(CLevelGraph::CVertex))/float(sizeof(vertex)));
+
+	Msg				("Renumbering nodes...");
 
 	string256		fName; 
 	strconcat		(fName,N,"level.ai");
@@ -100,10 +143,15 @@ void xrSaveNodes(LPCSTR N)
 		vertex			&N	= g_nodes[i];
 		NodeCompressed	NC;
 		Compress		(NC,N,H);
-		fs->w			(&NC,sizeof(NC));
-		Progress		(float(i)/float(g_nodes.size()));
+		compressed_nodes.push_back(NC);
 	}
 
+	CNodeRenumberer	A(compressed_nodes);
+
+	for (u32 i=0; i<g_nodes.size(); ++i) {
+		fs->w			(&compressed_nodes[i],sizeof(NodeCompressed));
+		Progress		(float(i)/float(g_nodes.size()));
+	}
 	// Stats
 	u32	SizeTotal	= fs->tell();
 	Msg				("%dK saved",SizeTotal/1024);
