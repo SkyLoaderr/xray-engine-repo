@@ -55,7 +55,6 @@ CSpawnPoint::CLE_Visual::CLE_Visual(CSE_Visual* src)
 {
 	source			= src;
     visual			= 0;
-    OnChangeVisual	();
 }
 CSpawnPoint::CLE_Visual::~CLE_Visual()
 {
@@ -87,7 +86,6 @@ CSpawnPoint::CLE_Motion::CLE_Motion	(CSE_Motion* src)
 {
 	source			= src;
     animator		= 0;
-    OnChangeMotion	();
 }
 CSpawnPoint::CLE_Motion::~CLE_Motion()
 {
@@ -114,13 +112,15 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 {
     m_Data 	= create_entity(entity_ref);
 
-    if (m_Data->visual()){
-    	m_Visual	= xr_new<CLE_Visual>(m_Data->visual());
-    }
-    if (m_Data->motion()){
-    	m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
-    }
     if (m_Data){
+        if (m_Data->visual()){
+            m_Visual	= xr_new<CLE_Visual>(m_Data->visual());
+            m_Data->set_editor_flag(ISE_Abstract::flVisualChange|ISE_Abstract::flVisualAnimationChange);
+        }
+        if (m_Data->motion()){
+            m_Motion	= xr_new<CLE_Motion>(m_Data->motion());
+            m_Data->set_editor_flag(ISE_Abstract::flMotionChange);
+        }
         if (pSettings->line_exist(entity_ref,"$player")){
             if (pSettings->r_bool(entity_ref,"$player")){
 				m_Data->flags().set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
@@ -684,6 +684,7 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
+static     	ref_str						xxx;
 void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);

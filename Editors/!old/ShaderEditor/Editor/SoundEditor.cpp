@@ -258,14 +258,17 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
         // folder name
         AnsiString folder;
 
-        ElItemsVec sel_items;
+        RStringVec sel_items;
         if (m_ItemList->GetSelected(sel_items)>1){
             ELog.DlgMsg(mtInformation,"Select only one item and retry again.");
         	return;
         }
         
-        TElTreeItem* item = sel_items.empty()?0:sel_items.back(); 
-        if (item) FHelper.MakeName(item,0,folder,true);
+        if (!sel_items.empty()){
+	        TElTreeItem* item 	= 0;
+        	item				= FHelper.FindItem(m_ItemList->tvItems,*sel_items.back());
+	        if (item) 			FHelper.MakeName(item,0,folder,true);
+        }
 
 		AnsiString m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){

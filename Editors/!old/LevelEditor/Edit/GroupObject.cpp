@@ -219,17 +219,40 @@ void CGroupObject::Move(Fvector& amount)
 void CGroupObject::RotateParent(Fvector& axis, float angle )
 {
 	inherited::RotateParent(axis,angle);
-    Fmatrix  m_old;
-    m_old.invert(FTransform);
-	UpdateTransform(true);
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-		(*it)->PivotRotateParent(m_old,FTransform,axis,angle);
+    Fmatrix  Ginv;
+    Ginv.set		(FITransformRP);
+	UpdateTransform	(true);
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	Fmatrix 	O,On;
+        O.mul		(Ginv,(*it)->FTransformRP);
+        On.mul		(FTransform,O);
+        Fvector 	xyz;
+        On.getXYZ	(xyz);
+        (*it)->NumSetRotation(xyz);
+        (*it)->NumSetPosition(On.c);
+//		(*it)->PivotRotateParent(m_old,FTransform,axis,angle);
+    }
 }
 void CGroupObject::RotateLocal(Fvector& axis, float angle )
 {
 	inherited::RotateLocal(axis,angle);
+    Fmatrix  Ginv;
+    Ginv.set		(FITransformRP);
+	UpdateTransform	(true);
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	Fmatrix 	O,On;
+        O.mul		(Ginv,(*it)->FTransformRP);
+        On.mul		(FTransform,O);
+        Fvector 	xyz;
+        On.getXYZ	(xyz);
+        (*it)->NumSetRotation(xyz);
+        (*it)->NumSetPosition(On.c);
+//		(*it)->PivotRotateParent(m_old,FTransform,axis,angle);
+    }
+/*    
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
 		(*it)->PivotRotateLocal(FTransformRP,FPosition,axis,angle);
+*/
 }
 void CGroupObject::Scale(Fvector& amount )
 {
@@ -238,7 +261,7 @@ void CGroupObject::Scale(Fvector& amount )
     m_old.invert(FTransform);
 	UpdateTransform(true);
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-		(*it)->PivotScale(m_old,FTransform,amount);
+		(*it)->ScalePivot(m_old,FTransform,amount);
 }
 void CGroupObject::Render(int priority, bool strictB2F)
 {

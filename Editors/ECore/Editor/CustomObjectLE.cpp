@@ -113,40 +113,15 @@ void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
     PPosition = v;
 }
 
-void CCustomObject::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle)
+void CCustomObject::RotatePivot(const Fmatrix& prev_inv, const Fmatrix& current)
 {
-    Fvector p		= PPosition;
-    prev_inv.transform_tiny	(p);
-    current.transform_tiny	(p);
-    PPosition 			= p;
-
-    Fvector r	= PRotation;
-    r.mad		(axis,angle);
-    PRotation	= r;
-}
-
-void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
-{
-	R_ASSERT(!Locked());
-    UI->UpdateScene();
-
-	Fmatrix m;
-    // rotation
-	m.rotation	(axis, angle);
-    Fvector r;
-    FTransformRP.mulB(m);
-    FTransformRP.getXYZ(r);
-    PRotation	= r;
-
-    // position
-    Fvector A;
-    parent.transform_dir(A,axis);
-	m.rotation	(A, angle);
-    Fvector p	= PPosition;
-	p.sub		(center);
-    m.transform_tiny(p);
-	p.add		(center);
-	PPosition 	= p;
+    Fmatrix 		Ol,On;
+    Ol.mul			(prev_inv,FTransformRP);
+    On.mul			(current,Ol);
+    Fvector 		xyz;
+    On.getXYZ		(xyz);
+    PRotation		= xyz;
+    PPosition		= On.c;
 }
 
 void CCustomObject::RotateParent(Fvector& axis, float angle)
@@ -168,7 +143,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
     PRotation		= r;    
 }
 
-void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
+void CCustomObject::ScalePivot( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
 {
 	R_ASSERT(!Locked());
     UI->UpdateScene();

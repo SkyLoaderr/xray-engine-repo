@@ -214,6 +214,66 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             F.w					(&part->m_OBB,sizeof(part->m_OBB));
             F.close_chunk		();
 */
+//*
+			AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
+            IWriter* W 	= FS.w_open(r.c_str());
+// optimize
+/*
+			FvectorVec 			pts;
+            U32Vec 				remap_idx	(part->m_Verts.size(),0);
+            for (v_it=part->m_Verts.begin(); v_it!=part->m_Verts.end(); v_it++){
+                SOGFVert& pV 	= *v_it;
+                BOOL bFound		= FALSE;
+                for (FvectorIt vert_it=pts.begin(); vert_it!=pts.end(); vert_it++){
+                	if (vert_it->similar(pV.P,EPS_L)){
+                    	remap_idx[v_it-part->m_Verts.begin()]=vert_it-pts.begin();
+		                bFound	= TRUE;
+                    	break;
+                    }
+                }
+                if (!bFound){
+                    remap_idx[v_it-part->m_Verts.begin()]=pts.size();
+                	pts.push_back(pV.P);
+                }
+            }
+			
+            for (FvectorIt vert_it=pts.begin(); vert_it!=pts.end(); vert_it++){
+            	AnsiString 		tmp;
+                tmp.sprintf		("v %f %f %f",vert_it->x,vert_it->y,-vert_it->z);
+                W->w_string		(tmp.c_str());
+            }
+            for (OGFFaceIt f_it=part->m_Faces.begin(); f_it!=part->m_Faces.end(); f_it++){
+                SOGFFace& pF 	= *f_it;
+            	AnsiString 		tmp;
+                tmp.sprintf		("f %d %d %d",remap_idx[pF.v[0]]+1,remap_idx[pF.v[2]]+1,remap_idx[pF.v[1]]+1);
+                W->w_string		(tmp.c_str());
+            }
+*/
+/*
+			// vertices
+            for (v_it=part->m_Verts.begin(); v_it!=part->m_Verts.end(); v_it++){
+                SOGFVert& pV 	= *v_it;
+            	AnsiString 		tmp;
+                tmp.sprintf		("v %f %f %f",pV.P.x,pV.P.y,-pV.P.z);
+                W->w_string		(tmp.c_str());
+            }
+            // face
+            for (OGFFaceIt f_it=part->m_Faces.begin(); f_it!=part->m_Faces.end(); f_it++){
+                SOGFFace& pF 	= *f_it;
+            	AnsiString 		tmp;
+                tmp.sprintf		("f %d %d %d",pF.v[0]+1,pF.v[2]+1,pF.v[1]+1);
+                W->w_string		(tmp.c_str());
+            }
+            // normals
+            W->w_string			("bind n vertex");
+            for (v_it=part->m_Verts.begin(); v_it!=part->m_Verts.end(); v_it++){
+                SOGFVert& pV 	= *v_it;
+            	AnsiString 		tmp;
+                tmp.sprintf		("n %f %f %f",pV.N.x,pV.N.y,-pV.N.z);
+                W->w_string		(tmp.c_str());
+            }
+			FS.w_close	(W);
+//*/            
         }
         F.close_chunk();
         chunk_id++;

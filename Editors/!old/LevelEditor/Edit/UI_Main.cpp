@@ -396,9 +396,9 @@ void TUI::Idle()
         Tools->UpdateProperties	(false);
         RealUpdateScene			();
     }
+    Tools->OnFrame	();
     if (m_Flags.is(flRedraw)){
 	    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
-	    Tools->OnFrame		();
         Redraw				();         
     }
 	// show hint

@@ -35,6 +35,7 @@ u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
     VERIFY		(!CMD.command.empty());
     u32 res		= TRUE;
     CMD.command	(p1,p2,res);
+//?	UI->RedrawScene();
     return		res;
 }
 void	RegisterCommand (u32 cmd, const SECommand& cmd_impl)
@@ -83,6 +84,7 @@ void 	TUI::CommandRenderResize(u32 p1, u32 p2, u32& res)
         m_D3DWindow->Width 	= m_D3DPanel->Width;
         m_D3DWindow->Height	= m_D3DPanel->Height;
     }
+    UI->RedrawScene		();
 }
 
 //------------------------------------------------------------------------------
@@ -175,6 +177,7 @@ void 	CommandRefreshTextures(u32 p1, u32 p2, u32& res)
 void 	CommandReloadTextures(u32 p1, u32 p2, u32& res)
 {
     Device.ReloadTextures();
+    UI->RedrawScene		();
 }
 void 	CommandChangeSnap(u32 p1, u32 p2, u32& res)
 {
@@ -214,32 +217,38 @@ void 	CommandRefreshProperties(u32 p1, u32 p2, u32& res)
 }
 void 	CommandZoomExtents(u32 p1, u32 p2, u32& res)
 {
-    Tools->ZoomObject(p1);
+    Tools->ZoomObject	(p1);
+    UI->RedrawScene		();
 }
 void 	CommandRenderWire(u32 p1, u32 p2, u32& res)
 {
     if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
     else 	Device.dwFillMode 	= D3DFILL_SOLID;
+    UI->RedrawScene		();
 }
 void 	CommandToggleSafeRect(u32 p1, u32 p2, u32& res)
 {
     psDeviceFlags.set	(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
     ExecCommand			(COMMAND_RENDER_RESIZE);
+    UI->RedrawScene		();
 }
 void 	CommandToggleGrid(u32 p1, u32 p2, u32& res)
 {
     psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
+    UI->RedrawScene		();
 }
 void 	CommandUpdateGrid(u32 p1, u32 p2, u32& res)
 {
-    DU.UpdateGrid(EPrefs.grid_cell_count,EPrefs.grid_cell_size);
-    UI->OutGridSize();
+    DU.UpdateGrid		(EPrefs.grid_cell_count,EPrefs.grid_cell_size);
+    UI->OutGridSize		();
+    UI->RedrawScene		();
 }
 void 	CommandGridNumberOfSlots(u32 p1, u32 p2, u32& res)
 {
     if (p1)	EPrefs.grid_cell_count += 2;
     else	EPrefs.grid_cell_count -= 2;
-    ExecCommand	(COMMAND_UPDATE_GRID);
+    ExecCommand			(COMMAND_UPDATE_GRID);
+    UI->RedrawScene		();
 }
 void 	CommandGridSlotSize(u32 p1, u32 p2, u32& res)
 {
@@ -252,7 +261,8 @@ void 	CommandGridSlotSize(u32 p1, u32 p2, u32& res)
         if (fsimilar(val,1.f)||(val<1)) step/=10.f;
         EPrefs.grid_cell_size -= step;
     }
-    ExecCommand	(COMMAND_UPDATE_GRID);
+    ExecCommand			(COMMAND_UPDATE_GRID);
+    UI->RedrawScene		();
 }
 void 	CommandCreateSoundLib(u32 p1, u32 p2, u32& res)
 {

@@ -242,11 +242,11 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     B					= PHelper().CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
     B->OnBtnClickEvent.bind(this,&SGameMtlPair::OnParentClick);
     
-    propBreakingSounds	= PHelper().CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource);
-    propStepSounds		= PHelper().CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource);
-    propCollideSounds	= PHelper().CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource);
-    propCollideParticles= PHelper().CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles);
-    propCollideMarks	= PHelper().CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture);
+    propBreakingSounds	= PHelper().CreateChoose	(items,	"Breaking Sounds",	&BreakingSounds, 	smSoundSource, 0,0, GAMEMTL_SUBITEM_COUNT);
+    propStepSounds		= PHelper().CreateChoose	(items,	"Step Sounds",		&StepSounds, 		smSoundSource, 0,0, GAMEMTL_SUBITEM_COUNT);
+    propCollideSounds	= PHelper().CreateChoose	(items,	"Collide Sounds",	&CollideSounds, 	smSoundSource, 0,0, GAMEMTL_SUBITEM_COUNT);
+    propCollideParticles= PHelper().CreateChoose	(items,	"Collide Particles",&CollideParticles, 	smParticles, 0,0, GAMEMTL_SUBITEM_COUNT);
+    propCollideMarks	= PHelper().CreateChoose	(items,	"Collide Marks",	&CollideMarks,		smTexture, 0,0, GAMEMTL_SUBITEM_COUNT);
 
     propBreakingSounds->Owner()->m_Flags.assign	(SetMask(show_CB,OwnProps,flBreakingSounds));
     propStepSounds->Owner()->m_Flags.assign		(SetMask(show_CB,OwnProps,flStepSounds));
@@ -259,12 +259,6 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     propCollideSounds->OnChangeEvent			= OnChange;
     propCollideParticles->OnChangeEvent			= OnChange;
     propCollideMarks->OnChangeEvent				= OnChange;
-
-    propBreakingSounds->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
-    propStepSounds->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
-    propCollideSounds->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
-    propCollideParticles->Owner()->subitem		= GAMEMTL_SUBITEM_COUNT;
-    propCollideMarks->Owner()->subitem			= GAMEMTL_SUBITEM_COUNT;
 
     if (show_CB)
     {

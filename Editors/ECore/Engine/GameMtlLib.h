@@ -51,9 +51,9 @@
 #endif
 
 #ifdef GM_NON_GAME
-	#define SoundSVec4 		AnsiString
-	#define PSSVec4 		AnsiString
-	#define ShaderSVec4 	AnsiString
+	#define SoundSVec4 		ref_str
+	#define PSSVec4 		ref_str
+	#define ShaderSVec4 	ref_str
 #else
 	DEFINE_SVECTOR(ref_sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
 	DEFINE_SVECTOR(ref_str,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
@@ -158,10 +158,10 @@ public:
     PropValue*			propCollideSounds;
     PropValue*			propCollideParticles;
     PropValue*			propCollideMarks;
-    void __fastcall 	OnFlagChange	(PropValue* sender);
-	void __fastcall 	OnParentClick	(PropValue* sender, bool& bModif, bool& bSafe);
-	void __fastcall 	OnCommandClick	(PropValue* sender, bool& bModif, bool& bSafe);
-    void __fastcall 	FillChooseMtl	(ChooseItemVec& items);
+    void __stdcall	 	OnFlagChange	(PropValue* sender);
+	void __stdcall	 	OnParentClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall	 	OnCommandClick	(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall	 	FillChooseMtl	(ChooseItemVec& items, void* param);
 #endif
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)

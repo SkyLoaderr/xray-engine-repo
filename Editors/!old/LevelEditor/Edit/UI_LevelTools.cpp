@@ -268,6 +268,7 @@ void __fastcall CLevelTools::OnPropsModified()
 {
 	Scene->Modified();
 //	Scene->UndoSave();
+	UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

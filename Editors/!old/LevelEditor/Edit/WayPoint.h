@@ -83,10 +83,9 @@ public:
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	RotateParent	(Fvector& axis, float angle ){;}
 	virtual void 	RotateLocal		(Fvector& axis, float angle ){;}
+	virtual void 	RotatePivot		(const Fmatrix& prev_inv, const Fmatrix& current){;}
 	virtual void 	Scale			(Fvector& amount){;}
-	virtual void 	PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& axis, float angle ){;}
-	virtual void 	PivotRotateLocal(const Fmatrix& parent, Fvector& pivot, Fvector& axis, float angle ){;}
-	virtual void 	PivotScale		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){;}
+	virtual void 	ScalePivot		(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount){;}
 
 	virtual bool    GetBox      	(Fbox& box);
 	virtual void    Render      	(int priority, bool strictB2F);
