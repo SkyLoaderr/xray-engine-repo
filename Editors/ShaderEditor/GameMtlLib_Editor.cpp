@@ -25,11 +25,11 @@ void SGameMtl::FillProp		(PropItemVec& items)
     PHelper.CreateFlag32	(items,	"Flags\\Wheeltrace",	&Flags,	flWheeltrace);
     PHelper.CreateFlag32	(items,	"Flags\\Bloodmark",		&Flags,	flBloodmark);
     // physics part
-    PHelper.CreateFloat		(items,	"Physics\\Friction",		&fPHFriction);
-    PHelper.CreateFloat		(items,	"Physics\\Dumping",			&fPHDumping);
-    PHelper.CreateFloat		(items,	"Physics\\Spring",			&fPHSpring);
-    PHelper.CreateFloat		(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity);
-    PHelper.CreateFloat		(items,	"Physics\\Bouncing",		&fPHBouncing);
+    PHelper.CreateFloat		(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat		(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat		(items,	"Physics\\Spring",			&fPHSpring,				0.001f,	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat		(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
+    PHelper.CreateFloat		(items,	"Physics\\Bouncing",		&fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
     // factors
     PHelper.CreateFloat		(items,	"Factors\\Shoot",			&fShootFactor);
     PHelper.CreateFloat		(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
@@ -172,12 +172,15 @@ LPCSTR CGameMtlLibrary::MtlPairToName		(int mtl0, int mtl1)
     SGameMtl* M0	= GetMaterialByID(mtl0);	R_ASSERT(M0);
     SGameMtl* M1	= GetMaterialByID(mtl1);	R_ASSERT(M1);
     sprintf			(buf,"%s # %s",M0->name,M1->name);
+    _ChangeSymbol	(buf,'\\','/');
     return buf;
 }
 void CGameMtlLibrary::NameToMtlPair			(LPCSTR name, int& mtl0, int& mtl1)
 {
     string64 buf0, buf1;
     sscanf(name,"%s # %s",buf0,buf1);
+    _ChangeSymbol	(buf0,'/','\\');
+    _ChangeSymbol	(buf1,'/','\\');
     SGameMtl* M0	= GetMaterial(buf0);	R_ASSERT(M0);	mtl0=M0->GetID();
     SGameMtl* M1	= GetMaterial(buf1);	R_ASSERT(M1);   mtl1=M1->GetID();
 }
@@ -300,7 +303,7 @@ void SGameMtl::Save(CFS_Base& fs)
 
 	fs.open_chunk			(GAMEMTL_CHUNK_PHYSICS);
     fs.Wfloat				(fPHFriction);
-    fs.Wfloat				(fPHDumping);
+    fs.Wfloat				(fPHDamping);
     fs.Wfloat				(fPHSpring);
     fs.Wfloat				(fPHBounceStartVelocity);
     fs.Wfloat				(fPHBouncing);

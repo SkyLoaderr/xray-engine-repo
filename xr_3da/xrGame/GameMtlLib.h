@@ -69,7 +69,7 @@ public:
     Flags32				Flags;
     // physics part
     float				fPHFriction;            // ?
-    float				fPHDumping;             // ?
+    float				fPHDamping;             // ?
     float				fPHSpring;              // ?
     float				fPHBounceStartVelocity;	// ?
 	float				fPHBouncing;            // ?
@@ -84,6 +84,12 @@ public:
 		ZeroMemory		(this,sizeof(*this));
 		strcpy			(name,"unknown");
         ID				= -1;
+        // physics
+        fPHFriction				= 1.f;          
+        fPHDamping				= 1.f;           
+        fPHSpring				= 1.f;            
+        fPHBounceStartVelocity  = 0.f; 
+        fPHBouncing				= 0.1f;          
 	}               	
     void 				Load			(CStream& fs);
     void 				Save			(CFS_Base& fs);
@@ -147,7 +153,7 @@ public:
     IC int				GetMtl0			(){return mtl0;}
     IC int				GetMtl1			(){return mtl1;}
     IC int				GetID			(){return ID;}
-    IC void				SetPair			(int m0, int m1){if (m0<m1){mtl0=m0; mtl1=m1;} else { mtl0=m1; mtl1=m0;}}
+    IC void				SetPair			(int m0, int m1){mtl0=m0; mtl1=m1;}
 	IC bool				IsPair			(int m0, int m1){return !!(((mtl0==m0)&&(mtl1==m1))||((mtl0==m1)&&(mtl1==m0)));}
     void				Save			(CFS_Base& fs);
     void				Load			(CStream& fs);

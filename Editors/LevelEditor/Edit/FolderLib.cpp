@@ -246,7 +246,7 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, LPCSTR full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
-	char fld[128];
+	char fld[128];                                                                     
 	int fld_cnt = _GetItemCount(full_name,'\\')-1;
     _GetItems(full_name,0,fld_cnt,fld,'\\');
     TElTreeItem* fld_node = fld[0]?FindFolder(tv,fld,&last_node,&idx):0;

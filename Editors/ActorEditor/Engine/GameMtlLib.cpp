@@ -16,7 +16,7 @@ void SGameMtlPair::Load(CStream& fs)
 
 	R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_PAIR));
     mtl0				= fs.Rdword();
-    mtl1				= fs.Rdword();
+    mtl1				= fs.Rdword();  
     ID					= fs.Rdword();
     ID_parent			= fs.Rdword();
     OwnProps.set		(fs.Rdword());
@@ -51,7 +51,7 @@ void SGameMtl::Load(CStream& fs)
 
 	R_ASSERT(fs.FindChunk(GAMEMTL_CHUNK_PHYSICS));
     fPHFriction				= fs.Rfloat();
-    fPHDumping				= fs.Rfloat();
+    fPHDamping				= fs.Rfloat();
     fPHSpring				= fs.Rfloat();
     fPHBounceStartVelocity 	= fs.Rfloat();
     fPHBouncing				= fs.Rfloat();
