@@ -18,20 +18,20 @@ DEFINE_VECTOR			(FLOAT_VECTOR,	FLOAT_VECTOR_VECTOR,	FLOAT_VECTOR_IT);
 
 void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CLevelGraph& tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID, float fValue)
 {
-	if (tDistances[dwStartNodeID] < fValue)
+	if (tDistances[dwStartNodeID] <= fValue)
 		return;
 	else
-		tDistances[dwStartNodeID] = fValue;
-	CLevelGraph::CVertex		*tpNode = tMap.vertex(dwStartNodeID);
-	CLevelGraph::const_iterator	I, E;
-	tMap.begin			(dwStartNodeID,I,E);
-	tMarks[dwStartNodeID] = true;
-	for ( ; I != E; I++) {
-		u32				dwNexNodeID = tpNode->link(I);
+		tDistances[dwStartNodeID]	= fValue;
+	CLevelGraph::CVertex			*tpNode = tMap.vertex(dwStartNodeID);
+	CLevelGraph::const_iterator		I, E;
+	tMap.begin						(dwStartNodeID,I,E);
+	tMarks[dwStartNodeID]			= true;
+	for ( ; I != E; ++I) {
+		u32							dwNexNodeID = tpNode->link(I);
 		if (tMap.valid_vertex_id(dwNexNodeID) && !tMarks[dwNexNodeID])
-			vfRecurseUpdate(tDistances,tMap,tMarks,dwNexNodeID,fValue + tMap.distance(dwStartNodeID,dwNexNodeID));
+			vfRecurseUpdate			(tDistances,tMap,tMarks,dwNexNodeID,fValue + tMap.distance(dwStartNodeID,dwNexNodeID));
 	}
-	tMarks[dwStartNodeID] = false;
+	tMarks[dwStartNodeID]			= false;
 }
 
 void					vfRecurseMark(const CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
@@ -40,7 +40,7 @@ void					vfRecurseMark(const CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwS
 	CLevelGraph::const_iterator	I, E;
 	tMap.begin					(dwStartNodeID,I,E);
 	tMarks[dwStartNodeID]		= true;
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		u32						dwNexNodeID = tpNode->link(I);
 		if (tMap.valid_vertex_id(dwNexNodeID) && !tMarks[dwNexNodeID])
 			vfRecurseMark		(tMap,tMarks,dwNexNodeID);
