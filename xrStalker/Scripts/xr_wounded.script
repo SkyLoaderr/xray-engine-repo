@@ -158,6 +158,10 @@ function action_cover:initialize ()
        self.pos = pt:position ()
        self.vid = pt:level_vertex_id ()    
     end    
+
+    if self.object:active_item () ~= nil then
+       self.object:set_item (object.deactivate, self.object:active_item ())
+    end   
     
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
@@ -380,6 +384,7 @@ function action_stand:finalize ()
     self.object:set_start_dialog ("hello_dialog")
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
+    self.a.sit = false
 end    
 ------------------------------------------------------------------------------------------
 
@@ -554,7 +559,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["sit"],             true))
-    action:add_effect       (world_property (properties["wound"],           false))
+    action:add_effect       (world_property (properties["sit"],             false))
     --action:add_effect       (world_property (properties["wound"],         false))
    	manager:add_action      (operators["enemy"], action)
     
@@ -562,7 +567,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],  false))
     
     action = manager:action (stalker_ids.action_combat_planner)
-    action:add_precondition (world_property (properties["wound"],  false))
+    action:add_precondition (world_property (properties["sit"],  false))
 
 end
 ------------
