@@ -438,6 +438,20 @@ void CALifeCombatManager::vfFinishCombat(ECombatResult tCombatResult)
 
 ALife::ERelationType	CALifeCombatManager::relation_type	(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract2) const
 {
+	CSE_ALifeTraderAbstract* human1 = smart_cast<CSE_ALifeTraderAbstract*>(tpALifeMonsterAbstract1);
+	CSE_ALifeTraderAbstract* human2 = smart_cast<CSE_ALifeTraderAbstract*>(tpALifeMonsterAbstract2);
+
+	if(human1 && human2)
+	{
+		ALife::ERelationType rel12 = human1->get_relation(tpALifeMonsterAbstract1->ID);
+		ALife::ERelationType rel21 = human2->get_relation(tpALifeMonsterAbstract2->ID);
+
+		if(ALife::eRelationTypeEnemy == rel12 || ALife::eRelationTypeEnemy == rel21)
+			return ALife::eRelationTypeEnemy;
+		else 
+			return ALife::eRelationTypeFriend;
+	}
+
 	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team())
 		return(ALife::eRelationTypeEnemy);
 	else

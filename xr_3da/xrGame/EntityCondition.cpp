@@ -402,9 +402,14 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 		m_fDeltaRadiation += hit_power;
 		return NULL;
 		break;
-	case ALife::eHitTypeStrike:
-	case ALife::eHitTypeFireWound:
 	case ALife::eHitTypeExplosion:
+	case ALife::eHitTypeStrike:
+		hit_power *= m_HitTypeK[hit_type];
+		m_fHealthLost = hit_power*m_fHealthHitPart;
+		m_fDeltaHealth -= m_fHealthLost;
+		m_fDeltaPower -= hit_power*m_fPowerHitPart;
+		break;
+	case ALife::eHitTypeFireWound:
 	case ALife::eHitTypeWound:
 		hit_power *= m_HitTypeK[hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart*m_fHitBoneScale;

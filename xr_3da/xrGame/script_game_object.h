@@ -231,9 +231,12 @@ public:
 			int					CharacterReputation	();
 
 			void SetCharacterRank			(int);
+			void ChangeCharacterRank		(int);
 			void SetCharacterReputation		(int);
+			void ChangeCharacterReputation	(int);
 			void SetCharacterCommunity		(LPCSTR);
-						
+		
+
 			u32					GetInventoryObjectCount() const;
 
 			CScriptGameObject	*GetActiveItem		();

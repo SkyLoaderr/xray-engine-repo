@@ -21,6 +21,7 @@ CInventorySlot::CInventorySlot()
 {
 	m_pIItem = NULL;
 	m_bCanBeActivated = true;
+	m_bUsable = true;
 }
 
 CInventorySlot::~CInventorySlot() 

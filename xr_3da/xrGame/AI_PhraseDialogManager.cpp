@@ -42,14 +42,14 @@ void CAI_PhraseDialogManager::AnswerPhrase (DIALOG_SHARED_PTR& phrase_dialog)
 
 	if(!phrase_dialog->IsFinished())
 	{
-		int goodwill = pInvOwner->CharacterInfo().GetGoodwill(pOthersGO->ID());
+		CHARACTER_ATTITUDE attitude = pInvOwner->CharacterInfo().Relations().GetAttitude(pOthersGO->ID());
 
 		//если не найдем более подходяещей выводим фразу
 		//последнюю из списка (самую грубую)
 		int phrase_num = phrase_dialog->PhraseList().size()-1;
 		for(u32 i=0; i<phrase_dialog->PhraseList().size(); i++)
 		{
-			if(goodwill >= phrase_dialog->PhraseList()[phrase_num]->GoodwillLevel())
+			if(attitude >= phrase_dialog->PhraseList()[phrase_num]->GoodwillLevel())
 			{
 				phrase_num = i;
 				break;

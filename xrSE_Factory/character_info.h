@@ -8,13 +8,12 @@
 #include "character_info_defs.h"
 #include "PhraseDialogDefs.h"
 
-#include "alife_registry_container.h"
-#include "alife_registry_wrapper.h"
-
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
 #include "specific_character.h"
+#include "relation_registry.h"
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,15 +103,9 @@ public:
 	PHRASE_DIALOG_INDEX			StartDialog	()	const;
 	const DIALOG_INDEX_VECTOR&	ActorDialogs()	const;
 
-	int					 GetGoodwill			(u16 person_id) const ;
-	void				 SetGoodwill			(u16 person_id, int goodwill);
-	ALife::ERelationType GetRelationType		(u16 person_id) const ;
-	void				 SetRelationType		(u16 person_id, ALife::ERelationType new_relation);
-	void				 ClearRelations			();
-
+	RELATION_REGISTRY&			Relations ();
 protected:
 	//наши отношения с другими персонажами
-	typedef CALifeRegistryWrapper<CRelationRegistry> RELATION_REGISTRY;
 	RELATION_REGISTRY relation_registry;
 
 	CHARACTER_RANK			m_CurrentRank;

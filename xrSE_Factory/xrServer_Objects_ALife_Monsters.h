@@ -11,7 +11,7 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
-#include "character_info_defs.h"
+#include "relation_registry.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -35,6 +35,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	void							set_character_profile	(PROFILE_INDEX);
 	SPECIFIC_CHARACTER_INDEX		specific_character		();
 	void							set_specific_character	(SPECIFIC_CHARACTER_INDEX);
+	ALife::ERelationType			get_relation			(u16 person_id);
 private:
 	bool							m_character_profile_init;
 	PROFILE_INDEX					m_iCharacterProfile;
@@ -42,6 +43,8 @@ private:
 	//буферный вектор проверенных персонажей
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
 
+	//реестр  отношений с другими персонажами
+	RELATION_REGISTRY relation_registry;
 
 public:	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);

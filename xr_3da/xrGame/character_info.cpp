@@ -10,34 +10,6 @@
 
 #include "alife_registry_container_composition.h"
 
-//////////////////////////////////////////////////////////////////////////
-
-SRelation::SRelation()
-{
-	m_eRelationType = ALife::eRelationTypeDummy;
-}
-SRelation::~SRelation()
-{
-}
-
-ALife::ERelationType SRelation::RelationType() const 
-{
-	return m_eRelationType;
-}
-void SRelation::SetRelationType(ALife::ERelationType relation) 
-{
-	m_eRelationType = relation;
-}
-
-int SRelation::Goodwill() const
-{
-	return m_iGoodwill;
-}
-void SRelation::SetGoodwill(int new_goodwill)
-{
-	m_iGoodwill = new_goodwill;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
@@ -173,58 +145,12 @@ void CCharacterInfo::SetCommunity	(CHARACTER_COMMUNITY community)
 	m_CurrentCommunity = community;
 }
 
-ALife::ERelationType  CCharacterInfo::GetRelationType	(u16 person_id) const 
-{
-	const RELATION_MAP* relation_map = relation_registry.objects_ptr();
 
-	if(relation_map)
-	{
-		RELATION_MAP::const_iterator it = relation_map->find(person_id);
-		if(relation_map->end() != it)
-		{
-			const SRelation& relation = (*it).second;
-			return relation.RelationType();
-		}
-	}
-	return ALife::eRelationTypeDummy;
-}
-void CCharacterInfo::SetRelationType	(u16 person_id, ALife::ERelationType new_relation)
+RELATION_REGISTRY& CCharacterInfo::Relations ()
 {
-	RELATION_MAP& relation_map = relation_registry.objects();
-	relation_map[person_id].SetRelationType(new_relation);
+	return relation_registry;
 }
 
-
-int  CCharacterInfo::GetGoodwill (u16 person_id) const 
-{
-	const RELATION_MAP* relation_map = relation_registry.objects_ptr();
-
-	if(relation_map)
-	{
-		RELATION_MAP::const_iterator it = relation_map->find(person_id);
-		if(relation_map->end() != it)
-		{
-			const SRelation& relation = (*it).second;
-			return relation.Goodwill();
-		}
-	}
-		return NO_GOODWILL;
-}
-void CCharacterInfo::SetGoodwill	(u16 person_id, int goodwill)
-{
-	RELATION_MAP& relation_map = relation_registry.objects();
-	relation_map[person_id].SetGoodwill(goodwill);
-}
-
-
-void CCharacterInfo::ClearRelations	()
-{
-	const RELATION_MAP* relation_map = relation_registry.objects_ptr();
-	if(relation_map)
-	{
-		relation_registry.objects().clear();
-	}
-}
 
 int	 CCharacterInfo::TradeIconX() const
 {

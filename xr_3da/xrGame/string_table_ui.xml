@@ -9,5 +9,10 @@
 		<text>To Global Map</text>
 		<text ln="rus">Глобальная карта</text>
 	</string>
+	<!-- надписи внизу основного окна -->
+	<string id="cant_walk">
+		<text>too tied to walk</text>
+		<text ln="rus">слишком истощен, чтобы идти</text>
+	</string>
 </string_table>
 

@@ -104,6 +104,7 @@ public:
 			void					interactive			(bool value);
 			void					move_offline		(bool value);
 #ifdef XRGAME_EXPORTS
+	virtual void					spawn_supplies		(LPCSTR);
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
 #endif

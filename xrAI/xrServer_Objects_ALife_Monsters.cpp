@@ -96,6 +96,8 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
 	}
+
+	relation_registry.Init(base()->ID);
 }
 
 #ifdef XRGAME_EXPORTS
@@ -160,6 +162,15 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 			char_info.m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
 
 		set_specific_character(char_info.m_iSpecificCharacterIndex);
+		CSpecificCharacter selected_char;
+		selected_char.Load(m_iSpecificCharacter);
+		if(selected_char.Visual())
+		{
+			CSE_Visual* visual = smart_cast<CSE_Visual*>(base()); VERIFY(visual);
+			if(xr_strlen(selected_char.Visual())>0)
+				visual->set_visual(selected_char.Visual());
+		}
+
 		return m_iSpecificCharacter;
 	}
 }
@@ -226,6 +237,13 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 	m_character_profile_init = true;
 	return	m_iCharacterProfile;
 }
+
+
+ALife::ERelationType CSE_ALifeTraderAbstract::get_relation (u16 person_id)
+{
+	return relation_registry.GetRelationType(person_id);
+}
+
 #endif
 
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)

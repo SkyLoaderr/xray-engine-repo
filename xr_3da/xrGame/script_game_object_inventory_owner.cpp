@@ -195,21 +195,21 @@ int	CScriptGameObject::GetGoodwill(CScriptGameObject* pToWho)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().GetGoodwill(pToWho->m_tpGameObject->ID());
+	return pInventoryOwner->CharacterInfo().Relations().GetGoodwill(pToWho->m_tpGameObject->ID());
 }
 
 void CScriptGameObject::SetGoodwill(int goodwill, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	pInventoryOwner->CharacterInfo().SetGoodwill(pWhoToSet->m_tpGameObject->ID(), goodwill);
+	pInventoryOwner->CharacterInfo().Relations().SetGoodwill(pWhoToSet->m_tpGameObject->ID(), goodwill);
 }
 
 void CScriptGameObject::SetRelation(ALife::ERelationType relation, CScriptGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	pInventoryOwner->CharacterInfo().SetRelationType(pWhoToSet->m_tpGameObject->ID(), relation);
+	pInventoryOwner->CharacterInfo().Relations().SetRelationType(pWhoToSet->m_tpGameObject->ID(), relation);
 }
 bool CScriptGameObject::NeedToAnswerPda		()
 {
@@ -245,6 +245,13 @@ void CScriptGameObject::SetCharacterRank			(int char_rank)
 	return pInventoryOwner->CharacterInfo().SetRank(char_rank);
 }
 
+void CScriptGameObject::ChangeCharacterRank			(int char_rank)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().SetRank(pInventoryOwner->CharacterInfo().Rank() + char_rank);
+}
+
 int CScriptGameObject::CharacterReputation			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
@@ -256,7 +263,14 @@ void CScriptGameObject::SetCharacterReputation		(int char_rep)
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().SetReputation(char_rep);
+	pInventoryOwner->CharacterInfo().SetReputation(char_rep);
+}
+
+void CScriptGameObject::ChangeCharacterReputation		(int char_rep)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	pInventoryOwner->CharacterInfo().SetReputation(pInventoryOwner->CharacterInfo().Reputation() + char_rep);
 }
 
 LPCSTR CScriptGameObject::CharacterCommunity	()

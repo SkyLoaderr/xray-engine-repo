@@ -10,8 +10,12 @@
 //////////////////////////////////////////////////////////////////////////
 SSpecificCharacterData::SSpecificCharacterData()
 {
-	m_sGameName		= NULL;
-	m_sBioText		= NULL;
+	m_sGameName.clear();
+	m_sBioText.clear();
+	m_sVisual.clear();
+	m_sSupplySpawn.clear();
+
+
 	m_iStartDialog	= NO_PHRASE_DIALOG;
 	m_ActorDialogs.clear(); 
 
@@ -53,12 +57,12 @@ void CSpecificCharacter::InitXmlIdToIndex()
 		id_to_index::file_str = pSettings->r_string("profiles", "specific_characters_files");
 }
 
-void CSpecificCharacter::Load(PROFILE_ID id)
+void CSpecificCharacter::Load(SPECIFIC_CHARACTER_ID id)
 {
 	Load(id_to_index::IdToIndex(id));
 }
 
-void CSpecificCharacter::Load(PROFILE_INDEX index)
+void CSpecificCharacter::Load(SPECIFIC_CHARACTER_INDEX index)
 {
 	m_iOwnIndex = index;
 	inherited_shared::load_shared(m_iOwnIndex, NULL);
@@ -121,8 +125,10 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	data()->m_iMapIconY		= uiXml.ReadAttribInt("map_icon", 0, "y");
 
 	//игровое имя персонажа
-	data()->m_sGameName		= uiXml.Read("name", 0, NULL);
-	data()->m_sBioText		= uiXml.Read("bio", 0, NULL);
+	data()->m_sGameName		= uiXml.Read("name", 0, "");
+	data()->m_sBioText		= uiXml.Read("bio", 0, "");
+	data()->m_sVisual		= uiXml.Read("visual", 0, "");
+	data()->m_sSupplySpawn	= uiXml.Read("supplies", 0, "");
 
 	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
 	R_ASSERT3(data()->m_Community != NO_COMMUNITY, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
@@ -135,12 +141,12 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 
 LPCSTR CSpecificCharacter::Name() const 
 {
-	return	*data()->m_sGameName;
+	return	data()->m_sGameName.c_str();
 }
 
 LPCSTR CSpecificCharacter::Bio() const 
 {
-	return	*data()->m_sBioText;
+	return	data()->m_sBioText.c_str();
 }
 
 CHARACTER_RANK CSpecificCharacter::Rank() const 
@@ -155,4 +161,13 @@ LPCSTR CSpecificCharacter::Community() const
 CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const 
 {
 	return data()->m_Reputation;
+}
+
+LPCSTR CSpecificCharacter::Visual		() const 
+{
+	return data()->m_sVisual.c_str();
+}
+LPCSTR CSpecificCharacter::SupplySpawn	() const 
+{
+	return data()->m_sSupplySpawn.c_str();
 }

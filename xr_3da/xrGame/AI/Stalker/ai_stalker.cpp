@@ -85,7 +85,10 @@ void CAI_Stalker::reload			(LPCSTR section)
 {
 	CMotivationActionManagerStalker::reload(section);
 	CCustomMonster::reload			(section);
+	
 	CObjectHandler::reload			(section);
+	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
+
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
@@ -179,6 +182,11 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
 
+	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
+		set_game_vertex				(tpHuman->m_tGraphID);
+	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID))
+		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
+
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (u32(-1) == m_dwParticularState) {
 		R_ASSERT2					(
@@ -208,6 +216,20 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	if (!g_Alive())
 		CSoundPlayer::set_sound_mask(u32(eStalkerSoundMaskDie));
+
+
+
+	//загрузить иммунитеты из модельки сталкера
+	CKinematics* pKinematics = smart_cast<CKinematics*>(Visual()); VERIFY(pKinematics);
+	CInifile* ini = pKinematics->LL_UserData();
+	if(ini)
+	{
+		if(ini->section_exist("immunities"))
+		{
+			LPCSTR imm_sect = ini->r_string("immunities", "immunities_sect");
+			LoadImmunities(imm_sect);
+		}
+	}
 
 	return							(TRUE);
 }
@@ -355,7 +377,7 @@ void CAI_Stalker::UpdateCL()
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(smart_cast<CActor*>(who))
-		CInventoryOwner::CharacterInfo().SetRelationType(who->ID(), ALife::eRelationTypeEnemy);
+		CInventoryOwner::CharacterInfo().Relations().SetRelationType(who->ID(), ALife::eRelationTypeEnemy);
 
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }

@@ -90,7 +90,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 
 	//-------------------------------------
 	known_info_registry.init(pThis->ID());
-	CharacterInfo().relation_registry.init(pThis->ID());
+	CharacterInfo().Relations().Init(pThis->ID());
 	//-------------------------------------
 
 

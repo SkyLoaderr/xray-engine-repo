@@ -11,22 +11,24 @@
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
 #include "ai_space.h"
+#include "specific_character.h"
 
 using namespace ALife;
 
-void CSE_ALifeObject::spawn_supplies		()
+
+void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 {
-	if (!xr_strlen(m_ini_string))
+	if (!xr_strlen(ini_string))
 		return;
 
 #pragma warning(push)
 #pragma warning(disable:4238)
 	CInifile					ini(
 		&IReader				(
-			(void*)(*(m_ini_string)),
-			m_ini_string.size()
+		(void*)(*(ini_string)),
+		xr_strlen(ini_string)
 		)
-	);
+		);
 #pragma warning(pop)
 
 	if (ini.section_exist("spawn")) {
@@ -45,6 +47,11 @@ void CSE_ALifeObject::spawn_supplies		()
 	}
 }
 
+void CSE_ALifeObject::spawn_supplies		()
+{
+	spawn_supplies(*m_ini_string);
+}
+
 void CSE_ALifeTraderAbstract::spawn_supplies	()
 {
 	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(this);
@@ -52,6 +59,10 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 	CSE_Abstract				*abstract = dynamic_object->alife().spawn_item("device_pda",base()->o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,base()->ID);
 	CSE_ALifeItemPDA			*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 	pda->m_original_owner		= base()->ID;
+	
+	CSpecificCharacter spec_char;
+	spec_char.Load(m_iSpecificCharacter);
+	dynamic_object->spawn_supplies(spec_char.SupplySpawn());	
 }
 
 void CSE_ALifeTraderAbstract::vfInitInventory()

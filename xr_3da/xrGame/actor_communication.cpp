@@ -313,7 +313,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	map_location.attached_to_object = true;
 	map_location.object_id = GO->ID();
 
-	ALife::ERelationType relation =  pInvOwner->CharacterInfo().GetRelationType(ID());
+	ALife::ERelationType relation =  pInvOwner->CharacterInfo().Relations().GetRelationType(ID());
 	LPCSTR anim_name = NULL;
 
 	switch(relation)

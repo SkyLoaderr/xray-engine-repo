@@ -29,7 +29,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC; PURE_DYNAMIC_CAST"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
@@ -5535,6 +5535,12 @@
 									RelativePath=".\character_info_defs.h">
 								</File>
 								<File
+									RelativePath=".\relation_registry.cpp">
+								</File>
+								<File
+									RelativePath=".\relation_registry.h">
+								</File>
+								<File
 									RelativePath=".\specific_character.cpp">
 								</File>
 								<File
@@ -9310,6 +9316,9 @@
 			</File>
 			<File
 				RelativePath=".\game.ltx">
+			</File>
+			<File
+				RelativePath=".\game_relations.ltx">
 			</File>
 			<File
 				RelativePath=".\helicopter.ltx">

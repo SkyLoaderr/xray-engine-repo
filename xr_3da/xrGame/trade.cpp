@@ -386,13 +386,13 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		int goodwill = pPartner.inv_owner->CharacterInfo().GetGoodwill(pThis.base->ID());
+		CHARACTER_ATTITUDE attitude = pPartner.inv_owner->CharacterInfo().Relations().GetAttitude(pThis.base->ID());
 		float goodwill_factor;
 		
-		if(NO_GOODWILL == goodwill)
+		if(NO_ATTITUDE == attitude)
 			goodwill_factor = 0.f;
 		else
-			goodwill_factor = float(goodwill)/100.f;
+			goodwill_factor = float(attitude)/100.f;
 
 		factor = m_tTradeFactors.fBuyFactorHostile +
 			(m_tTradeFactors.fBuyFactorFriendly - m_tTradeFactors.fBuyFactorHostile)*goodwill_factor;
@@ -407,13 +407,13 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 		}
 
 
-		int goodwill = pThis.inv_owner->CharacterInfo().GetGoodwill(pPartner.base->ID());
+		CHARACTER_ATTITUDE attitude = pThis.inv_owner->CharacterInfo().Relations().GetAttitude(pPartner.base->ID());
 		float goodwill_factor;
 
-		if(NO_GOODWILL == goodwill)
+		if(NO_ATTITUDE == attitude)
 			goodwill_factor = 0.f;
 		else
-			goodwill_factor = float(goodwill)/100.f;
+			goodwill_factor = float(attitude)/100.f;
 
 		factor = m_tTradeFactors.fSellFactorFriendly +
 			(m_tTradeFactors.fSellFactorHostile - m_tTradeFactors.fSellFactorFriendly) *goodwill_factor;

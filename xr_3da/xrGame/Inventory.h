@@ -15,6 +15,8 @@ public:
 	shared_str m_name;
 	//может ли слот стать активным
 	bool m_bCanBeActivated;
+	//может ли слот вообще быть использован
+	bool m_bUsable;
 };
 typedef xr_vector<CInventorySlot> TISlotArr;
 

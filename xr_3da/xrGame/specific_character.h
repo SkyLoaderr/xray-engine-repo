@@ -22,9 +22,13 @@ struct SSpecificCharacterData : CSharedResource
 	virtual ~SSpecificCharacterData ();
 
 	//игровое имя персонажа
-	shared_str m_sGameName;
+	std::string m_sGameName;
 	//текст с биографией персонажа (линк на string table)
-	shared_str m_sBioText;
+	std::string m_sBioText;
+	//имя модели
+	std::string m_sVisual;
+	//строка содержащая предметы, которые нужно проспавнить 
+	std::string m_sSupplySpawn;
 
 	//начальный диалог
 	PHRASE_DIALOG_INDEX m_iStartDialog;
@@ -92,6 +96,9 @@ public:
 	LPCSTR					Community	() const ;
 	CHARACTER_RANK			Rank		() const ;
 	CHARACTER_REPUTATION	Reputation	() const ;
+
+	LPCSTR					Visual		() const ;
+	LPCSTR					SupplySpawn	() const ;
 	
 
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
