@@ -731,7 +731,7 @@ void	CLocatorAPI::w_close(IWriter* &S)
 {
 	R_ASSERT	(S->fName.size());
 	string_path	fname;
-	strcpy		(fname,S->fName);
+	strcpy		(fname,*S->fName);
 	xr_delete	(S);
     struct _stat st;
     _stat		(fname,&st);
