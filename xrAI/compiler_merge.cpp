@@ -13,7 +13,7 @@ BOOL	NodeSimilar(Node&	N1, Node&	N2)
 	if (!fsimilar(N1.LightLevel,N2.LightLevel,l_eps))				return FALSE;
 
 	// plane
-	if (N1.Plane.n.dotproduct(N2.Plane.n)<cosf(deg2rad(sim_angle)))	return FALSE;
+	if (N1.Plane.n.dotproduct(N2.Plane.n)<_cos(deg2rad(sim_angle)))	return FALSE;
 	if (N1.Plane.distance(N2.Pos)>sim_dist)							return FALSE;
 	if (N2.Plane.distance(N1.Pos)>sim_dist)							return FALSE;
 
@@ -102,7 +102,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 			
 			// expand up
 			for (;stack_up.size()<=limit;) {
-				// create new list
+				// create _new list
 				stack_up.push_back	(vecDW());
 				vecDW&	src			= stack_up[stack_up.size()-2];
 				vecDW&	dest		= stack_up[stack_up.size()-1];
@@ -127,7 +127,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 			}
 			// expand down
 			for (; (stack_up.size()+stack_down.size()-1) <= limit;) {
-				// create new list
+				// create _new list
 				stack_down.push_back(vecDW());
 				vecDW&	src			= stack_down[stack_down.size()-2];
 				vecDW&	dest		= stack_down[stack_down.size()-1];
@@ -202,7 +202,7 @@ BOOL QuadFit(DWORD Base, DWORD Size)
 	BestQuad.push_back		(BaseLine);
 	
 	for (; BestQuad.size() < Size;) {
-		// create new list
+		// create _new list
 		BestQuad.push_back	(vecDW());
 		vecDW&	src			= BestQuad[BestQuad.size()-2];
 		vecDW&	dest		= BestQuad[BestQuad.size()-1];

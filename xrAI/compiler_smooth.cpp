@@ -251,7 +251,7 @@ void	xrSmoothNodes()
 		);
 		if (vNorm.y<0) vNorm.invert();
 
-		// create new node
+		// create _new node
 		Node NEW = N;
 		NEW.Plane.build	(vOffs,vNorm);
 		D.set			(0,1,0);

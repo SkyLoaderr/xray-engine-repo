@@ -26,7 +26,7 @@ close.rc
     Visual C++.
 
 Resource.h
-    This is the standard header file, which defines new resource IDs.
+    This is the standard header file, which defines _new resource IDs.
     Microsoft Visual C++ reads and updates this file.
 close.ico
     This is an icon file, which is used as the application's icon (32x32).

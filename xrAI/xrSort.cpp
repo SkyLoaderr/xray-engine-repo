@@ -94,9 +94,9 @@ void vfQuickSortEdges(SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
 			if (d < a)
 				break;
 			int rr;
-			rr = min(a - uiaArray,b - a);
+			rr = _min(a - uiaArray,b - a);
 			vfSwapVectors(uiaArray,b - rr,rr);
-			rr = min(d - c,n - (d - uiaArray) - 1);
+			rr = _min(d - c,n - (d - uiaArray) - 1);
 			vfSwapVectors(b,uiaArray + n - rr,rr);
 			rr = b - a;
 			QPUSH(iStartI,rr);

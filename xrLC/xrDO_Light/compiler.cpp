@@ -67,7 +67,7 @@ b_params				g_params;
 void xrLoad(LPCSTR name)
 {
 	// Load CFORM
-	FILE_NAME			N;
+	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
 		CVirtualFileStream	FS(N);
@@ -87,7 +87,7 @@ void xrLoad(LPCSTR name)
 	// Load .details
 	{
 		strconcat			(N,name,"level.details");
-		dtFS				= new CVirtualFileStreamRW(N);
+		dtFS				= xr_new<CVirtualFileStreamRW> (N);
 		dtFS->ReadChunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
 
@@ -101,11 +101,11 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		CStream*	F			= new CFileStream(N);
+		CStream*	F			= xr_new<CFileStream> (N);
 		F->Read		(&id,8);
 		if (0==strcmp(id,ID))	{
-			_DELETE		(F);
-			F					= new CCompressedStream(N,ID);
+			xr_delete			(F);
+			F					= xr_new<CCompressedStream> (N,ID);
 		}
 		CStream&				FS	= *F;
 
@@ -393,7 +393,7 @@ void	xrLight			()
 	DWORD	last			= range-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 	{
-		CThread*	T		= new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
+		CThread*	T		= xr_new<LightThread> (thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
 		T->thMessages		= FALSE;
 		T->thMonitor		= TRUE;
 		Threads.start		(T);
@@ -410,7 +410,7 @@ void xrCompiler(LPCSTR name)
 	Phase("Lighting nodes...");
 	xrLight		();
 
-	if (dtFS)	_DELETE(dtFS);
+	if (dtFS)	xr_delete(dtFS);
 }
 						/*
 						Frect rect;

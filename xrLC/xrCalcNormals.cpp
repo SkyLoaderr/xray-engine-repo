@@ -10,7 +10,7 @@ void CBuild::CalcNormals()
 
 	// Clear temporary flag
 	Status("Processing...");
-	float sm_cos = cosf(deg2rad(g_params.m_sm_angle));
+	float sm_cos = _cos(deg2rad(g_params.m_sm_angle));
 
 	for (vecFaceIt it = g_faces.begin(); it!=g_faces.end(); it++)
 	{

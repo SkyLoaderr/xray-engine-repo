@@ -123,7 +123,7 @@ VOID CDeflector::OA_Export()
 BOOL CDeflector::OA_Place	(Face *owner)
 {
 	float cosa = N.dotproduct(owner->N);
-	if (cosa<cosf(deg2rad(g_params.m_lm_split_angle))) return FALSE;
+	if (cosa<_cos(deg2rad(g_params.m_lm_split_angle))) return FALSE;
 
 	UVtri				T;
 	T.owner				= owner;

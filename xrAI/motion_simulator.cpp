@@ -428,16 +428,16 @@ Fvector msimulator_CollideWithWorld(SCollisionData& cl, Fvector position, Fvecto
 		// We now project the destination point onto the sliding plane
 		float l = intersectRayPlane(destinationPoint, slidePlaneNormal, slidePlaneOrigin, slidePlaneNormal); 
 
-		// We can now calculate a new destination point on the sliding plane
+		// We can now calculate a _new destination point on the sliding plane
 		Fvector newDestinationPoint;
 		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
-		// Generate the slide vector, which will become our new velocity vector
+		// Generate the slide vector, which will become our _new velocity vector
 		// for the next iteration
 		Fvector newVelocityVector;
 		newVelocityVector.sub(newDestinationPoint, cl.vNearestPolygonIntersectionPoint);
 		
-		// now we recursively call the function with the new position and velocity 
+		// now we recursively call the function with the _new position and velocity 
 		cl.vLastSafePosition.set(position);
 		return msimulator_CollideWithWorld(cl, newSourcePoint, newVelocityVector,cnt+1); 
 	}
