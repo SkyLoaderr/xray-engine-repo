@@ -310,7 +310,7 @@ _BUMP:
 		// Create HW-surface, compute normal map
 		IDirect3DTexture9*	T_normal_1	= 0;
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1));
-		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,5.f));
+		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,4.f));
 		//TW_Save						(T_normal_1,fname,"debug-1","normal");
 
 		// Transfer gloss-map
@@ -379,7 +379,7 @@ _BUMP_from_base:
 		// Create HW-surface
 		IDirect3DTexture9*	T_normal_1	= 0;
 		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &T_normal_1));
-		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
+		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,4.f));
 
 		// Transfer gloss-map
 		TW_Iterate_1OP				(T_normal_1,T_base,it_gloss_rev_base);
