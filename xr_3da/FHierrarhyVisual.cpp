@@ -46,15 +46,15 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
     	if (data->FindChunk(OGF_CHILDREN)){
             CStream* OBJ = data->OpenChunk(OGF_CHILDREN);
             if (OBJ){
-                CStream* chield = data->OpenChunk(0);
-                for (int count=1; chield; count++) {
+                CStream* O = OBJ->OpenChunk(0);
+                for (int count=1; O; count++) {
 #ifdef _EDITOR
-                    chields.push_back	(Device.CreateVisual(chield));
+                    chields.push_back	(Device.CreateVisual(O));
 #else
-					chields.push_back	(::Render.Models.Create(chield));
+					chields.push_back	(::Render.Models.Create(O));
 #endif
-                    chield->Close();
-                    chield = data->OpenChunk(count);
+                    O->Close();
+                    O = OBJ->OpenChunk(count);
                 }
                 OBJ->Close();
             }
