@@ -518,20 +518,22 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TEXTURE2:{
-			LPSTR tex = (LPSTR)item->Data;
+        	TextValue* V				= (TextValue*)item->Data; 
+			AnsiString old_val			= V->val;
+			AnsiString edit_val			= V->val;
+			if (V->OnBeforeEdit) 		V->OnBeforeEdit(item,V,&edit_val);
+            LPCSTR new_val 				= 0;
         	if (mi->MenuIndex==0){
-            	LPCSTR name = TfrmChoseItem::SelectTexture(false,tex,true);
-            	if (name&&name[0]&&strcmp(tex,name)!=0){
-					strcpy(tex,name);
-		            item->ColumnText->Strings[0]= name;
-		            Modified();
-                }
+            	new_val 				= TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);
             }else if (mi->MenuIndex>=2){
-            	if (strcmp(tex,TEXTUREString[mi->MenuIndex])!=0){
-					strcpy(tex,TEXTUREString[mi->MenuIndex]);
-		            item->ColumnText->Strings[0]= TEXTUREString[mi->MenuIndex];
-		            Modified();
-                }
+            	new_val					= TEXTUREString[mi->MenuIndex];
+            }
+            if (new_val){
+                edit_val			= new_val;
+                if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
+                strcpy(V->val,edit_val.c_str());
+                if (edit_val!=old_val)	Modified();
+                item->ColumnText->Strings[0]= V->GetText();
             }
         }break;
         }
