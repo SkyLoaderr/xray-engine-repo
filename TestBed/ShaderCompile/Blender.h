@@ -63,7 +63,7 @@ protected:
 public:
 	static		CBlender*	Create			(CLSID cls);
 
-	virtual		LPCSTR		getName()		= 0;
+	CBlender_DESC&			getDescription()= 0;
 	virtual		LPCSTR		getComment()	= 0;
 
 	virtual		void		Save			(CFS_Base&  FS);
