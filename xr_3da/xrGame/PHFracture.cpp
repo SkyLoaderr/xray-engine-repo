@@ -153,7 +153,7 @@ bool CPHFracturesHolder::PhDataUpdate(dBodyID body)
 	FRACTURE_I i=m_fractures.begin(),e=m_fractures.end();
 	for(;i!=e;i++)
 	{
-		m_has_breaks=m_has_breaks||i->Update(m_impacts,body);
+		m_has_breaks=i->Update(m_impacts,body)||m_has_breaks;
 	}
 	return m_has_breaks;
 }

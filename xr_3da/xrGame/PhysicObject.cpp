@@ -283,14 +283,27 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 {
 	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
-	CPhysicsShell* pPhysicsShell=m_unsplited_shels.back().first;
-	O->m_pPhysicsShell=pPhysicsShell;
-	CKinematics *pKinematics=PKinematics(O->Visual());
-	pKinematics->Calculate();
-	pPhysicsShell->set_Kinematics(pKinematics);
-	Flags64 mask;
-	mask.zero();
-	pPhysicsShell->ResetCallbacks(m_unsplited_shels.back().second,mask);
+	CPhysicsShell* newPhysicsShell=m_unsplited_shels.back().first;
+	O->m_pPhysicsShell=newPhysicsShell;
+	CKinematics *newKinematics=PKinematics(O->Visual());
+	CKinematics *pKinematics  =PKinematics(Visual());
+
+	Flags64 mask0,mask1;
+	mask1.set(pKinematics->LL_GetBonesVisible());//source bones mask
+	pKinematics->LL_SetBoneVisible(m_unsplited_shels.back().second,FALSE,TRUE);
+
+	mask0.set(pKinematics->LL_GetBonesVisible());//first part mask
+	mask0.invert();
+	mask1.and(mask0.flags);//second part mask
+	
+	newPhysicsShell->set_Kinematics(newKinematics);
+	newPhysicsShell->ResetCallbacks(m_unsplited_shels.back().second,mask1);
+	newKinematics->Calculate();
+	newKinematics->LL_SetBoneRoot		(m_unsplited_shels.back().second);
+	newKinematics->LL_SetBonesVisible	(mask1.flags);
+	
+	//
+
 	//////////////////////////////////////////////////////////////////////////
 
 

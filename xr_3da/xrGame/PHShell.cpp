@@ -781,8 +781,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			fracture.m_end_geom_num		=E->numberOfGeoms();
 			fracture.m_end_el_num		=u16(elements.size());//just after this el = current+1
 			fracture.m_end_jt_num		=u16(joints.size());	 //current+1
-			E->setGeomFracturable(fracture);
 			setElementSplitter(element_number);
+			E->setGeomFracturable(fracture);
 		}
 		else
 		{
@@ -964,7 +964,7 @@ void CPHShell::setEndElementSplitter()
 }
 void CPHShell::setElementSplitter(u16 element)
 {
-	if(elements[element]->FracturesHolder())
+	if(!elements[element]->FracturesHolder())
 						AddSplitter(CPHShellSplitter::splElement,element,element-1);
 }
 void CPHShell::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
