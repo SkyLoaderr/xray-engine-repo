@@ -1,7 +1,7 @@
 #ifndef _GETOPT_H_
 #define _GETOPT_H_
 
-#include <OpenMesh/Core/System/compiler.hh>
+//.#include <OpenMesh/Core/System/compiler.hh>
 
 #if defined(WIN32)
 #if   defined(__cplusplus)

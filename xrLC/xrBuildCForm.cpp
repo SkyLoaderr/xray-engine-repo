@@ -63,7 +63,7 @@ void TestEdge			(Vertex *V1, Vertex *V2, Face* parent)
 		pBuild->err_multiedge.w_fvector3(V2->P);
 	}
 }
-void SimplifyCFORM		(CDB::CollectorPacked& CL);
+extern void SimplifyCFORM		(CDB::CollectorPacked& CL);
 void CBuild::BuildCForm	()
 {
 	// Collecting data
@@ -140,7 +140,7 @@ void CBuild::BuildCForm	()
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Simplification
-	// SimplifyCFORM	(CL);
+	SimplifyCFORM	(CL);
 
 	// Saving
 	string512		fn;

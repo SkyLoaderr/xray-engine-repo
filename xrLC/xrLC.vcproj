@@ -34,6 +34,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="FALSE"
+				AdditionalIncludeDirectories="..\xrQSlim\src"
 				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_DEBUG,_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -110,9 +111,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				OptimizeForProcessor="2"
+				AdditionalIncludeDirectories="..\xrQSlim\src"
 				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_DEBUG,_WINDOWS"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				ForceConformanceInForLoopScope="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
@@ -192,6 +194,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
 				OptimizeForWindowsApplication="FALSE"
+				AdditionalIncludeDirectories="..\xrQSlim\src"
 				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,_DEBUG,_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -216,7 +219,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				ShowProgress="0"
 				OutputFile="x:\xrLC.exe"
 				LinkIncremental="1"
@@ -675,21 +677,6 @@
 			</File>
 			<File
 				RelativePath=".\xrBuildCForm.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrBuildRapidModel.cpp">
@@ -726,6 +713,9 @@
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\xrOptimizeCFORM_qslim.cpp">
 			</File>
 			<File
 				RelativePath=".\xrPhase_AdaptiveHT.cpp">
@@ -1612,10 +1602,10 @@
 					RelativePath=".\OpenMesh\Tools\Decimater\CollapseInfoT.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Tools\Utils\conio.cc">
