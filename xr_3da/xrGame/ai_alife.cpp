@@ -109,25 +109,21 @@ void CAI_ALife::vfNewGame()
 					vfAssignGraphPosition(tp3);
 			}
 			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
-			if (tp3) {
-				tp3->m_tNextGraphID = tp3->m_tPrevGraphID = tp3->m_tGraphID;
-				tp3->m_fDistanceToPoint	= tp3->m_fDistanceFromPoint = 0;
-			}
+			if (tp3)
+				vfAssignGraphPosition(tp3);
 		}
 		else {
             vfCreateObject		(i);
 			i->m_tObjectID		= i->ID;
 			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
-			if (tp3) {
-				tp3->m_tNextGraphID = tp3->m_tPrevGraphID = tp3->m_tGraphID;
-				tp3->m_fDistanceToPoint	= tp3->m_fDistanceFromPoint = 0;
-			}
+			if (tp3)
+				vfAssignGraphPosition(tp3);
 		}
 		I						= m;
 	}
 	m_tALifeVersion				= ALIFE_VERSION;
-	m_tGameTime					= u64(Device.dwTimeGlobal);
+	m_tGameTime					= u64(m_dwStartTime = Device.dwTimeGlobal);
 }
 
 void CAI_ALife::Save()
@@ -160,9 +156,10 @@ void CAI_ALife::Load()
 	m_qwMaxProcessTime			= pSettings->ReadINT	("alife","procees_time")*CPU::cycles_per_microsec;
 	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->ReadINT	("alife","switch_delay");
+	m_fTimeFactor				= pSettings->ReadFLOAT	("alife","time_factor");
 
 	string256					caFileName;
-	IReader						*tpStream;
+	CStream						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
 		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
 		tpStream				= Engine.FS.Open(caFileName);
