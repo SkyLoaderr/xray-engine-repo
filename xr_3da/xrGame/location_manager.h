@@ -10,6 +10,8 @@
 
 #include "game_graph_space.h"
 
+class CGameObject;
+
 class CLocationManager {
 private:
 	GameGraph::TERRAIN_VECTOR	m_vertex_types;

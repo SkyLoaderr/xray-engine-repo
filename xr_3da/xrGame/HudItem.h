@@ -5,10 +5,12 @@
 
 #pragma once
 
+class CSE_Abstract;
 class CPhysicItem;
 class CWeaponHUD;
 class NET_Packet;
 struct HUD_SOUND;
+class CInventoryItem;
 
 class CHudItem {
 protected: //чтоб нельзя было вызвать на прямую

@@ -10,6 +10,8 @@
 #include "inventory_item.h"
 #include "ai_sounds.h"
 
+class IRender_Light;
+
 class CExplosive : public Feel::Touch {
 
 public:

@@ -18,6 +18,9 @@ enum EHandDependence{
 	hd2Hand	= 2
 };
 
+
+class CSE_Abstract;
+class CGameObject;
 class CFoodItem;
 class CMissile;
 class CHudItem;

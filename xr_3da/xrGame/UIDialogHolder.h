@@ -1,6 +1,7 @@
 #pragma once
 
 class CUIDialogWnd;
+class CUIWindow;
 
 class CDialogHolder :public ISheduled
 {
