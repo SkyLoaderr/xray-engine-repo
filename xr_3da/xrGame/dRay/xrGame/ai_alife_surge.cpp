@@ -18,7 +18,7 @@ using namespace ALife;
 void CSE_ALifeSimulator::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, _GRAPH_ID game_vertex_id, u16 parent_id)
 {
 	CSE_Abstract				*abstract = F_entity_Create(section);
-	R_ASSERT					(abstract);
+	R_ASSERT3					(abstract,"Cannot find item with section %s",section);
 
 	strcpy						(abstract->s_name,section);
 	abstract->s_gameid			= u8(GameID());
