@@ -6,6 +6,8 @@
 #define AFX_LIGHTPPA_H__E5B97AC9_84A6_4773_9FEF_3BC5D1CEF8B6__INCLUDED_
 #pragma once
 
+#include "xr_list.h"
+
 struct ENGINE_API	PPA_Vertex
 {
 	Fvector			P;
