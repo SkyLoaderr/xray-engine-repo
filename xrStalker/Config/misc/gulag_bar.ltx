@@ -636,3 +636,67 @@ active = camper@bar_svoboda_ambush_sniper_7
 [camper@bar_svoboda_ambush_sniper_7]
 path_walk = 7_walk
 path_look = 7_look
+
+
+;*******************************************************************
+; «рители на арене
+;*******************************************************************
+
+[logic@bar_arena_leader]
+active = walker@bar_arena_leader
+
+[walker@bar_arena_leader]
+path_walk = rest_6_walk
+
+
+[logic@bar_arena_follower_1]
+active = follower@bar_arena_follower_1
+
+[follower@bar_arena_follower_1]
+leader = logic@bar_arena_leader
+
+
+[logic@bar_arena_follower_2]
+active = follower@bar_arena_follower_2
+
+[follower@bar_arena_follower_2]
+leader = logic@bar_arena_leader
+
+
+[logic@bar_arena_walker_1]
+active = walker@bar_arena_walker_1
+
+[walker@bar_arena_walker_1]
+path_walk = rest_1_walk
+path_look = rest_1_look
+
+
+[logic@bar_arena_walker_2]
+active = walker@bar_arena_walker_2
+
+[walker@bar_arena_walker_2]
+path_walk = rest_2_walk
+path_look = rest_2_look
+
+
+[logic@bar_arena_walker_3]
+active = walker@bar_arena_walker_3
+
+[walker@bar_arena_walker_3]
+path_walk = rest_3_walk
+path_look = rest_3_look
+
+
+[logic@bar_arena_walker_4]
+active = walker@bar_arena_walker_4
+
+[walker@bar_arena_walker_4]
+path_walk = rest_4_walk
+
+
+[logic@bar_arena_walker_5]
+active = walker@bar_arena_walker_5
+
+[walker@bar_arena_walker_5]
+path_walk = rest_5_walk
+path_look = rest_5_look
