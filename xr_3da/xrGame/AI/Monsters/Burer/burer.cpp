@@ -58,6 +58,9 @@ void CBurer::reload(LPCSTR section)
 {
 	inherited::reload(section);
 
+	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
+	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
+
 	// Load triple gravi animations
 	CMotionDef *def1, *def2, *def3;
 	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_0");
@@ -100,9 +103,6 @@ void CBurer::Load(LPCSTR section)
 	particle_gravi_wave		= pSettings->r_string(section,"Particle_Gravi_Wave");
 	particle_gravi_prepare	= pSettings->r_string(section,"Particle_Gravi_Prepare");
 	particle_tele_object	= pSettings->r_string(section,"Particle_Tele_Object");
-	
-	CSoundPlayer::add(pSettings->r_string(section,"sound_gravi_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 16,	MonsterSpace::eMonsterSoundGraviAttack, "bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_tele_attack"),		16,	SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(1 << 31) | 17,	MonsterSpace::eMonsterSoundTeleAttack, "bip01_head");
 	
 	::Sound->create(sound_gravi_wave,	TRUE, pSettings->r_string(section,"sound_gravi_wave"),	SOUND_TYPE_WORLD);
 

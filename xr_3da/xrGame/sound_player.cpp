@@ -35,11 +35,11 @@ void CSoundPlayer::init				()
 
 void CSoundPlayer::reinit			()
 {
-	clear							();
 }
 
 void CSoundPlayer::reload			(LPCSTR section)
 {
+	clear							();
 	set_sound_mask					(u32(-1));
 	set_sound_mask					(0);
 	VERIFY							(m_playing_sounds.empty());

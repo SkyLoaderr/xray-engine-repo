@@ -68,6 +68,12 @@ void CAI_Rat::reload					(LPCSTR	section)
 {
 	inherited::reload		(section);
 	CEatableItem::reload	(section);
+	LPCSTR					head_bone_name = pSettings->r_string(section,"bone_head");
+	CSoundPlayer::add		(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(eRatSoundMaskDie),		eRatSoundDie,		head_bone_name);
+	CSoundPlayer::add		(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eRatSoundMaskInjuring),	eRatSoundInjuring,	head_bone_name);
+	CSoundPlayer::add		(pSettings->r_string(section,"sound_attack"),	100, SOUND_TYPE_MONSTER_ATTACKING,	2, u32(eRatSoundMaskAttack),	eRatSoundAttack,	head_bone_name);
+	CSoundPlayer::add		(pSettings->r_string(section,"sound_voice"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eRatSoundMaskVoice),		eRatSoundVoice,		head_bone_name);
+	CSoundPlayer::add		(pSettings->r_string(section,"sound_eat"),		100, SOUND_TYPE_MONSTER_EATING	,	3, u32(eRatSoundMaskEat),		eRatSoundEat,		head_bone_name);
 }
 
 void CAI_Rat::Die()
@@ -99,13 +105,6 @@ void CAI_Rat::Load(LPCSTR section)
 	Fvector	P						= Position();
 	P.x								+= ::Random.randF();
 	P.z								+= ::Random.randF();
-
-	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(eRatSoundMaskDie),		eRatSoundDie,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eRatSoundMaskInjuring),	eRatSoundInjuring,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),	100, SOUND_TYPE_MONSTER_ATTACKING,	2, u32(eRatSoundMaskAttack),	eRatSoundAttack,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_voice"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eRatSoundMaskVoice),		eRatSoundVoice,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_eat"),		100, SOUND_TYPE_MONSTER_EATING	,	3, u32(eRatSoundMaskEat),		eRatSoundEat,		head_bone_name);
 
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->r_float (section,"ChangeActiveStateProbability");
