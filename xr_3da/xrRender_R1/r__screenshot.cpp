@@ -106,6 +106,7 @@ void CRender::Screenshot		(IRender_interface::ScreenshotMode mode, LPCSTR name)
 				_RELEASE			(saved);
 			}
 			break;
+		case IRender_interface::SM_FOR_LEVELMAP:
 		case IRender_interface::SM_FOR_CUBEMAP:
 			{
 				string64			t_stemp;
