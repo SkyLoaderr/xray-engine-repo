@@ -63,7 +63,7 @@ public:
 	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 	void					Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
 
-	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E);
+	xrClientData*			SelectBestClientToMigrateTo		(xrServerEntity* E, BOOL bForceAnother=FALSE);
 
 public:
 	// constr / destr

@@ -15,7 +15,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	for (; I!=E; I++)
 	{
 		xrServerEntity*	E	= I->second;
-		if (E->owner == CL)		PerformMigration	(E,(xrClientData*)CL,SelectBestClientToMigrateTo(E));
+		if (E->owner == CL)		PerformMigration	(E,(xrClientData*)CL,SelectBestClientToMigrateTo(E,TRUE));
 	}
 	csPlayers.Leave			();
 }
