@@ -69,7 +69,7 @@ local monster3	=
 				"m_boar_e0012"
 			}
 
-local g_monsters 		= { monster1, monster2 }
+local g_monsters 		= { monster1, monster2, monster3 }
 local g_monsters_id 	= {}
 
 function main()
