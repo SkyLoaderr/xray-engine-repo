@@ -200,7 +200,6 @@ void CWeaponList::Update(float dt, bool bHUDView)
 	// Update all needed weapons
 	for (DWORD it=0; it<m_Weapons.size(); it++)
 		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update(dt,bHUDView);
-	if (m_iActiveWeapon<0) return;
 
 	// Change weapon if needed and can be done
 	if (m_iSelectedWeapon>=0)	
