@@ -268,6 +268,9 @@
 	<character id="bar_killer">
 		<class>stalker_bar_killer</class>
 	</character>
+	<character id="bar_barman_guard">
+		<class>stalker_bar_guard</class>
+	</character>
 	
 	
 </xml>
