@@ -19,6 +19,7 @@ function artifact_merge(merger)
 	   merger:get_black_drops_num()==1  then
 				merger:destroy_mercury_ball(2)
 				merger:destroy_black_drops(1)
+				merger:spawn_needles()
 	end 
 end
 
