@@ -1118,7 +1118,7 @@ void test1()
 
 		class_<CInternalStorage>("internal_storage")
 			.def("add",	&CInternalStorage::add, adopt(_2))
-			.def("get",	&CInternalStorage::get),
+			.def("get",	&CInternalStorage::get),//adopt(return_value)),
 
 		def("get_internals",	&get_internals)
 	];
