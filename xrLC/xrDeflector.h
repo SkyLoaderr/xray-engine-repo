@@ -43,7 +43,7 @@ public:
 	float			Radius;
 	int				iArea;
 
-	vector<R_Light>	Lights;
+	vector<R_Light>	LightsSelected;
 public:
 	CDeflector		();
 	~CDeflector		();
