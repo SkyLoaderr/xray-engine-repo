@@ -440,7 +440,9 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& /**vDir/**/, const Fvector
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
-			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
+			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
+			g_pGameLevel->ObjectSpace.GetStaticVerts()
+			);
 	}
 
 	Sound->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);

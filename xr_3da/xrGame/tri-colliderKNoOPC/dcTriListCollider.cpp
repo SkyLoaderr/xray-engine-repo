@@ -136,22 +136,14 @@ extern "C" int dSortTriBoxCollide (
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		//tri.v0=(dReal*)T->verts[0];
-		//tri.v1=(dReal*)T->verts[1];
-		//tri.v2=(dReal*)T->verts[2];
-		//tri.side0[0]=tri.v1[0]-tri.v0[0];
-		//tri.side0[1]=tri.v1[1]-tri.v0[1];
-		//tri.side0[2]=tri.v1[2]-tri.v0[2];
-		//tri.side1[0]=tri.v2[0]-tri.v1[0];
-		//tri.side1[1]=tri.v2[1]-tri.v1[1];
-		//tri.side1[2]=tri.v2[2]-tri.v1[2];
-		tri.side0[0]=T->verts[1]->x-T->verts[0]->x;
-		tri.side0[1]=T->verts[1]->y-T->verts[0]->y;
-		tri.side0[2]=T->verts[1]->z-T->verts[0]->z;
 
-		tri.side1[0]=T->verts[2]->x-T->verts[1]->x;
-		tri.side1[1]=T->verts[2]->y-T->verts[1]->y;
-		tri.side1[2]=T->verts[2]->z-T->verts[1]->z;
+		tri.side0[0]=Res->verts[1].x-Res->verts[0].x;
+		tri.side0[1]=Res->verts[1].y-Res->verts[0].y;
+		tri.side0[2]=Res->verts[1].z-Res->verts[0].z;
+
+		tri.side1[0]=Res->verts[2].x-Res->verts[1].x;
+		tri.side1[1]=Res->verts[2].y-Res->verts[1].y;
+		tri.side1[2]=Res->verts[2].z-Res->verts[1].z;
 
 		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
@@ -712,25 +704,16 @@ extern "C" int dSortTriSphereCollide (
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		//tri.v0=(dReal*)T->verts[0];
-		//tri.v1=(dReal*)T->verts[1];
-		//tri.v2=(dReal*)T->verts[2];
-		//tri.side0[0]=tri.v1[0]-tri.v0[0];
-		//tri.side0[1]=tri.v1[1]-tri.v0[1];
-		//tri.side0[2]=tri.v1[2]-tri.v0[2];
-		//tri.side1[0]=tri.v2[0]-tri.v1[0];
-		//tri.side1[1]=tri.v2[1]-tri.v1[1];
-		//tri.side1[2]=tri.v2[2]-tri.v1[2];
-		tri.side0[0]=T->verts[1]->x-T->verts[0]->x;
-		tri.side0[1]=T->verts[1]->y-T->verts[0]->y;
-		tri.side0[2]=T->verts[1]->z-T->verts[0]->z;
+		tri.side0[0]=Res->verts[1].x-Res->verts[0].x;
+		tri.side0[1]=Res->verts[1].y-Res->verts[0].y;
+		tri.side0[2]=Res->verts[1].z-Res->verts[0].z;
 
-		tri.side1[0]=T->verts[2]->x-T->verts[1]->x;
-		tri.side1[1]=T->verts[2]->y-T->verts[1]->y;
-		tri.side1[2]=T->verts[2]->z-T->verts[1]->z;
-		tri.T=T;
-		dCROSS(tri.norm,=,tri.side0,tri.side1);
-		dNormalize3(tri.norm);
+		tri.side1[0]=Res->verts[2].x-Res->verts[1].x;
+		tri.side1[1]=Res->verts[2].y-Res->verts[1].y;
+		tri.side1[2]=Res->verts[2].z-Res->verts[1].z;
+		tri.T		=T;
+		dCROSS		(tri.norm,=,tri.side0,tri.side1);
+		dNormalize3	(tri.norm);
 
 
 		tri.pos=dDOT((dReal*)tri.T->verts[0],tri.norm);

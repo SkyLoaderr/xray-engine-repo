@@ -68,7 +68,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 
 	previous_p[0]=dInfinity;
 	dis_count_f=0;
-	
+
 	m_capture_joint=NULL;
 
 
@@ -138,7 +138,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	m_hat_transform=dCreateGeomTransform(0);
 	dGeomTransformSetCleanup(m_hat_transform,0);
 	//m_wheel_transform=dCreateGeomTransform(0);
-	
+
 	dGeomTransformSetInfo(m_shell_transform,1);
 	dGeomTransformSetInfo(m_hat_transform,1);
 	//dGeomTransformSetInfo(m_wheel_transform,1);
@@ -203,7 +203,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	//dGeomGroupAdd(chRGeomGroup,chRCylinder);
 	m_body_interpolation.SetBody(m_body);
 
-	
+
 	if(m_object_contact_callback)
 	{
 		dGeomUserDataSetObjectContactCallback(m_hat,m_object_contact_callback);
@@ -583,13 +583,13 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 		CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
 		if(__aabb_tri(Point((float*)&center_forbid),Point((float*)&AABB_forbid),vertices)){
-			side0[0]=T->verts[1]->x-T->verts[0]->x;
-			side0[1]=T->verts[1]->y-T->verts[0]->y;
-			side0[2]=T->verts[1]->z-T->verts[0]->z;
+			side0[0]=Res->verts[1].x-Res->verts[0].x;
+			side0[1]=Res->verts[1].y-Res->verts[0].y;
+			side0[2]=Res->verts[1].z-Res->verts[0].z;
 
-			side1[0]=T->verts[2]->x-T->verts[1]->x;
-			side1[1]=T->verts[2]->y-T->verts[1]->y;
-			side1[2]=T->verts[2]->z-T->verts[1]->z;
+			side1[0]=Res->verts[2].x-Res->verts[1].x;
+			side1[1]=Res->verts[2].y-Res->verts[1].y;
+			side1[2]=Res->verts[2].z-Res->verts[1].z;
 
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
@@ -610,13 +610,13 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 		CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
 		if(__aabb_tri(Point((float*)&center),Point((float*)&AABB),vertices)){
-			side0[0]=T->verts[1]->x-T->verts[0]->x;
-			side0[1]=T->verts[1]->y-T->verts[0]->y;
-			side0[2]=T->verts[1]->z-T->verts[0]->z;
+			side0[0]=Res->verts[1].x-Res->verts[0].x;
+			side0[1]=Res->verts[1].y-Res->verts[0].y;
+			side0[2]=Res->verts[1].z-Res->verts[0].z;
 
-			side1[0]=T->verts[2]->x-T->verts[1]->x;
-			side1[1]=T->verts[2]->y-T->verts[1]->y;
-			side1[2]=T->verts[2]->z-T->verts[1]->z;
+			side1[0]=Res->verts[2].x-Res->verts[1].x;
+			side1[1]=Res->verts[2].y-Res->verts[1].y;
+			side1[2]=Res->verts[2].z-Res->verts[1].z;
 
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
@@ -953,16 +953,16 @@ void	CPHSimpleCharacter::Disabling(){
 
 void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)
 {
-m_capture_joint=dJointCreateBall(phWorld,0);
-dJointAttach(m_capture_joint,m_body,body);
-dJointSetBallAnchor(m_capture_joint,anchor[0],anchor[1],anchor[2]);
-dJointSetFeedback(m_capture_joint,&m_capture_joint_feedback);
+	m_capture_joint=dJointCreateBall(phWorld,0);
+	dJointAttach(m_capture_joint,m_body,body);
+	dJointSetBallAnchor(m_capture_joint,anchor[0],anchor[1],anchor[2]);
+	dJointSetFeedback(m_capture_joint,&m_capture_joint_feedback);
 }
 
 void CPHSimpleCharacter::CapturedSetPosition(const dReal* position)
 {
-if(!m_capture_joint) return;
-dJointSetBallAnchor(m_capture_joint,position[0],position[1],position[2]);
+	if(!m_capture_joint) return;
+	dJointSetBallAnchor(m_capture_joint,position[0],position[1],position[2]);
 }
 
 void CPHSimpleCharacter::CheckCaptureJoint()
@@ -972,17 +972,17 @@ void CPHSimpleCharacter::CheckCaptureJoint()
 
 void CPHSimpleCharacter::doCaptureExist(bool& do_exist)
 {
-do_exist=!!m_capture_joint;
+	do_exist=!!m_capture_joint;
 }
 
 void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
 {
-m_object_contact_callback=callback;
-if(!b_exist) return;
+	m_object_contact_callback=callback;
+	if(!b_exist) return;
 
-dGeomUserDataSetObjectContactCallback(m_hat,callback);
-dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
-dGeomUserDataSetObjectContactCallback(m_wheel,callback);
+	dGeomUserDataSetObjectContactCallback(m_hat,callback);
+	dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
+	dGeomUserDataSetObjectContactCallback(m_wheel,callback);
 }
 
 u16 CPHSimpleCharacter::RetriveContactBone()
@@ -995,7 +995,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 	CObject* object=dynamic_cast<CObject*>(m_phys_ref_object);
 	if (object->collidable.model->_RayPick	(result,*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	{
-		
+
 		ICollisionForm::RayPickResult::Result* R = result.r_begin();
 		contact_bone=(u16)R->element;
 		//int y=result.r_count();

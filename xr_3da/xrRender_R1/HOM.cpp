@@ -75,9 +75,9 @@ void CHOM::Load			()
 	{
 		CDB::TRI&	clT = CL.getT()[it];
 		occTri&		rT	= m_pTris[it];
-		Fvector&	v0	= CL.getV()[clT.IDverts()[0]];
-		Fvector&	v1	= CL.getV()[clT.IDverts()[1]];
-		Fvector&	v2	= CL.getV()[clT.IDverts()[2]];
+		Fvector&	v0	= CL.getV()[clT.verts[0]];
+		Fvector&	v1	= CL.getV()[clT.verts[1]];
+		Fvector&	v2	= CL.getV()[clT.verts[2]];
 		rT.adjacent[0]	= (0xffffffff==adjacency[3*it+0])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+0]);
 		rT.adjacent[1]	= (0xffffffff==adjacency[3*it+1])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+1]);
 		rT.adjacent[2]	= (0xffffffff==adjacency[3*it+2])?((occTri*) 0xffffffff):(m_pTris+adjacency[3*it+2]);

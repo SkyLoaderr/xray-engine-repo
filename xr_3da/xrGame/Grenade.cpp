@@ -363,8 +363,9 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 	{
 		// particles
 		Fvector N,D;
-		CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
+		Fvector*	pVerts	= g_pGameLevel->ObjectSpace.GetStaticVerts();
+		CDB::TRI*	pTri	= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
+		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
 		D.reflect			(vDir,N);
 		
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")

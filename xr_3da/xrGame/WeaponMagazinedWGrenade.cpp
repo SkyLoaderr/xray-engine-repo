@@ -368,7 +368,9 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
-			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
+			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
+			g_pGameLevel->ObjectSpace.GetStaticVerts()
+			);
 	}
 
 	Sound->play_at_pos(sndRicochet[Random.randI(SND_RIC_COUNT)], 0, vEnd,false);
@@ -376,9 +378,10 @@ void CWeaponFakeGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	if (!R.O) 
 	{
 		// particles
-		Fvector N,D;
-		CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
+		Fvector		N,D;
+		Fvector*	pVerts	= g_pGameLevel->ObjectSpace.GetStaticVerts();
+		CDB::TRI*	pTri	= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
+		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
 		D.reflect			(vDir,N);
 		
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
