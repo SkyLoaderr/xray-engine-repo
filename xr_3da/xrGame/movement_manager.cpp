@@ -24,7 +24,7 @@ CMovementManager::~CMovementManager	()
 
 void CMovementManager::Init			()
 {
-	m_time_work						= 300*CPU::cycles_per_microsec;
+	m_time_work						= 1300*CPU::cycles_per_microsec;
 	m_speed							= 0.f;
 	m_path_type						= ePathTypeDummy;
 	m_path_state					= ePathStateDummy;
