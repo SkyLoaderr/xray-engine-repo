@@ -118,9 +118,9 @@ void CDetailManager::VS_Unload()
 void CDetailManager::VS_Render()
 {
 	// Phase
-	float	fPhaseRange	=	PI/16;
-	float	fPhaseX		=	sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
+	// float	fPhaseRange	=	PI/16;
+	// float	fPhaseX		=	sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
+	// float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;

@@ -145,8 +145,8 @@ void CEnvironment::Music_Play(int id)
 void CEnvironment::OnMove()
 {
 	// ******************** Viewport params
-	float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
-	float dst = 1-src;
+	// float src = 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
+	// float dst = 1-src;
 
 	// ******************** Environment params (interpolation)
 	float _s	= CurrentSpeed*Device.fTimeDelta;	clamp(_s,0.f,1.f);

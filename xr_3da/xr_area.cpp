@@ -250,7 +250,6 @@ void CObjectSpace::dbgRender()
 	DWORD	C2s		= D3DCOLOR_XRGB(170,170,170);
 
 	float cl = CL_SLOT_SIZE;
-	float of = .1f;
 	float cl_2 = CL_SLOT_SIZE/2-.05f;
 	for (int x=0; x<Dynamic.x_count; x++){
 		for (int z=0; z<Dynamic.z_count; z++){

@@ -11,9 +11,9 @@ VOID TGAdesc::maketga( CFS_Base& fs ){
 
 	tgaHeader hdr;
 	ZeroMemory( &hdr, sizeof(hdr) );
-	hdr.tgaImgType = 2;
-	hdr.tgaImgSpec.tgaXSize = width;
-	hdr.tgaImgSpec.tgaYSize = height;
+	hdr.tgaImgType			= 2;
+	hdr.tgaImgSpec.tgaXSize = u16(width);
+	hdr.tgaImgSpec.tgaYSize = u16(height);
 
 	if( format == IMG_24B ){
 		hdr.tgaImgSpec.tgaDepth = 24;

@@ -251,12 +251,13 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	CPartDef& P	=	(*partition)[part];
 	CBlend*	B	=	IBlend_Create();
 
-	CBoneData*	Bone;
+	CBoneData*	Bone=0;
 	for (int i=0; i<int(P.bones.size()); i++)
 	{
 		Bone	= (*bones)[P.bones[i]];
 		Bone->Motion_Start_IM	(this,B);
 	}
+	VERIFY		(Bone);
 	blend_cycles[part].push_back(B);
 
 	// Setup blend params

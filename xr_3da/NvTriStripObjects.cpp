@@ -702,8 +702,8 @@ void NvStripifier::RemoveSmallStrips(NvStripInfoVec& allStrips, NvStripInfoVec& 
 	VertexCache* vcache = new VertexCache(cacheSize);
 	
 	int bestNumHits = -1;
-	int numHits;
-	int bestIndex;
+	int numHits		= 0;
+	int bestIndex	= 0;
 	
 	while(1)
 	{
@@ -761,10 +761,6 @@ bool NvStripifier::IsCW(NvFaceInfo *faceInfo, int v0, int v1)
 	
 	else 
 		return (faceInfo->m_v0 == v1);
-	
-	// shouldn't get here
-	assert(0);
-	return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
