@@ -1166,6 +1166,7 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 	{
 	case GAME_DEATHMATCH:
 	case GAME_TEAMDEATHMATCH:
+	case GAME_ARTEFACTHUNT:
 		{
 			SpawnAmmoForWeapon(inventory_item);
 		}break;
@@ -1181,6 +1182,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 	{
 	case GAME_DEATHMATCH:
 	case GAME_TEAMDEATHMATCH:
+	case GAME_ARTEFACTHUNT:
 		{
 			RemoveAmmoForWeapon(inventory_item);
 		}break;

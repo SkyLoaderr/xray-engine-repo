@@ -291,11 +291,6 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 			caSection			= "deathmatch";
 			break;
 		}
-		case GAME_TEAMDEATHMATCH	: 
-			{
-				caSection			= "teamdeathmatch";
-				break;
-			}
 		case GAME_CTF			: {
 			caSection			= "ctf";
 			break;
@@ -308,6 +303,16 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 			caSection			= "cs";
 			break;
 		}
+		case GAME_TEAMDEATHMATCH	: 
+			{
+				caSection			= "teamdeathmatch";
+				break;
+			}
+		case GAME_ARTEFACTHUNT	: 
+			{
+				caSection			= "artefacthunt";
+				break;
+			}
 		default					: NODEFAULT;
 	}
 	string256					S;

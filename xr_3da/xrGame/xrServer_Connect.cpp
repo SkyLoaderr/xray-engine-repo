@@ -9,10 +9,11 @@
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},
 	{ "deathmatch",			GAME_DEATHMATCH							},
-	{ "teamdeathmatch",		GAME_TEAMDEATHMATCH							},
 	{ "ctf",				GAME_CTF								},
 	{ "assault",			GAME_ASSAULT							},
 	{ "cs",					GAME_CS									},
+	{ "teamdeathmatch",		GAME_TEAMDEATHMATCH						},
+	{ "artefacthunt",		GAME_ARTEFACTHUNT						},
 	{ 0,							0								}
 };
 
@@ -43,6 +44,9 @@ BOOL xrServer::Connect(LPSTR &session_name)
 		break;
 	case GAME_TEAMDEATHMATCH:
 		game				= xr_new<game_sv_TeamDeathmatch> ();
+		break;
+	case GAME_ARTEFACTHUNT:
+		game				= xr_new<game_sv_ArtefactHunt> ();
 		break;
 	case GAME_CS:
 		game				= xr_new<game_sv_CS> ();
