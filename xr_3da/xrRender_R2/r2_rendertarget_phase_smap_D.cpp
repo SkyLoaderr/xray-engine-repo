@@ -15,5 +15,5 @@ void	CRenderTarget::phase_smap_direct()
 
 	// Misc		- draw only back-faces
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
-	if (RImplementation.b_nv3x)			{ CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0)); }
+	// if (RImplementation.b_nv3x)		{ CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0)); }
 }
