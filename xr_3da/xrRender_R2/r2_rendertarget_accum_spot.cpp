@@ -105,7 +105,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		Fvector		L_dir,L_clr,L_pos;	float L_spec;
 		L_clr.set					(L->color.r,L->color.g,L->color.b);
 		L_clr.div					(ps_r2_ls_dynamic_range);
-		L_spec						= 3*L_clr.magnitude()/_sqrt(3.f);
+		L_spec						= L_clr.magnitude()/_sqrt(3.f);
 		Device.mView.transform_tiny	(L_pos,L->position);
 		Device.mView.transform_dir	(L_dir,L->direction);
 		L_dir.normalize				();
