@@ -352,8 +352,10 @@ void CLightShadows::render	()
 		xrc.frustum_query		(DB,F);
 		if (0==xrc.r_count())	continue;
 		
+		/*
 		Msg							("----- %d",xrc.r_count());
 		if (xrc.r_count() > 1000)	Log("matrix:",S.M);
+		*/
 
 		// Clip polys by frustum
 		tess.clear				();
