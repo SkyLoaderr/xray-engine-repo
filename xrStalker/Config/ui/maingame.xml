@@ -21,8 +21,8 @@
 	<!-- power bar static -->
 	<!--<power_bar_static x="110" y="635" width="50" height="100"></power_bar_static>-->
 	<power_bar_static x="110" y="635" width="150" height="200" align="rb">
-		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">health</text>
-		<texture>ui\ui_mn_health</texture>
+	<!--	<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">health</text>
+	<!--	<texture>ui\ui_mn_health</texture>>-->
 	</power_bar_static>
 
 	<!-- pda online icon -->
@@ -149,11 +149,6 @@
     <power_bar x="0" y="0" length="215" broad="20" horz="0" min="0" max="100" pos="0">
         <texture tile="0" length="215" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
         <background x="0" y="0">ui\ui_inv_progress_end_empty</background>
-	<!--
-    <power_bar x="16" y="23" length="120" broad="20" horz="1" min="0" max="100" pos="0">
-		<texture tile="0" length="120" r="255" g="50" b="50">ui\ui_mg_progress_efficiency_full</texture>
-		<background x="0" y="0">ui\ui_mg_progress_efficiency_empty</background>
-         -->
    </power_bar>
 	
 	<!-- artefact panel -->
