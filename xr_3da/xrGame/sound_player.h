@@ -99,6 +99,7 @@ private:
 	xr_map<u32,CSoundCollection>				m_sounds;
 	xr_vector<CSoundSingle>						m_playing_sounds;
 	u32											m_sound_mask;
+	CObject										*m_object;
 
 			u32		load					(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type);
 	IC		Fvector compute_sound_point		(const CSoundSingle &sound);

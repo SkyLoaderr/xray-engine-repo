@@ -8,7 +8,7 @@
 
 	CPhysicsShellHolder::CPhysicsShellHolder()
 	{
-		Init();
+		init();
 	}
 
 void CPhysicsShellHolder::net_Destroy()
@@ -42,9 +42,8 @@ void CPhysicsShellHolder::create_physic_shell	()
 		shell_creator->CreatePhysicsShell();
 }
 
-void CPhysicsShellHolder::Init			()
+void CPhysicsShellHolder::init			()
 {
-	inherited::Init();
 	m_pPhysicsShell				= NULL;
 }
 

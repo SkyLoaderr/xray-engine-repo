@@ -13,14 +13,14 @@
 IC	CAI_ObjectLocation::CAI_ObjectLocation()
 {
 	m_dwCurrentFrame		= u32(-1);
-	Init					();
+	init					();
 }
 
 IC	CAI_ObjectLocation::~CAI_ObjectLocation()
 {
 }
 
-IC	void CAI_ObjectLocation::Init()
+IC	void CAI_ObjectLocation::init()
 {
 	if (ai().get_level_graph())
 		ai().level_graph().set_invalid_vertex	(m_level_vertex_id);
@@ -36,7 +36,7 @@ IC	void CAI_ObjectLocation::reinit()
 
 	m_dwCurrentFrame		= Device.dwFrame;
 
-	Init					();
+	init					();
 }
 
 IC	void CAI_ObjectLocation::set_game_vertex(const CGameGraph::CVertex *game_vertex)

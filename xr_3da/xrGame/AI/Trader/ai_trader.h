@@ -50,7 +50,7 @@ private:
 public:
 						CAI_Trader		();
 	virtual				~CAI_Trader		();
-	virtual	void		Init			();
+	virtual	void		init			();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& P);

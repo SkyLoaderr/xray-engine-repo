@@ -251,7 +251,7 @@ public:
 			void				ReturnHome				();
 			void				EatCorpse				();
 			void				test_movement			();
-			void				Init					();
+			void				init					();
 public:
 								CAI_Rat					();
 	virtual						~CAI_Rat				();

@@ -13,23 +13,26 @@
 
 CMaterialManager::CMaterialManager	()
 {
-	Init					();
+	init					();
 }
 
 CMaterialManager::~CMaterialManager	()
 {
 }
 
-void CMaterialManager::Init			()
+void CMaterialManager::init			()
 {
 	m_my_material_idx		= GAMEMTL_NONE_IDX;
-	m_run_mode = false;
+	m_run_mode				= false;
+	m_object				= 0;
 }
 
 void CMaterialManager::Load			(LPCSTR section)
 {
+	m_object				= dynamic_cast<CObject*>(this);
+	VERIFY					(m_object);
 	if (!pSettings->line_exist(section,"material")) {
-		R_ASSERT3(false,"Material not found in the section ",*(dynamic_cast<CObject*>(this)->cNameSect()));
+		R_ASSERT3(false,"Material not found in the section ",*(m_object->cNameSect()));
 	}
 	
 	m_my_material_idx		= GMLib.GetMaterialIdx(pSettings->r_string(section,"material"));
@@ -59,9 +62,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	VERIFY					(GAMEMTL_NONE_IDX != m_last_material_idx);
 	SGameMtlPair			*mtl_pair = GMLib.GetMaterialPair(m_my_material_idx,m_last_material_idx);
 	VERIFY3					(mtl_pair,"Undefined material pair: ", *GMLib.GetMaterialByIdx(m_last_material_idx)->m_Name);
-	CObject					*object = dynamic_cast<CObject*>(this);
-	VERIFY					(object);
-	Fvector					position = object->Position();
+	Fvector					position = m_object->Position();
 	CPHMovementControl* movement=movement_control();
 	if(movement&&movement->CharacterExist())
 	{
@@ -81,7 +82,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 				m_time_to_step							= step_time;
 
 				m_step_sound[m_step_id]					= snd_array[m_step_id];
-				m_step_sound[m_step_id].play_at_pos	(object,position);
+				m_step_sound[m_step_id].play_at_pos	(m_object,position);
 			}
 		}
 		m_time_to_step								-= time_delta;

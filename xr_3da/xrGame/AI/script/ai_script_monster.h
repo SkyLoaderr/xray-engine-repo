@@ -70,7 +70,7 @@ protected:
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
-			void				Init					();
+			void				init					();
 	virtual	void				reinit					();
 	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();

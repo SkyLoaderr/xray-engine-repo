@@ -16,7 +16,7 @@ protected:
 public:
 					CSelectorManager		();
 	virtual			~CSelectorManager		();
-			void	Init					();
+			void	init					();
 	virtual	void	reinit					();
 			void	init_selector			(CAbstractVertexEvaluator &S);
 	template <typename T> 

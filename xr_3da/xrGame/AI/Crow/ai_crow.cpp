@@ -68,7 +68,7 @@ void CAI_Crow::OnHitEndPlaying(CBlend* /**B/**/)
 
 CAI_Crow::CAI_Crow()
 {
-	Init				();
+	init				();
 }
 
 CAI_Crow::~CAI_Crow()
@@ -77,9 +77,8 @@ CAI_Crow::~CAI_Crow()
 	m_Sounds.m_idle.Unload		();
 }
 
-void CAI_Crow::Init		()
+void CAI_Crow::init		()
 {
-	inherited::Init		();
 	st_current			= eUndef;
 	st_target			= eFlyIdle;
 	vGoalDir.set		(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));

@@ -15,7 +15,7 @@ protected:
 public:
 					CDamageManager			();
 	virtual			~CDamageManager			();
-			void	Init					();
+			void	init					();
 	virtual	void	Load					(LPCSTR section);
 	virtual	void	reinit					();
 	virtual	void	reload					(LPCSTR section);

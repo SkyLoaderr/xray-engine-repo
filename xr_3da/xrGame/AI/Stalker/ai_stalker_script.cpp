@@ -58,7 +58,6 @@ CInventoryItem *CAI_Stalker::GetFood() const
 void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
-	CMemoryManager::Init		();
 }
 
 bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)

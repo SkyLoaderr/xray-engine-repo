@@ -19,6 +19,7 @@ private:
 	u32							m_step_id;
 	u16							m_my_material_idx;
 	ref_sound					m_step_sound[4];
+	CObject						*m_object;
 
 protected:
 	u16							m_last_material_idx;
@@ -26,7 +27,7 @@ protected:
 public:
 								CMaterialManager		();
 	virtual						~CMaterialManager		();
-			void				Init					();
+			void				init					();
 	virtual void				Load					(LPCSTR section);
 	virtual void				reinit					();
 	virtual void				reload					(LPCSTR section);

@@ -11,14 +11,14 @@
 
 CDamageManager::CDamageManager			()
 {
-	Init								();
+	init								();
 }
 
 CDamageManager::~CDamageManager			()
 {
 }
 
-void CDamageManager::Init				()
+void CDamageManager::init				()
 {
 	m_default_hit_factor				= 1.f;
 }

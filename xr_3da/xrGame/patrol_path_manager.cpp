@@ -26,6 +26,7 @@ void CPatrolPathManager::reinit				()
 	m_start_point_index		= u32(-1);
 	m_callback				= 0;
 	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+	VERIFY					(m_restricted_object);
 }
 
 IC	bool CPatrolPathManager::accessible	(const Fvector &position) const
@@ -116,7 +117,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	VERIFY					(m_path->vertex(m_curr_point_index));
 
 	if (m_callback)
-		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), dynamic_cast<CGameObject*>(this)->lua_game_object(),u32(ScriptMonster::eActionTypeMovement),m_curr_point_index);
+		SCRIPT_CALLBACK_EXECUTE_3((*m_callback), m_restricted_object->lua_game_object(),u32(ScriptMonster::eActionTypeMovement),m_curr_point_index);
 
 	u32							count = 0;
 	float						sum = 0.f;
@@ -180,4 +181,45 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	VERIFY				(accessible(m_dest_position));
 	m_actuality			= true;
 	m_completed			= false;
+}
+
+ref_str	CPatrolPathManager::path_name	() const
+{
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_restricted_object->cName());
+		return				("");
+	}
+	VERIFY					(m_path);
+	return					(m_path_name);
+}
+
+void CPatrolPathManager::set_previous_point	(int point_index)
+{
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_restricted_object->cName());
+		return;
+	}
+	
+	if (!m_path->vertex(point_index)) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_restricted_object->cName());
+		return;
+	}
+	VERIFY					(m_path);
+	VERIFY					(m_path->vertex(point_index));
+	m_prev_point_index		= point_index;
+}
+
+void CPatrolPathManager::set_start_point	(int point_index)
+{
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*m_restricted_object->cName());
+		return;
+	}
+	if (!m_path->vertex(point_index)) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point violates path bounds %s (object %s)!",*m_path_name,*m_restricted_object->cName());
+		return;
+	}
+	VERIFY					(m_path);
+	VERIFY					(m_path->vertex(point_index));
+	m_start_point_index		= point_index;
 }

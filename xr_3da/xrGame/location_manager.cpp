@@ -12,14 +12,14 @@
 
 CLocationManager::CLocationManager	()
 {
-	Init							();
+	init							();
 }
 
 CLocationManager::~CLocationManager	()
 {
 }
 
-void CLocationManager::Init			()
+void CLocationManager::init			()
 {
 	m_vertex_types.clear			();
 }

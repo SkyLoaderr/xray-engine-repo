@@ -21,7 +21,7 @@
 CAI_Trader::CAI_Trader()
 {
 	InitTrade();
-	Init();
+	init();
 } 
 
 CAI_Trader::~CAI_Trader()
@@ -43,9 +43,8 @@ void CAI_Trader::Load(LPCSTR section)
 	inventory().CalcTotalWeight();
 }
 
-void CAI_Trader::Init()
+void CAI_Trader::init()
 {
-	inherited::Init();
 }
 
 void CAI_Trader::reinit	()

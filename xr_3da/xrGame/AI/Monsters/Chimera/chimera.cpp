@@ -6,7 +6,7 @@
 
 CChimera::CChimera()
 {
-	Init();
+	init();
 	
 	StateMan = xr_new<CStateManagerChimera>(this);
 }
@@ -17,11 +17,8 @@ CChimera::~CChimera()
 }
 
 
-void CChimera::Init()
+void CChimera::init()
 {
-	inherited::Init();
-
-	
 }
 
 void CChimera::reinit()

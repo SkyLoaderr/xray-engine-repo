@@ -24,7 +24,7 @@ public:
 	virtual					~CEntityAlive			();
 
 	// Core events
-			void			Init					();
+			void			init					();
 	virtual void			Load					(LPCSTR section);
 	virtual void			reinit					();
 	virtual void			reload					(LPCSTR section);

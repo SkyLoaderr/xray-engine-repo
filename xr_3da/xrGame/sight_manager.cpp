@@ -13,14 +13,14 @@
 
 CSightManager::CSightManager		()
 {
-	Init						();
+	init						();
 }
 
 CSightManager::~CSightManager		()
 {
 }
 
-void CSightManager::Init			()
+void CSightManager::init			()
 {
 	m_enabled					= true;
 }
@@ -253,4 +253,22 @@ void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 	}
 	GetDirectionAnglesByPrevPositions	(yaw,pitch);
 };
+
+void CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
+{
+	Fvector					tDirection;
+	int						i = m_object->ps_Size	();
+
+	if (i < 2) 
+		return;
+
+	CObject::SavedPosition	tPreviousPosition = m_object->ps_Element(i - 2), tCurrentPosition = m_object->ps_Element(i - 1);
+	VERIFY					(_valid(tPreviousPosition.vPosition));
+	VERIFY					(_valid(tCurrentPosition.vPosition));
+	tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
+	if (tDirection.magnitude() < EPS_L)	return;
+	tDirection.getHP		(yaw,pitch);
+	VERIFY					(_valid(yaw));
+	VERIFY					(_valid(pitch));
+}
 

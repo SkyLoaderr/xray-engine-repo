@@ -136,7 +136,7 @@ public:
 	
 	virtual float			get_custom_pitch_speed			(float def_speed);
 
-			void			Init							() {}
+			void			init							() {}
 
 	virtual void			load_shared						(LPCSTR section);
 

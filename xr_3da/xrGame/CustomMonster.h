@@ -165,7 +165,9 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 	///////////////////////////////////////////////////////////////////////
-			void				Init					();
+private:
+			void				init					();
+public:
 	virtual void				Load					(LPCSTR	section);				
 	virtual	void				reinit					();
 	virtual void				reload					(LPCSTR	section);				

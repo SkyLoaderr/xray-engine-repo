@@ -16,7 +16,7 @@
 
 CSelectorManager::CSelectorManager		()
 {
-	Init						();
+	init						();
 }
 
 CSelectorManager::~CSelectorManager		()
@@ -24,7 +24,7 @@ CSelectorManager::~CSelectorManager		()
 	remove_all					();
 }
 
-void CSelectorManager::Init				()
+void CSelectorManager::init				()
 {
 }
 

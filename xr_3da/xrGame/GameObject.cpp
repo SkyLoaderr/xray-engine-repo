@@ -26,7 +26,7 @@
 //////////////////////////////////////////////////////////////////////
 CGameObject::CGameObject		()
 {
-	Init						();
+	init						();
 	//-----------------------------------------
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
@@ -38,7 +38,7 @@ CGameObject::~CGameObject		()
 	xr_delete					(m_lua_game_object);
 }
 
-void CGameObject::Init			()
+void CGameObject::init			()
 {
 
 	m_lua_game_object			= 0;

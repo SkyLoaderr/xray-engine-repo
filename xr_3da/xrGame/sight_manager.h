@@ -24,7 +24,7 @@ protected:
 public:
 					CSightManager						();
 	virtual			~CSightManager						();
-			void	Init								();
+			void	init								();
 	virtual	void	Load								(LPCSTR section);
 	virtual	void	reinit								(CAI_Stalker *object);
 	virtual void	Exec_Look							(float dt);

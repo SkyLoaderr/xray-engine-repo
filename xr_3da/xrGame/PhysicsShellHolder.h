@@ -48,7 +48,7 @@ public:
 
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Spawn			(LPVOID	DC);
-			void			Init				();
+			void			init				();
 
 protected:
 private:

@@ -46,7 +46,7 @@ STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 /////////////////////////////////////////////
 CEntityAlive::CEntityAlive()
 {
-	Init				();
+	init				();
 }
 
 CEntityAlive::~CEntityAlive()
@@ -54,7 +54,7 @@ CEntityAlive::~CEntityAlive()
 	xr_delete				(m_PhysicMovementControl);
 }
 
-void CEntityAlive::Init			()
+void CEntityAlive::init			()
 {
 	m_PhysicMovementControl = xr_new<CPHMovementControl>();
 }

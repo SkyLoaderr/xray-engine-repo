@@ -36,10 +36,11 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
 #endif
-			if (inventory().Take(dynamic_cast<CGameObject*>(O),true, false)) { //GetScriptControl()
+			CGameObject	*_O = dynamic_cast<CGameObject*>(O);
+			if (inventory().Take(_O,true, false)) { //GetScriptControl()
 				O->H_SetParent(this);
 				if (!inventory().ActiveItem() && GetScriptControl() && dynamic_cast<CShootingObject*>(O))
-					CObjectHandler::set_goal	(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
+					CObjectHandler::set_goal	(eObjectActionIdle,_O);
 
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", *O->cName(),O->ID());

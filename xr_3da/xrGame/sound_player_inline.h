@@ -10,10 +10,8 @@
 
 IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
 {
-	CObject								*object = dynamic_cast<CObject*>(this);
-	VERIFY								(object);
 	Fmatrix								l_tMatrix;
-	l_tMatrix.mul_43					(object->XFORM(),PKinematics(object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
+	l_tMatrix.mul_43					(m_object->XFORM(),PKinematics(m_object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
 	return								(l_tMatrix.c);
 }
 

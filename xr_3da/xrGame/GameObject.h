@@ -114,7 +114,7 @@ public:
 	virtual void			OnRender			();
 #endif
 
-			void			Init				();
+			void			init				();
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	///////////////////// network /////////////////////////////////////////

@@ -43,6 +43,8 @@ void CSoundPlayer::reload			(LPCSTR section)
 	set_sound_mask					(u32(-1));
 	set_sound_mask					(0);
 	VERIFY							(m_playing_sounds.empty());
+	m_object						= dynamic_cast<CObject*>(this);
+	VERIFY							(m_object);
 }
 
 u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
@@ -138,11 +140,8 @@ void CSoundPlayer::update_playing_sounds()
 		if ((*I).m_sound->feedback)
 			(*I).m_sound->feedback->set_position(compute_sound_point(*I));
 		else
-			if (!(*I).started() && (Level().timeServer() >= (*I).m_start_time)) {
-				CObject						*object = dynamic_cast<CObject*>(this);
-				VERIFY						(object);
-				(*I).play_at_pos			(object,compute_sound_point(*I));
-			}
+			if (!(*I).started() && (Level().timeServer() >= (*I).m_start_time))
+				(*I).play_at_pos			(m_object,compute_sound_point(*I));
 	}
 }
 
@@ -151,9 +150,6 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	if (!check_sound_legacy(internal_type))
 		return;
 	
-	CObject						*object = dynamic_cast<CObject*>(this);
-	VERIFY						(object);
-
 	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
 	VERIFY						(m_sounds.end() != I);
 	CSoundCollection			&sound = (*I).second;
@@ -166,7 +162,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
-	sound_single.m_bone_id		= PKinematics(object->Visual())->LL_BoneID(sound.m_bone_name);
+	sound_single.m_bone_id		= PKinematics(m_object->Visual())->LL_BoneID(sound.m_bone_name);
 	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? sound.random(sound.m_sounds.size()) : id];
 	VERIFY						(sound_single.m_sound->handle);
 	VERIFY						(max_start_time >= min_start_time);
@@ -186,5 +182,5 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	m_playing_sounds.push_back	(sound_single);
 	
 	if (Level().timeServer() >= m_playing_sounds.back().m_start_time)
-		m_playing_sounds.back().play_at_pos(object,compute_sound_point(m_playing_sounds.back()));
+		m_playing_sounds.back().play_at_pos(m_object,compute_sound_point(m_playing_sounds.back()));
 }

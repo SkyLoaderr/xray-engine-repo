@@ -11,6 +11,7 @@
 #include "abstract_location_selector.h"
 #include "game_graph.h"
 #include "ai_object_location.h"
+#include "location_manager.h"
 
 template <
 	typename _VertexEvaluator,
@@ -46,6 +47,7 @@ private:
 	ESelectionType			m_selection_type;
 	ALife::_GRAPH_ID		m_previous_vertex_id;
 	u32						m_time_to_change;
+	CLocationManager		*m_location_manager;
 
 protected:
 	IC			void		select_random_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);

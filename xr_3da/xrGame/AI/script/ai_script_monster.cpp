@@ -20,7 +20,7 @@ void __stdcall ActionCallback(CKinematics *tpKinematics);
 
 CScriptMonster::CScriptMonster()
 {
-	Init					();
+	init					();
 }
 
 CScriptMonster::~CScriptMonster()
@@ -29,7 +29,7 @@ CScriptMonster::~CScriptMonster()
 	ResetScriptData						();
 }
 
-void CScriptMonster::Init()
+void CScriptMonster::init()
 {
 	m_current_sound						= 0;
 

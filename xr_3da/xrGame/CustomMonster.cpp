@@ -43,14 +43,14 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
-	Init				();
+	init				();
 }
 
 CCustomMonster::~CCustomMonster	()
 {
 }
 
-void CCustomMonster::Init()
+void CCustomMonster::init()
 {
 }
 
