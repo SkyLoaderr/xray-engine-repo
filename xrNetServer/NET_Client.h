@@ -73,7 +73,7 @@ public:
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-//.	IC u32					timeServer				()	{ return Device.dwTimeGlobal + net_TimeDelta; }
+	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta; }
 	IC u32					timeServer_Async		()	{ return TimerAsync(device_timer) + net_TimeDelta; }
 	IC u32					timeServer_Delta		()	{ return net_TimeDelta; }
 	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
