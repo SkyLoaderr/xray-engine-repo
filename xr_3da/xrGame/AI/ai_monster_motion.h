@@ -179,7 +179,7 @@ class CMotionManager {
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
-	CKinematics				*tpKinematics;
+	IRender_Visual			*pVisual;
 
 	ANIM_VECTOR				m_tHitFXs;
 
@@ -262,15 +262,15 @@ public:
 	void		PlayHitFX				(float amount);
 
 	// Обновить tpKinematics
-	void		OnNetSpawn				(); 
+	void		UpdateVisual			();
 
 private:	
 
 	// загрузка MotionDef для определённого типа анимации 
 	void		Load					(LPCSTR pmt_name, ANIM_VECTOR	*pMotionVect);
 	// очистка и загрузка MotionDef для карты анимаций (выполнять на Monster::Spawn, после обновления Visual)
-	void		LoadAnims				();
-	void		ClearAnims				();
+	void		LoadVisualAnims			();
+	void		ClearVisualAnims		();
 
 	// работа с последовательностями
 	void		Seq_Init				();

@@ -184,7 +184,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// Установить новый Visual, перезагрузить анимации
-	MotionMan.OnNetSpawn();
+	MotionMan.UpdateVisual();
 
 	m_pPhysics_support->in_NetSpawn();
 

@@ -11,7 +11,7 @@ void CMotionManager::Init (CAI_Biting	*pM)
 {
 	pMonster				= pM;
 	pJumping				= dynamic_cast<CJumping*>(pM);
-	tpKinematics			= 0;
+	pVisual					= 0;
 
 	prev_anim				= cur_anim	= eAnimStandIdle; 
 	m_tAction				= ACT_STAND_IDLE;
@@ -41,14 +41,14 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 }
 
 // Загрузка анимаций. Необходимо вызывать на Monster::NetSpawn 
-void CMotionManager::LoadAnims()
+void CMotionManager::LoadVisualAnims()
 {
 	for (ANIM_ITEM_MAP_IT item_it = m_tAnims.begin(); item_it != m_tAnims.end(); item_it++) {
 		Load(*item_it->second.target_name, &item_it->second.pMotionVect);
 	}
 }
 // Очистка анимаций (при переходе в оффлайн)
-void CMotionManager::ClearAnims()
+void CMotionManager::ClearVisualAnims()
 {
 	for (ANIM_ITEM_MAP_IT item_it = m_tAnims.begin(); item_it != m_tAnims.end(); item_it++) {
 		if (!item_it->second.pMotionVect.empty()) item_it->second.pMotionVect.clear();
@@ -150,8 +150,8 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 	string256	S1, S2; 
 	CMotionDef	*tpMotionDef;
 	for (int i=0; ; i++) {
-		if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
-		else if (0 != (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
+		if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
+		else if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
 		else break;
 	}
 }
@@ -343,7 +343,7 @@ bool CMotionManager::IsMoving()
 // FX plaing stuff
 void CMotionManager::AddHitFX(LPCTSTR name)
 {
-	m_tHitFXs.push_back(tpKinematics->ID_FX_Safe(name));
+	m_tHitFXs.push_back(PSkeletonAnimated(pVisual)->ID_FX_Safe(name));
 }
 
 void CMotionManager::PlayHitFX(float amount)
@@ -531,12 +531,12 @@ void CMotionManager::ForceAnimSelect()
 	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0);
 }
 
-void CMotionManager::OnNetSpawn() 
+void CMotionManager::UpdateVisual()
 {
-	ClearAnims(); 
-	tpKinematics = PKinematics(pMonster->Visual()); 
-	LoadAnims();
-}
+	ClearVisualAnims();
+	pVisual = pMonster->Visual();
+	LoadVisualAnims();
+}	
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Scripting

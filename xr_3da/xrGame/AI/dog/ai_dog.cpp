@@ -110,9 +110,9 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
-	CJumping::AddState(PKinematics(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
-	CJumping::AddState(PKinematics(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, 0.f);
-	CJumping::AddState(PKinematics(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, 0.f);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
 }
 
 void CAI_Dog::StateSelector()

@@ -166,10 +166,10 @@ void CAI_Bloodsucker::vfAssignBones()
 {
 	// Установка callback на кости
 
-	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
-	PKinematics(Visual())->LL_GetInstance(u16(bone1)).set_callback(BoneCallback,this);
+	int bone1	= PKinematics(Visual())->LL_BoneID("bip01_spine");
+	PKinematics(Visual())->LL_GetBoneInstance(u16(bone1)).set_callback(BoneCallback,this);
 	int bone2	= PKinematics(Visual())->LL_BoneID("bip01_head");
-	PKinematics(Visual())->LL_GetInstance(u16(bone2)).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(u16(bone2)).set_callback(BoneCallback,this);
 
 	// Bones settings
 	Bones.Reset();
