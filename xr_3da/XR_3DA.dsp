@@ -657,6 +657,14 @@ SOURCE=.\xr_effgamma.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\Blenders\Blender_Blur.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_Blur.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\Blender_BmmD.cpp
 # End Source File
 # Begin Source File

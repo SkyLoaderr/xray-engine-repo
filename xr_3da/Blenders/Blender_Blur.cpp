@@ -1,33 +1,33 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_Shadow_World.h"
+#include "Blender_Blur.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_ShWorld::CBlender_ShWorld()
+CBlender_Blur::CBlender_Blur()
 {
 	description.CLS		= B_SHADOW_WORLD;
 }
 
-CBlender_ShWorld::~CBlender_ShWorld()
+CBlender_Blur::~CBlender_Blur()
 {
 
 }
 
-void	CBlender_ShWorld::Save	( CFS_Base& FS	)
+void	CBlender_Blur::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_ShWorld::Load	( CStream& FS, WORD version	)
+void	CBlender_Blur::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS,version);
 }
 
-void CBlender_ShWorld::Compile	(CBlender_Compile& C)
+void CBlender_Blur::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 	C.PassBegin		();
