@@ -176,7 +176,7 @@ static void	UpdateLimits (Fvector &p, Fvector& min, Fvector& max)
 	{
 		if (p[k]<min[k] || p[k]>max[k])
 		{
-			R_ASSERT(0, "Fuck");
+			R_ASSERT2(0, "Fuck");
 			UpdateLimits(p, min, max);
 		}
 	}
