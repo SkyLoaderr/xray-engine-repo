@@ -16,7 +16,7 @@ float	psSoundOcclusionScale	= 0.5f;
 float	psSoundCull				= 0.01f;
 float	psSoundRolloff			= 0.25f;
 float	psSoundDoppler			= 0.3f;
-u32		psSoundFreq				= 0;
+u32		psSoundFreq				= 1;
 u32		psSoundModel			= 0;
 float	psSoundVMaster			= 1.0f;
 float	psSoundVEffects			= 1.0f;
@@ -78,7 +78,6 @@ void CSoundRender_Core::_initialize	(u64 window)
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
 	switch	( psSoundFreq )
 	{
-	case sf_11K:	wfm.nSamplesPerSec = 11025; break;
 	case sf_22K:	wfm.nSamplesPerSec = 22050; break;
 	case sf_44K:	wfm.nSamplesPerSec = 44100; break;
 	}

@@ -49,7 +49,6 @@ enum {
 	ss_forcedword		= u32(-1)
 };
 enum {
-	sf_11K,
 	sf_22K,
 	sf_44K,
 	sf_forcedword = u32(-1)
