@@ -110,7 +110,7 @@ end
 function generic_object_binder:update(delta)
 	object_binder.update(self, delta)
 
-	xr_logic.non_goap_update_actions_event(self.st) --xTEST
+	--xr_logic.non_goap_update_actions_event(self.st) --xTEST
 --TEST-------------------------------------------------------------
 	--reset_action(self.object, script_name())
 --TEST-------------------------------------------------------------
