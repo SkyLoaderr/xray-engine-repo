@@ -10,7 +10,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	u16			destination;
 	u32			MODE			= net_flags(TRUE,TRUE);
 
-	xrClientData *l_pC = ID_to_client(sender);
+//	xrClientData *l_pC = ID_to_client(sender);
 
 	// correct timestamp with server-unique-time (note: direct message correction)
 	P.r_u32		(timestamp	);
@@ -130,8 +130,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			P.r_u16				(id_src);
 			/*CSE_Abstract*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
 			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
-			xrClientData*		c_src		= e_src->owner;
-			xrClientData*		c_from		= ID_to_client	(sender);
+//			xrClientData*		c_src		= e_src->owner;
+//			xrClientData*		c_from		= ID_to_client	(sender);
 //			R_ASSERT			(c_src == c_from);							// assure client ownership of event
 
 			// Signal just to destination (тому, кто повредился)
@@ -149,7 +149,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
-			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
+//			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
 //			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
 			//
