@@ -151,7 +151,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     case STextureParams::tfRGB: 	nvOpt.TextureFormat = d888; 	break;
     case STextureParams::tfRGBA: 	nvOpt.TextureFormat = d8888; 	break;
     }
-    switch(fmt->flag.eMIPFilter){
+    switch(fmt->mip_filter){
     case STextureParams::dMIPFilterBox:		nvOpt.MIPFilterType = dMIPFilterBox;	break;
     case STextureParams::dMIPFilterCubic:	nvOpt.MIPFilterType = dMIPFilterCubic;	break;
     case STextureParams::dMIPFilterFullDFT:	nvOpt.MIPFilterType = dMIPFilterFullDFT;break;
@@ -161,7 +161,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	}
 //-------------------
 
-	if (fmt->flag.bGenerateMipMaps&&(STextureParams::dMIPFilterAdvanced==fmt->flag.eMIPFilter)){
+	if (fmt->flag.bGenerateMipMaps&&(STextureParams::dMIPFilterAdvanced==fmt->mip_filter)){
 		nvOpt.MipMapType=dUseExistingMipMaps;
 
 		LPBYTE pImagePixels=0;

@@ -111,6 +111,10 @@ SOURCE=.\nvdxt_options.h
 # Begin Group "Shared"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\xr_tokens.h
+# End Source File
 # End Group
 # Begin Source File
 

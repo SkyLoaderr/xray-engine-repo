@@ -4,6 +4,7 @@
 #ifndef _INCDEF_TextureParam_H_
 #define _INCDEF_TextureParam_H_
 
+#include "xr_tokens.h"
 
 #pragma pack(push,1)
 struct STextureParams{
@@ -65,7 +66,7 @@ struct STextureParams{
 		ZeroMemory(this,sizeof(STextureParams)); 
 		flag.bGenerateMipMaps	= TRUE;
 		flag.bDitherColor		= TRUE;
-		flag.eMIPFilter			= dMIPFilterBox;
+		mip_filter				= dMIPFilterBox;
 	}
 	IC BOOL HasAlphaChannel()
 	{
