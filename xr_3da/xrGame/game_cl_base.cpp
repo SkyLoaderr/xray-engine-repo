@@ -95,6 +95,10 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 	u32 Message;
 	P.r_u32(Message);
 
+	char	Color_Weapon[]	= "%c0,255,0";
+	char	Color_Main[]	= "%c192,192,192";
+	LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c255,0,0", "%c0,0,255"};
+
 	switch (Message)
 	{
 	case GMSG_PLAYER_CONNECTED:
@@ -103,17 +107,16 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			P.r_string(PlayerName);
 			
 			string512 Text;
-			sprintf(Text, "Player %s connected",PlayerName);
+			sprintf(Text, "%sPlayer %s%s %sconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	case GMSG_PLAYER_DISCONNECTED:
 		{
 			string64 PlayerName;
 			P.r_string(PlayerName);
-			HUD().outMessage			(0xffffffff,"","Player %s disconnected",PlayerName);
 
 			string512 Text;
-			sprintf(Text, "Player %s disconnected",PlayerName);
+			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
 	case GMSG_PLAYER_KILLED:
@@ -128,12 +131,28 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			CObject* pWeapon = Level().Objects.net_Find(WeaponID);
 
 			if (!pPlayer || !pKiller) break;
-			
+
 			string512 Text;
-			if (pWeapon)
-				sprintf(Text, "%s killed from %s by %s",pPlayer->name, *(pWeapon->cName()), pKiller->name);
+			if (pWeapon && WeaponID != 0)
+				sprintf(Text, "%s%s %skilled from %s%s %sby %s%s", 
+								Color_Teams[pPlayer->team], 
+								pPlayer->name, 
+								Color_Main,
+								Color_Weapon,
+								*(pWeapon->cName()), 
+								Color_Main,
+								Color_Teams[pKiller->team], 
+								pKiller->name);
 			else
-				sprintf(Text, "%s killed by %s",pPlayer->name, pKiller->name);
+//*
+				sprintf(Text, "%s%s %skilled by %s%s",
+								Color_Teams[pPlayer->team],
+								pPlayer->name, 
+								Color_Main,
+								Color_Teams[pKiller->team],
+								pKiller->name);
+//*/
+//								sprintf(Text, "%%c128,128,128 dead %s", pPlayer->name);
 
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;
