@@ -126,6 +126,6 @@ void CRenderTarget::accum_direct()
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		1,0,0,1);
+	RCache.set_c				("light_color",		1,.5f,.5f,1);
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
