@@ -31,6 +31,7 @@ struct word_list_struct
 
 struct func_list_struct
 {
+	func_list_struct():line_num(0),pf(0){}
 	int				line_num;
 	CProjectFile*	pf;
 };

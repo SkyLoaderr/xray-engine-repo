@@ -471,6 +471,87 @@ const CString&	CProjectFile::getWorkingFolder()
 	return g_mainFrame->GetProject()->m_ss_working_folder;
 }
 
+void CProjectFile::CreateWordList(LPSTR start_word,CString& str)
+{
+	if(!GetLuaView())
+		return;
+
+	TextToFind ttf;
+	ttf.lpstrText = start_word;
+	ttf.chrg.cpMin = 0;
+	ttf.chrg.cpMax = GetLuaView()->GetEditor()->GetLength();
+
+	char buff_[2048];
+	TextRange tr;
+	tr.lpstrText = buff_;
+	int r;
+	char trim[] = "\t\n\r ";
+
+	while(-1 != (r=GetLuaView()->GetEditor()->FindText(SCFIND_WORDSTART,&ttf)) ){
+
+		tr.chrg.cpMin = ttf.chrgText.cpMin;
+		tr.chrg.cpMax = GetLuaView()->GetEditor()->Sci(SCI_WORDENDPOSITION,ttf.chrgText.cpMax);
+		GetLuaView()->GetEditor()->Sci(SCI_GETTEXTRANGE,0,(int)&tr);
+
+		StrTrim(tr.lpstrText,trim);
+
+		if(-1!=str.Find(tr.lpstrText)){
+			ttf.chrg.cpMin = r+1;
+			continue;
+		}
+
+		if(str.GetLength())
+			str.AppendChar(30);
+
+		CString buff;
+		buff.Format("%s",tr.lpstrText);
+		
+		str.Append(buff);
+
+	}
+
+}
+
+void CProjectFile::CreateFunctionsList(CString& str)
+{
+	if(!GetLuaView())
+		return;
+
+	TextToFind ttf;
+	ttf.chrg.cpMin=0;
+	ttf.chrg.cpMax=GetLuaView()->GetEditor()->GetLength();
+	ttf.lpstrText = "function";
+	int r;
+	int line,line_length;
+	char str_line[1024];
+	char trim[] = "\t\n\r";
+
+	while(-1 != (r=GetLuaView()->GetEditor()->FindText(SCFIND_REGEXP,&ttf)) ){
+		if(str.GetLength())
+			str.AppendChar(30);
+
+		line = GetLuaView()->GetEditor()->Sci(SCI_LINEFROMPOSITION,r);
+		GetLuaView()->GetEditor()->Sci(SCI_GETLINE,line,(int)&str_line[0]);
+		line_length = GetLuaView()->GetEditor()->Sci(SCI_LINELENGTH,line);
+		str_line[line_length] = 0;
+		StrTrim(str_line,trim);
+//		mnu.AppendMenu(MF_STRING,line+1,str_line);
+		ttf.chrg.cpMin = r+1;
+
+		CString buff;
+		buff.Format("%s, line %d, %s",GetName(),line+1,str_line+strlen("function"));
+		
+		str.Append(buff);
+
+		func_list_struct* s = new func_list_struct();
+		s->line_num = line+1;
+		s->pf = this;
+		g_funcArray.Add(s);
+
+	}
+
+}
+
 void CProjectFile::CreateBreakPointList(CString& str)
 {
 		POSITION pos = m_breakPoints.GetStartPosition();

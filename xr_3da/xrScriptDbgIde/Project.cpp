@@ -426,6 +426,20 @@ void CProject::CreateBreakPointList(CString& str)
 		m_files[i]->CreateBreakPointList(str);
 }
 
+void CProject::CreateFunctionsList(CString& str)
+{
+	int nFiles = m_files.GetSize();
+	for ( int i=0; i<nFiles; ++i )
+		m_files[i]->CreateFunctionsList(str);
+}
+
+void CProject::CreateWordList(LPSTR start_word,CString& str)
+{
+	int nFiles = m_files.GetSize();
+	for ( int i=0; i<nFiles; ++i )
+		m_files[i]->CreateWordList(start_word,str);
+}
+
 void CProject::NewFile(CString& fn)
 {
 	CFile fin;

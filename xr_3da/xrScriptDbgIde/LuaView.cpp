@@ -201,8 +201,12 @@ int CLuaView::OnSci(SCNotification* pNotify)
 			int idx = pNotify->lParam;
 			switch (type){
 		case eWordList:{
+	   		GetEditor()->CompleteWord(pNotify->text);
+
 					   }break;
 		case eFuncList:{
+			theApp.OpenProjectFilesView(g_funcArray[idx]->pf);
+			g_funcArray[idx]->pf->GetLuaView()->GetEditor()->GotoLine(g_funcArray[idx]->line_num);
 					   }break;
 		case eBreakPointList:{
 			theApp.OpenProjectFilesView(g_breakpointsArray[idx]->pf);
@@ -248,6 +252,9 @@ int CLuaView::OnSci(SCNotification* pNotify)
 			if(pNotify->ch==13){
 				GetEditor()->AdjustCurrTabIndent();
 			}
+
+			if( GetEditor()->Sci(SCI_AUTOCACTIVE) )
+				OnCompleteWord();
 		}break;
 
 	}
@@ -778,46 +785,49 @@ bool CLuaView::_save()
 	}
 	return false;
 }
+
 void CLuaView::OnCompleteWord()
 {
-	CMenu mnu;
-	mnu.CreatePopupMenu();
-	if( !GetEditor()->createWordList(mnu) )
+	int word_end = GetEditor()->GetSelectionEnd();
+
+	int word_start = GetEditor()->GetWordStart(word_end);
+
+	char buff_[2048];
+	TextRange tr;
+	tr.lpstrText = buff_;
+	tr.chrg.cpMin = word_start;
+	tr.chrg.cpMax = word_end;
+	GetEditor()->Sci(SCI_GETTEXTRANGE,0,(int)&tr);
+	char str_word[2048];
+	strcpy(str_word,tr.lpstrText);
+	if(strlen(str_word)<3)
 		return;
 
-	RECT rct;
-	GetWindowRect(&rct);
-	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
-	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+	CString buff;
+	g_mainFrame->GetProject()->CreateWordList(str_word,buff);
 
-	::SetForegroundWindow(m_hWnd);	
-	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
-	if( 0 != idx ){
-		CString s;
-		mnu.GetMenuString(idx,s,MF_BYCOMMAND);
-		GetEditor()->CompleteWord(s.GetBuffer(0));
-	}
+	if(buff.GetLength() )
+		GetEditor()->Sci(SCI_AUTOCSHOW, strlen(str_word), (int)buff.GetBuffer());
+	else
+		if( GetEditor()->Sci(SCI_AUTOCACTIVE) )
+			GetEditor()->Sci(SCI_AUTOCCANCEL);
+
+	return;
 
 }
 
 void CLuaView::OnFunctionList()
 {
-	CMenu mnu;
-	mnu.CreatePopupMenu();
-	GetEditor()->createFunctionList(mnu);
 
-	RECT rct;
-	GetWindowRect(&rct);
-	rct.left += GetEditor()->PointXFromPosition( GetEditor()->GetSelectionEnd() );
-	rct.top  += GetEditor()->PointYFromPosition( GetEditor()->GetSelectionEnd() );
+	free(g_breakpointsArray);
 
-	::SetForegroundWindow(m_hWnd);	
+	CString buff;
+	g_mainFrame->GetProject()->CreateFunctionsList(buff);
 
-	int idx = mnu.TrackPopupMenuEx(TPM_RETURNCMD, rct.left, rct.top, this, NULL); 
-	if( 0 != idx ){
-		GetEditor()->GotoLine(idx);
-	}
-	
+	if(buff.GetLength() )
+		GetEditor()->Sci(SCI_USERLISTSHOW, eFuncList, (int)buff.GetBuffer());
+
+	return;
 }
 
 void CLuaView::OnBreakPointList()

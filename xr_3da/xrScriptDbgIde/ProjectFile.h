@@ -45,7 +45,9 @@ public:
 	BOOL		HasBreakPoint(){return m_breakPoints.GetSize();};
 
 	void		CreateBreakPointList(CString& str);
-	
+	void		CreateFunctionsList(CString& str);
+	void		CreateWordList(LPSTR start_word,CString& str);
+
 	EVSSStatus		GetSS_status		();
 	void			UpdateSS_status		();
 	void			SS_check_in			();
