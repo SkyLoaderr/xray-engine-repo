@@ -151,14 +151,14 @@ Device.Statistic.TEST0.End		();
 				if (CDB::TestRayTri(Item_P,dir,Tv,r_u,r_v,r_range,TRUE))
 				{
 					if (r_range>=0)	{
-						float y_test	= Item.P.y - r_range;
+						float y_test	= Item_P.y - r_range;
 						if (y_test>y)	y = y_test;
 					}
 				}
 #endif
 			}
 			if (y<D.vis.box.min.y)			continue;
-			Item.P.y	= y;
+			Item_P.y	= y;
 
 			// Angles and scale
 			Item.scale	= r_scale.randF		(Dobj->m_fMinScale,Dobj->m_fMaxScale);
@@ -167,7 +167,7 @@ Device.Statistic.TEST0.End		();
 			Fmatrix		mScale,mXform;
 			Fbox		ItemBB;
 			Item.mRotY.rotateY				(r_yaw.randF	(0,PI_MUL_2));
-			Item.mRotY.translate_over		(Item.P);
+			Item.mRotY.translate_over		(Item_P);
 			mScale.scale					(Item.scale,Item.scale,Item.scale);
 			mXform.mul_43					(Item.mRotY,mScale);
 			ItemBB.xform					(Dobj->bv_bb,mXform);
@@ -184,7 +184,7 @@ Device.Statistic.TEST0.End		();
 			gray255[2]						=	255.f*float(c_pal->a2)/15.f;
 			gray255[3]						=	255.f*float(c_pal->a3)/15.f;
 			*/
-			float c_f						=	1.f;	//Interpolate		(gray255,x,z,d_size)+.5f;
+			//float c_f						=	1.f;	//Interpolate		(gray255,x,z,d_size)+.5f;
 			//int c_dw						=	255;	//iFloor			(c_f);
 			//clamp							(c_dw,0,255);
 			//Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
