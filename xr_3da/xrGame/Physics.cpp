@@ -801,6 +801,12 @@ dContact contacts[N];
 					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
+
+			}
+			if(usr_data_2->object_callback){
+				bool do_colide=true;
+				usr_data_2->object_callback(do_colide,contacts[i]);
+				if(!do_colide) continue;
 			}
 		}
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -813,12 +819,17 @@ dContact contacts[N];
 				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDamping;
 			if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
+
 					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
 					//dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 				}
-
+			if(usr_data_1->object_callback){
+				bool do_colide=true;
+				usr_data_1->object_callback(do_colide,contacts[i]);
+				if(!do_colide) continue;
+			}
 		}
 
 		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
@@ -903,6 +914,11 @@ dContact contacts[N];
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 			}
+			if(usr_data_2->object_callback){
+				bool do_colide=true;
+				usr_data_2->object_callback(do_colide,contacts[i]);
+				if(!do_colide) continue;
+			}
 		}
 ///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
@@ -919,6 +935,11 @@ dContact contacts[N];
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 				}
+			if(usr_data_1->object_callback){
+				bool do_colide=true;
+				usr_data_1->object_callback(do_colide,contacts[i]);
+				if(!do_colide) continue;
+			}
 
 		}
 
@@ -1451,6 +1472,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 														//(*i)->SetTransform(m0);
 														(*i)->Activate(m0,dt01, m2, disable);
 			}
+	SetPhObjectInElements();
 	bActive=true;
 }
 
@@ -1471,6 +1493,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 		//(*i)->SetTransform(m0);
 		(*i)->Activate(transform,lin_vel, ang_vel);
 	}
+	SetPhObjectInElements();
 	bActive=true;
 }
 
@@ -2133,6 +2156,7 @@ void CPHShell::Activate(){
 														(*i)->Activate();
 										
 			}
+		SetPhObjectInElements();/////////////////////////////////////////////////////////////////////
 	bActive=true;
 	bActivating=true;
 }
@@ -3045,11 +3069,33 @@ if(!bActive)
 	}
 }
 
+
+void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	if(!bActive)
+	{
+		return;
+	}
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+	{
+		dGeomUserDataSetObjectContactCallback(*i,callback);
+	}
+}
+
 void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
 {
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 					(*i)->set_ContactCallback(callback);
+}
+
+
+void CPHShell::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+		(*i)->set_ObjectContactCallback(callback);
 }
 
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
@@ -3108,4 +3154,20 @@ dBodyGetMass(b,&m);
 float CPHJeep::GetSteerAngle()
 {
 	return dJointGetHinge2Angle1 (Joints[2]);
+}
+
+void CPHElement::SetPhObjectInGeomData(CPHObject* O)
+{
+	if(!bActive) return;
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+				dGeomGetUserData(*i)->ph_object=O;
+}
+
+void CPHShell::SetPhObjectInElements()
+{
+if(!bActive) return;
+vector<CPHElement*>::iterator i;
+for(i=elements.begin();i!=elements.end();i++ )
+		(*i)->SetPhObjectInGeomData((CPHObject*)this);
 }
