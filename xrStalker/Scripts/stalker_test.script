@@ -18,7 +18,8 @@ function main ()
     
     action				(
 		stalker,
-		move(move.standing,move.walk,move.line,patrol("way0000")),
+		move(move.standing,move.run,move.line,patrol("way0001")),
+		anim(anim.danger),
 		cond(cond.move_end)
 	)
     
