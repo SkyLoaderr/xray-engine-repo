@@ -651,8 +651,7 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 		switch (Team)
 		{
 		case 0:
-///			std::strcat(SkinName, "stalker_hood_multiplayer");
-			std::strcat(SkinName, "raneniy_1");
+			std::strcat(SkinName, "stalker_hood_multiplayer");
 			break;
 		case 1:
 			std::strcat(SkinName, "soldat_beret");
