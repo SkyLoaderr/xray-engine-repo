@@ -13,9 +13,9 @@
         <text>Door is locked</text>
     </string>
     <string id="tip_door_open">
-        <text>Press &apos;E&apos; to open the door</text>
+        <text>Press &amp;apos;E&amp;apos; to open the door</text>
     </string>
     <string id="tip_door_close">
-        <text>Press &apos;E&apos; to close the door</text>
+        <text>Press &amp;apos;E&amp;apos; to close the door</text>
     </string>
 </string_table>

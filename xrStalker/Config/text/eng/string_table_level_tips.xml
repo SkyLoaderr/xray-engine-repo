@@ -4,10 +4,10 @@
         <text>To talk to someone point sight at him and press ‘E’ button.</text>
     </string>
     <string id="tips_esc_trader_activate_pda">
-        <text>To activate PDA, press &apos;P&apos; button.</text>
+        <text>To activate PDA, press &amp;apos;P&amp;apos; button.</text>
     </string>
     <string id="tips_esc_trader_activate_map">
-        <text>To activate map press &apos;M&apos;.</text>
+        <text>To activate map press &amp;apos;M&amp;apos;.</text>
     </string>
     <string id="tips_esc_trader_quest_1">
         <text>Find artifact in the place pointed on the map and bring it to the trader.</text>
@@ -15,17 +15,11 @@
     <string id="tutorial_trader_search_corpses">
         <text>Search dead bodies, you may find some useful staff.</text>
     </string>
-    <string id="tutorial_trader_help_wounded">
-        <text>Remember! Helping wounded men, you help yourself.</text>
-    </string>
     <string id="tutorial_trader_give_medikit">
         <text>Give this jerk a medkit.</text>
     </string>
     <string id="tips_esc_trader_about_pda">
         <text>Press Contact (Ñ). In and on minimap on the screen other stalkers with activated PDA will appear. Their attitude to you will also be stated on the screen. Be careful if you see enemies on the screen. However bandits and monsters usually don`t use PDA, so you better watch out in the Zone.</text>
-    </string>
-    <string id="esc_trader_about_anomalies">
-        <text>Watch out! Anomaly is near. Use screw-bolt to define their borders.</text>
     </string>
     <string id="tips_esc_trader_about_anomalies">
         <text>Watch out! Anomaly is near. Use screw-bolt to define their borders.</text>

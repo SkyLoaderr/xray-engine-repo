@@ -58,7 +58,7 @@
         <text>Get dynamite for the Wolf.</text>
     </string>
     <string id="esc_dinamit_to_volk_0">
-        <text>Collect dynamite from the bandits on the factory and take it to the Wolf. </text>
+        <text>Collect dynamite from the bandits on the factory and take it to the Wolf.</text>
     </string>
     <string id="esc_dinamit_to_volk_1">
         <text>Find dynamite on the factory.</text>
@@ -85,7 +85,7 @@
         <text>Deliver the documents to barman in Stalker bar.</text>
     </string>
     <string id="agroprom_meet_gunslinger_band">
-        <text>Meet Sniper&apos;s grouping.</text>
+        <text>Meet Sniper&amp;apos;s grouping.</text>
     </string>
     <string id="agroprom_meet_gunslinger_band_0">
         <text>You found out, that some stalkers gather on the abandoned factory near “Agroprom” institute. They may lead you to Sniper.</text>

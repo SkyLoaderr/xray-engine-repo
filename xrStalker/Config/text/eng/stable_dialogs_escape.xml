@@ -10,7 +10,7 @@
         <text>Maybe it would be better to attack the factory all together?</text>
     </string>
     <string id="escape_factory_attackers_1121">
-        <text>You chicken out, aren’t you? Me too, I’m not for so long in Zone as well, if you wanna  stay alive it’s better not to show yourself. Vodka should be good here, for bravery.</text>
+        <text>You chicken out, aren’t you? Me too, I’m not for so long in Zone as well, if you wanna stay alive it’s better not to show yourself. Vodka should be good here, for bravery.</text>
     </string>
     <string id="escape_factory_attackers_11211">
         <text>Ah, I wish I had vodka now.</text>
@@ -49,7 +49,7 @@
         <text>Haven’t you heard about the Sniper?</text>
     </string>
     <string id="escape_lager_hlam_flame_111">
-        <text>I’ve once occurred to see the suit with &amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Sniper grouping &amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; inscription. Resolt with good benefits. If you see something like this, grab it to me.</text>
+        <text>I’ve once occurred to see the suit with &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Sniper grouping &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; inscription. Resolt with good benefits. If you see something like this, grab it to me.</text>
     </string>
     <string id="escape_lager_hlam_flame_12">
         <text>How’s life? What are you doing?</text>
@@ -61,7 +61,7 @@
         <text>Who is in charge in this camp?</text>
     </string>
     <string id="escape_lager_hlam_flame_131">
-        <text>Wolf. He’s there near the fire in stalker’s suit. I begged him to sell the suit for almost 20 times. That damn greedy doesn&apos;t want to.Íå õî÷åò, æëîá ìàõðîâûé.</text>
+        <text>Wolf. He’s there near the fire in stalker’s suit. I begged him to sell the suit for almost 20 times. That damn greedy doesn&amp;apos;t want to.Íå õî÷åò, æëîá ìàõðîâûé.</text>
     </string>
     <string id="escape_lager_hlam_hello_0">
         <text>Greetings. Can you sell anything?</text>
@@ -70,7 +70,7 @@
         <text>Take dymanite. Now you’re free.</text>
     </string>
     <string id="escape_lager_volk_dynamite_done_1">
-        <text>Yeah! I&apos;ll use the very single possibility to get a hell out of this zone, sell the bribe and go on vacation to the sea!</text>
+        <text>Yeah! I&amp;apos;ll use the very single possibility to get a hell out of this zone, sell the bribe and go on vacation to the sea!</text>
     </string>
     <string id="escape_lager_volk_flame_0">
         <text>Can I set some questions?</text>
@@ -91,7 +91,7 @@
         <text>Who’s that Barman?</text>
     </string>
     <string id="escape_lager_volk_flame_11111">
-        <text>There is a stalker bar at &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Rostok&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; factory. He is in charge there. But the enterance is opened only for veterans.</text>
+        <text>There is a stalker bar at &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Rostok&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot; factory. He is in charge there. But the enterance is opened only for veterans.</text>
     </string>
     <string id="escape_lager_volk_flame_1112">
         <text>Where is the Scientific camp?</text>
@@ -106,7 +106,7 @@
         <text>The majority wants to be rich – they hunt for artifacts. However there is something better than the amundance of the artifacts… Wishes executor much more expensive than any wealth.</text>
     </string>
     <string id="escape_lager_volk_flame_1211">
-        <text>&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Wish executor &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;? What a hell is this?</text>
+        <text>&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;Wish executor &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;? What a hell is this?</text>
     </string>
     <string id="escape_lager_volk_flame_12111">
         <text>I don’t have a clue. But it is there… I hope…</text>
@@ -115,7 +115,7 @@
         <text>What prevents you from deeper penetration in the Zone?</text>
     </string>
     <string id="escape_lager_volk_flame_12121">
-        <text>Something burns out stalkers&apos; brains to the north and prevents from breaking deeper into the zone.</text>
+        <text>Something burns out stalkers&amp;apos; brains to the north and prevents from breaking deeper into the zone.</text>
     </string>
     <string id="escape_lager_volk_flame_2">
         <text>What do you know about someone called Sniper?</text>
@@ -163,7 +163,7 @@
         <text>Easily, take it, I don’t mean it.</text>
     </string>
     <string id="escape_raid_wounded_11">
-        <text>Thanks for your help. Me and my workmate have dicovered a lot during this raid. Mate remained at the Dump to defend the bribe, and I decided to visit merchant quickly, to buy medicines, besides I had to deliver more info to him. So please hand this to the merchant </text>
+        <text>Thanks for your help. Me and my workmate have dicovered a lot during this raid. Mate remained at the Dump to defend the bribe, and I decided to visit merchant quickly, to buy medicines, besides I had to deliver more info to him. So please hand this to the merchant</text>
     </string>
     <string id="escape_raid_wounded_2">
         <text>No, I can’t.</text>
@@ -196,7 +196,7 @@
         <text>Weeeell, 1000 or not, 500 rubles and we’re done.</text>
     </string>
     <string id="escape_trader_done_gift_0">
-        <text>That stalker who returned wounded from the Zone handed over this package to you </text>
+        <text>That stalker who returned wounded from the Zone handed over this package to you</text>
     </string>
     <string id="escape_trader_done_gift_1">
         <text>Yeah, thanks.</text>
@@ -232,7 +232,7 @@
         <text>Affirmative.</text>
     </string>
     <string id="escape_trader_jobs_61">
-        <text>Right, I’ll try to do that imperceptibly. </text>
+        <text>Right, I’ll try to do that imperceptibly.</text>
     </string>
     <string id="escape_trader_jobs_62">
         <text>Okay, I’m on it, just explain where to go.</text>
@@ -295,13 +295,13 @@
         <text>Ask, but I don’t know much. You understand, I sit here all the time and the whole life is outside.</text>
     </string>
     <string id="escape_trader_talk_about_10">
-        <text>Thanks, that’s  it for today.</text>
+        <text>Thanks, that’s it for today.</text>
     </string>
     <string id="escape_trader_talk_about_2">
         <text>Tell me about the military stalkers.</text>
     </string>
     <string id="escape_trader_talk_about_21">
-        <text>Militaries as they are. Kind of presumptuous guys make themselves out to be gods. No respect for the customs, can&apos;t expect help from them, try as you might. Unless they shoot you not because of pity, because this is their nature – shoot first, them think. But I’ve found common with them. You understand what I mean.</text>
+        <text>Militaries as they are. Kind of presumptuous guys make themselves out to be gods. No respect for the customs, can&amp;apos;t expect help from them, try as you might. Unless they shoot you not because of pity, because this is their nature – shoot first, them think. But I’ve found common with them. You understand what I mean.</text>
     </string>
     <string id="escape_trader_talk_about_22">
         <text>What are the militaries doing in the Zone?</text>
@@ -397,31 +397,24 @@
         <text>Tell me more about demolished bridge.</text>
     </string>
     <string id="escape_trader_talk_level_31">
-        <text>Further along the road inside the zone you&apos;ll find a railway embankment. It was once an expensive bridge, but had been destroyed during the surge. Militaries like to lie in wait for stalkers, returning with the bribe there.</text>
+        <text>Further along the road inside the zone you&amp;apos;ll find a railway embankment. It was once an expensive bridge, but had been destroyed during the surge. Militaries like to lie in wait for stalkers, returning with the bribe there.</text>
     </string>
     <string id="escape_trader_talk_level_4">
         <text>Tell me more about the abandond factory.</text>
     </string>
     <string id="escape_trader_talk_level_41">
-        <text>When you cross the road you&apos;ll see it. White building. Things that could be stolen had been stolen long ago, everything else became rusty. The favourite bandits&apos; place. There is a depression in the ground nearby that can provide one with artifacts.</text>
+        <text>When you cross the road you&amp;apos;ll see it. White building. Things that could be stolen had been stolen long ago, everything else became rusty. The favourite bandits&amp;apos; place. There is a depression in the ground nearby that can provide one with artifacts.</text>
     </string>
     <string id="tutorial_wounded_0">
-        <text>Mate, help me with a medikit, I&apos;m dying!</text>
+        <text>Mate, help me with a medikit, I&amp;apos;m dying!</text>
     </string>
     <string id="tutorial_wounded_1">
-        <text>Sure, that&apos;s no question.</text>
+        <text>Sure, that&amp;apos;s no question.</text>
     </string>
     <string id="tutorial_wounded_11">
         <text>Thanks, mate! Talk to Wolf near the merchnt camp, you can be useful to him.</text>
     </string>
     <string id="tutorial_wounded_3">
-        <text>No, I ain&apos;t got any.</text>
+        <text>No, I ain&amp;apos;t got any.</text>
     </string>
-    <string id="hello_dialog_0">
-        <text>Hi!</text>
-    </string>
-    <string id="actor_break_dialog_0">
-        <text>See you!</text>
-    </string>
-    
 </string_table>
