@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void	CRenderTarget::phase_smap_direct		(light* L)
+void	CRenderTarget::phase_smap_direct		(light* L, u32 sub_phase)
 {
 	// Targets
 	if (RImplementation.o.HW_smap)		u_setrt	(rt_smap_surf, NULL, NULL, rt_smap_depth->pRT);
@@ -12,12 +12,13 @@ void	CRenderTarget::phase_smap_direct		(light* L)
 	// Stencil	- disable
 	RCache.set_Stencil					( FALSE );
 
-	// Misc		- draw only back-faces
-	RCache.set_CullMode					( CULL_CCW );
+	// Misc		- draw only front/back-faces
+	if (SE_SUN_NEAR==sub_phase)			RCache.set_CullMode			( CULL_CCW	);	// near
+	else								RCache.set_CullMode			( CULL_CW	);	// far
 	if (RImplementation.o.HW_smap)		RCache.set_ColorWriteEnable	(FALSE);
 }
 
-void	CRenderTarget::phase_smap_direct_tsh	(light* L)
+void	CRenderTarget::phase_smap_direct_tsh	(light* L, u32 sub_phase)
 {
 	VERIFY								(RImplementation.o.Tshadows);
 	u32		_clr						= 0xffffffff;	//color_rgba(127,127,12,12);
