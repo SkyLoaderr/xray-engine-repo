@@ -54,6 +54,14 @@ IC	bool CGameGraph::mask		(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, 
 	return(true);
 }
 
+IC	bool CGameGraph::mask		(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
+{
+	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
+		if ((M[i] != E[i]) && (M[i] != 255))
+			return(false);
+	return(true);
+}
+
 IC	float CGameGraph::distance	(const ALife::_GRAPH_ID tGraphID0, const ALife::_GRAPH_ID tGraphID1) const
 {
 	const_iterator			i, e;

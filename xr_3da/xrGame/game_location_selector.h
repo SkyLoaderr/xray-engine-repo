@@ -8,14 +8,15 @@
 
 #pragma once
 
-#include "path_manager_selector.h"
+#include "path_manager_game_selector.h"
 
 class CGameLocationSelector {
 protected:
 	u32										m_game_locate_query_time;
 	u32										m_game_location_query_interval;
 	bool									m_game_selector_failed;
-	PathManagers::CAbstractNodeEvaluator	*m_game_selector_evaluator;
+	PathManagers::SVertexType				*m_game_selector_evaluator;
+	ALife::_GRAPH_ID						m_selected_game_vertex_id;
 
 public:
 					CGameLocationSelector	();
@@ -24,5 +25,7 @@ public:
 			bool	game_vertex_selection_actual();
 //	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
 //	template <u64 flags>
-//			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
+//			void	select_location			(PathManagers::CVertexEvaluator<flags> *node_evaluator);
+private:
+			void perform_search				(const ALife::_GRAPH_ID game_vertex_id);
 };

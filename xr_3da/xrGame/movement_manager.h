@@ -62,7 +62,7 @@ private:
 	bool									m_path_type_changed;
 
 //	template <u64 flags>
-//	void			find_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
+//	void			find_location			(PathManagers::CVertexEvaluator<flags> *node_evaluator);
 	void			process_game_path		();
 	void			process_level_path		();
 	void			process_enemy_search	();

@@ -50,7 +50,7 @@ CLevelLocationSelector::~CLevelLocationSelector		()
 //}
 //
 //template <u64 flags>
-//void CLevelLocationSelector::select_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+//void CLevelLocationSelector::select_location(PathManagers::CVertexEvaluator<flags> *node_evaluator)
 //{
 //	CEntity						*l_tpEntity = dynamic_cast<CEntity*>(this);
 //	VERIFY						(l_tpEntity);
@@ -84,11 +84,24 @@ CLevelLocationSelector::~CLevelLocationSelector		()
 //
 //	Device.Statistic.AI_Range.End();
 
+
+void CGameLocationSelector::perform_search		(const ALife::_GRAPH_ID game_vertex_id)
+{
+	VERIFY				(m_game_selector_evaluator);
+	ai().graph_search_engine().build_path(ai().level_graph(),game_vertex_id,game_vertex_id,0,m_game_selector_evaluator);
+	m_game_selector_failed	= !ai().game_graph().valid_vertex_id(m_game_selector_evaluator->m_vertex_id) || (m_game_selector_evaluator->m_vertex_id == m_selected_game_vertex_id);
+}
+
 void CLevelLocationSelector::select_level_vertex()
 {
+	if (!m_game_selector_failed) {
+		perform_search	(game_vertex_id);
+		return;
+	}
 }
 
 bool CLevelLocationSelector::level_vertex_selection_actual()
 {
-	return				(true);
+	perform_search		(game_vertex_id);
+	return				(m_game_selector_failed);
 }

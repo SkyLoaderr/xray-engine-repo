@@ -105,6 +105,7 @@ public:
 	IC virtual						~CGameGraph		();
 	IC const CHeader				&header			() const;
 	IC		bool					mask			(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
+	IC		bool					mask			(const ALife::_LOCATION_ID M[LOCATION_TYPE_COUNT], const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;
 	IC		float					distance		(const ALife::_GRAPH_ID tGraphID0, const ALife::_GRAPH_ID tGraphID1) const;
 	IC		bool					accessible		(const u32 vertex_id) const;
 	IC		void					begin			(const u32 vertex_id, const_iterator &start, const_iterator &end) const;

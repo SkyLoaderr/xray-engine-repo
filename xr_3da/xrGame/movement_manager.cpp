@@ -343,7 +343,7 @@ void CMovementManager::process_enemy_search()
 }
 
 //template <u64 flags>
-//void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+//void CMovementManager::find_location(PathManagers::CVertexEvaluator<flags> *node_evaluator)
 //{
 //	if (!m_locate_query_time ||
 //		(m_locate_query_time < m_location_query_interval + m_current_update) ||

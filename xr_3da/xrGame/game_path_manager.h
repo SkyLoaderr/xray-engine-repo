@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "path_manager_selector.h"
+#include "path_manager_game_selector.h"
 
 class CGamePathManager {
 protected:
