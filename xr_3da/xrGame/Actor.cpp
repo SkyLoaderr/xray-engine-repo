@@ -403,9 +403,9 @@ void CActor::ZoneEffect	(float z_amount)
 	// Fov/Shift + Pulse
 	CCameraBase* C		= cameras	[cam_active];
 	float	shift		= z_amount*F*.1f;
-	C->f_fov			= 90.f+z_amount*45.f + shift;
-	C->f_aspect			= 1.f+cam_shift;
-	cam_shift			= shift/3.f;
+	C->f_fov			= 90.f+z_amount*15.f + shift;
+	C->f_aspect			= 1.f+cam_shift/3;
+	cam_shift			= shift/(3.f*3.f);
 
 	// Sounds
 	Fvector				P;
