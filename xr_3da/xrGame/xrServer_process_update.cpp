@@ -25,16 +25,9 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 		if (E)				
 		{
 			E->net_Ready	= TRUE;
-			if (strstr(E->s_name, "m_car"))
-			{
-				int x=0; 
-				x=x;
-			};
 			E->UPDATE_Read	(P);
-			Log(" - Update -", E->s_name);
 		} else {
 			P.r_advance	(size);
-			Log(" - Update - Skip");
 		}
 	}
 }
