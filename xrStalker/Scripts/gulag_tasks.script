@@ -164,7 +164,7 @@ function loadStates(st, gname, type)
 		t = { id = 2,
 		    timeout = 1*60*60*1000 }
 		table.insert(st, t)			
-		return function(obj, rupor)
+		return function(obj, st, rupor)
 			for k,v in obj do
 				enemy = v:best_enemy()
 				if enemy ~= nil then
