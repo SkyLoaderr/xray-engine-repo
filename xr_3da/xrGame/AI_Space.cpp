@@ -102,8 +102,8 @@ void CAI_Space::Load(LPCSTR name)
 	}
 
 	// for a* search
-	m_fSize2				= _sqr(m_fSize = m_header.size)/4;
-	m_fYSize2				= _sqr(m_fYSize = (float)(m_header.size_y/32767.0))/4;
+	m_fSize2				= _sqr(m_header.size)/4;
+	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
 	u32 S1					= (MAX_NODES + 1)*sizeof(SNode);
 	m_tpHeap				= (SNode *)xr_malloc(S1);
 	ZeroMemory				(m_tpHeap,S1);

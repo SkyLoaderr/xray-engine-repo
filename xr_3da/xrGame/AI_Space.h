@@ -219,19 +219,18 @@ public:
 	void			Load			(LPCSTR name);
 	void			Render			();
 
-	void			q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
+	u32				q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
+	void			q_Range			(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
 	void			q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
-	//void			q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, u32 &BestNode, float &BestCost);
-	u32				q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
 
 	AI::SGraphVertex						*m_tpaGraph;			// graph
 	SNode									*m_tpHeap;
 	SIndexNode								*m_tpIndexes;
 	u32										m_dwAStarStaticCounter;
-	float									m_fSize,m_fYSize,m_fSize2,m_fYSize2;
+	float									m_fSize2,m_fYSize2;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData>
 		m_tpMapPath;
 	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>
@@ -242,7 +241,6 @@ public:
 		m_tpEnemyPositionPath;
 	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>
 		m_tpGraphPath;
-	vector<u32>		m_tpaNodes;
 	float			vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks = false);
 	float			vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, bool bUseMarks = false);
 	float			vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight = DEFAULT_LIGHT_WEIGHT, float fCoverWeight = DEFAULT_COVER_WEIGHT, float fDistanceWeight = DEFAULT_DISTANCE_WEIGHT, float fEnemyViewWeight = DEFAULT_ENEMY_VIEW_WEIGHT, bool bUseMarks = false);
@@ -337,7 +335,6 @@ public:
 	float	ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<u32> &tpaStack);
 	bool	bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, u32 dwFinishNode);
 	u32		dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition);
-	//void	vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2);
 
 	// Device dependance
 	virtual void	OnDeviceCreate	();
