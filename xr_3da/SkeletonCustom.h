@@ -47,6 +47,7 @@ class ENGINE_API		CBoneData
 {
 public:
 	u16					SelfID;
+	u16					ParentID;
 	vecBones			children;		// bones which are slaves to this
 	Fobb				obb;			
 

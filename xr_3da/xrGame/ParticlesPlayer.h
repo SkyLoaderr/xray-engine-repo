@@ -8,77 +8,61 @@
 #include "ParticlesObject.h"
 
 
-//информация о косточке на которой будут проигрываться партиклы
-typedef struct
-{
-	int index;
-	Fvector offset;
-} SBoneInfo;
-
-
 DEFINE_VECTOR(CParticlesObject*, PARTICLES_PTR_VECTOR, PARTICLES_PTR_VECTOR_IT);
-DEFINE_VECTOR(SBoneInfo, BONE_INFO_VECTOR, BONE_INFO_VECTOR_IT);
-
-//структура с внутренней информацией о партикле
-typedef struct 
-{
-	ref_str particles_name;
-	
-	int bone;
-	Fvector bone_pos;
-	Fvector dir;
-
-	bool auto_remove;
-	u16 sender_id;
-} SParticlesInfo;
 
 
 class CParticlesPlayer 
 {
+private:
+	//структура с внутренней информацией о партикле
+	struct SParticlesInfo
+	{
+		CParticlesObject*	ps;
+		Fvector				dir;
+		u16					sender_id;
+	};
+	DEFINE_LIST				(SParticlesInfo,ParticlesInfoList,ParticlesInfoListIt);
+	//структура для косточки с списком запущенных партиклов
+	struct SBoneInfo
+	{
+		u16					index;
+		Fvector				offset;
+		ParticlesInfoList	particles;
+		SParticlesInfo*		FindParticles			(ref_str ps_name);
+	public:
+							SBoneInfo				(u16 idx, const Fvector& offs):index(idx),offset(offs){;}
+		SParticlesInfo*		AppendParticles			(CObject* object, ref_str ps_name);
+		void				StopParticles			(ref_str ps_name);
+		void				StopParticles			(u16 sender_id);
+	} ;
+	DEFINE_VECTOR			(SBoneInfo,BoneInfoVec,BoneInfoVecIt);
+
+	// список костей
+	u64						bone_mask; // используемые кости
+	BoneInfoVec				m_Bones;
+private:
+	IC SBoneInfo*			get_bone_info			(u16 bone_index)
+	{
+		if (BI_NONE==bone_index) return 0;
+		for (BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
+			if (it->index==bone_index) return &(*it);
+		return 0;
+	}
+	SBoneInfo*				get_nearest_bone_info	(CKinematics* K, u16 bone_index);
 public:
-	CParticlesPlayer			(void);
-	virtual ~CParticlesPlayer	(void);
-
+							CParticlesPlayer		(void);
+	virtual					~CParticlesPlayer		(void);
+	void					Load					(CKinematics* K);
 	
-	virtual void UpdateParticles	();
+	void					UpdateParticles			();
 
-	virtual CParticlesObject* StartParticles(ref_str particles_name,
-											 int bone_num, 
-											 const Fvector& bone_pos,
-											 const Fvector& dir,
-											 u16 sender_id,
-											 bool auto_remove = true);
-	
-	virtual void StopParticles(CParticlesObject* particles_object);
-	virtual void StopParticles(PARTICLES_PTR_VECTOR& particles_vector);
-	
-	virtual void StopParticles(u32 sender_ID);
-	virtual void StopParticles(ref_str particles_name);
+	void					StartParticles			(ref_str ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id);
+	void					StartParticles			(ref_str ps_name, const Fvector& dir, u16 sender_id);
 
+	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
+	void					StopParticles			(ref_str particles_name, u16 bone_id=BI_NONE);
 
-	virtual void StartParticlesOnAllBones(PARTICLES_PTR_VECTOR& particles_vector,
-										  ref_str particles_name,
-										  u16 sender_id,
-										  bool auto_remove = true);
-
-	virtual void UpdateParticlesPosition(CParticlesObject* pParticles,
-										 const SParticlesInfo* pInfo);
-
-	//размещение партиклов на конкретной косточке объекта
-	static void UpdateParticlesPosition(CObject* pObject,
-										CParticlesObject* pParticles,
-										int bone_num, 
-										const Fvector& bone_pos,
-										const Fvector& dir,
-										const Fvector& vel = zero_vel,
-										bool set_xform = false);
-
-	virtual BONE_INFO_VECTOR& GetParticleBones() {return m_ParticlesBonesList;}
-
-protected:
-	DEFINE_MAP(CParticlesObject*, SParticlesInfo*, PARTICLES_INFO_MAP, PARTICLES_INFO_MAP_IT);
-	PARTICLES_INFO_MAP m_ParticlesInfoMap;
-
-	//список косточек на которые могут цепляться партиклы
-	BONE_INFO_VECTOR m_ParticlesBonesList;
+	void					MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
+	u16						GetNearestBone			(CKinematics* K, u16 bone_id);
+	IC u16					GetRandomBone			(){return m_Bones.size()?Random.randI(m_Bones.size()):BI_NONE;}
 };

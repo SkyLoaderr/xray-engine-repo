@@ -200,11 +200,13 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 			// no parent - this is root bone
 			R_ASSERT	(BI_NONE==iRoot);
 			iRoot		= u16(i);
+			B->ParentID	= BI_NONE;
 			continue;
 		} else {
 			u16 ID		= LL_BoneID(P);
 			R_ASSERT	(ID!=BI_NONE);
 			(*bones)[ID]->children.push_back(B);
+			B->ParentID	= ID;
 		}
 	}
 	R_ASSERT	(BI_NONE != iRoot);

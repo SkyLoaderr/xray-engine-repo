@@ -506,11 +506,13 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 		particle_str = m_sHitParticlesBig;
 	}
 
-	//выбрать случайную косточку на объекте
-	BONE_INFO_VECTOR_IT it = pObject->GetParticleBones().begin() +
-							::Random.randI(0,pObject->GetParticleBones().size());
-	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
-						     Fvector().set(0,1,0), (u16)ID(), true);
+	// play particles
+	CParticlesPlayer* PP = dynamic_cast<CParticlesPlayer*>(pObject);
+	if (PP){
+		u16 play_bone = pObject->GetRandomBone(); 
+		if (play_bone!=BI_NONE)
+			PP->StartParticles	(*particle_str,play_bone,Fvector().set(0,1,0),(u16)ID());
+	}
 }
 
 void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
@@ -532,31 +534,17 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 	}
 
 	//выбрать случайную косточку на объекте
-	BONE_INFO_VECTOR_IT it = pObject->GetParticleBones().begin() +
-							::Random.randI(0,pObject->GetParticleBones().size());
-	
-	CParticlesObject* pParticles = NULL;
-	//pParticles = CParticlesObject::Create(*particle_str,Sector());
-	pParticles = CParticlesObject::Create(*particle_str);
-
-	CParticlesPlayer::UpdateParticlesPosition(pObject, pParticles, 
-											(*it).index, (*it).offset, 
-											Fvector().set(0,1,0));
-
-	pParticles->Play();
-
-
-	//Fmatrix m = Fmatrix().identity();
-	//m.c.set(-1.f,1.5f,-22.f);
-	//pParticles->SetXFORM(m);
-	
-	//pParticles->UpdateParent(pObject->XFORM(),zero_vel);
-	//pParticles->SetXFORM(pObject->XFORM());
-
-	//const Fmatrix& m = pParticles->XFORM();
-	//Msg("entrance particles");
-//	pObject->StartParticles(*particle_str, (*it).index, (*it).offset,
-//						     Fvector().set(0,1,0), (u16)ID(), true);
+	CParticlesPlayer* PP = dynamic_cast<CParticlesPlayer*>(pObject);
+	if (PP){
+		u16 play_bone = pObject->GetRandomBone(); 
+		if (play_bone!=BI_NONE){
+			CParticlesObject* pParticles = CParticlesObject::Create(*particle_str);
+			Fmatrix xform;
+			PP->MakeXFORM			(pObject,play_bone,Fvector().set(0,1,0),Fvector().set(0,0,0),xform);
+			pParticles->UpdateParent(xform,zero_vel);
+			pParticles->Play		();
+		}
+	}
 }
 
 
@@ -595,16 +583,14 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 
 	
 	//запустить партиклы на объекте
-	pObject->StartParticlesOnAllBones(m_ObjectInfoMap[pObject].particles_vector,
-									  *particle_str,
-									  (u16)ID(), false);
+	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), (u16)ID());
 }
 void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
-	OBJECT_INFO_MAP_IT it = m_ObjectInfoMap.find(pObject);
+	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
 	if(m_ObjectInfoMap.end() == it) return;
 	//остановить партиклы
-	pObject->StopParticles(it->second.particles_vector);
+	pObject->StopParticles	(ID());
 }
 
 

@@ -2,214 +2,181 @@
 // ParticlesPlayer.cpp
 // интерфейс для проигрывания партиклов на объекте
 ///////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-
 #include "ParticlesPlayer.h"
+//-------------------------------------------------------------------------------------
 
-
+CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(ref_str ps_name)
+{
+	for (ParticlesInfoListIt it=particles.begin(); it!=particles.end(); it++)
+		if (it->ps->Name()==ps_name) return &(*it);
+	return 0;
+}
+CParticlesPlayer::SParticlesInfo*	CParticlesPlayer::SBoneInfo::AppendParticles(CObject* object, ref_str ps_name)
+{
+	SParticlesInfo* pi	= FindParticles(ps_name);
+	if (pi)				return pi;
+	particles.push_back	(SParticlesInfo());
+	pi					= &particles.back();
+	pi->ps				= xr_new<CParticlesObject>(*ps_name, object->Sector(), false);
+	return pi;
+}
+void CParticlesPlayer::SBoneInfo::StopParticles(ref_str ps_name)
+{
+	SParticlesInfo* pi	= FindParticles(ps_name);
+	if (pi)				pi->ps->Stop();
+}
+void CParticlesPlayer::SBoneInfo::StopParticles(u16 sender_id)
+{
+	for (ParticlesInfoListIt it=particles.begin(); it!=particles.end(); it++)
+		if (it->sender_id==sender_id) it->ps->Stop();
+}
+//-------------------------------------------------------------------------------------
 
 CParticlesPlayer::CParticlesPlayer ()
 {
-	//добавить одну косточку для партиклов по дефаулту
-	SBoneInfo bone_info;
-	m_ParticlesBonesList.clear();
-	bone_info.index = 0;
-	bone_info.offset.set(0,0,0);
-	m_ParticlesBonesList.push_back(bone_info);
+	m_Bones.push_back	(SBoneInfo(0,Fvector().set(0,0,0)));
+	bone_mask			= u64(1)<<u64(0);
 }
 
 CParticlesPlayer::~CParticlesPlayer ()
 {
 }
 
+void CParticlesPlayer::Load(CKinematics* K)
+{
+	VERIFY				(K);
+	//считать список косточек и соответствующих
+	//офсетов  куда можно вешать партиклы
+	CInifile* ini		= K->LL_UserData();
+	if(ini&&ini->section_exist("particle_bones")){
+		bone_mask		= 0;
+		m_Bones.clear	();
+		CInifile::Sect& data		= ini->r_section("particle_bones");
+		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+			CInifile::Item& item	= *I;
+			u16 index				= K->LL_BoneID(*item.first); 
+			R_ASSERT3(index != BI_NONE, "Particles bone not found", *item.first);
+			Fvector					offs;
+			sscanf					(*item.second,"%f,%f,%f",&offs.x,&offs.y,&offs.z);
+			m_Bones.push_back		(SBoneInfo(index,offs));
+			bone_mask				|= u64(1)<<u64(index);
+		}
+	}
+}
 
-CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
-											 int bone_num, 
-											 const Fvector& bone_pos,
-											 const Fvector& dir,
-											 u16 sender_id,
-											 bool auto_remove)
 
+CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics* K, u16 bone_index)
+{
+	u16 play_bone	= bone_index;
+	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
+		play_bone	= K->LL_GetData(play_bone).ParentID;
+	return get_bone_info(play_bone);
+}
+
+
+
+void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, const Fvector& dir, u16 sender_id)
 {
 	R_ASSERT(*particles_name);
 	
-	CObject* pObject = dynamic_cast<CObject*>(this);
-	VERIFY(pObject);
+	CObject* object					= dynamic_cast<CObject*>(this);
+	VERIFY(object);
 
-	CParticlesObject* pParticlesObject = NULL;
-	pParticlesObject = xr_new<CParticlesObject>(*particles_name, pObject->Sector(), false);
+	//найти ближайшую допустимую косточку, чтобы повесить партиклы
+	SBoneInfo* pBoneInfo			=  get_nearest_bone_info(PKinematics(object->Visual()),bone_num);
+	if(!pBoneInfo) return;
 
-	SParticlesInfo* pParticlesInfo = xr_new<SParticlesInfo>();
-	pParticlesInfo->particles_name = particles_name;
-	pParticlesInfo->bone = bone_num;
-	pParticlesInfo->bone_pos = bone_pos;
-	pParticlesInfo->dir = dir;
-	pParticlesInfo->sender_id = sender_id;
-	pParticlesInfo->auto_remove = auto_remove;
+	SParticlesInfo* particles_info	= pBoneInfo->AppendParticles(object,particles_name);
+	particles_info->dir				= dir;
+	particles_info->sender_id		= sender_id;
 
-	R_ASSERT3(!(pParticlesObject->IsLooped()&&auto_remove),"Can't attach looped particle system with auto-remove flag.", *particles_name);
-
-	//добавить новую запись в map
-	m_ParticlesInfoMap[pParticlesObject] = pParticlesInfo;
-	
 	//начать играть партиклы
-	UpdateParticlesPosition(pParticlesObject,pParticlesInfo);
-	pParticlesObject->Play();
-		
-	return pParticlesObject;
+	Fmatrix xform;
+	MakeXFORM						(object,pBoneInfo->index,particles_info->dir,pBoneInfo->offset,xform);
+	particles_info->ps->UpdateParent(xform,zero_vel);
+	particles_info->ps->Play		();
 }
 
-
-void CParticlesPlayer::StartParticlesOnAllBones(PARTICLES_PTR_VECTOR& particles_vector,
-												ref_str particles_name,
-												u16 sender_id,
-												bool auto_remove)
+void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 sender_id)
 {
-	for(BONE_INFO_VECTOR_IT it = m_ParticlesBonesList.begin();
-							it != m_ParticlesBonesList.end();
-							it++)
-	{
-		CParticlesObject* pParticles = StartParticles(particles_name, (*it).index, (*it).offset, 
-													  Fvector().set(0,1,0),sender_id, auto_remove);
-		particles_vector.push_back(pParticles);
+	CObject* object					= dynamic_cast<CObject*>(this);
+	VERIFY(object);
+	for(BoneInfoVecIt it = m_Bones.begin(); it!=m_Bones.end(); it++){
+		SParticlesInfo* particles_info	= it->AppendParticles(object,ps_name);
+		particles_info->dir			= dir;
+		particles_info->sender_id	= sender_id;
+
+		//начать играть партиклы
+		Fmatrix xform;
+		MakeXFORM					(object,it->index,particles_info->dir,it->offset,xform);
+		particles_info->ps->UpdateParent(xform,zero_vel);
+		particles_info->ps->Play	();
 	}
 }
 
-void CParticlesPlayer::StopParticles(CParticlesObject* particles_object)
+void CParticlesPlayer::StopParticles(u16 sender_id, u16 bone_id)
 {
-	PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.find(particles_object);
-	
-	if(m_ParticlesInfoMap.end() == it) return;
-	
-	CParticlesObject* pParticlesObject = it->first;
-	pParticlesObject->Stop();
-}
-
-void CParticlesPlayer::StopParticles(PARTICLES_PTR_VECTOR& particles_vector)
-{
-	for(PARTICLES_PTR_VECTOR_IT it = particles_vector.begin();
-							    it != particles_vector.end();
-							    it++)
-	{
-		StopParticles(*it);
+	if (BI_NONE==bone_id){
+		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
+			it->StopParticles	(sender_id);
+	}else{
+		SBoneInfo* bi			= get_bone_info(bone_id); VERIFY(bi);
+		bi->StopParticles		(sender_id);
 	}
 }
 
-
-void CParticlesPlayer::StopParticles(u32 sender_id)
+void CParticlesPlayer::StopParticles(ref_str ps_name, u16 bone_id)
 {
-	for(PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.begin();
-							  it != m_ParticlesInfoMap.end();
-							  it++)
-	{
-		CParticlesObject* pParticlesObject = it->first;
-		SParticlesInfo* pParticlesInfo = it->second;
-
-		if(pParticlesInfo->sender_id == sender_id)
-		{
-			pParticlesObject->Stop();
-		}
-	}
-}
-void CParticlesPlayer::StopParticles(ref_str particles_name)
-{
-	for(PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.begin();
-							  it != m_ParticlesInfoMap.end();
-							  it++)
-	{
-		CParticlesObject* pParticlesObject = it->first;
-		SParticlesInfo* pParticlesInfo = it->second;
-
-		if(pParticlesInfo->particles_name == particles_name)
-		{
-			pParticlesObject->Stop();
-		}
+	if (BI_NONE==bone_id){
+		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
+			it->StopParticles	(ps_name);
+	}else{
+		SBoneInfo* bi			= get_bone_info(bone_id); VERIFY(bi);
+		bi->StopParticles		(ps_name);
 	}
 }
 
 void CParticlesPlayer::UpdateParticles()
 {
-	CParticlesObject* pPreviousObject = NULL;
+	CObject* object			= dynamic_cast<CObject*>(this);
+	VERIFY(object);
 
-	for(PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.begin();
-							  it != m_ParticlesInfoMap.end();
-							  it++)
-	{
-		CParticlesObject* pParticlesObject = it->first;
-		SParticlesInfo* pParticlesInfo = it->second;
+	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+		SBoneInfo& b_info	= *b_it;
 
+		for (ParticlesInfoListIt p_it=b_info.particles.begin(); p_it!=b_info.particles.end(); p_it++){
+			SParticlesInfo& p_info	= *p_it;
+			//обновить позицию партиклов
+			Fmatrix xform;
+			MakeXFORM				(object,b_info.index,p_info.dir,b_info.offset,xform);
+			p_info.ps->UpdateParent(xform,zero_vel);
 
-		//обновить позицию партиклов
-		UpdateParticlesPosition(pParticlesObject,pParticlesInfo);
-
-
-		//остановить партикл, который уже отыграл
-		if(pParticlesInfo->auto_remove && !pParticlesObject->PSI_alive())
-		{
-			pParticlesObject->Stop();
+			if(!p_info.ps->IsPlaying()){
+				p_info.ps->PSI_destroy		();
+				ParticlesInfoListIt cur_it	= p_it++;
+				b_info.particles.erase		(cur_it);
+			}
 		}
-
-		if(!pParticlesObject->IsPlaying())
-		{
-			pParticlesObject->PSI_destroy();
-			m_ParticlesInfoMap.erase(pParticlesObject);
-
-			if(pPreviousObject == NULL)
-				it = m_ParticlesInfoMap.begin();
-			else
-				it = m_ParticlesInfoMap.find(pPreviousObject);
-		}
-
-		//запомнить объект, чтоб после erase можно было возобновить поиск
-		//восстанавливая it
-		pPreviousObject = it->first;
 	}
 }
 
-void CParticlesPlayer::UpdateParticlesPosition(CParticlesObject* pParticles,
-											   const SParticlesInfo* pInfo)
+void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result)
 {
-	CObject	*object = dynamic_cast<CObject*>(this);
+	CBoneInstance&		l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_id);
 
-	UpdateParticlesPosition(object, pParticles, 
-							pInfo->bone, 
-							pInfo->bone_pos, 
-							pInfo->dir);
+	result.identity		();
+	result.k.normalize	(dir);
+	Fvector::generate_orthonormal_basis(result.k, result.i, result.j);
+	result.translate_over(offset);
+	result.mulA			(l_tBoneInstance.mTransform);
+	result.mulA			(pObject->XFORM());
 }
 
-void CParticlesPlayer::UpdateParticlesPosition(CObject* pObject, 
-												CParticlesObject* pParticles,
-												int bone_num, 
-												const Fvector& bone_pos,
-												const Fvector& dir,
-												const Fvector& vel,
-												bool set_xform)
+u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
 {
-	VERIFY				(pObject);
-
-	Fmatrix				  l_tMatrix;
-
-	CBoneInstance	  	 &l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_num);
-	
-	l_tMatrix.identity();
-	l_tMatrix.translate_over(bone_pos);
-	l_tMatrix.k.normalize(dir);
-	Fvector::generate_orthonormal_basis(l_tMatrix.k, l_tMatrix.i, l_tMatrix.j);
-	l_tMatrix.mulA(l_tBoneInstance.mTransform);
-	l_tMatrix.mulA(pObject->XFORM());
-
-/*	Fvector vel;
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(pObject);
-	if(pGameObject)
-		pGameObject->PHGetLinearVell(vel);
-	else
-		vel = zero_vel;*/
-
-
-	if(set_xform)
-		pParticles->SetXFORM(l_tMatrix);
-	else	
-		pParticles->UpdateParent(l_tMatrix, vel);
-
+	u16 play_bone	= bone_id;
+	while((BI_NONE!=play_bone)||!(bone_mask&(u64(1)<<u64(play_bone))))
+		play_bone	= K->LL_GetData(play_bone).ParentID;
+	return play_bone;
 }
