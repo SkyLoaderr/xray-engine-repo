@@ -4,16 +4,6 @@ function main()
     
     stalker:script		(true,stalker_test:script_name());
     
---[
-    action				(
-		stalker,
-		look			(look.fire_point,actor),
-		anim			(anim.danger),
-		move			(move.standing,move.walk,move.line,actor),
-		cond			(cond.time_end,10000)
-    )
---]
-    
     action				(
 		stalker,
 		look			(look.fire_point,actor),
