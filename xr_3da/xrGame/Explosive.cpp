@@ -110,7 +110,14 @@ void CExplosive::Explode()
 	//показываем эффекты
 	CParticlesObject* pStaticPG; 
 	pStaticPG = xr_new<CParticlesObject>(*m_sExplodeParticles,Sector()); 
-	pStaticPG->play_at_pos(Position());
+	
+	Fvector vel;
+	PHGetLinearVell(vel);
+	pStaticPG->UpdateParent(XFORM(),vel);
+	pStaticPG->Play();
+
+//pStaticPG->SetXFORM(XFORM());
+//	pStaticPG->play_at_pos(Position());
 
 
 	
@@ -174,8 +181,8 @@ void CExplosive::Explode()
 	//взрывная волна
 	////////////////////////////////
 
-	Fvector l_goPos; 
-	Fvector l_dir; 
+	Fvector l_goPos;
+	Fvector l_dir;
 	float l_dst;
 
 	m_blasted.clear();
