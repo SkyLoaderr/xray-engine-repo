@@ -479,7 +479,7 @@ function process_map_spot(info_id)
 	elseif info_id == "mil_rg6_gain" then       
 		   remove_location (706, "mil_rg6_location")
 		   
-	elseif info_id == "mil_bandit_flash_get" then
+	elseif info_id == "mil_bandit_flash_get" and db.actor:dont_has_info ("mil_bandit_secret_found") then
 	       add_location (705, "mil_secret_location")
 	elseif info_id == "mil_bandit_secret_found" then
            remove_location (705, "mil_secret_location")
