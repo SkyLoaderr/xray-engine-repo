@@ -51,8 +51,8 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	inherited::net_Spawn	(DC);
 
 	R_ASSERT(!CFORM());
-	if (PKinematics(Visual()))	collidable.model	= xr_new<CCF_Skeleton>	(this);
-	else						collidable.model	= xr_new<CCF_Rigid>		(this);
+	R_ASSERT(PKinematics(Visual()));
+	collidable.model		= xr_new<CCF_Skeleton>	(this);
 
 	// set bone id
 	Fcolor					clr;
@@ -70,6 +70,8 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 
 	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
+
+	guid_bone				= torch->guid_bone; VERIFY(guid_bone!=BI_NONE);
 
 	VERIFY						(m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
@@ -145,61 +147,35 @@ void CTorch::UpdateCL()
 {
 	inherited::UpdateCL();
 	
+	CBoneInstance* BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+	Fmatrix M;
+	M.mul(XFORM(),BI->mTransform);
+
 	if (H_Parent()) {
-		/*Collide::rq_result RQ;
-		H_Parent()->setEnabled(false);
-		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
-		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);
-		Fvector l_end, l_up; 
-		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, Collide::rqtBoth, RQ)) {
-		l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
-		XFORM().k.sub(l_end, l_p); XFORM().k.normalize();
-		XFORM().i.crossproduct(l_up, XFORM().k); XFORM().i.normalize();
-		XFORM().j.crossproduct(XFORM().k, XFORM().i);
-		}
-		m_focus.inertion(l_end,1-Device.fTimeDelta*4);
+		light_render->set_direction	(M.k);
+		light_render->set_position	(M.c);
+		glow_render->set_position	(M.c);
+	}else if(getVisible() && m_pPhysicsShell) {
+		m_pPhysicsShell->Update	();
+		XFORM().set				(m_pPhysicsShell->mXFORM);
+		Position().set			(M.c);
 
-		Fvector _P,_D;
-		_P.mad		(l_p,Device.vCameraRight,	m_pos.x);
-		_P.mad		(Device.vCameraTop,			m_pos.y);
-		_D.sub		(m_focus,_P);
-		_D.normalize();
-		H_Parent()->setEnabled		(true);
-		light_render->set_direction	(_D);	//XFORM().k); // l_d
-		light_render->set_position	(_P);	//XFORM().c); // l_p
-		glow_render->set_position	(_P);*/
-
-		light_render->set_direction	(XFORM().k);
-		light_render->set_position	(XFORM().c);
-		glow_render->set_position	(XFORM().c);
-	}
-	else 
-		if(getVisible() && m_pPhysicsShell) {
-			m_pPhysicsShell->Update	();
-			XFORM().set				(m_pPhysicsShell->mXFORM);
-			Position().set			(XFORM().c);
-			
-			if (light_render->get_active())
-			{
-				light_render->set_direction	(XFORM().k);
-				light_render->set_position	(XFORM().c);
-				glow_render->set_position	(XFORM().c);
-				time2hide			-= Device.fTimeDelta;
-				if (time2hide<0)
-				{
-					light_render->set_active(false);
-					glow_render->set_active(false);
-				}
+		if (light_render->get_active()){
+			light_render->set_direction	(M.k);
+			light_render->set_position	(M.c);
+			glow_render->set_position	(M.c);
+			time2hide			-= Device.fTimeDelta;
+			if (time2hide<0){
+				light_render->set_active(false);
+				glow_render->set_active(false);
 			}
-		} 
+		}
+	} 
 	
 	// update light source
-	if (light_render->get_active())
-	{
-		
+	if (light_render->get_active()){
 		// calc color animator
-		if (lanim)
-		{
+		if (lanim){
 			int frame;
 			// возвращает в формате BGR
 			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); 
@@ -219,12 +195,13 @@ void CTorch::renderable_Render()
 	{
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
-	 
+/*	 
 		if(H_Parent()) 
 		{
-			light_render->set_direction	(XFORM().k);
+			light_render->set_direction	(M.k);
 			light_render->set_position	(XFORM().c);
 			glow_render->set_position	(XFORM().c);
 		}
+*/
 	}
 }

@@ -12,6 +12,7 @@ typedef	CInventoryItem	inherited;
 	float			fBrightness;
 	CLAItem*		lanim;
 	float			time2hide;
+	u16				guid_bone;
 public:
 	Fvector			m_pos;
 	IRender_Light*	light_render;
