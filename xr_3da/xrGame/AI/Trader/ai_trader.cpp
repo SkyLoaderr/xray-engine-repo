@@ -18,6 +18,7 @@
 #include "../../artifact.h"
 #include "../../xrserver.h"
 #include "../../../skeletonanimated.h"
+#include "../../alife_artefact_order.h"
 
 CAI_Trader::CAI_Trader()
 {

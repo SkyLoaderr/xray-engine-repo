@@ -12,6 +12,7 @@
 #include "alife_discovery.h"
 #include "object_broker.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "alife_artefact_order.h"
 
 using namespace ALife;
 
@@ -87,7 +88,7 @@ struct CDiscoveryLoader : public object_loader::detail::CEmptyPredicate {
 
 class CArtefactOrderPredicate {
 public:
-	IC	bool		operator()	(const ALife::SArtefactOrder &tArtefactOrder1, const ALife::SArtefactOrder &tArtefactOrder2) const
+	IC	bool		operator()	(const SArtefactOrder &tArtefactOrder1, const SArtefactOrder &tArtefactOrder2) const
 	{
 		return		(tArtefactOrder1.m_price > tArtefactOrder2.m_price);
 	};

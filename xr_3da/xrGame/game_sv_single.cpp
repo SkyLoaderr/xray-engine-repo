@@ -236,3 +236,18 @@ void game_sv_Single::teleport_object	(NET_Packet &net_packet, u16 id)
 
 	alife().teleport_object (id,game_vertex_id,level_vertex_id,position);
 }
+
+void game_sv_Single::add_restriction	(NET_Packet &packet, u16 id)
+{
+	if (!ai().get_alife())
+		return;
+
+	ALife::_OBJECT_ID		restriction_id;
+	packet.r				(&restriction_id,sizeof(restriction_id));
+
+	RestrictionSpace::ERestrictorTypes	restriction_type;
+	packet.r				(&restriction_type,sizeof(restriction_type));
+	
+	alife().add_restriction (id,restriction_id,restriction_type);
+}
+

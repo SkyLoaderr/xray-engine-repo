@@ -20,6 +20,7 @@
 #include "alife_task_registry.h"
 #include "alife_schedule_registry.h"
 #include "alife_simulator_header.h"
+#include "alife_artefact_order.h"
 #include "ai_space.h"
 #include "ef_storage.h"
 #include "graph_engine.h"

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "alife_discovery.h"
 #include "object_broker.h"
+#include "alife_artefact_order.h"
 
 using namespace ALife;
 

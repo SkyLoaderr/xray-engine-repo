@@ -1484,6 +1484,16 @@
 							</File>
 						</Filter>
 						<Filter
+							Name="artefact_order"
+							Filter="">
+							<File
+								RelativePath=".\alife_artefact_order.cpp">
+							</File>
+							<File
+								RelativePath=".\alife_artefact_order.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="discovery"
 							Filter="">
 							<File

@@ -310,6 +310,10 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			game->teleport_object	(P,destination);
 		}break;
+	case GE_ADD_RESTRICTION:
+		{
+			game->add_restriction	(P,destination);
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

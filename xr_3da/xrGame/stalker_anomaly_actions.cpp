@@ -64,19 +64,17 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 {
 	inherited::execute					();
 
-	string512							m_temp;
-	strcpy								(m_temp,"");
+	m_temp0.clear						();
+
 	xr_vector<CObject*>::const_iterator	I = m_object->feel_touch.begin();
 	xr_vector<CObject*>::const_iterator	E = m_object->feel_touch.end();
 	for ( ; I != E; ++I) {
 		CCustomZone						*zone = smart_cast<CCustomZone*>(*I);
 		if (zone)
-			strcat						(m_temp,*zone->cName());
+			m_temp0.push_back			(zone->ID());
 	}
 	
-	SpaceRestrictionHolder::CBaseRestrictionPtr	restriction = Level().space_restriction_manager().restriction(m_temp);
-	if (restriction->inside(m_object->Position()))
-		m_object->add_restrictions		("",m_temp);
+	m_object->add_restrictions			(m_temp1,m_temp0);
 
 	if (m_object->accessible(m_object->Position()))
 		return;

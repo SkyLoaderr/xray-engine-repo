@@ -5,13 +5,11 @@
 
 #include "stdafx.h"
 #include "script_task.h"
-
 #include "alife_task.h"
-
 #include "level.h"
 #include "xrserver.h"
 #include "xrServer_Objects_ALife_Monsters.h"
-
+#include "alife_artefact_order.h"
 
 CScriptTask::CScriptTask ()
 {

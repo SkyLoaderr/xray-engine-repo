@@ -49,6 +49,7 @@ class CSE_ALifeInventoryItem;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeSchedulable;
 class CGameGraph;
+struct SArtefactOrder;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -73,33 +74,13 @@ namespace ALife {
 		u32											dwMaxTime;
 	} STerrainPlace;
 
-	struct SArtefactOrder : public IPureSerializeObject {
-		shared_str				m_section;
-		u32						m_count;
-		u32						m_price;
-
-		virtual void load(NET_Packet &packet)
-		{
-			packet.r_stringZ	(m_section);
-			packet.r_u32		(m_count);
-			packet.r_u32		(m_price);
-		}
-
-		virtual void save(NET_Packet &packet)
-		{
-			packet.w_stringZ	(m_section);
-			packet.w_u32		(m_count);
-			packet.w_u32		(m_price);
-		}
-	};
-
 	struct SOrganizationOrder {
 		CALifeOrganization		*m_tpALifeOrganization;
 		u32						m_dwCount;
 	};
 
 	struct STraderSupply {
-		shared_str					m_caSections;
+		shared_str				m_caSections;
 		u32						m_dwCount;
 		float					m_fMinFactor;
 		float					m_fMaxFactor;

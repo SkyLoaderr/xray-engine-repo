@@ -591,6 +591,9 @@ void game_sv_GameState::teleport_object	(NET_Packet &packet, u16 id)
 {
 }
 
+void game_sv_GameState::add_restriction	(NET_Packet &packet, u16 id)
+{
+}
 
 void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
 {

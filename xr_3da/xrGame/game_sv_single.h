@@ -38,6 +38,7 @@ public:
 	virtual		void				switch_distance			(NET_Packet &net_packet, ClientID sender);
 	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
 	virtual		void				teleport_object			(NET_Packet &packet, u16 id);
+	virtual		void				add_restriction			(NET_Packet &packet, u16 id);
 
 	IC			xrServer			&server					() const
 	{

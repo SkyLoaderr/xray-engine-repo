@@ -12,9 +12,9 @@
 #include "alife_object_registry.h"
 #include "ai_space.h"
 #include "specific_character.h"
+#include "alife_artefact_order.h"
 
 using namespace ALife;
-
 
 void CSE_ALifeObject::spawn_supplies		(LPCSTR ini_string)
 {
