@@ -4,6 +4,8 @@ class light;
 
 #define DU_SPHERE_NUMVERTEX 92
 #define DU_SPHERE_NUMFACES	180
+#define DU_CONE_NUMVERTEX	18
+#define DU_CONE_NUMFACES	32
 
 class CRenderTarget		: public IRender_Target
 {
@@ -60,9 +62,12 @@ private:
 	Shader*						s_accum_spot_s;
 	Shader*						s_accum_spot_uns;
 	SGeometry*					g_accum_point;
+	SGeometry*					g_accum_spot;
 	SGeometry*					g_accum_point_tl;
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
+	IDirect3DVertexBuffer9*		g_accum_spot_vb;
+	IDirect3DIndexBuffer9*		g_accum_spot_ib;
 
 	// Bloom
 	SGeometry*					g_bloom_build;
@@ -91,6 +96,8 @@ public:
 	void						OnDeviceDestroy			();
 	void						accum_point_geom_create	();
 	void						accum_point_geom_destroy();
+	void						accum_spot_geom_create	();
+	void						accum_spot_geom_destroy	();
 
 	void						u_setrt					(CRT* _1, CRT* _2, CRT* _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
