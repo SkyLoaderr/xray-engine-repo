@@ -94,7 +94,7 @@ void CAI_Space::Load(LPCSTR name)
 	// for a*
 	m_fSize2	= _sqr(Level().AI.m_header.size)/4;
 	m_fYSize2	= _sqr((float)(Level().AI.m_header.size_y/32767.0))/4;
-	m_tpAStar	= new CAStar(65535);
+	m_tpAStar	= xr_new<CAStar>(65535);
 
 //	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);

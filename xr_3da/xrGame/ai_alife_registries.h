@@ -93,31 +93,31 @@ public:
 			CALifeDynamicObject *tpALifeDynamicObject = 0;
 			switch (tFileStream.Rbyte()) {
 				case ALIFE_ITEM_ID : {
-					tpALifeDynamicObject = new CALifeItem();
+					tpALifeDynamicObject = xr_new<CALifeItem> ();
 					break;
 				}
 				case ALIFE_MONSTER_ID : {
-					tpALifeDynamicObject = new CALifeMonster();
+					tpALifeDynamicObject = xr_new<CALifeMonster> ();
 					break;
 				}
 				case ALIFE_MONSTER_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeMonsterGroup();
+					tpALifeDynamicObject = xr_new<CALifeMonsterGroup> ();
 					break;
 				}
 				case ALIFE_HUMAN_ID : {
-					tpALifeDynamicObject = new CALifeHuman();
+					tpALifeDynamicObject = xr_new<CALifeHuman> ();
 					break;
 				}
 				case ALIFE_HUMAN_GROUP_ID : {
-					tpALifeDynamicObject = new CALifeHumanGroup();
+					tpALifeDynamicObject = xr_new<CALifeHumanGroup> ();
 					break;
 				}
 				case ALIFE_TRADER_ID : {
-					tpALifeDynamicObject = new CALifeTrader();
+					tpALifeDynamicObject = xr_new<CALifeTrader> ();
 					break;
 				}
 				case ALIFE_ANOMALOUS_ZONE_ID : {
-					tpALifeDynamicObject = new CALifeDynamicAnomalousZone();
+					tpALifeDynamicObject = xr_new<CALifeDynamicAnomalousZone> ();
 					break;
 				}
 				default : NODEFAULT;
@@ -233,7 +233,7 @@ public:
 		m_tTaskRegistry.clear		();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			CALifeTask				*tpTask = new CALifeTask();
+			CALifeTask				*tpTask = xr_new<CALifeTask> ();
 			tpTask->Load			(tFileStream);
 			m_tTaskRegistry.insert	(make_pair(tpTask->m_tTaskID,tpTask));
 		}

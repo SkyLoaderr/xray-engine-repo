@@ -210,7 +210,7 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 		VERIFY(tpALifeDynamicObject);
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
-			// adding new item to the item list
+			// adding _new item to the item list
 			if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
 				if (randF(1.0f) < fProbability) {
 					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);

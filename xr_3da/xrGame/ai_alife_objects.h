@@ -28,7 +28,7 @@ void load_vector(vector<T *> &tpVector, CStream &tFileStream)
 	vector<T *>::iterator			I = tpVector.begin();
 	vector<T *>::iterator			E = tpVector.end();
 	for ( ; I != E; I++) {
-		*I = new T();
+		*I = xr_new<T> ();
 		(*I)->Load(tFileStream);
 	}
 };

@@ -211,7 +211,7 @@ public:
 		for ( ; I != E; I++) {
 			CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
 			if (tpALifeItem && !tpALifeItem->m_bAttached) {
-				CALifeTask					*tpTask = new CALifeTask();
+				CALifeTask					*tpTask = xr_new<CALifeTask> ();
 				tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
 				tpTask->m_tLocationID		= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
 				tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
