@@ -109,7 +109,7 @@ void CObjectList::Update		()
 		if (objects_count > objects_dup_memsz)	{
 			// realloc
 			while (objects_count > objects_dup_memsz)	objects_dup_memsz	+= 32;
-			objects_dup	= (CObject*)xr_realloc(objects_dup,objects_dup_memsz*sizeof(CObject*));
+			objects_dup	= (CObject**)xr_realloc(objects_dup,objects_dup_memsz*sizeof(CObject*));
 		}
 		CopyMemory	(objects_dup,&*objects_active.begin(),objects_count*sizeof(CObject*))
 		for (u32 O=0; O<objects_count; O++) 
