@@ -32,79 +32,6 @@ class CAI_Biting : public CCustomMonster,
 		SND_VOICE_COUNT=2,
 	};
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	typedef struct tagCriticalAnimation {
-		bool Playing;
-		bool Started;
-		bool Finished;
-		AI_Biting::EActionAnim		Action;
-		AI_Biting::EPostureAnim		Posture;
-
-		void Init() {
-			Playing = Started = Finished = false;
-		}
-		void Set(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a) {
-			Posture = p; Action = a;
-			Started = true;
-		}
-
-		bool Active() {return (Playing || Started);}
-	}_TCA;
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	typedef struct tagCriticalAction {
-		
-		struct State {
-			AI_Biting::EActionAnim		Action;
-			AI_Biting::EPostureAnim		Posture;
-			float						speed;
-			float						r_speed;
-			float						yaw;
-			u32							time;
-		};
-
-		bool Playing;
-		bool Started;						// true, если новое состояние готово к выполнению
-		bool Finished;
-										
-		xr_vector<State>::iterator it;		// указатель на текущий элемент
-		xr_vector<State> States;
-
-		void Init() {
-			States.clear();
-			it = 0;
-			Playing = Started = Finished = false;
-		}
-		void Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, u32 t, float y = 0, float r_s = 0, float s = 0) {
-			State tS;
-			tS.Posture = p;  tS.Action = a; tS.time = t; tS.yaw = y; tS.r_speed = r_s; tS.speed = s;
-
-			States.push_back(tS);
-		}   
-
-		// Перейти в следующее состояние, иначе завершить
-		void Switch() {		
-
-			Started = true;
-			if (it == 0) it = States.begin();
-			else {
-				it++; 
-				if (it != States.end()) Started = true;	
-				else Finish();
-			}
-		}
-		
-		void Finish() {
-			Init(); Finished = true;
-		}
-		void Cycle(u32 cur_time) {
-			if (cur_time > it->time) Switch();
-		}
-		bool Active() {return (Playing || Started);}
-
-	}_TCAction;
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 public:
 
@@ -315,10 +242,6 @@ private:
 	u32						m_dwEatInterval;
 
 
-	_TCA					_CA;
-	_TCAction				_CAction;
-
-
 	u32						m_dwLieIndex;
 	u32						m_dwActionIndex;
 
@@ -346,14 +269,16 @@ private:
 	IState				*CurrentState;
 	CRest				*stateRest;
 	CAttack				*stateAttack;
+	CEat				*stateEat;
 
-	friend	class IState;
-	friend	class CRest;
 	friend	class CBitingMotion;
 	friend	class CMotionParams;
 	friend  class CMotionTurn;
 	friend  class CAttack;
 	friend	class CMotionSequence;
+	friend	class IState;
+	friend	class CRest;
+	friend	class CEat;
 
 
 	void SetState(IState *pS);
@@ -365,6 +290,6 @@ private:
 	// Animations
 	EMotionAnim		m_tAnim;
 	EMotionAnim		m_tAnimPrevFrame;
-	void MotionToAnim(EMotionAnim motion, int &index1, int &index2);
+	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 
 };

@@ -455,6 +455,89 @@ bool CAttack::CheckCompletion()
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CEat class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CEat::CEat(CAI_Biting *p)  
+: IState(p) 
+{
+	Reset();
+}
+
+
+void CEat::Reset()
+{
+	IState::Reset();
+
+	m_tAction			= ACTION_RUN;
+
+	pCorpse				= 0;
+}
+
+void CEat::Init()
+{
+	IState::Init();
+
+	// Получить инфо о трупе
+	VisionElem ve;
+	if (!pData->SelectCorpse(ve)) R_ASSERT(false);
+	pCorpse = ve.obj;
+
+	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
+	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
+}
+
+void CEat::Run()
+{
+	bool bStartEating = (m_tAction == ACTION_RUN);
+
+	// Выбор состояния
+	if (pCorpse->Position().distance_to(pData->Position()) < m_fDistToCorpse) 
+		m_tAction = ACTION_EAT;
+	else 
+		m_tAction = ACTION_RUN;
+
+	bStartEating = bStartEating && (m_tAction == ACTION_EAT);
+	if (bStartEating) {
+		pData->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pData->Motion.m_tSeq.Add(eMotionLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pData->Motion.m_tSeq.Switch();
+	}
+
+	// Выполнение состояния
+	switch (m_tAction) {
+		case ACTION_RUN:
+			pData->AI_Path.DestNode = pCorpse->AI_NodeID;
+			pData->m_tPathType = ePathTypeStraight;
+			pData->vfChoosePointAndBuildPathAtOnce(0,&pCorpse->Position(), false, 0);
+
+			pData->Motion.m_tParams.SetParams(eMotionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
+
+			if (pCorpse->Position().distance_to(pData->Position()) > m_fDistToCorpse*5)
+				SetNextThink(300);	// чем больше расстояние, тем больше SetNextThink
+
+			break;
+		case ACTION_EAT:
+			pData->Motion.m_tParams.SetParams(eMotionEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tTurn.Clear();
+
+			SetNextThink(400);
+			break;
+	}
+}
+
+bool CEat::CheckCompletion() 
+{
+	// если труп съеден || монстр достаточно сыт
+	return false;
+}	
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CAI_Biting state-specific functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 

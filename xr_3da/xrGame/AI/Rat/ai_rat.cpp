@@ -230,6 +230,13 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	return							(TRUE);
 }
 
+void CAI_Rat::net_Destroy()
+{
+	inherited::net_Destroy();
+
+	if (m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+}
+
 void CAI_Rat::Exec_Movement	( float dt )
 {
 }

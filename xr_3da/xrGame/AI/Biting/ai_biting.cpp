@@ -16,9 +16,9 @@ CAI_Biting::CAI_Biting()
 	Init();
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
-
-	stateRest			= xr_new<CRest>(this);
-	stateAttack			= xr_new<CAttack>(this);
+	stateRest			= xr_new<CRest>		(this);
+	stateAttack			= xr_new<CAttack>	(this);
+	stateEat			= xr_new<CEat>		(this);
 	CurrentState		= stateRest;
 }
 
@@ -26,6 +26,7 @@ CAI_Biting::~CAI_Biting()
 {
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
+	xr_delete(stateEat);
 
 }
 
@@ -82,7 +83,6 @@ void CAI_Biting::Init()
 
 	m_dwLieIndex					= 0;
 	
-	_CA.Init();
 
 	m_dwPointCheckLastTime			= 0;
 	m_dwPointCheckInterval			= 1500;
@@ -92,8 +92,6 @@ void CAI_Biting::Init()
 	m_AttackLastTime				= 0;			
 	m_AttackInterval				= 500;
 	m_AttackLastPosition.set		(0,0,0);		
-
-	_CAction.Init();
 
 	InitMemory(5000,10000);
 

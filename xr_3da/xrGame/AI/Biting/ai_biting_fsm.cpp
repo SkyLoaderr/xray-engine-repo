@@ -444,9 +444,9 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 //	if (SelectCorpse(ve)) 
 //		if (ve.obj->m_fFood >= 0) bCorpseFound = true;
 
-	if (m_bStateChanged) {
-		_CAction.Init();
-	}
+//	if (m_bStateChanged) {
+//		_CAction.Init();
+//	}
 
 	if (bCorpseFound) {
 		AI_Path.DestNode		=ve.node_id;
@@ -502,7 +502,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 						dwMaxRand = 4000;
 						break;
 				case 10: m_tActionState = eActionStateLie;
-						if (!_CA.Active()) _CA.Set(ePostureStand,eActionLieDown);
+						//if (!_CA.Active()) _CA.Set(ePostureStand,eActionLieDown);
 						dwMinRand = 15000;
 						dwMaxRand = 30000;
 						break;
@@ -551,12 +551,12 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
 										eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
 			} else  { // ест труп
-				if (!_CAction.Active() && !_CAction.Finished) {
-					u32 time = m_dwCurrentUpdate;
-					_CAction.Add(ePostureStand,eActionCheckCorpse,( time += 2000));
-					_CAction.Add(ePostureStand, eActionLieDown,(time += 2000));
-					_CAction.Switch();
-				} 
+//				if (!_CAction.Active() && !_CAction.Finished) {
+//					u32 time = m_dwCurrentUpdate;
+//					_CAction.Add(ePostureStand,eActionCheckCorpse,( time += 2000));
+//					_CAction.Add(ePostureStand, eActionLieDown,(time += 2000));
+//					_CAction.Switch();
+//				} 
 					
 				vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
 										eMovementDirectionNone, eStateTypeNormal, eActionTypeEat);
@@ -607,7 +607,9 @@ void CAI_Biting::Think()
 		VisionElem VE;
 		if (SelectEnemy(VE)) {
 			SetState(stateAttack);
-		} else {	
+		} else if (SelectCorpse(VE)){	
+			SetState(stateEat);
+		} else {
 			SetState(stateRest);
 		}
 		//---

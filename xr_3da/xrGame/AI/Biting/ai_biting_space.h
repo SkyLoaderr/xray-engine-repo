@@ -151,6 +151,7 @@ enum EMotionAnim {
 	eMotionDie,
 	eMotionLieDown,
 	eMotionStandUp,
-	eMotionCheckCorpse
+	eMotionCheckCorpse,
+	eMotionLieDownEat
 };
 

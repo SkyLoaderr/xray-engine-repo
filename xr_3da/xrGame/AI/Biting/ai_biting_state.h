@@ -246,3 +246,28 @@ private:
 	void Run();
 	void Replanning();
 };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CEat class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CEat : public IState {
+	enum {
+		ACTION_RUN,
+		ACTION_EAT,
+	} m_tAction;
+
+	CEntity			*pCorpse;
+	float			m_fDistToCorpse;			//!< дистанция до трупа
+
+public:
+	CEat(CAI_Biting *p);
+
+	void Reset();
+	bool CheckCompletion();
+
+private:
+	void Init();
+	void Run();
+	void Replanning();
+};

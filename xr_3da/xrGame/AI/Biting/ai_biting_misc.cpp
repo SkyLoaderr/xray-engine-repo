@@ -46,32 +46,32 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 {
 
 	//*
-	if (_CAction.Active()) {
-
-		r_torso_target.yaw = _CAction.it->yaw;
-		m_fCurSpeed = _CAction.it->speed;
-		r_torso_speed = _CAction.it->r_speed;
-		_CAction.Cycle(m_dwCurrentUpdate);
-		return;
-	}
-	//**
-
-
-
-	//bool bMoveLeft = false;
+//	if (_CAction.Active()) {
+//
+//		r_torso_target.yaw = _CAction.it->yaw;
+//		m_fCurSpeed = _CAction.it->speed;
+//		r_torso_speed = _CAction.it->r_speed;
+//		_CAction.Cycle(m_dwCurrentUpdate);
+//		return;
+//	}
+//	//**
+//
+//
+//
+//	//bool bMoveLeft = false;
 	bool bPathBuilt = false;
-	
-	m_tPathType = path_type;
-	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode, bSelectorPath);
-	bPathBuilt = AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart);
-	
-	bool caActive = _CA.Active();
-	if (caActive) {
-		r_torso_speed			= 0;		// угловая скорость
-		m_fCurSpeed				= 0.0f;			// скорость движения
-
-		return;
-	}
+//	
+//	m_tPathType = path_type;
+//	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode, bSelectorPath);
+//	bPathBuilt = AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart);
+//	
+//	bool caActive = _CA.Active();
+//	if (caActive) {
+//		r_torso_speed			= 0;		// угловая скорость
+//		m_fCurSpeed				= 0.0f;			// скорость движения
+//
+//		return;
+//	}
 //	if (!caActive && (m_tActionAnim == eActionIdle) && (m_tPostureAnim == ePostureLie) && (m_tActionType!=eActionTypeLie)) {
 //		_CA.Set(ePostureLie,eActionStandUp);
 //	}
