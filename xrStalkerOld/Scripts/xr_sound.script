@@ -79,6 +79,37 @@ snd_files = {
 	bar_dolg_base_guard_backoff	   = [[characters_voice\human_01\scenario\guard_novice_camp\guard_novice_camp_stop_tutorial_1]],
 	bar_dolg_base_guard_no_talk	   = [[characters_voice\human_01\talk\rejection\stalker\rejection_2]]
 }
+
+ph_snd_themes = {}           
+ph_snd_themes["music"] = {  "characters_voice\\human_01\\scenario\\megafon\\megafon_music_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_6",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_7",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_8",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_9",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_13",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_14",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_music_15"
+	                        }
+ph_snd_themes["alarm1"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_1",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_10",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_11",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_12",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_13"
+	                        }
+ph_snd_themes["alarm2"] = { "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_2",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_3",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_4",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_5",
+	                        "characters_voice\\human_01\\scenario\\megafon\\megafon_alarm_6"
+	                      }
+
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
 	local sounds_base = stalker_ids.sound_script + 10000
