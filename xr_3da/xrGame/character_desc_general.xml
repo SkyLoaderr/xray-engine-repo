@@ -44,7 +44,7 @@
 
 	<specific_character id="actor" team_default = "1">
 		<name>Меченый</name>
-		<icon x="24" y="6"></icon>
+		<icon x="26" y="6"></icon>
 		<map_icon x="2" y="5"></map_icon>
 
 		<team>Actor</team>
