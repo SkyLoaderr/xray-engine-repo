@@ -12,7 +12,7 @@ struct Params
 	
 	void		Init	()
 	{
-		fPatchSize		= 0.75f;
+		fPatchSize		= 0.7f;
 		fTestHeight		= 1.0f;
 		fCanUP			= 1.5f;
 		fCanDOWN		= 4.0f;
