@@ -82,7 +82,8 @@ public:
 	void	BuildCForm				(CFS_Base &fs);
 	void	BuildPortals			(CFS_Base &fs);
 	void	BuildRapid				();
-
+		
+	void	IsolateVertices			();
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
 	void	xrPhase_Subdivide		();

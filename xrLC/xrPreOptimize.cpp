@@ -121,14 +121,6 @@ void CBuild::PreOptimize()
 		Progress(float(it)/float(g_faces.size()));
 	}
 	
-	Status("Removing isolated vertices...");
-	g_bUnregister = true;
-	for (it = 0; it<int(g_vertices.size()); it++)
-		if (g_vertices[it] && g_vertices[it]->adjacent.empty()) _DELETE(g_vertices[it]);
-	vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
-	g_vertices.erase	(_end,g_vertices.end());
-	g_bUnregister		= true;
-
 	Status("Freeing memory...");
 	DWORD M1 = mem_Usage();
 	{
@@ -144,4 +136,26 @@ void CBuild::PreOptimize()
 	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
 	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
 	Msg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
+}
+
+void CBuild::IsolateVertices()
+{
+	Phase				("Isolating vertices...");
+	Status				("Processing...");
+	{
+		DWORD M1			= mem_Usage();
+		g_bUnregister		= false;
+		DWORD verts_old		= g_vertices.size();
+		for (int it=0; it<int(g_vertices.size()); it++)
+		{
+			Progress(float(it)/float(g_vertices.size()));
+			if (g_vertices[it] && g_vertices[it]->adjacent.empty())	_DELETE	(g_vertices[it]);
+		}
+		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
+		g_vertices.erase	(_end,g_vertices.end());
+		g_bUnregister		= true;
+		mem_Compact			();
+		DWORD M2			= mem_Usage();
+		Msg("Compact: %d / %d (%d), %d verts removed",M1/1024,M2/1024,(M1-M2)/1024,verts_old-g_vertices.size());
+	}
 }
