@@ -21,8 +21,6 @@ public:
 
 void CBuild::Light()
 {
-	vecDeflIt it;
-
 	Phase	(
 		(string("Raytracing lightmaps (")+
 		string(g_params.m_bRadiosity?"Radiosity":"Direct") +
@@ -30,6 +28,7 @@ void CBuild::Light()
 		);
 
 	// Main process (4 threads)
+	DWORD	dwTimeStart = timeGetTime();
 	CLMThread*	threads[4] = {0,0,0};
 	DWORD		N=0;
 	for (;;) {
@@ -50,8 +49,11 @@ void CBuild::Light()
 		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[4]))	break;
 		Sleep	(300);
 	}
+	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 
 	/*
+	vecDeflIt it;
+
 	Phase("Saving shadowmaps...");
 	for (it = g_deflectors.begin(); it!=g_deflectors.end(); it++)
 	{

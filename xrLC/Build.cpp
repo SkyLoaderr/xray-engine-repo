@@ -244,10 +244,6 @@ void CBuild::Run()
 	SoftenLights	();
 
 	FPU::m24r();
-	Phase	("Merging lightmaps...");
-	MergeLM			();
-
-	FPU::m24r();
 	Phase	("Implicit lighting...");
 	ImplicitLighting();
 
@@ -255,6 +251,10 @@ void CBuild::Run()
 	Phase	("Raytracing...");
 	Light			();
 	
+	FPU::m24r();
+	Phase	("Merging lightmaps...");
+	MergeLM			();
+
 	FPU::m24r();
 	Phase	("Merging geometry...");
 	MergeGeometry();
