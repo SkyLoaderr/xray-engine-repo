@@ -87,7 +87,7 @@ public:
 			
 			fs.w		(vDcl[i].begin(), vDcl[i].size()*sizeof(D3DVERTEXELEMENT9));	// Vertex format
 			fs.w_u32	(dwVertCount);													// Number of vertices
-			fs.w		(vContainers[i].begin(),dwTotalSize);
+			fs.w		(&*vContainers[i].begin(),dwTotalSize);
 		}
 		vDcl.clear			();
 		vContainers.clear	();
