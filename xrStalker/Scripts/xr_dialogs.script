@@ -29,18 +29,28 @@ class "dialog_mgr"
 function dialog_mgr:__init()
 end
 
-function dialog_mgr:initialize( npc, team )
+function dialog_mgr:reset( npc, team )
 	self.object = npc
 
-	if not teams[team] then
-		teams[team] = { npcs = {}, npcs_num = 0, idle_end = 0 }
+	if self.team ~= team then
+		-- если сталкер в команде
+		if self.team then
+			-- убрать из текущей команды
+			self:finalize()
+		end
+
+		self.team = team
+
+		if not teams[team] then
+			teams[team] = { npcs = {}, npcs_num = 0, idle_end = 0 }
+		end
+
+		self.a = teams[team]
+--		self.a.npcs[npc:id()] = npc
+		table.insert( self.a.npcs, npc )
+
+--		printf( "[dialogs] adding %s to dlgteam %s", npc:name(), team )
 	end
-
-	self.a = teams[team]
---	self.a.npcs[npc:id()] = npc
-	table.insert( self.a.npcs, npc )
-
---	printf( "[dialogs] adding %s to dlgteam %s", npc:name(), team )
 end
 
 function dialog_mgr:finalize()
@@ -51,6 +61,8 @@ function dialog_mgr:finalize()
 			break
 		end
 	end
+
+	self.team = nil
 
 	-- если никого не осталось, сбросить диалог
 	if table.getn( self.a.npcs ) == 0 then
