@@ -8,7 +8,7 @@
 #include "blender_bloom_build.h"
 #include "blender_decompress.h"
 
-void	CRenderTarget::u_setrt			(CRT* _1, CRT* _2, CRT* _3, IDirect3DSurface9* zb)
+void	CRenderTarget::u_setrt			(ref_rt& _1, ref_rt& _2, ref_rt& _3, IDirect3DSurface9* zb)
 {
 	VERIFY									(_1);
 	dwWidth									= _1->dwWidth;

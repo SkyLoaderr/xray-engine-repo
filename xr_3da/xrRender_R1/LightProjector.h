@@ -25,8 +25,8 @@ private:
 	IRenderable*			current;
 	xr_vector<recv>			receivers;
 
-	CRT*					RT;
-	CRT*					RT_temp;
+	ref_rt					RT;
+	ref_rt					RT_temp;
 	ref_shader				sh_BlurTR;
 	ref_shader				sh_BlurRT;
 	ref_geom				geom_Blur;

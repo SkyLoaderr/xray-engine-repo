@@ -27,23 +27,23 @@ public:
 	IBlender*					b_decompress;
 
 	// MRT-path (or decompressed MET)
-	CRT*						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
-	CRT*						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
-	CRT*						rt_Color;		// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
+	ref_rt						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)
+	ref_rt						rt_Normal;		// 64bit,	fat	(x,y,z,hemi)			(eye-space)
+	ref_rt						rt_Color;		// 64/32bit,fat	(r,g,b,specular-gloss)	(or decompressed MET-8-8-8-8)
 
 	// MET-path
-	CRT*						rt_Deffer;		// NVE3, 8*4_8*4_16*2_16*2 = 128bit
+	ref_rt						rt_Deffer;		// NVE3, 8*4_8*4_16*2_16*2 = 128bit
 
 	// 
-	CRT*						rt_Accumulator;	// 32bit		(r,g,b,specular)
-	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
-	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
-	CRT*						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
+	ref_rt						rt_Accumulator;	// 32bit		(r,g,b,specular)
+	ref_rt						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
+	ref_rt						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
+	ref_rt						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 	IDirect3DSurface9*			rt_Bloom_ZB;	// $$$ dumb ZB for nv3xx
 
 	// D-smap
-	CRT*						rt_smap_d_surf;	// 32bit, depth 
-	CRT*						rt_smap_d_depth;// 24(32) bit, depth 
+	ref_rt						rt_smap_d_surf;	// 32bit, depth 
+	ref_rt						rt_smap_d_depth;// 24(32) bit, depth 
 	IDirect3DSurface9*			rt_smap_d_ZB;	//
 
 	// P-smap
@@ -106,7 +106,7 @@ public:
 	void						accum_spot_geom_create	();
 	void						accum_spot_geom_destroy	();
 
-	void						u_setrt					(CRT* _1, CRT* _2, CRT* _3, IDirect3DSurface9* zb);
+	void						u_setrt					(ref_rt& _1, ref_rt& _2, ref_rt& _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 
 	void						phase_scene				();

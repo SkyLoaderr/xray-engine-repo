@@ -11,7 +11,7 @@ private:
 	u32					curWidth;
 	u32					curHeight;
 
-	CRT*				RT;
+	ref_rt				RT;
 	IDirect3DSurface9*	ZB;
 
 	ref_shader			pShaderSet;
