@@ -69,13 +69,17 @@ void CPHObject::Collide()
 
 void CPHObject::FreezeContent()
 {
+	R_ASSERT(!b_freezed);
 	b_freezed=true;
 	b_activated=false;
+	vis_update_deactivate();
 }
 void CPHObject::UnFreezeContent()
 {
+	R_ASSERT(b_freezed);
 	b_freezed=false;
 	b_activated=true;
+	vis_update_activate();
 }
 
 void CPHObject::spatial_register()
@@ -92,7 +96,7 @@ void CPHObject::Freeze()
 	ph_world->RemoveObject(this);
 	ph_world->AddFreezedObject(this);
 	FreezeContent();
-	vis_update_deactivate();
+
 }
 
 void CPHObject::UnFreeze()
@@ -101,7 +105,7 @@ void CPHObject::UnFreeze()
 	UnFreezeContent();
 	ph_world->RemoveFreezedObject(this);
 	ph_world->AddObject(this);
-	vis_update_activate();
+
 }
 
 CPHUpdateObject::CPHUpdateObject()
