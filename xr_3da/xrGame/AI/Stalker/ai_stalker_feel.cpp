@@ -132,7 +132,7 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 
 	if (!bDifferenceLook || !bOk) 
 		for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-			float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
+			float fSquare = ffCalcSquare(-fIncrement,fAngleOfView,tpNode);
 			if (fSquare > fMaxSquare) {
 				fMaxSquare = fSquare;
 				fBestAngle = fIncrement;
@@ -141,8 +141,8 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 	else {
 		float fMaxSquareSingle = -1.f, fSingleIncrement = r_target.yaw;
 		for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-			float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
-			float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,tpNextNode);
+			float fSquare0 = ffCalcSquare(-fIncrement,fAngleOfView,tpNode);
+			float fSquare1 = ffCalcSquare(-fIncrement,fAngleOfView,tpNextNode);
 			if (fSquare1 - fSquare0 > fMaxSquare) {
 				fMaxSquare = fSquare1 - fSquare0;
 				fBestAngle = fIncrement;
