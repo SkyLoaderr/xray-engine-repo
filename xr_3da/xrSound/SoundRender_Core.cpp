@@ -181,7 +181,7 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	IReader*			geom	= I->open_chunk(1);
 	hdrCFORM			H;
 	geom->r				(&H,sizeof(hdrCFORM));
-	Fvector*	verts	= (Fvector*)F->pointer();
+	Fvector*	verts	= (Fvector*)geom->pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	for (u32 it=0; it<H.facecount; it++)
 	{
