@@ -312,7 +312,7 @@
 		<class>bar_crazy_veterans_lucky</class>
 	</character>
 	<character id="bar_crazy_veterans">
-		<class>bar_crazy_veterans/class>
+		<class>bar_crazy_veterans</class>
 	</character>
 
 	<!-- X18 -->
