@@ -386,8 +386,13 @@ void CLevel::ClientReceive()
 			break;
 		case M_DESTROY:
 			{
-				P->r_u16				(ID);
-				Objects.DestroyObject	(u32(ID));
+				u16 count;
+				P->r_u16				(count);
+				for (; count; count--)	
+				{
+					P->r_u16				(ID);
+					Objects.DestroyObject	(u32(ID));
+				}
 			}
 			break;
 		case M_UPDATE:
