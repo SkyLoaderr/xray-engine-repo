@@ -372,14 +372,17 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
+	if(g_Alive())
+	{
 	XFORM().rotateY			(NET_Last.o_model);
 	XFORM().translate_over	(NET_Last.p_pos);
-
+	
 	if (Remote())		{
 		XFORM().rotateY			(N.o_model);
 		XFORM().translate_over	(N.p_pos);
 		Position().set				(NET_Last.p_pos);
 
+	}
 	}
 }
 
