@@ -35,7 +35,7 @@ _keybind  keybind[] = {
 	{ "cam_zoom_in",	kCAM_ZOOM_IN},	
 	{ "cam_zoom_out",	kCAM_ZOOM_OUT},
 
-	{ "binocular",		kBINOCULAR	},
+	{ "binoculars",		kBINOCULARS	},
 	{ "wpn_1",			kWPN_1		},
 	{ "wpn_2",			kWPN_2		},
 	{ "wpn_3",			kWPN_3		},
