@@ -12,7 +12,7 @@ class CCoverEvaluatorCloseToEnemy;
 class CMonsterMovement : virtual public CMovementManager {
 	typedef CMovementManager inherited;
 public:
-	CAI_Biting			*pMonster;
+	CAI_Biting			*m_object;
 	bool				b_try_min_time;
 	bool				b_enable_movement;
 	bool				b_use_dest_orient;
@@ -95,7 +95,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 public:
 
-		struct {
+		struct STarget {
 			Fvector		position;
 			u32			node;
 		} m_target, m_intermediate;
@@ -105,7 +105,8 @@ public:
 		float		m_distance_to_path_end;
 		bool		m_path_end;
 		bool		m_failed;
-		
+		bool		m_actual;
+
 		struct {
 			bool	use_covers;
 			float	min_dist;
@@ -114,7 +115,13 @@ public:
 			float	radius;
 		} m_cover_info;
 
+		enum {
+			eMoveToTarget,
+			eRetreatFromTarget,
+		} m_target_type;
+
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
+		void		set_retreat_from_point	(const Fvector &position);
 	IC	void		set_rebuild_time		(u32 time);
 	IC	void		set_cover_params		(float min, float max, float dev, float radius);
 	IC	void		set_use_covers			(bool val = true);
@@ -132,8 +139,11 @@ public:
 		void		update_target_point		();
 
 		void		initialize_movement		();
+		void		validate_target			(Fvector &pos, u32 &node);		
 
-		
+		bool		check_build_conditions	();
+
+		bool		actual_params			();
 };
 
 #include "ai_monster_movement_inline.h"

@@ -5,27 +5,32 @@
 #include "../cover_evaluators.h"
 #include "biting/ai_biting.h"
 
-//////////////////////////////////////////////////////////////////////////
-// Select Target
-//////////////////////////////////////////////////////////////////////////
+
+
+void CMonsterMovement::update_target_point() 
+{
+	m_path_end	= false;
+	m_failed	= false;
+
+	/// проверить условия, когда путь строить не нужно
+	if (!b_enable_movement)								return;
+	if (!check_build_conditions() && actual_params())	return;
+
+	Msg(" ---- Update [%u] ---- ", Level().timeServer());
+
+	// получить промежуточные позицию и ноду
+	get_intermediate		();
+	// установить параметры
+	set_parameters			();
+
+	m_last_time_path_update	= m_object->m_current_update;
+}
+
+
 
 #define MAX_COVER_DISTANCE		50.f
 #define MAX_SELECTOR_DISTANCE	10.f
 #define MAX_PATH_DISTANCE		100.f
-
-void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
-{
-	if (node != u32(-1)) {
-		if (!ai().level_graph().valid_vertex_id(node) ||
-			!ai().level_graph().valid_vertex_position(position) || 
-			!ai().level_graph().inside(node, position)
-			)
-		m_target.node = u32(-1);
-	} else 
-		m_target.node = node;
-
-	m_target.position	= position;
-}
 
 //////////////////////////////////////////////////////////////////////////
 // лимитировать по расстоянию
@@ -33,12 +38,23 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 void CMonsterMovement::get_intermediate() 
 {
 	m_intermediate.node		= m_target.node;
-	m_intermediate.position = m_target.position;
-
+	
 	Fvector	dir;
-	dir.sub		(m_target.position, Position());
-	dir.normalize();
-	float dist	= Position().distance_to(m_target.position);
+	if (m_target_type == eMoveToTarget) {
+		dir.sub						(m_target.position, Position());
+		dir.normalize				();
+		m_intermediate.position		= m_target.position;
+	} else if (m_target_type == eRetreatFromTarget){
+		if (m_target.node == u32(-1)) {
+			dir.sub						(Position(), m_target.position);
+			dir.normalize				();
+			m_intermediate.position.mad	(Position(), dir, MAX_PATH_DISTANCE - 1.f);
+		} else {
+			m_intermediate.position		= m_target.position;
+		}
+	}
+	
+	float dist = Position().distance_to(m_intermediate.position);		
 
 	// лимитировать по расстоянию
 	if (dist > MAX_PATH_DISTANCE) {
@@ -47,7 +63,7 @@ void CMonsterMovement::get_intermediate()
 		Msg("FIND :: Max distance pos cut");
 	} else {
 		// если задана нода, то выходим
-		if (m_intermediate.node != u32(-1)) {
+		if (m_intermediate.node != u32(-1) && accessible(m_intermediate.node)) {
 			Msg("FIND :: Direct node");
 			return;
 		}
@@ -142,37 +158,6 @@ void CMonsterMovement::set_parameters()
 	Msg("SET :: Selector used");
 }
 
-void CMonsterMovement::update_target_point() 
-{
-	m_path_end	= false;
-	m_failed	= false;
-
-	/// проверить условия, когда путь строить не нужно
-	if (!b_enable_movement) return;
-	bool b_path_end = IsPathEnd(m_distance_to_path_end);
-	// проверить на завершение пути
-	if (b_path_end && m_intermediate.position.similar(m_target.position, EPS)) m_path_end = true;
-	// если конец пути или путь не может быть построен
-	if (m_path_end) return;
-	// если путь ещё не построен - выход
-	if (!CDetailPathManager::completed(Position()) && !CDetailPathManager::actual() && (time_path_built() < m_last_time_path_update)) return;
-	// если время движения по пути не вышло - выйти
-	if (!b_path_end && (m_last_time_path_update + m_time > pMonster->m_current_update)) return;
-
-	Msg(" ---- Update [%u] ---- ", Level().timeServer());
-
-	// получить промежуточные позицию и ноду
-	get_intermediate		();
-	// установить параметры
-	set_parameters			();
-
-	// проверить на сбой
-	if (CDetailPathManager::completed(Position()) && CDetailPathManager::actual() && !Position().similar(m_target.position)) m_failed = true;
-	else m_failed = false;
-	if (CLevelPathManager::failed()) m_failed = true;
-
-	m_last_time_path_update	= pMonster->m_current_update;
-}
 
 void CMonsterMovement::initialize_movement() 
 {
@@ -185,4 +170,128 @@ void CMonsterMovement::initialize_movement()
 	m_path_end					= false;
 	m_failed					= false;
 	m_cover_info.use_covers		= false;
+
+	m_actual					= false;
 }
+
+void CMonsterMovement::validate_target(Fvector &pos, u32 &node)
+{
+}
+
+void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
+{
+	STarget saved_target;
+	saved_target.position	= m_target.position;
+	saved_target.node		= m_target.node;
+	
+	// validate target
+	Fvector	pos_validated	= position;	
+	
+	bool bad_target = false;
+	if (failed())	bad_target = true;
+	if (path_end()) bad_target = true;
+
+	if (bad_target) {
+		Fvector dir;
+		dir.random_dir		();
+
+		pos_validated.mad(Position(), dir, 20.f);
+
+		if (!accessible(pos_validated)) 
+			node = accessible_nearest(position, pos_validated);
+		else 
+			node = u32(-1);
+	}
+
+	if (node != u32(-1)) {
+		if (!ai().level_graph().valid_vertex_id(node) ||
+			!ai().level_graph().valid_vertex_position(position) || 
+			!ai().level_graph().inside(node, position)
+			)
+			m_target.node = u32(-1);
+	} else 
+		m_target.node = node;
+
+	m_target.position	= position;
+	m_target_type		= eMoveToTarget;
+
+	if (m_target.position.similar(saved_target.position) && (m_target.node == saved_target.node)) m_actual = true;
+	else m_actual = false;
+}
+
+void CMonsterMovement::set_retreat_from_point(const Fvector &position)
+{
+	STarget saved_target;
+	saved_target.position	= m_target.position;
+	saved_target.node		= m_target.node;
+	
+	// validate position
+	Fvector	pos_validated	= position;
+	u32		node			= u32(-1);
+
+	bool bad_target = false;
+	if (failed())	bad_target = true;
+	if (path_end()) bad_target = true;
+
+	if (bad_target) {
+		Fvector dir, pos;
+
+		dir.random_dir	();
+		pos.mad			(Position(), dir, 20.f);
+
+		if (accessible(pos)) {
+			pos_validated = pos;
+			Msg("Accessible Position = [%f]", pos_validated);
+		} else {
+			node = accessible_nearest(pos, pos_validated);
+			Msg("Accessible Nearest Position = [%f, %f, %f] [%u]", VPUSH(pos_validated), node);
+			
+			VERIFY(accessible(pos_validated) && accessible(node));
+
+			if (!ai().level_graph().inside(node, pos_validated)) {
+				__asm int 0x3;
+			}
+
+		}
+	}
+
+	// set_position
+	m_target.position	= pos_validated;
+	m_target.node		= node;
+	m_target_type		= eRetreatFromTarget;
+
+	if (m_target.position.similar(saved_target.position) && (m_target.node == saved_target.node)) m_actual = true;
+	else m_actual = false;
+}
+
+bool CMonsterMovement::check_build_conditions()
+{
+	// проверить на завершение пути
+	if (!IsPathEnd(m_distance_to_path_end)) {
+		m_path_end	= false;
+		m_failed	= false;
+
+		// если время движения по пути не вышло
+		if (m_last_time_path_update + m_time > m_object->m_current_update) return false;
+		return		true;
+	}
+	
+	if (m_intermediate.position.similar(m_target.position)) {
+		m_path_end = true;
+		return		false;
+	}
+
+	if (CDetailPathManager::actual() || CLevelPathManager::failed()) {
+		m_failed	= true;
+		return		false;
+	}
+
+	// если путь ещё не построен - выход
+	//if (!CDetailPathManager::actual() && (time_path_built() < m_last_time_path_update)) return;
+
+	return true;
+}
+
+
+
+

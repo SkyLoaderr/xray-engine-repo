@@ -16,7 +16,7 @@ CMonsterMovement::CMonsterMovement()
 	m_selector_approach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_cover_approach		= xr_new<CCoverEvaluatorCloseToEnemy>(this);
 	
-	pMonster				= 0;
+	m_object				= 0;
 
 	m_dwFrameReinit			= u32(-1);
 	m_dwFrameLoad			= u32(-1);
@@ -58,10 +58,10 @@ void CMonsterMovement::reinit()
 
 void CMonsterMovement::InitExternal(CAI_Biting *pM)
 {
-	pMonster	= pM;
-	VERIFY		(pMonster);
+	m_object	= pM;
+	VERIFY		(m_object);
 
-	MotionStats	= xr_new<CMotionStats> (pMonster);
+	MotionStats	= xr_new<CMotionStats> (m_object);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,8 +69,8 @@ void CMonsterMovement::InitExternal(CAI_Biting *pM)
 
 void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_pos)
 {
-	S.m_dwCurTime		= pMonster->m_dwCurrentTime;
-	S.m_tMe				= pMonster;
+	S.m_dwCurTime		= m_object->m_dwCurrentTime;
+	S.m_tMe				= m_object;
 	S.m_tpMyNode		= level_vertex();
 	S.m_tMyPosition		= Position();
 	S.m_dwStartNode		= level_vertex_id();
@@ -109,7 +109,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 	if (IsPathEnd(2,1.5f)) new_params = true;
 
 	// перестраивать если вышел временной квант
-	if (m_selector_approach->m_dwCurTime  + 2000 < pMonster->m_dwCurrentTime) new_params = true;
+	if (m_selector_approach->m_dwCurTime  + 2000 < m_object->m_dwCurrentTime) new_params = true;
 
 	if (!new_params) return;
 
@@ -121,7 +121,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 		SetPathParams (node_id, position);
 
 		// хранить в данном селекторе время последнего перестраивания пути
-		m_selector_approach->m_dwCurTime = pMonster->m_dwCurrentTime;
+		m_selector_approach->m_dwCurTime = m_object->m_dwCurrentTime;
 	} else {
 		bool use_selector = true;
 
@@ -131,7 +131,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 				SetPathParams (vertex_id, position);
 
 				// хранить в данном селекторе время последнего перестраивания пути
-				m_selector_approach->m_dwCurTime = pMonster->m_dwCurrentTime;
+				m_selector_approach->m_dwCurTime = m_object->m_dwCurrentTime;
 
 				use_selector = false;
 			}
@@ -207,7 +207,7 @@ bool CMonsterMovement::ObjectNotReachable(const CEntity *entity)
 	if (!object_position_valid(entity)) return true;
 	
 	// Commented because of Acceleration Conflict
-	//if (pMonster->MotionMan.BadMotionFixed()) return true;
+	//if (m_object->MotionMan.BadMotionFixed()) return true;
 
 	return false;
 }
@@ -240,13 +240,13 @@ void CMonsterMovement::update_velocity()
 {
 	// Обновить линейную скорость движения
 	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
-										pMonster->MotionMan.accel_get(eAV_Braking) :
-										pMonster->MotionMan.accel_get(eAV_Accel));
+										m_object->MotionMan.accel_get(eAV_Braking) :
+										m_object->MotionMan.accel_get(eAV_Accel));
 		
 	velocity_lerp		(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
 	
 	// установить линейную скорость движения
-	set_desirable_speed	(pMonster->m_fCurSpeed = m_velocity_linear.current);
+	set_desirable_speed	(m_object->m_fCurSpeed = m_velocity_linear.current);
 
 	// установить угловую скорость движения
 	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
@@ -263,6 +263,6 @@ void CMonsterMovement::set_dest_direction(const Fvector &dir)
 void CMonsterMovement::stop_now()
 {
 	CMovementManager::enable_movement	(false);
-	pMonster->m_velocity_linear.target	= 0.f;
-	pMonster->m_velocity_linear.current = 0.f;
+	m_object->m_velocity_linear.target	= 0.f;
+	m_object->m_velocity_linear.current = 0.f;
 }
