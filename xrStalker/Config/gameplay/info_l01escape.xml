@@ -7,7 +7,7 @@
 			<level>stohe_selo</level>
 			<x>105</x>
 			<y>-15</y>
-			<icon name="Заброшенная фабрика" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="0" dyn="1">ui\ui_round_map_area</icon>
+			<icon name="Заброшенная фабрика" x="0" y="0" width="2" height="2" r="238" g="155" b="23" marker="0" dyn="1">ui\ui_round_map_area</icon>
 			<text>Не ходите дети на фабрику гулять!</text>
 		</location>
 	</info_portion>
