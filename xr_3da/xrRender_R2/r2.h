@@ -99,8 +99,8 @@ public:
 
 	xr_vector<Fbox3>											main_coarse_structure;
 
-	shared_str														c_sbase;
-	shared_str														c_lmaterial;
+	shared_str													c_sbase;
+	shared_str													c_lmaterial;
 
 	IDirect3DQuery9*											q_sync_point;
 private:
@@ -182,7 +182,7 @@ public:
 
 	// Information
 	virtual void					Statistics					(CGameFont* F);
-	virtual LPCSTR					getShaderPath				()									{ return "r2\\";	}
+	virtual LPCSTR					getShaderPath				()									{ return "r2x\\";	}
 	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);
 	virtual IRender_Visual*			getVisual					(int id);
