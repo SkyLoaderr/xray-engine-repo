@@ -42,9 +42,11 @@ void FLOD::Copy			(IRender_Visual *pFrom	)
 	inherited::Copy		(pFrom);
 
 	FLOD* F				= (FLOD*)pFrom;
+	geom				= F->geom		;
+	lod_factor			= F->lod_factor	;
 	Memory.mem_copy		(facets,F->facets,sizeof(facets));
 }
-void FLOD::Render		(float LOD		)
+void FLOD::Render		(float LOD)
 {
 	Fvector				Ldir;
 	Ldir.sub			(vis.sphere.P,Device.vCameraPosition);
