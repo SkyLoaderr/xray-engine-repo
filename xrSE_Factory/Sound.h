@@ -177,6 +177,7 @@ public:
 	virtual void					set_frequency			(float freq)												= 0;
 	virtual void					set_range				(float min, float max)										= 0;
 	virtual void					set_volume				(float vol)													= 0;
+	virtual void					set_priority			(float vol)													= 0;
 	virtual void					stop					( )															= 0;
 	virtual	const CSound_params*	get_params				( )															= 0;
 };
