@@ -468,7 +468,10 @@ public:
 
 class ECORE_API FlagValueCustom: public PropValue
 {
-	public:
+public:
+    AnsiString			caption[2];
+public:
+	virtual	bool		HaveCaption		(){return caption[0].Length()&&caption[1].Length();}
     virtual bool		GetValueEx		()=0;
 };
 
@@ -482,12 +485,17 @@ public:
 	TYPE*				value;
     T::TYPE				mask;
 public:
-						FlagValue		(T* val, T::TYPE _mask):FlagValueCustom(),mask(_mask)
+						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1):FlagValueCustom(),mask(_mask)
 	{
     	value			= val;
     	init_value		= *val;
+        caption[0]		= c0;
+        caption[1]		= c1;
     };
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
+    {	
+    	return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
+    }
     virtual bool		Equal			(PropValue* val)
     {
     	if (OnTestEqual) return OnTestEqual(this,val);
@@ -495,7 +503,7 @@ public:
     }
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){value->set(mask,init_value.is(mask));}
-    bool				GetValueEx		(){return value->is(mask);}
+    virtual bool		GetValueEx		(){return value->is(mask);}
     virtual bool		ApplyValue		(LPVOID _val)
     {
     	T* val			= (T*)_val;

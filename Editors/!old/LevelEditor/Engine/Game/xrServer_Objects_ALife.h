@@ -267,16 +267,29 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     };
 
     Flags16							flags;
+// light color    
     u32								color;
     float							brightness;
-    ref_str							startup_animation;
     ref_str							color_animator;
+// light texture    
+	ref_str							light_texture;
+// range
     float							range;
+	float							m_virtual_size;
+// bones&motions
+	ref_str							guid_bone;
     ref_str							fixed_bones;
-    float							m_health;
-	float							m_visible_size;
+    ref_str							startup_animation;
+// spot
+	float							spot_cone_angle;
+// ambient    
     float							m_ambient_radius;
     float							m_ambient_power;
+// glow    
+	ref_str							glow_texture;
+	float							glow_radius;
+// game
+    float							m_health;
 	
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();

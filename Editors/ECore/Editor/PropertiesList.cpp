@@ -515,7 +515,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG:{
                 FlagValueCustom*  V	= dynamic_cast<FlagValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
-                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
+                if (V->HaveCaption())	OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                else	        		OutBOOL	(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -648,15 +649,15 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     item->RedrawItem			(true);
                 }break;
                 case PROP_FLAG:{
-					BOOL bRes 					= FALSE;
+                    BOOL bRes 					= FALSE;
                     if (!FlagOnEdit<u8>(prop,bRes))
-	                    if (!FlagOnEdit<u16>(prop,bRes))
-		                    if (!FlagOnEdit<u32>(prop,bRes))
-                            	Debug.fatal		("Unknown flag type");
-                	if (bRes){
-	                  	Modified				();
-    	              	RefreshForm				();
-					}
+                        if (!FlagOnEdit<u16>(prop,bRes))
+                            if (!FlagOnEdit<u32>(prop,bRes))
+                                Debug.fatal		("Unknown flag type");
+                    if (bRes){
+                        Modified				();
+                        RefreshForm				();
+                    }
                 }break;
                 case PROP_BOOLEAN:{
                     BOOLValue* V				= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);

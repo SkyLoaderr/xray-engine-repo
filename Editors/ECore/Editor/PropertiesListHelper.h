@@ -125,8 +125,8 @@ public:
     IC VectorValue*   	CreateVector	(PropItemVec& items, AnsiString key, Fvector* val, float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2)
     {   return			(VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);}
     template <class T>
-    IC FlagValue<T>*	CreateFlag		(PropItemVec& items, AnsiString key, T* val, T::TYPE mask)
-    {   return			(FlagValue<T>*)	AppendValue		(items,key,xr_new<FlagValue<T> >(val,mask),PROP_FLAG);    }
+    IC FlagValue<T>*	CreateFlag		(PropItemVec& items, AnsiString key, T* val, T::TYPE mask, LPCSTR c0=0, LPCSTR c1=0)
+    {   return			(FlagValue<T>*)	AppendValue		(items,key,xr_new<FlagValue<T> >(val,mask,c0,c1),PROP_FLAG);    }
     template <class T>
 	IC TokenValue<T>*	CreateToken		(PropItemVec& items, AnsiString key, T* val, xr_token* token)
     {   return			(TokenValue<T>*)AppendValue		(items,key,xr_new<TokenValue<T> >(val,token),PROP_TOKEN);}

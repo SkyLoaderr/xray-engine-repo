@@ -72,7 +72,7 @@
 // 53 - CSE_AlifeInventoryItem			appended with property 'condition'
 // 54 - CSE_AlifeLevelChanger			property 'angles' changed from float to fvector
 // 55 - CSE_AlifeItemCar->CSE_ALifeCar	heritage changed
-// 56 - CSE_ALifeObjectHangingLamp		appended with properties 'cast_shadow', 'render_type'
+// 56 - CSE_ALifeObjectHangingLamp		restore removed props + appended some new
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

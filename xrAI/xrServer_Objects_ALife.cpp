@@ -867,7 +867,11 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	m_flags.set					(flUseSwitches,false);
 	m_flags.set					(flSwitchOffline,false);
 
-	m_visible_size				= 0.1f;
+	m_virtual_size				= 0.1f;
+	m_ambient_radius			= 0.1f;
+    m_ambient_power				= 0.1f;
+    spot_cone_angle				= deg2rad(120.f);
+    glow_radius					= 0.2f;
 }
 
 CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
@@ -934,9 +938,14 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion > 55)
 	{
-		tNetPacket.r_float			(m_visible_size);
+		tNetPacket.r_float			(m_virtual_size);
 	    tNetPacket.r_float			(m_ambient_radius);
     	tNetPacket.r_float			(m_ambient_power);
+        tNetPacket.r_string			(light_texture);
+        tNetPacket.r_string			(guid_bone);
+        tNetPacket.r_float			(spot_cone_angle);
+        tNetPacket.r_string			(glow_texture);
+        tNetPacket.r_float			(glow_radius);
 	}
 }
 
@@ -952,10 +961,17 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(startup_animation);
     tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_float			(m_health);
-	tNetPacket.w_float			(m_visible_size);
+	tNetPacket.w_float			(m_virtual_size);
     tNetPacket.w_float			(m_ambient_radius);
     tNetPacket.w_float			(m_ambient_power);
+
+    tNetPacket.w_string			(light_texture);
+    tNetPacket.w_string			(guid_bone);
+    tNetPacket.w_float			(spot_cone_angle);
+    tNetPacket.w_string			(glow_texture);
+    tNetPacket.w_float			(glow_radius);
 }
+
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
 {
@@ -1002,19 +1018,25 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 
     PropValue* P				= 0;
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
-	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast shadow"),	&flags,			flCastShadow);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	P=PHelper.CreateFlag<Flags16>(values,FHelper.PrepareKey(pref,s_name,"Flags\\Allow Ambient Point"), &flags,	flPointAmbient);
+	P=PHelper.CreateFlag<Flags16>(values,FHelper.PrepareKey(pref,s_name,"Flags\\Allow Ambient"),&flags,			flPointAmbient);
     P->OnChangeEvent			= OnChangeFlag;
-
-	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Type"), 				&flags,				flTypeSpot, "Point", "Spot");
+	// 
+	P=PHelper.CreateFlag<Flags16>(values, FHelper.PrepareKey(pref,s_name,"Type"), 				&flags,				flTypeSpot, "Point", "Spot");
+    P->OnChangeEvent			= OnChangeFlag;
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			    &color);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		    &brightness,		0.1f, 5.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	    &color_animator, 	smLAnim);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color Animator"),	    &color_animator, 	smLAnim);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			    &range,				0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			    &m_health,			0.f, 100.f);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visible size"),	    &m_visible_size,	0.f, 100.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Virtual Size"),	    &m_virtual_size,	0.f, 100.f);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Light Texture"),	    &light_texture, 	smTexture);
+
+    if (flags.is(flTypeSpot))
+		PHelper.CreateAngle		(values, FHelper.PrepareKey(pref,s_name,"Cone Angle"),		    &spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
+
 	// motions
     if (visual && PSkeletonAnimated(visual))
     {
@@ -1030,11 +1052,16 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
         V->OnChooseEvent		= OnChooseBone;
         V->Owner()->subitem		= 8;
+        V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Guid bone"),		&guid_bone, smCustom);
+        V->OnChooseEvent		= OnChooseBone;
     }
     if (flags.is(flPointAmbient)){
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
     }
+    // glow
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow\\Radius"),	    &glow_radius,		0.01f, 100.f);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 	smTexture);
 }
 #endif
 
