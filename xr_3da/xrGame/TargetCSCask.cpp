@@ -39,7 +39,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			// Test for CS Target
 			CTargetCS* l_pBall	= dynamic_cast<CTargetCS*>(l_pObj);
 			if(l_pBall) {
-				R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
+				// R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
 				l_pBall->H_SetParent(0);
 				return;
 			}
