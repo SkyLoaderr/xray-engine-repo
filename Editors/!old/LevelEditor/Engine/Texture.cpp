@@ -196,6 +196,7 @@ IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	string256				fn;
 	u32						dwWidth,dwHeight;
+	D3DFORMAT				fmt;
 
 	// validation
 	R_ASSERT				(fRName);
