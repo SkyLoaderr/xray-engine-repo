@@ -36,7 +36,6 @@ CAI_Rat::CAI_Rat()
 	tpaDynamicSounds.clear();
 	m_fSensetivity = 0.f;
 	m_iSoundIndex = -1;
-	tpaDynamicSounds.clear();
 	m_dwLastUpdate = 0;
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;

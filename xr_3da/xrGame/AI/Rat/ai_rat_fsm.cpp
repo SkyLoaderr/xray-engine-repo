@@ -18,6 +18,7 @@
 //#define PRE_THINK_COUNT					4
 #define ATTACK_DISTANCE						.5f
 #define ATTACK_ANGLE					PI_DIV_6
+#define LOST_MEMORY_TIME				30000
 
 void CAI_Rat::Die()
 {
@@ -99,7 +100,6 @@ void CAI_Rat::AttackFire()
 	vfSaveEnemy();
 
 	vfAimAtEnemy();
-	//SetDirectionLook();
 
 	vfSetFire(true,Group);
 
@@ -115,7 +115,9 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(Enemy);
 	
-	if (!(Enemy.Enemy) && tSavedEnemy && (tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()))
+	if (Enemy.Enemy)
+		m_dwLostEnemyTime = Level().timeServer();
+	if (!(Enemy.Enemy) && tSavedEnemy && ((tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))
 		Enemy.Enemy = tSavedEnemy;
 	CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy || !Enemy.Enemy->g_Alive())
 		
@@ -136,15 +138,16 @@ void CAI_Rat::AttackRun()
 
 	INIT_SQUAD_AND_LEADER;
 	
-//	GoToPointViaSubnodes(Enemy.Enemy->Position());
-	
 	m_tGoalDir.set			(Enemy.Enemy->Position());
 	m_fASpeed				= .3f;
 	m_tSpawnPosition.set	(Enemy.Enemy->Position());
 	m_tVarGoal.set			(0,0,0);
-	m_fGoalChangeDelta		= .5f;
-	m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
-	//vfChangeGoal();
+	if (m_fSpeed > EPS_L) {
+		m_fGoalChangeDelta		= .5f;
+		m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
+	}
+	else
+		m_fGoalChangeDelta		= 3.f;
 
 	vfSaveEnemy();
 
@@ -162,6 +165,29 @@ void CAI_Rat::AttackRun()
 	vfSetFire(false,Group);
 
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+	
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+		m_fSpeed = EPS_S;
+	else 
+		if (m_fSafeSpeed != m_fSpeed) {
+			int iRandom = ::Random.randI(0,2);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		}
 }
 
 void CAI_Rat::FreeHunting()
@@ -217,6 +243,60 @@ void CAI_Rat::FreeHunting()
 		}
 	AI_Path.TravelPath.clear();
 }
+
+//void CAI_Rat::UnderFire()
+//{
+//	WRITE_TO_LOG("Under fire");
+//
+//	bStopThinking = true;
+//	
+//	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+//
+//	SelectEnemy(Enemy);
+//	
+//	if (Enemy.Enemy) {
+//		m_fGoalChangeTime = 0;
+//		SWITCH_TO_NEW_STATE(aiRatAttackFire)
+//	}
+//
+//	m_tSpawnPosition.set(m_tSafeSpawnPosition);
+//	m_fGoalChangeDelta		= 10.f;
+//	m_tVarGoal.set			(10.0,0.0,20.0);
+//	m_fASpeed				= .2f;
+//	
+//	if (bfCheckIfGoalChanged())
+//		vfChooseNewSpeed();
+//
+//	vfUpdateTime(m_fTimeUpdateDelta);
+//
+//	vfComputeNewPosition();
+//
+//	SetDirectionLook();
+//
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+//		m_fSpeed = EPS_S;
+//	else 
+//		if (m_fSafeSpeed != m_fSpeed) {
+//			int iRandom = ::Random.randI(0,2);
+//			switch (iRandom) {
+//				case 0 : {
+//					m_fSpeed = m_fMaxSpeed;
+//					break;
+//				}
+//				case 1 : {
+//					m_fSpeed = m_fMinSpeed;
+//					break;
+//				}
+//				case 2 : {
+//					if (::Random.randI(0,4) == 0)
+//						m_fSpeed = EPS_S;
+//					break;
+//				}
+//			}
+//			m_fSafeSpeed = m_fSpeed;
+//		}
+//	AI_Path.TravelPath.clear();
+//}
 
 void CAI_Rat::Think()
 {

@@ -176,6 +176,7 @@ class CAI_Rat : public CCustomMonster
 		float			m_fMinPatrolDistance;
 		float			m_fMaxPatrolDistance;
 		DWORD			m_dwStartAttackTime;
+		DWORD			m_dwLostEnemyTime;
 
 		// finite state machine
 		stack<ERatStates>	tStateStack;
