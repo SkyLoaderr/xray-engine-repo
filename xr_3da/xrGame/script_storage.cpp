@@ -416,12 +416,14 @@ bool CScriptStorage::print_output(CLuaVirtualMachine *L, LPCSTR caScriptFileName
 			LPCSTR	S = lua_tostring(L,i);
 			if (!xr_strcmp(S,"cannot resume dead coroutine")) {
 				VERIFY2	("Please do not return any values from main!!!",caScriptFileName);
+				CScriptDebugger::GetDebugger()->Write(S);
 				return	(true);
 			}
 			else {
 				if (!i && !iErorCode)
 					script_log	(ScriptStorage::eLuaMessageTypeInfo,"Output from %s",caScriptFileName);
 				script_log	(iErorCode ? ScriptStorage::eLuaMessageTypeError : ScriptStorage::eLuaMessageTypeMessage,"%s",S);
+				CScriptDebugger::GetDebugger()->Write(S);
 			}
 		}
 		else

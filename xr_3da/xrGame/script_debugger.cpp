@@ -7,7 +7,7 @@ CScriptDebugger* CScriptDebugger::m_pDebugger = NULL;
 
 LRESULT CScriptDebugger::_SendMessage(u32 message, WPARAM wParam, LPARAM lParam)
 {
-	if ( (m_pDebugger)&&(message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG) )
+	if ( (m_pDebugger)&&(m_pDebugger->Active())&&(message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG) )
 		return m_pDebugger->DebugMessage(message, wParam, lParam);
 
 	return 0;
@@ -306,9 +306,17 @@ void CScriptDebugger::CheckNewMessages()
 LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 {
 	CMailSlotMsg msg;
+	u32 t = Device.dwTimeGlobal;
 	while (true){
 		if(CheckMailslotMessage(m_mailSlot,msg)) break;
 		Sleep(100);
+
+		if( (t+1000)>Device.dwTimeGlobal ){
+			CMailSlotMsg m;
+			m.w_int(DMSG_SHOW_IDE);
+			SendMailslotMessage(IDE_MAIL_SLOT,m);
+			t = Device.dwTimeGlobal;
+		};
 	};
 	R_ASSERT(msg.GetLen());
 	

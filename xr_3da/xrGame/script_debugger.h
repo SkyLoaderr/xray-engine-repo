@@ -6,20 +6,6 @@
 #include "script_debugger_messages.h"
 #include "script_debugger_utils.h"
 
-//#include "../../luaDbg/dbgIde/dbgIde/script_debug_ide.h"
-//#pragma comment(lib, "x:/dbgIde.lib")
-
-/*
-typedef LRESULT (*TmsgFunc)(UINT Msg,	WPARAM wParam,	LPARAM lParam);
-class CScriptDeduggerIDE 
-{
-public:
-	LRESULT		OnMessageToIDE				(UINT Msg, WPARAM wParam,	LPARAM lParam){return 0;};
-	void		SetDebuggerMsgFunc			(TmsgFunc F){};
-
-	CScriptDeduggerIDE(){};
-	~CScriptDeduggerIDE(){};
-};*/
 class CMailSlotMsg;
 struct lua_State;
 
