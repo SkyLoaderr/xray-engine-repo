@@ -393,7 +393,7 @@ IC  Fvector2 CLevelGraph::v2d(const Fvector &vector3d) const
 	return			(Fvector2().set(vector3d.x,vector3d.z));
 }
 
-template <typename T>
+template <bool bAssignY, typename T>
 IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<T> &tpaOutputPoints, const T &example, bool bAddFirstPoint, bool bClearPath) const
 {
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = start_vertex_id;
@@ -413,7 +413,8 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 		tpaOutputPoints.clear	();
 	if (bAddFirstPoint) {
 		pos3d				= v3d(start_point);
-		pos3d.y				= vertex_plane_y(start_vertex_id,start_point.x,start_point.y);
+		if (bAssignY)
+			pos3d.y			= vertex_plane_y(start_vertex_id,start_point.x,start_point.y);
 		path_node.set_position(pos3d);
 		path_node.set_vertex_id(start_vertex_id);
 		tpaOutputPoints.push_back(path_node);
@@ -474,14 +475,16 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 				u32				dwIntersect = intersect(start_point.x,start_point.y,finish_point.x,finish_point.y,next1.x,next1.y,next2.x,next2.y,&tIntersectPoint.x,&tIntersectPoint.z);
 				if (!dwIntersect)
 					continue;
-				tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+				if (bAssignY)
+					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 				path_node.set_position(tIntersectPoint);
 				path_node.set_vertex_id(next_vertex_id);
 				tpaOutputPoints.push_back(path_node);
 
 				if (box.contains(dest)) {
 					tIntersectPoint = v3d(dest);
-					tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
+					if (bAssignY)
+						tIntersectPoint.y = vertex_plane_y(vertex(cur_vertex_id),tIntersectPoint.x,tIntersectPoint.z);
 					path_node.set_position(tIntersectPoint);
 					path_node.set_vertex_id(next_vertex_id);
 					tpaOutputPoints.push_back(path_node);
@@ -495,5 +498,29 @@ IC	bool	CLevelGraph::create_straight_PTN_path	(u32 start_vertex_id, const Fvecto
 		}
 		if (!found)
 			return			(false);
+	}
+}
+
+template<typename T>
+IC	void CLevelGraph::assign_y_values		(xr_vector<T> &path)
+{
+	Fvector						DUP, normal, v1, P;
+	Fplane						PL; 
+	DUP.set						(0,1,0);
+	u32							prev_id = u32(-1);
+	const CVertex				*_vertex;
+
+	xr_vector<T>::iterator		I = path.begin();
+	xr_vector<T>::iterator		E = path.end();
+	for ( ; I != E; ++I) {
+		if (prev_id != (*I).get_vertex_id()) {
+			_vertex				= vertex((*I).get_vertex_id());
+			pvDecompress		(normal,_vertex->plane());
+			vertex_position		(P,_vertex->position());
+			PL.build			(P,normal);
+			prev_id				= (*I).get_vertex_id();
+		}
+		PL.intersectRayPoint	((*I).get_position(),DUP,v1);	
+		(*I).get_position().y	= v1.y;
 	}
 }

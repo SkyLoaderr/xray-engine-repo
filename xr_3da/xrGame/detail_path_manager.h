@@ -72,6 +72,16 @@ public:
 		{
 			vertex_id		= _vertex_id;
 		}
+
+		IC	Fvector &get_position	()
+		{
+			return			(position);
+		}
+
+		IC	u32		get_vertex_id	()
+		{
+			return			(vertex_id);
+		}
 	};
 
 	struct SDist {
@@ -129,10 +139,13 @@ private:
 			bool	build_trajectory		(	   STrajectoryPoint &start,			  STrajectoryPoint				&dest,			const SCirclePoint					tangents[4][2],		const u32							tangent_count,		  xr_vector<STravelPathPoint>	*path,				  float	&time,		const u32 velocity1, const u32 velocity2, const u32 velocity3);
 			bool	compute_trajectory		(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*path,					  float							&time,			const u32							velocity1,		const u32	velocity2,	const u32 velocity3);
 			bool	compute_path			(      STrajectoryPoint &start,			  STrajectoryPoint				&dest,				  xr_vector<STravelPathPoint>	*m_tpTravelLine, 	const xr_vector<STravelParamsIndex> &m_start_params,const xr_vector<STravelParamsIndex> &m_dest_params);
-			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
-			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
-			void	build_straight_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
-			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
+			bool	init_build				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
+			bool	fill_key_points			(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
+			void	build_path_via_key_points(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params);
+			void	build_smooth_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
+			void	build_criteria_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
+			void	build_straight_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
+			void	build_dodge_path		(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
 
 protected:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index);
