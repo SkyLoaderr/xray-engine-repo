@@ -45,7 +45,6 @@ void CAI_Stalker::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
 		D.setHP			(-m_head.current.yaw,-m_head.current.pitch);
-		D.normalize_safe();
 		Center			(P);
 		P.mad			(D,.5f);
 		P.y				+= body_state() == eBodyStateStand ? .75f : .15f;
