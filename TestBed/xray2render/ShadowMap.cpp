@@ -282,9 +282,6 @@ HRESULT CMyD3DApplication::Render		()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::InitDeviceObjects()
 {
-	LPDIRECT3DVERTEXBUFFER9 pMeshSrcVB;
-	LPDIRECT3DINDEXBUFFER9  pMeshSrcIB;
-	VERTEX*					pSrc;
 	VERTEX*					pDst;
 	TVERTEX*				pDstT;
 	CD3DMesh                Mesh;
@@ -367,6 +364,13 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		inputAtts.push_back(texCoordAtt);
 
 		// Specify the requested output
+		// Tangents
+		NVMeshMender::VertexAttribute tangentAtt;
+		tangentAtt.Name_ = "tangent";
+		// Binormals
+		NVMeshMender::VertexAttribute binormalAtt;
+		binormalAtt.Name_ = "binormal";
+
 		std::vector<NVMeshMender::VertexAttribute> outputAtts;
 		unsigned int n = 0;
 		outputAtts.push_back(positionAtt); ++n;
@@ -402,7 +406,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 		// Create the new vertex buffer
 		m_dwModelNumVerts = position.size() / 3;
-		D3DXComputeBoundingSphere(&position.front(), m_dwModelNumVerts, 3*sizeof(float), &vecModelCenter, &fModelRad);
+		D3DXComputeBoundingSphere((D3DXVECTOR3*)&position.front(), m_dwModelNumVerts, 3*sizeof(float), &vecModelCenter, &fModelRad);
 		m_fModelSize = fModelRad * 2.0f;
 
 		u32 size = m_dwModelNumVerts * sizeof(VERTEX);
