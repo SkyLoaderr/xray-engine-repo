@@ -12,7 +12,7 @@ class CMercuryBall : public CGameObject {
 typedef	CGameObject	inherited;
 public:
 	CMercuryBall(void);
-	~CMercuryBall(void);
+	virtual ~CMercuryBall(void);
 
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();

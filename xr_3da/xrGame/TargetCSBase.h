@@ -12,7 +12,7 @@ class CTargetCSBase :
 	u8					team;
 public:
 	CTargetCSBase		(void);
-	~CTargetCSBase		(void);
+	virtual ~CTargetCSBase		(void);
 
 	virtual BOOL		net_Spawn			(LPVOID DC);
 	virtual void		net_Destroy			();

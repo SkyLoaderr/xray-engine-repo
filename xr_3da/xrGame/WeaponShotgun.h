@@ -7,7 +7,7 @@ class CWeaponShotgun :
 	typedef CWeaponCustomPistol inherited;
 public:
 	CWeaponShotgun(void);
-	~CWeaponShotgun(void);
+	virtual ~CWeaponShotgun(void);
 
 	virtual void	Load			(LPCSTR section);
 	//virtual void OnZoomIn();

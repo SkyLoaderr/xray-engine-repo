@@ -8,7 +8,7 @@ class CWeaponSVD :
 	float			fMaxZoomFactor;
 public:
 	CWeaponSVD(void);
-	~CWeaponSVD(void);
+	virtual ~CWeaponSVD(void);
 	virtual void	Load			(LPCSTR section);
 	virtual void			Fire2Start			();
 	virtual void			Fire2End			();

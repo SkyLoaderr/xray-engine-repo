@@ -8,7 +8,7 @@ class CTargetCS :
 typedef	CGameObject	inherited;
 public:
 	CTargetCS(void);
-	~CTargetCS(void);
+	virtual ~CTargetCS(void);
 
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
