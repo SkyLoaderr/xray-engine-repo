@@ -455,13 +455,13 @@ void CWeaponMagazined::OnEmptyClick	()
 void CWeaponMagazined::OnAnimationEnd() {
 	switch(STATE) {
 		case eReload:	ReloadMagazine();		break;	// End of reload animation
-		case eHiding:	SwitchState(eHidden); setVisible(false);	break;	// End of Hide
+		case eHiding:	SwitchState(eHidden); /*if(H_Parent()) setVisible(false);*/	break;	// End of Hide
 		case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
 void CWeaponMagazined::switch2_Idle	()
 {
-	setVisible(true);
+	//ësetVisible(true);
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponMagazined::switch2_Fire	()
@@ -490,11 +490,11 @@ void CWeaponMagazined::switch2_Hiding()
 void CWeaponMagazined::switch2_Hidden()
 {
 	signal_HideComplete		();
-	setVisible(false);
+	//if(H_Parent()) setVisible(false);
 }
 void CWeaponMagazined::switch2_Showing()
 {
-	setVisible				(TRUE);
+	//setVisible				(TRUE);
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	if (sndShow.feedback)
 		sndShow.feedback->set_volume(.3f);

@@ -359,7 +359,7 @@ void CWeapon::Load		(LPCSTR section)
 	// slot
 	iSlotBinding = m_slot = pSettings->r_s32		(section,"slot");
 
-	setVisible			(FALSE);
+	//setVisible			(FALSE);
 	
 	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");

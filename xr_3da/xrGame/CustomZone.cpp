@@ -46,7 +46,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
 		Fmatrix l_m; l_m.set(renderable.xform);
-		for(s32 i = 0; i < l_c; i++) {
+		for(s32 i = 0; i < 0/*l_c*/; i++) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
 			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);

@@ -398,7 +398,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 
 		CPGObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
-		for(s32 i = 0; i < l_c; i++) {
+		for(s32 i = 0; i < 0/*l_c*/; i++) {
 			pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
