@@ -377,7 +377,10 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	Fvector& P		= V->bv_Position;
 	S.R				= V->bv_Radius;
 	O->svTransform.transform_tiny	(S.P,P);
+	if (Sphere.intersect(S))	return TRUE;
+	else						return FALSE;
 	
+/*	
 	// Get our matrix
 	Fmatrix& XF		= Owner()->svTransform;
 	
@@ -426,4 +429,5 @@ BOOL CCF_Shape::Contact		( CObject* O )
 		}
 	}
 	return FALSE;
+*/
 }
