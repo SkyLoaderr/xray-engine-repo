@@ -186,8 +186,9 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	//return(fAlpha < PI/10);
-	return(false);
+	return(fAlpha < PI/10);
+	
+	//return(false);
 }
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
@@ -411,8 +412,8 @@ bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 				break;
 			}
 
-	return(false);
-//	return(bCanKillMember);
+	//return(false);
+	return(bCanKillMember);
 }
 
 void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
