@@ -152,11 +152,11 @@ public:
 	// movement
 	float				m_fJumpSpeed;
 
-	// Biting/Himera motion & states management
+	// Biting motion & state management
 	u32					m_dwCurrentUpdate;
 	EMotionAnim			m_tAnim;
+	EMotionAnim			m_tAnimPrevFrame;
 	void				SetDirectionLook();
-
 
 	// network
 //------------------------------

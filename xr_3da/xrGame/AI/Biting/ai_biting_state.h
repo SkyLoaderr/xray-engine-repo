@@ -12,27 +12,6 @@
 
 class CAI_Biting;
 
-
-const float m_cfBitingStandTurnRSpeed	=	PI_DIV_4;
-
-const float m_cfBitingWalkSpeed			=	3.0f;
-const float m_cfBitingWalkTurningSpeed	=	1.0f;
-const float m_cfBitingWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
-const float m_cfBitingWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
-const float m_cfBitingWalkMinAngle		=   PI_DIV_6;
-
-
-const float m_cfBitingRunAttackSpeed		=	7.0f;
-const float m_cfBitingRunAttackTurnSpeed	=	3.5f;
-const float m_cfBitingRunAttackTurnRSpeed	=	5* PI_DIV_6;
-const float m_cfBitingRunRSpeed				=	PI_DIV_2;
-const float m_cfBitingRunAttackMinAngle		=   PI_DIV_6;
-const float m_cfBitingAttackFastRSpeed		=	3*PI_DIV_4;
-
-const float m_cfBitingAttackFastRSpeed2		=	PI;
-
-const float m_cfBitingScaredRSpeed			=	3*PI_DIV_4;
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,25 +273,3 @@ private:
 	virtual void	Init				();
 	virtual void	Run					();
 };
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CFindEnemy // враг потерян из вида - искать врага
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CFindEnemy : public IState {
-	CAI_Biting		*pMonster;
-	
-	TTime			m_dwReplanTime;			//!< время через, которое делать планирование
-	TTime			m_dwLastPlanTime;		//!< последнее время планирования
-	bool			bLookLeft;
-
-	typedef IState inherited;
-public:
-					CFindEnemy 			(CAI_Biting *p);
-
-	virtual void	Reset				();	
-
-private:
-	virtual void	Init				();
-	virtual void	Run					();
-};
-

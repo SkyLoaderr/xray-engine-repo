@@ -17,7 +17,7 @@
 #include "ai\\stalker\\ai_stalker.h"
 #include "ai\\zombie\\ai_zombie.h"
 #include "ai\\idol\\ai_idol.h"
-#include "ai\\biting\\ai_biting.h"
+#include "ai\\flesh\\ai_flesh.h"
 #include "ai\\chimera\\ai_chimera.h"
 #include "ai\\trader\\ai_trader.h"
 #include "car.h"
@@ -840,7 +840,7 @@ extern "C" {
 
 		case CLSID_AI_GRAPH:												break;
 		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
-		case CLSID_AI_FLESH:			P = xr_new<CAI_Biting>();			break;
+		case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
 		case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
 		case CLSID_AI_DOG_RED:			P = xr_new<CAI_Chimera>();			break;
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;

@@ -46,44 +46,6 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 			HearSound(who,eType,Position,power,m_dwCurrentUpdate);
 		}
  	}
-
-//		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
-//			Msg("%s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
-//
-//			Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
-//
-//			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
-//			if (m_tLastSound.tpEntity) {
-//				m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;
-//				m_tLastSound.eSoundType		= ESoundTypes(eType);
-//				m_tLastSound.dwTime			= Level().timeServer();
-//				m_tLastSound.fPower			= power;
-//				m_tLastSound.tSavedPosition = Position;
-//			}
-///		}
-//	}
-}
-
-void CAI_Biting::feel_touch_new	(CObject* O)
-{
-	if (!g_Alive()) return;
-/*
-	CEntity *pEntity = dynamic_cast<CEntity *>(O);
-
- 	if (m_tSavedEnemy && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY) && (pEntity == m_tSavedEnemy)) {
-		Fvector tDirection;
-		Fvector position_in_bone_space;
-		position_in_bone_space.set(0.f,0.f,0.f);
-		tDirection.sub(m_tSavedEnemy->Position(),this->Position());
-		tDirection.normalize();
-
-		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
-
-		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
-		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-
-	}
-	*/
 }
 
 void CAI_Biting::DoDamage(CEntity *pEntity)
@@ -102,9 +64,6 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 		vfNormalizeSafe(tDirection);
 
 		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
-//		
-//		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
-//		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 	}
 }
 
@@ -121,37 +80,13 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 	}
 }
 
-void CAI_Biting::vfAssignPitch			()
+void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
-//	if (getAI().bfInsideNode(AI_Node,Position())) {
-//		Fvector l_tDirection, l_tEdgePosition, l_tEdgePosition1;
-//		float fRadius;
-//		u32 l_dwNodeID;
-//		Movement.GetBoundingSphere	(l_tDirection,fRadius);
-//		l_tDirection.setHP			(-r_torso_current.yaw,0);
-//		l_tDirection.normalize		();
-//		l_tDirection.mul			(fRadius);
-//		l_tEdgePosition.add			(Position(),l_tDirection);
-//		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
-//		if (l_dwNodeID == u32(-1))
-//			l_dwNodeID = AI_NodeID;
-//		l_tEdgePosition.y			= getAI().ffGetY(*getAI().Node(l_dwNodeID),l_tEdgePosition.x,l_tEdgePosition.z);
-//		
-//		l_tEdgePosition1			= l_tEdgePosition;
-//
-//		l_tDirection.setHP			(r_torso_current.yaw,0);
-//		l_tDirection.normalize		();
-//		l_tDirection.mul			(fRadius);
-//		l_tEdgePosition.add			(Position(),l_tDirection);
-//		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
-//		if (l_dwNodeID == u32(-1))
-//			l_dwNodeID = AI_NodeID;
-//		l_tEdgePosition.y			= getAI().ffGetY(*getAI().Node(l_dwNodeID),l_tEdgePosition.x,l_tEdgePosition.z);
-//
-//		l_tEdgePosition.sub			(l_tEdgePosition1);
-//
-//		float						fYaw, fPitch;
-//		l_tEdgePosition.getHP		(fYaw,fPitch);
-//		r_torso_target.pitch		= fPitch;
-//	}
+	
+	// Save event
+	Fvector D;
+	XFORM().transform_dir(D,vLocalDir);
+	
+	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 }
+

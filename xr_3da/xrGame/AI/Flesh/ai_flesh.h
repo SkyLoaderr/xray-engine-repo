@@ -1,15 +1,14 @@
 #pragma once
 
 #include "..\\biting\\ai_biting.h"
-#include "ai_chimera_state.h"
 
-class CAI_Chimera : public CAI_Biting {
+class CAI_Flesh : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
 public:
-							CAI_Chimera		();
-	virtual					~CAI_Chimera	();	
-
+							CAI_Flesh		();
+	virtual					~CAI_Flesh		();	
+	
 	virtual void	Init();
 
 	virtual void	Think ();
@@ -19,9 +18,8 @@ public:
 	virtual void	FillAttackStructure(u32 i, TTime t);
 
 	// Flesh-specific FSM
-	CChimeraAttack		*stateAttack;
-
 	CBitingRest			*stateRest;
+	CBitingAttack		*stateAttack;
 	CBitingEat			*stateEat;
 	CBitingHide			*stateHide;
 	CBitingDetour		*stateDetour;
@@ -31,6 +29,7 @@ public:
 	CBitingExploreNDE	*stateExploreNDE;
 
 	friend	class		CBitingRest;
+	friend  class 		CBitingAttack;
 	friend	class 		CBitingEat;
 	friend	class 		CBitingHide;
 	friend	class 		CBitingDetour;
@@ -38,6 +37,4 @@ public:
 	friend	class 		CBitingExploreDNE;
 	friend	class 		CBitingExploreDE;
 	friend	class 		CBitingExploreNDE;
-
-	friend  class 		CChimeraAttack;
 };

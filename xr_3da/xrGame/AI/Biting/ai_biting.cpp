@@ -9,53 +9,19 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-using namespace AI_Biting;
-
 CAI_Biting::CAI_Biting()
 {
-	//shedule.t_min	=	50;
-	//shedule.t_max	=	150;
-	
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
-
-	stateRest			= xr_new<CBitingRest>		(this);
-	stateAttack			= xr_new<CBitingAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
-	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
-	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateFindEnemy		= xr_new<CFindEnemy>		(this);
-	CurrentState		= stateRest;
-
-	Init();
 }
 
 CAI_Biting::~CAI_Biting()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
-	xr_delete(stateEat);
-	xr_delete(stateHide);
-	xr_delete(stateDetour);
-	xr_delete(statePanic);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateExploreDE);
-	xr_delete(stateExploreNDE);
-	xr_delete(stateFindEnemy);
-
-	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_ATTACK_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_VOICE_COUNT, m_tpaSoundVoice);
 }
 
 void CAI_Biting::Init()
 {
 	// initializing class members
-	m_tpCurrentGlobalAnimation		= 0;
+	m_tpCurAnim						= 0;
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
 	m_fGoingSpeed					= 0.f;
@@ -64,61 +30,24 @@ void CAI_Biting::Init()
 	m_dwLastRangeSearch				= 0;
 
 	// »нициализаци€ параметров анимации
-	m_tAnim							= DEFAULT_ANIM;
+	m_tAnim							= m_tAnimPrevFrame = DEFAULT_ANIM;
 
-	m_tPathType						= ePathTypeStraight;
-	m_tPathState					= ePathStateSearchNode;
+	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
 	m_fAttackSuccessProbability0	= .8f;
 	m_fAttackSuccessProbability1	= .6f;
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 
-	m_dwLostEnemyTime				= 0;
-
-	m_dwActionStartTime				= 0;
-
-	m_dwAnimFrameDelay				= 100;
-	m_dwAnimLastSetTime				= 0;
-	m_bActionFinished				= true;
-
-	bPlayDeath						= false;
-	bStartPlayDeath					= false;
-	bTurning						= false;
-	m_tpSoundBeingPlayed			= 0;
-	
-	
 	bShowDeath						= false;
 	
-	m_dwEatInterval					= 500;
-	m_dwLastTimeEat					= 0;
-
-	m_dwLieIndex					= 0;
-	
-
-	m_dwPointCheckLastTime			= 0;
-	m_dwPointCheckInterval			= 1500;
-	
-	m_dwActionIndex					= 0;
-
-	m_AttackLastTime				= 0;			
-	m_AttackInterval				= 500;
-	m_AttackLastPosition.set		(0,0,0);		
-
 	InitMemory						(10000,10000);
 
-	m_dwAttackMeleeTime				= 0;
-	m_dwAttackActorMeleeTime		= 0;
 
 	Motion.Init						();
 
 	m_dwPathBuiltLastTime			= 0;
-
-	m_fEyeShiftYaw					= PI_DIV_6;
 	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
-
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
 	
 	AI_Path.TravelPath.clear		();
 	AI_Path.Nodes.clear				();
@@ -138,7 +67,6 @@ void CAI_Biting::Die()
 	bShowDeath = true;
 	SelectAnimation(dir,dir,0.f);
 
-	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -165,7 +93,6 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
-	m_tSelectorRetreat.Load			(section,"selector_retreat");
 	m_tSelectorCover.Load			(section,"selector_cover");
 
 	// loading frustum parameters
@@ -173,27 +100,31 @@ void CAI_Biting::Load(LPCSTR section)
 	eye_range						= pSettings->r_float(section,"EyeRange");
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
-	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
-	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
-	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
-
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	m_fHitPower						= pSettings->r_float (section,"HitPower");
 	// temp
 	//m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
-
-	vfLoadSounds();
-
-	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
-
-	vfSetFireBones				(pSettings,section);
-
 	// prefetching
-	cNameVisual_set					("monsters\\flesh\\flesh_ik1");
+	cNameVisual_set					(pSettings->r_string(section,"visual"));
+
+	m_ftrStandTurnRSpeed			= pSettings->r_float(section,"StandTurnRSpeed");
+	m_ftrWalkSpeed					= pSettings->r_float(section,"WalkSpeed");
+	m_ftrWalkTurningSpeed			= pSettings->r_float(section,"WalkTurningSpeed");
+	m_ftrWalkRSpeed					= pSettings->r_float(section,"WalkRSpeed");
+	m_ftrWalkTurnRSpeed				= pSettings->r_float(section,"WalkTurnRSpeed");
+	m_ftrWalkMinAngle				= pSettings->r_float(section,"WalkMinAngle");
+	m_ftrRunAttackSpeed				= pSettings->r_float(section,"RunAttackSpeed");
+	m_ftrRunAttackTurnSpeed			= pSettings->r_float(section,"RunAttackTurnSpeed");
+	m_ftrRunAttackTurnRSpeed		= pSettings->r_float(section,"RunAttackTurnRSpeed");
+	m_ftrRunRSpeed					= pSettings->r_float(section,"RunRSpeed");
+	m_ftrRunAttackMinAngle			= pSettings->r_float(section,"RunAttackMinAngle");
+	m_ftrAttackFastRSpeed			= pSettings->r_float(section,"AttackFastRSpeed");
+	m_ftrAttackFastRSpeed2			= pSettings->r_float(section,"AttackFastRSpeed2");
+	m_ftrScaredRSpeed				= pSettings->r_float(section,"ScaredRSpeed");
+
+
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
@@ -300,109 +231,14 @@ void CAI_Biting::Exec_Movement		(float dt)
 
 void CAI_Biting::UpdateCL()
 {
-	SetText();
+	//SetText();
 	inherited::UpdateCL();
 
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
 	{
-
 		//XFORM().set(m_pPhysicsShell->mXFORM);
 		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
 	}
-	// ѕроверка состо€ни€ анимации (атака)
-	TTime cur_time = Level().timeServer();
-	
-	VisionElem ve;
-	if (!GetEnemy(ve)) return;
-	CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
-
-	if (m_tAttack.time_started != 0) {
-
-		if ((m_tAttack.time_started + m_tAttack.time_from < cur_time) && 
-			(m_tAttack.time_started + m_tAttack.time_to > cur_time) && 
-			(m_tAttack.LastAttack + 1000 < cur_time)) {
-
-			// трассировка нужна?
-			if (m_tAttack.b_fire_anyway) {
-				DoDamage(ve.obj); // не нужна
-				m_tAttack.LastAttack = cur_time;
-			}
-			else if (m_tAttack.b_attack_rat) {
-				
-				// TestIntersection конуса(копыта) и сферы(крысы)
-				bool Intersected = false;
-
-				float angle = PI_DIV_6;					// угол конуса
-				Fvector fromV = m_tAttack.TraceFrom;	// вершина конуса
-				Fvector dir;							// направление конуса
-				dir.set(0.f,-1.f,0.f);
-
-				float fInvSin = 1.0f/_sin(angle);
-				float fCosSqr = _cos(angle)*_cos(angle);
-
-				Fvector vC;		ve.obj->Center(vC);		// центр сферы
-				Fvector kCmV;	kCmV.sub(vC,fromV);
-				Fvector kD		= kCmV;
-				Fvector tempV	= dir;
-				tempV.mul(ve.obj->Radius()* fInvSin);
-				kD.add(tempV);
-
-				float fDSqrLen = kD.square_magnitude();
-				float fE = kD.dotproduct(dir);
-				if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr )
-				{
-					float fSinSqr = _sin(angle)*_sin(angle);
-
-					fDSqrLen = kCmV.square_magnitude();
-					fE = -kCmV.dotproduct(dir);
-					if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr )
-					{
-						float fRSqr = ve.obj->Radius()*ve.obj->Radius();
-						Intersected =  fDSqrLen <= fRSqr;
-					}else Intersected = true;
-				} else Intersected = false;
-					
-				if (Intersected) {
-					DoDamage(ve.obj);
-					m_tAttack.LastAttack = cur_time;
-				}
-
-			} else 	{ // нужна
-				this->setEnabled(false);
-				Collide::ray_query	l_rq;
-				
-				if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
-					if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
-						DoDamage(ve.obj);
-						m_tAttack.LastAttack = cur_time;
-					}
-				}
-
-				this->setEnabled(true);			
-			}
-
-			if (!ve.obj->g_Alive()) AddCorpse(ve);
-		}
-	}
-
-
-}
-
-// Load sounds
-void CAI_Biting::vfLoadSounds()
-{
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\flesh\\test_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\flesh\\test_0",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\flesh\\test_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\flesh\\test_3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-}
-
-void CAI_Biting::vfSetFireBones(CInifile *ini, const char *section)
-{
-	m_iLeftFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"LeftFireBone"));
-	m_iRightFireBone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"RightFireBone"));
 }
 
 void CAI_Biting::shedule_Update(u32 dt)

@@ -11,47 +11,6 @@
 #include "..\\..\\actor.h"
 #include "..\\..\\hudmanager.h"
 
-//test
-//#include "..\\rat\\ai_rat.h"
-
-
-using namespace AI_Biting;
-
-const float tempCrouchFactor = 0.5f;
-const float tempWalkFactor = 1.7f;
-const float tempWalkFreeFactor = 1.7f;
-const float tempRunFactor = 5.0f;
-const float tempRunFreeFactor = 5.0f;
-const float tempPanicFactor = 5.0f;
-
-const float min_angle = PI_DIV_4;
-const float min_turning_angle = PI_DIV_6;
-
-// исправление несоответствия позиции узлу 
-void CAI_Biting::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
-{
-	//if ((dwNodeID <= 0) || (dwNodeID >= getAI().Header().count) || (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1)))
-	//	m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
-}
-
-// установка параметров движения и действий 
-void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_Biting::EMovementType l_move_type, 
-										 AI_Biting::EMovementDir l_move_dir, AI_Biting::EStateType l_state_type, AI_Biting::EActionType l_action_type)
-{
-	m_tMovementType		= l_move_type;
-	m_tBodyState		= l_body_state;
-	m_tStateType		= l_state_type;
-	m_tMovementDir		= l_move_dir;
-	m_tActionType		= l_action_type;
-}
-
-// построение пути и установка параметров скорости 
-void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint, bool moveback, bool bSelectorPath)
-{
-
-
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Входные воздействия 
 // Зрение, слух, вероятность победы, выгодность противника
@@ -126,16 +85,6 @@ void CAI_Biting::vfUpdateParameters()
 	// вероятность победы
 	C = D = E = F = G	= false;
 
-//	Msg("Enemies = [%i]", VisibleEnemies.size());
-//	CObject *obj;
-//	for (u32 i=0; i<VisibleEnemies.size(); i++) {
-//		obj = VisibleEnemies[i].key;
-//		//CAI_Rat *r = dynamic_cast<CAI_Rat *>(obj);
-//		CActor *a = dynamic_cast<CActor *>(obj);
-//		//if (r) Msg("Enemy %i - rat",i+1);
-//		if (a) Msg("Enemy %i - actor",i+1);
-//	}
-
 	if (bfIsAnyAlive(VisibleEnemies)) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
@@ -157,18 +106,7 @@ void CAI_Biting::vfUpdateParameters()
 
 	//------------------------------------
 	// враг выгоден ?
-	H = false;
-	getAI().m_tpCurrentMember = this;
-	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
-		if (0 == (getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
-			continue;
-		if ((E || F || G) && (0 != (H = !!getAI().m_pfExpediency->dwfGetDiscreteValue(2))))
-			break;
-		else
-			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)
-				H = true;
-	}
-
+	// временно "всегда выгоден"
 	H = true;
 
 	// Fill flags, properties and vars for attack mode
@@ -185,7 +123,7 @@ void CAI_Biting::vfUpdateParameters()
 	flagEnemyRunAway			= false;			// todo
 
 	// Set current enemy
-	m_tEnemy = ve;
+	m_tEnemy					= ve;
 	
 	if (m_tEnemy.obj && (m_tEnemyPrevFrame.obj == m_tEnemy.obj) && (m_tEnemy.time != m_dwCurrentUpdate)) {
 		flagEnemyLostSight = true;
@@ -218,57 +156,4 @@ void CAI_Biting::vfUpdateParameters()
 	if (m_tEnemy.obj)
 		m_tEnemyPrevFrame = m_tEnemy;
 }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Test stuff
-void CAI_Biting::SetText()
-{
-}
-
-
-bool CAI_Biting::IsLeftSide(const Fvector &Position)
-{
-	Fvector iV; // i-состовляющая матрицы mRotate
-	Fvector temp;
-
-	iV		= XFORM().i;
-	temp	= XFORM().c;
-	temp.sub(Position);
-	float f = temp.dotproduct(iV);
-
-	if (f >= 0) return true;
-	else return false;
-}
-
-bool CAI_Biting::IsLeftSide(float current_yaw,float target_yaw)
-{
-	float cy = angle_normalize(current_yaw);	
-	float ty = angle_normalize(target_yaw);
-
-	if (((cy < ty) && (cy + PI > ty) && (cy>0) && (cy<PI)) && 
-		!((cy > ty) && (ty > cy-PI) && (cy > PI) && (cy < PI_MUL_2))) 
-			return true;
-	return false;
-}
-
-void CAI_Biting::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAngle)
-{
-	float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_torso_target.yaw;
-	
-	for (float fIncrement = r_torso_current.yaw - fMaxHeadTurnAngle; fIncrement <= r_torso_current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-		float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tpNode);
-		if (fSquare > fMaxSquare) {
-			fMaxSquare = fSquare;
-			fBestAngle = fIncrement;
-		}
-	}
-	
-	r_target.yaw = r_torso_target.yaw = fBestAngle; // angle_normalize(fBestAngle * (-1));
-
-
-	VERIFY (_valid(r_torso_target.yaw));
-}
-
 

@@ -11,7 +11,6 @@
 #include "..\\..\\a_star.h"
 #include "..\\ai_monsters_misc.h"
 
-using namespace AI_Biting;
 using namespace AI;
 
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	 4000		// 2 сек
@@ -78,11 +77,8 @@ void CAI_Biting::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluator
 				Msg("! Invalid Node Evaluator node");
 			}
 			AI_Path.Nodes.clear		();
-			m_tPathState			= ePathStateBuildNodePath;
-			m_bIfSearchFailed		= false;
+			m_tPathState			= PATH_STATE_BUILD_NODE_PATH;
 		} 
-		else
-			m_bIfSearchFailed		= true;
 	}
 
 	Device.Statistic.AI_Range.End();
@@ -99,7 +95,7 @@ void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEval
 		AI_Path.TravelPath.clear();
 		AI_Path.TravelStart		= 0;
 		m_fCurSpeed				= 0;
-		m_tPathState			= ePathStateSearchNode;
+		m_tPathState			= PATH_STATE_SEARCH_NODE;
 		Device.Statistic.AI_Path.End();
 		return;
 	}
@@ -115,12 +111,12 @@ void CAI_Biting::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEval
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 		
 		if (AI_Path.Nodes.empty())
-			m_tPathState = ePathStateSearchNode;
+			m_tPathState = PATH_STATE_SEARCH_NODE;
 		else
-			m_tPathState = ePathStateBuildTravelLine;
+			m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
 	}
 	else
-		m_tPathState = ePathStateBuildTravelLine;
+		m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
 
 	Device.Statistic.AI_Path.End();
 }
@@ -140,7 +136,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		Msg("! Node list is empty!");
 		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
-		m_tPathState = ePathStateSearchNode;
+		m_tPathState = PATH_STATE_SEARCH_NODE;
 		Device.Statistic.TEST1.End();
 		return;
 	}
@@ -189,9 +185,6 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 	T.floating		= false;
 	T.P.set			(0,0,0);
 	for (i=1; i<N; i++) {
-		m_tpaLine.clear();
-		m_tpaLine.push_back(m_tpaPoints[i-1]);
-		m_tpaLine.push_back(m_tpaPoints[i]);
 		getAI().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
 		u32 n = (u32)m_tpaTravelPath.size();
 		for (u32 j= 0; j<n; j++) {
@@ -214,7 +207,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 	}
 
 	AI_Path.TravelStart = 0;
-	m_tPathState		= ePathStateSearchNode;
+	m_tPathState		= PATH_STATE_SEARCH_NODE;
 
 	Device.Statistic.TEST1.End();
 }
@@ -224,9 +217,9 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 // Выбор точки, построение пути, построение TravelLine
 void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath, u32 TimeToRebuild)
 {
-	if (m_tPathState == ePathStateBuilt) {
+	if (m_tPathState == PATH_STATE_PATH_BUILT) {
 		if (m_dwPathBuiltLastTime + TimeToRebuild > m_dwCurrentUpdate) return;
-		m_tPathState = ePathStateSearchNode;
+		m_tPathState = PATH_STATE_SEARCH_NODE;
 	}
 
 
@@ -241,38 +234,38 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 	Fvector tempV;
 
 	switch (m_tPathState) {
-		case ePathStateSearchNode : 
+		case PATH_STATE_SEARCH_NODE : 
 			if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
 				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
 			else
 				if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-					m_tPathState = ePathStateBuildNodePath;	// 
+					m_tPathState = PATH_STATE_BUILD_NODE_PATH;	// 
 			break;
 									
-		case ePathStateBuildNodePath : 
+		case PATH_STATE_BUILD_NODE_PATH : 
 			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
 				vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
 			else
 				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
 					AI_Path.Nodes.clear();
 					AI_Path.Nodes.push_back(AI_NodeID);
-					m_tPathState = ePathStateBuildTravelLine;
+					m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
 				}
 				else
 					if (bSearchForNode && tpNodeEvaluator)
-						m_tPathState = ePathStateSearchNode;
+						m_tPathState = PATH_STATE_SEARCH_NODE;
 					else
 						if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-							m_tPathState = ePathStateBuildTravelLine;
+							m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
 			break;
 									
-		case ePathStateBuildTravelLine : 
+		case PATH_STATE_BUILD_TRAVEL_LINE : 
 			
 			tempV = ((tpDestinationPosition) ?  *tpDestinationPosition : getAI().tfGetNodeCenter(AI_Path.Nodes.back()));
 			//vfBuildTravelLine(tempV,Position());
 			vfBuildTravelLine(&tempV);
 
-			m_tPathState = ePathStateBuilt;
+			m_tPathState = PATH_STATE_PATH_BUILT;
 			m_dwPathBuiltLastTime = m_dwCurrentUpdate;
 			break;
 										

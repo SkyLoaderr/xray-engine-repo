@@ -1,30 +1,19 @@
-////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_chimera.cpp
-//	Created 	: 22.05.2003
-//  Modified 	: 22.05.2003
-//	Author		: Serge Zhem
-//	Description : AI Behaviour for all monsters of class "Chimera"
-////////////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "ai_chimera.h"
 
-using namespace AI_Chimera;
-
 CAI_Chimera::CAI_Chimera()
 {
-	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
-
-	stateRest			= xr_new<CChimeraRest>		(this);
-	stateAttack			= xr_new<CChimeraAttack>		(this);
-	stateEat			= xr_new<CChimeraEat>		(this);
-	stateHide			= xr_new<CChimeraHide>		(this);
-	stateDetour			= xr_new<CChimeraDetour>		(this);
-	statePanic			= xr_new<CChimeraPanic>		(this);
-	stateExploreDNE		= xr_new<CChimeraExploreDNE>	(this);
-	stateExploreDE		= xr_new<CChimeraExploreDE>	(this);
-	stateExploreNDE		= xr_new<CChimeraExploreNDE>	(this);
+	stateRest			= xr_new<CBitingRest>		(this);
+	stateAttack			= xr_new<CChimeraAttack>	(this);
+	stateEat			= xr_new<CBitingEat>		(this);
+	stateHide			= xr_new<CBitingHide>		(this);
+	stateDetour			= xr_new<CBitingDetour>		(this);
+	statePanic			= xr_new<CBitingPanic>		(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
+	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
+
 	Init();
 }
 
@@ -41,227 +30,79 @@ CAI_Chimera::~CAI_Chimera()
 	xr_delete(stateExploreNDE);
 }
 
+
 void CAI_Chimera::Init()
 {
-	// initializing class members
-	m_tpCurrentGlobalAnimation		= 0;
-	m_tCurGP						= _GRAPH_ID(-1);
-	m_tNextGP						= _GRAPH_ID(-1);
-	m_dwTimeToChange				= 0;
-	
-	m_dwLastRangeSearch				= 0;
-	m_fGoingSpeed					= 0.f;
-
-	// Инициализация параметров анимации
-	m_tAnim							= DEFAULT_ANIM;
-
-	m_tPathType						= ePathTypeStraight;
-	m_tPathState					= ePathStateSearchNode;
-
-	m_fAttackSuccessProbability0	= .8f;
-	m_fAttackSuccessProbability1	= .6f;
-	m_fAttackSuccessProbability2	= .4f;
-	m_fAttackSuccessProbability3	= .2f;
-
-	m_dwPointCheckLastTime			= 0;
-	m_dwPointCheckInterval			= 1500;
-	
-	m_dwActionIndex					= 0;
-
-	InitMemory						(10000,10000);
-	Motion.Init						();
-
-	m_dwPathBuiltLastTime			= 0;
-	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
+	inherited::Init();
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
-
-	AI_Path.TravelPath.clear		();
-	AI_Path.Nodes.clear				();
-	AI_Path.TravelStart				= 0;
-	AI_Path.DestNode				= u32(-1);
-	
-	bShowDeath						= false;
 }
 
-void CAI_Chimera::Die()
+
+void CAI_Chimera::Think()
 {
-	inherited::Die( );
+	inherited::Think();
 
-	DeinitMemory();
+	// A - я слышу опасный звук
+	// B - я слышу неопасный звук
+	// С - я вижу очень опасного врага
+	// D - я вижу опасного врага
+	// E - я вижу равного врага
+	// F - я вижу слабого врага
+	// H - враг выгодный
+	// I - враг видит меня
+	// J - A | B
+	// K - C | D | E | F 
 
-//	Fvector	dir;
-//	AI_Path.Direction(dir);
-//
-//	bShowDeath = true;
-//	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);	
+	VisionElem ve;
 
-	Fvector	dir;
-	bShowDeath = true;
-	SelectAnimation(dir,dir,0.f);	
-}
+	if (Motion.m_tSeq.Active())	{
+		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
+	}else {
+		//- FSM 1-level 
 
-void CAI_Chimera::Load(LPCSTR section)
-{
-	// load parameters from ".ltx" file
-	inherited::Load		(section);
-	
-	// группы маск точек графа с параметрами
-	m_tpaTerrain.clear				();
-	LPCSTR							S = pSettings->r_string(section,"terrain");
-	u32								N = _GetItemCount(S);
-	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-	STerrainPlace					tTerrainPlace;
-	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
-	m_tpaTerrain.reserve			(32);
-	string16						I;
-	for (u32 i=0; i<N;) {
-		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
-			tTerrainPlace.tMask[j]	= _LOCATION_ID(atoi(_GetItem(S,i,I)));
-		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
-		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
-		m_tpaTerrain.push_back		(tTerrainPlace);
-	}
-	
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
+		if (C && H && I)		SetState(statePanic);
+		else if (C && H && !I)		SetState(statePanic);
+		else if (C && !H && I)		SetState(statePanic);
+		else if (C && !H && !I) 	SetState(statePanic);
+		else if (D && H && I)		SetState(stateAttack);
+		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+		else if (D && !H && I)		SetState(statePanic);
+		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+		else if (E && H && I)		SetState(stateAttack); 
+		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+		else if (E && !H && I) 		SetState(stateDetour); 
+		else if (E && !H && !I)		SetState(stateDetour); 
+		else if (F && H && I) 		SetState(stateAttack); 		
+		else if (F && H && !I)  	SetState(stateAttack); 
+		else if (F && !H && I)  	SetState(stateDetour); 
+		else if (F && !H && !I) 	SetState(stateHide);
+		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
+			SetState(stateEat);
+		else						SetState(stateRest); 
 
-	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
-	m_tSelectorRetreat.Load			(section,"selector_retreat");
-	m_tSelectorCover.Load			(section,"selector_cover");
+		//---
 
-	// loading frustum parameters
-	eye_fov							= pSettings->r_float(section,"EyeFov");
-	eye_range						= pSettings->r_float(section,"EyeRange");
-	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
+		CurrentState->Execute(m_dwCurrentUpdate);
 
-	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
-	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
-	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
-
-	m_dwHealth						= pSettings->r_u32   (section,"Health");
-	m_fHitPower						= pSettings->r_float (section,"HitPower");
-	// temp
-	//m_fHitPower						= 1.f;
-	fHealth							= (float)m_dwHealth;
-
-	// prefetching
-	cNameVisual_set					(pSettings->r_string(section,"visual"));
-}
-
-BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
-{
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-
-	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterChimera			*l_tpSE_Chimera	= dynamic_cast<CSE_ALifeMonsterChimera*>(e);
-	
-	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-l_tpSE_Chimera->o_Angle.y);
-
-	cNameVisual_set					(l_tpSE_Chimera->get_visual());
-	
-	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-
-	fHealth							= l_tpSE_Chimera->fHealth;
-	
-	// loading animations
-	CChimeraAnimations::Load			(PKinematics(Visual()));
-
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.CreateCharacter();
-	Movement.SetPhysicsRefObject(this);
-#endif
-	Movement.SetPosition	(Position());
-	Movement.SetVelocity	(0,0,0);
-
-	return(TRUE);
-}
-
-void CAI_Chimera::net_Destroy()
-{
-	inherited::net_Destroy();
-	Init();
-	Movement.DestroyCharacter();
-	if(m_pPhysicsShell)
-	{
-		m_pPhysicsShell->Deactivate();
-		m_pPhysicsShell->ZeroCallbacks();
-	}
-	xr_delete(m_pPhysicsShell);
-}
-
-void CAI_Chimera::net_Export(NET_Packet& P) 
-{
-	R_ASSERT				(Local());
-
-	// export last known packet
-	R_ASSERT				(!NET.empty());
-	net_update& N			= NET.back();
-	P.w_float_q16			(fHealth,-1000,1000);
-	P.w_u32					(N.dwTimeStamp);
-	P.w_u8					(0);
-	P.w_vec3				(N.p_pos);
-	P.w_angle8				(N.o_model);
-	P.w_angle8				(N.o_torso.yaw);
-	P.w_angle8				(N.o_torso.pitch);
-
-	P.w						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.w						(&m_tCurGP,					sizeof(m_tCurGP));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	float					f1;
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tCurGP].tLocalPoint);
-	P.w						(&f1,						sizeof(f1));
-	f1						= Position().distance_to		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-	P.w						(&f1,						sizeof(f1));
-}
-
-void CAI_Chimera::net_Import(NET_Packet& P)
-{
-	R_ASSERT				(Remote());
-	net_update				N;
-
-	u8 flags;
-	P.r_float_q16			(fHealth,-1000,1000);
-	P.r_u32					(N.dwTimeStamp);
-	P.r_u8					(flags);
-	P.r_vec3				(N.p_pos);
-	P.r_angle8				(N.o_model);
-	P.r_angle8				(N.o_torso.yaw);
-	P.r_angle8				(N.o_torso.pitch);
-
-	P.r						(&m_tNextGP,				sizeof(m_tNextGP));
-	P.r						(&m_tCurGP,					sizeof(m_tCurGP));
-
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-		NET_WasInterpolating	= TRUE;
+		// проверяем на завершённость
+		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
 
-	setVisible				(TRUE);
-	setEnabled				(TRUE);
+	Motion.SetFrameParams(this);
+
+	ControlAnimation();
 }
-
-void CAI_Chimera::Exec_Movement		(float dt)
-{
-	AI_Path.Calculate				(this,Position(),Position(),m_fCurSpeed,dt);
-}
-
-
-//////////////////////////////////////////////////////////////////////
-// Other functions
-//////////////////////////////////////////////////////////////////////
 
 void CAI_Chimera::UpdateCL()
 {
 	inherited::UpdateCL();
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
-	{
-
-		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
-	}
 
 	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();
@@ -269,7 +110,6 @@ void CAI_Chimera::UpdateCL()
 	VisionElem ve;
 	if (!GetEnemy(ve)) return;
 	CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
 
 	if (m_tAttack.time_started != 0) {
 
@@ -294,77 +134,119 @@ void CAI_Chimera::UpdateCL()
 		}
 	}	
 }
-void CAI_Chimera::shedule_Update(u32 dt)
+
+
+void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {
-	inherited::shedule_Update(dt);
-
-	////physics/////////////////////////////////////////////////////////////////////////////////////
-	if(m_pPhysicsShell)
-	{	
-		if(m_pPhysicsShell->bActive)
-		{
-
-			//	if(m_saved_impulse!=0.f)
-			//	{
-			//	m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
-			//	m_saved_impulse=0.f;
-			//	}
-
-
-			//	if(skel_ddelay==0)
-			//	{
-			//		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-			//m_pPhysicsShell->SetAirResistance()
-
-			//	}
-			//if(skel_ddelay==-10)
-			//{
-			//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-			//m_pPhysicsShell->SetAirResistance()
-
-			//}
-
-			//	skel_ddelay--;
-
-
-
-		}
-
+	if (this->SUB_CLS_ID == CLSID_AI_CHIMERA) {
+		switch(motion) {
+			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
+			case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 index3 = -1;	break;
+			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
+			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
+			case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
+			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
+			case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
+			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
+			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
+			case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
+			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
+			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
+			case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
+			case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
+			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
+			default:					NODEFAULT;
+		} 
+	} else if (this->SUB_CLS_ID == CLSID_AI_DOG_RED) {
+		switch(motion) {
+			case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
+			case eMotionStandTurnLeft:	index1 = 0; index2 = 0;	 index3 = -1;	break;
+			case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
+			case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnLeft:	index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionWalkTurnRight:	index1 = 0; index2 = 2;  index3 = -1;	break;
+			case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionRunTurnRight:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
+			case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
+			case eMotionFastTurnLeft:	index1 = 0; index2 = 6;  index3 = -1;	break;
+			case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
+			case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
+			case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
+			case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 0;	break;
+			case eMotionLieDownEat:		index1 = 0; index2 = 16; index3 = -1;	break;
+			case eMotionAttackJump:		index1 = 0; index2 = 0;  index3 = -1;	break;
+			default:					NODEFAULT;
+		} 
 	}
-	else if (!g_Alive())
-	{
-
-		CreateSkeleton();
-#ifndef NO_PHYSICS_IN_AI_MOVE
-
-		Movement.DestroyCharacter();
-		PHSetPushOut();
-#endif
-	}
-
 }
 
 
-void CAI_Chimera::CreateSkeleton()
+void CAI_Chimera::FillAttackStructure(u32 i, TTime t)
 {
-	if(m_pPhysicsShell) return;
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition	(Position());
-	//Position().y+=.1f;
-	//#else
-	//Position().y+=0.1f;
-#endif
+	m_tAttack.i_anim		= i;
+	m_tAttack.time_started	= t;
+	m_tAttack.b_fire_anyway = false;
+	m_tAttack.b_attack_rat	= false;
 
-	if (!Visual())
-		return;
-	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
-	m_pPhysicsShell->mXFORM.set(XFORM());
-	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-	//	0.3f*skel_airr_ang_factor);
-	m_pPhysicsShell->SmoothElementsInertia(0.3f);
+	Fvector tempV;
 
-	m_pPhysicsShell->set_PhysicsRefObject(this);
-	m_pPhysicsShell->Activate(true);
-	PKinematics(Visual())->Calculate();
+	switch (m_tAttack.i_anim) {
+		case 0:
+			m_tAttack.time_from = 700;
+			m_tAttack.time_to	= 800;
+			m_tAttack.dist		= 3.f;
+			
+			Center(m_tAttack.TraceFrom);
+			break;
+		case 1:
+			m_tAttack.time_from = 500;
+			m_tAttack.time_to	= 600;
+			m_tAttack.dist		= 2.5f;
+			Center(m_tAttack.TraceFrom);
+			tempV.set(0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
+			break;
+		case 2:
+			m_tAttack.time_from = 600;
+			m_tAttack.time_to	= 700;
+			m_tAttack.dist		= 3.5f;
+			Center(m_tAttack.TraceFrom);
+			break;
+		case 3:
+			m_tAttack.time_from = 800;
+			m_tAttack.time_to	= 900;
+			m_tAttack.dist		= 1.0f;
+			
+			Center(m_tAttack.TraceFrom);
+			tempV.set(-0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
+			break;
+		case 4:
+			m_tAttack.time_started = 0;
+			break;
+		case 5:
+			m_tAttack.time_from = 1500;
+			m_tAttack.time_to	= 1600;
+			m_tAttack.dist		= 3.0f;
+			Center(m_tAttack.TraceFrom);
+			tempV.set(0.3f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
+			break;
+		case 6:
+			m_tAttack.time_started = 0;
+			break;
+	}
 }

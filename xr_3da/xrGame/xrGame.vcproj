@@ -527,9 +527,6 @@
 							RelativePath="AI\Biting\ai_biting_feel.cpp">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_fire.cpp">
-						</File>
-						<File
 							RelativePath="AI\Biting\ai_biting_fsm.cpp">
 						</File>
 						<File
@@ -537,9 +534,6 @@
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_path.cpp">
-						</File>
-						<File
-							RelativePath="AI\Biting\ai_biting_space.h">
 						</File>
 						<File
 							RelativePath=".\Ai\Biting\ai_biting_state.cpp">
@@ -659,31 +653,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_zombie"
-						Filter="">
-						<File
-							RelativePath="AI\Zombie\ai_zombie.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie.h">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_animations.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_feel.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_fire.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_fsm.cpp">
-						</File>
-						<File
-							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
-						</File>
-					</Filter>
-					<Filter
 						Name="ai_crow"
 						Filter="">
 						<File
@@ -709,36 +678,11 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_anim.h">
 							<FileConfiguration
-								Name="Debug|Win32">
+								Name="Debug|Win32"
+								ExcludedFromBuild="TRUE">
 								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_feel.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_fire.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_fsm.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_misc.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_path.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_space.h">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCustomBuildTool"/>
+									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
 						</File>
 						<File
@@ -751,6 +695,41 @@
 								<Tool
 									Name="VCCustomBuildTool"/>
 							</FileConfiguration>
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_flesh"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Flesh\ai_flesh.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Flesh\ai_flesh.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ai_zombie"
+						Filter="">
+						<File
+							RelativePath="AI\Zombie\ai_zombie.cpp">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie.h">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie_animations.cpp">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie_feel.cpp">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie_fire.cpp">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie_fsm.cpp">
+						</File>
+						<File
+							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
 						</File>
 					</Filter>
 				</Filter>
