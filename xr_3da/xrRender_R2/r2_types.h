@@ -23,7 +23,6 @@
 #define r2_ncm				"$user$ncm"								// --- normal encode
 #define r2_float2RG			"$user$float2rg"						// --- compression/encoding table
 #define r2_float2B			"$user$float2b"							// --- compression/encoding table
-#define r2_attenuate		"internal\\internal_light_r2att"		// ---
 #define r2_ds2_fade			"$user$ds2_fade"						// ---
 
 const u32					DSM_size			= 1024;
