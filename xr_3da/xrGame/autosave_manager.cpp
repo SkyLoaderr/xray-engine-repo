@@ -33,6 +33,7 @@ CAutosaveManager::CAutosaveManager			()
 	m_not_ready_count			= 0;
 	m_save_state				= eSaveStateWaitForUpdate;
 
+	shedule_unregister			();
 	shedule.t_min				= 5000;
 	shedule.t_max				= 5000;
 	shedule_register			();
