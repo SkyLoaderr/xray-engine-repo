@@ -116,6 +116,11 @@
 		<team>Trader</team>
 		<specific_character>escape_trader</specific_character>
 	</character>
+
+	<character id="rostok_barman">
+		<team>Trader</team>
+		<specific_character>rostok_barman</specific_character>
+	</character>
 		
 	<character id="actor">
 		<team>Actor</team>
