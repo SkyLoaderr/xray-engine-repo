@@ -48,6 +48,10 @@ void CStateWatchOver::initialize		()
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
 	set_inertia_time				(::Random.randI(5,10)*1000);
 	m_start_yaw						= m_object->Orientation().yaw;
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
 }
 
 void CStateWatchOver::execute			()
@@ -55,17 +59,12 @@ void CStateWatchOver::execute			()
 	Fvector							direction;
 	direction.setHP					(m_start_yaw,0);
 	m_object->CSightManager::update	(eLookTypeDirection,&direction);
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		0,
-		0,
-		CMovementManager::ePathTypeNoPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeStand,
-		eMentalStateDanger
-	);
+	
+	m_object->set_path_type			(CMovementManager::ePathTypeNoPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeStand);
+	m_object->set_mental_state		(eMentalStateDanger);
 }
 
 void CStateWatchOver::finalize		()

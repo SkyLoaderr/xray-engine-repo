@@ -33,8 +33,47 @@ IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 	return				(m_tBodyState);
 }
 
-IC	void CStalkerMovementManager::set_mental_state	(const MonsterSpace::EMentalState mental_state)
+IC	void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)
 {
-	m_tMentalState		= mental_state;
+	m_desired_position	= desired_position;
 }
 
+IC	void CStalkerMovementManager::set_desired_direction(const Fvector *desired_direction)
+{
+	m_desired_direction	= desired_direction;
+}
+
+IC	void CStalkerMovementManager::set_body_state(EBodyState body_state)
+{
+	m_body_state		= body_state;
+}
+
+IC	void CStalkerMovementManager::set_movement_type(EMovementType movement_type)
+{
+	m_movement_type		= movement_type;
+}
+
+IC	void CStalkerMovementManager::set_mental_state(EMentalState mental_state)
+{
+	m_mental_state		= mental_state;
+}
+
+IC	void CStalkerMovementManager::set_path_type(EPathType path_type)
+{
+	m_path_type			= path_type;
+}
+
+IC	void CStalkerMovementManager::set_detail_path_type(EDetailPathType detail_path_type)
+{
+	m_detail_path_type	= detail_path_type;
+}
+
+IC	void CStalkerMovementManager::set_node_evaluator(CAbstractVertexEvaluator *node_evaluator)
+{
+	m_node_evaluator	= node_evaluator;
+}
+
+IC	void CStalkerMovementManager::set_path_evaluator(CAbstractVertexEvaluator *path_evaluator)
+{
+	m_path_evaluator	= path_evaluator;
+}

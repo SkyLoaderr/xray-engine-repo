@@ -48,21 +48,19 @@ void CStateAnomalyCheck::initialize		()
 	inherited::initialize			();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
 	set_inertia_time				(::Random.randI(5,10)*1000);
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
 }
 
 void CStateAnomalyCheck::execute			()
 {
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		0,
-		0,
-		CMovementManager::ePathTypeNoPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeStand,
-		eMentalStateDanger
-	);
+	m_object->set_path_type			(CMovementManager::ePathTypeNoPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeStand);
+	m_object->set_mental_state		(eMentalStateDanger);
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
 #else

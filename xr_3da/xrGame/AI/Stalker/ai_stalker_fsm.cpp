@@ -1162,5 +1162,6 @@ void CAI_Stalker::Think()
 #else
 	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
 #endif
+	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 //	CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
 }

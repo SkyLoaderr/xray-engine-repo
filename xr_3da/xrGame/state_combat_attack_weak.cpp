@@ -46,6 +46,10 @@ void CStateAttackWeak::initialize		()
 {
 	inherited::initialize			();
 	m_object->set_refresh_rate		(1500);
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
 }
 
 void CStateAttackWeak::execute			()
@@ -84,32 +88,21 @@ void CStateAttackWeak::execute			()
 	}
 
 	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
-		m_object->CStalkerMovementManager::update	(
-			0,
-			0,
-			0,
-			0,
-			CMovementManager::ePathTypeLevelPath,
-			CMovementManager::eDetailPathTypeSmooth,
-			eBodyStateStand,
-			eMovementTypeStand,
-			eMentalStateDanger
-		);
+		m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+		m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+		m_object->set_body_state		(eBodyStateStand);
+		m_object->set_movement_type		(eMovementTypeStand);
+		m_object->set_mental_state		(eMentalStateDanger);
 		return;
 	}
 
-	m_object->set_level_dest_vertex				(mem_object.m_object_params.m_level_vertex_id);
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		&mem_object.m_object_params.m_position,
-		0,
-		CMovementManager::ePathTypeLevelPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eMentalStateDanger
-	);
+	m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+	m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
 
 	if (m_object->CMovementManager::path_completed())
 		m_object->CMemoryManager::enable		(m_object->enemy(),false);

@@ -51,17 +51,15 @@ void CStateHiddenEnemyCheck::initialize		()
 
 void CStateHiddenEnemyCheck::execute			()
 {
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		0,
-		0,
-		CMovementManager::ePathTypeNoPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeStand,
-		eMentalStateDanger
-	);
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeNoPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeStand);
+	m_object->set_mental_state		(eMentalStateDanger);
 }
 
 void CStateHiddenEnemyCheck::finalize		()

@@ -51,17 +51,17 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->play			(eStalkerSoundHumming,60000,10000);
 	CStalkerMovementManager	*cast = dynamic_cast<CStalkerMovementManager*>(m_object);
 	VERIFY					(cast);
-	cast->update			(
-		0,
-		0,
-		0,
-		0,
-		CMovementManager::ePathTypeGamePath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eMentalStateFree
-		);
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+
 	m_object->CSightManager::update				(eLookTypeSearch);
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);

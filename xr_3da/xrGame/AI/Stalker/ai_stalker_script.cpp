@@ -73,25 +73,18 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
 	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
 	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
-//	if (l_tMovementAction.m_tMovementType == eMovementTypeStand) {
-//		set_level_dest_vertex(level_vertex_id());
-//		set_dest_position(Position());
-//	}
 
-	vfSetParameters	(
-		0,
-		0,
-		false,
-		l_tObjectAction.m_tGoalType,
-		CMovementManager::path_type(),
-		l_tMovementAction.m_tPathType,
-		l_tMovementAction.m_tBodyState,
-		l_tMovementAction.m_tMovementType,
-		l_tAnimationAction.m_tMentalState,
-		l_tWatchAction.m_tWatchType,
-		l_tWatchAction.m_tWatchVector,
-		0
-	);
+#ifdef OLD_OBJECT_HANDLER
+	CObjectHandler::set_dest_state	(l_tObjectAction.m_tGoalType);
+#else
+	CObjectHandlerGOAP::set_goal	(l_tObjectAction.m_tGoalType);
+#endif
+	set_path_type					(ePathTypeLevelPath);
+	set_detail_path_type			(l_tMovementAction.m_tPathType);
+	set_body_state					(l_tMovementAction.m_tBodyState);
+	set_movement_type				(l_tMovementAction.m_tMovementType);
+	set_mental_state				(l_tAnimationAction.m_tMentalState);
+	CSightManager::update			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
 
 	return			(true);
 }

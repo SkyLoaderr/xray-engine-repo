@@ -46,24 +46,24 @@ void CStateGatherItems::initialize		()
 {
 	inherited::initialize			();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskHumming));
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_direction	(0);
 }
 
 void CStateGatherItems::execute			()
 {
 	if (!m_object->item())
 		return;
-	m_object->set_level_dest_vertex				(m_object->item()->level_vertex_id());
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		&m_object->item()->Position(),
-		0,
-		CMovementManager::ePathTypeLevelPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eMentalStateDanger
-	);
+	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
+
+	m_object->set_desired_position	(&m_object->item()->Position());
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
 	m_object->CSightManager::update				(eLookTypePathDirection);
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);

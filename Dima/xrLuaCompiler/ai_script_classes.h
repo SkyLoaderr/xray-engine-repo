@@ -512,12 +512,36 @@ public:
 
 	IC		CMotivationActionManager<CLuaGameObject>	*motivation_action_manager()
 	{
+		CMotivationActionManager<CLuaGameObject>	*manager = dynamic_cast<CMotivationActionManager<CLuaGameObject>*>(m_tpGameObject);
+		if (!manager)
+			LuaOut				(Lua::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
+		return					(manager);
+	}
+
+	IC		void		movement					(
+//			CStalkerMovementManager::EPathType			tGlobalPathType,
+//			CStalkerMovementManager::EDetailPathType	tPathType,
+			MonsterSpace::EBodyState					tBodyState,
+			MonsterSpace::EMovementType					tMovementType,
+			MonsterSpace::EMentalState					tMentalState,
+			Fvector										*tDesiredPosition,
+			Fvector										*tDesiredDirection
+		)
+	{
 		CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!stalker) {
-			LuaOut				(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member motivation_action_manager!");
-			return				(0);
-		}
-		else
-			return				(dynamic_cast<CMotivationActionManager<CLuaGameObject>*>(stalker));
+		if (!stalker)
+			LuaOut				(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+//		else
+//			stalker->CStalkerMovementManager::update(
+//				0,
+//				0,
+//				0,//&tDesiredPosition,
+//				&tDesiredDirection,
+//				tGlobalPathType,
+//				tPathType,
+//				tBodyState,
+//				tMovementType,
+//				tMentalState
+//			);
 	}
 };

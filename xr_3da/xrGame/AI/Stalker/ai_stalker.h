@@ -140,32 +140,32 @@ public:
 
 //protected:
 	// movement and look setup functions
-			void				vfSetParameters					(
-				CAbstractVertexEvaluator *tpPathEvaluator, 
-				Fvector *tpDesiredPosition, 
-				CAbstractVertexEvaluator *tpNodeEvaluator, 
-				EObjectAction tWeaponState, 
-				EPathType		tGlobalPathType,
-				EDetailPathType	tPathType, 
-				EBodyState tBodyState, 
-				EMovementType tMovementType, 
-				EMentalState tMentalState, 
-				ELookType tLookType
-			);
-			void				vfSetParameters					(
-				CAbstractVertexEvaluator *tpPathEvaluator, 
-				Fvector *tpDesiredPosition, 
-				CAbstractVertexEvaluator *tpNodeEvaluator, 
-				EObjectAction tWeaponState, 
-				EPathType		tGlobalPathType,
-				EDetailPathType	tPathType, 
-				EBodyState tBodyState, 
-				EMovementType tMovementType, 
-				EMentalState tMentalState, 
-				ELookType tLookType, 
-				const Fvector &tPointToLook, 
-				u32 dwLookOverDelay = 2000
-			);
+//			void				vfSetParameters					(
+//				CAbstractVertexEvaluator *tpPathEvaluator, 
+//				Fvector *tpDesiredPosition, 
+//				CAbstractVertexEvaluator *tpNodeEvaluator, 
+//				EObjectAction tWeaponState, 
+//				EPathType		tGlobalPathType,
+//				EDetailPathType	tPathType, 
+//				EBodyState tBodyState, 
+//				EMovementType tMovementType, 
+//				EMentalState tMentalState, 
+//				ELookType tLookType
+//			);
+//			void				vfSetParameters					(
+//				CAbstractVertexEvaluator *tpPathEvaluator, 
+//				Fvector *tpDesiredPosition, 
+//				CAbstractVertexEvaluator *tpNodeEvaluator, 
+//				EObjectAction tWeaponState, 
+//				EPathType		tGlobalPathType,
+//				EDetailPathType	tPathType, 
+//				EBodyState tBodyState, 
+//				EMovementType tMovementType, 
+//				EMentalState tMentalState, 
+//				ELookType tLookType, 
+//				const Fvector &tPointToLook, 
+//				u32 dwLookOverDelay = 2000
+//			);
 			
 	// miscellanious functions
 			void				DropItemSendMessage				(CObject *O);

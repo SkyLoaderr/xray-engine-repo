@@ -15,64 +15,64 @@
 #include "../../ef_storage.h"
 #include "../../inventory.h"
 
-void CAI_Stalker::vfSetParameters(
-	CAbstractVertexEvaluator	*tpPathEvaluator, 
-	Fvector									*tpDesiredPosition, 
-	CAbstractVertexEvaluator	*tpNodeEvaluator, 
-	EObjectAction							tWeaponState, 
-	EPathType								tGlobalPathType, 
-	EDetailPathType							tPathType, 
-	EBodyState								tBodyState, 
-	EMovementType							tMovementType, 
-	EMentalState							tMentalState, 
-	ELookType								tLookType
-)
-{
-	R_ASSERT		(eLookTypePoint != tLookType);
-	vfSetParameters	(tpPathEvaluator,tpDesiredPosition,tpNodeEvaluator,tWeaponState,tGlobalPathType,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
-}
-
-void CAI_Stalker::vfSetParameters(
-	CAbstractVertexEvaluator	*tpPathEvaluator, 
-	Fvector									*tpDesiredPosition, 
-	CAbstractVertexEvaluator	*tpNodeEvaluator, 
-	EObjectAction							tWeaponState, 
-	EPathType								tGlobalPathType,
-	EDetailPathType							tPathType, 
-	EBodyState								tBodyState, 
-	EMovementType							tMovementType, 
-	EMentalState							tMentalState, 
-	ELookType								tLookType, 
-	const Fvector							&tPointToLook, 
-	u32										dwLookOverDelay
-)
-{
-	CStalkerMovementManager::update(
-		tpNodeEvaluator,
-		tpPathEvaluator,
-		tpDesiredPosition,
-		0,
-		tGlobalPathType,
-		tPathType,
-		tBodyState,
-		tMovementType,
-		tMentalState
-	);
-
-	CSightManager::update			(
-		tLookType,
-		&tPointToLook,
-		dwLookOverDelay
-	);
-	
-	if (!GetScriptControl())
-#ifdef OLD_OBJECT_HANDLER
-		CObjectHandler::set_dest_state	(tWeaponState);
-#else
-		CObjectHandlerGOAP::set_goal	(tWeaponState);
-#endif
-}
-
+//void CAI_Stalker::vfSetParameters(
+//	CAbstractVertexEvaluator	*tpPathEvaluator, 
+//	Fvector									*tpDesiredPosition, 
+//	CAbstractVertexEvaluator	*tpNodeEvaluator, 
+//	EObjectAction							tWeaponState, 
+//	EPathType								tGlobalPathType, 
+//	EDetailPathType							tPathType, 
+//	EBodyState								tBodyState, 
+//	EMovementType							tMovementType, 
+//	EMentalState							tMentalState, 
+//	ELookType								tLookType
+//)
+//{
+//	R_ASSERT		(eLookTypePoint != tLookType);
+//	vfSetParameters	(tpPathEvaluator,tpDesiredPosition,tpNodeEvaluator,tWeaponState,tGlobalPathType,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
+//}
+//
+//void CAI_Stalker::vfSetParameters(
+//	CAbstractVertexEvaluator	*tpPathEvaluator, 
+//	Fvector									*tpDesiredPosition, 
+//	CAbstractVertexEvaluator	*tpNodeEvaluator, 
+//	EObjectAction							tWeaponState, 
+//	EPathType								tGlobalPathType,
+//	EDetailPathType							tPathType, 
+//	EBodyState								tBodyState, 
+//	EMovementType							tMovementType, 
+//	EMentalState							tMentalState, 
+//	ELookType								tLookType, 
+//	const Fvector							&tPointToLook, 
+//	u32										dwLookOverDelay
+//)
+//{
+//	CStalkerMovementManager::update(
+//		tpNodeEvaluator,
+//		tpPathEvaluator,
+//		tpDesiredPosition,
+//		0,
+//		tGlobalPathType,
+//		tPathType,
+//		tBodyState,
+//		tMovementType,
+//		tMentalState
+//	);
+//
+//	CSightManager::update			(
+//		tLookType,
+//		&tPointToLook,
+//		dwLookOverDelay
+//	);
+//	
+//	if (!GetScriptControl())
+//#ifdef OLD_OBJECT_HANDLER
+//		CObjectHandler::set_dest_state	(tWeaponState);
+//#else
+//		CObjectHandlerGOAP::set_goal	(tWeaponState);
+//#endif
+//}
+//
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
 	if (!CItemManager::useful(object))

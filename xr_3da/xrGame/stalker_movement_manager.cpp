@@ -97,6 +97,14 @@ void CStalkerMovementManager::reinit				()
 	VERIFY							(custom_monster);
 	custom_monster->m_body.speed	= PI_MUL_2;
 	m_head.speed					= 3*PI_DIV_2;
+
+	m_desired_position				= 0;
+	m_desired_direction				= 0;
+	m_body_state					= eBodyStateStand;
+	m_movement_type					= eMovementTypeStand;
+	m_mental_state					= eMentalStateDanger;
+	m_path_type						= ePathTypeNoPath;
+	m_detail_path_type				= eDetailPathTypeSmooth;
 }
 
 void CStalkerMovementManager::reload				(LPCSTR section)
@@ -104,34 +112,24 @@ void CStalkerMovementManager::reload				(LPCSTR section)
 	inherited::reload				(section);
 }
 
-void CStalkerMovementManager::update(
-	CAbstractVertexEvaluator	*tpNodeEvaluator,
-	CAbstractVertexEvaluator	*tpPathEvaluator,
-	const Fvector				*tpDesiredPosition,
-	const Fvector				*tpDesiredDirection,
-	EPathType					tGlobalPathType,
-	EDetailPathType				tPathType,
-	EBodyState					tBodyState,
-	EMovementType				tMovementType,
-	EMentalState				tMentalState
-)
+void CStalkerMovementManager::update(u32 time_delta)
 {
-	CMovementManager::set_path_type						(tGlobalPathType);
-	CDetailPathManager::set_path_type					(tPathType);
-	CLevelLocationSelector::set_evaluator				(tpNodeEvaluator);
-	CMovementManager::CLevelPathManager::set_evaluator	(tpPathEvaluator ? tpPathEvaluator : base_level_selector());
-	m_tBodyState										= tBodyState;
-	m_tMovementType										= tMovementType;
-	m_tMentalState										= tMentalState;
+	CMovementManager::set_path_type						(m_path_type);
+	CDetailPathManager::set_path_type					(m_detail_path_type);
+	CLevelLocationSelector::set_evaluator				(m_node_evaluator);
+	CMovementManager::CLevelPathManager::set_evaluator	(m_path_evaluator ? m_path_evaluator : base_level_selector());
+	m_tBodyState										= m_body_state;
+	m_tMovementType										= m_movement_type;
+	m_tMentalState										= m_mental_state;
 	
-	if (tpDesiredPosition)
-		CDetailPathManager::set_dest_position			(*tpDesiredPosition);
+	if (m_desired_position)
+		CDetailPathManager::set_dest_position			(*m_desired_position);
 	else
-		if ((tGlobalPathType != ePathTypePatrolPath) && (tGlobalPathType != ePathTypeGamePath))
+		if ((m_path_type != ePathTypePatrolPath) && (m_path_type != ePathTypeGamePath))
 			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
 
-	if (tpDesiredDirection) {
-		CDetailPathManager::set_dest_direction			(*tpDesiredDirection);
+	if (m_desired_direction) {
+		CDetailPathManager::set_dest_direction			(*m_desired_direction);
 		CDetailPathManager::set_use_dest_orientation	(true);
 	}
 	else

@@ -326,7 +326,14 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("object",					int(CScriptMonster::eActionTypeObject)),
 				value("action_type_count",		int(CScriptMonster::eActionTypeCount))
 			]
-
+			.enum_("EPathType")
+			[
+				value("game_path",				int(CMovementManager::ePathTypeGamePath)),
+				value("level_path",				int(CMovementManager::ePathTypeLevelPath)),
+				value("enemy_search",			int(CMovementManager::ePathTypeEnemySearch)),
+				value("patrol_path",			int(CMovementManager::ePathTypePatrolPath)),
+				value("no_path",				int(CMovementManager::ePathTypeNoPath))
+			]
 			.property("visible",				&CLuaGameObject::getVisible,		&CLuaGameObject::setVisible)
 			.property("enabled",				&CLuaGameObject::getEnabled,		&CLuaGameObject::setEnabled)
 			.property("health",					&CLuaGameObject::GetHealth,			&CLuaGameObject::SetHealth)
@@ -408,6 +415,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("get_corpse",					&CLuaGameObject::GetCorpse)
 			.def("set_object",					&CLuaGameObject::set_object)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
+			.def("movement",					&CLuaGameObject::movement)
 			
 	];
 }

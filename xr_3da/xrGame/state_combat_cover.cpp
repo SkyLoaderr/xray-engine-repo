@@ -102,16 +102,14 @@ void CStateCover::execute			()
 	if (!best_point)
 		return;
 
-	m_object->set_level_dest_vertex				(best_point->level_vertex_id());
-	m_object->CStalkerMovementManager::update	(
-		0,
-		0,
-		&best_point->position(),
-		0,
-		CMovementManager::ePathTypeLevelPath,
-		CMovementManager::eDetailPathTypeSmooth,
-		eBodyStateStand,
-		eMovementTypeWalk,
-		eMentalStateDanger
-	);
+	m_object->set_level_dest_vertex	(best_point->level_vertex_id());
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&best_point->position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
 }
