@@ -134,6 +134,7 @@ void	CSoundRender_Core::statistic			(CSound_stats&  dest)
 	dest._simulated		= s_emitters.size();
 	dest._cache_hits	= cache._stat_hit;
 	dest._cache_misses	= cache._stat_miss;
+	cache.stats_clear	();
 }
 
 BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
