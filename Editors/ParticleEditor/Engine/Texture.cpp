@@ -153,10 +153,10 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
-	if (strstr(fname,"_bump"))								
-		if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _BUMP;
-	if (FS.exist(fn,"$level$",			fname,	".dds"))	goto _DDS;
-	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))	goto _DDS;
+	if (FS.exist(fn,"$game_textures$",	fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP;
+	if (!FS.exist(fn,"$game_textures$",	fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP_from_base;
+	if (FS.exist(fn,"$level$",			fname,	".dds"))							goto _DDS;
+	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))							goto _DDS;
 
 #ifdef _EDITOR
 	ELog.Msg(mtError,"Can't find texture '%s'",fname);
@@ -300,8 +300,7 @@ _BUMP:
 			DWORD mips							= tDest->GetLevelCount();
 			R_ASSERT							(mips == tSrc->GetLevelCount());
 
-			for (DWORD i = 0; i < mips; i++)
-			{
+			for (DWORD i = 0; i < mips; i++)	{
 				D3DLOCKED_RECT				Rsrc,Rdst;
 				D3DSURFACE_DESC				desc;
 
@@ -310,16 +309,71 @@ _BUMP:
 				tSrc->LockRect				(i,&Rsrc,0,0);
 				tDest->LockRect				(i,&Rdst,0,0);
 
-				for (u32 y = 0; y < desc.Height; y++)
-				{
-					for (u32 x = 0; x < desc.Width; x++)
-					{
+				for (u32 y = 0; y < desc.Height; y++)	{
+					for (u32 x = 0; x < desc.Width; x++)	{
 						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
 						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
-
 						DWORD	mask	= DWORD(0xff) << DWORD(24);
-
 						pDst			= (pDst& (~mask)) | (pSrc&mask);
+					}
+				}
+
+				tDest->UnlockRect			(i);
+				tSrc->UnlockRect			(i);
+			}
+		}
+		_RELEASE	(T_sysmem);
+		return		pTexture2D;
+	}
+_BUMP_from_base:
+	{
+		*strstr		(fname,"_bump")	= 0;
+		R_ASSERT	(FS.exist(fn,"$game_textures$",	fname,	".dds"));
+
+		// Load   SYS-MEM-surface, bound to device restrictions
+		D3DXIMAGE_INFO			IMG;
+		IReader* S				= FS.r_open	(fn);
+		IDirect3DTexture9*		T_sysmem;
+		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
+			HW.pDevice,
+			S->pointer(),S->length(),
+			D3DX_DEFAULT,D3DX_DEFAULT,
+			D3DX_DEFAULT,0,
+			D3DFMT_A8R8G8B8,
+			D3DPOOL_SCRATCH,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			0,&IMG,0,
+			&T_sysmem
+			));
+		FS.r_close				(S);
+
+		// Create HW-surface
+		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &pTexture2D));
+		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
+
+		// Transfer gloss-map
+		if (1)
+		{
+			LPDIRECT3DTEXTURE9			tDest	= pTexture2D;
+			LPDIRECT3DTEXTURE9			tSrc	= T_sysmem;
+			DWORD mips							= tDest->GetLevelCount();
+			R_ASSERT							(mips == tSrc->GetLevelCount());
+
+			for (DWORD i = 0; i < mips; i++)	{
+				D3DLOCKED_RECT				Rsrc,Rdst;
+				D3DSURFACE_DESC				desc;
+
+				tDest->GetLevelDesc			(i, &desc);
+
+				tSrc->LockRect				(i,&Rsrc,0,0);
+				tDest->LockRect				(i,&Rdst,0,0);
+
+				for (u32 y = 0; y < desc.Height; y++)	{
+					for (u32 x = 0; x < desc.Width; x++)	{
+						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
+						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
+						pDst			= subst_alpha(pDst,color_get_A(pDst)/3);
 					}
 				}
 
