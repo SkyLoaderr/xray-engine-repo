@@ -118,7 +118,7 @@ function motivator_binder:reload (section)
 	xr_sos.add_to_binder (self.object, char_ini)
 	--' раненый.
 	xr_motivator.storage[self.object:id ()].wounded = {
-		enabled = false,
+		enabled = true,
 		threshold = 0.2,
 		sit = false,
 		cover = false,

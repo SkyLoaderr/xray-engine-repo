@@ -419,10 +419,6 @@ end
 ------------------------------------------------------------------------------------------
 function add_to_binder (object, char_ini)
 
-    if char_ini == nil or char_ini:section_exist ("wounded") == false then 
-       return 
-    end
-
     local operators     = {}
     local properties    = {}
     
@@ -553,8 +549,6 @@ function set_wounded (npc, enabled, threshold, immediate)
     if enabled == nil then
        if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "enabled") == true then
           st.enabled = char_ini:r_bool("wounded", "enabled")
-       else 
-          st.enabled = false   
        end
     else
        st.enabled = enabled     
