@@ -722,7 +722,9 @@ void CAI_Stalker::Think			()
 		}
 	}
 	catch(...) {
+#ifdef DEBUG
 		Msg						("! Last action being executed : %s",brain().current_action().m_action_name);
+#endif
 		brain().setup			(this);
 		brain().update			(update_delta);
 	}
@@ -734,7 +736,9 @@ void CAI_Stalker::Think			()
 		movement().update		(update_delta);
 	}
 	catch(...) {
+#ifdef DEBUG
 		Msg						("! Last action being executed : %s",brain().current_action().m_action_name);
+#endif
 		movement().initialize	();
 		movement().update		(update_delta);
 	}
