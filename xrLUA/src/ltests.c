@@ -100,8 +100,8 @@ static void freeblock (void *block, size_t size) {
   if (block) {
     lua_assert(checkblocksize(block, size));
     block = checkblock(block, size);
-    fillmem(block, size+HEADER+MARKSIZE);  /* erase block */
-    free(block);  /* free original block */
+    fillmem(block, size+HEADER+MARKSIZE);	/* erase block */
+    free(block);							/* free original block */
     memdebug_numblocks--;
     memdebug_total -= size;
   }
