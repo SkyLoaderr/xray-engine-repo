@@ -37,7 +37,7 @@ void CMaterialManager::reinit		()
 {
 	m_last_material_id		= GMLib.GetMaterialIdx("default");
 	m_step_id				= 0;
-	CEntityAlive	*entity_alive = dynamic_cast<CEntityAlive*>(this);
+	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
 	if (entity_alive && entity_alive->m_PhysicMovementControl->CharacterExist()) {
 		entity_alive->m_PhysicMovementControl->SetPLastMaterial	(&m_last_material_id);
 		entity_alive->m_PhysicMovementControl->SetMaterial		(m_my_material_id);
