@@ -33,7 +33,7 @@ public:
 	virtual void					Load(CStream	&tFileStream)
 	{
 		m_tNearestGraphPointID		= tFileStream.Rword();
-		tFileStream.Rstring			(m_caModel);
+		tFileStream.RstringZ		(m_caModel);
 		tFileStream.Rvector			(m_tPosition);
 	};
 };

@@ -45,6 +45,7 @@ void CAI_Space::OnDeviceCreate()
 	REQ_CREATE					();
 	sh_debug					= Device.Shader.Create	("debug\\ai_nodes","$null");
 }
+
 void CAI_Space::OnDeviceDestroy()
 {
 	REQ_DESTROY	();

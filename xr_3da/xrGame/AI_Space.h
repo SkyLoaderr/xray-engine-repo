@@ -23,10 +23,9 @@ namespace AI {
 	typedef struct tagSGraphVertex {
 		Fvector	tLocalPoint;
 		Fvector	tGlobalPoint;
-		u32		tNodeID:24;
-		u32		tLevelID:8;
-		u32		tVertexType:24;
-		u32		tNeighbourCount:8;
+		u8		tLevelID;
+		u16		tVertexType;
+		u8		tNeighbourCount;
 		u32		dwEdgeOffset;
 	} SGraphVertex;
 
