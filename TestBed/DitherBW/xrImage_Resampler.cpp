@@ -319,7 +319,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 				w_b			+=	W*double(RGBA_GETBLUE(P));
 				w_a			+=	W*double(RGBA_GETALPHA(P));
 			}
-			put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
+			put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 		}
 	}
 	_FREE(raster);
@@ -399,7 +399,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 				w_b			+=	W*double(RGBA_GETBLUE(P));
 				w_a			+=	W*double(RGBA_GETALPHA(P));
 			}
-			put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
+			put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 		}
 
 	}
