@@ -1,9 +1,9 @@
 #ifndef DefinesH
 #define DefinesH
 
-ENGINE_API	extern BOOL		bDebug;
+ENGINE_API	extern BOOL			bDebug;
 
-string256					PathCurrent;
+ENGINE_API  extern string256	PathCurrent;
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define THROW				throw 123456789
