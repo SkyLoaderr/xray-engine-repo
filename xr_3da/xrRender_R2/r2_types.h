@@ -34,16 +34,16 @@ const	u32					SMAP_adapt_min		= 32	;
 const	u32					SMAP_adapt_optimal	= 512	;
 const	u32					SMAP_adapt_max		= 1024	;
 
-const u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
-const u32					TEX_material_LdotH	= 256	;	// specular,	Y
-const u32					TEX_ds2_fade_size	= 256	;
-const u32					TEX_float2rgb		= 256	;
+const	u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
+const	u32					TEX_material_LdotH	= 256	;	// specular,	Y
+const	u32					TEX_ds2_fade_size	= 256	;
+const	u32					TEX_float2rgb		= 256	;
 
-const u32					BLOOM_size_X		= 256	;
-const u32					BLOOM_size_Y		= 256	;
-const u32					LUMINANCE_size		= 16	;
+const	u32					BLOOM_size_X		= 256	;
+const	u32					BLOOM_size_Y		= 256	;
+const	u32					LUMINANCE_size		= 16	;
 
-const u32					occq_size			= 128	;	// queue for occlusion queries
+const	u32					occq_size			= 128	;	// queue for occlusion queries
 
 // spot
 #define		SE_L_FILL			0
