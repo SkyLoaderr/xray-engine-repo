@@ -7,23 +7,23 @@
 #endif
 
 // refs
-class	ENGINE_API					CObject;
-class	ENGINE_API					CSound_source;
-class	ENGINE_API					CSound_interface;
-class	ENGINE_API					CSound_stream_interface;
+class	CObject;
+class	XRSOUND_API					CSound_source;
+class	XRSOUND_API					CSound_interface;
+class	XRSOUND_API					CSound_stream_interface;
 
 //
-ENGINE_API extern u32				psSoundFreq				;
-ENGINE_API extern u32				psSoundModel			;
-ENGINE_API extern float				psSoundVMaster			;
-ENGINE_API extern float				psSoundVEffects			;
-ENGINE_API extern float				psSoundVMusic			;
-ENGINE_API extern float				psSoundRolloff			;
-ENGINE_API extern float				psSoundDoppler			;
-ENGINE_API extern float				psSoundOcclusionScale	;
-ENGINE_API extern float				psSoundCull				;
-ENGINE_API extern Flags32			psSoundFlags			;
-ENGINE_API extern int				psSoundRelaxTime		;
+XRSOUND_API extern u32				psSoundFreq				;
+XRSOUND_API extern u32				psSoundModel			;
+XRSOUND_API extern float				psSoundVMaster			;
+XRSOUND_API extern float				psSoundVEffects			;
+XRSOUND_API extern float				psSoundVMusic			;
+XRSOUND_API extern float				psSoundRolloff			;
+XRSOUND_API extern float				psSoundDoppler			;
+XRSOUND_API extern float				psSoundOcclusionScale	;
+XRSOUND_API extern float				psSoundCull				;
+XRSOUND_API extern Flags32				psSoundFlags			;
+XRSOUND_API extern int					psSoundRelaxTime		;
 
 // Flags
 enum {
@@ -47,7 +47,7 @@ enum {
 };
 
 // definition (Sound Structure + control)
-struct	ENGINE_API	sound
+struct	XRSOUND_API	sound
 {
 	CSound_source*					handle;
 	CSound_interface*				feedback;
@@ -71,13 +71,13 @@ struct	ENGINE_API	sound
 };
 
 // definition (Sound Source)
-class ENGINE_API	CSound_source
+class XRSOUND_API	CSound_source
 {
 public:
 };
 
 // definition (Sound Interface)
-class ENGINE_API	CSound_interface
+class XRSOUND_API	CSound_interface
 {
 public:
 	virtual void					set_position			(const Fvector &pos)										= 0;
@@ -87,13 +87,13 @@ public:
 	virtual void					stop					()															= 0;
 };
 
-class ENGINE_API	CSound_stream_interface
+class XRSOUND_API	CSound_stream_interface
 {
 public:
 };
 
 // definition (Sound Manager Interface)
-class ENGINE_API	CSound_manager_interface
+class XRSOUND_API	CSound_manager_interface
 {
 public:
 	// General
@@ -112,7 +112,7 @@ public:
 
 	virtual void					update					( )																						= 0;
 };
-extern ENGINE_API CSound_manager_interface*		Sound;
+extern XRSOUND_API CSound_manager_interface*		Sound;
 
 // ********* Sound ********* (utils, accessors, helpers)
 IC void	sound::create				( BOOL _3D,	LPCSTR name,	int		type)				{	::Sound->create					(*this,_3D,name,type);	}
