@@ -3941,8 +3941,8 @@ trader_buy_price_factor					= 0.5
 trader_sell_price_factor				= 2.0
 stalker_neutral_buy_price_factor		= 0.6
 stalker_neutral_sell_price_factor		= 1.5
-stalker_friend_buy_price_factor			= 1
-stalker_friend_sell_price_factor		= 1
+stalker_friend_buy_price_factor			= 0.9
+stalker_friend_sell_price_factor		= 1.1
 ;-----------------------------------------------------------------
 
 [spawn_group_zone]
@@ -3957,38 +3957,114 @@ class						= AI_SPGRP
 	agroprom
 	militaries
 	scientists
-	
+		
 [agroprom]
 	name					= "Agroprom Research Institute"					; organization public name
-	discoveries				= discovery_magnet								; discoveries can be discovered
-	join_probability		= 0.3											; a probability to join zone investigations
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
 	left_probability		= 0.1											; a probability to left zone investigations
-	trader_rank				= 2												; rank of the trader to deal with
+	trader_rank				= 1												; rank of the trader to deal with
 
 [militaries]
-	name					= "Ukrainian Army : Special Purpose Forces"		; organization public name
-	discoveries				= discovery_magnet								; discoveries can be discovered
-	join_probability		= 0.3											; a probability to join zone investigations
+	name					= "KGB : Special Purpose Forces"				; organization public name
+	discoveries				= discovery_magnetic_field,discovery_electro_magnetic_force,discovery_magnetic_battery	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
 	left_probability		= 0.1											; a probability to left zone investigations
 	trader_rank				= 1												; rank of the trader to deal with
 
 [scientists]
-	name					= "Scientific Laboratory"						; organization public name
-	discoveries				= discovery_magnet								; discoveries can be discovered
-	join_probability		= 0.3											; a probability to join zone investigations
+	name					= "NASA: Scientific Laboratory"					; organization public name
+	discoveries				= discovery_magnet,discovery_electro_magnetic_force,discovery_magnetic_battery	; discoveries can be discovered
+	join_probability		= 1.0											; a probability to join zone investigations
 	left_probability		= 0.1											; a probability to left zone investigations
-	trader_rank				= 2												; rank of the trader to deal with
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Japan_Lab]
+	name					= "Japan Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[USA_Lab]
+	name					= "USA Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Uzbekistan_Lab]
+	name					= "Uzbekistan Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.2											; a probability to join zone investigations
+	left_probability		= 0.2											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
+
+[Soviet_Lab]
+	name					= "USSR Research Laboratories"					; organization public name
+	discoveries				= discovery_magnet,discovery_magnetic_field,discovery_electro_magnetic_force	; discoveries can be discovered
+	join_probability		= 0.4											; a probability to join zone investigations
+	left_probability		= 0.1											; a probability to left zone investigations
+	trader_rank				= 1												; rank of the trader to deal with
 
 [discovery_magnet]
-	name					= "Super-puper-hyper-turbo force field"			; discovery public name
+	name					= "Surrealistics effect of magnet"				; discovery public name
+	success_probability		= 0.4											; a probability to make a discovery
+	destroy_probability		= 0.1											; a probability to make an excident during investigations
+	result_probability		= 0.5											; discovery getting result probability
+	unfreeze_probability	= 0.1											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,3,15,50,350							; artefacts per week (section, count, price)
+	artefacts				= af_magnet,20,500 								; artefacts to make a discovery
+	discovery_dependence	= 												; if this discoveries are invented, then this 
+	sections				= m_detector									; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_magnetic_field]
+	name					= "Magnetic force field"						; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.4											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,3,20,70,450							; artefacts per week (section, count, price)
+	artefacts				= af_magnet,30,630								; artefacts to make a discovery
+	discovery_dependence	= discovery_magnet								; if this discoveries are invented, then this 
+	sections				= wpn_fn2000									; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_electro_magnetic_force]
+	name					= "Electro magnetic force"						; discovery public name
 	success_probability		= 0.2											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.7											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,10,1000								; artefacts to make a discovery (section, count, price)
+	discovery_dependence	= discovery_magnetic_field						; if this discoveries are invented, then this 
+	sections				= 												; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_magnetic_battery]
+	name					= "Magnetic battery"							; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
 	destroy_probability		= 0.2											; a probability to make an excident during investigations
 	result_probability		= 0.7											; discovery getting result probability
-	unfreeze_probability	= 0.8											; discovery freeze probability after destruction
-	demand_on_success		= af_magnet,4,8,50,150,af_magnet,6,12,100,300	; artefacts per week (section, count_min, count_max, price_min, price_max)
-	artefacts				= af_magnet,6,100,af_magnet,6,100				; artefacts to make a discovery (section, count, price)
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,5,1200								; artefacts to make a discovery (section, count, price)
+	discovery_dependence	= discovery_magnetic_field						; if this discoveries are invented, then this 
+	sections				= wpn_rpg_7										; sections of the objects being invented after this discovery
+	already_invented		= 0												; bool, if discovery has been already invented
+
+[discovery_vintorez]
+	name					= "Weapon Vintorez with strong magnetic effects"; discovery public name
+	success_probability		= 0.3											; a probability to make a discovery
+	destroy_probability		= 0.3											; a probability to make an excident during investigations
+	result_probability		= 0.6											; discovery getting result probability
+	unfreeze_probability	= 0.2											; discovery freeze probability after destruction
+	demand_on_success		= af_magnet,4,8,50,150							; artefacts per week (section, count_min, count_max, price_min, price_max)
+	artefacts				= af_magnet,7,800								; artefacts to make a discovery (section, count, price)
 	discovery_dependence	= discovery_magnet								; if this discoveries are invented, then this 
-	class_ids				= m_detector									; class identifiers of the objects being invented after this discovery
+	sections				= m_detector									; sections of the objects being invented after this discovery
 	already_invented		= 0												; bool, if discovery has been already invented
 
 [alife]
