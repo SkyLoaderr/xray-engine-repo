@@ -8,8 +8,25 @@
 #include "ui/xrXMLParser.h"
 #include "ui/UIXmlInit.h"
 #include "ui/UIInventoryUtilities.h"
+#include "object_broker.h"
 
 using namespace InventoryUtilities;
+
+void ARTICLE_DATA::load (IReader& stream) 
+{
+	load_data(receive_time, stream); 
+	load_data(article_id, stream); 
+	load_data(readed, stream); 
+	load_data(article_type, stream);
+}
+
+void ARTICLE_DATA::save (IWriter& stream)		
+{
+	save_data(receive_time, stream); 
+	save_data(article_id, stream); 
+	save_data(readed, stream); 
+	save_data(article_type, stream);
+}
 
 CEncyclopediaArticle::CEncyclopediaArticle()
 {
@@ -20,6 +37,7 @@ CEncyclopediaArticle::~CEncyclopediaArticle()
 	if( data()->image.GetParent() )
 		data()->image.GetParent()->DetachChild( &(data()->image) );
 }
+
 /*
 void CEncyclopediaArticle::Load	(ARTICLE_STR_ID str_id)
 {

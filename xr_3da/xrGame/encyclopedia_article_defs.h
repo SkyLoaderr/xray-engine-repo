@@ -11,7 +11,9 @@
 typedef shared_str	ARTICLE_ID;
 //#define NO_ARTICLE	ARTICLE_INDEX(-1)
 
-struct ARTICLE_DATA
+#include "object_interfaces.h"
+
+struct ARTICLE_DATA : public IPureSerializeObject<IReader,IWriter>
 {
 	enum EArticleType {eEncyclopediaArticle, eDiaryArticle, eDummyArticle};
 
@@ -29,6 +31,9 @@ struct ARTICLE_DATA
 			article_type	(articleType)
 	{}
 	
+	virtual void load (IReader& stream);
+	virtual void save (IWriter&);
+
 	ALife::_TIME_ID receive_time;
 	ARTICLE_ID article_id;
 	//whether the article has been read

@@ -14,9 +14,22 @@
 #include "xrServer_Objects_ALife.h"
 #include "script_engine.h"
 #include "ui\uixmlinit.h"
-
+#include "object_broker.h"
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
+
+void INFO_DATA::load (IReader& stream) 
+{
+	load_data(info_id, stream); 
+	load_data(receive_time, stream);
+}
+
+void INFO_DATA::save (IWriter& stream) 
+{
+	save_data(info_id, stream); 
+	save_data(receive_time, stream);
+}
+
 
 SInfoPortionData::SInfoPortionData ()
 {
@@ -53,11 +66,12 @@ void CInfoPortion::Load	(INFO_ID info_id)
 void CInfoPortion::load_shared	(LPCSTR)
 {
 //	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetByIndex(m_InfoIndex);
+	g_pStringContainer->verify();
 	const id_to_index::ITEM_DATA& item_data = *id_to_index::GetById(m_InfoId);
 
 	CUIXml uiXml;
-	string128 xml_file_full;
-	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
+	string_path xml_file_full;
+	strconcat(xml_file_full, *item_data.file_name, ".xml");
 
 	bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full);
 	THROW3(xml_result, "xml file not found", xml_file_full);
