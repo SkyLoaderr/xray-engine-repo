@@ -302,6 +302,7 @@ void CCar::SDoor::ClosingToClosed()
 	CBoneData& bone_data= pKinematics->LL_GetData(u16(bone_id));
 	CBoneInstance& bone_instance=pKinematics->LL_GetInstance(u16(bone_id));
 	bone_instance.set_callback(0,joint->PFirst_element());
+	bone_instance.Callback_overwrite=FALSE;
 	joint->PSecond_element()->Deactivate();
 	joint->Deactivate();
 	RemoveFromUpdate();
