@@ -90,6 +90,14 @@ void CBurerAttackTele::Run()
 void CBurerAttackTele::Done()
 {
 	tele_objects.clear();
+	pMonster->DeactivateShield();
+	
+	// clear particles on active objects
+	if (pMonster->CTelekinesis::is_active()) {
+		for (u32 i=0; i<pMonster->CTelekinesis::get_objects_count(); i++) {
+			pMonster->StopTeleObjectParticle(pMonster->CTelekinesis::get_object_by_index(i).get_object());
+		}
+	}
 }
 
 void CBurerAttackTele::CriticalInterrupt()
@@ -97,6 +105,14 @@ void CBurerAttackTele::CriticalInterrupt()
 	pMonster->MotionMan.TA_Deactivate();
 	pMonster->CTelekinesis::Deactivate();
 	tele_objects.clear();
+	pMonster->DeactivateShield();
+
+	// clear particles on active objects
+	if (pMonster->CTelekinesis::is_active()) {
+		for (u32 i=0; i<pMonster->CTelekinesis::get_objects_count(); i++) {
+			pMonster->StopTeleObjectParticle(pMonster->CTelekinesis::get_object_by_index(i).get_object());
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,6 +145,7 @@ void CBurerAttackTele::ExecuteTeleStart()
 {
 	pMonster->MotionMan.TA_Activate(&pMonster->anim_triple_tele);
 	time_started = m_dwCurrentTime;
+	pMonster->ActivateShield();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -182,6 +199,7 @@ void CBurerAttackTele::ExecuteTeleFire()
 	pMonster->StopTeleObjectParticle(selected_object);
 	
 	pMonster->CSoundPlayer::play(eMonsterSoundTeleAttack);
+	pMonster->DeactivateShield();
 }
 
 

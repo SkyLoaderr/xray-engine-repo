@@ -16,9 +16,9 @@ class CBurerAttack : public IState {
 	IState				*stateFaceEnemy;
 
 	IState				*cur_state;
+	IState				*prev_state;
 
 	bool				b_need_reselect;
-	bool				prev_state_run_around;
 
 public:	
 					CBurerAttack		(CBurer *p);

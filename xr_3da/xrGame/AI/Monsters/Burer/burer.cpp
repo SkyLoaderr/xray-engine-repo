@@ -41,8 +41,7 @@ void CBurer::reinit()
 {
 	inherited::reinit			();
 
-	//DeactivateShield			();
-	ActivateShield				();
+	DeactivateShield			();
 }
 
 
@@ -291,24 +290,24 @@ void CBurer::UpdateGraviObject()
 			}
 		}
 	}
-
+																								
 	m_gravi_object.cur_pos				= new_pos;
 	m_gravi_object.time_last_update		= Level().timeServer();
 
+	// ---------------------------------------------------------------------
 	// draw particle
 	CParticlesObject* ps = xr_new<CParticlesObject>(particle_gravi_wave);
 
 	// вычислить позицию и направленность партикла
 	Fmatrix pos; 
-
-	// установить направление
-	pos.k.set(Fvector().set(dir));
-	Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);
+	pos.identity();
+	pos.k.set(dir);
+	Fvector::generate_orthonormal_basis_normalized(pos.k,pos.j,pos.i);
 	// установить позицию
-	pos.c.set(m_gravi_object.cur_pos);
+	pos.translate_over(m_gravi_object.cur_pos);
 
-	ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
-	Level().ps_needtoplay.push_back(ps);
+	ps->UpdateParent(pos, zero_vel);
+	ps->Play();
 	
 	// hit objects
 	Level().ObjectSpace.GetNearest(m_gravi_object.cur_pos, m_gravi_radius); 

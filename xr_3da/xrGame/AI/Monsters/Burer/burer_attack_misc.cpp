@@ -71,7 +71,7 @@ void CBurerAttackRunAround::UpdateExternal()
 bool CBurerAttackRunAround::IsCompleted() 
 {
 	if ((time_started + 3500 < Level().timeServer()) || 
-		(pMonster->IsMovingOnPath() && pMonster->IsPathEnd(1.f))) {
+		(pMonster->IsMovingOnPath() && pMonster->IsPathEnd(2.f))) {
 
 		pMonster->FaceTarget(enemy);
 		return true;

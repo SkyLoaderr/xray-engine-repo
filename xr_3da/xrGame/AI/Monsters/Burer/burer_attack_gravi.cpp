@@ -3,8 +3,7 @@
 #include "burer_attack_gravi.h"
 #include "burer.h"
 
-#define GOOD_DISTANCE_FOR_GRAVI 8.f
-#define GRAVI_DELAY				5000
+#define GOOD_DISTANCE_FOR_GRAVI 6.f
 
 CBurerAttackGravi::CBurerAttackGravi(CBurer *p)
 {
@@ -76,7 +75,7 @@ void CBurerAttackGravi::Run()
 
 void CBurerAttackGravi::Done()
 {
-
+	pMonster->DeactivateShield();
 }
 
 
@@ -86,9 +85,7 @@ bool CBurerAttackGravi::CheckStartCondition()
 	float dist = pMonster->Position().distance_to(enemy->Position());
 	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
 
-	bool see_enemy_now		= pMonster->EnemyMan.get_enemy_time_last_seen() == Level().timeServer();
-
-	if (!see_enemy_now) return false; 
+	if (pMonster->EnemyMan.get_enemy_time_last_seen() != Level().timeServer()) return false; 
 
 	// всё ок, можно начать грави атаку
 	return true;
@@ -103,6 +100,7 @@ bool CBurerAttackGravi::IsCompleted()
 void CBurerAttackGravi::CriticalInterrupt()
 {
 	pMonster->MotionMan.TA_Deactivate();
+	pMonster->DeactivateShield();
 }
 
 void CBurerAttackGravi::UpdateExternal()
@@ -119,6 +117,7 @@ void CBurerAttackGravi::ExecuteGraviStart()
 	time_gravi_started			= m_dwCurrentTime;
 	
 	pMonster->StartGraviPrepare();
+	pMonster->ActivateShield();
 }
 
 void CBurerAttackGravi::ExecuteGraviContinue()
@@ -142,4 +141,6 @@ void CBurerAttackGravi::ExecuteGraviFire()
 	
 	pMonster->StopGraviPrepare();
 	pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
+	pMonster->DeactivateShield();
+
 }

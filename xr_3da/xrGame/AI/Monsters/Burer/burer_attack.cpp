@@ -9,7 +9,7 @@
 #include "../../ai_monster_debug.h"
 
 
-#define GRAVI_PERCENT		80
+#define GRAVI_PERCENT		50
 #define TELE_PERCENT		50
 #define RUN_AROUND_PERCENT	20
 
@@ -52,7 +52,7 @@ void CBurerAttack::Init()
 	stateFaceEnemy->UpdateExternal();
 
 	b_need_reselect = true;
-	prev_state_run_around = false;
+	prev_state		= 0;
 }
 
 
@@ -82,37 +82,12 @@ void CBurerAttack::Run()
 	if (cur_state->IsCompleted()) {
 		
 		// сохранить предыдущее состояние
-		if (cur_state == stateRunAround) prev_state_run_around = true;
-		else prev_state_run_around = false;
-		
+		prev_state = cur_state;
+
 		cur_state->Done();
 		cur_state = 0;
 		b_need_reselect = true;
 	}
-
-	
-#ifdef DEBUG
-	string128 s;
-	strcpy(s, "No State!");
-
-	if (cur_state == stateTele) {
-		strcpy(s,"State: Tele");
-	} else if (cur_state == stateGravi){
-		strcpy(s,"State: Gravi");
-	} else if (cur_state == stateMelee){
-		strcpy(s,"State: Melee");
-	} else if (cur_state == stateRunAround){
-		strcpy(s,"State: Run Around");
-	} else if (cur_state == stateFaceEnemy){
-		strcpy(s,"State: Face Enemy");
-	} 
-
-	pMonster->HDebug->M_Clear();
-	pMonster->HDebug->M_Add(0,s, D3DCOLOR_XRGB(0,255,255));
-#endif
-
-
-
 }
 
 
@@ -155,9 +130,9 @@ void CBurerAttack::ReselectState()
 
 	bool enable_gravi	= stateGravi->CheckStartCondition();
 	bool enable_tele	= stateTele->CheckStartCondition();
-		
+
 	if (!enable_gravi && !enable_tele) {
-		if (prev_state_run_around) 
+		if (prev_state == stateRunAround) 
 			select_state(stateFaceEnemy);
 		else 	
 			select_state(stateRunAround);
@@ -184,7 +159,7 @@ void CBurerAttack::ReselectState()
 		return;
 	}
 
-	if (prev_state_run_around) {
+	if ((prev_state == stateRunAround) || (prev_state == stateFaceEnemy)) {
 		if (enable_gravi) select_state(stateGravi);
 		else select_state(stateTele);
 	} else {
