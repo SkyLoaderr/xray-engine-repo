@@ -9,18 +9,6 @@
 #include "stdafx.h"
 #include "object_factory.h"
 
-#ifdef XRGAME_EXPORTS
-#	include "xrEProps.h"
-	
-	IPropHelper &PHelper()
-	{
-		NODEFAULT;
-#	ifdef DEBUG
-		return(*(IPropHelper*)0);
-#	endif
-	}
-#endif
-
 CSE_Abstract *F_entity_Create	(LPCSTR section)
 {
 	if (!pSettings->section_exist(section))

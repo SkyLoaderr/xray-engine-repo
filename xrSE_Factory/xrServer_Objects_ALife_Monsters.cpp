@@ -12,7 +12,10 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "object_broker.h"
 #include "alife_event_personal.h"
-#include "ai_space.h"
+
+#ifndef AI_COMPILER
+#	include "ai_space.h"
+#endif
 
 #ifdef XRGAME_EXPORTS
 #	include "ef_storage.h"
