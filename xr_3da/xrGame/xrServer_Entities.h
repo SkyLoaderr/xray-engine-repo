@@ -286,6 +286,38 @@ xrSE_DECLARE_BEGIN(xrSE_Zombie,xrSE_Enemy)
 							xrSE_Zombie();				// constructor for variable initialization
 xrSE_DECLARE_END
 
+xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
+	// model
+	string64				caModel;
+	
+	// Personal characteristics:
+	float					fEyeFov;
+	float					fEyeRange;
+	float					fHealth;
+	float					fMinSpeed;
+	float					fMaxSpeed;
+	float					fAttackSpeed;
+	float					fMaxPursuitRadius;
+	float					fMaxHomeRadius;
+	// morale
+	float					fMoraleSuccessAttackQuant;
+	float					fMoraleDeathQuant;
+	float					fMoraleFearQuant;
+	float					fMoraleRestoreQuant;
+	u16						u16MoraleRestoreTimeInterval;
+	float					fMoraleMinValue;
+	float					fMoraleMaxValue;
+	float					fMoraleNormalValue;
+	// attack
+	float					fHitPower;
+	u16						u16HitInterval;
+	float					fAttackDistance;
+	float					fAttackAngle;
+	float					fAttackSuccessProbability;
+
+							xrSE_Dog();				// constructor for variable initialization
+xrSE_DECLARE_END
+
 // 
 #undef xrSE_EDITOR_METHODS
 #undef xrSE_DECLARE_BEGIN
