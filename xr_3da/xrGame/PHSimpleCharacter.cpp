@@ -666,7 +666,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 			CDB::TRI* T = T_array + Res->id;
 			SGameMtl* material=GMLib.GetMaterialByIdx(T->material);
 
-			b_near_leader=b_near_leader||(!!material->Flags.is(SGameMtl::flClimbable));
+			b_near_leader=b_near_leader||(!!material->Flags.is(SGameMtl::flClimable));
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
 			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
@@ -812,7 +812,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
 	}
 
-	//M->m_Flags.is(GameMtl::flClimbable);
+	//M->m_Flags.is(GameMtl::flClimable);
 	if(!b_at_wall&&b_climb)
 	{
 		if(!b_block_climb_getup)
@@ -1155,7 +1155,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	else
 		tri_material=material_1;
 
-	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
+	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimable);
 	if(is_control&&b_at_wall)
 	{
 		c->surface.mu=0.f;
