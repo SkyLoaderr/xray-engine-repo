@@ -39,6 +39,8 @@ BOOL CRenderTarget::Create	()
 	case	2:		rtWidth = iFloor(1.414f*Device.dwWidth);	rtHeight=iFloor(1.414f*Device.dwHeight);	break;
 	case	3:		rtWidth = iFloor(1.732f*Device.dwWidth);	rtHeight=iFloor(1.732f*Device.dwHeight);	break;
 	case	4:		rtWidth = 2*Device.dwWidth;					rtHeight=2*Device.dwHeight;					break;
+	case	5:		rtWidth = iFloor(2.236f*Device.dwWidth);	rtHeight=iFloor(2.236f*Device.dwHeight);	break;
+	case	6:		rtWidth = iFloor(2.449f*Device.dwWidth);	rtHeight=iFloor(2.449f*Device.dwHeight);	break;
 	default:		rtWidth	= Device.dwWidth;					rtHeight=Device.dwHeight;					return FALSE;
 	}
 	while (rtWidth%2)	rtWidth--;
