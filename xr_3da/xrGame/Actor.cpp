@@ -524,17 +524,17 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	/////////////////////////////////////////////Update ph_Movement///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	
-	ph_Movement.SetEnvironment(ph_Movement.Environment(),ph_Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
-	ph_Movement.SetPosition		(vPosition);
-	Fvector velocity=ph_Movement.GetVelocity();
-	ph_Movement.SetVelocity(velocity);
-	ph_Movement.gcontact_Was=ph_Movement.gcontact_Was;
+	//ph_Movement.SetEnvironment(ph_Movement.Environment(),ph_Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
+	//ph_Movement.SetPosition		(vPosition);
+	//Fvector velocity=ph_Movement.GetVelocity();
+	//ph_Movement.SetVelocity(velocity);
+	//ph_Movement.gcontact_Was=ph_Movement.gcontact_Was;
 	//ph_Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
 	//velocity.y=0.f;
 //	ph_Movement.SetActualVelocity(velocity.magnitude());
 	ph_Movement.bSleep=false;
-	ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
-	ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
+	//ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
+	//ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////
