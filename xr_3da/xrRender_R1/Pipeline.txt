@@ -1,0 +1,26 @@
+
+lmapped									
+-------------------------------------------------------------------------------
+input:
+	constants:
+		hemi_color	-	vector
+		sun_color	-	vector
+		sun_dir		-	vector
+		lmap_color	-	vector
+	vertex:
+		diffuse.rgb	-	???
+		diffuse.a	-	hemi-occlusion
+		normal		-	for lighting
+	vertex-math:
+		diffuse		=	hemi_color * vertex.diffuse.a
+		specular	=	light_direct(sun_color,sun_dir,vertex.normal)
+	pixel:
+		t_diff		=	tex(diffuse)
+		t_lmap		=	tex(lmap)
+		light		=	t_lmap.rgb * lmap_color + diffuse.rgb(hemi + фонарик) + specular.rgb(sun)*t_lmap.a
+		out			:=	(t_diff * light)x2;
+
+-------------------------------------------------------------------------------
+vertex
+-------------------------------------------------------------------------------
+		

@@ -600,6 +600,9 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\Pipeline.txt">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

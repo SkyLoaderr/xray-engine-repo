@@ -13,7 +13,7 @@ public:
 	virtual		BOOL		canBeDetailed()	{ return TRUE; }
 	virtual		BOOL		canBeLMAPped()	{ return TRUE; }
 
-	virtual		void		Save			(IWriter&  fs);
+	virtual		void		Save			(IWriter&	fs);
 	virtual		void		Load			(IReader&	fs, WORD version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
