@@ -125,7 +125,7 @@ public:
 
 	virtual		char*				GetAnomalySetBaseName	() {return "deathmatch_game_anomaly_sets";};
 	virtual		void				LoadAnomalySets			();
-	virtual		void				StartAnomalies			();
+	virtual		void				StartAnomalies			(int AnomalySet = -1);
 
 //	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);

@@ -25,6 +25,7 @@
 #include "autosave_manager.h"
 #include "ai_space.h"
 #include "ai/monsters/BaseMonster/base_monster.h"
+#include "game_sv_deathmatch.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -1002,6 +1003,28 @@ public:
 	}
 };
 
+class CCC_AnomalySet : public IConsole_Command {
+public:
+	CCC_AnomalySet(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+		if (GameID() == GAME_SINGLE) return;
+
+		game_sv_Deathmatch* gameDM = smart_cast<game_sv_Deathmatch *>(Level().Server->game);
+		if (!gameDM) return;
+
+		char	AnomalySet[256];		
+		sscanf	(args,"%s", AnomalySet);
+		gameDM->StartAnomalies(atol(AnomalySet));
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Activating pointed Anomaly set"); 
+	}
+};
+
 
 class CCC_ChangeLevelGameType : public IConsole_Command {
 public:
@@ -1721,7 +1744,8 @@ void CCC_RegisterCommands()
 
 	CMD1(CCC_AddMap,		"sv_addmap"				);	
 	CMD1(CCC_NextMap,		"sv_nextmap"				);	
-	CMD1(CCC_PrevMap,		"sv_prevmap"				);	
+	CMD1(CCC_PrevMap,		"sv_prevmap"				);
+	CMD1(CCC_AnomalySet,	"sv_nextanomalyset"			);
 
 	CMD1(CCC_Vote_Start,	"cl_votestart"				);
 	CMD1(CCC_Vote_Stop,		"sv_votestop"				);

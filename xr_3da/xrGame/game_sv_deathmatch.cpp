@@ -1301,11 +1301,14 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 	};
 };
 
-void	game_sv_Deathmatch::StartAnomalies			()
+void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
 {
 	if (m_AnomalySetsList.empty())
 		LoadAnomalySets();
 	if (m_AnomalySetsList.empty()) return;	
+
+	if (AnomalySet != -1 && u32(AnomalySet) >= m_AnomalySetsList.size())
+		return;
 
 	xr_vector<u8>&	ASetID	= m_AnomalySetID;
 	if (ASetID.empty())
@@ -1335,9 +1338,12 @@ void	game_sv_Deathmatch::StartAnomalies			()
 		};
 	};
 	///////////////////////////////////////////////////
-	m_dwLastAnomalySetID = NewAnomalySetID;
+	if (AnomalySet != -1 && AnomalySet < m_AnomalySetsList.size())
+		m_dwLastAnomalySetID = u32(AnomalySet);
+	else
+		m_dwLastAnomalySetID = NewAnomalySetID;
 
-	ANOMALIES* NewAnomalies = &(m_AnomalySetsList[NewAnomalySetID]);
+	ANOMALIES* NewAnomalies = &(m_AnomalySetsList[m_dwLastAnomalySetID]);
 	for (u32 i=0; i<NewAnomalies->size(); i++)
 	{
 		const char *pName = ((*NewAnomalies)[i]).c_str();
@@ -1347,6 +1353,9 @@ void	game_sv_Deathmatch::StartAnomalies			()
 			pZone->ZoneEnable();
 	};
 	m_dwLastAnomalyStartTime = Level().timeServer();
+#ifdef DEBUG
+	Msg("Anomaly Set %d Activated", m_dwLastAnomalySetID);
+#endif
 };
 
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
