@@ -23,7 +23,6 @@ TfrmMain *frmMain;
 #include "texture.h"
 #include "Library.h"
 #include "EditObject.h"
-#include "LevelGameDef.h"
 #include "EThumbnail.h"
 #include "FolderLib.h"
 #include "LightAnimLibrary.h"
