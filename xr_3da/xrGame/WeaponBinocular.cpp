@@ -1,0 +1,14 @@
+#include "stdafx.h"
+
+#include "WeaponBinocular.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+CWeaponBinocular::CWeaponBinocular() : CWeaponCustomPistol("BINOCULAR")
+{
+}
+
+CWeaponBinocular::~CWeaponBinocular()
+{
+}
