@@ -48,10 +48,20 @@ enum OGF_Chuncks {
 	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
 	OGF_IKDATA		= 25,	// * For skeletons only
 	OGF_MOTIONS2	= 26,	// * For skeletons only
+	OGF_DESC		= 27,	// * 
     OGF_forcedword	= 0xFFFFFFFF
 };
 
 const u16	xrOGF_SMParamsVersion	= 1;
+
+// OGF_DESC
+struct ogf_desc{
+	ref_str	source_file;
+    ref_str	creator_name;
+    ref_str	owner_name;
+    time_t	create_time;
+    time_t	build_time;
+};
 
 // OGF_HEADER
 const BYTE	xrOGF_FormatVersion		= 3;

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "fmesh.h"
 #include "EditObject.h"
 #include "EditMesh.h"
 #ifdef _EDITOR
@@ -44,6 +45,9 @@ CEditableObject::CEditableObject(LPCSTR name)
     m_RefCount		= 0;
 
     m_LODShader		= 0;
+    
+    m_OwnerName		= "unknown";
+    m_CreateTime	= 0;
 }
 
 CEditableObject::~CEditableObject()
@@ -193,5 +197,15 @@ bool CEditableObject::VerifyBoneParts()
     for (U8It u_it=b_use.begin(); u_it!=b_use.end(); u_it++)
     	if (*u_it!=1) return false;
     return true;
+}
+
+void CEditableObject::PrepareOGFDesc(ogf_desc& desc)
+{
+	string512		tmp;
+	desc.source_file	= m_LibName.c_str();
+    desc.creator_name	= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
+    desc.owner_name		= m_OwnerName.c_str();
+    desc.create_time	= m_CreateTime;
+    ctime				(&desc.build_time);
 }
 

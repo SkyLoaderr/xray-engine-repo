@@ -150,6 +150,11 @@ void CEditableObject::Save(IWriter& F)
     }
 //    Log("7: ",F.tell());
 
+    F.open_chunk		(EOBJ_CHUNK_DESC);
+    F.w_stringZ			(m_OwnerName.c_str());
+    F.w					(&m_CreateTime,sizeof(m_CreateTime));
+    F.close_chunk		();
+
 	bOnModified		= false;
 }
 //------------------------------------------------------------------------------
@@ -310,6 +315,11 @@ bool CEditableObject::Load(IReader& F)
 			F.r_fvector3	(a_vRotate);
 		}
 
+	    if (F.find_chunk	(EOBJ_CHUNK_DESC)){
+		    F.r_stringZ		(m_OwnerName);
+		    F.r				(&m_CreateTime,sizeof(m_CreateTime));
+    	}
+	
 		ResetSAnimation();
 
 		if (!bRes) break;

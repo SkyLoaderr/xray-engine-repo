@@ -21,6 +21,7 @@ class	CExporter;
 class	CMayaTranslator;
 struct	st_ObjectDB;
 struct	SXRShaderData;
+struct  ogf_desc;
 
 #ifndef _EDITOR
 	class PropValue;
@@ -158,6 +159,10 @@ class CEditableObject{
     IRender_Visual*	m_Visual;
 	ref_geom 		vs_SkeletonGeom;
 #endif
+// desc
+	AnsiString		m_OwnerName;
+    time_t			m_CreateTime;
+    
 // general
 	AnsiString		m_ClassScript;
 
@@ -378,7 +383,8 @@ public:
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
 
-    // export routine
+    // utils
+    void			PrepareOGFDesc			(ogf_desc& desc);
     // skeleton
     bool			PrepareSVGeometry		(IWriter& F);
     bool			PrepareSVKeys			(IWriter& F);
@@ -436,6 +442,7 @@ public:
 #define EOBJ_CHUNK_BONEPARTS		0x0919
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
 #define EOBJ_CHUNK_BONES2			0x0921
+#define EOBJ_CHUNK_DESC				0x0922
 //----------------------------------------------------
 
 

@@ -386,6 +386,17 @@ bool CExportObjectOGF::Export(IWriter& F)
     H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
+    // Desc
+    ogf_desc		desc;
+    m_Source->PrepareOGFDesc(desc);
+    F.open_chunk	(OGF_DESC);
+	F.w_stringZ		(desc.source_file);
+    F.w_stringZ		(desc.creator_name);
+    F.w_stringZ		(desc.owner_name);
+    F.w				(&desc.create_time,sizeof(desc.create_time));
+    F.w				(&desc.build_time,sizeof(desc.build_time));
+    F.close_chunk	();
+
     // OGF_CHILDREN
     F.open_chunk	(OGF_CHILDREN);
     int chunk=0;
