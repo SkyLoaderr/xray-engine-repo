@@ -281,6 +281,6 @@
 	<Globals>
 		<Global
 			Name="DevPartner_IsInstrumented"
-			Value="0"/>
+			Value="1"/>
 	</Globals>
 </VisualStudioProject>
