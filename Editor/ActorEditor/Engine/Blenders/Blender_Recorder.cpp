@@ -133,7 +133,6 @@ int ParseName(LPCSTR N)
 	if (0==strcmp(N,"$base7"))	return	7;
 	return -1;
 }
-
 void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 {
 	sh_list& lst=	L_textures;
@@ -144,6 +143,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 		N = lst [id];
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
+	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
 }
 void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {
