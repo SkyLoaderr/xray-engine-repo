@@ -68,6 +68,7 @@ BOOL ShaderElement::equal	(ShaderElement& S)
 	if (Flags.iPriority		!= S.Flags.iPriority)	return FALSE;
 	if (Flags.bStrictB2F	!= S.Flags.bStrictB2F)	return FALSE;
 	if (Flags.bEmissive		!= S.Flags.bEmissive)	return FALSE;
+	if (Flags.bDistort		!= S.Flags.bDistort)	return FALSE;
 	if (Passes.size() != S.Passes.size())			return FALSE;
 	for (u32 p=0; p<Passes.size(); p++)
 		if (Passes[p] != S.Passes[p])				return FALSE;
