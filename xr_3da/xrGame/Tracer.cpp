@@ -39,7 +39,7 @@ void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, f
 	B.speed_head =		bullet_speed;
 	B.speed_trail =		bullet_speed*trail_speed_factor;
 	B.color.set			(color);
-	B.life_time =		(path.magnitude()-start_length)/bullet_speed;
+	B.life_time =		(path.magnitude()-start_length/2)/bullet_speed;
 	if (B.life_time<0)	bullets.pop_back();
 }
 
