@@ -1147,6 +1147,23 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="smart_cover"
+						Filter="">
+						<File
+							RelativePath=".\smart_cover.cpp">
+						</File>
+						<Filter
+							Name="quadtree"
+							Filter="">
+							<File
+								RelativePath=".\quadtree.h">
+							</File>
+							<File
+								RelativePath=".\quadtree_inline.h">
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

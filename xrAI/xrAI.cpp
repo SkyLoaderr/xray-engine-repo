@@ -29,6 +29,7 @@ extern void test_smooth_path	(LPCSTR name);
 extern void test_hierarchy		(LPCSTR name);
 extern void	xrConvertMaps		();
 extern void	test_goap			();
+extern void	smart_cover			(LPCSTR name);
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -114,7 +115,8 @@ void Startup(LPSTR     lpCmdLine)
 //						path_test			(prjName);
 //						test_smooth_path	(prjName);
 //						test_hierarchy		(prjName);
-						test_goap			();
+//						test_goap			();
+						smart_cover			(prjName);
 					}
 					else
 						if (strstr(cmd,"-c")) {
