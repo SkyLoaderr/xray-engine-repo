@@ -4,7 +4,7 @@
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
 #include "../skeletonanimated.h"
-
+#include "Actor.h"
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
@@ -287,6 +287,12 @@ Fvector velocity;
 }
 void CCharacterPhysicsSupport::ActivateShell			()
 {
+	if(m_eType==etActor)
+	{
+		CActor* A=smart_cast<CActor*>(&m_EntityAlife);
+		R_ASSERT2(A,"not an actor has actor type");
+		if(A->Holder()) return;
+	}
 	if(m_pPhysicsShell) return;
 	Fvector velocity;
 	m_PhysicMovementControl.GetCharacterVelocity		(velocity);
