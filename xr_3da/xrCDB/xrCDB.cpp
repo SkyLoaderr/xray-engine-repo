@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "xrCDB.h"
 
+XRCDB_API	CDB::COLLIDER	XRC;
+
 using namespace CDB;
 using namespace Opcode;
 
@@ -22,6 +24,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     }
     return TRUE;
 }
+
 
 // Triangle utilities
 void	TRI::convert_I2P	(Fvector* pBaseV, TRI* pBaseTri)	

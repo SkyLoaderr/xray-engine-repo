@@ -124,4 +124,7 @@ namespace CDB
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
 };
+
+extern XRCDB_API	CDB::COLLIDER	XRC;
+
 #pragma pack(pop)	
