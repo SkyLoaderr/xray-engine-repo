@@ -167,4 +167,10 @@
 	<info_portion id="esc_flesh_in_anomaly"></info_portion>
 	<info_portion id="esc_boar_dogs_restrictor"></info_portion>
 
+	<!-- test infoportions -->
+	<info_portion id="test_info_1"></info_portion>
+	<info_portion id="test_info_2"></info_portion>
+	<info_portion id="test_info_3"></info_portion>
+	<info_portion id="test_info_4"></info_portion>
+	<info_portion id="test_info_5"></info_portion>
 </game_information_portions>
