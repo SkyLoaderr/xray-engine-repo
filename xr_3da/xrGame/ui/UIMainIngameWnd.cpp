@@ -18,6 +18,7 @@
 #include "UIInventoryUtilities.h"
 
 #include "../inventory.h"
+#include "../../xr_ioconsole.h"
 
 using namespace InventoryUtilities;
 
@@ -32,7 +33,7 @@ using namespace InventoryUtilities;
 #define RADIATION_MEDIUM 0.75f
 #define RADIATION_HIGH 1.0f
 
-
+#define DEFAULT_MAP_SCALE 1.f
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -46,6 +47,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_dwMaxShowTime = 20000;
 	m_dwMsgShowingTime = 0;
 
+	m_bShowHudInfo = true;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -121,7 +123,7 @@ void CUIMainIngameWnd::Init()
 
 	//индикаторы 
 	UIZoneMap.Init();
-	UIZoneMap.SetScale(2);
+	UIZoneMap.SetScale(DEFAULT_MAP_SCALE);
 
 	//для отображения входящих сообщений PDA
 	UIPdaMsgListWnd.Show(false);
@@ -133,36 +135,52 @@ void CUIMainIngameWnd::Init()
 
 void CUIMainIngameWnd::Draw()
 {
-	static float radiation_alpha = 254.f;
-	static float radiation_alpha_inc = 0.5;
-
-	radiation_alpha += radiation_alpha_inc;
-	if(radiation_alpha > 255.f || radiation_alpha < 60.0f) 
+	if(m_bShowHudInfo)
 	{
-		radiation_alpha_inc *=-1;
+
+		static float radiation_alpha = 254.f;
+		static float radiation_alpha_inc = 0.5;
+
 		radiation_alpha += radiation_alpha_inc;
+		if(radiation_alpha > 255.f || radiation_alpha < 60.0f) 
+		{
+			radiation_alpha_inc *=-1;
+			radiation_alpha += radiation_alpha_inc;
+		}
+
+		UIStaticRadiationLow.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
+		UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
+		UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
+
 	}
-	
-	UIStaticRadiationLow.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-	UIStaticRadiationMedium.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-	UIStaticRadiationHigh.SetColor(RGB_ALPHA(radiation_alpha, 0xFF,0xFF,0xFF));
-	
+
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture())
 	{
 		m_pWeapon->ZoomTexture()->SetPos(0,0);
 		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+
+		//!!!
+		Console->Execute("hud_crosshair 0");
+
 	}
-	else
+	else 
 	{
-		//отрисовать остальные иконки
-		CUIWindow::Draw();
-		UIZoneMap.Render();
+		if(m_bShowHudInfo)
+		{
+			//отрисовать остальные иконки
+			CUIWindow::Draw();
+			UIZoneMap.Render();
+		}
+		//!!!
+		Console->Execute("hud_crosshair 1");
 	}
 }
 
 void CUIMainIngameWnd::Update()
 {
+	if(!m_bShowHudInfo) return;
+
 	static string256 text_str;
 
 	m_pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
@@ -329,19 +347,47 @@ void CUIMainIngameWnd::Update()
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
-	switch(dik)
+	if(Level().IR_GetKeyState(DIK_LSHIFT) || Level().IR_GetKeyState(DIK_RSHIFT))
 	{
-	case DIK_NUMPADMINUS:
-		UIZoneMap.ZoomOut();
-		return true;
-		break;
-	case DIK_NUMPADPLUS:
-		UIZoneMap.ZoomIn();
-		return true;
-		break;
+		switch(dik)
+		{
+		case DIK_NUMPADMINUS:
+			UIZoneMap.ZoomOut();
+			return true;
+			break;
+		case DIK_NUMPADPLUS:
+			UIZoneMap.ZoomIn();
+			return true;
+			break;
+		}
+	}
+	else
+	{
+		switch(dik)
+		{
+		case DIK_NUMPADMINUS:
+			HideAll();
+			return true;
+			break;
+		case DIK_NUMPADPLUS:
+			ShowAll();
+			return true;
+			break;
+		}
 	}
 	return false;
 }
+
+
+void CUIMainIngameWnd::HideAll()
+{
+	m_bShowHudInfo = false;
+}
+void CUIMainIngameWnd::ShowAll()
+{
+	m_bShowHudInfo = true;
+}
+
 
 void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index)
 {

@@ -40,6 +40,9 @@ public:
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, int info_index);
 
 protected:
+	void HideAll();
+	void ShowAll();
+	bool m_bShowHudInfo;
 
 	CUIStatic	UIStaticHealth;
 	CUIStatic	UIStaticMapBack;

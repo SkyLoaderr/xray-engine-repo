@@ -502,6 +502,7 @@ void CWeaponMagazined::switch2_Fire	()
 }
 void CWeaponMagazined::switch2_Empty()
 {
+	OnZoomOut();
 	if(!TryReload())
 	{
 		OnEmptyClick();

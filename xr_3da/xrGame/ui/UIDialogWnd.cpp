@@ -26,6 +26,7 @@ void CUIDialogWnd::Show()
 	inherited::Enable(true);
 	inherited::Show(true);
 
+	//!!!
 	m_bCrosshair = true;
 	if(m_bCrosshair) Console->Execute("hud_crosshair 0");
 

@@ -90,6 +90,11 @@ void CUIMapWnd::Init()
 	UIMainMapFrame.AttachChild(&UICheckButton4);
 	xml_init.InitButton(uiXml, "button", 3, &UICheckButton4);
 
+	UICheckButton1.Show(false);UICheckButton1.Enable(false);
+	UICheckButton2.Show(false);UICheckButton2.Enable(false);
+	UICheckButton3.Show(false);UICheckButton3.Enable(false);
+	UICheckButton4.Show(false);UICheckButton4.Enable(false);
+
 	//информация о точке на карте на которую наводит игрок
 	UIMainMapFrame.AttachChild(&UIStaticInfo);
 	xml_init.InitStatic(uiXml, "static", 1, &UIStaticInfo);
