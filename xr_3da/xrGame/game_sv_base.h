@@ -34,9 +34,6 @@ public:
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 
-	virtual		void				OnFraglimitExceed		()								= 0;
-	virtual		void				OnTimelimitExceed		()								= 0;
-
 	// Main
 	virtual		void				Update					()								= 0;
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
