@@ -5,7 +5,7 @@
 
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
-void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)
+void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip)
 {
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
@@ -38,7 +38,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 		// ok - perform lighting
 		Fcolor	C; C.set(0,0,0,0);
 		Fvector	P; P.direct(v1,vdir,time);
-		LightPoint	(DB, C, P, N, LightsSelected->begin(), LightsSelected->end());
+		LightPoint	(DB, C, P, N, LightsSelected->begin(), LightsSelected->end(),skip);
 		
 		Fcolor	R;
 		R.lerp	(C,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
@@ -100,7 +100,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(DB, C[J], wP, wN, LightsSelected->begin(), LightsSelected->end());
+								LightPoint	(DB, C[J], wP, wN, LightsSelected->begin(), LightsSelected->end(), F);
 								Fcount		+= 1;
 							} catch (...) {
 								Msg("* ERROR (CDB). Recovered. ");

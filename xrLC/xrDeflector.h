@@ -76,7 +76,7 @@ public:
 		
 	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
 	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
-	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
 	VOID	L_Calculate			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}

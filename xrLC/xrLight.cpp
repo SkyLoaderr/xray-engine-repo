@@ -115,7 +115,7 @@ public:
 				
 				Fcolor		C,R,Lumel;
 				C.set		(0,0,0,0);
-				LightPoint	(&DB, C, V->P, V->N, Lights.begin(), Lights.end());
+				LightPoint	(&DB, C, V->P, V->N, Lights.begin(), Lights.end(), F);
 				
 				R.r			= C.r*v_inv+v_amb;
 				R.g			= C.g*v_inv+v_amb;
