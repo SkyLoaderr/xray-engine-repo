@@ -82,10 +82,10 @@ int ProcessDifference()
 	LPCSTR params = GetCommandLine();
 	Flags32 _flags;
 	_flags.zero();
-	if(strstr(params,"-diff //?")){
+	if(strstr(params,"-diff /?")){
 		printf("HELP:\n");
 		printf("xrCompress.exe -diff <new_data> <old_data> -out <diff_resulf> [options]\n");
-		printf("<new_data>, <old_data> and <diff_resulf> values must be folder name\n");
+		printf("<new_data>, <old_data> and <diff_resulf> values must be a folder name\n");
 		printf("[options] are set of:\n");
 		printf("-nofileage		do not perform file age checking\n");
 		printf("-crc			do not perform crc32 checking\n");
