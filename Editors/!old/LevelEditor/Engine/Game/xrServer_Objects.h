@@ -73,6 +73,7 @@
 // 54 - CSE_AlifeLevelChanger			property 'angles' changed from float to fvector
 // 55 - CSE_AlifeItemCar->CSE_ALifeCar	heritage changed
 // 56 - CSE_ALifeObjectHangingLamp		restore removed props + appended some new
+// 57 - CSE_ALifeObjectPhysic			fixed bones added to state read/write
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {
