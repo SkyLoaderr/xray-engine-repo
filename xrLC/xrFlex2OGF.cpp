@@ -15,66 +15,76 @@ void CBuild::Flex2OGF()
 	for (splitIt it=g_XSplit.begin(); it!=g_XSplit.end(); it++)
 	{
 		R_ASSERT( ! it->empty() );
-
+		
 		DWORD MODEL_ID		= it-g_XSplit.begin();
-
+		
 		OGF*		pOGF	= new OGF;
 		Face*		F		= *(it->begin());				// first face
 		b_material*	M		= &(materials[F->dwMaterial]);	// and it's material
-
-		// Common data
-		pOGF->Sector		= M->sector;
-
-		// Collect textures
-		OGF_Texture			T;
-		pOGF->shader		= M->shader;
-		pOGF->shader_xrlc	= &F->Shader();
-
-		strcpy					(T.name,textures[M->surfidx].name);
-		T.pSurface				= &(textures[M->surfidx]);
-		pOGF->textures.push_back(T);
-		for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
-		{
-			// If lightmaps persist
-			CLightmap* LM	= F->lmap_layers[lmit];
+		
+		try {
+			// Common data
+			pOGF->Sector		= M->sector;
 			
-			strcpy			(T.name, LM->lm.name);
-			T.pSurface		= &(LM->lm);
+			// Collect textures
+			OGF_Texture			T;
+			pOGF->shader		= M->shader;
+			pOGF->shader_xrlc	= &F->Shader();
+			
+			strcpy					(T.name,textures[M->surfidx].name);
+			T.pSurface				= &(textures[M->surfidx]);
 			pOGF->textures.push_back(T);
-		}
-
-		// Collect faces & vertices
-		for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
-		{
-			OGF_Vertex	V1,V2,V3;
-
-			Face*	FF = *Fit;
-
-			// Geometry
-			V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
-			V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
-			V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
-
-			// Normal order
-			svector<_TCF,8>::iterator TC=FF->tc.begin(); 
-			for (;TC!=FF->tc.end(); TC++)
+			for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
 			{
-				V1.UV.push_back(TC->uv[0]);
-				V2.UV.push_back(TC->uv[1]);
-				V3.UV.push_back(TC->uv[2]);
+				// If lightmaps persist
+				CLightmap* LM	= F->lmap_layers[lmit];
+				
+				strcpy			(T.name, LM->lm.name);
+				T.pSurface		= &(LM->lm);
+				pOGF->textures.push_back(T);
 			}
-
-			// build face
-			pOGF->_BuildFace(V1,V2,V3);
+			
+			// Collect faces & vertices
+			for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
+			{
+				OGF_Vertex	V1,V2,V3;
+				
+				Face*	FF = *Fit;
+				
+				// Geometry
+				V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
+				V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
+				V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
+				
+				// Normal order
+				svector<_TCF,8>::iterator TC=FF->tc.begin(); 
+				for (;TC!=FF->tc.end(); TC++)
+				{
+					V1.UV.push_back(TC->uv[0]);
+					V2.UV.push_back(TC->uv[1]);
+					V3.UV.push_back(TC->uv[2]);
+				}
+				
+				// build face
+				pOGF->_BuildFace(V1,V2,V3);
+			}
+		} catch (...)
+		{
+			Msg("* ERROR: Flex2OGF, 1st part, model# %d",MODEL_ID);
 		}
-
-		pOGF->treeID	= g_tree.size();
-		pOGF->Optimize	();
-		pOGF->CalcBounds();
-
-		if (g_params.m_bConvertProgressive)		pOGF->MakeProgressive	();
-		if (g_params.m_bStripify)				pOGF->Stripify			();
-
+		
+		try {
+			pOGF->treeID	= g_tree.size();
+			pOGF->Optimize	();
+			pOGF->CalcBounds();
+			
+			if (g_params.m_bConvertProgressive)		pOGF->MakeProgressive	();
+			if (g_params.m_bStripify)				pOGF->Stripify			();
+		} catch (...)
+		{
+			Msg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);
+		}
+		
 		g_tree.push_back(pOGF);
 		Progress(p_total+=p_cost);
 	}
