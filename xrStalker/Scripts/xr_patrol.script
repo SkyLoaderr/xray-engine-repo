@@ -280,6 +280,15 @@ end
 function action_single_patrol:process_radio ()
     local count = self.object:animation_count ()
     local t_size = table.getn (self.phrases)
+
+    if self.sub_stage == 0 and count == 2 then
+       local obj = self.object:object ("hand_radio")
+       if obj ~= nil then 
+--          self.object:enable_attachable_item (true)
+          printf ("ENABLE RADIO")
+          obj:enable_attachable_item (true)
+       end   
+    end    
     
     if self.sub_stage == 0 and count == 1 then
        self.sub_stage = 1 
@@ -305,6 +314,14 @@ function action_single_patrol:process_radio ()
        end
     end      
           
+    if self.sub_stage == 2 and count == 1 then
+       local obj = self.object:object ("hand_radio")
+       if obj ~= nil then 
+          printf ("DISABLE RADIO")
+          --self.object:enable_attachable_item (false)
+          obj:enable_attachable_item (false)
+       end   
+    end          
                 
     if count ~= 0 then 
        return false 
@@ -336,7 +353,7 @@ function action_single_patrol:radio ()
     table.insert (self.phrases, {namespace = radio_commander_end, phrase = math.random (0, 2)})
     table.insert (self.phrases, {namespace = radio_off, phrase = 0})
 
-    self.object:set_sound_mask (2147483647)
+    self.object:set_sound_mask (-1)
     self.object:set_sound_mask (0)
     
 end
