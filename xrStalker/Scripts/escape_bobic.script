@@ -8,7 +8,7 @@ local bobik_home = nil
 function main()
 	bobik_home = patrol("point_bobic"):point(0)
 
-	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), "point_bobic", 3 )
+	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), "point_bobic", 4 )
 
     while(dog:execute()) do
     	wait()
