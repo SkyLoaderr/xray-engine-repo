@@ -13,7 +13,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:	// masking
-		C.r2_Pass				(r2s("r2_accum_point_mask"),	r2s("r2_accum_point_mask"),TRUE,FALSE);
+		C.r2_Pass				(r2v("r2_accum_point_mask"),	r2p("r2_accum_point_mask"),TRUE,FALSE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_p);
@@ -21,7 +21,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 		break;
 	case 1:	// lighting/shadowing - front/back
 	case 2:
-		C.r2_Pass				(r2s("r2_accum_point"),			r2s("r2_accum_point"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r2_Pass				(r2v("r2_accum_point"),			r2p("r2_accum_point"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_p);

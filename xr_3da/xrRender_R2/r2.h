@@ -177,4 +177,5 @@ extern CRender						RImplementation;
 
 // shader name prefixed with codepath
 // MT unsafe
-extern LPCSTR						r2s(LPCSTR name);
+extern LPCSTR						r2p(LPCSTR name);
+extern LPCSTR						r2v(LPCSTR name);

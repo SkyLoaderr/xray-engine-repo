@@ -6,10 +6,17 @@
  
 CRender										RImplementation;
 
-// 
-LPCSTR					r2s(LPCSTR name)
+// Just two static storage
+LPCSTR					r2p(LPCSTR name)
 {
-	static string256	path;
+	static string128	path;
+	if (RImplementation.b_nv3x)	strconcat(path,"r2_nv3x\\",name);
+	else						strconcat(path,"r2_r3xx\\",name);
+	return				path;
+}
+LPCSTR					r2v(LPCSTR name)
+{
+	static string128	path;
 	if (RImplementation.b_nv3x)	strconcat(path,"r2_nv3x\\",name);
 	else						strconcat(path,"r2_r3xx\\",name);
 	return				path;
