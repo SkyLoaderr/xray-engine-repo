@@ -46,7 +46,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	DWORD		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);
-	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
+	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")||(0==strcmp(u_name,"dima"))))	bHighPriority	= TRUE;
 
 	// Send
 	if (bHighPriority) 
