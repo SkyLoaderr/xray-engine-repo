@@ -3,7 +3,7 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.05.03"/>
-    <PROJECT value="!run\LevelEditor.exe"/>
+    <PROJECT value="x:\LevelEditor.exe"/>
     <OBJFILES value="intermediate\LevelEditor.obj intermediate\Library.obj 
       intermediate\Scene.obj intermediate\SceneUndo.obj 
       intermediate\FileSystem.obj intermediate\SceneUtil.obj 
@@ -99,7 +99,8 @@
       intermediate\Blender_Shadow_Texture.obj intermediate\PropertiesGroup.obj 
       intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
       intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
-      intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj"/>
+      intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
+      intermediate\Blender_Model.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -167,7 +168,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=408
+Build=409
 Debug=1
 PreRelease=0
 Special=0
@@ -179,7 +180,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.408
+FileVersion=1.0.1.409
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -187,9 +188,6 @@ OriginalFilename=
 ProductName=
 ProductVersion=1.0.0.0
 Comments=
-
-[Excluded Packages]
-$(BCB)\Bin\dclite50.bpl=Borland Integrated Translation Environment
 
 [HistoryLists\hlIncludePath]
 Count=30
@@ -258,10 +256,11 @@ Item28=c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\compon
 Item29=c:\rad\bcb5\CBuilder5\Projects;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
 
 [HistoryLists\hlDebugSourcePath]
-Count=3
-Item0=c:\rad\borland\cbuilder5\source\vcl
-Item1=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
-Item2=$(BCB)\source\vcl
+Count=4
+Item0=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
+Item1=c:\rad\borland\cbuilder5\source\vcl
+Item2=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
+Item3=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=8
@@ -280,9 +279,11 @@ Item0=intermediate
 Item1=ed_debug
 
 [HistoryLists\hlFinalOutputDir]
-Count=2
-Item0=!run\
-Item1=P:\Editor\!run
+Count=4
+Item0=x:\
+Item1=x:
+Item2=!run\
+Item3=P:\Editor\!run
 
 [Debugging]
 DebugSourceDirs=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components\AlexMX\
@@ -297,11 +298,5 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=0
-
-[CORBA]
-AddServerUnit=1
-AddClientUnit=1
-PrecompiledHeaders=1
   </IDEOPTIONS>
 </PROJECT>

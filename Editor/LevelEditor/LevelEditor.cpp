@@ -215,6 +215,7 @@ USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEUNIT("edit\CustomObjectLE.cpp");
 USEUNIT("Engine\Blenders\Blender_Blur.cpp");
+USEUNIT("Engine\Blenders\Blender_Model.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -239,8 +240,8 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Level Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		frmMain->SetHInst(hInst);
+         Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+         frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
 

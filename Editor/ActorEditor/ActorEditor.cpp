@@ -133,6 +133,7 @@ USEUNIT("Engine\SH_RT.cpp");
 USEUNIT("Engine\SH_VS.cpp");
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
 USEUNIT("Engine\Blenders\Blender_Blur.cpp");
+USEUNIT("Engine\Blenders\Blender_Model.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -157,9 +158,9 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
 		Application->Title = "Actor Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
-		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
-		frmMain->SetHInst(hInst);
+         Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+         Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
+         frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
 

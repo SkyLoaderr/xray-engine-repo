@@ -61,7 +61,7 @@
       Intermediate\Blender_Shadow_Texture.obj 
       Intermediate\Blender_Shadow_World.obj Intermediate\SH_RT.obj 
       Intermediate\SH_VS.obj Intermediate\NumericVector.obj 
-      Intermediate\Blender_Blur.obj"/>
+      Intermediate\Blender_Blur.obj Intermediate\Blender_Model.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
