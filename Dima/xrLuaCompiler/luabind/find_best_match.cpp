@@ -76,4 +76,4 @@ void luabind::detail::find_exact_match(lua_State* L, const overload_rep_base* st
 #pragma warning(default:4995)
 #pragma warning(default:4530)
 #pragma warning(default:4267)
-#pragma warning(default:4505)
+//#pragma warning(default:4505)
