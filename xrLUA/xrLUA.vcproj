@@ -222,6 +222,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -248,6 +249,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -274,6 +276,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -300,6 +303,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -326,6 +330,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -349,6 +354,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -375,6 +381,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -401,6 +408,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -430,6 +438,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -456,6 +465,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -482,6 +492,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -508,6 +519,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -534,6 +546,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -560,6 +573,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -586,6 +600,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -612,6 +627,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -630,6 +646,12 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -655,6 +677,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -681,6 +704,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -707,6 +731,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -738,6 +763,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -761,6 +787,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -784,6 +811,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -807,6 +835,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -830,6 +859,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -853,6 +883,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -876,6 +907,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -899,6 +931,7 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
