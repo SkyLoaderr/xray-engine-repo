@@ -38,7 +38,7 @@ struct ENGINE_API	CWallmark {
 	};
 	IC void		Draw	(Vertex*	&D) 
 	{
-		DWORD vOffset,C;
+		DWORD C;
 		C = iFloor(ttl/W_TTL * 255.f);
 		C = D3DCOLOR_RGBA(C,C,C,C);
 
