@@ -75,7 +75,7 @@ void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc,
 	build_internal				(V,Vcnt,T,Tcnt,bc,bcp);
 #else
 	BTHREAD_params				P = { this, V, Vcnt, T, Tcnt, bc, bcp };
-	R_ASSERT					(thread_spawn(build_thread,"CDB-construction",0,&P) >= 0);
+	thread_spawn				(build_thread,"CDB-construction",0,&P);
 	while						(S_INIT	== status)	Sleep	(5);
 #endif
 }

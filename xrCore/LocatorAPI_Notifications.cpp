@@ -7,7 +7,7 @@
 
 #include "LocatorAPI_Notifications.h"
 
-void __cdecl CThread::startup(void* P)
+void CThread::startup(void* P)
 {
 	CThread* T 			= (CThread*)P;
 	T->Execute			();
