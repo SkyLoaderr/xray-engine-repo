@@ -67,7 +67,7 @@
 	<!-- Sleep button -->
     <sleep_button x="800" y="715" width="150" height="40">
         <texture>ui\ui_button_01</texture>
-        <text r="255" g="255" b="255">Sleep</text>
+        <text>Sleep</text>
     </sleep_button>
 
 	<!-- Drop button -->
