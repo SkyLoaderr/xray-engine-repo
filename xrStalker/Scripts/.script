@@ -44,7 +44,7 @@ module ("escape")
 module ("escape_factory_bandits")
 
 --For Dark Laboratory
-//module ("xr_scientist")
+module ("xr_scientist")
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
@@ -783,4 +783,9 @@ function new_point(center_id, position_id,radius, min_radius)
     end
 
     return (level.vertex_position(pos))
+end
+
+function stop_play_sound(obj)
+	obj:set_sound_mask (-1)
+    obj:set_sound_mask (0)
 end

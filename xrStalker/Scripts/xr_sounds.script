@@ -9,7 +9,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 --function play_sound_table (obj, delay, theme, sub_theme, phrase_set)
 --    if obj == nil or theme == nil or sub_theme == nil then return end
---    if typeof (phrase_set) ~= "table" or table.getn (phrase_set) == 0 then 
+--    if typeof (phrase_set) ~= "table" or table.getn (phrase_set) == 0 then
 --       this.play_sound (obj, delay_min, theme, sub_theme, phrase_set)
 --       return
 --    end
@@ -17,42 +17,45 @@ end
 --    if table.getn (phrase_set) == 1 then phrase = 1
 --    else
 --       phrase = phrase_set[math.random (1, table,getn (phrase_set))]
---    end    
+--    end
 --    this.play_sound (obj, delay, theme, sub_theme, phrase)
 --end
 -----------------------------------------------------------------------------------------------------------------------------------
 function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
+--Немного поменял Джон. Просьба не ругаться и не бить(особенно по голове - ей еще думать). Закоментированное
+--надо будет стереь. У меня рука не поднялась.
+	this.play_sound_rnd(obj, delay, delay + 1, theme, sub_theme, phrase_set, sub_phrase)
 
-    if obj == nil or theme == nil then return end
-    printf ("Theme %s", theme)
-    if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
-       sub_theme = this.get_random_subtheme (theme)
-       if sub_theme == 0 then return end
-    end
-    printf ("Sub_theme %d", sub_theme)
-    if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
-       phrase_set = math.random (1, table.getn (themes[theme][sub_theme]) - 1)
-    end
-    printf ("Phrase_set %d", phrase_set)
-    if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
-       local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
-       if num == 0 then 
-          printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
-          return 
-       end
-       if num == 1 then 
-          sub_phrase = 0 
-       else
-          sub_phrase = math.random (0, num - 1)
-       end   
-    else
-       sub_phrase = sub_phrase - 1    
-    end
-    printf ("Sub_phrase %d", sub_phrase)
-    obj:set_sound_mask (-1)
-    obj:set_sound_mask (0)
-    --printf ("NAMESPACE %d", themes[theme][sub_theme][1] + phrase_set)
-    obj:play_sound (themes[theme][sub_theme][1] + phrase_set - 1, delay + 1, delay, 1, 0, sub_phrase)
+--    if obj == nil or theme == nil then return end
+--    printf ("Theme %s", theme)
+--    if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
+--       sub_theme = this.get_random_subtheme (theme)
+--       if sub_theme == 0 then return end
+--    end
+--    printf ("Sub_theme %d", sub_theme)
+--    if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
+--       phrase_set = math.random (1, table.getn (themes[theme][sub_theme]) - 1)
+--    end
+--    printf ("Phrase_set %d", phrase_set)
+--    if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
+--       local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
+--       if num == 0 then
+--          printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
+--          return
+--       end
+--       if num == 1 then
+--          sub_phrase = 0
+--       else
+--          sub_phrase = math.random (0, num - 1)
+--       end
+--    else
+--       sub_phrase = sub_phrase - 1
+--    end
+--    printf ("Sub_phrase %d", sub_phrase)
+--    obj:set_sound_mask (-1)
+--    obj:set_sound_mask (0)
+--    --printf ("NAMESPACE %d", themes[theme][sub_theme][1] + phrase_set)
+--    obj:play_sound (themes[theme][sub_theme][1] + phrase_set - 1, delay + 1, delay, 1, 0, sub_phrase)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set, sub_phrase)
@@ -70,17 +73,17 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
     printf ("Phrase_set %d", phrase_set)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
        local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
-       if num == 0 then 
+       if num == 0 then
           printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
-          return 
+          return
        end
-       if num == 1 then 
-          sub_phrase = 0 
+       if num == 1 then
+          sub_phrase = 0
        else
           sub_phrase = math.random (0, num - 1)
-       end   
+       end
     else
-       sub_phrase = sub_phrase - 1    
+       sub_phrase = sub_phrase - 1
     end
     printf ("Sub_phrase %d", sub_phrase)
     obj:set_sound_mask (-1)
@@ -124,21 +127,21 @@ function get_random_phrases_set (theme, sub_theme)
        printf ("No phrases set in %s theme, %d sub theme", theme, sub_theme)
        return
     end
-    if num == 1 then return 1 end       
+    if num == 1 then return 1 end
     return math.random (1, num - 1)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function get_random_phrase (theme, sub_theme, phrase_set)
     local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
-    if num == 0 then 
+    if num == 0 then
        printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
-       return 
+       return
     end
-    if num == 1 then 
-       sub_phrase = 0 
+    if num == 1 then
+       sub_phrase = 0
     else
        sub_phrase = math.random (0, num - 1)
-    end   
+    end
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function create_sound_constructor (theme, sub_theme)
@@ -356,6 +359,20 @@ function load_common (obj, sounds_base)
               }
               }
     sounds_base = sounds_base + table.getn (themes["bar_talk_double"][1])
+
+    themes["laboratory_scientist"] =
+               {
+               {
+               sounds_base,
+               --1 - убери оружие и заходи
+               --2 - приветствие
+               --3,... - различные задания
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_ambush_3",  	30, snd_type.talk, 2, 1, sounds_base + 0),
+               obj:add_sound ("script_replics\\trader\\trader_script1a_",  			30, snd_type.talk, 2, 1, sounds_base + 1),
+               obj:add_sound ("script_replics\\trader\\trader_monolog",    	   		30, snd_type.talk, 2, 1, sounds_base + 2),
+              }
+              }
+    sounds_base = sounds_base + table.getn (themes["laboratory_scientist"][1])
 
     return sounds_base
 end
