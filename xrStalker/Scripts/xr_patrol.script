@@ -126,7 +126,7 @@ function action_path:initialize ()
 	self.object:set_sight				(look.search, nil, 0)
 	self.object:set_item				(object.idle)
 	self.object:set_path_type			(game_object.patrol_path)
-	self.object:set_patrol_path			("way0000", patrol.start, patrol.continue, true)
+	self.object:set_patrol_path			(self.path, patrol.start, patrol.continue, true)
 	self.object:set_detail_path_type	(move.line)
 	self.object:set_body_state			(move.standing)
 	self.object:set_movement_type		(move.walk)
@@ -151,7 +151,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "patrol_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:__init (obj) super(object)
+function patrol_binder:__init (obj) super(obj)
     self.npc = obj
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -166,20 +166,22 @@ function patrol_binder:reload (section)
 	local					manager	= self.object:motivation_action_manager ()
 	local					goal = world_state ()
 
-	properties["path_end"]	= self.npc.property_script + 1
-	actions["move"]		    = self.npc.action_script   + 1
+	properties["path_end"]	= stalker_ids.property_script + 1
+	actions["move"]		    = stalker_ids.action_script   + 1
 	
 	goal:clear ()
 	-- // evaluators
 	manager:add_evaluator	(properties["path_end"],	this.evaluator_const	(false))
 
-	action = this.action_path (PathsAndSoldiers (self.npc:name ()))
-	action:add_precondition	(world_property(self.npc.property_alive,	true))
-	action:add_precondition	(world_property(self.npc.property_items,	false))
-	action:add_precondition	(world_property(self.npc.property_enemy,	false))
+	action = this.action_path (globals.PathsAndSoldiers (self.npc:name ()))
+	action:add_precondition	(world_property(stalker_ids.property_alive,	true))
+	action:add_precondition	(world_property(stalker_ids.property_items,	false))
+	action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
 	action:add_effect		(world_property(properties["path_end"],	    true))
 	manager:add_action		(actions["move"],			                action)
 	
+	action                  = manager:action(stalker_ids.free_no_alife)
+	action:add_precondition (world_property(properties["path_end"],	    true))
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_spawn	(server_object)
