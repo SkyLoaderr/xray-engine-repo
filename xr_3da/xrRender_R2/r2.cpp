@@ -177,10 +177,14 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);								}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V)
+void					CRender::add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)
 {
-	VERIFY2					(_valid(P) && _valid(s) && T && V && (s>EPS_L), "Invalid wallmark params");
-	Wallmarks->AddWallmark	(T,V,P,&*S,s);
+	VERIFY2							(_valid(P) && _valid(s) && T && verts && (s>EPS_L), "Invalid static wallmark params");
+	Wallmarks->AddStaticWallmark	(T,verts,P,&*S,s);
+}
+void					CRender::add_SkeletonWallmark	(CSkeletonWallmark* wm)
+{
+	Wallmarks->AddSkeletonWallmark				(wm);
 }
 void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
 {
