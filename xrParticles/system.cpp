@@ -204,6 +204,12 @@ ParticleAction* pCreateAction(PActionEnum type, ParticleAction* src)
 	return pa;
 }
 
+void ParticleActions::copy(ParticleActions* src)
+{
+    clear		();
+    for (PAVecIt s_it=src->begin(); s_it!=src->end(); s_it++)
+        append	(pCreateAction((*s_it)->type,*s_it));
+}
 ////////////////////////////////////////////////////////
 // Auxiliary calls
 void _pCallActionList(ParticleActions* pa, ParticleEffect *pe)

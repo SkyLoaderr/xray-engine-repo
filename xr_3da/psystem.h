@@ -534,6 +534,15 @@ namespace PAPI
 		{
 			return		actions.end();
 		}
+        IC int			size()
+        {
+        	return 		actions.size();
+        }
+        IC int			resize(int cnt)
+        {
+        	actions.resize(cnt);
+        }
+        void			copy(ParticleActions* src);
 	};
 
 	// Global state _vector
