@@ -1,13 +1,67 @@
+//-----------------------------------------------------------------------------/
+//  Окно вывода статистики по игрокам в сетевой игре
+//-----------------------------------------------------------------------------/
 
-#include "UIDialogWnd.h"
+#ifndef UISTATSWND_H_
+#define UISTATSWND_H_
 
 #pragma once
+
+#include "UIDialogWnd.h"
+#include "UIFrameWindow.h"
+#include "UIListWnd.h"
+#include "UIListItem.h"
+#include "xrXMLParser.h"
+#include "UIXmlInit.h"
+#include "UIButton.h"
+
+DEF_VECTOR (FIELDS_VECTOR, CUIButton*)
+
+// Класс для определения нового члена списка
+class CUIStatsListItem: public CUIListItem
+{
+	typedef CUIListItem inherited;
+public:
+	virtual ~CUIStatsListItem() {};
+	void XmlInit(const char *path, CUIXml &uiXml);
+	void Highlight(bool bHighlight);
+
+	// поля записи
+	FIELDS_VECTOR FieldsVector;
+};
 
 class CUIStatsWnd: public CUIDialogWnd
 {
 private:
 	typedef CUIDialogWnd inherited;
 public:
-	CUIStatsWnd() {};
-	virtual ~CUIStatsWnd() {};
+	CUIStatsWnd();
+	virtual ~CUIStatsWnd();
+
+	virtual void Init();
+//	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
+
+	// Добавить 1 элемент. Заполнить поля необходимо самостоятельно. Возвращает указатель 
+	// на добавленный элемент
+	CUIStatsListItem * AddItem();
+	// Получить элемент, при п		омощи поиска в полях по строке. Можно искать
+	// элемент начиная с заданного номера
+	CUIStatsListItem * FindFrom(const u32 beg_pos, const char *strCaption);
+	// Удалить элемент в котором есть статик с текстом strCaption. В каждом Item'е поиск 
+	// начать с позиции beg_pos
+	void RemoveItemFrom(const u32 beg_pos, const char *strCaption);
+	// Подсветить нужный элемент
+	void HighlightItem(const u32 uItem);
+	// Получить номер подсвеченого эл-та
+	u32	GetHighlightedItem() { return m_uHighlightedItem; }
+protected:
+	CUIButton			UIBtn;
+	// Фрейм - оболочка
+	CUIFrameWindow		UIFrameWnd;
+	// Лист для отображения списка статичтики игроков
+	CUIListWnd			UIStatsList;
+	// Подсвеченый элемент
+	u32					m_uHighlightedItem;
 };
+
+#endif

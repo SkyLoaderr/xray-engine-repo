@@ -195,7 +195,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						   pWnd->GetAbsoluteRect().bottom)/2;;
 
 
-			if(PtInRect(&rect, pt_center))
+			if(PtInRect(&rect, pt_center) || pItem->NeedMoveWithoutRectCheck())
 			{
 
 				//отсоединить у прошлого родителя

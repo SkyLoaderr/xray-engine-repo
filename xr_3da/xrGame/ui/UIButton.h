@@ -60,6 +60,8 @@ public:
 
 	//подсвечен ли текст на кнопке
 	virtual bool IsHighlightText();
+	// принудительная подсветка
+	virtual void HighlightItem(bool bHighlight) { m_bCursorOverButton = bHighlight; }
 
 	//состояния в которых находится кнопка
 	typedef enum{BUTTON_NORMAL, //кнопка никак не затрагивается

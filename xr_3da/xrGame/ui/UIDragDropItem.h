@@ -77,6 +77,13 @@ public:
 
 	bool m_bInFloat;
 
+	// —пециальные функции дл€ перемещени€ вещи посредством посылки сообщени€
+	// ITEM_DROP даже если она не находитс€ над контролом в который бросают.
+	// »спользуетс€ дл€ принудительного вытаскивани€ вещи из слота.
+	void MoveOnNextDrop() { m_bMoveOnNextDrop = true; }
+	// ѕроверка необходимости перемещени€ вещи без проверки находжени€ вещи над контролом
+	bool NeedMoveWithoutRectCheck() { return m_bMoveOnNextDrop ? m_bMoveOnNextDrop = false, true : false; }
+
 protected:
 	
 	int m_iOldMouseX;
@@ -106,6 +113,10 @@ protected:
 
 	CUSTOM_UPDATE_PROC m_pCustomUpdateProc;
 	CUSTOM_DRAW_PROC m_pCustomDrawProc;
+
+	// ѕризнак перемещени€ вещи в другой слот, при следующей посылке ITEM_DROP сообщени€.
+	// см. функцию MoveOnNextDrop()
+	bool m_bMoveOnNextDrop;
 };
 
 #endif // _UI_DRAG_DROP_ITEM_H_

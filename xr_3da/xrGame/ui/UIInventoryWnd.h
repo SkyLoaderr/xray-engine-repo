@@ -63,6 +63,15 @@ public:
 
 	// cнять костюм
 	bool UndressOutfit();
+
+	// Получить указатель на окно сумки. Используется при автоматическом вынимании текущей вещи
+	// из слотов, при дропе на них новых вещей
+	CUIDragDropList * GetBag() { return &UIBagList; }
+
+	// Проверить принадлежность вещи к нужному слоту и попробовать освободить для нее место
+	// переместив текущую вещь в слоте в сумку
+	bool SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
+
 protected:
 
 	CUIFrameWindow		UIBagWnd;

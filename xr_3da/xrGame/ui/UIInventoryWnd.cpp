@@ -416,9 +416,11 @@ bool CUIInventoryWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
+	if (!this_inventory->SlotToBag(pInvItem, pList, PISTOL_SLOT)) return false;
+
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if(pInvItem->GetSlot() == 1)
+	if(pInvItem->GetSlot() == PISTOL_SLOT)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -430,9 +432,11 @@ bool CUIInventoryWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
-	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
+	if (!this_inventory->SlotToBag(pInvItem, pList, RIFLE_SLOT)) return false;
 
-	if( pInvItem->GetSlot() == 2)
+	if (!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
+
+	if( pInvItem->GetSlot() == RIFLE_SLOT)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -442,12 +446,13 @@ bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
-
 	PIItem pInvItem = (PIItem)pItem->GetData();
+
+	if (!this_inventory->SlotToBag(pInvItem, pList, GRENADE_SLOT)) return false;
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if( pInvItem->GetSlot() == 3)
+	if( pInvItem->GetSlot() == GRENADE_SLOT)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -546,6 +551,9 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		
 		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
+
+		// "Поднять" вещь для освобождения занимаемого места
+		SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
 
 		//попытаться закинуть элемент в слот, рюкзак или на пояс
 		if(!ToSlot())
@@ -995,7 +1003,28 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 bool CUIInventoryWnd::ToSlot()
 {
+	// Если целевой слот - слот с одеждой, то попробуем убрать текущую одежду
 	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
+
+	// Убираем текущую вещь в слоте, если это не одежда, и текущая вещь и вешь в слоте не одно и то же
+	if (OUTFIT_SLOT != m_pCurrentItem->GetSlot())
+	{
+		DRAG_DROP_LIST &DDList = UITopList[m_pCurrentItem->GetSlot()].GetDragDropItemsList();
+
+		if (!DDList.empty() &&
+			m_pCurrentDragDropItem != *DDList.begin())
+		{
+			// Берем текущую вещь в слоте...
+			(*DDList.begin())->MoveOnNextDrop();
+			// ...и посылаем слоту сообщение переместить эту вещь в себя
+			UIBagList.SendMessage(
+				*DDList.begin(), 
+				CUIDragDropItem::ITEM_DROP,
+				NULL);
+		}
+	}
+
+	// Можно ли засунуть новую вещь в предназначеный для нее слот?
 	if(!GetInventory()->CanPutInSlot(m_pCurrentItem)) return false;
 
 	//попытаться закинуть элемент в соответствующий слот
@@ -1208,4 +1237,24 @@ bool CUIInventoryWnd::UndressOutfit()
 		m_pCurrentDragDropItem = pCurrDDItem;
 	}
 	return status;
+}
+
+//-----------------------------------------------------------------------------/
+//	Проверить принадлежность вещи к нужному слоту и попробовать освободить для 
+//	нее место, переместив текущую вещь в слоте в сумку
+//-----------------------------------------------------------------------------/
+bool CUIInventoryWnd::SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum)
+{
+	// Проверяем возможность перенесения  айтема в нужный слот
+	if (SlotNum != pItem->GetSlot()) return false;
+	// Выкидываем вещь из слота если есть.
+	if (!pList->GetDragDropItemsList().empty())
+	{
+		// Берем текущее оружие в слоте...
+		(*pList->GetDragDropItemsList().begin())->MoveOnNextDrop();
+		// ...и посылаем ему сообщение переместиться в сумку
+		GetBag()->SendMessage((*pList->GetDragDropItemsList().begin()), 
+			CUIDragDropItem::ITEM_DROP, NULL);
+	}
+	return true;
 }

@@ -36,12 +36,10 @@ bool CUITabControl::AddItem(CUIButton *pButton)
 	pButton->SetButtonAsSwitch(true);
 
 	// Нажимаем кнопку по умолчанию
-	static bool DefaultSetted = false;
-	if (!DefaultSetted && m_iPushedIndex == static_cast<int>(m_TabsArr.size() - 1))
+	if (m_iPushedIndex == static_cast<int>(m_TabsArr.size() - 1))
 	{
 		m_TabsArr[m_iPushedIndex]->OnMouse(1, 1, CUIWindow::LBUTTON_DOWN);
 		SetCapture(m_TabsArr[m_iPushedIndex], false);
-		DefaultSetted = true;
 	}
 
 	AttachChild(pButton);

@@ -56,7 +56,6 @@ void CUIPdaWnd::Init()
 
 	// Tab control
 	AttachChild(&UITabControl);
-	//	UITabControl.Init(0, 0, GetWidth(), GetHeight());
 	xml_init.InitTabControl(uiXml, "tab", 0, &UITabControl);
 
 	// Oкно коммуникaции

@@ -354,7 +354,7 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, const char *path, int index, CU
 	bool status = true;
 
 	status &= InitWindow(xml_doc, path, index, pWnd);
-	int tabsCount = xml_doc.GetNodesNum(path, 0, "button");//xml_doc.ReadAttribInt(path, index, "tabcount");
+	int tabsCount = xml_doc.GetNodesNum(path, 0, "button");
 
 	XML_NODE* tab_node = xml_doc.NavigateToNode(path,index);
 	xml_doc.SetLocalRoot(tab_node);
