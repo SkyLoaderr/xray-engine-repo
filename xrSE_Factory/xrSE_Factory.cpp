@@ -35,7 +35,7 @@ FACTORY_API ISE_Abstract *create_entity	(LPCSTR section)
 
 FACTORY_API void destroy_entity			(ISE_Abstract *&abstract)
 {
-	return				(F_entity_Destroy(abstract));
+	return				(F_entity_Destroy(dynamic_cast<CSE_Abstract*>(abstract)));
 }
 
 void load_prop_helper			()

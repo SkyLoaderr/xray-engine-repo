@@ -23,7 +23,6 @@
 #pragma warning(disable:4005)
 
 struct ISE_Abstract {
-	virtual							~ISE_Abstract	() = 0;
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
     virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
