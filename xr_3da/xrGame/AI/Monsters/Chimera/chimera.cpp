@@ -218,14 +218,14 @@ void CChimera::TranslateActionToPathParams()
 		}
 		break;
 	case ACT_DRAG:
-		vel_mask = eVelocityParameterDrag;
+		vel_mask = eVelocityParamsDrag;
 		des_mask = eVelocityParameterDrag;
 
 		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 
 		break;
 	case ACT_STEAL:
-		vel_mask = eVelocityParameterSteal;
+		vel_mask = eVelocityParamsSteal;
 		des_mask = eVelocityParameterSteal;
 		break;
 	}
