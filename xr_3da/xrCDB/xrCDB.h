@@ -13,6 +13,7 @@
 
 // forward declarations
 class CFrustum;
+class OPCODE_Model;
 
 namespace CDB
 {
@@ -22,7 +23,11 @@ namespace CDB
 		OPT_ONLYNEAREST	= (1<<2)
 	};
 	
-	class XRCDB_API MODEL;
+	class XRCDB_API MODEL
+	{
+		OPCODE_Model*	tree;
+	public:
+	};
 
 	class XRCDB_API RESULT
 	{
