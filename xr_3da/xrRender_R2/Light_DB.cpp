@@ -176,9 +176,9 @@ void			CLight_DB::Update()
 		sun_dir_1.normalize		();
 
 		sun_color_0.set				(sun_color_1);
-		sun_color_1.set				(::Random.randF(15.f),::Random.randF(15.f),::Random.randF(15.f));
+		sun_color_1.set				(::Random.randF(150.f),::Random.randF(150.f),::Random.randF(150.f));
 		sun_color_1.normalize_safe	();
-		sun_color_1.mul				(::Random.randF(.5,1.5f));
+		sun_color_1.mul				(::Random.randF(.5f,2.0f));
 	}
 	
 	float f					= float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base);
