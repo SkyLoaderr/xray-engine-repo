@@ -181,7 +181,7 @@ void CSE_ALifeTrader::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
 {
     m_tpSupplies.resize			(supplies_count);
-	UI.Command					(COMMAND_UPDATE_PROPERTIES);
+	UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)

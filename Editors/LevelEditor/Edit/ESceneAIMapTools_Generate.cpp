@@ -5,7 +5,7 @@
 
 #include "scene.h"
 #include "ui_main.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "cl_intersect.h"
 #include "MgcAppr3DPlaneFit.h"
 #include "sceneobject.h"
@@ -386,7 +386,7 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
     // Estimate nodes
     float estimated_nodes	= (2*sz-1)*(2*sz-1);
 
-    if (estimated_nodes>1024) UI.ProgressStart(1, "Building nodes...");
+    if (estimated_nodes>1024) UI->ProgressStart(1, "Building nodes...");
     float radius			= sz*m_Params.fPatchSize-EPS_L;
     // General cycle
     for (int k=0; k<(int)m_Nodes.size(); k++){
@@ -426,13 +426,13 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
                 float	p	= 0.1f*p1+0.9f*p2;
 
                 clamp	(p,0.f,1.f);
-                UI.ProgressUpdate(p);
+                UI->ProgressUpdate(p);
                 // check need abort && redraw
-                if (UI.NeedAbort()) break;
+                if (UI->NeedAbort()) break;
             }
         }
     }
-	if (estimated_nodes>1024) UI.ProgressEnd();
+	if (estimated_nodes>1024) UI->ProgressEnd();
     return oldcount-m_Nodes.size();
 }
 
@@ -450,7 +450,7 @@ void ESceneAIMapTools::BuildNodes()
     m_AIBBox.getsize	(LevelSize);
     float estimated_nodes	= (LevelSize.x/m_Params.fPatchSize)*(LevelSize.z/m_Params.fPatchSize);
 
-    UI.ProgressStart		(1, "Building nodes...");
+    UI->ProgressStart		(1, "Building nodes...");
     // General cycle
     for (int k=0; k<(int)m_Nodes.size(); k++){
         SAINode* N 			= m_Nodes[k];
@@ -484,13 +484,13 @@ void ESceneAIMapTools::BuildNodes()
             float	p	= 0.1f*p1+0.9f*p2;
 
             clamp	(p,0.f,1.f);
-            UI.ProgressUpdate(p);
+            UI->ProgressUpdate(p);
             // check need abort && redraw
-            if (k%32768==0) UI.RedrawScene(true);
-            if (UI.NeedAbort()) break;
+            if (k%32768==0) UI->RedrawScene(true);
+            if (UI->NeedAbort()) break;
         }
     }
-    UI.ProgressEnd();
+    UI->ProgressEnd();
 }
 
 SAINode* ESceneAIMapTools::GetNode(Fvector vAt, bool bIC)	// return node's index
@@ -559,13 +559,13 @@ bool ESceneAIMapTools::GenerateMap()
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Continue generate nodes?"))
         	return false;
 
-        UI.ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
+        UI->ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
         // prepare collision model
         CDB::CollectorPacked* CL = xr_new<CDB::CollectorPacked>(m_AIBBox);
         Fvector verts[3];
         for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
         	CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
-        	UI.ProgressInc		(S->Name);
+        	UI->ProgressInc		(S->Name);
             CEditableObject*    E = S->GetReference(); VERIFY(E);
             EditMeshVec& 		_meshes = E->Meshes();
             for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
@@ -583,15 +583,15 @@ bool ESceneAIMapTools::GenerateMap()
                 }
             }
         }
-        UI.ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
+        UI->ProgressStart(m_SnapObjects.size(),"Prepare collision model...");
 
-        UI.SetStatus		("Building collision model...");
+        UI->SetStatus		("Building collision model...");
         // create CFModel
 		m_CFModel 			= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
 	    m_CFModel->build	(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
 		xr_delete			(CL);        
         
-        UI.SetStatus		("Building nodes...");
+        UI->SetStatus		("Building nodes...");
         // building
         Scene.lock			();
 CTimer tm;
@@ -767,7 +767,7 @@ void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode, bool bIgnoreConstrain
 #define		merge(pt)	if (fsimilar(P.y,REF.y,0.5f)) { c++; pt.add(P); }
 void ESceneAIMapTools::SmoothNodes()
 {
-    UI.ProgressStart		(m_Nodes.size(), "Smoothing nodes...");
+    UI->ProgressStart		(m_Nodes.size(), "Smoothing nodes...");
 
 	AINodeVec	smoothed;	smoothed.reserve(m_Nodes.size());
 	U8Vec		mark;		mark.assign		(m_Nodes.size(),0);
@@ -940,11 +940,11 @@ void ESceneAIMapTools::SmoothNodes()
 
         int k = it-m_Nodes.begin();
         if (k%128==0) {
-            UI.ProgressUpdate(k);
-            if (UI.NeedAbort()) break;
+            UI->ProgressUpdate(k);
+            if (UI->NeedAbort()) break;
         }
     }
-    UI.ProgressEnd();
+    UI->ProgressEnd();
     Clear				(true);
     m_Nodes 			= smoothed;
 	DenumerateNodes		();

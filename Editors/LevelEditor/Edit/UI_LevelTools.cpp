@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "UI_LevelTools.h"
 #include "ui_control.h"
 #include "cursor3d.h"
 #include "LeftBar.h"
-#include "TopBar.h"
 #include "Scene.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 
 #include "editlibrary.h"
 #include "render.h"
@@ -18,49 +17,49 @@
 #define DETACH_FRAME(a) 	if (a){ (a)->Hide(); 	(a)->Parent = NULL; }
 #define ATTACH_FRAME(a,b) 	if (a){ (a)->Parent=(b);(a)->Show(); 		}
 
-TUI_Tools Tools;
+CLevelTools*&	LTools=(CLevelTools*)Tools;
 
 TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
-TUI_Tools::TUI_Tools()
+CLevelTools::CLevelTools()
 {
     fFogness	= 0.9f;
     dwFogColor	= 0xffffffff;
     m_Flags.zero();
 }
 //---------------------------------------------------------------------------
-TUI_Tools::~TUI_Tools()
+CLevelTools::~CLevelTools()
 {
 }
 //---------------------------------------------------------------------------
 
-TForm*	TUI_Tools::GetFrame()
+TForm*	CLevelTools::GetFrame()
 {
 	if (pCurTools) return pCurTools->pFrame;
     return 0;
 }
 //---------------------------------------------------------------------------
-bool TUI_Tools::OnCreate()
+bool CLevelTools::OnCreate()
 {
-    target          = OBJCLASS_DUMMY;//-1;
-    action          = eaSelect;//-1;
+    target          = OBJCLASS_DUMMY;
+    action          = etaSelect;
     sub_target		= -1;
     pCurTools       = 0;
     ssRBOnly << ssRight;
-    paParent = fraLeftBar->paFrames;   VERIFY(paParent);
-    m_Flags.set(flChangeAction,FALSE);
-    m_Flags.set(flChangeTarget,FALSE);
+    paParent 		= fraLeftBar->paFrames;   VERIFY(paParent);
+    m_Flags.set		(flChangeAction,FALSE);
+    m_Flags.set		(flChangeTarget,FALSE);
     // scene creating
 	Scene.OnCreate	();
     // change target to Object
-	UI.Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
+	UI->Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
 	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,OnPropsModified,0,OnPropsClose);
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::OnDestroy()
+void CLevelTools::OnDestroy()
 {
     TfrmObjectList::DestroyForm(pObjectListForm);
 	TProperties::DestroyForm(m_Props);
@@ -69,89 +68,90 @@ void TUI_Tools::OnDestroy()
 	Scene.OnDestroy		();
 }
 //---------------------------------------------------------------------------
-void TUI_Tools::Reset()
+void CLevelTools::Reset()
 {
-	SetTarget(GetTarget(),true);
+	RealSetTarget(GetTarget(),true);
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TUI_Tools::MouseStart(TShiftState Shift)
+bool __fastcall CLevelTools::MouseStart(TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->Start(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::MouseMove(TShiftState Shift)
+void __fastcall CLevelTools::MouseMove(TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift)
+bool __fastcall CLevelTools::MouseEnd(TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::OnObjectsUpdate()
+void __fastcall CLevelTools::OnObjectsUpdate()
 {
 	UpdateProperties(false);
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::HiddenMode()
+bool __fastcall CLevelTools::HiddenMode()
 {
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->HiddenMode();
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyDown   (WORD Key, TShiftState Shift)
+bool __fastcall CLevelTools::KeyDown   (WORD Key, TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyDown(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyUp     (WORD Key, TShiftState Shift)
+bool __fastcall CLevelTools::KeyUp     (WORD Key, TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyUp(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyPress  (WORD Key, TShiftState Shift)
+bool __fastcall CLevelTools::KeyPress  (WORD Key, TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyPress(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::SetAction   (int act)
+void CLevelTools::RealSetAction   (ETAction act)
 {
     action = act;
     switch(act){
-        case eaSelect:  UI.GetD3DWindow()->Cursor = crCross;     break;
-        case eaAdd:     UI.GetD3DWindow()->Cursor = crArrow;     break;
-        case eaMove:    UI.GetD3DWindow()->Cursor = crSizeAll;   break;
-        case eaRotate:  UI.GetD3DWindow()->Cursor = crSizeWE;    break;
-        case eaScale:   UI.GetD3DWindow()->Cursor = crVSplit;    break;
-        default:        UI.GetD3DWindow()->Cursor = crHelp;
+        case etaSelect:  UI->GetD3DWindow()->Cursor = crCross;     break;
+        case etaAdd:     UI->GetD3DWindow()->Cursor = crArrow;     break;
+        case etaMove:    UI->GetD3DWindow()->Cursor = crSizeAll;   break;
+        case etaRotate:  UI->GetD3DWindow()->Cursor = crSizeWE;    break;
+        case etaScale:   UI->GetD3DWindow()->Cursor = crVSplit;    break;
+        default:         UI->GetD3DWindow()->Cursor = crHelp;
     }
     if (pCurTools) pCurTools->SetAction(action);
-    UI.RedrawScene();
-    fraTopBar->ChangeAction(act);
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
+    UI->RedrawScene();
+    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    UI->Command(COMMAND_REFRESH_UI_BAR);
     m_Flags.set	(flChangeAction,FALSE);
 }
 
-void __fastcall TUI_Tools::ChangeAction(int act, bool forced){
+void __fastcall CLevelTools::SetAction(ETAction act)
+{
 	// если мышь захвачена - изменим action после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
+	if (UI->IsMouseCaptured()||UI->IsMouseInUse()||!false){
 	    m_Flags.set	(flChangeAction,TRUE);
         iNeedAction=act;
     }else
-    	SetAction	(act);
+    	RealSetAction	(act);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::SetTarget   (EObjClass tgt,bool bForced)
+void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,bool bForced)
 {
     if(bForced||(target!=tgt)){
         target 					= tgt;
@@ -167,82 +167,77 @@ void __fastcall TUI_Tools::SetTarget   (EObjClass tgt,bool bForced)
         pCurTools->SetAction	(action);
         ATTACH_FRAME(pCurTools->pFrame, paParent);
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
     fraLeftBar->UpdateSnapList();
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
+    UI->Command(COMMAND_UPDATE_TOOLBAR);
     m_Flags.set(flChangeTarget,FALSE);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ResetSubTarget()
+void __fastcall CLevelTools::ResetSubTarget()
 {
 	VERIFY(pCurTools);
 	pCurTools->ResetSubTarget();
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::SetSubTarget(int tgt)
+void __fastcall CLevelTools::SetSubTarget(int tgt)
 {
 	VERIFY(pCurTools);
 	sub_target 				= tgt;
     pCurTools->SetSubTarget	(tgt);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ChangeTarget(EObjClass tgt, bool forced)
+void __fastcall CLevelTools::SetTarget(EObjClass tgt)
 {
 	// если мышь захвачена - изменим target после того как она освободится
-	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
+	if (UI->IsMouseCaptured()||UI->IsMouseInUse()||!false){
 	    m_Flags.set(flChangeTarget,TRUE);
         iNeedTarget=tgt;
     }else
-    	SetTarget(tgt,forced);
+    	RealSetTarget(tgt);
 }
 //---------------------------------------------------------------------------
 
-EObjClass TUI_Tools::CurrentClassID()
+EObjClass CLevelTools::CurrentClassID()
 {
 	return GetTarget();
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::OnShowHint(AStringVec& ss)
+void CLevelTools::OnShowHint(AStringVec& ss)
 {
 	Scene.OnShowHint(ss);
 }
 //---------------------------------------------------------------------------
 
-bool TUI_Tools::Pick(TShiftState Shift)
+bool CLevelTools::Pick(TShiftState Shift)
 {
-    if( Scene.locked() && (esEditLibrary==UI.GetEState())){
-        UI.IR_GetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);
-        UI.m_StartCp = UI.m_CurrentCp;
-        Device.m_Camera.MouseRayFromPoint(UI.m_CurrentRStart, UI.m_CurrentRNorm, UI.m_CurrentCp );
+    if( Scene.locked() && (esEditLibrary==UI->GetEState())){
+        UI->IR_GetMousePosReal(Device.m_hRenderWnd, UI->m_CurrentCp);
+        UI->m_StartCp = UI->m_CurrentCp;
+        Device.m_Camera.MouseRayFromPoint(UI->m_CurrentRStart, UI->m_CurrentRNorm, UI->m_CurrentCp );
         SRayPickInfo pinf;
-        TfrmEditLibrary::RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,&pinf);
+        TfrmEditLibrary::RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,&pinf);
         return true;
     }
     return false;
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::RefreshProperties()
+void CLevelTools::RefreshProperties()
 {
 	m_Props->RefreshForm();
 }
 
-void TUI_Tools::ShowProperties()
+void CLevelTools::ShowProperties()
 {
     m_Props->ShowProperties	();
     UpdateProperties		(false);
-    UI.RedrawScene			();
+    UI->RedrawScene			();
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::HideProperties()
-{
-	m_Props->HideProperties			();
-}
-//---------------------------------------------------------------------------
-void TUI_Tools::RealUpdateProperties()
+void CLevelTools::RealUpdateProperties()
 {
 	if (m_Props->Visible){
 		if (m_Props->IsModified()) Scene.UndoSave();
@@ -266,13 +261,13 @@ void TUI_Tools::RealUpdateProperties()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::OnPropsClose()
+void __fastcall CLevelTools::OnPropsClose()
 {
 	if (m_Props->IsModified()) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::OnPropsModified()
+void __fastcall CLevelTools::OnPropsModified()
 {
 	Scene.Modified();
 //	Scene.UndoSave();
@@ -281,9 +276,9 @@ void __fastcall TUI_Tools::OnPropsModified()
 
 #include "EditLightAnim.h"
 
-bool TUI_Tools::IfModified()
+bool CLevelTools::IfModified()
 {
-    EEditorState est 		= UI.GetEState();
+    EEditorState est 		= UI->GetEState();
     switch(est){
     case esEditLightAnim: 	return TfrmEditLightAnim::FinalClose();
     case esEditLibrary: 	return TfrmEditLibrary::FinalClose();
@@ -294,19 +289,19 @@ bool TUI_Tools::IfModified()
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::ZoomObject(bool bSelectedOnly)
+void CLevelTools::ZoomObject(bool bSelectedOnly)
 {
     if( !Scene.locked() ){
         Scene.ZoomExtents(CurrentClassID(),bSelectedOnly);
     } else {
-        if (UI.GetEState()==esEditLibrary){
+        if (UI->GetEState()==esEditLibrary){
             TfrmEditLibrary::ZoomObject();
         }
     }
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
+void CLevelTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
 	if (psDeviceFlags.is(rsEnvironment)&&psDeviceFlags.is(rsFog)){
         s_fog				= g_pGamePersistent->Environment.CurrentEnv.fog_near;
@@ -314,8 +309,8 @@ void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
         Fvector& f_clr		= g_pGamePersistent->Environment.CurrentEnv.fog_color;
         fog_color 			= color_rgba_f(f_clr.x,f_clr.y,f_clr.z,1.f);
     }else{
-        s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
-        e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
+        s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI->ZFar():0.99f*UI->ZFar();
+        e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI->ZFar():UI->ZFar();
         fog_color 			= dwFogColor;
     }
 /*
@@ -326,24 +321,24 @@ void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 }
 //---------------------------------------------------------------------------
 
-LPCSTR TUI_Tools::GetInfo()
+LPCSTR CLevelTools::GetInfo()
 {
 	static AnsiString sel;
-	int cnt = Scene.SelectionCount(true,Tools.CurrentClassID());
+	int cnt = Scene.SelectionCount(true,CurrentClassID());
 	return sel.sprintf(" Sel: %d",cnt).c_str();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::OnFrame()
+void __fastcall CLevelTools::OnFrame()
 {
 	Scene.OnFrame		(Device.fTimeDelta);
-    EEditorState est 	= UI.GetEState();
+    EEditorState est 	= UI->GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
-        if (!UI.IsMouseCaptured()){
+        if (!UI->IsMouseCaptured()){
             // если нужно изменить target выполняем после того как мышь освободится
-            if(m_Flags.is(flChangeTarget)) 		SetTarget(iNeedTarget);
+            if(m_Flags.is(flChangeTarget)) 		RealSetTarget(iNeedTarget);
             // если нужно изменить action выполняем после того как мышь освободится
-            if(m_Flags.is(flChangeAction)) 		SetAction(iNeedAction);
+            if(m_Flags.is(flChangeAction)) 		RealSetAction(iNeedAction);
         }
         if (m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
         if (m_Flags.is(flUpdateObjectList)) 	RealUpdateObjectList();
@@ -352,23 +347,23 @@ void __fastcall TUI_Tools::OnFrame()
 }
 //---------------------------------------------------------------------------
 #include "d3dutils.h"
-void __fastcall TUI_Tools::RenderEnvironment()
+void __fastcall CLevelTools::RenderEnvironment()
 {
     // draw sky
-    EEditorState est 		= UI.GetEState();
+    EEditorState est 		= UI->GetEState();
     switch(est){
     case esEditLightAnim:
     case esEditScene:		if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderFirst	();
     }
 }
 
-void __fastcall TUI_Tools::Render()
+void __fastcall CLevelTools::Render()
 {
 	// Render update
     ::Render->Calculate		();
     ::Render->Render		();
 
-    EEditorState est 		= UI.GetEState();
+    EEditorState est 		= UI->GetEState();
     // draw scene
     switch(est){
     case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
@@ -379,33 +374,33 @@ void __fastcall TUI_Tools::Render()
     break;
     }
     // draw cursor
-    UI.m_Cursor->Render();
+    LUI->m_Cursor->Render();
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::ShowObjectList()
+void CLevelTools::ShowObjectList()
 {
 	if (pObjectListForm) pObjectListForm->ShowObjectList();
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::RealUpdateObjectList()
+void CLevelTools::RealUpdateObjectList()
 {
 	if (pObjectListForm) pObjectListForm->UpdateObjectList();
 	m_Flags.set(flUpdateObjectList,FALSE);
 }
 //---------------------------------------------------------------------------
 
-bool TUI_Tools::IsModified()
+bool CLevelTools::IsModified()
 {
 	return Scene.IsUnsaved();
 }
 //---------------------------------------------------------------------------
 
 #include "EditMesh.h"
-bool TUI_Tools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
+bool CLevelTools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
 {
-    if (Scene.ObjCount()&&(UI.GetEState()==esEditScene)){
+    if (Scene.ObjCount()&&(UI->GetEState()==esEditScene)){
         SRayPickInfo pinf;
         pinf.inf.range	= dist;
         if (Scene.RayPickObject(dist, start,dir,OBJCLASS_SCENEOBJECT,&pinf,0)){ 

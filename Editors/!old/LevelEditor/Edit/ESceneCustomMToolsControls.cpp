@@ -3,7 +3,7 @@
 
 #include "ESceneCustomMTools.h"
 #include "ui_control.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 
 void ESceneCustomMTools::CreateControls()
 {
@@ -21,7 +21,7 @@ void ESceneCustomMTools::RemoveControls()
 
 void ESceneCustomMTools::CreateDefaultControls()
 {
-    for (int a=0; a<eaMaxActions; a++)
+    for (int a=0; a<etaMaxActions; a++)
     	AddControl(xr_new<TUI_CustomControl>(estDefault,a,this));
 }
 

@@ -9,7 +9,7 @@
 #include "render.h"
 #include "SceneObject.h"
 #include "bottombar.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 
 typedef Fvector2 t_node_tc[4];
 static const float dtc = 0.25f;
@@ -54,7 +54,7 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
     if (1==priority){
         if (false==strictB2F){
             RCache.set_xform_world(Fidentity);
-			if (OBJCLASS_AIMAP==Tools.CurrentClassID()){
+			if (OBJCLASS_AIMAP==LTools->CurrentClassID()){
 	            u32 clr = 0xffffc000;
 	            Device.SetShader	(Device.m_WireShader);
     	        DU.DrawSelectionBox	(m_AIBBox,&clr);

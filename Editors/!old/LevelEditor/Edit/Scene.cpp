@@ -12,7 +12,7 @@
 #include "Sector.h"
 #include "SoundManager.h"
 #include "EParticlesObject.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 
 #include "ESceneAIMapTools.h"
 #include "DetailObjects.h"
@@ -56,7 +56,7 @@ EScene::EScene()
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
     m_SummaryInfo	= 0;
-    ClearSnapList	(false);
+    //ClearSnapList	(false);
 }
 
 EScene::~EScene()
@@ -77,7 +77,7 @@ void EScene::OnCreate()
 	ELog.Msg				( mtInformation, "Scene: initialized" );
 	m_Valid 				= true;
     m_RTFlags.zero			();
-	UI.Command				(COMMAND_UPDATE_CAPTION);
+	UI->Command				(COMMAND_UPDATE_CAPTION);
 	m_SummaryInfo 			= TProperties::CreateForm("Level Summary Info");
 }
 
@@ -105,7 +105,7 @@ void EScene::AppendObject( CCustomObject* object, bool bUndo )
     
     ESceneCustomOTools* mt	= GetOTools(object->ClassID); VERIFY3(mt,"Can't find Object Tools:",GetMTools(object->ClassID)->ClassDesc());
     mt->_AppendObject	(object);
-    UI.UpdateScene		();
+    UI->UpdateScene		();
     if (bUndo){	
 	    object->Select	(true);
     	UndoSave();
@@ -132,7 +132,7 @@ bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
             }
             UpdateSnapList						();
         }
-        UI.UpdateScene	();
+        UI->UpdateScene	();
     }
     if (bUndo)		   	UndoSave();
     return true;
@@ -190,12 +190,12 @@ bool EScene::GetBox(Fbox& box, ObjectList& lst)
 void EScene::Modified()
 {
 	m_RTFlags.set(flRT_Modified|flRT_Unsaved,TRUE);
-    UI.Command(COMMAND_UPDATE_CAPTION);
+    UI->Command(COMMAND_UPDATE_CAPTION);
 }
 
 bool EScene::IsUnsaved()
 {
-    return (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI.GetEditFileName().IsEmpty()));
+    return (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI->GetEditFileName().IsEmpty()));
 }
 bool EScene::IsModified()
 {
@@ -208,10 +208,10 @@ bool EScene::IfModified()
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         return false;
     }
-    if (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI.GetEditFileName().IsEmpty())){
+    if (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI->GetEditFileName().IsEmpty())){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; break;
+        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; break;
         case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
         case mrCancel: return false;
         }
@@ -253,7 +253,7 @@ void EScene::OnDeviceDestroy()
 
 void EScene::OnShowHint(AStringVec& dest)
 {
-    CCustomObject* obj = RayPickObject(flt_max,UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
+    CCustomObject* obj = RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,LTools->CurrentClassID(),0,0);
     if (obj) obj->OnShowHint(dest);
 }
 //------------------------------------------------------------------------------

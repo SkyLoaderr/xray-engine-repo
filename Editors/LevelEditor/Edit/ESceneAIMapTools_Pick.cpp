@@ -4,7 +4,7 @@
 #include "ESceneAIMapTools.h"                            
 #include "scene.h"
 #include "ui_main.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "ui_aimaptools.h"   
 
 SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, float dist)
@@ -62,14 +62,14 @@ bool ESceneAIMapTools::PickGround(Fvector& dest, const Fvector& start, const Fve
 int ESceneAIMapTools::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
 {
 	int count=0;
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         SAINode * N = PickNode(start, direction, distance);
         if (N){ N->flags.set(SAINode::flSelected,flag); count++;}
     }break;
     }
     UpdateHLSelected	();
-    UI.RedrawScene		();
+    UI->RedrawScene		();
     return count;
 }
 
@@ -77,7 +77,7 @@ int ESceneAIMapTools::FrustumSelect(bool flag, const CFrustum& frustum)
 {
     int count = 0;
 
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
             SAINode& N 	= **it;
@@ -92,7 +92,7 @@ int ESceneAIMapTools::FrustumSelect(bool flag, const CFrustum& frustum)
     }
     
     UpdateHLSelected	();
-    UI.RedrawScene		();
+    UI->RedrawScene		();
 
     return count;
 }

@@ -273,7 +273,7 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj)
 {
 	CEditableObject *O = obj->GetReference();
     AnsiString temp; temp.sprintf("Building object: %s",obj->Name);
-    UI.SetStatus(temp.c_str());
+    UI->SetStatus(temp.c_str());
 
     const Fmatrix& T 	= obj->_Transform();
 	// parse mesh data
@@ -289,7 +289,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 {
 	CEditableObject *O = obj->GetReference();
     AnsiString temp; temp.sprintf("Building object: %s",obj->Name);
-    UI.SetStatus(temp.c_str());
+    UI->SetStatus(temp.c_str());
 
     int model_idx		= -1;
 
@@ -744,8 +744,8 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
 {
 	BOOL bResult = TRUE;
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-        UI.ProgressInc((*_F)->Name);
-        if (UI.NeedAbort()) break;
+        UI->ProgressInc((*_F)->Name);
+        if (UI->NeedAbort()) break;
         switch((*_F)->ClassID){
         case OBJCLASS_LIGHT:
             bResult = BuildLight((CLight*)(*_F));
@@ -822,7 +822,7 @@ BOOL SceneBuilder::CompileStatic()
 // make sun
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene
-    UI.ProgressStart(Scene.ObjCount(),"Parse scene objects...");
+    UI->ProgressStart(Scene.ObjCount(),"Parse scene objects...");
     SceneToolsMapPairIt t_it 	= Scene.FirstTools();
     SceneToolsMapPairIt t_end 	= Scene.LastTools();
     for (; t_it!=t_end; t_it++)
@@ -830,9 +830,9 @@ BOOL SceneBuilder::CompileStatic()
             ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
             if (mt&&!ParseStaticObjects(mt->GetObjects())){bResult = FALSE; break;}
         }
-	UI.ProgressEnd();
+	UI->ProgressEnd();
 
-    if (bResult&&!UI.NeedAbort()) SaveBuild();
+    if (bResult&&!UI->NeedAbort()) SaveBuild();
 
     ResetStructures();
 

@@ -3,14 +3,14 @@
 
 #include "scene.h"
 #include "leftbar.h"
-#include "UI_Tools.h"
+#include "ui_leveltools.h"
 #include "SceneObject.h"
 #include "UI_Main.h"
 //------------------------------------------------------------------------------
  
 ObjectList* EScene::GetSnapList(bool bIgnoreUse)
 {
-    EObjClass cls = Tools.CurrentClassID();
+    EObjClass cls = LTools->CurrentClassID();
     ESceneCustomMTools* mt = m_SceneTools[cls];
     if (mt)	return bIgnoreUse?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):(fraLeftBar->ebUseSnapList->Down?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):NULL);
     else	return bIgnoreUse?&m_ESO_SnapObjects:fraLeftBar->ebUseSnapList->Down?&m_ESO_SnapObjects:NULL;
@@ -40,7 +40,7 @@ bool EScene::AddToSnapList(CCustomObject* O, bool bUpdateScene)
         if (std::find(snap_objects->begin(),snap_objects->end(),O)==snap_objects->end()){
             snap_objects->push_back(O);
             if (bUpdateScene){
-	            UI.RedrawScene();
+	            UI->RedrawScene();
     	        UpdateSnapList();
 	 			UndoSave();
             }
@@ -59,7 +59,7 @@ bool EScene::DelFromSnapList(CCustomObject* O, bool bUpdateScene)
         if (it!=snap_objects->end()){
             snap_objects->erase(it);
             if (bUpdateScene){
-	            UI.RedrawScene();
+	            UI->RedrawScene();
     	        UpdateSnapList();
 	 			UndoSave();
             }
@@ -81,7 +81,7 @@ int EScene::AddSelToSnapList()
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
             	if (AddToSnapList(*_F,false)) count++;
             if (count){
-                UI.RedrawScene();
+                UI->RedrawScene();
                 UpdateSnapList();
 	 			UndoSave();
             }
@@ -102,7 +102,7 @@ int EScene::DelSelFromSnapList()
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
             	if (DelFromSnapList(*_F,false)) count++;
             if (count){
-                UI.RedrawScene();
+                UI->RedrawScene();
                 UpdateSnapList();
 	 			UndoSave();
             }
@@ -124,7 +124,7 @@ int EScene::SetSnapList()
                 snap_objects->push_back(*_F);
                 count++;
             }
-        UI.RedrawScene();
+        UI->RedrawScene();
         UpdateSnapList();
 		UndoSave();
     }
@@ -159,14 +159,15 @@ void EScene::SelectSnapList()
         SelectObjects(FALSE,OBJCLASS_SCENEOBJECT);
         for(ObjectIt _F = snap_objects->begin();_F!=snap_objects->end();_F++)
             (*_F)->Select(TRUE);
-        UI.RedrawScene();
+        UI->RedrawScene();
     }
 }
 //------------------------------------------------------------------------------
 
 void EScene::UpdateSnapList()
 {
-    EObjClass cls = Tools.CurrentClassID();
+	if (NULL==LTools) return;
+    EObjClass cls = LTools->CurrentClassID();
     switch (cls){
     case OBJCLASS_DUMMY:	break;
     default:

@@ -73,7 +73,7 @@ int CPortalUtils::CalculateSelectedPortals()
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
-	UI.SetStatus("...");
+	UI->SetStatus("...");
     return iPCount;
 }
 //---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ bool CPortalUtils::RemoveDefaultSector()
     	Scene.RemoveObject(O,false);
         xr_delete(O);
 		Scene.UndoSave();
-        UI.UpdateScene();
+        UI->UpdateScene();
         return true;
     }
     return false;
@@ -138,7 +138,7 @@ int CPortalUtils::CalculateAllPortals2()
                 bResult+=CalculatePortals(sectors[f],sectors[b]);
                 AnsiString t;
                 t.sprintf("Calculate %d of %d",f,sectors.size());
-                UI.SetStatus(t.c_str());
+                UI->SetStatus(t.c_str());
             }
 
         Scene.UndoSave();
@@ -146,7 +146,7 @@ int CPortalUtils::CalculateAllPortals2()
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
-	UI.SetStatus("...");
+	UI->SetStatus("...");
     return bResult;
 }
 */
@@ -518,7 +518,7 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     Fmatrix T;
 
     //1. xform + weld
-    UI.SetStatus("xform + weld...");
+    UI->SetStatus("xform + weld...");
     for (ObjectIt s_it=sectors.begin(); s_it!=sectors.end(); s_it++){
         CSector* S=(CSector*)(*s_it);
         for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
@@ -537,19 +537,19 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
         }
     }
     //2. update pervertex adjacency
-    UI.SetStatus("updating per-vertex adjacency...");
+    UI->SetStatus("updating per-vertex adjacency...");
     CL->update_adjacency();
     //3. find edges
-    UI.SetStatus("searching edges...");
+    UI->SetStatus("searching edges...");
     CL->find_edges();
     //4. sort edges
-    UI.SetStatus("sorting edges...");
+    UI->SetStatus("sorting edges...");
     CL->sort_edges();
     //5. make portals
-    UI.SetStatus("calculating portals...");
+    UI->SetStatus("calculating portals...");
     CL->make_portals();
     //6. export portals
-    UI.SetStatus("building portals...");
+    UI->SetStatus("building portals...");
     CL->export_portals();
 
     Scene.UndoSave();
@@ -565,7 +565,7 @@ int CPortalUtils::CalculateAllPortals()
 {
     int iPCount=0;
     if (Validate(false)){
-		UI.SetStatus("Prepare...");
+		UI->SetStatus("Prepare...");
         RemoveAllPortals();
         ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
         iPCount = CalculateSelectedPortals(s_lst);
@@ -573,7 +573,7 @@ int CPortalUtils::CalculateAllPortals()
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
-	UI.ResetStatus();
+	UI->ResetStatus();
     return iPCount;
 }
 
@@ -581,7 +581,7 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB)
 {
     int iPCount=0;
     if (Validate(false)){
-		UI.SetStatus("Prepare...");
+		UI->SetStatus("Prepare...");
         RemoveAllPortals();
         // transfer from list to vector
         ObjectList sectors;
@@ -593,6 +593,6 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB)
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
 
-	UI.ResetStatus();
+	UI->ResetStatus();
     return iPCount;
 }

@@ -54,7 +54,7 @@ void __fastcall TfrmEditLightAnim::ShowEditor()
 void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
 {
     ebSave->Enabled = false;
-    UI.BeginEState(esEditLightAnim);
+    UI->BeginEState(esEditLightAnim);
 
     if (!m_LastSelection.IsEmpty()){
     	TElTreeItem *node=FHelper.FindObject(tvItems,m_LastSelection);
@@ -66,7 +66,7 @@ void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
 
     InitItems();
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLightAnim::FormClose(TObject *Sender, TCloseAction &Action)
@@ -74,7 +74,7 @@ void __fastcall TfrmEditLightAnim::FormClose(TObject *Sender, TCloseAction &Acti
 	form = 0;
 	Action = caFree;
 	Scene.unlock();
-    UI.EndEState(esEditLightAnim);
+    UI->EndEState(esEditLightAnim);
 
    	if (ebSave->Enabled&&!bFinalClose)
     	LALib.Reload();
@@ -514,7 +514,7 @@ void __fastcall TfrmEditLightAnim::OnIdle()
 			form->paColor->Color=TColor(form->m_CurrentItem->Calculate(Device.fTimeGlobal,frame));
             form->lbCurFrame->Caption=frame;
         }
-        UI.RedrawScene();
+        UI->RedrawScene();
     }
 }
 //---------------------------------------------------------------------------

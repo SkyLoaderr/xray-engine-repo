@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "DetailObjects.h"
-#include "ui_tools.h"
 #include "FrameDetObj.h"
 
 void EDetailManager::CreateControls()

@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneObjectTools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "ui_ObjectTools.h"
 #include "FrameObject.h"
 #include "SceneObject.h"
@@ -29,7 +29,7 @@ ESceneObjectTools::ESceneObjectTools():ESceneCustomOTools(OBJCLASS_SCENEOBJECT)
 void ESceneObjectTools::CreateControls()
 {
 	inherited::CreateControls();
-    AddControl		(xr_new<TUI_ControlObjectAdd >(estDefault,eaAdd,		this));
+    AddControl		(xr_new<TUI_ControlObjectAdd >(estDefault,etaAdd,		this));
 	// frame
     pFrame 			= xr_new<TfraObject>((TComponent*)0,this);
 }

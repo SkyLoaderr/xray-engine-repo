@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "ui_main.h"
 #include "FrameSpawn.h"
 #include "Scene.h"
@@ -25,7 +25,7 @@ void __fastcall TfraSpawn::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (LPCSTR)(*it)->m_Object;
-    UI.Command			(COMMAND_RENDER_FOCUS);
+    UI->Command			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ void __fastcall TfraSpawn::ExpandClick(TObject *Sender)
 
 void __fastcall TfraSpawn::ebAttachObjectClick(TObject *Sender)
 {
-	if (ebAttachObject->Down) UI.Command(COMMAND_CHANGE_ACTION, eaAdd);
+	if (ebAttachObject->Down) UI->Command(COMMAND_CHANGE_ACTION, etaAdd);
 }
 //---------------------------------------------------------------------------
 
@@ -171,7 +171,7 @@ void __fastcall TfraSpawn::ebMultiSelectByRefAppendClick(TObject *Sender)
 
 void __fastcall TfraSpawn::seSelPercentKeyPress(TObject *Sender, char &Key)
 {
-	if (Key==VK_RETURN) UI.Command(COMMAND_RENDER_FOCUS);
+	if (Key==VK_RETURN) UI->Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

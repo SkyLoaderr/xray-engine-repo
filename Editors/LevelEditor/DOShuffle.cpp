@@ -65,7 +65,7 @@ void __fastcall TfrmDOShuffle::FormShow(TObject *Sender)
     bObjectModif		= false;
     FillData			();
 	// check window position
-	UI.CheckWindowPos	(this);
+    UI->CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 
@@ -358,7 +358,7 @@ void __fastcall TfrmDOShuffle::ebClearListClick(TObject *Sender)
     FillData				();
 	bColorIndModif 			= true;
     bObjectModif			= true;
-    UI.RedrawScene			();
+    UI->RedrawScene			();
 }
 //---------------------------------------------------------------------------
 

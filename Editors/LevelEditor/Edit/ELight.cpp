@@ -84,7 +84,7 @@ void CLight::CopyFrom(CLight* src)
 
 void CLight::AffectD3D(BOOL flag){
 	m_UseInD3D = flag;
-    UI.UpdateScene();
+    UI->UpdateScene();
 }
 //----------------------------------------------------
 
@@ -426,7 +426,7 @@ void __fastcall CLight::OnAttenuationDraw(PropValue* sender, TCanvas* canvas, co
 
 void __fastcall	CLight::OnPointDataChange(PropValue* value)
 {
-	UI.Command(COMMAND_UPDATE_PROPERTIES);
+	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 bool __fastcall	CLight::OnPointDataTestEqual(PropValue* a, PropValue* b)
@@ -541,7 +541,7 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
 void __fastcall	CLight::OnTypeChange(PropValue* value)
 {
-	UI.Command		(COMMAND_UPDATE_PROPERTIES);
+	UI->Command		(COMMAND_UPDATE_PROPERTIES);
 
 	Update			();
 }

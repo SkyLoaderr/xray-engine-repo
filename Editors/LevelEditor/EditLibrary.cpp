@@ -6,7 +6,7 @@
 #include "EditLibrary.h"
 #include "Library.h"
 #include "library.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "EditObject.h"
 #include "EditObject.h"
 #include "Main.h"
@@ -109,7 +109,7 @@ void __fastcall TfrmEditLibrary::ZoomObject()
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
-    UI.BeginEState(esEditLibrary);
+	UI->BeginEState(esEditLibrary);
 	modif_map.clear();
 
     InitObjects();
@@ -128,7 +128,7 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 	Device.LightEnable(1,true);
 
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
@@ -137,16 +137,16 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 
     if (!bFinalExit&&ebSave->Enabled){
 	    bFinalExit = false;
-        UI.SetStatus("Objects reloading...");
+        UI->SetStatus("Objects reloading...");
         FS_QueryPairIt it=modif_map.begin();
 		FS_QueryPairIt _E=modif_map.end();
         for (;it!=_E;it++)
         	Lib.ReloadObject(it->first.c_str());
-        UI.ResetStatus();
+        UI->ResetStatus();
     }
 	Scene.unlock();
 
-    UI.EndEState(esEditLibrary);
+    UI->EndEState(esEditLibrary);
 
     // remove directional light                             
 	Device.LightEnable(0,false);
@@ -163,7 +163,7 @@ void __fastcall TfrmEditLibrary::FormDestroy(TObject *Sender)
 
 	form = 0;
 
-    UI.Command(COMMAND_CLEAR);
+    UI->Command(COMMAND_CLEAR);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender, bool &CanClose)
@@ -195,7 +195,7 @@ void TfrmEditLibrary::OnModified()
     	E->Modified();
 		form->m_pEditObject->UpdateTransform();
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
 {
 	xr_delete(m_Thm);
     bool mt=false;
-    if (item&&FHelper.IsObject(item)&&UI.ContainEState(esEditLibrary)){
+    if (item&&FHelper.IsObject(item)&&UI->ContainEState(esEditLibrary)){
         // change thm
         ListItem* prop = (ListItem*)item->Tag; VERIFY(prop);
         AnsiString nm=prop->Key(),obj_fn,thm_fn;
@@ -239,7 +239,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
     }
     paImage->Repaint	();
     UpdateObjectProperties();
-    UI.RedrawScene();
+    UI->RedrawScene();
     ebMakeThm->Enabled	= mt;
     ebMakeLOD->Enabled	= cbPreview->Checked;
 }
@@ -268,10 +268,10 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    	if (Key==VK_CANCEL)		UI->Command(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Key==VK_ESCAPE){
-            if (bFormLocked)	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+            if (bFormLocked)	UI->Command(COMMAND_BREAK_LAST_OPERATION);
             else				ebCancel->Click();
             Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
         }
@@ -377,13 +377,13 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
     	} if (FHelper.IsFolder(node)){
 	        if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
                 int iLODcnt = 0;
-                UI.ProgressStart(node->ChildrenCount,"Making LOD");
+                UI->ProgressStart(node->ChildrenCount,"Making LOD");
                 for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
-                    UI.ProgressInc();
+                    UI->ProgressInc();
 		        	if (GenerateLOD(item)) iLODcnt++;
-					if (UI.NeedAbort()) break;
+					if (UI->NeedAbort()) break;
                 }
-                UI.ProgressEnd();
+                UI->ProgressEnd();
                 Msg ("'%d' LOD's succesfully created.",iLODcnt);
             }
         }
@@ -413,8 +413,8 @@ void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
     }
     // update transformation
     m_pEditObject->UpdateTransform();
-    UI.Command(COMMAND_EVICT_OBJECTS);
-    UI.Command(COMMAND_EVICT_TEXTURES);
+    UI->Command(COMMAND_EVICT_OBJECTS);
+    UI->Command(COMMAND_EVICT_TEXTURES);
 }
 //---------------------------------------------------------------------------
 
@@ -443,7 +443,7 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
         }
         ebMakeThm->Enabled = mt;
         ebMakeLOD->Enabled = cbPreview->Checked;
-        UI.RedrawScene();
+        UI->RedrawScene();
     }
 }
 //---------------------------------------------------------------------------

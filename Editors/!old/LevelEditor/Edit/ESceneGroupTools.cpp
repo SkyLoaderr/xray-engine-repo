@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneGroupTools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameGroup.h"
 
 void ESceneGroupTools::CreateControls()

@@ -124,7 +124,7 @@ int ESceneCustomOTools::SelectObjects(bool flag)
             (*_F)->Select( flag );
             count++;
         }
-    UI.RedrawScene		();
+    UI->RedrawScene		();
     return count;
 }
 
@@ -148,7 +148,7 @@ int ESceneCustomOTools::RemoveSelection()
         }
     }
 
-	UI.RedrawScene		();
+	UI->RedrawScene		();
     return count;
 }
 
@@ -162,7 +162,7 @@ int ESceneCustomOTools::InvertSelection()
             count++;
         }
         
-    UI.RedrawScene		();
+    UI->RedrawScene		();
     return count;
 }
 
@@ -192,7 +192,7 @@ int ESceneCustomOTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bS
         }
     }
     
-    UI.RedrawScene();
+    UI->RedrawScene();
     return count;
 }
 
@@ -231,7 +231,7 @@ int ESceneCustomOTools::RaySelect(bool flag, float& distance, const Fvector& sta
     CCustomObject* nearest_object=0;
     if (RayPick(nearest_object,distance,start,direction,0)) nearest_object->Select(flag);
 
-    UI.RedrawScene();
+    UI->RedrawScene();
     return !!nearest_object;
 }
 

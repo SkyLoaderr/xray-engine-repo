@@ -296,7 +296,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 DU.DrawEntity(c.get(),Device.m_WireShader);
             }
         }else{
-            if (fraBottomBar->miSpawnPointDrawText->Checked){
+            ESceneSpawnTools* st = dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
+            if (st->m_Flags.is(ESceneSpawnTools::flShowSpawnType)){ 
                 AnsiString s_name;
                 if (m_SpawnData.Valid()){
                     s_name	= m_SpawnData.m_Data->s_name;
@@ -307,14 +308,11 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     }
                 }
                 
-                ESceneSpawnTools* st = dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
-                if (st->m_Flags.is(ESceneSpawnTools::flShowSpawnType)){ 
-                    Fvector D;	D.sub(Device.vCameraPosition,PPosition);
-                    float dist 	= D.normalize_magn();
-                    if (!st->m_Flags.is(ESceneSpawnTools::flPickSpawnType)||
-                    	!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
-	                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
-                }
+                Fvector D;	D.sub(Device.vCameraPosition,PPosition);
+                float dist 	= D.normalize_magn();
+                if (!st->m_Flags.is(ESceneSpawnTools::flPickSpawnType)||
+                    !Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
             }
             if(Selected()){
                 RCache.set_xform_world(Fidentity);

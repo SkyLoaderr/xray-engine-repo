@@ -6,8 +6,7 @@
 #include "ui_main.h"
 #include "FrameAIMap.h"
 #include "scene.h"
-#include "TopBar.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 
 //------------------------------------------------------------------------------
 // Node Add
@@ -19,7 +18,7 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 {
 	append_nodes = 0;
 	Fvector p;
-    if (parent_tool->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
+    if (parent_tool->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
     	parent_tool->SelectObjects(false);
         ESceneAIMapTools* S = (ESceneAIMapTools*)parent_tool;
 	    append_nodes		= S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
@@ -34,7 +33,7 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 void TUI_ControlAIMapNodeAdd::Move(TShiftState _Shift)
 {
 	Fvector p;
-    if (parent_tool->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
+    if (parent_tool->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
         ESceneAIMapTools* S = (ESceneAIMapTools*)parent_tool;
 	    append_nodes+=S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
     }
@@ -57,12 +56,12 @@ bool TUI_ControlAIMapNodeSelect::Start(TShiftState Shift)
 	if (CheckSnapList(Shift)) return false;
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) parent_tool->SelectObjects(false);
 
-    SAINode* N 		= ((ESceneAIMapTools*)parent_tool)->PickNode(UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar());
+    SAINode* N 		= ((ESceneAIMapTools*)parent_tool)->PickNode(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar());
     bBoxSelection   = (N && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !N;
 
     if( bBoxSelection ){
-        UI.EnableSelectionRect( true );
-        UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
+        UI->EnableSelectionRect( true );
+        UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
         if(N){
         	if (Shift.Contains(ssCtrl)) N->flags.invert(SAINode::flSelected);
 			else N->flags.set(SAINode::flSelected,!Shift.Contains(ssAlt));
@@ -97,7 +96,7 @@ bool TUI_ControlAIMapNodeMove::Start(TShiftState Shift)
 {
     if(parent_tool->SelectionCount(true)==0) return false;
 
-    if (fraTopBar->ebAxisY->Down){
+    if (etAxisY==Tools->GetAxis()){
         m_MovingXVector.set(0,0,0);
         m_MovingYVector.set(0,1,0);
     }else{
@@ -137,9 +136,9 @@ bool __fastcall TUI_ControlAIMapNodeRotate::Start(TShiftState Shift)
     if(parent_tool->SelectionCount(true)==0) return false;
 
     m_RotateVector.set(0,0,0);
-    if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
-    else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,0,0);
-    else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
+    if (etAxisX==Tools->GetAxis()) m_RotateVector.set(1,0,0);
+    else if (etAxisY==Tools->GetAxis()) m_RotateVector.set(0,0,0);
+    else if (etAxisZ==Tools->GetAxis()) m_RotateVector.set(0,0,1);
 	m_fRotateSnapAngle = 0;
     return true;
 }
@@ -147,9 +146,9 @@ bool __fastcall TUI_ControlAIMapNodeRotate::Start(TShiftState Shift)
 void __fastcall TUI_ControlAIMapNodeRotate::Move(TShiftState _Shift)
 {
     if (_Shift.Contains(ssLeft)){
-        float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
+        float amount = -UI->m_DeltaCpH.x * UI->m_MouseSR;
 
-        if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
+        if( Tools->GetSettings(etfASnap) ) CHECK_SNAP(m_fRotateSnapAngle,amount,Tools->m_RotateSnapAngle);
 
         Fmatrix R;
         if 	(fis_zero(m_RotateVector.x)) 	R.rotateZ(amount);

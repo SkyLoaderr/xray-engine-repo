@@ -225,7 +225,7 @@ void __fastcall EParticlesObject::OnRefChange(PropValue* V)
 	if (!Compile(m_RefName.c_str())){
         ELog.Msg( mtError, "Can't compile particle system '%s'", m_RefName.c_str() );
     }else{
-        UI.Command(COMMAND_REFRESH_PROPERTIES);
+        UI->Command(COMMAND_REFRESH_PROPERTIES);
     }
 }
 
@@ -236,7 +236,7 @@ void __fastcall EParticlesObject::OnControlClick(PropValue* sender, bool& bModif
     case 0: Play();	break;
     case 1: Stop();	break;
 	}
-    UI.RedrawScene();
+    UI->RedrawScene();
     bModif = false;
 }
 

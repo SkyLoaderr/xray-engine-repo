@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "UI_PSTools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "PSLibrary.h"
 #include "EParticlesObject.h"
 #include "scene.h"

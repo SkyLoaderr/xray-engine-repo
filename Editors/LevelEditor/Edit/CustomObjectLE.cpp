@@ -3,8 +3,8 @@
 
 #include "scene.h"
 #include "sceneobject.h"
-#include "topbar.h"
 #include "ui_main.h"
+#include "ui_leveltools.h"
 #include "PropertiesListHelper.h"
 #include "editorpreferences.h"
 
@@ -25,7 +25,7 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     pinf.inf.range=EPrefs.snap_moveto;
     if (Scene.RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))||Scene.RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
             pos.set(pinf.pt);
-            if (fraTopBar->ebNormalAlignment->Down){
+            if (Tools->GetSettings(etfNormalAlign)){
                 Fvector verts[3];
                 pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
                 Fvector vR,vD,vN;
@@ -80,10 +80,10 @@ void CCustomObject::OnAttach(CCustomObject* owner)
 void CCustomObject::Move(Fvector& amount)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector v=PPosition;
     Fvector r=PRotation;
-    if (fraTopBar->ebMoveToSnap->Down){
+    if (Tools->GetSettings(etfMTSnap)){
         BOOL bVis	= Visible();
         Show		(FALSE);
     	SnapMove	(v,r,FTransformRP,amount);
@@ -98,10 +98,10 @@ void CCustomObject::Move(Fvector& amount)
 void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector v=PPosition;
     v.set(pos);
-    if (fraTopBar->ebNormalAlignment->Down){
+    if (Tools->GetSettings(etfNormalAlign)){
         Fvector r=PRotation;
     	NormalAlign(r,up);
         PRotation = r;
@@ -124,7 +124,7 @@ void CCustomObject::PivotRotateParent(const Fmatrix& prev_inv, const Fmatrix& cu
 void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
 
 	Fmatrix m;
     // rotation
@@ -148,7 +148,7 @@ void CCustomObject::PivotRotateLocal(const Fmatrix& parent, Fvector& center, Fve
 void CCustomObject::RotateParent(Fvector& axis, float angle)
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector r	= PRotation;
     r.mad		(axis,angle);
     PRotation		= r;
@@ -167,7 +167,7 @@ void CCustomObject::RotateLocal(Fvector& axis, float angle)
 void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector p	= PPosition;
     Fvector s	= PScale;
 	s.add(amount);
@@ -186,7 +186,7 @@ void CCustomObject::PivotScale( const Fmatrix& prev_inv, const Fmatrix& current,
 void CCustomObject::Scale( Fvector& amount )
 {
 	R_ASSERT(!Locked());
-    UI.UpdateScene();
+    UI->UpdateScene();
     Fvector s	= PScale;
 	s.add(amount);
     if (s.x<EPS) s.x=EPS;

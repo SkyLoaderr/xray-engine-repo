@@ -13,7 +13,7 @@
 #include "leftbar.h"
 #include "cl_intersect.h"
 #include "Library.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 
 #include "Library.h"
 #include "DetailFormat.h"
@@ -72,7 +72,7 @@ void EDetailManager::ClearBase()
 {
     m_Base.Clear		();
     m_SnapObjects.clear	();
-    UI.Command			(COMMAND_REFRESH_SNAP_OBJECTS);
+    UI->Command			(COMMAND_REFRESH_SNAP_OBJECTS);
 }
 void EDetailManager::Clear(bool bSpecific)
 {
@@ -380,10 +380,10 @@ bool EDetailManager::Export(LPCSTR fn)
 {
     bool bRes=true;
 
-    UI.ProgressStart	(5,"Making details...");
+    UI->ProgressStart	(5,"Making details...");
 	CMemoryWriter F;
 
-	UI.ProgressInc		("merge textures");
+	UI->ProgressInc		("merge textures");
     Fvector2Vec			offsets;
     Fvector2Vec			scales;
     boolVec				rotated;
@@ -418,7 +418,7 @@ bool EDetailManager::Export(LPCSTR fn)
                         res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,1024,offsets,scales,rotated);
     if (1!=res)		bRes=FALSE;
 
-	UI.ProgressInc		("export geometry");
+	UI->ProgressInc		("export geometry");
     // objects
     int object_idx		= 0;
     if (bRes){
@@ -444,7 +444,7 @@ bool EDetailManager::Export(LPCSTR fn)
         F.close_chunk		();
     }
     
-	UI.ProgressInc("export slots");
+	UI->ProgressInc("export slots");
     // slots
     if (bRes){
     	xr_vector<DetailSlot> dt_slots(slot_cnt); dt_slots.assign(dtSlots,dtSlots+slot_cnt);
@@ -458,7 +458,7 @@ bool EDetailManager::Export(LPCSTR fn)
 		F.open_chunk	(DETMGR_CHUNK_SLOTS);
 		F.w				(dt_slots.begin(),dtH.size_x*dtH.size_z*sizeof(DetailSlot));
 	    F.close_chunk	();
-		UI.ProgressInc	();
+		UI->ProgressInc	();
 
         // write header
         dtH.version		= DETAIL_VERSION;
@@ -469,8 +469,8 @@ bool EDetailManager::Export(LPCSTR fn)
     	F.save_to(fn);
     }
 
-    UI.ProgressInc		();
-    UI.ProgressEnd		();
+    UI->ProgressInc		();
+    UI->ProgressEnd		();
     return bRes;
 }
 

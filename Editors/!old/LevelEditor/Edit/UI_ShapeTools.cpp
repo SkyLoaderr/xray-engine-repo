@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ui_Shapetools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameShape.h"
 #include "EShape.h"
 #include "scene.h"
@@ -36,7 +36,7 @@ bool __fastcall TUI_ControlShapeAdd::Start(TShiftState Shift)
 {
 	TfraShape* F 		= (TfraShape*)parent_tool->pFrame;
     if (F->ebAttachShape->Down){
-		CEditShape* from = dynamic_cast<CEditShape*>(Scene.RayPickObject(flt_max,UI.m_CurrentRStart, UI.m_CurrentRNorm, OBJCLASS_SHAPE, 0, 0));
+		CEditShape* from = dynamic_cast<CEditShape*>(Scene.RayPickObject(flt_max,UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_SHAPE, 0, 0));
         if (from){
             ObjectList lst;
             int cnt 		= Scene.GetQueryObjects(lst,OBJCLASS_SHAPE,1,1,0);

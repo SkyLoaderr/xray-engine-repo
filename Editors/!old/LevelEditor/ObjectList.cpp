@@ -3,7 +3,7 @@
 
 #include "ObjectList.h"
 #include "GroupObject.h"
-#include "UI_Tools.h"
+#include "ui_leveltools.h"
 #include "Scene.h"
 #include "ui_main.h"
 #include "folderlib.h"
@@ -65,7 +65,7 @@ void __fastcall TfrmObjectList::FormShow(TObject *Sender)
 	tvItems->FilteredVisibility = ((rgSO->ItemIndex==1)||(rgSO->ItemIndex==2));
     InitListBox();
 	// check window position
-	UI.CheckWindowPos(this);
+    UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmObjectList::FindFolderByType(int type)
@@ -105,7 +105,7 @@ void __fastcall TfrmObjectList::InitListBox()
 {
     tvItems->IsUpdating = true;
     tvItems->Items->Clear();
-    cur_cls = Tools.CurrentClassID();
+    cur_cls = LTools->CurrentClassID();
     for(SceneToolsMapPairIt it=Scene.FirstTools(); it!=Scene.LastTools(); it++){
     	ESceneCustomOTools* ot = dynamic_cast<ESceneCustomOTools*>(it->second);
         if (ot&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
@@ -163,7 +163,7 @@ void TfrmObjectList::UpdateSelection()
         Scene.SelectObjects( false, (EObjClass)cur_cls );
         for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
             if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
-        UI.RedrawScene();
+        UI->RedrawScene();
 
         bLockUpdate = false;
     }
@@ -192,7 +192,7 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 
 void __fastcall TfrmObjectList::sbRefreshListClick(TObject *Sender)
 {
-    if ((Scene.ObjCount()!=obj_count)||(cur_cls!=Tools.CurrentClassID()))
+    if ((Scene.ObjCount()!=obj_count)||(cur_cls!=LTools->CurrentClassID()))
 	    InitListBox();
     else
     	UpdateState();

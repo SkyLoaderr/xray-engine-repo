@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameObject.h"
 #include "scene.h"
 #include "ui_main.h"
@@ -38,7 +38,7 @@ void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (*it)->Key();
-    UI.Command			(COMMAND_RENDER_FOCUS);
+    UI->Command			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 void __fastcall TfraObject::PaneMinClick(TObject *Sender)
@@ -135,7 +135,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
 	    AStringVec lst;
     	_SequenceToList(lst,N);
-        UI.ProgressStart(lst.size(),"Append object: ");
+        UI->ProgressStart(lst.size(),"Append object: ");
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             string256 namebuffer;
             Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, it->c_str());
@@ -155,7 +155,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
             obj->MoveTo(pos,up);
             Scene.AppendObject( obj );
         }
-        UI.ProgressEnd();
+        UI->ProgressEnd();
     }
 }
 //---------------------------------------------------------------------------
@@ -176,7 +176,7 @@ void __fastcall TfraObject::ebMultiSelectByRefAppendClick(TObject *Sender)
 void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
       char &Key)
 {
-	if (Key==VK_RETURN) UI.Command(COMMAND_RENDER_FOCUS);
+	if (Key==VK_RETURN) UI->Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

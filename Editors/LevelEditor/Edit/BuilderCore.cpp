@@ -28,24 +28,25 @@ bool SceneBuilder::PrepareFolders()
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::EvictResource(){
-    UI.Command(COMMAND_EVICT_OBJECTS);
-    UI.Command(COMMAND_EVICT_TEXTURES);
+bool SceneBuilder::EvictResource()
+{
+	UI->Command(COMMAND_EVICT_OBJECTS);
+    UI->Command(COMMAND_EVICT_TEXTURES);
 
 	int objcount = Scene.ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;
 
-	UI.ProgressStart(objcount, "Evict objects...");
+	UI->ProgressStart(objcount, "Evict objects...");
     // unload cform, point normals
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
     	CSceneObject* O = (CSceneObject*)(*_F);
-        if (UI.NeedAbort()) break; // break building
+        if (UI->NeedAbort()) break; // break building
         O->EvictObject();
-		UI.ProgressInc();
+		UI->ProgressInc();
 	}
-	UI.ProgressEnd();
+	UI->ProgressEnd();
 
     return true;
 }
@@ -65,7 +66,7 @@ bool SceneBuilder::RenumerateSectors()
 {
 	m_iDefaultSectorNum	= -1;
 
-	UI.ProgressStart(Scene.ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
+	UI->ProgressStart(Scene.ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
 
 	int sector_num = 0;
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
@@ -74,10 +75,10 @@ bool SceneBuilder::RenumerateSectors()
     	CSector* _S=(CSector*)(*_F);
         _S->sector_num = sector_num;
         if (_S->IsDefault()) m_iDefaultSectorNum=sector_num;
-		UI.ProgressInc();
+		UI->ProgressInc();
 	}
 
-	UI.ProgressEnd();
+	UI->ProgressEnd();
 
 	if (m_iDefaultSectorNum<0) m_iDefaultSectorNum=Scene.ObjCount(OBJCLASS_SECTOR);
 	return true;

@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "FrameShape.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "scene.h"
 #include "EShape.h"
 #include "ui_main.h"
@@ -42,7 +42,7 @@ void __fastcall TfraShape::ebDetachAllShapesClick(TObject *Sender)
 
 void __fastcall TfraShape::ebAttachShapeClick(TObject *Sender)
 {
-	if (ebAttachShape->Down) UI.Command(COMMAND_CHANGE_ACTION, eaAdd);
+	if (ebAttachShape->Down) UI->Command(COMMAND_CHANGE_ACTION, etaAdd);
 }
 //---------------------------------------------------------------------------
 

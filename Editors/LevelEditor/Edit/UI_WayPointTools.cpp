@@ -2,11 +2,11 @@
 #pragma hdrstop
 
 #include "UI_WayPointTools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameWayPoint.h"
 #include "WayPoint.h"
 #include "scene.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 //---------------------------------------------------------------------------
 __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent){
 }
@@ -21,7 +21,7 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift)
             return false;
         }
         Fvector p;
-	    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1)){
+	    if (LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1)){
         	CWayObject* obj = (CWayObject*)lst.front(); R_ASSERT(obj);
 	        CWayPoint* last_wp=obj->GetFirstSelected();
 	        CWayPoint* wp=obj->AppendWayPoint();

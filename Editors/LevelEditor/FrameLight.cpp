@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameLight.h"
 #include "ELight.h"
 #include "Scene.h"
@@ -39,7 +39,7 @@ void TfraLight::UseInD3D(bool bAll, bool bFlag){
 			if(L->Selected() && L->Visible()) L->AffectD3D(bFlag);
         }
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 
 //----------------------------------------------------

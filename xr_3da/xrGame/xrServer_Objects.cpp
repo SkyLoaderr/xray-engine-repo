@@ -278,7 +278,7 @@ void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)
         visual					= ::Render->model_Create(visual_name);
         PlayAnimation			(play_animation.c_str());
     }
-	UI.Command					(COMMAND_UPDATE_PROPERTIES);
+	UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)

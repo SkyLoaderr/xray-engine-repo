@@ -2,14 +2,14 @@
 #pragma hdrstop
 
 #include "UI_ObjectTools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "library.h"
 #include "scene.h"
 #include "SceneObject.h"
 #include "ESceneObjectTools.h"
 #include "FrameObject.h"
 #include "leftbar.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 
 //------------------------------------------------------------------------------
 //
@@ -20,10 +20,10 @@ __fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, ESceneCus
 
 bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
+    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p,n;
-	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)) return false;
+	if(!LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)) return false;
     { // pick already executed (see top)
 		ESceneObjectTools* ot = dynamic_cast<ESceneObjectTools*>(parent_tool);
     	LPCSTR N;
@@ -73,7 +73,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
 
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
         Scene.AppendObject( obj );
-        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
+        if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;

@@ -123,7 +123,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
             Fvector dir;
             dir.setHP(m_SunShadowDir.y,m_SunShadowDir.x);
             Fvector p;
-            float fd				= UI.ZFar()*0.95f;
+            float fd				= UI->ZFar()*0.95f;
             p.mad					(Device.vCameraPosition,dir,-fd);
             DU.DrawPointLight		( p ,VIS_RADIUS*fd, 0x00FFE020);
             DU.DrawLineSphere		( p, VIS_RADIUS*fd*0.3f, 0x00FF3000, false );
@@ -135,7 +135,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified)
 {
 	AppendLightControl(GenLightControlName().c_str());
-    UI.Command(COMMAND_UPDATE_PROPERTIES);
+    UI->Command(COMMAND_UPDATE_PROPERTIES);
     bDataModified = true;
 }
 //------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, 
     }break;
     case 1: RemoveLightControl(item_name.c_str());	break;
 	}
-    UI.Command(COMMAND_UPDATE_PROPERTIES);
+    UI->Command(COMMAND_UPDATE_PROPERTIES);
     bDataModified = true;
 }
 //------------------------------------------------------------------------------

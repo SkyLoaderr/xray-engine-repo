@@ -140,9 +140,9 @@ int EScene::GetQueryObjects(ObjectList& lst, EObjClass classfilter, int iSel, in
 int EScene::RaySelect(int flag, EObjClass classfilter)
 {
 	if( !valid() ) return 0;
-	CCustomObject *nearest_object = RayPickObject(flt_max,UI.m_CurrentRStart,UI.m_CurrentRNorm,classfilter,0,0);
+	CCustomObject *nearest_object = RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,classfilter,0,0);
     if (nearest_object) nearest_object->Select(flag);
-    UI.RedrawScene();
+    UI->RedrawScene();
     return nearest_object?1:0;
 }
 //------------------------------------------------------------------------------

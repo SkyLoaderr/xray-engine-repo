@@ -4,14 +4,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
+#include "ESceneSectorTools.h"
 #include "Sector.h"
 #include "EditMesh.h"
 #include "SceneObject.h"
 #include "Scene.h"
 #include "Texture.h"
 #include "cl_intersect.h"
-#include "bottombar.h"
 #include "portal.h"
 #include "portalutils.h"
 #include "cl_collector.h"
@@ -123,9 +122,10 @@ bool CSector::GetBox( Fbox& box )
 
 void CSector::Render(int priority, bool strictB2F)
 {
+    ESceneSectorTools* lt = dynamic_cast<ESceneSectorTools*>(ParentTools); VERIFY(lt);
 	if (2==priority){
         if (true==strictB2F){
-            if (!fraBottomBar->miDrawSectorSolid->Checked){
+            if (!lt->m_Flags.is(ESceneSectorTools::flDrawSolid)){
                 Fmatrix matrix;
                 Fcolor color;
                 float k = Selected()?0.4f:0.2f;
@@ -146,7 +146,7 @@ void CSector::Render(int priority, bool strictB2F)
             float k2 = Selected()?0.5f:0.2f;
             color.set(sector_color.r*k,sector_color.g*k,sector_color.b*k,1.f);
             color2.set(sector_color.r*k2,sector_color.g*k2,sector_color.b*k2,1.f);
-            if (fraBottomBar->miDrawSectorSolid->Checked){
+            if (lt->m_Flags.is(ESceneSectorTools::flDrawSolid)){
                 Device.SetShader(Device.m_WireShader);
                 Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
                 for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
@@ -200,7 +200,7 @@ void CSector::UpdateVolume()
     }
     m_Box.getsphere(m_SectorCenter,m_SectorRadius);
 
-    UI.RedrawScene();
+    UI->RedrawScene();
 
     m_Flags.set(flNeedUpdateVolume,FALSE);
 }
@@ -280,8 +280,8 @@ void CSector::CaptureInsideVolume(){
             }
         }
 		m_Flags.set		(flNeedUpdateVolume,TRUE);
-		UI.RedrawScene	();
-        UI.Command		(COMMAND_UPDATE_PROPERTIES);
+		UI->RedrawScene	();
+        UI->Command		(COMMAND_UPDATE_PROPERTIES);
     }
 }
 //----------------------------------------------------
@@ -292,9 +292,9 @@ void CSector::CaptureAllUnusedMeshes()
     CSceneObject *obj=NULL;
     ObjectList& lst=Scene.ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
-    UI.ProgressStart(lst.size(),"Capturing unused face...");
+    UI->ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-		UI.ProgressInc();
+		UI->ProgressInc();
         obj = (CSceneObject*)(*_F);
         if (!(obj->IsStatic()||obj->IsMUStatic())) continue;
         EditMeshVec* M = obj->Meshes();
@@ -302,8 +302,8 @@ void CSector::CaptureAllUnusedMeshes()
         for(EditMeshIt m_def = M->begin(); m_def!=M->end();m_def++)
         	AddMesh(obj,*m_def);
     }
-    UI.ProgressEnd();
-    UI.RedrawScene();
+    UI->ProgressEnd();
+    UI->RedrawScene();
 }
 
 //----------------------------------------------------

@@ -4,8 +4,8 @@
 #include "ESceneAIMapTools.h"
 #include "xrLevel.h"
 #include "Scene.h"
-#include "ui_main.h"
-#include "ui_tools.h"
+#include "ui_levelmain.h"
+#include "ui_leveltools.h"
 #include "ui_aimaptools.h"
 #include "PropertiesListHelper.h"
 
@@ -119,7 +119,7 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	m_Nodes.clear		();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
-        UI.Command		(COMMAND_REFRESH_SNAP_OBJECTS);
+        UI->Command		(COMMAND_REFRESH_SNAP_OBJECTS);
     }
 }
 //----------------------------------------------------
@@ -365,14 +365,14 @@ void ESceneAIMapTools::SelectNodesByLink(int link)
         if ((*it)->Links()==link)
 			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.set(SAINode::flSelected,TRUE);
-    UI.RedrawScene		();
+    UI->RedrawScene		();
 }
 
 int ESceneAIMapTools::SelectObjects(bool flag)
 {
 	int count = 0;
 
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
 			if (!(*it)->flags.is(SAINode::flHide))
@@ -381,7 +381,7 @@ int ESceneAIMapTools::SelectObjects(bool flag)
     }break;
     }
     UpdateHLSelected	();
-    UI.RedrawScene		();
+    UI->RedrawScene		();
     return count;
 }
 struct sel_node_pred : public std::unary_function<SAINode*, bool>
@@ -391,21 +391,21 @@ struct sel_node_pred : public std::unary_function<SAINode*, bool>
 int ESceneAIMapTools::RemoveSelection()
 {
 	int count=0;
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
     	if (m_Nodes.size()==(u32)SelectionCount(true)){
         	count 	= m_Nodes.size();
         	Clear	(true);
         }else{
-        	UI.ProgressStart	(4,"Removing nodes...");
+        	UI->ProgressStart	(4,"Removing nodes...");
         	// remove link to sel nodes
-    		UI.ProgressInc		("breaking links");
+    		UI->ProgressInc		("breaking links");
 	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
             	for (int k=0; k<4; k++) 
                 	if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected))
                     	(*it)->n[k]=0;
             }
-    		UI.ProgressInc		("erasing nodes");
+    		UI->ProgressInc		("erasing nodes");
             // remove sel nodes
            	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), sel_node_pred());
             count				= m_Nodes.size();
@@ -413,17 +413,17 @@ int ESceneAIMapTools::RemoveSelection()
             	if ((*r_it)->flags.is(SAINode::flSelected)) xr_delete(*r_it);
             m_Nodes.erase		(result,m_Nodes.end());
             count				-= m_Nodes.size();
-    		UI.ProgressInc		("updating hash");
+    		UI->ProgressInc		("updating hash");
             hash_Clear		   	();
 		    hash_FillFromNodes 	();
-    		UI.ProgressInc		("end");
-            UI.ProgressEnd		();
+    		UI->ProgressInc		("end");
+            UI->ProgressEnd		();
         }
     }break;
     }
     if (count){ 
 	    UpdateHLSelected	();
-    	UI.RedrawScene		();
+    	UI->RedrawScene		();
     }
     return count;
 }
@@ -431,7 +431,7 @@ int ESceneAIMapTools::RemoveSelection()
 int ESceneAIMapTools::InvertSelection()
 {
 	int count=0;
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
 			if (!(*it)->flags.is(SAINode::flHide))
@@ -440,14 +440,14 @@ int ESceneAIMapTools::InvertSelection()
     }break;
     }
     UpdateHLSelected	();
-    UI.RedrawScene		();
+    UI->RedrawScene		();
     return count;
 }
 
 int ESceneAIMapTools::SelectionCount(bool testflag)
 {
 	int count = 0;
-    switch (Tools.GetSubTarget()){
+    switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
             if ((*it)->flags.is(SAINode::flSelected)==testflag)

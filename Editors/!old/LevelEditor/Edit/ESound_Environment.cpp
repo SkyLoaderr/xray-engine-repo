@@ -4,7 +4,7 @@
 
 #include "ESound_Environment.h"
 #include "EShape.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 //----------------------------------------------------
 
 #define SOUND_SEL0_COLOR 	0x00A0A0A0
@@ -112,7 +112,7 @@ void ESoundEnvironment::Save(IWriter& F)
 
 void __fastcall ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
 {
-	UI.Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
+	UI->Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
 }
 //----------------------------------------------------
 
@@ -151,6 +151,6 @@ void ESoundEnvironment::get_box(Fmatrix& m)
 void ESoundEnvironment::OnSceneUpdate()
 {
 	inherited::OnSceneUpdate();
-	UI.Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
+	UI->Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
 }
 

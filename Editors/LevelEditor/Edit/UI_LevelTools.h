@@ -1,5 +1,5 @@
-#ifndef ui_toolsH
-#define ui_toolsH
+#ifndef UI_LevelToolsH
+#define UI_LevelToolsH
 
 // refs
 class ESceneCustomMTools;
@@ -7,27 +7,13 @@ class TProperties;
 class TfrmObjectList;
 
 #include "SceneClassList.h"
+#include "UI_ToolsCustom.h"
 
 //---------------------------------------------------------------------------
-enum EAction{
-    eaSelect=0,
-    eaAdd,
-    eaMove,
-    eaRotate,
-    eaScale,
-    eaMaxActions
-};
-
-enum EAxis{
-    eAxisX=0,
-	eAxisY,
-    eAxisZ,
-    eAxisZX
-};
 #define estDefault 0
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
-class TUI_Tools{
+class CLevelTools: public CToolsCustom{
     TPanel*         paParent;
     int             sub_target;
     EObjClass		target;
@@ -49,14 +35,14 @@ class TUI_Tools{
     
     TfrmObjectList*		pObjectListForm;
 
-    void __fastcall 	SetTargetAction	();
+    void __fastcall 	SetTargetAction		();
 
-    void __fastcall 	SetAction   	(int act);
-    void __fastcall 	SetTarget   	(EObjClass tgt,bool bForced=false);
+    void __fastcall 	RealSetAction   	(ETAction act);
+    void __fastcall 	RealSetTarget   	(EObjClass tgt,bool bForced=false);
 
     TProperties* 		m_Props;
-    void __fastcall 	OnPropsModified	();
-    void __fastcall 	OnPropsClose	();
+    void __fastcall 	OnPropsModified		();
+    void __fastcall 	OnPropsClose		();
 
     void				RealUpdateProperties();
     void				RealUpdateObjectList();
@@ -64,60 +50,75 @@ public:
     float 				fFogness;
     u32					dwFogColor;
 public:
-                    	TUI_Tools		();
-    virtual         	~TUI_Tools		();
+                    	CLevelTools			();
+    virtual         	~CLevelTools		();
 
-    bool 				OnCreate		();
-    void            	OnDestroy      	();
-    void            	Reset       	();
+    IC EObjClass		GetTarget   		(){return target;}
+    IC int          	GetAction   		(){return action;}
+    IC int          	GetSubTarget   		(){return sub_target;}
+    virtual void		SetAction			(ETAction act);
+    void 			 	SetTarget			(EObjClass tgt);
 
-	bool 				IfModified		();
-	bool				IsModified		();
+    virtual void		SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
+    virtual void		GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
 
-    void				ZoomObject		(bool bSelectedOnly);
-    void				SetFog			(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
-    void				GetCurrentFog	(u32& fog_color, float& s_fog, float& e_fog);
-    LPCSTR				GetInfo			();
+    virtual void		Render				();
+	virtual void		RenderEnvironment	();
+    virtual void		OnFrame				();
 
-    void __fastcall 	OnFrame			();
-    void __fastcall 	Render			();
-    void __fastcall 	RenderEnvironment();
+    virtual bool		OnCreate			();
+    virtual void		OnDestroy			();
 
-    IC EObjClass		GetTarget   	(){return target;}
-    IC int          	GetAction   	(){return action;}
-    IC int          	GetSubTarget   	(){return sub_target;}
+    virtual bool		IfModified			();
+    virtual bool		IsModified			();
+    virtual void		Modified			(){;}
 
-    TForm*				GetFrame		();
+    virtual LPCSTR		GetInfo				();
+    
+    virtual void		ZoomObject			(bool bSelOnly);
 
-    void __fastcall 	ResetSubTarget	();
-    void __fastcall 	SetSubTarget	(int tgt);
+    virtual bool		Load				(LPCSTR path, LPCSTR name){return true;}
+    virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false){return true;}
+    virtual void		Reload				(){;}
+    
+    virtual void		OnDeviceCreate		(){;}
+    virtual void		OnDeviceDestroy		(){;}
 
-    void __fastcall 	ChangeTarget	(EObjClass tgt, bool forced=false);
-    void __fastcall 	ChangeAction	(int act, bool forced=false);
-    void __fastcall 	OnObjectsUpdate	();
+    virtual void		Clear				(){;}
 
-    void				OnShowHint		(AStringVec& ss);
+    virtual void		OnShowHint			(AStringVec& SS);
 
-    bool __fastcall 	MouseStart  	(TShiftState Shift);
-    bool __fastcall 	MouseEnd    	(TShiftState Shift);
-    void __fastcall 	MouseMove   	(TShiftState Shift);
-	bool __fastcall 	HiddenMode  	();
-    bool __fastcall 	KeyDown     	(WORD Key, TShiftState Shift);
-    bool __fastcall 	KeyUp       	(WORD Key, TShiftState Shift);
-    bool __fastcall 	KeyPress    	(WORD Key, TShiftState Shift);
-    EObjClass 			CurrentClassID();
+    virtual bool __fastcall 	MouseStart	(TShiftState Shift);
+    virtual bool __fastcall 	MouseEnd  	(TShiftState Shift);
+    virtual void __fastcall 	MouseMove 	(TShiftState Shift);
+	virtual bool __fastcall 	HiddenMode	();
+    virtual bool __fastcall 	KeyDown    	(WORD Key, TShiftState Shift);
+    virtual bool __fastcall 	KeyUp       (WORD Key, TShiftState Shift);
+    virtual bool __fastcall 	KeyPress    (WORD Key, TShiftState Shift);
 
-    bool				Pick			(TShiftState Shift);
-	bool 				RayPick			(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
+    virtual bool		Pick				(TShiftState Shift);
+	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
 
-    void				ShowObjectList	();
+    virtual void		ShowProperties		();
+    virtual void		UpdateProperties(bool bForced){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE); if (bForced) OnFrame();}
+    virtual void		RefreshProperties	();
 
-    void				ShowProperties	();
-    void				HideProperties	();
-    void				UpdateProperties(bool bForced){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE); if (bForced) OnFrame();}
-    void				RefreshProperties();
+    // specified functions
+    void            	Reset       		();
+
+    TForm*				GetFrame			();
+
+    void __fastcall 	ResetSubTarget		();
+    void __fastcall 	SetSubTarget		(int tgt);
+
+    void __fastcall 	OnObjectsUpdate		();
+
+    EObjClass 			CurrentClassID		();
+
+    void				ShowObjectList		();
 };
-extern TUI_Tools Tools;
+extern CLevelTools*&	LTools;
+
 extern void ResetActionToSelect();
 extern TShiftState ssRBOnly;
 #endif

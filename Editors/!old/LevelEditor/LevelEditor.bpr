@@ -4,159 +4,86 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\LevelEditor.exe"/>
-    <OBJFILES value="intermediate\LevelEditor.obj intermediate\xrXRC.obj intermediate\bone.obj 
-      intermediate\cl_collector.obj intermediate\defines.obj 
-      intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
-      intermediate\DetailManager_Decompress.obj 
-      intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
-      intermediate\Envelope.obj intermediate\fmesh.obj intermediate\Frustum.obj 
-      intermediate\GameFont.obj intermediate\GameMtlLib.obj intermediate\HW.obj 
-      intermediate\HWCaps.obj intermediate\IInputReceiver.obj 
-      intermediate\Image.obj intermediate\interp.obj intermediate\motion.obj 
-      intermediate\NET_Compressor.obj intermediate\ParticleEffect.obj 
-      intermediate\ParticleGroup.obj intermediate\pure.obj 
-      intermediate\R_Backend.obj intermediate\R_Backend_DBG.obj 
-      intermediate\R_Backend_Runtime.obj intermediate\R_Backend_xform.obj 
-      intermediate\r_constants.obj intermediate\r_constants_cache.obj 
-      intermediate\R_DStreams.obj intermediate\SH_Constant.obj 
-      intermediate\SH_Matrix.obj intermediate\SH_RT.obj 
-      intermediate\SH_Texture.obj intermediate\Shader.obj 
-      intermediate\Texture.obj intermediate\tga.obj intermediate\tss_def.obj 
-      intermediate\xr_avi.obj intermediate\xr_efflensflare.obj 
-      intermediate\Xr_input.obj intermediate\xrImage_Resampler.obj 
-      intermediate\xrLoadSurface.obj intermediate\xrRender_console.obj 
-      intermediate\xrSkin2W.obj intermediate\FBasicVisual.obj 
-      intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
-      intermediate\FVisual.obj intermediate\SkeletonX.obj 
-      intermediate\xrSkin1W.obj intermediate\BlenderDefault.obj 
-      intermediate\Blender.obj intermediate\Blender_B.obj 
-      intermediate\Blender_Blur.obj intermediate\Blender_BmmD.obj 
-      intermediate\Blender_default_aref.obj 
-      intermediate\Blender_detail_still.obj intermediate\Blender_Editor_Selection.obj 
-      intermediate\Blender_Editor_Wire.obj intermediate\Blender_LaEmB.obj 
-      intermediate\blender_light.obj intermediate\Blender_Lm(EbB).obj 
-      intermediate\Blender_LmBmmD.obj intermediate\Blender_Model.obj 
-      intermediate\Blender_Model_EbB.obj intermediate\Blender_Palette.obj 
-      intermediate\Blender_Recorder.obj intermediate\Blender_Recorder_R2.obj 
-      intermediate\Blender_Screen_GRAY.obj intermediate\Blender_Screen_SET.obj 
-      intermediate\Blender_Shadow_Texture.obj 
-      intermediate\Blender_Shadow_World.obj intermediate\Blender_tree.obj 
-      intermediate\Blender_Vertex.obj intermediate\Blender_Vertex_aref.obj 
-      intermediate\xrServer_Objects_ALife_Monsters.obj 
-      intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
-      intermediate\xrServer_Objects_ALife.obj 
-      intermediate\xrServer_Objects_ALife_Items.obj intermediate\WayPoint.obj 
-      intermediate\AIMapExport.obj intermediate\BoneEditor.obj 
+    <OBJFILES value="intermediate\LevelEditor.obj intermediate\BottomBar.obj 
+      intermediate\main.obj intermediate\TopBar.obj intermediate\stdafx.obj 
+      intermediate\NET_Compressor.obj intermediate\DOOneColor.obj 
+      intermediate\DOShuffle.obj intermediate\EditLibrary.obj 
+      intermediate\EditLightAnim.obj intermediate\FrameAIMap.obj 
+      intermediate\FrameDetObj.obj intermediate\FrameEmitter.obj 
+      intermediate\FrameGroup.obj intermediate\FrameLight.obj 
+      intermediate\FrameObject.obj intermediate\FramePortal.obj 
+      intermediate\FramePS.obj intermediate\FrameSector.obj 
+      intermediate\FrameShape.obj intermediate\FrameSpawn.obj 
+      intermediate\FrameWayPoint.obj intermediate\LeftBar.obj 
+      intermediate\ObjectList.obj intermediate\previewimage.obj 
+      intermediate\PropertiesEObject.obj intermediate\SceneProperties.obj 
+      intermediate\ShaderFunction.obj intermediate\Splash.obj 
+      intermediate\UI_LevelTools.obj intermediate\UI_LevelMain.obj 
+      intermediate\WayPoint.obj intermediate\AIMapExport.obj 
       intermediate\Builder.obj intermediate\BuilderCF.obj 
       intermediate\BuilderCore.obj intermediate\BuilderGame.obj 
       intermediate\BuilderLTX.obj intermediate\BuilderOGF.obj 
-      intermediate\BuilderRemote.obj intermediate\c_dinput.obj 
-      intermediate\ColorPicker.obj intermediate\Cursor3D.obj 
-      intermediate\Custom2DProjector.obj intermediate\CustomObject.obj 
-      intermediate\CustomObjectAnimation.obj intermediate\CustomObjectLE.obj 
-      intermediate\d3dutils.obj intermediate\EDetailModel.obj 
-      intermediate\DetailObjects.obj intermediate\DetailObjectsGenerate.obj 
-      intermediate\DetailObjectsPick.obj intermediate\Device.obj 
-      intermediate\du_box.obj intermediate\du_cone.obj 
-      intermediate\du_cylinder.obj intermediate\du_sphere.obj 
-      intermediate\EditMesh.obj intermediate\EditMeshIO.obj 
-      intermediate\EditMeshModify.obj intermediate\EditMeshPick.obj 
-      intermediate\EditMeshRender.obj intermediate\EditObject.obj 
-      intermediate\EditObjectEditor.obj intermediate\EditObjectExportLWO.obj 
-      intermediate\EditObjectImport.obj intermediate\EditObjectIO.obj 
-      intermediate\EditObjectMotions.obj intermediate\EditObjectProps.obj 
-      intermediate\ELight.obj intermediate\ELog.obj intermediate\Engine.obj 
+      intermediate\BuilderRemote.obj intermediate\Cursor3D.obj 
+      intermediate\Custom2DProjector.obj intermediate\CustomObjectLE.obj 
+      intermediate\DetailObjects.obj intermediate\DetailObjects_Controls.obj 
+      intermediate\DetailObjectsGenerate.obj intermediate\DetailObjectsPick.obj 
+      intermediate\EditObjectExportLWO.obj intermediate\ELight.obj 
       intermediate\EParticlesObject.obj intermediate\ESceneAIMapTools.obj 
+      intermediate\ESceneAIMapTools_Controls.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
-      intermediate\ESceneAIMapTools_Pick.obj 
-      intermediate\ESceneAIMapTools_Render.obj intermediate\EShape.obj 
-      intermediate\ESound_Environment.obj intermediate\ESound_Source.obj 
-      intermediate\estats.obj intermediate\ETextureParams.obj 
-      intermediate\ExportObjectOGF.obj intermediate\ExportSkeleton.obj 
-      intermediate\FolderLib.obj intermediate\FS2.obj intermediate\Glow.obj 
-      intermediate\GroupObject.obj intermediate\ImageManager.obj 
-      intermediate\ItemList.obj intermediate\ItemListHelper.obj 
-      intermediate\ItemListTypes.obj intermediate\Library.obj 
-      intermediate\LightAnimLibrary.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
-      intermediate\ParticleEffectEditor.obj intermediate\portal.obj 
-      intermediate\portalutils.obj intermediate\PSLibrary.obj 
-      intermediate\PSLibraryEditor.obj intermediate\render.obj 
-      intermediate\scene.obj intermediate\SceneIO.obj 
-      intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
-      intermediate\SceneSummaryInfo.obj intermediate\SceneUndo.obj 
-      intermediate\SceneUtil.obj intermediate\sector.obj 
-      intermediate\SoundManager.obj intermediate\SoundManager_LE.obj 
-      intermediate\SpawnPoint.obj intermediate\TLSPRITE.obj 
-      intermediate\UI_AIMapTools.obj intermediate\UI_Camera.obj 
-      intermediate\ui_control.obj intermediate\UI_Main.obj 
-      intermediate\UI_MainCommand.obj intermediate\UI_MainExtern.obj 
-      intermediate\UI_MainMail.obj intermediate\UI_ObjectTools.obj 
-      intermediate\UI_PSTools.obj intermediate\UI_SpawnTools.obj 
-      intermediate\UI_PortalTools.obj intermediate\UI_ShapeTools.obj 
-      intermediate\ui_tools.obj intermediate\UI_WayPointTools.obj 
-      intermediate\TopBar.obj intermediate\BottomBar.obj 
-      intermediate\ChoseForm.obj intermediate\DOOneColor.obj 
-      intermediate\DOShuffle.obj intermediate\EditLibrary.obj 
-      intermediate\EditLightAnim.obj intermediate\FrameAIMap.obj 
-      intermediate\FrameDetObj.obj intermediate\FrameGroup.obj 
-      intermediate\FrameLight.obj intermediate\FramePortal.obj 
-      intermediate\FramePS.obj intermediate\FrameSector.obj 
-      intermediate\FrameShape.obj intermediate\FrameWayPoint.obj 
-      intermediate\ImageEditor.obj intermediate\LeftBar.obj 
-      intermediate\LogForm.obj intermediate\main.obj 
-      intermediate\NumericVector.obj intermediate\ObjectList.obj 
-      intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
-      intermediate\PropertiesList.obj intermediate\PropertiesListHelper.obj 
-      intermediate\PropertiesListTypes.obj intermediate\SceneProperties.obj 
-      intermediate\ShaderFunction.obj intermediate\Splash.obj 
-      intermediate\stdafx.obj intermediate\TextForm.obj 
-      intermediate\FrameObject.obj intermediate\SceneClassList.obj 
-      intermediate\SceneSnap.obj intermediate\SH_Atomic.obj 
-      intermediate\ResourceManager_Resources.obj 
-      intermediate\ResourceManager.obj intermediate\ResourceManager_Loader.obj 
-      intermediate\Blender_Recorder_StandartBinding.obj 
-      intermediate\DetailModel.obj intermediate\ImageManagerDO.obj 
-      intermediate\ESceneCustomOTools.obj intermediate\ESceneCustomOToolsIO.obj 
-      intermediate\SceneSelection.obj intermediate\ScenePick.obj 
-      intermediate\SceneRender.obj intermediate\ESceneLightToolsIO.obj 
-      intermediate\ESceneLightTools.obj intermediate\Environment.obj 
-      intermediate\IGame_Persistent.obj intermediate\rain.obj 
-      intermediate\ESceneCustomOToolsFactory.obj 
+      intermediate\ESceneAIMapTools_Pick.obj 
+      intermediate\ESceneAIMapTools_Render.obj 
       intermediate\ESceneCustomMTools.obj 
       intermediate\ESceneCustomMToolsControls.obj 
-      intermediate\ESceneAIMapTools_Controls.obj 
-      intermediate\DetailObjects_Controls.obj intermediate\ESceneGroupTools.obj 
+      intermediate\ESceneCustomOTools.obj 
+      intermediate\ESceneCustomOToolsFactory.obj 
+      intermediate\ESceneCustomOToolsIO.obj intermediate\ESceneDummyTools.obj 
+      intermediate\ESceneGlowTools.obj intermediate\ESceneGroupTools.obj 
+      intermediate\ESceneLightTools.obj intermediate\ESceneLightToolsIO.obj 
       intermediate\ESceneObjectTools.obj intermediate\EScenePortalTools.obj 
-      intermediate\EScenePSTools.obj intermediate\ESceneSpawnTools.obj 
-      intermediate\ESceneSectorTools.obj intermediate\ESceneShapeTools.obj 
-      intermediate\ESceneWayTools.obj intermediate\ESceneSoundEnvTools.obj 
-      intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
-      intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj 
-      intermediate\FrameSpawn.obj intermediate\UI_SectorTools.obj 
-      intermediate\thunderbolt.obj intermediate\ModelPool.obj 
-      intermediate\SkeletonCustom.obj intermediate\SkeletonAnimated.obj 
-      intermediate\SkeletonRigid.obj intermediate\SoundEditor.obj 
-      intermediate\EThumbnailTexture.obj intermediate\EThumbnail.obj 
-      intermediate\EThumbnailObject.obj intermediate\EThumbnailSound.obj 
-      intermediate\EditorPreferences.obj"/>
-    <RESFILES value="resource.res LevelEditor.res"/>
+      intermediate\EScenePSTools.obj intermediate\ESceneSectorTools.obj 
+      intermediate\ESceneShapeTools.obj intermediate\ESceneSoundEnvTools.obj 
+      intermediate\ESceneSoundSrcTools.obj intermediate\ESceneSpawnTools.obj 
+      intermediate\ESceneWayTools.obj intermediate\EShape.obj 
+      intermediate\ESound_Environment.obj intermediate\ESound_Source.obj 
+      intermediate\FS2.obj intermediate\Glow.obj intermediate\GroupObject.obj 
+      intermediate\ImageManagerDO.obj intermediate\portal.obj 
+      intermediate\portalutils.obj intermediate\Scene.obj 
+      intermediate\Scene_Tools.obj intermediate\SceneIO.obj 
+      intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
+      intermediate\ScenePick.obj intermediate\SceneRender.obj 
+      intermediate\SceneSelection.obj intermediate\SceneSnap.obj 
+      intermediate\SceneSummaryInfo.obj intermediate\SceneUndo.obj 
+      intermediate\SceneUtil.obj intermediate\sector.obj 
+      intermediate\SoundManager_LE.obj intermediate\SpawnPoint.obj 
+      intermediate\UI_AIMapTools.obj intermediate\ui_control.obj 
+      intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
+      intermediate\UI_PSTools.obj intermediate\UI_SectorTools.obj 
+      intermediate\UI_ShapeTools.obj intermediate\UI_SpawnTools.obj 
+      intermediate\UI_WayPointTools.obj intermediate\DetailModel.obj 
+      intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
+      intermediate\DetailManager_Decompress.obj 
+      intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
+      intermediate\xrServer_Objects_ALife_Monsters.obj 
+      intermediate\IGame_Persistent.obj intermediate\xrServer_Factory.obj 
+      intermediate\xrServer_Objects.obj intermediate\xrServer_Objects_ALife.obj 
+      intermediate\xrServer_Objects_ALife_Items.obj"/>
+    <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) edit\ItemList.dfm TopBar.dfm BottomBar.dfm ChoseForm.dfm 
-      DOOneColor.dfm DOShuffle.dfm EditLibrary.dfm EditLightAnim.dfm 
-      FrameAIMap.dfm FrameDetObj.dfm FrameGroup.dfm FrameLight.dfm 
-      FramePortal.dfm FramePS.dfm FrameSector.dfm FrameShape.dfm 
-      FrameWayPoint.dfm ImageEditor.dfm LeftBar.dfm LogForm.dfm main.dfm 
-      NumericVector.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm 
-      PropertiesList.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm 
-      TextForm.dfm FrameObject.dfm FrameSpawn.dfm edit\SoundEditor.dfm"/>
+    <RESDEPEN value="$(RESFILES) BottomBar.dfm main.dfm TopBar.dfm DOOneColor.dfm DOShuffle.dfm 
+      EditLibrary.dfm EditLightAnim.dfm FrameAIMap.dfm FrameDetObj.dfm 
+      FrameEmitter.dfm FrameGroup.dfm FrameLight.dfm FrameObject.dfm 
+      FramePortal.dfm FramePS.dfm FrameSector.dfm FrameShape.dfm FrameSpawn.dfm 
+      FrameWayPoint.dfm LeftBar.dfm ObjectList.dfm previewimage.dfm 
+      PropertiesEObject.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi"/>
-    <PATHCPP value=".;Engine;Engine\Animations;Engine\Blenders;Engine\Game;edit"/>
+    <PATHCPP value=".;Engine;Edit;Engine\Game"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -166,18 +93,19 @@
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="P:\;C:\Rad\Borland\CBuilder6\Projects;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Game;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
-    <LIBPATH value="P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;&quot;x:\&quot;"/>
+    <INCLUDEPATH value="Engine\Game;Edit;Engine;r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals"/>
+    <LIBPATH value="Engine\Game;Edit;Engine;C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IP:\. -IC:\Rad\Borland\CBuilder6\Projects -IR:\sdk\DirectX9.0\include 
-      -I$(BCB)\include -I$(BCB)\include\vcl -IP:\xrCore -Iedit -Iengine 
-      -IEngine\Game -IEngine\Animations -IEngine\Blenders 
-      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
-      -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
-      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
+    <IDLCFLAGS value="-IEngine\Game -IEdit -IEngine -Ir:\borland\components6\alexmx 
+      -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
+      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\ElPack\Code 
+      -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrCDB 
+      -IP:\xrSound -I..\ECore -I..\ECore\Editor -I..\ECore\Engine 
+      -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -src_suffix cpp 
+      -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
@@ -195,274 +123,128 @@
   <FILELIST>
       <FILE FILENAME="LevelEditor.cpp" FORMNAME="" UNITNAME="LevelEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LevelEditor.todo" FORMNAME="" UNITNAME="LevelEditor.todo" CONTAINERID="ToDo" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\bone.cpp" FORMNAME="" UNITNAME="bone.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\cl_collector.cpp" FORMNAME="" UNITNAME="cl_collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LevelEditor.res" FORMNAME="" UNITNAME="LevelEditor.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\NET_utils.h" FORMNAME="" UNITNAME="NET_utils.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\NET_Compressor.cpp" FORMNAME="" UNITNAME="NET_Compressor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DOOneColor.cpp" FORMNAME="frmOneColor" UNITNAME="DOOneColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="DOShuffle.cpp" FORMNAME="frmDOShuffle" UNITNAME="DOShuffle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditLibrary.cpp" FORMNAME="frmEditLibrary" UNITNAME="EditLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditLightAnim.cpp" FORMNAME="frmEditLightAnim" UNITNAME="EditLightAnim" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameAIMap.cpp" FORMNAME="fraAIMap" UNITNAME="FrameAIMap" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameObject.cpp" FORMNAME="fraObject" UNITNAME="FrameObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_LevelTools.cpp" FORMNAME="" UNITNAME="UI_LevelTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_LevelMain.cpp" FORMNAME="" UNITNAME="UI_LevelMain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\WayPoint.cpp" FORMNAME="" UNITNAME="WayPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\AIMapExport.cpp" FORMNAME="" UNITNAME="AIMapExport.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Builder.cpp" FORMNAME="" UNITNAME="Builder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderCore.cpp" FORMNAME="" UNITNAME="BuilderCore.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderGame.cpp" FORMNAME="" UNITNAME="BuilderGame.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderLTX.cpp" FORMNAME="" UNITNAME="BuilderLTX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderOGF.cpp" FORMNAME="" UNITNAME="BuilderOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\BuilderRemote.cpp" FORMNAME="" UNITNAME="BuilderRemote.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Cursor3D.cpp" FORMNAME="" UNITNAME="Cursor3D.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\DetailObjects_Controls.cpp" FORMNAME="" UNITNAME="DetailObjects_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\DetailObjectsGenerate.cpp" FORMNAME="" UNITNAME="DetailObjectsGenerate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EditObjectExportLWO.cpp" FORMNAME="" UNITNAME="EditObjectExportLWO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ELight.cpp" FORMNAME="" UNITNAME="ELight.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EParticlesObject.cpp" FORMNAME="" UNITNAME="EParticlesObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Controls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Generate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_MotionSimulator.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_MotionSimulator.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_Pick.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Pick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_Render.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneCustomMTools.cpp" FORMNAME="" UNITNAME="ESceneCustomMTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneCustomMToolsControls.cpp" FORMNAME="" UNITNAME="ESceneCustomMToolsControls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneCustomOTools.cpp" FORMNAME="" UNITNAME="ESceneCustomOTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneCustomOToolsFactory.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsFactory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneCustomOToolsIO.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneGroupTools.cpp" FORMNAME="" UNITNAME="ESceneGroupTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneLightTools.cpp" FORMNAME="" UNITNAME="ESceneLightTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneLightToolsIO.cpp" FORMNAME="" UNITNAME="ESceneLightToolsIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneObjectTools.cpp" FORMNAME="" UNITNAME="ESceneObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePortalTools.cpp" FORMNAME="" UNITNAME="EScenePortalTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePSTools.cpp" FORMNAME="" UNITNAME="EScenePSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSectorTools.cpp" FORMNAME="" UNITNAME="ESceneSectorTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneShapeTools.cpp" FORMNAME="" UNITNAME="ESceneShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSoundEnvTools.cpp" FORMNAME="" UNITNAME="ESceneSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSoundSrcTools.cpp" FORMNAME="" UNITNAME="ESceneSoundSrcTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSpawnTools.cpp" FORMNAME="" UNITNAME="ESceneSpawnTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneWayTools.cpp" FORMNAME="" UNITNAME="ESceneWayTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EShape.cpp" FORMNAME="" UNITNAME="EShape.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESound_Environment.cpp" FORMNAME="" UNITNAME="ESound_Environment.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\FS2.CPP" FORMNAME="" UNITNAME="FS2.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Glow.cpp" FORMNAME="" UNITNAME="Glow.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\portal.cpp" FORMNAME="" UNITNAME="portal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\portalutils.cpp" FORMNAME="" UNITNAME="portalutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Scene.cpp" FORMNAME="" UNITNAME="Scene.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\Scene_Tools.cpp" FORMNAME="" UNITNAME="Scene_Tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ScenePick.cpp" FORMNAME="" UNITNAME="ScenePick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneRender.cpp" FORMNAME="" UNITNAME="SceneRender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneSelection.cpp" FORMNAME="" UNITNAME="SceneSelection.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneSnap.cpp" FORMNAME="" UNITNAME="SceneSnap.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneSummaryInfo.cpp" FORMNAME="" UNITNAME="SceneSummaryInfo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneUndo.cpp" FORMNAME="" UNITNAME="SceneUndo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SceneUtil.cpp" FORMNAME="" UNITNAME="SceneUtil.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\sector.cpp" FORMNAME="" UNITNAME="sector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SoundManager_LE.cpp" FORMNAME="" UNITNAME="SoundManager_LE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_AIMapTools.cpp" FORMNAME="" UNITNAME="UI_AIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_SpawnTools.cpp" FORMNAME="" UNITNAME="UI_SpawnTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager.cpp" FORMNAME="" UNITNAME="DetailManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_CACHE.cpp" FORMNAME="" UNITNAME="DetailManager_CACHE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_Decompress.cpp" FORMNAME="" UNITNAME="DetailManager_Decompress.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_soft.cpp" FORMNAME="" UNITNAME="DetailManager_soft.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_VS.cpp" FORMNAME="" UNITNAME="DetailManager_VS.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\fmesh.cpp" FORMNAME="" UNITNAME="fmesh.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Image.cpp" FORMNAME="" UNITNAME="Image.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\interp.cpp" FORMNAME="" UNITNAME="interp.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\motion.cpp" FORMNAME="" UNITNAME="motion.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\NET_Compressor.cpp" FORMNAME="" UNITNAME="NET_Compressor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ParticleEffect.cpp" FORMNAME="" UNITNAME="ParticleEffect.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\pure.cpp" FORMNAME="" UNITNAME="pure.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend.cpp" FORMNAME="" UNITNAME="R_Backend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_Runtime.cpp" FORMNAME="" UNITNAME="R_Backend_Runtime.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_constants_cache.cpp" FORMNAME="" UNITNAME="r_constants_cache.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Constant.cpp" FORMNAME="" UNITNAME="SH_Constant.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Matrix.cpp" FORMNAME="" UNITNAME="SH_Matrix.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_RT.cpp" FORMNAME="" UNITNAME="SH_RT.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Texture.cpp" FORMNAME="" UNITNAME="SH_Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Shader.cpp" FORMNAME="" UNITNAME="Shader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Texture.cpp" FORMNAME="" UNITNAME="Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\tss_def.cpp" FORMNAME="" UNITNAME="tss_def.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xr_avi.cpp" FORMNAME="" UNITNAME="xr_avi.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender.cpp" FORMNAME="" UNITNAME="Blender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Blur.cpp" FORMNAME="" UNITNAME="Blender_Blur.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_BmmD.cpp" FORMNAME="" UNITNAME="Blender_BmmD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_default_aref.cpp" FORMNAME="" UNITNAME="Blender_default_aref.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Editor_Selection.cpp" FORMNAME="" UNITNAME="Blender_Editor_Selection.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Editor_Wire.cpp" FORMNAME="" UNITNAME="Blender_Editor_Wire.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\blender_light.cpp" FORMNAME="" UNITNAME="blender_light.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB).cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_LmBmmD.cpp" FORMNAME="" UNITNAME="Blender_LmBmmD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Recorder.cpp" FORMNAME="" UNITNAME="Blender_Recorder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Screen_GRAY.cpp" FORMNAME="" UNITNAME="Blender_Screen_GRAY.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Screen_SET.cpp" FORMNAME="" UNITNAME="Blender_Screen_SET.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Vertex.cpp" FORMNAME="" UNITNAME="Blender_Vertex.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Vertex_aref.cpp" FORMNAME="" UNITNAME="Blender_Vertex_aref.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Monsters.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Monsters.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Factory.cpp" FORMNAME="" UNITNAME="xrServer_Factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Items.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Items.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\WayPoint.cpp" FORMNAME="" UNITNAME="WayPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\AIMapExport.cpp" FORMNAME="" UNITNAME="AIMapExport.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Builder.cpp" FORMNAME="" UNITNAME="Builder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderCore.cpp" FORMNAME="" UNITNAME="BuilderCore.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderGame.cpp" FORMNAME="" UNITNAME="BuilderGame.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderLTX.cpp" FORMNAME="" UNITNAME="BuilderLTX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderOGF.cpp" FORMNAME="" UNITNAME="BuilderOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\BuilderRemote.cpp" FORMNAME="" UNITNAME="BuilderRemote.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Cursor3D.cpp" FORMNAME="" UNITNAME="Cursor3D.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\CustomObjectAnimation.cpp" FORMNAME="" UNITNAME="CustomObjectAnimation.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\CustomObjectLE.cpp" FORMNAME="" UNITNAME="CustomObjectLE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\d3dutils.cpp" FORMNAME="" UNITNAME="d3dutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EDetailModel.cpp" FORMNAME="" UNITNAME="EDetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjectsGenerate.cpp" FORMNAME="" UNITNAME="DetailObjectsGenerate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjectsPick.cpp" FORMNAME="" UNITNAME="DetailObjectsPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Device.cpp" FORMNAME="" UNITNAME="Device.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\du_cone.cpp" FORMNAME="" UNITNAME="du_cone.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditMesh.cpp" FORMNAME="" UNITNAME="EditMesh.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditMeshIO.cpp" FORMNAME="" UNITNAME="EditMeshIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditMeshModify.cpp" FORMNAME="" UNITNAME="EditMeshModify.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditMeshPick.cpp" FORMNAME="" UNITNAME="EditMeshPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObject.cpp" FORMNAME="" UNITNAME="EditObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectEditor.cpp" FORMNAME="" UNITNAME="EditObjectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectExportLWO.cpp" FORMNAME="" UNITNAME="EditObjectExportLWO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectImport.cpp" FORMNAME="" UNITNAME="EditObjectImport.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditObjectProps.cpp" FORMNAME="" UNITNAME="EditObjectProps.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ELight.cpp" FORMNAME="" UNITNAME="ELight.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ELog.cpp" FORMNAME="" UNITNAME="ELog.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Engine.cpp" FORMNAME="" UNITNAME="Engine.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EParticlesObject.cpp" FORMNAME="" UNITNAME="EParticlesObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools_Generate.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Generate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools_Pick.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Pick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools_Render.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EShape.cpp" FORMNAME="" UNITNAME="EShape.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESound_Environment.cpp" FORMNAME="" UNITNAME="ESound_Environment.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\estats.cpp" FORMNAME="" UNITNAME="estats.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\FS2.cpp" FORMNAME="" UNITNAME="FS2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Glow.cpp" FORMNAME="" UNITNAME="Glow.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools_MotionSimulator.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_MotionSimulator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ParticleEffectEditor.cpp" FORMNAME="" UNITNAME="ParticleEffectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\portal.cpp" FORMNAME="" UNITNAME="portal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\portalutils.cpp" FORMNAME="" UNITNAME="portalutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\scene.cpp" FORMNAME="" UNITNAME="Scene" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneSummaryInfo.cpp" FORMNAME="" UNITNAME="SceneSummaryInfo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneUndo.cpp" FORMNAME="" UNITNAME="SceneUndo.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneUtil.cpp" FORMNAME="" UNITNAME="SceneUtil.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\sector.cpp" FORMNAME="" UNITNAME="sector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SoundManager_LE.cpp" FORMNAME="" UNITNAME="SoundManager_LE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_AIMapTools.cpp" FORMNAME="" UNITNAME="UI_AIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_SpawnTools.cpp" FORMNAME="" UNITNAME="UI_SpawnTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ui_tools.cpp" FORMNAME="" UNITNAME="ui_tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="DOOneColor.cpp" FORMNAME="frmOneColor" UNITNAME="DOOneColor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="DOShuffle.cpp" FORMNAME="frmDOShuffle" UNITNAME="DOShuffle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditLibrary.cpp" FORMNAME="frmEditLibrary" UNITNAME="EditLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditLightAnim.cpp" FORMNAME="frmEditLightAnim" UNITNAME="EditLightAnim" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameAIMap.cpp" FORMNAME="fraAIMap" UNITNAME="FrameAIMap" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ObjectList.cpp" FORMNAME="frmObjectList" UNITNAME="ObjectList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesEObject.cpp" FORMNAME="frmPropertiesEObject" UNITNAME="PropertiesEObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SceneProperties.cpp" FORMNAME="frmSceneProperties" UNITNAME="SceneProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="LevelEditor.res" FORMNAME="" UNITNAME="LevelEditor.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameObject.cpp" FORMNAME="fraObject" UNITNAME="FrameObject" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneClassList.cpp" FORMNAME="" UNITNAME="SceneClassList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneSnap.cpp" FORMNAME="" UNITNAME="SceneSnap" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Atomic.cpp" FORMNAME="" UNITNAME="SH_Atomic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ResourceManager_Resources.cpp" FORMNAME="" UNITNAME="ResourceManager_Resources.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ResourceManager.cpp" FORMNAME="" UNITNAME="ResourceManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Recorder_StandartBinding.cpp" FORMNAME="" UNITNAME="Blender_Recorder_StandartBinding" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneCustomOTools.cpp" FORMNAME="" UNITNAME="ESceneCustomOTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneCustomOToolsIO.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneSelection.cpp" FORMNAME="" UNITNAME="SceneSelection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ScenePick.cpp" FORMNAME="" UNITNAME="ScenePick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SceneRender.cpp" FORMNAME="" UNITNAME="SceneRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneLightToolsIO.cpp" FORMNAME="" UNITNAME="ESceneLightToolsIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneLightTools.cpp" FORMNAME="" UNITNAME="ESceneLightTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Environment.cpp" FORMNAME="" UNITNAME="Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\rain.cpp" FORMNAME="" UNITNAME="rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneCustomOToolsFactory.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsFactory" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneCustomMTools.cpp" FORMNAME="" UNITNAME="ESceneCustomMTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneCustomMToolsControls.cpp" FORMNAME="" UNITNAME="ESceneCustomMToolsControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneAIMapTools_Controls.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Controls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\DetailObjects_Controls.cpp" FORMNAME="" UNITNAME="DetailObjects_Controls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneGroupTools.cpp" FORMNAME="" UNITNAME="ESceneGroupTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneObjectTools.cpp" FORMNAME="" UNITNAME="ESceneObjectTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EScenePortalTools.cpp" FORMNAME="" UNITNAME="EScenePortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EScenePSTools.cpp" FORMNAME="" UNITNAME="EScenePSTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneSpawnTools.cpp" FORMNAME="" UNITNAME="ESceneSpawnTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneSectorTools.cpp" FORMNAME="" UNITNAME="ESceneSectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneShapeTools.cpp" FORMNAME="" UNITNAME="ESceneShapeTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneWayTools.cpp" FORMNAME="" UNITNAME="ESceneWayTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneSoundEnvTools.cpp" FORMNAME="" UNITNAME="ESceneSoundEnvTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneSoundSrcTools.cpp" FORMNAME="" UNITNAME="ESceneSoundSrcTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Scene_Tools.cpp" FORMNAME="" UNITNAME="Scene_Tools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EThumbnailTexture.cpp" FORMNAME="" UNITNAME="EThumbnailTexture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EThumbnail.cpp" FORMNAME="" UNITNAME="EThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\EditorPreferences.cpp" FORMNAME="" UNITNAME="EditorPreferences" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Sound.h" FORMNAME="" UNITNAME="Sound.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\PHSynchronize.h" FORMNAME="" UNITNAME="PHSynchronize.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\NET_utils.h" FORMNAME="" UNITNAME="NET_utils.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ChooseTypes.h" FORMNAME="" UNITNAME="ChooseTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -474,7 +256,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=101
+Build=102
 Debug=1
 PreRelease=0
 Special=0
@@ -486,7 +268,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.101
+FileVersion=1.0.2.102
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -496,13 +278,15 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=1
-Item0=P:\;C:\Rad\Borland\CBuilder6\Projects;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Game;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source
+Count=2
+Item0=r:\borland\components6\alexmx;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals
+Item1=P:\;C:\Rad\Borland\CBuilder6\Projects;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Game;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
+Count=3
+Item0=C:\Rad\Borland\CBuilder6\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\;..\ECore;..\ECore\Editor
 Item1=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
+Item2=P:\;C:\Rad\Borland\CBuilder6\Projects;..\lib\DX;..\lib;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\Animations;Engine\Blenders;Engine\Game;R:\Borland\Components6\alexmx;x:\
 
 [HistoryLists\hlDebugSourcePath]
 Count=5

@@ -9,7 +9,7 @@
 #include "Scene.h"
 #include "ELight.h"
 #include "SceneObject.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "PropertiesListTypes.h"
 #include "Render.h"
 

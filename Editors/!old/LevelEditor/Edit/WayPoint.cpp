@@ -6,7 +6,7 @@
 
 #include "WayPoint.h"
 #include "Scene.h"
-#include "UI_Tools.h"
+#include "ui_leveltools.h"
 #include "FrameWayPoint.h"
 #include "d3dutils.h"
 #include "ui_main.h"
@@ -108,8 +108,8 @@ bool CWayPoint::FrustumSelect(int flag, const CFrustum& frustum)
 void CWayPoint::Select( int flag )
 {
 	m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
-    UI.RedrawScene();
-    UI.Command	(COMMAND_UPDATE_PROPERTIES);
+    UI->RedrawScene();
+    UI->Command	(COMMAND_UPDATE_PROPERTIES);
 }
 WPLIt CWayPoint::FindLink(CWayPoint* P)
 {
@@ -147,19 +147,19 @@ bool CWayPoint::DeleteLink(CWayPoint* P)
 	if (it!=m_Links.end()){
     	xr_delete		(*it);
 		m_Links.erase	(it);
-        UI.RedrawScene	();
+        UI->RedrawScene	();
     	return true;
     }
     return false;
 }
 bool CWayPoint::AddSingleLink(CWayPoint* P)
 {
-    UI.RedrawScene();
+    UI->RedrawScene();
     return AppendLink(P,1.f);
 }
 bool CWayPoint::AddDoubleLink(CWayPoint* P)
 {
-    UI.RedrawScene();
+    UI->RedrawScene();
     bool bRes 	= 	AppendLink		(P,1.f);
     bRes 		|=	P->AppendLink	(this,1.f);
     return bRes;
@@ -338,9 +338,9 @@ void CWayObject::Select(int flag)
 bool CWayObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest)
 {
     if (IsPointMode()){
-    	float dist = UI.ZFar();
+    	float dist = UI->ZFar();
         CWayPoint* nearest=0;
-        dist = UI.ZFar();
+        dist = UI->ZFar();
 		for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
 			if ((*it)->RayPick(dist,start,dir)) nearest=*it;
         if (nearest!=0){
@@ -431,8 +431,8 @@ bool CWayObject::FrustumPick(const CFrustum& frustum)
 
 bool CWayObject::IsPointMode()
 {
-	if (Tools.GetTarget()==OBJCLASS_WAY){
-	    TfraWayPoint* frame=(TfraWayPoint*)Tools.GetFrame(); R_ASSERT(frame);
+	if (LTools->GetTarget()==OBJCLASS_WAY){
+	    TfraWayPoint* frame=(TfraWayPoint*)LTools->GetFrame(); R_ASSERT(frame);
     	return frame->ebModePoint->Down;
     }else return false;
 }

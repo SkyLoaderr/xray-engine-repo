@@ -33,9 +33,9 @@ void EScene::UndoClear()
 
 void EScene::UndoSave()
 {
-    if (UI.GetEState()!=esEditScene) return;
+    if (UI->GetEState()!=esEditScene) return;
     Modified();
-    UI.RedrawScene();
+    UI->RedrawScene();
 
     if (0==EPrefs.scene_undo_level) return;
 
@@ -71,7 +71,7 @@ bool EScene::Undo()
          	Load( 0, m_UndoStack.back().m_FileName, true );
         }
 
-        UI.UpdateScene();
+        UI->UpdateScene();
         Modified();
 
 		return true;
@@ -92,7 +92,7 @@ bool EScene::Redo()
 			unlink( m_UndoStack.front().m_FileName );
 			m_UndoStack.pop_front(); }
 
-        UI.UpdateScene();
+        UI->UpdateScene();
         Modified();
 
 		return true;

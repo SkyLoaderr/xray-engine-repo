@@ -95,12 +95,12 @@
 
   <IDEOPTIONS>
 [Version Info]
-IncludeVerInfo=0
+IncludeVerInfo=1
 AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=101
+Build=102
 Debug=1
 PreRelease=0
 Special=0
@@ -112,7 +112,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.101
+FileVersion=1.0.2.102
 InternalName=
 LegalCopyright=
 LegalTrademarks=

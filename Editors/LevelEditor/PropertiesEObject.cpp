@@ -161,7 +161,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 void __fastcall TfrmPropertiesEObject::FormShow(TObject *Sender)
 {
 	// check window position
-	UI.CheckWindowPos(this);
+    UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

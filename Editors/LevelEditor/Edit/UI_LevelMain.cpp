@@ -2,13 +2,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_MainExtern.h"
+#include "UI_LevelMain.h"
 
-#include "UI_Tools.h"
+#include "UI_LevelTools.h"
 #include "EditLibrary.h"
 #include "ImageEditor.h"
-#include "topbar.h"
 #include "leftbar.h"
+#include "topbar.h"
 #include "scene.h"
 #include "sceneobject.h"
 #include "Cursor3D.h"
@@ -26,7 +26,19 @@
 #include "NumericVector.h"
 #include "EditorPreferences.h"
 
-bool TUI::CommandExt(int _Command, int p1, int p2)
+CLevelMain*&	LUI=(CLevelMain*)UI;
+
+CLevelMain::CLevelMain()
+{
+    m_Cursor        = xr_new<C3DCursor>();
+}
+
+CLevelMain::~CLevelMain()
+{
+    xr_delete(m_Cursor);
+}
+
+bool CLevelMain::CommandExt(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	switch (_Command){
@@ -34,11 +46,11 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 //    	Scene.ChangeView
     	break;
 	case COMMAND_CHANGE_TARGET:
-	  	Tools.ChangeTarget(p1,p2);
+	  	LTools->SetTarget((EObjClass)p1);
         Command(COMMAND_UPDATE_PROPERTIES);
         break;
 	case COMMAND_SHOW_OBJECTLIST:
-        if (GetEState()==esEditScene) Tools.ShowObjectList();
+        if (GetEState()==esEditScene) LTools->ShowObjectList();
         break;
     case COMMAND_LIBRARY_EDITOR:
         if (Scene.ObjCount()||(GetEState()!=esEditScene)){
@@ -81,10 +93,10 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                     Scene.UndoSave	();
                     Scene.m_RTFlags.set(EScene::flRT_Unsaved|EScene::flRT_Modified,FALSE);
 				    Command			(COMMAND_UPDATE_CAPTION);
-    	            Command			(COMMAND_CHANGE_ACTION,eaSelect);
+    	            Command			(COMMAND_CHANGE_ACTION,etaSelect);
         	        // lock
 	                EFS.LockFile	(_maps_,temp_fn.c_str());
-    	            AppendRecentFile(temp_fn.c_str());
+    	            EPrefs.AppendRecentFile(temp_fn.c_str());
                 }else{
 					ELog.DlgMsg	( mtError, "Can't load map '%s'", temp_fn.c_str() );
                 }
@@ -145,7 +157,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 EFS.LockFile	(_maps_,temp_fn.c_str());
 				m_LastFileName 	= temp_fn;
 			    bRes 			= Command(COMMAND_UPDATE_CAPTION);
-                AppendRecentFile(temp_fn.c_str());
+                EPrefs.AppendRecentFile(temp_fn.c_str());
 			}else
             	bRes = false;
 		} else {
@@ -170,7 +182,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
            	Scene.UndoClear			();
 			Command(COMMAND_UPDATE_CAPTION);
 			Command(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT,TRUE);
-			Command(COMMAND_CHANGE_ACTION,eaSelect);
+			Command(COMMAND_CHANGE_ACTION,etaSelect);
 		    Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -180,8 +192,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
 
     case COMMAND_LOAD_FIRSTRECENT:
-    	if (FirstRecentFile())
-        	bRes = Command(COMMAND_LOAD,(int)FirstRecentFile());
+    	if (EPrefs.FirstRecentFile())
+        	bRes = Command(COMMAND_LOAD,(int)EPrefs.FirstRecentFile());
     	break;
 
 	case COMMAND_CLEAR_COMPILER_ERROR:
@@ -219,7 +231,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_CUT:
 		if( !Scene.locked() ){
-			Scene.CutSelection(Tools.CurrentClassID());
+			Scene.CutSelection(LTools->CurrentClassID());
             fraLeftBar->miPaste->Enabled = true;
             fraLeftBar->miPaste2->Enabled = true;
 			Scene.UndoSave();
@@ -231,7 +243,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_COPY:
 		if( !Scene.locked() ){
-			Scene.CopySelection(Tools.CurrentClassID());
+			Scene.CopySelection(LTools->CurrentClassID());
             fraLeftBar->miPaste->Enabled = true;
             fraLeftBar->miPaste2->Enabled = true;
 		} else {
@@ -258,7 +270,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 				Scene.LoadSelection	(0,fn.c_str());
 				ResetStatus		();
 				Scene.UndoSave	();
-                Command			(COMMAND_CHANGE_ACTION,eaSelect);
+                Command			(COMMAND_CHANGE_ACTION,etaSelect);
 		        Command			(COMMAND_UPDATE_PROPERTIES);
                 RedrawScene		();
 			}
@@ -273,7 +285,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	AnsiString fn;
 			if( EFS.GetSaveName	( _maps_, fn ) ){
                 SetStatus		("Fragment saving...");
-				Scene.SaveSelection(Tools.CurrentClassID(),0,fn.c_str());
+				Scene.SaveSelection(LTools->CurrentClassID(),0,fn.c_str());
 				ResetStatus		();
 			}
 		} else {
@@ -286,8 +298,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			if( !Scene.Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
             else{
-	            Tools.Reset();
-			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+	            LTools->Reset();
+			    Command(COMMAND_CHANGE_ACTION, etaSelect);
             }
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -299,8 +311,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			if( !Scene.Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
             else{
-	            Tools.Reset();
-			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+	            LTools->Reset();
+			    Command(COMMAND_CHANGE_ACTION, etaSelect);
             }
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -374,7 +386,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
 	case COMMAND_INVERT_SELECTION_ALL:
 		if( !Scene.locked() ){
-			Scene.InvertSelection(Tools.CurrentClassID());
+			Scene.InvertSelection(LTools->CurrentClassID());
 //.			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -384,7 +396,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_SELECT_ALL:
 		if( !Scene.locked() ){
-			Scene.SelectObjects(true,Tools.CurrentClassID());
+			Scene.SelectObjects(true,LTools->CurrentClassID());
 //.			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -394,7 +406,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_DESELECT_ALL:
 		if( !Scene.locked() ){
-			Scene.SelectObjects(false,Tools.CurrentClassID());
+			Scene.SelectObjects(false,LTools->CurrentClassID());
 //			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -404,7 +416,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_DELETE_SELECTION:
 		if( !Scene.locked() ){
-			Scene.RemoveSelection( Tools.CurrentClassID() );
+			Scene.RemoveSelection( LTools->CurrentClassID() );
 			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -414,7 +426,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_HIDE_UNSEL:
 		if( !Scene.locked() ){
-			Scene.ShowObjects( false, Tools.CurrentClassID(), true, false );
+			Scene.ShowObjects( false, LTools->CurrentClassID(), true, false );
 			Scene.UndoSave();
 	        Command(COMMAND_UPDATE_PROPERTIES);
 		} else {
@@ -424,7 +436,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         break;
 	case COMMAND_HIDE_SEL:
 		if( !Scene.locked() ){
-			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), true, true );
+			Scene.ShowObjects( bool(p1), LTools->CurrentClassID(), true, true );
 			Scene.UndoSave();
 	        Command(COMMAND_UPDATE_PROPERTIES);
 		} else {
@@ -434,7 +446,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         break;
 	case COMMAND_HIDE_ALL:
 		if( !Scene.locked() ){
-			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), false );
+			Scene.ShowObjects( bool(p1), LTools->CurrentClassID(), false );
 			Scene.UndoSave();
 	        Command(COMMAND_UPDATE_PROPERTIES);
 		}else{
@@ -444,7 +456,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         break;
     case COMMAND_LOCK_ALL:
 		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),false);
+			Scene.LockObjects(bool(p1),LTools->CurrentClassID(),false);
 			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -453,7 +465,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
     case COMMAND_LOCK_SEL:
 		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,true);
+			Scene.LockObjects(bool(p1),LTools->CurrentClassID(),true,true);
 			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -462,7 +474,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
     case COMMAND_LOCK_UNSEL:
 		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,false);
+			Scene.LockObjects(bool(p1),LTools->CurrentClassID(),true,false);
 			Scene.UndoSave();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -536,6 +548,32 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if (NumericVectorRun("Move to",&pos,3))
         	Device.m_Camera.Set(Device.m_Camera.GetHPB(),pos);
     	}break;
+	case COMMAND_SHOWCONTEXTMENU:
+    	ShowContextMenu(EObjClass(p1));
+        break;
+//------        
+    case COMMAND_REFRESH_UI_BAR:
+        fraTopBar->RefreshBar	();
+        fraLeftBar->RefreshBar	();
+        fraBottomBar->RefreshBar();
+        break;
+    case COMMAND_RESTORE_UI_BAR:
+        fraTopBar->fsStorage->RestoreFormPlacement();
+        fraLeftBar->fsStorage->RestoreFormPlacement();
+        fraBottomBar->fsStorage->RestoreFormPlacement();
+        break;
+    case COMMAND_SAVE_UI_BAR:
+        fraTopBar->fsStorage->SaveFormPlacement();
+        fraLeftBar->fsStorage->SaveFormPlacement();
+        fraBottomBar->fsStorage->SaveFormPlacement();
+        break;
+	case COMMAND_UPDATE_TOOLBAR:
+    	fraLeftBar->UpdateBar();
+    	break;
+    case COMMAND_UPDATE_CAPTION:
+    	frmMain->UpdateCaption();
+    	break;
+//------
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -543,7 +581,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     return 	bRes;
 }
 
-char* TUI::GetCaption()
+char* CLevelMain::GetCaption()
 {
 	return m_LastFileName.IsEmpty()?"noname":m_LastFileName.c_str();
 }
@@ -551,7 +589,7 @@ char* TUI::GetCaption()
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 
-bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CLevelMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
@@ -595,7 +633,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CLevelMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
@@ -615,10 +653,10 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
+bool CLevelMain::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
 	VERIFY(m_bReady);
     // pick object geometry
-    if ((bSnap==-1)||(fraTopBar->ebOSnap->Down&&(bSnap==1))){
+    if ((bSnap==-1)||(Tools->GetSettings(etfOSnap)&&(bSnap==1))){
         bool bPickObject;
         SRayPickInfo pinf;
 	    EEditorState est = GetEState();
@@ -632,7 +670,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         default: return false;
         }
         if (bPickObject){
-		    if (fraTopBar->ebVSnap->Down&&bSnap){
+		    if (Tools->GetSettings(etfVSnap)&&bSnap){
                 Fvector pn;
                 float u = pinf.inf.u;
                 float v = pinf.inf.v;
@@ -642,7 +680,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
                 if ((w>u) && (w>v)) pn.set(verts[0]);
                 else if ((u>w) && (u>v)) pn.set(verts[1]);
                 else pn.set(verts[2]);
-                if (pn.distance_to(pinf.pt) < movesnap()) hitpoint.set(pn);
+                if (pn.distance_to(pinf.pt) < LTools->m_MoveSnap) hitpoint.set(pn);
                 else hitpoint.set(pinf.pt);
             }else{
             	hitpoint.set(pinf.pt);
@@ -668,9 +706,9 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 	hitpoint.y = start.y + direction.y * alpha;
 	hitpoint.z = start.z + direction.z * alpha;
 
-    if (fraTopBar->ebGSnap->Down && bSnap){
-        hitpoint.x = snapto( hitpoint.x, movesnap() );
-        hitpoint.z = snapto( hitpoint.z, movesnap() );
+    if (Tools->GetSettings(etfGSnap) && bSnap){
+        hitpoint.x = snapto( hitpoint.x, LTools->m_MoveSnap );
+        hitpoint.z = snapto( hitpoint.z, LTools->m_MoveSnap );
         hitpoint.y = 0.f;
     }
 	if (hitnormal) hitnormal->set(0,1,0);
@@ -678,7 +716,8 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 }
 //----------------------------------------------------
 
-bool TUI::SelectionFrustum(CFrustum& frustum){
+bool CLevelMain::SelectionFrustum(CFrustum& frustum)
+{
 	VERIFY(m_bReady);
     Fvector st,d,p[4];
     Ivector2 pt[4];
@@ -699,12 +738,12 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (EPrefs.bp_lim_depth){
-			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
+			pinf.inf.range = Device.m_Camera._Zfar(); // max pick range
             if (Scene.RayPickObject(pinf.inf.range, st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
-    if (depth<Device.m_Camera.m_Znear) depth = Device.m_Camera.m_Zfar;
+    if (depth<Device.m_Camera._Znear()) depth = Device.m_Camera._Zfar();
     else depth += EPrefs.bp_depth_tolerance;
 
     for (i=0; i<4; i++){
@@ -712,7 +751,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
         p[i].mad(st,d,depth);
     }
 
-    frustum.CreateFromPoints(p,4,Device.m_Camera.m_Position);
+    frustum.CreateFromPoints(p,4,Device.m_Camera.GetPosition());
 
     Fplane P; P.build(p[0],p[1],p[2]);
     if (P.classify(st)>0) P.build(p[2],p[1],p[0]);
@@ -721,11 +760,11 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	return true;
 }
 //----------------------------------------------------
-void TUI::RealUpdateScene()
+void CLevelMain::RealUpdateScene()
 {
 	if (GetEState()==esEditScene){
 	    Scene.OnObjectsUpdate();
-    	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами
+    	LTools->OnObjectsUpdate(); // обновить все что как-то связано с объектами
 	    RedrawScene();
     }
     m_Flags.set(flUpdateScene,FALSE);
@@ -733,7 +772,7 @@ void TUI::RealUpdateScene()
 //---------------------------------------------------------------------------
 
 
-void TUI::ShowContextMenu(int cls)
+void CLevelMain::ShowContextMenu(int cls)
 {
 	VERIFY(m_bReady);
     POINT pt;
@@ -743,6 +782,120 @@ void TUI::ShowContextMenu(int cls)
     RedrawScene(true);
     fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
     fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
+}
+//---------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------
+// Common
+//---------------------------------------------------------------------------
+void CLevelMain::ResetStatus()
+{
+	VERIFY(m_bReady);
+    if (fraBottomBar->paStatus->Caption!=""){
+	    fraBottomBar->paStatus->Caption=""; fraBottomBar->paStatus->Repaint();
+    }
+}
+void CLevelMain::SetStatus(LPSTR s, bool bOutLog)
+{
+	VERIFY(m_bReady);
+    if (fraBottomBar->paStatus->Caption!=s){
+	    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
+    	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
+    }
+}
+void CLevelMain::ProgressInfo(LPCSTR text, bool bWarn)
+{
+	if (text){
+		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
+    	fraBottomBar->paStatus->Repaint();
+	    ELog.Msg(bWarn?mtError:mtInformation,fraBottomBar->paStatus->Caption.c_str());
+    }
+}
+void CLevelMain::ProgressStart(float max_val, const char* text)
+{
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = text;
+	fraBottomBar->paStatus->Caption=text;
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->fMaxVal=max_val;
+	fraBottomBar->fStatusProgress=0;
+	fraBottomBar->cgProgress->Progress=0;
+	fraBottomBar->cgProgress->Visible=true;
+    ELog.Msg(mtInformation,text);
+}
+void CLevelMain::ProgressEnd()
+{
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = "";
+	fraBottomBar->paStatus->Caption="";
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->cgProgress->Visible=false;
+}
+void CLevelMain::ProgressUpdate(float val)
+{
+	VERIFY(m_bReady);
+	fraBottomBar->fStatusProgress=val;
+    if (fraBottomBar->fMaxVal>=0){
+    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (new_val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+    	    fraBottomBar->cgProgress->Repaint();
+        }
+    }
+}
+void CLevelMain::ProgressInc(const char* info, bool bWarn)
+{
+	VERIFY(m_bReady);
+    ProgressInfo(info,bWarn);
+	fraBottomBar->fStatusProgress++;
+    if (fraBottomBar->fMaxVal>=0){
+    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=val;
+	        fraBottomBar->cgProgress->Repaint();
+        }
+    }
+}
+//---------------------------------------------------------------------------
+void CLevelMain::OutCameraPos()
+{
+	VERIFY(m_bReady);
+    AnsiString s;
+	const Fvector& c 	= Device.m_Camera.GetPosition();
+	s.sprintf("C: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+//	const Fvector& hpb 	= Device.m_Camera.GetHPB();
+//	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
+    fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
+}
+//---------------------------------------------------------------------------
+void CLevelMain::OutUICursorPos()
+{
+	VERIFY(m_bReady);
+    AnsiString s; POINT pt;
+    GetCursorPos(&pt);
+    s.sprintf("Cur: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+}
+//---------------------------------------------------------------------------
+void CLevelMain::OutGridSize()
+{
+	VERIFY(m_bReady);
+    AnsiString s;
+    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
+    fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
+}
+//---------------------------------------------------------------------------
+void CLevelMain::OutInfo()
+{
+	fraBottomBar->paSel->Caption = Tools->GetInfo();
+}
+//---------------------------------------------------------------------------
+void CLevelMain::RealQuit()
+{
+	frmMain->Close();
 }
 //---------------------------------------------------------------------------
 

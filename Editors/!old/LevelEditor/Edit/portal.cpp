@@ -4,14 +4,13 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
+#include "EScenePortalTools.h"
 #include "Portal.h"
 #include "Scene.h"
 #include "cl_intersect.h"
 #include "sector.h"
 #include "MgcConvexHull2D.h"
 #include "MgcAppr3DPlaneFit.h"
-#include "bottombar.h"
 #include "d3dutils.h"
 #include "ui_main.h"
 #include "SceneObject.h"
@@ -92,7 +91,8 @@ void CPortal::Render(int priority, bool strictB2F)
 		Device.RenderNearer(0.0002);
         if (!Selected())	col.mul_rgb(0.5f);
     	// render portal edges
-        FvectorVec& src_ln 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
+    	EScenePortalTools* lt = dynamic_cast<EScenePortalTools*>(ParentTools); VERIFY(lt);
+        FvectorVec& src_ln 	= (lt->m_Flags.is(EScenePortalTools::flDrawSimpleModel))?m_SimplifyVertices:m_Vertices;
         DU.DrawPrimitiveL	(D3DPT_LINESTRIP, src_ln.size(), src_ln.begin(), src_ln.size(), col.get(), true, true);
         Device.ResetNearer	();
         DU.DrawFaceNormal	(m_Center,m_Normal,1,0xFFFFFFFF);
@@ -124,16 +124,18 @@ bool CPortal::FrustumPick(const CFrustum& frustum){
 }
 //------------------------------------------------------------------------------
 
-bool CPortal::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+bool CPortal::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
+{
 	Fvector p[3];
     float range;
     bool bPick=false;
 	p[0].set(m_Center);
-	FvectorVec& src=(fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
+    EScenePortalTools* lt = dynamic_cast<EScenePortalTools*>(ParentTools); VERIFY(lt);
+    FvectorVec& src=(lt->m_Flags.is(EScenePortalTools::flDrawSimpleModel))?m_SimplifyVertices:m_Vertices;
     for(FvectorIt it=src.begin(); it!=src.end(); it++){
 		p[1].set(*it);
 		p[2].set(((it+1)==src.end())?src.front():*(it+1));
-        range=UI.ZFar();
+        range=UI->ZFar();
 		if (CDB::TestRayTri2(start,direction,p,range)){
         	if ((range>=0)&&(range<distance)){
             	distance=range;
@@ -202,7 +204,7 @@ void CPortal::InvertOrientation(bool bUndo)
     std::reverse(m_Vertices.begin(),m_Vertices.end());
     std::reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
     m_Normal.invert();
-    UI.RedrawScene();
+    UI->RedrawScene();
     if (bUndo) Scene.UndoSave();
 }
 //------------------------------------------------------------------------------

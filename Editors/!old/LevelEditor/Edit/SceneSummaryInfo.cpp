@@ -40,9 +40,9 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PropValue* total_mem	= PHelper.CreateCaption(items,"Textures\\Memory Usage","");
     PHelper.CreateCaption	(items,"Textures\\Base\\Count",		textures.size());
     PropValue* base_mem		= PHelper.CreateCaption(items,"Textures\\Base\\Memory Usage",	"");
-    UI.ProgressStart(textures.size(),"Collect base textures info: ");
+    UI->ProgressStart(textures.size(),"Collect base textures info: ");
     for (AStringSetIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
-        UI.ProgressInc	(t_it->c_str());
+        UI->ProgressInc	(t_it->c_str());
         ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
@@ -64,15 +64,15 @@ void SSceneSummary::FillProp(PropItemVec& items)
         }
         xr_delete			(T);
     }
-    UI.ProgressEnd			();
+    UI->ProgressEnd			();
     temp.sprintf			("%d Kb",iFloor(base_mem_usage/1024));
     base_mem->ApplyValue	(&temp);
 
     PHelper.CreateCaption	(items,"Textures\\Detail\\Count",			det_textures.size());
     PropValue* det_mem		= PHelper.CreateCaption(items,"Textures\\Detail\\Memory Usage",	"");
-    UI.ProgressStart(det_textures.size(),"Collect detail textures info: ");
+    UI->ProgressStart(det_textures.size(),"Collect detail textures info: ");
     for (t_it=det_textures.begin(); t_it!=det_textures.end(); t_it++){
-        UI.ProgressInc	(t_it->c_str());
+        UI->ProgressInc	(t_it->c_str());
         ETextureThumbnail* T = (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
@@ -88,7 +88,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
         }
         xr_delete			(T);
     }
-    UI.ProgressEnd			();
+    UI->ProgressEnd			();
     temp.sprintf			("%d Kb",iFloor(det_mem_usage/1024));
     det_mem->ApplyValue		(&temp);
 
@@ -101,9 +101,9 @@ void SSceneSummary::FillProp(PropItemVec& items)
     int do_mem_usage		= 0;
     PHelper.CreateCaption	(items,"Detail Objects\\Textures\\Count",			do_textures.size());
     PropValue* do_mem		= PHelper.CreateCaption(items,"Detail Objects\\Textures\\Memory Usage",	"");
-    UI.ProgressStart(do_textures.size(),"Collect detail object textures info: ");
+    UI->ProgressStart(do_textures.size(),"Collect detail object textures info: ");
     for (t_it=do_textures.begin(); t_it!=do_textures.end(); t_it++){
-        UI.ProgressInc		(t_it->c_str());
+        UI->ProgressInc		(t_it->c_str());
         ETextureThumbnail* T = (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
@@ -119,7 +119,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
         }
         xr_delete			(T);
     }
-    UI.ProgressEnd			();
+    UI->ProgressEnd			();
     temp.sprintf			("%d Kb",iFloor(do_mem_usage/1024));
     do_mem->ApplyValue		(&temp);
 

@@ -44,7 +44,7 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
     	m_Selected[sz*dtH.size_x+sx] = flag;
         count++;
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
     return count;
 }
 
@@ -74,7 +74,7 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
             }
         }
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
     return count;
 }
 

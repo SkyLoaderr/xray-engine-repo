@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameAIMap.h"
 #include "Scene.h"
 #include "ESceneAIMapTools.h"
@@ -60,19 +60,19 @@ void __fastcall TfraAIMap::ExtBtn6Click(TObject *Sender)
 
 void __fastcall TfraAIMap::ebChangeCurrentClick(TObject *Sender)
 {
-	Tools.SetSubTarget		(dynamic_cast<TExtBtn*>(Sender)->Tag);
+	LTools->SetSubTarget		(dynamic_cast<TExtBtn*>(Sender)->Tag);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::fsStorageRestorePlacement(TObject *Sender)
 {
-//.	Tools.SetSubTarget				(estAIMapNode);
+//.	LTools->SetSubTarget				(estAIMapNode);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebDrawSnapObjectsClick(TObject *Sender)
 {
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ void __fastcall TfraAIMap::ebInvertLinkClick(TObject *Sender)
 {
 	tools->InvertLinks();
     Scene.UndoSave();
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
 	tools->MakeLinks(fl[ConvertV2L(btn->Tag)], mode, ebIgnoreConstraints->Down);
     Scene.UndoSave();
-    UI.RedrawScene();      
+    UI->RedrawScene();      
 }
 //---------------------------------------------------------------------------
 

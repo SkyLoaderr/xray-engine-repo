@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "Scene.h"
-#include "ui_main.h"
+#include "ui_levelmain.h"
 //------------------------------------------------------------------------------
 
 int EScene::SelectObjects( bool flag, EObjClass classfilter )
@@ -19,7 +19,7 @@ int EScene::SelectObjects( bool flag, EObjClass classfilter )
         if (mt) 			count+=mt->SelectObjects(flag);
     }
 
-    UI.RedrawScene();
+    UI->RedrawScene();
 	return count;
 }
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter )
 {
 	CFrustum frustum;
 	int count = 0;
-    if (!UI.SelectionFrustum(frustum)) return 0;
+    if (!LUI->SelectionFrustum(frustum)) return 0;
 
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
@@ -40,7 +40,7 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter )
         if (mt) 			count+=mt->FrustumSelect(flag,frustum);
     }
     
-    UI.RedrawScene();
+    UI->RedrawScene();
 	return count;
 }
 //------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ int EScene::InvertSelection( EObjClass classfilter )
         if (mt) 			count+=mt->InvertSelection();
     }
     
-    UI.RedrawScene();
+    UI->RedrawScene();
 	return count;
 }
 //------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ int EScene::RemoveSelection( EObjClass classfilter )
         if (mt) 			count+=mt->RemoveSelection();
     }
 
-    UI.UpdateScene	(true);
+    UI->UpdateScene	(true);
 	return count;
 }
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
         ESceneCustomOTools* mt = GetOTools(classfilter);
         if (mt) 			count+=mt->LockObjects(flag, bAllowSelectionFlag, bSelFlag);
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 	return count;
 }
 //------------------------------------------------------------------------------
@@ -157,7 +157,7 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
         ESceneCustomMTools* mt = GetMTools(classfilter);
         if (mt) 			count+=mt->ShowObjects(flag, bAllowSelectionFlag, bSelFlag);
     }
-    UI.RedrawScene();
+    UI->RedrawScene();
 	return count;
 }
 //------------------------------------------------------------------------------

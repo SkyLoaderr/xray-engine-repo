@@ -217,7 +217,7 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
 bool EScene::OnLoadAppendObject(CCustomObject* O)
 {
 	AppendObject	(O,false);
-	UI.ProgressInc	();
+	UI->ProgressInc	();
     return true;
 }
 //----------------------------------------------------
@@ -235,7 +235,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
-            UI.UpdateScene();
+            UI->UpdateScene();
             FS.r_close(F);
             return false;
         }
@@ -262,9 +262,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         if (F->find_chunk(CHUNK_OBJECT_COUNT))
         	obj_cnt = F->r_u32();
 
-        UI.ProgressStart(obj_cnt,"Loading objects...");
+        UI->ProgressStart(obj_cnt,"Loading objects...");
         ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject);
-        UI.ProgressEnd	();
+        UI->ProgressEnd	();
 
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
@@ -307,7 +307,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 		}        
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
-        UI.UpdateScene(true);
+        UI->UpdateScene(true);
 
 		FS.r_close(F);
 
@@ -389,7 +389,7 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
         R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
-            UI.UpdateScene();
+            UI->UpdateScene();
             FS.r_close(F);
             return false;
         }

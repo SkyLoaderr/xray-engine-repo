@@ -3,18 +3,19 @@
 
 #include "ESceneSectorTools.h"
 #include "ui_sectortools.h"
-#include "ui_tools.h"
+#include "ui_leveltools.h"
 #include "FrameSector.h"
 #include "SceneObject.h"
 #include "sector.h"
+#include "PropertiesListHelper.h"
 
 /* TODO 1 -oAlexMX -cTODO: Create tools as AI Map */
 
 void ESceneSectorTools::CreateControls()
 {
 //	inherited::CreateControls();
-    AddControl		(xr_new<TUI_ControlSectorSelect>(estDefault,eaSelect,	this));
-    AddControl		(xr_new<TUI_ControlSectorAdd>	(estDefault,eaAdd,		this));
+    AddControl		(xr_new<TUI_ControlSectorSelect>(estDefault,etaSelect,	this));
+    AddControl		(xr_new<TUI_ControlSectorAdd>	(estDefault,etaAdd,		this));
 	// frame
     pFrame 			= xr_new<TfraSector>((TComponent*)0);
 }
@@ -41,4 +42,10 @@ void ESceneSectorTools::OnObjectRemove(CCustomObject* O)
 	}
 }
 //----------------------------------------------------
+
+void ESceneSectorTools::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Draw Solid"),&m_Flags,			flDrawSolid);
+	inherited::FillProp(pref, items);
+}
 

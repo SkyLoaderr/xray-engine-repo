@@ -101,7 +101,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 
 #ifdef _LEVEL_EDITOR
 	// check window position
-	UI.CheckWindowPos(this);
+    UI->CheckWindowPos(this);
 #endif
 }
 //---------------------------------------------------------------------------

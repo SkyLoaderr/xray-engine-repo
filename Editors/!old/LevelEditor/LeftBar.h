@@ -281,7 +281,8 @@ __published:	// IDE-managed Components
 	void __fastcall MenuItem12Click(TObject *Sender);
 	void __fastcall SynchronizeSounds1Click(TObject *Sender);
 private:	// User declarations
-    void RefreshBar();
+    void RedrawBar();
+	void __fastcall miRecentFilesClick(TObject *Sender);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
 	void ChangeTarget(EObjClass tgt);
@@ -290,6 +291,7 @@ public:		// User declarations
     void MaximizeAllFrames();
     void UpdateBar();
     void OnTimer();
+    void RefreshBar();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

@@ -8,9 +8,8 @@
 #include "EditObject.h"
 #include "SceneObject.h"
 #include "frameSector.h"
-#include "topbar.h"
-#include "ui_tools.h"
-#include "ui_main.h"
+#include "ui_leveltools.h"
+#include "ui_levelmain.h"
 
 //---------------------------------------------------------------------------
 // add
@@ -37,7 +36,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
+    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -46,7 +45,7 @@ void TUI_ControlSectorAdd::DelMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
+    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -55,7 +54,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
 	CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)&&
+    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)&&
     	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
     {
         Scene.SelectObjects(false,OBJCLASS_SECTOR);
@@ -69,7 +68,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
+    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     if (fraSector->ebCreateNew->Down){
     	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNew->Down=false;
@@ -78,8 +77,8 @@ bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){
 		bool bBoxSelection = fraSector->ebBoxPick->Down;
         if( bBoxSelection ){
-            UI.EnableSelectionRect( true );
-            UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
+            UI->EnableSelectionRect( true );
+            UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
 			m_Action = saMeshBoxSelection;
             return true;
         } else {
@@ -96,7 +95,7 @@ void __fastcall TUI_ControlSectorAdd::Move(TShiftState _Shift)
     switch (m_Action){
     case saAddMesh:	AddMesh();	break;
     case saDelMesh:	DelMesh();	break;
-    case saMeshBoxSelection:UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp); break;
+    case saMeshBoxSelection:UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp); break;
     }
 }
 
@@ -106,14 +105,14 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
     CSector* sector=PortalUtils.GetSelectedSector();
 	if (sector){
         if (m_Action==saMeshBoxSelection){
-            UI.EnableSelectionRect( false );
+            UI->EnableSelectionRect( false );
             Fmatrix matrix;
             CSceneObject* O_ref=NULL;
             CEditableObject* O_lib=NULL;
 
             CFrustum frustum;
             ObjectList lst;
-            if (UI.SelectionFrustum(frustum)){;
+            if (LUI->SelectionFrustum(frustum)){;
                 Scene.FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                     O_ref = (CSceneObject*)(*_F);
