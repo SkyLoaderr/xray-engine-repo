@@ -17,7 +17,7 @@
 		<community>stalker</community>
 				
 		<rank>50</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 		
 		<start_dialog>escape_trader_start_dialog</start_dialog>
 		<actor_dialog>escape_trader_talk_level</actor_dialog>
