@@ -137,6 +137,7 @@ void CScriptMonster::ProcessScripts()
 
 	if (m_tpActionQueue.empty()) {
 		Msg			("* Object %s has an empty script queue!",cName());
+//		SetScriptControl(false,m_caScriptName);
 		return;
 	}
 
