@@ -488,6 +488,7 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 #include "stdafx.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\SkeletonCustom.h"
+#include "..\flod.h"
 #include "..\fmesh.h"
 
 void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB, int sh)
@@ -532,7 +533,7 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 			break;
 		case MT_LOD:
 			{
-				FLOD		* pV	= (FLOD*) pVisual;
+				FLOD		* pV	= (FLOD*) V;
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)		{
