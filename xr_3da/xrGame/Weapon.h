@@ -194,8 +194,7 @@ protected:
 	void					ShaderDestroy		(ref_shader&	dest);
 
 public:
-	enum	
-	{
+	enum EWeaponStates {
 		eIdle		= 0,
 		eFire,
 		eFire2,
