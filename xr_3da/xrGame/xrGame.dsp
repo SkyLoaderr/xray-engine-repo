@@ -129,21 +129,7 @@ SOURCE=.\clsid_game.h
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
 # ADD CPP /Yc"stdafx.h"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-# ADD CPP /Yc"stdafx.h"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-# ADD CPP /Yc"stdafx.h"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -152,15 +138,6 @@ SOURCE=.\StdAfx.h
 # Begin Source File
 
 SOURCE=.\xrGame.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "Objects"
@@ -172,15 +149,6 @@ SOURCE=.\xrGame.cpp
 # Begin Source File
 
 SOURCE=.\Entity.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -189,15 +157,6 @@ SOURCE=.\Entity.h
 # Begin Source File
 
 SOURCE=.\GameObject.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -206,15 +165,6 @@ SOURCE=.\GameObject.h
 # Begin Source File
 
 SOURCE=.\MovementControl.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -243,15 +193,6 @@ SOURCE=.\ai_goals.h
 # Begin Source File
 
 SOURCE=.\AI_PathNodes.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -260,15 +201,6 @@ SOURCE=.\AI_PathNodes.h
 # Begin Source File
 
 SOURCE=.\CustomMonster.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -277,28 +209,10 @@ SOURCE=.\CustomMonster.h
 # Begin Source File
 
 SOURCE=.\CustomMonster_VCPU.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\CustomMonster_VisTrack.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -307,18 +221,6 @@ SOURCE=.\CustomMonster_VisTrack.h
 # Begin Source File
 
 SOURCE=.\dbg_draw_frustum.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "Weapons"
@@ -330,15 +232,6 @@ SOURCE=.\dbg_draw_frustum.cpp
 # Begin Source File
 
 SOURCE=.\Weapon.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -347,15 +240,6 @@ SOURCE=.\Weapon.h
 # Begin Source File
 
 SOURCE=.\WeaponHUD.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -368,15 +252,6 @@ SOURCE=.\WeaponHUD.h
 # Begin Source File
 
 SOURCE=.\WeaponM134.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -389,15 +264,6 @@ SOURCE=.\WeaponM134.h
 # Begin Source File
 
 SOURCE=.\WeaponGroza.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -454,17 +320,6 @@ SOURCE=.\WeaponRail.h
 # Begin Source File
 
 SOURCE=.\WeaponProtecta.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -477,18 +332,6 @@ SOURCE=.\WeaponProtecta.h
 # Begin Source File
 
 SOURCE=.\EffectorNoise.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -497,18 +340,6 @@ SOURCE=.\EffectorNoise.h
 # Begin Source File
 
 SOURCE=.\EffectorRecoil.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -517,18 +348,6 @@ SOURCE=.\EffectorRecoil.h
 # Begin Source File
 
 SOURCE=.\EffectorShot.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -538,18 +357,6 @@ SOURCE=.\EffectorShot.h
 # Begin Source File
 
 SOURCE=.\xr_weapon_list.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -562,18 +369,6 @@ SOURCE=.\xr_weapon_list.h
 # Begin Source File
 
 SOURCE=.\CustomDoor.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -586,18 +381,6 @@ SOURCE=.\CustomDoor.h
 # Begin Source File
 
 SOURCE=.\CustomItem.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -610,18 +393,6 @@ SOURCE=.\CustomItem.h
 # Begin Source File
 
 SOURCE=.\CustomLift.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -634,18 +405,6 @@ SOURCE=.\CustomLift.h
 # Begin Source File
 
 SOURCE=.\CustomEvent.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -658,18 +417,6 @@ SOURCE=.\CustomEvent.h
 # Begin Source File
 
 SOURCE=.\Actor.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -682,18 +429,6 @@ SOURCE=.\Actor_Flags.h
 # Begin Source File
 
 SOURCE=.\ActorAnimation.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -702,49 +437,14 @@ SOURCE=.\ActorAnimation.h
 # Begin Source File
 
 SOURCE=.\ActorCameras.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\ActorInput.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\EffectorBobbing.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -757,18 +457,6 @@ SOURCE=.\EffectorBobbing.h
 # Begin Source File
 
 SOURCE=.\DemoActor.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -777,18 +465,6 @@ SOURCE=.\DemoActor.h
 # Begin Source File
 
 SOURCE=.\DemoActorCameras.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "_dummy"
@@ -797,18 +473,6 @@ SOURCE=.\DemoActorCameras.cpp
 # Begin Source File
 
 SOURCE=.\DummyObject.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -821,18 +485,6 @@ SOURCE=.\DummyObject.h
 # Begin Source File
 
 SOURCE=.\Flyer.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -841,34 +493,10 @@ SOURCE=.\Flyer.h
 # Begin Source File
 
 SOURCE=.\FlyerCameras.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\FlyerInput.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "AI_Monsters"
@@ -880,18 +508,6 @@ SOURCE=.\FlyerInput.cpp
 # Begin Source File
 
 SOURCE=.\AI\Hen\ai_hen.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -900,16 +516,6 @@ SOURCE=.\AI\Hen\ai_hen.h
 # Begin Source File
 
 SOURCE=.\AI\Hen\ai_hen_selectors.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -932,18 +538,6 @@ SOURCE=.\TestPhysics.h
 # Begin Source File
 
 SOURCE=.\Group.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -952,18 +546,6 @@ SOURCE=.\Group.h
 # Begin Source File
 
 SOURCE=.\Level.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -979,18 +561,6 @@ SOURCE=.\Level.h
 # Begin Source File
 
 SOURCE=.\UI.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -999,18 +569,6 @@ SOURCE=.\UI.h
 # Begin Source File
 
 SOURCE=.\UICursor.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1019,18 +577,6 @@ SOURCE=.\UICursor.h
 # Begin Source File
 
 SOURCE=.\UICustomItem.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1039,18 +585,6 @@ SOURCE=.\UICustomItem.h
 # Begin Source File
 
 SOURCE=.\UIDynamicItem.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1059,18 +593,6 @@ SOURCE=.\UIDynamicItem.h
 # Begin Source File
 
 SOURCE=.\UIGroup.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1079,18 +601,6 @@ SOURCE=.\UIGroup.h
 # Begin Source File
 
 SOURCE=.\UIHealth.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1099,18 +609,6 @@ SOURCE=.\UIHealth.h
 # Begin Source File
 
 SOURCE=.\UIStaticItem.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1119,18 +617,6 @@ SOURCE=.\UIStaticItem.h
 # Begin Source File
 
 SOURCE=.\UIWeapon.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1139,18 +625,6 @@ SOURCE=.\UIWeapon.h
 # Begin Source File
 
 SOURCE=.\UIZoneMap.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1160,18 +634,6 @@ SOURCE=.\UIZoneMap.h
 # Begin Source File
 
 SOURCE=.\ContextMenu.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1180,18 +642,6 @@ SOURCE=.\ContextMenu.h
 # Begin Source File
 
 SOURCE=.\HitMarker.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1200,18 +650,6 @@ SOURCE=.\HitMarker.h
 # Begin Source File
 
 SOURCE=.\HUDCursor.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1220,18 +658,6 @@ SOURCE=.\HUDCursor.h
 # Begin Source File
 
 SOURCE=.\HUDManager.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1248,18 +674,6 @@ SOURCE=.\xrMessages.h
 # Begin Source File
 
 SOURCE=.\xrServer.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1268,18 +682,6 @@ SOURCE=.\xrServer.h
 # Begin Source File
 
 SOURCE=.\xrServer_Entities.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # End Group
 # Begin Group "Effects"
@@ -1291,18 +693,6 @@ SOURCE=.\xrServer_Entities.cpp
 # Begin Source File
 
 SOURCE=.\DynamicHeightMap.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1312,18 +702,6 @@ SOURCE=.\DynamicHeightMap.h
 # Begin Source File
 
 SOURCE=.\Rain.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1332,18 +710,6 @@ SOURCE=.\Rain.h
 # Begin Source File
 
 SOURCE=.\Tracer.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1356,18 +722,6 @@ SOURCE=.\Tracer.h
 # Begin Source File
 
 SOURCE=.\ai_a_star.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1384,66 +738,18 @@ SOURCE=.\AI_astar_fsa.h
 # Begin Source File
 
 SOURCE=.\AI_qNode.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\AI_qPath.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\AI_qRange.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
 SOURCE=.\AI_Space.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -1452,19 +758,11 @@ SOURCE=.\AI_Space.h
 # Begin Source File
 
 SOURCE=.\AI_Utilities.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-
-!ENDIF 
-
 # End Source File
+# End Group
+# Begin Group "Spawn Process"
+
+# PROP Default_Filter ""
 # End Group
 # Begin Source File
 
