@@ -17,7 +17,6 @@ module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
 module ("xr_state")
-module ("xr_death")
 
 module ("debug_info")
 module ("utils")
@@ -106,6 +105,7 @@ load_scheme("xr_heli_hunter", "heli_hunter", stype_stalker)
 load_scheme("xr_zoneguard",   "zoneguard",   stype_stalker)
 load_scheme("xr_commander",   "commander",   stype_stalker)
 load_scheme("xr_combat",	  "combat",      stype_stalker)
+load_scheme("xr_death",		  "death",       stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:

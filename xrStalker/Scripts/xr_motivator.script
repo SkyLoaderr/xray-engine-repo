@@ -37,9 +37,6 @@ function motivator_binder:reinit()
 ----------------------------------------------------------------------------------------------------------------------
     xr_motivator.storage[self.object:id()] = {  followers = {} }
 
-	--' Смерть чувака
-	xr_death.add_to_binder(self.object, char_ini)
-	
     --' Положения тела
     xr_motivator.storage[self.object:id()].state = xr_state.body_state(self.object)
 

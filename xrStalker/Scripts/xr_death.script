@@ -7,7 +7,7 @@ function evaluator_allow_death:__init(name, storage) super (nil, name)
   self.a = storage
 end
 function evaluator_allow_death:evaluate ()
-    return self.a.conditions == nil
+    return self.a.logic == nil
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -26,11 +26,8 @@ function action_process_death:initialize()
     self.object:set_desired_direction()        
 end
 function action_process_death:execute()
-	local actor = level.actor()
-	if actor ~= nil then
-		xr_logic.pick_section_from_condlist(actor,nil,self.a.conditions.condlist)
-		self.a.conditions = nil
-	end
+	xr_logic.try_switch_to_another_section(self.object, self.a)
+	self.a.logic = nil
 	action_base.execute(self)
 end
 function action_process_death:finalize()
@@ -40,27 +37,28 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc, ini)
+function add_to_binder(npc, ini, scheme, section, storage)
   	local operators    = {}
   	local properties  = {}
-
-	xr_motivator.storage[npc:id()].death = {
-		conditions = xr_logic.cfg_get_condlist(ini,"death","conditions",npc)
-	}
-   	
+  	
   	local manager = npc:motivation_action_manager()
 
   	properties["allow_death"]   	= xr_evaluators_id.death + 1
 
   	operators["death"]   	= xr_actions_id.death + 1
 
-  	manager:add_evaluator (properties["allow_death"],   this.evaluator_allow_death("evaluator_allow_death",xr_motivator.storage[npc:id()].death))
+  	manager:add_evaluator (properties["allow_death"],   this.evaluator_allow_death("evaluator_allow_death",storage))
 
-  	local action = this.action_process_death(npc, "action_process_death", xr_motivator.storage[npc:id()].death)
+  	local action = this.action_process_death(npc, "action_process_death", storage)
   	action:add_precondition(world_property(properties["allow_death"], false))
  	action:add_effect(world_property(properties["allow_death"], true))
   	manager:add_action(operators["death"], action)
 
   	action = manager:action(stalker_ids.action_death_planner)
   	action:add_precondition(world_property(properties["allow_death"], true))
+end
+
+function set_death_checker(npc, ini, scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 end

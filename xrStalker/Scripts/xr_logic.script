@@ -169,11 +169,18 @@ function enable_scripts(npc, ini, stype)
 		end
 	
 		if stype == modules.stype_stalker then
-			local combat_section = utils.cfg_get_string(actual_ini, "logic", "combat", npc, false, "")
+			local combat_section = utils.cfg_get_string(actual_ini, "logic", "on_combat", npc, false, "")
 			printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
 				"not_found"))
 			if combat_section then
 				xr_combat.set_combat_checker(npc, actual_ini, "combat", combat_section)
+			end
+			
+			local death_section = utils.cfg_get_string(actual_ini, "logic", "on_death", npc, false, "")
+			printf("_bp: npc='%s': death section: %s", npc:name(), if_then_else(death_section ~= nil, "found",
+				"not_found"))
+			if death_section then
+				xr_death.set_death_checker(npc, actual_ini, "death", death_section)
 			end
 		end
 	
