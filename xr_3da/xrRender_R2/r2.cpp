@@ -65,7 +65,7 @@ static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_co
 void					CRender::create					()
 {
 	// hardware
-	o.smapsize			= 1536;
+	o.smapsize			= 2048;
 	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
 	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
 	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);

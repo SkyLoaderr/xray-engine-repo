@@ -271,6 +271,9 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_LUM_result.create		(r2_RT_luminance,		1,	1,	D3DFMT_A16B16G16R16F	);	// need blending here
 		s_luminance.create			(b_luminance,				"r2\\luminance");
 		f_luminance_adapt			= 0.5f;
+		u_setrt						(rt_LUM_result,0,0,0);
+		CHK_DX						(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0x0,	1.0f, 0L));
+		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	}
 
 	// COMBINE
