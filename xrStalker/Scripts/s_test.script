@@ -86,7 +86,7 @@ function action_patrol_hi:initialize()
 	action					(
 		self.object,
 		anim				(anim.free),
-		sound				("scripts\\idle\\say_holodno","bip01_head")
+		sound				("scripts\\idle\\say_holodno","bip01_head"),
 		cond				(cond.sound_end)
 	)
 	printf					("action %s is initialized!",self.name)
