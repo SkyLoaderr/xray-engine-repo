@@ -12,7 +12,7 @@
 	#define XRSOUND_EDITOR_API XRSOUND_API
 
 	// editor only refs
-	class SoundEnvironment_LIB;
+	class XRSOUND_EDITOR_API SoundEnvironment_LIB;
 #else
 	#define XRSOUND_EDITOR_API
 #endif
