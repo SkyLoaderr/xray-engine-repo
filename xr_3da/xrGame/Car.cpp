@@ -1156,6 +1156,7 @@ void CCar::ResetScriptData(void	*P)
 	CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>();
 	l_tpEntityAction->m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
 	bfAssignMovement(l_tpEntityAction);
+	xr_delete		(l_tpEntityAction);
 	m_max_rpm		= m_fSaveMaxRPM;
 }
 
