@@ -226,6 +226,9 @@
 					RelativePath="r2_rendertarget_accum_point.cpp">
 				</File>
 				<File
+					RelativePath="r2_rendertarget_accum_point_geom.cpp">
+				</File>
+				<File
 					RelativePath="r2_rendertarget_phase_accumulator.cpp">
 				</File>
 				<File
