@@ -43,6 +43,8 @@ function action_walker_activity:reset_scheme()
 	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
 
 	self.object:clear_animations()
+
+	self.st.signals = {}
 	
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
