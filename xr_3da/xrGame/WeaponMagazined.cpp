@@ -424,7 +424,8 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		CSector* S			= ::Render->getSector(pTri->sector);
 		
 		// smoke
-		CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
+		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
+		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
 		
