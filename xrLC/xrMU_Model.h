@@ -108,6 +108,9 @@ public:
 	u16					sector;
 
 	vector<Fcolor>		color;
+
+	Fvector4			c_scale;
+	Fvector4			c_bias;
 public:
 	void				Load				(CStream& FS);
 	void				calc_lighting		();

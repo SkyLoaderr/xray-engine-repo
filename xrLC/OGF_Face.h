@@ -137,6 +137,9 @@ struct OGF_Reference : public OGF_Base
 {
 	OGF*				model;
 
+	DWORD				material;
+	vecOGF_T			textures;
+
 	u32					vb_id;
 	u32					vb_start;
 	u32					ib_id;
@@ -145,6 +148,11 @@ struct OGF_Reference : public OGF_Base
 	Fmatrix				xform;
 	Fvector4			c_scale;
 	Fvector4			c_bias;
+
+	OGF_Reference() : OGF_Base(0) 
+					{
+						model	= 0;
+					}
 
 	virtual void		Save		(CFS_Base &fs);
 	virtual void		GetGeometry	(vector<Fvector> &R)
