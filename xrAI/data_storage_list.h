@@ -1051,7 +1051,7 @@ namespace DataStorageBucketList {
 	{
 		SGraphNode		*back;
 		SGraphNode		*next;
-//		SGraphNode		*prev;
+		SGraphNode		*prev;
 		u32				bucket_id;
 	};
 	template <
@@ -1132,6 +1132,7 @@ protected:
 	_dist_type			min_bucket_value;
 	_dist_type			max_bucket_value;
 	CGraphNode			*buckets[bucket_count];
+	CGraphNode			*best;
 	u32					min_bucket_id;
 
 public:
@@ -1146,7 +1147,6 @@ public:
 	virtual				~CDataStorageBucketList()
 	{
 	}
-
 
 	IC		void		init			()
 	{
@@ -1232,49 +1232,62 @@ public:
 
 		node.bucket_id = bucket_id;
 		
-		CGraphNode			*i = buckets[bucket_id], *j=0;
+		CGraphNode			*i = buckets[bucket_id];
 		if (!i || (!clear_buckets && (indexes[i->index()].path_id != cur_path_id))) {
 			buckets[bucket_id]	= &node;
-			node.next			= 0;
+			node.next			= node.prev = 0;
 			verify_buckets		();
 			return;
 		}
 
-		if (i->f() >= node.f()) {
-			buckets[bucket_id]	= &node;
-			node.next			= i;
-			verify_buckets		();
-			return;
-		}
-		
-		if (!i->next) {
-			node.next			= 0;
-			i->next				= &node;
-			verify_buckets		();
-			return;
-		}
-		
-		for (j=i, i = i->next; i->next; j=i, i = i->next) {
-			if (i->f() >= node.f()) {
-				node.next		= i;
-				j->next			= &node;
-				verify_buckets	();
-				return;
-			}
-		}
-		
-		if (i->f() >= node.f()) {
-			node.next		= i;
-			j->next			= &node;
-			verify_buckets	();
-			return;
-		}
-		else {
-			node.next		= 0;
-			i->next			= &node;
-			verify_buckets	();
-			return;
-		}
+		i->prev					= &node;
+		node.next				= i;
+		node.prev				= 0;
+		buckets[bucket_id]		= &node;
+
+//		if (i->f() >= node.f()) {
+//			buckets[bucket_id]	= &node;
+//			node.next			= i;
+//			node.prev			= 0;
+//			i->prev				= &node;
+//			verify_buckets		();
+//			return;
+//		}
+//		
+//		if (!i->next) {
+//			node.prev			= i;
+//			node.next			= 0;
+//			i->next				= &node;
+//			verify_buckets		();
+//			return;
+//		}
+//		
+//		for (i = i->next; i->next; i = i->next) {
+//			if (i->f() >= node.f()) {
+//				node.next		= i;
+//				node.prev		= i->prev;
+//				i->prev->next	= &node;
+//				i->prev			= &node;
+//				verify_buckets	();
+//				return;
+//			}
+//		}
+//		
+//		if (i->f() >= node.f()) {
+//			node.next		= i;
+//			node.prev		= i->prev;
+//			i->prev->next	= &node;
+//			i->prev			= &node;
+//			verify_buckets	();
+//			return;
+//		}
+//		else {
+//			node.next		= 0;
+//			node.prev		= i;
+//			i->next			= &node;
+//			verify_buckets	();
+//			return;
+//		}
 		
 		verify_buckets	();
 	}
@@ -1289,22 +1302,20 @@ public:
 	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-//		if (node.prev)
-//			node.prev->next		= node.next;
-//		else {
-//			VERIFY				(buckets[node.bucket_id] == &node);
-//			buckets[node.bucket_id] = node.next;
-//		}
-//		if (node.next)
-//			node.next->prev		= node.prev;
-		for (CGraphNode *i = buckets[node.bucket_id], *j=0; i != &node; j = i, i = i->next);
-		if (j)
-			j->next				= node.next;
-		else
+		u32						node_bucket_id = compute_bucket_id(node);
+		if (node_bucket_id == node.bucket_id)
+			return;
+		if (node.prev)
+			node.prev->next		= node.next;
+		else {
+			VERIFY				(buckets[node.bucket_id] == &node);
 			buckets[node.bucket_id] = node.next;
+		}
+		if (node.next)
+			node.next->prev		= node.prev;
 
 		verify_buckets			();
-		add_to_bucket			(node,compute_bucket_id(node));
+		add_to_bucket			(node,node_bucket_id);
 		verify_buckets			();
 	}
 
@@ -1313,9 +1324,12 @@ public:
 		VERIFY					(!is_opened_empty());
 		verify_buckets			();
 		VERIFY					(buckets[min_bucket_id] && (indexes[buckets[min_bucket_id]->index()].path_id == cur_path_id));
-		buckets[min_bucket_id]	= buckets[min_bucket_id]->next;
-//		if (buckets[min_bucket_id])
-//			buckets[min_bucket_id]->prev = 0;
+		if (best->prev)
+			best->prev->next	= best->next;
+		else
+			buckets[min_bucket_id]	= best->next;
+		if (best->next)
+			best->next->prev	= best->prev;
 		verify_buckets			();
 	}
 
@@ -1331,7 +1345,10 @@ public:
 			VERIFY				(min_bucket_id < bucket_count);
 			verify_buckets		();
 		}
-		return					(*buckets[min_bucket_id]);
+		best					= buckets[min_bucket_id];
+		for (CGraphNode *i = best->next; i; i = i->next)
+			if (i->f() < best->f())
+				best			= i;
+		return					(*best);
 	}
 };
-
