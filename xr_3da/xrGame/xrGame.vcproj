@@ -36,7 +36,7 @@
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
 				BufferSecurityCheck="TRUE"
-				EnableFunctionLevelLinking="TRUE"
+				EnableFunctionLevelLinking="FALSE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"

@@ -14,6 +14,8 @@
 #pragma warning(disable:4530)
 #pragma warning(disable:4267)
 
+//#define LUABIND_NO_EXCEPTIONS
+
 #pragma comment(lib,"x:\\xrLUA.lib")
 
 extern "C" {
@@ -24,12 +26,11 @@ extern "C" {
 
 // Lua-bind
 #include <luabind\\luabind.hpp>
+#include <luabind\\object.hpp>
 
 #pragma warning(default:4244)
 #pragma warning(default:4995)
 #pragma warning(default:4530)
 #pragma warning(default:4267)
-
-using namespace luabind;
 
 typedef lua_State CLuaVirtualMachine;

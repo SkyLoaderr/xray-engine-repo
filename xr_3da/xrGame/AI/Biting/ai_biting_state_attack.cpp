@@ -88,19 +88,18 @@ void CBitingAttack::Run()
 	}
 
 	u32 delay;
-
-//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-//	if (m_bInvisibility) {
-//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-//		if (pBS) {
-//			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-//				if (pBS->CMonsterInvisibility::Switch(false)) {
-//					pBS->ChangePower(pBS->m_ftrPowerDown);
-//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-//				}
-//			}
-//		}
-//	}
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		if (pBS) {
+			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
 	bool bJumpState	= pMonster->Movement.JumpState();
 
 	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;

@@ -31,7 +31,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	open			(tpLuaVirtualMachine);
+	luabind::open	(tpLuaVirtualMachine);
 
 	vfExportGlobals	(tpLuaVirtualMachine);
 	vfExportFvector	(tpLuaVirtualMachine);
@@ -144,14 +144,15 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool
 	FS.r_close		(l_tpFileReader);
 
 	if (bCall) {
-		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
-		if (l_iErrorCode) {
-#ifdef DEBUG
-			vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
-			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
-#endif
-			return	(false);
-		}
+		lua_call	(tpLuaVirtualMachine,0,0);
+//		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
+//		if (l_iErrorCode) {
+//#ifdef DEBUG
+//			vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+//			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+//#endif
+//			return	(false);
+//		}
 	}
 	else
 		lua_insert		(tpLuaVirtualMachine,-4);

@@ -15,6 +15,7 @@
 #include "..\\cameramanager.h"
 #include "..\\effectorpp.h"
 
+using namespace luabind;
 using namespace Script;
 
 void LuaLog(LPCSTR caMessage)
@@ -37,6 +38,12 @@ const CCameraManager &get_camera_manager()
 	return		(Level().Cameras);
 }
 
+void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	vfPrintOutput(tpLuaVirtualMachine,"unknown script");
+	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
+}
+
 CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 {
 	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
@@ -46,9 +53,57 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 		return		(0);
 }
 
+int LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	vfPrintOutput(tpLuaVirtualMachine,"unknown script");
+	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
+	return(0);
+}
+
+void LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+{
+	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
+	if (tpLuaDebug->event)
+		return;
+	Msg				("* [Lua] %s : called %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
+}
+
+void LuaHookReturn(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+{
+//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
+	if (tpLuaDebug->event & LUA_HOOKTAILRET)
+		return;
+	Msg				("* [Lua] %s : returned %s %s",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name);
+}
+
+void LuaHookLine(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+{
+//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
+	if (tpLuaDebug->currentline > -1)
+		Msg			("* [Lua] %s : %s %s : current line is %d",tpLuaDebug->short_src,tpLuaDebug->namewhat,tpLuaDebug->name,tpLuaDebug->currentline);
+}
+
+void LuaHookCount(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+{
+//	lua_getstack	(tpLuaVirtualMachine,0,tpLuaDebug);
+}
+
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
+	lua_atpanic		(tpLuaVirtualMachine,LuaPanic);
+#ifdef DEBUG
+	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKCALL,	0);
+	lua_sethook		(tpLuaVirtualMachine, LuaHookReturn,	LUA_HOOKRET,	0);
+	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKLINE,	0);
+//	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,		LUA_HOOKCOUNT,	0);
+#endif
+
 	function		(tpLuaVirtualMachine,	"log",	LuaLog);
+#ifdef DEBUG
+	function		(tpLuaVirtualMachine,	"flush",FlushLog);
+#else
+	function		(tpLuaVirtualMachine,	"flush",FlushLogFake);
+#endif
 }
 
 void Script::vfExportFvector(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -624,10 +679,10 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("noise",				&SPPInfo::noise)
 			.def(								constructor<>()),
 
-		class_<CLuaEffector>("pp_effector")
+		class_<CLuaEffector, CLuaEffectorWrapper>("pp_effector")
 			.def(								constructor<int,float>())
-			.def("process",						&CLuaEffector::Process)
 			.def("start",						&CLuaEffector::Add)
 			.def("finish",						&CLuaEffector::Remove)
+			.def("process",						&CLuaEffectorWrapper::Process_static)
 	];
 }

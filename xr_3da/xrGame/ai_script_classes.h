@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "ai_script_space.h"
 #include "ai\\stalker\\ai_stalker.h"
 #include "..\\effectorpp.h"
 
@@ -404,3 +405,23 @@ public:
 		Level().Cameras.RemoveEffector	(m_tEffectorType);
 	}
 };
+
+class CLuaEffectorWrapper : public CLuaEffector {
+public:
+	luabind::object		m_tLuaBindObject;
+
+			CLuaEffectorWrapper					(luabind::object tLuaBindObject, int iType, float fTime) : CLuaEffector(iType, fTime), m_tLuaBindObject(tLuaBindObject)
+	{
+	}
+
+	virtual BOOL	Process						(SPPInfo &pp)
+	{
+		return	(luabind::call_member<bool>(m_tLuaBindObject,"process",pp));
+	}
+
+	static	bool	Process_static				(CLuaEffector *tpLuaEffector, SPPInfo &pp)
+	{
+		return	(!!tpLuaEffector->CLuaEffector::Process(pp));
+	}
+};
+
