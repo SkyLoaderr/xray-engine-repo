@@ -145,3 +145,63 @@ function dialogs.trade_help (helper, player)
     helper:switch_to_trade ()
 end
 ------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------
+-- wounded
+------------------------------------------------------------------------------------
+-------------------
+function medikit_drop (player, wounded)
+    if player:relation (wounded) ~= game_object.friend then return false end
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function medikit_sell (player, wounded)
+    if player:relation (wounded) ~= game_object.neutral then return false end
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function medikit_no (player, wounded)
+    return player:object ("medkit") == nil
+end
+-------------------
+function medikit_yes (player, wounded)
+    return player:object ("medkit") ~= nil
+end
+-------------------
+function have_money (wounded, helper)
+    return wounded:money () >= 400 
+end
+-------------------
+function not_have_money (wounded, helper)
+    return wounded:money () < 400
+end
+-------------------
+function wounded_trade (wounded, helper)
+    helper:switch_to_trade ()
+    wounded:switch_to_trade ()
+end
+-------------------
+function disable_wounded (wounded, helper)
+    helper:stop_talk ()
+    wounded:stop_talk ()
+end
+-------------------
+function transfer_medikit (wounded, player)
+    player:transfer_item (player:object ("medkit"), wounded)
+    local good = wounded:goodwill (player) + 20
+    if good > 100 then good = 100 end
+    wounded:set_goodwill (good, player)
+end
+-------------------
+function sell_medikit (wounded, player)
+    if player:object ("medkit") == nil then return end
+    local good = wounded:goodwill (player) + 5
+    if good > 100 then good = 100 end
+    wounded:set_goodwill (good, player)
+end
+-------------------
+function kozel (wounded, player)
+    local good = wounded:goodwill (player) - 20
+    if good < 0 then good = 0 end
+    wounded:set_goodwill (good, player)
+end

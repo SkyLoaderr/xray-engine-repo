@@ -288,6 +288,8 @@ function action_help:initialize ()
     action_base.initialize (self)
     self.object:set_movement_type         (move.stand)
     self.first = false
+    self.object:enable_talk ()
+    self.object:set_start_dialog ("stalker_wounded_friend")
 end
 ------------
 function action_help:execute ()
