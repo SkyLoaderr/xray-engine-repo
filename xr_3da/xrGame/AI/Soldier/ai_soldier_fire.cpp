@@ -125,11 +125,11 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	}
 	
 	// Play hit-sound
-	sound3D& S	= sndHit[Random.randI(SND_HIT_COUNT)];
+	sound& S	= sndHit[Random.randI(SND_HIT_COUNT)];
 	
 	if (S.feedback)			
 		return;
-	pSounds->Play3DAtPos	(S,this,vPosition);
+	pSounds->PlayAtPos	(S,this,vPosition);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
