@@ -202,6 +202,7 @@ namespace PAPI
 		PATargetVelocityID,	// 
 		PATargetVelocityDID,// 
 		PAVortexID,			// 
+        PARotateDID,		// Random initial rotate
 		action_enum_force_dword = DWORD(-1)
 	};
 
@@ -406,6 +407,14 @@ namespace PAPI
 		Methods
 	};
 
+	struct PARotateD : public ParticleAction
+	{
+		pDomain gen_rotateL;// The domain of startup rotate.(in local space)
+		pDomain gen_rotate;	// The domain of startup rotate.
+
+		Methods
+	};
+
 	struct PASink : public ParticleAction
 	{
 		BOOL kill_inside;	// True to dispose of particles *inside* domain
@@ -568,11 +577,6 @@ namespace PAPI
 
 	PARTICLEDLL_API void pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);
 
-	PARTICLEDLL_API void pRotateD(PDomainEnum dtype,
-		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
-		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
-
 	PARTICLEDLL_API void pSize(float size_x, float size_y = 1.0f, float size_z = 1.0f);
 
 	PARTICLEDLL_API void pSizeD(PDomainEnum dtype,
@@ -701,6 +705,11 @@ namespace PAPI
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 
 	PARTICLEDLL_API void pRandomVelocity(PDomainEnum dtype,
+		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
+		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
+
+	PARTICLEDLL_API void pRotateD(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
