@@ -9,7 +9,7 @@
 #define		debug_mode 0
 #endif
 
-#ifndef		DEBUG
+#ifdef		DEBUG
 XRCORE_API void*	g_globalCheckAddr = NULL;
 #endif
 
