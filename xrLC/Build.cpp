@@ -16,16 +16,14 @@ template <class T>
 void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
 {
 	CStream*	O		= F.OpenChunk(chunk);
-	if (0==O)	return;
-
-	DWORD		count	= O->Length()/sizeof(T);
+	DWORD		count	= O?(O->Length()/sizeof(T)):0;
 	Msg			("* %16s: %d",name,count);
 	if (count)  
 	{
 		dest.reserve(count);
 		dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
 	}
-	O->Close	();
+	if (O)		O->Close	();
 }
 
 extern DWORD*	Surface_Load	(char* name, DWORD& w, DWORD& h);
@@ -111,7 +109,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	transfer("shaders_xrlc",shader_compile,		FS,		EB_Shaders_Compile);
 	transfer("glows",		glows,				FS,		EB_Glows);
 	transfer("portals",		portals,			FS,		EB_Portals);
-	transfer("portals",		lods,				FS,		EB_LOD_models);
+	transfer("LODs",		lods,				FS,		EB_LOD_models);
 
 	// Load lights
 	Status	("Loading lights...");
