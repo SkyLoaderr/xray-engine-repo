@@ -283,7 +283,7 @@ void CParticleGroup::SItem::OnFrame(u32 u_dt, const CPGDef::SEffect& def, Fbox& 
                     if (E->vis.box.is_valid()) box.merge	(E->vis.box);
                 }else{
                 	rem_cnt++	;
-                    ::Render->model_Delete_Defferred(*it);
+                    ::Render->model_Delete(*it);
                 }
             }
         }
