@@ -13,19 +13,20 @@
 const u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
 const u32 max_operator_count	= 8;
-typedef u32																		_condition_type;
-typedef bool																	_value_type;
-typedef u32																		_operator_id_type;
-typedef CProblemSolver<_condition_type,_value_type,_operator_id_type>			CSProblemSolver;
-typedef CConditionState<_condition_type,_value_type>							CState;
-typedef COperatorConditionAbstract<_condition_type,_value_type>					CCondition;
-typedef COperatorAbstract<_condition_type,_value_type>							COperator;
-typedef u8																		_dist_type;
-typedef u32																		_iteration_type;
-typedef CSProblemSolver::_edge_type												_edge_type;
-typedef CSProblemSolver::CState													_index_type;
-typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
-CRandom32																		random;
+typedef u32																				_condition_type;
+typedef bool																			_value_type;
+typedef u16																				_edge_value_type;
+typedef u32																				_operator_id_type;
+typedef CProblemSolver<_condition_type,_value_type,_edge_value_type,_operator_id_type>	CSProblemSolver;
+typedef CConditionState<_condition_type,_value_type>									CState;
+typedef COperatorConditionAbstract<_condition_type,_value_type>							CCondition;
+typedef COperatorAbstract<_condition_type,_value_type,_edge_value_type>					COperator;
+typedef u8																				_dist_type;
+typedef u32																				_iteration_type;
+typedef CSProblemSolver::_edge_type														_edge_type;
+typedef CSProblemSolver::CState															_index_type;
+typedef SBaseParameters<_dist_type,_index_type,_iteration_type>							CBaseParameters;
+CRandom32																				random;
 const int	seeds[] = {
 		-1029457977 ,
 		1267097753  ,

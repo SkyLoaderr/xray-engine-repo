@@ -14,8 +14,6 @@ IC	CGraphEngine::CGraphEngine		(u32 max_vertex_count)
 	m_algorithm->data_storage().set_min_bucket_value		(_dist_type(0));
 	m_algorithm->data_storage().set_max_bucket_value		(_dist_type(2000));
 	m_solver_algorithm	= xr_new<CSolverAlgorithm>			(16*65536);
-//	m_solver_algorithm->data_storage().set_min_bucket_value	(_dist_type(0));
-//	m_solver_algorithm->data_storage().set_max_bucket_value	(_dist_type(256));
 }
 
 IC	CGraphEngine::~CGraphEngine			()
