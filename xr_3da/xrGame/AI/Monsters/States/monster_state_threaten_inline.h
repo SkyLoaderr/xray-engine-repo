@@ -46,18 +46,6 @@ void CStateMonsterThreatenAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterThreatenAbstract::execute()
 {
-
-	float dist, m_fDistMin, m_fDistMax;
-	dist = m_object->GetEnemyDistances(m_fDistMin, m_fDistMax);
-
-	const CEntity *enemy = m_object->m_tEnemy.obj;
-
-	// установить целевое состояние
-	if (dist > m_fDistMax + 1.f) 
-		set_dest_state(eStateWalk);
-	else 
-		set_dest_state(eStateThreaten);
-	
 	inherited::execute();
 }
 

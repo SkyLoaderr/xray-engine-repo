@@ -35,8 +35,8 @@ void CStateMonsterAttackMeleeAbstract::execute()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackMeleeAbstract::check_start_conditions()
 {
-	float m_fDistMin, m_fDistMax, dist;
-	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
+	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 	
 	if (dist < m_fDistMax)	return true;
 	return false;
@@ -45,8 +45,9 @@ bool CStateMonsterAttackMeleeAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackMeleeAbstract::check_completion()
 {
-	float m_fDistMin, m_fDistMax, dist;
-	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	float m_fDistMax	= object->MeleeChecker.get_max_distance		();
+	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
+
 
 	if (dist > m_fDistMax)	return true;
 	return false;

@@ -56,8 +56,9 @@ void CBaseMonsterControlled::ExecuteAttack()
 {
 	// -----------------------------------------------------------------------
 	// обновить минимальную и максимальную дистанции до врага
-	float m_fDistMin, m_fDistMax;
-	float dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax, enemy);
+	float m_fDistMin = pMonster->MeleeChecker.get_min_distance	();
+	float m_fDistMax = pMonster->MeleeChecker.get_max_distance	();
+	float dist = pMonster->MeleeChecker.distance_to_enemy		(enemy);
 
 	// определить переменные машины состояний
 

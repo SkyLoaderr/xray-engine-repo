@@ -76,6 +76,9 @@ BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 	
 	if ((O->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI) return FALSE;
 	
+	// если спит, то ничего не видит
+	if (m_bSleep) return FALSE;
+
 	CEntityAlive* E = smart_cast<CEntityAlive*> (O);
 	if (!E) return FALSE;
 	if (E->g_Team() == g_Team() && E->g_Alive()) return FALSE;
@@ -111,47 +114,6 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 	if (script_monster)
 		script_monster->hit_callback(amount,vLocalDir,who,element);
 	
-}
-
-bool CBaseMonster::RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks)
-{
-	bool ret_val = false;
-	
-	this->setEnabled(false);
-	Collide::rq_result	l_rq;
-	
-	if (Level().ObjectSpace.RayPick(trace_from, dir, dist, Collide::rqtObject, l_rq)) {
-		if ((l_rq.O == target_obj) && (l_rq.range < dist)) ret_val = true;
-	} else {
-		// макс. угол отклонения
-		float max_alpha = atanf(radius/dist);
-		
-		float src_h, src_p;	
-		dir.getHP(src_h,src_p);
-
-		Fvector new_dir;
-		float new_h,new_p;
-
-		for (u32 i=0;i<num_picks;i++) {
-
-			new_h = src_h + ::Random.randF(-max_alpha, max_alpha);
-			new_p = src_p + ::Random.randF(-max_alpha, max_alpha);
-
-			new_dir = dir;
-			new_dir.setHP(new_h,new_p);
-			new_dir.normalize();
-
-			if (Level().ObjectSpace.RayPick(trace_from, new_dir, dist, Collide::rqtObject, l_rq)) {
-				if ((l_rq.O == target_obj) && (l_rq.range < dist)) {
-					ret_val = true;
-					break;
-				}
-			}
-		}
-	}
-
-	this->setEnabled(true);	
-	return ret_val;
 }
 
 void CBaseMonster::SetAttackEffector() 

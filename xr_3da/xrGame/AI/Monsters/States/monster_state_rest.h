@@ -11,6 +11,7 @@ protected:
 	enum {
 		eStateSleep				= u32(0),
 		eStateWalkGraphPoint,
+		eStateIdle
 	};
 
 public:

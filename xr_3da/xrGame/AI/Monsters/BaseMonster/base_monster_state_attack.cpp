@@ -67,7 +67,8 @@ void CBaseMonsterAttack::Init()
 		m_fDistMin = 0.7f;				// todo: make as ltx parameters
 		m_fDistMax = 2.8f;				// todo: make as ltx parameters
 	}
-	pMonster->AS_Start();				// учитывать атак-стопы
+	
+	pMonster->MeleeChecker.init_attack(); // учитывать атак-стопы
 
 	b_in_threaten				= false;
 	ThreatenTimeStarted			= 0;
@@ -107,7 +108,9 @@ void CBaseMonsterAttack::Run()
 	flags.or(frame_flags, init_flags.get());
 
 	// обновить минимальную и максимальную дистанции до врага
-	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	m_fDistMin = pMonster->MeleeChecker.get_min_distance	();
+	m_fDistMax = pMonster->MeleeChecker.get_max_distance	();
+	dist = pMonster->MeleeChecker.distance_to_enemy			(pMonster->EnemyMan.get_enemy());
 
 	// определить переменные машины состояний
 	bool b_attack_melee		= false;
@@ -347,8 +350,6 @@ void CBaseMonsterAttack::Run()
 void CBaseMonsterAttack::Done()
 {
 	inherited::Done();
-
-	pMonster->AS_Stop();
 }
 
 #define THREATEN_TIME  5300

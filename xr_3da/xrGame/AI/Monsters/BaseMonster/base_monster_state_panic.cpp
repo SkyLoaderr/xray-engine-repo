@@ -29,8 +29,11 @@ void CBaseMonsterPanic::Init()
 void CBaseMonsterPanic::Run()
 {
 	// если враг очень близко - атаковать
-	float m_fDistMin, m_fDistMax, dist;
-	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	float m_fDistMin = pMonster->MeleeChecker.get_min_distance	();
+	float m_fDistMax = pMonster->MeleeChecker.get_max_distance	();
+	float dist = pMonster->MeleeChecker.distance_to_enemy		(pMonster->EnemyMan.get_enemy());
+
+
 	if (dist < m_fDistMax) m_tAction = ACTION_ATTACK_MELEE;
 	else {
 		

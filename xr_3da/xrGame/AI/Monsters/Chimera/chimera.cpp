@@ -240,6 +240,9 @@ void CChimera::TranslateActionToPathParams()
 
 void CChimera::HitEntityInJump(const CEntity *pEntity)
 {
+	SAAParam params;
+	MotionMan.AA_GetParams	(params, "stand_attack_2_1");
+	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
 void CChimera::UpdateCL()

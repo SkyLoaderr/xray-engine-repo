@@ -12,6 +12,7 @@
 #include "chimera_state_threaten.h"
 #include "../states/state_test_look_actor.h"
 
+#include "../critical_action_info.h"
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
@@ -22,9 +23,7 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
-	//add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
-
-	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CChimera> >				(obj));
+	add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -69,7 +68,17 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 
-	state_id = eStateThreaten;
+	if (state_id == eStateAttack) {
+		if (!object->MotionMan.IsCriticalAction()) {
+			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
+			if (object->CJumpingAbility::can_jump(target)) {
+				object->try_to_jump();
+			}
+		}
+	}
+
+	if (object->CriticalActionInfo->is_fsm_locked()) return;
+
 
 	select_state(state_id); 
 

@@ -30,9 +30,10 @@ void CBurerAttackMelee::Run()
 {
 
 	// Если ничего не выбрали
-	float m_fDistMin, m_fDistMax;
-	float dist;
-	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
+	float m_fDistMin	= pMonster->MeleeChecker.get_min_distance	();
+	float m_fDistMax	= pMonster->MeleeChecker.get_max_distance	();
+	float dist			= pMonster->MeleeChecker.distance_to_enemy	(pMonster->EnemyMan.get_enemy());
+
 
 	// получить минимальную и максимальную дистанции до врага
 	if ((m_tAction == ACTION_MELEE) && (dist < m_fDistMax)) m_tAction = ACTION_MELEE;

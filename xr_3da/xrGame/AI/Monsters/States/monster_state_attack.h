@@ -18,6 +18,7 @@ public:
 						CStateMonsterAttack		(_Object *obj, state_ptr state_run, state_ptr state_melee);
 	virtual				~CStateMonsterAttack	();
 	
+	virtual void		initialize				();
 	virtual	void		execute					();
 };
 

@@ -17,6 +17,7 @@ class CStateManagerCat : public CStateManagerSecond<CCat> {
 		eStateInterestingSound,
 		eStateFindEnemy,
 		eStateHitted,
+		eStateAttackRat,
 	};
 
 public:

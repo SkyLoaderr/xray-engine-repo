@@ -17,6 +17,13 @@ CStateMonsterRestSleepAbstract::~CStateMonsterRestSleep	()
 }
 
 TEMPLATE_SPECIALIZATION
+void CStateMonsterRestSleepAbstract::initialize()
+{
+	inherited::initialize	();
+	object->fall_asleep		();
+}
+
+TEMPLATE_SPECIALIZATION
 void CStateMonsterRestSleepAbstract::execute()
 {
 	object->set_action				(ACT_SLEEP);
@@ -28,5 +35,19 @@ void CStateMonsterRestSleepAbstract::execute()
 
 	}
 #endif
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterRestSleepAbstract::finalize()
+{
+	inherited::finalize	();
+	object->wake_up		();
+}
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterRestSleepAbstract::critical_finalize()
+{
+	inherited::critical_finalize	();
+	object->wake_up					();
 }
 

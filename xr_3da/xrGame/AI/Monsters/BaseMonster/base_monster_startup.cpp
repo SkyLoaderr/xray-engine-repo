@@ -56,10 +56,10 @@ void CBaseMonster::reinit()
 	m_bDamaged						= false;
 	m_bAngry						= false;
 	m_bAggressive					= false;
+	m_bSleep						= false;
 
 	state_invisible					= false;
-
-	bone_part						= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
+	m_default_bone_part				= smart_cast<CSkeletonAnimated*>(Visual())->LL_PartID("default");
 
 	b_velocity_reset				= false;
 
@@ -78,7 +78,7 @@ void CBaseMonster::Load(LPCSTR section)
 	CMonsterMovement::Load			(section);
 	CStepManager::load				(section);
 
-	AS_Load							(section);
+	MeleeChecker.load				(section);
 
 	m_pPhysics_support				->in_Load(section);
 
@@ -86,8 +86,6 @@ void CBaseMonster::Load(LPCSTR section)
 	fEntityHealth					= (float)m_dwHealth;
 
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
-	m_fCurMinAttackDist				= get_sd()->m_fMinAttackDist;
-
 //	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
 }
 
@@ -110,9 +108,6 @@ void CBaseMonster::load_shared(LPCSTR section)
 	get_sd()->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
 
 	get_sd()->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
-	get_sd()->m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
-	get_sd()->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
-
 	get_sd()->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
 
 	get_sd()->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");

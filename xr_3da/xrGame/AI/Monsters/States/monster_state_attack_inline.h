@@ -29,15 +29,20 @@ CStateMonsterAttackAbstract::~CStateMonsterAttack()
 }
 
 TEMPLATE_SPECIALIZATION
+void CStateMonsterAttackAbstract::initialize()
+{
+	inherited::initialize				();
+
+	object->MeleeChecker.init_attack	();
+}
+
+TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackAbstract::execute()
 {
-	float dist, m_fDistMin, m_fDistMax;
-	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
-
 	// определить тип атаки
 	bool b_melee = false; 
-	if ((prev_substate == eStateMelee) && (dist < m_fDistMax)) b_melee = true;
-	else if (dist < m_fDistMin) b_melee = true;
+	if ((prev_substate == eStateMelee) && !object->MeleeChecker.should_stop_melee(object->EnemyMan.get_enemy())) b_melee = true;
+	else if (object->MeleeChecker.can_start_melee(object->EnemyMan.get_enemy())) b_melee = true;
 
 	// установить целевое состояние
 	if (b_melee)	select_state(eStateMelee);
@@ -47,3 +52,6 @@ void CStateMonsterAttackAbstract::execute()
 	
 	prev_substate = current_substate;
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateMonsterAttackAbstract

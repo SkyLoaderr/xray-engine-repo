@@ -1,9 +1,5 @@
 #pragma once
 
-#include "../states/state_move_to_point.h"
-#include "../states/state_look_point.h"
-#include "../states/state_custom_action.h"
-
 #include "chimera_state_threaten_steal.h"
 #include "chimera_state_threaten_walk.h"
 #include "chimera_state_threaten_roar.h"
@@ -29,13 +25,11 @@ CStateChimeraThreatenAbstract::~CStateChimeraThreaten()
 }
 
 #define MIN_DIST_TO_ENEMY	3.f
-#define MAX_DIST_TO_ENEMY	15.f
 #define MORALE_THRESHOLD	0.8f
 
 TEMPLATE_SPECIALIZATION
 bool CStateChimeraThreatenAbstract::check_start_conditions()
 {
-	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) > MAX_DIST_TO_ENEMY) return false;
 	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) < MIN_DIST_TO_ENEMY) return false;
 	if (object->GetEntityMorale() < MORALE_THRESHOLD)	return false;
 	if (object->HitMemory.is_hit())						return false;
