@@ -131,6 +131,7 @@ function action_single_patrol:initialize ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
     self.object:set_item                  (object.activate, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
@@ -142,11 +143,10 @@ function action_single_patrol:initialize ()
        self.speak_time = 0
        self.sub_stage = 0
        self.current_phrase = 0
-       self.phrases = {}
        self.path_type = patrol.start
        self.mental_state = anim.danger
        self.move_type = move.run
---       printf ("PATROL PATH IS %s, for object ", self.a.patrol_path, self.object:name ())
+--       printf ("PATROL PATH IS %s, for object %s", self.a.patrol_path, self.object:name ())
     else  
        self.path_type = patrol.nearest 
     end 

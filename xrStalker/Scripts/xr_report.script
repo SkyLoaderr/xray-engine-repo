@@ -1,4 +1,4 @@
-local timeout = 30000
+local timeout = 600000
 local dist_for_report = 40
 local min_dist_to_report = 1
 
@@ -14,13 +14,15 @@ operators["report_soldier"]             = xr_actions_id.sidor_act_report_soldier
 class "evaluator_timeout" (property_evaluator)
 ----------------------
 function evaluator_timeout:__init (name, leader_name) super ()
-    self.time = device ():time_global ()
+--    self.time = device ():time_global ()
+	self.time = game.time ()
     self.leader_name = leader_name
 end
 ----------------------
 function evaluator_timeout:evaluate ()
     local leader = level.object (self.leader_name)
-    if (device ():time_global () - self.time) > timeout then
+--    if (device ():time_global () - self.time) > timeout then
+	if (game.time () - self.time) > timeout then
        if leader ~= nil and leader:alive () == true then
           if distance_between (leader, self.object) < dist_for_report then 
              leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = self.object
@@ -33,7 +35,7 @@ function evaluator_timeout:evaluate ()
     else if leader ~= nil and leader:alive () == true then   
             leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
          end      
-    end   
+    end
     return false
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -52,7 +54,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 
-
+--[[
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_leader" (property_evaluator)
 ----------------------
@@ -66,7 +68,7 @@ function evaluator_leader:evaluate ()
     return false
 end
 ----------------------------------------------------------------------------------------------------------------------
-
+]]
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_report_soldier" (action_base) 
@@ -121,7 +123,8 @@ end
 function action_report_soldier:finalize ()
     action_base.finalize (self)
     self.object:clear_animations () 
-    self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+--    self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+	self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = game.time ()
     self.stage = 0
     self.sub_stage = 0
     self.a.active = false
@@ -153,10 +156,10 @@ function action_report_soldier:stage2 ()
        self.sub_stage = 1
        if self.phrases[self.current_phrase].our == true then
 --          self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
-          xr_sounds.play_sound (self.object, 0, self.theme, nil, self.current_phrase)
+          xr_sounds.play_sound (self.object, 0, self.theme, 1, self.current_phrase)
        else
 --          self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
-          xr_sounds.play_sound (self.leader, 0, self.theme, nil, self.current_phrase)
+          xr_sounds.play_sound (self.leader, 0, self.theme, 1, self.current_phrase)
        end   
        return
     end
@@ -181,10 +184,10 @@ function action_report_soldier:stage2 ()
           return
        else
           if self.phrases[self.current_phrase].our == true then
-             xr_sounds.play_sound (self.object, 0, self.theme, nil, self.current_phrase)
+             xr_sounds.play_sound (self.object, 0, self.theme, 1, self.current_phrase)
              --self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
           else
-             xr_sounds.play_sound (self.leader, 0, self.theme, nil, self.current_phrase)
+             xr_sounds.play_sound (self.leader, 0, self.theme, 1, self.current_phrase)
 --             self.leader:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
           end   
        end
@@ -200,14 +203,17 @@ function action_report_soldier:stage2 ()
        dir.z = -dir.z
        self.object:set_sight (look.direction, dir, 0) 
        self.stage = 2
-       self.time = device ():time_global ()
+--       self.time = device ():time_global ()
+		self.time = game.time ()
 --       self.leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil 
     end    
                 
 end
 function action_report_soldier:stage3 ()
-    if device ():time_global () - self.time > 1500 then
-       self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+--    if device ():time_global () - self.time > 1500 then
+	if game.time () - self.time > 15000 then
+--       self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = device ():time_global ()
+		self.object:motivation_action_manager ():evaluator (properties["timeout_soldier"]).time = game.time ()
 --       self.leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil 
     end   
 end
@@ -352,11 +358,11 @@ function AddScheme (obj, property_id)
        local action = this.action_report_soldier ("action_report_soldier", leader_name, theme, a)
        action:add_precondition      (world_property (stalker_ids.property_alive,    true))
        action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
-       action:add_precondition      (world_property (properties["timeout_soldier"], true))
+--       action:add_precondition      (world_property (properties["timeout_soldier"], true))
        action:add_effect            (world_property (properties["timeout_soldier"], false))
 --         action:set_weight            (2)
        manager:add_action           (operators["report_soldier"], action)
-       
+
        action = manager:action (property_id)
        action:add_precondition (world_property (properties["timeout_soldier"],  false))        
     else
@@ -367,14 +373,12 @@ function AddScheme (obj, property_id)
        local action = this.action_report_leader ("action_report_leader", a)
        action:add_precondition      (world_property (stalker_ids.property_alive,    true))
        action:add_precondition      (world_property (stalker_ids.property_enemy,    false))
-       action:add_precondition      (world_property (properties["leader_report"],   true))
+--       action:add_precondition      (world_property (properties["leader_report"],   true))
        action:add_effect            (world_property (properties["leader_report"],   false))
 --         action:set_weight            (2)
        manager:add_action           (operators["report_leader"], action)
        
        action = manager:action (property_id)
        action:add_precondition (world_property (properties["leader_report"],  false))
-       
-    end       
-    
+    end
 end
