@@ -11,8 +11,8 @@ CPHElement* CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 	FRACTURE_I fract_i=m_fractures.begin()+fracture;
 	u16 geom_num=fract_i->m_geom_num;
 	CPHElement* new_element=dynamic_cast<CPHElement*>(P_create_Element());
-	element->PassEndGeoms(geom_num,new_element);
 	InitNewElement(new_element);
+	element->PassEndGeoms(geom_num,new_element);
 	m_fractures.erase(fract_i);
 	//fracture now points to next fracture
 	//if we have another fractures after this one pass them to the created element starting from fracture(next to argument fracture)
@@ -56,10 +56,25 @@ void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_STORAGE &new_e
 
 void CPHFracturesHolder::InitNewElement(CPHElement* element)
 {
-
+element->CreateSimulBase();
+element->ReInitDynamics();
 }
 
+void CPHFracturesHolder::PhTune()
+{
+
+}
+bool CPHFracturesHolder::PhDataUpdate()
+{
+	return false;
+}
+
+void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point)
+{
+	m_impacts.push_back(SPHImpact(force,point));
+}
 bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
 {
-return false;
+
+	return false;
 }

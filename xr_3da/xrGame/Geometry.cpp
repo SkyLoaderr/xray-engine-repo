@@ -248,6 +248,20 @@ void CODEGeom::set_ph_object(CPHObject* o)
 		dGeomGetUserData(m_geom_transform)->ph_object=o;
 	}
 }
+void CODEGeom::build(const Fvector& ref_point)
+{
+	init();
+	set_position(ref_point);
+}
+void CODEGeom::init()
+{
+	dGeomID	geom=create();
+	m_geom_transform=dCreateGeomTransform(0);
+	dGeomSetData(m_geom_transform,0);
+	dGeomTransformSetGeom(m_geom_transform,geom);
+	dGeomTransformSetInfo(m_geom_transform,1);
+	dGeomCreateUserData(geom);
+}
 void CODEGeom::destroy()
 {
 	if(!m_geom_transform) return;
@@ -285,6 +299,7 @@ float CBoxGeom::radius()
 {
 	return m_box.m_halfsize.x;
 }
+
 void CBoxGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
 {
 	if(geom())
@@ -296,10 +311,12 @@ void CBoxGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_
 	}
 	else GetBoxExtensions(geom(),(const float*)&axis,center_prg,&lo_ext,&hi_ext);
 }
+
 const Fvector& CBoxGeom::local_center()
 {
 	return m_box.m_translate;
 }
+
 void CBoxGeom::get_local_form(Fmatrix& form)
 {
 	form.i.set(m_box.m_rotate.i);
@@ -307,31 +324,32 @@ void CBoxGeom::get_local_form(Fmatrix& form)
 	form.k.set(m_box.m_rotate.k);
 	form.c.set(m_box.m_translate);
 }
-void CBoxGeom::build(const Fvector& ref_point)
+
+dGeomID CBoxGeom::create()
 {
-	dGeomID geom;
+
+return dCreateBox(0,
+		m_box.m_halfsize.x*2.f,
+		m_box.m_halfsize.y*2.f,
+		m_box.m_halfsize.z*2.f
+		);
+}
+
+void CBoxGeom::set_position(const Fvector& ref_point)
+{
+
 	dVector3 local_position={m_box.m_translate.x-ref_point.x,
 							m_box.m_translate.y-ref_point.y,
 							m_box.m_translate.z-ref_point.z
 							};
-	geom=dCreateBox(0,
-					m_box.m_halfsize.x*2.f,
-					m_box.m_halfsize.y*2.f,
-					m_box.m_halfsize.z*2.f
-					);
-	dGeomSetPosition(geom,
+	dGeomSetPosition(geom(),
 					local_position[0],
 					local_position[1],
 					local_position[2]
 					);
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m_box.m_rotate,R);
-	dGeomSetRotation(geom,R);
-	m_geom_transform=dCreateGeomTransform(0);
-	dGeomSetData(m_geom_transform,0);
-	dGeomTransformSetGeom(m_geom_transform,geom);
-	dGeomTransformSetInfo(m_geom_transform,1);
-	dGeomCreateUserData(geom);
+	dGeomSetRotation(geom(),R);
 }
 
 CSphereGeom::CSphereGeom(const Fsphere& sphere)
@@ -374,21 +392,22 @@ void CSphereGeom::get_local_form(Fmatrix& form)
 	form.identity();
 	form.c.set(m_sphere.P);
 }
-void CSphereGeom::build(const Fvector& ref_point)
+
+dGeomID CSphereGeom::create()
 {
-	dGeomID geom;
+	return dCreateSphere(0,m_sphere.R);
+}
+
+void CSphereGeom::set_position(const Fvector& ref_point)
+{
+
 	dVector3 local_position={
 		m_sphere.P.x-ref_point.x,
 		m_sphere.P.y-ref_point.y,
 		m_sphere.P.z-ref_point.z
 	};
-	geom=dCreateSphere(0,m_sphere.R);
-	dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
-	m_geom_transform=dCreateGeomTransform(0);
-	dGeomSetData(m_geom_transform,0);
-	dGeomTransformSetGeom(m_geom_transform,geom);
-	dGeomTransformSetInfo(m_geom_transform,1);		
-	dGeomCreateUserData(geom);
+
+	dGeomSetPosition(geom(),local_position[0],local_position[1],local_position[2]);
 }
 
 CCylinderGeom::CCylinderGeom(const Fcylinder& cyl)
@@ -438,21 +457,25 @@ void CCylinderGeom::get_local_form(Fmatrix& form)
 	Fvector::generate_orthonormal_basis(form.j,form.k,form.i);
 	form.c.set(m_cylinder.m_center);
 }
-void CCylinderGeom::build(const Fvector& ref_point)
+dGeomID CCylinderGeom::create()
 {
-	dGeomID geom;
+return dCreateCylinder(
+		0,
+		m_cylinder.m_radius,
+		m_cylinder.m_height
+		);
+}
+void CCylinderGeom::set_position(const Fvector& ref_point)
+{
+
 	dVector3 local_position={
 	 m_cylinder.m_center.x-ref_point.x,
 	 m_cylinder.m_center.y-ref_point.y,
 	 m_cylinder.m_center.z-ref_point.z
 	};
-	geom=dCreateCylinder(
-		0,
-		m_cylinder.m_radius,
-		m_cylinder.m_height
-		);
+
 	dGeomSetPosition(
-			geom,
+			geom(),
 			local_position[0],
 			local_position[1],
 			local_position[2]
@@ -462,10 +485,5 @@ void CCylinderGeom::build(const Fvector& ref_point)
 		m33.j.set(m_cylinder.m_direction);
 		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
 		PHDynamicData::FMX33toDMX(m33,R);
-		dGeomSetRotation(geom,R);
-		m_geom_transform=dCreateGeomTransform(0);
-		dGeomSetData(m_geom_transform,0);
-		dGeomTransformSetGeom(m_geom_transform,geom);
-		dGeomTransformSetInfo(m_geom_transform,1);
-		dGeomCreateUserData(geom);
+		dGeomSetRotation(geom(),R);
 }

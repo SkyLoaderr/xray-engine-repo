@@ -14,7 +14,7 @@ CPhysicsShell* CPHShellSplitterHolder::SplitJoint(u16 aspl)
 
 CPhysicsShell *new_shell=P_create_Shell();
 CPHShell	  *new_shell_desc=dynamic_cast<CPHShell*>(new_shell);
-InitNewShell(new_shell_desc);
+InitNewShell(new_shell_desc);//this called before adding elements because existing elems do not need initialization
 SPLITTER_I splitter=m_splitters.begin()+aspl;
 u16 start_element=splitter->m_element;
 u16 start_joint=splitter->m_joint;
@@ -50,18 +50,20 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_VECTOR &out_shels)
 	new_elements.clear();
 	const CPHShellSplitter& splitter=m_splitters[aspl];
 	CPHElement* element=m_pShell->elements[splitter.m_element];
+	CPhysicsShell *new_shell_last=P_create_Shell();
+	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
+	new_shell_last->mXFORM.set(m_pShell->mXFORM);
 
 	element->SplitProcess(new_elements);
 	ELEMENT_RI i=new_elements.rbegin(),e=new_elements.rend();
-
 	m_pShell->joints[splitter.m_joint]->ReattachFirstElement(*i);
-
 	//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
-	CPhysicsShell *new_shell_last=P_create_Shell();
-	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
-	InitNewShell(new_shell_last_desc);
+
 	m_pShell->add_Element(*i);
 	m_pShell->PassEndElements(splitter.m_element+1,new_shell_last_desc,1);
+	
+	InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
+
 	m_pShell->PassEndJoints(splitter.m_joint,new_shell_last_desc);
 	m_splitters.erase(m_splitters.begin()+aspl);
 	//now aspl points to the next splitter
@@ -117,8 +119,7 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_VECTOR &out_shels)
 }
 void CPHShellSplitterHolder::InitNewShell(CPHShell* shell)
 {
-	shell->Activate(false,false);
-	shell->bActivating=false;
+shell->PresetActive();
 }
 CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {

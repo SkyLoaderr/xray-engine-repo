@@ -68,7 +68,11 @@ virtual			void		get_local_form		(Fmatrix& form)														=0;
 	//build/destroy
 protected:
 public:
-	virtual		void		build				(const Fvector& ref_point)											=0;
+				void		build				(const Fvector& ref_point)											;
+				void		init				()																	;
+	virtual		dGeomID		create				()																	=0;
+	virtual		void		set_position		(const Fvector& ref_point)											=0;
+		
 				void		destroy				()																	;
 							CODEGeom			()																	;
 	virtual					~ CODEGeom			()																	;
@@ -86,7 +90,8 @@ public:
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
-	virtual		void		build				(const Fvector& ref_point)											;
+	virtual		dGeomID		create				()																	;
+	virtual		void		set_position		(const Fvector& ref_point)											;
 };
 
 class CSphereGeom : public CODEGeom
@@ -101,9 +106,9 @@ public:
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_local_form		(Fmatrix& form)														;
-	virtual		void		build				(const Fvector& ref_point)											;
+	virtual		dGeomID		create				()																	;
+	virtual		void		set_position		(const Fvector& ref_point)											;
 };
-
 class CCylinderGeom : public CODEGeom
 {
 	typedef CODEGeom inherited																						;
@@ -116,6 +121,7 @@ public:
 virtual const	Fvector&	local_center		()																	;
 	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
 	virtual		void		get_local_form		(Fmatrix& form)														;
-	virtual		void		build				(const Fvector& ref_point)											;
+	virtual		dGeomID		create				()																	;
+	virtual		void		set_position		(const Fvector& ref_point)											;
 };
 #endif //GEOMETRY_H

@@ -6,14 +6,16 @@
 class CPHFracture;
 class CPHElement;
 DEFINE_VECTOR(CPHFracture,FRACTURE_STORAGE,FRACTURE_I)
+DEFINE_VECTOR(dJointFeedback,CFEEDBACK_STORAGE,CFEEDBACK_I)
 typedef		xr_vector<CPHFracture>::reverse_iterator	FRACTURE_RI;
 struct SPHImpact 
 {
 	Fvector force;
 	Fvector point;
+	SPHImpact(const Fvector& aforce,const Fvector& apoint){force.set(aforce);point.set(apoint);}
 };
 
-DEFINE_VECTOR(SPHImpact*,PH_IMPACT_STORAGE,PH_IMPACT_I)
+DEFINE_VECTOR(SPHImpact,PH_IMPACT_STORAGE,PH_IMPACT_I)
 
 class CPHFracturesHolder 			//stored in CPHElement
 {
@@ -22,11 +24,13 @@ FRACTURE_STORAGE m_fractures;
 PH_IMPACT_STORAGE m_impacts;		//filled in anytime from CPHElement addForce cleared in PhDataUpdate
 public:
 CPHFracturesHolder			();
+void		AddImpact		(const Fvector& force,const Fvector& point);
 protected:
 private:
 void		PhTune			();										//set feedback for joints called from PhTune of ShellSplitterHolder
-void		PhDataUpdate	();										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder 
+bool		PhDataUpdate	();										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
 u16 		CheckFractured	();										//returns first breaked fracture
+
 CPHElement* SplitFromEnd	(CPHElement* element,u16 geom_num);
 void		InitNewElement	(CPHElement* element);
 void		PassEndFractures(u16 from,CPHFracturesHolder* dest,u16 shift_geoms);

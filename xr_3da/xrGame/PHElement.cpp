@@ -662,7 +662,8 @@ void CPHElement::ReEnable(){
 }
 
 
-void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
+void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)
+{
 
 	if(!bActive) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
@@ -670,10 +671,15 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	Fvector body_pos;
 	body_pos.sub(pos,m_inverse_local_transform.c);
 	
+	Fvector impulse;
+	impulse.set(dir);
+	impulse.mul(val);
+	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,body_pos.x, body_pos.y, body_pos.z);
+	if(m_fratures_holder)
+	{
+		m_fratures_holder->AddImpact(impulse,body_pos);
+	}
 	
-	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
-	
-
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
 
@@ -1212,8 +1218,9 @@ void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
 	for(GEOM_I i=i_from;i!=e;i++)
 	{
 		(*i)->remove_from_space(m_group);
-		(*i)->add_to_space(dest->m_group);
-		(*i)->set_body(dest->m_body);
+		//(*i)->add_to_space(dest->m_group);
+		//(*i)->set_body(dest->m_body);
+		(*i)->set_body(0);
 	}
 	dest->m_geoms.insert(dest->m_geoms.begin(),i_from,e);
 	m_geoms.erase(i_from,e);
@@ -1221,4 +1228,65 @@ void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
 void CPHElement::SplitProcess(ELEMENT_STORAGE &new_elements)
 {
 	m_fratures_holder->SplitProcess(this,new_elements);
+}
+
+void CPHElement::CreateSimulBase()
+{
+	m_body=dBodyCreate(phWorld);
+	m_saved_contacts=dJointGroupCreate (0);
+	b_contacts_saved=false;
+	dBodyDisable(m_body);
+	if(m_geoms.size()>1)m_group=dSimpleSpaceCreate(0);
+}
+
+void CPHElement::ReInitDynamics()
+{
+	get_mc_data();
+	dBodySetMass(m_body,&m_mass);
+	m_inverse_local_transform.identity();
+	m_inverse_local_transform.c.set(m_mass_center);
+	m_inverse_local_transform.invert();
+	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
+
+	for(;i!=e;i++)
+	{
+		(*i)->set_position(m_mass_center);
+		(*i)->set_body(m_body);
+		//if(object_contact_callback)geom.set_obj_contact_cb(object_contact_callback);
+		//if(m_phys_ref_object) geom.set_ref_object(m_phys_ref_object);
+		if(m_group)
+		{
+			(*i)->add_to_space((dSpaceID)m_group);
+		}
+	}	
+}
+
+void CPHElement::PresetActive()
+{
+	if(bActive) return;
+	
+	Fmatrix global_transform;
+	global_transform.set(m_shell->mXFORM);
+	//if(m_parent_element)
+	global_transform.mulB(mXFORM);
+	SetTransform(global_transform);
+	
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+
+
+	//////////////////////////////////////////////////////////////
+	//initializing values for disabling//////////////////////////
+	//////////////////////////////////////////////////////////////
+
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+	m_body_interpolation.SetBody(m_body);
+	bActivating=true;
+	bActive=true;
+	RunSimulation();
+	
 }

@@ -205,19 +205,29 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 
 		{		
-		ELEMENT_I i;
-		if(place_current_forms)
-		for(i=elements.begin();i!=elements.end();i++)	{
-															(*i)->Activate(mXFORM,disable);
-														}
+		ELEMENT_I i=elements.begin(),e=elements.end();
+		if(place_current_forms) for(;i!=e;i++)(*i)->Activate(mXFORM,disable);
 		}
 		
 		{
-		JOINT_I i;
-		for(i=joints.begin();i!=joints.end();i++) (*i)->Activate();
+		JOINT_I i=joints.begin(),e=joints.end();
+		for(;i!=e;i++) (*i)->Activate();
 		}	
+
 	bActive=true;
 	bActivating=true;
+}
+
+void CPHShell::PresetActive()
+{
+	if(bActive)
+		return;
+	CPHObject::Activate();
+	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	bActive=true;
+	bActivating=true;
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;i++)(*i)->PresetActive();
 }
 
 void CPHShell::SetTransform(Fmatrix m){
@@ -799,6 +809,7 @@ void CPHShell::PassEndElements(u16 from,CPHShell *dest,u16 position)
 		dGeomID spaced_geom=(*i)->dSpacedGeometry();
 		dSpaceRemove (m_space,spaced_geom );
 		dSpaceAdd(dest->m_space,spaced_geom);
+		(*i)->SetShell(dest);
 	}
 	dest->elements.insert(dest->elements.begin()+position,i_from,e);
 	elements.erase(i_from,e);

@@ -78,6 +78,7 @@ virtual ~CPHShell				()
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false){};
+			void			PresetActive			();
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;

@@ -151,6 +151,7 @@ public:
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false);
+
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
 	virtual float			getMass					(){return m_mass.mass;}
@@ -160,7 +161,10 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)																					{}
 	dGeomID					dSpacedGeometry			();
 			void			PassEndGeoms			(u16 from,CPHElement* dest);
+			void			CreateSimulBase			();//create body & cpace
+			void			ReInitDynamics			();//set body & geom positions
 			void			SplitProcess			(ELEMENT_STORAGE &new_elements);
+			void			PresetActive			();
 	dMass*					GetMass					()
 	{
 		return &m_mass;
@@ -176,8 +180,8 @@ public:
 		dBodyAddForce(m_body,x,y,z);
 	}
 	virtual void			applyImpulse			(const Fvector& dir, float val){
-		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-		dBodyAddForce(m_body,dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
+		
+		applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 	};
 	virtual void			Update					();
 
