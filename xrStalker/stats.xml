@@ -10,7 +10,7 @@
 	</frame_window>
 
 	<!-- LOG LIST -->
-	<list x="10" y="40" width="390" height="410" item_height="18" active_bg="0">
+	<list x="35" y="40" width="390" height="410" item_height="18" active_bg="0">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 		<!-- SUBITEMS IN LISTITEM -->
 		<static x="0" y="0" width="200" height="15">
@@ -33,5 +33,12 @@
 		<texture>ui\ui_button_04</texture>
 		<text>JOIN</text>
 	</button>
-
+	
+	<!-- Column headers -->
+	<headers_mt_static x="10" y="40" width="290" height="25">
+		<phrase x="0" y="0" font="graffiti22" r="238" g="155" b="23" a="255"/>
+		<phrase x="220" y="0" font="graffiti22" r="238" g="155" b="23" a="255"/>
+		<phrase x="270" y="0" font="graffiti22" r="238" g="155" b="23" a="255"/>
+		<phrase x="320" y="0" font="graffiti22" r="238" g="155" b="23" a="255"/>
+	</headers_mt_static>
 </window>
