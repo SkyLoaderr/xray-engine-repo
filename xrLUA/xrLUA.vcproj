@@ -217,19 +217,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -241,19 +241,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -265,19 +265,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -289,19 +289,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -313,19 +313,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -334,19 +334,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -358,19 +358,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -382,19 +382,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -409,19 +409,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -433,19 +433,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -457,19 +457,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -481,19 +481,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -505,19 +505,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -529,19 +529,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -553,19 +553,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -577,19 +577,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -598,19 +598,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -622,19 +622,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -646,19 +646,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -670,19 +670,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -699,19 +699,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -720,19 +720,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -741,19 +741,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -762,19 +762,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -783,19 +783,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -804,19 +804,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -825,19 +825,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -846,19 +846,19 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
 		</Filter>

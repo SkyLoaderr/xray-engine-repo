@@ -4,8 +4,11 @@
 ** See Copyright Notice in lua.h
 */
 
-#include "stdafx.h"
-#pragma hdrstop
+#include <ctype.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define ltests_c
 
