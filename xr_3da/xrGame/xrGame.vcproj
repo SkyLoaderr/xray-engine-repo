@@ -4417,6 +4417,12 @@
 						RelativePath="game_sv_single.h">
 					</File>
 					<File
+						RelativePath=".\game_sv_teamdeathmatch.cpp">
+					</File>
+					<File
+						RelativePath=".\game_sv_teamdeathmatch.h">
+					</File>
+					<File
 						RelativePath="PlayerList.cpp">
 						<FileConfiguration
 							Name="Debug|Win32"
@@ -5422,6 +5428,28 @@
 					</File>
 					<File
 						RelativePath="UIGameSP.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="TeamDeathmatch"
+					Filter="">
+					<File
+						RelativePath=".\UIGameTDM.cpp">
+					</File>
+					<File
+						RelativePath=".\UIGameTDM.h">
+					</File>
+					<File
+						RelativePath=".\UITDMFragList.cpp">
+					</File>
+					<File
+						RelativePath=".\UITDMFragList.h">
+					</File>
+					<File
+						RelativePath=".\UITDMPlayerList.cpp">
+					</File>
+					<File
+						RelativePath=".\UITDMPlayerList.h">
 					</File>
 				</Filter>
 			</Filter>

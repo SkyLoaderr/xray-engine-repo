@@ -2194,6 +2194,7 @@ void CActor::OnItemTake			(CInventoryItem *inventory_item)
 	switch (Game().type)
 	{
 	case GAME_DEATHMATCH:
+	case GAME_TEAMDEATHMATCH:
 		{
 			SpawnAmmoForWeapon(inventory_item);
 		}break;
@@ -2208,6 +2209,7 @@ void CActor::OnItemDrop			(CInventoryItem *inventory_item)
 	switch (Game().type)
 	{
 	case GAME_DEATHMATCH:
+	case GAME_TEAMDEATHMATCH:
 		{
 			RemoveAmmoForWeapon(inventory_item);
 		}break;

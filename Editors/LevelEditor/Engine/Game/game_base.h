@@ -8,6 +8,7 @@ enum
 	GAME_CTF							= 3,
 	GAME_ASSAULT						= 4,	// Team1 - assaulting, Team0 - Defending
 	GAME_CS								= 5,
+	GAME_TEAMDEATHMATCH					= 6,
 	GAME_DUMMY							= 255	// temporary game type
 };
 

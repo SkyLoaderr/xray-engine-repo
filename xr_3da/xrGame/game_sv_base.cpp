@@ -264,6 +264,7 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 	switch (type) {
 		case GAME_ANY			: {
 			Debug.fatal			("Game type is not specified!");
+			break;
 		}
 		case GAME_SINGLE		: {
 			caSection			= "single";
@@ -273,6 +274,11 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 			caSection			= "deathmatch";
 			break;
 		}
+		case GAME_TEAMDEATHMATCH	: 
+			{
+				caSection			= "teamdeathmatch";
+				break;
+			}
 		case GAME_CTF			: {
 			caSection			= "ctf";
 			break;

@@ -26,8 +26,7 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
-	virtual		void				OnPlayerChangeTeam		(u32 id_who, s16 team);
-
+	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
 

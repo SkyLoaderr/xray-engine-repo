@@ -171,12 +171,13 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	{
 	case GAME_SINGLE:		bRender = TRUE; break;
 	case GAME_DEATHMATCH:	bRender = TRUE; break;
+	case GAME_TEAMDEATHMATCH:	bRender = TRUE; break;
 	case GAME_ASSAULT:		bRender = TRUE;	break;
 	case GAME_CTF:			bRender = TRUE;	break;
 	case GAME_CS:			bRender = TRUE;	break;
 	}
 	
-	if (bRender && GameID() == GAME_DEATHMATCH)
+	if (bRender && (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH))
 	{
 		for(u32 i=0; i<Level().Objects.objects.size(); i++)
 		{

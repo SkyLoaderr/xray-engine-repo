@@ -224,58 +224,15 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	};
 }
 
-void game_sv_Deathmatch::OnPlayerChangeTeam(u32 id_who, s16 team) 
-{
-	game_PlayerState*	ps_who	=	get_id	(id_who);
-	if (!ps_who || ps_who->team == team) return;
-	
-	ps_who->team = team;
-	ps_who->kills--;
-	ps_who->deaths++;
-
-	if (OnServer())
-	{
-		KillPlayer(id_who);
-	};	
-
-	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
-	char	pTeamName[2][1024] = {"Red Team", "Blue Team"};
-	DWORD	pTeamColor[2] = {0xffff0000, 0xff0000ff};
-	switch (team)
-	{
-	case 0:
-		break;
-	case 1:
-	case 2:
-		HUD().outMessage		(pTeamColor[team-1],"","%s has switched to %s",get_option_s(xrCData->Name,"name",xrCData->Name), pTeamName[team-1]);
-		break;
-	};
-	/*
-	if(team == 0 || team == 1) {
-		s16 l_old_team = get_id(id_who)->team;
-		get_id(id_who)->team = team;
-		get_id(id_who)->flags &= ~GAME_PLAYER_FLAG_CS_SPECTATOR;
-		if(get_alive_count(l_old_team) == 0) {
-			OnTeamScore((l_old_team+1)%2);
-			OnRoundEnd("????");
-		}
-	} else {
-		get_id(id_who)->flags |= GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-		if(get_alive_count(0)+get_alive_count(1) == 0) OnRoundEnd("????");
-	}
-	*/
-}
-
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
 	__super::OnPlayerConnect	(id_who);
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
-	LPCSTR	options			=	get_name_id	(id_who);
 
 	ps_who->kills				=	0;
 	ps_who->deaths				=	0;
-	ps_who->team				=	u8(get_option_i(options,"team",0));
+	ps_who->team				=	0;
 
 	SpawnActor(id_who, "spectator");
 }
@@ -357,8 +314,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 {
 	game_PlayerState*	ps_who	=	get_id	(id);
 	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-	//	ps_who->team				=	u8(get_option_i(options,"team",AutoTeam()));
-
+	
 	// Spawn "actor"
 	LPCSTR	options			=	get_name_id	(id);
 	CSE_Abstract			*E	=	spawn_begin	(N);													// create SE

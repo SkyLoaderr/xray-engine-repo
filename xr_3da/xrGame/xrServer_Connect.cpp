@@ -2,11 +2,13 @@
 
 #include "game_sv_single.h"
 #include "game_sv_deathmatch.h"
+#include "game_sv_teamdeathmatch.h"
 #include "game_sv_cs.h"
 
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},
 	{ "deathmatch",			GAME_DEATHMATCH							},
+	{ "teamdeathmatch",		GAME_TEAMDEATHMATCH							},
 	{ "ctf",				GAME_CTF								},
 	{ "assault",			GAME_ASSAULT							},
 	{ "cs",					GAME_CS									},
@@ -37,6 +39,9 @@ BOOL xrServer::Connect(LPSTR &session_name)
 		break;
 	case GAME_DEATHMATCH:
 		game				= xr_new<game_sv_Deathmatch> ();
+		break;
+	case GAME_TEAMDEATHMATCH:
+		game				= xr_new<game_sv_TeamDeathmatch> ();
 		break;
 	case GAME_CS:
 		game				= xr_new<game_sv_CS> ();
