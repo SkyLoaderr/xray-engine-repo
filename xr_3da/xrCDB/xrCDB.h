@@ -12,10 +12,14 @@
 #endif
 
 // This class is exported from the xrCDB.dll
-class XRCDB_API CXrCDB {
+class XRCDB_API CDB 
+{
 public:
-	CXrCDB(void);
-	// TODO: add your methods here.
+	CDB		();
+	~CDB	();
+
+	void	oRAY
+
 };
 
 extern XRCDB_API int nXrCDB;
