@@ -16,9 +16,9 @@ void CDetailManager::soft_Unload	()
 void CDetailManager::soft_Render	()
 {
 	// Render itself
-	float	fPhaseRange	= PI/16;
-	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
+	// float	fPhaseRange	= PI/16;
+	// float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
+	// float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Get index-stream
 	CIndexStream*	IS	= Device.Streams.Get_IB();
@@ -63,7 +63,6 @@ void CDetailManager::soft_Render	()
 			DWORD	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	soft_VS->Lock(vCount_Lock,vBase);
 			WORD*	iDest					= (WORD*)					IS->Lock(iCount_Lock,iBase);
-			WORD*	dbgIndices				= iDest;
 
 			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)

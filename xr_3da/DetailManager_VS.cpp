@@ -71,7 +71,6 @@ void CDetailManager::VS_Load()
 			for (u32 batch=0; batch<VS_BatchSize; batch++)
 			{
 				DWORD mid	=	batch*c_size+c_base;
-				DWORD M		=	D3DCOLOR_RGBA	(mid,mid,mid,mid);
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
 					Fvector&	vP = D.vertices[v].P;
@@ -100,7 +99,7 @@ void CDetailManager::VS_Load()
 			for (u32 batch=0; batch<VS_BatchSize; batch++)
 			{
 				for (u32 i=0; i<D.number_indices; i++)
-					*pI++	=	D.indices[i] + offset;
+					*pI++	=	u16(D.indices[i] + offset);
 				offset		+=	u16(D.number_vertices);
 			}
 		}

@@ -254,7 +254,6 @@ CBlend*	CKinematics::LL_PlayCycle(int part, int motion, BOOL  bMixing,	float ble
 	CBoneData*	Bone;
 	for (int i=0; i<int(P.bones.size()); i++)
 	{
-		int id = P.bones[i];
 		Bone	= (*bones)[P.bones[i]];
 		Bone->Motion_Start_IM	(this,B);
 	}

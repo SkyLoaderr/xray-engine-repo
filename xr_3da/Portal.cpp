@@ -39,7 +39,6 @@ void drawPoly(sPoly &P, CPortal* Portal)
 	else										S=Portal->Front	();
 	
 	Fvector Center,End;
-	DWORD A_Mask = D3DCOLOR_RGBA(0xff,0xff,0xff,0x7f);
 	DWORD C		 = COLORS[S->SelfID % 8];
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
 	Center.add(P[0],P[1]);

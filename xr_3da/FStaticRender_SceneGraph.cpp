@@ -266,7 +266,6 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, DWORD planes)
 	// If we get here visual is visible or partially visible
 	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
-	int count = 0;
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
 		{

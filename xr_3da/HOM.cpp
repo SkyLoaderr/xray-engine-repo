@@ -174,7 +174,6 @@ void CHOM::Render_DB	(CFrustum& base)
 		CDB::RESULT*	end	= XRC.r_end();
 		Fvector			COP = Device.vCameraPosition;
 		Fmatrix			XF	= Device.mFullTransform;
-		DWORD			frame=Device.dwFrame;
 		float			dim = occ_dim_0/2;
 
 		// Build frustum with near plane only

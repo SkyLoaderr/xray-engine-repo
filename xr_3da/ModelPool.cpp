@@ -56,7 +56,7 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	//	V	= new FProgressive;
 	//	break;
 	default:
-		R_ASSERT(0=="Unknown visual type");
+		R_ASSERT2(0,"Unknown visual type");
 		break;
 	}
 	R_ASSERT(V);

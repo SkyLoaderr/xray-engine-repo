@@ -42,7 +42,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	// Build perturberation table
 	for(DWORD index = 0; index < PGROUP->numIndices; index++)
 	{
-		int oldIndex = PGROUP->indices	[index];
+		u16 oldIndex = PGROUP->indices	[index];
 		int newIndex = xPGROUP->indices	[index];
 		R_ASSERT(oldIndex<(int)perturb.size());
 		R_ASSERT(newIndex<(int)perturb.size());

@@ -311,7 +311,6 @@ void CLightShadows::render	()
 	CDB::TRI*		TRIS	= DB->get_tris();
 
 	int slot_line	= S_rt_size/S_size;
-	int slot_max	= slot_line*slot_line;
 	
 	// Projection and xform
 	float _43			= Device.mProject._43;
@@ -324,7 +323,6 @@ void CLightShadows::render	()
 	Device.Shader.set_Shader	(sh_World);
 	int batch					= 0;
 	DWORD Offset				= 0;
-	DWORD C						= 0x7f7f7f7f;
 	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{

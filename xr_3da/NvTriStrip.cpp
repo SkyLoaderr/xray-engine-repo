@@ -125,18 +125,18 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		{
 			for(int j = 0; j < tempStrips[i]->m_faces.size(); j++)
 			{
-				primGroupArray[0].indices[indexCtr++] = tempStrips[i]->m_faces[j]->m_v0;
-				primGroupArray[0].indices[indexCtr++] = tempStrips[i]->m_faces[j]->m_v1;
-				primGroupArray[0].indices[indexCtr++] = tempStrips[i]->m_faces[j]->m_v2;
+				primGroupArray[0].indices[indexCtr++] = u16(tempStrips[i]->m_faces[j]->m_v0);
+				primGroupArray[0].indices[indexCtr++] = u16(tempStrips[i]->m_faces[j]->m_v1);
+				primGroupArray[0].indices[indexCtr++] = u16(tempStrips[i]->m_faces[j]->m_v2);
 			}
 		}
 
 		//do lists
 		for(i = 0; i < tempFaces.size(); i++)
 		{
-			primGroupArray[0].indices[indexCtr++] = tempFaces[i]->m_v0;
-			primGroupArray[0].indices[indexCtr++] = tempFaces[i]->m_v1;
-			primGroupArray[0].indices[indexCtr++] = tempFaces[i]->m_v2;
+			primGroupArray[0].indices[indexCtr++] = u16(tempFaces[i]->m_v0);
+			primGroupArray[0].indices[indexCtr++] = u16(tempFaces[i]->m_v1);
+			primGroupArray[0].indices[indexCtr++] = u16(tempFaces[i]->m_v2);
 		}
 	}
 	else
@@ -147,7 +147,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 		assert( (bStitchStrips && (numSeparateStrips == 1)) || !bStitchStrips);
 		
 		//convert to output format
-		*numGroups = numSeparateStrips; //for the strips
+		*numGroups = u16(numSeparateStrips); //for the strips
 		if(tempFaces.size() != 0)
 			(*numGroups)++;  //we've got a list as well, increment
 		(*primGroups) = new PrimitiveGroup[*numGroups];
@@ -179,7 +179,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 			
 			int indexCtr = 0;
 			for(int i = startingLoc; i < stripLength + startingLoc; i++)
-				primGroupArray[stripCtr].indices[indexCtr++] = stripIndices[i];
+				primGroupArray[stripCtr].indices[indexCtr++] = u16(stripIndices[i]);
 			
 			startingLoc += stripLength + 1; //we add 1 to account for the -1 separating strips
 		}
@@ -194,9 +194,9 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 			int indexCtr = 0;
 			for(int i = 0; i < tempFaces.size(); i++)
 			{
-				primGroupArray[faceGroupLoc].indices[indexCtr++] = tempFaces[i]->m_v0;
-				primGroupArray[faceGroupLoc].indices[indexCtr++] = tempFaces[i]->m_v1;
-				primGroupArray[faceGroupLoc].indices[indexCtr++] = tempFaces[i]->m_v2;
+				primGroupArray[faceGroupLoc].indices[indexCtr++] = u16(tempFaces[i]->m_v0);
+				primGroupArray[faceGroupLoc].indices[indexCtr++] = u16(tempFaces[i]->m_v1);
+				primGroupArray[faceGroupLoc].indices[indexCtr++] = u16(tempFaces[i]->m_v2);
 			}
 		}
 	}

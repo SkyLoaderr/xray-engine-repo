@@ -461,10 +461,10 @@ void NvStripInfo::Build(NvEdgeInfoVec &edgeInfos, NvFaceInfoVec &faceInfos){
 	
 	// easiest way to get v2 is to use this function which requires the
 	// other indices to already be in the list.
-	scratchIndices.push_back(v0);
-	scratchIndices.push_back(v1);
+	scratchIndices.push_back(u16(v0));
+	scratchIndices.push_back(u16(v1));
 	int v2 = NvStripifier::GetNextIndex(scratchIndices, m_startInfo.m_startFace);
-	scratchIndices.push_back(v2);
+	scratchIndices.push_back(u16(v2));
 	
 	//
 	// build the forward list
@@ -488,7 +488,7 @@ void NvStripInfo::Build(NvEdgeInfoVec &edgeInfos, NvFaceInfoVec &faceInfos){
 		// add the index
 		nv0 = nv1;
 		nv1 = NvStripifier::GetNextIndex(scratchIndices, nextFace);
-		scratchIndices.push_back(nv1);
+		scratchIndices.push_back(u16(nv1));
 		
 		// and get the next face
 		nextFace = NvStripifier::FindOtherFace(edgeInfos, nv0, nv1, nextFace);
@@ -505,9 +505,9 @@ void NvStripInfo::Build(NvEdgeInfoVec &edgeInfos, NvFaceInfoVec &faceInfos){
 	// reset the indices for building the strip backwards and do so
 	//
 	scratchIndices.resize(0);
-	scratchIndices.push_back(v2);
-	scratchIndices.push_back(v1);
-	scratchIndices.push_back(v0);
+	scratchIndices.push_back(u16(v2));
+	scratchIndices.push_back(u16(v1));
+	scratchIndices.push_back(u16(v0));
 	nv0 = v1;
 	nv1 = v0;
 	nextFace = NvStripifier::FindOtherFace(edgeInfos, nv0, nv1, m_startInfo.m_startFace);
@@ -529,7 +529,7 @@ void NvStripInfo::Build(NvEdgeInfoVec &edgeInfos, NvFaceInfoVec &faceInfos){
 		// add the index
 		nv0 = nv1;
 		nv1 = NvStripifier::GetNextIndex(scratchIndices, nextFace);
-		scratchIndices.push_back(nv1);
+		scratchIndices.push_back(u16(nv1));
 		
 		// and get the next face
 		nextFace = NvStripifier::FindOtherFace(edgeInfos, nv0, nv1, nextFace);
@@ -1020,7 +1020,6 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 		float bestNumHits = -1.0f;
 		float numHits;
 		int bestIndex;
-		bool done = false;
 		
 		int firstIndex = 0;
 		float minCost = 10000.0f;
