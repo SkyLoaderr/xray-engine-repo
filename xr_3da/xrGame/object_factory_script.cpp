@@ -16,7 +16,6 @@
 
 void CObjectFactory::register_script_class	(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid)
 {
-	
 	add							(
 		xr_new<CObjectItemScript>(
 #ifndef NO_XR_GAME
