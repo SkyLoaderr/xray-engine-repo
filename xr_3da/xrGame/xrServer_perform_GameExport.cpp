@@ -9,7 +9,13 @@ void xrServer::Perform_game_export	()
 	DWORD			mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
-	P.w_begin				(M_SV_CONFIG_GAME);
-	game->net_Export_State	(P);
-	SendBroadcast			(0xffffffff,P,mode);
+	csPlayers.Enter		();
+	for (DWORD client=0; client<net_Players.size(); client++)
+	{
+		DWORD ID						= net_Players[client]->ID;
+		P.w_begin						(M_SV_CONFIG_GAME);
+		game->net_Export_State			(P,ID);
+		SendTo							(ID,P,mode);
+	}
+	csPlayers.Leave		();
 }
