@@ -89,9 +89,6 @@ function motivator_binder:reload (section)
     properties["solved"]        = stalker_ids.property_puzzle_solved
     properties["trade_init"]    = xr_evaluators_id.final_trade_init
 
-    operators["dead"]       = stalker_ids.action_dead
-    operators["free"]       = stalker_ids.action_free
-
     xr_motivator.storage[self.object:id()] = {  followers = {} }
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
 
@@ -435,21 +432,21 @@ xr_motivator.storage[self.object:id()].reactions = {
     -- Bind other scripts
     self.object:disable_talk()
 
-    xr_state.add_to_binder(self.object)
-    xr_reactions.add_to_binder(self.object)
-    xr_patrol.add_to_binder (self.object)
-    xr_follower.add_to_binder (self.object)
-    xr_report.AddScheme (self.object, stalker_ids.action_free_no_alife)
-    xr_meet.add_to_binder(self.object)
-    xr_kamp.add_to_binder(self.object)
-    xr_commander.add_to_binder(self.object)
-    xr_guard.add_to_binder(self.object)
-    xr_camper2.add_to_binder(self.object)
-    xr_sleeper.add_to_binder(self.object)
-    xr_robbers.add_to_binder(self.object)
-    xr_scout.add_to_binder(self.object)
-    xr_trivial.add_novice     (self.object)
-    xr_trivial.add_novice2    (self.object)
+--    xr_state.add_to_binder(self.object)
+--    xr_reactions.add_to_binder(self.object)
+--    xr_patrol.add_to_binder (self.object)
+--    xr_follower.add_to_binder (self.object)
+--    xr_report.AddScheme (self.object, stalker_ids.action_free_no_alife)
+--    xr_meet.add_to_binder(self.object)
+--    xr_kamp.add_to_binder(self.object)
+--    xr_commander.add_to_binder(self.object)
+--    xr_guard.add_to_binder(self.object)
+--    xr_camper2.add_to_binder(self.object)
+--    xr_sleeper.add_to_binder(self.object)
+--    xr_robbers.add_to_binder(self.object)
+--    xr_scout.add_to_binder(self.object)
+--    xr_trivial.add_novice     (self.object)
+--    xr_trivial.add_novice2    (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)

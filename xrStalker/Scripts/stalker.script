@@ -1,52 +1,48 @@
 function init    (obj)
-    --if xr_guard2.Bind(obj) == true then return end
     if string.find(obj:name(), "grd_") then
-       xr_motivator.AddToMotivator(obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     end
     if string.find(obj:name(), "cmp_") then
-       xr_motivator.AddToMotivator(obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     end
     if string.find(obj:name(), "slp_") then
-       xr_motivator.AddToMotivator(obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     end
     if string.find(obj:name(), "robber_") then
-       xr_motivator.AddToMotivator(obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     end
 
     local name, command, group, member = str_split (obj:name ())
     if name == "patrol" then
-       xr_motivator.AddToMotivator(obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     elseif name == "report" then
-       xr_report.add_to_binder (obj)
+--       xr_report.add_to_binder (obj)
        return
     elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" then
-       xr_motivator.AddToMotivator(obj)
-       return
-    elseif name == "bandit" then
-       bandits.CreateBandit (obj)
+--       xr_motivator.AddToMotivator(obj)
        return
     elseif name == "mover" then
-       xr_mover.AddMover (obj)
+--       xr_mover.AddMover (obj)
     elseif name == "ambush" then
-       xr_ambush.AddToAmbush (obj, command, group, member)
+--       xr_ambush.AddToAmbush (obj, command, group, member)
     elseif name == "waiter" then
-       xr_waiter.AddWaiter( obj )
+--       xr_waiter.AddWaiter( obj )
     elseif name == "camper" then
-       xr_camper.AddCamper (obj)
+--       xr_camper.AddCamper (obj)
     elseif name == "wounded" then
-       xr_wounded.SetWounded (obj)
+--       xr_wounded.SetWounded (obj)
     elseif name == "swat" then
-       xr_swat.AddSwat  (obj)
-	elseif name == "trivial" then
+--       xr_swat.AddSwat  (obj)
+    elseif name == "trivial" then
        if( command == "novice" or command == "novice2" ) then
-	   	   xr_motivator.AddToMotivator( obj )
+--   	   xr_motivator.AddToMotivator( obj )
        else
-           xr_trivial.bind_object( obj, command )
+--           xr_trivial.bind_object( obj, command )
        end
     end
 end
