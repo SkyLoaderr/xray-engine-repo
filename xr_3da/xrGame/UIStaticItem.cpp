@@ -64,44 +64,29 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
-	float fw			= iVisRect.width()  * UI()->GetScaleX();
-	float fh			= iVisRect.height() * UI()->GetScaleY();
+	float fw		= iVisRect.width()  * UI()->GetScaleX();
+	float fh		= iVisRect.height() * UI()->GetScaleY();
 
+	int tile_x		= (iRemX==0)?iTileX:iTileX+1;
+	int tile_y		= (iRemY==0)?iTileY:iTileY+1;
 	int				x,y;
-	for (x=0; x<iTileX; ++x){
-		for (y=0; y<iTileY; ++y){
+	for (x=0; x<tile_x; ++x){
+		for (y=0; y<tile_y; ++y){
 			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
 			inherited::Render		(pv,pos,dwColor);
 			v_cnt	+=4;
 		}
 	}
-	Irect clip_rect	= {bp.x,bp.y,iFloor(bp.x+fw*iTileX+iRemX),iFloor(bp.y+fh*iTileY+iRemY)};
-	UI()->PushScissor(clip_rect);
-	if (iRemX){
-		for (y=0; y<iTileY; ++y){
-			pos.set					(iCeil(bp.x+iTileX*fw),iCeil(bp.y+y*fh));
-			inherited::Render		(pv,pos,dwColor);	
-			v_cnt	+=4;
-		}
-	}
-	if (iRemY){
-		for (x=0; x<iTileX; ++x){
-			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+iTileY*fh));
-			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
-			v_cnt	+=4;
-		}
-	}
-	if (iRemX&&iRemY){
-		pos.set						(iCeil(bp.x+iTileX*fw),iCeil(bp.y+iTileY*fh));
-		inherited::Render			(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
-		v_cnt		+=4;
-	}
-	UI()->PopScissor();
+
+	Irect clip_rect			= {bp.x,bp.y,iFloor(bp.x+fw*iTileX+iRemX),iFloor(bp.y+fh*iTileY+iRemY)};
+	UI()->PushScissor		(clip_rect);
 
 	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock	(v_cnt,hGeom.stride());
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,v_cnt,0,v_cnt/2);
+
+	UI()->PopScissor();
 }
 //--------------------------------------------------------------------
 void CUIStaticItem::Render(float angle, const ref_shader& sh)
@@ -151,7 +136,6 @@ void CUIStaticItem::Render(float x1, float y1, float x2, float y2,
 	RCache.Vertex.Unlock	(4,hGeom.stride());
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
-
 }
 //вывод изображения из OriginalRect на текстуре в заданную область экрана 
 //при этом меняется VisRect

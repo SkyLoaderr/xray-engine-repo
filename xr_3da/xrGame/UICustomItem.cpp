@@ -116,11 +116,6 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color)
 }
 //--------------------------------------------------------------------
 
-void rotation(int x, int y, const float angle, int& x_, int& y_)
-{
-	x_= iFloor(float(x)*_cos(angle)+float(y)*_sin(angle));
-	y_= iFloor(float(y)*_cos(angle)-float(x)*_sin(angle));
-}
 /*
 void rotation(const float x, const float y, const float angle, float& x_, float& y_)
 {
@@ -183,6 +178,12 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 }*/
 
 
+
+void rotation(int x, int y, const float angle, int& x_, int& y_)
+{
+	x_= iFloor(float(x)*_cos(angle)+float(y)*_sin(angle));
+	y_= iFloor(float(y)*_cos(angle)-float(x)*_sin(angle));
+}
 
 void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, float angle)
 {

@@ -7,6 +7,7 @@ m_fItemsScale// UIDragDropList.cpp: список элементов Drag&Drop
 #include "uidragdroplist.h"
 #include "UIOutfitSlot.h"
 #include "../object_broker.h"
+#include "../MainUI.h"
 
 #define SCROLLBAR_OFFSET_X 5
 #define SCROLLBAR_OFFSET_Y 0
@@ -600,7 +601,9 @@ E_CELL_STATE CUIDragDropList::GetCellState(int row, int col)
 
 void CUIDragDropList::Draw()
 {
+//.	UI()->PushScissor	(GetAbsoluteRect());
 	inherited::Draw();
+//.	UI()->PopScissor	();
 }
 void CUIDragDropList::Update()
 {

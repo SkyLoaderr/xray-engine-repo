@@ -82,23 +82,6 @@ void CUIStatic::Init(int x, int y, int width, int height)
 //прорисовка
 //////////////////////////////////////////////////////////////////////////
 
-bool box2box_intersected(const Irect &b0, const Irect &b1)
-{
-	return !(b0.x1>b1.x2 || b0.x2<b1.x1 || b0.y1>b1.y2 ||  b0.y2<b1.y1);
-}
-
-bool box2box_intersection(const Irect &b0, const Irect &b1, Irect &result)
-{
-	if (!box2box_intersected(b0,b1))
-		return	(false);
-
-	result.x1	= _max(b0.x1,b1.x1);
-	result.y1	= _max(b0.y1,b1.y1);
-	result.x2	= _min(b0.x2,b1.x2);
-	result.y2	= _min(b0.y2,b1.y2);
-	return		(true);
-}
-
 void  CUIStatic::Draw()
 {
 	if(m_bClipper){
@@ -383,7 +366,7 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 	// изображение, вычисляется с учетом положения относительно родительского
 	// окна, а также размеров прямоугольника на текстуре с изображением.
 
-	box2box_intersection(*((Irect*)&rect),*((Irect*)&parent_rect),*((Irect*)&out_rect));
+	out_rect.intersection(parent_rect,rect);
 	out_rect.left	-= out_x;
 	out_rect.top	-= out_y;
 	out_rect.right	-= out_x;

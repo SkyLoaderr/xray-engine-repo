@@ -274,14 +274,17 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 	}
 }
 
-void CMainUI::PushScissor(const Irect& r)
+void CMainUI::PushScissor(const Irect& r2)
 {
-	m_Scissors.push(r);
-	RCache.set_Scissor(&m_Scissors.top());
+	Irect r1={0,0,UI_BASE_WIDTH,UI_BASE_HEIGHT},r={0,0,0,0};
+	if (!m_Scissors.empty())	r1 = m_Scissors.top();
+	r.intersection		(r1,r2);
+	m_Scissors.push		(r);
+	RCache.set_Scissor	(&m_Scissors.top());
 }
 void CMainUI::PopScissor()
 {
 	VERIFY(!m_Scissors.empty());
-	m_Scissors.pop();
-	RCache.set_Scissor(m_Scissors.empty()?NULL:&m_Scissors.top());
+	m_Scissors.pop		();
+	RCache.set_Scissor	(m_Scissors.empty()?NULL:&m_Scissors.top());
 }

@@ -219,9 +219,9 @@ void CUIDragDropItem::Draw()
 	m_UIStaticItem.SetPos(rect.left , rect.top);
 //.	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	
-/*	if(m_bClipper)
+	if(m_bClipper)
 		TextureClipper(right_offset, down_offset);
-*/
+
 	m_UIStaticItem.Render();
 
 
