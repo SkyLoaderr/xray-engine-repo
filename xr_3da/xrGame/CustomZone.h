@@ -265,6 +265,12 @@ protected:
 
 	virtual bool IsVisibleForZones() { return false;}
 
+
+	//обновление, если зона передвигается
+	virtual void OnMove	();
+	Fvector m_vPrevPos;
+	u32		m_dwLastTimeMoved;
+
 	//видимость зоны детектором
 public:
 	virtual bool VisibleByDetector	() {return m_bVisibleByDetector;}

@@ -46,6 +46,7 @@ CCustomZone::CCustomZone(void)
 
 
 	m_dwAffectFrameNum = 0;
+	m_dwLastTimeMoved = 0;
 }
 
 CCustomZone::~CCustomZone(void) 
@@ -252,6 +253,9 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	m_effector.SetRadius(CFORM()->getSphere().R);
 
 
+	m_dwLastTimeMoved = Device.dwTimeGlobal;
+	m_vPrevPos.set(Position());
+
 	return bOk;
 }
 
@@ -365,10 +369,6 @@ void CCustomZone::UpdateCL()
 		m_effector.Update(Level().CurrentEntity()->Position().distance_to(Position()));
 
 	UpdateBlowoutLight	();
-
-	if (m_pIdleParticles)
-		m_pIdleParticles->UpdateParent(XFORM(),zero_vel);
-
 }
 
 void CCustomZone::shedule_Update(u32 dt)
@@ -843,3 +843,30 @@ void CCustomZone::UpdateBlowout()
 		m_dwBlowoutExplosionTime<(u32)m_iStateTime)
 		AffectObjects();
 }
+
+void  CCustomZone::OnMove	()
+{
+	if(m_dwLastTimeMoved == 0)
+	{
+		m_dwLastTimeMoved = Device.dwTimeGlobal;
+		m_vPrevPos.set(Position());
+	}
+	else
+	{
+		float time_delta = float(Device.dwTimeGlobal - m_dwLastTimeMoved)/1000.f;
+		m_dwLastTimeMoved = Device.dwTimeGlobal;
+		//скорость движения
+		Fvector vel;
+		vel.sub(Position(), m_vPrevPos);
+		vel.div(time_delta);
+
+		if (m_pIdleParticles)
+			m_pIdleParticles->UpdateParent(XFORM(), vel);
+
+		if(m_pLight && m_pLight->get_active())
+		{
+			m_pLight->set_position(Position());
+		}
+     }
+}
+
