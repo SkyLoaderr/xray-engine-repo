@@ -913,8 +913,27 @@ GroupControlSection	= spawn_group
 $spawn 			= "temp\m_mball"
 $npc			= on				; option for Level Editor
 $prefetch 		= 3
-cform                   = skeleton
+cform           = skeleton
 class   		= AF_MBALL
+
+visual				= cs\artefact_magnet.ogf
+inv_name			= "Mercury Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
 
 [m_target_assault]
 $spawn 			 = "temp\m_target_assault"
