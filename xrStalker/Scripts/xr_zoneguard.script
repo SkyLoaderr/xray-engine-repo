@@ -4,6 +4,10 @@
 -- –азработчик: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+-- ≈сли охранник еще не прибыл на свой путь, то разрешаетс€ атаковать
+-- игрока не ближе N метров от центра охран€емой зоны
+local not_on_pos_max_kill_distance = 20
+
 teams = {}
 
 local state_none = 0
@@ -204,21 +208,23 @@ function action_zoneguard_activity:fsm_step()
 	
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
-		if see_actor and self.st.zone_guard_obj:inside(actor:position()) then
-			if not self:ignore_actor(actor) then
-				-- FIXME:
-				-- ¬место set_relation используем hit с нулевой силой,
-				-- чтобы на игрока обиделась вс€ группа, а не только
-				-- один zoneguard.
-				--self.object:set_relation(game_object.enemy, actor)
-				local h = hit()
-				h.power = 0
-				h.direction = self.object:direction()
-				h.bone = "bip01_spine"
-				h.draftsman = actor
-				h.impulse = 0
-				h.type = hit.wound
-				self.object:hit(h)
+		if self.move_mgr:arrived_to_first_waypoint() or distance_between(self.object, self.st.zone_guard_obj) <= not_on_pos_max_kill_distance then
+			if see_actor and self.st.zone_guard_obj:inside(actor:position()) then
+				if not self:ignore_actor(actor) then
+					-- FIXME:
+					-- ¬место set_relation используем hit с нулевой силой,
+					-- чтобы на игрока обиделась вс€ группа, а не только
+					-- один zoneguard.
+					--self.object:set_relation(game_object.enemy, actor)
+					local h = hit()
+					h.power = 0
+					h.direction = self.object:direction()
+					h.bone = "bip01_spine"
+					h.draftsman = actor
+					h.impulse = 0
+					h.type = hit.wound
+					self.object:hit(h)
+				end
 			end
 		end
 	end
@@ -226,7 +232,8 @@ function action_zoneguard_activity:fsm_step()
 	if self.state == state_walking then
 		if actor:alive() and see_actor and self.st.zone_warn_obj:inside(actor:position()) and
 		   teams[self.st.team].triggered == nil and
-		   not self:ignore_actor(actor)
+		   not self:ignore_actor(actor) and
+		   self.move_mgr:arrived_to_first_waypoint()
 		then
 			if not self.st.no_move then
 				self:go_to_actor(actor, true)
