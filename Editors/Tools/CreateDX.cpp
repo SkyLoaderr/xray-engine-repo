@@ -8,3 +8,10 @@ __declspec( dllimport ) bool WINAPI FSColorPickerDoModal(unsigned int * currentC
 extern "C" __declspec(dllexport) bool FSColorPickerExecute(LPDWORD currentColor, LPDWORD originalColor, const int initialExpansionState){
 	return FSColorPickerDoModal((unsigned int*)currentColor, (unsigned int*)originalColor, initialExpansionState);
 }
+namespace D3DX
+{
+	UINT WINAPI D3DXGetDriverLevel(LPDIRECT3DDEVICE9 pDevice)
+	{
+		return ::D3DXGetDriverLevel(pDevice);
+	}
+}

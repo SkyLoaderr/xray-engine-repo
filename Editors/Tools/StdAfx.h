@@ -109,6 +109,7 @@ struct Fvector{};
 struct Fcolor{};
 
 #include "FS.h"
+#include "d3dx9.h"
 // TODO: reference additional headers your program requires here
 
 #define MAX_FOLDER_NAME    255
@@ -134,6 +135,8 @@ DEFINE_VECTOR(WORD,WORDVec,WORDIt);
 DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
 DEFINE_VECTOR(int,INTVec,INTIt);
 DEFINE_VECTOR(float,FloatVec,FloatIt);
+
+#pragma comment(lib,"d3dx9.lib")
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
