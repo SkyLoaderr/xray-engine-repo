@@ -11,7 +11,7 @@ class MONSTER_COMMUNITY;
 class CEntityCondition;
 class CWound;
 class CScriptCallback;
-
+class CCharacterPhysicsSupport;
 
 class CEntityAlive : public CEntity {
 private:
@@ -78,10 +78,14 @@ IC	CPHMovementControl* PMovement()
 		return m_PhysicMovementControl;
 	}
 ///////////////////////////////////////////////////////////////////////
-	virtual u16				PHGetSyncItemsNumber();
-	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
-	virtual void			PHUnFreeze			();
-	virtual void			PHFreeze			();
+	virtual u16								PHGetSyncItemsNumber		()						;
+	virtual CPHSynchronize*					PHGetSyncItem				(u16 item)				;
+	virtual void							PHUnFreeze					()						;
+	virtual void							PHFreeze					()						;
+//////////////////////////////////////////////////////////////////////////////////////
+	virtual void							PHGetLinearVell				(Fvector& velocity)		;
+	virtual	CCharacterPhysicsSupport*		character_physics_support	()						{return NULL;}
+	virtual	CCharacterPhysicsSupport*		character_physics_support	() const				{return NULL;}
 ///////////////////////////////////////////////////////////////////////
 
 protected:

@@ -95,6 +95,7 @@ public:
 		void 							in_Hit							(float P,Fvector &dir, CObject *who, s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing=false);
 		void							in_NetSave						(NET_Packet& P)																										;
 		void							in_ChangeVisual					();
+		void							PHGetLinearVell					(Fvector& velocity);
 /////////////////////////////////////////////////////////////////
 		CCharacterPhysicsSupport& operator = (CCharacterPhysicsSupport& /**asup/**/){R_ASSERT2(false,"Can not assign it");}
 								CCharacterPhysicsSupport				(EType atype,CEntityAlive* aentity)																					;

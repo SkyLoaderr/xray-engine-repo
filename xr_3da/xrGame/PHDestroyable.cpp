@@ -76,9 +76,14 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
 
+	CActor				*A		=smart_cast<CActor*>(obj)	;
+	if(A)
+	{
+		A->character_physics_support()->SetRemoved();
+	}
+	else
+		obj->PPhysicsShell()->Deactivate();
 
-	//	
-	obj->PPhysicsShell()->Deactivate();
 	obj->setVisible(false);
 	obj->setEnabled(false);
 	if(source_id==obj->ID())

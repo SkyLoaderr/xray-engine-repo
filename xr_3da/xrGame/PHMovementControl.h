@@ -133,7 +133,7 @@ public:
 	//}
 	void SetPLastMaterial(u16* p){m_character->SetPLastMaterial(p);}
 	//float				GetCurrentFriction()		{ return fFriction; }
-
+	dBodyID				GetBody				( )		{if(m_character) return m_character->get_body(); else return NULL;}
 	const Fvector&		GetVelocity			( )		{ return vVelocity;	}
 	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}

@@ -358,3 +358,14 @@ bool CCharacterPhysicsSupport::CanRemoveObject()
 		return !m_EntityAlife.IsPlaying();
 	}
 }
+
+void CCharacterPhysicsSupport::PHGetLinearVell(Fvector &velocity)
+{
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	{
+		m_pPhysicsShell->get_LinearVel(velocity);
+	}
+	else
+		m_PhysicMovementControl.GetCharacterVelocity(velocity);
+		
+}

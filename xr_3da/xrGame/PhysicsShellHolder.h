@@ -7,7 +7,7 @@
 
 class CPHDestroyable;
 class CPHCollisionDamageReceiver;
-
+class CPHSoundPlayer;
 class CPhysicsShellHolder:  public CGameObject,
 							public CParticlesPlayer
 	
@@ -36,6 +36,7 @@ public:
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return NULL;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
+	virtual CPHSoundPlayer*				ph_sound_player				()  {return NULL;}	
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);
@@ -52,6 +53,7 @@ public:
 	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
 	virtual void			PHUnFreeze			();
 	virtual void			PHFreeze			();
+
 ///////////////////////////////////////////////////////////////
 	virtual void			create_physic_shell		();
 	virtual void			activate_physic_shell	();

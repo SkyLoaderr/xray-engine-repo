@@ -633,3 +633,12 @@ u32	 CEntityAlive::ef_detector_type	() const
 	VERIFY	(m_ef_detector_type != u32(-1));
 	return	(m_ef_detector_type);
 }
+void CEntityAlive::PHGetLinearVell(Fvector& velocity)
+{
+	if(character_physics_support())
+	{
+	}
+	else
+		inherited::PHGetLinearVell(velocity);
+
+}
