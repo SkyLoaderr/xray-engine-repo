@@ -252,7 +252,6 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 			pSounds->Play3DAtPos(sndServo,		vLastFP,true);
 			break;
 		case eM134Brake:
-			if (bHUDView)	Level().Cameras.RemoveEffector(cefShot);
 			// sound fire loop
 			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 
