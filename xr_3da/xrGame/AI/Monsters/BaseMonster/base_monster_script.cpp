@@ -10,6 +10,10 @@
 #include "../../../ai_monster_space.h"
 #include "../state_manager.h"
 
+#include "../../../ai_debug.h"
+#include "../../../level.h"
+#include "../../../level_debug.h"
+
 using namespace MonsterSpace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -252,6 +256,14 @@ void CBaseMonster::ProcessScripts()
 
 	m_force_real_speed			= false;
 	m_script_processing_active	= false;
+
+#ifdef DEBUG	
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		DBG().object_info(this,this).remove_item (u32(0));
+		DBG().object_info(this,this).add_item	 ("Under script", D3DCOLOR_XRGB(255,0,0), 0);
+	}
+#endif
+
 }
 
 CEntity *CBaseMonster::GetCurrentEnemy()

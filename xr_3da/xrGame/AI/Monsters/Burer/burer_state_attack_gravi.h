@@ -1,38 +1,38 @@
 #pragma once
-
-#include "../../../state_manager_state.h"
-
-template<typename _Object>
-class CStateBurerAttackGraviStart : public CStateBase<_Object> {
-	typedef CStateBase<_Object> inherited;
-
-	u32					attack_started; 
-	bool				fade_in;
-
-public:
-						CStateBurerAttackGraviStart	(LPCSTR state_name);
-	virtual				~CStateBurerAttackGraviStart();
-
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
-
-};
+#include "../state.h"
 
 template<typename _Object>
-class CStateBurerAttackGraviFinish : public CStateBase<_Object> {
-	typedef CStateBase<_Object> inherited;
+class CStateBurerAttackGravi : public CState<_Object> {
+	typedef CState<_Object> inherited;	
+	
+	enum {
+		ACTION_GRAVI_STARTED,
+		ACTION_GRAVI_CONTINUE,
+		ACTION_GRAVI_FIRE,
+		ACTION_WAIT_TRIPLE_END,
+		ACTION_COMPLETED,
+	} m_action;
 
-	u32					attack_started; 
-	bool				fade_in;
+	u32			time_gravi_started;
 
 public:
-						CStateBurerAttackGraviFinish	(LPCSTR state_name);
-	virtual				~CStateBurerAttackGraviFinish	();
+							CStateBurerAttackGravi	(_Object *obj);
 
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
+		virtual	void		initialize				();
+		virtual	void		execute					();
+		virtual void		finalize				();
+		virtual void		critical_finalize		();
+
+		virtual bool		check_start_conditions	();
+		virtual bool		check_completion		();
+
+private:
+				// выполнять состояние
+				void		ExecuteGraviStart		();
+				void		ExecuteGraviContinue	();
+				void		ExecuteGraviFire		();
+
 };
 
 #include "burer_state_attack_gravi_inline.h"
+

@@ -1,5 +1,15 @@
 #pragma once
 
+#include "burer_state_attack_tele.h"
+#include "burer_state_attack_gravi.h"
+#include "burer_state_attack_melee.h"
+#include "../states/state_look_point.h"
+#include "burer_state_attack_run_around.h"
+
+#define GRAVI_PERCENT		50
+#define TELE_PERCENT		50
+#define RUN_AROUND_PERCENT	20
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
@@ -7,141 +17,81 @@
 #define CStateBurerAttackAbstract CStateBurerAttack<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateBurerAttackAbstract::CStateBurerAttack(LPCSTR state_name, SSubStatePtr state_tele, SSubStatePtr state_gravi_start, SSubStatePtr state_gravi_finish, SSubStatePtr state_melee) : inherited(state_name)
+CStateBurerAttackAbstract::CStateBurerAttack(_Object *obj) : inherited(obj)
 {
-	states[eStateTelekinetic]	= state_tele;
-	states[eStateGraviStart]	= state_gravi_start;
-	states[eStateGraviFinish]	= state_gravi_finish;
-	states[eStateMelee]			= state_melee;
-}
-
-TEMPLATE_SPECIALIZATION
-CStateBurerAttackAbstract::~CStateBurerAttack()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateBurerAttackAbstract::Load(LPCSTR section)
-{
-	add_state				(states[eStateTelekinetic],		eStateTelekinetic,	1);
-	add_state				(states[eStateGraviStart],		eStateGraviStart,	2);
-	add_state				(states[eStateGraviFinish],		eStateGraviFinish,	3);
-	add_state				(states[eStateMelee],			eStateMelee,		0);
+	add_state(eStateBurerAttack_Tele,		xr_new<CStateBurerAttackTele<_Object> >		(obj));
+	add_state(eStateBurerAttack_Gravi,		xr_new<CStateBurerAttackGravi<_Object> >	(obj));
+	add_state(eStateBurerAttack_Melee,		xr_new<CStateBurerAttackMelee<_Object> >	(obj));
 	
-	add_transition			(eStateTelekinetic,	eStateMelee,		1,1);
-	add_transition			(eStateTelekinetic,	eStateGraviStart,	1);
-	add_transition			(eStateMelee,		eStateGraviStart,	1);
-	add_transition			(eStateGraviStart,	eStateGraviFinish,	1);
-	add_transition			(eStateGraviFinish,	eStateMelee,		1);
-	add_transition			(eStateGraviFinish,	eStateTelekinetic,	1);
-
-	inherited::Load			(section);
+	add_state(eStateBurerAttack_FaceEnemy,	xr_new<CStateMonsterLookToPoint<_Object> >	(obj));
+	add_state(eStateBurerAttack_RunAround,	xr_new<CStateBurerAttackRunAround<_Object> >(obj));
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBurerAttackAbstract::reinit(_Object *object)
+void CStateBurerAttackAbstract::reselect_state()
 {
-	inherited::reinit		(object);
-	set_current_state		(eStateTelekinetic);
-	set_dest_state			(eStateTelekinetic);
-}
+	if (get_state(eStateBurerAttack_Melee)->check_start_conditions()) {
+		select_state(eStateBurerAttack_Melee);
+		return;
+	}
 
-TEMPLATE_SPECIALIZATION
-void CStateBurerAttackAbstract::initialize()
-{
-	inherited::initialize();
-}
+	bool enable_gravi	= get_state(eStateBurerAttack_Gravi)->check_start_conditions	();
+	bool enable_tele	= get_state(eStateBurerAttack_Tele)->check_start_conditions		();
 
-#define GOOD_DISTANCE			10.f
-#define MAX_HANDLED_OBJECTS		3
-#define CHECK_OBJECTS_RADIUS	10.f
-#define MINIMAL_MASS			20.f
-#define MAXIMAL_MASS			5000.f
+	if (!enable_gravi && !enable_tele) {
+		if (prev_substate == eStateBurerAttack_RunAround) 
+			select_state(eStateBurerAttack_FaceEnemy);
+		else 	
+			select_state(eStateBurerAttack_RunAround);
+		return;
+	}
 
-TEMPLATE_SPECIALIZATION
-void CStateBurerAttackAbstract::execute()
-{
-	const CEntityAlive *enemy = m_object->EnemyMan.get_enemy();
-	float dist = m_object->Position().distance_to(enemy->Position());
-	Fvector dir;
-	dir.sub(enemy->Position(), m_object->Position());
-	dir.normalize();
+	if (enable_gravi && enable_tele) {
 
-	if (dist > GOOD_DISTANCE) {
-		if (m_object->CTelekinesis::get_objects_count() < MAX_HANDLED_OBJECTS) {
-			
-			// получить список объектов вокруг монстра
-			Level().ObjectSpace.GetNearest	(m_object->Position(), CHECK_OBJECTS_RADIUS);
-			xr_vector<CObject*> &tpNearest	= Level().ObjectSpace.q_nearest;
-			
-			bool b_objects_found = true;
+		u32 rnd_val = ::Random.randI(GRAVI_PERCENT + TELE_PERCENT + RUN_AROUND_PERCENT);
+		u32 cur_val = GRAVI_PERCENT;
 
-			if (get_number_available_objects(tpNearest) == 0) {
-				// получить список объектов на середине пути от монстра до врага
-				Fvector pos;
-				pos.mad(m_object->Position(), dir, dist / 2.f);
-				Level().ObjectSpace.GetNearest(pos, CHECK_OBJECTS_RADIUS); 
-				tpNearest	= Level().ObjectSpace.q_nearest; 
-
-				if (get_number_available_objects(tpNearest) == 0) {
-					b_objects_found = false;
-				}
-			} 
-			
-			if (b_objects_found) {
-				// выбрать объект
-				for (u32 i=0;i<tpNearest.size();i++) {
-					CGameObject *obj = dynamic_cast<CGameObject *>(tpNearest[i]);
-					// проверка по объекту и его массе
-					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS)) continue;
-
-					// проверить, активен ли уже объект
-					if (m_object->CTelekinesis::is_active_object(obj)) continue;
-
-					// применить телекинез на объект
-					m_object->CTelekinesis::activate(obj, 3.f, 2.f, 10000);
-					break;
-				}
-			}
+		if (rnd_val < cur_val) {
+			select_state(eStateBurerAttack_Gravi);
+			return;
 		}
+
+		cur_val += TELE_PERCENT;
+		if (rnd_val < cur_val) {
+			select_state(eStateBurerAttack_Tele);
+			return;
+		}
+
+		select_state(eStateBurerAttack_RunAround);
+		return;
 	}
 
-	TTime cur_time = Level().timeServer();
-	TTime time_last_seen = m_object->EnemyMan.get_enemy_time_last_seen();
-
-
-	if (m_object->CTelekinesis::get_objects_count() > 0) {
-		// обработать объекты
-		set_dest_state(eStateTelekinetic);
-
-	} else if (time_last_seen == cur_time){
-		set_dest_state(eStateGraviStart);
+	if ((prev_substate == eStateBurerAttack_RunAround) || (prev_substate == eStateBurerAttack_FaceEnemy)) {
+		if (enable_gravi) select_state(eStateBurerAttack_Gravi);
+		else select_state(eStateBurerAttack_Tele);
 	} else {
-		// бить вплотную
-		set_dest_state(eStateMelee);
+		select_state(eStateBurerAttack_RunAround);
 	}
-	
-	inherited::execute();
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBurerAttackAbstract::finalize()
+void CStateBurerAttackAbstract::setup_substates()
 {
-	inherited::finalize();
-}
+	state_ptr state = get_state_current();
 
-TEMPLATE_SPECIALIZATION
-u32	CStateBurerAttackAbstract::get_number_available_objects(xr_vector<CObject*> &tpObjects)
-{
-	u32 ret_val = 0;
+	if (current_substate == eStateBurerAttack_FaceEnemy) {
+		SStateDataLookToPoint data;
+		
+		data.point				= object->EnemyMan.get_enemy()->Position(); 
+		data.action.action		= ACT_STAND_IDLE;
+		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
+		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
 
-	for (u32 i=0;i<tpObjects.size();i++) {
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MAXIMAL_MASS) || (obj == m_object)) continue;
-		ret_val++;
+		state->fill_data_with	(&data, sizeof(SStateDataLookToPoint));
+		return;
 	}
 
-	return ret_val;
 }
 
-
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateBurerAttackAbstract

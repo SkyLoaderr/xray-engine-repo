@@ -112,7 +112,20 @@ enum EMonsterState {
 
 	eStateCustom					= eGlobalState << 15,
 
+	eStateBurerScanning				= eStateCustom | 1, 
+	
+	// -------------------------------------------------------------
+	// custom attack states
+
 	eStateCustom_Vampire			= eStateCustom | eStateAttack | 1,
+	
+	eStateBurerAttack_Tele			= eStateCustom | eStateAttack | 2,
+	eStateBurerAttack_Gravi			= eStateCustom | eStateAttack | 3,
+	eStateBurerAttack_RunAround		= eStateCustom | eStateAttack | 4,
+	eStateBurerAttack_FaceEnemy		= eStateCustom | eStateAttack | 5,
+	eStateBurerAttack_Melee			= eStateCustom | eStateAttack | 6,
+	
+	// -------------------------------------------------------------
 
 	eStateUnknown					= u32(-1),
 };

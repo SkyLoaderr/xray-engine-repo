@@ -2267,15 +2267,6 @@
 								Name="State"
 								Filter="">
 								<File
-									RelativePath=".\ai\Monsters\ai_monster_state.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\ai_monster_state.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\state.cpp">
-								</File>
-								<File
 									RelativePath=".\ai\Monsters\state.h">
 								</File>
 								<File
@@ -2286,12 +2277,6 @@
 								</File>
 								<File
 									RelativePath=".\ai\Monsters\state_manager.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\state_manager_first.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\state_manager_first.h">
 								</File>
 								<File
 									RelativePath=".\ai\Monsters\state_manager_second.h">
@@ -2894,58 +2879,6 @@
 									RelativePath=".\ai\Monsters\States\state_test_look_actor_inline.h">
 								</File>
 							</Filter>
-							<Filter
-								Name="Outdated"
-								Filter="">
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_eat.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.h">
-								</File>
-								<File
-									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_rest.cpp">
-								</File>
-							</Filter>
 						</Filter>
 						<Filter
 							Name="Attack"
@@ -3231,12 +3164,6 @@
 							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_psi_effector.h">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_growling.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_growling.h">
-						</File>
-						<File
 							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_manager.cpp">
 						</File>
 						<File
@@ -3260,55 +3187,50 @@
 							RelativePath=".\ai\Monsters\Burer\burer.h">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_gravi.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_gravi.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_melee.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_melee.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_misc.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_misc.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_tele.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_attack_tele.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_scan.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_scan.h">
-						</File>
-						<File
 							RelativePath=".\ai\Monsters\Burer\burer_state_manager.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\Burer\burer_state_manager.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Burer\burer_states.h">
 						</File>
 						<Filter
 							Name="Script"
 							Filter="">
 							<File
 								RelativePath=".\ai\Monsters\Burer\burer_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_gravi.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_gravi_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_melee.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_melee_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_run_around.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_run_around_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_state_attack_tele_inline.h">
 							</File>
 						</Filter>
 					</Filter>
