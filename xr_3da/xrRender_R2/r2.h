@@ -104,6 +104,7 @@ private:
 	void							add_leafs_Static			(IRender_Visual	*pVisual);					// if detected node's full visibility
 
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
+	void							render_main					();
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_indirect				(light*			L	);
 	void							render_lights				(light_Package& LP	);

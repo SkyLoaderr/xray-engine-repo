@@ -10,119 +10,120 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 	return	d1<d2;
 }
 
-extern int					emapslice;
+void CRender::render_main	()
+{
+	marker									++;
+	phase									= PHASE_NORMAL;
+
+	// Calculate sector(s) and their objects
+	if (pLastSector)
+	{
+		// Traverse sector/portal structure
+		PortalTraverser.traverse	
+			(
+			pLastSector,
+			ViewBase,
+			Device.vCameraPosition,
+			Device.mFullTransform,
+			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 
+			(HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
+			);
+
+		// Determine visibility for static geometry hierrarhy
+		for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
+		{
+			CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
+			IRender_Visual*	root	= sector->root();
+			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
+				set_Frustum			(&(sector->r_frustums[v_it]));
+				add_Geometry		(root);
+			}
+		}
+
+		// Traverse object database
+		g_SpatialSpace->q_frustum
+			(
+			lstRenderables,
+			ISpatial_DB::O_ORDERED,
+			STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
+			ViewBase
+			);
+
+		// (almost)Exact sorting order (front-to-back)
+		std::sort			(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+
+		// Determine visibility for dynamic part of scene
+		set_Object							(0);
+		//. g_pGameLevel->pHUD->Render_First( );
+		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
+		{
+			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
+			CSector*	sector		= (CSector*)spatial->spatial.sector;
+			if	(0==sector)										continue;	// disassociated from S/P structure
+			if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
+			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
+				CFrustum&	view	= sector->r_frustums[v_it];
+				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+
+				if (spatial->spatial.type & STYPE_RENDERABLE)
+				{
+					// renderable
+					IRenderable*	renderable		= spatial->dcast_Renderable	();
+					VERIFY							(renderable);
+
+					// Occlusion
+					vis_data&		v_orig			= renderable->renderable.visual->vis;
+					vis_data		v_copy			= v_orig;
+					v_copy.box.xform				(renderable->renderable.xform);
+					BOOL			bVisible		= HOM.visible(v_copy);
+					v_orig.frame					= v_copy.frame;
+					v_orig.hom_frame				= v_copy.hom_frame;
+					v_orig.hom_tested				= v_copy.hom_tested;
+					if (!bVisible)					break;	// exit loop on frustums
+
+					// Rendering
+					set_Object						(renderable);
+					renderable->renderable_Render	();
+					set_Object						(0);
+				}
+				else 
+				{
+					VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
+					// lightsource
+					light*			L				= (light*)	(spatial->dcast_Light());
+					VERIFY							(L);
+					Lights.add_light				(L);
+				}
+
+				break;	// exit loop on frustums
+			}
+		}
+		g_pGameLevel->pHUD->Render_Last						();	
+	}
+	else
+	{
+		set_Object											(0);
+		g_pGameLevel->pHUD->Render_First					();	
+		g_pGameLevel->pHUD->Render_Last						();	
+	}
+}
+
 void CRender::Render		()
 {
 	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
 	//******* Main calc
 	Device.Statistic.RenderCALC.Begin		();
-	r_pmask									(true,true);	// enable priority "0" and "1"
-	lstRecorded.clear						();
-	//if (b_emap)	set_RecordMP				(true);
-	{
-		marker									++;
-		phase									= PHASE_NORMAL;
 
-		// Frustum & HOM rendering
-		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
-		View									= 0;
-		HOM.Enable								();
-		HOM.Render								(ViewBase);
+	// Frustum & HOM rendering
+	ViewBase.CreateFromMatrix					(Device.mFullTransform,FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	View										= 0;
+	HOM.Enable									();
+	HOM.Render									(ViewBase);
 
-		// Calculate sector(s) and their objects
-		if (pLastSector)
-		{
-			// Traverse sector/portal structure
-			PortalTraverser.traverse	
-				(
-				pLastSector,
-				ViewBase,
-				Device.vCameraPosition,
-				Device.mFullTransform,
-				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA + 
-				(HW.Caps.bScissor?CPortalTraverser::VQ_SCISSOR:0)	// generate scissoring info
-				);
-
-			// Determine visibility for static geometry hierrarhy
-			for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
-			{
-				CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
-				IRender_Visual*	root	= sector->root();
-				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
-					set_Frustum			(&(sector->r_frustums[v_it]));
-					add_Geometry		(root);
-				}
-			}
-
-			// Traverse object database
-			g_SpatialSpace->q_frustum
-				(
-				lstRenderables,
-				ISpatial_DB::O_ORDERED,
-				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
-				ViewBase
-				);
-
-			// (almost)Exact sorting order (front-to-back)
-			std::sort			(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
-
-			// Determine visibility for dynamic part of scene
-			set_Object							(0);
-			//. g_pGameLevel->pHUD->Render_First( );
-			for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
-			{
-				ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
-				CSector*	sector		= (CSector*)spatial->spatial.sector;
-				if	(0==sector)										continue;	// disassociated from S/P structure
-				if	(PortalTraverser.i_marker != sector->r_marker)	continue;	// inactive (untouched) sector
-				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)	{
-					CFrustum&	view	= sector->r_frustums[v_it];
-					if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
-
-					if (spatial->spatial.type & STYPE_RENDERABLE)
-					{
-						// renderable
-						IRenderable*	renderable		= spatial->dcast_Renderable	();
-						VERIFY							(renderable);
-
-						// Occlusion
-						vis_data&		v_orig			= renderable->renderable.visual->vis;
-						vis_data		v_copy			= v_orig;
-						v_copy.box.xform				(renderable->renderable.xform);
-						BOOL			bVisible		= HOM.visible(v_copy);
-						v_orig.frame					= v_copy.frame;
-						v_orig.hom_frame				= v_copy.hom_frame;
-						v_orig.hom_tested				= v_copy.hom_tested;
-						if (!bVisible)					break;	// exit loop on frustums
-
-						// Rendering
-						set_Object						(renderable);
-						renderable->renderable_Render	();
-						set_Object						(0);
-					}
-					else 
-					{
-						VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
-						// lightsource
-						light*			L				= (light*)	(spatial->dcast_Light());
-						VERIFY							(L);
-						Lights.add_light				(L);
-					}
-
-					break;	// exit loop on frustums
-				}
-			}
-			g_pGameLevel->pHUD->Render_Last						();	
-		}
-		else
-		{
-			set_Object											(0);
-			g_pGameLevel->pHUD->Render_First					();	
-			g_pGameLevel->pHUD->Render_Last						();	
-		}
-	}
-	set_RecordMP								(false);	
+	// Main calc
+	r_pmask										(true,false);	// enable priority "0"
+	render_main									();
 	r_pmask										(true,false);	// disable priority "1"
 	Device.Statistic.RenderCALC.End				();
 
@@ -207,13 +208,13 @@ void CRender::Render		()
 	}
 
 	// Wall marks
-	Target.phase_wallmarks				();
-	Wallmarks->Render					();				// wallmarks has priority as normal geometry
+	Target.phase_wallmarks					();
+	Wallmarks->Render						();				// wallmarks has priority as normal geometry
 
 	// Lighting, non dependant on OCCQ
-	Target.phase_accumulator			();
-	HOM.Disable							();
-	render_lights						(LP_normal);
+	Target.phase_accumulator				();
+	HOM.Disable								();
+	render_lights							(LP_normal);
 	
 	// Sync-Point
 	{
@@ -230,7 +231,7 @@ void CRender::Render		()
 	}
 	
 	// Lighting, dependant on OCCQ
-	render_lights						(LP_pending);
+	render_lights							(LP_pending);
 
 	// Postprocess
 	// Target.phase_bloom					();
@@ -239,6 +240,8 @@ void CRender::Render		()
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
 	{
 		// level
+		r_pmask									(false,true);	// enable priority "1"
+		render_main								();
 		r_dsgraph_render_graph					(1);			// normal level, secondary priority
 		r_dsgraph_render_sorted					();				// strict-sorted geoms
 	}
@@ -249,15 +252,6 @@ void CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
-
-	/*
-	if (0==::Random.randI(100))	
-	{
-		u32		clr4clear							= color_rgba(0,0,0,0);	// 0x00
-		CHK_DX	(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
-	}
-	*/
-	// Msg					("--- %d : was(%d)",Device.dwFrame,stats.l_visible);	//.
 }
 
 //******* Directional light
