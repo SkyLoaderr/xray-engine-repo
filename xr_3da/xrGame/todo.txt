@@ -1,7 +1,8 @@
-	. TODO: Multi-shaders
+	+ TODO: NET: Can't connect
+	+ TODO: Level-unload
+	. TODO: NET: Server Disconnect
+	. TODO: NET: Client Disconnect
 	. TODO: Detail texturing
-	. TODO: Lighting projection
-	. TODO: 
 
 
 

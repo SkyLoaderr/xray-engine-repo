@@ -39,6 +39,8 @@ CEnvironment::CEnvironment()
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
 	
+	pSkydome				= 0;
+
 	c_Invalidate			();
 }
 

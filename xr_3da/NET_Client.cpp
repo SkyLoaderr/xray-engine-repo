@@ -144,7 +144,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 		
 		// ****** Connection
 		IDirectPlay8Address*        pHostAddress = NULL;
-		R_ASSERT					(!net_Hosts.empty());
+		if (net_Hosts.empty())		return FALSE;
 		
 		net_csEnumeration.Enter		();
 		// real connect
