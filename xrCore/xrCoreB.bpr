@@ -12,7 +12,10 @@
       Intermediate\_compressed_normal.obj Intermediate\xrMemory_align.obj 
       Intermediate\LzHuf.obj Intermediate\log.obj Intermediate\FS.obj 
       Intermediate\xr_trims.obj Intermediate\Xr_ini.obj Intermediate\clsid.obj 
-      Intermediate\LocatorAPI.obj Intermediate\LocatorAPI_borland.obj"/>
+      Intermediate\LocatorAPI.obj Intermediate\LocatorAPI_borland.obj 
+      Intermediate\FileSystem_borland.obj Intermediate\FileSystem.obj 
+      Intermediate\xrMemory_subst_msvc.obj Intermediate\xrMemory_POOL.obj 
+      Intermediate\xrMemory_subst_borland.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -29,7 +32,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_XRCOREB;XRCORE_EXPORTS"/>
+    <USERDEFINES value="_EDITOR;_XRCOREB;XRCORE_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrCoreB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include"/>
@@ -41,8 +44,8 @@
     <IDLCFLAGS value="-IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\VS7.NET\Vc7\atlmfc\include -src_suffix cpp -D_XRCOREB -DXRCORE_EXPORTS 
-      -boa"/>
+      -IR:\VS7.NET\Vc7\atlmfc\include -src_suffix cpp -D_EDITOR -D_XRCOREB 
+      -DXRCORE_EXPORTS -boa"/>
     <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
       -6 -b- -k -vi -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
@@ -81,6 +84,11 @@
       <FILE FILENAME="clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI.cpp" FORMNAME="" UNITNAME="LocatorAPI" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI_borland.cpp" FORMNAME="" UNITNAME="LocatorAPI_borland" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FileSystem_borland.cpp" FORMNAME="" UNITNAME="FileSystem_borland.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrMemory_subst_msvc.cpp" FORMNAME="" UNITNAME="xrMemory_subst_msvc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrMemory_POOL.cpp" FORMNAME="" UNITNAME="xrMemory_POOL.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrMemory_subst_borland.cpp" FORMNAME="" UNITNAME="xrMemory_subst_borland.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -158,13 +166,14 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=6
-Item0=_XRCOREB;XRCORE_EXPORTS
-Item1=_XRCOREB;XRCORE_EXPORTS;_DEBUG
-Item2=_XRCOREB
-Item3=_LEVEL_OPTIONS
-Item4=_OPTIONS
-Item5=_DEBUG
+Count=7
+Item0=_EDITOR;_XRCOREB;XRCORE_EXPORTS
+Item1=_XRCOREB;XRCORE_EXPORTS
+Item2=_XRCOREB;XRCORE_EXPORTS;_DEBUG
+Item3=_XRCOREB
+Item4=_LEVEL_OPTIONS
+Item5=_OPTIONS
+Item6=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=3

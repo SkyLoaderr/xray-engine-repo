@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 #ifdef __BORLANDC__
 // Borland doesn't support marked aligned allocs ???

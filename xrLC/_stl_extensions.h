@@ -3,14 +3,14 @@
 
 #ifdef __BORLANDC__
 
-#define xr_vector vector
-#define xr_list list
-#define xr_deque deque
-#define xr_stack stack
-#define xr_set set
-#define xr_multiset multiset
-#define xr_map map
-#define xr_multimap multimap
+#define xr_vector std::vector
+#define xr_list std::list
+#define xr_deque std::deque
+#define xr_stack std::stack
+#define xr_set std::set
+#define xr_multiset std::multiset
+#define xr_map std::map
+#define xr_multimap std::multimap
 
 #else
 

@@ -112,7 +112,7 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		if (INVALID_HANDLE_VALUE!=handle){
 			LPSTR lp_fn=fn;
-			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::mk_pair(lp_fn,handle));
+			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(mk_pair(lp_fn,handle));
 			R_ASSERT(I.second);
 			RegisterAccess(fn,"Lock",bLog);
 			bRes=true;

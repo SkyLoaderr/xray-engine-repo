@@ -14,19 +14,19 @@ struct xr_token;
 	XRCORE_API void 		_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
 #endif
 
-XRCORE_API int				_GetItemCount			( LPCSTR , char separator=',');
-XRCORE_API LPSTR			_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="" );
-XRCORE_API LPSTR			_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
-XRCORE_API LPCSTR			_SetPos					( LPCSTR src, u32 pos, char separator=',' );
-XRCORE_API LPCSTR			_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );
-XRCORE_API LPSTR			_Trim					( LPSTR str );
-XRCORE_API LPSTR			_TrimLeft				( LPSTR str );
-XRCORE_API LPSTR			_TrimRight				( LPSTR str );
-XRCORE_API LPSTR			_ChangeSymbol			( LPSTR name, char src, char dest );
-XRCORE_API u32				_ParseItem				( LPSTR src, xr_token* token_list );
-XRCORE_API u32				_ParseItem				( LPSTR src, int ind, xr_token* token_list );
-XRCORE_API LPSTR 			_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
-XRCORE_API LPSTR 			_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
-XRCORE_API void 			_SequenceToList			( LPSTRVec& lst, LPCSTR in, char separator=',' );
+XRCORE_API int		__stdcall	_GetItemCount			( LPCSTR , char separator=',');
+XRCORE_API LPSTR	__stdcall	_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="" );
+XRCORE_API LPSTR	__stdcall	_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
+XRCORE_API LPCSTR	__stdcall	_SetPos					( LPCSTR src, u32 pos, char separator=',' );
+XRCORE_API LPCSTR	__stdcall	_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );
+XRCORE_API LPSTR	__stdcall	_Trim					( LPSTR str );
+XRCORE_API LPSTR	__stdcall	_TrimLeft				( LPSTR str );
+XRCORE_API LPSTR	__stdcall	_TrimRight				( LPSTR str );
+XRCORE_API LPSTR	__stdcall	_ChangeSymbol			( LPSTR name, char src, char dest );
+XRCORE_API u32		__stdcall	_ParseItem				( LPSTR src, xr_token* token_list );
+XRCORE_API u32		__stdcall	_ParseItem				( LPSTR src, int ind, xr_token* token_list );
+XRCORE_API LPSTR 	__stdcall	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator );
+XRCORE_API LPSTR 	__stdcall	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator );
+XRCORE_API void 	__stdcall	_SequenceToList			( LPSTRVec& lst, LPCSTR in, char separator=',' );
 
 #endif

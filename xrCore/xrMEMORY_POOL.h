@@ -1,3 +1,5 @@
+#ifndef xrMemory_POOLh
+#define xrMemory_POOLh
 #pragma once
 
 class	MEMPOOL
@@ -35,3 +37,4 @@ public:
 		cs.Leave		();
 	}
 };
+#endif

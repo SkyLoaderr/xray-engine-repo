@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "xrMemory_align.h"
 
 #ifndef __BORLANDC__

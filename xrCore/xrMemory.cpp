@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#pragma hdrstop
 
 #include <malloc.h>
 
@@ -30,6 +31,7 @@ void	xrMemory::_initialize	()
 		mem_fill32	= xrMemFill32_x86;
 	}
 
+#ifndef M_BORLAND
 	// initialize POOLs
 	u32	element		= mem_pools_ebase;
 	u32 sector		= mem_pools_ebase*1024;
@@ -38,6 +40,7 @@ void	xrMemory::_initialize	()
 		mem_pools[pid]._initialize(element,sector,0x1);
 		element		+=	mem_pools_ebase;
 	}
+#endif    
 	mem_initialized	= TRUE;
 }
 

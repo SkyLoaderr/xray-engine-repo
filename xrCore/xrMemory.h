@@ -36,9 +36,9 @@ extern XRCORE_API	xrMemory	Memory;
 
 // delete
 #ifdef __BORLANDC__
-#include "xrMemory_subst_borland.h"
+	#include "xrMemory_subst_borland.h"
 #else
-#include "xrMemory_subst_msvc.h"
+	#include "xrMemory_subst_msvc.h"
 #endif
 
 // generic "C"-like allocations/deallocations

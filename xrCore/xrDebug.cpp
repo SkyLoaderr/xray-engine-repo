@@ -1,4 +1,6 @@
 #include "StdAfx.h"
+#pragma hdrstop
+
 #include "xrdebug.h"
 #include "resource.h"
 #include "dbghelp.h"
@@ -261,7 +263,9 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 //////////////////////////////////////////////////////////////////////
 #ifdef M_BORLAND
 //	typedef void ( _RTLENTRY *___new_handler) ();
+namespace std{
 	extern new_handler _RTLENTRY _EXPFUNC set_new_handler( new_handler new_p );
+};
 
 //    typedef int	(__stdcall * _PNH)( size_t );
 //    _CRTIMP int	__cdecl _set_new_mode( int );
