@@ -74,9 +74,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	}
 	if (style&esModel)			{
 		// Load model
-		s_model					= ::Render->model_Create	(E->s_Model);
-		CKinematics* V			= PKinematics(s_model);
-		if (V)					V->PlayCycle("idle");
+		cNameVisual_set			(E->s_Model);
 	}
 	if (style&esParticles)		{
 		// Load model
@@ -161,9 +159,14 @@ void CDummyObject::UpdateCL		()
 	}
 }
 
+void CDummyObject::OnDeviceCreate()
+{
+	inherited::OnDeviceCreate();
+	CKinematics* V			= PKinematics	(Visual());
+	if (V)					V->PlayCycle	("idle");
+}
 void CDummyObject::OnVisible	()
 {
-	::Render->set_Transform					(&clTransform);
-	if (s_model)		::Render->add_Visual(s_model);
+	inherited::OnVisible();
 	if (s_particles)	::Render->add_Visual(s_particles);
 }

@@ -36,6 +36,11 @@ void CObject::cNameSect_set		(LPCSTR N)
 	_FREE					(NameSection);
 	NameSection=xr_strdup	(N); 
 }
+void CObject::cNameVisual_set	(LPCSTR N)
+{ 
+	_FREE					(NameVisual);
+	NameVisual=xr_strdup	(N); 
+}
 void CObject::setEnabled		(BOOL _enabled)
 {
 	FLAGS.bEnabled = _enabled?1:0;	
@@ -60,7 +65,6 @@ CObject::CObject		( )
 
 	cfModel						= NULL;
 	pVisual						= NULL;
-	pVisualName					= NULL;
 
 	FLAGS.storage				= 0;
 
@@ -71,6 +75,7 @@ CObject::CObject		( )
 
 	NameObject					= 0;
 	NameSection					= 0;
+	NameVisual					= NULL;
 
 	Device.seqDevDestroy.Add	(this);
 	Device.seqDevCreate.Add		(this);
@@ -114,8 +119,8 @@ void CObject::Load				(LPCSTR section )
 	R_ASSERT					( pCreator );
 
 	// Visual
-	pVisualName					= xr_strdup(pSettings->ReadSTRING(section,"visual"));
-	OnDeviceCreate				();
+	if (pSettings->LineExists(section,"visual")) 
+		pVisualName				= xr_strdup(pSettings->ReadSTRING(section,"visual"));
 	
 	// Collision model
 	cfModel						= NULL;

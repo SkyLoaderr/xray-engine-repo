@@ -60,6 +60,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	UpdateTransform				();
 
 	// Adapt to sphere
+	/*
 	Fvector						svC;
 	float						svR		= Radius();
 	svCenter					(svC);
@@ -69,15 +70,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		vPosition.y			+=	diff;
 		UpdateTransform		();
 	}
+	*/
 
 	// Net params
 	setLocal						(E->s_flags&M_SPAWN_OBJECT_LOCAL);
 	setReady						(TRUE);
 	setID							(E->ID);
 	pCreator->Objects.net_Register	(this);
-
-	// Sector detection
-	Sector_Detect				();
 
 	// AI-DB connectivity
 	Fvector				nPos	= vPosition;

@@ -52,6 +52,8 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	} else {
 		if ((E->s_flags&M_SPAWN_OBJECT_LOCAL) && (E->s_flags&M_SPAWN_OBJECT_ASPLAYER))	SetEntity		(O);
 		if (E->s_flags&M_SPAWN_OBJECT_ACTIVE)											O->OnActivate	( );
+		O->OnDeviceCreate		( );
+
 		if (0xffff != E->ID_Parent)	
 		{
 			// Generate ownership-event

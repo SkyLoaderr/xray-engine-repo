@@ -29,7 +29,6 @@ private:
 	u8									style;
 private:
 	CObjectAnimator*					s_animator;
-	CVisual*							s_model;
 	CVisual*							s_particles;
 	sound								s_sound;
 	PS::SEmitter						s_emitter;
@@ -42,6 +41,7 @@ public:
 	virtual void						Update			( DWORD dt);							// Called by sheduler
 	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
 	virtual void						OnVisible		( );
+	virtual void						OnDeviceCreate	( );
 
 	virtual BOOL						ShadowGenerate	( ) { return FALSE;	}
 	virtual BOOL						ShadowReceive	( ) { return FALSE;	}

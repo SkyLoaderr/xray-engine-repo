@@ -53,6 +53,7 @@ private:
 	// Some property variables
 	LPSTR								NameObject;
 	LPSTR								NameSection;
+	LPSTR								NameVisual;
 
 	// Visibility detection
 	CSector*							pSector;
@@ -67,7 +68,6 @@ protected:
 	svector<SavedPosition,4>			PositionStack;
 	
 	// Model
-	LPSTR								pVisualName;
 	CVisual*							pVisual;
 
 	// Information and status
@@ -126,6 +126,8 @@ public:
 	void								cName_set			(LPCSTR N);
 	IC LPCSTR							cNameSect			()					{ return NameSection;		}
 	void								cNameSect_set		(LPCSTR N);
+	IC LPCSTR							cNameVisual			()					{ return NameVisual;		}
+	void								cNameVisual_set		(LPCSTR N);
 	
 	// Properties
 	IC void								setVisible			(BOOL _visible)		{ FLAGS.bVisible = _visible?1:0;	}
