@@ -24,6 +24,13 @@ IC	CAbstractOperator::COperatorAbstract	()
 }
 
 TEMPLATE_SPECIALIZATION
+IC	CAbstractOperator::COperatorAbstract	(const COperatorAbstract &self)
+{
+	*this				= self;
+	m_actual			= false;
+}
+
+TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	(const CSConditionState &conditions, const CSConditionState &effects)
 {
 	m_conditions		= conditions;

@@ -33,6 +33,7 @@ protected:
 
 public:
 	IC								COperatorAbstract	();
+	IC								COperatorAbstract	(const COperatorAbstract &self);
 	IC								COperatorAbstract	(const CSConditionState &conditions, const CSConditionState &effects);
 	virtual							~COperatorAbstract	();
 	virtual	void					Load				(LPCSTR section);
