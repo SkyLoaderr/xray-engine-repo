@@ -62,7 +62,7 @@ void CStateMonsterRestFunAbstract::execute()
 		CEntityAlive		*corpse = const_cast<CEntityAlive *>		(object->CorpseMan.get_corpse());
 		CPhysicsShellHolder	*target = smart_cast<CPhysicsShellHolder *>	(corpse);
 
-		if  (target) {
+		if  (target && target->m_pPhysicsShell) {
 			Fvector			dir;
 			dir.add			(Fvector().sub(target->Position(), object->Position()), object->Direction());
 			
