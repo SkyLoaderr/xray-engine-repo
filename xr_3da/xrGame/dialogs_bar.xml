@@ -3105,7 +3105,6 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_bar_hunter_quest_finish">
-        <precondition>bar_dialogs.have_hunters_toz</precondition>
         <has_info>bar_bar_hunter_quest_start</has_info>
         <dont_has_info>bar_bar_hunter_quest_finish</dont_has_info>
         <phrase_list>
