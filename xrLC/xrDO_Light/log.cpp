@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "vector.h"
 #include "resource.h"
+#include "xrSyncronize.h"
 #include "log.h"
 
 //************************* Log-thread data
-static CRITICAL_SECTION	csLog;
+static CCriticalSection	csLog;
 
 volatile BOOL			bClose = FALSE;
 
@@ -68,13 +69,12 @@ string make_time(DWORD sec)
 
 void __cdecl Status	(const char *format, ...)
 {
-	EnterCriticalSection(&csLog);
+	csLog.Enter			();
 	va_list mark;
 	va_start( mark, format );
 	vsprintf( status, format, mark );
 	bStatusChange = TRUE;
-	LeaveCriticalSection(&csLog);
-//	Msg("~~~ %s",status);
+	csLog.Leave			();
 }
 
 void Progress		(const float F)
@@ -90,7 +90,8 @@ void Progress		(const float F)
 
 void Phase			(const char *phase_name)
 {
-	EnterCriticalSection(&csLog);
+	csLog.Enter			();
+	while (!(hwPhaseTime && hwStage)) Sleep(1);
 
 	// Replace phase name with TIME:Name 
 	char	tbuf		[512];
@@ -108,7 +109,7 @@ void Phase			(const char *phase_name)
 	Progress			(0);
 
 	// Release focus
-	LeaveCriticalSection(&csLog);
+	csLog.Leave			();
 	Msg("\n* New phase started: %s",phase_name);
 }
 
@@ -116,8 +117,7 @@ void LOut(const char *s) {
 	int		i,j;
 	char	split[256];
 
-
-	EnterCriticalSection(&csLog);
+	csLog.Enter			();
 
 	for (i=0,j=0; s[i]!=0; i++) {
 		if (s[i]=='\n') {
@@ -132,15 +132,13 @@ void LOut(const char *s) {
 	split[j]=0;
 	strings.push_back(split);
 
-	LeaveCriticalSection(&csLog);
+	csLog.Leave			();
 };
 
 HWND logWindow=0;
 void __cdecl logThread(void *dummy)
 {
 	// Startup
-	InitializeCriticalSection(&csLog);
-
 	FILE *F = fopen("x:\\build.log", "wt");
 	R_ASSERT(F);
 
@@ -179,7 +177,7 @@ void __cdecl logThread(void *dummy)
 	while (TRUE)
 	{
 		// transfer data
-		EnterCriticalSection(&csLog);
+		csLog.Enter			();
 		if (progress>1.f) progress=1.f;
 
 		BOOL bWasChanges = FALSE;
@@ -243,7 +241,7 @@ void __cdecl logThread(void *dummy)
 			UpdateWindow	( logWindow);
 			bWasChanges		= FALSE;
 		}
-		LeaveCriticalSection(&csLog);
+		csLog.Leave			();
 
 		_process_messages	();
 		if (bClose)			break;
@@ -253,7 +251,6 @@ void __cdecl logThread(void *dummy)
 	// Cleanup
 	DestroyWindow(logWindow);
 	strings.clear();
-//	DeleteCriticalSection(&csLog);
 }
 
 void Log(const char *s) {
