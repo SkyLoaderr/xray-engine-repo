@@ -28,8 +28,12 @@ public:
 	ImplicitLumel*			temp;
 	vecFace					faces;
 	
-	ImplicitDeflector() : texture(0),lmap(0)
+	ImplicitDeflector() : texture(0),lmap(0),temp(0)
 	{
+	}
+	~ImplicitDeflector()
+	{
+		Deallocate	();
 	}
 	
 	void			Allocate()
@@ -281,7 +285,7 @@ void CBuild::ImplicitLighting()
 		
 		Progress (float(I-g_faces.begin())/float(g_faces.size()));
 		b_material&		M	= materials		[F->dwMaterial];
-		u32			Tid = M.surfidx;
+		u32				Tid = M.surfidx;
 		b_BuildTexture*	T	= &(textures[Tid]);
 		
 		Implicit_it		it	= calculator.find(Tid);
@@ -390,6 +394,8 @@ void CBuild::ImplicitLighting()
 		}
 		xr_free(markup)
 		*/
+		xr_free						(markup);
+		defl.Deallocate				();
 	}
 
 	xr_delete			(ImplicitHash);
