@@ -455,7 +455,7 @@ u32	CScriptGameObject::vertex_in_direction(u32 level_vertex_id, Fvector directio
 		return		(u32(-1));
 	}
 
-	if (!monster->movement().restrictions().accessible(level_vertex_id))
+	if (!monster->movement().restrictions().accessible(level_vertex_id)) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster::vertex_in_direction - start vertex id is not accessible!");
 		return		(u32(-1));
 	}
