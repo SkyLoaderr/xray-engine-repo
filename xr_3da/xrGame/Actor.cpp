@@ -95,6 +95,8 @@ CActor::CActor() : CEntityAlive()
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
 
+	m_fCamHeightFactor		= 0.87f;
+
 	m_fFallTime				=	s_fFallTime;
 	m_bAnimTorsoPlayed		=	false;
 
@@ -217,6 +219,7 @@ void CActor::Load		(LPCSTR section )
 	hinge_force_factor2 		= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
 	hinge_vel					= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl.SetJumpUpVelocity(m_fJumpSpeed);
 
 

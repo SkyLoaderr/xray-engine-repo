@@ -21,10 +21,10 @@ void CActor::cam_Update(float dt, float fFOV)
 	
 	Fvector point, dangle;
 	
-	// get calc eye point 90% from player height
+	// calc eye point from player height
 	Fvector						R;
 	m_PhysicMovementControl.Box().getsize		(R);
-	point.set					(0.f,.91f*R.y,0.f);
+	point.set					(0.f,m_fCamHeightFactor*R.y,0.f);
 	XFORM().transform_tiny	(point);
 
 	// soft crouch

@@ -190,7 +190,7 @@ protected:
 
 	u32						patch_frame;
 	Fvector					patch_position;
-
+	float					m_fCamHeightFactor;
 	
 	int						skel_ddelay;
 	
