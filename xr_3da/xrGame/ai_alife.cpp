@@ -46,10 +46,18 @@ void CAI_ALife::vfInitLocationOwners()
 void CAI_ALife::vfInitGraph()
 {
 	m_tpGraphObjects.resize(Level().AI.GraphHeader().dwVertexCount);
-	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
-	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
-	for ( ; it != E; it++)
-		m_tpGraphObjects[(*it).second->m_tGraphID].push_back((*it).second->m_tObjectID);
+	{
+		OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
+		OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
+		for ( ; it != E; it++)
+			m_tpGraphObjects[(*it).second->m_tGraphID].tpObjectIDs.push_back((*it).second->m_tObjectID);
+	}
+	{
+		EVENT_PAIR_IT	it = m_tEventRegistry.m_tpMap.begin();
+		EVENT_PAIR_IT	E  = m_tEventRegistry.m_tpMap.end();
+		for ( ; it != E; it++)
+			m_tpGraphObjects[(*it).second.tGraphID].tpEventIDs.push_back((*it).second.tEventID);
+	}
 }
 
 void CAI_ALife::vfInitScheduledObjects()
@@ -155,6 +163,33 @@ void CAI_ALife::vfSaveSpawnPoints()
 	tStream.close_chunk	();
 	tStream.SaveTo		("game.spawn",0);
 }
+// end of temporary
+void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
+{
+	R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_VERSION));
+	tpStream->Read(&m_tSpawnHeader,sizeof(m_tSpawnHeader));
+	if (m_tSpawnHeader.dwVersion != SPAWN_POINT_VERSION)
+		THROW;
+	R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_DATA));
+	m_tpSpawnPoints.resize(m_tSpawnHeader.dwCount);
+	for (int i=0; i<(int)m_tSpawnHeader.dwCount; i++) {
+		m_tpSpawnPoints[i].tNearestGraphPointID		= tpStream->Rword();
+		tpStream->Rstring							(m_tpSpawnPoints[i].caModel);
+		m_tpSpawnPoints[i].ucTeam					= tpStream->Rbyte();
+		m_tpSpawnPoints[i].ucSquad					= tpStream->Rbyte();
+		m_tpSpawnPoints[i].ucGroup					= tpStream->Rbyte();
+		m_tpSpawnPoints[i].wGroupID					= tpStream->Rword();
+		m_tpSpawnPoints[i].wCount					= tpStream->Rword();
+		m_tpSpawnPoints[i].fBirthRadius				= tpStream->Rfloat();
+		m_tpSpawnPoints[i].fBirthProbability		= tpStream->Rfloat();
+		m_tpSpawnPoints[i].fIncreaseCoefficient		= tpStream->Rfloat();
+		m_tpSpawnPoints[i].fAnomalyDeathProbability	= tpStream->Rfloat();
+		m_tpSpawnPoints[i].ucRoutePointCount		= tpStream->Rbyte();
+		m_tpSpawnPoints[i].wpRouteGraphPoints.resize(m_tpSpawnPoints[i].ucRoutePointCount);
+		for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
+			m_tpSpawnPoints[i].wpRouteGraphPoints[j] = tpStream->Rword();
+	}
+}
 
 void CAI_ALife::Load()
 {
@@ -184,29 +219,7 @@ void CAI_ALife::Load()
 	}
 	else {
 		tpStream = Engine.FS.Open(caFileName);
-		R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_VERSION));
-		tpStream->Read(&m_tSpawnHeader,sizeof(m_tSpawnHeader));
-		if (m_tSpawnHeader.dwVersion != SPAWN_POINT_VERSION)
-			THROW;
-		R_ASSERT(tpStream->FindChunk(SPAWN_POINT_CHUNK_DATA));
-		m_tpSpawnPoints.resize(m_tSpawnHeader.dwCount);
-		for (int i=0; i<(int)m_tSpawnHeader.dwCount; i++) {
-			m_tpSpawnPoints[i].tNearestGraphPointID		= tpStream->Rword();
-			tpStream->Rstring							(m_tpSpawnPoints[i].caModel);
-			m_tpSpawnPoints[i].ucTeam					= tpStream->Rbyte();
-			m_tpSpawnPoints[i].ucSquad					= tpStream->Rbyte();
-			m_tpSpawnPoints[i].ucGroup					= tpStream->Rbyte();
-			m_tpSpawnPoints[i].wGroupID					= tpStream->Rword();
-			m_tpSpawnPoints[i].wCount					= tpStream->Rword();
-			m_tpSpawnPoints[i].fBirthRadius				= tpStream->Rfloat();
-			m_tpSpawnPoints[i].fBirthProbability		= tpStream->Rfloat();
-			m_tpSpawnPoints[i].fIncreaseCoefficient		= tpStream->Rfloat();
-			m_tpSpawnPoints[i].fAnomalyDeathProbability	= tpStream->Rfloat();
-			m_tpSpawnPoints[i].ucRoutePointCount		= tpStream->Rbyte();
-			m_tpSpawnPoints[i].wpRouteGraphPoints.resize(m_tpSpawnPoints[i].ucRoutePointCount);
-			for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-				m_tpSpawnPoints[i].wpRouteGraphPoints[j] = tpStream->Rword();
-		}
+		vfLoadSpawnPoints(tpStream);
 		Engine.FS.Close(tpStream);
 	}
 
@@ -356,7 +369,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
 		u32 dwCurTime = Level().timeServer();
 		tpALifeMonster->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonster->m_tTimeID)/1000.f * tpALifeMonster->m_fCurSpeed;
 		if (tpALifeMonster->m_fDistanceToPoint - tpALifeMonster->m_fDistanceFromPoint < EPS_L) {
-			vfChangeGraphPoint(tpALifeMonster->m_tObjectID,tpALifeMonster->m_tGraphID,tpALifeMonster->m_tNextGraphID);
+			vfChangeObjectGraphPoint(tpALifeMonster->m_tObjectID,tpALifeMonster->m_tGraphID,tpALifeMonster->m_tNextGraphID);
 			tpALifeMonster->m_fDistanceToPoint	= tpALifeMonster->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonster->m_tPrevGraphID		= tpALifeMonster->m_tGraphID;
 			tpALifeMonster->m_tGraphID			= tpALifeMonster->m_tNextGraphID;
@@ -429,8 +442,9 @@ void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
 
 void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 {
-	OBJECT_IT it = m_tpGraphObjects[tpALifeHuman->m_tGraphID].begin();
-	OBJECT_IT E  = m_tpGraphObjects[tpALifeHuman->m_tGraphID].end();
+	
+	OBJECT_IT it = m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.begin();
+	OBJECT_IT E  = m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.end();
 	for( ; it != E; it++) {
 		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*it);
 		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
@@ -441,7 +455,7 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 			// adding new item to the item list
 			if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
 				tpALifeHuman->m_tpItemIDs.push_back(*it);
-				m_tpGraphObjects[tpALifeHuman->m_tGraphID].erase(it);
+				m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.erase(it);
 				tpALifeHuman->m_fItemMass += tpALifeItem->m_fMass;
 			}
 			else {
@@ -476,4 +490,28 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 			}
 		}
 	}
+}
+
+void CAI_ALife::vfListObjects()
+{
+}
+
+void CAI_ALife::vfListEvents()
+{
+}
+
+void CAI_ALife::vfListTasks()
+{
+}
+
+void CAI_ALife::vfObjectInfo()
+{
+}
+
+void CAI_ALife::vfEventInfo()
+{
+}
+
+void CAI_ALife::vfTaskInfo()
+{
 }

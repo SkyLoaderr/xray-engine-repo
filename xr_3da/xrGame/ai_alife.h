@@ -29,7 +29,7 @@ public:
 															//  графа
 	OBJECT_VECTOR_VECTOR			m_tpLocationOwners;		// массив списков : по точке графа 
 															//  получить список её владельцев
-	OBJECT_VECTOR_VECTOR			m_tpGraphObjects;		// по точке графа получить все 
+	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
 	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
 	
@@ -41,24 +41,46 @@ public:
 	CALifeEventRegistry				m_tEventRegistry;		// карта событий
 	CALifeTaskRegistry				m_tTaskRegistry;		// карта заданий
 
-	IC void vfRemoveFromGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphID)
+	// objects
+	IC void vfRemoveObjectFromGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphID)
 	{
-		for (int i=0; i<(int)m_tpGraphObjects[tGraphID].size(); i++)
-			if (m_tpGraphObjects[tGraphID][i] == tObjectID) {
-				m_tpGraphObjects[tGraphID].erase(m_tpGraphObjects[m_tObjectRegistry.m_tppMap[tObjectID]->m_tGraphID].begin() + i);
+		for (int i=0; i<(int)m_tpGraphObjects[tGraphID].tpObjectIDs.size(); i++)
+			if (m_tpGraphObjects[tGraphID].tpObjectIDs[i] == tObjectID) {
+				m_tpGraphObjects[tGraphID].tpObjectIDs.erase(m_tpGraphObjects[tGraphID].tpObjectIDs.begin() + i);
 				break;
 			}
 	}
 	
-	IC void vfAddToGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddObjectToGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tNextGraphPointID)
 	{
-		m_tpGraphObjects[tNextGraphPointID].push_back(tObjectID);
+		m_tpGraphObjects[tNextGraphPointID].tpObjectIDs.push_back(tObjectID);
 	}
 
-	IC void vfChangeGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeObjectGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
-		vfRemoveFromGraphPoint	(tObjectID,tGraphPointID);
-		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
+		vfRemoveObjectFromGraphPoint	(tObjectID,tGraphPointID);
+		vfAddObjectToGraphPoint		(tObjectID,tNextGraphPointID);
+	}
+
+	// events
+	IC void vfRemoveEventFromGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tGraphID)
+	{
+		for (int i=0; i<(int)m_tpGraphObjects[tGraphID].tpEventIDs.size(); i++)
+			if (m_tpGraphObjects[tGraphID].tpEventIDs[i] == tEventID) {
+				m_tpGraphObjects[tGraphID].tpEventIDs.erase(m_tpGraphObjects[tGraphID].tpEventIDs.begin() + i);
+				break;
+			}
+	}
+	
+	IC void vfAddEventToGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tNextGraphPointID)
+	{
+		m_tpGraphObjects[tNextGraphPointID].tpEventIDs.push_back(tEventID);
+	}
+
+	IC void vfChangeEventGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	{
+		vfRemoveEventFromGraphPoint	(tEventID,tGraphPointID);
+		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
 	}
 
 	void							vfCheckForItems			(CALifeHuman	*tpALifeHuman);
@@ -70,6 +92,7 @@ public:
 	void							vfInitLocationOwners	();
 	void							vfInitGraph				();
 	void							vfInitScheduledObjects	();
+	void							vfLoadSpawnPoints		(CStream *tpStream);
 	// temporary
 	void							vfGenerateSpawnPoints	(u32 dwSpawnCount);
 	void							vfSaveSpawnPoints		();
@@ -84,4 +107,12 @@ public:
 	virtual void					Update					(u32 dt);	
 			void					Save					();
 			void					Generate				();
+	// temporary
+			void					vfListObjects			();
+			void					vfListEvents			();
+			void					vfListTasks				();
+			void					vfObjectInfo			();
+			void					vfEventInfo				();
+			void					vfTaskInfo				();
+	//
 };

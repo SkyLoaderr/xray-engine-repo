@@ -123,9 +123,9 @@ public:
 	}
 };
 
-class CCC_Path : public CConsoleCommand {
+class CCC_ALifePath : public CConsoleCommand {
 public:
-	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifePath(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		int id1=-1, id2=-1;
 		sscanf(args ,"%d %d",&id1,&id2);
@@ -139,14 +139,10 @@ public:
 					if (min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",min(id1,id2));
 					else {
-//						SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 						Sleep				(1);
 						u64 t1x = CPU::GetCycleCount();
 						float fValue = Level().AI.m_tpAStar->ffFindMinimalPath(id1,id2);
 						u64 t2x = CPU::GetCycleCount();
-//						SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-//						SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 						t2x -= t1x;
 						Msg("* %7.2f[%d] : %11I64u cycles (%.3f microseconds)",fValue,Level().AI.m_tpAStar->m_tpaNodes.size(),t2x,CPU::cycles2microsec*t2x);
 					}
@@ -155,15 +151,117 @@ public:
 	}
 };
 
-class CCC_SaveALife : public CConsoleCommand {
+class CCC_ALifeSave : public CConsoleCommand {
 public:
-	CCC_SaveALife(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				tpGame->m_tALife.Save();
 				Log("* ALife simulation is successfully saved!");
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeListObjects : public CConsoleCommand {
+public:
+	CCC_ALifeListObjects(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListObjects();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeListEvents : public CConsoleCommand {
+public:
+	CCC_ALifeListEvents(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListEvents();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeListTasks : public CConsoleCommand {
+public:
+	CCC_ALifeListTasks(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListTasks();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeObjectInfo : public CConsoleCommand {
+public:
+	CCC_ALifeObjectInfo(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfObjectInfo();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeEventInfo : public CConsoleCommand {
+public:
+	CCC_ALifeEventInfo(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfEventInfo();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeTaskInfo : public CConsoleCommand {
+public:
+	CCC_ALifeTaskInfo(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfTaskInfo();
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -206,38 +304,46 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	case DLL_PROCESS_ATTACH:
 		{
 		// game
-		CMD3(CCC_Mask,		"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
-		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
-		CMD1(CCC_Spawn,		"g_spawn"				);
-		CMD1(CCC_Restart,	"g_restart"				);
-		CMD1(CCC_Money,		"g_money"				);
-		CMD1(CCC_Team,		"g_change_team"			);
-		CMD1(CCC_Path,		"path"					);
-		CMD1(CCC_SaveALife,	"asave"					);
+		CMD3(CCC_Mask,				"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
+		CMD3(CCC_Mask,				"g_god",				&psActorFlags,	AF_GODMODE	);
+		CMD1(CCC_Spawn,				"g_spawn"				);
+		CMD1(CCC_Restart,			"g_restart"				);
+		CMD1(CCC_Money,				"g_money"				);
+		CMD1(CCC_Team,				"g_change_team"			);
+		
+		// alife
+		CMD1(CCC_ALifePath,			"alife_path"			);
+		CMD1(CCC_ALifeSave,			"alife_save"			);
+		CMD1(CCC_ALifeListObjects,	"alife_lo"				);
+		CMD1(CCC_ALifeListEvents,	"alife_le"				);
+		CMD1(CCC_ALifeListTasks,	"alife_lt"				);
+		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);
+		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);
+		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);
 
 		// hud
-		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
-		CMD3(CCC_Mask,		"hud_crosshair_dist",	&psHUD_Flags,	HUD_CROSSHAIR_DIST);
-		CMD3(CCC_Mask,		"hud_weapon",			&psHUD_Flags,	HUD_WEAPON);
-		CMD3(CCC_Mask,		"hud_info",				&psHUD_Flags,	HUD_INFO);
-		CMD3(CCC_Mask,		"hud_draw",				&psHUD_Flags,	HUD_DRAW);
-		CMD2(CCC_Float,		"hud_fov",				&psHUD_FOV);
+		CMD3(CCC_Mask,				"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
+		CMD3(CCC_Mask,				"hud_crosshair_dist",	&psHUD_Flags,	HUD_CROSSHAIR_DIST);
+		CMD3(CCC_Mask,				"hud_weapon",			&psHUD_Flags,	HUD_WEAPON);
+		CMD3(CCC_Mask,				"hud_info",				&psHUD_Flags,	HUD_INFO);
+		CMD3(CCC_Mask,				"hud_draw",				&psHUD_Flags,	HUD_DRAW);
+		CMD2(CCC_Float,				"hud_fov",				&psHUD_FOV);
 
 		// Demo
 #ifdef DEBUG
-		CMD1(CCC_DemoRecord,"demo_record"			);
+		CMD1(CCC_DemoRecord,		"demo_record"			);
 #endif
-		CMD1(CCC_DemoPlay,	"demo_play"				);
+		CMD1(CCC_DemoPlay,			"demo_play"				);
 
 		// ai
-		CMD3(CCC_Mask,		"ai_debug",				&psAI_Flags,	aiDebug);
-		CMD3(CCC_Mask,		"ai_dbg_brain",			&psAI_Flags,	aiBrain);
-		CMD3(CCC_Mask,		"ai_dbg_motion",		&psAI_Flags,	aiMotion);
-		CMD3(CCC_Mask,		"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
+		CMD3(CCC_Mask,				"ai_debug",				&psAI_Flags,	aiDebug);
+		CMD3(CCC_Mask,				"ai_dbg_brain",			&psAI_Flags,	aiBrain);
+		CMD3(CCC_Mask,				"ai_dbg_motion",		&psAI_Flags,	aiMotion);
+		CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
 
 		// physics
-		CMD4(CCC_Integer,	"ph_fps",				&psPhysicsFPS,	10,1000);
-		CMD4(CCC_Float,		"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
+		CMD4(CCC_Integer,			"ph_fps",				&psPhysicsFPS,	10,1000);
+		CMD4(CCC_Float,				"ph_squeeze_velocity",	&psHUD_FOV,		0,500);
 		}
 		GamePersistent		= new CGamePersistent();
 		break;
