@@ -19,6 +19,9 @@ CScriptCallback::~CScriptCallback	()
 
 CScriptCallback::CScriptCallback	(const CScriptCallback &callback)
 {
+	m_lua_function	= 0;
+	m_lua_object	= 0;
+
 	if (callback.m_lua_function)
 		m_lua_function	= xr_new<luabind::functor<void> >(*callback.m_lua_function);
 
