@@ -126,8 +126,6 @@ void CWeaponMagazined::FireEnd			()
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
-		m_pHUD->FireEnd		();
-		
 		if (eMagEmpty == st_current)	st_target = eReload;
 		else							st_target = eIdle;
 	}

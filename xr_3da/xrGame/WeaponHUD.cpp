@@ -55,7 +55,7 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	vFirePoint					= ini->ReadVECTOR					(section,"fire_point");
 
 	// play default animation
-	PKinematics					(pVisual)->PlayCycle(mIdle);
+	PKinematics					(pVisual)->PlayCycle("idle");
 
 	/*
 	// init anims
@@ -112,11 +112,19 @@ void CWeaponHUD::OnDeviceCreate	()
 {
 	pVisual						= ::Render.Models.Create(pVisualName);
 }
-CMotionDef* CWeaponHUD::animGet	(LPCSTR name)
+CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
 	return PKinematics(Visual())->ID_Cycle(name);
 }
-void CWeaponHUD::animPlay		(CMotionDef* M)
+
+static void __stdcall animCallback	(CBlend* B)
 {
-	PKinematics(pVisual)->PlayCycle(M);
+	CWeapon* W			= (CWeapon*)B->CallbackParam;
+	W->OnAnimationEnd	();
+}
+
+void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CWeapon* W);
+{
+	if (W)	PKinematics(pVisual)->PlayCycle(M,bMixIn,animCallback,W);
+	else	PKinematics(pVisual)->PlayCycle(M,bMixIn);
 }

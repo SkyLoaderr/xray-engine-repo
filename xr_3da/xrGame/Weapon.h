@@ -69,6 +69,7 @@ protected:
 	DWORD			light_frame;
 	float			light_time;
 
+protected:
 	void			Light_Start		();
 	void			Light_Render	(Fvector& P);
 
@@ -80,6 +81,7 @@ protected:
 	virtual void	UpdateXForm		(BOOL bHUD)	= 0;
 	
 	virtual void	OnMagazineEmpty	()			= 0;
+	virtual void	OnAnimationEnd	()			{};
 public:
 					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();

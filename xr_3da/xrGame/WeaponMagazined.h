@@ -4,6 +4,8 @@
 
 #include "weapon.h"
 
+class ENGINE_API CMotionDef;
+
 class CWeaponMagazined: public CWeapon
 {
 private:
@@ -44,6 +46,8 @@ protected:
 protected:
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
+
+
 public:
 					CWeaponMagazined	(LPCSTR name);
 	virtual			~CWeaponMagazined	();
