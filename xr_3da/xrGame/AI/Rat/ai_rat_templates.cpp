@@ -169,8 +169,8 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 				m_tHPB.y *= 0.95f;
 	}
 	
-	tDirection.normalize();
-	tOffset.normalize	();
+	tDirection.normalize_safe	();
+	tOffset.normalize_safe		();
 
 	float fDot = tDirection.dotproduct(tOffset);
 	float fSafeDot = fDot;
