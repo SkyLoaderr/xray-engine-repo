@@ -12,7 +12,7 @@
 	#define XRSOUND_EDITOR_API XRSOUND_API
 #else
 	#define XRSOUND_EDITOR_API
-#else
+#endif
 
 #define SNDENV_FILENAME "sEnvironment.xr"
 
