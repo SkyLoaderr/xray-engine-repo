@@ -22,13 +22,12 @@ TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::reinit(CRestrictedObject *object, const CLevelGraph *graph)
 {
 	inherited::reinit			(object,graph);
-	CAI_ObjectLocation::reinit	();
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::actual() const
 {
-	return		(inherited::actual(level_vertex_id(),dest_vertex_id()));
+	return		(inherited::actual(m_object->ai_location().level_vertex_id(),dest_vertex_id()));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -58,24 +57,24 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::before_search			(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
-	if (m_restricted_object) {
-		m_restricted_object->add_border(start_vertex_id,dest_vertex_id);
-		VERIFY					(!m_restricted_object->applied() || ai().level_graph().is_accessible(start_vertex_id));
-		VERIFY					(!m_restricted_object->applied() || ai().level_graph().is_accessible(dest_vertex_id));
+	if (m_object) {
+		m_object->add_border	(start_vertex_id,dest_vertex_id);
+		VERIFY					(!m_object->applied() || ai().level_graph().is_accessible(start_vertex_id));
+		VERIFY					(!m_object->applied() || ai().level_graph().is_accessible(dest_vertex_id));
 	}
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::after_search			()
 {
-	if (m_restricted_object)
-		m_restricted_object->remove_border();
+	if (m_object)
+		m_object->remove_border();
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CLevelManagerTemplate::check_vertex			(const _vertex_id_type vertex_id) const
 {
-	return						(inherited::check_vertex(vertex_id) && (!m_restricted_object || m_restricted_object->accessible(vertex_id)));
+	return						(inherited::check_vertex(vertex_id) && (!m_object || m_object->accessible(vertex_id)));
 }
 
 #undef TEMPLATE_SPECIALIZATION

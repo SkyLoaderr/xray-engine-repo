@@ -12,6 +12,7 @@
 #include "game_cl_base.h"
 #include "xrServer.h"
 #include "autosave_manager.h"
+#include "ai_space.h"
 
 #define ONLINE_RADIUS				2.f
 #define MIN_SPRING_TO_SLEEP			0.8f	

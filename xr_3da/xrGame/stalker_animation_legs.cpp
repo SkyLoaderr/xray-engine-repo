@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "stalker_animation_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "sight_manager.h"
 
 float faTurnAngles	[] = {
 	0.f,
@@ -30,7 +31,7 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 	
 	// moving
 	float					yaw, pitch;
-	object()->GetDirectionAngles	(yaw,pitch);
+	object()->sight().GetDirectionAngles	(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 
 	if ((object()->speed() < EPS_L) || (eMovementTypeStand == object()->movement_type())) {
@@ -38,7 +39,10 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 		if (angle_difference(object()->body_orientation().current.yaw,object()->body_orientation().target.yaw) <= EPS_L)
 			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[0]);
 		else
-			return			(&m_part_animations.A[l_tBodyState].m_in_place->A[left_angle(-object()->body_orientation().target.yaw,-object()->body_orientation().current.yaw) ? 1 : 2]);
+			if (left_angle(-object()->body_orientation().target.yaw,-object()->body_orientation().current.yaw))
+				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[1]);
+			else
+				return		(&m_part_animations.A[l_tBodyState].m_in_place->A[2]);
 	}
 
 	float					fAnimationSwitchFactor = 1.f;

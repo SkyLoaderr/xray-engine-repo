@@ -27,6 +27,12 @@ protected:
 	typedef typename inherited_action::_condition_type		_condition_type;
 	typedef typename inherited_action::_value_type			_value_type;
 
+#ifdef LOG_ACTION
+public:
+	virtual	void		set_use_log				(bool value);
+	virtual void		show					(LPCSTR offset = "");
+#endif
+
 public:
 	IC					CActionPlannerAction	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual				~CActionPlannerAction	();
@@ -38,11 +44,6 @@ public:
 	virtual bool		completed				() const;
 	IC		void		add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void		add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
-
-#ifdef LOG_ACTION
-public:
-	virtual	void		set_use_log				(bool value);
-#endif
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

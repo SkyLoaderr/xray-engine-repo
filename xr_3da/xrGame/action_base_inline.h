@@ -190,5 +190,12 @@ typename CBaseAction::_edge_value_type CBaseAction::weight	(const CSConditionSta
 	return					(m_weight);
 }
 
+#ifdef LOG_ACTION
+TEMPLATE_SPECIALIZATION
+IC	void CBaseAction::show			(LPCSTR offset)
+{
+}
+#endif
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CBaseAction

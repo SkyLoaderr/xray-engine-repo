@@ -1,27 +1,28 @@
 #pragma once
 #include "../entity.h"
+#include "../ai_object_location.h"
 
 // проверить, находится ли объект entity на ноде
 // возвращает позицию объекта, если он находится на ноде, или центр его ноды
 IC Fvector get_valid_position(const CEntity *entity, const Fvector &actual_position) 
 {
 	if (
-		ai().level_graph().valid_vertex_id(entity->level_vertex_id()) &&
+		ai().level_graph().valid_vertex_id(entity->ai_location().level_vertex_id()) &&
 		ai().level_graph().valid_vertex_position(entity->Position()) && 
-		ai().level_graph().inside(entity->level_vertex_id(), entity->Position())
+		ai().level_graph().inside(entity->ai_location().level_vertex_id(), entity->Position())
 	)
 		return			(actual_position);
 	else
-		return			(ai().level_graph().vertex_position(entity->level_vertex()));
+		return			(ai().level_graph().vertex_position(entity->ai_location().level_vertex()));
 }
 
 // возвращает true, если объект entity находится на ноде
 IC bool object_position_valid(const CEntity *entity)
 {
 	return				(
-		ai().level_graph().valid_vertex_id(entity->level_vertex_id()) &&
+		ai().level_graph().valid_vertex_id(entity->ai_location().level_vertex_id()) &&
 		ai().level_graph().valid_vertex_position(entity->Position()) && 
-		ai().level_graph().inside(entity->level_vertex_id(), entity->Position())
+		ai().level_graph().inside(entity->ai_location().level_vertex_id(), entity->Position())
 	);
 }
 

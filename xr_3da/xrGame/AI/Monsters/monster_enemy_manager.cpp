@@ -2,6 +2,7 @@
 #include "monster_enemy_manager.h"
 #include "BaseMonster/base_monster.h"
 #include "../ai_monsters_misc.h"
+#include "../../ai_object_location.h"
 
 CMonsterEnemyManager::CMonsterEnemyManager()
 {
@@ -99,7 +100,7 @@ void CMonsterEnemyManager::force_enemy (const CEntityAlive *enemy)
 {
 	this->enemy		= enemy;
 	position		= enemy->Position();
-	vertex			= enemy->level_vertex_id();
+	vertex			= enemy->ai_location().level_vertex_id();
 	time_last_seen	= Level().timeServer();
 
 	forced			= true;

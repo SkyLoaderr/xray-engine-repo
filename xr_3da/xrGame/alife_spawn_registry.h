@@ -13,6 +13,7 @@
 #include "game_graph.h"
 #include "graph_abstract.h"
 #include "server_entity_wrapper.h"
+#include "ai_debug.h"
 
 class CServerEntityWrapper;
 

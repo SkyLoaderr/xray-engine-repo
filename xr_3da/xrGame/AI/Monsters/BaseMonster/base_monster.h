@@ -39,7 +39,7 @@ class CCriticalActionInfo;
 class CJumping;
 
 class CBaseMonster : public CCustomMonster, 
-				   virtual public CMonsterMovement,
+				   public CMonsterMovement,
 				   public CSharedClass<_base_monster_shared, CLASS_ID>, 
 				   public CStepManager {
 
@@ -89,6 +89,8 @@ public:
 	virtual CEntity*					cast_entity					()	{return this;}
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
+	virtual CCustomMonster*				cast_custom_monster			()	{return this;}
+	virtual CScriptMonster*				cast_script_monster			()	{return this;}
 
 public:
 	

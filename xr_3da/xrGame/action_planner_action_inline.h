@@ -84,5 +84,14 @@ IC	void CPlanner::add_effect		(_world_operator *action, _condition_type conditio
 	inherited_planner::add_effect		(action,condition_id,condition_value);
 }
 
+#ifdef LOG_ACTION
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::show				(LPCSTR offset)
+{
+	inherited_action::show	(offset);
+	inherited_planner::show	(offset);
+}
+#endif
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner

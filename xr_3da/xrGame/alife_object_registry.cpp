@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "alife_object_registry.h"
 #include "net_utils.h"
+#include "ai_debug.h"
 
 CALifeObjectRegistry::CALifeObjectRegistry	(LPCSTR section)
 {
@@ -71,9 +72,11 @@ CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
 
 	string64				s_name;
 	tNetPacket.r_stringZ	(s_name);
+#ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
 		Msg					("Loading object %s",s_name);
 	}
+#endif
 	// create entity
 	CSE_Abstract			*tpSE_Abstract = F_entity_Create	(s_name);
 	R_ASSERT2				(tpSE_Abstract,"Can't create entity.");

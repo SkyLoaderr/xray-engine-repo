@@ -218,7 +218,7 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 	set_goal					(eObjectActionIdle);
 
 #ifdef LOG_ACTION
-//	m_use_log					= true;
+	m_use_log					= true;
 #endif
 }
 

@@ -16,6 +16,8 @@
 #include "detail_path_manager_space.h"
 #include "stalker_decision_space.h"
 #include "stalker_animation_manager.h"
+#include "sight_manager.h"
+#include "ai_object_location.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -39,11 +41,10 @@ void CStalkerActionGetReadyToDialog::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
 	m_object->set_desired_position	(&m_object->Position());
-	m_object->CSightManager::setup	(SightManager::eSightTypeCurrentDirection);
+	m_object->sight().setup			(SightManager::eSightTypeCurrentDirection);
 	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
-	m_object->body_action			(eBodyActionHello);
 
 	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
 		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
@@ -64,7 +65,8 @@ void CStalkerActionGetReadyToDialog::finalize	()
 void CStalkerActionGetReadyToDialog::execute		()
 {
 	inherited::execute		();
-	m_storage->set_property	(eWorldPropertyReadyToDialog,true);
+	if (m_object->CObjectHandler::weapon_strapped())
+		m_storage->set_property	(eWorldPropertyReadyToDialog,true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,9 +89,9 @@ void CStalkerActionHello::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
 	m_object->set_desired_position	(&m_object->Position());
-	m_object->CSightManager::setup	(SightManager::eSightTypeCurrentDirection);
+	m_object->sight().setup			(SightManager::eSightTypeCurrentDirection);
 	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	m_object->body_action			(eBodyActionHello);
 	
@@ -99,7 +101,6 @@ void CStalkerActionHello::initialize	()
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 
 	CStalkerAnimationManager		&animation_manager = m_object->animation();
-	VERIFY							(!animation_manager.setup_storage());
 	animation_manager.setup_storage	(m_storage);
 	animation_manager.property_id	(eWorldPropertyHelloCompleted);
 	animation_manager.property_value(true);
@@ -141,16 +142,16 @@ void CStalkerActionDialog::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
 	m_object->set_desired_position	(&m_object->Position());
-	m_object->CSightManager::setup	(SightManager::eSightTypeCurrentDirection);
+	m_object->sight().setup			(SightManager::eSightTypeCurrentDirection);
 	m_object->remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	m_object->body_action			(eBodyActionHello);
-	
-	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
-		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
-	else
-		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+//	
+//	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
+//		m_object->CObjectHandler::set_goal	(eObjectActionStrapped,m_object->best_weapon());
+//	else
+//		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 }
 
 void CStalkerActionDialog::finalize	()
@@ -166,4 +167,5 @@ void CStalkerActionDialog::finalize	()
 void CStalkerActionDialog::execute		()
 {
 	inherited::execute		();
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
 }

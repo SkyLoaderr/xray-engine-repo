@@ -10,7 +10,6 @@
 
 #include "abstract_location_selector.h"
 #include "game_graph.h"
-#include "ai_object_location.h"
 #include "location_manager.h"
 
 enum ESelectionType {
@@ -33,8 +32,7 @@ class
 		CGameGraph,
 		_VertexEvaluator,
 		_vertex_id_type
-	>,
-	virtual public CAI_ObjectLocation
+	>
 {
 	typedef CGameGraph _Graph;
 	typedef CAbstractLocationSelector <

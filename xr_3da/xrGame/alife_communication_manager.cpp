@@ -11,6 +11,7 @@
 #include "alife_communication_space.h"
 #include "xrServer_objects_ALife_All.h"
 #include "alife_object_registry.h"
+#include "ai_debug.h"
 
 using namespace ALife;
 using namespace ALifeCommunication;

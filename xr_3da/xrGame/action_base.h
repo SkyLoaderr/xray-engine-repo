@@ -53,6 +53,7 @@ public:
 public:
 	virtual void				debug_log			(const EActionStates state_state) const;
 	virtual	void				set_use_log			(bool value);
+	virtual void				show				(LPCSTR offset = "");
 #endif
 
 public:

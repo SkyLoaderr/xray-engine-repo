@@ -7,7 +7,6 @@
 #pragma once
 
 #include "../xr_object.h"
-#include "ai_object_location.h"
 #include "prefetch_manager.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
@@ -18,7 +17,6 @@ class CPhysicsShell;
 class CSE_Abstract;
 class CPHSynchronize;
 class CScriptGameObject;
-
 class CInventoryItem;
 class CEntity;
 class CEntityAlive;
@@ -29,10 +27,13 @@ class CParticlesPlayer;
 class CCustomZone;
 class IInputReceiver;
 class CArtefact;
+class CCustomMonster;
+class CAI_Stalker;
+class CScriptMonster;
+class CAI_ObjectLocation;
 
 class CGameObject : 
 	public CObject, 
-	virtual public CAI_ObjectLocation,
 	public CPrefetchManager,
 	public CUsableScriptObject,
 	public CScriptBinder
@@ -48,6 +49,7 @@ class CGameObject :
 	u32						m_dwFrameBeforeChild;
 	u32						m_dwFrameBeforeIndependent;
 	bool					m_spawned;
+	CAI_ObjectLocation		*m_ai_location;
 
 protected:
 	//время удаления объекта
@@ -66,6 +68,9 @@ public:
 	virtual IInputReceiver*				cast_input_receiver			()						{return NULL;}
 	virtual CParticlesPlayer*			cast_particles_player		()						{return NULL;}
 	virtual CArtefact*					cast_artefact				()						{return NULL;}
+	virtual CCustomMonster*				cast_custom_monster			()						{return NULL;}
+	virtual CAI_Stalker*				cast_stalker				()						{return NULL;}
+	virtual CScriptMonster*				cast_script_monster			()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}
@@ -210,8 +215,13 @@ protected:
 	virtual	void			spawn_supplies		();
 
 public:
-	virtual void			on_reguested_spawn	(CObject *object);
-	IC		u32				spawn_time			() {return m_dwFrameSpawn;}
+	virtual void				on_reguested_spawn	(CObject *object);
+	IC		u32					spawn_time			() {return m_dwFrameSpawn;}
+	IC		CAI_ObjectLocation	&ai_location		() const
+	{
+		VERIFY				(m_ai_location);
+		return				(*m_ai_location);
+	}
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

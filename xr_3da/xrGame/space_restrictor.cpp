@@ -12,6 +12,7 @@
 #include "level.h"
 #include "space_restriction_manager.h"
 #include "restriction_space.h"
+#include "ai_space.h"
 
 CSpaceRestrictor::~CSpaceRestrictor	()
 {

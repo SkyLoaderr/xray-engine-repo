@@ -13,6 +13,7 @@
 #include "ai_space.h"
 #include "specific_character.h"
 #include "alife_artefact_order.h"
+#include "ai_debug.h"
 
 using namespace ALife;
 

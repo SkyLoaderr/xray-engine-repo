@@ -10,6 +10,7 @@
 #include "item_manager.h"
 #include "inventory_item.h"
 #include "custommonster.h"
+#include "ai_object_location.h"
 
 bool CItemManager::is_useful		(const CGameObject *object) const
 {
@@ -35,7 +36,7 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (inventory_item && !inventory_item->useful_for_NPC())
 		return				(false);
 
-	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(object->level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(object->ai_location().level_vertex_id()))
 		return				(false);
 
 	return					(true);

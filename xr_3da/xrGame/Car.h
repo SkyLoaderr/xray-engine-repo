@@ -526,6 +526,7 @@ private:
 	
 	virtual	void reinit			();
 	virtual	void reload			(LPCSTR section);
-	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
+	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
+	virtual CScriptMonster*		cast_script_monster			()	{return this;}
 };

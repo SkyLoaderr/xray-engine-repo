@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "monster_corpse_manager.h"
 #include "BaseMonster/base_monster.h"
+#include "../../ai_object_location.h"
 
 CMonsterCorpseManager::CMonsterCorpseManager()
 {
@@ -27,7 +28,7 @@ void CMonsterCorpseManager::update()
 		}
 	} else {
 		corpse = monster->CorpseMemory.get_corpse();
-		
+
 		if (corpse) {
 			SMonsterCorpse corpse_info = monster->CorpseMemory.get_corpse_info();
 			position		= corpse_info.position;
@@ -41,7 +42,7 @@ void CMonsterCorpseManager::force_corpse(const CEntityAlive *corpse)
 {
 	this->corpse	= corpse;
 	position		= corpse->Position();
-	vertex			= corpse->level_vertex_id();
+	vertex			= corpse->ai_location().level_vertex_id();
 	time_last_seen	= Level().timeServer();
 
 	forced			= true;

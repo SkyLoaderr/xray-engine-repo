@@ -23,7 +23,7 @@ using namespace StalkerMovement;
 IC	void CStalkerMovementManager::setup_head_speed		()
 {
 	if (mental_state() == eMentalStateFree) {
-		if (m_stalker->CSightManager::enabled())
+		if (m_stalker->sight().enabled())
 			m_head.speed		= PI_DIV_2;
 	}
 	else
@@ -326,7 +326,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	if (path().empty() || (detail_path_manager().curr_travel_point_index() != m_last_turn_index))
 		m_last_turn_index				= u32(-1);
 
-	m_stalker->CSightManager::enable	(true);
+	m_stalker->sight().enable	(true);
 
 	if (fis_zero(speed())) {
 		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
@@ -350,11 +350,11 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	if (fis_zero(current_velocity.linear_velocity)) {
 		if (mental_state() != eMentalStateDanger) {
 			setup_body_orientation			();
-			m_stalker->CSightManager::enable(false);
+			m_stalker->sight().enable(false);
 		}
 		if ((mental_state() == eMentalStateDanger) || fis_zero(path_direction_angle(),EPS_L) || (m_last_turn_index == detail_path_manager().curr_travel_point_index())) {
 			m_last_turn_index			= detail_path_manager().curr_travel_point_index();
-			m_stalker->CSightManager::enable(true);
+			m_stalker->sight().enable(true);
 			if (detail_path_manager().curr_travel_point_index() + 1 < path().size()) {
 				point				= path()[detail_path_manager().curr_travel_point_index() + 1];
 				current_velocity	= detail_path_manager().velocity(point.velocity);

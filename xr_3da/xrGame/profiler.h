@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+#ifdef DEBUG
 #include "ai_debug.h"
 
 struct CProfileResultPortion {
@@ -65,3 +67,9 @@ IC	CProfiler&	profiler();
 #define STOP_PROFILE     }
 
 #include "profiler_inline.h"
+
+#else
+#	define START_PROFILE(a)
+#	define STOP_PROFILE
+#endif
+

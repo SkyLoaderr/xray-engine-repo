@@ -80,9 +80,9 @@ void CMonsterMovement::InitSelector(CAbstractVertexEvaluator &S, Fvector target_
 {
 	S.m_dwCurTime		= m_object->m_dwCurrentTime;
 	S.m_tMe				= m_object;
-	S.m_tpMyNode		= level_vertex();
+	S.m_tpMyNode		= ai_location().level_vertex();
 	S.m_tMyPosition		= Position();
-	S.m_dwStartNode		= level_vertex_id();
+	S.m_dwStartNode		= ai_location().level_vertex_id();
 	S.m_tStartPosition	= Position();
 
 	S.m_tEnemyPosition	= target_pos;
@@ -196,7 +196,7 @@ bool CMonsterMovement::build_special(const Fvector &target, u32 node, u32 vel_ma
 	if (node == u32(-1)) {
 		// нода в прямой видимости?
 		CRestrictedObject::add_border(Position(), target);
-		node = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),target);
+		node = ai().level_graph().check_position_in_direction(ai_location().level_vertex_id(),Position(),target);
 		CRestrictedObject::remove_border();
 		
 		if (!ai().level_graph().valid_vertex_id(node) || !accessible(node)) return false;

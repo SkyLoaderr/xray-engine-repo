@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "ai_object_location.h"
 #include "ai/script/ai_script_monster.h"
 #include "level.h"
 #include "script_engine.h"
@@ -20,9 +19,7 @@ class CRestrictedObject;
 
 using namespace PatrolPathManager;
 
-class CPatrolPathManager : 
-	virtual public CAI_ObjectLocation
-{
+class CPatrolPathManager {
 	friend struct CAccessabilityEvaluator;
 
 private:
@@ -39,7 +36,7 @@ private:
 	u32							m_start_point_index;
 	Fvector						m_dest_position;
 	CScriptCallback				*m_callback;
-	CRestrictedObject			*m_restricted_object;
+	CRestrictedObject			*m_object;
 
 protected:
 	IC			bool				random					() const;

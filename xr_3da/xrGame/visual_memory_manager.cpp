@@ -12,6 +12,7 @@
 #include "memory_space_impl.h"
 #include "../skeletoncustom.h"
 #include "clsid_game.h"
+#include "ai_object_location.h"
 
 struct SRemoveOfflinePredicate {
 	bool		operator()						(const CVisibleObject &object) const
@@ -75,10 +76,10 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 void CVisualMemoryManager::reinit					()
 {
 	m_objects							= 0;
-	
+
 	m_visible_objects.clear				();
 	m_visible_objects.reserve			(100);
-	
+
 	m_not_yet_visible_objects.clear		();
 	m_not_yet_visible_objects.reserve	(100);
 
@@ -130,7 +131,7 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	eye_matrix.transform_tiny			(temp,eye_position);
 	m_object->XFORM().transform_tiny	(eye_position,temp);
 	eye_direction.setHP					(-m_stalker->m_head.current.yaw, -m_stalker->m_head.current.pitch);
-	
+
 	Fvector								object_direction;
 	game_object->Center					(object_direction);
 	object_distance						= object_direction.distance_to(eye_position);
@@ -167,14 +168,14 @@ float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object,
 
 	CObject::SavedPosition	pos0 = game_object->ps_Element	(game_object->ps_Size() - 2);
 	CObject::SavedPosition	pos1 = game_object->ps_Element	(game_object->ps_Size() - 1);
-	
+
 	return					(
 		pos1.vPosition.distance_to(pos0.vPosition)/
 		(
-			float(pos1.dwTime)/1000.f - 
-			float(pos0.dwTime)/1000.f
+		float(pos1.dwTime)/1000.f - 
+		float(pos0.dwTime)/1000.f
 		)
-	);
+		);
 }
 
 float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity, float luminocity) const
@@ -191,7 +192,7 @@ float CVisualMemoryManager::get_visible_value	(float distance, float object_dist
 		(1.f + current_state().m_velocity_factor*object_velocity) *
 		(distance - object_distance) /
 		(distance - always_visible_distance)
-	);
+		);
 }
 
 CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameObject *game_object)
@@ -200,7 +201,7 @@ CNotYetVisibleObject *CVisualMemoryManager::not_yet_visible_object(const CGameOb
 		m_not_yet_visible_objects.begin(),
 		m_not_yet_visible_objects.end(),
 		CNotYetVisibleObjectPredicate(game_object)
-	);
+		);
 	if (I == m_not_yet_visible_objects.end())
 		return							(0);
 	return								(&*I);
@@ -223,7 +224,7 @@ u32	 CVisualMemoryManager::get_prev_time				(const CGameObject *game_object) con
 bool CVisualMemoryManager::visible				(const CGameObject *game_object, float time_delta)
 {
 	VERIFY						(game_object);
-	
+
 	if (game_object->getDestroy())
 		return					(false);
 
@@ -233,7 +234,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	float						object_distance, distance = object_visible_distance(game_object,object_distance);
 
 	CNotYetVisibleObject		*object = not_yet_visible_object(game_object);
-	
+
 	if (distance < object_distance) {
 		if (object) {
 			object->m_value		-= current_state().m_decrease_value;
@@ -257,7 +258,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 		add_not_yet_visible_object(new_object);
 		return					(new_object.m_value >= current_state().m_visibility_threshold);
 	}
-	
+
 	object->m_updated			= true;
 	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object),object_luminocity(game_object));
 	clamp						(object->m_value,0.f,current_state().m_visibility_threshold + EPS_L);
@@ -307,7 +308,7 @@ void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_obje
 		else
 			m_objects->push_back(visible_object);
 }
-	
+
 void CVisualMemoryManager::update				(float time_delta)
 {
 	if (!enabled())
@@ -337,7 +338,7 @@ void CVisualMemoryManager::update				(float time_delta)
 		for ( ; I != E; ++I)
 			add_visible_object			(*I,time_delta);
 	}
-	
+
 	{
 		xr_vector<CNotYetVisibleObject>::iterator	I = m_not_yet_visible_objects.begin();
 		xr_vector<CNotYetVisibleObject>::iterator	E = m_not_yet_visible_objects.end();
@@ -367,7 +368,7 @@ bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fo
 	float					y, p;
 	direction.getHP			(y,p);
 	if (angle_difference(yaw,y) <= eye_fov*PI/180.f/2.f)
-		return(ai().level_graph().check_vertex_in_direction(m_object->level_vertex_id(),m_object->Position(),_level_vertex_id));
+		return(ai().level_graph().check_vertex_in_direction(m_object->ai_location().level_vertex_id(),m_object->Position(),_level_vertex_id));
 	else
 		return(false);
 }

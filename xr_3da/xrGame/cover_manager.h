@@ -12,6 +12,10 @@
 
 class CCoverPoint;
 
+namespace LevelGraph {
+	class	CVertex;
+};
+
 class CCoverManager {
 public:
 	typedef CQuadTree<CCoverPoint> CPointQuadTree;
@@ -24,8 +28,8 @@ protected:
 
 protected:
 	IC		bool					edge_vertex			(u32 index);
-	IC		bool					cover				(CLevelGraph::CVertex *v, u32 index0, u32 index1);
-	IC		bool					critical_point		(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1);
+	IC		bool					cover				(LevelGraph::CVertex *v, u32 index0, u32 index1);
+	IC		bool					critical_point		(LevelGraph::CVertex *v, u32 index, u32 index0, u32 index1);
 	IC		bool					critical_cover		(u32 index);
 
 public:

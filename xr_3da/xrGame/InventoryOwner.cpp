@@ -21,13 +21,11 @@
 #include "game_base_space.h"
 #include "script_space.h"
 #include "PhraseDialog.h"
-
 #include "xrserver.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_registry_wrappers.h"
-
 #include "relation_registry.h"
-
+#include "ai_object_location.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -356,10 +354,10 @@ void CInventoryOwner::spawn_supplies		()
 	VERIFY									(game_object);
 
 	if (use_bolts())
-		Level().spawn_item					("bolt",game_object->Position(),game_object->level_vertex_id(),game_object->ID());
+		Level().spawn_item					("bolt",game_object->Position(),game_object->ai_location().level_vertex_id(),game_object->ID());
 
 	if (!ai().get_alife()) {
-		CSE_Abstract						*abstract = Level().spawn_item("device_pda",game_object->Position(),game_object->level_vertex_id(),game_object->ID(),true);
+		CSE_Abstract						*abstract = Level().spawn_item("device_pda",game_object->Position(),game_object->ai_location().level_vertex_id(),game_object->ID(),true);
 		CSE_ALifeItemPDA					*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);
 		R_ASSERT							(pda);
 		pda->m_original_owner				= (u16)game_object->ID();

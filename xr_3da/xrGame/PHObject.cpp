@@ -6,7 +6,8 @@
 #include "PHMoveStorage.h"
 #include "dRayMotions.h"
 #include "PHCollideValidator.h"
-	CPHObject::CPHObject()
+
+CPHObject::CPHObject()
 {
 	m_flags.flags=0;
 	spatial.type|=STYPE_PHYSIC;

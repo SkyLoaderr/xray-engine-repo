@@ -17,6 +17,7 @@
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
 #include "memory_space.h"
+#include "ai_object_location.h"
 
 CSelectorManager::CSelectorManager		()
 {
@@ -65,14 +66,14 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 
 	S.m_dwCurTime			= Level().timeServer();
 	S.m_tMe					= smart_cast<CEntity*>(this);
-	S.m_tpMyNode			= m_object->level_vertex();
+	S.m_tpMyNode			= m_object->ai_location().level_vertex();
 	S.m_tMyPosition			= m_object->Position();
 	
 	if (m_object->memory().enemy().selected()) {
 		S.m_tEnemy			= m_object->memory().enemy().selected();
 		S.m_tEnemyPosition	= m_object->memory().enemy().selected()->Position();
-		S.m_dwEnemyNode		= m_object->memory().enemy().selected()->level_vertex_id();
-		S.m_tpEnemyNode		= m_object->memory().enemy().selected()->level_vertex();
+		S.m_dwEnemyNode		= m_object->memory().enemy().selected()->ai_location().level_vertex_id();
+		S.m_tpEnemyNode		= m_object->memory().enemy().selected()->ai_location().level_vertex();
 	}
 	else {
 		S.m_tEnemy			= 0;
@@ -81,6 +82,6 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 	}
 	
 	S.m_taMembers			= &(Level().seniority_holder().team(entity_alive->g_Team()).squad(entity_alive->g_Squad()).group(entity_alive->g_Group()).members());
-	S.m_dwStartNode			= m_object->level_vertex_id();
+	S.m_dwStartNode			= m_object->ai_location().level_vertex_id();
 	S.m_tStartPosition		= m_object->Position();
 }

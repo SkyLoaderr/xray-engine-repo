@@ -4,6 +4,7 @@
 #include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
 #include "../../item_manager.h"
+#include "../../ai_object_location.h"
 
 CMonsterCorpseMemory::CMonsterCorpseMemory()
 {
@@ -40,7 +41,7 @@ void CMonsterCorpseMemory::add_corpse(const CEntityAlive *corpse)
 {
 	SMonsterCorpse corpse_info;
 	corpse_info.position	= corpse->Position();
-	corpse_info.vertex		= corpse->level_vertex_id();
+	corpse_info.vertex		= corpse->ai_location().level_vertex_id();
 	corpse_info.time		= Level().timeServer();
 
 	CORPSE_MAP_IT it = m_objects.find(corpse);

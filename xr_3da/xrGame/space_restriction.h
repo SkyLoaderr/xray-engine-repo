@@ -74,8 +74,8 @@ public:
 			u32						accessible_nearest			(const Fvector &position, Fvector &result);
 			bool					accessible					(const Fvector &position, float radius);
 			bool					accessible					(u32 level_vertex_id, float radius);
-	IC		shared_str					out_restrictions			() const;
-	IC		shared_str					in_restrictions				() const;
+	IC		shared_str				out_restrictions			() const;
+	IC		shared_str				in_restrictions				() const;
 	IC		bool					applied						() const;
 	IC		bool					inside						(const Fvector &position);
 	IC		bool					inside						(u32 level_vertex_id, bool partially_inside);

@@ -16,6 +16,7 @@
 #include "greeting_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "agent_manager.h"
+#include "ai_object_location.h"
 #include "memory_space_impl.h"
 
 CMemoryManager::CMemoryManager		(CCustomMonster *monster)
@@ -114,8 +115,14 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 			continue;
 		
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
-		if (!entity_alive || !enemy().add(entity_alive))
-			item().add		((*I).m_object);
+		if (entity_alive && enemy().add(entity_alive))
+			continue;
+
+		const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
+		if (stalker && greeting().add(stalker))
+			continue;
+
+		item().add					((*I).m_object);
 	}
 }
 

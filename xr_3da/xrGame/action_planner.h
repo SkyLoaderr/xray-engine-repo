@@ -14,6 +14,7 @@
 #include "property_storage.h"
 #include "script_export_space.h"
 #include "intrusive_ptr.h"
+#include "ai_debug.h"
 
 class CScriptGameObject;
 
@@ -71,6 +72,14 @@ public:
 	_object_type				*m_object;
 	CPropertyStorage			m_storage;
 
+#ifdef LOG_ACTION
+public:
+	virtual LPCSTR				action2string			(const _action_id_type &action_id);
+	virtual LPCSTR				property2string			(const _condition_type &action_id);
+	virtual LPCSTR				object_name				() const;
+	virtual void				show					(LPCSTR offset = "");
+#endif
+
 public:
 								CActionPlanner			();
 	virtual						~CActionPlanner			();
@@ -87,11 +96,6 @@ public:
 	IC		virtual void		add_operator			(const _edge_type &operator_id,	_operator_ptr _operator);
 	IC		virtual void		add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
 
-#ifdef LOG_ACTION
-	virtual LPCSTR				action2string			(const _action_id_type &action_id);
-	virtual LPCSTR				property2string			(const _condition_type &action_id);
-	virtual LPCSTR				object_name				() const;
-#endif
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CActionPlanner<CScriptGameObject> CScriptActionPlanner;

@@ -45,6 +45,10 @@
 #include "autosave_manager.h"
 
 #include "ClimableObject.h"
+
+#include "level_graph.h"
+
+
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;

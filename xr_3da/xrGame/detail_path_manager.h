@@ -8,15 +8,12 @@
 
 #pragma once
 
-#include "ai_object_location.h"
 #include "restricted_object.h"
 #include "detail_path_manager_space.h"
 
 using namespace DetailPathManager;
 
-class CDetailPathManager :
-	virtual public CAI_ObjectLocation
-{
+class CDetailPathManager {
 public:
 	struct STravelParams {
 		float			linear_velocity;
@@ -149,7 +146,6 @@ protected:
 public:
 					CDetailPathManager			();
 	virtual			~CDetailPathManager			();
-			void	init						();
 	virtual	void	reinit						(CRestrictedObject *object);
 			bool	valid						() const;
 			Fvector direction					() const;

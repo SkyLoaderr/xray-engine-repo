@@ -23,6 +23,8 @@
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
 #include "game_location_selector.h"
+#include "sight_manager.h"
+#include "ai_object_location.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -52,7 +54,7 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
 }
 
 void CStalkerActionSolveZonePuzzle::finalize	()
@@ -99,7 +101,7 @@ void CStalkerActionReachTaskLocation::initialize	()
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
-	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePathDirection));
+	m_object->sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
 	if (!m_object->best_weapon())
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -156,7 +158,7 @@ void CStalkerActionAccomplishTask::initialize	()
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
-	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeSearch,false,true));
+	m_object->sight().setup				(CSightAction(SightManager::eSightTypeSearch,false,true));
 	m_object->extrapolate_path			(true);
 	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	if (!m_object->best_weapon())
@@ -227,7 +229,7 @@ void CStalkerActionReachCustomerLocation::initialize	()
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateFree);
-	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePathDirection));
+	m_object->sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
 	if (!m_object->best_weapon())
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -247,7 +249,7 @@ void CStalkerActionReachCustomerLocation::execute		()
 	m_object->play						(eStalkerSoundHumming,60000,10000);
 
 	CSE_ALifeDynamicObject				*customer = ai().alife().objects().object(m_object->current_alife_task().m_tCustomerID);
-	if (m_object->game_vertex_id() != customer->m_tGraphID) {
+	if (m_object->ai_location().game_vertex_id() != customer->m_tGraphID) {
 		m_object->set_game_dest_vertex	(customer->m_tGraphID);
 		return;
 	}
@@ -284,12 +286,12 @@ void CStalkerActionCommunicateWithCustomer::initialize	()
 	m_object->set_desired_direction		(0);
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex		(m_object->level_vertex_id());
+	m_object->set_level_dest_vertex		(m_object->ai_location().level_vertex_id());
 	m_object->set_desired_position		(&m_object->Position());
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeStand);
 	m_object->set_mental_state			(eMentalStateFree);
-	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
 	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	m_object->remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(m_object->current_alife_task().m_tCustomerID));

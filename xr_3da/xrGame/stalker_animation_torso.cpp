@@ -19,16 +19,7 @@
 bool CStalkerAnimationManager::strapped				() const
 {
 	VERIFY					(m_weapon);
-	
-	if	(
-			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
-			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
-			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
-			(object()->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
-		)
-		return				(false);
-	
-	return					(m_weapon->strapped_mode());
+	return					(object()->CObjectHandler::weapon_strapped(m_weapon));
 }
 
 void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)

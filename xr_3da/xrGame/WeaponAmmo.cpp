@@ -7,7 +7,7 @@
 #include "weapon.h"
 #include "level.h"
 #include "level_bullet_manager.h"
-
+#include "ai_space.h"
 
 CCartridge::CCartridge() 
 {

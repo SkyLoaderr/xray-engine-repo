@@ -11,6 +11,7 @@
 #include "xrserver_objects_alife.h"
 #include "level.h"
 #include "script_space.h"
+#include "ai_object_location.h"
 
 //глобальный указатель на функтор, который
 //запускает функцию сочетания артефактов из 
@@ -114,7 +115,7 @@ void CArtefactMerger::SpawnArtefact(const char* af_section)
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
 								 smart_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
-	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
+	l_tpALifeDynamicObject->m_tNodeID = ai_location().level_vertex_id();
 		
 	// Fill
 	D->s_name			= af_section;

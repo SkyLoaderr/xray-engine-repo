@@ -18,9 +18,10 @@
 #define CSSetupManager CSetupManager<_action_type,_object_type,_action_id_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CSSetupManager::CSetupManager					()
+IC	CSSetupManager::CSetupManager					(_object_type *object)
 {
-	init					();
+	VERIFY					(object);
+	m_object				= object;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -30,18 +31,10 @@ CSSetupManager::~CSetupManager						()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSSetupManager::init						()
+void CSSetupManager::reinit							()
 {
-	m_object				= 0;
-}
-
-TEMPLATE_SPECIALIZATION
-void CSSetupManager::reinit							(_object_type *object)
-{
-	VERIFY					(object);
 	clear					();
 	m_current_action_id		= _action_id_type(-1);
-	m_object				= object;
 	m_actuality				= false;
 }
 

@@ -17,6 +17,8 @@
 #include "detail_path_manager_space.h"
 #include "memory_manager.h"
 #include "item_manager.h"
+#include "sight_manager.h"
+#include "ai_object_location.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
@@ -70,9 +72,9 @@ void CStalkerActionGatherItems::execute		()
 	if (!m_object->memory().item().selected())
 		return;
 
-	m_object->set_level_dest_vertex	(m_object->memory().item().selected()->level_vertex_id());
+	m_object->set_level_dest_vertex	(m_object->memory().item().selected()->ai_location().level_vertex_id());
 	m_object->set_desired_position	(&m_object->memory().item().selected()->Position());
-	m_object->CSightManager::setup	(SightManager::eSightTypePosition,&m_object->memory().item().selected()->Position());
+	m_object->sight().setup			(SightManager::eSightTypePosition,&m_object->memory().item().selected()->Position());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,20 +99,20 @@ void CStalkerActionNoALife::initialize	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
 	
 	m_stop_weapon_handling_time		= Level().timeServer();
 	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 #else
 //	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCurrentDirection));
+	m_object->sight().setup			(CSightAction(SightManager::eSightTypeCurrentDirection));
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_level_dest_vertex	(m_object->ai_location().level_vertex_id());
 	m_object->set_desired_position	(&m_object->Position());
 //	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 //	direction.normalize_safe		();
@@ -121,11 +123,11 @@ void CStalkerActionNoALife::initialize	()
 
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
-//	m_object->set_level_dest_vertex	(actor->level_vertex_id());
+//	m_object->set_level_dest_vertex	(actor->ai_location().level_vertex_id());
 //	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 //	Fvector							look_pos = Fvector().set(0.f,0.f,1.f);//actor->Position();
 //	look_pos.y						+= .8f;
-//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
+//	m_object->sight().setup			(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
 //	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
@@ -135,7 +137,7 @@ void CStalkerActionNoALife::initialize	()
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 //	smart_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
-//	m_object->CSightManager::setup	(CSightAction(actor,true));
+//	m_object->sight().setup			(CSightAction(actor,true));
 //	Fvector2						start_position  = Fvector2().set(-37.100006f,-42.700001f);
 //	Fvector2						finish_position = Fvector2().set(-36.750004f,-45.850002f);
 //	u32								start_vertex_id = 34013;
@@ -173,7 +175,7 @@ void CStalkerActionNoALife::execute		()
 #else
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	Fvector							dest_position = actor->Position();
-//	u32								dest_vertex = dddddactor->level_vertex_id();
+//	u32								dest_vertex = actor->ai_location().level_vertex_id();
 //	if (!ai().level_graph().inside(dest_vertex,dest_position))d
 //		dest_position				= ai().level_graph().vertex_position(dest_vertex);
 //
@@ -187,7 +189,7 @@ void CStalkerActionNoALife::execute		()
 //	m_object->set_level_dest_vertex (dest_vertex);
 //	Fvector							look_pos = actor->Position();
 //	look_pos.y						+= .8f;
-//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
+//	m_object->sight().setup			(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 //	m_object->play					(eStalkerSoundAttack,10000);
 
 //	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(m_object->best_weapon());

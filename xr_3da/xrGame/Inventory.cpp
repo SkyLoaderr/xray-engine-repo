@@ -12,6 +12,7 @@
 #include "game_cl_base.h"
 #include "xr_level_controller.h"
 #include "level.h"
+#include "ai_space.h"
 
 using namespace InventoryUtilities;
 

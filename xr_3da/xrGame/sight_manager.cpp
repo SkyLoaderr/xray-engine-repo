@@ -11,10 +11,12 @@
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
 #include "detail_path_manager.h"
+#include "level_graph.h"
 
 //#define SIGHT_DEBUG
 
-CSightManager::CSightManager		()
+CSightManager::CSightManager		(CAI_Stalker *object) :
+	inherited					(object)
 {
 	m_enabled					= true;
 }
@@ -27,9 +29,9 @@ void CSightManager::Load			(LPCSTR section)
 {
 }
 
-void CSightManager::reinit			(CAI_Stalker *object)
+void CSightManager::reinit			()
 {
-	inherited::reinit			(object);
+	inherited::reinit			();
 	m_enabled					= true;
 }
 

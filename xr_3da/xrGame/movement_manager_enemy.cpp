@@ -11,6 +11,7 @@
 #include "enemy_location_predictor.h"
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
+#include "ai_object_location.h"
 
 void CMovementManager::process_enemy_search()
 {
@@ -30,7 +31,7 @@ void CMovementManager::process_enemy_search()
 				break;
 		}
 		case ePathStateBuildLevelPath : {
-			level_path_manager().build_path(level_vertex_id(),level_dest_vertex_id());
+			level_path_manager().build_path(ai_location().level_vertex_id(),level_dest_vertex_id());
 			if (level_path_manager().failed())
 				break;
 			m_path_state		= ePathStateContinueLevelPath;

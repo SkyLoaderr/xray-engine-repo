@@ -254,7 +254,6 @@ void CObjectActionUnstrappingToIdle::initialize		()
 void CObjectActionUnstrappingToIdle::execute			()
 {
 	inherited::execute();
-	m_object->animation().setup_storage(false);
 }
 
 void CObjectActionUnstrappingToIdle::finalize		()

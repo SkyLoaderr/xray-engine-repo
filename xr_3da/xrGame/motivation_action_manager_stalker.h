@@ -22,12 +22,6 @@ protected:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef CActionPlannerActionScript<CAI_Stalker>		CActionPlannerAction;
 
-
-protected:
-#ifdef DEBUG
-	EStalkerBehaviour		m_stalker_behaviour;
-#endif
-
 protected:
 			void			add_evaluators						();
 			void			add_actions							();
@@ -40,7 +34,6 @@ protected:
 public:
 							CMotivationActionManagerStalker		();
 	virtual					~CMotivationActionManagerStalker	();
-			void			init								();
 	virtual	void			setup								(CAI_Stalker *object);
 	virtual	void			update								(u32 time_delta);
 #ifdef LOG_ACTION

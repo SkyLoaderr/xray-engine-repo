@@ -11,7 +11,9 @@
 
 BOOL xrServer::Connect(shared_str &session_name)
 {
+#ifdef DEBUG
 	Msg						("! sv_Connect: %s",	*session_name);
+#endif
 
 	// Parse options and create game
 	if (0==strchr(*session_name,'/'))
@@ -36,7 +38,9 @@ BOOL xrServer::Connect(shared_str &session_name)
 	if (0==game)			return FALSE;
 	csPlayers.Enter			();
 //	game->type				= type_id;
+#ifdef DEBUG
 	Msg("Created server_game %s",game->type_name());
+#endif
 	game->Create			(session_name);
 	csPlayers.Leave			();
 	

@@ -12,6 +12,7 @@
 #include "Car.h"
 #include "../skeletonanimated.h"
 #include "clsid_game.h"
+#include "ai_object_location.h"
 
 static const float y_spin0_factor		= 0.0f;
 static const float y_spin1_factor		= 0.4f;
@@ -472,7 +473,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		HUD().pFontSmall->OutNext	(buf);
 		HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
 		HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
-		HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
+		HUD().pFontSmall->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
 		
 		strcpy(buf,"");
 		if (m_iCurWeaponHideState & (1<<0)) strcat(buf, "INVENTORY_MENU_OPEN ");

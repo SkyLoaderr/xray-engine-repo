@@ -43,6 +43,11 @@ _value_type CStalkerPropertyEvaluatorALife::evaluate	()
 // CStalkerPropertyEvaluatorAlive
 //////////////////////////////////////////////////////////////////////////
 
+CStalkerPropertyEvaluatorAlive::CStalkerPropertyEvaluatorAlive	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
+
 _value_type CStalkerPropertyEvaluatorAlive::evaluate	()
 {
 	return			(!!m_object->g_Alive());
@@ -60,6 +65,11 @@ _value_type CStalkerPropertyEvaluatorItems::evaluate	()
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorEnemies
 //////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemies::CStalkerPropertyEvaluatorEnemies	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
 
 _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 {
@@ -123,6 +133,11 @@ _value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorAnomaly
 //////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorAnomaly::CStalkerPropertyEvaluatorAnomaly	(CAI_Stalker *object, LPCSTR evaluator_name) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name)
+{
+}
 
 _value_type CStalkerPropertyEvaluatorAnomaly::evaluate	()
 {
@@ -240,5 +255,5 @@ _value_type CStalkerPropertyEvaluatorCanBuyAmmo::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorHumanToDialog::evaluate	()
 {
-	return				(false);//true);
+	return				(true);//false);//true);
 }

@@ -7,6 +7,7 @@
 #include "../../detail_path_manager.h"
 #include "../../level_location_selector.h"
 #include "../../level_path_manager.h"
+#include "../../ai_object_location.h"
 
 #define MAX_COVER_DISTANCE		50.f
 #define MAX_SELECTOR_DISTANCE	10.f
@@ -89,7 +90,7 @@ bool CMonsterMovement::position_in_direction(const Fvector &target, u32 &node)
 {
 	// нода в прямой видимости?
 	CRestrictedObject::add_border(Position(), target);
-	node = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),target);
+	node = ai().level_graph().check_position_in_direction(ai_location().level_vertex_id(),Position(),target);
 	CRestrictedObject::remove_border();
 	if (ai().level_graph().valid_vertex_id(node) && accessible(node)) {
 		return true;

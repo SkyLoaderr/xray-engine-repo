@@ -15,7 +15,7 @@ template <
 	typename _world_property,
 	typename _edge_value_type
 >
-class COperatorAbstract : virtual public intrusive_base {
+class COperatorAbstract : public intrusive_base {
 public:
 	typedef _edge_value_type					_edge_value_type;
 

@@ -9,6 +9,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "../skeletoncustom.h"
+#include "ai_object_location.h"
 
 #define PLAYING_ANIM_TIME 10000
 
@@ -152,7 +153,7 @@ void CMissile::spawn_fake_missile()
 //	// Destroy
 //	F_entity_Destroy	(D);
 	if (!getDestroy())
-		Level().spawn_item	(*cNameSect(),Position(),level_vertex_id(),ID());
+		Level().spawn_item	(*cNameSect(),Position(),ai_location().level_vertex_id(),ID());
 }
 
 void CMissile::OnH_A_Chield() 

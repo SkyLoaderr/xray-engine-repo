@@ -42,7 +42,7 @@ IC	void CPathManagerTemplate::reinit			(CRestrictedObject *object, const _Graph 
 	m_intermediate_index	= _index_type(-1);
 	m_dest_vertex_id		= _index_type(-1);
 	m_path.clear			();
-	m_restricted_object		= object;
+	m_object				= object;
 }
 
 TEMPLATE_SPECIALIZATION

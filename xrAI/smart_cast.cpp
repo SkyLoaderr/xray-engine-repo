@@ -13,6 +13,7 @@
 #		include "../fbasicvisual.h"
 #		include "actor.h"
 #		include "custommonster.h"
+#		include "ai/stalker/ai_stalker.h"
 #		include "ui/uiwindow.h"
 #		include "customzone.h"
 #		include "weapon.h"

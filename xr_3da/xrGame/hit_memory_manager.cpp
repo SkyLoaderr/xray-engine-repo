@@ -10,6 +10,7 @@
 #include "hit_memory_manager.h"
 #include "memory_space_impl.h"
 #include "custommonster.h"
+#include "ai_object_location.h"
 
 struct CHitObjectPredicate {
 	const CObject *m_object;

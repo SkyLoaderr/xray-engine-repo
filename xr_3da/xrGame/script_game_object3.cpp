@@ -31,6 +31,8 @@
 #include "sound_memory_manager.h"
 #include "hit_memory_manager.h"
 
+#include "sight_manager.h"
+
 namespace MemorySpace {
 	struct CVisibleObject;
 	struct CSoundObject;
@@ -409,65 +411,65 @@ void  CScriptGameObject::set_detail_path_type	(DetailPathManager::EDetailPathTyp
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(sight_type,vector3d);
+		stalker->sight().setup	(sight_type,vector3d);
 }
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, bool torso_look, bool path)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(sight_type,torso_look,path);
+		stalker->sight().setup	(sight_type,torso_look,path);
 }
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector &vector3d, bool torso_look = false)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(sight_type,vector3d,torso_look);
+		stalker->sight().setup	(sight_type,vector3d,torso_look);
 }
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(sight_type,vector3d);
+		stalker->sight().setup	(sight_type,vector3d);
 }
 
 void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(object_to_look->object(),torso_look);
+		stalker->sight().setup	(object_to_look->object(),torso_look);
 }
 
 void CScriptGameObject::set_sight		(CScriptGameObject *object_to_look, bool torso_look, LPCSTR bone_name)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(object_to_look->object(),torso_look,bone_name);
+		stalker->sight().setup	(object_to_look->object(),torso_look,bone_name);
 }
 
 void CScriptGameObject::set_sight		(const CMemoryInfo *memory_object, bool	torso_look)
 {
-	CSightManager				*sight_manager = smart_cast<CSightManager*>(object());
-	if (!sight_manager)
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
-		sight_manager->setup	(memory_object,torso_look);
+		stalker->sight().setup	(memory_object,torso_look);
 }
 
 // CAI_Stalker

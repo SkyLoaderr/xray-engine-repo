@@ -25,14 +25,9 @@ using namespace StalkerDecisionSpace;
 
 CMotivationActionManagerStalker::CMotivationActionManagerStalker	()
 {
-	init					();
 }
 
 CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
-{
-}
-
-void CMotivationActionManagerStalker::init				()
 {
 }
 
@@ -73,7 +68,7 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 		set_use_log			(!!psAI_Flags.test(aiGOAP));
 #endif
 	inherited::update		();
-	
+
 #ifdef GOAP_DEBUG
 	if (m_failed) {
 		{
@@ -81,10 +76,7 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I)
-				if ((*I).first != 5023)
-					Msg		("%d,%d",(*I).first,(*I).second->evaluate() ? 1 : 0);
-				else
-					Msg		("%d,%d",(*I).first,0);
+				Msg		("%d,%d",(*I).first,(*I).second->evaluate() ? 1 : 0);
 		}
 		{
 			Msg			("%d",target_state().conditions().size());
@@ -104,14 +96,14 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->conditions().conditions().begin();
 					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->conditions().conditions().end();
 					for ( ; i != e; ++i)
-						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
+						Msg	("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
 				}
 				{
 					Msg		("%d",(*I).m_operator->effects().conditions().size());
 					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->effects().conditions().begin();
 					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->effects().conditions().end();
 					for ( ; i != e; ++i)
-						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
+						Msg	("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
 				}
 			}
 		}
@@ -158,12 +150,12 @@ void CMotivationActionManagerStalker::add_motivations	()
 
 void CMotivationActionManagerStalker::add_evaluators		()
 {
-	add_evaluator			(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
-	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
-	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
-	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				());
-	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			());
-	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			());
+	add_evaluator			(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_already_dead"));
+	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_zone_puzzle_solved"));
+	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_squad_action_assigned"));
+	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				(m_object,"is_alive"));
+	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies"));
+	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			(m_object,"is_there_anomalies"));
 }
 
 void CMotivationActionManagerStalker::add_actions			()

@@ -26,6 +26,7 @@
 #include "../skeletoncustom.h"
 #include "HangingLamp.h"
 #include "patrol_path_manager.h"
+#include "ai_object_location.h"
 
 class CScriptBinderObject;
 
@@ -69,7 +70,7 @@ BIND_FUNCTION10	(object(),	CScriptGameObject::GetActionCount,		CScriptMonster,	G
 
 u32	CScriptGameObject::level_vertex_id		() const
 {
-	return						(object()->level_vertex_id());
+	return						(object()->ai_location().level_vertex_id());
 }
 
 CScriptIniFile *CScriptGameObject::spawn_ini			() const

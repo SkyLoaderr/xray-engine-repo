@@ -79,7 +79,7 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("action_dead",								StalkerDecisionSpace::eWorldOperatorDead),
 				luabind::value("action_gather_items",						StalkerDecisionSpace::eWorldOperatorGatherItems),
 				luabind::value("action_no_alife",							StalkerDecisionSpace::eWorldOperatorALifeEmulation),
-				luabind::value("action_puzzle_solver",						StalkerDecisionSpace::eWorldOperatorSolveZonePuzzle),
+				luabind::value("action_solve_zone_puzzle",					StalkerDecisionSpace::eWorldOperatorSolveZonePuzzle),
 				luabind::value("action_reach_task_location",				StalkerDecisionSpace::eWorldOperatorReachTaskLocation),
 				luabind::value("action_accomplish_task",					StalkerDecisionSpace::eWorldOperatorAccomplishTask),
 				luabind::value("action_reach_customer_location",			StalkerDecisionSpace::eWorldOperatorReachCustomerLocation),

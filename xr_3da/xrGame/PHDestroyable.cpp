@@ -8,6 +8,8 @@
 #include "PhysicsShell.h"
 #include "Actor.h"
 #include "CharacterPhysicsSupport.h"
+#include "ai_object_location.h"
+
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -43,8 +45,8 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
 		VERIFY						(l_tpALifePhysicObject);
 
-		l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();
-		l_tpALifeDynamicObject->m_tNodeID	= obj->level_vertex_id();
+		l_tpALifePhysicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
+		l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
 		l_tpALifePhysicObject->set_visual	(*m_destroyed_obj_visual_name);
 
 		l_tpALifePhysicObject->source_id	= u16(-1);

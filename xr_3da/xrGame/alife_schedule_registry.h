@@ -10,6 +10,7 @@
 
 #include "safe_map_iterator.h"
 #include "xrServer_Objects_ALife.h"
+#include "ai_debug.h"
 
 class CALifeScheduleRegistry : public CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeSchedulable> {
 private:

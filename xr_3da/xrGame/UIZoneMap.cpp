@@ -17,6 +17,8 @@
 #include "game_cl_base.h"
 
 #include "actor.h"
+#include "ai_space.h"
+#include "game_graph.h"
 
 //////////////////////////////////////////////////////////////////////////
 

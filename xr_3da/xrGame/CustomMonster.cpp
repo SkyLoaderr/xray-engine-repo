@@ -24,15 +24,14 @@
 #include "sound_memory_manager.h"
 #include "enemy_manager.h"
 #include "item_manager.h"
+#include "ai_object_location.h"
 
 extern int g_AI_inactive_time;
 
 #ifdef DEBUG
 Flags32		psAI_Flags	= {0};
-#else
-Flags32		psAI_Flags	= {aiLua};
 #endif
- 
+
 void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	char	buf[128];
@@ -80,7 +79,7 @@ void CCustomMonster::Load		(LPCSTR section)
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
 		self->spatial.type	|= STYPE_REACTTOSOUND;
 	}
-//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
 	///////////
 	// m_PhysicMovementControl: General
@@ -112,7 +111,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	//float	mass		= pSettings->r_float	(section,"ph_mass"				);
 	//m_PhysicMovementControl->SetCrashSpeeds	(cs_min,cs_max);
 	//m_PhysicMovementControl->SetMass		(mass);
-	
+
 
 	// m_PhysicMovementControl: Frictions
 	/*
@@ -128,8 +127,8 @@ void CCustomMonster::Load		(LPCSTR section)
 	////////
 
 	Position().y			+= EPS_L;
-	
-//	m_current			= 0;
+
+	//	m_current			= 0;
 
 	if (pSettings->line_exist(section,"eye_fov"))
 		eye_fov						= pSettings->r_float(section,"eye_fov");
@@ -139,7 +138,7 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	// Health & Armor
 	fArmor				= 0;
-	
+
 	// Sheduler
 	shedule.t_min			= 50;
 	shedule.t_max			= 500; // 30 * NET_Latency / 4;
@@ -218,7 +217,7 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	
+
 	float health;
 	P.r_float_q16			(health,-500,1000);
 	fEntityHealth			= health;
@@ -230,11 +229,11 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	P.r_angle8				(N.o_torso.yaw);
 	P.r_angle8				(N.o_torso.pitch);
 	P.r_angle8				(N.o_torso.roll	);
-	
+
 	id_Team					= P.r_u8();
 	id_Squad				= P.r_u8();
 	id_Group				= P.r_u8();
-	
+
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
 		NET_WasInterpolating	= TRUE;
@@ -303,8 +302,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Center(C);
 			R = Radius();
 			//////////////////////////////////////
-/// #pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
-///			feel_touch_update		(C,R);
+			/// #pragma todo("Oles to all AI guys: perf/logical problem: Only few objects needs 'feel_touch' why to call update for everybody?")
+			///			feel_touch_update		(C,R);
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();
@@ -340,13 +339,13 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
-	
+
 	CScriptMonster::process_sound_callbacks();
 	CSoundPlayer::update				(Device.fTimeDelta);
 	if	(NET.empty())	return;
-	
+
 	m_dwCurrentTime	= Level().timeServer();
-	
+
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();
@@ -382,7 +381,7 @@ void CCustomMonster::UpdateCL	()
 				if (!bfScriptAnimation())
 					SelectAnimation	(XFORM().k,detail_path_manager().direction(),speed());
 			}
-			
+
 			// Signal, that last time we used interpolation
 			NET_WasInterpolating	= TRUE;
 			NET_Time				= dwTime;
@@ -391,7 +390,7 @@ void CCustomMonster::UpdateCL	()
 
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
-		
+
 		UpdatePositionAnimation();
 	}
 
@@ -433,9 +432,9 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
-	
+
 	const MonsterSpace::SBoneRotation		&rotation = head_orientation();
-	
+
 	eye_matrix.setHPB						(-rotation.current.yaw + m_fEyeShiftYaw,-rotation.current.pitch,0);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }
@@ -498,7 +497,7 @@ void CCustomMonster::OnRender()
 	//if (!bDebug)					return;
 	//if (!psAI_Flags.test(aiDebug))	return;
 
-//	m_PhysicMovementControl->DBG_Render();
+	//	m_PhysicMovementControl->DBG_Render();
 
 	RCache.OnFrameEnd				();
 	for (int i=0; i<1; ++i) {
@@ -547,95 +546,95 @@ void CCustomMonster::OnRender()
 	{
 	for (u32 I=1; I<AI_Path.TravelPath_dbg.size(); ++I)
 	{
-		CTravelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
-		CTravelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		RCache.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
-		RCache.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+	CTravelNode&	N1 = AI_Path.TravelPath_dbg[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
+	CTravelNode&	N2 = AI_Path.TravelPath_dbg[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
+	RCache.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,0,0));
+	RCache.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
 	}
 	}
 	*/
 	{
-	
-//	for (int I=0, N = (int)detail_path_manager().path().size(); I<N - 1; ++I)
-//	{
-//		Fvector P1 = detail_path_manager().path()[I].position;		P1.y+=0.1f;
-//		Fvector P2 = detail_path_manager().path()[I + 1].position;	P2.y+=0.1f;
-//		{
-//			const STravelParams&		i = velocity(detail_path_manager().path()[I].velocity);
-//			float	r = i.linear_velocity/i.angular_velocity;
-//			Fmatrix						V = Fidentity;
-//			V.c							= P1;
-//			V.c.y						+= r + float(I)/100.f;
-//			V.i.x						= .05f;//r;
-//			V.j.y						= .05f;//r;
-//			V.k.z						= .05f;//r;
-//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
-//		}
-//		{
-//			const STravelParams&		i = velocity(detail_path_manager().path()[I + 1].velocity);
-//			float	r = i.linear_velocity/i.angular_velocity;
-//			Fmatrix						V = Fidentity;
-//			V.c							= P2;
-//			V.c.y						+= r + float(I + 1)/100.f;
-//			V.i.x						= .05f;//r;
-//			V.j.y						= .05f;//r;
-//			V.k.z						= .05f;//r;
-//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
-//		}
-//		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-//		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-//		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
-//	}
+
+		//	for (int I=0, N = (int)detail_path_manager().path().size(); I<N - 1; ++I)
+		//	{
+		//		Fvector P1 = detail_path_manager().path()[I].position;		P1.y+=0.1f;
+		//		Fvector P2 = detail_path_manager().path()[I + 1].position;	P2.y+=0.1f;
+		//		{
+		//			const STravelParams&		i = velocity(detail_path_manager().path()[I].velocity);
+		//			float	r = i.linear_velocity/i.angular_velocity;
+		//			Fmatrix						V = Fidentity;
+		//			V.c							= P1;
+		//			V.c.y						+= r + float(I)/100.f;
+		//			V.i.x						= .05f;//r;
+		//			V.j.y						= .05f;//r;
+		//			V.k.z						= .05f;//r;
+		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+		//		}
+		//		{
+		//			const STravelParams&		i = velocity(detail_path_manager().path()[I + 1].velocity);
+		//			float	r = i.linear_velocity/i.angular_velocity;
+		//			Fmatrix						V = Fidentity;
+		//			V.c							= P2;
+		//			V.c.y						+= r + float(I + 1)/100.f;
+		//			V.i.x						= .05f;//r;
+		//			V.j.y						= .05f;//r;
+		//			V.k.z						= .05f;//r;
+		//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+		//		}
+		//		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		//		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+		//		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		//	}
 	}
 
-//	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
-//		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-//		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
-//			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-//			tP0.y += .35f;
-//			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
-//				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
-//			else
-//				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
-//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
-//				else
-//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
-//			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
-//				case 0 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-//					break;
-//				}
-//				case 1 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
-//					break;
-//				}
-//				case 2 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-//					break;
-//				}
-//				case 3 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
-//					break;
-//				}
-//				case 4 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
-//					break;
-//				}
-//				case 5 : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
-//					break;
-//				}
-//				default : {
-//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
-//					break;
-//				}
-//			}
-//		}
-//	}
+	//	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
+	//		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	//		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
+	//			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+	//			tP0.y += .35f;
+	//			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
+	//				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
+	//			else
+	//				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
+	//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+	//				else
+	//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+	//			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
+	//				case 0 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+	//					break;
+	//				}
+	//				case 1 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+	//					break;
+	//				}
+	//				case 2 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+	//					break;
+	//				}
+	//				case 3 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+	//					break;
+	//				}
+	//				case 4 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+	//					break;
+	//				}
+	//				case 5 : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+	//					break;
+	//				}
+	//				default : {
+	//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+	//					break;
+	//				}
+	//			}
+	//		}
+	//	}
 
 	if (psAI_Flags.test(aiFrustum))
 		dbg_draw_frustum(eye_fov,eye_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
-	
+
 	if (psAI_Flags.test(aiMotion)) 
 	{
 		m_PhysicMovementControl->dbg_Draw();
@@ -658,7 +657,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
 		return					(FALSE);
-	
+
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= smart_cast<CSE_ALifeMonsterAbstract*>(e);
 
@@ -671,13 +670,13 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 	if (ai().get_level_graph() && UsedAI_Locations() && (e->ID_Parent == 0xffff)) {
 		if (ai().game_graph().valid_vertex_id(E->m_tGraphID))
-			set_game_vertex			(E->m_tGraphID);
+			ai_location().game_vertex			(E->m_tGraphID);
 
 		if (ai().game_graph().valid_vertex_id(E->m_tNextGraphID) && accessible(ai().game_graph().vertex(E->m_tNextGraphID)->level_vertex_id()))
 			set_game_dest_vertex	(E->m_tNextGraphID);
 
-		if (accessible(level_vertex_id()))
-			set_level_dest_vertex	(level_vertex_id());
+		if (accessible(ai_location().level_vertex_id()))
+			set_level_dest_vertex	(ai_location().level_vertex_id());
 		else {
 			Fvector					dest_position;
 			u32						level_vertex_id = accessible_nearest(Position(),dest_position);
@@ -793,7 +792,7 @@ void CCustomMonster::ChangeTeam(int team, int squad, int group)
 void CCustomMonster::PitchCorrection() 
 {
 	CLevelGraph::SContour	contour;
-	ai().level_graph().contour(contour, level_vertex_id());
+	ai().level_graph().contour(contour, ai_location().level_vertex_id());
 	
 	Fplane  P;
 	P.build(contour.v1,contour.v2,contour.v3);

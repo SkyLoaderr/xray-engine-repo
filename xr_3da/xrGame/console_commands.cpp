@@ -23,6 +23,7 @@
 #include "PhysicsGamePars.h"
 #include "string_table.h"
 #include "autosave_manager.h"
+#include "ai_space.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -1503,6 +1504,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_DemoRecord,		"demo_record"			);
 	CMD1(CCC_DemoPlay,			"demo_play"				);
 
+#ifdef DEBUG
 	// ai
 	CMD3(CCC_Mask,				"ai_debug",				&psAI_Flags,	aiDebug);
 	CMD3(CCC_Mask,				"ai_dbg_brain",			&psAI_Flags,	aiBrain);
@@ -1516,11 +1518,9 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_anim",			&psAI_Flags,	aiAnimation);
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
-	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
+	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	
-	
-#ifdef DEBUG
 	CMD1(CCC_DebugNode,			"ai_dbg_node");
 	CMD1(CCC_ScriptDbg,			"script_debug_break");
 	CMD1(CCC_ScriptDbg,			"script_debug_stop");

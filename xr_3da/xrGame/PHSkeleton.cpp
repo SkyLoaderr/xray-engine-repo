@@ -10,6 +10,8 @@
 #include "../skeletoncustom.h"
 #include "PHObject.h"
 #include "PHCollideValidator.h"
+#include "ai_object_location.h"
+
 #define F_MAX         3.402823466e+38F
 
 u32 CPHSkeleton::remove_time=5000;
@@ -377,8 +379,8 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 	CSE_ALifePHSkeletonObject		*l_tpALifePhysicObject = smart_cast<CSE_ALifePHSkeletonObject*>(D);
 	R_ASSERT					(l_tpALifePhysicObject);
 
-	l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();
-	l_tpALifeDynamicObject->m_tNodeID	= obj->level_vertex_id();
+	l_tpALifePhysicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
+	l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
 	l_tpALifePhysicObject->set_visual	(*obj->cNameVisual());
 
 

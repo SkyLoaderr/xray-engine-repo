@@ -21,6 +21,7 @@
 #include "../skeletoncustom.h"
 #include "memory_manager.h"
 #include "enemy_manager.h"
+#include "ai_object_location.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -84,7 +85,7 @@ void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 	if (m_infinite_ammo && planner().object()->g_Alive()) {
 		CWeaponAmmo				*weapon_ammo = smart_cast<CWeaponAmmo*>(inventory_item);
 		if (weapon_ammo)
-			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object()->Position(),planner().object()->level_vertex_id(),planner().object()->ID());
+			Level().spawn_item	(*weapon_ammo->cNameSect(),planner().object()->Position(),planner().object()->ai_location().level_vertex_id(),planner().object()->ID());
 	}
 	planner().remove_item		(inventory_item);
 
@@ -160,4 +161,28 @@ void CObjectHandler::weapon_bones	(int &b0, int &b1, int &b2) const
 	b0							= kinematics->LL_BoneID(weapon->strap_bone0());
 	b1							= kinematics->LL_BoneID(weapon->strap_bone1());
 	b2							= b1;
+}
+
+bool CObjectHandler::weapon_strapped	() const
+{
+	CWeapon						*weapon = smart_cast<CWeapon*>(inventory().ActiveItem());
+	if (!weapon)
+		return					(false);
+
+	return						(weapon_strapped(weapon));
+}
+
+bool CObjectHandler::weapon_strapped	(CWeapon *weapon) const
+{
+	VERIFY						(weapon);
+
+	if (
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
+		(planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
+	)
+		return					(false);
+
+	return						(weapon->strapped_mode());
 }

@@ -10,8 +10,7 @@
 #include "game_cl_base.h"
 #include "../igame_persistent.h"
 #include "artifact.h"
-
-
+#include "ai_object_location.h"
 
 //////////////////////////////////////////////////////////////////////////
 //количество предварительно проспавненых артефактов
@@ -1126,7 +1125,7 @@ void CCustomZone::SpawnArtefact()
 
 	Fvector pos;
 	Center(pos);
-	Level().spawn_item(*m_ArtefactSpawn[i].section, pos, level_vertex_id(), ID());
+	Level().spawn_item(*m_ArtefactSpawn[i].section, pos, ai_location().level_vertex_id(), ID());
 }
 
 void CCustomZone::AddArtefact(CArtefact* pArtefact)

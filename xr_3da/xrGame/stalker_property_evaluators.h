@@ -39,6 +39,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorAlive	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -63,6 +64,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorEnemies(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate						();
 };
 
@@ -147,6 +149,7 @@ protected:
 	typedef CStalkerPropertyEvaluator inherited;
 
 public:
+						CStalkerPropertyEvaluatorAnomaly	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate							();
 };
 

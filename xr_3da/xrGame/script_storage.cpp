@@ -61,6 +61,10 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 		return(0);
 #endif
 
+#ifndef DEBUG
+	return		(0);
+#endif
+
 	LPCSTR		S = "", SS = "";
 	LPSTR		S1;
 	string4096	S2;

@@ -28,7 +28,7 @@ protected:
 	bool										m_actuality;
 	bool										m_failed;
 	xr_vector<_vertex_id_type>					m_path;
-	CRestrictedObject							*m_restricted_object;
+	CRestrictedObject							*m_object;
 
 protected:
 	IC	_vertex_id_type	intermediate_vertex_id		() const;

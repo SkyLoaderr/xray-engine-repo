@@ -16,7 +16,7 @@
 class CScriptGameObject;
 
 template <typename _object_type>
-class CPropertyEvaluator : virtual public intrusive_base {
+class CPropertyEvaluator : public intrusive_base {
 public:
 	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef GraphEngineSpace::_solver_value_type		_value_type;

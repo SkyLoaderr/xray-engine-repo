@@ -8,6 +8,7 @@
 #include "CustomRocket.h"
 #include "xrserver_objects_alife_items.h"
 #include "level.h"
+#include "ai_object_location.h"
 
 CRocketLauncher::CRocketLauncher()
 {
@@ -33,7 +34,7 @@ void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_roc
 	R_ASSERT			(D);
 	CSE_Temporary		*l_tpTemporary = smart_cast<CSE_Temporary*>(D);
 	R_ASSERT			(l_tpTemporary);
-	l_tpTemporary->m_tNodeID	= parent_rocket_launcher->level_vertex_id();
+	l_tpTemporary->m_tNodeID	= parent_rocket_launcher->ai_location().level_vertex_id();
 	// Fill
 	D->s_name			= rocket_section;
 	D->set_name_replace	("");

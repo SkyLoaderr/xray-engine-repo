@@ -17,6 +17,7 @@
 #include "enemy_location_predictor.h"
 #include "patrol_path_manager.h"
 #include "xrmessages.h"
+#include "ai_object_location.h"
 
 using namespace MovementManager;
 

@@ -372,8 +372,4 @@ namespace ALife {
 	DEFINE_MAP_PRED	(LPCSTR,					SArtefactTraderOrder*,			ARTEFACT_TRADER_ORDER_MAP,	ARTEFACT_TRADER_ORDER_PAIR_IT,	pred_str);
 };
 
-#ifdef XRGAME_EXPORTS
-#	include "ai_debug.h"
-#endif
-
 #endif //XRAY_ALIFE_SPACE

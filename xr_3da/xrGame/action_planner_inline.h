@@ -78,6 +78,7 @@ void CPlanner::update				()
 #ifdef LOG_ACTION
 	if (m_failed && psAI_Flags.test(aiLua)) {
 		// printing current world state
+		show					();
 		{
 			Msg					("! ERROR : there is no action sequence, which can transfer current world state to the target one");
 			Msg					("Time : %6d",Level().timeServer());
@@ -90,7 +91,7 @@ void CPlanner::update				()
 				char			temp = '?';
 				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 					temp		= (*J).value() ? '+' : '-';
-					Msg			("%5c : %s",temp,property2string((*I).first));
+					Msg			("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
 				}
 			}
 		}
@@ -104,7 +105,7 @@ void CPlanner::update				()
 				char			temp = '?';
 				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 					temp		= (*J).value() ? '+' : '-';
-					Msg			("%5c : %s",temp,property2string((*I).first));
+					Msg			("%5c : [%d]%s",temp,(*I).first,property2string((*I).first));
 				}
 			}
 		}
@@ -219,6 +220,44 @@ IC	void CPlanner::set_use_log		(bool value)
 	OPERATOR_VECTOR::iterator			E = m_operators.end();
 	for ( ; I != E; ++I)
 		(*I).get_operator()->set_use_log(m_use_log);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::show				(LPCSTR offset)
+{
+	string256		temp;
+	strconcat		(temp,offset,"    ");
+	{
+		Msg			("\n%sEVALUATORS : %d\n",offset,evaluators().size());
+		EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+		EVALUATOR_MAP::const_iterator	E = evaluators().end();
+		for ( ; I != E; ++I)
+			Msg		("%sevaluator   [%d][%s]",offset,(*I).first,property2string((*I).first));
+	}
+	{
+		Msg			("\n%sOPERATORS : %d\n",offset,operators().size());
+		OPERATOR_VECTOR::const_iterator	I = operators().begin();
+		OPERATOR_VECTOR::const_iterator	E = operators().end();
+		for ( ; I != E; ++I) {
+			Msg		("%soperator    [%d][%s]",offset,(*I).m_operator_id,(*I).m_operator->m_action_name);
+
+			{
+				xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->conditions().conditions().begin();
+				xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->conditions().conditions().end();
+				for ( ; i != e; ++i)
+					Msg	("%s	condition [%d][%s] = %s",offset,(*i).condition(),property2string((*i).condition()),(*i).value() ? "TRUE" : "FALSE");
+			}
+			{
+				xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->effects().conditions().begin();
+				xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->effects().conditions().end();
+				for ( ; i != e; ++i)
+					Msg	("%s	effect    [%d][%s] = %s",offset,(*i).condition(),property2string((*i).condition()),(*i).value() ? "TRUE" : "FALSE");
+			}
+
+			(*I).m_operator->show(temp);
+			Msg	(" ");
+		}
+	}
 }
 #endif
 

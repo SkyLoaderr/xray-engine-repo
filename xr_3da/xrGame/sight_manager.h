@@ -25,10 +25,10 @@ protected:
 	bool			m_enabled;
 
 public:
-					CSightManager						();
+					CSightManager						(CAI_Stalker *object);
 	virtual			~CSightManager						();
 	virtual	void	Load								(LPCSTR section);
-	virtual	void	reinit								(CAI_Stalker *object);
+	virtual	void	reinit								();
 	virtual void	Exec_Look							(float dt);
 			bool	bfIf_I_SeePosition					(Fvector tPosition) const;
 			void	SetPointLookAngles					(const Fvector &tPosition, float &yaw, float &pitch);

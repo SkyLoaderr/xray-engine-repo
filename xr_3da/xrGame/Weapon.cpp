@@ -20,6 +20,7 @@
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "../skeletoncustom.h"
+#include "ai_object_location.h"
 
 #define WEAPON_REMOVE_TIME		30000
 #define ROTATION_TIME			0.25f
@@ -731,7 +732,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect, u32 ParentID)
 	D->ID_Phantom = 0xffff;
 	D->s_flags.assign(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
-	l_pA->m_tNodeID	= level_vertex_id();
+	l_pA->m_tNodeID	= ai_location().level_vertex_id();
 	
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;

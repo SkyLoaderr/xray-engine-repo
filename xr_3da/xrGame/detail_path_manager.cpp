@@ -10,23 +10,18 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 #include "level.h"
+#include "ai_object_location.h"
 
 CDetailPathManager::CDetailPathManager	()
 {
-	init					();
 }
 
 CDetailPathManager::~CDetailPathManager	()
 {
 }
 
-void CDetailPathManager::init			()
-{
-}
-
 void CDetailPathManager::reinit			(CRestrictedObject *object)
 {
-	CAI_ObjectLocation::reinit();
 	m_actuality				= false;
 	m_failed				= false;
 	m_start_position		= Fvector().set(0,0,0);

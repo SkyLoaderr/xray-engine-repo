@@ -20,6 +20,7 @@
 #include "game_cl_base.h"
 #include "object_factory.h"
 #include "../skeletoncustom.h"
+#include "ai_object_location.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
@@ -31,6 +32,7 @@ CGameObject::CGameObject		()
 	//-----------------------------------------
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
+	m_ai_location				= xr_new<CAI_ObjectLocation>();
 }
 
 CGameObject::~CGameObject		()
@@ -38,6 +40,7 @@ CGameObject::~CGameObject		()
 	VERIFY						(!m_ini_file);
 	VERIFY						(!m_lua_game_object);
 	VERIFY						(!m_spawned);
+	xr_delete					(m_ai_location);
 }
 
 void CGameObject::init			()
@@ -79,7 +82,7 @@ void CGameObject::reinit	()
 		return;
 
 	m_visual_callback.clear		();
-	CAI_ObjectLocation::reinit	();
+	ai_location().reinit	();
 	CScriptBinder::reinit		();
 }
 
@@ -117,8 +120,8 @@ void CGameObject::net_Destroy	()
 		Level().SetControlEntity				(0);
 	}
 
-	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
-		ai().level_graph().ref_dec				(level_vertex_id());
+	if (UsedAI_Locations() && !H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+		ai().level_graph().ref_dec				(ai_location().level_vertex_id());
 
 	Parent = 0;
 
@@ -244,19 +247,19 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			CSE_ALifeObject			*l_tpALifeObject = smart_cast<CSE_ALifeObject*>(E);
 			CSE_Temporary			*l_tpTemporary	= smart_cast<CSE_Temporary*>	(E);
 			if (l_tpALifeObject && ai().level_graph().valid_vertex_id(l_tpALifeObject->m_tNodeID))
-				set_level_vertex	(l_tpALifeObject->m_tNodeID);
+				ai_location().level_vertex	(l_tpALifeObject->m_tNodeID);
 			else
 				if (l_tpTemporary && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
-					set_level_vertex(l_tpTemporary->m_tNodeID);
+					ai_location().level_vertex	(l_tpTemporary->m_tNodeID);
 
 			if (l_tpALifeObject && ai().game_graph().valid_vertex_id(l_tpALifeObject->m_tGraphID))
-				set_game_vertex		(l_tpALifeObject->m_tGraphID);
+				ai_location().game_vertex			(l_tpALifeObject->m_tGraphID);
 
 			validate_ai_locations	(false);
 
 			// validating position
 			if (UsedAI_Locations())
-				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
+				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*ai_location().level_vertex(),Position().x,Position().z);
 		
 		}
  		inherited::net_Spawn	(DC);
@@ -305,7 +308,7 @@ void CGameObject::spawn_supplies()
 				j			= 1;
 		}
 		for (u32 i=0; i<j; ++i)
-			Level().spawn_item	(N,Position(),level_vertex_id(),ID());
+			Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID());
 	}
 }
 
@@ -321,15 +324,15 @@ void CGameObject::setup_parent_ai_locations(bool assign_position)
 	if (!UsedAI_Locations() || !ai().get_level_graph())
 		return;
 
-	if (ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
-		set_level_vertex		(l_tpGameObject->level_vertex_id());
+	if (ai().level_graph().valid_vertex_id(l_tpGameObject->ai_location().level_vertex_id()))
+		ai_location().level_vertex	(l_tpGameObject->ai_location().level_vertex_id());
 	else
 		validate_ai_locations	(false);
 
-	if (ai().game_graph().valid_vertex_id(l_tpGameObject->game_vertex_id()))
-		set_game_vertex			(l_tpGameObject->game_vertex_id());
+	if (ai().game_graph().valid_vertex_id(l_tpGameObject->ai_location().game_vertex_id()))
+		ai_location().game_vertex	(l_tpGameObject->ai_location().game_vertex_id());
 	else
-		set_game_vertex			(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
+		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
 }
 
 void CGameObject::validate_ai_locations			(bool decrement_reference)
@@ -348,7 +351,7 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 	Center							(center);
 	center.x						= Position().x;
 	center.z						= Position().z;
-	u32								l_dwNewLevelVertexID = ai().level_graph().vertex(level_vertex_id(),center);
+	u32								l_dwNewLevelVertexID = ai().level_graph().vertex(ai_location().level_vertex_id(),center);
 //	u64								stop = CPU::GetCycleCount();
 
 #ifdef _DEBUG
@@ -356,19 +359,19 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 #endif
 	VERIFY							(ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID));
 
-	if (decrement_reference && (level_vertex_id() == l_dwNewLevelVertexID))
+	if (decrement_reference && (ai_location().level_vertex_id() == l_dwNewLevelVertexID))
 		return;
 
-	if (decrement_reference && ai().level_graph().valid_vertex_id(level_vertex_id()))
-		ai().level_graph().ref_dec	(level_vertex_id());
+	if (decrement_reference && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+		ai().level_graph().ref_dec	(ai_location().level_vertex_id());
 
-	set_level_vertex				(l_dwNewLevelVertexID);
+	ai_location().level_vertex		(l_dwNewLevelVertexID);
 
-	ai().level_graph().ref_add		(level_vertex_id());
+	ai().level_graph().ref_add		(ai_location().level_vertex_id());
 
 	if (ai().get_game_graph() && ai().get_cross_table()) {
-		set_game_vertex				(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
-		VERIFY						(ai().game_graph().valid_vertex_id(game_vertex_id()));
+		ai_location().game_vertex	(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
+		VERIFY						(ai().game_graph().valid_vertex_id(ai_location().game_vertex_id()));
 	}
 }
 
@@ -436,8 +439,8 @@ void CGameObject::OnH_B_Chield()
 
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
-	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
-		ai().level_graph().ref_dec(level_vertex_id());
+	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
+		ai().level_graph().ref_dec(ai_location().level_vertex_id());
 }
 
 void CGameObject::OnH_B_Independent()

@@ -23,6 +23,7 @@
 #include "../../../hudmanager.h"
 #include "../../../memory_manager.h"
 #include "../../../visual_memory_manager.h"
+#include "../../../ai_debug.h"
 
 CBaseMonster::CBaseMonster()
 {

@@ -27,8 +27,7 @@ class
 		_VertexEvaluator,
 		_vertex_id_type,
 		_index_type
-	>,
-	virtual public CAI_ObjectLocation
+	>
 {
 	typedef CAbstractPathManager<
 		CLevelGraph,

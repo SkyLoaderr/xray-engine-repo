@@ -12,10 +12,7 @@
 #include "patrol_point.h"
 #include "intrusive_ptr.h"
 
-class CPatrolPath : 
-	public CGraphAbstract<CPatrolPoint,float,u32,u32>,
-	public intrusive_base
-{
+class CPatrolPath : public CGraphAbstract<CPatrolPoint,float,u32,u32> {
 private:
 	struct CAlwaysTrueEvaluator {
 		IC	bool	operator()	(const Fvector &position) const

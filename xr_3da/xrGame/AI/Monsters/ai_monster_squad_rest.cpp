@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_monster_squad.h"
 #include "../entity.h"
+#include "../ai_object_location.h"
 
 void CMonsterSquad::ProcessIdle()
 {
@@ -140,7 +141,7 @@ void CMonsterSquad::Idle_AssignAction(ENTITY_VEC &members)
 			SSquadCommand command;
 			command.type		= SC_REST;
 			command.position	= leader->Position();
-			command.node		= leader->level_vertex_id();
+			command.node		= leader->ai_location().level_vertex_id();
 			command.entity		= 0;
 			
 			UpdateCommand		(*it, command);

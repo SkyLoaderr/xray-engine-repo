@@ -15,16 +15,15 @@ template <
 >
 class CSetupManager {
 protected:
+	_object_type							*m_object;
 	xr_map<_action_id_type,_action_type*>	m_actions;
 	_action_id_type							m_current_action_id;
-	_object_type							*m_object;
 	bool									m_actuality;
 
 public:
-	IC								CSetupManager		();
+	IC								CSetupManager		(_object_type *object);
 	virtual 						~CSetupManager		();
-	IC		void					init				();
-	virtual void					reinit				(_object_type *object);
+	virtual void					reinit				();
 	virtual void					update				();
 	IC		void					add_action			(const _action_id_type &action_id, _action_type *action);
 	IC		_action_type			&action				(const _action_id_type &action_id) const;

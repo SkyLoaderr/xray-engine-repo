@@ -130,8 +130,10 @@ void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
 
 void CGamePersistent::Statistics	(CGameFont* F)
 {
-#ifndef _EDITOR
-	profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
+#ifdef DEBUG
+#	ifndef _EDITOR
+		profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
+#	endif
 #endif
 }
 

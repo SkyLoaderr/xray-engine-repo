@@ -36,6 +36,7 @@
 #include "memory_manager.h"
 #include "enemy_manager.h"
 #include "memory_space.h"
+#include "ai_object_location.h"
 
 void CLevelGraph::on_render1()
 {
@@ -49,7 +50,7 @@ void CLevelGraph::on_render1()
 	CPosition			Local;
 	vertex_position		(Local,P);
 
-	u32 ID				= O->level_vertex_id();
+	u32 ID				= O->ai_location().level_vertex_id();
 
 	CGameFont* F		= HUD().pFontDI;
 	F->SetSize			(.02f);

@@ -8,6 +8,21 @@
 
 #include "stdafx.h"
 #include "greeting_manager.h"
+#include "ai/stalker/ai_stalker.h"
+
+const u32 FORGET_GREETING_TIME = 300000;
+
+struct CRemoveOldGreetingPredicate {
+	IC	bool	operator()	(const CGreetingManager::CGreeting &greeting) const
+	{
+		return			(Device.dwTimeGlobal > greeting.m_time + FORGET_GREETING_TIME);
+	}
+};
+
+IC	bool CGreetingManager::CGreeting::operator==(const CAI_Stalker *stalker) const
+{
+	return				(m_object->ID() < stalker->ID());
+}
 
 CGreetingManager::CGreetingManager	(CCustomMonster *object)
 {
@@ -17,16 +32,31 @@ CGreetingManager::CGreetingManager	(CCustomMonster *object)
 
 void CGreetingManager::reload		(LPCSTR section)
 {
+	m_greetings.clear	();
 }
 
 bool CGreetingManager::useful		(const CAI_Stalker *object) const
 {
-	return				(false);
+	return				(!old_greeting(object));
 }
 
 float CGreetingManager::evaluate	(const CAI_Stalker *object) const
 {
-	return				(0.f);
+	return				(m_object->Position().distance_to_sqr(object->Position()));
+}
+
+IC	void CGreetingManager::remove_old_greetings	()
+{
+	GREETINGS::iterator	I = remove_if(m_greetings.begin(),m_greetings.end(),CRemoveOldGreetingPredicate());
+	m_greetings.erase	(I,m_greetings.end());
+}
+
+IC	const CGreetingManager::CGreeting *CGreetingManager::old_greeting	(const CAI_Stalker *stalker) const
+{
+	GREETINGS::const_iterator	I = std::find(m_greetings.begin(),m_greetings.end(),stalker);
+	if (I == m_greetings.end())
+		return			(0);
+	return				(&*I);
 }
 
 void CGreetingManager::update		()
@@ -34,5 +64,14 @@ void CGreetingManager::update		()
 	if (!m_object)
 		return;
 
-	inherited::update			();
+	remove_old_greetings();
+
+	inherited::update	();
+}
+
+void CGreetingManager::process_greeting	()
+{
+	VERIFY					(selected());
+	VERIFY					(!old_greeting(selected()));
+	m_greetings.push_back	(CGreeting(selected(),Device.dwTimeGlobal));
 }

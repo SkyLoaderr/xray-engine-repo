@@ -41,8 +41,6 @@ TEMPLATE_SPECIALIZATION
 IC	void CGameLocationSelector::reinit			(CRestrictedObject *object, const CGameGraph *graph)
 {
 	inherited::reinit				(object,graph);
-	CAI_ObjectLocation::reinit		();
-	
 	m_selection_type				= eSelectionTypeRandomBranching;
 	m_location_manager				= smart_cast<CLocationManager*>(object);
 	VERIFY							(m_location_manager);

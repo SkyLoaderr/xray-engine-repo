@@ -49,7 +49,9 @@ void CSMotivationManager::setup					(_object_type *object)
 TEMPLATE_SPECIALIZATION
 void CSMotivationManager::clear	()
 {
-	m_graph->clear			();
+	m_graph->clear				();
+	m_motivation_actions.clear	();
+	m_actuality					= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -65,6 +67,19 @@ IC	const typename CSMotivationManager::CSGraphAbstract &CSMotivationManager::gra
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CSMotivationManager::add_motivation_action	(u32 motivation_id, CSMotivation *motivation)
+{
+	ACTIONS::const_iterator	I = m_motivation_actions.find(motivation_id);
+	VERIFY					(I == m_motivation_actions.end());
+
+	CSMotivationAction		*action = smart_cast<CSMotivationAction*>(motivation);
+	if (!action)
+		return;
+
+	m_motivation_actions.insert	(std::make_pair(motivation_id,action));
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *motivation)
 {
 	VERIFY					(!graph().vertex(motivation_id));
@@ -72,6 +87,7 @@ IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *mo
 	VERIFY					(graph().vertex(motivation_id));
 	motivation->setup		(m_object);
 	m_actuality				= false;
+	add_motivation_action	(motivation_id,motivation);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -81,6 +97,11 @@ IC	void CSMotivationManager::remove_motivation	(u32 motivation_id)
 	graph().remove_vertex	(motivation_id);
 	VERIFY					(!graph().vertex(motivation_id));
 	m_actuality				= false;
+
+	ACTIONS::iterator		I = m_motivation_actions.find(motivation_id);
+	if (I == m_motivation_actions.end())
+		return;
+	m_motivation_actions.erase	(I);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -108,8 +129,10 @@ IC	typename CSMotivationManager::CSMotivationAction *CSMotivationManager::select
 {
 	xr_vector<CMotivationWeight>::const_iterator	I = std::find(m_actions.begin(),m_actions.end(),m_selected_id);
 	VERIFY					(m_actions.end() != I);
-	VERIFY					(smart_cast<CSMotivationAction*>(motivation(m_selected_id)));
-	return					(static_cast<CSMotivationAction*>(motivation(m_selected_id)));
+
+	ACTIONS::const_iterator	i = m_motivation_actions.find(m_selected_id);
+	VERIFY					(i != m_motivation_actions.end());
+	return					((*i).second);
 }
 
 TEMPLATE_SPECIALIZATION

@@ -7,8 +7,3 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-IC	const CGreetingManager::GREETINGS &CGreetingManager::greetings	() const
-{
-	return				(objects());
-}

@@ -16,6 +16,7 @@
 #include "clsid_game.h"
 #include "../skeletoncustom.h"
 #include "monster_community.h"
+#include "ai_space.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100

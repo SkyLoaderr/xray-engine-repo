@@ -4,6 +4,7 @@
 #include "../../memory_manager.h"
 #include "../../visual_memory_manager.h"
 #include "../../enemy_manager.h"
+#include "../../ai_object_location.h"
 
 CMonsterEnemyMemory::CMonsterEnemyMemory()
 {
@@ -44,7 +45,7 @@ void CMonsterEnemyMemory::add_enemy(const CEntityAlive *enemy)
 {
 	SMonsterEnemy enemy_info;
 	enemy_info.position = enemy->Position();
-	enemy_info.vertex   = enemy->level_vertex_id();
+	enemy_info.vertex   = enemy->ai_location().level_vertex_id();
 	enemy_info.time		= Level().timeServer();
 	enemy_info.danger	= 0.f;
 

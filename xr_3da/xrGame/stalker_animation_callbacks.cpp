@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "stalker_animation_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "sight_manager.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -30,7 +31,7 @@ void __stdcall head_callback	(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	if (A->use_torso_look()) {
+	if (A->sight().use_torso_look()) {
 		yaw_factor			= y_head_fire_factor;
 		pitch_factor		= p_head_fire_factor;
 	}
@@ -53,7 +54,7 @@ void __stdcall shoulder_callback(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	if (A->use_torso_look()) {
+	if (A->sight().use_torso_look()) {
 		yaw_factor			= y_shoulder_fire_factor;
 		pitch_factor		= p_shoulder_fire_factor;
 	}
@@ -75,7 +76,7 @@ void __stdcall spine_callback(CBoneInstance *B)
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
 	float					yaw_factor = 0, pitch_factor = 0;
-	if (A->use_torso_look()) {
+	if (A->sight().use_torso_look()) {
 		yaw_factor			= y_spin_fire_factor;
 		pitch_factor		= p_spin_fire_factor;
 	}

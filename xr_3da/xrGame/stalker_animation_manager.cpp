@@ -104,5 +104,9 @@ void CStalkerAnimationManager::update						()
 	legs().animation		(assign_legs_animation());
 	legs().play				(m_skeleton_animated,legs_play_callback,object());
 
+	VERIFY					(head().animation());
+	VERIFY					(torso().animation());
+	VERIFY					(legs().animation());
+
 	torso().synchronize		(m_legs);
 }

@@ -15,6 +15,7 @@
 #include "ef_storage.h"
 #include "ef_pattern.h"
 #include "autosave_manager.h"
+#include "ai_object_location.h"
 
 #define USE_EVALUATOR
 
@@ -34,7 +35,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((m_object->ID() == entity_alive->ID()) || ((m_object->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy) && (m_object->tfGetRelationType(entity_alive) != ALife::eRelationTypeWorstEnemy)))
 		return				(false);
 
-	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->ai_location().level_vertex_id()))
 		return				(false);
 
 	if	(

@@ -20,13 +20,12 @@ TEMPLATE_SPECIALIZATION
 IC	void CGameManagerTemplate::reinit(CRestrictedObject *object, const CGameGraph *graph)
 {
 	inherited::reinit			(object,graph);
-	CAI_ObjectLocation::reinit	();
 }
 
 TEMPLATE_SPECIALIZATION
 IC	bool CGameManagerTemplate::actual() const
 {
-	return				(inherited::actual(game_vertex_id(),dest_vertex_id()));
+	return				(inherited::actual(m_object->ai_location().game_vertex_id(),dest_vertex_id()));
 }
 
 TEMPLATE_SPECIALIZATION

@@ -12,12 +12,34 @@
 #include "ai/stalker/ai_stalker.h"
 
 class CGreetingManager : public CObjectManager<const CAI_Stalker> {
-protected:
+public:
 	typedef CObjectManager<const CAI_Stalker>	inherited;
-	typedef xr_vector<const CAI_Stalker*>		GREETINGS;
+
+public:
+	struct CGreeting {
+		const CAI_Stalker	*m_object;
+		u32					m_time;
+
+		IC		CGreeting	(const CAI_Stalker *stalker, u32 time)
+		{
+			VERIFY			(stalker);
+			m_object		= stalker;
+			m_time			= time;
+		}
+
+		IC	bool operator==	(const CAI_Stalker *stalker) const;
+	};
+
+public:
+	typedef xr_vector<CGreeting>				GREETINGS;
 
 protected:
 	CAI_Stalker				*m_object;
+	GREETINGS				m_greetings;
+
+protected:
+	IC		const CGreeting	*old_greeting		(const CAI_Stalker *stalker) const;
+	IC		void			remove_old_greetings();
 
 public:
 							CGreetingManager	(CCustomMonster *object);
@@ -25,9 +47,7 @@ public:
 	virtual bool			useful				(const CAI_Stalker *object) const;
 	virtual	float			evaluate			(const CAI_Stalker *object) const;
 	virtual void			update				();
-
-public:
-	IC		const GREETINGS	&greetings			() const;
+			void			process_greeting	();
 };
 
 #include "greeting_manager_inline.h"

@@ -30,6 +30,7 @@ public:
 		u32,
 		u16
 	> CSGraphAbstract;
+	typedef xr_map<u32,CSMotivationAction*>	ACTIONS;
 
 protected:
 	struct CMotivationWeight {
@@ -49,6 +50,7 @@ protected:
 	};
 protected:
 	CSGraphAbstract					*m_graph;
+	ACTIONS							m_motivation_actions;
 	xr_vector<u32>					m_motivations;
 	xr_vector<CMotivationWeight>	m_actions;
 	u32								m_selected_id;
@@ -62,6 +64,7 @@ protected:
 	IC		void					update_motivations	();
 	IC		void					select_action		();
 	IC		void					propagate			(u32 motivation_id, float weight);
+	IC		void					add_motivation_action(u32 motivation_id, CSMotivation *motivation);
 
 public:
 	IC								CMotivationManager	();

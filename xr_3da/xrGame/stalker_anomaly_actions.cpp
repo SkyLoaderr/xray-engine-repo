@@ -20,6 +20,7 @@
 #include "detail_path_manager_space.h"
 #include "memory_manager.h"
 #include "enemy_manager.h"
+#include "sight_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -46,7 +47,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateDanger);
-	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
+	m_object->sight().setup				(SightManager::eSightTypeCurrentDirection);
 	if (m_object->memory().enemy().selected() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
 	else

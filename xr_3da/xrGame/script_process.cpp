@@ -23,7 +23,9 @@ string4096			g_ca_stdout;
 CScriptProcess::CScriptProcess	(shared_str name, shared_str scripts) :
 	m_name						(name)
 {
+#ifdef DEBUG
 	Msg				("* Initializing %s script process",*m_name);
+#endif
 	
 	string256		I;
 	for (u32 i=0, n = _GetItemCount(*scripts); i<n; ++i)

@@ -18,6 +18,7 @@
 #include "Actor.h"
 #include "string_table.h"
 #include "../skeletoncustom.h"
+#include "ai_object_location.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -273,7 +274,7 @@ bool CInventoryItem::Detach(const char* item_section_name)
 							 smart_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
 	
-	l_tpALifeDynamicObject->m_tNodeID = this->level_vertex_id();
+	l_tpALifeDynamicObject->m_tNodeID = ai_location().level_vertex_id();
 		
 	// Fill
 	D->s_name			=	item_section_name;
