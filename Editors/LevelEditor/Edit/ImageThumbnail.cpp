@@ -207,33 +207,33 @@ void EImageThumbnail::FillProp(PropValueVec& values)
 {
 	STextureParams& F	= m_TexParams;
 	if (IsTexture()){
-        FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token,4));
-        FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token,4));
+        FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PHelper.CreateToken	(tfmt_token,4));
+        FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PHelper.CreateToken	(ttype_token,4));
             
-        FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flGenerateMipMaps));
-        FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token,4));
+        FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PHelper.CreateFlag	(STextureParams::flGenerateMipMaps));
+        FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PHelper.CreateToken	(tparam_token,4));
 
-        FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flHasDetailTexture));
-        FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTexture	(sizeof(F.detail_name)));
-        FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PROP::CreateFloat	(0.1f,10000.f,0.1f,2));
+        FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PHelper.CreateFlag	(STextureParams::flHasDetailTexture));
+        FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PHelper.CreateTexture	(sizeof(F.detail_name)));
+        FILL_PROP(values,	"Details\\Scale",		&F.detail_scale,		PHelper.CreateFloat	(0.1f,10000.f,0.1f,2));
 
-        FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PROP::CreateFlag	(STextureParams::flGreyScale));
-        FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flBinaryAlpha));
-        FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PROP::CreateFlag	(STextureParams::flDitherColor));
-        FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PROP::CreateFlag	(STextureParams::flDitherEachMIPLevel));
-        FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PROP::CreateFlag	(STextureParams::flImplicitLighted));
+        FILL_PROP(values,	"Flags\\Grayscale",		&F.flag,				PHelper.CreateFlag	(STextureParams::flGreyScale));
+        FILL_PROP(values,	"Flags\\Binary Alpha",	&F.flag,				PHelper.CreateFlag	(STextureParams::flBinaryAlpha));
+        FILL_PROP(values,	"Flags\\Dither",		&F.flag,				PHelper.CreateFlag	(STextureParams::flDitherColor));
+        FILL_PROP(values,	"Flags\\Dither Each MIP",&F.flag,				PHelper.CreateFlag	(STextureParams::flDitherEachMIPLevel));
+        FILL_PROP(values,	"Flags\\Implicit Lighted",&F.flag,				PHelper.CreateFlag	(STextureParams::flImplicitLighted));
 
-        FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToColor));
-        FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToAlpha));
-        FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateU32		(0,1000,0));
-        FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColor	());
+        FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PHelper.CreateFlag	(STextureParams::flFadeToColor));
+        FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PHelper.CreateFlag	(STextureParams::flFadeToAlpha));
+        FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PHelper.CreateU32		(0,1000,0));
+        FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PHelper.CreateColor	());
             
-        FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlag	(STextureParams::flColorBorder));
-        FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PROP::CreateFlag	(STextureParams::flAlphaBorder));
-        FILL_PROP(values,	"Border\\Color",		&F.border_color,		PROP::CreateColor	());
+        FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PHelper.CreateFlag	(STextureParams::flColorBorder));
+        FILL_PROP(values,	"Border\\Enabled Alpha",&F.flag,				PHelper.CreateFlag	(STextureParams::flAlphaBorder));
+        FILL_PROP(values,	"Border\\Color",		&F.border_color,		PHelper.CreateColor	());
     }else{
-        FILL_PROP(values,	"Face Count",			AnsiString(F.face_count).c_str(),	PROP::CreateMarker());
-        FILL_PROP(values,	"Vertex Count",			AnsiString(F.vertex_count).c_str(),	PROP::CreateMarker());
+        FILL_PROP(values,	"Face Count",			AnsiString(F.face_count).c_str(),	PHelper.CreateMarker());
+        FILL_PROP(values,	"Vertex Count",			AnsiString(F.vertex_count).c_str(),	PHelper.CreateMarker());
     }
 }
 

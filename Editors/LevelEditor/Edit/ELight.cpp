@@ -23,6 +23,7 @@
 #define LIGHT_CHUNK_USE_IN_D3D			0xB436
 #define LIGHT_CHUNK_ROTATE				0xB437
 #define LIGHT_CHUNK_ANIMREF				0xB438
+#define LIGHT_CHUNK_SPOT_TEXTURE		0xB439
 //----------------------------------------------------
 //----------------------------------------------------
 #define FLARE_CHUNK_FLAG				0x1002
@@ -55,6 +56,7 @@ void CLight::Construct(LPVOID data){
 	m_D3D.diffuse.set(1.f,1.f,1.f,0);
 	m_D3D.attenuation0 = 1.f;
 	m_D3D.range 	= 8.f;
+    m_D3D.phi		= PI_DIV_8; 
 
     m_Brightness 	= 1;
 
@@ -76,7 +78,8 @@ void CLight::OnUpdateTransform(){
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
 }
 
-void CLight::CopyFrom(CLight* src){
+void CLight::CopyFrom(CLight* src)
+{
 	THROW2("Go to AlexMX");
 }
 
@@ -110,6 +113,10 @@ void CLight::Render(int priority, bool strictB2F){
         case D3DLIGHT_DIRECTIONAL:
             if (Selected()) DU::DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
             else			DU::DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_RANGE, clr );
+        break;
+        case D3DLIGHT_SPOT:
+        	if (Selected())	DU::DrawSpotLight( m_D3D.position, m_D3D.direction, m_D3D.range, m_D3D.phi, clr );
+            else			DU::DrawSpotLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, m_D3D.phi, clr );
         break;
         default: THROW;
         }
@@ -186,6 +193,7 @@ void CLight::OnShowHint(AStringVec& dest){
     switch(m_D3D.type){
     case D3DLIGHT_DIRECTIONAL:  temp+="direct"; break;
     case D3DLIGHT_POINT:        temp+="point"; break;
+    case D3DLIGHT_SPOT:			temp+="spot"; break;
     default: temp+="undef";
     }
     dest.push_back(temp);
@@ -236,7 +244,10 @@ bool CLight::Load(CStream& F){
         m_pAnimRef	= LALib.FindItem(buf);
         if (!m_pAnimRef) ELog.Msg(mtError, "Can't find light animation: %s",buf);
     }
-    
+
+    if (F.FindChunk(LIGHT_CHUNK_SPOT_TEXTURE)){
+    	F.RstringZ(buf);	m_SpotAttTex = buf;
+    }    
     
 	UpdateTransform	();
 
@@ -263,51 +274,65 @@ void CLight::Save(CFS_Base& F){
 		F.WstringZ	(m_pAnimRef->cName);
 		F.close_chunk();
     }
+
+    if (!m_SpotAttTex.IsEmpty()){
+	    F.open_chunk(LIGHT_CHUNK_SPOT_TEXTURE);
+    	F.WstringZ	(m_SpotAttTex.c_str());
+	    F.close_chunk();
+    }
 }
 //----------------------------------------------------
 
 void CLight::FillProp(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values,	pref,	"Color",			&m_D3D.diffuse,	PROP::CreateFColor	());
-	FILL_PROP_EX(values,	pref,	"Brightness",		&m_Brightness,	PROP::CreateFloat	(-3.f,3.f,0.1f,2));
-	FILL_PROP_EX(values,	pref,	"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOL	());
-	FILL_PROP_EX(values,	pref,	"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectStatic));
-	FILL_PROP_EX(values,	pref,	"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlag	(CLight::flAffectDynamic));
-	FILL_PROP_EX(values,	pref,	"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlag	(CLight::flProcedural));
-	FILL_PROP_EX(values,	pref,	"Flags\\Breakable",	&m_dwFlags,		PROP::CreateFlag	(CLight::flBreaking));
+	FILL_PROP_EX(values,	pref,	"Color",			&m_D3D.diffuse,	PHelper.CreateFColor());
+	FILL_PROP_EX(values,	pref,	"Brightness",		&m_Brightness,	PHelper.CreateFloat	(-3.f,3.f,0.1f,2));
+	FILL_PROP_EX(values,	pref,	"Use In D3D",		&m_UseInD3D,	PHelper.CreateBOOL	());
+	FILL_PROP_EX(values,	pref,	"Usage\\LightMap",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flAffectStatic));
+	FILL_PROP_EX(values,	pref,	"Usage\\Dynamic",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flAffectDynamic));
+	FILL_PROP_EX(values,	pref,	"Usage\\Animated",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flProcedural));
+	FILL_PROP_EX(values,	pref,	"Flags\\Breakable",	&m_dwFlags,		PHelper.CreateFlag	(CLight::flBreaking));
 }
 //----------------------------------------------------
 
 void CLight::FillSunProp(LPCSTR pref, PropValueVec& values)
 {
 	CEditFlare& F 			= m_LensFlare;
-	FILL_PROP_EX(values,	pref, "Source\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flSource));
-	FILL_PROP_EX(values,	pref, "Source\\Radius",	&F.m_Source.fRadius,	PROP::CreateFloat	(0.f,10.f));
-	FILL_PROP_EX(values,	pref, "Source\\Texture",	F.m_Source.texture,		PROP::CreateTexture(sizeof(F.m_Source.texture)));
+	FILL_PROP_EX(values,	pref, "Source\\Enabled",	&F.m_dwFlags,			PHelper.CreateFlag	(CEditFlare::flSource));
+	FILL_PROP_EX(values,	pref, "Source\\Radius",		&F.m_Source.fRadius,	PHelper.CreateFloat	(0.f,10.f));
+	FILL_PROP_EX(values,	pref, "Source\\Texture",	F.m_Source.texture,		PHelper.CreateTexture(sizeof(F.m_Source.texture)));
 
-	FILL_PROP_EX(values,	pref, "Gradient\\Enabled",&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flGradient));
-	FILL_PROP_EX(values,	pref, "Gradient\\Radius",	&F.m_Gradient.fRadius,	PROP::CreateFloat	(0.f,100.f));
-	FILL_PROP_EX(values,	pref, "Gradient\\Opacity",&F.m_Gradient.fOpacity,	PROP::CreateFloat	(0.f,1.f));
-	FILL_PROP_EX(values,	pref, "Gradient\\Texture",F.m_Gradient.texture,	PROP::CreateTexture	(sizeof(F.m_Gradient.texture)));
+	FILL_PROP_EX(values,	pref, "Gradient\\Enabled",&F.m_dwFlags,				PHelper.CreateFlag	(CEditFlare::flGradient));
+	FILL_PROP_EX(values,	pref, "Gradient\\Radius",	&F.m_Gradient.fRadius,	PHelper.CreateFloat	(0.f,100.f));
+	FILL_PROP_EX(values,	pref, "Gradient\\Opacity",&F.m_Gradient.fOpacity,	PHelper.CreateFloat	(0.f,1.f));
+	FILL_PROP_EX(values,	pref, "Gradient\\Texture",F.m_Gradient.texture,		PHelper.CreateTexture	(sizeof(F.m_Gradient.texture)));
 
-	FILL_PROP_EX(values,	pref, "Flares\\Enabled",	&F.m_dwFlags,			PROP::CreateFlag	(CEditFlare::flFlare));
+	FILL_PROP_EX(values,	pref, "Flares\\Enabled",	&F.m_dwFlags,			PHelper.CreateFlag	(CEditFlare::flFlare));
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("Flares\\Flare %d",it-F.m_Flares.begin());
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Radius").c_str(),  &it->fRadius,	PROP::CreateFloat	(0.f,10.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PROP::CreateFloat	(0.f,1.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Position").c_str(),&it->fPosition,	PROP::CreateFloat	(-10.f,10.f));
-		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Texture").c_str(),	it->texture,	PROP::CreateTexture	(sizeof(it->texture)));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Radius").c_str(),  	&it->fRadius,  	PHelper.CreateFloat	(0.f,10.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PHelper.CreateFloat	(0.f,1.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Position").c_str(),	&it->fPosition,	PHelper.CreateFloat	(-10.f,10.f));
+		FILL_PROP_EX(values,pref, AnsiString(nm+"\\Texture").c_str(),	it->texture,	PHelper.CreateTexture	(sizeof(it->texture)));
 	}
 }
 //----------------------------------------------------
 
 void CLight::FillPointProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PROP::CreateFloat	(0.f,1000.f));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Constant",	&m_D3D.attenuation0,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Linear",		&m_D3D.attenuation1,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
-	FILL_PROP_EX(values,	pref, "Attenuation\\Quadratic",	&m_D3D.attenuation2,	PROP::CreateFloat	(0.f,1.f,0.0001f,6));
+	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Constant",	&m_D3D.attenuation0,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Linear",	&m_D3D.attenuation1,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Quadratic",	&m_D3D.attenuation2,	PHelper.CreateFloat	(0.f,1.f,0.0001f,6));
+}
+//----------------------------------------------------
+
+void CLight::FillSpotProp(LPCSTR pref, PropValueVec& values)
+{
+	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
+	FILL_PROP_EX(values,	pref, "Cone Angle",				&m_D3D.phi,				PHelper.CreateFloat	(0.1f,120.f,0.01f,2,PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit,PHelper.floatRDOnDraw));
+	FILL_PROP_EX(values,	pref, "Attenuation\\Texture",	&m_SpotAttTex,			PHelper.CreateATexture());
 }
 //----------------------------------------------------
 
@@ -319,7 +344,8 @@ void CLight::OnDeviceCreate()
 
 void CLight::OnDeviceDestroy()
 {
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnDeviceDestroy();
+//	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) 
+    m_LensFlare.OnDeviceDestroy();
 }
 //----------------------------------------------------
 

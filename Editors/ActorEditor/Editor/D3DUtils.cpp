@@ -174,6 +174,28 @@ void OnDeviceDestroy(){
 }
 //----------------
 
+void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, DWORD clr)
+{
+    Fmatrix T;
+	Fvector p1;
+    float H,P;
+    float da	= PI_MUL_2/LINE_DIVISION;
+	float r		= range*tanf(phi/2);
+    d.getHP		(H,P);
+    T.setHPB	(H,P,0);
+    T.translate_over(p);
+	for (float angle=0; angle<PI_MUL_2; angle+=da){
+		float 	sa,ca; _sincos(angle,sa,ca);
+		p1.x	= r * ca;
+		p1.y	= r * sa;
+        p1.z	= range;
+        T.transform_tiny(p1);
+    	DrawLine(p,p1,clr);
+    }
+    p1.mad(p,d,range);
+   	DrawLine(p,p1,clr);
+}
+
 void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, DWORD c)
 {
     float r=radius*0.71f;

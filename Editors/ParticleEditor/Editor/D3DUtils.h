@@ -19,8 +19,11 @@ namespace DU{
     void DrawEntity(DWORD clr, Shader* s);
     void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity);
     void DrawRomboid(const Fvector& p, float radius, DWORD clr);
+
+    void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, DWORD clr);
     void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, DWORD clr);
     void DrawPointLight(const Fvector& p, float radius, DWORD clr);
+
     void DrawSound(const Fvector& p, float radius, DWORD clr);
     void DrawLineSphere(const Fvector& p, float radius, DWORD clr, bool bCross);
     void DrawLine(const Fvector& p0,	const Fvector& p1, DWORD clr);

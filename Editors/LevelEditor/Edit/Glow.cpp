@@ -59,10 +59,10 @@ void CGlow::OnDeviceDestroy()
 void CGlow::FillProp(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref, values);
-	FILL_PROP_EX(values, pref, "Texture", 		&m_TexName, 	PROP::CreateATexture());
-	FILL_PROP_EX(values, pref, "Shader", 		&m_ShaderName, 	PROP::CreateAEShader());
-    FILL_PROP_EX(values, pref, "Radius", 		&m_fRadius,		PROP::CreateFloat	(0.01f,10000.f));
-    FILL_PROP_EX(values, pref, "Fixed size", 	&m_dwFlags, 	PROP::CreateFlag	(gfFixedSize));
+	FILL_PROP_EX(values, pref, "Texture", 		&m_TexName, 	PHelper.CreateATexture());
+	FILL_PROP_EX(values, pref, "Shader", 		&m_ShaderName, 	PHelper.CreateAEShader());
+    FILL_PROP_EX(values, pref, "Radius", 		&m_fRadius,		PHelper.CreateFloat	(0.01f,10000.f));
+    FILL_PROP_EX(values, pref, "Fixed size", 	&m_dwFlags, 	PHelper.CreateFlag	(gfFixedSize));
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box )

@@ -53,31 +53,6 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	Fvector* V = (Fvector*)edit_val;
-	V->x = deg2rad(V->x);
-	V->y = deg2rad(V->y);
-	V->z = deg2rad(V->z);
-	UI.RedrawScene();
-}
-
-void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	Fvector* V = (Fvector*)edit_val;
-	V->x = rad2deg(V->x);
-	V->y = rad2deg(V->y);
-	V->z = rad2deg(V->z);
-}
-
-void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	Fvector* V = (Fvector*)draw_val;
-	V->x = rad2deg(V->x);
-	V->y = rad2deg(V->y);
-	V->z = rad2deg(V->z);
-}
-
 void TfrmPropertiesEObject::FillBasicProps()
 {
 	// basic
@@ -87,17 +62,17 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
         PropValueVec values;
 
-	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PROP::CreateMarker());
-	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoDynamic));
-	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoHOM));
-	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoUsingLOD));
+	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PHelper.CreateMarker());
+	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoDynamic));
+	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoHOM));
+	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoUsingLOD));
 
-	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
-	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
-//	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-//    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
-//		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,	OnChangeTransform));
+    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PHelper.CreateVector(-10000,	10000,0.1,1,		PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,PHelper.FvectorRDOnDraw,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PHelper.CreateVector(0.01,		10000,0.01,2,0,0,0,OnChangeTransform));
+//	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+//    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
+//		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PHelper.CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
 
 		O->FillPropSummary(0,values);
 

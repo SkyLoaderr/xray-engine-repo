@@ -213,10 +213,16 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
 		break;
 
+    case COMMAND_SAVE_BACKUP:{
+    	AnsiString fn = AnsiString(Engine.FS.m_UserName)+"_backup.level";
+        Engine.FS.m_Maps.Update(fn);
+    	Command(COMMAND_SAVEAS,(int)fn.c_str());
+    }break;
 	case COMMAND_SAVEAS:
 		if( !Scene.locked() ){
 			filebuffer[0] = 0;
-			if( Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+			if(p1 || Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+            	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
 	            BeginEState(esSceneLocked);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );

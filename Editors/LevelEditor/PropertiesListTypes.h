@@ -598,7 +598,8 @@ public:
 DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
 
 //---------------------------------------------------------------------------
-namespace PROP{
+class CPropHelper{
+public:
     MarkerItem*			CreateMarker	()
     {
         MarkerItem* V	= new MarkerItem();
@@ -826,9 +827,50 @@ namespace PROP{
         v->InitNext		(val);
         return v;
     }
-}
-#define FILL_PROP(A,K,V,P){PropValue* prop=PROP::FindProp(A,K); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,K,V,P);}
-#define FILL_PROP_EX(A,X,K,V,P){AnsiString XK=PROP::PrepareKey(X,K); PropValue* prop=PROP::FindProp(A,XK.c_str()); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,XK.c_str(),V,P);}
+
+//------------------------------------------------------------------------------
+// predefind event routines    
+    IC void __fastcall 	FvectorRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
+    {
+        Fvector* V = (Fvector*)edit_val;
+        V->x = deg2rad(V->x);
+        V->y = deg2rad(V->y);
+        V->z = deg2rad(V->z);
+    }
+
+    IC void __fastcall 	FvectorRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
+    {
+        Fvector* V = (Fvector*)edit_val;
+        V->x = rad2deg(V->x);
+        V->y = rad2deg(V->y);
+        V->z = rad2deg(V->z);
+    }
+
+    IC void __fastcall 	FvectorRDOnDraw(PropValue* sender, LPVOID draw_val)
+    {
+        Fvector* V = (Fvector*)draw_val;
+        V->x = rad2deg(V->x);
+        V->y = rad2deg(V->y);
+        V->z = rad2deg(V->z);
+    }
+    IC void __fastcall 	floatRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
+    {
+        *(float*)edit_val = deg2rad(*(float*)edit_val);
+    }
+
+    IC void __fastcall 	floatRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
+    {
+        *(float*)edit_val = rad2deg(*(float*)edit_val);
+    }
+
+    IC void __fastcall 	floatRDOnDraw(PropValue* sender, LPVOID draw_val)
+    {
+        *(float*)draw_val = rad2deg(*(float*)draw_val);
+    }
+};
+extern CPropHelper PHelper;
+#define FILL_PROP(A,K,V,P){PropValue* prop=PHelper.FindProp(A,K); if (prop) PHelper.InitNext(prop,V); else PHelper.InitFirst(A,K,V,P);}
+#define FILL_PROP_EX(A,X,K,V,P){AnsiString XK=PHelper.PrepareKey(X,K); PropValue* prop=PHelper.FindProp(A,XK.c_str()); if (prop) PHelper.InitNext(prop,V); else PHelper.InitFirst(A,XK.c_str(),V,P);}
 //---------------------------------------------------------------------------
 #endif
 

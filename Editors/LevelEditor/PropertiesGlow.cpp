@@ -87,8 +87,8 @@ void TfrmPropertiesGlow::GetObjectsInfo()
 		CGlow *P		= dynamic_cast<CGlow*>(*_F); R_ASSERT(P);
         P->FillProp		(pref,values);
 	}
-    PropValue* T 		= PROP::FindProp(values,pref,"Texture"); R_ASSERT(T);
-    PropValue* S 		= PROP::FindProp(values,pref,"Shader"); R_ASSERT(S);
+    PropValue* T 		= PHelper.FindProp(values,pref,"Texture"); R_ASSERT(T);
+    PropValue* S 		= PHelper.FindProp(values,pref,"Shader"); R_ASSERT(S);
     T->OnChange			= OnShaderChange;
     S->OnChange			= OnShaderChange;
 	m_Props->AssignValues(values,true);

@@ -117,7 +117,7 @@ public:
     BOOL		UnlockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
 
-    void		RegisterAccess	(LPSTR fn, LPSTR start_msg);
+    void		RegisterAccess	(LPSTR fn, LPSTR start_msg, bool bLog=true);
     void		WriteAccessLog	(LPSTR fn, LPSTR start_msg);
 
     LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name);

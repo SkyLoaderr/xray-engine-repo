@@ -26,6 +26,7 @@ void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
+	m_SpotProps	= TProperties::CreateForm(paSpotProps,alClient,OnModified);
 	m_PointProps= TProperties::CreateForm(paPointProps,alClient,OnModified);
     m_SunProps 	= TProperties::CreateForm(tsSun,alClient,OnModified);
     m_Props		= TProperties::CreateForm(paProps,alClient,OnModified);
@@ -40,6 +41,7 @@ void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
     case mrCancel: 	CancelObjectsInfo();	break;
     default: THROW2("Invalid case");
     }
+    TProperties::DestroyForm(m_SpotProps);
     TProperties::DestroyForm(m_PointProps);
 	TProperties::DestroyForm(m_SunProps);
 	TProperties::DestroyForm(m_Props);
@@ -125,28 +127,32 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     switch(_L->m_D3D.type){
     case D3DLIGHT_POINT:   			pcType->ActivePage = tsPoint;   break;
     case D3DLIGHT_DIRECTIONAL: 		pcType->ActivePage = tsSun; 	break;
+    case D3DLIGHT_SPOT:   			pcType->ActivePage = tsSpot;	break;
     default: THROW;
     }
 
     PropValueVec values;
     PropValueVec sun_values;
     PropValueVec point_values;
+    PropValueVec spot_values;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L 							= (CLight *)(*_F);
         _L->FillProp				(GetClassNameByClassID(_L->ClassID),values);
         _L->FillSunProp				(GetClassNameByClassID(_L->ClassID),sun_values);
         _L->FillPointProp			(GetClassNameByClassID(_L->ClassID),point_values);
+        _L->FillSpotProp			(GetClassNameByClassID(_L->ClassID),spot_values);
 	}
-	flBrightness 					= (FloatValue*)PROP::FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
+	flBrightness 					= (FloatValue*)PHelper.FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
     flBrightness->OnChange			= OnBrightnessChange;
-    flPointRange					= (FloatValue*)PROP::FindProp(point_values,pref,"Range");					R_ASSERT(flPointRange);
-    flPointA0						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
-    flPointA1						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Linear"); 	 R_ASSERT(flPointA1);
-    flPointA2						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
+    flPointRange					= (FloatValue*)PHelper.FindProp(point_values,pref,"Range");						R_ASSERT(flPointRange);
+    flPointA0						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
+    flPointA1						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Linear"); 	 	R_ASSERT(flPointA1);
+    flPointA2						= (FloatValue*)PHelper.FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
     m_Props->AssignValues			(values,true);
     m_SunProps->AssignValues		(sun_values,true);
     m_PointProps->AssignValues		(point_values,true);
+    m_SpotProps->AssignValues		(spot_values,true);
 }
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
@@ -159,6 +165,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 		_L = (CLight *)(*_F);
         if  (pcType->ActivePage==tsSun)			_L->m_D3D.type = D3DLIGHT_DIRECTIONAL;
         else if (pcType->ActivePage==tsPoint)	_L->m_D3D.type = D3DLIGHT_POINT;
+        else if (pcType->ActivePage==tsSpot)	_L->m_D3D.type = D3DLIGHT_SPOT;
         _L->Update();
 	}
 
@@ -216,7 +223,7 @@ void __fastcall TfrmPropertiesLight::OnBrightnessChange(PropValue* sender)
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (m_SunProps->IsFocused()||m_Props->IsFocused()||m_PointProps->IsFocused()) return;
+	if (m_SunProps->IsFocused()||m_Props->IsFocused()||m_PointProps->IsFocused()||m_SpotProps->IsFocused()) return;
     if (Key==VK_ESCAPE) ebCancel->Click();
     if (Key==VK_RETURN) ebOk->Click();
 }
@@ -245,6 +252,7 @@ void __fastcall TfrmPropertiesLight::ebQLautoClick(TObject *Sender){
 void __fastcall TfrmPropertiesLight::fsStorageRestorePlacement(
       TObject *Sender)
 {
+	m_SpotProps->RestoreColumnWidth	(fsStorage);
 	m_PointProps->RestoreColumnWidth(fsStorage);
 	m_SunProps->RestoreColumnWidth	(fsStorage);
 	m_Props->RestoreColumnWidth		(fsStorage);
@@ -254,6 +262,7 @@ void __fastcall TfrmPropertiesLight::fsStorageRestorePlacement(
 void __fastcall TfrmPropertiesLight::fsStorageSavePlacement(
       TObject *Sender)
 {
+	m_SpotProps->SaveColumnWidth	(fsStorage);
 	m_PointProps->SaveColumnWidth	(fsStorage);
 	m_SunProps->SaveColumnWidth		(fsStorage);
 	m_Props->SaveColumnWidth		(fsStorage);

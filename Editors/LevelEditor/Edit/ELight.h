@@ -45,6 +45,9 @@ public:
     // flares
     CEditFlare		m_LensFlare;
 
+    // spot light
+    AnsiString		m_SpotAttTex;
+
     void			OnUpdateTransform();
 protected:                 
     virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
@@ -72,6 +75,7 @@ public:
 	virtual void	FillProp	(LPCSTR pref, PropValueVec& values);
 	void			FillSunProp	(LPCSTR pref, PropValueVec& values);
 	void			FillPointProp(LPCSTR pref, PropValueVec& values);
+	void			FillSpotProp(LPCSTR pref, PropValueVec& values);
 
     // render utility function
 	void 			Set			(int d3dindex);

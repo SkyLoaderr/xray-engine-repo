@@ -49,6 +49,8 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TPanel *paProps;
 	TPanel *paPointProps;
+	TTabSheet *tsSpot;
+	TPanel *paSpotProps;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);
@@ -70,6 +72,7 @@ private:	// User declarations
     void __fastcall	DrawGraph();
     void __fastcall DrawGraph(float r, float b, float b_max, float a0, float a1, float a2);
 
+    TProperties*	m_SpotProps;
     TProperties*	m_PointProps;
     TProperties*	m_SunProps;
     TProperties*	m_Props;

@@ -4,6 +4,8 @@
 #include "PropertiesListTypes.h"
 #include "xr_tokens.h"
 
+CPropHelper PHelper;
+
 AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
 // AnsiTextValue

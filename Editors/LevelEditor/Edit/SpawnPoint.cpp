@@ -300,10 +300,10 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropValueVec& values)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-            FILL_PROP_EX(values, PROP::PrepareKey(pref,"Respawn Point"), 	"Team",			&m_dwTeamID, PROP::CreateU32(0,64,1));
+            FILL_PROP_EX(values, PHelper.PrepareKey(pref,"Respawn Point"), 	"Team",			&m_dwTeamID, PHelper.CreateU32(0,64,1));
         }break;
         case ptAIPoint: 
-            FILL_PROP_EX(values, PROP::PrepareKey(pref,"AI Point"), 		"Reserved", "-", PROP::CreateMarker());
+            FILL_PROP_EX(values, PHelper.PrepareKey(pref,"AI Point"), 		"Reserved", "-", PHelper.CreateMarker());
         break;
         default: THROW;
         }

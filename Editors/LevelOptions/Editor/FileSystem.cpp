@@ -508,12 +508,12 @@ void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
 }
 
-void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg)
+void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
 	ini->WriteString("last_access",fn,m_CompName);
     CInifile::Destroy(ini);
-    WriteAccessLog(fn,start_msg);
+    if (bLog) 	WriteAccessLog(fn,start_msg);
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
@@ -541,7 +541,7 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
         	LPSTR lp_fn=fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
             R_ASSERT(I.second);
-            if (bLog) RegisterAccess(fname,"Lock");
+            RegisterAccess(fname,"Lock",bLog);
             bRes=true;
         }
     }

@@ -43,10 +43,10 @@ object frmPropertiesLight: TfrmPropertiesLight
       Top = 15
       Width = 298
       Height = 247
-      ActivePage = tsPoint
+      ActivePage = tsSpot
       Align = alClient
       Style = tsFlatButtons
-      TabIndex = 1
+      TabIndex = 2
       TabOrder = 0
       object tsSun: TTabSheet
         Caption = 'Sun'
@@ -158,6 +158,19 @@ object frmPropertiesLight: TfrmPropertiesLight
           Height = 109
           BevelOuter = bvNone
           TabOrder = 1
+        end
+      end
+      object tsSpot: TTabSheet
+        Caption = 'Spot'
+        ImageIndex = 2
+        object paSpotProps: TPanel
+          Left = 0
+          Top = 0
+          Width = 290
+          Height = 216
+          Align = alClient
+          BevelOuter = bvNone
+          TabOrder = 0
         end
       end
     end
