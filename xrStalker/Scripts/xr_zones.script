@@ -116,6 +116,10 @@ function zone_binder:reload( section )
 
 	local zone_ini = self.object:spawn_ini()
 
+	if not zone_ini then
+		return
+	end
+
 	if zone_ini:section_exist( "fractions1" ) then
 		-- если управление фракциями ещё не создано, то создать
 		if not z.zone_fractions then
