@@ -6,6 +6,15 @@
 
 CRender										RImplementation;
 
+// 
+LPCSTR					r2s(LPCSTR name)
+{
+	static string256	path;
+	if (RImplementation.b_nv3x)	strconcat(path,"r2_nv3x\\",name);
+	else						strconcat(path,"r2_r3xx\\",name);
+	return				path;
+}
+
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(CObject* parent)				{ return 0;								}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}

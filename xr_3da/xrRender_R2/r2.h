@@ -174,3 +174,7 @@ public:
 };
 
 extern CRender						RImplementation;
+
+// shader name prefixed with codepath
+// MT unsafe
+extern LPCSTR						r2s(LPCSTR name);

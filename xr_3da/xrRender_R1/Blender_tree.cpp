@@ -127,27 +127,27 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:		// deffer
-		if (oBlend.value)		C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_aref_flat");
-		else					C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_flat");
+		if (oBlend.value)		C.r2_Pass				(r2s("r2_deffer_tree_flat"),r2s("r2_deffer_base_aref_flat"));
+		else					C.r2_Pass				(r2s("r2_deffer_tree_flat"),r2s("r2_deffer_base_flat"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
 		break;
 	case 1:		// smap-direct
-		if (oBlend.value)		C.r2_Pass				("r2_shadow_direct_aref","r2_shadow_direct_aref");
-		else					C.r2_Pass				("r2_shadow_direct_base","r2_shadow_direct_base");
+		if (oBlend.value)		C.r2_Pass				(r2s("r2_shadow_direct_aref"),r2s("r2_shadow_direct_aref"));
+		else					C.r2_Pass				(r2s("r2_shadow_direct_base"),r2s("r2_shadow_direct_base"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
 		break;
 	case 2:		// smap-point
-		if (oBlend.value)		C.r2_Pass				("r2_shadow_point_aref","r2_shadow_point_aref");
-		else					C.r2_Pass				("r2_shadow_point_base","r2_shadow_point_base");
+		if (oBlend.value)		C.r2_Pass				(r2s("r2_shadow_point_aref"),r2s("r2_shadow_point_aref"));
+		else					C.r2_Pass				(r2s("r2_shadow_point_base"),r2s("r2_shadow_point_base"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_Constant			("light_position",	&RImplementation.Binders.l_position);
 		C.r2_End				();
 		break;
 	case 3:		// smap-spot
-		/*if (oBlend.value)		C.r2_Pass				("r2_shadow_point_aref","r2_shadow_point_aref");
-		else*/					C.r2_Pass				("r2_shadow_direct_base","r2_shadow_direct_base");
+		/*if (oBlend.value)		C.r2_Pass				(r2s("r2_shadow_point_aref"),r2s("r2_shadow_point_aref"));
+		else*/					C.r2_Pass				(r2s("r2_shadow_direct_base"),r2s("r2_shadow_direct_base"));
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
 		break;

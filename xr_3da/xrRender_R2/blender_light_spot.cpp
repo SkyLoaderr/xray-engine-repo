@@ -14,7 +14,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 	{
 	case 0:	// masking
 		/*
-		C.r2_Pass				("r2_accum_spot_mask",	"r2_accum_spot_mask",TRUE,FALSE);
+		C.r2_Pass				(r2s("r2_accum_spot_mask"),	r2s("r2_accum_spot_mask"),TRUE,FALSE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_s);
@@ -23,7 +23,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		*/
 	case 1:	// lighting/shadowing - front/back
 	case 2:
-		C.r2_Pass				("null",			"r2_accum_spot",FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r2_Pass				("null",			r2s("r2_accum_spot"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_s);
