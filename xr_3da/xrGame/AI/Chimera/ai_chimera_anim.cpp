@@ -94,25 +94,25 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 {
 	switch(motion) {
 		case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-		case eMotionLieIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 2;	 index3 = -1;	break;
+		case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
+		case eMotionStandTurnLeft:	index1 = 0; index2 = 4;	 index3 = -1;	break;
 		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
 		case eMotionWalkBkwd:		index1 = 0; index2 = 2;  index3 = -1;	break;
-		case eMotionWalkTurnLeft:	index1 = 0; index2 = 2;  index3 = -1;	break;
-		case eMotionWalkTurnRight:	index1 = 0; index2 = 2;  index3 = -1;	break;
+		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
+		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
 		case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
 		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
 		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
 		case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
-		case eMotionAttackRat:		index1 = 0; index2 = 9; index3 = -1;	break;
-		case eMotionFastTurnLeft:	index1 = 0; index2 = 7; index3 = -1;	break;
-		case eMotionEat:			index1 = 2; index2 = 0; index3 = -1;	break;
-		case eMotionDamage:			index1 = 0; index2 = 0; index3 = -1;	break;
-		case eMotionScared:			index1 = 0; index2 = 0; index3 = -1;	break;
-		case eMotionDie:			index1 = 0; index2 = 0; index3 = -1;	break;
-		case eMotionLieDown:		index1 = 0; index2 = 0; index3 = -1;	break;
-		case eMotionStandUp:		index1 = 2; index2 = 0; index3 = -1;	break;
+		case eMotionAttackRat:		index1 = 0; index2 = 9;	 index3 = -1;	break;
+		case eMotionFastTurnLeft:	index1 = 0; index2 = 8;  index3 = -1;	break;
+		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
+		case eMotionDamage:			index1 = 0; index2 = 0;  index3 = -1;	break;
+		case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+		case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
+		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
+		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
-		case eMotionLieDownEat:		index1 = 0; index2 = 0; index3 = -1;	break;
+		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
 	}
 }

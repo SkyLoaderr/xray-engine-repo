@@ -57,7 +57,8 @@ CChimeraRest::CChimeraRest(CAI_Chimera *p)
 {
 	pMonster = p;
 	Reset();
-	SetLowPriority();			// удиноразова€ утановка приоритета
+
+	SetLowPriority();			// единоразова€ утановка приоритета
 }
 
 
@@ -79,19 +80,21 @@ void CChimeraRest::Run()
 
 	// FSM 2-го уровн€
 	switch (m_tAction) {
-		case ACTION_WALK:
+		case ACTION_WALK:		// обход точек графа
+			pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
+
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
 			break;
-		case ACTION_STAND:
+		case ACTION_STAND:     // сто€ть, ничего не делать
 			pMonster->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
-		case ACTION_LIE:
+		case ACTION_LIE:		// лежать
 			pMonster->Motion.m_tParams.SetParams(eMotionLieIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
-		case ACTION_TURN:
+		case ACTION_TURN:		// повернутьс€ на 90 град.
 			pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfChimeraStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
@@ -107,26 +110,22 @@ void CChimeraRest::Replanning()
 	u32		rand_val = ::Random.randI(100);
 	u32		dwMinRand = 0, dwMaxRand = 0;
 
-	if (rand_val < 90) {	
+	if (rand_val < 50) {	
 		m_tAction = ACTION_WALK;
-
 		// ѕостроить путь обхода точек графа
 		pMonster->vfUpdateDetourPoint();	
 		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
-		pMonster->m_tPathType = ePathTypeStraight;
-		
-		pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
 
-	} else if (rand_val < 100) {	
+	} else if (rand_val < 60) {	
 		m_tAction = ACTION_STAND;
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
 
-	} else if (rand_val < 170) {	
+	} else if (rand_val < 70) {	
 		m_tAction = ACTION_LIE;
 		// проверить лежит уже?
 		if (pMonster->m_tAnim != eMotionLieIdle) {
@@ -141,8 +140,8 @@ void CChimeraRest::Replanning()
 		m_tAction = ACTION_TURN;
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
-		dwMinRand = 800;
-		dwMaxRand = 900;
+		dwMinRand = 1100;
+		dwMaxRand = 1200;
 
 	}
 	
@@ -185,6 +184,10 @@ void CChimeraAttack::Reset()
 	m_fDistMin			= 0.f;	
 	m_fDistMax			= 0.f;
 
+	m_dwFaceEnemyLastTime = 0;
+	m_dwFaceEnemyLastTimeInterval = 1200;
+	
+	nStartStop = nDoDamage = 0;
 }
 
 void CChimeraAttack::Init()
@@ -207,8 +210,9 @@ void CChimeraAttack::Init()
 		m_fDistMax = 2.8f;
 	} else {
 		m_fDistMin = 2.4f;
-		m_fDistMax = 5.8f;
+		m_fDistMax = 3.8f;
 	}
+	
 
 	// Test
 	Msg("_ Attack Init _");
@@ -216,6 +220,14 @@ void CChimeraAttack::Init()
 
 void CChimeraAttack::Run()
 {
+	// ≈сли враг изменилс€, инициализировать состо€ние
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pEnemy != ve.obj) {
+		Reset();
+		Init();
+	} 
+
 	// ¬ыбор состо€ни€
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
@@ -223,33 +235,66 @@ void CChimeraAttack::Run()
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
 		m_tAction = ((pEnemy->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
-	
+
+//	// вычисление частоты старт-стопов
+//	if (bAttackMelee && m_tAction == ACTION_RUN) {
+//		nStartStop++;
+//	}
+//	if (nStartStop > nDoDamage*2) {
+//		if (nDoDamage != 0) {
+//			nStartStop = nDoDamage = 0;
+//			m_fDistMin -= 0.3f;
+//		} else nDoDamage = 1;
+//	}
+
+
 	// ¬ыполнение состо€ни€
-	switch (m_tAction) {
+	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0, 300);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			if (m_bAttackRat)
+			float yaw, pitch;
 
-				pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			else 
-				pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
+			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
+				// —мотреть на врага 
+				m_dwFaceEnemyLastTime = m_dwCurrentTime;
+				pMonster->AI_Path.TravelPath.clear();
 				
-			pMonster->Motion.m_tTurn.Clear();
+				Fvector EnemyCenter;
+				Fvector MyCenter;
+
+				pEnemy->Center(EnemyCenter);
+				pMonster->Center(MyCenter);
+
+				EnemyCenter.sub(MyCenter);
+				EnemyCenter.getHP(yaw,pitch);
+				yaw *= -1;
+				yaw = angle_normalize(yaw);
+			} else yaw = pMonster->r_torso_target.yaw;
+
+			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,m_cfChimeraRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfChimeraRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);			
+			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfChimeraAttackFastRSpeed,m_cfChimeraRunAttackMinAngle);
+
+//			if (pMonster->AttackMelee(pEnemy,false)) {
+//				pMonster->DoDamage(pEnemy);
+//				nDoDamage++; 
+//			}
+
 			break;
 	}
 }
 
 bool CChimeraAttack::CheckCompletion() 
 {
-	// если враг убит
-	if (!pEnemy || !pEnemy->g_Alive()) return true;
+//// если враг убит
+//	if (!pEnemy || !pEnemy->g_Alive()) return true;
 	return false;
 }	
 
@@ -290,21 +335,25 @@ void CChimeraEat::Init()
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
 	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
 
-	SetInertia(20000);
 	// Test
 	Msg("_ Eat Init _");
-
 }
 
 void CChimeraEat::Run()
 {
+	// ≈сли новый труп, снова инициализировать состо€ние 
+	VisionElem ve;
+	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (pCorpse != ve.obj) {
+		Reset();
+		Init();
+	}
+	
 	bool bStartEating = (m_tAction == ACTION_RUN);
 
 	// ¬ыбор состо€ни€
-	if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) 
-		m_tAction = ACTION_EAT;
-	else 
-		m_tAction = ACTION_RUN;
+	if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_EAT;
+	else m_tAction = ACTION_RUN;
 
 	bStartEating = bStartEating && (m_tAction == ACTION_EAT);
 	if (bStartEating) {	// если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
@@ -315,10 +364,10 @@ void CChimeraEat::Run()
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {
-		case ACTION_RUN:
+		case ACTION_RUN:	// бежать к трупу
+
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->m_tPathType = ePathTypeStraight;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), false, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
@@ -340,8 +389,6 @@ void CChimeraEat::Run()
 
 bool CChimeraEat::CheckCompletion() 
 {
-	// если труп съеден || монстр достаточно сыт
-	if ((pCorpse->m_fFood <= 0.f) || (!IsInertia())) return true;
 	return false;
 }	
 
@@ -363,17 +410,12 @@ void CChimeraHide::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
-	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
-
-	pMonster->m_tPathType = ePathTypeStraight;
+	pMonster->SaveEnemy();
 
 	SetInertia(30000);
 
 	// Test
 	Msg("_ Hide Init _");
-
 }
 
 void CChimeraHide::Reset()
@@ -385,6 +427,14 @@ void CChimeraHide::Reset()
 
 void CChimeraHide::Run()
 {
+	Fvector EnemyPos;
+	if (m_tEnemy.obj) EnemyPos = m_tEnemy.obj->Position();
+	else EnemyPos = m_tEnemy.position;
+	
+	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
+	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorCover.m_fMinEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + 3.f;
+
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
 	// ”становить параметры движени€
@@ -394,7 +444,6 @@ void CChimeraHide::Run()
 
 bool CChimeraHide::CheckCompletion()
 {	
-	// если больша€ дистанци€ || враг забыт
 	return false;
 }
 
@@ -421,12 +470,9 @@ void CChimeraDetour::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->m_tPathType = ePathTypeStraight;
+	pMonster->SaveEnemy();
 
-	SetInertia(10000);
-	// Test
-	Msg("_ Detour Init _");
-
+	Msg(" DETOUR init!");
 }
 
 void CChimeraDetour::Run()
@@ -446,19 +492,16 @@ void CChimeraDetour::Run()
 	pMonster->m_tSelectorCover.m_fOptEnemyDistance = 15;
 	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + 3.f;
 	
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, false, 0);
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
 	// ”становить параметры движени€
 	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
 
-	SetNextThink(1000);
 }
 
 bool CChimeraDetour::CheckCompletion()
 {	
-	// если больша€ дистанци€ || враг забыт
-	if (!IsInertia()) return true;
 	return false;
 }
 
@@ -486,13 +529,9 @@ void CChimeraPanic::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-	pMonster->m_tPathType = ePathTypeStraight;
+	pMonster->SaveEnemy();
 
 	SetInertia(30000);
-
-	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
-	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
 	// Test
 	Msg("_ Panic Init _");
@@ -501,7 +540,17 @@ void CChimeraPanic::Init()
 
 void CChimeraPanic::Run()
 {
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, false, 0);
+	VisionElem tempEnemy;
+	if (pMonster->GetEnemy(tempEnemy)) {
+		m_tEnemy = tempEnemy;
+		SetInertia(20000);
+	}
+
+	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
+	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
 
 	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
@@ -509,13 +558,180 @@ void CChimeraPanic::Run()
 
 bool CChimeraPanic::CheckCompletion()
 {	
-	// если больша€ дистанци€ || враг забыт
-	if (!IsInertia()) return true;
 	return false;
 }
 
-//---------------------------------------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreDNE class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+CChimeraExploreDNE::CChimeraExploreDNE(CAI_Chimera *p)
+{
+	pMonster = p;
+	Reset();
+	SetHighPriority();
+}
+
+void CChimeraExploreDNE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+}
+
+void CChimeraExploreDNE::Init()
+{
+	// Test
+	Msg("_ ExploreDNE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	// проиграть анимацию испуга
+	float yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
+
+	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfChimeraScaredRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+	pMonster->Motion.m_tSeq.Add(eMotionScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tSeq.Switch();
+
+	SetInertia(20000);
+}
+
+void CChimeraExploreDNE::Run()
+{
+	// “икать нафиг
+	VisionElem tempEnemy;
+
+	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
+	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
+
+	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreDE class  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CChimeraExploreDE::CChimeraExploreDE(CAI_Chimera *p)
+{
+	pMonster = p;
+	Reset();
+	SetNormalPriority();
+}
+
+void CChimeraExploreDE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+	m_tAction = ACTION_LOOK_AROUND;
+}
+
+void CChimeraExploreDE::Init()
+{
+	// Test
+	Msg("_ ExploreDE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
+
+	// проиграть анимацию испуга
+	SetInertia(20000);
+}
+
+void CChimeraExploreDE::Run()
+{
+	// определение состо€ни€
+	if (m_tAction == ACTION_LOOK_AROUND && (m_dwStateStartedTime + 2000 < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+	
+	switch(m_tAction) {
+	case ACTION_LOOK_AROUND:
+		pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfChimeraStandTurnRSpeed, pMonster->r_torso_target.yaw, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+		pMonster->Motion.m_tTurn.Clear();
+		break;
+	case ACTION_HIDE:
+		pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
+		pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
+		pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
+
+		// ”становить параметры движени€
+		pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
+		break;
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreNDE class  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CChimeraExploreNDE::CChimeraExploreNDE(CAI_Chimera *p)
+{
+	pMonster = p;
+	Reset();
+	SetLowPriority();
+}
+
+void CChimeraExploreNDE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+}
+
+void CChimeraExploreNDE::Init()
+{
+	// Test
+	Msg("_ ExploreNDE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	// проиграть анимацию испуга
+	SetInertia(6000);
+}
+
+void CChimeraExploreNDE::Run()
+{
+	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0);
+
+	// ”становить параметры движени€
+	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CAI_Chimera state-specific functions
@@ -549,6 +765,15 @@ void CAI_Chimera::ControlAnimation()
 	} 
 
 	if (!Motion.m_tSeq.Playing) {
+		
+		// ≈сли нет пути и есть анимаци€ движени€, то играть анимацию отдыха
+		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) < AI_Path.TravelStart)) {
+			if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
+				m_tAnim = eMotionStandIdle;
+			}
+		}
+		
+		// если анимаци€ изменилась, переназначить анимацию
 		if (m_tAnimPrevFrame != m_tAnim) {
 			FORCE_ANIMATION_SELECT();
 		}	

@@ -53,11 +53,14 @@ private:
 			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
 			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
 			void			vfChooseNextGraphPoint			();
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			void			vfUpdateParameters				();
 			float			EnemyHeuristics					(CEntity* E);
+			
+			u32				m_dwPathBuiltLastTime;
+
 			AI_Chimera::EPathState			m_tPathState;
 			AI_Chimera::EPathType			m_tPathType;
 			AI_Chimera::EPathType			m_tPrevPathType;
@@ -158,7 +161,7 @@ private:
 	u32						m_dwPointCheckLastTime;
 	u32						m_dwPointCheckInterval;
 
-	/////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 	// Extended FSM
 	CChimeraMotion		Motion;
 	IState				*CurrentState;
@@ -168,19 +171,22 @@ private:
 	CChimeraHide		*stateHide;
 	CChimeraDetour		*stateDetour;
 	CChimeraPanic		*statePanic;
+	CChimeraExploreDNE	*stateExploreDNE;
+	CChimeraExploreDE	*stateExploreDE;
+	CChimeraExploreNDE	*stateExploreNDE;
 
 	friend	class CChimeraMotion;
-	friend	class CMotionParams;
-	friend  class CMotionTurn;
-	friend  class CChimeraAttack;
-	friend	class CMotionSequence;
 	
 	friend	class IState;
 	friend	class CChimeraRest;
+	friend  class CChimeraAttack;
 	friend	class CChimeraEat;
 	friend	class CChimeraHide;
 	friend	class CChimeraDetour;
 	friend	class CChimeraPanic;
+	friend	class CChimeraExploreDNE;
+	friend	class CChimeraExploreDE;
+	friend	class CChimeraExploreNDE;
 
 	void SetState(IState *pS, bool bSkipInertiaCheck = false);
 	void ControlAnimation();

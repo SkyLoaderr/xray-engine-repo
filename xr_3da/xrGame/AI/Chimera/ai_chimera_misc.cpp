@@ -135,12 +135,6 @@ void CAI_Chimera::vfUpdateParameters()
 				H = true;
 	}
 
-	// temp - גûדמהום
-//	if (ve.obj) {
-//		D = C = false;
-//		E = true;
-//	}
-	H = false;
 	H= true;
 }
 

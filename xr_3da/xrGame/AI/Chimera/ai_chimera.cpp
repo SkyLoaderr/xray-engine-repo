@@ -17,11 +17,14 @@ CAI_Chimera::CAI_Chimera()
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 	stateRest			= xr_new<CChimeraRest>		(this);
-	stateAttack			= xr_new<CChimeraAttack>	(this);
+	stateAttack			= xr_new<CChimeraAttack>		(this);
 	stateEat			= xr_new<CChimeraEat>		(this);
 	stateHide			= xr_new<CChimeraHide>		(this);
-	stateDetour			= xr_new<CChimeraDetour>	(this);
-	statePanic			= xr_new<CChimeraPanic>	(this);
+	stateDetour			= xr_new<CChimeraDetour>		(this);
+	statePanic			= xr_new<CChimeraPanic>		(this);
+	stateExploreDNE		= xr_new<CChimeraExploreDNE>	(this);
+	stateExploreDE		= xr_new<CChimeraExploreDE>	(this);
+	stateExploreNDE		= xr_new<CChimeraExploreNDE>	(this);
 	CurrentState		= stateRest;
 }
 
@@ -33,6 +36,9 @@ CAI_Chimera::~CAI_Chimera()
 	xr_delete(stateHide);
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
+	xr_delete(stateExploreDNE);
+	xr_delete(stateExploreDE);
+	xr_delete(stateExploreNDE);
 }
 
 void CAI_Chimera::Init()
@@ -61,9 +67,10 @@ void CAI_Chimera::Init()
 	
 	m_dwActionIndex					= 0;
 
-	InitMemory(5000,10000);
-	Motion.Init();
+	InitMemory						(10000,10000);
+	Motion.Init						();
 
+	m_dwPathBuiltLastTime			= 0;
 }
 
 void CAI_Chimera::Die()

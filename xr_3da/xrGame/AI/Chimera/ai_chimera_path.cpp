@@ -225,9 +225,16 @@ void CAI_Chimera::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Выбор точки, построение пути, построение TravelLine
-void CAI_Chimera::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
+void CAI_Chimera::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath, u32 TimeToRebuild)
 {
+	if (m_tPathState == ePathStateBuilt) {
+		if (m_dwPathBuiltLastTime + TimeToRebuild > m_dwCurrentUpdate) return;
+		m_tPathState = ePathStateSearchNode;
+	}
+	
 	INIT_SQUAD_AND_LEADER;
+
+	m_tPathType = ePathTypeStraight;
 
 	if (m_tPrevPathType != m_tPathType) {	// если изменен тип пути, то необходимо перестроить путь
 		m_tPrevPathType		= m_tPathType;
@@ -237,17 +244,8 @@ void CAI_Chimera::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 	if (tpNodeEvaluator)
 		vfInitSelector			(*tpNodeEvaluator,Squad);
 
-	
-	EPathType tPathType = m_tPathType;		// сохраняем текущий тип пути
-
-	if (m_tPathType == ePathTypeStraightCriteria) {
-		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
-													  		 m_tPathType = ePathTypeCriteria ;
-	}
 
 //	do {
-		
-
 		switch (m_tPathState) {
 			case ePathStateSearchNode : {
 				if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
@@ -276,13 +274,13 @@ void CAI_Chimera::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 										}
 			case ePathStateBuildTravelLine : {
 				vfBuildTravelLine(tpDestinationPosition);
-				m_tPathState = ePathStateSearchNode;
-				break;
+				m_tPathState = ePathStateBuilt;
+				m_dwPathBuiltLastTime = m_dwCurrentUpdate;	
+			break;
 											}
 		}	
 //	} while (m_tPathState != ePathStateBuilt);
 
-	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

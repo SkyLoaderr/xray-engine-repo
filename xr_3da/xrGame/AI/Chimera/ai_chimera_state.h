@@ -26,10 +26,12 @@ const float m_cfChimeraRunAttackTurnSpeed	=	3.5f;
 const float m_cfChimeraRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfChimeraRunRSpeed			=	PI_DIV_2;
 const float m_cfChimeraRunAttackMinAngle	=   PI_DIV_6;
+const float m_cfChimeraAttackFastRSpeed		=	3*PI_DIV_4;
 
+const float m_cfChimeraScaredRSpeed			=	3*PI_DIV_4;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingMotion class
+// CChimeraMotion class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CChimeraMotion {
@@ -50,8 +52,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CChimeraRest : public IState {
-	CAI_Chimera		*pMonster;
-
+	CAI_Chimera	*pMonster;
+	
 	enum {
 			ACTION_WALK,
 			ACTION_STAND,
@@ -81,7 +83,8 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CChimeraAttack : public IState {
-	CAI_Chimera		*pMonster;
+	
+	CAI_Chimera	*pMonster;
 
 	enum {
 		ACTION_RUN,
@@ -93,6 +96,12 @@ class CChimeraAttack : public IState {
 
 	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки
 	float			m_fDistMax;						//!< максимально допустимое рассто€ние дл€ аттаки
+
+	TTime			m_dwFaceEnemyLastTime;
+	TTime			m_dwFaceEnemyLastTimeInterval;
+
+	u32				nStartStop;						
+	u32				nDoDamage;						//!<  оличество нанесЄнных повреждений
 
 public:
 	CChimeraAttack(CAI_Chimera *p);
@@ -111,7 +120,8 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class CChimeraEat : public IState {
-	CAI_Chimera		*pMonster;
+	
+	CAI_Chimera	*pMonster;
 
 	enum {
 		ACTION_RUN,
@@ -143,11 +153,7 @@ class CChimeraHide : public IState {
 
 	VisionElem		m_tEnemy;
 
-	TTime			m_dwReplanTime;						//!< врем€ через, которое делать планирование
-	TTime			m_dwLastPlanTime;					//!< последнее врем€ планировани€
-
 	typedef IState inherited;
-
 public:
 					CChimeraHide			(CAI_Chimera *p);
 
@@ -198,4 +204,65 @@ public:
 private:
 	virtual void	Init			();
 	virtual void	Run				();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreDNE class	// Explore danger-non-expedient enemy
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CChimeraExploreDNE : public IState {
+	CAI_Chimera		*pMonster;
+	VisionElem		m_tEnemy;
+
+	typedef IState inherited;
+public:
+					CChimeraExploreDNE	(CAI_Chimera *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreDE class	// Explore danger-expedient enemy //  ѕосмотреть по сторонам, укрытьс€	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CChimeraExploreDE : public IState {
+	CAI_Chimera		*pMonster;
+	VisionElem		m_tEnemy;
+
+	enum {
+		ACTION_LOOK_AROUND,
+		ACTION_HIDE,
+	} m_tAction;
+
+
+	typedef IState inherited;
+public:
+					CChimeraExploreDE	(CAI_Chimera *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CChimeraExploreNDE class	// Explore non-danger enemy //  »дти в сторону звука	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CChimeraExploreNDE : public IState {
+	CAI_Chimera		*pMonster;
+	VisionElem		m_tEnemy;
+
+	typedef IState inherited;
+public:
+					CChimeraExploreNDE	(CAI_Chimera *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
 };

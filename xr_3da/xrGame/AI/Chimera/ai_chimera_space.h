@@ -30,7 +30,7 @@ namespace AI_Chimera {
 		ePathStateSearchNode = 0,
 		ePathStateBuildNodePath,
 		ePathStateBuildTravelLine,
-//		ePathStateBuilt
+		ePathStateBuilt
 	};
 
 	enum EPathType {
