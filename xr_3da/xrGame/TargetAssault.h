@@ -1,8 +1,7 @@
 #pragma once
 #include "customtarget.h"
 
-class CTargetAssault :
-	public CCustomTarget
+class CTargetAssault : public CCustomTarget
 {
 public:
 	CTargetAssault(void);

@@ -23,6 +23,8 @@ const DWORD    patch_frames = 50;
 #include "ActorAnimation.h"
 #include "xr_weapon_list.h"
 
+#include "targetassault.h"
+
 #define SND_STEP_TIME	1.f
 
 static Fbox		bbStandBox;
@@ -314,7 +316,6 @@ void CActor::feel_touch_new				(CObject* O)
 		if (T)	
 		{
 			// We have similar weapon - just get ammo out of it
-			Log			("~~~!!!~~~ CL: send 'GE_TRANSFER_AMMO'");
 			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
 			P.w_u16		(u16(W->ID()));
 			u_EventSend	(P);
@@ -329,7 +330,21 @@ void CActor::feel_touch_new				(CObject* O)
 		return;
 	}
 
-	// 
+	// Test for GAME-specific events
+	switch (GAME)
+	{
+	case GAME_ASSAULT:
+		{
+			CTargetAssault*		T	= dynamic_cast<CTargetAssault*>	(O);
+			if (g_Team() && T)
+			{
+				// Target acomplished
+				u_EventGen	(P,GEG_ASSAULT_ACOMPLISHED,ID());
+				u_EventSend	(P);
+				return;
+			}
+		}
+	}
 }
 
 void CActor::feel_touch_delete	(CObject* O)
