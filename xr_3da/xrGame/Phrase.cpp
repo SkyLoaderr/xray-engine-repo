@@ -18,3 +18,21 @@ CPhrase::CPhrase	(void)
 CPhrase::~CPhrase	(void)
 {
 }
+
+LPCSTR CPhrase::GetText		()	const			
+{
+	return m_text.GetBuf();
+}
+
+LPCSTR  CPhrase::GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const
+{
+	return m_PhraseScript.Text(pSpeaker1, pSpeaker2);
+}
+
+bool	CPhrase::IsDummy()		const
+{
+	if(xr_strlen(GetText()) == 0 && !m_PhraseScript.HasText())
+		return true;
+
+	return false;
+}

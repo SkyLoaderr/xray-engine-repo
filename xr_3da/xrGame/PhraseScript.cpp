@@ -25,6 +25,8 @@ CPhraseScript::~CPhraseScript	()
 //загрузка из XML файла
 void CPhraseScript::Load		(CUIXml& uiXml, XML_NODE* phrase_node)
 {
+	m_sScriptTextFunc = uiXml.Read(phrase_node, "script_text", 0, NULL);
+
 	LoadSequence(uiXml,phrase_node, "precondition",		m_Preconditions);
 	LoadSequence(uiXml,phrase_node, "action",			m_ScriptActions);
 	
@@ -141,4 +143,14 @@ void CPhraseScript::Action			(const CGameObject* pSpeakerGO1, const CGameObject*
 		R_ASSERT3(functor_exists, "Cannot find phrase dialog script function", *Actions()[i]);
 		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
 	}
+}
+
+LPCSTR  CPhraseScript::Text		(const CGameObject* pSpeakerGO1, const CGameObject* pSpeakerGO2) const 
+{
+	if(NULL == *m_sScriptTextFunc) return NULL;
+
+	luabind::functor<LPCSTR>	lua_function;
+	bool functor_exists = ai().script_engine().functor(*m_sScriptTextFunc ,lua_function);
+	R_ASSERT3(functor_exists, "Cannot find phrase dialog text script function", *m_sScriptTextFunc);
+	return lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
 }

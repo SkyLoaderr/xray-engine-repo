@@ -29,7 +29,9 @@ public:
 	//вызов с двум€ параметрами (dialog, phrase)
 	virtual bool Precondition	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
 	virtual void Action			(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
-
+	//текст из скриптовой функции
+	virtual LPCSTR Text			(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
+	virtual bool   HasText		() const {return *m_sScriptTextFunc!=NULL;}
 
 
 	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
@@ -46,6 +48,9 @@ protected:
 	//манипул€ции с информацией во врем€ вызовов Precondition и Action 
 	virtual bool CheckInfo		(const CInventoryOwner* pOwner) const;
 	virtual void TransferInfo	(const CInventoryOwner* pOwner) const;
+
+	//им€ скриптовой функции, котора€ возвращает какой-то текст
+	ref_str m_sScriptTextFunc;
 
 	//скриптовые действи€, которые активируетс€ после того как 
 	//говоритс€ фраза

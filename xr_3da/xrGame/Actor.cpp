@@ -343,6 +343,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 		m_saved_position.set(position_in_bone_space);
+		m_saved_hit_type=hit_type;
 	}
 
 

@@ -134,6 +134,17 @@ CPhraseDialogManager* CPhraseDialog::OurPartner	(CPhraseDialogManager* dialog_ma
 		return FirstSpeaker();
 }
 
+
+CPhraseDialogManager* CPhraseDialog::CurrentSpeaker()	const 
+{
+	return FirstIsSpeaking()?m_pSpeakerFirst:m_pSpeakerSecond;
+}
+CPhraseDialogManager* CPhraseDialog::OtherSpeaker	()	const 
+{
+	return (!FirstIsSpeaking())?m_pSpeakerFirst:m_pSpeakerSecond;
+}
+
+
 //предикат для сортировки вектора фраз
 static bool PhraseGoodwillPred(const CPhrase* phrase1, const CPhrase* phrase2)
 {
@@ -204,9 +215,20 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 
 LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
 {
+	
 	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(phrase_id);
 	VERIFY(phrase_vertex);
-	return phrase_vertex->data()->GetText();
+	
+	//если есть скриптовый текст, то он и будет задан
+	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(CurrentSpeaker());
+	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(OtherSpeaker());	
+	
+	LPCSTR script_text = NULL;
+	//если собеседники еще не заданы, то текст фразы запрашивается только для 
+	//обычный но не скриптовый
+	if(pSpeakerGO1 && pSpeakerGO2)
+		script_text = phrase_vertex->data()->GetScriptText(pSpeakerGO1, pSpeakerGO2);
+	return script_text?script_text:phrase_vertex->data()->GetText();
 }
 
 LPCSTR CPhraseDialog::DialogCaption()

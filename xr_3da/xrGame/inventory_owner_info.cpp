@@ -38,6 +38,16 @@ void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 }
 
 
+class CFindByIDPred
+{
+public:
+	CFindByIDPred(int element_to_find) {element = element_to_find;}
+	bool operator () (const INFO_DATA& data) const {return data.id == element;}
+private:
+	INFO_ID element;
+};
+
+
 void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 {
 	//«апустить скриптовый callback
@@ -58,10 +68,10 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 
 	//добавить запись в реестр
 	KNOWN_INFO_VECTOR& known_info = KnownInfo	();
-	KNOWN_INFO_VECTOR_IT it = std::find(known_info.begin(), known_info.end(), info_index);
+	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
 	if( known_info.end() == it)
 	{
-		known_info.push_back(info_index);
+		known_info.push_back(INFO_DATA(info_index, Level().GetGameTime()));
 	}
 }
 
@@ -70,9 +80,8 @@ void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
 	//удалить запись из реестра
 	KNOWN_INFO_VECTOR& known_info = KnownInfo	();
 
-	KNOWN_INFO_VECTOR_IT it = std::find(known_info.begin(), known_info.end(), info_index);
+	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
 	if( known_info.end() == it)	return;
-	
 	known_info.erase(it);
 }
 
@@ -95,7 +104,7 @@ bool CInventoryOwner::HasInfo(INFO_ID info_index) const
 	
 	if(!known_info) return false;
 
-	if(std::find(known_info->begin(), known_info->end(), info_index) == known_info->end())
+	if(std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_index)) == known_info->end())
 		return false;
 
 	return true;

@@ -138,7 +138,7 @@ void CUITalkWnd::UpdateQuestions()
 			if(m_pCurrentDialog->PhraseList().size() == 1)
 			{
 				CPhrase* phrase = m_pCurrentDialog->PhraseList().front();
-				if(xr_strlen(phrase->GetText()) == 0) SayPhrase(phrase->GetIndex());
+				if(phrase->IsDummy()) SayPhrase(phrase->GetIndex());
 			}
 
 			//выбор доступных фраз из активного диалога

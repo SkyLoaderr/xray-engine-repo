@@ -22,13 +22,16 @@ public:
 	CPhrase(void);
 	virtual ~CPhrase(void);
 
-	void			SetText		(LPCSTR text)		{m_text.SetText(text);}
-	LPCSTR			GetText		()	const			{return m_text.GetBuf();}
+	void			SetText			(LPCSTR text)		{m_text.SetText(text);}
+	LPCSTR			GetText			()	const;
+	LPCSTR			GetScriptText	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
 
 	void			SetIndex	(int index)			{m_iIndex = index;}
 	int				GetIndex	()	const			{return m_iIndex;}
 
 	int				GoodwillLevel()	const			{return m_iGoodwillLevel;}
+
+	bool			IsDummy()		const;
 
 protected:
 	//уникальный индекс в списке фраз диалога

@@ -92,6 +92,9 @@ public:
 	
 	IC CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
 	IC CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
+	   CPhraseDialogManager* CurrentSpeaker	()	const;
+	   CPhraseDialogManager* OtherSpeaker	()	const;
+
 
 	IC bool				FirstIsSpeaking	()	const {return m_bFirstIsSpeaking;}
 	IC bool				SecondIsSpeaking()	const {return !m_bFirstIsSpeaking;}
