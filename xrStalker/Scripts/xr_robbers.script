@@ -540,6 +540,7 @@ function action_robber_activity:fsm_step()
 				h.type = hit.wound
 				actor:hit(h)
 				--]]
+				printf("SLEEP")
 				actor:actor_sleep(10, 30)
 
 				self.state = state_last
