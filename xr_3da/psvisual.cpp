@@ -77,8 +77,8 @@ void CPSVisual::Update(DWORD dt)
 		float T 		= fTime-P.m_Time.start;
 		float k 		= T/(P.m_Time.end-P.m_Time.start);
 
-		PS::SimulatePosition(Pos, P,T,k);		bv_BBox.modify		(Pos);
-		PS::SimulateSize	(size,P,k,1-k);		if (sz>p_size)		p_size = sz;
+		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
 	bv_BBox.grow		(p_size);
 	bv_BBox.getsphere	(bv_Position,bv_Radius);
