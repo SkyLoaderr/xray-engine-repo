@@ -53,12 +53,9 @@ void CAI_Biting::Init()
 
 	flagEatNow						= false;
 
-	sndCurrent						= 0;
+	CMonsterSound::Init				(this);
 	
-
-	sndCurType						= sndPrevType = SND_TYPE_IDLE;
-	sndDelay						= 0;
-	sndTimeNextPlay					= 0;
+	AS_Init							();
 }
 
 void CAI_Biting::Die()
@@ -67,7 +64,7 @@ void CAI_Biting::Die()
 
 	DeinitMemory();
 
-	SET_SOUND_ONCE(SND_TYPE_DIE);
+	SetSoundOnce(SND_TYPE_DIE, m_dwCurrentTime);
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -155,13 +152,22 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
 	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
+	m_fCurMinAttackDist				= m_fMinAttackDist;
+
 	LoadSounds						(section);
 
-	m_fJumpSpeed					= pSettings->r_float(section,"jump_speed");		
+	m_dwIdleSndDelay				= pSettings->r_u32(section,"idle_sound_delay");
+	m_dwEatSndDelay					= pSettings->r_u32(section,"eat_sound_delay");
+	m_dwAttackSndDelay				= pSettings->r_u32(section,"attack_sound_delay");
+
+	m_fJumpFactor					= pSettings->r_float(section,"jump_factor");
 	m_fJumpMinDist					= pSettings->r_float(section,"jump_min_dist");		
 	m_fJumpMaxDist					= pSettings->r_float(section,"jump_max_dist");		
 	m_fJumpMaxAngle					= pSettings->r_float(section,"jump_max_angle");
+	m_dwDelayAfterJump				= pSettings->r_float(section,"jump_delay");
 
+	AS_Load							(section);
+	
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 }
@@ -271,12 +277,13 @@ void CAI_Biting::UpdateCL()
 	inherited::UpdateCL();
 	
 	// Проверка состояния анимации (атака)
-	if (g_Alive()) CheckAttackHit();
-
-	MotionMan.ProcessJump();
+	if (g_Alive()) {
+		
+		AA_CheckHit();
+		MotionMan.JMP_Update();
+	}
 
 	m_pPhysics_support->in_UpdateCL();
-
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
@@ -292,7 +299,7 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 
-	if (g_Alive()) SET_SOUND_ONCE(SND_TYPE_TAKE_DAMAGE);
+	if (g_Alive()) SetSoundOnce(SND_TYPE_TAKE_DAMAGE, m_dwCurrentTime);
 }
 
 CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)

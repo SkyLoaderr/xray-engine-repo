@@ -73,7 +73,7 @@ void CBitingPanic::Run()
 		}
 	}
 
-	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
+	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
 
 
 	if (!cur_pos.similar(prev_pos)) {

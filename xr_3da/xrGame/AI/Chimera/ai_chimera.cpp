@@ -153,7 +153,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 void CAI_Chimera::Jump(Fvector to_pos)
 {
 	// Select animation and time parameters for jump
-	MotionMan.CheckJump(Position(),to_pos);
+	//MotionMan.CheckJump(Position(),to_pos);
 }
 
 bool CAI_Chimera::CanJump() 

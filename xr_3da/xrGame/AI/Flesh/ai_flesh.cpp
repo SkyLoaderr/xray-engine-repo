@@ -141,19 +141,19 @@ void CAI_Flesh::StateSelector()
 	else						SetState(stateRest); 
 }
 
-void CAI_Flesh::CheckAttackHit()
+bool CAI_Flesh::AA_CheckHit()
 {
 	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();
 	SAttackAnimation apt_anim;
 
-	bool bGoodTime = MotionMan.AA_CheckTime(cur_time,apt_anim);
+	bool was_hit = false;	
 
-	if (bGoodTime) {
-		SET_SOUND_ONCE(SND_TYPE_ATTACK_HIT);
+	if (MotionMan.AA_CheckTime(cur_time,apt_anim)) {
+		SetSoundOnce(SND_TYPE_ATTACK_HIT, cur_time);
 
 		VisionElem ve;
-		if (!GetEnemy(ve)) return;
+		if (!GetEnemy(ve)) return false;
 		CObject *obj = dynamic_cast<CObject *>(ve.obj);
 
 		Fvector trace_from;
@@ -163,7 +163,7 @@ void CAI_Flesh::CheckAttackHit()
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
 			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);	// не нужна
-			MotionMan.AA_UpdateLastAttack(cur_time);
+			was_hit = true;
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
 			// TestIntersection конуса(копыта) и сферы(крысы)
@@ -172,7 +172,7 @@ void CAI_Flesh::CheckAttackHit()
 
 			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
 				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
-				MotionMan.AA_UpdateLastAttack(cur_time);
+				was_hit = true;
 			}
 
 		} else 	{ // нужна
@@ -182,14 +182,20 @@ void CAI_Flesh::CheckAttackHit()
 			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
 					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
-					MotionMan.AA_UpdateLastAttack(cur_time);
+					was_hit = true;
 				}
 			}
 			this->setEnabled(true);			
-
-			if (!ve.obj->g_Alive()) AddCorpse(ve);	
 		}
+		if (!ve.obj->g_Alive()) AddCorpse(ve);	
+		
+		if (AS_Active()) {
+			AS_Check(was_hit);
+		}
+
+		MotionMan.AA_UpdateLastAttack(cur_time);
 	}
+	return was_hit;
 }
 
 // возвращает true, если после выполнения этой функции необходимо прервать обработку

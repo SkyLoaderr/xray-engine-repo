@@ -13,6 +13,7 @@
 #include "ai_biting_anim.h"
 #include "ai_biting_state.h"
 #include "..\\ai_monster_mem.h"
+#include "..\\ai_monster_sound.h"
 
 
 // flags
@@ -29,7 +30,6 @@
 #define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
 
-#define SET_SOUND_ONCE(pmt) {SetSound(pmt, 0); ControlSound();}
 #define SOUND_ATTACK_HIT_MIN_DELAY 1000
 
 // logging
@@ -57,7 +57,8 @@ enum EBitingPathState {
 typedef VisionElem SEnemy;
 
 class CAI_Biting : public CCustomMonster, 
-				   public CMonsterMemory
+				   public CMonsterMemory,
+				   public CMonsterSound
 {
 
 public:
@@ -112,7 +113,7 @@ public:
 			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
-	virtual void			CheckAttackHit					();
+	virtual bool			AA_CheckHit						();
 
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 spec_params) {}
@@ -126,7 +127,7 @@ public:
 
 
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
-
+	virtual	bool			bfAssignAnimation				(CEntityAction	*tpEntityAction);
 
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
 	
@@ -226,6 +227,7 @@ public:
 	float					m_fMinAttackDist;
 	float					m_fMaxAttackDist;
 
+	float					m_fCurMinAttackDist;		// according to attack stops
 
 	// Biting-specific states
 	CBitingRest				*stateRest;
@@ -258,43 +260,64 @@ public:
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
 
-	// sound
-	enum ESoundType {
-		SND_TYPE_IDLE,
-		SND_TYPE_EAT,
-		SND_TYPE_ATTACK,
-		SND_TYPE_ATTACK_HIT,
-		SND_TYPE_TAKE_DAMAGE,
-		SND_TYPE_DIE
-	};	
-	
-	SOUND_VECTOR 			sndIdle;
-	SOUND_VECTOR 			sndEat;
-	SOUND_VECTOR 			sndAttack;
-	SOUND_VECTOR 			sndAttackHit;
-	SOUND_VECTOR 			sndTakeDamage;
-	SOUND_VECTOR			sndDie;
-
-	ref_sound				*sndCurrent;
-
-	ESoundType				sndCurType, sndPrevType;
-	TTime					sndDelay, sndTimeNextPlay;
-
-	void					LoadSounds	(LPCTSTR section);
-	void					PlaySound	(ESoundType sound_type);
-	void					SetSound	(ESoundType sound_type, TTime delay);
-	void					ControlSound();
-	virtual	void			OnSoundPlay() {};
-
-	TTime					m_dwIdleSndDelay;
-	TTime					m_dwEatSndDelay;
-	TTime					m_dwAttackSndDelay;
 
 	// -------------------------------------------------------
-	
 	// jumps
-	float					m_fJumpSpeed;		// скорость прыжка (м/с)
-	float					m_fJumpMinDist;		// мин. дистанция, возможная для прыжка
-	float					m_fJumpMaxDist;		// макс. дистанция возможная для прыжка
+	float					m_fJumpFactor;			// коэффициент-делитель времени прыжка
+	float					m_fJumpMinDist;			// мин. дистанция, возможная для прыжка
+	float					m_fJumpMaxDist;			// макс. дистанция возможная для прыжка
 	float					m_fJumpMaxAngle;		// макс. угол возможный для прыжка между монстром и целью
+	TTime					m_dwDelayAfterJump;		// задержка после прыжка
+
+	// -------------------------------------------------------
+	// attack stops
+	struct {
+		float	min_dist;		// load from ltx
+		float	step;			// load from ltx
+		bool	active;
+		bool	prev_prev_hit;
+		bool	prev_hit;
+	} m_tAttackStop;
+
+	void AS_Init	() {
+		m_tAttackStop.active	= false;
+	}
+	void AS_Load	(LPCSTR section) {
+		m_tAttackStop.min_dist	= pSettings->r_float(section,"as_min_dist");
+		m_tAttackStop.step		= pSettings->r_float(section,"as_step");
+	}
+	void AS_Start	() {
+		m_tAttackStop.active			= true;
+		m_tAttackStop.prev_prev_hit		= true;
+		m_tAttackStop.prev_hit			= true;
+	}
+	void AS_Stop	() {
+		m_tAttackStop.active			= false;
+		m_fCurMinAttackDist				= m_fMinAttackDist;
+	}
+	void AS_Check	(bool hit_success) {
+		if (!m_tAttackStop.active) return;
+		
+		m_tAttackStop.prev_prev_hit = m_tAttackStop.prev_hit;
+		m_tAttackStop.prev_hit		= hit_success;
+
+		if (!m_tAttackStop.prev_prev_hit && !m_tAttackStop.prev_prev_hit) {
+			if ((m_fCurMinAttackDist >= m_tAttackStop.min_dist) && (m_fCurMinAttackDist >= m_tAttackStop.min_dist + m_tAttackStop.step)) {
+				m_fCurMinAttackDist -= m_tAttackStop.step;
+			}
+		} else if (m_tAttackStop.prev_prev_hit && m_tAttackStop.prev_prev_hit) {
+			if ((m_fCurMinAttackDist < m_fMinAttackDist - m_tAttackStop.step)) {
+				m_fCurMinAttackDist += m_tAttackStop.step;
+			}
+		}
+	}
+
+	bool AS_Active() {return m_tAttackStop.active;}
+
+	// -------------------------------------------------------
+
+	TTime			m_dwIdleSndDelay;
+	TTime			m_dwEatSndDelay;
+	TTime			m_dwAttackSndDelay;
+
 };

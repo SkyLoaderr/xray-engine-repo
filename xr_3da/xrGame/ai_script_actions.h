@@ -99,6 +99,7 @@ public:
 	float							m_fSpeed;
 	bool							m_bRandom;
 	EInputKeys						m_tInputKeys;
+	MonsterSpace::EActState			m_tActState;
 
 							CMovementAction		()
 	{
@@ -160,6 +161,11 @@ public:
 	{
 		SetInputKeys		(tInputKeys);
 		SetSpeed			(fSpeed);
+	}
+							CMovementAction		(MonsterSpace::EActState tActState, const Fvector &tPosition)
+	{
+		SetAct				(tActState);
+		SetPosition			(tPosition);
 	}
 
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
@@ -226,6 +232,11 @@ public:
 		m_tGoalType			= eGoalTypeInput;
 		m_bCompleted		= false;
 	}
+			void			SetAct				(MonsterSpace::EActState tActState)
+	{
+		m_tActState = tActState;
+	}
+
 };
 
 class CWatchAction : public CAbstractAction {
@@ -290,7 +301,7 @@ public:
 		eGoalTypeMental,
 		eGoalTypeDummy = u32(-1),
 	};
-	string32						m_caAnimationToPlay;
+	string64						m_caAnimationToPlay;
 	MonsterSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
 

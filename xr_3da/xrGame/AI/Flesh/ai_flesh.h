@@ -12,7 +12,7 @@ public:
 	virtual	BOOL	net_Spawn				(LPVOID DC);
 	virtual void    StateSelector			();
 
-	virtual	void	CheckAttackHit			();
+	virtual	bool	AA_CheckHit				();
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
 

@@ -185,75 +185,6 @@ bool CAI_Biting::IsStanding (TTime time)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// Sounds
-void CAI_Biting::LoadSounds(LPCTSTR section)
-{
-	g_vfLoadSounds(sndIdle,			pSettings->r_string(section,"sound_idle"),			100);
-	g_vfLoadSounds(sndEat,			pSettings->r_string(section,"sound_eat"),			100);
-	g_vfLoadSounds(sndAttack,		pSettings->r_string(section,"sound_attack"),		100);
-	g_vfLoadSounds(sndAttackHit,	pSettings->r_string(section,"sound_attack_hit"),	100);
-	g_vfLoadSounds(sndTakeDamage,	pSettings->r_string(section,"sound_take_damage"),	100);
-	g_vfLoadSounds(sndDie,			pSettings->r_string(section,"sound_die"),			100);
-
-	m_dwIdleSndDelay		= pSettings->r_u32(section,"idle_sound_delay");
-	m_dwEatSndDelay			= pSettings->r_u32(section,"eat_sound_delay");
-	m_dwAttackSndDelay		= pSettings->r_u32(section,"attack_sound_delay");
-
-}
-
-void CAI_Biting::PlaySound(ESoundType sound_type)
-{
-	SOUND_VECTOR *sv = &sndIdle;
-
-	switch(sound_type) {
-		case SND_TYPE_IDLE:			sv = &sndIdle;			break;
-		case SND_TYPE_EAT:			sv = &sndEat;			break;
-		case SND_TYPE_ATTACK:		sv = &sndAttack;		break;
-		case SND_TYPE_ATTACK_HIT:	sv = &sndAttackHit;		break;
-		case SND_TYPE_TAKE_DAMAGE:	sv = &sndTakeDamage;	break;
-		case SND_TYPE_DIE:			sv = &sndDie;			break;
-	}
-
-	sndCurrent = &sv->at(::Random.randI((int)sv->size()));
-	if (!sndCurrent->feedback) sndCurrent->play_at_pos(this,eye_matrix.c);
-	
-	sndCurrent->feedback->set_volume(1.f);
-
-	sndDelay		= 0;
-	sndTimeNextPlay	= 0;
-	sndPrevType		= sndCurType;
-
-	OnSoundPlay();
-}
-
-void CAI_Biting::SetSound(ESoundType sound_type, TTime delay)
-{
-	sndCurType		= sound_type;
-	sndDelay		= delay;
-}
-
-void CAI_Biting::ControlSound()
-{
-	if (sndPrevType != sndCurType)  {
-		PlaySound(sndCurType);
-		return;
-	}
-
-	// если звук сейчас играет
-	if (sndCurrent && sndCurrent->feedback) return;
-
-	// не нужно играть никаких звуков
-	if (sndDelay == 0) return;
-
-	TTime cur_time = Level().timeServer();
-	if (sndTimeNextPlay == 0) sndTimeNextPlay = cur_time + ::Random.randI(sndDelay);
-	
-	if (sndTimeNextPlay < cur_time) {
-		PlaySound(sndCurType);
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
 // обработка скриптов
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 {
@@ -261,12 +192,23 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		return		(false);
 
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-
 	// build path to the point
-	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
-	//Msg("Biting use script...");
-	//MotionMan.ProcessAction();
 
+	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
+	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
+	MotionMan.ProcessAction();
 	return			(true);		
+}
+
+bool CAI_Biting::bfAssignAnimation (CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignAnimation(tpEntityAction))
+		return		(false);
+
+//	CAnimationAction &l_tAnimAction	 = tpEntityAction->m_tAnimationAction;
+//
+//	Msg("Biting use script...");
+//	MotionMan.SCRIPT_SetAnim(l_tAnimAction.m_caAnimationToPlay);
+	return true;
 }
 

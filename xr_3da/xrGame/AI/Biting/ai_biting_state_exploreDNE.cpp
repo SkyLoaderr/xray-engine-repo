@@ -104,5 +104,5 @@ void CBitingExploreDNE::Run()
 		break;
 	}
 	
-	pMonster->SetSound(pMonster->SND_TYPE_IDLE, pMonster->m_dwIdleSndDelay);
+	pMonster->SetSound(SND_TYPE_IDLE, pMonster->m_dwIdleSndDelay);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\\CustomMonster.h"
-
+#include "ai_monster_defs.h"
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MEMORY MANAGMENT
@@ -12,8 +12,6 @@
 #define TIME_TO_UPDATE_IGNORE_OBJECTS	3000
 
 #define DEFINE_THIS_CLASS_AS_POLYMORPHIC() virtual void __VirtualFunctionThatMakesClassPolymorphic() {}
-
-typedef u32 TTime;
 
 typedef enum {
 	WEAPON_SHOOTING = 0,

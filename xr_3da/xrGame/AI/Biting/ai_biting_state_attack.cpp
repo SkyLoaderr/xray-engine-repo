@@ -64,6 +64,9 @@ void CBitingAttack::Init()
 	flag_once_1	= false;
 
 	bEnemyDoesntSeeMe = ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME);
+
+	pMonster->AS_Start();
+
 	// Test
 	WRITE_TO_LOG("_ Attack Init _");
 }
@@ -74,6 +77,12 @@ void CBitingAttack::Run()
 //	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
+
+	// for attack stops needed
+	if (!m_bAttackRat) {
+		m_fDistMin = pMonster->m_fCurMinAttackDist;
+		m_fDistMax = pMonster->m_fMaxAttackDist - (pMonster->m_fMinAttackDist - pMonster->m_fCurMinAttackDist);
+	}
 
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
@@ -105,8 +114,10 @@ void CBitingAttack::Run()
 		}
 	}
 	
-	if (pMonster->CanJump())
-		pMonster->MotionMan.CheckJump(pMonster->Position(),m_tEnemy.obj->Position());
+	if (pMonster->CanJump() && pMonster->MotionMan.JMP_Check(pMonster->Position(),m_tEnemy.obj->Position()))
+		pMonster->MotionMan.JMP_Start(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+
+	if (pMonster->Movement.JumpState()) return;
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
@@ -114,14 +125,13 @@ void CBitingAttack::Run()
 
 	// Выполнение состояния
 	switch (m_tAction) {	
-		case ACTION_RUN:		// бежать на врага
+		case ACTION_RUN:		 // бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
 
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
-
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			// если враг крыса под монстром подпрыгнуть и убить
@@ -170,6 +180,12 @@ void CBitingAttack::Run()
 			break;
 	}
 
-	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
+	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
 }
 
+void CBitingAttack::Done()
+{
+	inherited::Done();
+
+	pMonster->AS_Stop();
+}

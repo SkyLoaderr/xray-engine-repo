@@ -461,6 +461,24 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("on",						int(CMovementAction::eInputKeyEngineOn)),
 				value("off",					int(CMovementAction::eInputKeyEngineOff))
 			]
+			.enum_("act")
+			[
+				value("act_stand_idle",					int(MonsterSpace::eActStandIdle)),
+				value("act_sit_idle",					int(MonsterSpace::eActSitIdle)),
+				value("act_lie_idle",					int(MonsterSpace::eActLieIdle)),
+				value("act_walk_fwd",					int(MonsterSpace::eActWalkFwd)),
+				value("act_walk_bkwd",					int(MonsterSpace::eActWalkBkwd)),
+				value("act_run",						int(MonsterSpace::eActRun)),
+				value("act_eat",						int(MonsterSpace::eActEat)),
+				value("act_sleep",						int(MonsterSpace::eActSleep)),
+				value("act_rest",						int(MonsterSpace::eActRest)),
+				value("act_drag",						int(MonsterSpace::eActDrag)),
+				value("act_attack",						int(MonsterSpace::eActAttack)),
+				value("act_steal",						int(MonsterSpace::eActSteal)),
+				value("act_look_around",				int(MonsterSpace::eActLookAround)),
+				value("act_jump",						int(MonsterSpace::eActJump))
+			]
+
 			.def(								constructor<>())
 			.def(								constructor<const CMovementAction::EInputKeys>())
 			.def(								constructor<const CMovementAction::EInputKeys, float>())
@@ -470,6 +488,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const Fvector &,float>())
+			.def(								constructor<MonsterSpace::EActState,const Fvector &>())
 			.def(								constructor<const Fvector &,float>())
 			.def("body",						&CMovementAction::SetBodyState)
 			.def("move",						&CMovementAction::SetMovementType)
@@ -477,7 +496,8 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object",						&CMovementAction::SetObjectToGo)
 			.def("patrol",						&CMovementAction::SetPatrolPath)
 			.def("position",					&CMovementAction::SetPosition)
-			.def("input",						&CMovementAction::SetInputKeys),
+			.def("input",						&CMovementAction::SetInputKeys)
+			.def("act",							&CMovementAction::SetAct),
 
 		class_<CWatchAction>("look")
 			.enum_("look")

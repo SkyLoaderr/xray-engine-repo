@@ -162,7 +162,7 @@ struct SMotionItem {
 
 #define CRITICAL_STAND_TIME 1400
 #define TIME_STAND_RECHECK  2000
-#define JUMP_MIN_TIME_DELAY 5000
+#define JUMP_MIN_TIME_DELAY 3000
 
 // Определение времени аттаки по анимации
 typedef struct {
@@ -183,14 +183,17 @@ typedef struct {
 } SAttackAnimation;
 
 // Определение параметров прыжка
+#define JUMP_PREPARE_USED	(1<<0)
+#define JUMP_FINISH_USED	(1<<1)
+
 struct SJump{
 	EMotionAnim	prepare;
 	EMotionAnim	jump;
 	EMotionAnim	finish;
 
 	float		trace_dist;
+	u8			states_used;
 };
-
 
 // Motion and animation management
 class CMotionManager {
@@ -237,12 +240,16 @@ class CMotionManager {
 	// Прыжки
 	struct {
 		bool				active;					// состояние прыжка активно?
+		JUMP_VECTOR			bank;					// параметры прыжков
+		SJump				*ptr_cur;				// текущий указатель
 		EJumpState			state;					// состояние прыжка
 		Fvector				target_pos;				// целевая позиция
 		TTime				started;				// время начала прыжка
-		JUMP_VECTOR			bank;					// массив параметров прыжков
-		SJump				*ptr_cur;				// указатель на текущий прыжок
 		TTime				next_time_allowed;		// время следующего разрешенного прыжка
+		EMotionAnim			saved_anim;				// анимация до прыжка
+		float				ph_time;				// расcчетное время прыжка
+		float				dest_yaw;				// угол вектора направления
+		CObject				*entity;				// указатель на объект-цель (0 - нет)
 	} jump;
 
 	// ----------------------------------------------
@@ -277,14 +284,17 @@ public:
 	//	Прыжки
 	// -------------------------------------
 	// Добавить в вектор параметры прыжка
-	void		AddJump					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, float td);
+	void		JMP_Add					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, u8 used, float td);
 	// Проверка на возможность прыжка
-	void		CheckJump				(Fvector from_pos, Fvector to_pos);
+	bool		JMP_Check				(Fvector from_pos, Fvector to_pos);
+	void		JMP_Start				(Fvector from_pos, Fvector to_pos, CObject *pE);
+	void		JMP_Finish				();
+	void		JMP_Exec				();
 	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
-	void		ProcessJump				();
-	void		NextJumpState			(bool bFinishJump);
-	void		SetJumpAnim				();
-
+	void		JMP_Update				();
+	bool		JMP_OnAnimEnd			();
+	void		JMP_SetAnim				();
+	
 
 	// -------------------------------------
 
@@ -337,6 +347,12 @@ private:
 
 	void		FixBadState				();
 	bool		IsMoving				();
+
+	// sctipting
+public:
+	
+	void		SCRIPT_SetAnim			(LPCSTR sa);
+
 };
 
 

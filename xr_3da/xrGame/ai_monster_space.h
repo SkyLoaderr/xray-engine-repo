@@ -85,4 +85,22 @@ namespace MonsterSpace {
 		eMentalStateZombied,
 		eMentalStateDummy = u32(-1),
 	};
+
+	enum EActState {
+		eActStandIdle = u32(0),
+		eActSitIdle,
+		eActLieIdle,
+		eActWalkFwd,
+		eActWalkBkwd,
+		eActRun,
+		eActEat,
+		eActSleep,
+		eActRest,
+		eActDrag,
+		eActAttack,
+		eActSteal,
+		eActLookAround,
+		eActJump,
+		eActNone	 = u32(-1),
+	};
 };

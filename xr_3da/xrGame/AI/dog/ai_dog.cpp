@@ -43,6 +43,9 @@ void CAI_Dog::Init()
 void CAI_Dog::StateSelector()
 {	
 	VisionElem ve;
+	
+	if (C || D || E || F) SetBkgndSound();
+	else SetBkgndSound(false);
 
 	if (C && H && I)			SetState(statePanic);
 	else if (C && H && !I)		SetState(statePanic);
@@ -146,7 +149,7 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.Reset();
 	Bones.AddBone(GetBone(bone1), AXIS_Y); 
 
-	MotionMan.AddJump(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish, 10.f);
+	MotionMan.JMP_Add(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish, 0, 10.f);
 
 	return TRUE;
 }

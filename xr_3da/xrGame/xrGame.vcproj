@@ -470,6 +470,9 @@
 							RelativePath=".\ai\ai_monster_bones.h">
 						</File>
 						<File
+							RelativePath=".\ai\ai_monster_defs.h">
+						</File>
+						<File
 							RelativePath=".\ai\ai_monster_invisibility.cpp">
 						</File>
 						<File
@@ -480,6 +483,12 @@
 						</File>
 						<File
 							RelativePath=".\Ai\ai_monster_mem.h">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_sound.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_sound.h">
 						</File>
 						<File
 							RelativePath=".\Ai\ai_monster_state.cpp">
