@@ -587,9 +587,9 @@ void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 }
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
 {
-if(pShell&&pShell->bActive)pShell->Enable();
-SetForce(force,axis_num);
-SetVelocity(velocity,axis_num);
+	if(pShell&&pShell->bActive)pShell->Enable();
+	SetForce(force,axis_num);
+	SetVelocity(velocity,axis_num);
 }
 
 void CPHJoint::GetMaxForceAndVelocity(float &force,float &velocity,int axis_num)
