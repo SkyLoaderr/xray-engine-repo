@@ -23,7 +23,7 @@ end
 
 function SPatrol:initialize ()
     reset_action (self.npc, self.script)
-    action (self.npc, move (move.standing, move.walk, move.line, self.way), anim (anim.free), 
+    action (self.npc, move (move.standing, move.walk, move.line, self.way), anim (anim.free), look (look.search), 
             object (self.npc:best_weapon (), object.activate), cond (cond.move_end))
     self.snd_time = game.time ()            
     self.anim_time = self.snd_time
