@@ -85,7 +85,7 @@ CEntityAction *CScriptMonster::GetCurrentAction()
 void __stdcall ActionCallback(CKinematics *tpKinematics)
 {
 	// sounds
-	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(tpKinematics->Update_Callback_Param);
+	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	if (!l_tpScriptMonster->GetCurrentAction()) {
 		tpKinematics->Callback(0,0);
 		return;

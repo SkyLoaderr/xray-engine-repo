@@ -335,8 +335,8 @@ public:
 		eGoalTypeSoundPosition,
 		eGoalTypeDummy = u32(-1),
 	};
-	string32						m_caSoundToPlay;
-	string32						m_caBoneName;
+	string256						m_caSoundToPlay;
+	string64						m_caBoneName;
 	EGoalType						m_tGoalType;
 	ref_sound						*m_tpSound;
 	bool							m_bLooped;
