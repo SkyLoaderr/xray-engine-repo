@@ -27,14 +27,14 @@ function add_member (obj)
     local zone_id = ini:r_u32 ("zone_spawner", "id")
     for a = 1, table.getn (zones), 1 do
         if zones[a].id == zone_id then
-           --printf ("Object %s attached to zone with id %d", obj:name (), zones[a].id)
+           printf ("Object %s attached to zone with id %d", obj:name (), zones[a].id)
            zones[a]:add_member (obj)
            return
         end
     end 
     
     local t = {id = obj.id, id_spawner = zone_id}
-    --printf ("Object %s include to temporary store", obj:name ())
+    printf ("Object %s include to temporary store", obj:name ())
     table.insert (temporary_store, t)
     this.switch_offline (t.id)
     
@@ -111,16 +111,18 @@ function zone_spawner:on_enter (obj)
     
     if founded == false then return end
     
+    self.activated = true
     if table.getn (self.members) == 0 then return end
     for a = 1, table.getn (self.members), 1 do
         this.switch_online (self.members[a].id)
     end
-    self.activated = true
 end
 -----------------------
 function zone_spawner:add_member (obj)
+    if self.activated == true then return end
     local t = {id = obj.id, id_spawner = zone_id}    
     table.insert (self.members, t)
+    this.switch_offline (obj.id)
 end
 -----------------------
 function zone_spawner:on_infoportion (info)
@@ -141,11 +143,11 @@ function zone_spawner:on_infoportion (info)
     
     if founded == false then return end
     
+    self.activated = true
     if table.getn (self.members) == 0 then return end
     for a = 1, table.getn (self.members), 1 do
         this.switch_online (self.members[a].id)
     end
-    self.activated = true
 end
 
 
