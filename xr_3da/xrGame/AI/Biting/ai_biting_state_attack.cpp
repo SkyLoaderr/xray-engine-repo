@@ -207,20 +207,25 @@ void CBitingAttack::Run()
 			
 			
 			if (bNeedRebuild) {
-				
-				// ¬раг далеко? —троить полный путь?
-				if (dist < BUILD_FULL_PATH_MAX_DIST) {
-					
-					// ѕолучить позицию, определЄнную груп. интелл.
-					CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
-					TTime			squad_ai_last_updated;
-					Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
+				// ѕолучить позицию, определЄнную груп. интелл.
+				CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
+				TTime			squad_ai_last_updated;
+				Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
 
-					// проверить выбрана ли нова€ позици€
-					if (squad_ai_last_updated !=0 ) {		// нова€ позици€
-						pMonster->Path_ApproachPoint(target);
-						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-					} else { 
+//				pMonster->set_dest_direction			(target);
+//				pMonster->set_use_dest_orientation	(true);
+//				
+//				pMonster->MoveToTarget(m_tEnemy.obj);
+					
+
+				// проверить выбрана ли нова€ позици€
+				if (squad_ai_last_updated !=0 ) {		// нова€ позици€
+					pMonster->Path_ApproachPoint(target);
+					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+				} else { 
+					
+					// ¬раг далеко? —троить полный путь?
+					if (dist < BUILD_FULL_PATH_MAX_DIST) {
 						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
 						
 						// использовать ли предсказание позиции
@@ -235,18 +240,15 @@ void CBitingAttack::Run()
 						} else {
 							pMonster->MoveToTarget(m_tEnemy.obj);
 						}
-						
+					} else { // построить не полный путь на рассто€ние BUILD_HALF_PATH_DIST
+						Fvector pos;
+						Fvector dir;
+						dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
+						dir.normalize();
+						pos.mad(pMonster->Position(), dir, BUILD_HALF_PATH_DIST);
+						pMonster->Path_ApproachPoint(pos);
+						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 					}
-				}
-				
-				else { // построить не полный путь на рассто€ние BUILD_HALF_PATH_DIST
-					Fvector pos;
-					Fvector dir;
-					dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
-					dir.normalize();
-					pos.mad(pMonster->Position(), dir, BUILD_HALF_PATH_DIST);
-					pMonster->Path_ApproachPoint(pos);
-					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 				}
 			}
 

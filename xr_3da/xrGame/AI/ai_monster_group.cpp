@@ -399,8 +399,8 @@ void CMonsterSquad::UpdateDecentralized()
 }
 
 struct sort_predicate {
-	CEntity *enemy;
-public:
+			CEntity *enemy;
+
 			sort_predicate	(CEntity *pEnemy) : enemy(pEnemy) {}
 
 	bool	operator()		(CEntity *pE1, CEntity *pE2) const
@@ -410,6 +410,7 @@ public:
 	};
 };
 
+
 struct _line {
 	CEntity *pE;
 	Fvector p_from;
@@ -417,11 +418,292 @@ struct _line {
 	bool	b_changed;
 };
 
+
+
+
 #define MIN_ANGLE						PI_DIV_6
 #define MAX_DIST_THRESHOLD				10.f
 #define CHANGE_DIR_ANGLE				PI_DIV_4
 #define MIN_DIST_TO_SKIP_ANGLE_CHECK	2.5f
 #define ENABLE_RANDOM_SIDE	
+
+
+struct _elem {
+	CEntity *pE;
+	Fvector p_from;
+	float	yaw;
+};
+
+
+
+//void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
+//{
+//	xr_vector<_elem>		lines;
+//	xr_vector<CEntity *>	members;
+//	_elem					first;
+//	_elem					last;
+//
+//
+//	// заполнить вектор npc
+//	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
+//		members.push_back(it->first);
+//	
+//	// сортировать по убыванию расстояния от npc до врага 
+//	std::sort(members.begin(), members.end(), sort_predicate(enemy));
+//
+//	if (members.empty()) return;
+//
+//	float delta_yaw = PI_MUL_2 / members.size();
+//
+//	// обработать ближний элемент
+//	first.pE		= members.back();
+//	first.p_from	= first.pE->Position();
+//	first.yaw		= 0;
+//	members.pop_back();
+//
+//	lines.push_back(first);
+//
+//	// обработать дальний элемент
+//	if (!members.empty()) {
+//		last.pE			= members[0];
+//		last.p_from		= last.pE->Position();
+//		last.yaw		= PI;
+//		members.erase	(members.begin());
+//
+//		lines.push_back(last);
+//	}
+//
+//	Fvector target_pos = enemy->Position();
+//	float	next_right_yaw	= delta_yaw;
+//	float	next_left_yaw	= delta_yaw;
+//
+//	// проходим с конца members в начало (начиная с наименьшего расстояния)
+//	while (!members.empty()) {
+//		CEntity *pCur;
+//
+//		pCur = members.back();
+//		members.pop_back();
+//		
+//		_elem cur_line;
+//		cur_line.p_from		= pCur->Position();
+//		cur_line.pE			= pCur;
+//
+//		// определить cur_line.yaw
+//		
+//		float h1,p1,h2,p2;
+//		Fvector dir;
+//		dir.sub(target_pos, first.p_from);
+//		dir.getHP(h1,p1);	
+//		dir.sub(target_pos, cur_line.p_from);
+//		dir.getHP(h2,p2);
+//	
+//		bool b_add_left = false;
+//		
+//		if (angle_normalize_signed(h2 - h1) > 0)  {		// right
+//			if ((next_right_yaw < PI) && !fsimilar(next_right_yaw, PI, PI/60.f)) b_add_left = false;
+//			else b_add_left = true;
+//		} else {										// left
+//			if ((next_left_yaw < PI) && !fsimilar(next_left_yaw, PI, PI/60.f)) b_add_left = true;
+//			else b_add_left = false;
+//		}
+//
+//		if (b_add_left) {
+//			cur_line.yaw = -next_left_yaw;
+//			next_left_yaw += delta_yaw;
+//		} else {
+//			cur_line.yaw = next_right_yaw;
+//			next_right_yaw += delta_yaw;
+//		}
+//
+//		lines.push_back(cur_line);
+//	}
+//
+//
+//	// Пройти по всем линиям и заполнить таргеты у npc
+//	TTime cur_time = Level().timeServer();
+//
+//	float first_h, first_p;
+//	Fvector d; d.sub(target_pos,lines[0].p_from);
+//	d.getHP(first_h, first_p);
+//
+//	for (u32 i = 0; i < lines.size(); i++){
+//		ENTITY_STATE_MAP_IT	it	= states.find(lines[i].pE);
+//		R_ASSERT(it != states.end());
+//		
+//		float h = first_h + lines[i].yaw;
+//		it->second.target_pos.setHP(angle_normalize(h),first_p);
+//	
+////		if (lines[i].b_changed) it->second.last_repos = cur_time;
+////		else it->second.last_repos = 0;
+//
+//	}
+//}
+
+
+
+
+
+//#define TEST_DELTA_ANGLE				PI_DIV_4
+//
+//
+//struct sort_predicate_temp {
+//
+//	bool	operator()		(_line &l1, _line &l2) const
+//	{
+//
+//		float h1,p1,h2,p2;
+//
+//		Fvector dir;
+//		dir.sub(l1.p_to, l1.p_from);
+//		dir.getHP(h1,p1);
+//
+//		dir.sub(l2.p_to, l2.p_from);
+//		dir.getHP(h2,p2);
+//
+//		return	(h2 > h1);
+//	};
+//
+//};
+//void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
+//{
+//	xr_vector<_line>		lines;
+//	xr_vector<CEntity *>	members;
+//
+//	xr_vector <_line>		temp_lines;
+//	temp_lines.reserve(members.size());
+//
+//	// заполнить вектор npc
+//	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
+//		members.push_back(it->first);
+//	
+//	// сортировать по убыванию расстояния от npc до врага 
+//	std::sort(members.begin(), members.end(), sort_predicate(enemy));
+//
+//	
+//	// проходим с конца members в начало (начиная с наименьшего расстояния)
+//	while (!members.empty()) {
+//		CEntity *pCur;
+//
+//		pCur = members.back();
+//		members.pop_back();
+//		
+//		// построить текущую линию
+//		_line cur_line;
+//		cur_line.p_from		= pCur->Position();
+//		cur_line.p_to		= enemy->Position();
+//		cur_line.pE			= pCur;
+//		cur_line.b_changed	= false;
+//		
+//		// Установить линии атаки
+//
+//		// Пройти по всем линиям и определить линию, с которой минимальный угол
+//		float	smallest_angle	= flt_max;
+//		u32		line_index	= u32(-1);
+//
+//		for (u32 i = 0; i < lines.size(); i++){
+//			Fvector dir1, dir2;
+//			dir1.sub(lines[i].p_to,		lines[i].p_from); 
+//			dir2.sub(cur_line.p_to,		cur_line.p_from);
+//			
+//			dir1.normalize();
+//			dir2.normalize();
+//
+//			// определить угол между 2-мя векторами
+//			float angle = acosf(dir1.dotproduct(dir2));
+//			
+//			if ((angle > MIN_ANGLE)) continue;
+//			else {
+//				if (angle < smallest_angle) {
+//					smallest_angle	= angle;
+//					line_index		= i;
+//				}
+//			}
+//		}
+//
+//
+//		if (line_index == u32(-1)) {	// нет слишком малых углов
+//			lines.push_back(cur_line);
+//		} else {
+//			_line nearest = lines[line_index];
+//			
+//			// сформировать новые параметры cur_line 
+//			Fvector cur_dir; 
+//			cur_dir.normalize();
+//			float c_h,c_p;
+//			cur_dir.getHP(c_h,c_p);
+//			
+//			temp_lines.clear();
+//			temp_lines = lines;
+//			std::sort(temp_lines.begin(), temp_lines.end(), sort_predicate_temp());
+//	
+//			// найти подходящий yaw 
+//
+//			if (temp_lines.size() == 1) {
+//				float h,p;
+//				cur_dir.sub(temp_lines[0].p_to, temp_lines[0].p_from);
+//				cur_dir.getHP(h,p);
+//				c_h = angle_normalize(h + TEST_DELTA_ANGLE * 2);
+//			} else {
+//				bool b_found = false;
+//				float prev_h,prev_p, next_h,next_p;
+//				
+//				for (u32 i = 0; i < (temp_lines.size()-1); i++) {
+//					cur_dir.sub(temp_lines[i].p_to,temp_lines[i].p_from);
+//					cur_dir.getHP(prev_h,prev_p);
+//					cur_dir.sub(temp_lines[i+1].p_to,temp_lines[i+1].p_from);
+//					cur_dir.getHP(next_h,next_p);
+//
+//					if (angle_difference(next_h,prev_h) > TEST_DELTA_ANGLE * 2) {
+//						c_h = angle_normalize(prev_h + TEST_DELTA_ANGLE);
+//						b_found = true;
+//						break;
+//					}
+//				}
+//
+//				if (!b_found) {
+//					// проверить первый и последний
+//					cur_dir.sub(temp_lines[0].p_to,temp_lines[0].p_from);
+//					cur_dir.getHP(prev_h,prev_p);
+//					cur_dir.sub(temp_lines[temp_lines.size()-1].p_to,temp_lines[temp_lines.size()-1].p_from);
+//					cur_dir.getHP(next_h,next_p);
+//
+//					if (angle_difference(next_h,prev_h) > TEST_DELTA_ANGLE * 2) {
+//						c_h = angle_normalize(next_h + TEST_DELTA_ANGLE);
+//						b_found = true;
+//					}
+//				}
+//			}
+//			
+//			cur_dir.setHP(c_h,c_p);
+//			cur_dir.invert();
+//
+//			cur_line.p_from.mad(cur_line.p_to,cur_dir,5.f);
+//			cur_line.b_changed	= true;
+//			lines.push_back(cur_line);
+//		}
+//	}
+//	
+//	// Пройти по всем линиям и заполнить таргеты у npc
+//	TTime cur_time = Level().timeServer();
+//
+//	for (u32 i = 0; i < lines.size(); i++){
+//		ENTITY_STATE_MAP_IT	it	= states.find(lines[i].pE);
+//		R_ASSERT(it != states.end());
+//		
+//		it->second.target_pos.sub(lines[i].p_to,lines[i].p_from);
+//
+//		if (lines[i].b_changed) it->second.last_repos = cur_time;
+//		else it->second.last_repos = 0;
+//
+//	}
+//}
+
+
+
+
+//*************************************************************************************
+//** Working version
+//*************************************************************************************
 
 void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
 {
