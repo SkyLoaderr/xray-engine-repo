@@ -181,6 +181,7 @@ xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	float					fArmor;
 	u8						weapon;
 	string64				caModel;
+							xrSE_Actor();
 xrSE_DECLARE_END
 
 //***** Enemy
