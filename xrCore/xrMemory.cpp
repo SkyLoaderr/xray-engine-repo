@@ -49,7 +49,7 @@ void	xrMemory::mem_compact	()
 	HeapCompact			(GetProcessHeap(),0);
 }
 
-u32		xrMemory::mem_usage		(u32* )
+u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 {
 	_HEAPINFO		hinfo;
 	int				heapstatus;

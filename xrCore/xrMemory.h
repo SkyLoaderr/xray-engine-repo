@@ -8,7 +8,7 @@ public:
 	void			_initialize	();
 	void			_destroy	();
 public:
-	u32				mem_usage	();
+	u32				mem_usage	(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void			mem_compact ();
 
 	void*			mem_alloc	(size_t	size							);
