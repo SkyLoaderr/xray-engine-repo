@@ -49,7 +49,6 @@ CCustomMonster::CCustomMonster()
 
 CCustomMonster::~CCustomMonster	()
 {
-
 }
 
 void CCustomMonster::Init()
