@@ -849,7 +849,7 @@ function action_security_stand:initialize ()
     self.object:set_body_state      (move.standing)
     self.object:set_sight           (look.point, self.a.path:point(1), 0)
     self.object:set_item          	(object.activate, self.object:best_weapon () )
-    self.object:mental_state		(anim.free)
+    self.object:set_mental_state 	(anim.free)
 
 	self.object:enable_talk			()
 
