@@ -20,9 +20,9 @@
 void CMovementControl::dbg_Draw()
 {
 	Fvector P2; P2.add(vPosition,vVelocity);
-	Device.Primitive.dbg_DrawLINE(precalc_identity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));
+	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));
 	P2.add(vPosition,vLastMotion);
-	Device.Primitive.dbg_DrawLINE(precalc_identity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
+	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
 
 	Fvector sz,C; aabb.getsize(sz); sz.div(2); aabb.getcenter(C);
 	Fmatrix	M = pObject->svXFORM();

@@ -169,11 +169,11 @@ void CAI_Space::Render()
 			v.set(P0.x-st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.direct(v4,PL.n,tt);	// minX,maxZ
 
 			// render quad
-			Device.Primitive.dbg_DrawTRI(precalc_identity,v3,v2,v1,CT);
-			Device.Primitive.dbg_DrawTRI(precalc_identity,v1,v4,v3,CT);
+			Device.Primitive.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
+			Device.Primitive.dbg_DrawTRI	(Fidentity,v1,v4,v3,CT);
 
 			// render center
-			Device.Primitive.dbg_DrawAABB(PC,sc,sc,sc,CC);
+			Device.Primitive.dbg_DrawAABB	(PC,sc,sc,sc,CC);
 
 			// render id
 			if (bHL) {

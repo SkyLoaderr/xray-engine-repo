@@ -67,7 +67,7 @@ void __stdcall CAI_Rat::SpinCallback(CBoneInstance* B)
 		spin.rotateZ(-fAlpha);
 	/**/
 	spin.setXYZ			(0, M->NET_Last.o_torso.pitch, 0);
-	B->mTransform.mul_43(spin);
+	B->mTransform.mulB_43(spin);
 }
 
 void CAI_Rat::Load(CInifile* ini, const char* section)

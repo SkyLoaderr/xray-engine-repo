@@ -43,7 +43,7 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	float				bone_pitch	= A->r_torso.pitch;
 	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
-	B->mTransform.mul_43(spin);
+	B->mTransform.mulB_43(spin);
 }
 
 void CActor::net_Export(NET_Packet* P)					// export to server

@@ -201,13 +201,13 @@ void CFlyer::Update(DWORD DT)
 
 	// рассчитаем крен по повороту
 	float bank = mYawVelocity/(mMaxYawVelocity*BANK_FACTOR);
-	bank*=fabsf(V.z*4.f);
+	bank*=fabsf		(V.z*4.f);
 	bank+=V.x;
 
 	// повернем модель
 	Q.rotationYawPitchRoll(bank,0,-(V.z));
 	Rbank.rotation	(Q);
-	mRotate.mul(Rbank);
+	mRotate.mulB	(Rbank);
 
 	// crop yaw angle
 	if (mYaw>PI_MUL_2){ 

@@ -29,9 +29,10 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 {
 	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
 
-	Fmatrix				spin;
-	spin.setXYZ			(0, M->NET_Last.o_torso.pitch, 0);
-	B->mTransform.mul_43(spin);
+	Fmatrix					spin;
+	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
+	B->mTransform.mulB_43	(spin);
+	
 /*
 	Fmatrix				spin;
 	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
@@ -468,7 +469,7 @@ void CCustomMonster::OnRender()
 	{
 		CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	}
 	}

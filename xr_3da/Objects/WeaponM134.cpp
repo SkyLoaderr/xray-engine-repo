@@ -25,7 +25,7 @@ void __stdcall CWeaponM134::RotateCallback_norm(CBoneInstance* B)
 	case 2: spin.rotateZ	(-W->fRotateAngle); break;
 	default: NODEFAULT;
 	}
-	xform.mul	(spin);
+	xform.mulB	(spin);
 }
 
 static float AA=0.f;
@@ -43,7 +43,7 @@ void __stdcall CWeaponM134::RotateCallback_hud(CBoneInstance* B)
 	default: NODEFAULT;
 	}
 
-	xform.mul	(spin);
+	xform.mulB	(spin);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -201,7 +201,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			R.crossproduct	(mR.j,D);		R.normalize_safe();
 			N.crossproduct	(D,R);			N.normalize_safe();
 			mRes.set		(R,N,D,mR.c);
-			mRes.mul2		(m_pParent->clXFORM());
+			mRes.mulA		(m_pParent->clXFORM());
 			UpdatePosition	(mRes);
 		}
 	}

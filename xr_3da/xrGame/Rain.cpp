@@ -317,7 +317,7 @@ void	CEffect_Rain::Render	()
 	
 	// Render if needed
 	if (vCount)	{
-		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
+		HW.pDevice->SetTransform	(D3DTS_WORLD, Fidentity.d3d());
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
 		Device.Shader.set_Shader	(SH_Rain);
 		Device.Primitive.Draw		(VS_Rain,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
