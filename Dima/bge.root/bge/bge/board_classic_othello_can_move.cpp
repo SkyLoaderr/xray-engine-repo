@@ -16,33 +16,25 @@ template <
 >
 IC	bool CBoardClassicOthello::can_move_in_direction(cell_type const *start_cell) const
 {
-    CBoardClassicOthello::cell_type const *current_cell = start_cell + increment;
-
-	if (*current_cell != opponent_color)
+	if (start_cell[1*increment] != opponent_color)
 		return			(false);
 
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		return			(*current_cell == _color_to_move);
+	if (start_cell[2*increment] != opponent_color)
+		return			(start_cell[2*increment] == _color_to_move);
 			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		return			(*current_cell == _color_to_move);
+	if (start_cell[3*increment] != opponent_color)
+		return			(start_cell[3*increment] == _color_to_move);
 			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		return			(*current_cell == _color_to_move);
+	if (start_cell[4*increment] != opponent_color)
+		return			(start_cell[4*increment] == _color_to_move);
 			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		return			(*current_cell == _color_to_move);
+	if (start_cell[5*increment] != opponent_color)
+		return			(start_cell[5*increment] == _color_to_move);
 			
-	current_cell		+= increment;
-	if (*current_cell != opponent_color)
-		return			(*current_cell == _color_to_move);
+	if (start_cell[6*increment] != opponent_color)
+		return			(start_cell[6*increment] == _color_to_move);
 			
-    current_cell		+= increment;
-	return				(*current_cell == _color_to_move);
+	return				(start_cell[7*increment] == _color_to_move);
 }
 	
 template <CBoardClassicOthello::cell_type _color_to_move>
