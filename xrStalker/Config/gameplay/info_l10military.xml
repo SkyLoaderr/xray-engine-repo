@@ -97,5 +97,14 @@
 	<info_portion id="mil_courier_death"></info_portion>
 	<info_portion id="mil_courier_meet"></info_portion>
 	<info_portion id="mil_courier_visited"></info_portion>
+
+	<!-- Диалог с поваром-->
+	<info_portion id="mil_cook_dialog1"></info_portion>
+	<info_portion id="mil_cook_dialog2"></info_portion>
+	<info_portion id="mil_cook_dialog3"></info_portion>
+	<info_portion id="mil_cook_dialog4"></info_portion>
+	<info_portion id="mil_cook_dialog5"></info_portion>
+	<info_portion id="mil_cook_dialog6"></info_portion>
+	
 	
 </game_information_portions>

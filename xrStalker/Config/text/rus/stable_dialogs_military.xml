@@ -18,6 +18,159 @@
     <string id="mil_bodyguard_dialog_5">
         <text>Ок.</text>
     </string>
+    <string id="mil_cook_common_100">
+        <text>Здравствуй.</text>
+    </string>
+    <string id="mil_cook_common_101">
+        <text>Ага.</text>
+    </string>
+    <string id="mil_cook_common_102">
+        <text>Прости?</text>
+    </string>
+    <string id="mil_cook_common_103">
+        <text>Не вопрос...</text>
+    </string>
+    <string id="mil_cook_common_104">
+        <text>Издеваешься ?</text>
+    </string>
+    <string id="mil_cook_common_105">
+        <text>О! Здорова!</text>
+    </string>
+    <string id="mil_cook_common_106">
+        <text>Здравствуй.</text>
+    </string>
+    <string id="mil_cook_common_107">
+        <text>Давненько не виделись...</text>
+    </string>
+    <string id="mil_cook_common_108">
+        <text>А мы знакомы ?</text>
+    </string>
+    <string id="mil_cook_common_109">
+        <text>Эээ... Н-да... Хехе...</text>
+    </string>
+    <string id="mil_cook_common_110">
+        <text>Честно говоря, я тебя раньше не встречал.</text>
+    </string>
+    <string id="mil_cook_common_111">
+        <text>Хмм... Тоже неплохо.</text>
+    </string>
+    <string id="mil_cook_common_200">
+        <text>А что это вообще за место ?</text>
+    </string>
+    <string id="mil_cook_common_201">
+        <text>Место... да ничего себе местечко...</text>
+    </string>
+    <string id="mil_cook_common_202">
+        <text>А конкретней?</text>
+    </string>
+    <string id="mil_cook_common_203">
+        <text>Та... ну ты вопросы задаёшь... хе...</text>
+    </string>
+    <string id="mil_cook_common_204">
+        <text>И всё таки?</text>
+    </string>
+    <string id="mil_cook_common_205">
+        <text>Эй... расслабся. Ща... Да нормальное место. Спокойное. Всё ништяк. Да... Ты расслабся. Не торопись.</text>
+    </string>
+    <string id="mil_cook_common_300">
+        <text>А ты кто, вообще?</text>
+    </string>
+    <string id="mil_cook_common_301">
+        <text>Я ?</text>
+    </string>
+    <string id="mil_cook_common_302">
+        <text>Ну не я же.</text>
+    </string>
+    <string id="mil_cook_common_303">
+        <text>Я. Ну я. Еду готовлю... Вот. Повар там, мастер ножа и приправ... Петрушка там, укроп, зелень всякая, ну трава, в общем. Хлеб, мясо, сыр - ага?</text>
+    </string>
+    <string id="mil_cook_common_304">
+        <text>Ясно.</text>
+    </string>
+    <string id="mil_cook_common_305">
+        <text>Консерва разная... сгущёнка, тушёнка, гы, быки в помидорах... хехе.</text>
+    </string>
+    <string id="mil_cook_common_306">
+        <text>Я понял.</text>
+    </string>
+    <string id="mil_cook_common_307">
+        <text>Батон... кетчуп... яйца... хлеб... батон... сыр. Ну там. Сосиски, колбаса, дичь неживая...</text>
+    </string>
+    <string id="mil_cook_common_308">
+        <text>Всё! Я понял! Как хоть тебя зовут?</text>
+    </string>
+    <string id="mil_cook_common_309">
+        <text>Хмм... А! Славик меня зовут... это за этикетку... Не! за передник... есть у меня белый передник...  А вообще да... Да ты садись... Не маячь... Хе... Ещё снайпер подстрелит... хмм... хе...</text>
+    </string>
+    <string id="mil_cook_common_400">
+        <text>Тут вроде деревня рядом?</text>
+    </string>
+    <string id="mil_cook_common_401">
+        <text>Ну.</text>
+    </string>
+    <string id="mil_cook_common_402">
+        <text>Что "ну"?</text>
+    </string>
+    <string id="mil_cook_common_403">
+        <text>Хмм?</text>
+    </string>
+    <string id="mil_cook_common_404">
+        <text>Деревня.</text>
+    </string>
+    <string id="mil_cook_common_405">
+        <text>Ааа... Да, есть деревня. Продукты там... сгущёнка...</text>
+    </string>
+    <string id="mil_cook_common_406">
+        <text>Как туда добраться?</text>
+    </string>
+    <string id="mil_cook_common_407">
+        <text>Хмм. Ща подумаю...  Угу... Не, слушай, оно тебе надо? Расслабся... Садись... Покурим, посидим, угу?</text>
+    </string>
+    <string id="mil_cook_common_408">
+        <text>Мне надо в деревню.</text>
+    </string>
+    <string id="mil_cook_common_409">
+        <text>Лады... вот щас посидим, да... покурим... и нормально, да... я тебя отведу. Не вопрос.</text>
+    </string>
+    <string id="mil_cook_common_410">
+        <text>Не надо. Просто расскажи, как туда добраться.</text>
+    </string>
+    <string id="mil_cook_common_411">
+        <text>Ага... Не... Ты задачи задаёшь... Ща нормально вместе дойдём. Ща, вот посидим...</text>
+    </string>
+    <string id="mil_cook_common_500">
+        <text>Слушай, не знаешь где здесь можно разжиться снаряжением?</text>
+    </string>
+    <string id="mil_cook_common_501">
+        <text>Снаряжением? Шифры... шифры...</text>
+    </string>
+    <string id="mil_cook_common_502">
+        <text>Да, снаряжение. Оружие? Может быть артефакты?</text>
+    </string>
+    <string id="mil_cook_common_503">
+        <text>Оружие... не... нож мой... Хочешь нож? Ага. Артефакты. А нафига? Не напрягайся.  Давай садись. Покурим. Поговорим... про артефакты...</text>
+    </string>
+    <string id="mil_cook_common_504">
+        <text>Где в округе можно найти артефакты?</text>
+    </string>
+    <string id="mil_cook_common_505">
+        <text>Да не вопрос. Есть артефакты. Болото радиоактивное знаешь? Не? Пофиг. Там. В смысле артефакты. Там.\nА вообще, ты не суетись. Не напрягай. Хм? Артефакты... хехе... артефакты-артефакты...</text>
+    </string>
+    <string id="mil_cook_common_600">
+        <text>Ладно. До свидания.</text>
+    </string>
+    <string id="mil_cook_common_601">
+        <text>Угу... ты садись.</text>
+    </string>
+    <string id="mil_cook_common_602">
+        <text>Я ухожу.</text>
+    </string>
+    <string id="mil_cook_common_603">
+        <text>А? Не вопрос... расслабся... Ага? Закрой за мной дверь... я ухожу...</text>
+    </string>
+    <string id="mil_cook_dialog_0">
+        <text>Да ты присаживайся... Посидим...</text>
+    </string>
     <string id="mil_dolg_dialog_1000">
         <text>Привет. Что делаем ?</text>
     </string>
