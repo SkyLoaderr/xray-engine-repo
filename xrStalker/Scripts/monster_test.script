@@ -12,33 +12,46 @@ function main()
 	printf	("Taking Script");
 
 	local	 monster = get_level_object("trader");
+	local	 monster2 = get_level_object("monster");
 	wait	(5000);
 	
 	printf	("Taking Script");
 	
 	local	stage = 0;
 	
-	monster:script( true, script_name() )
+	//monster:script( true, script_name() )
+	
+	monster2:script( true, script_name() )
 	
 	while ( true ) do
-
-		if( monster:action() == nil ) then
-			monster:script	( false,	script_name() );
-			wait			(1000);
-			monster:script	( true,	script_name() );
-
-			if(stage == 0) then
-				this.action_one( monster );
-				stage = 1;
-			else 
-				
-				this.action_two( monster );
-				stage = 0;
-			end
+		action( monster2, anim(anim.stand_idle, 0), cond(cond.anim_end))
+		while monster2:action() do
+			wait()
 		end
-		wait();
-	 end
+	end
 	
-	monster:script( false, script_name() )
+
+
+	//while ( true ) do
+	//	reset_action(monster, script_name())
+
+	//	if(stage == 0) then
+	//		action_one( monster );
+	//		stage = 1;
+	//	else 
+	//		action_two( monster );
+	//		stage = 0;
+	//	end
+
+	//	while monster:action() do
+	//		wait()
+	//	end
+	//	
+	//	monster:script( false, script_name() )
+
+	//	wait(1000)
+	// end
+	//
+	//monster:script( false, script_name() )
 	
 end
