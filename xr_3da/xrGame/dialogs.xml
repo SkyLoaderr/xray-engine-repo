@@ -2,6 +2,95 @@
 
 <game_dialogs>
 
+<dialog id="trader_job">
+		<precondition>trader_job.is_trader</precondition>
+		<phrase_list>
+			<phrase id="0">
+				<text>Eaeay o oaay anou ?aaioa?</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>Anou ianeieuei caaaiee: \n?uee n aeieiinoa \naue?anou eia-?oi n Aa?ii?iia \ne ee?ii aey iaiy yyy... nae?aoiay ?aaioaiea\nIo a ii oiao ii?aou i?eoa?aieou ia?o-o?ieeo a?oaoaeoia</text>
+				<next>2</next>
+				<next>3</next>
+				<next>4</next>
+				<next>14</next>
+				<next>15</next>
+			</phrase>
+			<phrase id="2">
+				<dont_has_info>trader_start2</dont_has_info>
+				<dont_has_info>job_box_finished</dont_has_info>
+				<text>? aicuionu ca yuee n aeieiinoa.</text>
+				<next>5</next>
+			</phrase>
+			<phrase id="3">
+				<dont_has_info>trader_start4</dont_has_info>
+				<dont_has_info>job_box02_finished</dont_has_info>
+				<text>? aicuionu aue?anou eia-?oi n Aa?ii?iia.</text>
+				<next>6</next>
+			</phrase>
+			<phrase id="4">
+				<dont_has_info>trader_start5</dont_has_info>
+				<text>?oi ca nae?aoiay ?aaioa?</text>
+				<next>7</next>
+			</phrase>
+			<phrase id="5">
+				<text>Iaai i?iieeioou ia aeieiino e oeoi oe?anou yuee, \n oae ?oia ieeoi ia caiaoee.</text>
+				<next>8</next>
+				<next>9</next>
+			</phrase>
+			<phrase id="6">
+				<text>Ia Aa?ii?iia ?oi-oi ?aneiiaee aiaiiua noaeea?u... \n I?eiane iia yoi e y oaaa oi?ioi caiea?o.</text>
+				<next>10</next>
+				<next>9</next>
+			</phrase>
+			<phrase id="7">
+				<text>Ni iiie naycaeny iie noa?ue ciaeiiue noaeea? aaoa?ai... \nIi ?aneiiae eie-eaeo? eio?ano?uo? iaiy eioi?iaoe?... \nOae aio, ano?aouny n iei e caaa?e aa... Eiaaa i?eianaou aa iia, \ny oaaa ioiea?o... \n \nE ?oou ia caaue, ii ii?ao ciaou i a?oiie?iaea No?aeea, \n ni?ine aai... ii iiiai ?aai ciaao.</text>
+				<next>11</next>
+				<next>9</next>
+			</phrase>
+
+			<phrase id="8">
+				<text>Ie. ? i?eiano yuee.</text>
+				<give_info>trader_start2</give_info>
+				<next>12</next>
+			</phrase>
+			<phrase id="9">
+				<text>Iao, ia aoao a?aouny.</text>
+				<next>13</next>
+			</phrase>
+			<phrase id="10">
+				<text>Ie. ? i?eiano oi, ?oi ?aneiiaee aiaiiua noaeea?u.</text>
+				<give_info>trader_start4</give_info>
+				<next>12</next>
+			</phrase>
+			<phrase id="11">
+				<text>Oi?ioi... ? aa?onu ano?aoeouny ni noaeea?ii.</text>
+				<give_info>trader_start5</give_info>
+				<next>12</next>
+			</phrase>
+			<phrase id="12">
+				<text>? caiea?o, eiaaa ou auiieieou caaaiea.</text>
+			</phrase>
+			<phrase id="13">
+				<text>Io eae ciaaou.</text>
+			</phrase>
+			<phrase id="14">
+				<text>?oi-oi y ia?aaoiae ?aaioaou.</text>
+				<next>13</next>
+			</phrase>
+			<phrase id="15">
+				<text>?oi-oi ca a?oaoaeou?.</text>
+				<next>16</next>
+			</phrase>
+			<phrase id="16">
+				<text>Iia ooo i?ineee ainoaou, iea?o aaaia iau?iiai.</text>
+				<script_text>trader_job.artefacts_task_text</script_text>
+			</phrase>
+
+		</phrase_list>
+	</dialog>
+	
     <dialog id="trader_talk_about">
     <precondition>trader_job.is_trader</precondition>
         <has_info>actor_start</has_info>
