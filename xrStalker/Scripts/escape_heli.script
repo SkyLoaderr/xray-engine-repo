@@ -118,8 +118,8 @@ function main()
 		heli_mgr:update()
 		wait()
 
-		if actor:has_info( "tutorial_artefact_gain" ) then
-			printf( "tutorial_artefact_gain" )
-		end
+--		if actor:has_info( "tutorial_artefact_gain" ) then
+--			printf( "tutorial_artefact_gain" )
+--		end
 	end
 end
