@@ -166,6 +166,21 @@ private:
 
 		return(false);
 	};
+
+	IC		float		ffSubAngles(float a, float b)
+	{
+		//a = normalize_angle_signed(a);
+		//b = normalize_angle_signed(b);
+		float c = a - b;
+		if (c > PI)
+			return(c - PI_MUL_2);
+		else
+			if (c < -PI)
+				return(c + PI_MUL_2);
+			else
+				return(c);
+	};
+
 public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker						();

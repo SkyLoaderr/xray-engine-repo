@@ -215,24 +215,20 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
 	// updating torso angles
-	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt,true);
+	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
 	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
 	
 	// updating head angles
-	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,r_head_speed,true);
+	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,r_head_speed);
 	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
 
 	// normalizing torso angles
 	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
 	r_torso_current.pitch	= angle_normalize_signed	(r_torso_current.pitch);
-	r_torso_target.yaw		= angle_normalize_signed	(r_torso_target.yaw);
-	r_torso_target.pitch	= angle_normalize_signed	(r_torso_target.pitch);
 	
 	// normalizing head angles
 	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
-	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
-	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 	
 	// updating rotation matrix
 	mRotate.setHPB			(-NET_Last.o_model,0,0);
