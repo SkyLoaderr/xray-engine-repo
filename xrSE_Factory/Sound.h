@@ -237,6 +237,7 @@ public:
 
 	virtual void					set_volume				( float f=1.f )																			= 0;
 	virtual void					set_geometry_env		( IReader* I )																			= 0;
+	virtual void					set_geometry_som		( IReader* I )																			= 0;
 	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
 	virtual void					set_handler				( sound_event* E )																		= 0;
 	//@}
