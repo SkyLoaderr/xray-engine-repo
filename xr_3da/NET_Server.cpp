@@ -248,6 +248,7 @@ void IPureServer::Disconnect	()
     _RELEASE	(NET);
 }
 
+#define BANNED_STR	"Player Banned by Server!"
 HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 {
     // HRESULT     hr = S_OK;
@@ -369,7 +370,9 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			GetClientAddress(msg->pAddressPlayer, HAddr);
 
 			if (GetBannedClient(HAddr)) 
-			{				
+			{
+				msg->dwReplyDataSize = xr_strlen(BANNED_STR);
+				msg->pvReplyData = BANNED_STR;
 				return S_FALSE;
 			};
 		}break;

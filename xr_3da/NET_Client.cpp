@@ -247,7 +247,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			NULL,					// pvAsyncHandle
 			DPNCONNECT_SYNC);		// dwFlags
 
-		R_CHK(res);
+//		R_CHK(res);
 		if (res != S_OK) return FALSE;
 
 		// Create ONE node
@@ -318,7 +318,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			NULL,					// pvAsyncContext
 			NULL,					// pvAsyncHandle
 			DPNCONNECT_SYNC);		// dwFlags
-		R_CHK(res);		
+//		R_CHK(res);		
 		net_csEnumeration.Leave		();
 		_RELEASE					(pHostAddress);
 		if (res != S_OK) return FALSE;
@@ -484,14 +484,25 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 		break;
 	default:
 		{
-#if	0
-			LPSTR	msg;	
+#if	1
+			LPSTR	msg = "";	
 			switch (dwMessageType)
 			{
 			case DPN_MSGID_ADD_PLAYER_TO_GROUP:			msg = "DPN_MSGID_ADD_PLAYER_TO_GROUP"; break;
 			case DPN_MSGID_ASYNC_OP_COMPLETE:			msg = "DPN_MSGID_ASYNC_OP_COMPLETE"; break;
 			case DPN_MSGID_CLIENT_INFO:					msg	= "DPN_MSGID_CLIENT_INFO"; break;
-			case DPN_MSGID_CONNECT_COMPLETE:			msg	= "DPN_MSGID_CONNECT_COMPLETE"; break;
+			case DPN_MSGID_CONNECT_COMPLETE:			
+				{
+					PDPNMSG_CONNECT_COMPLETE pMsg = (PDPNMSG_CONNECT_COMPLETE)pMessage;
+					if (pMsg->dwApplicationReplyDataSize)
+					{
+						string256 ResStr = "";
+						strncpy(ResStr, (char*)(pMsg->pvApplicationReplyData), pMsg->dwApplicationReplyDataSize);
+						Msg("Connection result : %s", ResStr);
+					}
+					else
+						msg	= "DPN_MSGID_CONNECT_COMPLETE"; 
+				}break;
 			case DPN_MSGID_CREATE_GROUP:				msg	= "DPN_MSGID_CREATE_GROUP"; break;
 			case DPN_MSGID_CREATE_PLAYER:				msg = "DPN_MSGID_CREATE_PLAYER"; break;
 			case DPN_MSGID_DESTROY_GROUP: 				msg = "DPN_MSGID_DESTROY_GROUP"; break;

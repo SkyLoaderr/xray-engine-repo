@@ -758,6 +758,106 @@ public:
 	}
 };
 
+class CCC_BanPlayer : public IConsole_Command {
+public:
+	CCC_BanPlayer(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+		
+		char	Name[128] = {0};
+		char	Number[128] = {0};
+		char	Time[128] = {0};
+		char	Kick[128] = {0};
+		sscanf	(args,"%s %s %s %s", Name, Number, Time, Kick);
+
+		bool NeedKick = _stricmp(Kick, "kick") == NULL;
+		if (!_stricmp(Time, "kick")) NeedKick = true;
+		xrClientData *l_pC = NULL;
+		char Address[4] = {0, 0, 0, 0};
+		u32 BanTime = 0;
+		bool BanByName = true;
+
+		if (Name[0] == '#') //индентификация по номеру клиента в списке
+		{
+			BanTime = atol(Time);
+			u32 Num = atol(Number);
+			if (Num < 1) return;
+			xrClientData *pCl = (xrClientData*)	Level().Server->client_Get	(Num-1);
+			if (!pCl) return;
+			l_pC = pCl;
+			BanByName = true;
+		}
+		else
+		{
+			if (!_stricmp(Name, "ip"))	//Напрямую задается IP адрес
+			{
+				BanTime = atol(Time);
+
+				char a[4][4] = {0, 0, 0, 0};
+				sscanf(Number, "%[^'.'].%[^'.'].%[^'.'].%s", a[0], a[1], a[2], a[3]);
+
+				for (int i=0; i<4; i++)
+				{
+					Address[i] = char(atol(a[i]));
+				};
+
+				BanByName = false;
+			}
+			else						// идентификация по имени игрока
+			{
+				BanTime = atol(Number);
+				u32	cnt = Level().Server->game->get_players_count();
+				for(u32 it=0; it<cnt; it++)	
+				{
+					xrClientData *pCl = (xrClientData*)	Level().Server->client_Get	(it);
+					if (!pCl) continue;
+					if (!_stricmp(pCl->ps->getName(), Name))
+					{
+						l_pC = pCl;
+						break;
+					}
+				};
+				BanByName = true;
+			};
+		};
+
+		if (l_pC && BanByName)
+		{
+			if (l_pC != Level().Server->GetServer_client())
+			{
+				Msg("Player %s Banned%s", l_pC->ps->getName(), (NeedKick)? " and Kicked!" : "!");
+				Level().Server->BanClient(l_pC, BanTime);
+			}
+			else
+			{
+				Msg("! Can't Ban server's client");
+			};
+		}
+
+		if (!BanByName)
+		{
+			Msg("Address %i.%i.%i.%i Banned%s", 
+				unsigned char(Address[0]), 
+				unsigned char(Address[1]), 
+				unsigned char(Address[2]), 
+				unsigned char(Address[3]), 
+				(NeedKick)? " and Kicked!" : "!");
+			Level().Server->BanAddress(Address, BanTime);
+		};
+
+		if (NeedKick) 
+		{
+			if (l_pC && BanByName && (l_pC != Level().Server->GetServer_client())) Level().Server->DisconnectClient(l_pC);
+			if (!BanByName) Level().Server->DisconnectAddress(Address);
+		};
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Ban Player"); 
+	}
+};
 class CCC_ListPlayers : public IConsole_Command {
 public:
 	CCC_ListPlayers(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1241,11 +1341,12 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
 #endif
 
-	CMD1(CCC_KickPlayer,	"sv_kick"					);		// graph-point info
-	CMD1(CCC_ListPlayers,	"sv_listplayers"				);		// graph-point info
+	CMD1(CCC_KickPlayer,	"sv_kick"					);		
+	CMD1(CCC_BanPlayer,	"sv_banplayer"					);
+	CMD1(CCC_ListPlayers,	"sv_listplayers"				);		
 	
 	CMD1(CCC_ChangeGameType,	"sv_changegametype"			);
 	CMD1(CCC_ChangeLevel,		"sv_changelevel"				);
-	CMD1(CCC_ChangeLevelGameType,		"sv_changelevelgametype"				);
+	CMD1(CCC_ChangeLevelGameType,		"sv_changelevelgametype"				);	
 }
 
