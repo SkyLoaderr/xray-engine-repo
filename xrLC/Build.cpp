@@ -280,6 +280,11 @@ void CBuild::Run	(string& P)
 	PreOptimize		();
 
 	FPU::m64r		();
+	Phase			("Building RayCast model...");
+	mem_Compact		();
+	BuildRapid		();
+
+	FPU::m64r		();
 	Phase			("Checking T-Junctions...");
 	mem_Compact		();
 	CorrectTJunctions();
@@ -298,11 +303,6 @@ void CBuild::Run	(string& P)
 	Phase			("Building volume-pick database...");
 	mem_Compact		();
 	BuildPortals	(fs);
-
-	FPU::m64r		();
-	Phase			("Building RayCast model...");
-	mem_Compact		();
-	BuildRapid		();
 
 	FPU::m64r		();
 	Phase			("Resolving materials...");
