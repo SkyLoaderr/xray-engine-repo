@@ -11,6 +11,7 @@ function callback_static(object,action,index)
 end
 
 function main ()
+--[
     stalker				= get_level_object ("m_stalker_e0000")
     actor				= get_actor()
     torch				= get_level_object ("device_torch0000")
@@ -33,6 +34,7 @@ function main ()
 	end
 	
     stalker:script		(false,stalker_test:script_name());
+--]
     
     
 --[	zone0				= get_level_object ("script_zone0000")
@@ -78,4 +80,36 @@ function main ()
 	
     stalker:script		(false,stalker_test:script_name());
 --]
+
+    stalker				= get_level_object ("m_stalker_e0000")
+    ak					= get_level_object ("wpn_ak0001")
+    stalker:script		(true,stalker_test:script_name());
+    
+    wait				(1000)
+    
+    action				(
+		stalker,
+		object			(ak,object.activate),
+		cond			(cond.time_end,2000)
+    )
+    
+    action				(
+		stalker,
+		object			(ak,object.reload),
+		cond			(cond.time_end,2000)
+    )
+    
+    action				(
+		stalker,
+		object			(ak,object.fire),
+		cond			(cond.time_end,2000)
+    )
+    
+    action				(
+		stalker,
+		object			(ak,object.deactivate),
+		cond			(cond.time_end,2000)
+    )
+    
+    stalker:script		(false,stalker_test:script_name());
 end
