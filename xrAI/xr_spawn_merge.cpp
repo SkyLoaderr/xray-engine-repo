@@ -297,13 +297,13 @@ void xrMergeSpawns()
     }
 	R_ASSERT					(tpLevels.size());
 	
-//	CThreadManager				tThreadManager;		// multithreading
-//
-//	Phase						("Searching for corresponding graph vertices");
-//	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-//		tThreadManager.start	(tpLevels[i]);
-//	tThreadManager.wait();
-//	
+	CThreadManager				tThreadManager;		// multithreading
+
+	Phase						("Searching for corresponding graph vertices");
+	for (u32 i=0, N = tpLevels.size(); i<N; i++)
+		tThreadManager.start	(tpLevels[i]);
+	tThreadManager.wait();
+	
 	Phase						("Merging spawn files");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
