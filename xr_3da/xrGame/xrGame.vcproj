@@ -6335,6 +6335,12 @@
 				Name="PHNet"
 				Filter="">
 				<File
+					RelativePath=".\PHNetState.cpp">
+				</File>
+				<File
+					RelativePath=".\PHNetState.h">
+				</File>
+				<File
 					RelativePath=".\PHSynchronize.cpp">
 				</File>
 				<File
