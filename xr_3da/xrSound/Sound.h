@@ -147,6 +147,7 @@ public:
 	virtual	u32				length_ms				( )		= 0;
 	virtual u32				game_type				( )		= 0;
 	virtual LPCSTR			file_name				( )		= 0;
+	virtual float			start_volume			( )		= 0;
 };
 
 /// definition (Sound Source)

@@ -38,5 +38,6 @@ public:
 	virtual	u32				length_ms				()	{return dwTimeTotal;	}
 	virtual u32				game_type				()	{return m_uGameType;	}
 	virtual LPCSTR			file_name				()	{return *fname;	}
+	virtual float			start_volume			()	{return m_fVolume; }
 };
 #endif
