@@ -150,7 +150,7 @@ IC BOOL RAYvsOBB(const Fmatrix& IM, Fbox& B, const Fvector &S, const Fvector &D,
 
 CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O,cftObject)
 {
-	CKinematics* K	= PKinematics(O->Visual());
+	CKinematics* K	= PKinematics(O->Visual()); VERIFY3(K,"Can't create skeleton without Kinematics.",O->cNameVisual());
 	base_box.set	(K->vis.box);
 	bv_box.set		(K->vis.box);
 	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
