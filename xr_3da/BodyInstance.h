@@ -118,8 +118,6 @@ public:
 	}
 	IC	void		blend_add	(CBlend* H)
 	{	
-		#pragma todo("after TOZ fired Blend.size()>MAX_BLENDED")
-//		if (Blend.size()<MAX_BLENDED) 
 		Blend.push_back(H);	
 	}
 	IC	void		blend_remove(CBlend* H)
