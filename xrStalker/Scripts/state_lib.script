@@ -29,7 +29,7 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
-	sprint = {	weapon = "unstrapped",
+	sprint = {	weapon = "strapped",
 				movement = move.run,
 				mental = anim.panic,
 				bodystate = move.standing,
