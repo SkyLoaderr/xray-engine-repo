@@ -109,6 +109,8 @@ void CAI_Biting::SetDirectionLook(bool bReversed)
 	// get prev
 	CDetailPathManager::direction().getHP(yaw,pitch);
 
+	if (fsimilar(yaw,0.f)) return;
+
 	m_body.target.yaw = -yaw;
 	m_body.target.pitch = -pitch;
 

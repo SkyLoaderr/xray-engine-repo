@@ -821,6 +821,9 @@
 						RelativePath=".\ai\biting\ai_biting_state_attack.cpp">
 					</File>
 					<File
+						RelativePath=".\ai\biting\ai_biting_state_attack.h">
+					</File>
+					<File
 						RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
 					</File>
 					<File

@@ -113,7 +113,7 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft,	eAnimStandTurnRight, PI_DIV_6);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);	
+	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);	
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
 
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 400, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.5f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
@@ -142,8 +142,21 @@ void CAI_Dog::StateSelector()
 
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
+	
+//	if (m_tEnemy.obj) {
+//		float h,p;
+//		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(h,p);
+//		
+//		if ((anim == eAnimThreaten)	&& ( ((flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) || (angle_difference(h, m_body.current.yaw) > PI_DIV_4))) 
+//			MotionMan.Seq_Finish();
+//	}
+
 
 	BonesInMotion(); 
+
+	// Temp
+	ChangeEntityMorale(-0.5f);
+
 }
 
 
@@ -173,9 +186,6 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Y); 
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Z); 
 
-	// Temp
-	ChangeEntityMorale(0.1f);
-
 	return TRUE;
 }
 
@@ -187,8 +197,7 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 	}
 	
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
-		MotionMan.Seq_Add(eAnimThreaten);
-		MotionMan.Seq_Switch();
+		MotionMan.SetCurAnim(eAnimThreaten);
 	}
 }
 

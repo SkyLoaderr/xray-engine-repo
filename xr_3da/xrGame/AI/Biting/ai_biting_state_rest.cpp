@@ -15,18 +15,6 @@ CBitingRest::CBitingRest(CAI_Biting *p)
 	SetPriority(PRIORITY_LOW);
 }
 
-
-void CBitingRest::Reset()
-{
-	IState::Reset();
-
-	m_dwLastPlanTime	= 0;
-
-	m_tAction			= ACTION_WALK;
-
-	pMonster->SetMemoryTimeDef();
-}
-
 void CBitingRest::Init()
 {
 	LOG_EX2("%s: rest init", *"*/ pMonster->cName() /*"*);
@@ -35,6 +23,10 @@ void CBitingRest::Init()
 	// если есть путь - дойти до конца (последствия преследования врага) FIXME
 	if (pMonster->IsMovingOnPath()) m_bFollowPath = true;
 	else m_bFollowPath = false;
+
+	m_dwLastPlanTime	= 0;
+	m_tAction			= ACTION_WALK;
+
 }
 
 void CBitingRest::Replanning()

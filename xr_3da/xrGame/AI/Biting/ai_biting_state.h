@@ -15,6 +15,7 @@ class CAI_Biting;
 
 #define IS_NEED_REBUILD() pMonster->NeedRebuildPath(2,0.5f)
 
+#include "ai_biting_state_attack.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
@@ -39,8 +40,6 @@ class CBitingRest : public IState {
 
 public:
 					CBitingRest		(CAI_Biting *p);
-
-	virtual void	Reset			();
 
 	virtual TTime	UnlockState		(TTime cur_time);
 private:
@@ -106,90 +105,6 @@ private:
 	virtual void	Done			();
 };
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingAttack class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CBitingAttack : public IState {
-	typedef	IState inherited;
-	CAI_Biting	*pMonster;
-
-	enum {
-		ACTION_RUN,
-		ACTION_ATTACK_MELEE,
-		ACTION_FIND_ENEMY,
-		ACTION_STEAL,
-		ACTION_THREATEN,
-		ACTION_WALK_ANGRY_AROUND,
-		ACTION_STAND_ANGRY_FACE_ENEMY,
-		ACTION_WALK_AWAY,
-		ACTION_FACE_ENEMY,
-		ACTION_THREATEN2,
-		ACTION_WALK_END_PATH,
-		ACTION_SEARCH_ENEMY_INIT,
-		ACTION_SEARCH_ENEMY,
-		ACTION_ENEMY_POSITION_APPROACH,
-	} m_tAction,m_tSubAction;
-
-	VisionElem		m_tEnemy;
-
-	bool			m_bAttackRat;
-
-	float			m_fDistMin;						//!< минимально допустимое расстояния для аттаки
-	float			m_fDistMax;						//!< максимально допустимое расстояние для аттаки
-	float			dist;							// текущая дистанция
-
-	TTime			m_dwFaceEnemyLastTime;
-	TTime			m_dwFaceEnemyLastTimeInterval;
-
-	TTime			m_dwSuperMeleeStarted;
-
-	bool			m_bInvisibility;
-	
-	bool			flag_once_1;
-
-	bool			bEnemyDoesntSeeMe;
-
-	bool			bCanThreaten;
-
-	TTime			m_dwTimeWalkingPath;
-
-	bool			once_flag_1,once_flag_2;
-
-	TTime			time_start_walk_away;
-
-	TTime			ThreatenTimeStarted;
-
-	bool			bEnableBackAttack;
-	
-	TTime			RebuildPathInterval;
-	
-	bool			bAngrySubStateActive;
-
-	u32				search_vertex_id;
-	bool			bSearchEnemy;
-
-	Fvector			EnemySavedPos;
-
-public:	
-					CBitingAttack	(CAI_Biting *p, bool bVisibility);
-
-	virtual	void	Reset			();
-
-	virtual	void	Init			();
-	virtual void	Run				();
-	virtual void	Done			();
-
-			bool	CheckThreaten	();
-			Fvector RandomPos		(Fvector pos, float R);
-			
-			void	WalkAngrySubState();
-
-			bool	CanAttackFromBack();
-			
-			void	SearchEnemy		();
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingHide class	// отход перебежками через укрытия

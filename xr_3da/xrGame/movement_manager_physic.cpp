@@ -19,7 +19,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	dest_position		= Position();
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	float				precision = 1.f;
+	float				precision = 0.5f;
 #endif
 
 	

@@ -20,6 +20,9 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
+	// if gliding -return;
+	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
+
 	// pre-update path parameters
 	enable_movement							(true);
 	b_try_min_time							= true;
