@@ -116,10 +116,8 @@ namespace PathManagers {
 		_index_type,
 		_iteration_type
 	> {
-		xr_vector<_index_type>	*m_flood;
-
+		u32	m_dummy;
 		IC	SFlooder (
-				xr_vector<_index_type>	&flood,
 				_dist_type				max_range = _dist_type(6000),
 				_iteration_type			max_iteration_count = _iteration_type(-1),
 				_index_type				max_visited_node_count = _index_type(-1)
@@ -135,7 +133,6 @@ namespace PathManagers {
 				max_visited_node_count
 			)
 		{
-			m_flood			= &flood;
 		}
 	};
 

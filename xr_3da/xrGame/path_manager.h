@@ -689,8 +689,6 @@ template <
 				_iteration_type
 			> inherited;
 protected:
-	xr_vector<_index_type>	*m_flood;
-
 public:
 	virtual				~CPathManager	()
 	{
@@ -702,7 +700,7 @@ public:
 				xr_vector<_index_type>	*_path,
 				const _index_type		_start_node_index,
 				const _index_type		_goal_node_index,
-				_Parameters				&parameters
+				const _Parameters		&parameters
 			)
 	{
 		inherited::setup(
@@ -713,13 +711,12 @@ public:
 			_goal_node_index,
 			parameters
 		);
-		m_flood			= parameters.m_flood;
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
-		VERIFY					(m_flood);
-		m_flood->push_back		(node_index);
+		VERIFY					(path);
+		path->push_back			(node_index);
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
 		y1						= (float)(tNode0.position().y());
 		return					(false);
