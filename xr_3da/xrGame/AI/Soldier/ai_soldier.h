@@ -174,7 +174,7 @@ class CAI_Soldier : public CCustomMonster
 	typedef struct tagSSearch {
 		u32	dwTime;
 		u32	dwNodeID;
-	}SSearch;
+	} SSearch;
 
 	u32 m_tActionType;
 	u32 m_tFightType;

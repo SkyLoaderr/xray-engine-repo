@@ -52,12 +52,14 @@ protected:
 
 	typedef struct tagSDynamicSound {
 		ESoundTypes		eSoundType;
-		u32			dwTime;
+		u32				dwTime;
 		float			fPower;
-		u32			dwUpdateCount;
+		u32				dwUpdateCount;
 		Fvector			tSavedPosition;
+		u32				dwNodeID;
 		SRotation		tOrientation;
 		Fvector			tMySavedPosition;
+		u32				dwMyNodeID;
 		SRotation		tMyOrientation;
 		CEntity			*tpEntity;
 	} SDynamicSound;
@@ -114,7 +116,7 @@ public:
 	float				r_spine_speed, r_torso_speed;
 
 	// Motions
-	u32				dwMoveState;
+	u32					dwMoveState;
 
 	CMotionDef*			m_current;
 	
@@ -133,10 +135,10 @@ public:
 	char				m_cBodyState;
 	
 	float				m_fTimeUpdateDelta;
-	u32				m_dwLoopCount;
+	u32					m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
-	u32				m_dwLastUpdateTime;
+	u32					m_dwLastUpdateTime;
 
 	// movement
 	float				m_fJumpSpeed;

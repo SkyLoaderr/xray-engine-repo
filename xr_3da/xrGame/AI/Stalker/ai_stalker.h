@@ -14,6 +14,12 @@
 #include "ai_stalker_selectors.h"
 
 #define MAX_STATE_LIST_SIZE				256
+#define MAX_DYNAMIC_OBJECTS 			32
+#define MAX_DYNAMIC_SOUNDS  			32
+#define MAX_HURT_COUNT					32
+#define MAX_SEARCH_COUNT				32
+
+#define MAX_STATE_LIST_SIZE				256
 #define MAX_TIME_RANGE_SEARCH			5000.f
 #define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 
@@ -71,9 +77,28 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	typedef struct tagSHurt {
+		CEntity *tpEntity;
+		u32	dwTime;
+	} SHurt;
+
+	typedef struct tagSSearch {
+		u32	dwTime;
+		u32	dwNodeID;
+	} SSearch;
+
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousPoints;
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
 
+	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;
+	svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>			m_tpaDynamicSounds;
+	svector<SHurt,			MAX_HURT_COUNT>				m_tpaHurts;
+	svector<SSearch,		MAX_SEARCH_COUNT>			m_tpaSearchPositions;
+	objSET					m_tpaVisibleObjects;
+	u32						m_dwMaxDynamicObjectsCount;
+	u32						m_dwMaxDynamicSoundsCount;
+	float					m_fSensetivity;
+	int						m_iSoundIndex;
 	// firing
 	bool					m_bFiring;
 	u32						m_dwStartFireAmmo;
@@ -96,7 +121,6 @@ private:
 	Fvector					m_tHitPosition;
 	
 	// VISIBILITY
-	objSET					m_tpaVisibleObjects;
 	SEnemySelected			m_tEnemy;
 	CEntity*				m_tSavedEnemy;
 	Fvector					m_tSavedEnemyPosition;
@@ -241,6 +265,11 @@ private:
 			void			vfChooseSuspiciousNode			(CAISelectorBase &tSelector);
 			int				ifGetSuspiciousAvailableNode	(int iLastIndex, CGroup &Group);
 			bool			bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
+			void			SelectSound						(int &iIndex);
+			void			vfUpdateDynamicObjects			();
+			int				ifFindDynamicObject				(CEntity *tpEntity);
+			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
+			bool			bfCheckIfSound					();
 
 			// physics
 			void			CreateSkeleton					();
@@ -329,4 +358,5 @@ public:
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 	virtual float			EnemyHeuristics					(CEntity* E);
 	virtual void			SelectEnemy						(SEnemySelected& S);
+	virtual void			feel_sound_new					(CObject* who, int eType, Fvector& Position, float power);
 };

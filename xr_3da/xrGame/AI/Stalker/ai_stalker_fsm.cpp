@@ -56,11 +56,6 @@ void CAI_Stalker::RetreatUnknown()
 	WRITE_TO_LOG("Retreating unknown");
 }
 
-void CAI_Stalker::PursuitUnknown()
-{
-	WRITE_TO_LOG("Pursuiting unknown");
-}
-
 void CAI_Stalker::vfUpdateSearchPosition()
 {
 	if (!g_Alive())
@@ -228,6 +223,8 @@ void CAI_Stalker::AccomplishTask()
 	// I see enemy
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
 
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckIfSound(),eStalkerStatePursuitUnknown);
+
 	// I have to recharge active weapon
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
@@ -276,6 +273,24 @@ void CAI_Stalker::RetreatKnown()
 		r_torso_target.yaw		= r_target.yaw;
 }
 
+void CAI_Stalker::PursuitUnknown()
+{
+	WRITE_TO_LOG("Pursuiting unknown");
+
+	int						iIndex;
+	SelectSound				(iIndex);
+	
+	m_tSavedEnemy			= m_tpaDynamicSounds[iIndex].tpEntity;
+	m_tSavedEnemyPosition	= m_tpaDynamicSounds[iIndex].tSavedPosition;
+	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[iIndex].dwNodeID;
+	m_tpSavedEnemyNode		= getAI().Node(m_dwSavedEnemyNodeID);
+	m_dwLostEnemyTime		= m_tpaDynamicSounds[iIndex].dwTime;
+	m_tMySavedPosition		= m_tpaDynamicSounds[iIndex].tMySavedPosition;
+	m_dwMyNodeID			= m_tpaDynamicSounds[iIndex].dwMyNodeID;
+
+	GO_TO_NEW_STATE_THIS_UPDATE(eStalkerStatePursuitKnown);
+}
+
 void CAI_Stalker::PursuitKnown()
 {
 	WRITE_TO_LOG("Pursuiting known");
@@ -294,6 +309,8 @@ void CAI_Stalker::PursuitKnown()
 	// I see enemy
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
 
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckIfSound(),eStalkerStatePursuitUnknown);
+
 	// I have to recharge active weapon
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
@@ -311,6 +328,7 @@ void CAI_Stalker::PursuitKnown()
 
 void CAI_Stalker::Think()
 {
+	vfUpdateDynamicObjects	();
 	vfUpdateSearchPosition	();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
