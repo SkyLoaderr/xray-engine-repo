@@ -104,8 +104,8 @@ void CStalkerActionFreeNoALife::initialize	()
 	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
 
 #ifdef STALKER_DEBUG_MODE
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
+//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
@@ -116,8 +116,8 @@ void CStalkerActionFreeNoALife::initialize	()
 //	direction.normalize_safe		();
 //	m_object->set_desired_direction	(&direction);
 //	m_object->set_desired_position	(0);
-	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+//	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
 //	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
@@ -128,9 +128,9 @@ void CStalkerActionFreeNoALife::initialize	()
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
 	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
+	m_object->set_body_state		(eBodyStateCrouch);
+	m_object->set_movement_type		(eMovementTypeStand);
+	m_object->set_mental_state		(eMentalStateDanger);
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 //	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 #endif
@@ -164,6 +164,11 @@ void CStalkerActionFreeNoALife::execute		()
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
+#else
+	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+	Fvector							look_pos = actor->Position();
+	look_pos.y						+= .8f;
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 #endif
 }
 
