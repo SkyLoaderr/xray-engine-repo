@@ -4,6 +4,7 @@
 
 class	R_shader
 {
+public:
 	IDirect3DPixelShader9*		ps;
 	IDirect3DVertexShader9*		vs;
 	R_constant_table			constants;

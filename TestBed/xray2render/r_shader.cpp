@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "r_shader.h"
 
 BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 {
@@ -8,16 +9,23 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 	HRESULT						hr;
 
 	// pixel
-	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "p_main", "ps_2_0", D3DXSHADER_DEBUG, &pShaderBuf, &pErrorBuf, &pConstants);
+	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "p_main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 	if (SUCCEEDED(hr))
 	{
 		if (pShaderBuf) 
 		{
 			hr = pDevice->CreatePixelShader	((DWORD*)pShaderBuf->GetBufferPointer(), &ps);
-			if (SUCCEEDED(hr) && pConstants)	constants.parse(pConstants,0x1);
+			if (SUCCEEDED(hr))	{
+				LPCVOID			data		= NULL;
+				hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
+				if (SUCCEEDED(hr) && data) 
+				{
+					pConstants		= LPD3DXSHADER_CONSTANTTABLE(data);
+					constants.parse	(pConstants,0x1);
+				} else	hr = E_FAIL;
+			}
 		}
-		else
-			hr = E_FAIL;
+		else	hr = E_FAIL;
 	}
 	SAFE_RELEASE	(pShaderBuf);
 	SAFE_RELEASE	(pErrorBuf);
@@ -25,19 +33,28 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 	if (FAILED(hr))	return FALSE;
 
 	// vertex
-	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "v_main", "vs_2_0", D3DXSHADER_DEBUG, &pShaderBuf, &pErrorBuf, &pConstants);
+	hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "v_main", "vs_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 	if (SUCCEEDED(hr))
 	{
 		if (pShaderBuf) 
 		{
 			hr = pDevice->CreateVertexShader	((DWORD*)pShaderBuf->GetBufferPointer(), &vs);
-			if (SUCCEEDED(hr) && pConstants)	constants.parse(pConstants,0x2);
+			if (SUCCEEDED(hr))	{
+				LPCVOID			data		= NULL;
+				hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
+				if (SUCCEEDED(hr) && data) 
+				{
+					pConstants		= LPD3DXSHADER_CONSTANTTABLE(data);
+					constants.parse	(pConstants,0x1);
+				} else	hr = E_FAIL;
+			}
 		}
-		else
-			hr = E_FAIL;
+		else	hr = E_FAIL;
 	}
 	SAFE_RELEASE	(pShaderBuf);
 	SAFE_RELEASE	(pErrorBuf);
 	pConstants		= NULL;
 	if (FAILED(hr))	return FALSE;
+
+	return			TRUE;
 }
