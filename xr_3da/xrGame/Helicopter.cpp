@@ -344,7 +344,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 		if(m_allow_fire)
 		{
-			FireStart();
+			//FireStart(); //temporary
 			
 			float d = XFORM().c.distance_to_xz(m_destEnemyPos);
 			
