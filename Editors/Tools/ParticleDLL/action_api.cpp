@@ -173,7 +173,7 @@ PARTICLEDLL_API void __stdcall pKillOld(float age_limit, BOOL kill_less_than)
 	_pSendAction(&S, PAKillOldID, sizeof(PAKillOld));
 }
 
-PARTICLEDLL_API void __stdcall pMatchVelocity(float magnitude, float epsilon, float max_radius, BOOL allow_transform)
+PARTICLEDLL_API void __stdcall pMatchVelocity(float magnitude, float epsilon, float max_radius)
 {
 	PAMatchVelocity S;
 	
@@ -327,7 +327,9 @@ PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 	S.age			= _ps.Age;
 	S.age_sigma		= _ps.AgeSigma;
 	S.vertexB_tracks= _ps.vertexB_tracks;
+	S.flags.zero	();
 	S.flags.set		(ParticleAction::ALLOW_TRANSFORM,allow_transform);
+	S.parent_vel	= pVector(0.5f,0,0);
 
 	_pSendAction(&S, PASourceID, sizeof(PASource));
 }

@@ -91,8 +91,9 @@ struct pDomain
 	
 	BOOL Within(const pVector &) const;
 	void Generate(pVector &) const;
-	void Transform(const Fmatrix& m);
-	void Transform(const pDomain& domain, const Fmatrix& m);
+	// transformation
+	void transform(const pDomain& domain, const Fmatrix& m);
+	void transform_dir(const pDomain& domain, const Fmatrix& m);
 	// This constructor is used when default constructing a
 	// ParticleAction that has a pDomain.
 	inline pDomain()
@@ -164,7 +165,7 @@ struct PAHeader : public ParticleAction
 {
 	int actions_allocated;
 	int count;			// Total actions in the list.
-	float padding[114];	// This must be the largest action.
+	float padding[125];	// This must be the largest action.
 	
 	ExecMethod
 };
@@ -383,6 +384,7 @@ struct PASource : public ParticleAction
 	float age;			// Initial age of the particles
 	float age_sigma;	// St. dev. of initial age of the particles
 	BOOL vertexB_tracks;// True to get positionB from position.
+	pVector parent_vel;	
 	
 	ExecMethod
 };

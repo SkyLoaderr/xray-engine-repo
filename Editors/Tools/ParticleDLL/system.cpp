@@ -691,6 +691,7 @@ PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, cons
 	// Step through all the actions in the action list.
 	for(int action = 0; action < num_actions; action++, pa++)
 	{
+		if (!pa->flags.is(ParticleAction::ALLOW_TRANSFORM)) continue;
 		switch(pa->type)
 		{
 		case PAAvoidID:

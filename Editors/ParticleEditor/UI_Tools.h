@@ -56,6 +56,7 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     void __fastcall		OnApplyClick		();
 public:
 	void				EditActionList		();
+    void				ResetState			();
 public:
 						CParticleTools		();
     virtual 			~CParticleTools		();

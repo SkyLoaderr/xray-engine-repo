@@ -60,25 +60,34 @@ void CParticleGroup::pFrameExec(Particle *m)
     if (m_Flags.test(flRandomFrame))
     	m->frame	= Random.randI(m_Animation.m_iFrameCount);
     if (m_Flags.test(flAnimated)&&m_Flags.test(flRandomPlayback)&&Random.randI(2))	
-    	m->flags	|= Particle::ANIMATE_CCW;
+    	m->flags.set(Particle::ANIMATE_CCW,TRUE);
 }
 void CParticleGroup::pAnimateExec(ParticleGroup *group)
 {
 	float speedFac = m_Animation.m_fSpeed * Device.fTimeDelta;
 	for(int i = 0; i < group->p_count; i++){
 		Particle &m = group->list[i];
-		m.frame						+= ((m.flags&Particle::ANIMATE_CCW)?-1.f:1.f)*speedFac;
+		m.frame						+= ((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac;
 		if (m.frame>m_Animation.m_iFrameCount)	m.frame-=m_Animation.m_iFrameCount;
 		if (m.frame<0.f)						m.frame+=m_Animation.m_iFrameCount;
 	}
 }
 
+static float phase = 0.f;
 
 void CParticleGroup::OnFrame()
 {
     pTimeStep			(Device.fTimeDelta);
 	pCurrentGroup		(m_HandleGroup);
 
+    Fmatrix M;
+    phase				+= 0.5f*Device.fTimeDelta;
+	if (phase>10) phase = -10;
+    M.translate			(phase,0,0);
+//    M.rotateY			(phase);
+//    M.translate_over	(10*sin(phase),0,10*cos(phase));
+//    Log("M.c: ",M.c);
+    pSetActionListTransform(m_HandleActionList,M);
 //	Fvector src;
     
 //	PASource* source	= ;
@@ -92,10 +101,10 @@ void CParticleGroup::OnFrame()
 
 	for(int i = 0; i < pg->p_count; i++){
         Particle &m 	= pg->list[i];
-        if (m.flags&Particle::DYING){}
-        if (m.flags&Particle::BIRTH){
+        if (m.flags.is(Particle::DYING)){}
+        if (m.flags.is(Particle::BIRTH)){
 	        if (m_Flags.is(flFramed)) pFrameExec(&m);
-			m.flags		&=~	Particle::BIRTH;
+			m.flags.set(Particle::BIRTH,FALSE);
         }
 	}
 }

@@ -1,7 +1,7 @@
 object frmText: TfrmText
-  Left = 356
-  Top = 323
-  Width = 374
+  Left = 401
+  Top = 329
+  Width = 302
   Height = 286
   BorderStyle = bsSizeToolWin
   Caption = 'Text'
@@ -26,7 +26,7 @@ object frmText: TfrmText
   object paBottomBar: TPanel
     Left = 0
     Top = 239
-    Width = 366
+    Width = 294
     Height = 20
     Align = alBottom
     BevelOuter = bvNone
@@ -35,7 +35,7 @@ object frmText: TfrmText
     object ebOk: TExtBtn
       Left = 2
       Top = 2
-      Width = 62
+      Width = 50
       Height = 18
       Align = alNone
       BevelShow = False
@@ -45,9 +45,9 @@ object frmText: TfrmText
       OnClick = ebOkClick
     end
     object ebCancel: TExtBtn
-      Left = 65
+      Left = 52
       Top = 2
-      Width = 62
+      Width = 50
       Height = 18
       Align = alNone
       BevelShow = False
@@ -57,9 +57,9 @@ object frmText: TfrmText
       OnClick = ebCancelClick
     end
     object ebApply: TExtBtn
-      Left = 133
+      Left = 107
       Top = 2
-      Width = 62
+      Width = 50
       Height = 18
       Align = alNone
       BevelShow = False
@@ -69,7 +69,7 @@ object frmText: TfrmText
       OnClick = ebApplyClick
     end
     object ebLoad: TExtBtn
-      Left = 197
+      Left = 214
       Top = 2
       Width = 37
       Height = 18
@@ -81,7 +81,7 @@ object frmText: TfrmText
       OnClick = ebLoadClick
     end
     object ebSave: TExtBtn
-      Left = 234
+      Left = 251
       Top = 2
       Width = 37
       Height = 18
@@ -96,7 +96,7 @@ object frmText: TfrmText
   object mmText: TElAdvancedMemo
     Left = 0
     Top = 0
-    Width = 366
+    Width = 294
     Height = 239
     Align = alClient
     Color = 10526880
@@ -113,6 +113,9 @@ object frmText: TfrmText
     OnChange = mmTextChange
     Flat = True
     FlatFocusedScrollBars = True
+    BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+    LineBorderActiveColor = clBlack
+    LineBorderInactiveColor = clBlack
   end
   object fsStorage: TFormStorage
     IniSection = 'Text Form'

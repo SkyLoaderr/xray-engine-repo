@@ -380,7 +380,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 }
 void PAAvoid::Transform(const Fmatrix& m)
 {
-	position.Transform(positionL,m);
+	position.transform(positionL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -702,7 +702,7 @@ void PABounce::Execute(ParticleGroup *group)
 }
 void PABounce::Transform(const Fmatrix& m)
 {
-	position.Transform(positionL,m);
+	position.transform(positionL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -954,7 +954,7 @@ void PAJet::Execute(ParticleGroup *group)
 void PAJet::Transform(const Fmatrix& m)
 {
 	m.transform_tiny(center.xr(),center.xr());
-	acc.Transform(accL,m);
+	acc.transform_dir(accL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1167,7 +1167,7 @@ void PARandomAccel::Execute(ParticleGroup *group)
 }
 void PARandomAccel::Transform(const Fmatrix& m)
 {
-	gen_acc.Transform(gen_accL,m);
+	gen_acc.transform_dir(gen_accL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1189,7 +1189,7 @@ void PARandomDisplace::Execute(ParticleGroup *group)
 }
 void PARandomDisplace::Transform(const Fmatrix& m)
 {
-	gen_disp.Transform(gen_dispL,m);
+	gen_disp.transform_dir(gen_dispL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1210,7 +1210,7 @@ void PARandomVelocity::Execute(ParticleGroup *group)
 }
 void PARandomVelocity::Transform(const Fmatrix& m)
 {
-	gen_vel.Transform(gen_velL,m);
+	gen_vel.transform_dir(gen_velL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1326,7 +1326,7 @@ void PASink::Execute(ParticleGroup *group)
 }
 void PASink::Transform(const Fmatrix& m)
 {
-	position.Transform(positionL,m);
+	position.transform(positionL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1345,7 +1345,7 @@ void PASinkVelocity::Execute(ParticleGroup *group)
 }
 void PASinkVelocity::Transform(const Fmatrix& m)
 {
-	velocity.Transform(velocityL,m);
+	velocity.transform_dir(velocityL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1371,9 +1371,10 @@ void PASource::Execute(ParticleGroup *group)
 			position.Generate(pos);
 			size.Generate(siz);
 			rot.Generate(rt);
-			velocity.Generate(vel);
+			velocity.Generate(vel);	vel += parent_vel;
 			color.Generate(col);
 			float ag = age + NRand(age_sigma);
+			
 			
 			group->Add(pos, pos, siz, rt, vel, col, alpha, ag);
 		}
@@ -1385,18 +1386,18 @@ void PASource::Execute(ParticleGroup *group)
 			position.Generate(pos);
 			size.Generate(siz);
 			rot.Generate(rt);
-			velocity.Generate(vel);
+			velocity.Generate(vel);	vel += parent_vel;
 			color.Generate(col);
 			float ag = age + NRand(age_sigma);
-			
+
 			group->Add(pos, posB, siz, rt, vel, col, alpha, ag);
 		}
 	}
 }
 void PASource::Transform(const Fmatrix& m)
 {
-	position.Transform(positionL,m);
-	velocity.Transform(velocityL,m);
+	position.transform(positionL,m);
+	velocity.transform_dir(velocityL,m);
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -1940,19 +1941,14 @@ void pDomain::Generate(pVector &pos) const
 	}
 }
 
-void pDomain::Transform(const Fmatrix& m)
-{
-	pDomain domain=*this;
-	Transform(domain,m);
-}
-
-void pDomain::Transform(const pDomain& domain, const Fmatrix& m)
+void pDomain::transform(const pDomain& domain, const Fmatrix& m)
 {
 	switch (type)
 	{
 	case PDBox:{
-		Fbox* bb=(Fbox*)&p1;
-		bb->xform(m);
+		Fbox* bb_dest=(Fbox*)&p1;
+		Fbox* bb_from=(Fbox*)&domain.p1;
+		bb_dest->xform(*bb_from,m);
 		}break;
 	case PDPlane:
 		m.transform_tiny(p1.xr(),domain.p1.xr());
@@ -2001,5 +1997,12 @@ void pDomain::Transform(const pDomain& domain, const Fmatrix& m)
 	default:
 		R_ASSERT2(0,"Unknown domain type.");
 	}
+}
+
+void pDomain::transform_dir(const pDomain& domain, const Fmatrix& m)
+{
+	Fmatrix M=m;
+	M.c.set(0,0,0);
+	transform(domain,M);
 }
 

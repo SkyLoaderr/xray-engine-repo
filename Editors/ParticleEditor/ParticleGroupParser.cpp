@@ -7,7 +7,7 @@
 #include "ParticleGroup.h"
 #include "engine/particles/papi.h"
 #include "engine/particles/general.h"
-
+              
 xr_token					domain_token		[ ]={
 	{ "PDPoint",	  		PDPoint				},
 	{ "PDLine",	  			PDLine				},
@@ -223,12 +223,12 @@ public:
         #define P11 P10,p(10)
         #define P12 P11,p(11)
         #define P13 P12,p(12)
+        #define P14 P13,p(13)
 
     	// state
 		if (command==	  "pColor")				pColor			(P4);
         else if (command=="pColorD")			pColorD			(P11);
         else if (command=="pVelocity")			pVelocity		(P3);
-        else if (command=="pVelocityD")			pVelocityD		(P10);
         else if (command=="pVertexB")			pVertexB		(P3);
         else if (command=="pVertexBD")			pVertexBD		(P10);
         else if (command=="pVertexBTracks")		pVertexBTracks	(P1);
@@ -243,36 +243,36 @@ public:
         else if (command=="pFrame")				parent->pFrame	(P6);
         // actions
         else if (command=="pAnimate")			parent->pAnimate(P2);		
-        else if (command=="pAvoid")				pAvoid			(P13);
-        else if (command=="pBounce")			pBounce			(P13);
+        else if (command=="pAvoid")				pAvoid			(P14);
+        else if (command=="pBounce")			pBounce			(P14);
 //        else if (command=="pCallActionList")	pCallActionList	();
         else if (command=="pCopyVertexB")		pCopyVertexB	(P2);
         else if (command=="pDamping")			pDamping		(P5);
-        else if (command=="pExplosion")			pExplosion		(P8);
+        else if (command=="pExplosion")			pExplosion		(P9);
         else if (command=="pFollow")			pFollow			(P3);
         else if (command=="pGravitate")			pGravitate		(P3);
-        else if (command=="pGravity")			pGravity		(P3);
-        else if (command=="pJet")				pJet			(P6);
+        else if (command=="pGravity")			pGravity		(P4);
+        else if (command=="pJet")				pJet			(P7);
         else if (command=="pKillOld")			pKillOld		(P2);
         else if (command=="pMatchVelocity")		pMatchVelocity	(P3);
         else if (command=="pMove")				pMove			();
-        else if (command=="pOrbitLine")			pOrbitLine		(P9);
-        else if (command=="pOrbitPoint")		pOrbitPoint		(P6);
-        else if (command=="pRandomAccel")		pRandomAccel	(P10);
-        else if (command=="pRandomDisplace")	pRandomDisplace	(P10);
-        else if (command=="pRandomVelocity")	pRandomVelocity	(P10);
+        else if (command=="pOrbitLine")			pOrbitLine		(P10);
+        else if (command=="pOrbitPoint")		pOrbitPoint		(P7);
+        else if (command=="pRandomAccel")		pRandomAccel	(P11);
+        else if (command=="pRandomDisplace")	pRandomDisplace	(P11);
+        else if (command=="pRandomVelocity")	pRandomVelocity	(P11);
         else if (command=="pRestore")			pRestore		(P1);
-        else if (command=="pSink")				pSink			(P11);
-        else if (command=="pSinkVelocity")		pSinkVelocity	(P11);
-        else if (command=="pSource")			pSource			(P11);
+        else if (command=="pSink")				pSink			(P12);
+        else if (command=="pSinkVelocity")		pSinkVelocity	(P12);
+        else if (command=="pSource")			pSource			(P12);
         else if (command=="pSpeedLimit")		pSpeedLimit		(P2);
         else if (command=="pTargetColor")		pTargetColor	(P5);
         else if (command=="pTargetSize")		pTargetSize		(P6);
         else if (command=="pTargetRotate")		pTargetRotate	(P4);
         else if (command=="pTargetRotateD")		pTargetRotateD	(P11);
-        else if (command=="pTargetVelocity")	pTargetVelocity	(P4);
-        else if (command=="pTargetVelocityD")	pTargetVelocityD(P11);
-        else if (command=="pVortex")			pVortex			(P9);
+        else if (command=="pTargetVelocity")	pTargetVelocity	(P5);
+        else if (command=="pTargetVelocityD")	pTargetVelocityD(P12);
+        else if (command=="pVortex")			pVortex			(P10);
 		#undef p
         #undef P1
         #undef P2
@@ -287,6 +287,7 @@ public:
         #undef P11
         #undef P12
         #undef P13
+        #undef P14
     }
 };
 
@@ -296,10 +297,11 @@ DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 static PFuncMap CommandTemplates;
 
 static LPCSTR PStateCommands[]={
-	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
-	"pRotateD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",
 	"pColorD(float alpha, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);",
+	"pRotateD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pSize(float size_x, float size_y = 1.0f, float size_z = 1.0f);",
 	"pSizeD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pStartingAge(float age, float sigma = 1.0f);",
@@ -317,37 +319,37 @@ static LPCSTR PStateCommands[]={
 };
 
 static LPCSTR PActionCommands[]={
-	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
+	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
 	"pCopyVertexB(BOOL copy_pos = TRUE, BOOL copy_vel = FALSE);",
 	"pDamping(float damping_x, float damping_y, float damping_z, float vlow = 0.0f, float vhigh = P_MAXFLOAT);",
-	"pExplosion(float center_x, float center_y, float center_z, float velocity, float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f);",
+	"pExplosion(float center_x, float center_y, float center_z, float velocity, float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f, BOOL allow_transform=TRUE);",
 	"pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
 	"pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
-	"pGravity(float dir_x, float dir_y, float dir_z);",
-	"pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
+	"pGravity(float dir_x, float dir_y, float dir_z, BOOL allow_transform=TRUE);",
+	"pJet(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);",
 	"pKillOld(float age_limit, BOOL kill_less_than = FALSE);",
 	"pMatchVelocity(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
 	"pMove();",
-	"pOrbitLine(float p_x, float p_y, float p_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
-	"pOrbitPoint(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
-	"pRandomAccel(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pRandomDisplace(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pRandomVelocity(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pOrbitLine(float p_x, float p_y, float p_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);",
+	"pOrbitPoint(float center_x, float center_y, float center_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);",
+	"pRandomAccel(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
+	"pRandomDisplace(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
+	"pRandomVelocity(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
 	"pRestore(float time);",
-	"pSink(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pSinkVelocity(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pSource(float particle_rate, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pSink(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
+	"pSinkVelocity(BOOL kill_inside, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
+	"pSource(float particle_rate, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
 	"pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);",
 	"pTargetColor(float color_x, float color_y, float color_z, float alpha, float scale);",
 	"pTargetColorD(float color_x, float color_y, float color_z, float alpha, float scale);",
 	"pTargetSize(float size_x, float size_y, float size_z, float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);",
 	"pTargetRotate(float rot_x, float rot_y, float rot_z, float scale = 0.0f);",
 	"pTargetRotateD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
-	"pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale);",
-	"pTargetVelocityD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
+	"pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale, BOOL allow_transform=TRUE);",
+	"pTargetVelocityD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
 	"pVertex(float x, float y, float z);",
-	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);",
+	"pVortex(float center_x, float center_y, float center_z, float axis_x, float axis_y, float axis_z, float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT, BOOL allow_transform=TRUE);",
     // our
 	"pAnimate(float speed=24.f, BOOL random_playback=FALSE);",
     0

@@ -16,6 +16,8 @@
 #include "xr_trims.h"
 #include "library.h"
 
+#include "engine/particles/papi.h"
+
 #include "xr_tokens.h"
 #include "TextForm.h"
 #include "d3dutils.h"
@@ -498,6 +500,11 @@ void __fastcall	CParticleTools::OnApplyClick()
 void __fastcall CParticleTools::EditActionList()
 {
 	TfrmText::Run(m_CommandList,"Edit action list",false,0,false,OnApplyClick);
+}
+
+void __fastcall CParticleTools::ResetState()
+{
+	pResetState();
 }
 
 void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 721
+  Height = 586
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 721
+    Height = 586
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -33,7 +33,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 210
-      Height = 80
+      Height = 92
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -177,12 +177,32 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = ExtBtn2Click
       end
+      object ExtBtn3: TExtBtn
+        Left = 2
+        Top = 77
+        Width = 207
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Caption = '- Reset PS -'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Margin = 13
+        ParentFont = False
+        OnClick = ExtBtn3Click
+      end
     end
     object paParticles: TPanel
       Left = 1
-      Top = 81
+      Top = 93
       Width = 210
-      Height = 247
+      Height = 100
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -204,13 +224,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 216
+        Height = 69
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 214
+          Top = 67
           Width = 208
           Height = 2
           Align = alBottom
@@ -226,7 +246,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 178
+          Height = 31
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -419,7 +439,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 230
+        Top = 83
         Width = 208
         Height = 16
         Align = alBottom
@@ -450,7 +470,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 370
+      Top = 235
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -508,7 +528,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 328
+      Top = 193
       Width = 210
       Height = 42
       Hint = 'Scene commands'
@@ -682,7 +702,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 5
+    Version = 6
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'

@@ -358,3 +358,9 @@ void __fastcall TfraLeftBar::ExtBtn2Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
+{
+	Tools.ResetState();
+}
+//---------------------------------------------------------------------------
+
