@@ -7,6 +7,8 @@ class CChimera : public CAI_Biting,
 
 	typedef		CAI_Biting	inherited;
 
+	bool		b_upper_state;
+
 public:
 					CChimera			();
 	virtual			~CChimera			();	
@@ -22,5 +24,8 @@ public:
 	virtual bool	UpdateStateManager	();
 	virtual void	CheckSpecParams		(u32 spec_params);
 
+			void	SetUpperState		(bool state = true) {b_upper_state = state;}
+
 };
+
 

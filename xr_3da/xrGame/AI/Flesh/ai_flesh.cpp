@@ -63,35 +63,35 @@ void CAI_Flesh::Load(LPCSTR section)
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	
-	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
-	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::_sd->m_fsVelocityWalkFwdNormal,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &inherited::_sd->m_fsVelocityWalkFwdDamaged,	PS_STAND);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::_sd->m_fsVelocityWalkFwdNormal,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, &inherited::_sd->m_fsVelocityWalkFwdDamaged,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND);
-	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&inherited::_sd->m_fsVelocityRunFwdDamaged,		PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	&inherited::_sd->m_fsVelocityRunFwdNormal,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	&inherited::_sd->m_fsVelocityRunFwdDamaged,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
-	MotionMan.AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
-	MotionMan.AddAnim(eAnimAttackFromBack,	"stand_attack_back_",	-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimAttackRat,		"stand_attack_rat_",	-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimAttackFromBack,	"stand_attack_back_",	-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	
-	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, &inherited::_sd->m_fsVelocityNone,				PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, &inherited::_sd->m_fsVelocitySteal,				PS_STAND);
-	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &inherited::_sd->m_fsVelocityDrag,				PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, &inherited::_sd->m_fsVelocitySteal,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, &inherited::_sd->m_fsVelocityDrag,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
-	MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1,	&inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 	
 	// define transitions
 	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
@@ -113,19 +113,17 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-
-//	// Добавить анимации атак
-//	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttackFromBack,0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,-3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
-//	MotionMan.AA_PushAttackAnim(eAnimAttackRat,		0, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
-
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack,		0, 400,		600,	STANDART_ATTACK,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack,		1, 600,		800,	STANDART_ATTACK,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttackFromBack,0, 400,		600,	-PI_DIV_6 + PI, PI_DIV_6 + PI, -PI_DIV_6,PI_DIV_6, 3.5f,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttackRat,		0, 600,		800,	-PI_DIV_6, PI_DIV_6, -PI_DIV_3 - PI_DIV_2, PI_DIV_3 - PI_DIV_2, 2.f, inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
 
 	END_LOAD_SHARED_MOTION_DATA();
+
+	MotionMan.accel_load			(section);
+	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
 }
 
 
@@ -337,9 +335,29 @@ void CAI_Flesh::OnRender()
 }
 #endif
 
-void CAI_Flesh::Testing() 
+void CAI_Flesh::ProcessTurn()
 {
-	
-		
+	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
+	if (delta_yaw < deg(1)) {
+		//m_body.current.yaw = m_body.target.yaw;
+		return;
+	}
+
+	EMotionAnim anim = MotionMan.GetCurAnim();
+
+	bool turn_left = true;
+	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
+
+	switch (anim) {
+		case eAnimStandIdle: 
+			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			return;
+		default:
+			if (delta_yaw > deg(30)) {
+				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			}
+			return;
+	}
+
 }
 

@@ -14,9 +14,13 @@ protected:
 		eStateAttack,
 		eStatePanic,
 		eStateThreaten,
+		eStateDangerousSound,
+		eStateInterestingSound,
 
 		eStateDummy = u32(-1),
 	};
+
+	TTime		time_threaten;
 
 public:
 						CStateManagerChimera	(LPCSTR state_name);

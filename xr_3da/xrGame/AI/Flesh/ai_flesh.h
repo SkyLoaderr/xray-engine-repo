@@ -16,6 +16,8 @@ public:
 	virtual	bool	AA_CheckHit				();
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
+	virtual void	ProcessTurn				();
+
 
 	// debug
 #ifdef DEBUG
@@ -24,7 +26,6 @@ public:
 
 	CBitingSearchEnemy	*stateSearchEnemy;
 
-			void	Testing					();
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
 									Fvector SphereCenter, float SphereRadius);

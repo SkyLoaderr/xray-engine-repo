@@ -39,7 +39,7 @@ void CAI_Biting::vfUpdateParameters()
 	I = false;
 	
 	// Set current enemy
-	GetEnemy(m_tEnemy);
+	if (!GetEnemy(m_tEnemy)) m_tEnemy.obj = 0;
 	
 	if (m_tEnemy.obj) {
 		const CEntityAlive *pEA = dynamic_cast<const CEntityAlive*>(m_tEnemy.obj);

@@ -407,12 +407,14 @@ void CMotionManager::SelectAnimation()
 
 	cur_anim						= _sd->m_tMotions[action].anim;
 	
-	if (prev_anim != cur_anim)		CheckTransition(prev_anim, cur_anim);
-
 	pMonster->CheckSpecParams		(spec_params);	
+	if (Seq_Active()) return;
+
+	if (prev_anim != cur_anim)		CheckTransition(prev_anim, cur_anim);
+	if (Seq_Active()) return;
 
 	CheckReplacedAnim				();
-
+	
 	pMonster->ProcessTurn			();
 }
 

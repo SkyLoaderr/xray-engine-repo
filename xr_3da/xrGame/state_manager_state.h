@@ -24,7 +24,8 @@ protected:
 	typedef CStateBase<_Object> CSStateBase;
 	typedef CStateManagerAbstract<CStateBase<_Object> > CSStateManagerAbstract;
 
-	IC		xr_vector<u32> &sequence();
+protected:
+	bool	m_initialized;
 
 public:
 						CStateManagerState		(LPCSTR state_name);
@@ -38,7 +39,6 @@ public:
 	virtual	void		finalize				();
 	virtual	void		update					(u32 time_delta);
 	virtual	bool		completed				() const;
-	IC		const xr_vector<u32> &sequence		() const;
 	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority);
 };
 

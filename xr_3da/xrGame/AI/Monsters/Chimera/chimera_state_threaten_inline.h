@@ -24,7 +24,7 @@ void CStateChimeraThreatenAbstract::Load(LPCSTR section)
 	add_state				(states[eStateWalk],		eStateWalk,			1);
 	add_state				(states[eStateThreaten],	eStateThreaten,		0);
 
-	add_transition			(eStateWalk,eStateThreaten,1,1);
+	add_transition		 	(eStateWalk,eStateThreaten,1,1);
 
 	inherited::Load			(section);
 }
@@ -41,6 +41,7 @@ TEMPLATE_SPECIALIZATION
 void CStateChimeraThreatenAbstract::initialize()
 {
 	inherited::initialize();
+	Msg("CStateChimeraThreaten initialized : time = [%u]", Level().timeServer());
 }
 
 TEMPLATE_SPECIALIZATION

@@ -41,6 +41,8 @@ void CChimera::Init()
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
+
+	b_upper_state					= false;
 }
 
 void CChimera::reinit()
@@ -53,6 +55,12 @@ void CChimera::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 	CStateManagerChimera::Load(section);
+
+	MotionMan.AddReplacedAnim(&b_upper_state, eAnimAttack,			eAnimUpperAttack);
+	MotionMan.AddReplacedAnim(&b_upper_state, eAnimWalkFwd,			eAnimUpperWalkFwd);
+	MotionMan.AddReplacedAnim(&b_upper_state, eAnimStandTurnLeft,	eAnimUpperStandTurnLeft);
+	MotionMan.AddReplacedAnim(&b_upper_state, eAnimStandTurnRight,	eAnimUpperStandTurnRight);
+	MotionMan.AddReplacedAnim(&b_upper_state, eAnimThreaten,		eAnimUpperThreaten);
 
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 	
@@ -178,6 +186,8 @@ void CChimera::ProcessTurn()
 
 bool CChimera::UpdateStateManager()
 {
+	//UpdateWorld();
+	
 	CStateManagerChimera::update(m_current_update - m_dwLastUpdateTime);
 	return true;
 }
@@ -185,6 +195,6 @@ bool CChimera::UpdateStateManager()
 void CChimera::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
-		MotionMan.SetCurAnim(eAnimThreaten);
+		MotionMan.SetCurAnim(eAnimUpperThreaten);
 	}
 }

@@ -46,6 +46,7 @@ void CStateManagerAbstract::reinit			(_Object *object, bool clear_all)
 	CSStateManagerAbstract::reinit	(clear_all);
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
 		graph().vertices()[i].data().m_state->reinit(object);
+	m_initialized					= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -60,6 +61,11 @@ void CStateManagerAbstract::reload			(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::update			(u32 time_delta)
 {
+	if (!m_initialized) {
+		initialize					();
+		m_initialized				= true;
+	}
+
 	execute							();
 	CSStateManagerAbstract::update	(time_delta);
 	IGraphManager					*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
@@ -91,49 +97,6 @@ TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::execute	()
 {
 	CSStateBase::execute			();
-
-	if (current_vertex_id() == dest_vertex_id()) {
-		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
-		if (!state_manager_interface)
-			current_state().execute	();
-		return;
-	}
-
-	if (path().empty())
-		return;
-
-	for (;;) {
-		if (
-			(internal_state(path().front()).priority() <= internal_state(path().back()).priority()) 
-			&& 
-			!state(path().front()).completed()
-			)
-		{
-			state(path().front()).execute();
-			return;
-		}
-
-		state(path().front()).finalize();
-		go_path			();
-		state(path().front()).initialize();
-		state(path().front()).execute();
-		if (path().size() < 2) {
-			go_path			();
-			break;
-		}
-	}
-}
-
-TEMPLATE_SPECIALIZATION
-IC	xr_vector<u32> &CStateManagerAbstract::sequence()
-{
-	return					(path());
-}
-
-TEMPLATE_SPECIALIZATION
-IC	const xr_vector<u32> &CStateManagerAbstract::sequence() const
-{
-	return					(path());
 }
 
 TEMPLATE_SPECIALIZATION

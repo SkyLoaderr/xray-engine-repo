@@ -424,7 +424,7 @@ void CVisionMemory::AddIgnoreObject(CEntity *pObj)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMonsterMemory::UpdateMemory()
 {
-	TTime curtime = 0;
+	TTime curtime = Level().timeServer();
 
 	UpdateVision(curtime);
 	UpdateHearing(curtime);

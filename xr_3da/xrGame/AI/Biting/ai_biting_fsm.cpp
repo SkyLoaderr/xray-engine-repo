@@ -47,8 +47,6 @@ void CAI_Biting::Think()
 	}
 
 	MotionMan.accel_deactivate			();
-
-	
 	
 	if (!MotionMan.Seq_Active()) {
 		if (!UpdateStateManager()) {

@@ -60,20 +60,23 @@ void CPseudoGigant::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 
-	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun	, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/6);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
-	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
+	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
+
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,	1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,1.f));
 
 	END_LOAD_SHARED_MOTION_DATA();
 

@@ -77,12 +77,6 @@ void CAbstractStateManager::remove			(u32 state_id)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::update					(u32 time_delta)
-{
-	inherited::update		(time_delta);
-}
-
-TEMPLATE_SPECIALIZATION
 IC	T	&CAbstractStateManager::state		(const u32 state_id)
 {
 	VERIFY					(graph().vertex(state_id));
@@ -155,6 +149,43 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CAbstractStateManager::CState &CAbstractStateManager::internal_state	(u32 state_id) const
 {
 	return			(graph().vertex(state_id)->data());
+}
+
+TEMPLATE_SPECIALIZATION
+void CAbstractStateManager::update					(u32 time_delta)
+{
+	inherited::update		(time_delta);
+
+	if (current_vertex_id() == dest_vertex_id()) {
+		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
+		if (!state_manager_interface) 
+			current_state().execute();
+		return;
+	}
+
+	if (path().empty())
+		return;
+
+	for (;;) {
+		if (
+			(internal_state(path().front()).priority() <= internal_state(path().back()).priority()) 
+			&& 
+			!state(path().front()).completed()
+			)
+		{
+			state(path().front()).execute();
+			return;
+		}
+
+		state(path().front()).finalize();
+		go_path			();
+		state(path().front()).initialize();
+		state(path().front()).execute();
+		if (path().size() < 2) {
+			go_path			();
+			break;
+		}
+	}
 }
 
 #undef TEMPLATE_SPECIALIZATION
