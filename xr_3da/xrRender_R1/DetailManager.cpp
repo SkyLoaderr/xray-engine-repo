@@ -191,7 +191,7 @@ void CDetailManager::Render		()
 	float factor				= g_pGamePersistent->Environment.wind_strength;
 	swing_current.lerp			(swing_desc[0],swing_desc[1],factor);
 
-	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
+	float		r_ssaCHEAP		= 16*r_ssaDISCARD;
 
 	Fvector		EYE				= Device.vCameraPosition;
 	CFrustum	View			= RImplementation.ViewBase;

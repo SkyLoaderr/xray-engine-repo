@@ -241,7 +241,7 @@ void CRender::Calculate				()
 	IRender_Target* T				=	getTarget	();
 	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
 	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD);
-	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD/3)	/g_fSCREEN;
+	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)		/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT/3)	/g_fSCREEN;
 	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A/3)		/g_fSCREEN;
 	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B/3)		/g_fSCREEN;
