@@ -7,6 +7,8 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 
+const float drive_force		= 700;
+
 extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
@@ -194,11 +196,11 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kL_STRAFE:	ph_world->Jeep.Steer(-1);//vPosition.x-=1;
 					break;
 	case kFWD:		ph_world->Jeep.DriveDirection=1;
-					ph_world->Jeep.DriveForce=650;
+					ph_world->Jeep.DriveForce=drive_force;
 					ph_world->Jeep.Drive();//vPosition.z+=1; 
 					break;
 	case kBACK:		ph_world->Jeep.DriveDirection=-1;
-					ph_world->Jeep.DriveForce=650;
+					ph_world->Jeep.DriveForce=drive_force;
 					ph_world->Jeep.Drive();//vPosition.z-=1; 
 					break;
 	case kJUMP:		ph_world->Jeep.Breaks=true;
