@@ -12,10 +12,18 @@
 const int INDENT = 10;
 
 CUIPdaKillMessage::CUIPdaKillMessage(){
-
+	AttachChild(&m_victim_name);
+	AttachChild(&m_killer_name);	
+	AttachChild(&m_initiator);
+	AttachChild(&m_ext_info);
 }
 
 CUIPdaKillMessage::CUIPdaKillMessage(int iDelay){
+	AttachChild(&m_victim_name);
+	AttachChild(&m_killer_name);	
+	AttachChild(&m_initiator);
+	AttachChild(&m_ext_info);
+
    	m_iDelay = iDelay;
 	m_timeBegin = 0;
 }
@@ -38,13 +46,6 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 	width = InitIcon(m_initiator,   x, msg.m_initiator);	x += width + INDENT;
 	width = InitText(m_killer_name, x, msg.m_killer);		x += width + INDENT;
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
-
-	m_killer_name.SetText(*msg.m_killer.m_name);
-
-    
-	
-	m_ext_info.SetOriginalRect(msg.m_ext_info.m_rect);
-	m_ext_info.SetShader(msg.m_ext_info.m_shader);
 }
 
 int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
