@@ -2,6 +2,16 @@
 #include "build.h"
 
 base_Vertex::~base_Vertex() {};
+
+base_Face::base_Face()
+{
+	basis_tangent[0].set	(0,0,0);
+	basis_tangent[1].set	(0,0,0);
+	basis_tangent[2].set	(0,0,0);
+	basis_binormal[0].set	(0,0,0);
+	basis_binormal[1].set	(0,0,0);
+	basis_binormal[2].set	(0,0,0);
+}
 base_Face::~base_Face()		{};
 
 Shader_xrLC&	base_Face::Shader		()
@@ -73,9 +83,9 @@ void	Vertex::normalFromAdj()
 
 Face::Face()
 {
-	pDeflector			= 0;
-	bSplitted			= FALSE;
-	g_faces.push_back	(this);
+	pDeflector				= 0;
+	bSplitted				= FALSE;
+	g_faces.push_back		(this);
 }
 Face::~Face()
 {

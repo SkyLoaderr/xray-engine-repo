@@ -28,6 +28,7 @@ public:
 	virtual void			CacheOpacity		( );
 	virtual Fvector2*		getTC0				( ) = 0;
 
+	base_Face();
 	virtual ~base_Face() = 0; 
 };		
 
