@@ -56,7 +56,7 @@ void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 			continue;
 
 		if (psAI_Flags.test(aiALife)) {
-			Msg					("Saving object %s",(*I).second->s_name);
+			Msg					("Saving object [%x][%s][%s][%f][%f][%f]",(*I).second,(*I).second->s_name,(*I).second->s_name_replace,VPUSH((*I).second->o_Position));
 		}
 		NET_Packet				tNetPacket;
 		// Spawn
@@ -100,6 +100,9 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		CSE_ALifeDynamicObject	*tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(tpSE_Abstract);
 		R_ASSERT2				(tpALifeDynamicObject,"Non-ALife object in the saved game!");
 		tpALifeDynamicObject->Spawn_Read(tNetPacket);
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("SPAWN  : %s[%f][%f][%f]",tpSE_Abstract->s_name_replace,VPUSH(tpSE_Abstract->o_Position));
+		}
 
 		// Update
 		tNetPacket.B.count		= tFileStream.r_u16();
@@ -107,6 +110,9 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		tNetPacket.r_begin		(u_id);
 		R_ASSERT2				(M_UPDATE==u_id,"Invalid packet ID (!= M_UPDATE)");
 		tpALifeDynamicObject->UPDATE_Read(tNetPacket);
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("UPDATE : [%f][%f][%f]",VPUSH(tpSE_Abstract->o_Position));
+		}
 		Add						(tpALifeDynamicObject);
 	}
 	Msg							("%d objects are successfully loaded",dwCount);
