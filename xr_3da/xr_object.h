@@ -27,6 +27,12 @@ class	ENGINE_API						CObject :
 	public pureDeviceDestroy,
 	public pureDeviceCreate
 {
+public:
+	struct SavedPosition
+	{
+		DWORD	dwTime;
+		Fvector	vPosision;
+	};
 protected:
 	// some property variables
 	bool								rbEnabled;
@@ -40,14 +46,14 @@ protected:
 	Fvector								vScale;
 	Fmatrix								mRotate;
 	CCFModel*							cfModel;
-
+	svector<SavedPosition,4>			PositionStack;
+	
 	LPSTR								pVisualName;
 	FBasicVisual*						pVisual;
 
 	// Visibility detection
 	CSector*							pSector;
 	ESectorMode							SectorMode;
-	Fvector								vPositionPrevious;
 
 	// Shadow
 	Shader*								sh_Shader;

@@ -164,10 +164,33 @@ void CObject::UpdateCL	()
 
 void CObject::Update	( DWORD T )
 {
-	if (!vPositionPrevious.similar(vPosition,0.005f))
+	BOOL	bUpdate=FALSE;
+	if (PositionStack.empty())
 	{
-		vPositionPrevious.set(vPosition);
+		bUpdate							= TRUE;
+		PositionStack.push_back			(SavedPosition());
+		PositionStack.back().dwTime		= Device.dwTimeGlobal;
+		PositionStack.back().vPosition	= vPosition;
+	} else {
+		if (PositionStack.back().similar(vPosition,0.005f))
+		{
+			PositionStack.back().dwTime	= Device.dwTimeGlobal;
+		} else {
+			bUpdate							= TRUE;
+			if (PositionStack.size()<4)		{
+				PositionStack.push_back			(SavedPosition());
+			} else {
+				PositionStack[0]				= PositionStack[1];
+				PositionStack[1]				= PositionStack[2];
+				PositionStack[2]				= PositionStack[3];
+			}
+			PositionStack.back().dwTime		= Device.dwTimeGlobal;
+			PositionStack.back().vPosition	= vPosition;
+		}
+	}
 
+	if (bUpdate)
+	{
 		// cfmodel
 		if (cfModel)	cfModel->OnMove();
 
