@@ -89,13 +89,14 @@ void Scan1Line(unsigned char *Color, float *Depth, const int W, const int H,
 	// some test cases gave min > max (ie pixel should not be plotted)
 	if (minX > maxX) return;
 	// interpolate Z to this start of boundary
-	float Z = startZ + (minX - startX)/(endX - startX) * (endZ - startZ);
+	float Z		= startZ + (minX - startX)/(endX - startX) * (endZ - startZ);
 	// incerement in Z / pixel wrt dX
-	float dZ = (endZ-startZ)/(endX-startX);
+	float dZ	= (endZ-startZ)/(endX-startX);
 	// trunc the 0.5 in pixel coords to int, setup starting conditons
-	int initX = int(minX), finalX = int(maxX), i=curY*W+initX, ci=3*i;
+	int initX	= int(minX), finalX = int(maxX), i = curY*W+initX, ci=3*i;
 	// compute the scanline
-	for (; initX<=finalX; initX++) {
+	for (; initX<=finalX; initX++) 
+	{
 		if (Z<(Depth[i])) { // update Z buffer, RGB
 			Color[ci] = cur_color[0];
 			Color[ci+1] = cur_color[1];
