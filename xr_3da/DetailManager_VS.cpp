@@ -139,8 +139,8 @@ void CDetailManager::hw_Render()
 	Fvector dir1,dir2;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot1;
 	float	tm_rot2			= PI_MUL_2*Device.fTimeGlobal/psDetail_w_rot2;
-	dir1.set				(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();
-	dir2.set				(sinf(tm_rot2),0,cosf(tm_rot2));	dir1.normalize		();
+	dir1.set				(sinf(tm_rot1),0,cosf(tm_rot1));	dir1.normalize		();	dir1.mul(.1f);	// dir*amplitude
+	dir2.set				(sinf(tm_rot2),0,cosf(tm_rot2));	dir1.normalize		(); dir2.mul(.05f);	// dir*amplitude
 
 	// Wave0
 	CVS_Constants& VSC		=	Device.Shader.VSC;
@@ -149,7 +149,7 @@ void CDetailManager::hw_Render()
 	VSC.set					(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
 	VSC.set					(2,	dir1);																		// wind-dir
 	VSC.set					(3,	Device.mFullTransform);
-	VSC.set					(7,	1,			.1f,		0,			2);				//const c[7] = 1 0.1 0 2
+	VSC.set					(7,	1,			0,			2,			0);				//const c[7] = 1 0 2 0
 	VSC.set					(8,	0,			0.5f,		1.f,		0);				//const c[8] = 0 0.5 1 0
 	VSC.set					(9, 0.25f,		-9.f,		0.75f,		0.1591549f);	//const c[9] = 0.25 -9 0.75 0.1591549
 	VSC.set					(10,24.9808f,	-24.9808f,	-60.14581f,	60.14581f);		//const c[10] = 24.9808 -24.9808 -60.14581 60.14581
