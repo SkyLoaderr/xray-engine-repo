@@ -41,6 +41,7 @@ zmey_bodyguard_base         = sound_zmey_base + 300
 zmey_guide_base             = sound_zmey_base + 350
 zmey_robber_guard_base      = sound_zmey_base + 400
 zmey_scared_base            = sound_zmey_base + 450
+zmey_zoneguard_base         = sound_zmey_base + 500
 
 -- Чугай
 chugai_sounds          = global_sounds + 4000

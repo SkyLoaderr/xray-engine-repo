@@ -178,6 +178,8 @@ function motivator_binder:reload (section)
 		path_guard_radius = 0,
 		path_center = nil
 	}
+	--' Охранники
+    xr_motivator.storage[self.object:id()].zoneguard = { }
     --' схема командира
     xr_motivator.storage[self.object:id()].commander = {
             enabled = false,
@@ -249,6 +251,7 @@ function motivator_binder:reload (section)
         xr_comm_ptr.add_to_binder   (self.object, nil)
 		xr_follower.add_to_binder	(self.object, nil)
 		xr_bodyguard.add_to_binder	(self.object, nil)
+		xr_zoneguard.add_to_binder	(self.object, nil)
 		xr_sniper.add_to_binder		(self.object, nil)
 		xr_kamp.add_to_binder		(self.object, nil)
 		xr_robbers.add_to_binder		(self.object, nil)
@@ -262,6 +265,7 @@ function motivator_binder:reload (section)
 		xr_follower.add_to_binder		(self.object, char_ini)
 		xr_commander.add_to_binder		(self.object, char_ini)
 		xr_bodyguard.add_to_binder		(self.object, char_ini)
+		xr_zoneguard.add_to_binder		(self.object, char_ini)
 		xr_walker.add_to_binder			(self.object, char_ini)
 		xr_assassin.add_to_binder		(self.object, char_ini)
 		xr_guard.add_to_binder			(self.object, char_ini)
@@ -296,10 +300,10 @@ function checkStorage(npc)
 			k == "guard" or
 			k == "walker" or
 			k == "assassin" or
-			k == "bodyguard" or
 			k == "commander" or
 			k == "ambush" or
 			k == "bodyguard" or
+			k == "zoneguard" or
 			k == "sniper" or
 			k == "kamp"
         then
@@ -317,10 +321,10 @@ function checkStorage(npc)
 				k == "guard" or
 				k == "walker" or
 				k == "assassin" or
-				k == "bodyguard" or
 				k == "commander" or
 				k == "ambush" or
 				k == "bodyguard" or
+				k == "zoneguard" or
 				k == "sniper" or
 				k == "kamp"
             then

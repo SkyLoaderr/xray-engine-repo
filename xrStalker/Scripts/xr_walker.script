@@ -1,3 +1,9 @@
+----------------------------------------------------------------------------------------------------
+-- Walkers
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_walker" (property_evaluator)
 
@@ -46,7 +52,7 @@ function action_walker_activity:initialize()
 
 	self.move_mgr:initialize(self.object)
 
-	printf("initiz")
+	--printf("initiz")
 	self.initialized = true
 
 	self:reset_scheme()
@@ -54,10 +60,12 @@ end
 
 
 function action_walker_activity:reset_scheme()
-	printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
+	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
 	if not self.initialized then
 		return
 	end
+
+	self.object:clear_animations()
 	
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
@@ -76,6 +84,7 @@ end
 
 function action_walker_activity:finalize()
 	self.move_mgr:finalize()
+	self.object:clear_animations()
 	action_base.finalize(self)
 end
 
