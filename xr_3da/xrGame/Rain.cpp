@@ -23,17 +23,20 @@ const float particles_time	= .3f;
 
 CEffect_Rain::CEffect_Rain()
 {
-	state				= stIdle;
-	control_start		= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
-	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
+	state					= stIdle;
+	control_start			= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
+	control_stop			= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	Sound->create		(snd_Ambient,TRUE,"amb_rain");
-	snd_Ambient_volume	= 0;
+	Sound->create			(snd_Ambient,TRUE,"amb_rain");
+	snd_Ambient_volume		= 0;
+
+	IReader*	 fs			= FS.r_open("$game_meshes$","dm\\rain.dm");
+	DM_Drop					= ::Render->model_CreateDM		(fs);
+	FS.r_close				(fs);
 
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
-
-	OnDeviceCreate		();
+	OnDeviceCreate			();
 }
 
 CEffect_Rain::~CEffect_Rain()
@@ -57,10 +60,6 @@ void	CEffect_Rain::OnDeviceCreate	()
 {
 	REQ_CREATE			();
 
-	IReader*	 fs		= FS.r_open("$game_meshes$","dm\\rain.dm");
-	DM_Drop				= ::Render->model_CreateDM		(fs);
-	FS.r_close			(fs);
-
 	SH_Rain				= Device.Shader.Create		("effects\\rain","fx\\rain");
 	hGeom_Rain			= Device.Shader.CreateGeom	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hGeom_Drops			= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
@@ -74,7 +73,6 @@ void	CEffect_Rain::OnDeviceDestroy	()
 	Device.Shader.DeleteGeom	(hGeom_Rain);
 	Device.Shader.Delete	(SH_Rain);
 	p_destroy				();
-	DM_Drop.Unload			();
 }
 
 void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
@@ -211,8 +209,8 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	P->time						= particles_time;
 	P->mXForm.rotateY			(::Random.randF(PI_MUL_2));
 	P->mXForm.translate_over	(pos);
-	P->mXForm.transform_tiny	(P->bounds.P,DM_Drop.bv_sphere.P);
-	P->bounds.R					= DM_Drop.bv_sphere.R;
+	P->mXForm.transform_tiny	(P->bounds.P,DM_Drop->bv_sphere.P);
+	P->bounds.R					= DM_Drop->bv_sphere.R;
 }
 
 void	CEffect_Rain::Render	()
@@ -333,15 +331,15 @@ void	CEffect_Rain::Render	()
 	{
 		float	dt				= Device.fTimeDelta;
 		_IndexStream& _IS		= RCache.Index;
-		RCache.set_Shader		(DM_Drop.shader);
+		RCache.set_Shader		(DM_Drop->shader);
 		
 		Fmatrix					mXform,mScale;
 		int						pcount  = 0;
 		u32						v_offset,i_offset;
-		u32						vCount_Lock		= particles_cache*DM_Drop.number_vertices;
-		u32						iCount_Lock		= particles_cache*DM_Drop.number_indices;
-		CDetail::fvfVertexOut*	v_ptr			= (CDetail::fvfVertexOut*) RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops->vb_stride, v_offset);
-		WORD*					i_ptr			= _IS.Lock										(iCount_Lock, i_offset);
+		u32						vCount_Lock		= particles_cache*DM_Drop->number_vertices;
+		u32						iCount_Lock		= particles_cache*DM_Drop->number_indices;
+		IRender_DetailModel::fvfVertexOut* v_ptr= (IRender_DetailModel::fvfVertexOut*) RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops->vb_stride, v_offset);
+		WORD*					i_ptr			= _IS.Lock													(iCount_Lock, i_offset);
 		while (P)	{
 			Particle*	next	=	P->next;
 			
@@ -362,9 +360,9 @@ void	CEffect_Rain::Render	()
 				mXform.mul_43		(P->mXForm,mScale);
 				
 				// XForm verts
-				DM_Drop.Transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop.number_vertices);
-				v_ptr			+=	DM_Drop.number_vertices;
-				i_ptr			+=	DM_Drop.number_indices;
+				DM_Drop->Transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop->number_vertices);
+				v_ptr			+=	DM_Drop->number_vertices;
+				i_ptr			+=	DM_Drop->number_indices;
 				pcount			++;
 
 				if (pcount >= particles_cache) {
@@ -386,8 +384,8 @@ void	CEffect_Rain::Render	()
 		}
 
 		// Flush if needed
-		vCount_Lock						= pcount*DM_Drop.number_vertices;
-		iCount_Lock						= pcount*DM_Drop.number_indices;
+		vCount_Lock						= pcount*DM_Drop->number_vertices;
+		iCount_Lock						= pcount*DM_Drop->number_indices;
 		u32	dwNumPrimitives				= iCount_Lock/3;
 		RCache.Vertex.Unlock			(vCount_Lock,hGeom_Drops->vb_stride);
 		_IS.Unlock						(iCount_Lock);
