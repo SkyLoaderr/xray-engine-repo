@@ -277,3 +277,14 @@ function script_object:update()
 	end
 end
 
+--
+-- Передача персонажу информации
+--
+function GiveInfo(obj, info_number)
+
+	local result = obj:give_info_portion(info_number)
+	while not result do
+		wait()
+		result = obj:give_info_portion(info_number)
+	end
+end 
