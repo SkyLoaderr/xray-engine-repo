@@ -10,151 +10,122 @@
 #include "memory_manager.h"
 #include "HudSound.h"
 
+#include "patrol_path.h"
+#include "intrusive_ptr.h"
+
 class CScriptGameObject;
 class CLAItem;
 class CHelicopterMovManager;
+class CHelicopter;
 
-struct SHeliShared{
-	CObject*						m_destEnemy;
-	Fvector							m_destEnemyPos; //lastEnemyPos
-	Fvector							m_stayPoint;
-
-	float							m_pitch_k;
-	float							m_bank_k;
-	float							m_time_delay_between_patrol;
-	float							m_time_patrol_period;
-	float							m_alt_korridor;
-	float							m_baseAltitude;
-	float							m_attackAltitude;
-	float							m_basePatrolSpeed;
-	float							m_baseAttackSpeed;
-	float							m_hunt_dist;
-	float							m_hunt_time;
-	Fvector							m_to_point;//tmp, fix it
-	Fvector							m_via_point;//tmp, fix it
-
-	float							m_wait_in_point;//tmp, fix it
-	float							m_maxKeyDist;
-	float							m_endAttackTime;
-	Fvector							m_startDir;
-	float							m_time_last_patrol_end;
-	float							m_time_last_patrol_start;
-	float							m_time_delay_before_start;
-
-	Fmatrix							m_desiredXFORM;
-	Fvector							m_desiredP;
-	Fvector							m_desiredR;
-
-
-	float							m_wrk_altitude;
-
-	int								m_patrol_begin_idx;
-	shared_str						m_patrol_path_name;
-
-
-	bool							m_b_looking_at_point;
-	Fvector							m_looking_point;
-
-	Fvector							m_round_center;
-	float							m_round_radius;
-	bool							m_round_reverse;
+enum EHeliHuntState{eEnemyNone,eEnemyPoint,eEnemyEntity};
+struct SHeliEnemy{
+	EHeliHuntState					type;
+	Fvector							destEnemyPos;
+	u32								destEnemyID;
+	void Update						();
 };
 
-class CHelicopter : 
-	public CEntity,
-	public CShootingObject,
-	public CRocketLauncher,
-	public CPHSkeleton,
-	public CHitImmunity
+enum EHeliBodyState{eBodyByPath,eBodyToPoint};
+struct SHeliBodyState{
+	EHeliBodyState					type;
+	//settings, constants
+	float							model_pitch_k;
+	float							model_bank_k;
+	float							model_angSpeedBank;
+	float							model_angSpeedPitch;
+
+	//runtime params
+	float							currBodyH;
+	float							currBodyP;
+	float							currBodyB;
+
+	bool							b_looking_at_point;
+	Fvector							looking_point;
+	void		LookAtPoint			(Fvector point, bool do_it);
+};
+
+enum EHeilMovementState{eMovNone,eMovToPoint,eMovPatrolPath,eMovLanding,eMovTakeOff};
+struct SHeliMovementState{
+	CHelicopter*					parent;
+	EHeilMovementState				type;
+	//specified path
+	const CPatrolPath*				currPatrolPath;
+	const CPatrolPath::CVertex*		currPatrolVertex;
+	
+	int								patrol_begin_idx;
+	shared_str						patrol_path_name;
+	bool							need_to_del_path;
+	bool							need_to_call_callback;
+
+	float							maxLinearSpeed;
+	float							LinearAcc_fw;
+	float							LinearAcc_bk;
+	float							angularSpeedPitch;
+	float							angularSpeedHeading;
+	float							speedInDestPoint;
+//runtime values
+	Fvector							desiredPoint;
+
+	float							curLinearSpeed;
+	float							curLinearAcc;
+
+	Fvector							currP;
+	Fvector							currR;
+	float							currPathH;
+	float							currPathP;
+
+
+	Fvector							round_center;
+	float							round_radius;
+	bool							round_reverse;
+
+	float							onPointRangeDist;
+
+	void	Update						();
+	void	UpdateMovToPoint			();
+	void	UpdatePatrolPath			();
+	void	goByRoundPath				(Fvector center, float radius, bool clockwise);
+	float	GetDistanceToDestPosition	();
+	void	getPathAltitude				(Fvector& point, float base_altitude);
+	void	SetDestPosition				(Fvector* pos);
+	void	goPatrolByPatrolPath		(LPCSTR path_name,int start_idx);
+};
+
+class CHelicopter : 	public CEntity,
+						public CShootingObject,
+						public CRocketLauncher,
+						public CPHSkeleton,
+						public CHitImmunity
+					#ifdef DEBUG
+						,public pureRender
+					#endif
+
 {
 	typedef CPhysicsShellHolder inherited;
 public:
 	enum EHeliState {
-		eIdleState							= u32(0),
-		eInitiatePatrolZone,				// ->eMovingByPatrolZonePath
-		eMovingByPatrolZonePath,			//->eInitiatePatrolZone, eInitiateWaitBetweenPatrol
-		eInitiateHunt,						// ->eMovingByAttackTraj,eInitiatePatrolZone
-		eInitiateHunt2,						// ->eMovingByAttackTraj,eInitiatePatrolZone
-		eMovingByAttackTraj,				// ->eInitiatePatrolZone
-		eWaitForStart,						// ->eInitiatePatrolZone
-		eWaitBetweenPatrol,					// ->eInitiatePatrolZone
-		eInitiateWaitBetweenPatrol,			// ->eMovingToWaitPoint
-		eMovingToWaitPoint,					// ->eWaitBetweenPatrol
-		eInitiateGoToPoint,					// ->eMovingByPatrolZonePath
-		eMovingToPoint,
-		eInitiatePatrolByPath,
-		eMovingByPatrolPath,
-		eInitiateRoundMoving,
+		eAlive							= u32(0),
 		eDead,
 		eForce = u32(-1)
 	}; 
-	SHeliShared						m_data;
 
+
+// heli weapons
 	bool							m_use_rocket_on_attack;
 	bool							m_use_mgun_on_attack;
-	float							m_min_rocket_dist;
-	float							m_max_rocket_dist;
-	float							m_min_mgun_dist;
-	float							m_max_mgun_dist;
+	float							m_min_rocket_dist,m_max_rocket_dist;
+	float							m_min_mgun_dist, m_max_mgun_dist;
 	u32								m_time_between_rocket_attack;
 	bool							m_syncronize_rocket;
-	float							m_on_point_range_dist;
-	float							m_last_point_range_dist;
-
-
-	Fvector							m_fire_dir;
-
-protected:
-	float							m_maxLinearSpeed;
-
-	float							m_curLinearSpeed;//m/s
-	float							m_curLinearAcc;
-	float							m_LinearAcc_fw;
-	float							m_LinearAcc_bk;
-	float							m_angularSpeedPitch;
-	float							m_angularSpeedHeading;
-
-	float							m_model_angSpeedBank;
-	float							m_model_angSpeedPitch;
-
-	Fvector							m_currP;
-	Fvector							m_currR;
-	float							m_currPathH;
-	float							m_currPathP;
-
-	float							m_currBodyH;
-	float							m_currBodyP;
-	float							m_currBodyB;
-
-	Fvector							m_death_ang_vel;
-	float							m_death_lin_vel_k;
-//////////////////////////////////////////////////
-	EHeliState						m_curState;
 
 	HUD_SOUND						m_sndShot;
 	HUD_SOUND						m_sndShotRocket;
-	ref_sound						m_engineSound;
-	ref_sound						m_explodeSound;
-	ref_light						m_light_render;
-	CLAItem*						m_lanim;
-	u16								m_light_bone;
-	float							m_light_brightness;
-	float							m_light_range;
-	Fcolor							m_light_color;
-	shared_str						m_l_anim;
 
-	CHelicopterMovManager			*m_movMngr;
+	Fvector							m_fire_dir,m_fire_pos;
 
-	xr_map<s16,float>				m_hitBones;
+	u16								m_left_rocket_bone, m_right_rocket_bone, m_fire_bone, m_rotate_x_bone, m_rotate_y_bone;
 
-	u16								m_left_rocket_bone;
-	u16								m_right_rocket_bone;
-	u16								m_fire_bone;
-	u16								m_rotate_x_bone;
-	u16								m_rotate_y_bone;
-
-	Fvector							m_fire_pos;
-//	Fvector							m_fire_dir;
 	Fmatrix							m_fire_bone_xform;
 	Fmatrix							m_i_bind_x_xform, m_i_bind_y_xform;
 	Fvector2						m_lim_x_rot, m_lim_y_rot;
@@ -166,122 +137,156 @@ protected:
 	u16								m_last_launched_rocket;
 	u32								m_last_rocket_attack;
 
-
-	shared_str						m_sAmmoType;
-	shared_str						m_sRocketSection;
+	shared_str						m_sAmmoType, m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
-	shared_str						m_smoke_particle;
-	shared_str						m_explode_particle;
-	CParticlesObject*				m_pParticle;
-	Fmatrix							m_particleXFORM;
-	u16								m_smoke_bone;
+	Fmatrix							m_left_rocket_bone_xform, m_right_rocket_bone_xform;
 
-	shared_str						m_death_bones_to_hide;
-	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
-	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
-
-	typedef xr_map<s16,float>::iterator bonesIt;
-
+	static void __stdcall			BoneMGunCallbackX		(CBoneInstance *B);
+	static void __stdcall			BoneMGunCallbackY		(CBoneInstance *B);
 	void							startRocket(u16 idx);
 
+	//CShootingObject
+	virtual const Fmatrix&			ParticlesXFORM		()const					{return m_fire_bone_xform;};
+
+	virtual const Fvector&			CurrentFirePoint	()						{return m_fire_pos;};
+
+	void							MGunFireStart		();
+	void							MGunFireEnd			();
+	void							MGunUpdateFire		();
+	virtual	void					OnShot				();
+
+	void							UpdateMGunDir		();
+	void							UpdateWeapons		();
+
+protected:
+	SHeliEnemy						m_enemy;
+	SHeliBodyState					m_body;
+	SHeliMovementState				m_movement;
+
+// on death...
+	Fvector							m_death_ang_vel;
+	float							m_death_lin_vel_k;
+	shared_str						m_death_bones_to_hide;
+
+//////////////////////////////////////////////////
+
+// sound, light, particles...
+	ref_sound						m_engineSound;
+	ref_sound						m_explodeSound;
+	ref_light						m_light_render;
+	CLAItem*						m_lanim;
+	u16								m_light_bone, m_smoke_bone;
+	float							m_light_range, m_light_brightness;
+	Fcolor							m_light_color;
+	shared_str						m_smoke_particle, m_explode_particle;
+	CParticlesObject*				m_pParticle;
+	Fmatrix							m_particleXFORM;
+
+	void							StartFlame					();
+	void							UpdateHeliParticles			();
+	void							Explode						();
+	void							DieHelicopter				();
+	void							TurnLighting				(bool bOn);
+	void							TurnEngineSound				(bool bOn);
+
+
+//general
+	EHeliState						m_curState;
+
+	xr_map<s16,float>				m_hitBones;
+	typedef xr_map<s16,float>::iterator bonesIt;
+	float							m_stepRemains;
+
+	void	UpdateState					();
 public:
-	Fmatrix							m_left_rocket_bone_xform;
-	Fmatrix							m_right_rocket_bone_xform;
+
 
 
 	CHelicopter();
 	virtual							~CHelicopter();
 	
 	CHelicopter::EHeliState			state		()		{return m_curState;};
-	u32								state_script()		{return m_curState;};
+	int								state_script()		{return m_curState;};
 
 	void							setState	(CHelicopter::EHeliState s);
-	void							setState_script	(u32 s){setState((CHelicopter::EHeliState)s);};
-	//CAI_ObjectLocation
+	void							setState_script	(u32 s)					{setState((CHelicopter::EHeliState)s);};
+
 	void							init		();
-	virtual	void					reinit		();
+	virtual	void					reinit		()							{inherited::reinit	();};
 
-	//CGameObject
-	virtual	void			Load				(LPCSTR		section);
-	virtual	void			reload				(LPCSTR		section);
+	virtual	void					Load				(LPCSTR		section);
+	virtual	void					reload				(LPCSTR		section);
 
-	virtual BOOL			net_Spawn			(CSE_Abstract*		DC);
-	virtual void			net_Destroy			();
-	virtual void			net_Export			(NET_Packet &P);
-	virtual void			net_Import			(NET_Packet &P);
+	virtual BOOL					net_Spawn			(CSE_Abstract*		DC);
+	virtual void					net_Destroy			();
+	virtual void					net_Export			(NET_Packet &P){};
+	virtual void					net_Import			(NET_Packet &P){};
 
-	virtual void			SpawnInitPhysics	(CSE_Abstract	*D);
-	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}
-	virtual void			net_Save			(NET_Packet& P);
-	virtual	BOOL			net_SaveRelevant	();					
+	virtual void					SpawnInitPhysics	(CSE_Abstract	*D);
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()						{return PhysicsShellHolder();}
+	virtual void					net_Save			(NET_Packet& P);
+	virtual	BOOL					net_SaveRelevant	()						{return (inherited::net_SaveRelevant() || BOOL(PPhysicsShell()!=NULL));};					
 
-	virtual void			renderable_Render				();
-	virtual BOOL			renderable_ShadowGenerate		()	{ return FALSE;	}
-	virtual BOOL			renderable_ShadowReceive		()	{ return TRUE;	}
+	virtual void					renderable_Render				()			{ inherited::renderable_Render();};
+	virtual BOOL					renderable_ShadowGenerate		()			{ return FALSE;	}
+	virtual BOOL					renderable_ShadowReceive		()			{ return TRUE;	}
 
-	virtual void			OnEvent				(NET_Packet& P, u16 type);
-	virtual void			UpdateCL			();
-	virtual void			shedule_Update		(u32		time_delta);
+	virtual void					OnEvent				(NET_Packet& P, u16 type);
+	virtual void					UpdateCL			();
+	virtual void					shedule_Update		(u32		time_delta);
+			void					MoveStep			();
 
-	virtual	void			Hit					(float P, Fvector &dir, CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual void			PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
+	virtual	void					Hit					(float P, Fvector &dir, CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual void					PHHit				(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
 	//CEntity
-	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
-	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
-	virtual void			DieHelicopter		();
+	virtual void					HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
+	virtual void					HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
 	
-			void			PrepareDie			();
-			void			UpdateHeliParticles	();
-			void			Explode				();
+	virtual const Fmatrix&			get_ParticlesXFORM	();
+	virtual const Fvector&			get_CurrentFirePoint();
 
 
-protected:
-	//CShootingObject
-	virtual const Fvector&	get_CurrentFirePoint	();
-	virtual const Fmatrix&	get_ParticlesXFORM		();
 
-	void					MGunFireStart			();
-	void					MGunFireEnd				();
-	void					MGunUpdateFire			();
-	virtual	void			OnShot					();
-
-	void					updateMGunDir			();
 public:
 	//for scripting
-	bool					isVisible			(CScriptGameObject* O);
-	bool					isObjectVisible		(CObject* O);
-	void					doHunt				(CObject* dest);
-	void					doHunt2				(CObject* dest, float dist=20.0f, float time=5.0f);
-	bool			 		isOnAttack			()					{return (m_curState==eInitiateHunt || m_curState==eInitiateHunt2 || m_curState==eMovingByAttackTraj) ;}
-	void					useRocket			(bool b)			{m_use_rocket_on_attack = b;};
-	bool					useRocket			()const				{return m_use_rocket_on_attack;};
-	void					useMGun				(bool b)			{m_use_mgun_on_attack = b;};
-	bool					useMGun				()const				{return m_use_mgun_on_attack;};
-	void					gotoStayPoint		(float time=0.0f, Fvector* pos = 0);
-	void					goPatrol			(float time=0.0f);
-	void					goToPoint			(Fvector* to, Fvector* via, float time);
-	float					getLastPointTime	();
+	bool					isVisible						(CScriptGameObject* O);
+	bool					isObjectVisible					(CObject* O);
+	bool			 		isOnAttack						()				{return m_enemy.type!=eEnemyNone;}
 
-	void					goPatrolByPatrolPath (LPCSTR path_name,int start_idx);
+	void					goPatrolByPatrolPath			(LPCSTR path_name,int start_idx);
+	void					goByRoundPath					(Fvector center, float radius, bool clockwise);
+	void					LookAtPoint						(Fvector point, bool do_it);
+	void					SetDestPosition					(Fvector* pos);
+	float					GetDistanceToDestPosition		();
 	
-	float					GetDistanceToDestPosition();
-	void					SetDestPosition (Fvector* pos);
-	float					GetCurrAltitude();
-	void					SetCurrAltitude(float a);
-	float					GetCurrVelocity();
-	void					SetCurrVelocity(float v);
-	void					SetEnemy(CScriptGameObject* e);
-	float					GetRealAltitude();
+	void					SetSpeedInDestPoint				(float sp);
+	float					GetSpeedInDestPoint				(float sp);
+	
+	void					SetOnPointRangeDist				(float d);
+	float					GetOnPointRangeDist				();
 
+	float					GetCurrVelocity					();
+	float					GetMaxVelocity					();
+	void					SetMaxVelocity					(float v);
 
-	void					goByRoundPath(Fvector center, float radius, bool clockwise);
-	void					LookAtPoint(Fvector point, bool do_it);
+	void					SetEnemy						(CScriptGameObject* e);
+	void					SetEnemy						(Fvector* pos);
 
-	virtual float GetfHealth() const;
-	virtual float SetfHealth(float value);
-			void   TurnLighting(bool bOn);
-			void  TurnEngineSound(bool bOn);
+	float					GetRealAltitude					();
+
+	int						GetMovementState				();
+	int						GetHuntState					();
+	int						GetBodyState					();
+
+//	virtual float			GetfHealth						() const;
+//	virtual float			SetfHealth						(float value);
+
+#ifdef DEBUG
+public:
+	virtual void			OnRender						();
+#endif
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CHelicopter)

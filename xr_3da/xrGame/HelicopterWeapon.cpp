@@ -23,16 +23,22 @@ CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 }
 
 
-const Fmatrix& CHelicopter::get_ParticlesXFORM()
-{
-	return m_fire_bone_xform;
-}
 
-const Fvector&	CHelicopter::get_CurrentFirePoint()
+void CHelicopter::OnEvent(	NET_Packet& P, u16 type) 
 {
-	return m_fire_pos;
+	inherited::OnEvent(P,type);
+	u16 id;
+	switch (type) {
+		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CRocketLauncher::AttachRocket(id, this);
+								 } break;
+		case GE_OWNERSHIP_REJECT : {
+			P.r_u16(id);
+			CRocketLauncher::DetachRocket(id);
+								   } break;
+	}
 }
-
 
 void CHelicopter::MGunUpdateFire()
 {
@@ -66,6 +72,7 @@ void CHelicopter::OnShot		()
 	StartShotParticles	();
 	if(m_bShotLight) Light_Start();
 
+
 	StartFlameParticles();
 	StartSmokeParticles(m_fire_pos, zero_vel);
 	OnShellDrop(m_fire_pos, zero_vel);
@@ -84,22 +91,84 @@ void CHelicopter::MGunFireStart()
 
 void CHelicopter::MGunFireEnd()
 {
-	if(!m_use_mgun_on_attack)
-		return;
-
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
 }
 
-void CHelicopter::updateMGunDir()
+bool between(const float& src, const float& min, const float& max){return( (src>min)&&(src<max));}
+
+void CHelicopter::UpdateWeapons		()
 {
-//	if(!m_destEnemy)	return;
+	if( isOnAttack() ){
+		UpdateMGunDir();
+	}else{
+		m_tgt_x_rot = 0.0f;
+		m_tgt_y_rot = 0.0f;
+	};
+
+	// lerp angle
+	angle_lerp	(m_cur_x_rot, m_tgt_x_rot, PI, Device.fTimeDelta);
+	angle_lerp	(m_cur_y_rot, m_tgt_y_rot, PI, Device.fTimeDelta);
+
+	if( isOnAttack() ){
+
+		if(m_allow_fire){
+			
+			float d = XFORM().c.distance_to_xz(m_enemy.destEnemyPos);
+			
+			if( between(d,m_min_mgun_dist,m_max_mgun_dist) )
+					MGunFireStart();
+			
+			if( between(d,m_min_rocket_dist,m_max_rocket_dist) &&
+				(Device.dwTimeGlobal-m_last_rocket_attack > m_time_between_rocket_attack) ) {
+				if(m_syncronize_rocket)	{
+					startRocket(1);
+					startRocket(2);
+				}else{
+					if(m_last_launched_rocket==1)
+						startRocket(2);
+					else
+						startRocket(1);
+				}
+
+				m_last_rocket_attack = Device.dwTimeGlobal;
+			}
+
+		}else{
+				MGunFireEnd();
+		}
+
+	}else
+		MGunFireEnd();
+
+	MGunUpdateFire();
+}
+
+void CHelicopter::UpdateMGunDir()
+{
+	CKinematics* K		= smart_cast<CKinematics*>(Visual());
+	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
+
+	m_fire_bone_xform.mulA(XFORM());
+	m_fire_pos.set(0,0,0); 
+	m_fire_bone_xform.transform_tiny(m_fire_pos);
+	m_fire_dir.set(0,0,1);
+	m_fire_bone_xform.transform_dir(m_fire_dir);
+
+	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
+	m_left_rocket_bone_xform.mulA(XFORM());
+	m_left_rocket_bone_xform.c.y += 1.0f;
+	//.fake
+	m_right_rocket_bone_xform	= K->LL_GetTransform(m_right_rocket_bone);
+	m_right_rocket_bone_xform.mulA(XFORM());
+	m_right_rocket_bone_xform.c.y += 1.0f;
+	//.fake
 
 	m_allow_fire		= TRUE;
 	Fmatrix XFi;
 	XFi.invert			(XFORM());
 	Fvector dep;
-	XFi.transform_tiny	(dep,m_data.m_destEnemyPos);
+	XFi.transform_tiny	(dep,m_enemy.destEnemyPos);
 	{// x angle
 		Fvector A_;		A_.sub(dep,m_bind_x);	m_i_bind_x_xform.transform_dir(A_); A_.normalize();
 		m_tgt_x_rot		= angle_normalize_signed(m_bind_x_rot-A_.getP());
@@ -128,7 +197,7 @@ void CHelicopter::startRocket(u16 idx)
 
 		Fvector vel;
 		Fvector dir;
-		dir.sub(m_data.m_destEnemyPos, rocketXFORM.c ).normalize_safe();
+		dir.sub(m_enemy.destEnemyPos, rocketXFORM.c ).normalize_safe();
 		vel.mul(dir,CRocketLauncher::m_fLaunchSpeed);
 
 		Fmatrix xform;
@@ -150,4 +219,15 @@ void CHelicopter::startRocket(u16 idx)
 		HUD_SOUND::PlaySound(m_sndShotRocket, xform.c, this, false);
 
 	}
+}
+
+const Fmatrix& CHelicopter::get_ParticlesXFORM()
+
+{
+	return m_fire_bone_xform;
+}
+
+const Fvector&	CHelicopter::get_CurrentFirePoint()
+{
+	return m_fire_pos;
 }

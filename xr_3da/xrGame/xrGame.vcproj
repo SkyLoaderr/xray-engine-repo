@@ -7210,22 +7210,13 @@
 								RelativePath=".\helicopter.h">
 							</File>
 							<File
+								RelativePath=".\Helicopter2.cpp">
+							</File>
+							<File
 								RelativePath=".\helicopter_script.cpp">
 							</File>
 							<File
-								RelativePath=".\HelicopterMotion.cpp">
-							</File>
-							<File
-								RelativePath=".\HelicopterMotion.h">
-							</File>
-							<File
 								RelativePath=".\HelicopterMovementManager.cpp">
-							</File>
-							<File
-								RelativePath=".\HelicopterMovementManager.h">
-							</File>
-							<File
-								RelativePath=".\HelicopterMovMngrPatrolTrajectory.cpp">
 							</File>
 							<File
 								RelativePath=".\HelicopterWeapon.cpp">

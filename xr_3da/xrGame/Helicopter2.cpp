@@ -33,7 +33,7 @@ bool CHelicopter::isVisible			(CScriptGameObject* O)
 }
 
 
-
+/*
 float CHelicopter::GetfHealth() const 
 { 
 	float f = CEntity::GetfHealth(); 
@@ -44,7 +44,7 @@ float CHelicopter::SetfHealth(float value) {
 	CEntity::SetfHealth(value);
 	return value;
 }
-
+*/
 void CHelicopter::TurnLighting(bool bOn)
 {
 	m_light_render->set_active						(bOn);
