@@ -21,16 +21,12 @@ ammo_class		 = ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource		= 6000
 
-cam_relax_speed          = 10; 5.5
+cam_relax_speed          = 10
 cam_dispersion           = 2
-cam_max_angle		 = 3; 4
-fire_dispersion          = 0.027 ;;не менять
-fire_dispersion_add      = 3
-fire_dispersion_relax    = 4
-fire_dispersion_base	 = 1.1
-disp_vel_factor		 = 0.1
-disp_crouch_factor	 = 0.5
-disp_jump_factor	 = 3
+cam_max_angle		     = 6
+
+fire_dispersion_base	 = 0.027
+
 fire_dispersion_condition_factor = 0.3
 misfire_probability = 0.0
 condition_shot_dec = 0.0003
@@ -45,8 +41,7 @@ inv_grid_height		= 1
 inv_grid_x			= 5
 inv_grid_y			= 4
 
-;cam_relax                = 0.37
-;cam_dispersion           = 2
+
 direction                = 0, 0, 1
 fire_point               = 0.0, 0.12, 0.55
 fire_point2              = 0.0, 0.12, 0.55
@@ -63,7 +58,7 @@ hit_power                = 95
 hit_impulse	        	 = 133
 hit_type = wound
 
-fire_distance            = 500
+fire_distance            = 600
 bullet_speed			 = 800			;начальная скорость пули
 rpm                      = 200
 ; end ttc
@@ -113,7 +108,7 @@ snd_close			= weapons\generic_close
 shell_point          = -0.15, -0.02, 0.05
 shell_dir		 = 0.0, 1.0, 0.0
 
-fire_point               = 0.07, -0.05, 0.11
+fire_point               = -0.090000,-0.090000,0.100000
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
