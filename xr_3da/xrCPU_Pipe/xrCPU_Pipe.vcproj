@@ -398,6 +398,12 @@
 			</File>
 			<File
 				RelativePath="xrSkin2W.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrTransfer.cpp">
