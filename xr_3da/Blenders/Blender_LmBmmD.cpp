@@ -1,4 +1,4 @@
-// BlenderDefault.cpp: implementation of the CBlender_lm_detail class.
+// BlenderDefault.cpp: implementation of the CBlender_LmBmmD class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -11,31 +11,31 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_lm_detail::CBlender_lm_detail	()
+CBlender_LmBmmD::CBlender_LmBmmD	()
 {
 	description.CLS		= B_LM_DETAIL;
 }
 
-CBlender_lm_detail::~CBlender_lm_detail	()
+CBlender_LmBmmD::~CBlender_LmBmmD	()
 {
 	
 }
 
-void	CBlender_lm_detail::Save(	CFS_Base& FS )
+void	CBlender_LmBmmD::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Detail texture");
 	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }
-void	CBlender_lm_detail::Load(	CStream& FS )
+void	CBlender_LmBmmD::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
 	xrPREAD_MARKER	(FS);
 	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT_Name);
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
 }
-void	CBlender_lm_detail::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	if (bEditor)	{
 		RS.PassBegin		();
