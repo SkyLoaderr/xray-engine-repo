@@ -206,7 +206,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	}
 
 	// Try predefined colors
-	for (CUIXmlInit::ColorDefs_it it = CUIXmlInit::m_ColorDefs.begin(); it != CUIXmlInit::m_ColorDefs.end(); ++it)
+	for (CUIXmlInit::ColorDefs::const_iterator it = CUIXmlInit::GetColorDefs()->begin(); it != CUIXmlInit::GetColorDefs()->end(); ++it)
 	{
 		if (strstr(static_cast<char*>(m_str + pos), *it->first) == m_str + pos)
 		{
@@ -214,7 +214,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 			g = (it->second >> 8) & 0xff;
 			b = it->second  & 0xff;
 
-			return xr_strlen(it->first);
+			return xr_strlen(*it->first);
 		}
 	}
 
@@ -537,7 +537,7 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 				else
 				{
 					// Try predefined colors
-					for (CUIXmlInit::ColorDefs_it it2 = CUIXmlInit::m_ColorDefs.begin(); it2 != CUIXmlInit::m_ColorDefs.end(); ++it2)
+					for (CUIXmlInit::ColorDefs::const_iterator it2 = CUIXmlInit::GetColorDefs()->begin(); it2 != CUIXmlInit::GetColorDefs()->end(); ++it2)
 					{
 						if (strstr(&*(it + 2), *it2->first) == &*(it + 2))
 						{

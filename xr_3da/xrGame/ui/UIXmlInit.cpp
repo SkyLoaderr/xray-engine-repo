@@ -32,37 +32,14 @@
 
 const char * const		COLOR_DEFINITIONS					= "color_defs.xml";
 
-bool					CUIXmlInit::m_bColorsInitialized	= false;
-CUIXmlInit::ColorDefs	CUIXmlInit::m_ColorDefs;
+CUIXmlInit::ColorDefs	*CUIXmlInit::m_pColorDefs			= NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
 CUIXmlInit::CUIXmlInit()
 {
 	// Init colors
-	if (!m_bColorsInitialized)
-	{
-		CUIXml uiXml;
-		bool flag = uiXml.Init("$game_data$", COLOR_DEFINITIONS);
-		R_ASSERT3(flag, "xml file not found", COLOR_DEFINITIONS);
-
-		int num = uiXml.GetNodesNum("colors", 0, "color");
-
-		ref_str name;
-		int r, b, g;
-
-		for (int i = 0; i < num; ++i)
-		{
-			name	= uiXml.ReadAttrib("color", i, "name", "");
-			r		= uiXml.ReadAttribInt("color", i, "r", 0);
-			g		= uiXml.ReadAttribInt("color", i, "g", 0);
-			b		= uiXml.ReadAttribInt("color", i, "b", 0);
-
-			m_ColorDefs.push_back(std::make_pair<ref_str, int>(name, (r<<16) | (g<<8) | b));
-		}
-
-		m_bColorsInitialized = true;
-	}
+	InitColorDefs();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -763,4 +740,32 @@ bool CUIXmlInit::InitAlignment(CUIXml &xml_doc, const char *path,
 	}
 
 	return result;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIXmlInit::InitColorDefs()
+{
+	if (NULL != m_pColorDefs) return;
+
+	m_pColorDefs = xr_new<ColorDefs>();
+
+	CUIXml uiXml;
+	bool flag = uiXml.Init("$game_data$", COLOR_DEFINITIONS);
+	R_ASSERT3(flag, "xml file not found", COLOR_DEFINITIONS);
+
+	int num = uiXml.GetNodesNum("colors", 0, "color");
+
+	ref_str name;
+	int r, b, g;
+
+	for (int i = 0; i < num; ++i)
+	{
+		name	= uiXml.ReadAttrib("color", i, "name", "");
+		r		= uiXml.ReadAttribInt("color", i, "r", 0);
+		g		= uiXml.ReadAttribInt("color", i, "g", 0);
+		b		= uiXml.ReadAttribInt("color", i, "b", 0);
+
+		m_pColorDefs->push_back(std::make_pair<ref_str, int>(name, (r<<16) | (g<<8) | b));
+	}
 }

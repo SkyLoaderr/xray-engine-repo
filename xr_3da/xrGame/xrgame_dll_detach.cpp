@@ -7,6 +7,7 @@
 #include "entity_alive.h"
 #include "profiler.h"
 #include "ui/UIInventoryUtilities.h"
+#include "UI/UIXmlInit.h"
 
 void clean_memory_global()
 {
@@ -31,6 +32,9 @@ void clean_memory_global()
 
 	//очищение памяти таблицы строк
 	CStringTable::Destroy				();
+	
+	// Очищение таблицы цветов
+	CUIXmlInit::DeleteColorDefs			();
 
 	xr_delete							(g_profiler);
 }

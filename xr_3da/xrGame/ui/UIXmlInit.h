@@ -99,10 +99,13 @@ public:
 	// Initialize and store predefined colors
 	typedef std::pair<ref_str, int> ColorMap;
 	DEF_VECTOR(ColorDefs, ColorMap);
-	static	ColorDefs m_ColorDefs;
 
+	static const ColorDefs		*GetColorDefs()		{ R_ASSERT(m_pColorDefs); return m_pColorDefs; }
+
+	void						InitColorDefs();
+	static void					DeleteColorDefs()	{ xr_delete(m_pColorDefs); }
 private:
-	static bool m_bColorsInitialized;
+	static	ColorDefs			*m_pColorDefs;
 };
 
 #endif // _UI_XML_INIT_H_
