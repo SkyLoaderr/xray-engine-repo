@@ -200,7 +200,7 @@ void CGameObject::OnRender()
 {
 	if (bDebug && Visual()){
 		Fvector bc,bd; 
-		Visual()->bv_BBox.get_CD(bc,bd);
+		Visual()->vis.box.get_CD	(bc,bd);
 		Fmatrix	M = clXFORM();	M.c.add (bc);
 		RCache.dbg_DrawOBB (M,bd,D3DCOLOR_RGBA(0,0,255,255));
 	}

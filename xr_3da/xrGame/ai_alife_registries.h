@@ -32,22 +32,22 @@ public:
 	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
-		tMemoryStream.Wdword		(m_tObjectRegistry.size());
+		tMemoryStream.w_u32			(m_tObjectRegistry.size());
 		OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			NET_Packet				tNetPacket;
 			// Spawn
 			(*I).second->Spawn_Write(tNetPacket,TRUE);
-			tMemoryStream.Wword		(u16(tNetPacket.B.count));
-			tMemoryStream.write		(tNetPacket.B.data,tNetPacket.B.count);
+			tMemoryStream.w_u16		(u16(tNetPacket.B.count));
+			tMemoryStream.w			(tNetPacket.B.data,tNetPacket.B.count);
 
 			// Update
 			tNetPacket.w_begin		(M_UPDATE);
 			(*I).second->UPDATE_Write(tNetPacket);
 
-			tMemoryStream.Wword		(u16(tNetPacket.B.count));
-			tMemoryStream.write		(tNetPacket.B.data,tNetPacket.B.count);
+			tMemoryStream.w_u16		(u16(tNetPacket.B.count));
+			tMemoryStream.w			(tNetPacket.B.data,tNetPacket.B.count);
 		}
 		tMemoryStream.close_chunk	();
 	};
@@ -61,8 +61,8 @@ public:
 			NET_Packet				tNetPacket;
 			u16						u_id;
 			// Spawn
-			tNetPacket.B.count		= tFileStream.Rword();
-			tFileStream.Read		(tNetPacket.B.data,tNetPacket.B.count);
+			tNetPacket.B.count		= tFileStream.r_u16();
+			tFileStream.r			(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(u_id);
 			R_ASSERT				(M_SPAWN==u_id);
 
@@ -76,8 +76,8 @@ public:
 			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
 			// Update
-			tNetPacket.B.count		= tFileStream.Rword();
-			tFileStream.Read		(tNetPacket.B.data,tNetPacket.B.count);
+			tNetPacket.B.count		= tFileStream.r_u16();
+			tFileStream.r			(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(u_id);
 			R_ASSERT				(M_UPDATE==u_id);
 			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
@@ -144,7 +144,7 @@ public:
 	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
-		tMemoryStream.write			(&m_tEventID,sizeof(m_tEventID));
+		tMemoryStream.w				(&m_tEventID,sizeof(m_tEventID));
 		//save_map					(m_tEventRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
@@ -152,7 +152,7 @@ public:
 	virtual	void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.find_chunk(EVENT_CHUNK_DATA));
-		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
+		tFileStream.r	(&m_tEventID,sizeof(m_tEventID));
 		//load_map					(m_tEventRegistry,tFileStream,tfChooseEventKeyPredicate);
 	};
 	
@@ -181,7 +181,7 @@ public:
 	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
-		tMemoryStream.write			(&m_tTaskID,sizeof(m_tTaskID));
+		tMemoryStream.w				(&m_tTaskID,sizeof(m_tTaskID));
 		//save_map					(m_tTaskRegistry,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
@@ -189,7 +189,7 @@ public:
 	virtual	void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.find_chunk(TASK_CHUNK_DATA));
-		tFileStream.Read			(&m_tTaskID,sizeof(m_tTaskID));
+		tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
 //		load_map					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
 	};
 	 
@@ -402,8 +402,8 @@ public:
 		for (int id=0; I != E; I++, id++) {
 			R_ASSERT				(0!=(S = tFileStream.open_chunk(id)));
 			// Spawn
-			tNetPacket.B.count		= S->Rword();
-			S->Read					(tNetPacket.B.data,tNetPacket.B.count);
+			tNetPacket.B.count		= S->r_u16();
+			S->r					(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(ID);
 			R_ASSERT				(M_SPAWN == ID);
 			
@@ -414,8 +414,8 @@ public:
 			R_ASSERT2				(E,"Can't create entity.");
 			E->Spawn_Read			(tNetPacket);
 			// Update
-			tNetPacket.B.count		= S->Rword();
-			S->Read					(tNetPacket.B.data,tNetPacket.B.count);
+			tNetPacket.B.count		= S->r_u16();
+			S->r					(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(ID);
 			R_ASSERT				(M_UPDATE == ID);
 			E->UPDATE_Read			(tNetPacket);

@@ -21,9 +21,9 @@ void xrServer::SLS_Default	()
 		int				S_id	= 0;
 		while (0!=(S = SP->open_chunk(S_id)))
 		{
-			P.B.count	=	S->Length();
-			S->Read			(P.B.data,P.B.count);
-			S->Close		();
+			P.B.count	=	S->length();
+			S->r			(P.B.data,P.B.count);
+			S->close		();
 
 			u16				ID;
 			P.r_begin		(ID);		R_ASSERT(M_SPAWN==ID);

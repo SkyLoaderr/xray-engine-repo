@@ -72,7 +72,7 @@ void SGameMtlPair::Load(IReader& fs)
     OwnProps.set		(fs.r_u32());
  
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
-    fFlotation			= fs.Rfloat();
+    fFlotation			= fs.r_float();
 
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
     fs.r_stringZ			(buf); 		CreateSounds		(BreakingSounds,buf);

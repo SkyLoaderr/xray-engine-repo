@@ -239,13 +239,13 @@ void game_sv_GameState::Create					(LPCSTR options)
 				RPoint					R;
 				int						team;
 
-				O->Rvector				(R.P);
-				O->Rvector				(R.A);
+				O->r_fvector3			(R.P);
+				O->r_fvector3			(R.A);
 				team					= O->r_u32	();
 				VERIFY					(team>=0 && team<4);
 				rpoints[team].push_back	(R);
 			}
-			O->Close();
+			O->close();
 		}
 
 		Engine.FS.Close	(F);

@@ -140,7 +140,7 @@ void CAI_ALife::Save()
 	CALifeTaskRegistry::Save	(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,SAVE_NAME);
-	tStream.SaveTo				(S,0);
+	tStream.save_to				(S,0);
 }
 
 void CAI_ALife::Load()

@@ -70,18 +70,18 @@ public:
 	virtual void					Save(CMemoryWriter	&tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);
-		tMemoryStream.write			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
-		tMemoryStream.write			(&m_tZoneState,		sizeof(m_tZoneState));
+		tMemoryStream.w				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
+		tMemoryStream.w				(&m_tZoneState,		sizeof(m_tZoneState));
 		tMemoryStream.close_chunk	();
 	}
 	
 	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
-		tFileStream.Read			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
+		tFileStream.r			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
 		if (m_tALifeVersion != ALIFE_VERSION)
 			THROW;
-		tFileStream.Read			(&m_tZoneState,		sizeof(m_tZoneState));
+		tFileStream.r			(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
 

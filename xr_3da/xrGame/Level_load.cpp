@@ -205,7 +205,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 			int chunk = 0;
 			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
-				u32 dw = OBJ->Rword();
+				u32 dw = OBJ->r_u16();
 				R_ASSERT(dw == WAYOBJECT_VERSION);
 
 				SPath tPatrolPath;
@@ -215,23 +215,23 @@ BOOL CLevel::Load_GameSpecific_Before()
 				OBJ->r_stringZ(sName);
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
-				u32 dwCount = OBJ->Rword();
+				u32 dwCount = OBJ->r_u16();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
 				for (int i=0; i<(int)dwCount; i++){
-					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					OBJ->r_fvector3(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = getAI().q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
-				u32 dwCountL = OBJ->Rword();
+				u32 dwCountL = OBJ->r_u16();
 				tPatrolPath.tpaWayLinks.resize(dwCountL);
 				for ( i=0; i<(int)dwCountL; i++){
-					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->Rword();
-					tPatrolPath.tpaWayLinks[i].wTo = OBJ->Rword();
+					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->r_u16();
+					tPatrolPath.tpaWayLinks[i].wTo = OBJ->r_u16();
 				}
 
-				OBJ->Close();
+				OBJ->close();
 
 				// sorting links
 				bool bOk;
@@ -254,7 +254,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				
 				vfCreateAllPossiblePaths(sName, m_PatrolPaths[sName]);
 			}
-			O->Close();
+			O->close();
 		}
 		Engine.FS.Close(F);
 	}

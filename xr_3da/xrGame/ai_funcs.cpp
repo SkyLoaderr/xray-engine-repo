@@ -65,7 +65,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	}
 	
 	IReader *F = Engine.FS.Open(caPath);
-	F->Read(&m_tEFHeader,sizeof(SEFHeader));
+	F->r(&m_tEFHeader,sizeof(SEFHeader));
 
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		Engine.FS.Close(F);
@@ -74,27 +74,27 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 		return;
 	}
 
-	F->Read(&m_dwVariableCount,sizeof(m_dwVariableCount));
+	F->r(&m_dwVariableCount,sizeof(m_dwVariableCount));
 	m_dwaAtomicFeatureRange = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(u32));
 	u32 *m_dwaAtomicIndexes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
 	ZeroMemory(m_dwaAtomicIndexes,m_dwVariableCount*sizeof(u32));
 
 	for (u32 i=0; i<m_dwVariableCount; i++) {
-		F->Read(m_dwaAtomicFeatureRange + i,sizeof(u32));
+		F->r(m_dwaAtomicFeatureRange + i,sizeof(u32));
 		if (i)
 			m_dwaAtomicIndexes[i] = m_dwaAtomicIndexes[i-1] + m_dwaAtomicFeatureRange[i-1];
 	}
 
 	m_dwaVariableTypes = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));
-	F->Read(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
+	F->r(m_dwaVariableTypes,m_dwVariableCount*sizeof(u32));
 
-	F->Read(&m_dwFunctionType,sizeof(u32));
+	F->r(&m_dwFunctionType,sizeof(u32));
 
-	F->Read(&m_fMinResultValue,sizeof(float));
-	F->Read(&m_fMaxResultValue,sizeof(float));
+	F->r(&m_fMinResultValue,sizeof(float));
+	F->r(&m_fMaxResultValue,sizeof(float));
 
-	F->Read(&m_dwPatternCount,sizeof(m_dwPatternCount));
+	F->r(&m_dwPatternCount,sizeof(m_dwPatternCount));
 	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
 	m_dwaPatternIndexes = (u32 *)xr_malloc(m_dwPatternCount*sizeof(u32));
 	ZeroMemory(m_dwaPatternIndexes,m_dwPatternCount*sizeof(u32));
@@ -102,9 +102,9 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	for ( i=0; i<m_dwPatternCount; i++) {
 		if (i)
 			m_dwaPatternIndexes[i] = m_dwParameterCount;
-		F->Read(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
+		F->r(&(m_tpPatterns[i].dwCardinality),sizeof(m_tpPatterns[i].dwCardinality));
 		m_tpPatterns[i].dwaVariableIndexes = (u32 *)xr_malloc(m_tpPatterns[i].dwCardinality*sizeof(u32));
-		F->Read(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
+		F->r(m_tpPatterns[i].dwaVariableIndexes,m_tpPatterns[i].dwCardinality*sizeof(u32));
 		u32 m_dwComplexity = 1;
 		for (int j=0; j<(int)m_tpPatterns[i].dwCardinality; j++)
 			m_dwComplexity *= m_dwaAtomicFeatureRange[m_tpPatterns[i].dwaVariableIndexes[j]];
@@ -112,7 +112,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	}
 	
 	m_faParameters = (float *)xr_malloc(m_dwParameterCount*sizeof(float));
-	F->Read(m_faParameters,m_dwParameterCount*sizeof(float));
+	F->r(m_faParameters,m_dwParameterCount*sizeof(float));
 	Engine.FS.Close(F);
 
 	m_dwaVariableValues = (u32 *)xr_malloc(m_dwVariableCount*sizeof(u32));

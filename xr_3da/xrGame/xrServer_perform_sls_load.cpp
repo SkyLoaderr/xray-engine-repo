@@ -11,18 +11,18 @@ void xrServer::SLS_Load	(IReader& FS)
 		if (0==F)			break;
 
 		// Spawn
-		P.B.count			= F->Rword();
-		F->Read				(P.B.data,P.B.count);
+		P.B.count			= F->r_u16();
+		F->r				(P.B.data,P.B.count);
 		P.r_begin			(u_id);	R_ASSERT	(M_SPAWN==u_id);
 		Process_spawn		(P,0);
 
 		// Update
-		P.B.count			= F->Rword();
-		F->Read				(P.B.data,P.B.count);
+		P.B.count			= F->r_u16();
+		F->r				(P.B.data,P.B.count);
 		P.r_begin			(u_id);	R_ASSERT	(M_UPDATE==u_id);
 		Process_update		(P,0);
 
 		// Close
-		F->Close			();
+		F->close			();
 	}
 }

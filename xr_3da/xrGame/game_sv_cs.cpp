@@ -49,7 +49,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 		l_pWeapon->Spawn_Write(l_packet, true);
 		l_pWeapon->ID = id_save;				// restore wpn entity ID 
 		l_pWeapon->state = 4;
-		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size()-(l_pPS->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT?2:1)):l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size()-(l_pPS->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT?2:1)):l_chunk++); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
 }
 
@@ -92,11 +92,11 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 		CMemoryWriter &l_mem = store;
 		if(W_prim) {
 			W_prim->Spawn_Write(l_packet, true);
-			l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+			l_mem.open_chunk(l_chunk++); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 		}
 		if(W_pistol) {
 			W_pistol->Spawn_Write(l_packet, true);
-			l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+			l_mem.open_chunk(l_chunk); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 		}
 		if(W_prim) F_entity_Destroy(W_prim);
 		if(W_pistol) F_entity_Destroy(W_pistol);
@@ -146,8 +146,8 @@ void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 		u16 skip_header;
 		IReader l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
 		while(NULL != (l_pS = l_stream.open_chunk(l_chunk++))) {
-			l_packet.B.count = l_pS->Length();
-			l_pS->Read(l_packet.B.data, l_packet.B.count);
+			l_packet.B.count = l_pS->length();
+			l_pS->r(l_packet.B.data, l_packet.B.count);
 			l_packet.r_begin(skip_header);
 			Level().Server->Process_spawn(l_packet,get_it_2_id(it),true);
 		}

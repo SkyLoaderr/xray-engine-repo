@@ -14,7 +14,7 @@ void	CLevel::net_Save				(LPCSTR name)		// Game Save
 
 	// 2. Description
 	fs.open_chunk		(fsSLS_Description);
-	fs.WstringZ			(net_SessionName());
+	fs.w_stringZ		(net_SessionName());
 	fs.close_chunk		();
 
 	// 3. Server state
@@ -28,5 +28,5 @@ void	CLevel::net_Save				(LPCSTR name)		// Game Save
 	fs.close_chunk		();
 
 	// Save it to file
-	fs.SaveTo			(name,0);
+	fs.save_to			(name,0);
 }

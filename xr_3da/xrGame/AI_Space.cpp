@@ -74,21 +74,21 @@ void CAI_Space::Load(LPCSTR name)
 	vfs			= Engine.FS.Open	(fName);
 
 	// m_header & data
-	vfs->Read	(&m_header,sizeof(m_header));
+	vfs->r	(&m_header,sizeof(m_header));
 	R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
-	m_nodes		= (BYTE*) vfs->Pointer();
+	m_nodes		= (BYTE*) vfs->pointer();
 
 	// dispatch table
 	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 	for (u32 I=0; I<m_header.count; I++)
 	{
-		m_nodes_ptr[I]	= (NodeCompressed*)vfs->Pointer();
+		m_nodes_ptr[I]	= (NodeCompressed*)vfs->pointer();
 
 		NodeCompressed	C;
-		vfs->Read		(&C,sizeof(C));
+		vfs->r			(&C,sizeof(C));
 
-		u32			L = C.links;
-		vfs->Advance	(L*sizeof(NodeLink));
+		u32			L	= C.links;
+		vfs->advance	(L*sizeof(NodeLink));
 	}
 
 	

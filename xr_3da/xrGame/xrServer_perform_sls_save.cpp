@@ -14,8 +14,8 @@ void xrServer::SLS_Save	(IWriter& FS)
 
 		// Spawn
 		E->Spawn_Write		(P,TRUE);
-		FS.Wword			(u16(P.B.count));
-		FS.write			(P.B.data,P.B.count);
+		FS.w_u16			(u16(P.B.count));
+		FS.w				(P.B.data,P.B.count);
 
 		// Update
 		P.w_begin			(M_UPDATE);
@@ -24,8 +24,8 @@ void xrServer::SLS_Save	(IWriter& FS)
 		E->UPDATE_Write		(P);
 		P.w_chunk_close8	(position);
 
-		FS.Wword			(u16(P.B.count));
-		FS.write			(P.B.data,P.B.count);
+		FS.w_u16			(u16(P.B.count));
+		FS.w				(P.B.data,P.B.count);
 
 		FS.close_chunk		();
 	}

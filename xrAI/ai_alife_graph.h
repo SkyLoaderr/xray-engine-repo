@@ -89,12 +89,12 @@ public:
 			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
 			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
 			for ( ; I != E; I++) {
-				m_tpGraphVFS->r_stringZ	((*I).caLevelName);
-				m_tpGraphVFS->Rvector	((*I).tOffset);
+				m_tpGraphVFS->r_stringZ		((*I).caLevelName);
+				m_tpGraphVFS->r_fvector3	((*I).tOffset);
 			}
 		}
 		R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-		m_tpaGraph						= (SGraphVertex*)m_tpGraphVFS->Pointer();
+		m_tpaGraph						= (SGraphVertex*)m_tpGraphVFS->pointer();
 	};
 
 	IC	bool bfCheckMask(svector<_LOCATION_ID,LOCATION_TYPE_COUNT> &M, _LOCATION_ID E[LOCATION_TYPE_COUNT])

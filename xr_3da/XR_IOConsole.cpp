@@ -16,7 +16,6 @@
 
 ENGINE_API CConsole		Console;
 const char *			ioc_prompt=">>> ";
-extern vector<LPCSTR>	LogFile;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

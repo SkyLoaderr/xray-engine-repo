@@ -62,7 +62,7 @@ public:
 		R_ASSERT							(m_tCrossTableHeader.dwVersion == XRAI_CURRENT_VERSION);
 		R_ASSERT							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_DATA));
 		m_tpCrossTableVFS->open_chunk		(CROSS_TABLE_CHUNK_DATA);
-		m_tpaCrossTable						= (SCrossTableCell*)m_tpCrossTableVFS->Pointer();
+		m_tpaCrossTable						= (SCrossTableCell*)m_tpCrossTableVFS->pointer();
 	};
 
 	IC void Unload							()
