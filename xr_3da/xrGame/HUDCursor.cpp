@@ -70,7 +70,7 @@ void CHUDCursor::Render()
 	dir = Device.vCameraDirection;
 	
 	// Render cursor
-	float		dist=Device.fFOV;
+	float		dist=Level().Environment.c_Far*0.99f;
 	
 	pCreator->CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
@@ -90,33 +90,28 @@ void CHUDCursor::Render()
 	float			di_size = C_SIZE/powf(PT.p.w,.2f);
 
 	CGameFont* F = Level().HUD()->pFontDI;
+	F->SetAligment	(CGameFont::alCenter);
+	F->SetSize		(0.02f);
+	F->OutSet		(0.f,0.f+di_size*2);
 	if (psHUD_Flags&HUD_CROSSHAIR_DIST){
 		F->SetColor	(C);
-		F->SetSize	(di_size*1.5f);
-		F->SetAligment(CGameFont::alCenter);
-		F->Out		(PT.p.x,PT.p.y+di_size*2,"%3.1f",dist);
+		F->OutNext	("%3.1f",dist);
 	}
-	if (psHUD_Flags&HUD_INFO)
-	{ 
+	if (psHUD_Flags&HUD_INFO){ 
 		if (RQ.O){
 			CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
-			if (E && (E->g_Health()>0)) 
-			{
+			if (E && (E->g_Health()>0)){
 				if (fuzzyShowInfo>0.5f){
 					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-					F->SetSize	(0.02f);
-					F->SetAligment(CGameFont::alCenter);
-					F->Out		(PT.p.x,PT.p.y+di_size*4,"%s",RQ.O->cName());
-				}else{
-					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+					F->OutNext	("%s",RQ.O->cName());
 				}
+				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 			}
 		}else{
 			fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 		}
 		clamp(fuzzyShowInfo,0.f,1.f);
 	}
-
 	// actual rendering
 	u32			vOffset;
 	FVF::TL*	pv		= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
