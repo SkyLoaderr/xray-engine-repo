@@ -54,51 +54,63 @@ public:
 
 void CBuild::Run	(string& P)
 {
-	path			= P+"\\";
+	//****************************************** Open Level
+	path						= P+"\\";
+	IWriter* fs					= FS.w_open((path+"level.").c_str());
+	fs->open_chunk				(fsL_HEADER);
+	hdrLEVEL H;		ZeroMemory	(&H,sizeof(H));
+	H.XRLC_version				= XRCL_PRODUCTION_VERSION;
+	strcpy						(H.name,g_params.L_name);
+	fs->w						(&H,sizeof(H));
+	fs->close_chunk				();
 
-	IWriter* fs		= FS.w_open((path+"level.").c_str());
-
-	fs->open_chunk	(fsL_HEADER);
-	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
-	H.XRLC_version = XRCL_PRODUCTION_VERSION;
-	strcpy			(H.name,g_params.L_name);
-	fs->w			(&H,sizeof(H));
-	fs->close_chunk	();
-
-	FPU::m64r		();
-	Phase			("Tesselating...");
-	mem_Compact		();
-	Tesselate		();
+	//****************************************** Tesselating
+	FPU::m64r					();
+	Phase						("Tesselating...");
+	mem_Compact					();
+	Tesselate					();
 	
-	FPU::m64r		();
-	Phase			("Optimizing...");
-	mem_Compact		();
-	PreOptimize		();
+	//****************************************** Optimizing
+	FPU::m64r					();
+	Phase						("Optimizing...");
+	mem_Compact					();
+	PreOptimize					();
 
-	FPU::m64r		();
-	Phase			("Building RayCast model...");
-	mem_Compact		();
-	BuildRapid		();
+	//****************************************** RayCast model
+	FPU::m64r					();
+	Phase						("Building RayCast model...");
+	mem_Compact					();
+	BuildRapid					();
 
-	FPU::m64r		();
-	Phase			("Checking T-Junctions...");
-	mem_Compact		();
-	CorrectTJunctions();
+	//****************************************** Checking T-junctors
+	FPU::m64r					();
+	Phase						("Checking T-Junctions...");
+	mem_Compact					();
+	CorrectTJunctions			();
 
-	FPU::m64r		();
-	Phase			("Building normals...");
-	mem_Compact		();
-	CalcNormals		();
+	//****************************************** Building normals
+	FPU::m64r					();
+	Phase						("Building normals...");
+	mem_Compact					();
+	CalcNormals					();
+
+	//****************************************** T-Basis
+	FPU::m64r					();
+	Phase						("Building tangent-basis...");
+	xrPhase_TangentBasis		();
+	mem_Compact					();
 	
+	//****************************************** Collision DB
 	FPU::m64r();
-	Phase			("Building collision database...");
-	mem_Compact		();
-	BuildCForm		(*fs);
+	Phase						("Building collision database...");
+	mem_Compact					();
+	BuildCForm					(*fs);
 
-	FPU::m64r		();
-	Phase			("Building volume-pick database...");
-	mem_Compact		();
-	BuildPortals	(*fs);
+	//****************************************** Portals
+	FPU::m64r					();
+	Phase						("Building portals...");
+	mem_Compact					();
+	BuildPortals				(*fs);
 
 	//****************************************** Starting MU
 	FPU::m64r		();

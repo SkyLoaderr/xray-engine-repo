@@ -90,10 +90,11 @@ public:
 	void	Load					(const b_params& P, const IReader&  FS);
 	void	Run						(string& path);
 
+	void	Tesselate				();
 	void	PreOptimize				();
 	void	CorrectTJunctions		();
 	void	CalcNormals				();
-	void	Tesselate				();
+	void	xrPhase_TangentBasis	();
 
 	void	BuildCForm				(IWriter &fs);
 	void	BuildPortals			(IWriter &fs);
