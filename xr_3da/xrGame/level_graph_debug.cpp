@@ -480,6 +480,7 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 
 void CLevelGraph::compute_path() const
 {
+	return;
 	u32						l_dwStartNodeID		= vertex(m_start_point);
 	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
 	u32						l_dwFinishNodeID	= vertex(m_finish_point);

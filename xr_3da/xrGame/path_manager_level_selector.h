@@ -21,6 +21,7 @@
 
 #define DEST_POSITIONS
 #define FIRE_SAFETY_ANGLE				PI/18.f
+#define ATTACK_HIT_REACTION_TIME		30000
 #define aiSearchRange					(u64(1) <<  0)
 #define aiEnemySurround					(u64(1) <<  1)
 #define aiTotalCover					(u64(1) <<  2)
@@ -44,7 +45,6 @@
 #define aiMaxEnemyDistance				(u64(1) << 20)
 #define aiMaxEnemyDistanceWeight		(u64(1) << 21)
 #define aiEnemyViewDeviationWeight		(u64(1) << 22)
-#define aiInsideNode					(u64(1) << 23)
 
 #define aiMemberDistance				(aiOptMemberDistance | aiOptMemberDistanceWeight | aiMinMemberDistance | aiMinMemberDistanceWeight | aiMaxMemberDistance | aiMaxMemberDistanceWeight)
 #define aiEnemyDistance					(aiOptEnemyDistance | aiOptEnemyDistanceWeight | aiMinEnemyDistance | aiMinEnemyDistanceWeight | aiMaxEnemyDistance | aiMaxEnemyDistanceWeight)
@@ -57,6 +57,7 @@ namespace PathManagers {
 	typedef SBaseParameters<float,u32,u32> CBaseParameters;
 
 	class CAbstractVertexEvaluator : public CBaseParameters {
+	protected:
 		static const u32		dwSelectorVarCount	= 23;
 	public:
 		float		    m_fBestCost,                    //  0
@@ -134,10 +135,9 @@ namespace PathManagers {
 		float			m_fResult;
 		float			m_fFireDispersionAngle;
 
-		virtual			~CAbstractVertexEvaluator				() {}
+		virtual			~CAbstractVertexEvaluator			() {}
+		virtual void	Load								(LPCSTR section, LPCSTR Name) = 0;
 		virtual	float	ffEvaluate							() = 0;
-		virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<u8> &tpaMask) = 0;
-		virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask) = 0;
 		IC		u32		selected_vertex_id					() const
 		{
 			return		(m_dwBestNode);
@@ -163,7 +163,16 @@ namespace PathManagers {
 
 	public:
 
-						CVertexEvaluator			(LPCSTR section, LPCSTR Name) : CBaseParameters()
+						CVertexEvaluator			()
+		{
+		}
+
+						CVertexEvaluator			(LPCSTR section, LPCSTR Name)
+		{
+			Load			(section, name);
+		}
+
+		virtual void	Load						(LPCSTR section, LPCSTR Name)
 		{
 			svector<float *,dwSelectorVarCount>	m_tpVarValues;
 
@@ -201,9 +210,7 @@ namespace PathManagers {
 
 		IC		float	Evaluate							()
 		{
-			if (!CHECK_CONDITION(aiInsideNode))
-				vfInit();
-			CALL_FUNCTION(aiInsideNode,vfAddIfInsideNode);
+			vfInit		();
 			CALL_FUNCTION(aiTravelWeight,vfAddTravelCost);
 			CALL_FUNCTION(aiLightWeight,vfAddLightCost);
 			CALL_FUNCTION(aiTotalCover,vfAddTotalCoverCost);
@@ -230,20 +237,10 @@ namespace PathManagers {
 			return(m_fResult);
 		}
 
-		virtual	float	ffEvaluateNode						()
+		virtual	float	ffEvaluate							()
 		{
 			Evaluate();
 			return(m_fResult);
-		}
-
-		IC		void vfAddIfInsideNode						()
-		{
-			if (!ai().level_graph().inside(m_tpCurrentNode,m_tStartPosition) || (_abs(m_tStartPosition.y - ai().level_graph().vertex_plane_y(m_tpCurrentNode,m_tStartPosition.x,m_tStartPosition.z) >= 1.f)))
-				m_fResult = m_fDistance;
-			else {
-				m_fResult = -1.f;
-				m_bStopSearch = true;
-			}
 		}
 
 		IC		void vfAddTravelCost						()
