@@ -12,29 +12,19 @@
 
 int		g_iNumOfObjectVertsDrawn	= 0;
 int		g_iMaxNumTrisDrawn			= -1;
-BOOL	g_bOptimiseVertexOrder		= FALSE;
 BOOL	g_bShowVIPMInfo				= FALSE;
-BOOL	g_bUseFastButBadOptimise	= TRUE;
+BOOL	g_bUseFastButBadOptimise	= FALSE;
 
 Object::Object()
 {
 	pNextCollapse = &CollapseRoot;
 	iCurSlidingWindowLevel = 0;
-
-	pOptMesh = OptimisedMesh::Create ( this );
 }
 
 
 Object::~Object()
 {
 	BinCurrentObject();
-
-
-	if ( pOptMesh != NULL )
-	{
-		delete pOptMesh;
-		pOptMesh = NULL;
-	}
 
 	while ( CollapseRoot.ListNext() != NULL )
 	{
@@ -57,24 +47,9 @@ Object::~Object()
 
 }
 
-// Call before D3D leaves.
-void Object::AboutToChangeDevice ( void )
-{
-	// Not actually much to do.
-	if ( pOptMesh != NULL )
-	{
-		pOptMesh->AboutToChangeDevice();
-	}
-
-	MarkAsDirty();
-}
-
-
 
 void Object::CreateTestObject ( LPDIRECT3DDEVICE8 pd3dDevice )
 {
-	MarkAsDirty();
-
 	ASSERT ( PermPtRoot.ListNext() == NULL );
 	ASSERT ( PermTriRoot.ListNext() == NULL );
 	ASSERT ( PermEdgeRoot.ListNext() == NULL );
@@ -137,11 +112,11 @@ void Object::CreateTestObject ( LPDIRECT3DDEVICE8 pd3dDevice )
 	// Make a teapotahedron.
 	LPD3DXMESH pmeshTeapot;
 	ASSERT ( pd3dDevice != NULL );		// Slight fudge - shame we need a D3D device.
-	hres = D3DXCreateTeapot ( pd3dDevice, &pmeshTeapot, NULL );
+	//hres = D3DXCreateTeapot ( pd3dDevice, &pmeshTeapot, NULL );
 	// These are just some simpler test meshes
 	//hres = D3DXCreatePolygon ( pd3dDevice, 1.0f, 6, &pmeshTeapot, NULL );
 	//hres = D3DXCreateSphere ( pd3dDevice, 1.0f, 12, 6, &pmeshTeapot, NULL );
-	//hres = D3DXCreateSphere ( pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
+	hres = D3DXCreateSphere ( pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
 
 
 	// OK, now extract the data.
@@ -277,18 +252,12 @@ void Object::CheckObject ( void )
 				 ( tri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 ) );
 		tri = tri->ListNext();
 	}
-
-	if ( pOptMesh != NULL )
-	{
-		pOptMesh->Check();
-	}
 }
 
 
 // Bins all the current data.
 void Object::BinCurrentObject ( void )
 {
-	MarkAsDirty();
 	while ( CurTriRoot.ListNext() != NULL )
 	{
 		delete ( CurTriRoot.ListNext() );
@@ -306,7 +275,6 @@ void Object::BinCurrentObject ( void )
 // Creates the current data from the permanent data.
 void Object::MakeCurrentObjectFromPerm ( void )
 {
-	MarkAsDirty();
 	BinCurrentObject();
 
 	// Copy the points.
@@ -344,6 +312,15 @@ void Object::MakeCurrentObjectFromPerm ( void )
 	SetNewLevel ( iCurSlidingWindowLevel );
 }
 
+
+struct STDVERTEX
+{
+	D3DXVECTOR3 v;
+	D3DXVECTOR3 norm;
+	FLOAT       tu, tv;
+};
+
+#define STDVERTEX_FVF (D3DFVF_XYZ|D3DFVF_NORMAL|D3DFVF_TEX1)
 
 // Renders the given material of the current state of the object.
 // Set iSlidingWindowLevel to -1 if you don't care about level numbers.
@@ -416,7 +393,6 @@ void Object::RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev )
 // Make sure the object is fully collapsed already.
 void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 {
-	MarkAsDirty();
 	CheckObject();
 
 
@@ -597,7 +573,6 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 // Returns TRUE if these was a last collapse to do.
 BOOL Object::BinEdgeCollapse ( void )
 {
-	MarkAsDirty();
 	GeneralCollapseInfo *pGCI = CollapseRoot.ListNext();
 	if ( pGCI == NULL )
 	{
@@ -628,8 +603,6 @@ BOOL Object::BinEdgeCollapse ( void )
 // Returns TRUE if a collapse was undone.
 BOOL Object::UndoCollapse ( void )
 {
-	bSomethingHappened = TRUE;
-
 	if ( pNextCollapse->ListNext() == NULL )
 	{
 		// No more to undo.
@@ -687,8 +660,6 @@ BOOL Object::UndoCollapse ( void )
 // Returns TRUE if a collapse was done.
 BOOL Object::DoCollapse ( void )
 {
-	bSomethingHappened = TRUE;
-
 	if ( pNextCollapse == &CollapseRoot )
 	{
 		// No more to do.
@@ -809,145 +780,4 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, BO
 	// And find the error once the collapse has happened.
 	return qSum.FindError ( pptKept->mypt.vPos );
 }
-
-
-
-// Call this if you make a change to the mesh.
-// It will mark all the OptimisedMeshes hanging off it as dirty.
-void Object::MarkAsDirty ( void )
-{
-	bSomethingHappened = TRUE;
-
-	if ( pOptMesh != NULL )
-	{
-		pOptMesh->MarkAsDirty ( g_bShowVIPMInfo );
-	}
-}
-
-
-
-ObjectInstance::ObjectInstance ( Object *pObject /*= NULL*/, ObjectInstance *pRoot /*= NULL*/ )
-{
-	pObj = pObject;
-	D3DXMatrixIdentity( &matOrn );
-
-	ListInit();
-	if ( pRoot != NULL )
-	{
-		ListAddAfter ( pRoot );
-	}
-
-	pOptMeshInst = NULL;
-
-	if ( pObj != NULL )
-	{
-		if ( pObj->pOptMesh != NULL )
-		{
-			pOptMeshInst = pObj->pOptMesh->CreateInstance ( this );
-		}
-	}
-
-	iCurCollapses = 0;
-}
-
-ObjectInstance::~ObjectInstance ( void )
-{
-	pObj = NULL;
-
-	ListDel();
-
-	if ( pOptMeshInst != NULL )
-	{
-		delete pOptMeshInst;
-		pOptMeshInst = NULL;
-	}
-}
-
-
-
-void ObjectInstance::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel /*= -1*/, BOOL bShowOptiMesh /*= FALSE*/ )
-{
-	if ( bShowOptiMesh && ( pOptMeshInst != NULL ) )
-	{
-		pOptMeshInst->RenderCurrentObject ( pd3ddev, iCurCollapses );
-	}
-	else
-	{
-		// Want plain bog-slow rendering, or the OptMeshInstance doesn't exist.
-		pObj->RenderCurrentObject ( pd3ddev, iSlidingWindowLevel );
-	}
-}
-
-
-void ObjectInstance::SetNumCollapses ( int iNum )
-{
-	iCurCollapses = iNum;
-}
-
-int ObjectInstance::GetNumCollapses ( void )
-{
-	return iCurCollapses;
-}
-
-
-// Call before D3D leaves.
-void ObjectInstance::AboutToChangeDevice ( void )
-{
-	// Not actually much to do.
-	ASSERT ( pObj != NULL );
-	pObj->AboutToChangeDevice();
-
-	if ( pOptMeshInst != NULL )
-	{
-		pOptMeshInst->AboutToChangeDevice();
-	}
-}
-
-
-
-
-
-#ifdef DEBUG
-
-// Set this to 1 if you want to do extra debugging on the OptimisedMesh stuff.
-// But it will change where things like index buffers go, and so potentially
-// hide other bugs.
-// It's also very slow, because it does a lot of checking.
-#define EXTRA_DEBUGGING 0
-
-#else
-// Not a debug build - no extras.
-#define EXTRA_DEBUGGING 0
-#endif
-
-
-OptimisedMesh::OptimisedMesh ( void )
-{
-	iVersion = 1234;
-	bDirty = TRUE;
-	bWillGetInfo = FALSE;
-}
-
-OptimisedMesh::~OptimisedMesh() {}
-
-
-// No real need to override this - override Update() instead.
-// Tell this method that the underlying mesh has changed.
-// bWillGetInfo = TRUE if you are going to call any of the Info* functions.
-// This causes a speed hit, so only do it when necessary.
-void OptimisedMesh::MarkAsDirty ( BOOL bNewWillGetInfo )
-{
-	iVersion++;
-	bDirty = TRUE;
-	bWillGetInfo = bNewWillGetInfo;
-}
-
-
-
-OptimisedMeshInstance::OptimisedMeshInstance ( void )
-{
-	iVersion = 1233;		// One less than the initialiser of OptimisedMesh
-}
-
-OptimisedMeshInstance::~OptimisedMeshInstance() {}
 

@@ -16,25 +16,42 @@
 //-----------------------------------------------------------------------------
 class CMyD3DApplication : public CD3DApplication
 {
-	CD3DFont*          m_pFont;
+	struct Fvector3{
+		float x,y,z;
+		Fvector3& set	(float _x, float _y, float _z)
+		{
+			x = _x;
+			y = _y;
+			z = _z;
+			return *this;	
+		}
+		Fvector3& setHP	(float h, float p)
+		{
+			float _ch=cosf(h), _cp=cosf(p), _sh=sinf(h), _sp=sinf(p);
+			x = -_cp*_sh;
+			y = _sp;
+			z = _cp*_ch;
+			return *this;	
+		}
+		Fvector3& mul	(Fvector3& v, float f)
+		{
+			x = v.x*f;
+			y = v.y*f;
+			z = v.z*f;
+			return *this;	
+		}
 
-	BOOL				m_bShowSlidingWindowInfo;
+	};
+	Fvector3			m_CameraHPB;
+	float				m_CameraDist;
+
+	void				BuildCamera		();
+
+	CD3DFont*			m_pFont;
+
 	float				m_fSlidingWindowErrorTolerance;
-	int					m_iFindBestErrorCountdown;
 
-	int					m_iTargetNumCollapses;
-	float				m_fTargetErrorFactor;
-	BOOL				m_bTargetErrorAutoGen;
-	BOOL				m_bWireframe;
-	int					m_iCreateThisManyCollapses;
-
-
-	MeshEdge			*m_pedgeBestError;
-	MeshPt				*m_pptBestError;
-
-
-	ObjectInstance		m_ObjectInstRoot;
-	Object				*m_pObject;
+	Object*				m_pObject;
 	D3DXMATRIX			m_matView;
 	D3DXMATRIX			m_matProjClose;
 	D3DXMATRIX			m_matProjCloseZbias;

@@ -34,9 +34,7 @@ LPDIRECT3DDEVICE8		g_pd3dDevice	= NULL;
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::Render()
 {
-	ObjectInstance *pFirstObjInst = m_ObjectInstRoot.ListNext();
-	ASSERT ( pFirstObjInst != NULL );
-	Object *pFirstObj = pFirstObjInst->pObj;
+//	Object *pFirstObj = m_pObject;
 
 	{
 		MeshPt *ppt;
@@ -67,9 +65,6 @@ HRESULT CMyD3DApplication::Render()
 			m_pd3dDevice->SetTransform( D3DTS_VIEW,       &m_matView );
 			m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &m_matProjClose );
 
-			ObjectInstance *pObjInst = pFirstObjInst;
-			Object *pObj = pObjInst->pObj;
-
 			m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG1, D3DTA_TEXTURE );
 			m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,   D3DTOP_SELECTARG2 );
 			m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLORARG2, D3DTA_TFACTOR );
@@ -87,7 +82,7 @@ HRESULT CMyD3DApplication::Render()
 
 			m_pd3dDevice->SetTexture( 0, NULL );
 
-			m_pd3dDevice->SetTransform( D3DTS_WORLD,      &pObjInst->matOrn );
+//.			m_pd3dDevice->SetTransform( D3DTS_WORLD,      &pObjInst->matOrn );
 
 			m_pd3dDevice->SetRenderState ( D3DRS_LIGHTING, FALSE );
 			m_pd3dDevice->SetRenderState ( D3DRS_ZENABLE, TRUE );
@@ -97,25 +92,25 @@ HRESULT CMyD3DApplication::Render()
 			// Draw the current state of the object.
 			// Render twice.
 			// Current level.
-			pObjInst->RenderCurrentObject ( m_pd3dDevice, pObj->iCurSlidingWindowLevel );
+			m_pObject->RenderCurrentObject	( m_pd3dDevice, m_pObject->iCurSlidingWindowLevel );
 			// Next level.
-			m_pd3dDevice->SetRenderState ( D3DRS_TEXTUREFACTOR, 0xff800000 );
-			pObjInst->RenderCurrentObject ( m_pd3dDevice, pObj->iCurSlidingWindowLevel + 1 );
+			m_pd3dDevice->SetRenderState	( D3DRS_TEXTUREFACTOR, 0xff800000 );
+			m_pObject->RenderCurrentObject	( m_pd3dDevice, m_pObject->iCurSlidingWindowLevel + 1 );
 
 			// Tweak the projection matrix so that things are a bit more visible.
-			m_pd3dDevice->SetTransform( D3DTS_PROJECTION, &m_matProjCloseZbias );
+			m_pd3dDevice->SetTransform		( D3DTS_PROJECTION, &m_matProjCloseZbias );
 
 			// Render visible edges again in a different colour.
-			m_pd3dDevice->SetRenderState ( D3DRS_TEXTUREFACTOR, 0xffffff00 );
-			m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-			pObjInst->RenderCurrentEdges ( m_pd3dDevice );
+			m_pd3dDevice->SetRenderState	( D3DRS_TEXTUREFACTOR, 0xffffff00 );
+			m_pd3dDevice->SetRenderState	( D3DRS_ZENABLE, TRUE );
+			m_pObject->RenderCurrentEdges	( m_pd3dDevice );
 
 			// Output statistics
 			m_pFont->DrawText( 2,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats );
 			m_pFont->DrawText( 2, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats );
 
 			char strTemp[1000];
-			sprintf ( strTemp, "Sliding window level %i, error tolerance %f%%", pFirstObj->iCurSlidingWindowLevel, m_fSlidingWindowErrorTolerance * 100.0f );
+			sprintf ( strTemp, "Sliding window level %i, error tolerance %f%%", m_pObject->iCurSlidingWindowLevel, m_fSlidingWindowErrorTolerance * 100.0f );
 			m_pFont->DrawText( 2, 40, D3DCOLOR_ARGB(255,255,255,0), strTemp );
 
 			// End the scene.
@@ -191,22 +186,21 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Make an example object.
 	static BOOL bAlreadyDone = FALSE;
-	if ( !bAlreadyDone )
-	{
+	if (!bAlreadyDone){
 		// Only needs doing once, but annoyingly requires a D3D device to do the init.
 		bAlreadyDone = TRUE;
-		m_pObject->CreateTestObject(m_pd3dDevice);
+		m_pObject->CreateTestObject			(m_pd3dDevice);
 		m_pObject->MakeCurrentObjectFromPerm();
 	}
 
 
 	// And make a few lights.
-	D3DLIGHT8 light;
-	light.Type = D3DLIGHT_DIRECTIONAL;
-	D3DXCOLOR col = D3DXCOLOR ( 1.0f, 1.0f, 1.0f, 0.0f );
-	light.Diffuse  = D3DXCOLOR ( 1.0f, 1.0f, 1.0f, 0.0f );
-	light.Ambient  = D3DXCOLOR ( 0.0f, 0.0f, 0.0f, 0.0f );
-	light.Specular = D3DXCOLOR ( 0.0f, 0.0f, 0.0f, 0.0f );
+	D3DLIGHT8		light;
+	light.Type		= D3DLIGHT_DIRECTIONAL;
+	D3DXCOLOR col	= D3DXCOLOR ( 1.0f, 1.0f, 1.0f, 0.0f );
+	light.Diffuse	= D3DXCOLOR ( 1.0f, 1.0f, 1.0f, 0.0f );
+	light.Ambient	= D3DXCOLOR ( 0.0f, 0.0f, 0.0f, 0.0f );
+	light.Specular	= D3DXCOLOR ( 0.0f, 0.0f, 0.0f, 0.0f );
 	D3DXVECTOR3 vec ( -1.0f, -1.0f, -1.0f );
 	D3DXVec3Normalize ( &vec, &vec );
 	light.Direction = vec;
@@ -249,11 +243,13 @@ HRESULT CMyD3DApplication::InvalidateDeviceObjects()
     FreeDirectInput();
 
 	// Warn things that D3D is leaving now.
+/*
+//.
 	for ( ObjectInstance *pOI = m_ObjectInstRoot.ListNext(); pOI != NULL; pOI = pOI->ListNext() )
 	{
 		pOI->AboutToChangeDevice();
 	}
-
+*/
 	// Let the outside world know.
 	g_pd3dDevice = NULL;
 

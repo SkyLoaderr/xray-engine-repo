@@ -274,12 +274,6 @@
 				RelativePath="object.h">
 			</File>
 			<File
-				RelativePath=".\object_sliding.cpp">
-			</File>
-			<File
-				RelativePath=".\object_tools.cpp">
-			</File>
-			<File
 				RelativePath=".\quad.h">
 			</File>
 		</Filter>

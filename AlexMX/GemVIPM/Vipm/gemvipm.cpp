@@ -56,26 +56,17 @@ INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, INT )
 //-----------------------------------------------------------------------------
 CMyD3DApplication::CMyD3DApplication()
 {
-    m_strWindowTitle  = _T("VIPM tester");
-    m_bUseDepthBuffer = TRUE;
+	m_CameraHPB.set		(0,0,0);
+	m_CameraDist		= 5.f;
 
-    m_pFont                = new CD3DFont( _T("Arial"), 12, D3DFONT_BOLD );
+    m_strWindowTitle	= _T("VIPM tester");
+    m_bUseDepthBuffer	= TRUE;
 
-	m_bShowSlidingWindowInfo = TRUE;
+    m_pFont				= new CD3DFont( _T("Arial"), 12, D3DFONT_BOLD );
+
 	m_fSlidingWindowErrorTolerance = 0.1f;	// 10%
-	m_iFindBestErrorCountdown = 0;
-
-	m_iTargetNumCollapses = 0;
-	m_fTargetErrorFactor = 1.0f;
-	m_bTargetErrorAutoGen = TRUE;
-	m_bWireframe = FALSE;
-	m_iCreateThisManyCollapses = 0;
-
-	m_pedgeBestError = NULL;
-	m_pptBestError = NULL;
 
 	g_iMaxNumTrisDrawn = -1;	// No limit.
-	g_bOptimiseVertexOrder = FALSE;
 	g_bShowVIPMInfo = FALSE;
 }
 
@@ -91,6 +82,7 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()
 {
 
 	m_pObject				= new Object;
+/*
 	ObjectInstance			*pInst;
 	D3DXMATRIX				mat;
 	D3DXMatrixIdentity		( &mat );
@@ -100,7 +92,7 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()
 	// First one should always be at the origin - it's used for editing.
 	pInst					= new ObjectInstance ( m_pObject, pInst );
 	pInst->matOrn			= mat;
-
+*/
     return S_OK;
 }
 
@@ -112,11 +104,25 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()
 // Desc: Called once per frame, the call is the entry point for animating
 //       the scene.
 //-----------------------------------------------------------------------------
+void CMyD3DApplication::BuildCamera()
+{
+	// Set the transform matrices
+	D3DXVECTOR3 vEyePt    = D3DXVECTOR3( 0.0f, 0.0f, 5.0f );
+	D3DXVECTOR3 vLookatPt = D3DXVECTOR3( 0.0f, 0.0f, 0.0f );
+	D3DXVECTOR3 vUpVec    = D3DXVECTOR3( 0.0f, 1.0f, 0.0f );
+
+	Fvector3 D;
+	D.setHP	(m_CameraHPB.x,m_CameraHPB.y);
+	Fvector3 P;
+	P.mul	(D,-m_CameraDist);
+
+	vEyePt	= D3DXVECTOR3(P.x,P.y,P.z);
+	D3DXMatrixLookAtLH( &m_matView, &vEyePt, &vLookatPt, &vUpVec );
+}
+
 HRESULT CMyD3DApplication::FrameMove()
 {
-	ObjectInstance *pFirstObjInst = m_ObjectInstRoot.ListNext();
-	ASSERT ( pFirstObjInst != NULL );
-	Object *pFirstObj = pFirstObjInst->pObj;
+	Object *pFirstObj = m_pObject;
 
 	// camera Move/Rotate
 	HRESULT hr;
@@ -149,60 +155,25 @@ HRESULT CMyD3DApplication::FrameMove()
 	DWORD dwButtonsGoneUp = ~dwButtons & dwPreviousButtons;
 	dwPreviousButtons = dwButtons;
 
-
-
-	// Do we premult or postmult the transform?
-	// Premult for most things, postmult for camera.
-	bool bPremult = TRUE;
-
-#define PrePost_MatrixMultiply(res,varg,barg) if ( bPremult ) {D3DXMatrixMultiply ( res, barg, varg );} else D3DXMatrixMultiply ( res, varg, barg )
-
-
 	// If shift is not down, but some mouse buttons are, this may be a movement of some sort.
 	if ( ( dwButtons != 0 ) && !g_bKeyDownShift ){
 		if ( !g_bExclusive ) SetExclusiveMode ( TRUE, m_hWnd );
 
 		{
-			D3DXMATRIX *pmat;
-
-			// Ctrl key down - move the first object.
-			pmat = &(pFirstObjInst->matOrn);
-			bPremult = TRUE;
-
-
-			D3DXMATRIX  mat1;
-
 			if ( dwButtons == BUTTON_LEFT ){
-				// Look.
-
-				// Magic number is X scale.
-				D3DXMatrixRotationY( &mat1, -(float)g_dims.lX * 0.003f );
-				PrePost_MatrixMultiply ( pmat, pmat, &mat1 );
-
-				// Magic number is Y scale.
-				D3DXMatrixRotationX( &mat1, (float)g_dims.lY * 0.003f );
-				PrePost_MatrixMultiply ( pmat, pmat, &mat1 );
+				m_CameraHPB.x	-= ((float)g_dims.lX * 0.007f);
+				m_CameraHPB.y	-= ((float)g_dims.lY * 0.007f);;
 			}else if ( dwButtons == BUTTON_RIGHT ){
-				// Rotate on X, zoom on Y.
-
-				// Magic number is X scale (rotate).
-				D3DXMatrixRotationZ( &mat1, (float)g_dims.lX * 0.003f );
-				PrePost_MatrixMultiply ( pmat, pmat, &mat1 );
-
-				float fHowMuch;
-				// Finer control when creating collapses.
-				fHowMuch = (float)g_dims.lY * -0.01f;
-
-				// Magic number is Y scale (zoom).
-				D3DXMatrixTranslation( &mat1, 0.0f, 0.0f, fHowMuch );
-				PrePost_MatrixMultiply ( pmat, pmat, &mat1 );
+				m_CameraDist	-= (float)g_dims.lY * 0.01f;
 			}
 		}
 	}else{
 		// Not moving.
 		// Make sure we are out of exclusive mode.
-		SetExclusiveMode ( FALSE, m_hWnd );
+		SetExclusiveMode( FALSE, m_hWnd );
 	}
+
+	BuildCamera			();
 
     return S_OK;
 }
@@ -210,23 +181,11 @@ HRESULT CMyD3DApplication::FrameMove()
 // Sets menu items up correctly.
 void CMyD3DApplication::SetMenuItems()
 {
-	CheckMenuItem( GetMenu(m_hWnd), IDM_SLIDING_WINDOW_SHOW,
-		   m_bShowSlidingWindowInfo ? MF_CHECKED : MF_UNCHECKED );
-
-
-	CheckMenuItem( GetMenu(m_hWnd), IDM_TARGET_AUTO_TOGGLE,
-		   m_bTargetErrorAutoGen ? MF_CHECKED : MF_UNCHECKED );
-
-	CheckMenuItem( GetMenu(m_hWnd), IDM_WIREFRAME,
-		   m_bWireframe ? MF_CHECKED : MF_UNCHECKED );
-
 	CheckMenuItem( GetMenu(m_hWnd), IDM_SHOW_VIPM_INFO,
 		   g_bShowVIPMInfo ? MF_CHECKED : MF_UNCHECKED );
 
 	CheckMenuItem( GetMenu(m_hWnd), IDM_CACHE_DISPLAY_ENABLE,
 		   ( g_iMaxNumTrisDrawn > 0 ) ? MF_CHECKED : MF_UNCHECKED );
-	CheckMenuItem( GetMenu(m_hWnd), IDM_CACHE_OPTIMISE,
-		   g_bOptimiseVertexOrder ? MF_CHECKED : MF_UNCHECKED );
 	CheckMenuItem( GetMenu(m_hWnd), IDM_CACHE_OPTIMISE_CHEAP,
 		   g_bUseFastButBadOptimise ? MF_CHECKED : MF_UNCHECKED );
 
@@ -239,13 +198,6 @@ void CMyD3DApplication::SetMenuItems()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::FinalCleanup()
 {
-
-	ObjectInstance *pInst = m_ObjectInstRoot.ListNext();
-	while ( pInst != NULL )
-	{
-		delete pInst;
-		pInst = m_ObjectInstRoot.ListNext();
-	}
 	if ( m_pObject != NULL )
 	{
 		delete m_pObject;
@@ -302,96 +254,50 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
         switch( LOWORD(wParam) )
         {
 		case IDM_VIPM_COLLAPSE_NEXT:
-			m_iCreateThisManyCollapses = 0;
-			m_iFindBestErrorCountdown = 1;
 			m_pObject->DoCollapse();
 			break;
 		case IDM_VIPM_COLLAPSE_PREV:
-			m_iCreateThisManyCollapses = 0;
-			m_iFindBestErrorCountdown = 1;
 			m_pObject->UndoCollapse();
 			break;
 		case IDM_VIPM_COLLAPSE_NEXT_10:
-			m_iCreateThisManyCollapses = 0;
 			{
 				for ( int i = 10; i > 0; i-- )
 				{
 					m_pObject->DoCollapse();
 				}
-				m_iFindBestErrorCountdown = 1;
 			}
 			break;
 		case IDM_VIPM_COLLAPSE_PREV_10:
-			m_iCreateThisManyCollapses = 0;
 			{
 				for ( int i = 10; i > 0; i-- )
 				{
 					m_pObject->UndoCollapse();
 				}
-				m_iFindBestErrorCountdown = 1;
 			}
 			break;
 		case IDM_VIPM_COLLAPSE_ALL:
-			m_iCreateThisManyCollapses = 0;
 			while ( m_pObject->DoCollapse() ){}
 			break;
 		case IDM_VIPM_COLLAPSE_NONE:
-			m_iCreateThisManyCollapses = 0;
 			while ( m_pObject->UndoCollapse() ){}
 			break;
 		case IDM_VIPM_COLLAPSE_DEL:
-			m_iCreateThisManyCollapses = 0;
 			// Do all collapses.
 			while ( m_pObject->DoCollapse() ){}
 			// Delete the last collapse.
 			m_pObject->BinEdgeCollapse();
-			m_iFindBestErrorCountdown = 1;
 			break;
 
-		case IDM_VIPM_COLLAPSE_DO_BEST:
-			if ( m_iCreateThisManyCollapses == 0 )
-			{
-				// Do a collapse.
-				m_iCreateThisManyCollapses = 1;
-			}
-			else
-			{
-				// Already doing collapses - stop doing them.
-				m_iCreateThisManyCollapses = 0;
-			}
-			break;
 		case IDM_VIPM_COLLAPSE_DO_BEST_ALL:
-			if ( m_iCreateThisManyCollapses == 0 )
-			{
-				// Do all the collapses you can (will automatically stop).
-//.					m_iCreateThisManyCollapses = 1 << 30;
-				CollapseAll();
-			}
-			else
-			{
-				// Already doing collapses - stop doing them.
-				m_iCreateThisManyCollapses = 0;
-			}
+			CollapseAll();
 			break;
 
-		case IDM_SLIDING_WINDOW_SHOW:
-			m_bShowSlidingWindowInfo = !m_bShowSlidingWindowInfo;
-			break;
 		case IDM_SLIDING_WINDOW_INC:
 			m_fSlidingWindowErrorTolerance *= 1.1f;
 			break;
 		case IDM_SLIDING_WINDOW_DEC:
 			m_fSlidingWindowErrorTolerance /= 1.1f;
 			break;
-
-		case IDM_TARGET_AUTO_TOGGLE:
-			m_bTargetErrorAutoGen = !m_bTargetErrorAutoGen;
-			break;
-
-		case IDM_WIREFRAME:
-			m_bWireframe = !m_bWireframe;
-			break;
-
 
 		case IDM_CACHE_DISPLAY_ENABLE:
 			g_iMaxNumTrisDrawn = -g_iMaxNumTrisDrawn;
@@ -428,10 +334,6 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 					g_iMaxNumTrisDrawn = 1;
 				}
 			}
-			break;
-
-		case IDM_CACHE_OPTIMISE:
-			g_bOptimiseVertexOrder = !g_bOptimiseVertexOrder;
 			break;
 
         }
