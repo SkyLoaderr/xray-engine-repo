@@ -89,6 +89,18 @@ extern "C"{
 	}
 
 	ETOOLS_API HRESULT WINAPI
+		D3DX_ComputeNormalMap(
+		LPDIRECT3DTEXTURE9 pTexture,
+		LPDIRECT3DTEXTURE9 pSrcTexture,
+		const PALETTEENTRY *pSrcPalette,
+		DWORD Flags,
+		DWORD Channel,
+		FLOAT Amplitude)	
+	{
+		return D3DXComputeNormalMap( pTexture, pSrcTexture, pSrcPalette, Flags, Channel, Amplitude);
+	}
+
+	ETOOLS_API HRESULT WINAPI
 		D3DX_LoadSurfaceFromSurface(
 		LPDIRECT3DSURFACE9        pDestSurface,
 		CONST PALETTEENTRY*       pDestPalette,
