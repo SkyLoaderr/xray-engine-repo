@@ -53,6 +53,7 @@ public:
 	FSPath		m_GameKeys;
 	FSPath 		m_GameDO;
 	FSPath 		m_GameTextures;
+	FSPath 		m_GameShaders;
 	FSPath 		m_GameLevels;
 	FSPath 		m_Maps;
 	FSPath 		m_Import;

@@ -84,6 +84,7 @@ void CFileSystem::OnCreate()
 	m_GameMeshes.Init		(m_Server, 		"gamedata\\meshes\\",	"*.ogf",			"Render model files" );
     m_GameDO.Init			(m_Server,  	"gamedata\\meshes\\",	"*.do",				"Detail object files" );
     m_GameTextures.Init		(m_Server,		"gamedata\\textures\\",	"*.dds",			"Texture files" );
+	m_GameShaders.Init		(m_Server,		"gamedata\\shaders\\",	"",					"Shader files" );
 	m_GameKeys.Init			(m_Server,  	"gamedata\\meshes\\",	"*.key",			"XRay model key" );
 
 	m_Groups.Init   		(m_Server, 		"objects\\",       		"*.group", 			"Groups" );

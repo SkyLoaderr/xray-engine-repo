@@ -144,7 +144,11 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
+#ifdef _EDITOR
+		strconcat					(cname, Engine.FS.m_GameShaders.m_Path, name, ".vs");
+#else
 		strconcat					(cname, Path.Shaders, name, ".vs");
+#endif
 		LPCSTR						target		= NULL;
 
 		if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
@@ -212,7 +216,11 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
+#ifdef _EDITOR
+		strconcat					(cname, Engine.FS.m_GameShaders.m_Path, name, ".ps");
+#else
 		strconcat					(cname, Path.Shaders, name, ".ps");
+#endif
 
 		// pixel
 		IReader*					fs			= Engine.FS.Open(cname);
@@ -802,14 +810,14 @@ void	CShaderManager::DeferredUnload	()
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Unload();
 }
-
-void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
+#ifdef _EDITOR
+void	CShaderManager::ED_UpdateTextures(AStringVec* names)
 {
 	// 1. Unload
     if (names){
         for (u32 nid=0; nid<names->size(); nid++)
         {
-            map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid]);
+            map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.find	((*names)[nid].c_str());
             if (I!=m_textures.end())	I->second->Unload();
         }
     }else{
@@ -820,7 +828,7 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 	// 2. Load
 	DeferredUpload	();
 }
-
+#endif
 void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
 {
 	m_base=c_base=m_lmaps=c_lmaps=0;

@@ -104,11 +104,11 @@
       intermediate\c_dinput.obj intermediate\xrServer_Entity_Custom.obj 
       intermediate\ai_alife_server_objects.obj intermediate\PSLibrary.obj 
       intermediate\ParticleGroup.obj intermediate\PSLibraryEditor.obj 
-      intermediate\r_shader.obj intermediate\R_Backend_DBG.obj 
-      intermediate\R_Backend_Runtime.obj intermediate\r_constants.obj 
-      intermediate\r_constants_cache.obj intermediate\R_DStreams.obj 
-      intermediate\R_Backend.obj intermediate\Blender_detail_still.obj 
-      intermediate\Blender_tree.obj intermediate\ELog.obj intermediate\FS2.obj"/>
+      intermediate\R_Backend_DBG.obj intermediate\R_Backend_Runtime.obj 
+      intermediate\r_constants.obj intermediate\r_constants_cache.obj 
+      intermediate\R_DStreams.obj intermediate\R_Backend.obj 
+      intermediate\Blender_detail_still.obj intermediate\Blender_tree.obj 
+      intermediate\ELog.obj intermediate\FS2.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -134,7 +134,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Game;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
@@ -148,13 +148,13 @@
       -IP:\xrCore -Iedit -Iengine -IEngine\Animations -IEngine\Blenders 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
       -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
-      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
-      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
+      -D_LEVEL_EDITOR -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
+      -b- -k -vi -He -c -tW -tWM"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$Y- -$R -$Q -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -378,7 +378,6 @@
       <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_shader.cpp" FORMNAME="" UNITNAME="r_shader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_Runtime.cpp" FORMNAME="" UNITNAME="R_Backend_Runtime.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -400,7 +399,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=56
+Build=59
 Debug=1
 PreRelease=0
 Special=0
@@ -412,7 +411,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.56
+FileVersion=1.0.2.59
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -497,9 +496,9 @@ Item4=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=10
-Item0=_EDITOR;_LEVEL_EDITOR;_DEBUG
-Item1=_EDITOR;_LEVEL_EDITOR;_DEBUG;DEBUG
-Item2=_EDITOR;_LEVEL_EDITOR
+Item0=_EDITOR;_LEVEL_EDITOR
+Item1=_EDITOR;_LEVEL_EDITOR;_DEBUG
+Item2=_EDITOR;_LEVEL_EDITOR;_DEBUG;DEBUG
 Item3=_EDITOR;_DEBUG
 Item4=_EDITOR
 Item5=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE

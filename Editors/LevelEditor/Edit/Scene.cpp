@@ -933,7 +933,7 @@ void EScene::ShowSummaryInfo()
 	AnsiString nm = "textures.ltx";
     Engine.FS.m_GameTextures.Update(nm);
     if (Engine.FS.Exist(nm.c_str())){
-        CInifile* ini = xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
+        CInifile* ini = xr_new<CInifile>(nm.c_str());
         if (ini->SectionExists("association")){
             CInifile::Sect& 	data = ini->ReadSection("association");
             for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){

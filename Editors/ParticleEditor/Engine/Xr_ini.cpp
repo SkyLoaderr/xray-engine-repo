@@ -441,3 +441,16 @@ void	CInifile::WriteVector	( LPCSTR S, LPCSTR L, const Fvector&	V, LPCSTR commen
 	char temp[128];	sprintf		(temp,"%.3f,%.3f,%.3f", V.x, V.y, V.z);
 	WriteString	(S,L,temp,comment);
 }
+
+void	CInifile::RemoveLine	( LPCSTR S, LPCSTR L )
+{
+	R_ASSERT	(!bReadOnly);
+
+    if (LineExists(S,L)){
+		Sect&	data	= ReadSection	(S);
+		Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(data.begin(),data.end(),Test,item_pred());
+    	R_ASSERT(A!=data.end() && strcmp(A->first,L)==0);
+        data.Data.erase(A);
+    }
+}
+

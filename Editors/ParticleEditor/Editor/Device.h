@@ -85,7 +85,7 @@ public:
 	bool 					Create			();
 	void 					Destroy			();
     void 					Resize			(int w, int h, bool bRefreshDevice=true);
-	void 					RefreshTextures	(LPSTRVec* modif);
+	void 					RefreshTextures	(AStringVec* modif);
 	void 					ReloadTextures	();
 	void 					UnloadTextures	();
 

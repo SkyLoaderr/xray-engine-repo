@@ -76,7 +76,7 @@ void __fastcall TfrmImageLib::UpdateImageLib()
 {
     SaveTextureParams();
     if (bImportMode&&!texture_map.empty()){
-    	LPSTRVec modif;
+    	AStringVec modif;
         LockForm();
         ImageManager.SafeCopyLocalToServer(texture_map);
 		// rename with folder
@@ -91,16 +91,14 @@ void __fastcall TfrmImageLib::UpdateImageLib()
 		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
         UnlockForm();
     	Device.RefreshTextures(&modif);
-		ImageManager.FreeModifVec(modif);
     }else{
 	    // save game textures
         if (modif_map.size()){
-            LPSTRVec modif;
+            AStringVec modif;
 	        LockForm();
             ImageManager.SynchronizeTextures(true,true,true,&modif_map,&modif);
             UnlockForm();
 	        Device.RefreshTextures(&modif);
-            ImageManager.FreeModifVec(modif);
         }
 	}
 }

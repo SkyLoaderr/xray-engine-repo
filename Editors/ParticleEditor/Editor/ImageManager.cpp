@@ -9,6 +9,7 @@
 #include "Image.h"
 #include "ui_main.h"
 #include "EditObject.h"
+#include "xr_ini.h"
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -184,7 +185,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
 // source_list - содержит список текстур с расширениями
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
-void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_list, LPSTRVec* sync_list, FileMap* modif_map)
+void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_list, AStringVec* sync_list, FileMap* modif_map)
 {
 	FileMap M_BASE;
 	FileMap M_THUM;
@@ -201,6 +202,11 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     if (sync_thm) Engine.FS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
     if (sync_game) Engine.FS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
 
+    // sync assoc
+	AnsiString ltx_nm = "textures.ltx";
+    Engine.FS.m_GameTextures.Update(ltx_nm);
+	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
+    
     UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
@@ -208,7 +214,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 	    U32Vec data;
     	u32 w, h, a;
 
-        string256 base_name; strcpy(base_name,it->first.c_str());
+        string256 base_name; strcpy(base_name,it->first.c_str()); strlwr(base_name);
         UI.ProgressInc(base_name);
         AnsiString fn = it->first;
         Engine.FS.m_Textures.Update(fn);
@@ -230,15 +236,25 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
         }
         // check game textures
     	if (bForceGame||(sync_game&&bGame)){
-        	if (!THM) THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
+        	if (!THM) THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture); 
+            R_ASSERT(THM);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
                 AnsiString game_name=AnsiString(base_name)+".dds";
                 Engine.FS.m_GameTextures.Update(game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
                 Engine.FS.SetFileAge(game_name, it->second);
-                if (sync_list) sync_list->push_back(xr_strdup(base_name));
+                if (sync_list) sync_list->push_back(base_name);
                 if (modif_map) (*modif_map)[it->first]=it->second;
+                // save to assoc ltx
+                STextureParams& FMT = THM->_Format();
+                if (FMT.flags.is(STextureParams::flHasDetailTexture)){
+                    AnsiString det;                          
+                    det.sprintf("%s, %f",FMT.detail_name,FMT.detail_scale);
+                    ltx_ini->WriteString("association", base_name, det.c_str());
+                }else{
+                    ltx_ini->RemoveLine("association", base_name);
+                }
             }else{
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
             }
@@ -246,17 +262,19 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 		if (THM) xr_delete(THM);
 		if (UI.NeedAbort()) break;
     }
+
+    xr_delete(ltx_ini);
+    
     UI.ProgressEnd();
 }
 
 void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
 {
-    LPSTRVec modif;
+    AStringVec modif;
     FileMap t_map;
     t_map[tex_name]=age;
     SynchronizeTextures(true,true,true,&t_map,&modif);
    	Device.RefreshTextures(&modif);
-    ImageManager.FreeModifVec(modif);
 }
 
 int	CImageManager::GetServerModifiedTextures(FileMap& files)
@@ -575,6 +593,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname)
 	AnsiString src_name=fname;
     Engine.FS.m_Textures.Update(src_name);
 	if (Engine.FS.Exist(src_name.c_str())){
+        AnsiString base_name 		= ChangeFileExt(fname,"");
     	// source
         Engine.FS.BackupFile		(&Engine.FS.m_Textures,fname);
         Engine.FS.DeleteFileByName	(src_name.c_str());
@@ -586,6 +605,12 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname)
         // game
         AnsiString game_name 		= ChangeFileExt(fname,".dds");
         Engine.FS.DeleteFileByName	(&Engine.FS.m_GameTextures,game_name.c_str());
+        // assoc
+        AnsiString ltx_nm 			= "textures.ltx";
+        Engine.FS.m_GameTextures.Update(ltx_nm);
+        CInifile* ltx_ini 			= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
+		ltx_ini->RemoveLine			("association", base_name.c_str());
+        xr_delete					(ltx_ini);
         return TRUE;
     }
     return FALSE;

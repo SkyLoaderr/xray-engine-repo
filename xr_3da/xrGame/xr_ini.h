@@ -1,5 +1,5 @@
-#ifndef __XR_INI_H__
-#define __XR_INI_H__
+#ifndef xr_iniH
+#define xr_iniH
 
 // refs
 class	CInifile;
@@ -91,6 +91,8 @@ public:
     void		WriteColor		( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment=0 );
     void		WriteColor		( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment=0 );
     void		WriteVector		( LPCSTR S, LPCSTR L, const Fvector&	V, LPCSTR comment=0 );
+
+    void		RemoveLine		( LPCSTR S, LPCSTR L );
 };
 
 // Main configuration file
