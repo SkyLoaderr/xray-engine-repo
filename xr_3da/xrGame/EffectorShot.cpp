@@ -21,6 +21,7 @@ CEffectorShot::CEffectorShot	(float max_angle, float relax_speed,
 	fAngleHorz = 0.f;
 	fAngleHorzMax = max_angle_horz;//PI*0.05f;
 	fAngleHorzStep = step_angle_horz;//PI*0.05f*0.2f;
+
 }
 
 CEffectorShot::~CEffectorShot	()
@@ -98,6 +99,7 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 
 void CEffectorShot::UpdateAngles	()
 {
+	vDispersionDir.x = 0.0f;
 	vDispersionDir.y = tanf(fAngleCurrent);
 	vDispersionDir.z = tanf(fAngleHorz);
 }
