@@ -30,7 +30,7 @@ public:
 															//  получить список её владельцев
 	vector<vector<_OBJECT_ID> >		m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
-	vector<_OBJECT_ID>				m_tpScheduledObjects;	// массив обновляемых объектов
+	vector<CALifeMonster *>			m_tpScheduledObjects;	// массив обновляемых объектов
 	
 	// static
 	vector<SSpawnPoint>				m_tpSpawnPoints;		// массив spawn-point-ов
@@ -60,10 +60,10 @@ public:
 		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
 	}
 
-	void							vfCheckForDeletedEvents	(_OBJECT_ID &tObjectID);
-	void							vfCheckForTheBattle		(_OBJECT_ID &tObjectID);
-	void							vfChooseNextRoutePoint	(_OBJECT_ID &tObjectID);
-	void							vfProcessNPC			(_OBJECT_ID &tObjectID);
+	void							vfCheckForDeletedEvents	(CALifeItem	*tpALifeMonster);
+	void							vfCheckForTheBattle		(CALifeItem	*tpALifeMonster);
+	void							vfChooseNextRoutePoint	(CALifeItem	*tpALifeMonster);
+	void							vfProcessNPC			(CALifeItem	*tpALifeMonster);
 	void							vfInitTerrain			();
 	void							vfInitLocationOwners	();
 	void							vfInitGraph				();

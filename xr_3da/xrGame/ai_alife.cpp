@@ -313,16 +313,16 @@ void CAI_ALife::Update(u32 dt)
 #endif
 }
 
-void CAI_ALife::vfProcessNPC(_OBJECT_ID	&tObjectID)
+void CAI_ALife::vfProcessNPC(CALifeItem	*tpALifeMonster)
 {
 //	Msg						("* Monster %d",dwNPCIndex);
 //	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
 //	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
 //	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
-	vfCheckForDeletedEvents	(tObjectID);
-	vfChooseNextRoutePoint	(tObjectID);
-	vfCheckForTheBattle		(tObjectID);
-	m_tObjectRegistry.m_tppMap[tObjectID]->m_tTimeID = Level().timeServer();
+	vfCheckForDeletedEvents	(tpALifeMonster);
+	vfChooseNextRoutePoint	(tpALifeMonster);
+	vfCheckForTheBattle		(tpALifeMonster);
+	tpALifeMonster->m_tTimeID = Level().timeServer();
 //	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
 //	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
 //	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
@@ -332,7 +332,7 @@ void CAI_ALife::vfProcessNPC(_OBJECT_ID	&tObjectID)
 //	Msg						("* * Health     : %d",m_tpNPC[dwNPCIndex].iHealth);
 }
 
-void CAI_ALife::vfChooseNextRoutePoint(_OBJECT_ID &tObjectID)
+void CAI_ALife::vfChooseNextRoutePoint(CALifeItem	*tpALifeMonster)
 {
 //	if (m_tpNPC[dwNPCIndex].wNextGraphPoint != m_tpNPC[dwNPCIndex].wGraphPoint) {
 //		u32 dwCurTime = Level().timeServer();
@@ -399,10 +399,10 @@ void CAI_ALife::vfChooseNextRoutePoint(_OBJECT_ID &tObjectID)
 //	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(_OBJECT_ID &tObjectID)
+void CAI_ALife::vfCheckForTheBattle(CALifeItem	*tpALifeMonster)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(_OBJECT_ID &tObjectID)
+void CAI_ALife::vfCheckForDeletedEvents(CALifeItem	*tpALifeMonster)
 {
 }
