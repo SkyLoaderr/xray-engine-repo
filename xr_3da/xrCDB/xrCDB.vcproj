@@ -15,7 +15,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="x:\game"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -53,17 +53,17 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				OutputFile="x:\game/xrCDB.dll"
+				OutputFile="x:\xrCDB.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ImportLibrary="x:\game/xrCDB.lib"/>
+				ImportLibrary="x:\xrCDB.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrCDB.tlb"/>
+				TypeLibraryName="x:\xrCDB.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -81,7 +81,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:\game"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -110,19 +110,19 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="x:\game/xrCDB.dll"
+				OutputFile="x:\xrCDB.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="x:\game/xrCDB.pdb"
-				ImportLibrary="x:\game/xrCDB.lib"/>
+				ProgramDatabaseFile=".\Debug/xrCDB.pdb"
+				ImportLibrary="x:\xrCDB.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrCDB.tlb"/>
+				TypeLibraryName="x:\xrCDB.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
