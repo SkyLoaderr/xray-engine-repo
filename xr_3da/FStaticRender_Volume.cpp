@@ -9,7 +9,7 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 	lstVisuals.clear		();
 	lstVisuals.push_back	(S->Root());
 	
-	for (int test=0; test<lstVisuals.size(); test++)
+	for (u32 test=0; test<lstVisuals.size(); test++)
 	{
 		CVisual*	V		= 	lstVisuals[test];
 		
@@ -46,7 +46,7 @@ void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 			{
 				// Renderable visual
 				ShaderElement* E	= V->hShader->E[sh];
-				for (int pass=0; pass<E->Passes.size(); pass++)
+				for (u32 pass=0; pass<E->Passes.size(); pass++)
 				{
 					Device.Shader.set_Element	(E,pass);
 					V->Render					(-1.f);
