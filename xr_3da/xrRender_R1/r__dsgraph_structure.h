@@ -16,6 +16,7 @@ public:
 	BOOL														val_bHUD;
 	BOOL														val_bInvisible;
 	u32															marker;
+	bool														pmask		[2];
 public:
 	// Dynamic scene graph
 	R_dsgraph::mapNormal_T										mapNormal	[2];	// 2==(priority/2)
@@ -53,6 +54,8 @@ public:
 	virtual		ShaderElement*			rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
 	virtual		ShaderElement*			rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
 public:
+	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}
+
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
 
