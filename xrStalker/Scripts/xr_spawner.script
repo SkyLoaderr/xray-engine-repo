@@ -147,19 +147,23 @@ function add_to_spawn_list (s_object)
 end
 -----------------------------
 function check_spawn (s_object)
-
-    if this.is_object_in_list (s_object) == false then
-       this.add_to_spawn_list (s_object)
-    end
+	if this.is_object_in_list (s_object) == false then
+		this.add_to_spawn_list (s_object)
+	end
 
 	local actor = level.actor ()
-	if actor ~= nil and  spawn_list[s_object.id].cond ~= nil then
-		if xr_logic.pick_section_from_condlist (actor, nil, spawn_list[s_object.id].cond.condlist) ~= nil then
-		   return true
+	if actor ~= nil then
+		if spawn_list[s_object.id].cond ~= nil then
+			if xr_logic.pick_section_from_condlist (actor, nil, spawn_list[s_object.id].cond.condlist) ~= nil then
+				return true
+			else
+				return false 
+			end
 		else
-           return false 
+			return true
 		end
 	end
+	return false
 end
 -----------------------------------------------------------------------------------
 function is_object_in_list (s_object)
