@@ -44,9 +44,6 @@ void CDemoActor::Update(u32 DT)
 			vPosition.set	(animator->GetPosition());
 			vPosition.add	(start_position);
 			UpdateTransform	();
-			
-			// test nearest object
-			pCreator->ObjectSpace.TestNearestObject(cfModel, vPosition, 1.f);
 		} else {
 			// animation stops
 			time2start = time2start_ltx;
