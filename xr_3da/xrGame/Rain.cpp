@@ -276,8 +276,8 @@ void	CEffect_Rain::Render	()
 		float	wlen	=	wdir.magnitude();
 		if (wlen>b_radius_wrap)	{
 			// Perform wrapping
-			wdir.div	(-wlen);
-			one.P.direct(one.P, wdir, b_radius);
+			wdir.div	(wlen);
+			one.P.direct(one.P, wdir, -b_radius);
 			RayTest		(one, b_height);
 		}
 
@@ -287,11 +287,11 @@ void	CEffect_Rain::Render	()
 		
 		// Culling
 		Fvector sC,lineD;	float sR; 
-		sC.sub	(pos_head,pos_trail);
-		lineD.normalize(sC);
-		sC.mul	(.5f);
-		sR		= sC.magnitude();
-		sC.add	(pos_trail);
+		sC.sub			(pos_head,pos_trail);
+		lineD.normalize	(sC);
+		sC.mul			(.5f);
+		sR				= sC.magnitude();
+		sC.add			(pos_trail);
 		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
 		
 		// Everything OK - build vertices
