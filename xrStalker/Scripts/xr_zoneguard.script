@@ -149,6 +149,18 @@ function action_zoneguard_activity:execute()
 	until prev_state == self.state
 end
 
+function action_zoneguard_activity:ignore_actor(actor)
+	if self.st.ignore_friends and self.object:relation(actor) == game_object.friend then
+		return true
+	end
+	if self.st.ignore_cond and xr_logic.pick_section_from_condlist(actor, self.object,
+	     self.st.ignore_cond.condlist) ~= nil then
+	     return true
+	end
+
+	return false
+end
+
 function action_zoneguard_activity:fsm_step()
 	if not self.st.zone_guard_obj and self.st.zone_guard then
 		self.st.zone_guard_obj = db.zone_by_name[self.st.zone_guard]
@@ -193,18 +205,8 @@ function action_zoneguard_activity:fsm_step()
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
 		if see_actor and self.st.zone_guard_obj:inside(actor:position()) then
-			if self.st.ignore_cond and xr_logic.pick_section_from_condlist(actor, self.object,
-			     self.st.ignore_cond.condlist) ~= nil then
-				-- Игнорируем игрока
-			else
-				local rel = self.object:relation(actor)
-				-- ОБИЖАЕМСЯ ЕСЛИ: 1) ignore_friends == false
-				-- 2) ignore_friends == true and rel ~= game_object.friend
-				-- Т.Е.:
-				if not self.st.ignore_friends or rel ~= game_object.friend then
-					-- Обиделись:
-					self.object:set_relation(game_object.enemy, actor)
-				end
+			if not self:ignore_actor(actor) then
+				self.object:set_relation(game_object.enemy, actor)
 			end
 		end
 	end
@@ -212,7 +214,7 @@ function action_zoneguard_activity:fsm_step()
 	if self.state == state_walking then
 		if actor:alive() and see_actor and self.st.zone_warn_obj:inside(actor:position()) and
 		   teams[self.st.team].triggered == nil and
-		   (not self.st.ignore_friends or self.object:relation(actor) ~= game_object.friend)
+		   not self:ignore_actor(actor)
 		then
 			if not self.st.no_move then
 				self:go_to_actor(actor, true)
