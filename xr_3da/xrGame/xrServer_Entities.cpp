@@ -509,6 +509,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_W_PM:			return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_FORT:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_BINOCULAR:	return new	xrSE_Weapon;
+	case CLSID_OBJECT_W_SHOTGUN:	return new	xrSE_Weapon;
 	case CLSID_OBJECT_HEALTH:		return new	xrSE_Health;
 	case CLSID_TARGET_ASSAULT:		return new	xrSE_Target_Assault;
 	}
