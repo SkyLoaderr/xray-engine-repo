@@ -165,25 +165,6 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	rect.y2				= TransZ(max.z);
 }
 //----------------------------------------------------------------------
-BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, float range)
-{
-	R_ASSERT			(0);
-	/*
-	dwQueryID++;
-
-	object->Enable 		( false ); // self exclude from test
-	GetNearest			( center, range );
-	object->EnableRollback( );
-
-	CObject**			_it	 = q_nearest.begin	();
-	CObject**			_end = q_nearest.end		();
-	for ( ; _it!=_end; _it++ )
-		(*_it)->OnNear	(object->Owner());
-	return q_nearest.size();
-	*/
-	return FALSE;
-}
-//----------------------------------------------------------------------
 void CObjectSpace::Load	(CStream *F)
 {
 	R_ASSERT			(F);
@@ -191,19 +172,26 @@ void CObjectSpace::Load	(CStream *F)
 
 	hdrCFORM			H;
 	F->Read				(&H,sizeof(hdrCFORM));
-	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
-
 	Fvector*	verts	= (Fvector*)F->Pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+	if (2 == H.version)
+	{
+		u32(-1)
+	} else {
+		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
+	}
 	Static.build		( verts, H.vertcount, tris, H.facecount );
 	Sound->SetGeometry	( &Static );
-	Msg("* Level CFORM memory usage: %dK",Static.memory()/1024);
+    Msg("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
 	// CForm
 	x_count				= iCeil((H.aabb.max.x-H.aabb.min.x)/CL_SLOT_SIZE);
 	z_count				= iCeil((H.aabb.max.z-H.aabb.min.z)/CL_SLOT_SIZE);
 	Static_Shift.invert	(H.aabb.min);
 	Dynamic.SetSize		( x_count, z_count );
+
+	// Game-postprocess
+	CFOrm_bofisudfds		(version)
 }
 //----------------------------------------------------------------------
 void CObjectSpace::dbgRender()

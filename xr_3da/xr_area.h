@@ -118,7 +118,6 @@ public:
 
 	int								GetNearest			( CCFModel *obj, float range );
 	int								GetNearest			( const Fvector &point, float range );
-	BOOL							TestNearestObject	( CCFModel *object, const Fvector& center, float radius);
 
 	CDB::TRI*						GetStaticTris		() { return Static.get_tris();  }
 	CDB::MODEL*						GetStaticModel		() { return &Static; }
