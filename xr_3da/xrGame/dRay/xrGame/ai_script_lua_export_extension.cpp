@@ -96,7 +96,7 @@ u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distan
 	Fvector			finish_position = Fvector(start_position).add(direction);
 	u32				result = u32(-1);
 	ai().level_graph().find_farthest_node_in_direction(level_vertex_id,start_position,finish_position,result,0);
-	return			(result);
+	return			(ai().level_graph().valid_vertex_id(result) ? result : level_vertex_id);
 }
 
 CLuaGameObject *not_yet_visible_object(const MemorySpace::CNotYetVisibleObject &object)
