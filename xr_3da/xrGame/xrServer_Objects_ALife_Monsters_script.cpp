@@ -38,7 +38,7 @@ void CSE_ALifeCustomZone::script_register(lua_State *L)
 {
 	module(L)[
 		luabind_class_alife2(
-			CSE_ALifeAnomalousZone,
+			CSE_ALifeCustomZone,
 			"cse_custom_zone",
 			CSE_ALifeDynamicObject,
 			CSE_Shape
