@@ -12,24 +12,20 @@ void _InitSurface	()
 }
 
 // Rendering of rect
-void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
+void _rect_register	(L_rect &R, lm_layer* D, BOOL bRotate)
 {
-	u32*	lm	= D->lm.pSurface;
-	u32		s_x	= D->lm.dwWidth+2*BORDER;
-	u32		s_y = D->lm.dwHeight+2*BORDER;
+	u8*		lm	= &*(D->marker.begin());
+	u32		s_x	= D->width+2*BORDER;
+	u32		s_y = D->height+2*BORDER;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
 		for (u32 y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			u32*	S = lm + y*s_x;
-			for (u32 x=0; x<s_x; x++,P++) 
-			{
-				u32 C = *S++;
-				u32 A = color_get_A	(C);
-				if (A>=alpha_ref)	*P	= 255;
-			}
+			u8*		S = lm + y*s_x;
+			for (u32 x=0; x<s_x; x++,P++,S++) 
+				if (*S >= alpha_ref)			*P	= 255;
 		}
 	} else {
 		// Rotated :(
@@ -37,34 +33,26 @@ void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			for (u32 x=0; x<s_y; x++,P++)
-			{
-				u32 C = lm[x*s_x+y];
-				u32 A = color_get_A(C);
-				if (A>=alpha_ref)	*P	= 255;
-			}
+				if (lm[x*s_x+y] >= alpha_ref)	*P	= 255;
 		}
 	}
 }
 
 // Test of per-pixel intersection (surface test)
-bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
+bool Place_Perpixel	(L_rect& R, lm_layer* D, BOOL bRotate)
 {
-	u32*	lm			= D->lm.pSurface;
-	u32	s_x			= D->lm.dwWidth	+2*BORDER;
-	u32	s_y			= D->lm.dwHeight+2*BORDER;
+	u8*	lm			= &*(D->marker.begin());
+	u32	s_x			= D->width	+2*BORDER;
+	u32	s_y			= D->height +2*BORDER;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
 		for (u32 y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			u32*	S = lm + y*s_x;
-			for (u32 x=0; x<s_x; x++,P++) 
-			{
-				u32 C = *S++;
-				u32 A = color_get_A(C);
-				if ((*P)&&(A>=alpha_ref))	return false;
-			}
+			u8*		S = lm + y*s_x;
+			for (u32 x=0; x<s_x; x++,P++,S++) 
+				if ((*P)&&(*S>=alpha_ref))			return false;	// overlap
 		}
 	} else {
 		// Rotated :(
@@ -72,11 +60,7 @@ bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
 			for (u32 x=0; x<s_y; x++,P++)
-			{
-				u32 C = lm[x*s_x+y];
-				u32 A = color_get_A(C);
-				if ((*P)&&(A>=alpha_ref))	return false;
-			}
+				if ((*P)&&(lm[x*s_x+y]>=alpha_ref))	return false;	// overlap
 		}
 	}
 	
@@ -85,7 +69,7 @@ bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 }
 
 // Check for intersection
-BOOL _rect_place(L_rect &r, CDeflector::Layer* D)
+BOOL _rect_place(L_rect &r, lm_layer* D)
 {
 	L_rect R;
 

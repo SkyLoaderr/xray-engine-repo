@@ -3,6 +3,7 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
+/*
 void __stdcall  hemi_callback	(float x, float y, float z, float E, LPVOID P)
 {
 	R_Light*	T				= (R_Light*)P;
@@ -22,6 +23,7 @@ void CBuild::xrPhase_R2_Lights	()
 	RL.diffuse.set				(1,1,1,1);
 	xrHemisphereBuild			(2,FALSE,1.f,1.f,hemi_callback,&RL);
 }
+*/
 
 #define NUM_THREADS	4
 class CR2Light : public CThread
@@ -40,19 +42,14 @@ public:
 		CDB::COLLIDER			DB;
 		DB.ray_options			(0);
 
-		xr_vector<R_Light>	Lights = pBuild->L_hemi;
-		if (Lights.empty())		return;
-
 		for (u32 I = vertStart; I<vertEnd; I++)
 		{
 			Vertex* V		= g_vertices[I];
 			R_ASSERT		(V);
 
-			Fcolor			C;
-			C.set			(0,0,0,0);
-			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, &*Lights.begin(), &*Lights.end(), 0);
-			V->C.set		(C);
-			V->C.a			= 1.f;
+			base_color		C;
+			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
+			V->C			= C;
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
@@ -65,7 +62,7 @@ void CBuild::Light_R2			()
 	mem_Compact				();
 
 	// Start threads, wait, continue --- perform all the work
-	Status					("Calculating... (%d lights)",L_hemi.size());
+	Status					("Calculating... (%d lights)",L_static.hemi.size());
 	u32	start_time			= timeGetTime();
 	CThreadManager			Threads;
 	u32	stride				= g_vertices.size()/NUM_THREADS;
