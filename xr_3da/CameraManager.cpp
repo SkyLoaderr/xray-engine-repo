@@ -96,14 +96,15 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 			Fvector sp=vPosition;
 			Fvector sd=vDirection;
 			Fvector sn=vNormal;
-			eff->Process(vPosition,vDirection,vNormal);
-			if (eff->Affected()){
-				sp.sub(vPosition,sp);	sd.sub(vDirection,sd);	sn.sub(vNormal,sn);
-				affected_vPosition.add	(sp);
-				affected_vDirection.add	(sd);
-				affected_vNormal.add	(sn);
-			}
-			if (eff->fLifeTime<=0){ 
+			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal))
+			{
+				if (eff->Affected()){
+					sp.sub(vPosition,sp);	sd.sub(vDirection,sd);	sn.sub(vNormal,sn);
+					affected_vPosition.add	(sp);
+					affected_vDirection.add	(sd);
+					affected_vNormal.add	(sn);
+				}
+			}else{
 				m_Effectors.erase(m_Effectors.begin()+i);
 				_DELETE(eff);
 			}

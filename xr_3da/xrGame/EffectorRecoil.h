@@ -16,7 +16,7 @@ class CEffectorRecoil : public CEffector
 	float	fTime;
 	float	fPower;
 public:
-	virtual	void	Process(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL	Process(Fvector &p, Fvector &d, Fvector &n);
 
 	CEffectorRecoil(float power, float life_time);
 	virtual ~CEffectorRecoil();

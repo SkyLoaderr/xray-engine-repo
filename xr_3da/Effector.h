@@ -23,7 +23,7 @@ public:
 	IC EEffectorType	GetType		() {return eType;}
 	IC BOOL				Affected	() {return bAffected;}
 
-	virtual	void		Process		(Fvector &p, Fvector &d, Fvector &n)= 0;
+	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n)= 0;
 };
 
 #endif // !defined(AFX_EFFECTOR_H__E8300C00_1C3E_11D4_B4E3_00C02610C34E__INCLUDED_)

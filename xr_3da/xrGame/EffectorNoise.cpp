@@ -21,7 +21,7 @@ CEffectorNoise::~CEffectorNoise()
 {
 }
 
-void CEffectorNoise::Process(Fvector &p, Fvector &d, Fvector &n)
+BOOL CEffectorNoise::Process(Fvector &p, Fvector &d, Fvector &n)
 {
 	fStepTime-=Device.fTimeDelta;
 	if (fStepTime<0) {
@@ -32,4 +32,5 @@ void CEffectorNoise::Process(Fvector &p, Fvector &d, Fvector &n)
 	}
 	p.add(vStep);
 	fLifeTime-=Device.fTimeDelta;
+	return TRUE;
 }

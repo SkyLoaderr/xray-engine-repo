@@ -226,9 +226,10 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 
 		// start any console command
 		if (strstr(Engine.Params,"-$")) {
-			string64			cmd;
-			sscanf				(strstr(Engine.Params,"-$")+2,"%[^,] ",cmd);
-			Console.Execute		(cmd);
+			string64			buf,cmd,param;
+			sscanf				(strstr(Engine.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
+			strconcat			(buf,cmd," ",param);
+			Console.Execute		(buf);
 		}
 	} else if (E==eStartClient) {
 		Console.Hide();

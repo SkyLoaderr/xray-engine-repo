@@ -20,7 +20,7 @@ CEffectorRecoil::~CEffectorRecoil()
 
 }
 
-void CEffectorRecoil::Process(Fvector &p, Fvector &d, Fvector &n)
+BOOL CEffectorRecoil::Process(Fvector &p, Fvector &d, Fvector &n)
 {
 	fTime-=Device.fTimeDelta;
 	float dist = fPower*fTime/Recoil_TIME;
@@ -35,4 +35,5 @@ void CEffectorRecoil::Process(Fvector &p, Fvector &d, Fvector &n)
 	n.normalize	();
 
 	fLifeTime-=Device.fTimeDelta;
+	return TRUE;
 }

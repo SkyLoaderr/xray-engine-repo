@@ -30,9 +30,10 @@ void CEffectorShot::Shot		(float angle)
 	vDispersionDir.normalize_safe();
 }
 
-void CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
+BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
 {
-	if (fAngleCurrent<0) return;
+	if (fAngleCurrent<0) return TRUE;
 	d.mad			(vDispersionDir,tanf(fAngleCurrent));
 	fAngleCurrent	-= fRelaxSpeed*Device.fTimeDelta;
+	return TRUE;
 }

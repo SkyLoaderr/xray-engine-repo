@@ -25,13 +25,13 @@ class ENGINE_API CDemoPlay :
 	float				fSpeed;
 	BOOL				bCycle;
 
-	u32				dwStartTime;
-	u32				dwStartFrame;
+	u32					dwStartTime;
+	u32					dwStartFrame;
 	
 	void				stat_Start	();
 	void				stat_Stop	();
 public:
-	virtual	void		Process		(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL		Process		(Fvector &p, Fvector &d, Fvector &n);
 
 						CDemoPlay	(const char *name, float ms, BOOL cycle=false, float life_time=60*60*1000);
 	virtual				~CDemoPlay	();

@@ -65,9 +65,9 @@ CDemoRecord::~CDemoRecord()
 	}
 }
 
-void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
+BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 {
-	if (hFile<=0)	return;
+	if (hFile<=0)	return TRUE;
 
 	if ((Device.dwTimeGlobal/500)%2==0) {
 		pApp->pFontSystem->Size		(0.015f);
@@ -126,6 +126,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 
 	m_vT.set(0,0,0);
     m_vR.set(0,0,0);
+	return TRUE;
 }
 
 void CDemoRecord::OnKeyboardPress	(int dik)

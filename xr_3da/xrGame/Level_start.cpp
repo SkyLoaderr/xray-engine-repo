@@ -9,6 +9,7 @@ BOOL CLevel::net_Start	( LPCSTR options, BOOL server )
 	// Start client and server if need it
 	if (server)
 	{
+		pApp->LoadTitle				("");						
 		pApp->LoadTitle				("SERVER: Starting...");
 
 		// Activate level

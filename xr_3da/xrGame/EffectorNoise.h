@@ -15,7 +15,7 @@ class CEffectorNoise : public CEffector
 	float	fStepTime;
 	Fvector	vStep;
 public:
-	virtual	void	Process(Fvector &p, Fvector &d, Fvector &n);
+	virtual	BOOL	Process(Fvector &p, Fvector &d, Fvector &n);
 
 	CEffectorNoise(float _fForce, float life_time);
 	virtual ~CEffectorNoise();

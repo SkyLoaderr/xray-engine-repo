@@ -72,7 +72,7 @@ void CDemoPlay::stat_Stop()
 #define FIX(a) while (a>=m_count) a-=m_count
 
 extern void spline1(float,Fvector*,Fvector*);
-void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
+BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 {
 	if (m_pMotion)
 	{
@@ -97,7 +97,7 @@ void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 		
 		if (frame>=m_count)
 		{
-			if (!bCycle)	{ pCreator->Cameras.RemoveEffector(cefDemo); return; }
+			if (!bCycle)	{ return FALSE; }
 			stat_Stop		();
 			stat_Start		();
 		}
@@ -130,4 +130,5 @@ void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 		
 		fLifeTime-=Device.fTimeDelta;
 	}
+	return TRUE;
 }
