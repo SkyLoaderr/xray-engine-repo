@@ -140,17 +140,22 @@ void CLevel::IR_OnKeyboardPress(int key)
 			if (GameID() == GAME_SINGLE)
 				Server->game->SetGameTimeFactor(NewTimeFactor);
 			else
+			{
 				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
+				Server->game->SetGameTimeFactor(NewTimeFactor);
+			};
 		}
-		break;
-	
+		break;	
 	case DIK_MULTIPLY:
 		if( OnServer() ){
 			float NewTimeFactor				= 1000.f;
 			if (GameID() == GAME_SINGLE)
 				Server->game->SetGameTimeFactor(NewTimeFactor);
 			else
+			{
 				Server->game->SetEnvironmentGameTimeFactor(NewTimeFactor);
+				Server->game->SetGameTimeFactor(NewTimeFactor);
+			};
 		}
 		break;
 

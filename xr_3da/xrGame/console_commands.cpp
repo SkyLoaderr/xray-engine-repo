@@ -1029,6 +1029,25 @@ public:
 	}
 };
 
+class CCC_SetWeather : public IConsole_Command {
+public:
+	CCC_SetWeather(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!g_pGamePersistent) return;
+		if (!OnServer())	return;
+
+		char	weather_name[256] = "";		
+		sscanf	(args,"%s", weather_name);
+		if (!weather_name[0]) return;
+		g_pGamePersistent->Environment.SetWeather(weather_name);		
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Set new weather"); 
+	}
+};
 
 class CCC_ChangeLevelGameType : public IConsole_Command {
 public:
@@ -1628,6 +1647,27 @@ struct CCC_TimeFactorSingle : public CCC_Float {
 	}
 };
 
+struct CCC_StartTimeEnvironment: public IConsole_Command {
+	CCC_StartTimeEnvironment(LPCSTR N) : IConsole_Command(N) {};
+	virtual void	Execute	(LPCSTR args)
+	{
+		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
+		sscanf				(args,"%d:%d:%d.%d",&hours,&mins,&secs,&milisecs);
+		g_qwStartGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+
+		if (!g_pGameLevel)
+			return;
+
+		if (!Level().Server)
+			return;
+
+		if (!Level().Server->game)
+			return;
+
+		Level().Server->game->SetEnvironmentGameTimeFactor(g_qwStartGameTime,g_fTimeFactor);
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// game
@@ -1813,4 +1853,7 @@ void CCC_RegisterCommands()
 
 	CMD1(CCC_StartTimeSingle,	"start_time_single");
 	CMD4(CCC_TimeFactorSingle,	"time_factor_single", &g_fTimeFactor, 0.f,flt_max);
+	CMD1(CCC_StartTimeEnvironment,	"sv_setenvtime");
+
+	CMD1(CCC_SetWeather,	"sv_setweather"			);
 }

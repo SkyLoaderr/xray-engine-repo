@@ -9,12 +9,17 @@
 #include "actor.h"
 #include "clsid_game.h"
 #include "../XR_IOConsole.h"
+#include "../igame_persistent.h"
+#include "date_time.h"
 
 u32		g_dwMaxCorpses = 10;
 
 game_sv_mp::game_sv_mp() :inherited()
 {
 	m_bVotingActive = false;
+	//------------------------------------------------------
+	g_pGamePersistent->Environment.SetWeather("mp_weather");
+	
 }
 
 void	game_sv_mp::Update	()
@@ -195,6 +200,18 @@ void game_sv_mp::Create (shared_str &options)
 {
 	SetVotingActive(false);
 	inherited::Create(options);
+	//-------------------------------------------------------------------
+	string64	StartTime, TimeFactor;
+	strcpy(StartTime,get_option_s		(*options,"estime","12:00:00"));
+	strcpy(TimeFactor,get_option_s		(*options,"etimef","1"));
+	
+	u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
+	sscanf				(StartTime,"%d:%d:%d.%d",&hours,&mins,&secs,&milisecs);
+	u64 StartEnvGameTime	= generate_time	(year,month,day,hours,mins,secs,milisecs);
+	float EnvTimeFactor = float(atof(TimeFactor));
+
+	SetEnvironmentGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
+//	SetGameTimeFactor(StartEnvGameTime,EnvTimeFactor);
 };
 
 void game_sv_mp::net_Export_State		(NET_Packet& P, ClientID id_to)
