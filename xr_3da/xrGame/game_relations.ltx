@@ -20,6 +20,14 @@ goodwill_neutal = 0
 goodwill_friend = 100
 
 
+;коэффициенты изменения цены при торговле
+;апроксимируется линейно от attitude_neutal_threshold до attitude_friend_threshold
+trade_prices_neutral_sell_k = 1.3	
+trade_prices_friend_sell_k	= 1.1
+trade_prices_neutral_buy_k	= 0.8	
+trade_prices_friend_buy_k	= 0.9
+
+
 
 ;названия группировок
 communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 1, dolg, 1, freedom, 1, bandit, 1, zombied, 23
