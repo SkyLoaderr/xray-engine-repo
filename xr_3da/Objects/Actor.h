@@ -133,9 +133,9 @@ protected:
 	u32						patch_frame;
 	Fvector					patch_position;
 
-	static void	__stdcall SpinCallback(CBoneInstance*);
-	static void	__stdcall ShoulderCallback(CBoneInstance*);
-	static void	__stdcall HeadCallback(CBoneInstance*);
+	static void	__stdcall	SpinCallback	(CBoneInstance*);
+	static void	__stdcall	ShoulderCallback(CBoneInstance*);
+	static void	__stdcall	HeadCallback	(CBoneInstance*);
 private:
 	// Motions
 	u32						mstate_wishful;	
