@@ -81,7 +81,9 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	void*	_ptr				= NULL;
 	if (mem_generic==p_current)
 	{
-		void*	_real2			= xr_aligned_offset_realloc(_real,size,16,0x1);
+		stat_counter			-=	xr_aligned_msize			(_real);
+		void*	_real2			=	xr_aligned_offset_realloc	(_real,size,16,0x1);
+		stat_counter			+=	xr_aligned_msize			(_real2);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
 	} else {
