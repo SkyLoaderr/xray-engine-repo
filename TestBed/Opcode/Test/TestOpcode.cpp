@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	Sample.Build(OPCC);
 
 	// 2) Create a tree collider and setup it:
-	AABBTreeCollider TC;
+	AABBTreeCollider		TC;
 	TC.SetFirstContact		(false);	// report all contacts
 	TC.SetFullBoxBoxTest	(false);	// use coarse BV-BV tests
 	TC.SetFullPrimBoxTest	(false);	// use coarse primitive-BV tests
