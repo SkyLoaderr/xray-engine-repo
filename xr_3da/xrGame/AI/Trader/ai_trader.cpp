@@ -38,10 +38,23 @@ void CAI_Trader::Load(LPCSTR section)
 BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeTrader					*tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
+	CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
+
+
+	m_tArtefactNeeded.clear			();
+	SArtefactNeeded					tempArtefact;
+
+	ARTEFACT_ORDER_IT				B = l_tpTrader->m_tpOrderedArtefacts.begin(), I = B;
+	ARTEFACT_ORDER_IT				E = l_tpTrader->m_tpOrderedArtefacts.end();
+	for (; I != E; I++) {
+		strcpy(tempArtefact.m_caName,pSettings->r_string	(I->m_caSection,"inv_name"));
+		tempArtefact.m_dwCount = I->m_dwCount;
+		tempArtefact.m_dwPrice = I->m_dwPrice;
+		m_tArtefactNeeded.push_back(tempArtefact);
+	}
 	
-	R_ASSERT						(tpTrader);
-	cNameVisual_set					(tpTrader->get_visual());
+	R_ASSERT						(l_tpTrader);
+	cNameVisual_set					(l_tpTrader->get_visual());
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
@@ -53,9 +66,8 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
 
-	CSE_ALifeTraderAbstract		*pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
-	m_dwMoney	= pTA->m_dwMoney;
-	m_tRank		= pTA->m_tRank;
+	m_dwMoney						= l_tpTrader->m_dwMoney;
+	m_tRank							= l_tpTrader->m_tRank;
 
 	return	TRUE;
 }

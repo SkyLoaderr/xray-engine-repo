@@ -234,12 +234,14 @@ void CTrade::ShowArtifactPrices()
 {
 	if (pThis.type == TT_TRADER) {
 		Msg("--TRADE:: [%s]: Here is my artefact prices: ",pThis.base->cName());
+		
+		CAI_Trader *pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 
-		xr_set<CArtifact*>::iterator it;
-		for(it = CArtifact::m_all.begin(); it != CArtifact::m_all.end(); it++) {
-			CArtifact &af = **it;
-			Msg("--TRADE:: [%s]: %s  -  $%i ",pThis.base->cName(),af.Name(),af.Cost());
-		}
+		ARTEFACTS_NEEDED_IT		B = pTrader->m_tArtefactNeeded.begin(), I = B;
+		ARTEFACTS_NEEDED_IT		E = pTrader->m_tArtefactNeeded.end();
+		
+		for(; I != E; I++)
+			Msg("--TRADE:: [%s]: I need %i artefacts %s (i'll pay $%i for each)",pThis.base->cName(),I->m_dwCount,I->m_caName,I->m_dwPrice);
 
 	} else 
 		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",pThis.base->cName());
