@@ -95,7 +95,7 @@ void CParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
 {
 	strcpy				(m_caParticleToRun,caParticleToRun);
 	m_tGoalType			= eGoalTypeParticleAttached;
-	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,bAutoRemove);
+	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,m_bAutoRemove = bAutoRemove);
 	m_bStartedToPlay	= false;
 	m_bCompleted		= false;
 }

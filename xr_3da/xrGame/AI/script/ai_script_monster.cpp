@@ -82,6 +82,44 @@ CEntityAction *CScriptMonster::GetCurrentAction()
 		return(m_tpActionQueue.front());
 }
 
+void __stdcall ActionCallback(CKinematics *tpKinematics)
+{
+	// sounds
+	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(tpKinematics->Update_Callback_Param);
+	if (!l_tpScriptMonster->GetCurrentAction()) {
+		tpKinematics->Callback(0,0);
+		return;
+	}
+	l_tpScriptMonster->vfUpdateSounds();
+	l_tpScriptMonster->vfUpdateParticles();
+}
+
+void CScriptMonster::vfUpdateParticles()
+{
+	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
+	LPCSTR			l_caBoneName = l_tParticleAction.m_caBoneName;
+	if (strlen(l_caBoneName)) {
+		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
+		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
+	}
+}
+
+void CScriptMonster::vfUpdateSounds()
+{
+	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
+	LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
+	if (strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
+		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
+}
+
+void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
+{
+	if (tpEntityAction->m_tSoundAction.m_bLooped)
+		tpEntityAction->m_tSoundAction.m_tpSound->destroy();
+	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove)
+		xr_delete(tpEntityAction->m_tParticleAction.m_tpParticleSystem);
+}
+
 void CScriptMonster::ProcessScripts()
 {
 	CEntityAction	*l_tpEntityAction = 0;
@@ -90,6 +128,8 @@ void CScriptMonster::ProcessScripts()
 		R_ASSERT	(l_tpEntityAction);
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
+
+		vfFinishAction(l_tpEntityAction);
 
 		xr_delete	(l_tpEntityAction);
 		m_tpActionQueue.erase(m_tpActionQueue.begin());
@@ -100,6 +140,7 @@ void CScriptMonster::ProcessScripts()
 		return;
 	}
 
+	PKinematics(Visual())->Callback(ActionCallback,this);
 	bfAssignWatch	(l_tpEntityAction);
 	bfAssignAnimation(l_tpEntityAction);
 	bfAssignSound	(l_tpEntityAction);
@@ -118,44 +159,7 @@ bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
 	return			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted);
 }
 
-void __stdcall ParticleCallback(CBoneInstance *tpBoneInstance)
-{
-	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(tpBoneInstance->Callback_Param);
-	CCustomMonster	*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(l_tpScriptMonster);
-	R_ASSERT		(l_tpScriptMonster);
-	if (!l_tpCustomMonster || l_tpCustomMonster->g_Alive()) {
-		CParticleAction	&l_tParticleAction = l_tpScriptMonster->GetCurrentAction()->m_tParticleAction;
-		LPCSTR			l_caBoneName = l_tParticleAction.m_caBoneName;
-		if (l_tpScriptMonster->GetCurrentAction() && strlen(l_caBoneName)) {
-			CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
-			l_tpParticlesObject->UpdateParent(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
-		}
-		else {
-			CBoneInstance	&l_tBoneInstance = PKinematics(l_tpScriptMonster->Visual())->LL_GetInstance(PKinematics(l_tpScriptMonster->Visual())->LL_BoneID(l_caBoneName));
-			l_tBoneInstance.set_callback(0,0);
-		}
-	}
-}
-
-void __stdcall SoundCallback(CBoneInstance *tpBoneInstance)
-{
-	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(tpBoneInstance->Callback_Param);
-	CCustomMonster	*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(l_tpScriptMonster);
-	R_ASSERT		(l_tpScriptMonster);
-	if (!l_tpCustomMonster || l_tpCustomMonster->g_Alive()) {
-		CSoundAction	&l_tSoundAction = l_tpScriptMonster->GetCurrentAction()->m_tSoundAction;
-		LPCSTR			l_caBoneName = l_tSoundAction.m_caBoneName;
-		if (l_tpScriptMonster->GetCurrentAction() && strlen(l_caBoneName) && l_tSoundAction.m_tpSound->feedback)
-			l_tSoundAction.m_tpSound->feedback->set_position(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
-		else {
-			R_ASSERT		(l_caBoneName && strlen(l_caBoneName));
-			CBoneInstance	&l_tBoneInstance = PKinematics(l_tpScriptMonster->Visual())->LL_GetInstance(PKinematics(l_tpScriptMonster->Visual())->LL_BoneID(l_caBoneName));
-			l_tBoneInstance.set_callback(0,0);
-		}
-	}
-}
-
-const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset, BoneCallback fpBoneCallback)
+const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset)
 {
 	Fmatrix			l_tMatrix;
 
@@ -164,9 +168,9 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 
 	if (caBoneName && strlen(caBoneName)) {
 		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
-#pragma todo("Dima to Dima : null callbacks after completion")
-		if (fpBoneCallback)
-			l_tBoneInstance.set_callback(fpBoneCallback,this);
+//#pragma todo("Dima to Dima : null callbacks after completion")
+//		if (fpBoneCallback)
+//			l_tBoneInstance.set_callback(fpBoneCallback,this);
 		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
 		l_tMatrix.mulA	(XFORM());
 	}
@@ -182,8 +186,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 	if (l_tSoundAction.m_tpSound) {
 		if (!l_tSoundAction.m_tpSound->feedback)
 			if (!l_tSoundAction.m_bStartedToPlay) {
-				CEntityAlive	*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(this);
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles,(!l_tpEntityAlive || l_tpEntityAlive->g_Alive()) ? SoundCallback : 0);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tSoundAction.m_caBoneName,l_tSoundAction.m_tSoundPosition,l_tSoundAction.m_tSoundAngles);
 				l_tSoundAction.m_tpSound->play_at_pos(this,l_tMatrix.c,l_tSoundAction.m_bLooped);
 				l_tSoundAction.m_bStartedToPlay = true;
 			}
@@ -203,8 +206,7 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 	if (l_tParticleAction.m_tpParticleSystem) {
 		if (true/** !l_tParticleAction.m_tpParticleSystem/**/)
 			if (!l_tParticleAction.m_bStartedToPlay) {
-				CEntityAlive	*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(this);
-				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles,(!l_tpEntityAlive || l_tpEntityAlive->g_Alive()) ? ParticleCallback : 0);
+				const Fmatrix	&l_tMatrix = GetUpdatedMatrix(l_tParticleAction.m_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles);
 				l_tParticleAction.m_tpParticleSystem->SetTransform(l_tMatrix);
 				l_tParticleAction.m_tpParticleSystem->play_at_pos(l_tMatrix.c);
 				l_tParticleAction.m_bStartedToPlay = true;
@@ -401,6 +403,9 @@ void CScriptMonster::Init()
 	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
 	// animation
 	m_tpScriptAnimation		= 0;
+	// callbacks
+	if (Visual())
+		PKinematics(Visual())->Callback(0,0);
 }
 
 void CScriptMonster::net_Destroy()

@@ -453,6 +453,7 @@ public:
 	Fvector							m_tParticlePosition;
 	Fvector							m_tParticleAngles;
 	Fvector							m_tParticleVelocity;
+	bool							m_bAutoRemove;
 
 							CParticleAction		()
 	{
@@ -465,6 +466,7 @@ public:
 		m_tParticlePosition.set	(0,0,0);
 		m_tParticleAngles.set	(0,0,0);
 		m_tParticleVelocity.set	(0,0,0);
+		m_bAutoRemove		= true;
 	}
 
 #pragma todo("Dima to Dima : Add velocity for particle systems here")

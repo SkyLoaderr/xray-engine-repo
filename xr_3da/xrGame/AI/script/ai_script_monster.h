@@ -26,7 +26,10 @@ public:
 	virtual						~CScriptMonster			();
 			void				Init					();
 	virtual void				net_Destroy				();
-			const Fmatrix		GetUpdatedMatrix		(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset, BoneCallback fpBoneCallback = 0);
+			const Fmatrix		GetUpdatedMatrix		(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
+			void				vfUpdateParticles		();
+			void				vfUpdateSounds			();
+			void				vfFinishAction			(CEntityAction		*tpEntityAction);
 	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
