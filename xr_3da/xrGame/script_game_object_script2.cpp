@@ -77,7 +77,14 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 			value("inventory_pda",			int(GameObject::eInventoryPda)),
 			value("inventory_info",			int(GameObject::eInventoryInfo)),
 			value("use_object",				int(GameObject::eUseObject)),
-			value("hit",					int(GameObject::eHit))
+			value("hit",					int(GameObject::eHit)),
+			value("sound",					int(GameObject::eSound)),
+			value("action_movement",		int(GameObject::eActionTypeMovement)),
+			value("action_watch",			int(GameObject::eActionTypeWatch)),
+			value("action_animation",		int(GameObject::eActionTypeAnimation)),
+			value("action_sound",			int(GameObject::eActionTypeSound)),
+			value("action_particle",		int(GameObject::eActionTypeParticle)),
+			value("action_object",			int(GameObject::eActionTypeObject))
 		]
 
 		.property("visible",				&CScriptGameObject::getVisible,		&CScriptGameObject::setVisible)
