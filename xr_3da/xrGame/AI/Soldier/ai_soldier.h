@@ -66,6 +66,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierDefendFireAlone,
 		aiSoldierHurtAloneDefend,
 		aiSoldierPatrolDanger,
+		aiSoldierPursuitAlone,
 	};
 	
 	enum EGestureStates {
@@ -372,7 +373,6 @@ class CAI_Soldier : public CCustomMonster
 		void OnPatrolHurtNonAggressiveUnderFire();
 		void OnPatrolUnderFire();
 		
-		void OnPursuit();
 		void OnRetreat();
 		void OnUnderFire();
 		void OnJumping();
@@ -391,6 +391,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnRecharge();
 		void OnNoWeapon();
 		void OnSteal();
+		void OnPursuitAlone();
 		//void OnLyingDown();
 		//void OnStandingUp();
 		void OnAttackAim();

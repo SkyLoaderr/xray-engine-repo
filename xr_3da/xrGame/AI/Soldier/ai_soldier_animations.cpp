@@ -14,8 +14,8 @@
 // bones
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 {
-	//int h  ead_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	//PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
 	
 	//int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
 	//PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
@@ -369,9 +369,9 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			default : {
 				// not moving
 				//if (speed < .1f) {
-				Msg("speed %.2f",speed);
-				Msg("m_fCurSpeed %.2f",m_fCurSpeed);
-				Msg("BODY_STATE %d",m_cBodyState);
+//				Msg("speed %.2f",speed);
+//				Msg("m_fCurSpeed %.2f",m_fCurSpeed);
+//				Msg("BODY_STATE %d",m_cBodyState);
 				if (speed < .1f) {
 					// turning around || standing idle
 					if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)

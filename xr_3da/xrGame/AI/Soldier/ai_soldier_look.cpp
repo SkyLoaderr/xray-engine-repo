@@ -11,7 +11,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
 
-#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
+#define	MAX_HEAD_TURN_ANGLE				(PI/2.f)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
@@ -305,10 +305,35 @@ void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
 void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float power)
 {
 	#ifdef WRITE_LOG
-		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
+	if (Level().timeServer() < 15000)
+		return;
+
 	power *= ffGetStartVolume(ESoundTypes(eType));
+
+	switch (eType) {
+		case SOUND_TYPE_WEAPON_RECHARGING		: power *= 0.15f; break;
+		case SOUND_TYPE_WEAPON_SHOOTING			: power *= 1.00f; break; 
+		case SOUND_TYPE_WEAPON_TAKING			: power *= 0.05f; break; 
+		case SOUND_TYPE_WEAPON_HIDING			: power *= 0.05f; break; 
+		case SOUND_TYPE_WEAPON_CHANGING			: power *= 0.05f; break; 
+		case SOUND_TYPE_WEAPON_EMPTY_CLICKING	: power *= 0.10f; break; 
+		case SOUND_TYPE_WEAPON_BULLET_RICOCHET	: power *= 0.50f; break; 
+		case SOUND_TYPE_MONSTER_DYING			: power *= 0.50f; break; 
+		case SOUND_TYPE_MONSTER_INJURING		: power *= 0.50f; break; 
+		case SOUND_TYPE_MONSTER_WALKING_NORMAL	: power *= 0.15f; break; 
+		case SOUND_TYPE_MONSTER_WALKING_CROUCH	: power *= 0.05f; break; 
+		case SOUND_TYPE_MONSTER_WALKING_LIE		: power *= 0.10f; break; 
+		case SOUND_TYPE_MONSTER_RUNNING_NORMAL	: power *= 0.25f; break; 
+		case SOUND_TYPE_MONSTER_RUNNING_CROUCH	: power *= 0.20f; break; 
+		case SOUND_TYPE_MONSTER_RUNNING_LIE		: power *= 0.20f; break; 
+		case SOUND_TYPE_MONSTER_JUMPING_NORMAL	: power *= 0.20f; break; 
+		case SOUND_TYPE_MONSTER_JUMPING_CROUCH	: power *= 0.15f; break; 
+		case SOUND_TYPE_MONSTER_FALLING			: power *= 0.20f; break; 
+		case SOUND_TYPE_MONSTER_TALKING			: power *= 0.25f; break; 
+	}
 
 	DWORD dwTime = Level().timeServer();
 	
@@ -378,10 +403,11 @@ void CAI_Soldier::SelectSound(int &iIndex)
 	iIndex = -1;
 	float fMaxPower = 0.f;
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
-		if ((tpaDynamicSounds[i].dwTime > m_dwLastUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
-			fMaxPower = tpaDynamicSounds[i].fPower;
-			iIndex = i;
-		}
+		if (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team())
+			if ((tpaDynamicSounds[i].dwTime > m_dwLastUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
+				fMaxPower = tpaDynamicSounds[i].fPower;
+				iIndex = i;
+			}
 }
 
 /**/
