@@ -13,8 +13,8 @@ using namespace AI_Biting;
 
 CAI_Biting::CAI_Biting()
 {
-	shedule.t_min	=	200;
-	shedule.t_max	=	350;
+//	shedule.t_min	=	200;
+//	shedule.t_max	=	350;
 	
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
