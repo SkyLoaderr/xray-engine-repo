@@ -151,18 +151,18 @@ morale_v			= 0.01					;скорость восстановления морали
 health_hit_part = 0.1		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part = 0.5		;0.9			;процент хита, уходящий на отнимание силы
 
-burn_immunity = 0.1				;коэффициенты иммунитета 
-strike_immunity = 0.1
-shock_immunity = 0.1
-wound_immunity = 0.1	;0.30	;1.0		
+burn_immunity = 0.9				;коэффициенты иммунитета 
+strike_immunity = 0.5
+shock_immunity = 0.5
+wound_immunity = 0.5	;0.30	;1.0		
 radiation_immunity = 0.01
-telepatic_immunity = 0.1
-chemical_burn_immunity = 0.1
-explosion_immunity = 0.1
-fire_wound_immunity  = 0.1
+telepatic_immunity = 0.5
+chemical_burn_immunity = 0.9
+explosion_immunity = 0.9
+fire_wound_immunity  = 0.9
 
 ;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+bleeding_v					= 0.01					;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
 
@@ -231,8 +231,8 @@ LegsCount			= 4
 
 default				= 1.00,	-1,	1.00
 
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
+bip01_pelvis 		= 0.3, -1, 0.5
+bip01_spine 		= 0.3, -1, 0.5
+bip01_spine1 		= 0.3, -1, 0.5
 bip01_neck 			= 0.5, -1, 0.5
-bip01_head 			= 10.0, -1, 10.00
+bip01_head 			= 2.0, -1, 10.00
