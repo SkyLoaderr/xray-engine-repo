@@ -81,7 +81,7 @@ void	xrServerEntity::FillProp	(LPCSTR pref, PropValueVec& values)
 xrSE_Weapon::xrSE_Weapon()
 {
 	a_current			= 90;
-	a_elapsed			= 30;
+	a_elapsed			= 0;
 }
 void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
 {
