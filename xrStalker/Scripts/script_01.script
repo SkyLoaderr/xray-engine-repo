@@ -89,7 +89,7 @@ function main()
 			stalker1:script	(true,  script_01.script_name())
 			stalker2:script	(false, script_01.script_name())
 			stalker2:script	(true,  script_01.script_name())
-			sound_01:play		(actor,0);
+			sound_01:play_at_pos		(actor,0);
 		wait(1000)
 			action(
 				stalker1,
