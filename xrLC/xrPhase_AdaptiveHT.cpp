@@ -62,7 +62,6 @@ int		callback_edge_error		(Face* F)
 	if (b1 && b2 && b3)		return	-1;		// don't touch flat-shaded triangle
 	else					return	max_id;	// tesselate longest edge
 }
-*/
 void	callback_vertex_hemi	(Vertex* V)
 {
 	// calc vertex attributes
@@ -72,7 +71,6 @@ void	callback_vertex_hemi	(Vertex* V)
 	LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
 	V->C._set				(vC);
 }
-/*
 int		smfVertex				(Vertex* V)
 {
 	return 1 + (std::lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin());
@@ -150,6 +148,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 			Vertex*		V		= g_vertices[vit];
 			V->normalFromAdj	();
 			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
+			vC.mul				(0.5f);
 			V->C._set			(vC);
 		}
 	}
