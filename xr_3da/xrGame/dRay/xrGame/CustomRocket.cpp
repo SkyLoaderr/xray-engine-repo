@@ -10,7 +10,8 @@
 #include "extendedgeom.h"
 #include "level.h"
 #include "xrMessages.h"
-
+#include "gamemtllib.h"
+#include "tri-colliderknoopc/dTriList.h"
 
 CCustomRocket::CCustomRocket() 
 {
@@ -108,14 +109,30 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c)
 	l_pUD1 = retrieveGeomUserData(c.geom.g1);
 	l_pUD2 = retrieveGeomUserData(c.geom.g2);
 
+	SGameMtl* material=0;
 	CCustomRocket *l_this = l_pUD1 ? dynamic_cast<CCustomRocket*>(l_pUD1->ph_ref_object) : NULL;
 	Fvector vUp;
 	if(!l_this){
 		l_this = l_pUD2 ? dynamic_cast<CCustomRocket*>(l_pUD2->ph_ref_object) : NULL;
 		vUp.invert(*(Fvector*)&c.geom.normal);
+
+		if(dGeomGetClass(c.geom.g1)==dTriListClass)
+			material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
+		else
+			material=GMLib.GetMaterialByIdx(l_pUD2->material);
+
 	}else{
 		vUp.set(*(Fvector*)&c.geom.normal);	
+
+		if(dGeomGetClass(c.geom.g2)==dTriListClass)
+			material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
+		else
+			material=GMLib.GetMaterialByIdx(l_pUD1->material);
+
 	}
+	VERIFY(material);
+	if(material->Flags.is(SGameMtl::flPassable)) return;
+
 	if(!l_this) return;
 
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
