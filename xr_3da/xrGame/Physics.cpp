@@ -449,6 +449,7 @@ DynamicData.SetZeroTransform(Translate);
 
 }
 
+
 void CPHJeep::Steer(const char& steering)
 {
 	static const dReal steeringRate = M_PI * 4 / 5;
@@ -3102,4 +3103,9 @@ dBodyGetMass(b,&m);
 //				T);
 	 
  } 
+}
+
+float CPHJeep::GetSteerAngle()
+{
+	return dJointGetHinge2Angle1 (Joints[2]);
 }

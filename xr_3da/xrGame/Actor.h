@@ -256,8 +256,10 @@ private:
 	void					attach_Vehicle			(CCar* vehicle);
 	void					use_Vehicle				();
 	CObject*				pick_Object				();
+
 public:
 	void					detach_Vehicle			();
+	void					steer_Vehicle			(float angle);
 public:
 							CActor					( );
 	virtual					~CActor					( );

@@ -30,6 +30,7 @@ class CPHJeep {
 	static const	u32 NofGeoms=8;
 	static const	u32 NofBodies=5;
 	static const	u32 NofJoints=4;
+
 	dReal MassShift;
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
@@ -57,6 +58,7 @@ public:
 	void Destroy();
 	void Steer1(const char& velocity, const char& steering);
 	void Steer(const char& steering);
+	float GetSteerAngle();
 	void LimitWeels();
 	void Drive(const char& velocity,dReal force=500.f);
 	void Drive();

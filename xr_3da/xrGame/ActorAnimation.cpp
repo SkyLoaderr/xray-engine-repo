@@ -91,16 +91,22 @@ void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 
 void CActor::SActorMotions::Create(CKinematics* V)
 {
-	m_steering_torso_left	= V->ID_Cycle("steering_torso_ls");
-	m_steering_torso_right	= V->ID_Cycle("steering_torso_rs");
-	m_steering_torso_idle	= V->ID_Cycle("steering_torso_idle");
-	m_steering_legs_idle	= V->ID_Cycle("steering_legs_idle");
+	m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
+	m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
+	m_steering_torso_idle	= V->ID_Cycle_Safe("steering_torso_idle");
+	m_steering_legs_idle	= V->ID_Cycle_Safe("steering_legs_idle");
 
 	m_normal.Create	(V,"norm");
 	m_crouch.Create	(V,"cr");
 	m_climb.Create	(V,"cr");
 }
-
+void CActor::steer_Vehicle(float angle)
+{
+if(!m_vehicle)		return;
+if(angle==0.f) 		PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_idle);
+else if(angle>0.f)	PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_right);
+else				PKinematics	(pVisual)->PlayCycle(m_anims.m_steering_torso_left);
+}
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())

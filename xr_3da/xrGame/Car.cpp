@@ -119,6 +119,14 @@ void __stdcall CCar::cb_WheelBR	(CBoneInstance* B)
 	B->mTransform.mulB	(A);
 }
 
+void __stdcall  CCar::cb_Steer(CBoneInstance* B)
+{
+CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
+Fmatrix m;
+m.rotateZ(C->m_jeep.GetSteerAngle());
+B->mTransform.mulB	(m);
+}
+
 void	CCar::cam_Update			(float dt)
 {
 	Fvector							P,Da;
@@ -276,9 +284,11 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kACCEL:	m_jeep.DriveVelocity=5*M_PI;
 					m_jeep.Drive();
 					break;
-	case kRIGHT:	m_jeep.Steer(1);		
+	case kRIGHT:	m_jeep.Steer(1);
+					m_owner->steer_Vehicle(1);
 					break;
 	case kLEFT:		m_jeep.Steer(-1);
+					m_owner->steer_Vehicle(-1);
 					break;
 	case kUP:		m_jeep.DriveDirection=1;
 					m_jeep.DriveForce=drive_force;
@@ -308,6 +318,7 @@ void	CCar::OnKeyboardRelease		(int cmd)
 					break;
 	case kLEFT:	
 	case kRIGHT:	m_jeep.Steer(0);
+					m_owner->steer_Vehicle(0);
 					break;
 	case kUP:	
 	case kDOWN:		m_jeep.DriveDirection=0;
@@ -445,10 +456,11 @@ void CCar::ActivateJeep()
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
-	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+	M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback			(cb_Steer,this);
+	 ///clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
 
 void CCar::ActivateShell()
 {
+
 }

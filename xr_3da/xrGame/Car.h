@@ -36,6 +36,7 @@ private:
 	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBL			(CBoneInstance* B);
 	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
+	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse);
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
