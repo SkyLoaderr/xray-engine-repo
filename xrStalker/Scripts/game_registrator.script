@@ -26,8 +26,8 @@ function get_game_clsid(game_type_option)
 	if(game_type_option == "artefacthunt") then 
 		return "GM_AHUNT" end
 
-	if(game_type_option == "cs") then 
-		return "GM_CS" end
+--	if(game_type_option == "cs") then 
+--		return "GM_CS" end
 
 	if(game_type_option == "new_dm") then 
 		return "GM_NEWDM" end

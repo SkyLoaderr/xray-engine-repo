@@ -14,3 +14,6 @@ function C_new_game_sv_Deathmatch:section_name()
 	return "new_deathmatch"
 end
 
+function Money_SetStart	(id_who)
+
+end
