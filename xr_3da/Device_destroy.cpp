@@ -24,6 +24,8 @@ void CRenderDevice::Destroy	(void) {
 
 	_Destroy					(FALSE);
 
+	xr_delete					(Resources);
+
 	// real destroy
 	HW.DestroyDevice			();
 }
