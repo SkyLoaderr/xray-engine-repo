@@ -11,12 +11,12 @@
 ----------------------------
 done, ~7% perf-gain		:	intelligent	RT-switches sheduling + give some time to complete RT-rendering
 done, ~5.5% perf-gain	:	cull point-light frustums against real frustum
+						:	fixed coordinate system for point lights - should minimize flickering
 						:	clip every-light frustums against real frustum - difficult
 						:	scissoring ???
 ----------------------------
 bilinear/q-linear filter for cubemaps
 bicubic filter for spot shadows
-fixed coordinate system for point lights - should minimize flickering
 3*32	bit RTs		- position/normal compression
 2*DXT5	bumpmaps	- better quality, 16bit total
 detail	bumpmaps	- better quality
