@@ -24,7 +24,11 @@ public:
 						CAI_Idol		();
 	virtual				~CAI_Idol		();
 public:
-	virtual CGameObject*				cast_game_object		()						{return this;}
+	virtual CInventoryOwner*			cast_inventory_owner		()						{return this;}
+	virtual CEntityAlive*				cast_entity_alive			()						{return this;}
+	virtual CEntity*					cast_entity					()						{return this;}
+	virtual CGameObject*				cast_game_object			()						{return this;}
+
 public:
 
 	virtual void		Load			( LPCSTR section );
