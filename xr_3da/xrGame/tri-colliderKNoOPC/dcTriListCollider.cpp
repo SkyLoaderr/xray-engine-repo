@@ -426,15 +426,16 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 ///end @slipch
 
 int dTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
-			   CDB::RESULT* T,
+			   CDB::TRI* T,
 			   dxGeom* Sphere,dxGeom* Geometry, int Flags, 
 			   dContactGeom* Contacts)
 {
+	const Fvector*	V_array			=	Level().ObjectSpace.GetStaticVerts();
 	const dReal*	SphereCenter	=	dGeomGetPosition	(Sphere);
 	const float		SphereRadius	=	dGeomSphereGetRadius(Sphere);
-	const dReal* v0	=(dReal*)T->verts + 0;
-	const dReal* v1	=(dReal*)T->verts + 1;
-	const dReal* v2	=(dReal*)T->verts + 2;
+	const dReal* v0	=(dReal*)&V_array[T->verts[0]];
+	const dReal* v1	=(dReal*)&V_array[T->verts[1]];
+	const dReal* v2	=(dReal*)&V_array[T->verts[2]];
 	//dVector3 triSideAx0={V[1][0]-V[0][0],V[1][1]-V[0][1],V[1][2]-V[0][2]};
 	//	dVector3 triSideAx1={V[2][0]-V[1][0],V[2][1]-V[1][1],V[2][2]-V[1][2]};
 	//		dVector3 triSideAx2={V[0][0]-V[2][0],V[0][1]-V[2][1],V[0][2]-V[2][2]};
