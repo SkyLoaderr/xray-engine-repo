@@ -1,37 +1,3 @@
-function action1(obj,...)
-	local act = entity_action()
-	local i = 1
-	while true do
-		if (arg[i] ~= nil) then
-			act:set_action(arg[i])
-		else
-			break
-		end
-		i = i + 1
-	end
-	if (obj ~= nil) then
-		obj:command(act,false)
-	end
-	return	entity_action(act)
-end
-
-function action_first1(obj,...)
-	local act = entity_action()
-	local i = 1
-	while true do
-		if (arg[i] ~= nil) then
-			act:set_action(arg[i])
-		else
-			break
-		end
-		i = i + 1
-	end
-	if (obj ~= nil) then
-		obj:command(act,true)
-	end
-	return	entity_action(act)
-end
-
 function main ()
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -67,22 +33,22 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	stalker_test:action1 (
+	action (
 		stalker, 
---		move		(move.standing, move.walk, move.line, patrol ("way0000")),
---		look		(look.path_dir),
---		anim		(anim.danger),
+		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+		look		(look.path_dir),
+		anim		(anim.danger),
 		cond		(cond.move_end)
 	)
 	
---	wait			(2000)
+	wait			(2000)
 	
---	stalker_test:action_first1 (
---		stalker, 
---		move		(move.standing, move.stand, move.line, patrol ("way0000")),
---		anim		("stoya_ruje_ 0"),
---		cond		(cond.time_end, 10000)
---	)
+	action_first1 (
+		stalker, 
+		move		(move.standing, move.stand, move.line, patrol ("way0000")),
+		anim		("stoya_ruje_ 0"),
+		cond		(cond.time_end, 10000)
+	)
 	
 	while stalker:action() do
 		wait		();
