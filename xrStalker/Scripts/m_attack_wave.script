@@ -45,21 +45,15 @@ function main ()
 
     for a = 1, table.getn (t), 1 do
         t[a]:script (true, m_attack_wave.script_name ())
-        action (t[a], move (move.act_stand_idle, tways[a]), cond (cond.time_end, 1000000000))
+        action (t[a], move (move.act_stand_idle, move.default, tways[a]), cond (cond.time_end, 1000000000))
         end
 
     wait (20000)
 
-    for a = 1, table.getn (t), 1 do
-        reset_action (t[a], m_attack_wave.script_name ())
-        action (t[a], move (move.act_walk_fwd, tways[a]), cond (cond.time_end, 1000))
-        end
-
-	wait (1000)
 
     for a = 1, table.getn (t), 1 do
         reset_action (t[a], m_attack_wave.script_name ())
-        action (t[a], move (move.act_run, tways[a]), cond (cond.move_end))
+        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
         end
 
     wait (120000)
