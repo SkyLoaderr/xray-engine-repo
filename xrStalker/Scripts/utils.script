@@ -496,3 +496,20 @@ function angle_left_xz(dir1, dir2)
 	return dir_res.y <= 0
 end
 
+function get_nearest_waypoint(obj, pathname, ptr, cnt)
+	local pt_chosen = nl
+	local min_dist = nil
+	local dist
+	for i = 0, cnt - 1 do
+		dist = obj:position():distance_to(ptr:point(i))
+		if not min_dist or dist < min_dist then
+			min_dist = dist
+			pt_chosen = i
+		end
+	end
+	if not pt_chosen then
+		utils.abort("get_nearest_waypoint: object '%s': path '%s': action_car: unable to choose a nearest waypoint (path has no waypoints?)",
+			obj:name(), pathname)
+	end
+	return pt_chosen
+end
