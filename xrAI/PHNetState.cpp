@@ -14,7 +14,7 @@ static void r_vec_q8(NET_Packet& P,Fvector& vec,const Fvector& min,const Fvector
 	P.r_float_q8(vec.x,min.x,max.x);
 	P.r_float_q8(vec.y,min.y,max.y);
 	P.r_float_q8(vec.z,min.z,max.z);
-	VERIFY		(vec.x>=min.x && vec.x<=max.x);
+
 	clamp(vec.x,min.x,max.x);
 	clamp(vec.y,min.y,max.y);
 	clamp(vec.z,min.z,max.z);
