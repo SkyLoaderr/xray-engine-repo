@@ -6,11 +6,18 @@ function CStateHit:__init(_data, _mem)
 	self.data		= _data
 	self.memory		= _mem
 	self.hit_time	= 0
+	self.hit_id		= -1
+	if(self.data) then 
+		printf("DAta is %s", self.data.scr_name)
+	else
+		printf("DAta is null")
+	end
 end
 
 function CStateHit:initialize()
 	reset_action(self.data.npc, self.data.scr_name)
 	self.hit_time	= self.memory.hit.time
+	self.hit_id		= self.memory.hit.who:id()
 end
 
 function CStateHit:execute()
@@ -26,6 +33,7 @@ end
 function CStateHit:hit_changed()
 	if(self.memory.hit.time > self.hit_time + time_update) then
 		self.hit_time	= self.memory.hit.time
+		self.hit_id		= self.memory.hit.who:id()
 		return true
 	end
 	
@@ -37,4 +45,58 @@ function CStateHit:id()
 end
 
 function CStateHit:finalize()
+end
+
+//----------------------------------------------------------------------------------------------------------
+// State Hit Look
+//----------------------------------------------------------------------------------------------------------
+
+class "CStateHitLook" (CStateHit)
+function CStateHitLook:__init(_data, _mem) super(_data, _mem)
+	self.angry		= false
+	self.position	= nil
+end
+
+function CStateHitLook:initialize()
+	this.CStateHit.initialize(self)
+	self.angry		= false
+	self.position	= self.memory.hit.who:position()
+end
+
+function CStateHitLook:execute()
+	if(self:hit_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		if(self.angry) then
+			//Если далеко от позиции, то подходим, в противном случаее осматривеамся и кружимся рядом
+			if(self.data.npc:position():distance_to(self.position) > 3) then		
+				action(self.data.npc, move(move.run_fwd, self.memory.hit.who:position(), 1, move.force),
+									  sound(sound.threaten), cond(cond.move_end))
+			else
+				action(self.data.npc, move(move.walk_fwd, self.data.npc:position():sub(self.data.npc:direction())),
+									  sound(sound.threaten), cond(cond.move_end))
+			end
+			action(self.data.npc, anim(anim.look_around, 0), sound(sound.threaten), cond(cond.time_end, 15000))	
+		else
+			action(self.data.npc, anim(anim.look_around, 0), sound(sound.threaten), cond(cond.time_end, 15000))
+			action(self.data.npc, move(move.walk_fwd, self.data.npc:position():sub(self.data.npc:direction())),
+								  sound(sound.threaten), cond(cond.move_end))
+		end
+	end
+end
+
+function CStateHitLook:hit_changed()
+	if(self.memory.hit.time > self.hit_time + 2*time_update) then
+		if(	self.hit_id	== self.memory.hit.who:id()) then
+			self.angry	= true
+		end
+		self.hit_id		= self.memory.hit.who:id()
+		self.hit_time	= self.memory.hit.time
+		self.position	= self.memory.hit.who:position()
+		return true
+	end
+	
+	return false
 end

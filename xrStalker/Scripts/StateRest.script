@@ -12,7 +12,7 @@ function CStateRest:__init(_data, _mem, sWalk)
 	self.stateEat	= stateeat.CStateEat(self.data, self.memory)
 	
 	if(sWalk) then
-		self.stateWalk	= statewalk.sWalk(self.data, self.memory)
+		self.stateWalk	= sWalk(self.data, self.memory)
 	else
 		self.stateWalk	= statewalk.CStateWalk(self.data, self.memory)
 	end
@@ -39,7 +39,7 @@ function CStateRest:select_state()
 	else
 		if(self.curState and self.curState:id() ~= s_eat) then
 			self:set_state(s_walk)
-		elseif(self.data.npc.satiety < 0.9) then				//≈ще не наелись
+		elseif(self.data.npc.satiety < 0.9 and self.memory.corpse) then			//≈ще не наелись
 			self:set_state(s_eat)
 		else	
 			self:set_state(s_walk)

@@ -24,3 +24,43 @@ end
 
 function CStateWalk:finalize()
 end
+
+//---------------------------------------------------------------------------------------------------------
+//State walk patrol
+//---------------------------------------------------------------------------------------------------------
+local time_to_look	= 4000
+local time_to_walk	= 10000
+
+class "CStateWalkPatrol" (CStateWalk)
+function CStateWalkPatrol:__init(_data, _mem, sWalk) super(_data, _mem, sWalk)
+	self.index	= 0
+end
+
+function CStateWalkPatrol:initialize()
+	self.index	= -1
+	self.data.npc:set_callback(self, "move_callback", game_object.movement)
+	this.CStateWalk.initialize(self)
+end
+
+function CStateWalkPatrol:execute()
+	if(self.data.npc:action() == nil) then
+		if(self.index ~= -1) then
+			action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, math.random(time_to_look, 1.5*time_to_look)))
+			action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.next, patrol.continue, true, self.index)),
+								sound(sound.idle), cond(cond.time_end, math.random(time_to_walk, 1.5*time_to_walk)))			
+		
+		else
+			action(self.data.npc, move(move.walk_fwd, patrol(self.path, patrol.nearest, patrol.continue, true)),
+								sound(sound.idle), cond(cond.time_end, math.random(time_to_walk, 1.5*time_to_walk)))			
+		end
+	end
+end
+
+function CStateWalkPatrol:move_callback(obj, type, index)
+	self.index	= index
+end
+
+function CStateWalkPatrol:finalize()
+	self.data.npc:clear_callback(game_object.movement)
+	this.CStateWalk.finalize(sefl)
+end

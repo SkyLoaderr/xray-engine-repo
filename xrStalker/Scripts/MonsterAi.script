@@ -55,7 +55,7 @@ function CMonsterBase:__init(_name, sRest, sAttack, sHit, sDangerSound, sNotDang
 	end
 
 	if(sRest) then
-		self.stateRest	= sRest(self.data, self.memory)
+		self.stateRest	= staterest.CStateRest(self.data, self.memory, sRest)
 	else
 		self.stateRest	= staterest.CStateRest(self.data, self.memory)
 	end
@@ -77,6 +77,7 @@ function CMonsterBase:is_on_line()
 		if(self.data.npc == nil) then return false end
 		
 		self.data.npc		= nil
+		self.curState		= nil
 		
 		return false
 	end
@@ -107,7 +108,6 @@ function CMonsterBase:select_state()
 
 	if(self.memory.enemy) then
 		self:set_state(s_attack)
-		printf("Set staet attack")
 	elseif(self.memory.hit.time ~= 0) then
 		self:set_state(s_hit)
 	elseif(self.memory.sound.time ~= 0) then
@@ -124,7 +124,7 @@ end
 
 function CMonsterBase:set_state(new_state)
 	if(self.curState) then
-		printf("old state %d", self.curState:id())
+		//printf("old state %d", self.curState:id())
 		if(self.curState:id() == new_state) then
 			return
 		end
