@@ -28,12 +28,13 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 					   y = self.top_align_y,
 					   width = 300,
 					   height = self.btn_rect.height}
-	--local lst_rect  = {x}
+	local lst_rect  = {x = info_rect.x,
+					   y = info_rect.y + info_rect.height + self.indent,
+					   width = 400,
+					   height = 200}
 	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
-	-------- BUTTONS ------------------------------- 
-	--------->> VIDEO
     local frame_info = CUIFrameWindow()
 	frame_info:SetAutoDelete(true)
 	frame_info:SetWindowName("info_label")
@@ -48,6 +49,12 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	caption:SetFont(self.caption_font);
 	caption:SetText("Current Profile: xxx")
 	self.main_frame:AttachChild(caption)
+	
+	local lst_frame = CUIStatic()
+	lst_frame:SetAutoDelete(true)
+	lst_frame:SetWindowName("list_frame")
+	lst_frame:Init(lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
+	self.main_frame:AttachChild(lst_frame)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
