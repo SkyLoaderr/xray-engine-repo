@@ -118,6 +118,16 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 		xr_delete				(m_agent_manager);
 }
 
+void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member)
+{
+	CMemoryManager				*memory_manager = dynamic_cast<CMemoryManager*>(member);
+	if (memory_manager) {
+		memory_manager->CVisualMemoryManager::set_squad_objects	(0);
+		memory_manager->CSoundMemoryManager::set_squad_objects	(0);
+		memory_manager->CHitMemoryManager::set_squad_objects	(0);
+	}
+}
+
 void CGroupHierarchyHolder::register_member				(CEntity *member)
 {
 	register_in_group			(member);

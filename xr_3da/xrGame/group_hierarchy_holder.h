@@ -67,6 +67,7 @@ private:
 			void					unregister_in_group			(CEntity *member);
 			void					unregister_in_squad			(CEntity *member);
 			void					unregister_in_agent_manager	(CEntity *member);
+			void					unregister_in_group_senses	(CEntity *member);
 
 public:
 	IC								CGroupHierarchyHolder		(CSquadHierarchyHolder *squad);
