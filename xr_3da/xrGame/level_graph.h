@@ -205,7 +205,7 @@ public:
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
 			void	draw_travel_line			() const;
 			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;
-			void	compute_path				() const;
+			void	compute_path				();
 			void	draw_dynamic_obstacles		() const;
 #endif
 #endif

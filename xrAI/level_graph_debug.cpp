@@ -20,6 +20,7 @@
 #include "game_sv_single.h"
 #include "ai_alife.h"
 #include "custommonster.h"
+#include "ai/stalker/ai_stalker.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -468,18 +469,6 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 
 #include "graph_engine.h"
 
-void CLevelGraph::compute_path() const
-{
-	return;
-//	u32						l_dwStartNodeID		= vertex(m_start_point);
-//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
-//	u32						l_dwFinishNodeID	= vertex(m_finish_point);
-//	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
-//	xr_vector<u32>			l_tpNodePath;
-//	ai().graph_engine().search(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphEngine::CObstacleParams());
-//	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
-}
-
 void CLevelGraph::draw_dynamic_obstacles() const
 {
 //	Level().CurrentEntity()->setEnabled	(false);
@@ -772,6 +761,35 @@ bool compute_trajectory(
 		return		(false);
 
 	return			(build_trajectory(start,dest,path));
+}
+
+void CLevelGraph::compute_path()
+{
+	STrajectoryPoint		start, dest;
+	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+	obj						= Level().Objects.FindObjectByName("localhost/dima");
+	CActor					*actor = dynamic_cast<CActor*>(obj);
+	
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 2.15f;
+	start.position			= stalker->Position();
+	start.direction.setHP	(stalker->m_body.current.yaw,0);
+	
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 2.15f;
+	dest.position			= actor->Position();
+	dest.direction.setHP	(actor->r_model_yaw,0);
+	
+	compute_trajectory		(start,dest,m_tpTravelLine);
+	return;
+	//	u32						l_dwStartNodeID		= vertex(m_start_point);
+	//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
+	//	u32						l_dwFinishNodeID	= vertex(m_finish_point);
+	//	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
+	//	xr_vector<u32>			l_tpNodePath;
+	//	ai().graph_engine().search(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphEngine::CObstacleParams());
+	//	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 
 #endif // DEBUG
