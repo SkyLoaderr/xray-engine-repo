@@ -146,4 +146,7 @@ void	FTreeVisual::Copy			(CVisual *pSrc)
 	PCOPY(xform);
 	PCOPY(c_scale);
 	PCOPY(c_bias);
+
+	PCOPY(c_eye);
+	PCOPY(c_fog);
 }

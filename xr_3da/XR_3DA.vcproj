@@ -1263,6 +1263,9 @@
 				RelativePath=".\FStaticRender_SceneGraph.cpp">
 			</File>
 			<File
+				RelativePath="FStaticRender_SceneGraph.h">
+			</File>
+			<File
 				RelativePath=".\FStaticRender_Screenshot.cpp">
 			</File>
 			<File
@@ -1270,9 +1273,6 @@
 			</File>
 			<File
 				RelativePath="FStaticRender_Volume.cpp">
-			</File>
-			<File
-				RelativePath=".\SceneGraph.h">
 			</File>
 			<File
 				RelativePath=".\tempobject.cpp">
