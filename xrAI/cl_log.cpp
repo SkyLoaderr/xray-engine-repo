@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "log.h"
-#include "cl_log.h"
 
 //************************* Log-thread data
 static xrCriticalSection	csLog;
