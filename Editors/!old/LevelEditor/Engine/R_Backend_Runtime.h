@@ -31,6 +31,10 @@ IC	void	CBackend::set_xform_project	(const Fmatrix& M)
 { 
 	xforms.set_P(M);	
 }
+IC	const Fmatrix&	CBackend::get_xform_world	()	{ return xforms.get_W();	}
+IC	const Fmatrix&	CBackend::get_xform_view	()	{ return xforms.get_V();	}
+IC	const Fmatrix&	CBackend::get_xform_project	()	{ return xforms.get_P();	}
+
 IC void CBackend::set_RT				(IDirect3DSurface9* RT, u32 ID)
 {
 	if (RT!=pRT[ID])

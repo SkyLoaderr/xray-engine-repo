@@ -24,6 +24,9 @@ public:
 	void			set_W		(const Fmatrix& m);
 	void			set_V		(const Fmatrix& m);
 	void			set_P		(const Fmatrix& m);
+	IC const Fmatrix&	get_W	()					{ return m_w;	}
+	IC const Fmatrix&	get_V	()					{ return m_v;	}
+	IC const Fmatrix&	get_P	()					{ return m_p;	}
 	IC void			set_c_w		(R_constant* C);
 	IC void			set_c_v		(R_constant* C);
 	IC void			set_c_p		(R_constant* C);

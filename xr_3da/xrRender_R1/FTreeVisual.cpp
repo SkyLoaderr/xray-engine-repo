@@ -116,7 +116,7 @@ void FTreeVisual::Render	(float LOD)
 	// setup constants
 #if RENDER==R_R2
 	Fmatrix					xform_v			;
-							xform_v.mul_43	(Device.mView,xform);
+							xform_v.mul_43	(RCache.get_xform_view(),xform);
 							RCache.set_c	(m_xform_v,	xform_v);														// matrix
 #endif
 	RCache.set_c			(m_xform,	xform);														// matrix

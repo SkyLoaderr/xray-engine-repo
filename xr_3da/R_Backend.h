@@ -104,6 +104,9 @@ public:
 	IC	void						set_xform_world		(const Fmatrix& M);
 	IC	void						set_xform_view		(const Fmatrix& M);
 	IC	void						set_xform_project	(const Fmatrix& M);
+	IC	const Fmatrix&				get_xform_world		();
+	IC	const Fmatrix&				get_xform_view		();
+	IC	const Fmatrix&				get_xform_project	();
 
 	IC	void						set_RT				(IDirect3DSurface9* RT, u32 ID=0);
 	IC	void						set_ZB				(IDirect3DSurface9* ZB);
