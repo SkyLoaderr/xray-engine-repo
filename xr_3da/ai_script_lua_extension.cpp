@@ -410,12 +410,12 @@ bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR namespace_na
 	return					(bfIsObjectPresent(tpLuaVM,identifier,type)); 
 }
 
-luabind::object Script::lua_namespace_table(LPCSTR namespace_name)
+luabind::object Script::lua_namespace_table(CLuaVirtualMachine *tpLuaVM, LPCSTR namespace_name)
 {
 	string256			S1;
 	strcpy				(S1,namespace_name);
 	LPSTR				S = S1;
-	luabind::object		lua_namespace = luabind::get_globals(ai().lua());
+	luabind::object		lua_namespace = luabind::get_globals(tpLuaVM);
 	for (;;) {
 		if (!xr_strlen(S))
 			return		(lua_namespace);

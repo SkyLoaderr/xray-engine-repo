@@ -71,7 +71,7 @@ void CScriptBinder::reload			(LPCSTR section)
 		return;
 	}
 
-	luabind::object			lua_namespace	= Script::lua_namespace_table(name_space);
+	luabind::object			lua_namespace	= Script::lua_namespace_table(ai().lua(),name_space);
 	luabind::functor<void>	lua_function	= luabind::object_cast<luabind::functor<void> >(lua_namespace[function]);
 	lua_function			(lua_game_object());
 	
