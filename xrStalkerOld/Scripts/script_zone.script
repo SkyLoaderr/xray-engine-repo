@@ -109,7 +109,7 @@ function monster_zone:read_custom_data(ini)
 		self.ref_manager = CMonsterCamper
 	elseif(self.type == "zombie_sham") then
 		self.custom_data.path 		= ini:r_string("monster", "path")
-		self.custom_data.zone_name 	= utils.conf_get_string(ini, "monster", "zone", nil, self.object, true)
+		self.custom_data.zone_name 	= utils.mob_get_string(ini, "monster", "zone", nil, self.object, true)
 		printf("read path %s", self.custom_data.path)
 		
 		self.ref_manager = CZombieSham
