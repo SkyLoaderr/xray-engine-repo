@@ -39,7 +39,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 			return tSearch.m_dwBestNode;
 		}
 	}
-	if (bShortSearch) {
+	if (bShortSearch && PrevNode && (PrevNode < m_header.count)) {
 		Device.Statistic.AI_Node.End		();
 		return(PrevNode);
 	}
