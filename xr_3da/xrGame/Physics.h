@@ -113,19 +113,7 @@ class CPHMan{
 };
 
 
-class CPHGun{
-public:
-	//dGeomID canon;
 
-	dGeomID Ray;
-
-
-
-	void Create(dSpaceID space);
-	void Destroy();
-	void Shoot(const dReal* rayO,const dReal* rayD);
-
-};
 ////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 class CPHWorld {
@@ -144,7 +132,7 @@ public:
 	double m_frame_sum;
 	dReal frame_time;
 	float m_update_time;
-	CPHGun Gun;
+	//CPHGun Gun;
 	//CPHJeep Jeep;
 	unsigned int disable_count;
 	//vector<CPHElement*> elements;

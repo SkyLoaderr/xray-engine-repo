@@ -2,7 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-#include "dRay/include/dRay.h"
+//#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 // #include "contacts.h"
@@ -744,6 +744,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 			if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
+					if(pushing_neg) contacts[i].surface.mu=dInfinity;
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
@@ -757,6 +758,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 			if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
+					if(pushing_neg) contacts[i].surface.mu=dInfinity;
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
@@ -773,40 +775,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	
 	
 }
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////CPHGun//////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-void CPHGun::Create(dSpaceID space){
-	
-	dVector3 rayO={0.f,0.f,0.f};
-	dVector3 rayD={0.f,1.f,0.f};
-	Ray=dGeomCreateRay(space,1.f);
-	dGeomRaySet(Ray,rayO,rayD);
-	isShooting=false;
-}
 
-///////////////////////////////////////////////////////////////////////////////////////////
-void CPHGun::Destroy(){
-dGeomDestroy(Ray);
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-
-
-void CPHGun::Shoot(const dReal* rayO,const dReal*  rayD){
-bulletContact.geom.pos[0]=dInfinity;
-RayO[0]=rayO[0];
-RayO[1]=rayO[1];
-RayO[2]=rayO[2];
-RayD[0]=rayD[0];
-RayD[1]=rayD[1];
-RayD[2]=rayD[2];
-dGeomRaySet(Ray,RayO,RayD);
-
-isShooting=true;
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
 void CPHElement::			add_Box		(const Fobb&		V){

@@ -1670,31 +1670,6 @@
 				RelativePath="dCylinder\dCylinder.h">
 			</File>
 			<Filter
-				Name="dRay"
-				Filter="">
-				<File
-					RelativePath="dRay\dRay.cpp">
-				</File>
-				<File
-					RelativePath="dRay\Include\dRay.h">
-				</File>
-				<File
-					RelativePath="dRay\dRay_Box.cpp">
-				</File>
-				<File
-					RelativePath="dRay\dRay_CCylinder.cpp">
-				</File>
-				<File
-					RelativePath="dRay\dRay_Plane.cpp">
-				</File>
-				<File
-					RelativePath="dRay\dRay_Sphere.cpp">
-				</File>
-				<File
-					RelativePath="dRay\dxRay.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Tri-Collider"
 				Filter="">
 				<File
