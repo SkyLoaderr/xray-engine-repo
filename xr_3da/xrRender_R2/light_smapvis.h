@@ -21,10 +21,10 @@ public:
 	~smapvis		();
 
 	void			invalidate	();
-	void			begin		(light* L);	// should be called before 'marker++' and before graph-build
-	void			end			(light* L);
-	void			mark		(light* L);
-	void			flushoccq	(light* L);	// should be called when no rendering of light is supposed
+	void			begin		();			// should be called before 'marker++' and before graph-build
+	void			end			();
+	void			mark		();
+	void			flushoccq	();			// should be called when no rendering of light is supposed
 	IC	bool		sleep		()			{ return Device.dwFrame > frame_sleep; }
 
 	virtual		void	rfeedback_static	(IRender_Visual*	V);

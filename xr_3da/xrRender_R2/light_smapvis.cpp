@@ -12,7 +12,7 @@ void	smapvis::invalidate	()
 	frame_sleep	=	Device.dwFrame + ps_r__LightSleepFrames;
 	invisible.clear	();
 }
-void	smapvis::begin		(light* L)
+void	smapvis::begin		()
 {
 	switch	(state)
 	{
@@ -24,16 +24,16 @@ void	smapvis::begin		(light* L)
 		// mark already known to be invisible visuals, set breakpoint
 		testQ_V							= 0;
 		testQ_id						= 0;
-		mark							(L);
+		mark							();
 		RImplementation.set_Feedback	(this,test_current);
 		break;
 	case state_usingTC:
 		// just mark
-		mark						(L);
+		mark						();
 		break;
 	}
 }
-void	smapvis::end		(light* L)
+void	smapvis::end		()
 {
 	switch	(state)			{
 	case state_counting:
@@ -60,7 +60,7 @@ void	smapvis::end		(light* L)
 	RImplementation.set_Feedback	(0,0);
 }
 
-void	smapvis::flushoccq	(light* L)
+void	smapvis::flushoccq	()
 {
 	// the tough part
 	if	(testQ_frame != Device.dwFrame)			return;
@@ -81,7 +81,7 @@ void	smapvis::flushoccq	(light* L)
 	}
 }
 
-void	smapvis::mark		()
+void	smapvis::mark				()
 {
 	u32		marker			= RImplementation.marker + 1;	// we are called befor marker increment
 	for		(u32 it=0; it<invisible.size(); it++)
