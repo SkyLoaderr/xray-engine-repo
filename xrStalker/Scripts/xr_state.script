@@ -490,7 +490,7 @@ function anims:weapon_slot()
 		return 3
 	end
 
-    	if id == clsid.wpn_rpg7 then
+    if id == clsid.wpn_rpg7 then
 		return 4
 	end
 	return 0
