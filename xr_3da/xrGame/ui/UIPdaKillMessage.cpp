@@ -10,7 +10,6 @@
 #include "UIPdaKillMessage.h"
 #include "UIInventoryUtilities.h"
 
-
 using namespace InventoryUtilities;
 
 const int INDENT = 10;
@@ -86,7 +85,7 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 
 	int width = rect.width();
 	int height = rect.height();
-	scale = ((float)selfHeight)/((float)height);
+	scale = ((float)selfHeight)/((float)INV_GRID_HEIGHT*2);
 	width  = (int)((float)width*scale);
 	height = (int)((float)height*scale);
 	refStatic.Init(x, y, width, height);
