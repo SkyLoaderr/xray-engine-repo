@@ -6,9 +6,10 @@
 #define CStateControllerHideAbstract CStateControlHide<_Object>
 
 #define GOOD_DISTANCE_TO_ENEMY	10.f
-#define GOOD_DISTANCE_IN_COVER	15.f
+#define GOOD_DISTANCE_IN_COVER	10.f
 #define MIN_HIDE_TIME			3.f
 #define DIST_TO_PATH_END		1.5f
+#define MAX_DIST_TO_ENEMY		15.f
 
 TEMPLATE_SPECIALIZATION
 void CStateControllerHideAbstract::initialize()
@@ -54,7 +55,8 @@ bool CStateControllerHideAbstract::check_start_conditions()
 {
 	float dist = object->Position().distance_to(object->EnemyMan.get_enemy()->Position());
 	if (dist < GOOD_DISTANCE_TO_ENEMY) return false;
-	
+	if (dist > MAX_DIST_TO_ENEMY) return false;
+
 	return true;
 }
 
@@ -84,6 +86,7 @@ void CStateControllerHideAbstract::select_target_point()
 		target.node	= u32(-1);
 }
 
+#undef GOOD_DISTANCE_IN_COVER
 #undef DIST_TO_PATH_END
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateControllerHideAbstract

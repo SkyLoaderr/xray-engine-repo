@@ -10,12 +10,11 @@ class CStateManagerZombie : public CState<CZombie> {
 		eStateRest					 = u32(0),
 		eStateEat,
 		eStateAttack,
-		eStatePanic,
 		eStateThreaten,
-		eStateDangerousSound,
 		eStateInterestingSound,
 		eStateHitted,
 		eStateFindEnemy,
+		eStateFakeDeath,
 	};
 
 public:
@@ -24,4 +23,6 @@ public:
 
 	virtual void		initialize				();
 	virtual	void		execute					();
+
+	
 };

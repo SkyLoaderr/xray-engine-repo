@@ -82,6 +82,7 @@ void CStateMonsterHittedHideAbstract::select_target_point()
 		target.node	= u32(-1);
 }
 
+#undef GOOD_DISTANCE_IN_COVER
 #undef DIST_TO_PATH_END
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterHittedHideAbstract

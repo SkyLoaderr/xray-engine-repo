@@ -85,5 +85,27 @@ struct SStateDataLookToPoint {
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
+// SStateDataMoveAroundPoint
+//////////////////////////////////////////////////////////////////////////
+struct SStateDataMoveAroundPoint {
+	Fvector				point;
+	u32					vertex;
+	
+	float				radius;
+
+	bool				accelerated;
+	bool				braking;
+	u8					accel_type;
+	
+	SStateDataAction	action;
+
+	SStateDataMoveAroundPoint() {
+		point.set			(0.f,0.f,0.f);
+		vertex				= u32(-1);
+		accelerated			= false;
+		radius				= 10.f;
+	}
+};
 
 

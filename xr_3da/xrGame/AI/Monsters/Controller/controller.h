@@ -49,6 +49,8 @@ public:
 	virtual	void	CheckSpecParams		(u32 spec_params);
 	virtual bool	UpdateStateManager	();
 
+	virtual	void	PitchCorrection		() {}
+
 	virtual void	InitThink			();
 
 	virtual bool	ability_can_jump	() {return true;}

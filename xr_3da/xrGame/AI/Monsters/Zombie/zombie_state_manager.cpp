@@ -7,10 +7,10 @@
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {
-	add_state(eStateRest,	xr_new<CStateMonsterRest<CZombie> >	(obj));
-	add_state(eStateAttack, xr_new<CStateMonsterAttack<CZombie> > (obj)); 
-
-	
+	add_state(eStateRest,				xr_new<CStateMonsterRest<CZombie> >	(obj));
+	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CZombie> > (obj));
+	add_state(eStateInterestingSound,	xr_new<CStateMonsterAttack<CZombie> > (obj));
+	add_state(eStateFakeDeath,			xr_new<CStateMonsterAttack<CZombie> > (obj));
 
 	//add_state(
 	//	eStateAttack, 

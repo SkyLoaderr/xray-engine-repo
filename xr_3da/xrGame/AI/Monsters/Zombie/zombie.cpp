@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
+#include "../../../profiler.h"
 
 CZombie::CZombie()
 {
@@ -52,5 +53,54 @@ void CZombie::Load(LPCSTR section)
 bool CZombie::UpdateStateManager()
 {
 	StateMan->execute	();
+
+	if (!Bones.IsActive()) {
+		
+		float look_k = (Random.randI(2) ? (-1.f) : (1.f));
+		
+		Bones.SetMotion(bone_spine, AXIS_Z, 2 * look_k * PI_DIV_6/2,	2 * PI_DIV_6 / 2,	1);		
+		Bones.SetMotion(bone_spine, AXIS_Y, 2 * look_k * PI_DIV_6,		2 * PI_DIV_6,		1);
+	}
+	
 	return true;
+}
+
+void CZombie::reinit()
+{
+	inherited::reinit();
+	Bones.Reset();
+}
+
+void __stdcall CZombie::BoneCallback(CBoneInstance *B)
+{
+	CZombie*	this_class = dynamic_cast<CZombie*> (static_cast<CObject*>(B->Callback_Param));
+
+	START_PROFILE("AI/Zombie/Bones Update");
+	this_class->Bones.Update(B, Level().timeServer());
+	STOP_PROFILE("AI/Zombie/Bones Update");
+}
+
+
+void CZombie::vfAssignBones()
+{
+	// Установка callback на кости
+	bone_spine =	&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	bone_spine->set_callback(BoneCallback,this);
+	bone_head->set_callback(BoneCallback,this);
+
+	// Bones settings
+	Bones.Reset();
+	Bones.AddBone(bone_spine, AXIS_Z);	Bones.AddBone(bone_spine, AXIS_Y);
+	Bones.AddBone(bone_head, AXIS_Z);	Bones.AddBone(bone_head, AXIS_Y);
+}
+
+BOOL CZombie::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	vfAssignBones	();
+
+	return(TRUE);
 }
