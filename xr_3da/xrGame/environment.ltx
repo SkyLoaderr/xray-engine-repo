@@ -133,9 +133,9 @@ blend_down_time				= 300 ;(сек)
 [weathers]
 ;groza          = sect_groza
 ;default			= sect_default
-all             = sect_all
+;all             = sect_all
 ;sarkofag        = sect_sarkofag
-
+a             = sect_a
 
 
 [sect_default]
@@ -234,6 +234,57 @@ hemi_color		=	0.757, 0.855, 1.000
 sun_color		=	0.000, 0.000, 0.000
 sun_dir			=	-40.0, 60.0
 
+
+
+[sect_a]
+
+
+12:00:00			=	e_12
+00:00:00	   		=	e_00
+
+
+[e_00]
+flares			=   flares_gradient
+sky_texture		=	sky\sky_7_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	400
+fog_color		=	0.427, 0.439, 0.475
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-28.0, 292
+
+
+[e_12]
+flares			=   flares_gradient
+sky_texture		=	sky\sky_7_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	400
+fog_color		=	0.427, 0.439, 0.475
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	1.90,	1.90,	2.0
+sun_color		=	1.000,  0.875,  0.576
+sun_dir			=	-28.0, 292
 
 
 
