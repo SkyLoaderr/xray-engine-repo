@@ -243,7 +243,7 @@ void CApplication::LoadSwitch()
 
 void CApplication::OnFrame( )
 {
-	::Sound->update		();
+	::Sound->update		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
 	Engine.Event.OnFrame();
 }
 

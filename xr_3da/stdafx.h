@@ -53,6 +53,7 @@
 
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #pragma comment( lib, "x:\\xrCDB.lib"	)
+#pragma comment( lib, "x:\\xrSound.lib"	)
 
 #pragma comment( lib, "winmm.lib"		)
 

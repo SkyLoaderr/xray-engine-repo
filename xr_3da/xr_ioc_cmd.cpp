@@ -395,8 +395,8 @@ void CCC_Register()
 	CMD1(CCC_VID_Reset, "vid_reset"				);
 	
 	// Sound
-	CMD4(CCC_Float,		"snd_rolloff",			&psSoundRolloff,	DS3D_MINROLLOFFFACTOR, DS3D_MAXROLLOFFFACTOR);
-	CMD4(CCC_Float,		"snd_doppler",			&psSoundDoppler,	DS3D_MINDOPPLERFACTOR, DS3D_MAXDOPPLERFACTOR );
+	CMD4(CCC_Float,		"snd_rolloff",			&psSoundRolloff,	EPS_S, 10);
+	CMD4(CCC_Float,		"snd_doppler",			&psSoundDoppler,	EPS_S, 10);
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
 	CMD2(CCC_Float,		"snd_volume_music",		&psSoundVMusic);
 	CMD2(CCC_Float,		"snd_volume_master",	&psSoundVMaster);
