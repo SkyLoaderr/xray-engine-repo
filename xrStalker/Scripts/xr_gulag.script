@@ -225,8 +225,8 @@ function fract:setJob(npc, job)
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.object:squad(), job.group)
 	--' Спейс рестрикторы
-	job.object:remove_all_restrictions()
-	job.object:add_restrictions(job.out_rest, job.in_rest)
+	--job.object:remove_all_restrictions()
+	--job.object:add_restrictions(job.out_rest, job.in_rest)
 end
 function fract:getJob(npc)
 	if npc == nil then return nil end
