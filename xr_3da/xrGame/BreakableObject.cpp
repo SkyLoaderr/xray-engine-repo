@@ -172,9 +172,11 @@ void CBreakableObject::CreateBroken()
 void CBreakableObject::ActivateBroken()
 {
 	m_pPhysicsShell=m_Shell;
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
+	m_pPhysicsShell->set_Kinematics(K);
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetStaticObjectBonesCallback());
-	smart_cast<CKinematics*>(Visual())->CalculateBones();
+	K->CalculateBones();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 
