@@ -142,7 +142,7 @@ void CSoundRender_Environment::load			(IReader* fs)
 {
 	version							= fs->r_u32();
     if (1 == version){
-    	fs->r_stringZ	(name);
+    	fs->r_stringZ				(name);
         R_InGain				    = fs->r_float();
         R_Mix					    = fs->r_float();
         R_Time					    = fs->r_float();
@@ -182,7 +182,7 @@ void CSoundRender_Environment::load			(IReader* fs)
 void CSoundRender_Environment::save			(IWriter* fs)
 {
 	fs->w_u32 	                    (sdef_env_version);
-	fs->w_string                    (name);
+	fs->w_stringZ                   (name);
 
     fs->w_float	                    (L_Room				);
     fs->w_float	                    (L_RoomHF			);
