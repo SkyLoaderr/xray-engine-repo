@@ -1957,6 +1957,12 @@
 			<File
 				RelativePath="dCylinder\dCylinder.h">
 			</File>
+			<File
+				RelativePath="ode_include.h">
+			</File>
+			<File
+				RelativePath="ode_redefine.h">
+			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
@@ -2018,12 +2024,6 @@
 		</File>
 		<File
 			RelativePath=".\notes.txt">
-		</File>
-		<File
-			RelativePath="ode_include.h">
-		</File>
-		<File
-			RelativePath="ode_redefine.h">
 		</File>
 		<File
 			RelativePath=".\todo.txt">
