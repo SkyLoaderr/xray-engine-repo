@@ -47,6 +47,8 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +BUG	:	fucking light-flickering!!!
 +BUG	:	DX-WARN: RT used while bound
 
+hw-pointlight
+incremental object level culling
 self-ilum
 volume-fog
 z-fade particles
@@ -76,7 +78,7 @@ done* work out tonemapping				(?)							-	?
 done* work out blooming					(again)						-\  3 days	
 	* work out skybox					(again)						-/
 	* work out hemisphere				(again)						-	1 day (?)
-	* work out ordinary rendering + transparency					-	1 day (?)
+done* work out ordinary rendering + transparency					-	1 day (?)
 done* work out HUD													-	1 day (?)
 	* sRGB convert diffuse				(???)						-	?
 	* transluency						(again + experiment)		-	1day - 1week
