@@ -19,10 +19,12 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  SelectSoundSource(SChooseItem* item, PropItemVec& info_items)
 {
+	ref_sound snd;
+//	snd.create	(true,item->name.c_str(),0);
+//    snd.pla
 /*
 //.
 	ECustomThumbnail*& thm, ref_sound& snd, 
-	snd.create	(true,item->name.c_str(),0);
     thm 		= xr_new<ESoundThumbnail>(item->name.c_str());
 */
 }
@@ -62,10 +64,10 @@ void __stdcall  SelectObject(SChooseItem* item, PropItemVec& info_items)
     thm->FillInfo					(info_items);
     xr_delete						(thm);
 }
-void __stdcall  DrawObjectTHM(HWND hwnd, const Irect& r, LPCSTR name)
+void __stdcall  DrawObjectTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
 	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(name);
-    thm->Draw						(hwnd,r);
+    thm->Draw						(hdc,r);
     xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
@@ -170,10 +172,10 @@ void __stdcall  SelectTexture(SChooseItem* item, PropItemVec& info_items)
     thm->FillInfo					(info_items);
     xr_delete						(thm);
 }
-void __stdcall  DrawTextureTHM(HWND hwnd, const Irect& r, LPCSTR name)
+void __stdcall  DrawTextureTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
 	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(name);
-    thm->Draw						(hwnd,r);
+    thm->Draw						(hdc,r);
     xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
