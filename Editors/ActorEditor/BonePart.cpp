@@ -112,7 +112,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
         }
     }
 	m_BoneParts->clear();
-    for (k=0; k<4; k++){
+    for (k=0; k<MAX_PARTS; k++){
     	if (T[k]->Items->Count){
             m_BoneParts->push_back(SBonePart());
             SBonePart& BP = m_BoneParts->back();
@@ -121,7 +121,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
             	BP.bones.push_back(m_EditObject->BoneIDByName(AnsiString(node->Text).c_str()));
         }
     }
-    Tools.MotionModified();
+    Tools.OnMotionDefsModified();
     Close();
     ModalResult = mrOk;
 }

@@ -198,7 +198,8 @@ public:
 	void		Load		(CKinematics* P, CInifile* INI, LPCSTR section, BOOL bCycle);
 	void		Load		(CKinematics* P, IReader* MP, u32 fl);
 	CBlend*		PlayCycle	(CKinematics* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*		PlayFX		(CKinematics* P);
+	CBlend*		PlayCycle	(CKinematics* P, int part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
+	CBlend*		PlayFX		(CKinematics* P, float power_scale);
 };
 
 //*** Shared partition Data ***********************************************************************
@@ -328,9 +329,9 @@ public:
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);
 	CMotionDef*					ID_FX_Safe		(LPCSTR  N);
-	CBlend*						PlayFX			(LPCSTR  N);
-	CBlend*						PlayFX			(CMotionDef* M)
-	{	VERIFY(M); return M->PlayFX(this);	}
+	CBlend*						PlayFX			(LPCSTR  N, float power_scale);
+	CBlend*						PlayFX			(CMotionDef* M, float power_scale)
+	{	VERIFY(M); return M->PlayFX(this,power_scale);	}
 
 
 	// debug

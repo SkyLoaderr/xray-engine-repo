@@ -144,10 +144,7 @@ void TfraLeftBar::UpdateBar(){
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
-    if (ebRenderEngineStyle->Down){
-    	ebMakePreview->Enabled = Tools.IsModified();
-	    if (!Tools.IsVisualPresent()) SetRenderStyle(false);
-    }
+    if (ebRenderEngineStyle->Down&&!Tools.IsVisualPresent()) SetRenderStyle(false);
 }
 //---------------------------------------------------------------------------
 
@@ -267,7 +264,7 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 	TElTreeItem* node = FHelper.AppendFolder(tvMotions,folder.c_str());
     if (tvMotions->Selected) tvMotions->Selected->Expand(false);
     tvMotions->EditItem(node,-1);
-	Tools.MotionModified();
+//	Tools.MotionModified();
 }
 //---------------------------------------------------------------------------
 
@@ -296,7 +293,6 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
                 }
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
-                Tools.MotionModified();
         	}
         }
     	if (FHelper.IsObject(pNode)){
@@ -305,7 +301,6 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
 	            Tools.RemoveMotion(full_name.c_str());
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
-                Tools.MotionModified();
         	}
         }
     }else{
@@ -321,7 +316,7 @@ void __fastcall TfraLeftBar::ebMotionsClearClick(TObject *Sender)
     	CEditableObject* object=Tools.CurrentObject();
     	object->ClearSMotions();
         UpdateMotionList();
-		Tools.MotionModified();
+		Tools.MakePreview();
 		lbMotionCount->Caption = tvMotions->Items->Count;	
     }
 }
@@ -366,7 +361,6 @@ void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
             full_name = AnsiString(folder+nm).LowerCase();
             if (Tools.AppendMotion(full_name.c_str(),it->c_str())){
                 tvMotions->Selected = FHelper.AppendObject(tvMotions,full_name.c_str());
-                Tools.MotionModified();
             }
         }
         tvMotions->IsUpdating = false;
@@ -392,7 +386,6 @@ void __fastcall TfraLeftBar::tvMotionsDragOver(TObject *Sender,
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 {
     Tools.RenameMotion((LPCSTR)p0,(LPCSTR)p1);
-    Tools.MotionModified();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,

@@ -70,14 +70,26 @@ CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn, PlayCallback Callback
 		);
 }
 
-CBlend*	CMotionDef::PlayFX(CKinematics* P)
+CBlend*	CMotionDef::PlayCycle(CKinematics* P, int part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
+{
+	return P->LL_PlayCycle(
+		part,int(motion),bMixIn,
+		fAA*Dequantize(accrue),
+		fAA*Dequantize(falloff),
+		Dequantize(speed),
+		flags&esmStopAtEnd,
+		Callback,Callback_Param
+		);
+}
+
+CBlend*	CMotionDef::PlayFX(CKinematics* P, float power_scale)
 {
 	return P->LL_PlayFX(
 		int(bone_or_part),int(motion),
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
-		Dequantize(power) 
+		Dequantize(power)*power_scale
 		);
 }
 
@@ -162,10 +174,10 @@ CMotionDef*	CKinematics::ID_FX_Safe		(LPCSTR  N)
 	if(I==m_fx->end()) return 0;
 	return &I->second;
 }
-CBlend*	CKinematics::PlayFX			(LPCSTR  N)
+CBlend*	CKinematics::PlayFX			(LPCSTR  N, float power_scale)
 {
 	mdef::iterator I = m_fx->find(LPSTR(N));
-	if (I!=m_fx->end())		return I->second.PlayFX(this);
+	if (I!=m_fx->end())		return I->second.PlayFX(this,power_scale);
 	else					{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 }
 

@@ -4,6 +4,7 @@
 
 #include "eltree.hpp"
 #include "mxplacemnt.hpp"
+#include "BodyInstance.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -69,26 +70,42 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	CEditableObject*	m_pEditObject;
     class EngineModel{
     	CMemoryWriter	m_GeometryStream;
-	    CMemoryWriter	m_MotionsStream;
-	    bool			UpdateGeometryStream(CEditableObject* source);
-    	bool			UpdateMotionsStream	(CEditableObject* source);
+	    CMemoryWriter	m_MotionKeysStream;
+	    CMemoryWriter	m_MotionDefsStream;
+	    bool			UpdateGeometryStream	(CEditableObject* source);
+    	bool			UpdateMotionKeysStream	(CEditableObject* source);
+    	bool			UpdateMotionDefsStream	(CEditableObject* source);
     public:
     	float			m_fLOD;
 	    IVisual*		m_pVisual;
         CBlend*			m_pBlend;
+        AnsiString		m_BPPlayCache[MAX_PARTS];
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
         void			DeleteVisual		(){Device.Models.Delete(m_pVisual);m_pBlend=0;}
-        void			Clear				(){DeleteVisual(); m_GeometryStream.clear();m_MotionsStream.clear();}
-        bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom=false, bool bUpdMotions=false);
+        void			ClearCache			()
+        {
+            for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k]="";
+        }
+        void			Clear				()
+        {
+        	ClearCache				();
+        	DeleteVisual			(); 
+            m_GeometryStream.clear	();
+            m_MotionKeysStream.clear();
+            m_MotionDefsStream.clear();
+        }
+        bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom, bool bUpdKeys, bool bUpdDefs);
         bool			IsRenderable		(){return !!m_pVisual;}
         void			Render				(const Fmatrix& mTransform);
+        void			PlayMotion			(CSMotion* motion);
     };
 
     bool				m_bObjectModified;
     bool				m_bMotionModified;
     bool				m_bReady;
-    bool				m_bNeedUpdateMotion;
+    bool				m_bNeedUpdateMotionKeys;
+    bool				m_bNeedUpdateMotionDefs;
 
     EAction				m_Action;
     bool				m_bHiddenMode;
@@ -138,8 +155,9 @@ public:
     bool				IsModified			(){return m_bObjectModified||m_bMotionModified;}
     bool				IsObjectModified	(){return m_bObjectModified;}
     bool				IsMotionModified	(){return m_bMotionModified;}
-    void __fastcall		ObjectModified		(void);
-    void __fastcall		MotionModified		(void);
+    void __fastcall		OnObjectModified	(void);
+    void __fastcall		OnMotionDefsModified(void); 
+    void 				OnMotionKeysModified(void); 
 
     bool				IsVisualPresent		(){return m_RenderObject.IsRenderable();}
 

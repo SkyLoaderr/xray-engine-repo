@@ -404,11 +404,11 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 }
 //----------------------------------------------------
 
-bool CExportSkeleton::ExportMotions(IWriter& F)
+bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
-    if (m_Source->SMotionCount()<=0) return false;
+    if (m_Source->SMotionCount()<1) return false;
 
-    UI.ProgressStart(3+m_Source->SMotionCount(),"Export skeleton motions...");
+    UI.ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
     UI.ProgressInc();
 
     // mem active motion
@@ -482,8 +482,19 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
 	    UI.ProgressInc();
     }
     F.close_chunk();
-    UI.ProgressInc();
+    UI.ProgressEnd();
 
+    // restore active motion
+    m_Source->SetActiveSMotion(active_motion);
+    return true;
+}
+
+bool CExportSkeleton::ExportMotionDefs(IWriter& F)
+{
+    if (m_Source->SMotionCount()<1) return false;
+
+    UI.ProgressStart	(3,"Export skeleton motions defs...");
+    UI.ProgressInc		();
     // save smparams
     F.open_chunk		(OGF_SMPARAMS2);
     F.w_u16				(xrOGF_SMParamsVersion);
@@ -494,7 +505,6 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
     	for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
     		F.w_stringZ(bp_it->alias.c_str());
             F.w_u16(bp_it->bones.size());
-//	        F.w(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
 	        for (int i=0; i<int(bp_it->bones.size()); i++)
             	F.w_u32(bp_it->bones[i]);
     	}
@@ -504,13 +514,14 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
 		F.w_u16(m_Source->BoneCount());
         for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
     }
+    UI.ProgressInc		();
     // motion defs
     SMotionVec& sm_lst 		= m_Source->SMotions();
 	F.w_u16(sm_lst.size());
-    for (motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
+    for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         F.w_stringZ	(motion->Name());
-        F.w_u32	(motion->m_Flags.get());
+        F.w_u32		(motion->m_Flags.get());
 		F.w_s16		(motion->iBoneOrPart);
         F.w_u16		(motion_it-sm_lst.begin());
         F.w_float	(motion->fSpeed);
@@ -518,30 +529,26 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
         F.w_float	(motion->fAccrue);
         F.w_float	(motion->fFalloff);
     }
+    UI.ProgressInc		();
     F.close_chunk();
-	UI.ProgressInc();
     UI.ProgressEnd();
+    return true;
+}
 
-    // restore active motion
-    m_Source->SetActiveSMotion(active_motion);
+bool CExportSkeleton::ExportMotions(IWriter& F)
+{
+	if (!ExportMotionKeys(F)) 	return false;
+	if (!ExportMotionDefs(F)) 	return false;
     return true;
 }
 //----------------------------------------------------
 
-bool CExportSkeleton::Export(IWriter& F){
-    if (!ExportGeometry(F)) return false;
-    if (!ExportMotions(F)) return false;
+bool CExportSkeleton::Export(IWriter& F)
+{
+    if (!ExportGeometry(F)) 	return false;
+    if (!ExportMotions(F)) 		return false;
     return true;
 };
 //----------------------------------------------------
 
-//------------------------------------------------------------------------------
-/*
-    // Progressive              	int idx = GetRootBoneID();
-        CBone* bone = m_Bones[idx];
-        {
-            Fvector& pos = bone->get_rest_offset();
-            pos.add(parent.c);
-        }
 
-*/

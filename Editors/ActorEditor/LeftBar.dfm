@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 661
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 661
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object spProps: TSplitter
       Left = 1
-      Top = 176
+      Top = -208
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSkeletonPart: TPanel
       Left = 1
-      Top = 178
+      Top = -206
       Width = 210
       Height = 482
       Align = alBottom
@@ -641,7 +641,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 82
         Width = 210
-        Height = 67
+        Height = 49
         Hint = 'Scene commands'
         Align = alTop
         Color = 10528425
@@ -684,30 +684,9 @@ object fraLeftBar: TfraLeftBar
           ParentFont = False
           OnClick = PanelMimimizeClick
         end
-        object ebMakePreview: TExtBtn
-          Left = 2
-          Top = 32
-          Width = 207
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          HotTrack = True
-          HotColor = 15790320
-          CloseButton = False
-          Caption = 'Update Engine Render'
-          Enabled = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Margin = 13
-          ParentFont = False
-          OnClick = ebMakePreviewClick
-        end
         object ebRenderEditorStyle: TExtBtn
-          Left = 85
-          Top = 49
+          Left = 84
+          Top = 31
           Width = 60
           Height = 15
           Align = alNone
@@ -767,8 +746,8 @@ object fraLeftBar: TfraLeftBar
           OnClick = ebRenderStyleClick
         end
         object ebRenderEngineStyle: TExtBtn
-          Left = 145
-          Top = 49
+          Left = 144
+          Top = 31
           Width = 60
           Height = 15
           Align = alNone
@@ -827,8 +806,8 @@ object fraLeftBar: TfraLeftBar
           OnClick = ebRenderStyleClick
         end
         object Label5: TLabel
-          Left = 17
-          Top = 51
+          Left = 16
+          Top = 32
           Width = 64
           Height = 13
           Caption = 'Render Style:'
@@ -858,9 +837,9 @@ object fraLeftBar: TfraLeftBar
       end
       object paObjectProperties: TPanel
         Left = 0
-        Top = 149
+        Top = 131
         Width = 210
-        Height = 26
+        Height = 44
         Align = alClient
         ParentShowHint = False
         ShowHint = False
@@ -889,7 +868,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 208
-          Height = 10
+          Height = 28
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -1061,7 +1040,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 10
+    Version = 11
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredValues = <>

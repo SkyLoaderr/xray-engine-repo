@@ -91,7 +91,6 @@ __published:	// IDE-managed Components
 	TPanel *paModel;
 	TLabel *Label4;
 	TExtBtn *ExtBtn2;
-	TExtBtn *ebMakePreview;
 	TExtBtn *ebRenderEditorStyle;
 	TExtBtn *ebRenderEngineStyle;
 	TLabel *Label5;

@@ -152,6 +152,9 @@ public:
     bool    Export				(IWriter& F);
     bool    ExportGeometry		(IWriter& F);
     bool    ExportMotions		(IWriter& F);
+
+    bool    ExportMotionKeys	(IWriter& F);
+    bool    ExportMotionDefs	(IWriter& F);
 };
 
 #endif

@@ -366,7 +366,8 @@ public:
     // skeleton
 	bool			ExportSkeletonOGF		(LPCSTR fname);
     bool			PrepareSVGeometry		(IWriter& F);
-    bool			PrepareSVMotions		(IWriter& F);
+    bool			PrepareSVKeys			(IWriter& F);
+    bool			PrepareSVDefs			(IWriter& F);
     bool			PrepareSV				(IWriter& F);
     // ogf
     bool			ExportObjectOGF			(LPCSTR fname);

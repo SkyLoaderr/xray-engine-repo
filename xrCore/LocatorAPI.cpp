@@ -542,8 +542,10 @@ void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
     const files_it I	= file_find(fname);
     if (I!=files.end()){
 	    // remove file
-    	unlink		(I->name);
-	    files.erase	(I);
+    	unlink			(I->name);
+		char* str		= LPSTR(I->name);
+		xr_free			(str);
+	    files.erase		(I);
     }
 }
 
@@ -558,18 +560,28 @@ void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
 	}
 }
 
-void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest)
+void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 {
-	files_it	I		= file_find(src);
-	if (I!=files.end()){
-        file new_desc	= *I;
+	files_it	S		= file_find(src);
+	if (S!=files.end()){
+		files_it D		= file_find(dest);
+		if (D!=files.end()){ 
+	        if (!bOwerwrite) return;
+            unlink		(D->name);
+			char* str	= LPSTR(D->name);
+			xr_free		(str);
+			files.erase	(D);
+        }
+
+        file new_desc	= *S;
 		// remove existing item
-		char* str		= LPSTR(I->name);
+		char* str		= LPSTR(S->name);
 		xr_free			(str);
-		files.erase		(I);
+		files.erase		(S);
 		// insert updated item
         new_desc.name	= strlwr(xr_strdup(dest));
 		files.insert	(new_desc); 
+        
         // physically rename file
         VerifyPath		(dest);
         rename			(src,dest);

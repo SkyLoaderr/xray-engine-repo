@@ -326,10 +326,16 @@ bool CEditableObject::PrepareSVGeometry(IWriter& F)
     return E.ExportGeometry(F);
 }
 
-bool CEditableObject::PrepareSVMotions(IWriter& F)
+bool CEditableObject::PrepareSVKeys(IWriter& F)
 {
     CExportSkeleton E(this);
-    return E.ExportMotions(F);
+    return E.ExportMotionKeys(F);
+}
+
+bool CEditableObject::PrepareSVDefs(IWriter& F)
+{
+    CExportSkeleton E(this);
+    return E.ExportMotionDefs(F);
 }
 
 bool CEditableObject::PrepareSV(IWriter& F)

@@ -118,7 +118,8 @@ CActorTools::CActorTools()
 	m_pEditObject		= 0;
     m_bObjectModified	= false;
     m_bMotionModified	= false;
-    m_bNeedUpdateMotion	= false;
+    m_bNeedUpdateMotionKeys	= false;
+    m_bNeedUpdateMotionDefs = false;
     m_ObjectProps 		= 0;
     m_MotionProps 		= 0;
     m_bReady			= false;
@@ -137,8 +138,8 @@ bool CActorTools::OnCreate(){
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectProps = TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,ObjectModified);
-    m_MotionProps = TProperties::CreateForm(fraLeftBar->paMotionProps,alClient,MotionModified);
+    m_ObjectProps = TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectModified);
+    m_MotionProps = TProperties::CreateForm(fraLeftBar->paMotionProps,alClient,OnMotionDefsModified);
     m_PreviewObject.OnCreate();
 
     // key bar
@@ -181,7 +182,7 @@ bool CActorTools::IfModified(){
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::ObjectModified()
+void CActorTools::OnObjectModified()
 {
 	if (m_pEditObject) m_pEditObject->Modified();
 	m_bObjectModified = true;
@@ -322,7 +323,8 @@ void CActorTools::Clear(){
 
 	m_bObjectModified 	= false;
 	m_bMotionModified 	= false;
-    m_bNeedUpdateMotion = false;
+    m_bNeedUpdateMotionKeys = false;
+	m_bNeedUpdateMotionDefs = false;
 
     UI.RedrawScene();
 }
@@ -468,14 +470,14 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
 		m_pEditObject->a_vPosition.add(amount);
         m_ObjectProps->RefreshForm();
-        ObjectModified();
+        OnObjectModified();
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
         m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
         m_ObjectProps->RefreshForm();
-        ObjectModified();
+        OnObjectModified();
     }break;
     case eaScale:{
 /*        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
@@ -501,7 +503,7 @@ void CActorTools::WorldMotionRotate(const Fvector& R)
 	CSMotion* M = m_pEditObject->GetActiveSMotion();
     int rootId = m_pEditObject->GetRootBoneID();
     M->WorldRotate(rootId,R.y,R.x,R.z);
-    MotionModified();
+    OnMotionKeysModified();
 }
 
 CSMotion* CActorTools::GetCurrentMotion()
@@ -519,7 +521,7 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
 
 void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
 {
-	MotionModified();
+    OnMotionKeysModified();
 	UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
