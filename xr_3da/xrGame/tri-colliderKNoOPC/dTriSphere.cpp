@@ -164,9 +164,9 @@ int dSortedTriSphere(const dReal*	/**v1/**/,const dReal*	/**v2/**/,
 								 ContactNormal[0]=norm[0];
 								 ContactNormal[1]=norm[1];
 								 ContactNormal[2]=norm[2];
-								 ContactPos[0]=SphereCenter[0]-ContactNormal[0];
-								 ContactPos[1]=SphereCenter[1]-ContactNormal[1];
-								 ContactPos[2]=SphereCenter[2]-ContactNormal[2];
+								 ContactPos[0]=SphereCenter[0]-ContactNormal[0]*SphereRadius;
+								 ContactPos[1]=SphereCenter[1]-ContactNormal[1]*SphereRadius;
+								 ContactPos[2]=SphereCenter[2]-ContactNormal[2]*SphereRadius;
 
 								 ContactDepth=Depth;
 							 }
