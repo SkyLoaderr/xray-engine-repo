@@ -23,10 +23,14 @@ struct	ENGINE_API CKeyQ;
 class	ENGINE_API CBoneData;
 class	ENGINE_API CInifile;
 class   ENGINE_API CBoneInstance;
+class   ENGINE_API CBlend;
 
 // t-defs
 typedef vector<CBoneData*>	vecBones;
 typedef vecBones::iterator	vecBonesIt;
+
+typedef void (__stdcall * BoneCallback) (CBoneInstance* B);
+typedef void (__stdcall * PlayCallback)	(CBlend*		B);
 
 //*** Key frame definition ************************************************************************
 #pragma pack(push,2)
@@ -89,8 +93,6 @@ public:
 	vecKeys		Keys;
 	float		GetLength() { return float(Keys.size())*SAMPLE_SPF; }
 };
-
-typedef void (__stdcall * BoneCallback) (CBoneInstance* B);
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
