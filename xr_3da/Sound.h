@@ -170,6 +170,7 @@ public:
 class XRSOUND_API	CSound_interface
 {
 public:
+	virtual	void					set_2D_mode				()															= 0;
 	virtual void					set_position			(const Fvector &pos)										= 0;
 	virtual void					set_frequency			(float freq)												= 0;
 	virtual void					set_range				(float min, float max)										= 0;
@@ -242,6 +243,7 @@ IC void	ref_sound::play							( CObject* O,						BOOL bLoop, float d){	::Sound->
 IC void ref_sound::play_unlimited				( CObject* O,						BOOL bLoop, float d){	::Sound->play_unlimited			(*this,O,bLoop,d);					}
 IC void	ref_sound::play_at_pos					( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos			(*this,O,pos,bLoop,d);				}
 IC void	ref_sound::play_at_pos_unlimited		( CObject* O,	const Fvector &pos,	BOOL bLoop, float d){	::Sound->play_at_pos_unlimited	(*this,O,pos,bLoop,d);				}
+IC void	ref_sound::set_2D_mode					( )														{	VERIFY(feedback);feedback->set_2D_mode();							}
 IC void	ref_sound::set_position					( const Fvector &pos)									{	VERIFY(feedback);feedback->set_position(pos);						}
 IC void	ref_sound::set_frequency				( float freq)											{	if (feedback)	feedback->set_frequency(freq);						}
 IC void	ref_sound::set_range					( float min, float max )								{	if (feedback)	feedback->set_range(min,max);						}
