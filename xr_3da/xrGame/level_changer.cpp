@@ -90,7 +90,7 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 	}
 }
 
-void CLevelChanger::feel_touch_contact	(CObject *object)
+BOOL CLevelChanger::feel_touch_contact	(CObject *object)
 {
 	return						((CCF_Shape*)CFORM())->Contact(object);
 }
