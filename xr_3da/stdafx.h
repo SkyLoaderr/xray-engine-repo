@@ -100,6 +100,7 @@
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 #pragma warning (disable : 4127 )		// conditional expression is constant
 #pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
+#pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
 
 // stl
 #define _STLP_NO_EXCEPTIONS
