@@ -237,6 +237,7 @@ void CAI_Zombie::AttackRun()
 
 	INIT_SQUAD_AND_LEADER;
 	
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver)
 	/**
 	vfInitSelector(SelectorAttack,Squad,Leader);
 	
@@ -270,26 +271,87 @@ void CAI_Zombie::Pursuit()
 	
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
-	Fvector tDistance;
-	tDistance.sub(Position(),tSavedEnemyPosition);
-	
-	Fvector tTemp;
-	tTemp.sub(Enemy.Enemy->Position(),vPosition);
-	vfNormalizeSafe(tTemp);
-	SRotation sTemp;
-	mk_rotation(tTemp,sTemp);
-
-	CHECK_IF_GO_TO_NEW_STATE((fabsf(r_torso_current.yaw - sTemp.yaw) < 2*PI_DIV_6) && (tDistance.magnitude() <= 2.f),aiZombieAttackFire);
-
 	INIT_SQUAD_AND_LEADER;
 	
-	GoToPointViaSubnodes(tSavedEnemyPosition);
+	mk_rotation(tHitDir,r_torso_target);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(r_torso_target.yaw - );
 	
+	vfInitSelector(SelectorFreeHunting,Squad,Leader);
+
+	if ((AI_Path.TravelPath.empty()) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 2) || (!AI_Path.fSpeed)) {
+		if (ps_Size() > 1)
+			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500)
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+			else {
+				Fvector tDistance;
+				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				if (tDistance.magnitude() < .01f)
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+				else
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+			}
+		else
+			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
+		SelectorFreeHunting.m_tDirection.normalize_safe();
+		vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+		vfBuildPathToDestinationPoint(0);
+	}
+	else
+		if (ps_Size() > 1)
+			if (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime > 500) {
+				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+				SelectorFreeHunting.m_tDirection.normalize_safe();
+				vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+				vfBuildPathToDestinationPoint(0);
+			}
+			else {
+				Fvector tDistance;
+				tDistance.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+				if (tDistance.magnitude() < .01f) {
+					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+					SelectorFreeHunting.m_tDirection.normalize_safe();
+					vfSearchForBetterPositionWTime(SelectorFreeHunting,Squad,Leader);
+					vfBuildPathToDestinationPoint(0);
+				}
+			}
+
 	SetDirectionLook();
 	
 	vfSetFire(false,Group);
 
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+}
+
+void CAI_Soldier::TurnOver()
+{
+	WRITE_TO_LOG("Turning over...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
+		m_ePreviousState = tStateStack.top();
+		GO_TO_PREV_STATE
+	}
+
+	vfSetFire(m_bFiring = false,Group);
+
+	if (!AI_Path.TravelPath.empty())
+		AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
+	else
+		AI_Path.TravelStart = 0;
+	
+	vfSetMovementType(m_cBodyState,0);
+
+	r_torso_speed = PI_DIV_2/1;
+	r_spine_speed = PI_DIV_2/1;
+	q_look.o_look_speed = PI_DIV_2/1;
 }
 
 void CAI_Zombie::Think()
@@ -320,6 +382,10 @@ void CAI_Zombie::Think()
 			}
 			case aiZombiePursuit : {
 				Pursuit();
+				break;
+			}
+			case aiZombieTurnOver : {
+				TurnOver();
 				break;
 			}
 		}

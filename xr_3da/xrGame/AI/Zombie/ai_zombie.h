@@ -32,6 +32,7 @@ class CAI_Zombie : public CCustomMonster
 		aiZombieFreeHunting,
 		
 		aiZombiePursuit,
+		aiZombieTurnOver,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -177,6 +178,7 @@ class CAI_Zombie : public CCustomMonster
 		void AttackRun();
 		
 		void Pursuit();
+		void TurnOver();
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
