@@ -145,7 +145,7 @@ public:
 			switch (S.type)
 			{
 			case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
-			case 1:	P.r_matrix	(&S.data.box);							break;
+			case 1:	P.r_matrix	(S.data.box);							break;
 			}
 			shapes.push_back	(S);
 			count--;
@@ -162,7 +162,7 @@ public:
 			switch (S.type)
 			{
 			case 0:	P.w			(&S.data.sphere,sizeof(S.data.sphere));	break;
-			case 1:	P.w_matrix	(&S.data.box);							break;
+			case 1:	P.w_matrix	(S.data.box);							break;
 			}
 		}
 	}

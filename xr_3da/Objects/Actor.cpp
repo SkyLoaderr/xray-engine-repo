@@ -17,8 +17,6 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const DWORD	NET_Latency	= 100;
-
 // breakpoints
 #include "..\xr_input.h"
 

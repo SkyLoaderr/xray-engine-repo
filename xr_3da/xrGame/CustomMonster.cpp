@@ -14,8 +14,6 @@
 #include "customitem.h"
 #include "hudmanager.h"
 
-const DWORD NET_Latency	= 100;
-
 DWORD psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
 
