@@ -190,6 +190,7 @@ public:
 	void			Construct				();
     void			Clear					();
 
+	IC void			SetName					(LPCSTR name){strcpy(m_Name,name);}
 	IC char*		GetName					(){return m_Name;}
 	void            GetBox					(Fbox& box){box.set(m_Box);}
 	CSurface*		GetSurfaceByFaceID		(u32 fid);
