@@ -153,7 +153,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
 			
 			u32 pixel		= T.pSurface[V*T.dwWidth+U];
-			u32 pixel_a	= RGBA_GETALPHA(pixel);
+			u32 pixel_a		= RGBA_GETALPHA(pixel);
 			float opac		= 1.f - float(pixel_a)/255.f;
 			scale			*= opac;
 		}
