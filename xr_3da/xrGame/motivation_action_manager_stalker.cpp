@@ -166,6 +166,8 @@ void CMotivationActionManagerStalker::add_actions			()
 	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_alife");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		true);
+	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyEnemy,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorFreeALife,			action);
