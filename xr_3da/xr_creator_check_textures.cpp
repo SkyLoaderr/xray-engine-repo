@@ -21,7 +21,8 @@ void CCreator::LL_CheckTextures()
 		Msg			("***FATAL***: %s",msg);
 		bError		= TRUE;
 	}
-	if (bError)		{
+	if (bError && 0==strstr(Core.Params,"-external"))
+	{
 		BOOL	bAccess	= FALSE;
 		BOOL	bKoan	= FALSE;
 		BOOL	bProf	= FALSE;

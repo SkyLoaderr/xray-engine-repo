@@ -3,8 +3,6 @@
 
 ENGINE_API	extern BOOL		bDebug;
 
-typedef	char				FILE_NAME	[ _MAX_PATH	];
-
 struct ENGINE_API			FS_Defs
 {
 	const char*				GameData;
@@ -14,9 +12,11 @@ struct ENGINE_API			FS_Defs
 	const char*				CForms;
 	const char*				Meshes;
 	const char*				SShot;
-	FILE_NAME				Current;
+	string256				Current;
 };
 extern ENGINE_API FS_Defs	Path;
+extern FS_Defs				Path_InternalBuild;
+extern FS_Defs				Path_ExternalBuild;
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 #define THROW				throw 123456789

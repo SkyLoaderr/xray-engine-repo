@@ -26,8 +26,12 @@ ENGINE_API	CCreator*		pCreator		= NULL;
 extern BOOL					StartGame			(u32 num);
 
 // startup point
-void Startup()
+void Startup				()
 {
+	//
+	if (strstr(Core.Params,"-external"))	Path	= Path_ExternalBuild;
+	else									Path	= Path_InternalBuild;
+
 	// initialization
 	Engine.Initialize			( );
 	Device.Initialize			( );
