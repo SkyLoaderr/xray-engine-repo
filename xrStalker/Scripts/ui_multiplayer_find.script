@@ -1,0 +1,26 @@
+-- File:        UI_MULTIPLAYER_FIND.SCRIPT
+-- Description: Find Server dialog for Multiplayer menu
+-- Created:     02.12.2004
+-- Author:      Serhiy O. Vynnychenko
+-- Mail:        narrator@gsc-game.com
+--
+
+class "multiplayer_find_dialog" (ui_base_dialog.base_dialog)
+
+function multiplayer_find_dialog:__init() super()
+	self:InitControls()
+	self:InitCallbacks()
+end
+
+function multiplayer_find_dialog:__finalize()
+end
+
+function multiplayer_find_dialog:InitControls()
+	ui_base_dialog.base_dialog.InitControls(self, "Find Server")
+	
+end
+
+function multiplayer_find_dialog:InitCallbacks()
+
+end
+
