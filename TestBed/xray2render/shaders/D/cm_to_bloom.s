@@ -68,10 +68,12 @@ p2f 	p_main	( v2p_in IN )
 	L 			+=	tex2D		(s_accumulator, IN.tc2);
 	L 			+=	tex2D		(s_accumulator, IN.tc3);
 	
+	// rgb*diffuse + gloss*specular
 	C			=	(D*0.25h)*(L*0.25h);			// rgb.gloss * light(rgb.specular)
 	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
 	
-	OUT.C 		=	(C+S) - half4(1,1,1,1);
+	// we are interested only in colors > 1
+	OUT.C 		=	saturate	((C+S) - half4(1,1,1,1));
 	return OUT;
 }
 
