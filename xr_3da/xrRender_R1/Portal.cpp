@@ -67,7 +67,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	BB.getsphere		(S.P,S.R);
 
 	// 
-	poly.assign			(V,V+vcnt);
+	poly.assign			(V,vcnt);
 	pFace				= face; 
 	pBack				= back;
 	dwFrame				= 0xffffffff; 
@@ -175,8 +175,8 @@ void CSector::Render_objects_s	(CFrustum& F, Fvector& __P, Fmatrix& __X)
 			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum
-			xr_vector<Fvector> &	POLY = PORTAL->getPoly();
-			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
+			svector<Fvector,8>&	POLY = PORTAL->getPoly();
+			S.assign			(POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
 
@@ -323,7 +323,7 @@ void CSector::Render			(CFrustum &F)
 			if (ssa<r_ssaDISCARD)	continue;
 
 			// Clip by frustum
-			xr_vector<Fvector> &	POLY = PORTAL->getPoly();
+			svector<Fvector,8>&	POLY = PORTAL->getPoly();
 			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
 			sPoly* P			= F.ClipPoly(S,D);
 			if (0==P)			continue;
@@ -375,7 +375,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 	{
 		sPoly	S,D;
 		if (Portals[I]->dwFrameObject != oQuery.dwMark) {
-			xr_vector<Fvector> &POLY = Portals[I]->getPoly();
+			svector<Fvector,8>&	POLY = Portals[I]->getPoly();
 			S.assign(&*POLY.begin(),POLY.size()); D.clear();
 			
 			// Clip by frustum
@@ -401,7 +401,7 @@ void CSector::DebugDump()
 	for (u32 i=0; i<Portals.size(); i++)
 	{
 		CPortal* P			= Portals[i];
-		xr_vector<Fvector>& V	= P->getPoly();
+		svector<Fvector,8>&	V = P->getPoly();
 		Fplane PL;			PL.build(V[0],V[1],V[2]);
 
 		Msg("#%d --- verts: %d, front(%d), back(%d), F(%d), B(%d), (%.2f,%.2f,%.2f)",

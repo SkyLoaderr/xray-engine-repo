@@ -24,7 +24,7 @@ public:
 
 	void					Setup						(Fvector* V, int vcnt, CSector* face, CSector* back);
 
-	xr_vector<Fvector>&		getPoly()					{ return poly;		}
+	svector<Fvector,8>&		getPoly()					{ return poly;		}
 	CSector*				Back()						{ return pBack;		}
 	CSector*				Front()						{ return pFace;		}
 
