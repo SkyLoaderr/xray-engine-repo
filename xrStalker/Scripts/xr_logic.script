@@ -237,7 +237,8 @@ function parse_infop(rslt, str)
 	local infop_name, sign
 	local infop_n = 1
 	if str then
-		for s in string.gfind(str, "%s*([^%s]+)%s*") do
+		for s in string.gfind(str, "%s*([%-%+][^%-%+%s]+)%s*") do
+			printf("_bp: parse_infop: s=%s", utils.to_str(s))
 			sign = string.sub(s, 1, 1)
 			infop_name = string.sub(s, 2)
 			if sign == "+" then
@@ -264,16 +265,18 @@ function parse_condlist(npc, section, field, src)
 	-- 1) Разбиваем на разделенные запятыми части:
 	local at, to, infop_check_lst, remainings, infop_set_lst, newsect
 
+	printf("_bp: src = %s", src)
+
 	local n = 1
 	for fld in string.gfind(src, "%s*([^,]+)%s*") do
 		-- Здесь fld это набор infoportions в {} и имя секции, на которую переключиться.
 		lst[n] = {}
-		--printf("_bp: %d: %s", n, fld)
+		printf("_bp: iter %d: fld = %s", n, fld)
 
 		-- Выделяем список infoportions для проверки:	
 		at, to, infop_check_lst = string.find(fld, "{%s*(.*)%s*}")
 		if infop_check_lst then
-			--print("infop_check_lst: [" .. infop_check_lst .. "]")
+			printf("_bp: infop_check_lst: [%s]", infop_check_lst)
 
 			-- Выделяем оставшуюся часть поля, т.е. имя секции плюс список infoportions для установки:
 			remainings = string.sub(fld, 1, at - 1) .. string.sub(fld, to + 1)
@@ -292,6 +295,7 @@ function parse_condlist(npc, section, field, src)
 			-- Список infoportions для установки не был задан, следовательно, remainings и есть имя секции.
 			newsect = remainings
 		end
+		printf("_bp: newsect: %s", newsect)
 
 		-- И сразу trim имя секции:
 		at, to, newsect = string.find(newsect, "%s*(.*)%s*")

@@ -104,6 +104,7 @@ function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name,
 		utils.abort("section '%s': wrong arguments order in call to cfg_get_string", section)
 	end
 
+
 	printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		if gulag_name and gulag_name ~= "" then
@@ -379,9 +380,11 @@ end
 
 -- a | b | c  ==>  { 1 = "a", 2 = "b", 3 = "c" }
 function parse_params(params)
+	printf("_bp: parse_params: params=%s", params)
 	local rslt = {}
 	local n = 1
 	for fld in string.gfind(params, "%s*([^|]+)%s*") do
+		printf("_bp: parse_params iter=%d, fld=%s", n, fld)
 		rslt[n] = fld
 		n = n + 1
 	end
