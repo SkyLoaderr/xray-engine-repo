@@ -14,7 +14,7 @@ private:
 	u32							dwLightMarkerID;
 private:
 	// 
-	CBlender*					b_accum_direct_mask;
+	CBlender*					b_accum_mask;
 	CBlender*					b_accum_direct;
 	CBlender*					b_accum_point;
 	CBlender*					b_bloom;

@@ -11,7 +11,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	Device.Shader.Evict				();
 
 	// Blenders
-	b_accum_direct_mask				= xr_new<CBlender_accum_direct_mask>	();
+	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
 	b_accum_point					= xr_new<CBlender_accum_point>			();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
@@ -33,7 +33,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
 		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,				w,h,D3DFMT_R32F);
-		s_accum_direct_mask			= Device.Shader.Create_B	(b_accum_direct_mask,		"r2\\accum_direct_mask");
+		s_accum_mask				= Device.Shader.Create_B	(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,			"r2\\accum_direct");
 	}
 
@@ -164,7 +164,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 
 	// DIRECT
 	Device.Shader.Delete		(s_accum_direct			);
-	Device.Shader.Delete		(s_accum_direct_mask	);
+	Device.Shader.Delete		(s_accum_mask			);
 	Device.Shader._DeleteRT		(rt_smap_d				);
 	_RELEASE					(rt_smap_d_ZB			);
 
@@ -180,5 +180,5 @@ void	CRenderTarget::OnDeviceDestroy	()
 	xr_delete					(b_bloom				);
 	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
-	xr_delete					(b_accum_direct_mask	);
+	xr_delete					(b_accum_mask			);
 }
