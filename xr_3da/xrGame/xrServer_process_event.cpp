@@ -26,6 +26,20 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 		}
 		break;
+	case GE_BUY:
+		{
+			string64			i_name;
+			P.r_string			(i_name);
+			xrServerEntity*		E			= ID_to_entity	(destination);
+			if (E) {
+				xrClientData*		C			= E->owner;
+				if (C && (C->owner == E))
+				{
+					game->OnPlayerBuy		(C->ID,destination,i_name);
+				}
+			}
+		}
+		break;
 	case GE_RESPAWN:
 		{
 			xrServerEntity*		E	= ID_to_entity	(destination);
