@@ -214,13 +214,6 @@ BOOL IPureClient::Connect	(LPCSTR options)
     ZeroMemory					(&dpAppDesc, sizeof(DPN_APPLICATION_DESC));
     dpAppDesc.dwSize			= sizeof(DPN_APPLICATION_DESC);
     dpAppDesc.guidApplication	= NET_GUID;
-	WCHAR	SessionPasswordUNICODE[4096];
-	if (xr_strlen(password_str))
-	{
-		CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
-		dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
-		dpAppDesc.pwszPassword = SessionPasswordUNICODE;
-	};
 	
 	// Setup client info
 	WCHAR	ClientNameUNICODE	[256];
@@ -235,7 +228,15 @@ BOOL IPureClient::Connect	(LPCSTR options)
 
 	if (stricmp(server_name,"localhost")==0)	
 	{
-		R_CHK(NET->Connect(
+		WCHAR	SessionPasswordUNICODE[4096];
+		if (xr_strlen(password_str))
+		{
+			CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
+			dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
+			dpAppDesc.pwszPassword = SessionPasswordUNICODE;
+		};
+
+		HRESULT res = NET->Connect(
 			&dpAppDesc,				// pdnAppDesc
 			net_Address_server,		// pHostAddr
 			net_Address_device,		// pDeviceInfo
@@ -244,7 +245,10 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			NULL, 0,				// pvUserConnectData/Size
 			NULL,					// pvAsyncContext
 			NULL,					// pvAsyncHandle
-			DPNCONNECT_SYNC));		// dwFlags
+			DPNCONNECT_SYNC);		// dwFlags
+
+		R_CHK(res);
+		if (res != S_OK) return FALSE;
 
 		// Create ONE node
 		HOST_NODE	NODE;
@@ -288,6 +292,14 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		// ****** Connection
 		IDirectPlay8Address*        pHostAddress = NULL;
 		if (net_Hosts.empty())		return FALSE;
+
+		WCHAR	SessionPasswordUNICODE[4096];
+		if (xr_strlen(password_str))
+		{
+			CHK_DX(MultiByteToWideChar(CP_ACP, 0, password_str, -1, SessionPasswordUNICODE, 4096 ));
+			dpAppDesc.dwFlags |= DPNSESSION_REQUIREPASSWORD;
+			dpAppDesc.pwszPassword = SessionPasswordUNICODE;
+		};
 		
 		net_csEnumeration.Enter		();
 		// real connect
@@ -296,7 +308,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		
 		R_CHK(net_Hosts.front().pHostAddress->Duplicate(&pHostAddress ) );
 		// dump_URL		("! c2s ",	pHostAddress);
-		R_CHK(NET->Connect(
+		HRESULT res = NET->Connect(
 			&dpAppDesc,				// pdnAppDesc
 			pHostAddress,			// pHostAddr
 			net_Address_device,		// pDeviceInfo
@@ -305,9 +317,11 @@ BOOL IPureClient::Connect	(LPCSTR options)
 			NULL, 0,				// pvUserConnectData/Size
 			NULL,					// pvAsyncContext
 			NULL,					// pvAsyncHandle
-			DPNCONNECT_SYNC));		// dwFlags
+			DPNCONNECT_SYNC);		// dwFlags
+		R_CHK(res);		
 		net_csEnumeration.Leave		();
 		_RELEASE					(pHostAddress);
+		if (res != S_OK) return FALSE;
 	}
 
 	// Caps
