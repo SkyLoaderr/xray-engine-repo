@@ -155,7 +155,7 @@ public:
 
 #include "HelicopterMovementManager_inl.h"
 
-#include "motion.h"
+#include "../motion.h"
 class CHelicopterMovManager :public COMotion
 {
 	bool							m_bLoop;
