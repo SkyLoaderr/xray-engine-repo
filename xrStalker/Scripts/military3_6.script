@@ -1,31 +1,29 @@
--- скрипт патрульных сталкеров
+-- скрипт стоящего сталкера
 
 function main ()
-
 	local stand = get_level_object ("stalker_stand")
-
 	stand:script (true, military3_6.script_name ())
-	action (stand, move (move.standing, move.stand, move.line, patrol ("way_ptr50")),
-			anim ("k stene"), cond (cond.time_end, 100000000))
+	action (stand, move (move.standing, move.stand, move.line, patrol ("way_eat")),
+			anim ("k stene"), cond (cond.time_end, 30000))
+	
+	reset_action (stand, military3_6.script_name ())
 
+	action (stand, move (move.standing, move.walk, move.line, patrol ("way_eat")),
+			look (look.search), anim (anim.free), cond (cond.move.end))
+	action (stand, move (move.standing, move.walk, move.line, patrol ("way_eat")),
+			anim ("stalker_1_down"), cond (cond.anim_end))
 
-  	local patrol = military3_5.Patrol (get_level_object ("stalker_ptr5"), military3_6.script_name ())
+	while stand:action () do wait () end
 
-	patrol:add_path ("way_ptr50", 0)
-	patrol:add_path ("way_ptr51", 0)
-	patrol:add_path ("way_ptr_check50", 1)
-	patrol:add_path ("way_ptr_check51", 2)
-	patrol:add_animation ("proverka_dver")
-	patrol.probability = 80
-
-  	patrol:start ()
-
-  	while true do
-      	  patrol:process ()
-      	  wait ()
-      	  end
-
-  	patrol:finish ()
+	while true do 
+		  reset_action (stand, military3_6.script_name ())
+		  action (stand, move (move.standing, move.walk, move.line, patrol ("way_eat")),
+				  anim ("stalker_1_1"), cond (cond.anim_end))
+		  action (stand, move (move.standing, move.walk, move.line, patrol ("way_eat")),
+				  anim ("stalker_1_2"), cond (cond.anim_end))
+		  while stand:action () do wait () end 
+		  end
 
 	stand:script (false, military3_6.script_name ())
+
 end

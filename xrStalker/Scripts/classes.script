@@ -12,17 +12,14 @@
 class "AnimationSet"
 
 function AnimationSet:__init (flags)
-	self.anims_list = {}
 	self.flags = flags
 	self.current_animation = 0
+	self.anims_list = {}
 end
 
-function AnimationSet:add_animation (anim_name, flag)
-	printf (anim_name)
-	local a
-	if flag == 0 then a = anim (anim_name, false) 
-	else anim (anim_name, true)	end
-	table.insert (self.anims_list, a)
+function AnimationSet:add_animation (name, flag)
+	printf ("Add animation %s", name)
+	table.insert (self.anims_list, anim (name, flag))
 end
 
 function AnimationSet:get_animation ()
@@ -33,8 +30,7 @@ function AnimationSet:get_animation ()
 	   if self.current_animation > size then self.current_animation = 1 end
    	   return self.anims_list[self.current_animation]
 	   end
-	self.current_animation = math.random (1, size)
-	printf ("Current animation %d", self.current_animation)
+	self.current_animation = math.random (1, size  + 1)
  	return self.anims_list[self.current_animation]
 end
 
@@ -69,29 +65,30 @@ end
 ----------------------------------------------------------------------------------------------------
 class "SinglePatrol"
 
-function SinglePatrol:__init (npc, script_name, path_name)
+function SinglePatrol:__init (npc, script_name, path_name, anims_razv, anims_end)
 	self.npc = npc
 	self.script_name = script_name
 	self.started = false
 	self.path_name = path_name
 	self.current_state = 0
-	self.anims_razv = nil
-	self.anims_end = nil
+	self.anims_razv = anims_razv
+	self.anims_end = anims_end
 end
 
 function SinglePatrol:callback (obj, action_type, index)
-  	local ptr = patrol (object:patrol ())
+
+  	local ptr = patrol (obj:patrol ())
 
 	--обработаем развилку
 	if ptr:flag (index, 1) then
 	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
-					 self.animations:get_animation (), cond (cond.anim_end))
+					 self.anims_razv:get_animation (), cond (cond.anim_end))
 	   return	
 	   end	
 	--обработаем конечную точку
 	if ptr:flag (index, 2) then
 	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
-					 self.animations:get_animation (), cond (cond.anim_end))
+					 self.anims_end:get_animation (), cond (cond.anim_end))
 	   return 
 	   end	  	
 
@@ -101,14 +98,6 @@ function SinglePatrol:process ()
 
 	if self.started == false then
 	   self.npc:script (true, self.script_name)
-	   if self.anims_razv == nil then
-		  self.anims_razv = classes.AnimationSet (1)
-		  self.anims_razv:add_animation (anim (anim.free, false))	
-		  end
-	   if self.anims_end == nil then
-		  self.anims_end = classes.AnimationSet (1)
-		  self.anims_end:add_animation (anim (anim.free, false))	
-		  end
 	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
 			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
 	   self.started = true
@@ -118,5 +107,47 @@ function SinglePatrol:process ()
 end
 
 function SinglePatrol:finish ()
+	self.npc:script (false, self.script_name)
+end
+
+
+----------------------------------------------------------------------------------------------------
+class "Guardian"
+
+function Guardian:__init (npc, script_name, path_name, anims_check)
+	self.npc = npc
+	self.script_name = script_name
+	self.started = false
+	self.path_name = path_name
+	self.current_state = 0
+	self.anims_check = anims_check
+end
+
+function Guardian:callback (obj, action_type, index)
+
+  	local ptr = patrol (obj:patrol ())
+
+	--обработаем точку осмотра
+	if ptr:flag (index, 2) and math.random (1, 100) > 50 then
+	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
+					 self.anims_check:get_animation (), cond (cond.anim_end))
+	   return 
+	   end	  	
+
+end
+
+function Guardian:process ()
+
+	if self.started == false then
+	   self.npc:script (true, self.script_name)
+	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
+			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+	   self.started = true
+	   self.npc:set_callback (self, "callback", game_object.movement)
+	   return 
+	   end
+end
+
+function Guardian:finish ()
 	self.npc:script (false, self.script_name)
 end

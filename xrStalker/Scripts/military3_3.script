@@ -1,26 +1,5 @@
 -- сталкер у шлагбаума
 
-local anims = {"stoya_ruje_ 0", "vishka_3"}
-
-function waiting (actor)
-    military3_3.reset (actor)
-	action (actor, move (move.standing, move.stand, move.line, patrol ("way_sh1")), 
-			look (), anim (anims[math.random (1, table.getn (anims))], true), cond (cond.anim_end))
-	while actor:action () do wait () end
-end
-
-function reset (actor)
-	actor:script (false, military3_3.script_name ())
-	actor:script (true, military3_3.script_name ())
-end
-
-function moving (actor, path)
-	military3_3.reset (actor)
-	action (actor, move (move.standing, move.walk, move.line, patrol (path)),
-			look (look.search), anim (anim.free), cond (cond.move_end))
---	printf ("Moving path - %s", path)
-end
-
 function main ()
 
 	local stalker = get_level_object ("stalker_sh")
@@ -29,71 +8,37 @@ function main ()
 
 	--тут мы сидим и чистим ружжо :)
 
-	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 
-	military3_3.reset (stalker)
-	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+	reset_action (stalker, military3_3.script_name ())
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 
-	military3_3.reset (stalker)
-	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+	--подъем !!!
+	reset_action (stalker, military3_3.script_name ())
+
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			look (), anim ("stul_podyem", true), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 
-	local point = 1
-	local nextpoint = 2
-	
-	military3_3.moving (stalker, "way_sh1")
-
-	while true do
-		  while stalker:action () do wait () end
-
-		  military3_3.waiting (stalker)
-
-		  point = nextpoint
---		  printf ("Next point : %d", nextpoint)	
-
-		  --перемещения из точки 1
-		  if point == 1 then
-			 military3_3.moving (stalker, "way_sh1")
-			 nextpoint = 2
-			 end
-
-		  --перемещения из точки 2
-		  if point == 2 then
-	     	 if math.random (1, 100) < 50 then
-			    military3_3.moving (stalker, "way_sh2")
-			    nextpoint = 3
-			 else 
-                military3_3.moving (stalker, "way_sh5")
-		     	nextpoint = 4
-			 end
-		  end	
-
-		  --перемещения из точки 3
-		  if point == 3 then
-			 if math.random (1, 100) < 50 then
-				military3_3.moving (stalker, "way_sh3")
-			    nextpoint = 4
-			 else
-				military3_3.moving (stalker, "way_sh4")
-				nextpoint = 1
-			 end
-          end
- 
-		  --перемещения из точки 4
-		  if point == 4 then
- 			 military3_3.moving (stalker, "way_sh5")
-			 nextpoint = 1
-			 end
-	end
+	--создаем патрульный класс.
+  	local anim_end = classes.AnimationSet (1)
+  	anim_end:add_animation ("stoya_ruje_ 0", true)
+  	anim_end:add_animation ("vishka_3", true)
 
 	stalker:script (false, military3_3.script_name ())
 
+	local patrol = classes.SinglePatrol (stalker, military3_3.script_name (), "way_sh", nil, anim_end)
+
+	while true do
+      	  patrol:process ()
+      	  wait ()
+      	  end
+	patrol.finish ()
 end
