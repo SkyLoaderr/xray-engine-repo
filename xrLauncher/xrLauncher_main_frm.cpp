@@ -19,7 +19,6 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 		if(!ini.section_exist("general"))
 			return;
 
-		LPCSTR pStr = 0;
 		m_mod_info->push_back( SmodInfo() );
 		SmodInfo& info = m_mod_info->back();
 
@@ -105,9 +104,6 @@ void xrLauncher_main_frm::InitMod()
 	if(fn)
 		addFileInfo(fn->name);
 	
-	FS_Path* pth = FS.get_path("$mod_dir$");
-	LPCSTR mod_dir = pth->m_Path;
-
 	xr_vector<LPSTR>* dirs =	FS.file_list_open("$mod_dir$",FS_ListFolders);
 
 	xr_vector<LPSTR>::const_iterator it = dirs->begin();
@@ -229,5 +225,5 @@ System::Void xrLauncher_main_frm::settingsBtn_Click(System::Object *  sender, Sy
 	if(!m_settings_dlg)
 		m_settings_dlg = new xrLauncherControl();
 
-	int res = m_settings_dlg->_Show(0);
+	m_settings_dlg->_Show	(0);
 }

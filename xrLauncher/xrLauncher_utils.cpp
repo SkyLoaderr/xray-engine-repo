@@ -81,8 +81,8 @@ void resetCoreParam(LPCSTR str)
 		return;
 
 	int len = xr_strlen(str);
-	int core_len = xr_strlen(Core.Params);
-	int start = c-Core.Params;
+	//int core_len = xr_strlen(Core.Params);
+	ptrdiff_t start = c-Core.Params;
 	string1024 new_param;
 	strncpy(new_param,Core.Params,start);
 
