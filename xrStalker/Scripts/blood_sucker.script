@@ -53,7 +53,7 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
 end
 
 function CBaseBloodsucker:initialize()
-  self.npc:script    (true, blood_sucker.script_name())
+     self.npc:script    (true, this.script_name())
 end
 
 function CBaseBloodsucker:execute()
