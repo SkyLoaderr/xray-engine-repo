@@ -46,12 +46,14 @@ public:
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD PC)
 	{	HW.pDevice->DrawPrimitive(T,	SV, PC);			}
 	
+	// The most used wrappers --- recomendation DON'T USE AT ALL :)
 	IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);	// non indexed
+	IC void Draw			(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
 	IC void DrawNI_SP		(CPrimitive& P, DWORD dwStartVert,	DWORD dwNumPrimitives);
 	IC void DrawSubset		(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
-	IC void Reset			();
+	void Reset				();
 
 	void Lines_Begin		(int count);
 	void Lines_Draw			(Fvector& P1, Fvector& P2, float width, DWORD C);

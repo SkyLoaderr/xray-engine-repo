@@ -78,6 +78,19 @@ void CDraw::Draw(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase)
 	}
 	UPDATEC(dwNumPrimitives*3,dwNumPrimitives,dwRequired);
 }
+void CDraw::Draw	(CVertexStream* VS,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase)
+{
+	setVertices		(VS->mFVF,VS->mStride,VS->pVB);
+	setIndicesUC	(vBase, IS->getBuffer());
+	DWORD dwRequired	= Device.Shader.dwPassesRequired;
+	for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++)
+	{
+		Device.Shader.SetupPass(dwPass);
+		Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,iBase,dwNumPrimitives);
+	}
+	UPDATEC(dwNumVerts,dwNumPrimitives,dwRequired);
+}
+
 void CDraw::DrawNI_SP(CPrimitive& P, DWORD dwStartVert, DWORD dwNumPrimitives)
 {
 	setVertices	(P.vShader,P.vSize,P.pVertices);
