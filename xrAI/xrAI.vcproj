@@ -1242,6 +1242,9 @@
 					RelativePath=".\graph_abstract_inline.h">
 				</File>
 				<File
+					RelativePath=".\inventory_space.h">
+				</File>
+				<File
 					RelativePath="NET_Compressor.h">
 				</File>
 				<File
