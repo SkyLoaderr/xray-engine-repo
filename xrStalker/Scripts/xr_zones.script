@@ -1,0 +1,448 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Управление скриптовыми зонами
+Чугай Саша
+
+Сделать:
+
+Идеи:
+	- для каждого типа фракции отдельный файл
+	- дополнительные условия начала, конца фракции. Например, ночь и день для sleepers
+	- возложить проверку условий освобождения мужиков на класс типа фракции
+	- специальные диалоги
+	- группы, сквады - характеристика типа фракции
+
+Проблемы:
+	- проблема уничтожения зоны при переходе на другой уровень или при офлайне
+	- если во время офлайна истекло время существования фракции, то все разойдутся только при входе в онлайн :(
+	
+--------------------------------------------------------------------------------------------------------------------]]
+
+local h2ms = 60 * 60 * 1000
+local check_period = 300000
+
+local zones = {}
+
+-------------- помощники для чтения spawn_ini -------------------
+function r_str( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_string( section, line )
+	else
+		return default
+	end
+end
+
+function r_num( spawn_ini, section, line, default )
+	if spawn_ini:line_exist( section, line ) then
+		return spawn_ini:r_float( section, line )
+	else
+		return default
+	end
+end
+
+function r_nums( spawn_ini, section, line, ... )
+	if spawn_ini:line_exist( section, line ) then
+		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
+		local t = parse_names( spawn_ini:r_string( section, line ) )
+		local n = table.getn( t )
+
+		if n == 0 then
+			return unpack( arg )
+		end
+
+		while table.getn( t ) < arg.n do
+			table.insert( t, t[n] )
+		end
+
+		return unpack( t )
+	else
+		return unpack( arg )
+	end
+end
+
+-- включить в dest все элементы из src. таблицы индексированы
+function table_include( dest, src )
+	if dest and src then
+		for i, v in src do
+			table.insert( dest, v )
+		end
+	end
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- класс zone_binder. Он контролирует скриптовую зону, подключает различные классы управления зоной.
+----------------------------------------------------------------------------------------------------------------------
+class "zone_binder" ( object_binder )
+
+function zone_binder:__init( obj ) super( obj )
+end
+
+function zone_binder:reinit()
+	object_binder.reinit( self )
+end
+
+function zone_binder:net_spawn( server_object )
+	local r = object_binder.net_spawn( self, server_object )
+	self.object:set_callback( self, "on_enter", true )
+	return r
+end
+
+function zone_binder:net_destroy()
+	self.object:clear_callback( true )
+	object_binder.net_destroy( self )
+end
+
+function zone_binder:update( delta )
+	object_binder.update( self, delta )
+
+	table.foreach( zones[self.object:id()], function( k, v ) if v.update then v:update() end end )
+end
+
+function zone_binder:reload( section )
+	object_binder.reload( self, section )
+
+	local id = self.object:id()
+
+	if not zones[id] then
+		zones[id] = {}
+	end
+
+	local z = zones[id]
+
+	local zone_ini = self.object:spawn_ini()
+
+	if zone_ini:section_exist( "fractions" ) then
+		-- если управление фракциями ещё не создано, то создать
+		if not z.zone_fractions then
+			z.zone_fractions = zone_fractions( self.object, zone_ini )
+
+			-- если ошибка инициализации, то прибить
+			if not z.zone_fractions.ini_ok then
+				z.zone_fractions = nil
+			end
+		end
+	end
+
+	if zone_ini:section_exist( "sound" ) then
+		-- если управление звуками ещё не создано, то создать
+		if not z.zone_sound then
+			z.zone_sound = zone_sound( self.object, zone_ini )
+
+			-- если ошибка инициализации, то прибить
+			if not z.zone_sound.ini_ok then
+				z.zone_sound = nil
+			end
+		end
+	end
+end
+
+-- callback на вход в зону
+function zone_binder:on_enter( zone, obj )
+	printf( "[zone] on_enter obj=%s", obj:name() )
+	-- вызвать callback-и всех подключённых классов
+	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- класс фракции типа "несколько спящих на базе xr_sleeper"
+----------------------------------------------------------------------------------------------------------------------
+class "fraction_sleepers"
+
+function fraction_sleepers:__init()
+end
+
+-- при загрузке работ, ёмкость фракции может уменьшиться (к примеру, если на уровне нету всех необходимых путей)
+function fraction_sleepers.setup_jobs( a )
+	local i = 1
+	local prefix = a.prefix .. "_sleep_"
+
+	repeat
+		local pname = prefix .. i
+
+		if not level.patrol_path_exists( pname ) then
+			a.capacity = i - 1	-- мужиков больше, чем кол-во путей всё равно не влезет
+			break
+		end
+
+		table.insert(
+			a.fraction.Job,
+			{
+				name      = "sleeper",
+				idle      = 0,
+				prior     = 1,
+				state     = { 0 },
+				group     = a.group,
+				squad     = a.squad,
+				path_main = pname
+			}
+		)
+
+		i = i + 1
+
+		if i > a.capacity then
+			break
+		end
+	until false
+
+	printf( "capacity = %d", a.capacity )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- регистрация всех типов фракций
+----------------------------------------------------------------------------------------------------------------------
+
+local fraction_types = {}
+fraction_types.sleepers = fraction_sleepers()
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Класс zone_fractions. Он управляет фракциями, которые могут образоваться в этой схеме.
+----------------------------------------------------------------------------------------------------------------------
+class "zone_fractions"
+
+function zone_fractions:__init( zone, ini )
+	-- общие настройки системы управления фракциями для данной зоны
+	local sect = "fractions"
+
+	if not ini:line_exist( sect, "squad" ) or
+	   not ini:line_exist( sect, "group" )
+	then
+		return
+	end
+
+	self.zone            = zone
+	self.squad           = ini:r_float( sect, "squad" )
+	self.group           = ini:r_float( sect, "group" )
+	self.stalkers        = {}    -- group и squad для каждого
+	self.fractions       = {}    -- настройки фракций, возможных в этой зоне
+	self.fraction        = nil   -- экземпляр текущей фракции
+	self.fraction_name   = nil   -- имя текущей фракции
+	self.fraction_params = nil   -- ссылка на ini настройки текущей фракции в табличке fractions
+	self.type            = nil   -- тип текущей фракции зоны
+
+	-- прочитать настройки всех возможных фракций
+	local f  = self.fractions
+	local fi = 1
+
+	repeat
+		table.insert( f, {} )
+		local ffi = f[fi]
+
+		sect = "fraction"..fi
+
+		if not ini:section_exist( sect ) then
+			break
+		end
+
+		if ini:line_exist( sect, "type" ) then
+			ffi.type                            = ini:r_string( sect, "type" )
+			ffi.idle_min, ffi.idle_max          = r_nums( ini, sect, "idle",       12, 24 )
+			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   48, 72 )
+			ffi.prefix                          = r_str ( ini, sect, "prefix", self.zone:name() )
+			ffi.capacity                        = r_num ( ini, sect, "capacity",  100 )
+			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24, 48 )
+		else
+			table.remove( f, fi )
+		end
+
+		fi = fi + 1
+	until false
+
+	if fi == 1 then
+		return
+	end
+
+	self.ini_ok = true
+end
+
+-- добавить сталкера во фракцию
+function zone_fractions:add_stalker( obj )
+	if not self.fraction:stalkerExsist( obj ) then
+		local i = 0
+		for k, v in self.fraction.Object do
+			i = i + 1
+		end
+		-- если во фракции есть свободные места, то добавить
+		if i < self.capacity then
+			self.fraction:addObject( obj )
+			self.stalkers[obj:id()] = {
+				group    = obj:group(),
+				squad    = obj:squad(),
+				stay_end = math.random( self.fraction_params.stay_min, self.fraction_params.stay_max ) * h2ms + game.time()
+			}
+
+			printf( "[zone] adding %s to zonal fraction %s", obj:name(), self.fraction_name )
+		end
+	end
+end
+
+-- отпустить сталкера
+function zone_fractions:free_stalker( obj )
+	local id = obj:id()
+
+	self.fraction.Object[id] = nil
+
+	for k, v in xr_motivator.storage[id] do
+		if k == "sleeper" or
+		   k == "camper" or
+		   k == "scout" or
+		   k == "follower" or
+		   k == "patrol" or
+		   k == "guard" or
+		   k == "bodyguard" 
+		then
+			v.enabled = false
+		end
+	end
+
+	local backup = self.stalkers[id]
+	obj:change_team( obj:team(), backup.squad, backup.group )
+
+	printf( "[zone] removing %s from fraction %s", obj:name(), self.fraction_name )
+end
+
+-- создание новой фракции по конфигурации для данной зоны
+function zone_fractions:create_fraction()
+	local fn      = math.random( 1, table.getn( self.fractions ) )
+	local fparams = self.fractions[fn]
+
+	if not fraction_types[fparams.type] then
+		printf( "[zone] There is no such fraction type: %s", fparams.type )
+		return
+	end
+
+	self.fraction_params = fparams
+
+	self.fraction_type = fparams.type
+	self.fraction_name = self.zone:name() .. "_" .. fparams.type
+	self.prefix        = fparams.prefix
+	self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
+	self.capacity      = fparams.capacity
+	self.check_time    = game.time() + check_period
+
+	self.fraction      = xr_gulag.fract( self.fraction_name )
+
+	fraction_types[fparams.type].setup_jobs( self )
+end
+
+-- всех освободить, убить фракцию
+function zone_fractions:remove_fraction()
+	-- освободить всех, кто ещё жив в фракции
+	for k, obj in self.fraction.Object do
+		self:free_stalker( obj )
+	end
+
+	self.fraction  = nil
+	self.idle_end = math.random( self.fraction_params.idle_min, self.fraction_params.idle_max ) * h2ms + game.time()
+
+	printf( "[zone] removing zonal fraction %s", self.fraction_name )
+end
+
+-- callback на вход в зону
+function zone_fractions:on_enter( obj )
+	if get_clsid( obj ) == clsid.stalker then
+		if self.fraction then
+			self:add_stalker( obj )
+		else
+			if not self.idle_end or self.idle_end < game.time() then
+				self:create_fraction()
+				self:add_stalker( obj )
+			end
+		end
+	end
+end
+
+-- обновление
+function zone_fractions:update()
+	if self.fraction then
+--		if self.duration_end < game.time() then
+--			self:remove_fraction()
+--		else
+			-- периодически проверять, не собрался ли кто-то к этому времени уже уходить
+			if self.check_time < game.time() then
+				self.check_time = game.time() + check_period
+
+				local n = 0
+
+				for id, obj in self.fraction.Object do
+					if self.stalkers[id].stay_end < game.time() then
+						self:free_stalker( obj )
+					else
+						n = n + 1
+					end
+				end
+
+				-- если мужиков в фракции больше не осталось, убрать фракцию
+				if n == 0 then
+					self:remove_fraction()
+				else
+					self.fraction:calculate()
+				end
+			else
+				self.fraction:calculate()
+			end
+--		end
+	end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Класс zone_sound. Проигровка звуков при входе в зону.
+----------------------------------------------------------------------------------------------------------------------
+class "zone_sound"
+
+-- типы звуков для зон
+local sound_types = {
+	floor_wooden = {
+		"ambient\\floor_creak1",
+--		"ambient\\floor_creak2",
+--		"ambient\\floor_creak3"
+	}
+}
+
+function zone_sound:__init( zone, ini )
+	self.zone        = zone
+	self.sound_names = {}
+
+	local sect = "sound"
+
+	if ini:line_exist( sect, "snd" ) then
+		table_include( self.sound_names, parse_names( ini:r_string( sect, "snd" ) ) )
+	end
+
+	if ini:line_exist( sect, "type" ) then
+		local t = parse_names( ini:r_string( sect, "type" ) )
+
+		for i, v in t do
+			table_include( self.sound_names, sound_types[v] )
+		end
+	end
+
+	if table.getn( self.sound_names ) == 0 then
+		return
+	end
+
+	printf( table.concat( self.sound_names, "  " ) )
+
+	self.delay = r_num( ini, sect, "delay", 0 )
+	self.idle  = r_num( ini, sect, "idle",  0 ) * 1000 -- секунды->мс
+	self.rnd   = r_num( ini, sect, "rnd", 100 )
+
+	self.idle_end = 0
+
+	self.ini_ok = true
+end
+
+function zone_sound:on_enter( obj )
+	if self.idle_end < game.time() then
+		self.idle_end = game.time() + self.idle
+
+		if math.random( 100 ) <= self.rnd then
+			local obj_type = object_type( obj )
+
+			if obj_type == "stalker" or obj_type == "monstr" then
+				sound_object( self.sound_names[math.random( 1, table.getn( self.sound_names ) )] ):play_at_pos( obj, obj:position(), self.delay )
+			end
+		end
+	end
+end
