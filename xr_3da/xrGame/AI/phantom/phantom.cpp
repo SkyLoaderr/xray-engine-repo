@@ -6,14 +6,15 @@
 CPhantom::CPhantom()
 {
 	fDHeading			= 0;
-	fSpeed				= 7.f;
-	fASpeed				= 1.3f;
+	fSpeed				= 4.f;
+	fASpeed				= 1.7f;
 	vHPB.set			(0,0,0);
 	fGoalChangeTime		= 0.f;
 	fGoalChangeDelta	= 4.f;
-	vGoalDir.set		(10.0f*Random.randF(),10.0f*Random.randF(),10.0f*Random.randF());
+	vGoalDir.set		(0,0,0);
 	vVarGoal.set		(0,0,0);
 	vCurrentDir.set		(0,0,1);
+	bAlive				= false;
 }
 
 CPhantom::~CPhantom()
@@ -41,18 +42,26 @@ BOOL CPhantom::net_Spawn		(CSE_Abstract* DC)
 	setVisible		(TRUE);
 	setEnabled		(TRUE);
 
-	m_enemy = Level().CurrentEntity();
-	VERIFY	(m_enemy);
+	m_enemy			= Level().CurrentEntity();
+	VERIFY			(m_enemy);
 
-	PlayParticles	();
+//	PlayParticles	();
+
+	bAlive			= true;
+
+	XFORM().k.sub	(m_enemy->Position(),Position()).normalize();
+	XFORM().j.set	(0,1,0);
+	XFORM().i.crossproduct	(XFORM().j,XFORM().k);
+
+	XFORM().getHPB	(vHPB);
 
 	return	TRUE;
 }
-void CPhantom::net_Destroy()
+void CPhantom::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	PlayParticles			();
+//	PlayParticles			();
 }
 
 //---------------------------------------------------------------------
@@ -72,21 +81,21 @@ void CPhantom::UpdateCL()
 		// выбор анимации
 		CSkeletonAnimated *skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
 		
-		m_motion = skeleton_animated->ID_Cycle	("$editor");
+		m_motion = skeleton_animated->ID_Cycle	("fly_0");
 		skeleton_animated->PlayCycle			(m_motion);
 	}
 
-	Fvector vP;
-	m_enemy->Center		(vP);
-	if (vP.distance_to_sqr(Position())<1.f){
+	Fvector vE,vP;
+	float rE,rP;
+	m_enemy->Center		(vE);
+	Center				(vP);
+	if (vP.distance_to_sqr(vE)<_sqr(Radius())){
 		// hit enemy
-
+		PsyHit			(m_enemy,1);
 		// destroy
-		NET_Packet		P;
-		u_EventGen		(P,GE_DESTROY,ID());
-		u_EventSend		(P);
+		SendDestroyMsg	();
 	}else{
-		UpdatePosition	();
+		UpdatePosition	(m_enemy->Position());//vE);
 	}
 }
 //---------------------------------------------------------------------
@@ -151,12 +160,20 @@ void CPhantom::net_Import	(NET_Packet& P)
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 
+void CPhantom::SendDestroyMsg()
+{
+	if (bAlive){
+		NET_Packet		P;
+		u_EventGen		(P,GE_DESTROY,ID());
+		u_EventSend		(P);
+		bAlive			= false;
+	}
+}
+
 //---------------------------------------------------------------------
 void CPhantom::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
-	NET_Packet		P;
-	u_EventGen		(P,GE_DESTROY,ID());
-	u_EventSend		(P);
+	SendDestroyMsg		();
 }
 //---------------------------------------------------------------------
 
@@ -186,17 +203,28 @@ void CPhantom::PlayParticles()
 }
 
 //---------------------------------------------------------------------
-void CPhantom::UpdatePosition() 
+void CPhantom::UpdatePosition(const Fvector& tgt_pos) 
 {
+	Fvector& vDirection	= XFORM().k;
+	float			tgt_h,tgt_p;
+	Fvector			tgt_dir,cur_dir;
+	tgt_dir.sub		(tgt_pos,Position());
+	tgt_dir.getHP	(tgt_h,tgt_p);
+
+	angle_lerp		(vHPB.x,tgt_h,fASpeed,Device.fTimeDelta);
+	angle_lerp		(vHPB.y,tgt_p,fASpeed,Device.fTimeDelta);
+
+	cur_dir.setHP	(vHPB.x,vHPB.y);
+
+	Fvector prev_pos=Position();
+	XFORM().setHPB	(vHPB.x,0,0);
+	Position().mad	(prev_pos,cur_dir,fSpeed*Device.fTimeDelta);
+/*
 	if(fGoalChangeTime<=0)	{
 		fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
-		Fvector vP;
-//		vP.set(Device.vCameraPosition.x,Device.vCameraPosition.y,Device.vCameraPosition.z);
-		m_enemy->Center	(vP);
-		
-		vGoalDir.x		= vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
-		vGoalDir.y		= vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
-		vGoalDir.z		= vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
+		vGoalDir.x		= goal_pos.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
+		vGoalDir.y		= goal_pos.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
+		vGoalDir.z		= goal_pos.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
 	}
 	fGoalChangeTime		-= Device.fTimeDelta;
 	
@@ -237,6 +265,8 @@ void CPhantom::UpdatePosition()
 	vHPB.x  +=  fDHeading;
 	vHPB.z  = -fDHeading * 9.0f;
 
+	vHPB.y  = 0;
+	vHPB.z  = 0;
 	// Update position
 
 	Fvector vOldPosition;
@@ -244,5 +274,21 @@ void CPhantom::UpdatePosition()
 
 	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
 	Position().mad	(vOldPosition,vDirection,fSpeed*Device.fTimeDelta);
+*/
 }
 
+void CPhantom::PsyHit(const CObject *object, float value) 
+{
+	NET_Packet		P;
+
+	u_EventGen		(P,GE_HIT, object->ID());				// 
+	P.w_u16			(ID());									// own
+	P.w_u16			(ID());									// own
+	P.w_dir			(Fvector().set(0.f,1.f,0.f));			// direction
+	P.w_float		(value);								// hit value	
+	P.w_s16			(BI_NONE);								// bone
+	P.w_vec3		(Fvector().set(0.f,0.f,0.f));			
+	P.w_float		(0.f);									
+	P.w_u16			(u16(ALife::eHitTypeTelepatic));
+	u_EventSend		(P);
+}

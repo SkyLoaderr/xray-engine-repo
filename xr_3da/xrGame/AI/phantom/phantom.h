@@ -26,6 +26,15 @@ class CPhantom : public CEntity {
 	Fvector			vVarGoal;
 	float			fGoalChangeTime;
 	float			fGoalChangeDelta;
+
+	bool			bAlive;
+
+	void			SendDestroyMsg				();
+
+	void			PlayParticles				();
+	void			UpdatePosition				(const Fvector& tgt_pos);
+
+	void			PsyHit						(const CObject *object, float value);
 public:
 					CPhantom					();
 	virtual			~CPhantom					();
@@ -51,9 +60,5 @@ public:
 	virtual BOOL	UsedAI_Locations			() {return false;}
 
 	virtual CEntity*cast_entity					() {return this;}
-
-			void	PlayParticles				();
-
-			void	UpdatePosition				();
 };
 
