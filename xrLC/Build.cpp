@@ -111,7 +111,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	transfer("shaders_xrlc",shader_compile,		FS,		EB_Shaders_Compile);
 	transfer("glows",		glows,				FS,		EB_Glows);
 	transfer("portals",		portals,			FS,		EB_Portals);
-	transfer("d-lights",	L_dynamic,			FS,		EB_Light_dynamic);
 
 	// Load lights
 	Status	("Loading lights...");
@@ -137,7 +136,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		}
 		// Static
 		{
-			F = FS.OpenChunk(EB_Light_control);
+			F = FS.OpenChunk(EB_Light_static);
 			b_light_static	temp;
 			DWORD cnt		= F->Length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
