@@ -67,7 +67,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 
 	FS._initialize			(flags);
 
-#ifdef EDITOR
+#ifdef _EDITOR
 	xr_EFS					= xr_new<EFS_Utils>		();
 	EFS._initialize			();
 #endif
@@ -81,8 +81,10 @@ void xrCore::_destroy		()
 {
 	CloseLog				();
 	FS._destroy				();
+#ifdef _EDITOR
 	EFS._destroy			();
 	xr_delete				(xr_EFS);
+#endif
 	xr_delete				(xr_FS);
 	Memory._destroy			();
 }
