@@ -26,7 +26,7 @@ public:
 	xr_vector<light_indirect>	indirect;
 	u32							indirect_photons;
 
-	smapvis			svis;
+	smapvis			svis	[6];	// used for 6-cubemap faces
 
 	ref_shader		s_spot;
 	ref_shader		s_point;
