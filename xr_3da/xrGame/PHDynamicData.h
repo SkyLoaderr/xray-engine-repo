@@ -19,6 +19,7 @@ dMatrix3 R;
 Fmatrix BoneTransform;
 private:
 dBodyID body;
+CPHInterpolation* p_parent_body_interpolation;
 CPHInterpolation body_interpolation;
 dGeomID geom;
 dGeomID transform;
@@ -31,7 +32,9 @@ public:
 		body_interpolation.UpdatePositions();
 		body_interpolation.UpdateRotations();
 	}
-	
+	void UpdateInterpolationRecursive()	;
+	void InterpolateTransform(Fmatrix& transform);
+	void InterpolateTransformVsParent(Fmatrix& transform);
 	PHDynamicData& operator [] (unsigned int i) {return Childs[i];};
 	void Destroy();
 	void Create(unsigned int numOfchilds,dBodyID Body);

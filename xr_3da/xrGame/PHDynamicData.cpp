@@ -12,6 +12,7 @@ PHDynamicData::PHDynamicData()
 {
 numOfChilds=0;
 Childs=NULL;
+p_parent_body_interpolation=NULL;
 }
 
 PHDynamicData::~PHDynamicData()
@@ -47,6 +48,8 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 		Childs[childNum].transform=NULL;
 		Childs[childNum].numOfChilds=numOfchilds;
 		Childs[childNum].ZeroTransform.identity();
+		Childs[childNum].p_parent_body_interpolation=&body_interpolation;
+		Childs[childNum].body_interpolation.SetBody(body);
 
 		if(numOfchilds>0)
 			Childs[childNum].Childs=new PHDynamicData[numOfchilds];
@@ -79,7 +82,41 @@ for(unsigned int i=0;i<numOfChilds;i++){
 	}
 
 }
+void PHDynamicData::UpdateInterpolationRecursive(){
+	UpdateInterpolation();
 
+for(unsigned int i=0;i<numOfChilds;i++){
+	Childs[i].UpdateInterpolationRecursive();
+	}
+}
+
+void PHDynamicData::InterpolateTransform(Fmatrix &transform){
+//DMXPStoFMX(dBodyGetRotation(body),
+//			dBodyGetPosition(body),BoneTransform);
+body_interpolation.InterpolateRotation(transform);
+body_interpolation.InterpolatePosition(transform.c);
+Fmatrix zero;
+zero.set(ZeroTransform);
+zero.invert();
+//BoneTransform.mulB(zero);
+transform.mulB(zero);
+}
+void PHDynamicData::InterpolateTransformVsParent(Fmatrix &transform){
+Fmatrix parent_transform;
+//DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
+//DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+p_parent_body_interpolation->InterpolateRotation(parent_transform);
+p_parent_body_interpolation->InterpolatePosition(parent_transform.c);
+body_interpolation.InterpolateRotation(transform);
+body_interpolation.InterpolatePosition(transform.c);
+parent_transform.mulB(ZeroTransform);
+
+parent_transform.invert();
+
+
+//BoneTransform.mulA(parent_transform);
+transform.mulA(parent_transform);
+}
 PHDynamicData * PHDynamicData::GetChild(unsigned int ChildNum)
 {
 if(ChildNum<numOfChilds)
@@ -93,7 +130,10 @@ void PHDynamicData::CalculateData()
 
 DMXPStoFMX(dBodyGetRotation(body),
 			dBodyGetPosition(body),BoneTransform);
-BoneTransform.mulB(ZeroTransform);
+Fmatrix zero;
+zero.set(ZeroTransform);
+zero.invert();
+BoneTransform.mulB(zero);
 for(unsigned int i=0;i<numOfChilds;i++){
 
 	Childs[i].CalculateR_N_PosOfChilds(body);
@@ -109,6 +149,7 @@ numOfChilds=numOfchilds;
 body=Body;
 geom=NULL;
 Childs=new PHDynamicData[numOfChilds];
+body_interpolation.SetBody(Body);
 }
 
 void PHDynamicData::Destroy()

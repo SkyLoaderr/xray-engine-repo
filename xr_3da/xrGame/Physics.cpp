@@ -433,8 +433,8 @@ Fmatrix Translate;
 
 DynamicData.CalculateData();
 DynamicData.SetAsZeroRecursive();
-
-Translate.translate(0,MassShift-0.810f,0);
+Translate.identity();
+Translate.translate(0,-MassShift+0.810f,0);
 DynamicData.SetZeroTransform(Translate);
 
 }
@@ -671,8 +671,8 @@ void CPHWorld::Step(dReal step)
 			dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
 			dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
 
-//			dWorldSetERP(phWorld,  0.2);
-//			dWorldSetCFM(phWorld,  0.0001);
+			//dWorldSetERP(phWorld,  0.8);
+			//dWorldSetCFM(phWorld,  0.00000001);
 
 
 
@@ -1344,5 +1344,7 @@ if( !dBodyIsEnabled(m_body)) return;
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
-	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,pos.x, pos.y, pos.z);
+	Fvector body_pos;
+	body_pos.sub(pos,m_inverse_local_transform.c);
+	dBodyAddForceAtRelPos       (m_body, dir.x*val,dir.y*val,dir.z*val,body_pos.x, body_pos.y, body_pos.z);
 }

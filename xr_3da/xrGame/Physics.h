@@ -33,7 +33,14 @@ public:
 	void applyImpulseTrace		(int part,const Fvector& pos, const Fvector& dir, float val){
 	val/=fixed_step;
 	if(part<0||part>NofBodies-1) return;
-	dBodyAddForceAtRelPos       (Bodies[part], dir.x*val,dir.y*val,dir.z*val,pos.x, pos.y, pos.z);
+	Fvector body_pos;
+	body_pos.set(pos);
+	if(part==0){ body_pos.sub(DynamicData.BoneTransform.c);
+	dBodyAddForceAtRelPos       (Bodies[part], dir.x*val,dir.y*val,dir.z*val,pos.z, pos.y, -pos.x);
+	}
+	else
+		dBodyAddForceAtRelPos       (Bodies[part], dir.x*val,dir.y*val,dir.z*val,pos.x, pos.z, -pos.y);
+	//else		body_pos.sub(DynamicData[part-1].BoneTransform.c);
 	}
 	void Create(dSpaceID space, dWorldID world);
 	void Create1(dSpaceID space, dWorldID world);

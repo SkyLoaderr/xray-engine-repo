@@ -47,7 +47,12 @@ void __stdcall CCar::cb_WheelFL	(CBoneInstance* B)
 	M.rotateX			(deg2rad(-90.f));
 	m.rotateZ			(deg2rad(-90.f));	// ?	2
 	t.mul				(M,m);		// ?			2
-	A.mul				(C->m_jeep.DynamicData[2].BoneTransform,t);
+	/////////////
+	Fmatrix b_t;
+	C->m_jeep.DynamicData[2].InterpolateTransformVsParent(b_t);
+	A.mul(b_t,t);
+	/////////////////
+	//A.mul				(C->m_jeep.DynamicData[2].BoneTransform,t);
 	M2.rotateX			(deg2rad(90.f));
 	m2.rotateZ			(deg2rad(90.f));	// ?	2
 	t.mul				(m2,M2);	// ?			2
@@ -63,7 +68,12 @@ void __stdcall CCar::cb_WheelFR	(CBoneInstance* B)
 	M.rotateX			(deg2rad(90.f));
 	m.rotateZ			(deg2rad(-90.f));	
 	t.mul				(M,m);		
-	A.mul				(C->m_jeep.DynamicData[3].BoneTransform,t);
+	/////////////
+	Fmatrix b_t;
+	C->m_jeep.DynamicData[3].InterpolateTransformVsParent(b_t);
+	A.mul(b_t,t);
+	/////////////////
+	//A.mul				(C->m_jeep.DynamicData[3].BoneTransform,t);
 	M2.rotateX			(deg2rad(-90.f));
 	m2.rotateZ			(deg2rad(90.f));	
 	t.mul				(m2,M2);	
@@ -77,7 +87,12 @@ void __stdcall CCar::cb_WheelBL	(CBoneInstance* B)
 	M.rotateX			(deg2rad(-90.f));
 	m.rotateZ			(deg2rad(-90.f));	// ?	2
 	t.mul				(M,m);		// ?			2
-	A.mul				(C->m_jeep.DynamicData[0].BoneTransform,t);
+		/////////////
+	Fmatrix b_t;
+	C->m_jeep.DynamicData[0].InterpolateTransformVsParent(b_t);
+	A.mul(b_t,t);
+	/////////////////
+	//A.mul				(C->m_jeep.DynamicData[0].BoneTransform,t);
 	M2.rotateX			(deg2rad(90.f));
 	m2.rotateZ			(deg2rad(90.f));	// ?	2
 	t.mul				(m2,M2);	// ?			2
@@ -91,7 +106,12 @@ void __stdcall CCar::cb_WheelBR	(CBoneInstance* B)
 	M.rotateX			(deg2rad(90.f));
 	m.rotateZ			(deg2rad(-90.f));	// ?	2
 	t.mul				(M,m);		// ?			2
-	A.mul				(C->m_jeep.DynamicData[1].BoneTransform,t);
+		/////////////
+	Fmatrix b_t;
+	C->m_jeep.DynamicData[1].InterpolateTransformVsParent(b_t);
+	A.mul(b_t,t);
+	/////////////////
+	//A.mul				(C->m_jeep.DynamicData[1].BoneTransform,t);
 	M2.rotateX			(deg2rad(-90.f));
 	m2.rotateZ			(deg2rad(90.f));	// ?	2
 	t.mul				(m2,M2);	// ?			2
@@ -165,9 +185,15 @@ void	CCar::Update				( u32 T )
 	
 	Fmatrix mY;
 	mY.rotateY		(deg2rad(90.f));
-	mRotate.mul		(m_jeep.DynamicData.BoneTransform,mY);
+	/////////////
+	Fmatrix b_t;
+	m_jeep.DynamicData.InterpolateTransform(b_t);
+	/////////////////
+	//mRotate.mul		(m_jeep.DynamicData.BoneTransform,mY);
+	mRotate.mul		(b_t,mY);
 	mRotate.c.set	(0,0,0);
-	svTransform.mul	(m_jeep.DynamicData.BoneTransform,mY);
+	//svTransform.mul	(m_jeep.DynamicData.BoneTransform,mY);
+	svTransform.mul	(b_t,mY);
 	
 	UpdateTransform					();
 }
@@ -177,7 +203,12 @@ void	CCar::UpdateCL				( )
 	// Transform
 	Fmatrix mY;
 	mY.rotateY			(deg2rad(90.f));
-	clTransform.mul		(m_jeep.DynamicData.BoneTransform,mY);
+	/////////////
+	Fmatrix b_t;
+	m_jeep.DynamicData.InterpolateTransform(b_t);
+	/////////////////
+	//clTransform.mul		(m_jeep.DynamicData.BoneTransform,mY);
+	clTransform.mul		(b_t,mY);
 
 	// Sound
 	Fvector		C,V;
@@ -321,7 +352,8 @@ void	CCar::OnHUDDraw				(CCustomHUD* hud)
 
 
 void CCar::PhDataUpdate(dReal step){
-	m_jeep.DynamicData.CalculateData();
+	//m_jeep.DynamicData.CalculateData();
+	m_jeep.DynamicData.UpdateInterpolationRecursive();
 	m_jeep.LimitWeels();
 	if(m_repairing) m_jeep.Revert();
 
