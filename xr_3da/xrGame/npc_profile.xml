@@ -63,10 +63,6 @@
 		<team>Soldier_sniper</team>
 		<class>Soldier_sniper</class>
 	</character>
-	<character id="soldier_general">
-		<team>Soldier_sniper</team>
-		<class>Soldier_sniper</class>
-	</character>
 	<character id="soldier_veteran">
 		<team>Soldier_specnaz</team>
 		<class>Soldier_specnaz</class>
