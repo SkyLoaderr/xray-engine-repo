@@ -15,10 +15,10 @@ void	R_xforms::flush_cache	()
 	flags		= 0;
 
 	// set mapping
-	if (mapping->c_w)	RCache.constants.set(mapping->c_w,	m_w);
-	if (mapping->c_v)	RCache.constants.set(mapping->c_v,	m_v);
-	if (mapping->c_p)	RCache.constants.set(mapping->c_p,	m_p);
-	if (mapping->c_wv)	RCache.constants.set(mapping->c_wv,	m_wv);
-	if (mapping->c_vp)	RCache.constants.set(mapping->c_vp,	m_vp);
-	if (mapping->c_wvp)	RCache.constants.set(mapping->c_wvp,m_wvp);
+	if (mapping->c_w)	RCache.set_c(mapping->c_w,	m_w);
+	if (mapping->c_v)	RCache.set_c(mapping->c_v,	m_v);
+	if (mapping->c_p)	RCache.set_c(mapping->c_p,	m_p);
+	if (mapping->c_wv)	RCache.set_c(mapping->c_wv,	m_wv);
+	if (mapping->c_vp)	RCache.set_c(mapping->c_vp,	m_vp);
+	if (mapping->c_wvp)	RCache.set_c(mapping->c_wvp,m_wvp);
 }

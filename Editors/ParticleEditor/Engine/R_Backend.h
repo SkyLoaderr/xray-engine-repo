@@ -118,12 +118,19 @@ public:
 	IC  void						set_Geometry		(SGeometry* _geom);
 
 	// constants
-	IC void							set_c				(R_constant* C, const Fmatrix& A)									{ constants.set(C,A);			}
-	IC void							set_c				(R_constant* C, const Fvector4& A)								{ constants.set(C,A);			}
-	IC void							set_c				(R_constant* C, float x, float y, float z, float w)			{ constants.set(C,x,y,z,w);		}
-	IC void							set_ca				(R_constant* C, u32 e, const Fmatrix& A)							{ constants.seta(C,e,A);		}
-	IC void							set_ca				(R_constant* C, u32 e, const Fvector4& A)							{ constants.seta(C,e,A);		}
-	IC void							set_ca				(R_constant* C, u32 e, float x, float y, float z, float w)	{ constants.seta(C,e,x,y,z,w);	}
+	IC void							set_c				(R_constant* C, const Fmatrix& A)									{ if (C)		constants.set(C,A);					}
+	IC void							set_c				(R_constant* C, const Fvector4& A)									{ if (C)		constants.set(C,A);					}
+	IC void							set_c				(R_constant* C, float x, float y, float z, float w)					{ if (C)		constants.set(C,x,y,z,w);			}
+	IC void							set_ca				(R_constant* C, u32 e, const Fmatrix& A)							{ if (C)		constants.seta(C,e,A);				}
+	IC void							set_ca				(R_constant* C, u32 e, const Fvector4& A)							{ if (C)		constants.seta(C,e,A);				}
+	IC void							set_ca				(R_constant* C, u32 e, float x, float y, float z, float w)			{ if (C)		constants.seta(C,e,x,y,z,w);		}
+
+	IC void							set_c				(LPCSTR n, const Fmatrix& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	IC void							set_c				(LPCSTR n, const Fvector4& A)										{ if(ctable)	set_c	(ctable->get(n),A);			}
+	IC void							set_c				(LPCSTR n, float x, float y, float z, float w)						{ if(ctable)	set_c	(ctable->get(n),x,y,z,w);	}
+	IC void							set_ca				(LPCSTR n, u32 e, const Fmatrix& A)									{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	IC void							set_ca				(LPCSTR n, u32 e, const Fvector4& A)								{ if(ctable)	set_ca	(ctable->get(n),e,A);		}
+	IC void							set_ca				(LPCSTR n, u32 e, float x, float y, float z, float w)				{ if(ctable)	set_ca	(ctable->get(n),e,x,y,z,w);	}
 
 	IC	void						Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
 	IC	void						Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC);

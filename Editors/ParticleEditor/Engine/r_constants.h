@@ -75,11 +75,12 @@ struct	R_mapping
 
 class	ENGINE_API R_constant_table
 {
+public:
+	R_mapping				mapping;
 private:
 	typedef svector<R_constant*,32>		c_table;
 
 	c_table					table;
-	R_mapping				mapping;
 
 	void					fatal		(LPCSTR s);
 public:

@@ -104,7 +104,7 @@ IC void CBackend::set_Matrices			(SMatrixList*	_M)
 IC void CBackend::set_Constants			(R_constant_table* C)
 {
 	ctable			= C;
-	if (C)			xforms.set_mapping	(C->mapping);
+	if (C)			xforms.set_mapping	(&C->mapping);
 }
 
 IC void CBackend::set_Element			(ShaderElement* S, u32	pass)
