@@ -55,7 +55,7 @@ CSHSoundEnvTools::~CSHSoundEnvTools()
 
 void CSHSoundEnvTools::OnActivate()
 {
-	if (!psSoundFlags.is(ssHardware|ssFX)){
+	if (!psSoundFlags.is(ssHardware|ssEAX)){
     	Log("#!HARDWARE or FX flags are not set. Preview is disabled.");
     }else{
         m_PreviewSnd->Play	();
