@@ -12,11 +12,13 @@
 #include "..\\rat\\ai_rat.h"
 
 using namespace AI_Biting;
+#define SILENCE
 
 /**
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 /**/
+
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
