@@ -13,7 +13,11 @@ end
 function artifact_merge(merger)
 	log	("artifact merge in actor01!")
 
-	merger:spawn_needles()
+   if merger:get_black_drops_num()>=2  then
+ 		merger:destroy_black_drops(1)
+	end
+
+
 --	if merger:get_mercury_ball_num()==3 and 
 --	   merger:get_black_drops_num()>=2  then
 --			merger:destroy_mercury_ball(1)
