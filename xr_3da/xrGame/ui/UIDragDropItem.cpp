@@ -213,13 +213,15 @@ void CUIDragDropItem::Draw()
 	Irect rect = GetAbsoluteRect();
 	m_UIStaticItem.SetPos(rect.left , rect.top);
 
-	if (m_bInFloat) UI()->PushScissor(UI()->ScreenRect(),true);
+	if (m_bInFloat) 
+		UI()->PushScissor(UI()->ScreenRect(),true);
 
 	m_UIStaticItem.Render();
 	//
 	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
 
-	if (m_bInFloat) UI()->PopScissor();
+	if (m_bInFloat) 
+		UI()->PopScissor();
 }
 
 void CUIDragDropItem::Update()
