@@ -99,7 +99,7 @@ function main()
 		wait()			
 	end
 
-	while stalker1:action() and stalker2:action() do
+	while true do
 		if stalker1:see(actor) or stalker2:see(actor) then
 			printf("script 2!")
 			flush()
@@ -136,6 +136,8 @@ function main()
 		wait()			
 	end
 
+			printf("!!!")
+			flush()
 
 	while stalker1:action() and stalker2:action() do
 	    wait	()
