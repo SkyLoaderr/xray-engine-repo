@@ -6,7 +6,7 @@
 
 states = {
 	-- Дефолтовый
-	idle = {	weapon = "strapped",
+	idle = {	weapon = nil,
 				movement = nil,
 				mental = nil,
 				bodystate = nil,
