@@ -293,6 +293,8 @@ function load_sound(obj)
 	theme["val_ambush_come_here"].types["stalker"] = load_theme("val_ambush_come_here")
 	theme["val_prisoner_captive_help_me"] = { exec = npc_class, types = {}}
 	theme["val_prisoner_captive_help_me"].types["stalker"] = load_theme("val_prisoner_captive_help_me")
+	theme["val_prisoner_captive_come_here"] = { exec = npc_class, types = {}}
+	theme["val_prisoner_captive_come_here"].types["stalker"] = load_theme("val_prisoner_captive_come_here")
 	theme["val_suicide_before_death"] = { exec = npc_class, types = {}}
 	theme["val_suicide_before_death"].types["stalker"] = load_theme("val_suicide_before_death")
 
