@@ -595,7 +595,7 @@ CPracticalPSM::CPracticalPSM()
     m_pRockChunk = NULL;
     m_pClawBot = NULL;
     m_fMinInfinityZ = 1.5f;
-    m_smap_mode = smap_UNIFORM;	//. OLES:
+    m_smap_mode = smap_PSM;		//. OLES:
 
     D3DXMatrixIdentity(&m_World);
     D3DXMatrixIdentity(&m_View);

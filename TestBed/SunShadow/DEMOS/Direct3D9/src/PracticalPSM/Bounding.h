@@ -27,6 +27,23 @@ struct BoundingBox
     }
     void Centroid( D3DXVECTOR3* vec) const { *vec = 0.5f*(minPt+maxPt); }
     void Merge( const D3DXVECTOR3* vec );
+
+	//. OLES:
+	D3DXVECTOR3	point(int id)	const 
+	{		
+		switch (id)
+		{
+		case 0:		return D3DXVECTOR3(minPt.x,minPt.y,minPt.z);
+		case 1:		return D3DXVECTOR3(minPt.x,minPt.y,maxPt.z);
+		case 2:		return D3DXVECTOR3(minPt.x,maxPt.y,maxPt.z);
+		case 3:		return D3DXVECTOR3(minPt.x,maxPt.y,minPt.z);
+		case 4:		return D3DXVECTOR3(maxPt.x,maxPt.y,maxPt.z);
+		case 5:		return D3DXVECTOR3(maxPt.x,maxPt.y,minPt.z);
+		case 6:		return D3DXVECTOR3(maxPt.x,minPt.y,maxPt.z);
+		case 7:		return D3DXVECTOR3(maxPt.x,minPt.y,minPt.z);
+		default:	__assume(0);
+		}
+	}
 };
 
 struct BoundingSphere

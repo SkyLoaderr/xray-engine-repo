@@ -112,60 +112,105 @@ struct	DumbClipper
 };
 
 //////////////////////////////////////////////////////////////////////////
-// OLES: naive 3D convex hull - slow as hell ~O(N^2), and not useful for 
-//		 generic cases, I think. But it works for out simple usages :)
+// OLES: naive builder of infinite volume expanded from base frustum towards 
+//		 light source. really slow, but it works for our simple usage :)
 // note: normals points to 'outside'
 //////////////////////////////////////////////////////////////////////////
-class	DumbConvexHull
+class	DumbConvexVolume
 {
 public:
 	struct	_poly
 	{
-		vector<vector3>	points;
+		vector<int>		points;
 		vector3			planeN;
 		float			planeD;
 
-		float			classify(vector3& p)	{	return D3DXVec3Dot(&planeN,&p)+planeD; 	}
+		float			classify	(vector3& p)	{	return D3DXVec3Dot(&planeN,&p)+planeD; 	}
 	};
-	vector<_poly>		polys;
-public:
-	void				compute	(DumbClipper& dest)
+	struct	_edge
 	{
-		// planes
+		int				p0,p1;
+		int				counter;
+						_edge	(int _p0, int _p1, int m) : p0(_p0), p1(_p1), counter(m){ if (p0>p1)	swap(p0,p1); 	}
+		bool			equal	(_edge& E)												{ return p0==E.p0 && p1==E.p1;	}
+	};
+public:
+	vector<vector3>		points;
+	vector<_poly>		polys;
+	vector<_edge>		edges;
+public:
+	void				compute_planes	()
+	{
 		for (int it=0; it<polys.size(); it++)
 		{
 			_poly&			P	= polys[it];
-			vector3			t1	= P.points[0]-P.points[1], t2 = P.points[0]-P.points[2];
+			vector3			t1	= points[P.points[0]]-points[P.points[1]], t2 = points[P.points[0]]-points[P.points[2]];
 			D3DXVec3Cross		(&P.planeN,&t1,&t2);
 			D3DXVec3Normalize	(&P.planeN,&P.planeN);
-			P.planeD			= -D3DXVec3Dot(&P.planeN,&P.points[0]);
+			P.planeD			= -D3DXVec3Dot(&P.planeN,&points[P.points[0]]);
 		}
+	}
+	void				compute_model	(DumbClipper& dest, vector3 direction)
+	{
+		// COG
+		vector3	cog(0,0,0);
+		for		(int it=0; it<points.size(); it++)	cog+=points[it];
+		cog		/= float(points.size());
 
-		// cycle
-		for (int i=0; i<polys.size(); i++)
+		// planes
+		compute_planes	();
+
+		// remove faceforward polys, build list of edges -> find open ones
+		for (int it=0; it<polys.size(); it++)
 		{
-			_poly&	base		= polys	[i];
-			bool	all_inside	= true;
-			for	(int j=0; j<polys.size(); j++)
+			_poly&	base		= polys	[it];
+			assert	(base.classify(cog)<0);					// debug
+
+			int		marker		= (D3DXVec3Dot(&base.planeN,&direction)<=0)?-1:1;
+
+			// register edges
+			vector<int>&	plist		= polys[it].points;
+			for (int p=0; p<plist.size(); p++)
 			{
-				_poly&	test	= polys	[j];
-				if (j==i)		continue;
-				for (int k=0; k<test.points.size(); k++)
-				{
-					vector3&	v = test.points[k];
-					if (base.classify(v)>_eps)			// point of another poly outside
-						{ all_inside = false; break; }
-				}
-				if (!all_inside)	break;
+				_edge	E		(plist[p],plist[ (p+1)%plist.size() ], marker);
+				bool	found	= false;
+				for (int e=0; e<edges.size(); e++)	
+					if (edges[e].equal(E))	{ edges[e].counter += marker; found=true; break; }
+				if		(!found)	edges.push_back	(E);
 			}
-			if (!all_inside)	{
-				// bad plane, remove
-				polys.erase	(polys.begin()+i);
-				i			--;
+
+			// remove if unused
+			if (marker>0)	{
+				polys.erase(polys.begin()+it);
+				it--;
 			}
 		}
 
-		// transfer
+		// Extend model to infinity, the volume is not capped, so this is indeed up to infinity
+		for (int e=0; e<edges.size(); e++)
+		{
+			if	(edges[e].counter != 0)	continue;
+			_edge&		E		= edges[e];
+			points.push_back	(points[E.p0]-direction);
+			points.push_back	(points[E.p1]-direction);
+			polys.push_back		(_poly());
+			_poly&		P		= polys.back();	
+			P.points.push_back	(E.p0);
+			P.points.push_back	(E.p1);
+			P.points.push_back	(points.size()-1);
+			P.points.push_back	(points.size()-2);
+		}
+
+		// Reorient planes (try to write more inefficient code :)
+		compute_planes	();
+		for (int it=0; it<polys.size(); it++)
+		{
+			_poly&	base				= polys	[it];
+			if (base.classify(cog)>0)	reverse(base.points.begin(),base.points.end());
+		}
+		compute_planes	();
+
+		// Export
 		for (int it=0; it<polys.size(); it++)
 		{
 			_poly&			P	= polys[it];
@@ -186,10 +231,10 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 	ComputeVirtualCameraParameters	();					//. to compute caster/receiver objects
 
 	// Find inverse transform
-	matrix				modelView;
-	matrix				modelViewProjection;
-	matrix				modelViewProjection_inv;
+	matrix				modelView, 	modelView_inv;
+	matrix				modelViewProjection, modelViewProjection_inv;
 	D3DXMatrixMultiply	(&modelView, &m_World, &m_View);
+	D3DXMatrixInverse	(&modelView_inv,0,&modelView);
 	D3DXMatrixMultiply	(&modelViewProjection, &modelView, &m_Projection);
 	D3DXMatrixInverse	(&modelViewProjection_inv,0,&modelViewProjection);
 
@@ -213,69 +258,52 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 	// This is similar to focusing shadowmap to the interesting parts only
 	if (m_bUnitCubeClip)			{
 		// Create convex volume enclosing the primary frustum and extended up to infinity
-		// in the direction inverse to light
-		DumbConvexHull			hull;
-		std::vector<vector3>&	P = points;
+		// in the direction inverse to light's direction. Create simple clipper;
+		DumbClipper				clipper;
+		{
+			// Lets begin from base frustum
+			DumbConvexVolume		hull;
+			static int				facetable[6][4]	= 
+			{
+				{ 0, 3, 5, 7 },
+				{ 1, 2, 3, 0 },
+				{ 6, 7, 5, 4 },
+				{ 4, 2, 1, 6 },
+				{ 3, 2, 4, 5 },
+				{ 1, 0, 7, 6 },
+			};
+			hull.points		= points;
+			for (int plane=0; plane<6; plane++)
+			{
+				hull.polys.push_back(DumbConvexVolume::_poly());
+				for (int pt=0; pt<4; pt++)	hull.polys.back().points.push_back(facetable[plane][pt]);
+			}
 
-		// Lets begin from base frustum
-		int		facetable[6][4]	= 
-		{
-			{ 0, 3, 5, 7 },
-			{ 1, 2, 3, 0 },
-			{ 6, 7, 5, 4 },
-			{ 4, 2, 1, 6 },
-			{ 3, 2, 4, 5 },
-			{ 1, 0, 7, 6 },
-		};
-		for (int plane=0; plane<6; plane++)
-		{
-			hull.polys.push_back(DumbConvexHull::_poly());
-			for (int pt=0; pt<4; pt++)	hull.polys.back().points.push_back(points[facetable[plane][pt]]);
+			// Compute volume
+			hull.compute_model(clipper,m_lightDir);
 		}
 
-		// Now extend this towards the light
-		int		edgetable[12][2]	= 
+		// use shadow casters, clip them agains our volume
+		// approximately linear time
+		// note: Gary stores points in eye-space, we will convert them back to world :)
+		static	int					edgetable [12][2]	= 
 		{
-			{ }, 
+			0,1, 0,3, 1,2, 2,3, 2,4, 3,5, 1,6, 0,7, 4,6, 4,5, 5,7, 7,6
 		};
-
-
-		// use shadow casters
-		// note: actual clipping not implemented, so this is not conservative at all
-		Frustum sceneFrustum		( &modelViewProjection );
 		points.clear				();
+		points.reserve				(m_ShadowCasterPoints.size()*12*2);
 		for (int it=0; it<m_ShadowCasterPoints.size(); it++)
 		{
 			BoundingBox&	bb		= m_ShadowCasterPoints[it];
-			points.push_back		(vector3(bb.minPt.x,bb.minPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.minPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.maxPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.maxPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.minPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.minPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.maxPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.maxPt.y,bb.maxPt.z));
-		}
-		for (int it=0; it<m_ShadowReceiverPoints.size(); it++)
-		{
-			BoundingBox&	bb		= m_ShadowReceiverPoints[it];
-			points.push_back		(vector3(bb.minPt.x,bb.minPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.minPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.maxPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.minPt.x,bb.maxPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.minPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.minPt.y,bb.maxPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.maxPt.y,bb.minPt.z));
-			points.push_back		(vector3(bb.maxPt.x,bb.maxPt.y,bb.maxPt.z));
-		}
-		for (int it=0; it<points.size(); it++)
-		{
-			BoundingSphere	S;
-			S.centerVec		= points[it];
-			S.radius		= 0.f;
-			if (!sceneFrustum.TestSphere(&S))	{
-				points.erase(points.begin()+it);
-				it--;
+			// for (int e=0; e<8; e++)	points.push_back( xform(bb.point(e),modelView_inv) );
+			for (int e=0; e<12; e++)
+			{
+				vector3		p0		= xform(bb.point(edgetable[e][0]),modelView_inv);
+				vector3		p1		= xform(bb.point(edgetable[e][1]),modelView_inv);
+				if (clipper.clip(p0,p1))	{
+					points.push_back(p0);
+					points.push_back(p1);
+				}
 			}
 		}
 	}
@@ -325,13 +353,18 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 		calc_xaabb		(min,max,&*points.begin(),lightview,points.size());
 
 		{
-			float	_z_near			= m_bUnitCubeClip?min.y:ZNEAR_MIN;
-			float	_z_far			= m_bUnitCubeClip?max.y:ZFAR_MAX;
+			float	_z_near			=	ZNEAR_MIN;	//m_bUnitCubeClip?min.y:ZNEAR_MIN;
+			float	_z_far			=	ZFAR_MAX;	//m_bUnitCubeClip?max.y:ZFAR_MAX;
+					//_z_near			= max(_z_near,ZNEAR_MIN);
+					//_z_far			= min(_z_far, ZFAR_MAX);
+
+					// _z_far			= (_z_far-_z_near) + ZNEAR_MIN;
+					// _z_near			= ZNEAR_MIN; 
 
 			//use the formulas of the paper to get n (and f)
 			const float factor		= 1.0f/cosGamma;
 			const float z_n			= factor*_z_near;			//often 1 
-			const float d			= fabsf(_z_far-_z_near);	//(max[1]-min[1]), perspective transform depth //light space y extents
+			const float d			= fabsf(max[1]-min[1]);		//(max[1]-min[1]), perspective transform depth //light space y extents
 			const float z_f			= z_n + d*cosGamma;
 			const float n			= m_fBiasLiSPSM * (z_n+sqrt(z_f*z_n))/cosGamma;
 			const float f			= n+d;

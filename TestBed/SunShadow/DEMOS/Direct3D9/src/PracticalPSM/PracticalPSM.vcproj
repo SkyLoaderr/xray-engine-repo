@@ -192,9 +192,6 @@
 		<File
 			RelativePath="..\..\..\..\Media\programs\PracticalPSM\PracticalPSM.fx">
 		</File>
-		<File
-			RelativePath=".\README.txt">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
