@@ -19,4 +19,4 @@ To OLES :
 -O	resolved	~160 memory operations per frame
 -O	resolved	no particles
 -WT				ни хера не работает (level - cs_test)
--D				зоны глючат постоянно из-за spatial-хрени!
+-D				зоны глючат постоянно из-за spatial-хрени! (game00/single/alife)
