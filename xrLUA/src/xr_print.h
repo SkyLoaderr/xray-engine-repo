@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 
-//extern __declspec(dllexport) char *g_ca_stdout;
-
+#ifndef _EDITOR
+extern __declspec(dllexport) char *g_ca_stdout;
+#endif
 extern void __cdecl xr_printf(FILE *stream, const char *fmt, ...);
 
 #endif

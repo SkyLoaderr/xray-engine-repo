@@ -3,7 +3,9 @@
 
 #include "xr_print.h"
 
-//char *g_ca_stdout	= 0;
+#ifndef _EDITOR
+char *g_ca_stdout	= 0;
+#endif
 
 void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 {
@@ -11,9 +13,12 @@ void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 
 	va_start		(marker,fmt);
 
-//	if (g_ca_stdout)
-//		g_ca_stdout += vsprintf(g_ca_stdout,fmt,marker);
+#ifndef _EDITOR
+	if (g_ca_stdout)
+		g_ca_stdout += vsprintf(g_ca_stdout,fmt,marker);
+#else
 	Msg				(fmt,marker);
+#endif
 
 	va_end			(marker);              
 }
