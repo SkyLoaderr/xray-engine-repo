@@ -2,7 +2,61 @@
 
 <game_information_portions>
 	<info_portion id="actor_start">
+		<location >
+			<level></level>
+			<x>-250</x>
+			<y>-127</y>
+			<icon name="Dealer" x="2" y="2" width="1" height="1"></icon>
+			<text>Bring artefacts to the Dealer</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
+		<dialog>trader_job</dialog>
+		<dialog>trader_talk_about</dialog>
+		<dialog>stalker_talk_about</dialog>
 	</info_portion>
 
+	<info_portion id="actor_start02">
+		<location >
+			<level></level>
+			<object>quest_case_01</object>
+			<icon name="ƒипломат" x="2" y="8" width="1" height="1"></icon>
+			<text>”кради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="actor_start04">
+		<location >
+			<level></level>
+			<object>quest_case_02</object>
+			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<text>Steal the case...</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="trader_start2">
+		<dialog>job_box</dialog>
+	
+		<location >
+			<level></level>
+			<object>quest_case_01</object>
+			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+			<text>Steal the case...</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="trader_start4">
+		<dialog>job_box02</dialog>
+	</info_portion>
+
+	<info_portion id="trader_start5">
+	</info_portion>
+
+	<info_portion id="job_box_finished">
+	<disable>trader_start2</disable>
+	</info_portion>
+
+	<info_portion id="job_box02_finished">
+	<disable>trader_start4</disable>
+	</info_portion>
 
 </game_information_portions>
