@@ -796,10 +796,10 @@ function vector_rotate_y (v, angle)
     return vector ():set (v.x * c - v.z * s, v.y, v.x * s + v.z * c)
 end
 
--- очистка таблицv
+-- очистка таблицы
 function clear_table (t)
-    while table.getn (t) do
-          table.remove (t, 1)
+    while table.getn (t) > 0 do
+          table.remove (t, table.getn (t))
     end
 end
 
