@@ -4,7 +4,7 @@
 #include "resource.h"
 #include "log.h"
 
-static const char *		logFName		= "engine.log";
+static string64			logFName		= "engine.log";
 static HWND				logWindow		= NULL;
 static HWND				logoWindow		= NULL;
 static HWND				logControl		= NULL;
@@ -22,8 +22,8 @@ void AddOne				(const char *split)
 
 	FILE	*f = fopen	(logFName, "at");
 	if (f) {
-		fprintf				(f, "%s\n", split);
-		fclose				(f);
+		fprintf			(f, "%s\n", split);
+		fclose			(f);
 	}
 
 	LogFile.push_back	(split);
@@ -142,6 +142,11 @@ static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 
 void CreateLog(BOOL bQuiet)
 {
+	string64 user;
+	DWORD	sz_user		= sizeof(user);
+	GetUserName			(user,&sz_user);
+	strconcat			(logFName,"engine_",strlwr(user),".log");
+
 	FILE *f;
 	f = fopen(logFName, "wt");
 	if (f==NULL) abort();
