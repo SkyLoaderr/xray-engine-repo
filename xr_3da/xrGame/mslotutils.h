@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef XRGAME_EXPORTS
+#if XRGAME_EXPORTS | XRSE_FACTORY_EXPORTS
 #	define	_memcpy Memory.mem_copy
 #	define	_memset Memory.mem_fill
 #	define	_strlen xr_strlen
