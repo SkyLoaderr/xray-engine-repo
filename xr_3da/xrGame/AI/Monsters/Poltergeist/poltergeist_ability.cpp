@@ -25,22 +25,31 @@ void CPoltergeist::PhysicalImpulse(const Fvector &position)
 
 void CPoltergeist::StrangeSounds(const Fvector &position)
 {
-	//Fvector dir;
-	//dir.random_dir(position);
+	if (m_strange_sound.feedback) return;
+	
+	Fvector dir;
+	dir.random_dir();
 
-	//Collide::rq_result	l_rq;
-	//if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, Collide::rqtStatic, l_rq)) {
-	//	if (l_rq.range < TRACE_DISTANCE) {
-	//		
-	//		// Получить материал
-	//		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + l_rq.element;
-	//		u16 material_idx	= pTri->material;
-	//		SGameMtl* mtl		= GMLib.GetMaterialByIdx(material_idx);
-	//								
-	//			
-	//		
-	//		SGameMtlPair* mtl_pair		= pMonster->CMaterialManager::get_current_pair();
-	//	}
-	//}
+	Collide::rq_result	l_rq;
+	if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, Collide::rqtStatic, l_rq)) {
+		if (l_rq.range < TRACE_DISTANCE) {
+			
+			// Получить пару материалов
+			CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris() + l_rq.element;
+			SGameMtlPair* mtl_pair = GMLib.GetMaterialPair(CMaterialManager::self_material_idx(),pTri->material);
+			if (!mtl_pair) return;
+
+			// Играть звук
+			if (!mtl_pair->CollideSounds.empty()) {
+				SELECT_RANDOM(m_strange_sound, mtl_pair, CollideSounds);
+				
+				Fvector pos;
+				pos.mad(position, dir, ((l_rq.range - 0.1f > 0) ? l_rq.range - 0.1f  : l_rq.range));
+				m_strange_sound.play_at_pos(this,pos);
+			}			
+
+
+		}
+	}
 }
 

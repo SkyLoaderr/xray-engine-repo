@@ -64,6 +64,8 @@ public:
 			void	PhysicalImpulse		(const Fvector &position);
 
 			void	StrangeSounds		(const Fvector &position);
+			
+			ref_sound m_strange_sound;
 
 	
 
