@@ -799,6 +799,9 @@
 				Name="scripts"
 				Filter="">
 				<File
+					RelativePath=".\Config\scripts\dummy.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\esc_trader.ltx">
 				</File>
 				<File
