@@ -62,8 +62,8 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 				*pWallmarkShader,
 				vEnd,
 				fWallmarkSize,
-				Level().ObjectSpace.GetStaticTris()+R.element,
-				Level().ObjectSpace.GetStaticVerts());
+				pTri,
+				pVerts);
 		}
 	}		
 	
@@ -132,7 +132,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 	else
 	{
 		//получить треугольник и узнать его материал
-		CDB::TRI* T	= Level().ObjectSpace.GetStaticTris()+result.element;
+		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
 		hit_material_id = T->material;
 		pThisWeapon->StaticObjectHit(result, hit_material_id);
 	}

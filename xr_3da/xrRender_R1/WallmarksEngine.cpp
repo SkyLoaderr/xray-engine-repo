@@ -179,9 +179,10 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		if (0==triCount)	return;
 		CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 		sml_collector.clear	();
-		// sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
+		sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
 		for (u32 t=0; t<triCount; t++)	{
 			CDB::TRI*	T	= tris+xrc.r_begin()[t].id;
+			if (T==pTri)	continue;
 			sml_collector.add_face_packed_D		(pVerts[T->verts[0]],pVerts[T->verts[1]],pVerts[T->verts[2]],0);
 		}
 		sml_collector.calc_adjacency	(sml_adjacency);

@@ -41,7 +41,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 		IReader *O = 0;
 
 		// Load WayPoints
-		if (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK))) { 
+		if (ai().get_level_graph() && (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK)))) { 
 			int chunk = 0;
 			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
 				R_ASSERT			(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
