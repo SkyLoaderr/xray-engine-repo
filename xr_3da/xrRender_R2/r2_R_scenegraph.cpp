@@ -61,7 +61,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	_MatrixItem *it =L.begin(), *end	= L.end();
 	for (; it!=end; it++)
 	{
-		_MatrixItem&	I		= N->val;
+		_MatrixItem&	I		= *it;
 		IVisual			*V		= I.pVisual;
 		RCache.set_xform_world	(I.Matrix);
 		V->Render				(0);	// zero lod 'cause it is too small onscreen
