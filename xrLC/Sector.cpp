@@ -46,7 +46,7 @@ void CSector::BuildHierrarhy	()
 	// calc scene BB
 	Fbox&		scene_bb		= pBuild->scene_bb;
 	scene_bb.invalidate			();
-	for (int I=0; I<g_tree.size(); I++)
+	for (int I=0; I<s32(g_tree.size()); I++)
 		scene_bb.merge			(g_tree[I]->bbox);
 
 	// 
@@ -144,10 +144,4 @@ void CSector::Save(IWriter &fs)
 
 	// Portals
 	fs.w_chunk(fsP_Portals,&*Portals.begin(),Portals.size()*sizeof(WORD));
-
-	// Glows
-	fs.w_chunk(fsP_Glows,&*Glows.begin(),Glows.size()*sizeof(WORD));
-
-	// Lights
-	fs.w_chunk(fsP_Lights,&*Lights.begin(),Lights.size()*sizeof(WORD));
 }
