@@ -10,6 +10,14 @@ CStatGraph::CStatGraph()
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	hGeom.create				(FVF::F_TL0uv,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+	mn					= 0;
+	mx					= 0;
+	max_item_count		= 0;
+	lt.set				(0,0);
+	rb.set				(0,0);
+	grid.set			(0,0);
+	grid_color			= 0xFF000000;
+	rect_color			= 0xFF000000;
 }
 
 CStatGraph::~CStatGraph()
