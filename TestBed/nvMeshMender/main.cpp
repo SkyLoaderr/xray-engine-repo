@@ -85,7 +85,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 {
 	// Gauss filtering coeffs
 	const int	n	= 7;		// kernel size
-	const float r	= 10.3f;		// gaussian radius
+	const float r	= 3.3f;		// gaussian radius
 	const float t	= 1;		// grid dimension
 	const float bs	= 1.2f;		// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
 
