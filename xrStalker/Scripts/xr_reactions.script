@@ -427,7 +427,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 
 		if continue then
                         if is_object_online(so:id()) then
-				so_id = so:clsid()
+				so_id = get_clsid(so)
 			else
 				continue = false
 			end
@@ -526,7 +526,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 
 		if continue then
                         if is_object_online(vo:id()) then
-				vo_id = vo:clsid()
+				vo_id = get_clsid(vo)
 			else
 				continue = false
 			end
@@ -818,7 +818,7 @@ function events:print()
 	end
 end
 function events:type(obj)
-	local otype = obj:clsid()
+	local otype = get_clsid(obj)
 	local type
 
 	if 	otype == clsid.actor or
@@ -906,7 +906,7 @@ function events:type(obj)
 	return type
 end
 function events:corpseType(obj)
-	local otype = obj:clsid()
+	local otype = get_clsid(obj)
 	local type
 
 	if 	otype == clsid.actor or
@@ -938,7 +938,7 @@ function events:corpseType(obj)
 	return type
 end
 function events:monstr_power(obj)
-	local otype = obj:clsid()
+	local otype = get_clsid(obj)
 
 	if	otype == clsid.zombie or
 		otype == clsid.flesh or
@@ -959,7 +959,7 @@ function events:monstr_power(obj)
 	end
 end
 function events:item_power(obj)
-	local otype = obj:clsid()
+	local otype = get_clsid(obj)
 
 	if	otype == clsid.wpn_fn2000 or
 		otype == clsid.wpn_ak74 or
@@ -1010,7 +1010,7 @@ function events:item_power(obj)
 	end
 end
 function events:isTrash(obj)
-	local otype = obj:clsid()
+	local otype = get_clsid(obj)
 
 	if	otype == clsid.obj_physic or
 		otype == clsid.obj_breakable or
