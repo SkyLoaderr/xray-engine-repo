@@ -579,37 +579,67 @@ void CPHWorld::Destroy(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-static dReal rest=0.f;
+static dReal frame_time=0.f;
 const int dis_frames=11;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
-	///return;
-
 
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
-	const dReal max_step=0.02f;//0.0034f;
+	//const dReal max_step=0.02f;//0.0034f;
 	//const dReal min_step=0.005f;
 	const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	const dReal k_d=400000.f;
-	//if(step>0.019){
-	//step=0.03f;
+	UINT it_number;
+	const dReal fixed_step=0.02f;
+	frame_time+=step;
 
+	if(!(frame_time<fixed_step)){
+	it_number=(UINT)(frame_time/step);
+	frame_time-=it_number*fixed_step;
+	}
+	else return;
+
+
+			for(UINT i=0; i<it_number;i++)
+		{
+			disable_count++;	
+			if(disable_count==dis_frames+1) disable_count=0;
+
+					
+			dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
+			dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
+
+//			dWorldSetERP(phWorld,  0.2);
+//			dWorldSetCFM(phWorld,  0.0001);
+
+			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhTune(fixed_step);	
+
+			dSpaceCollide(Space, 0, &NearCallback); 
+		
+
+			dWorldStep(phWorld, fixed_step);
+			
+		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhDataUpdate(fixed_step);
+			dJointGroupEmpty(ContactGroup);
+	
+		
+
+		}
+	
+/*
 	if(step<=max_step){
 			
 	disable_count++;	
 	if(disable_count==dis_frames+1) disable_count=0;
-		//if((step+=rest)<min_step) return ;
-		//rest=0;
+
 		
 			dWorldSetERP(phWorld,  step*k_p / (step*k_p + k_d));
 			dWorldSetCFM(phWorld,  1.f / (step*k_p + k_d));
-			//dWorldSetERP(phWorld,  0.8);
-			//dWorldSetCFM(phWorld,  0.00001);
-
-//			Jeep.JointTune(step);
-
+	
 			
 			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhTune(step);	
@@ -617,14 +647,14 @@ void CPHWorld::Step(dReal step)
 			
 			dSpaceCollide(Space, 0, &NearCallback);
 		
-			/*
-			if(isShooting&&bulletContact.geom.pos[0]!=dInfinity){
-				dJointID c = dJointCreateContact(phWorld, ContactGroup, &bulletContact);
-				dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
-				
-				}
 			
-		*/
+			//if(isShooting&&bulletContact.geom.pos[0]!=dInfinity){
+			//	dJointID c = dJointCreateContact(phWorld, ContactGroup, &bulletContact);
+			//	dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
+				
+			//	}
+			
+		
 			
 	
 
@@ -672,6 +702,7 @@ void CPHWorld::Step(dReal step)
 //Jeep.DynamicData.CalculateData();
 //	}
 //step=0.f;
+*/
 }
 
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
