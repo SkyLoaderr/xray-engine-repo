@@ -52,7 +52,6 @@ protected:
 
 public:
 #ifdef AI_COMPILER
-	IC						CGameLevelCrossTable	(){};
 	IC						CGameLevelCrossTable	(LPCSTR fName);
 #else
 	IC						CGameLevelCrossTable	();

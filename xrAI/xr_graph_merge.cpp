@@ -87,10 +87,11 @@ public:
 			(*I).tNeighbourCount	= m_tpGraph->vertex(int(I - B)).edge_count();
 			CGameGraph::const_iterator	b,i,e;
 			m_tpGraph->begin		(int(I - B),i,e);
+			(*I).tpaEdges			= (CGameGraph::CEdge*)xr_malloc((*I).tNeighbourCount*sizeof(CGameGraph::CEdge));
 			b						= i;
 			for ( ; i != e; ++i) {
-				(*I).tpaEdges[b - i]	= *i;
-				(*I).tpaEdges[b - i].dwVertexNumber += dwOffset;
+				(*I).tpaEdges[i - b]	= *i;
+				(*I).tpaEdges[i - b].dwVertexNumber += dwOffset;
 			}
 			(*I).dwPointOffset		= 0;
 			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,l_tpAI_Map,(*I).tDeathPointCount);
@@ -110,21 +111,21 @@ public:
 				tCrossTableUpdate[i].tGraphIndex += dwOffset;
 			}
 
-			CMemoryWriter			tMemoryStream;
-			CGameLevelCrossTable	tCrossTable;
+			CMemoryWriter					tMemoryStream;
+			CGameLevelCrossTable::CHeader	tCrossTableHeader;
 
-			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
-			tCrossTable.m_tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
+			tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+			tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
+			tCrossTableHeader.dwGraphPointCount = tpCrossTable->m_tCrossTableHeader.dwGraphPointCount;
 
 			xr_delete			(tpCrossTable);
 
 			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-			tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+			tMemoryStream.w(&tCrossTableHeader,sizeof(tCrossTableHeader));
 			tMemoryStream.close_chunk();
 
 			tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
-			for (int i=0; i<(int)tCrossTable.m_tCrossTableHeader.dwNodeCount; i++)
+			for (int i=0; i<(int)tCrossTableHeader.dwNodeCount; i++)
 				tMemoryStream.w(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
 			tMemoryStream.close_chunk();
 

@@ -135,15 +135,15 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 	Progress			(1.f);
 	
 	Phase				("Saving cross table");
-	CMemoryWriter			tMemoryStream;
-	CGameLevelCrossTable	tCrossTable;
+	CMemoryWriter					tMemoryStream;
+	CGameLevelCrossTable::CHeader	tCrossTableHeader;
 	
-	tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
-	tCrossTable.m_tCrossTableHeader.dwNodeCount = iNodeCount;
-	tCrossTable.m_tCrossTableHeader.dwGraphPointCount = iVertexCount;
+	tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
+	tCrossTableHeader.dwNodeCount = iNodeCount;
+	tCrossTableHeader.dwGraphPointCount = iVertexCount;
 	
 	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_VERSION);
-	tMemoryStream.w(&tCrossTable.m_tCrossTableHeader,sizeof(tCrossTable.m_tCrossTableHeader));
+	tMemoryStream.w(&tCrossTableHeader,sizeof(tCrossTableHeader));
 	tMemoryStream.close_chunk();
 	
 	tMemoryStream.open_chunk(CROSS_TABLE_CHUNK_DATA);
