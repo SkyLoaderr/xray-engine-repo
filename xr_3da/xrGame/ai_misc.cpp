@@ -1474,7 +1474,7 @@ float CAI_Space::ffFindFarthestNodeInDirection(u32 dwStartNode, Fvector tStartPo
 	return(fCurDistance);
 }
 
-bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes)
+bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, vector<Fvector> &tpaOutputPoints, vector<u32> &tpaOutputNodes, bool bAddFirstPoint)
 {
 	PContour				tCurContour;
 	NodeCompressed			*tpNode;
@@ -1486,8 +1486,10 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 
 	tpaOutputPoints.clear	();
 	tpaOutputNodes.clear	();
-	tpaOutputPoints.push_back(tStartPoint);
-	tpaOutputNodes.push_back(dwStartNode);
+	if (bAddFirstPoint) {
+		tpaOutputPoints.push_back(tStartPoint);
+		tpaOutputNodes.push_back(dwStartNode);
+	}
 
 	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
 		tpNode				= Node(dwCurNode);
@@ -1537,7 +1539,6 @@ bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, F
 					break;
 				}
 			}
-			return(false);
 		}
 	}
 
