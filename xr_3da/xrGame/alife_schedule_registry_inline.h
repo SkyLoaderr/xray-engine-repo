@@ -10,15 +10,6 @@
 
 IC	void CALifeScheduleRegistry::update		()
 {
-#ifdef _DEBUG
-	_REGISTRY::const_iterator	I = objects().begin();
-	_REGISTRY::const_iterator	E = objects().end();
-	for ( ; I != E; ++I) {
-		CSE_ALifeObject			*alife_object = dynamic_cast<CSE_ALifeObject*>((*I).second);
-		VERIFY					(alife_object);
-		VERIFY3					(!alife_object->m_bOnline,alife_object->s_name,alife_object->s_name_replace);
-	}
-#endif
 	u32							count = objects().empty() ? 0 : inherited::update(CUpdatePredicate());
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
