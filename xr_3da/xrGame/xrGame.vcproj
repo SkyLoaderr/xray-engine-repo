@@ -35,7 +35,6 @@
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="1"
-				BrowseInformationFile=""
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
@@ -46,11 +45,12 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
+				AdditionalDependencies="odeN_D.lib  odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
 				ShowProgress="0"
 				OutputFile="x:\game/xrGame.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="&quot;C:\SDK\odeLast\!ode-dll\lib&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\game/xrGame.pdb"
 				ImportLibrary="x:\game/xrGame.lib"/>
@@ -179,10 +179,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib drawstuff.lib ode.lib"
 				OutputFile="x:\game/xrGame.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="&quot;C:\SDK\odeLast\!ode-dll\lib&quot;"
 				GenerateDebugInformation="TRUE"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\game\xrGame.map"
@@ -993,6 +994,44 @@
 			<File
 				RelativePath=".\Spawn_Event.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="Physics"
+			Filter="">
+			<File
+				RelativePath="PHDynamicData.cpp">
+			</File>
+			<File
+				RelativePath="PHDynamicData.h">
+			</File>
+			<File
+				RelativePath="Physics.cpp">
+			</File>
+			<File
+				RelativePath="Physics.h">
+			</File>
+			<Filter
+				Name="Tri-Collider"
+				Filter="">
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dxTriList.h">
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Shedule.txt">
