@@ -208,10 +208,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 
 void CAI_Rat::net_Import(NET_Packet& P)
 {
-	if (Level().game.type != GAME_SINGLE)
-		R_ASSERT				(Remote());
-	else
-		R_ASSERT				(Local());
+	R_ASSERT				(Remote());
 	net_update				N;
 
 	u8 flags;

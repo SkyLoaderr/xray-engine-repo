@@ -22,18 +22,22 @@ CAI_ALife::~CAI_ALife()
 	shedule_Unregister	();
 }
 
-void CAI_ALife::vfInitTerrain()
+
+float CAI_ALife::shedule_Scale()
 {
-	m_tpTerrain.resize(LOCATION_COUNT);
-	{
-		GRAPH_VECTOR_IT		I = m_tpTerrain.begin();
-		GRAPH_VECTOR_IT		E = m_tpTerrain.end();
-		for ( ; I != E; I++)
-			(*I).clear();
-	}
-	for (_GRAPH_ID i=0; i<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; i++)
-		m_tpTerrain[m_tpaGraph[i].tVertexType].push_back(i);
+	return(.5f);
 }
+
+BOOL CAI_ALife::Ready()
+{
+	return(TRUE);
+}
+
+LPCSTR CAI_ALife::cName()
+{
+	return("ALife Simulator");
+}; 
+
 
 void CAI_ALife::vfNewGame()
 {
@@ -101,8 +105,8 @@ void CAI_ALife::Load()
 
 #ifdef USE_SINGLE_PLAYER
 	FILE_NAME					caFileName;
+	CStream						*tpStream;
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
-		CStream					*tpStream;
 		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
 		tpStream				= Engine.FS.Open(caFileName);
 		Log						("* Loading spawn registry");
@@ -120,7 +124,6 @@ void CAI_ALife::Load()
 	CALifeEventRegistry::Load	(*tpStream);
 	CALifeTaskRegistry::Load	(*tpStream);
 	vfUpdateDynamicData			();
-	vfInitTerrain				();
 
 	m_bLoaded = true;
 #endif

@@ -47,14 +47,14 @@ void CAI_ALife::Update(u32 dt)
 			for (I = M ; I != E; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_dwObjectsBeingSwitched = I - B;
+					m_dwObjectsBeingSwitched = I - B + 1;
 					return;
 				}
 			}
 			for (I = B; I != M; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
-					m_dwObjectsBeingSwitched = I - B;
+					m_dwObjectsBeingSwitched = I - B + 1;
 					return;
 				}
 			}
@@ -74,14 +74,14 @@ void CAI_ALife::Update(u32 dt)
 				for (I = M ; I != E; I++, i++) {
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
-						m_dwObjectsBeingProcessed = I - B;
+						m_dwObjectsBeingProcessed = I - B + 1;
 						return;
 					}
 				}
 				for (I = B; I != M; I++, i++) {
 					vfProcessNPC			(*I);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
-						m_dwObjectsBeingProcessed = I - B;
+						m_dwObjectsBeingProcessed = I - B + 1;
 						return;
 					}
 				}

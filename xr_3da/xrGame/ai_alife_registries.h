@@ -70,7 +70,7 @@ public:
 			// create entity
 			xrServerEntity			*tpServerEntity = F_entity_Create	(s_name);
 			R_ASSERT2				(tpServerEntity,"Can't create entity.");
-			CALifeDynamicObject			*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+			CALifeDynamicObject		*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 			R_ASSERT				(tpALifeDynamicObject);
 			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
@@ -200,17 +200,29 @@ public:
 class CALifeGraphRegistry : public CALifeGraph {
 public:
 	typedef CALifeGraph	inherited;
-	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
-															//  динамические объекты
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
-	CALifeDynamicObject					*m_tpActor;
+	CALifeDynamicObject				*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
+	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
+	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
+															//	местности получить список точек 
+															//  графа
 
 	void							Init()
 	{
 		FILE_NAME					caFileName;
 		strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
 		inherited::Load				(caFileName);
+
+		m_tpTerrain.resize(LOCATION_COUNT);
+		{
+			GRAPH_VECTOR_IT		I = m_tpTerrain.begin();
+			GRAPH_VECTOR_IT		E = m_tpTerrain.end();
+			for ( ; I != E; I++)
+				(*I).clear();
+		}
+		for (_GRAPH_ID i=0; i<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; i++)
+			m_tpTerrain[m_tpaGraph[i].tVertexType].push_back(i);
 
 		m_tpGraphObjects.resize		(CALifeGraph::Header().dwVertexCount);
 		{
