@@ -205,11 +205,6 @@ void CWeaponFakeGrenade::PH_A_CrPr			()
 {
 }
 
-void CWeaponFakeGrenade::OnH_A_Chield		()
-{
-	CExplosive::OnH_A_Chield		();
-}
-
 void CWeaponFakeGrenade::activate_physic_shell	()
 {
 	CObject		*E = dynamic_cast<CObject*>(H_Parent());
@@ -239,19 +234,4 @@ void CWeaponFakeGrenade::activate_physic_shell	()
 void CWeaponFakeGrenade::create_physic_shell	()
 {
 	create_box2sphere_physic_shell();
-}
-
-void CWeaponFakeGrenade::setup_physic_shell		()
-{
-	CExplosive::setup_physic_shell		();
-}
-
-void CWeaponFakeGrenade::reinit			()
-{
-	CExplosive::reinit			();
-}
-
-void CWeaponFakeGrenade::reload			(LPCSTR section)
-{
-	CExplosive::reload			(section);
 }

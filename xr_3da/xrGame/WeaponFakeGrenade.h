@@ -66,10 +66,6 @@ public:
 	virtual void			PH_B_CrPr				(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr				(); // actions & operations after correction before prediction steps
 	virtual void			PH_A_CrPr				(); // actions & operations after phisic correction-prediction steps
-	virtual void			OnH_A_Chield			();
-	virtual	void			reinit					();
-	virtual	void			reload					(LPCSTR section);
 	virtual void			activate_physic_shell	();
-	virtual void			setup_physic_shell		();
 	virtual void			create_physic_shell		();
 };

@@ -565,9 +565,6 @@ void CWeapon::OnH_B_Independent	()
 
 	hud_mode					= FALSE;
 	UpdateXForm					();
-
-//	if (m_pPhysicsShell)
-//		activate_physic_shell	();
 }
 
 

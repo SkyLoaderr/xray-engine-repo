@@ -34,6 +34,7 @@
 #include "trade.h"
 #include "actor.h"
 #include "ai_script_processor.h"
+#include "attachable_item.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -1003,6 +1004,7 @@ extern "C" {
 			case CLSID_IITEM_BOTTLE:		P = xr_new<CBottleItem>();			break;
 			//Info Document
 			case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
+			case CLSID_IITEM_ATTACH:		P = xr_new<CAttachableItem>();		break;
 
 			//Equipment outfit
 			case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;
