@@ -60,6 +60,7 @@ bool CParticleMain::CommandExt(int _Command, int p1, int p2)
     case COMMAND_PLAY_CURRENT:
     	PTools->PlayCurrent();
     	break;
+//------        
     case COMMAND_REFRESH_UI_BAR:
         fraTopBar->RefreshBar	();
         fraLeftBar->RefreshBar	();
@@ -81,6 +82,7 @@ bool CParticleMain::CommandExt(int _Command, int p1, int p2)
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
     	break;
+//------
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
