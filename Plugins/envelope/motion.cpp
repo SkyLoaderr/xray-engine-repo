@@ -119,20 +119,13 @@ bool COMotion::Load(CStream& F){
 
 
 
-
-
-
-
-
-
-
 //------------------------------------------------------------------------------------------
 // Skeleton Motion
 //------------------------------------------------------------------------------------------
 CSMotion::CSMotion():CCustomMotion(){
 	mtype			=mtSkeleton;
     cStartBone[0] 	=0;
-	cDirectBone[0]	=0;
+	cBonePart[0]	=0;
     bFX				=FALSE;
 	bStopAtEnd		=FALSE;
     fSpeed			=1.0f;
@@ -193,7 +186,7 @@ void CSMotion::Save(CFS_Base& F){
 #endif
 	F.Wword		(EOBJ_SMOTION_VERSION);
 	F.WstringZ	(cStartBone);
-	F.WstringZ	(cDirectBone);
+	F.WstringZ	(cBonePart);
     F.Wbyte		(bFX);
     F.Wbyte		(bStopAtEnd);
     F.Wfloat	(fSpeed);
@@ -217,7 +210,7 @@ bool CSMotion::Load(CStream& F){
 	WORD vers	= F.Rword();
 	if (vers!=EOBJ_SMOTION_VERSION) return false;
 	F.RstringZ	(cStartBone);
-	F.RstringZ	(cDirectBone);
+	F.RstringZ	(cBonePart);
     bFX			= F.Rbyte();
     bStopAtEnd	= F.Rbyte();
     fSpeed		= F.Rfloat();

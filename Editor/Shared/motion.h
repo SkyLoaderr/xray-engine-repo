@@ -97,7 +97,7 @@ class CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
 	char			cStartBone[MAX_OBJ_NAME];
-	char			cDirectBone[MAX_OBJ_NAME];
+	char			cBonePart[MAX_OBJ_NAME];
     BOOL			bFX;
 	BOOL			bStopAtEnd;
     float			fSpeed;
@@ -113,10 +113,10 @@ public:
 
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
 	void			SetStartBone	(const char* n)	{if(n) strcpy(cStartBone,n);strlwr(cStartBone);}
-	void			SetDirectBone	(const char* n)	{if(n) strcpy(cDirectBone,n);strlwr(cDirectBone);}
+	void			SetBonePart		(const char* n)	{if(n) strcpy(cBonePart,n);strlwr(cBonePart);}
 	const char*		GetRootBone		()				{return bone_mots.empty()?0:bone_mots[0].name;}
 	DWORD			GetMotionFlag	(int bone_idx)	{return bone_mots[bone_idx].flag;}
-    
+
 	virtual void	Save			(CFS_Base& F);
 	virtual bool	Load			(CStream& F);
 
