@@ -406,7 +406,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectBreakable)
 #define script_type_list save_type_list(CSE_ALifeObjectBreakable)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectClimable,CSE_Shape,CSE_ALifeObject)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectClimable,CSE_Shape,CSE_ALifeDynamicObject)
 CSE_ALifeObjectClimable	(LPCSTR caSection);
 virtual							~CSE_ALifeObjectClimable	();
 virtual bool					used_ai_locations	() const;

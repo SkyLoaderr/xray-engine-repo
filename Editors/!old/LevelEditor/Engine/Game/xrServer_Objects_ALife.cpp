@@ -1456,7 +1456,7 @@ bool CSE_ALifeObjectBreakable::can_switch_offline	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectClimable
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectClimable::CSE_ALifeObjectClimable	(LPCSTR caSection) : CSE_Shape(), CSE_ALifeObject(caSection)
+CSE_ALifeObjectClimable::CSE_ALifeObjectClimable	(LPCSTR caSection) : CSE_Shape(), CSE_ALifeDynamicObject(caSection)
 {
 	//m_health					= 100.f;
 	//m_flags.set					(flUseSwitches,FALSE);
@@ -1475,7 +1475,9 @@ ISE_Shape* CSE_ALifeObjectClimable::shape					()
 void CSE_ALifeObjectClimable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	//inherited1::STATE_Read		(tNetPacket,size);
-	if(m_wVersion>98)
+	if(m_wVersion==99)
+		CSE_ALifeObject::STATE_Read		(tNetPacket,size);
+	if(m_wVersion>99)
 		inherited2::STATE_Read		(tNetPacket,size);
 	cform_read(tNetPacket);
 }
