@@ -17,6 +17,7 @@ struct CLoader {
 		template <bool a>
 		IC	static void load_data(T &data, M &stream, const P &p)
 		{
+			STATIC_CHECK				(object_type_traits::is_pod_type<T>::value,Cannot_load_non_pod_types_as_binary_data);
 			stream.r					(&data,sizeof(T));
 		}
 
@@ -118,7 +119,7 @@ struct CLoader {
 
 	IC	static void load_data(LPCSTR &data, M &stream, const P &p)
 	{
-		STATIC_CHECK					(false,Cannot_load_const_char_star);
+		NODEFAULT;
 	}
 
 	IC	static void load_data(LPSTR &data, M &stream, const P &p)
