@@ -80,7 +80,6 @@ function set_dialog_thank(first_speaker, second_speaker)
 	first_speaker:set_start_dialog("escape_novice_thank_actor")
 end
 
-
 -- Trader
 function have_blockpost_case(first_speaker, second_speaker)
 	return( first_speaker:object("quest_case_01") ~= nil )
@@ -119,4 +118,8 @@ function trader_dont_has_job(first_speaker, second_speaker)
 		return true
 	end
 	return false
+end
+function blockpost_case_progress()
+-- task.completed - задание (цель выполнена) task.in_progress - в стадии выполнения task.fail - провалено
+	return task.in_progress
 end
