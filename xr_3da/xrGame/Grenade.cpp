@@ -7,7 +7,7 @@
 #include "..\PGObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
-void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
+static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
 	if(_abs(n.z) > INVSQRT2) {
 		FLOAT a = n.y * n.y + n.z * n.z;
 		FLOAT k = 1.f / _sqrt(a);

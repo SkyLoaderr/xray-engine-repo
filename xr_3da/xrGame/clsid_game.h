@@ -61,6 +61,9 @@
 #define CLSID_OBJECT_W_SVU			MK_CLSID('W','_','S','V','U',' ',' ',' ')
 #define CLSID_OBJECT_W_RPG7			MK_CLSID('W','_','R','P','G','7',' ',' ')
 #define CLSID_OBJECT_W_VAL			MK_CLSID('W','_','V','A','L',' ',' ',' ')
+#define CLSID_OBJECT_W_VINTOREZ		MK_CLSID('W','_','V','I','N','T',' ',' ')
+#define CLSID_OBJECT_W_WALTHER		MK_CLSID('W','_','W','A','L','T','H','R')
+#define CLSID_OBJECT_W_USP45		MK_CLSID('W','_','U','S','P','4','5',' ')
 
 // Weapons Ammo
 #define CLSID_OBJECT_A_M134			MK_CLSID('A','_','M','1','3','4',' ',' ')

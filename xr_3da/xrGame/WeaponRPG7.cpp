@@ -7,7 +7,7 @@
 #include "..\PGObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
-void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
+static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
 	if(_abs(n.z) > INVSQRT2) {
 		FLOAT a = n.y * n.y + n.z * n.z;
 		FLOAT k = 1.f / _sqrt(a);
@@ -419,7 +419,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 
 void CWeaponRPG7Grenade::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
 	string256	name,temp;
-	strconcat	(name,"weapons\\","rpg_grenade","_",s_name,".wav");
+	strconcat	(name,"weapons\\","rpg7","_",s_name,".wav");
 	if (FS.exist(temp,"$game_sounds$",name)) 
 	{
 		dest.create		(TRUE,name,iType);

@@ -8,4 +8,5 @@ class CWeaponVal :
 public:
 	CWeaponVal(void);
 	virtual ~CWeaponVal(void);
+	virtual void			OnDrawFlame			(){}
 };

@@ -1086,6 +1086,36 @@
 								RelativePath="WeaponVal.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Weapon Vintorez"
+							Filter="">
+							<File
+								RelativePath="WeaponVintorez.cpp">
+							</File>
+							<File
+								RelativePath="WeaponVintorez.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Weapon Walther 99"
+							Filter="">
+							<File
+								RelativePath="WeaponWalther.cpp">
+							</File>
+							<File
+								RelativePath="WeaponWalther.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Weapon USP45"
+							Filter="">
+							<File
+								RelativePath="WeaponUSP45.cpp">
+							</File>
+							<File
+								RelativePath="WeaponUSP45.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Target"
