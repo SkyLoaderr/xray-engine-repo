@@ -237,6 +237,16 @@ IC void CBackend::set_Geometry			(SGeometry* _geom)
 	set_Indices			(_geom->ib);
 }
 
+
+IC void	CBackend::set_Scissor			(u32 _enable, Irect&	R)
+{
+	CHK_DX			(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,_enable));
+	if (_enable)	{
+		RECT	*	clip	= (RECT	*)(&R);
+		CHK_DX		(HW.pDevice->SetScissorRect(clip));
+	}
+}
+
 IC void CBackend::set_Stencil			(u32 _enable, u32 _func, u32 _ref, u32 _mask, u32 _writemask, u32 _fail, u32 _pass, u32 _zfail)
 {
 	// Simple filter

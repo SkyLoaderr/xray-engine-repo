@@ -48,7 +48,7 @@ void CBackend::Invalidate	()
 
 	textures[0]=textures[1]=textures[2]=textures[3]=textures[4]=textures[5]=textures[6]=textures[7]=NULL;
 	matrices[0]=matrices[1]=matrices[2]=matrices[3]=matrices[4]=matrices[5]=matrices[6]=matrices[7]=NULL;
-	cull_mode					= u32(-1);
+	cull_mode					= CULL_NONE;
 	colorwrite_mask				= u32(-1);
 }
 
