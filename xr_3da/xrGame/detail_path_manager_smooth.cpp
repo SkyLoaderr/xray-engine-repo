@@ -10,6 +10,8 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
+#define OLD_BEHAVIOUR
+
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 {
