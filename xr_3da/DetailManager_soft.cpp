@@ -90,17 +90,17 @@ void CDetailManager::soft_Render	()
 					{
 						float	tm			= Device.fTimeGlobal*0.1f; 
 						float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
-						Fvector origin;		origin.set				(20,0,20);
 						Fvector& src		= srcIt->P;
+						Fvector dir2D;
+						dir2D.set			(sinf(tm*0.1f),0,cosf(tm*0.15f));
+						dir2D.normalize		();
 
 						//
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
-						Fvector dir2D;		dir2D.sub				(pos2D, origin);	// 2D dir (non normalized)
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
 						float	frac		= src.y/height;								// fraction of model height
-						float	inten		= sinf					(tm+.1f*dir2D.magnitude())*H;
-						dir2D.normalize		();
+						float	inten		= sinf					(tm+pos.x+pos.z)*H;
 
 						//
 						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
