@@ -207,6 +207,11 @@ class CBaseFunction;
 	#define PREV_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
 	#define COMPUTE_DISTANCE_2D(t,p)			(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
+	#define DELETE_SOUNDS(a,b) {\
+		for (int i=0; i<(a); i++)\
+			pSounds->Delete((b)[i]);\
+	}
+
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 	{
 		Fvector	DUP, vNorm, v, v1, P0;

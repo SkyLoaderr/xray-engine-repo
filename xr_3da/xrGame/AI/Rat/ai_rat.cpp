@@ -7,7 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
 #include "ai_rat.h"
+#include "..\\ai_monsters_misc.h"
 
 CAI_Rat::CAI_Rat()
 {
@@ -44,14 +46,9 @@ CAI_Rat::CAI_Rat()
 
 CAI_Rat::~CAI_Rat()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundHit[i]);
-
-	for (i=0; i<SND_DIE_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundDie[i]);
-
-	for (i=0; i<SND_VOICE_COUNT; i++) 
-		pSounds->Delete(m_tpaSoundVoice[i]);
+	DELETE_SOUNDS(SND_HIT_COUNT,	m_tpaSoundHit);
+	DELETE_SOUNDS(SND_DIE_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS(SND_VOICE_COUNT,	m_tpaSoundVoice);
 }
 
 void CAI_Rat::Die()

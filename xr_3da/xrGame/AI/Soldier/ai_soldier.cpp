@@ -65,9 +65,10 @@ CAI_Soldier::CAI_Soldier()
 
 CAI_Soldier::~CAI_Soldier()
 {
-	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
-	for (i=0; i<SND_RADIO_COUNT; i++) pSounds->Delete(sndRadio[i]);
+	DELETE_SOUNDS(SND_HIT_COUNT,	sndHit);
+	DELETE_SOUNDS(SND_DIE_COUNT,	sndDie);
+	DELETE_SOUNDS(SND_RADIO_COUNT,	sndRadio);
+
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 	Msg("FSM report for %s :",cName());

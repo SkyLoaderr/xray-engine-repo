@@ -7,7 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
 #include "ai_zombie.h"
+#include "..\\ai_monsters_misc.h"
 
 CAI_Zombie::CAI_Zombie()
 {
@@ -39,11 +41,6 @@ CAI_Zombie::CAI_Zombie()
 	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
 	m_dwTimeToLie			= 20000;
-}
-
-#define DELETE_SOUNDS(a,b) {\
-	for (int i=0; i<(a); i++)\
-		pSounds->Delete((b)[i]);\
 }
 
 CAI_Zombie::~CAI_Zombie()
