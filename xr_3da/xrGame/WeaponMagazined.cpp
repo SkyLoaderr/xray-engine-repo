@@ -217,6 +217,7 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 		}
 		break;
 	}
+	bPending	= FALSE;
 }
 
 void CWeaponMagazined::Render(BOOL bHUDView)
@@ -261,10 +262,12 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	inherited::Hide				();
+	Log							("Hide: ",GetName());
 }
 void CWeaponMagazined::Show		()
 {
 	inherited::Show				();
+	Log							("Show: ",GetName());
 }
 void CWeaponMagazined::OnShow	()
 {

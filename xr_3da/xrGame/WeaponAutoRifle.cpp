@@ -117,7 +117,7 @@ void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 }
 void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
 {
-	m_pHUD->animPlay			(mhud_show,TRUE,this);
+	m_pHUD->animPlay			(mhud_show,FALSE,this);
 }
 void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 {

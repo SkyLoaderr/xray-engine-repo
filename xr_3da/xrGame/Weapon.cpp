@@ -200,6 +200,7 @@ void CWeapon::Hide		()
 {
 	FireEnd				();
 	OnHide				();
+	bPending			= TRUE;
 }
 void CWeapon::signal_HideComplete()
 {
