@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ftimer.h"
-
 CStatTimer::CStatTimer()
 {
 	accum	= 0;
