@@ -96,9 +96,6 @@ function main()
 				)
 				wait(20000)
                	break		
-		end
-		wait()
-	end
 
 	while stalker1:action() and stalker2:action() do		
 		if stalker1:see(actor) or stalker2:see(actor) then
@@ -139,6 +136,10 @@ function main()
 		end
 		wait()			
 	end
+		end
+		wait()
+	end
+
 
 	while stalker1:action() and stalker2:action() do
 	    wait	()
