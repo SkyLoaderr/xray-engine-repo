@@ -58,6 +58,7 @@ BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserv
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
  			Core._initialize			("xrSE_Factory",NULL);
+			pSettings					= xr_new<CInifile>(SYSTEM_LTX);
 			load_prop_helper			();
 			ai().script_engine().export	();
 			break;
