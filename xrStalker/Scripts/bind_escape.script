@@ -50,10 +50,12 @@ function CDeadFlesh:update(delta)
 
 	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
 	//if(self.actor_near == false) then	
+	    if not self.object:action() then 
 		// Актер далеко, ходит просто по маршруту
-		action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
-		action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
-		action(self.object, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 1000000000))
+		    action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
+		    action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
+		    action(self.object, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 1000000000))
+		end
 	else
 		// Актер рядом, бежит в аномалию
 		if(self.actor_near == false) then
