@@ -28,14 +28,14 @@ IC CGameLevelCrossTable::CGameLevelCrossTable()
 	
 	R_ASSERT2							(m_tCrossTableHeader.version() == XRAI_CURRENT_VERSION,"Cross table version mismatch!");
 
-	m_chunk								= m_tpCrossTableVFS->open_chunk(CROSS_TABLE_CHUNK_VERSION);
-	R_ASSERT2							(m_chunk,"Cross table is corrupted!");
-	m_tpaCrossTable						= (CCell*)m_reader->pointer();
+	chunk								= m_tpCrossTableVFS->open_chunk(CROSS_TABLE_CHUNK_VERSION);
+	R_ASSERT2							(chunk,"Cross table is corrupted!");
+	m_tpaCrossTable						= (CCell*)m_tpCrossTableVFS->pointer();
+	chunk->close						();
 };
 
 IC CGameLevelCrossTable::~CGameLevelCrossTable()
 {
-	m_chunk->close						();
 	FS.r_close							(m_tpCrossTableVFS);
 };
 
