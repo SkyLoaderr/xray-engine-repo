@@ -444,8 +444,9 @@ void MxPropSlim::compute_target_placement(edge_info *info)
 		e_min /= Q.area();
 
 	info->heap_key(float(-e_min));
-}bool MxPropSlim::decimate(unsigned int target, float max_error)
-s)
+}
+
+bool MxPropSlim::decimate(unsigned int target, float max_error, void* cb_params)
 {
 	MxPairContraction conx;
 
@@ -470,8 +471,9 @@ et[0] - m->vertex(v1)[0]);
 			conx.dv2[2] = float(info->target[2] - m->vertex(v2)[2]);
 
 			if( contraction_callback )
-				(*contraction_callback)(conx, -				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR));
-o);
+				(*contraction_callback)(conx, -(info->heap_key()+EDGE_BASE_ERROR), cb_params);
+			
+			apply_contraction(conx, info);
 
 			const MxFaceList& N2			= conx.delta_faces;
 			for (u32 f_idx=conx.delta_pivot; f_idx<(u32)N2.size(); f_idx++)

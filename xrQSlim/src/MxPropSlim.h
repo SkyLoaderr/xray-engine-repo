@@ -76,8 +76,9 @@ public:
 	void				initialize				();
 
 	void				collect_edges			();
-	void				constraint_manual		(MxVertexID, MxVertexID, Mx	bool				decimate				(unsigned int, float max_error);
-params=0);
+	void				constraint_manual		(MxVertexID, MxVertexID, MxFaceID);
+
+	bool				decimate				(unsigned int, float max_error, void* cb_params=0);
 
 	unsigned int		dim						() const { return D; }
 
@@ -88,7 +89,7 @@ params=0);
 	unsigned int		quadric_count			() const { return __quadrics.length(); }
 	MxQuadric&			quadric					(unsigned int i)       { return *(__quadrics(i)); }
 	const MxQuadric&	quadric					(unsigned int i) const { return *(__quadrpublic:
-	void (*contraction_callback)(const MxPairContraction&, float);
+	void (*contraction_callback)(const MxPairContraction&, float, void*);
 ics(i)); }
 };
 
