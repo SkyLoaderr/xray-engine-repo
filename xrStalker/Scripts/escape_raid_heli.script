@@ -19,7 +19,7 @@ function set_enemy( obj )
 end
 
 function main()
-	local heli = get_level_object( "heli" )
+--[[	local heli = get_level_object( "heli" )
 
 	while true do
 		while not active do
@@ -50,7 +50,7 @@ function main()
 			enemy = nil
 		end
 	end
-
+]]
 
 
 --[[
