@@ -77,6 +77,14 @@ function motivator_binder:update(delta)
     if nn ~= nil then
         xr_gulag.fraction[nn]:calculate()
     end
+
+    -- вызов апдейта у управления бандюками
+    local nn = xr_bandit.isBandit(self.object)
+
+    if nn ~= nil then
+        xr_bandit.bandits[nn]:update()
+    end
+
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload (section)
@@ -228,11 +236,7 @@ xr_guard.add_to_binder(self.object, char_ini)
 	-- схема командира
 	xr_motivator.storage[self.object:id()].commander = {
         	enabled = false,
-	        soldiers = {},
-        	--way
-	        --way_inside
-        	--way_outside
-	        --near_door_index
+	        soldiers = {}
 	}
 xr_commander.add_to_binder(self.object, char_ini)
 	-- Настройка патруля
@@ -265,18 +269,24 @@ xr_patrol.add_to_binder(self.object, char_ini)
     		npc_id = -1
     	}
 xr_follower.add_to_binder(self.object, char_ini)
-    --chaser
-    xr_motivator.storage[self.object:id ()].chaser = {
-            enabled = false,        --enabled or disabled 
-            npc = nil,              --sacrifice game_object
-            ret_vertex = -1         --level vertex id for return
-            }
+    	--chaser
+    	xr_motivator.storage[self.object:id()].chaser = {
+            	enabled = false,        --enabled or disabled 
+            	npc = nil,              --sacrifice game_object
+            	ret_vertex = -1         --level vertex id for return
+        }
 xr_chaser.add_to_binder (self.object, char_ini)            
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object, char_ini)
+        end
+    end
+    --Привязка к бандюкам
+    if char_ini:section_exist ("bandit") == true then
+        if char_ini:line_exist("bandit", "name") == true then
+            xr_bandit.addMember(char_ini:r_string("bandit", "name"), self.object, char_ini)
         end
     end
 

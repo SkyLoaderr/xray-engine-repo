@@ -1,0 +1,78 @@
+bandits = {}
+
+class "bandit"
+function bandit:__init(name, char_ini)
+	self.name = name 	-- Имя бандитской группировки
+
+	self.state = 0 		-- состояние схемы. 0 - в лагере. 1 - идем к засаде, 2 - засада, 3 - идем в лагерь, 4 - отступаем в лагерь
+
+	self.leader = nil       -- главарь
+	self.bandits = {}	-- бандиты
+end
+function bandit:addObject(npc, leader)
+	if leader == true then
+		self.leader = npc
+	else
+		if self.bandits[npc:id()] == nil then
+			table.insert(self.bandits, npc:id(), npc)
+		end             	
+	end
+end
+function bandit:update()
+	-- убирание мертвецов
+	if self.leader ~= nil and self.leader:alive() ~= true then 
+		self.leader = nil 
+	end
+	for k,v in self.bandits do
+		if v:alive() ~= true then
+			self.bandits[k] = nil
+		end
+	end
+
+
+	self:print()
+end
+function bandit:print()
+	printf("---------------------- %s ---------------------- State: %d", self.name, self.state)
+	if self.leader ~= nil then
+		printf("Leader: %s", self.leader:name())
+	else
+		printf("Leader: NIL")
+	end
+	for k,v in self.bandits do
+		printf("Bandit: %s", v:name())
+	end
+end
+function bandit:stalkerExsist(npc)
+	-- существует ли сталкер
+	if self.bandits[npc:id()] ~= nil or 
+	   self.leader ~= nil and self.leader:id() == npc:id()		
+	then	
+		return true
+	end
+	return false
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Function
+----------------------------------------------------------------------------------------------------------------------
+function addMember(name, npc, char_ini)
+	if xr_bandit.bandits[name] == nil then
+		xr_bandit.bandits[name] = xr_bandit.bandit(name, char_ini)
+	end
+
+        if char_ini:line_exist("bandit", "leader") == true then
+            	if char_ini:r_bool("bandit", "leader") == true then
+			xr_bandit.bandits[name]:addObject(npc, true)
+			return
+		end
+	end
+	xr_bandit.bandits[name]:addObject(npc, false)
+end
+function isBandit(npc)
+	for k,v in xr_bandit.bandits do
+		if v:stalkerExsist(npc) == true then
+			return k
+		end
+	end
+	return nil
+end             
