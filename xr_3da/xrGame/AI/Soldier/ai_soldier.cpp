@@ -108,9 +108,9 @@ void CAI_Soldier::vfCheckForPatrol()
 			if (!path_count)
 				break;
 			
-			R_ASSERT(path_count && ((path_count - 1) % 3 == 0));
+			R_ASSERT(path_count && (path_count % 4 == 0));
 			
-			DWORD team,squad,group;
+			DWORD team,squad,group, dwDummy;
 			
 			for ( ; ; buf2++)
 				if (*buf2 == ',') {
@@ -121,7 +121,7 @@ void CAI_Soldier::vfCheckForPatrol()
 				
 			const char *cTest = cName();
 				
-			if ((!(strlen(monster_name))) || (strcmp(monster_name,this->cName())))
+			if ((strlen(monster_name)) && (strcmp(monster_name,this->cName())))
 				continue;
 				
 			sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
@@ -133,13 +133,13 @@ void CAI_Soldier::vfCheckForPatrol()
 				continue;
 			
 			path_count -= 4;
-			path_count /= 3;
+			path_count /= 4;
 			m_tpaPatrolPoints.resize(path_count);
 			m_tpaPointDeviations.resize(path_count);
 			
 			for (int i=0; i<path_count; i++) {
-				sscanf(buf2,"%f,%f,%f",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z));
-				for ( komas=0; komas<3; buf2++)
+				sscanf(buf2,"%f,%f,%f,%d",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z),&dwDummy);
+				for ( komas=0; komas<4; buf2++)
 					if (*buf2 == ',')
 						komas++;
 			}
