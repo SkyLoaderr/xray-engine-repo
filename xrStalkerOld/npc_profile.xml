@@ -107,6 +107,14 @@
 		<class>Monolit_master</class>
 	</character>
 
+	<!-- Zombied -->
+	<character id="zombied">
+		<class>Zombied</class>
+	</character>
+	<character id="zombied_veteran">
+		<class>Zombied_veteran</class>
+	</character>
+
 	<!-- Killer -->
 	<character id="killer">
 		<class>Killer_regular</class>
@@ -150,10 +158,6 @@
 	<character id="bolota_izgoy">
 		<class>Izgoy</class>
 		<specific_character>doctor_izgoy</specific_character>
-	</character>
-
-	<character id="zombied">
-		<class>Zombied</class>
 	</character>
 
 	<character id="dolg_leader">
