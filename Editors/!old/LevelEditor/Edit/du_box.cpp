@@ -36,8 +36,8 @@ WORD du_box_faces[DU_BOX_NUMFACES*3] = {
 	3, 2, 6,   6, 7, 3,
 	6, 4, 5,   6, 5, 7,
     4, 1, 5,   1, 0, 5,
-    3, 5, 0,   3, 7, 5,
-    1, 4, 6,   1, 6, 2
+    3, 5, 0,   3, 7, 5,	// bottom
+    1, 4, 6,   1, 6, 2	// top
 };
 
 WORD du_box_lines[DU_BOX_NUMLINES*2] = {
