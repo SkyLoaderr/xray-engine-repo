@@ -985,7 +985,7 @@ bool CUIBuyWeaponWnd::ToSlot()
 	CUIDragDropItemMP * pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
 	if (pDDItemMP)
 	{
-		pDDItemMP->AttachDetachAddon(ID, true, pDDItemMP->m_bHasRealRepresentation);
+		pDDItemMP->AttachDetachAddon(ID, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 	}
 
 	// Если вещь без номера слота, то ее поместить никуда нельзя (например патроны)
@@ -1979,8 +1979,8 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 //						IgnoreMoney(false);
 
 					
-					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
+					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 					// аттачим аддоны к мувнутому оружию
 					if (uAddonFlags != 0)
