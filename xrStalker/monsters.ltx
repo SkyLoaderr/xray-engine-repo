@@ -976,20 +976,20 @@ ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
 ; speed factors
-TurnNormalAngular		= 0.79
-WalkFwdNormal			= 3.0
-WalkFwdDamaged			= 3.0
+TurnNormalAngular		= 1.05
+WalkFwdNormal			= 2.0
+WalkFwdDamaged			= 2.0
 WalkBkwdNormal			= 1.0
-WalkAngular				= 0.79
+WalkAngular				= 2.0
 WalkTurn				= 1.0
 WalkTurnAngular			= 1.57
-RunFwdNormal			= 7.0
-RunFwdDamaged			= 7.0
-RunAngular				= 1.57
-RunTurn					= 3.5
+RunFwdNormal			= 8.0	;6.0
+RunFwdDamaged			= 8.0	;6.0
+RunAngular				= 5.0
+RunTurn					= 8.5
 RunTurnAngular			= 2.6
-Drag					= 1.5 
-Steal					= 1.3
+Drag					= 0.4 
+Steal					= 1.5
 
 ; state times
 LieIdleTimeMin		= 5000
@@ -1081,13 +1081,14 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 2000
 
-jump_factor				= 1.6
-jump_delay				= 3000	
-jump_min_dist			= 1.0 
-jump_max_dist			= 20.0
-jump_max_angle			= 1.5
+jump_factor				= 1.7
+jump_delay				= 6000	
+jump_min_dist			= 2.0 
+jump_max_dist			= 3.0
+jump_max_angle			= 1.2
+jump_trace_dist			= 1.0
 
-as_min_dist				= 1.0
+as_min_dist				= 0.8
 as_step					= 0.1
 
 DamagedThreshold		= 0.5
