@@ -11,7 +11,11 @@ private:
 	svector<T,limit>		array;
 	u32						lo,hi;
 public:
-	IC void					init	(u32 size)				{ array.resize(size); flush();				}
+	R_constant_cache()
+	{
+		array.resize(limit); 
+		flush		();
+	}
 	IC T*					access	(u32 id)				{ return &array[id];						}
 	IC void					flush	()						{ lo=hi=0;									}
 	IC void					dirty	(u32 _lo, u32 _hi)		{ if (_lo<lo) lo=_lo; if (_hi>hi) hi=_hi;	}

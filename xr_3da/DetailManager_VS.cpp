@@ -105,6 +105,20 @@ void CDetailManager::hw_Load	()
 		R_CHK			(hw_IB->Unlock());
 	}
 
+	// Create shader to access constant storage
+	Shader*		S		= Device.Shader.Create	("details\\set");
+	R_constant_table&	T0	= *(S->E[0]->Passes[0]->constants);
+	R_constant_table&	T1	= *(S->E[1]->Passes[0]->constants);
+	hwc_consts			= T0.get("consts");
+	hwc_wave			= T0.get("wave");
+	hwc_wind			= T0.get("dir2D");
+	hwc_xform			= T0.get("xform");
+	hwc_array			= T0.get("array");
+	hwc_s_consts		= T1.get("consts");
+	hwc_s_xform			= T1.get("xform");
+	hwc_s_array			= T1.get("array");
+	Device.Shader.Delete(S);
+
 	// Declare geometry
 	hw_Geom				= Device.Shader.CreateGeom	(dwDecl, hw_VB, hw_IB);
 }
