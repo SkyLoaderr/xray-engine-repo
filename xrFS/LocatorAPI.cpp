@@ -250,6 +250,8 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 {
+	if (m_Flags.is(flReady))return;
+
 	Log				("Initializing File System...");
 	u32	M1			= Memory.mem_usage();
 
