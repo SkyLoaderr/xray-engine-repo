@@ -258,7 +258,7 @@ void CWeaponProtecta::Show		()
 void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::AddShotmark(vDir, vEnd, R);
-/*
+
 	// particles
 	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
 	Fvector N,D;
@@ -276,5 +276,4 @@ void CWeaponProtecta::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Coll
 	// update emitter & run
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
-*/
 }
