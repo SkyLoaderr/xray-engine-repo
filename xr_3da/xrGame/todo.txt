@@ -1,5 +1,6 @@
-	+ TODO: ***Sheduler***
-	+ TODO: Adaptive Texture Sorter
+	+ TODO: ***Sheduler***					| Core
+	+ TODO: Adaptive Texture Sorter			| Optimization
+	+ TODO: Detail stripifier				| Optimization
 	+ TODO: Weapons as 'native' objects
 	+ TODO: NET: Can't connect
 	+ TODO: Level-unload / reload
