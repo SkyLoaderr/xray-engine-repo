@@ -379,13 +379,6 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
-							case CLSID_OBJECT_W_M134_en		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
-									fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
-								else
-									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
-								break;
-							}
 							case CLSID_OBJECT_W_FN2000		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
