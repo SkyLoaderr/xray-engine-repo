@@ -198,6 +198,8 @@ public:
 												float& precesition					 //in- tolerance, out - precesition
 												);
 	void				AddControlVel			(const Fvector& vel);
+	void				SetVelocityLimit		(float val);
+	float				VelocityLimit			();
 	void				PathNearestPoint		(const xr_vector<DetailPathManager::STravelPathPoint>	&path,		//in path
 												 const Fvector					&new_position,  //in position
 												 int							&index,			//out nearest

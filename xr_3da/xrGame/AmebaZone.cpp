@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "CustomZone.h"
 #include "ZoneVisual.h"
+#include "PHObject.h"
 #include "AmebaZone.h"
 #include "hudmanager.h"
 #include "level.h"
 
 CAmebaZone::CAmebaZone()
 {
-	m_fFlotationFactor=1.f;
+	m_fVelocityLimit=1.f;
 }
 
 CAmebaZone::~CAmebaZone()
@@ -17,12 +18,14 @@ CAmebaZone::~CAmebaZone()
 void CAmebaZone::Load(LPCSTR section)
 {
 	inherited::Load(section);
+	m_fVelocityLimit= pSettings->r_float(section,"max_velocity_in_zone");
 }
 bool CAmebaZone::BlowoutState()
 {
 	bool result = inherited::BlowoutState();
 	if(!result) UpdateBlowout();
-
+	xr_set<CObject*>::iterator it;
+	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) Affect(*it);
 	return result;
 }
 
@@ -79,4 +82,41 @@ void  CAmebaZone::Affect(CObject* O)
 
 		PlayHitParticles(pGameObject);
 	}
+}
+
+void CAmebaZone::PhTune(dReal step)
+{
+	xr_set<CObject*>::iterator it;
+	for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
+	{
+		CEntityAlive	*EA=smart_cast<CEntityAlive*>(*it);
+		if(EA)
+		{
+			CPHMovementControl* mc=EA->movement_control();
+			if(mc)
+			{
+				//Fvector vel;
+				//mc->GetCharacterVelocity(vel);
+				//vel.invert();
+				//vel.mul(mc->GetMass());
+
+				mc->SetVelocityLimit(m_fVelocityLimit);
+			}
+		}
+		
+	}
+}
+
+void CAmebaZone::SwitchZoneState(EZoneState new_state)
+{
+	if(new_state==eZoneStateBlowout&&m_eZoneState!=eZoneStateBlowout)
+	{
+		CPHUpdateObject::Activate();
+	}
+
+	if(new_state!=eZoneStateBlowout&&m_eZoneState==eZoneStateBlowout)
+	{
+		CPHUpdateObject::Deactivate();
+	}
+	inherited::SwitchZoneState(new_state);
 }

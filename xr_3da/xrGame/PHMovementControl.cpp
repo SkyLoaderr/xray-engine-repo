@@ -77,7 +77,16 @@ void CPHMovementControl::ApplyImpulse(const Fvector& dir,const dReal P)
 	force.mul(P/fixed_step);
 	
 	AddControlVel(force);
-	/*m_character->ApplyImpulse(dir,P);*/
+ 	//m_character->ApplyImpulse(dir,P);
+}
+void CPHMovementControl::SetVelocityLimit(float val)
+{
+	if(m_character)m_character->SetMaximumVelocity(val);
+}
+float CPHMovementControl::VelocityLimit()
+{
+	if(!m_character || !m_character->b_exist) return 0.f;
+	return m_character->GetMaximumVelocity();
 }
 void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /**ang_speed/**/,float jump,float /**dt/**/,bool /**bLight/**/){
 
