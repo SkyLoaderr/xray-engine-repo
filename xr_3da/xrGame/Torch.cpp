@@ -89,8 +89,10 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	glow_render->set_color	(clr);
 	glow_render->set_radius	(pUserData->r_float					("torch_definition","glow_radius"));
 
-	//выключить фонарик
+	//включить/выключить фонарик
 	Switch					(torch->m_active);
+	VERIFY					(!torch->m_active || (torch->ID_Parent != 0xffff));
+
 	return					(TRUE);
 }
 
