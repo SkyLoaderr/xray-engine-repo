@@ -268,13 +268,12 @@ function action_help:execute ()
     local dist = distance_between (self.object, self.a.npc)
     
     --обрабатываем ожидание диалога
-    if distance_between (self.object, self.a.npc) < 2 then
+    if distance_between (self.object, self.a.npc) < 1 then
        if self.dialog_first == false then
           self.dialog_first = true
           self.see_time = device ():time_global ()
           self.object:enable_talk ()
           self.a.npc:run_talk_dialog (self.object)
-          printf ("WAIT FOR DIALOG !!!")
        end
        self.object:set_movement_type (move.stand)
        self:wait_for_player2 ()
