@@ -274,7 +274,7 @@ void CSE_ALifeTask::UPDATE_Read				(NET_Packet &tNetPacket)
 }
 
 #ifdef _EDITOR
-void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeTask::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 }
 #endif
@@ -304,7 +304,7 @@ void CSE_ALifePersonalTask::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifePersonalTask::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
@@ -353,7 +353,6 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-#include "PropertiesListHelper.h"
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
