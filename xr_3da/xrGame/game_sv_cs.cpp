@@ -649,11 +649,11 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	ps_who->money_total		= 1000;
 	ps_who->flags |= GAME_PLAYER_FLAG_VERY_VERY_DEAD;
-
-	// Spawn "actor"
 	ps_who->team			= u8(get_option_i(options,"team",AutoTeam()));
 	ps_who->kills				=	0;
 	ps_who->deaths				=	0;
+
+	// Spawn "actor"
 	xrSE_Spectator*		A	=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags

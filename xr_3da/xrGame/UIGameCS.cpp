@@ -66,6 +66,7 @@ void CUIGameCS::OnFrame()
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
 		PlayerList.OnFrame();
+		if (CTMenu.Visible())		CTMenu.OnFrame	();
 	break;
 	case GAME_PHASE_INPROGRESS:
 		if(!CanBuy()) BuyMenu.Hide	();
@@ -110,13 +111,21 @@ void CUIGameCS::Render()
 
 bool CUIGameCS::OnKeyboardPress(int dik)
 {
-	if (Game().phase==GAME_PHASE_INPROGRESS){
+	switch (Game().phase){
+	case GAME_PHASE_PENDING: 
+		if (CTMenu.Visible()&&CTMenu.OnKeyboardPress(dik))		return true;
+		// switch pressed keys
+		switch (dik){
+		case DIK_M:		BuyMenu.Hide(); CTMenu.Show();	return true;
+		}
+		break;
+	case GAME_PHASE_INPROGRESS:
 		if (BuyMenu.Visible()&&BuyMenu.OnKeyboardPress(dik))	return true;
 		if (CTMenu.Visible()&&CTMenu.OnKeyboardPress(dik))		return true;
 		// switch pressed keys
 		switch (dik){
-		case DIK_M:		CTMenu.Show();	return true;
-		case DIK_B:		BuyMenu.Show();	return true;
+		case DIK_M:		BuyMenu.Hide(); CTMenu.Show();	return true;
+		case DIK_B:		CTMenu.Hide(); BuyMenu.Show();	return true;
 		case DIK_TAB:	SetFlag(flShowFragList,TRUE);	return true;
 		}
 	}

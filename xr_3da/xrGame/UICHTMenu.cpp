@@ -62,7 +62,7 @@ bool CUIChangeTeamMenu::OnKeyboardPress(int dik)
 		CUICustomMenuItem* menu	= menu_active->GetItem(id);
 		if (menu){
 			if (menu->HasChildren())menu_active = menu;
-			else menu->Execute();
+			else { menu->Execute(); Hide(); }
 			return true;
 		}
 	}
