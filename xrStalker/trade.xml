@@ -63,7 +63,7 @@
 
 
 	<!-- DESCRIPTION WINDOW -->
-	<desc_frame_window x="350" y="22" width="320" height="230">
+	<desc_frame_window x="350" y="22" width="310" height="230">
 		<base_texture>ui\ui_frame_03</base_texture>
 	</desc_frame_window>
 
