@@ -1,14 +1,22 @@
 tips = {}
 
-function fill_tips()
-	t = { info = "test_tip",
-		position = nil,
-		point_name = nil,
-		radius = 5,
-		done = nil }
-	table.insert(tips, t)					
+function fill_tips(object, name, distance)
+	if tips[name] == nil then
+		t = { info = name,
+			position = object:position(),
+			radius = distance,
+			done = nil }
+		tips[name] = t
+	end
 end
 
 function get_tips(actor)
-	--actor:give_game_news("", "", 0,0,0,0)
+	for k,v in tips do
+		if v.done ~= true then
+			if actor:position():distance_to(v.position) <= v.radius then
+				actor:give_game_news(v.info, "", 0,0,0,0)
+				v.done = true
+			end
+		end
+	end
 end

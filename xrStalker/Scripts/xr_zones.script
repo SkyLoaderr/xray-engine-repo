@@ -178,6 +178,11 @@ function zone_binder:reload( section )
 			z.spawner = xr_spawner.spawner [zone_ini:r_string("spawner", "id")]
 		end
 	end
+	if zone_ini:section_exist("tips") then
+		if zone_ini:line_exist("tips", "name") == true then
+			level_tips.fill_tips(self.object, zone_ini:r_string("tips", "name"), zone_ini:r_s32("tips", "distance"))
+		end
+	end
 
 	if zone_ini:section_exist("no_weapon") then
 		z.no_weapon = CZoneNotWeapon(self.object)
