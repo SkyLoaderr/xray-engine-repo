@@ -81,7 +81,7 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 	obj->PPhysicsShell()->Deactivate();
 	obj->setVisible(false);
 	obj->setEnabled(false);
-	if(source_id!=u16(-1))
+	if(source_id==obj->ID())
 	{
 		m_flags.set(fl_released,FALSE);
 	}
@@ -151,6 +151,7 @@ void CPHDestroyable::RespawnInit()
 }
 void CPHDestroyable::SheduleUpdate(u32 dt)
 {
+	if(!m_flags.test(fl_destroyed)||!m_flags.test(fl_released)) return;
 	CPhysicsShellHolder *obj=PPhysicsShellHolder();
 	//CActor				*A		=smart_cast<CActor*>(obj)	;
 	//if(A)
@@ -160,7 +161,7 @@ void CPHDestroyable::SheduleUpdate(u32 dt)
 	//	obj->setEnabled(FALSE);
 	//}
 	//else
-	if(CanRemoveObject() && m_flags.test(fl_destroyed)&&m_flags.test(fl_released))
+	if( CanRemoveObject() )
 	{
 		NET_Packet			P;
 		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
