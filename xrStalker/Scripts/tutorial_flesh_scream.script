@@ -1,0 +1,23 @@
+-- При смерти плоти в аномалии звучит визг
+-- Затычка для версии 2005-12-15
+
+function main()
+	local flesh = get_level_object( "esc_tutorial_flesh" )
+	local flesh_id = flesh:id()
+
+	while not is_object_online( flesh_id ) or flesh:alive() do
+		wait( 100 )
+	end
+
+	local snd = sound_object( "monsters\\flesh\\flesh_panic_2" )
+
+	for i = 1, 6 do
+		if not is_object_online( flesh_id ) then
+			break
+		end
+
+		snd:play_at_pos( flesh, flesh:position() )
+   		wait( math.random( 900, 1100 ) )
+    end
+end
+

@@ -1,0 +1,7 @@
+ini = {
+		 trader_start = true,
+         bring_trader = 0,
+         garbage1     = false,         --Кровосос в подземелье
+         garbage2     = false,         --Сабаки в радиации
+         agroprom1    = true           --Бюреры в подземелье
+         }

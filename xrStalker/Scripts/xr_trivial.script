@@ -1,0 +1,936 @@
+--Stalker_novice   - новичок на мусорке. Ходит, ищет артефакты, иногда сидит и отдыхает
+--Stalker_novice2  - новичок возле аномалии пытается достать артефакт.
+--Stalker_novice3  - новичок, которого ограбили. Хочет убить бандитов. Принеси ему оружие и он это сделает
+--Stalker_zombe    - и ежу понятно, что это сталкер зомби
+
+local time_walk   	= 100000
+local time_rest   	= 30000         --Сколько времени сидим
+local novice_speak  = 10000     --Через какое время примерно новичок произносит фразы
+
+local novice_speak3 = 8000
+
+local time_to_speak = 5000     	--Через какое время примерно зомби произносит фразы
+
+local time_walk2    = 10000     --Время ходьбы для навичка номер2
+
+local time_to_look  = 30000     --Время, через которое обиженный новичок смотрит по сторонам
+
+local walk_speak  	= xr_sounds_id.zombie_walk_speak
+local stand_speak   = xr_sounds_id.zombie_stand_speak
+
+local walk_speak2   = walk_speak +2
+local stand_speak2  = stand_speak +2
+
+local phrase_help   = xr_sounds_id.novice_speak
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
+--Пока нет донной информации, работаем, только получили, перестаем выполнятся
+class "info_portion_evaluator" (property_evaluator)
+function info_portion_evaluator:__init (name, info_portion) super ()
+    self.info = info_portion
+end
+
+function info_portion_evaluator:evaluate()
+    return level.actor():has_info(self.info) == false
+end
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
+class "artifact_evaluator" (property_evaluator)
+--Пока self.a.enabled и артефакт а аномалии возвращает
+function artifact_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function artifact_evaluator:evaluate()
+    if(self.a.enabled == false) then  return false  end
+
+  --Если нет сейкци про артефакти и аномалию то возвращаем false
+    if(self.a.artifact == nil or self.a.zone == nil) then  return false  end
+
+    if(level.object(self.a.artifact) and distance_between(level.object(self.a.artifact), level.object(self.a.zone)) < self.a.radius) then
+    --Если артефакт есть и он в центре зоны, то работаем
+      return true
+    end
+	printf("distance = %f", distance_between(level.object(self.a.artifact), level.object(self.a.zone)) )
+	printf("Disabled_____________________")
+	self.a.enabled = false
+
+    return  self.a.enabled
+end
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
+class "can_attack_enemy_evaluator" (property_evaluator)
+--Евалуатор используется для того, когда у нас в customDate задан враг и сообщаем можем ли мы атаковать врага
+function can_attack_enemy_evaluator:__init (name, storage, obj) super ()
+    self.a       = storage
+end
+
+function can_attack_enemy_evaluator:evaluate()
+
+--    local wpn = self.object:best_weapon()
+  if(self.object:object("wpn_ak74") or self.object:object("wpn_toz34") ) then
+      return true
+    end
+
+    return false
+
+end
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "stalker_zombie_action" (action_base)
+function stalker_zombie_action:__init (name, storage) super (nil, name)
+    self.a     	= storage
+    self.time 	= 0
+	self.sounds = { themes = {"zombie"} }
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombie_action:initialize ()
+	action_base.initialize       	(self)
+    self.a.time      = device():time_global() + time_to_speak
+    self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
+
+    self.object:clear_animations  	()
+    self.object:set_detail_path_type( move.line )
+    self.object:set_movement_type   ( move.walk )
+    self.object:set_body_state      ( move.standing )
+    self.object:set_mental_state  	( anim.free )
+    self.object:set_patrol_path    	( self.a.path, patrol.nearest, patrol.continue, true )
+    self.object:set_path_type    	( game_object.patrol_path )
+    self.object:set_sight      		( look.path_dir, nil, 0 )
+    self.object:set_item            ( object.idle, self.object:best_weapon() )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombie_action:execute ()
+    --Ходим, изредка произносим фразы
+    action_base.execute       		(self)
+
+	self.object:set_mental_state    ( anim.free )
+	self.object:set_item            ( object.idle, self.object:best_weapon() )
+
+	if(self.a.stand == false and device():time_global() > self.a.time and self.object:active_sound_count() == 0 ) then
+		--Давно уже ничего не говорили
+		self:speak()
+    end
+
+
+	if( self.a.stand and device():time_global() > self.time and self.object:active_sound_count() == 0 ) then
+		--Если остановились и проиграли до конца звук, то снова идем
+		self.a.stand = false
+		self.object:clear_animations()
+		self.object:set_movement_type( move.walk )
+		self.a.time = device():time_global() + 8000 + 0.4*math.random(time_to_speak)
+		self.time	= device():time_global() + 5000
+    end
+	
+	if(self.a.stand == false) then
+		xr_sound.sound_update(self.object, self.sounds)
+	end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombie_action:speak()
+    if( math.random() < 0.5 ) then
+        self.object:set_movement_type ( move.stand )
+        self.object:add_animation( "prisluh_9_0", true )
+        self.object:add_animation( "prisluh_9_2", true )
+		xr_sound.sound_update(self.object, self.sounds, math.random(1000, 3000))
+        self.a.stand = true
+    end
+
+    self.time    = device():time_global() + 5000
+    self.a.time = device():time_global() + ( 0.8 + math.random() ) * time_to_speak          --Запоминаем время, когда надо сказать следующую фразу( время всегда разное )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombie_action:finalize ()
+    action_base.finalize (self)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--zombi binder
+----------------------------------------------------------------------------------------------------------------------
+function add_zombie(obj)
+    local operators     = {}
+    local properties    = {}
+
+    properties[ "zombie_alife" ]      = xr_evaluators_id.jon_stalker_zombie
+    operators [ "stalker_zombie" ]     = xr_actions_id.jon_stalker_zombie
+
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "zombie_alife" ], const_evaluator( true )  )
+
+    local action = this.stalker_zombie_action ( "stalker_zombie_action", xr_motivator.storage[obj:id()].zombie )
+
+    action:add_precondition         (world_property(stalker_ids.property_enemy,   false))
+    action:add_precondition         ( world_property ( properties[ "zombie_alife" ], true ) )
+    xr_motivator.addCommonPrecondition(action)
+    action:add_effect               ( world_property ( properties[ "zombie_alife" ], false ) )
+    manager:add_action              ( operators[ "stalker_zombie" ], action)
+
+    action = manager:action (xr_actions_id.alife)
+    action:add_precondition         ( world_property (properties["zombie_alife"],     false ) )
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+
+local walk     = 1
+local sit_down   = 3
+local meet_actor = 4
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+--Либо сталкер ходит и ищет что-нибудь, либо сидит и отдыхает
+class "stalker_novice_action" (action_base)
+function stalker_novice_action:__init (name, storage) super (nil, name)
+    self.a         = storage
+    self.a.curState = walk
+    self.a.time     = device():time_global()
+    self.speak_time = self.a.time
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:initialize ()
+    action_base.initialize          ( self )
+
+    if( self.a.curState == walk ) then
+    self:state_walk( "init" )
+    else
+    self:state_sit_down( "init" )
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:execute ()
+    action_base.execute             ( self )
+
+    if( self.a.curState == walk ) then
+    self:state_walk()
+        if( device():time_global() > self.a.time + time_walk ) then
+      self:state_sit_down( "init" )              --Init state sit down
+            xr_sounds.play_sound (self.object, 0, "trivial", 2, 1)
+        end
+    else
+        self:state_sit_down()
+        if( xr_motivator.storage[self.object:id()].state.body_state == 1 and
+       device():time_global() > self.a.time + time_rest ) then
+          self.a.index = math.random( 1, self.a.rest_w:count() - 1 )              --Выбераем точку, в которой потом будем сидеть.
+            self:state_walk( "init" )                   --Init state sit down
+        end
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:state_walk( param )
+  if( param ) then                        --Init state walk
+      self.a.curState = walk
+      self.a.time = device():time_global()
+      self.speak_time = self.a.time + (math.random()+0.5) * novice_speak    --Когда произнесу некоторую фразу
+
+      if( xr_motivator.storage[self.object:id()].state.body_state ~= 0 ) then
+        xr_state.change_state( self.object, 0 )
+            return
+        end
+
+        self.object:clear_animations()
+    self.object:set_desired_direction()
+        self.object:set_detail_path_type ( move.line )
+        self.object:set_movement_type    ( move.walk )
+        self.object:set_body_state       ( move.standing )
+        self.object:set_mental_state     ( anim.free )
+        self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
+        self.object:set_path_type        ( game_object.patrol_path )
+        self.object:set_sight            ( look.search, false, false )
+        self.object:set_item             ( object.idle, self.object:best_weapon() )
+
+        return
+    end
+
+    self.object:set_mental_state    ( anim.free )
+    self.object:set_item            ( object.idle, self.object:best_weapon() )
+
+    if( device():time_global() > self.a.time + 3000 ) then
+        --Первые 3 секунды идем просто, потом начинаем что-то искать
+        self.object:set_sight       ( look.search, nil, 0 )
+    end
+
+  if( device():time_global() > self.speak_time ) then
+    --Произносим фразу
+    xr_sounds.play_sound(self.object, 0, "trivial", 2, 2)
+        self.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:state_sit_down( param )
+  if( param )  then                        --Init state sit
+		self.a.curState  = sit_down
+        self.object:set_dest_level_vertex_id( self.a.rest_w:level_vertex_id( self.a.index ) )
+        self.object:set_path_type         ( game_object.level_path )
+		self.object:set_desired_direction    ( self.a.rest_w:point( 0 ):sub( self.a.rest_w:point( self.a.index ) ) )   --Отдыхаем в направлении нулевой точкки
+        self.object:set_sight            ( look.danger, nil, 0 )
+    end
+
+    if( xr_motivator.storage[self.object:id()].state.body_state == 1 ) then           --Уже сидим
+        if( self.object:animation_count() <= 1 ) then
+            self.object:add_animation( "stalker_1_2",   true )
+      self.a.time = device():time_global()
+        end
+    else
+      if( self.object:level_vertex_id() == self.a.rest_w:level_vertex_id( self.a.index ) ) then -- Находимся на той ноде, на которой собрались посидеть
+          self.object:set_movement_type    ( move.stand )
+            self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+          xr_state.change_state( self.object, 1 )
+        else
+          --Идем в точку сидения
+          self.object:set_mental_state        ( anim.free )
+          self.object:set_path_type           ( game_object.level_path )
+          self.object:set_movement_type       ( move.walk )
+    end
+    end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function stalker_novice_action:finalize ()
+    action_base.finalize (self)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--novice binder
+----------------------------------------------------------------------------------------------------------------------
+function add_novice(obj)
+
+    local operators     = {}
+    local properties    = {}
+
+    properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
+    properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+    properties["event"]             = xr_evaluators_id.reaction
+
+    operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "work" ], enabled_evaluator("Enabled evaluator", xr_motivator.storage[obj:id()].novice ) )
+
+    local action = this.stalker_novice_action ( "stalker_novice_action", xr_motivator.storage[obj:id()].novice )
+
+    action:add_precondition         (world_property(stalker_ids.property_enemy,      false))
+    action:add_precondition         (world_property (properties["event"],            false))
+    action:add_precondition         ( world_property ( properties[ "work" ],         true ) )
+    xr_motivator.addCommonPrecondition(action)
+    action:add_effect               ( world_property ( properties[ "work" ],         false ) )
+    manager:add_action              ( operators[ "stalker_novice" ], action)
+
+    action = manager:action (xr_actions_id.alife)
+    action:add_precondition         ( world_property (properties["work"],  false ) )
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+--1 - ходим вокруг аномалии
+--2 - смотрим на артефакт и говорм фразу
+class "stalker_novice2_action" (action_base)
+function stalker_novice2_action:__init (name, storage) super (nil, name)
+    self.a      = storage
+    self.time  = device():time_global()
+    self.look  = 1
+    self.state = 8      --Какая анимация используется prislush_8 иди prislush_9
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:initialize ()
+    action_base.initialize          (self)
+
+    self:walk( "init" )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:execute ()
+    --Ходим, изредка произносим фразы и смотрим на артефакт
+    action_base.execute             (self)
+
+  if( self.a.curState == 1 ) then          --Walk
+      if( device():time_global() > self.a.time ) then
+            if( patrol(self.a.path):point(0):distance_to( self.object:position() ) < 20 ) then
+            --Проверям, не далеко ли мы от патрульного пути( от 0 точки )
+              self:action( "init" )
+            else
+              self.a.time = device():time_global() + 10000
+            end
+        else
+          self:walk()
+        end    -- device():time_global() > self.a.time
+    else       --Look to artefact
+        if( device():time_global() > self.a.time ) then
+             self:walk( "init" )
+        else
+          self:action()
+        end
+    end        --self.a.curState == 1
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:walk( param )
+
+    if( param ) then
+        self.a.curState         = 1
+        self:new_time          ()
+        self.look            = 2
+        self.time              = device():time_global()
+
+      self.object:clear_animations    ()
+      self.object:set_detail_path_type( move.line )
+      self.object:set_movement_type   ( move.walk )
+      self.object:set_body_state      ( move.standing )
+      self.object:set_patrol_path     ( self.a.path, patrol.nearest, patrol.continue, true )
+      self.object:set_path_type       ( game_object.patrol_path )
+      self.object:set_item            ( object.activate, self.object:best_weapon() )
+      self.object:set_sight           ( look.danger, nil, 0 )
+    end
+
+    self.object:set_item              ( object.activate, self.object:best_weapon() )
+    self.object:set_mental_state      ( anim.free )
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:action( param )
+  if( param ) then
+      self.a.curState    = 2
+    self.a.time     = device():time_global() + 3000
+        self.object:set_sight           ( look.point, level.object(self.a.artifact):position(), 0 )
+        self.object:set_movement_type   ( move.stand )
+    end
+
+    if( self.a.curState == 2 and                                     --Повернули ли мы
+       yaw( self.object:direction(), level.object(self.a.artifact):position() : sub( self.object:position() ) ) < 0.3 ) then
+
+        if( math.random() < 0.5 ) then
+      xr_sounds.play_sound_rnd    (self.object, 2000, 5000, "trivial", 3,1)
+            self.object:add_animation   ( "prisluh_2_idle_0", true )
+            self.object:add_animation   ( "prisluh_2_idle_3", true )
+            self.object:add_animation   ( "prisluh_2_idle_6", true )
+            self.object:add_animation   ( "prisluh_2_idle_1", true )
+            self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
+            self.state  = 8
+        else
+            xr_sounds.play_sound_rnd    (self.object, 2000, 3000, "trivial", 3,1)
+            self.object:add_animation   ( "prisluh_9_0", true )
+            self.object:add_animation   ( "prisluh_9_2", true )
+            self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
+            self.state  = 9
+        end
+
+        self.a.curState = 3
+        self.a.time = self.a.time + 20000
+
+    end
+
+  if( self.a.curState == 3 ) then
+      if( device():time_global() > self.time ) then
+          self.object:clear_animations()
+            if( self.staet == 8 ) then
+              self.object:add_animation   ( "prisluh_2_idle_7", true )
+            else
+                self.object:add_animation   ( "prisluh_9_3", true )
+            end
+            self.a.curState  = 4
+        end
+    end
+
+    if( self.a.curState == 4 ) then
+      if(  self.object:animation_count() == 0 ) then
+          self.object:set_sight       ( look.path_dir, nil, 0 )
+            self.object:clear_animations()
+            self.a.time = device():time_global() + 600
+            self.a.curState = 5
+        end
+  end
+
+    self.object:set_mental_state        ( anim.free )
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:new_time()
+--  self.a.time = device():time_global() + time_walk2 * ( 0.5 + math.random() )
+    self.a.time = device():time_global() + time_walk2
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice2_action:finalize ()
+    action_base.finalize (self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--novice binder
+----------------------------------------------------------------------------------------------------------------------
+function add_novice2(obj)
+    local operators     = {}
+    local properties    = {}
+
+    properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
+    properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+    properties["event"]             = xr_evaluators_id.reaction
+
+    operators [ "stalker_novice2" ]    = xr_actions_id.jon_stalker_novice2
+
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "novice2_alife" ], this.artifact_evaluator("artifact_evaluator", xr_motivator.storage[obj:id()].novice2 )  )
+
+    local action = this.stalker_novice2_action ( "stalker_novice2_action", xr_motivator.storage[obj:id()].novice2 )
+
+    action:add_precondition         ( world_property ( properties[ "novice2_alife" ], true ) )
+    action:add_precondition         (world_property (properties["event"],             false))
+    action:add_precondition         (world_property(stalker_ids.property_enemy,       false))
+    xr_motivator.addCommonPrecondition(action)
+    action:add_effect               ( world_property ( properties[ "novice2_alife" ], false ) )
+    manager:add_action              ( operators[ "stalker_novice2" ], action)
+
+    action = manager:action (xr_actions_id.alife)
+    action:add_precondition         ( world_property (properties["novice2_alife"],   false ) )
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+local say_hello      =  10
+local wait_actor      = 11
+local say_bring_weapon = 12
+
+--Сталкер новичок. его ограбили, ждет приближения актера, если у него появляется оружие, то идет убивать бандитов
+class "stalker_novice3_action" (action_base)
+function stalker_novice3_action:__init (name, storage) super (nil, name)
+    self.a            = storage
+    self.a.curState   = walk
+    self.a.time       = device():time_global()
+    self.b        = {}
+    self.b.speak_time = self.a.time
+    self.b.time_stand = self.a.time
+    self.b.stand      = false
+    self.b.talk       = false
+    self.b.time_actor = 0
+    self.phrase       = 1
+	self.idle_sound	  = { sumidle = 5, maxidle = 7, themes = {"escape_novice_weeping"} }	
+	self.help_sound	  = { sumidle = 5, maxidle = 3, themes = {"escape_novice_ask_for_help"} }	
+	self.move_mgr 	   = move_mgr.move_mgr()
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:initialize ()
+
+    action_base.initialize          ( self )
+	
+	self.move_mgr:initialize(self.object)
+
+	if self.path_walk_info == nil then
+		self.path_walk_info = utils.path_parse_waypoints(self.a.path_walk)
+	end
+	if self.path_look_info == nil then
+		self.path_look_info = utils.path_parse_waypoints(self.a.path_look)
+	end
+
+	self:reset_scheme()
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:execute ()
+    action_base.execute             ( self )
+    self.object:enable_talk         ()
+
+    if( self.a.curState == walk ) then
+        --Видим актера, запускается состояние state_acotor в котором смотрим на актера и ждем, пока он даст нам оружме
+        if(level.actor()) then
+          if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 40) then
+--              if(device():time_global() > self.b.time_actor + 30000) then
+        --Если актер рядом или мы его видим и с ним давно не разговаривали, реагируем на него
+                self:init_state_actor()
+          end
+      end
+        self:state_walk()
+    else
+        self:state_actor()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:state_walk( param )
+	xr_sound.sound_update(self.object, self.idle_sound)
+	self.move_mgr:update()
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:stand(param)
+    --Это дейсвие состовная часть состояния walk
+    if(param)then              --Init stand
+        self.object:set_movement_type(move.stand)
+
+        self.object:add_animation("torg_2", true)
+        self.object:add_animation("torg_4", true)
+    end
+
+    if(self.object:animation_count() == 0) then
+      self.b.stand  = false
+        self:init_state_walk()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:init_state_walk()
+	printf("call reset_scheme()")
+	self.a.curState        = walk
+	self.move_mgr:reset(self.a.path_walk, self.path_walk_info, self.a.path_look, self.path_look_info, nil,
+							{run = false}, nil)
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:init_state_actor()
+    local pos = level.actor():position()
+    pos.y  = pos.y + 1.6
+
+    self.object:clear_animations  	()
+    self.object:set_sight      		(look.point, pos, 0)
+    self.object:set_movement_type   (move.stand)
+    self.a.curState        = say_hello
+    self.a.time            = device():time_global() + 1000
+    self.b.speak_time      = device():time_global() + 5000
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:state_actor()
+  --Условия окончания работы этого состояния
+    if(level.actor() == nil) then
+        self:init_state_walk()
+        return
+    end
+    if(distance_between(self.object, level.actor()) > 45 and
+         self.object:see(level.actor()) == false) then
+        self:init_state_walk()
+        return
+    end
+
+    if(self.object:is_talking()) then
+		self.b.talk   = true
+    end
+
+	if(self.a.curState == say_hello) then
+		if(self.object:active_sound_count() == 0 and self.object:is_body_turning() == false) then
+			self.a.curState    = wait_actor
+		end
+	end
+
+    if(self.a.curState == wait_actor and self.b.talk == false) then
+		--Изредка зовем актера, или проигруем анимацию
+		if(distance_between(self.object, level.actor()) > 4) then
+			xr_sound.sound_update(self.object, self.help_sound)
+		else
+			xr_sound.sound_update(self.object, self.idle_sound)
+		end
+    end
+
+    if(self.object:animation_count() < 2) then
+    --иногда машем рукой
+        self.object:add_animation("torg_1", true)
+        if(distance_between(self.object, level.actor()) > 13) then
+          self.object:add_animation("hello_0_idle_0", true)
+        end
+        self.object:add_animation("torg_2", true)
+        self.object:add_animation("torg_4", true)
+    end
+
+    local pos = level.actor():position()
+    pos.y  = pos.y + 1.6
+
+    self.object:set_sight           (look.point, pos, 0)
+    self.object:set_mental_state    (anim.free)
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:select_phrase()
+    local rnd = math.random(0, 3)
+    while(rnd == self.phrase) do
+       rnd = math.random(0, 3)
+    end
+    self.phrase = rnd
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:reset_scheme()
+	if(level.actor()) then
+        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 30 ) then
+			self:init_state_actor()
+            return
+        end
+    end
+    
+	self.object:enable_talk()
+    self:init_state_walk()
+    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+	
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function stalker_novice3_action:finalize ()
+    action_base.finalize(self)
+	
+	self.move_mgr:finalize()
+	self.object:clear_animations()
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "novice3_attack" (action_base)
+function novice3_attack:__init (name, storage) super (nil, name)
+    self.a    		= storage
+    self.time 		= 0
+    self.start_run 	= false
+    self.end_run   	= false
+    self.walk_time 	= 0
+    self.state     	= 0
+	self.move_mgr 	= move_mgr.move_mgr()
+	self.phrase		= {themes = {"escape_novice_i_dead_their"}}
+	--0 - говорим фразу и начинаем бежать
+	--1 - бежим
+    --2 - идем к предпоследней точке
+    --3 - стоим и смотрим
+end
+---------------------------------------------------------------------------------------------------------------------
+function novice3_attack:initialize ()
+    action_base.initialize(self)
+
+	self.move_mgr:initialize(self.object)
+	
+	self.path_walk_info = utils.path_parse_waypoints(self.a.enemy_path_walk)
+	self.path_look_info = utils.path_parse_waypoints(self.a.enemy_path_look)
+	
+	if(self.state == 0) then
+		// Говорим
+		stop_play_sound(self.object)
+		xr_sound.sound_update(self.object, self.phrase, true)
+		self.move_mgr:reset(self.a.enemy_path_walk, self.path_walk_info, self.a.enemy_path_look, self.path_look_info, nil,
+								{run = false}, nil)
+
+    elseif(self.state == 1)then
+		// Бежим
+		self.move_mgr:reset(self.a.enemy_path_walk, self.path_walk_info, self.a.enemy_path_look, self.path_look_info, nil,
+								{run = true, danger = true}, nil)
+	end
+
+	-- Инициализируем инфопоршн
+	local actor = level.actor()
+	if actor ~= nil then
+		actor:give_info_portion("escape_novice_has_weapon")
+	end
+
+	--Отключаем реакции
+	xr_reactions.add_rule(self.object, "ignore")
+	self.object:disable_talk()
+end
+---------------------------------------------------------------------------------------------------------------------
+function novice3_attack:execute ()
+	action_base.execute(self)
+
+    self.object:set_item             ( object.idle, self.object:best_weapon() )
+
+	if(self.state == 0 and self.object:active_sound_count() == 0) then
+		if not self.move_mgr:arrived_to_first_waypoint() then 
+			self.move_mgr.running = true
+			self.move_mgr.danger  = true
+			self.move_mgr:update_movement_state()
+		end
+		self.state	= 1
+	end
+  
+	self.move_mgr:update()
+end
+---------------------------------------------------------------------------------------------------------------------
+function novice3_attack:finalize ()
+	action_base.finalize(self)
+	self.move_mgr:finalize()
+	
+	--Если схема заканчивает работу, то включаем встречу
+	if(level.actor():has_info("escape_factory_bandits_dead")) then
+		xr_meet.enable_meet(self.object)
+	end
+	
+	--Включаем реакции
+	xr_reactions.remove_rule(self.object, "ignore")
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--novice binder
+----------------------------------------------------------------------------------------------------------------------
+function add_novice3(obj)
+
+	xr_motivator.storage[obj:id()].novice3 = { } 
+	
+	local ini	= obj:spawn_ini()
+	
+	xr_motivator.storage[obj:id()].novice3.path_walk	   = utils.conf_get_string(ini, "novice3", "path_walk", nil, obj, true)
+	xr_motivator.storage[obj:id()].novice3.path_look  	   = utils.conf_get_string(ini, "novice3", "path_look", nil, obj, false)
+	xr_motivator.storage[obj:id()].novice3.enemy_path_walk = utils.conf_get_string(ini, "novice3", "enemy_path_walk", nil, obj, true)	
+	xr_motivator.storage[obj:id()].novice3.enemy_path_look = utils.conf_get_string(ini, "novice3", "enemy_path_look", nil, obj, false)
+
+	local operators     = {}
+    local properties    = {}
+
+    properties["work"]              = xr_evaluators_id.jon_stalker_novice3
+    properties["attack"]            = xr_evaluators_id.jon_stalker_attack
+    properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+    properties["event"]             = xr_evaluators_id.reaction
+
+    operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
+    operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
+
+	xr_meet.disable_meet(obj)                       --Отключаем встречу
+    
+	local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator ( properties[ "work" ],   this.info_portion_evaluator("info_portion_evaluator", "escape_factory_bandits_dead" ) )
+    manager:add_evaluator ( properties[ "attack" ], this.can_attack_enemy_evaluator("go to attack enemy", xr_motivator.storage[obj:id()].novice3, obj ) )
+
+    local action = this.stalker_novice3_action ( "stalker_novice3_action", xr_motivator.storage[obj:id()].novice3 )
+
+    action:add_precondition         (world_property(stalker_ids.property_enemy, false))
+    action:add_precondition         (world_property ( properties["attack"],     false ) )
+    action:add_precondition         (world_property ( properties["event"],       false))
+    action:add_precondition         (world_property ( properties["work"],       true ) )
+    xr_motivator.addCommonPrecondition(action)
+    action:add_effect               (world_property ( properties["work"],       false ) )
+    manager:add_action              (operators["stalker_novice"], action)
+
+	action = this.novice3_attack("novice go to attack", xr_motivator.storage[obj:id()].novice3)
+
+    action:add_precondition         (world_property(stalker_ids.property_enemy, false))
+    action:add_precondition         (world_property ( properties["work"],       true ) )
+    action:add_precondition         (world_property ( properties["attack"],     true ) )
+    xr_motivator.addCommonPrecondition(action)
+    action:add_effect               (world_property ( properties["attack"],     false ) )
+    manager:add_action              (operators["stalker_attack"], action)
+
+    action = manager:action (xr_actions_id.alife)
+    action:add_precondition         ( world_property (properties["work"],  false ) )
+end
+
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "action_security_stand" (action_base)
+function action_security_stand:__init (name, storage) super (nil, name)
+    self.a         = storage
+    self.stand_point_id = self.a.path:level_vertex_id(0)
+    self.animations    = nil
+    self.time           = 0
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:initialize ()
+	action_base.initialize (self)
+	self.animations    = xr_state.anims(self.object)
+
+	self.object:set_body_state      (move.standing)
+	self.object:set_sight           (look.point, self.a.path:point(1), 0)
+	self.object:set_item            (object.activate, self.object:best_weapon () )
+	self.object:set_mental_state   (anim.free)
+
+	self.object:enable_talk      ()
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:execute ()
+
+	if(self.object:level_vertex_id() == self.stand_point_id) then
+		self:on_position()
+	else
+		self.object:set_movement_type    (move.walk)
+		self.object:set_mental_state    (anim.free)
+		self.object:set_path_type      (game_object.level_path)
+		self.object:set_dest_level_vertex_id(self.stand_point_id)
+		self.time = 0
+		--Нужно для того, чтоб указать, что мы переходили на другую позицию
+	end
+
+	self.object:set_item            (object.idle, self.object:best_weapon () )
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:on_position()
+	--Когда пришли в указанную позицию, две секунды не проигруем анимацию, врдуг разворачиваемся
+	if(self.time == 0) then self.time = device():time_global() + 2000 end
+
+	--Если точно не поворачиваемя, то: если актер далеко проигруем анимации, если рядом и угол между направлением
+	--наблюдения и актером меньше величины, то смотрим на актера, в противном случае - в наблюдаемую точку
+	if(device():time_global() > self.time) then
+		if(level.actor() and distance_between(level.actor(), self.object) > 5) then
+			self.animations:update("idle")
+			self.object:set_sight               (look.point, self.a.path:point(1), 0)
+        else
+			if(self.object:animation_count() <= 1) then
+				--Доигруем анимацию до конца
+				self.animations:update(nil)
+			else
+				return
+			end
+
+			--Проверяем угол
+			if(level.actor() and yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1.5)then
+				--Угол не большой, смотрим на актера
+				local pos = level.actor():position()
+				pos.y     = pos.y + 1.4
+				self.object:set_sight               (look.point, pos, 0)
+			else
+				--Смотрим в точку
+				self.object:set_sight               (look.point, self.a.path:point(1), 0)
+			end
+		end
+	else
+		self.object:set_sight               (look.point, self.a.path:point(1), 0)
+	end
+
+	self.object:set_movement_type    (move.stand)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:finalize ()
+	action_base.finalize     (self)
+	self.animations      = nil
+	self.object:disable_talk  ()
+	self.object:clear_animations()
+end
+----------------------------------------------------------------------------------------------------------------------
+--scientist binder
+----------------------------------------------------------------------------------------------------------------------
+function add_security(obj)
+
+	local operators     = {}
+	local properties    = {}
+
+	properties["enabled"]            = xr_evaluators_id.jon_security
+
+	operators["security"]            = xr_actions_id.jon_security
+
+	local manager  = obj:motivation_action_manager ()
+	manager:add_evaluator (properties["enabled"], enabled_evaluator("enabled_evaluator", xr_motivator.storage[obj:id()].security))
+
+	local action = this.action_security_stand ("action_security_stand", xr_motivator.storage[obj:id()].security)
+
+	action:add_precondition         (world_property (stalker_ids.property_alive,  true))
+	action:add_precondition         (world_property (stalker_ids.property_enemy,  false))
+	action:add_precondition         (world_property (properties["enabled"],       true))
+	xr_motivator.addCommonPrecondition(action)
+	action:add_effect               (world_property (properties["enabled"],       false))
+
+	manager:add_action              (operators["security"], action)
+
+	action = manager:action         (xr_actions_id.alife)
+	action:add_precondition         (world_property (properties["enabled"],  false))
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
+
+function bind_object( obj, name )
+	if( name == "zombie" ) then
+		this.add_zombie ( obj )
+	elseif( name == "novice" ) then
+		this.add_novice( obj )
+	elseif( name == "novice2" ) then
+		this.add_novice2( obj )
+	elseif( name == "novice3" ) then
+		this.add_novice3( obj )
+	end
+end

@@ -1,0 +1,61 @@
+//------------------------------------------------------------------------------------------
+// –азличные хранилища
+//------------------------------------------------------------------------------------------
+
+// из CStorage можно вз€ть некоторые данные, которые не используетс€. ѕосле того, как персонаж
+// закончил с ними работать, он их освобождает и они станос€тс€ свободными дл€ других
+
+class "CStorage"
+function CStorage:__init()
+	self.data	= {}			// ƒанные, которые хран€тс€
+	self.use	= {}			// ƒанные, которые испольлует npc
+	self.n  	= 0				//  оличесвто используемых елементов
+end
+
+function CStorage:insert(_data)
+	table.insert(self.data, _data)
+end
+
+function CStorage:get_data(npc_id)
+	printf("%d", npc_id)
+	assert(table.getn(self.data) >= 0)				// ѕопытка вызвать get_date() без проверки empty()
+	
+	self.index		 	= if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
+	self.use[npc_id] 	= self.data[self.index]
+	self.n				= self.n + 1
+	table.remove(self.data, self.index)
+	
+	return self.use[npc_id]
+end
+
+function CStorage:release_data(npc_id)
+	printf("%d", npc_id)
+	//printf("%f", self.use[npc_id]:position().x)
+	assert(self.use[npc_id] ~= nil)					// данный npc и не брал никаких данных
+
+	table.insert(self.data, self.use[npc_id])
+	self.use[npc_id]	= nil
+	self.n 	= self.n - 1 
+	assert(self.n >= 0)
+	printf("Release data")
+end
+
+function CStorage:empty()
+	return(table.getn(self.data) == 0)
+end
+
+function CStorage:use_count()
+	return self.n
+end
+
+function CStorage:data_count()
+	return table.getn(self.data)
+end
+
+function CStorage:count()
+	return self:use_count() + self:data_count()
+end
+
+function CStorage:use_data(npc_id)
+	return (self.use[npc_id] ~= nil)
+end

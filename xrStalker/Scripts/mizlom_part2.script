@@ -1,0 +1,165 @@
+local	distance		= 40			//' –ассто€ние, начина€ с которого может спр€татс€ монстр
+local   max_damage		= 0.2			//' ѕолучив какое повреждение, излом начинает убегать
+local   min_dist		= 20            //' ¬о врем€ пугани€ актера, если приближаемс€ ближе к актеру, чем это рассто€ние и видим актера, то начинаем атаковать
+local	run_distance	= 30			//' –ассто€ние одной перебежки во врем€ бегани€ вокруг актера
+local	time_threaten	= 60000
+
+class "CIzlom2"
+function CIzlom2:__init(_npc)
+	self.npc			= _npc
+	self.course			= false				//'¬ каком направлении ходит( по часовой стрелке или против) вокруг игрока
+	self.attacked		= false
+	self.damaged		= false
+	self.time			= 0
+	self.start_health	= 0
+	self.actor_live     = true
+end
+
+function CIzlom2:initialize()
+	//'¬ыбираем, что будем делать: атаковать и в каком направлении будем ходить вокруг игрока
+	if(math.random() < 0.5) then
+		self.attacked	= true
+	else
+		self.attacked	= false
+	end
+	if(math.random() > 0.5) then
+		self.course		= true			//'Ѕудем ходить по часовой стрелке	
+	else
+		self.course		= false			//'Ѕудем ходить против часовой стрелки
+	end
+	
+	self.npc:script(true, script_name())
+	//' следующа€ строка временна€
+	self.attacked		= false
+	self.damaged		= false
+	self:initialize_state()				//' »нициализирует некоторое состо€ние
+end
+
+function CIzlom2:execute()
+	//' ≈сли излом мертв, либо он отбежал далеко, то скрипт заканчивает работу
+	if(level.actor() == nil) then printf("__not actor__")  return true end			//' Ќа вс€кий случай
+
+	if(self.attacked) then
+		self:state_attack()
+	else
+		self:state_threaten()
+	end
+	
+	return true
+end
+
+function CIzlom2:state_attack()
+	if(self.damaged == false and self.npc.health < self.start_health - max_damage) then 
+		self.damaged = true
+		self:initialize_state()		
+	end
+	if(self.npc:action() == nil) then
+		if(self.damaged) then
+			//' ”бегаем, больше не будем атаковать
+			action(self.npc, act(act.panic, level.actor()), cond(cond.time_end, 60000))
+		else
+			//' јтакуем, пока нас не атакуют
+			action(self.npc, act(act.attack, level.actor()), cond(cond.time_end, 60000))
+		end
+	end
+end
+
+function CIzlom2:state_threaten()
+	//' ”слови€, при которых излом перестает пугать и начинает атаковать актера
+	if(self.npc:see(level.actor()) and distance_between(self.npc, level.actor()) < min_dist) then
+		self.attacked = true
+		self:initialize_state()
+		return
+	end
+	
+	if(self.npc:get_monster_hit_info().time ~= 0) then
+		self.attacked = true
+		self:initialize_state()
+		return
+	end
+	
+	if(self.npc:action() == nil) then
+		if(self:select_run_point()) then
+			printf("mizlom_part2 call vertex_position")
+			action(self.npc, move(move.run_fwd, level.vertex_position(self.vertex_id), 1), sound(sound.attack), cond(cond.move_end))
+		else
+			action(self.npc, move(move.walk_fwd, level.actor():position()), sound(sound.attack),
+																					 cond(cond.time_end, 2000))
+		end
+	end
+end
+
+function CIzlom2:initialize_state()
+	reset_action(self.npc, script_name())
+	
+	if(self.damaged) then
+		//' ѕолучили хит, наверно будем убегать
+		return
+	end
+	
+	if(self.attacked) then
+		//' Ѕудем атаковать актера
+		self.start_health = self.npc.health	
+	else
+		//' Ѕудем бегать и пугать, не приближа€сь к нему
+		self.time	= device():time_global()
+	end
+end
+
+function CIzlom2:check_completed()
+	//' ”слови€ завершини€ скрипта
+	
+	if(self.npc:alive() == false) then return true end
+	
+	if(level.actor() and level.actor():alive() == false) then return true end
+	
+	if(self.damaged and level.actor() and distance_between(level.actor(), self.npc) > distance) then
+		return true
+	end	
+	
+	if(self.attacked == false and device():time_global() > self.time + time_threaten and
+		distance_between(level.actor(), self.npc) > distance) then
+		return true
+	end
+	
+	return false
+end
+
+function CIzlom2:select_run_point()
+	self.dir		= self.npc:position():sub(level.actor():position())
+	
+	if(self.course) then 
+		self.new_dir = vector_rotate_y(self.dir, -90)
+	else
+		self.new_dir = vector_rotate_y(self.dir, 90)		
+	end
+	
+	self.vertex_id   = level.vertex_in_direction(self.npc:level_vertex_id(), self.new_dir, run_distance)
+	if(level.vertex_position(self.vertex_id):distance_to(self.npc:position()) > 3) then return true end
+	
+	//' Ёта точка нам не подходим, ищем новую
+	
+	self.vertex_id   = level.vertex_in_direction(self.npc:level_vertex_id(), self.dir, run_distance)	//' ѕросто отбегаем от актера	
+	if(level.vertex_position(self.vertex_id):distance_to(self.npc:position()) > 3) then return true end
+	
+	//' Ёта точка нам не подходим, ищем новую
+
+	self.vertex_id   = level.vertex_in_direction(self.npc:level_vertex_id(), vector_rotate_y(self.new_dir, 180), run_distance)	//' ѕытаемс€ бежать в противоположную сторону
+	if(level.vertex_position(self.vertex_id):distance_to(self.npc:position()) > 3) then 
+		self.course	= not(self.course)
+		return true
+	end
+	 	
+	//' Ёта точка нам не подходим, ищем новую
+
+	self.vertex_id   = level.vertex_in_direction(self.npc:level_vertex_id(), vector_rotate_y(self.dir, math.random(-90, 90)), run_distance)	//' 
+	if(level.vertex_position(self.vertex_id):distance_to(self.npc:position()) > 3) then return true end
+
+	return false
+end
+
+function CIzlom2:finalize()
+	if(self.npc and self.npc:get_script()) then
+		self.npc:script(false, script_name())
+	end
+end

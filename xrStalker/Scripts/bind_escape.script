@@ -1,0 +1,429 @@
+// Сюжетные скрипты, которые на данный момент используются на escape. Все биндится к 
+// монстрам, все настройки в customdate.
+
+local flesh_distance 	= 10
+
+
+// Плоть которая бежит в аномалию при приближении актера
+
+class "CDeadFlesh" (object_binder)
+
+function CDeadFlesh:__init(obj) super(obj)
+end 
+
+function CDeadFlesh:reload(section)
+	object_binder.reload(self, section)
+	
+	self.char_ini	= self.object:spawn_ini()
+	
+	self.rest_way	= utils.mob_get_string(self.char_ini, "gameplay", "path", nil, obj, true)
+	self.dead_way	= utils.mob_get_string(self.char_ini, "gameplay", "dead_point", nil, obj, true)
+
+	self.end_work	= false
+	self.actor_near = false
+end
+
+function CDeadFlesh:update(delta)
+	object_binder.update(self, delta)
+	
+	if(self.end_work) then return end
+	
+	if(self:test_to_dead()) then return end
+	
+	// Если еще не взяли под скрипт, то берем
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+	
+	// проверка, пора ли бежать плоти в анамалию
+	if(self.actor_near == false) then 
+		self.hear_sound	= self.object:get_sound_info()
+		if( (self.object:get_monster_hit_info().time ~= 0) or
+			(level.actor() and self.object:see(level.actor()) or
+			(self.hear_sound.who and self.hear_sound.who:id() == get_actor_id() and distance_between(self.object, level.actor()) < 4)
+			)
+		) then
+			reset_action(self.object, script_name())
+			self.actor_near	= true
+		end
+	end
+
+	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	//if(self.actor_near == false) then	
+	    if not self.object:action() then 
+		// Актер далеко, ходит просто по маршруту
+		    action(self.object, move(move.walk_fwd, patrol(self.rest_way):point(0), 1), sound(sound.idle), cond(cond.move_end))
+		    action(self.object, look(look.point, patrol(self.rest_way):point(1)), anim(anim.turn, 0), sound(sound.idle), cond(cond.look_end))
+		    action(self.object, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 1000000000))
+		end
+	else
+		// Актер рядом, бежит в аномалию
+		if(self.actor_near == false) then
+			reset_action(self.object, script_name())
+			self.actor_near	= true
+		end
+		
+		if(self.object:action() == nil) then
+			action(self.object, move(move.run_fwd, patrol(self.dead_way)), sound(sound.panic, 800), cond(cond.move_end))
+		end
+	end
+end
+
+// Проверяем, не умер ли монстр
+function CDeadFlesh:test_to_dead()
+	if(self.object:alive()) then return (false) end
+	
+	self.end_work		= true
+	
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	return (true)
+end
+
+// Кабаны не escape. Буцают труп, при подходе игрока бегут в аномалию
+// Часть скрипта скопирована из футбола. Так что немного тут есть лишнего
+
+local boar_distance         = 39      // Расстояние, ближе которого кабаны бегут в аномалию
+local max_distance       	= 10      // На каком расстояние от точки обитания, буду буцать трупп
+
+class "CBoarPlayWithCorpse" (object_binder)
+function CBoarPlayWithCorpse:__init(obj) super(obj)
+end 
+
+function CBoarPlayWithCorpse:reload(section)
+	object_binder.reload(self, section)
+	
+	self.ini        = self.object:spawn_ini()
+
+	self.path		= patrol(utils.mob_get_string(self.ini, "gameplay", "path", nil, self.object, true))
+	self.corpse		= utils.mob_get_string(self.ini, "gameplay", "corpse", nil, self.object, true)
+	self.end_work	= false
+	self.actor_near = false
+	
+	self.ball		= level.object(self.corpse)
+	if(self.ball) then
+		self.shell	= self.ball:get_physics_shell()
+	end
+	self.state		= 0
+	self.time_play	= 0
+	self.temp		= false				// Временно, оббегаем ли мы мяч
+end
+
+function CBoarPlayWithCorpse:update(delta)
+	object_binder.update(self, delta)
+	
+	if(self.end_work) then return end
+	
+	// Если еще не взяли под скрипт, то берем
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+
+	if(self.actor_near == false and 
+		self.object:get_monster_hit_info().time ~= 0 and self.object:get_monster_hit_info().who:id() == get_actor_id()
+	) then
+		reset_action(self.object, script_name())
+		self.actor_near	= true
+	end
+
+	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) < boar_distance) then
+		reset_action(self.object, script_name())
+		self.actor_near	= true
+	end
+
+	if(self.actor_near == false) then
+		self:set_action()
+	else
+		// Актер рядом, бежит в аномалию
+		if(self.actor_near == false) then
+			reset_action(self.object, script_name())
+			self.actor_near	= true
+		end
+		
+		if(self.object:get_enemy() and self.object:get_enemy():id() == get_actor_id()) then
+			// Если появился враг и он актер, то отпускаем из под скрипта
+			if(self.object:get_script()) then self.object:script(false, script_name()) end
+			self.end_work	= true		// Больше скрипт не работает
+			return
+		end
+		
+		action(self.object, act(act.attack, level.actor()), cond(cond.time_end, 10000))
+	end
+end
+
+function CBoarPlayWithCorpse:set_action()
+	if(self.ball == nil) then
+		
+		self.ball		= level.object(self.corpse)	
+		self.shell		= self.ball:get_physics_shell()
+		
+		if(self.object:action() == nil and self.ball == nil) then
+			// Если еще мяча почему-то нет
+			action(self.object, anim(anim.sit_idle, 0), cond(cond.time_end, 3000))
+			return
+		end
+	end
+	
+	if(self.state == 0 and self.object:action() == nil) then
+		if(self.ball:position():distance_to(self.path:point(0)) > max_distance and
+		   self.object:position():distance_to(self.path:point(0)) < self.ball:position():distance_to(self.path:point(0))
+		) then
+			// мяч забили сильно далеко, пытаемся его вернуть назад. Забегаем с другой стороны
+			action(self.object, move(move.run_fwd, self:select_point(), 0.5), sound(sound.attack), cond(cond.move_end))
+			self.temp	= true
+			//action(self.object, move(move.run_fwd, self.ball), sound(sound.attack), cond(cond.time_end, 3000))
+		else
+			// Вносим елемент случайности
+			if(math.random() < 0.8) then
+				action(self.object, move(move.run_fwd, self.ball), sound(sound.attack), cond(cond.time_end, 3000))
+			else
+				action(self.object, move(move.run_fwd, self:select_point(), 0.5), sound(sound.attack), cond(cond.move_end))			
+			end
+			self.temp	= false
+		end
+	end
+
+	if(device():time_global() > self.time_play) then
+		if(distance_between(self.object, self.ball) < 2 and self.temp == false) then
+			if(self.state == 0) then
+				// Проигруем анимацию
+				reset_action(self.object, script_name())
+				action(self.object, look(look.point, self.ball:position()), anim(anim.turn, 0), cond(cond.look_end))
+				self.state 		= 1
+			elseif(self.state == 1 and self.object:action() == nil) then
+				action(self.object, anim(anim.attack, 0), cond(cond.time_end, 600))
+				self.temp_time 	= device():time_global() + 400
+				self.state		= 2
+			elseif(self.state == 2 and device():time_global() > self.temp_time) then
+				// Бьем
+				self:play()
+				self.state		= 0
+			end
+		else
+			self.state	= 0
+		end
+	end	
+end 
+
+local k 	= 200000
+
+function CBoarPlayWithCorpse:play()   
+	self.dir	= self.ball:position():sub(self.object:position()):normalize()
+	self.dir.y	 = 0.6
+
+	self.shell:apply_force(k * self.dir.x, k * self.dir.y, k * self.dir.z)	
+end 
+
+function CBoarPlayWithCorpse:select_point()
+	// Выбираем точку, так, чтоб было похоже, что пытаемся оббежать
+	
+	self.id			= self.object:level_vertex_id()
+	self.dir		= self.ball:position():sub(self.path:point(0))
+	
+	
+	// Пытаемся съимитировать бег разбросанный
+	if(math.random() > 0.5) then
+		self.dir 	= vector_rotate_y(self.dir, 35)
+	else
+		self.dir 	= vector_rotate_y(self.dir, -35)
+	end
+	
+	if(self.dir:magnitude() == 0) then
+		// На всякий случай, вдруг получится, что |self.dir| = 0
+		self.dir.x = 0.1
+	end
+	
+	self.id		 	= level.vertex_in_direction(self.id, self.dir, 5)
+	
+	return	(level.vertex_position(self.id))
+end
+
+// Проверяем, не умер ли монстр
+function CBoarPlayWithCorpse:test_to_dead()
+	if(self.object:alive()) then return (false) end
+	
+	self.end_work		= true
+	
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	return (true)
+end
+
+------------------------------------------------------------------------------------------------
+// Скрипт: собаки, которые пытаются атаковать раненого
+
+// Менеджер, который управляет очередностью атак собак
+local pDogs_manager = nil
+
+class "CDogsManager"
+function CDogsManager:__init()
+	self.attack		= false
+	self.time		= 0
+end
+
+// Атакует сейчас кто-то 
+function CDogsManager:attack_stalker()
+	if(self.attack) then return true end
+	
+	if(device():time_global() > self.time + 5000) then		// следущий атакует, только через 5 секунд, после того, как предъидущий закончил
+		return false
+	end
+	
+	return true
+end
+
+function CDogsManager:monster_attack(param)
+	self.attack		= param
+end
+
+function dog_manager()
+	if(pDogs_manager == nil) then
+		pDogs_manager = CDogsManager()
+	end
+	
+	return (pDogs_manager)
+end
+
+
+
+// Собака, которая будет биндится
+class "CDangerDogs" (object_binder)
+
+function CDangerDogs:__init(obj) super(obj)
+end 
+
+function CDangerDogs:reload(section)
+	object_binder.reload(self, section)
+	
+	self.char_ini	= self.object:spawn_ini()
+	
+	self.rest_way	= patrol(utils.mob_get_string(self.char_ini, "gameplay", "path_walk", nil, self.object, true))
+	self.dead_way	= patrol(utils.mob_get_string(self.char_ini, "gameplay", "path_attack", nil, self.object, true))
+	self.enemy_name	= utils.mob_get_string(self.char_ini, "gameplay", "enemy", nil, self.object, true)
+
+	self.end_work	= false
+	self.actor_near = false
+	self.freed		= false
+end
+
+function CDangerDogs:update(delta)
+	object_binder.update(self, delta)
+	
+	if(self.end_work) then return end
+	
+	if(self:test_to_end_work()) then return end
+	
+	// Если еще не взяли под скрипт, то берем
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+	
+	self:set_action()
+end
+
+function CDangerDogs:set_action()
+	// Спрашиваем у менеджера, может мне начать атаковать
+	if(dog_manager():attack_stalker() == false) then
+		self.attack	= true
+		dog_manager():monster_attack(true)
+		reset_action(self.object, script_name())
+	end
+	
+	// Если пока еще есть действия, то нечего не делаем
+	if(self.object:action()) then return end
+	
+	if(self.attack) then 
+		// идем пугать сталкера
+		self.dist = distance_between(self.enemy, self.object)
+		if(self.dist <= 4) then
+			action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), sound(sound.threaten), cond(cond.look_end))
+			action(self.object, anim(anim.attack, 0), sound(sound.attack), cond(cond.time_end, 5000))		
+			action(self.object, anim(anim.stand_idle, 0), sound(sound.threaten), cond(cond.time_end, 1500))		
+		else
+			// еще далеко от сталкера, подходим, но учитываем расстояния. Когда не сильно далеко, то подкрадуемся
+			if(self.object:position():distance_to(self.dead_way:point(0)) < 4.5) then
+				action(self.object, move(move.steal, self.enemy:position(), 4), sound(sound.threaten), cond(cond.move_end))
+			else
+				action(self.object, move(move.walk_fwd, self.dead_way:point(0), 1), sound(sound.threaten), cond(cond.move_end))
+			end
+		end
+	else
+		// не атакуем, а ходим вокруг дома
+		action(self.object, move(move.walk_fwd, self.rest_way), sound(sound.attack), cond(cond.move_end))
+	end
+end
+
+// Проверяем, надо ли работать скрипту, или его отключить
+function CDangerDogs:test_to_end_work()
+	
+	self.enemy		= level.object(self.enemy_name)
+	
+	// Если нет инфопоршена, либо нет врага, то пока не работаем
+	if(self.object:alive() and level.actor():dont_has_info("escape_stalker_spawn") or self.enemy == nil) then
+		self:freeded()
+		return (true)
+	end
+	
+	// Учитываем, хиты и наличие врага рядом. Если это присуствует, то атакуем
+	if(self.object:alive() and self:need_attack()) then return (true) end
+	
+	// Если мертвый, то больше скрипт не работает
+	if(self.object:alive()) then return (false) end
+	
+	// Мертвый, заканчиваем работу
+	self.end_work		= true
+	
+	// если атаковали актера, то сообщаем менеджеру, что уже больше не атакуем
+	self:freeded()
+	
+	return (true)
+end
+
+function CDangerDogs:freeded()
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	if(self.attack) then
+		dog_manager():monster_attack(false)
+		self.attack		= false
+	end
+end
+
+// Эта функции смотрит, надо ли отпустить монстра из под скрипта и начать атаковать
+function CDangerDogs:need_attack()
+	if(self.freed) then
+		// Пока отпущен, смотрим, может порае его взять под контроль
+		if(self.object:get_enemy() == nil and self.object:get_monster_hit_info().time == 0 and distance_between_safe(self.object, level.actor()) >= 5) then
+			self.freed	= false
+		end
+	else
+		// Проверяем, может надо отпустить монстра. Враг очень рядом или монстр получит хит
+		if(distance_between_safe(self.object, level.actor()) < 5 or
+		   (self.object:get_monster_hit_info().who and self.object:get_monster_hit_info().who:id() == get_actor_id())
+		) then
+			// К гадалке не ходи, надо отпускать монстра
+			self.freed	= true
+		end
+	end      
+	
+	// Если надо отпустить, то отпускаем
+	if(self.freed) then self:freeded() end
+	
+	return (self.freed)	   
+end
+
+
+// Если проподаем и в это время атаковали, то сообщаем менеджеру, что больше не атакуем
+function CDangerDogs:net_destroy()
+	object_binder.net_destroy(self)
+
+	if(self.attack) then
+		dog_manager():monster_attack(false)
+		self.attack 	= false
+	end
+end

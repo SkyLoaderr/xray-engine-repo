@@ -1,0 +1,442 @@
+    
+local animations = {
+                   "idle_0_idle_0",
+                   "idle_0_idle_1",
+                   "idle_0_idle_2",
+                   "idle_0_idle_3",
+                   "idle_0_idle_4",
+                   "idle_1_idle_0",
+                   "idle_1_idle_1",
+                   "idle_1_idle_2",
+                   "idle_1_idle_3",
+                   "idle_1_idle_4"
+                   }
+                   
+
+----------------------------------------------------------------------------
+class "evaluator_complete" (property_evaluator)
+-------------------
+function evaluator_complete:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_complete:evaluate ()
+    --printf ("EVALUATOR complete for BAR_STALKER called")
+    return not (self.a.enabled == true)
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "evaluator_meat" (property_evaluator)
+-------------------
+function evaluator_meat:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_meat:evaluate ()
+    return self.a.meat
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "evaluator_interlocutor" (property_evaluator)
+-------------------
+function evaluator_interlocutor:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_interlocutor:evaluate ()
+    return self.a.interlocutor ~= nil
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "action_meat" (action_base)
+-------------------
+function action_meat:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.anims = {}
+    self.current = 1
+end
+-------------------
+function action_meat:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations          ()
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_mental_state          (anim.free)
+    
+    if self.a.pose == nil then
+       self.anims[1] = "drink_idle9"
+       self.anims[2] = "drink_idle9"
+    elseif self.a.pose == "hiccup" then
+       self.anims[1] = "drink_idle_5_0"
+       self.anims[2] = "drink_idle_5_1"
+    elseif self.a.pose == "lie" then
+       self.anims[1] = "drink_idle_7"
+       self.anims[2] = "drink_idle_7"
+    elseif self.a.pose == "sit" then
+       self.anims[1] = "drink_idle_8"
+       self.anims[2] = "drink_idle_8"
+    elseif self.a.pose == "sleep" then
+       self.anims[1] = "drink_idle_9"
+       self.anims[2] = "drink_idle_9"
+    end
+    
+    self.object:add_animation (self.anims[1], true)
+    self.current = 2
+end
+-------------------
+function action_meat:execute ()
+    action_base.execute (self)
+    
+    if self.object:animation_count () < 2 then
+       self.current = self.current + 1
+       if self.current > 2 then self.current = 1 end
+       if self.a.pose == "hiccup" and self.current == 1 then
+          xr_sounds.play_sound (self.object, 0, "bar", 1, 2)
+       end  
+       self.object:add_animation (self.anims[self.current], true)
+    end
+            
+end
+-------------------
+function action_meat:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "action_bar_single" (action_base)
+-------------------
+function action_bar_single:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.anims = {}
+    self.current = 1
+    self.count = 0
+    self.set = 0
+    self.in_talk = false
+    self.dir = vector ():set (0, 0, 0)
+end
+-------------------
+function action_bar_single:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations ()
+    self:recreate_animations ()
+    self.object:set_use_callback (self, "use_callback")
+    self.in_talk = false
+    self.dir = self.object:direction ()
+end
+-------------------
+function action_bar_single:execute ()
+    action_base.execute (self)
+
+    if self.object:is_talking () == true then
+       self.in_talk = true 
+       --if self.object:animation_count () < 2 then
+         -- self.object:add_animation ("drink_idle_0_talk", true)
+       --end
+       return   
+    end
+    
+    if self.in_talk == true then
+       self.object:set_sight (look.direction, self.dir, 0) 
+       self.object:clear_animations ()
+       self.object:add_animation ("drink_idle_0_0", true)
+       self:recreate_animations ()
+       self.in_talk = false
+    end    
+    
+    if self.object:animation_count () < 2 then
+       if self.anims[self.current].count == 0 then
+          self.current = self.current + 1
+          if self.current > self.count then 
+             self:recreate_animations ()
+          end
+       end   
+       self.object:add_animation (self.anims[self.current].name, true)
+       self.anims[self.current].count = self.anims[self.current].count - 1
+    end
+    
+end
+-------------------
+function action_bar_single:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:clear_use_callback ()
+end
+-------------------
+function action_bar_single:recreate_animations ()
+    self.anims = {}
+    local num = math.random (1, 3)
+    if num == 1 then
+       self.anims[1] = {name = "drink_idle_1_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_1_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_1_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
+    elseif num == 2 then
+       self.anims[1] = {name = "drink_idle_2_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_2_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_2_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
+    else
+       self.anims[1] = {name = "drink_idle_3_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_3_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_3_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_3_3", count = 1} 
+       self.anims[5] = {name = "drink_idle_3_4", count = 1} 
+       self.anims[6] = {name = "drink_idle_0_0", count = math.random (2, 5)} 
+    end
+    self.set = num
+    self.current = 1    
+    self.count = table.getn (self.anims)
+end
+-------------------
+function action_bar_single:use_callback ()
+    if self.a.talking == false then 
+       xr_sounds.play_sound (self.object, 0, "bar", 1, 1)
+       return 
+    end
+    
+    if self.set == 3 and self.current < 4 then
+       xr_sounds.play_sound (self.object, 0, "bar", 1, 1)
+       return 
+    end
+    
+    --self.object:clear_animations ()
+    --self.object:add_animation ("drink_idle_0_0", true)
+    --self.object:add_animation ("drink_idle_0_talk", true)
+    
+    self.object:enable_talk ()
+    
+    self.object:clear_animations ()
+    
+    local v1 = level.actor ():position ()
+    local v2 = self.object:position ()
+    v1:sub (v2)
+    v1:normalize ()
+    self.object:set_sight (look.direction, v1, 0)
+    
+    --self:recreate_animations ()
+end
+
+
+----------------------------------------------------------------------------
+class "action_bar" (action_base)
+-------------------
+function action_bar:__init (name, storage) super (nil, name)
+    self.current_animation = math.random (1, table.getn (animations))
+    self.interlocutor = nil
+    self.talk_enabled = false
+    self.a = storage
+    self.theme = nil
+    self.sub_theme = 0
+    self.phrase = 0
+    self.wait_time = 0
+    self.wait = 0
+    self.delay = 0
+end
+-------------------
+function action_bar:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations ()
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_mental_state          (anim.free)
+    self.current_animation = math.random  (1, table.getn (animations))
+    self.talk_enabled = false
+    
+    if self.a.interlocutor == nil then
+       self.theme = "bar_talk_single"
+    else
+       self.theme = "bar_talk_double"
+    end       
+    
+    self.delay = device ():time_global () + math.random (1000, 60000)
+end    
+-------------------
+function action_bar:execute ()
+    action_base.execute (self)
+    
+    if self.interlocutor == nil and self.a.interlocutor ~= nil then
+       self.interlocutor = level.object (self.a.interlocutor)
+       if self.interlocutor ~= nil then
+          xr_motivator.storage[self.interlocutor:id ()].bar_stalker.passive = true
+       end   
+       self.talk_enabled = true
+    end   
+    
+    if self.object:animation_count () < 2 then
+       self:set_animation ()
+    end
+    
+    if self.a.interlocutor == nil then
+       self:single_talk ()
+    else
+       if self.talk_enabled == true then
+          self:double_talk ()
+       end   
+    end            
+        
+end    
+-------------------
+function action_bar:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end    
+-------------------
+function action_bar:single_talk ()
+    if self.a.passive == true then return end
+    if self.sub_theme == 0 then
+       if self.delay - device ():time_global ()  > 0 then return end 
+       self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
+       self.phrase = 1
+       self.delay = 0
+       return
+    end
+    
+    if self.object:active_sound_count () ~= 0 then 
+       return
+    else
+       if self.delay ~= 0 and self.delay - device ():time_global () > 0 then return end
+    end   
+    
+    xr_sounds.play_sound (self.object, 0, self.theme, self.sub_theme, self.phrase)
+    self.delay = device ():time_global () + math.random (20000, 50000)
+    self.phrase = self.phrase + 1
+    if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
+       self.sub_theme = 0
+    end   
+           
+end
+-------------------
+function action_bar:double_talk ()
+    if self.interlocutor == nil then return end
+    
+    if self.sub_theme == 0 then
+       if self.delay - device ():time_global () > 0 then return end
+       self.sub_theme = xr_sounds.get_random_subtheme (self.theme) 
+       self.phrase = 1
+       self.delay = 0
+       return
+    end
+    
+    if self.interlocutor:active_sound_count () ~= 0 or self.object:active_sound_count () ~= 0 then
+       return
+    else
+       if self.delay ~= 0 and self.delay - device ():time_global () > 0 then return end
+    end   
+                
+    local talker = nil
+    if bit_and (self.phrase, 1) == 1 then
+       talker = self.object
+    else    
+       talker = self.interlocutor
+    end    
+    
+    
+    xr_sounds.play_sound (talker, 0, self.theme, self.sub_theme, self.phrase)
+    self.delay = device ():time_global () + math.random (1500, 3000)
+    self.phrase = self.phrase + 1
+    if self.phrase > xr_sounds.get_num_phrases (self.theme, self.sub_theme) then
+       self.sub_theme = 0
+       self.delay = device ():time_global () + math.random (30000, 50000)
+    end   
+    
+end
+-------------------
+function action_bar:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation], false)
+end
+
+
+
+----------------------------------------------------------------------------
+function add_to_binder (npc, ini)
+    --if true then return end
+    
+   	if ini == nil or ini:section_exist ("bar") == false or ini:line_exist ("bar", "enabled") == false then 
+   	   return 
+    end
+     
+    local st = xr_motivator.storage[npc:id()].bar
+    st.enabled = ini:r_bool ("bar", "enabled")
+    if st.enabled == false then return end
+    if ini:line_exist ("bar", "meat") == true then 
+       st.meat = ini:r_bool ("bar", "meat")
+    end
+    
+    if ini:line_exist ("bar", "interlocutor") == true then
+       st.interlocutor = ini:r_string ("bar", "interlocutor")     
+    end
+    
+    if ini:line_exist ("bar", "talk_enable") == true then
+       st.talking = ini:r_bool ("bar", "talk_enable")
+    end
+    
+    if ini:line_exist ("bar", "pose") == true then
+       st.pose = ini:r_string ("bar", "pose")
+    end
+       
+    local manager = npc:motivation_action_manager ()
+    local property = {}
+    local operators = {}
+     
+    property["complete"]    = xr_evaluators_id.sidor_bar
+    property["meat"]        = xr_evaluators_id.sidor_bar + 1
+    property["inter"]       = xr_evaluators_id.sidor_bar + 2
+    
+    operators["bar"]        = xr_actions_id.sidor_act_bar
+    operators["meat"]       = xr_actions_id.sidor_act_bar + 1
+    operators["single"]     = xr_actions_id.sidor_act_bar + 2
+    
+    manager:add_evaluator (property["complete"], this.evaluator_complete (st, "property_complete"))
+    manager:add_evaluator (property["meat"], this.evaluator_meat (st, "property_meat"))
+    manager:add_evaluator (property["inter"], this.evaluator_interlocutor (st, "property_inter"))
+    
+    local action = this.action_bar ("action_bar", st)
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              false))
+    action:add_precondition         (world_property (property["inter"],             true))
+    action:add_effect               (world_property (property["complete"],          true))
+    manager:add_action              (operators["bar"], action)
+
+    action = this.action_meat ("action_meat", st)
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              true))
+    action:add_effect               (world_property (property["complete"],          true))
+    manager:add_action              (operators["meat"], action)
+  
+    action = this.action_bar_single ("action_bar_single", st)
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              false))
+    action:add_precondition         (world_property (property["inter"],             false))
+    action:add_effect               (world_property (property["complete"],          true))
+    manager:add_action              (operators["single"], action)
+               
+    action = manager:action (xr_actions_id.alife)
+    action:add_precondition (world_property (property["complete"],  true))
+    --printf ("BAR_STALKER scheme binded to object %s", npc:name ())
+    
+end
+----------------------------------------------------------------------------

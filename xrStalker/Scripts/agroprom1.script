@@ -1,0 +1,115 @@
+module ( "monsters" )
+--script_zone01, script_zone02, script_zone03, script_zone04, script_zone05,
+--script_zone06, script_zone07
+
+local on_line 	= {}
+
+local zone   = {}
+local monstr = {}
+
+local list      = {
+                    "burer1",     --Список монстров
+                    "burer2",
+                    "burer3",
+                    "burer4",
+                    "burer5",
+                    "burer6",
+                    "burer7",
+                    "burer8",
+                  }
+
+local zone_name = {
+                  	"script_zone01",
+                    "script_zone02",
+                    "script_zone03",
+                    "script_zone04",
+                    "script_zone05",
+                   }
+
+
+function on_enter (zone, obj )
+    if( level.actor() == nil ) then return end
+
+    if( obj:id() == level.actor():id() ) then
+        monsters.ini.agroprom1 = false
+        printf( "______Enter______________" )
+    end
+end
+
+function is_on_line()
+	for i = 1, table.getn( list ) do
+    	if( level.object( list[i] ) ) then
+            --Данный монстр был в offline
+            if( monstr[i] == nil ) then
+				monstr[i] = level.object( list[i] )
+                monstr[i]:script( true, this.script_name() )
+            end
+        else
+            --Нет, а раньше был - перешел в offline
+            if( monstr[i] ) then
+            	monstr[i] = nil
+            end
+        end
+    end
+
+    for i = 1, table.getn( zone_name ) do
+        if( level.object( zone_name[i] ) ) then
+            --Данная зона была в offline
+            if( zone[i] == nil ) then
+                zone[i] = level.object( zone_name[i] )
+                zone[i]:set_callback( this.on_enter, true )
+            end
+        else
+            --Нет, а раньше былa - перешел в offline
+            if( zone[i] ) then
+                zone[i] = nil
+            end
+        end
+    end
+end
+
+function main ()
+
+	printf( "agroprom1 start" )    
+	for i = 1, table.getn( zone_name ) do
+        table.insert( zone, level.object( zone_name[i] ) )
+        if( zone[i] ) then
+        	zone[i]:set_callback( this.on_enter, true )
+--	        printf( "set callback %s", zone[i] )
+        end
+		printf( "Set callback to zone %s", zone_name[i] )
+--
+    end
+
+    for i = 1, table.getn( list ) do
+        table.insert( monstr, level.object( list[i] ) )
+        if( monstr[i] ) then
+        	monstr[i]:script( true, this.script_name() )
+        end
+    end
+
+    while( monsters.ini.agroprom1 ) do
+        this.is_on_line()
+        wait()
+    end
+
+    for i = 1, table.getn( monstr ) do
+        if( monstr[i] ) then
+            monstr[i]:script( false, this.script_name() )
+		end
+    end
+
+    printf( "__________Actor enter in agroprom vault__________" )
+
+    while( true ) do
+        wait()
+    end
+
+    for i = 1, table.getn( zone ) do
+       if( zone[i] ) then
+          zone[i]:clear_callback( true )
+          printf( "clear callback %s", zone[i]:name() )
+       end
+    end
+
+end

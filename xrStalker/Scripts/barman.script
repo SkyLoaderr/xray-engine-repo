@@ -1,0 +1,162 @@
+--[[------------------------------------------------------------------------------------------------------------------
+"Бармен" в баре "С.Т.А.Л.К.Е.Р."
+Чугай Саша
+
+Сделать:
+	- звуки
+	- переход от анимации к втыканию
+
+--------------------------------------------------------------------------------------------------------------------]]
+
+local prop_barman = xr_evaluators_id.chugai_barman_base
+local act_bar     = xr_actions_id.chugai_barman_base
+
+local walking, animating, in_room, in_bar = 0, 1, 2, 3
+
+local i, a, ra
+
+----------------------------------------------------------------------------------------------------------------------
+-- Действие "за стойкой"
+----------------------------------------------------------------------------------------------------------------------
+class "action_bar" ( action_base )
+
+function action_bar:__init( name )  super ( nil, name )
+	self.move_mgr = move_mgr.move_mgr()
+	self.state = walking
+end
+
+function action_bar:initialize()
+	action_base.initialize( self )
+
+	self.move_mgr:initialize( self.object )
+
+	if a.path == a.path_bar then
+		self.move_mgr:reset( a.path_bar, a.path_bar_info, a.path_bar_look, a.path_bar_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	elseif a.path == a.path_bar2room then
+		self.move_mgr:reset( a.path_bar2room, a.path_bar2room_info, a.path_bar2room_look, a.path_bar2room_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	elseif a.path == a.path_room2bar then
+		self.move_mgr:reset( a.path_room2bar, a.path_room2bar_info, nil, nil, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	end
+end
+
+function action_bar:execute()
+	action_base.execute( self )
+
+	if self.state == walking then
+		self.move_mgr:update()
+	elseif self.state == animating then
+		if self.object:animation_count() == 0 then
+			self.state = walking
+			self.move_mgr:update_movement_state()
+		end
+	end
+end
+
+function action_bar:finalize()
+	action_base.finalize( self )
+
+	-- чтобы вызвался move_mgr:update() при возврате к этому действию
+	self.state = walking
+end
+
+function action_bar:move_cb( mode, num )
+	printf( "move callback num = %d", num )
+
+	if num == animating then
+		self.state = num
+
+		i = random_choice_weighted{ 30, 10, 20 }
+		if i == 1 then
+			for j = 1, math.random( 4 ) do
+				self.object:add_animation( random_choice( "idle_0_idle_0", "idle_0_idle_1", "idle_0_idle_4" ), true )
+			end
+		elseif i == 2 then
+			self.object:add_animation( random_choice( "idle_0_idle_5", "idle_0_idle_6" ), true )
+		else
+			self.object:add_animation( "idle_0_idle_7_0", true )
+			self.object:add_animation( "idle_0_idle_7_1", true )
+			self.object:add_animation( "idle_0_idle_7_2", true )
+		end
+	elseif num == in_room then
+		self.state = num
+
+		ra.restriction = false
+		self.object:set_start_dialog( "barman_room" )
+
+		self.move_mgr:reset_path_info()
+	elseif num == in_bar then
+		self.state = walking
+
+		ra.restriction = false
+		self.object:set_start_dialog( "barman_bar" )
+
+		a.path = a.path_bar
+		self.move_mgr:reset( a.path_bar, a.path_bar_info, a.path_bar_look, a.path_bar_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	end
+
+	return true
+end
+
+----------------------------------------------------------------------------------------------------------------------
+
+function add_to_binder( npc )
+	a = {}
+
+	a.path_bar                = "bar"
+	a.path_bar_look           = "bar_look"
+	a.path_bar2room           = "bar2room"
+	a.path_bar2room_look      = "bar2room_look"
+	a.path_room2bar           = "room2bar"
+	a.path_bar_info           = utils.path_parse_waypoints( a.path_bar )
+	a.path_bar_look_info      = utils.path_parse_waypoints( a.path_bar_look )
+	a.path_bar2room_info      = utils.path_parse_waypoints( a.path_bar2room )
+	a.path_bar2room_look_info = utils.path_parse_waypoints( a.path_bar2room_look )
+	a.path_room2bar_info      = utils.path_parse_waypoints( a.path_room2bar )
+
+	a.path = a.path_bar
+
+	local manager = npc:motivation_action_manager()
+
+	xr_motivator.storage[npc:id()].replics = { npc = npc }
+	ra = xr_motivator.storage[npc:id()].replics
+
+	manager:add_evaluator( prop_barman, const_evaluator( true ) )
+	manager:add_evaluator( xr_evaluators_id.chugai_replics_base, xr_replics.evaluator_play( "property_play", ra ) )
+
+	local action = xr_replics.action_play( "action_play", ra )
+	action:add_effect( world_property( xr_evaluators_id.chugai_replics_base, false ) )
+	manager:add_action( xr_actions_id.chugai_replics_base, action )
+
+	action = this.action_bar( "action_bar", a )
+	action:add_precondition( world_property( prop_barman, true ) )
+	action:add_precondition( world_property( xr_evaluators_id.chugai_replics_base, false ) )
+	action:add_effect( world_property( prop_barman, false ) )
+	manager:add_action( act_bar, action )
+
+	action = manager:action( xr_actions_id.alife )
+	action:add_precondition( world_property( prop_barman, false ) )
+
+	npc:set_start_dialog( "barman_bar" )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+
+function to_small_room( barman, actor )
+	ra.restriction = true
+	barman:disable_talk()
+	a.path = a.path_bar2room
+end
+
+function from_small_room( barman, actor )
+	ra.restriction = true
+	barman:disable_talk()
+	a.path = a.path_room2bar
+end
+
+function about_bobik( barman, actor )
+	xr_replics.set_scenario( barman, "barman_test" )
+end

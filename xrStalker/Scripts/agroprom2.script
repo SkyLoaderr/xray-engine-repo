@@ -1,0 +1,25 @@
+module( "m_Manager" )
+module( "m_waiter" )
+
+local mnstr = {
+                "m_bloodsucker_e0000",
+                "m_bloodsucker_e"
+               }
+
+local waiters = nil
+
+function init()
+    waiters = m_manager.Easy()
+
+    for i = 1, table.getn( mnstr ) do
+        waiters:insert( m_waiter.waiter( mnstr[i], this.script_name() ) )
+    end
+end
+
+function execute()
+	return waiters:execute()
+end
+
+function finalize()
+    waiters:finalize()
+end

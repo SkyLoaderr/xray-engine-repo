@@ -1,0 +1,48 @@
+--air_attack				(CLuaGameObject*);
+--air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
+--air_attack_active		();
+--heli_goto_stay_point	(float time=0.0f);
+--heli_goto_stay_point	(Fvector& pos, float time=0.0f);
+--heli_go_patrol			(float time=0.0f);
+--heli_go_to_point		(Fvector& pos, Fvector& via, float time);
+--heli_last_point_time ()   returns last key point's time in float
+
+
+
+
+function main()
+
+    if true then return end
+	local helicopter = get_level_object( "helicopter" )
+	local car = get_level_object( "m_car" )
+	local actor = get_actor()
+--	wait(10000)	
+--	while(true)do
+
+
+		if(helicopter:air_attack_active()==false) then
+--			helicopter:air_attack_wait(actor,100,15)    --þ¸ªðýþòøª¹¸  ÷ð 100 üõª¨þò ôþ ¡õûø, òø¸õª¹ 15 ¸õú
+--			helicopter:air_attack(actor)
+   	
+			local vecDst = vector():set(actor:position())
+			local vecVia = vector():set(car:position())
+			
+
+
+--			helicopter:heli_goto_stay_point( vecVia, 6000 )
+
+			helicopter:heli_go_to_point(vecDst,vecVia,63)
+
+			wait(40000)
+    	
+
+			local vecSp = vector():set(-448,15,-233)
+			helicopter:heli_goto_stay_point( vecSp, 6000 )
+
+
+		end
+
+
+--	end
+		
+end

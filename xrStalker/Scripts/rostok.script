@@ -1,0 +1,249 @@
+--[[---------------------------------------------------------------------------------------------------------------
+Росток. Сбивание вертолёта.
+Чугай Саша
+
+Сделать:
+-----------------------------------------------------------------------------------------------------------------]]
+
+local heli_mgr
+local heli_start
+local path_flg
+
+local the_actor
+
+local svoboda = {}
+local pilots  = {}
+local wrecked_heli_id
+local svoboda_spawned, pilots_corpses_spawned
+
+-------------------------------------------------------------------------------------------------------------------
+function on_enter( zone, obj )
+	if obj:id() == the_actor:id() then
+		heli_start = true
+	end
+end
+
+-------------------------------------------------------------------------------------------------------------------
+-- Класс управления вертолётом
+-------------------------------------------------------------------------------------------------------------------
+class "RostokHeliManager" ( xr_heli.HeliManager )
+
+function RostokHeliManager:__init() super()
+end
+
+function RostokHeliManager:initialize( name, path, patrol_speed, attack_speed )
+	xr_heli.HeliManager.initialize( self, name, path, patrol_speed, attack_speed )
+end
+
+function RostokHeliManager:HeliOnHit( p )
+--	printf( "[heli] OnHit %f", self.heliObject:GetfHealth() )
+end
+
+local dist_to_point, point, path_idx, ptrl
+
+function RostokHeliManager:HeliOnPoint( p )
+--	xr_heli.HeliManager.HeliOnPoint( self, p )
+
+	dist_to_point = p:r_float()
+	point         = p:r_vec3( point )
+	path_idx      = p:r_s16()  -- ==-1 if no path moving
+
+	printf( "[heli] OnPoint %d", path_idx )
+
+	if path_idx > -1 then
+		if ptrl:flag( path_idx, 0 ) then
+			path_flg = true
+		elseif ptrl:flag( path_idx, 1 ) then
+			self.heliObject:PrepareDie()
+		end
+	end
+end
+
+function RostokHeliManager:udpate()
+	xr_heli.HeliManager.update( self )
+end
+-------------------------------------------------------------------------------------------------------------------
+
+function main()
+	the_actor = get_actor()
+
+	if the_actor:has_info( "rostok_heli_down" ) then
+		return
+	end
+
+	the_actor:give_info_portion( "rostok_heli_start" )
+
+	-- запомнить id стлкеров и спрятать в офлайн
+	local sim = alife()
+	local npc_id
+
+	for i = 1, 5 do
+		npc_id = get_level_object( "svoboda_0"..i ):id()
+		table.insert( svoboda, npc_id )
+
+		sim:set_switch_online ( npc_id, false )
+		sim:set_switch_offline( npc_id, true )
+	end
+
+	for i = 1, 6 do
+		npc_id = get_level_object( "army_pilot_0"..i ):id()
+		table.insert( pilots, npc_id )
+
+		sim:set_switch_online ( npc_id, false )
+		sim:set_switch_offline( npc_id, true )
+	end
+
+	-- спрятать подбитый вертолёт
+--	get_level_object( "helicopter" ):get_helicopter():Die()
+--	get_level_object( "helicopter" ):get_helicopter():Explode()
+	wrecked_heli_id = get_level_object( "helicopter" ):id()
+	sim:set_switch_online ( wrecked_heli_id, false )
+	sim:set_switch_offline( wrecked_heli_id, true )
+
+	-- подождать входа актёра в скриптовую зону
+	-- пока не получен инфопоршн, скрипту пофиг, войдёт ли актёр в зону или нет
+	local zone = get_level_object( "heli_start_zone" )
+	zone:set_callback( on_enter, true )
+
+	printf( "waiting for zone entrance" )
+	while not heli_start or
+	      the_actor:dont_has_info( "rostok_heli_start" ) or
+	      not ( level.get_time_hours() >= 9 and level.get_time_hours() < 21 )
+	do
+		wait( 500 )
+	end
+
+	zone:clear_callback( true )
+
+	the_actor:give_info_portion( "rostok_heli_down" )
+
+	-- заказать перевод всех сталкеров в онлайн
+	for i, id in svoboda do
+		sim:set_switch_online ( id, true )
+		sim:set_switch_offline( id, false )
+	end
+
+	for i, id in pilots do
+		sim:set_switch_online ( id, true )
+		sim:set_switch_offline( id, i <= 3 ) -- последние трое - трупы. их нужно обязательно в онлайн, чтобы убить
+	end
+
+	-- показать подбитый вертолёт
+	sim:set_switch_online ( wrecked_heli_id, true )
+	sim:set_switch_offline( wrecked_heli_id, true )
+
+	-- отловить переход всех сталкеров "Свободы" и трупов-пилотов в онлайн
+	local npc
+	svoboda_spawned        = 0
+	pilots_corpses_spawned = 0
+
+	repeat
+		for i, id in svoboda do
+			if type( id ) == "number" then
+				npc = level.object_by_id( id )
+				if npc then
+					svoboda[i] = npc
+					svoboda_spawned = svoboda_spawned + 1
+
+					-- просто стоять
+					npc:script( true, script_name() )
+					action(
+						npc,
+						move(),
+--						object( wpn, object.activate ),
+						look( look.path_dir ),
+--						anim( anim.danger ),
+						cond( cond.time_end, time_infinite )
+					)
+				end
+			end
+		end
+
+		for i = 4, 6 do
+			if type( pilots[i] ) == "number" then
+				npc = level.object_by_id( pilots[i] )
+				-- при спавне сразу убить
+				if npc then
+					pilots[i] = npc
+					pilots_corpses_spawned = pilots_corpses_spawned + 1
+					npc:kill( npc )
+				end
+			end
+		end
+
+		wait()
+	until svoboda_spawned >= 5 and pilots_corpses_spawned >= 3
+
+	-- взорвать подбитый вертолёт
+--	get_level_object( "helicopter" ):get_helicopter():Die()
+--	get_level_object( "helicopter" ):get_helicopter():Explode()
+
+	-- вертолёт летит к ним
+	heli_mgr = RostokHeliManager()
+	heli_mgr:initialize( "heli", "heli1", 30 )
+	ptrl = patrol( heli_mgr.path )
+	heli_mgr.not_die = true -- вертолёт бессмертен
+
+	printf( "Heli has started" )
+
+	while not path_flg do
+		heli_mgr:update()
+		wait()
+	end
+
+	-- если подлетел к точке с флажком, то замедлить
+	heli_mgr.heliObject:SetCurrVelocity( 10 )
+
+	-- сталкеры палят по нему
+	for i, npc in svoboda do
+		if npc:alive() then
+			reset_action( npc, script_name() )
+
+			action(
+				npc,
+				move(),
+				look( look.fire_point, heli_mgr.heli ),
+--				anim( anim.danger ),
+				cond( cond.time_end, math.random( 0, 3000 ) )
+			)
+
+			local wpn = npc:best_weapon()
+			if not wpn then
+				printf( "%s best_weapon()=nil!!!", npc:name() )
+			end
+
+			action(
+				npc,
+				object( wpn, object.fire1 ),
+				look( look.fire_point, heli_mgr.heli ),
+				cond( cond.time_end, time_infinite )
+			)
+		end
+	end
+
+	-- лететь до очередной точки с флажком
+	path_flg = false
+
+	while not path_flg do
+		heli_mgr:update()
+		wait()
+	end
+
+	-- в этой точке он умирает
+	heli_mgr.heliObject:SetfHealth( 0.5 )
+	heli_mgr.not_die = false
+
+	-- отпустить всех сталкеров "Свободы"
+	-- теперь они могут свободно переходить в онлайн и офлайн
+	for i, npc in svoboda do
+		npc:script( false, script_name() )
+
+		sim:set_switch_online ( npc:id(), true )
+		sim:set_switch_offline( npc:id(), true )
+	end
+
+	-- дать вертолёту упасть и взорваться
+	while heli_mgr:update() do
+		wait()
+	end
+end

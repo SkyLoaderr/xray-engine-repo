@@ -1,0 +1,42 @@
+local s_sound		= 4
+
+local time_update	= 5000
+
+class "CStateNotDangerSound"
+function CStateNotDangerSound:__init(_data, _mem)
+	self.data		= _data
+	self.memory		= _mem
+	self.sound_time	= 0
+end
+
+function CStateNotDangerSound:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+	self.sound_time	= self.memory.sound.time
+end
+
+function CStateNotDangerSound:execute()
+	if(self:sound_changed()) then
+		reset_action(self.data.npc, self.data.scr_name)
+	end
+	
+	if(self.data.npc:action() == nil) then
+		action(self.data.npc, move(move.walk_fwd, self.memory.sound.position, 1.5), sound(sound.idle), cond(cond.move_end))
+		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 30000))
+	end		
+end
+
+function CStateNotDangerSound:sound_changed()
+	if(self.memory.sound.time > self.sound_time + time_update) then
+		self.sound_time	= self.memory.sound.time
+		return true
+	end
+	
+	return false
+end
+
+function CStateNotDangerSound:id()
+	return s_sound
+end
+
+function CStateNotDangerSound:finalize()
+end

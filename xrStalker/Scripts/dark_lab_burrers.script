@@ -1,0 +1,336 @@
+local see_actor		= 5000		// Сколько времени бюреры смотртят на актера, когда он зашел
+local actor_time 	= 30000		// Сколько времени находятся в агресивном состоянии
+
+--==============================================================================================================
+// message id
+local ADD_MEMBER	= 1
+local DELETE_MEMBER	= 2
+local ACTOR_FIRE	= 3
+local ENEMY 		= 4			// У кого-то есть враг
+
+//states
+local REST			= 10
+local ACTOR_ENTER 	= 11
+local ATTACK		= 12
+local ALL_DEAD		= 13		// Все убиты, остался только босс
+--==============================================================================================================
+local g_pManager = nil
+
+------------------------------------------------------------------------------------------------------
+function manager()
+	if(g_pManager == nil) then
+		g_pManager = CBurrerManager()
+	end
+	
+	return g_pManager
+end
+
+//-------------------------------------------------------------------------------------------------------------
+// Менеджер, который управляет группировкой
+//-------------------------------------------------------------------------------------------------------------
+class "CBurrerManager"
+function CBurrerManager:__init()
+	self.enter	= false
+	self.time	= 0
+end
+------------------------------------------------------------------------------------------------------
+function CBurrerManager:reinit()
+	// Вызывается, когда стартует, либо при перезагрузке
+	self.members 	= 0
+end
+------------------------------------------------------------------------------------------------------
+function CBurrerManager:get_state(visitor)
+	if(device():time_global() > self.time + actor_time) then
+		// Уже давно никто не видел актера, забываем про него
+		self.enter	= false
+	end
+
+	if(self.enter == false) then 
+		return (REST)
+	end
+	
+	//Проверяем, видит ли этот член актера, если видит, то запоминаем время, когда видели последний раз
+	if(visitor:get_enemy() and visitor:get_enemy():id() == get_actor_id()) then
+		if(device():time_global() > self.time + see_actor) then
+			// Cмотрим, а давно ли зашел актер, если давно, то запоминаем, что его недавно видели
+			self.time = device():time_global() - see_actor
+		end
+	end
+	
+	// Перебил, гад, всех
+	if(self.members <= 1) then 
+		return (ALL_DEAD)
+	end
+	
+	if(device():time_global() < self.time + see_actor) then 
+		return (ACTOR_ENTER)
+	end
+	
+	return (ATTACK)
+end------------------------------------------------------------------------------------------------------
+
+function CBurrerManager:message(message_id)
+	if(message_id == ADD_MEMBER) then
+		self.members	= self.members + 1
+	elseif(message_id == DELETE_MEMBER) then
+		self.members	= self.members - 1
+	elseif(message_id == ACTOR_FIRE) then
+		self.enter 		= true						// Если еще не вощел, то говорим, что актер зашел
+		self.time		= device():time_global()
+		self.time		= self.time - see_actor	// Этим гарантируем, что они сразу начнут его атаковать
+	end
+end
+------------------------------------------------------------------------------------------------------
+function CBurrerManager:actor_enter()
+	// Смотрим, вдруг актер только что заходил. Если убрать if, то может быть следующее. Актер воюет, зашел вышел, а бюреры опять некоторое время на него смотрят
+	if(self.enter) then 
+		if(device():time_global() > self.time + see_actor) then
+			// Cмотрим, а давно ли зашел актер, если давно, то запоминаем, что его недавно видели
+			self.time = device():time_global() - see_actor
+		end
+	else
+		self.enter	= true
+		self.time 	= device():time_global()
+	end
+end
+
+//-------------------------------------------------------------------------------------------------------------
+// Босс бюреров
+//-------------------------------------------------------------------------------------------------------------
+class "CBossBurrer" (object_binder)
+function CBossBurrer:__init(object) super(object)
+	
+	self.path 		= patrol(utils.conf_get_string(object:spawn_ini(), "burrer_boss", "path", nil, self.object, true))
+	self.state		= REST	
+	
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+	
+	manager():message(ADD_MEMBER)
+end
+------------------------------------------------------------------------------------------------------
+function CBossBurrer:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.end_work) then return end
+	
+	if(self.object:alive() == false) then
+		self:finalize()
+		return
+	end
+	
+	self:select_state()
+	
+	if(self.state == REST) then 
+		self:rest()
+	else
+		self:attack_enemy()
+	end
+end
+------------------------------------------------------------------------------------------------------		
+function CBossBurrer:rest()
+	if(self.object:action()) then return end
+	
+	if(self.object:position():distance_to(self.path:point(0)) > 1.5) then
+		action(self.object, move(move.walk_fwd, self.path:point(0), 1), sound(sound.idle), cond(cond.move_end))
+		action(self.object, look(look.point, self.path:point(1)), anim(anim.turn, 0), cond(cond.look_end))
+		action(self.object, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 60000))	
+	else
+		action(self.object, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 60000))	
+	end
+end
+------------------------------------------------------------------------------------------------------
+function CBossBurrer:attack_enemy()
+	if(self.object:action()) then return end
+	
+	if(self.state == ACTOR_ENTER) then
+		// Зашел актер
+		action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), cond(cond.look_end))
+		action(self.object, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, see_actor))
+	elseif(self.state == ATTACK) then
+		// Все дерутся, а я смотрю
+		action(self.object, act(act.attack, self.enemy), cond(cond.time_end, 30000))
+		action(self.object, anim(anim.look_around, 0), sound(sound.attack), cond(cond.time_end, 7000))
+	else
+		// Удаляем рестриктор
+		if(string.find(self.object:out_restrictions(), "boss")) then
+			self.object:remove_restrictions("boss", "")
+		end
+
+		action(self.object, act(act.attack, self.enemy), cond(cond.time_end, 30000))
+	end
+end
+------------------------------------------------------------------------------------------------------
+function CBossBurrer:select_state()
+	// Выбор сосояни для монстра
+	
+	self.temp = manager():get_state(self.object)
+	
+	// В состоянии не REST запоминаем врага и проверяем, чтоб он был живой
+	if(self.temp ~= REST) then 
+		self.enemy = level.actor()
+		if(self.enemy == nil or self.enemy:alive() == false) then 
+			// Нет актера, либо он мертв, тогда новое состояние REST
+			self.temp = REST
+		end
+	end
+	
+	// Все в состоянии покоя, но у нас есть враг и он является актером
+	if(self.temp == REST and self.object:get_enemy() and self.object:get_enemy():id() == get_actor_id()) then
+		// Актер нанес нам хит
+		manager():message(ACTOR_FIRE)
+		self.temp 	= ATTACK
+		self.enemy	= level.actor()
+	end		
+
+	// Актер нанес нам хит
+	if((self.temp == ACTOR_ENTER or self.temp == REST) and device():time_global() < self.object:get_monster_hit_info().time + 2000) then
+		manager():message(ACTOR_FIRE)
+		self.temp = ATTACK
+		self.enemy	= level.actor()
+	end
+
+	// Все дерутся, босс наблюдает, но вдруг он получил хит, тоже начинает атаковать
+	if(self.temp == ATTACK and self.object:get_monster_hit_info().time ~= 0) then
+		self.temp = ALL_DEAD					// Приходится дратся, как буд-то уже остался один
+		self.enemy	= level.actor()
+	end
+	
+	if(self.temp == self.state) then return end
+	
+	self.state = self.temp
+	reset_action(self.object, script_name())
+end
+------------------------------------------------------------------------------------------------------
+function CBossBurrer:finalize()
+	if(self.end_work) then return end
+	
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	self.end_work	= true
+	manager():message(DELETE_MEMBER)
+end
+------------------------------------------------------------------------------------------------------
+function CBossBurrer:net_destroy()
+	object_binder.net_destroy(self)
+	
+	if(self.end_work == false) then
+		// Пропал в офлайн, но еще работал
+		manager():message(DELETE_MEMBER)
+	end
+end
+
+//-------------------------------------------------------------------------------------------------------------
+// Бюррер охранник
+//-------------------------------------------------------------------------------------------------------------
+class "CSecurityBurrer" (object_binder)
+function CSecurityBurrer:__init(object) super(object)
+	self.path 		= patrol(utils.conf_get_string(object:spawn_ini(), "burrer_security", "path", nil, self.object, true))
+	self.state		= REST
+	
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+	
+	manager():message(ADD_MEMBER)
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.end_work) then return end
+	
+	if(self.object:alive() == false) then
+		self:finalize()
+		return
+	end
+
+	self:select_state()
+	
+	if(self.state == REST) then 
+		self:rest()
+	else
+		self:attack_enemy()
+	end
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:rest()
+	if(self.object:action()) then return end
+		
+	action(self.object, move(move.walk_fwd, self.path), sound(sound.idle), cond(cond.move_end))
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:attack_enemy()
+	if(self.object:action()) then return end
+	
+	
+	if(self.state == ACTOR_ENTER) then
+		action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), cond(cond.look_end))
+		action(self.object, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, see_actor))
+	else
+		if(self.enemy) then 
+			action(self.object, act(act.attack, self.enemy), cond(cond.time_end, 60000))
+		else
+			action(self.object, anim(anim.stand_idle, 0), sound(sound.attack), cond(cond.time_end, 5000))
+			printf("Error. Not enemy. id = 1")
+		end
+	end
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:select_state()
+	// Выбор сосояния для монстра
+	
+	self.temp = manager():get_state(self.object)
+	
+	// В состоянии не REST запоминаем врага и проверяем, чтоб он был живой
+	if(self.temp ~= REST) then 
+		self.enemy = level.actor()
+		if(self.enemy == nil or self.enemy:alive() == false) then 
+			// Нет актера, либо он мертв, тогда новое состояние REST
+			self.temp = REST
+		end
+	end
+	
+	// Все в состоянии покоя, но у нас есть враг и он является актером
+	if(self.temp == REST and self.object:get_enemy() and self.object:get_enemy():id() == get_actor_id()) then
+		// Актер нанес нам хит
+		manager():message(ACTOR_FIRE)
+		self.temp  = ATTACK		
+		self.enemy = self.object:get_enemy()
+	end		
+
+	// Актер нанес нам хит
+	if((self.temp == ACTOR_ENTER or self.temp == REST) and device():time_global() < self.object:get_monster_hit_info().time + 2000) then
+		manager():message(ACTOR_FIRE)
+		self.temp 	= ATTACK		
+		self.enemy 	= level.actor()
+	end
+
+	if(self.temp == self.state) then return end
+	
+	self.state = self.temp
+	reset_action(self.object, script_name())
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:finalize()
+	if(self.end_work) then return end
+	
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	self.end_work	= true
+	manager():message(DELETE_MEMBER)
+end
+------------------------------------------------------------------------------------------------------
+function CSecurityBurrer:net_destroy()
+	object_binder.net_destroy(self)
+	
+	if(self.end_work == false) then
+		// Пропал в офлайн, но еще работал
+		manager():message(DELETE_MEMBER)
+	end
+end

@@ -1,0 +1,202 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Скрипт "Два бандита на заводе (escape)"
+Чугай Саша
+
+Сделать:
+
+Соответствие номера синхронизации флажкам:
+	n	flg
+	0	1
+	1	2
+	2	3
+	10	11
+	11	12
+	12	13
+	13	14
+	14	15
+	20	21
+	21	22
+--------------------------------------------------------------------------------------------------------------------]]
+
+local one_dead    = false -- флажок смерти одного бандита
+local repl        = false -- сказал ли что-то один бандит на finalize 
+local team        = "factory_bandits"
+local novice_name = "escape_robbed_novice"
+local the_actor
+
+local snd_novice_again =  { themes = { "escape_factory_bandits_novice_again" } }
+local snd_on_actor     =  { themes = { "escape_factory_bandits_on_actor" } }
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "бандит управляется этим скриптом"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_factory_bandit" (property_evaluator)
+
+function evaluator_factory_bandit:__init( name, storage ) super (nil, name)
+	self.a = storage
+end
+
+function evaluator_factory_bandit:evaluate()
+	return self.a.enabled == true
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "перехвачено ли уже событие смерти бандюгана?"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_dead_hook" ( property_evaluator )
+
+function evaluator_dead_hook:__init( name, storage ) super(nil, name)
+	self.a = storage
+end
+
+function evaluator_dead_hook:evaluate()
+	return self.a.dead_hook
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие "прохаживаться"
+---------------------------------------------------------------------------------------------------------------------
+class "action_walk" (action_base)
+
+function action_walk:__init( name, storage ) super( nil, name )
+	self.a        = storage
+	self.move_mgr = move_mgr.move_mgr()
+end
+
+function action_walk:initialize()
+	action_base.initialize( self )
+
+	self.move_mgr:initialize( self.object )
+
+	self.state = nil
+end
+
+function action_walk:execute()
+	action_base.execute( self )
+
+	if self.state ~= one_dead then
+		self.state = one_dead
+
+		if one_dead then
+			self.move_mgr:reset( self.a.path_walk2, self.a.path_walk_info2, self.a.path_look2, self.a.path_look_info2, team )
+		else
+			self.move_mgr:reset( self.a.path_walk1, self.a.path_walk_info1, self.a.path_look1, self.a.path_look_info1, team )
+		end
+	end
+
+	self.move_mgr:update()
+end
+
+function action_walk:finalize()
+	action_base.finalize( self )
+
+	self.move_mgr:finalize()
+
+	if not repl then
+		if self.object:alive() then
+			repl = true
+
+			local enemy = self.object:best_enemy()
+			if enemy then
+				stop_play_sound( self.object )
+
+				if not the_actor then
+					the_actor = level.actor()
+				end
+
+				if the_actor and enemy:id() == the_actor:id() then
+					xr_sound.sound_update( self.object, snd_on_actor, true )
+				elseif enemy:name() == novice_name then
+					xr_sound.sound_update( self.object, snd_novice_again, true )
+				end
+			end
+		end
+	else
+		repl = false
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие для перехвата смерти
+---------------------------------------------------------------------------------------------------------------------
+class "action_dead_hook" ( action_base )
+
+function action_dead_hook:__init( name, storage ) super( nil, name )
+	self.a = storage
+end
+
+function action_dead_hook:initialize()
+	action_base.initialize( self )
+
+	if one_dead then
+		-- если до один уже был мёртв, то дать инфу, что оба бандита мертвы
+		if not the_actor then
+			the_actor = level.actor()
+		end
+
+		the_actor:give_info_portion( "escape_factory_bandits_dead" )
+	else
+		one_dead = true
+	end
+
+	self.a.dead_hook = true
+end
+
+function action_dead_hook:execute()
+	action_base.execute( self )
+end
+
+function action_dead_hook:finalize()
+	action_base.finalize( self )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Настройка скрипта и GOAP
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder( npc )
+	local a = xr_motivator.storage[npc:id()].escape_factory_bandit
+	if not a.enabled then
+	    return
+	end
+
+	a.dead_hook = false
+
+	-- настройка movement manager
+	a.path_walk1 = npc:name() .. "_walk"
+	a.path_look1 = npc:name() .. "_look"
+	a.path_walk_info1 = utils.path_parse_waypoints( a.path_walk1 )
+	a.path_look_info1 = utils.path_parse_waypoints( a.path_look1 )
+
+	a.path_walk2 = "factory_bandit_alone_walk"
+	a.path_look2 = "factory_bandit_alone_look"
+	a.path_walk_info2 = utils.path_parse_waypoints( a.path_walk2 )
+	a.path_look_info2 = utils.path_parse_waypoints( a.path_look2 )
+
+	-- GOAP
+
+	local eva_base = xr_evaluators_id.chugai_escape_factory_bandits_base
+	local act_base = xr_actions_id.chugai_escape_factory_bandits_base
+
+	local manager = npc:motivation_action_manager()
+
+	manager:add_evaluator( eva_base,     this.evaluator_factory_bandit( "property_enabled", a ) )
+	manager:add_evaluator( eva_base + 1, this.evaluator_dead_hook( "property_dead_hook", a ) )
+
+	local action = this.action_walk( "action_walk", a )
+	action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+	action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+	action:add_precondition( world_property( xr_evaluators_id.reaction,  false ) )
+	action:add_effect      ( world_property( eva_base,                   false ) )
+	manager:add_action     ( act_base, action )
+
+	action = manager:action( xr_actions_id.alife )
+	action:add_precondition( world_property( eva_base, false ) )
+
+	-- перехват смерти
+	action = this.action_dead_hook( "action_dead_hook", a )
+	action:add_effect( world_property( eva_base + 1, true ) )
+	manager:add_action( act_base + 1, action )
+
+	action = manager:action( stalker_ids.action_death_planner )
+	action:add_precondition( world_property( eva_base + 1, true ) )
+end

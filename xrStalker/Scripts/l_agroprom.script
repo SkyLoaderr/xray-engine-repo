@@ -1,0 +1,29 @@
+module("agroprom2")
+
+local work = {}
+
+function main()
+    printf("started")
+
+    agroprom2.init	()
+
+    table.insert(work, "agroprom2"     )
+
+    while(table.getn(work) > 0) do
+        local deleted = {}
+        for k,v in work do
+            if v == "agroprom2" then
+                if(agroprom2.execute() == false) then
+                    agroprom2.finalize()
+                    table.insert(deleted, k)
+                end
+            end
+        end
+        for k,v in deleted do
+            table.remove(work, v)
+        end
+
+        wait()
+
+    end
+end

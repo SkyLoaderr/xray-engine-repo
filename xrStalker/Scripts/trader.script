@@ -1,0 +1,529 @@
+// Скрипт торговец: тут он и биндится и находится его реализация. Для нормальной работы 
+// скрипта торговцу необходима скриптовая зона "trader_zone" и дверь "trader_door". У двери
+// в customdate должно быть прописано [door], у скриптовой зоны - [no_weapon]
+
+
+function bind(obj)
+	obj:bind_object(CTrader(obj))
+end
+
+local snd =   {
+	hello = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1a_1",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1a_2",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1a_3",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1a_4",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1a_5"
+          },
+
+	go_out = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_1",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_2",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_3",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_4",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_5"
+				},
+
+	good_trade = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_1",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_2",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_3",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_4",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_5"
+				},
+
+	bad_trade = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_6",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_7",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_8",
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1c_9",
+				},
+
+	monolog1 = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_monolog1"
+				},
+
+	monolog2 = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_monolog2"
+				},
+
+	monolog3 = {
+				"\characters_voice\\human_01\\scenario\\trader\\trader_script1b_1"
+				}
+
+}
+
+local last_snd = {}		// используется для того, чтоб фразы одного типа
+
+local spinka     = 1
+local idle       = 2
+local chitaet    = 3
+
+// Базовый класс. Он используется для проигрывания анимация и звука которые ему задают 
+// класы, которые описуют поведение торговца в текущий момент времени
+
+class "CTrader" (object_binder)
+function CTrader:__init(obj) super(obj)
+end
+
+
+function CTrader:reload(section)
+	object_binder.reload(self, section)
+
+	self.state	= idle				// Положение тела	
+	self.trade	= false
+	
+	self.need_init	= true			// Необходимо вызвать select_state
+	
+	self.anim  = 
+	{
+		sound  		= nil,
+		index  		= -1,
+		time   		= 0,
+		animation 	= "",
+		state    	= idle,
+		repeats		= 0,
+		especial	= nil			// Особенная анимация, которая проигруется вместе со звуком
+	}
+end
+
+
+function CTrader:set_zone_callback()
+	// callback на зону
+	self.zone  = level.object("trader_zone")
+	
+	if(self.zone == nil) then return end
+	
+	self.zone:set_callback(self, "on_enter", true)
+	self.zone:set_callback(self, "on_exit", false)
+
+	// Проверяем, вдруг на старте актер уже находится в зоне
+	if(self.zone:active_zone_contact(level.actor():id())) then
+		self.action:on_enter(true)
+	end
+end
+
+
+function CTrader:set_trade_callbacks()
+	self.object:set_callback(self, "start_trade", true)
+	self.object:set_callback(self, "end_trade",   false)
+	self.object:set_trade_callback(self, "on_trade")
+end
+
+
+function CTrader:select_state()
+	// Если не рассказывали историю фразу, то первый менеджер, в противном случае другой
+	if(level.actor():dont_has_info("tutorial_artefact_start") and
+	   level.actor():dont_has_info("tutorial_artefact_gain")
+	) then
+		self.action = CStartActions ()
+		self.object:disable_talk 	()
+	else
+		self.action = CLifeAction  	()
+		
+		self.object:enable_talk 	()
+		self:set_trade_callbacks	()		
+		self:set_zone_callback	()
+	end
+end
+
+
+function CTrader:play_animation(animation, state, sound, time, now, especial)
+	if(now == true) then
+		reset_action(self.object, script_name())
+	end
+	
+	// Играет фразу, причем, так, чтоб она была не такой, как в прошлый раз
+	if(sound) then
+		if(table.getn(snd[sound]) > 1) then
+			// до этого звуки такого типа не проигрывали
+			if(last_snd[sound] == nil) then
+				last_snd[sound]	= math.random(1, table.getn(snd[sound]))
+				self.anim.sound	= snd[sound][last_snd[sound]] 
+				printf("%d", last_snd[sound])
+				printf("%s", self.anim.sound)
+			else
+				// берем произвольно фразу, и выбираем ее так, чтоб она не совпадала с предъидущей фразой
+				self.index	= math.random(1, table.getn(snd[sound]))
+				
+				while(self.index == last_snd[sound]) do
+					self.index	= math.random(1, table.getn(snd[sound]))
+				end
+				
+				self.anim.sound	= snd[sound][self.index]
+				last_snd[sound]	= self.index
+			end
+		else
+			// Такого типа всего одна фразу, ее и выбираем
+			self.anim.sound		= snd[sound][1]
+		end
+	else
+		self.anim.sound	= nil
+	end
+	
+	self.anim.time		= time
+	self.anim.animation	= animation
+	self.anim.state		= state
+	self.anim.especial	= especial
+end
+
+
+function CTrader:update(delta)
+	object_binder.update(self, delta)
+
+	// Когда проспаунились, ждем появления актера, для того, чтоб прочитать у него инфу
+	if(self.need_init) then
+		if(level.actor()) then
+			self:select_state()
+			self.need_init	= false
+		else
+			return
+		end
+	end
+	
+	if(self.zone == nil) then self:set_zone_callback() end
+	if(self.object:get_script() == false) then self.object:script(true, script_name()) end
+	
+
+	// Если сейчас не торгуем, то вызываем update у текущего менеджера
+	if(self.trade == false) then
+		// updat-им. Если конец, то выбираем новый управляющий менеджер
+		if(self.action:update(self) == false) then
+			self:select_state()
+			self.action:update(self)
+		end
+	else
+		if(self.object:action() == nil) then
+			self:play_animation("idle", idle)
+		end
+	end
+
+	self:actions()
+end
+
+
+function CTrader:actions(param)						// param - true, тогда экшн добавляется полюбому. Используется для проигрыванию звука, когда еще и надо изменить положение тела. Без этого параметра были проблемы
+	if(self.object:action() and param == nil) then return end
+	
+	if(self.state == self.anim.state) then
+		// Положение тела менять не надо, проигруем анимацию
+		if(self.anim.especial) then
+			// Проигруем специальную анимацию со звуком
+			action(self.object, anim(self.anim.animation), sound(self.anim.sound, "bip01_head"), cond(cond.sound_end))
+		elseif(self.anim.sound) then
+			action(self.object, anim(self.anim.animation), sound(self.anim.sound, "bip01_head", MonsterSpace.head_anim_normal), cond(cond.sound_end))
+			self.anim.sound		= nil
+			self.anim.animation = "idle"
+		else
+			// Надо выполнять экшн до конца анимации, или задано время
+			if(self.anim.time) then
+				action(self.object, anim(self.anim.animation), cond(cond.time_end, self.anim.time))
+			else
+				action(self.object, anim(self.anim.animation), cond(cond.anim_end))
+				self.anim.repeats 	= self.anim.repeats - 1
+			end
+		end
+	else
+		// Изменяем положение тела, а потом будем проигрывать анимацию
+		if(self.state == spinka) then
+			if(self.anim.state == idle) then
+				action(self.object, anim("spinka_idle"), cond(cond.anim_end))
+			elseif(self.anim.state == chitaet) then
+				action(self.object, anim("spinka_idle"), cond(cond.anim_end))
+				action(self.object, anim("idle_chitaet"), cond(cond.anim_end))
+			else
+				assert(true)
+			end
+		elseif(self.state == chitaet) then
+			if(self.anim.state == idle) then
+				action(self.object, anim("chitaet_idle"), cond(cond.anim_end))
+			elseif(self.anim.state == spinka) then
+				action(self.object, anim("chitaet_idle"), cond(cond.anim_end))
+				action(self.object, anim("idle_spinka"), cond(cond.anim_end))
+			else
+				assert(true)
+			end
+		elseif(self.state == idle) then
+			if(self.anim.state == chitaet) then
+				action(self.object, anim("idle_chitaet"), cond(cond.anim_end))
+			elseif(self.anim.state == spinka) then
+				action(self.object, anim("idle_spinka"), cond(cond.anim_end))
+			else
+				assert(false)
+			end
+		end
+		self.state	= self.anim.state
+		self:actions(true)
+	end    // self.state ==  self.anim.state			
+end
+
+
+function CTrader:on_enter(zone, obj)
+	if(obj:id() == get_actor_id()) then
+		printf("Actor_enter")
+		self.action:on_enter()
+	end
+end
+
+
+function CTrader:on_exit(zone,  obj)
+	if(obj:id() == get_actor_id()) then
+		printf("Actor_exit")
+		self.action:on_exit()
+	end
+end
+
+
+function CTrader:start_trade(zone,  obj)
+	self.trade		= true
+	self.exchange	= false
+	reset_action(self.object, script_name())
+end
+
+
+function CTrader:end_trade()
+	self.action:end_trade(self.exchange, self)
+	self.trade		= false
+end
+
+
+function CTrader:on_trade(obj, type)
+	self.exchange	= true
+end
+
+
+function CTrader:net_destroy()
+	object_binder.net_destroy(self)
+
+	// Смотрим, зона находится ли еще в онлайне
+	if(level.object("trader_zone")) then
+		self.zone:clear_callback(true)
+		self.zone:clear_callback(false)
+	end
+end
+
+
+//---------------------------------------------------------------------------------------------
+// Действия, которые выполняет торговец на старте
+//---------------------------------------------------------------------------------------------
+local start			= 1
+local wait1			= 2
+local say_phrase1 	= 3
+local wait2			= 4
+local say_phrase2 	= 5
+local wait3			= 6
+local say_phrase3 	= 7
+local wait4			= 8
+
+
+class "CStartActions"
+function CStartActions:__init()
+	self.enter    	= false
+	self.enter_time = 0
+	self.need_reset	= false
+	self.state		= start
+	self.lock		= false
+	self.door       = nil
+end
+
+function CStartActions:update(trader)
+	if(self.door == nil) then
+		self.door = level.object("trader_door")
+	end
+
+	// закрываем дверь, если это еще не сделали
+	if(self.lock == false and self.door ~= nil) then
+		self.door:binded_object():set_lock(true)
+		self.lock	= true
+	end
+	
+	if(trader.object:action() == nil) then
+		return (self:select_new_action(trader))
+	end
+	
+	return (true)
+end
+
+
+//function CTrader:play_animation(animation, state, sound, time, now, especial)
+function CStartActions:select_new_action(trader)
+	if(self.state == start) then			
+		// Ждем в начале немного
+		trader:play_animation("idle_looped", idle, nil, 3000, false)
+		self:set_state(wait1)
+	elseif(self.state == wait1) then		
+		// Говорим первую фразу
+		trader:play_animation("idle_non_stop", idle, "monolog1")
+		self:set_state(say_phrase1)
+	elseif(self.state == say_phrase1) then
+		// Ждем немного
+		trader:play_animation("idle_looped", idle, nil, 3000, false)
+		self:set_state(wait2)
+	elseif(self.state == wait2) then		
+		// Говорим вторую фразу
+		trader:play_animation("idle_non_stop", idle, "monolog2")
+		self:set_state(say_phrase2)
+	elseif(self.state == say_phrase2) then
+		// Ждем немного
+		trader:play_animation("idle_looped", idle, nil, 3000, false)
+		self:set_state(wait3)
+	elseif(self.state == wait3) then		
+		// Говорим третью фразу
+		trader:play_animation("idle_non_stop", idle, "monolog3")
+		self:set_state(say_phrase3)
+	elseif(self.state == say_phrase3) then
+		// Ждем немного
+		trader:play_animation("idle_looped", idle, nil, 3000, false)
+		level.actor():give_info_portion("tutorial_artefact_start")
+		if(self.lock and self.door) then
+			self.door:binded_object():set_lock(false)
+		end
+		self:set_state(wait4)
+	elseif(self.state == wait4) then		
+		// Ожидаем некоторое время
+		return (false)
+	end
+	
+	return (true)
+end
+
+
+function CStartActions:set_state(new_state)
+	self.state	= new_state
+	self.time	= device():time_global()
+end
+
+
+function CStartActions:on_enter(param)
+end
+
+
+function CStartActions:on_exit()
+end
+
+
+function CStartActions:end_trade(exchange)
+end
+
+//---------------------------------------------------------------------------------------------
+// Действия, которые выполняет торговец когда мы к нему приходим, после старта
+//---------------------------------------------------------------------------------------------
+
+class "CLifeAction"
+function CLifeAction:__init()
+	self.enter    	= false
+	self.enter_time = 0
+	self.next_anim	= {}			// Список следующих анимаций
+	self.say_hello	= false
+end
+
+
+function CLifeAction:update(trader)
+
+	if(self.enter) then
+		self:action_actor_enter(trader)
+	else
+		self:action_actor_exit(trader)
+	end
+
+	return (true)
+end
+
+
+function CLifeAction:action_actor_enter(trader)
+	if(trader.object:action()) then return end
+	
+	if(self.say_hello == false) then
+		if(distance_between(level.actor(), trader.object) < 3) then
+			trader:play_animation("idle_non_stop", idle, "hello")
+			self.say_hello	= true
+		else
+			trader:play_animation("idle", idle)
+		end
+	else
+		if(table.getn(self.next_anim) == 0) then
+			if(math.random() < 0.8) then 
+				assign_table(self.next_anim, "palci", 4, 7)
+			else
+				assign_table(self.next_anim, "idle", 2, 4)
+			end
+			self.next_anim[math.random(1, table.getn(self.next_anim))] = random_choice("palci", "zatylok", "idle_0", "idle_1", "cheshit")
+		else
+			// проигруем анимацию из заданого списка
+			trader:play_animation(self.next_anim[1], trader.state)
+			table.remove(self.next_anim, 1)
+		end
+	end
+end
+
+//play_animation(animation, state, sound, time, now, especial)
+
+function CLifeAction:action_actor_exit(trader)
+	self.trader	= trader
+	
+	if(trader.object:action()) then return end
+	
+	if(table.getn(self.next_anim) == 0) then
+		self.choise	= math.random(1, 3)
+		if(self.choise == 1) then
+			trader:play_animation("spinka", spinka)
+			assign_table(self.next_anim, "spinka", 4, 7)
+			self.next_anim[math.random(1, table.getn(self.next_anim))] = "idle_2"
+		elseif(self.choise == 2) then
+			trader:play_animation("idle", idle)
+			assign_table(self.next_anim, "idle", 2, 5)
+			self.next_anim[math.random(1, table.getn(self.next_anim))] = random_choice("palci", "zatylok", "idle_0", "idle_1", "cheshit")
+		else
+			trader:play_animation("chitaet", chitaet)
+			assign_table(self.next_anim, "chitaet", 4, 6)
+		end
+	else
+		// проигруем анимацию из заданого списка
+		trader:play_animation(self.next_anim[1], trader.state)
+		table.remove(self.next_anim, 1)
+	end
+end
+
+
+function CLifeAction:on_enter()
+	printf("actor enter")
+	self.enter		= true
+	self.enter_time	= device():time_global()
+	self.next_anim	= {}
+	self.say_hello	= false
+end
+
+
+function CLifeAction:on_exit()
+	printf("actor exit")
+	self.enter		= false
+	self.enter_time	= device():time_global()
+	self.next_anim	= {}
+end
+
+
+function CLifeAction:end_trade(exchange, trader)
+	if(exchange) then
+		trader:play_animation("idle_non_stop", idle, "good_trade", nil, true)
+		trader:actions()
+	else
+		trader:play_animation("idle_non_stop", idle, "bad_trade", nil, true)
+		trader:actions()
+	end
+end
+
+
+// Заполняем таблицу одним и тем же значением от min_count до max_count раз
+function assign_table(t, value, min_count, max_count)
+	while(table.getn(t) > 0) do
+		table.remove(t, 1)
+	end
+	
+	for i = 1, math.random(min_count, max_count) do
+		table.insert(t, value)
+	end
+	
+	for i = 1, table.getn(t) do
+		printf("%s", t[i])
+	end
+end 

@@ -1,0 +1,202 @@
+module("StateEat")
+module("StateWalk")
+
+local s_rest	= 5
+local s_eat		= 6
+local s_walk	= 7
+
+class "CStateRest"
+function CStateRest:__init(_data, _mem, sWalk)
+	self.data	= _data
+	self.memory = _mem
+	self.stateEat	= stateeat.CStateEat(self.data, self.memory)
+	
+	if(sWalk) then
+		self.stateWalk	= sWalk(self.data, self.memory)
+	else
+		self.stateWalk	= statewalk.CStateWalk(self.data, self.memory)
+	end
+	//написать код, который читает из кастом даты следующие : может ли монстр кушать
+	self.can_eat	= true
+	self.curState	= nil
+end
+
+function CStateRest:initialize()
+end
+
+function CStateRest:execute()
+	self:select_state()
+	self.curState:execute()
+end
+
+function CStateRest:select_state()
+	if(self.data.npc.satiety < 0.3) then
+		if(self.memory.corpse ~= nil) then 
+			self:set_state(s_eat)
+			return
+		end			
+		self:set_state(s_walk)
+	else
+		if(self.curState and self.curState:id() ~= s_eat) then
+			self:set_state(s_walk)
+		elseif(self.data.npc.satiety < 0.9 and self.memory.corpse) then			//≈ще не наелись
+			self:set_state(s_eat)
+		else	
+			self:set_state(s_walk)
+		end
+	end
+end
+
+function CStateRest:set_state(new_state)
+	if(self.curState) then
+		if(self.curState:id() == new_state) then  return  end
+		self.curState:finalize()
+	end
+	
+	if(new_state == s_eat) then
+		self.curState	= self.stateEat
+	elseif(new_state == s_walk) then
+		self.curState	= self.stateWalk
+	else
+		printf("Eroor %d")
+	end
+
+	//if(new_state == s_eat) then
+	//	printf("corpse start id", self.memory.corpse:id())
+	//end
+	self.curState:initialize()
+end
+
+function CStateRest:id()
+	return s_rest
+end
+
+function CStateRest:finalize()
+	if(self.curState) then
+		self.curState:finalize()
+		self.curState	= nil
+	end
+end
+
+//'  ласс дл€ монстров, которые бинд€тс€ и имеют некоторое состо€ние sWalk
+
+class "CStateRestBind" (CStateRest)
+function CStateRestBind:__init(_data, _mem, sWalk) super(_data, _mem)
+	if(sWalk) then
+		self.stateWalk	= sWalk
+	else
+		self.stateWalk	= statewalk.CStateWalk(self.data, self.memory)
+	end
+	//написать код, который читает из кастом даты следующие : может ли монстр кушать
+	self.can_eat	= true
+	self.curState	= nil
+end
+
+function CStateRestBind:set_data(_data, _mem)
+	self.data	= _data
+	self.memory = _mem
+	
+	self.stateEat:set_data(_data, _mem)
+	self.stateWalk:set_data(_data, _mem)
+end
+
+//  ласс дл€ монстров, которые делают некоторое маленькое действие, эти монстры не ход€т кушать
+
+class "CStateSmallRestBind"
+function CStateSmallRestBind:__init(_data, _mem)
+	self.data			= _data
+	self.memory			= _mem
+	self.sleep_point	= _sleep_point
+end
+
+function CStateSmallRestBind:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
+end
+
+function CStateSmallRestBind:initialize()
+	reset_action(self.data.npc, self.data.scr_name)
+end
+
+function CStateSmallRestBind:execute()
+	assert(false)									// “ипа чисто виртуального класса, копий быть не должно
+end
+
+function CStateSmallRestBind:id()
+	return s_rest
+end
+
+function CStateSmallRestBind:finalize()
+end
+
+
+//-----------------------------------------------------------------------------------------
+//  —осто€ние отдыха, в котором монстр только спит в указанной точке
+//-----------------------------------------------------------------------------------------
+
+class "CStateRestSleep" (CStateSmallRestBind)
+function CStateRestSleep:__init(_data, _mem, _sleep_point) super(_data, _mem)
+	self.sleep_point	= _sleep_point
+end
+
+function CStateRestSleep:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.sleep_point ~= nil)
+		
+		action(self.data.npc, move(move.walk_fwd, self.sleep_point, 1), sound(sound.idle), cond(cond.move_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), cond(cond.time_end, 300))
+		action(self.data.npc, anim(anim.lie_idle, 0), cond(cond.time_end, 2000))
+		action(self.data.npc, anim(anim.sleep, 0), cond(cond.time_end, 6000000))
+	end
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// ћонстр кемпер. —тоит в точки с индексом 0 и смотрит в точку с индексом 1
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class "CStateRestCamper" (CStateSmallRestBind)
+function CStateRestCamper:__init(_data, _mem, _path) super(_data, _mem)
+	self.path	 = _path
+	self.point   = point_with_bit(patrol(self.path), 0)
+	self.look_to = point_with_bit(patrol(self.path), 1)
+end
+
+function CStateRestCamper:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.point ~= nil)
+		assert(self.look_to ~= nil)
+		
+		if(self.data.npc:position():distance_to(self.point) > 1) then
+			action(self.data.npc, move(move.walk_fwd, self.point, 1), sound(sound.idle), cond(cond.move_end))
+		end
+		action(self.data.npc, anim(anim.turn, 0), look(look.point, self.look_to), sound(sound.idle), cond(cond.look_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 4000))
+		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 6000))
+	end
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// «омби. ѕодходит к точке и протвор€етс€ мертвым вал€етс€ там некоторое врем€
+//////////////////////////////////////////////////////////////////////////////////////////
+
+class "CStateRestZombieFakeDead" (CStateSmallRestBind)
+function CStateRestZombieFakeDead:__init(_data, _mem, _path) super(_data, _mem)
+	self.path	 = _path
+	self.point   = point_with_bit(patrol(self.path), 0)
+	self.look_to = point_with_bit(patrol(self.path), 1)
+end
+
+function CStateRestZombieFakeDead:execute()
+	if(self.data.npc:action() == nil) then
+		assert(self.point ~= nil)
+		assert(self.look_to ~= nil)
+		
+		if(self.data.npc:position():distance_to(self.point) > 1) then
+			action(self.data.npc, move(move.walk_fwd, self.point, 1), sound(sound.idle), cond(cond.move_end))
+		end
+		action(self.data.npc, anim(anim.turn, 0), look(look.point, self.look_to), sound(sound.idle), cond(cond.look_end))
+		action(self.data.npc, anim(anim.stand_idle, 0), sound(sound.idle), cond(cond.time_end, 4000))
+		action(self.data.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 6000))
+	end
+end
+

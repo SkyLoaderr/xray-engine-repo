@@ -1,0 +1,283 @@
+local g_pManager = nil
+------------------------------------------------------------------------------------------------------
+// messages
+local DEAD_KONTROLER 	= 1
+local PLAY 				= 2
+------------------------------------------------------------------------------------------------------
+local max_distance		= 30
+
+function manager()
+	if(g_pManager == nil) then
+		g_pManager = CFootbalManager()
+	end
+	
+	return g_pManager
+end
+
+class "CFootbalManager"
+function CFootbalManager:__init()
+	self.state	= PLAY
+end
+
+function CFootbalManager:set_data(ball)
+	self.path	= patrol("futboll_center")
+	self.ball	= ball
+end
+
+function CFootbalManager:message(id, data)
+	if(id == DEAD_KONTROLER) then
+		printf("controler dead")
+		self.state = DEAD_KONTROLER
+	end
+end
+
+function CFootbalManager:get_state()
+	return (self.state)
+end
+
+
+//----------------------------------------------------------------------------------------------
+// Контролер
+//----------------------------------------------------------------------------------------------
+
+class "CControlerTrainer" (object_binder)
+function CControlerTrainer:__init(obj) super(obj)
+end 
+
+function CControlerTrainer:reload(section)
+	object_binder.reload(self, section)
+	
+	local 		ini = self.object:spawn_ini()
+
+	self.path		= patrol(utils.conf_get_string(ini, "controler_trainer", "way", nil, self.object, true))
+	self.ball_name	= utils.conf_get_string(ini, "controler_trainer", "ball", nil, self.object, true)
+	
+	self.ball		= level.object(self.ball_name)
+	self.end_work	= false
+	
+	self.attack		= false
+end
+
+function CControlerTrainer:update(delta)
+	object_binder.update(self, delta)
+	
+	if(self.end_work) then return end
+	
+	if(self.object:alive() == false) then 
+		self:finalize()
+		return
+	end
+
+	if(self.object:get_script() == false) then self.object:script(true, script_name()) end
+	
+	self:select_state()
+	
+	if(self.attack) then
+		self:action_attack()
+	else
+		self:action()
+	end
+end
+
+function CControlerTrainer:action()
+	if(self.object:action()) then return end
+	
+	// set actions
+	if(self.object:position():distance_to(self.path:point(0)) < 1) then
+		//Стоит на точке наблюдения
+		if(self.ball) then
+			action(self.object, look(look.point, self.ball:position()), anim(anim.turn, 0), cond(cond.time_end, 10000))
+		else
+			printf("Not ball")
+			action(self.object, look(look.point, self.path:point(0)), anim(anim.turn, 0), cond(cond.look_end))
+			self.ball		= level.object(self.ball_name)
+		end
+		
+		action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, math.random(4000, 6000)))
+		//action(self.object, anim(anim.look_around, 0), cond(cond.time_end, math.random(3000, 6000)))
+	else
+		action(self.object, move(move.walk_fwd, self.path:point(0), 0.5), cond(cond.move_end))
+	end
+end
+
+function CControlerTrainer:select_state()
+	self.hit_info	= self.object:get_monster_hit_info()
+	
+	if(self.object:get_enemy() and self.object:get_enemy():id() == get_actor_id()) then
+		// У контролера враг актер - зашибись
+		self.enemy		= self.object:get_enemy()
+		self.new_state	= true
+	elseif(self.hit_info.time ~=  0 and self.hit_info.who and self.hit_info.who:alive()) then
+		// получили хит
+		self.new_state	= true
+		self.enemy		= self.hit_info.who				// наш враг, то кто нанес хит
+	else
+		self.new_state	= false
+	end
+	
+	if(self.new_state ~= self.attack) then
+		reset_action(self.object, script_name())
+	end
+	
+	self.attack	= self.new_state
+end
+
+function CControlerTrainer:action_attack()
+	if(self.object:action()) then return end
+	
+	action(self.object, act(act.attack, self.enemy), cond(cond.time_end, 20000))
+end	
+
+function CControlerTrainer:finalize()
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	// Сообщаем менеджеру, что контролер умер, если это случилось
+	if(self.object:alive() == false) then manager():message(DEAD_KONTROLER) end
+
+	self.end_work	= true
+end
+
+//----------------------------------------------------------------------------------------------
+// Простой игрок в футбол
+//----------------------------------------------------------------------------------------------
+
+class "CFootballPlayer" (object_binder)
+function CFootballPlayer:__init(obj) super(obj)
+end 
+
+function CFootballPlayer:reload(section)
+	object_binder.reload(self, section)
+
+	local 			ini = self.object:spawn_ini()
+	
+	self.path		= patrol(utils.conf_get_string(ini, "play_football", "way", nil, self.object, true))
+	self.ball_name	= utils.conf_get_string(ini, "play_football", "ball", nil, self.object, true)
+	self.ball		= level.object(self.ball_name)
+	self.shell		= self.ball:get_physics_shell()
+	self.state		= 0
+	self.time_play	= 0
+	self.temp		= false				// Временно, оббегаем ли мы мяч
+
+end
+
+function CFootballPlayer:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.end_work) then return end
+	
+	if(self.object:alive() == false) then 
+		self:finalize()
+		return
+	end
+
+	if(self.object:get_script() == false) then self.object:script(true, script_name()) end
+
+	if(manager():get_state() == DEAD_KONTROLER) then
+		self:finalize()
+	else
+		self:action()
+	end
+end
+
+function CFootballPlayer:action()
+	if(self.ball == nil) then
+		
+		self.ball		= level.object(self.ball_name)	
+		self.shell		= self.ball:get_physics_shell()
+		
+		if(self.object:action() == nil and self.ball == nil) then
+			// Если еще мяча почему-то нет
+			action(self.object, anim(anim.sit_idle, 0), cond(cond.time_end, 3000))
+			return
+		end
+	end
+	
+	if(self.state == 0 and self.object:action() == nil) then
+		if(self.ball:position():distance_to(self.path:point(0)) > max_distance and
+		   self.object:position():distance_to(self.path:point(0)) < self.ball:position():distance_to(self.path:point(0))
+		) then
+			// мяч забили сильно далеко, пытаемся его вернуть назад. Забегаем с другой стороны
+			action(self.object, move(move.run_fwd, self:select_point(), 0.5), sound(sound.attack), cond(cond.move_end))
+			self.temp	= true
+			//action(self.object, move(move.run_fwd, self.ball), sound(sound.attack), cond(cond.time_end, 3000))
+		else
+			// Вносим елемент случайности
+			if(math.random() < 0.8) then
+				action(self.object, move(move.run_fwd, self.ball), sound(sound.attack), cond(cond.time_end, 3000))
+			else
+				action(self.object, move(move.run_fwd, self:select_point(), 0.5), sound(sound.attack), cond(cond.move_end))			
+			end
+			self.temp	= false
+		end
+	end
+
+	if(device():time_global() > self.time_play) then
+		if(distance_between(self.object, self.ball) < 2 and self.temp == false) then
+			if(self.state == 0) then
+				// Проигруем анимацию
+				reset_action(self.object, script_name())
+				action(self.object, look(look.point, self.ball:position()), anim(anim.turn, 0), cond(cond.look_end))
+				self.state 		= 1
+			elseif(self.state == 1 and self.object:action() == nil) then
+				action(self.object, anim(anim.attack, 0), cond(cond.time_end, 600))
+				self.temp_time 	= device():time_global() + 400
+				self.state		= 2
+			elseif(self.state == 2 and device():time_global() > self.temp_time) then
+				// Бьем
+				self:play()
+				self.state		= 0
+			end
+		else
+			self.state	= 0
+		end
+	end	
+end 
+
+local k 	= 500000
+
+function CFootballPlayer:play()   
+	self.dir	= self.ball:position():sub(self.object:position()):normalize()
+	self.dir.y	 = 0.5
+
+	self.shell:apply_force(k * self.dir.x, k * self.dir.y, k * self.dir.z)	
+end 
+
+function CFootballPlayer:select_point()
+	// Выбираем точку, так, чтоб было похоже, что пытаемся оббежать
+	
+	self.id			= self.object:level_vertex_id()
+		
+	// еще больше вносим неясность
+	if(math.random() > 0.85) then
+		self.dir		= self.ball:position():sub(self.object:position())
+	else
+		self.dir		= self.ball:position():sub(self.path:point(0))
+	end
+	
+	
+	// Пытаемся съимитировать бег разбросанный
+	if(math.random() > 0.5) then
+		self.dir 	= vector_rotate_y(self.dir, 35)
+	else
+		self.dir 	= vector_rotate_y(self.dir, -35)
+	end
+	
+	if(self.dir:magnitude() == 0) then
+		// На всякий случай, вдруг получится, что |self.dir| = 0
+		self.dir.x = 0.1
+	end
+	
+	self.id		 	= level.vertex_in_direction(self.id, self.dir, 5) //self.len * 3
+	
+	return	(level.vertex_position(self.id))
+end
+
+function CFootballPlayer:finalize()
+	if(self.object:get_script()) then
+		self.object:script(false, script_name())
+	end
+	
+	self.end_work	= true
+end

@@ -1,0 +1,57 @@
+local zone_name		= "rush_zone"
+local zone_count	= "rush_zone_1"				// Скрипт срабатывает если пересекли первую зону и были во второй(этой)
+
+local exit_zone2    =   false
+local enter_zone1   =   false
+
+function main()
+	
+    printf ("Start find zones")
+    local zone1 = nil
+    while zone1 == nil do
+          zone1 = level.object ("rush_zone")
+          wait (100)
+    end      
+	zone1:set_callback (this.on_enter, true)
+    
+    local zone2 = nil
+    while zone2 == nil do
+          zone2 = level.object ("rush_zone_1")
+          wait (100)
+    end      
+	zone2:set_callback (this.on_exit, false)
+	
+    while exit_zone2 == false or enter_zone1 == false do
+          wait (100)
+    end      
+
+    local actor = nil
+    while actor == nil do
+          actor = level.actor ()
+          wait (100)  
+    end      
+    actor:give_info_portion ("gar_monsters_rush_wave1")
+    wait (5000)
+    actor:give_info_portion ("gar_monsters_rush_wave2")
+    wait (5000)
+    actor:give_info_portion ("gar_monsters_rush_wave3")
+	
+end
+
+function on_enter (zone, obj)
+    local actor = level.actor ()
+    if actor == nil or actor:id () ~= obj:id () then
+       return 
+    end    
+    if exit_zone2 == false then return end
+    enter_zone1 = true
+end
+
+function on_exit (zone, obj)
+    local actor = level.actor ()
+    if actor == nil or actor:id () ~= obj:id () then
+       return 
+    end    
+    exit_zone2 = true
+end
+

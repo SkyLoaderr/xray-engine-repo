@@ -1,0 +1,39 @@
+
+local doors = {
+}
+
+function 
+
+function new_door(door_name)
+	local door_object = get_level_object("physic_object")
+	local door_ph_shell = object:get_physics_shell()
+	local door_joint = ph_shell:get_joint_by_bone_name("door")
+	doors[door_name] = {
+		object = object,
+		ph_shell = door_ph_shell,
+		joint = door_joint,
+		angle_min = angle_min,
+		angle_max = angle_max
+	}
+	return doors[door_name]
+end
+
+function lock(door)
+	printf("lock")
+end
+
+function unlock()
+end
+
+function main()
+	while true do
+		table.foreach(doors,
+			function(door_name, door_info)
+			end
+		)
+		
+		wait()
+	end
+end
+
+

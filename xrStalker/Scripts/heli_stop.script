@@ -1,0 +1,11 @@
+
+function main()
+    if true then return end
+	local helicopter = get_level_object( "helicopter" )
+	local actor = get_actor()
+
+		if(helicopter:air_attack_active()==false) then
+			helicopter:heli_goto_stay_point(6000000)
+		end
+
+end

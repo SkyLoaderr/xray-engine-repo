@@ -1,0 +1,58 @@
+module( "monsters" )
+
+function main()
+	while true do
+	wait()
+	end
+end
+
+
+
+
+
+
+
+-- функция генерит текст задания для артефактов в диалогах
+function artefacts_task_text(original_text, first_speaker, second_speaker)
+
+/*	
+	local task_list = first_speaker:artefact_tasks()
+
+	local different_artefacts = {}
+	local result_text = string.format("%s\\n", original_text)
+
+	for K,V in task_list do
+		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
+									K.name, K.organization, K.quantity, K.price)
+	end
+*/
+
+	local tasks = task_list(first_speaker:id())
+
+	local result_text = string.format("%s\\n", original_text)
+
+	for i = 0, tasks:size()-1, 1 do 
+		K = tasks:get(i)
+		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
+									K.name, K.organization, K.quantity, K.price)
+	end
+
+	
+	return result_text
+end
+
+
+-- функция генерит текст задания для артефактов в обычных меню
+function artefacts_task_list_text(original_text, trader_id)
+	local tasks = task_list(trader_id)
+
+	local result_text = string.format("%s\\n", original_text)
+
+	for i = 0, tasks:size()-1, 1 do 
+		K = tasks:get(i)
+		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
+									K.name, K.organization, K.quantity, K.price)
+	end
+
+	return result_text
+end
