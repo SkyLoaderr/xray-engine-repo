@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
-USERES("ParticleEditor.res");
+USERES("ActorEditor.res");
 USERES("resource.res");
 USE("!.txt", File);
 USEUNIT("stdafx.cpp");
@@ -137,7 +137,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus("Loading...");
 
 // startup create
-		Application->Title = "Particle Editor";
+		Application->Title = "Actor Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);
