@@ -14,7 +14,6 @@
 #include "xr_input.h"
 
 //---------------------------------------------------------------------------
-
 void TUI::Redraw(){
 	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
