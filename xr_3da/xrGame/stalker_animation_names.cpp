@@ -61,6 +61,7 @@ LPCSTR movement_action_names[] = {
 };
 
 LPCSTR in_place_names		[] = {
+	"idle_0",
 	"idle_1",
 	"turn_left_0",
 	"turn_right_0",
