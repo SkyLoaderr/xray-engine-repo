@@ -73,12 +73,16 @@ void CBlender_Vertex::Compile	(CBlender_Compile& C)
 			}
 			break;
 		case SE_R1_LPOINT:
+			C.r_Pass		("vert_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf	("s_att",	TEX_POINT_ATT		);
+			C.r_End			();
 			break;
 		case SE_R1_LSPOT:
 			C.r_Pass		("vert_spot","add_spot",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf	("s_lmap",	"internal\\internal_light_att",		true);
-			C.r_Sampler_clf	("s_att",	"internal\\internal_light_attclip"		);
+			C.r_Sampler_clf	("s_att",	TEX_SPOT_ATT		);
 			C.r_End			();
 			break;
 		case SE_R1_LMODELS:
