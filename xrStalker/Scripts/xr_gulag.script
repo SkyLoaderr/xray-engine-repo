@@ -465,9 +465,15 @@ function action_alarm:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	local f = xr_gulag.isUnderFraction(self.object)
-	if f ~= nil then
-		xr_gulag.setFractionState(f, 1)
+	local enemy = self.object:best_enemy()
+    	if enemy and is_object_online( enemy:id() ) then
+        	if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
+			local f = xr_gulag.isUnderFraction(self.object)
+
+			if f ~= nil then
+				xr_gulag.setFractionState(f, 1)
+			end
+		end
 	end
 end
 function action_alarm:execute ()
