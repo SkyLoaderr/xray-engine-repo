@@ -672,22 +672,22 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// Attach bones to their parents
-	iRoot = -1;
+	iRoot = BONE_NONE;
 	for (u32 i=0; i<bones->size(); i++) {
 		LPCSTR 	P = L_parents[i];
 		CBoneData*	B = (*bones)[i];
 		if (!P[0]) {
 			// no parent - this is root bone
-			R_ASSERT(-1==iRoot);
-			iRoot = i;
+			R_ASSERT(BONE_NONE==iRoot);
+			iRoot	= i;
 			continue;
 		} else {
-			int ID = LL_BoneID(P);
+			u32 ID	= LL_BoneID(P);
 			R_ASSERT(ID>=0);
 			(*bones)[ID]->children.push_back(B);
 		}
 	}
-	R_ASSERT(-1 != iRoot);
+	R_ASSERT(BONE_NONE != iRoot);
 
 	// Free parents
 	for (u32 aaa=0; aaa<L_parents.size(); aaa++)
@@ -707,10 +707,10 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
         }
     	IKD->close();
     }
-        
+
 	// Load animation
-	IReader* MS = data->open_chunk(OGF_MOTIONS);
-	u32 dwCNT = 0;
+	IReader*	MS		= data->open_chunk(OGF_MOTIONS);
+	u32			dwCNT	= 0;
 	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
 	for (u32 M=0; M<dwCNT; M++)
 	{

@@ -16,7 +16,7 @@ const	u32		MAX_PARTS			=	4;
 const	u32		MAX_BLENDED_POOL	=	(MAX_BLENDED*MAX_PARTS);
 const	f32		SAMPLE_FPS			=	30.f;
 const	f32		SAMPLE_SPF			=	(1.f/SAMPLE_FPS);
-const	s32		BONE_NONE			=	int(-1);
+const	u32		BONE_NONE			=	u32(-1);
 
 // refs
 class	ENGINE_API CKinematics;
