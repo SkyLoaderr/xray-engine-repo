@@ -58,6 +58,7 @@ int			ps_r2_GI_photons			= 16;				// 8..64
 float		ps_r2_GI_clip				= EPS_L;			// EPS
 float		ps_r2_GI_refl				= .9f;				// .9f
 float		ps_r2_emap_height			= 0.05f;			// 0.05f
+float		ps_r2_emap_range			= 30.f;				// 0.05f
 int			ps_r2_emap_slices			= 4;				// 4
 
 #ifndef _EDITOR

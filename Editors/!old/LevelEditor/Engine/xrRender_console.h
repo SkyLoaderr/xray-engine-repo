@@ -57,6 +57,7 @@ extern int			ps_r2_GI_photons;			// 8..256
 extern float		ps_r2_GI_clip;				// EPS
 extern float		ps_r2_GI_refl;				// .9f
 extern float		ps_r2_emap_height;			// 0.05f
+extern float		ps_r2_emap_range;			// 30.f
 extern int			ps_r2_emap_slices;			// 4
 
 enum
