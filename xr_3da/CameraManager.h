@@ -10,31 +10,32 @@
 #include "CameraDefs.h"
 
 struct SPPInfo {
-	struct SColor {
-		f32 r, g, b;
+	struct SColor{
+		float r, g, b;
 		IC operator u32()										{
 			int		_r	= clampr	(iFloor(r*255.f+.5f),0,255);
 			int		_g	= clampr	(iFloor(g*255.f+.5f),0,255);
 			int		_b	= clampr	(iFloor(b*255.f+.5f),0,255);
 			return color_rgba		(_r,_g,_b,0);
 		}
-		IC SColor& operator += (const SColor &ppi)				{
+		IC SColor& operator +=	(const SColor &ppi)				{
 			r += ppi.r; g += ppi.g; b += ppi.b; 
 			return *this;
 		}
-		IC SColor& operator -= (const SColor &ppi)				{
+		IC SColor& operator -=	(const SColor &ppi)				{
 			r -= ppi.r; g -= ppi.g; b -= ppi.b; 
 			return *this;
 		}
-		IC void set		(float _r, float _g, float _b)			{
+		IC SColor& set			(float _r, float _g, float _b)			{
 			r=_r;g=_g;b=_b;
+			return *this;
 		}
 	};
-	f32			blur, gray;
-	struct SDuality { f32 h, v; } duality;
+	float		blur, gray;
+	struct SDuality { float h, v; } duality;
 	struct SNoise	{
-		f32		intensity, grain;
-		f32		fps;
+		float		intensity, grain;
+		float		fps;
 	} noise;
 
 	SColor		color_base;
