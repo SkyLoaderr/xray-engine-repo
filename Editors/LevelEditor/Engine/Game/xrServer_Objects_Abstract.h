@@ -18,7 +18,6 @@
 #	include "net_utils.h"
 #endif
 #include "xrEProps.h"
-#include "PropertiesListHelper.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
