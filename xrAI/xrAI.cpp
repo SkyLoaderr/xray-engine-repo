@@ -25,7 +25,7 @@
 #pragma comment(lib,"x:/xrSE_Factory.LIB")
 
 extern void	xrCompiler			(LPCSTR name, bool draft_mode);
-extern void __cdecl logThread	(void *dummy);
+extern void logThread			(void *dummy);
 extern volatile BOOL bClose;
 extern void test_smooth_path	(LPCSTR name);
 extern void test_hierarchy		(LPCSTR name);
