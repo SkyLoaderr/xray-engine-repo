@@ -296,6 +296,7 @@ void CDetailManager::Render		(Fvector& EYE)
 					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
 					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
 				}
+				#pragma todo("DetailManager: set matrix!!!") 
 				
 				// Transfer vertices
 				{
@@ -390,12 +391,16 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 	float	cy	= ifx*c02 + fx*c13;
 	return	(cx+cy)/2;
 }
-IC BOOL		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
+
+IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD sx, DWORD sy, DWORD size, int dither[16][16] )
 {
-	int		c	= iFloor(Interpolate(alpha255,x%size,y%size,size)+.5f);
-	
-	DWORD	row	= y % 16; 
-	DWORD	col	= x % 16;
+	clamp 	(x,0ul,size-1);
+	clamp 	(y,0ul,size-1);
+	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
+    clamp   (c,0,255);
+
+	DWORD	row	= (y+sy) % 16;
+	DWORD	col	= (x+sx) % 16;
  	return	c	> dither[col][row];
 }
 
@@ -464,16 +469,16 @@ void CDetailManager::UpdateCache	(int limit)
 		{
 			for (DWORD x=0; x<=d_size; x++)
 			{
-				// shift mask
-                int shift_x = r_jitter.randI(16);
-                int shift_z = r_jitter.randI(16);
+            	// shift
+                DWORD shift_x =  r_jitter.randI(16);
+                DWORD shift_z =  r_jitter.randI(16);
 
 				// Iterpolate and dither palette
 				selected.clear();
-				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(0);
-				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(1);
-				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(2);
-				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(3);
+				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(0);
+				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(1);
+				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(2);
+				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(3);
 				
 				// Select 
 				if (selected.empty())	continue;
