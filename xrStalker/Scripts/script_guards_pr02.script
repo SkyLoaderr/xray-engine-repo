@@ -1,5 +1,3 @@
-guard01_dead = 0
-guard02_dead = 0
 guard_see_actor = 0
 hrom_prishli_rebyat = 0
 
@@ -178,7 +176,7 @@ function main()
 	end
 
 	while true do
-		if guard01.health <= 0 guard02.health > 0 then
+		if guard01.health <= 0 and guard02.health > 0 then
 			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr02.script_name())
@@ -195,7 +193,7 @@ function main()
 	end
 
 	while true do
-		if guard01.health <= 0 guard02.health > 0 then
+		if guard02.health <= 0 and guard01.health > 0 then
 		wait(2000)			
 			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
 			guard01:script						(false,  script_guards_pr02.script_name())
