@@ -64,7 +64,8 @@
 				GenerateDebugInformation="FALSE"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="x:\xrCDB.lib"/>
+				ImportLibrary="x:\xrCDB.lib"
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -146,7 +147,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCDB.lib"
-				TargetMachine="1"/>
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -226,7 +227,8 @@
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrCDB.map"
 				MapExports="FALSE"
-				ImportLibrary="x:\xrCDB.lib"/>
+				ImportLibrary="x:\xrCDB.lib"
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"

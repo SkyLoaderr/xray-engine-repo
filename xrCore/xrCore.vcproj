@@ -61,7 +61,7 @@
 				MapExports="FALSE"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="1"/>
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -129,7 +129,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="1"/>
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -200,7 +200,7 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrCore.lib"
-				TargetMachine="1"/>
+				TargetMachine="0"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
