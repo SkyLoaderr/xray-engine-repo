@@ -2,66 +2,6 @@
 #pragma hdrstop
 
 #include "ImageManager.h"
-#include "ETextureParams.h"
-#include "EThumbnail.h"
-#include "xrImage_Resampler.h"
-#include "freeimage.h"
-#include "Image.h"
-#include "ui_main.h"
-#include "EditObject.h"
-/*
-void CDeflector::RemapUV        (xr_vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
-{
-    dest.clear      ();
-    dest.reserve(UVpolys.size());
-        
-    // UV rect (actual)
-    Fvector2                a_min,a_max,a_size;
-    GetRect         (a_min,a_max);
-    a_size.sub      (a_max,a_min);
-        
-    // UV rect (dedicated)
-    Fvector2                d_min,d_max,d_size;
-    d_min.x         = (float(base_u)+.5f)/float(lm_u);
-    d_min.y         = (float(base_v)+.5f)/float(lm_v);
-    d_max.x         = (float(base_u+size_u)-.5f)/float(lm_u);
-    d_max.y         = (float(base_v+size_v)-.5f)/float(lm_v);
-    if (d_min.x>=d_max.x)   { d_min.x=d_max.x=(d_min.x+d_max.x)/2; d_min.x-=EPS_S; d_max.x+=EPS_S; }
-    if (d_min.y>=d_max.y)   { d_min.y=d_max.y=(d_min.y+d_max.y)/2; d_min.y-=EPS_S; d_max.y+=EPS_S; }
-    d_size.sub      (d_max,d_min);
-        
-    // Remapping
-    Fvector2                tc;
-    UVtri           tnew;
-    if (bRotate)    {
-            for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
-            {
-                    UVtri&  T       = *it;
-                    tnew.owner      = T.owner;
-                    for (int i=0; i<3; i++) 
-                    {
-                            tc.x = ((T.uv[i].y-a_min.y)/a_size.y)*d_size.x + d_min.x;
-                            tc.y = ((T.uv[i].x-a_min.x)/a_size.x)*d_size.y + d_min.y;
-                            tnew.uv[i].set(tc);
-                    }
-                    dest.push_back  (tnew);
-            }
-    } else {
-            for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
-            {
-                    UVtri&  T       = *it;
-                    tnew.owner      = T.owner;
-                    for (int i=0; i<3; i++) 
-                    {
-                            tc.x = ((T.uv[i].x-a_min.x)/a_size.x)*d_size.x + d_min.x;
-                            tc.y = ((T.uv[i].y-a_min.y)/a_size.y)*d_size.y + d_min.y;
-                            tnew.uv[i].set(tc);
-                    }
-                    dest.push_back  (tnew);
-            }
-    }
-}
-*/
 
 IC void blit(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py)
 {
@@ -121,11 +61,10 @@ IC bool _rect_place(U8Vec& mask, int dest_width, int dest_height, Irect& r, BOOL
 {
     Irect R;
 
-    u32 x_max = dest_width -r.rb.x; 
-    u32 y_max = dest_height-r.rb.y; 
-
-    // Rotated
-    {
+    // Normal
+    if ((r.rb.x<dest_width)&&(r.rb.y<dest_height)){
+        u32 x_max = dest_width -r.rb.x; 
+        u32 y_max = dest_height-r.rb.y; 
 	    bRotated = FALSE;
         for (u32 _Y=0; _Y<y_max; _Y++){
             for (u32 _X=0; _X<x_max; _X++){
@@ -140,8 +79,10 @@ IC bool _rect_place(U8Vec& mask, int dest_width, int dest_height, Irect& r, BOOL
         }
     }
 
-    // Normal
-    {
+    // Rotated
+    if ((r.rb.y<dest_width)&&(r.rb.x<dest_height)){
+        u32 x_max = dest_width -r.rb.y; 
+        u32 y_max = dest_height-r.rb.x; 
 	    bRotated = TRUE;
         for (u32 _Y=0; _Y<y_max; _Y++){
             for (u32 _X=0; _X<x_max; _X++){
@@ -171,9 +112,13 @@ extern bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 
 bool item_sort_pred(const SrcItem& item0, const SrcItem& item1){return ((item0.Area()>item1.Area())||(item0.LongestEdge()>item1.LongestEdge()));}
 
-int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate)
+int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate)
 {
 	if (src_names.empty()) return -1;
+    dest_offset.clear	();
+    dest_scale.clear	();
+    dest_rotate.clear	();
+    
 	U32Vec 	dest_pixels	(dest_width*dest_height,0); 
 	U8Vec 	dest_mask	(dest_width*dest_height,0); 
 
@@ -185,8 +130,7 @@ int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, 
     for (AStringIt n_it=src_names.begin(); n_it!=src_names.end(); n_it++,s_it++){
         AnsiString 		t_name;
         FS.update_path	(t_name,_textures_,n_it->c_str());
-        if (!Surface_Load((t_name+".tga").c_str(),s_it->data,s_it->w,s_it->h,s_it->a)&&
-        	!Surface_Load((t_name+".bmp").c_str(),s_it->data,s_it->w,s_it->h,s_it->a)){
+        if (!Surface_Load(ChangeFileExt(t_name,".tga").c_str(),s_it->data,s_it->w,s_it->h,s_it->a)){
             ELog.DlgMsg	(mtError,"Can't load texture '%s'. Check file existence.",n_it->c_str());
             return -1;
         }
@@ -219,9 +163,29 @@ int CImageManager::CreateMergedTexture(AStringVec& src_names, LPCSTR dest_name, 
     for (s_it = src_items.begin(); s_it!=src_items.end(); s_it++)
     	src_names.push_back		(s_it->tname);
     
-    MakeGameTexture		(dest_name,dest_pixels.begin(),dest_width,dest_height,STextureParams::tfADXT1,true);
+    AnsiString fn		= ChangeFileExt	(dest_name,".dds");
+    MakeGameTexture		(fn.c_str(),dest_pixels.begin(),dest_width,dest_height,fmt,true);
 
     return 1;
 }
 
+int	CImageManager::CreateMergedTexture	(AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate)
+{
+    int res;
+    for (int w=dest_width_min; w<=dest_width_max; w*=2)
+	    for (int h=dest_height_min; h<=dest_height_max; h*=2)
+		    if (0!=(res=ImageLib.CreateMergedTexture(src_names,dest_name,fmt,w,h,dest_offset,dest_scale,dest_rotate))) return res;
+    return res;
+}
+
+void CImageManager::MergedTextureRemapUV(float& dest_u, float& dest_v, float src_u, float src_v, const Fvector2& offs, const Fvector2& scale, bool bRotate)
+{
+    if (bRotate){
+        dest_u	= scale.x*src_v+offs.x;
+        dest_v	= scale.y*src_u+offs.y;
+    }else{
+        dest_u	= scale.x*src_u+offs.x;
+        dest_v	= scale.y*src_v+offs.y;
+    }
+}
  

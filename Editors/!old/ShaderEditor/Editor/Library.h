@@ -39,6 +39,7 @@ public:
     void				RemoveEditObject	(CEditableObject*& object);
 
     int					GetObjects			(FS_QueryMap& files);
+    int					ObjectCount			(){return m_EditObjects.size();}
 
     void				EvictObjects		();
 

@@ -24,17 +24,7 @@ class ECORE_API EDetail: public CDetail{
             if (!P.similar	(V.P,EPS_L))	return FALSE;
             return TRUE;
         }
-        IC void			remapUV		(const fvfVertexIn& src, const Fvector2& offs, const Fvector2& scale, bool bRotate)
-        {
-        	P.set		(src.P);
-        	if (bRotate){
-	        	u		= scale.x*src.v+offs.x;
-	        	v		= scale.y*src.u+offs.y;
-            }else{
-	        	u		= scale.x*src.u+offs.x;
-	        	v		= scale.y*src.v+offs.y;
-            }
-        }
+        void			remapUV		(const fvfVertexIn& src, const Fvector2& offs, const Fvector2& scale, bool bRotate);
     };
 /*
 	struct fvfVertexIn{

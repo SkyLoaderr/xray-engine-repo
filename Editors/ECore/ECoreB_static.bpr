@@ -76,7 +76,8 @@
       intermediate\TextForm.obj intermediate\TLSPRITE.obj 
       intermediate\UI_Camera.obj intermediate\UI_MainCommand.obj 
       intermediate\UI_Main.obj intermediate\stdafx.obj 
-      intermediate\UI_ToolsCustom.obj intermediate\ItemDialog.obj"/>
+      intermediate\UI_ToolsCustom.obj intermediate\ItemDialog.obj 
+      intermediate\ImageManagerDO.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -282,6 +283,7 @@
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_ToolsCustom.cpp" FORMNAME="" UNITNAME="UI_ToolsCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
