@@ -13,7 +13,7 @@ protected:
 	Fvector					m_position;
 	u32						m_level_vertex_id;
 	u32						m_flags;
-	shared_str					m_name;
+	shared_str				m_name;
 #ifdef DEBUG
 	bool					m_initialized;
 #endif
@@ -27,7 +27,7 @@ public:
 	IC		const Fvector	&position			() const;
 	IC		u32				level_vertex_id		() const;
 	IC		u32				flags				() const;
-	IC		shared_str			name				() const;
+	IC		shared_str		name				() const;
 			CPatrolPoint	&load				(IReader &stream);
 };
 
