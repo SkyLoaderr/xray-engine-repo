@@ -209,7 +209,7 @@
 		</phrase_list>
 	</dialog>
 
-	<dialog id="stalker_talk_about2">
+	<dialog id="stalker_talk_about">
 	<precondition>trader_job.if_not_a_trader</precondition>
 	    <has_info>actor_start</has_info>
 		<phrase_list>
@@ -303,20 +303,6 @@
 			</phrase>
 		</phrase_list>
 	</dialog>
-
-
-	<dialog id="stalker_talk_about">
---	        <precondition>trader_job.is_medkit_present</precondition>
-		<phrase_list>
-			<phrase id="0">
-				<text>Я пришел спасти тебя, возьми эту аптечку.</text>
-				<next>1</next>
-				<give_info>job_medkit_finished</give_info>
-			</phrase>
-			<phrase id="1">
-				<text>Спасибо, брат... Возьми немного денег, я тебе очень благодарен\n          [получено 1500 рублей]</text>
-				<action>trader_job.give_medkit_to_wounded</action>
-			</phrase>
 
 
 	<dialog id="job_medkit">
