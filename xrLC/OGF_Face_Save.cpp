@@ -302,4 +302,12 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	fs.w_u32		(ib_start);
 	fs.w_u32		((u32)faces.size()*3);
 	fs.close_chunk	();
+
+	// progressive-data, if need it
+	if (H.type == MT_PROGRESSIVE){
+		// SW
+		fs.open_chunk		(OGF_SWICONTAINER);
+		fs.w_u32			(sw_id);
+		fs.close_chunk		();
+	}
 }

@@ -130,6 +130,8 @@ struct OGF : public OGF_Base
 		m_SWI.reserved[3]	= 0;
 		dwRelevantUV		= 0;
 		dwRelevantUVMASK	= 0;
+
+		vb_id=xvb_id=vb_start=xvb_start=ib_id=xib_id=ib_start=xib_start=sw_id=xsw_id=u32(-1);
 	};
 	~OGF(){
 		xr_free			(m_SWI.sw);

@@ -97,10 +97,11 @@ void	xrMU_Model::export_geometry		()
 			g_VB.End		(&it->vb_id,&it->vb_start);
 		}
 
-		// SW
-		g_SWI.Register	(&it->sw_id,&it->ogf->m_SWI);
-
 		// Indices
 		g_IB.Register	(LPWORD(&*it->ogf->faces.begin()),LPWORD(&*it->ogf->faces.end()),&it->ib_id,&it->ib_start);
+
+		// SW
+		if (it->ogf->progressive_test())
+			g_SWI.Register	(&it->sw_id,&it->ogf->m_SWI);
 	}
 }
