@@ -205,7 +205,7 @@ function val_suicide_kill_self(actor, npc)
 	h.direction = vector_rotate_y(npc:direction(), 90)
 	h.bone = "bip01_head"
 	h.draftsman = npc 
-	h.impulse = 350
+	h.impulse = 200 --350
 	h.type = hit.wound
 	npc:hit(h)
 end

@@ -126,6 +126,10 @@ function val_fighting_prisoner(actor, npc)
 	return db.storage[npc:id()].enemy:name() == "val_prisoner_captive"
 end    
 
+function val_fighting_sacrifice_bloodsucker(actor, npc)
+	return db.storage[npc:id()].enemy:story_id() == 403
+end    
+
 function val_actor_in_cage(actor, npc)
 	return xr_logic.npc_in_zone(actor, db.zone_by_name["val_prisoner_cage_zone"])
 end

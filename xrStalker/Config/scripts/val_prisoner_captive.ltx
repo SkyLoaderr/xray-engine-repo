@@ -84,6 +84,7 @@ no_move = true
 anim = wait
 meet_dialog = val_prisoner_hello
 meet_talk_enabled = true
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}
 on_info = {+val_prisoner_raid} walker@escape
 
 [walker@escape]
@@ -92,6 +93,7 @@ path_look = val_prisoner_captive_escape_look
 def_state_moving1 = assault
 def_state_moving2 = assault
 def_state_moving3 = assault
+combat_ignore_cond = {=val_fighting_sacrifice_bloodsucker}
 on_signal = arrived | nil
 
 
