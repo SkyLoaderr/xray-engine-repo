@@ -115,7 +115,8 @@ public:
     TShellChangeThread*			FThread;
 	enum{
     	flNeedRescan	= (1<<0),
-        flLockRescan	= (1<<1)
+        flLockRescan	= (1<<1),
+		flBuildCopy		= (1<<2),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
@@ -136,7 +137,7 @@ private:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		();
+	void						_initialize		(BOOL bBuildCopy);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);

@@ -219,10 +219,12 @@ bool CLocatorAPI::Recurse		(const char* path)
     return true;
 }
 
-void CLocatorAPI::_initialize	()
+void CLocatorAPI::_initialize	(BOOL bBuildCopy)
 {
 	Log				("Initializing File System...");
 	DWORD	M1		= Memory.mem_usage();
+
+	m_Flags.set		(flBuildCopy,bBuildCopy);
 
 	// scan root directory
 	bNoRecurse		= TRUE;
@@ -381,6 +383,7 @@ void	CLocatorAPI::file_list_close	(vector<char*>* &lst)
 
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 {
+	IReader* R		= 0;
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
@@ -401,8 +404,8 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
-		if (desc.size<256*1024)	return xr_new<CFileReader>			(fname);
-		else					return xr_new<CVirtualFileReader>	(fname);
+		if (desc.size<256*1024)	R = xr_new<CFileReader>			(fname);
+		else					R = xr_new<CVirtualFileReader>	(fname);
 	} else {
 		// Archived one
 		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->pointer()) + desc.ptr);
@@ -413,12 +416,20 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			unsigned	size;
 
 			_decompressLZ	(&dest,&size,ptr,desc.size);
-			return xr_new<CTempReader>	(dest,size);
+			R = xr_new<CTempReader>	(dest,size);
 		} else {
 			// Plain (VFS)
-			return xr_new<IReader>		(ptr,desc.size);
+			R = xr_new<IReader>		(ptr,desc.size);
 		}
 	}
+	if (R&&m_Flags.is(flBuildCopy)){
+		string512 cpy_name;
+		update_path(cpy_name,"$build_copy$",fname);
+		IWriter* W = w_open(cpy_name);
+		W->w(R->pointer(),R->length());
+		w_close(W);
+	}
+	return R;
 }
 
 void	CLocatorAPI::r_close	(IReader* &fs)
@@ -501,7 +512,7 @@ void CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm)
             if (0!=strncmp(entry.name,fpath,base_len))	break;	// end of list
 			const char* end_symbol = entry.name+strlen(entry.name)-1;
 			if ((*end_symbol) !='\\'){
-		        const char* entry_begin = entry.name+base_len;
+//		        const char* entry_begin = entry.name+base_len;
 		    	unlink		(entry.name);
 	        }else{
             	folders.insert(entry);
