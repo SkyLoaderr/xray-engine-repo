@@ -63,6 +63,11 @@
 	</info_portion>
 
 
+	<!-- osvedomitel trade information -->
+	<info_portion id="bar_bar_osvedomitel_info_01"></info_portion>
+	<info_portion id="bar_bar_osvedomitel_info_02"></info_portion>
+	<info_portion id="bar_bar_osvedomitel_info_03"></info_portion>
+
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
