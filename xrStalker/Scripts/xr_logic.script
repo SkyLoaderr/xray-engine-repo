@@ -144,11 +144,12 @@ function pick_section_from_condlist(actor, npc, condlist)
 					break
 				end
 			elseif infop.func then
-				if not infop.func then
-					utils.abort("object '%s': pick_section_from_condlist: function '%s' does not exist",
+				printf("_bp: infop.func = %s", infop.func)
+				if not xr_conditions[infop.func] then
+					utils.abort("object '%s': pick_section_from_condlist: function '%s' is not defined in xr_conditions.script",
 						npc:name(), infop.func)
 				end
-				if infop.func() then
+				if xr_conditions[infop.func](actor, npc) then
 					if not infop.expected then
 						infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
 						break
@@ -231,6 +232,18 @@ function try_switch_to_another_section(npc, st)
 			end
 		elseif c.name == "on_actor_dist_le_nvis" then
 			if distance_between(actor, npc) <= c.v1 then
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				return true
+			end
+		if c.name == "on_actor_dist_ge" then
+			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
+			if npc:see(actor) and distance_between(actor, npc) >= c.v1 then
+				--printf("_bp: conditions met")
+				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				return true
+			end
+		elseif c.name == "on_actor_dist_ge_nvis" then
+			if distance_between(actor, npc) >= c.v1 then
 				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 				return true
 			end
@@ -445,6 +458,8 @@ function cfg_get_switch_conditions(ini, section, npc)
 
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le",       npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge",       npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_ge_nvis",  npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
