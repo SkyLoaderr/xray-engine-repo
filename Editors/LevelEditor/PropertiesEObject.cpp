@@ -92,9 +92,12 @@ void TfrmPropertiesEObject::FillBasicProps()
 	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoHOM));
 	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlag(CEditableObject::eoUsingLOD));
 
-	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 	PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
+//	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PROP::CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+//    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PROP::CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
+//		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PROP::CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));
 
 		O->FillPropSummary(0,values);
 
@@ -204,6 +207,13 @@ void __fastcall TfrmPropertiesEObject::OnChangeShader(PropValue* sender)
 void __fastcall TfrmPropertiesEObject::OnChangeTransform(PropValue* sender)
 {
 	UI.RedrawScene();
+/*	// внести изменения в едит об для последующего сохранения
+	CSceneObject* 		S = m_pEditObject;
+	CEditableObject* 	O = S->GetReference(); R_ASSERT(O);
+    S->FPosition.set	(O->t_vPosition);
+    S->FRotation.set	(O->t_vRotate);
+    S->FScale.set		(O->t_vScale);
+*/
 }
 //---------------------------------------------------------------------------
 

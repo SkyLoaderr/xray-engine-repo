@@ -58,7 +58,7 @@ LPCSTR 	TokenValue::GetText()
 {
 	int draw_val 	= GetValue();
     if (OnDrawValue)OnDrawValue(this, &draw_val);
-	for(int i=0; token[i].name; i++) if (token[i].id==draw_val) return token[i].name;
+	for(int i=0; token[i].name; i++) if (0==memcmp(&token[i].id,&draw_val,p_size)) return token[i].name;
     return 0;
 }
 //------------------------------------------------------------------------------

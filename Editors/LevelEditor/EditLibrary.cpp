@@ -271,6 +271,7 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 {
 	ebSave->Enabled = false;
+    ChangeReference(0);
     Lib.Save();
 	form->tvObjectsItemFocused(0);
 }

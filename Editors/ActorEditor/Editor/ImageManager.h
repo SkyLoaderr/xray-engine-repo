@@ -22,7 +22,7 @@ public:
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
     void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) _FREE(*it);};
 	// make/update routines
-    void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path=0);
+    void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path=0, bool bSetDefParam=true); 
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, int age);
     void		CreateLODTexture	(Fbox bbox, LPCSTR tex_name, int tgt_w, int tgt_h, int samples, int age);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);

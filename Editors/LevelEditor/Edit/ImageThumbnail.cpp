@@ -181,11 +181,11 @@ void EImageThumbnail::Save(int age, FSPath* path){
 bool EImageThumbnail::FillProp(PropValueVec& values)
 {
 	STextureParams& F	= m_TexParams;
-    FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token));
-    FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token));
+    FILL_PROP(values,	"Format",				(LPVOID)&F.fmt,			PROP::CreateToken	(tfmt_token,4));
+    FILL_PROP(values,	"Type",					(LPVOID)&F.type,		PROP::CreateToken	(ttype_token,4));
             
     FILL_PROP(values,	"MipMaps\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flGenerateMipMaps));
-    FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token));
+    FILL_PROP(values,	"MipMaps\\Filter",		(LPVOID)&F.mip_filter,	PROP::CreateToken	(tparam_token,4));
 
     FILL_PROP(values,	"Details\\Enabled",		&F.flag,				PROP::CreateFlag	(STextureParams::flHasDetailTexture));
     FILL_PROP(values,	"Details\\Texture",		F.detail_name,			PROP::CreateTexture	(sizeof(F.detail_name)));

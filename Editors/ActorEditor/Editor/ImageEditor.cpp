@@ -224,8 +224,11 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         	m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
             AnsiString fn = m_SelectedName;
             Engine.FS.UpdateTextureNameWithFolder(fn);         
-            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
-            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),&Engine.FS.m_Import);
+//            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
+            if (!m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)){
+            	bool bLoad = m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures);
+            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),&Engine.FS.m_Import,!bLoad);
+            }
         }else			 m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid()){
         	pbImage->Repaint();

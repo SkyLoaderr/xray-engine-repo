@@ -210,8 +210,11 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     C.div			(m);
 	int max_frame;
     float max_dot	= 0;
+    Fvector HPB;
+    parent.getHPB	(HPB);
+    
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
-    	float angle = frame*(PI_MUL_2/LOD_SAMPLE_COUNT);
+    	float angle = angle_normalize(frame*(PI_MUL_2/LOD_SAMPLE_COUNT)+HPB.x);
 
         Fvector D;
         D.setHP(angle,0);

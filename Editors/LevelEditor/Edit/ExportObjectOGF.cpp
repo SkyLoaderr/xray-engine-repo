@@ -233,8 +233,6 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
 {
     if( m_Source->MeshCount() == 0 ) return false;
 
-    R_ASSERT(m_Source->IsDynamic());
-
     UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export OGF geometry...");
     UI.ProgressInc();
 

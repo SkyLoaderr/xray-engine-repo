@@ -28,7 +28,7 @@ public:
 	virtual		void		Render_Affected			() {;}
 	virtual		void		Render_Direct			() {;}
 	
-	virtual		void		OnMove					(){;}
+	virtual		void		OnFrame					(){;}
 	virtual		void		OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
 
 	virtual		void		Hit						(int idx){;}

@@ -43,7 +43,8 @@ bool CEditableObject::LoadObject(const char* fname){
     return bRes;
 }
 
-void CEditableObject::SaveObject(const char* fname){
+void CEditableObject::SaveObject(const char* fname)
+{
 	if (IsModified()){
         // update transform matrix
         Fmatrix	mTransform,mScale,mTranslate,mRotate;

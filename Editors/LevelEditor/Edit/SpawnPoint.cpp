@@ -12,7 +12,7 @@
 #include "xr_hudfont.h"
 #include "bottombar.h"
 
-#define SPAWNPOINT_VERSION   			0x0012
+#define SPAWNPOINT_VERSION   			0x0013
 //----------------------------------------------------
 #define SPAWNPOINT_CHUNK_VERSION		0xE411
 #define SPAWNPOINT_CHUNK_POSITION		0xE412
@@ -26,8 +26,8 @@
 
 #define SPAWNPOINT_CHUNK_SPAWNDATA		0xE420
 //----------------------------------------------------
-#define MAX_TEAM 8
-const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x7f0000,0x007f00,0x00007f};
+#define MAX_TEAM 6
+const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
 
 ShaderMap CSpawnPoint::m_Icons;
 //----------------------------------------------------
@@ -69,6 +69,10 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 	F_entity_Destroy(m_SpawnData);
 	m_SpawnData = F_entity_Create(entity_ref);
     if (m_SpawnData){ 
+        if (pSettings->LineExists(entity_ref,"$player")){
+			if (pSettings->ReadBOOL(entity_ref,"$player"))
+            	m_SpawnData->s_flags |= M_SPAWN_OBJECT_ASPLAYER;
+        }
 		m_SpawnClassID = pSettings->ReadCLSID(entity_ref,"class");
     	strcpy(m_SpawnData->s_name,entity_ref);
         OnDeviceCreate();
@@ -111,7 +115,29 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     Shader* s = GetIcon(m_SpawnData->s_name);
                     DU::DrawEntity(0xffffffff,s);
                 }else{
-                    DU::DrawEntity(RP_COLORS[m_dwTeamID],Device.m_WireShader);
+                	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
+                    int r = m_dwTeamID%MAX_TEAM;
+                    Fcolor c;
+                    c.set(RP_COLORS[r]);
+                    c.mul_rgb(k*0.9f+0.1f);
+                    DU::DrawEntity(c.get(),Device.m_WireShader);
+                    if (fraBottomBar->miSpawnPointDrawText->Checked)
+                    {
+                    	AnsiString s_name;
+                        switch (m_Type){
+                        case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
+                        case ptAIPoint: s_name.sprintf("AIPoint"); break;
+                        default: THROW;
+                        }
+                    	
+                        FVF::TL	P;
+                        float 			cx,cy;
+                        P.transform		( PPosition, Device.mFullTransform );
+                        cx				= iFloor(Device._x2real(P.p.x));
+                        cy				= iFloor(Device._y2real(P.p.y));
+                        Device.pHUDFont->Color	(0xffffffff);
+                        Device.pHUDFont->Out	(cx,cy,s_name.c_str());
+                    }
                 }
             }else{
                 if( Selected() ){
@@ -272,7 +298,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropValueVec& values)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-            FILL_PROP_EX(values, PROP::PrepareKey(pref,"Respawn Point"), 	"Team",		&m_dwTeamID, PROP::CreateU32(64,1));
+            FILL_PROP_EX(values, PROP::PrepareKey(pref,"Respawn Point"), 	"Team",			&m_dwTeamID, PROP::CreateU32(0,64,1));
         }break;
         case ptAIPoint: 
             FILL_PROP_EX(values, PROP::PrepareKey(pref,"AI Point"), 		"Reserved", "-", PROP::CreateMarker());

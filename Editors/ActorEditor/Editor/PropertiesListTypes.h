@@ -473,19 +473,25 @@ public:
 class TokenValue: public PropValue{
 	DWORDVec			init_values;
 	LPDWORDVec			values;
+    int 				p_size;
     void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	xr_token* 			token;
-						TokenValue		(xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),PropValue(after,before,draw,change){};
+						TokenValue		(xr_token* _token, int p_sz, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),p_size(p_sz),PropValue(after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			();
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual void		InitNext		(LPVOID value)
+    {
+       	if (0!=memcmp(values.front(),&value,p_size))
+        	bDiff=true; 
+        AppendValue((DWORD*)value);
+    }
     bool				ApplyValue		(DWORD value)
     {
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
-        	if (**it!=value){
-	        	**it 	= value;
+        	if (0!=memcmp(*it,&value,p_size)){
+                CopyMemory(*it,&value,p_size);
                 bChanged= true;
             }
         }
@@ -493,7 +499,12 @@ public:
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
-    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		()
+    {
+    	DWORDIt src=init_values.begin(); 
+        for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) 
+        	CopyMemory(*it,src,p_size);
+    }
 };
 //------------------------------------------------------------------------------
 
@@ -653,9 +664,9 @@ namespace PROP{
         V->type			= PROP_VECTOR;
         return V;
     }
-	TokenValue* 		CreateToken	(xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+	TokenValue* 		CreateToken	(xr_token* token, int p_size, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        TokenValue* V	= new TokenValue(token,after,before,draw,change);
+        TokenValue* V	= new TokenValue(token,p_size,after,before,draw,change);
         V->type			= PROP_TOKEN;
         return V;
     }

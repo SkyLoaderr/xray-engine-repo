@@ -74,7 +74,7 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, DWORD* data, int w,
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path){
+void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path, bool bSetDefParam){
 	R_ASSERT(src_name.Length());
 	AnsiString base_name 		= src_name;
     if (path)	path->Update	(base_name);
@@ -87,25 +87,13 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
     }
     MakeThumbnailImage(THM,data.begin(),w,h,a);
 
-    // проверить если тхумбнайла не было выставить начальные параметры
-    AnsiString 	fn 	= ChangeFileExt	(base_name,".thm");
-	if (!Engine.FS.Exist(fn.c_str())){
+    // выставить начальные параметры
+	if (bSetDefParam){
 		THM->m_Age 			= Engine.FS.GetFileAge(base_name);
 		THM->m_TexParams.fmt= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
 	    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
     }
 }
-/*
-	if (!Engine.FS.Exist(fn.c_str())){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",fn.c_str());
-        return;
-    }
-	bool bRes = Surface_Load(fn.c_str(),data,w,h,a);
-    if (!bRes){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance or texture size.",fn.c_str(),w,h);
-		return;
-    }
-*/
 //------------------------------------------------------------------------------
 // создает новую текстуру
 //------------------------------------------------------------------------------

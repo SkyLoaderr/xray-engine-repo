@@ -182,7 +182,7 @@ void CCreator::OnFrame	( void )
 	Engine.Sheduler.Update		( );
 	Environment.OnMove			( );
 	Objects.OnMove				( );
-	pHUD->OnMove				( );
+	pHUD->OnFrame				( );
 
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
