@@ -69,6 +69,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     extractor	= xr_new<CGeomPartExtractor>();
     extractor->Initialize(bb,EPS_L,2);
     
+    UI->SetStatus	("Export breakable objects...");
 	// collect verts&&faces
     {
 	    SPBItem* pb = UI->PBStart(m_Objects.size(),"Prepare geometry...");
@@ -145,8 +146,9 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
     if (!GetBox(bb)) return false;
 
     extractor	= xr_new<CGeomPartExtractor>();
-    extractor->Initialize(bb,EPS_L,flt_max);
+    extractor->Initialize(bb,EPS_L,int_max);
     
+    UI->SetStatus	("Export climable objects...");
 	// collect verts&&faces
     {
 	    SPBItem* pb = UI->PBStart(m_Objects.size(),"Prepare geometry...");

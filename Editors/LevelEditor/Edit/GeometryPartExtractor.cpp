@@ -337,7 +337,7 @@ void CGeomPartExtractor::Initialize	(const Fbox& bb, float eps, u32 per_bone_fac
 {
 	VERIFY				(0==m_Verts);
 	m_Verts 			= xr_new<VCPacked>(bb,eps);
-    m_PerBoneFaceCountMin=per_bone_face_count_min;
+    m_PerBoneFaceCountMin=per_bone_face_count_min; VERIFY(m_PerBoneFaceCountMin>0);
 }
 void CGeomPartExtractor::Clear		()
 {
