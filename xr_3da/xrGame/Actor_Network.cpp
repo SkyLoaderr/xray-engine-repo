@@ -626,6 +626,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->o_Angle.x = -E->o_torso.pitch;
 	}*/
 
+	r_torso_tgt_roll		= 0;
+
 	r_model_yaw				= E->o_model;
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
