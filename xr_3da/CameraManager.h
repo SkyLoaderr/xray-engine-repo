@@ -20,12 +20,19 @@ class ENGINE_API CCameraManager
 	float					fFov;
 	float					fFar;
 	
-	Fmatrix					mView;
+	Fmatrix					unaffected_mView;
+	Fvector					unaffected_vPosition;
+	Fvector					unaffected_vDirection;
+	Fvector					unaffected_vNormal;
 public:
 	void					Dump				(void);
 	void					SetEffector			(CEffector *pe);
-	IC CEffector*			GetEffector			()	{ return pEffector; }
-	IC Fmatrix&				GetUnaffectedView	()	{ return mView;		}
+	IC CEffector*			GetEffector			()	{ return pEffector;				}
+
+	IC Fmatrix&				unaffected_View		()	{ return unaffected_mView;		}
+	IC Fvector&				unaffected_Pos		()	{ return unaffected_vPosition;	}
+	IC Fvector&				unaffected_Dir		()	{ return unaffected_vDirection;	}
+	IC Fvector&				unaffected_Up		()	{ return unaffected_vNormal;	}
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest);
 	void					Update				(const CCameraBase* C);
