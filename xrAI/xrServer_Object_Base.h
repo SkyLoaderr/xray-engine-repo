@@ -107,9 +107,9 @@ public:
 	virtual void		__stdcall	set_name		(LPCSTR s)
 	{
 		if	(
-			!xr_strcmp(*s_name,"m_stalker_e") ||
-			!xr_strcmp(*s_name,"m_stalker_demo") ||
-			!xr_strcmp(*s_name,"m_stalker_wolf")
+				!xr_strcmp(s,"m_stalker_e") ||
+				!xr_strcmp(s,"m_stalker_demo") ||
+				!xr_strcmp(s,"m_stalker_wolf")
 			)
 			s_name		= "stalker";
 		else
