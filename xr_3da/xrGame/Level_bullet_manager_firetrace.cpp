@@ -70,6 +70,16 @@ BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LP
 
 
 
+class CFindByIDPred
+{
+public:
+	CFindByIDPred(int element_to_find) {element = element_to_find;}
+	bool operator () (CCF_OBB& ccf_obb) {return ccf_obb.elem_id == element;}
+private:
+	int element;
+};
+
+
 void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material, Fvector& vNormal)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
@@ -90,7 +100,11 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 		CCF_Skeleton* skeletion = dynamic_cast<CCF_Skeleton*>(R.O->CFORM());
 		if(skeletion)
 		{
-			CCF_OBB& ccf_obb = skeletion->_GetElements()[R.element];
+			xr_vector<CCF_OBB>::iterator it = std::find_if(skeletion->_GetElements().begin(),
+												skeletion->_GetElements().end(),
+												CFindByIDPred(R.element));
+			VERIFY(skeletion->_GetElements().end() != it);
+			CCF_OBB& ccf_obb = *it;
 			vNormal.sub(vEnd, ccf_obb.OBB.m_translate);
 			if(!fis_zero(vNormal.magnitude()))
 				vNormal.normalize();
