@@ -111,8 +111,8 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 		Face* F										= (Face*)(RCAST_Model.tris[rpinf.id].dummy);
 		if (0==F)									continue;
 
-		SH_ShaderDef&	SH							= F->Shader();
-		if (!SH.C.bCastShadow)						continue;
+		Shader_xrLC&	SH							= F->Shader();
+		if (!SH.flags.bLIGHT_CastShadow)			continue;
 		
 		if (F->bOpaque)		{
 			// Opaque poly - cache it

@@ -45,7 +45,7 @@ Face::~Face()
 	for (int i=0; i<3; i++)
 		v[i]->prep_remove(this);
 }
-SH_ShaderDef&	Face::Shader()
+Shader_xrLC&	Face::Shader()
 {
 	DWORD shader_id = pBuild->materials[dwMaterial].reserved;
 	return *(pBuild->shaders.Get(shader_id));
@@ -64,12 +64,12 @@ float Face::CalcMaxEdge()
 	float	e1 = v[0]->P.distance_to(v[1]->P);
 	float	e2 = v[0]->P.distance_to(v[2]->P);
 	float	e3 = v[1]->P.distance_to(v[2]->P);
-
+	
 	if (e1>e2 && e1>e3) return e1;
 	if (e2>e1 && e2>e3) return e2;
 	return e3;
 }
- 
+
 BOOL Face::RenderEqualTo(Face *F)
 {
 	if (F->dwMaterial	!= dwMaterial		)	return FALSE;
@@ -79,6 +79,14 @@ BOOL Face::RenderEqualTo(Face *F)
 
 void Face::CacheOpacity()
 {
+	bOpaque	= false;
+	
+	b_material& M	= pBuild->materials			[dwMaterial];
+	b_texture&	T	= pBuild->textures			[M.surfidx[0]];
+	if (T.bHasAlpha)	bOpaque = FALSE;
+	else				bOpaque = TRUE;
+
+	/*
 	bOpaque	= true;
 
 	SH_ShaderDef&	SH							= Shader();
@@ -115,4 +123,5 @@ void Face::CacheOpacity()
 	}
 
 	bOpaque	= false;
+	*/
 }

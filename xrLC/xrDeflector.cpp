@@ -71,7 +71,7 @@ VOID CDeflector::OA_Export()
 		SN.mul	(F->CalcArea());
 		N.add	(SN);
 
-		density	+= F->Shader().cl_LM_Density;
+		density	+= F->Shader().lm_density;
 		fcount	+= 1.f;
 	}
 	N.normalize();

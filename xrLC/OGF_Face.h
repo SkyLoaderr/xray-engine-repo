@@ -146,7 +146,7 @@ struct OGF : public OGF_Base
 {
 	DWORD				treeID;
 
-	SH_ShaderDef*		shader;
+	Shader_xrLC*		shader;
 	vecOGF_T			textures;
 	vecOGF_V			vertices, vertices_saved;
 	vecOGF_F			faces,    faces_saved;
