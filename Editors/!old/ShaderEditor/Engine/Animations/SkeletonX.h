@@ -49,16 +49,19 @@ protected:
 	ref_smem<vertBoned1W>	Vertices1W;		// shared
 	ref_smem<vertBoned2W>	Vertices2W;		// shared
 
-	// soft-skinning only
-	u32						cache_DiscardID;
-	u32						cache_vCount;
-	u32						cache_vOffset;
+	u16						RenderMode;		
 
 	// render-mode specifics
-	u16						RenderMode;		
-	u16						RMS_boneid;		// single-bone-rendering
-	u16						RMS_bonecount;	// skinning, maximal bone ID
-	
+	union {
+		struct {			// soft-skinning only
+			u32					cache_DiscardID;
+			u32					cache_vCount;
+			u32					cache_vOffset;
+		};
+		u32						RMS_boneid;		// single-bone-rendering
+		u32						RMS_bonecount;	// skinning, maximal bone ID
+	};
+
 	void					_Copy			(CSkeletonX *V);
 	void					_Render_soft	(ref_geom& hGeom,	u32 vCount,		u32 pCount);
 	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);

@@ -184,7 +184,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		for (it=0; it<dwVertCount; it++)	{
 			u32		mid = Vertices1W[it].matrix;
 			if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
-			if		(mid>sw_bones)	sw_bones = mid.matrix;
+			if		(mid>sw_bones)	sw_bones = mid;
 		}
 		if	(1==bids.size())	{
 			RenderMode						= RM_SINGLE;
