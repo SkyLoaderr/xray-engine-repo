@@ -55,11 +55,14 @@ void CAI_Soldier::OnFightAlone()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.Enemy,aiSoldierFindAlone);
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.bVisible,aiSoldierPursuitAlone);
+	/**
 	switch (tfGetAloneFightType()) {
 		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAlone);
 		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAlone);
 		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
 	}
+	/**/
+	SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
 }
 
 void CAI_Soldier::OnFightGroup()
@@ -228,6 +231,8 @@ void CAI_Soldier::OnAttackAloneFire()
 {
 	WRITE_TO_LOG("attack alone fire");
 	
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
+	
 	SelectEnemy(Enemy);
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
@@ -243,6 +248,8 @@ void CAI_Soldier::OnDefendAloneNonFire()
 {
 	WRITE_TO_LOG("defend alone non-fire");
 	
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
+	
 	SelectEnemy(Enemy);
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
@@ -257,6 +264,8 @@ void CAI_Soldier::OnDefendAloneNonFire()
 void CAI_Soldier::OnDefendAloneFire()
 {
 	WRITE_TO_LOG("defend alone fire");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
 	
 	SelectEnemy(Enemy);
 	
@@ -297,6 +306,29 @@ void CAI_Soldier::OnRetreatAloneNonFire()
 void CAI_Soldier::OnRetreatAloneFire()
 {
 	WRITE_TO_LOG("retreat alone fire");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType() || dwHitTime >= m_dwLastUpdate || !Enemy.Enemy || !Enemy.bVisible);
+
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	vfInitSelector(SelectorRetreat,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+
+	vfStopFire();
+
+	StandUp();
+
+	vfSetMovementType(RUN_FORWARD_3);
 }
 
 void CAI_Soldier::OnRetreatAloneDialog()
@@ -332,9 +364,12 @@ void CAI_Soldier::OnAttackAloneNonFireRun()
 
 	if (!Weapons->ActiveWeapon()->GetAmmoCurrent()) {
 		if (!bfSaveFromEnemy(Enemy.Enemy)) {
-			INIT_SQUAD_AND_LEADER
+			INIT_SQUAD_AND_LEADER;
 			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
-
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPosition(SelectorUnderFireCover,Squad,Leader);
 		}
 		else
 			switch (m_cBodyState) {
@@ -351,6 +386,9 @@ void CAI_Soldier::OnAttackAloneNonFireRun()
 					break;
 				}
 			}
+	}
+	else {
+
 	}
 }
 

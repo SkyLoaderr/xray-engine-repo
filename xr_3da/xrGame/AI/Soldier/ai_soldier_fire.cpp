@@ -683,5 +683,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 
 bool CAI_Soldier::bfSaveFromEnemy(CEntity *tpEntity)
 {
-	return(true);
+	NodeCompressed *tNode = AI_Node;
+	float fSquare = ffCalcSquare(r_torso_current.yaw,eye_fov/180.f*PI,FN(1),FN(2),FN(3),FN(0));
+	return(fSquare < .1f);
 }
