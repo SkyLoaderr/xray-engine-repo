@@ -114,9 +114,15 @@ public:
 	}
 	virtual void			STATE_Read			(NET_Packet& P, u16 size)
 	{
+		P.r_u8				(s_team	);
+		P.r_u8				(s_squad);
+		P.r_u8				(s_group);
 	}
 	virtual void			STATE_Write			(NET_Packet& P)
 	{
+		P.w_u8				(s_team	);
+		P.w_u8				(s_squad);
+		P.w_u8				(s_group);
 	}
 	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
