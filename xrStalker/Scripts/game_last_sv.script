@@ -1,0 +1,259 @@
+
+module("game_types")
+module("game_phases")
+module("game_messages")
+module("game_last_ps")
+module("game_player_flags")
+
+
+
+class "game_sv_LastStanding" (game_sv_mp_script)
+
+function ps_create()
+   return game_last_ps.game_last_playerState()
+end
+
+function game_sv_LastStanding:__init() super()
+	self.type = game_types.game_types.GAME_LASTSTANDING
+
+end
+
+function game_sv_LastStanding:__finalize  ()
+end
+
+function game_sv_LastStanding:createPlayerState()
+   return game_last_ps.game_last_playerState()
+
+
+end
+
+function game_sv_LastStanding:type_name   ()
+	return "laststanding"
+end
+
+function game_sv_LastStanding:Create   (str)
+   game_sv_mp_script.Create(self, str)
+   self.lifecount = self:get_option_i (str,"lifecount",3)
+
+   self:loadGameOptions()
+
+   self:switch_Phase(game_phases.game_phases.GAME_PHASE_PENDING);
+end
+
+
+function game_sv_LastStanding:Update	()
+	
+game_sv_mp_script.Update	(self)
+
+local foo = 1
+      if self:Phase() == game_phases.game_phases.GAME_PHASE_INPROGRESS then
+--			checkForRoundEnd()
+      foo = 2
+      elseif self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING then
+			self:checkForRoundStart()
+      end
+
+end
+
+
+function game_sv_LastStanding:OnPlayerConnect	(cl_id_who)
+	printf("---------PLAYER CONNECTED---------%d",cl_id_who:value() )
+   game_sv_mp_script.OnPlayerConnect	(self, cl_id_who);
+
+	local	ps_who	=	self:get_id	(cl_id_who)
+
+	ps_who:clear()
+   ps_who.team = 0
+	ps_who.Skip = false
+
+   local rp = RPoint()
+   rp.P:set(0,5,0)
+   rp.A:set(0,0,0)
+--	self:SpawnPlayer(cl_id_who, "spectator", "", rp)
+--	self:SpawnPlayer(cl_id_who, "mp_actor", "", rp)
+	self:SpawnPlayer(cl_id_who, "spectator", "", rp)
+
+   local P = net_packet()
+   self:GenerateGameMessage (P)
+   P:w_u32				(game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED)
+   P:w_stringZ			(self:get_player_name_id(cl_id_who) )
+
+   self:u_EventSend(P)
+
+--	Money_SetStart(id_who);
+--	SetPlayersDefItems(ps_who);
+
+
+end
+
+function game_sv_LastStanding:net_Export_State		( P, cl_id_to)
+
+	game_sv_mp_script.net_Export_State(self, P, cl_id_to)
+end
+
+function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
+   if type == game_messages.game_messages.GAME_EVENT_PLAYER_READY then
+
+      self:player_ready(cl_id)
+
+  else
+      game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
+  end      
+end
+
+
+function game_sv_LastStanding:player_ready (player_cl_id )
+	
+   local	ps_who	=	self:get_id	(player_cl_id)
+   if self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING then
+      if ps_who:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)==true then
+         ps_who:resetFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)
+         printf("---------reset Ready")
+      else
+         ps_who:setFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)
+         printf("---------set Ready")
+      end
+   elseif self:Phase() == game_phases.game_phases.GAME_PHASE_INPROGRESS then
+         local rp = RPoint()
+         rp.P:set(0,5,0)
+         rp.A:set(0,0,0)
+
+         self:SpawnPlayer(player_cl_id, "mp_actor", "", rp)
+         self:SpawnItemsForActor(ps_who.GameID)
+   end
+
+end
+
+function game_sv_LastStanding:all_players_ready()
+
+	local		cnt		= self:get_players_count	()
+	local		ready_cnt	= 0
+
+
+	for	it=0, cnt-1 	do
+	
+		local ps		=	self:get_it	(it)
+		if (  (ps.Skip==true) or 
+            (ps:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)==true)) then
+         ready_cnt = ready_cnt+1
+      end
+   end
+
+	if (ready_cnt == cnt) then 
+      return true
+   else
+      return false
+   end
+
+end
+
+
+function game_sv_LastStanding:checkForRoundStart()
+      
+   if self:all_players_ready()==true then
+         self:OnRoundStart()
+      end
+end
+
+
+function game_sv_LastStanding:OnRoundStart()
+   printf("---------onRoundStart")
+   game_sv_mp_script.OnRoundStart(self)
+
+   local rp = RPoint()
+   rp.P:set(0,5,0)
+   rp.A:set(0,0,0)
+
+--spawn all players
+	local		cnt		= self:get_players_count	()
+	for	it=0, cnt-1 	do
+		local ps		=	self:get_it	(it)
+      ps:clear()
+      if ps.Skip ~= true then
+         local clientID = self:get_it_2_id(it)
+         
+          self:SpawnPlayer( clientID, "mp_actor", "", rp )
+          self:SpawnItemsForActor(ps.GameID) 
+         
+    end
+   end
+
+end
+
+
+function game_sv_LastStanding:OnPlayerHitPlayer(id_hitter, id_hitted, P)
+
+end
+
+
+function game_sv_LastStanding:OnPlayerKillPlayer(cl_id_killer, cl_id_killed)
+
+end
+
+function game_sv_LastStanding:OnTouch(id_who, id_target)
+   printf("-------OnTouch")   
+   return true
+end
+
+function game_sv_LastStanding:OnDetach(id_who, id_target)
+   printf("-------OnDetach")   
+      return true
+end
+
+
+
+function game_sv_LastStanding:loadGameOptions()
+   local ini_file_name        = "laststanding_game.ltx"
+   local ini_section_name = "game_laststanding_options"
+   local game_settings = ini_file(ini_file_name)
+   if game_settings == nil then
+      printf("----Cannot open LTX file %s", ini_file_name)
+      return
+   end
+   
+   if game_settings:section_exist(ini_section_name) then
+         self.actor_entity = game_settings:r_string(ini_section_name, "actor_entity")
+         self.spectator_entity = game_settings:r_string(ini_section_name, "spectator_entity")
+         self.default_items = {}
+         
+         local def_weapons = game_settings:r_string(ini_section_name, "default_weapons")
+         local idx = string.find(def_weapons, ";")
+          if idx~=nil then def_weapons = string.sub(def_weapons, 0, eee-1 ) end
+         
+         for itm in string.gfind(def_weapons, '[^, ]+') do 
+            local wpn_sect=itm
+            local idx_bg = string.find(wpn_sect,"{")
+            local idx_end = string.find(wpn_sect,"}")
+            local isScope                       = false
+            local isGrenadeLauncher    = false
+            local isSilencer                    = false
+            if idx_bg~=nil then
+               wpn_sect = string.sub(wpn_sect, 0, idx_bg-1)
+               local addons = string.sub(itm, idx_bg, idx_end)
+            
+               if string.find(addons,"Scope")~=nil then isScope=true end
+               if string.find(addons,"GrenadeLauncher")~=nil then isGrenadeLauncher=true end
+               if string.find(addons,"Silencer")~=nil then isSilencer=true end
+         end
+
+         local wpn_struct={}
+         wpn_struct.Section                           = wpn_sect
+         wpn_struct.Scope 	                           = isScope
+         wpn_struct.GrenadeLauncher          = isGrenadeLauncher
+         wpn_struct.Silencer                          = isSilencer
+         self.default_items[table.getn(self.default_items)+1] = wpn_struct
+
+         end
+   else
+      printf("----Cannot find section %s in LTX file %s", ini_section_name, ini_file_name)
+      return
+   end
+
+end
+
+function game_sv_LastStanding:SpawnItemsForActor(actorGameID) 
+
+   for wpn_it in self.default_items do
+      self:SpawnWeaponForActor(actorGameID, self.default_items[wpn_it].Section, self.default_items[wpn_it].Scope, self.default_items[wpn_it].GrenadeLauncher, self.default_items[wpn_it].Silencer)
+   end
+end
