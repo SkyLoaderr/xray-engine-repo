@@ -157,7 +157,7 @@ void	timestamp	(string64& dest)
 	* for the variable. 
 	*/
 	_tzset		();
-	int			it;
+	u32			it;
 
 	// date
 	_strdate	( temp );
@@ -229,7 +229,9 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 				ExInfo.ClientPointers		= NULL;
 
 				// write the dump
-				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL );
+				MINIDUMP_TYPE	dump_flags	= MINIDUMP_TYPE(MiniDumpNormal | MiniDumpWithDataSegs | MiniDumpWithFullMemory | MiniDumpWithHandleData);
+
+				BOOL bOK = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, dump_flags, &ExInfo, NULL, NULL );
 				if (bOK)
 				{
 					sprintf( szScratch, "Saved dump file to '%s'", szDumpPath );
