@@ -29,6 +29,7 @@
 		*	BUG:		vert_aref					- черный
 		*	BUG:		засветка кончиков моделей 
 		*	BUG:		5-color-lods
+		*	BUG:
 
 ***[OLES]*** In progress:
 -------------------------
