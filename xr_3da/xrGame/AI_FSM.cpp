@@ -119,7 +119,7 @@ namespace AI {
 			Squad.Groups[Me->g_Group()].GetMemberDedication(S.Members,Me);
 			
 			// *** query and move if needed
-			Level().AI.q_Range	(Me->AI_NodeID,Me->Position(),25.f,S);
+			Level().AI.q_Range	(Me->AI_NodeID,Me->Position(),35.f,S);
 
 			if (Me->AI_Path.DestNode != S.BestNode) 
 			{
