@@ -74,6 +74,12 @@ BOOL CScriptZone::net_Spawn	(LPVOID DC)
 	return						(bOk);
 }
 
+void CScriptZone::net_Destroy	()
+{
+	m_tpOnEnter.clear();
+	m_tpOnExit.clear();
+}
+
 void CScriptZone::UpdateCL	()
 {
 	inherited::UpdateCL			();

@@ -385,8 +385,10 @@ void CAI_Trader::net_Destroy()
 {
 	inherited::net_Destroy		();
 	CScriptMonster::net_Destroy ();
+	m_OnStartCallback.clear		();
+	m_OnStopCallback.clear		();
+	m_OnTradeCallback.clear		();
 }
-
 
 void TraderScriptCallBack(CBlend* B)
 {

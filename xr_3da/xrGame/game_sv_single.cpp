@@ -48,6 +48,8 @@ void	game_sv_Single::OnCreate		(u16 id_who)
 	if (!alife_object)
 		return;
 
+	alife_object->m_bOnline	= true;
+
 	if (alife_object->ID_Parent != 0xffff) {
 		CSE_ALifeDynamicObject			*parent = ai().alife().objects().object(alife_object->ID_Parent,true);
 		if (parent) {
@@ -123,6 +125,7 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 				dynamic_object->m_tNodeID		= l_tpDynamicObject->m_tNodeID;
 				dynamic_object->m_tGraphID		= l_tpDynamicObject->m_tGraphID;
 				dynamic_object->m_bALifeControl	= true;
+				dynamic_object->m_bOnline		= true;
 				alife().create	(dynamic_object);
 				l_tpALifeInventoryItem->ID_Parent	= id;
 			}

@@ -21,7 +21,7 @@ IC	void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_
 		Msg						("[LSS] adding object [%s][%d] to graph point %d",object->s_name_replace,object->ID,game_vertex_id);
 	}
 #endif
-	if (object->used_ai_locations() && object->interactive()) {
+	if (!object->m_bOnline && object->used_ai_locations() && object->interactive()) {
 		ALife::D_OBJECT_PAIR_IT	I = m_objects[game_vertex_id].objects().find(object->ID);
 		R_ASSERT3				(m_objects[game_vertex_id].objects().end() == I,"Specified object has already found on the given graph point!",object->s_name_replace);
 		m_objects[game_vertex_id].objects().insert(mk_pair(object->ID,object));

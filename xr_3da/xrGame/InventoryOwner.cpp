@@ -119,6 +119,8 @@ void CInventoryOwner::net_Destroy()
 {
 	CAttachmentOwner::net_Destroy();
 	m_inventory->SetActiveSlot(NO_ACTIVE_SLOT);
+	m_pPdaCallback.clear();
+	m_pInfoCallback.clear();
 }
 
 void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)

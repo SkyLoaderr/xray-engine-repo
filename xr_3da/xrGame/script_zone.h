@@ -24,6 +24,7 @@ public:
 	virtual			~CScriptZone		();
 	virtual void	reinit				();
 	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual void	net_Destroy			();
 
 	virtual void	Center				(Fvector& C)	const;
 	virtual float	Radius				() const;

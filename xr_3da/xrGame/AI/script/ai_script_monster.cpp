@@ -495,6 +495,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 void CScriptMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
+	FreeAll					();
 }
 
 void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)
