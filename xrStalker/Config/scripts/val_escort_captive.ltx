@@ -1,14 +1,18 @@
 [logic]
 active = walker1
+combat_ignore = combat_ignore
+on_hit = hit
 
 [walker1]
 path_walk = val_escort_captive_walk
 path_look = val_escort_captive_look
 on_signal = flee | walker@flee
+combat_ignore = always
 
 [walker@flee]
 path_walk = val_escort_captive_flee_walk
 path_look = val_escort_captive_flee_look
+combat_ignore = always
 
 ;[remark1]
 ;anim = hello
