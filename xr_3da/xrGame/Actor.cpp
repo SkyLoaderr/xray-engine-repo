@@ -754,7 +754,8 @@ void CActor::shedule_Update	(u32 DT)
 
 	//обновить положение камеры и FOV 
 	if (eacFirstEye == cam_active && pWeapon &&
-		pWeapon->IsZoomed() && !pWeapon->IsRotatingToZoom())
+		pWeapon->IsZoomed() && (!pWeapon->ZoomTexture() ||
+		(!pWeapon->IsRotatingToZoom() && pWeapon->ZoomTexture())))
 		cam_Update(dt, pWeapon->GetZoomFactor());
 	else 
 		cam_Update(dt, DEFAULT_FOV);
