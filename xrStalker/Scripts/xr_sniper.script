@@ -237,7 +237,7 @@ function action_sniper_idle:init_state_sit_down  ()
     self.object:set_detail_path_type  (move.line)
       self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item              (object.activate, self.object:best_weapon())
-        self.object:set_desired_direction  ( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
+--        self.object:set_desired_direction  ( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
     end
 
     self.object:set_mental_state            (anim.free)
