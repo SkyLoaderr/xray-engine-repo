@@ -29,10 +29,10 @@ using namespace InventoryUtilities;
 
 const u32			cDetached				= 0xffffffff;
 const u32			cAttached				= 0xff00ff00;
-const u32			cRed					= 0xffff0000;
-const u32			cPartRed				= 0x80ff0000;
-const u32			cWhite					= cDetached;
-const u32			cPartWhite				= 0x80ffffff;
+const u32			cUnableToBuy			= 0xffff0000;
+const u32			cUnableToBuyOwned		= 0x80ff0000;
+const u32			cAbleToBuy				= cDetached;
+const u32			cAbleToBuyOwned			= 0xff8080ff;
 const u8			uIndicatorWidth			= 17;
 const u8			uIndicatorHeight		= 27;
 const float			SECTION_ICON_SCALE		= 0.8f;
@@ -64,7 +64,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
-	SetMoneyAmount(50160);
+	m_bIgnoreMoney	= false;
 
 	// Инициализируем вещи
 	Init(strSectionName);
@@ -549,6 +549,9 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		// Если у вещи есть аддоны, то прибавляем и также и их половинную стоимость
 		pDDItemMP->m_bAlreadyPaid = false;
 	}
+
+	if (pDDItemMP->GetCost() > this_inventory->GetMoneyAmount())
+		pDDItemMP->EnableDragDrop(false);
 
 	// Если это армор, то убедимся, что он стал видимым
 	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
@@ -1741,9 +1744,9 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 			{
 				// Если эта вещь была при актере во время вызова меню покупки, то ее цвет - полупрозрачный
 				if (pDDItemMP->m_bHasRealRepresentation)
-					pDDItemMP->SetColor(cPartWhite);
+					pDDItemMP->SetColor(cAbleToBuyOwned);
 				else
-					pDDItemMP->SetColor(cWhite);
+					pDDItemMP->SetColor(cAbleToBuy);
 				pDDItemMP->EnableDragDrop(true);
 			}
 			else
@@ -1751,9 +1754,9 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 				if (m_pCurrentDragDropItem != pDDItemMP)
 				{
 					if (pDDItemMP->m_bHasRealRepresentation)
-						pDDItemMP->SetColor(cPartRed);
+						pDDItemMP->SetColor(cUnableToBuyOwned);
 					else
-						pDDItemMP->SetColor(cRed);
+						pDDItemMP->SetColor(cUnableToBuy);
 					pDDItemMP->EnableDragDrop(false);
 				}
 			}
@@ -1771,8 +1774,9 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 	{
 		RIFLE_SLOT,
 		PISTOL_SLOT,
+		OUTFIT_SLOT,
 		GRENADE_SLOT,
-		KNIFE_SLOT,
+		KNIFE_SLOT
 	};
 
 	// Пробегаемся по вещам в слотах, и смотрим есть ли
@@ -1794,12 +1798,14 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 					SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
 				else
 				{
-					pDDItemMP->SetColor(cRed);
+					pDDItemMP->SetColor(cUnableToBuy);
+					if (pDDItemMP->m_bAlreadyPaid)
+						SetMoneyAmount(GetMoneyAmount() + pDDItemMP->GetCost());
 					pDDItemMP->m_bAlreadyPaid = false;
 				}
 			}
 			else
-				pDDItemMP->SetColor(cPartWhite);
+				pDDItemMP->SetColor(cAbleToBuyOwned);
 		}
 	}
 
@@ -1814,10 +1820,15 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 		if (!pDDItemMP->m_bHasRealRepresentation)
 		{
 			if (pDDItemMP->GetCost() < GetMoneyAmount())
+			{
 				SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+				(*it)->SetColor(cAbleToBuy);
+			}
 			else
-				(*it)->SetColor(cRed);
+				(*it)->SetColor(cUnableToBuy);
 		}
+		else
+			(*it)->SetColor(cAbleToBuyOwned);
 	}
 }
 
@@ -1844,6 +1855,7 @@ void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 void CUIBuyWeaponWnd::ClearSlots()
 {
 	// очищаем слоты
+	IgnoreMoney(true);
 	SlotToSection(KNIFE_SLOT		);
 	SlotToSection(PISTOL_SLOT		);
 	SlotToSection(RIFLE_SLOT		);
@@ -1856,11 +1868,12 @@ void CUIBuyWeaponWnd::ClearSlots()
 	{
 		BeltToSection(&m_vDragDropItems[i]);
 	}
+	IgnoreMoney(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet, bool withMoneyCalculation)
+void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet)
 {
 	for (int i = 0; i < m_iUsedItems; ++i)
 	{
@@ -1873,9 +1886,9 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
-					DDItemMP.m_bAlreadyPaid = !withMoneyCalculation;
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 				}
+				break;
 			}
 		}
 	}
@@ -1883,7 +1896,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet, bool withMoneyCalculation)
+void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet)
 {
 	// Получаем оружие
 
@@ -1903,7 +1916,6 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
-					DDItemMP.m_bAlreadyPaid = !withMoneyCalculation;
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 					// аттачим аддоны к мувнутому оружию
@@ -1928,9 +1940,9 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 bool CUIBuyWeaponWnd::IsItemInShop(int idx)
 {
 	CUIDragDropItemMP &DDItemMP = m_vDragDropItems[idx];
-	if (std::find(m_WeaponSubBags[DDItemMP.GetSlot()]->GetDragDropItemsList().begin(),
-		m_WeaponSubBags[DDItemMP.GetSlot()]->GetDragDropItemsList().end(),
-		&DDItemMP) != m_WeaponSubBags[DDItemMP.GetSlot()]->GetDragDropItemsList().end())
+	if (std::find(m_WeaponSubBags[DDItemMP.GetSectionGroupID()]->GetDragDropItemsList().begin(),
+		m_WeaponSubBags[DDItemMP.GetSectionGroupID()]->GetDragDropItemsList().end(),
+		&DDItemMP) != m_WeaponSubBags[DDItemMP.GetSectionGroupID()]->GetDragDropItemsList().end())
 	{
 		return true;
 	}
@@ -1947,6 +1959,28 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 	{
 		m_vDragDropItems[i].m_bHasRealRepresentation = false;
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
+{
+	if (!m_bIgnoreMoney)
+	{
+		m_iMoneyAmount = moneyAmount;
+		CheckBuyAvailabilityInShop();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIBuyWeaponWnd::GetMoneyAmount() const
+{
+	if (!m_bIgnoreMoney)
+	{
+		return m_iMoneyAmount;
+	}
+	return 10000000;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -358,6 +358,8 @@ protected:
 
 	// Количество
 	int			m_iMoneyAmount;
+	// Игнорируем изменения денег
+	bool		m_bIgnoreMoney;
 	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
 	// проверяем только в листах с доступным оружием
@@ -385,10 +387,12 @@ public:
 	// Проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
 	// возможности купить предыдущее оружие установленное в слотах, если нет денег.
 	void		CheckBuyAvailabilityInSlots();
+	// Устанавливаем режим работы с деньгами: игнорировать, или нет.
+	void		IgnoreMoney(bool ignore)		{ m_bIgnoreMoney = ignore; }
 	// Получаем количество денег
-	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
+	int			GetMoneyAmount() const;
 	// Устанавливам количество денег
-	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); }
+	void		SetMoneyAmount(int moneyAmount);
 
 	// Процедура запоминания индекса скина в списке skins типа сетевой игры, после выбора его игроком
 	void		SetSkin			(u8 SkinID);	
@@ -441,9 +445,9 @@ public:
 	//									  Возможны установленные флаги аддонов.
 	//			bRealRepresentationSet	- флаг, который указывает на наличие у вещи реального 
 	//									  представления
-	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet,  bool withMoneyCalculation = false);
+	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
 	// Params:	sectionName				- имя конфигурационной секции оружия
-	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet,  bool withMoneyCalculation = false);
+	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
 
 	// Функция перемещения всех вещей из слотов обратно в секции
 	void		ClearSlots();

@@ -509,6 +509,7 @@ void		CUIGameDM::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
 	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
+	pCurBuyMenu->IgnoreMoney(true);
 	for ( ; I != E; ++I) 
 	{
 		PIItem pItem = (*I);
@@ -518,6 +519,7 @@ void		CUIGameDM::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	PRESET_ITEMS_it		It = pCurPresetItems->begin();
 	PRESET_ITEMS_it		Et = pCurPresetItems->end();
+	pCurBuyMenu->IgnoreMoney(false);
 	for ( ; It != Et; ++It) 
 	{
 		s16	ItemID = (*It);
