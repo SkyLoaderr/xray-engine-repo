@@ -171,6 +171,10 @@ function pp_linear_lerp:process(pp)
 	base.r			= self.min_power.color_base.r 	 	+ (self.max_power.color_base.r 		- self.min_power.color_base.r 	)	* d
 	base.g			= self.min_power.color_base.g 	 	+ (self.max_power.color_base.g 		- self.min_power.color_base.g 	)	* d
 	base.b			= self.min_power.color_base.b 	 	+ (self.max_power.color_base.b 		- self.min_power.color_base.b 	)	* d 
+	printf			("Base : %f,%f,%f",base.r,base.g,base.b)
+	printf			("Min : %f,%f,%f",self.min_power.color_base.r,self.min_power.color_base.g,self.min_power.color_base.b)
+	printf			("Max : %f,%f,%f",self.max_power.color_base.r,self.max_power.color_base.g,self.max_power.color_base.b)
+	printf			("Factor : %f",d)
 
 	gray.r			= self.min_power.color_gray.r 	 	+ (self.max_power.color_gray.r 		- self.min_power.color_gray.r 	)	* d
 	gray.g			= self.min_power.color_gray.g 	 	+ (self.max_power.color_gray.g 		- self.min_power.color_gray.g 	)	* d
