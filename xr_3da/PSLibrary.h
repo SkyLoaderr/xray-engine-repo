@@ -9,7 +9,8 @@ DEFINE_VECTOR(PS::SDef, PSList, PSIt);
 
 #define PSLIB_FILENAME "particles.xr"
 
-class CPSLibrary{
+class CPSLibrary
+{
     PSList				m_PSs;
 public:
 						CPSLibrary		(){;}
