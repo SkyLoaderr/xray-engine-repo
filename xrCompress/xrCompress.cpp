@@ -2,10 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "fs.h"
 
-CFS_File*				fs=0;
-CFS_Memory				fs_desc;
+IWriter*				fs=0;
+CMemoryWriter			fs_desc;
 
 u32						bytesSRC=0,bytesDST=0;
 u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
@@ -19,7 +18,7 @@ struct	ALIAS
 	u32				c_ptr;
 	u32				c_size;
 };
-multimap<u32,ALIAS>		aliases;
+xr_multimap<u32,ALIAS>	aliases;
 
 
 BOOL	testSKIP		(LPCSTR path)
@@ -34,6 +33,7 @@ BOOL	testSKIP		(LPCSTR path)
 	if ('_'==p_ext[1])				return TRUE;
 	return FALSE;
 }
+
 BOOL	testVFS			(LPCSTR path)
 {
 	string256			p_name;
@@ -50,21 +50,21 @@ BOOL	testVFS			(LPCSTR path)
 	return FALSE;
 }
 
-BOOL	testEqual		(LPCSTR path, CVirtualFileStream& base)
+BOOL	testEqual		(LPCSTR path, IReader* base)
 {
-	CVirtualFileStream	test	(path);
-	if (test.Length() != base.Length())
+	IReader*	test	= FS.r_open	(path);
+	if (test->length() != base->length())
 	{
 		return FALSE;
 	}
-	return 0==memcmp(test.Pointer(),base.Pointer(),base.Length());
+	return 0==memcmp(test->pointer(),base->pointer(),base->length());
 }
 
-ALIAS*	testALIAS		(CVirtualFileStream& base, u32 crc, u32& a_tests)
+ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 {
-	multimap<u32,ALIAS>::iterator I = aliases.lower_bound(base.Length());
+	xr_multimap<u32,ALIAS>::iterator I = aliases.lower_bound(base->length());
 
-	while (I!=aliases.end() && (I->first==base.Length()))
+	while (I!=aliases.end() && (I->first==base->length()))
 	{
 		if (I->second.crc == crc)
 		{
@@ -92,9 +92,9 @@ void	Compress			(LPCSTR path)
 		return;
 	}
 
-	CVirtualFileStream		src	(path);
-	bytesSRC				+=	src.Length();
-	u32			c_crc32		=	crc32_calc	(src.Pointer(),src.Length());
+	IReader*		src		=	FS.r_open	(path);
+	bytesSRC				+=	src->length	();
+	u32			c_crc32		=	crc32_calc	(src->pointer(),src->length());
 	u32			c_ptr		=	0;
 	u32			c_size		=	0;
 	u32			c_mode		=	0;
@@ -118,49 +118,49 @@ void	Compress			(LPCSTR path)
 
 			// Write into BaseFS
 			c_ptr				= fs->tell	();
-			c_size				= src.Length();
+			c_size				= src->length();
 			c_mode				= 1;		// VFS file
-			fs->write			(src.Pointer(),c_size);
+			fs->w				(src->pointer(),c_size);
 		} else {
 			// Compress into BaseFS
 			c_ptr				= fs->tell();
 			c_size				= 0;
 			BYTE*		c_data	= 0;
-			_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
-			if ((c_size+64)>=u32(src.Length()))
+			_compressLZ			(&c_data,&c_size,src->pointer(),src->length());
+			if ((c_size+64)>=u32(src->length()))
 			{
 				// Failed to compress - revert to VFS
 				filesVFS			++;
 				c_mode				= 1;		// VFS file
-				c_size				= src.Length();
-				fs->write			(src.Pointer(),c_size);
+				c_size				= src->length();
+				fs->w				(src->pointer(),c_size);
 				printf				("VFS (R)");
 			} else {
 				// Compressed OK
 				c_mode				= 0;		// Normal file
-				fs->write			(c_data,c_size);
-				printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
+				fs->w				(c_data,c_size);
+				printf				("%3.1f%%",100.f*float(c_size)/float(src->length()));
 			}
 		}
 	}
 
 	// Write description
-	fs_desc.WstringZ	(path	);
-	fs_desc.Wdword		(c_mode	);
-	fs_desc.Wdword		(c_ptr	);
-	fs_desc.Wdword		(c_size	);
+	fs_desc.w_stringZ	(path	);
+	fs_desc.w_u32		(c_mode	);
+	fs_desc.w_u32		(c_ptr	);
+	fs_desc.w_u32		(c_size	);
 
 	if (0==A)	
 	{
 		// Register for future aliasing
 		ALIAS			R;
-		R.path			= strdup	(path);
-		R.size			= src.Length();
+		R.path			= xr_strdup	(path);
+		R.size			= src->length();
 		R.crc			= c_crc32;
 		R.c_mode		= c_mode;
 		R.c_ptr			= c_ptr;
 		R.c_size		= c_size;
-		aliases.insert	(make_pair(R.size,R));
+		aliases.insert	(mk_pair(R.size,R));
 	}
 }
 
@@ -217,12 +217,12 @@ int __cdecl main	(int argc, char* argv[])
 		string256		fname;
 		strconcat		(fname,"..\\",argv[1],".xrp");
 		unlink			(fname);
-		fs				= new CFS_File(fname);
+		fs				= FS.w_open	(fname);
 		fs->open_chunk	(0);
 		Recurse			("");
 		fs->close_chunk	();
 		bytesDST		= fs->tell	();
-		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
+		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		u32			dwTimeEnd	= timeGetTime();
 		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\n",
