@@ -637,15 +637,12 @@ void CLuaEditor::setupLexer_ex()
   const char keywords[] = "super module class __finalize __init and break do else elseif end false for function global if in local nil not or repeat return then true until while";
   const char keywords2[] = "self";
 
-  //Setup the Lexer
-//  SetLexer(SCLEX_CPP);
   SetLexer(SCLEX_LUA);
   SetKeyWords(0, keywords);
   SetKeyWords(1, keywords2);
 
 
   //Setup styles
-//  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 12, "Courier");
   SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Courier New"); //Verdana
   StyleClearAll();
   SetAStyle(SCE_LUA_DEFAULT, RGB(0, 0, 0));
@@ -680,7 +677,6 @@ void	CLuaEditor::AdjustCurrTabIndent()
 	int line		= 	Sci(SCI_LINEFROMPOSITION,pos);
 	int prev_indent	=	Sci(SCI_GETLINEINDENTATION,line-1);
 	Sci(SCI_SETLINEINDENTATION,line,prev_indent);
-//	int l_lenght	=	Sci(SCI_GETLINEENDPOSITION,line);
 	int l_lenght	=	Sci(SCI_GETLINEINDENTPOSITION,line);
 	Sci(SCI_SETCURRENTPOS,l_lenght);
 	Sci(SCI_SETSELECTIONSTART,l_lenght);
