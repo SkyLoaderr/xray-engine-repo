@@ -35,6 +35,7 @@ static CRandom DetailRandom(0x26111975);
 #define DETOBJ_CHUNK_VERSION		0x1000
 #define DETOBJ_CHUNK_REFERENCE 		0x0101
 #define DETOBJ_CHUNK_SCALE_LIMITS	0x0102
+#define DETOBJ_CHUNK_DENSITY_FACTOR	0x0103
 
 #define DETOBJ_VERSION 				0x0001
 //------------------------------------------------------------------------------
@@ -59,6 +60,7 @@ CDetail::CDetail(){
     m_bMarkDel			= false;
     m_fMinScale			= 0.5f;
     m_fMaxScale         = 2.f;
+    m_fDensityFactor	= 1.f;
 }
 
 CDetail::~CDetail(){
@@ -149,6 +151,10 @@ bool CDetail::Load(CStream& F){
     m_fMinScale			= F.Rfloat(); if (fis_zero(m_fMinScale)) 	m_fMinScale = 0.1f;
 	m_fMaxScale         = F.Rfloat(); if (m_fMaxScale<m_fMinScale) 	m_fMaxScale = m_fMinScale;
 
+	// density factor
+    if (F.FindChunk(DETOBJ_CHUNK_DENSITY_FACTOR))
+	    m_fDensityFactor= F.Rfloat();
+
     // update object
     return 				Update(buf);
 }
@@ -169,6 +175,11 @@ void CDetail::Save(CFS_Base& F){
 	F.open_chunk		(DETOBJ_CHUNK_SCALE_LIMITS);
     F.Wfloat			(m_fMinScale);
     F.Wfloat			(m_fMaxScale);
+    F.close_chunk		();
+
+	// density factor
+	F.open_chunk		(DETOBJ_CHUNK_DENSITY_FACTOR);
+    F.Wfloat			(m_fDensityFactor);
     F.close_chunk		();
 }
 
@@ -546,10 +557,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
 
     // заполним палитру и установим Random'ы
     for(DWORD k=0; k<best.size(); k++){
-        slot->items[k].palette.a0 	= iFloor(best[k].density[0]*15+.5f);
-        slot->items[k].palette.a1 	= iFloor(best[k].density[1]*15+.5f);
-        slot->items[k].palette.a2 	= iFloor(best[k].density[2]*15+.5f);
-        slot->items[k].palette.a3 	= iFloor(best[k].density[3]*15+.5f);
+    	// objects
         bool bReject;
         do{
             bReject					= false;
@@ -558,7 +566,14 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
                 if (slot->items[j].id==slot->items[k].id){bReject=true; break;}
         }while(bReject);
         slot->color					= 0xffffffff;
+        // density
+        float f = m_Objects[slot->items[k].id]->m_fDensityFactor;
+        slot->items[k].palette.a0 	= iFloor(best[k].density[0]*f*15.f+.5f);
+        slot->items[k].palette.a1 	= iFloor(best[k].density[1]*f*15.f+.5f);
+        slot->items[k].palette.a2 	= iFloor(best[k].density[2]*f*15.f+.5f);
+        slot->items[k].palette.a3 	= iFloor(best[k].density[3]*f*15.f+.5f);
     }
+
     // определим ID незаполненных слотов как пустышки
     for(k=best.size(); k<4; k++)
         slot->items[k].id = 0xff;
@@ -815,12 +830,16 @@ bool CDetailManager::Load(CStream& F){
 
 	// snap objects
     if (F.FindChunk(DETMGR_CHUNK_SNAP_OBJECTS)){
-		cnt 			= F.Rdword(); VERIFY(cnt);
-        for (int i=0; i<cnt; i++){
-        	F.RstringZ	(buf);
-            CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
-            if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
-            else		m_SnapObjects.push_back(O);
+		cnt 			= F.Rdword();
+        if (cnt){
+	        for (int i=0; i<cnt; i++){
+    	    	F.RstringZ	(buf);
+        	    CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
+            	if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+	            else		m_SnapObjects.push_back(O);
+    	    }
+        }else{
+	    	m_SnapObjects= Scene->m_SnapObjects;
         }
     }else{
     	m_SnapObjects	= Scene->m_SnapObjects;

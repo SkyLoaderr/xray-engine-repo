@@ -142,6 +142,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         DWORD flag=0;
         if (m_ActiveSMotion) flag = m_ActiveSMotion->GetMotionFlag(b_it-m_Bones.begin());
+//        else if (bGenInvMat) flag = m_SMotions[0]->GetMotionFlag(b_it-m_Bones.begin());
         Fmatrix M,R;
         Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():precalc_identity;
         const Fvector& r = (*b_it)->Rotate();
@@ -158,6 +159,25 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
             M.c.set((*b_it)->Offset());
             M.mul2(parent);
         }
+/*
+        {
+            Log->Msg(mtInformation,"A: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
+                        M.i.x,M.i.y,M.i.z,M._14_,
+                        M.j.x,M.j.y,M.j.z,M._24_,
+                        M.k.x,M.k.y,M.k.z,M._34_,
+                        M.c.x,M.c.y,M.c.z,M._44_);
+        }
+        if (m_ActiveSMotion){
+			GetBoneWorldTransform(b_it-m_Bones.begin(),m_SMParam.Frame(),m_ActiveSMotion,M);
+    	    {
+        	    Log->Msg(mtInformation,"B: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
+            	            M.i.x,M.i.y,M.i.z,M._14_,
+                	        M.j.x,M.j.y,M.j.z,M._24_,
+                    	    M.k.x,M.k.y,M.k.z,M._34_,
+                        	M.c.x,M.c.y,M.c.z,M._44_);
+	        }
+        }
+*/
         (*b_it)->LTransform().set(M);
         if (bGenInvMat) (*b_it)->LITransform().invert((*b_it)->LTransform());
     }
@@ -300,6 +320,34 @@ int	CEditObject::GetBoneIndexByWMap(const char* wm_name){
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
 }
 
+void CEditObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
+	VERIFY(bone_idx<m_Bones.size());
+    int idx	= bone_idx;
+    matrix.identity();
+    INTVec lst;
+    do{ lst.push_back(idx); }while((idx=m_Bones[idx]->ParentIndex())>-1);
+    for (int i=lst.size()-1; i>=0; i--){
+    	idx = lst[i];
+	    DWORD flag	= motion->GetMotionFlag(idx);
+    	Fvector T,R;
+        Fmatrix rot, mat;
+        motion->Evaluate(idx,t,T,R);
+        if (flag&WORLD_ORIENTATION){
+            rot.setHPB(-R.x,-R.y,R.z);
+            mat.identity();
+            mat.c.set(T);
+            mat.mul2(matrix);
+            mat.i.set(rot.i);
+            mat.j.set(rot.j);
+            mat.k.set(rot.k);
+        }else{
+            mat.setHPB(-R.x,-R.y,R.z);
+            mat.c.set(T);
+            mat.mul2(matrix);
+        }
+        matrix.set(mat);
+    }
+}
 
 bool CEditObject::CheckBoneCompliance(CSMotion* M){
 	VERIFY(M);

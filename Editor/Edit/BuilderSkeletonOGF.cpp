@@ -33,8 +33,8 @@ struct st_SPLIT
 	Fbox			bb;
 
 	// Progressive
-	DWORD			I_Current;
-	DWORD			V_Minimal;
+	int				I_Current;
+	int				V_Minimal;
 	std::vector<Vsplit>	pmap_vsplit;
 	std::vector<WORD>	pmap_faces;
 
@@ -298,6 +298,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditObject* O){
 	for (i=0; i<int(g_splits.size()); i++) g_splits[i].mtl=i;
 
 	// Collapse vertices
+    int sz = g_verts.size();
 	for (i=0; i<int(g_verts.size()); i++){
 		st_SVERT* from = g_verts[i];
 		for (int j=i+1; j<int(g_verts.size()); j++){
@@ -400,20 +401,63 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditObject* O){
         BoneMotionVec& lst=M->BoneMotions();
         int bone_id = 0;
         for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
+			DWORD flag = M->GetMotionFlag(bone_id);
+        	CBone* B = obj->GetBone(bone_id);
+            int parent_idx = B->ParentIndex();
             for (int frm=M->FrameStart(); frm<M->FrameEnd(); frm++){
                 float t = (float)frm/M->FPS();
                 Fvector T,R;
                 Fmatrix mat;
                 Fquaternion q;
-                M->Evaluate(bone_id,t,T,R);
-                mat.setHPB(-R.x,-R.y,R.z);
-                q.set(mat);
+                M->Evaluate	(bone_id,t,T,R);
+
+                if (flag&WORLD_ORIENTATION){
+			        Fmatrix 	parent;
+			        Fmatrix 	inv_parent;
+                	if(parent_idx>-1){
+			            obj->GetBoneWorldTransform(parent_idx,t,M,parent);
+        	            inv_parent.invert(parent);
+                 	}else{
+                		parent 		= precalc_identity;
+	                    inv_parent	= precalc_identity;
+    	            }
+                	Fmatrix 	rot;
+                    rot.setHPB	(-R.x,-R.y,R.z);
+//                    Log->Msg(mtInformation,"#%d - HPB: %3.2f, %3.2f, %3.2f",frm,-R.x,-R.y,R.z);
+//                    Log->Msg(mtInformation,"#%d - PARENT: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",frm,
+//                    			parent.i.x,parent.i.y,parent.i.z,parent._14_,
+//                    			parent.j.x,parent.j.y,parent.j.z,parent._24_,
+//                    			parent.k.x,parent.k.y,parent.k.z,parent._34_,
+//                    			parent.c.x,parent.c.y,parent.c.z,parent._44_);
+                    mat.mul	(inv_parent,rot);
+//	                mat.setHPB	(1.57f,0,0);
+                }else{
+	                mat.setHPB	(-R.x,-R.y,R.z);
+                }
+
+				q.set		(mat);
         		// Quantize quaternion
 	        	int	_x = int(q.x*KEY_Quant); clamp(_x,-32767,32767); short x =  _x; F.write(&x,2);
     		    int	_y = int(q.y*KEY_Quant); clamp(_y,-32767,32767); short y =  _y; F.write(&y,2);
     		    int	_z = int(q.z*KEY_Quant); clamp(_z,-32767,32767); short z =  _z; F.write(&z,2);
 	        	int	_w = int(q.w*KEY_Quant); clamp(_w,-32767,32767); short w =  _w; F.write(&w,2);
                 F.Wvector(T);
+
+/*
+                if (flag&WORLD_ORIENTATION){
+                    R.setHPB(-r.x,-r.y,r.z);
+                    M.identity();
+                    M.c.set	((*b_it)->Offset());
+                    M.mul2	(parent);
+                    M.i.set	(R.i);
+                    M.j.set	(R.j);
+                    M.k.set	(R.k);
+                    M.mul	(inv_parent);
+                }else{
+                    M.setHPB(-r.x,-r.y,r.z);
+                    M.c.set((*b_it)->Offset());
+                }
+*/
             }
         }
 		F.close_chunk();

@@ -39,6 +39,9 @@ class CDetail{
     DEFINE_VECTOR		(fvfVertexIn,DOVertVec,DOVertIt);
     float				m_fMinScale;
     float				m_fMaxScale;
+
+    float 				m_fDensityFactor;
+
 	// render
     DOVertVec			m_Vertices;
     WORDVec				m_Indices;

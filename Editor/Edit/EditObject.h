@@ -137,6 +137,7 @@ public:
     IC BoneIt		LastBone				()	{return m_Bones.end();}
     IC int			BoneCount				()	{return m_Bones.size();}
     IC CBone*		GetBone					(DWORD idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
+    void			GetBoneWorldTransform	(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
     IC SMotionIt	FirstSMotion			()	{return m_SMotions.begin();}
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
     IC int			SMotionCount 			()	{return m_SMotions.size();}
