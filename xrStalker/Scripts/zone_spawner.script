@@ -1,17 +1,43 @@
-local members = {}
-local on_active = false
+----------------------------------------------------------------------
+--	created:	2004/12/03
+--	created:	3:12:2004   14:46
+--	filename: 	x:\gamedata\scripts\zone_spawner.script
+--	file path:	x:\gamedata\scripts
+--	file base:	zone_spawner
+--	author:		Sidorovich
+--	purpose:	
+----------------------------------------------------------------------
+local temporary_store = {}
+
+local zones = {}
 
 -------------------------------------------------------------------------
 function add_member (obj)
-    if on_active == true then return end
+
     local ini = obj:spawn_ini ()
     if ini == nil or ini:section_exist ("zone_spawner") == false then
        return 
     end
     
-    table.insert (members, obj.id)
-    this.switch_offline (obj)
-    return        
+    if ini:line_exist ("zone_spawner", "id") == false then
+       printf ("Object %s can't attach to zone spawner - ID number not found", obj:name ()) 
+       return
+    end       
+    
+    local zone_id = ini:r_u32 ("zone_spawner", "id")
+    for a = 1, table.getn (zones), 1 do
+        if zones[a].id == zone_id then
+           printf ("Object %s attached to zone with id %d", obj:name (), zones[a].id)
+           table.insert (zones[a].members, obj.id)
+           return
+        end
+    end        
+    
+    local t = {id = obj.id, id_spawner = zone_id }
+    printf ("Object %s include to temporary store", obj:name ())
+    table.insert (temporary_store, t)
+    this.switch_offline (t.id)
+    
 end
 -------------------------------------------------------------------------
 
@@ -22,7 +48,23 @@ class "zone_spawner"
 -----------------------
 function zone_spawner:__init (zone, ini)
     self.ini_ok = true
+    self.activated = false
+    if ini:line_exist ("zone_spawner", "id") == false then
+       printf ("Zone spawner without ID. Set defualt ID = 0") 
+       self.id = 0
+    else
+       self.id = ini:r_u32 ("zone_spawner", "id")
+    end   
+    
+    table.insert (zones, self)
     printf ("Zone %s is added to binder", zone:name ())
+    self.members = {}
+    for a = 1, table.getn (temporary_store), 1 do
+        if temporary_store[a].id_spawner == self.id then
+           table.insert (self.members,  temporary_store[a].id)
+           this.switch_offline (temporary_store[a].id)
+        end
+    end       
 end
 -----------------------
 function zone_spawner:on_enter (obj)
@@ -30,11 +72,12 @@ function zone_spawner:on_enter (obj)
     if actor == nil or obj:id () ~= actor:id () then 
        return 
     end
-    on_active = true    
-    if table.getn (members) == 0 then return end
-    for a = 1, table.getn (members), 1 do
-        this.switch_online (members[a])
+    if self.activated == true then return end
+    if table.getn (self.members) == 0 then return end
+    for a = 1, table.getn (self.members), 1 do
+        this.switch_online (self.members[a])
     end
+    self.activated = true
 end
 -----------------------
 
@@ -51,11 +94,11 @@ function switch_online (id)
     end
 end
 -------------------------------------------------------------------------------------------
-function switch_offline (npc)
-    if npc == nil then return end
+function switch_offline (id)
+    if id == -1 then return end
     local sim = alife ()
     if sim ~= nil then
-       sim:set_switch_online  (npc.id, false)
-       sim:set_switch_offline (npc.id, true)
+       sim:set_switch_online  (id, false)
+       sim:set_switch_offline (id, true)
     end
 end
