@@ -13,7 +13,6 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "../igame_persistent.h"
-#include "../skeletoncustom.h"
 
 #define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
 #define C_ON_FRIEND	D3DCOLOR_XRGB(0,0xff,0)
@@ -103,11 +102,13 @@ void CHUDCursor::Render()
 	{ 
 		if (RQ.O)
 		{
+/*
 			CKinematics* K = PKinematics(RQ.O->Visual());
 			if (K){
 				ref_shader shader; shader.create("effects\\wallmark","wm\\wm_blood_1");
 				K->AddWallmark(&RQ.O->renderable.xform,p1,dir,RQ.element,shader,0.2f);
 			}
+*/
 
 			CEntityAlive*	E = smart_cast<CEntityAlive*>(RQ.O);
 			PIItem	l_pI = smart_cast<PIItem>(RQ.O);
