@@ -73,6 +73,7 @@ void Startup(LPSTR     lpCmdLine)
 	Header.vertices			= (b_vertex*)	(DWORD(data)+DWORD(Header.vertices));
 	Header.material			= (b_material*)	(DWORD(data)+DWORD(Header.material));
 	Header.shaders			= (b_shader*)	(DWORD(data)+DWORD(Header.shaders));
+	Header.shaders_xrlc		= (b_shader*)	(DWORD(data)+DWORD(Header.shaders_xrlc));
 	Header.textures			= (b_texture*)	(DWORD(data)+DWORD(Header.textures));
 	Header.lights			= (b_light*)	(DWORD(data)+DWORD(Header.lights));
 	Header.light_keys		= (Flight*)		(DWORD(data)+DWORD(Header.light_keys));
