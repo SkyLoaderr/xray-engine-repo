@@ -92,6 +92,7 @@ void CBuild::BuildRapid()
 	
 	// Saving for AI/DO usage
 	Status					("Saving...");
+
 	CFileWriter		MFS		((pBuild->path+"build.cform").c_str());
 
 	vector<b_rc_face>		rc_faces;
