@@ -110,10 +110,20 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 
     if (mt==mtConfirmation)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
     else                   	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbOK, 0);
-#else
-	#ifdef _LW_PLUGIN
-		g_msg->info(buf,0);
-	#endif
+#endif
+#ifdef _LW_PLUGIN
+	switch(mt){
+	case mtError:		g_msg->error(buf,0);	break;
+	case mtInformation: g_msg->info(buf,0);		break;
+	default:			g_msg->info(buf,0);		break;
+	}
+#endif
+#ifdef _MAX_PLUGIN
+	switch(mt){
+	case mtError:		MessageBox(0,buf,"Error",		MB_OK|MB_ICONERROR);		break;
+	case mtInformation: MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);	break;
+	default:			MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);	break;
+	}
 #endif
 
     Msg(mt,buf);
