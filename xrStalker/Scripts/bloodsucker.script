@@ -1,3 +1,10 @@
+//  ровосос на ростке. —тоит в нулевой точке, и смотрит в направлении первой точки. ѕри
+// подходе игрока к нему ближе заданной дистанции, он поворачиваетс€ в его сторону, становитс€
+// видимым, если у него есть враг, орет несколько секунд, и отпускаетс€ из под скрипта на 
+// заданное врем€. ≈сли врем€ прошло, и у него нет врагов, то он беретс€ оп€ть под скрипт, 
+// и оп€ть садитс€, и ждет врагов. 
+// Ѕиндитс€ к монстру.
+
 local min_distance	= 10		// ƒистанци, ближе которой кровосос отпускаетс€ из под скрипта
 
 class "CRostokBloodSucker" (object_binder)
@@ -11,9 +18,9 @@ function CRostokBloodSucker:reload(section)
 	object_binder.reload(self, section)
 	
 	local char_ini		= self.object:spawn_ini()
-	self.path       	= patrol(utils.mob_get_string(char_ini, "rostok_bloodsuceker", "path", nil, self.object, true))
-	self.add_time		= utils.mob_get_number(char_ini, "rostok_bloodsuceker", "time", nil, self.object, false, 60)
-	self.zone			= utils.mob_get_string(char_ini, "rostok_bloodsuceker", "zone", nil, self.object, false)
+	self.path       	= patrol(utils.conf_get_string(char_ini, "rostok_bloodsuceker", "path", nil, self.object, true))
+	self.add_time		= utils.conf_get_number(char_ini, "rostok_bloodsuceker", "time", nil, self.object, false, 60)
+	self.zone			= utils.conf_get_string(char_ini, "rostok_bloodsuceker", "zone", nil, self.object, false)
 	
 	self.not_working	= false
 	self.on_position	= false

@@ -1,6 +1,8 @@
-module("bind_escape")
+// биндятся различные одноразовые скрипты для сюжета. Сделано для того, чтоб одноразовые
+// скрипты, не засоряли место биндинга. У всех таких скриптов используется секция 
+// [gameplay], а в поле script идет имя скрипта.
 
-// биндятся различные одноразовые скрипты
+module("bind_escape")
 
 function bind(obj, char_ini)
 	local script_name = utils.mob_get_string(char_ini, "gameplay", "script", nil, obj, true)

@@ -1,3 +1,6 @@
+// Место, где биндятся все монстры.
+
+
 module("bloodsucker")
 module("monster_bind")
 module("pripyat_football")
