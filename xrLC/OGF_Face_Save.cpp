@@ -63,8 +63,8 @@ D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24
 struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
-	u16			tc0x,tc0y;
-	u16			tc1x,tc1y;
+	s16			tc0x,tc0y;
+	s16			tc1x,tc1y;
 
 	r1v_lmap	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base, Fvector2 tc_lmap )
 	{
@@ -81,7 +81,7 @@ struct  r1v_vert	{
 	Fvector3	P;
 	u32			N;
 	u32			C;
-	u16			tc0x,tc0y;
+	s16			tc0x,tc0y;
 
 	r1v_vert	(Fvector3 _P, Fvector _N, base_color _C, Fvector2 tc_base)
 	{
