@@ -13,6 +13,10 @@ CMissile::CMissile(void)
 {
 	m_pHUD				= xr_new<CWeaponHUD>();
 	m_offset.identity	();
+	///////////////////////////////////
+	m_throw_direction.set(0.0f, 1.0f, 0.0f);
+	m_throw_matrix.identity();
+	///////////////////////////////////
 }
 
 CMissile::~CMissile(void) 
@@ -89,6 +93,10 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 
 	dwXF_Frame					= 0xffffffff;
 
+	///////////////////////////////////
+	m_throw_direction.set(0.0f, 1.0f, 0.0f);
+	m_throw_matrix.identity();
+	///////////////////////////////////
 	return l_res;
 }
 
@@ -528,7 +536,7 @@ void CMissile::activate_physic_shell()
 	
 	Fvector l_vel;
 	l_vel.set(m_throw_direction);
-	l_vel.normalize();
+	l_vel.normalize_safe();
 	l_vel.mul(m_fThrowForce);
 
 	Fvector a_vel;
