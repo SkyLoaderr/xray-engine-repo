@@ -531,27 +531,6 @@
 					RelativePath=".\CameraBase.h">
 				</File>
 				<File
-					RelativePath=".\CameraDebug.cpp">
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-				</File>
-				<File
 					RelativePath=".\CameraDebug.h">
 				</File>
 				<File
@@ -885,6 +864,9 @@
 				<Filter
 					Name="Particles"
 					Filter="">
+					<File
+						RelativePath=".\ParticleCustom.h">
+					</File>
 					<File
 						RelativePath=".\ParticleEffect.cpp">
 					</File>

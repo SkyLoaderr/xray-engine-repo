@@ -2,7 +2,7 @@
 #ifndef ParticleCustomH
 #define ParticleCustomH
 //---------------------------------------------------------------------------
-class IParticleCustom{
+class ENGINE_API IParticleCustom{
 public:
 	virtual 		~IParticleCustom	(){;}
 
