@@ -20,8 +20,8 @@ public:
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
-	CPHSimpleCharacter  m_character;
-	
+	//CPHSimpleCharacter  m_character;
+	CPHCharacter*		m_character;
 	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
@@ -62,12 +62,14 @@ public:
 	float				gcontact_HealthLost;	// Скоко здоровья потеряли
 	void				CreateCharacter()		{	
 													dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
-													m_character.Create(size);
+													m_character->Create(size);
 												}
-	void				DestroyCharacter(){m_character.Destroy();}
+	void				DestroyCharacter(){m_character->Destroy();
+											//xr_delete<CPHSimpleCharacter>(m_character);
+																	}
 	void				Load					(LPCSTR section);
 #ifdef DEBUG
-	void				dbg_Draw(){m_character.OnRender();};
+	void				dbg_Draw(){m_character->OnRender();};
 #endif
 
 	void				SetFriction(float air, float wall, float ground)
@@ -76,24 +78,24 @@ public:
 		fWallFriction	= wall;
 		fGroundFriction	= ground;
 	}
-	void SetPLastMaterial(u32* p){m_character.SetPLastMaterial(p);}
+	void SetPLastMaterial(u32* p){m_character->SetPLastMaterial(p);}
 	float				GetCurrentFriction()		{ return fFriction; }
 
 	const Fvector&		GetVelocity		( )			{ return vVelocity;	}
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
 	float				GetContactSpeed	()			{ return fContactSpeed; }
-	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character.SetVelocity(vVelocity);}
-	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character.SetVelocity(vVelocity);}
+	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
+	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
 
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction){};
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction){};
 
 	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);
 													
-														m_character.Destroy();
+														m_character->Destroy();
 														CreateCharacter();	
-														m_character.SetPosition(vPosition);	
+														m_character->SetPosition(vPosition);	
 													}
 
 	EEnvironment	Environment		( )			{ return eEnvironment; }
@@ -106,7 +108,7 @@ public:
 	void				SetParent		(CObject* P){ pObject = P; }
 
 	void				SetMass			(float M)	{ fMass = M;
-													  m_character.SetMas(fMass);
+													  m_character->SetMas(fMass);
 													}
 	float				GetMass			()			{ return fMass;	}
 
@@ -117,15 +119,15 @@ public:
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
 
 	void				SetPosition		(const Fvector &P)
-	{	vPosition.set	(P); vLastUpdatePosition.set(P); m_character.SetPosition(vPosition);}
+	{	vPosition.set	(P); vLastUpdatePosition.set(P); m_character->SetPosition(vPosition);}
 
 	void				SetPosition		(float x, float y, float z)
-	{	vPosition.set	(x,y,z);m_character.SetPosition(vPosition); 	}
+	{	vPosition.set	(x,y,z);m_character->SetPosition(vPosition); 	}
 
 	void				GetPosition		(Fvector &P)
 	{	P.set			(vPosition); }
 	void				GetCharacterPosition(Fvector &P)
-	{ P.set(m_character.GetPosition());}
+	{ P.set(m_character->GetPosition());}
 
 
 	void				GetBoundingSphere(Fvector &P, float &R)
@@ -137,10 +139,10 @@ public:
 	void				Calculate		(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
-	void				GetDeathPosition(Fvector& pos){pos.set( m_character.DeathPosition());}
+	void				GetDeathPosition(Fvector& pos){pos.set( m_character->DeathPosition());}
 	void SetEnvironment( int enviroment,int old_enviroment);
-	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character.ApplyImpulse(dir,P);};
-	void		SetJumpUpVelocity(float velocity){m_character.SetJupmUpVelocity(velocity);}
+	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character->ApplyImpulse(dir,P);};
+	void		SetJumpUpVelocity(float velocity){m_character->SetJupmUpVelocity(velocity);}
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
 };

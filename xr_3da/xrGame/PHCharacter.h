@@ -11,7 +11,7 @@
 
 class CPHCharacter : public CPHObject
 #ifdef DEBUG
-	, pureRender
+	,public pureRender
 #endif
 {
 protected:
@@ -130,7 +130,7 @@ virtual		Fvector		GetPosition							(void)			=0	;
 virtual		void		SetMas								(dReal mass)	=0	;
 
 			CPHCharacter									(void)				;
-			~CPHCharacter									(void)				;
+virtual		~CPHCharacter									(void)				;
 };
 
 class CPHSimpleCharacter : public CPHCharacter {

@@ -108,7 +108,13 @@ class CAI_Rat : public CCustomMonster
 		Fvector				m_tHitPosition;
 		float				m_fHitPower;
 		u32					m_dwHitInterval;
-		
+		//HIT PHYS
+		float				m_saved_impulse;
+		Fvector				m_saved_hit_position;
+		Fvector				m_saved_hit_dir;
+		//PHYS
+		float				m_phMass;
+
 		// SOUND BEING FELT
 		SSimpleSound		m_tLastSound;
 		
@@ -363,7 +369,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  OnDeviceCreate();
 		virtual void  Update(u32 dt);
 		virtual void  UpdateCL();
-		//virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
+		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 };
 		
 #endif

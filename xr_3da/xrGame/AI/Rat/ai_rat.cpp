@@ -43,6 +43,7 @@ CAI_Rat::CAI_Rat()
 	m_dwStartAttackTime		= 0;
 	q_look.o_look_speed		= PI;
 	m_pPhysicsShell			= NULL;
+	m_saved_impulse			= 0.f;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -135,6 +136,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_bCannibalism					= pSettings->ReadBOOL  (section,"Cannibalism");
 	m_dwEatCorpseInterval			= pSettings->ReadINT   (section,"EatCorpseInterval");
 
+	m_phMass						= pSettings->ReadFLOAT (section,"corp_mass");
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
 }
@@ -243,16 +245,19 @@ void CAI_Rat::CreateSkeleton(){
 	box.m_translate.set(0,0.1f,-0.15f);
 	box.m_halfsize.set(0.10f,0.085f,0.25f);
 	element->add_Box(box);
-	Fsphere sphere;
-	sphere.P.set(0,0,0);
-	sphere.R=0.25;
+	//Fsphere sphere;
+	//sphere.P.set(0,0,0);
+	//sphere.R=0.25;
 	//element->add_Sphere(sphere);
-	element->setMass(200.f);
+	element->setMass(m_phMass);
 	element->SetMaterial("creatures\\rat");
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
-	
+	if(m_saved_impulse!=0.f){
+
+		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
+	}
 	/*
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	m_pPhysicsShell		= P_create_Shell();
@@ -316,7 +321,11 @@ void CAI_Rat::UpdateCL(){
 	
 }
 
-//void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
-//	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
-
-//}
+void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	if(!m_pPhysicsShell){
+		m_saved_impulse=impulse;
+		m_saved_hit_dir.set(dir);
+		m_saved_hit_position.set(p_in_object_space);
+	}
+}

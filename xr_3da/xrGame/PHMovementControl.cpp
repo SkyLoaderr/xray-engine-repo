@@ -15,7 +15,7 @@
 
 CPHMovementControl::CPHMovementControl(void)
 {
-	//m_character.Create();
+	//m_character->Create();
 		pObject	=			NULL;
 	eOldEnvironment =	peInAir;
 	eEnvironment =		peInAir;
@@ -39,12 +39,13 @@ CPHMovementControl::CPHMovementControl(void)
 	gcontact_HealthLost = 0;
 	fContactSpeed		= 0.f;
 
-	
+	m_character=xr_new<CPHSimpleCharacter>();
 }
 
 CPHMovementControl::~CPHMovementControl(void)
 {
-	m_character.Destroy();
+	m_character->Destroy();
+	xr_delete(m_character);
 }
 
 //static Fvector old_pos={0,0,0};
@@ -52,19 +53,19 @@ CPHMovementControl::~CPHMovementControl(void)
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
 
-    vPosition=m_character.IPosition();
+    vPosition=m_character->IPosition();
 	vAccel.y+=jump;
-	m_character.SetMaximumVelocity(vAccel.magnitude()/10.f);
-	m_character.SetAcceleration(vAccel);
+	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
+	m_character->SetAcceleration(vAccel);
 	
 
- vVelocity =m_character.GetVelocity(); 
+ vVelocity =m_character->GetVelocity(); 
 
-	gcontact_Was=m_character.ContactWas();
+	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
 	if(gcontact_Was){
-		fContactSpeed=m_character.ContactVelocity();
-		//m_character.ContactVelocity()=0.f;
+		fContactSpeed=m_character->ContactVelocity();
+		//m_character->ContactVelocity()=0.f;
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
 			gcontact_HealthLost			= 0;
@@ -125,7 +126,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 
 void CPHMovementControl::CheckEnvironment(const Fvector &V){
 eOldEnvironment=eEnvironment;
-switch (m_character.CheckInvironment()){
+switch (m_character->CheckInvironment()){
 case peOnGround : eEnvironment=peOnGround;break;
 case peInAir :		eEnvironment=peInAir		;break;
 case peAtWall : eEnvironment=peAtWall		;break;
