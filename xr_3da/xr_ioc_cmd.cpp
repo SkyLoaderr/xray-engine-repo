@@ -3,8 +3,6 @@
 #include "xr_ioconsole.h"
 #include "xr_creator.h"
 #include "xr_ioc_cmd.h"
-#include "fdemorecord.h"
-#include "fdemoplay.h"
 #include "fbasicvisual.h"
 #include "xr_tokens.h"
 #include "cameramanager.h"
@@ -198,29 +196,6 @@ public:
 		Sound->Restart();
 	}
 };
-//-----------------------------------------------------------------------
-class CCC_DemoRecord : public CConsoleCommand
-{
-public:
-	CCC_DemoRecord(LPCSTR N) : CConsoleCommand(N) {};
-	virtual void Execute(LPCSTR args) {
-		Console.Hide	();
-		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(new CDemoRecord(fn));
-	}
-};
-class CCC_DemoPlay : public CConsoleCommand
-{
-public:
-	CCC_DemoPlay(LPCSTR N) : 
-		CConsoleCommand(N) 
-		{ bEmptyArgsHandled = TRUE; };
-	virtual void Execute(LPCSTR args) {
-		Console.Hide();
-		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(new CDemoPlay(fn,1.3f));
-	}
-};
 
 //-----------------------------------------------------------------------
 class CCC_Gamma : public CCC_Float
@@ -289,7 +264,7 @@ extern float		psDetail_w_speed;
 extern float		psDetail_l_ambient;
 extern float		psDetail_l_aniso;
 extern int			psSupersample;
-extern u32		psEnvFlags;
+extern u32			psEnvFlags;
 
 void CCC_Register()
 {
@@ -395,10 +370,6 @@ void CCC_Register()
 	// Camera
 	CMD2(CCC_Float,		"cam_inert",			&psCamInert);
 	CMD2(CCC_Float,		"cam_slide_inert",		&psCamSlideInert);
-
-	// Demo
-	CMD1(CCC_DemoRecord,"demo_record"			);
-	CMD1(CCC_DemoPlay,	"demo_play"				);
 
 	// Collision
 	CMD4(CCC_Integer,	"cl_act_depth",			&psCollideActDepth,			4,	32);

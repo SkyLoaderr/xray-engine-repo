@@ -17,6 +17,8 @@
 #include "car.h"
 #include "dummyobject.h"
 #include "customtarget.h"
+#include "..\fdemorecord.h"
+#include "..\fdemoplay.h"
     
 ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
@@ -55,6 +57,29 @@ public:
 		strcpy(I,"restart game"); 
 	}
 };
+//-----------------------------------------------------------------------
+class CCC_DemoRecord : public CConsoleCommand
+{
+public:
+	CCC_DemoRecord(LPCSTR N) : CConsoleCommand(N) {};
+	virtual void Execute(LPCSTR args) {
+		Console.Hide	();
+		char fn[256]; strconcat(fn,args,".xrdemo");
+		pCreator->Cameras.AddEffector(new CDemoRecord(fn));
+	}
+};
+class CCC_DemoPlay : public CConsoleCommand
+{
+public:
+	CCC_DemoPlay(LPCSTR N) : 
+	  CConsoleCommand(N) 
+	  { bEmptyArgsHandled = TRUE; };
+	  virtual void Execute(LPCSTR args) {
+		  Console.Hide();
+		  char fn[256]; strconcat(fn,args,".xrdemo");
+		  pCreator->Cameras.AddEffector(new CDemoPlay(fn,1.3f));
+	  }
+};
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
@@ -78,6 +103,12 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,		"hud_info",				&psHUD_Flags,	HUD_INFO);
 		CMD3(CCC_Mask,		"hud_draw",				&psHUD_Flags,	HUD_DRAW);
 		CMD2(CCC_Float,		"hud_fov",				&psHUD_FOV);
+
+		// Demo
+#ifdef DEBUG
+		CMD1(CCC_DemoRecord,"demo_record"			);
+#endif
+		CMD1(CCC_DemoPlay,	"demo_play"				);
 
 		// ai
 		CMD3(CCC_Mask,		"ai_debug",				&psAI_Flags,	aiDebug);
