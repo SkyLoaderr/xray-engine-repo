@@ -7,6 +7,7 @@
 void	CRenderTarget::OnDeviceCreate	()
 {
 	dwAccumulatorClearMark			= 0;
+	Device.Shader.Evict				();
 
 	// blenders
 	b_accum_direct_mask				= xr_new<CBlender_accum_direct_mask>	();
@@ -21,6 +22,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
 		rt_Accumulator				= Device.Shader._CreateRT	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
+		rt_Generic					= Device.Shader._CreateRT	(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
 		rt_Bloom_1					= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
 		rt_Bloom_2					= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
 	}
@@ -149,6 +151,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// NORMAL
 	Device.Shader._DeleteRT		(rt_Bloom_2				);
 	Device.Shader._DeleteRT		(rt_Bloom_1				);
+	Device.Shader._DeleteRT		(rt_Generic				);
 	Device.Shader._DeleteRT		(rt_Accumulator			);
 	Device.Shader._DeleteRT		(rt_Color				);
 	Device.Shader._DeleteRT		(rt_Normal				);

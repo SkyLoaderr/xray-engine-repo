@@ -24,6 +24,7 @@ private:
 	CRT*						rt_Normal;		// 64bit, fat	(x,y,z,?)				(eye-space)
 	CRT*						rt_Color;		// 64bit, fat	(r,g,b,specular-gloss)
 	CRT*						rt_Accumulator;	// 32bit		(r,g,b,specular)
+	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	CRT*						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 
