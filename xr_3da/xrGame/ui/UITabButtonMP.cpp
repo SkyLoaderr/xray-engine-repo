@@ -17,6 +17,7 @@ CUITabButtonMP::CUITabButtonMP(){
 	AttachChild(&m_staticNumber);
 	m_staticNumber.SetFont(UI()->Font()->pFontGraffiti32Russian);
 	m_orientation = O_VERTICAL;
+	SetNewRenderMethod(true);
 }
 
 CUITabButtonMP::~CUITabButtonMP(){
