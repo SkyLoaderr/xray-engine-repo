@@ -5,6 +5,8 @@
 
 class CStateManagerZombie;
 
+#define FAKE_DEATH_TYPES_COUNT	3
+
 class CZombie :	public CAI_Biting {
 	
 	typedef		CAI_Biting		inherited;
@@ -35,7 +37,9 @@ public:
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 
-	CAnimTriple		anim_triple_death;
+	CAnimTriple		anim_triple_death[FAKE_DEATH_TYPES_COUNT];
+	u8				active_triple_idx;
+	
 	u32				time_dead_start;
 	u32				last_hit_frame;
 	u32				time_resurrect;

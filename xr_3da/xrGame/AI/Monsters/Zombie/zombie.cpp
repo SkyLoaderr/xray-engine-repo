@@ -86,6 +86,8 @@ void CZombie::reinit()
 	last_hit_frame			= 0;
 	time_resurrect			= 0;
 	last_health_fake_death	= 1.f;
+
+	active_triple_idx		= u8(-1);
 }
 
 void CZombie::reload(LPCSTR section)
@@ -103,7 +105,32 @@ void CZombie::reload(LPCSTR section)
 	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2");
 	VERIFY(def3);
 
-	anim_triple_death.init_external	(def1, def2, def3);
+	anim_triple_death[0].init_external	(def1, def2, def3);
+
+
+	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_0");
+	VERIFY(def1);
+
+	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_1");
+	VERIFY(def2);
+
+	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1_2");
+	VERIFY(def3);
+
+	anim_triple_death[1].init_external	(def1, def2, def3);
+
+
+	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_0");
+	VERIFY(def1);
+
+	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_1");
+	VERIFY(def2);
+
+	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2_2");
+	VERIFY(def3);
+
+	anim_triple_death[2].init_external	(def1, def2, def3);
+
 }
 
 
@@ -154,7 +181,8 @@ void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 				
 				if ((last_health_fake_death - GetHealth()) > (health_death_threshold / fake_death_count)) {
 					
-					MotionMan.TA_Activate		(&anim_triple_death);
+					active_triple_idx			= u8(Random.randI(FAKE_DEATH_TYPES_COUNT));
+					MotionMan.TA_Activate		(&anim_triple_death[active_triple_idx]);
 					CMonsterMovement::stop_now	();
 					time_dead_start				= Level().timeServer();
 
@@ -176,7 +204,7 @@ void CZombie::shedule_Update(u32 dt)
 		if (time_dead_start + TIME_FAKE_DEATH < Level().timeServer()) {
 			time_dead_start  = 0;
 
-			VERIFY(anim_triple_death.is_active());
+			VERIFY(anim_triple_death[active_triple_idx].is_active());
 
 			MotionMan.TA_PointBreak();	
 
