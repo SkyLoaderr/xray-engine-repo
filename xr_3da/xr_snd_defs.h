@@ -10,20 +10,27 @@ class	ENGINE_API	C2DSound;
 class	ENGINE_API	C2DSoundRender;
 class	ENGINE_API	CMusicStream;
 class	ENGINE_API	CInifile;
+class	ENGINE_API	CObject;
 struct	ENGINE_API	xr_token;
-namespace RAPID		{ class ENGINE_API Model; };
 
 // t-defs
 struct	sound3D
 {
 	int			handle;
 	C3DSound*	feedback;
-	sound3D()	{ handle = SND_UNDEFINED; feedback=0; }
+	int			type;
+	sound3D()	{ handle = SND_UNDEFINED; feedback=0; type=0; }
 };
 struct	sound2D
 {
 	int			handle;
 	C2DSound*	feedback;
-	sound2D()	{ handle = SND_UNDEFINED; feedback=0; }
+	int			type;
+	sound2D()	{ handle = SND_UNDEFINED; feedback=0; type=0; }
 };
+struct	soundListener
+{
+	virtual		void	soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
+};
+
 typedef Fvector soundOccluder[3];
