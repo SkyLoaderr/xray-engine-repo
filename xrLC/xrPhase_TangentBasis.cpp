@@ -152,8 +152,8 @@ void CBuild::xrPhase_TangentBasis()
 			F->tc.front().uv[v].set			(o_tc		[id*3+0],	o_tc		[id*3+1]);
 			F->basis_tangent[v].set			(o_tangent	[id*3+0],	o_tangent	[id*3+1],	o_tangent	[id*3+2]);
 			F->basis_binormal[v].set		(o_binormal	[id*3+0],	o_binormal	[id*3+1],	o_binormal	[id*3+2]);
-			//F->basis_tangent[v].normalize		();
-			//F->basis_binormal[v].normalize	();
+			F->basis_tangent[v].normalize	();
+			F->basis_binormal[v].normalize	();
 		}
 	}
 }

@@ -21,7 +21,7 @@ Comments:
 
 #include <assert.h>
 
-typedef float nv_scalar;
+typedef double nv_scalar;
 
 #define nv_zero			      nv_scalar(0)
 #define nv_zero_5             nv_scalar(0.5)

@@ -343,7 +343,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			bool minz,miny,minx;
 			minx = miny = minz = false;
 
-			float deltaMajor;
+			double deltaMajor;
 
 			if ( ( delta.x >= delta.y ) && ( delta.x >= delta.z ) )
 			{
@@ -689,20 +689,20 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			if (2064==f)		__asm int 3;
 
             // grap position & tex coords again in case they were reallocated
-            pPositions = (vec3*)( &( positions[ 0 ] ) );
-            tex = (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
+            pPositions	= (vec3*)( &( positions[ 0 ] ) );
+            tex			= (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
 
 			// create an edge out of x, s and t
-			edge0.x = pPositions[ indices[ f + 1 ] ].x - pPositions[ indices[ f ] ].x;
-			edge0.y = tex[ indices[ f + 1 ] ].x - tex[ indices[ f ] ].x;
-			edge0.z = tex[ indices[ f + 1 ] ].y - tex[ indices[ f ] ].y;
+			edge0.x		= pPositions[ indices[ f + 1 ] ].x - pPositions[ indices[ f ] ].x;
+			edge0.y		= tex[ indices[ f + 1 ] ].x - tex[ indices[ f ] ].x;
+			edge0.z		= tex[ indices[ f + 1 ] ].y - tex[ indices[ f ] ].y;
 
 			// create an edge out of x, s and t
-			edge1.x = pPositions[ indices[ f + 2 ] ].x - pPositions[ indices[ f ] ].x;
-			edge1.y = tex[ indices[ f + 2 ] ].x - tex[ indices[ f ] ].x;
-			edge1.z = tex[ indices[ f + 2 ] ].y - tex[ indices[ f ] ].y;
+			edge1.x		= pPositions[ indices[ f + 2 ] ].x - pPositions[ indices[ f ] ].x;
+			edge1.y		= tex[ indices[ f + 2 ] ].x - tex[ indices[ f ] ].x;
+			edge1.z		= tex[ indices[ f + 2 ] ].y - tex[ indices[ f ] ].y;
 
-			vec3 sxt = edge0 ^ edge1;
+			vec3 sxt	= edge0 ^ edge1;
 
             float a = sxt.x;
             float b = sxt.y;
