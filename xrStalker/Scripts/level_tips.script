@@ -22,7 +22,6 @@ function get_tips(actor)
 
 					if v.news then
 						news_manager.send_news(actor, v.info)
-						--actor:give_game_news(v.info, "ui\\ui_icons_npc", 50,0,50,50)
 					end
 
 					tips[k] = nil
