@@ -5,7 +5,6 @@
 #include "customHUD.h"
 #include "xr_ini.h"
 #include "render.h"
-#include "xr_sndman.h"
 #include "gamefont.h"
 #include "xrLevel.h"
 

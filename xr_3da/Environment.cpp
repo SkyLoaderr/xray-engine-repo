@@ -11,7 +11,6 @@
 #include "xr_ini.h"
 #include "xr_creator.h"
 #include "xr_streamsnd.h"
-#include "xr_sndman.h"
 #include "PSObject.h"
 
 #include "fmesh.h"

@@ -7,7 +7,6 @@
 #include "fdemoplay.h"
 #include "fbasicvisual.h"
 #include "xr_tokens.h"
-#include "xr_sndman.h"
 #include "cameramanager.h"
 #include "environment.h"
 #include "xr_input.h"

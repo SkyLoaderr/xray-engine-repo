@@ -8,7 +8,6 @@
 #include "xr_ioconsole.h"
 #include "xr_input.h"
 #include "xr_ioc_cmd.h"
-#include "xr_sndman.h"
 #include "GameFont.h"
 #include "xr_tokens.h"
 #include "xr_trims.h"
