@@ -22,10 +22,6 @@ light::light(void)
 
 light::~light(void)
 {
-	Device.Shader.Delete	(s_spot_s);
-	Device.Shader.Delete	(s_spot_uns);
-	Device.Shader.Delete	(s_point_s);
-	Device.Shader.Delete	(s_point_uns);
 }
 
 void light::set_texture		(LPCSTR name)
@@ -33,17 +29,16 @@ void light::set_texture		(LPCSTR name)
 	if (NULL==name)
 	{
 		// default shaders
-		Device.Shader.Delete	(s_spot_s);
-		Device.Shader.Delete	(s_spot_uns);
-		Device.Shader.Delete	(s_point_s);
-		Device.Shader.Delete	(s_point_uns);
+		s_spot_s.destroy	();
+		s_spot_uns.destroy	();
+		s_point_s.destroy	();
+		s_point_uns.destroy	();
 		return;
 	}
 
 #pragma todo("Only shadowed spot implements projective texture")
 	string128				temp;
-	Device.Shader.Delete	(s_spot_s);
-	s_spot_s				= Device.Shader.Create_B(RImplementation.Target.b_accum_spot_s,strconcat(temp,"r2\\accum_spot_s_",name),name);
+	s_spot_s.create			(RImplementation.Target.b_accum_spot_s,strconcat(temp,"r2\\accum_spot_s_",name),name);
 }
 
 void light::set_active		(bool a)

@@ -102,6 +102,9 @@ public:
 	void							render_smap_sector			(CSector* S, Fmatrix& mCombined, Fvector& C);
 public:
 	// Loading / Unloading
+	virtual void					create						();
+	virtual void					destroy						();
+
 	virtual	void					level_Load					();
 	virtual void					level_Unload				();
 
