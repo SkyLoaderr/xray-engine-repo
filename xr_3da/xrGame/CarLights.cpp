@@ -92,8 +92,6 @@ void SCarLight::Update()
 	M.mul(pcar->XFORM(),BI.mTransform);
 	light_render->set_rotation	(M.k,M.i);
 	glow_render->set_position	(M.c);
-	M.k.mul(0.2);
-	M.c.add(M.k);
 	light_render->set_position	(M.c);
 
 }
