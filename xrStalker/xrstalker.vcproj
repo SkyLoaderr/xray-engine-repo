@@ -582,6 +582,9 @@
 					RelativePath=".\Config\ui\events_new.xml">
 				</File>
 				<File
+					RelativePath=".\config\ui\global_map.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\ingame_msglog_mp.xml">
 				</File>
 				<File
