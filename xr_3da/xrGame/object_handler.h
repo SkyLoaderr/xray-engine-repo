@@ -64,6 +64,7 @@ public:
 	virtual	void					detach				(CInventoryItem *inventory_item);
 			CInventoryItem			*best_weapon		() const;
 			void					set_goal			(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
+			void					set_goal			(MonsterSpace::EObjectAction object_action, CInventoryItem *inventory_item, u32 queue_size = 0, u32 queue_interval = 300);
 			bool					goal_reached		();
 	IC		bool					hammer_is_clutched	() const;
 	IC		CObjectHandlerPlanner	&planner			() const;

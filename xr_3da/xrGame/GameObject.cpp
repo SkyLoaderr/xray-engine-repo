@@ -37,6 +37,7 @@ CGameObject::CGameObject		()
 	//-----------------------------------------
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
+	m_spawn_time				= 0;
 	m_ai_location				= xr_new<CAI_ObjectLocation>();
 	m_server_flags.one			();
 }
@@ -51,17 +52,7 @@ CGameObject::~CGameObject		()
 
 void CGameObject::init			()
 {
-
 	m_lua_game_object			= 0;
-	m_dwFrameLoad				= u32(-1);
-	m_dwFrameReload				= u32(-1);
-	m_dwFrameReinit				= u32(-1);
-	m_dwFrameSpawn				= u32(-1);
-	m_dwFrameDestroy			= u32(-1);
-	m_dwFrameClient				= u32(-1);
-	m_dwFrameSchedule			= u32(-1);
-	m_dwFrameBeforeChild		= u32(-1);
-	m_dwFrameBeforeIndependent	= u32(-1);
 	m_script_clsid				= -1;
 	m_ini_file					= 0;
 	m_spawned					= false;
@@ -69,9 +60,6 @@ void CGameObject::init			()
 
 void CGameObject::Load(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameLoad))
-		return;
-
 	inherited::Load			(section);
 	CPrefetchManager::Load	(section);
 	ISpatial*		self				= smart_cast<ISpatial*> (this);
@@ -84,26 +72,17 @@ void CGameObject::Load(LPCSTR section)
 
 void CGameObject::reinit	()
 {
-	if (!frame_check(m_dwFrameReinit))
-		return;
-
 	m_visual_callback.clear	();
 	ai_location().reinit	();
 }
 
 void CGameObject::reload	(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameReload))
-		return;
-
 	m_script_clsid				= object_factory().script_clsid(CLS_ID);
 }
 
 void CGameObject::net_Destroy	()
 {
-	if (!frame_check(m_dwFrameDestroy))
-		return;
-
 #ifdef DEBUG
 	if (psAI_Flags.test(aiDestroy))
 		Msg					("Destroying client object [%d][%s][%x]",ID(),*cName(),this);
@@ -179,11 +158,9 @@ void __stdcall VisualCallback(CKinematics *tpKinematics);
 
 BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 {
-	if (!frame_check(m_dwFrameSpawn))
-		return						(TRUE);
-
 	VERIFY							(!m_spawned);
 	m_spawned						= true;
+	m_spawn_time					= Device.dwFrame;
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	VERIFY							(E);
 
@@ -424,8 +401,6 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID) const
 
 void CGameObject::UpdateCL	()
 {
-	if (!frame_check(m_dwFrameClient))
-		return;
 	inherited::UpdateCL	();
 }
 
@@ -448,9 +423,6 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL /**sync/**/)
 #include "bolt.h"
 void CGameObject::OnH_B_Chield()
 {
-	if (!frame_check(m_dwFrameBeforeChild))
-		return;
-
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
 	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(ai_location().level_vertex_id()))
@@ -459,9 +431,6 @@ void CGameObject::OnH_B_Chield()
 
 void CGameObject::OnH_B_Independent()
 {
-	if (!frame_check(m_dwFrameBeforeIndependent))
-		return;
-
 	inherited::OnH_B_Independent();
 	setup_parent_ai_locations	(false);
 	validate_ai_locations		(false);
@@ -556,8 +525,6 @@ void CGameObject::DestroyObject()
 
 void CGameObject::shedule_Update	(u32 dt)
 {
-	if (!frame_check(m_dwFrameSchedule))
-		return;
 	//уничтожить
 	if(NeedToDestroyObject())
 		DestroyObject();

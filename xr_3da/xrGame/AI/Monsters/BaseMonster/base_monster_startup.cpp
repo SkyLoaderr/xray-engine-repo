@@ -15,9 +15,6 @@
 
 void CBaseMonster::reload	(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameReload))
-		return;
-
 	CCustomMonster::reload		(section);
 	movement().reload	(section);
 
@@ -37,9 +34,6 @@ void CBaseMonster::reload	(LPCSTR section)
 
 void CBaseMonster::reinit()
 {
-	if (!frame_check(m_dwFrameReinit))
-		return;
-
 	inherited::reinit					();
 	movement().reinit			();
 	CStepManager::reinit				();
@@ -81,9 +75,6 @@ void CBaseMonster::reinit()
 
 void CBaseMonster::Load(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameLoad))
-		return;
-
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
 
@@ -180,9 +171,6 @@ void CBaseMonster::load_shared(LPCSTR section)
 
 BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC) 
 {
-	if (!frame_check(m_dwFrameSpawn))
-		return	(TRUE);
-
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
@@ -210,8 +198,6 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 
 void CBaseMonster::net_Destroy()
 {
-	if (!frame_check(m_dwFrameDestroy)) return;
-
 	inherited::net_Destroy				();
 	m_pPhysics_support->in_NetDestroy	();
 

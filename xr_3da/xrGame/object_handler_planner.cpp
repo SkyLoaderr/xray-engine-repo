@@ -261,8 +261,8 @@ void CObjectHandlerPlanner::add_item			(CInventoryItem *inventory_item)
 
 void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)
 {
-	remove_evaluators		(inventory_item);
-	remove_operators		(inventory_item);
+	remove_evaluators		(&inventory_item->object());
+	remove_operators		(&inventory_item->object());
 }
 
 void CObjectHandlerPlanner::update			()

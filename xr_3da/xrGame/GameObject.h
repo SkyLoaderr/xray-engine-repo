@@ -40,15 +40,6 @@ class CGameObject :
 	public CScriptBinder
 {
 	typedef CObject inherited;
-	u32						m_dwFrameLoad;
-	u32						m_dwFrameReload;
-	u32						m_dwFrameReinit;
-	u32						m_dwFrameSpawn;
-	u32						m_dwFrameDestroy;
-	u32						m_dwFrameClient;
-	u32						m_dwFrameSchedule;
-	u32						m_dwFrameBeforeChild;
-	u32						m_dwFrameBeforeIndependent;
 	bool					m_spawned;
 	Flags32					m_server_flags;
 	CAI_ObjectLocation		*m_ai_location;
@@ -210,21 +201,24 @@ public:
 		return				(m_ini_file);
 	}
 protected:
-	IC		bool			frame_check			(u32 &frame)
-			{
-				if (Device.dwFrame == frame)	return	(false);
-				frame		= Device.dwFrame	;
-				return		(true);
-			}
 	virtual	void			spawn_supplies		();
 
 public:
 	virtual void				on_reguested_spawn	(CObject *object);
-	IC		u32					spawn_time			() {return m_dwFrameSpawn;}
 	IC		CAI_ObjectLocation	&ai_location		() const
 	{
 		VERIFY				(m_ai_location);
 		return				(*m_ai_location);
+	}
+
+private:
+	u32						m_spawn_time;
+
+public:
+	IC		u32				spawn_time			() const
+	{
+		VERIFY				(m_spawned);
+		return				(m_spawn_time);
 	}
 };
 

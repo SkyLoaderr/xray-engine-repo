@@ -298,10 +298,10 @@ void CAI_Trader::feel_touch_new				(CObject* O)
 	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
 
 	if (I && I->useful_for_NPC()) {
-		Msg("Taking item %s!",*I->cName());
+		Msg("Taking item %s!",*I->object().cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
-		P.w_u16			(u16(I->ID()));
+		P.w_u16			(u16(I->object().ID()));
 		u_EventSend		(P);
 	}
 }

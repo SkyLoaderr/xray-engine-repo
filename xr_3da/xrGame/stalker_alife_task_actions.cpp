@@ -43,7 +43,7 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	inherited::initialize			();
 
 	m_stop_weapon_handling_time		= Level().timeServer();
-	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
 	object().movement().set_node_evaluator	(0);

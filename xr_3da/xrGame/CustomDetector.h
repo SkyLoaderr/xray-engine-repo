@@ -1,5 +1,5 @@
 #pragma once
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 #include "../feel_touch.h"
 #include "customzone.h"
 
@@ -24,10 +24,10 @@ struct ZONE_INFO
 class CInventoryOwner;
 
 class CCustomDetector :
-	public CInventoryItem,
+	public CInventoryItemObject,
 	public Feel::Touch
 {
-typedef	CInventoryItem	inherited;
+	typedef	CInventoryItemObject	inherited;
 public:
 	CCustomDetector(void);
 	virtual ~CCustomDetector(void);

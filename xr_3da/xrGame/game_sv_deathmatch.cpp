@@ -587,8 +587,8 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 	WeaponDataStruct* pWpnS = NULL;
 
 	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->cNameSect()));
-	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->cNameSect()))) return;
+	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->object().cNameSect()));
+	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->object().cNameSect()))) return;
 	pWpnS = &(*pWpnI);
 	//-------------------------------------------
 	bool	found = false;
@@ -624,7 +624,7 @@ void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vect
 		break;
 	};
 	if (found) return;
-	pItemsToDelete->push_back(pItem->ID());
+	pItemsToDelete->push_back(pItem->object().ID());
 };
 
 

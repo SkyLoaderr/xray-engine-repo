@@ -462,9 +462,9 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 										pItem->GetYPos()*INV_GRID_HEIGHT,
 										pItem->GetGridWidth()*INV_GRID_WIDTH,
 										pItem->GetGridHeight()*INV_GRID_HEIGHT);
-	if(m_pInv->Get(pItem->ID(), false))
+	if(m_pInv->Get(pItem->object().ID(), false))
         UIBeltList.AttachChild(&UIDragDropItem);
-	else if(m_pInv->Get(pItem->ID(), true))
+	else if(m_pInv->Get(pItem->object().ID(), true))
 		UIBagList.AttachChild(&UIDragDropItem);
 
 	
@@ -476,9 +476,9 @@ void CUIInventoryWnd::AttachAddon()
 	if (OnClient())
 	{
 		NET_Packet P;
-		m_pItemToUpgrade->u_EventGen(P, GE_ADDON_ATTACH, m_pItemToUpgrade->ID());
-		P.w_u32(m_pCurrentItem->ID());
-		m_pItemToUpgrade->u_EventSend(P);
+		m_pItemToUpgrade->object().u_EventGen(P, GE_ADDON_ATTACH, m_pItemToUpgrade->object().ID());
+		P.w_u32(m_pCurrentItem->object().ID());
+		m_pItemToUpgrade->object().u_EventSend(P);
 	};
 
 	R_ASSERT(m_pItemToUpgrade);
@@ -506,9 +506,9 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 	if (OnClient())
 	{
 		NET_Packet P;
-		m_pCurrentItem->u_EventGen(P, GE_ADDON_DETACH, m_pCurrentItem->ID());
+		m_pCurrentItem->object().u_EventGen(P, GE_ADDON_DETACH, m_pCurrentItem->object().ID());
 		P.w_stringZ(addon_name);
-		m_pCurrentItem->u_EventSend(P);
+		m_pCurrentItem->object().u_EventSend(P);
 	};
 	m_pCurrentItem->Detach(addon_name);
 
@@ -586,34 +586,34 @@ bool CUIInventoryWnd::SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 
 void	CUIInventoryWnd::SendEvent_Item2Slot			(PIItem	pItem)
 {
 	NET_Packet	P;
-	pItem->u_EventGen(P, GEG_PLAYER_ITEM2SLOT, pItem->H_Parent()->ID());
-	P.w_u16		(pItem->ID());
-	pItem->u_EventSend(P);
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2SLOT, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
 };
 
 void	CUIInventoryWnd::SendEvent_Item2Belt			(PIItem	pItem)
 {
 	NET_Packet	P;
-	pItem->u_EventGen(P, GEG_PLAYER_ITEM2BELT, pItem->H_Parent()->ID());
-	P.w_u16		(pItem->ID());
-	pItem->u_EventSend(P);
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2BELT, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
 
 };
 
 void	CUIInventoryWnd::SendEvent_Item2Ruck			(PIItem	pItem)
 {
 	NET_Packet	P;
-	pItem->u_EventGen(P, GEG_PLAYER_ITEM2RUCK, pItem->H_Parent()->ID());
-	P.w_u16		(pItem->ID());
-	pItem->u_EventSend(P);
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEM2RUCK, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
 };
 
 void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 {
 	NET_Packet	P;
-	pItem->u_EventGen(P, GEG_PLAYER_ITEMDROP, pItem->H_Parent()->ID());
-	P.w_u16		(pItem->ID());
-	pItem->u_EventSend(P);
+	pItem->object().u_EventGen(P, GEG_PLAYER_ITEMDROP, pItem->object().H_Parent()->ID());
+	P.w_u16		(pItem->object().ID());
+	pItem->object().u_EventSend(P);
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -88,7 +88,7 @@ void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
 	object().sound().remove_active_sounds(u32(eStalkerSoundMaskNoHumming));
-	object().sight().setup	(CSightAction(object().m_best_found_item_to_kill,true));
+	object().sight().setup	(CSightAction(object().m_best_found_item_to_kill ? &object().m_best_found_item_to_kill->object() : 0,true));
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -109,10 +109,10 @@ void CStalkerActionGetItemToKill::execute	()
 	if (!object().m_best_found_item_to_kill)
 		return;
 
-	object().movement().set_level_dest_vertex	(object().m_best_found_item_to_kill->ai_location().level_vertex_id());
+	object().movement().set_level_dest_vertex	(object().m_best_found_item_to_kill->object().ai_location().level_vertex_id());
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_position	(&object().m_best_found_item_to_kill->Position());
+	object().movement().set_desired_position	(&object().m_best_found_item_to_kill->object().Position());
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
@@ -158,10 +158,10 @@ void CStalkerActionMakeItemKilling::execute	()
 	if (!object().m_best_found_ammo)
 		return;
 
-	object().movement().set_level_dest_vertex	(object().m_best_found_ammo->ai_location().level_vertex_id());
+	object().movement().set_level_dest_vertex	(object().m_best_found_ammo->object().ai_location().level_vertex_id());
 	object().movement().set_node_evaluator	(0);
 	object().movement().set_path_evaluator	(0);
-	object().movement().set_desired_position	(&object().m_best_found_ammo->Position());
+	object().movement().set_desired_position	(&object().m_best_found_ammo->object().Position());
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);

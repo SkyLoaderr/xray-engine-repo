@@ -22,8 +22,9 @@ class	CWeaponList;
 class   CPHMovementControl;
 class	CHudItem;
  
-class CEntity : virtual public CPhysicsShellHolder,
-						public CDamageManager
+class CEntity : 
+		public CPhysicsShellHolder,
+		public CDamageManager
 {
 private:
 	typedef	CPhysicsShellHolder	inherited;			

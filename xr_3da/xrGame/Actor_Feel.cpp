@@ -25,7 +25,7 @@ BOOL CActor::feel_touch_contact		(CObject *O)
 	CInventoryItem	*item = smart_cast<CInventoryItem*>(O);
 	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(O);
 
-	if (item && item->Useful() && !item->H_Parent()) 
+	if (item && item->Useful() && !item->object().H_Parent()) 
 		return TRUE;
 
 	if(inventory_owner && inventory_owner != smart_cast<CInventoryOwner*>(this))
@@ -74,7 +74,7 @@ void CActor::PickupModeUpdate()
 	{
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
-		P.w_u16(inventory().m_pTarget->ID());
+		P.w_u16(inventory().m_pTarget->object().ID());
 		u_EventSend(P);
 	}
 

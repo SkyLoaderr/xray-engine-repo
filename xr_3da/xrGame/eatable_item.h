@@ -10,17 +10,23 @@
 
 #include "inventory_item.h"
 
+class CPhysicItem;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Съедобная вещь
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class CEatableItem : virtual public CInventoryItem 
-{
+class CEatableItem : public CInventoryItem {
 private:
 	typedef CInventoryItem	inherited;
+
+private:
+	CPhysicItem		*m_physic_item;
+
 public:
 	CEatableItem();
 	virtual ~CEatableItem();
+	virtual DLL_Pure *_construct();
 
 	virtual void Load(LPCSTR section);
 	virtual bool Useful() const;

@@ -323,7 +323,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 				}else{
 					if (!m_bAnimTorsoPlayed) {
 						if (W) {
-							bool K =inventory().ActiveItem()->CLS_ID == CLSID_OBJECT_W_KNIFE;
+							bool K =inventory().ActiveItem()->object().CLS_ID == CLSID_OBJECT_W_KNIFE;
 							
 							if(K)
 							{

@@ -13,8 +13,6 @@ CPhysicsShellHolder::CPhysicsShellHolder()
 
 void CPhysicsShellHolder::net_Destroy()
 {
-	if (!frame_check(m_dwFrameDestroy))
-		return;
 	//удалить партиклы из ParticlePlayer
 	CParticlesPlayer::net_DestroyParticles	();
 
@@ -23,8 +21,6 @@ void CPhysicsShellHolder::net_Destroy()
 }
 BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
-	if (!frame_check(m_dwFrameSpawn))
-		return					(TRUE);
 	BOOL ret=inherited::net_Spawn(DC);
 	create_physic_shell			();
 	CParticlesPlayer::net_SpawnParticles		();
@@ -148,9 +144,6 @@ void	CPhysicsShellHolder::PHFreeze()
 
 void CPhysicsShellHolder::UpdateCL	()
 {
-	if (!frame_check(m_dwFrameClient))
-		return;
-
 	inherited::UpdateCL	();
 	//обновить присоединенные партиклы
 	UpdateParticles	();

@@ -12,11 +12,6 @@ class CPhysicsShellHolder:  public CGameObject,
 							public CParticlesPlayer
 	
 {
-private:
-	u32						m_dwFrameSpawn;
-	u32						m_dwFrameDestroy;
-	u32						m_dwFrameClient;
-
 public:
 	typedef CGameObject inherited;
 	

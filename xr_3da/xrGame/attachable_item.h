@@ -8,13 +8,15 @@
 
 #pragma once
 
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
-class CAttachableItem : public CInventoryItem
+class CAttachableItem : public CInventoryItemObject
 {
-	typedef CInventoryItem inherited;
+private:
+	typedef CInventoryItemObject inherited;
+
 protected:
-	shared_str					m_bone_name;
+	shared_str				m_bone_name;
 	Fmatrix					m_offset;
 	u16						m_bone_id;
 	bool					m_enabled;
@@ -34,7 +36,6 @@ public:
 	IC		const Fmatrix	&offset				() const;
 	IC		bool			enabled				() const;
 			void			enable				(bool value);
-
 	virtual bool			can_be_attached		() const;
 };
 

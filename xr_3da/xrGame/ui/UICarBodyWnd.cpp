@@ -348,13 +348,13 @@ bool CUICarBodyWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	NET_Packet						P;
 	this_car_body_wnd->m_pOthersObject->u_EventGen(P,GE_OWNERSHIP_REJECT,
 										this_car_body_wnd->m_pOthersObject->ID());
-	P.w_u16							   (u16(pIItem->ID()));
+	P.w_u16							   (u16(pIItem->object().ID()));
 	this_car_body_wnd->m_pOthersObject->u_EventSend	(P);
 
 	//нам - взять вещь 
 	this_car_body_wnd->m_pOurObject->u_EventGen(P,GE_OWNERSHIP_TAKE,
 										this_car_body_wnd->m_pOurObject->ID());
-	P.w_u16							(u16(pIItem->ID()));
+	P.w_u16							(u16(pIItem->object().ID()));
 	this_car_body_wnd->m_pOurObject->u_EventSend	(P);
 
 	return true;
@@ -375,13 +375,13 @@ bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 	NET_Packet P;
 	this_car_body_wnd->m_pOurObject->u_EventGen(P,GE_OWNERSHIP_REJECT,
 									 this_car_body_wnd->m_pOurObject->ID());
-	P.w_u16							 (u16(pIItem->ID()));
+	P.w_u16							 (u16(pIItem->object().ID()));
 	this_car_body_wnd->m_pOurObject->u_EventSend			(P);
 
 	//другому инвентарю - взять вещь 
 	this_car_body_wnd->m_pOthersObject->u_EventGen(P,GE_OWNERSHIP_TAKE,
 										this_car_body_wnd->m_pOthersObject->ID());
-	P.w_u16								(u16(pIItem->ID()));
+	P.w_u16								(u16(pIItem->object().ID()));
 	this_car_body_wnd->m_pOthersObject->u_EventSend	(P);
 
 	return true;

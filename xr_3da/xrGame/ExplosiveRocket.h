@@ -7,8 +7,7 @@
 
 #include "CustomRocket.h"
 #include "Explosive.h"
-
-
+#include "inventory_item.h"
 
 class CExplosiveRocket : 
 			public CCustomRocket,
@@ -21,10 +20,12 @@ private:
 public:
 	CExplosiveRocket(void);
 	virtual ~CExplosiveRocket(void);
+	virtual DLL_Pure	*_construct	();
 public:
 	virtual CInventoryItem*				cast_inventory_item		()						{return this;}
 	virtual CWeapon*					cast_weapon				()						{return NULL;}
 	virtual CGameObject					*cast_game_object		()						{return this;}
+	virtual void						on_activate_physic_shell();
 public:
 
 	virtual void Load(LPCSTR section);

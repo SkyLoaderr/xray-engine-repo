@@ -154,7 +154,7 @@ void CAI_Stalker::update_best_item_info	()
 		PSPIItem					E = inventory().m_all.end();
 		for ( ; I != E; ++I) {
 			if ((*I)->can_kill()) {
-				ai().ef_storage().non_alife().member_item()	= *I;
+				ai().ef_storage().non_alife().member_item()	= &(*I)->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value			= value;
@@ -178,11 +178,11 @@ void CAI_Stalker::update_best_item_info	()
 		xr_vector<const CGameObject*>::const_iterator	E = memory().item().objects().end();
 		for ( ; I != E; ++I) {
 			const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
-			if (!inventory_item || !memory().item().useful(inventory_item))
+			if (!inventory_item || !memory().item().useful(&inventory_item->object()))
 				continue;
 			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
 			if (item) {
-				ai().ef_storage().non_alife().member_item()	= inventory_item;
+				ai().ef_storage().non_alife().member_item()	= &inventory_item->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
@@ -196,7 +196,7 @@ void CAI_Stalker::update_best_item_info	()
 				if (!item)
 					continue;
 
-				ai().ef_storage().non_alife().member_item()	= item;
+				ai().ef_storage().non_alife().member_item()	= &item->object();
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
@@ -218,11 +218,11 @@ void CAI_Stalker::update_best_item_info	()
 	xr_vector<const CGameObject*>::const_iterator	E = memory().item().objects().end();
 	for ( ; I != E; ++I) {
 		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
-		if (!inventory_item || !memory().item().useful(inventory_item))
+		if (!inventory_item || !memory().item().useful(&inventory_item->object()))
 			continue;
 		const CInventoryItem	*item = inventory_item->can_kill(memory().item().objects());
 		if (item) {
-			ai().ef_storage().non_alife().member_item()	= inventory_item;
+			ai().ef_storage().non_alife().member_item()	= &inventory_item->object();
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 			if (value > best_value) {
 				best_value					= value;
@@ -262,7 +262,7 @@ bool CAI_Stalker::ready_to_kill			()
 	return					(
 		m_best_item_to_kill && 
 		inventory().ActiveItem() && 
-		(inventory().ActiveItem()->ID() == m_best_item_to_kill->ID()) &&
+		(inventory().ActiveItem()->object().ID() == m_best_item_to_kill->object().ID()) &&
 		m_best_item_to_kill->ready_to_kill()
 	);
 }

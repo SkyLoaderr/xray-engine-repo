@@ -9,8 +9,7 @@
 #pragma once
 
 #include "inventory_space.h"
-#include "physic_item.h"
-#include "phsynchronize.h"
+#include "phnetstate.h"
 #include "hit_immunity.h"
 
 enum EHandDependence{
@@ -24,10 +23,13 @@ class CMissile;
 class CHudItem;
 class CWeaponAmmo;
 class CWeapon;
+class CPhysicsShellHolder;
+class NET_Packet;
 
-class CInventoryItem : public CPhysicItem, public CHitImmunity
-{
-	typedef CPhysicItem	inherited;
+class CInventoryItem : public CHitImmunity {
+private:
+	CPhysicsShellHolder	*m_object;
+
 public:
 					CInventoryItem		();
 	virtual			~CInventoryItem		();
@@ -224,14 +226,6 @@ protected:
 
 	void			CalculateInterpolationParams();
 
-private:
-	u32				m_dwFrameLoad;
-	u32				m_dwFrameReload;
-	u32				m_dwFrameReinit;
-	u32				m_dwFrameSpawn;
-	u32				m_dwFrameDestroy;
-	u32				m_dwFrameClient;
-
 protected:
 	bool			m_useful_for_NPC;
 
@@ -251,9 +245,17 @@ public:
 	virtual bool	ready_to_kill			() const;
 	IC		bool	useful_for_NPC			() const;
 #ifdef DEBUG
-	virtual void			OnRender			();
+	virtual void			OnRender		();
 #endif
-};
 
+public:
+	virtual DLL_Pure		*_construct		();
+	IC		CPhysicsShellHolder	&object		() const
+	{
+		VERIFY		(m_object);
+		return		(*m_object);
+	}
+	virtual void			on_activate_physic_shell() = 0;
+};
 
 #include "inventory_item_inline.h"

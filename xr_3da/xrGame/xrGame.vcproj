@@ -5608,6 +5608,39 @@
 							</File>
 						</Filter>
 						<Filter
+							Name="EatableItemObject"
+							Filter="">
+							<File
+								RelativePath=".\eatable_item_object.cpp">
+							</File>
+							<File
+								RelativePath=".\eatable_item_object.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="InventoryItem"
+							Filter="">
+							<File
+								RelativePath=".\inventory_item.cpp">
+							</File>
+							<File
+								RelativePath=".\inventory_item.h">
+							</File>
+							<File
+								RelativePath=".\inventory_item_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="InventoryItemObject"
+							Filter="">
+							<File
+								RelativePath=".\inventory_item_object.cpp">
+							</File>
+							<File
+								RelativePath=".\inventory_item_object.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="InventoryOwner"
 							Filter="">
 							<File
@@ -5718,19 +5751,6 @@
 							</File>
 							<File
 								RelativePath="trade.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="InventoryItem"
-							Filter="">
-							<File
-								RelativePath=".\inventory_item.cpp">
-							</File>
-							<File
-								RelativePath=".\inventory_item.h">
-							</File>
-							<File
-								RelativePath=".\inventory_item_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -6389,6 +6409,12 @@
 						<Filter
 							Name="HudItem"
 							Filter="">
+							<File
+								RelativePath=".\hud_item_object.cpp">
+							</File>
+							<File
+								RelativePath=".\hud_item_object.h">
+							</File>
 							<File
 								RelativePath=".\HudItem.cpp">
 							</File>

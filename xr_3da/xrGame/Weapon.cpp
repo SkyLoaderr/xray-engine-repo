@@ -987,13 +987,13 @@ void CWeapon::PH_A_CrPr			()
 void CWeapon::reinit			()
 {
 	CShootingObject::reinit		();
-	CHudItem::reinit			();
+	CHudItemObject::reinit			();
 }
 
 void CWeapon::reload			(LPCSTR section)
 {
 	CShootingObject::reload		(section);
-	CHudItem::reload			(section);
+	CHudItemObject::reload			(section);
 	
 	m_can_be_strapped			= true;
 	m_strapped_mode				= false;
@@ -1084,7 +1084,7 @@ CInventoryItem *CWeapon::can_kill	(CInventory *inventory) const
 		CInventoryItem	*inventory_item = smart_cast<CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
-		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->cNameSect());
+		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->object().cNameSect());
 		if (i != m_ammoTypes.end())
 			return			(inventory_item);
 	}
@@ -1103,7 +1103,7 @@ const CInventoryItem *CWeapon::can_kill	(const xr_vector<const CGameObject*> &it
 		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
 		if (!inventory_item)
 			continue;
-		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->cNameSect());
+		xr_vector<shared_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->object().cNameSect());
 		if (i != m_ammoTypes.end())
 			return			(inventory_item);
 	}

@@ -40,13 +40,6 @@ CBaseMonster::CBaseMonster()
 	
 	m_pPhysics_support				->in_Init();
 
-	m_dwFrameLoad		= u32(-1);
-	m_dwFrameReload		= u32(-1);
-	m_dwFrameReinit		= u32(-1);
-	m_dwFrameSpawn		= u32(-1);
-	m_dwFrameDestroy	= u32(-1);
-	m_dwFrameClient		= u32(-1);
-
 	// Components external init 
 
 	EnemyMemory.init_external		(this, 20000);
@@ -89,9 +82,6 @@ CBaseMonster::~CBaseMonster()
 
 void CBaseMonster::UpdateCL()
 {
-	if (!frame_check(m_dwFrameClient))
-		return;
-
 	inherited::UpdateCL();
 	
 	

@@ -10,6 +10,7 @@
 #include "eatable_item.h"
 #include "xrmessages.h"
 #include "net_utils.h"
+#include "physic_item.h"
 
 ///////////////////////////////////////////
 // CEatableItem class 
@@ -23,10 +24,20 @@ CEatableItem::CEatableItem()
 	m_fRadiationInfluence = 0;
 
 	m_iPortionsNum = -1;
+
+	m_physic_item	= 0;
 }
+
 CEatableItem::~CEatableItem()
 {
 }
+
+DLL_Pure *CEatableItem::_construct	()
+{
+	m_physic_item	= smart_cast<CPhysicItem*>(this);
+	return			(inherited::_construct());
+}
+
 void CEatableItem::Load(LPCSTR section)
 {
 	inherited::Load(section);
@@ -56,21 +67,21 @@ void CEatableItem::OnH_A_Independent()
 {
 	if(!Useful()) {
 		NET_Packet		P;
-		u_EventGen		(P,GE_DESTROY,ID());
+		object().u_EventGen		(P,GE_DESTROY,object().ID());
 		
 		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
-		if (Local())	u_EventSend	(P);
+		if (object().Local())	object().u_EventSend	(P);
 	}
-	inherited::OnH_A_Independent();
 }
 
 void CEatableItem::OnH_B_Independent()
 {
 	if(!Useful()) 
 	{
-		setVisible(false);
-		setEnabled(false);
-		m_ready_to_destroy	= true;
+		object().setVisible(false);
+		object().setEnabled(false);
+		if (m_physic_item)
+			m_physic_item->m_ready_to_destroy	= true;
 	}
 	inherited::OnH_B_Independent();
 }

@@ -124,7 +124,7 @@ void CStalkerAnimationManager::update						()
 		if (!object().inventory().ActiveItem())
 			Msg				("no active item");
 		else
-			Msg				("active item [%s][%s]",*object().inventory().ActiveItem()->cName(),*object().inventory().ActiveItem()->cNameSect());
+			Msg				("active item [%s][%s]",*object().inventory().ActiveItem()->object().cName(),*object().inventory().ActiveItem()->object().cNameSect());
 		
 		if (m_weapon) {
 			Msg				("active item is weapon");

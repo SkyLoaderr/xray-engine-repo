@@ -27,7 +27,7 @@
 
 IC	bool CAI_Stalker::CTradeItem::operator<	(const CTradeItem &trade_item) const
 {
-	return			(m_item->ID() < trade_item.m_item->ID());
+	return			(m_item->object().ID() < trade_item.m_item->object().ID());
 }
 
 bool CAI_Stalker::task_completed			(const CALifeTask *_task)
@@ -130,7 +130,7 @@ u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner,
 		if (!(*I)->useful_for_NPC())
 			continue;
 
-		if (CLSID_DEVICE_PDA == (*I)->CLS_ID) {
+		if (CLSID_DEVICE_PDA == (*I)->object().CLS_ID) {
 			CPda				*pda = smart_cast<CPda*>(*I);
 			VERIFY				(pda);
 			if (pda->GetOriginalOwnerID() == old_owner->ID())
@@ -160,12 +160,12 @@ void CAI_Stalker::transfer_item						(CInventoryItem *item, CGameObject *old_own
 	NET_Packet			P;
 	CGameObject			*O = old_owner;
 	O->u_EventGen		(P,GE_TRADE_SELL,O->ID());
-	P.w_u16				(u16(item->ID()));
+	P.w_u16				(u16(item->object().ID()));
 	O->u_EventSend		(P);
 
 	O					= new_owner;
 	O->u_EventGen		(P,GE_TRADE_BUY,O->ID());
-	P.w_u16				(u16(item->ID()));
+	P.w_u16				(u16(item->object().ID()));
 	O->u_EventSend		(P);
 }
 
@@ -230,7 +230,7 @@ void CAI_Stalker::attach_available_ammo	(CWeapon *weapon)
 			std::find(
 				weapon->m_ammoTypes.begin(),
 				weapon->m_ammoTypes.end(),
-				(*I).m_item->cNameSect()
+				(*I).m_item->object().cNameSect()
 			) == 
 			weapon->m_ammoTypes.end()
 		)
@@ -256,7 +256,7 @@ void CAI_Stalker::choose_weapon						(ALife::EWeaponPriorityType weapon_priority
 		if (m_total_money < (*I).m_item->Cost())
 			continue;
 
-		ai().ef_storage().non_alife().member_item() = (*I).m_item;
+		ai().ef_storage().non_alife().member_item() = &(*I).m_item->object();
 		int						j = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					current_value = -1.f;
 		switch (weapon_priority_type) {

@@ -285,14 +285,6 @@ public:
 	virtual void			play_effect_sound		() {}
 	
 
-	// предотвращение двойного вызова методов
-	u32						m_dwFrameLoad;
-	u32						m_dwFrameReload;
-	u32						m_dwFrameReinit;
-	u32						m_dwFrameSpawn;
-	u32						m_dwFrameDestroy;
-	u32						m_dwFrameClient;
-
 	u16						m_default_bone_part;
 	
 	bool					b_velocity_reset;

@@ -5,19 +5,16 @@
 
 #pragma once
 
-#include "inventory_item.h"
-#include "HudSound.h"
-
-
+class CPhysicItem;
 class CWeaponHUD;
+class NET_Packet;
+struct HUD_SOUND;
 
-class CHudItem: virtual public CInventoryItem
-{
-private:
-	typedef CInventoryItem inherited;
+class CHudItem {
 protected: //чтоб нельзя было вызвать на прямую
 	CHudItem(void);
 	virtual ~CHudItem(void);
+	virtual DLL_Pure*_construct			();
 public:
 	virtual void	Load		(LPCSTR section);
 	virtual CHudItem*cast_hud_item		()	{return this;}
@@ -120,4 +117,23 @@ protected:
 	u32				m_animation_slot;
 public:
 	IC		u32		animation_slot			()	{	return m_animation_slot;}
+
+private:
+	CPhysicItem		*m_object;
+	CInventoryItem	*m_item;
+
+public:
+	IC		CPhysicItem	&object	() const
+	{
+		VERIFY		(m_object);
+		return		(*m_object);
+	}
+
+	IC		CInventoryItem	&item	() const
+	{
+		VERIFY		(m_item);
+		return		(*m_item);
+	}
+
+	virtual void	on_renderable_Render	() = 0;
 };

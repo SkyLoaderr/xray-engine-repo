@@ -1,11 +1,10 @@
 #pragma once
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 #include "hit_immunity.h"
 
-class CArtefact : public CInventoryItem
-{
+class CArtefact : public CInventoryItemObject {
 private:
-	typedef	CInventoryItem	inherited;
+	typedef	CInventoryItemObject	inherited;
 public:
 	CArtefact(void);
 	virtual ~CArtefact(void);

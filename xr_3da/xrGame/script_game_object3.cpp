@@ -163,7 +163,7 @@ CScriptGameObject *CScriptGameObject::GetCurrentEquipment() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	CGameObject		*current_equipment = l_tpStalker->GetCurrentEquipment();
+	CGameObject		*current_equipment = l_tpStalker->GetCurrentEquipment() ? &l_tpStalker->GetCurrentEquipment()->object() : 0;
 	return			(current_equipment ? current_equipment->lua_game_object() : 0);
 }
 
@@ -174,7 +174,7 @@ CScriptGameObject *CScriptGameObject::GetFood() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	CGameObject		*food = l_tpStalker->GetFood();
+	CGameObject		*food = l_tpStalker->GetFood() ? &l_tpStalker->GetFood()->object() : 0;
 	return			(food ? food->lua_game_object() : 0);
 }
 
@@ -185,7 +185,7 @@ CScriptGameObject *CScriptGameObject::GetMedikit() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
-	CGameObject		*medikit = l_tpStalker->GetMedikit();
+	CGameObject		*medikit = l_tpStalker->GetMedikit() ? &l_tpStalker->GetMedikit()->object() : 0;
 	return			(medikit ? medikit->lua_game_object() : 0);
 }
 
@@ -542,7 +542,7 @@ CScriptGameObject	*CScriptGameObject::GetActiveItem()
 	CInventoryOwner		*l_tpInventoryOwner = smart_cast<CInventoryOwner*>(&object());
 	if (l_tpInventoryOwner)
 		if (l_tpInventoryOwner->inventory().ActiveItem())
-			return		(l_tpInventoryOwner->inventory().ActiveItem()->lua_game_object());
+			return		(l_tpInventoryOwner->inventory().ActiveItem()->object().lua_game_object());
 		else
 			return		(0);
 	else {

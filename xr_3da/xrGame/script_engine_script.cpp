@@ -23,6 +23,16 @@ void LuaLog(LPCSTR caMessage)
 #endif
 }
 
+void ErrorLog(LPCSTR caMessage)
+{
+	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%s",caMessage);
+#ifdef USE_DEBUGGER
+	if( ai().script_engine().debugger() ){
+		ai().script_engine().debugger()->Write(caMessage);
+	}
+#endif
+}
+
 void LoadScriptModule(LPCSTR script_name)
 {
 	ai().script_engine().add_file(script_name);
@@ -85,6 +95,7 @@ LPCSTR user_name()
 void CScriptEngine::script_register(lua_State *L)
 {
 	function	(L,	"log",							LuaLog);
+	function	(L,	"error_log",					ErrorLog);
 	function	(L,	"flush",						FlushLogs);
 	function	(L,	"module",						LoadScriptModule);
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);

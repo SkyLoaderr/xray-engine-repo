@@ -16,8 +16,12 @@ CExplosiveRocket::~CExplosiveRocket()
 {
 }
 
-
-
+DLL_Pure *CExplosiveRocket::_construct	()
+{
+	CCustomRocket::_construct	();
+	CInventoryItem::_construct	();
+	return						(this);
+}
 
 void CExplosiveRocket::Load(LPCSTR section) 
 {
@@ -51,13 +55,12 @@ void CExplosiveRocket::net_Destroy()
 void CExplosiveRocket::OnH_A_Independent() 
 {
 	inherited::OnH_A_Independent();
-	CInventoryItem::OnH_A_Independent();
 }
 
 void CExplosiveRocket::OnH_B_Independent() 
 {
-	inherited::OnH_B_Independent();
 	CInventoryItem::OnH_B_Independent();
+	inherited::OnH_B_Independent();
 }
 
 void CExplosiveRocket::UpdateCL() 
@@ -126,6 +129,11 @@ void CExplosiveRocket::reload					(LPCSTR section)
 void CExplosiveRocket::activate_physic_shell	()
 {
 	inherited::activate_physic_shell();
+}
+
+void CExplosiveRocket::on_activate_physic_shell	()
+{
+	CCustomRocket::activate_physic_shell();
 }
 
 void CExplosiveRocket::setup_physic_shell		()

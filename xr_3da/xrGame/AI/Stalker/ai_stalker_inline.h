@@ -62,3 +62,12 @@ IC	CStalkerMovementManager	&CAI_Stalker::movement	() const
 	VERIFY			(m_movement_manager);
 	return			(*m_movement_manager);
 }
+
+IC	bool CAI_Stalker::frame_check					(u32 &frame)
+{
+	if (Device.dwFrame == frame)
+		return		(false);
+
+	frame			= Device.dwFrame;
+	return			(true);
+}

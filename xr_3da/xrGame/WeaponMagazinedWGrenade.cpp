@@ -411,7 +411,7 @@ bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
 	if(pGrenadeLauncher &&
 	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
-	   !xr_strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sGrenadeLauncherName, pIItem->object().cNameSect()))
        return true;
 	else
 		return inherited::CanAttach(pIItem);
@@ -434,7 +434,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 	if(pGrenadeLauncher &&
 	   CSE_ALifeItemWeapon::eAddonAttachable == m_eGrenadeLauncherStatus &&
 	   0 == (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) &&
-	   !xr_strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sGrenadeLauncherName, pIItem->object().cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
 
@@ -445,9 +445,9 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		if (OnServer()) 
 		{
 			NET_Packet P;
-			u_EventGen(P,GE_DESTROY,pIItem->ID());
+			u_EventGen(P,GE_DESTROY,pIItem->object().ID());
 			//		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-			P.w_u16(u16(pIItem->ID()));
+			P.w_u16(u16(pIItem->object().ID()));
 			u_EventSend(P);
 		};
 
@@ -472,7 +472,7 @@ bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 		}
 
 		UpdateAddonsVisibility();
-		return CInventoryItem::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name);
 	}
 	else
 		return inherited::Detach(item_section_name);;

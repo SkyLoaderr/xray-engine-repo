@@ -3,6 +3,7 @@
 #pragma once
 
 #include "weapon.h"
+#include "hudsound.h"
 #include "ai_sounds.h"
 
 class ENGINE_API CMotionDef;

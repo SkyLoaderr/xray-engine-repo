@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../feel_touch.h"
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
 #include "InfoPortionDefs.h"
 #include "character_info_defs.h"
@@ -24,10 +24,10 @@ class CPda;
 DEF_LIST (PDA_LIST, CPda*);
 
 class CPda :
-	public CInventoryItem,
+	public CInventoryItemObject,
 	public Feel::Touch
 {
-typedef	CInventoryItem	inherited;
+	typedef	CInventoryItemObject inherited;
 public:
 	CPda(void);
 	virtual ~CPda(void);

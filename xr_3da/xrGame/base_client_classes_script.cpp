@@ -144,7 +144,8 @@ void CObjectScript::script_register		(lua_State *L)
 //			.def(constructor<>())
 
 //		,class_<CAI_Stalker,CCustomMonster>("CAI_Stalker")
-//			.def(constructor<>())
+		,class_<CAI_Stalker,CGameObject>("CAI_Stalker")
+			.def(constructor<>())
 	];
 }
 

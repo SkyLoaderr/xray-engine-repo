@@ -6,23 +6,21 @@
 
 #pragma once
 
-#include "eatable_item.h"
+#include "eatable_item_object.h"
 
-class CAntirad: public CEatableItem {
+class CAntirad: public CEatableItemObject {
 private:
-    typedef	CEatableItem inherited;
-public:
-	CAntirad(void);
-	virtual ~CAntirad(void);
+    typedef	CEatableItemObject inherited;
 
+public:
+				 CAntirad			();
+	virtual		 ~CAntirad			();
 	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 	virtual void Load				(LPCSTR section);
 	virtual void net_Destroy		();
 	virtual void shedule_Update		(u32 dt);
 	virtual void UpdateCL			();
 	virtual void renderable_Render	();
-
 	virtual void OnH_A_Chield		();
 	virtual void OnH_B_Independent	();
-
 };

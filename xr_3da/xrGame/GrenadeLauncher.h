@@ -4,12 +4,11 @@
 ///////////////////////////////////////////////////////////////
 
 #pragma once
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
-class CGrenadeLauncher : public CInventoryItem
-{
+class CGrenadeLauncher : public CInventoryItemObject {
 private:
-	typedef CInventoryItem inherited;
+	typedef CInventoryItemObject inherited;
 public:
 	CGrenadeLauncher (void);
 	virtual ~CGrenadeLauncher(void);

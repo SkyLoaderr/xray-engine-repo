@@ -62,8 +62,9 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 	m_hit_direction.normalize();
 	m_tHitPosition = who->Position();
 	
-	// Play hit-ref_sound
-	sound().play			(eRatSoundInjuring);
+	// Play hit sound
+	if (!AlreadyDie())
+		sound().play		(eRatSoundInjuring);
 }
 
 bool CAI_Rat::useful		(const CGameObject *object) const

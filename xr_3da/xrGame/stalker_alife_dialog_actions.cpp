@@ -48,7 +48,7 @@ void CStalkerActionGetReadyToDialog::initialize	()
 	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
 	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
 
-	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		object().CObjectHandler::set_goal		(eObjectActionStrapped,object().best_weapon());
 	else
 		object().CObjectHandler::set_goal		(eObjectActionIdle);
@@ -97,7 +97,7 @@ void CStalkerActionHello::initialize	()
 	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
 	object().body_action			(eBodyActionHello);
 	
-	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
 	else
 		object().CObjectHandler::set_goal	(eObjectActionIdle);

@@ -272,7 +272,7 @@ void CTrade::SellItem(int id)
 				NET_Packet				P;
 				CGameObject				*O = smart_cast<CGameObject *>(pThis.inv_owner);
 				O->u_EventGen			(P,GE_TRADE_SELL,O->ID());
-				P.w_u16					(u16(l_pIItem->ID()));
+				P.w_u16					(u16(l_pIItem->object().ID()));
 				O->u_EventSend			(P);
 
 				// добавить себе денег
@@ -281,7 +281,7 @@ void CTrade::SellItem(int id)
 				// взять у партнера
 				O						= smart_cast<CGameObject *>(pPartner.inv_owner);
 				O->u_EventGen			(P,GE_TRADE_BUY,O->ID());
-				P.w_u16					(u16(l_pIItem->ID()));
+				P.w_u16					(u16(l_pIItem->object().ID()));
 				O->u_EventSend			(P);
 
 				// уменьшить денег у партнера
@@ -289,8 +289,8 @@ void CTrade::SellItem(int id)
 #ifdef DEBUG
 				Msg("--TRADE:: [%s]: Ok, item sold!",*pThis.base->cName());
 #endif
-				if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnTradeAction(l_pIItem, true);
-				else if (pPartner.type == TT_TRADER) smart_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(l_pIItem, false);
+				if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnTradeAction(&l_pIItem->object(), true);
+				else if (pPartner.type == TT_TRADER) smart_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(&l_pIItem->object(), false);
 			}
 			break;
 		}
@@ -313,7 +313,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	NET_Packet				P;
 	CGameObject				*O = smart_cast<CGameObject *>(pThis.inv_owner);
 	O->u_EventGen			(P,GE_TRADE_SELL,O->ID());
-	P.w_u16					(pItem->ID());
+	P.w_u16					(pItem->object().ID());
 	O->u_EventSend			(P);
 
 	// добавить себе денег
@@ -322,7 +322,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	// взять у партнера
 	O						= smart_cast<CGameObject *>(pPartner.inv_owner);
 	O->u_EventGen			(P,GE_TRADE_BUY,O->ID());
-	P.w_u16					(pItem->ID());
+	P.w_u16					(pItem->object().ID());
 	O->u_EventSend			(P);
 
 	// уменьшить денег у партнера
@@ -332,12 +332,12 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	if (pThis.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pThis.base);
-		pTrader->OnTradeAction(pItem, true);
+		pTrader->OnTradeAction(&pItem->object(), true);
 	}
 	else if (pPartner.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pPartner.base);
-		pTrader->OnTradeAction(pItem, false);
+		pTrader->OnTradeAction(&pItem->object(), false);
 		CArtefact* pArtefact= smart_cast<CArtefact*>(pItem);
 		if(pArtefact)
 			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtefact(pArtefact);

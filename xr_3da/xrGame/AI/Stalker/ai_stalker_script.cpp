@@ -147,7 +147,7 @@ bool CAI_Stalker::bfAssignObject(CScriptEntityAction *tpEntityAction)
 		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
 	}
 
-	if (!l_tpInventoryItem->H_Parent())
+	if (!l_tpInventoryItem->object().H_Parent())
 		return			(true);
 
 	CWeapon				*l_tpWeapon				= smart_cast<CWeapon*>(inventory().ActiveItem());
@@ -218,7 +218,7 @@ bool CAI_Stalker::bfAssignObject(CScriptEntityAction *tpEntityAction)
 			if (!l_tpWeapon)
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			CObjectHandler::set_goal	(eObjectActionReload1,l_tpInventoryItem);
-			if (inventory().ActiveItem()->ID() == l_tObjectAction.m_tpObject->ID()) {
+			if (inventory().ActiveItem()->object().ID() == l_tObjectAction.m_tpObject->ID()) {
 //				inventory().Action(kWPN_FIRE,	CMD_STOP);
 				if (CWeapon::eReload != l_tpWeapon->STATE) {
 //					inventory().Action(kWPN_RELOAD,	CMD_START);

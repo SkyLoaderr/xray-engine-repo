@@ -137,10 +137,10 @@ void game_cl_Deathmatch::SetBuyMenuItems		()
 void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 {
 	if (!pItem || !pPresetItems) return;
-	if (!pItem || pItem->getDestroy() || pItem->m_drop) return;
+	if (!pItem || pItem->object().getDestroy() || pItem->m_drop) return;
 
 	u8 SlotID, ItemID;
-	pCurBuyMenu->GetWeaponIndexByName(*pItem->cNameSect(), SlotID, ItemID);
+	pCurBuyMenu->GetWeaponIndexByName(*pItem->object().cNameSect(), SlotID, ItemID);
 	if (SlotID == 0xff || ItemID == 0xff) return;
 	//-----------------------------------------------------
 	pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);

@@ -43,13 +43,13 @@ void CGrenade::Load(LPCSTR section)
 BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	m_dwGrenadeIndependencyTime = 0;
-	return (inherited::net_Spawn(DC)/* && CInventoryItem::net_Spawn(DC)*/);
+	return (inherited::net_Spawn(DC)/* && CInventoryItemObject::net_Spawn(DC)*/);
 }
 
 void CGrenade::net_Destroy() 
 {
 	inherited::net_Destroy	();
-	//CInventoryItem::net_Destroy();
+	//CInventoryItemObject::net_Destroy();
 	CExplosive::net_Destroy();
 }
 
@@ -342,13 +342,13 @@ void CGrenade::PH_A_CrPr			()
 void CGrenade::reinit				()
 {
 	inherited::reinit			();
-	//CInventoryItem::reinit			();
+	//CInventoryItemObject::reinit			();
 }
 
 void CGrenade::reload					(LPCSTR section)
 {
 	inherited::reload			(section);
-	//CInventoryItem::reload			(section);
+	//CInventoryItemObject::reload			(section);
 }
 
 void CGrenade::activate_physic_shell	()

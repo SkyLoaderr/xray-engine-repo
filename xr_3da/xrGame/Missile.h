@@ -1,6 +1,6 @@
 #pragma once
-#include "HudItem.h"
-#include "Level.h"
+#include "hud_item_object.h"
+#include "HudSound.h"
 
 class CWeaponHUD;
 
@@ -15,9 +15,9 @@ class CWeaponHUD;
 #define MS_HIDING	8
 #define MS_PLAYING	9
 
-class CMissile : public CHudItem
+class CMissile : public CHudItemObject
 {
-	typedef CHudItem inherited;
+	typedef CHudItemObject inherited;
 public:
 			CMissile	(void);
 	virtual ~CMissile	(void);
@@ -118,6 +118,6 @@ public:
 	virtual void	create_physic_shell		();
 	IC		void	set_destroy_time		(u32 delta_destroy_time)
 	{
-		m_dwDestroyTime		= delta_destroy_time + Level().timeServer();
+		m_dwDestroyTime		= delta_destroy_time + Device.dwTimeGlobal;
 	}
 };

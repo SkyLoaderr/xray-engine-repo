@@ -4,12 +4,11 @@
 ///////////////////////////////////////////////////////////////
 
 #pragma once
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
-class CScope : public CInventoryItem
-{
+class CScope : public CInventoryItemObject {
 private:
-	typedef CInventoryItem inherited;
+	typedef CInventoryItemObject inherited;
 public:
 			CScope ();
 	virtual ~CScope();

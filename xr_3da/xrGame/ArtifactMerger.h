@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 #include "Artifact.h"
 #include "MercuryBall.h"
 #include "GraviArtifact.h"
@@ -20,9 +20,8 @@ DEF_LIST (ARTIFACT_LIST, CArtefact*);
 
 // void SetArtefactMergeFunctor(const luabind::functor<void> &artifactMergeFunctor);
 
-class CArtefactMerger : public CInventoryItem
-{
-typedef	CInventoryItem	inherited;
+class CArtefactMerger : public CInventoryItemObject {
+	typedef	CInventoryItemObject	inherited;
 public:
 	CArtefactMerger(void);
 	virtual ~CArtefactMerger(void);

@@ -96,7 +96,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 #endif
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
-		P.w_u16			(u16(I->ID()));
+		P.w_u16			(u16(I->object().ID()));
 		u_EventSend		(P);
 	}
 }

@@ -325,7 +325,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	VERIFY(pIItem);
 	
 #ifdef _DEBUG
-	Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->cName(), pIItem->GetSlot());
+	Msg("%s put item %s in inventory slot %d",m_pOwner->Name(), *pIItem->object().cName(), pIItem->GetSlot());
 #endif
 		
 	if (GameID() != GAME_SINGLE)
@@ -336,7 +336,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 	if(!CanPutInSlot(pIItem)) 
 	{
 #ifdef _DEBUG
-		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->cName(), pIItem->GetSlot());
+		Msg("there is item %s in slot %d", *m_slots[pIItem->GetSlot()].m_pIItem->object().cName(), pIItem->GetSlot());
 #endif
 
 		return false;
@@ -641,12 +641,12 @@ void CInventory::Update()
 			if(pIItem->m_drop)
 			{
 				pIItem->m_drop = false;
-				if(pIItem->H_Parent())	{
+				if(pIItem->object().H_Parent())	{
 					NET_Packet P;
-					pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
-										  pIItem->H_Parent()->ID());
-					P.w_u16(u16(pIItem->ID()));
-					if (OnServer()) pIItem->u_EventSend(P);
+					pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
+										  pIItem->object().H_Parent()->ID());
+					P.w_u16(u16(pIItem->object().ID()));
+					if (OnServer()) pIItem->object().u_EventSend(P);
 				}
 				else 
 					drop_tasks.push_back(pIItem);
@@ -662,20 +662,20 @@ void CInventory::Update()
 		if(pIItem && pIItem->m_drop)	{
 			pIItem->m_drop = false;			 
 			
-			if(pIItem->H_Parent())
+			if(pIItem->object().H_Parent())
 			{
 				NET_Packet P;
-				pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
-									pIItem->H_Parent()->ID());
-				P.w_u16(u16(pIItem->ID()));
-				if (OnServer()) pIItem->u_EventSend(P);
+				pIItem->object().u_EventGen(P, GE_OWNERSHIP_REJECT, 
+									pIItem->object().H_Parent()->ID());
+				P.w_u16(u16(pIItem->object().ID()));
+				if (OnServer()) pIItem->object().u_EventSend(P);
 			}
 			else
 				drop_tasks.push_back	(pIItem);
 		}
 	}
 	while	(drop_tasks.size())	{
-		drop_count			= Drop(drop_tasks.back()) ? drop_count + 1 : drop_count;
+		drop_count			= Drop(&drop_tasks.back()->object()) ? drop_count + 1 : drop_count;
 		drop_tasks.pop_back	();
 	}
 
@@ -695,8 +695,8 @@ PIItem CInventory::Same(const PIItem pIItem, bool bSearchRuck) const
 		const PIItem l_pIItem = *it;
 		
 		if((l_pIItem != pIItem) && 
-				!xr_strcmp(l_pIItem->cNameSect(), 
-				pIItem->cNameSect())) 
+				!xr_strcmp(l_pIItem->object().cNameSect(), 
+				pIItem->object().cNameSect())) 
 			return l_pIItem;
 	}
 	return NULL;
@@ -726,7 +726,7 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck) const
 	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(!xr_strcmp(pIItem->cNameSect(), name) && 
+		if(!xr_strcmp(pIItem->object().cNameSect(), name) && 
 								pIItem->Useful()) 
 				return pIItem;
 	}
@@ -740,7 +740,7 @@ PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->CLS_ID == cls_id && 
+		if(pIItem->object().CLS_ID == cls_id && 
 								pIItem->Useful()) 
 				return pIItem;
 	}
@@ -754,7 +754,7 @@ PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 	for(TIItemList::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->ID() == id) 
+		if(pIItem->object().ID() == id) 
 			return pIItem;
 	}
 	return NULL;
@@ -767,7 +767,7 @@ PIItem CInventory::item(CLASS_ID cls_id) const
 	for(TIItemSet::const_iterator it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->CLS_ID == cls_id && 
+		if(pIItem->object().CLS_ID == cls_id && 
 			pIItem->Useful()) 
 			return pIItem;
 	}
@@ -799,7 +799,7 @@ u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
-		if (!xr_strcmp(l_pIItem->cNameSect(), caSection))
+		if (!xr_strcmp(l_pIItem->object().cNameSect(), caSection))
             ++l_dwCount;
 	}
 	
@@ -812,7 +812,7 @@ bool CInventory::bfCheckForObject(ALife::_OBJECT_ID tObjectID)
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
-		if (l_pIItem->ID() == tObjectID)
+		if (l_pIItem->object().ID() == tObjectID)
 			return(true);
 	}
 	return		(false);
@@ -824,7 +824,7 @@ CInventoryItem *CInventory::get_object_by_id(ALife::_OBJECT_ID tObjectID)
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it) 
 	{
 		PIItem	l_pIItem = *l_it;
-		if (l_pIItem->ID() == tObjectID)
+		if (l_pIItem->object().ID() == tObjectID)
 			return	(l_pIItem);
 	}
 	return		(0);
@@ -881,12 +881,12 @@ bool CInventory::InSlot(PIItem pIItem) const
 }
 bool CInventory::InBelt(PIItem pIItem) const
 {
-	if(Get(pIItem->ID(), false)) return true;
+	if(Get(pIItem->object().ID(), false)) return true;
 	return false;
 }
 bool CInventory::InRuck(PIItem pIItem) const
 {
-	if(Get(pIItem->ID(), true)) return true;
+	if(Get(pIItem->object().ID(), true)) return true;
 	return false;
 }
 
@@ -952,7 +952,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemSet	&l_list = m_all;
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-		if (!xr_strcmp((*l_it)->cNameSect(),caItemName))
+		if (!xr_strcmp((*l_it)->object().cNameSect(),caItemName))
 			return	(*l_it);
 //	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*smart_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
@@ -963,12 +963,12 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 {
 	VERIFY			(inventory_item);
 	VERIFY			(m_pOwner);
-	VERIFY			(inventory_item->H_Parent() == NULL);
+	VERIFY			(inventory_item->object().H_Parent() == NULL);
 
 	if(!inventory_item->CanTake()) return false;
 
 	for(TIItemSet::const_iterator it = m_all.begin(); it != m_all.end(); it++)
-		if((*it)->ID() == inventory_item->ID()) break;
+		if((*it)->object().ID() == inventory_item->object().ID()) break;
 	VERIFY2(it == m_all.end(), "item already exists in inventory");
 
 	CActor* pActor = smart_cast<CActor*>(m_pOwner);

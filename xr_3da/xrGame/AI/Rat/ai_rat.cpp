@@ -171,10 +171,11 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 	// model
 	if (!CEatableItem::net_Spawn(DC))
 		return(FALSE);
+
 	// personal characteristics
-	movement().m_body.current.yaw				= movement().m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
-	movement().m_body.current.pitch			= movement().m_body.target.pitch	= 0;
-	movement().m_body.speed					= PI_MUL_2;
+	movement().m_body.current.yaw	= movement().m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
+	movement().m_body.current.pitch	= movement().m_body.target.pitch	= 0;
+	movement().m_body.speed			= PI_MUL_2;
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
@@ -211,22 +212,22 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 			break;
 		}
 
-		//////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
 
-		m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
+	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
 
-		m_tOldPosition.set				(Position());
-		if (g_Alive())
-			m_tSpawnPosition.set		(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
-		else
-			m_tSpawnPosition.set		(Position());
-		m_tSafeSpawnPosition.set		(m_tSpawnPosition);
-		m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
-		if (g_Alive())
-			vfAddActiveMember			(true);
+	m_tOldPosition.set				(Position());
+	if (g_Alive())
+		m_tSpawnPosition.set		(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
+	else
+		m_tSpawnPosition.set		(Position());
+	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
+	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
+	if (g_Alive())
+		vfAddActiveMember			(true);
 
-		m_bStateChanged					= true;
-		ai_location().game_vertex		(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
+	m_bStateChanged					= true;
+	ai_location().game_vertex		(ai().cross_table().vertex(ai_location().level_vertex_id()).game_vertex_id());
 
 	m_tHPB.x						= -movement().m_body.current.yaw;
 	m_tHPB.y						= -movement().m_body.current.pitch;
@@ -238,6 +239,9 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 
 	if (g_Alive())
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwLastActionTime = 0;
+
+//	if (!g_Alive())
+//		setup_physic_shell			();
 
 	return							(TRUE);
 }
@@ -385,15 +389,20 @@ void CAI_Rat::shedule_Update(u32 dt)
 
 void CAI_Rat::UpdateCL			()
 {
+	if (!m_pPhysicsShell && !g_Alive())
+		CreateSkeleton			();
+
 	if (!Useful()) {
 		inherited::UpdateCL		();
 		Exec_Look				(Device.fTimeDelta);
 	}
-	else
-		CEatableItem::UpdateCL	();
+	else {
+		if (!H_Parent() && m_pPhysicsShell && m_pPhysicsShell->bActive)
+			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
-	if(!m_pPhysicsShell && !g_Alive())
-		CreateSkeleton			();
+		CPhysicsShellHolder::UpdateCL	();
+		CEatableItem::UpdateCL			();
+	}
 }
 
 void CAI_Rat::UpdatePositionAnimation()
@@ -423,6 +432,9 @@ void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_obje
 		m_saved_hit_type		= hit_type;
 		m_saved_hit_position.set(p_in_object_space);
 	}
+	else {
+		CEatableItem::Hit		(P,dir,who,element,p_in_object_space,impulse, hit_type);
+	}
 }
 
 void CAI_Rat::feel_touch_new(CObject* O)
@@ -440,20 +452,34 @@ void CAI_Rat::OnH_A_Chield		()
 
 void CAI_Rat::OnH_B_Chield		()
 {
-	inherited::OnH_B_Chield		();
+	setVisible					(false);
+	setEnabled					(false);
+
+	if (m_pPhysicsShell)
+		m_pPhysicsShell->Deactivate	();
+
 	CEatableItem::OnH_B_Chield	();
 }
 
 void CAI_Rat::OnH_B_Independent	()
 {
-	inherited::OnH_B_Independent	();
 	CEatableItem::OnH_B_Independent	();
+	inherited::OnH_B_Independent	();
+	
+	if (!Useful())
+		return;
+
+	setVisible					(true);
+	setEnabled					(true);
+
+	if (m_pPhysicsShell)
+		activate_physic_shell	();
 }
 
 void CAI_Rat::OnH_A_Independent	()
 {
-	inherited::OnH_A_Independent	();
 	CEatableItem::OnH_A_Independent	();
+	inherited::OnH_A_Independent	();
 }
 
 bool CAI_Rat::Useful() const
@@ -525,6 +551,14 @@ void CAI_Rat::setup_physic_shell()
 void CAI_Rat::activate_physic_shell	()
 {
 	CEatableItem::activate_physic_shell();
+}
+
+void CAI_Rat::on_activate_physic_shell	()
+{
+	CObject						*object = smart_cast<CObject*>(H_Parent());
+	R_ASSERT					(object);
+	XFORM().set					(object->XFORM());
+	inherited::activate_physic_shell();
 }
 
 float CAI_Rat::get_custom_pitch_speed	(float def_speed)

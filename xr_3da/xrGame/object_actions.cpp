@@ -59,7 +59,7 @@ void CObjectActionShow::execute		()
 {
 	inherited::execute				();
 	VERIFY							(m_item);
-	if (!object().inventory().ActiveItem() || (object().inventory().ActiveItem()->ID() != m_item->ID())) {
+	if (!object().inventory().ActiveItem() || (object().inventory().ActiveItem()->object().ID() != m_item->object().ID())) {
 		CHudItem					*hud_item = smart_cast<CHudItem*>(object().inventory().ActiveItem());
 		if (!hud_item)
 			return;
@@ -327,12 +327,12 @@ CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, 
 void CObjectActionDrop::initialize		()
 {
 	inherited::initialize	();
-	if (!m_item || !m_item->H_Parent() || (m_object->ID() != m_item->H_Parent()->ID()))
+	if (!m_item || !m_item->object().H_Parent() || (m_object->ID() != m_item->object().H_Parent()->ID()))
 		return;
 
 	NET_Packet				P;
 	m_object->u_EventGen	(P,GE_OWNERSHIP_REJECT,m_object->ID());
-	P.w_u16					(u16(m_item->ID()));
+	P.w_u16					(u16(m_item->object().ID()));
 	m_object->u_EventSend	(P);
 }
 

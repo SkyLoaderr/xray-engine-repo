@@ -607,7 +607,7 @@ void CMissile::activate_physic_shell()
 void CMissile::create_physic_shell	()
 {
 	//create_box2sphere_physic_shell();
-	CInventoryItem::CreatePhysicsShell();
+	CInventoryItemObject::CreatePhysicsShell();
 }
 
 void CMissile::setup_physic_shell	()

@@ -54,7 +54,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	if	(	object().memory().enemy().selected() && 
 			object().inventory().ActiveItem() && 
 			object().best_weapon() && 
-			(object().inventory().ActiveItem()->ID() == object().best_weapon()->ID())
+			(object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID())
 		)
 		object().CObjectHandler::set_goal	(eObjectActionIdle,object().best_weapon());
 	else

@@ -1,5 +1,5 @@
 #pragma once
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
 class CCartridge 
 {
@@ -18,9 +18,8 @@ public:
 	u16		bullet_material_idx;
 };
 
-class CWeaponAmmo :	public CInventoryItem
-{
-	typedef CInventoryItem		inherited;
+class CWeaponAmmo :	public CInventoryItemObject {
+	typedef CInventoryItemObject		inherited;
 public:
 	CWeaponAmmo(void);
 	virtual ~CWeaponAmmo(void);

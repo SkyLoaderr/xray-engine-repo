@@ -275,7 +275,7 @@ void CWeaponKnife::Fire2End ()
 
 const char* CWeaponKnife::Name() 
 {
-	return CInventoryItem::Name();
+	return CInventoryItemObject::Name();
 }
 
 bool CWeaponKnife::Action(s32 cmd, u32 flags) 

@@ -110,10 +110,10 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
 	TIItemSet::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
-		if ((*I)->getDestroy())
+		if ((*I)->object().getDestroy())
 			continue;
 		if ((*I)->can_kill()) {
-			ai().ef_storage().non_alife().member_item()	= *I;
+			ai().ef_storage().non_alife().member_item()	= &(*I)->object();
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 			if (value > best_value) {
 				best_value		= value;
@@ -132,6 +132,11 @@ void CObjectHandler::update		()
 void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object, u32 queue_size, u32 queue_interval)
 {
 	planner().set_goal(object_action,game_object,queue_size,queue_interval);
+}
+
+void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CInventoryItem *inventory_item, u32 queue_size, u32 queue_interval)
+{
+	set_goal(object_action,inventory_item ? &inventory_item->object() : 0,queue_size,queue_interval);
 }
 
 bool CObjectHandler::goal_reached	()

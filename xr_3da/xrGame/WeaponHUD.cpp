@@ -46,7 +46,7 @@ SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 	else 
 		vFirePoint2 = vFirePoint;
 
-	if(pHudItem && pSettings->line_exist(pHudItem->cNameSect(), "shell_particles")) 
+	if(pHudItem && pSettings->line_exist(pHudItem->object().cNameSect(), "shell_particles")) 
 	{
 		vShellPoint = pSettings->r_fvector3	(section,"shell_point");
 	}

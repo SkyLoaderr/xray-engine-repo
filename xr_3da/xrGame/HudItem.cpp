@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "HudItem.h"
+#include "physic_item.h"
 #include "WeaponHUD.h"
 #include "actor.h"
 #include "actoreffector.h"
@@ -12,12 +13,7 @@
 #include "xrmessages.h"
 #include "level.h"
 #include "inventory.h"
-
 #include "../CameraBase.h"
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -36,7 +32,6 @@ static float			m_fInertPitchRestoreSpeed;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-
 CHudItem::CHudItem(void)
 {
 	m_pHUD = NULL;
@@ -47,16 +42,25 @@ CHudItem::CHudItem(void)
 	m_bInertionEnable  = true;
 	m_bInertionOn = true;
 }
+
 CHudItem::~CHudItem(void)
 {
 	xr_delete			(m_pHUD);
 }
 
+DLL_Pure *CHudItem::_construct	()
+{
+	m_object			= smart_cast<CPhysicItem*>(this);
+	VERIFY				(m_object);
+
+	m_item				= smart_cast<CInventoryItem*>(this);
+	VERIFY				(m_item);
+
+	return				(m_object);
+}
 
 void CHudItem::Load(LPCSTR section)
 {
-	inherited::Load		(section);
-
 	//загрузить hud, если он нужен
 	if(pSettings->line_exist(section,"hud"))
 		hud_sect = pSettings->r_string		(section,"hud");
@@ -70,7 +74,7 @@ void CHudItem::Load(LPCSTR section)
 	{
 		m_pHUD = NULL;
 		//если hud не задан, но задан слот, то ошибка
-		R_ASSERT2(m_slot == NO_ACTIVE_SLOT, "active slot is set, but hud for food item is not available");
+		R_ASSERT2(item().GetSlot() == NO_ACTIVE_SLOT, "active slot is set, but hud for food item is not available");
 	}
 
 	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
@@ -83,21 +87,18 @@ void CHudItem::net_Destroy()
 
 	hud_mode = FALSE;
 	m_dwStateTime = 0;
-
-	inherited::net_Destroy();
 }
 
 
 void CHudItem::PlaySound(HUD_SOUND& hud_snd,
 						 const Fvector& position)
 {
-	HUD_SOUND::PlaySound(hud_snd, position, H_Root(), !!hud_mode);
+	HUD_SOUND::PlaySound(hud_snd, position, object().H_Root(), !!hud_mode);
 }
 
 BOOL  CHudItem::net_Spawn(CSE_Abstract* DC) 
 {
-	BOOL l_res = inherited::net_Spawn(DC);
-	return l_res;
+	return TRUE;
 }
 
 
@@ -105,7 +106,7 @@ void CHudItem::renderable_Render()
 {
 	UpdateXForm	();
 	BOOL		_hud_render		= ::Render->get_HUD() && hud_mode;
-	if(_hud_render && !m_pHUD->IsHidden() && !IsHidden())
+	if(_hud_render && !m_pHUD->IsHidden() && !item().IsHidden())
 	{ 
 		// HUD render
 		if(m_bRenderHud)
@@ -115,18 +116,17 @@ void CHudItem::renderable_Render()
 		}
 	}
 	else
-		if(!H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !IsHidden()))
+		if(!object().H_Parent() || (!_hud_render && m_pHUD && !m_pHUD->IsHidden() && !item().IsHidden()))
 		{
-			inherited::renderable_Render();
+			on_renderable_Render();
 		}
 }
 
 bool CHudItem::Action(s32 cmd, u32 flags) 
 {
-	if(inherited::Action(cmd, flags)) return true;
-
 	return false;
 }
+
 void CHudItem::OnAnimationEnd()
 {
 }
@@ -134,20 +134,18 @@ void CHudItem::OnAnimationEnd()
 void CHudItem::SwitchState(u32 S)
 {
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
-	if (Local() && !getDestroy()/* && (S!=NEXT_STATE)*/)	
+	if (object().Local() && !object().getDestroy()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
 		NET_Packet		P;
-		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
+		object().u_EventGen		(P,GE_WPN_STATE_CHANGE,object().ID());
 		P.w_u8			(u8(S));
-		u_EventSend		(P);
+		object().u_EventSend		(P);
 	}
 }
 
 void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 {
-	inherited::OnEvent		(P,type);
-	
 	switch (type)
 	{
 	case GE_WPN_STATE_CHANGE:
@@ -164,7 +162,7 @@ void CHudItem::OnStateSwitch	(u32 S)
 {
 	m_dwStateTime = 0;
 	STATE = S;
-	if(Remote()) NEXT_STATE = S;
+	if(object().Remote()) NEXT_STATE = S;
 }
 
 
@@ -188,11 +186,11 @@ void CHudItem::UpdateHudPosition	()
 {
 	if (m_pHUD && hud_mode)
 	{
-		if(IsHidden()) hud_mode = false;
+		if(item().IsHidden()) hud_mode = false;
 
 		Fmatrix							trans;
 
-		CActor* pActor = smart_cast<CActor*>(H_Parent());
+		CActor* pActor = smart_cast<CActor*>(object().H_Parent());
 		if(pActor)
 		{
 			pActor->EffectorManager().affected_Matrix	(trans);
@@ -357,7 +355,6 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 
 void CHudItem::UpdateCL()
 {
-	inherited::UpdateCL();
 	m_dwStateTime += Device.dwTimeDelta;
 
 	if(m_pHUD) m_pHUD->UpdateHud();
@@ -369,20 +366,16 @@ void CHudItem::OnH_A_Chield		()
 	hud_mode = FALSE;
 	
 	if (m_pHUD) {
-		if(Level().CurrentEntity() == H_Parent() && smart_cast<CActor*>(H_Parent()))
+		if(Level().CurrentEntity() == object().H_Parent() && smart_cast<CActor*>(object().H_Parent()))
 			m_pHUD->SetCurrentEntityHud(true);
 		else
 			m_pHUD->SetCurrentEntityHud(false);
 	}
-
-	inherited::OnH_A_Chield		();
 }
 
 void CHudItem::OnH_B_Chield		()
 {
-	inherited::OnH_B_Chield		();
-
-	if (m_pInventory && m_pInventory->ActiveItem() == smart_cast<PIItem>(this))
+	if (item().m_pInventory && item().m_pInventory->ActiveItem() == smart_cast<PIItem>(this))
 		OnActiveItem ();
 	else
 		OnHiddenItem ();
@@ -395,6 +388,4 @@ void CHudItem::OnH_B_Independent	()
 		m_pHUD->SetCurrentEntityHud(false);
 	
 	StopHUDSounds();
-
-	inherited::OnH_B_Independent	();
 }

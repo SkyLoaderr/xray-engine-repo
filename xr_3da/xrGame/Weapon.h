@@ -13,7 +13,7 @@
 #include "PHShellCreator.h"
 
 #include "ShootingObject.h"
-#include "HudItem.h"
+#include "hud_item_object.h"
 
 
 // refs
@@ -23,14 +23,14 @@ class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
 class CWeaponMagazined;
 
-class CWeapon : public CHudItem,
+class CWeapon : public CHudItemObject,
 				public CShootingObject
 {
 //////////////////////////////////////////////////////////////////////////
 //  General
 //////////////////////////////////////////////////////////////////////////
 private:
-	typedef CHudItem inherited;
+	typedef CHudItemObject inherited;
 
 public:
 							CWeapon				(LPCSTR name);

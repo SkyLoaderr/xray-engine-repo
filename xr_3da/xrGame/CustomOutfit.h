@@ -6,12 +6,11 @@
 
 #pragma once
 
-#include "inventory_item.h"
+#include "inventory_item_object.h"
 
-class CCustomOutfit: public CInventoryItem
-{
+class CCustomOutfit: public CInventoryItemObject {
 private:
-    typedef	CInventoryItem inherited;
+    typedef	CInventoryItemObject inherited;
 public:
 	CCustomOutfit(void);
 	virtual ~CCustomOutfit(void);

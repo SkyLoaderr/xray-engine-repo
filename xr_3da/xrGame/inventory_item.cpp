@@ -44,12 +44,6 @@ CInventoryItem::CInventoryItem()
 	////////////////////////////////////	
 	m_name = m_nameShort = NULL;
 
-	m_dwFrameLoad		= u32(-1);
-	m_dwFrameReload		= u32(-1);
-	m_dwFrameReinit		= u32(-1);
-	m_dwFrameSpawn		= u32(-1);
-	m_dwFrameDestroy	= u32(-1);
-	m_dwFrameClient		= u32(-1);
 #ifdef DEBUG
 	LastVisPos.clear();
 #endif
@@ -66,10 +60,6 @@ CInventoryItem::~CInventoryItem()
 
 void CInventoryItem::Load(LPCSTR section) 
 {
-	if (!frame_check(m_dwFrameLoad))
-		return;
-
-	inherited::Load				(section);
 	CHitImmunity::LoadImmunities	(section);
 
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
@@ -126,9 +116,6 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 						 float impulse, 
 						 ALife::EHitType hit_type)
 {
-	inherited::Hit(P, dir, who, element, position_in_object_space, 
-		impulse, hit_type);
-
 	if(!m_bUsingCondition) return;
 
 	float hit_power = P/100.f;
@@ -218,31 +205,22 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 void CInventoryItem::OnH_B_Independent	()
 {
 	m_eItemPlace = eItemPlaceUndefined;
-	inherited::OnH_B_Independent();
 }
 
 void CInventoryItem::OnH_B_Chield		()
 {
-	inherited::OnH_B_Chield		();
 }
 
 void CInventoryItem::OnH_A_Chield		()
 {
-	inherited::OnH_A_Chield		();
 }
 
 void CInventoryItem::UpdateCL()
 {
-	if (!frame_check(m_dwFrameClient))
-		return;
-
-	inherited::UpdateCL();
 }
-
 
 void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 {
-	inherited::OnEvent(P, type);
 	switch (type)
 	{
 	case GE_ADDON_ATTACH:
@@ -252,7 +230,7 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 			CInventoryItem*	 ItemToAttach	= smart_cast<CInventoryItem*>(Level().Objects.net_Find(ItemID));
 			if (!ItemToAttach) break;
 			Attach(ItemToAttach);
-			CActor* pActor = smart_cast<CActor*>(H_Parent());
+			CActor* pActor = smart_cast<CActor*>(object().H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
 				pActor->inventory().SetPrevActiveSlot(pActor->inventory().GetActiveSlot());
@@ -265,7 +243,7 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 			string64			i_name;
 			P.r_stringZ			(i_name);
 			Detach(i_name);
-			CActor* pActor = smart_cast<CActor*>(H_Parent());
+			CActor* pActor = smart_cast<CActor*>(object().H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)
 			{
 				pActor->inventory().SetPrevActiveSlot(pActor->inventory().GetActiveSlot());
@@ -288,7 +266,7 @@ bool CInventoryItem::Detach(const char* item_section_name)
 							 smart_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT			(l_tpALifeDynamicObject);
 	
-	l_tpALifeDynamicObject->m_tNodeID = ai_location().level_vertex_id();
+	l_tpALifeDynamicObject->m_tNodeID = object().ai_location().level_vertex_id();
 		
 	// Fill
 	D->s_name			=	item_section_name;
@@ -296,9 +274,9 @@ bool CInventoryItem::Detach(const char* item_section_name)
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;
 	D->ID				=	0xffff;
-	D->ID_Parent		=	u16(this->H_Parent()->ID());
+	D->ID_Parent		=	u16(object().H_Parent()->ID());
 	D->ID_Phantom		=	0xffff;
-	D->o_Position		=	Position();
+	D->o_Position		=	object().Position();
 	D->s_flags.assign	(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
 	// Send
@@ -316,11 +294,6 @@ BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 {
 	VERIFY(!m_pInventory);
 
-	if (!frame_check(m_dwFrameSpawn))
-		return	(TRUE);
-
-	BOOL res = inherited::net_Spawn(DC);
-
 	m_bInInterpolation = false;
 	m_bInterpolate	= false;
 
@@ -332,27 +305,22 @@ BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 	}
 
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = smart_cast<CSE_ALifeInventoryItem*>(e);
-	if(!pSE_InventoryItem) return res;
+	if (!pSE_InventoryItem) return TRUE;
 
 	//!!!
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 	if (GameID() != GAME_SINGLE)
 	{
-		processing_activate();
+		object().processing_activate();
 	}
 
-	return		res;
+	return		TRUE;
 }
 
 void CInventoryItem::net_Destroy		()
 {
-	if (!frame_check(m_dwFrameDestroy))
-		return;
-
 	//инвентарь которому мы принадлежали
 	m_pInventory = NULL;
-
-	inherited::net_Destroy	();
 }
 
 void CInventoryItem::net_Import			(NET_Packet& P) 
@@ -393,9 +361,9 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 
 	if (!NET_IItem.empty()) m_bInterpolate = true;
 
-	Level().AddObject_To_Objects4CrPr(this);
-	CrPr_SetActivated(false);
-	CrPr_SetActivationStep(0);
+	Level().AddObject_To_Objects4CrPr(m_object);
+	object().CrPr_SetActivated(false);
+	object().CrPr_SetActivationStep(0);
 
 	NET_IItem.push_back			(N);
 	while (NET_IItem.size() > 2)
@@ -406,22 +374,20 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 
 void CInventoryItem::net_Export			(NET_Packet& P) 
 {	
-	
-//	inherited::net_Export(P);
 	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
 
 	///////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
-	pSyncObj = PHGetSyncItem(0);
-	if (pSyncObj && !H_Parent()) 
+	pSyncObj = object().PHGetSyncItem(0);
+	if (pSyncObj && !object().H_Parent()) 
 		pSyncObj->get_State(State);
 	else 	
-		State.position.set(Position());
+		State.position.set(object().Position());
 	///////////////////////////////////////	
-	u16 NumItems = PHGetSyncItemsNumber();
-	if (H_Parent())
+	u16 NumItems = object().PHGetSyncItemsNumber();
+	if (object().H_Parent())
 		NumItems = CSE_ALifeInventoryItem::FLAG_NO_POSITION;
 	else
 		if (GameID() == GAME_SINGLE)
@@ -451,28 +417,25 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 
 void CInventoryItem::save(NET_Packet &packet)
 {
-	inherited::save(packet);
 	packet.w_u8 ((u8)m_eItemPlace);
 }
+
 void CInventoryItem::load(IReader &packet)
 {
-	inherited::load(packet);
 	m_eItemPlace = (EItemPlace)packet.r_u8 ();
-/*	if(m_pInventory)
-		m_pInventory->Replace(this);*/
 }
 
 ///////////////////////////////////////////////
 void CInventoryItem::PH_B_CrPr		()
 {
 	//just set last update data for now
-	if (CrPr_IsActivated()) return;
-	if (CrPr_GetActivationStep() > ph_world->m_steps_num) return;
-	CrPr_SetActivated(true);
+	if (object().CrPr_IsActivated()) return;
+	if (object().CrPr_GetActivationStep() > ph_world->m_steps_num) return;
+	object().CrPr_SetActivated(true);
 
 	///////////////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
+	pSyncObj = object().PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	///////////////////////////////////////////////
 	pSyncObj->get_State(LastState);
@@ -481,7 +444,7 @@ void CInventoryItem::PH_B_CrPr		()
 
 	pSyncObj->set_State(N_I.State);
 
-	PHUnFreeze();
+	object().PHUnFreeze();
 	///////////////////////////////////////////////
 	if (Level().InterpolationDisabled())
 	{
@@ -493,10 +456,10 @@ void CInventoryItem::PH_B_CrPr		()
 void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
 {
 	//store recalculated data, then we able to restore it after small future prediction
-	if (!CrPr_IsActivated()) return;
+	if (!object().CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
+	pSyncObj = object().PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
 	pSyncObj->get_State(RecalculatedState);
@@ -504,26 +467,26 @@ void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic p
 	Fmatrix xformX;
 	pSyncObj->cv2obj_Xfrom(RecalculatedState.quaternion, RecalculatedState.position, xformX);
 
-	VERIFY2								(_valid(xformX),*cName());
+	VERIFY2								(_valid(xformX),*object().cName());
 	pSyncObj->cv2obj_Xfrom(RecalculatedState.quaternion, RecalculatedState.position, xformX);
 
 	IRecRot.set(xformX);
 	IRecPos.set(xformX.c);
-	VERIFY2								(_valid(IRecPos),*cName());
+	VERIFY2								(_valid(IRecPos),*object().cName());
 }; 
 
 #ifdef DEBUG
 void CInventoryItem::PH_Ch_CrPr			()
 {
 	//restore recalculated data and get data for interpolation	
-	if (!CrPr_IsActivated()) return;
+	if (!object().CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
+	pSyncObj = object().PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
 	pSyncObj->get_State(CheckState);
-	if (!H_Parent() && getVisible())
+	if (!object().H_Parent() && object().getVisible())
 	{
 		if (CheckState.enabled == false && RecalculatedState.enabled == true)
 		{
@@ -531,7 +494,7 @@ void CInventoryItem::PH_Ch_CrPr			()
 			pSyncObj->set_State(LastState);
 			pSyncObj->set_State(RecalculatedState);//, N_A.State.enabled);
 
-			PHUnFreeze();
+			object().PHUnFreeze();
 			///////////////////////////////////////////////////////////////////
 			ph_world->Step();
 			///////////////////////////////////////////////////////////////////
@@ -545,10 +508,10 @@ void CInventoryItem::PH_Ch_CrPr			()
 void CInventoryItem::PH_A_CrPr		()
 {
 	//restore recalculated data and get data for interpolation	
-	if (!CrPr_IsActivated()) return;
+	if (!object().CrPr_IsActivated()) return;
 	////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
+	pSyncObj = object().PHGetSyncItem(0);
 	if (!pSyncObj) return;
 	////////////////////////////////////
 	pSyncObj->get_State(PredictedState);
@@ -561,12 +524,12 @@ void CInventoryItem::PH_A_CrPr		()
 	Fmatrix xformX;
 	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformX);
 
-	VERIFY2								(_valid(xformX),*cName());
+	VERIFY2								(_valid(xformX),*object().cName());
 	pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformX);
 	
 	IEndRot.set(xformX);
 	IEndPos.set(xformX.c);
-	VERIFY2								(_valid(IEndPos),*cName());
+	VERIFY2								(_valid(IEndPos),*object().cName());
 	/////////////////////////////////////////////////////////////////////////
 	CalculateInterpolationParams();
 	///////////////////////////////////////////////////
@@ -576,13 +539,13 @@ extern	float		g_cl_lvInterp;
 
 void CInventoryItem::CalculateInterpolationParams()
 {
-	IStartPos.set(Position());
-	IStartRot.set(XFORM());
+	IStartPos.set(object().Position());
+	IStartRot.set(object().XFORM());
 
 	Fvector P0, P1, P2, P3;
 
 	CPHSynchronize* pSyncObj = NULL;
-	pSyncObj = PHGetSyncItem(0);
+	pSyncObj = object().PHGetSyncItem(0);
 	
 	Fmatrix xformX0, xformX1;	
 
@@ -688,7 +651,7 @@ void CInventoryItem::CalculateInterpolationParams()
 	/////////////////////////////////////////////////////////////////////////////
 	m_bInInterpolation = true;
 
-	if (m_pPhysicsShell) m_pPhysicsShell->NetInterpolationModeON();
+	if (object().m_pPhysicsShell) object().m_pPhysicsShell->NetInterpolationModeON();
 
 };
 
@@ -696,23 +659,23 @@ void CInventoryItem::make_Interpolation	()
 {
 	m_dwILastUpdateTime = Level().timeServer();
 	
-	if(!H_Parent() && getVisible() && m_pPhysicsShell && m_bInInterpolation) 
+	if(!object().H_Parent() && object().getVisible() && object().m_pPhysicsShell && m_bInInterpolation) 
 	{
 		u32 CurTime = Level().timeServer();
 		if (CurTime >= m_dwIEndTime) 
 		{
 			m_bInInterpolation = false;
 
-			m_pPhysicsShell->NetInterpolationModeOFF();
+			object().m_pPhysicsShell->NetInterpolationModeOFF();
 
 			CPHSynchronize* pSyncObj = NULL;
-			pSyncObj = PHGetSyncItem(0);
+			pSyncObj = object().PHGetSyncItem(0);
 			pSyncObj->set_State(PredictedState);
 			Fmatrix xformI;
 			pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformI);
-			VERIFY2								(_valid(renderable.xform),*cName());
-			XFORM().set(xformI);
-			VERIFY2								(_valid(renderable.xform),*cName());
+			VERIFY2								(_valid(object().renderable.xform),*object().cName());
+			object().XFORM().set(xformI);
+			VERIFY2								(_valid(object().renderable.xform),*object().cName());
 		}
 		else 
 		{
@@ -730,13 +693,13 @@ void CInventoryItem::make_Interpolation	()
 				IPos[k] = c*(c*(c*SCoeff[k][0]+SCoeff[k][1])+SCoeff[k][2])+SCoeff[k][3];
 			};
 
-			VERIFY2								(_valid(IPos),*cName());
+			VERIFY2								(_valid(IPos),*object().cName());
 			IRot.slerp(IStartRot, IEndRot, factor);
-			VERIFY2								(_valid(IRot),*cName());
-			XFORM().rotation(IRot);
-			VERIFY2								(_valid(renderable.xform),*cName());
-			Position().set(IPos);
-			VERIFY2								(_valid(renderable.xform),*cName());
+			VERIFY2								(_valid(IRot),*object().cName());
+			object().XFORM().rotation(IRot);
+			VERIFY2								(_valid(object().renderable.xform),*object().cName());
+			object().Position().set(IPos);
+			VERIFY2								(_valid(object().renderable.xform),*object().cName());
 		};
 	}
 	else
@@ -745,9 +708,9 @@ void CInventoryItem::make_Interpolation	()
 	};
 
 #ifdef DEBUG
-	Fvector iPos = Position();
+	Fvector iPos = object().Position();
 
-	if (!H_Parent() && getVisible()) 
+	if (!object().H_Parent() && object().getVisible()) 
 	{
 		LastVisPos.push_back(iPos);
 	};
@@ -757,25 +720,15 @@ void CInventoryItem::make_Interpolation	()
 
 void CInventoryItem::renderable_Render	()
 {
-	inherited::renderable_Render();
 }
 
 void CInventoryItem::reload		(LPCSTR section)
 {
-	if (!frame_check(m_dwFrameReload))
-		return;
-
-	inherited::reload	(section);
 }
 
 void CInventoryItem::reinit		()
 {
-	if (!frame_check(m_dwFrameReinit))
-		return;
-
 	m_pInventory		= 0;
-
-	inherited::reinit	();
 }
 
 bool CInventoryItem::can_kill			() const
@@ -805,23 +758,23 @@ bool CInventoryItem::ready_to_kill		() const
 
 void CInventoryItem::activate_physic_shell()
 {
-	CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
-	if (!E)
-	{
-		inherited::activate_physic_shell();
+	CEntityAlive*	E		= smart_cast<CEntityAlive*>(object().H_Parent());
+	if (!E) {
+		on_activate_physic_shell();
 		return;
 	};
+
 	UpdateXForm();
 
-	CPhysicsShellHolder::activate_physic_shell();
+	object().CPhysicsShellHolder::activate_physic_shell();
 }
 
 void CInventoryItem::UpdateXForm	()
 {
-	if (0==H_Parent())	return;
+	if (0==object().H_Parent())	return;
 
 	// Get access to entity and its visual
-	CEntityAlive*	E		= smart_cast<CEntityAlive*>(H_Parent());
+	CEntityAlive*	E		= smart_cast<CEntityAlive*>(object().H_Parent());
 
 	if(!E) return;
 	R_ASSERT		(E);
@@ -860,7 +813,7 @@ void CInventoryItem::UpdateXForm	()
 	}
 
 	//	UpdatePosition	(mRes);
-	Position().set(mRes.c);
+	object().Position().set(mRes.c);
 }
 
 
@@ -869,13 +822,13 @@ void CInventoryItem::UpdateXForm	()
 extern	Flags32	dbg_net_Draw_Flags;
 void CInventoryItem::OnRender()
 {
-	if (bDebug && Visual())
+	if (bDebug && object().Visual())
 	{
 		if (!(dbg_net_Draw_Flags.is_any((1<<4)))) return;
 
 		Fvector bc,bd; 
-		Visual()->vis.box.get_CD	(bc,bd);
-		Fmatrix	M = XFORM();
+		object().Visual()->vis.box.get_CD	(bc,bd);
+		Fmatrix	M = object().XFORM();
 		M.c.add (bc);
 		RCache.dbg_DrawOBB			(M,bd,color_rgba(0,0,255,255));
 /*
@@ -945,3 +898,10 @@ void CInventoryItem::OnRender()
 	};
 }
 #endif
+
+DLL_Pure *CInventoryItem::_construct	()
+{
+	m_object	= smart_cast<CPhysicsShellHolder*>(this);
+	VERIFY		(m_object);
+	return		(m_object);
+}

@@ -336,6 +336,7 @@ public:
 	virtual void				create_physic_shell		();
 	virtual void				setup_physic_shell		();
 	virtual void				activate_physic_shell	();
+	virtual void				on_activate_physic_shell();
 	virtual	Feel::Sound*		dcast_FeelSound			()			{ return this;	}
 	virtual bool				use_model_pitch			() const;
 	virtual float				get_custom_pitch_speed	(float def_speed);

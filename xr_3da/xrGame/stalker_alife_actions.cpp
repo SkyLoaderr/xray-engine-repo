@@ -104,7 +104,7 @@ void CStalkerActionNoALife::initialize	()
 	object().sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
 	
 	m_stop_weapon_handling_time		= Level().timeServer();
-	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
+	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 #else
 //	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());

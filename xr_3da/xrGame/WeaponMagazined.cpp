@@ -655,12 +655,12 @@ bool CWeaponMagazined::CanAttach(PIItem pIItem)
 	if(pScope &&
 	   m_eScopeStatus == ALife::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !xr_strcmp(*m_sScopeName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sScopeName, pIItem->object().cNameSect()))
        return true;
 	else if(pSilencer &&
 	   m_eSilencerStatus == ALife::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !xr_strcmp(*m_sSilencerName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sSilencerName, pIItem->object().cNameSect()))
        return true;
 	else
 		return inherited::CanAttach(pIItem);
@@ -690,7 +690,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	if(pScope &&
 	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
-	   !xr_strcmp(*m_sScopeName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sScopeName, pIItem->object().cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonScope;
 		result = true;
@@ -698,7 +698,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 	else if(pSilencer &&
 	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
-	   !xr_strcmp(*m_sSilencerName, pIItem->cNameSect()))
+	   !xr_strcmp(*m_sSilencerName, pIItem->object().cNameSect()))
 	{
 		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
 		result = true;
@@ -711,8 +711,8 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 			//уничтожить подсоединенную вещь из инвентаря
 			pIItem->Drop();
 			NET_Packet P;
-			u_EventGen(P,GE_DESTROY,pIItem->ID());
-			P.w_u16(u16(pIItem->ID()));
+			u_EventGen(P,GE_DESTROY,pIItem->object().ID());
+			P.w_u16(u16(pIItem->object().ID()));
 			u_EventSend(P);
 		};
 
@@ -737,7 +737,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 		UpdateAddonsVisibility();
 		InitAddons();
 
-		return CInventoryItem::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name);
 	}
 	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonAttachable &&
 	   0 != (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) &&
@@ -747,7 +747,7 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 
 		UpdateAddonsVisibility();
 		InitAddons();
-		return CInventoryItem::Detach(item_section_name);
+		return CInventoryItemObject::Detach(item_section_name);
 	}
 	else
 		return inherited::Detach(item_section_name);;

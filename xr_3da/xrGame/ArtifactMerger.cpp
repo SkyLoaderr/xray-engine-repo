@@ -169,11 +169,11 @@ template<typename A> void CArtefactMerger::DestroyArtefacts(int num_to_destroy)
 			PIItem pIItem = *it;
 			pIItem->Drop();
 			NET_Packet P;
-			CGameObject* pObject = static_cast<CGameObject*>(pIItem->H_Parent());
+			CGameObject* pObject = static_cast<CGameObject*>(pIItem->object().H_Parent());
 			R_ASSERT(pObject);
-			pObject->u_EventGen(P,GE_DESTROY,pIItem->ID());
+			pObject->u_EventGen(P,GE_DESTROY,pIItem->object().ID());
 //				Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-			P.w_u16(u16(pIItem->ID()));
+			P.w_u16(u16(pIItem->object().ID()));
 			pObject->u_EventSend(P);
 		
 			//удалить артефакт

@@ -547,7 +547,7 @@ void CActor::Die	(CObject* who)
 		{
 			if (GameID() == GAME_ARTEFACTHUNT)
 			{
-				if ((*l_it)->CLS_ID == CLSID_ARTEFACT)
+				if ((*l_it)->object().CLS_ID == CLSID_ARTEFACT)
 				{
 					(*l_it)->Drop();
 					continue;
@@ -561,7 +561,7 @@ void CActor::Die	(CObject* who)
 //			if ((*l_it)->CLS_ID == CLSID_DEVICE_PDA)
 			{
 				NET_Packet P;
-				u_EventGen(P,GE_DESTROY,(*l_it)->ID());
+				u_EventGen(P,GE_DESTROY,(*l_it)->object().ID());
 				u_EventSend(P, TRUE);
 			}
 		};
@@ -887,7 +887,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	//установить режим показа HUD для текущего активного слота
 	CHudItem* pHudItem = smart_cast<CHudItem*>(inventory().ActiveItem());	
-	if(pHudItem && !pHudItem->getDestroy()) 
+	if(pHudItem && !pHudItem->object().getDestroy()) 
 		pHudItem->SetHUDmode(HUDview());
 
 
