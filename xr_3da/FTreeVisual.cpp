@@ -5,14 +5,15 @@
 #include "ftreevisual.h"
 #include "fmesh.h"
 #include "render.h"
+#include "xr_effsun.h"
 
-FTreeVisual::FTreeVisual(void)
+FTreeVisual::FTreeVisual	(void)
 {
 	pVertices			= 0;
 	pIndices			= 0;
 }
 
-FTreeVisual::~FTreeVisual(void)
+FTreeVisual::~FTreeVisual	(void)
 {
 }
 
@@ -74,6 +75,8 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	c_m_w2v2p			= T.get	("m_w2v2p");
 	c_eye				= T.get	("v_eye");
 	c_fog				= T.get	("fog");
+	c_l_dir				= T.get	("l_dir");
+	c_l_color			= T.get	("l_color");
 }
 
 float	psTree_w_rot		= 10.0f;
@@ -89,17 +92,21 @@ void FTreeVisual::Render	(float LOD)
 	wind.set				(sinf(tm_rot),0,cosf(tm_rot),0);	wind.normalize	();	wind.mul(psTree_w_amp);	// dir1*amplitude
 	float	scale			= 1.f/float(FTreeVisual_quant);
 
-	// fog
+	// Fog
 	float	f_near			= pCreator->Environment.c_FogNear;
 	float	f_far			= 1/(pCreator->Environment.c_FogFar - f_near);
 	Fvector4 plane;			
 
+	// Near plane for fog
 	Fmatrix& M				= Device.mFullTransform;
 	plane.x					= -(M._14 + M._13);
 	plane.y					= -(M._24 + M._23);
 	plane.z					= -(M._34 + M._33);
 	plane.w					= -(M._44 + M._43);
 	float denom				= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
+
+	// D-Light
+	CSun&	sun				= *(pCreator->Environment.Suns.front());
 
 	// setup constants
 	RCache.set_c			(c_consts,	scale,		scale,		0,					0);
@@ -111,12 +118,12 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);															// view-projection
 	RCache.set_c			(c_eye,		plane.x*denom,	plane.y*denom,	plane.z*denom,	plane.w*denom);					// view-pos
 	RCache.set_c			(c_fog,		f_near,	f_far,	0,		0);														// fog-params
+	RCache.set_c			(c_l_dir,	sun.Direction().x,	sun.Direction().y,	sun.Direction().z,	0);						// L-dir
+	RCache.set_c			(c_l_color,	sun.Color().r,		sun.Color().g,		sun.Color().b,		0);
 
 	// render
-	// RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
-	// RCache.set_VS			(0);
 }
 
 #define PCOPY(a)	a = pFrom->a
@@ -149,4 +156,7 @@ void	FTreeVisual::Copy			(CVisual *pSrc)
 
 	PCOPY(c_eye);
 	PCOPY(c_fog);
+
+	PCOPY(c_l_dir);
+	PCOPY(c_l_color);
 }

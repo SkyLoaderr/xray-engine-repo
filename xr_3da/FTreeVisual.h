@@ -22,6 +22,8 @@ protected:
 	R_constant*					c_m_w2v2p;
 	R_constant*					c_eye;
 	R_constant*					c_fog;
+	R_constant*					c_l_dir;
+	R_constant*					c_l_color;
 
 	Fmatrix						xform;
 	Fvector4					c_scale;

@@ -21,6 +21,7 @@ public:
 	void __fastcall				RenderSource			( );
 	void __fastcall				RenderFlares			( );
 	Fvector&					Direction				( ) { return sun_dir;	}
+	Fcolor&						Color					( )	{ return sun_color;	}
 	void						Update					( );
 };
 
