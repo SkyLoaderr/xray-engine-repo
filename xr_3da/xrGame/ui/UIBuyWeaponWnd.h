@@ -86,9 +86,37 @@ protected:
 		void SetSectionName(const char *pData) { std::strcpy(strName, pData); }
 		const char *GetSectionName() const { return strName; }
 		// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
-		// вешь
+		// вещь
 		void SetOwner(CUIDragDropList *pOwner) { R_ASSERT(pOwner); m_pOwner = pOwner; }
 		CUIDragDropList * GetOwner() { return m_pOwner; }
+
+		//-----------------------------------------------------------------------------/
+		//  Работа с аддонами. Средствами переопределения CWeapon нужную функциональность
+		//	получить не удалось
+		//-----------------------------------------------------------------------------/
+
+		// Структура информации о аддоне
+		typedef struct tAddonInfo
+		{
+			// Имя секции для аддона
+			std::string			strAddonName;
+			// -1 - вообще нельзя приаттачить, 0 - не приаттачен, 1 - приаттачен
+			int					bIsAttached;
+			// Координаты смещения относительно иконки оружия
+			int					x, y;
+			// Constructor
+			tAddonInfo():		bIsAttached(false), x(-1), y(-1) {}
+		} AddonInfo;
+
+		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
+		// Scope, Silencer, Grenade Launcher.
+		AddonInfo	m_addonInfo[3];
+		
+		void AttachDetachAddon(int iAddonIndex, bool bAttach = true)
+		{
+			R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 4);
+			m_addonInfo[iAddonIndex].bIsAttached = bAttach ? 1 : 0;
+		}
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -148,7 +176,6 @@ protected:
 	//информация о предмете
 	CUIItemInfo UIItemInfo;
 
-
 	static const int MAX_ITEMS = 70;
 	CUIDragDropItemMP m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
@@ -177,10 +204,7 @@ protected:
 	void ActivatePropertiesBox();
 
 	//описание возоможных дейстивий над предметами инвентаря
-	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, 
-		TO_SLOT_ACTION, TO_BAG_ACTION,
-		ARTIFACT_MERGER_ACTIVATE,
-		ARTIFACT_MERGER_DEACTIVATE,
+	enum {BUY_ITEM_ACTION, CANCEL_BUYING_ACTION,
 		ATTACH_ADDON, 
 		DETACH_SCOPE_ADDON,
 		DETACH_SILENCER_ADDON,
@@ -234,8 +258,12 @@ protected:
 	void InitWpnSectStorage();
 	// заполнить секции оружием которое мы определили предыдущей процедурой
 	void FillWpnSubBags();
+	// заполнить заданную секцию оружием которое мы определили процедурой InitWpnSectStorage
+	void FillWpnSubBag(const u32 slotNum);
 	// удаляем все из секций
 	void ClearWpnSubBags();
+	// удаляем все из заданной секции
+	void ClearWpnSubBag(const u32 slotNum);
 	// переместить вещь из слота обратно в сответствующую секцию.
 	bool SlotToSection(const u32 SlotNum);
 	// переместить вещь с пояса в сумку
@@ -248,6 +276,9 @@ protected:
 	string64	m_SectionName;
 	// Кнопки OK и Cancel
 	CUIButton	UIBtnOK, UIBtnCancel;
+	// Спецмассив для запоминания индексов гранат в массиве.
+	xr_vector<int> m_vGrenadeArr;
+
 public:
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте
 	const char *GetWeaponName(u32 slotNum);
