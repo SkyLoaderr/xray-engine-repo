@@ -198,24 +198,8 @@ void CAI_Rat::vfSetFire(bool bFire, CGroup &Group)
 
 void CAI_Rat::vfSetMovementType(char cBodyState, float fSpeed)
 {
-	switch (cBodyState) {
-		case BODY_STATE_STAND : {
-			StandUp();
-			m_fCurSpeed = fSpeed;
-			//r_torso_speed = PI;
-			break;
-		}
-		case BODY_STATE_CROUCH : {
-			Squat();
-			//r_torso_speed = 3*PI_DIV_4;
-			break;
-		}
-		case BODY_STATE_LIE : {
-			Lie();
-			//r_torso_speed = PI_DIV_2;
-			break;
-		}
-	}
+	StandUp();
+	m_fCurSpeed = fSpeed;
 }
 
 //////////////////////////////////////////////////////////////////////////

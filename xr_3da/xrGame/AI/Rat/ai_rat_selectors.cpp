@@ -25,8 +25,8 @@ float CRatSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	// computations
 	vfAddTravelCost();
 
-	if (m_fDistance < .7f)
-		m_fResult += 10000;
+	//if (m_fDistance < .7f)
+	//	m_fResult += 10000;
 	//CHECK_RESULT;
 	vfAddDeviationFromPreviousDirectionCost();
 	CHECK_RESULT;

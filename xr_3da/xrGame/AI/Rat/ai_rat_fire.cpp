@@ -85,29 +85,11 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	tHitDir.normalize();
 	tHitPosition = who->Position();
 	
-	/**	
-	INIT_SQUAD_AND_LEADER;
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	Group.m_dwLastHitTime = dwHitTime;
-	Group.m_tLastHitDirection = tHitDir;
-	Group.m_tHitPosition = tHitPosition;
-	/**/
-	
 	// Play hit-sound
 	sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->PlayAtPos		(S,this,vPosition);
-	
-	if (fHealth > 0) {
-		/**
-		if (dwfRandom(2))
-			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageLeft);
-		else
-			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageRight);
-		/**/
-	}
 }
 
 // when someone hit rat
@@ -170,7 +152,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 				// only for fitting light coefficients
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (g_Squad() == SPECIAL_SQUAD) {
-					bool bB = bfCheckForVisibility(E);
+					bool bB = true;//bfCheckForVisibility(E);
 					CActor *tpActor = dynamic_cast<CActor *>(E);
 					if (tpActor) {
 						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
@@ -211,6 +193,9 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
 		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
+
+	if (g_Squad() == SPECIAL_SQUAD)
+		Enemy.Enemy = 0;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 }

@@ -25,15 +25,11 @@ CAI_Rat::CAI_Rat()
 	tpSavedEnemyNode = 0;
 	dwSavedEnemyNodeID = DWORD(-1);
 	dwLostEnemyTime = 0;
-	//m_fSpin = 0.0;
-	//m_fMultiplier = sinf(m_fSpin);
-	//AI_Path.m_bCollision = false;
 	r_spine_speed = r_torso_speed = q_look.o_look_speed = PI_DIV_2*1;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
 	m_bMobility = true;
-	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_bFiring = false;
@@ -60,7 +56,6 @@ CAI_Rat::~CAI_Rat()
 void CAI_Rat::Death()
 {
 	inherited::Death( );
-//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	eCurrentState = aiRatDie;
 	
 	Fvector	dir;
@@ -89,7 +84,6 @@ void CAI_Rat::Load(LPCSTR section)
 	vfLoadSounds();
 	vfLoadAnimations();
 	vfLoadSelectors(section);
-	//vfAssignBones(ini,section);
 	
 	// visibility
 	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
@@ -120,19 +114,14 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	
 	INIT_SQUAD_AND_LEADER;
 
-	/**/
 	if (Leader == this)
 		tStateStack.push(eCurrentState = aiRatFreeHunting);
 	else
 		tStateStack.push(eCurrentState = aiRatFollowLeader);
 	
-	//eCurrentState = aiRatFreeHunting;
-	/**/
-	
 	return TRUE;
 }
 
-// rat update
 void CAI_Rat::Update(DWORD DT)
 {
 	inherited::Update(DT);

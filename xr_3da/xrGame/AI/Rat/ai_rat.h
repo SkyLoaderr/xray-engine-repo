@@ -17,8 +17,8 @@
 class CAI_Rat : public CCustomMonster  
 {
 	enum ESoundCcount {
-		SND_HIT_COUNT=8,
-		SND_DIE_COUNT=4,
+		SND_HIT_COUNT=1,
+		SND_DIE_COUNT=1,
 		SND_VOICE_COUNT=2,
 	};
 
