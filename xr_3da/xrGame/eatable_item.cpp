@@ -35,6 +35,7 @@ void CEatableItem::Load(LPCSTR section)
 	m_fRadiationInfluence = pSettings->r_float(section, "eat_radiation");
 
 	m_iPortionsNum = pSettings->r_s32(section, "eat_portions_num");
+	VERIFY(m_iPortionsNum<10000);
 }
 
 bool CEatableItem::Useful() const

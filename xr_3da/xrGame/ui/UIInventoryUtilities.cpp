@@ -38,7 +38,10 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 //для надписей на иконках с едой
 void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 {
-	CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
+	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
+	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); VERIFY(pIItem);
+	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(pIItem); VERIFY(pEatableItem);
+
 	RECT rect = pItem->GetAbsoluteRect();
 	
 	if(pEatableItem->m_iPortionsNum>0)
