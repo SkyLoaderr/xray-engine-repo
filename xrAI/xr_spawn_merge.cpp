@@ -24,6 +24,8 @@ DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
 CGameGraph						*tpGraph = 0;
 
+extern u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName);
+
 class CSpawnComparePredicate {
 private:
 	u32							m_dwStartNode;
@@ -50,14 +52,16 @@ public:
 	CGameLevelCrossTable		*m_tpCrossTable;
 	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
 	xr_vector<CSE_ALifeLevelChanger*>	*m_level_changers;
+	CInifile					*m_ini;
 
-								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset, xr_vector<CSE_ALifeLevelChanger*> *level_changers) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset, xr_vector<CSE_ALifeLevelChanger*> *level_changers, CInifile *ini) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
 		m_level_changers		= level_changers;
+		m_ini					= ini;
 		string256				fName;
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
 		strcat					(fName,"\\");
@@ -249,7 +253,11 @@ public:
 				xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
 				xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
 				for ( ; i != e; ++i)
-					if (!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name)) {
+					if (
+						(dwfGetIDByLevelName(m_ini,(*i)->m_caLevelToChange) == m_dwLevelID) &&
+						!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name)
+					) 
+					{
 						(*i)->m_tNextGraphID	= (*I)->m_tGraphID;
 						(*i)->m_tNextPosition	= (*I)->o_Position;
 						(*i)->m_tAngles			= (*I)->o_Angle;
@@ -421,7 +429,7 @@ public:
 			strcpy					(tLevel.caLevelName,(*I).name);
 			tLevel.tLevelID			= (*I).id;
 			Msg						("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
-			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset,&level_changers));
+			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset,&level_changers,Ini));
 		}
 
 		R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
@@ -430,8 +438,10 @@ public:
 
 		Phase						("Searching for corresponding graph vertices");
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
-			tThreadManager.start	(tpLevels[i]);
-		tThreadManager.wait			();
+//			tThreadManager.start	(tpLevels[i]);
+//			tThreadManager.start	(tpLevels[i]);
+			tpLevels[i]->Execute	();
+//		tThreadManager.wait			();
 
 		Phase						("Merging spawn files");
 		for (u32 i=0, N = tpLevels.size(); i<N; i++)
