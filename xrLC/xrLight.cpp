@@ -208,7 +208,7 @@ public:
 
 			// 
 			base_color_c		vC;
-			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, bVertexLight?0:(LP_dont_rgb+LP_dont_sun), 0);
+			if (bVertexLight)	LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_hemi, 0);
 			vC._tmp_			= v_trans;
 			vC.mul				(.5f);
 			V->C._set			(vC);
