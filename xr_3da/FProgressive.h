@@ -12,7 +12,8 @@ struct	FSlideWindowItem;
 class	FProgressive	: public Fvisual
 {
 protected:
-	FSlideWindowItem*	pSWI		;
+	FSlideWindowItem	nSWI		;
+	FSlideWindowItem*	xSWI		;
 	u32					last_lod	;
 public:
     					FProgressive();
