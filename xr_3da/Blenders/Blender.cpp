@@ -120,6 +120,7 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_SHADOW_WORLD:	return new CBlender_ShWorld;		break;
 	case B_BLUR:			return new CBlender_Blur;			break;
 	case B_MODEL:			return new CBlender_Model;			break;
+	case B_MODEL_EbB:		return new CBlender_Model_EbB;		break;
 	default:				return 0;
 	}
 }

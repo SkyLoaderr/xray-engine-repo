@@ -932,6 +932,12 @@
 								RelativePath="Blenders\Blender_Model.h">
 							</File>
 							<File
+								RelativePath="Blenders\Blender_Model_EbB.cpp">
+							</File>
+							<File
+								RelativePath="Blenders\Blender_Model_EbB.h">
+							</File>
+							<File
 								RelativePath=".\Blenders\Blender_Screen_GRAY.cpp">
 							</File>
 							<File
