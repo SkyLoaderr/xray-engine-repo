@@ -465,7 +465,7 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
-		BOOL t = (*it)->m_Flags.is(ParticleAction::ALLOW_TRANSLATE);
+		BOOL t = TRUE;//(*it)->m_Flags.is(ParticleAction::ALLOW_TRANSLATE);
 		BOOL r = (*it)->m_Flags.is(ParticleAction::ALLOW_ROTATE);
 		if ((!t)&&(!r)) continue;
 		const Fmatrix& m = t&&r?full:(t?mT:mR);
