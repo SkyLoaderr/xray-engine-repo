@@ -190,7 +190,7 @@ bool CEditableObject::LoadSMotions(const char* fname)
 	return true;
 }
 */
-bool CEditableObject::AppendSMotion(LPCSTR fname)
+bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
 {
 	VERIFY(IsSkeleton());
 
@@ -211,6 +211,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname)
                 GenerateSMotionName	(m_name,name.c_str(),M);
                 M->SetName			(m_name);
                 m_SMotions.push_back(M);
+                if (inserted)		inserted->push_back(M);
             }else{
                 ELog.DlgMsg(mtError,"Append failed.",fname);
                 xr_delete(M);
@@ -240,6 +241,7 @@ bool CEditableObject::AppendSMotion(LPCSTR fname)
                 GenerateSMotionName	(m_name,M->Name(),M);
                 M->SetName			(m_name);
                 m_SMotions.push_back(M);
+                if (inserted)		inserted->push_back(M);
             }
         }
         FS.r_close(F);

@@ -359,7 +359,7 @@ public:
 
     bool			RemoveSMotion			(LPCSTR name);
     bool			RenameSMotion			(LPCSTR old_name, LPCSTR new_name);
-    bool			AppendSMotion			(LPCSTR fname);
+    bool			AppendSMotion			(LPCSTR fname, SMotionVec* inserted=0);
     void			ClearSMotions			();
     bool			SaveSMotions			(LPCSTR fname);
 
