@@ -73,7 +73,7 @@ function evaluator_afraid:__init(storage) super()
 	self.a = storage
 end
 function evaluator_afraid:evaluate()
-	if self.a.actor ~= nil then printf(" goodwill %d", self.object:goodwill(self.a.actor)) end
+	--if self.a.actor ~= nil then printf(" goodwill %d", self.object:goodwill(self.a.actor)) end
 	return false
 end
 -- принадлежим ли мы с клиентом к одной и той же группировке
