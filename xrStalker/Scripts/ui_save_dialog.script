@@ -230,17 +230,55 @@ function save_dialog:OnMsgNo()
 	msg_box:Hide()
 end
 
-function save_dialog:OnButton_ok_clicked()	
+function save_dialog:OnButton_ok_clicked()
+	-- prepare message box
+	local message_box = self:GetMessageBox("message_box")
+	
+	-- Get file name
 	local edit_box = self:GetEditBox("edit_filename")
-	local txt = edit_box:GetText()
-	self:AddItemToList(txt)
+	local new_save = edit_box:GetText()
+	
+	// check for empty name
+	if string.len(new_save) == 0 then
+		message_box:SetStyle(0)		
+		message_box:SetText("The file name is empty. Please enter valid name!")
+		message_box:Show()
+		return
+	end
+
+	local f = getFS()
+	local file_struct = f:exist("$game_saves$", new_save)
+	
+	
+	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
+	local f_cnt = flist:Size()
+	
+//	for	it=0, f_cnt-1 	do
+	local it = 50
+	local file		=	flist:GetAt(it)
+	printf("file[%d]=%s",it,file)
+	local pth = f:update_path("$game_saves$", file) 
+	printf("full path=%s",pth)
+	
+	printf("file age is [%s]",f:get_file_age_str(pth))
+	
+	
+	if file_struct~=nil then
+	printf("name=%s;modif=%d",file_struct.name,file_struct.modif)
+	end
+		
+//   end
+	
+	flist:Free()
+
+--		
+--	
+--		
+
 end
 
 function save_dialog:OnButton_cancel_clicked()
-	local message_box = self:GetMessageBox("message_box")
-	
-	message_box:SetText("Do you really want to exit?")
-	message_box:Show()
+	level.start_stop_menu(self,true)	
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
