@@ -189,7 +189,12 @@ void CEntityCondition::UpdateCondition()
 	u64 cur_time = Level().GetGameTime();
 
 	if(m_bTimeValid)
-		m_iDeltaTime = cur_time - m_iLastTimeCalled;
+	{
+		if (cur_time > m_iLastTimeCalled)
+			m_iDeltaTime = cur_time - m_iLastTimeCalled;
+		else 
+			m_iDeltaTime = 0;
+	}
 	else
 	{
 		m_iDeltaTime = 0;
@@ -417,6 +422,7 @@ void CEntityCondition::UpdatePower()
 }
 void CEntityCondition::UpdateSatiety()
 {
+	if (Game().type != GAME_SINGLE) return;
 	if(m_fSatiety>0)
 	{
 		m_fDeltaSatiety -= m_fV_Satiety*

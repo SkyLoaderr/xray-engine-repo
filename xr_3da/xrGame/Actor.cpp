@@ -1007,6 +1007,7 @@ CWound* CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_
 void CActor::UpdateCondition()
 {
 	if (psActorFlags.test(AF_GODMODE)) return;
+	if (Remote()) return;
 
 	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
 	{
