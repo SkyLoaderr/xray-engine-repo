@@ -73,7 +73,8 @@ void HUD_SOUND::set_position(const Fvector& pos)
 {
 	xr_vector<SSnd>::iterator it = sounds.begin();
 	for(;it!=sounds.end();++it)
-		(*it).snd.set_position(pos);
+		if( (*it).snd.feedback )
+			(*it).snd.set_position(pos);
 	
 }
 
