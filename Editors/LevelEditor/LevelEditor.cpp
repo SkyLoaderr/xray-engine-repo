@@ -35,6 +35,11 @@ USEFORM("Splash.cpp", frmSplash);
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
+        if (!Application->Handle){ 
+            Application->CreateHandle	(); 
+            Application->Icon->Handle 	= LoadIcon(MainInstance, "MAINICON"); 
+			Application->Title 			= "Loading...";
+        } 
         frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show			();
         frmSplash->Repaint		();
@@ -43,7 +48,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     	Core._initialize		("level",ELogCallback);
 
         Application->Initialize	();
-        Application->Icon		= frmSplash->Icon;
                                        
         frmSplash->SetStatus	("Loading...");
 
@@ -52,7 +56,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         UI						= xr_new<CLevelMain>();
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
-
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		frmMain->SetHInst		(hInst);
 

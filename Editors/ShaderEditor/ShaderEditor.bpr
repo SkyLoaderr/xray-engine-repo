@@ -48,7 +48,7 @@
       -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals 
       -IR:\SDK\eax20\Include -I..\xrEProps -src_suffix cpp -D_EDITOR 
       -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+    <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -99,7 +99,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=105
+Build=106
 Debug=1
 PreRelease=0
 Special=0
@@ -111,7 +111,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.105
+FileVersion=1.0.2.106
 InternalName=
 LegalCopyright=
 LegalTrademarks=

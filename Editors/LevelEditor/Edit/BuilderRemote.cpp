@@ -1,7 +1,7 @@
-#include "stdafx.h"
-#pragma hdrstop
-
-#include "Builder.h"
+#include "stdafx.h"      
+#pragma hdrstop          
+                              
+#include "Builder.h"  
 #include "ELight.h"
 #include "SceneObject.h"
 #include "EditObject.h"

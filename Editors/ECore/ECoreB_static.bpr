@@ -101,7 +101,7 @@
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
       -IP:\xrCore -Ieditor -Iengine -Iengine\blenders -Iengine\visuals 
       -I..\xrEProps -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -X- -r- -ps -a4 -6 
+    <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -X- -r- -ps -a4 -6 
       -b- -k -y -v -vi- -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$YD -$W -$O- -$A8 -v -JPHNE -M"/>
     <AFLAGS value="/mx /w2 /zi"/>

@@ -19,6 +19,11 @@ USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
 WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
+        if (!Application->Handle){ 
+            Application->CreateHandle	(); 
+            Application->Icon->Handle 	= LoadIcon(MainInstance, "MAINICON"); 
+			Application->Title 			= "Loading...";
+        } 
         frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show			();
         frmSplash->Repaint		();
@@ -26,11 +31,6 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 
     	Core._initialize		("actor",ELogCallback);
 
-        if (!Application->Handle){ 
-            Application->CreateHandle(); 
-            Application->Icon->Handle = LoadIcon(MainInstance, "MAINICON"); 
-        } 
-        
         Application->Initialize	();
                                        
         frmSplash->SetStatus	("Loading...");

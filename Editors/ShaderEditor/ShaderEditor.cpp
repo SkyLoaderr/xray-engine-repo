@@ -15,6 +15,11 @@ USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
+        if (!Application->Handle){ 
+            Application->CreateHandle	(); 
+            Application->Icon->Handle 	= LoadIcon(MainInstance, "MAINICON"); 
+			Application->Title 			= "Loading...";
+        } 
         frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show			();
         frmSplash->Repaint		();
@@ -23,7 +28,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     	Core._initialize		("shader",ELogCallback);
 
         Application->Initialize	();
-        Application->Icon		= frmSplash->Icon;
                                        
         frmSplash->SetStatus	("Loading...");
 

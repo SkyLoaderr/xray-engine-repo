@@ -177,4 +177,4 @@ void __fastcall TfrmPropertiesEObject::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
+                           

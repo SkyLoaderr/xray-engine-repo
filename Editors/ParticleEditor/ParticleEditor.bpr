@@ -50,7 +50,7 @@
       -IP:\xrSound -I..\ECore -I..\ECore\Editor -I..\ECore\Engine 
       -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -I..\xrEProps 
       -src_suffix cpp -D_EDITOR -D_PARTICLE_EDITOR -D_DEBUG -no_tie -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+    <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
@@ -103,7 +103,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=107
+Build=108
 Debug=1
 PreRelease=0
 Special=0
@@ -115,7 +115,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.2.107
+FileVersion=1.0.2.108
 InternalName=
 LegalCopyright=
 LegalTrademarks=
