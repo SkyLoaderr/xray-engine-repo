@@ -39,7 +39,7 @@
 -------------------------------------------------------------------------------------------------------------------------------------
 class "Monster"
 
-function Monster:__init (npc, attack_way, script_name)
+function Monster:__init (npc, attack_way, script_name, snds_idle, snds_attack)
 	self.npc = npc
 	self.way = attack_way
 	self.script = script_name
@@ -49,6 +49,11 @@ function Monster:__init (npc, attack_way, script_name)
 	self.target = nil
 	self.targetdir = vector():set (0, 0, 1)
 	self.play = 0
+	self.idle = snds_idle
+	self.attack = snds_attack
+	self.idle_played = false
+	self.tw = math.random (4000, 10000)
+	self.ctime = 0
 end
 
 function Monster:set_callback (callback)
@@ -64,6 +69,7 @@ end
 function Monster:initialize ()
 	self.npc:script (true, self.script)
 	action (self.npc, move (move.act_stand_idle, move.default, self.npc:position()), cond (cond.time_end, time_infinite))
+	self.ctime = device():time_global ()
 end
 
 
@@ -80,6 +86,24 @@ function Monster:process ()
 	   return 
 	end   
 	
+	local v = vector ():set (0, 0, 0)
+	
+	if self.idle_played == false then
+	   if device():time_global () - self.ctime > self.tw then
+	      if table.getn (self.idle) ~= 0 then
+	         update_action (self.npc, self.script, sound (self.idle[math.random (1, table.getn (self.idle))], "bip01_head", v, v, false))
+	      end
+	   self.idle_played = true
+	   self.tw = 5000
+	   self.ctime = device():time_global ()
+    else	   
+	   if device():time_global () - self.ctime > self.tw then
+	      if table.getn (self.attack) ~= 0 then
+	         update_action (self.npc, self.script, sound (self.attack[math.random (1, table.getn (self.idle))], "bip01_head", v, v, false))
+	      end
+	   self.tw = 1000 + math.random (2000, 5000)
+	   self.ctime = device():time_global ()
+    end	         
 	
 	if self.npc:action () then return end
 	
@@ -250,22 +274,32 @@ end
 function main ()
 
 	local scrname = m_attack_wave2.script_name ()
+	
+	local bidle = {"monsters\\boar\\idle_0",  "monsters\\boar\\idle_1"}
+	local batt  = {"monsters\\boar\\attack_0", "monsters\\boar\\attack_hit_0"};
+	local didle = {"monsters\\dog\\idle_0",  "monsters\\dog\\idle_1"}
+	local datt  = {"monsters\\dog\\attack_0", "monsters\\dog\\attack_1", "monsters\\dog\\attack_2"}
+	local pidle = {"monsters\\pseudodog\\idle_0", "monsters\\pseudodog\\idle_1"}
+	local patt  = {"monsters\\pseudodog\\attack_hit_0"}
+	local fidle = {"monsters\\flesh\\idle_0", "monsters\\flesh\\idle_1"}
+	local fatt  = {"monsters\\flesh\\attack_0", "monsters\\flesh\\attack_1", "monsters\\flesh\\attack_3"}
+
 
     local monsters = {
-                      m_attack_wave2.Monster (get_level_object ("boar01"), patrol ("way_boar01"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("boar02"), patrol ("way_boar02"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("boar03"), patrol ("way_boar03"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("boar04"), patrol ("way_boar04"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("dog01"),  patrol ("way_dog01"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("dog02"),  patrol ("way_dog02"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("dog03"),  patrol ("way_dog03"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("dog04"),  patrol ("way_dog04"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("dog05"),  patrol ("way_dog05"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("pdog01"),  patrol ("way_pdog01"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("pdog02"),  patrol ("way_pdog02"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("pdog03"),  patrol ("way_pdog03"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("pdog04"),  patrol ("way_pdog04"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("flesh01"),  patrol ("way_flesh01"), scrname)
+                      m_attack_wave2.Monster (get_level_object ("boar01"), patrol ("way_boar01"), scrname, bidle, batt),
+                      m_attack_wave2.Monster (get_level_object ("boar02"), patrol ("way_boar02"), scrname, bidle, batt),
+                      m_attack_wave2.Monster (get_level_object ("boar03"), patrol ("way_boar03"), scrname, bidle, batt),
+                      m_attack_wave2.Monster (get_level_object ("boar04"), patrol ("way_boar04"), scrname, bidle, batt),
+                      m_attack_wave2.Monster (get_level_object ("dog01"),  patrol ("way_dog01"), scrname, didle, datt),
+                      m_attack_wave2.Monster (get_level_object ("dog02"),  patrol ("way_dog02"), scrname, didle, datt),
+                      m_attack_wave2.Monster (get_level_object ("dog03"),  patrol ("way_dog03"), scrname, didle, datt),
+                      m_attack_wave2.Monster (get_level_object ("dog04"),  patrol ("way_dog04"), scrname, didle, datt),
+                      m_attack_wave2.Monster (get_level_object ("dog05"),  patrol ("way_dog05"), scrname, didle, datt),
+                      m_attack_wave2.Monster (get_level_object ("pdog01"),  patrol ("way_pdog01"), scrname, pidle, patt),
+                      m_attack_wave2.Monster (get_level_object ("pdog02"),  patrol ("way_pdog02"), scrname, pidle, patt),
+                      m_attack_wave2.Monster (get_level_object ("pdog03"),  patrol ("way_pdog03"), scrname, pidle, patt),
+                      m_attack_wave2.Monster (get_level_object ("pdog04"),  patrol ("way_pdog04"), scrname, pidle, patt),
+                      m_attack_wave2.Monster (get_level_object ("flesh01"),  patrol ("way_flesh01"), scrname, fidle, fatt)
 					  }
 					  
 	--monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
