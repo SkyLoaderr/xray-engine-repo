@@ -209,7 +209,7 @@ public:
     // debug
     void			DumpAdjacency			();
 
-#ifdef MAX_EXPORT
+#ifdef _MAX_EXPORT
 	// convert
     void			FlipFaces				();
 	TriObject*		ExtractTriObject		(INode *node, int &deleteIt);

@@ -51,7 +51,7 @@ public:
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
-#ifdef MAX_EXPORT
+#ifdef _MAX_EXPORT
 	DWORD			mat_id;
 	Mtl*			pMtlMain;
 #endif
@@ -250,7 +250,7 @@ public:
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
 
-#ifdef MAX_EXPORT
+#ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);
 #endif

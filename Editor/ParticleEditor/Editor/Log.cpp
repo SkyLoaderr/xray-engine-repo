@@ -94,7 +94,6 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 #endif
 
     Msg(mt,buf);
-	strcat( buf, "\r\n" );
     g_ErrorMode = false;
     return res;
 }
@@ -109,6 +108,10 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...){
 #ifdef _EDITOR
     if (frmSplash) frmSplash->SetStatus(buf);
     TfrmLog::AddMessage(mt,AnsiString(buf));
+#endif
+
+#ifdef _MAX_EXPORT
+	EConsole.print(mt,buf);
 #endif
 
 	strcat( buf, "\r\n" );
