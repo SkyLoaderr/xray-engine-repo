@@ -233,23 +233,28 @@ xr_motivator.storage[self.object:id()].patrol = {
     raid_enabled = false
   }
       if char_ini:section_exist ("patrol") == true then
-    if char_ini:line_exist("patrol", "enabled") == true then
-          xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
+         if char_ini:line_exist("patrol", "enabled") == true then
+            xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
+            if xr_motivator.storage[self.object:id()].patrol.enabled == true then
+               printf ("PATROL_ENABLED")
+            else
+                printf ("PATROL_DISABLED")
+            end  
+         end
+         if char_ini:line_exist("patrol", "patrol_path") == true then
+            xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
+         else
+            xr_motivator.storage[self.object:id()].patrol.enabled = false
+         end
+         if char_ini:line_exist("patrol", "escape_path") == true then
+            xr_motivator.storage[self.object:id()].patrol.escape_path = char_ini:r_string("patrol", "escape_path")
+         else
+            xr_motivator.storage[self.object:id()].patrol.escape_path = xr_motivator.storage[self.object:id()].patrol.patrol_path
+         end
+         if char_ini:line_exist ("patrol", "raid_enabled") == true then
+            xr_motivator.storage[self.object:id()].patrol.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
+         end
       end
-    if char_ini:line_exist("patrol", "patrol_path") == true then
-          xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
-    else
-      xr_motivator.storage[self.object:id()].patrol.enabled = false
-      end
-    if char_ini:line_exist("patrol", "escape_path") == true then
-          xr_motivator.storage[self.object:id()].patrol.escape_path = char_ini:r_string("patrol", "escape_path")
-    else
-      xr_motivator.storage[self.object:id()].patrol.escape_path = xr_motivator.storage[self.object:id()].patrol.patrol_path
-      end
-      if char_ini:line_exist ("patrol", "raid_enabled") == true then
-         xr_motivator.storage[self.object:id()].patrol.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
-      end
-  end
 -- Настройка follower
 xr_motivator.storage[self.object:id()].follower = {
     enabled = false,
