@@ -99,7 +99,7 @@
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="701" width="1014" height="200">
 		<!-- BUTTONS -->
-		<button x="18" y="0" width="150" height="52">
+		<button x="18" y="0" width="150" height="52" accel="2">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_sec_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -124,7 +124,7 @@
 			</hint>
 						
 		</button>
-		<button x="202" y="0" width="150" height="52">
+		<button x="202" y="0" width="150" height="52" accel="3">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_prim_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -172,7 +172,7 @@
 				</text_color>
 			</hint>
 		</button>
-		<button x="570" y="0" width="150" height="52">
+		<button x="570" y="0" width="150" height="52" accel="5">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_suit_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
@@ -196,7 +196,7 @@
 				</text_color>
 			</hint>
 		</button>
-		<button x="753" y="0" width="150" height="52">
+		<button x="753" y="0" width="150" height="52" accel="6">
 			<texture_offset x="-18" y="-62"/>
 			<texture_t>ui\ui_btn_equip_t</texture_t>
 			<texture_e>ui\ui_btn_mp_e</texture_e>
