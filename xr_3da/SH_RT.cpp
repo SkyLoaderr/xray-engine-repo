@@ -76,6 +76,10 @@ void CRT::Destroy	()
 	_RELEASE	(pRT		);
 	_RELEASE	(pSurface	);
 }
+void resptrcode_crt::create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f)
+{
+	_set			(Device.Resources->_CreateRT(Name,w,h,f));
+}
 
 //////////////////////////////////////////////////////////////////////////
 CRTC::CRTC			()
@@ -139,4 +143,9 @@ void CRTC::Destroy()
 	for (u32 face=0; face<6; face++)
 		_RELEASE	(pRT[face]	);
 	_RELEASE	(pSurface	);
+}
+
+void resptrcode_crtc::create(LPCSTR Name, u32 size, D3DFORMAT f)
+{
+	_set			(Device.Resources->_CreateRTC(Name,size,f));
 }

@@ -2,8 +2,7 @@
 #define SH_RT_H
 #pragma once
 
-class	ENGINE_API	CTexture;
-
+//////////////////////////////////////////////////////////////////////////
 class	ENGINE_API	CRT		:	public xr_resource_named	{
 public:
 	IDirect3DTexture9*	pSurface;
@@ -17,12 +16,18 @@ public:
 	CRT					();
 	~CRT				();
 
-	void				Create	(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
-	void				Destroy	();
-	IC BOOL				Valid	()	{ return !pTexture; }
+	void				Create			(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
+	void				Destroy			();
+	IC BOOL				Valid			()	{ return !pTexture; }
 };
-typedef	resptr_core<CRT,resptr_base<CRT> >					ref_rt;
+struct ENGINE_API		resptrcode_crt	: public resptr_base<CRT>
+{
+	void				create			(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
+	void				destroy			()	{ _set(NULL);		}
+};
+typedef	resptr_core<CRT,resptrcode_crt>		ref_rt;
 
+//////////////////////////////////////////////////////////////////////////
 class	ENGINE_API	CRTC	:	public xr_resource_named	{
 public:
 	IDirect3DCubeTexture9*	pSurface;
@@ -39,6 +44,11 @@ public:
 	void				Destroy	();
 	IC BOOL				Valid	()	{ return !pTexture; }
 };
-typedef	resptr_core<CRTC,resptr_base<CRTC> >				ref_rtc;
+struct ENGINE_API		resptrcode_crtc	: public resptr_base<CRTC>
+{
+	void				create			(LPCSTR Name, u32 size, D3DFORMAT f);
+	void				destroy			()	{ _set(NULL);		}
+};
+typedef	resptr_core<CRTC,resptrcode_crtc>		ref_rt;
 
 #endif // SH_RT_H
