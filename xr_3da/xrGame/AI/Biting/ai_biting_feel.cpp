@@ -76,8 +76,8 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 //				m_tLastSound.fPower			= power;
 //				m_tLastSound.tSavedPosition = Position;
 //			}
-		}
-	}
+//		}
+//	}
 }
 
 void CAI_Biting::feel_touch_new	(CObject* O)
