@@ -1136,9 +1136,9 @@
             </phrase>
             <phrase id="3">
                 <text>escape_trader_done_tutorial_artefact_3</text>
+                <action>escape_dialog.give_medkit</action>
             </phrase>
             <phrase id="13">
-                <text></text>
                 <dont_has_info>tutorial_end</dont_has_info>
                 <dont_has_info>tutorial_wounded_start</dont_has_info>
                 <give_info>tutorial_wounded_must_spawn</give_info>
