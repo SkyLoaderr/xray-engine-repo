@@ -3,6 +3,7 @@
 Чугай Саша
 
 Сделать:
+	- если нету такого типа
 	- два одинаковых name
 	- fraction types->gulag
 	- createGulag
@@ -147,7 +148,7 @@ end
 
 -- callback на вход в зону
 function zone_binder:on_enter( zone, obj )
-	printf( "[zone] on_enter obj=%s", obj:name() )
+	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
 	-- вызвать callback-и всех подключённых классов
 	table.foreach( zones[zone:id()], function( k, v ) v:on_enter( obj ) end )
 end
@@ -302,7 +303,7 @@ function zone_fractions:add_stalker( obj )
 				stay_end = math.random( self.fraction_params.stay_min, self.fraction_params.stay_max ) * h2ms + game.time()
 			}
 
-			printf( "[zone] adding %s to zonal fraction %s", obj:name(), self.fraction_name )
+			printf( "[zone %s] adding %s to zonal fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
 		end
 	end
 end
@@ -331,18 +332,13 @@ function zone_fractions:free_stalker( obj )
 	local backup = self.stalkers[id]
 	obj:change_team( obj:team(), backup.squad, backup.group )
 
-	printf( "[zone] removing %s from fraction %s", obj:name(), self.fraction_name )
+	printf( "[zone %s] removing %s from fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
 end
 
 -- создание новой фракции по конфигурации для данной зоны
 function zone_fractions:create_fraction()
 	local fn      = math.random( 1, table.getn( self.fractions ) )
 	local fparams = self.fractions[fn]
-
-	if not fraction_types[fparams.type] then
-		printf( "[zone] There is no such fraction type: %s", fparams.type )
-		return
-	end
 
 	self.fraction_params = fparams
 
@@ -360,7 +356,7 @@ function zone_fractions:create_fraction()
 
 --	fraction_types[fparams.type].setup_jobs( self )
 
-	printf( "[zone] creating fraction %s of type %s", self.fraction_name, fparams.type )
+	printf( "[zone %s] creating fraction of type %s", self.zone:name(), fparams.type )
 end
 
 -- всех освободить, убить фракцию
@@ -373,7 +369,7 @@ function zone_fractions:remove_fraction()
 	self.fraction  = nil
 	self.idle_end = math.random( self.fraction_params.idle_min, self.fraction_params.idle_max ) * h2ms + game.time()
 
-	printf( "[zone] removing zonal fraction %s", self.fraction_name )
+	printf( "[zone %s] removing zonal fraction type=%s", self.zone:name(), self.fraction_type )
 end
 
 -- callback на вход в зону
