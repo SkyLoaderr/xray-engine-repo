@@ -1,0 +1,25 @@
+-------------------------------------------------------------------------------
+class "torch_light"
+---------------------------------
+function torch_light:__init (npc)
+    self.npc = npc
+    self.always_on = false
+end
+---------------------------------
+function torch_light:update ()
+
+    local obj = self.npc:object ("device_torch")
+    if obj == nil then return end
+    
+    if utils.is_day () == false or self.always_on == true then
+       obj:enable_attachable_item (true)
+    else   
+       obj:enable_attachable_item (false) 
+    end
+        
+end
+---------------------------------
+function torch_light:set_always_on (value)
+    self.always_on = value
+end
+---------------------------------
