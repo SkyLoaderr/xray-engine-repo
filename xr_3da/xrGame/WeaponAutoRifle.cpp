@@ -86,7 +86,7 @@ void CWeaponAutoRifle::MediaLOAD		()
 	for (DWORD i=0; i<scnt; i++)
 	{
 		Shader* SH			= 0;
-		ShaderCreate		(SH,"particles\\add",_GetItem(S,i,name));
+		ShaderCreate		(SH,"effects\\flame",_GetItem(S,i,name));
 		hFlames.push_back	(SH);
 	}
 }

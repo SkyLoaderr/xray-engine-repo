@@ -139,7 +139,7 @@ void CWeaponM134::FlameLOAD()
 	DWORD scnt		= _GetItemCount(S);
 	char name[255];
 	for (DWORD i=0; i<scnt; i++)
-		hFlames.push_back(Device.Shader.Create("effects\\screen_set",_GetItem(S,i,name),false));
+		hFlames.push_back(Device.Shader.Create("effects\\flame",_GetItem(S,i,name),false));
 }
 void CWeaponM134::FlameUNLOAD()
 {

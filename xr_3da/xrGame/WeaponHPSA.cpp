@@ -82,7 +82,7 @@ void CWeaponHPSA::MediaLOAD		()
 	for (DWORD i=0; i<scnt; i++)
 	{
 		Shader* SH			= 0;
-		ShaderCreate		(SH,"particles\\add",_GetItem(S,i,name));
+		ShaderCreate		(SH,"effects\\flame",_GetItem(S,i,name));
 		hFlames.push_back	(SH);
 	}
 }
@@ -102,11 +102,11 @@ void CWeaponHPSA::switch2_Idle	(BOOL bHUDView)
 void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 {
 	// Fire
-	Fvector					p1, d;
-	m_pParent->g_fireParams	(p1,d);
-	bFlame					=	TRUE;
-	OnShot					(bHUDView);
-	FireTrace				(p1,vLastFP,d);
+	Fvector						p1, d;
+	m_pParent->g_fireParams		(p1,d);
+	bFlame						=	TRUE;
+	OnShot						(bHUDView);
+	FireTrace					(p1,vLastFP,d);
 }
 void CWeaponHPSA::switch2_Empty	(BOOL bHUDView)
 {
