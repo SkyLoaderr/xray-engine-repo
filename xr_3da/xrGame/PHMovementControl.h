@@ -15,8 +15,8 @@ static const path_few_point=10;
 public:
 void				PHCaptureObject(CGameObject* object);
 void				PHCaptureObject(CGameObject* object,int element);
-const CPHCapture*	PHCapture        (){return m_capture;}
-void				PHReleaseObject	 ();
+CPHCapture*			PHCapture      (){return m_capture;}
+void				PHReleaseObject();
 bool			b_exect_position;
 public:
 
@@ -89,11 +89,7 @@ public:
 		dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
 		m_character->Create(size);
 	}
-	void				DestroyCharacter(){
-		m_character->Destroy();
-		PHReleaseObject();
-	//xr_delete<CPHSimpleCharacter>(m_character);
-	}
+	void				DestroyCharacter();
 	void				Load					(LPCSTR section);
 #ifdef DEBUG
 	void				dbg_Draw(){

@@ -36,11 +36,12 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
 	if(capturer)
 	{
-		const CPHCapture* capture=capturer->Movement.PHCapture();
+		CPHCapture* capture=capturer->Movement.PHCapture();
 		if(capture)
 		{
 		if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
 			do_colide = false;
+		if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 		}
 
 
@@ -49,11 +50,12 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
 	if(capturer)
 	{
-		const CPHCapture* capture=capturer->Movement.PHCapture();
+		CPHCapture* capture=capturer->Movement.PHCapture();
 		if(capture)
 		{
 			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 
 				do_colide = false;
+			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 		}
 
 
@@ -68,6 +70,12 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 {
 
 	CPHObject::Activate();
+
+	m_joint					=NULL;	
+	m_ajoint				=NULL;
+	m_body					=NULL;
+	b_failed				=false;
+	e_state					=cstPulling;
 
 	if(!a_taget_object||!a_taget_object->m_pPhysicsShell||!a_taget_object->m_pPhysicsShell->bActive) 
 	{
@@ -130,6 +138,12 @@ CPHCapture::CPHCapture									(CPHCharacter   *a_character,
 {
 
 	CPHObject::Activate();
+
+	m_joint					=NULL;	
+	m_ajoint				=NULL;
+	m_body					=NULL;
+	b_failed				=false;
+	e_state					=cstPulling;
 
 	if(!a_taget_object||!a_taget_object->m_pPhysicsShell||!a_taget_object->m_pPhysicsShell->bActive) 
 	{
@@ -229,11 +243,6 @@ void CPHCapture::Init(CInifile* ini)
 	if(m_pull_force>max_pull_force) m_pull_force=max_pull_force;
 
 
-	m_joint					=NULL;	
-	m_ajoint				=NULL;
-	m_body					=NULL;
-	b_failed				=false;
-	e_state					=cstPulling;
 
 	float pulling_vel_scale =ini->r_float("capture","velocity_scale");				//
 	m_taget_element->set_DynamicLimits(default_l_limit*pulling_vel_scale,default_w_limit*pulling_vel_scale);
@@ -255,7 +264,7 @@ void CPHCapture::CreateBody()
 CPHCapture::~CPHCapture()
 {
 CPHObject::Deactivate();
-Fail();
+Deactivate();
 }
 void CPHCapture::PhDataUpdate(dReal step)
 {
@@ -266,16 +275,22 @@ void CPHCapture::PhDataUpdate(dReal step)
 		break;
 	case cstCaptured: CapturedUpdate();
 		break;
+	case cstReleased: ReleasedUpdate();
+		break;
 	default: NODEFAULT;
 	}
 }
 
+void CPHCapture::PhTune(dReal step)
+{
+
+}
 
 void CPHCapture::PullingUpdate()
 {
 if(!m_taget_element->bActive||Device.dwTimeGlobal-m_time_start>m_capture_time)
 {
-	Fail();
+	Release();
 	return;
 }
 
@@ -289,7 +304,7 @@ dir.sub(capture_bone_position,dir);
 float dist=dir.magnitude();
 if(dist>m_pull_distance)
 {
-	Fail();
+	Release();
 	return;
 }
 dir.mul(1.f/dist);
@@ -382,7 +397,7 @@ void CPHCapture::CapturedUpdate()
 
 	if(!m_taget_element->bActive||dDOT(m_joint_feedback.f2,m_joint_feedback.f2)>m_capture_force*m_capture_force) 
 	{
-		Fail();
+		Release();
 		return;
 	}
 
@@ -393,21 +408,40 @@ void CPHCapture::CapturedUpdate()
 	dBodySetPosition(m_body,capture_bone_position.x,capture_bone_position.y,capture_bone_position.z);
 }
 
+void CPHCapture::ReleasedUpdate()
+{
+	if(!b_collide) b_failed=true;
+	b_collide=false;
+}
 
-void CPHCapture::Fail()
+void CPHCapture::ReleaseInCallBack()
+{
+//	if(!b_failed) return;
+	b_collide=true;
+}
+void CPHCapture::Release()
 {
 	if(b_failed) return;
-
-
+	if(e_state==cstReleased) return;
 	if(m_joint) dJointDestroy(m_joint);
 	m_joint=NULL;
 	if(m_body) dBodyDestroy(m_body);
+	m_body=NULL;
+
 	if(m_taget_element&&m_taget_object->m_pPhysicsShell)
 	{
-	if(m_taget_object->m_pPhysicsShell->bActive)
-				m_taget_element->set_ObjectContactCallback(0);
-	m_taget_element->set_DynamicLimits();
+		m_taget_element->set_DynamicLimits();
 	}
-	b_failed=true;
 
+	e_state=cstReleased;
+	b_collide=true;
+}
+
+void CPHCapture::Deactivate()
+{
+	Release();
+	if(m_taget_object&&m_taget_element&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->bActive)
+	{
+		m_taget_element->set_ObjectContactCallback(0);
+	}
 }

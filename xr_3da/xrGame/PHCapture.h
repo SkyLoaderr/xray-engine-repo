@@ -15,6 +15,7 @@ virtual				~CPHCapture							();
 
 
 bool				Failed								(){return b_failed;};
+void				Release								();
 
 protected:
 CPHCharacter		*m_character;
@@ -33,18 +34,24 @@ u32					m_time_start;
 CBoneInstance		*m_capture_bone;
 dBodyID				m_body;
 bool				b_failed;
+bool				b_collide;
+
 
 private:
 	enum 
 	{
 	 cstPulling,
-	 cstCaptured
+	 cstCaptured,
+	 cstReleased
 	} e_state;
 
 			void PullingUpdate();
 			void CapturedUpdate();
+			void ReleasedUpdate();
+			void ReleaseInCallBack();
 			void Init(CInifile* ini);
-			void Fail();
+
+			void Deactivate();
 			void CreateBody();
 			bool Invalid(){return 
 							!m_taget_object->m_pPhysicsShell||
@@ -56,7 +63,7 @@ static void object_contactCallbackFun(bool& do_colide,dContact& c);
 
 ///////////CPHObject/////////////////////////////
 	virtual void PhDataUpdate(dReal step);
-	virtual void PhTune(dReal step){};
+	virtual void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};	
 };

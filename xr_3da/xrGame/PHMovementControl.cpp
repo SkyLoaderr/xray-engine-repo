@@ -55,6 +55,7 @@ CPHMovementControl::~CPHMovementControl(void)
 	if(m_character)
 		m_character->Destroy();
 	DeleteCharacterObject();
+	xr_delete(m_capture);
 }
 
 //static Fvector old_pos={0,0,0};
@@ -708,12 +709,20 @@ void	CPHMovementControl::PHCaptureObject(CGameObject* object,int element)
 }
 void CPHMovementControl::PHReleaseObject()
 {
-xr_delete(m_capture);
+	m_capture->Release();
+}
+
+void	CPHMovementControl::DestroyCharacter()
+{
+	m_character->Destroy();
+	xr_delete(m_capture);
+	//xr_delete<CPHSimpleCharacter>(m_character);
 }
 
 void	CPHMovementControl::DeleteCharacterObject()
 {
 	xr_delete(m_character);
+	xr_delete(m_capture);
 }
 
 

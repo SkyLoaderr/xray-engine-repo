@@ -7,12 +7,13 @@ protected:
 	////////////////////////// geometry
 	dGeomID m_geom_shell;
 	dGeomID m_wheel;
-
 	dGeomID m_hat;
+
 	dGeomID m_hat_transform;
-	dGeomID m_geom_group;
 	dGeomID m_wheel_transform;
 	dGeomID m_shell_transform;
+
+	dGeomID m_geom_group;
 	
 	dReal m_radius;
 	dReal m_cyl_hight;
