@@ -8,8 +8,8 @@
 // and may not be copied or disclosed except in accordance with the terms of
 // that agreement.
 
-#ifndef WMLMATH_H
-#define WMLMATH_H
+#ifndef WMLMATHH
+#define WMLMATHH
 
 #include "WmlSystem.h"
 

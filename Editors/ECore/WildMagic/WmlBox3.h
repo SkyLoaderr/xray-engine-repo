@@ -8,8 +8,8 @@
 // and may not be copied or disclosed except in accordance with the terms of
 // that agreement.
 
-#ifndef WMLBOX3_H
-#define WMLBOX3_H
+#ifndef WMLBOX3H
+#define WMLBOX3H
 
 #include "WmlVector3.h"
 
@@ -35,7 +35,7 @@ public:
     Real* Extents ();
     const Real* Extents () const;
 
-    void ComputeVertices (Vector3<Real> akVertex[8]) const;
+//.    void ComputeVertices (Vector3<Real> akVertex[8]) const;
 
 protected:
     Vector3<Real> m_kCenter;

@@ -14,30 +14,30 @@
 using namespace Wml;
 
 //----------------------------------------------------------------------------
-void System::EndianCopy (int iSize, const void* pvSrc, void* pvDst)
+void Wml::System::EndianCopy (int iSize, const void* pvSrc, void* pvDst)
 {
     memcpy(pvDst,pvSrc,iSize);
 }
 //----------------------------------------------------------------------------
-void System::EndianCopy (int iSize, int iQuantity, const void* pvSrc,
+void Wml::System::EndianCopy (int iSize, int iQuantity, const void* pvSrc,
     void* pvDst)
 {
     memcpy(pvDst,pvSrc,iSize*iQuantity);
 }
 //----------------------------------------------------------------------------
-unsigned int System::MakeRGB (unsigned char ucR, unsigned char ucG,
+unsigned int Wml::System::MakeRGB (unsigned char ucR, unsigned char ucG,
     unsigned char ucB)
 {
     return (ucR | (ucG << 8) | (ucB << 16) | (0xFF << 24));
 }
 //----------------------------------------------------------------------------
-unsigned int System::MakeRGBA (unsigned char ucR, unsigned char ucG,
+unsigned int Wml::System::MakeRGBA (unsigned char ucR, unsigned char ucG,
     unsigned char ucB, unsigned char ucA)
 {
     return (ucR | (ucG << 8) | (ucB << 16) | (ucA << 24));
 }
 //----------------------------------------------------------------------------
-double System::GetTime ()
+double Wml::System::GetTime ()
 {
     // 64-bit quantities
     LARGE_INTEGER iFrequency, iCounter;

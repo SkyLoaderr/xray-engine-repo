@@ -34,9 +34,9 @@ MinBox3<Real>::MinBox3 (int iQuantity, const Vector3<Real>* akPoint,
 
     Real afA1[3] =
     {
-        Math<Real>::PI,
+        Math<Real>::_PI,
         Math<Real>::HALF_PI,
-        Math<Real>::PI
+        Math<Real>::_PI
     };
 
     // compute some samples to narrow down the search region
