@@ -99,8 +99,8 @@ void CSector::Render(CFrustum &F)
 				CTempObject* pV = tempObjects[i];
 				if (pV->Alive())
 				{
-					if (Occluders.visibleVisual	(vcc,pV->Visual())!=fcvNone)
-						::Render.add_Static		(pV->Visual(),vcc);
+					if (Occluders.visibleVisual(vcc,pV->Visual())!=fcvNone)
+						::Render.add_leafs_Static(pV->Visual());
 				}
 				else
 				{
