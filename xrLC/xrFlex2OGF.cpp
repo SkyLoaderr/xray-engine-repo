@@ -101,4 +101,9 @@ void CBuild::Flex2OGF()
 		g_tree.push_back	(pOGF);
 		Progress			(p_total+=p_cost);
 	}
+
+	for (u32 m=0; m<mu_refs.size(); m++)
+	{
+		mu_refs[m]->export_ogf	();
+	}
 }

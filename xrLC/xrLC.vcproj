@@ -824,6 +824,9 @@
 					RelativePath="xrMU_Model_Load.cpp">
 				</File>
 				<File
+					RelativePath="xrMU_Model_export_OGF.cpp">
+				</File>
+				<File
 					RelativePath="xrMU_Model_export_cform_game.cpp">
 				</File>
 				<File

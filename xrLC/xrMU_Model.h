@@ -94,6 +94,7 @@ public:
 	void				Load				(CStream& FS);
 	void				export_cform_rcast	(CDB::CollectorPacked& CL);
 	void				export_cform_game	(CDB::CollectorPacked& CL);
+	void				export_ogf			();
 };
 
 extern	poolSS<xrMU_Model::_vertex,256>	mu_vertices;
