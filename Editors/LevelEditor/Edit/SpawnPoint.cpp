@@ -265,12 +265,14 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 if (fraBottomBar->miSpawnPointDrawText->Checked)
                 {
                     AnsiString s_name;
-                    switch (m_Type){
-                    case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
-                    case ptAIPoint: s_name.sprintf("AIPoint"); break;
-                    default: 
-                        if (m_SpawnData.Valid()) s_name	= m_SpawnData.m_Data->s_name;
-                        else THROW;
+					if (m_SpawnData.Valid()){ 
+                    	s_name	= m_SpawnData.m_Data->s_name;
+                    }else{
+                        switch (m_Type){
+                        case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
+                        case ptAIPoint: s_name.sprintf("AIPoint"); break;
+                        default: THROW2("CSpawnPoint:: Unknown Type");
+                        }
                     }
                     FVF::TL	P;
                     float 			cx,cy;

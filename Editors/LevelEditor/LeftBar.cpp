@@ -230,7 +230,7 @@ void __fastcall TfraLeftBar::MenuItem9Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebObjectListClick(TObject *Sender)
 {
-	UI.Command( COMMAND_OBJECT_LIST );
+	UI.Command( COMMAND_SHOW_OBJECTLIST );
 }
 //---------------------------------------------------------------------------
 

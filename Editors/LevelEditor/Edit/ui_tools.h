@@ -56,7 +56,8 @@ class TUI_Tools{
     enum{
     	flChangeAction		= (1<<0),
         flChangeTarget		= (1<<1),
-        flUpdateProperties	= (1<<2)
+        flUpdateProperties	= (1<<2),
+        flUpdateObjectList	= (1<<3)
     };
     
     int				iNeedAction;
@@ -77,6 +78,7 @@ class TUI_Tools{
     void __fastcall OnPropsClose	();
 
     void			RealUpdateProperties();
+    void			RealUpdateObjectList();
 public:
                     TUI_Tools		();
     virtual         ~TUI_Tools		();
@@ -129,7 +131,7 @@ public:
     
     void			ShowProperties	();
     void			HideProperties	();
-    void			UpdateProperties(){m_Flags.set(flUpdateProperties,TRUE);}
+    void			UpdateProperties(){m_Flags.set(flUpdateProperties|flUpdateObjectList,TRUE);}
 };
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();

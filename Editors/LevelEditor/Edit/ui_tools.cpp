@@ -3,6 +3,7 @@
 
 #include "ui_tools.h"
 #include "ui_control.h"
+#include "cursor3d.h"
 #include "UI_CustomTools.h"
 #include "LeftBar.h"
 #include "TopBar.h"
@@ -408,6 +409,7 @@ void __fastcall TUI_Tools::OnFrame()
             if(m_Flags.is(flChangeAction)) 		SetAction(iNeedAction);
         }
         if (m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
+        if (m_Flags.is(flUpdateObjectList)) 	RealUpdateObjectList();
         if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
     }
 }
@@ -430,12 +432,21 @@ void __fastcall TUI_Tools::Render()
     case esEditLightAnim:
     case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
     }
+    // draw cursor
+    UI.m_Cursor->Render();
 }
 //---------------------------------------------------------------------------
 
 void TUI_Tools::ShowObjectList()
 {
 	pObjectListForm->ShowObjectList();
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::RealUpdateObjectList()
+{
+	pObjectListForm->UpdateObjectList();
+	m_Flags.set(flUpdateObjectList,FALSE);
 }
 //---------------------------------------------------------------------------
 

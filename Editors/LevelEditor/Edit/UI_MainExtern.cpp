@@ -33,8 +33,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_CHANGE_TARGET:
 	  	Tools.ChangeTarget(p1);
         break;
-	case COMMAND_OBJECT_LIST:
-        if (GetEState()!=esEditScene) Tools.ShowObjectList();
+	case COMMAND_SHOW_OBJECTLIST:
+        if (GetEState()==esEditScene) Tools.ShowObjectList();
         break;
     case COMMAND_LIBRARY_EDITOR:
         if (Scene.ObjCount()||(GetEState()!=esEditScene)){
@@ -474,7 +474,7 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
         	else if (Key=='9')  		{Command(COMMAND_CHANGE_TARGET, etSector);      bExec=true;}
         	else if (Key=='0')  		{Command(COMMAND_CHANGE_TARGET, etPortal);      bExec=true;}
             // simple press             
-        	else if (Key=='W')			{Command(COMMAND_OBJECT_LIST);                  bExec=true;}
+        	else if (Key=='W')			{Command(COMMAND_SHOW_OBJECTLIST);              bExec=true;}
         	else if (Key==VK_DELETE)	{Command(COMMAND_DELETE_SELECTION);             bExec=true;}
         	else if (Key==VK_RETURN)	{Command(COMMAND_SHOW_PROPERTIES);              bExec=true;}
             else if (Key==VK_OEM_MINUS)	{Command(COMMAND_HIDE_SEL, FALSE);              bExec=true;}

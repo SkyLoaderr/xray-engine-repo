@@ -10,6 +10,7 @@
 #include "folderlib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 //---------------------------------------------------------------------------
 TfrmObjectList* TfrmObjectList::CreateForm(TWinControl* parent)
@@ -40,10 +41,16 @@ void __fastcall TfrmObjectList::HideObjectList()
 	Hide();
 }
 
+void __fastcall TfrmObjectList::UpdateObjectList()
+{
+	if (Visible&&!bLockUpdate) sbRefreshListClick(0);
+}
+
 //---------------------------------------------------------------------------
 __fastcall TfrmObjectList::TfrmObjectList(TComponent* Owner)
     : TForm(Owner)
 {
+	bLockUpdate = false;
 }
 
 void __fastcall TfrmObjectList::sbCloseClick(TObject *Sender)
@@ -54,9 +61,6 @@ void __fastcall TfrmObjectList::sbCloseClick(TObject *Sender)
 
 void __fastcall TfrmObjectList::FormShow(TObject *Sender)
 {
-	Left = 0; Top = 45;
-    tmRefreshSelection->Enabled = true;
-    tmRefreshList->Enabled = true;
     obj_count = 0;
     cur_cls = OBJCLASS_DUMMY;
 	tvItems->FilteredVisibility = ((rgSO->ItemIndex==1)||(rgSO->ItemIndex==2));
@@ -160,19 +164,17 @@ void TfrmObjectList::UpdateState()
 
 void TfrmObjectList::UpdateSelection()
 {
+	bLockUpdate = true;
+    
 	Scene.SelectObjects( false, (EObjClass)cur_cls );
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
         if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
     UI.RedrawScene();
+    
+	bLockUpdate = false;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmObjectList::tvItemsItemSelectedChange(
-      TObject *Sender, TElTreeItem *Item)
-{
-    UpdateSelection();
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmObjectList::ebHideSelClick(TObject *Sender)
 {
@@ -208,29 +210,12 @@ void __fastcall TfrmObjectList::tmRefreshListTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmObjectList::tmRefreshSelectionTimer(TObject *Sender)
-{
-    // disable UpdateSelection
-    tvItems->OnItemSelectedChange = 0;
-
-    if ((Scene.ObjCount()!=obj_count)||(cur_cls!=Tools.CurrentClassID()))
-		InitListBox();
-//    UpdateListBox();
-
-    // enable UpdateSelection
-    tvItems->OnItemSelectedChange = tvItemsItemSelectedChange;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmObjectList::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-    tmRefreshSelection->Enabled 	= false;
-    tmRefreshList->Enabled 			= false;
-
-    tvItems->OnItemSelectedChange 	= 0;
-    tvItems->Items->Clear			();
-    tvItems->OnItemSelectedChange 	= tvItemsItemSelectedChange;
+    tvItems->IsUpdating 	= true;
+    tvItems->Items->Clear	();
+    tvItems->IsUpdating 	= false;
 }
 //---------------------------------------------------------------------------
 
@@ -256,6 +241,12 @@ void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     FHelper.RestoreSelection(tvItems,node);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmObjectList::tvItemsItemFocused(TObject *Sender)
+{
+    UpdateSelection();
 }
 //---------------------------------------------------------------------------
 
