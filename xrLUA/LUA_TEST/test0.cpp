@@ -850,8 +850,36 @@ void register_smth1	(module_ &module_ref)
 struct A1 {};
 struct A2 : virtual public A1 {};
 
+struct B1{
+	virtual void unique(){}
+	virtual void unique(const B1&){}
+};
+
+struct B2 : public B1 {
+	using B1::unique;
+	virtual void unique(const B2 &){}
+};
+
+struct B3 : public B2 {
+	using B2::unique;
+	virtual void unique(const B3 &){}
+};
+
 void test1()
 {
+	B1  b1;
+	B2	b2;
+	B3	b3;
+	
+	b2.unique		();
+	b2.unique		(b1);
+	b2.unique		(b2);
+	
+	b3.unique		();
+	b3.unique		(b1);
+	b3.unique		(b2);
+	b3.unique		(b3);
+
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
