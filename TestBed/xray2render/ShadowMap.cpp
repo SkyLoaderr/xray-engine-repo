@@ -551,20 +551,25 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 	// Bloom-combine VB
 	{
-		TVERTEXbloom	*V;
-		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float  eps= 0.01f;
-		const float _w	= w-1.f, _h = h-1.f;
-		const float thw = .5f/w;
-		const float thh = .5f/h;
+		const float	 w		= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
+		const float	 bw		= float(m_d3dsdBackBuffer.Width/2),	bh = float(m_d3dsdBackBuffer.Height/2);
+		const float	 _bw	= bw-1,	_bh = bh-1;
+		const float  eps	= 0.01f;
 
 		// uv-offsets
+		D3DXVECTOR2		one	= D3DXVECTOR2(1./w,1./h);
+		D3DXVECTOR2		half= D3DXVECTOR2(.5/w,.5/h);
 		D3DXVECTOR2		offs[4];
-		offs[0]			= D3DXVECTOR2();
+		offs[0]				= D3DXVECTOR2(-half.x,-half.y);
+		offs[1]				= D3DXVECTOR2(+half.x,-half.y);
+		offs[2]				= D3DXVECTOR2(-half.x,+half.y);
+		offs[3]				= D3DXVECTOR2(+half.x,+half.y);
 
-		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
-		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
-		pDstT[0].p	= D3DXVECTOR4(0+eps, _h+eps,	0.001f, 1.0f);
+		// Create and fill VB
+		TVERTEXbloom	*V;
+		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEXbloom), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pBloom_Combine_VB, NULL);
+		m_pBloom_Combine_VB->Lock			(0, 0, (void**)&V, 0);
+		pDstT[0].p	= D3DXVECTOR4(0+eps, _bh+eps,	0.001f, 1.0f);
 		pDstT[0].tu = 0.0f+thw;
 		pDstT[0].tv = 1.0f+thh;
 
@@ -1486,6 +1491,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Set Bloom 1
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
 	m_pd3dDevice->SetDepthStencilSurface	(NULL);
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
 
 	// samplers and texture (diffuse + gloss)
 	m_pd3dDevice->SetTexture				(0, d_Color);
@@ -1551,8 +1557,11 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		TRUE);
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget		);
+	m_pd3dDevice->SetDepthStencilSurface	(pBaseZB);
 	return S_OK;
 }
 
