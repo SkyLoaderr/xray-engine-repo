@@ -38,22 +38,22 @@ void OGF::Save			(CFS_Base &fs)
 	// Vertices
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
-	bool bNeedLighting	=	FALSE;
+	bool bNeedNormals	=	(SH->flags.bSaveNormals);
 	DWORD	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
 							(bVertexColors?D3DFVF_DIFFUSE:0) |
-							(bNeedLighting?D3DFVF_NORMAL:0);
+							(bNeedNormals?D3DFVF_NORMAL:0);
 	
 	switch (H.type) 
 	{
 	case MT_CACHED:			
-		Save_Cached		(fs,H,FVF,bVertexColors,bNeedLighting);		
+		Save_Cached		(fs,H,FVF,bVertexColors,bNeedNormals);		
 		break;
 	case MT_NORMAL:			
 	case MT_PROGRESSIVE:
-		Save_Normal_PM	(fs,H,FVF,bVertexColors,bNeedLighting);		
+		Save_Normal_PM	(fs,H,FVF,bVertexColors,bNeedNormals);		
 		break;
 	case MT_PROGRESSIVE_STRIPS:
-		Save_Progressive(fs,H,FVF,bVertexColors,bNeedLighting);		
+		Save_Progressive(fs,H,FVF,bVertexColors,bNeedNormals);		
 		break;
 	}
 
@@ -63,7 +63,7 @@ void OGF::Save			(CFS_Base &fs)
 	fs.close_chunk		();
 }
 
-void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
+void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: cached");
 	fs.open_chunk	(OGF_VERTICES);
@@ -71,7 +71,7 @@ void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BO
 	fs.Wdword		(vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bLighting)		fs.write(V,6*sizeof(float));	// Position & normal
+		if (bNeedNormals)	fs.write(V,6*sizeof(float));	// Position & normal
 		else				fs.write(V,3*sizeof(float));	// Position only
 		if (bColors)		fs.write(&(V->Color),4);
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)
@@ -81,12 +81,12 @@ void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BO
 	
 	// Faces
 	fs.open_chunk(OGF_INDICES);
-	fs.Wdword(faces.size()*3);
+	fs.Wdword	(faces.size()*3);
 	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.write(F,3*sizeof(WORD));
 	fs.close_chunk();
 }
 
-void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
+void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: normal or clod");
 
@@ -95,7 +95,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	g_VB.Begin		(FVF);
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bLighting)		g_VB.Add(V,6*sizeof(float));	// Position & normal
+		if (bNeedNormals)		g_VB.Add(V,6*sizeof(float));	// Position & normal
 		else				g_VB.Add(V,3*sizeof(float));	// Position only
 		if (bColors)		g_VB.Add(&(V->Color),4);
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)
@@ -144,7 +144,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 
 extern	void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
-void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
+void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg				("- saving: progressive");
 
@@ -168,7 +168,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 		vertices			= vertices_saved;
 		faces				= faces_saved;
 		Stripify			();
-		Save_Normal_PM		(fs,H,FVF,bColors,bLighting);
+		Save_Normal_PM		(fs,H,FVF,bColors,bNeedNormals);
 		return;
 	}
 
@@ -256,7 +256,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 				g_VB.Begin(FVF);
 				for (itOGF_V V=strip_verts.begin(); V!=strip_verts.end(); V++)
 				{
-					if (bLighting)		g_VB.Add(V,6*sizeof(float));	// Position & normal
+					if (bNeedNormals)		g_VB.Add(V,6*sizeof(float));	// Position & normal
 					else				g_VB.Add(V,3*sizeof(float));	// Position only
 					if (bColors)		g_VB.Add(&(V->Color),4);
 					for (DWORD uv=0; uv<dwRelevantUV; uv++)
