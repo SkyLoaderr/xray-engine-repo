@@ -1,5 +1,5 @@
 function main()
-	wait(5000)
+	wait(25000)
 
 	local 	actor = get_actor()
 	local 	stalker = get_level_object("m_stalker_demo0001") 
