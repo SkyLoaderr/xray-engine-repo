@@ -50,7 +50,7 @@ function action_bodyguard_activity:initialize()
 	self.object:set_movement_type(move.run)
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_mental_state(anim.free)
-	self.object:set_sight(look.search, nil, 0)
+	self.object:set_sight(look.danger, nil, 0)
 	--self.object:set_sight(look.path_dir, nil, 0)
 	--self.object:set_sight(look.danger, nil, 0)
 
@@ -95,7 +95,7 @@ function action_bodyguard_activity:reset_scheme()
 	self.object:set_movement_type(move.walk)
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-	self.object:set_sight(look.search, nil, 0)
+	self.object:set_sight(look.danger, nil, 0)
 
 	self.state = state_moving
 end	
