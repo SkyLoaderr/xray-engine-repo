@@ -247,7 +247,7 @@ void CRender::Calculate()
 	calc_DetailTexturing					();
 	set_Object								(0);
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
-	pCreator->pHUD->Render_Calcualte		();	
+	pCreator->pHUD->Render_Calculate		();	
 	L_Shadows.calculate						();
 	L_Projector.calculate					();
 	

@@ -24,7 +24,7 @@ public:
 
 	virtual		void		Load					(){;}
 	
-	virtual		void		Render_Calcualte		() {;}
+	virtual		void		Render_Calculate		() {;}
 	virtual		void		Render_Affected			() {;}
 	virtual		void		Render_Direct			() {;}
 	

@@ -101,7 +101,7 @@ void CHUDManager::OnFrame()
 
 ENGINE_API extern float psHUD_FOV;
 
-void CHUDManager::Render_Calcualte()
+void CHUDManager::Render_Calculate()
 {
 	if (!psHUD_Flags.test(HUD_WEAPON))return;
 	if (0==pUI)						return;
