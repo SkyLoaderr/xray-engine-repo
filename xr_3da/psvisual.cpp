@@ -230,7 +230,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 			if (sz>p_size)		p_size = sz;
 			
             Fvector D;
-			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
+			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) {
 				Fvector p;
                 float PT = T-0.1f;
 				float kk = PT/(P->m_Time.end-P->m_Time.start);
