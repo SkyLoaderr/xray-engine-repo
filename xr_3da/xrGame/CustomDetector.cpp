@@ -20,7 +20,7 @@ ZONE_INFO::~ZONE_INFO	()
 
 CCustomDetector::CCustomDetector(void) 
 {
-	TurnOff();
+	m_bWorking = false;
 	m_belt = true;
 }
 
