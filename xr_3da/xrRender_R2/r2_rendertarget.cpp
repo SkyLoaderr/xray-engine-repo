@@ -246,7 +246,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		// Build material(s)
 		{
 			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,1,0,D3DFMT_A8L8,D3DPOOL_MANAGED,&t_material_surf));
 			t_material					= Device.Resources->_CreateTexture(r2_material);
 			t_material->surface_set		(t_material_surf);
 
@@ -257,13 +257,13 @@ void	CRenderTarget::OnDeviceCreate	()
 			{
 				for (u32 x=0; x<TEX_material_LdotN; x++)
 				{
-					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
+					u16*	p	=	(u16*)		(LPBYTE (R.pBits) + y*R.Pitch + x*2);
 					float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
 					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
 							ls	*=	powf		(ld,1/4.f);							// minimize specular where diffuse near zero
 					s32		_d	=	iFloor		(ld*255.5f);						clamp(_d,0,255);
 					s32		_s	=	iFloor		(powf(ls,ps_r2_ls_spower)*255.5f);	clamp(_s,0,255);
-					*p			=	color_rgba	(_d,_d,_d,_s);
+					*p			=	_s*256 + _d;	// color_rgba	(_d,_d,_d,_s);
 				}
 			}
 			R_CHK						(t_material_surf->UnlockRect	(0));

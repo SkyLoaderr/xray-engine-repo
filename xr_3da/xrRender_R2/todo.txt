@@ -8,9 +8,9 @@ done, works OK			:	3*32	bit RTs		- position/normal compression
 done, works OK			:	bilinear/q-linear filter for cubemaps
 done, works OK			:	1*DXT5	bumpmaps	- lower quality, 8 bit, faster
 ----------------------------
-						:	U8V8	encoding of encodeRG
+						:	A8L8	encoding of encodeRG
 						:	L8		encoding of encodeB + mov instead add
-						:	U8V8	encoding of material
+						:	A8L8	encoding of material
 ----------------------------
 work out tonemapping	(?)
 xrLC geometry selection for point/spot lights
