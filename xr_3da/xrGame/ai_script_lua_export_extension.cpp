@@ -255,6 +255,10 @@ void CScriptEngine::export_memory_objects()
 		class_<MemorySpace::SMemoryObject>("memory_object")
 			.def_readonly("game_time",		&MemorySpace::SMemoryObject::m_game_time)
 			.def_readonly("level_time",		&MemorySpace::SMemoryObject::m_level_time)
+			.def_readonly("last_game_time",	&MemorySpace::SMemoryObject::m_last_game_time)
+			.def_readonly("last_level_time",&MemorySpace::SMemoryObject::m_last_level_time)
+			.def_readonly("first_game_time",&MemorySpace::SMemoryObject::m_first_game_time)
+			.def_readonly("first_level_time",&MemorySpace::SMemoryObject::m_first_level_time)
 			.def_readonly("update_count",	&MemorySpace::SMemoryObject::m_update_count),
 
 		class_<MemorySpace::CMemoryObject<CEntityAlive>,MemorySpace::SMemoryObject>("entity_memory_object")
