@@ -1,6 +1,7 @@
 #pragma once
 
 #include "r__dsgraph_structure.h"
+#include "r__occlusion.h"
 
 #include "PSLibrary.h"
 
