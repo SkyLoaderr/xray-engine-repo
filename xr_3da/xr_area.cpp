@@ -12,34 +12,36 @@ using namespace	Collide;
 
 IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
 
+void	IGame_Level::SoundEvent	( ref_sound* S, float range )
+{
+	const CSound_params*	p	= S->feedback->get_params();
+	VERIFY					(p);
+
+	// Query objects
+	Fvector					bb_size	= {range,range,range};
+	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,p->position,bb_size);
+
+	// Iterate
+	xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
+	xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
+	for (; it!=end; it++)
+	{
+		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(*it);
+		if (0==L)			continue;
+
+		// Energy and signal
+		float D				= p->position.distance_to((*it)->spatial.center);
+		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
+		clamp				(A,0.f,1.f);
+		float Power			= A*p->volume;
+		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
+	}
+}
+
 void __stdcall _sound_event	(ref_sound* S, float range)
 {
-#pragma todo("Check why sometimes 'S->feedback==0'")
-	if ( S&&S->feedback )
-	{
-		const CSound_params*	p	= S->feedback->get_params();
-		VERIFY					(p);
-
-		// Query objects
-		Fvector					bb_size	= {range,range,range};
-		g_SpatialSpace->q_box	(0,STYPE_REACTTOSOUND,p->position,bb_size);
-
-		// Iterate
-		xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
-		xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
-		for (; it!=end; it++)
-		{
-			Feel::Sound* L		= dynamic_cast<Feel::Sound*>(*it);
-			if (0==L)			continue;
-
-			// Energy and signal
-			float D				= p->position.distance_to((*it)->spatial.center);
-			float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
-			clamp				(A,0.f,1.f);
-			float Power			= A*p->volume;
-			if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
-		}
-	}
+	if ( g_pGameLevel && S && S->feedback )
+		g_pGameLevel->SoundEvent(S,range);
 }
 
 //----------------------------------------------------------------------

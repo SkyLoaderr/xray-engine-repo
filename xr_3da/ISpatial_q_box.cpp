@@ -55,16 +55,17 @@ public:
 	}
 };
 
-void	ISpatial_DB::q_box			(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector& _center, const Fvector& _size)
+void	ISpatial_DB::q_box			(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector& _center, const Fvector& _size)
 {
 	cs.Enter			();
-	q_result.clear		();
+	q_result			= &R;
+	q_result->clear		();
 	if (_o & O_ONLYFIRST)			{ walker<true>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 
 	else							{ walker<false>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 
 	cs.Leave			();
 }
 
-void	ISpatial_DB::q_sphere		(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector& _center, const float _radius)
+void	ISpatial_DB::q_sphere		(xr_vector<ISpatial*>& R, u32 _o, u32 _mask, const Fvector& _center, const float _radius)
 {
 	Fvector			_size			= {_radius,_radius,_radius};
 	q_box							(_o,_mask,_center,_size);

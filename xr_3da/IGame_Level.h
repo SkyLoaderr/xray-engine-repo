@@ -44,6 +44,7 @@ public:
 	xr_set<CPS_Instance*>		ps_active;
 	xr_vector<CPS_Instance*>	ps_destroy;
 	xr_vector<CPS_Instance*>	ps_needtoplay;
+	xr_vector<ISpatial*>		snd_ER;					// event receivers
 public:
 	// Main, global functions
 	IGame_Level					();
@@ -66,6 +67,7 @@ public:
 	CObject*					CurrentEntity			( void ) const							{ return pCurrentEntity; }
 	CObject*					CurrentViewEntity		( void ) const							{ return pCurrentViewEntity; }
 	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O; }
+	void						SoundEvent				( ref_sound* S, float range );
 
 	// Loader interface
 	ref_shader					LL_CreateShader			(int S, int T, int M, int C);
