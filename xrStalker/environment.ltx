@@ -133,10 +133,10 @@ blend_down_time				= 300 ;(сек)
 [weathers]
 ;groza          = sect_groza
 ;default			= sect_default
-all             = sect_all
+;all             = sect_all
 ;sarkofag        = sect_sarkofag
 ;aaa             = sect_aaa
-
+vibros           =sect_vibros
 
 [sect_default]
 00:00:00		=	default_01
@@ -291,25 +291,81 @@ sun_dir			=	-28.0, 292
 
 
 
-[environment]
+[sect_vibros]
 
-5				=	e_05
-6				=	e_06
-7				=	e_07
-8				=	e_08
-9				=	e_09
-10				=	e_10
-11				=	e_11
-12				=	e_12
-13				=	e_13
-14				=	e_14
-15				=	e_15
-;;16				=	e_16
-17				=	e_17
-18				=	e_18
-19				=	e_19
-20  			=	e_20
-21	    		=	e_21
+01:00:00	   		=	v_01
+02:00:00	   		=	v_01
+03:00:00	   		=	v_01
+04:00:00	   		=	v_01
+05:00:00			=	v_01
+06:00:00			=	v_01
+07:00:00			=	v_01
+08:00:00			=	v_01
+09:00:00			=	v_01
+10:00:00			=	v_01
+11:00:00			=	v_01
+12:00:00			=	v_01
+12:05:00			=	v_02
+12:10:00			=	v_01
+13:00:00			=	v_01
+14:00:00			=	v_01
+15:00:00			=	v_01
+16:00:00			=	v_01
+17:00:00			=	v_01
+18:00:00			=	v_01
+19:00:00			=	v_01
+20:00:00  			=	v_01
+21:00:00	   		=	v_01
+22:00:00	   		=	v_01
+23:00:00	   		=	v_01
+00:00:00	   		=	v_01
+
+
+
+[v_01]
+flares			=	
+sky_texture		=	sky\sky_13_cube
+sky_rotation	=	0
+sky_color		=	0.50,	0.50,	0.50
+far_plane		=	300
+fog_color		=	0.204, 0.200, 0.204
+fog_density		=	0.9
+rain_density	=	0.6
+rain_color		=	0.70,	0.70,	0.70
+thunderbolt		= 	on
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.01,   0.01,  	0.01
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	0.757, 0.855, 1.000
+sun_color		=	0.000, 0.000, 0.000
+sun_dir			=	-26.0, 292.0
+
+
+
+[v_02]
+flares			=	
+sky_texture		=	sky\sky_13_vibros_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	200
+fog_color		=	0.365, 0.455, 0.443
+fog_density		=	0.9
+rain_density	=	0.50
+rain_color		=	0.70,	0.70,	0.70
+thunderbolt		= 	on
+bolt_period		=	2.f
+bolt_duration	=	0.25f
+wind_velocity	=	0.0 
+wind_direction	=	0.0
+ambient			=	0.03,   0.04,  	0.04
+lmap_color		=	1.0,    1.0,  	1.0
+hemi_color		=	1.365, 1.455, 1.443
+sun_color		=	0.000, 0.000, 0.000
+sun_dir			=	-26.0, 292.0
+
 
 ;___________________________________________________________________
 ;___________________________________________________________________
