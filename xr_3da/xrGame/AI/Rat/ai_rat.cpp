@@ -81,7 +81,14 @@ void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
 	inherited::Load(section);
-	
+
+	/*
+	CVisual*	temp;
+	temp = ::Render->model_Create("aaa");	::Render->model_Delete(temp);
+	temp = ::Render->model_Create("bbb");	::Render->model_Delete(temp);
+	temp = ::Render->model_Create("ccc");	::Render->model_Delete(temp);
+	*/
+
 	// initialize start position
 	Fvector	P						= vPosition;
 	P.x								+= ::Random.randF();
