@@ -44,7 +44,7 @@ function decide (npc, sos)
     -- Чайник. Идем на помощь, если здоровья 75 и более процентов. 
     -- Тип помощи 50:50 - или мы ему продадим, то, что ему надо или просто так дадим
     if rel == dummy then
-       if health < 0.75 return sos_ignore end
+       if health < 0.75 then return sos_ignore end
        if math.random (1, 100) < 50 then return sos_help end
        return sos_mercant 
     end
