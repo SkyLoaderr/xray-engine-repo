@@ -57,7 +57,6 @@ public:
 
 	// AI
 	AI::AIC_Look		q_look;
-	AI::AIC_Look		q_torso_look;
 	AI::AIC_Action		q_action;
 	Fvector				tWatchDirection;
 	float				m_fMinSpeed;

@@ -19,8 +19,8 @@
 #define mNode(x)			(this->Node(x))
 #define MAX_VALUE			100000.0
 #define MAX_NODES			4096
-#define fLightWeight		5.f //5
-#define fCoverWeight		10.f //10
+#define fLightWeight		0.f //5
+#define fCoverWeight		0.f //10
 #define fDistanceWeight		40.f
 #define fEnemyViewWeight	100.f
 
@@ -56,7 +56,7 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fLight*fLightWeight + fCover*fCoverWeight + fDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + 0*fYSize2*SQR(y2 - y1))));
 	/**/
 }
 

@@ -27,6 +27,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierDie,
 		aiSoldierFindEnemy,
 		aiSoldierFollowLeader,
+		aiSoldierFollowLeaderPatrol,
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		aiSoldierJumping,
@@ -115,6 +116,7 @@ class CAI_Soldier : public CCustomMonster
 		void Defend();
 		void FindEnemy();
 		void FollowLeader();
+		void FollowLeaderPatrol();
 		void FreeHunting();
 		void Injuring();
 		void Jumping();
