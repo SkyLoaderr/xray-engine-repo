@@ -19,7 +19,7 @@ enum {
 	M_CHAT,						// DUAL:
 
 	M_EVENT,					// Game Event
-	MSG_FORCEDWORD				= DWORD(-1)
+	MSG_FORCEDWORD				= u32(-1)
 };
 
 enum {
@@ -34,7 +34,7 @@ enum {
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
 
-	GE_FORCEDWORD				= DWORD(-1)
+	GE_FORCEDWORD				= u32(-1)
 };
 
 enum
@@ -45,7 +45,7 @@ enum
 	M_SPAWN_OBJECT_ASPLAYER		= (1<<3),	// after spawn it must become viewable
 	M_SPAWN_OBJECT_PHANTOM		= (1<<4),	// after spawn it must become viewable
 
-	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
+	M_SPAWN_OBJECT_FORCEDWORD	= u32(-1)
 };
 
 enum
@@ -53,7 +53,7 @@ enum
 	M_UPDATE_WEAPON_wfWorking	= (1<<0),
 	M_UPDATE_WEAPON_wfVisible	= (1<<1),
 
-	M_UPDATE_WEAPON_FORCEDWORD	= DWORD(-1)
+	M_UPDATE_WEAPON_FORCEDWORD	= u32(-1)
 };
 
 /*
@@ -171,7 +171,7 @@ M_SPAWN
 
 M_UPDATE
 {
-	DWORD	server_time;	// only for server2client update
+	u32	server_time;	// only for server2client update
 
 	header
 	{
@@ -180,7 +180,7 @@ M_UPDATE
 	}
 	actor 
 	{
-		DWORD		timestamp;
+		u32		timestamp;
 		u8			flags;
 		vec3		pos;
 		u8			mstate;		// checked and verified keyboard/motion state
@@ -195,7 +195,7 @@ M_UPDATE
 
 	enemy
 	{
-		DWORD		timestamp;
+		u32		timestamp;
 		u8			flags;
 		vec3		pos;
 		u8			state_data_size;
@@ -206,7 +206,7 @@ M_UPDATE
 
 	weapon
 	{
-		DWORD		timestamp;
+		u32		timestamp;
 		u8			flags;				// wf_working, wf_visible=selected or independent,  
 		u8			state;
 

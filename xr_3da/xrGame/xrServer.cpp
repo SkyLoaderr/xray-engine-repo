@@ -27,7 +27,7 @@ xrClientData*	xrServer::ID_to_client		(DPNID ID)
 {
 	if (0==ID)			return 0;
 	csPlayers.Enter		();
-	for (DWORD client=0; client<net_Players.size(); client++)
+	for (u32 client=0; client<net_Players.size(); client++)
 	{
 		if (net_Players[client]->ID==ID)	{
 			csPlayers.Leave		();
@@ -70,7 +70,7 @@ void xrServer::Update	()
 	u32				position;
 
 	// spawn queue
-	DWORD svT				= Device.TimerAsync();
+	u32 svT				= Device.TimerAsync();
 	while (!(q_respawn.empty() || (svT<q_respawn.begin()->timestamp)))
 	{
 		// get
@@ -87,7 +87,7 @@ void xrServer::Update	()
 
 	// 
 	csPlayers.Enter		();
-	for (DWORD client=0; client<net_Players.size(); client++)
+	for (u32 client=0; client<net_Players.size(); client++)
 	{
 		// Initialize process and check for available bandwidth
 		xrClientData*	Client	= (xrClientData*) net_Players	[client];
@@ -132,7 +132,7 @@ void xrServer::Update	()
 	csPlayers.Leave		();
 }
 
-DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
+u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
 	u16			type;
 	P.r_begin	(type);

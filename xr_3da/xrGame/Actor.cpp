@@ -13,7 +13,7 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const DWORD		patch_frames	= 50;
+const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
 
@@ -38,7 +38,7 @@ static Fbox		bbCrouchBox;
 static Fvector	vFootCenter;
 static Fvector	vFootExt;
 
-DWORD			psActorFlags=0;
+u32			psActorFlags=0;
 
 //--------------------------------------------------------------------
 void CActor::net_Export	(NET_Packet& P)					// export to server
@@ -76,7 +76,7 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
-	P.r_u16				(tmp			); N.mstate = DWORD(tmp);
+	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
@@ -450,7 +450,7 @@ void CActor::UpdateCL()
 	}
 }
 
-void CActor::Update	(DWORD DT)
+void CActor::Update	(u32 DT)
 {
 	if (!getEnabled())	return;
 	if (!Ready())		return;
@@ -506,12 +506,12 @@ void CActor::Update	(DWORD DT)
 		}
 	} else {
 		// distinguish interpolation/extrapolation
-		DWORD	dwTime		= Level().timeServer()-NET_Latency;
+		u32	dwTime		= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
 			// BAD.	extrapolation
-			DWORD	delta				= dwTime-N.dwTimeStamp;
+			u32	delta				= dwTime-N.dwTimeStamp;
 
 			if (NET_WasInterpolating)
 			{
@@ -536,7 +536,7 @@ void CActor::Update	(DWORD DT)
 
 			// Search 2 keyframes for interpolation
 			int select		= -1;
-			for (DWORD id=0; id<NET.size()-1; id++)
+			for (u32 id=0; id<NET.size()-1; id++)
 			{
 				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
 			}
@@ -548,8 +548,8 @@ void CActor::Update	(DWORD DT)
 				// Interpolate state
 				net_update&	A	= NET[0];
 				net_update&	B	= NET[1];
-				DWORD	d1		= dwTime-A.dwTimeStamp;
-				DWORD	d2		= B.dwTimeStamp - A.dwTimeStamp;
+				u32	d1		= dwTime-A.dwTimeStamp;
+				u32	d2		= B.dwTimeStamp - A.dwTimeStamp;
 				float	factor	= (float(d1)/float(d2));
 				NET_Last.lerp	(A,B,factor);
 				
@@ -612,7 +612,7 @@ void CActor::OnVisible()
 	if (W)					W->OnVisible		();
 }
 
-void CActor::g_cl_ValidateMState(float dt, DWORD mstate_wf)
+void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// изменилось состояние
 	if (mstate_wf != mstate_real)
@@ -674,7 +674,7 @@ void CActor::g_cl_ValidateMState(float dt, DWORD mstate_wf)
 	}
 }
 
-void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
+void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
 {
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
@@ -709,7 +709,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 		}
 		
 		// mask input into "real" state
-		DWORD move	= mcAnyMove|mcAccel;
+		u32 move	= mcAnyMove|mcAccel;
 		mstate_real &= (~move);
 		mstate_real |= (mstate_wf & move);
 		
@@ -749,7 +749,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 	mOrient.transform_dir(vControlAccel);
 }
 
-void CActor::g_Orientate	(DWORD mstate_rl, float dt)
+void CActor::g_Orientate	(u32 mstate_rl, float dt)
 {
 	// visual effect of "fwd+strafe" like motion
 	float calc_yaw = 0;
@@ -779,7 +779,7 @@ void CActor::g_Orientate	(DWORD mstate_rl, float dt)
 }
 
 // ****************************** Update actor orientation according to camera orientation
-void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
+void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
 	if (cam_active!=eacFreeLook){
@@ -808,7 +808,7 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 	}
 }
 
-void CActor::g_sv_Orientate(DWORD mstate_rl, float dt)
+void CActor::g_sv_Orientate(u32 mstate_rl, float dt)
 {
 	// rotation
 	r_model_yaw		= NET_Last.o_model;

@@ -39,7 +39,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
-	DWORD			mode			= net_flags(TRUE,TRUE);
+	u32			mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
 	game->OnPlayerConnect			(CL->ID,CL->Name);
