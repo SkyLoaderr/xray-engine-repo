@@ -291,6 +291,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else							ST = &m_anims->m_normal;
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
+		else							AS = &ST->m_walk;
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;

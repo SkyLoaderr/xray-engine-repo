@@ -20,6 +20,7 @@ public:
 	virtual	void		Disable								();
 	virtual	void		Jump								(const Fvector& jump_velocity);
 	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
+			void		SetRestrictorRadius					(float r);
 						CPHActorCharacter					(float restrictor_radius);
 	virtual				~CPHActorCharacter					(void);
 };

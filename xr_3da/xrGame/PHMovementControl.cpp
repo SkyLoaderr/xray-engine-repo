@@ -624,6 +624,8 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 void CPHMovementControl::SetActorRestrictorRadius(float r)
 {
 	fActorRestrictorRadius=r;
+	if(m_character&&eCharacterType==actor)
+		static_cast<CPHActorCharacter*>(m_character)->SetRestrictorRadius(r);
 }
 void CPHMovementControl::Load					(LPCSTR section){
 
@@ -710,8 +712,9 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	switch(type)
 	{
 	case actor:			m_character = xr_new<CPHActorCharacter>	(fActorRestrictorRadius);	break;
-	case ai:	m_character = xr_new<CPHAICharacter>	()							;	break;
+	case ai:			m_character = xr_new<CPHAICharacter>	()							;	break;
 	}
+	eCharacterType=type;
 	m_character->SetMas(fMass);
 	m_character->SetPosition(vPosition);
 }

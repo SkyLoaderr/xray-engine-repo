@@ -36,7 +36,16 @@ void CPHActorCharacter::Create(dVector3 sizes)
 	dSpaceAdd(m_space,m_restrictor_transform);
 	dGeomUserDataSetPhObject(m_restrictor,(CPHObject*)this);
 }
-
+void CPHActorCharacter::SetRestrictorRadius(float r)
+{
+	m_restrictor_radius=r;
+	if(b_exist)
+	{
+		float h;
+		dGeomCylinderGetParams(m_restrictor,&r,&h);
+		dGeomCylinderSetParams(m_restrictor,m_restrictor_radius,h);
+	}
+}
 void CPHActorCharacter::Destroy()
 {
 	if(!b_exist) return;

@@ -60,7 +60,7 @@ public:
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
-
+	CharacterType		eCharacterType;
 	CPHCharacter*		m_character;
 	CPHCapture  *		m_capture;
 
