@@ -155,7 +155,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
 	CInventoryItem	*l_tpInventoryItem	= dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 
-	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem || !l_tpInventoryItem->H_Parent()) {
+	if (!inherited::bfAssignObject(tpEntityAction) || !l_tObjectAction.m_tpObject || !l_tpInventoryItem) {
 		if (!inventory().ActiveItem()) {
 			CObjectHandler::set_dest_state	(eObjectActionNoItems);
 		}
@@ -168,7 +168,8 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		return	((l_tObjectAction.m_bCompleted = (CObjectHandler::current_state_id() == CObjectHandler::dest_state_id())) == false);
 	}
 
-	
+	if (!l_tpInventoryItem->H_Parent())
+		return			(true);
 
 	CWeapon				*l_tpWeapon				= dynamic_cast<CWeapon*>(inventory().ActiveItem());
 //	CWeaponMagazined	*l_tpWeaponMagazined	= dynamic_cast<CWeaponMagazined*>(inventory().ActiveItem());
