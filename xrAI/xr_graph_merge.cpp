@@ -126,9 +126,6 @@ public:
 				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
 				VERIFY				(u32(tCrossTableUpdate[i].tGraphIndex) < tpCrossTable->header().game_vertex_count());
 				tCrossTableUpdate[i].tGraphIndex += dwOffset;
-				if (tCrossTableUpdate[i].tGraphIndex == 953) {
-					tCrossTableUpdate[i].tGraphIndex = tCrossTableUpdate[i].tGraphIndex;
-				}
 			}
 
 			CMemoryWriter					tMemoryStream;
