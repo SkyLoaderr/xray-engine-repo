@@ -734,6 +734,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\lbaselib.c">
@@ -749,6 +755,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -768,6 +780,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\liolib.c">
@@ -783,6 +801,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -802,6 +826,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\loadlib.c">
@@ -817,6 +847,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -836,6 +872,12 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\ltablib.c">
@@ -851,6 +893,12 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -876,6 +924,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						CompileAs="2"/>
