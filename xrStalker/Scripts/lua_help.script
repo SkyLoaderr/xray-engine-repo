@@ -1363,6 +1363,7 @@ C++ class property_storage {
 
 C++ class cpure_server_object : ipure_server_object {
 };
+render_device* get_device();
 
 C++ class render_device {
     property aspect_ratio;
