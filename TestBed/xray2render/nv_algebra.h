@@ -391,8 +391,8 @@ struct DECLSPEC_NV_MATH mat3
     };
 };
 
-const vec3 operator*(const mat3&, const vec3&);
-const vec3 operator*(const vec3&, const mat3&);
+const vec3 __cdecl operator*(const mat3&, const vec3&);
+const vec3 __cdecl operator*(const vec3&, const mat3&);
 
 struct DECLSPEC_NV_MATH mat4
 {
@@ -482,9 +482,9 @@ struct DECLSPEC_NV_MATH mat4
     };
 };
 
-const vec4 operator*(const mat4&, const vec4&);
-const vec4 operator*(const vec4&, const mat4&);
-
+const vec4 __cdecl operator*(const mat4&, const vec4&);
+const vec4 __cdecl operator*(const vec4&, const mat4&);
+	
 // quaternion
 struct DECLSPEC_NV_MATH quat {
 public:
