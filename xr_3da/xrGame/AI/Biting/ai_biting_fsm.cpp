@@ -39,7 +39,7 @@ void CAI_Biting::Think()
 	CTimer T;
 	T.Start();
 	
-	update_path				();
+	//update_path				();
 
 	if (T.GetElapsed_sec() > 0.1f)  {
 		// Time checker	
@@ -60,19 +60,19 @@ void CAI_Biting::Think()
 		LOG_EX("Desirable Mask: ");
 		u32 m = desirable_mask();
 		
-		if ((m & eMovementParameterStand) == eMovementParameterStand) {
-			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterStand);
-			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-		} 
-		if ((m & eMovementParameterWalkFree) == eMovementParameterWalkFree) {
-			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterWalkFree);
-			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-		}
-		
-		if ((m & eMovementParameterRunFree) == eMovementParameterRunFree) {
-			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterRunFree);
-			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-		}
+//		if ((m & eMovementParameterStand) == eMovementParameterStand) {
+//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterStand);
+//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+//		} 
+//		if ((m & eMovementParameterWalkFree) == eMovementParameterWalkFree) {
+//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterWalkFree);
+//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+//		}
+//		
+//		if ((m & eMovementParameterRunFree) == eMovementParameterRunFree) {
+//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterRunFree);
+//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+//		}
 		
 		LOG_EX2("Start dir: [yaw = %f]", *"*/m_body.current.yaw /*"*);
 
@@ -103,7 +103,7 @@ void CAI_Biting::SetVelocity()
 		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
 			next_point_velocity = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
 
-		if ((velocity_index == eMovementParameterStand) && (next_point_velocity != u32(-1))) {
+		if ((velocity_index == eVelocityParameterStand) && (next_point_velocity != u32(-1))) {
 			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
 				velocity_index = next_point_velocity;
 			}
@@ -123,15 +123,25 @@ void CAI_Biting::PreprocessAction()
 	if (IsMovingOnPath()) {
 		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
 
-		if (velocity_index == eMovementParameterStand) MotionMan.m_tAction = ACT_STAND_IDLE;
-		else if (velocity_index == eMovementParameterWalkFree) MotionMan.m_tAction = ACT_WALK_FWD;
-		else if (velocity_index == eMovementParameterRunFree) MotionMan.m_tAction = ACT_RUN;
+		if (velocity_index == eVelocityParameterStand) MotionMan.m_tAction = ACT_STAND_IDLE;
+		else if (velocity_index == eVelocityParameterWalkNormal) MotionMan.m_tAction = ACT_WALK_FWD;
+		else if (velocity_index == eVelocityParameterRunNormal) MotionMan.m_tAction = ACT_RUN;
+
+		else if (velocity_index == eVelocityParameterWalkDamaged) {
+			MotionMan.m_tAction = ACT_WALK_FWD;
+		} else if (velocity_index == eVelocityParameterRunDamaged) {
+			MotionMan.m_tAction = ACT_RUN;
+		} else if (velocity_index == eVelocityParameterSteal) {
+			MotionMan.m_tAction = ACT_STEAL;
+		} else if (velocity_index == eVelocityParameterDrag) {
+			MotionMan.m_tAction = ACT_DRAG;
+		}
 
 		u32 next_point_velocity = u32(-1);
 		if (CDetailPathManager::path().size() > curr_travel_point_index() + 1) 
 			next_point_velocity = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
 
-		if ((velocity_index == eMovementParameterStand) && (next_point_velocity != u32(-1))) {
+		if ((velocity_index == eVelocityParameterStand) && (next_point_velocity != u32(-1))) {
 			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
 				MotionMan.m_tAction = ACT_RUN;
 			}

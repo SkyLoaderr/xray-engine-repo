@@ -49,8 +49,8 @@ void CBitingTest::Run()
 		CMovementManager::ePathTypeLevelPath, 
 		vertex_id, 
 		ai().level_graph().vertex_position(vertex_id),
-		pMonster->eMovementParameterAnyType,
-		pMonster->eMovementParameterRunFree | pMonster->eMovementParameterWalkFree
+		pMonster->eVelocityParamsRun,
+		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterRunNormal
 	);
 
 }

@@ -138,14 +138,20 @@ class CAI_Biting : public CCustomMonster,
 public:
 
 	enum EMovementParameters {
-		eMovementParameterStand						= u32(1) <<  4,
-		eMovementParameterWalkFree					= u32(1) <<  3,
-		eMovementParameterRunFree					= u32(1) <<  2,
+		eVelocityParameterStand			= u32(1) <<  4,
+		eVelocityParameterWalkNormal	= u32(1) <<  3,
+		eVelocityParameterRunNormal		= u32(1) <<  2,
+		
+		eVelocityParameterWalkDamaged	= u32(1) <<  5,
+		eVelocityParameterRunDamaged	= u32(1) <<  6,
+		eVelocityParameterSteal			= u32(1) <<  7,
+		eVelocityParameterDrag			= u32(1) <<  8,
 
-		eMovementParameterAnyType					= eMovementParameterStand | eMovementParameterWalkFree | eMovementParameterRunFree,
+		eVelocityParamsWalk				= eVelocityParameterStand | eVelocityParameterWalkNormal,
+		eVelocityParamsRun				= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsAttackNorm		= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsAttackDamaged	= eVelocityParameterStand | eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
 	};
-
-
 
 public:
 	

@@ -50,10 +50,6 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	m_movement_params.insert(std::make_pair(eMovementParameterStand		,STravelParams(0.f,	inherited::_sd->m_fsTurnNormalAngular / 2)));
-	m_movement_params.insert(std::make_pair(eMovementParameterWalkFree	,STravelParams(inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular / 2)));
-	m_movement_params.insert(std::make_pair(eMovementParameterRunFree	,STravelParams(inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular / 2 )));
-
 	return TRUE;
 }
 

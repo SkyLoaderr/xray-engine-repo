@@ -201,36 +201,46 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
 
 	bool bEnablePath = true;
-//
-//	switch (m_tAction) {
-//	case ACT_STAND_IDLE:
-//	case ACT_SIT_IDLE:
-//	case ACT_LIE_IDLE:
-//	case ACT_EAT:
-//	case ACT_SLEEP:
-//	case ACT_REST:
-//	case ACT_LOOK_AROUND:
-//		bEnablePath = false;
-//		break;
-//	case ACT_WALK_FWD:
-//		break;
-//	case ACT_WALK_BKWD:
-//		break;
-//	case ACT_RUN:
-//		break;
-//	case ACT_DRAG:
-//		break;
-//	case ACT_ATTACK:
-//		break;
-//	case ACT_STEAL:
-//		break;
-//	case ACT_JUMP:
-//		break;
-//	}
+	u32 vel_mask = 0;
+	u32 des_mask = 0;
+
+	switch (MotionMan.m_tAction) {
+	case ACT_STAND_IDLE: 
+	case ACT_SIT_IDLE:	 
+	case ACT_LIE_IDLE:
+	case ACT_EAT:
+	case ACT_SLEEP:
+	case ACT_REST:
+	case ACT_LOOK_AROUND:
+	case ACT_ATTACK:
+		bEnablePath = false;
+		break;
+	
+	case ACT_WALK_FWD:
+		vel_mask = eVelocityParamsWalk;
+		des_mask = eVelocityParameterWalkNormal;
+		break;
+	case ACT_WALK_BKWD:
+		break;
+	case ACT_RUN:
+		vel_mask = eVelocityParamsRun;
+		des_mask = eVelocityParameterRunNormal;
+		break;
+	case ACT_DRAG:
+		vel_mask = eVelocityParameterDrag;
+		des_mask = eVelocityParameterDrag;
+		break;
+	case ACT_STEAL:
+		vel_mask = eVelocityParameterSteal;
+		des_mask = eVelocityParameterSteal;
+		break;
+	case ACT_JUMP:
+		break;
+	}
 
 	if (bEnablePath) {
-		CDetailPathManager::set_velocity_mask(eMovementParameterAnyType);
-		CDetailPathManager::set_desirable_mask(eMovementParameterRunFree | eMovementParameterWalkFree);
+		CDetailPathManager::set_velocity_mask(vel_mask);
+		CDetailPathManager::set_desirable_mask(des_mask);
 
 		CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
 		CDetailPathManager::set_try_min_time(true);
