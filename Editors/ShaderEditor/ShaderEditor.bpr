@@ -60,7 +60,7 @@
       Intermediate\Blender_Shadow_World.obj Intermediate\NumericVector.obj 
       Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
       Intermediate\Blender_Blur.obj Intermediate\Blender_Model.obj 
-      Intermediate\cpuid.obj Intermediate\_math.obj"/>
+      Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\xrSkin1W.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -74,7 +74,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Editor;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine;Editor;Editor;Engine\BLENDERS;Engine\BLENDERS;Editor;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine;Engine"/>
+    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Editor;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine;Editor;Editor;Engine\BLENDERS;Engine\BLENDERS;Editor;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine;Engine;Engine\Animations"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -241,6 +241,7 @@
       <FILE FILENAME="Engine\BLENDERS\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\cpuid.cpp" FORMNAME="" UNITNAME="cpuid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\_math.cpp" FORMNAME="" UNITNAME="_math.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
