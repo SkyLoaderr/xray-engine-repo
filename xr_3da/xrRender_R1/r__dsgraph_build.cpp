@@ -91,7 +91,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	}
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
-	// d) Should be rendered to special distort buffer in another pass
+	// b) Should be rendered to special distort buffer in another pass
 	if (sh->Flags.bEmissive) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
 		N->val.ssa				= SSA;
@@ -156,6 +156,17 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// d) Should be rendered to accumulation buffer in the second pass
 	if (sh->Flags.bEmissive) {
 		mapSorted_Node* N		= mapEmissive.insertInAnyWay	(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= NULL;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= Fidentity;
+		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
+	}
+	// Distortive geometry should be marked and R2 special-cases it
+	// a) Allow to optimize RT order
+	// b) Should be rendered to special distort buffer in another pass
+	if (sh->Flags.bEmissive) {
+		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;
 		N->val.pVisual			= pVisual;
