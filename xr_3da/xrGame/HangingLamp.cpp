@@ -20,6 +20,7 @@ CHangingLamp::CHangingLamp	()
 	light_render			= 0;
 	light_ambient			= 0;
 	glow_render				= 0;
+	guid_physic_bone		= NULL;
 }
 
 CHangingLamp::~CHangingLamp	()
@@ -135,9 +136,20 @@ void CHangingLamp::UpdateCL	()
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
 		{
-			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
-			xf.mul		(XFORM(),M);
-		} 
+			if(m_pPhysicsShell)
+			{
+				Fmatrix f;
+				guid_physic_bone->InterpolateGlobalTransform(&f);
+				xf.mul(f,guid_bone_offset);
+				//Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
+				//xf.mul		(XFORM(),M);
+			}
+			else
+			{
+				Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
+				xf.mul		(XFORM(),M);
+			} 
+		}
 		else 
 		{
 			xf.set		(XFORM());
@@ -231,14 +243,24 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 		bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()))			;
 	}
 
+	bone_map.insert(mk_pair(guid_bone,physicsBone()));
+
 	m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true,true);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
-	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
+	BONE_P_PAIR_IT g_i= bone_map.find(guid_bone);
+	guid_physic_bone=g_i->second.element;
+	bone_map.erase(g_i);
+	pKinematics->Calculate();
+	Fmatrix InvET;
+	InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
+	InvET.invert();
+	guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
 
+	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
 	for(;i!=e;i++)
 	{
 		CPhysicsElement* fixed_element=i->second.element;

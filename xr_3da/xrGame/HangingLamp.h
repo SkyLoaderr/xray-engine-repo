@@ -26,7 +26,8 @@ private:
 	
 	float			fHealth;
 	float			fBrightness;
-
+	CPhysicsElement * guid_physic_bone;
+	Fmatrix			guid_bone_offset;
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	bool			Alive			(){return fHealth>0.f;}
 
