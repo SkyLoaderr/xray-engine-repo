@@ -51,10 +51,6 @@ void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 
 int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillItems item_fill, void* fill_param, TOnChooseSelectItem item_select, ChooseItemVec* items)
 {
-	if (m_Events.empty()){
-    	VERIFY						(fill_events);
-	    fill_events					();
-    }
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
     form->bMultiSel 				= sel_cnt>1;
