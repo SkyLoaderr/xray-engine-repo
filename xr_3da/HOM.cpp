@@ -96,22 +96,20 @@ void CHOM::Load			()
 	h_Shader			= Device.Shader.Create		("zfill"	);
 	
 	// Debug
-/*
-	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&m_pDBG);
-	R_ASSERT			(m_pDBG);
-	LPCSTR		RTname	= "$user$hom";
-	pStream		= RCache.Create			(FVF::F_TL,4);
-	pTexture	= Device.Shader._CreateTexture	(RTname);
-	pShader		= Device.Shader.Create			("effects\\screen_set",		RTname);
-	pTexture->surface_set	(m_pDBG);
-*/
+	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&dbg_surf,NULL);
+	R_ASSERT				(dbg_surf);
+	LPCSTR		RTname		= "$user$hom";
+	dbg_geom				= Device.Shader.CreateGeom		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	dbg_texture				= Device.Shader._CreateTexture	(RTname);
+	dbg_shader				= Device.Shader.Create			("effects\\screen_set",		RTname);
+	dbg_texture->surface_set(dbg_surf);
 }
 
 void CHOM::Unload		()
 {
 	Device.Shader.Delete		(h_Shader);
 	Device.Shader.DeleteGeom	(h_Geom);
-//	_RELEASE	(m_pDBG);
+	_RELEASE	(dbg_surf);
 	xr_delete	(m_pModel);
 	xr_free		(m_pTris);
 }
@@ -246,7 +244,7 @@ void CHOM::Render_ZB	()
 	RCache.set_xform_world			(Fidentity);
 	RCache.set_Shader				(m_Shader);
 	RCache.set_Indices		(0,0);
-	RCache.set_Vertices	(m_VS->dwHandle,m_VS->vb_stride,RCache.Vertex.Buffer());
+	RCache.set_Vertices		(m_VS->dwHandle,m_VS->vb_stride,RCache.Vertex.Buffer());
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
@@ -255,25 +253,22 @@ void CHOM::Render_ZB	()
 
 void CHOM::Debug		()
 {
-	return;
-
-/*
 	// Texture
 	D3DLOCKED_RECT		R;
-	R_CHK				(m_pDBG->LockRect(0,&R,0,0));
+	R_CHK				(dbg_surf->LockRect(0,&R,0,0));
 	for (int y=0; y<occ_dim_0; y++)
 	{
 		for (int x=0; x<occ_dim_0; x++)
 		{
 			int*	pD	= Raster.get_depth_level(0);
 			int		D	= pD[y*occ_dim_0+x];
-			int		V	= iFloor(Raster.d2float(D)*255.f);
+			int		V	= iFloor	(Raster.d2float(D) * 255.f);
 			clamp	(V,0,255);
 			u32	C	= D3DCOLOR_XRGB(V,V,V);
 			LPDWORD(R.pBits)[y*occ_dim_0+x]	= C;
 		}
 	}
-	m_pDBG->UnlockRect	(0);
+	dbg_surf->UnlockRect	(0);
 	
 	// UV
 	Fvector2		p0,p1;
@@ -281,19 +276,19 @@ void CHOM::Debug		()
 	p1.set			((occ_dim_0+.5f)/occ_dim_0, (occ_dim_0+.5f)/occ_dim_0);
 	
 	// Fill vertex buffer
-	u32 Offset, C=0xffffffff;
+	u32 vOffset, C=0xffffffff;
 	u32 _w = occ_dim_0*2, _h = occ_dim_0*2;
-	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
+	FVF::TL* pv		= (FVF::TL*) RCache.Vertex.Lock(4,dbg_geom->vb_stride,vOffset);
 	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
 	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	pStream->Unlock			(4);
+	RCache.Vertex.Unlock			(4,dbg_geom->vb_stride);
 	
 	// Actual rendering
-	RCache.set_Shader(pShader);
-	RCache.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
-*/
+	RCache.set_Shader	(dbg_shader);
+	RCache.set_Geometry	(dbg_geom);
+	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
 
 IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)

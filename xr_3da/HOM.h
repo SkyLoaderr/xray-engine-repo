@@ -18,10 +18,10 @@ private:
 	Shader*					h_Shader;
 	SGeometry*				h_Geom;
 
-//	IDirect3DTexture9*		m_pDBG;
-//	CTexture*				pTexture;
-//	Shader*					pShader;
-//	CVertexStream*			pStream;
+	IDirect3DTexture9*		dbg_surf;
+	CTexture*				dbg_texture;
+	Shader*					dbg_shader;
+	SGeometry*				dbg_geom;
 	
 	void					Render_DB	(CFrustum& base);
 public:
