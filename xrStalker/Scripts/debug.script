@@ -1,0 +1,43 @@
+
+function ggg()
+	local A = {x="x",y="1",z=1,a={ss="hello",xx=2,tt=76,qq=12345}}
+	local B = {x="x",y="1",z=1,a={ss="hello",xx=2,tt=76,qq=12345}}
+	local b = 8
+	local c = 88
+end
+
+
+function vo_blin()
+	local q = 56
+	local a = 78
+	printf("vo blin!")
+end
+
+function nu_blin()
+	printf("nu blin!")
+	local d = 4
+	local w = 14
+	this.vo_blin()
+end
+
+--printf("blin!")
+--nu_blin()
+--printf("blin!")
+--vo_blin()
+--printf("blin!")
+--nu_blin()
+--printf("blin!")
+
+function bbb_blin()
+  local andy = "hello world"
+	this.nu_blin()
+end
+
+function main()
+   printf("------------line")
+   this.bbb_blin()
+   this.ggg()
+--   local gg = _G
+	 printf( "HELLO")
+
+end
