@@ -386,7 +386,8 @@ protected:
 public:
 	// Проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
 	// возможности купить предыдущее оружие установленное в слотах, если нет денег.
-	void		CheckBuyAvailabilityInSlots();
+	// Return:	true - если в все оружие в слотах мы можем купить.
+	bool		CheckBuyAvailabilityInSlots();
 	// Устанавливаем режим работы с деньгами: игнорировать, или нет.
 	void		IgnoreMoney(bool ignore)		{ m_bIgnoreMoney = ignore; }
 	// Получаем количество денег

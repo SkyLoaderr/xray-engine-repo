@@ -1781,7 +1781,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInShop()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
+bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 {
 	// массив приоритетов слотов при проверке
 	const int arrSize = 5;
@@ -1793,6 +1793,8 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 		GRENADE_SLOT,
 		KNIFE_SLOT
 	};
+
+	bool status = true;
 
 	// ѕробегаемс€ по вещам в слотах, и смотрим есть ли
 	// денежки на эту вещь. ≈сли есть, то отнимаем цену вещи
@@ -1814,6 +1816,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 				else
 				{
 					pDDItemMP->SetColor(cUnableToBuy);
+					status = false;
 
 					// ƒл€ армора закрациваем дополнительно и иконку с изображением персонажа
 					if (OUTFIT_SLOT == pDDItemMP->GetSlot())
@@ -1848,11 +1851,16 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 				(*it)->SetColor(cAbleToBuy);
 			}
 			else
+			{
 				(*it)->SetColor(cUnableToBuy);
+				status = false;
+			}
 		}
 		else
 			(*it)->SetColor(cAbleToBuyOwned);
 	}
+
+	return status;
 }
 
 //////////////////////////////////////////////////////////////////////////
