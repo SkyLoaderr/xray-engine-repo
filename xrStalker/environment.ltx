@@ -97,8 +97,8 @@ source_texture          = fx\fx_moon.tga
 source_shader			= effects\moon
 source_ignore_color		= true
 blend_time				= 10
-blend_rise_time				= 10 ;(сек)
-blend_down_time				= 10 ;(сек)
+blend_rise_time				= 120 ;(сек)
+blend_down_time				= 120 ;(сек)
 
 
 [flares_sun_rise]
@@ -129,7 +129,6 @@ blend_down_time				= 300 ;(сек)
 [weathers]
 ;groza          = sect_groza
 default			= sect_default
-;normal			= sect_normal
 all            = sect_all
 
 
@@ -180,47 +179,6 @@ lmap_color		=	1.0,    1.0,  	1.0
 hemi_color		=	0.757, 0.855, 1.000
 sun_color		=	0.000, 0.000, 0.000
 sun_dir			=	-25.0, 292.0
-
-[sect_normal]
-00:00:00		=	normal_01
-05:00:00		=	normal_02
-
-[normal_01]
-flares			=	flares_aaa			
-sky_texture		=	sky\sky_13_cube_night
-sky_rotation	=	0
-sky_color		=	1.0,	1.0,	1.0
-far_plane		=	350
-fog_color		=	0.098, 0.102, 0.169
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-wind_velocity	=	20.0 
-wind_direction	=	90.0
-ambient			=	0.02,   0.02,  	0.02
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	0.30,	0.30,	0.50
-sun_color		=	0.0,    0.0,  	0.0
-sun_dir			=	-31.0, 296
-
-[normal_02]
-flares			=	flares_bbb		
-sky_texture		=	sky\sky_5_cube
-sky_rotation	=	0
-sky_color		=	0.50,	0.50,	0.50
-far_plane		=	300
-fog_color		=	0.133, 0.125, 0.110
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-wind_velocity	=	20.0 
-wind_direction	=	-90.0
-ambient			=	0.06,   0.06,  	0.06
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	0.50,	0.50,	0.50
-sun_color		=	0.0,    0.0,  	0.0
-sun_dir			=	-3.0, 292
-
 
 
 
@@ -819,7 +777,7 @@ sky_texture		=	sky\sky_17_cube
 sky_rotation	=	0
 sky_color		=	0.5,	0.5,	0.5
 far_plane		=	400
-fog_color		=	0.135,	0.125,	0.11
+fog_color		=	0.165, 0.169, 0.212
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
