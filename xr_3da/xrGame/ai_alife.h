@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_alife.h
 //	Created 	: 25.12.2002
-//  Modified 	: 25.12.2002
+//  Modified 	: 29.12.2002
 //	Author		: Dmitriy Iassenev
 //	Description : A-Life simulation
 ////////////////////////////////////////////////////////////////////////////
@@ -17,21 +17,21 @@
 #define ALIFE_CHUNK_DATA				0x0002
 	
 class CAI_ALife : public CSheduled {
-private:
+public:
 	typedef CSheduled inherited;
-	
-	typedef struct tagSUsefulObject {
-		u16						wSpawnPoint;
-		u16						wCount;
-	} SUsefulObject;
 	
 	typedef struct tagSSpawnHeader {
 		u32						dwVersion;
 		u32						dwCount;
 	} SSpawnHeader;
 
+	typedef struct tagSNPCHeader {
+		u32						dwVersion;
+		u32						dwCount;
+	} SNPCHeader;
+
 	typedef struct tagSSpawnPoint {
-		u16						wGraphPoint;
+		u16						wNearestGraphPoint;
 		string64				caModel;
 		u8						ucTeam;
 		u8						ucSquad;
@@ -46,16 +46,20 @@ private:
 		vector<u16>				wpRouteGraphPoints;
 	} SSpawnPoint;
 
-	typedef struct tagSNPCHeader {
-		u32						dwVersion;
-		u32						dwCount;
-	} SNPCHeader;
-
-	typedef struct tagSALifeNPC {
-		u16						wGraphPoint;
-		u16						wCount;
+	typedef struct tagSUsefulObject {
 		u16						wSpawnPoint;
+		u16						wCount;
+	} SUsefulObject;
+	
+	typedef struct tagSALifeNPC {
 		u32						dwLastUpdateTime;
+		u16						wSpawnPoint;
+		u16						wCount;
+		u16						wGraphPoint;
+		u16						wNextGraphPoint;
+		float					fSpeed;
+		float					fDistanceFromPoint;
+		s32						iHealth;
 		vector<SUsefulObject>	tpUsefulObject;
 	} SALifeNPC;
 
@@ -79,6 +83,9 @@ private:
 	void						vfInitTerrain		();
 	void						vfInitLocationOwners();
 	void						vfInitGraph			();
+	// temporary
+	void						vfGenerateSpawnPoints(u32 dwSpawnCount);
+	void						vfSaveSpawnPoints	();
 
 public:
 								CAI_ALife			();

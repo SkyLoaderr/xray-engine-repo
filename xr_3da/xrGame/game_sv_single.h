@@ -6,8 +6,8 @@
 class	game_sv_Single				: public game_sv_GameState
 {
 private:
-	CAI_ALife						m_tALife;
 public:
+	CAI_ALife						m_tALife;
 									game_sv_Single			(){};
 	virtual							~game_sv_Single			(){};
 	virtual		void				Create					(LPCSTR options);
