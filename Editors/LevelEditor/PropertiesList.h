@@ -211,6 +211,7 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TMultiObjSpinEdit *seNumber;
 	TEdit *edText;
+	TBevel *Bevel1;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
