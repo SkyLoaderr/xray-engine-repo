@@ -50,8 +50,8 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	float				fRadius;
 
 	// Prepare
-	if					(0==O)																return;
-	if					(!O->renderable_ShadowGenerate() && !O->renderable_ShadowReceive())	return;
+	if					(0==O)																	return;
+	if					((!O->renderable_ShadowGenerate()) && (!O->renderable_ShadowReceive()))	return;
 
 	CLightTrack* pROS	= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
 	R_ASSERT			(pROS);
