@@ -152,7 +152,7 @@ void CAI_Zombie::vfUpdateDynamicObjects()
 
 }
 
-void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float power)
+void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
 {
 	#ifdef WRITE_LOG
 		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);

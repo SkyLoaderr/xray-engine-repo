@@ -80,6 +80,14 @@ protected:
 		CEntity			*tpEntity;
 	} SDynamicSound;
 
+	typedef struct tagSSimpleSound {
+		ESoundTypes		eSoundType;
+		DWORD			dwTime;
+		float			fPower;
+		Fvector			tSavedPosition;
+		CEntity			*tpEntity;
+	} SSimpleSound;
+
 public:
 	enum EBodyStates {
 		BODY_STATE_STAND=0,
@@ -246,7 +254,6 @@ public:
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
 	virtual objQualifier*	GetQualifier		();
-	virtual	void			soundEvent			(CObject* who, int type, Fvector& Position, float power) {};
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
 	CWeaponList			*	tpfGetWeapons		(){return Weapons;}

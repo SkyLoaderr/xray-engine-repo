@@ -34,7 +34,7 @@ class CAI_Rat : public CCustomMonster
 
 	protected:
 		
-		vector<SDynamicSound>	tpaDynamicSounds;
+		SSimpleSound			m_tLastSound;
 		DWORD					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
 		int						m_iSoundIndex;
@@ -292,6 +292,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  Exec_Action(float dt);
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual objQualifier* GetQualifier();
+		virtual	void  feel_sound_new(CObject* who, int type, Fvector& Position, float power);
 };
 		
 #endif

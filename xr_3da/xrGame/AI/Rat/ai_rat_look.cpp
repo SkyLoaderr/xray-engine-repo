@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\ai_sounds.h"
 
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
@@ -123,4 +124,35 @@ objQualifier* CAI_Rat::GetQualifier	()
 void CAI_Rat::vfUpdateDynamicObjects()
 {
 
+}
+
+void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
+{
+	#ifdef WRITE_LOG
+		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+	#endif
+
+	if (g_Health() <= 0)
+		return;
+	
+	power *= ffGetStartVolume(ESoundTypes(eType));
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+		power = 1.f;//expf(.1f*log(power));
+
+//	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
+	if (power >= 0.1) {
+		if (this != who) {
+			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+			m_tLastSound.eSoundType		= ESoundTypes(eType);
+			m_tLastSound.dwTime			= Level().timeServer();
+			m_tLastSound.fPower			= power;
+			m_tLastSound.tSavedPosition = Position;
+			m_tLastSound.tpEntity		= tpEntity;
+		}
+	}
+	// computing total power of my own sounds for computing tha ability to hear the others
+//	if (m_fSoundPower < power) {
+//		m_fSoundPower = m_fStartPower = power;
+//		m_dwSoundUpdate = dwTime;
+//	}
 }

@@ -205,6 +205,11 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE(aiRatAttackFire)
 	}
 
+	if (Level().timeServer() - m_tLastSound.dwTime <= DWORD(iFloor(m_fTimeUpdateDelta*1000) + 100)) {
+		tSavedEnemy = m_tLastSound.tpEntity;
+		SWITCH_TO_NEW_STATE(aiRatAttackFire);
+	}
+
 	m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
@@ -259,7 +264,6 @@ void CAI_Rat::FreeHunting()
 //		SWITCH_TO_NEW_STATE(aiRatAttackFire)
 //	}
 //
-//	m_tSpawnPosition.set(m_tSafeSpawnPosition);
 //	m_fGoalChangeDelta		= 10.f;
 //	m_tVarGoal.set			(10.0,0.0,20.0);
 //	m_fASpeed				= .2f;
@@ -297,7 +301,7 @@ void CAI_Rat::FreeHunting()
 //		}
 //	AI_Path.TravelPath.clear();
 //}
-
+//
 void CAI_Rat::Think()
 {
 	bStopThinking = false;

@@ -730,7 +730,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
-		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
+		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);
 };
 		
 #endif

@@ -33,7 +33,7 @@ CAI_Rat::CAI_Rat()
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_bFiring = false;
-	tpaDynamicSounds.clear();
+	m_tLastSound.dwTime = 0;
 	m_fSensetivity = 0.f;
 	m_iSoundIndex = -1;
 	m_dwLastUpdate = 0;
