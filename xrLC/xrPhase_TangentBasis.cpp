@@ -106,12 +106,12 @@ void CBuild::xrPhase_TangentBasis()
 		Face*	F				= g_faces[f];
 		for (u32 v=0; v<3; v++)
 		{
-			u32	id						=	o_indices	[f*3+v];	// vertex index
-			F->tc.front().uv[v].set		(o_tc		[id*3+0],	o_tc		[id*3+1]);
-			F->basis_tangent.set		(o_tangent	[id*3+0],	o_tangent	[id*3+1],	o_tangent	[id*3+2]);
-			F->basis_binormal.set		(o_binormal	[id*3+0],	o_binormal	[id*3+1],	o_binormal	[id*3+2]);
-			F->basis_tangent.normalize	();
-			F->basis_binormal.normalize	();
+			u32	id							=	o_indices	[f*3+v];	// vertex index
+			F->tc.front().uv[v].set			(o_tc		[id*3+0],	o_tc		[id*3+1]);
+			F->basis_tangent[v].set			(o_tangent	[id*3+0],	o_tangent	[id*3+1],	o_tangent	[id*3+2]);
+			F->basis_binormal[v].set		(o_binormal	[id*3+0],	o_binormal	[id*3+1],	o_binormal	[id*3+2]);
+			F->basis_tangent[v].normalize	();
+			F->basis_binormal[v].normalize	();
 		}
 	}
 }
