@@ -205,7 +205,7 @@ function Monster:process ()
 	else
        if enemy ~= self.target then 
 		  reset_action (self.npc, self.script)
-		  action (self.npc, move (move.act_run, move.force_type, enemy), cond (cond.time_end))
+		  action (self.npc, move (move.act_run, move.force_type, enemy.npc), cond (cond.time_end))
 	   end	  
 	end   
 
