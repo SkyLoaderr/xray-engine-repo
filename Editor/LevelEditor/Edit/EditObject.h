@@ -13,6 +13,7 @@ class 	CSMotion;
 class 	COMotion;
 class 	CCustomMotion;
 class	CBone;
+class	Shader;
 class	Mtl;
 struct	FSChunkDef;
 struct	st_ObjectDB;
