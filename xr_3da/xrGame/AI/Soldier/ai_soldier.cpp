@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-#define WRITE_LOG
+//#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
@@ -268,8 +268,8 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 				}
 	
 
-	Msg("%8.2f",fCover);
-	if (fCover > 0.2f*255.f) {
+	//Msg("%8.2f",fCover);
+	if (fCover > 0.05f*255.f) {
 		q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
 		q_look.o_look_speed=8*_FB_look_speed;
 	}

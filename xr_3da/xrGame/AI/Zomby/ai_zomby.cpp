@@ -279,7 +279,7 @@ IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const float fRadius, 
 	float fDist1 = SQR(tCenter.x - tpSubNode.tLeftDown.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
 	float fDist2 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tLeftDown.z);
 	float fDist3 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
-	return(min(fDist0,min(fDist1,min(fDist2,fDist3))) <= fRadius*fRadius + EPSILON);
+	return(min(fDist0,min(fDist1,min(fDist2,fDist3))) <= (fRadius - 0.5f)*(fRadius - 0.5f) + EPSILON);
 }
 
 IC bool CAI_Zomby::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
@@ -840,7 +840,7 @@ void CAI_Zomby::Attack()
 			}
 			/**/
 			else {
-				/**
+				/**/
 				tSavedEnemy = Enemy.Enemy;
 				tSavedEnemyPosition = Enemy.Enemy->Position();
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
@@ -888,9 +888,9 @@ void CAI_Zomby::Attack()
 					S.m_tEnemyPosition	= Enemy.Enemy->Position();
 					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 					
-					S.taMembers = Squad.Groups[g_Group()].Members;
-					if (S.m_tLeader)
-						S.taMembers.push_back(S.m_tLeader);
+					//S.taMembers = Squad.Groups[g_Group()].Members;
+					//if (S.m_tLeader)
+					//	S.taMembers.push_back(S.m_tLeader);
 					// building a path from and to
 					AI_Path.DestNode = dwSavedEnemyNodeID;
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
@@ -963,13 +963,13 @@ void CAI_Zomby::FreeHunting()
 		}
 		else {
 			// checking if I am under fire
-			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
+			if ((Level().timeServer() - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiZombyUnderFire;
 				return;
 			}
 			else {
-				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
+				if ((Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime)) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiZombySenseSomething;
 					return;

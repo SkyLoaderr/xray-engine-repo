@@ -117,6 +117,17 @@ void CAI_Rat::Death()
 	q_action.setup(AI::AIC_Action::FireEnd);
 	eCurrentState = aiRatDie;
 
+	/**/
+	Fvector tAcceleration;
+	tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
+	vfNormalizeSafe(tAcceleration);
+	tAcceleration.mul(5);
+	Movement.SetPosition(vPosition);
+	Movement.Calculate	(tAcceleration,0,0,0.01f,false);
+	Movement.GetPosition(vPosition);
+	UpdateTransform	();
+	/**/
+	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
