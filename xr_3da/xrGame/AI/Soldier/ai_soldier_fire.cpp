@@ -280,9 +280,9 @@ DWORD CAI_Soldier::tfGetActionType()
 		if (Group.Members[i]->g_Health() > 0)
 			dwMemberCount++;
 
-	if (dwMemberCount > 0)
-		return(ACTION_TYPE_GROUP);
-	else
+//	if (dwMemberCount > 0)
+//		return(ACTION_TYPE_GROUP);
+//	else
 		return(ACTION_TYPE_ALONE);
 }
 
@@ -342,13 +342,13 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 	float fFightCoefficient = 0.f, fTempCoefficient;
 	CCustomMonster *tpCustomMonster = 0;
 
-	if (KnownEnemies.size() == 1) {
+	if (Enemy.Enemy) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(KnownEnemies[0].key);
 		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge() && !bfCheckHistoryForState(aiSoldierAttackAloneFireFire,100000))
 			return(FIGHT_TYPE_ATTACK);
 	}
 
-	if (!KnownEnemies.size())
+	if (!Enemy.Enemy)
 		if (tSavedEnemy)
 			if (bfCheckHistoryForState(aiSoldierRetreatAloneNonFire,10000) || bfCheckHistoryForState(aiSoldierRetreatAloneFire,10000))
 				return(FIGHT_TYPE_RETREAT);

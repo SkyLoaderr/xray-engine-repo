@@ -208,6 +208,16 @@ void CAI_Soldier::OnVisible()
 	//return(0);
 }
 
+Fvector tfGetDirection(CEntity *tpEntity)
+{
+	Fvector tDirection;
+	if (tpEntity->ps_Size() > 1)
+		tDirection.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition);
+	else
+		tDirection.set(1,0,0);
+	return(tDirection);
+}
+
 void CAI_Soldier::vfUpdateDynamicObjects()
 {
 	ai_Track.o_get(tpaVisibleObjects);
@@ -226,6 +236,7 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				tpaDynamicObjects[j].dwNodeID = tpEntity->AI_NodeID;
 				tpaDynamicObjects[j].tSavedPosition = tpEntity->Position();
 				tpaDynamicObjects[j].tOrientation = tfGetOrientation(tpEntity);
+				//tpaDynamicObjects[j].tDirection = tfGetDirection(tpEntity);
 				tpaDynamicObjects[j].dwMyNodeID = AI_NodeID;
 				tpaDynamicObjects[j].tMySavedPosition = Position();
 				tpaDynamicObjects[j].tMyOrientation = r_torso_current;
@@ -246,6 +257,7 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 					tpaDynamicObjects[dwIndex].dwNodeID = tpEntity->AI_NodeID;
 					tpaDynamicObjects[dwIndex].tSavedPosition = tpEntity->Position();
 					tpaDynamicObjects[dwIndex].tOrientation = tfGetOrientation(tpEntity);
+					//tpaDynamicObjects[dwIndex].tDirection = tfGetDirection(tpEntity);
 					tpaDynamicObjects[dwIndex].dwMyNodeID = AI_NodeID;
 					tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
 					tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
@@ -259,6 +271,7 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				tDynamicObject.dwNodeID = tpEntity->AI_NodeID;
 				tDynamicObject.tSavedPosition = tpEntity->Position();
 				tDynamicObject.tOrientation = tfGetOrientation(tpEntity);
+				//tDynamicObject.tDirection = tfGetDirection(tpEntity);
 				tDynamicObject.dwMyNodeID = AI_NodeID;
 				tDynamicObject.tMySavedPosition = Position();
 				tDynamicObject.tMyOrientation = r_torso_current;

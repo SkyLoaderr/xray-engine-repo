@@ -282,17 +282,25 @@ void CAI_Soldier::OnFindAloneFire()
 	if (m_bActionStarted) {
 		int iIndex = ifFindDynamicObject(tSavedEnemy);
 		if (iIndex != -1) {
-			
-			vfInitSelector(SelectorRetreat,Squad,Leader);
-			
-			if (AI_Path.bNeedRebuild)
-				vfBuildPathToDestinationPoint(0);
+			if (this == Leader) {
+			}
 			else {
-				SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
-				SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
-				SelectorRetreat.m_tMyPosition = vPosition;
-				SelectorRetreat.m_tpMyNode = AI_Node;
-				vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+				if (AI_Path.bNeedRebuild) {
+					vfInitSelector(SelectorAttack,Squad,Leader);
+					SelectorAttack.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+					SelectorAttack.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+					SelectorAttack.m_tMyPosition = vPosition;
+					SelectorAttack.m_tpMyNode = AI_Node;
+					vfBuildPathToDestinationPoint(&SelectorAttack);
+				}
+				else {
+					vfInitSelector(SelectorRetreat,Squad,Leader);
+					SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+					SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+					SelectorRetreat.m_tMyPosition = vPosition;
+					SelectorRetreat.m_tpMyNode = AI_Node;
+					vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+				}
 			}
 		}
 		else
@@ -306,7 +314,7 @@ void CAI_Soldier::OnFindAloneFire()
 		vfSetMovementType(RUN_FORWARD_3);
 	}
 	else
-		if (bfCheckForDangerPlace() && (!bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart].P,.5f) || (r_torso_target.yaw - r_torso_current.yaw > EPS_L))) {
+		if (bfCheckForDangerPlace() && (((!bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart].P,.5f)) && (bfTooBigDistance(AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.5f))) || (r_torso_target.yaw - r_torso_current.yaw > EPS_L))) {
 			Squat();
 			vfSetMovementType(WALK_FORWARD_1);
 		}

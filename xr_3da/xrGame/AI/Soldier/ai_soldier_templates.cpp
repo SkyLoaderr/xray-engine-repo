@@ -143,6 +143,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 			AI_Path.DestNode		= S.BestNode;
 			AI_Path.bNeedRebuild	= TRUE;
+			vfAddToSearchList();
 		} 
 		
 		if (AI_Path.Nodes.size() <= 2)
@@ -172,6 +173,7 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 	if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
 		AI_Path.DestNode		= S.BestNode;
 		AI_Path.bNeedRebuild	= TRUE;
+		vfAddToSearchList();
 	} 
 	
 	if (AI_Path.Nodes.size() <= 2)
