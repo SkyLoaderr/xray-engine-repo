@@ -6,13 +6,18 @@ function main()
 
 	flesh:script(true,monster.script_name())                                                                                
 
+	
+
 	action(                                                                                                       
     	flesh,                                                                                                      
 		move(move.act_eat,actor),
-    	cond(cond.time_end,30000) 
+    	cond(cond.time_end,100000000) 
 	)                                                                                                             
 
-	action(
+	while flesh:action() do	
+		if flesh:see(actor) then
+		end
+
 		flesh,
 		move(move.act_walk_fwd, actor),
 	    cond(cond.time_end,3000)                                                                                 
