@@ -1,5 +1,6 @@
 module("scr_trader")
 module("escape_dogs")
+module("escape1")
 
 local work = {}
 
@@ -10,10 +11,11 @@ function main()
 --	escape_bobik.init_bobik		()
     	scr_trader.init			()
 --    	escape_dogs.init		()
-
+	escape1.init				()
 --    	table.insert(work, "escape_bobik"  )
 	table.insert(work, "scr_trader"    )
 --    	table.insert(work, "escape_dogs"   )
+    table.insert(work, "escape1"	    )
 
     	while(table.getn(work) > 0) do
 		local deleted = {}
@@ -24,13 +26,18 @@ function main()
 					table.insert(deleted, k)
 				end
         	    	elseif v == "scr_trader" then
-				scr_trader.execute()
+						scr_trader.execute()
             		elseif v == "escape_dogs" then
                 		if(escape_dogs.execute() == false) then
                 			escape_dogs.finalize()
-		                    	table.insert(deleted, k)
+		                    table.insert(deleted, k)
         		        end
-            		end
+                    elseif v == "escape1" then
+                        if(escape1.execute() == false) then
+                            escape1.finalize()
+                            table.insert(deleted, k)
+                        end
+                    end
 		end
 		for k,v in deleted do
                 	table.remove(work, v)
