@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "object_broker.h"
-
 template <typename _1, typename _2, typename _3, typename _4> class CGraphVertex;
 
 template <
@@ -18,7 +16,7 @@ template <
 	typename _vertex_id_type,
 	typename _vertex_index_type
 >
-class CGraphEdge : public IPureSerializeObject {
+class CGraphEdge {
 public:
 	typedef _Data				_Data;
 	typedef _edge_weight_type	_edge_weight_type;
@@ -42,19 +40,10 @@ private:
 public:
 
 	IC							CGraphEdge		(const _edge_weight_type weight, const _vertex_id_type vertex_id, const _vertex_index_type vertex_index);
-	IC	_edge_weight_type		weight			() const;
-	IC	_vertex_id_type			vertex_id		() const;
-	IC	_vertex_index_type		vertex_index	() const;
-	IC	bool					operator==		(const _vertex_index_type &) const;
-
-	template <typename _Stream>
-	IC	void					save			(_Stream &stream) const;
-
-	template <typename _Stream>
-	IC	void					load			(_Stream &stream);
-	
-	IC	virtual void			load			(IReader &tFileStream);
-	IC	virtual void			save			(IWriter &tMemoryStream);
+	IC		_edge_weight_type	weight			() const;
+	IC		_vertex_id_type		vertex_id		() const;
+	IC		_vertex_index_type	vertex_index	() const;
+	IC		bool				operator==		(const _vertex_index_type &) const;
 };
 
 #include "graph_edge_inline.h"

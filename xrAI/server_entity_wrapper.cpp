@@ -23,22 +23,52 @@ void CServerEntityWrapper::save				(IWriter &stream)
 {
 	NET_Packet				net_packet;
 
-	stream.open_chunk		(m_object->m_tSpawnID);
-
 	// Spawn
+	stream.open_chunk		(0);
+
 	m_object->Spawn_Write	(net_packet,TRUE);
 	stream.w_u16			(u16(net_packet.B.count));
 	stream.w				(net_packet.B.data,net_packet.B.count);
+	
+	stream.close_chunk		();
 
 	// Update
+	stream.open_chunk		(1);
+
 	net_packet.w_begin		(M_UPDATE);
 	m_object->UPDATE_Write	(net_packet);
 	stream.w_u16			(u16(net_packet.B.count));
 	stream.w				(net_packet.B.data,net_packet.B.count);
-
+	
 	stream.close_chunk		();
 }
 
 void CServerEntityWrapper::load				(IReader &stream)
 {
+	NET_Packet				net_packet;
+	u16						ID;
+	IReader					*chunk;
+	
+	chunk					= stream.open_chunk(0);
+
+	net_packet.B.count		= chunk->r_u16();
+	chunk->r				(net_packet.B.data,net_packet.B.count);
+	net_packet.r_begin		(ID);
+	R_ASSERT2				(M_SPAWN == ID,"Invalid packet ID (!= M_SPAWN)!");
+
+	string64				s_name;
+	net_packet.r_stringZ	(s_name);
+	
+	m_object				= F_entity_Create(s_name);
+
+	R_ASSERT3				(m_object,"Can't create entity.",s_name);
+	m_object->Spawn_Read	(net_packet);
+	
+	chunk					= stream.open_chunk(1);
+	
+	net_packet.B.count		= chunk->r_u16();
+	chunk->r				(net_packet.B.data,net_packet.B.count);
+	net_packet.r_begin		(ID);
+	R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
+	m_object->UPDATE_Read	(net_packet);
 }

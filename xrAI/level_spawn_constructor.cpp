@@ -168,6 +168,12 @@ void CLevelSpawnConstructor::load_objects						()
 			continue;
 		}
 
+		CSE_ALifeCreatureActor	*actor = smart_cast<CSE_ALifeCreatureActor*>(alife_object);
+		if (actor) {
+			R_ASSERT3			(!m_actor,"Too many actors on the level ",m_level.name());
+			m_actor				= actor;
+		}
+
 		m_spawns.push_back		(alife_object);
 
 		CSE_ALifeDynamicObject	*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(alife_object);

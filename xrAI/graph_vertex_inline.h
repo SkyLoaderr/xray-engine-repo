@@ -52,24 +52,6 @@ IC	typename CSGraphVertex::CSGraphEdge *CSGraphVertex::edge								(const _verte
 }
 
 TEMPLATE_SPECIALIZATION
-template <typename _Stream>
-IC	void CSGraphVertex::save													(_Stream &stream) const
-{
-	save_data				(m_data,stream);
-	save_data				(m_vertex_index,stream);
-	save_data				(m_edges,stream);
-}
-
-TEMPLATE_SPECIALIZATION
-template <typename _Stream>
-IC	void CSGraphVertex::load													(_Stream &stream)
-{
-	load_data				(m_data,stream);
-	load_data				(m_vertex_index,stream);
-	load_data				(m_edges,stream);
-}
-
-TEMPLATE_SPECIALIZATION
 IC	void CSGraphVertex::set_data												(_Data &data)
 {
 	m_data					= data;
@@ -129,18 +111,6 @@ TEMPLATE_SPECIALIZATION
 IC	const xr_vector<typename CSGraphVertex::CSGraphEdge> &CSGraphVertex::edges	() const
 {
 	return					(m_edges);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSGraphVertex::load														(IReader &tFileStream)
-{
-	load			(tFileStream);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSGraphVertex::save														(IWriter &tMemoryStream)
-{
-	save			(tMemoryStream);
 }
 
 #undef TEMPLATE_SPECIALIZATION

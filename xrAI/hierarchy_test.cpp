@@ -21,6 +21,9 @@ struct CCellVertex {
 struct CSector {
 	u32		min_vertex_id;
 	u32		max_vertex_id;
+
+	IC		CSector(int) {}
+	IC		CSector() {}
 };
 
 typedef CGraphAbstract<CSector,float,u32,u32> CSectorGraph;

@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "game_spawn_constructor.h"
-/**/
+/**
 #include "xr_ini.h"
 #include "xrAI.h"
 #include "xrLevel.h"
@@ -567,7 +567,7 @@ void xrMergeSpawns(LPCSTR name, LPCSTR output)
 	CSpawnMerger	A(name,output);
 }
 
-/**
+/**/
 void xrMergeSpawns(LPCSTR name, LPCSTR output)
 {
 	CGameSpawnConstructor			spawn(name,output);

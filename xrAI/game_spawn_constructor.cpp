@@ -14,6 +14,8 @@
 #include "xrai.h"
 #include "server_entity_wrapper.h"
 
+#define NO_MULTITHREADING
+
 CGameSpawnConstructor::CGameSpawnConstructor	(LPCSTR name, LPCSTR output)
 {
 	load_spawns		(name);
@@ -41,9 +43,9 @@ IC	shared_str CGameSpawnConstructor::actor_level_name()
 		if (!(*I)->actor())
 			continue;
 
-		Msg							("Actor is on the level %s",game_graph().header().levels().find(game_graph().vertex(actor->m_tGraphID)->level_id())->second.name());
+		Msg							("Actor is on the level %s",game_graph().header().level(game_graph().vertex((*I)->actor()->m_tGraphID)->level_id()).name());
 		VERIFY2						(!actor,"There must be the SINGLE level with ACTOR!");
-		actor						= actor;
+		actor						= (*I)->actor();
 		level						= *I;
 	}
 
@@ -107,10 +109,12 @@ void CGameSpawnConstructor::process_spawns	()
 	LEVEL_SPAWN_STORAGE::iterator		I = m_level_spawns.begin();
 	LEVEL_SPAWN_STORAGE::iterator		E = m_level_spawns.end();
 	for ( ; I != E; ++I)
+#ifdef NO_MULTITHREADING
 		(*I)->Execute					();
-//		m_thread_manager.start			(*I);
-
-//	m_thread_manager.wait				();
+#else
+		m_thread_manager.start			(*I);
+	m_thread_manager.wait				();
+#endif
 
 	I									= m_level_spawns.begin();
 	for ( ; I != E; ++I)
@@ -141,17 +145,28 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	m_spawn_header.m_level_count	= (u32)m_level_spawns.size();
 	m_spawn_header.m_spawn_count	= spawn_graph().vertex_count();
 	
-	stream.open_chunk				(SPAWN_POINT_CHUNK_VERSION);
+	stream.open_chunk				(0);
 	stream.w						(&m_spawn_header,sizeof(m_spawn_header));
 	stream.close_chunk				();
 	
+	stream.open_chunk				(1);
 	save_data						(spawn_graph(),stream);
+	stream.close_chunk				();
 
-	stream.open_chunk				(spawn_id());
+	stream.open_chunk				(2);
 	save_data						(m_level_points,stream);
 	stream.close_chunk				();
 
 	stream.save_to					(*spawn_name(output));
+
+	// TEST
+	SPAWN_GRAPH						test;
+	IReader							*reader = FS.r_open(*spawn_name(output)), *chunk;
+
+	chunk							= reader->open_chunk(1);
+	load_data						(test,*chunk);
+
+	FS.r_close						(reader);
 }
 
 shared_str CGameSpawnConstructor::spawn_name	(LPCSTR output)

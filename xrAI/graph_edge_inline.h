@@ -53,33 +53,5 @@ IC	bool CSGraphEdge::operator==										(const _vertex_index_type &index) const
 	return			(vertex_index() == index);
 }
 
-TEMPLATE_SPECIALIZATION
-template <typename _Stream>
-IC	void CSGraphEdge::save												(_Stream &stream) const
-{
-	save_data		(m_weight,stream);
-	save_data		(m_vertex_index,stream);
-}
-
-TEMPLATE_SPECIALIZATION
-template <typename _Stream>
-IC	void CSGraphEdge::load												(_Stream &stream)
-{
-	load_data		(m_weight,stream);
-	load_data		(m_vertex_index,stream);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSGraphEdge::load													(IReader &tFileStream)
-{
-	load			(tFileStream);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSGraphEdge::save													(IWriter &tMemoryStream)
-{
-	save			(tMemoryStream);
-}
-
 #undef TEMPLATE_SPECIALIZATION
 #undef CSGraphEdge

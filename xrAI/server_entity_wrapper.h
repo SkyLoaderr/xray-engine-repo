@@ -17,7 +17,7 @@ private:
 	CSE_Abstract	*m_object;
 
 public:
-	IC				CServerEntityWrapper	(CSE_Abstract *object);
+	IC				CServerEntityWrapper	(CSE_Abstract *object = 0);
 	virtual			~CServerEntityWrapper	();	
 	virtual	void	save					(IWriter &stream);
 	virtual	void	load					(IReader &stream);
