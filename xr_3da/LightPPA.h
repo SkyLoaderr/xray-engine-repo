@@ -33,13 +33,16 @@ public:
 	void			Render			(CVertexStream* VS);
 };
 
-class ENGINE_API	CLightPPA_Manager
+class ENGINE_API	CLightPPA_Manager	: public pureDeviceCreate, pureDeviceDestroy
 {
 	svector<CLightPPA*,128>			container;
 	
 	Shader*							SH;
 	CVertexStream*					VS;
 public:
+	virtual	void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
+
 	void			Initialize		();
 	void			Destroy			();
 

@@ -84,14 +84,30 @@ void CLightPPA::Render	(CVertexStream* VS)
 	if (actual) Device.Primitive.Draw	(VS,actual,vOffset);
 }
 
-void CLightPPA_Manager::Initialize	()
+void CLightPPA_Manager::OnDeviceCreate	()
 {
+	REQ_CREATE	();
 	SH	= Device.Shader.Create	("$light");
 	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
 }
+
+void CLightPPA_Manager::OnDeviceDestroy	()
+{
+	REQ_DESTROY	();
+	Device.Shader.Delete		(SH);
+}
+
+void CLightPPA_Manager::Initialize	()
+{
+	Device.seqDevCreate.Add		(this);
+	Device.seqDevDestroy.Add	(this);
+	OnDeviceCreate		();
+}
 void CLightPPA_Manager::Destroy		()
 {
-	Device.Shader.Delete		(SH);
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	OnDeviceDestroy		();
 }
 
 void CLightPPA_Manager::Render()

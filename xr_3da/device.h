@@ -131,4 +131,7 @@ extern ENGINE_API CRenderDevice Device;
 #include "TextureManager_Runtime.h"
 #include "PrimitivesR_Runtime.h"
 
+#define		REQ_CREATE()	if (!Device.bReady)	return;
+#define		REQ_DESTROY()	if (Device.bReady)	return;
+
 #endif
