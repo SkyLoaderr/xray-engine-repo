@@ -19,7 +19,7 @@ void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_dwSpawnGroup);
 	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
 	tNetPacket.w_float			(m_fDistance);
-	tNetPacket.w_u8				(m_bDirectControl);
+	tNetPacket.w_u32			(m_bDirectControl);
 }
 
 void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
@@ -36,9 +36,9 @@ void CALifeObject::STATE_Read(NET_Packet &tNetPacket, u16 size)
 		m_tObjectID				= ID;
 	}
 	if (m_wVersion >= 4) {
-		u8						ucDummy;
-		tNetPacket.r_u8			(ucDummy);
-		m_bDirectControl		= !!ucDummy;
+		u32						dwDummy;
+		tNetPacket.r_u32		(dwDummy);
+		m_bDirectControl		= !!dwDummy;
 	}
 }
 

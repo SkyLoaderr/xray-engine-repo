@@ -338,31 +338,31 @@ public:
 	
 	virtual void STATE_Read		(NET_Packet& P, u16 size)
 	{
-		u8						uDummy;
-		P.r_u8					(uDummy);
-		m_bCreateSpawnPositions = !!uDummy;
+		u32						dwDummy;
+		P.r_u32					(dwDummy);
+		m_bCreateSpawnPositions = !!dwDummy;
 		P.r_u16					(m_wCount);
 	};
 
 	virtual void STATE_Write	(NET_Packet& P)
 	{
-		P.w_u8					(m_bCreateSpawnPositions);
+		P.w_u32					(m_bCreateSpawnPositions);
 		P.w_u16					(m_wCount);
 	};
 
 	virtual void UPDATE_Read	(NET_Packet& P)
 	{
 		load_base_vector		(m_tpMembers,P);
-		u8 uDummy;
-		P.r_u8	  (uDummy);
-		m_bCreateSpawnPositions = !!uDummy;
+		u32						dwDummy;
+		P.r_u32					(dwDummy);
+		m_bCreateSpawnPositions = !!dwDummy;
 		P.r_u16					(m_wCount);
 	};
 
 	virtual void UPDATE_Write	(NET_Packet& P)
 	{
 		save_base_vector		(m_tpMembers,P);
-		P.w_u8					(m_bCreateSpawnPositions);
+		P.w_u32					(m_bCreateSpawnPositions);
 		P.w_u16					(m_wCount);
 	};
 
