@@ -87,6 +87,7 @@ public:
 	virtual u32				OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
 	virtual void			OnCL_Connected		(IClient* C);
 	virtual void			OnCL_Disconnected	(IClient* C);
+	virtual bool			OnCL_QueryHost		()		{ return true; };
 
 	virtual IClient*		client_Create		()				= 0;			// create client info
 	virtual void			client_Replicate	()				= 0;			// replicate current state to client

@@ -209,6 +209,8 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
     {
 	case DPN_MSGID_ENUM_HOSTS_QUERY :
 		{
+			if (OnCL_QueryHost()) return S_OK;
+			else return S_FALSE;
 		}break;
 	case DPN_MSGID_CREATE_PLAYER :
         {
