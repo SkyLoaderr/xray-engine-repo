@@ -753,7 +753,7 @@ void CAI_Soldier::OnLookingOver()
 		}
 	/**/
 
-	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
+	vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_NO,1.0f,Group,dwCurTime);
 
 	//r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
 	r_torso_target.pitch = -PI_DIV_4*0;
@@ -866,7 +866,7 @@ void CAI_Soldier::OnPatrolReturn()
 		}
 	}
 
-	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,Leader != this ? m_fMaxSpeed : m_fMinSpeed)
+	vfSetLookAndFireMovement(false, BODY_STATE_STAND,Leader != this ? RUN_FORWARD_1 : WALK_FORWARD_3,1.0f,Group,dwCurTime);
 	
 	SetDirectionLook();
 }
@@ -1038,18 +1038,18 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
 		if (fDistance >= m_fMaxPatrolDistance) {
-			SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,1.1f*m_fMinSpeed);
+			vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,1.1f,Group,dwCurTime);
 		}
 		else
 			if (fDistance <= m_fMinPatrolDistance) {
-				SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
+				vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,0.9f,Group,dwCurTime);
 			}
 			else {
-				SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
+				vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,float(((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)),Group,dwCurTime);
 			}
 	}
 	else {
-		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
+		vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_3,0.9f,Group,dwCurTime);
 	}
 
 	SetDirectionLook();
@@ -1148,7 +1148,7 @@ void CAI_Soldier::OnPatrol()
 		}
 	}
 	
-	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
+	vfSetLookAndFireMovement(false, BODY_STATE_STAND,WALK_FORWARD_4,1.0f,Group,dwCurTime);
 
 	SetDirectionLook();
 }

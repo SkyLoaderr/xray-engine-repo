@@ -238,7 +238,7 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 					Group.m_dwFiring++;
 }
 
-void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType)
+void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType,float fMultplier)
 {
 	Fvector view = clTransform.k, move;
 	AI_Path.Direction(move); 
@@ -260,7 +260,7 @@ void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType)
 		m_cMovementType = WALK_NO;
 		m_fCurSpeed = 0.0f;
 	}
-	else
+	else {
 		switch (cBodyState) {
 			case BODY_STATE_STAND : {
 				StandUp();
@@ -367,4 +367,6 @@ void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType)
 				break;
 			}
 		}
+		m_fCurSpeed *= fMultplier;
+	}
 }

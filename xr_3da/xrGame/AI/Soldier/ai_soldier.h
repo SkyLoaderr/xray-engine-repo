@@ -425,10 +425,27 @@ class CAI_Soldier : public CCustomMonster
 		bool bfCheckIfCanKillMember();
 		bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);
-		void vfSetMovementType(char cBodyState, char cMovementType);
 		void vfCheckForSavedEnemy();
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
+		void vfSetMovementType(char cBodyState, char cMovementType, float fMultiplier = 1.0f);
+	IC	void vfSetLookAndFireMovement(bool a,char b,char c,float d,CGroup &Group, DWORD dwCurTime)
+		{
+			if (!(Group.m_bLessCoverLook)) {
+				Group.m_bLessCoverLook = m_bLessCoverLook = true;
+				Group.m_dwLastViewChange = dwCurTime;
+			}
+			else
+				if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))
+					Group.m_bLessCoverLook = m_bLessCoverLook = false;
+			if (m_bLessCoverLook)
+				SetLessCoverLook(AI_Node);
+			else
+				SetDirectionLook();\
+			vfSetFire(a,Group);
+			vfSetMovementType(b,c,d);
+		}
+
 	public:
 		bool		  m_bActionStarted;
 					   CAI_Soldier();

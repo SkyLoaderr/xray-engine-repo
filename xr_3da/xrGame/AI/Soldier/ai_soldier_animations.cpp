@@ -243,39 +243,6 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				tpTorsoAnimation = tpLegsAnimation = 0;
 				break;
 			}
-//			case aiSoldierLyingDown : {
-//				switch (m_cBodyState) {
-//					case BODY_STATE_STAND : {
-//						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
-//						break;
-//					}
-//					case BODY_STATE_CROUCH : {
-//						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
-//						break;
-//					}
-//					case BODY_STATE_LIE : {
-//						break;
-//					}
-//				}
-//				tpTorsoAnimation = tpLegsAnimation = 0;
-//				break;
-//			}
-//			case aiSoldierStandingUp : {
-//				switch (m_cBodyState) {
-//					case BODY_STATE_STAND : {
-//						break;
-//					}
-//					case BODY_STATE_CROUCH : {
-//						break;
-//					}
-//					case BODY_STATE_LIE : {
-//						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpStandUp;
-//						break;
-//					}
-//				}
-//				tpTorsoAnimation = tpLegsAnimation = 0;
-//				break;
-//			}
 //			case aiSoldierJumping : {
 //				switch (m_cBodyState) {
 //					case BODY_STATE_STAND : {
@@ -580,59 +547,6 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	}
 
-	/**
-	if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0])
-		m_fCurSpeed = 1.5f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1])
-		m_fCurSpeed = 1.5f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2])
-		m_fCurSpeed = 1.8f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3])
-		m_fCurSpeed = 1.4f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4])
-		m_fCurSpeed = 1.4f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0])
-		m_fCurSpeed = 4.0f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1])
-		m_fCurSpeed = 1.7f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2])
-		m_fCurSpeed = 3.0f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3])
-		m_fCurSpeed = 4.5f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0])
-		m_fCurSpeed = 1.3f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1])
-		m_fCurSpeed = 0.7f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2])
-		m_fCurSpeed = 0.7f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpWalkLeft)
-		m_fCurSpeed = 0.8f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpWalkRight)
-		m_fCurSpeed = 0.8f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkForward)
-		m_fCurSpeed = 0.6f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkBack)
-		m_fCurSpeed = 0.7f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkLeft)
-		m_fCurSpeed = 1.0f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpWalkRight)
-		m_fCurSpeed = 1.0f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0])
-		m_fCurSpeed = 0.6f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1])
-		m_fCurSpeed = 0.4f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0])
-		m_fCurSpeed = 0.4f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1])
-		m_fCurSpeed = 0.4f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft)
-		m_fCurSpeed = 0.7f;
-	else if (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpWalkRight)
-		m_fCurSpeed = 0.7f;
-	else
-		m_fCurSpeed = 0.0f;
-	/**/
-	
 	/**
 	if (tpTorsoAnimation != m_tpCurrentTorsoAnimation) { 
 		//Msg("restarting animation..."); 
