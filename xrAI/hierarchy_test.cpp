@@ -315,12 +315,28 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 	Msg								("Sector Graph : %d vertices, %d edges",sector_graph.vertex_count(),sector_graph.edge_count());
 
-	CSectorGraph::const_vertex_iterator	I = sector_graph.vertices().begin();
-	CSectorGraph::const_vertex_iterator	E = sector_graph.vertices().end();
-	for ( ; I != E; ++I) {
-		VERIFY						(!(*I).second->edges().empty());
+	{
+		u32									count = 0;
+		CSectorGraph::const_vertex_iterator	I = sector_graph.vertices().begin();
+		CSectorGraph::const_vertex_iterator	E = sector_graph.vertices().end();
+		for ( ; I != E; ++I) {
+//			VERIFY							(!(*I).second->edges().empty());
+			if (!(*I).second->edges().empty())
+				continue;
+
+			if ((*I).second->data().min_vertex_id == (*I).second->data().max_vertex_id)
+				Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id);
+			else
+				Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id,(*I).second->data().max_vertex_id);
+		}
+		if (count) {
+			if (count == 1)
+				Msg							("! There is single not connected island");
+			else
+				Msg							("! There are %d not connected islands",count);
+		}
 	}
-	
+
 	f								= CPU::GetCycleCount();
 	Msg								("Check edges time %f",CPU::cycles2seconds*float(f - s));
 }
