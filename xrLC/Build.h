@@ -24,7 +24,7 @@ struct b_BuildTexture : public b_texture
 	{
 		return pSurface[y*dwWidth+x];
 	}
-	void Vflip		()
+	void	Vflip		()
 	{
 		R_ASSERT(pSurface);
 		for (DWORD y=0; y<dwHeight/2; y++)
@@ -78,7 +78,6 @@ public:
 	Shader_xrLC_LIB			shaders;
 	string					path;
 
-	DWORD	mem_Usage				(LPDWORD _used=0,LPDWORD _free=0);
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:

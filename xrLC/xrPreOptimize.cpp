@@ -145,7 +145,7 @@ void CBuild::PreOptimize()
 	}
 	
 	Status	("Cleanup...");
-	u32 M1			= mem_Usage();
+	u32 M1				= Memory.mem_usage	();
 	g_vertices.erase	(remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
 	g_faces.erase		(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 	{
@@ -157,7 +157,7 @@ void CBuild::PreOptimize()
 				}
 	}
 	mem_Compact			();
-	u32 M2 = mem_Usage();
+	u32 M2				= Memory.mem_usage	();
 	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
 	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
 	Msg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
