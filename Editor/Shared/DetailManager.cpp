@@ -319,7 +319,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	VS->Lock(vCount_Lock,vBase);
 			WORD*	iDest					= (WORD*)					IS->Lock(iCount_Lock,iBase);
 
-			// Rendering
+			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
