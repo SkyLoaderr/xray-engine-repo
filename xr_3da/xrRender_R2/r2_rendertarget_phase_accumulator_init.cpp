@@ -2,8 +2,9 @@
 
 void CRenderTarget::phase_accumulator_init()
 {
-	dwLightMarkerID						= 5;	// start from 5, increment in 2 units
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L));
+	dwLightMarkerID						= 5;		// start from 5, increment in 2 units
+	u32		clr4clear					= color_rgba(127,127,127,127);	// 0x00
+	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
 
 	// Common
 	u32		Offset						= 0;
@@ -112,8 +113,8 @@ void CRenderTarget::phase_accumulator_init()
 		// RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 
 		// Render
-		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0		));
+		RCache.set_ColorWriteEnable	(FALSE);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+		RCache.set_ColorWriteEnable	();
 	}
 }

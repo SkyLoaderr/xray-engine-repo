@@ -39,8 +39,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
 		// *** thus can cope without stencil clear with 127 lights
 		// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
-		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
-
+		RCache.set_ColorWriteEnable		(FALSE);
 		RCache.set_Element				(shader->E[0]);			// masker
 		RCache.set_Geometry				(g_accum_spot);
 
@@ -53,8 +52,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
-
-		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+		RCache.set_ColorWriteEnable		();
 	}
 
 	// *****************************	Minimize overdraw	*************************************

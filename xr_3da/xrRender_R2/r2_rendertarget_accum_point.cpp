@@ -30,7 +30,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
 	RCache.set_Element				(s_accum_point_s->E[0]);			// masker
 	RCache.set_Geometry				(g_accum_point);
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
+	RCache.set_ColorWriteEnable		(FALSE);
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
@@ -41,8 +41,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+	RCache.set_ColorWriteEnable		();
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
@@ -130,7 +129,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
 	RCache.set_Element				(s_accum_point_uns->E[0]);	// masker
 	RCache.set_Geometry				(g_accum_point);
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
+	RCache.set_ColorWriteEnable		(FALSE);
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
@@ -141,8 +140,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+	RCache.set_ColorWriteEnable		();
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
