@@ -215,7 +215,7 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrGame.pch"
-				AssemblerOutput="4"
+				AssemblerOutput="0"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
