@@ -152,9 +152,10 @@ void CObject::net_Destroy		()
 void CObject::UpdateCL			()
 {
 	// consistency check
-	if (Device.dwFrame==chk_update_cl)	
-		Debug.fatal	("'UpdateCL' called twice per frame for %s",cName());
+	if (Device.dwFrame==chk_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",cName());
 	chk_update_cl	= Device.dwFrame;
+
+	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered",cName());
 }
 
 void CObject::shedule_Update	( u32 T )
