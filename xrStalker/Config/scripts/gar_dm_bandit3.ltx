@@ -2,6 +2,7 @@
 active = walker1
 on_death = death
 on_combat = combat
+on_hit = hit
 
 [death]
 on_info = %+gar_dm_bandit3_dead%
@@ -9,18 +10,29 @@ on_info = %+gar_dm_bandit3_dead%
 [combat]
 on_info = nil %=disable_combat_handler =gar_bandits_fight%
 
+[hit]
+on_info = nil %=gar_bandits_fight%
+
 [walker1]
 path_walk = bandit3_walk
 path_look = bandit3_look
 on_info = {+gar_dm_novice_asked_for_help -gar_dm_bandit_warned_plr =gar_dm_nearest_bandit} remark1 %+gar_dm_bandit_warned_plr%
 on_info2 = {+gar_dm_novice_dead} nil
+on_info3 = {+gar_dm_bandit2_warn_plr -gar_dm_bandit2_warned_plr =gar_dm_2nd_nearest_bandit} remark2 %+gar_dm_bandit2_warned_plr%
 reactions = ignore
 
 [remark1]
 no_move = true
-snd = weather
-anim = hide
-;on_signal = sound_end | walker1
+snd = gar_dm_bandit_backoff1
+anim = backoff
+on_signal = sound_end | %+gar_dm_bandit2_warn_plr%
+on_info = {+gar_dm_novice_dead} nil
+reactions = ignore
+
+[remark2]
+no_move = true
+snd = gar_dm_bandit_backoff2
+anim = backoff
 on_info = {+gar_dm_novice_dead} nil
 reactions = ignore
 

@@ -29,6 +29,7 @@ function gar_bandits_fight(actor, npc)
 end
 	
 function actor_friend(actor, npc)
+	printf("_bp: xr_effects: actor_friend(): npc='%s': time=%d", npc:name(), device():time_global())
 	npc:set_relation(game_object.friend, actor)
 end
 

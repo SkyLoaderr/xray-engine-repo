@@ -18,6 +18,8 @@ function evaluator_need_remark:__init(storage, name) super(nil, name)
 end
 
 function evaluator_need_remark:evaluate()
+	printf("_bp: evaluator_need_remark [%s]: evaluate(): %s",
+		self.object:name(), if_then_else(xr_logic.is_active(self.object, self.st), "true", "false"))
   	return xr_logic.is_active(self.object, self.st)
 end
 
@@ -29,7 +31,8 @@ function action_remark_activity:__init (npc_name, action_name, storage) super(ni
 end
 
 function action_remark_activity:initialize()
-	--printf("_bp: action_remark_activity: initialize")
+	printf("_bp: action_remark_activity [%s]: initialize", self.object:name())
+
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -41,6 +44,8 @@ end
 
 
 function action_remark_activity:reset_scheme()
+	printf("_bp: action_remark_activity [%s]: reset_scheme", self.object:name())
+
 	self.object:clear_animations()
 	
 	self.state = state_initial
@@ -240,6 +245,8 @@ end
 function action_remark_activity:execute()
 	action_base.execute(self)
 
+	printf("_bp: action_remark_activity [%s]: execute", self.object:name())
+
 	local old_state
 	repeat
 		old_state = self.state
@@ -265,7 +272,7 @@ end
 --remark binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage)
-		printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+		printf("DEBUG: add_to_binder [%s]: scheme='%s', section='%s'", npc:name(), scheme, section)
   		local operators	= {}
 	  	local properties  = {}
 		

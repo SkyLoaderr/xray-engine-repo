@@ -1,4 +1,8 @@
 
+-- Каждая функция в этом файле используется как условие xr_logic: {=функция !функция}
+-- Формат: function f(actor, npc)
+-- Детали реализации нужно помещать в файл xr_conditions_impl.script, а не в этот файл.
+
 -- DELME: для тестов: {=test_condition_actor_near}
 function test_condition_actor_near(actor, npc)
 	if distance_between(actor, npc) <= 3 then
@@ -21,41 +25,11 @@ function actor_enemy(actor, npc)
 end
 
 function gar_dm_nearest_bandit(actor, npc)
-	local nearest = nil
-	local nearest_dist = nil
-	
-	local bandit1 = level.object("gar_dramscene_bandit1")
-	if bandit1 and bandit1:alive() then
-		local dist = distance_between(actor, bandit1)
-		if not nearest_dist or dist < nearest_dist then
-			nearest = bandit1
-			nearest_dist = dist
-		end
-	end
+	return xr_conditions_impl.gar_dm_nearest_bandit(actor, npc, 1)
+end
 
-	local bandit2 = level.object("gar_dramscene_bandit2")
-	if bandit2 and bandit2:alive() then
-		local dist = distance_between(actor, bandit2)
-		if not nearest_dist or dist < nearest_dist then
-			nearest = bandit2
-			nearest_dist = dist
-		end
-	end
-
-	local bandit3 = level.object("gar_dramscene_bandit3")
-	if bandit3 and bandit3:alive() then
-		local dist = distance_between(actor, bandit3)
-		if not nearest_dist or dist < nearest_dist then
-			nearest = bandit3
-			nearest_dist = dist
-		end
-	end
-
-	if nearest and npc:id() == nearest:id() then
-		return true
-	end
-
-	return false
+function gar_dm_2nd_nearest_bandit(actor, npc)
+	return xr_conditions_impl.gar_dm_nearest_bandit(actor, npc, 2)
 end
 
 function trade_exchanged(actor, npc)
@@ -66,3 +40,8 @@ function trading(actor, npc)
 	return xr_motivator.storage[npc:id()].trade.trading
 end
 
+function hit_by_actor(actor, npc)
+	local t = xr_motivator.storage[npc:id()].hit
+	local hit_by_actor = t ~= nil and t.who == actor:id()
+	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
+end

@@ -22,6 +22,9 @@
   <info_portion id="gar_dm_bandit2_dead"></info_portion>
   <info_portion id="gar_dm_bandit3_dead"></info_portion>
   <info_portion id="gar_dm_novice_dead"></info_portion>
+  <info_portion id="gar_dm_bandit2_warn_plr"></info_portion>
+  <info_portion id="gar_dm_bandit2_warned_plr"></info_portion>
+
   <info_portion id="gar_monsters_rush_wave1"></info_portion>
   <info_portion id="gar_monsters_rush_wave2"></info_portion>
   <info_portion id="gar_monsters_rush_wave3"></info_portion>

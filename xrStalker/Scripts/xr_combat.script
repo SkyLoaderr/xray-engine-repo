@@ -4,14 +4,16 @@
 -- Константа
 class "evaluator_check_combat" (property_evaluator)
 function evaluator_check_combat:__init(name, storage) super (nil, name)
-	self.a = storage
+	self.st = storage
 end
 function evaluator_check_combat:evaluate ()
-	if self.a.enabled and self.object:best_enemy() then
-		local actor = level.actor()
-		if actor then
-			if xr_logic.try_switch_to_another_section(self.object, self.a, actor) then
-				return
+	if self.st.enabled and self.object:best_enemy() then
+		if xr_motivator.storage[self.object:id()].active_scheme then
+			local actor = level.actor()
+			if actor then
+				if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+					return true
+				end
 			end
 		end
 	end

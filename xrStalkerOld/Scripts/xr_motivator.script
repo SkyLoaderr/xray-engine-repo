@@ -182,12 +182,64 @@ end
 function motivator_binder:save(packet)
 	printf("motivator_binder:save(): self.object:name()='%s'", self.object:name())
 	object_binder.save( self, packet )
-	-- ...
+	-- Logic:
+	local npc_id = self.object:id()
+	local st = xr_motivator.storage[npc_id]
+
+	if st.active_section then
+		packet:w_stringZ(st.active_section)
+	else
+		packet:w_stringZ("")
+	end
+
+	if st.active_scheme then
+		packet:w_stringZ(st.active_scheme)
+	else
+		packet:w_stringZ("")
+	end
+	
+	if st.gulag_name then
+		packet:w_stringZ(st.gulag_name)
+	else
+		packet:w_stringZ("")
+	end
+
+	packet:w_s32(st.stype)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:load(reader)
 	printf("motivator_binder:load(): self.object:name()='%s'", self.object:name())
 	object_binder.load(self, reader)
+	-- Logic:
+	local npc_id = self.object:id()
+	local st = xr_motivator.storage[npc_id]
+	
+	local active_section = reader:r_stringZ()
+	if active_section == "" then
+		active_section = nil
+	end
+
+	local active_scheme = reader:r_stringZ()
+	if active_scheme == "" then
+		active_scheme = nil
+	end
+	
+	local gulag_name = reader:r_stringZ()
+	if gulag_name == "" then
+		gulag_name = nil
+	end
+	
+	local stype = reader:r_s32()
+	
+	local ini = st[active_scheme].ini
+
+	st.gulag_name = if_then_else(gulag_name, gulag_name, "")
+	st.stype = stype
+	st.active_section = nil
+	st.active_scheme = nil
+
+	printf("motivator_binder:load(): activating script by section '%s'", active_section)
+	xr_logic.activate_by_section(self.object, ini, active_section)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)

@@ -1,7 +1,8 @@
 class "action_process_hit"
 
-function action_process_hit:__init(storage)
-    self.st = storage
+function action_process_hit:__init(obj, storage)
+	self.object = obj
+	self.st = storage
 end
 
 function action_process_hit:hit_callback(obj, amount, local_direction, who, bone_index)
@@ -26,7 +27,7 @@ end
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, ini, scheme, section, storage) 	
- 	local action = this.action_process_hit(storage)
+ 	local action = this.action_process_hit(npc, storage)
 	npc:set_hit_callback(action, "hit_callback")
 end
 
