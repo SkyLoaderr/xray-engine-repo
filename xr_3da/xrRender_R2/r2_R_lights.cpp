@@ -56,7 +56,7 @@ void	CRender::render_lights	(light_Package& LP)
 				Lights_LastFrame.push_back				(L);
 				phase									= PHASE_SMAP_S;
 				LR.compute_xfs_1						(0, L);
-				L->svis.begin							();
+				L->svis[0].begin						();
 				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
 				LR.compute_xfs_2						(0, L);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
@@ -66,7 +66,7 @@ void	CRender::render_lights	(light_Package& LP)
 					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
 				}
-				L->svis.end								();
+				L->svis[0].end							();
 			}
 		}
 
