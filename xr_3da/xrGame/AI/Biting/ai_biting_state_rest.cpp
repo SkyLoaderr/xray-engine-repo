@@ -42,6 +42,66 @@ void CBitingRest::Init()
 void CBitingRest::Replanning()
 {
 	m_dwLastPlanTime = m_dwCurrentTime;	
+
+	u32		dwMinRand, dwMaxRand;
+	u8		day_time = Level().GetDayTime();
+
+	if ((day_time >= pMonster->m_dwDayTimeBegin) && (day_time <= pMonster->m_dwDayTimeEnd)) {  // день?
+
+		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->m_fMaxSatiety); 
+		if (bNormalSatiety) {		// отдых
+			WRITE_TO_LOG("ACTION_SATIETY_GOOD");
+			m_tAction = ACTION_SATIETY_GOOD;
+
+			dwMinRand = pMonster->m_timeLieIdleMin;	 dwMaxRand = pMonster->m_timeLieIdleMax;
+
+		} else {					// бродит, ищет еду
+			WRITE_TO_LOG("ACTION_WALK");
+			m_tAction = ACTION_WALK;
+
+			// ѕостроить путь обхода точек графа, поиск пищи
+			pMonster->AI_Path.TravelPath.clear();
+			pMonster->vfUpdateDetourPoint();	
+			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+
+			dwMinRand = pMonster->m_timeFreeWalkMin;  dwMaxRand = pMonster->m_timeFreeWalkMax;
+		}
+	} else { // ночь
+
+		//bool bSerenity = pMonster->GetSerenity() > 0.8f; 
+		bool bSerenity = true;
+		if (bSerenity) { // спокоен, спит
+			// спать
+			WRITE_TO_LOG("ACTION_SLEEP");
+			m_tAction = ACTION_SLEEP;
+
+			dwMinRand = pMonster->m_timeSleepMin; dwMaxRand = pMonster->m_timeSleepMax; 
+
+		} else {
+			// бродить (настороженно), часто осматриватьс€ по сторонам
+			WRITE_TO_LOG("ACTION_WALK_CIRCUMSPECTION");
+
+			m_tAction = ACTION_WALK_CIRCUMSPECTION;
+
+			pMonster->AI_Path.TravelPath.clear();
+			pMonster->vfUpdateDetourPoint();	
+			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+
+			dwMinRand = pMonster->m_timeFreeWalkMin; dwMaxRand = pMonster->m_timeFreeWalkMax;
+		}
+	}
+
+	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
 	u32		cur_val;
 	u32		dwMinRand, dwMaxRand;
