@@ -8,11 +8,15 @@ void CBuild::CalcNormals()
 	float	p_total = 0;
 	float	p_cost  = 1.f/(Vcount);
 
+	// Clear temporary flag
 	Status("Processing...");
 	float sm_cos = cosf(deg2rad(g_params.m_sm_angle));
 
 	for (vecFaceIt it = g_faces.begin(); it!=g_faces.end(); it++)
+	{
+		(*it)->bSplitted = FALSE;
 		(*it)->CalcNormal();
+	}
 
 	// remark:
 	//	we use Face's bSplitted value to indicate that face is processed
