@@ -61,3 +61,13 @@ void CGameObject::Sector_Detect	()
 		}
 	}
 }
+
+float CGameObject::OnVisible	()
+{
+	float	l_f		= Device.fTimeDelta*fLightSmoothFactor;
+	float	l_i		= 1.f-l_f;
+	float&	LL		= AI_Lighting;
+	float	CL		= AI_Node?float(AI_Node->light):255;
+	LL				= l_i*LL + l_f*CL;
+	return LL;
+}

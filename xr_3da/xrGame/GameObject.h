@@ -17,6 +17,7 @@ public:
 	// Methods
 	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector4& o_pos);
 	virtual void						Sector_Detect	();
+	virtual float						OnVisible		();
 
 	CGameObject();
 	virtual ~CGameObject();
