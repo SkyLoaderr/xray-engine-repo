@@ -176,7 +176,7 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                 std::string fn		= Scene->LevelPath()+sn.c_str();
                 IWriter* W			= FS.w_open(fn.c_str()); VERIFY(W);
                 if (!P->Export(*W)){
-                    ELog.DlgMsg		(mtError,"Invalid ladder object.");
+                    ELog.DlgMsg		(mtError,"Invalid climable object.");
                     bResult 		= false;
                     break;
                 }
