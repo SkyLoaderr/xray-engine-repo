@@ -114,8 +114,7 @@ function move_mgr:simulate_callback_if_neccessary()
 	local ptr = patrol(self.path_walk)
 	local num_points = ptr:count()
 	for i = 0, num_points - 1 do
-		local distance = pos:distance_to(ptr:point(i))
-		if distance <= 1 then
+		if utils.stalker_at_waypoint(self.object, ptr, i) then
 			printf("simulating callback")
 			self:waypoint_callback(self.object, nil, i)
 			break
@@ -289,7 +288,8 @@ function move_mgr:update()
 		self.state = state_moving
 
 		if patrol_walk_count == 1 then
-			self:waypoint_callback(self.object, nil, 0)
+			printf("_bp1")
+			self:waypoint_callback(self.object, nil, self.last_index)
 		else
 			self.last_look_index = nil
 			self:update_movement_state() -- идти дальше
