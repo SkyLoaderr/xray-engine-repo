@@ -203,36 +203,68 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 		R_Light	*L	= &*lights.rgb.begin(), *E = &*lights.rgb.end();
 		for (;L!=E; L++)
 		{
-			if (L->type==LT_DIRECT) {
-				// Cos
-				Ldir.invert	(L->direction);
-				float D		= Ldir.dotproduct( N );
-				if( D <=0 ) continue;
+			switch (L->type)
+			{
+			case LT_DIRECT:
+				{
+					// Cos
+					Ldir.invert	(L->direction);
+					float D		= Ldir.dotproduct( N );
+					if( D <=0 ) continue;
 
-				// Trace Light
-				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
-				C.rgb.x		+=	scale * L->diffuse.x; 
-				C.rgb.y		+=	scale * L->diffuse.y;
-				C.rgb.z		+=	scale * L->diffuse.z;
-			} else {
-				// Distance
-				float sqD	=	P.distance_to_sqr	(L->position);
-				if (sqD > L->range2) continue;
+					// Trace Light
+					float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+					C.rgb.x		+=	scale * L->diffuse.x; 
+					C.rgb.y		+=	scale * L->diffuse.y;
+					C.rgb.z		+=	scale * L->diffuse.z;
+				}
+				break;
+			case LT_POINT:
+				{
+					// Distance
+					float sqD	=	P.distance_to_sqr	(L->position);
+					if (sqD > L->range2) continue;
 
-				// Dir
-				Ldir.sub	(L->position,P);
-				Ldir.normalize_safe();
-				float D		= Ldir.dotproduct( N );
-				if( D <=0 ) continue;
+					// Dir
+					Ldir.sub			(L->position,P);
+					Ldir.normalize_safe	();
+					float D				= Ldir.dotproduct( N );
+					if( D <=0 )			continue;
 
-				// Trace Light
-				float R		= _sqrt(sqD);
-				float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
-				float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+					// Trace Light
+					float R		= _sqrt(sqD);
+					float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+					float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
-				C.rgb.x += A * L->diffuse.x;
-				C.rgb.y += A * L->diffuse.y;
-				C.rgb.z += A * L->diffuse.z;
+					C.rgb.x += A * L->diffuse.x;
+					C.rgb.y += A * L->diffuse.y;
+					C.rgb.z += A * L->diffuse.z;
+				}
+				break;
+			case LT_SECONDARY:
+				{
+					// Distance
+					float sqD	=	P.distance_to_sqr	(L->position);
+					if (sqD > L->range2) continue;
+
+					// Dir
+					Ldir.sub	(L->position,P);
+					Ldir.normalize_safe();
+					float	D	=	Ldir.dotproduct		( N );
+					if( D <=0 ) continue;
+							D	*=	-Ldir.dotproduct	(L->direction);
+					if( D <=0 ) continue;
+
+					// Trace Light
+					float R		= _sqrt(sqD);
+					float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+					float A		= scale * (1-R/L->range);
+
+					C.rgb.x += A * L->diffuse.x;
+					C.rgb.y += A * L->diffuse.y;
+					C.rgb.z += A * L->diffuse.z;
+				}
+				break;
 			}
 		}
 	}

@@ -157,6 +157,14 @@ void CBuild::PreOptimize()
 	mem_Compact			();
 	clMsg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
 	clMsg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
+
+	if (b_noise)	{
+		CRandom		rnd		(0x12071980);
+		Fvector		dir;
+		for (int it = 0; it<(int)g_vertices.size(); it++)	{
+			g_vertices[it]->P.mad(dir.random_dir(rnd).normalize(), .01f);
+		}
+	}
 }
 
 void CBuild::IsolateVertices	(BOOL bProgress)

@@ -30,7 +30,7 @@ void	CThreadManager::wait	(u32	sleep_time)
 		perf[0]					=0;
 		float	sumProgress		=0;
 		float	sumPerformance	=0;
-		u32	sumComplete		=0;
+		u32		sumComplete		=0;
 		for (u32 ID=0; ID<threads.size(); ID++)
 		{
 			sumProgress			+= threads[ID]->thProgress;

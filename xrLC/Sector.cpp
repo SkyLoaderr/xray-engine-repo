@@ -25,7 +25,7 @@ IC BOOL	ValidateMerge	(Fbox& bb_base, Fbox& bb, float& volume, float SLimit)
 {
 	// Size
 	Fbox	merge;	merge.merge		(bb_base,bb);
-	Fvector sz;		merge.getsize	(sz);
+	Fvector sz;		merge.getsize	(sz);	sz.add	(EPS_L);
 	if (sz.x>SLimit)		return FALSE;	// Don't exceed limits (4/3 GEOM)
 	if (sz.y>SLimit)		return FALSE;
 	if (sz.z>SLimit)		return FALSE;
@@ -48,15 +48,18 @@ void CSector::BuildHierrarhy	()
 	scene_bb.invalidate			();
 	for (int I=0; I<s32(g_tree.size()); I++)
 		scene_bb.merge			(g_tree[I]->bbox);
+	scene_bb.grow	(EPS_L);
 
 	// 
 	scene_bb.getsize(scene_size);
 	delimiter		=	_max(scene_size.x,_max(scene_size.y,scene_size.z));
 	delimiter		*=	2;
 
-	int		iLevel	=	2;
-	float	SizeLimit = c_SS_maxsize/4.f;
-	if		(SizeLimit<4.f) SizeLimit=4.f;
+	int		iLevel					=	2;
+	float	SizeLimit				= c_SS_maxsize/4.f;
+	if		(SizeLimit<4.f)			SizeLimit=4.f;
+	if		(delimiter<=SizeLimit)	delimiter*=2;		// just very small level
+
 	for (; SizeLimit<=delimiter; SizeLimit*=2)
 	{
 		int iSize			= g_tree.size();

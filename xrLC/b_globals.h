@@ -42,3 +42,4 @@ extern const int				edge2idx3	[3][3];
 extern const int				idx2edge	[3][3];
 extern BOOL						b_R2;
 extern BOOL						b_radiosity;
+extern BOOL						b_noise;
