@@ -73,7 +73,7 @@ MxVertexID MxBlockModel::add_vertex(float x, float y, float z)
 
 void MxBlockModel::remove_vertex(MxVertexID v)
 {
-    AssertBound( v < vertices.length() );
+    VERIFY( v < vertices.length() );
 
     free_vertex(v);
     vertices.remove(v);
@@ -84,7 +84,7 @@ void MxBlockModel::remove_vertex(MxVertexID v)
 
 void MxBlockModel::remove_face(MxFaceID f)
 {
-    AssertBound( f < faces.length() );
+    VERIFY( f < faces.length() );
 
     free_face(f);
     faces.remove(f);
@@ -105,7 +105,7 @@ MxFaceID MxBlockModel::add_face(unsigned int v1,
 
 unsigned int MxBlockModel::add_color(float r, float g, float b)
 {
-    assert( colors );
+    VERIFY( colors );
     MxColor c(r, g, b);
     colors->add(c);
     return colors->last_id();
@@ -219,7 +219,7 @@ void MxBlockModel::normal_binding(unsigned char b)
 void MxBlockModel::texcoord_binding(unsigned char b)
 {
     if( b!=MX_UNBOUND && b!=MX_PERVERTEX )
-	fatal_error("Illegal texture coordinate binding.");
+		Debug.fatal("Illegal texture coordinate binding.");
 
     int size = binding_size(*this, b);
     if( tcoords )  tcoords->reset();
