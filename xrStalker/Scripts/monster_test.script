@@ -9,6 +9,8 @@ end
 
 
 function main()
+	printf	("Taking Script");
+
 	local	 monster = get_level_object("trader");
 	wait	(5000);
 	
