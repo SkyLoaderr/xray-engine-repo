@@ -247,8 +247,11 @@ void CWeapon::Load		(LPCSTR section)
 
 BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	return inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL bResult			= inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
+	u16						current,elapsed;
+	P.r_u16					(current);	iAmmoCurrent	= current;
+	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
 }
 
 void CWeapon::net_Destroy	()

@@ -100,6 +100,11 @@ M_SPAWN
 		u8			g_squad;		// user defined
 		u8			g_group;		// user defined
 	}
+	weapon
+	{
+		u16			a_current;
+		u16			a_elapsed;
+	}
 	dummy
 	{
 		u8				style;				// esAnimated=1<<0,	esModel=1<<1, esParticles=1<<2, esSound=1<<3, esRelativePosition=1<<4
