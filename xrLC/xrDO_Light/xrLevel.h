@@ -68,18 +68,6 @@ struct NodeCompressed
 	u64				link1	:21;
 	u64				link2	:21;
 	u64				link3	:21;
-
-	IC u32 get_link	(int i) const
-	{
-		switch (i) {
-			case 0 :	return link0;
-			case 1 :	return link1;
-			case 2 :	return link2;
-			case 3 :	return link3;
-			default :	NODEFAULT;
-		}
-		return		(u32(-1));
-	}
 };									// 2+5+1+11 = 19b
 #pragma pack	(pop)
 

@@ -248,7 +248,14 @@ IC	u16	CLevelGraph::CVertex::plane() const
 
 IC	u32	CLevelGraph::CVertex::link(int i) const
 {
-	return				(get_link(i));
+	switch (i) {
+			case 0 :	return link0;
+			case 1 :	return link1;
+			case 2 :	return link2;
+			case 3 :	return link3;
+			default :	NODEFAULT;
+	}
+	return		(u32(-1));
 }
 
 IC	const CLevelGraph::CPosition &CLevelGraph::CVertex::position() const
