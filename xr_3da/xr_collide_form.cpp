@@ -158,8 +158,7 @@ IC BOOL RAYvsOBB(CCF_Skeleton::xOBB &B, Fvector &S, Fvector &D, float &R)
 
 CCF_Skeleton::CCF_Skeleton(CObject* O) : CCFModel(O)
 {
-	PKinematics	K	= PKinematics(O->Visual());
-	R_ASSERT		(K->Type == MT_SKELETON);
+	CKinematics* K	= PKinematics(O->Visual());
 	model.resize	(K->LL_BoneCount());
 
 	base_box.set	(K->bv_BBox);
