@@ -23,6 +23,7 @@ void CShaderManager::xrStartUp()
 			CBlender_DESC	desc;
 			chunk->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
+			R_ASSERT		(B->getDescription().version == desc.version);
 			fs->Seek		(0);
 			B->Load			(*fs);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
