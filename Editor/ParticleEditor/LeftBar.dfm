@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 752
+  Height = 858
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 752
+    Height = 858
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -151,8 +151,9 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 290
+      Height = 396
       Align = alClient
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
@@ -172,13 +173,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 259
+        Height = 365
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 257
+          Top = 363
           Width = 208
           Height = 2
           Align = alBottom
@@ -194,7 +195,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 208
-          Height = 221
+          Height = 327
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -389,7 +390,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 273
+        Top = 379
         Width = 208
         Height = 16
         Align = alBottom
@@ -420,11 +421,12 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 401
+      Top = 507
       Width = 210
       Height = 350
       Hint = 'Scene commands'
       Align = alBottom
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
@@ -477,7 +479,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 359
+      Top = 465
       Width = 210
       Height = 42
       Hint = 'Scene commands'

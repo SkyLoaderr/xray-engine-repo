@@ -115,6 +115,9 @@ USELIB("Lib\ETools.lib");
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEUNIT("Editor\EditMeshPick.cpp");
 USEUNIT("Editor\EditObjectEditor.cpp");
+USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
+USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
+USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
