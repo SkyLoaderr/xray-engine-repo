@@ -155,7 +155,7 @@ function main_menu:OnButton_new_game_clicked()
 	level.start_stop_menu(dlg, true)
 end
 
-function main_menu:OnButton_new_options_clicked()
+function main_menu:OnButton_options_clicked()
 	local dlg = ui_options_dialog.options_dialog()
 	level.start_stop_menu(dlg, true)
 end
