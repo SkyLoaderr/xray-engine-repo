@@ -81,13 +81,12 @@ public:
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
 	void	xrPhase_Subdivide		();
+	void	SoftenLights			();
+	void	ImplicitLighting		();
+	void	Light					();
+	void	LightVertex				();
 	void	xrPhase_MergeLM			();
 	void	xrPhase_MergeGeometry	();
-
-	void	SoftenLights	();
-	void	ImplicitLighting();
-	void	Light			();
-	void	LightVertex		();
 
 	void	Flex2OGF		();
 	void	LightPatches	();
