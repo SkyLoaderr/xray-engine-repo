@@ -345,7 +345,7 @@ void	CRender::Render()
 	static	CLightPPA	TEST;
 
 	Fvector	P;
-	P.direct			(Device.vCameraPosition,Device.vCameraDirection,5);
+	P.direct			(Device.vCameraPosition,Device.vCameraDirection,0);
 	TEST.SetPosition	(P);
 	TEST.SetRange		(4.f);
 	TEST.SetColor		(0,0,1);
