@@ -331,6 +331,27 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------------------------------------------------
+class "action_stand2" (action_base)
+----------------------
+function action_stand2:__init (name, storage) super (nil, name)
+    self.st = storage
+end
+----------------------
+function action_stand2:initialize ()
+    action_base.initialize (self)
+end
+----------------------
+function action_stand2:execute ()
+    action_base.execute (self)
+	self.st.on_position = false
+end
+----------------------
+function action_stand2:finalize ()
+    action_base.finalize (self)
+end    
+----------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------
 function add_to_binder (npc, ini, scheme, section, st)
 
     local operators		= {}
@@ -344,13 +365,14 @@ function add_to_binder (npc, ini, scheme, section, st)
     operators["action_position"]    = xr_actions_id.sidor_act_rest     + 0
     operators["action_rest"]        = xr_actions_id.sidor_act_rest     + 1
     operators["action_no_food"]     = xr_actions_id.sidor_act_rest     + 2 
-    operators["action_stand"]       = xr_actions_id.sidor_act_rest     + 3 
+    operators["action_stand"]       = xr_actions_id.sidor_act_rest     + 3
+    operators["action_stand2"]      = xr_actions_id.sidor_act_rest     + 4
 
 	local manager  = npc:motivation_action_manager ()
    	
-    manager:add_evaluator (properties["food"], this.evaluator_food ("evaluator_food", st))
-    manager:add_evaluator (properties["on_position"], this.evaluator_pos ("evaluator_position", st))
-    manager:add_evaluator (properties["rest"], this.evaluator_rest ("evaluator_rest", st))
+    manager:add_evaluator (properties["food"], this.evaluator_food ("rest_have_food", st))
+    manager:add_evaluator (properties["on_position"], this.evaluator_pos ("rest_on_position", st))
+    manager:add_evaluator (properties["rest"], this.evaluator_rest ("rest_need_rest", st))
     
     local action = this.action_position ("action_position", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
@@ -387,6 +409,14 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["on_position"],     false))
    	manager:add_action          (operators["action_stand"], action)
+
+    action = this.action_stand2 ("action_stand2", st)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     (world_property (stalker_ids.property_enemy,    true))
+   	action:add_precondition     (world_property (properties["rest"],            false))
+   	action:add_precondition     (world_property (properties["on_position"],     true))
+   	action:add_effect           (world_property (properties["on_position"],     false))
+   	manager:add_action          (operators["action_stand2"], action)
    	     	   
     manager:action (xr_actions_id.alife):add_precondition (world_property (properties["rest"],  false))
     manager:action (stalker_ids.action_combat_planner):add_precondition (world_property (properties["on_position"],  false))
