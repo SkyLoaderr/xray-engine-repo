@@ -34,10 +34,10 @@ void CLight_DB::Load			(IReader *fs)
 			L->flags.bStatic			= true;
 			L->set_type					(IRender_Light::POINT);
 
-/*			L->set_type					(IRender_Light::SPOT);
+			L->set_type					(IRender_Light::SPOT);
 
 			Fvector	tmp_D; tmp_D.set	(0,-1,0);
-			L->set_direction			(tmp_D);*/
+			L->set_direction			(tmp_D);
 #if RENDER==R_R1
 			L->set_shadow				(false);
 #else
