@@ -238,6 +238,10 @@
 				RelativePath="xrStripify.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Lights"
+			Filter="">
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

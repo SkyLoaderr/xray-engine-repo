@@ -1189,60 +1189,6 @@
 				RelativePath=".\DetailModel.h">
 			</File>
 			<File
-				RelativePath=".\FStaticRender.cpp">
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed (for debug only)|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\FStaticRender.h">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_Cached.cpp">
-			</File>
-			<File
-				RelativePath="FStaticRender_DetailTexturing.cpp">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_DetectSector.cpp">
-			</File>
-			<File
-				RelativePath="FStaticRender_LODs.cpp">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_Loader.cpp">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_SceneGraph.cpp">
-			</File>
-			<File
-				RelativePath="FStaticRender_SceneGraph.h">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_Screenshot.cpp">
-			</File>
-			<File
-				RelativePath=".\FStaticRender_Types.h">
-			</File>
-			<File
-				RelativePath="FStaticRender_Volume.cpp">
-			</File>
-			<File
 				RelativePath=".\tempobject.cpp">
 			</File>
 			<File
@@ -1874,34 +1820,6 @@
 				</File>
 				<File
 					RelativePath="GameFont.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="Stripifier"
-				Filter="">
-				<File
-					RelativePath="NvTriStrip.cpp">
-				</File>
-				<File
-					RelativePath="NvTriStrip.h">
-				</File>
-				<File
-					RelativePath="NvTriStripObjects.cpp">
-				</File>
-				<File
-					RelativePath="NvTriStripObjects.h">
-				</File>
-				<File
-					RelativePath="VertexCache.cpp">
-				</File>
-				<File
-					RelativePath="VertexCache.h">
-				</File>
-				<File
-					RelativePath="xrStripify.cpp">
-				</File>
-				<File
-					RelativePath="xrStripify.h">
 				</File>
 			</Filter>
 		</Filter>

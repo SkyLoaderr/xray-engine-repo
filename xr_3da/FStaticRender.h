@@ -6,22 +6,22 @@
 #define AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-#include "render.h"
+#include "..\render.h"
+#include "..\FLightsController.h"
+#include "..\glowmanager.h"
+#include "..\wallmarksengine.h"
+#include "..\portal.h"
+#include "..\modelpool.h"
+#include "..\hom.h"
+#include "..\lightShadows.h"
+#include "..\lightProjector.h"
+#include "..\lightPPA.h"
+#include "..\PSLibrary.h"
 
-#include "FLightsController.h"
-#include "fstaticrender_scenegraph.h"
-#include "glowmanager.h"
-#include "wallmarksengine.h"
-#include "portal.h"
-#include "modelpool.h"
-#include "fstaticrender_types.h"
 #include "detailmanager.h"
+#include "fstaticrender_types.h"
+#include "fstaticrender_scenegraph.h"
 #include "fstaticrender_rendertarget.h"
-#include "hom.h"
-#include "lightShadows.h"
-#include "lightProjector.h"
-#include "lightPPA.h"
-#include "PSLibrary.h"
 
 // defs
 const int max_patches = 512;
