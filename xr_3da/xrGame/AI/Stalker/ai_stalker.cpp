@@ -159,7 +159,6 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
 	
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
-
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -216,9 +215,10 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	movement().m_body.current.pitch	= movement().m_body.target.pitch	= 0;
 
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
-		ai_location().game_vertex	(tpHuman->m_tGraphID);
+		ai_location().game_vertex		(tpHuman->m_tGraphID);
+
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && movement().restrictions().accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
-		movement().set_game_dest_vertex		(tpHuman->m_tNextGraphID);
+		movement().set_game_dest_vertex	(tpHuman->m_tNextGraphID);
 
 	m_current_alife_task			= 0;
 
@@ -277,12 +277,17 @@ BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 	m_fRankVisibility = novice_rank_visibility + (expirienced_rank_visibility - novice_rank_visibility) * rank_k;
 	m_fRankDisperison = novice_rank_immunity + (expirienced_rank_dispersion - novice_rank_dispersion) * rank_k;
 
+	if (!fis_zero(SpecificCharacter().panic_threshold()))
+		m_panic_threshold						= SpecificCharacter().panic_threshold();
+	else
+		m_panic_threshold						= pSettings->r_float(cNameSect(),"panic_threshold");
+
 	//загрузка спецевической звуковой схемы для сталкера согласно m_SpecificCharacter
 	LPCSTR snd_sound_sect = SpecificCharacter().SndConfigSect();
-	if(snd_sound_sect && pSettings->section_exist(snd_sound_sect))
-		LoadSounds(snd_sound_sect);
+	if (snd_sound_sect && pSettings->section_exist(snd_sound_sect))
+		LoadSounds	(snd_sound_sect);
 	else
-		LoadSounds(*cNameSect());
+		LoadSounds	(*cNameSect());
 
 	return							(TRUE);
 }

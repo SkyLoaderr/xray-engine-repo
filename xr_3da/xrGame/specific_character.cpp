@@ -234,6 +234,11 @@ LPCSTR CSpecificCharacter::SndConfigSect () const
 	return data()->m_sSndConfigSect.c_str();
 }
 
+float CSpecificCharacter::panic_threshold () const 
+{
+	return data()->m_fPanic_threshold;
+}
+
 #endif
 
 

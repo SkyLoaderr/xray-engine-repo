@@ -132,7 +132,7 @@ public:
 	LPCSTR						SupplySpawn		() const ;
 	LPCSTR						NpcConfigSect   () const ;
 	LPCSTR						SndConfigSect   () const ;
-	
+	float						panic_threshold () const ;
 
 	int		TradeIconX	() const	 {return data()->m_iIconX;}
 	int		TradeIconY	() const	 {return data()->m_iIconY;}
