@@ -317,6 +317,8 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case DMSG_NEED_ANSWER:
 		m_needAnswer = TRUE;
+		OnUpdateFrameTitle(TRUE);
+
 		break;
 	case DMSG_WRITE_DEBUG:
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
@@ -422,6 +424,7 @@ void CMainFrame::OnDebugGo()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 
@@ -434,6 +437,7 @@ void CMainFrame::OnDebugStepinto()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 	
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnDebugStepover() 
@@ -445,6 +449,7 @@ void CMainFrame::OnDebugStepover()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnDebugStepout() 
@@ -456,6 +461,7 @@ void CMainFrame::OnDebugStepout()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnDebugRuntocursor() 
@@ -470,6 +476,7 @@ void CMainFrame::OnDebugRuntocursor()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnDebugBreak()
@@ -495,6 +502,7 @@ void CMainFrame::OnDebugStopdebugging()
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 
@@ -613,11 +621,11 @@ void CMainFrame::UpdateFrameTitleForDocument(LPCTSTR lpszDocName)
 		}else
 			lstrcpy(szText, m_strTitle);
 
-/*		if(m_needAnswer)
+		if(m_needAnswer)
 			lstrcat(szText, _T(" [DEBUG BREAK] "));
 		else
 			lstrcat(szText, _T(" [NOT ACTIVE] "));
-*/
+
 
 		if (lpszDocName != NULL)
 		{
@@ -643,6 +651,7 @@ void CMainFrame::StackLevelChanged(int nLine)
 	msg.w_int (DMSG_GOTO_STACKTRACE_LEVEL);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 	m_needAnswer = FALSE;
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
