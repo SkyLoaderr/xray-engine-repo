@@ -13,6 +13,29 @@
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <windows.h>
+#include <mmsystem.h>
+
+#include "limits"
+#include "list"
+
+#undef min
+#undef max
+#define ENGINE_API 
+#define IC __forceinline
+#define	NO_XR_COLOR
+#define NO_XR_LIGHT
+#define NO_XR_MATERIAL
+#define NO_XR_3DBUFFER
+#define VERIFY(a)
+#define R_ASSERT(a)
+#define Msg printf
+struct D3DVECTOR;
+struct D3DMATRIX;
+#define NODEFAULT
+#include "vector.h"
 
 // TODO: reference additional headers your program requires here
 
