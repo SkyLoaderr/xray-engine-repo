@@ -494,7 +494,7 @@ void CAI_Stalker::spawn_supplies	()
 	inherited::spawn_supplies			();
 	CObjectHandler::spawn_supplies	();
 }
-
+#ifdef DEBUG
 void CAI_Stalker::OnRender			()
 {
 	inherited::OnRender		();
@@ -532,3 +532,4 @@ void CAI_Stalker::OnRender			()
 	HUD().pFontMedium->OutSet	(x,y);
 	HUD().pFontMedium->OutNext	(out_text);
 }
+#endif
