@@ -191,7 +191,7 @@ void CSoundManager::Initialize( )
 	LONG 			lVol;
 	lpPrimaryBuf->GetVolume( &lVol );
 	fSaveWaveVol	= (1-float(lVol)/float(DSBVOLUME_MIN));
-	lpPrimaryBuf->SetVolume( DSBVOLUME_MAX );
+//	lpPrimaryBuf->SetVolume( DSBVOLUME_MAX );
 
 	GetDeviceInfo	();
 }
