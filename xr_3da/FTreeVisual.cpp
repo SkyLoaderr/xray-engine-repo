@@ -76,6 +76,7 @@ void FTreeVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 float	psTree_w_rot1		= 30.f;
 float	psTree_w_speed		= 2.f;
 float	psTree_w_amp		= .1f;
+Fvector psTree_Wave			= {1.f/5.f, 1.f/7.f, 1.f/3.f};
 
 void FTreeVisual::Render	(float LOD)
 {
@@ -87,7 +88,7 @@ void FTreeVisual::Render	(float LOD)
 
 	// setup constants
 	RCache.set_c			(c_consts,	scale,		scale,		0,					0);
-	RCache.set_c			(c_wave,	1.f/5.f,	1.f/7.f,	1.f/3.f,			Device.fTimeGlobal*psTree_w_speed);	// wave
+	RCache.set_c			(c_wave,	psWave.x,	psWave.y,	psWave.z,			Device.fTimeGlobal*psTree_w_speed);	// wave
 	RCache.set_c			(c_wind,	wind);																			// wind
 	RCache.set_c			(c_c_scale,	c_scale);																		// scale
 	RCache.set_c			(c_c_bias,	c_bias);																		// bias

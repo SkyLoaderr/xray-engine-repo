@@ -266,6 +266,12 @@ extern float		psDetail_l_aniso;
 extern int			psSupersample;
 extern Flags32		psEnvFlags;
 
+extern float		psTree_w_rot;
+extern float		psTree_w_speed;
+extern float		psTree_w_amp;
+extern Fvector		psTree_Wave;
+
+
 void CCC_Register()
 {
 	// Input
@@ -283,6 +289,7 @@ void CCC_Register()
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,	mtSound);
 	CMD3(CCC_Mask,		"mt_input",				&psDeviceFlags,	mtInput);
+	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,	mtPhysics);
 	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,	1000,	100000	);
 	
 	// Events
@@ -313,6 +320,7 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
 	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 	CMD4(CCC_Float,		"rs_ssa_hzb_vs_tex",	&ssaHZBvsTEX,		16,	512		);
+
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot1,	1.f,180.f	);
@@ -320,6 +328,14 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_detail_w_speed",	&psDetail_w_speed,	1.f,4.f		);
 	CMD4(CCC_Float,		"rs_detail_l_ambient",	&psDetail_l_ambient,.5f,.95f	);
 	CMD4(CCC_Float,		"rs_detail_l_aniso",	&psDetail_l_aniso,	.1f,.5f		);
+
+	Fvector	tw_min,tw_max;
+	tw_min.set			(EPS,EPS,EPS);
+	tw_max.set			(2,2,2);
+	CMD4(CCC_Float,		"rs_d_tree_w_rot",		&psTree_w_rot,		.01f, 1.f		);
+	CMD4(CCC_Float,		"rs_d_tree_w_speed",	&psTree_w_speed,	1.0f, 4.f		);
+	CMD4(CCC_Float,		"rs_d_tree_w_amp",		&psTree_w_amp,		.01f, 1.f		);
+	CMD4(CCC_Vector3,	"rs_d_tree_wave",		&psTree_Wave,		tw_min, tw_max	);
 	
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
