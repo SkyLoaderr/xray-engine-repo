@@ -59,6 +59,19 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 				info.m_credits->at(i) = ini.r_string_wb( "creator", name);
 			}
 		}
+		info.m_archieves->clear();
+		if(ini.section_exist("packages")){
+			int lc = ini.line_count("packages");
+			
+			info.m_archieves->resize(lc);
+
+			LPCSTR name;
+			LPCSTR value;
+			for (int i=0 ;i<lc; ++i){
+				ini.r_line( "packages", i, &name, &value);
+				info.m_archieves->at(i) = ini.r_string_wb( "packages", name);
+			}
+		}
 }
 
 void xrLauncher_main_frm::InitMod()
@@ -114,6 +127,11 @@ System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System
 		  return;
 
     SmodInfo& info = m_mod_info->at(index);
+	string_path pack_path;
+	for(u32 i=0;i<info.m_archieves->size();++i){
+		FS.update_path(pack_path,"$server_root$",*(info.m_archieves->at(i)));
+		FS.register_archieve(pack_path);
+	}
 	CConsole* con = ::Console;
 	con->Execute(*info.m_cmd_line);
 	Close();

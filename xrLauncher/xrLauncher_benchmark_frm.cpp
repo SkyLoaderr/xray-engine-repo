@@ -31,8 +31,8 @@ void xrLauncher_benchmark_frm::Init()
 	for ( i=0 ;i<ccount; ++i){
 		ini.r_line( "quality", i, &name, &value);
 		
-		ref_str	q_name;
-		ref_str	q_conf;
+		shared_str	q_name;
+		shared_str	q_conf;
 		q_name = ini.r_string_wb(value,"name_visual");
 		q_conf = ini.r_string_wb(value,"config_file");
 
@@ -44,7 +44,7 @@ void xrLauncher_benchmark_frm::Init()
 	for ( i=0 ;i<ccount; ++i){
 		ini.r_line( "benchmarks", i, &name, &value);
 		
-		ref_str	q_conf;
+		shared_str	q_conf;
 		q_conf = ini.r_string_wb(value,"command");
 		m_test_cmds->Add(new String(*q_conf));
 	}
