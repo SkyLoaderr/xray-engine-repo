@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_creator.h"
 #include "ftreevisual.h"
-#include "fmesh.h"
-#include "render.h"
-#include "xr_effsun.h"
+
+#include "..\xr_creator.h"
+#include "..\xr_effsun.h"
 
 FTreeVisual::FTreeVisual	(void)
 {
@@ -149,7 +148,7 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
 	// render
-#if 0
+#if RENDER==R_R1
 	RCache.set_xform_world	(xform);
 #endif
 	RCache.set_Geometry		(hGeom);

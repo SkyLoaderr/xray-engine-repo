@@ -1417,16 +1417,6 @@
 						RelativePath="FLOD.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="Waving or tree model"
-					Filter="">
-					<File
-						RelativePath="FTreeVisual.cpp">
-					</File>
-					<File
-						RelativePath="FTreeVisual.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Visibility"

@@ -14,7 +14,7 @@
 #include "..\ParticleGroup.h"
 #include "..\fcached.h"
 #include "..\flod.h"
-#include "..\ftreevisual.h"
+#include "ftreevisual.h"
 
 IVisual*	CModelPool::Instance_Create(u32 type)
 {
