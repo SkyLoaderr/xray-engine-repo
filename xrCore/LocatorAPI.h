@@ -166,7 +166,8 @@ public:
     int  						get_file_age	(LPCSTR nm);
     void 						set_file_age	(LPCSTR nm, int age);
 
-	xr_vector<char*>*			file_list_open	(LPCSTR path, u32 flags=FS_ListFiles);
+	xr_vector<char*>*			file_list_open	(LPCSTR initial, LPCSTR folder,	u32 flags=FS_ListFiles);
+	xr_vector<char*>*			file_list_open	(LPCSTR path,					u32 flags=FS_ListFiles);
 	void						file_list_close	(xr_vector<char*>* &lst);
 
     bool						path_exist		(LPCSTR path);

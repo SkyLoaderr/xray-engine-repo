@@ -44,7 +44,7 @@ LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
     R_ASSERT(src);
 	string256		temp;
 	strcpy			(temp,src);
-	return strlwr(strconcat(dest,m_Path,temp));
+	return strlwr	(strconcat(dest,m_Path,temp));
 }
 
 #ifdef __BORLANDC__
@@ -332,7 +332,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 	return exist(fn);
 }
 
-const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const char* name, const char* ext)
+const CLocatorAPI::file* CLocatorAPI::exist				(char* fn, const char* path, const char* name, const char* ext)
 {
 	string256 nm;
 	strconcat		(nm,name,ext);
@@ -340,13 +340,19 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 	return exist(fn);
 }
 
-xr_vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
+xr_vector<char*>* CLocatorAPI::file_list_open			(const char* initial, const char* folder, u32 flags)
+{
+	string256		N;
+	R_ASSERT		(initial&&initial[0]);
+	update_path		(N,initial,folder);
+	return			file_list_open(N,flags);
+}
+
+xr_vector<char*>* CLocatorAPI::file_list_open			(const char* path, u32 flags)
 {
 	VERIFY			(flags);
 	
-	string256		N;
-	if (initial&&initial[0]) update_path(N,initial,"");
-	
+	LPCSTR N		= path;
 	file			desc;
 	desc.name		= N;                      
 	files_it	I	= files.find(desc);
