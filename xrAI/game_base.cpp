@@ -11,6 +11,8 @@ game_PlayerState::game_PlayerState()
 	flags				=	0;
 
 	m_skin				=	0;
+
+	Skip = false;
 }
 
 game_PlayerState::~game_PlayerState()
