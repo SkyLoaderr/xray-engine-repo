@@ -164,11 +164,11 @@ void CSkeletonX_PM::Render	(float LOD)
 	int lod_id				= inherited1::last_lod;
 	if (LOD>=0.f){
 		clamp				(LOD,0.f,1.f);
-		lod_id				= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+		lod_id				= iFloor((1.f-LOD)*float(nSWI.count-1)+0.5f);
 		inherited1::last_lod= lod_id;
 	}
-	VERIFY					(lod_id>=0 && lod_id<int(pSWI->count));
-	FSlideWindow& SW		= pSWI->sw[lod_id];
+	VERIFY					(lod_id>=0 && lod_id<int(nSWI.count));
+	FSlideWindow& SW		= nSWI.sw[lod_id];
 	_Render					(geom,SW.num_verts,SW.offset,SW.num_tris);
 }
 void CSkeletonX_ST::Render	(float LOD) 
@@ -325,7 +325,7 @@ void CSkeletonX_ST::AfterLoad(CKinematics* parent, u16 child_idx)
 void CSkeletonX_PM::AfterLoad(CKinematics* parent, u16 child_idx)
 {
 	inherited2::AfterLoad			(parent,child_idx);
-	FSlideWindow& SW				= pSWI->sw[0]; // max LOD
+	FSlideWindow& SW				= nSWI.sw[0]; // max LOD
 	inherited2::_CollectBoneFaces	(this,iBase+SW.offset,SW.num_tris*3);
 }
 
@@ -410,7 +410,7 @@ BOOL CSkeletonX_ST::PickBone		(Fvector& normal, float& dist, const Fvector& star
 }
 BOOL CSkeletonX_PM::PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)
 {
-	FSlideWindow& SW				= pSWI->sw[0];
+	FSlideWindow& SW				= nSWI.sw[0];
 	return inherited2::_PickBone	(normal,dist,start,dir,this,bone_id,iBase+SW.offset,SW.num_tris*3);
 }
 
@@ -515,6 +515,6 @@ void CSkeletonX_ST::FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, co
 }
 void CSkeletonX_PM::FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)
 {
-	FSlideWindow& SW				= pSWI->sw[0];
+	FSlideWindow& SW				= nSWI.sw[0];
 	inherited2::_FillVertices		(view,wm,normal,size,this,bone_id,iBase+SW.offset,SW.num_tris*3);
 }
