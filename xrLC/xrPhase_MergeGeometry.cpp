@@ -55,6 +55,18 @@ float	Cuboid			(Fbox& BB)
 	return  powf(volume_cube / volume, 1.f/3.f);
 }
 
+void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
+{
+	Fvector C,D;
+	BB_src.get_CD		(C,D);
+	float	max			= D.x;
+	if (D.y>max)	max = D.y;
+	if (D.z>max)	max = D.z;
+
+	BB_dest.set			(C,C);
+	BB_dest.grow		(max);
+}
+
 BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 {
 	// Polygons
@@ -68,8 +80,9 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 	if (sz.z>(4*g_params.m_SS_maxsize/3))			return FALSE;
 
 	// Volume
-	float	v1	= bb_base.getvolume	();
-	float	v2	= bb.getvolume		();
+	Fbox		bb0,bb1;
+	MakeCube	(bb0,bb_base);	float	v1	= bb0.getvolume	();
+	MakeCube	(bb1,bb);		float	v2	= bb1.getvolume	();
 	volume		= merge.getvolume	(); // / Cuboid(merge);
 	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
 
