@@ -9,7 +9,7 @@ module("game_last_header_wnd")
 class "game_cl_LastStanding" (game_cl_mp_script)
 
 function game_cl_LastStanding:__init() super()
-//hhhhh
+//hhhhh333333333
 end
 
 
