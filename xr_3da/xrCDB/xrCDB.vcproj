@@ -60,6 +60,8 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="FALSE"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCDB.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -131,6 +133,8 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCDB.lib"
 				TargetMachine="1"/>
 			<Tool

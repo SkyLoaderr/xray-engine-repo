@@ -65,6 +65,8 @@
 				GenerateDebugInformation="FALSE"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrCPU_Pipe.map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -140,6 +142,7 @@
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrCPU_Pipe.map"
 				MapExports="FALSE"
+				OptimizeReferences="2"
 				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -293,6 +296,8 @@
 				MapFileName="x:\xrCPU_Pipe.map"
 				MapExports="TRUE"
 				MapLines="TRUE"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrCPU_Pipe.lib"
 				TargetMachine="1"/>
 			<Tool

@@ -145,6 +145,8 @@
 				GenerateMapFile="TRUE"
 				MapFileName="x:\XR_3DA.map"
 				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -221,7 +223,9 @@
 				GenerateDebugInformation="FALSE"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\XR_3DA.map"
-				SubSystem="2"/>
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"

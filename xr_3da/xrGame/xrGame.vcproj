@@ -140,6 +140,8 @@
 				GenerateDebugInformation="TRUE"
 				GenerateMapFile="TRUE"
 				MapFileName=".\Mixed/xrGame.map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrGame.lib"
 				TargetMachine="1"/>
 			<Tool
@@ -216,6 +218,8 @@
 				GenerateDebugInformation="FALSE"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrGame.map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\xrGame.lib"/>
 			<Tool
 				Name="VCMIDLTool"
