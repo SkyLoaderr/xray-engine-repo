@@ -34,6 +34,7 @@ __fastcall TfrmSoundLib::TfrmSoundLib(TComponent* Owner)
 void __fastcall TfrmSoundLib::FormCreate(TObject *Sender)
 {
 	m_ItemProps = TProperties::CreateForm	("SoundED",paProperties,alClient);
+    m_ItemProps->SetModifiedEvent			(TOnModifiedEvent().bind(this,&TfrmSoundLib::OnModified));
     m_ItemList	= TItemList::CreateForm		("Items",paItems,alClient,TItemList::ilMultiSelect);
     m_ItemList->SetOnItemsFocusedEvent		(TOnILItemsFocused(this,&TfrmSoundLib::OnItemsFocused));
     TOnItemRemove on_remove; on_remove.bind	(this,&TfrmSoundLib::RemoveSound);
@@ -65,6 +66,12 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title)
 
     form->ShowModal			();
     UI->RedrawScene			();
+}
+//---------------------------------------------------------------------------
+
+void TfrmSoundLib::OnModified()
+{
+	m_ItemProps->RefreshForm();
 }
 //---------------------------------------------------------------------------
 
@@ -276,6 +283,67 @@ void TfrmSoundLib::DestroyUsedTHM()
 }
 //------------------------------------------------------------------------------
 
+#define X_GRID 10
+#define Y_GRID 5
+void  TfrmSoundLib::OnAttenuationDraw(CanvasValue* sender, void* _canvas, const Irect& _rect)
+{
+	TCanvas* canvas 	= (TCanvas*)_canvas;
+    const TRect& rect	= *((TRect*)&_rect);
+//	canvas
+    int w = rect.Width();
+    int h = rect.Height();
+    int x0= rect.left;
+    int y0= rect.top;
+
+    canvas->Brush->Color = clBlack;
+    canvas->FillRect(rect);
+    canvas->Pen->Color = TColor(0x00006600);
+    canvas->MoveTo(x0,y0);
+    for (int i=0; i<X_GRID+1; i++){
+        canvas->LineTo(x0+i*w/X_GRID,y0+h);
+        canvas->MoveTo(x0+(i+1)*w/X_GRID,y0+0);
+    }
+    canvas->MoveTo(x0+0,y0+0);
+    for (int j=0; j<Y_GRID+1; j++){
+        canvas->LineTo(x0+w,y0+j*h/Y_GRID);
+        canvas->MoveTo(x0+0,y0+(j+1)*h/Y_GRID);
+    }
+    canvas->Pen->Color = clYellow;
+    canvas->MoveTo(x0+0,y0+iFloor(float(h)-float(h)*0.01f)); // snd cull = 0.01f
+    canvas->LineTo(x0+w,y0+iFloor(float(h)-float(h)*0.01f));
+
+    ESoundThumbnail* thm	= m_THM_Current.back();
+    float d_cost 			= thm->MaxDist()/w;
+    AnsiString temp;
+//    float v = m_D3D.range;
+//    temp.sprintf("Range = %.2f",v); lbRange->Caption = temp;
+    canvas->Pen->Color = clLime;
+    for (int d=1; d<w; d++){
+        float R = d*d_cost;
+    	float b = thm->MinDist()/(psSoundRolloff*R);
+//		float b = m_Brightness/(m_Attenuation0+m_Attenuation1*R+m_Attenuation2*R*R);
+        float bb = h-(h*b);
+        int y = iFloor(y0+bb); clamp(y,int(rect.Top),int(rect.Bottom));
+        if (1==d)	canvas->MoveTo(x0+d,y);
+        else		canvas->LineTo(x0+d,y);
+    }
+}
+
+void __stdcall TfrmSoundLib::OnAttClick(PropValue* sender, bool& bModif, bool& bSafe)
+{
+    bModif = true;
+	ButtonValue* V 			= dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    ESoundThumbnail* thm	= m_THM_Current.back();
+    switch (V->btn_num){
+    case 0: 
+    	thm->SetMaxDist		(thm->MinDist()/(0.01f*psSoundRolloff));
+   	break;
+    case 1: 
+    	thm->SetMinDist		(psSoundRolloff*thm->MaxDist()*0.01f);
+    break;
+	}
+}
+
 void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 {
 	PropItemVec props;
@@ -303,12 +371,21 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         u32 size=0;
         u32 time=0;
 		PlaySound(thm->SrcName(), size, time);
-        PHelper().CreateCaption(props,"File Length",	shared_str().sprintf("%.2f Kb",float(size)/1024.f));
-        PHelper().CreateCaption(props,"Total Time",		shared_str().sprintf("%.2f sec",float(time)/1000.f));
-        B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
-        B->OnBtnClickEvent.bind(this,&TfrmSoundLib::OnControlClick);
+
+        CanvasValue* C=0;
+        C=PHelper().CreateCanvas	(props,"Attenuation",	"", 64);
+        C->tag						= (int)this;
+        C->OnDrawCanvasEvent.bind	(this,&TfrmSoundLib::OnAttenuationDraw);
+//		C->OnTestEqual.bind			(this,&TfrmSoundLib::OnPointDataTestEqual);
+        B=PHelper().CreateButton	(props,"Auto Att",		"By Min,By Max",ButtonValue::flFirstOnly);
+        B->OnBtnClickEvent.bind		(this,&TfrmSoundLib::OnAttClick);
+        
+        PHelper().CreateCaption		(props,"File Length",	shared_str().sprintf("%.2f Kb",float(size)/1024.f));
+        PHelper().CreateCaption		(props,"Total Time", 	shared_str().sprintf("%.2f sec",float(time)/1000.f));
+        B=PHelper().CreateButton	(props,"Control",		"Play,Stop",ButtonValue::flFirstOnly);
+        B->OnBtnClickEvent.bind		(this,&TfrmSoundLib::OnControlClick);
     }
-    B=PHelper().CreateButton		(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+    B=PHelper().CreateButton		(props,"Auto Play",		bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent.bind			(this,&TfrmSoundLib::OnControl2Click);
     
 	m_ItemProps->AssignItems		(props);

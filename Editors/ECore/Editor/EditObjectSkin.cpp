@@ -132,11 +132,11 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
                     DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_norm_cm);
                 }
             }
-            if (0){
-	            M.transform_dir	(d);
-    	        p2.mad			(p1,d,(*b_it)->_Length());
-        	    DU.DrawLine		(p1,p2,c_joint);
-            }
+//			if (0){
+//	            M.transform_dir	(d);
+//    	        p2.mad			(p1,d,(*b_it)->_Length());
+//        	    DU.DrawLine		(p1,p2,c_joint);
+//			}
 	     	if ((*b_it)->Parent()){
 		        Device.SetShader(Device.m_SelectionShader);
 				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
@@ -375,22 +375,35 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-		FaceVec& _faces		= MESH->GetFaces();
-        for (FaceIt f_it=_faces.begin(); f_it!=_faces.end(); f_it++){
-            for (int k=0; k<3; k++){
-                st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
-                FvectorVec& P 	= bone_points[sv.bone0];
-                bool bFound		= false;
-                Fvector p;
-				m_Bones[sv.bone0]->_RITransform().transform_tiny(p,sv.offs);
-                for (FvectorIt p_it=P.begin(); p_it!=P.end(); p_it++)
-                	if (p_it->similar(p)){ 
-                    	bFound=true; 
-                        break; 
-                }
-                if (!bFound)	P.push_back(p);       
-//		        if (sv.bone1!=BI_NONE) bone_points[sv.bone1].push_back(sv.offs1);
+		FaceVec&  _faces	= MESH->GetFaces();
+        SVertVec& _verts	= MESH->GetSVertices();
+	    for (FaceIt f_it=_faces.begin(); f_it!=_faces.end(); f_it++){
+            U16Vec b;
+            st_SVert& sv0	= _verts[(f_it-_faces.begin())*3+0];
+            st_SVert& sv1	= _verts[(f_it-_faces.begin())*3+1];
+            st_SVert& sv2	= _verts[(f_it-_faces.begin())*3+2];
+            if ((sv0.bone0==sv1.bone0)&&(sv0.bone0==sv2.bone0)){
+            	u16 B		= sv0.bone0;
+                bone_points[B].push_back(sv2.offs);
+                bone_points[B].push_back(sv0.offs);
+                bone_points[B].push_back(sv1.offs);
+                for (u16 k=0; k<3; k++)
+	                m_Bones[B]->_RITransform().transform_tiny(bone_points[B][k]);
             }
+/*
+            for (u16 k=0; k<3; k++){
+                st_SVert& sv= _verts[(f_it-_faces.begin())*3+k];
+                if (b.end()==std::find(b.begin(),b.end(),sv.bone0)) b.push_back(sv.bone0);
+            }
+            for (U16It b_it=b.begin(); b_it!=b.end(); b_it++){
+            	u16 B			= *b_it;
+	            for (u16 k=0; k<3; k++){
+	                st_SVert& sv= _verts[(f_it-_faces.begin())*3+k];
+                    bone_points[B].push_back(sv.offs);
+                    m_Bones[B]->_RITransform().transform_tiny(bone_points[B].back());
+            	}
+            }
+*/            
         }
     }
 
@@ -398,7 +411,8 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
     	if (bSelOnly&&!(*b_it)->flags.is(CBone::flSelected)) continue;
         FvectorVec& positions = bone_points[b_it-lst.begin()];
-        ComputeOBB		((*b_it)->shape.box,positions);
+        VERIFY			(0==(positions.size()%3));
+        ComputeOBB		((*b_it)->shape.box,positions,positions.size()/3);
         ComputeSphere	((*b_it)->shape.sphere,positions);
         ComputeCylinder	((*b_it)->shape.cylinder,(*b_it)->shape.box,positions);
         (*b_it)->center_of_mass.set((*b_it)->shape.sphere.P);

@@ -185,6 +185,6 @@ public:
     virtual bool    	ExportMotionDefs	(IWriter& F);
 };
 
-void ECORE_API 			ComputeOBB			(Fobb &B, FvectorVec& V);
+void ECORE_API 			ComputeOBB			(Fobb &B, FvectorVec& V, u32 t_cnt);
 
 #endif

@@ -42,8 +42,6 @@ CEditorPreferences::CEditorPreferences()
     scene_undo_level	= 125;
     scene_recent_count	= 10;
     scene_clear_color	= DEFAULT_CLEARCOLOR;
-    // sounds
-    sound_rolloff		= 1.f;
     // objects
     object_flags.zero	();
 }
@@ -66,8 +64,6 @@ void CEditorPreferences::ApplyValues()
     Device.m_Camera.SetFlyParams	(cam_fly_speed, cam_fly_alt);
 
     ExecCommand		(COMMAND_UPDATE_GRID);
-
-	psSoundRolloff	= sound_rolloff;
 }
 //---------------------------------------------------------------------------
 
@@ -124,7 +120,6 @@ void CEditorPreferences::Edit()
     PHelper().CreateFloat	(props,"Tools\\Snap\\Move",			          	&snap_move, 		0.01f,	1000.f);
     PHelper().CreateFloat	(props,"Tools\\Snap\\Move To", 		          	&snap_moveto,		0.01f,	1000.f);
 
-    PHelper().CreateFloat	(props,"Sounds\\Params\\Rolloff",				&sound_rolloff, 	0.f,	10.f);
     PHelper().CreateFlag32	(props,"Sounds\\Use\\Hardware",					&psSoundFlags, 	ssHardware);
     PHelper().CreateFlag32	(props,"Sounds\\Use\\EAX",						&psSoundFlags, 	ssEAX);        
 
@@ -156,6 +151,9 @@ void CEditorPreferences::Edit()
 
 	m_ItemProps->AssignItems		(props);
     m_ItemProps->ShowPropertiesModal();
+
+    // save changed options
+    Save							();
 }
 //---------------------------------------------------------------------------
 
@@ -163,8 +161,7 @@ void CEditorPreferences::Edit()
 #define R_U32_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_u32(S,L):D;
 #define R_BOOL_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_bool(S,L):D;
 #define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string_wb(S,L):D;
-
-void CEditorPreferences::OnCreate()
+void CEditorPreferences::Load()
 {
 	std::string	fn;
 	INI_NAME	(fn);
@@ -206,8 +203,6 @@ void CEditorPreferences::OnCreate()
     scene_recent_count	= R_U32_SAFE	("editor_prefs","scene_recent_count",scene_recent_count	);
     scene_clear_color	= R_U32_SAFE	("editor_prefs","scene_clear_color"	,scene_clear_color	);
 
-    sound_rolloff		= R_FLOAT_SAFE	("editor_prefs","sound_rolloff"		,sound_rolloff   	);
-
     object_flags.flags	= R_U32_SAFE	("editor_prefs","object_flags"		,object_flags.flags );
 
 	// read recent list    
@@ -216,17 +211,15 @@ void CEditorPreferences::OnCreate()
         if (fn.size())	scene_recent_list.push_back(*fn);
     }
 
-    xr_delete	(I);
+    // load shortcuts
+    LoadShortcuts		(I);
+    
+    xr_delete			(I);
 
     ApplyValues			();
-
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullExpand); //|TProperties::plFullSortTProperties::plNoClearStore|TProperties::plFolderStore|
 }
-//---------------------------------------------------------------------------
-
-void CEditorPreferences::OnDestroy()
+void CEditorPreferences::Save()
 {
-    TProperties::DestroyForm(m_ItemProps);
 
 	std::string fn;
 	INI_NAME	(fn);
@@ -268,8 +261,6 @@ void CEditorPreferences::OnDestroy()
     I->w_u32	("editor_prefs","scene_recent_count",	scene_recent_count	);
     I->w_u32	("editor_prefs","scene_clear_color",	scene_clear_color 	);
 
-    I->w_float	("editor_prefs","sound_rolloff",	sound_rolloff 	);
-
     I->w_u32	("editor_prefs","object_flags",		object_flags.flags);
 
     for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++){
@@ -278,7 +269,23 @@ void CEditorPreferences::OnDestroy()
 		I->w_string("editor_prefs",L.c_str(),V.c_str());
     }
 
+    // load shortcuts
+    SaveShortcuts		(I);
+
 	xr_delete	(I);
+}
+
+void CEditorPreferences::OnCreate()
+{
+	Load				();
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,TOnCloseEvent(this,&CEditorPreferences::OnClose),TProperties::plItemFolders|TProperties::plFullExpand); //|TProperties::plFullSortTProperties::plNoClearStore|TProperties::plFolderStore|
+}
+//---------------------------------------------------------------------------
+
+void CEditorPreferences::OnDestroy()
+{
+    TProperties::DestroyForm(m_ItemProps);
+    Save				();
 }
 //---------------------------------------------------------------------------
 

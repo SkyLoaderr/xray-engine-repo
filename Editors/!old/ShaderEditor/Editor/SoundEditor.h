@@ -86,6 +86,8 @@ private:	// User declarations
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
 	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
 	void __stdcall  	OnControl2Click		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnAttClick			(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall  	OnAttenuationDraw	(CanvasValue* sender, void* _canvas, const Irect& _rect);
 
     void				AppendModif			(LPCSTR nm);
 public:		// User declarations

@@ -55,13 +55,14 @@ public:
     u32		scene_recent_count;
     u32		scene_clear_color;
     AStringVec scene_recent_list;
-    // sound
-	float	sound_rolloff;
     // objects
     Flags32	object_flags;
 private:
 	void 	__stdcall  OnClose	();
     void	ApplyValues			();
+
+    void 	Load				();
+    void 	Save				();
 public:		// User declarations
     		CEditorPreferences	();
     void	Edit				();

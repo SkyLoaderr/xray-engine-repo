@@ -133,6 +133,11 @@ public:
     virtual bool	Valid			(){return true;}
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void	FillInfo		(PropItemVec& values);
+    float			MinDist			(){return m_fMinDist;}
+    float			MaxDist			(){return m_fMaxDist;};
+    float			Volume			(){return m_fVolume;};
+   	void			SetMinDist		(float d){m_fMinDist=d;}
+    void			SetMaxDist		(float d){m_fMaxDist=d;};
 };
 //------------------------------------------------------------------------------
 

@@ -414,14 +414,16 @@ CExportSkeleton::CExportSkeleton(CEditableObject* object)
 	m_Source=object;
 }
 //----------------------------------------------------
-//#include "WmlContMinBox3.h"
-//#include "WmlContBox3.h"
+#include "WmlContMinBox3.h"
+#include "WmlContBox3.h"
 
 extern BOOL RAPIDMinBox(Fobb& B, Fvector* vertices, u32 v_count);
 
-void ComputeOBB	(Fobb &B, FvectorVec& V)
+void ComputeOBB	(Fobb &B, FvectorVec& V, u32 t_cnt)
 {
-    if (V.size()<3) { B.invalidate(); return; }
+	VERIFY	(t_cnt==(V.size()/3));
+
+    if ((t_cnt<1)||(V.size()<3)) { B.invalidate(); return; }
 
     float 	HV				= flt_max;
 //    if (1)
@@ -434,7 +436,7 @@ void ComputeOBB	(Fobb &B, FvectorVec& V)
         	B				= BOX;
         }
     }
-/*    
+return;    
     // вариант 1
     {
         Wml::Box3<float> 	BOX;
@@ -450,7 +452,7 @@ void ComputeOBB	(Fobb &B, FvectorVec& V)
             B.m_halfsize.set(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
         }
     }
-    // вариант 2
+/*    // вариант 2
     {
         Wml::Box3<float> BOX= Wml::ContOrientedBox(V.size(), (const Wml::Vector3<float>*) V.begin());
         float hv			= BOX.Extents()[0]*BOX.Extents()[1]*BOX.Extents()[2];
@@ -616,10 +618,24 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
-		SkelVertVec& lst = split_it->getV_Verts();
-	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
-		    bone_points[sv_it->B0].push_back(sv_it->O);
-            bones[sv_it->B0]->_RITransform().transform_tiny(bone_points[sv_it->B0].back());
+        // fill bone_points
+        SkelFaceVec& f_lst	= split_it->getV_Faces();
+		SkelVertVec& v_lst 	= split_it->getV_Verts();
+	    for (SkelFaceIt sf_it=f_lst.begin(); sf_it!=f_lst.end(); sf_it++){
+	        SSkelFace& f 	= *sf_it;
+            U16Vec b;
+            for (u16 k=0; k<3; k++){
+	        	SSkelVert& v= v_lst[f.v[k]];
+                if (b.end()==std::find(b.begin(),b.end(),v.B0)) b.push_back(v.B0);
+            }
+            for (U16It b_it=b.begin(); b_it!=b.end(); b_it++){
+            	u16 B		= *b_it;
+	            for (u16 k=0; k<3; k++){
+		        	SSkelVert& v = v_lst[f.v[k]];
+                    bone_points[B].push_back(v.O);
+                    bones[B]->_RITransform().transform_tiny(bone_points[B].back());
+            	}
+            }
         }
         pb->Inc		();
     }
@@ -662,7 +678,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.w_stringZ	((*bone_it)->Name());
 		F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName().c_str():"");
         Fobb	obb;
-        ComputeOBB	(obb,bone_points[bone_idx]);
+        VERIFY		(0==(bone_points[bone_idx].size()%3));
+        ComputeOBB	(obb,bone_points[bone_idx],bone_points[bone_idx].size()/3);
         F.w			(&obb,sizeof(Fobb));
     }
     F.close_chunk();
