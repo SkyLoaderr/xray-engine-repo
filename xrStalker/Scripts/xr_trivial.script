@@ -691,7 +691,7 @@ function novice3_attack:initialize ()
     self.object:set_mental_state     ( anim.danger )
     self.object:set_path_type        ( game_object.level_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
-    self.object:set_item             ( object.idle, self.object:best_weapon() )
+    self.object:set_item             ( object.activate, self.object:best_weapon() )
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
     xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
