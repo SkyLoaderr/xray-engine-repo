@@ -19,12 +19,20 @@ CTexture::CTexture		()
 	pAVI				= NULL;
 	dwMemoryUsage		= 0;
 	desc_cache			= 0;
+	seqMSPF				= 0;
+	seqCycles			= FALSE;
+	bUser				= FALSE;
 }
 
 CTexture::~CTexture()
 {
-//	R_ASSERT(dwReference==0);
+	//.
+	//if (0!=strstr(cName,"hud_group_back"))	__asm int 3;
+
 	Unload	();
+
+	// release external reference
+	Device.Shader._DeleteTexture	(this);	
 }
 
 void					CTexture::surface_set	(IDirect3DBaseTexture9* surf)

@@ -12,6 +12,9 @@ CRT::CRT			()
 CRT::~CRT			()
 {
 	Destroy			();
+
+	// release external reference
+	Device.Shader._DeleteRT	(this);	
 }
 
 void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
@@ -83,6 +86,9 @@ CRTC::CRTC			()
 CRTC::~CRTC			()
 {
 	Destroy			();
+
+	// release external reference
+	Device.Shader._DeleteRTC	(this);	
 }
 
 void CRTC::Create	(LPCSTR Name, u32 size,	D3DFORMAT f)

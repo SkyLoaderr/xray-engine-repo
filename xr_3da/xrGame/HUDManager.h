@@ -13,8 +13,7 @@ class CHUDCursor;
 
 class CHUDManager :
 	public CCustomHUD,
-	public pureDeviceCreate, 
-	public pureDeviceDestroy
+	public pureDeviceCreate 
 {
 	friend class CUI;
 private:
@@ -49,7 +48,6 @@ public:
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
 
 	virtual		void		OnDeviceCreate		();
-	virtual		void		OnDeviceDestroy		();
 
 	float					GetScale			(){return fScale;}
 	void					SetScale			(float s);

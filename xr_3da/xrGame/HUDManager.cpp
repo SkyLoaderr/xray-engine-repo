@@ -20,7 +20,6 @@ CHUDManager::CHUDManager()
 	pFontBigDigit	= xr_new<CGameFont> ("hud_font_big_digit");
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
-	Device.seqDevDestroy.Add(this);
 	if (Device.bReady) OnDeviceCreate();
 }
 //--------------------------------------------------------------------
@@ -28,7 +27,6 @@ CHUDManager::CHUDManager()
 CHUDManager::~CHUDManager()
 {
 	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
 	xr_delete			(pUI);
 	xr_delete			(pFontBigDigit);
 	xr_delete			(pFontSmall);
@@ -161,24 +159,13 @@ void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }
 //--------------------------------------------------------------------
-
 void CHUDManager::SetScale(float s){
 	fScale			= s;
 }
-
 void CHUDManager::OnDeviceCreate()
 {
-	pUI				= xr_new<CUI> (this);
-	
 	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
 	else								SetScale(1.f);
-
-}
-//--------------------------------------------------------------------
-
-void CHUDManager::OnDeviceDestroy()
-{
-	xr_delete		(pUI);
 }
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)

@@ -38,7 +38,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	csPlayers.Enter					();
 	xrClientData*	CL				= (xrClientData*)_CL;
 
-	HUD().outMessage				(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
+	//. HUD().outMessage			(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
 	u32			mode				= net_flags(TRUE,TRUE);
 
