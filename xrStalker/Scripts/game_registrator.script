@@ -51,4 +51,5 @@ function get_game_clsid(game_type_option,is_server)
 		if(game_type_option == "laststanding") then 
 			return "CL_LAST" end
 	end
+	return ""
 end
