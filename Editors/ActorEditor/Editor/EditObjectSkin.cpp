@@ -384,3 +384,10 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     return true;
 }
  
+void CEditableObject::ClampByLimits()
+{
+    BoneVec& lst 	= m_Bones;    
+    for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+    	(*b_it)->ClampByLimits();
+}
+

@@ -341,6 +341,7 @@ public:
 	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& parent);
 	void 			SelectBones				(bool bVal);
 	void 			SelectBone				(CBone* b, bool bVal);
+    void			ClampByLimits			();
 #endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);

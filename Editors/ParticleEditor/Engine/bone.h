@@ -157,6 +157,8 @@ public:
 
     void			Select			(BOOL flag){flags.set(flSelected,flag);}
     bool			Selected		(){return flags.is(flSelected);}
+
+    void			ClampByLimits	();
 #endif
 };
 DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);

@@ -141,6 +141,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     void __fastcall		OnBoneShapeClick  		(PropValue* sender);
     void __fastcall		OnBoneEditClick			(PropValue* sender);
     void __fastcall		OnBoneFileClick			(PropValue* sender);
+    void __fastcall		OnBoneLimitsChange		(PropValue* sender);
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
 	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
