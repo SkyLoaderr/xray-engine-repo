@@ -11,6 +11,9 @@ game_cl_GameState::game_cl_GameState()
 	pMessageSounds[3].create(TRUE, "messages\\multiplayer\\mp_got_artifact");
 	pMessageSounds[4].create(TRUE, "messages\\multiplayer\\mp_got_artifact_radio");
 	pMessageSounds[5].create(TRUE, "messages\\multiplayer\\mp_new_artifact");
+
+	pMessageSounds[6].create(TRUE, "messages\\multiplayer\\mp_artifact_delivered_by_enemy");
+	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen.ogg ");
 }
 
 game_cl_GameState::~game_cl_GameState()
@@ -21,6 +24,8 @@ game_cl_GameState::~game_cl_GameState()
 	pMessageSounds[3].destroy();
 	pMessageSounds[4].destroy();
 	pMessageSounds[5].destroy();
+	pMessageSounds[6].destroy();
+	pMessageSounds[7].destroy();
 }
 
 void	game_cl_GameState::Create(LPSTR &options)
@@ -225,11 +230,16 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 				Color_Main,
 				Color_Artefact);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
-
-			if (Level().CurrentEntity() && Level().CurrentEntity()->ID() == PlayerID)
+						
+			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+			if (!pActor) break;
+			if (pActor->ID() == PlayerID)
 				pMessageSounds[3].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
-				pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+				if (pActor->g_Team() == Team)
+					pMessageSounds[4].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+				else
+					pMessageSounds[7].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
 	case GMSG_ARTEFACT_DROPPED:
 		{
@@ -264,10 +274,21 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 				Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 
+			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+			if (!pActor) break;
+			if (pActor->ID() == PlayerID)
+				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+			else
+				if (pActor->g_Team() == Team)
+					pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+				else
+					pMessageSounds[6].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+/*
 			if (Level().CurrentEntity() && Level().CurrentEntity()->ID() == PlayerID)
 				pMessageSounds[1].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 			else
 				pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
+*/
 		}break;
 	case GMSG_ARTEFACT_SPAWNED:
 		{
