@@ -51,14 +51,90 @@ class CEnemyMaxHealth;
 class CEnemyAnomalyType;
 class CEnemyDistanceToGraphPoint;
 
+template <typename T1, typename T2>
+class CEF_Params {
+private:
+	T1					*m_member;
+	T1					*m_enemy;
+	T2					*m_member_item;
+	T2					*m_enemy_item;
+
+public:
+	IC			CEF_Params	()
+	{
+		clear			();
+	}
+
+	IC	void	clear		()
+	{
+		m_member		= 0;
+		m_enemy			= 0;
+		m_member_item	= 0;
+		m_enemy_item	= 0;
+	}
+
+	IC	T1*&	member		()
+	{
+		return			(m_member);
+	}
+
+	IC	T1*&	enemy		()
+	{
+		return			(m_enemy);
+	}
+
+	IC	T2*&	member_item	()
+	{
+		return			(m_member_item);
+	}
+
+	IC	T2*&	enemy_item	()
+	{
+		return			(m_enemy_item);
+	}
+};
+
+typedef CEF_Params<const CEntityAlive,const CGameObject>		CNonALifeParams;
+typedef CEF_Params<CSE_ALifeSchedulable,const CSE_ALifeObject>	CALifeParams;
+
+class CEF_Storage;
+
+template <typename T>
+struct CEnemyFunction : public T {
+	IC				CEnemyFunction	(CEF_Storage *storage) : T(storage)
+	{
+	}
+
+	template <typename P>
+	IC		float	get_value		(P &params)
+	{
+		P						save = params;
+		params.member()			= params.enemy();
+		params.member_item()	= params.enemy_item();
+		float					value = T::ffGetValue();
+		params					= save;
+		return					(value);
+	}
+
+	virtual float	ffGetValue		()
+	{
+		if (ef_storage().non_alife().member())
+			return	(get_value(ef_storage().non_alife()));
+		return		(get_value(ef_storage().alife()));
+	}
+};
+
 class CEF_Storage {
 public:
-	const CGameObject						*m_tpGameObject;
-	const CEntityAlive						*m_tpCurrentMember;
-	const CEntityAlive						*m_tpCurrentEnemy;
-	const CSE_ALifeObject					*m_tpCurrentALifeObject;
-	CSE_ALifeSchedulable					*m_tpCurrentALifeMember;
-	CSE_ALifeSchedulable					*m_tpCurrentALifeEnemy;
+	typedef CEnemyFunction<CPersonalHealthFunction>			CEnemyHealthFunction;
+	typedef CEnemyFunction<CPersonalCreatureTypeFunction>	CEnemyCreatureTypeFunction;
+	typedef CEnemyFunction<CPersonalWeaponTypeFunction>		CEnemyWeaponTypeFunction;
+	typedef CEnemyFunction<CPersonalEyeRange>				CEnemyEyeRange;
+	typedef CEnemyFunction<CPersonalMaxHealth>				CEnemyMaxHealth;
+
+public:
+	CNonALifeParams							m_non_alife_params;
+	CALifeParams							m_alife_params;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
@@ -125,8 +201,13 @@ public:
 											CEF_Storage		();
 	virtual									~CEF_Storage	();
 			CBaseFunction					*function		(LPCSTR function) const;
+	IC		void							alife_evaluation(bool value);
+	IC		CNonALifeParams					&non_alife		();
+	IC		CALifeParams					&alife			();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CEF_Storage)
 #undef script_type_list
 #define script_type_list save_type_list(CEF_Storage)
+
+#include "ef_storage_inline.h"

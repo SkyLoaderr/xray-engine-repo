@@ -56,11 +56,16 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 		case ObjectHandlerSpace::eWorldOperatorFire1 :
 		case ObjectHandlerSpace::eWorldOperatorFire2 :
 		case ObjectHandlerSpace::eWorldOperatorQueueWait1 :
-		case ObjectHandlerSpace::eWorldOperatorQueueWait2 :
+		case ObjectHandlerSpace::eWorldOperatorQueueWait2 : {
 			if ((body_state == eBodyStateStand) && !fis_zero(object()->speed()))
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[1];
 			else
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
+		}
+		case ObjectHandlerSpace::eWorldOperatorStrapping :
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[13].A[object()->mental_state() == eMentalStateFree ? 1 : 0];
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
+			return &m_part_animations.A[body_state].m_torso.A[slot].A[14].A[object()->mental_state() == eMentalStateFree ? 1 : 0];
 		default : {
 			if (eMentalStateFree == object()->mental_state()) {
 				//. hack

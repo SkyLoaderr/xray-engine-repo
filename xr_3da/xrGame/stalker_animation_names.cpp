@@ -42,6 +42,8 @@ LPCSTR weapon_action_names	[] = {
 	"escape_",		// 10
 	"prepare_",		// 11
 	"playing",		// 12
+	"strap",		// 13
+	"unstrap",		// 14
 	0
 };
 

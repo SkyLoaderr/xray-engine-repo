@@ -98,19 +98,19 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	if (!planner().object()->g_Alive())
 		return		(0);
 
-	ai().ef_storage().m_tpCurrentMember			= planner().object();
-	ai().ef_storage().m_tpCurrentALifeMember	= 0;
-	ai().ef_storage().m_tpCurrentEnemy			= planner().object()->enemy() ? planner().object()->enemy() : planner().object();
+	ai().ef_storage().alife().clear		();
+	ai().ef_storage().non_alife().clear	();
+	ai().ef_storage().non_alife().member()	= planner().object();
+	ai().ef_storage().non_alife().enemy()	= planner().object()->enemy() ? planner().object()->enemy() : planner().object();
 
-	float						best_value = 0;
-	ai().ef_storage().m_tpCurrentMember = planner().object();
+	float										best_value = 0;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
 	TIItemSet::const_iterator	E = inventory().m_all.end();
 	for ( ; I != E; ++I) {
 		if ((*I)->getDestroy())
 			continue;
 		if ((*I)->can_kill()) {
-			ai().ef_storage().m_tpGameObject	= *I;
+			ai().ef_storage().non_alife().member_item()	= *I;
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 			if (value > best_value) {
 				best_value		= value;
@@ -118,7 +118,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 			}
 		}
 	}
-	return			(best_weapon);
+	return						(best_weapon);
 }
 
 void CObjectHandler::update		()

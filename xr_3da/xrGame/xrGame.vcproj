@@ -1311,14 +1311,11 @@
 				Name="AEval"
 				Filter="">
 				<Filter
-					Name="EvaluationFunctions"
+					Name="functions"
 					Filter="">
 					<Filter
 						Name="base"
 						Filter="">
-						<File
-							RelativePath=".\ef_base.cpp">
-						</File>
 						<File
 							RelativePath=".\ef_base.h">
 						</File>
@@ -1345,13 +1342,16 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="EvaluationFunctionStorage"
+					Name="storage"
 					Filter="">
 					<File
 						RelativePath=".\ef_storage.cpp">
 					</File>
 					<File
 						RelativePath=".\ef_storage.h">
+					</File>
+					<File
+						RelativePath=".\ef_storage_inline.h">
 					</File>
 					<File
 						RelativePath=".\ef_storage_script.cpp">

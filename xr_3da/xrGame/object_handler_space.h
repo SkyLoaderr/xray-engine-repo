@@ -12,9 +12,7 @@ namespace ObjectHandlerSpace {
 	enum EWorldProperties {
 		eWorldPropertyItemID		= u32(0),
 		eWorldPropertyHidden,
-		eWorldPropertyStrapping,
 		eWorldPropertyStrapped,
-		eWorldPropertyUnstrapping,
 		eWorldPropertySwitch1,
 		eWorldPropertySwitch2,
 		eWorldPropertyAimed1,

@@ -77,6 +77,7 @@ void CALifeCombatManager::vfFillCombatGroup(CSE_ALifeSchedulable *tpALifeSchedul
 
 ECombatAction CALifeCombatManager::choose_combat_action(int iCombatGroupIndex)
 {
+	ai().ef_storage().alife_evaluation(true);
 	if (eCombatTypeMonsterMonster != combat_type())
 		if (((eCombatTypeAnomalyMonster == combat_type()) && !iCombatGroupIndex) || ((eCombatTypeMonsterAnomaly == combat_type()) && iCombatGroupIndex))
 			return(eCombatActionAttack);
@@ -95,13 +96,13 @@ ECombatAction CALifeCombatManager::choose_combat_action(int iCombatGroupIndex)
 		fMinProbability				= l_tpALifeMonsterAbstract->m_fRetreatThreshold;
 	}
 	while ((i < I) && (j < J)) {
-		ai().ef_storage().m_tpCurrentALifeMember	= smart_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
-		ai().ef_storage().m_tpCurrentALifeEnemy	= smart_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
+		ai().ef_storage().alife().member()	= smart_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
+		ai().ef_storage().alife().enemy()	= smart_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
 		float fProbability = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f, fCurrentProbability;
 		if (fProbability > fMinProbability) {
 			fCurrentProbability = fProbability;
 			for (++j; (i < I) && (j < J); ++j) {
-				ai().ef_storage().m_tpCurrentALifeEnemy = smart_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
+				ai().ef_storage().alife().enemy() = smart_cast<CSE_ALifeMonsterAbstract*>(Enemies[j]);
 				fProbability = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < fMinProbability) {
 					++i;
@@ -114,7 +115,7 @@ ECombatAction CALifeCombatManager::choose_combat_action(int iCombatGroupIndex)
 		else {
 			fCurrentProbability = 1.0f - fProbability;
 			for (++i; (i < I) && (j < J); ++i) {
-				ai().ef_storage().m_tpCurrentALifeMember	= smart_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
+				ai().ef_storage().alife().member()	= smart_cast<CSE_ALifeMonsterAbstract*>(Members[i]);
 				fProbability = 1.0f - ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < fMinProbability) {
 					++j;
@@ -130,21 +131,22 @@ ECombatAction CALifeCombatManager::choose_combat_action(int iCombatGroupIndex)
 
 bool CALifeCombatManager::bfCheckObjectDetection(CSE_ALifeSchedulable *tpALifeSchedulable1, CSE_ALifeSchedulable *tpALifeSchedulable2)
 {
+	ai().ef_storage().alife_evaluation(true);
 	switch (combat_type()) {
 		case eCombatTypeMonsterMonster : {
-			ai().ef_storage().m_tpCurrentALifeObject	= smart_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable1);
-			ai().ef_storage().m_tpCurrentALifeMember	= tpALifeSchedulable1;
-			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable2;
+			ai().ef_storage().alife().member_item()	= smart_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable1);
+			ai().ef_storage().alife().member()	= tpALifeSchedulable1;
+			ai().ef_storage().alife().enemy()		= tpALifeSchedulable2;
 			return										(randF(100) < (int)ai().ef_storage().m_pfEnemyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeAnomalyMonster : {
-			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable1;
+			ai().ef_storage().alife().enemy()		= tpALifeSchedulable1;
 			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyInteractProbability->ffGetValue());
 		}
 		case eCombatTypeMonsterAnomaly : {
-			ai().ef_storage().m_tpCurrentALifeObject	= tpALifeSchedulable1->tpfGetBestDetector();
-			ai().ef_storage().m_tpCurrentALifeMember	= tpALifeSchedulable1;
-			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable2;
+			ai().ef_storage().alife().member_item()	= tpALifeSchedulable1->tpfGetBestDetector();
+			ai().ef_storage().alife().member()	= tpALifeSchedulable1;
+			ai().ef_storage().alife().enemy()		= tpALifeSchedulable2;
 			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeSmartTerrain : {
@@ -283,14 +285,16 @@ bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSch
 
 bool CALifeCombatManager::bfCheckIfRetreated(int iCombatGroupIndex)
 {
-	ai().ef_storage().m_tpCurrentALifeObject	= (eCombatTypeMonsterMonster == combat_type()) ? smart_cast<CSE_ALifeObject*>(m_tpaCombatGroups[iCombatGroupIndex][0]) : m_tpaCombatGroups[iCombatGroupIndex][0]->m_tpBestDetector;
-	ai().ef_storage().m_tpCurrentALifeMember	= m_tpaCombatGroups[iCombatGroupIndex][0];
-	ai().ef_storage().m_tpCurrentALifeEnemy		= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
+	ai().ef_storage().alife_evaluation(true);
+	ai().ef_storage().alife().member_item()	= (eCombatTypeMonsterMonster == combat_type()) ? smart_cast<CSE_ALifeObject*>(m_tpaCombatGroups[iCombatGroupIndex][0]) : m_tpaCombatGroups[iCombatGroupIndex][0]->m_tpBestDetector;
+	ai().ef_storage().alife().member()	= m_tpaCombatGroups[iCombatGroupIndex][0];
+	ai().ef_storage().alife().enemy()		= m_tpaCombatGroups[iCombatGroupIndex ^ 1][0];
 	return										(randF(100) < ((eCombatTypeMonsterMonster != combat_type()) ? ai().ef_storage().m_pfAnomalyRetreatProbability->ffGetValue() : ai().ef_storage().m_pfEnemyRetreatProbability->ffGetValue()));
 }
 
 void CALifeCombatManager::vfPerformAttackAction(int iCombatGroupIndex)
 {
+	ai().ef_storage().alife_evaluation(true);
 	SCHEDULE_P_VECTOR		&l_tCombatGroup = m_tpaCombatGroups[iCombatGroupIndex];
 	SCHEDULE_P_IT			I = l_tCombatGroup.begin();
 	SCHEDULE_P_IT			E = l_tCombatGroup.end();
@@ -307,8 +311,8 @@ void CALifeCombatManager::vfPerformAttackAction(int iCombatGroupIndex)
 			l_fHitPower		= (*I)->m_tpCurrentBestWeapon->m_fHitPower;
 		}
 		
-		ai().ef_storage().m_tpCurrentALifeObject = smart_cast<CSE_ALifeObject*>(*I);
-		ai().ef_storage().m_tpCurrentALifeMember = *I;
+		ai().ef_storage().alife().member_item() = smart_cast<CSE_ALifeObject*>(*I);
+		ai().ef_storage().alife().member() = *I;
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
 			Msg				("[LSS] %s attacks with %s(%d ammo) %d times in a row",(*I)->base()->name_replace(),(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->name_replace() : "its natural weapon",(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->m_dwAmmoAvailable : 0,iFloor(ai().ef_storage().m_pfWeaponAttackTimes->ffGetValue() + .5f));

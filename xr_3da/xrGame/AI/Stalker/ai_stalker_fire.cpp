@@ -119,6 +119,8 @@ void CAI_Stalker::update_best_item_info	()
 	if (!frame_check(m_last_best_item_frame))
 		return;
 
+	ai().ef_storage().alife_evaluation(false);
+
 	if (m_item_actuality) {
 		if (m_best_item_to_kill) {
 			if (m_best_item_to_kill->can_kill())
@@ -128,9 +130,8 @@ void CAI_Stalker::update_best_item_info	()
 
 	// initialize parameters
 	m_item_actuality							= true;
-	ai().ef_storage().m_tpCurrentMember			= this;
-	ai().ef_storage().m_tpCurrentALifeMember	= 0;
-	ai().ef_storage().m_tpCurrentEnemy			= enemy() ? enemy() : this;
+	ai().ef_storage().non_alife().member()		= this;
+	ai().ef_storage().non_alife().enemy()		= enemy() ? enemy() : this;
 	m_best_item_to_kill			= 0;
 	m_best_ammo					= 0;
 	m_best_found_item_to_kill	= 0;
@@ -143,7 +144,7 @@ void CAI_Stalker::update_best_item_info	()
 		PSPIItem					E = inventory().m_all.end();
 		for ( ; I != E; ++I) {
 			if ((*I)->can_kill()) {
-				ai().ef_storage().m_tpGameObject	= *I;
+				ai().ef_storage().non_alife().member_item()	= *I;
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value			= value;
@@ -171,7 +172,7 @@ void CAI_Stalker::update_best_item_info	()
 				continue;
 			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
 			if (item) {
-				ai().ef_storage().m_tpGameObject	= inventory_item;
+				ai().ef_storage().non_alife().member_item()	= inventory_item;
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
@@ -185,7 +186,7 @@ void CAI_Stalker::update_best_item_info	()
 				if (!item)
 					continue;
 
-				ai().ef_storage().m_tpGameObject	= item;
+				ai().ef_storage().non_alife().member_item()	= item;
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
@@ -211,7 +212,7 @@ void CAI_Stalker::update_best_item_info	()
 			continue;
 		const CInventoryItem	*item = inventory_item->can_kill(items());
 		if (item) {
-			ai().ef_storage().m_tpGameObject	= inventory_item;
+			ai().ef_storage().non_alife().member_item()	= inventory_item;
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 			if (value > best_value) {
 				best_value					= value;

@@ -102,9 +102,7 @@ void CALifeUpdateManager::set_process_time	(int microseconds)
 
 void CALifeUpdateManager::init_ef_storage() const
 {
-	ai().ef_storage().m_tpCurrentMember	= 0;
-	ai().ef_storage().m_tpCurrentEnemy	= 0;
-	ai().ef_storage().m_tpGameObject	= 0;
+	ai().ef_storage().alife_evaluation(true);
 }
 
 bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)

@@ -248,7 +248,7 @@ void CAI_Stalker::choose_weapon						(ALife::EWeaponPriorityType weapon_priority
 {
 	CTradeItem						*best_weapon	= 0;
 	float							best_value		= -1.f;
-	ai().ef_storage().m_tpCurrentMember	= this;
+	ai().ef_storage().non_alife().member()	= this;
 
 	xr_vector<CTradeItem>::iterator	I = m_temp_items.begin();
 	xr_vector<CTradeItem>::iterator	E = m_temp_items.end();
@@ -256,7 +256,7 @@ void CAI_Stalker::choose_weapon						(ALife::EWeaponPriorityType weapon_priority
 		if (m_total_money < (*I).m_item->Cost())
 			continue;
 
-		ai().ef_storage().m_tpGameObject = (*I).m_item;
+		ai().ef_storage().non_alife().member_item() = (*I).m_item;
 		int						j = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					current_value = -1.f;
 		switch (weapon_priority_type) {
@@ -323,7 +323,7 @@ void CAI_Stalker::choose_detector					()
 {
 	CTradeItem					*best_detector	= 0;
 	float						best_value		= -1.f;
-	ai().ef_storage().m_tpCurrentMember	= this;
+	ai().ef_storage().non_alife().member()	= this;
 	xr_vector<CTradeItem>::iterator	I = m_temp_items.begin();
 	xr_vector<CTradeItem>::iterator	E = m_temp_items.end();
 	for ( ; I != E; ++I) {
@@ -335,7 +335,7 @@ void CAI_Stalker::choose_detector					()
 			continue;
 
 		// evaluating item
-		ai().ef_storage().m_tpGameObject = detector;
+		ai().ef_storage().non_alife().member_item() = detector;
 		float					current_value = ai().ef_storage().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
 		if ((current_value > best_value)) {

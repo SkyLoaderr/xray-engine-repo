@@ -543,11 +543,11 @@ CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
 		for ( ; I != E; ++I) {
 			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>(ai().alife().objects().object(l_tpALifeGroupAbstract->m_tpMembers[0]));
 			R_ASSERT				(l_tpALifeHumanAbstract);
-			ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
+			ai().ef_storage().alife().member_item() = l_tpALifeHumanAbstract->tpfGetBestDetector();
 			u32						l_dwCurrentValue = iFloor(ai().ef_storage().m_pfDetectorType->ffGetValue()+.5f);
 			if (l_dwCurrentValue > l_dwBestValue) {
 				l_dwBestValue		= l_dwCurrentValue;
-				m_tpBestDetector	= const_cast<CSE_ALifeDynamicObject*>(smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeObject));
+				m_tpBestDetector	= const_cast<CSE_ALifeDynamicObject*>(smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().alife().member_item()));
 			}
 		}
 		return						(m_tpBestDetector);
@@ -695,13 +695,14 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 //	// choosing equipment
 //	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 //	float							l_fItemBestValue	= -1.f;
-//	ai().ef_storage().m_tpCurrentALifeMember	= this;
+//	ai().ef_storage().alife_evaluation(true);
+//	ai().ef_storage().alife().member()	= this;
 //
 //	ITEM_P_IT					I = alife().m_temp_item_vector.begin(), X;
 //	ITEM_P_IT					E = alife().m_temp_item_vector.end();
 //	for ( ; I != E; ++I) {
 //		// checking if it is an equipment item
-//		ai().ef_storage().m_tpCurrentALifeObject = smart_cast<CSE_ALifeObject*>(*I);
+//		ai().ef_storage().alife().member_item() = smart_cast<CSE_ALifeObject*>(*I);
 //		if (ai().ef_storage().m_pfEquipmentType->ffGetValue() > ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue())
 //			continue;
 //		if (m_dwTotalMoney < (*I)->m_dwCost)
@@ -731,7 +732,8 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 {
 	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
 	float							l_fItemBestValue	= -1.f;
-	ai().ef_storage().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().alife_evaluation(true);
+	ai().ef_storage().alife().member()	= this;
 
 	u32						l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT				I = alife().m_temp_item_vector.begin();
@@ -739,7 +741,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	for ( ; I != E; ++I) {
 		// checking if it is a hand weapon
 		m_dwTotalMoney			= l_dwSafeMoney;
-		ai().ef_storage().m_tpCurrentALifeObject = smart_cast<CSE_ALifeObject*>(*I);
+		ai().ef_storage().alife().member_item() = smart_cast<CSE_ALifeObject*>(*I);
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
 		m_dwTotalMoney			-= (*I)->m_dwCost;
@@ -804,7 +806,8 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
-	ai().ef_storage().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().alife_evaluation(true);
+	ai().ef_storage().alife().member()	= this;
 	u32							l_dwCount = 0, l_dwSafeMoney = m_dwTotalMoney;
 	ITEM_P_IT					I = alife().m_temp_item_vector.begin();
 	ITEM_P_IT					E = alife().m_temp_item_vector.end();
@@ -872,7 +875,8 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 	// choosing detector
 	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
 	float						l_fItemBestValue	= -1.f;
-	ai().ef_storage().m_tpCurrentALifeMember	= this;
+	ai().ef_storage().alife_evaluation(true);
+	ai().ef_storage().alife().member()	= this;
 	ITEM_P_IT					I = alife().m_temp_item_vector.begin(), X;
 	ITEM_P_IT					E = alife().m_temp_item_vector.end();
 	for ( ; I != E; ++I) {
@@ -883,7 +887,7 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 		if (m_dwTotalMoney < l_tpALifeItem->m_dwCost)
 			continue;
 		// evaluating item
-		ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeItem;
+		ai().ef_storage().alife().member_item() = l_tpALifeItem;
 		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),l_tpALifeItem->ID) == tpObjectVector->end()))) {

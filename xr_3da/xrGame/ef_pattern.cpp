@@ -14,7 +14,7 @@
 #include "ai_debug.h"
 #include "ef_storage.h"
 
-CPatternFunction::CPatternFunction() : CBaseFunction()
+CPatternFunction::CPatternFunction(LPCSTR caFileName, CEF_Storage *storage) : CBaseFunction(storage)
 {
 	m_dwPatternCount		= 0;
 	m_dwVariableCount		= 0;
@@ -25,20 +25,7 @@ CPatternFunction::CPatternFunction() : CBaseFunction()
 	m_tpPatterns			= 0;
 	m_faParameters			= 0;
 	m_dwaVariableValues		= 0;
-}
-
-CPatternFunction::CPatternFunction(LPCSTR caFileName, CEF_Storage *tpAI_DDD) : CBaseFunction()
-{
-	m_dwPatternCount		= 0;
-	m_dwVariableCount		= 0;
-	m_dwParameterCount		= 0;
-	m_dwaVariableTypes		= 0;
-	m_dwaAtomicFeatureRange = 0;
-	m_dwaPatternIndexes		= 0;
-	m_tpPatterns			= 0;
-	m_faParameters			= 0;
-	m_dwaVariableValues		= 0;
-	vfLoadEF				(caFileName, tpAI_DDD);
+	vfLoadEF				(caFileName);
 }
 
 CPatternFunction::~CPatternFunction()
@@ -53,7 +40,7 @@ CPatternFunction::~CPatternFunction()
 	xr_free			(m_dwaVariableValues);
 }
 
-void CPatternFunction::vfLoadEF(LPCSTR caFileName, CEF_Storage *tpAI_DDD)
+void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 {
 	string256		caPath;
 	if (!FS.exist(caPath,"$game_ai$",caFileName)) {
@@ -117,7 +104,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CEF_Storage *tpAI_DDD)
 	
 	xr_free			(m_dwaAtomicIndexes);
     
-	tpAI_DDD->m_fpaBaseFunctions[m_dwFunctionType] = this;
+	ef_storage().m_fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	_splitpath		(caPath,0,0,m_caName,0);
 
@@ -134,25 +121,22 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	if (bfCheckForCachedResult())
-		return(m_fLastValue);
-
 	for (u32 i=0; i<m_dwVariableCount; ++i)
-		m_dwaVariableValues[i] = ai().ef_storage().m_fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = ef_storage().m_fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 
 	
 #ifdef DEBUG	
 	if (psAI_Flags.test(aiFuncs)) {
-		m_fLastValue = ffEvaluate();
+		float value = ffEvaluate();
 		char caString[256];
 		int j = sprintf(caString,"%32s (",m_caName);
 		for ( i=0; i<m_dwVariableCount; ++i)
 			j += sprintf(caString + j," %3d",m_dwaVariableValues[i] + 1);
-		sprintf(caString + j,") = %7.2f",m_fLastValue);
+		sprintf(caString + j,") = %7.2f",value);
 		Msg("- %s",caString);
-		return(m_fLastValue);
+		return(value);
 	}
 #endif
 	
-	return(m_fLastValue = ffEvaluate());
+	return(ffEvaluate());
 }

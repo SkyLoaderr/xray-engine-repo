@@ -46,6 +46,7 @@ public:
 	static	void				lua_hook_call				(lua_State *L, lua_Debug *tpLuaDebug);
 	static	int					lua_panic					(lua_State *L);
 	static	void				lua_error					(lua_State *L);
+			void				setup_callbacks				();
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
 	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;

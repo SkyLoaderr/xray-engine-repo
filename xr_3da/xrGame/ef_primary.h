@@ -14,7 +14,7 @@ class CDistanceFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CDistanceFunction()
+	CDistanceFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 3.0;
 		m_fMaxResultValue = 20.0;
@@ -43,7 +43,7 @@ class CPersonalHealthFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalHealthFunction()
+	CPersonalHealthFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -58,7 +58,7 @@ class CPersonalMoraleFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalMoraleFunction()
+	CPersonalMoraleFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -75,7 +75,7 @@ class CPersonalCreatureTypeFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalCreatureTypeFunction()
+	CPersonalCreatureTypeFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 21.0;
@@ -92,7 +92,7 @@ class CPersonalWeaponTypeFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalWeaponTypeFunction()
+	CPersonalWeaponTypeFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 11.0;
@@ -111,7 +111,7 @@ class CPersonalAccuracyFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalAccuracyFunction()
+	CPersonalAccuracyFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue =   0.0;
 		m_fMaxResultValue = 100.0;
@@ -128,7 +128,7 @@ class CPersonalIntelligenceFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalIntelligenceFunction()
+	CPersonalIntelligenceFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue =   0.0;
 		m_fMaxResultValue = 100.0;
@@ -145,7 +145,7 @@ class CPersonalRelationFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalRelationFunction()
+	CPersonalRelationFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue =   0.0;
 		m_fMaxResultValue = 100.0;
@@ -162,7 +162,7 @@ class CPersonalGreedFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalGreedFunction()
+	CPersonalGreedFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue =   0.0;
 		m_fMaxResultValue = 100.0;
@@ -179,7 +179,7 @@ class CPersonalAggressivenessFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalAggressivenessFunction()
+	CPersonalAggressivenessFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue =   0.0;
 		m_fMaxResultValue = 100.0;
@@ -192,28 +192,11 @@ public:
 	virtual float ffGetValue();
 };
 
-class CEnemyHealthFunction : public CBaseFunction {
-public:
-	typedef CBaseFunction inherited;
-
-	CEnemyHealthFunction()
-	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 100.0;
-		strcat(m_caName,"EnemyHealth");
-		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	};
-
-	virtual ~CEnemyHealthFunction(){}
-
-	virtual float ffGetValue();
-};
-
 class CEnemyMoraleFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyMoraleFunction()
+	CEnemyMoraleFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -226,45 +209,11 @@ public:
 	virtual float ffGetValue();
 };
 
-class CEnemyCreatureTypeFunction : public CBaseFunction {
-public:
-	typedef CBaseFunction inherited;
-
-	CEnemyCreatureTypeFunction()
-	{
-		m_fMinResultValue = 1.0;
-		m_fMaxResultValue = 21.0;
-		strcat(m_caName,"EnemyCreatureType");
-		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	};
-
-	virtual ~CEnemyCreatureTypeFunction(){}
-
-	virtual float ffGetValue();
-};
-
-class CEnemyWeaponTypeFunction : public CBaseFunction {
-public:
-	typedef CBaseFunction inherited;
-
-	CEnemyWeaponTypeFunction()
-	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 11.0;
-		strcat(m_caName,"EnemyWeaponType");
-		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	};
-
-	virtual ~CEnemyWeaponTypeFunction(){}
-
-	virtual float ffGetValue();
-};
-
 class CEnemyEquipmentCostFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyEquipmentCostFunction()
+	CEnemyEquipmentCostFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
@@ -281,7 +230,7 @@ class CEnemyRukzakWeightFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyRukzakWeightFunction()
+	CEnemyRukzakWeightFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
@@ -298,7 +247,7 @@ class CEnemyAnomalityFunction : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyAnomalityFunction()
+	CEnemyAnomalityFunction(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 12.0;
@@ -315,7 +264,7 @@ class CGraphPointType0 : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CGraphPointType0()
+	CGraphPointType0(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -332,7 +281,7 @@ class CPersonalEyeRange : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalEyeRange()
+	CPersonalEyeRange(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -349,7 +298,7 @@ class CPersonalMaxHealth : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CPersonalMaxHealth()
+	CPersonalMaxHealth(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 1000.0;
@@ -363,46 +312,11 @@ public:
 	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
 };
 
-class CEnemyEyeRange : public CBaseFunction {
-public:
-	typedef CBaseFunction inherited;
-
-	CEnemyEyeRange()
-	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 100.0;
-		strcat(m_caName,"EnemyEyeRange");
-		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	};
-
-	virtual ~CEnemyEyeRange(){}
-
-	virtual float ffGetValue();
-};
-
-class CEnemyMaxHealth : public CBaseFunction {
-public:
-	typedef CBaseFunction inherited;
-
-	CEnemyMaxHealth()
-	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
-		strcat(m_caName,"EnemyMaxHealth");
-		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	};
-
-	virtual ~CEnemyMaxHealth(){}
-
-	virtual float	ffGetValue();
-	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
-};
-
 class CEquipmentType : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEquipmentType()
+	CEquipmentType(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 5.0;
@@ -419,7 +333,7 @@ class CItemDeterioration : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CItemDeterioration()
+	CItemDeterioration(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
@@ -436,7 +350,7 @@ class CEquipmentPreference : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEquipmentPreference()
+	CEquipmentPreference(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 3.0;
@@ -453,7 +367,7 @@ class CMainWeaponType : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CMainWeaponType()
+	CMainWeaponType(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 4.0;
@@ -470,7 +384,7 @@ class CMainWeaponPreference : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CMainWeaponPreference()
+	CMainWeaponPreference(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 1.0;
 		m_fMaxResultValue = 3.0;
@@ -487,7 +401,7 @@ class CItemValue : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CItemValue()
+	CItemValue(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 100.0;
 		m_fMaxResultValue = 2000.0;
@@ -504,7 +418,7 @@ class CWeaponAmmoCount : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CWeaponAmmoCount()
+	CWeaponAmmoCount(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 10.0;
@@ -522,7 +436,7 @@ class CEnemyAnomalyType : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyAnomalyType()
+	CEnemyAnomalyType(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 7.0;
@@ -539,7 +453,7 @@ class CDetectorType : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CDetectorType()
+	CDetectorType(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 2.0;
@@ -556,7 +470,7 @@ class CEnemyDistanceToGraphPoint : public CBaseFunction {
 public:
 	typedef CBaseFunction inherited;
 
-	CEnemyDistanceToGraphPoint()
+	CEnemyDistanceToGraphPoint(CEF_Storage *storage) : CBaseFunction(storage)
 	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 4.0;

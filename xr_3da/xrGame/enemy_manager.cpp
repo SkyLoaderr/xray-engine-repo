@@ -60,8 +60,8 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	m_visible_now		= visible;
 
 #ifdef USE_EVALUATOR
-	ai().ef_storage().m_tpCurrentMember = m_self_entity_alive;
-	ai().ef_storage().m_tpCurrentEnemy	= object;
+	ai().ef_storage().non_alife().member()	= m_self_entity_alive;
+	ai().ef_storage().non_alife().enemy()	= object;
 	float				distance = m_self_entity_alive->Position().distance_to_sqr(object->Position());
 	return				(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
 #else
@@ -73,15 +73,15 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const
 {
-	ai().ef_storage().m_tpCurrentMember		= m_self_entity_alive;
-	VERIFY									(ai().ef_storage().m_tpCurrentMember);
-	ai().ef_storage().m_tpCurrentEnemy		= object;
+	ai().ef_storage().non_alife().member()		= m_self_entity_alive;
+	VERIFY									(ai().ef_storage().non_alife().member());
+	ai().ef_storage().non_alife().enemy()		= object;
 
 	if (ai().ef_storage().m_pfExpediency->dwfGetDiscreteValue())
 		return				(true);
 
 	VERIFY					(m_self_memory_manager);
-	if (m_self_memory_manager->hit(ai().ef_storage().m_tpCurrentEnemy))
+	if (m_self_memory_manager->hit(ai().ef_storage().non_alife().enemy()))
 		return				(true);
 	return					(false);
 }

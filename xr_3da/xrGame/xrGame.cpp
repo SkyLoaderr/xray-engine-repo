@@ -11,6 +11,8 @@
 #include "ui/xrXMLParser.h"
 #include "xr_level_controller.h"
 #include "profiler.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 #pragma comment(lib,"ode.lib" )
 
@@ -34,7 +36,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call) {
 		case DLL_PROCESS_ATTACH: {
-			
+			ai().script_engine().script_export();
 			// register console commands
 			CCC_RegisterCommands();
 			// keyboard binding

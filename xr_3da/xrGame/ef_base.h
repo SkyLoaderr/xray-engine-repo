@@ -12,21 +12,21 @@
 
 class CEntityAlive;
 class CSE_ALifeObject;
+class CEF_Storage;
 
 class CBaseFunction {
 protected:
-	u32						m_dwLastUpdate;
-	float					m_fLastValue;
-	const CEntityAlive		*m_tpLastMonster;
-	const CSE_ALifeObject	*m_tpLastALifeObject;
 	float					m_fMinResultValue;
 	float					m_fMaxResultValue;
 	char					m_caName[260];
+	CEF_Storage				*m_storage;
 
 public:
 
-					CBaseFunction()
+					CBaseFunction(CEF_Storage *storage)
 	{
+		m_storage	= storage;
+		VERIFY		(m_storage);
 		m_caName[0] = 0;
 	};
 
@@ -34,7 +34,11 @@ public:
 	{
 	};
 
-	virtual bool	bfCheckForCachedResult();
+	IC	CEF_Storage &ef_storage() const
+	{
+		VERIFY		(m_storage);
+		return		(*m_storage);
+	}
 
 	virtual float	ffGetValue() = 0;
 
@@ -64,4 +68,9 @@ public:
 	{
 		return	(m_caName);
 	}
+
+	IC	CLASS_ID clsid_member		() const;
+	IC	CLASS_ID clsid_enemy		() const;
+	IC	CLASS_ID clsid_member_item	() const;
+	IC	CLASS_ID clsid_enemy_item	() const;
 };

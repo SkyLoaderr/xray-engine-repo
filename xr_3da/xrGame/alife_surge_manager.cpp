@@ -60,13 +60,13 @@ void CALifeSurgeManager::kill_creatures()
 		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
 			CSE_ALifeGroupAbstract *l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
-			ai().ef_storage().m_tpCurrentALifeObject = (*I).second;
+			ai().ef_storage().alife().member_item() = (*I).second;
 			if (l_tpALifeGroupAbstract) {
 				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;
 				for (u32 i=0, N = (u32)l_tpALifeGroupAbstract->m_tpMembers.size(); i<N; ++i) {
 					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>(objects().object(l_tpALifeGroupAbstract->m_tpMembers[i]));
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
-					ai().ef_storage().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
+					ai().ef_storage().alife().member_item() = l_tpALifeCreatureAbstract;
 					if (randF(100) > ai().ef_storage().m_pfSurgeDeathProbability->ffGetValue()) {
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
 						l_tpALifeGroupAbstract->m_tpMembers.erase	(l_tpALifeGroupAbstract->m_tpMembers.begin() + i);

@@ -75,15 +75,13 @@ void lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
-void CScriptEngine::script_export		()
+void CScriptEngine::setup_callbacks		()
 {
-	luabind::open						(lua());
-	
 #ifdef USE_DEBUGGER
 	if( debugger() )
 		debugger()->PrepareLuaBind	();
 #endif
-	
+
 #ifdef USE_DEBUGGER
 	if (!debugger() || !debugger()->Active() )
 #endif
@@ -91,6 +89,13 @@ void CScriptEngine::script_export		()
 
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
+}
+
+void CScriptEngine::script_export		()
+{
+	luabind::open						(lua());
+
+	setup_callbacks						();
 	
 	export_classes						(lua());
 
@@ -185,6 +190,8 @@ void CScriptEngine::process	()
 
 void CScriptEngine::register_script_classes	()
 {
+	setup_callbacks				();
+	
 	u32							n = _GetItemCount(*m_class_registrators);
 	string256					I;
 	for (u32 i=0; i<n; ++i) {
@@ -222,6 +229,7 @@ void CScriptEngine::load_class_registrators		()
 
 bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object)
 {
+	VERIFY(luabind::get_error_callback() == CScriptEngine::lua_error);
 	if (!xr_strlen(function_to_call))
 		return				(false);
 

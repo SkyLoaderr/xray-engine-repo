@@ -164,9 +164,7 @@ LPCSTR CObjectHandlerPlanner::property2string(const _condition_type &id)
 	strcat		(S,":");
 	switch (action_state_id(id)) {
 		case ObjectHandlerSpace::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
-		case ObjectHandlerSpace::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
 		case ObjectHandlerSpace::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
-		case ObjectHandlerSpace::eWorldPropertyUnstrapping	: {strcat(S,"Unstrapping");	break;}
 		case ObjectHandlerSpace::eWorldPropertySwitch1		: {strcat(S,"Switch1");		break;}
 		case ObjectHandlerSpace::eWorldPropertySwitch2		: {strcat(S,"Switch2");		break;}
 		case ObjectHandlerSpace::eWorldPropertyAimed1		: {strcat(S,"Aimed1");		break;}
@@ -210,6 +208,8 @@ void CObjectHandlerPlanner::add_evaluators		(CWeapon *weapon)
 	// dynamic member properties
 	add_evaluator		(uid(id,eWorldPropertyAimed1)		,xr_new<CObjectPropertyEvaluatorMember>(&m_storage,eWorldPropertyAimed1,true));
 	add_evaluator		(uid(id,eWorldPropertyAimed2)		,xr_new<CObjectPropertyEvaluatorMember>(&m_storage,eWorldPropertyAimed2,true));
+	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorMember>(&m_storage,eWorldPropertyStrapped,true));
+
 	// dynamic properties
 	add_evaluator		(uid(id,eWorldPropertyAmmo1)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,0));
 	add_evaluator		(uid(id,eWorldPropertyAmmo2)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,1));
@@ -219,12 +219,11 @@ void CObjectHandlerPlanner::add_evaluators		(CWeapon *weapon)
 	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,1));
 	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorQueue>(weapon,m_object,0));
 	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorQueue>(weapon,m_object,1));
-	// temporarile const properties
+	
+	// temporary const properties
 	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(true));
 	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
-	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(false));
-	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
-	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	
 	// const properties
 	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
@@ -295,6 +294,7 @@ void CObjectHandlerPlanner::add_operators		(CWeapon *weapon)
 	// strapped
 	action				= xr_new<CSObjectActionBase>(weapon,m_object,&m_storage,"strapped");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyIdleStrap,	false);
 	add_effect			(action,id,eWorldPropertyIdleStrap,	true);
 	add_operator		(uid(id,eWorldOperatorStrapped),	action);
 
@@ -620,6 +620,7 @@ void CObjectHandlerPlanner::setup(CAI_Stalker *object)
 	m_storage.set_property		(eWorldPropertyAimed1,false);
 	m_storage.set_property		(eWorldPropertyAimed2,false);
 	m_storage.set_property		(eWorldPropertyUseEnough,false);
+	m_storage.set_property		(eWorldPropertyStrapped,false);
 	
 	add_evaluator				(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator				(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));

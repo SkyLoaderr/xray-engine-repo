@@ -78,10 +78,9 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 void CGamePersistent::OnAppCycleStart()
 {
 	// load game materials
-	GMLib.Load					();
-	ai().script_engine().script_export	();
-
-	__super::OnAppCycleStart	();
+	GMLib.Load							();
+	ai().script_engine().setup_callbacks();
+	__super::OnAppCycleStart			();
 }
 
 extern void clean_game_globals	();

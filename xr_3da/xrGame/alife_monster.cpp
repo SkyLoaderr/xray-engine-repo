@@ -158,9 +158,10 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges()
 	if (!l_tpALifeGroupAbstract || !bfActive() || m_bOnline)
 		return;
 
+	ai().ef_storage().alife_evaluation(true);
 	_TIME_ID					l_tTimeID = ai().alife().time_manager().game_time();
 	if (l_tTimeID >= l_tpALifeGroupAbstract->m_tNextBirthTime) {
-		ai().ef_storage().m_tpCurrentALifeMember = this;
+		ai().ef_storage().alife().member() = this;
 		l_tpALifeGroupAbstract->m_tNextBirthTime = l_tTimeID + _TIME_ID(ai().ef_storage().m_pfBirthSpeed->ffGetValue()*24*60*60*1000);
 		if (randF(100) < ai().ef_storage().m_pfBirthProbability->ffGetValue()) {
 			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*randF(.5f,1.5f)*ai().ef_storage().m_pfBirthPercentage->ffGetValue()/100.f + .5f);
