@@ -63,8 +63,8 @@ namespace PAPI{
 		Flags16		flags;	// 2
 	};                  	// 		72
 
-	typedef void (__stdcall * OnBirthParticleCB)(PAPI::Particle& P);
-	typedef void (__stdcall * OnDeadParticleCB)(PAPI::Particle& P);
+	typedef void (__stdcall * OnBirthParticleCB)(void* owner, PAPI::Particle& P);
+	typedef void (__stdcall * OnDeadParticleCB)(void* owner, PAPI::Particle& P);
 	//////////////////////////////////////////////////////////////////////
 	// Type codes for all actions
 	enum PActionEnum
@@ -125,7 +125,7 @@ namespace PAPI{
 
         // effect
         virtual void				SetMaxParticles		(int effect_id, u32 max_particles)=0;
-        virtual void				SetCallback			(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d)=0;
+        virtual void				SetCallback			(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d, void* owner)=0;
     	virtual void				GetParticles		(int effect_id, Particle*& particles, u32& cnt)=0;
     	virtual u32					GetParticlesCount	(int effect_id)=0;
         
