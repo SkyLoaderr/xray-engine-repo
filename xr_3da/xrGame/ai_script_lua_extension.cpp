@@ -9,17 +9,42 @@
 #include "stdafx.h"
 #include "ai_script_lua_extension.h"
 #include "ParticlesObject.h"
+#include "GameObject.h"
 
 using namespace Script;
+
+void LuaLog(LPCSTR caMessage)
+{
+	Msg			("* [LUA] %s",caMessage);
+}
 
 double get_time()
 {
 	return((double)Device.TimerAsync());
 }
 
-void LuaLog(LPCSTR caMessage)
+class CSearchByNamePredicate {
+	LPCSTR				m_caObjectName;
+public:
+					CSearchByNamePredicate(LPCSTR caObjectName)
+	{
+		m_caObjectName = caObjectName;
+	}
+
+	const bool operator()(CObject *tpObject) const
+	{
+		return(!strcmp(tpObject->cName(),m_caObjectName));
+	}
+};
+
+CGameObject *get_object_by_name(LPCSTR caObjectName)
 {
-	Msg			("* [LUA] %s",caMessage);
+	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
+	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
+	for ( ; I != E; I++)
+		if (!strcmp(caObjectName,(*I)->cName()))
+			return(dynamic_cast<CGameObject*>(*I));
+	return(0);
 }
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
@@ -31,10 +56,10 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	module(tpLuaVirtualMachine)
 	[
 		class_<Fvector>("Fvector")
-			.def_readwrite("x", &Fvector::x)
-			.def_readwrite("y", &Fvector::y)
-			.def_readwrite("z", &Fvector::z)
 			.def(constructor<>())
+			.def_readwrite("x",					&Fvector::x)
+			.def_readwrite("y",					&Fvector::y)
+			.def_readwrite("z",					&Fvector::z)
 			.def("set",							(Fvector & (Fvector::*)(float,float,float))(Fvector::set))
 			.def("set",							(Fvector & (Fvector::*)(const Fvector &))(Fvector::set))
 			.def("add",							(Fvector & (Fvector::*)(float))(Fvector::add))
@@ -101,24 +126,113 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("slide",						&Fvector::slide)
 			.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis),
 
+
+		class_<Fmatrix>("Fmatrix")
+			.def(constructor<>())
+			.def_readwrite("i",					&Fmatrix::i)
+			.def_readwrite("_14_",				&Fmatrix::_14_)
+			.def_readwrite("j",					&Fmatrix::j)
+			.def_readwrite("_24_",				&Fmatrix::_24_)
+			.def_readwrite("k",					&Fmatrix::k)
+			.def_readwrite("_34_",				&Fmatrix::_34_)
+			.def_readwrite("c",					&Fmatrix::c)
+			.def_readwrite("_44_",				&Fmatrix::_44_)
+			.def("set",							(Fmatrix & (Fmatrix::*)(const Fmatrix &))(Fmatrix::set))
+			.def("set",							(Fmatrix & (Fmatrix::*)(const Fvector &, const Fvector &, const Fvector &, const Fvector &))(Fmatrix::set))
+			.def("identity",					&Fmatrix::identity)
+//			.def("mk_xform",					&Fmatrix::mk_xform)
+			.def("mul",							(Fmatrix & (Fmatrix::*)(const Fmatrix &, const Fmatrix &))(Fmatrix::mul))
+			.def("mul",							(Fmatrix & (Fmatrix::*)(const Fmatrix &, float))(Fmatrix::mul))
+			.def("mul",							(Fmatrix & (Fmatrix::*)(float))(Fmatrix::mul))
+			.def("mul_43",						&Fmatrix::mul_43)
+			.def("mulA",						&Fmatrix::mulA)
+			.def("mulB",						&Fmatrix::mulB)
+			.def("mulA_43",						&Fmatrix::mulA_43)
+			.def("mulB_43",						&Fmatrix::mulB_43)
+			.def("div",							(Fmatrix & (Fmatrix::*)(const Fmatrix &, float))(Fmatrix::div))
+			.def("div",							(Fmatrix & (Fmatrix::*)(float))(Fmatrix::div))
+			.def("invert",						(Fmatrix & (Fmatrix::*)())(Fmatrix::invert))
+			.def("invert",						(Fmatrix & (Fmatrix::*)(const Fmatrix &))(Fmatrix::invert))
+			.def("transpose",					(Fmatrix & (Fmatrix::*)())(Fmatrix::transpose))
+			.def("transpose",					(Fmatrix & (Fmatrix::*)(const Fmatrix &))(Fmatrix::transpose))
+			.def("translate",					(Fmatrix & (Fmatrix::*)(const Fvector &))(Fmatrix::translate))
+			.def("translate",					(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::translate))
+			.def("translate_over",				(Fmatrix & (Fmatrix::*)(const Fvector &))(Fmatrix::translate_over))
+			.def("translate_over",				(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::translate_over))
+			.def("translate_add",				&Fmatrix::translate_add)
+			.def("scale",						(Fmatrix & (Fmatrix::*)(const Fvector &))(Fmatrix::scale))
+			.def("scale",						(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::scale))
+			.def("rotateX",						&Fmatrix::rotateX)
+			.def("rotateY",						&Fmatrix::rotateY)
+			.def("rotateZ",						&Fmatrix::rotateZ)
+			.def("rotation",					(Fmatrix & (Fmatrix::*)(const Fvector &, const Fvector &))(Fmatrix::rotation))
+			.def("rotation",					(Fmatrix & (Fmatrix::*)(const Fvector &, float))(Fmatrix::rotation))
+//			.def("rotation",					&Fmatrix::rotation)
+			.def("mapXYZ",						&Fmatrix::mapXYZ)
+			.def("mapXZY",						&Fmatrix::mapXZY)
+			.def("mapYXZ",						&Fmatrix::mapYXZ)
+			.def("mapYZX",						&Fmatrix::mapYZX)
+			.def("mapZXY",						&Fmatrix::mapZXY)
+			.def("mapZYX",						&Fmatrix::mapZYX)
+			.def("mirrorX",						&Fmatrix::mirrorX)
+			.def("mirrorX_over",				&Fmatrix::mirrorX_over)
+			.def("mirrorX_add ",				&Fmatrix::mirrorX_add)
+			.def("mirrorY",						&Fmatrix::mirrorY)
+			.def("mirrorY_over",				&Fmatrix::mirrorY_over)
+			.def("mirrorY_add ",				&Fmatrix::mirrorY_add)
+			.def("mirrorZ",						&Fmatrix::mirrorZ)
+			.def("mirrorZ_over",				&Fmatrix::mirrorZ_over)
+			.def("mirrorZ_add ",				&Fmatrix::mirrorZ_add)
+			.def("build_projection",			&Fmatrix::build_projection)
+			.def("build_projection_HAT",		&Fmatrix::build_projection_HAT)
+			.def("build_projection_ortho",		&Fmatrix::build_projection_ortho)
+			.def("build_camera",				&Fmatrix::build_camera)
+			.def("build_camera_dir",			&Fmatrix::build_camera_dir)
+			.def("inertion",					&Fmatrix::inertion)
+//			.def("transform_tiny32",			&Fmatrix::transform_tiny32)
+//			.def("transform_tiny23",			&Fmatrix::transform_tiny23)
+			.def("transform_tiny",				(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::transform_tiny))
+			.def("transform_tiny",				(void	   (Fmatrix::*)(Fvector &, const Fvector &) const)(Fmatrix::transform_tiny))
+			.def("transform_dir",				(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::transform_dir))
+			.def("transform_dir",				(void	   (Fmatrix::*)(Fvector &, const Fvector &) const)(Fmatrix::transform_dir))
+			.def("transform",					(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::transform))
+			.def("transform",					(void	   (Fmatrix::*)(Fvector &, const Fvector &) const)(Fmatrix::transform))
+			.def("setHPB",						&Fmatrix::setHPB)
+			.def("setXYZ",						(Fmatrix & (Fmatrix::*)(Fvector &))(Fmatrix::setXYZ))
+			.def("setXYZ",						(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::setXYZ))
+			.def("setXYZi",						(Fmatrix & (Fmatrix::*)(Fvector &))(Fmatrix::setXYZi))
+			.def("setXYZi",						(Fmatrix & (Fmatrix::*)(float, float, float))(Fmatrix::setXYZi))
+			.def("getHPB",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getHPB))
+			.def("getHPB",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getHPB))
+			.def("getXYZ",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getXYZ))
+			.def("getXYZ",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getXYZ))
+			.def("getXYZi",						(void	   (Fmatrix::*)(Fvector &) const)(Fmatrix::getXYZi))
+			.def("getXYZi",						(void	   (Fmatrix::*)(float &, float &, float &) const)(Fmatrix::getXYZi)),
+
 		class_<CParticlesObject>("CParticleSystem")
 			.def(constructor<const char *, bool>())
+			.def("Position",					&CParticlesObject::Position)
 			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
+			.def("Stop",						&CParticlesObject::Stop),
+
+		class_<CGameObject>("CGameObject")
+			.def("Position",					(Fvector & (CGameObject::*)())(CGameObject::Position))
+			.def("cName",						(void	   (CGameObject::*)())(CGameObject::cName))
 	];
 	
 	module(tpLuaVirtualMachine,"Game")
 	[
 		// declarations
-		def("get_time",							get_time)
+		def("get_time",							get_time),
 //		def("get_surge_time",					Game::get_surge_time),
 //		def("get_object_by_name",				Game::get_object_by_name),
 		
-//		namespace_("Level")
-//		[
+		namespace_("Level")
+		[
 //			// declarations
 //			def("get_weather",					Level::get_weather)
-//			def("get_object_by_name",			Level::get_object_by_name),
-//		]
+			def("get_object_by_name",			get_object_by_name)
+		]
 
 	];
 	

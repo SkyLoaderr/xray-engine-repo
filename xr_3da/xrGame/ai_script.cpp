@@ -36,8 +36,9 @@ CScript::CScript(LPCSTR caFileName)
 	R_ASSERT		(l_tpFileReader);
 
 	CLuaVirtualMachine	*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
-
-	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
+	string256		S;
+	strconcat		(S,"@",caFileName);		
+	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),S);
 	
 #ifdef DEBUG
 	if (i) {
