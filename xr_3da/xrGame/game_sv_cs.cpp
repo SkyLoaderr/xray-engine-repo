@@ -253,6 +253,12 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 {
 	__super::OnPlayerBuy	(id_who,eid_who,what);
 
+	// entity-name
+	string64				name;
+	strcpy					(name,what);
+	if ( strchr(name,'/') )	*strchr(name,'/') = 0;
+
+	// initialize spawn
 	xrServerEntity*		E	=	spawn_begin	(name);														// create SE
 	strcpy					(E->s_name_replace,name);													// name
 	E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
@@ -297,11 +303,6 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if(ps_who->money_total < cost)	return;
 	ps_who->money_total		= ps_who->money_total - s16(cost);
-
-	// spawn it right in hands
-	string64				name;
-	strcpy					(name,what);
-	if ( strchr(name,'/') )	*strchr(name,'/') = 0;
 
 	// Spawn item
 	spawn_end				(E,	id_who);
