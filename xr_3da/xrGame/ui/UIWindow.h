@@ -65,7 +65,6 @@ public:
 //				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void OnMouseWheel(int direction);
 	virtual void OnDbClick();
 
 	//захватить/освободить мышь окном
@@ -230,6 +229,7 @@ protected:
 
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
+	virtual bool			GetHint			(shared_str& hint)		{return false;};
 	// Последняя позиция мышки
 	Ivector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION

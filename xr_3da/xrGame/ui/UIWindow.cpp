@@ -146,11 +146,6 @@ Irect CUIWindow::GetAbsoluteRect()
 //задаются относительно текущего окна
 
 #define DOUBLE_CLICK_TIME 250
-void CUIWindow::OnMouseWheel(int direction)
-{
-	if(m_pMouseCapturer)
-		m_pMouseCapturer->OnMouseWheel(direction);
-}
 
 void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 {	

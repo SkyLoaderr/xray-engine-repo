@@ -67,8 +67,8 @@ public:
 	//сообщени€, отправл€емые родительскому окну
 //	typedef enum{VSCROLL, HSCROLL} E_MESSAGE;
 
-	virtual void	OnMouseWheel	(int direction);
-	virtual void	SendMessage		(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	virtual void	Draw			();
 

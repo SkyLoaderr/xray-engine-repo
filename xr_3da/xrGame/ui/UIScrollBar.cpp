@@ -99,12 +99,19 @@ void CUIScrollBar::UpdateScrollBar()
 	}
 }
 
-void CUIScrollBar::OnMouseWheel(int direction)
+void CUIScrollBar::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	if(direction>0)	ScrollInc	();
-	else			ScrollDec	();
-
+	switch(mouse_action){
+		case WINDOW_MOUSE_WHEEL_DOWN:
+			TryScrollInc();
+			break;
+		case WINDOW_MOUSE_WHEEL_UP:
+			TryScrollDec();
+			break;
+	};
+	inherited::OnMouse(x, y, mouse_action);
 }
+
 
 void CUIScrollBar::ClampByViewRect()
 {
