@@ -181,6 +181,9 @@
 				RelativePath="r2_scenegraph.h">
 			</File>
 			<File
+				RelativePath="r2_screenshot.cpp">
+			</File>
+			<File
 				RelativePath="r2_types.h">
 			</File>
 		</Filter>
