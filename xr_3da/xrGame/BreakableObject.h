@@ -4,11 +4,14 @@
 
 #ifndef BreakableObjectH
 #define BreakableObjectH
+
 #pragma once
-struct SGameMtl;
+
 #include "physicsshellholder.h"
-#include "ode_include.h"
-class CPHStaticGeomShell;
+
+class	CPHStaticGeomShell;
+struct	dContact;
+struct	SGameMtl;
 
 class CBreakableObject: public CPhysicsShellHolder {
 	typedef	CPhysicsShellHolder		inherited;
