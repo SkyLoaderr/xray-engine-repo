@@ -8,22 +8,38 @@
 ----------------------------------------------------------------------------------------------------------------------
 --' Условие завершения скрипта
 class "evaluator_end" (property_evaluator)
-
 function evaluator_end:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-
 function evaluator_end:evaluate()
 	return not xr_logic.is_active(self.object, self.a)
 end
 
+--' Находимся ли мы недалеко от своей позиции
+class "evaluator_place" (property_evaluator)
+function evaluator_place:__init(name, storage) super (nil, name)
+	self.a = storage
+end
+function evaluator_place:evaluate()
+	
+	local path = patrol(self.a.path_walk)
+	if path ~= nil then
+		for k = 0, path:count() - 1 do
+			if utils.stalker_at_waypoint(self.object, patrol(self.a.path_walk), 0) then
+				return true
+			end
+		end
+		return false
+	end
+	
+	return true
+end
+
 --' Обычный комбат или кемперский
 class "evaluator_close_combat" (property_evaluator)
-
 function evaluator_close_combat:__init(name, storage) super (nil, name)
 	self.a = storage
 end
-
 function evaluator_close_combat:evaluate()
 	if not xr_logic.is_active(self.object, self.a) then
 		return true
@@ -138,6 +154,52 @@ end
 function action_kill:finalize ()
     action_base.finalize(self)
 end
+
+--' Отступление на позиции
+class "action_retreat" (action_base)
+function action_retreat:__init(npc_name,action_name,storage) super(nil,action_name)
+    self.a = storage
+end
+function action_retreat:initialize()
+    action_base.initialize(self)
+    
+--    patrol_path:level_vertex_id(path_point)
+    
+    local path_walk = patrol(self.a.path_walk)
+    if path_walk then
+		local point = utils.get_nearest_waypoint(self.object, self.a.path_walk, path_walk, path_walk:count())
+
+		if self.object:accessible(point) then
+			printf("RETREAT")
+			self.object:set_dest_level_vertex_id(path_walk:level_vertex_id(point))
+			self.object:set_path_type(game_object.level_path)
+			self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
+			self.object:set_body_state(move.crouch)
+			self.object:set_mental_state(anim.danger)
+			self.object:set_movement_type(move.walk)
+		else
+			printf("ERROR: RETREAT NODE NOT ACCESIBLE")
+		end
+						
+    end
+end
+function action_retreat:execute()
+	action_base.execute(self)
+
+	self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
+	printf("_bp: %d: see_enemy?", device():time_global())
+	if self.object:see(self.object:best_enemy()) == true then
+		printf("_bp: YES")
+		self.object:set_item(object.fire1, self.object:best_weapon())
+	else
+		printf("_bp: NO")
+		self.object:set_item(object.idle, self.object:best_weapon())
+	end
+	
+end
+function action_retreat:finalize()
+    action_base.finalize(self)
+end
 ----------------------------------------------------------------------------------------------------------------------
 -- BINDER
 ----------------------------------------------------------------------------------------------------------------------
@@ -149,32 +211,44 @@ function add_to_binder(object, ini, scheme, section, storage)
 
 		operators["patrol"]			= xr_actions_id.stohe_camper_base + 1
 		operators["kill"]			= xr_actions_id.stohe_camper_base + 2
+		operators["retreat"]		= xr_actions_id.stohe_camper_base + 3
 	
 		properties["end"]			= xr_evaluators_id.stohe_camper_base + 1
 		properties["close_combat"]	= xr_evaluators_id.stohe_camper_base + 2
+		properties["place"]			= xr_evaluators_id.stohe_camper_base + 3
 		
 		manager:add_evaluator (properties["end"], this.evaluator_end("camper_end", db.storage[object:id()].camper))
+		manager:add_evaluator (properties["place"], this.evaluator_place("camper_place", db.storage[object:id()].camper))
 		manager:add_evaluator (properties["close_combat"], this.evaluator_close_combat("camper_close_combat", db.storage[object:id()].camper))
 
 		local action = this.action_patrol (object:name(),"action_patrol", db.storage[object:id()].camper)
 		action:add_precondition	(world_property(stalker_ids.property_alive, true))
 		action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
 		xr_motivator.addCommonPrecondition(action)
-		action:add_effect (world_property(properties["end"],			true))
+		action:add_effect (world_property(properties["end"],				true))
 		manager:add_action (operators["patrol"], action)
 
 		action = this.action_kill (object:name(),"action_kill", db.storage[object:id()].camper)
 		action:add_precondition	(world_property(stalker_ids.property_alive, true))
 		action:add_precondition (world_property(properties["close_combat"],	false))
+		action:add_precondition (world_property(properties["place"],		true))
 		xr_motivator.addCommonPrecondition(action)
-		action:add_effect (world_property(stalker_ids.property_enemy,	false))		
+		action:add_effect (world_property(stalker_ids.property_enemy,		false))		
 		manager:add_action (operators["kill"], action)
+
+		action = this.action_retreat (object:name(),"action_retreat", db.storage[object:id()].camper)
+		action:add_precondition	(world_property(stalker_ids.property_alive, true))
+		action:add_precondition (world_property(properties["close_combat"],	false))
+		action:add_precondition (world_property(properties["place"],		false))
+		xr_motivator.addCommonPrecondition(action)
+		action:add_effect (world_property(stalker_ids.property_enemy,		false))		
+		manager:add_action (operators["retreat"], action)
 
 		action = manager:action (xr_actions_id.alife)	
 		action:add_precondition	(world_property(properties["end"],			true))
 
 		action = manager:action (stalker_ids.action_combat_planner)
-		action:add_precondition (world_property(properties["close_combat"],	true))   		
+		action:add_precondition (world_property(properties["close_combat"],	true))
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
