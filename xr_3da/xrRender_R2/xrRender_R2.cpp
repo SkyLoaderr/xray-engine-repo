@@ -14,6 +14,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 		::Render			= &RImplementation;
+		::Device.Resources->SetShaderPath	("xr2_r3xx\\");
 		xrRender_initconsole();
 		break;
 	case DLL_THREAD_ATTACH:

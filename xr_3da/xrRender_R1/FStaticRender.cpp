@@ -47,7 +47,6 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 //////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
-	::Device.Resources->SetHLSL_path("xr1\\");
 	::Device.Resources->RegisterConstantSetup("L_dynamic_pos",		&r1_dlight_binder_PR);
 	::Device.Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
 	::Device.Resources->RegisterConstantSetup("L_dynamic_xform",	&r1_dlight_binder_xform);

@@ -36,9 +36,6 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 // Just two static storage
 void					CRender::create					()
 {
-	if (b_nv3x)					::Device.Resources->SetHLSL_path("xr2_nv3x\\");
-	else						::Device.Resources->SetHLSL_path("xr2_r3xx\\");
-
 	Target.OnDeviceCreate		();
 	LR.Create					();
 
