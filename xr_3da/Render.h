@@ -62,6 +62,17 @@ public:
 // definition (Per-object render-specific data)
 class	ENGINE_API	IRender_ObjectSpecific		{
 public:
+	enum mode
+	{
+		TRACE_LIGHTS	= (1<<0),
+		TRACE_SUN		= (1<<1),
+		TRACE_HEMI		= (1<<2),
+		TRACE_ALL		= (TRACE_LIGHTS|TRACE_SUN|TRACE_HEMI),
+	};
+public:
+	virtual	void						force_mode			(u32 mode)							= 0;
+	virtual float						get_luminocity		()									= 0;
+
 	virtual ~IRender_ObjectSpecific()	{};
 };
 

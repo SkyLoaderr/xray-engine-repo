@@ -1,7 +1,7 @@
 #pragma once
 
 class ENGINE_API CObject;
-namespace Collide 
+namespace collide 
 {
 	struct			tri {
 		Fvector	e10; float e10s;

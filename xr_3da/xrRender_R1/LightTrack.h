@@ -6,61 +6,63 @@
 #define AFX_LIGHTTRACK_H__89914D61_AC0B_4C7C_BA8C_D7D810738CE7__INCLUDED_
 #pragma once
 
-const	float				lt_inc			= 4.f;
-const	float				lt_dec			= 2.f;
-const	float				lt_smooth		= 4.f;
+const	float				lt_inc			= 4.f	;
+const	float				lt_dec			= 2.f	;
+const	float				lt_smooth		= 4.f	;
+const	int					lt_hemisamples	= 26	;
 
-/*
----		Not implemented
-
-class	CShadowGeomCache
+class	CROS_impl			: public IRender_ObjectSpecific
 {
 public:
-	struct	Item
-	{
-		Fvector		Lpos;
-		void*		data;
-		u32			frame;
+	struct	Item			{
+		u32					frame_touched	;	// to track creation & removal
+		light*				source			;	// 
+		Collide::ray_cache	cache			;	//
+		float				test			;	// note range: (-1[no]..1[yes])
+		float				energy			;	//
+	};
+	struct	Light			{
+		light*				source			;
+		float				energy			;
+		Fcolor				color			;
 	};
 public:
-	Fvector					cached_pos;
-	xr_map<light*,Item>		cache;
-};
-*/
-class	CLightTrack			: public IRender_ObjectSpecific
-{
+	// general
+	u32						MODE			;
+	u32						dwFrame			;
+
+	// 
+	xr_vector<Item>			track			;	// everything what touches
+	xr_vector<Light>		lights			;	// 
+
+	bool					result			[lt_hemisamples];
+	Collide::ray_cache		cache			[lt_hemisamples];
+	Collide::ray_cache		cache_sun		;
+	u32		result_count		;
+	u32		result_iterator		;
+	u32		result_frame		;
+	s32		result_sun			;
 public:
-	struct	Item 
-	{
-		u32					frame_touched;
-		light*				source;
-		Collide::ray_cache	cache;
-		float				test;			// note range: (-1[no]..1[yes])
-		float				energy;
-	};
-	struct	Light
-	{
-		light*				source;
-		float				energy;
-		Fcolor				color;
-	};
-	xr_vector<Item>			track;
-	xr_vector<Light>		lights;
-	float					ambient;
-	Fvector					approximate;
-	u32						dwFrame;
+	u32		shadow_gen_frame	;
+	u32		shadow_recv_frame	;
+	int		shadow_recv_slot	;
+private:
+	float	hemi_value			;
+	float	hemi_smooth			;
+	float	sun_value			;
+	float	sun_smooth			;
+
+	Fvector	approximate			;
 public:
-	//CShadowGeomCache		ShadowGeomCache;			
-	u32						Shadowgen_dwFrame;
+	virtual	void			force_mode			(u32 mode)	;
+	virtual float			get_luminocity		()			;
 
-	u32						Shadowed_dwFrame;
-	int						Shadowed_Slot;
+	void					add					(light*			L);
+	void 
+	void					update				(IRenderable*	O);
 
-	void					add				(light*			L);
-	void					ltrack			(IRenderable*	O);
-
-	CLightTrack				();
-	virtual ~CLightTrack	()	{};
+	CROS_impl				();
+	virtual ~CROS_impl	()	{};
 };
 
 #endif // !defined(AFX_LIGHTTRACK_H__89914D61_AC0B_4C7C_BA8C_D7D810738CE7__INCLUDED_)
