@@ -181,26 +181,6 @@ function loadJob(sj, gname, type, squad, groups)
 	
 	--' Лагерь новичков на Escape
 	if type == "esc_lager" then
---[[		-- Волк
-		t = { section = "walker@esc_lager_wolf",
-			idle = 0,
-			prior = 10, state = {0, 1},
-			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-			              return obj:profile_name() == "stalker_esc_wolf"
-			            end
-		}
-		table.insert(sj, t)
-		-- перекупщик хлама
-		t = { section = "walker@esc_lager_bariga",
-			idle = 0,
-			prior = 10, state = {0, 1},
-			in_rest = "", out_rest = "",
-			predicate = function(obj) 
-			              return obj:profile_name() == "stalker_esc_bariga"
-			            end
-		}
-		table.insert(sj, t)]]
 		-- охранники
 		t = { section = "zoneguard1@esc_lager",
 			idle = 0,
@@ -265,6 +245,7 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
 	--' Бандиты на фабрике
 	if type == "esc_fabrika_bandit" then
 		-- снайпер, охраняющий лестницу на чердак
@@ -278,18 +259,21 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "walker1@esc_fabrika_bandit_day",
 			idle = 0,
 			prior = 2, state = {0},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "walker2@esc_fabrika_bandit_day",
 			idle = 0,
 			prior = 2, state = {0},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "walker3@esc_fabrika_bandit_day",
 			idle = 0,
 			prior = 2, state = {0},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -297,12 +281,14 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
 			prior = 1, state = {0, 1},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
 			prior = 1, state = {0, 1},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -310,23 +296,25 @@ function loadJob(sj, gname, type, squad, groups)
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
 			prior = 0, state = {1},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
 			prior = 0, state = {1},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
 			prior = 0, state = {1},
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
 	end
-
 
 --'--------------------------------------------------------------------------	
 --' GARBAGE
@@ -738,6 +726,51 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)	
 	end
 
+	--' Agroprom factory
+	if type == "agr_factory" then
+		t = { section = "walker1@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker4@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker5@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "walker6@agr_factory_shoot",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 end
 
 function loadStates(gname, type)
@@ -824,6 +857,18 @@ function loadStates(gname, type)
 			else
 				return 1  -- ночь
 			end
+		end
+	end
+
+	if type == "agr_factory" then
+		return function( gulag )
+			if gulag:get_population() <= 3 then
+				local actor = level.actor()
+				if actor and actor:has_info( "agr_factory_combat_proceed" ) then
+					actor:give_info_portion( "agr_factory_need_help" )
+				end
+			end
+			return 0
 		end
 	end
 end
