@@ -11,6 +11,8 @@ local state_standing_before_anim = 2
 local state_before_anim_playing = 3
 local state_anim_playing = 4
 
+local sync = {}
+
 class "move_mgr"
 
 function move_mgr:__init()
@@ -21,7 +23,7 @@ function move_mgr:initialize(npc)
 	self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
 
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, enable_dialog)
 	xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -86,6 +88,23 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
 
+	self.highest_sync_val = self:get_highest_sync_val()
+	self.team = team
+	if self.team then
+		local s = sync[self.team]
+		if not s then
+			sync[self.team] = {}
+			s = sync[self.team]
+		end
+		s[self.object:id()] = -1
+	end
+
+	self.enable_dialog = enable_dialog
+	if self.enable_dialog then
+		dialog_mgr:reset(self.object, team)
+	end
+
+	self.last_index = -1
 	self:simulate_callback_if_neccessary()
 end
 
@@ -119,8 +138,78 @@ function move_mgr:update_sound()
 	end
 end
 
+function move_mgr:get_highest_sync_val()
+	local ptr = patrol(self.path_walk)
+	local num_points = ptr:count()
+	local v
+	local highest = -1
+	for i = 0, num_points - 1 do
+		v = self.path_walk_info[i]["sync"]
+		if v then
+			v = tonumber(v)
+			if v > highest then
+				highest = v
+			end
+		end
+	end
+	return highest
+end
+
+-- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
+-- синхронизацией)
+function move_mgr:wayp_lesser(arg1, arg2)
+	local ptr = patrol(self.path_walk)
+	local num_points = ptr:count()
+	if arg1 == self.highest_sync_val and arg2 == 0 then
+		return true
+	elseif arg1 == 0 and arg2 == self.highest_sync_val then
+		return false
+	else
+		return arg1 < arg2
+	end
+end
+
+-- Проверка синхронизации с остальными солдатами на пути.
+-- Возвращает true, если дальнейшее движение разрешено.
+function move_mgr:sync_ok()
+	if self.team then
+		local s = sync[self.team]
+		local self_id = self.object:id()
+		
+		-- Если только бежим на путь (еще не были в точках синхронизации), то разрешить движение:
+		if s[self_id] == -1 then
+			return true
+		end
+		
+		local highest = -1
+
+		local prev = nil
+		local all_equal = true
+		for k, v in pairs(s) do
+			if v ~= nil then
+				if prev ~= nil and prev ~= v then
+					all_equal = false
+				end
+				if self:wayp_lesser(highest, v) then
+					highest = v
+				end
+				prev = v
+			end
+		end
+
+		-- В этом месте highest ~= -1 благодаря проверке до цикла
+
+		return all_equal or self:wayp_lesser(s[self_id], highest)
+	end
+	return true
+end
+
 function move_mgr:update()
 	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+
+	if self.enable_dialog then
+		dialog_mgr:update(self.object, self.team)
+	end
 
 	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
 	if not self.play_sound_after_anim_start then
@@ -151,6 +240,14 @@ function move_mgr:update()
 
 		if self.object:animation_count() <= 0 then
 			if not self.shall_shoot then
+				-- Уже когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
+				-- в синхронизаторе, что прибыли на данную точку
+				if self.team then
+					local sync_id = self.path_walk_info[self.last_index]["sync"]
+					if sync_id then
+						sync[self.team][self.object:id()] = tonumber(sync_id)
+					end
+				end
 				xr_state.anim_update(self.cur_anim_set, self.object)
 			else
 				--xr_state.anim_update(self.cur_anim_set, self.object)
@@ -169,11 +266,11 @@ function move_mgr:update()
 
 	-- Ждать синхронизации, а только затем включить счетчик анимации
 	if self.state == state_before_anim_playing then
-		--if self:sync_ok() then
+		if self:sync_ok() then
 		--	printf("_bp [%s]: anim counter activated", self.object:name())
 			self.expiration_time = device():time_global() + self.pt_wait_time
 			self.state = state_anim_playing
-		--end
+		end
 	end
 
 	if (self.state == state_anim_playing and device():time_global() >= self.expiration_time and
@@ -206,6 +303,13 @@ end
 
 function move_mgr:finalize(npc)
 	self.object:clear_callback(game_object.movement)
+
+	if self.team then
+		local s = sync[self.team]
+		if s then
+			s[self.object:id()] = nil
+		end
+	end
 end
 
 -------------------------------------------------------------------------------
@@ -223,6 +327,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		printf("ERROR: move_mgr: waypoint_callback: index is -1")
 		return
 	end
+
+	self.last_index = index
 
 	-- <ЗВУК>
 	local suggested_snd = self.path_walk_info[index]["snd"]
