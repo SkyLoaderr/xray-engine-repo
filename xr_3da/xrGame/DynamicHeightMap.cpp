@@ -86,8 +86,7 @@ void CHM_Static::Update	()
 	}
 	
 	// *****	perform TASKs
-	if (task.empty())	return;
-	for (int taskid=0; taskid<tasksPerFrame; taskid++)
+	for (int taskid=0; (taskid<tasksPerFrame) && (!task.empty()); taskid++)
 	{
 		Slot*	S	= task.back	();	task.pop_back();
 		S->bReady	= TRUE;
