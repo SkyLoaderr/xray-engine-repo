@@ -12,6 +12,8 @@
 #include "../skeletonanimated.h"
 #include "script_game_object.h"
 
+#define BOUND_DIST 20000.0f
+
 CHelicopter::CHelicopter()
 {
 	init();
@@ -121,7 +123,7 @@ void CHelicopter::init()
 	m_min_rocket_dist			= 20.0f;
 	m_max_rocket_dist			= 200.0f;
 	m_time_between_rocket_attack = 0;
-	m_last_point_range_dist		= 1000000.f;
+	m_last_point_range_dist		= BOUND_DIST;
 	m_last_rocket_attack		= Device.dwTimeGlobal;
 
 	SetfHealth					(100.0f);
@@ -146,7 +148,7 @@ void CHelicopter::Load(LPCSTR section)
 //	CMemoryManager::Load				(section);
 
 ////////////////////////////////////
-	m_last_point_range_dist				= 1000000.f;
+	m_last_point_range_dist				= BOUND_DIST;
 	m_on_point_range_dist				= 10.0f;
 	m_data.m_time_last_patrol_end		= 0.0f;
 	m_data.m_time_last_patrol_start		= 0.0f;
@@ -336,7 +338,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
 
 	m_data.m_b_looking_at_point		=	false;
-	m_last_point_range_dist				= 1000000.f;
+	m_last_point_range_dist				= BOUND_DIST;
 
     m_movMngr->init			(this);
 
@@ -599,20 +601,22 @@ void CHelicopter::shedule_Update(u32 time_delta)
 
 	float dist = GetDistanceToDestPosition();
 	if( (m_last_point_range_dist < m_on_point_range_dist) ||
-		(m_last_point_range_dist < dist)								)
-//	if( m_last_point_range_dist < m_on_point_range_dist)
+		(dist < m_on_point_range_dist)								)
+		{//GENARATE EVENT	
+			NET_Packet P;
+			P.write_start();
+			P.w_float(dist);
+			P.w_vec3(XFORM().c);
+			s16 curr_idx = -1;
+			if(m_movMngr->m_currPatrolVertex)
+				curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
+			P.w_s16(curr_idx);
+			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+		}
 
-	{//GENARATE EVENT	
-		NET_Packet P;
-		P.write_start();
-		P.w_float(dist);
-		P.w_vec3(XFORM().c);
-		s16 curr_idx = -1;
-		if(m_movMngr->m_currPatrolVertex)
-			curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
-		P.w_s16(curr_idx);
-		lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
-	}
+		if( (state()!=eMovingByPatrolPath)&&( !fsimilar(m_last_point_range_dist,BOUND_DIST,EPS_L) )  )//fake
+			m_last_point_range_dist = dist;
+
 	m_movMngr->shedule_Update (time_delta);
 
 
@@ -824,7 +828,7 @@ void CHelicopter::SetDestPosition (Fvector* pos)
 	point.y += m_data.m_wrk_altitude;
 
 	m_data.m_to_point = point;
-	m_last_point_range_dist = 1000000;
+	m_last_point_range_dist = BOUND_DIST;
 
 }
 

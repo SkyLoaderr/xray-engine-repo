@@ -8,6 +8,7 @@
 #include "script_game_object.h"
 
 #define ROUND_RADIUS 20.0f
+#define BOUND_DIST 20000.0f
 
 void dumpMotion(CHelicopterMotion* m)
 {
@@ -768,20 +769,18 @@ void CHelicopterMovManager::UpdatePatrolPath()
 {
 	float dist = m_heli->GetDistanceToDestPosition();
 	if( (m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist) ||
-		(m_heli->m_last_point_range_dist < dist)								){
+		(dist < m_heli->m_on_point_range_dist)								){
 
 		CPatrolPath::const_iterator b,e;
 		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
-		
-
 			m_currPatrolVertex =  m_currPatrolPath->vertex((*b).vertex_id());
 			Fvector p = m_currPatrolVertex->data().position();
 			m_heli->SetDestPosition(&p);
 
 		}else{
 			m_heli->setState(CHelicopter::eIdleState);
-			m_heli->m_last_point_range_dist = 1000000;
+			m_heli->m_last_point_range_dist = BOUND_DIST;
 		}
 	}else
 		m_heli->m_last_point_range_dist = dist;
