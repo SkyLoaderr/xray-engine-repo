@@ -79,7 +79,7 @@ BOOL	Surface_Detect(LPSTR F, LPSTR N)
 	return FALSE;
 }
 
-DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
+FIBITMAP*	Surface_Load(char* name)
 {
 	if (strchr(name,'.')) *(strchr(name,'.')) = 0;
 
@@ -92,17 +92,25 @@ DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
 	FIBITMAP*			map		= FreeImage_Load(fif,full);
 	if (0==map)			return NULL;
 
-	h					= FreeImage_GetHeight	(map);
-	w					= FreeImage_GetWidth	(map);
-
 	// check if already 32bpp
-	if (32==FreeImage_GetBPP(map))	return LPDWORD(FreeImage_GetScanLine(map,0));
+	if (32==FreeImage_GetBPP(map))	map;
 
 	// convert
 	FIBITMAP*			map32	= FreeImage_ConvertTo32Bits(map);
 	if (0==map32)		map32	= map;
 	else				FreeImage_Free(map);
 
+	return				map32;
+}
+
+DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
+{
+	FIBITMAP* map32		= Surface_Load(name);
+
+	h					= FreeImage_GetHeight	(map32);
+	w					= FreeImage_GetWidth	(map32);
+
 	// return
 	return				LPDWORD(FreeImage_GetScanLine(map32,0));
 }
+
