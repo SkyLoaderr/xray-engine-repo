@@ -114,6 +114,7 @@ function main()
 			wait(2000)
 			break		
 		end
+		wait()
 	end
 
 	while stalker1:action() and stalker2:action() do
