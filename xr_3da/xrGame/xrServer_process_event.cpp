@@ -6,6 +6,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	u32			timestamp;
 	u16			type;
 	u16			destination;
+	u32			MODE			= net_flags(TRUE,TRUE);
 
 	P.r_u32		(timestamp);
 	P.r_u16		(type);
@@ -47,7 +48,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			e_entity->ID_Parent	= id_parent;
 
 			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
 	case GE_OWNERSHIP_REJECT:
@@ -72,13 +73,27 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			e_entity->ID_Parent	= 0xffff;
 
 			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
 	case GE_TRANSFER_AMMO:
 		{
+			u16					id_parent=destination,id_entity;
+			P.r_u16				(id_entity);
+			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);	// кто забирает (для своих нужд)
+			xrServerEntity*		e_entity	= ID_to_entity	(id_entity);	// кто отдает
+			if (0xffff != e_entity->ID_Parent)	break;						// this item already taken
+			xrClientData*		c_parent	= e_parent->owner;
+			xrClientData*		c_entity	= e_entity->owner;
+			xrClientData*		c_from		= ID_to_client	(sender);
+			R_ASSERT			(c_src == c_parent);						// assure client ownership of event
+
 			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
+
+			// Perfrom real destroy
+			entity_Destroy		(e_dest);
+			entities.erase		(id_entity);
 		}
 		break;
 	case GE_HIT:
@@ -94,7 +109,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_src == c_from);		// assure client ownership of event
 
 			// Signal just to destination (тому, кто повредился)
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
 	case GE_DIE:
@@ -108,7 +123,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил
 			xrClientData*		c_from		= ID_to_client	(sender);	// клиент, откуда пришла мессага
-			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
+			R_ASSERT			(c_dest == c_from);						// assure client ownership of event
 
 			//
 			if (c_src->owner->ID == id_src)
@@ -123,7 +138,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				P.w_u16				(id_src);
 				P.w_u32				(c_src->ID);
 			}
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
 	case GE_DESTROY:
@@ -146,13 +161,13 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				P2.w_u16			(GE_OWNERSHIP_REJECT);
 				P2.w_u16			(e_dest->ID_Parent);
 				P2.w_u16			(id_dest);
-				SendBroadcast		(0xffffffff,P2,net_flags(TRUE,TRUE));
+				SendBroadcast		(0xffffffff,P2,MODE);
 			}
 
 			// Everything OK, so perform entity-destroy
 			entity_Destroy		(e_dest);
 			entities.erase		(id_dest);
-			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
 	default:
