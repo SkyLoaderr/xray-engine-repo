@@ -909,6 +909,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
 	m_pd3dDevice->SetTexture				(2, NULL);
+	m_pd3dDevice->SetTexture				(4, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 	pBaseTarget->Release					();
 
