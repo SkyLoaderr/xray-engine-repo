@@ -79,21 +79,21 @@ void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)
 	p.format		= IMG_24B;
 
 	if (bSquare){
-		u32* data	= (u32*)xr_malloc(Device.dwHeight*Device.dwHeight*4);
-		imf_Process	(data,Device.dwHeight,Device.dwHeight,(u32*)D.pBits,Device.dwWidth,Device.dwHeight,imf_lanczos3);
-		p.scanlenght= Device.dwHeight*4;
-		p.width		= Device.dwHeight;
-		p.height	= Device.dwHeight;
-		p.data		= data;
-		p.maketga	(*fs);
-		xr_free		(data);
-	}else{
+		u32* data		= (u32*)xr_malloc(Device.dwHeight*Device.dwHeight*4);
+		imf_Process		(data,Device.dwHeight,Device.dwHeight,(u32*)D.pBits,Device.dwWidth,Device.dwHeight,imf_lanczos3);
+		p.scanlenght	= Device.dwHeight*4;
+		p.width			= Device.dwHeight;
+		p.height		= Device.dwHeight;
+		p.data			= data;
+		p.maketga		(*fs);
+		xr_free			(data);
+	} else {
 		// 
 		p.scanlenght	= D.Pitch;
 		p.width			= Device.dwWidth;
 		p.height		= Device.dwHeight;
 		p.data			= D.pBits;
-		p.maketga	(*fs);
+		p.maketga		(*fs);
 	}
 
 	FS.w_close		(fs);
