@@ -37,6 +37,22 @@ void CRenderTarget::accum_spot	(light* L)
 		draw_volume						(L);
 	}
 
+	// nv-stencil recompression
+	if (RImplementation.b_nvstecil)	{
+		u32		Offset;
+		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+		pv->set						(EPS,			float(_h+EPS),	EPS_S,	1.f, C, 0, 0);	pv++;
+		pv->set						(EPS,			EPS,			EPS_S,	1.f, C, 0, 0);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	EPS_S,	1.f, C, 0, 0);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			EPS_S,	1.f, C, 0, 0);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x1,0xff,0xff);	// keep/keep/keep
+		RCache.set_Element			(s_occq->E[1]);
+		RCache.set_Geometry			(g_combine);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+	}
+
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
 	RCache.set_ColorWriteEnable				();
