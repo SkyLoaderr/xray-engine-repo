@@ -238,8 +238,8 @@ xr_guard.add_to_binder(self.object, char_ini)
             action = nil,
             path_main = nil,
             path_side = nil,
-            path_guard = nil,
-            path_guard_radius = 0,
+	    path_guard = nil,
+	    path_guard_radius = 0,
 	    path_center = nil
         }
 xr_bodyguard.add_to_binder(self.object, char_ini)
@@ -287,8 +287,12 @@ xr_follower.add_to_binder(self.object, char_ini)
                 ret_vertex = -1         --level vertex id for return
         }
 xr_chaser.add_to_binder (self.object, char_ini)            
-
-    xr_motivator.storage[self.object:id()].ambush = {}
+	-- бандиты в засаде
+	xr_motivator.storage[self.object:id()].ambush = {
+		enabled = false,
+		path = nil,
+		dist_sqr = 0
+	}
 xr_ambush.add_to_binder(self.object, char_ini)
 
     --Привязка к организации
