@@ -242,7 +242,6 @@ void CLevel::script_register(lua_State *L)
 		def("add_dialog_to_render",				add_dialog_to_render),
 		def("remove_dialog_to_render",			remove_dialog_to_render),
 		def("main_input_receiver",				main_input_receiver),
-		def("present",							is_level_present),
 		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
 		def("present",							is_level_present)
@@ -250,5 +249,3 @@ void CLevel::script_register(lua_State *L)
 }
 
 
-//(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))
-//)(
