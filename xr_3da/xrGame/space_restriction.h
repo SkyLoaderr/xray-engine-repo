@@ -78,7 +78,7 @@ public:
 	IC		ref_str					in_restrictions				() const;
 	IC		bool					applied						() const;
 	IC		bool					inside						(const Fvector &position);
-	IC		bool					inside						(u32 level_vertex_id, bool out_restriction);
+	IC		bool					inside						(u32 level_vertex_id, bool partially_inside);
 };
 
 #include "space_restriction_inline.h"

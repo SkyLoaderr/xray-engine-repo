@@ -68,25 +68,25 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 IC	bool CSpaceRestriction::applied					() const
 {
 	return							(m_applied);
-}
+}n
 
 IC	bool CSpaceRestriction::inside					(const Fvector &position)
 {
 	return							(accessible(position,EPS_L));
 }
 
-IC	bool CSpaceRestriction::inside					(u32 level_vertex_id, bool out_restriction)
+IC	bool CSpaceRestriction::inside					(u32 level_vertex_id, bool partially_inside)
 {
 	return							(
 		(
 			m_out_space_restriction ? 
-			m_out_space_restriction->inside(level_vertex_id,out_restriction) :
+			m_out_space_restriction->inside(level_vertex_id,partially_inside) :
 			true
 		)
 		&&
 		(
 			m_in_space_restriction ? 
-			!m_in_space_restriction->inside(level_vertex_id,!out_restriction) :
+			!m_in_space_restriction->inside(level_vertex_id,!partially_inside) :
 			true
 		)
 	);

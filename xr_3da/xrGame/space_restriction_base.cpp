@@ -13,29 +13,34 @@
 
 #define DEFAULT_RADIUS EPS_L
 
-bool CSpaceRestrictionBase::inside(u32 level_vertex_id, bool partially_inside)
+bool CSpaceRestrictionBase::inside	(u32 level_vertex_id, bool partially_inside)
 {
 	return							(inside(level_vertex_id,partially_inside,DEFAULT_RADIUS));
 }
 
-bool CSpaceRestrictionBase::inside(u32 level_vertex_id, bool partially_inside, float radius)
+IC	Fvector construct_position		(u32 level_vertex_id, float x, float z)
+{
+	return							(Fvector().set(x,ai().level_graph().vertex_plane_y(level_vertex_id,x,z),z));
+}
+
+bool CSpaceRestrictionBase::inside	(u32 level_vertex_id, bool partially_inside, float radius)
 {
 	const Fvector					&position = ai().level_graph().vertex_position(level_vertex_id);
 	float							offset = ai().level_graph().header().cell_size()*.5f - EPS;
 	if (partially_inside)
 		return						(
-			inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) || 
-			inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) ||
-			inside(Fvector().set(position.x - offset,position.y,position.z + offset),radius) || 
-			inside(Fvector().set(position.x - offset,position.y,position.z - offset),radius) ||
+			inside(construct_position(level_vertex_id,position.x + offset,position.z + offset),radius) || 
+			inside(construct_position(level_vertex_id,position.x + offset,position.z - offset),radius) ||
+			inside(construct_position(level_vertex_id,position.x - offset,position.z + offset),radius) || 
+			inside(construct_position(level_vertex_id,position.x - offset,position.z - offset),radius) ||
 			inside(Fvector().set(position.x,position.y,position.z),radius)
 		);
 	else
 		return						(
-			inside(Fvector().set(position.x + offset,position.y,position.z + offset),radius) && 
-			inside(Fvector().set(position.x + offset,position.y,position.z - offset),radius) && 
-			inside(Fvector().set(position.x - offset,position.y,position.z + offset),radius) && 
-			inside(Fvector().set(position.x - offset,position.y,position.z - offset),radius) &&
+			inside(construct_position(level_vertex_id,position.x + offset,position.z + offset),radius) && 
+			inside(construct_position(level_vertex_id,position.x + offset,position.z - offset),radius) && 
+			inside(construct_position(level_vertex_id,position.x - offset,position.z + offset),radius) && 
+			inside(construct_position(level_vertex_id,position.x - offset,position.z - offset),radius) &&
 			inside(Fvector().set(position.x,position.y,position.z),radius)
 		);
 }
