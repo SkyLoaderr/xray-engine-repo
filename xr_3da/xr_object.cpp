@@ -105,7 +105,8 @@ void CObject::Load				( CInifile* ini, const char *section )
 
 	// Visual
 	pVisualName					= strdup(ini->ReadSTRING(section,"visual"));
-
+	OnDeviceCreate				();
+	
 	// Collision model
 	cfModel						= NULL;
 	if (ini->LineExists(section,"cform")) {
@@ -120,7 +121,6 @@ void CObject::Load				( CInifile* ini, const char *section )
 		cfModel->OnMove();
 	}
 
-	OnDeviceCreate				();
 	bVisible					= true;
 }
 
