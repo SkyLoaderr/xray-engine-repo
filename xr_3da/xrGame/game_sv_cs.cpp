@@ -163,6 +163,7 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 		else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
 		ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 		Unlock();
+		signal_Syncronize();
 	}
 	return TRUE;
 }
@@ -202,6 +203,7 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 			OnRoundEnd("MISSION_complete");
 		}
 		Unlock();
+		signal_Syncronize();
 	}
 	return TRUE;
 }
