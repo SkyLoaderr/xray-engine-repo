@@ -103,10 +103,6 @@ void CAI_Zombie::Load(LPCSTR section)
 
 	// former constants
 	m_dwLostMemoryTime				= pSettings->ReadINT   (section,"LostMemoryTime");
-	m_dwLostRecoilTime				= pSettings->ReadINT   (section,"LostRecoilTime");
-	m_fUnderFireDistance			= pSettings->ReadFLOAT (section,"UnderFireDistance");
-	m_dwRetreatTime					= pSettings->ReadINT   (section,"RetreatTime");
-	m_fRetreatDistance				= pSettings->ReadFLOAT (section,"RetreatDistance");
 	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
 	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
 	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
@@ -115,8 +111,6 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
-
-	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
 

@@ -165,10 +165,6 @@ class CAI_Zombie : public CCustomMonster
 
 		// former constants
 		u32					m_dwLostMemoryTime;
-		u32					m_dwLostRecoilTime;
-		float				m_fUnderFireDistance;
-		u32					m_dwRetreatTime;
-		float				m_fRetreatDistance;
 		float				m_fAttackStraightDistance;
 		float				m_fStableDistance;
 		float				m_fWallMinTurnValue;
