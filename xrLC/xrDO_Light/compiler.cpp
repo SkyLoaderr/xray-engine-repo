@@ -127,7 +127,7 @@ void xrLoad(LPCSTR name)
 		for (DWORD l=0; l<Header.light_count; l++) 
 		{
 			b_light R = Header.lights[l];
-			if (R.flags & XRLIGHT_LMAPS) 
+			if (R.flags.bAffectStatic) 
 			{
 				R_Light	RL;
 				if (R.type==D3DLIGHT_DIRECTIONAL) {
