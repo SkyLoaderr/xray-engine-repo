@@ -98,9 +98,9 @@ void CStats::Show()
 		if (mem_count>fMem_calls)	fMem_calls	=	mem_count;
 		else						fMem_calls	=	.9f*fMem_calls + .1f*mem_count;
 	}
-
-	div_t ddd = div(Device.dwFrame,2000);
-	if( ddd.rem < 1000 ){
+	int frm = 2000;
+	div_t ddd = div(Device.dwFrame,frm);
+	if( ddd.rem < frm/2.0f ){
 		pFont->SetColor	(0xFFFFFFFF	);
 		pFont->OutSet	(0,0);
 		pFont->OutNext	(*eval_line_1);
@@ -109,6 +109,15 @@ void CStats::Show()
 		pFont->OnRender	();
 	}
 
+	if(g_bPause.get()  ){
+		u32 sz = pFont->GetSize();
+		pFont->SetSize(32);
+		pFont->SetColor	(0x80FF0000	);
+		pFont->OutSet	(Device.dwWidth/2.0-(pFont->SizeOf("Game paused")/2.0f),Device.dwHeight/2.0f);
+		pFont->OutNext	("Game paused");
+		pFont->OnRender	();
+		pFont->SetSize(sz);
+	}
 	// Show them
 	if (psDeviceFlags.test(rsStatistic))
 	{

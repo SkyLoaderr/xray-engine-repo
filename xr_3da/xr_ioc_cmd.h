@@ -273,3 +273,24 @@ public:
 		sprintf(I,"string with up to %d characters",size);
 	}
 };
+
+class CCC_Pause : public CCC_ToggleMask
+{
+public:
+	CCC_Pause(LPCSTR N, Flags32* V, u32 M) :CCC_ToggleMask(N,V,M){}
+	virtual void	Execute	(LPCSTR args)
+	{
+		CCC_ToggleMask::Execute(args);
+		if(GetValue()){
+			g_dwPause_TimeGlobal	+= Device.dwTimeGlobal;
+			g_fPause_TimeGlobal		+= Device.fTimeGlobal;
+		}else{
+			u64	qTime		= Device.GetTimerGlobal()->GetElapsed_clk();
+			float ftmp		= float(qTime)*CPU::cycles2seconds;
+			u32 utmp		= u32((qTime*u64(1000))/CPU::cycles_per_second);
+
+			g_fPause_TimeGlobal		=	ftmp-Device.fTimeGlobal;
+			g_dwPause_TimeGlobal	=	utmp-Device.dwTimeGlobal;
+		}
+	}
+};

@@ -128,6 +128,10 @@ public:
 
 extern		ENGINE_API		CRenderDevice		Device;
 extern		ENGINE_API		bool				g_bBenchmark;
+extern		ENGINE_API		Flags32				g_bPause;
+extern		ENGINE_API		float				g_fPause_TimeGlobal;
+extern		ENGINE_API		float				g_dwPause_TimeGlobal;
+
 
 #include	"R_Backend_Runtime.h"
 

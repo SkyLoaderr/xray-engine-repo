@@ -40,6 +40,9 @@ static		HWND			logoWindow		= NULL;
 
 int				doLauncher					();
 ENGINE_API	bool			g_bBenchmark	= false;
+ENGINE_API	Flags32			g_bPause;
+ENGINE_API		float		g_fPause_TimeGlobal		=0.0f;
+ENGINE_API		float		g_dwPause_TimeGlobal	=0;
 
 // -------------------------------------------
 // startup point

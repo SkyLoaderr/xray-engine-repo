@@ -121,7 +121,7 @@ void __cdecl	mt_Thread	(void *ptr)	{
 		}
 		// we has granted permission to execute
 		mt_Thread_marker			= Device.dwFrame;
-		Device.seqFrameMT.Process	(rp_Frame);
+			Device.seqFrameMT.Process	(rp_Frame);
 
 		// now we give control to device - signals that we are ended our work
 		LeaveCriticalSection	(&Device.mt_csEnter);
@@ -143,7 +143,7 @@ void CRenderDevice::Run			()
 {
     MSG         msg;
     BOOL		bGotMsg;
-
+	g_bPause.set(1,FALSE);
 	Log				("Starting engine...");
 	SetThreadName	("X-RAY Primary thread");
 
@@ -181,7 +181,7 @@ void CRenderDevice::Run			()
         else
         {
 			if (bReady) {
-				FrameMove					( );
+					FrameMove					( );
 
 				// Precache
 				if (dwPrecacheFrame)
@@ -255,16 +255,22 @@ void CRenderDevice::FrameMove()
 		dwTimeDelta		=	20;
 		dwTimeGlobal	+=	20;
 	} else {
+		if(g_bPause.get()){
+			dwTimeDelta		=	0;
+			fTimeDelta		=	0.0f;
+			dwTimeGlobal	=	g_dwPause_TimeGlobal;
+			fTimeGlobal		=	g_fPause_TimeGlobal;
+		}else{
 		// Timer
 		float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
 		fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;			// smooth random system activity - worst case ~7% error
 		if (fTimeDelta>.06666f) fTimeDelta=.06666f;							// limit to 15fps minimum
 
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
-		fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
-
-		dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
+		fTimeGlobal		= float(qTime)*CPU::cycles2seconds - g_fPause_TimeGlobal;
+		dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second) - g_dwPause_TimeGlobal;
 		dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+		}
 	}
 
 	// Frame move
