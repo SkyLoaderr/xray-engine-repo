@@ -304,30 +304,87 @@ path_look = agr_mil_night_walk2_look
 ;path_walk = hlam_walk
 ;path_look = hlam_look
 
+
 ;охранники
 [zoneguard1@esc_lager]
 path_walk  = guard_walk1
 zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone
 team       = guards
+snd_greet  = threat_back
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard1@esc_lager_friend
+
+[zoneguard1@esc_lager_friend]
+path_walk  = guard_walk1
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
+
+[walker1@esc_lager]
+path_walk  = guard_walk1
+
 
 [zoneguard2@esc_lager]
 path_walk  = guard_walk2
 zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone
 team       = guards
+snd_greet  = threat_back
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard2@esc_lager_friend
+
+[zoneguard2@esc_lager_friend]
+path_walk  = guard_walk2
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
+
+[walker2@esc_lager]
+path_walk  = guard_walk2
+
 
 [zoneguard3@esc_lager]
 path_walk  = guard_walk3
 zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone
 team       = guards
+snd_greet  = threat_back
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard3@esc_lager_friend
+
+[zoneguard3@esc_lager_friend]
+path_walk  = guard_walk3
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker3@esc_lager
+
+[walker3@esc_lager]
+path_walk  = guard_walk3
+
 
 [zoneguard4@esc_lager]
 path_walk  = guard_walk4
 zone_guard = guard_kill_zone
 zone_warn  = guard_warn_zone
 team       = guards
+snd_greet  = threat_back
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard4@esc_lager_friend
+
+[zoneguard4@esc_lager_friend]
+path_walk  = guard_walk4
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker4@esc_lager
+
+[walker4@esc_lager]
+path_walk  = guard_walk4
+
 
 ; сидящие днём у костра
 [kamp1@esc_lager]
