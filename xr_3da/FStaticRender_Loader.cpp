@@ -42,7 +42,7 @@ void CRender::level_Load()
 	Details.Load		();
 
 	// Streams
-	vsPatches			= Device.Streams.Create(FVF::F_TL,max_patches*4);
+	vsPatches			= Device.Shader._CreateVS	(FVF::F_TL);
 	
 	// HOM
 	HOM.Load			();
@@ -53,35 +53,35 @@ void CRender::level_Load()
 
 void CRender::level_Unload()
 {
-	if (0==pCreator)	return;
+	if (0==pCreator)		return;
 
 	DWORD I;
 
 	// HOM
-	HOM.Unload			();
+	HOM.Unload				();
 
 	//*** Streams
-	vsPatches			= 0;
+	Device.Shader._DeleteVS	(vsPatches);
 
 	//*** Details
-	Details.Unload		();
+	Details.Unload			();
 
 	//*** Sectors
 	// 1.
-	_DELETE				(rmPortals);
-	pLastSector			= 0;
-	vLastCameraPos.set	(0,0,0);
+	_DELETE					(rmPortals);
+	pLastSector				= 0;
+	vLastCameraPos.set		(0,0,0);
 	// 2.
 	for (I=0; I<Sectors.size(); I++)
 		_DELETE(Sectors[I]);
-	Sectors.clear		();
+	Sectors.clear			();
 	// 3.
-	Portals.clear		();
+	Portals.clear			();
 
 	//*** Lights
-	Glows.Unload		();
-	L_DB.Unload			();
-	L_Dynamic.Destroy	();
+	Glows.Unload			();
+	L_DB.Unload				();
+	L_Dynamic.Destroy		();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -89,14 +89,14 @@ void CRender::level_Unload()
 		Visuals[I]->Release();
 		_DELETE(Visuals[I]);
 	}
-	Visuals.clear		();
+	Visuals.clear			();
 
 	//*** VB/IB
-	for (I=0; I<VB.size(); I++)	VB[I]->Release	();
-	for (I=0; I<IB.size(); I++)	IB[I]->Release	();
-	FVF.clear			();
-	VB.clear			();
-	IB.clear			();
+	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
+	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
+	FVF.clear				();
+	VB.clear				();
+	IB.clear				();
 }
 
 void CRender::LoadBuffers	(CStream *base_fs)

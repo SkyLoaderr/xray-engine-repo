@@ -45,7 +45,7 @@ public:
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 	vector<CVisual*>								lstVisuals;
 
-	CVertexStream*									vsPatches;
+	CVS*											vsPatches;
 
 	// Sector detection and visibility
 	CSector*										pLastSector;
