@@ -283,6 +283,22 @@ int	 CAI_Stalker::ifFindHurtIndex(CEntity *tpEntity)
 	return(-1);
 }
 
+void CAI_Stalker::vfAddHurt(const SHurt &tHurt)
+{
+	if (m_tpaHurts.size() >= MAX_HURT_COUNT)
+		m_tpaHurts.erase(m_tpaHurts.begin());
+	m_tpaHurts.push_back(tHurt);
+}
+
+void CAI_Stalker::vfUpdateHurt(const SHurt &tHurt)
+{
+	int iIndex = ifFindHurtIndex(tHurt.tpEntity);
+	if (iIndex != -1)
+		m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
+	else
+		vfAddHurt(tHurt);
+}
+
 bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
 {
 	for (int i=0; i<(int)tpStalker->m_tpaDynamicObjects.size(); i++) {
@@ -389,8 +405,45 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	
 	power *= 1;//ffGetStartVolume(ESoundTypes(eType));
 	
-	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		power = 1.f;
+		// if enemy made a shot to us, add a fictitious hurt
+		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+		if (tpEntity) {
+			bool bFound = false;
+			objVisible	&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+			for (int i=0, n=VisibleEnemies.size(); i<n; i++)
+				if (VisibleEnemies[i].key == tpEntity) {
+					bFound = true;
+					break;
+				}
+			if (bFound) {
+				bFound = false;
+				float yaw1, pitch1;
+				CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+				if (tpCustomMonster) {
+					yaw1		= -tpCustomMonster->r_current.yaw;
+					pitch1		= -tpCustomMonster->r_current.pitch;
+					bFound		= true;
+				}
+				else {
+					CActor		*tpActor = dynamic_cast<CActor *>(tpEntity);
+					if (tpActor) {
+						yaw1	= tpActor->Orientation().yaw;
+						pitch1	= tpActor->Orientation().pitch;
+						bFound	= true;
+					}
+				}
+				if (bFound && bfCheckIfCanKillTarget(tpEntity,vPosition,yaw1,pitch1)) {
+					SHurt tHurt;
+					tHurt.tpEntity = tpEntity;
+					tHurt.dwTime = Level().timeServer();
+					Msg("! Adding fictitious hurt");
+					vfUpdateHurt(tHurt);
+				}
+			}
+		}
+	}
 	
 	u32 dwTime = m_dwCurrentUpdate;
 

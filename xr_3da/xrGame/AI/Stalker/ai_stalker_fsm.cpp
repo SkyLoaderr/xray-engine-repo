@@ -85,7 +85,7 @@ void CAI_Stalker::BackCover(bool bFire)
 			eStateTypeDanger,
 			eLookTypeFirePoint,
 			tPoint);
-		if (!m_tEnemy.Enemy && getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw,PI_DIV_6) && bfCheckIfCanKillTarget(vPosition,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
+		if (!m_tEnemy.Enemy && getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw,PI_DIV_6) && bfCheckIfCanKillTarget(this,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
 			Camp(bFire);
 			return;
 		}

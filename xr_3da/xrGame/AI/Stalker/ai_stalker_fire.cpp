@@ -34,11 +34,9 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	L				= V->LL_BoneID("bip01_l_finger1");
 }
 
-bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle) 
+bool CAI_Stalker::bfCheckIfCanKillTarget(CEntity *tpEntity, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle) 
 {
-	if (!m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->GetAmmoElapsed())
-		return(false);
-
+	Fvector fire_pos = tpEntity->Position();
 	fire_pos.sub(target_pos,fire_pos);
 	float yaw1,pitch1;
 	fire_pos.getHP(yaw1,pitch1);
@@ -46,12 +44,20 @@ bool CAI_Stalker::bfCheckIfCanKillTarget(Fvector fire_pos, Fvector target_pos, f
 	pitch1 = angle_normalize_signed(pitch1);
 	yaw2 = angle_normalize_signed(yaw2);
 	pitch2 = angle_normalize_signed(pitch2);
-	return(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle));
+	
+	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(tpEntity);
+	if (tpInventoryOwner) {
+		if (!tpInventoryOwner->m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem())->GetAmmoElapsed())
+			return(false);
+		return(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle));
+	}
+	else
+		return((tpEntity->Position().distance_to(target_pos) < 2.f) && getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_2));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillEnemy()
 {
-	return(m_tEnemy.Enemy && m_tEnemy.Enemy->g_Alive() && m_tEnemy.bVisible && bfCheckIfCanKillTarget(vPosition,m_tEnemy.Enemy->Position(),-r_current.yaw,-r_current.pitch));
+	return(m_tEnemy.Enemy && m_tEnemy.Enemy->g_Alive() && m_tEnemy.bVisible && bfCheckIfCanKillTarget(this,m_tEnemy.Enemy->Position(),-r_current.yaw,-r_current.pitch));
 }
 
 bool CAI_Stalker::bfCheckIfCanKillMember()
@@ -61,7 +67,7 @@ bool CAI_Stalker::bfCheckIfCanKillMember()
 	for (int i=0, iTeam = (int)g_Team(); i<(int)m_tpaVisibleObjects.size(); i++) {
 		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(m_tpaVisibleObjects[i]);
 		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
-			if (CustomMonster->g_Alive() && bfCheckIfCanKillTarget(vPosition,CustomMonster->Position(),-r_current.yaw,-r_current.pitch)) {
+			if (CustomMonster->g_Alive() && bfCheckIfCanKillTarget(this,CustomMonster->Position(),-r_current.yaw,-r_current.pitch)) {
 				bCanKillMember = true;
 				break;
 			}
@@ -81,9 +87,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	SHurt	tHurt;
 	tHurt.dwTime	= Level().timeServer();
 	if (tHurt.tpEntity	= dynamic_cast<CEntity*>(who)) {
-		if (m_tpaHurts.size() >= MAX_HURT_COUNT)
-			m_tpaHurts.erase(m_tpaHurts.begin());
-		m_tpaHurts.push_back(tHurt);
+		int iIndex = ifFindHurtIndex(tHurt.tpEntity);
+		if (iIndex == -1)
+			vfAddHurt(tHurt);
+		else
+			m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
 	}
 	
 	// Play hit-sound
