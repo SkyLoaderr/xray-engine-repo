@@ -5,7 +5,7 @@
 ------------------------------------------------------------------------------------------
 class "evaluator_enable" (property_evaluator) 
 ------------
-function evaluator_enable:__init (name, storage) super ()
+function evaluator_enable:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
@@ -18,7 +18,7 @@ end
 ------------------------------------------------------------------------------------------
 class "evaluator_wound" (property_evaluator) 
 ------------
-function evaluator_wound:__init (name, storage) super ()
+function evaluator_wound:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
@@ -44,7 +44,7 @@ end
 ------------------------------------------------------------------------------------------
 class "evaluator_sit" (property_evaluator) 
 ------------
-function evaluator_sit:__init (name, storage) super ()
+function evaluator_sit:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
@@ -56,7 +56,7 @@ end
 ------------------------------------------------------------------------------------------
 class "evaluator_final" (property_evaluator) 
 ------------
-function evaluator_final:__init (name, storage) super ()
+function evaluator_final:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
@@ -71,7 +71,7 @@ end
 ------------------------------------------------------------------------------------------
 class "evaluator_cover" (property_evaluator) 
 ------------
-function evaluator_cover:__init (name, storage) super ()
+function evaluator_cover:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
@@ -84,7 +84,7 @@ end
 ------------------------------------------------------------------------------------------
 class "evaluator_friend" (property_evaluator) 
 ------------
-function evaluator_friend:__init (name, storage) super ()
+function evaluator_friend:__init (name, storage) super (nil, name)
     self.a = storage
 end
 ------------
