@@ -1,10 +1,13 @@
 #include "stdafx.h"
+#include "game_sv_single.h"
 
 void xrServer::SLS_Default	()
 {
 	// Spawn all other objects
+//	if (game->type == GAME_SINGLE)
+//		return;
 	FILE_NAME			fn_spawn;
-	if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
+	if (Engine.FS.Exist(fn_spawn, ::Path.Current, "level.spawn"))
 	{
 		CStream*		SP	= Engine.FS.Open(fn_spawn);
 		NET_Packet		P;

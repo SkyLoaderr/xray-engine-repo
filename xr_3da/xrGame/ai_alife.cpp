@@ -55,9 +55,15 @@ void CAI_ALife::Load()
 	if (!Level().AI.m_tpaGraph)
 		return;
 
-	//m_tpServerEntitites
+	vfInitTerrain				();
+	CStream						*tpStream;
+	FILE_NAME					caFileName;
+	R_ASSERT					(Engine.FS.Exist(caFileName, ::Path.GameData, "game.spawn"));
+	tpStream					= Engine.FS.Open(caFileName);
+//	CALifeSpawnRegistry::Load	(*tpStream);
+	Engine.FS.Close				(tpStream);
 	return;
-//
+
 //	vfInitTerrain();
 //
 //	CStream						*tpStream;
@@ -146,46 +152,46 @@ void CAI_ALife::vfUpdateDynamicData()
 
 void CAI_ALife::vfCreateNewDynamicObject(SPAWN_P_IT I, bool bUpdateDynamicData)
 {
-	CALifeDynamicObject	*tpALifeDynamicObject = 0;
-	if (pSettings->LineExists((*I)->m_caModel, "scheduled") && pSettings->ReadBOOL((*I)->m_caModel, "scheduled")) {
-		if (pSettings->LineExists((*I)->m_caModel, "human") && pSettings->ReadBOOL((*I)->m_caModel, "human")) {
-			CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
-			VERIFY(tpALifeCreatureSpawnPoint);
-			if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
-				tpALifeDynamicObject	= xr_new<CALifeHumanGroup>();
-			else
-				if (pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "trader") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "trader"))
-					tpALifeDynamicObject	= xr_new<CALifeTrader>();
-				else
-					tpALifeDynamicObject	= xr_new<CALifeHuman>();
-		}
-		else
-			if (pSettings->LineExists((*I)->m_caModel, "monster") && pSettings->ReadBOOL((*I)->m_caModel, "monster")) {
-				CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
-				VERIFY(tpALifeCreatureSpawnPoint);
-				if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
-					tpALifeDynamicObject	= xr_new<CALifeMonsterGroup>();
-				else
-					tpALifeDynamicObject	= xr_new<CALifeMonster>();
-			}
-			else
-				if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-					tpALifeDynamicObject	= xr_new<CALifeDynamicAnomalousZone>();
-				else {
-					Msg("!Unspecified ALife monster type!");
-					R_ASSERT(false);
-				}
-	}
-	else
-		if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-			tpALifeDynamicObject			= xr_new<CALifeAnomalousZone>();
-		else
-			tpALifeDynamicObject			= xr_new<CALifeItem>();
-
-	tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
-	CALifeObjectRegistry::Add			(tpALifeDynamicObject);
-	if (bUpdateDynamicData)
-		vfUpdateDynamicData				(tpALifeDynamicObject);
+//	CALifeDynamicObject	*tpALifeDynamicObject = 0;
+//	if (pSettings->LineExists((*I)->m_caModel, "scheduled") && pSettings->ReadBOOL((*I)->m_caModel, "scheduled")) {
+//		if (pSettings->LineExists((*I)->m_caModel, "human") && pSettings->ReadBOOL((*I)->m_caModel, "human")) {
+//			CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
+//			VERIFY(tpALifeCreatureSpawnPoint);
+//			if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
+//				tpALifeDynamicObject	= xr_new<CALifeHumanGroup>();
+//			else
+//				if (pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "trader") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "trader"))
+//					tpALifeDynamicObject	= xr_new<CALifeTrader>();
+//				else
+//					tpALifeDynamicObject	= xr_new<CALifeHuman>();
+//		}
+//		else
+//			if (pSettings->LineExists((*I)->m_caModel, "monster") && pSettings->ReadBOOL((*I)->m_caModel, "monster")) {
+//				CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
+//				VERIFY(tpALifeCreatureSpawnPoint);
+//				if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
+//					tpALifeDynamicObject	= xr_new<CALifeMonsterGroup>();
+//				else
+//					tpALifeDynamicObject	= xr_new<CALifeMonster>();
+//			}
+//			else
+//				if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
+//					tpALifeDynamicObject	= xr_new<CALifeDynamicAnomalousZone>();
+//				else {
+//					Msg("!Unspecified ALife monster type!");
+//					R_ASSERT(false);
+//				}
+//	}
+//	else
+//		if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
+//			tpALifeDynamicObject			= xr_new<CALifeAnomalousZone>();
+//		else
+//			tpALifeDynamicObject			= xr_new<CALifeItem>();
+//
+//	tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
+//	CALifeObjectRegistry::Add			(tpALifeDynamicObject);
+//	if (bUpdateDynamicData)
+//		vfUpdateDynamicData				(tpALifeDynamicObject);
 }
 
 void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
@@ -197,7 +203,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 		if (tpALifeItem && !tpALifeItem->m_bAttached) {
 			CALifeTask					*tpTask = xr_new<CALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
-			tpTask->m_tLocationID		= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
+			tpTask->m_tLocationID		= _LOCATION_ID(Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType);
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
@@ -243,4 +249,11 @@ void CAI_ALife::vfBallanceCreatures()
 
 void CAI_ALife::vfUpdateCreatures()
 {
+}
+
+void CAI_ALife::Spawn()
+{
+	FILE_NAME	fn_spawn;
+	R_ASSERT(Engine.FS.Exist(fn_spawn, ::Path.GameData, "game.spawn"));
+	CVirtualFileStream	F(fn_spawn);
 }

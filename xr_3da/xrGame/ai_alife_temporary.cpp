@@ -264,17 +264,17 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 	for (int i=0, m=0; i<(int)Level().AI.GraphHeader().dwVertexCount; i++)
 		if (!tpaGraph[i].tVertexType) {
 			m = (m + 1) & 0xff;
-			tpaGraph[i].tVertexType = (u32)m;
+			tpaGraph[i].tVertexType = (u16)m;
 			int			wCount = tpaGraph[i].tNeighbourCount;
 			SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[i].dwEdgeOffset);
 			for (int j=0; j<(int)wCount; j++)
 				if (!tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType) {
-					tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType = m;
+					tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType = (u16)m;
 					int			wCount1 = tpaGraph[tpaEdges[j].dwVertexNumber].tNeighbourCount;
 					SGraphEdge	*tpaEdges1 = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tpaEdges[j].dwVertexNumber].dwEdgeOffset);
 					for (int k=0; k<wCount1; k++)
 						if (!tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType)
-							tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType = m;
+							tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType = (u16)m;
 				}
 		}
 	tpaGraph = (SGraphVertex *)((BYTE *)tpaGraph - sizeof(SGraphHeader));
@@ -307,8 +307,9 @@ void CAI_ALife::Generate()
 //		vfCreateNewDynamicObject(k);
 //		I = m;	
 //	}
-	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
-	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
+
+//	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
+//	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
 
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tGameTime					= u64(Level().timeServer());

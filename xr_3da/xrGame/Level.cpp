@@ -147,7 +147,7 @@ void CLevel::OnFrame	()
 
 	CGameFont* F = ((CHUDManager*)Level().HUD())->pFontDI;
 	// If server - perform server-update
-	if (Server && CurrentEntity())
+	if (Server)
 	{
 		Device.Statistic.netServer.Begin();
 		Server->Update					();

@@ -241,44 +241,6 @@ public:
 	};
 };
 
-class CALifeSpawnRegistry : public CALifeSpawnHeader {
-public:
-	typedef CALifeSpawnHeader inherited;
-	
-	SPAWN_P_VECTOR					m_tpSpawnPoints;
-	
-	virtual							~CALifeSpawnRegistry()
-	{
-		free_vector					(m_tpSpawnPoints);
-	};
-	
-	virtual void					Load(CStream	&tFileStream)
-	{
-		inherited::Load				(tFileStream);
-		R_ASSERT					(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
-		m_tpSpawnPoints.resize		(tFileStream.Rdword());
-		SPAWN_P_IT					I = m_tpSpawnPoints.begin();
-		SPAWN_P_IT					E = m_tpSpawnPoints.end();
-		for ( ; I != E; I++) {
-			switch (tFileStream.Rbyte()) {
-				case SPAWN_POINT_CREATURE_ID : {
-					*I				= xr_new<CALifeCreatureSpawnPoint>();
-					break;
-				}
-				case SPAWN_POINT_ZONE_ID : {
-					*I				= xr_new<CALifeZoneSpawnPoint>();
-					break;
-				}
-				case SPAWN_POINT_OBJECT_ID : {
-					*I				= xr_new<CALifeObjectSpawnPoint>();
-					break;
-				}
-			}
-			(*I)->Load				(tFileStream);
-		}
-	};
-};
-
 class CALifeGraphRegistry {
 public:
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
@@ -428,4 +390,44 @@ public:
 		if (tpALifeMonsterAbstract)
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
+};
+
+class CALifeSpawnRegistry : public CALifeSpawnHeader {
+public:
+	typedef CALifeSpawnHeader inherited;
+	
+	SERVER_ENTITY_P_VECTOR			m_tpServerEntitites;
+	
+	virtual							~CALifeSpawnRegistry()
+	{
+		free_vector					(m_tpServerEntitites);
+	};
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		inherited::Load				(tFileStream);
+		R_ASSERT					(tFileStream.FindChunk(SPAWN_POINT_CHUNK_DATA));
+		m_tpServerEntitites.resize	(m_dwSpawnCount);
+		SERVER_ENTITY_P_IT			I = m_tpServerEntitites.begin();
+		SERVER_ENTITY_P_IT			E = m_tpServerEntitites.end();
+		NET_Packet					P;
+		CStream						*S = 0;
+		for (int id=0; I != E; I++) {
+			R_ASSERT(0!=(S = tFileStream.OpenChunk(id)));
+			P.B.count			= S->Length();
+			S->Read				(P.B.data,P.B.count);
+			S->Close			();
+			u16					ID;
+			P.r_begin			(ID);
+			R_ASSERT			(M_SPAWN==ID);
+			string64			s_name;
+			P.r_string			(s_name);
+			xrServerEntity		*E = F_entity_Create(s_name);
+			R_ASSERT2(E,"Can't create entity.");
+			E->Spawn_Read		(P);
+			R_ASSERT(E->s_gameid == GAME_SINGLE);
+			*I					= E;
+			id++;
+		}
+	};
 };

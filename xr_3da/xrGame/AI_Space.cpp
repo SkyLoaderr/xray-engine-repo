@@ -195,12 +195,12 @@ void CAI_Space::Render()
 				OBJECT_PAIR_IT	I = tpGame->m_tALife.m_tObjectRegistry.begin();
 				OBJECT_PAIR_IT	E = tpGame->m_tALife.m_tObjectRegistry.end();
 				for ( ; I != E; I++) {
-					{
-						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
-						t1.y += .6f;
-						NORMALIZE_VECTOR(t1);
-						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
-					}
+//					{
+//						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
+//						t1.y += .6f;
+//						NORMALIZE_VECTOR(t1);
+//						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+//					}
 					{
 						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
 						if (tpALifeMonsterAbstract) {

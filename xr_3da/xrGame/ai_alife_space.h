@@ -13,10 +13,6 @@
 
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
 
-#define SPAWN_POINT_CREATURE_ID		0x0000
-#define SPAWN_POINT_OBJECT_ID		0x0001
-#define SPAWN_POINT_ZONE_ID			0x0002
-
 // ALife objects, events and tasks
 #define ALIFE_VERSION				0x0001
 

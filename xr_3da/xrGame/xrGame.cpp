@@ -348,23 +348,23 @@ class CCC_ALifeSpawnInfo : public CConsoleCommand {
 public:
 	CCC_ALifeSpawnInfo(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				u32 id1 = u32(-1);
-				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tpSpawnPoints.size())
-					Msg("Invalid task ID! (%d)",id1);
-				else {
-					ALife::_SPAWN_ID id = ALife::_SPAWN_ID(id1);
-					tpGame->m_tALife.vfSpawnPointInfo(id);
-				}
-			}
-			else
-				Log("!ALife parameters are not loaded!");
-		}
-		else
-			Log("!Not a single player game!");
+//		if (Level().game.type == GAME_SINGLE) {
+//			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+//			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+//				u32 id1 = u32(-1);
+//				sscanf(args ,"%d",&id1);
+//				if (id1 >= tpGame->m_tALife.m_tpSpawnPoints.size())
+//					Msg("Invalid task ID! (%d)",id1);
+//				else {
+//					ALife::_SPAWN_ID id = ALife::_SPAWN_ID(id1);
+//					tpGame->m_tALife.vfSpawnPointInfo(id);
+//				}
+//			}
+//			else
+//				Log("!ALife parameters are not loaded!");
+//		}
+//		else
+//			Log("!Not a single player game!");
 	}
 };
 
