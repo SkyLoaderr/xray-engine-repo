@@ -19,7 +19,14 @@ public:
 	
 	// User-data
 	BOOL							bUser;
-	
+
+	// Description
+	IDirect3DBaseTexture8*			desc_cache;
+	D3DSURFACE_DESC					desc;
+	IC BOOL							desc_valid	()	{ return pSurface==desc_cache; } 
+	IC void							desc_enshure()	{ if (!desc_valid()) desc_update(); }
+	void							desc_update	();
+
 public:
 	void							Load		(LPCSTR Name);
 	void							Unload		(void);
@@ -30,6 +37,10 @@ public:
 	IDirect3DBaseTexture8*			surface_get ();
 
 	IC BOOL							isUser		()	{return bUser;};
+
+	IC u32							get_Width	()	{ desc_enshure(); return desc.Width;	}
+	IC u32							get_Height	()	{ desc_enshure(); return desc.Height;	}
+	IC u32							get_Depth	()	{ return 1;								}
 
 	CTexture						();
 	virtual ~CTexture				();

@@ -171,6 +171,10 @@ public:
 	{
 		set_Element			(S->lod0,pass);
 	}
+	IC	CTexture*	get_ActiveTexture	(u32 stage)	
+	{
+		return cache.surfaces[stage];
+	}
 };
 
 #endif // !defined(AFX_TEXTUREMANAGER_H__0E25CF4B_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_)

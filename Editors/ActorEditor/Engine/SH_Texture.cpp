@@ -20,6 +20,7 @@ CTexture::CTexture		()
 	pSurface			= NULL;
 	pAVI				= NULL;
 	dwMemoryUsage		= 0;
+	desc_cache			= 0;
 }
 
 CTexture::~CTexture() 
@@ -72,6 +73,7 @@ void CTexture::Apply	(DWORD dwStage)
 
 void CTexture::Load(LPCSTR cName)
 {
+	desc_cache						= 0;
 	if (pSurface)					return;
 	Device.Shader.Evict				();
 
@@ -229,4 +231,14 @@ void CTexture::Unload()
 	}
 	_RELEASE	(pSurface);
 	_DELETE		(pAVI);
+}
+
+void CTexture::desc_update()
+{
+	desc_cache	= pSurface;
+	if (D3DRTYPE_TEXTURE == pTexture->GetType())
+	{
+		IDirect3DTexture8*	T	= (IDirect3DTexture8*)pTexture;
+		R_CHK					(T->GetLevelDesc(0,&desc));
+	}
 }
