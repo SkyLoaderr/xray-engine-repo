@@ -275,7 +275,11 @@ void CTorch::UpdateCL	()
 			{
 				light_render->set_position	(M.c);
 				glow_render->set_position	(M.c);
-				light_render->set_rotation	(actor->cam_FirstEye()->vDirection,
+				Fvector dir = actor->cam_FirstEye()->vDirection;
+				Fmatrix rY;
+				rY.rotateY(PI_DIV_8);
+				rY.transform_dir(dir);
+				light_render->set_rotation	(dir,
 											actor->cam_FirstEye()->vNormal);
 				glow_render->set_direction	(actor->cam_FirstEye()->vDirection);
 
