@@ -451,7 +451,7 @@ function add_to_binder (object, char_ini)
     local operators     = {}
     local properties    = {}
     
-    xr_motivator.storage[object:id()].wounded.on_medikit = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object))
+    xr_motivator.storage[object:id()].wounded.on_medikit = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object)
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
