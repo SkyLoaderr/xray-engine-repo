@@ -86,7 +86,9 @@ function main()
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, script_01.script_name())
+			stalker2:script	(false, script_01.script_name())
 			stalker1:script	(true,  script_01.script_name())
+			stalker2:script	(true,  script_01.script_name())
 			action(
 				stalker1,
 				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
