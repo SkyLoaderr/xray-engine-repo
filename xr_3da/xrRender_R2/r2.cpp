@@ -199,7 +199,6 @@ void					CRender::rmNormal			()
 CRender::CRender()
 {
 	b_mrt				= TRUE;
-	b_nv3x				= (strstr(Core.Params,"-nv3x"))?TRUE:FALSE;
 	b_HW_smap			= (strstr(Core.Params,"-hw_smap"))?TRUE:FALSE;
 	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
 	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;

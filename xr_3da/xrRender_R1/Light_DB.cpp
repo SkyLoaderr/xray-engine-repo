@@ -140,8 +140,7 @@ void			CLight_DB::add_light		(light* L)
 	if (L->flags.bShadow)			{
 		switch (L->flags.type)	{
 			case IRender_Light::POINT:
-				if (RImplementation.b_nv3x)	package.v_point.push_back	(L);
-				else						package.v_point_s.push_back	(L);
+				package.v_point_s.push_back			(L);
 				break;
 			case IRender_Light::SPOT:
 				package.v_spot_s.push_back			(L);

@@ -10,59 +10,28 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
 
-	if (RImplementation.b_nv3x)
+	switch (C.iElement)
 	{
-		// two positions, depth as texture
-		switch (C.iElement)
-		{
-		case 0:		// near pass
-			C.r_Pass			("null",		"accum_direct_1",FALSE,TRUE,FALSE,FALSE);
-			C.RS.SetRS			(D3DRS_ZFUNC,	D3DCMP_GREATEREQUAL);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_clf		("s_smap",		r2_RT_smap_d_depth);
-			C.r_End				();
-			break;
-		case 1:		// far pass
-			C.r_Pass			("null",		"accum_direct_2",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_clf		("s_fade",		r2_ds2_fade);
-			C.r_Sampler_clf		("s_smap",		r2_RT_smap_d_depth);
-			C.r_End				();
-			break;
-		case 2:		// lighting pass
-			C.r_Pass			("null",		"accum_direct_L",FALSE,FALSE,FALSE,TRUE,	D3DBLEND_DESTCOLOR,	D3DBLEND_ZERO);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_rtf		("s_normal",	r2_RT_N);
-			C.r_Sampler_clf		("s_material",	r2_material);
-			C.r_End				();
-			break;
-		}
-	}
-	else
-	{
-		switch (C.iElement)
-		{
-		case 0:		// near pass
-			C.r_Pass			("null",		"accum_direct_1",FALSE,TRUE,FALSE,FALSE);
-			C.RS.SetRS			(D3DRS_ZFUNC,	D3DCMP_GREATEREQUAL);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_rtf		("s_smap",		r2_RT_smap_d_surf);
-			C.r_End				();
-			break;
-		case 1:		// far pass
-			C.r_Pass			("null",		"accum_direct_2",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_rtf		("s_smap",		r2_RT_smap_d_surf);
-			C.r_Sampler_clf		("s_fade",		r2_ds2_fade);
-			C.r_End				();
-			break;
-		case 2:		// lighting pass
-			C.r_Pass			("null",		"accum_direct_L",FALSE,FALSE,FALSE,TRUE,	D3DBLEND_DESTCOLOR,		D3DBLEND_ZERO);
-			C.r_Sampler_rtf		("s_position",	r2_RT_P);
-			C.r_Sampler_rtf		("s_normal",	r2_RT_N);
-			C.r_Sampler_clf		("s_material",	r2_material);
-			C.r_End				();
-			break;
-		}
+	case 0:		// near pass
+		C.r_Pass			("null",		"accum_direct_1",FALSE,TRUE,FALSE,FALSE);
+		C.RS.SetRS			(D3DRS_ZFUNC,	D3DCMP_GREATEREQUAL);
+		C.r_Sampler_rtf		("s_position",	r2_RT_P);
+		C.r_Sampler_rtf		("s_smap",		r2_RT_smap_d_surf);
+		C.r_End				();
+		break;
+	case 1:		// far pass
+		C.r_Pass			("null",		"accum_direct_2",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r_Sampler_rtf		("s_position",	r2_RT_P);
+		C.r_Sampler_rtf		("s_smap",		r2_RT_smap_d_surf);
+		C.r_Sampler_clf		("s_fade",		r2_ds2_fade);
+		C.r_End				();
+		break;
+	case 2:		// lighting pass
+		C.r_Pass			("null",		"accum_direct_L",FALSE,FALSE,FALSE,TRUE,	D3DBLEND_DESTCOLOR,		D3DBLEND_ZERO);
+		C.r_Sampler_rtf		("s_position",	r2_RT_P);
+		C.r_Sampler_rtf		("s_normal",	r2_RT_N);
+		C.r_Sampler_clf		("s_material",	r2_material);
+		C.r_End				();
+		break;
 	}
 }

@@ -16,22 +16,10 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	VERIFY									(_1);
 	dwWidth									= _1->dwWidth;
 	dwHeight								= _1->dwHeight;
-
-	if (RImplementation.b_nv3x)
-	{
-		VERIFY								(!_2);
-		VERIFY								(!_3);
-
-		// Use only one RT + ZB
-		RCache.set_RT						(_1->pRT,	0);
-		RCache.set_ZB						(zb);
-	} else {
-		if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(NULL,0);
-		if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
-		if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(NULL,2);
-		RCache.set_ZB						(zb);
-	}
-
+	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(NULL,0);
+	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
+	if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(NULL,2);
+	RCache.set_ZB							(zb);
 	RImplementation.rmNormal				();
 }
 
@@ -40,25 +28,11 @@ void	CRenderTarget::u_setrt			(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSur
 	VERIFY									(_1);
 	dwWidth									= W;
 	dwHeight								= H;
-
-	if (RImplementation.b_nv3x)
-	{
-		VERIFY								(_1);
-		VERIFY								(0==_2);
-		VERIFY								(0==_3);
-
-		// Use only one RT + ZB
-		RCache.set_RT						(_1,	0);
-		RCache.set_ZB						(zb);
-	} else {
-		VERIFY								(_1);
-
-		RCache.set_RT						(_1,	0);
-		RCache.set_RT						(_2,	1);
-		RCache.set_RT						(_3,	2);
-		RCache.set_ZB						(zb);
-	}
-
+	VERIFY									(_1);
+	RCache.set_RT							(_1,	0);
+	RCache.set_RT							(_2,	1);
+	RCache.set_RT							(_3,	2);
+	RCache.set_ZB							(zb);
 	RImplementation.rmNormal				();
 }
 
@@ -161,19 +135,11 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// DECOMPRESSION
 	g_decompress.create				(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
-	if (RImplementation.b_nv3x)
+	if (!RImplementation.b_fp16)
 	{
-		s_decompress.create			(b_decompress,	"r2\\met_decompress");
-		g_decompress.create			(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
-	}
-	else
-	{
-		if (!RImplementation.b_fp16)
-		{
-			u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
-			s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
-			g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
-		}
+		u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
+		s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
+		g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// DIRECT (spot)
@@ -201,18 +167,10 @@ void	CRenderTarget::OnDeviceCreate	()
 	// POINT
 	{
 		u32 size = PSM_size;
-		if (RImplementation.b_nv3x)
-		{
-			rt_smap_p_ZB				= NULL;
-			rt_smap_p					= NULL;
-		} else
-		{
-			// R3xx codepath, nv3x not implemented
-			R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
-			rt_smap_p.create			(r2_RT_smap_p,				size,D3DFMT_R32F);
-		}
+		// R3xx codepath, nv3x not implemented
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(size,size,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_p_ZB,NULL));
+		rt_smap_p.create			(r2_RT_smap_p,				size,D3DFMT_R32F);
 		s_accum_point.create		(b_accum_point,				"r2\\accum_point_s");
-
 		accum_point_geom_create		();
 		g_accum_point.create		(D3DFVF_XYZ,				g_accum_point_vb, g_accum_point_ib);
 	}

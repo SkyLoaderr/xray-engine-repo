@@ -35,7 +35,6 @@ public:
 
 	BOOL						b_mrt;
 	BOOL                        b_fp16;
-	BOOL						b_nv3x;
 	BOOL						b_HW_smap;
 	BOOL						b_noshadows;
 	BOOL						b_Tshadows;						// transluent shadows
