@@ -36,7 +36,9 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 //////////////////////////////////////////////////////////////////////
 CCustomMonster::CCustomMonster()
 {
+#ifdef DEBUG
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+#endif
 
 	Weapons				= 0;
 	tWatchDirection		= Direction();
@@ -54,7 +56,9 @@ CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
 
+#ifdef DEBUG
 	Device.seqRender.Remove	(this);
+#endif
 }
 
 void CCustomMonster::Load		(LPCSTR section)
