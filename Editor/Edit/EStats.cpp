@@ -55,8 +55,8 @@ void CStats::Show(CFontBase* font)
 		F.OutSet	(5,5);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",fTPS);
-		F.OutNext	("VERT:        %d/%d",dwVert,dwVert/dwCalls);
-		F.OutNext	("POLY:        %d/%d",dwPoly,dwPoly/dwCalls);
+		F.OutNext	("VERT:        %d/%d",dwVert,dwCalls?dwVert/dwCalls:0);
+		F.OutNext	("POLY:        %d/%d",dwPoly,dwCalls?dwPoly/dwCalls:0);
 		F.OutNext	("DIP/DP:      %d",dwCalls);
 		F.OutNext	("SH Changes:  %d",dwShader_Changes);
 		F.OutNext	("TEX Changes: %d",dwTexture_Changes);

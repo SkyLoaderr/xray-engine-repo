@@ -7,6 +7,7 @@
 void CShaderManager::xrStartUp()
 {
 #ifdef M_BORLAND
+	if (!FS.Exist("game\\shaders.xr")) return;
 	CCompressedStream		FS("game\\shaders.xr","shENGINE");
 #else
 	CCompressedStream		FS("shaders.xr","shENGINE");
@@ -24,8 +25,8 @@ void CShaderManager::xrStartUp()
 			chunk->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
 			R_ASSERT		(B->getDescription().version == desc.version);
-			fs->Seek		(0);
-			B->Load			(*fs);
+            chunk->Seek		(0);
+            B->Load			(*chunk);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
 			chunk->Close	();
 			chunk_id		+= 1;

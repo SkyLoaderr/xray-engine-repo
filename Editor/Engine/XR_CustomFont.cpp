@@ -41,7 +41,7 @@ void CFontBase::OnDeviceDestroy()
 
 void CFontBase::OnRender()
 {
-	Device.Shader.set_Shader	(pShader);
+	if (pShader) Device.Shader.set_Shader	(pShader);
 	Fvector2 UVSize;	UVSize.set(1.f/float(iNumber),1.f/float(iNumber));
 	Fvector2 HalfPixel;	HalfPixel.set(.5f/TextureSize.x,.5f/TextureSize.y);
 

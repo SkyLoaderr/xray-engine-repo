@@ -175,7 +175,11 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	
 	LPSTR N = LPSTR(Name);
 	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
+#ifdef _SHADER_EDITOR
+	if (I==blenders.end())	return 0;
+#else
 	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
+#endif
 	else					return I->second;
 }
 
@@ -327,6 +331,10 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	CBlender*	B		= _GetBlender	(s_shader);
 	CBlender_Recorder	Recorder		(&S);
 #ifdef M_BORLAND
+    if (!B){
+    	ELog.DlgMsg(mtError,"Can't find shader '%s'",s_shader);
+    	return 0;
+    }
 	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,TRUE);
 #else
 	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,FALSE);
@@ -449,6 +457,7 @@ void	CShaderManager::OnDeviceCreate(void)
 	cache.Invalidate	();
 
 #ifdef M_BORLAND
+	if (!FS.Exist("game\\shaders.xr")) return;
 	CCompressedStream		FS("game\\shaders.xr","shENGINE");
 #else
 	CCompressedStream		FS("shaders.xr","shENGINE");
