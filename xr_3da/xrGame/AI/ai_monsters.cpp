@@ -399,5 +399,5 @@ void CAISelectorBase::vfAddDistanceToLastPositionCost()
 {
 	Fvector tTemp;
 	tTemp.sub(m_tCurrentPosition,m_tLastEnemyPosition);
-	m_fResult += 200.f*tTemp.square_magnitude();
+	m_fResult += 20.f*tTemp.magnitude();
 }

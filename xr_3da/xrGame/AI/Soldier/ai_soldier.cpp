@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-//#define WRITE_LOG
+#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
@@ -442,7 +442,7 @@ void CAI_Soldier::Attack()
 			}
 			/**/
 			else {
-				/**
+				/**/
 				tSavedEnemy = Enemy.Enemy;
 				tSavedEnemyPosition = Enemy.Enemy->Position();
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
@@ -463,6 +463,7 @@ void CAI_Soldier::Attack()
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
+						bBuildPathToLostEnemy = true;
 						AI_Path.BuildTravelLine(Position());
 					}
 					else
@@ -482,7 +483,7 @@ void CAI_Soldier::Attack()
 				m_fCurSpeed = m_fMaxSpeed;
 				bStopThinking = true;
 				return;
-				/**/
+				/**
 				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 				// determining who is leader
 				CEntity* Leader = Squad.Leader;
@@ -529,7 +530,7 @@ void CAI_Soldier::Attack()
 				if (AI_Path.bNeedRebuild) {
 					// building a path from and to
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
-					if (AI_Path.Nodes.size() > 2) {
+					if (AI_Path.Nodes.size() >= 2) {
 					// if path is long enough then build travel line
 						AI_Path.BuildTravelLine(Position());
 					}
@@ -540,7 +541,8 @@ void CAI_Soldier::Attack()
 					}
 				} 
 				else 
-					if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+					//if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH)
+					{
 						m_dwLastRangeSearch = S.m_dwCurTime;
 						Device.Statistic.AI_Node.Begin();
 						Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -640,103 +642,113 @@ void CAI_Soldier::FollowMe()
 					return;
 				}
 				else {
-					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					// determining who is leader
-					CEntity* Leader = Squad.Leader;
-					// checking if the leader exists
-					R_ASSERT (Leader);
-					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
-						Leader = this;
-					// I am leader then go to state "Free Hunting"
-					if (Leader == this) {
-						eCurrentState = aiSoldierFreeHunting;
+					CGroup& Group = Squad.Groups[g_Group()];
+					if (dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+						tHitDir = Group.m_tLastHitDirection;
+						dwHitTime = Group.m_dwLastHitTime;
+						tStateStack.push(eCurrentState);
+						eCurrentState = aiSoldierUnderFire;
+						m_dwLastRangeSearch = Level().timeServer();
 						return;
 					}
 					else {
-						bool bWatch = false;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CSoldierSelectorFollow S = SelectorFollow;
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
+						// determining who is leader
+						CEntity* Leader = Squad.Leader;
+						// checking if the leader exists
+						R_ASSERT (Leader);
+						// checking if leader is dead then make myself a leader
+						if (Leader->g_Health() <= 0)
+							Leader = this;
+						// I am leader then go to state "Free Hunting"
+						if (Leader == this) {
+							eCurrentState = aiSoldierFreeHunting;
+							return;
 						}
-						// otherwise assign leader to null
 						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode		= AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= 0;
-						S.m_tEnemyPosition.set(0,0,0);
-						S.m_tpEnemyNode		= NULL;
-						
-						//S.taMembers = Squad.Groups[g_Group()].Members;
-						// checking if I need to rebuild the path i.e. previous search
-						// has found better destination node
-						if (AI_Path.bNeedRebuild) {
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-							if (AI_Path.Nodes.size() > 2) {
-							// if path is long enough then build travel line
-								AI_Path.BuildTravelLine(Position());
+							bool bWatch = false;
+							// get pointer to the class of node estimator 
+							// for finding the best node in the area
+							CSoldierSelectorFollow S = SelectorFollow;
+							if (Leader != this) {
+								S.m_tLeader = Leader;
+								S.m_tLeaderPosition = Leader->Position();
+								S.m_tpLeaderNode = Leader->AI_Node;
+								S.m_tLeaderNode = Leader->AI_NodeID;
 							}
+							// otherwise assign leader to null
 							else {
-							// if path is too short then clear it (patch for ExecMove)
-								AI_Path.TravelPath.clear();
-								AI_Path.bNeedRebuild = FALSE;
+								S.m_tLeader = 0;
+								S.m_tLeaderPosition.set(0,0,0);
+								S.m_tpLeaderNode = NULL;
+								S.m_tLeaderNode = -1;
 							}
-						} 
-						else 
-							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-								m_dwLastRangeSearch = S.m_dwCurTime;
-								// fill arrays of members and exclude myself
-								Device.Statistic.AI_Node.Begin();
-								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-								Device.Statistic.AI_Node.End();
-								// search for the best node according to the 
-								// SelectFollow evaluation function in the radius 35 meteres
-								float fOldCost;
-								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
-								// if search has found new best node then 
-								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-									// if old cost minus new cost is a little then soldier is too lazy
-									// to move there
-									AI_Path.DestNode		= S.BestNode;
-									AI_Path.bNeedRebuild	= TRUE;
+							S.m_tHitDir			= tHitDir;
+							S.m_dwHitTime		= dwHitTime;
+							
+							S.m_dwCurTime		= Level().timeServer();
+							
+							S.m_tMe				= this;
+							S.m_tpMyNode		= AI_Node;
+							S.m_tMyPosition		= Position();
+							
+							S.m_tEnemy			= 0;
+							S.m_tEnemyPosition.set(0,0,0);
+							S.m_tpEnemyNode		= NULL;
+							
+							//S.taMembers = Squad.Groups[g_Group()].Members;
+							// checking if I need to rebuild the path i.e. previous search
+							// has found better destination node
+							if (AI_Path.bNeedRebuild) {
+								Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+								if (AI_Path.Nodes.size() > 2) {
+								// if path is long enough then build travel line
+									AI_Path.BuildTravelLine(Position());
 								}
-								else { 
-									// search hasn't found a better node we have to look around
-									bWatch = true;
+								else {
+								// if path is too short then clear it (patch for ExecMove)
+									AI_Path.TravelPath.clear();
+									AI_Path.bNeedRebuild = FALSE;
 								}
-								
-								if (AI_Path.TravelPath.size() < 2)
-									AI_Path.bNeedRebuild	= TRUE;
-							}
-						// setting up a look
-						// getting my current node
-						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
-						// if we are going somewhere
-						SetLessCoverLook(tNode);
-						// setting up an action
-						q_action.setup(AI::AIC_Action::FireEnd);
-						// checking flag to stop processing more states
-						m_fCurSpeed = m_fMinSpeed;
-						bStopThinking = true;
-						return;
+							} 
+							else 
+								if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH) {
+									m_dwLastRangeSearch = S.m_dwCurTime;
+									// fill arrays of members and exclude myself
+									Device.Statistic.AI_Node.Begin();
+									Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+									Device.Statistic.AI_Node.End();
+									// search for the best node according to the 
+									// SelectFollow evaluation function in the radius 35 meteres
+									float fOldCost;
+									Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
+									// if search has found new best node then 
+									if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
+										// if old cost minus new cost is a little then soldier is too lazy
+										// to move there
+										AI_Path.DestNode		= S.BestNode;
+										AI_Path.bNeedRebuild	= TRUE;
+									}
+									else { 
+										// search hasn't found a better node we have to look around
+										bWatch = true;
+									}
+									
+									if (AI_Path.TravelPath.size() < 2)
+										AI_Path.bNeedRebuild	= TRUE;
+								}
+							// setting up a look
+							// getting my current node
+							NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
+							// if we are going somewhere
+							SetLessCoverLook(tNode);
+							// setting up an action
+							q_action.setup(AI::AIC_Action::FireEnd);
+							// checking flag to stop processing more states
+							m_fCurSpeed = m_fMinSpeed;
+							bStopThinking = true;
+							return;
+						}
 					}
 				}
 			}
@@ -781,92 +793,102 @@ void CAI_Soldier::FreeHunting()
 					return;
 				}
 				else {
-					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					// determining who is leader
-					CEntity* Leader = Squad.Leader;
-					// checking if the leader exists
-					R_ASSERT (Leader);
-					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
-						Leader = this;
-					// setting up watch mode to false
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CSoldierSelectorFreeHunting S = SelectorFreeHunting;
-					// if i am not a leader then assign leader
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
+					CGroup& Group = Squad.Groups[g_Group()];
+					if (Level().timeServer() - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+						tHitDir = Group.m_tLastHitDirection;
+						dwHitTime = Group.m_dwLastHitTime;
+						tStateStack.push(eCurrentState);
+						eCurrentState = aiSoldierUnderFire;
+						m_dwLastRangeSearch = Level().timeServer();
+						return;
 					}
-					// otherwise assign leader to null
 					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
+						// determining who is leader
+						CEntity* Leader = Squad.Leader;
+						// checking if the leader exists
+						R_ASSERT (Leader);
+						// checking if leader is dead then make myself a leader
+						if (Leader->g_Health() <= 0)
+							Leader = this;
+						// setting up watch mode to false
+						bool bWatch = false;
+						// get pointer to the class of node estimator 
+						// for finding the best node in the area
+						CSoldierSelectorFreeHunting S = SelectorFreeHunting;
+						// if i am not a leader then assign leader
+						if (Leader != this) {
+							S.m_tLeader = Leader;
+							S.m_tLeaderPosition = Leader->Position();
+							S.m_tpLeaderNode = Leader->AI_Node;
+							S.m_tLeaderNode = Leader->AI_NodeID;
+						}
+						// otherwise assign leader to null
+						else {
+							S.m_tLeader = 0;
+							S.m_tLeaderPosition.set(0,0,0);
+							S.m_tpLeaderNode = NULL;
+							S.m_tLeaderNode = -1;
+						}
+						S.m_tHitDir			= tHitDir;
+						S.m_dwHitTime		= dwHitTime;
+						
+						S.m_dwCurTime		= Level().timeServer();
+						
+						S.m_tMe				= this;
+						S.m_tpMyNode		= AI_Node;
+						S.m_tMyPosition		= Position();
+						
+						S.m_tEnemy			= 0;
+						S.m_tEnemyPosition.set(0,0,0);
+						S.m_tpEnemyNode		= NULL;
+						
+						//S.taMembers = Squad.Groups[g_Group()].Members;
+						// checking if I need to rebuild the path i.e. previous search
+						// has found better destination node
+						if (AI_Path.bNeedRebuild) {
+							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+							if (AI_Path.Nodes.size() > 2) {
+							// if path is long enough then build travel line
+								AI_Path.BuildTravelLine(Position());
+							}
+							else
+							// if path is too short then clear it (patch for ExecMove)
+								AI_Path.TravelPath.clear();
+						} 
+						else 
+							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+								m_dwLastRangeSearch = S.m_dwCurTime;
+								// fill arrays of members and exclude myself
+								Device.Statistic.AI_Node.Begin();
+								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+								Device.Statistic.AI_Node.End();
+								// SelectFollow evaluation function in the radius 35 meteres
+								float fOldCost;
+								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+								// if search has found new best node then 
+								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+									AI_Path.DestNode		= S.BestNode;
+									AI_Path.bNeedRebuild	= TRUE;
+								} 
+								else 
+									// search hasn't found a better node we have to look around
+									bWatch = true;
+								if (AI_Path.TravelPath.size() < 2)
+									AI_Path.bNeedRebuild	= TRUE;
+							}
+						// setting up a look
+						// getting my current node
+						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
+						
+						SetLessCoverLook(tNode);
+						
+						q_action.setup(AI::AIC_Action::FireEnd);
+						// checking flag to stop processing more states
+						m_fCurSpeed = m_fMinSpeed;
+						bStopThinking = true;
+						return;
 					}
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
-					
-					S.m_dwCurTime		= Level().timeServer();
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode		= AI_Node;
-					S.m_tMyPosition		= Position();
-					
-					S.m_tEnemy			= 0;
-					S.m_tEnemyPosition.set(0,0,0);
-					S.m_tpEnemyNode		= NULL;
-					
-					//S.taMembers = Squad.Groups[g_Group()].Members;
-					// checking if I need to rebuild the path i.e. previous search
-					// has found better destination node
-					if (AI_Path.bNeedRebuild) {
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-						if (AI_Path.Nodes.size() > 2) {
-						// if path is long enough then build travel line
-							AI_Path.BuildTravelLine(Position());
-						}
-						else
-						// if path is too short then clear it (patch for ExecMove)
-							AI_Path.TravelPath.clear();
-					} 
-					else 
-						if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-							m_dwLastRangeSearch = S.m_dwCurTime;
-							// fill arrays of members and exclude myself
-							Device.Statistic.AI_Node.Begin();
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							Device.Statistic.AI_Node.End();
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							} 
-							else 
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
-					// setting up a look
-					// getting my current node
-					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-					
-					SetLessCoverLook(tNode);
-					
-					q_action.setup(AI::AIC_Action::FireEnd);
-					// checking flag to stop processing more states
-					m_fCurSpeed = m_fMinSpeed;
-					bStopThinking = true;
-					return;
 				}
 			}
 		}
@@ -921,7 +943,7 @@ void CAI_Soldier::Pursuit()
 					m_dwLastRangeSearch = Level().timeServer();
 					return;
 				}
-				else {
+				else
 					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiSoldierSenseSomething;
@@ -929,98 +951,107 @@ void CAI_Soldier::Pursuit()
 						return;
 					}
 					else {
-						// determining the team
 						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-						// determining who is leader
-						CEntity* Leader = Squad.Leader;
-						// checking if the leader exists
-						R_ASSERT (Leader);
-						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
-							Leader = this;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CSoldierSelectorPursuit S = SelectorPursuit;
-						// if i am not a leader then assign leader
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
+						CGroup& Group = Squad.Groups[g_Group()];
+						if (dwCurrentTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+							tHitDir = Group.m_tLastHitDirection;
+							dwHitTime = Group.m_dwLastHitTime;
+							tStateStack.push(eCurrentState);
+							eCurrentState = aiSoldierUnderFire;
+							m_dwLastRangeSearch = Level().timeServer();
+							return;
 						}
-						// otherwise assign leader to null
 						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode		= AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= tSavedEnemy;
-						S.m_tEnemyPosition	= tSavedEnemyPosition;
-						S.m_tpEnemyNode		= tpSavedEnemyNode;
-						
-						//S.taMembers = Squad.Groups[g_Group()].Members;
-						bool bWatch = false;
-						// checking if I need to rebuild the path i.e. previous search
-						// has found better destination node
-						if (AI_Path.bNeedRebuild) {
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-							if (AI_Path.Nodes.size() > 2) {
-							// if path is long enough then build travel line
-								AI_Path.BuildTravelLine(Position());
+							// determining who is leader
+							CEntity* Leader = Squad.Leader;
+							// checking if the leader exists
+							R_ASSERT (Leader);
+							// checking if leader is dead then make myself a leader
+							if (Leader->g_Health() <= 0)
+								Leader = this;
+							// get pointer to the class of node estimator 
+							// for finding the best node in the area
+							CSoldierSelectorPursuit S = SelectorPursuit;
+							// if i am not a leader then assign leader
+							if (Leader != this) {
+								S.m_tLeader = Leader;
+								S.m_tLeaderPosition = Leader->Position();
+								S.m_tpLeaderNode = Leader->AI_Node;
+								S.m_tLeaderNode = Leader->AI_NodeID;
 							}
+							// otherwise assign leader to null
 							else {
-							// if path is too short then clear it (patch for ExecMove)
-								AI_Path.TravelPath.clear();
-								AI_Path.bNeedRebuild = FALSE;
+								S.m_tLeader = 0;
+								S.m_tLeaderPosition.set(0,0,0);
+								S.m_tpLeaderNode = NULL;
+								S.m_tLeaderNode = -1;
 							}
-						} 
-						else 
-							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-								m_dwLastRangeSearch = S.m_dwCurTime;
-								// fill arrays of members and exclude myself
-								Device.Statistic.AI_Node.Begin();
-								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-								Device.Statistic.AI_Node.End();
-								// search for the best node according to the 
-								// SelectFollow evaluation function in the radius 35 meteres
-								float fOldCost;
-								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-								// if search has found new best node then 
-								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-									AI_Path.DestNode		= S.BestNode;
-									AI_Path.bNeedRebuild	= TRUE;
-								} 
-								else
-									// search hasn't found a better node we have to look around
-									bWatch = true;
-								if (AI_Path.TravelPath.size() < 2)
-									AI_Path.bNeedRebuild	= TRUE;
-							}
-						// setting up a look
-						// getting my current node
-						tWatchDirection.sub(tSavedEnemyPosition,Position());
-						if (tWatchDirection.magnitude() > 0.0001f)
-							SetSmartLook(AI_Node,tWatchDirection);
-						else
-							SetLessCoverLook(AI_Node);
-						// checking flag to stop processing more states
-						q_action.setup(AI::AIC_Action::FireEnd);
-						bStopThinking = true;
-						m_fCurSpeed = m_fMaxSpeed;
-						return;
+							S.m_tHitDir			= tHitDir;
+							S.m_dwHitTime		= dwHitTime;
+							
+							S.m_dwCurTime		= Level().timeServer();
+							
+							S.m_tMe				= this;
+							S.m_tpMyNode		= AI_Node;
+							S.m_tMyPosition		= Position();
+							
+							S.m_tEnemy			= tSavedEnemy;
+							S.m_tEnemyPosition	= tSavedEnemyPosition;
+							S.m_tpEnemyNode		= tpSavedEnemyNode;
+							
+							//S.taMembers = Squad.Groups[g_Group()].Members;
+							bool bWatch = false;
+							// checking if I need to rebuild the path i.e. previous search
+							// has found better destination node
+							if (AI_Path.bNeedRebuild) {
+								Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+								if (AI_Path.Nodes.size() > 2) {
+								// if path is long enough then build travel line
+									AI_Path.BuildTravelLine(Position());
+								}
+								else {
+								// if path is too short then clear it (patch for ExecMove)
+									AI_Path.TravelPath.clear();
+									AI_Path.bNeedRebuild = FALSE;
+								}
+							} 
+							else 
+								if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+									m_dwLastRangeSearch = S.m_dwCurTime;
+									// fill arrays of members and exclude myself
+									Device.Statistic.AI_Node.Begin();
+									Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+									Device.Statistic.AI_Node.End();
+									// search for the best node according to the 
+									// SelectFollow evaluation function in the radius 35 meteres
+									float fOldCost;
+									Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+									// if search has found new best node then 
+									if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+										AI_Path.DestNode		= S.BestNode;
+										AI_Path.bNeedRebuild	= TRUE;
+									} 
+									else
+										// search hasn't found a better node we have to look around
+										bWatch = true;
+									if (AI_Path.TravelPath.size() < 2)
+										AI_Path.bNeedRebuild	= TRUE;
+								}
+							// setting up a look
+							// getting my current node
+							tWatchDirection.sub(tSavedEnemyPosition,Position());
+							if (tWatchDirection.magnitude() > 0.0001f)
+								SetSmartLook(AI_Node,tWatchDirection);
+							else
+								SetLessCoverLook(AI_Node);
+							// checking flag to stop processing more states
+							q_action.setup(AI::AIC_Action::FireEnd);
+							bStopThinking = true;
+							m_fCurSpeed = m_fMaxSpeed;
+							return;
+						}
 					}
 				}
-			}
 			else {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
@@ -1101,8 +1132,11 @@ void CAI_Soldier::UnderFire()
 					return;
 				}
 				else {
+					
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+					Squad.Groups[g_Group()].m_tLastHitDirection = tHitDir;
+					Squad.Groups[g_Group()].m_dwLastHitTime = dwHitTime;
 					// determining who is leader
 					CEntity* Leader = Squad.Leader;
 					// checking if the leader exists
