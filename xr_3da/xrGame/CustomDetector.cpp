@@ -248,7 +248,7 @@ BOOL CCustomDetector::feel_touch_contact(CObject* O)
 void CCustomDetector::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name)) 
+	if (FS.exist(temp,"$game_sounds$",s_name,".ogg")) 
 	{
 		Sound->create(dest,TRUE,s_name,iType);
 		return;

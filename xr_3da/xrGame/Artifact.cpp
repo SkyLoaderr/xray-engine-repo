@@ -196,7 +196,7 @@ void CArtifact::renderable_Render()
 void CArtifact::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
 {
 	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name)) 
+	if (FS.exist(temp,"$game_sounds$",s_name,".ogg")) 
 	{
 		Sound->create(dest,TRUE,s_name,iType);
 		return;

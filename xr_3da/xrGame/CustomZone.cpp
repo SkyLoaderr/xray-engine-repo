@@ -201,8 +201,8 @@ f32 CCustomZone::Power(f32 dist)
 
 void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
-	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name))
+	string256	temp;
+	if (FS.exist(temp,"$game_sounds$",s_name,".ogg"))
 	{
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
