@@ -762,6 +762,9 @@
 				<File
 					RelativePath=".\Config\ui\trade_new.xml">
 				</File>
+				<File
+					RelativePath=".\Config\ui\zone_map.xml">
+				</File>
 			</Filter>
 			<Filter
 				Name="weapons"
