@@ -3,7 +3,7 @@
 #pragma once
 
 // Desc: Simple wrapper for critical section
-class xrCriticalSection
+class XRCORE_API		xrCriticalSection
 {
 private:
 	void*				pmutex;

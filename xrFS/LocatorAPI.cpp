@@ -316,13 +316,14 @@ void CLocatorAPI::_initialize	(u32 flags)
 #ifdef __BORLANDC__
 	m_Flags.set		(flEventNotificator,TRUE);
 //.    
-#endif
 	if (m_Flags.is(flEventNotificator)){
 	    // set event handlers
 	    SetEventNotification();
     }
+#endif
 	m_Flags.set		(flReady,TRUE);
 }
+
 void CLocatorAPI::_destroy		()
 {
 #ifdef _EDITOR
