@@ -45,22 +45,22 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
 				ShowProgress="0"
-				OutputFile="x:\game/xrGame.dll"
+				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="&quot;C:\SDK\odeLast\!ode-dll\lib&quot;"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="x:\game/xrGame.pdb"
-				ImportLibrary="x:\game/xrGame.lib"/>
+				ProgramDatabaseFile="x:\xrGame.pdb"
+				ImportLibrary="x:\xrGame.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrGame.tlb"/>
+				TypeLibraryName="x:\xrGame.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -78,7 +78,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="x:\game"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -108,21 +108,21 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
-				OutputFile="x:\game/xrGame.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
+				OutputFile="x:\xrGame.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				GenerateMapFile="TRUE"
 				MapFileName=".\Mixed/xrGame.map"
-				ImportLibrary="x:\game/xrGame.lib"/>
+				ImportLibrary="x:\xrGame.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrGame.tlb"/>
+				TypeLibraryName="x:\xrGame.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -181,22 +181,22 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
-				OutputFile="x:\game/xrGame.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
+				OutputFile="x:\xrGame.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="TRUE"
 				GenerateMapFile="TRUE"
-				MapFileName="x:\game\xrGame.map"
-				ImportLibrary="x:\game/xrGame.lib"/>
+				MapFileName="x:\xrGame.map"
+				ImportLibrary="x:\xrGame.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrGame.tlb"/>
+				TypeLibraryName="x:\xrGame.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -1268,7 +1268,7 @@
 			RelativePath=".\Shedule.txt">
 		</File>
 		<File
-			RelativePath="X:\game\engine.log">
+			RelativePath="X:\engine.log">
 		</File>
 		<File
 			RelativePath=".\notes.txt">

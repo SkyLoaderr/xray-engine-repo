@@ -57,21 +57,21 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="x:\game\xr_3da.lib odbc32.lib odbccp32.lib"
-				OutputFile="x:\game/xrCPU_Pipe.dll"
+				AdditionalDependencies="x:\xr_3da.lib odbc32.lib odbccp32.lib"
+				OutputFile="x:\xrCPU_Pipe.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				GenerateMapFile="TRUE"
-				MapFileName="x:\game\xrCPU_Pipe.map"
-				ImportLibrary="x:\game/xrCPU_Pipe.lib"/>
+				MapFileName="x:\xrCPU_Pipe.map"
+				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrCPU_Pipe.tlb"/>
+				TypeLibraryName="x:\xrCPU_Pipe.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
@@ -118,20 +118,20 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
-				OutputFile="x:\game/xrCPU_Pipe.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
+				OutputFile="x:\xrCPU_Pipe.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="x:\game/xrCPU_Pipe.pdb"
-				ImportLibrary="x:\game/xrCPU_Pipe.lib"/>
+				ProgramDatabaseFile="x:\xrCPU_Pipe.pdb"
+				ImportLibrary="x:\xrCPU_Pipe.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
-				TypeLibraryName="x:\game/xrCPU_Pipe.tlb"/>
+				TypeLibraryName="x:\xrCPU_Pipe.tlb"/>
 			<Tool
 				Name="VCPostBuildEventTool"/>
 			<Tool
