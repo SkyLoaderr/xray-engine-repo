@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "../ui.h"
 
 u64	generate_time	(u32 years, u32 months, u32 days, u32 hours, u32 minutes, u32 seconds, u32 milliseconds)
 {
@@ -18,7 +17,11 @@ u64	generate_time	(u32 years, u32 months, u32 days, u32 hours, u32 minutes, u32 
 	t1						= years/400;
 	t2						= years/100;
 	t3						= years/4;
-	t4						= (years%4) ? 0 : 1;
+	bool					a1,a2,a3;
+	a1						= !years%400;
+	a2						= !years%100;
+	a3						= !years%4;
+	t4						= a3 && (!a2 || a1) ? 1 : 0;
 	u64						result = u64(years - 1)*u64(365) + t1 - t2 + t3;
 
 	if (months >  1) result	+= u64(31);
@@ -68,7 +71,11 @@ void split_time		(u64 time, u32 &years, u32 &months, u32 &days, u32 &hours, u32 
 	t1						= years/400;
 	t2						= years/100;
 	t3						= years/4;
-	t4						= (years%4) ? 0 : 1;
+	bool					a1,a2,a3;
+	a1						= !years%400;
+	a2						= !years%100;
+	a3						= !years%4;
+	t4						= a3 && (!a2 || a1) ? 1 : 0;
 	u64						result = u64(years - 1)*u64(365) + t1 - t2 + t3;
 	time					-= result;
 	++time;
