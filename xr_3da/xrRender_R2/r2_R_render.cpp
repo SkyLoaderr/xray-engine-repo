@@ -80,7 +80,7 @@ void CRender::Render	()
 	}
 
 	// Point lighting (shadowed)
-	if (0)
+	if (1)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
@@ -100,11 +100,14 @@ void CRender::Render	()
 				LR_Direct.compute_xfp_2					(pls_phase, L);
 
 				// rendering
-				Target.phase_smap_point					(pls_phase);
-				RCache.set_xform_world					(Fidentity);			// ???
-				RCache.set_xform_view					(LR_Direct.L_view);
-				RCache.set_xform_project				(LR_Direct.L_project);
-				render_scenegraph						();
+				if (mapNormal.size())
+				{
+					Target.phase_smap_point				(pls_phase);
+					RCache.set_xform_world				(Fidentity);			// ???
+					RCache.set_xform_view				(LR_Direct.L_view);
+					RCache.set_xform_project			(LR_Direct.L_project);
+					render_scenegraph					();
+				}
 			}
 
 			// Render light
