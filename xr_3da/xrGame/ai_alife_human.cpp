@@ -163,6 +163,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 				}
 				case CLSID_OBJECT_W_SHOTGUN:
 				case CLSID_OBJECT_W_AK74:
+				case CLSID_OBJECT_W_GROZA:
 				case CLSID_OBJECT_W_VAL:
 				case CLSID_OBJECT_W_LR300:		{
 					l_dwCurrentBestWeapon = 6;
