@@ -109,6 +109,8 @@ function Defender:process ()
 	   	  return
 	   else 
 	      self.state = on_ready 
+	      printf ("Set On_Ready")
+
 	   end
 	end   
 	--если сталкер должен быть отпущен, то отпускаем
