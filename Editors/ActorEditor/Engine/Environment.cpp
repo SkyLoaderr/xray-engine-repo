@@ -135,7 +135,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	sky_r_textures.push_back(B.sky_texture);
 	sky_factor				= f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
-	far_plane				= fi*A.far_plane + f*B.far_plane;
+	far_plane				= (fi*A.far_plane + f*B.far_plane)*psVisDistance;
 	fog_color.lerp			(A.fog_color,B.fog_color,f);
 	fog_density				= fi*A.fog_density + f*B.fog_density;
 	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
