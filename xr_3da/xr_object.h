@@ -89,6 +89,7 @@ public:
 	virtual void						spatial_register	();
 	virtual void						spatial_unregister	();
 	virtual void						spatial_move		();
+	void								spatial_update		(float eps_P, float eps_R);
 
 	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}
 	IC const Fvector&					Direction			() 			const	{ return renderable.xform.k;		}

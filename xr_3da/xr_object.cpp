@@ -159,29 +159,11 @@ void CObject::net_Destroy		()
 	setDestroy					(true);
 }
 
-// Updates
-void CObject::UpdateCL			()
+//////////////////////////////////////////////////////////////////////////
+const	float	base_spu_epsP		= 0.05f;
+const	float	base_spu_epsR		= 0.05f;
+void	CObject::spatial_update		(float eps_P, float eps_R)
 {
-	// consistency check
-#ifdef DEBUG
-	VERIFY2								(_valid(renderable.xform),*cName());
-
-	if (Device.dwFrame==dbg_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",*cName());
-	dbg_update_cl	= Device.dwFrame;
-
-	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered inside spatial DB",*cName());
-#endif
-}
-
-void CObject::shedule_Update	( u32 T )
-{
-	// consistency check
-	// Msg							("-SUB-:[%x][%s] CObject::shedule_Update",dynamic_cast<void*>(this),*cName());
-	ISheduled::shedule_Update	(T);
-
-	const	float eps_R	= 0.01f;
-	const	float eps_P	= 0.005f;
-
 	//
 	BOOL	bUpdate=FALSE;
 	if (PositionStack.empty())
@@ -227,7 +209,30 @@ void CObject::shedule_Update	( u32 T )
 	}
 }
 
-void	CObject::spatial_register()
+// Updates
+void CObject::UpdateCL			()
+{
+	// consistency check
+#ifdef DEBUG
+	VERIFY2								(_valid(renderable.xform),*cName());
+
+	if (Device.dwFrame==dbg_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",*cName());
+	dbg_update_cl	= Device.dwFrame;
+
+	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered inside spatial DB",*cName());
+#endif
+	spatial_update				(base_spu_epsP*5,base_spu_epsR*5);
+}
+
+void CObject::shedule_Update	( u32 T )
+{
+	// consistency check
+	// Msg							("-SUB-:[%x][%s] CObject::shedule_Update",dynamic_cast<void*>(this),*cName());
+	ISheduled::shedule_Update	(T);
+	spatial_update				(base_spu_epsP*1,base_spu_epsR*1);
+}
+
+void	CObject::spatial_register	()
 {
 	Center						(spatial.center);
 	spatial.radius				= Radius();
