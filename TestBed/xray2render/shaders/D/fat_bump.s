@@ -86,7 +86,7 @@ p2f 	p_main	( v2p_in IN )
 							IN.M3.x,IN.M3.y,IN.M3.z),
 							N);
 
-  half3 NeN= normalize	(Ne);
+  half3 NeN	= normalize	(Ne);
   OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
   return OUT;
 }
