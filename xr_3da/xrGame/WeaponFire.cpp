@@ -148,6 +148,7 @@ void CWeapon::StartFlameParticles	()
 	//if(m_iNextParticle>=PARTICLES_CACHE_SIZE) m_iNextParticle = 0;
 
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParticlesCurrent,Sector(),false);
+#pragma todo("AlexMX to Ura: на фига ты делаешь Memory Leaks. Удалять кто за тебя будет!!!!")
 	
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
