@@ -120,8 +120,9 @@ void CShaderTools::Render()
 
 void CShaderTools::OnFrame()
 {
-	if (m_RTFlags.is(flRT_UpdateProperties)) RealUpdateProperties();
 	Current()->OnFrame();
+	if (m_RTFlags.is(flRT_UpdateProperties)) 
+    	RealUpdateProperties();
 }
 
 void CShaderTools::ZoomObject(bool bOnlySel)
@@ -286,8 +287,8 @@ bool CShaderTools::RayPick(const Fvector& start, const Fvector& dir, float& dist
 
 void CShaderTools::RealUpdateProperties()
 {
-	m_RTFlags.set(flRT_UpdateProperties,FALSE);
     Current()->RealUpdateProperties();
+	m_RTFlags.set(flRT_UpdateProperties,FALSE);
 }
 
 
