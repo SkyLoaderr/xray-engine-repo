@@ -493,22 +493,23 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin();
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if ((*I).m_pIItem->Useful())
-					m_inventory.Ruck((*I).m_pIItem);
+				m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-				(**l_it).Drop();
+				if ((*l_it)->Useful())
+					(*l_it)->Drop();
 		}
 		else {
 			m_inventory.Action(kWPN_FIRE,	CMD_START);
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if (((I - B) != (int)m_inventory.m_activeSlot) && (*I).m_pIItem->Useful())
+				if ((I - B) != (int)m_inventory.m_activeSlot)
 					m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-				(**l_it).Drop();
+				if ((*l_it)->Useful())
+					(**l_it).Drop();
 		}
 	}
 	VERIFY				(_valid(Position()));
