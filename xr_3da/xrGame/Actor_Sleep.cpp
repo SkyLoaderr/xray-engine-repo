@@ -22,7 +22,7 @@ EActorSleep CActor::CanSleepHere()
 {
 	if(0 != mstate_real) return easNotSolidGround;
 
-	Collide::rq_result RQ;
+	collide::rq_result RQ;
 
 	Fvector pos, dir;
 	pos.set(Position());
@@ -30,7 +30,7 @@ EActorSleep CActor::CanSleepHere()
 	dir.set(0, -1.f, 0);
 	setEnabled(FALSE);
 	BOOL result = Level().ObjectSpace.RayPick(pos, dir, 0.3f, 
-				  Collide::rqtBoth, RQ);
+				  collide::rqtBoth, RQ);
 	setEnabled(TRUE);
 	
 	//актер стоит на динамическом объекте или вообще падает - 

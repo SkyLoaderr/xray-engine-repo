@@ -23,8 +23,8 @@ float CMeleeChecker::distance_to_enemy(const CEntity *enemy)
 	Fvector					dir; 
 	dir.sub					(enemy_center, global_transform.c);
 
-	Collide::ray_defs		r_query	(global_transform.c, dir, MAX_TRACE_ENEMY_RANGE, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, Collide::rqtObject);
-	Collide::rq_results		r_res;
+	collide::ray_defs		r_query	(global_transform.c, dir, MAX_TRACE_ENEMY_RANGE, CDB::OPT_CULL | CDB::OPT_ONLYNEAREST, collide::rqtObject);
+	collide::rq_results		r_res;
 
 	m_object->setEnabled	(false);
 	

@@ -9,7 +9,7 @@
 #include "skeletoncustom.h"
 #include "frustum.h"
 
-using namespace	Collide;
+using namespace	collide;
 //----------------------------------------------------------------------
 // Class	: CXR_CFObject
 // Purpose	: stores collision form
@@ -60,7 +60,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	return				TRUE;
 }
 
-BOOL CCF_Polygonal::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R)
+BOOL CCF_Polygonal::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 {
 	// Convert ray into local model space
 	Fvector dS, dD;
@@ -214,7 +214,7 @@ void CCF_Skeleton::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Skeleton::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R)
+BOOL CCF_Skeleton::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -338,7 +338,7 @@ void CCF_Rigid::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Rigid::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R)
+BOOL CCF_Rigid::_RayQuery( const collide::ray_defs& Q, collide::rq_results& R)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -435,7 +435,7 @@ BOOL CCF_EventBox::Contact(CObject* O)
 	}
 	return TRUE;
 }
-BOOL CCF_EventBox::_RayQuery(const Collide::ray_defs& Q, Collide::rq_results& R)
+BOOL CCF_EventBox::_RayQuery(const collide::ray_defs& Q, collide::rq_results& R)
 {	return FALSE; }
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
@@ -445,7 +445,7 @@ void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner,cftShape)
 {
 }
-BOOL CCF_Shape::_RayQuery(const Collide::ray_defs& Q, Collide::rq_results& R)
+BOOL CCF_Shape::_RayQuery(const collide::ray_defs& Q, collide::rq_results& R)
 {	
 	// Convert ray into local model space
 	Fvector dS, dD;

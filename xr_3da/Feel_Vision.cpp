@@ -14,7 +14,7 @@ namespace Feel {
 		float						vis_threshold;
 		SFeelParam(Vision* _parent, Vision::feel_visible_Item* _item, float _vis_threshold):parent(_parent),item(_item),vis(1.f),vis_threshold(_vis_threshold){}
 	};
-	IC BOOL __stdcall feel_vision_callback(Collide::rq_result& result, LPVOID params)
+	IC BOOL __stdcall feel_vision_callback(collide::rq_result& result, LPVOID params)
 	{
 		VERIFY(!result.O);
 		SFeelParam* fp	= (SFeelParam*)params;
@@ -169,7 +169,7 @@ namespace Feel {
 			if (f>fuzzy_guaranteed){
 				D.div						(f);
 				// setup ray defs & feel params
-				Collide::ray_defs RD		(P,D,f,0,Collide::rqtStatic);
+				collide::ray_defs RD		(P,D,f,0,collide::rqtStatic);
 				SFeelParam	feel_params		(this,&*I,vis_threshold);
 				// check cache
 				if (I->Cache.result&&I->Cache.similar(P,D,f)){
@@ -205,7 +205,7 @@ namespace Feel {
 					clamp					(I->fuzzy,-.5f,1.f);
 				}
 /*
-				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,Collide::rqtStatic,&I->Cache)) 
+				if (g_pGameLevel->ObjectSpace.RayTest(P,D,f,collide::rqtStatic,&I->Cache)) 
 				{
 					// callback and multiple ray-tests
 

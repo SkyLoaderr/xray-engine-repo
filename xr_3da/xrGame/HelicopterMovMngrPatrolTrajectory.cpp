@@ -209,7 +209,7 @@ void CHelicopterMovManager::selectSafeDir(const Fvector& prevPoint,
 
 void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude)
 {
-	Collide::rq_result		cR;
+	collide::rq_result		cR;
 	Fvector down_dir;
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
@@ -217,7 +217,7 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 	//VERIFY( m_boundingAssert.contains(point) );
 	VERIFY( _valid(point) );
 
-	Level().ObjectSpace.RayPick(point, down_dir, m_boundingVolume.max.y-m_boundingVolume.min.y+1.0f, Collide::rqtStatic, cR);
+	Level().ObjectSpace.RayPick(point, down_dir, m_boundingVolume.max.y-m_boundingVolume.min.y+1.0f, collide::rqtStatic, cR);
 	
 	point.y = point.y-cR.range;
 

@@ -6,7 +6,7 @@
 #include "xr_object.h"
 #include "cl_intersect.h"
 
-using namespace	Collide;
+using namespace	collide;
 
 // ----------------------------------------------------------------------
 // Name  : classifyPoint()

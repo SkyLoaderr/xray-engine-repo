@@ -64,7 +64,7 @@ public:
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
 	
 	//текущий предмет на который смотрит HUD
-	Collide::rq_result&		GetCurrentRayQuery	();
+	collide::rq_result&		GetCurrentRayQuery	();
 
 	virtual		void		OnDeviceCreate		();
 

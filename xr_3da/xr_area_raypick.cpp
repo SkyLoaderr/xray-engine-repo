@@ -8,19 +8,19 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-using namespace	Collide;
+using namespace	collide;
 
 //--------------------------------------------------------------------------------
 // RayTest - Occluded/No
 //--------------------------------------------------------------------------------
-BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float range, Collide::rq_target tgt, Collide::ray_cache* cache)
+BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache)
 {
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
 
 	r_results.r_clear		();
 
 	xrc.ray_options			(CDB::OPT_ONLYFIRST);
-	Collide::ray_defs Q		(start,dir,range,CDB::OPT_ONLYFIRST,tgt);
+	collide::ray_defs Q		(start,dir,range,CDB::OPT_ONLYFIRST,tgt);
 	// dynamic test
 	if (tgt&rqtDyn) 
 	{
@@ -94,7 +94,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 	}
 	// dynamic test
 	if (tgt&rqtDyn){ 
-		Collide::ray_defs Q		(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,tgt);
+		collide::ray_defs Q		(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,tgt);
 		// traverse object database
 		g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,start,dir,range);
 		// Determine visibility for dynamic part of scene
@@ -125,7 +125,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 //--------------------------------------------------------------------------------
 // RayQuery
 //--------------------------------------------------------------------------------
-BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB, LPVOID user_data)
+BOOL CObjectSpace::RayQuery(const collide::ray_defs& R, collide::rq_callback* CB, LPVOID user_data)
 {
 	// initialize query
 	r_results.r_clear	();
@@ -212,7 +212,7 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 	return r_results.r_count();
 }
 
-BOOL CObjectSpace::RayQuery(ICollisionForm* target, const Collide::ray_defs& R)
+BOOL CObjectSpace::RayQuery(ICollisionForm* target, const collide::ray_defs& R)
 {
 	VERIFY(target);
 	r_results.r_clear();

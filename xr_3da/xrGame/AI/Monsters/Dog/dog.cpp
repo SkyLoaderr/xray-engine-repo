@@ -192,9 +192,9 @@ void CAI_Dog::UpdateCL()
 		Fvector trace_from;
 		Center(trace_from);
 		setEnabled(false);
-		Collide::rq_result	l_rq;
+		collide::rq_result	l_rq;
 
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , Collide::rqtBoth, l_rq)) {
+		if (Level().ObjectSpace.RayPick(trace_from, Direction(), trace_dist , collide::rqtBoth, l_rq)) {
 			if ((l_rq.O == CJumping::GetEnemy()) && (l_rq.range < trace_dist)) {
 				//HitEntity(pE, inherited::get_sd()->m_fHitPower,Direction());
 				strike_in_jump = true;

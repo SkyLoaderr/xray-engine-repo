@@ -286,8 +286,8 @@ bool CAI_Stalker::can_kill_member		()
 
 bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &direction) const
 {
-	Collide::rq_result		ray_query_result;
-	Level().ObjectSpace.RayPick(position, direction, 50.f, Collide::rqtBoth, ray_query_result);
+	collide::rq_result		ray_query_result;
+	Level().ObjectSpace.RayPick(position, direction, 50.f, collide::rqtBoth, ray_query_result);
 	
 	if (!ray_query_result.O)
 		return				(false);
@@ -307,8 +307,8 @@ bool CAI_Stalker::can_kill_enemy		()
 //	Fvector					position, direction;
 //	g_fireParams			(0,position,direction);
 //
-//	Collide::rq_result		ray_query_result;
-//	Level().ObjectSpace.RayPick(position, direction, 50.f, Collide::rqtBoth, ray_query_result);
+//	collide::rq_result		ray_query_result;
+//	Level().ObjectSpace.RayPick(position, direction, 50.f, collide::rqtBoth, ray_query_result);
 //
 //	if (!ray_query_result.O)
 //		return				(false);

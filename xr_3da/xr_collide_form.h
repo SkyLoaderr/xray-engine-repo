@@ -95,7 +95,7 @@ public:
 					ICollisionForm	( CObject* _owner, ECollisionFormType tp );
 	virtual			~ICollisionForm	( );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R) = 0;
+	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags)	= 0;
 
 	IC CObject*		Owner			( )	const				{ return owner;			}
@@ -112,7 +112,7 @@ private:
 public:
 					CCF_Polygonal	( CObject* _owner );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
@@ -147,7 +147,7 @@ private:
 public:
 						CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL		_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
 	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
@@ -167,7 +167,7 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL		_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual BOOL		_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
 	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
@@ -179,7 +179,7 @@ private:
 public:
 					CCF_EventBox	( CObject* _owner );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	BOOL			Contact			( CObject* O );
@@ -205,7 +205,7 @@ public:
 public:
 					CCF_Shape		( CObject* _owner );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual BOOL	_RayQuery		( const collide::ray_defs& Q, collide::rq_results& R);
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
 
 	void			add_sphere		( Fsphere& S	);

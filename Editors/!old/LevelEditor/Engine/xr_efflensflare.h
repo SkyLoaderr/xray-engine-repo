@@ -89,7 +89,7 @@ protected:
 
 public:
 #ifndef _EDITOR
-	Collide::ray_cache	m_ray_cache;
+	collide::ray_cache	m_ray_cache;
 #endif
 public:
 						CLensFlare		();

@@ -106,9 +106,9 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			Fvector dir = Device.vCameraDirection;
 
 			Level().CurrentControlEntity()->setEnabled(false);
-			Collide::rq_result result;
+			collide::rq_result result;
 			BOOL reach_wall = Level().ObjectSpace.RayPick(pos, dir, 100.0f, 
-				Collide::rqtBoth, result) && !result.O;
+				collide::rqtBoth, result) && !result.O;
 			Level().CurrentControlEntity()->setEnabled(true);			
 			////////////////////////////////////
 			if (!reach_wall || result.range < 1) break;
@@ -165,7 +165,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 			{
 				u32 FullKickTime = Level().timeServer() - m_dwStartKickTime;
 				
-				Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+				collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 				CActor* pActor = smart_cast<CActor*>(RQ.O);
 				if (!pActor || pActor->g_Alive()) break;
 
@@ -298,7 +298,7 @@ void CActor::ActorUse()
 				smart_cast<CGameObject*>(m_pVehicleWeLookingAt));
 
 		}
-		Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
 		u16 element = BI_NONE;
 		if(object) 

@@ -475,12 +475,12 @@ IC	float current_cover					(CAI_Stalker *m_object)
 	m_object->Center					(position);
 	position.x							= m_object->Position().x;
 	position.z							= m_object->Position().z;
-	Collide::rq_result					ray_query_result;
+	collide::rq_result					ray_query_result;
 	BOOL								result = Level().ObjectSpace.RayPick(
 		position,
 		direction,
 		10.f,
-		Collide::rqtStatic,
+		collide::rqtStatic,
 		ray_query_result
 	);
 

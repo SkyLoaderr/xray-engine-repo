@@ -795,7 +795,7 @@ void CHelicopter::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 
 void CHelicopter::SetDestPosition (Fvector* pos)
 {
-	Collide::rq_result		cR;
+	collide::rq_result		cR;
 	Fvector down_dir;
 	Fvector point = *pos;
 
@@ -804,7 +804,7 @@ void CHelicopter::SetDestPosition (Fvector* pos)
 
 	point.y = boundingVolume.max.y+EPS_L;
 
-	Level().ObjectSpace.RayPick(point, down_dir, boundingVolume.max.y-boundingVolume.min.y+1.0f, Collide::rqtStatic, cR);
+	Level().ObjectSpace.RayPick(point, down_dir, boundingVolume.max.y-boundingVolume.min.y+1.0f, collide::rqtStatic, cR);
 	
 	point.y = point.y-cR.range;
 
@@ -849,13 +849,13 @@ float CHelicopter::GetDistanceToDestPosition()
 
 float CHelicopter::GetRealAltitude()
 {
-	Collide::rq_result		cR;
+	collide::rq_result		cR;
 	Fvector down_dir;
 
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
 
-	Level().ObjectSpace.RayPick(XFORM().c, down_dir, 1000.0f, Collide::rqtStatic, cR);
+	Level().ObjectSpace.RayPick(XFORM().c, down_dir, 1000.0f, collide::rqtStatic, cR);
 	
 	return cR.range;
 }

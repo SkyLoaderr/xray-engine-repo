@@ -159,7 +159,7 @@ struct STranspParam{
 	float						vis_threshold;
 	STranspParam(CLensFlare* p, const Fvector& _P, const Fvector& _D, float _f, float _vis_threshold):P(_P),D(_D),f(_f),parent(p),vis(1.f),vis_threshold(_vis_threshold){}
 };
-IC BOOL __stdcall material_callback(Collide::rq_result& result, LPVOID params)
+IC BOOL __stdcall material_callback(collide::rq_result& result, LPVOID params)
 {
 	STranspParam* fp= (STranspParam*)params;
 	float vis		= 1.f;
@@ -291,7 +291,7 @@ void CLensFlare::OnFrame(int id)
 		o_main->setEnabled	(FALSE);
 	}
 	STranspParam TP			(this,Device.vCameraPosition,vSunDir,1000.f,EPS_L);
-	Collide::ray_defs RD	(TP.P,TP.D,TP.f,0,Collide::rqtBoth);
+	collide::ray_defs RD	(TP.P,TP.D,TP.f,0,collide::rqtBoth);
 	if (m_ray_cache.result&&m_ray_cache.similar(TP.P,TP.D,TP.f)){
 		// similar with previous query == 0
 		TP.vis				= 0.f;
@@ -307,7 +307,7 @@ void CLensFlare::OnFrame(int id)
 	}
 	blend_lerp(fBlend,TP.vis,BLEND_DEC_SPEED,Device.fTimeDelta);
 
-//	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, Collide::rqtBoth, &m_ray_cache) )
+//	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, collide::rqtBoth, &m_ray_cache) )
 #endif
 	clamp( fBlend, 0.0f, 1.0f );
 

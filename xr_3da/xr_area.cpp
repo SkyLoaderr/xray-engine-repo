@@ -8,7 +8,7 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
-using namespace	Collide;
+using namespace	collide;
 
 IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
 

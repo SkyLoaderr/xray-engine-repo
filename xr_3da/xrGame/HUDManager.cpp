@@ -249,7 +249,7 @@ void __cdecl CHUDManager::outMessage(u32 C, const shared_str& from, LPCSTR msg, 
 	Msg			("- %s: %s",from,buffer);
 }
 
-Collide::rq_result&	CHUDManager::GetCurrentRayQuery	() 
+collide::rq_result&	CHUDManager::GetCurrentRayQuery	() 
 {
 	return m_pHUDCursor->RQ;
 }

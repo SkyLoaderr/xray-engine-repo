@@ -36,8 +36,8 @@ void CPoltergeist::StrangeSounds(const Fvector &position)
 		Fvector dir;
 		dir.random_dir();
 
-		Collide::rq_result	l_rq;
-		if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, Collide::rqtStatic, l_rq)) {
+		collide::rq_result	l_rq;
+		if (Level().ObjectSpace.RayPick(position, dir, TRACE_DISTANCE, collide::rqtStatic, l_rq)) {
 			if (l_rq.range < TRACE_DISTANCE) {
 
 				// Получить пару материалов

@@ -84,7 +84,7 @@ void CHUDCursor::Render()
 	Level().CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
 
-	if (Level().ObjectSpace.RayPick( p1, dir, dist, Collide::rqtBoth, RQ ))
+	if (Level().ObjectSpace.RayPick( p1, dir, dist, collide::rqtBoth, RQ ))
 		dist = RQ.range;
 
 	Level().CurrentEntity()->setEnabled(true);

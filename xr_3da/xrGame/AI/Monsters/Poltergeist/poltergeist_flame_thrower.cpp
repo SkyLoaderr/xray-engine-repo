@@ -84,9 +84,9 @@ void CPoltergeist::UpdateFlame()
 
 		if (element->time_started + m_flame_fire_delay < Level().timeServer()) {
 			// Test hit
-			Collide::rq_result rq;
+			collide::rq_result rq;
 			
-			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, Collide::rqtBoth, rq)) {
+			if (Level().ObjectSpace.RayPick(element->position, element->target_dir, m_flame_length, collide::rqtBoth, rq)) {
 				if ((rq.O == element->target_object) && (rq.range < m_flame_length)) {
 
 					NET_Packet		P;

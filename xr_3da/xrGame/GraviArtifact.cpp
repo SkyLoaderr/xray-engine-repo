@@ -57,11 +57,11 @@ void CGraviArtefact::UpdateCL()
 		if (m_fJumpHeight) {
 			Fvector dir; 
 			dir.set(0, -1.f, 0);
-			Collide::rq_result RQ;
+			collide::rq_result RQ;
 			setEnabled(false);
 			
 			//проверить высоту артифакта
-			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, Collide::rqtBoth, RQ)) 
+			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, collide::rqtBoth, RQ)) 
 			{
 				dir.y = 1.f; 
 				m_pPhysicsShell->applyImpulse(dir, 
