@@ -14,10 +14,11 @@ sound_wounded_base  =   sound_sidor_base + 10
 
 
 -- Стохе
-sound_stohe_base    =   global_sounds + 2000
-stohe_kamp_base     =   sound_stohe_base + 0
-stohe_tradeseller_base  =   sound_stohe_base + 10
-stohe_meet_base     =   sound_stohe_base + 20
+sound_stohe_base    		= global_sounds + 2000
+stohe_kamp_base     		= sound_stohe_base + 0
+stohe_tradeseller_base  	= sound_stohe_base + 10
+stohe_meet_base     		= sound_stohe_base + 20
+stohe_reaction_base     	= sound_stohe_base + 30
 
 -- Змей
 sound_zmey_base    =   global_sounds + 3000
