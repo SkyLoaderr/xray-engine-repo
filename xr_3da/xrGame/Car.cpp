@@ -963,21 +963,6 @@ bool CCar::DoorOpen(u32 id)
 	}
 }
 
-bool CCar::DoorUse(u32 id,eDoorAction action)
-{
-	switch(action) {
-	case daAny:
-		return DoorUse(id);
-		break;
-	case daOpen:
-		return DoorOpen(id);
-		break;
-	case daClose:
-		return DoorClose(id);
-	default: NODEFAULT;
-	}
-	return false;
-}
 float CCar::Parabola(float rpm)
 {
 	//float rpm_2=rpm*rpm;

@@ -13,13 +13,6 @@ class						CActor;
 
 class CEntityAction;
 
-enum eDoorAction
-{
-	daAny,
-	daOpen,
-	daClose
-};
-
 class CCar : 
 	public CEntity, 
 	public CScriptMonster,
@@ -37,6 +30,13 @@ protected:
 		ectFree
 	};
 public:
+	enum EDoorAction
+	{
+		daAny,
+		daOpen,
+		daClose
+	};
+
 	bool rsp,lsp,fwp,bkp,brp;
 	Fmatrix m_root_transform;
 	Fvector m_exit_position;
@@ -375,7 +375,6 @@ public:
 	bool					DoorOpen			(u32 id);
 	bool					DoorClose			(u32 id);
 	bool					DoorUse				(u32 id);
-	bool					DoorUse				(u32 id,eDoorAction action);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
 	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
@@ -387,6 +386,7 @@ public:
 	virtual void			shedule_Update		(u32 dt);
 	virtual void			renderable_Render	( ); 
 	virtual	bool			bfAssignMovement	(CEntityAction *tpEntityAction);
+	virtual	bool			bfAssignObject		(CEntityAction *tpEntityAction);
 
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_monster_space.h"
+#include "car.h"
 
 class CAbstractAction {
 public:
@@ -523,6 +524,7 @@ public:
 	CObject							*m_tpObject;
 	MonsterSpace::EObjectAction		m_tGoalType;
 	u32								m_dwQueueSize;
+	string32						m_caBoneName;
 
 							CObjectAction		()
 	{
@@ -538,7 +540,19 @@ public:
 		SetQueueSize		(dwQueueSize);
 	}
 
+							CObjectAction		(LPCSTR caBoneName, MonsterSpace::EObjectAction tObjectActionType)
+	{
+		SetObject			(caBoneName);
+		SetObjectAction		(tObjectActionType);
+	}
+
 			void			SetObject			(CLuaGameObject *tpLuaGameObject);
+
+			void			SetObject			(LPCSTR	caBoneName)
+	{
+		strcpy				(m_caBoneName,caBoneName);
+		m_bCompleted		= false;
+	}
 
 			void			SetObjectAction		(MonsterSpace::EObjectAction tObjectActionType)
 	{

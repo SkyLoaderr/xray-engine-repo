@@ -488,8 +488,10 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			]
 			.def(								constructor<>())
 			.def(								constructor<CLuaGameObject*,MonsterSpace::EObjectAction>())
+			.def(								constructor<LPCSTR,MonsterSpace::EObjectAction>())
 			.def("action",						&CObjectAction::SetObjectAction)
-			.def("object",						&CObjectAction::SetObject),
+			.def("object",						(void (CObjectAction::*)(LPCSTR))(CObjectAction::SetObject))
+			.def("object",						(void (CObjectAction::*)(CLuaGameObject*))(CObjectAction::SetObject)),
 			
 		class_<CActionCondition>("cond")
 			.enum_("cond")

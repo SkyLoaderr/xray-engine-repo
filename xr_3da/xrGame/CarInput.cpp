@@ -46,6 +46,35 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 	return	(true);
 }
 
+bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
+{
+	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+	if (l_tObjectAction.m_bCompleted || !l_tObjectAction.m_caBoneName || !strlen(l_tObjectAction.m_caBoneName))
+		return((l_tObjectAction.m_bCompleted = true) == false);
+
+	s16	l_sBoneID = PKinematics(Visual())->LL_BoneID(l_tObjectAction.m_caBoneName);
+	switch(l_tObjectAction.m_tGoalType) {
+		case MonsterSpace::eObjectActionActivate : {
+			if (!DoorOpen(l_sBoneID))
+				return((l_tObjectAction.m_bCompleted = true) == false);
+			break;
+		}
+		case MonsterSpace::eObjectActionDeactivate : {
+			if (!DoorClose(l_sBoneID))
+				return((l_tObjectAction.m_bCompleted = true) == false);
+			break;
+		}
+		case MonsterSpace::eObjectActionUse : {
+			if (!DoorUse(l_sBoneID))
+				return((l_tObjectAction.m_bCompleted = true) == false);
+			break;
+		}
+		default : 
+			return	((l_tObjectAction.m_bCompleted = true) == false);
+	}
+	return			(false);
+}
+
 void CCar::vfProcessInputKey	(int iCommand, bool bPressed)
 {
 	if (bPressed)
