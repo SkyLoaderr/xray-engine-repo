@@ -18,7 +18,7 @@ public:
 
 	void				Create			(LPCSTR Name, u32 w, u32 h, D3DFORMAT f);
 	void				Destroy			();
-	IC BOOL				Valid			()	{ return !pTexture; }
+	IC BOOL				Valid			()	{ return !!pTexture; }
 };
 struct ENGINE_API		resptrcode_crt	: public resptr_base<CRT>
 {

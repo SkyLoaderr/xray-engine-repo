@@ -215,8 +215,15 @@ void CRenderTarget::End		()
 	curWidth					= Device.dwWidth;
 	curHeight					= Device.dwHeight;
 	
+	/*
+	Msg	("blur:%f, gray:%f, dh:%f, dv:%f, noise:%f",
+		param_blur,param_gray,param_duality_h,param_duality_v,param_noise
+		);
+	*/
 	if (!Perform())							return;
+	//	Msg ("!---- PP-1");
 	if (!psDeviceFlags.test(rsPostprocess))	return;
+	//	Msg ("!---- PP-2");
 	
 	// Draw full-screen quad textured with our scene image
 	u32	Offset;
