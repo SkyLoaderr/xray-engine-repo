@@ -147,9 +147,9 @@ void __cdecl logThread(void *dummy)
 	string256	log_name,log_user;
 	DWORD		buffer_size		= 128;
 	GetUserName	(log_user,&buffer_size);
-	strconcat	(log_name,"build_",strlwr(log_user),".log");
-	FILE *F = fopen(log_name, "wt");
-	R_ASSERT(F);
+	strconcat	(log_name,"logs\\build_",strlwr(log_user),".log");
+	FILE *F		= fopen(log_name, "wt");
+	R_ASSERT	(F);
 
 	logWindow = CreateDialog(
 		HINSTANCE(GetModuleHandle(0)),
