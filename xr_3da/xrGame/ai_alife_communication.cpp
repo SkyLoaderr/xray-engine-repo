@@ -104,8 +104,10 @@ void CSE_ALifeSimulator::vfAttachOwnerItems(CSE_ALifeHumanAbstract *tpALifeHuman
 	ITEM_P_IT				I = tpItemVector.begin();
 	ITEM_P_IT				E = tpItemVector.end();
 	for ( ; I != E; I++)
-		if ((!tpOwnItems || (std::find(tpOwnItems->begin(),tpOwnItems->end(),*I) != tpOwnItems->end())) && tpALifeHumanAbstract->bfCanGetItem(*I))
+		if ((!tpOwnItems || (std::find(tpOwnItems->begin(),tpOwnItems->end(),*I) != tpOwnItems->end())) && tpALifeHumanAbstract->bfCanGetItem(*I)) {
+			(*I)->ID_Parent	= tpALifeHumanAbstract->ID;
 			tpALifeHumanAbstract->children.push_back((*I)->ID);
+		}
 }
 
 void CSE_ALifeSimulator::vfRestoreItems(CSE_ALifeTraderAbstract *tpALifeTraderAbstract, ITEM_P_VECTOR &tpItemVector)
@@ -328,14 +330,14 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract
 		return			(true);
 
 	if (iBallance < 0) {
-		if (tpALifeTraderAbstract1->m_dwMoney + iBallance >= 0) {
+		if (int(tpALifeTraderAbstract1->m_dwMoney) >= -iBallance) {
 			tpALifeTraderAbstract1->m_dwMoney += iBallance;
 			tpALifeTraderAbstract2->m_dwMoney -= iBallance;
 			return	(true);
 		}
 	}
 	else
-		if (tpALifeTraderAbstract2->m_dwMoney - iBallance >= 0) {
+		if (int(tpALifeTraderAbstract2->m_dwMoney) >= iBallance) {
 			tpALifeTraderAbstract1->m_dwMoney += iBallance;
 			tpALifeTraderAbstract2->m_dwMoney -= iBallance;
 			return	(true);
@@ -498,22 +500,27 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			}
 		}
 		else
-			k = 0;
+			k			= 0;
 	}
 
-	int				l_iItemCount1 = tpALifeHumanAbstract1->children.size();
-	int				l_iItemCount2 = tpALifeHumanAbstract2->children.size();
+	int					l_iItemCount1 = tpALifeHumanAbstract1->children.size();
+	int					l_iItemCount2 = tpALifeHumanAbstract2->children.size();
 
-	vfAttachOwnerItems(tpALifeHumanAbstract1,m_tpItemVector,&m_tpItems1);
-	vfAttachOwnerItems(tpALifeHumanAbstract2,m_tpItemVector,&m_tpItems2);
+	vfAttachOwnerItems	(tpALifeHumanAbstract1,m_tpItemVector,&m_tpItems1);
+	vfAttachOwnerItems	(tpALifeHumanAbstract2,m_tpItemVector,&m_tpItems2);
 	
+	ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+	m_tpItemVector.erase(I,m_tpItemVector.end());
+
 	if (!m_tpItemVector.empty()) {
 		vfAttachOwnerItems(tpALifeHumanAbstract1,m_tpItemVector);
 		vfAttachOwnerItems(tpALifeHumanAbstract2,m_tpItemVector);
+		I				= remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+		m_tpItemVector.erase(I,m_tpItemVector.end());
 	}
 	
-	l_iItemCount1	= tpALifeHumanAbstract1->children.size() - l_iItemCount1;
-	l_iItemCount2	= tpALifeHumanAbstract2->children.size() - l_iItemCount2;
+	l_iItemCount1		= tpALifeHumanAbstract1->children.size() - l_iItemCount1;
+	l_iItemCount2		= tpALifeHumanAbstract2->children.size() - l_iItemCount2;
 
 	if (m_tpItemVector.empty() && !bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,l_iItemCount1,l_iItemCount2,ifComputeBallance(tpALifeHumanAbstract1,m_tpItems2) - ifComputeBallance(tpALifeHumanAbstract2,m_tpItems1))) {
 		vfRestoreItems	(tpALifeHumanAbstract1,m_tpItems1);
