@@ -206,13 +206,16 @@ void CObject::shedule_Update	( u32 T )
 	if (bUpdate)		{	
 		spatial_move	();
 	} else {
-		if (!fsimilar(Radius(),spatial.radius,eps_R))	spatial_move();
-		else			{
-			Fvector			C;
-			Center			(C);
-			if (!C.similar(spatial.center,eps_P))	spatial_move();
+		if (spatial.node_ptr)	
+		{	// Object registered
+			if (!fsimilar(Radius(),spatial.radius,eps_R))	spatial_move();
+			else			{
+				Fvector			C;
+				Center			(C);
+				if (!C.similar(spatial.center,eps_P))	spatial_move();
+			}
+			// else nothing to do :_)
 		}
-		// else nothing to do :_)
 	}
 }
 
