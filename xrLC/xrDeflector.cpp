@@ -155,10 +155,10 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	
 	// UV rect (dedicated)
 	UVpoint		d_min,d_max,d_size;
-	d_min.u		= (float(base_u)+.4999f)/float(lm_u);
-	d_min.v		= (float(base_v)+.4999f)/float(lm_v);
-	d_max.u		= (float(base_u+size_u)-.5001f)/float(lm_u);
-	d_max.v		= (float(base_v+size_v)-.5001f)/float(lm_v);
+	d_min.u		= (float(base_u)+.5f)/float(lm_u);
+	d_min.v		= (float(base_v)+.5f)/float(lm_v);
+	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
+	d_max.v		= (float(base_v+size_v)-.5f)/float(lm_v);
 	if (d_min.u>d_max.u)	d_min.u=d_max.u=(d_min.u+d_max.u)/2;
 	if (d_min.v>d_max.v)	d_min.v=d_max.v=(d_min.v+d_max.v)/2;
 	d_size.sub	(d_max,d_min);
@@ -218,10 +218,10 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 	{
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,255-BORDER);
+		blit	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
 		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
 		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
-		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,255-BORDER);
+		blit_r	(lm.pSurface,512,512,D->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }

@@ -135,7 +135,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 			{
 				DWORD C = *S++;
 				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=(255-BORDER))?255:0;
+				*P ++	= (A>=(254-BORDER))?255:0;
 			}
 		}
 	} else {
@@ -147,7 +147,7 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 			{
 				DWORD C = lm[x*s_x+y];
 				DWORD A = RGBA_GETALPHA(C);
-				*P ++	= (A>=(255-BORDER))?255:0;
+				*P ++	= (A>=(254-BORDER))?255:0;
 			}
 		}
 	}
