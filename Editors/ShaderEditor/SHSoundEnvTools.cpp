@@ -234,7 +234,7 @@ void CSHSoundEnvTools::UpdateProperties()
         PHelper.CreateFloat		(items, "Environment\\Reverb\\In Gain",			&S.R_InGain, 	-96,	0, 		0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Mix",				&S.R_Mix,		-96,	0, 		0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Time",			&S.R_Time,		0.01f,	3000, 	0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\Ratio",			&S.R_HFRatio,	0.001f,	0.999f, 0.01f,	3);
+        PHelper.CreateFloat		(items, "Environment\\Reverb\\HF Ratio",		&S.R_HFRatio,	0.001f,	0.999f, 0.01f,	3);
         P=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity");
         P->SetEvents			(0,0,0,0,OnRevResetClick);
 
