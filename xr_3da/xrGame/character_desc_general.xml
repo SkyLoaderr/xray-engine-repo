@@ -3,7 +3,7 @@
 <!-- INFORMATION  ABOUT A SPECIFIC CHARACTERS IN GAME-->
 
 <xml>
-	<specific_character id="default">
+	<specific_character id="default" team_default = "1">
 		<name>Undefined Novice</name>
 		<bio></bio>
 			
