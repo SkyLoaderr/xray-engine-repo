@@ -117,6 +117,27 @@ inv_grid_x			= 7
 inv_grid_y			= 19
 cost				= 10
 
+[krot_flash]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\krot_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_2.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= "Krot" flash
+inv_weight			= 0.1
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 3
+inv_grid_y			= 19
+cost				= 0
+
 [quest_case_02]
 GroupControlSection	= spawn_group
 discovery_dependency = 
