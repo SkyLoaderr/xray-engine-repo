@@ -315,7 +315,6 @@ void CRenderDevice::End()
 {
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
-	g_bRendering = 	FALSE;
 
     seqRender.Process						(rp_Render);
     
@@ -323,6 +322,8 @@ void CRenderDevice::End()
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
 	pSystemFont->OnRender();
     Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
+
+	g_bRendering = 	FALSE;
 
 	// end scene
 	RCache.OnFrameEnd();
