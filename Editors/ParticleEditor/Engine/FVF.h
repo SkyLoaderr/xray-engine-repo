@@ -7,7 +7,7 @@
 namespace FVF {
 	struct L {
 		Fvector		p;
-		u32		color;
+		u32			color;
 		IC void		set(const L& src) {*this = src;};
 		IC void		set(float x, float y, float z, u32 C) { p.set(x,y,z); color=C; }
 		IC void		set(const Fvector& _p, u32 C) { p.set(_p); color=C; }
@@ -35,7 +35,7 @@ namespace FVF {
 
 	struct TL {
 		Fvector4	p;
-		u32		color;
+		u32			color;
 		Fvector2	uv;
 		IC void	set	(const TL& src)
 		{	*this = src; };
@@ -63,7 +63,7 @@ namespace FVF {
 
 	struct TL2uv {
 		Fvector4	p;
-		u32		color;
+		u32			color;
 		Fvector2	uv[2];
 		IC void	set	(const TL2uv& src)
 		{	*this = src; };
@@ -94,7 +94,7 @@ namespace FVF {
 	struct TL4uv {
 		Fvector4	p;
 		u32			color;
-		Fvector4	uv[2];
+		Fvector2	uv[4];
 		IC void	set	(const TL4uv& src)
 		{	*this = src; };
 		IC void	set	(float x, float y, u32 c, Fvector2& t0, Fvector2& t1)
