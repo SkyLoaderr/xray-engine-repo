@@ -236,7 +236,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 	}
 	if (0==(flags&LP_dont_sun))
 	{
-		R_Light	*L	= &*lights.sun.begin(), *E = &*lights.sun.end();
+		R_Light	*L	= &*(lights.sun.begin()), *E = &*(lights.sun.end());
 		for (;L!=E; L++)
 		{
 			if (L->type==LT_DIRECT) {
@@ -463,7 +463,7 @@ BOOL	compress_RMS			(b_texture& lm, u32 rms, u32& w, u32& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
+VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
 {
 	try {
 		b_texture&		lm = layers.back().lm;
@@ -495,7 +495,7 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH
 	}
 }
 
-VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
+VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();

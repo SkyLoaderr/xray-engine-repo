@@ -234,6 +234,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	u32 ID,Start;
 	if (b_R2)
 	{
+#pragma todo("R2 saving incorrect")
 		VDeclarator		D;
 		D.set			(r2_decl);
 

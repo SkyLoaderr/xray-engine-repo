@@ -12,12 +12,11 @@ struct UVtri : public _TCF
 };
 
 typedef hash2D<UVtri*,128,128>	HASH;
-typedef xr_vector<R_Light>		LSelection;
 
 class CDeflector
 {
 public:
-	xr_vector<UVtri>		UVpolys;
+	xr_vector<UVtri>	UVpolys;
 	Fvector				N;
 	struct Layer
 	{
@@ -48,10 +47,10 @@ public:
 	Layer*	GetLayer			(int base_id);
 	u32		GetFaceCount()		{ return (u32)UVpolys.size();	};
 		
-	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);
-	VOID	L_Direct			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
-	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, LSelection* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
-	VOID	L_Calculate			(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H  );
+	VOID	Light				(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H	);
+	VOID	L_Direct			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
+	VOID	L_Direct_Edge		(CDB::COLLIDER* DB, base_lighting* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip);
+	VOID	L_Calculate			(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 
