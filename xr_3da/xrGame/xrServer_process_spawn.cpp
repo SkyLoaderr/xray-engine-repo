@@ -83,7 +83,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		SendTo				(sender,Packet,net_flags(TRUE));
 	}
 
-	E->s_flags			&=	~M_SPAWN_OBJECT_ASPLAYER;
-	E->Spawn_Write		(Packet,FALSE	);
-	SendBroadcast		(sender,Packet,net_flags(TRUE));
+	if (GAME!=GAME_SINGLE)	E->s_flags		&=	~M_SPAWN_OBJECT_ASPLAYER;
+	E->Spawn_Write			(Packet,FALSE	);
+	SendBroadcast			(sender,Packet,net_flags(TRUE));
 }
