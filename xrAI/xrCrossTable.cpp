@@ -71,7 +71,7 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 	tMarks.assign		(tMap.header().vertex_count(),false);
 	{
 		for (int i=0; i<iVertexCount; i++)
-			vfRecurseMark(tMap,tMarks,tGraph.vertex(i).level_vertex_id());
+			vfRecurseMark(tMap,tMarks,tGraph.vertex(i)->level_vertex_id());
 		tMarks.flip		();
 	}
 
@@ -99,7 +99,7 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 				for (int k=0; k<(int)tMap.header().vertex_count(); k++)
 					tDistances[i][k] = tDistances[i - 1][k];
 			
-			vfRecurseUpdate(tDistances[i],tMap,tMarks,tGraph.vertex(i).level_vertex_id(),tGraph.vertex(i).level_point().distance_to(tMap.vertex_position(tGraph.vertex(i).level_vertex_id())));
+			vfRecurseUpdate(tDistances[i],tMap,tMarks,tGraph.vertex(i)->level_vertex_id(),tGraph.vertex(i)->level_point().distance_to(tMap.vertex_position(tGraph.vertex(i)->level_vertex_id())));
 			
 			Progress(jj + float(i+1)*kk);
 		}
