@@ -130,9 +130,9 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 		return(FALSE);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterBiting						*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
+	CSE_ALifeMonsterChimera	*l_tpSE_Chimera	= dynamic_cast<CSE_ALifeMonsterChimera*>(e);
 	
-	cNameVisual_set					(l_tpSE_Biting->get_visual());
+	cNameVisual_set					(l_tpSE_Chimera->get_visual());
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	

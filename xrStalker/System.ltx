@@ -3586,6 +3586,130 @@ LeftFireBone		= bip01_l_finger02
 RightFireBone		= bip01_r_finger02
 
 ;-----------------------------------------------------------------------------------
+; Chimera
+;-----------------------------------------------------------------------------------
+[m_chimera_e]
+GroupControlSection	= spawn_group
+$spawn               = monsters\Chimera			; option for Level Editor
+$npc			     = on						; option for Level Editor
+;$prefetch 			 = 16
+Scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 40						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
+visual				 = monsters\chimera\chimera_1
+
+cform                = skeleton					; collision class
+class                = AI_HIMER					; AI class
+
+ph_box0_center 		 = 0.0,  0.9,  0.0
+ph_box0_size 		 = 0.35, 0.9,  0.35
+ph_box1_center 		 = 0.0,  0.6,  0.0
+ph_box1_size 		 = 0.40, 0.6,  0.40
+ph_foot_center		 = 0.0,  0.2,  0.0
+ph_foot_size 		 = 0.20, 0.23, 0.20
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
+ph_mass 		     = 170.
+cost			     = 1
+ph_friction_air      = 0.01
+ph_friction_ground   = 7.0
+ph_friction_wall     = 4.0						; ???
+
+bone_torso			 = bip01_spine1 			; bone name
+bone_head			 = bip01_head				; bone name
+weapon_usage		 = 0						; boolean
+
+EyeYShift		     = 0						; meters
+
+MinVoiceInterval	 =  30000					; milliseconds
+MaxVoiceInterval	 = 120000					; milliseconds
+VoiceRefreshRate	 =   2500					; milliseconds
+
+ChangeActiveStateProbability = 1.0 				; range [0..1]
+ActiveCountPercent	 =   16						; percents
+StandingCountPercent =   16						; percents
+PassiveScheduleMin	 =  100						; microseconds
+PassiveScheduleMax   = 1000						; microseconds
+
+LostMemoryTime		 = 20000					; milliseconds
+LostRecoilTime		 =  2000					; milliseconds
+UnderFireDistance	 =   100					; meters
+RetreatTime			 = 10000					; milliseconds
+RetreatDistance		 =   100					; meters
+AttackStraightDistance = 10						; meters
+StableDistance		 =     5					; meters
+WallMinTurnValue	 =    90 					; degrees
+WallMaxTurnValue	 =   270					; degrees
+
+AngleSpeed			 = 0.2	            ; degrees per second
+GoalChangeDelta	 	 = 10.0				; seconds
+GoalVariation	  	 = 10.0, 0.0, 20.0	; each coordinate in meters
+AngularStandSpeed	 = 360				; degrees
+AngularMinSpeed		 = 360				; degrees
+AngularMaxSpeed		 = 30				; degrees
+AngularAttackSpeed	 = 10				; degrees
+
+MoraleDeathDistance	 = 50				; meters
+SoundThreshold		 = 0.06             ; range [0..1]
+
+ActionRefreshRate	 = 500			; milliseconds
+MaxHealthValue		 = 15			; range [0..200]
+
+EatMemberCorpses	 = 1			; range {0,1}
+Cannibalism			 = 1			; range {0,1}
+EatCorpseInterval	 = 600000		; milliseconds
+
+corp_mass			 = 500			;
+
+EyeFov				 = 100;
+EyeRange			 = 70;
+Health				 = 30;
+MinSpeed			 = .5;
+MaxSpeed			 = 1.5;
+AttackSpeed			 = 4.0;
+MaxPursuitRadius	 = 100;
+MaxHomeRadius		 = 10;
+
+MoraleSuccessAttackQuant = 20;
+MoraleDeathQuant	 = -10;
+MoraleFearQuant		 = -20;
+MoraleRestoreQuant	 =  10;
+MoraleRestoreTimeInterval = 3000;
+MoraleMinValue		 = 0;
+MoraleMaxValue		 = 100;
+MoraleNormalValue	 = 66;
+
+HitPower			 = 30.0;
+HitInterval			 = 1500;
+AttackDistance		 = 0.7f;
+AttackAngle			 = 45;
+AttackSuccessProbability = 0.5f;
+
+;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight,fEnemyViewDeviationWeight
+selector_retreat         =      50.0,             -100.0,            1000.0,                 1000.0,                0.0,                   0.0,        100000.0,                 0.0,                   000.0
+;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
+selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
+
+terrain				 = 255,255,255,255,30,40
+
+; sound
+sound_test			 = monsters\flesh\test
+
+;animation
+Ani_StandIdle		 = attack_0,attack_1
+Ani_StandWalk		 = lie_eat_0, lie_eat_1, lie_eat_2, lie_eat_3
+
+; Fire Bones
+LeftFireBone		= bip01_l_finger02	
+RightFireBone		= bip01_r_finger02
+
+
+;-----------------------------------------------------------------------------------
 ; Trader
 ;-----------------------------------------------------------------------------------
 [m_trader]
