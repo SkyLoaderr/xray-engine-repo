@@ -93,4 +93,6 @@ enum
 };
 
 extern void						xrRender_initconsole	();
+extern BOOL						xrRender_test_hw		();
+
 #endif

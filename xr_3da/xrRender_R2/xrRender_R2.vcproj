@@ -365,6 +365,9 @@
 				RelativePath="r2_sector_detect.cpp">
 			</File>
 			<File
+				RelativePath=".\r2_test_hw.cpp">
+			</File>
+			<File
 				RelativePath="r2_types.h">
 			</File>
 			<File

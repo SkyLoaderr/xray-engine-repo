@@ -12,13 +12,14 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 {
 	switch (ul_reason_for_call)
 	{
-	case DLL_PROCESS_ATTACH:
-		::Render			= &RImplementation;
-		xrRender_initconsole();
-		break;
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
+	case DLL_PROCESS_ATTACH	:
+		if (!xrRender_test_hw())	return FALSE;
+		::Render					= &RImplementation;
+		xrRender_initconsole		();
+		break	;
+	case DLL_THREAD_ATTACH	:
+	case DLL_THREAD_DETACH	:
+	case DLL_PROCESS_DETACH	:
 		break;
 	}
 	return TRUE;

@@ -55,6 +55,8 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
+BOOL	
+
 void					CRender::create					()
 {
 	m_skinning			= -1;
