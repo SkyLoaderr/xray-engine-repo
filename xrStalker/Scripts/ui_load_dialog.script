@@ -36,14 +36,22 @@ function load_dialog:FillList()
 	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
 	local f_cnt = flist:Size()
 	
+	----------------------------------------------------------------
+--[[	printf("---FS_sort_by_modif_down")
+	fs_list:Sort(FS.FS_sort_by_modif_down)
+	for it=0,sz-1 do
+	local fl = fs_list:GetAt(it)
+		printf("file name=%s; file_size=%d;file_modif=%s",fl:NameFull(),fl:Size(),fl:Modif() )
+	end]]
+	----------------------------------------------------------------
+	
 	for	it=0, f_cnt-1 	do
-		local file		=	flist:GetAt(it)	
-		
-		printf("file[%d]=%s",it,file)
+		local file		=	flist:GetAt(it)			
 		
 		local ext = string.sub(file, string.len(file) - 3)
+		
 		if ext == ".sav" then
-			file = string.sub(file,0 , (string.len(file) - 4))
+			file = "[" .. file:Modif() .. "]" .. string.sub(file,0 , (string.len(file) - 4))
 
 			self:AddItemToList(file)
 		end
