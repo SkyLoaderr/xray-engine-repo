@@ -904,15 +904,26 @@ void CPHElement::			add_Sphere	(const Fsphere&	V){
 
 void CPHElement::			create_Sphere	(Fsphere&	V){
 														dGeomID geom,trans;
+														dVector3 local_position={
+															V.P.x-m_mass_center.x,
+															V.P.y-m_mass_center.y,
+															V.P.z-m_mass_center.z};
 														geom=dCreateSphere(0,V.R);
 														m_geoms.push_back(geom);
-														dGeomSetPosition(geom,V.P.x,V.P.y,V.P.z);
-														trans=dCreateGeomTransform(0);
-														dGeomTransformSetGeom(trans,m_geoms.back());
+														dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
+														if(m_spheras_data.size()+m_boxes_data.size()>1)
+															trans=dCreateGeomTransform(0);
+														else
+															trans=dCreateGeomTransform(ph_world->GetSpace());
+														dGeomTransformSetGeom(trans,geom);
 														dGeomSetBody(trans,m_body);
 														m_trans.push_back(trans);
-														dGeomGroupAdd(m_group,m_trans.back());
-														dGeomTransformSetInfo(m_trans.back(),1);		
+														if(m_spheras_data.size()+m_boxes_data.size()>1)
+																	dGeomGroupAdd(m_group,trans);
+														dGeomTransformSetInfo(trans,1);		
+														dGeomCreateUserData(geom);
+														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
+														dGeomGetUserData(geom)->material=0;
 														};
 void CPHElement::			build	(dSpaceID space){
 
@@ -1055,7 +1066,8 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 	Fvector& pos=(*i_sphere).P;
 	Fvector l;
 	l.sub(pos,mc);
-	dMassSetSphere(&m,density,(*i_sphere).R);
+	dMassSetSphere(&m,1,(*i_sphere).R);
+	dMassAdjust(&m,4.f/3.f*M_PI*(*i_sphere).R*(*i_sphere).R*(*i_sphere).R*density);
 	dMassTranslate(&m,l.x,l.y,l.z);
 	dMassAdd(&m_mass,&m);
 
@@ -1460,12 +1472,13 @@ void CPHElement::CallBack(CBoneInstance* B){
 	Start();
 	Fmatrix global_transform;
 	global_transform.set(m_shell->mXFORM);
-	global_transform.mulB(mXFORM);
+
 	if(m_parent_element){
 		global_transform.mulB(m_parent_element->mXFORM);
 	}
 	else
 		m_shell->Activate();
+	global_transform.mulB(mXFORM);
 	SetTransform(global_transform);
 
 
@@ -1509,16 +1522,25 @@ void CPHElement::CallBack(CBoneInstance* B){
 //	bone.mulB(inv_shell);
 //	B->mTransform.set(bone);
 	Fmatrix parent;
-	InterpolateGlobalTransform(&B->mTransform);
+	
 	if(m_parent_element){
+	InterpolateGlobalTransform(&B->mTransform);
 	m_parent_element->InterpolateGlobalTransform(&parent);
 	parent.invert();
-	B->mTransform.mulB(parent);
+	B->mTransform.mulA(parent);
 	}
 	else{
-		parent.set(m_shell->mXFORM);
+		//InterpolateGlobalTransform(&B->mTransform);
+		//parent.set(m_shell->mXFORM);
+		//parent.invert();
+		//B->mTransform.mulA(parent);
+
+
+		InterpolateGlobalTransform(&m_shell->mXFORM);
+		parent.set(B->mTransform);
 		parent.invert();
-		B->mTransform.mulA(parent);
+		m_shell->mXFORM.mulB(parent);
+		
 	}
 }
 

@@ -1116,7 +1116,12 @@ void CActor::create_Skeleton(){
 
 	CPhysicsElement* pelvis=P_create_Element				();
 	instance.set_callback(m_phSkeleton->GetBonesCallback(),pelvis);
-	pelvis->add_Box(M->LL_GetBox(id));
+	//pelvis->add_Box(M->LL_GetBox(id));
+	Fsphere sphere;
+	sphere.P.set(0,0,0);
+	sphere.R=0.3f;
+	pelvis->add_Sphere(sphere);
+	pelvis->setMass(80.f);
 	m_phSkeleton->add_Element(pelvis);
 	Fmatrix m;
 	m.identity();
