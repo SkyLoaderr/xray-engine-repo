@@ -18,7 +18,7 @@ typedef CDataStorage<float,u32,u32,true,24,8>							CHeapDataStorage;
 typedef CPathManager<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
 typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,u32,float>	CAStarSearch;
 
-#define TIME_TEST
+//#define TIME_TEST
 
 void path_test(LPCSTR caLevelName)
 {
@@ -57,7 +57,7 @@ void path_test(LPCSTR caLevelName)
 			u32(-1),
 			6000,
 			u32(-1)
-			);
+		);
 		a_star->find		(*data_storage,*path_manager,*graph);
 		u32 v = data_storage->get_visited_node_count(), v1;
 		float f;
