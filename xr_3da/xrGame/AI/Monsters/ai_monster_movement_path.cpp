@@ -21,13 +21,13 @@ void CMonsterMovement::get_intermediate()
 	Fvector	dir;
 	if (m_target_type == eMoveToTarget) {
 		dir.sub						(m_target.position, Position());
-		dir.normalize				();
+		dir.normalize_safe			();
 		m_intermediate.position		= m_target.position;
 	} else if (m_target_type == eRetreatFromTarget){
 		VERIFY(m_intermediate.node == u32(-1));
 		
 		dir.sub						(Position(), m_target.position);
-		dir.normalize				();
+		dir.normalize_safe			();
 		m_intermediate.position.mad	(Position(), dir, MAX_PATH_DISTANCE - 1.f);
 	}
 	

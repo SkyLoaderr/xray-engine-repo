@@ -54,26 +54,44 @@ void CJumpingAbility::jump(CObject *obj, u32 vel_mask)
 {
 	if (m_active) return;
 	
-	m_object->MotionMan.TA_Activate(m_animation_holder);
-	
-	m_blend_speed		= -1.f;
-
 	m_velocity_mask		= vel_mask;
 	m_target_object		= obj;
-	m_target_position	= get_target(obj);
 
-	m_object->m_velocity_angular	= 3.f;
-	m_object->DirMan.face_target	(obj);
+	start_jump			(get_target(obj));
+}
+
+void CJumpingAbility::jump(const Fvector &point, u32 vel_mask)
+{
+	if (m_active) return;
+
+	m_velocity_mask		= vel_mask;
+	m_target_object		= 0;
+
+	start_jump			(point);
+}
+
+void CJumpingAbility::start_jump(const Fvector &point)
+{
+	m_object->MotionMan.TA_Activate	(m_animation_holder);
 	
+	m_blend_speed					= -1.f;
+	m_target_position				= point;
+
+	//m_object->m_velocity_angular	= 3.f;
+	//m_object->DirMan.face_target	(point);
+
 	m_active			= true;
 	m_velocity_bounced	= false;
 	m_object_hitted		= false;
 
 	m_time_started		= 0;
 
+	m_enable_bounce		= true;
+
 	// lock control blocks
 	m_object->CriticalActionInfo->set(CAF_LockFSM | CAF_LockPath);
 }
+
 
 void CJumpingAbility::update_frame()
 {
@@ -189,19 +207,24 @@ void CJumpingAbility::on_TA_change(IEventData *p_data)
 void CJumpingAbility::on_velocity_bounce(IEventData *p_data)
 {
 	if (!m_active) return;
-	
+
 	CEventVelocityBounce *data = (CEventVelocityBounce *)p_data;
 	if ((data->m_ratio < 0) && !m_velocity_bounced) {
 		if (is_on_the_ground()) {
 			m_velocity_bounced	= true;
 			build_line			();
-		} else stop();
+		} else {
+			if (!m_enable_bounce) {
+				m_enable_bounce = true;
+			} else stop();
+		}
 	}
 }
 
 void CJumpingAbility::hit_test() 
 {
-	if (m_object_hitted) return;
+	if (m_object_hitted)	return;
+	if (!m_target_object)	return;
 	
 	// Проверить на нанесение хита во время прыжка
 	Fvector trace_from;

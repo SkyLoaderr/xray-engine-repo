@@ -9,19 +9,24 @@ class CChimera : public CBaseMonster, public CJumpingAbility {
 
 	bool		b_upper_state;
 
-	enum EMovementParametersChimera {
-		eVelocityParameterUpperWalkFwd		= eVelocityParameterCustom << 1,
-		eVelocityParameterJumpOne			= eVelocityParameterCustom << 2,
-		eVelocityParameterJumpTwo			= eVelocityParameterCustom << 3,
-
-		eVelocityParamsJump					= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
-		
-		eVelocityParamsUpperWalkFwd			= eVelocityParameterStand | eVelocityParameterUpperWalkFwd,
-	};
 	
 	SVelocityParam	m_fsVelocityWalkUpper;
 	SVelocityParam	m_fsVelocityJumpOne;
 	SVelocityParam	m_fsVelocityJumpTwo;
+	SVelocityParam	m_fsVelocityRunAttack;
+
+public:
+	
+	enum EMovementParametersChimera {
+		eVelocityParameterUpperWalkFwd		= eVelocityParameterCustom << 1,
+		eVelocityParameterJumpOne			= eVelocityParameterCustom << 2,
+		eVelocityParameterJumpTwo			= eVelocityParameterCustom << 3,
+		eVelocityParameterRunAttack			= eVelocityParameterCustom << 4,
+
+		eVelocityParamsJump					= eVelocityParameterJumpOne | eVelocityParameterJumpTwo,
+		eVelocityParamsUpperWalkFwd			= eVelocityParameterStand | eVelocityParameterUpperWalkFwd,
+		eVelocityParamsRunAttack			= eVelocityParameterRunAttack | eVelocityParameterStand, 
+	};
 
 
 public:
@@ -41,6 +46,8 @@ public:
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
+
+	virtual u32		get_run_attack_velocity_mask() {return eVelocityParamsRunAttack;}
 };
 
 

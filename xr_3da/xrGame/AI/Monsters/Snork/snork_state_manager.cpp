@@ -11,7 +11,10 @@
 #include "../states/monster_state_hitted.h"
 #include "../states/state_look_point.h"
 
+#include "../states/state_test_look_actor.h"
+
 #include "../critical_action_info.h"
+
 
 
 CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
@@ -24,7 +27,8 @@ CStateManagerSnork::CStateManagerSnork(CSnork *obj) : inherited(obj)
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CSnork> >	(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CSnork> >				(obj));
 
-	add_state(eStateFindEnemy,			xr_new<CStateMonsterLookToPoint<CSnork> >			(obj));
+	add_state(eStateFindEnemy,			xr_new<CStateMonsterTurnAwayFromActor<CSnork> >			(obj));
+	add_state(eStateFakeDeath,			xr_new<CStateMonsterLookActor<CSnork> >			(obj));
 }
 
 CStateManagerSnork::~CStateManagerSnork()
@@ -66,13 +70,10 @@ void CStateManagerSnork::execute()
 		else			state_id = eStateRest;
 	}
 
+	state_id = eStateFindEnemy;
+
 	if (state_id == eStateAttack) {
-		if (!object->MotionMan.IsCriticalAction()) {
-			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
-			if (object->CJumpingAbility::can_jump(target)) {
-				object->try_to_jump();
-			}
-		}
+		if (!object->MotionMan.IsCriticalAction()) object->try_to_jump();
 	}
 
 	if (object->CriticalActionInfo->is_fsm_locked()) return;

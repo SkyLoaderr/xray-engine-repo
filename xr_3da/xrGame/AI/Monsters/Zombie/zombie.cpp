@@ -115,8 +115,8 @@ void CZombie::vfAssignBones()
 	// Установка callback на кости
 	bone_spine =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_spine"));
 	bone_head =		&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
-	bone_spine->set_callback(BoneCallback,this);
-	bone_head->set_callback(BoneCallback,this);
+	//bone_spine->set_callback(BoneCallback,this);
+	//bone_head->set_callback(BoneCallback,this);
 
 	// Bones settings
 	Bones.Reset();
@@ -140,6 +140,8 @@ BOOL CZombie::net_Spawn (LPVOID DC)
 void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
 {
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+
+	if (!g_Alive()) return;
 	
 	if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
 		if (!MotionMan.TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Level().timeServer()) && (GetHealth() < health_death_threshold)) {

@@ -27,11 +27,6 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 	m_time_last_faced			= Level().timeServer();
 }
 
-void CDirectionManager::face_target(const CObject *obj, u32 delay)
-{
-	face_target	(obj->Position(), delay);
-}
-
 void CDirectionManager::use_path_direction(bool reversed)
 {
 	float yaw,pitch;
@@ -40,5 +35,28 @@ void CDirectionManager::use_path_direction(bool reversed)
 	if (fsimilar(yaw,0.f,EPS_S)) return;
 
 	m_object->m_body.target.yaw = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
+}
+
+bool CDirectionManager::is_face_target(const Fvector &position, float eps_angle)
+{
+	float						h, p;
+	Fvector().sub				(position, m_object->Position()).getHP(h,p);
+	
+	float						my_h;
+	m_object->Direction().getHP	(my_h, p);
+
+	if (angle_difference(h,my_h) > eps_angle) return false;
+	
+	return true;
+}
+
+void CDirectionManager::face_target(const CObject *obj,	u32 delay) 
+{
+	face_target	(obj->Position(), delay);
+}
+
+bool CDirectionManager::is_face_target(const CObject *obj, float eps_angle) 
+{
+	return is_face_target(obj->Position(), eps_angle);
 }
 

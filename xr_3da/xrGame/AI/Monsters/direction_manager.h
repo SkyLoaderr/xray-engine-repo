@@ -16,6 +16,9 @@ public:
 		void	face_target			(const Fvector &position,	u32 delay = 0);
 		void	face_target			(const CObject *obj,		u32 delay = 0);
 	IC	void	set_delay			(u32 delay) {m_delay = delay;}
+
+		bool	is_face_target		(const Fvector &position,	float eps_angle);
+		bool	is_face_target		(const CObject *obj,		float eps_angle);
 		
 		void	use_path_direction	(bool reversed = false);
 };

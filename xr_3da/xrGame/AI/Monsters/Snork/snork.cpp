@@ -1,26 +1,27 @@
 #include "stdafx.h"
 #include "snork.h"
 #include "snork_state_manager.h"
-#include "../../../../skeletonanimated.h"
+#include "snork_jump.h"
+#include "../ai_monster_debug.h"
 
 CSnork::CSnork() 
 {
-	StateMan = xr_new<CStateManagerSnork>	(this);
-	
-	CJumpingAbility::init_external			(this);
+	StateMan	= xr_new<CStateManagerSnork>	(this);
+	Jump		= xr_new<CSnorkJump>			(this);
 }
 
 CSnork::~CSnork()
 {
 	xr_delete		(StateMan);
+	xr_delete		(Jump);
 }
 
 void CSnork::Load(LPCSTR section)
 {
 	inherited::Load			(section);
-	CJumpingAbility::load	(section);
+	Jump->load				(section);
 
-	MotionMan.accel_load			(section);
+	MotionMan.accel_load	(section);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
@@ -73,16 +74,7 @@ void CSnork::Load(LPCSTR section)
 
 void CSnork::reinit()
 {
-	inherited::reinit();
-	
-	CMotionDef			*def1, *def2, *def3;
-	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
-
-	def1 = pSkel->ID_Cycle_Safe("stand_attack_2_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("stand_attack_2_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("stand_somersault_0");	VERIFY(def3);
-	
-	CJumpingAbility::reinit(def1, def2, def3);
+	inherited::reinit	();
 	
 	m_movement_params.insert(std::make_pair(eVelocityParameterJumpOne,	STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterJumpTwo,	STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real)));
@@ -90,17 +82,118 @@ void CSnork::reinit()
 
 void CSnork::UpdateCL()
 {
-	inherited::UpdateCL();
-	CJumpingAbility::update_frame();
+	inherited::UpdateCL	();
+	Jump->update_frame	();
+
+	//////////////////////////////////////////////////////////////////////////
+	CObject *obj = Level().CurrentEntity();
+	if (!obj) return;
+	
+	//find_geometry	();
+	//////////////////////////////////////////////////////////////////////////
 }
+
+#define TRACE_RANGE 30.f
+
+float CSnork::trace(const Fvector &dir)
+{
+	float ret_val = flt_max;
+
+	setEnabled	(false);
+	Collide::rq_result	l_rq;
+
+	Fvector		trace_from;
+	Center		(trace_from);
+
+	float		trace_dist = Radius() + TRACE_RANGE;
+
+	if (Level().ObjectSpace.RayPick(trace_from, dir, trace_dist, Collide::rqtStatic, l_rq)) {
+		if ((l_rq.range < trace_dist)) ret_val = l_rq.range;
+	}
+
+	setEnabled	(true);
+	
+	return		ret_val;
+}
+
+#define JUMP_DISTANCE 10.f
+bool CSnork::find_geometry(Fvector &dir)
+{
+	// 1. trace direction
+	dir		= Direction();
+	float	range;
+	
+	if (trace_geometry(dir, range)) {
+		if (range < JUMP_DISTANCE) {
+			return true;	
+		}
+	}
+
+	return false;
+}
+
+bool CSnork::trace_geometry(const Fvector &d, float &range)
+{
+	Fvector				dir;
+	float				h, p;
+
+	Fvector				Pl,Pc,Pr;
+	Fvector				center;
+	Center				(center);
+
+	range				= trace (d);
+	if (range > TRACE_RANGE) return false;
+	
+	float angle			= asin(1.f / range);
+
+	// trace center ray
+	dir					= d;
+
+	dir.getHP			(h,p);
+	p					+= angle;
+	dir.setHP			(h,p);
+	dir.normalize_safe	();
+
+	range				= trace (dir);
+	if (range > TRACE_RANGE) return false;
+
+	Pc.mad				(center, dir, range);
+
+	// trace left ray
+	Fvector				temp_p;
+	temp_p.mad			(Pc, XFORM().i, Radius() / 2);
+	dir.sub				(temp_p, center);
+	dir.normalize_safe	();
+
+	range				= trace (dir);
+	if (range > TRACE_RANGE) return false;
+
+	Pl.mad				(center, dir, range);
+
+	// trace right ray
+	Fvector inv			= XFORM().i; 
+	inv.invert			();
+	temp_p.mad			(Pc, inv, Radius() / 2);
+	dir.sub				(temp_p, center);
+	dir.normalize_safe	();
+
+	range				= trace (dir);
+	if (range > TRACE_RANGE) return false;
+
+	Pr.mad				(center, dir, range);
+
+	float				h1,p1,h2,p2;
+
+	Fvector().sub(Pl, Pc).getHP(h1,p1);
+	Fvector().sub(Pc, Pr).getHP(h2,p2);
+
+	return (fsimilar(h1,h2,0.1f) && fsimilar(p1,p2,0.1f));
+}
+
 
 void CSnork::try_to_jump()
 {
-	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
-	if (!target || !EnemyMan.see_enemy_now()) return;
-
-	if (CJumpingAbility::can_jump(target))
-		CJumpingAbility::jump(target, eVelocityParamsJump);
+	Jump->try_to_jump(eVelocityParamsJump);
 }
 
 void CSnork::CheckSpecParams(u32 spec_params)

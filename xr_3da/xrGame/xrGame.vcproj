@@ -2364,58 +2364,6 @@
 						<File
 							RelativePath=".\ai\Monsters\BaseMonster\base_monster_think.cpp">
 						</File>
-						<Filter
-							Name="States"
-							Filter="">
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_eat.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.h">
-							</File>
-							<File
-								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_rest.cpp">
-							</File>
-						</Filter>
 					</Filter>
 					<Filter
 						Name="monster states"
@@ -2654,6 +2602,58 @@
 									RelativePath=".\ai\Monsters\States\state_test_look_actor_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Outdated"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_eat.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_rest.cpp">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Attack"
@@ -2672,6 +2672,12 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_attack_run.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_run_attack.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_attack_run_attack_inline.h">
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_attack_run_inline.h">
@@ -3080,6 +3086,16 @@
 						<File
 							RelativePath=".\ai\Monsters\Snork\snork_state_manager.h">
 						</File>
+						<Filter
+							Name="Special Jump"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Snork\snork_jump.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Snork\snork_jump.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Controller"

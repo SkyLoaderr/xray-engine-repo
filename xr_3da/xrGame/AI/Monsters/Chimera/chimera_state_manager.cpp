@@ -38,16 +38,16 @@ void CStateManagerChimera::execute()
 	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	if (enemy) {
-		if (get_state(eStateThreaten)->check_start_conditions()) {
-			state_id = eStateThreaten;
-		} else {
+		//if (get_state(eStateThreaten)->check_start_conditions()) {
+		//	state_id = eStateThreaten;
+		//} else {
 			switch (object->EnemyMan.get_danger_type()) {
 				case eVeryStrong:	state_id = eStatePanic; break;
 				case eStrong:		
 				case eNormal:
 				case eWeak:			state_id = eStateAttack; break;
 			}
-		}
+//		}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;
 	} else if (object->hear_dangerous_sound) {

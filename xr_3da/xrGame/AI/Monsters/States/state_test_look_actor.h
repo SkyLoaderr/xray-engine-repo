@@ -9,4 +9,13 @@ public:
 	virtual	void		execute					();
 };
 
+
+template<typename _Object>
+class CStateMonsterTurnAwayFromActor : public CState<_Object> {
+	typedef CState<_Object> inherited;
+public:
+						CStateMonsterTurnAwayFromActor	(_Object *obj) : inherited(obj) {}
+	virtual	void		execute					();
+};
+
 #include "state_test_look_actor_inline.h"

@@ -11,6 +11,7 @@ protected:
 	enum EAttackStates {
 		eStateRun			= u32(0),
 		eStateMelee,
+		eStateRunAttack,
 	};
 
 public:

@@ -304,7 +304,11 @@ IC	void					fall_asleep			(){m_bSleep = true;}
 IC	void					wake_up				(){m_bSleep = false;}
 
 
-	CCriticalActionInfo		*CriticalActionInfo;
+CCriticalActionInfo		*CriticalActionInfo;
+
+	// Temp
+	virtual u32				get_run_attack_velocity_mask() {return u32(0);}
+
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

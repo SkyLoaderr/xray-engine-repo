@@ -36,6 +36,8 @@ class CJumpingAbility {
 	bool			m_object_hitted;
 	bool			m_velocity_bounced;
 	bool			m_use_prediction;
+	
+	bool			m_enable_bounce;
 
 public:
 					CJumpingAbility		();
@@ -52,12 +54,18 @@ public:
 	
 	// process jump
 	virtual void	jump				(CObject *obj, u32 vel_mask = u32(-1));
+	virtual void	jump				(const Fvector &point, u32 vel_mask = u32(-1));
 	virtual void	update_frame		();
 
 	// check for distance and angle difference
 	virtual	bool	can_jump			(CObject *target);
 
 	virtual	bool	active				() {return m_active;}
+
+	// stop/break jump and all of jumping states
+	virtual void	stop				();
+
+			void	disable_bounce		() {m_enable_bounce = false;}
 
 private:	
 	// service routines		
@@ -69,8 +77,6 @@ private:
 			void	pointbreak			();
 			// set current blend speed
 			void	set_animation_speed	();
-			// stop/break jump and all of jumping states
-			void	stop				();
 			// check for hit object
 			void	hit_test			();
 
@@ -84,5 +90,7 @@ private:
 
 	// position prediction
 			Fvector	predict_position	(CObject *obj, const Fvector &pos);
+
+			void	start_jump			(const Fvector &point);
 };
 

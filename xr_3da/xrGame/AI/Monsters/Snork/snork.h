@@ -1,8 +1,9 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
-#include "../jump_ability.h"
 
-class CSnork :	public CBaseMonster, public CJumpingAbility {
+class CSnorkJump;
+
+class CSnork :	public CBaseMonster {
 	typedef		CBaseMonster		inherited;
 
 	enum EMovementParametersSnork {
@@ -14,6 +15,8 @@ class CSnork :	public CBaseMonster, public CJumpingAbility {
 
 	SVelocityParam	m_fsVelocityJumpOne;
 	SVelocityParam	m_fsVelocityJumpTwo;
+
+	CSnorkJump		*Jump;
 
 public:
 					CSnork				();
@@ -27,5 +30,9 @@ public:
 			void	try_to_jump			();
 
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
+			
+			bool	find_geometry		(Fvector &dir);
+			float	trace				(const Fvector &dir);
 
+			bool	trace_geometry		(const Fvector &d, float &range);
 };

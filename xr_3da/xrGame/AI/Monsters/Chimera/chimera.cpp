@@ -53,6 +53,8 @@ void CChimera::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 		MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
 
+		MotionMan.AddAnim(eAnimAttackRun,		"stand_run_attack_",	-1, &inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
+
 		//////////////////////////////////////////////////////////////////////////
 
 		MotionMan.AddAnim(eAnimUpperStandIdle,		"stand_up_idle_",		-1, &inherited::get_sd()->m_fsVelocityNone,			PS_STAND_UPPER);
@@ -101,6 +103,7 @@ void CChimera::Load(LPCSTR section)
 	m_fsVelocityWalkUpper.Load	(section, "Velocity_Walk_Upper");
 	m_fsVelocityJumpOne.Load	(section, "Velocity_Jump_Stand");
 	m_fsVelocityJumpTwo.Load	(section, "Velocity_Jump_Forward");
+	m_fsVelocityRunAttack.Load	(section, "Velocity_Run_Attack");
 }
 
 void CChimera::reinit()
@@ -111,7 +114,7 @@ void CChimera::reinit()
 	m_movement_params.insert		(std::make_pair(eVelocityParameterUpperWalkFwd,	STravelParams(m_fsVelocityWalkUpper.velocity.linear,	m_fsVelocityWalkUpper.velocity.angular_path, m_fsVelocityWalkUpper.velocity.angular_real)));
 	m_movement_params.insert		(std::make_pair(eVelocityParameterJumpOne,	STravelParams(m_fsVelocityJumpOne.velocity.linear,	m_fsVelocityJumpOne.velocity.angular_path, m_fsVelocityJumpOne.velocity.angular_real)));
 	m_movement_params.insert		(std::make_pair(eVelocityParameterJumpTwo,	STravelParams(m_fsVelocityJumpTwo.velocity.linear,	m_fsVelocityJumpTwo.velocity.angular_path, m_fsVelocityJumpTwo.velocity.angular_real)));
-
+	m_movement_params.insert		(std::make_pair(eVelocityParameterRunAttack,STravelParams(m_fsVelocityRunAttack.velocity.linear,m_fsVelocityRunAttack.velocity.angular_path, m_fsVelocityRunAttack.velocity.angular_real)));
 
 	CMotionDef			*def1, *def2, *def3;
 	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
@@ -139,7 +142,11 @@ void CChimera::CheckSpecParams(u32 spec_params)
 		else 
 			MotionMan.SetCurAnim(eAnimThreaten);
 	}
-	
+
+	if ((spec_params & ASP_ATTACK_RUN) == ASP_ATTACK_RUN) {
+		MotionMan.SetCurAnim(eAnimAttackRun);
+	}
+
 	if (b_upper_state) {
 		switch (MotionMan.GetCurAnim()) {
 			case eAnimAttack:			MotionMan.SetCurAnim(eAnimUpperAttack);			break;
