@@ -583,8 +583,12 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 {
 	//just set last update data for now
 	if (!m_bHasUpdate) return;
-
-	IStartPos = Position();
+	///////////////////////////////////////////////
+//	IStartPos = Position();
+	IStart.Pos				= Position();
+	IStart.o_model			= r_model_yaw;
+	IStart.o_torso.yaw		= unaffected_r_torso_yaw;
+	IStart.o_torso.pitch	= unaffected_r_torso_pitch;
 	///////////////////////////////////////////////
 	CPHSynchronize* pSyncObj = NULL;
 	pSyncObj = PHGetSyncItem(0);
@@ -674,7 +678,11 @@ void CActor::PH_A_CrPr		()
 	////////////////////////////////////
 	if (!m_bInterpolate) return;
 
-	IEndPos = PredictedState.position;
+//	IEndPos = PredictedState.position;
+	IEnd.Pos				= PredictedState.position;
+	IEnd.o_model			= NET_Last.o_model;
+	IEnd.o_torso			= NET_Last.o_torso;
+	////////////////////////////////////
 
 	m_bInInterpolation = true;
 	m_dwIStartTime = m_dwLastUpdateTime;
@@ -710,7 +718,22 @@ void CActor::make_Interpolation	()
 			{
 				float factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
 
-				Position().lerp(IStartPos, IEndPos, factor);
+//				Position().lerp(IStartPos, IEndPos, factor);
+				Position().lerp(IStart.Pos, IEnd.Pos, factor);
+				/*
+				if (Remote())
+				{
+					r_model_yaw					= angle_lerp(IStart.o_model, IEnd.o_model, factor);
+					unaffected_r_torso_yaw		= angle_lerp(IStart.o_torso.yaw, IEnd.o_torso.yaw, factor);
+					unaffected_r_torso_pitch	= angle_lerp(IStart.o_torso.pitch, IEnd.o_torso.pitch, factor);
+				};
+				*/
+
+				/*
+				o_model			= angle_lerp	(A.o_model,B.o_model,		f);
+				o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,f);
+				o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,f);
+				*/
 
 				g_Orientate					(NET_Last.mstate,0			);
 

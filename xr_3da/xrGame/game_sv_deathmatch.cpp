@@ -217,8 +217,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					//------------------------------------------------------------
 					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
 					R_ASSERT2(pA, "Owner not a Actor");
-					SpawnItem4Actor(pA->ID, "wpn_knife");
-					SpawnItem4Actor(pA->ID, "wpn_lr300");
+//					SpawnItem4Actor(pA->ID, "wpn_knife");
+//					SpawnItem4Actor(pA->ID, "wpn_lr300");
 					//------------------------------------------------------------
 				};				
 			};			

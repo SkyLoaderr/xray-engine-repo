@@ -706,6 +706,15 @@ void CActor::shedule_Update	(u32 DT)
 				m_PhysicMovementControl->ActivateBox(1, true);
 			else 
 				m_PhysicMovementControl->ActivateBox(0, true);
+
+			/*
+			if (Remote())
+			{
+			r_model_yaw					= angle_lerp(IStart.o_model, IEnd.o_model, factor);
+			unaffected_r_torso_yaw		= angle_lerp(IStart.o_torso.yaw, IEnd.o_torso.yaw, factor);
+			unaffected_r_torso_pitch	= angle_lerp(IStart.o_torso.pitch, IEnd.o_torso.pitch, factor);
+			};
+			*/			
 		};
 	}
 	make_Interpolation();

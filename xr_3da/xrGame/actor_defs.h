@@ -167,5 +167,14 @@ struct					net_update_A
 	SPHNetState			State;
 };
 
+///////////////////////////////////////////////////////
+// данные дл€ интерпол€ции
+struct					InterpData
+{
+	Fvector				Pos;
+	float				o_model;				// model yaw
+	SRotation			o_torso;				// torso in world coords
+};
+
 
 };

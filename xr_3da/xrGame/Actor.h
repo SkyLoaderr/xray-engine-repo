@@ -410,8 +410,10 @@ protected:
 	SPHNetState				RecalculatedState;
 	SPHNetState				PredictedState;
 
-	Fvector					IStartPos;
-	Fvector					IEndPos;
+//	Fvector					IStartPos;
+//	Fvector					IEndPos;
+	InterpData				IStart;
+	InterpData				IEnd;
 	
 	bool					m_bInInterpolation;
 	u32						m_dwLastUpdateTime;

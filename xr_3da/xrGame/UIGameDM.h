@@ -35,7 +35,7 @@ public:
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
-	CUIBuyWeaponWnd		BuyMenu;
+//	CUIBuyWeaponWnd		UIBuyWeaponWnd;
 //	CUIStatsWnd*		pUIStatsWnd;
 };
 #endif // __XR_UIGAMEDM_H__
