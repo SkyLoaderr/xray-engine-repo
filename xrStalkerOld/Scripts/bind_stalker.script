@@ -42,13 +42,15 @@ function actor_binder:reinit()
 
 	self.st = db.storage[self.object:id()]
 
-	--self.object:set_info_callback(self, "info_callback")
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
 	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
+	--' Сюжет
+	--level_tasks.proceed(self.object)
+	-- Отметки на карте
 	level_tasks.process_map_spot(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -84,19 +86,17 @@ function actor_binder:update(delta)
 		self:delayed_sleep_callback()
 	end
 	
+	level_tasks.proceed(self.object)	
 	--' Проверка потери жизни
-if false then
+--[[
 	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
 	lasthealth = self.object.health
 	lasttime = game.time()
-end
+]]
 
 	--' обновление рестрикторов, которые реагируют на актёра (убирание оружия, подсказки...)
 	bind_restrictor.actor_update(delta)
 
-	--' Сюжет
-	level_tasks.proceed(self.object)
-	
 	if  self.bCheckStart then
 
 		printf("SET DEFAULT INFOS")		
@@ -128,39 +128,4 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)
 	npc:bind_object(actor_binder(npc))
-end
-
-
-
-
-function object_init    (obj)
-	local obj_ini = obj:spawn_ini()
-	if obj_ini == nil then return end
-	
-	if obj_ini:section_exist("tip") == true then
-		if obj_ini:line_exist("tip", "label") == true then
-			local ll = obj_ini:r_string("tip", "label")
-			local st = string_table()
-			text = st:get_by_id(ll)
-			obj:set_tip_text(text)
-		end
-	end
-	
-	if obj_ini:section_exist("info") == true then
-		if obj_ini:line_exist("info", "id") == true then
-			obj:set_use_callback(object_info_callback)
-		end
-	end	
-end
-
-function object_info_callback(obj)
-	local obj_ini = obj:spawn_ini()	
-	local actor = level.actor()
-	if obj_ini == nil or actor == nil then return end
-	if obj_ini:section_exist("info") == true then
-		if obj_ini:line_exist("info", "id") == true then
-			local label = obj_ini:r_string("info", "id")
-			actor:give_info_portion(label)			
-		end
-	end
 end

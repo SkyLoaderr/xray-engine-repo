@@ -454,20 +454,7 @@ function load_states(gname, type)
 	end
 	if type == "bar_dolg_bunker" then        
 		return function (gulag)
-				for k,v in gulag.Object do
-					enemy = v:best_enemy()
-					if enemy ~= nil then
-   						gulag.alarm_start = game.get_game_time()
-   						return 2 -- тревога
-					end
-				end		
-		
-				if gulag.alarm_start == nil or
-					game.get_game_time():diffSec(gulag.alarm_start) > 300 then
-						return 0  -- день
-				else
-					return 2
-				end
+				return 0
 		end
 	end
 	
