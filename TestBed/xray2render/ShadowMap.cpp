@@ -344,9 +344,9 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		positionAtt.Name_			= "position";
 		positionAtt.floatVector_	= position;
 		// Normals
-		NVMeshMender::VertexAttribute positionAtt;
-		positionAtt.Name_			= "normal";
-		positionAtt.floatVector_	= normals;
+		NVMeshMender::VertexAttribute normalAtt;
+		normalAtt.Name_				= "normal";
+		normalAtt.floatVector_		= normals;
 		// Texture coordinates
 		NVMeshMender::VertexAttribute texCoordAtt;
 		texCoordAtt.Name_			= "tex0";
@@ -359,6 +359,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Fill in input list
 		std::vector<NVMeshMender::VertexAttribute> inputAtts;
 		inputAtts.push_back(positionAtt);
+		inputAtts.push_back(normalAtt);
 		inputAtts.push_back(indexAtt);
 		inputAtts.push_back(texCoordAtt);
 
