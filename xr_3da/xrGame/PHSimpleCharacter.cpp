@@ -306,20 +306,20 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 
 	dReal mag;
 	const dReal* vel = dBodyGetLinearVel(m_body);
+	if(!dV_valid(vel))
+		dBodySetLinearVel(m_body,0.f,0.f,0.f);
 	mag=_sqrt(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
 	if(mag>l_limit){
 		dReal f=mag/l_limit;
 		dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
 	}
 
-	else if(!(mag>-dInfinity)||!(mag<dInfinity))
-		dBodySetLinearVel(m_body,0.f,0.f,0.f);
+
 
 
 
 	const dReal* pos=dBodyGetPosition(m_body);
-	dReal smag=dDOT(pos,pos);
-	if(!((smag>-dInfinity)&&(smag<dInfinity)))
+	if(!dV_valid(pos))
 		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);

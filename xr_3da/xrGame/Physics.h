@@ -1,6 +1,7 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+
 #include "dCylinder/dCylinder.h"
 #include "PhysicsShell.h"
 #include "PHObject.h"
@@ -13,6 +14,7 @@ extern const dReal w_limit;
 extern const dReal fixed_step;
 extern const u16	 dis_frames;
 
+
 void BodyCutForce(dBodyID body);
 void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
 
@@ -21,6 +23,22 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
 #define SPRING(cfm,erp)		((erp)/(cfm)/fixed_step)
 #define DAMPING(cfm,erp)	((1.f-(erp))/(cfm))
 
+IC BOOL    f_valid         (const float f)
+{
+	return _finite(f) && !_isnan(f);
+}
+
+IC BOOL dV_valid			(const dReal * v)
+{
+	return f_valid(v[0])&&f_valid(v[1])&&f_valid(v[2]);
+}
+
+IC BOOL dM_valid			(const dReal* m)
+{
+	return  f_valid(m[0])&&f_valid(m[1])&&f_valid(m[2])&& 
+			f_valid(m[4])&&f_valid(m[5])&&f_valid(m[6])&&
+			f_valid(m[8])&&f_valid(m[9])&&f_valid(m[10]);
+}
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
 #ifndef  ODE_SLOW_SOLVER
@@ -115,4 +133,7 @@ typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 #endif PHYSICS_H
+
+

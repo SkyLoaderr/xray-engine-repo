@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\PGObject.h"
+#include "Physics.h"
 #include "car.h"
 #include "hudmanager.h"
 #include "cameralook.h"

@@ -13,29 +13,31 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	xr_vector<CPHJoint*>	joints;
 	dSpaceID			m_space;
 	bool bActivating;
-
 	xr_list<CPHObject*>::iterator m_ident;
 
 public:
 
-	CPHShell				()							{bActive=false;
-	bActivating=false;
-	m_space=NULL;
-	p_kinematics=NULL;
+	CPHShell				()							
+			{
+													bActive=false;
+													bActivating=false;
+													m_space=NULL;
+													p_kinematics=NULL;
+			};
 
+	~CPHShell				()							
+	{
+						if(bActive) Deactivate();
 
-	};
-	~CPHShell				()							{if(bActive) Deactivate();
+						xr_vector<CPHElement*>::iterator i;
+						for(i=elements.begin();i!=elements.end();i++)
+							xr_delete(*i);
+						elements.clear();
 
-	xr_vector<CPHElement*>::iterator i;
-	for(i=elements.begin();i!=elements.end();i++)
-		xr_delete(*i);
-	elements.clear();
-
-	xr_vector<CPHJoint*>::iterator j;
-	for(j=joints.begin();j!=joints.end();j++)
-		xr_delete(*j);
-	joints.clear();
+						xr_vector<CPHJoint*>::iterator j;
+						for(j=joints.begin();j!=joints.end();j++)
+							xr_delete(*j);
+						joints.clear();
 	}
 
 	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element);

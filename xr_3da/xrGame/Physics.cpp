@@ -817,26 +817,3 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-union a {
-float f;
-int i;
-a(int _i){i=_i;}
-a(float _f){f=_f;}
-a(){}
-};
-
-struct b
-{
-	a c;
-	float j;
-	b(float _a,float _j)
-			{a c(_a);j=_j;}
-	
-};
-
-b aaa[] = {
-	b(0.f,1.f),
-	b(1.,2.)
-};
-*/

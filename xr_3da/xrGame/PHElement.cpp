@@ -709,7 +709,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	const dReal* pos = dBodyGetLinearVel(m_body);
 	dReal mag;
 	mag=_sqrt(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
-	if(!(mag>-dInfinity && mag<dInfinity)){
+	if(!dV_valid(pos)){
 		dBodySetLinearVel(m_body,0.f,0.f,0.f);
 		mag=0.f;
 	}
@@ -720,10 +720,7 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
-	if(!(position[0]<dInfinity && position[0]>-dInfinity &&
-		position[1]<dInfinity && position[1]>-dInfinity &&
-		position[2]<dInfinity && position[2]>-dInfinity)
-		) 
+	if(!dV_valid(position)) 
 		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
 		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
@@ -735,7 +732,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
 	const dReal* rot = dBodyGetAngularVel(m_body);
 	dReal w_mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
-	if(!(w_mag>-dInfinity && w_mag<dInfinity)) 
+	if(!dV_valid(rot)) 
 		dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	else if(w_mag>w_limit){
 		dReal f=w_mag/w_limit;
@@ -745,16 +742,15 @@ void CPHElement::PhDataUpdate(dReal step){
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
 	{
 		const dReal* rotation=dBodyGetRotation(m_body);
-		for(int i=0;i<12;i++)
-		{
-			if(!(rotation[i]>-dInfinity&&rotation[i]<dInfinity))
+
+			if(!dV_valid(rotation))
 			{
 				dMatrix3 m;
 				dRSetIdentity(m);
 				dBodySetRotation(m_body,m);
-				break;
+			
 			}
-		}
+		
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
