@@ -242,7 +242,7 @@ void CWeaponKnife::switch2_Showing	()
 void CWeaponKnife::FireStart()
 {
 	inherited::FireStart();
-	OnStateSwitch(eFire);
+	SwitchState(eFire);
 }
 
 void CWeaponKnife::FireEnd()
@@ -254,7 +254,7 @@ void CWeaponKnife::FireEnd()
 void CWeaponKnife::Fire2Start () 
 {
 	inherited::Fire2Start();
-	OnStateSwitch(eFire2);
+	SwitchState(eFire2);
 }
 
 void CWeaponKnife::Fire2End () 
@@ -276,6 +276,11 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START) Fire2Start();
 			else Fire2End();
 			return true;
+		case kDROP:
+			{
+				if (Game().type != GAME_SINGLE)
+					return true;
+			}break;
 	}
 	return false;
 }

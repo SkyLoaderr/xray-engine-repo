@@ -181,9 +181,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			Msg		("* [%s] respawned ",get_option_s(options,"name","Player"));
 			//------------------------------------------------------------
 			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
-			if (!xrCData) break;
+			if (!xrCData || !xrCData->owner) break;
 			CSE_Abstract* pOwner = xrCData->owner;
-			if (!xrCData->owner) break;
 			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
 			CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
 
@@ -213,6 +212,10 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					Level().Send(P,net_flags(TRUE,TRUE));
 					//------------------------------------------------------------
 					SpawnActor(id, "actor");
+					//------------------------------------------------------------
+					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
+					R_ASSERT2(pA, "Owner not a Actor");
+					SpawnItem4Actor(pA->ID, "wpn_knife");
 					//------------------------------------------------------------
 				};				
 			};			
@@ -341,6 +344,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 		if (pS)
 		{
 			Fvector Pos, Angle;
+			ps_who->flags		|= GAME_PLAYER_FLAG_CS_SPECTATOR;
 			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E);
 			else
 			{
@@ -348,9 +352,19 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 				E->o_Position.set(Pos);
 			}
 		};
-
+	
 	spawn_end				(E,id);
 }
+
+void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
+{
+	if (!N) return;
+	CSE_Abstract			*E	=	spawn_begin	(N);
+	E->ID_Parent = u16(actorId);
+
+	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+	spawn_end				(E,Level().Server->GetServer_client()->ID);
+};
 
 #include "../CameraBase.h"
 
@@ -371,3 +385,4 @@ bool	game_sv_Deathmatch::GetPosAngleFromActor				(u32 id, Fvector& Pos, Fvector 
 	Pos.set(pActor->cam_Active()->vPosition);
 	return true;
 };
+

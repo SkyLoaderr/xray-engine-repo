@@ -8,6 +8,7 @@ protected:
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
+	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
 public:
 	virtual		void				Create					(LPSTR &options);
 
