@@ -203,6 +203,7 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 static const float s_fGroundDelaySpeed		= 10.f;
 static const float s_fMaxGroundDelayFactor	= 30.f;
 
+/*
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
 	Fvector motion,vAccel;
@@ -284,11 +285,6 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		float s_dummy	= 0;
 		float s_desired	= motion.y;
 		vVelocity.y		= Integrate1D_to	(fVelocityY,s_dummy,vAccel.y,fOldFriction,s_desired);
-/*
-#ifdef _DEBUG		
-		Msg				("o:%f / n:%f",fVelocityY,vVelocity.y);
-#endif
-*/
 	}
 
 	//	Don't allow _new velocity to go against original velocity unless told otherwise
@@ -347,12 +343,6 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 			float		a		= vAccel.magnitude();
 			fContactSpeed		= Integrate1D_to	(fVelocityBefore,dummy_s,a,fOldFriction,s_res);
 			// s_res, dummy_s ???
-/*
-#ifdef _DEBUG		
-			Msg	("dummy_s: %2.3f, sres: %2.3f, scalc: %2.1f, old_aspeed: %2.3f, cspeed: %2.3f (min: %2.1f)",
-				dummy_s,s_res,s_calc,fVelocityBefore,fContactSpeed,fMinCrashSpeed);
-#endif
-*/
 			// contact with ground
 			gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
@@ -388,6 +378,7 @@ void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 	//
 	Engine.Sheduler.Slice();
 }
+*/
 
 void CMovementControl::CheckEnvironment(const Fvector& newpos)
 {
