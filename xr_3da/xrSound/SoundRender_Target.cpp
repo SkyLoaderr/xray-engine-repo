@@ -82,7 +82,7 @@ void	CSoundRender_Target::_initialize		()
 		bDX7				= TRUE;
 	}
 	*/
-	R_CHK	(pBuffer_base->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
+	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,	(void **)&pControl));
 	R_ASSERT(pBuffer_base && pBuffer && pControl);
 
 	// DMOs
