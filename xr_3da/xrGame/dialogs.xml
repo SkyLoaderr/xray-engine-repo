@@ -151,6 +151,7 @@
 	</phrase_list>
 	</dialog>
 
+
     <dialog id="stalker_helper">
         <phrase_list>
             <phrase id="0">
@@ -161,6 +162,7 @@
                 <next>10</next>
             </phrase>
             <phrase id="1">
+                <precondition>dialogs.is_medikit_present</precondition>
                 <text>Брат, поделись аптечкой, помираю!</text>
                 <next>11</next>
                 <next>12</next>
@@ -168,16 +170,16 @@
                 <next>14</next>
             </phrase>
             <phrase id="11">
-				<!-- прекондишн <precondition></precondition> -->
+                <precondition>dialogs.is_good_relation</precondition>
                 <text>Возьми, потом отблагодаришь.</text>
-                <!-- Вызвать функцию передачи аптечки <action></action> -->
+                <action>dialogs.drop_medikit</action>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
                 <next>10</next>
             </phrase>
             <phrase id="12">
-				<!-- прекондишн -->
+                <precondition>dialogs.is_health_good</precondition>
                 <text>Да ты и так неплохо выглядишь.</text>
                 <next>1</next>
                 <next>2</next>
@@ -185,7 +187,7 @@
                 <next>10</next>
             </phrase>
             <phrase id="13">
-				<!-- прекондишн -->
+                <precondition>dialogs.is_medikit_no_present</precondition>
                 <text>Извини, нету.</text>
                 <next>1</next>
                 <next>2</next>
@@ -193,7 +195,7 @@
                 <next>10</next>
             </phrase>
             <phrase id="14">
-				<!-- прекондишн -->
+                <precondition>dialogs.is_bad_relation</precondition>
                 <text>Только за деньги. За 300 монет.</text>
                 <next>141</next>
                 <next>142</next>
@@ -204,6 +206,7 @@
             </phrase>
             <phrase id="1411">
                 <text>По рукам.</text>
+                <action>dialogs.sell_medikit</action>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -212,61 +215,67 @@
             <phrase id="142">
                 <text>Не, не могу.</text>
                 <next>1412</next>
-			</phrase>
+            </phrase>
             <phrase id="1412">
                 <text>Ну как хочешь.</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
                 <next>10</next>
-            </phrase>            
+            </phrase>
             <phrase id="2">
                 <text>Нужно оружие, а то без него хреново как-то.</text>
+                <next>21</next>
+                <next>22</next>
             </phrase>
             <phrase id="21">
-				<!-- прекондишн -->
-                <text>Посмотри сам что есть. Отдам по себестоимости.</text>
+                <precondition>dialogs.have_extra_weapon</precondition>
+                <text>Посмотри сам что есть.</text>
+                <action>dialogs.trade_help</action>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
                 <next>10</next>
             </phrase>
             <phrase id="22">
-				<!-- прекондишн -->
+                <precondition>dialogs.no_have_extra_weapon</precondition>
                 <text>Извини, ничего нет.</text>
                 <next>1</next>
-                <next>2</next>
                 <next>3</next>
                 <next>10</next>
-            </phrase>           
+            </phrase>
             <phrase id="3">
                 <text>Помоги прорваться, боюсь один не справлюсь.</text>
                 <next>31</next>
                 <next>32</next>
             </phrase>
             <phrase id="31">
-				<!-- прекондишн -->
+                <precondition>dialogs.is_good_relation</precondition>
                 <text>Ну пойдем, посмотрим кого ты там испугался.</text>
-                <!-- врубается помощник -->
+                <action>dialogs.activate_helper_follow</action>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
                 <next>10</next>
             </phrase>
             <phrase id="32">
-				<!-- прекондишн -->
+                <precondition>dialogs.is_bad_relation</precondition>
                 <text>Что-то как-то мне лениво. Разбирайся сам.</text>
-                <!-- обнуляется схема помощника. Обрывается диалог. -->
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
             </phrase>
 
             <phrase id="10">
                 <text>Уже все, спасибо.</text>
+                <action>dialogs.disable_helper_2</action>
                 <next>101</next>
             </phrase>
             <phrase id="101">
                 <text>Ну как знаешь.</text>
-                <!-- Вызвать функцию отмены помощника -->
+                <action>dialogs.disable_helper</action>
             </phrase>
         </phrase_list>
-    </dialog>    
+    </dialog>  
 </game_dialogs>

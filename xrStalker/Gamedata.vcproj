@@ -133,10 +133,64 @@
 			Name="others"
 			Filter="">
 			<File
+				RelativePath=".\actor_diary.xml">
+			</File>
+			<File
+				RelativePath=".\artefacthunt_game.ltx">
+			</File>
+			<File
+				RelativePath=".\artefacts.ltx">
+			</File>
+			<File
+				RelativePath=".\buy_mp_item.xml">
+			</File>
+			<File
 				RelativePath=".\carbody.xml">
 			</File>
 			<File
+				RelativePath=".\carbody_item.xml">
+			</File>
+			<File
+				RelativePath=".\carbody_new.xml">
+			</File>
+			<File
 				RelativePath=".\color_defs.xml">
+			</File>
+			<File
+				RelativePath=".\contracts.xml">
+			</File>
+			<File
+				RelativePath=".\contracts_character.xml">
+			</File>
+			<File
+				RelativePath=".\Copy of environment.ltx">
+			</File>
+			<File
+				RelativePath=".\deathmatch_game.ltx">
+			</File>
+			<File
+				RelativePath=".\effectors.ltx">
+			</File>
+			<File
+				RelativePath=".\environment.ltx">
+			</File>
+			<File
+				RelativePath=".\environment_1.ltx">
+			</File>
+			<File
+				RelativePath=".\events_new.xml">
+			</File>
+			<File
+				RelativePath=".\external.ltx">
+			</File>
+			<File
+				RelativePath=".\game_cs.ltx">
+			</File>
+			<File
+				RelativePath=".\helicopter.ltx">
+			</File>
+			<File
+				RelativePath=".\helicopter_.ltx">
 			</File>
 			<File
 				RelativePath=".\ingame_msglog_mp.xml">
@@ -154,10 +208,22 @@
 				RelativePath=".\inventory_item.xml">
 			</File>
 			<File
+				RelativePath=".\inventory_new.xml">
+			</File>
+			<File
 				RelativePath=".\inventoryMP_new.xml">
 			</File>
 			<File
+				RelativePath=".\inventoryMP_new2.xml">
+			</File>
+			<File
 				RelativePath=".\jobs.xml">
+			</File>
+			<File
+				RelativePath=".\jobs_new.xml">
+			</File>
+			<File
+				RelativePath=".\laststanding_game.ltx">
 			</File>
 			<File
 				RelativePath=".\maingame.xml">
@@ -178,6 +244,9 @@
 				RelativePath=".\map_character.xml">
 			</File>
 			<File
+				RelativePath=".\mp_actor.ltx">
+			</File>
+			<File
 				RelativePath=".\news.xml">
 			</File>
 			<File
@@ -187,7 +256,13 @@
 				RelativePath=".\pda.xml">
 			</File>
 			<File
+				RelativePath=".\pda_character_new.xml">
+			</File>
+			<File
 				RelativePath=".\pda_contacts.xml">
+			</File>
+			<File
+				RelativePath=".\pda_contacts_new.xml">
 			</File>
 			<File
 				RelativePath=".\pda_dialog.xml">
@@ -202,13 +277,22 @@
 				RelativePath=".\scenery_dialogs.xml">
 			</File>
 			<File
+				RelativePath=".\script.ltx">
+			</File>
+			<File
 				RelativePath=".\skin_selector.xml">
 			</File>
 			<File
 				RelativePath=".\sleep_dialog.xml">
 			</File>
 			<File
+				RelativePath=".\sleep_dialog_new.xml">
+			</File>
+			<File
 				RelativePath=".\spawn.xml">
+			</File>
+			<File
+				RelativePath=".\startup.ltx">
 			</File>
 			<File
 				RelativePath=".\stats.xml">
@@ -229,6 +313,12 @@
 				RelativePath=".\talk.xml">
 			</File>
 			<File
+				RelativePath=".\teamdeathmatch_game.ltx">
+			</File>
+			<File
+				RelativePath=".\test_script.ltx">
+			</File>
+			<File
 				RelativePath=".\trade.xml">
 			</File>
 			<File
@@ -236,6 +326,9 @@
 			</File>
 			<File
 				RelativePath=".\trade_item.xml">
+			</File>
+			<File
+				RelativePath=".\trade_new.xml">
 			</File>
 			<File
 				RelativePath=".\zones.ltx">
@@ -255,6 +348,9 @@
 			</File>
 			<File
 				RelativePath=".\encyclopedia_mutants.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_new.xml">
 			</File>
 			<File
 				RelativePath=".\encyclopedia_social.xml">
@@ -417,6 +513,9 @@
 				<File
 					RelativePath=".\m_stalker.ltx">
 				</File>
+				<File
+					RelativePath=".\stalkers.ltx">
+				</File>
 			</Filter>
 			<Filter
 				Name="mutants"
@@ -438,6 +537,9 @@
 				</File>
 				<File
 					RelativePath=".\M_Dog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_dog_.ltx">
 				</File>
 				<File
 					RelativePath=".\M_Flesh.ltx">
@@ -462,125 +564,27 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="npc_profile"
+			Filter="">
+			<File
+				RelativePath=".\character_desc_general.xml">
+			</File>
+			<File
+				RelativePath=".\npc_profile.xml">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\actor.ltx">
-		</File>
-		<File
-			RelativePath=".\actor_diary.xml">
-		</File>
-		<File
-			RelativePath=".\artefacthunt_game.ltx">
-		</File>
-		<File
-			RelativePath=".\artefacts.ltx">
-		</File>
-		<File
-			RelativePath=".\buy_mp_item.xml">
-		</File>
-		<File
-			RelativePath=".\carbody_item.xml">
-		</File>
-		<File
-			RelativePath=".\carbody_new.xml">
-		</File>
-		<File
-			RelativePath=".\character_desc_general.xml">
-		</File>
-		<File
-			RelativePath=".\contracts.xml">
-		</File>
-		<File
-			RelativePath=".\contracts_character.xml">
-		</File>
-		<File
-			RelativePath=".\Copy of environment.ltx">
-		</File>
-		<File
-			RelativePath=".\deathmatch_game.ltx">
 		</File>
 		<File
 			RelativePath=".\devices.ltx">
 		</File>
 		<File
-			RelativePath=".\effectors.ltx">
-		</File>
-		<File
-			RelativePath=".\encyclopedia_new.xml">
-		</File>
-		<File
-			RelativePath=".\environment.ltx">
-		</File>
-		<File
-			RelativePath=".\environment_1.ltx">
-		</File>
-		<File
-			RelativePath=".\events_new.xml">
-		</File>
-		<File
-			RelativePath=".\external.ltx">
-		</File>
-		<File
 			RelativePath=".\game.ltx">
 		</File>
 		<File
-			RelativePath=".\game_cs.ltx">
-		</File>
-		<File
-			RelativePath=".\helicopter.ltx">
-		</File>
-		<File
-			RelativePath=".\helicopter_.ltx">
-		</File>
-		<File
-			RelativePath=".\inventory_new.xml">
-		</File>
-		<File
-			RelativePath=".\inventoryMP_new2.xml">
-		</File>
-		<File
-			RelativePath=".\jobs_new.xml">
-		</File>
-		<File
-			RelativePath=".\laststanding_game.ltx">
-		</File>
-		<File
-			RelativePath=".\M_dog_.ltx">
-		</File>
-		<File
-			RelativePath=".\mp_actor.ltx">
-		</File>
-		<File
-			RelativePath=".\npc_profile.xml">
-		</File>
-		<File
-			RelativePath=".\pda_character_new.xml">
-		</File>
-		<File
-			RelativePath=".\pda_contacts_new.xml">
-		</File>
-		<File
-			RelativePath=".\script.ltx">
-		</File>
-		<File
-			RelativePath=".\sleep_dialog_new.xml">
-		</File>
-		<File
-			RelativePath=".\stalkers.ltx">
-		</File>
-		<File
-			RelativePath=".\startup.ltx">
-		</File>
-		<File
 			RelativePath=".\System.ltx">
-		</File>
-		<File
-			RelativePath=".\teamdeathmatch_game.ltx">
-		</File>
-		<File
-			RelativePath=".\test_script.ltx">
-		</File>
-		<File
-			RelativePath=".\trade_new.xml">
 		</File>
 	</Files>
 	<Globals>
