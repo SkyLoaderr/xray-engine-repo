@@ -7,6 +7,7 @@
 #pragma once
 
 #include "..\xr_collide_defs.h"
+#include "..\lightPPA.h"
 
 // refs
 class CEntity;
@@ -45,6 +46,10 @@ protected:
 	float			tracerTrailCoeff;
 	float			tracerStartLength;
 	float			tracerWidth;
+	
+	CLightPPA		light_base;
+	CLightPPA		light_render;
+	DWORD			light_frame;
 
 	BOOL			FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual void	FireShotmark	(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);

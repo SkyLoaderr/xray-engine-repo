@@ -91,7 +91,10 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	tracerWidth		= ini->ReadFLOAT	(section,"tracer_width"			);
 
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
-	
+
+	light_base.SetColor	(.5f,.5f,.0f);
+	light_base.SetRange	(4.f);
+
 	bVisible		= FALSE;
 }
 
@@ -164,6 +167,18 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// tracer
 	Level().Tracers.Add	(Peff,end_point,tracerHeadSpeed,tracerTrailCoeff,tracerStartLength,tracerWidth);
+
+	// light
+	if (Device.dwFrame	!= light_frame)
+	{
+		light_frame		= Device.dwFrame;
+		
+		light_render.SetPosition	(Peff);
+		light_render.SetColor		(light_base.color);
+		light_render.SetRange		(light_base.sphere.R);
+
+		::Render.Lights_Dynamic.Add(&light_render);
+	}
 
 	return				bResult;
 }
