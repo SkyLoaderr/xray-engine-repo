@@ -414,9 +414,9 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		int								l_iCumulativeItemVolume = m_iCumulativeItemVolume;
 		bool							l_bOk = true;
 		ITEM_P_IT						I = m_tpALife->m_tpItemVector.begin();
-		ITEM_P_IT						E = m_tpALife->m_tpItemVector.end();
+		ITEM_P_IT						E = m_tpALife->m_tpItemVector.end(), J = E - 1;
 		for ( ; I != E; I++)
-			if (bfCanGetItem(*I)) {
+			if ((I != J) || bfCanGetItem(*I)) {
 				m_fCumulativeItemMass	+= (*I)->m_fMass;
 				m_iCumulativeItemVolume	+= (*I)->m_iVolume;
 				children.push_back		((*I)->ID);
