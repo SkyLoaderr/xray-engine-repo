@@ -554,6 +554,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
                        LPVOID lpReserved
 					 )
 {
+	Msg("DLL_PROCESS %d",ul_reason_for_call);
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
@@ -614,8 +615,10 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		GamePersistent		= xr_new<CGamePersistent> ();
 		break;
 	case DLL_PROCESS_DETACH:
-		xr_delete			(GamePersistent);
+//		Msg("DLL_PROCESS_DETACH");
 		xr_delete			(tpAI_Space);
+//		Msg("After DLL_PROCESS_DETACH");
+		xr_delete			(GamePersistent);
 		break;
 	}
     return TRUE;

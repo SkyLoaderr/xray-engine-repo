@@ -191,7 +191,7 @@ IC CAI_Space& getAI()
 {
 	if (!tpAI_Space)
 		 tpAI_Space = xr_new<CAI_Space>();
-	return(*tpAI_Space);
+	return(*((CAI_Space*)tpAI_Space));
 };
 
 #endif // !defined(AFX_AI_SPACE_H__58DA6D1C_2A38_4242_8327_A4EDF2D8EC0C__INCLUDED_)
