@@ -1,9 +1,12 @@
 [without_outfit]
+;базовый костюм сталкера - костюм новичка. Обычная одежда туриста - штормовка+сапоги
 full_scale_icon_x	= 0			;иконка сталкера в без костюма в полный рост
 full_scale_icon_y	= 11
 
 
 [bandit_outfit]
+;традиционная одежда бандита -кожанная курка со вшитыми кевларовыми элементами. Слегка усиливает противопулевую и осколочную защиту
+;Не защищает от пси-влияния
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\bandit"
@@ -47,6 +50,8 @@ fire_wound_protection  = 0.95
 
 
 [soldier_outfit]
+; Стандартный комплект снаряжения солдата. Легкий армейский бронежилет. Достаточно эффективно защищает от пистолетных пуль и осколков.
+; Не защищает от пси-влияния
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\soldier"
@@ -90,6 +95,9 @@ fire_wound_protection  = 0.8
 
 
 [stalker_outfit]
+; Производимый "народными умельцами" комбез сталкера. Легкий армейский бронежилет плюс накладные усиливающие кевларовые элементы. 
+; Достаточно эффективно защищает от пистолетных пуль и осколков. Прорезиненый брезент неплохо защищает от радиационной пыли и слабых аномалий. 
+; Не защищает от пси-влияния
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\stalker"
@@ -133,6 +141,10 @@ fire_wound_protection  = 0.7
 
 
 [svoboda_light_outfit]
+; Производимый ремеленниками группировки "Свобода" облегченный комбез сталкера. Легкий армейский бронежилет плюс накладные усиливающие кевларовые элементы. 
+; Достаточно эффективно защищает от пистолетных пуль и осколков. Прорезиненый брезент неплохо защищает от радиационной пыли и слабых аномалий.
+; Не защищает от пси-влияния
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\svoboda_light"
@@ -176,6 +188,12 @@ fire_wound_protection  = 0.8
 
 
 [killer_outfit]
+
+; Комбез сталкера из группировки "Наемники". За основу взяты образцы спецназовской экипировки западных армий.
+; За счет специальной обработки ткани усилены жаростойкие и противорадиационные свойства ткани. Средний 
+; армейский бронежилет входящий в состав костюма усилен титановыми элементами. Достаточно эффективно защищает 
+; от автоматных пуль на средних и дальних растояниях. За счет наличия металической сетки в капюшоне слегка снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\killer"
@@ -191,7 +209,7 @@ inv_weight			= 6.0
 slot				= 6
 inv_grid_width		= 2
 inv_grid_height		= 3
-inv_grid_x			= 6
+inv_grid_x			= 4
 inv_grid_y			= 15
 cost				= 3500
 full_scale_icon_x	= 4			;иконка сталкера в костюме в полный рост
@@ -219,6 +237,12 @@ fire_wound_protection  = 0.7
 
 
 [svoboda_heavy_outfit]
+; Производимый ремеленниками группировки "Свобода" усиленный комбез сталкера. Средний армейский бронежилет 
+; плюс накладные усиливающие цирконевые элементы дают неплохую защиту от автоматных пуль и осколков на средних
+; и дальних дистанциях. Материал костюма состоит из двух слоев. Специально обработанной кожи и ткани с асбестовой нитью.
+; Хорошо защищает от радиации и слабых аномалий. За счет наличия металической сетки в капюшоне слегка снижает пси-влияние.
+
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\svoboda_heavy"
@@ -234,7 +258,7 @@ inv_weight			= 8.0
 inv_grid_width		= 2
 inv_grid_height		= 3
 inv_grid_x			= 8
-inv_grid_y			= 13
+inv_grid_y			= 15
 cost				= 4200
 slot				= 6
 full_scale_icon_x	= 2			;иконка сталкера в костюме в полный рост
@@ -262,6 +286,13 @@ fire_wound_protection  = 0.6
 
 
 [dolg_outfit]
+
+; Производимый ремеленниками группировки "Долг" усиленный комбез сталкера. Средний армейский бронежилет 
+; плюс накладные композитные элементы дают неплохую защиту от автоматных пуль и осколков на средних
+; и дальних дистанциях. Материал костюма состоит из двух слоев. Специально обработанной кожи и слоя кевлара,
+; предотвращающего сильные повреждения от укусов животных. Хорошо защищает от радиации и слабых аномалий. 
+; За счет наличия металической сетки в капюшоне слегка снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\dolg"
@@ -305,6 +336,14 @@ fire_wound_protection  = 0.7
 
 
 [monolit_outfit]
+
+; Комбез сталкера группировки "Монолит". Производитель неизвестен. Средний армейский бронежилет 
+; плюс накладные кевларовые элементы дают неплохую защиту от автоматных пуль и осколков на средних
+; и дальних дистанциях. Материал костюма состоит из двух слоев. Специально обработанной ткани и слоя 
+; специального полиэтилена. Очень хорошо защищает от радиации и слабых аномалий. Стоек к химически агрессивным средам. 
+; За счет наличия продвинутой системы металических сеток и токосъемников значительно снижает пси-влияние.
+
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\monolit"
@@ -339,7 +378,7 @@ fire_wound_immunity  = 0.4
 burn_protection = 0.7			;коэффициенты защиты костюма персонажем 
 strike_protection = 0.8
 shock_protection = 0.8
-wound_protection = 0.4		
+wound_protection = 0.6		
 radiation_protection = 0.1
 telepatic_protection = 0.5
 chemical_burn_protection = 0.4
@@ -348,6 +387,12 @@ fire_wound_protection  = 0.65
 
 
 [specops_outfit]
+
+; Модифицированная для работы в условиях Зоны, экипировка армейского спецназа - Берилл-5М. В составе: средний армейский бронежилет, 
+; усиленный титановыми пластинами с берилиевым покрытием двухслойный костюм и шлем Сфера-08. Неплохая защита от автоматных пуль и осколков
+; на средних и дальних дистанциях. Средняя защита от радиации и аномалий. Хорошая теплостойкость. 
+; За счет наличия металлического шлема незначительно снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\specops"
@@ -357,8 +402,8 @@ cform           = skeleton
 visual          = equipments\specnaz_suit
 actor_visual	= actors\hero\stalker_specops.ogf
 
-inv_name			= "HAP-5M Outfit"
-inv_name_short		= "HAP-5M Outfit"
+inv_name			= "Berill-5M Outfit"
+inv_name_short		= "Berill-5M Outfit"
 inv_weight			= 8.0
 inv_grid_width		= 2
 inv_grid_height		= 3
@@ -383,7 +428,7 @@ burn_protection = 0.4			;коэффициенты защиты костюма персонажем
 strike_protection = 0.8
 shock_protection = 0.8
 wound_protection = 0.8		
-radiation_protection = 0.8
+radiation_protection = 0.6
 telepatic_protection = 0.8
 chemical_burn_protection = 0.8
 explosion_protection = 0.8
@@ -391,6 +436,13 @@ fire_wound_protection  = 0.5
 
 
 [protection_outfit]
+
+; Модифицированный для работы в условиях Зоны костюм химической защиты ССП-98М . Используется подразделениями охраны научных лагерей.
+; Встроенная воздушная компенсационная система, позволяющая снизить вред от перегрузок при падения и ударах аномалий. Встроенная система фильтрации 
+; воздуха и кондиционирования.  Стоек к химически агрессивным средам. Очень хорошая защита от радиации. Хорошая теплостойкость. 
+; Средняя защита от пуль и осколков. За счет наличия системы подавления наведенного электричества хорошо снижает пси-влияние.
+
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\protection"
@@ -400,8 +452,8 @@ cform           = skeleton
 visual          = equipments\scientist_suit.ogf	
 actor_visual	= actors\hero\stalker_chemical.ogf
 
-inv_name			= "CCP-98 Outfit"
-inv_name_short		= "CCP-98 Outfit"
+inv_name			= "SSP-98M Outfit"
+inv_name_short		= "SSP-98M Outfit"
 inv_weight			= 6.5
 slot				= 6
 inv_grid_width		= 2
@@ -414,7 +466,7 @@ full_scale_icon_y	= 6
 
 burn_immunity = 0.3				;коэффициенты иммунитета самого костюма
 strike_immunity = 0.2	;1.0
-shock_immunity = 0.2
+shock_immunity = 0.5
 wound_immunity = 0.5		
 radiation_immunity = 0.01
 telepatic_immunity = 0.01
@@ -424,16 +476,23 @@ fire_wound_immunity  = 0.8
 
 burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
 strike_protection = 0.6	;0.9
-shock_protection = 0.6
+shock_protection = 0.4
 wound_protection = 0.8		
 radiation_protection = 0.1
 telepatic_protection = 0.3
 chemical_burn_protection = 0.3
 explosion_protection = 0.8
-fire_wound_protection  = 0.8
+fire_wound_protection  = 0.7
 
 
 [ecolog_outfit]
+
+; Модифицированный для работы в условиях Зоны костюм химической защиты ССП-99М . Используется экспедициями ученых и, 
+; сотрудничающих  с ними сталкеров -экологов. Встроенная воздушная компенсационная система, позволяющая снизить вред от 
+; перегрузок при падения и ударах аномалий. Встроенная система фильтрации воздуха и кондиционирования. Очень хорошая защита от 
+; радиации и биологических аномалий. Стоек к химически агрессивным средам. Хорошая теплостойкость. Средняя защита от пуль и осколков. 
+; За счет наличия системы подавления наведенных полей хорошо снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\ecolog"
@@ -443,8 +502,8 @@ cform           = skeleton
 visual          = equipments\ecolog_suit.ogf	
 actor_visual	= actors\hero\stalker_ecolog.ogf
 
-inv_name			= "CCP-98M Outfit"
-inv_name_short		= "CCP-98M Outfit"
+inv_name			= "SSP-99M Outfit"
+inv_name_short		= "SSP-99M Outfit"
 inv_weight			= 6.0
 slot				= 6
 inv_grid_width		= 2
@@ -467,16 +526,23 @@ fire_wound_immunity  = 0.8
 
 burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
 strike_protection = 0.6	;0.9
-shock_protection = 0.6
+shock_protection = 0.3
 wound_protection = 0.8		
 radiation_protection = 0.1
 telepatic_protection = 0.3
 chemical_burn_protection = 0.3
 explosion_protection = 0.8
-fire_wound_protection  = 0.7
+fire_wound_protection  = 0.8
 
 
 [exo_outfit]
+
+; Экспериментальный образец военного экзоскелета. Производитель - некий зарубежный военный исследовательский 
+; центр, заинтересованный в обкатке своего детища в сложных условиях Зоны. Тяжелое гидравлическое оборудование закрепленное на спине 
+; тем не менее в конечном итоге позволяет переносить гораздо больше веса и меньше уставать. Гидравлика также компенсирует вред от падений 
+; с высоты и влияние гравитационных аномалий. Система приводов косвенно служит защитой тела от пуль и осколков. Надевается поверх собственного костюма.
+
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\exo"
@@ -520,6 +586,13 @@ fire_wound_protection  = 0.5
 
 
 [military_stalker_outfit]
+
+; Специально сделанный для работы в условиях Зоны, комплект экипировки армейских сталкеров - СКАТ-9. В составе: тяжелый армейский бронежилет, 
+; встроенный компенсационный костюм, двухслойный (кевлар-упроченный полиэтилен) костюм усиленный титановыми пластинами с берилиевым покрытием 
+; и шлем Сфера-12. Очень хорошая защита от автоматных пуль и осколков. Улучшенные характеристики защиты от взрывов, падений и гравитационных ударов.
+; Хорошая защита от радиации и аномалий. Хорошая теплостойкость. Неплохая стойкость к химически агрессивным средам. За счет наличия металлического 
+; шлема с системой иеталических сеток и токосъемников снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\military_stalker"
@@ -529,15 +602,15 @@ cform           = skeleton
 visual          = equipments\stalker_military_suit
 actor_visual	= actors\hero\stalker_military.ogf	
 
-inv_name			= "MSO-09M"
-inv_name_short		= "MSO-09M"
+inv_name			= "SKAT-9"
+inv_name_short		= "SKAT-9"
 inv_weight			= 10.0
 slot				= 6
 inv_grid_width		= 2
 inv_grid_height		= 3
 inv_grid_x			= 16
 inv_grid_y			= 16
-cost				= 5000
+cost				= 8000
 full_scale_icon_x	= 8		;иконка сталкера в костюме в полный рост
 full_scale_icon_y	= 6
 
@@ -552,17 +625,24 @@ explosion_immunity = 0.6
 fire_wound_immunity  = 0.6
 
 burn_protection = 0.4			;коэффициенты защиты костюма персонажем 
-strike_protection = 0.8
+strike_protection = 0.6
 shock_protection = 0.8
 wound_protection = 0.8		
 radiation_protection = 0.5
 telepatic_protection = 0.6
 chemical_burn_protection = 0.6
 explosion_protection = 0.6
-fire_wound_protection  = 0.5
+fire_wound_protection  = 0.4
 
 
 [military_commander_outfit]
+
+; Специально сделанный для работы в условиях Зоны, комплект экипировки армейского сталкера-командира - СКАТ-9М. В составе: тяжелый армейский бронежилет, 
+; встроенный компенсационный костюм, двухслойный (кевлар-упроченный полиэтилен) костюм усиленный титановыми пластинами с берилиевым покрытием 
+; и шлем Сфера-12М. Очень хорошая защита от автоматных пуль и осколков. Улучшенные характеристики защиты от взрывов, падений и гравитационных ударов.
+; Хорошая защита от радиации и аномалий. Хорошая теплостойкость. Неплохая стойкость к химически агрессивным средам. За счет наличия металлического 
+; шлема с системой подавления наведенных полей хорошо снижает пси-влияние.
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\commander"
@@ -572,15 +652,15 @@ cform           = skeleton
 visual          = equipments\stalker_comander_suit
 actor_visual	= actors\hero\stalker_commander.ogf	
 
-inv_name			= "MSO-09M"
-inv_name_short		= "MSO-09M"
+inv_name			= "SKAT-9M"
+inv_name_short		= "SKAT-9M"
 inv_weight			= 10.0
 slot				= 6
 inv_grid_width		= 2
 inv_grid_height		= 3
 inv_grid_x			= 18
 inv_grid_y			= 17
-cost				= 10000
+cost				= 12000
 full_scale_icon_x	= 10		;иконка сталкера в костюме в полный рост
 full_scale_icon_y	= 6
 
@@ -606,6 +686,14 @@ fire_wound_protection  = 0.4
 
 
 [scientific_outfit]
+
+; Сталкеровский скафандр высшей защиты. Экипировка сталкера-мастера или лидера группировки. Производится и продается подпольно одним из 
+; оборонных киевских НИИ. Очень дорогой и из-за этого не был принят на вооружение армейских сталкеров. В составе: разнесенное бронирование по 
+; жизненно-важным участкам тела, встроенный компенсационный костюм, встроенная система фильтрации воздуха и кондиционирования, шлем от костюма 
+; высшей химической защиты со сложной системой подавления пси-полей.Очень хорошая защита от автоматных пуль и осколков. Улучшенные характеристики 
+; защиты от взрывов, падений и гравитационных ударов. Очень хорошая защита от радиации и аномалий. Хорошая теплостойкость. Отличная стойкость к 
+; химически агрессивным средам. 
+
 GroupControlSection	= spawn_group
 discovery_dependency = 
 $spawn 			= "outfit\scientific"
@@ -642,7 +730,7 @@ strike_protection = 0.6
 shock_protection = 0.3
 wound_protection = 0.6		
 radiation_protection = 0.1
-telepatic_protection = 0.2
+telepatic_protection = 0.1
 chemical_burn_protection = 0.3
 explosion_protection = 0.6
 fire_wound_protection  = 0.5
