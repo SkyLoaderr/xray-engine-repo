@@ -51,6 +51,8 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				ImportLibrary="x:\$(ProjectName).lib"/>
 			<Tool
 				Name="VCMIDLTool"
