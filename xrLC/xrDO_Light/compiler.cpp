@@ -166,7 +166,7 @@ void xrLoad(LPCSTR name)
 }
 
 //-----------------------------------------------------------------------------------------------------------------
-const int	LIGHT_Count			=2;
+const int	LIGHT_Count			=3;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
 typedef	svector<R_Light*,128>	LSelection;
