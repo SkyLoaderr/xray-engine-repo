@@ -16,6 +16,21 @@ using namespace MonsterSpace;
 class CAI_Stalker;
 
 class CStalkerMovementManager : virtual public CMovementManager {
+public:
+	struct CMovementParams {
+		Fvector						m_desired_position;
+		Fvector						m_desired_direction;
+		EBodyState					m_body_state;
+		EMovementType				m_movement_type;
+		EMentalState				m_mental_state;
+		EPathType					m_path_type;
+		EDetailPathType				m_detail_path_type;
+		CAbstractVertexEvaluator	*m_node_evaluator;
+		CAbstractVertexEvaluator	*m_path_evaluator;
+		bool						m_use_desired_position;
+		bool						m_use_desired_direction;
+	};
+
 protected:
 	typedef CMovementManager inherited;
 
@@ -35,17 +50,8 @@ protected:
 	float								m_fDamagedPanicFactor;
 
 protected:
-	Fvector								m_desired_position;
-	Fvector								m_desired_direction;
-	EBodyState							m_body_state;
-	EMovementType						m_movement_type;
-	EMentalState						m_mental_state;
-	EPathType							m_path_type;
-	EDetailPathType						m_detail_path_type;
-	CAbstractVertexEvaluator			*m_node_evaluator;
-	CAbstractVertexEvaluator			*m_path_evaluator;
-	bool								m_use_desired_position;
-	bool								m_use_desired_direction;
+	CMovementParams						m_current;
+	CMovementParams						m_target;
 	CAI_Stalker							*m_stalker;
 
 public:
@@ -73,6 +79,8 @@ public:
 	virtual	void	reload					(LPCSTR section);
 	virtual	void	update					(u32 time_delta);
 	IC		float	path_direction_angle	();
+	IC		bool	turn_in_place			() const;
+
 	IC		void	set_head_orientation	(const MonsterSpace::SBoneRotation &orientation);
 	IC		void	set_desired_position	(const Fvector *desired_position);
 	IC		void	set_desired_direction	(const Fvector *desired_direction);
@@ -83,12 +91,19 @@ public:
 	IC		void	set_detail_path_type	(EDetailPathType detail_path_type);
 	IC		void	set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
 	IC		void	set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
-	IC		bool	turn_in_place			() const;
 
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;
+	IC		const Fvector							&desired_position		() const;
+	IC		const Fvector							&desired_direction		() const;
+	IC		const MonsterSpace::EBodyState			body_state				() const;
 	IC		const MonsterSpace::EMovementType		movement_type			() const;
 	IC		const MonsterSpace::EMentalState		mental_state			() const;
-	IC		const MonsterSpace::EBodyState			body_state				() const;
+	IC		const EPathType							path_type				() const;
+	IC		const EDetailPathType					detail_path_type		() const;
+	IC		CAbstractVertexEvaluator				*node_evaluator			() const;
+	IC		CAbstractVertexEvaluator				*path_evaluator			() const;
+	IC		bool									use_desired_position	() const;
+	IC		bool									use_desired_direction	() const;
 };
 
 #include "stalker_movement_manager_inline.h"
