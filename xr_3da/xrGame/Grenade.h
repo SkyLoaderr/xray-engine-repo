@@ -33,7 +33,7 @@ public:
 	virtual void Destroy();
 	
 	virtual bool Action(s32 cmd, u32 flags);
-	virtual bool Useful();
+	virtual bool Useful() const;
 	virtual u32  State(u32 state);
 
 	virtual void						net_Import			(NET_Packet& P);					// import from server

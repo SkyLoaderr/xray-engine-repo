@@ -45,7 +45,7 @@ void CBolt::Throw()
 	spawn_fake_missile			();
 }
 
-bool CBolt::Useful() 
+bool CBolt::Useful() const
 {
 	// ≈сли IItem еще не полностью использованый, вернуть true
 	return m_dwDestroyTime == 0xffffffff;

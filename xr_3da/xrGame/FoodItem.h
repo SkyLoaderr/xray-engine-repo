@@ -52,7 +52,7 @@ public:
 	virtual bool Activate() {return inherited::Activate();}
 	virtual void Deactivate() {inherited::Deactivate();}
 
-	virtual bool Useful() {return CEatableItem::Useful();}
+	virtual bool Useful() const {return CEatableItem::Useful();}
 	virtual bool IsPending() {return inherited::IsPending();}
 	virtual bool IsHidden()	{return FOOD_HIDDEN == STATE;}
 	virtual bool IsHiding() {return FOOD_HIDING == STATE;}

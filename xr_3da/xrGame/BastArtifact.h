@@ -33,7 +33,7 @@ public:
 										float impulse, 
 										ALife::EHitType hit_type = ALife::eHitTypeWound);
 
-	virtual bool Useful();
+	virtual bool Useful() const;
 
 
 	virtual void feel_touch_new	(CObject* O);

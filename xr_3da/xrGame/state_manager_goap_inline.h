@@ -11,46 +11,46 @@
 #define TEMPLATE_SPECIALIZATION template <\
 	typename T1,\
 	typename T2,\
-	typename T3
+	typename T3\
 >
 
-#define CAbstractStateManager CStateManagerGOAP<T1,T2,T3>
+#define CGOAPStateManager CStateManagerGOAP<T1,T2,T3>
 
 TEMPLATE_SPECIALIZATION
-CAbstractStateManager::CStateManagerGOAP			()
+CGOAPStateManager::CStateManagerGOAP			()
 {
 	Init					();
 }
 
 TEMPLATE_SPECIALIZATION
-CAbstractStateManager::~CStateManagerGOAP			()
+CGOAPStateManager::~CStateManagerGOAP			()
 {
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::Init			()
+void CGOAPStateManager::Init			()
 {
 	m_conditions.reserve	(64);
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::Load			(LPCSTR section)
+void CGOAPStateManager::Load			(LPCSTR section)
 {
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::reinit			(bool clear_all)
+void CGOAPStateManager::reinit			(bool clear_all)
 {
 	inherited::reinit		(clear_all);
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::reload			(LPCSTR section)
+void CGOAPStateManager::reload			(LPCSTR section)
 {
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractStateManager::condition_contradiction(const CState &state0, const CState &state1)
+bool CGOAPStateManager::condition_contradiction(const CState &state0, const CState &state1)
 {
 	const xr_vector<CStateCondition>::const_iterator I = state0.pre_conditions().begin();
 	const xr_vector<CStateCondition>::const_iterator E = state0.pre_conditions().end();
@@ -120,7 +120,7 @@ bool CAbstractStateManager::condition_contradiction(const CState &state0, const 
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::update_transitions(CState &state)
+void CGOAPStateManager::update_transitions(CState &state)
 {
 	xr_vector<CVertex>::const_iterator	I = graph().vertices().begin();
 	xr_vector<CVertex>::const_iterator	E = graph().vertices().end();
@@ -136,7 +136,7 @@ void CAbstractStateManager::update_transitions(CState &state)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::add_state		(T *state, u32 state_id, u32 priority, const xr_vector<CStateCondition> &pre_conditions, const xr_vector<CStateCondition> &post_conditions)
+void CGOAPStateManager::add_state		(T1 *state, u32 state_id, u32 priority, const xr_vector<CStateCondition> &pre_conditions, const xr_vector<CStateCondition> &post_conditions)
 {
 	VERIFY					(!graph().vertex(state_id));
 	CState					state = CState(state,priority,pre_conditions,post_conditions);
@@ -146,7 +146,7 @@ void CAbstractStateManager::add_state		(T *state, u32 state_id, u32 priority, co
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::remove			(u32 state_id)
+void CGOAPStateManager::remove			(u32 state_id)
 {
 	VERIFY					(graph().vertex(state_id));
 	graph().vertex(state_id)->data().destroy();
@@ -156,13 +156,13 @@ void CAbstractStateManager::remove			(u32 state_id)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::update					(u32 time_delta)
+void CGOAPStateManager::update					(u32 time_delta)
 {
 	inherited::update		(time_delta);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	T	&CAbstractStateManager::state		(const u32 state_id)
+IC	T1	&CGOAPStateManager::state		(const u32 state_id)
 {
 	VERIFY					(graph().vertex(state_id));
 	VERIFY					(graph().vertex(state_id)->data().m_state);
@@ -170,41 +170,41 @@ IC	T	&CAbstractStateManager::state		(const u32 state_id)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	T	&CAbstractStateManager::current_state	()
+IC	T1	&CGOAPStateManager::current_state	()
 {
 	VERIFY					(graph().vertex(current_vertex_id()));
 	return					(*graph().vertex(current_vertex_id())->data().m_state);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const T	&CAbstractStateManager::current_state	() const
+IC	const T1	&CGOAPStateManager::current_state	() const
 {
 	VERIFY					(graph().vertex(current_vertex_id()));
 	return					(*graph().vertex(current_vertex_id())->data().m_state);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	T	&CAbstractStateManager::dest_state	()
+IC	T1	&CGOAPStateManager::dest_state	()
 {
 	VERIFY					(graph().vertex(dest_vertex_id()));
 	return					(*graph().vertex(dest_vertex_id())->data().m_state);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const T	&CAbstractStateManager::dest_state	() const
+IC	const T1	&CGOAPStateManager::dest_state	() const
 {
 	VERIFY					(graph().vertex(dest_vertex_id()));
 	return					(*graph().vertex(dest_vertex_id())->data().m_state);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CAbstractStateManager::set_dest_state			(const u32 dest_state_id)
+IC	void CGOAPStateManager::set_dest_state			(const u32 dest_state_id)
 {
 	set_dest_vertex_id		(dest_state_id);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CAbstractStateManager::set_current_state		(const u32 current_state_id)
+IC	void CGOAPStateManager::set_current_state		(const u32 current_state_id)
 {
 	if (current_state_id != current_vertex_id()) {
 		set_current_vertex_id	(current_state_id);
@@ -213,19 +213,19 @@ IC	void CAbstractStateManager::set_current_state		(const u32 current_state_id)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::remove_state	(u32 state_id)
+void CGOAPStateManager::remove_state	(u32 state_id)
 {
 	graph().remove_vertex	(state_id);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const u32 &CAbstractStateManager::current_state_id	() const
+IC	const u32 &CGOAPStateManager::current_state_id	() const
 {
 	return					(current_vertex_id());
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const u32 &CAbstractStateManager::dest_state_id		() const
+IC	const u32 &CGOAPStateManager::dest_state_id		() const
 {
 	return					(dest_vertex_id());
 }

@@ -182,7 +182,7 @@ LPCSTR CInventoryItem::NameComplex()
 	return m_nameComplex;
 }
 
-bool CInventoryItem::Useful() 
+bool CInventoryItem::Useful() const
 {
 	// Если IItem нельзя использовать, вернуть false
 	return true;

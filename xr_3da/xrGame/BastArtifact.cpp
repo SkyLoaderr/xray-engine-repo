@@ -223,7 +223,7 @@ void CBastArtifact::Hit(float P, Fvector &dir,
 
 
 //объект можно поднять только в спокойном состоянии
-bool CBastArtifact::Useful()
+bool CBastArtifact::Useful() const
 {
 	if(m_fEnergy>0) 
 		return false;

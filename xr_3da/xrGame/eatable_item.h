@@ -23,7 +23,7 @@ public:
 	virtual ~CEatableItem();
 
 	virtual void Load(LPCSTR section);
-	virtual bool Useful();
+	virtual bool Useful() const;
 
 	//влияние при поедании вещи на параметры игрока
 	float	m_fHealthInfluence;

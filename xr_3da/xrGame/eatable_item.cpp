@@ -37,7 +37,7 @@ void CEatableItem::Load(LPCSTR section)
 	m_iPortionsNum = pSettings->r_s32(section, "eat_portions_num");
 }
 
-bool CEatableItem::Useful()
+bool CEatableItem::Useful() const
 {
 	if(!inherited::Useful()) return false;
 

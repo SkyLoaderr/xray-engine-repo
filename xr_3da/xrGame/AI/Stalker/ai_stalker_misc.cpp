@@ -75,7 +75,7 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 		return			(false);
 
 	const CInventoryItem *inventory_item = dynamic_cast<const CInventoryItem*>(object);
-	if (!inventory_item)
+	if (!inventory_item || !inventory_item->Useful())
 		return			(false);
 
 	const CBolt			*bolt = dynamic_cast<const CBolt*>(object);

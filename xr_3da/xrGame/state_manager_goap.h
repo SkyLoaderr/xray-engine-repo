@@ -45,7 +45,7 @@ namespace StateManagerGOAP {
 		xr_vector<CStateCondition>	m_pre_conditions;
 		xr_vector<CStateCondition>	m_post_conditions;
 
-				CStateAbstract(T *state, u32 priority, const xr_vector<CStateCondition> &pre_conditions, const xr_vector<CStateCondition> &post_conditions) : 
+				CStateAbstract(T1 *state, u32 priority, const xr_vector<CStateCondition> &pre_conditions, const xr_vector<CStateCondition> &post_conditions) : 
 					m_state(state), 
 					m_priority(priority),
 					m_pre_conditions(pre_conditions),
@@ -82,7 +82,7 @@ template <
 	typename T2,
 	typename T3
 >
-class CStateManagerAbstract : 
+class CStateManagerGOAP : 
 	public CGraphManagerAbstract<
 		StateManagerGOAP::CStateAbstract<T1,T2,T3>,
 		float,
@@ -92,10 +92,11 @@ class CStateManagerAbstract :
 {
 public:
 	typedef StateManagerGOAP::CStateAbstract<T1,T2,T3>						CState;
+	typedef StateManagerGOAP::CStateConditionAbstract<T2,T3>				CStateCondition;
 	typedef CGraphManagerAbstract<CState,float,u32,u32>						inherited;
 	typedef typename CGraphAbstract<CState,float,u32,u32>::vertex_iterator	state_iterator;
 private:
-			bool		condition_contradiction	(CState &state);
+			bool		condition_contradiction	(const CState &state0, const CState &state1);
 			void		update_transitions		(CState &state);
 
 protected:
@@ -112,8 +113,8 @@ protected:
 	}
 
 public:
-						CStateManagerAbstract	();
-	virtual				~CStateManagerAbstract	();
+						CStateManagerGOAP		();
+	virtual				~CStateManagerGOAP		();
 			void		Init					();
 	virtual	void		Load					(LPCSTR		section);
 	virtual	void		reinit					(bool		clear_all = false);

@@ -92,7 +92,7 @@ void CGrenade::Destroy()
 
 
 
-bool CGrenade::Useful() 
+bool CGrenade::Useful() const
 {
 	// ≈сли IItem еще не полностью использованый, вернуть true
 	return m_dwDestroyTime == 0xffffffff;

@@ -27,7 +27,7 @@ public:
 	
 	virtual void	OnEvent				(NET_Packet& P, u16 type);
 	
-	virtual bool	Useful				();									// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool	Useful				() const;									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Attach				(PIItem pIItem) {return false;}
 	virtual bool	Detach				(PIItem pIItem) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции

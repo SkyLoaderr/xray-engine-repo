@@ -108,7 +108,7 @@ const char* CWeaponAmmo::NameShort()
 	return m_tmpName;
 }
 
-bool CWeaponAmmo::Useful() 
+bool CWeaponAmmo::Useful() const
 {
 	// ≈сли IItem еще не полностью использованый, вернуть true
 	return !!m_boxCurr;

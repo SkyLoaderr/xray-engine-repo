@@ -392,7 +392,7 @@ void CAI_Rat::OnH_B_Independent	()
 	CEatableItem::OnH_B_Independent	();
 }
 
-bool CAI_Rat::Useful()
+bool CAI_Rat::Useful() const
 {
 	//if(!g_Alive()) return true;
 	if(fEntityHealth<=0) return true;

@@ -35,7 +35,7 @@ public:
 	virtual const char* Name();
 	virtual const char* NameShort();
 
-	virtual bool Useful();
+	virtual bool Useful() const;
 	virtual s32 Sort(PIItem pIItem);
 	virtual bool Merge(PIItem pIItem);
 
