@@ -456,6 +456,7 @@ void CActor::Die	( )
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 	};
 	///!!! выбрасываем артефакты
+	/*
 	TIItemList &l_list = inventory().m_ruck;
 	for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 	{
@@ -463,6 +464,7 @@ void CActor::Die	( )
 		if(pArtifact)
 			pArtifact->Drop();
 	}
+	*/
 
 	///!!! чистка пояса
 	TIItemList &l_blist = inventory().m_belt;
@@ -478,6 +480,7 @@ void CActor::Die	( )
 			{
 				if ((*l_it)->SUB_CLS_ID == CLSID_ARTEFACT)
 				{
+					(*l_it)->Drop();
 					continue;
 				};
 			};
