@@ -22,7 +22,7 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 void CBuild::PreOptimize()
 {
 	// We use overlapping hash table to avoid boundary conflicts
-	static vecVertex	HASH	[HDIM_X+1][HDIM_Y+1][HDIM_Z+1];
+	vecVertex			HASH	[HDIM_X+1][HDIM_Y+1][HDIM_Z+1];
 	Fvector				VMmin,	VMscale, VMeps, scale;
 
 	// Calculate offset,scale,epsilon
@@ -116,7 +116,6 @@ void CBuild::PreOptimize()
 		if (g_vertices[it]->adjacent.empty()) {
 			// isolated
 			delete g_vertices[it];
-//			g_vertices.erase(g_vertices.begin()+it);
 			it--;
 		}
 	}
