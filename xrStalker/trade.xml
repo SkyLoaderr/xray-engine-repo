@@ -10,11 +10,11 @@
 
 
 	<!-- BUTTONS -->
-	<button x="350" y="705" width="107" height="36">
+	<button x="350" y="705" width="107" height="36" hR="0" hB="0" hG="0">
 		<texture>ui\ui_button_05</texture>
 		<text font="graffiti22" r="238" g="153" b="26" align="c">Trade</text>
 	</button>
-	<button x="570" y="705" width="107" height="36">
+	<button x="570" y="705" width="107" height="36" hR="0" hB="0" hG="0">
 		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26" align="c">Leave</text>
 	</button>
@@ -79,7 +79,7 @@
 	</deal_static>
 
 	<!-- DEAL BUTTON -->
-	<deal_button x="100" y="170" width="107" height="36">
+	<deal_button x="100" y="170" width="107" height="36" hR="0" hB="0" hG="0">
 		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26" align="c">Ok</text>
 	</deal_button>
