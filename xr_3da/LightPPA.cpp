@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "LightPPA.h"
-#include "cl_rapid.h"
 #include "xr_creator.h"
 #include "fstaticrender.h"
 
@@ -40,16 +39,15 @@ void CLightPPA::Render	(CVertexStream* VS)
 	VERIFY	(pCreator);
 
 	// Build bbox
-	Fbox	BB;
-	BB.set	(sphere.P,sphere.P);
-	BB.grow	(sphere.R+EPS_L);
+	Fvector size;
+	size.set(sphere.R+EPS_L,sphere.R+EPS_L,sphere.R+EPS_L);
 
 	// Query collision DB (Select polygons)
-	XRC.BBoxMode		(0);
-	XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,BB);
-	DWORD	triCount	= XRC.GetBBoxContactCount();
+	XRC.box_options		(0);
+	XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),sphere.P,size);
+	DWORD	triCount	= XRC.r_count	();
 	if (0==triCount)	return;
-	RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
+	CDB::TRI* tris		= pCreator->ObjectSpace.GetStaticTris();
 
 	// Lock
 	DWORD	vOffset;
@@ -61,7 +59,7 @@ void CLightPPA::Render	(CVertexStream* VS)
 	DWORD	actual	= 0;
 	for (DWORD t=0; t<triCount; t++)
 	{
-		RAPID::tri&	T	= tris	[XRC.BBoxContact[t].id];
+		CDB::TRI&	T	= tris	[XRC.r_begin()[t].id];
 
 		Fvector	V1		= *T.verts[0];
 		Fvector V2		= *T.verts[1];

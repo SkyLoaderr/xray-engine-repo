@@ -43,12 +43,12 @@ IC void AddTri(CDB::TRI* pTri,Fmatrix &mView,CWallmark	&W)
 	}
 }
 
-static vector<RAPID::tri*>	sml_processed;
+static vector<CDB::TRI*>	sml_processed;
 static Fvector				sml_normal;
 static sPoly				sml_poly_dest;
 static sPoly				sml_poly_src;
 
-IC void RecurseTri(RAPID::tri* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
+IC void RecurseTri(CDB::TRI* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
 {
 	// Check if triangle already processed
 	if (find(sml_processed.begin(),sml_processed.end(),T)!=sml_processed.end())
@@ -88,7 +88,7 @@ IC void RecurseTri(RAPID::tri* T, Fmatrix &mView,CWallmark	&W,CFrustum &F)
 		// recurse
 		for (i=0; i<3; i++)
 		{
-			RAPID::tri* SML = T->adj[i];
+			CDB::TRI* SML = T->adj[i];
 			if (SML)	{
 				Fvector test_normal;
 				test_normal.mknormal_non_normalized(*SML->verts[0],*SML->verts[1],*SML->verts[2]);
@@ -115,7 +115,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mul2			(mScale);
 }
 
-void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_point, Shader* hShader, float sz)
+void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, Shader* hShader, float sz)
 {
 	// calc face normal
 	Fvector	N;
@@ -271,7 +271,7 @@ void CWallmarksEngine::Render()
 			}
 			
 			pCreator->ObjectSpace.BoxQuery(BB,M_bbox,clGET_TRIS|clQUERY_STATIC|clCOARSE);
-			CList<clQueryTri>& L = pCreator->ObjectSpace.q_result.tris;
+			vector<clQueryTri>& L = pCreator->ObjectSpace.q_result.tris;
 			if (L.size()>0) {
 				Fvector& cPOS = Device.vCameraPosition;
 				Fvector& cDIR = Device.vCameraDirection;

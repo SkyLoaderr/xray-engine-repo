@@ -8,7 +8,6 @@
 #include "DetailManager.h"
 #include "fstaticrender.h"
 #include "xr_creator.h"
-#include "collide\cl_intersect.h"
 
 float		psDetailDensity		= 0.15f;
 
