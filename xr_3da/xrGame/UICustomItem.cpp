@@ -11,6 +11,7 @@ CUICustomItem::CUICustomItem()
 	uAlign			= alNone;
 	uFlags			= 0;
 	iVisRect.lt.set	(0,0); iVisRect.rb.set(0,0);
+	eMirrorMode		= tmNone;
 
 	fScale = 1.f;
 }
@@ -90,6 +91,20 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 					  float(y2-y1))/
 					  float(iTextureRect.height())+hp.y);*/
 
+	// Check mirror mode
+	if (tmMirrorHorisontal == eMirrorMode || tmMirrorBoth == eMirrorMode)
+	{
+		float tmp	= LTt.x;
+		LTt.x		= RBt.x;
+		RBt.x		= tmp;
+	}
+
+	if (tmMirrorVertical == eMirrorMode || tmMirrorBoth == eMirrorMode)
+	{
+		float tmp	= LTt.y;
+		LTt.y		= RBt.y;
+		RBt.y		= tmp;
+	}
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); ++Pointer;
 	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); ++Pointer;

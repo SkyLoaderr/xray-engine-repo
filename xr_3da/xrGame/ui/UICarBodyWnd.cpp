@@ -90,8 +90,8 @@ void CUICarBodyWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDescWnd);
 	UIDescWnd.AttachChild(&UIStaticDesc);
 	xml_init.InitStatic(uiXml, "descr_static", 0, &UIStaticDesc);
-	UIStaticDesc.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), CARBODY_ITEM_XML);
+	UIDescWnd.AttachChild(&UIItemInfo);
+	UIItemInfo.Init(0,0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), CARBODY_ITEM_XML);
 
 
 	//Элементы автоматического добавления
@@ -403,5 +403,10 @@ void CUICarBodyWnd::EnableAll()
 void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
+	const int offset = -10;
+
 	UIItemInfo.InitItem(m_pCurrentItem);
+	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
 }

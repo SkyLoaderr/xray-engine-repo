@@ -109,7 +109,7 @@ void CUIInventoryWnd::Init()
 
 	//информаци€ о предмете
 	UIDescrWnd.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0, 195, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
+	UIItemInfo.Init(0, 0, UIDescrWnd.GetWidth(), UIDescrWnd.GetHeight(), INVENTORY_ITEM_XML);
 
 	//  нопка Drop
 	UIDescrWnd.AttachChild(&UIDropButton);
@@ -1102,7 +1102,7 @@ bool CUIInventoryWnd::ToSlot()
 	if (OUTFIT_SLOT == m_pCurrentItem->GetSlot()) UndressOutfit();
 
 	// ”бираем текущую вещь в слоте, если это не одежда, и текуща€ вещь и вешь в слоте не одно и то же
-	if (OUTFIT_SLOT != m_pCurrentItem->GetSlot())
+	if (OUTFIT_SLOT != m_pCurrentItem->GetSlot() && m_pCurrentItem->GetSlot() < SLOTS_NUM)
 	{
 		DRAG_DROP_LIST &DDList = UITopList[m_pCurrentItem->GetSlot()].GetDragDropItemsList();
 
@@ -1305,7 +1305,12 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 void CUIInventoryWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
+	const int offset = -10;
+
 	UIItemInfo.InitItem(m_pCurrentItem);
+	UIItemInfo.AlignRight(UIItemInfo.UIWeight, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICost, offset);
+	UIItemInfo.AlignRight(UIItemInfo.UICondition, offset);
 }
 /////////////////////////////////////////////////
 //запуск и остановка диалога параметров сна

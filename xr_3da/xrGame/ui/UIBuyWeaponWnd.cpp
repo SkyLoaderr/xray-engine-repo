@@ -38,7 +38,7 @@ const char * const	BUY_WND_XML_NAME			= "inventoryMP_new2.xml";
 const float			fRealItemSellMultiplier		= 0.5f;
 const char * const	weaponFilterName			= "weapon_class";
 const char * const	BUY_MP_ITEM_XML				= "buy_mp_item.xml";
-const char * const	WEAPON_DESCRIPTION_FIELD	= "inv_name";
+const char * const	WEAPON_DESCRIPTION_FIELD	= "description";
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
 
@@ -250,7 +250,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
-	UIItemInfo.DetachChild(&UIItemInfo.UI3dStatic);
 
 	UIDescWnd.AttachChild(&UIWeaponDescription);
 	xml_init.InitListWnd(uiXml, "wpn_descr_list", 0, &UIWeaponDescription);
@@ -2332,28 +2331,31 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
 	{
 		UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
+//		UIItemInfo.AlignRight(UIItemInfo.UIName)
 	}
 	else
 		UIItemInfo.UIName.SetText("");
 
 
+	string128 buf;
 	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_weight"))
 	{
-		string64 buf;
-		strconcat(buf, *stbl("Weight"), ": ", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
+		strconcat(buf, fieldsCaptionColor, *stbl("weight"), "%cdefault ", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
 		UIItemInfo.UIWeight.SetText(buf);
 	}
 	else
 		UIItemInfo.UIWeight.SetText("");
 
+	sprintf(buf, "%s%s %s%i", fieldsCaptionColor, *stbl("weight"), "%default", pDDItemMP->GetCost());
+	UIItemInfo.UICost.SetText(buf);
+
+	UIItemInfo.UIDesc.RemoveAll();
 	if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
 	{
-		UIWeaponDescription.RemoveAll();
-		
  		CUIString str;
 		str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
-		CUIStatic::PreprocessText(str.m_str, UIWeaponDescription.GetItemWidth() - 5, UIWeaponDescription.GetFont());
-		UIWeaponDescription.AddParsedItem<CUIListItem>(str, 0, UIWeaponDescription.GetTextColor());
+		CUIStatic::PreprocessText(str.m_str, UIItemInfo.UIDesc.GetItemWidth() - 5, UIItemInfo.UIDesc.GetFont());
+		UIItemInfo.UIDesc.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
 	}
 	else
 		UIItemInfo.UIWeight.SetText("");
