@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding="UTF-8"?>
 
 <xml>
+	<!-- destroy name ID after next update  -->
 	<!-- PERSON INFORMATION  -->
-	<character name_id="novice">
+	<character name_id="novice" id="novice">
 		<name>Unknown Stalker</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -11,7 +12,7 @@
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
-	<character name_id="veteran">
+	<character name_id="veteran" id="veteran">
 		<name>Unknown Stalker</name>
 		<icon x="2" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -20,7 +21,7 @@
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
-	<character name_id="monolith">
+	<character name_id="monolith" id="monolith">
 		<name>Unknown Stalker</name>
 		<icon x="4" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -29,7 +30,7 @@
 		<team>clan Monolith</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
-	<character name_id="dolg">
+	<character name_id="dolg" id="dolg">
 		<name>Dolg</name>
 		<icon x="10" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -38,7 +39,7 @@
 		<team>clan Dolg</team>
 		<start_dialog>dolg_talk_about</start_dialog>
 	</character>
-	<character name_id="freedom">
+	<character name_id="freedom" id="freedom">
 		<name>Freedom</name>
 		<icon x="8" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -47,7 +48,7 @@
 		<team>clan Freedom</team>
 		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
-	<character name_id="trader">
+	<character name_id="trader" id="trader">
 		<name>Trader</name>
 		<icon x="3" y="1"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -56,7 +57,7 @@
 		<team>trader</team>
 		<start_dialog>escape_trader_start_dialog</start_dialog>
 	</character>
-	<character name_id="actor">
+	<character name_id="actor" id="actor">
 		<name>Gunner</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
