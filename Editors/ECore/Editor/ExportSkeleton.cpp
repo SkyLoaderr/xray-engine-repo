@@ -416,8 +416,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
-    if (m_Source->SMotionCount()<1){
-    	ELog.Msg(mtError,"Object doesn't have any motion.");
+    if (!!m_Source->m_SMotionRefs.size()||(m_Source->SMotionCount()<1)){
+    	ELog.Msg(mtError,"Object doesn't have own motion.");
      	return !!m_Source->m_SMotionRefs.size();
     }
 
@@ -587,12 +587,10 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             if (m_Source->VerifyBoneParts()){
                 F.w_u16(bp_lst.size());
                 for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
-                    F.w_stringZ(bp_it->alias.c_str());
-                    F.w_u16(bp_it->bones.size());
-                    for (int i=0; i<int(bp_it->bones.size()); i++){
-                        int idx = m_Source->FindBoneByNameIdx(bp_it->bones[i].c_str()); VERIFY(idx>=0);
-                        F.w_u32	(idx);
-                    }
+                    F.w_stringZ	(LowerCase(bp_it->alias).c_str());
+                    F.w_u16		(bp_it->bones.size());
+                    for (int i=0; i<int(bp_it->bones.size()); i++)
+                        F.w_stringZ(bp_it->bones[i].c_str());
                 }
             }else{
                 ELog.Msg(mtError,"Invalid bone parts (missing or duplicate bones).");
@@ -633,6 +631,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
         UI->ProgressInc		();
         F.close_chunk();
     }
+    
     UI->ProgressEnd();
     return bRes;
 }

@@ -192,7 +192,7 @@ protected:
 	void						IBlend_Startup			();
 	CBlend*						IBlend_Create			();
 
-	void						LoadMotions				(LPCSTR N, IReader *data);
+	bool						LoadMotions				(LPCSTR N, IReader *data);
 public:
 #ifdef DEBUG
 	LPCSTR						LL_MotionDefName_dbg	(u16	ID);

@@ -274,7 +274,7 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 	CBoneDataAnimated*	Bone=0;
 	for (u32 i=0; i<P.bones.size(); i++)
 	{
-		Bone	= (CBoneDataAnimated*)(*bones)[P.bones[i]];
+		Bone	= (CBoneDataAnimated*)(*bones)[P.bones[i]]; VERIFY(Bone);
 		Bone->Motion_Start_IM	(this,B);
 	}
 	VERIFY		(Bone);
@@ -509,77 +509,74 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	return 0;
 }
 
-void CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
+bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 {
-	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_MOTIONS2);
-    if (!MS) 	return;
-    
-    u32			dwCNT	= 0;
-    MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
-    for (u32 M=0; M<dwCNT; M++)
-    {
-        string128			mname;
-        R_ASSERT			(MS->find_chunk(M+1));             
-        MS->r_stringZ		(mname);
-
-        ref_str	m_key		= ref_str(strlwr(mname));
-//		CKinematics::accel_map::iterator it = motion_map->find(m_key);
-//		if (it!=motion_map->end())	xr_delete (it->second);
-        motion_map->insert	(mk_pair(m_key,M));
-
-        u32 dwLen			= MS->r_u32();
-        for (u32 i=0; i<bones->size(); i++)
-        {
-			((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(CMotion());
-            CMotion&		M	= ((CBoneDataAnimated*)(*bones)[i])->Motions.back();
-            M._count			= dwLen;
-            u8	t_present		= MS->r_u8	();
-            u32 crc_q			= MS->r_u32	();
-			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
-			MS->advance			(dwLen * sizeof(CKeyQR));
-            if (t_present)	{
-                u32 crc_t			= MS->r_u32	();
-				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
-				MS->advance			(dwLen * sizeof(CKeyQT));
-                MS->r_fvector3		(M._sizeT);
-                MS->r_fvector3		(M._initT);
-            }else{
-                MS->r_fvector3		(M._initT);
-            }
-        }
-    }
-    MS->close();
-
+	bool bRes		= true;
 	// Load definitions
-	IReader* MP = data->open_chunk(OGF_SMPARAMS2);
+	IReader* MP 	= data->open_chunk(OGF_SMPARAMS2);
     if (MP){
-	    u16 vers = MP->r_u16();
-        R_ASSERT(vers==xrOGF_SMParamsVersion);
-
-        // partitions
-        u16 part_count;
-        part_count = MP->r_u16();
-        string128 buf;
-        for (u16 part_i=0; part_i<part_count; part_i++){
-            CPartDef&	PART	= (*partition)[part_i];
-            MP->r_stringZ		(buf);
-            PART.Name			= _strlwr(buf);
-            PART.bones.resize	(MP->r_u16());
-            MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
+	    u16 		vers 			= MP->r_u16();
+        u16 		part_bone_cnt	= 0;
+        string128 	buf;
+        if (1==vers){
+            // partitions
+            u16 part_count;
+            part_count = MP->r_u16();
+            for (u16 part_i=0; part_i<part_count; part_i++){
+                CPartDef&	PART	= (*partition)[part_i];
+                MP->r_stringZ		(buf);
+                PART.Name			= _strlwr(buf);
+                PART.bones.resize	(MP->r_u16());
+                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
+                part_bone_cnt		+= PART.bones.size();
+            }
+        }else{
+	        R_ASSERT(vers==xrOGF_SMParamsVersion);
+            // partitions
+            u16 part_count;
+            part_count = MP->r_u16();
+            for (u16 part_i=0; part_i<part_count; part_i++){
+                CPartDef&	PART	= (*partition)[part_i];
+                MP->r_stringZ		(buf);
+                PART.Name			= _strlwr(buf);
+                PART.bones.resize	(MP->r_u16());
+                for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
+                	MP->r_stringZ	(buf);
+                    *b_it			= LL_BoneID(buf); 
+#ifdef _EDITOR
+					if (*b_it==BI_NONE){
+    	                bRes		= false;
+			            Msg			("!Can't find bone: '%s'",buf);
+                    }
+#else
+					VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
+#endif
+                }
+                part_bone_cnt		+= PART.bones.size();
+            }
         }
 
         m_cycle = xr_new<mdef> ();
         m_fx	= xr_new<mdef> ();
 
-        // motion defs (cycle&fx)
-        u16 mot_count			= MP->r_u16();
-        for (u16 mot_i=0; mot_i<mot_count; mot_i++){
-            MP->r_stringZ(buf);
-	        u32 dwFlags		= MP->r_u32();
-            CMotionDef	D;		D.Load(this,MP,dwFlags);
-            if (dwFlags&esmFX)	m_fx->insert(mk_pair(ref_str(_strlwr(buf)),D));
-            else				m_cycle->insert(mk_pair(ref_str(_strlwr(buf)),D));
+#ifdef _EDITOR
+        if (part_bone_cnt!=(u16)bones->size()){
+        	bRes = false;
+            Msg("!#Different bone count [Object: '%d' <-> Motions: '%d']",bones->size(),part_bone_cnt);
+        }
+#else
+        VERIFY3(part_bone_cnt==(u16)bones->size(),"Different bone count '%s'",nm);
+#endif
+        if (bRes){
+            // motion defs (cycle&fx)
+            u16 mot_count			= MP->r_u16();
+            for (u16 mot_i=0; mot_i<mot_count; mot_i++){
+                MP->r_stringZ(buf);
+                u32 dwFlags		= MP->r_u32();
+                CMotionDef	D;		D.Load(this,MP,dwFlags);
+                if (dwFlags&esmFX)	m_fx->insert(mk_pair(ref_str(_strlwr(buf)),D));
+                else				m_cycle->insert(mk_pair(ref_str(_strlwr(buf)),D));
+            }
         }
         MP->close();
     }else{
@@ -616,6 +613,46 @@ void CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 			Debug.fatal				("Old skinned model version unsupported! (%s)",N);
         }
     }
+	// Load animation
+	IReader*	MS		= data->open_chunk(OGF_MOTIONS2);
+    if (!MS) 	return false;
+    
+    u32			dwCNT	= 0;
+    MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
+    for (u32 M=0; M<dwCNT; M++)
+    {
+        string128			mname;
+        R_ASSERT			(MS->find_chunk(M+1));             
+        MS->r_stringZ		(mname);
+
+        ref_str	m_key		= ref_str(strlwr(mname));
+//		CKinematics::accel_map::iterator it = motion_map->find(m_key);
+//		if (it!=motion_map->end())	xr_delete (it->second);
+        motion_map->insert	(mk_pair(m_key,M));
+
+        u32 dwLen			= MS->r_u32();
+        for (u32 i=0; i<bones->size(); i++)
+        {
+			((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(CMotion());
+            CMotion&		M	= ((CBoneDataAnimated*)(*bones)[i])->Motions.back();
+            M._count			= dwLen;
+            u8	t_present		= MS->r_u8	();
+            u32 crc_q			= MS->r_u32	();
+			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
+			MS->advance			(dwLen * sizeof(CKeyQR));
+            if (t_present)	{
+                u32 crc_t			= MS->r_u32	();
+				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
+				MS->advance			(dwLen * sizeof(CKeyQT));
+                MS->r_fvector3		(M._sizeT);
+                MS->r_fvector3		(M._initT);
+            }else{
+                MS->r_fvector3		(M._initT);
+            }
+        }
+    }
+    MS->close();
+    return bRes;
 }
 
 void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
@@ -642,6 +679,8 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
             }
 		}
 		IReader* MS	= FS.r_open(fn);
+        // Check compatibility
+        Log			("Loading reference motions:",nm);
 	    LoadMotions	(nm,MS);
         MS->close	();
     }else{

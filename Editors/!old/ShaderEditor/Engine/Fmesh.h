@@ -54,7 +54,7 @@ enum OGF_Chuncks {
     OGF_forcedword	= 0xFFFFFFFF
 };
 
-const u16	xrOGF_SMParamsVersion	= 1;
+const u16	xrOGF_SMParamsVersion	= 2;
 
 // OGF_DESC
 struct ogf_desc{
