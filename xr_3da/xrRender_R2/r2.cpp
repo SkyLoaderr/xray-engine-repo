@@ -188,8 +188,17 @@ CRender::~CRender()
 {
 }
 
-void	CRender::Statistics	(CGameFont* F)
+void	CRender::Statistics	(CGameFont* _F)
 {
+	CGameFont&	F	= *_F;
+	F.OutNext	(" **** lights(%2d) **** ",stats.l_total);
+	F.OutNext	("    S(%2d) | (%2d)NS   ",stats.l_shadowed,stats.l_unshadowed	);
+	F.OutNext	(" omni(%2d) | (%2d)omni ",stats.l_point_s,stats.l_point		);
+	F.OutNext	(" spot(%2d) | (%2d)spot ",stats.l_spot_s,stats.l_spot			);
+	F.OutSkip	();
+	F.OutNext	(" **** occQ(%3.1f) **** ",100.f*f32(stats.o_culled)/f32(stats.o_queries?stats.o_queries:1));
+	F.OutNext	(" total  : %2d",	stats.o_queries	);	stats.o_queries = 0;
+	F.OutNext	(" culled : %2d",	stats.o_culled	);	stats.o_culled	= 0;
 }
 
 /////////
