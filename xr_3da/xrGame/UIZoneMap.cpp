@@ -70,10 +70,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	T.translate_over	(Actor->Position());
 	LM.invert			(T);
 
-	// draw self
-	ConvertToLocal	(LM,Actor->Position(),P);
-	entity.Out		(P.x,P.y,COLOR_SELF);
-
 	// render enemy
 	/*
 	for (u32 i=0; i<Team.KnownEnemys.size(); i++){
@@ -118,6 +114,10 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 			entity.Out	(P.x,P.y,COLOR_TARGET);
 		}
 	}
+
+	// draw self
+	ConvertToLocal	(LM,Actor->Position(),P);
+	entity.Out		(P.x,P.y,COLOR_SELF);
 }
 //--------------------------------------------------------------------
 
