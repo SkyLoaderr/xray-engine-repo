@@ -169,13 +169,29 @@ public:
 
 #include "HelicopterMovementManager_inl.h"
 /*
+#include "motion.h"
 class CHelicopterMovManager :public COMotion
 {
+	bool				m_bLoop;
+	SAnimParams			m_MParam;
+	Fmatrix				m_XFORM;
 
+	float				m_baseAltitude;
+	float				m_basePatrolSpeed;
+	float				m_maxKeyDist;
+	float				m_intermediateKeyRandFactor;
+	
+	void				buildHPB(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
 public:
-	void	onFrame(Fmatrix& xform, float fTimeDelta);
-	void	createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
-	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& xyz);
+	CHelicopterMovManager();
+	virtual ~CHelicopterMovManager();
+
+	void	onFrame();
+	void	onTime(float t);
+	void	createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, Fvector fromDir);
+	Fvector	makeIntermediateKey(Fvector& start, Fvector& dest, float k);
+	bool	dice();
+	void	getPathPosition(float time, float fTimeDelta, Fmatrix& dest);
 	void	buildHuntPath(Fvector& enemyPos);
 
 };*/

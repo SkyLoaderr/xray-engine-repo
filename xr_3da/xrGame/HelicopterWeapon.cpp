@@ -92,7 +92,7 @@ CHelicopter::FireEnd()
 void					
 CHelicopter::updateMGunDir()
 {
-	if(!m_destEnemy)	return;
+//	if(!m_destEnemy)	return;
 
 	m_allow_fire		= TRUE;
 	Fmatrix XFi;

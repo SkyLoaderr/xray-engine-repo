@@ -33,6 +33,7 @@ RCache.dbg_DrawAABB  (pos,path_box_size,path_box_size,path_box_size,D3DCOLOR_XRG
 */
 /*	return;
 	Fvector pos, prev_pos;
+	float path_box_size = .105f;
 
 	RCache.OnFrameEnd	();
 
@@ -249,7 +250,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 				m_path.erase( m_path.begin(), b);
 		};
 
-		if(m_currKeyIdx >= m_keyTrajectory.size()-1 )
+		if((u32)m_currKeyIdx >= m_keyTrajectory.size()-1 )
 			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
 	};
 
@@ -373,3 +374,138 @@ CHelicopterMovementManager::computeB(float angVel)
 	R_ASSERT(angVel>=0.0f);
 	return angVel/3.0f;
 }
+
+////////////////////////////////////////////////////
+/*
+void	
+CHelicopterMovManager::onTime(float t)
+{
+	Fvector P,R;
+	_Evaluate(t,P,R);
+	m_XFORM.setXYZi	(R.x,R.y,R.z);
+	m_XFORM.translate_over(P);
+}
+
+void 
+CHelicopterMovManager::onFrame()
+{
+	float t = Level().timeServer()/1000.0f;
+	
+	onTime(t);
+}
+
+void	
+CHelicopterMovManager::getPathPosition(float time, float fTimeDelta, Fmatrix& dest)
+{
+	onTime(time);
+	dest.set(m_XFORM);
+}
+
+bool 
+CHelicopterMovManager::dice()
+{
+	return (::Random.randF(-1.0f, 1.0f) > 0.0f);
+}
+
+void	
+CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, float fromTime, Fvector fromPos, Fvector fromDir)
+{
+	xr_vector<Fvector>		keyPoints;
+	Fvector					keyPoint;
+	Fvector					down_dir;
+	bool					useXBound;
+	bool					min_max;
+	Collide::rq_result		cR;
+
+	down_dir.set(0.0f, -1.0f, 0.0f);
+
+	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+	keyPoints.push_back(fromPos);
+	for(u32 i = 0; i<keyCount; ++i)	{
+		useXBound	= dice();
+		min_max		= dice();
+
+		if(useXBound){
+			(min_max)?keyPoint.x = levelBox.min.x:keyPoint.x = levelBox.max.x;
+			keyPoint.z = ::Random.randF(levelBox.min.z, levelBox.max.z);
+		}else{
+			(min_max)?keyPoint.z = levelBox.min.z:keyPoint.z = levelBox.max.z;
+			keyPoint.x = ::Random.randF(levelBox.min.x, levelBox.max.x);
+		}
+
+		keyPoint.y = levelBox.max.y;
+		Level().ObjectSpace.RayPick(keyPoint, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);
+
+		keyPoint.y = keyPoint.y-cR.range+m_baseAltitude;
+		//промежуточные точки
+		if( keyPoints.size() )
+		{
+			Fvector& prevPoint = keyPoints.back();
+			float dist = prevPoint.distance_to(keyPoint);
+			float k = (dist / m_maxKeyDist) - 1.0f;
+			for( float i=1; i<k; ++i )
+			{
+				keyPoints.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
+			}
+		}
+		keyPoints.push_back(keyPoint);
+	};
+
+	float	d;
+	float	t;
+	Fvector P;
+	Fvector R;
+	R.set(0.0f,0.0f,1.0f);
+	u32 sz = keyPoints.size();
+
+	for(u32 i=0; i<sz; ++i)
+	{
+		const Fvector& P = keyPoints[i];
+		if( i != 0 )
+		{
+			d  = P.distance_to( keyPoints[i-1] );
+			t += m_basePatrolSpeed * d;
+		}else
+			t = fromTime;
+
+		COMotion::CreateKey(t, P, R);
+	}
+}
+
+Fvector		
+CHelicopterMovManager::makeIntermediateKey(Fvector& start, Fvector& dest, float k)
+{
+	Fvector point;
+	point.lerp(start, dest, k);
+	float h = point.y; // or RayPick ????
+	point.add( Fvector().random_dir().mul(m_intermediateKeyRandFactor) );
+	point.y = h;
+	return point;
+}
+
+void				
+CHelicopterMovManager::buildHPB(const Fvector& p_prev, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res)
+{
+	float s1 = p_prev.distance_to (p0);
+	float s2 = p0.distance_to (p_next);
+	
+	Fvector d1,d2;
+	d1.sub(p0, p_prev);
+	d2.sub(p_next, p0);
+
+	float p1 = d1.getP();
+	float p2 = d2.getP();
+
+	float sk;
+	sk = s1+s2/s1;	
+	//y
+	p0_phb_res.y = lerp(p1, p2, sk);
+
+
+	//z
+	Fvector cp;
+	cp.crossproduct (d1,d2);
+	p0_phb_res.z = cp.y;
+
+}
+*/

@@ -324,18 +324,18 @@ CHelicopter::shedule_Update(u32	time_delta)
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
 	
-	if( GetfHealth() >= 0.0f )
-	{
+//	if( GetfHealth() >= 0.0f )
+//	{
 		m_movementMngr.shedule_Update(time_delta);
-	};
+//	};
 
-	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
-		Die();
+//	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
+//		Die();
 
-	if( m_curState==CHelicopter::eWaitBetweenPatrol)
-	{
-		SetfHealth(100.0f);
-	};
+//	if( m_curState==CHelicopter::eWaitBetweenPatrol)
+//	{
+//		SetfHealth(100.0f);
+//	};
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj )
 	{
@@ -394,7 +394,7 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-
+/*
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end() && hit_type==ALife::eHitTypeFireWound)
 	{
@@ -414,7 +414,6 @@ CHelicopter::Hit(	float P,
 		hit_power			*= m_HitTypeK[hit_type];
 
 		SetfHealth(GetfHealth()-hit_power);
-//		SetfHealth(-0.5f);
 		float h= GetfHealth();
 		Log("----Helicopter::Hit(). type=",hit_type);
 		Log("----Helicopter::Hit(). power=",hit_power);
@@ -422,7 +421,7 @@ CHelicopter::Hit(	float P,
 		Log("----Helicopter::Hit(). k=",m_HitTypeK[hit_type]);
 		Log("----------------------------------------");
 	};
-
+*/
 	CGameObject* GO = dynamic_cast<CGameObject*>(who);
 	if (GO){
 		switch (GO->SUB_CLS_ID){
