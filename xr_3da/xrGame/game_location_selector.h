@@ -10,7 +10,7 @@
 
 #include "path_manager_selector.h"
 
-class CGameLocationSelector : virtual public CGameObject {
+class CGameLocationSelector {
 protected:
 	u32										m_game_locate_query_time;
 	u32										m_game_location_query_interval;
@@ -20,7 +20,7 @@ protected:
 public:
 					CGameLocationSelector	();
 	virtual			~CGameLocationSelector	();
-	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
-	template <u64 flags>
-			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
+//	virtual void	init_evaluator			(PathManagers::CAbstractNodeEvaluator *node_evaluator);
+//	template <u64 flags>
+//			void	select_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
 };
