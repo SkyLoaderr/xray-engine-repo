@@ -38,7 +38,8 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	m_dwAnyPlayType					= tpIdol->m_dwAniPlayType;
 	m_tpaAnims.clear				();
 	
-	r_torso_current.yaw				= r_torso_target.yaw = -tpIdol->o_Angle.y;
+	r_torso_current.yaw				= r_torso_target.yaw	= -tpIdol->o_Angle.y;
+	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 	
 	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string32						I;

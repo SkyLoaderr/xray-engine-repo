@@ -137,6 +137,9 @@ BOOL CAI_Dog::net_Spawn	(LPVOID DC)
 	// model
 	cNameVisual_set					(tpSE_Dog->caModel);
 	// personal characteristics
+	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Dog->o_Angle.y;
+	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+
 	eye_fov							= tpSE_Dog->fEyeFov;
 	eye_range						= tpSE_Dog->fEyeRange;
 	fHealth							= tpSE_Dog->fHealth;

@@ -648,7 +648,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 	eye_matrix.identity		();
 
-	r_torso_current.yaw		= r_torso_target.yaw	= E->o_Position.y;
+	r_torso_current.yaw		= r_torso_target.yaw	= -E->o_Angle.y;
 	r_torso_current.pitch	= r_torso_target.pitch	= 0;
 
 	R_ASSERT				(pVisual->Type==MT_SKELETON);

@@ -162,6 +162,10 @@ BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
 	//tSavedEnemyPosition = vPosition;
+	xrSE_Enemy						*O = (xrSE_Enemy*)(DC);
+	r_torso_current.yaw				= r_torso_target.yaw	= -O->o_Angle.y;
+	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+
 	m_tStateStack.push(m_eCurrentState = aiSoldierLookingOver);
 	vfAddStateToList(m_eCurrentState);
 	return TRUE;

@@ -300,7 +300,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	cNameVisual_set			(E->caModel);
 
 	//
-	r_model_yaw				= E->o_Angle.y;
+	r_model_yaw				= -E->o_Angle.y;
 	cam_Active()->Set		(E->o_Angle.y,0,0);		// set's camera orientation
 	
 	// *** movement state - respawn

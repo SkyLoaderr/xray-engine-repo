@@ -228,6 +228,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->caModel);
 	
+	r_torso_current.yaw				= r_torso_target.yaw	= -tpHuman->o_Angle.y;
+	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+
 	fHealth							= tpHuman->fHealth;
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;

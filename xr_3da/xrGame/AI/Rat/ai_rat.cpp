@@ -165,6 +165,9 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 	// personal characteristics
+	r_torso_current.yaw				= r_torso_target.yaw	= -tpSE_Rat->o_Angle.y;
+	r_torso_current.pitch			= r_torso_target.pitch	= 0;
+
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
 	fHealth							= tpSE_Rat->fHealth;
