@@ -16,16 +16,16 @@ CHangingLamp::CHangingLamp	()
 	fHealth					= 100.f;
 	guid_bone				= BI_NONE;
 	lanim					= 0;
-	light_render			= ::Render->light_create();
-	light_render->set_type	(IRender_Light::SPOT);
-	light_render->set_shadow(true);
-
-	glow_render				= ::Render->glow_create();
+	ambient_power			= 0.f;
+	light_render			= 0;
+	light_ambient			= 0;
+	glow_render				= 0;
 }
 
 CHangingLamp::~CHangingLamp	()
 {
 	::Render->light_destroy	(light_render);
+	::Render->light_destroy	(light_ambient);
 	::Render->glow_destroy	(glow_render);
 }
 
@@ -45,21 +45,39 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	// set bone id
 	R_ASSERT				(Visual()&&PKinematics(Visual()));
 	CKinematics* K			= PKinematics(Visual());
-	CInifile* pUserData		= K->LL_UserData(); 
-	R_ASSERT3				(pUserData,"Empty HangingLamp user data!",lamp->get_visual());
+//	CInifile* pUserData		= K->LL_UserData(); 
+//	R_ASSERT3				(pUserData,"Empty HangingLamp user data!",lamp->get_visual());
 
-	guid_bone				= K->LL_BoneID	(pUserData->r_string("hanging_lamp_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
-	clr.set					(lamp->color);						clr.a = 1.f;
-	clr.mul_rgb				(lamp->brightness);
+	guid_bone				= K->LL_BoneID	(*lamp->guid_bone);	VERIFY(guid_bone!=BI_NONE);
 	fBrightness				= lamp->brightness;
-	light_render->set_range	(lamp->spot_range);
-	light_render->set_color	(clr);
-	light_render->set_cone	(deg2rad(pUserData->r_float			("hanging_lamp_definition","spot_angle")));
-	light_render->set_texture(pUserData->r_string				("hanging_lamp_definition","spot_texture"));
+	clr.set					(lamp->color);						clr.a = 1.f;
+	clr.mul_rgb				(fBrightness);
 
-	glow_render->set_texture(pUserData->r_string				("hanging_lamp_definition","glow_texture"));
-	glow_render->set_color	(clr);
-	glow_render->set_radius	(pUserData->r_float					("hanging_lamp_definition","glow_radius"));
+	light_render			= ::Render->light_create();
+	light_render->set_shadow(!!lamp->flags.is(CSE_ALifeObjectHangingLamp::flCastShadow));
+	light_render->set_type	(lamp->flags.is(CSE_ALifeObjectHangingLamp::flTypeSpot)?IRender_Light::SPOT:IRender_Light::POINT);
+	light_render->set_range	(lamp->range);
+	light_render->set_color	(clr);
+	light_render->set_cone	(lamp->spot_cone_angle);
+	light_render->set_texture(*lamp->light_texture);
+
+	if (*lamp->glow_texture){
+		glow_render				= ::Render->glow_create();
+		glow_render->set_texture(*lamp->glow_texture);
+		glow_render->set_color	(clr);
+		glow_render->set_radius	(lamp->glow_radius);
+	}
+
+	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPointAmbient)){
+		ambient_power			= lamp->m_ambient_power;
+		light_ambient			= ::Render->light_create();
+		light_ambient->set_type	(IRender_Light::POINT);
+		light_ambient->set_shadow(false);
+		clr.mul_rgb				(ambient_power);
+		light_ambient->set_range(lamp->m_ambient_radius);
+		light_ambient->set_color(clr);
+		light_ambient->set_texture(*lamp->m_ambient_texture);
+	}
 
 	fHealth					= lamp->m_health;
 
@@ -106,17 +124,25 @@ void CHangingLamp::UpdateCL	()
 
 		light_render->set_rotation	(xf.k,xf.i);
 		light_render->set_position	(xf.c);
-		glow_render->set_position	(xf.c);
-		//glow_render->set_direction	(xf.k);
+		if (glow_render)	glow_render->set_position	(xf.c);
+		if (light_ambient){	
+			light_ambient->set_rotation	(xf.k,xf.i);
+			light_ambient->set_position	(xf.c);
+		}
 		
 		if (lanim)
 		{
 			int frame;
-			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
-			Fcolor			fclr;
-			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-			fclr.mul_rgb	(fBrightness/255.f);
-			light_render->set_color(fclr);
+			u32 clr					= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			Fcolor					fclr;
+			fclr.set				((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
+			fclr.mul_rgb			(fBrightness);
+			light_render->set_color	(fclr);
+			if (glow_render)		glow_render->set_color	(fclr);
+			if (light_ambient){
+				fclr.mul_rgb		(ambient_power);
+				light_ambient->set_color(fclr);
+			}
 		}
 	}
 }
@@ -128,15 +154,17 @@ void CHangingLamp::renderable_Render()
 
 void CHangingLamp::TurnOn()
 {
-	light_render->set_active(true);
-	glow_render->set_active (true);
+	light_render->set_active						(true);
+	if (glow_render)	glow_render->set_active		(true);
+	if (light_ambient)	light_ambient->set_active	(true);
 	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
 }
 
 void CHangingLamp::TurnOff()
 {
-	light_render->set_active(false);
-	glow_render->set_active (false);
+	light_render->set_active						(false);
+	if (glow_render)	glow_render->set_active		(false);
+	if (light_ambient)	light_ambient->set_active	(false);
 	PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 }
 

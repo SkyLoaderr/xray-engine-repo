@@ -18,7 +18,9 @@ class CHangingLamp: public CGameObject {
 private:
 	u16				guid_bone;
 	IRender_Light*	light_render;
+	IRender_Light*	light_ambient;
 	CLAItem*		lanim;
+	float			ambient_power;
 
 	IRender_Glow*	glow_render;
 	
