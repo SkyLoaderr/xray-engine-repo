@@ -35,6 +35,8 @@ public:
 	IC Fvector&				unaffected_Dir		()	{ return unaffected_vDirection;	}
 	IC Fvector&				unaffected_Up		()	{ return unaffected_vNormal;	}
 	IC Fvector&				unaffected_Right	()	{ return unaffected_vRight;		}
+	IC void					unaffected_Matrix	(Fmatrix& M)	
+	{	M.set(unaffected_vRight,unaffected_vNormal,unaffected_vDirection,unaffected_vPosition);	}
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest);
 	void					Update				(const CCameraBase* C);

@@ -93,12 +93,7 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 			if (m_pHUD)	
 			{
 				Fmatrix			trans;
-				trans.set(
-					Device.vCameraRight,
-					Device.vCameraTop,
-					Device.vCameraDirection,
-					Device.vCameraPosition
-					);
+				Level().Cameras.unaffected_Matrix(trans);
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {

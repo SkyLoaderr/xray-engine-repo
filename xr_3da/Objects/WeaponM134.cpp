@@ -164,12 +164,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 		if (bHUDView) {
 			if (m_pHUD)	{
 				Fmatrix			trans;
-				trans.set(
-					Level().Cameras.unaffected_Right(),
-					Level().Cameras.unaffected_Up(),
-					Level().Cameras.unaffected_Dir(),
-					Level().Cameras.unaffected_Pos()
-					);
+				Level().Cameras.unaffected_Matrix(trans);
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {
