@@ -56,7 +56,8 @@ snd_files = {
 	
 	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_",
 
-	gar_dm_bandit_backoff          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_]],
+	gar_dm_bandit_backoff1         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_1_]],
+	gar_dm_bandit_backoff2         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_2_]],
 	gar_dm_bandit_demand           = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_demand_]],
 	gar_dm_newbie_no_money         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_no_money_]],
 	gar_dm_newbie_help_me          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
@@ -184,8 +185,10 @@ function load_sound(obj)
 	theme["military_radio"] = load_theme ("military_radio")
 
 	-- Garbage DramMoment
-	theme["gar_dm_bandit_backoff"] = { exec = npc_class, types = {}}
-	theme["gar_dm_bandit_backoff"].types["stalker"] = load_theme("gar_dm_bandit_backoff")
+	theme["gar_dm_bandit_backoff1"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_backoff1"].types["stalker"] = load_theme("gar_dm_bandit_backoff1")
+	theme["gar_dm_bandit_backoff2"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_backoff2"].types["stalker"] = load_theme("gar_dm_bandit_backoff2")
 	theme["gar_dm_bandit_demand"] = { exec = npc_class, types = {}}
 	theme["gar_dm_bandit_demand"].types["stalker"] = load_theme("gar_dm_bandit_demand")
 	theme["gar_dm_newbie_no_money"] = { exec = npc_class, types = {}}
