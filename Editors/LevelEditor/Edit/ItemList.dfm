@@ -164,7 +164,6 @@ object ItemList: TItemList
     ScrollbarOpposite = False
     ShowCheckboxes = True
     ShowHint = False
-    ShowImages = False
     ShowLeafButton = False
     ShowLines = False
     StoragePath = '\Tree'

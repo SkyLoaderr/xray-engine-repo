@@ -245,7 +245,7 @@ object fraLeftBar: TfraLeftBar
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           IgnoreEnabled = False
-          Images = ImageList1
+          Images = ilModeIcons
           IncrementalSearch = False
           ItemIndent = 14
           KeepSelectionWithinLevel = False
@@ -891,7 +891,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebPGCreateClick
     end
   end
-  object ImageList1: TImageList
+  object ilModeIcons: TImageList
     Height = 14
     Width = 9
     Left = 96

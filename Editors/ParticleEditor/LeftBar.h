@@ -89,7 +89,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N5;
 	TMenuItem *N7;
 	TMenuItem *N8;
-	TImageList *ImageList1;
+	TImageList *ilModeIcons;
 	TMenuItem *ParticleGroup1;
 	TPanel *paItemList;
     void __fastcall ebSaveClick(TObject *Sender);

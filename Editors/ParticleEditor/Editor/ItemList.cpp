@@ -172,6 +172,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
         prop->item			= FHelper.AppendObject(tvItems,prop->key);
+        prop->item->ImageIndex= prop->icon_index;
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);

@@ -75,6 +75,7 @@ bool CParticleTools::OnCreate()
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
 	m_ItemProps->HideProperties();
     m_PList			= TItemList::CreateForm(fraLeftBar->paItemList,alClient,OnParticleItemFocused,0,false);
+    m_PList->SetImages(fraLeftBar->ilModeIcons);
 
     return true;
 }
@@ -707,9 +708,7 @@ PS::SDef* CParticleTools::AppendPS(PS::SDef* src)
 {
 	VERIFY(m_bReady);
 	AnsiString folder_name;
-    ListItemsVec		items;
-    if (m_PList->GetSelected(items))
-		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
+	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
@@ -719,8 +718,6 @@ PS::SDef* CParticleTools::AppendPS(PS::SDef* src)
 
     UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
     if (new_name[0]) 	SelectListItem(0,new_name,true,false,true);
-
-//.	fraLeftBar->AddItem	(S->m_Name,false,emSystem);
     return S;
 }
 
@@ -728,16 +725,16 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
 {
 	VERIFY(m_bReady);
 	AnsiString folder_name;
-    ListItemsVec		items;
-    if (m_PList->GetSelected(items))
-		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
+	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
     ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
     PS::CPEDef* S 		= ::Render->PSystems.AppendPED(src);
     strcpy				(S->m_Name,new_name);
-//.	fraLeftBar->AddItem	(S->m_Name,false,emEffect);
+
+    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
+    if (new_name[0]) 	SelectListItem(0,new_name,true,false,true);
     return S;
 }
 
@@ -745,16 +742,16 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
 {
 	VERIFY(m_bReady);
 	AnsiString folder_name;
-    ListItemsVec		items;
-    if (m_PList->GetSelected(items))
-		FHelper.MakeName(items.front()->Item(),0,folder_name,true);
+	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
     ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
     PS::CPGDef* S 		= ::Render->PSystems.AppendPGD(src);
     strcpy				(S->m_Name,new_name);
-//.	fraLeftBar->AddItem	(S->m_Name,false,emGroup);  
+
+    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
+    if (new_name[0]) 	SelectListItem(0,new_name,true,false,true);
     return S;
 }
 
