@@ -785,6 +785,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
     action_base.finalize (self)
+	--Если схема заканчивает работу, то включаем встречу
+	if(level.actor():has_info("escape_factory_bandits_dead")) then
+    	xr_meet.enable_meet(self.object)
+    end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -796,38 +800,38 @@ function add_novice3(obj)
     local properties    = {}
 
 
-    properties["state_end"]       = xr_evaluators_id.state_change
+    properties["state_end"]       	= xr_evaluators_id.state_change
     properties["work"]              = xr_evaluators_id.jon_stalker_novice3
     properties["attack"]            = xr_evaluators_id.jon_stalker_attack
-    properties["contact"]         = xr_evaluators_id.stohe_meet_base + 1
+    properties["contact"]         	= xr_evaluators_id.stohe_meet_base + 1
     properties["event"]             = xr_evaluators_id.reaction
 
     operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
     operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
 
+	xr_meet.disable_meet(obj)       								--Отключаем встречу
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "work" ],   this.info_portion_evaluator("enabled evaluator", "escape_factory_bandits_dead" ) )
+    manager:add_evaluator ( properties[ "work" ],   this.info_portion_evaluator("info_portion_evaluator", "escape_factory_bandits_dead" ) )
     manager:add_evaluator ( properties[ "attack" ], this.can_attack_enemy_evaluator("go to attack enemy", xr_motivator.storage[obj:id()].novice3, obj ) )
 
     local action = this.stalker_novice3_action ( "stalker_novice3_action", xr_motivator.storage[obj:id()].novice3 )
 
-    action:add_precondition       (world_property(stalker_ids.property_enemy, false))
-    action:add_precondition         (world_property ( properties["attack"],     false ) )
-    action:add_precondition       (world_property ( properties["event"],       false))
+    action:add_precondition       	(world_property(stalker_ids.property_enemy, false))
+    action:add_precondition       	(world_property ( properties["attack"],     false ) )
+    action:add_precondition         (world_property ( properties["event"],       false))
     action:add_precondition         (world_property ( properties["work"],       true ) )
     action:add_effect               (world_property ( properties["work"],       false ) )
     manager:add_action              (operators["stalker_novice"], action)
 
-  action = this.novice3_attack("novice go to attack", xr_motivator.storage[obj:id()].novice3)
+	action = this.novice3_attack("novice go to attack", xr_motivator.storage[obj:id()].novice3)
 
-    action:add_precondition       (world_property(stalker_ids.property_enemy, false))
+    action:add_precondition       	(world_property(stalker_ids.property_enemy, false))
     action:add_precondition         (world_property ( properties["work"],       true ) )
     action:add_precondition         (world_property ( properties["attack"],     true ) )
     action:add_effect               (world_property ( properties["attack"],     false ) )
     manager:add_action              (operators["stalker_attack"], action)
 
     action = manager:action (stalker_ids.action_puzzle_solver)
-
     action:add_precondition         ( world_property (properties["work"],  false ) )
 end
 
