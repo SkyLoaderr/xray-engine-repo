@@ -85,8 +85,6 @@ protected:
 		int			element;
 	};
 
-	BOOL			enabled, enabled_prev;
-
 	CObject*		owner;			// владелец
 	Irect			rect_last;		// последние занимаемые слоты
 	u32				dwQueryID;
@@ -101,11 +99,7 @@ public:
 	virtual BOOL	_RayTest		( RayQuery& Q) = 0;
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags) = 0;
 
-	IC CObject*		Owner			( )	const				{ return owner;}
-	IC BOOL			GetEnable		( )	const				{ return enabled;}
-	void			Enable 			( BOOL _enable )		{ enabled_prev = enabled; enabled = _enable; }
-	void			EnableRollback	( )						{ enabled = enabled_prev; }
-
+	IC CObject*		Owner			( )	const				{ return owner;			}
 	const Fbox&		getBBox			( )	const				{ return bv_box;		}
 	float			getRadius		( )	const				{ return bv_sphere.R;	}
 	const Fsphere&	getSphere		( )	const				{ return bv_sphere;		}

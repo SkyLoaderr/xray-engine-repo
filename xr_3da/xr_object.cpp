@@ -44,12 +44,37 @@ void CObject::cNameVisual_set	(LPCSTR N)
 		if (NameVisual[0]) renderable.visual	= Render->model_Create	(NameVisual);
 	}
 }
+
+// flagging
 void CObject::setEnabled		(BOOL _enabled)
 {
-	FLAGS.bEnabled = _enabled?1:0;	
-	if (collidable.model) collidable.model->Enable(_enabled); 
+	if (_enabled)
+	{
+		FLAGS.bEnabled							=	1;	
+		if (spatial.model)		spatial.type	|=	STYPE_COLLIDEABLE;
+	}
+	else
+	{
+		FLAGS.bEnabled							=	0;
+		spatial.type							&=	~STYPE_COLLIDEABLE;
+	}
 }
-void	CObject::Center				(Fvector& C)	const	{ VERIFY(renderable.visual); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
+
+void CObject::setVisible		(BOOL _visible)		
+{
+	if (_visible)
+	{
+		FLAGS.bVisible							= 1;
+		if (renderable.visual)	spatial.type	|=	STYPE_RENDERABLE;
+	}
+	else
+	{
+		FLAGS.bVisible							= 1;
+		spatial.type							&=	~STYPE_RENDERABLE;
+	}
+}
+
+void	CObject::Center					(Fvector& C)	const	{ VERIFY(renderable.visual); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
 float	CObject::Radius					()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.sphere.R;								}
 const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY(renderable.visual); return renderable.visual->vis.box;								}
 
