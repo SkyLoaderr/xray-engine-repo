@@ -124,7 +124,6 @@ int __cdecl main	(int argc, char* argv[])
 		occ.clear		();
 		occ.rasterize	(&T1);
 		occ.rasterize	(&T2);
-		i_edge			(&occ,T1.raster[0].x,T1.raster[0].y,T1.raster[1].x,T1.raster[1].y);
 		occ.propagade	();
 		
 		// copy into surface
