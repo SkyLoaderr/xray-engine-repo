@@ -107,5 +107,3 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 void CLevel::IR_OnMouseStop( int axis, int value)
 {
 }
-
-IR_OnKeyboardPressIR_OnKeyboardPressIR_OnKeyboardPress

@@ -9,8 +9,8 @@ namespace SceneGraph
 {
 	// Low level
 	struct _MatrixItem	{
-		CObject*		pObject;
-		IRender_Visual*		pVisual;
+		IRenderable*	pObject;
+		IRender_Visual*	pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
 		float			lod;

@@ -8,7 +8,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 {
 	CSector*	S			= (CSector*)_S;
 	lstVisuals.clear		();
-	lstVisuals.push_back	(S->Root());
+	lstVisuals.push_back	(S->root());
 	
 	for (u32 test=0; test<lstVisuals.size(); test++)
 	{
@@ -57,4 +57,3 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 		}
 	}
 }
-

@@ -93,17 +93,17 @@ void		CRender::set_Object			(IRenderable*		O )
 }
 
 // Misc
-Shader*				shDEBUG = 0;
-_FpsController		QualityControl;
-static	float		g_fGLOD, g_fFarSq, g_fPOWER;
-float				g_fSCREEN;
-float				g_fLOD,g_fLOD_scale=1.f;
-static	Fmaterial	gm_Data;
-static	int			gm_Level	= 0;
-static	u32			gm_Ambient	= 0;
-static	BOOL		gm_Nearer	= 0;
-static	CObject*	gm_Object	= 0;
-static	int			gm_Lcount	= 0;
+Shader*					shDEBUG = 0;
+_FpsController			QualityControl;
+static	float			g_fGLOD, g_fFarSq, g_fPOWER;
+float					g_fSCREEN;
+float					g_fLOD,g_fLOD_scale=1.f;
+static	Fmaterial		gm_Data;
+static	int				gm_Level	= 0;
+static	u32				gm_Ambient	= 0;
+static	BOOL			gm_Nearer	= 0;
+static	IRenderable*	gm_Object	= 0;
+static	int				gm_Lcount	= 0;
 
 IC		void		gm_SetLevel			(int iLevel)
 {
@@ -141,13 +141,13 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 		else			RImplementation.rmNormal();
 	}
 }
-IC		void		gm_SetLighting		(CObject* O)
+IC		void		gm_SetLighting		(IRenderable* O)
 {
 	if (O != gm_Object)
 	{
 		gm_Object			= O;
 		if (0==gm_Object)	return;
-		CLightTrack& LT		= *((CLightTrack*)O->ROS());
+		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
 		
 		// shadowing
 		if (LT.Shadowed_dwFrame==Device.dwFrame)	{
@@ -270,7 +270,7 @@ void CRender::Calculate()
 		// Determine visibility for static geometry hierrarhy
 		for (u32 s_it=0; s_it<PortalTraverser.r_sectors.size(); s_it++)
 		{
-			CSector*	sector	= PortalTraverser.r_sectors[s_it];
+			CSector*	sector		= (CSector*)PortalTraverser.r_sectors[s_it];
 			IRender_Visual*	root	= sector->root();
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 			{
@@ -308,10 +308,15 @@ void CRender::Calculate()
 					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{
 						// renderable
-						
+						IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+						R_ASSERT						(renderable);
+						set_Object						(renderable);
+						renderable->renderable_Render	();
+						set_Object						(0);
+#pragma todo("Oles to Oles: verify if it is needed at all")
 					} else {
 						// lightsource
-						???????????????
+#pragma todo("Oles to Oles: need to do something with light-sources")
 					}
 				}
 			}

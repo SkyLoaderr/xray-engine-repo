@@ -8,8 +8,6 @@
 
 #include "fstaticrender_scenegraph.h"
 
-class ENGINE_API	CObject;
-
 class CLightProjector		: public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class			pred_sorter;
@@ -18,13 +16,13 @@ private:
 	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
 	struct	recv
 	{
-		CObject*			O;
+		IRenderable*		O;
 		Fvector				C;
 		float				D;
 		Fmatrix				UVgen;
 	};
 private:
-	CObject*				current;
+	IRenderable*			current;
 	xr_vector<recv>			receivers;
 
 	CRT*					RT;

@@ -70,15 +70,15 @@ void CLightProjector::set_object	(IRenderable* O)
 	{
 		if (!O->renderable_ShadowReceive())	return;
 
-		Fvector		C;
-		O->Center	(C);
-		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
+		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
+		float		R	= O->renderable.visual->vis.sphere.R;
+		float		D	= C.distance_to(Device.vCameraPosition)+R;
 		if (D < P_distance)		current	= O;
 		else					current = 0;
 		
 		if (current)
 		{
-			CLightTrack*	LT		= (CLightTrack*)current->ROS();
+			CLightTrack*	LT		= (CLightTrack*)current->renderable.ROS;
 			LT->Shadowed_dwFrame	= Device.dwFrame;
 			LT->Shadowed_Slot		= receivers.size();
 			receivers.push_back		(recv());
@@ -125,7 +125,7 @@ void CLightProjector::calculate	()
 
 		// calculate projection-matrix
 		Fmatrix		mProject;
-		float		p_R		=	C.O->Radius();
+		float		p_R		=	C.O->renderable.visual->vis.sphere.R;
 		float		p_hat	=	p_R/P_cam_dist;
 		float		p_asp	=	1.f;
 		float		p_near	=	P_cam_dist-EPS_L;									
@@ -161,9 +161,9 @@ void CLightProjector::calculate	()
 		C.UVgen.mulA_43			(mTemp);
 
 		// Clear color to ambience
-		float	c_a			=	((CLightTrack*)C.O->ROS())->ambient;
-		int		c_i			=	iFloor(c_a)/2;
-		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
+		float	c_a					=	((CLightTrack*)C.O->renderable.ROS)->ambient;
+		int		c_i					=	iFloor(c_a)/2;
+		CHK_DX						(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, D3DCOLOR_RGBA(c_i,c_i,c_i,c_i), 1, 0 ));
 		
 		// Build bbox and render
 		Fvector	min,max;
@@ -171,7 +171,8 @@ void CLightProjector::calculate	()
 		min.set						(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
 		max.set						(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set						(min,max);
-		RImplementation.RenderBox	(C.O->Sector(),BB,2);
+		ISpatial*	spatial			= dynamic_cast<ISpatial*>(C.O);
+		if (spatial)				RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
 	}
 
 	// Blur

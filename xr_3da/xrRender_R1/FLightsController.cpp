@@ -123,18 +123,15 @@ IC void t_spline(float t, float *m)
 	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
 	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
 }
-void	CLightDB_Static::add_sector_lights(xr_vector<WORD> &L)
+
+void	CLightDB_Static::add_light(WORD ID)
 {
-	for (xr_vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
+	xrLIGHT&  T	= Lights[ID];
+	if (T.dwFrame==Device.dwFrame) return;
+
+	if ((T.type == D3DLIGHT_DIRECTIONAL)||(RImplementation.View->testSphere_dirty	(T.position, T.range))) 
 	{
-		WORD ID		= *I;
-		xrLIGHT&  T	= Lights[ID];
-		if (T.dwFrame==Device.dwFrame) continue;
-		
-		if ((T.type == D3DLIGHT_DIRECTIONAL)||(RImplementation.View->testSphere_dirty	(T.position, T.range))) 
-		{
-			Selected.push_back(ID);
-			T.dwFrame=Device.dwFrame;
-		}
+		Selected.push_back(ID);
+		T.dwFrame=Device.dwFrame;
 	}
 }

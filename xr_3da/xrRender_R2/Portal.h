@@ -39,6 +39,7 @@ class	 CSector					: public IRender_Sector
 protected:
 	IRender_Visual*					m_root;			// whole geometry of that sector
 	xr_vector<CPortal*>				m_portals;
+public:
 	xr_vector<CFrustum>				r_frustums;
 	u32								r_marker;
 public:
