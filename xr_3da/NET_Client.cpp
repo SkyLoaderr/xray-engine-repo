@@ -258,7 +258,7 @@ BOOL IPureClient::Connect	(LPCSTR options)
 		R_CHK		(net_Address_server->Duplicate(&NODE.pHostAddress ) );
 		
 		// Retreive session name
-		char					desc[256];
+		char					desc[4096];
 		ZeroMemory				(desc,sizeof(desc));
 		DPN_APPLICATION_DESC*	dpServerDesc=(DPN_APPLICATION_DESC*)desc;
 		DWORD					dpServerDescSize=sizeof(desc);
