@@ -503,23 +503,35 @@ void write_trajectory_point(const CLevelGraph::STrajectoryPoint point, LPCSTR po
 
 void CLevelGraph::set_start_point	()
 {
-	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-	obj						= Level().Objects.FindObjectByName("localhost/dima");
-	CActor					*actor = dynamic_cast<CActor*>(obj);
-
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 0.f;
-	start.position			= v2d(stalker->Position());
-	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
-	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+//	obj						= Level().Objects.FindObjectByName("localhost/dima");
+//	CActor					*actor = dynamic_cast<CActor*>(obj);
+//
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 0.f;
+//	start.position			= v2d(stalker->Position());
+//	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
+//	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+//	start.vertex_id			= vertex(v3d(start.position));
+//
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 0.f;
+//	dest.position			= v2d(actor->Position());
+//	start.direction.x		= -_sin(actor->r_model_yaw);
+//	start.direction.y		= _cos(actor->r_model_yaw);
+//	dest.vertex_id			= vertex(v3d(dest.position));
+	
+	start.angular_velocity	= 1.f;
+	start.linear_velocity	= 2.f;
+	start.position			= Fvector2().set(-50.f,-40.f);
+	start.direction.set		(0.f,1.f);
 	start.vertex_id			= vertex(v3d(start.position));
-
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 0.f;
-	dest.position			= v2d(actor->Position());
-	start.direction.x		= -_sin(actor->r_model_yaw);
-	start.direction.y		= _cos(actor->r_model_yaw);
+	
+	dest.angular_velocity	= 1.f;
+	dest.linear_velocity	= 2.f;
+	dest.position			= Fvector2().set(-40.f,-40.f);
+	dest.direction.set		(0.f,-1.f);
 	dest.vertex_id			= vertex(v3d(dest.position));
 }
 
