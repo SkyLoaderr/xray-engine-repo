@@ -81,7 +81,12 @@ IC	void CBoardClassicOthello::undo_move		()
 IC	void CBoardClassicOthello::undo_move		()
 {
 	if (color_to_move() == BLACK)
-		undo_move<BLACK>();
+		undo_move<BLACK>			();
 	else
-		undo_move<WHITE>();
+		undo_move<WHITE>			();
+}
+
+IC	bool CBoardClassicOthello::can_move			(const cell_index &index0, const cell_index &index1)
+{
+	return							(can_move(index(index0,index1)));
 }

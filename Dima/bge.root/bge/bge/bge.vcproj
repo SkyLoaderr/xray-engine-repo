@@ -1625,6 +1625,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\board_classic_othello_can_move.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\board_classic_othello_do_move.cpp"
+							>
+						</File>
+						<File
 							RelativePath=".\board_classic_othello_inline.h"
 							>
 						</File>
