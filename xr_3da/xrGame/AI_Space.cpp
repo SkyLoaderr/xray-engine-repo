@@ -15,7 +15,6 @@
 
 CAI_Space::CAI_Space	()
 {
-/*
 	m_nodes_ptr					= NULL;
 	vfs							= NULL;
 	m_tpGraphVFS				= NULL;
@@ -24,7 +23,6 @@ CAI_Space::CAI_Space	()
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
 	m_tpAStar					= 0;
-	*/
 }
 
 CAI_Space::~CAI_Space	()
