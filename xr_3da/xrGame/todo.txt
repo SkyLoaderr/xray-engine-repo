@@ -105,6 +105,7 @@ Oles:
 			. TODO: Geometric occlusion - shadowing
 		. TODO: BumpMapping on models
 		. TODO: Shadows from static_light+dynamic_models
+			. TODO: Geometric occlusion
 	. TODO: AI
 		. TODO: не стрелять в своего если он находится на линии огня (отойти в сторону, и т.п.)
 		. TODO: модели поведения
