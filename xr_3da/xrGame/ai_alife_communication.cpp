@@ -308,7 +308,7 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 #ifdef ALIFE_LOG
 			string4096		S;
 			char			*S1 = S;	
-			S1				+= sprintf(S1,"Trader1 -> ");
+			S1				+= sprintf(S1,"%s -> ",tpALifeHumanAbstract1->s_name_replace);
 			
 			if (iSum1) {
 				for (int i=0, n=l_tpIndexes1.size(); i<n ;i++)
@@ -317,10 +317,11 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 			
 			if (iSum1 < iBallance + iSum2) {
 				S1			+= sprintf(S1," + $%d",iBallance + iSum2 - iSum1);
+				R_ASSERT	(int(tpALifeHumanAbstract1->m_dwMoney) >= iBallance + iSum2 - iSum1);
 				tpALifeHumanAbstract1->m_dwMoney -= iBallance + iSum2 - iSum1;
 			}
 			
-			S1				+= sprintf(S1,"\nTrader2 -> ");
+			S1				+= sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->s_name_replace);
 			
 			if (iSum2) {
 				for (int i=0, n=l_tpIndexes2.size(); i<n ;i++)
@@ -329,6 +330,7 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 			
 			if (iSum1 > iBallance + iSum2) {
 				S1			+= sprintf(S1," + $%d",iSum1 - iBallance - iSum2);
+				R_ASSERT	(int(tpALifeHumanAbstract2->m_dwMoney) >= iSum1 - iBallance - iSum2);
 				tpALifeHumanAbstract2->m_dwMoney -= iSum1 - iBallance - iSum2;
 			}
 
