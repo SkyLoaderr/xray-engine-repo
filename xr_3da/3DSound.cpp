@@ -12,6 +12,7 @@ extern	float			psSoundVEffects;
 extern	CSoundManager*	pSounds;
 
 const	DWORD			dwLoopAheadMS	= 50;
+const	float			fOcclusionSpeed	= 1.f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -64,7 +65,8 @@ BOOL C3DSound::Update_Volume()
 	if (dist>ps.flMaxDistance)	return FALSE;
 	else {
 		Update_Occlusion	();
-		fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*fBaseVolume);
+		float base			= fBaseVolume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale;
+		fRealVolume			= .9f*fRealVolume + .1f*(fVolume*psSoundVEffects*base);
 		float att			= ps.flMinDistance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
 		float volume		= fRealVolume*att;
 		if (volume>psSoundCull)	{
@@ -79,8 +81,13 @@ BOOL C3DSound::Update_Volume()
 
 void C3DSound::Update_Occlusion()
 {
-	if (pCreator->ObjectSpace.RayTest(P,D,f,false,&I->Cache))	I->fuzzy-=fuzzy_update_novis*dt;
-	else														I->fuzzy+=fuzzy_update_vis*dt;
+	if (pSounds->IsOccluded(ps.vPosition,1.f))	{
+		fBaseVolume -=	Device.fTimeDelta*fOcclusionSpeed;
+		clamp		(fBaseVolume,0.f,1.f);
+	} else {
+		fBaseVolume +=	Device.fTimeDelta*fOcclusionSpeed;
+		clamp		(fBaseVolume,0.f,1.f);
+	}
 }
 
 void C3DSound::OnMove		()
