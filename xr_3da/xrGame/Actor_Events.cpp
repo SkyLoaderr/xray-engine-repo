@@ -27,11 +27,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
 			if (A) 
 			{
+				R_ASSERT							(BE(Local(),A->Local()));	// remote can't take local
 				A->H_SetParent(this);
 				return;
 			}
-			// Test for weapon
 
+			// Test for weapon
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
