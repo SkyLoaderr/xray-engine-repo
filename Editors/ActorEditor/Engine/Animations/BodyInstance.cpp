@@ -583,7 +583,7 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// Globals
 	IReader* UD 	= data->open_chunk(OGF_USERDATA);
-    pUserData		= UD?xr_new<CInifile>(*UD):0;
+    pUserData		= UD?xr_new<CInifile>(UD):0;
     if (UD)			UD->close();
     
 	motion_map		= xr_new<accel> ();
