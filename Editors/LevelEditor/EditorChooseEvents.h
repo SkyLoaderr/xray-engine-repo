@@ -5,6 +5,7 @@
 #include "SkeletonAnimated.h"
 //#include "LevelGameDef.h"
 
+namespace ChoseEvents{
 void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 {
 //.    AppendItem						(RPOINT_CHOOSE_NAME);
@@ -16,10 +17,14 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
     }
 }
 //---------------------------------------------------------------------------
-void __stdcall  SelectSoundSource(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+void __stdcall  SelectSoundSource(SChooseItem* item, PropItemVec& info_items)
 {
+/*
+//.
+	ECustomThumbnail*& thm, ref_sound& snd, 
 	snd.create	(true,item->name.c_str(),0);
     thm 		= xr_new<ESoundThumbnail>(item->name.c_str());
+*/
 }
 //---------------------------------------------------------------------------
 void __stdcall  FillSoundSource(ChooseItemVec& items, void* param)
@@ -51,6 +56,18 @@ void __stdcall  FillObject(ChooseItemVec& items, void* param)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
+void __stdcall  SelectObject(SChooseItem* item, PropItemVec& info_items)
+{
+	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(*item->name);
+    thm->FillInfo					(info_items);
+    xr_delete						(thm);
+}
+void __stdcall  DrawObjectTHM(HWND hwnd, const Irect& r, LPCSTR name)
+{
+	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(name);
+    thm->Draw						(hwnd,r);
+    xr_delete						(thm);
+}
 //---------------------------------------------------------------------------
 void __stdcall  FillVisual(ChooseItemVec& items, void* param)
 {
@@ -61,8 +78,10 @@ void __stdcall  FillVisual(ChooseItemVec& items, void* param)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
-void __stdcall  SelectVisual(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+void __stdcall  SelectVisual(SChooseItem* item, PropItemVec& info_items)
 {
+/*
+//.
     AnsiString fn					= ChangeFileExt(item->name.c_str(),".ogf");
     IRender_Visual* visual			= ::Render->model_Create(fn.c_str());
     if (visual){ 
@@ -75,6 +94,7 @@ void __stdcall  SelectVisual(SChooseItem* item, ECustomThumbnail*& thm, ref_soun
         PHelper().CreateCaption	(info_items,	"Build T",	Trim(AnsiString(ctime(&visual->desc.build_time))).c_str());
     }
     ::Render->model_Delete(visual);
+*/
 }
 //---------------------------------------------------------------------------
 void __stdcall  FillGameObjectMots(ChooseItemVec& items, void* param)
@@ -86,7 +106,7 @@ void __stdcall  FillGameObjectMots(ChooseItemVec& items, void* param)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
-void __stdcall  SelectGameObjectMots(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+void __stdcall  SelectGameObjectMots(SChooseItem* item, PropItemVec& info_items)
 {
 }
 //---------------------------------------------------------------------------
@@ -144,9 +164,17 @@ void __stdcall  FillTexture(ChooseItemVec& items, void* param)
 	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
     }
 }
-void __stdcall  SelectTexture(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+void __stdcall  SelectTexture(SChooseItem* item, PropItemVec& info_items)
 {
-	thm		= xr_new<ETextureThumbnail>(item->name.c_str());
+	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(*item->name);
+    thm->FillInfo					(info_items);
+    xr_delete						(thm);
+}
+void __stdcall  DrawTextureTHM(HWND hwnd, const Irect& r, LPCSTR name)
+{
+	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(name);
+    thm->Draw						(hwnd,r);
+    xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
 void __stdcall  FillGameMaterial(ChooseItemVec& items, void* param)
@@ -181,30 +209,31 @@ void __stdcall  FillSkeletonBones(ChooseItemVec& items, void* param)
     }
 	::Render->model_Delete			(V);
 }
-
+}
 void FillChooseEvents()
 {
-	TfrmChoseItem::AppendEvents	(smSoundSource,		"Select Sound Source",		FillSoundSource,	SelectSoundSource,	false);
-	TfrmChoseItem::AppendEvents	(smSoundEnv,		"Select Sound Environment",	FillSoundEnv,		0,false);
-	TfrmChoseItem::AppendEvents	(smObject,			"Select Library Object",	FillObject,			0,false);
-	TfrmChoseItem::AppendEvents	(smEShader,			"Select Engine Shader",		FillEShader,		0,false);
-	TfrmChoseItem::AppendEvents	(smCShader,			"Select Compiler Shader",	FillCShader,		0,false);
-	TfrmChoseItem::AppendEvents	(smPE,				"Select Particle Effect",	FillPE,				0,false);
-	TfrmChoseItem::AppendEvents	(smParticles,		"Select Particle System", 	FillParticles,		0,false);
-	TfrmChoseItem::AppendEvents	(smTexture,			"Select Texture",			FillTexture,		SelectTexture,		false);
-	TfrmChoseItem::AppendEvents	(smEntityType,		"Select Entity",			FillEntity,			0,false);
-	TfrmChoseItem::AppendEvents	(smLAnim,			"Select Light Animation",	FillLAnim,			0,false);
-	TfrmChoseItem::AppendEvents	(smVisual,			"Select Visual",			FillVisual,			SelectVisual,		false);
-	TfrmChoseItem::AppendEvents	(smSkeletonAnims,	"Select Skeleton Animation",FillSkeletonAnims,	0,false);
-	TfrmChoseItem::AppendEvents	(smSkeletonBones,	"Select Skeleton Bones",	FillSkeletonBones,	0,false);
-	TfrmChoseItem::AppendEvents	(smGameMaterial,	"Select Game Material",		FillGameMaterial,	0,false);
-	TfrmChoseItem::AppendEvents	(smGameAnim,		"Select Animation",			FillGameAnim,		0,false);
-	TfrmChoseItem::AppendEvents	(smGameSMotions,	"Select Game Object Motions",FillGameObjectMots,SelectGameObjectMots,false);
+	TfrmChoseItem::AppendEvents	(smSoundSource,		"Select Sound Source",		ChoseEvents::FillSoundSource,	ChoseEvents::SelectSoundSource,	0);
+	TfrmChoseItem::AppendEvents	(smSoundEnv,		"Select Sound Environment",	ChoseEvents::FillSoundEnv,		0,					0);
+	TfrmChoseItem::AppendEvents	(smObject,			"Select Library Object",	ChoseEvents::FillObject,		ChoseEvents::SelectObject,		ChoseEvents::DrawObjectTHM);
+	TfrmChoseItem::AppendEvents	(smEShader,			"Select Engine Shader",		ChoseEvents::FillEShader,		0,					0);
+	TfrmChoseItem::AppendEvents	(smCShader,			"Select Compiler Shader",	ChoseEvents::FillCShader,		0,					0);
+	TfrmChoseItem::AppendEvents	(smPE,				"Select Particle Effect",	ChoseEvents::FillPE,			0,					0);
+	TfrmChoseItem::AppendEvents	(smParticles,		"Select Particle System", 	ChoseEvents::FillParticles,		0,					0);
+	TfrmChoseItem::AppendEvents	(smTexture,			"Select Texture",			ChoseEvents::FillTexture,		ChoseEvents::SelectTexture,		ChoseEvents::DrawTextureTHM);
+	TfrmChoseItem::AppendEvents	(smEntityType,		"Select Entity",			ChoseEvents::FillEntity,		0,					0);
+	TfrmChoseItem::AppendEvents	(smLAnim,			"Select Light Animation",	ChoseEvents::FillLAnim,			0,					0);
+	TfrmChoseItem::AppendEvents	(smVisual,			"Select Visual",			ChoseEvents::FillVisual,		ChoseEvents::SelectVisual,		0);
+	TfrmChoseItem::AppendEvents	(smSkeletonAnims,	"Select Skeleton Animation",ChoseEvents::FillSkeletonAnims,	0,					0);
+	TfrmChoseItem::AppendEvents	(smSkeletonBones,	"Select Skeleton Bones",	ChoseEvents::FillSkeletonBones,	0,					0);
+	TfrmChoseItem::AppendEvents	(smGameMaterial,	"Select Game Material",		ChoseEvents::FillGameMaterial,	0,					0);
+	TfrmChoseItem::AppendEvents	(smGameAnim,		"Select Animation",			ChoseEvents::FillGameAnim,		0,					0);
+	TfrmChoseItem::AppendEvents	(smGameSMotions,	"Select Game Object Motions",ChoseEvents::FillGameObjectMots,ChoseEvents::SelectGameObjectMots,0);
 }
 void ClearChooseEvents()
 {
 	TfrmChoseItem::ClearEvents	();
 }
+
 //---------------------------------------------------------------------------
 #endif
  
