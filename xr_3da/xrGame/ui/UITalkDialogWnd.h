@@ -34,6 +34,8 @@ public:
 	virtual void Show();
 	virtual void Hide();
 
+	void AddMessageToLog(const CUIString& msg);
+
 
 	//номер выбранного вопроса
 	int m_iClickedQuestion;
@@ -41,11 +43,10 @@ public:
 
 	//список вопросов, которые мы можем задавать персонажу
 	CUIListWnd			UIQuestionsList;
-	CUIStatic			UIAnswer;
+	CUIListWnd			UIAnswersList;
 
 	//элементы интерфейса диалога
-	CUIFrameWindow		UIQuestionFrame;
-	CUIFrameWindow		UIAnswerFrame;
+	CUIFrameWindow		UIDialogFrame;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;

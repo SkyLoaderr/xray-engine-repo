@@ -45,19 +45,19 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
 
+	//основной фрейм диалога
+	AttachChild(&UIDialogFrame);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
+
 	//Вопросы
-	AttachChild(&UIQuestionFrame);
-	UIQuestionFrame.Init("ui\\ui_frame", 200, 20, 600, 300);
-	AttachChild(&UIQuestionsList);
-	UIQuestionsList.Init(200, 20, 600, 300);
+	UIDialogFrame.AttachChild(&UIQuestionsList);
+	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
 
 	//Ответы
-	AttachChild(&UIAnswerFrame);
-	UIAnswerFrame.Init("ui\\ui_frame", 200, 350,  600, 370);
-
-	AttachChild(&UIAnswer);
-	UIAnswer.Init(200, 350,  600, 370);
-		
+	UIDialogFrame.AttachChild(&UIAnswersList);
+	xml_init.InitListWnd(uiXml, "list", 1, &UIAnswersList);
+	UIAnswersList.EnableScrollBar(true);
+	UIAnswersList.ActivateList(false);
 
 	//кнопка перехода в режим торговли
 	AttachChild(&UIToTradeButton);
@@ -99,4 +99,39 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
+}
+
+void CUITalkDialogWnd::AddMessageToLog(const CUIString& msg)
+{
+	const STRING& text =  msg.m_str;
+	STRING buf;
+
+	u32 last_pos = 0;
+
+	for(u32 i = 0; i<text.size()-2; ++i)
+	{
+         // '\n' - переход на новую строку
+		if(text[i] == '\\' && text[i+1]== 'n')
+		{	
+			buf.clear();
+			buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
+			buf.push_back(0);
+			UIAnswersList.AddItem(&buf.front());
+			++i;
+			last_pos = i+1;
+		}	
+	}
+
+	if(last_pos<text.size())
+	{
+		buf.clear();
+		buf.insert(buf.begin(), text.begin()+last_pos, text.end());
+		buf.push_back(0);
+		UIAnswersList.AddItem(&buf.front());
+	}
+
+	//добавить строку-разделитель
+	UIAnswersList.AddItem("----------------");
+
+	UIAnswersList.ScrollToEnd();
 }

@@ -38,6 +38,9 @@ public:
 	//скролинг
 	void SetRange(s16 iMin, s16 iMax);
 	void GetRange(s16& iMin, s16& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
+	int GetRangeSize() {return (m_iMaxPos-m_iMinPos);}
+	int GetMaxRange() {return m_iMaxPos;}
+	int GetMinRange() {return m_iMinPos;}
 
 	void SetPageSize(u16 iPage) { m_iPageSize = iPage; UpdateScrollBar();}
 	u16 GetPageSize() {return m_iPageSize;}

@@ -29,7 +29,7 @@ void CUIListItem::Init(int x, int y, int width, int height)
 {
 	inherited::Init(NULL, x,y, width, height);
 
-	m_pData = NULL;
+
 	SetPressMode(CUIButton::DOWN_PRESS);
 	SetPushOffsetX(0);
 	SetPushOffsetY(0);

@@ -15,6 +15,9 @@
 
 
 
+#define PDA_XML "pda.xml"
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -38,7 +41,7 @@ CUIPdaWnd::~CUIPdaWnd()
 void CUIPdaWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","pda.xml");
+	uiXml.Init("$game_data$",PDA_XML);
 	CUIXmlInit xml_init;
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
@@ -261,7 +264,7 @@ void CUIPdaWnd::InitPdaDialog()
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
 	//инициализировать окошко с информацие о собеседнике
-	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pInvOwner);
+	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
 
 
 	UpdateMessageLog();
@@ -281,15 +284,20 @@ void CUIPdaWnd::UpdateMessageLog()
 	//котактов еще не было
 	if(m_pPda->m_mapPdaLog.find(id_pda_contact) == m_pPda->m_mapPdaLog.end()) return;
 
-	for(CPda::PDA_MESSAGE_LIST_it it = m_pPda->m_mapPdaLog[id_pda_contact].begin();
-							      m_pPda->m_mapPdaLog[id_pda_contact].end() != it;
-							      ++it)
+//	for(CPda::PDA_MESSAGE_LIST_it it = m_pPda->m_mapPdaLog[id_pda_contact].begin();
+//							      m_pPda->m_mapPdaLog[id_pda_contact].end() != it;
+//							      ++it)
+	for(CPda::PDA_MESSAGE_LIST::reverse_iterator it = m_pPda->m_mapPdaLog[id_pda_contact].rbegin();
+			      m_pPda->m_mapPdaLog[id_pda_contact].rend() != it;
+			      ++it)
 	{
 		if((*it).receive)
 			UIPdaDialogWnd.AddOthersMessageToLog((*it).msg, m_pContactInvOwner);
 		else
 			UIPdaDialogWnd.AddOurMessageToLog((*it).msg, m_pInvOwner);
 	}
+
+	UIPdaDialogWnd.UILogListWnd.ScrollToEnd();
 }
 
 

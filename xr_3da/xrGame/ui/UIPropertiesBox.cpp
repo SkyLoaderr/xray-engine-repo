@@ -42,6 +42,7 @@ void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int heigh
 					 width - OFFSET_X*2, 
 					 height - OFFSET_Y*2, ITEM_HEIGHT);
 	m_UIListWnd.EnableActiveBackground(true);
+	m_UIListWnd.EnableScrollBar(false);
 
 
 	m_iClickedElement = -1;
@@ -55,9 +56,9 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 		{
-			GetParent()->SendMessage(this, PROPERTY_CLICKED);
 			m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
-
+			GetParent()->SendMessage(this, PROPERTY_CLICKED);
+			
 			Hide();
 		}
 	}

@@ -75,7 +75,7 @@ void CUIMapWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainMapFrame);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
+	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
 	AttachChild(&UIStaticBottom);
 	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 

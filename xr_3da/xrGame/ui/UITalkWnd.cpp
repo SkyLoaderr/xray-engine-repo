@@ -62,7 +62,6 @@ void CUITalkWnd::InitTalkDialog()
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 
-	UITalkDialogWnd.UIAnswer.SetText("...");
 	
 	UpdateQuestions();
 
@@ -85,7 +84,7 @@ void CUITalkWnd::UpdateQuestions()
 		++it)
 	{
 		SInfoQuestion* pQuestion = &(*it); 
-		UITalkDialogWnd.UIQuestionsList.AddItem((*it).text.GetBuf(), pQuestion);
+		UITalkDialogWnd.UIQuestionsList.AddItem(pQuestion->text, pQuestion);
 	}
 }
 
@@ -161,8 +160,9 @@ void CUITalkWnd::AskQuestion()
 
 	if(!result)
 	{
-		UITalkDialogWnd.UIAnswer.SetText(UITalkDialogWnd.m_pClickedQuestion->
-												negative_answer_text.GetBuf());
+		//UITalkDialogWnd.UIAnswer.SetText(UITalkDialogWnd.m_pClickedQuestion->
+		//										negative_answer_text.GetBuf());
+		UITalkDialogWnd.AddMessageToLog(UITalkDialogWnd.m_pClickedQuestion->negative_answer_text);
 	}
 	else
 	{
@@ -172,12 +172,13 @@ void CUITalkWnd::AskQuestion()
 		for(INFO_INDEX_LIST_it it = index_list.begin(); 
 							   index_list.end() != it; ++it)
 		{
-			info_portion.Load(*it);		
+			info_portion.Load(*it);
 			str.AppendText(info_portion.GetText());
 			str.AppendText("\\n");
 		}
 
-		UITalkDialogWnd.UIAnswer.SetText(str);
+		UITalkDialogWnd.AddMessageToLog(str);
+		//UITalkDialogWnd.UIAnswer.SetText(str);
 
 		//UpdateQuestions();
 	}

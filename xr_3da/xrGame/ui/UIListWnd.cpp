@@ -81,7 +81,6 @@ void CUIListWnd::SetWidth(int width)
 									 m_iItemHeight/ACTIVE_BACKGROUND_HEIGHT,
 									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 
 									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
-;
 }
 
 
@@ -91,9 +90,14 @@ bool CUIListWnd::AddItem(CUIListItem* pItem)
 	AttachChild(pItem);
 	pItem->Init(0, GetSize()* m_iItemHeight, 
 				m_iItemWidth, m_iItemHeight);
-
+	
+	
 	m_ItemList.push_back(pItem);
 	pItem->SetIndex(m_ItemList.size()-1);
+//	m_ItemList.push_front(pItem);
+//pItem->SetIndex(0);
+	
+	
 
 	UpdateList();
 
@@ -102,7 +106,6 @@ bool CUIListWnd::AddItem(CUIListItem* pItem)
 	m_ScrollBar.SetPageSize(s16(
 							(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
-
 
 	UpdateScrollBar();
 
@@ -193,6 +196,7 @@ void CUIListWnd::RemoveAll()
 
 	m_iFirstShownIndex = 0;
 	
+	
 	UpdateList();
 	Reset();
 
@@ -200,6 +204,8 @@ void CUIListWnd::RemoveAll()
 	m_ScrollBar.SetRange(0,0);
 	m_ScrollBar.SetPageSize(0);
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+
+	UpdateScrollBar();
 }
 
 void CUIListWnd::UpdateList()
@@ -271,7 +277,9 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			R_ASSERT(pListItem);
 
 			if(CUIListItem::BUTTON_CLICKED == msg)
-				GetParent()->SendMessage(this, LIST_ITEM_CLICKED, *it);
+			{
+				GetParent()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
+			}
 			else if(CUIListItem::BUTTON_FOCUS_RECEIVED == msg)
 			{
 				m_iFocusedItem = pListItem->GetIndex();
@@ -363,10 +371,12 @@ int CUIListWnd::GetLongestSignWidth()
 void CUIListWnd::UpdateScrollBar()
 {
 	//спрятать скорлинг, если он не нужен
-	if(m_bScrollBarEnabled && m_ItemList.size()<=m_ScrollBar.GetPageSize())
-		m_ScrollBar.Show(false);
-	else
-		m_ScrollBar.Show(true);
+	if(m_bScrollBarEnabled)
+		if(m_ItemList.size()<=m_ScrollBar.GetPageSize())
+			m_ScrollBar.Show(false);
+		else
+			m_ScrollBar.Show(true);
+	
 }
 
 void CUIListWnd::EnableScrollBar(bool enable)
@@ -390,4 +400,23 @@ void CUIListWnd::EnableScrollBar(bool enable)
 void CUIListWnd::ActivateList(bool activity)
 {
 	m_bListActivity = activity;
+}
+
+void CUIListWnd::ScrollToBegin()
+{
+	m_ScrollBar.SetScrollPos((s16)m_ScrollBar.GetMinRange());
+	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+	UpdateList();
+}
+void CUIListWnd::ScrollToEnd()
+{
+	int pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
+
+	if(pos > m_ScrollBar.GetMinRange())
+		m_ScrollBar.SetScrollPos((s16)pos);
+	else
+		m_ScrollBar.SetScrollPos((s16)m_ScrollBar.GetMinRange());
+
+	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+	UpdateList();
 }

@@ -48,14 +48,6 @@ public:
 	void PhrasesAnswer();
 	void PhrasesAsk();
 
-	CUIButton			UIBackButton;
-
-	CUIButton			UIMsgButton1;
-	CUIButton			UIMsgButton2;
-	CUIButton			UIMsgButton3;
-	
-	CUIStatic			UIStaticContactName;
-	CUIStatic			UIStaticContactStatus;
 
 	//номер отправленного сообщения
 	EPdaMsg m_iMsgNum;

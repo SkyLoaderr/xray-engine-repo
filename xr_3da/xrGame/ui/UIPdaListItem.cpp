@@ -8,6 +8,8 @@
 #include "UIPdaListItem.h"
 
 
+#define PDA_CONTACT_CHAR "pda_character.xml"
+
 CUIPdaListItem::CUIPdaListItem(void)
 {
 }
@@ -21,7 +23,7 @@ void CUIPdaListItem::Init(int x, int y, int width, int height)
 	inherited::Init(x, y, width, height);
 
 	AttachChild(&UICharacterInfo);
-	UICharacterInfo.Init(0,0,width, height, "pda_character.xml");
+	UICharacterInfo.Init(0,0,width, height, PDA_CONTACT_CHAR);
 }
 void CUIPdaListItem::Update()
 {

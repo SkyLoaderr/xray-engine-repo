@@ -60,6 +60,9 @@ public:
 	void EnableScrollBar(bool enable);
 	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
 	void UpdateScrollBar();
+
+	void ScrollToBegin();
+	void ScrollToEnd();
 	
 	bool IsActiveBackgroundEnabled() {return m_bActiveBackgroundEnable;}
 	void EnableActiveBackground(bool enable) {m_bActiveBackgroundEnable = enable;}
@@ -87,7 +90,7 @@ protected:
 	void UpdateList();
 
 
-	//вектор элементов списка
+	//список элементов листа
 	LIST_ITEM_LIST m_ItemList; 
 
 	//размеры элемента списка

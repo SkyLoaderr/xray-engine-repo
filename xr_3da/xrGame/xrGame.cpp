@@ -817,6 +817,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "weaponusp45.h"
 #include "weapongroza.h"
 #include "weaponmagazinedwgrenade.h"
+#include "WeaponFakeGrenade.h"
 
 #include "scope.h"
 #include "silencer.h"

@@ -1716,8 +1716,7 @@
 									<File
 										RelativePath=".\Explosive.cpp">
 										<FileConfiguration
-											Name="Debug|Win32"
-											ExcludedFromBuild="TRUE">
+											Name="Debug|Win32">
 											<Tool
 												Name="VCCLCompilerTool"/>
 										</FileConfiguration>
@@ -1737,8 +1736,7 @@
 									<File
 										RelativePath=".\Explosive.h">
 										<FileConfiguration
-											Name="Debug|Win32"
-											ExcludedFromBuild="TRUE">
+											Name="Debug|Win32">
 											<Tool
 												Name="VCCustomBuildTool"/>
 										</FileConfiguration>
@@ -1771,6 +1769,12 @@
 								<Filter
 									Name="Automatic"
 									Filter="">
+									<File
+										RelativePath=".\WeaponFakeGrenade.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponFakeGrenade.h">
+									</File>
 									<File
 										RelativePath=".\WeaponMagazined.cpp">
 									</File>

@@ -86,13 +86,10 @@ void CUIStatic::Update()
 	
 	if(!GetFont() || GetFont()->SizeOf((char*)m_str) == 0) return;	
 	
-
-	//RECT rect = GetAbsoluteRect();
 	GetFont()->SetAligment(GetTextAlign());
 	GetFont()->SetColor(m_dwFontColor);
 
 
-	
 	/////////////////////////////////////
 	//форматированный вывод текста
 	/////////////////////////////////////
@@ -104,9 +101,6 @@ void CUIStatic::Update()
 	outX = 0;
 	outY = 0;
 
-	//u32 str_len = (u32)xr_strlen(m_str);
-	//buf_str = (char*)xr_malloc(str_len*sizeof(char));
-	
 	new_word = false;
 	word_length = 0;
 	
