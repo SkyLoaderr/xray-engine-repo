@@ -81,8 +81,10 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float				(m_fCondition);
 	tNetPacket.w_u32				(m_dwTimeStamp);
 	tNetPacket.w_u16				(m_u16NumItems);
-	if (m_u16NumItems != FLAG_NO_POSITION)
+	if (m_u16NumItems != FLAG_NO_POSITION) {
 		tNetPacket.w_vec3			( State.position );
+		o_Position					= State.position;
+	}
 
 	if (!m_u16NumItems || (m_u16NumItems == FLAG_NO_POSITION))
 		return;	
@@ -100,8 +102,6 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float				( State.quaternion.y );
 	tNetPacket.w_float				( State.quaternion.z );
 	tNetPacket.w_float				( State.quaternion.w );	
-
-	o_Position						= State.position;
 };
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
