@@ -203,7 +203,7 @@ function proceed(actor)
 	end 
 
 	if	actor:has_info("bar_kill_borov_start") and
- 		actor:has_info("val_kill_borov_killed") and
+ 		actor:has_info("bar_kill_borov_voronin") and
  		actor:has_info("val_borov_info_gain") and
  		actor:dont_has_info("bar_kill_borov_done")
 	then		
