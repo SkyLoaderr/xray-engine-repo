@@ -91,6 +91,7 @@ IC	void COthelloClassicBoard::undo_move		()
 			m_difference				-= 2*flip_count + 1;
 		++m_empties;
 		VERIFY							(!m_flip_stack.empty());
+//		m_free_cells.insert				(m_flip_stack.top().m_cell - m_board);
 		*m_flip_stack.top().m_cell		= EMPTY;
 		m_flip_stack.pop				();
 		VERIFY							(!m_flip_stack.empty());

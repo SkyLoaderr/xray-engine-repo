@@ -25,15 +25,26 @@ const u8 COthelloClassicBoard::flipping_directions[BOARD_SIZE] = {
 void COthelloClassicBoard::start_position	()
 {
 	Memory::mem_fill		(m_board,DUMMY,sizeof(m_board));
-	
+
+//	m_free_cells.clear		();
+
 	for (cell_index i=0; i<8; ++i)
-		for (cell_index j=0; j<8; ++j)
+		for (cell_index j=0; j<8; ++j) {
+//			m_free_cells.insert(index(i,j));
 			cell			(i,j,EMPTY);
+		}
 	
 	cell					(3,3,WHITE);
+//	m_free_cells.erase		(index(3,3));
+
 	cell					(3,4,BLACK);
+//	m_free_cells.erase		(index(3,4));
+
 	cell					(4,3,BLACK);
+//	m_free_cells.erase		(index(4,3));
+
 	cell					(4,4,WHITE);
+//	m_free_cells.erase		(index(4,4));
 
 	m_color_to_move			= BLACK;
 	m_empties				= 60;

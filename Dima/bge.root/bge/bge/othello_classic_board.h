@@ -11,6 +11,7 @@
 #include "script_export_space.h"
 #include "ui.h"
 #include "move_processor.h"
+#include <hash_set>
 
 class COthelloClassicBoard {
 public:
@@ -61,6 +62,7 @@ public:
 	typedef CMoveProcessor<cell_index,60,60>	move_processor;
 	typedef move_processor::move_container		position_moves;
 	typedef position_moves::iterator			move_iterator;
+//	typedef stdext::hash_set<cell_index>		free_cells;
 
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
@@ -73,6 +75,7 @@ private:
 	bool					m_passed;
 	flip_stack				m_flip_stack;
 	move_processor			m_move_processor;
+//	free_cells				m_free_cells;
 
 private:
 	mutable string256		m_temp;
