@@ -6,19 +6,19 @@
 #include "occRasterizer.h"
 
 
-void fillDW_8x					(LPDWORD ptr, DWORD size, DWORD value)
+void __stdcall fillDW_8x	(LPDWORD ptr, DWORD size, DWORD value)
 {
 	LPDWORD end = ptr+size;
-	for (; ptr!=end; )
+	for (; ptr!=end; ptr+=8)
 	{
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
-		*ptr++	= value;
+		ptr[0]	= value;
+		ptr[1]	= value;
+		ptr[2]	= value;
+		ptr[3]	= value;
+		ptr[4]	= value;
+		ptr[5]	= value;
+		ptr[6]	= value;
+		ptr[7]	= value;
 	}
 }
 

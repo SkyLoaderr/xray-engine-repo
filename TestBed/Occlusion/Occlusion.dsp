@@ -96,6 +96,7 @@ SOURCE=.\Occlusion.cpp
 # Begin Source File
 
 SOURCE=.\occRasterizer.cpp
+# ADD CPP /FAs
 # End Source File
 # Begin Source File
 
