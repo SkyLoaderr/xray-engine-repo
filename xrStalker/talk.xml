@@ -23,18 +23,18 @@
 
 	<!-- PHRASES LIST -->
 	<list x="50" y="451" width="550" height="161" item_height="18" active_bg="1">
-		<font font="letterica18" r="240" g="217" b="182"></font>
+		<font font="letterica18" r="255" g="232" b="208"></font>
 	</list>
 
 	<!-- LOG LIST -->
 	<list x="20" y="20" width="550" height="415" item_height="16" active_bg="0">
-		<font font="letterica18" r="255" g="255" b="255"></font>
+		<font font="letterica18" r="216" g="186" b="140"></font>
 	</list>
 
 	<!-- FONT FOR INDICATE MESSAGE AUTORS -->
 	<font font="normal" r="250" g="151" b="22"></font>
 	<!-- Font for indicate our replics> -->
-	<font font="normal" r="216" g="186" b="140"></font>
+	<font font="normal" r="255" g="232" b="208"></font>
 	
 	<!-- STATIC FOR DISPLAYING NAME OF CHARACTER -->
 	<static x="20" y="430" width="347" height="212">
