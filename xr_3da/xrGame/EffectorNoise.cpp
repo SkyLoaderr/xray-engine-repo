@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "EffectorNoise.h"
-#include "device.h"
 
 static __forceinline float rnd_noise(void) { return float(rand())/float(RAND_MAX) - .5f; }
 

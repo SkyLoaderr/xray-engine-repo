@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Effector.h"
+#include "..\Effector.h"
 
-class ENGINE_API CEffectorNoise : public CEffector
+class CEffectorNoise : public CEffector
 {
 	float	fForce;
 	float	fStepTime;
@@ -19,7 +19,6 @@ public:
 
 	CEffectorNoise(float _fForce, float life_time);
 	virtual ~CEffectorNoise();
-
 };
 
 #endif // !defined(AFX_EFFECTORNOISE_H__E8300C01_1C3E_11D4_B4E3_00C02610C34E__INCLUDED_)
