@@ -174,8 +174,9 @@ CInventory::~CInventory() {}
 bool CInventory::Take(CGameObject *pObj) {
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	//if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_ruck.size() < m_maxRuck) && (m_all.find(l_pIItem) == m_all.end())) {
-	if(m_all.find(l_pIItem) != m_all.end()) {
-		R_ASSERT(0);
+	if(m_all.find(l_pIItem) != m_all.end()) 
+	{
+		Debug.fatal("Item already exist in inventory: %s(%s)",pObj->cName(),pObj->cNameSect());
 	}
 	if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_all.find(l_pIItem) == m_all.end())) {
 		l_pIItem->m_pInventory = this;
