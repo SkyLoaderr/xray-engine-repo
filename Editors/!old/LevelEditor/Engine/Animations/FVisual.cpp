@@ -56,7 +56,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		loaded_v			= true;
 
 		// indices
-		u32 ID			= data->r_u32			();
+		ID					= data->r_u32			();
 		iBase				= data->r_u32			();
 		iCount				= data->r_u32			();
 		dwPrimitives		= iCount/3;
