@@ -151,5 +151,5 @@ void CLightmap::Save()
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 
-	xr_vector
+	
 }

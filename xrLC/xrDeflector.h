@@ -24,6 +24,12 @@ struct lm_layer
 		surface.clear();	surface.resize	(size);
 		marker.clear();		marker.assign	(size,0);
 	}
+	void					destroy						()
+	{
+		width=height		= 0;
+		surface.clear_and_free	();
+		marker.clear_and_free	();
+	}
 	u32						Area ()						{ return (width+2*BORDER)*(height+2*BORDER); }
 	u32						Pixel(u32 ID);
 	void					Pack (xr_vector<u32>& dest);
