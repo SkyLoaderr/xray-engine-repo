@@ -58,11 +58,16 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 		power = 1.f;//expf(.1f*log(power));
 
 	if (power >= m_fSoundThreshold) {
-		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
-			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
-
+		if (this != who) {
 			Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+		}
+ 	}
 
+//		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
+//			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+//
+//			Mem.HearSound(who,eType,Position,power,m_dwCurrentUpdate);
+//
 //			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
 //			if (m_tLastSound.tpEntity) {
 //				m_dwLastSoundNodeID			= m_tLastSound.tpEntity->AI_NodeID;

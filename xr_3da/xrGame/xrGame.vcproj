@@ -927,12 +927,6 @@
 							<File
 								RelativePath="WeaponPistol.h">
 							</File>
-							<File
-								RelativePath=".\WeaponThrust.cpp">
-							</File>
-							<File
-								RelativePath=".\WeaponThrust.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="Weapon M134"

@@ -238,6 +238,9 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 	r_target = r_torso_target;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ¬ходные воздействи€
 void CAI_Biting::vfUpdateParameters()
 {
 	// sound
@@ -281,12 +284,6 @@ void CAI_Biting::vfUpdateParameters()
 	}
 	K					= C | D | E | F;
 	
-	// temp!!!!
-//	if (K) {
-//		E = true;
-//		C = F = D = false;
-//	}
-
 	// does enemy see me?
 	SelectEnemy			(m_tEnemy);
 
@@ -347,7 +344,9 @@ void CAI_Biting::vfUpdateParameters()
 	H = true;
 }
 
-//////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Temp!!!
 void CAI_Biting::SetText()
 {
