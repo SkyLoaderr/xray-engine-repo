@@ -107,6 +107,52 @@ void CStalkerAnimationManager::update						()
 	legs().play				(m_skeleton_animated,legs_play_callback,&object());
 
 	VERIFY					(head().animation());
+
+	if (!torso().animation()) {
+		Msg					("TORSO ANIMATION BUG MINI DUMP");
+		
+		if (!object().inventory().ActiveItem())
+			Msg				("no active item");
+		else
+			Msg				("active item [%s][%s]",*object().inventory().ActiveItem()->cName(),*object().inventory().ActiveItem()->cNameSect());
+		
+		if (m_weapon) {
+			Msg				("active item is weapon");
+			if (strapped())
+				Msg			("weapon is strapped");
+			else
+				Msg			("weapon is not strapped");
+		}
+		else
+			if (m_missile)
+				Msg			("active item is missile");
+			else
+				Msg			("active item is not a weapon nor a missile");
+
+		Msg					("object slot is %d",object_slot());
+
+		switch (body_state()) {
+			case eBodyStateStand : {
+				Msg			("body state is STAND");
+				break;
+			}
+			case eBodyStateCrouch : {
+				Msg			("body state is CROUCH");
+				break;
+			}
+			case eBodyStateStandDamaged : {
+				Msg			("body state is STAND_DAMAGED");
+				break;
+			}
+			default : {
+				Msg			("body state is INVALID");
+				break;
+			}
+		}
+
+		FlushLog			();
+	}
+
 	VERIFY					(torso().animation());
 	VERIFY					(legs().animation());
 
