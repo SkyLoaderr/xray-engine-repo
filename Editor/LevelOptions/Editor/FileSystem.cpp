@@ -141,16 +141,18 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, bool bMulti, LPCST
         strcpy(dir, buffer);
 
         int cnt		= _GetItemCount(buffer,0x0);
-		strcpy		(fns,dir);
-		strcat		(fns,"\\");
-		strcat		(fns,_GetItem(buffer,1,buf,0x0));
-		for (int i=2; i<cnt; i++){
-            strcat	(fns,",");
-            strcat	(fns,dir);
-			strcat	(fns,"\\");
-            strcat	(fns,_GetItem(buffer,i,buf,0x0));
+        if (cnt>1){
+            strcpy		(fns,dir);
+            strcat		(fns,"\\");
+            strcat		(fns,_GetItem(buffer,1,buf,0x0));
+            for (int i=2; i<cnt; i++){
+                strcat	(fns,",");
+                strcat	(fns,dir);
+                strcat	(fns,"\\");
+                strcat	(fns,_GetItem(buffer,i,buf,0x0));
+            }
+            strcpy		(buffer,fns);
         }
-        strcpy		(buffer,fns);
     }
     return bRes;
 }

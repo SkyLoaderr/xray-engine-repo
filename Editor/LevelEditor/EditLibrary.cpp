@@ -385,10 +385,12 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 save_nm = ChangeFileExt(nm,".object");
                 if (FS.GetSaveName(FS.m_Objects,save_nm,path.c_str())){
                 	path = ExtractFilePath(save_nm);
-                    O->SaveObject(save_nm.c_str());                  
+                    O->SaveObject(save_nm.c_str());
                     FS.MarkFile(*it);
                     bNeedUpdate=true;
                 }else bNeedBreak=true;
+            }else{
+            	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
             }
             _DELETE(O);
             if (bNeedBreak) break;
