@@ -79,7 +79,7 @@ void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 		m_pMotion->Evaluate(m_MParam.Frame(),P,R);
 		if (!m_MParam.Update(Device.fTimeDelta)) fLifeTime-=Device.fTimeDelta;
 		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
-		mRotate.setHPB	(-R.x,-R.y,R.z);
+		mRotate.setHPB	(-R.x,-R.y,-R.z);
 		D.set			(mRotate.k);
 		N.set			(mRotate.j);
 	}
