@@ -226,6 +226,7 @@ IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, float _x, float _y, float _z)
 	D.z		= 0.f+z/w;
 	return FALSE;
 }
+
 IC	void	modify		(float& x1, float& y1, float& x2, float& y2, float& z, Fvector& v)
 {
 	if (v.x<x1)	x1=v.x; else if (v.x>x2) x2=v.x;
