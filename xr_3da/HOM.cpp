@@ -42,7 +42,7 @@ void CHOM::Load			()
 	}
 	
 	destructor<CStream> FS	(Engine.FS.Open(fName));
-	destructor<CStream>	S	(FS->OpenChunk(1));
+	destructor<CStream>	S	(FS().OpenChunk(1));
 
 	// Load tris and merge them
 	CDB::Collector		CL;
@@ -62,9 +62,9 @@ void CHOM::Load			()
 	{
 		CDB::TRI&	clT = CL.getT()[it];
 		occTri&		rT	= m_pTris[it];
-		rT.adjacent[0]	= (CDB::edge_open==clT.IDadj()[0])?0xffffffff:(m_pTris+clT.IDadj()[0]);
-		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?0xffffffff:(m_pTris+clT.IDadj()[1]);
-		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?0xffffffff:(m_pTris+clT.IDadj()[2]);
+		rT.adjacent[0]	= (CDB::edge_open==clT.IDadj()[0])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[0]);
+		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[1]);
+		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[2]);
 		rT.flags		= clT.dummy;
 	}
 
