@@ -80,8 +80,6 @@ inline HANDLE CreateMailSlotByName(LPSTR slotName)
         MAILSLOT_WAIT_FOREVER,         // no time-out for operations 
         (LPSECURITY_ATTRIBUTES) NULL); // no security attributes 
  
-    R_ASSERT (hSlot != INVALID_HANDLE_VALUE);
- 
     return hSlot; 
 }
 inline BOOL CheckExisting(LPSTR slotName)

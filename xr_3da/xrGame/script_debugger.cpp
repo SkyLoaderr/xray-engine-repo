@@ -140,8 +140,14 @@ CScriptDebugger::CScriptDebugger()
 	m_nLevel = 0;
 	m_mailSlot = CreateMailSlotByName(DEBUGGER_MAIL_SLOT);
 
+	if (m_mailSlot == INVALID_HANDLE_VALUE) {
+		m_bIdePresent	= false;
+		return;
+	}
+
 	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
-	if(Active() )
+
+	if (Active())
 	{
 		_SendMessage(DMSG_NEW_CONNECTION,0,0);
 		CMailSlotMsg msg;
