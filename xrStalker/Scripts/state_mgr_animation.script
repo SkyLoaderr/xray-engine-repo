@@ -362,7 +362,8 @@ function animation:__init(npc, mgr)
 		current_state = nil,
 		target_state = nil,
 		begin = nil,
-		idle = nil
+		idle = nil,
+		callback_done = false
 	}		
 end
 --' апдейт
@@ -386,18 +387,50 @@ function animation:update()
 	else
 		--' переход закончился, можно играть анимашки.
 		-- Первым делом инициализируем коллбек, если он нужен
+		if self.mgr.reset_state == true then
+			if self.mgr.callback ~= nil then
+				self.mgr.callback.begin = nil
+				self.states.callback_done = false				
+			end
+			local nn = 0
+			self.npc:clear_animations()
+			if self.animations[self.states.target_state].into ~= nil then
+				if type(self.animations[self.states.target_state].into[self:weapon_slot()]) == "table" then
+					for k,v in self.animations[self.states.target_state].into[self:weapon_slot()] do
+						self.npc:add_animation(v, true)
+					end
+					nn = nn +1
+				else
+					self.npc:add_animation(self.animations[self.states.target_state].into[self:weapon_slot()], true)
+					nn = nn +1
+				end
+			end
+			if self.animations[self.states.target_state].idle ~= nil then
+				self.npc:add_animation(self.animations[self.states.target_state].idle[self:weapon_slot()], true)
+				nn = nn + 1
+			else
+				-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+				self.mgr.animstate:add_idle_animation()
+			end
+			self.mgr.reset_state = false
+			if nn > 0 then 
+				self.states.current_state = "wait"
+			end
+		end
+		
 		if self.mgr.callback ~= nil and
+  	 	   self.states.callback_done == false and		
 		   self.mgr.callback.func ~= nil
 		then
 			if self.mgr.callback.begin == nil then
 				self.mgr.callback.begin = device():time_global()
---				printf("Callback initialized %s", device():time_global())
+--				printf("		Callback initialized %s", device():time_global())				
 			else
 				if device():time_global() - self.mgr.callback.begin >= self.mgr.timeout then
---					printf("Callback called %s", device():time_global())
+--					printf("		Callback called %s", device():time_global())
 					self.mgr.callback.func(self.mgr.callback.obj)
 					self.is_called = true
-					self.mgr.callback = nil
+					self.states.callback_done = true
 				end
 			end
 		end
@@ -492,6 +525,7 @@ function animation:set_state(id)
 				nn = nn +1
 			end
 		end
+		self.mgr.reset_state = false
 		if self.animations[id].idle ~= nil then
 			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
 			nn = nn + 1
