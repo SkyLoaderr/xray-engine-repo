@@ -137,4 +137,3 @@ namespace PathManagers {
 		}
 	};
 };
-

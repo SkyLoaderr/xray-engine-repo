@@ -343,7 +343,7 @@ public:
 	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
 	{
 		VERIFY					(data_storage);
-		return					(false);
+		return					(inherited::is_limit_reached(iteration_count));
 	}
 
 	IC	bool		is_accessible	(const _index_type node_index) const
@@ -434,9 +434,187 @@ public:
 		VERIFY					(graph);
 		return					(!m_avoid_dynamic_obstacles || graph->is_accessible(node_index));
 	}
+};
 
-	IC	bool		is_metric_euclidian() const
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CLevelGraph,
+		_DataStorage,
+		PathManagers::SObstaclesLightCover<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CLevelGraph,
+			_DataStorage,
+			PathManagers::SObstacleParams<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::SObstaclesLightCover<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				_Parameters,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	float				light_weight;
+	float				cover_weight;
+	float				distance_weight;
+
+public:
+	virtual				~CPathManager	()
 	{
-		return					(true);
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				const _Parameters		&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		light_weight			= parameters.light_weight;
+		cover_weight			= parameters.cover_weight;
+		distance_weight			= parameters.distance_weight;
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	{
+		VERIFY					(graph);
+
+		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
+
+		y2						= (float)(tNode1.position().y);
+
+		float					cover = 1/(EPS_L + (float)(graph->cover(tNode1)[0])/255.f + (float)(graph->cover(tNode1)[1])/255.f + (float)(graph->cover(tNode1)[2])/255.f  + (float)(graph->cover(tNode1)[3])/255.f);
+		float					light = (float)(tNode1.light)/15.f;
+		return					(light_weight*light + cover_weight*cover + distance_weight*inherited::evaluate(node_index1,node_index2,i));
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(inherited::estimate(node_index));
+	}
+};
+
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CLevelGraph,
+		_DataStorage,
+		PathManagers::SObstaclesLightCoverEnemy<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CLevelGraph,
+			_DataStorage,
+			PathManagers::SObstaclesLightCover<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::SObstaclesLightCoverEnemy<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				_Parameters,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	Fvector						enemy_position;
+	_dist_type					enemy_distance; 
+	float						enemy_view_weight;
+
+public:
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				const _Parameters		&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		enemy_position			= parameters.enemy_position;
+		enemy_distance			= parameters.enemy_distance;
+		enemy_view_weight		= parameters.enemy_view_weight;
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	{
+		VERIFY					(graph);
+		return					(enemy_view_weight*_sqr(graph->distance(node_index2,enemy_position) - enemy_distance) + inherited::evaluate(node_index1,node_index2,i));
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(inherited::estimate(node_index));
 	}
 };

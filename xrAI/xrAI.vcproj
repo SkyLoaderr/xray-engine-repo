@@ -590,13 +590,10 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="path_machines"
+						Name="graph_search_engine"
 						Filter="">
 						<File
 							RelativePath=".\graph_search_engine.h">
-						</File>
-						<File
-							RelativePath=".\path_machine.h">
 						</File>
 					</Filter>
 					<Filter
