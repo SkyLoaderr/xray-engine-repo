@@ -11,7 +11,7 @@ function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
 end
 function evaluator_state_mgr_idle:evaluate()
 	local t = self.st.target_state == "idle" and 
-		   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
+		   --not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
 		   self.st.planner:evaluator(self.st.properties["animstate"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
@@ -95,15 +95,17 @@ function eva_state_mgr_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_locked:evaluate()
-	--printf("weapon locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate()))
-	--printf("direction locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()))
-	--printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
-	--printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
+--	printf("npc %s", self.object:name())
+--	printf("weapon locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate()))
+--	printf("direction locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()))
+--	printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
+--	printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
 
 	return self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate() or
 		   self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate() or
 		   self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate() or
-		   self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()
+		   self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate() or
+		   self.st.combat == true
 end
 
 --' Идловый экшн менеджера
@@ -557,7 +559,7 @@ function state_manager:__init(npc)
 	self.emerg = {}
 end
 function state_manager:set_state(state_name, callback, timeout, target, emerg)
-	printf("Set Stated called: %s for %s", state_name, self.npc:name())
+	printf("Set Stated called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
 	end

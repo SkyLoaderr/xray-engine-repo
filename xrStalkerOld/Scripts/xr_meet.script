@@ -91,8 +91,10 @@ function action_meet_wait:initialize()
 	
 	self.object:enable_talk()
 	state_mgr.set_state(self.object, "wait", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
+	--state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
 end
 function action_meet_wait:time_callback()
+	--state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor}, {animations = true})
 end
 function action_meet_wait:execute ()
 	-- Звуки

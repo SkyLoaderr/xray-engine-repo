@@ -582,9 +582,9 @@ function animation:callback_process()
 --			printf("	%s - %s ? %s", device():time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
 			if device():time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
 --				printf("		Callback called %s", device():time_global())
-				self.mgr.callback.func(self.mgr.callback.obj)
-				self.mgr.callback.begin = nil
+				self.mgr.callback.func(self.mgr.callback.obj)				
 				if self.mgr.callback then
+					self.mgr.callback.begin = nil
 					self.mgr.callback.func = nil
 				end
 				ret = true
