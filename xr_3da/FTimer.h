@@ -1,5 +1,5 @@
-#ifndef _FTIMER_H_
-#define _FTIMER_H_
+#ifndef FTimerH
+#define FTimerH
 #pragma once
 
 class XRCORE_API CTimer {
@@ -26,7 +26,6 @@ public:
 	__int64		accum;
 	float		result;
 	u32			count;
-	float		_time;
 public:
 				CStatTimer		();
 	void		FrameStart		();
@@ -36,8 +35,9 @@ public:
 	IC void		End				()		{	accum += T.GetElapsed_clk(); }
 
 	IC u64		GetElapsed_clk	()		{	return accum; }
-	IC float	GetElapsed_sec	()		{	return _time; }
+	IC u32		GetElapsed_ms	()		{	return u32(u64(GetElapsed_clk())/u64(CPU::cycles_per_milisec)); }
+	IC float	GetElapsed_sec	()		{	return float(GetElapsed_clk())*CPU::cycles2seconds; }
 	IC float	GetFrame_sec	()		{	return result; }
 };
 
-#endif
+#endif // FTimerH
