@@ -145,6 +145,12 @@ void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachin
 			.def("update",						&CScriptMotivationActionManagerWrapper::update_static)
 			.def("clear",						&CScriptMotivationActionManager::clear),
 
+//		class_<CSE_Abstract>("server_object")
+//			.def(								constructor<>())
+			
+//		class_<NET_Packet>("net_packet")
+//			.def(								constructor<>())
+			
 		class_<CScriptBinderObject,CScriptBinderObjectWrapper>("object_binder")
 			.def_readonly("object",				&CScriptBinderObject::m_object)
 			.def(								constructor<CLuaGameObject*>())

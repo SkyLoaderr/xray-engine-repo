@@ -102,13 +102,13 @@ void CScriptBinder::net_Destroy		()
 void CScriptBinder::net_Import		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Import(*(int*)((void*)&net_packet));
+		m_object->net_Import((int*)((void*)&net_packet));
 }
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
 	if (m_object)
-		m_object->net_Export(*(int*)((void*)&net_packet));
+		m_object->net_Export((int*)((void*)&net_packet));
 }
 
 void CScriptBinder::set_object		(CScriptBinderObject *object)
