@@ -2,7 +2,7 @@
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- ICON -->
-	<icon_static x="12" y="30" width="128" height="128"></icon_static>
+	<icon_static x="12" y="60" width="128" height="95"></icon_static>
 
 	<!-- NAME -->
 	<static x="20" y="162" width="240" height="60">
