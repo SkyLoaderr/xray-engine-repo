@@ -57,7 +57,7 @@ function main ()
     action (stalker3, object (weapon, object.deactivate), cond (cond.time_end, 1000))
     action (stalker3, anim ("stalker_3_2"), cond (cond.time_end, 100000000))
 
-    action (stalker2, anim ("sidya_boltaet_ 0"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false)), cond (cond.anim_end))
+    action (stalker2, anim ("sidya_boltaet_ 0"), sound ("scripts\\Rolik\\Stalker2_1", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
 	while stalker2:action () do wait () end    
     wait (1000)
 
