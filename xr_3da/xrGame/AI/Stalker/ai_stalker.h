@@ -37,6 +37,7 @@ using namespace StalkerSpace;
 class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
 class CWeapon;
+class CCoverPoint;
 
 //#define LOG_PARAMETERS
 
@@ -251,6 +252,9 @@ public:
 	const CInventoryItem		*m_best_found_item_to_kill;
 	const CInventoryItem		*m_best_found_ammo;
 	xr_vector<CCoverPoint*>		m_nearest;
+	u32							m_last_cover_change;
+	u32							m_cover_change_inertia;
+	CCoverPoint					*m_last_cover;
 };
 
 #include "ai_stalker_inline.h"

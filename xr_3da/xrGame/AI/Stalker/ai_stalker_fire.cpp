@@ -261,6 +261,12 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		float				max_enemy_distance
 	)
 {
+	if (m_last_cover && (Level().timeServer() <= m_last_cover_change + m_cover_change_inertia))
+		return									(m_last_cover);
+	
+	m_last_cover_change							= Level().timeServer();
+	m_last_cover								= 0;
+
 	Fvector										direction;
 	direction.sub								(enemy_position,Position());
 
@@ -268,7 +274,6 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 	float										best_value = 1000.f;
 	float										best_distance = 1000.f;
 	float										current_distance = self_position.distance_to(enemy_position);
-	CCoverPoint									*best_point = 0;
 	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
 	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
 	for ( ; I != E; ++I) {
@@ -280,22 +285,25 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		float			enemy_distance = enemy_position.distance_to((*I)->position());
 		float			my_distance = self_position.distance_to((*I)->position());
 
+		if (cover_value >= 1.5*best_value)
+			continue;
+
 		if (enemy_distance <= min_enemy_distance)
 			continue;
 
 		if (my_distance >= max_enemy_distance)
 			continue;
 
-		if (my_distance >= max_enemy_distance)
+		if (my_distance >= current_distance)
 			continue;
 
-		if (my_distance*(cover_value + 1.f) > best_distance*(best_value + 1.f))
-			continue;
+//		if (my_distance*(cover_value + 1.f) > best_distance*(best_value + 1.f))
+//			continue;
 
 		bool			choosed = false;
 		switch (cover_type) {
 			case eCoverTypeCloseToEnemy : {
-				choosed = (enemy_distance <= current_distance + deviation);
+				choosed = (enemy_distance < current_distance + deviation);
 				break;
 			}
 			case eCoverTypeFarFromEnemy : {
@@ -312,9 +320,9 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 		if (choosed) {
 			best_value		= cover_value;
 			best_distance	= my_distance;
-			best_point		= *I;
+			m_last_cover	= *I;
 		}
 	}
 
-	return				(best_point);
+	return				(m_last_cover);
 }

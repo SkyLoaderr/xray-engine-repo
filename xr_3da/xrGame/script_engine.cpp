@@ -32,12 +32,18 @@ void CScriptEngine::lua_error(CLuaVirtualMachine *L)
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 }
 
+void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
+{
+	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
+}
+
 void CScriptEngine::export()
 {
 	luabind::open				(lua());
 	
-	luabind::set_error_callback	(CScriptEngine::lua_error);
-	lua_atpanic					(lua(),CScriptEngine::lua_panic);
+	luabind::set_error_callback			(CScriptEngine::lua_error);
+	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
+	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 
 	export_globals				();
 	export_fvector				();

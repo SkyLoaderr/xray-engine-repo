@@ -46,6 +46,7 @@ public:
 	static	void		lua_hook_call				(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug);
 	static	int			lua_panic					(CLuaVirtualMachine *L);
 	static	void		lua_error					(CLuaVirtualMachine *L);
+	static	void		lua_cast_failed				(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info);
 			void		load_common_scripts			();
 			bool		load_file					(LPCSTR	caScriptName,	bool	bCall = true);
 	IC		CScriptProcessor *script_processor		(LPCSTR processor_name) const;
