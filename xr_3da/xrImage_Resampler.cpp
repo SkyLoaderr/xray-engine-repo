@@ -115,8 +115,8 @@ float	bell_filter			(float t)		/* box (*) box (*) box */
 	if(t < 0) t = -t;
 	if(t < .5) return float(.75 - (t * t));
 	if(t < 1.5) {
-		t = (t - 1.5);
-		return(.5 * (t * t));
+		t = (t - 1.5f);
+		return(.5f * (t * t));
 	}
 	return(0.0);
 }
@@ -130,7 +130,7 @@ float	B_spline_filter		(float t)	/* box (*) box (*) box (*) box */
 	if(t < 0) t = -t;
 	if(t < 1) {
 		tt = t * t;
-		return((.5 * tt * t) - tt + (2.0 / 3.0));
+		return((.5f * tt * t) - tt + (2.0f / 3.0f));
 	} else if(t < 2) {
 		t = 2 - t;
 		return((1.0 / 6.0) * (t * t * t));
@@ -255,7 +255,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 	if(xscale < 1.0) {
 		try	{
 			width	= fwidth / xscale;
-			fscale	= 1.0 / xscale;
+			fscale	= 1.0f / xscale;
 			for(i = 0; i < dst.xsize; ++i)
 			{
 				contrib[i].n	= 0;

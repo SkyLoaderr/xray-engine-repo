@@ -74,17 +74,17 @@ public:
 		g_pSharedMemoryContainer->dump		();
 	}
 };
-static void vminfo (size_t *free, size_t *reserved, size_t *committed) {
+static void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
 	MEMORY_BASIC_INFORMATION memory_info;
 	memory_info.BaseAddress = 0;
-	*free = *reserved = *committed = 0;
+	*_free = *reserved = *committed = 0;
 	while (VirtualQuery (memory_info.BaseAddress, &memory_info, sizeof (memory_info))) {
 		switch (memory_info.State) {
 		case MEM_FREE:
-			*free += memory_info.RegionSize;
+			*_free		+= memory_info.RegionSize;
 			break;
 		case MEM_RESERVE:
-			*reserved += memory_info.RegionSize;
+			*reserved	+= memory_info.RegionSize;
 			break;
 		case MEM_COMMIT:
 			*committed += memory_info.RegionSize;
