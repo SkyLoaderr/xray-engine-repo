@@ -86,8 +86,8 @@ void CFileSystem::OnCreate(){
 	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups (*.group)" );
     m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects (*.object,*.lwo)" );
 	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Import objects (*.object,*.lwo)" );
-	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anim",			"Object animation (*.anim)" );
-	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anims",	    	"Object animation list (*.anims)" );
+	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anm",			"Object animation (*.anm)" );
+	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anms",	    	"Object animation list (*.anms)" );
 	m_SMotion.Init		(m_Local, 	"import\\", 		    "*.skl",			"Skeleton motion file (*.skl)" );
 	m_SMotions.Init		(m_Local, 	"import\\", 		    "*.skls",			"Skeleton motions file (*.skls)" );
 	m_Maps.Init     	(m_Server, 	"maps\\",         		"*.level",  		"Levels (*.level)" );
@@ -455,7 +455,9 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     	if (INVALID_HANDLE_VALUE!=handle){
-			m_LockFiles.insert(std::make_pair(LPSTR(fname),handle));
+        	LPSTR lp_fn=fn;
+			pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
+            R_ASSERT(I.second);
             if (bLog) RegisterAccess(fname);
             bRes=true;
         }
