@@ -22,6 +22,8 @@ CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
+	// since we use multiple inheritance, we have to cast the objects to the underlying class
+	// to delete them properly
 	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
 	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 	for ( ; I != E; I++)
@@ -457,6 +459,8 @@ CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
+	// since we use multiple inheritance, we have to cast the objects to the underlying class
+	// to delete them properly
 	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++)
@@ -465,6 +469,8 @@ CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 
 void CSE_ALifeSpawnRegistry::Init()
 {
+	// since we use multiple inheritance, we have to cast the objects to the underlying class
+	// to delete them properly
 	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
 	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++)
@@ -530,22 +536,14 @@ CSE_ALifeAnomalyRegistry::~CSE_ALifeAnomalyRegistry()
 void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(ANOMALY_CHUNK_DATA);
-	tMemoryStream.w_u32			(m_tpAnomalies.size());
-	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
-	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
-	for ( ; I != E; I++)
-		save_data				(*I,tMemoryStream);
+	save_data					(m_tpAnomalies,tMemoryStream);
 	tMemoryStream.close_chunk	();
 }
 
 void CSE_ALifeAnomalyRegistry::Load(IReader &tFileStream)
 { 
 	R_ASSERT2					(tFileStream.find_chunk(ANOMALY_CHUNK_DATA),"Can't find chunk ANOMALY_CHUNK_DATA!");
-	m_tpAnomalies.resize		(tFileStream.r_u32());
-	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
-	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
-	for ( ; I != E; I++)
-		load_data				(*I,tFileStream);
+	load_data					(m_tpAnomalies,tFileStream);
 }
 
 ////////////////////////////////////////////////////////////////////////////

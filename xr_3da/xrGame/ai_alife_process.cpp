@@ -37,7 +37,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			u64							qwStartTime	= CPU::GetCycleCount();
 
 			// processing online/offline switches
-			VERIFY						(m_tpCurrentLevel);
+			R_ASSERT2					(m_tpCurrentLevel,"There is no actor in the game!");
 			ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin();
 			ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
 			ALIFE_ENTITY_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
