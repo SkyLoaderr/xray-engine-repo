@@ -146,7 +146,7 @@ public:
 	// Process scripts
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
-
+	virtual	bool			bfAssignWatch					(CEntityAction	*tpEntityAction);
 
 	// ---------------------------------------------------------------------------------
 	

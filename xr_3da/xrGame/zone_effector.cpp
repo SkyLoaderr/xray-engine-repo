@@ -116,7 +116,7 @@ void CZoneEffector::Update(float dist)
 	
 	if (p_effector) {
 		float f = (max_r - dist) / (max_r - min_r);
-		clamp(f,0.1f,1.0f);
+		clamp(f,0.01f,1.0f);
 		p_effector->Update(f);
 	}
 }
