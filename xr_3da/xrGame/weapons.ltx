@@ -63,7 +63,7 @@ rpm_empty_click 	     = 200
 
 ; ttc
 hit_power                = 40 		;//WAS "60"!!!
-hit_impulse		         = 150		;60
+hit_impulse		         = 40		;60
 hit_type				 = wound
 
 fire_distance            = 1
@@ -131,7 +131,7 @@ inv_grid_y			= 9
 slot				= 3
 hud					= grenade_f1_hud
 force_min			= 10
-force_max			= 30
+force_max			= 50
 force_grow_speed	= 50
 
 cost				= 50
@@ -181,23 +181,23 @@ inv_grid_y			= 9
 slot				= 3
 hud					= grenade_rgd5_hud
 force_min			= 10
-force_max			= 30
+force_max			= 50
 force_grow_speed	= 50
 
-cost				= 70
+cost				= 40
 
-blast				= 800
+blast				= 500
 blast_r				= 20
 frags				= 10
 frags_r				= 10
-frag_hit			= 100
+frag_hit			= 50
 
 up_throw_factor		= 0.4
 
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
 
-effects				= explosions\explosion_04a
+effects				= explosions\explosion_01
 
 light_color		         = 0.17,0.13,0.12
 light_range		         = 30.0
@@ -263,8 +263,8 @@ cam_relax_speed          = 5.0
 cam_dispersion           = 0.9
 cam_max_angle		     = 7
 
-fire_dispersion          = 0.5
-fire_dispersion_add      = 5.3
+fire_dispersion          = 0.3
+fire_dispersion_add      = 3.3
 fire_dispersion_relax    = 0.6
 fire_dispersion_base	 = 0.5
 disp_vel_factor		     = 0.9
@@ -282,16 +282,15 @@ flame_length             = .3
 flame_size               = 0.07
 flame			         = ShotFlame1, ShotFlame2, ShotFlame3
 
-;flame_particles			 = weapons\generic_flame_00
-;flame_particles			 = weapons\generic_wepon2;weapons\generic_flame_01
+
 flame_particles			 = weapons\generic_weapon
-smoke_particles			 = weapons\generic_shoot_00
+smoke_particles			 = weapons\generic_weapon00
 
 
 rpm_empty_click 	     = 200
 
 ; ttc
-hit_power                = 40 		;//WAS "60"!!!
+hit_power                = 50 		;//WAS "60"!!!
 hit_impulse		         = 60		;60
 hit_type = wound
 
@@ -386,8 +385,8 @@ cam_relax_speed          = 5.0
 cam_dispersion           = 0.9
 cam_max_angle		     = 7
 
-fire_dispersion          = 0.5
-fire_dispersion_add      = 5.3
+fire_dispersion          = 0.3
+fire_dispersion_add      = 2.3
 fire_dispersion_relax    = 0.6
 fire_dispersion_base	 = 0.5
 disp_vel_factor		     = 0.9
@@ -405,12 +404,12 @@ flame_length             = .3
 flame_size               = 0.07
 flame			         = ShotFlame1, ShotFlame2, ShotFlame3
 
-flame_particles			= weapons\generic_weapon00
+smoke_particles			= weapons\generic_weapon00
 
 rpm_empty_click 	     = 200
 
 ; ttc
-hit_power                = 60 		;//WAS "60"!!!
+hit_power                = 50 		;//WAS "60"!!!
 hit_impulse		         = 60
 hit_type = wound
 
@@ -505,8 +504,8 @@ slot 			 = 2		; // secondary
 cam_relax_speed          = 10.0
 cam_dispersion           = 2.1
 cam_max_angle		 = 9
-fire_dispersion          = 2.0
-fire_dispersion_add      = 0.8
+fire_dispersion          = 0.25
+fire_dispersion_add      = 2.8
 fire_dispersion_relax    = 0.7
 fire_dispersion_base	 = 0.8
 disp_vel_factor		 = 0.2
@@ -527,12 +526,13 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles			= weapons\generic_weapon
+smoke_particles         = weapons\generic_weapon00
 
 rpm_empty_click 	 = 200
 ; ttc
 
-hit_power                = 45
-hit_impulse		 = 121; 70
+hit_power                = 50
+hit_impulse		 = 60; 70
 hit_type = wound
 
 fire_distance            = 300
@@ -620,7 +620,7 @@ cam_relax_speed          = 10.0
 cam_dispersion           = 2.1
 cam_max_angle		 = 9
 
-fire_dispersion          = 2.5
+fire_dispersion          = 0.2
 fire_dispersion_add      = 1.0
 fire_dispersion_relax    = 0.5
 fire_dispersion_base	 = 1.0
@@ -639,13 +639,13 @@ flame_length             = .3
 flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
-flame_particles			= weapons\generic_weapon00
+smoke_particles			= weapons\generic_weapon00
 
 rpm_empty_click 	 = 200
 
 ; ttc
-hit_power                = 40
-hit_impulse		 = 70
+hit_power                = 50
+hit_impulse		 = 50
 hit_type = wound
 
 fire_distance            = 300
@@ -739,8 +739,8 @@ cam_relax_speed          = 10.0
 cam_dispersion           = 2.1
 cam_max_angle		 = 9
 
-fire_dispersion          = 5.0	;2.5
-fire_dispersion_add      = 5.0	;1.0
+fire_dispersion          = 0.5	;2.5
+fire_dispersion_add      = 4.0	;1.0
 fire_dispersion_relax    = 0.5
 fire_dispersion_base	 = 1.0
 disp_vel_factor		 = 0.2
@@ -760,14 +760,15 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles		    = weapons\generic_weapon
+smoke_particles		    = weapons\generic_weapon00
 grenade_flame_particles = weapons\generic_weapon01
 
 rpm_empty_click 	 = 200
 
 
 ; ttc
-hit_power                = 20	;45
-hit_impulse		 		 = 250	;70
+hit_power                = 50	;45
+hit_impulse		 		 = 60	;70
 hit_type = wound
 
 fire_distance            = 200	;300
@@ -892,8 +893,8 @@ cam_relax_speed          = 10.0
 cam_dispersion           = 2.1
 cam_max_angle		 = 9
 
-fire_dispersion          = 2.5
-fire_dispersion_add      = 1.0
+fire_dispersion          = 0.5
+fire_dispersion_add      = 3.0
 fire_dispersion_relax    = 0.5
 fire_dispersion_base	 = 1.0
 disp_vel_factor		 = 0.2
@@ -912,13 +913,14 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles		    = weapons\generic_weapon
+smoke_particles		    = weapons\generic_weapon00
 grenade_flame_particles = weapons\generic_weapon01
 
 rpm_empty_click 	 = 200
 
 ; ttc
-hit_power                = 45
-hit_impulse		 		 = 70
+hit_power                = 60
+hit_impulse		 		 = 65
 hit_type = wound
 
 fire_distance            = 300
@@ -1027,7 +1029,7 @@ inv_grid_y			= 7
 cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
-fire_dispersion          = 0.6
+fire_dispersion          = 0.5
 fire_dispersion_add      = 1
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
@@ -1049,11 +1051,12 @@ flame_size               = 0.07
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles		   = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
 
 rpm_empty_click 	 = 200
 ; ttc
 hit_power                = 50
-hit_impulse		 		 = 75
+hit_impulse		 		 = 60
 hit_type = wound
 
 fire_distance            = 150
@@ -1145,7 +1148,7 @@ cam_dispersion           = 2
 cam_max_angle		 = 5
 
 fire_dispersion          = 1
-fire_dispersion_add      = 3
+fire_dispersion_add      = 2
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
 disp_vel_factor		 = 0.1
@@ -1164,13 +1167,15 @@ fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+
 flame_particles		   = weapons\generic_weapon
+smoke_particles        = weapons\generic_weapon00
+
 rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 30
-hit_impulse		 		 = 80
+hit_impulse		 		 = 40
 hit_type = wound
 
 fire_distance            = 120
@@ -1265,7 +1270,7 @@ cam_dispersion           = 2
 cam_max_angle		 = 5
 
 fire_dispersion          = 1
-fire_dispersion_add      = 3
+fire_dispersion_add      = 1
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
 disp_vel_factor		 = 0.1
@@ -1284,13 +1289,14 @@ fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
-flame_particles		   = weapons\generic_weapon
+
+smoke_particles		   = weapons\generic_weapon00
+ 
 rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 20
-hit_impulse		 		 = 50
+hit_impulse		 		 = 40
 hit_type = wound
 
 fire_distance            = 120
@@ -1385,8 +1391,8 @@ cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 2
 
-fire_dispersion          = 0.75
-fire_dispersion_add      = 2
+fire_dispersion          = 0.5
+fire_dispersion_add      = 1
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
 disp_vel_factor		 = 0.1
@@ -1408,12 +1414,13 @@ flame_size               = 0.09
 flame			 = ShotFlame1, ShotFlame2, ShotFlame3
 
 flame_particles		   = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
 
 rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 35
-hit_impulse		 		 = 60
+hit_impulse		 		 = 50
 hit_type = wound
 
 fire_distance            = 200
@@ -1507,7 +1514,7 @@ cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
 
-fire_dispersion          = 0.8
+fire_dispersion          = 0.5
 fire_dispersion_add      = 3
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
@@ -1527,13 +1534,15 @@ fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+
 flame_particles		   = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
+
 rpm_empty_click 	 = 200
 
 ; ttc
 hit_power                = 60
-hit_impulse		 		 = 100
+hit_impulse		 		 = 75
 hit_type = wound
 
 fire_distance            = 120
@@ -1651,8 +1660,9 @@ fire_point               = 0.0, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size              = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+
 flame_particles		   = weapons\generic_weapon02
+
 rpm_empty_click 	 = 200
 
 ; ttc
@@ -1788,7 +1798,7 @@ inv_grid_y			= 8
 cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 5
-fire_dispersion          = 0.7
+fire_dispersion          = 0.6
 fire_dispersion_add      = 2
 fire_dispersion_relax    = 3
 fire_dispersion_base	 = 1.5
@@ -1807,13 +1817,14 @@ fire_point               = 0.00, 0.04, 0.2
 flame_div                = 5
 flame_length             = .1
 flame_size               = 0.09
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3, 
+
 flame_particles		   = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
 rpm_empty_click 	 = 200
 ; ttc
 
-hit_power                = 60 ;30
-hit_impulse		 		 = 60
+hit_power                = 35 ;30
+hit_impulse		 		 = 55
 hit_type = wound
 
 fire_distance            = 150
@@ -1914,8 +1925,9 @@ fire_bone                = barrels
 flame_div                = 10
 flame_length             = .5
 flame_size               = 0.14
-flame			 = weapons\generic\ShotFlame1, weapons\generic\ShotFlame2, weapons\generic\ShotFlame3
+
 flame_particles		   = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
 ; ttc
 hit_power                = 10
 fire_distance            = 400
@@ -2026,17 +2038,18 @@ inv_grid_y			= 2
 direction                = 0, 0, 1
 shell_point		 = 0.0, 0.0, 0.0
 fire_point               = 0.0, 0.11, 0.95
-fire_point2              = 0.0, 0.10, 0.95
+fire_point2              = 0.0, 0.09, 0.95
 flame_div                = 7
 flame_length             = .5
 flame_size               = 0.10
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+
 flame_particles		   = weapons\generic_weapon03
+smoke_particles		   = weapons\generic_weapon00
 rpm_empty_click 	 = 200
 ; ttc
 
-hit_power        = 27 ; 20
-hit_impulse      = 150 ;250
+hit_power        = 60 ; 20
+hit_impulse      = 100 ;250
 hit_type = wound
 
 fire_distance            = 50
@@ -2111,7 +2124,7 @@ resource				= 6000
 cam_relax_speed         = 5
 cam_dispersion          = 2
 cam_max_angle			= 3
-fire_dispersion         = 0.25
+fire_dispersion         = 0.1
 fire_dispersion_add     = 3
 fire_dispersion_relax   = 2
 fire_dispersion_base	= 1.1
@@ -2142,13 +2155,14 @@ fire_point              = 0.0, 0.0, 0.95
 flame_div               = 7
 flame_length            = .3
 flame_size              = 0.07
-flame					= ShotFlame1, ShotFlame2, ShotFlame3
+
 flame_particles		    = weapons\generic_weapon
+smoke_particles		   = weapons\generic_weapon00
 rpm_empty_click 		= 200
 ; ttc
 
 hit_power                = 65
-hit_impulse		 		 = 200		;120
+hit_impulse		 		 = 80		;120
 hit_type = wound
 
 fire_distance            = 800
@@ -2227,7 +2241,7 @@ resource		= 6000
 cam_relax_speed          = 5.5
 cam_dispersion           = 2
 cam_max_angle		 = 4
-fire_dispersion          = 0.5
+fire_dispersion          = 0.1
 fire_dispersion_add      = 3
 fire_dispersion_relax    = 4
 fire_dispersion_base	 = 1.1
@@ -2257,13 +2271,14 @@ fire_point2              = 0.0, 0.0, 0.0
 flame_div                = 3
 flame_length             = .1
 flame_size               = 0.04
-flame			 = ShotFlame1, ShotFlame2, ShotFlame3
-flame_particles		   = weapons\generic_weapon
+
+flame_particles		   = weapons\generic_weapon00
+smoke_particles		   = weapons\generic_weapon00
 rpm_empty_click 	 = 200
 ; ttc
 
 hit_power                = 65
-hit_impulse		 = 180
+hit_impulse		 = 80
 hit_type = wound
 
 fire_distance            = 600
@@ -3158,7 +3173,7 @@ impair			= 1.15
 buck_shot		= 0
 tracer			= off
 
-jump_height = 0
+jump_height = 1
 fake_grenade_name = wpn_fake_missile
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
