@@ -75,7 +75,7 @@ void CPHElement::add_Cylinder	(const Fcylinder& V)
 
 void CPHElement::			build	(){
 
-	m_body=dBodyCreate(phWorld);
+	m_body=dBodyCreate(0);//phWorld
 	//m_saved_contacts=dJointGroupCreate (0);
 	//b_contacts_saved=false;
 	dBodyDisable(m_body);
@@ -103,6 +103,7 @@ void CPHElement::RunSimulation()
 		dSpaceAdd(m_shell->dSpace(),(dGeomID)m_group);
 	else
 		(*m_geoms.begin())->add_to_space(m_shell->dSpace());
+	if(!m_body->world) dWorldAddBody(phWorld, m_body);
 	dBodyEnable(m_body);
 }
 

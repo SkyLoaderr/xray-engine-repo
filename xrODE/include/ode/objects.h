@@ -72,7 +72,8 @@ int dBodyGetAutoDisableSF1(dBodyID);
 
 dBodyID dBodyCreate (dWorldID);
 void dBodyDestroy (dBodyID);
-
+void dWorldAddBody(dWorldID, dBodyID);
+void dWorldAddJoint(dWorldID,dJointID);
 void  dBodySetData (dBodyID, void *data);
 void *dBodyGetData (dBodyID);
 

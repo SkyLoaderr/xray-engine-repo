@@ -27,7 +27,7 @@ CPHJoint::~CPHJoint(){
 void CPHJoint::CreateBall()
 {
 
-	m_joint=dJointCreateBall(phWorld,0);
+	m_joint=dJointCreateBall(0,0);
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
 	CPHElement* first=(pFirst_element);
@@ -69,7 +69,7 @@ default:NODEFAULT;
 	if(!(body1&&body2)) 
 	{
 
-		m_joint=dJointCreateBall(phWorld,0);
+		m_joint=dJointCreateBall(0,0);
 		dJointAttach(m_joint,body1,body2);
 
 
@@ -92,7 +92,7 @@ void CPHJoint::CreateCarWeel()
 void CPHJoint::CreateHinge()
 {
 
-	m_joint=dJointCreateHinge(phWorld,0);
+	m_joint=dJointCreateHinge(0,0);
 
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
@@ -145,7 +145,7 @@ default:NODEFAULT;
 void CPHJoint::CreateHinge2()
 {
 
-	m_joint=dJointCreateHinge2(phWorld,0);
+	m_joint=dJointCreateHinge2(0,0);
 
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
@@ -283,7 +283,7 @@ default:NODEFAULT;
 
 	if(!(body1&&body2)) 
 	{
-		m_joint=dJointCreateHinge(phWorld,0);
+		m_joint=dJointCreateHinge(0,0);
 
 		dJointAttach(m_joint,body1,body2);
 
@@ -304,7 +304,7 @@ default:NODEFAULT;
 
 #ifndef FIX_BY_ONE_HINGE
 
-		m_joint1=dJointCreateHinge(phWorld,0);
+		m_joint1=dJointCreateHinge(0,0);
 
 		dJointAttach(m_joint1,body1,body2);
 
@@ -322,13 +322,13 @@ default:NODEFAULT;
 		return;
 	}
 
-	m_joint=dJointCreateBall(phWorld,0);
+	m_joint=dJointCreateBall(0,0);
 	dJointAttach(m_joint,body1,body2);
 	dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
 
 
 
-	m_joint1=dJointCreateAMotor(phWorld,0);
+	m_joint1=dJointCreateAMotor(0,0);
 	dJointSetAMotorMode (m_joint1, dAMotorEuler);
 	dJointSetAMotorNumAxes (m_joint1, 3);
 
@@ -535,7 +535,7 @@ void CPHJoint::SetLimitsVsSecondElement(const float low, const float high,const 
 {
 }
 
-void CPHJoint::Activate()
+void CPHJoint::Create()
 {
 	if(bActive) return;
 	switch(eType){
@@ -558,7 +558,16 @@ void CPHJoint::Activate()
 	if(m_joint1)dJointSetData(m_joint1,(void*)this);
 	bActive=true;
 }
-
+void CPHJoint::RunSimulation()
+{
+	dWorldAddJoint(phWorld,m_joint);
+	if(m_joint1)dWorldAddJoint(phWorld,m_joint1);
+}
+void CPHJoint::Activate()
+{
+	Create();
+	RunSimulation();
+}
 void CPHJoint::Deactivate()
 {
 	if(!bActive) return;

@@ -162,9 +162,11 @@ public:
 	virtual ~CPhysicsJoint	()																{};
 		
 	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
-virtual CPhysicsElement* PFirst_element()												=0;
-virtual CPhysicsElement* PSecond_element()												=0;
+virtual CPhysicsElement* PFirst_element()													=0;
+virtual CPhysicsElement* PSecond_element()													=0;
 	virtual void Activate					()												=0;
+	virtual void Create						()												=0;
+	virtual void RunSimulation				()												=0;
 	virtual void Deactivate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;

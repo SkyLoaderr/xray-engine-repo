@@ -645,6 +645,7 @@ static void hingeInit (dxJointHinge *j)
 }
 
 
+
 static void hingeGetInfo1 (dxJointHinge *j, dxJoint::Info1 *info)
 {
   info->nub = 5;    
@@ -1150,6 +1151,7 @@ extern "C" void dJointAddSliderForce (dxJointSlider *joint, dReal force)
 dxJoint::Vtable __dslider_vtable = {
   sizeof(dxJointSlider),
   (dxJoint::init_fn*) sliderInit,
+
   (dxJoint::getInfo1_fn*) sliderGetInfo1,
   (dxJoint::getInfo2_fn*) sliderGetInfo2,
   dJointTypeSlider};

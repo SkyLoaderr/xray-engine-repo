@@ -122,7 +122,7 @@
 				IgnoreImportLibrary="TRUE"
 				OutputFile="$(OutDir)/ode.dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="..\..\..\config\msvcdefs.def"
+				ModuleDefinitionFile="../../../config/msvcdefs.def"
 				GenerateDebugInformation="FALSE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -427,9 +427,6 @@
 				RelativePath="..\..\..\ode\src\misc.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\config\msvcdefs.def">
-			</File>
-			<File
 				RelativePath="..\..\..\ode\src\obstack.cpp">
 			</File>
 			<File
@@ -457,6 +454,9 @@
 				RelativePath="..\..\..\ode\src\timer.cpp">
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\..\config\msvcdefs.def">
+		</File>
 		<File
 			RelativePath="ReadMe.txt">
 		</File>

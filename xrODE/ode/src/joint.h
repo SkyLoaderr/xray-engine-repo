@@ -113,6 +113,7 @@ struct dxJoint : public dObject {
   struct Vtable {
     int size;
     init_fn *init;
+	//init_fn *init1;
     getInfo1_fn *getInfo1;
     getInfo2_fn *getInfo2;
     int typenum;		// a dJointTypeXXX type number 
@@ -146,7 +147,8 @@ struct dxJointLimitMotor {
   int limit;			// 0=free, 1=at lo limit, 2=at hi limit
   dReal limit_err;		// if at limit, amount over limit
 
-  void init (dxWorld *);
+  void init  (dxWorld *);
+  void init1 (dxWorld *);
   void set (int num, dReal value);
   dReal get (int num);
   int testRotationalLimit (dReal angle);

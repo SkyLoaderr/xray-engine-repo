@@ -12,6 +12,7 @@ CPhysicObject::CPhysicObject(void) {
 	b_recalculate=false;
 	m_unsplit_time = u32(-1);
 	b_removing=false;
+	m_source=NULL;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -44,6 +45,14 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy)) 
 													CreateBody				(po);
+	else
+	{
+		CPhysicObject* source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
+		R_ASSERT2(source,"no source");
+		setVisible(true);
+		setEnabled(true);
+		source->UnsplitSingle(this);
+	}
 
 	CSkeletonAnimated* pSkeletonAnimated=NULL;
 	switch(m_type) {
@@ -61,9 +70,11 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		default: NODEFAULT; 
 	}
 
-
+if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
+{
 	setVisible(true);
 	setEnabled(true);
+}
 
 	return TRUE;
 }
@@ -78,7 +89,8 @@ void CPhysicObject::UpdateCL	()
 	inherited::UpdateCL		();
 	if(m_pPhysicsShell)
 	{
-		//PKinematics(Visual())->Calculate();
+	
+
 		if(m_type==epotBox) 
 		{
 			m_pPhysicsShell->Update();
@@ -86,6 +98,14 @@ void CPhysicObject::UpdateCL	()
 		}
 		else
 			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+	}
+	else
+	{
+		//if(m_source)
+		//{
+		//	m_source->UnsplitSingle(this);
+		//	m_source=NULL;
+		//}
 	}
 }
 
@@ -276,7 +296,7 @@ void CPhysicObject::net_Import(NET_Packet& P)
 void CPhysicObject::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	if(m_pPhysicsShell && m_pPhysicsShell->isFractured()) 
+	if(m_pPhysicsShell&&m_pPhysicsShell->isFractured()) 
 	{
 		PHSplit();
 	}
@@ -288,6 +308,8 @@ void CPhysicObject::shedule_Update(u32 dt)
 		if (Local()) u_EventSend			(P);
 		b_removing=false;
 	}
+
+
 }
 
 void CPhysicObject::SpawnCopy()
@@ -306,6 +328,8 @@ void CPhysicObject::SpawnCopy()
 		//char mask=0;
 		//mask&= (1>>1);
 		l_tpALifePhysicObject->flags.set(CSE_ALifeObjectPhysic::flSpawnCopy,1);
+		l_tpALifePhysicObject->source_id		=	u16(ID());
+
 		//l_tpALifePhysicObject->flags.set(mask);
 		// Fill
 
@@ -314,10 +338,10 @@ void CPhysicObject::SpawnCopy()
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
 		D->ID				=	0xffff;
-		D->ID_Parent		=	u16(ID());
+		D->ID_Parent		=	0xffff;//u16(ID());
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	Position();
-	
+		XFORM()				.getHPB(D->o_Angle);
 		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 		D->RespawnTime		=	0;
 		// Send
@@ -360,22 +384,22 @@ void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
 		{
 			P.r_u16		(id);
 			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-			O->H_SetParent(this);
-			UnsplitSingle( O );
+			//O->H_SetParent(this);
+			//UnsplitSingle( O );
 			break;
 		}
 	case GE_OWNERSHIP_REJECT:
 		{
 			P.r_u16		(id);
 			CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-			O->H_SetParent(NULL);
+			//O->H_SetParent(NULL);
 			break;
 		}
 	}
 }
 void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
-void CPhysicObject::UnsplitSingle(CGameObject* O)
+void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 {
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
 	VERIFY2(m_unsplited_shels.size(),"NO_SHELLS !!");
@@ -409,12 +433,14 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	newKinematics->Calculate();
-	NET_Packet				P;
-	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-	P.w_u16					(u16(O->ID()));
-	u_EventSend				(P);
+	//O->setVisible(true);
+	//O->setEnabled(true);
+	//NET_Packet				P;
+	//u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+	//P.w_u16					(u16(O->ID()));
+	//u_EventSend				(P);
 
-
+	O->CopySpawnInit		();
 	CopySpawnInit			();
 
 	
@@ -428,8 +454,8 @@ BOOL CPhysicObject::UsedAI_Locations()
 void CPhysicObject::OnH_A_Independent()
 {
 	inherited::OnH_A_Independent();
-	PKinematics(Visual())->Calculate();
-	CopySpawnInit();
+	//PKinematics(Visual())->Calculate();
+	//CopySpawnInit();
 }
 
 void CPhysicObject::CopySpawnInit()

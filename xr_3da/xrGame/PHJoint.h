@@ -86,6 +86,8 @@ public:
 	IC		CPHElement*		 PFirstElement(){return pFirst_element;}
 	IC		CPHElement*		 PSecondElement(){return pSecond_element;}
 	virtual void Activate					();
+	virtual void Create						();
+	virtual void RunSimulation				();
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);

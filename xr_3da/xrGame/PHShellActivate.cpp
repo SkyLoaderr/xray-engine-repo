@@ -121,9 +121,9 @@ void CPHShell::Build(bool place_current_forms/*true*/,bool disable/*false*/)
 
 	{
 		JOINT_I i=joints.begin(),e=joints.end();
-		for(;i!=e;++i) (*i)->Activate();
+		for(;i!=e;++i) (*i)->Create();
 	}	
-	spatial_register();
+	
 	//m_saved_contacts=dJointGroupCreate (0);
 	//b_contacts_saved=false;
 }
@@ -138,7 +138,11 @@ void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 		ELEMENT_I i=elements.begin(),e=elements.end();
 		if(place_current_forms) for(;i!=e;++i)(*i)->RunSimulation(mXFORM);
 	}
-
+	{
+		JOINT_I i=joints.begin(),e=joints.end();
+		for(;i!=e;++i) (*i)->RunSimulation();
+	}	
+	spatial_register();
 //	if(m_spliter_holder)m_spliter_holder->Activate();
 	//spatial_register();
 

@@ -41,6 +41,9 @@
 
 //****************************************************************************
 // utility
+dReal dxWorld::global_cfm=REAL(1.1363636e-006);
+dReal dxWorld::global_erp=REAL(0.54545456);
+dVector3 dxWorld::gravity={REAL(0.),REAL(-1.),REAL(0.)};
 
 static inline void initObject (dObject *obj, dxWorld *w)
 {
@@ -330,9 +333,26 @@ void dWorldCheck (dxWorld *w)
 //****************************************************************************
 // body
 
+void	dWorldRemoveBody(dxWorld *w, dxBody* b)
+{
+	dAASSERT (w);dAASSERT (b);
+	removeObjectFromList (b);
+	b->world->nb--;
+	b->world=0;
+}
+
+
+void dWorldAddBody(dxWorld *w, dxBody *b)
+{
+	dAASSERT (w);dAASSERT (b);
+	b->world=w;
+	addObjectToList (b,(dObject **) &w->firstbody);
+	w->nb++;
+}
+
 dxBody *dBodyCreate (dxWorld *w)
 {
-  dAASSERT (w);
+  ///dAASSERT (w);
   dxBody *b = new dxBody;
   initObject (b,w);
   b->firstjoint = 0;
@@ -353,8 +373,7 @@ dxBody *dBodyCreate (dxWorld *w)
   dSetZero (b->facc,4);
   dSetZero (b->tacc,4);
   dSetZero (b->finite_rot_axis,4);
-  addObjectToList (b,(dObject **) &w->firstbody);
-  w->nb++;
+  if(w) dWorldAddBody(w,b);
   return b;
 }
 
@@ -384,8 +403,7 @@ void dBodyDestroy (dxBody *b)
     removeJointReferencesFromAttachedBodies (n->joint);
     n = next;
   }
-  removeObjectFromList (b);
-  b->world->nb--;
+  if(b->world) dWorldRemoveBody(b->world,b);
   delete b;
 }
 
@@ -877,9 +895,18 @@ int dBodyGetGravityMode (dBodyID b)
 //****************************************************************************
 // joints
 
+ void	dWorldAddJoint(dxWorld *w,dxJoint *j)
+ {
+   dIASSERT (j&&w);
+   j->world=w;
+   addObjectToList (j,(dObject **) &w->firstjoint);
+   w->nj++;
+   
+ }
+
 static void dJointInit (dxWorld *w, dxJoint *j)
 {
-  dIASSERT (w && j);
+  dIASSERT (j);
   initObject (j,w);
   j->vtable = 0;
   j->flags = 0;
@@ -889,15 +916,14 @@ static void dJointInit (dxWorld *w, dxJoint *j)
   j->node[1].joint = j;
   j->node[1].body = 0;
   j->node[1].next = 0;
-  addObjectToList (j,(dObject **) &w->firstjoint);
-  w->nj++;
+  if(w)dWorldAddJoint(w,j);
 }
 
 
 static dxJoint *createJoint (dWorldID w, dJointGroupID group,
 			     dxJoint::Vtable *vtable)
 {
-  dIASSERT (w && vtable);
+  dIASSERT (vtable);
   dxJoint *j;
   if (group) {
     j = (dxJoint*) group->stack.alloc (vtable->size);
@@ -909,27 +935,28 @@ static dxJoint *createJoint (dWorldID w, dJointGroupID group,
   if (group) j->flags |= dJOINT_INGROUP;
   if (vtable->init) vtable->init (j);
   j->feedback = 0;
+
   return j;
 }
 
 
 dxJoint * dJointCreateBall (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dball_vtable);
 }
 
 
 dxJoint * dJointCreateHinge (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dhinge_vtable);
 }
 
 
 dxJoint * dJointCreateSlider (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dslider_vtable);
 }
 
@@ -937,7 +964,7 @@ dxJoint * dJointCreateSlider (dWorldID w, dJointGroupID group)
 dxJoint * dJointCreateContact (dWorldID w, dJointGroupID group,
 			       const dContact *c)
 {
-  dAASSERT (w && c);
+  dAASSERT (c);
   dxJointContact *j = (dxJointContact *)
     createJoint (w,group,&__dcontact_vtable);
   j->contact = *c;
@@ -947,35 +974,35 @@ dxJoint * dJointCreateContact (dWorldID w, dJointGroupID group,
 
 dxJoint * dJointCreateHinge2 (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dhinge2_vtable);
 }
 
 
 dxJoint * dJointCreateUniversal (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__duniversal_vtable);
 }
 
 
 dxJoint * dJointCreateFixed (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dfixed_vtable);
 }
 
 
 dxJoint * dJointCreateNull (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__dnull_vtable);
 }
 
 
 dxJoint * dJointCreateAMotor (dWorldID w, dJointGroupID group)
 {
-  dAASSERT (w);
+
   return createJoint (w,group,&__damotor_vtable);
 }
 
@@ -985,8 +1012,11 @@ void dJointDestroy (dxJoint *j)
   dAASSERT (j);
   if (j->flags & dJOINT_INGROUP) return;
   removeJointReferencesFromAttachedBodies (j);
-  removeObjectFromList (j);
-  j->world->nj--;
+  if(j->world)
+  {
+	 removeObjectFromList (j);
+	j->world->nj--;
+  }
   dFree (j,j->vtable->size);
 }
 
@@ -1043,7 +1073,7 @@ void dJointAttach (dxJoint *joint, dxBody *body1, dxBody *body2)
   dUASSERT (joint,"bad joint argument");
   dUASSERT (body1 == 0 || body1 != body2,"can't have body1==body2");
   dxWorld *world = joint->world;
-  dUASSERT ( (!body1 || body1->world == world) &&
+  dUASSERT ( !world||(!body1 || body1->world == world) &&
 	     (!body2 || body2->world == world),
 	     "joint and bodies must be in same world");
 

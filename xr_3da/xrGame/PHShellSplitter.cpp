@@ -30,6 +30,7 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	CPhysicsShell *new_shell=P_create_Shell();
 	CPHShell	  *new_shell_desc=dynamic_cast<CPHShell*>(new_shell);
 	new_shell_desc->mXFORM.set(m_pShell->mXFORM);
+	new_shell_desc->m_object_in_root.set(m_pShell->m_object_in_root);
 	SPLITTER_I splitter=m_splitters.begin()+aspl;
 	u16 start_element=splitter->m_element;
 	u16 start_joint=splitter->m_joint;

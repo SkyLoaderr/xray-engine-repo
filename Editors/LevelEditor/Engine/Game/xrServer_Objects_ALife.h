@@ -238,6 +238,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	u32 							type;
 	f32 							mass;
     ref_str 						fixed_bones;
+	u16								source_id;//for break only
 	ref_str							startup_animation;
     enum{
     	flActive					= (1<<0),

@@ -729,6 +729,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 {
 	type 						= epotBox;
 	mass 						= 10.f;
+	source_id					= u16(-1);
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
     flags.zero					();
@@ -763,6 +764,10 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 	if	(m_wVersion > 39)		// > 39 		
 		tNetPacket.r_u8			(flags.flags);
+
+	if (m_wVersion>56)
+		tNetPacket.r_u16		(source_id);
+
 #ifdef _EDITOR    
 	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
@@ -776,6 +781,7 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_string			(startup_animation);
 	tNetPacket.w_u8				(flags.flags);
+	tNetPacket.w_u16			(source_id);
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)

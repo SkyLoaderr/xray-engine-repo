@@ -254,6 +254,8 @@ dTestMatrixComparison
 dTestRand
 dTestSolveLCP
 dWorldCreate
+dWorldAddBody
+dWorldAddJoint
 dWorldDestroy
 dWorldGetAutoEnableDepthSF1
 dWorldGetCFM
