@@ -238,12 +238,14 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomSetBody(Geoms[5], Bodies[5]);
 	Geoms[5]=dCreateGeomTransform(0);
 	Geoms[7]=dCreateGeomTransform(0);
-	dGeomCreateUserData(Geoms[5]);
-	dGeomCreateUserData(Geoms[7]);
+	//dGeomCreateUserData(Geoms[5]);
+	//dGeomCreateUserData(Geoms[7]);
 	dGeomCreateUserData(Geoms[0]);
 	dGeomCreateUserData(Geoms[6]);
-	dGeomGetUserData(Geoms[5])->friction=500.f;
-	dGeomGetUserData(Geoms[7])->friction=500.f;
+	//dGeomGetUserData(Geoms[5])->friction=500.f;
+	//dGeomGetUserData(Geoms[7])->friction=500.f;
+	dGeomGetUserData(Geoms[0])->friction=500.f;
+	dGeomGetUserData(Geoms[6])->friction=500.f;
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	dGeomSetPosition(Geoms[6], -cabinSepX, cabinSepY+MassShift, 0.f); // x,y,z
@@ -721,20 +723,25 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
         contacts[i].surface.mode =dContactBounce|dContactApprox1;
 		contacts[i].surface.mu =1.f;// 5000.f;
 		bool pushing_neg=false;
-
-		dxGeomUserData* usr_data_1 = dGeomGetUserData(contacts[i].geom.g1);
-		dxGeomUserData* usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
-
-		if(usr_data_2){ 
-			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
-			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
-				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
-				dxGeomUserData* usr_data_geom = dGeomGetUserData(geom);
-				if(usr_data_geom)
-				pushing_neg=usr_data_geom->pushing_b_neg||usr_data_geom->pushing_neg;
+		dxGeomUserData* usr_data_1=NULL;
+		dxGeomUserData* usr_data_2=NULL;
+		if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
+				usr_data_1 = dGeomGetUserData(geom);
 			}
-			else
+		else
+			usr_data_1 = dGeomGetUserData(contacts[i].geom.g1);
+
+		if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
+				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
+				usr_data_2 = dGeomGetUserData(geom);
+			}
+		else
+			usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
+/////////////////////////////////////////////////////////////////////////////////////////////////
+		if(usr_data_2){ 
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
+
 			if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -742,15 +749,9 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 					continue;
 			}
 		}
+///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
-			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
-			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
-				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
-				dxGeomUserData* usr_data_geom = dGeomGetUserData(geom);
-				if(usr_data_geom)
-				pushing_neg=usr_data_geom->pushing_b_neg||usr_data_geom->pushing_neg;
-			}
-			else
+
 				pushing_neg=usr_data_1->pushing_b_neg||
 				usr_data_1->pushing_neg;
 
@@ -843,9 +844,10 @@ void CPHElement::			create_Box		(Fobb&		V){
 														m_trans.push_back(trans);
 														dGeomGroupAdd(m_group,trans);
 														dGeomTransformSetInfo(trans,1);
-														dGeomCreateUserData(trans);
+														//dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(trans)->friction=friction_table[1];
+														//dGeomGetUserData(trans)->friction=friction_table[1];
+														dGeomGetUserData(geom)->friction=friction_table[1];
 															}
 														else{
 													  geom=dCreateBox(ph_world->GetSpace(),
@@ -863,6 +865,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
 														dGeomCreateUserData(geom);
+														dGeomGetUserData(geom)->friction=friction_table[1];
 														}
 														//dGeomGetUserData(trans)->friction=dInfinity;
 														
@@ -1183,8 +1186,10 @@ void CPHShell::PhDataUpdate(dReal step){
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				dReal mag;
 				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
-				if(!(mag>-dInfinity && mag<dInfinity)) 
+				if(!(mag>-dInfinity && mag<dInfinity)){
 					dBodySetLinearVel(m_body,0.f,0.f,0.f);
+					mag=0.f;
+				}
 				else if(mag>l_limit){
 					dReal f=mag/l_limit;
 					dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
@@ -1205,11 +1210,11 @@ void CPHShell::PhDataUpdate(dReal step){
 				//dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);
 				//dBodyAddForce(m_body, u * pos[0]*mag, u * pos[1]*mag, u * pos[2]*mag);
 				const dReal* rot = dBodyGetAngularVel(m_body);
-				mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
-				if(!(mag>-dInfinity && mag<dInfinity)) 
+				dReal w_mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
+				if(!(w_mag>-dInfinity && w_mag<dInfinity)) 
 					dBodySetAngularVel(m_body,0.f,0.f,0.f);
-				else if(mag>w_limit){
-					dReal f=mag/w_limit;
+				else if(w_mag>w_limit){
+					dReal f=w_mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
 				//const dReal k_w=0.1f;
@@ -1220,8 +1225,14 @@ void CPHShell::PhDataUpdate(dReal step){
 				const dReal k_w=0.05f;
 				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 	
-				const dReal k_l=1.8f;
-				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+				const dReal k_l=0.0002f;//1.8f;
+				dMass mass;
+				dBodyGetMass(m_body,&mass);
+				dReal l_air=mag*k_l;
+				//if(mag*mag*k_l/fixed_step>mass.mass*mag) k_l=mass.mass/mag/fixed_step;
+				if(mag*l_air/fixed_step>mass.mass*mag) l_air=mass.mass/fixed_step;
+				//dBodyAddForce(m_body,-pos[0]*mag*k_l,-pos[1]*mag*k_l,-pos[2]*mag*k_l);			
+				dBodyAddForce(m_body,-pos[0]*l_air,-pos[1]*l_air,-pos[2]*l_air);
 				
 				m_body_interpolation.UpdatePositions();
 				m_body_interpolation.UpdateRotations();
