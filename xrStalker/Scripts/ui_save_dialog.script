@@ -8,6 +8,10 @@
 function main()
 	local dlg = ui_save_dialog.save_dialog()
 	level.start_stop_menu(dlg,true)
+	while true do
+		wait(3000)
+	end
+	
 end
 
 class "save_dialog" (CUIScriptWnd)
