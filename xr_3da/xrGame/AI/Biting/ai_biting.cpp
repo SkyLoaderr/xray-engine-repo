@@ -16,7 +16,7 @@
 #include "../../team_hierarchy_holder.h"
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
-
+#include "../../phdestroyable.h"
 CAI_Biting::CAI_Biting()
 {
 	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
@@ -151,6 +151,10 @@ CBoneInstance *CAI_Biting::GetBoneInstance(LPCTSTR bone_name)
 	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 
+CPHDestroyable*	CAI_Biting::	ph_destroyable	()
+{
+	return smart_cast<CPHDestroyable*>(character_physics_support());
+}
 CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 {
 	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone_id)));

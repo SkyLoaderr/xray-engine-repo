@@ -227,7 +227,7 @@ void CHelicopter::reload(LPCSTR section)
 
 void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
-	do_colide=false;
+//	do_colide=false;
 }
 BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
@@ -235,9 +235,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	setState(CHelicopter::eIdleState);
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
-	PPhysicsShell()=P_build_Shell	(this,false);
-	PPhysicsShell()->EnabledCallbacks(FALSE);
-	PPhysicsShell()->set_ObjectContactCallback(CollisionCallbackAlife);
+	CPHSkeleton::Spawn((CSE_Abstract*)(DC));
 	for(u32 i=0; i<4; ++i)
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, smart_cast<CGameObject*>(this/*H_Parent()*/));
 
@@ -363,7 +361,13 @@ void CHelicopter::net_Destroy()
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	
 {
-	if(!g_Alive())PPhysicsShell()=P_build_Shell	(this,false);
+	
+	PPhysicsShell()=P_build_Shell	(this,false);
+	if(g_Alive())
+	{
+		PPhysicsShell()->EnabledCallbacks(FALSE);
+		PPhysicsShell()->set_ObjectContactCallback(CollisionCallbackAlife);
+	}
 }
 
 void	CHelicopter::net_Save			(NET_Packet& P)	
@@ -403,6 +407,10 @@ void CHelicopter::UpdateCL()
 		m_particleXFORM.mulA(XFORM());
 		UpdateHeliParticles();
 		return;
+	}
+	else
+	{
+		PPhysicsShell()->SetTransform(XFORM());
 	}
 //	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 

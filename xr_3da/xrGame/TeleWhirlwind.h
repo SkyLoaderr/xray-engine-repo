@@ -20,6 +20,7 @@ public:
 	virtual		void				release					();
 	virtual		void				fire					(const Fvector &target);
 	virtual		void				fire					(const Fvector &target, float power);
+	virtual		void				switch_state			(ETelekineticState new_state);
 };
 
 class CTeleWhirlwind : public CTelekinesis

@@ -136,18 +136,24 @@ void CBaseGraviZone ::Affect(CObject* O)
 {
 	CPhysicsShellHolder* GO = smart_cast<CPhysicsShellHolder*>(O);
 	if(!GO) return;
-	CEntityAlive* EA = smart_cast<CEntityAlive*>(GO);	
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//	зат€гиваем объет по направлению к центру зоны
 
 	Fvector throw_in_dir;
 	Fvector zone_center;
-	Center(zone_center);
+	ThrowInCenter(zone_center);
 	throw_in_dir.sub(zone_center, GO->Position());
 
 	float dist = throw_in_dir.magnitude();
 	float dist_to_radius = dist/Radius();
+
+	if(!fis_zero(dist))
+	{
+		throw_in_dir.mul(1.f/dist);
+	}
+	else throw_in_dir.set(0.f,1.f,0.f);
 	//---------------------------------------------------------
 	bool CanApplyPhisImpulse = GO->Local() == TRUE;
 /*	if (EA && EA->g_Alive())
@@ -157,72 +163,95 @@ void CBaseGraviZone ::Affect(CObject* O)
 	//---------------------------------------------------------	
 	if(dist_to_radius>m_fBlowoutRadiusPercent && CanApplyPhisImpulse)
 	{
-		if(EA && EA->g_Alive())
-		{
-			float rel_power = RelativePower(dist);
-			float throw_power = m_fThrowInImpulseAlive*rel_power*rel_power*rel_power*rel_power*rel_power;
-			throw_in_dir.normalize();
-
-			Fvector vel;
-			vel.set(throw_in_dir);
-			vel.mul(throw_power);
-			EA->m_PhysicMovementControl->AddControlVel(vel);
-		}
-		else if(GO && GO->PPhysicsShell())
-		{
-			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/100.f);
-		}
+		AffectPull(GO,throw_in_dir,dist);
 	}
 	else
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// выброс аномалии
-
+		
 		//если врем€ выброса еще не пришло
 		if(m_dwBlowoutExplosionTime<(u32)m_iPreviousStateTime ||
 			m_dwBlowoutExplosionTime>=(u32)m_iStateTime) return;
+		AffectThrow(GO,throw_in_dir,dist);
+			
+	}
+}
 
-		Fvector position_in_bone_space;
+void CBaseGraviZone ::  ThrowInCenter(Fvector& C)
+{
+	Center(C);
+}
+void CBaseGraviZone ::	AffectPull(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
+{
+	CEntityAlive* EA = smart_cast<CEntityAlive*>(GO);	
+	if(EA && EA->g_Alive())
+	{
+		AffectPullAlife(EA,throw_in_dir,dist);
+	}
+	else if(GO && GO->PPhysicsShell())
+	{
+		AffectPullDead(GO,throw_in_dir,dist);
+	}
+}
+void CBaseGraviZone ::	AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
+{
+			float rel_power = RelativePower(dist);
+			float throw_power = m_fThrowInImpulseAlive*rel_power*rel_power*rel_power*rel_power*rel_power;
+			//throw_in_dir.normalize();
 
-		float power = Power(GO->Position().distance_to(zone_center));
-		float impulse = m_fHitImpulseScale*power*GO->GetMass();
+			Fvector vel;
+			vel.set(throw_in_dir);
+			vel.mul(throw_power);
+			EA->m_PhysicMovementControl->AddControlVel(vel);
+}
+void CBaseGraviZone ::	AffectPullDead(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
+{
+			GO->PPhysicsShell()->applyImpulse(throw_in_dir,dist * m_fThrowInImpulse*GO->GetMass()/100.f);
+}
+void CBaseGraviZone ::	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
+{
 
-		if(fis_zero(dist))
+	Fvector position_in_bone_space;
+
+	float power = Power(dist);//Power(GO->Position().distance_to(zone_center));
+	float impulse = m_fHitImpulseScale*power*GO->GetMass();
+
+	//if(fis_zero(dist))
+	//{
+	//	impulse = 0.f;
+	//	throw_in_dir.set(0,1,0);
+	//}
+	//else
+	//	throw_in_dir.normalize();
+
+
+	//статистика по объекту
+	m_ObjectInfoMap[smart_cast<CObject*>(GO)].total_damage += power;
+	m_ObjectInfoMap[smart_cast<CObject*>(GO)].hit_num++;
+
+	if(power > 0.01f) 
+	{
+		m_dwDeltaTime = 0;
+		position_in_bone_space.set(0.f,0.f,0.f);
+
+		if (OnServer())
 		{
-			impulse = 0.f;
-			throw_in_dir.set(0,1,0);
-		}
-		else
-			throw_in_dir.normalize();
-
-		
-		//статистика по объекту
-		m_ObjectInfoMap[O].total_damage += power;
-		m_ObjectInfoMap[O].hit_num++;
-
-		if(power > 0.01f) 
-		{
-			m_dwDeltaTime = 0;
-			position_in_bone_space.set(0.f,0.f,0.f);
-
-			if (OnServer())
-			{
-				NET_Packet	l_P;
-				u_EventGen	(l_P,GE_HIT, GO->ID());
-				l_P.w_u16	(u16(GO->ID()));
-				l_P.w_u16	(ID());
-				l_P.w_dir	(throw_in_dir);
-				l_P.w_float	(power);
-				l_P.w_s16	(0/*(s16)BI_NONE*/);
-				l_P.w_vec3	(position_in_bone_space);
-				l_P.w_float	(impulse);
-				l_P.w_u16	((u16)m_eHitTypeBlowout);
-				u_EventSend	(l_P);
-			};
+			NET_Packet	l_P;
+			u_EventGen	(l_P,GE_HIT, GO->ID());
+			l_P.w_u16	(u16(GO->ID()));
+			l_P.w_u16	(ID());
+			l_P.w_dir	(throw_in_dir);
+			l_P.w_float	(power);
+			l_P.w_s16	(0/*(s16)BI_NONE*/);
+			l_P.w_vec3	(position_in_bone_space);
+			l_P.w_float	(impulse);
+			l_P.w_u16	((u16)m_eHitTypeBlowout);
+			u_EventSend	(l_P);
+		};
 
 
-			PlayHitParticles(GO);
-		}
+		PlayHitParticles(GO);
 	}
 }
 

@@ -15,14 +15,18 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 {
 			bool result			=inherited::init(tele,obj,s,h,ttk);
 			m_telekinesis		=static_cast<CTeleWhirlwind*>(tele);
-			if(obj->PPhysicsShell())obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
+			if(obj->PPhysicsShell())
+			{
+				obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
+				//obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+			}
 			return result;
 }
 void		CTeleWhirlwindObject::		raise_update			()
 {
 	
-	u32 time=Level().timeServer();
-	if (time_raise_started + 100000 < time) release();
+	//u32 time=Level().timeServer();
+//	if (time_raise_started + 100000 < time) release();
 	
 }
 
@@ -35,9 +39,11 @@ void		CTeleWhirlwindObject::		release					()
 	dir_inv.set(0.f,-1.0f,0.f);
 
 	// включить гравитацию
+	Fvector zer;zer.set(0,0,0);
+	object->m_pPhysicsShell->set_LinearVel(zer);
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 
-	state = TS_None;
+	switch_state(TS_None);
 }
 void		CTeleWhirlwindObject::		raise					(float power)
 {
@@ -48,9 +54,10 @@ void		CTeleWhirlwindObject::		raise					(float power)
 
 		for(u16 element=0;element<element_number;++element)
 		{
-			float k=1000.f;
+			float k=600.f;
 			float predict_v_eps=0.1f;
-			float mag_eps	   =0.5f;
+			float mag_eps	   =2.0f;
+
 			CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
 			if (!E->bActive) continue;
 			Fvector pos=E->mass_Center();
@@ -62,11 +69,11 @@ void		CTeleWhirlwindObject::		raise					(float power)
 			float accel=k/mag/mag/mag;//*E->getMass()
 			if(mag<mag_eps)
 			{
-				accel=k/mag_eps/mag_eps;
+				accel=k/mag_eps/mag_eps/mag_eps;
 				Fvector zer;zer.set(0,0,0);
 				E->set_LinearVel(zer);
 			}
-
+	
 			Fvector vel;
 			E->get_LinearVel(vel);
 			float delta_v=accel*fixed_step;
@@ -136,3 +143,7 @@ void		CTeleWhirlwindObject::		fire					(const Fvector &target, float power)
 	//inherited:: fire(target,power);
 }
 
+void		CTeleWhirlwindObject::switch_state(ETelekineticState new_state)
+{
+	inherited::switch_state(new_state);
+}

@@ -87,8 +87,10 @@ public:
 	virtual					~CAI_Biting						();
 
 public:
-	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
-	virtual CEntity*					cast_entity				()						{return this;}
+	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
+	virtual CPHDestroyable*				ph_destroyable				()						;
+	virtual CEntityAlive*				cast_entity_alive			()						{return this;}
+	virtual CEntity*					cast_entity					()						{return this;}
 
 public:
 	

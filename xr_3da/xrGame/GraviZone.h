@@ -30,7 +30,12 @@ public:
 	virtual void	net_Destroy();
 
 	//воздействие зоной на объект
-	virtual void	Affect(CObject* O);
+	virtual void	Affect(CObject* GO);
+	virtual void	AffectPull(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual void	AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist);
+	virtual void	AffectPullDead(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual void	AffectThrow(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual void	ThrowInCenter(Fvector& C);
 
 	virtual void	shedule_Update		(u32 dt);
 	virtual bool	BlowoutState();

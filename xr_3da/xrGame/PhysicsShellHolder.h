@@ -1,7 +1,7 @@
 #ifndef PHYSICSSHELL_HOLDER_H
 #define PHYSICSSHELL_HOLDER_H
 #include "GameObject.h"
-
+class CPHDestroyable;
 class CPhysicsShellHolder: 
 	virtual public CGameObject
 {
@@ -25,6 +25,7 @@ public:
 	{
 		return this;
 	}
+	virtual CPHDestroyable*	ph_destroyable		(){return NULL;}
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);

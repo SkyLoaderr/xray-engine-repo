@@ -4,6 +4,7 @@
 #include "xrmessages.h"
 #include "level.h"
 #include "CustomZone.h"
+#include "PHDestroyable.h"
 CMincer::CMincer(void) 
 {
 }
@@ -13,7 +14,7 @@ CMincer::~CMincer(void)
 }
 void CMincer::SwitchZoneState(EZoneState new_state)
 {
-	if(new_state==eZoneStateBlowout)
+	if(m_eZoneState!=eZoneStateBlowout && new_state==eZoneStateBlowout)
 	{
 		xr_set<CObject*>::iterator it=m_inZone.begin(),e=m_inZone.end();
 		for(;e!=it;++it)
@@ -41,9 +42,33 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 	BOOL result=inherited::net_Spawn(DC);
 	Fvector C;
 	Center(C);
-	C.y+=5.f;
+	C.y+=m_fTeleHeight;
 	m_telekinetics.SetCenter(C);
 	return result;
+}
+
+void CMincer::feel_touch_new				(CObject* O)
+{
+	inherited::feel_touch_new(O);
+	if(m_eZoneState==eZoneStateBlowout)
+	{
+		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(O);
+		Telekinesis().activate(GO, 0.1f, m_fTeleHeight, 100000);
+	}
+}
+
+void CMincer:: AffectThrow	(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
+{
+	CPHDestroyable* D=GO->ph_destroyable();
+	if(D)
+	{
+		D->Destroy();
+	}
+}
+
+void CMincer ::ThrowInCenter(Fvector& C)
+{
+	C.set(m_telekinetics.Center());
 }
 #ifdef DEBUG
 void CMincer::OnRender()

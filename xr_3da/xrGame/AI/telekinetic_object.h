@@ -15,8 +15,8 @@ class CPHUpdateObject;
 class CTelekinesis;
 class CTelekineticObject {
 
-public:
 	ETelekineticState	state;
+public:
 	CPhysicsShellHolder *object;
 	CTelekinesis		*telekinesis;
 	float				target_height;

@@ -23,8 +23,11 @@ public:
 #endif
 	virtual CTelekinesis& Telekinesis		(){return m_telekinetics;}
 	virtual void SwitchZoneState			(EZoneState new_state);
+	virtual void feel_touch_new				(CObject* O);
 	virtual void Load						(LPCSTR section);
-	virtual void Affect						(CObject* O){};
+	virtual void AffectPullDead				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist){}
+	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
+	virtual void ThrowInCenter				(Fvector& C);
 	virtual BOOL net_Spawn					(LPVOID DC);
 
 };

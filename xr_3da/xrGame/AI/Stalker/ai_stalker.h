@@ -88,62 +88,64 @@ public:
 
 public:
 	// heritage
-								CAI_Stalker						();
-	virtual						~CAI_Stalker					();
+								CAI_Stalker							();
+	virtual						~CAI_Stalker						();
 
 public:
-	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
-	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
-	virtual CEntity*					cast_entity				()						{return this;}
-	virtual CGameObject*				cast_game_object		()						{return this;}
+	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
+	virtual CPHDestroyable*				ph_destroyable				()						;
+	virtual CInventoryOwner*			cast_inventory_owner		()						{return this;}
+	virtual CEntityAlive*				cast_entity_alive			()						{return this;}
+	virtual CEntity*					cast_entity					()						{return this;}
+	virtual CGameObject*				cast_game_object			()						{return this;}
 public:
 
-			void				init							();
-	virtual void				Load							(LPCSTR	section );				
-	virtual	void				reinit							();
-	virtual void				reload							(LPCSTR	section );				
+			void				init								();
+	virtual void				Load								(LPCSTR	section );				
+	virtual	void				reinit								();
+	virtual void				reload								(LPCSTR	section );				
 	
-	virtual BOOL				net_Spawn						(LPVOID DC);
-	virtual void				net_Export						(NET_Packet& P);
-	virtual void				net_Import						(NET_Packet& P);
-	virtual void				net_Destroy						();
-	virtual void				net_Save						(NET_Packet& P);
-	virtual	BOOL				net_SaveRelevant				();
+	virtual BOOL				net_Spawn							(LPVOID DC);
+	virtual void				net_Export							(NET_Packet& P);
+	virtual void				net_Import							(NET_Packet& P);
+	virtual void				net_Destroy							();
+	virtual void				net_Save							(NET_Packet& P);
+	virtual	BOOL				net_SaveRelevant					();
 
 	//save/load server serialization
-	virtual void				save							(NET_Packet &output_packet);
-	virtual void				load							(IReader &input_packet);
+	virtual void				save								(NET_Packet &output_packet);
+	virtual void				load								(IReader &input_packet);
 
-	virtual void				UpdateCL						();
-	virtual void				shedule_Update					(u32 dt);
-	virtual void				Think							();
-	virtual void				SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
-	virtual BOOL				UsedAI_Locations				();
+	virtual void				UpdateCL							();
+	virtual void				shedule_Update						(u32 dt);
+	virtual void				Think								();
+	virtual void				SelectAnimation						(const Fvector& _view, const Fvector& _move, float speed );
+	virtual BOOL				UsedAI_Locations					();
 
-	virtual void				g_WeaponBones					(int &L, int &R1, int &R2);
-	virtual void				g_fireParams					(const CHudItem* pHudItem, Fvector& P, Fvector& D);
-	virtual void				HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
-	virtual void				Die								();
+	virtual void				g_WeaponBones						(int &L, int &R1, int &R2);
+	virtual void				g_fireParams						(const CHudItem* pHudItem, Fvector& P, Fvector& D);
+	virtual void				HitSignal							(float P,	Fvector& vLocalDir, CObject* who, s16 element);
+	virtual void				Die									();
 
-	virtual void				OnEvent							(NET_Packet& P, u16 type);
-	virtual void				feel_touch_new					(CObject* O);
+	virtual void				OnEvent								(NET_Packet& P, u16 type);
+	virtual void				feel_touch_new						(CObject* O);
 
-	virtual void				renderable_Render				();
-	virtual void				Exec_Look						(float dt);
-	virtual void				Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual	void				PHHit							(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual BOOL				feel_vision_isRelevant			(CObject* who);
-	virtual float				Radius							() const;
-	virtual void				OnHUDDraw						(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
+	virtual void				renderable_Render					();
+	virtual void				Exec_Look							(float dt);
+	virtual void				Hit									(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual	void				PHHit								(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual BOOL				feel_vision_isRelevant				(CObject* who);
+	virtual float				Radius								() const;
+	virtual void				OnHUDDraw							(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
 #ifdef DEBUG
-	virtual void				OnRender						();
+	virtual void				OnRender							();
 #endif
 
-	virtual bool				useful							(const CGameObject *object) const;
-	virtual	float				evaluate						(const CGameObject *object) const;
+	virtual bool				useful								(const CGameObject *object) const;
+	virtual	float				evaluate							(const CGameObject *object) const;
 	
 	// PDA && Dialogs
-	virtual void				ReceivePdaMessage				(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+	virtual void				ReceivePdaMessage					(u16 who, EPdaMsg msg, INFO_INDEX info_index);
 
 	// scripts
 	virtual void				UseObject				(const CObject			*tpObject);

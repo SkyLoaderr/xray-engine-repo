@@ -368,6 +368,11 @@ void CAI_Stalker ::PHHit				(float P,Fvector &dir,s16 element,Fvector p_in_objec
 	m_pPhysics_support->in_Hit(P,dir,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
 
+CPHDestroyable*		CAI_Stalker::		ph_destroyable	()						
+{
+	return smart_cast<CPHDestroyable*>(character_physics_support());
+}
+
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
 	// Queue shrink
