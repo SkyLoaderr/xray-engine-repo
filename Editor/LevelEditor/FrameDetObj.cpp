@@ -37,7 +37,7 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBase)?Scene.m_DetailObjects->m_pBase->name:0);
+	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBase)?Scene.m_DetailObjects->m_pBase->name:0,false);
     if (T){
 		Scene.m_DetailObjects->Initialize(T);
     	Scene.UndoSave();

@@ -3,7 +3,7 @@
 
 #include "ui_tools.h"
 #include "FrameEvent.h"
-#include "ELight.h"
+#include "Event.h"
 #include "Scene.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
@@ -25,6 +25,18 @@ void __fastcall TfraEvent::PaneMinClick(TObject *Sender)
 void __fastcall TfraEvent::ExpandClick(TObject *Sender)
 {
     PanelMaximizeOnlyClick(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraEvent::ebAppendFormClick(TObject *Sender)
+{
+    ObjectList lst;
+	if (Scene.GetQueryObjects(lst,OBJCLASS_EVENT,1,1,0)!=1)
+    	ELog.DlgMsg(mtInformation,"Select one Event.");
+    else{
+    	CEvent* E=(CEvent*)lst.back();
+        E->AppendForm(CEvent::efBox);
+    }
 }
 //---------------------------------------------------------------------------
 

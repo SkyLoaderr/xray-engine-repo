@@ -173,7 +173,7 @@ int EScene::ObjCount(){
 	return cnt;
 }
 
-int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
+int EScene::FrustumSelect( int flag, EObjClass classfilter ){
 	CFrustum frustum;
 	int count = 0;
     if (!UI.SelectionFrustum(frustum)) return 0;
@@ -183,15 +183,10 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
+        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if((*_F)->Visible()){
-                    if( (*_F)->FrustumPick(frustum) ){
-                        (*_F)->Select( flag );
-                        count++;
-                    }
-                }
-        }
+                if((*_F)->Visible()&&(*_F)->FrustumSelect(flag,frustum))
+                	count++;
     }
     UI.RedrawScene();
 	return count;
@@ -347,7 +342,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         else lst=&(it->second);
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             if (classfilter==OBJCLASS_DO){
-                m_DetailObjects->RayPickSelect(nearest_dist,start,direction);
+                m_DetailObjects->RaySelect(true,nearest_dist,start,direction);
             }else{
                 for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
                     if((*_F)->Visible()){
@@ -360,6 +355,33 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         }
     }
 	return nearest_object;
+}
+
+int EScene::RaySelect(int flag, EObjClass classfilter, bool bOnlyNearest){
+	if( !valid() ) return 0;
+
+	float nearest_dist = UI.ZFar();
+	CCustomObject *nearest_object = 0;
+    int count=0;
+
+	Fvector& start		= UI.m_CurrentRStart;
+    Fvector& direction	= UI.m_CurrentRNorm;
+
+	if (classfilter==OBJCLASS_DO) return m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
+	if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
+
+    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+        ObjectList& lst = (*it).second;
+        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                if((*_F)->Visible()&&(*_F)->RayPick(nearest_dist,start,direction)){
+                	nearest_object=*_F;
+                    count++;
+            	}
+    }
+    if (nearest_object) nearest_object->RaySelect(flag,start,direction);
+    UI.RedrawScene();
+	return count;
 }
 
 int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list){

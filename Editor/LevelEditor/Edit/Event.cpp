@@ -29,6 +29,10 @@ void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][2],v[2]);
 }
 //----------------------------------------------------
+void CEvent::SForm::Select( int flag )
+{
+	m_Selected = (flag==-1)?(m_Selected?false:true):flag;
+};
 void CEvent::SForm::GetTransform(Fmatrix& M){
     // update transform matrix
 	Fmatrix	mScale,mTranslate,mRotate;
@@ -47,14 +51,14 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	FLvertexVec V;
 	DWORD C;
 	if (bAlpha){
-        C=D3DCOLOR_RGBA( 0, 255, 0, m_Selected?48:24 );
+        C=D3DCOLOR_RGBA( 0, 255, 0, 24 );
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
         Device.SetTransform(D3DTS_WORLD,T);
 	    Device.SetShader(Device.m_SelectionShader);
         DU::DrawIdentBox(true,false,&C);
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else{
-        C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
+        C=D3DCOLOR_RGBA( m_Selected?255:32,m_Selected?255:32,m_Selected?255:32, 255 );
         Device.RenderNearer(0.0003);
         Device.SetTransform(D3DTS_WORLD,T);
 	    Device.SetShader(Device.m_SelectionShader);
@@ -78,19 +82,19 @@ void CEvent::SForm::GetBox(Fbox& bb)
     bb.xform		(T);
 }
 
-bool CEvent::SForm::Pick(float& distance, Fvector& start, Fvector& direction)
+bool CEvent::SForm::RayPick(const Fmatrix& parent, float& distance, Fvector& start, Fvector& direction)
 {
 	bool bPick=false;
     float range;
 	if (m_eType==efBox){
 		Fmatrix T; 	GetTransform(T);
+        T.mulA(parent);
         Fvector v[3];
         for (int i=0; i<12; i++){
             GetBoxTri(i,v);
             T.transform_tiny(v[0]);
             T.transform_tiny(v[1]);
             T.transform_tiny(v[2]);
-            range=UI.ZFar();
             if (CDB::TestRayTri2(start,direction,v,range)){
                 if ((range>=0)&&(range<distance)){
                     distance=range;
@@ -102,10 +106,11 @@ bool CEvent::SForm::Pick(float& distance, Fvector& start, Fvector& direction)
     return bPick;
 }
 
-bool CEvent::SForm::FrustumPick( const CFrustum& frustum )
+bool CEvent::SForm::FrustumPick(const Fmatrix& parent, const CFrustum& frustum)
 {
 	if (m_eType==efBox){
 		Fmatrix T; 	GetTransform(T);
+        T.mulA(parent);
         Fvector v[3];
         for (int i=0; i<12; i++){
             GetBoxTri(i,v);
@@ -119,12 +124,27 @@ bool CEvent::SForm::FrustumPick( const CFrustum& frustum )
     return false;
 }
 
+bool CEvent::SForm::FrustumSelect(const Fmatrix& parent, int flag, const CFrustum& frustum)
+{
+	if (FrustumPick(parent,frustum)) Select(flag);
+}
+
+bool CEvent::SForm::RaySelect(const Fmatrix& parent, int flag, Fvector& start, Fvector& direction)
+{
+	if (RayPick(parent,UI.ZFar(),start,direction)) Select(flag);
+}
+
 void CEvent::SForm::Move( Fvector& amount )
 {
 	vPosition.add(amount);
 }
 
 void CEvent::SForm::RotateLocal( Fvector& axis, float angle )
+{
+    vRotate.mad(vRotate,axis,angle);
+}
+
+void CEvent::SForm::RotateParent( Fvector& axis, float angle )
 {
     vRotate.mad(vRotate,axis,angle);
 }
@@ -181,21 +201,7 @@ void CEvent::RemoveSelectedForm()
 }
 
 //------------------------------------------------------------------------------------------------
-/*
-void CEvent::UpdateTransform(){
-    // update transform matrix
-	Fmatrix	mScale,mTranslate,mRotate;
-
-	mRotate.setHPB	(vRotate.y, vRotate.x, vRotate.z);
-
-	mScale.scale	(vScale);
-	mTranslate.translate(vPosition);
-	mTransform.mul	(mTranslate,mRotate);
-	mTransform.mul	(mScale);
-}
-*/
-
-bool CEvent::GetBox( Fbox& box ){
+void CEvent::GetRenderBox(Fbox& box){
 	// calc for all forms
     box.invalidate();
     Fbox bb;
@@ -203,6 +209,12 @@ bool CEvent::GetBox( Fbox& box ){
     	it->GetBox(bb);
         box.merge(bb);
     }
+}
+//------------------------------------------------------------------------------------------------
+
+bool CEvent::GetBox( Fbox& box ){
+	GetRenderBox(box);
+    box.xform(FTransform);
 	return true;
 }
 
@@ -212,7 +224,7 @@ void CEvent::Render( int priority, bool strictB2F ){
         for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render(FTransform,strictB2F);
         if(Selected()&&(false==strictB2F)){
             Fbox bb;
-            GetBox(bb);
+            GetRenderBox(bb);
 			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 			Device.SetTransform(D3DTS_WORLD,FTransform);
 			DU::DrawSelectionBox(bb,&clr);
@@ -222,36 +234,48 @@ void CEvent::Render( int priority, bool strictB2F ){
 
 bool CEvent::FrustumPick(const CFrustum& frustum){
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
-    	if (it->FrustumPick(frustum)) return true;
+    	if (it->FrustumPick(FTransform,frustum)) return true;
     return false;
 }
 
 bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
     bool bPick=false;
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
-    	if (it->Pick(distance,start,direction)) bPick=true;
+    	if (it->RayPick(FTransform,distance,start,direction)) bPick=true;
     return bPick;
 }
 
-void CEvent::Select(BOOL flag)
+bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
 {
-	inherited::Select(flag);
-    if (UI.GetShiftState().Contains(ssCtrl)){
-		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
-    }
+    if (UI.GetShiftState().Contains(ssAlt)){
+    	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest) Select(1);
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->RaySelect(FTransform,flag,start,dir);
+    }else 	inherited::RaySelect(flag,start,dir,bRayTest);
+}
+
+bool CEvent::FrustumSelect(int flag, const CFrustum& frustum)
+{
+    if (UI.GetShiftState().Contains(ssAlt)){
+    	Select(1);
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->FrustumSelect(FTransform,flag,frustum);
+    }else 	inherited::FrustumSelect(flag,frustum);
 }
 
 void CEvent::Move(Fvector& amount){
-	inherited::Move(amount);
-    if (UI.GetShiftState().Contains(ssCtrl)){
+    if (UI.GetShiftState().Contains(ssAlt)){
 		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
-    }
+    }else inherited::Move(amount);
 }
 void CEvent::RotateParent(Fvector& axis, float angle){
-	inherited::RotateParent(axis,angle);
+    if (UI.GetShiftState().Contains(ssAlt))
+		for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->RotateParent(axis,angle);
+    else	inherited::RotateParent(axis,angle);
+
 }
 void CEvent::RotateLocal(Fvector& axis, float angle){
-	inherited::RotateLocal(axis,angle);
+    if (UI.GetShiftState().Contains(ssAlt))
+	    for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) /*if (it->m_Selected)*/ it->RotateLocal(axis,angle);
+    else	inherited::RotateLocal(axis,angle);
 }
 void CEvent::Scale(Fvector& amount){
 	inherited::Scale(amount);

@@ -231,7 +231,6 @@ void CDetail::Export(CFS_Base& F){
 CDetailManager::CDetailManager(){
 	m_fDensity			= 0.1f;
 	m_pBase		 		= 0;
-    m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Selected.clear	();
     InitRender			();
@@ -251,7 +250,7 @@ CDetailManager::~CDetailManager(){
 
 void CDetailManager::OnDeviceCreate(){
 	// base texture
-    if (m_pBase&&m_pBase->Valid()) m_pBaseShader = Device.Shader.Create("editor\\do_base",m_pBase->name);
+    if (m_pBase&&m_pBase->Valid()) m_pBase->shader = Device.Shader.Create("editor\\do_base",m_pBase->name);
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceCreate();
@@ -259,7 +258,7 @@ void CDetailManager::OnDeviceCreate(){
 
 void CDetailManager::OnDeviceDestroy(){
 	// base texture
-    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
+    if (m_pBase->shader) Device.Shader.Delete(m_pBase->shader);
 	// detail objects
 	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->OnDeviceDestroy();
@@ -395,11 +394,6 @@ bool CDetailManager::Reinitialize(){
 	return true;
 }
 
-CDetailManager::SBase::SBase(LPCSTR nm){
-	strcpy(name,nm);
-    ImageManager.LoadTextureData(nm,data,w,h);
-}
-
 bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     // create base texture
     if (!tex_name&&!m_pBase){
@@ -416,8 +410,9 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
         _DELETE(NB);
     	return false;
     }
-    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
-    m_pBaseShader = Device.Shader.Create("editor\\do_base",fn.c_str());
+    if (m_pBase->shader) Device.Shader.Delete(m_pBase->shader);
+    m_pBase->shader = Device.Shader.Create("editor\\do_base",fn.c_str());
+    m_pBase->CreateFromObjects(m_BBox,m_SnapObjects);
 //S    UI.Command(COMMAND_REFRESH_TEXTURES);
     return true;
 }
@@ -706,7 +701,7 @@ void CDetailManager::Clear(bool bOnlySlots){
 	if (!bOnlySlots){
 		RemoveObjects		();
 		m_ColorIndices.clear();
-	    if (m_pBaseShader)	Device.Shader.Delete(m_pBaseShader);
+	    if (m_pBase->shader)Device.Shader.Delete(m_pBase->shader);
     	_DELETE				(m_pBase);
    		m_SnapObjects.clear	();
     }
@@ -850,7 +845,7 @@ bool CDetailManager::Load(CStream& F){
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
     	m_pBase			= new SBase(buf);
-	    m_pBaseShader 	= Device.Shader.Create("editor\\do_base",m_pBase->name);
+	    m_pBase->shader	= Device.Shader.Create("editor\\do_base",m_pBase->name);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -975,5 +970,57 @@ void CDetailManager::Export(LPCSTR fn){
     F.SaveTo			(fn,0);
 	UI.ProgressInc();
     UI.ProgressEnd		();
+}
+
+//------------------------------------------------------------------------------
+// SBase
+//------------------------------------------------------------------------------
+#define MAX_BUF_SIZE 0xFFFF
+
+CDetailManager::SBase::SBase(LPCSTR nm){
+	strcpy(name,nm);
+    ImageManager.LoadTextureData(nm,data,w,h);
+	shader		= 0;
+}
+
+void CDetailManager::SBase::CreateFromObjects(const Fbox& box, ObjectList& lst)
+{
+	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+    	CSceneObject*	 S = (CSceneObject*)(*it);
+    	CEditableObject* O = S->GetReference(); VERIFY(O);
+
+        Fmatrix T; S->GetFullTransformToWorld(T);
+        mesh.reserve	(mesh.size()+S->GetFaceCount()*3);
+        for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
+		    FaceVec&	faces 	= (*m_it)->GetFaces();
+		    FvectorVec&	pts 	= (*m_it)->GetPoints();
+        	for (FaceIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
+            	FVF::V v;
+                for (int k=0; k<3; k++){
+                	T.transform_tiny(v.p,pts[f_it->pv[k].pindex]);
+                    mesh.push_back(v);
+                }
+            }
+        }
+    }
+	stream = Device.Streams.Create(FVF::F_V,MAX_BUF_SIZE);
+}
+
+void CDetailManager::SBase::Render()
+{
+	Device.SetTransform(D3DTS_WORLD,Fidentity);
+	Device.SetShader(shader);
+    div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
+    DWORD vBase;
+    for (int k=0; k<cnt.quot; k++){
+		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
+		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,MAX_BUF_SIZE);
+		stream->Unlock(MAX_BUF_SIZE);
+		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
+    }
+    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
+	CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,cnt.rem);
+    stream->Unlock(cnt.rem);
+    Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
 }
 

@@ -91,13 +91,7 @@ void CShaderTools::OnDestroy(){
 }
 
 void CShaderTools::Render(){
-	switch (ActiveEditor()){
-	case aeEngine:
-    	if (m_EditObject) m_EditObject->RenderSingle(precalc_identity);
-    break;
-	case aeCompiler:
-    break;
-    };
+	if (m_EditObject) m_EditObject->RenderSingle(precalc_identity);
 }
 
 void CShaderTools::Update(){

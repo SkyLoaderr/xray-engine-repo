@@ -183,13 +183,19 @@ public:
         int 			w;
         int 			h;
 		DWORDVec		data;
+	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
+		TVertVec		mesh;
+	    CVertexStream*	stream;
+		Shader*			shader;
+    public:
         				SBase(LPCSTR nm);
         bool			Valid(){return !data.empty();}
+        void			CreateFromObjects(const Fbox& box, ObjectList& lst); 
+        void			Render();
     };
 
     ColorIndexMap		m_ColorIndices;
 	BOOLVec				m_Selected;
-	Shader*				m_pBaseShader;
     SBase*				m_pBase;
 
     float				m_fDensity;
@@ -222,7 +228,7 @@ public:
     void				Render					(int priority, bool strictB2F);
     void				Clear					(bool bOnlySlots=false);
 
-	void				RayPickSelect			(float& distance, Fvector& start, Fvector& direction);
+	int					RaySelect				(bool flag, float& distance, Fvector& start, Fvector& direction);
 	int					FrustumSelect			(bool flag);
 	int 				SelectObjects           (bool flag);
 	int 				InvertSelection         ();

@@ -367,11 +367,12 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
 		case PROP_FLAG:{
         	FlagValue*	V 				= (FlagValue*)item->Data;
             DWORD new_val 				= *V->val;
+            DWORD old_val 				= *V->val;
             if (new_val&V->mask)new_val &=~V->mask;
             else				new_val |= V->mask;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (new_val!=*V->val){
-            	*V->val 	= new_val;
+			*V->val 			= new_val;
+            if (new_val!=old_val){
                 Modified();
 	            RefreshProperties();
             }
@@ -476,49 +477,46 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
         	TokenValue* V				= (TokenValue*)item->Data;
             xr_token* token_list 	   	= V->token;
             DWORD new_val				= token_list[mi->MenuIndex].id;
+            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (*V->val	!= new_val){
-    	        *V->val		= token_list[mi->MenuIndex].id;
-                Modified();
-            }
+			*V->val						= new_val;
+            if (old_val	!= new_val)		Modified();
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TOKEN2:{
         	TokenValue2* V				= (TokenValue2*)item->Data;
             DWORD new_val				= mi->MenuIndex;
+            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (*V->val	!= new_val){
-    	        *V->val		= mi->MenuIndex;
-                Modified();
-            }
+			*V->val						= new_val;
+            if (old_val	!= new_val)		Modified();
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TOKEN3:{
         	TokenValue3* V				= (TokenValue3*)item->Data;
             DWORD new_val				= V->items[mi->MenuIndex].ID;
+            DWORD old_val				= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (*V->val	!= new_val){
-    	        *V->val		= V->items[mi->MenuIndex].ID;
-                Modified();
-            }
+			*V->val						= new_val;
+            if (old_val	!= new_val)		Modified();
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_LIST:{
         	ListValue* V				= (ListValue*)item->Data;
             AStringVec& lst				= V->items;
             string256 new_val;
+            string256 old_val;
             strcpy(new_val,lst[mi->MenuIndex].c_str());
+            strcpy(old_val,new_val);
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (strcmp(V->val,new_val)){
-    	        strcpy(V->val,new_val);
-                Modified();
-            }
+			strcpy(V->val,new_val);
+            if (strcmp(old_val,new_val))Modified();
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TEXTURE2:{
 			LPSTR tex = (LPSTR)item->Data;
         	if (mi->MenuIndex==0){
-            	LPCSTR name = TfrmChoseItem::SelectTexture(false,tex);
+            	LPCSTR name = TfrmChoseItem::SelectTexture(false,tex,true);
             	if (name&&name[0]&&strcmp(tex,name)!=0){
 					strcpy(tex,name);
 		            item->ColumnText->Strings[0]= name;
@@ -568,14 +566,15 @@ void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
 
     VectorValue* V = (VectorValue*)item->Data;
     Fvector edit_val=*V->val;
+    Fvector old_val=*V->val;
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     Fvector mn={V->lim_mn,V->lim_mn,V->lim_mn},mx={V->lim_mx,V->lim_mx,V->lim_mx};
     POINT pt;
     GetCursorPos(&pt);
 	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&mn,&mx,(int*)&pt.x,(int*)&pt.y)){
         if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-        if (!edit_val.similar(*V->val)){
-	    	*V->val = edit_val;
+		*V->val = edit_val;
+        if (!old_val.similar(edit_val)){
 			item->RedrawItem(true);
             Modified();
         }
@@ -586,22 +585,21 @@ void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
 void __fastcall TfrmProperties::CustomTextClick(TElTreeItem* item)
 {
 	TextValue* V			= (TextValue*)item->Data;
+	AnsiString old_val		= V->val;
 	AnsiString edit_val		= V->val;
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     LPCSTR new_val=0;
     switch (item->Tag){
     case PROP_SH_ENGINE:	new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());		break;
 	case PROP_SH_COMPILE:	new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());	break;
-    case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str());	break;
+    case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
     default: THROW2("Unknown props");
     }
     if (new_val){
         edit_val				= new_val;
         if (V->OnAfterEdit) 	V->OnAfterEdit(item,V,&edit_val);
-        if (edit_val!=V->val){
-            strcpy(V->val,edit_val.c_str());
-            Modified();
-        }
+		strcpy(V->val,edit_val.c_str());
+        if (edit_val!=old_val)	Modified();
         item->ColumnText->Strings[0]= V->GetText();
     }
 }
@@ -610,22 +608,21 @@ void __fastcall TfrmProperties::CustomTextClick(TElTreeItem* item)
 void __fastcall TfrmProperties::CustomAnsiTextClick(TElTreeItem* item)
 {
 	AnsiTextValue* V		= (AnsiTextValue*)item->Data;
+	AnsiString old_val		= *V->val;
 	AnsiString edit_val		= *V->val;
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(item,V,&edit_val);
     LPCSTR new_val=0;
     switch (item->Tag){
-    case PROP_ANSI_SH_ENGINE:	new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());		break;
-	case PROP_ANSI_SH_COMPILE:	new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());	break;
-    case PROP_ANSI_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str());	break;
+    case PROP_ANSI_SH_ENGINE:	new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());			break;
+	case PROP_ANSI_SH_COMPILE:	new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());		break;
+    case PROP_ANSI_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
     default: THROW2("Unknown props");
     }
     if (new_val){
         edit_val				= new_val;
         if (V->OnAfterEdit) 	V->OnAfterEdit(item,V,&edit_val);
-        if (edit_val!=*V->val){
-            *V->val				= edit_val;
-            Modified();
-        }
+		*V->val					= edit_val;
+        if (old_val!=edit_val)	Modified();
         item->ColumnText->Strings[0]= V->GetText();
     }
 }
@@ -697,21 +694,19 @@ void TfrmProperties::ApplyLWNumber()
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
             int new_val		= seNumber->Value;
+            int old_val		= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (*V->val != new_val){
-                *V->val 	= new_val;
-				Modified();
-            }
+			*V->val 		= new_val;
+            if (old_val != new_val) Modified();
             item->ColumnText->Strings[0] = V->GetText();
         }break;
 	    case PROP_FLOAT:{
 	        FloatValue* V 	= (FloatValue*)item->Data; VERIFY(V);
             float new_val	= seNumber->Value;
+            float old_val	= new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-		    if (!fsimilar(*V->val,new_val)){
-                *V->val 	= new_val;
-				Modified();
-		    }
+			*V->val 		= new_val;
+		    if (!fsimilar(old_val,new_val)) Modified();
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	}
@@ -786,11 +781,10 @@ void TfrmProperties::ApplyLWText()
     	case PROP_TEXT:{
 	        TextValue* V 	= (TextValue*)item->Data; VERIFY(V);
 			AnsiString new_val=edText->Text;
+			AnsiString old_val=new_val;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (new_val != *V->val){
-                strcpy(V->val,new_val.c_str());
-				Modified();
-            }
+			strcpy(V->val,new_val.c_str());
+            if (new_val != old_val) Modified();
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	}

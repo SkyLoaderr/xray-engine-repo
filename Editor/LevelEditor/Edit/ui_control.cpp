@@ -15,7 +15,6 @@ TUI_CustomControl::TUI_CustomControl(int st, int act, TUI_CustomTools* parent){
 	sub_target		= st;
     action			= act;
 	bBoxSelection	= false;
-	m_ScaleCenter.set(0,0,0);
 }
 
 bool TUI_CustomControl::Start  (TShiftState _Shift){
@@ -107,10 +106,10 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
-        if(obj) obj->Select((obj->Selected())?false:true);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
         return true;
     } else {
-        if(obj) obj->Select(obj->Selected()?false:true);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
     }
     return false;
 }
@@ -124,7 +123,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI.EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene.FrustumSelect(true,fraLeftBar->ebIgnoreMode->Down?OBJCLASS_DUMMY:parent_tool->objclass);
+        Scene.FrustumSelect(_Shift.Contains(ssCtrl)?-1:1,Tools.CurrentClassID());
     }
     return true;
 }
@@ -227,7 +226,6 @@ bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
 
-    m_RotateCenter.set( UI.pivot() );
     m_RotateVector.set(0,0,0);
     if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
     else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
@@ -277,7 +275,6 @@ bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 	EObjClass cls = Tools.CurrentClassID();
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
-	m_ScaleCenter.set( UI.pivot() );
 	return true;
 }
 

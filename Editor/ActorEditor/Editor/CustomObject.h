@@ -51,7 +51,7 @@ public:
 	IC BOOL 		Selected		(){return m_bSelected; }
     IC BOOL			Valid			(){return m_bValid;}
 
-	virtual void 	Select			(BOOL flag);
+	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);
 	virtual void 	Lock			(BOOL flag);
     void			SetValid		(BOOL flag){m_bValid=flag;}
@@ -61,6 +61,8 @@ public:
 	virtual void 	OnFrame			();
     virtual void 	OnUpdateTransform();
 
+	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
+    virtual bool 	FrustumSelect	(int flag, const CFrustum& frustum);
 	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };
     virtual bool 	FrustumPick		(const CFrustum& frustum){ return false; };
     virtual bool 	SpherePick		(const Fvector& center, float radius){ return false; };

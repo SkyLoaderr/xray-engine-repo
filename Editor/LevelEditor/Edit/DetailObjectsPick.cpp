@@ -10,13 +10,14 @@
 #include "cl_intersect.h"
 #include "D3DUtils.h"
 
-void CDetailManager::RayPickSelect(float& distance, Fvector& start, Fvector& direction){
+int CDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvector& direction){
 	float			fx,fz;
     Fbox			bbox;
     Fvector 		P;
     float 			dist=flt_max;
     int 			sx=-1, sz=-1;
 
+    int count = 0;
 
     for (DWORD z=0; z<m_Header.size_z; z++){
         fz			= fromSlotZ(z);
@@ -34,8 +35,12 @@ void CDetailManager::RayPickSelect(float& distance, Fvector& start, Fvector& dir
             }
         }
     }
-    if ((sx>=0)||(sz>=0)) m_Selected[sz*m_Header.size_x+sx] = true;
+    if ((sx>=0)||(sz>=0)){
+    	m_Selected[sz*m_Header.size_x+sx] = flag;
+        count++;
+    }
     UI.RedrawScene();
+    return count;
 }
 
 int CDetailManager::FrustumSelect(bool flag){

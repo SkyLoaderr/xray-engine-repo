@@ -532,7 +532,7 @@ void DrawObjectAxis(const Fmatrix& T){
     n.x = Device._x2real(n.x); n.y = Device._y2real(-n.y);
     d.x = Device._x2real(d.x); d.y = Device._y2real(-d.y);
 
-    DWORD vBase;
+    DWORD vBase;      
 	FVF::TL* pv = (FVF::TL*)TLStream->Lock(6,vBase);
 	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
 	pv->p.x	= d.x; pv->p.y = d.y; pv->color=0x000000FF; pv++;

@@ -69,18 +69,18 @@ void CDetailManager::Render(int priority, bool strictB2F){
 	if (m_Slots.size()){
     	if (1==priority){
         	if (false==strictB2F){
-                Device.SetTransform(D3DTS_WORLD,Fidentity);
-                Device.SetShader(Device.m_WireShader);
+            	if (fraBottomBar->miDrawDOSlotBoxes->Checked){
+                    Device.SetTransform(D3DTS_WORLD,Fidentity);
+                    Device.SetShader(Device.m_WireShader);
 
-                Fvector			c;
-                Fbox			bbox;
-                DWORD			inactive = 0xff808080;
-                DWORD			selected = 0xffffffff;
-                for (DWORD z=0; z<m_Header.size_z; z++){
-                    c.z			= fromSlotZ(z);
-                    for (DWORD x=0; x<m_Header.size_x; x++){
-                        bool bSel = m_Selected[z*m_Header.size_x+x];
-                        if (bSel||fraBottomBar->miDrawDOSlotBoxes->Checked){
+                    Fvector			c;
+                    Fbox			bbox;
+                    DWORD			inactive = 0xff808080;
+                    DWORD			selected = 0xffffffff;
+                    for (DWORD z=0; z<m_Header.size_z; z++){
+                        c.z			= fromSlotZ(z);
+                        for (DWORD x=0; x<m_Header.size_x; x++){
+                            bool bSel = m_Selected[z*m_Header.size_x+x];
                             DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
                             c.x			= fromSlotX(x);
                             c.y			= (slot->y_max+slot->y_min)*0.5f;
@@ -96,26 +96,11 @@ void CDetailManager::Render(int priority, bool strictB2F){
             }else{
                 if (fraBottomBar->miDODrawObjects->Checked)
                     RenderObjects(Device.m_Camera.GetPosition());
-                if (fraBottomBar->miDrawDOBaseTexture->Checked)
-                    RenderTexture(1.0f);
+                if (fraBottomBar->miDrawDOBaseTexture->Checked&&m_pBase)
+                    m_pBase->Render();
             }
         }
     }
-}
-
-void CDetailManager::RenderTexture(float alpha){
-	FVF::LIT V[4];
-
-    DWORD color = D3DCOLOR_RGBA(255,255,255,BYTE(alpha*255));
-
-	V[0].set(m_BBox.min.x,m_BBox.max.y,m_BBox.min.z,color,0,1);
-	V[1].set(m_BBox.min.x,m_BBox.max.y,m_BBox.max.z,color,0,0);
-	V[2].set(m_BBox.max.x,m_BBox.max.y,m_BBox.max.z,color,1,0);
-	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
-
-	Device.SetShader(m_pBaseShader);
-    Device.SetTransform(D3DTS_WORLD,Fidentity);
-    DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN,2,V,4,false,false);
 }
 
 //------------------------------------------------------------------------------

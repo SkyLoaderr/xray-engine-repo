@@ -198,12 +198,13 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 }
 #endif
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
+LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name, bool bIgnoreExt){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
 	form->Mode = smTexture;
     form->bMultiSel = msel;
     form->iMultiSelLimit = 8;
+    form->bIgnoreExt = bIgnoreExt;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
 	form->tvItems->IsUpdating	= true;
@@ -222,6 +223,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
 
 	// show
     if (form->ShowModal()!=mrOk) return 0;
+    if (bIgnoreExt) select_item = ChangeFileExt(select_item,"");
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
@@ -237,6 +239,7 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
 	DEFINE_INI(fsStorage);
+    bIgnoreExt = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
@@ -292,7 +295,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 	if (bMultiSel&&(itm_cnt>1)){
 	    char T[MAX_OBJ_NAME];
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,true);
+            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0,bIgnoreExt);
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
 				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T),(void*)FOLDER::TYPE_OBJECT);
@@ -303,7 +306,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0,true);
+        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0,bIgnoreExt);
         TElTreeItem* fld_node = 0;
         if (itm_node){
         	if (bMultiSel){

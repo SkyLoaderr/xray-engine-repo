@@ -1,8 +1,8 @@
 object fraEvent: TfraEvent
   Left = 0
   Top = 0
-  Width = 123
-  Height = 370
+  Width = 443
+  Height = 277
   VertScrollBar.Visible = False
   Align = alClient
   Constraints.MaxWidth = 154
@@ -19,7 +19,7 @@ object fraEvent: TfraEvent
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 70
     Align = alTop
     Constraints.MaxWidth = 123
@@ -29,7 +29,7 @@ object fraEvent: TfraEvent
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -62,7 +62,7 @@ object fraEvent: TfraEvent
       ParentFont = False
       OnClick = PaneMinClick
     end
-    object ebFormMode: TExtBtn
+    object ebAppendForm: TExtBtn
       Left = 2
       Top = 17
       Width = 120
@@ -74,13 +74,14 @@ object fraEvent: TfraEvent
       HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
-      Caption = 'Form Mode'
+      Caption = 'Append Form'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+      OnClick = ebAppendFormClick
     end
   end
 end

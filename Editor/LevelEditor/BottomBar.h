@@ -83,6 +83,7 @@ __published:	// IDE-managed Components
 	TPanel *paGridSquareSize;
 	TMenuItem *Glow1;
 	TMenuItem *miGlowTestVisibility;
+	TMenuItem *miDrawObjectsPivot;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

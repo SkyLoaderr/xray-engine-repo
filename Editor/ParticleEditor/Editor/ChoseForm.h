@@ -94,6 +94,7 @@ private:	// User declarations
 
     bool bMultiSel;
     int iMultiSelLimit;
+    bool bIgnoreExt;
 public:		// User declarations
     __fastcall TfrmChoseItem(TComponent* Owner);
 // static function
@@ -101,7 +102,7 @@ public:		// User declarations
     static LPCSTR __fastcall SelectShader	(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectShaderXRLC(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectPS		(LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR tex=0);
+    static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR tex=0, bool bIgnoreExt=false);
     static LPCSTR __fastcall SelectEntity	(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectEntityCLSID(LPCSTR init_name=0);
     static bool __fastcall Visible(){return !!form;}

@@ -153,7 +153,8 @@ public:
 	CCustomObject *RayPick   		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list);
 	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
 
-	int FrustumSelect               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	int RaySelect               	(int flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bOnlyNearest=true); // flag=0,1,-1 (-1 invert)
+	int FrustumSelect               (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int SelectObjects               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int LockObjects               	(bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
 	int ShowObjects                 (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);

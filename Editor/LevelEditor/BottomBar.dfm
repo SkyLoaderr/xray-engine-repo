@@ -281,7 +281,8 @@ object fraBottomBar: TfraBottomBar
       'miDrawDOSlotBoxes.Checked'
       'miDrawDOBaseTexture.Checked'
       'miDODrawObjects.Checked'
-      'miGlowTestVisibility.Checked')
+      'miGlowTestVisibility.Checked'
+      'miDrawObjectsPivot.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -485,6 +486,12 @@ object fraBottomBar: TfraBottomBar
         Caption = 'Test Visibility'
         OnClick = ClickOptionsMenuItem
       end
+    end
+    object miDrawObjectsPivot: TMenuItem
+      Caption = 'Draw Objects Pivot'
+      Checked = True
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object N4: TMenuItem
       Caption = '-'

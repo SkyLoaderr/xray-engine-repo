@@ -185,7 +185,7 @@ void __fastcall TfrmPropertiesGlow::ebSelectShaderClick(TObject *Sender)
 void __fastcall TfrmPropertiesGlow::ebSelectTextureClick(TObject *Sender)
 {
     bool bValidTex 		= (lbTexture->Caption!="...");
-	LPCSTR S = TfrmChoseItem::SelectTexture(false,bValidTex?lbTexture->Caption.c_str():0);
+	LPCSTR S = TfrmChoseItem::SelectTexture(false,bValidTex?lbTexture->Caption.c_str():0,false);
     if (S){lbTexture->Caption=S; OnModified(Sender);}
 }
 //---------------------------------------------------------------------------

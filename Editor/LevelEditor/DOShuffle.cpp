@@ -246,6 +246,10 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
 		SequenceToList(lst, S);
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
         	if (!FindItem(s_it->c_str())){
+                if (tvItems->Items->Count>=dm_max_objects){
+                    ELog.DlgMsg(mtInformation,"Maximum detail objects in scene '%d'",dm_max_objects);
+                    return;
+                }
                 SDOData* dd 		= new SDOData;
                 dd->m_RefName 		= s_it->c_str();
                 dd->m_fMinScale 	= 0.5f;

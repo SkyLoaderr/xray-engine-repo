@@ -8,6 +8,7 @@
 #include "CustomObject.h"
 #include "ui_main.h"
 
+#include "bottombar.h"
 #include "topbar.h"
 #include "editorpref.h"
 #include "scene.h"
@@ -56,10 +57,10 @@ void CCustomObject::OnUpdateTransform()
 	FTransform.mul			(FTransformRP,mScale);
 }
 
-void CCustomObject::Select( BOOL flag )
+void CCustomObject::Select( int flag )
 {
-    if (m_bVisible&&(m_bSelected!=flag)){
-        m_bSelected = flag;
+    if (m_bVisible){
+        m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
         UI.RedrawScene();
     }
 };
@@ -287,9 +288,25 @@ void CCustomObject::Scale( Fvector& amount )
 
 void CCustomObject::Render(int priority, bool strictB2F)
 {
-	if ((1==priority)&&(false==strictB2F)&&(Selected())){
+	if (fraBottomBar->miDrawObjectsPivot->Checked&&(1==priority)&&(false==strictB2F)&&(Selected())){
     	Device.SetShader(Device.m_WireShader);
     	DU::DrawObjectAxis(FTransformRP);
     }
 }
+
+bool CCustomObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest){
+	if ((bRayTest&&RayPick(UI.ZFar(),start,dir))||!bRayTest){
+		Select(flag);
+        return true;
+    }
+    return false;
+};
+
+bool CCustomObject::FrustumSelect(int flag, const CFrustum& frustum){
+	if (FrustumPick(frustum)){
+    	Select(flag);
+        return true;
+    }
+	return false;
+};
 

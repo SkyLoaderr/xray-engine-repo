@@ -197,6 +197,9 @@ public:
 	void            CloneFrom				(CEditableMesh *source);
 	void            Transform				(const Fmatrix& parent);
 
+    IC FaceVec&		GetFaces				(){ return m_Faces;}
+    IC FvectorVec&	GetPoints				(){ return m_Points;}
+
     // pick routine
 	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
 #ifdef _LEVEL_EDITOR
