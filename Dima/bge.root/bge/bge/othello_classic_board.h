@@ -59,7 +59,7 @@ public:
 	typedef std::stack<CStackCell,std::vector<CStackCell> > flip_stack;
 
 public:
-	typedef CMoveProcessor<cell_index,60,60>	move_processor;
+	typedef CMoveProcessor<cell_index,120,120>	move_processor;
 	typedef move_processor::move_container		position_moves;
 	typedef position_moves::iterator			move_iterator;
 

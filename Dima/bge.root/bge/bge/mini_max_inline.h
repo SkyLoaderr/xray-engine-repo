@@ -36,7 +36,7 @@ IC	evaluator_type &_minimax::evaluator	() const
 TEMPLATE_SPECIALIZATION
 IC	typename _minimax::result_type _minimax::search	(int depth)
 {
-#if 0
+#if 1
 	++m_counter;
 
 	if (board().terminal_position())

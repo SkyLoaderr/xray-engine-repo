@@ -14,6 +14,7 @@
 #include <vector>
 #include <list>
 #include <stack>
+#include <set>
 #include <map>
 #include <windows.h>
 #include <math.h>

@@ -1527,6 +1527,74 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="gtl"
+				>
+				<Filter
+					Name="object_broker"
+					>
+					<File
+						RelativePath=".\gtl\object_broker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_cloner.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_comparer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_destroyer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_interfaces.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_loader.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_saver.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\object_type_traits.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="smart_cast"
+					>
+					<File
+						RelativePath=".\gtl\smart_cast.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\smart_cast.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\smart_cast_impl0.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\smart_cast_impl1.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\smart_cast_impl2.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\smart_cast_stats.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ui"
@@ -1907,6 +1975,10 @@
 		<Filter
 			Name="tests"
 			>
+			<File
+				RelativePath=".\move_iteration_test.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\string_search.cpp"
 				>

@@ -43,10 +43,14 @@ typedef CPrimitiveEvaluator<COthelloBoard>				CSPrimitiveEvaluator;
 typedef mini_max<COthelloBoard,CSPrimitiveEvaluator>	_mini_max;
 #endif
 
+//extern void move_iteration_test();
+
 void __cdecl main(char argc, char *argv[])
 {
 	Hardware::detect	();
 	script().init		();
+
+//	move_iteration_test	();
 
 #ifdef TEST
 	COthelloBoard			b;
@@ -62,7 +66,11 @@ void __cdecl main(char argc, char *argv[])
 	Sleep					(1);
 	
 	start					= CPU::cycles();
+#ifdef _DEBUG
+	search.search			(6);
+#else
 	search.search			(10);
+#endif
 	finish					= CPU::cycles();
 
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);

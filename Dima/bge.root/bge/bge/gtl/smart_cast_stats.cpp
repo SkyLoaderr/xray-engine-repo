@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "../ui.h"
 
 #ifdef  _DEBUG
 #define SMART_CAST_STATS
@@ -42,11 +43,11 @@ private:
 	};
 
 private:
-	typedef xr_set<CStats> STATS;
+	typedef std::set<CStats> STATS;
 
 private:
 	STATS							m_stats;
-	xr_vector<CStats>				m_temp;
+	std::vector<CStats>				m_temp;
 
 public:
 	IC	static	CSmartCastStats*	instance	();
@@ -63,18 +64,18 @@ CSmartCastStats* CSmartCastStats::m_instance = 0;
 IC	CSmartCastStats* CSmartCastStats::instance	()
 {
 	if (!m_instance)
-		m_instance			= xr_new<CSmartCastStats>();
+		m_instance			= new CSmartCastStats();
 	return					(m_instance);
 }
 
 IC	void CSmartCastStats::_release				()
 {
-	xr_delete				(m_instance);
+	c_delete				(m_instance);
 }
 
 IC	CSmartCastStats	&stats						()
 {
-	return						(*CSmartCastStats::instance());
+	return					(*CSmartCastStats::instance());
 }
 
 IC	void CSmartCastStats::add					(LPCSTR from, LPCSTR to)
@@ -104,8 +105,8 @@ IC	void CSmartCastStats::show					()
 	std::sort							(m_temp.begin(),m_temp.end(),CStatsPredicate());
 	u32									total = 0;
 
-	xr_vector<CStats>::const_iterator	I = m_temp.begin();
-	xr_vector<CStats>::const_iterator	E = m_temp.end();
+	std::vector<CStats>::const_iterator	I = m_temp.begin();
+	std::vector<CStats>::const_iterator	E = m_temp.end();
 	for ( ; I != E; ++I)
 		total							+= (*I).m_count;
 
