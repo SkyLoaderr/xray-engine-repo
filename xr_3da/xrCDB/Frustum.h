@@ -5,6 +5,7 @@
 #if !defined(AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_)
 #define AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_
 #pragma once
+#pragma pack(push,4)
 
 enum EFC_Visible {
 	fcvNone = 0,
@@ -158,5 +159,6 @@ public:
 		return true;
 	}
 };
+#pragma pack(pop)
 
 #endif // !defined(AFX_FRUSTUM_H__E66ED755_F741_49CF_8B2A_404CCF7067F2__INCLUDED_)
