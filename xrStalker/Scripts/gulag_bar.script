@@ -288,6 +288,15 @@ function load_job(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "logic@bar_freedom_attack_commander", 
+			idle = 0,
+			prior = 6, state = {0}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			predicate = function(obj)
+				         	return obj:profile_name() == "bar_svoboda_attack_commander"
+			            end
+		}
+		table.insert(sj, t)
 	end
 	-- Ученные, защищающие инфу от Свободы
 	if type == "bar_ecolog_crush" then
