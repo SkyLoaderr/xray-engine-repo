@@ -402,14 +402,6 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local continue = true
 		local type = nil
 
-		if self.used[vo:id()] ~= nil then
-			continue = false
-		end
-
-		if self.corpse[vo:id()] ~= nil then
-			continue = false
-		end
-
 		if v.value < self.visio * self.npc:visibility_threshold() then
 			continue = false
 		end
@@ -434,16 +426,19 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			continue = false
 		end
 
-		if continue and type == "stalker" and
-                   vo:squad() == self.npc:squad()
-		then
-		   	continue = false
-		end
-
-		if continue and type == "corpse" and
-		   v.value < self.npc:visibility_threshold()
+		if continue and type == "corpse" and (v.value < self.npc:visibility_threshold()
+										 or self.corpse[vo:id()] ~= nil)
 		then
 			continue = false
+		end
+
+		if continue and type == "stalker" and
+					((self.used[vo:id()] ~= nil) or
+					(vo:team() == self.npc:team()
+					and vo:squad() == self.npc:squad()
+					and vo:group() == self.npc:group()))
+		then
+		   	continue = false
 		end
 
 		if continue then
