@@ -137,6 +137,10 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	xr_map<u32,CSoundCollection>::const_iterator	I = m_sounds.find(internal_type);
 	VERIFY						(m_sounds.end() != I);
 	const CSoundCollection		&sound = (*I).second;
+	if (sound.m_sounds.empty()) {
+		Msg						("There are no sounds in sound collection with internal type %d (sound_script = %d)",internal_type,StalkerSpace::eStalkerSoundScript);
+		return;
+	}
 
 	remove_inappropriate_sounds	(sound.m_synchro_mask);
 
