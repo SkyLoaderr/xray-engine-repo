@@ -209,16 +209,13 @@ public:
 			E->Spawn_Write		(P,TRUE);
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
+			P.w_begin			(M_SPAWN);
 
 			// Update
-			P.w_begin			(M_UPDATE);
-			P.w_u16				(E->ID);
-			P.w_chunk_open8		(position);
 			E->UPDATE_Write		(P);
-			P.w_chunk_close8	(position);
-
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
+			P.w_begin			(M_UPDATE);
 
 			FS.close_chunk		();
 		}
