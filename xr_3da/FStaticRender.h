@@ -41,6 +41,12 @@ public:
 	SceneGraph::mapSorted_T			mapSorted;
 	SceneGraph::vecPatches_T		vecPatches;
 
+	CList<FCached*>									vecCached;
+	CList<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
+	CList<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
+	CList<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
+	CList<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
+
 	CVertexStream*					vsPatches;
 
 	// Sector detection
@@ -48,12 +54,6 @@ public:
 	CSector*						pLastSector;
 	Fvector							vLastCameraPos;
 public:
-	CList<FCached*>									vecCached;
-	CList<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
-	CList<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
-	CList<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
-	CList<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
-	
 	// Global vertex-buffer container
 	vector<DWORD>					FVF;
 	vector<IDirect3DVertexBuffer8*>	VB;
