@@ -90,6 +90,9 @@ public:
 	void								ApplyBlur4				(FVF::TL4uv*	dest, u32 w, u32 h, float k);
 	IC void								apply_lmaterial			()				{};
 public:
+	// feature level
+	virtual	GenerationLevel			get_generation			()	{ return IRender_interface::GENERATION_R1; }
+
 	// Loading / Unloading
 	virtual	void					create					();
 	virtual	void					destroy					();
