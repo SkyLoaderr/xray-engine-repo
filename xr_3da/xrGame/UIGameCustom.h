@@ -24,7 +24,7 @@ protected:
 	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
 	CUICaption*			GameCaptions			() {return &m_gameCaptions;}
 	CUICaption			m_gameCaptions;
-	CUIDialogWnd*		m_pMainInputReceiver;
+//	CUIDialogWnd*		m_pMainInputReceiver;
 public:
 
 	virtual void		SetClGame				(game_cl_GameState* g){};
@@ -44,36 +44,11 @@ public:
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
-//	virtual void		OnBuyMenu_Ok			()	{};
-//	virtual void		OnBuyMenu_Cancel		()	{};
 
-//	virtual void		OnSkinMenu_Ok			()	{};
-//	virtual void		OnSkinMenu_Cancel		()	{};
-
-//	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)	{};
-//	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)	{};
-
-//	virtual void		OnTeamSelect			(int Result)	{};
-//	virtual bool		CanBeReady				()	{ return true; };
-
-//	virtual CUIDialogWnd*	GetBuyWnd			()	{ return NULL; };
-
-
-	//для остановки и запуска дополнительных меню
-//	virtual void		StartStopMenu			(CUIDialogWnd* pDialog);
+	void				AddDialogToRender		(CUIWindow* pDialog);
+	void				RemoveDialogToRender	(CUIWindow* pDialog);
 	
-	//текущее меню пользователя показанное на экране
-	//NULL если такого сейчас нет
-
-
-	xr_vector<CUIWindow*>	m_dialogsToRender;
-	xr_vector<CUIWindow*>	m_dialogsToErase;
-
-	void					AddDialogToRender	(CUIWindow* pDialog);
-	void					RemoveDialogToRender(CUIWindow* pDialog);
-	
-	void					SetMainInputReceiver(CUIDialogWnd* ir){ m_pMainInputReceiver = ir;};
-	CUIDialogWnd*			MainInputReceiver	(){ return m_pMainInputReceiver; };
+	CUIDialogWnd*		MainInputReceiver		();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

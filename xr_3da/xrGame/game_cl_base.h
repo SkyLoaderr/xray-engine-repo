@@ -26,7 +26,7 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 	typedef game_GameState	inherited;
 	string256							m_game_type_name;
 	CUIGameCustom*						m_game_ui_custom;
-	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
+//	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
 protected:
 	bool								m_bVotingEnabled;
 	bool								m_bFriendlyIndicators;
@@ -50,8 +50,8 @@ protected:
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
 				void				CommonMessageOut		(LPCSTR msg);
 
-				void				StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-				void				StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+//				void				StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+//				void				StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 
 	virtual		float				shedule_Scale			();
 

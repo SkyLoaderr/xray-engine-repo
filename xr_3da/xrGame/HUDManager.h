@@ -24,14 +24,6 @@ private:
 
 	float					fScale;
 
-	// Cтруктурка буфера для надписей выводимых шрифтами
-	struct					FontBuffer
-	{
-		shared_str			buf;
-		float				outX, outY;
-		FontBuffer():		buf(NULL), outX(0), outY(0) {}
-	};
-
 public:
 	// hud font
 	CGameFont*				pFontSmall;

@@ -17,15 +17,8 @@
 //--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
 {
-	UIZoneMap.Init	();
-	UIHealth.Init	();
-	UISquad.Init	();
-
-#ifdef UI_INTERFACE_ON
 
 	UIMainIngameWnd.Init();
-
-#endif
 
 	m_Parent		= p;
 	pUIGame			= 0;
@@ -34,7 +27,9 @@ CUI::CUI(CHUDManager* p)
 
 	m_bShowIndicators = true;
 
-
+	shedule.t_min			= 5;
+	shedule.t_max			= 20;
+	shedule_register();
 }
 //--------------------------------------------------------------------
 
@@ -43,7 +38,14 @@ CUI::~CUI()
 	for (UIMsgIt it=messages.begin(); messages.end() != it; ++it)
 		xr_delete(*it);
 	xr_delete(pUIGame);
+
+	shedule_unregister();
 }
+
+float CUI::shedule_Scale		() 
+{
+	return 0.5f;
+};
 //--------------------------------------------------------------------
 
 void CUI::Load()
@@ -71,38 +73,12 @@ void CUI::OnFrame()
 	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor){
 		
-		
-		//all ingame information now in UIMainIngameWnd.Update();
-		/*
-		
-		
-		// radar
-		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
-		// viewport
-		float h,p;
-		Device.vCameraDirection.getHP	(h,p);
-		UIZoneMap.SetHeading			(-h);
-		// health&armor
-		UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
-		// weapon
-		//CWeaponList* wpns = m_Actor->GetItemList();
-		//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
-		CActor *l_pA = smart_cast<CActor*>(m_Actor);
-		if(l_pA && (l_pA->inventory().m_iActiveSlot < l_pA->inventory().m_slots.size())) {
-			UIWeapon.Out(smart_cast<CWeapon*>(l_pA->inventory().m_slots[l_pA->inventory().m_iActiveSlot].m_pIItem));
-		} else UIWeapon.Out(NULL);
-		
-		*/
-
-
-#ifdef UI_INTERFACE_ON
 		//update windows
 		if(m_bShowIndicators)
 		{
 			UIMainIngameWnd.SetFont(m_Parent->pFontMedium);
 			UIMainIngameWnd.Update();
 		}
-#endif
 			
 
 	}
@@ -137,16 +113,19 @@ bool CUI::Render()
 	CEntity* m_Actor = smart_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor)
 	{
-#ifdef UI_INTERFACE_ON
 		//Draw main window and its children
 		if(m_bShowIndicators)
 			UIMainIngameWnd.Draw();
-#endif
 		//render cursor only when it visible
 		if(UICursor.IsVisible())
             UICursor.Render();
 	}
 	// out GAME-style depend information
+	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	for(; it!=m_dialogsToRender.end();++it)
+		if((*it)->IsShown())
+			(*it)->Draw();
+
 	if (pUIGame) pUIGame->Render	();
 
 	return false;
@@ -154,71 +133,38 @@ bool CUI::Render()
 //--------------------------------------------------------------------
 bool CUI::IR_OnKeyboardPress(int dik)
 {
-/*#ifdef UI_INTERFACE_ON
-	if(dik==MOUSE_1)
-	{
-		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
-			CUIWindow::LBUTTON_DOWN);
-		return true;
-	}
-#endif*/
 	if(UIMainIngameWnd.OnKeyboardPress(dik))
-	{
 		return true;
-	}
+
+	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnKeyboardPress(dik)) 
+		return true;
 
 	if (pUIGame && pUIGame->IR_OnKeyboardPress(dik)) 
-	{
 		return true;
-	}
+
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::IR_OnKeyboardRelease(int dik)
 {
-/*#ifdef UI_INTERFACE_ON
-	if(dik==MOUSE_1)
-	{
-		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
-			CUIWindow::LBUTTON_UP);
+	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnKeyboardRelease(dik)) 
 		return true;
-	}
-#endif*/
 
 	if (pUIGame&&pUIGame->IR_OnKeyboardRelease(dik)) 
-	{
 		return true;
-	}
+
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::IR_OnMouseMove(int dx,int dy)
 {
-/*	if (UICursor.IsVisible())
-	{ 
-		UICursor.MoveBy(dx, dy);
-
-
-		if (pUIGame&&pUIGame->IR_OnMouseMove(UICursor.GetPos().x, UICursor.GetPos().y)) 
-		{
-			return true;
-		}
-
-#ifdef UI_INTERFACE_ON
-		UIMainWindow.OnMouse(UICursor.GetPos().x,
-							 UICursor.GetPos().y,
-							 CUIWindow::MOUSE_MOVE);
-#endif
+	if ( MainInputReceiver()&&MainInputReceiver()->IR_OnMouseMove(dx,dy)) 
 		return true;
-	}*/
-
-
+	
 	if (pUIGame&&pUIGame->IR_OnMouseMove(dx,dy)) 
-	{
 		return true;
-	}
 	
 	return false;
 }
@@ -232,3 +178,114 @@ void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 	messages.push_back(xr_new<SUIMessage> (S,M,C,life_time));
 }
 
+
+CUIDialogWnd* CUI::MainInputReceiver()
+{ 
+	if ( !m_input_receivers.empty() ) 
+		return m_input_receivers.top(); 
+	return NULL; 
+};
+
+void CUI::SetMainInputReceiver	(CUIDialogWnd* ir)	
+{ 
+	if( MainInputReceiver() == ir ) return;
+	if(!ir){//remove
+		if(!m_input_receivers.empty())
+				m_input_receivers.pop();
+	}else{
+		m_input_receivers.push(ir);
+	}
+};
+
+void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
+{
+	if( pDialog->IsShown() )
+		StopMenu(pDialog, bDoHideIndicators);
+	else
+		StartMenu(pDialog, bDoHideIndicators);
+
+	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToErase.begin(), m_dialogsToErase.end(), pDialog);
+	if (m_dialogsToErase.end() != it)
+		m_dialogsToErase.erase(it);
+}
+
+void CUI::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
+{
+//	if (m_game_ui_custom->MainInputReceiver() != NULL) return;
+
+	R_ASSERT( !pDialog->IsShown() );
+//	R_ASSERT( m_game_ui_custom->MainInputReceiver() == NULL );
+
+	AddDialogToRender(pDialog);
+	SetMainInputReceiver(pDialog);
+	pDialog->Show();
+
+	if(bDoHideIndicators){
+		HideIndicators();
+		ShowCursor();
+		m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
+		if(m_bCrosshair) 
+			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+	}
+
+}
+
+void CUI::StopMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
+{
+	R_ASSERT( pDialog->IsShown() );
+	R_ASSERT( MainInputReceiver()==pDialog );
+
+	RemoveDialogToRender(pDialog);
+	SetMainInputReceiver(NULL);
+	pDialog->Hide();
+
+	if(bDoHideIndicators){
+	ShowIndicators();
+	HideCursor();
+	if(m_bCrosshair) 
+		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+	};
+}
+
+void CUI::AddDialogToRender(CUIWindow* pDialog)
+{
+	if(std::find(m_dialogsToRender.begin(), m_dialogsToRender.end(), pDialog) == m_dialogsToRender.end() )
+	{
+		m_dialogsToRender.push_back(pDialog);
+		pDialog->Show(true);
+	}
+}
+
+void CUI::RemoveDialogToRender(CUIWindow* pDialog)
+{
+	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),pDialog);
+	if(it != m_dialogsToRender.end())
+	{
+		(*it)->Show(false);
+		(*it)->Enable(false);
+		m_dialogsToErase.push_back(*it);
+	}
+}
+
+void CUI::shedule_Update		(u32 dt)
+{
+	inherited::shedule_Update(dt);
+
+	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	for(; it!=m_dialogsToRender.end();++it)
+		if((*it)->IsEnabled())
+			(*it)->Update();
+
+
+	for(it = m_dialogsToErase.begin(); it!=m_dialogsToErase.end(); ++it)
+	{
+		xr_vector<CUIWindow*>::iterator it_find = std::find(m_dialogsToRender.begin(),
+															m_dialogsToRender.end(), *it);
+		if (it_find != m_dialogsToRender.end())
+		{
+			m_dialogsToRender.erase(it_find);
+		}
+    }
+	m_dialogsToErase.clear();
+
+}

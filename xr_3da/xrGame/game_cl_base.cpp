@@ -242,7 +242,9 @@ void game_cl_GameState::shedule_Update		(u32 dt)
 
 void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	if( pDialog->IsShown() )
+	HUD().GetUI()->StartStopMenu(pDialog, bDoHideIndicators);
+
+/*	if( pDialog->IsShown() )
 		StopMenu(pDialog, bDoHideIndicators);
 	else
 		StartMenu(pDialog, bDoHideIndicators);
@@ -250,10 +252,14 @@ void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicat
 	xr_vector<CUIWindow*>::iterator it = std::find(m_game_ui_custom->m_dialogsToErase.begin(), m_game_ui_custom->m_dialogsToErase.end(), pDialog);
 	if (m_game_ui_custom->m_dialogsToErase.end() != it)
 		m_game_ui_custom->m_dialogsToErase.erase(it);
+*/
+
 }
 
+/*
 void game_cl_GameState::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
+	HUD().GetUI()->
 	if (m_game_ui_custom->MainInputReceiver() != NULL) return;
 
 	R_ASSERT( !pDialog->IsShown() );
@@ -288,7 +294,7 @@ void game_cl_GameState::StopMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 	if(m_bCrosshair) 
 		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 	};
-}
+}*/
 
 void game_cl_GameState::sv_GameEventGen(NET_Packet& P)
 {

@@ -37,32 +37,29 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		m_game->StartStopMenu(&InventoryMenu,true);
 		return true;
 		break;
+
 	case kACTIVE_JOBS:
 		PdaMenu.SetActiveSubdialog(epsActiveJobs);
 		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
+
 	case kMAP:
 		PdaMenu.SetActiveSubdialog(epsMap);
 		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
+
 	case kCONTACTS:
 		PdaMenu.SetActiveSubdialog(epsContacts);
 		m_game->StartStopMenu(&PdaMenu,true);
 		return true;
 		break;
-/*
-	case DIK_B:
-///		StartStopMenu(&UIStatsWnd);
-		StartStopMenu(pUIBuyWeaponWnd);
-		return true;
-		break;
-*/
+
 	case kQUIT:
-		if(m_pMainInputReceiver)//m_pUserMenu)
+		if( MainInputReceiver() )//m_pUserMenu)
 		{
-			m_game->StartStopMenu(m_pMainInputReceiver,true);//m_pUserMenu);
+			m_game->StartStopMenu(MainInputReceiver(), true);
 			return true;
 		}
 		break;
@@ -75,7 +72,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->g_Alive() && !pActor->GetPower())
 	{
-			if(m_pMainInputReceiver/*m_pUserMenu*/ == NULL)
+			if( MainInputReceiver() == NULL)
 			{
 				//start the inventory menu
 				m_game->StartStopMenu(&InventoryMenu,true);
