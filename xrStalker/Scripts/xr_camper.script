@@ -91,7 +91,6 @@ function action_patrol:process_point(mode, number)
 end
 function action_patrol:finalize()
 	self.move_mgr:finalize()
-	state_mgr.set_state(self.object, "idle")
 	action_base.finalize (self)
 end
 
@@ -139,7 +138,6 @@ function action_kill:execute ()
 	end
 end
 function action_kill:finalize ()
-	state_mgr.set_state(self.object, "idle")
     action_base.finalize(self)
 end
 
@@ -180,7 +178,6 @@ function action_retreat:execute()
 	
 end
 function action_retreat:finalize()
-	state_mgr.set_state(self.object, "idle")
     action_base.finalize(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -245,4 +242,3 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		st.radius = 20
 	end
 end
-
