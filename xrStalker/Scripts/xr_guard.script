@@ -93,7 +93,7 @@ function action_guard_activity:reset_scheme()
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
+	self.object:set_movement_type(move.run)
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 	--self.object:set_mental_state(anim.free)
@@ -133,6 +133,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
         self.arrived_to_single_point_path = true
         self.object:set_movement_type(move.stand)
     else
+        self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
         self.arrived_to_single_point_path = false
     end
 
@@ -260,13 +261,14 @@ function action_guard_activity:execute()
         if self.arrived_to_single_point_path then
             self:waypoint_callback(self.object, self.last_action_type, self.last_index)
         else
-      self.last_look_index = nil
+            self.last_look_index = nil
             self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
             --self.object:set_sight(look.search, nil, 0)
             self.object:set_sight(look.danger, nil, 0)
         end
     end
 end
+
 function action_guard_activity:finalize()
   --printf("_bp: FINALIZE")
   self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
