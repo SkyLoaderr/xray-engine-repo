@@ -378,6 +378,9 @@ void CLevel::OnFrame	()
 			pApp->pFont->OutNext("client_2_sever ping: %d",	net_Statistic.getPing());
 		}
 	}
+
+	AI::Path path;
+	AI.q_Path(93,1417,path);
 }
 
 void CLevel::OnRender()
