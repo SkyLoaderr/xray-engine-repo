@@ -446,7 +446,10 @@ void CStalkerActionTakeCover::execute		()
 	if (object().movement().path_completed())// && (object().memory().enemy().selected()->Position().distance_to_sqr(object().Position()) >= 10.f))
 		m_storage->set_property			(eWorldPropertyInCover,true);
 
-	object().sight().setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
+	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
+		object().sight().setup		(CSightAction(object().memory().enemy().selected(),true));
+	else
+		object().sight().setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 }
 
 //////////////////////////////////////////////////////////////////////////
