@@ -162,6 +162,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 	if (inventory_owner) {
 		for (u32 i=0, n=m_saved_chidren.size(); i<n; ++i) {
 			CSE_ALifeDynamicObject	*child = smart_cast<CSE_ALifeDynamicObject*>(objects().object(m_saved_chidren[i],true));
+			if (!child) continue; //. hack
 			R_ASSERT				(child);
 			child->m_bOnline		= false;
 
