@@ -206,11 +206,11 @@ void CParticleTools::ResetPreviewObject(){
 void CParticleTools::Load()
 {
 	VERIFY(m_bReady);
-    PS::PSIt Ps = PSLib.FirstPS();
-    PS::PSIt Es = PSLib.LastPS();
+    PS::PSIt Ps = ::Render->PSystems.FirstPS();
+    PS::PSIt Es = ::Render->PSystems.LastPS();
     for (; Ps!=Es; Ps++) fraLeftBar->AddItem(Ps->m_Name,true,true);
-    PS::PGIt Pg = PSLib.FirstPG();
-    PS::PGIt Eg = PSLib.LastPG();
+    PS::PGIt Pg = ::Render->PSystems.FirstPG();
+    PS::PGIt Eg = ::Render->PSystems.LastPG();
     for (; Pg!=Eg; Pg++) fraLeftBar->AddItem((*Pg)->m_Name,true,false);
 }
 
@@ -223,14 +223,14 @@ void CParticleTools::Save()
     EFS.BackupFile	(_game_data_,"particles2.xr");
 	// save   
     EFS.UnlockFile	(_game_data_,"particles2.xr",false);
-	PSLib.Save();
+	::Render->PSystems.Save();
     EFS.LockFile	(_game_data_,"particles2.xr",false);
 }
 
 void CParticleTools::Reload()
 {
 	VERIFY(m_bReady);
-	PSLib.Reload();
+	::Render->PSystems.Reload();
     // visual part
     fraLeftBar->ClearParticleList();
     Load();
@@ -248,11 +248,11 @@ void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR ren_part, int level){
 void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name){
 	VERIFY(m_bReady);
     if (m_LibPGD){
-        PSLib.RenamePG(m_LibPGD,new_full_name);
+        ::Render->PSystems.RenamePG(m_LibPGD,new_full_name);
     }else if (m_LibPS){
         ApplyChanges();
-        PS::SDef* S = PSLib.FindPS(old_full_name); R_ASSERT(S);
-        PSLib.RenamePS(S,new_full_name);
+        PS::SDef* S = ::Render->PSystems.FindPS(old_full_name); R_ASSERT(S);
+        ::Render->PSystems.RenamePS(S,new_full_name);
         if (S==m_LibPS){
             m_EditPS = *S;
         }
@@ -265,8 +265,8 @@ PS::SDef* CParticleTools::AppendPS(LPCSTR folder_name, PS::SDef* src)
     string64 new_name;
     string64 pref; pref[0]=0;
     if (src) 			strcat(pref,src->m_Name);
-    PSLib.GenerateName	(new_name,folder_name,pref);
-    PS::SDef* S 		= PSLib.AppendPS(src);
+    ::Render->PSystems.GenerateName	(new_name,folder_name,pref);
+    PS::SDef* S 		= ::Render->PSystems.AppendPS(src);
     strcpy				(S->m_Name,new_name);
 	fraLeftBar->AddItem	(S->m_Name,false,true);
     return S;
@@ -275,7 +275,7 @@ PS::SDef* CParticleTools::AppendPS(LPCSTR folder_name, PS::SDef* src)
 void CParticleTools::RemovePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	PSLib.Remove(name);
+	::Render->PSystems.Remove(name);
 }
 
 void CParticleTools::ResetCurrent()
@@ -322,21 +322,21 @@ void CParticleTools::SetCurrentPG(PS::CPGDef* P)
 
 PS::SDef* CParticleTools::FindPS(LPCSTR name)
 {
-	return PSLib.FindPS(name);
+	return ::Render->PSystems.FindPS(name);
 }
 
 PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
 {
-	return PSLib.FindPG(name);
+	return ::Render->PSystems.FindPG(name);
 }
 
 void CParticleTools::SetCurrent(LPCSTR name)
 {
 	PS::SDef* 	ps=0;
 	PS::CPGDef* pg=0;
-	if (ps=PSLib.FindPS(name)){			SetCurrentPS(ps); 	SetCurrentPG(0);}
-    else if (pg=PSLib.FindPG(name)){	SetCurrentPG(pg); 	SetCurrentPS(0);}
-    else{								SetCurrentPG(0);	SetCurrentPS(0);}
+	if (ps=::Render->PSystems.FindPS(name)){		SetCurrentPS(ps); 	SetCurrentPG(0);}
+    else if (pg=::Render->PSystems.FindPG(name)){	SetCurrentPG(pg); 	SetCurrentPS(0);}
+    else{											SetCurrentPG(0);	SetCurrentPS(0);}
 }
 
 void CParticleTools::UpdateCurrent(){
@@ -358,7 +358,7 @@ void CParticleTools::UpdateEmitter(){
 PS::SDef* CParticleTools::ClonePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	PS::SDef* S = PSLib.FindPS(name); R_ASSERT(S);
+	PS::SDef* S = ::Render->PSystems.FindPS(name); R_ASSERT(S);
 	return AppendPS(0,S);
 }
 
@@ -660,8 +660,8 @@ PS::CPGDef* CParticleTools::AppendPG(LPCSTR folder_name, PS::CPGDef* src)
     string64 new_name;
     string64 pref; pref[0]=0;
     if (src) 			strcat(pref,src->m_Name);
-    PSLib.GenerateName	(new_name,folder_name,pref);
-    PS::CPGDef* S 		= PSLib.AppendPG(src);
+    ::Render->PSystems.GenerateName	(new_name,folder_name,pref);
+    PS::CPGDef* S 		= ::Render->PSystems.AppendPG(src);
     strcpy				(S->m_Name,new_name);
 	fraLeftBar->AddItem	(S->m_Name,false,false);
     return S;
