@@ -234,10 +234,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	}
 	Progress(p_total+=p_cost);
 
-	// Opacity
-	Status("Caching faces opacity...");
-	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
-	 
 	// Parameter block
 	CopyMemory(&g_params,&Params,sizeof(b_params));
 	g_params.m_SS_DedicateCached	= 8;
