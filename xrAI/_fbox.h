@@ -260,14 +260,18 @@ public:
 		}
 	}
 
-	IC void transform(const _fbox& src, const Fmatrix& M){
+	IC void modify(const _fbox& src, const Fmatrix& M){
 		Fvector pt;
-		invalidate();
 		for(int i=0; i<8; i++){
 			src.getpoint(i,pt);
 			M.transform_tiny(pt);
 			modify(pt);
 		}
+	}
+
+	IC void transform(const _fbox& src, const Fmatrix& M){
+		invalidate();
+		modify(src,M);
 	}
 } Fbox;
 
