@@ -104,9 +104,11 @@ void CAI_Biting::vfUpdateParameters()
 	}
 	K					= C | D | E | F;
 
+	// K должно быть true, только если корректный ve.obj
+	R_ASSERT(ve.obj || !K);
+
 	//------------------------------------
 	// враг выгоден ?
-	// временно "всегда выгоден"
 	H = true;
 
 	// Fill flags, properties and vars for attack mode
@@ -121,6 +123,8 @@ void CAI_Biting::vfUpdateParameters()
 	flagEnemyDoesntKnowAboutMe	= false;
 	flagEnemyHiding				= false;			// todo
 	flagEnemyRunAway			= false;			// todo
+
+	flagEnemyGoOffline			= false;
 
 	// Set current enemy
 	m_tEnemy					= ve;
@@ -152,6 +156,8 @@ void CAI_Biting::vfUpdateParameters()
 		if (flagEnemyStanding && !I) flagEnemyDoesntKnowAboutMe = true;
 	}
 	
+	if (!m_tEnemy.obj && m_tEnemyPrevFrame.obj && m_tEnemyPrevFrame.obj->getDestroy()) flagEnemyGoOffline = true;
+
 	// Save current enemy (only if valid)
 	if (m_tEnemy.obj)
 		m_tEnemyPrevFrame = m_tEnemy;

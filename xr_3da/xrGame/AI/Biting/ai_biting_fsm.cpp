@@ -18,6 +18,7 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters		();
 
+
 //#ifndef SILENCE
 //	if (g_Alive())
 //		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);

@@ -30,6 +30,11 @@ void CAI_Bloodsucker::Think()
 {
 	inherited::Think();
 	
+	if (flagEnemyGoOffline) {
+		CurrentState->Reset();
+		SetState(stateRest);
+	}
+
 	VisionElem ve;
 
 	if (Motion.m_tSeq.isActive())	{
@@ -57,7 +62,7 @@ void CAI_Bloodsucker::UpdateCL()
 
 void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {
-	index1 = 0; index2 = 0;	 index3 = -1;
+	index1 = 0; index2 = 0;	 index3 = 0;
 }
 
 
@@ -88,6 +93,18 @@ void CAI_Bloodsucker::vfAssignBones()
 	// ----
 	int bone2	= PKinematics(Visual())->LL_BoneID("bip01_head");
 	PKinematics(Visual())->LL_GetInstance(bone2).set_callback(BoneCallback,this);
+
+	// Bones settings
+	xr_vector<bonesBone> bones;
+	
+	bonesBone bone;
+//	bone.Setup(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_X);
+//	bones.push_back(bone);
+	bone.Setup(&PKinematics(Visual())->LL_GetInstance(bone2), AXIS_X);
+	bones.push_back(bone);
+
+	Bones.Init();
+	Bones.SetupMotionBones(bones);
 }
 
 

@@ -34,27 +34,21 @@ void CBloodsuckerRest::Run()
 
 			if (!pMonster->Bones.isActive()) {
 				//Look leftside/rightside
-
+				
 				bonesMotion		cur_motion;
 
-				CBoneInstance *bone_one, *bone_two;
-				int bone1	= PKinematics(pMonster->Visual())->LL_BoneID("bip01_spine");
-				bone_one = &PKinematics(pMonster->Visual())->LL_GetInstance(bone1);
-				int bone2	= PKinematics(pMonster->Visual())->LL_BoneID("bip01_head");
-				bone_two = &PKinematics(pMonster->Visual())->LL_GetInstance(bone2);
-
 				// смотреть влево
-				// будут вращаться 3 боны
-				cur_motion.AddBone(bone_one,AXIS_X, -PI_DIV_6, PI, 0, 0, 0, 0, 1000);
-				cur_motion.AddBone(bone_two,AXIS_X, -PI_DIV_6, PI, 0, 0, 0, 0, 1000);
+				// будут вращаться 2 боны
+				//cur_motion.AddBone(0,AXIS_X, -PI_DIV_4, PI_DIV_2, 0, 0, 0, 0, 2000);
+				cur_motion.AddBone(0,AXIS_X, -PI_DIV_2, PI_DIV_2, 0, 0, 0, 0, 1000);
 
 				pMonster->Bones.AddMotion(cur_motion);
 				cur_motion.Clear();
 
 				// смотреть вправо
-				// будут вращаться 3 боны
-				cur_motion.AddBone(bone_one,AXIS_X, PI_DIV_6, PI, 0, 0, 0, 0, 1000);
-				cur_motion.AddBone(bone_two,AXIS_X, PI_DIV_6, PI, 0, 0, 0, 0, 1000);
+				// будут вращаться 2 боны
+				//cur_motion.AddBone(0,AXIS_X, PI_DIV_4, PI_DIV_2, 0, 0, 0, 0, 2000);
+				cur_motion.AddBone(0,AXIS_X, PI, PI, 0, 0, 0, 0, 1000);
 
 				pMonster->Bones.AddMotion(cur_motion);
 			}

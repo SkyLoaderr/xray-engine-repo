@@ -60,7 +60,6 @@ void CAI_Biting::Init()
 
 	m_tAttackAnim.Clear				();
 
-
 }
 
 void CAI_Biting::Die()

@@ -158,6 +158,8 @@ public:
 	bool					flagEnemyHiding;
 	bool					flagEnemyRunAway;
 
+	bool					flagEnemyGoOffline;
+
 	// Enemy
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 

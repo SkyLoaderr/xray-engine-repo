@@ -193,7 +193,6 @@ void CBitingAttack::Reset()
 	m_dwFaceEnemyLastTime	= 0;
 	m_dwFaceEnemyLastTimeInterval = 1200;
 	
-	nStartStop = 0;
 	m_dwSuperMeleeStarted	= 0;
 }
 
@@ -226,8 +225,9 @@ void CBitingAttack::Init()
 
 void CBitingAttack::Run()
 {
-	// Если враг изменился, инициализировать состояние
 	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
+
+	// Если враг изменился, инициализировать состояние
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) {
 		Reset();
 		Init();
@@ -240,11 +240,6 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
 		m_tAction = ((m_tEnemy.obj->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
-
-	// вычисление частоты старт-стопов 
-	if (bAttackMelee && m_tAction == ACTION_RUN) {
-		nStartStop++;
-	}
 	
 	// задержка для построения пути
 	u32 delay;
@@ -404,7 +399,6 @@ void CBitingEat::Run()
 
 bool CBitingEat::CheckCompletion()
 {	
-//	if (!pCorpse) return true;
 	return false;
 }
 
@@ -460,8 +454,6 @@ void CBitingHide::Run()
 
 bool CBitingHide::CheckCompletion()
 {	
-//	if (!m_tEnemy.obj) return true;
-//	if (m_tEnemy.position.distance_to(pMonster->Position()) > 30) return true;
 	return false;
 }
 

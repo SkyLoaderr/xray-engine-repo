@@ -87,9 +87,6 @@ class CBitingAttack : public IState {
 	TTime			m_dwFaceEnemyLastTime;
 	TTime			m_dwFaceEnemyLastTimeInterval;
 
-	// регулировка приближением во время атаки
-	u32				nStartStop;						//!< количество	старт-стопов
-
 	TTime			m_dwSuperMeleeStarted;
 
 	typedef	IState inherited;

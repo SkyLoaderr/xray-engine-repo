@@ -51,6 +51,11 @@ void CAI_Chimera::Think()
 {
 	inherited::Think();
 
+	if (flagEnemyGoOffline) {
+		CurrentState->Reset();
+		SetState(stateRest);
+	}
+	
 	// A - я слышу опасный звук
 	// B - я слышу неопасный звук
 	// С - я вижу очень опасного врага

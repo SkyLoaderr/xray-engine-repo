@@ -21,6 +21,7 @@ struct bonesBone {
 	bool	NeedTurn	(u32 p_axis);					// необходим поворот по оси p_axis
 	void	Turn		(u32 dt, u32 p_axis);			// выполнить поворот по оси p_axis
 	void	Apply		();								// установить углы у боны
+	void	Setup		(CBoneInstance *b, u32 a);
 };
 
 // массив бон для движения нескольких бон дновременно + параметры движения
@@ -38,15 +39,18 @@ class bonesManipulation {
 	xr_vector<bonesMotion>				motions; 
 	xr_vector<bonesMotion>::iterator	cur_motion;
 
-	bool	growth;						// если идёт прирост по углам
+	xr_vector<bonesBone>	m_Bones;
+		
+	bool	in_return_state;				// если идёт возврат к исходному положению
 	u32		time_started;
 	u32		time_last_update;
+
 public:
+	void SetupMotionBones	(xr_vector<bonesBone> &bones) {m_Bones = bones;}
 	void Init				();
 	
 	void Update				(u32 time);
 	void AddMotion			(bonesMotion m);
-	//void Stop				();
 
 	bool isActive()			{return (!motions.empty());}
 };

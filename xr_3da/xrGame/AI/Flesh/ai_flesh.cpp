@@ -55,6 +55,11 @@ void CAI_Flesh::Think()
 
 	inherited::Think();
 
+	if (flagEnemyGoOffline) {
+		CurrentState->Reset();
+		SetState(stateRest);
+	}
+
 	// A - я слышу опасный звук
 	// B - я слышу неопасный звук
 	// С - я вижу очень опасного врага
@@ -121,31 +126,36 @@ void CAI_Flesh::UpdateCL()
 
 void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {
+	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
+	index3 = -1;
+
 	switch(motion) {
-		case eMotionStandIdle:		index1 = 0; index2 = 0;	 index3 = -1;	break;
-		case eMotionLieIdle:		index1 = 2; index2 = 0;	 index3 = -1;	break;
-		case eMotionStandTurnLeft:	index1 = 0; index2 = 1;	 index3 = -1;	break;
-		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 index3 = -1;	break;
-		case eMotionWalkBkwd:		index1 = 0; index2 = 3;  index3 = -1;	break;
-		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  index3 = -1;	break;
-		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  index3 = -1;	break;
-		case eMotionRun:			index1 = 0; index2 = 6;  index3 = -1;	break;
-		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  index3 = -1;	break;
-		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  index3 = -1;	break;
-		case eMotionAttack:			index1 = 0; index2 = 9;  index3 = -1;	break;
-		case eMotionAttackRat:		index1 = 0; index2 = 10; index3 = -1;	break;
-		case eMotionFastTurnLeft:	index1 = 0; index2 = 11; index3 = -1;	break;
-		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
-		case eMotionStandDamaged:	index1 = 0; index2 = 13; index3 = -1;	break;
-		case eMotionScared:			index1 = 0; index2 = 14; index3 = -1;	break;
-		case eMotionDie:			index1 = 0; index2 = 15; index3 = -1;	break;
-		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
-		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
+		case eMotionStandIdle:		index1 = 0; index2 = 0;	 break;
+		case eMotionLieIdle:		index1 = 2; index2 = 0;	 break;
+		case eMotionStandTurnLeft:	index1 = 0; index2 = 1;	 break;
+		case eMotionWalkFwd:		index1 = 0; index2 = 2;	 break;
+		case eMotionWalkBkwd:		index1 = 0; index2 = 3;  break;
+		case eMotionWalkTurnLeft:	index1 = 0; index2 = 4;  break;
+		case eMotionWalkTurnRight:	index1 = 0; index2 = 5;  break;
+		case eMotionRun:			index1 = 0; index2 = 6;  break;
+		case eMotionRunTurnLeft:	index1 = 0; index2 = 7;  break;
+		case eMotionRunTurnRight:	index1 = 0; index2 = 8;  break;
+		case eMotionAttack:			index1 = 0; index2 = 9;  break;
+		case eMotionAttackRat:		index1 = 0; index2 = 10; break;
+		case eMotionFastTurnLeft:	index1 = 0; index2 = 11; break;
+		case eMotionEat:			index1 = 2; index2 = 12; break;
+		case eMotionStandDamaged:	index1 = 0; index2 = 13; break;
+		case eMotionScared:			index1 = 0; index2 = 14; break;
+		case eMotionDie:			index1 = 0; index2 = 15; break;
+		case eMotionLieDown:		index1 = 0; index2 = 16; break;
+		case eMotionStandUp:		index1 = 2; index2 = 17; break;
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
-		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
-		case eMotionAttackJump:		index1 = 0; index2 = 19; index3 = -1;	break;
+		case eMotionLieDownEat:		index1 = 0; index2 = 18; break;
+		case eMotionAttackJump:		index1 = 0; index2 = 19; break;
 		//default:					NODEFAULT;
 	}
+
+	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
 }
 
 void CAI_Flesh::LoadAttackAnim()

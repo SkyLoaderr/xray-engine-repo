@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ai_bloodsucker_bones.h"
 
+//  temp
+#include "..\\..\\hudmanager.h"
+
 //****************************************************************************************************
 // class bonesBone
 //****************************************************************************************************
@@ -28,7 +31,7 @@ void bonesBone::Turn(u32 dt, u32 p_axis)
 	else index = 2; 
 
 	float dy;
-	dy = deg2rad(dt * axis[index].r_speed / 1000);  // учитываем милисек и радианную меры
+	dy =  axis[index].r_speed * dt / 1000;  // учитываем милисек и радианную меры
 	
 	if (_abs(axis[index].target_yaw - axis[index].cur_yaw) < dy) axis[index].cur_yaw = axis[index].target_yaw;
 	else axis[index].cur_yaw += ((axis[index].target_yaw > axis[index].cur_yaw) ? dy : -dy);
@@ -44,10 +47,25 @@ void bonesBone::Apply()
 	if ((axis_used & AXIS_Y) == AXIS_Y) y = axis[1].cur_yaw;
 	if ((axis_used & AXIS_Z) == AXIS_Z) z = axis[2].cur_yaw;
 
+	HUD().pFontSmall->OutSet (300,450);
+	HUD().pFontSmall->OutNext("BoneX : CY = [%f] ", x);
+
 	// создать матрицу вращения и умножить на mTransform боны
 	Fmatrix M;
 	M.setXYZi (x, y, z);
 	bone->mTransform.mulB(M);
+}
+
+void bonesBone::Setup (CBoneInstance *b, u32 a)
+{
+	bone		= b; 
+	axis_used	= a;
+
+	for (int i=0; i<3; i++) {
+		axis[i].cur_yaw		= 0.f; 
+		axis[i].target_yaw	= 0.f; 
+		axis[i].r_speed		= 0.f;
+	}
 }
 
 
@@ -93,83 +111,104 @@ void bonesManipulation::Init()
 	cur_motion			= motions.end();
 	time_started		= 0;
 	time_last_update	= 0;
-	growth				= true;
+	in_return_state		= false;
 }
 
 
 void bonesManipulation::Update(u32 time)
 {
-	if (motions.empty()) return;
-	
+	// todo если ничего не произошло - выход
+
+	if (time == time_last_update) return;
+
 	// провести обработку всех костей
 	bool bones_were_turned = false;
 	u32 dt = time - time_last_update;
 	time_last_update = time;
 
-	for (u32 i=0; i<cur_motion->bones.size(); i++) {
+	for (u32 i=0; i<m_Bones.size(); i++) {
+
+		if (m_Bones[i].NeedTurn(AXIS_X)){
+			m_Bones[i].Turn(dt,AXIS_X);
+			bones_were_turned = true;
+		}
+		if (m_Bones[i].NeedTurn(AXIS_Y)) {
+			m_Bones[i].Turn(dt,AXIS_Y);
+			bones_were_turned = true;
+		}
+		if (m_Bones[i].NeedTurn(AXIS_Z)) {
+			m_Bones[i].Turn(dt,AXIS_Z);
+			bones_were_turned = true;
+		}
+
+		HUD().pFontSmall->OutSet (300,400);
+		HUD().pFontSmall->OutNext("BoneX : CY = [%f]  TY = [%f] RS = [%f]", m_Bones[i].axis[0].cur_yaw, m_Bones[i].axis[0].target_yaw, m_Bones[i].axis[0].r_speed);
+
+	}
 	
-		bonesBone &bone = cur_motion->bones[i];
-
-		if (bone.NeedTurn(AXIS_X)){
-			bone.Turn(dt,AXIS_X);
-			bones_were_turned = true;
-		}
-		if (bone.NeedTurn(AXIS_Y)) {
-			bone.Turn(dt,AXIS_Y);
-			bones_were_turned = true;
-		}
-
-		if (bone.NeedTurn(AXIS_Z)) {
-			bone.Turn(dt,AXIS_Z);
-			bones_were_turned = true;
+	// если добавлены ещё элементы во время возврата
+	if (in_return_state && !motions.empty()) {
+		in_return_state = false;
+		cur_motion = motions.begin();
+		// устанавливаем новые таргеты и угловые скорости
+		for (u32 i = 0; i<m_Bones.size(); i++) {
+			for (int index = 0; index < 3; index++) {
+				m_Bones[i].axis[index].target_yaw	= cur_motion->bones[i].axis[index].target_yaw;
+				m_Bones[i].axis[index].r_speed		= cur_motion->bones[i].axis[index].r_speed;
+			}
 		}
 	}
 	
+	// если процесс возврата завершен
+	if (!bones_were_turned && motions.empty() && in_return_state) {
+		Init();
+		in_return_state = false;
+		return;
+	}
+	
 	// если выполняется наращивание угла и ни одна кость не повернулась (достигли таргета...)
-	if (growth && !bones_were_turned) {
-		// 
+	if (!bones_were_turned && !motions.empty() && !in_return_state) {
 		if ((time_started == 0) && (cur_motion->time > 0)) { // начинаем ждать
 			time_started = time;
 		}
 
-		if ((time_started != 0) && (time_started + cur_motion->time > time)) { // время вышло?
+		if ((time_started != 0) && (time_started + cur_motion->time < time)) { // время вышло?
 			time_started = 0;
+
 			// проверить является ли данный элемент последним
 			xr_vector<bonesMotion>::iterator	is_last_elem;
 			is_last_elem = cur_motion;
 			is_last_elem++;
-			
+
 			if (is_last_elem == motions.end()) { // последний
-				// удаляем все кроме первого и начинаем возврат
-				growth	= false;
-				cur_motion = motions.begin();
-				motions.erase(cur_motion + 1, motions.end());
-				// установить у всех костей таргеты в 0
-				for (u32 i = 0; i<cur_motion->bones.size(); i++) {
-					cur_motion->bones[i].axis[0].target_yaw = 0.f;
-					cur_motion->bones[i].axis[1].target_yaw = 0.f;
-					cur_motion->bones[i].axis[2].target_yaw = 0.f;
+				// удаляем все и начинаем возврат
+				in_return_state	= true;
+				motions.clear();
+				// установить у всех костей в m_Bone таргеты в 0
+				for (u32 i = 0; i<m_Bones.size(); i++) {
+					m_Bones[i].axis[0].target_yaw = 0.f;
+					m_Bones[i].axis[1].target_yaw = 0.f;
+					m_Bones[i].axis[2].target_yaw = 0.f;
 				}
-			} else {
+			} else { // если не последний
 				// переключаем на следующий элемент
 				cur_motion++;
-			}
-		} 
-	} 
+				
+				// устанавливаем новые таргеты и угловые скорости
+				for (u32 i = 0; i<m_Bones.size(); i++) {
+					for (int index = 0; index < 3; index++) {
+						m_Bones[i].axis[index].target_yaw	= cur_motion->bones[i].axis[index].target_yaw;
+						m_Bones[i].axis[index].r_speed		= cur_motion->bones[i].axis[index].r_speed;
+					}
+				}
 
-	// если выполняется возврат и ни одна кость не повернулась (всё в 0)
-	if (!growth && !bones_were_turned) {
-		Init();
-		return;
+			}
+		}
 	}
 
-	// Установить параметры из cur_motion
-	for (u32 i = 0; i<cur_motion->bones.size(); i++) {
-		cur_motion->bones[i].Apply();
+	// Установить параметры из m_Bones
+	for (u32 i = 0; i<m_Bones.size(); i++) {
+		m_Bones[i].Apply();
 	}
 }
-
-
-
-
 

@@ -50,10 +50,12 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	
-	// TODO: no magic numbers!!!
+	// преобразование названия анимации в индексы глобальной анимации
+	int i1, i2, i3;
+
 	if (bShowDeath)	{
-		m_tpCurAnim = m_tAnimations.A[0].A[15].A[::Random.randI((int)m_tAnimations.A[0].A[15].A.size())];
+		MotionToAnim(eMotionDie,i1,i2,i3);
+		m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
 		PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
 		bShowDeath  = false;
 		return;
@@ -61,18 +63,9 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	
 	if (g_Alive())
 		if (!m_tpCurAnim) {
-
-			// преобразование названия анимации в индексы глобальной анимации
-			int i1, i2, i3;
-			i1 = i2 = i3 = 0;			// bug protection ;) todo: find out the reason
 			MotionToAnim(m_tAnim,i1,i2,i3);
-			if (i3 == -1) {
-				i3 = ::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size());
-			}
-		
 			m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
 			PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
-
 			m_tAttackAnim.SwitchAnimation(m_dwCurrentUpdate,i1,i2,i3);
 		}
 }
