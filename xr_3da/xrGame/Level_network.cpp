@@ -18,6 +18,7 @@ void CLevel::ClientSend	()
 	NET_Packet				P;
 	P.w_begin				(M_UPDATE);
 	Objects.net_Export		(&P);
+//	Msg						("%6d : %d",timeServer(),P.w_tell());
 	if (P.B.count>2)		Send(P,net_flags(FALSE));
 }
 

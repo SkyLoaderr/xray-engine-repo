@@ -15,6 +15,11 @@
 class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
+	enum EFlags {
+		FLAG_NO_POSITION = u16(0x8000),
+	};
+
+public:
 	float							m_fCondition;
 	float							m_fMass;
 	int								m_iVolume;

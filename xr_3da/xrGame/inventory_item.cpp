@@ -356,9 +356,10 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 
 	u16	NumItems = 0;
 	P.r_u16					( NumItems);
-	P.r_vec3				( N.State.position);
+	if (CSE_ALifeInventoryItem::FLAG_NO_POSITION != NumItems)
+		P.r_vec3			( N.State.position);
 
-	if (!NumItems) return;
+	if (!NumItems || (CSE_ALifeInventoryItem::FLAG_NO_POSITION == NumItems)) return;
 
 	P.r_u8					( *((u8*)&(N.State.enabled)) );
 
@@ -417,12 +418,18 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 		State.position.set(Position());
 	///////////////////////////////////////	
 	u16 NumItems = PHGetSyncItemsNumber();
-	if (H_Parent() || GameID() == GAME_SINGLE) NumItems = 0;
+	if (H_Parent())
+		NumItems = CSE_ALifeInventoryItem::FLAG_NO_POSITION;
+	else
+		if (GameID() == GAME_SINGLE)
+			NumItems = 0;
 
 	P.w_u16					( NumItems		);
-	P.w_vec3				( State.position);
+	if (NumItems != CSE_ALifeInventoryItem::FLAG_NO_POSITION)
+		P.w_vec3			( State.position);
 
-	if (!NumItems) return;
+	if (!NumItems || (NumItems == CSE_ALifeInventoryItem::FLAG_NO_POSITION))
+		return;
 
 	P.w_u8					( State.enabled );
 
