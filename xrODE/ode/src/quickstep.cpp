@@ -115,27 +115,27 @@ static int compare_index_error (const void *a, const void *b)
 
 static void Multiply1_8q1 (dReal *A, dReal *B, dReal *C, int q)
 {
-	int k;
-	dReal sum;
-	dIASSERT (q>0 && A && B && C);
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[k*8] * C[k];
-	A[0] = sum;
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[1+k*8] * C[k];
-	A[1] = sum;
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[2+k*8] * C[k];
-	A[2] = sum;
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[4+k*8] * C[k];
-	A[4] = sum;
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[5+k*8] * C[k];
-	A[5] = sum;
-	sum = 0;
-	for (k=0; k<q; k++) sum += B[6+k*8] * C[k];
-	A[6] = sum;
+  int k;
+  dReal sum;
+  dIASSERT (q>0 && A && B && C);
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[k*8] * C[k];
+  A[0] = sum;
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[1+k*8] * C[k];
+  A[1] = sum;
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[2+k*8] * C[k];
+  A[2] = sum;
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[4+k*8] * C[k];
+  A[4] = sum;
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[5+k*8] * C[k];
+  A[5] = sum;
+  sum = 0;
+  for (k=0; k<q; k++) sum += B[6+k*8] * C[k];
+  A[6] = sum;
 }
 
 static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *body,
@@ -372,7 +372,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 
 
 void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
-		     dxJoint * const *_joint, int nj, dReal stepsize)
+		     dxJoint **joint, int nj, dReal stepsize)
 {
 	int i,j;
 	IFTIMING(dTimerStart("preprocessing");)
@@ -386,8 +386,10 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 	// (the "dxJoint *const*" declaration says we're allowed to modify the joints
 	// but not the joint array, because the caller might need it unchanged).
 	//@@@ do we really need to do this? we'll be sorting constraint rows individually, not joints
-	dxJoint **joint = (dxJoint**) alloca (nj * sizeof(dxJoint*));
-	memcpy (joint,_joint,nj * sizeof(dxJoint*));
+
+	//@slipch we will use argument join array
+	//dxJoint **joint = (dxJoint**) alloca (nj * sizeof(dxJoint*));
+	//memcpy (joint,_joint,nj * sizeof(dxJoint*));
 	
 	// for all bodies, compute the inertia tensor and its inverse in the global
 	// frame, and compute the rotational force and add it to the torque
@@ -561,10 +563,7 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 		}
 #endif
 
-		// note that rhs and J are overwritten at this point and should not be used again.
-		// make sure of this.
-		J=0;
-		rhs=0;
+
 		
 		// add stepsize * cforce to the body velocity
 		for (i=0; i<nb; i++) {
@@ -574,7 +573,7 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 
 		//@@@ reinstate joint feedback:
 		// BUT: cforce is inv(M)*J'*lambda, whereas we want just J'*lambda
-		/*
+		
 		for (i=0; i<nj; i++) {
 			dJointFeedback *fb = joint[i]->feedback;
 			dxBody* b1=joint[i]->node[0].body;
@@ -605,8 +604,12 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 				}
 			}
 		}
-		*/
+		// note that rhs and J are overwritten at this point and should not be used again.
+		// make sure of this.
+		J=0;
+		rhs=0;	
 	}
+
 
 	// compute the velocity update:
 	// add stepsize * invM * fe to the body velocity

@@ -177,6 +177,8 @@ void dxStepBody (dxBody *b, dReal h)
 // bodies will not be included in the simulation. disabled bodies are
 // re-enabled if they are found to be part of an active island.
 
+//no need Island collecting! @slipch
+/*
 void dxProcessIslands (dxWorld *world, dReal stepsize, dstepper_fn_t stepper)
 {
   dxBody *b,*bb,**body;
@@ -274,4 +276,39 @@ void dxProcessIslands (dxWorld *world, dReal stepsize, dstepper_fn_t stepper)
     }
   }
 # endif
+}
+*/
+void dxProcessIslands (dxWorld *world, dReal stepsize, dstepper_fn_t stepper)
+{
+	// nothing to do if no bodies
+	if (world->nb <= 0)
+		return;
+
+#	ifdef TIMING
+	dTimerStart ("creating joint and body arrays");
+#	endif
+	dxBody **bodies, *body;
+	dxJoint **joints, *joint;
+	joints = (dxJoint **) ALLOCA (world->nj * sizeof (dxJoint *));
+	bodies = (dxBody **) ALLOCA (world->nb * sizeof (dxBody *));
+
+	int nj = 0;
+	for (joint = world->firstjoint; joint; joint = (dxJoint *) joint->next)
+		joints[nj++] = joint;
+
+	int nb = 0;
+	for (body = world->firstbody; body; body = (dxBody *) body->next)
+	{
+		body->flags &= ~dxBodyDisabled;
+		bodies[nb++] = body;
+
+	}
+
+	// now do something with body and joint lists
+	stepper (world,bodies,nb,joints,nj,stepsize);
+//stepper (world,body,bcount,joint,jcount,stepsize);
+#	ifdef TIMING
+	dTimerEnd ();
+	dTimerReport (stdout, 1);
+#	endif
 }
