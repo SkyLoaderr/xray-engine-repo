@@ -1787,9 +1787,9 @@ void print_help(lua_State *L)
 
 int __cdecl main(int argc, char* argv[])
 {
-	test1();
+//	test1();
 //	test0();
-//	time_smart_ptr_test();
+	time_smart_ptr_test();
 	return 0;
 
 	printf	("xrLuaCompiler v0.1\n");
