@@ -95,6 +95,9 @@ USEUNIT("Engine\tss_def.cpp");
 USEUNIT("Engine\Blender_default_aref.cpp");
 USEUNIT("Engine\Image.cpp");
 USEUNIT("Engine\tga.cpp");
+USEFORM("ConstantForm.cpp", frmConstant);
+USEFORM("Editor\ShaderModificator.cpp", frmShaderMatrix);
+USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

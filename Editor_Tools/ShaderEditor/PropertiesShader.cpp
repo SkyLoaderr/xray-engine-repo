@@ -9,6 +9,7 @@
 #include "Blender.h"
 #include "Blender_Params.h"
 #include "ShaderTools.h"
+#include "ShaderModificator.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
@@ -17,6 +18,8 @@
 #pragma resource "*.dfm"
 
 const LPSTR BOOLString[2]={"False","True"};
+
+#define BPID_TYPE 0xffff
 
 TfrmShaderProperties* TfrmShaderProperties::form=0;
 //---------------------------------------------------------------------------
@@ -55,12 +58,11 @@ void __fastcall TfrmShaderProperties::FormShow(TObject *Sender)
     InplaceNumber->Editor->BorderStyle= bsNone;
     InplaceEdit->Editor->Color 		= TColor(0x00A0A0A0);
     InplaceEdit->Editor->BorderStyle= bsNone;
-    InplaceCustom->Editor->BorderStyle= bsNone;
-    InplaceCustom->Editor->Color 	= TColor(0x00A0A0A0);
-    InplaceCustom->Editor->BorderStyle= bsNone;
-    InplaceCustom->Editor->ButtonGlyph->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
-    InplaceCustom->Editor->ReadOnly	= true;
-    InplaceCustom->Editor->OnButtonClick = CustomClick;
+//    InplaceCustom->Editor->BorderStyle= bsNone;
+//    InplaceCustom->Editor->Color 	= TColor(0x00A0A0A0);
+//    InplaceCustom->Editor->ButtonGlyph->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
+//    InplaceCustom->Editor->ReadOnly	= true;
+//    InplaceCustom->Editor->OnButtonClick = CustomClick;
 
 	InitProperties();
 }
@@ -74,10 +76,11 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
     CS->OwnerProps 		= true;
 
     switch (type){
+    case BPID_TYPE:		CS->CellType = sftUndef;	TI->ColumnText->Add (AnsiString((LPSTR)value)); 	break;
     case BPID_MARKER:	CS->CellType = sftUndef;	break;
-    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Matrix]"+AnsiString((LPSTR)value));   break;
-    case BPID_CONSTANT:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Color]");	break;
-    case BPID_TEXTURE:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Textures]");	break;
+    case BPID_MATRIX:	CS->CellType = sftUndef;    TI->ColumnText->Add ("[Matrix]"); 	CS->Style = ElhsOwnerDraw; break;
+    case BPID_CONSTANT:	CS->CellType = sftUndef;    TI->ColumnText->Add ("[Color]");	CS->Style = ElhsOwnerDraw; break;
+    case BPID_TEXTURE:	CS->CellType = sftUndef;    TI->ColumnText->Add ("[Textures]");	CS->Style = ElhsOwnerDraw; break;
     case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->Add	(AnsiString(*(int*)value));		break;
     case BPID_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(*(float*)value));	break;
     case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->Add	(BOOLString[((BP_BOOL*)value)->value]); CS->Style = ElhsOwnerDraw; break;
@@ -153,6 +156,9 @@ void __fastcall TfrmShaderProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
+        case BPID_TEXTURE:
+        case BPID_CONSTANT:
+        case BPID_MATRIX:
 		case BPID_TOKEN:
 		case BPID_BOOL:
             R.Right-=10;
@@ -194,6 +200,9 @@ void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+        case BPID_TEXTURE:	 
+        case BPID_CONSTANT:
+        case BPID_MATRIX:	 CustomClick(item); break;
         };
         switch(type){
 		case BPID_BOOL:
@@ -243,6 +252,8 @@ void __fastcall TfrmShaderProperties::InitProperties(){
             form->tvProperties->IsUpdating = true;
             form->tvProperties->Items->Clear();
 
+			form->AddItem(0,BPID_TYPE,"Type",(LPDWORD)SHTools.m_CurrentBlender->getComment());
+
             while (!data.Eof()){
                 int sz=0;
                 type = data.Rdword();
@@ -271,16 +282,19 @@ void __fastcall TfrmShaderProperties::InitProperties(){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderProperties::CustomClick(
-      TObject *Sender)
+void __fastcall TfrmShaderProperties::CustomClick(TElTreeItem* item)
 {
-	DWORD type = InplaceCustom->Item->Tag;
+	DWORD type = item->Tag;
     switch (type){
-    case BPID_MATRIX:	type=0; break;
-    case BPID_CONSTANT:	type=0; break;
+    case BPID_MATRIX:{
+    	CMatrix* M = SHTools.FindMatrix(LPSTR(item->Data),true);
+        TfrmShaderMatrix::Run(M);
+    }break;
+    case BPID_CONSTANT:{
+    	CConstant* C = SHTools.FindConstant(LPSTR(item->Data),true);
+    }break;
     case BPID_TEXTURE:	type=0; break;
     }
 }
 //---------------------------------------------------------------------------
-
 

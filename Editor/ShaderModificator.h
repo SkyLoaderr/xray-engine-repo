@@ -11,66 +11,63 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
-
-#include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
-#include "RxMenus.hpp"
+#include "ExtBtn.hpp"
+#include "MXCtrls.hpp"
+#include "MxMenus.hpp"
+#include "mxPlacemnt.hpp"
 #include <Menus.hpp>
-#include "multi_edit.hpp"
 
-// refs
-struct SH_StageDef;
-
-class TfrmShaderModificator : public TForm
+class TfrmShaderMatrix : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-	TLabel *Label4;
-	TMultiObjSpinEdit *seScaleU;
-	TLabel *Label1;
-	TMultiObjSpinEdit *seRotFactor;
-	TLabel *Label2;
-	TMultiObjSpinEdit *seScrollU;
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
+	TMxLabel *RxLabel1;
+	TStaticText *stMode;
+	TMxPopupMenu *pmMode;
+	TFormStorage *fsStorage;
+	TPanel *paTCM;
+	TLabel *Label4;
+	TLabel *Label2;
+	TLabel *Label3;
+	TLabel *Label5;
+	TExtBtn *ebScaleU;
+	TExtBtn *ebRotate;
+	TExtBtn *ebScrollU;
+	TExtBtn *ebScaleV;
+	TExtBtn *ebScrollV;
 	TCheckBox *cbScale;
 	TCheckBox *cbRotate;
 	TCheckBox *cbScroll;
-	TCheckBox *cbStretch;
-	TMultiObjSpinEdit *seScaleV;
-	TLabel *Label3;
-	TLabel *Label5;
-	TMultiObjSpinEdit *seScrollV;
-	TExtBtn *ebStretchFunc;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
 	void __fastcall seArgExit(TObject *Sender);
 	void __fastcall CheckClick(TObject *Sender);
-	void __fastcall ebStretchFuncClick(TObject *Sender);
-	void __fastcall seScaleUKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall seScaleULWChange(TObject *Sender, int Val);
+	void __fastcall ebScaleUClick(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall stModeMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall ebScaleVClick(TObject *Sender);
+	void __fastcall ebRotateClick(TObject *Sender);
+	void __fastcall ebScrollUClick(TObject *Sender);
+	void __fastcall ebScrollVClick(TObject *Sender);
 private:	// User declarations
     bool bLoadMode;
+	void __fastcall stModeClick(TObject *Sender);
 
-	SH_StageDef* m_CurStage;
-	SH_StageDef* m_SaveStage;
+	CMatrix* m_CurMatrix;
+	CMatrix* m_SaveMatrix;
 
-    void GetModificatorData();
-    void UpdateModificatorData();
+    void GetMatrixData();
+    void UpdateMatrixData();
 
+	static TfrmShaderMatrix *form;
 public:		// User declarations
-    __fastcall TfrmShaderModificator(TComponent* Owner);
-    int __fastcall Run(SH_StageDef* stage);
+    __fastcall TfrmShaderMatrix(TComponent* Owner);
+    static int __fastcall Run(CMatrix* matrix);
 };
-//---------------------------------------------------------------------------
-extern int frmShaderModificatorRun(SH_StageDef* stage);
 //---------------------------------------------------------------------------
 #endif

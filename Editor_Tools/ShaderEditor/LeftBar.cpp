@@ -322,3 +322,9 @@ void __fastcall TfraLeftBar::tvShadersAfterSelectionChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::tvShadersDblClick(TObject *Sender)
+{
+	UI->Command( COMMAND_SHADER_PROPERTIES );
+}
+//---------------------------------------------------------------------------
+

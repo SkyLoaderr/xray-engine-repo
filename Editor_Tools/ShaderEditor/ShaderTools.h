@@ -40,15 +40,15 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     LPCSTR				GenerateBlenderName	(LPSTR name, LPCSTR source);
     void				RemoveBlender		(LPCSTR name);
 
-	CMatrix*			FindMatrix			(LPCSTR name);
+	CMatrix*			FindMatrix			(LPSTR name, bool bDuplicate);
     LPCSTR				GenerateMatrixName	(LPSTR name);
-    LPCSTR				AppendMatrix		(CMatrix* src=0);
-    void				RemoveMatrix		(LPCSTR name);
+    LPCSTR				AppendMatrix		(CMatrix* src=0, CMatrix** dest=0);
+    void				RemoveMatrix		(LPSTR name);
 
-	CConstant*			FindConstant		(LPCSTR name);
+	CConstant*			FindConstant		(LPSTR name, bool bDuplicate);
     LPCSTR				GenerateConstantName(LPSTR name);
-    LPCSTR				AppendConstant		(CConstant* src=0);
-    void				RemoveConstant		(LPCSTR name);
+    LPCSTR				AppendConstant		(CConstant* src=0, CConstant** dest=0);
+    void				RemoveConstant		(LPSTR name);
 
 friend class CCollapseBlender;
 friend class CRefsBlender;

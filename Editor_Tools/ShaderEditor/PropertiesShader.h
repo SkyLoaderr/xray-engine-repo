@@ -41,7 +41,7 @@ class TfrmShaderProperties : public TForm
 __published:	// IDE-managed Components
 	TElTree *tvProperties;
 	TElTreeInplaceEdit *InplaceEdit;
-	TElTreeInplaceButtonEdit *InplaceCustom;
+	TElTreeInplaceButtonEdit *InplaceCustom1;
 	TElTreeInplaceFloatSpinEdit *InplaceFloat;
 	TElTreeInplaceSpinEdit *InplaceNumber;
 	TElTreeInplaceModalEdit *InplaceEnum;
@@ -64,11 +64,11 @@ __published:	// IDE-managed Components
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall CustomClick(TObject *Sender);
 private:	// User declarations
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);
 	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0);
+	void __fastcall CustomClick(TElTreeItem* item);
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();

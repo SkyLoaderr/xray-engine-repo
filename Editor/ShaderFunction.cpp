@@ -4,46 +4,33 @@
 #include "ShaderFunction.h"
 #include "Shader.h"
 #include "xr_tokens.h"
+#include "WaveForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "RxMenus"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
-TfrmShaderFunction *frmShaderFunction=0;
+TfrmShaderFunction *TfrmShaderFunction::form=0;
 //---------------------------------------------------------------------------
-int frmShaderFunctionRun(SH_Function* func){
-	frmShaderFunction = new TfrmShaderFunction(0);
-    int res = frmShaderFunction->Run(func);
-    _DELETE(frmShaderFunction);
-    return res;
-}
-//---------------------------------------------------------------------------
-xr_token							function_token					[ ]={
-	{ "Sin",					  	SH_Function::fSIN		  	},
-	{ "Triangle",				  	SH_Function::fTRIANGLE	   	},
-	{ "Square",					  	SH_Function::fSQUARE	  	},
-	{ "Saw-Tooth",				  	SH_Function::fSAWTOOTH		},
-	{ "Inv Saw-Tooth",			  	SH_Function::fINVSAWTOOTH	},
-	{ 0,							0							}
+xr_token							function_token			[ ]={
+	{ "Constant",				  	WaveForm::fCONSTANT	  	},
+	{ "Sin",					  	WaveForm::fSIN		  	},
+	{ "Triangle",				  	WaveForm::fTRIANGLE	   	},
+	{ "Square",					  	WaveForm::fSQUARE	  	},
+	{ "Saw-Tooth",				  	WaveForm::fSAWTOOTH		},
+	{ "Inv Saw-Tooth",			  	WaveForm::fINVSAWTOOTH	},
+	{ 0,							0						}
 };
 //---------------------------------------------------------------------------
-void TfrmShaderFunction::FillMenuFromToken(TRxPopupMenu* menu, const xr_token *token_list ){
+void FillMenuFromToken(TMxPopupMenu* menu, const xr_token *token_list, ClickEvent func ){
 	menu->Items->Clear();
 	for( int i=0; token_list[i].name; i++ ){
     	TMenuItem* mi = new TMenuItem(0);
       	mi->Caption = token_list[i].name;
-        mi->OnClick = stFunctionClick;
+        mi->OnClick = func;
       	menu->Items->Add(mi);
     }
 }
 //---------------------------------------------------------------------------
-AnsiString& TfrmShaderFunction::GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list){
+AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list){
 	bool bRes=false;
 	for( DWORD i=0; token_list[i].name; i++ )
     	if (token_list[i].id==int(val)) {res = token_list[i].name; bRes=true; break; }
@@ -51,7 +38,7 @@ AnsiString& TfrmShaderFunction::GetTokenNameFromVal_EQ(DWORD val, AnsiString& re
     return res;
 }
 
-DWORD TfrmShaderFunction::GetTokenValFromName(AnsiString& val, const xr_token *token_list){
+DWORD GetTokenValFromName(AnsiString& val, const xr_token *token_list){
 	for( int i=0; token_list[i].name; i++ )
 		if( !stricmp(val.c_str(),token_list[i].name) )
 			return token_list[i].id;
@@ -62,7 +49,9 @@ DWORD TfrmShaderFunction::GetTokenValFromName(AnsiString& val, const xr_token *t
 __fastcall TfrmShaderFunction::TfrmShaderFunction(TComponent* Owner)
     : TForm(Owner)
 {
-	FillMenuFromToken(pmFunction, function_token);
+    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    fsStorage->IniFileName = buf;
+	FillMenuFromToken(pmFunction, function_token, stFunctionClick);
 }
 //---------------------------------------------------------------------------
 
@@ -94,17 +83,19 @@ void __fastcall TfrmShaderFunction::DrawGraph()
     float t_cost = 1.f/w;
     float tm = 0;
     float y = m_CurFunc->Calculate(tm) - m_CurFunc->arg[0];
-    float yy = h-((h/(m_CurFunc->arg[1]*2))*y + h/2);
+    float delta = m_CurFunc->arg[1]*2;
+    delta = delta?(h/delta):0;
+    float yy = h-(delta*y + h/2);
     C->MoveTo(2,yy+2);
     for (int t=1; t<w; t++){
     	tm = t*t_cost;
     	y = m_CurFunc->Calculate(tm) - m_CurFunc->arg[0];
-        yy = h-((h/(m_CurFunc->arg[1]*2))*y + h/2);
+        yy = h-(delta*y + h/2);
         C->LineTo(t+2,yy+2);
     }
     // draw X-axis
     C->Pen->Color = clGreen;
-	float AxisX = h-((h/(m_CurFunc->arg[1]*2))*(-m_CurFunc->arg[0]) + h/2);
+	float AxisX = h-(delta*(-m_CurFunc->arg[0]) + h/2);
     C->MoveTo(2,AxisX+2);
     C->LineTo(w+2,AxisX+2);
 }
@@ -133,18 +124,18 @@ void __fastcall TfrmShaderFunction::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 //----------------------------------------------------
-int __fastcall TfrmShaderFunction::Run(SH_Function* func)
+int __fastcall TfrmShaderFunction::Run(WaveForm* func)
 {
 	VERIFY(func);
-	m_CurFunc 	= func;
-    m_SaveFunc	= new SH_Function(*func);
-    GetFuncData	();
-    UpdateFuncData();
-    int res 	= ShowModal();
-    if (res!=mrOk)CopyMemory(m_CurFunc,m_SaveFunc,sizeof(SH_Function));
-    _DELETE(m_SaveFunc);
+	form = new TfrmShaderFunction(0);
+	form->m_CurFunc 	= func;
+    form->m_SaveFunc	= new WaveForm(*func);
+    form->GetFuncData	();
+    form->UpdateFuncData();
+    int res 	= form->ShowModal();
+    if (res!=mrOk)CopyMemory(form->m_CurFunc,form->m_SaveFunc,sizeof(WaveForm));
+    _DELETE(form->m_SaveFunc);
     return res;
 }
 
@@ -155,7 +146,6 @@ void __fastcall TfrmShaderFunction::stFunctionMouseDown(TObject *Sender,
     POINT pt;
     GetCursorPos(&pt);
     temp_text = (TStaticText*)Sender;
-    pmFunction->TrackButton = tbLeftButton;
 	pmFunction->Popup(pt.x,pt.y);
 }
 //---------------------------------------------------------------------------
@@ -210,4 +200,13 @@ void __fastcall TfrmShaderFunction::seArgKeyDown(TObject *Sender,
 	if (Key==VK_RETURN) UpdateFuncData();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderFunction::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+	Action 	= caFree;
+//    form 	= 0;
+}
+//---------------------------------------------------------------------------
+
 

@@ -11,29 +11,25 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "RXCtrls.hpp"
-#include "RXSpin.hpp"
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "ElHeader.hpp"
-#include <Grids.hpp>
-#include "ElTree.hpp"
-#include "RxMenus.hpp"
-#include <Menus.hpp>
+#include "ExtBtn.hpp"
 #include "multi_edit.hpp"
+#include "MXCtrls.hpp"
+#include "MxMenus.hpp"
+#include <Menus.hpp>
+#include "mxPlacemnt.hpp"
 
 // refs
 struct xr_token;
-struct SH_Function;
+struct WaveForm;
 
 class TfrmShaderFunction : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
 	TStaticText *stFunction;
-	TRxPopupMenu *pmFunction;
-	TRxLabel *RxLabel1;
+	TMxLabel *RxLabel1;
 	TLabel *Label4;
 	TMultiObjSpinEdit *seArg1;
 	TLabel *Label1;
@@ -48,10 +44,12 @@ __published:	// IDE-managed Components
 	TLabel *lbMax;
 	TLabel *lbCenter;
 	TLabel *lbMin;
-	TLabel *Label6;
-	TLabel *Label7;
+	TLabel *lbStart;
+	TLabel *lbEnd;
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
+	TMxPopupMenu *pmFunction;
+	TFormStorage *fsStorage;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -63,25 +61,28 @@ __published:	// IDE-managed Components
 	void __fastcall seArgLWChange(TObject *Sender, int Val);
 	void __fastcall seArgKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
     bool bLoadMode;
 
-	SH_Function* m_CurFunc;
-    SH_Function* m_SaveFunc;
+	WaveForm* m_CurFunc;
+    WaveForm* m_SaveFunc;
 
     void GetFuncData();
     void UpdateFuncData();
 
 	void __fastcall DrawGraph();
 
-	AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list);
-	DWORD GetTokenValFromName(AnsiString& res, const xr_token *token_list);
-	void FillMenuFromToken(TRxPopupMenu* menu, const xr_token *token_list );
+    static TfrmShaderFunction *form;
 public:		// User declarations
     __fastcall TfrmShaderFunction(TComponent* Owner);
-    int __fastcall Run(SH_Function* func);
+    static int __fastcall Run(WaveForm* func);
 };
-//---------------------------------------------------------------------------
-extern int frmShaderFunctionRun(SH_Function* func);
+
+typedef void __fastcall (__closure *ClickEvent)(System::TObject* Sender);
+AnsiString& GetTokenNameFromVal_EQ	(DWORD val, AnsiString& res, const xr_token *token_list);
+DWORD 		GetTokenValFromName		(AnsiString& res, const xr_token *token_list);
+void 		FillMenuFromToken		(TMxPopupMenu* menu, const xr_token *token_list, ClickEvent func);
+
 //---------------------------------------------------------------------------
 #endif

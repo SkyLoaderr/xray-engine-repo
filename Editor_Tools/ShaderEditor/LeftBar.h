@@ -84,6 +84,7 @@ __published:	// IDE-managed Components
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall tvShadersAfterSelectionChange(TObject *Sender);
+	void __fastcall tvShadersDblClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);

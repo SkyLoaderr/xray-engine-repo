@@ -4,35 +4,35 @@
 #include "ShaderModificator.h"
 #include "Shader.h"
 #include "ShaderFunction.h"
+#include "xr_tokens.h"
+#include "WaveForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CSPIN"
-#pragma link "RXCtrls"
-#pragma link "RXSpin"
-#pragma link "CloseBtn"
-#pragma link "ElHeader"
-#pragma link "ElTree"
-#pragma link "RxMenus"
-#pragma link "multi_edit"
 #pragma resource "*.dfm"
-TfrmShaderModificator *frmShaderModificator=0;
+TfrmShaderMatrix *TfrmShaderMatrix::form=0;
 //---------------------------------------------------------------------------
-int frmShaderModificatorRun(SH_StageDef* stage){
-	frmShaderModificator = new TfrmShaderModificator(0);
-    int res = frmShaderModificator->Run(stage);
-    _DELETE(frmShaderModificator);
-    return res;
-}
+xr_token							mode_token					[ ]={
+	{ "Programmable",			  	CMatrix::modeProgrammable  	},
+	{ "TCM",					  	CMatrix::modeTCM		  	},
+	{ "Spherical Reflection",	  	CMatrix::modeS_refl	   		},
+	{ "Cube Reflection",			CMatrix::modeC_refl	  		},
+	{ 0,							0							}
+};
 //---------------------------------------------------------------------------
-__fastcall TfrmShaderModificator::TfrmShaderModificator(TComponent* Owner)
+
+//---------------------------------------------------------------------------
+__fastcall TfrmShaderMatrix::TfrmShaderMatrix(TComponent* Owner)
     : TForm(Owner)
 {
+    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    fsStorage->IniFileName = buf;
+	FillMenuFromToken(pmMode, mode_token, stModeClick);
 }
 //---------------------------------------------------------------------------
 
 
 //---------------------------------------------------------------------------
-void __fastcall TfrmShaderModificator::FormKeyDown(TObject *Sender,
+void __fastcall TfrmShaderMatrix::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
@@ -41,15 +41,15 @@ void __fastcall TfrmShaderModificator::FormKeyDown(TObject *Sender,
 //----------------------------------------------------
 
 
-void __fastcall TfrmShaderModificator::ebOkClick(TObject *Sender)
+void __fastcall TfrmShaderMatrix::ebOkClick(TObject *Sender)
 {
-	UpdateModificatorData();
+	UpdateMatrixData();
     Close();
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderModificator::ebCancelClick(TObject *Sender)
+void __fastcall TfrmShaderMatrix::ebCancelClick(TObject *Sender)
 {
     Close();
     ModalResult = mrCancel;
@@ -58,86 +58,113 @@ void __fastcall TfrmShaderModificator::ebCancelClick(TObject *Sender)
 
 
 //----------------------------------------------------
-int __fastcall TfrmShaderModificator::Run(SH_StageDef* stage)
+int __fastcall TfrmShaderMatrix::Run(CMatrix* mat)
 {
-	VERIFY(stage);
-	m_CurStage 	= stage;
-    m_SaveStage	= new SH_StageDef(*stage);
-    GetModificatorData	();
-    UpdateModificatorData();
-    int res 	= ShowModal();
-    if (res!=mrOk)CopyMemory(m_CurStage,m_SaveStage,sizeof(SH_StageDef));
-    _DELETE(m_SaveStage);
+	VERIFY(mat);
+	form = new TfrmShaderMatrix(0);
+	form->m_CurMatrix 	= mat;
+    form->m_SaveMatrix	= new CMatrix(*mat);
+    form->GetMatrixData	();
+    form->UpdateMatrixData();
+    int res 	= form->ShowModal();
+    if (res!=mrOk)CopyMemory(form->m_CurMatrix,form->m_SaveMatrix,sizeof(CMatrix));
+    _DELETE(form->m_SaveMatrix);
     return res;
 }
 
-void TfrmShaderModificator::GetModificatorData(){
+void TfrmShaderMatrix::GetMatrixData(){
 	bLoadMode = true;
-    cbScale->Checked	= m_CurStage->tcm & SH_StageDef::tcmScale;
-    cbRotate->Checked	= m_CurStage->tcm & SH_StageDef::tcmRotate;
-    cbScroll->Checked	= m_CurStage->tcm & SH_StageDef::tcmScroll;
-    cbStretch->Checked	= m_CurStage->tcm & SH_StageDef::tcmStretch;
-
-    seScaleU->Value		= m_CurStage->tcm_scaleU;
-    seScaleV->Value		= m_CurStage->tcm_scaleV;
-    seScrollU->Value	= m_CurStage->tcm_scrollU;
-    seScrollV->Value	= m_CurStage->tcm_scrollV;
-    seRotFactor->Value	= m_CurStage->tcm_rotate;
+	stMode->Caption 	= GetTokenNameFromVal_EQ(m_CurMatrix->dwMode, AnsiString(stMode->Caption), mode_token);
+    cbScale->Checked	= m_CurMatrix->tcm & CMatrix::tcmScale;
+    cbRotate->Checked	= m_CurMatrix->tcm & CMatrix::tcmRotate;
+    cbScroll->Checked	= m_CurMatrix->tcm & CMatrix::tcmScroll;
 	bLoadMode = false;
 }
 
-void TfrmShaderModificator::UpdateModificatorData(){
+void TfrmShaderMatrix::UpdateMatrixData(){
 	if (bLoadMode) return;
-    m_CurStage->tcm = 0;
-    if (cbScale->Checked) m_CurStage->tcm 	|= SH_StageDef::tcmScale;
-    if (cbRotate->Checked) m_CurStage->tcm 	|= SH_StageDef::tcmRotate;
-    if (cbScroll->Checked) m_CurStage->tcm 	|= SH_StageDef::tcmScroll;
-    if (cbStretch->Checked) m_CurStage->tcm	|= SH_StageDef::tcmStretch;
-
-    m_CurStage->tcm_scaleU	= seScaleU->Value;
-    m_CurStage->tcm_scaleV	= seScaleV->Value;
-    m_CurStage->tcm_scrollU	= seScrollU->Value;
-    m_CurStage->tcm_scrollV	= seScrollV->Value;
-    m_CurStage->tcm_rotate	= seRotFactor->Value;
+	m_CurMatrix->dwMode 	= GetTokenValFromName(AnsiString(stMode->Caption), mode_token);
+    m_CurMatrix->tcm = 0;
+    if (cbScale->Checked) 	m_CurMatrix->tcm 	|= CMatrix::tcmScale;
+    if (cbRotate->Checked) 	m_CurMatrix->tcm 	|= CMatrix::tcmRotate;
+    if (cbScroll->Checked) 	m_CurMatrix->tcm 	|= CMatrix::tcmScroll;
+	// visible TCM params
+    paTCM->Visible		= m_CurMatrix->dwMode==CMatrix::modeTCM;
 }
-void __fastcall TfrmShaderModificator::seArgExit(TObject *Sender)
+void __fastcall TfrmShaderMatrix::seArgExit(TObject *Sender)
 {
-	UpdateModificatorData();
+	UpdateMatrixData();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderModificator::CheckClick(TObject *Sender)
+void __fastcall TfrmShaderMatrix::CheckClick(TObject *Sender)
 {
-	seScaleU->Enabled 		= cbScale->Checked;
-	seScaleV->Enabled 		= cbScale->Checked;
+	ebScaleU->Enabled 		= cbScale->Checked;
+	ebScaleV->Enabled 		= cbScale->Checked;
 
-	seScrollU->Enabled 		= cbScroll->Checked;
-	seScrollV->Enabled 		= cbScroll->Checked;
+	ebScrollU->Enabled 		= cbScroll->Checked;
+	ebScrollV->Enabled 		= cbScroll->Checked;
 
-    seRotFactor->Enabled 	= cbRotate->Checked;
-
-    ebStretchFunc->Enabled 	= cbStretch->Checked;
-	UpdateModificatorData();
+    ebRotate->Enabled 		= cbRotate->Checked;
+	UpdateMatrixData();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderModificator::ebStretchFuncClick(TObject *Sender)
+void __fastcall TfrmShaderMatrix::FormClose(TObject *Sender,
+      TCloseAction &Action)
 {
-	frmShaderFunctionRun(&m_CurStage->tcm_stretch);
+	Action 	= caFree;
+//    form 	= 0;
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderModificator::seScaleUKeyDown(TObject *Sender,
-      WORD &Key, TShiftState Shift)
+static TStaticText* temp_text=0;
+void __fastcall TfrmShaderMatrix::stModeMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Key==VK_RETURN)	UpdateModificatorData();
+    POINT pt;
+    GetCursorPos(&pt);
+    temp_text = (TStaticText*)Sender;
+	pmMode->Popup(pt.x,pt.y);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderModificator::seScaleULWChange(TObject *Sender,
-      int Val)
+void __fastcall TfrmShaderMatrix::stModeClick(TObject *Sender)
 {
-	UpdateModificatorData();
+	if (temp_text) temp_text->Caption=((TMenuItem*)Sender)->Caption;
+    temp_text = 0;
+    UpdateMatrixData();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderMatrix::ebScaleUClick(TObject *Sender)
+{
+	TfrmShaderFunction::Run(&m_CurMatrix->scaleU);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfrmShaderMatrix::ebScaleVClick(TObject *Sender)
+{
+	TfrmShaderFunction::Run(&m_CurMatrix->scaleV);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderMatrix::ebRotateClick(TObject *Sender)
+{
+	TfrmShaderFunction::Run(&m_CurMatrix->rotate);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderMatrix::ebScrollUClick(TObject *Sender)
+{
+	TfrmShaderFunction::Run(&m_CurMatrix->scrollU);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderMatrix::ebScrollVClick(TObject *Sender)
+{
+	TfrmShaderFunction::Run(&m_CurMatrix->scrollV);
 }
 //---------------------------------------------------------------------------
 

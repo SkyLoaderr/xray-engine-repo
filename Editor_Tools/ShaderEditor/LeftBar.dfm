@@ -304,6 +304,7 @@ object fraLeftBar: TfraLeftBar
           BkColor = clGray
           OnAfterSelectionChange = tvShadersAfterSelectionChange
           OnMouseDown = tvShadersMouseDown
+          OnDblClick = tvShadersDblClick
         end
       end
       object Panel1: TPanel
