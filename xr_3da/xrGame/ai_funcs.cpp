@@ -17,7 +17,7 @@ CPatternFunction::CPatternFunction()
 	m_dwaAtomicFeatureRange = 0;
 	m_dwaPatternIndexes = 0;
 	m_tpPatterns = 0;
-	m_daParameters = 0;
+	m_faParameters = 0;
 	m_dwaVariableValues = 0;
 }
 
@@ -28,7 +28,7 @@ CPatternFunction::CPatternFunction(const char *caFileName, CBaseFunction **fpaBa
 	m_dwaAtomicFeatureRange = 0;
 	m_dwaPatternIndexes = 0;
 	m_tpPatterns = 0;
-	m_daParameters = 0;
+	m_faParameters = 0;
 	m_dwaVariableValues = 0;
 	vfLoadEF(caFileName,fpaBaseFunctions);
 }
@@ -41,10 +41,16 @@ CPatternFunction::~CPatternFunction()
 	for (DWORD i=0; i<m_dwPatternCount; i++)
 		_FREE(m_tpPatterns[i].dwaVariableIndexes);
 	_FREE(m_tpPatterns);
-	_FREE(m_daParameters);
+	_FREE(m_faParameters);
 	_FREE(m_dwaVariableValues);
 }
 
+
+void CPatternFunction::vfReadEFHeader(FILE *fFile, SEFHeader &tEFHeader)
+{
+	fread(&tEFHeader,1,sizeof(SEFHeader),fFile);
+}
+	
 void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions)
 {
 	FILE *fTestParameters = fopen(caFileName,"rb");
@@ -52,6 +58,14 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 		Msg("EvaluationFunction : File not found \"%s\"",caFileName);
 		return;
 	}
+	
+	vfReadEFHeader(fTestParameters,m_tEFHeader);
+	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
+		fclose(fTestParameters);
+		Msg("EvaluationFunction (%s): Not supported version of the Evaluation Function Contructor",caFileName);
+		return;
+	}
+
 	fread(&m_dwVariableCount,1,sizeof(m_dwVariableCount),fTestParameters);
 	m_dwaAtomicFeatureRange = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
 	ZeroMemory(m_dwaAtomicFeatureRange,m_dwVariableCount*sizeof(DWORD));
@@ -69,8 +83,8 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 
 	fread(&m_dwFunctionType,1,sizeof(DWORD),fTestParameters);
 
-	fread(&m_dMinResultValue,1,sizeof(double),fTestParameters);
-	fread(&m_dMaxResultValue,1,sizeof(double),fTestParameters);
+	fread(&m_fMinResultValue,1,sizeof(float),fTestParameters);
+	fread(&m_fMaxResultValue,1,sizeof(float),fTestParameters);
 
 	fread(&m_dwPatternCount,1,sizeof(m_dwPatternCount),fTestParameters);
 	m_tpPatterns = (SPattern *)xr_malloc(m_dwPatternCount*sizeof(SPattern));
@@ -89,8 +103,8 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 		m_dwParameterCount += m_dwComplexity;
 	}
 	
-	m_daParameters = (double *)xr_malloc(m_dwParameterCount*sizeof(double));
-	fread(m_daParameters,m_dwParameterCount,sizeof(double),fTestParameters);
+	m_faParameters = (float *)xr_malloc(m_dwParameterCount*sizeof(float));
+	fread(m_faParameters,m_dwParameterCount,sizeof(float),fTestParameters);
 	fclose(fTestParameters);
 
 	m_dwaVariableValues = (DWORD *)xr_malloc(m_dwVariableCount*sizeof(DWORD));
@@ -100,21 +114,21 @@ void CPatternFunction::vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseF
 	fpaBaseFunctions[m_dwFunctionType - 1] = this;
 }
 
-double CPatternFunction::dfEvaluate()
+float CPatternFunction::ffEvaluate()
 {
-	double dResult = 0.0;
+	float fResult = 0.0;
 	for (DWORD i=0; i<m_dwPatternCount; i++)
-		dResult += m_daParameters[dwfGetPatternIndex(m_dwaVariableValues,i)];
-	return(dResult);
+		fResult += m_faParameters[dwfGetPatternIndex(m_dwaVariableValues,i)];
+	return(fResult);
 }
 
-double CPatternFunction::dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+float CPatternFunction::ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 {
 	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-		return(m_dLastValue);
+		return(m_fLastValue);
 	m_dwLastUpdate = Level().timeServer();
 	m_tpLastMonster = tpCustomMonster;
 	for (DWORD i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = fpaBaseFunctions[m_dwaVariableTypes[i] - 1]->dwfGetDiscreteValue(tpCustomMonster,fpaBaseFunctions,m_dwaAtomicFeatureRange[i]);
-	return(m_dLastValue = dfEvaluate());
+	return(m_fLastValue = ffEvaluate());
 }

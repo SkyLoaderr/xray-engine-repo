@@ -18,28 +18,28 @@
 class CBaseFunction {
 protected:
 	DWORD			m_dwLastUpdate;
-	double			m_dLastValue;
+	float			m_fLastValue;
 	CCustomMonster	*m_tpLastMonster;
-	double			m_dMinResultValue;
-	double			m_dMaxResultValue;
+	float			m_fMinResultValue;
+	float			m_fMaxResultValue;
 
 public:
 
 	virtual	void	vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions) {};
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
+	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
 	
 	virtual DWORD	dwfGetDiscreteValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
 	{
-		double dTemp = dfGetValue(tpCustomMonster,fpaBaseFunctions);
-		if (dTemp <= m_dMinResultValue)
+		float fTemp = ffGetValue(tpCustomMonster,fpaBaseFunctions);
+		if (fTemp <= m_fMinResultValue)
 			return(0);
 		else
-			if (dTemp >= m_dMaxResultValue)
+			if (fTemp >= m_fMaxResultValue)
 				return(dwDiscretizationValue - 1);
 			else {
-				double dDummy = (m_dMaxResultValue - m_dMinResultValue)/(double)dwDiscretizationValue;
-				dDummy = (dTemp - m_dMinResultValue)/dDummy;
-				return(iFloor((float)dDummy));
+				float fDummy = (m_fMaxResultValue - m_fMinResultValue)/(float)dwDiscretizationValue;
+				fDummy = (fTemp - m_fMinResultValue)/fDummy;
+				return(iFloor(fDummy));
 			}
 	}
 };
@@ -47,6 +47,12 @@ public:
 class CPatternFunction : public CBaseFunction {
 	
 private:
+	static const DWORD	EFC_VERSION	= 1;
+	typedef struct tagSEFHeader {
+		DWORD	dwBuilderVersion;
+		DWORD	dwDataFormat;
+	} SEFHeader;
+
 	typedef struct tagSPattern {
 		DWORD		dwCardinality;
 		DWORD		*dwaVariableIndexes;
@@ -55,10 +61,12 @@ private:
 	DWORD		*m_dwaAtomicFeatureRange;
 	DWORD		*m_dwaPatternIndexes;
 	SPattern	*m_tpPatterns;
-	double		*m_daParameters;
+	float		*m_faParameters;
 
 	DWORD		m_dwPatternCount;
 	DWORD		m_dwParameterCount;
+
+	SEFHeader	m_tEFHeader;
 
 	IC DWORD dwfGetPatternIndex(DWORD *dwpTest, int iPatternIndex)
 	{
@@ -68,7 +76,8 @@ private:
 		return(dwIndex + m_dwaPatternIndexes[iPatternIndex]);
 	}
 	
-	double		dfEvaluate();
+	float		ffEvaluate();
+	void		vfReadEFHeader(FILE *fFile, SEFHeader &tEFHeader);
 
 public:
 	
@@ -82,24 +91,24 @@ public:
 				~CPatternFunction();
 
 	virtual	void	vfLoadEF(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
+	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
 };
 
 class CHealthFunction : public CBaseFunction {
 	
 public:
 	CHealthFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = tpCustomMonster->g_Health());
+		return(m_fLastValue = tpCustomMonster->g_Health());
 	};
 	
 };
@@ -108,17 +117,17 @@ class CArmorFunction : public CBaseFunction {
 	
 public:
 	CArmorFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = tpCustomMonster->g_Armor());
+		return(m_fLastValue = tpCustomMonster->g_Armor());
 	};
 	
 };
@@ -127,17 +136,17 @@ class CMoraleFunction : public CBaseFunction {
 	
 public:
 	CMoraleFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = m_dMaxResultValue);
+		return(m_fLastValue = m_fMaxResultValue);
 	};
 	
 };
@@ -146,17 +155,17 @@ class CStrengthFunction : public CBaseFunction {
 	
 public:
 	CStrengthFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = m_dMaxResultValue);
+		return(m_fLastValue = m_fMaxResultValue);
 	};
 	
 };
@@ -165,17 +174,17 @@ class CAccuracyFunction : public CBaseFunction {
 	
 public:
 	CAccuracyFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = m_dMaxResultValue);
+		return(m_fLastValue = m_fMaxResultValue);
 	};
 	
 };
@@ -184,17 +193,17 @@ class CReactionFunction : public CBaseFunction {
 	
 public:
 	CReactionFunction() {
-		m_dMinResultValue = 0.0;
-		m_dMaxResultValue = 100.0;
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 100.0;
 	}
 	
-	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
 	{
 		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
-			return(m_dLastValue);
+			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
 		m_tpLastMonster = tpCustomMonster;
-		return(m_dLastValue = m_dMaxResultValue);
+		return(m_fLastValue = m_fMaxResultValue);
 	};
 	
 };
