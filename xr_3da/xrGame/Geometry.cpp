@@ -161,6 +161,16 @@ void CODEGeom::get_global_form_bt(Fmatrix& form)
 	//PHDynamicData::DMXtoFMX((dReal*)(&form),form);
 }
 
+void CODEGeom::set_static_ref_form(const Fmatrix& form)
+{
+	dGeomSetPosition(geometry_transform(),form.c.x,form.c.y,form.c.z);
+	Fmatrix33 m33;
+	m33.set(form);
+	dMatrix3 R;
+	PHDynamicData::FMX33toDMX(m33,R);
+	dGeomSetRotation(geometry_transform(),R);
+}
+
 void CODEGeom::set_body(dBodyID body)
 {
 	if(m_geom_transform) dGeomSetBody(m_geom_transform,body);

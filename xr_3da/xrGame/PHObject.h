@@ -22,7 +22,7 @@ protected:
 				Fvector		AABB;
 protected:
 
-	virtual		dSpaceID	dSpace				()								=0;
+	virtual		dGeomID		dSpacedGeom			()								=0;
 	virtual		void		get_spatial_params	()								=0;
 
 	virtual		void		spatial_register	()								;
@@ -30,24 +30,23 @@ protected:
 public:
 	virtual		void		FreezeContent		()								;
 	virtual		void		UnFreezeContent		()								;
-	virtual		void EnableObject	()											;
-	virtual 	void PhDataUpdate	(dReal step)								=0;
-	virtual 	void PhTune			(dReal step)								=0;
-	virtual		void spatial_move	()											;
-
-	virtual 	void InitContact	(dContact* c,bool& do_collide)				=0;
+	virtual		void 		EnableObject	()											;
+	virtual 	void 		PhDataUpdate	(dReal step)						=0;
+	virtual 	void 		PhTune			(dReal step)						=0;
+	virtual		void 		spatial_move	()									;
+	virtual 	void 		InitContact	(dContact* c,bool& do_collide)			=0;
 	
-				void Freeze			()											;
-				void UnFreeze		()											;
+				void 		Freeze			()									;
+				void 		UnFreeze		()									;
 
 	//virtual void StepFrameUpdate(dReal step)=0;
 
 
-				CPHObject		()												;
-	void		Activate		()												;
-	IC	bool	IsActive		()												{return b_activated;}
-	void		Deactivate		()												;
-	void		Collide			()					;
+						CPHObject		()										;
+virtual		void		Activate		()										;
+		IC	bool		IsActive		()										{return b_activated;}
+			void		Deactivate		()										;
+			void		Collide			()										;
 
 
 };

@@ -1304,5 +1304,5 @@ void CPHSimpleCharacter::set_State(const SPHNetState& state)
 
 void CPHSimpleCharacter::get_spatial_params()
 {
-	spatialParsFromDSpace(m_space,spatial.center,AABB,spatial.radius);
+	spatialParsFromDGeom((dGeomID)m_space,spatial.center,AABB,spatial.radius);
 }

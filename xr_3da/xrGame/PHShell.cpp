@@ -112,7 +112,7 @@ float CPHShell::getMass()
 
 void  CPHShell::get_spatial_params()
 {
-	spatialParsFromDSpace(m_space,spatial.center,AABB,spatial.radius);
+	spatialParsFromDGeom((dGeomID)m_space,spatial.center,AABB,spatial.radius);
 }
 
 float CPHShell::getVolume()
@@ -237,8 +237,8 @@ CPhysicsElement* CPHShell::get_Element(s16 bone_id)
 
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 	///CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
-	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
 
+	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
 	E->BonesCallBack(B);
 }
 
@@ -403,6 +403,23 @@ void CPHShell::SmoothElementsInertia(float k)
 	}
 }
 
+void CPHShell::setEquelInertiaForEls(const dMass& M)
+{
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;++i)
+	{
+		(*i)->setInertia(M);
+	}
+}
+
+void CPHShell::addEquelInertiaToEls(const dMass& M)
+{
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;++i)
+	{
+		(*i)->addInertia(M);
+	}
+}
 static BONE_P_MAP* spGetingMap=NULL;
 void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 {
@@ -687,15 +704,19 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 						break;
 					}
 
+				case jtNone: break;
 
 				default: NODEFAULT;
 				}
-				SetJointRootGeom(root_e,J);
-				add_Joint	(J);
-				if(breakable)
+				if(J)
 				{
-					setEndJointSplitter();
-					J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
+					SetJointRootGeom(root_e,J);
+					add_Joint	(J);
+					if(breakable)
+					{
+						setEndJointSplitter();
+						J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
+					}
 				}
 			}
 			if(m_spliter_holder)
@@ -764,8 +785,11 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 		else
 		{
-			J->JointDestroyInfo()->m_end_element=u16(elements.size());
-			J->JointDestroyInfo()->m_end_joint=u16(joints.size());
+			if(J)
+			{
+				J->JointDestroyInfo()->m_end_element=u16(elements.size());
+				J->JointDestroyInfo()->m_end_joint=u16(joints.size());
+			}
 		}
 	}
 

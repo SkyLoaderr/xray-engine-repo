@@ -88,6 +88,7 @@ public:
 	virtual		void		PhTune								(dReal step)						;
 	virtual		void		InitContact							(dContact* c,bool &do_collide)		;
 	virtual		dSpaceID	dSpace								()									{return m_space;}
+	virtual		dGeomID		dSpacedGeom							()									{return (dGeomID)m_space;}
 	virtual		void		get_spatial_params					()									;
 	/////////////////CPHCharacter////////////////////////////////////////////
 public:

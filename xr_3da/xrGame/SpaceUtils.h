@@ -5,7 +5,7 @@
 #include "../ode/src/collision_kernel.h"
 #pragma warning(default:4995)
 #pragma warning(default:4267)
-IC void spatialParsFromDSpace(dSpaceID d_space,Fvector& center,Fvector& AABB,float& radius)
+IC void spatialParsFromDGeom(dGeomID d_space,Fvector& center,Fvector& AABB,float& radius)
 {
 	
 	d_space->computeAABB();

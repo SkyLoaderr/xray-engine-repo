@@ -44,6 +44,7 @@ public:
 				void		get_global_center_bt(Fvector& center)													 ;		//for built
 				void		get_local_form_bt	(Fmatrix& form)														 ;	    //for built
 				void		get_global_form_bt	(Fmatrix& form)														 ;		//for built
+				void		set_static_ref_form	(const Fmatrix& form)												 ;		//for built
 	virtual		float		radius				()																	=0;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) =0;
 	IC			dGeomID		geometry_transform   ()

@@ -41,8 +41,7 @@ CPHElement::CPHElement()																															//aux
 	m_w_scale=default_w_scale;
 
 	push_untill=0;
-	contact_callback=ContactShotMark;
-	object_contact_callback=NULL;
+
 	temp_for_push_out=NULL;
 
 	m_body=NULL;
@@ -50,37 +49,28 @@ CPHElement::CPHElement()																															//aux
 	bActivating=false;
 	m_parent_element=NULL;
 	m_shell=NULL;
-	m_group=NULL;
-	m_phys_ref_object=NULL;
-	ul_material=GMLib.GetMaterialIdx("objects\\small_box");
+
+
 	k_w=default_k_w;
 	k_l=default_k_l;//1.8f;
 	m_fratures_holder=NULL;
 	b_enabled_onstep=false;
 }
 
-void CPHElement::			add_Box		(const Fobb&		V)
+void CPHElement::add_Box		(const Fobb&		V)
 {
-	Fobb box;
-	box=V;
-	if(box.m_halfsize.x<0.005f) box.m_halfsize.x=0.005f;
-	if(box.m_halfsize.y<0.005f) box.m_halfsize.y=0.005f;
-	if(box.m_halfsize.z<0.005f) box.m_halfsize.z=0.005f;
-	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CBoxGeom>(box)));
-
+	CPHGeometryOwner::add_Box(V);
 }
 
 
-
-
-void CPHElement::			add_Sphere	(const Fsphere&	V)
+void CPHElement::add_Sphere	(const Fsphere&	V)
 {
-	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CSphereGeom>(V)));
+	CPHGeometryOwner::add_Sphere(V);
 }
 
 void CPHElement::add_Cylinder	(const Fcylinder& V)
 {
-	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CCylinderGeom>(V)));
+	CPHGeometryOwner::add_Cylinder(V);
 }
 
 void CPHElement::			build	(){
@@ -110,9 +100,9 @@ void CPHElement::RunSimulation()
 		push_untill+=Device.dwTimeGlobal;
 
 	if(m_group)
-		dSpaceAdd(m_shell->GetSpace(),(dGeomID)m_group);
+		dSpaceAdd(m_shell->dSpace(),(dGeomID)m_group);
 	else
-		(*m_geoms.begin())->add_to_space(m_shell->GetSpace());
+		(*m_geoms.begin())->add_to_space(m_shell->dSpace());
 	dBodyEnable(m_body);
 }
 
@@ -210,16 +200,13 @@ void		CPHElement::Deactivate()
 void CPHElement::SetTransform(const Fmatrix &m0){
 	VERIFY2(_valid(m0),"invalid_form_in_set_transform");
 	Fvector mc;
-	mc.set(m_mass_center);
-	m0.transform_tiny(mc);
-	VERIFY2(_valid(mc),"invalid mc in_set_transform");
-	dBodySetPosition(m_body,mc.x,mc.y+0.0f,mc.z);
+	CPHGeometryOwner::get_mc_vs_transform(mc,m0);
+	dBodySetPosition(m_body,mc.x,mc.y,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
-
 }
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
@@ -248,10 +235,8 @@ void CPHElement::SetGlobalPositionDynamic(const Fvector& position)
 CPHElement::~CPHElement	()
 {
 	Deactivate();
-	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
-	for(;i_geom!=e;++i_geom)xr_delete(*i_geom);
 	DeleteFracturesHolder();
-	m_geoms.clear();
+
 }
 
 void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
@@ -720,8 +705,8 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		VERIFY(_valid(m_shell->mXFORM));
 	}
 
-	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
-
+	if( !m_shell->IsActive() && !bUpdate) return;
+	
 	{
 		InterpolateGlobalTransform(&mXFORM);
 		parent.set(m_shell->mXFORM);
@@ -746,28 +731,19 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 
 void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)
 {
-	m_phys_ref_object=ref_object;
-	if(!bActive) return;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i) (*i)->set_ref_object(ref_object);
+	CPHGeometryOwner::set_PhysicsRefObject(ref_object);
 }
 
 
 void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
-	object_contact_callback= callback;
-	if(!bActive)return;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i) (*i)->set_obj_contact_cb(callback);
+	CPHGeometryOwner::set_ObjectContactCallback(callback);
 }
 
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
-	contact_callback=callback;
 	push_untill=0;
-	if(!bActive)return;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i) (*i)->set_contact_cb(callback);
+	CPHGeometryOwner::set_ContactCallback(callback);
 }
 
 void CPHElement::SetMaterial(u16 m)
@@ -775,15 +751,24 @@ void CPHElement::SetMaterial(u16 m)
 	CPHGeometryOwner::SetMaterial(m);
 }
 
-
-
-
-
 dMass*	CPHElement::getMassTensor()																						//aux
 {
 	return &m_mass;
 }
 
+void	CPHElement::setInertia(const dMass& M)
+{
+	m_mass=M;
+	if(!bActive)return;
+	dBodySetMass(m_body,&M);
+}
+
+void	CPHElement::addInertia(const dMass& M)
+{
+	dMassAdd(&m_mass,&M);
+	if(!bActive)return;
+	dBodySetMass(m_body,&m_mass);
+}
 void CPHElement::get_LinearVel(Fvector& velocity)
 {
 	if(!bActive||!dBodyIsEnabled(m_body))
@@ -871,72 +856,12 @@ void CPHElement::unset_Pushout()
 
 void CPHElement::add_Shape(const SBoneShape& shape,const Fmatrix& offset)
 {
-	switch(shape.type) {
-	case SBoneShape::stBox	:
-		{
-			Fobb box=shape.box;
-			Fmatrix m;
-			m.set(offset);
-			//Fmatrix position;
-			//position.set(box.m_rotate);
-			//position.c.set(box.m_translate);
-			//position.mulA(offset);
-			//box.m_rotate.set(position);
-			//box.m_translate.set(position.c);
-			box.transform(box,m);
-			add_Box(box);
-			break;
-		}
-	case SBoneShape::stSphere	:
-		{
-			Fsphere sphere=shape.sphere;
-			offset.transform_tiny(sphere.P);
-			add_Sphere(sphere);
-			break;
-		}
-
-
-	case SBoneShape::stCylinder :
-		{
-			Fcylinder C=shape.cylinder;
-			offset.transform_tiny(C.m_center);
-			offset.transform_dir(C.m_direction);
-			add_Cylinder(C);
-			break;
-		}
-
-
-	case SBoneShape::stNone :
-		break;
-	default: NODEFAULT;
-	}
+	CPHGeometryOwner::add_Shape(shape,offset);
 }
 
 void CPHElement::add_Shape(const SBoneShape& shape)
 {
-	switch(shape.type) {
-	case SBoneShape::stBox	:
-		{
-			add_Box(shape.box);
-			break;
-		}
-	case SBoneShape::stSphere	:
-		{
-			add_Sphere(shape.sphere);
-			break;
-		}
-
-
-	case SBoneShape::stCylinder :
-		{
-			add_Cylinder(shape.cylinder);
-			break;
-		}
-
-	case SBoneShape::stNone :
-		break;
-	default: NODEFAULT;
-	}
+	CPHGeometryOwner::add_Shape(shape);
 }
 
 #pragma todo(remake it using Geometry functions)
@@ -1044,8 +969,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 
 float CPHElement::getRadius()
 {
-	if(!m_geoms.empty()) return m_geoms.back()->radius();
-	else				  return 0.f;
+	return CPHGeometryOwner::getRadius();
 }
 
 void CPHElement::set_DynamicLimits(float l_limit,float w_limit)
@@ -1070,17 +994,7 @@ void	CPHElement::set_DisableParams				(const SAllDDOParams& params)
 
 void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
 {
-	lo_ext=dInfinity;hi_ext=-dInfinity;
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i)
-	{
-		float temp_lo_ext,temp_hi_ext;
-		//GetTransformedGeometryExtensions((*i)->geometry_transform(),(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
-		(*i)->get_extensions_bt(axis,center_prg,temp_lo_ext,temp_hi_ext);
-		if(lo_ext>temp_lo_ext)lo_ext=temp_lo_ext;
-		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
-	}
-
+	CPHGeometryOwner::get_Extensions(axis,center_prg,lo_ext,hi_ext);
 }
 
 const Fvector& CPHElement::mass_Center()
@@ -1135,11 +1049,7 @@ void CPHElement::CreateSimulBase()
 	//m_saved_contacts=dJointGroupCreate (0);
 	//b_contacts_saved=false;
 	dBodyDisable(m_body);
-	if(m_geoms.size()>1)
-	{
-		m_group=dSimpleSpaceCreate(0);
-		dSpaceSetCleanup(m_group,0);
-	}
+	CPHGeometryOwner::CreateSimulBase();
 }
 void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 {
@@ -1174,11 +1084,7 @@ void CPHElement::ResetMass(float density)
 
 	bActivating = true;
 
-	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
-	for(;i!=e;++i)
-	{
-		(*i)->set_position(m_mass_center);
-	}
+	CPHGeometryOwner::setPosition(m_mass_center);
 }
 void CPHElement::ReInitDynamics(const Fmatrix &shift_pivot,float density)
 {
@@ -1248,7 +1154,7 @@ CPHFracture& CPHElement::Fracture(u16 num)
 }
 u16	CPHElement::numberOfGeoms()
 {
-	return (u16)m_geoms.size();
+	return CPHGeometryOwner::numberOfGeoms();
 }
 void CPHElement::get_State(SPHNetState& state)
 {

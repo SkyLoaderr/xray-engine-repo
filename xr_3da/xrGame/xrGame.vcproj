@@ -4931,6 +4931,12 @@
 						RelativePath=".\PHShellCreator.h">
 					</File>
 					<File
+						RelativePath=".\PHStaticGeomShell.cpp">
+					</File>
+					<File
+						RelativePath=".\PHStaticGeomShell.h">
+					</File>
+					<File
 						RelativePath=".\PhysicsRefObject.h">
 					</File>
 					<Filter

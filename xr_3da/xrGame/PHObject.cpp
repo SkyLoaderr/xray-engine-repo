@@ -53,10 +53,10 @@ void CPHObject::Collide()
 		
 		CPHObject* obj2=static_cast<CPHObject*>(*i);
 		if(obj2==this || !obj2->b_dirty)		continue;
-		NearCallback(this,obj2,(dGeomID)dSpace(),(dGeomID)obj2->dSpace());
+		NearCallback(this,obj2,dSpacedGeom(),obj2->dSpacedGeom());
 	}
 ///////////////////////////////
-	CollideStatic((dGeomID)dSpace());
+	CollideStatic(dSpacedGeom());
 	b_dirty=false;
 	//near_callback(this,0,(dGeomID)dSpace(),ph_world->GetMeshGeom());
 }

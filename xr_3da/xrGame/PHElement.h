@@ -68,20 +68,19 @@ public:
 	virtual	void			add_Cylinder							(const Fcylinder&	V);															//aux
 	virtual void			add_Shape								(const SBoneShape& shape);														//aux
 	virtual void			add_Shape								(const SBoneShape& shape,const Fmatrix& offset);								//aux
-	virtual CODEGeom*		last_geom								(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
-	virtual bool			has_geoms								(){return !m_geoms.empty();}
+	virtual CODEGeom*		last_geom								(){return CPHGeometryOwner::last_geom();}						//aux
+	virtual bool			has_geoms								(){return CPHGeometryOwner::has_geoms();}
 	virtual void			set_ContactCallback						(ContactCallbackFun* callback);													//aux (may not be)
-	virtual float			getRadius								();
 	virtual void			set_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
 	virtual void			set_PhysicsRefObject					(CPhysicsRefObject* ref_object);												//aux
 	virtual CPhysicsRefObject*	PhysicsRefObject					(){return m_phys_ref_object;}													//aux
 	virtual void			SetMaterial								(u16 m);																		//aux
-	virtual void			SetMaterial								(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}								//aux
+	virtual void			SetMaterial								(LPCSTR m){CPHGeometryOwner::SetMaterial(m);}									//aux
 	virtual u16				numberOfGeoms							();																				//aux
-	virtual const Fvector&	mass_Center								()						;														//aux
-	virtual const Fvector&	local_mass_Center						()		{return m_mass_center;}													//aux
-	virtual float			getVolume								()		{return m_volume;}	
+	virtual const Fvector&	local_mass_Center						()		{return CPHGeometryOwner::local_mass_Center();}							//aux
+	virtual float			getVolume								()		{return CPHGeometryOwner::get_volume();}								//aux
 	virtual void			get_Extensions							(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
+	virtual float			getRadius								();
 ////////////////////////////////////////////////////Mass/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
@@ -90,12 +89,13 @@ private:
 	void					calc_it_fract_data_use_density  		(const Fvector& mc,float density);//sets element mass and fractures parts mass	//aux
 	dMass					recursive_mass_summ						(u16 start_geom,FRACTURE_I cur_fracture);										//aux
 public:																																				//
-
+	virtual const Fvector&	mass_Center								()						;														//aux
 	virtual void			setDensity								(float M);																		//aux
 	virtual float			getDensity								(){return m_mass.mass/m_volume;}												//aux
 	virtual void			setMassMC								(float M,const Fvector& mass_center);											//aux
 	virtual void			setDensityMC							(float M,const Fvector& mass_center);											//aux
-	virtual void			setInertia								(const Fmatrix& M)															{}	//aux
+	virtual void			setInertia								(const dMass& M);																//aux
+	virtual void			addInertia								(const dMass& M);
 	virtual void			add_Mass								(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);//aux
 	virtual	void			set_BoxMass								(const Fobb& box, float mass);													//aux
 	virtual void			setMass									(float M);																		//aux

@@ -97,7 +97,8 @@ public:
 	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
-	virtual void			setInertia				(const Fmatrix& M)								= 0;
+	virtual void			setInertia				(const dMass& M)								= 0;																
+	virtual void			addInertia				(const dMass& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
@@ -217,6 +218,8 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 
 	virtual void				setMass1				(float M)											= 0;
 	virtual void				SmoothElementsInertia	(float k)											= 0;
+	virtual	void				setEquelInertiaForEls	(const dMass& M)									= 0;
+	virtual	void				addEquelInertiaToEls	(const dMass& M)									= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(ref_str bone_name)									= 0;
 	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;

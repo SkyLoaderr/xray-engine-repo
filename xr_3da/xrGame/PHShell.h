@@ -66,7 +66,9 @@ public:
 
 	virtual void			setMass					(float M)									;
 
-	virtual void			setMass1				(float M)								;
+	virtual void			setMass1				(float M)									;
+	virtual	void			setEquelInertiaForEls	(const dMass& M)							;
+	virtual	void			addEquelInertiaToEls	(const dMass& M)							;
 	virtual float			getMass					()											;
 	virtual void			setDensity				(float M)									;
 	virtual float			getDensity				()											;
@@ -148,11 +150,9 @@ public:
 	virtual void				GetGlobalTransformDynamic	(Fmatrix* m);
 	virtual void				GetGlobalPositionDynamic	(Fvector* v);
 	virtual Fmatrix&			ObjectInRoot				(){return m_object_in_root;}
+	virtual	dSpaceID			dSpace						(){return m_space;}
 
-	dSpaceID GetSpace()
-	{
-		return m_space;
-	}
+	
 	void CreateSpace()
 	{
 		if(!m_space) 
@@ -168,8 +168,8 @@ public:
 				u16  BoneIdToRootGeom					(u16 id)																		;
 				void SetTransform						(Fmatrix m)																		;
 protected:
-	virtual		void		get_spatial_params			()												;
-	virtual		dSpaceID	dSpace						()																	{return m_space;}
+	virtual		void		get_spatial_params			()																				;
+	virtual		dGeomID		dSpacedGeom					()																	{return (dGeomID)m_space;}
 private:
 	//breakable
 	void setEndElementSplitter	  			()																							;
