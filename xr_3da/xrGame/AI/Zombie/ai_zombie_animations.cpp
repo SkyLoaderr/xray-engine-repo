@@ -103,6 +103,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	if (!g_Alive()) {
 		for (int i=0 ;i<3; i++)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
+				Msg("Death idle");
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
@@ -111,12 +112,18 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			for (int i=0 ;i<3; i++)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-					if (!m_tpCurrentGlobalBlend->playing)
+					if (!m_tpCurrentGlobalBlend->playing) {
 						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i];
+						Msg("Death idle");
+					}
+					else
+						Msg("Death");
 					break;
 				}
-			if (!tpGlobalAnimation)
+			if (!tpGlobalAnimation) {
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
+				Msg("Death");
+			}
 		}
 	}
 	else

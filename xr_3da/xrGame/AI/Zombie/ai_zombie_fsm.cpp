@@ -133,6 +133,8 @@ void CAI_Zombie::Death()
 			GO_TO_NEW_STATE(aiZombieResurrect);
 		}
 	}
+
+	SelectAnimation(clTransform.k,mRotate.k,0);
 }
 
 void CAI_Zombie::Turn()
