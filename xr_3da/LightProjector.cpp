@@ -84,11 +84,36 @@ void CLightProjector::set_object	(CObject* O)
 		}
 	}
 }
+/*
+class mat_tex2d : public D3DXMATRIX
+{
+public:
+	mat_tex2d(const D3DMATRIX &rhs)
+		: D3DXMATRIX(rhs._11, rhs._12, rhs._14, 0,
+		rhs._21, rhs._22, rhs._24, 0,
+		rhs._41, rhs._42, rhs._44, 0,
+		0, 0, 0, 1)
+	{}
+	~mat_tex2d() {}
+};
+
+class mat_tex1d : public D3DXMATRIX
+{
+public:
+	mat_tex1d(const D3DXMATRIX &rhs)
+		: D3DXMATRIX(rhs._11, rhs._14, 0, 0,
+		rhs._41, rhs._44, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1)
+	{}
+	~mat_tex1d() {}
+};
+*/
 
 // 
 void CLightProjector::setup		(int id)
 {
-	VERIFY				(id<receivers.size());
+	VERIFY				(id<int(receivers.size()));
 	Device.set_xform	(D3DTS_TEXTURE0,receivers[id].UVgen);
 }
 
@@ -102,8 +127,11 @@ void CLightProjector::calculate	()
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	Device.set_xform_world		(Fidentity);
 
-	Fmatrix	mInvView;
+	Fmatrix	mInvView,mXform2UV,mTemp;
 	mInvView.invert				(Device.mView);
+	mXform2UV.translate			(+1,   -1,	0);
+	mTemp.scale					(.5f, -.5f,	0);
+	mXform2UV.mulA_43			(mTemp);
 	
 	// iterate on objects
 	int	slot_id		= 0;
@@ -126,12 +154,13 @@ void CLightProjector::calculate	()
 		Fvector		v_C, v_N;
 		v_C.set					(C.C);
 		v_C.y					+=	P_cam_dist;
-		v_N.set					(0,0,-1);
+		v_N.set					(0,0,1);
 		mView.build_camera		(v_C,C.C,v_N);
 		Device.set_xform_view	(mView);
 
 		// calculate uv-gen matrix
 		C.UVgen.mul_43			(mView,mInvView);
+		C.UVgen.mulA_43			(mXform2UV);
 		
 		// combine and build frustum
 		Fmatrix		mCombine;
@@ -166,7 +195,6 @@ void CLightProjector::calculate	()
 		slot_id	++;
 */
 	}
-	receivers.clear	();
 	
 	// Blur
 	{

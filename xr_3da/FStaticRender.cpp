@@ -521,7 +521,7 @@ void	CRender::Render		()
 	// Postprocess
 	Target.End				();
 	HOM.Debug				();
-	L_Projector.render		();
+	L_Projector.finalize	();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();

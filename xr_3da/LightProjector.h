@@ -39,6 +39,7 @@ public:
 	BOOL					shadowing		()			{ return current!=0; }
 	void					calculate		();
 	void					setup			(int slot);
+	void					finalize		()			{ receivers.clear(); }
 
 	void					render			();
 

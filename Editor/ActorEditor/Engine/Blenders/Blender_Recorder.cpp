@@ -162,7 +162,7 @@ void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 	if (M) {
 		switch (M->dwMode)
 		{
-		case CMatrix::modeProgrammable:	StageSET_XForm	(D3DTTFF_COUNT2,D3DTSS_TCI_CAMERASPACEPOSITION|ID);					break;
+		case CMatrix::modeProgrammable:	StageSET_XForm	(D3DTTFF_COUNT3,D3DTSS_TCI_CAMERASPACEPOSITION|ID);					break;
 		case CMatrix::modeTCM:			StageSET_XForm	(D3DTTFF_COUNT2,D3DTSS_TCI_PASSTHRU|iChannel);						break;
 		case CMatrix::modeC_refl:		StageSET_XForm	(D3DTTFF_COUNT3,D3DTSS_TCI_CAMERASPACEREFLECTIONVECTOR|ID);			break;
 		case CMatrix::modeS_refl:		StageSET_XForm	(D3DTTFF_COUNT2,D3DTSS_TCI_CAMERASPACENORMAL|ID);					break;
