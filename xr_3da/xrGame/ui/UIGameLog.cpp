@@ -25,19 +25,25 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	CUIColorAnimatorWrapper	*animation	= xr_new<CUIColorAnimatorWrapper>(CHAT_LOG_ITEMS_ANIMATION);
 	CUIPdaMsgListItem* pItem = NULL;
 	
-	pItem = xr_new<CUIPdaMsgListItem>(-1);
+	pItem = xr_new<CUIPdaMsgListItem>(-1);	
 
 	UILogList.AddItem(pItem, -1); 
 	CUIListItem	*item = UILogList.GetItem(UILogList.GetSize() - 1);
 	VERIFY(item);
-	
+
 	pItem->UIMsgText.SetText(msg.c_str());	
-	pItem->UIMsgText.SetWndPos(0, 0);	
+	pItem->SetFont(GetFont());
+	int h = pItem->GetHeight();
+	int h2 = (int)pItem->UIMsgText.GetFont()->CurrentHeight();
+	int y = (h - h2)/2;	
+	pItem->UIMsgText.SetTextPos(pItem->UIMsgText.GetTextX(), y);
+	pItem->UIMsgText.SetWndPos(pItem->UIMsgText.GetWndPos().x, 0);	
 	pItem->SetData(animation);
 
 	item->Show(true);
 	animation->SetColorToModify(&item->GetTextColorRef());
 	animation->Cyclic(false);
+	
 }
 
 void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
@@ -46,6 +52,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	
 	pItem = xr_new<CUIPdaKillMessage>(-1);
 
+	pItem->SetFont(GetFont());
 	UILogList.AddItem(pItem, -1); 
 	
 	pItem->Init(msg);	
@@ -53,7 +60,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 
 	pItem->Show(true);
 	animation->SetColorToModify(&pItem->GetTextColorRef());
-	animation->Cyclic(false);
+	animation->Cyclic(false);	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,6 +79,13 @@ void CUIGameLog::Init()
 	AttachChild(&UILogList);
 	xml_init.InitListWnd(uiXml, "game_log_list", 0, &UILogList);
 
+	AttachChild(&UIStatic);
+	Irect r = UILogList.GetWndRect();
+	UIStatic.Init(r.x1, r.y1, r.x2 - r.x1, r.y2 - r.y1);
+}
+
+void CUIGameLog::Draw(){
+	CUIDialogWnd::Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////

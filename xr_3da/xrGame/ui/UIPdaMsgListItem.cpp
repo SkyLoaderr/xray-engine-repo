@@ -31,6 +31,10 @@ CUIPdaMsgListItem::~CUIPdaMsgListItem(void)
 {
 }
 
+void CUIPdaMsgListItem::SetFont(CGameFont* pFont){
+	UIMsgText.SetFont(pFont);
+}
+
 void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 {
 	inherited::Init(x, y, width, height);
@@ -42,6 +46,8 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 	CUIXmlInit xml_init;
 	AttachChild(&UIIcon);
 	xml_init.InitStatic(uiXml, "icon_static", 0, &UIIcon);
+	y = (height - UIIcon.GetHeight())/2;
+	UIIcon.SetWndPos(UIIcon.GetWndPos().x , y);
 	UIIcon.ClipperOn();
 
 	AttachChild(&UIName);
@@ -52,10 +58,14 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 		UIName.Show(false);
 		UIName.Enable(false);
 	}
+	y = (height - (int)UIName.GetFont()->CurrentHeight())/2;
+	UIName.SetTextPos(UIName.GetTextX(), y);		
 
 	AttachChild(&UIMsgText);
 	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);	
 	UIMsgText.SetWidth(width - UIIcon.GetWidth());
+	y = (height - (int)UIMsgText.GetFont()->CurrentHeight())/2;
+	UIMsgText.SetTextPos(UIMsgText.GetTextX(), y);
 }
 
 void CUIPdaMsgListItem::SetDelay(int iDelay){

@@ -169,7 +169,20 @@ void CUIButton::DrawTexture()
 		else
 			m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, rect.top + m_iPushOffsetY + m_iTexOffsetY);
 
-		m_UIStaticItem.Render();
+		if(m_bStretchTexture)
+			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
+		else
+		{
+			Irect r={0,0,
+				m_UIStaticItem.GetOriginalRectScaled().width(),
+				m_UIStaticItem.GetOriginalRectScaled().height()};
+			m_UIStaticItem.SetRect(r);
+		}
+
+		if( Heading() )
+			m_UIStaticItem.Render( GetHeading() );
+		else
+			m_UIStaticItem.Render();		
 	}
 }
 
