@@ -232,7 +232,7 @@ public:
 			VERIFY				(m_tpAI_Map->valid_vertex_id(m_tpSpawnPoints[i]->m_tNodeID));
 			if (m_tpSpawnPoints[i]->used_ai_locations() && !m_tpAI_Map->inside(m_tpAI_Map->vertex(m_tpSpawnPoints[i]->m_tNodeID),m_tpSpawnPoints[i]->o_Position)) {
 				Fvector			new_position = m_tpAI_Map->vertex_position(m_tpSpawnPoints[i]->m_tNodeID);
-				Msg				("[%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_tpSpawnPoints[i]->s_name,m_tpSpawnPoints[i]->s_name_replace,m_tpSpawnPoints[i]->o_Position,new_position);
+				Msg				("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_tLevel.name(),m_tpSpawnPoints[i]->s_name,m_tpSpawnPoints[i]->s_name_replace,VPUSH(m_tpSpawnPoints[i]->o_Position),VPUSH(new_position));
 				m_tpSpawnPoints[i]->o_Position	= new_position;
 			}
 			u32 dwBest = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).game_vertex_id();
