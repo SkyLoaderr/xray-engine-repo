@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+#include "ai_debug.h"
 
 struct CProfileResultPortion {
 	LPCSTR			m_timer_id;
@@ -56,6 +57,7 @@ public:
 };
 
 extern 	CProfiler *g_profiler;
+extern Flags32 psAI_Flags;
 
 IC	CProfiler&	profiler();
 		
