@@ -176,6 +176,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\DebugDialog.cpp">
+			</File>
+			<File
 				RelativePath=".\GotoLineDialog.cpp">
 			</File>
 			<File
@@ -595,6 +598,9 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath="CallStack.h">
+			</File>
+			<File
+				RelativePath=".\DebugDialog.h">
 			</File>
 			<File
 				RelativePath=".\GotoLineDialog.h">

@@ -39,6 +39,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FILE_SAVEPROJECT, OnFileSaveproject)
 	ON_COMMAND(ID_FILE_SAVEPROJECTAS, OnFileSaveprojectas)
 	ON_COMMAND(ID_PROJECT_ADD_FILES, OnProjectAddFiles)
+	ON_COMMAND(ID_PROJECT_RUNPROJECT, OnRunApplication)
+	ON_COMMAND(ID_PROJECT_DEBUGGING,  OnDebuggingOptions)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_DEBUG_GO, OnDebugGo)
 	ON_COMMAND(ID_DEBUG_STEPINTO, OnDebugStepinto)
@@ -261,6 +263,15 @@ void CMainFrame::OnProjectAddFiles()
 	GetProject()->AddFiles();
 }
 
+void CMainFrame::OnRunApplication()
+{
+	GetProject()->OnRunApplication();
+}
+
+void CMainFrame::OnDebuggingOptions()
+{
+	GetProject()->OnDebugOptions();
+}
 
 void CMainFrame::OnClose() 
 {

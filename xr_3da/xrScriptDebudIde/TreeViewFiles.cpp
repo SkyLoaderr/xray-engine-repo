@@ -37,7 +37,11 @@ BEGIN_MESSAGE_MAP(CTreeViewFiles, CTreeView)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnDblclk)
 	ON_NOTIFY_REFLECT(TVN_KEYDOWN, OnKeydown)
 	//}}AFX_MSG_MAP
-	ON_COMMAND(ID_PROJECT_ADD_FILES, OnProjectAddFiles)
+	ON_COMMAND(ID_PROJECT_ADD_FILES,  OnProjectAddFiles)
+	ON_COMMAND(ID_PROJECT_RUNPROJECT, OnRunApplication)
+	ON_COMMAND(ID_PROJECT_DEBUGGING,  OnDebuggingOptions)
+	
+	
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -185,6 +189,17 @@ void CTreeViewFiles::OnProjectAddFiles()
 	pProject->AddFiles();
 }
 
+void CTreeViewFiles::OnRunApplication() 
+{
+	CProject* pProject = g_mainFrame->GetProject();
+	pProject->OnRunApplication();
+}
+
+void CTreeViewFiles::OnDebuggingOptions() 
+{
+	CProject* pProject = g_mainFrame->GetProject();
+	pProject->OnDebugOptions();
+}
 
 void CTreeViewFiles::OnDblclk(NMHDR* pNMHDR, LRESULT* pResult) 
 {

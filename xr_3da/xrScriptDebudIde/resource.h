@@ -28,6 +28,7 @@
 #define IDD_PROJECT_PROPERTIES          133
 #define IDD_NEW_PROJECT                 134
 #define IDD_DIALOG1                     136
+#define IDD_DEBUG_DIALOG                137
 #define IDC_PROJECT_TYPES               1002
 #define IDC_OUTPUT_DIR                  1003
 #define IDC_PROJECT_NAME                1003
@@ -38,6 +39,13 @@
 #define IDC_GENERATE_LISTING            1006
 #define IDC_INTERMEDIATE_DIR            1007
 #define IDC_EDIT1                       1007
+#define IDC_STATIC_COMMAND              1008
+#define IDC_STATIC_COMMAND2             1009
+#define IDC_STATIC_COMMAND3             1010
+#define IDC_EDIT_CMD                    1012
+#define IDC_EDIT_WDIR                   1013
+#define IDC_EDIT_ARGS                   1014
+#define ID_DEBUG_RUNTOCURSOR            32742
 #define ID_PROJECT_ADD_FILES            32771
 #define ID_FILE_OPENPROJECT             32773
 #define ID_FILE_SAVEPROJECT             32774
@@ -58,7 +66,6 @@
 #define ID_DEBUG_STEPOUT                32789
 #define ID_DEBUG_STEPINTO               32792
 #define ID_DEBUG_GO                     32793
-#define ID_DEBUG_RUNTOCURSOR            32742
 #define ID_TOGGLE_BREAKPOINT            32798
 #define ID_FILE_NEWPROJECT              32799
 #define ID_FILE_CLOSEPROJECT            32800
@@ -71,15 +78,17 @@
 #define ID_VIEW_THREADS                 32807
 #define ID_VIEW_THREADS32807            32807
 #define ID_EDIT_GOTOLINE                32808
+#define ID_PROJECT_DEBUGGING            32818
+#define ID_PROJECT_RUNPROJECT           32819
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        137
-#define _APS_NEXT_COMMAND_VALUE         32818
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           112
 #endif
 #endif

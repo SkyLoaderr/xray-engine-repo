@@ -96,7 +96,9 @@ BEGIN
     POPUP "&Project"
     BEGIN
         MENUITEM "Add &files to project",       ID_PROJECT_ADD_FILES
+        MENUITEM "Debugging options",           ID_PROJECT_DEBUGGING
         MENUITEM SEPARATOR
+        MENUITEM "Run project\tCtrl+F5",        ID_PROJECT_RUNPROJECT
     END
 END
 
@@ -195,6 +197,10 @@ BEGIN
     ID_DEBUG_STEPOVER       "Steps over the next statement"
     ID_DEBUG_STEPOUT        "Steps out of the current function"
     ID_DEBUG_STEPINTO       "Steps into the next statement"
+END
+
+STRINGTABLE 
+BEGIN
     ID_DEBUG_RUNTOCURSOR    "Runs the program to the line containing the cursor"
 END
 
@@ -227,6 +233,23 @@ BEGIN
     EDITTEXT        IDC_EDIT1,5,6,72,14,ES_AUTOHSCROLL | ES_NUMBER
 END
 
+IDD_DEBUG_DIALOG DIALOGEX 0, 0, 298, 90
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Debugging"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,180,72,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,240,72,50,14
+    LTEXT           "Command",IDC_STATIC_COMMAND,6,12,72,9
+    LTEXT           "Working directory",IDC_STATIC_COMMAND3,6,48,72,9
+    GROUPBOX        "Debugging",IDC_STATIC,3,1,290,67
+    LTEXT           "Command arguments",IDC_STATIC_COMMAND2,6,30,72,9
+    EDITTEXT        IDC_EDIT_CMD,78,12,210,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_WDIR,78,48,210,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ARGS,78,30,210,13,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -240,6 +263,11 @@ BEGIN
     BEGIN
         RIGHTMARGIN, 92
         BOTTOMMARGIN, 37
+    END
+
+    IDD_DEBUG_DIALOG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 89
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -470,6 +498,7 @@ BEGIN
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
     "G",            ID_EDIT_GOTOLINE,       VIRTKEY, CONTROL, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
@@ -485,7 +514,7 @@ BEGIN
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     VK_F7,          ID_PROJECT_PROPERTIES,  VIRTKEY, ALT, NOINVERT
     VK_F9,          ID_TOGGLE_BREAKPOINT,   VIRTKEY, NOINVERT
-    "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_PROJECT_RUNPROJECT,  VIRTKEY, CONTROL, NOINVERT
 END
 
 IDR_ACCEL_NO_PROJECT ACCELERATORS 
@@ -555,7 +584,7 @@ END
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "xRayScriptDebugger v1.0 Beta"
-    IDR_IDE2TYPE            "LuaIDE\nLua\nLua\nLua (*.lua)\n.lua\nLuaIDE.Document\nLuaIDE Document"
+    IDR_IDE2TYPE            "LuaIDE\nLua\nLua\nLua (*.script)\n.lua\nLuaIDE.Document\nLuaIDE Document"
 END
 
 STRINGTABLE 

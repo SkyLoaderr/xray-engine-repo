@@ -14,6 +14,7 @@
 #include "ProjectProperties.h"
 #include "ScintillaView.h"
 #include "ProjectNew.h"
+#include "DebugDialog.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -304,6 +305,10 @@ BOOL CProject::Load(CArchive &ar)
 		AddFile(pPF);
 	}
 
+	ar >> m_command;
+	ar >> m_arguments;
+	ar >> m_working_dir;
+
 	return TRUE;
 }
 
@@ -351,6 +356,10 @@ BOOL CProject::Save(CArchive &ar)
 
 	for ( int i=0; i<nFiles; ++i )
 		m_files[i]->Save(ar);
+
+	ar << m_command;
+	ar << m_arguments;
+	ar << m_working_dir;
 
 	return TRUE;
 }
@@ -450,5 +459,55 @@ BOOL CProject::HasBreakPoint(const char *szFile, int nLine)
 		return FALSE;
 
 	return pPF->HasBreakPoint(nLine);
+}
+
+void CProject::OnRunApplication()
+{
+	if( m_command.IsEmpty() )
+	{
+		AfxMessageBox("Debugging params not defined");
+		OnDebugOptions();
+		return;
+	}
+	
+	CString strCmdLine;
+	strCmdLine.Format("%s%s",m_working_dir.GetBuffer(),m_command.GetBuffer() );
+
+
+	PROCESS_INFORMATION pi;
+	STARTUPINFO si;
+
+	ZeroMemory(&si,sizeof(STARTUPINFO));
+	si.cb = sizeof(STARTUPINFO);
+
+/*	CreateProcess(NULL, strCmdLine.GetBuffer(), NULL, NULL, FALSE,
+		0, NULL, NULL, &si, &pi);*/
+//	_spawnl(_P_NOWAIT, strCmdLine.GetBuffer(), m_arguments.GetBuffer());
+	CString curDir;
+	if(!m_working_dir.IsEmpty()){
+		GetCurrentDirectoryA(2048,curDir.GetBuffer(2048));
+		SetCurrentDirectoryA(m_working_dir.GetBuffer());
+	};
+	spawnl(_P_NOWAIT, m_command.GetBuffer(), (m_arguments.IsEmpty())?" ":m_arguments.GetBuffer());
+	if(!m_working_dir.IsEmpty())
+		SetCurrentDirectoryA(curDir.GetBuffer());
+}
+
+void CProject::OnDebugOptions()
+{
+	CDebugDialog d;
+
+	d.m_command			= m_command;
+	d.m_arguments		= m_arguments;
+	d.m_working_dir		= m_working_dir;
+
+	if ( d.DoModal()!=IDOK )
+		return ;
+
+	m_command			= d.m_command;
+	m_arguments			= d.m_arguments;
+	m_working_dir		= d.m_working_dir;
+
+	SetModifiedFlag(TRUE);
 }
 

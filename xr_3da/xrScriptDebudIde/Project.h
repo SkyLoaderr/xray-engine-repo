@@ -40,6 +40,8 @@ public:
 	BOOL Load(CString);
 
 	void RemoveProjectFiles();
+	void OnRunApplication();
+	void OnDebugOptions();
 	void AddFile(CString strPathName, BOOL bFindExisting=TRUE);
 	void AddFile(CProjectFile* pPF);
 	int NofFiles() { return m_files.GetSize(); };
@@ -58,6 +60,10 @@ protected:
 
 	CProjectFileArray	m_files;
 	CString m_strPathName;
+
+	CString m_command;
+	CString m_arguments;
+	CString m_working_dir;
 
 };
 

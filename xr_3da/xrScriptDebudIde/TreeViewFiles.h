@@ -37,6 +37,9 @@ protected:
 	virtual void OnDraw(CDC* pDC);      // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnProjectAddFiles();
+	virtual void OnRunApplication();
+	virtual void OnDebuggingOptions();
+
 	//}}AFX_VIRTUAL
 
 // Implementation
