@@ -46,9 +46,11 @@ IC	board::score_type _minimax::search	(int depth)
 	board_type::iterator			E = board().moves().end();
 	for ( ; I != E; ++I) {
 		board().move				(*I);
+
 		current						= search(depth - 1);
 		if (current > result)
 			result					= current;
+
 		board().undo				();
 	}
 
