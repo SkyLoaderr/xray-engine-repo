@@ -886,7 +886,14 @@ void	CActor::ResetCallbacks()
 void	CActor::OnChangeVisual()
 {
 ///	inherited::OnChangeVisual();
-	CGameObject::OnChangeVisual();
+	{
+		CPhysicsShell* tmp_shell=PPhysicsShell();
+		PPhysicsShell()=NULL;
+		inherited::OnChangeVisual();
+		PPhysicsShell()=tmp_shell;
+		tmp_shell=NULL;
+	}
+
 	CSkeletonAnimated* V	= smart_cast<CSkeletonAnimated*>(Visual());
 	if (V){
 		SetCallbacks		();

@@ -8,9 +8,14 @@
 #include "PhSoundPlayer.h"
 #include "PhysicsShellHolder.h"
 #include "PHCommander.h"
+#include "MathUtils.h"
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
+static const float PARTICLE_EFFECT_DIST=70.f;
+static const float SOUND_EFFECT_DIST=70.f;
+//////////////////////////////////////////////////////////////////////////////////
+static const float SQUARE_PARTICLE_EFFECT_DIST=PARTICLE_EFFECT_DIST*PARTICLE_EFFECT_DIST;
+static const float SQUARE_SOUND_EFFECT_DIST=SOUND_EFFECT_DIST*SOUND_EFFECT_DIST;
 class CPHParticlesPlayCall :
 		public CPHAction
 {
@@ -91,7 +96,8 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 	dBodyGetMass(b,&m);
 	dBodyGetPointVel(b,c->pos[0],c->pos[1],c->pos[2],vel);
 	dReal vel_cret=dFabs(dDOT(vel,c->normal))* _sqrt(m.mass);
-
+	Fvector to_camera;to_camera.sub(cast_fv(c->pos),Device.vCameraPosition);
+	float square_cam_dist=to_camera.square_magnitude();
 	if(data)
 	{
 		SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(T->material,data->material);
@@ -104,36 +110,45 @@ void __stdcall TContactShotMark(CDB::TRI* T,dContactGeom* c)
 
 				Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHWallMarksCall>( *((Fvector*)c->pos),T,pWallmarkShader));
 			}
-			SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
-			if(!static_mtl->Flags.test(SGameMtl::flPassable))
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if(square_cam_dist<SQUARE_SOUND_EFFECT_DIST)
 			{
-				if(vel_cret>Pars.vel_cret_sound)
+			
+				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
+				if(!static_mtl->Flags.test(SGameMtl::flPassable))
 				{
-					if(!mtl_pair->CollideSounds.empty())
+					if(vel_cret>Pars.vel_cret_sound)
 					{
-						ref_sound& sound= SELECT_RANDOM1(mtl_pair->CollideSounds);
-						float volume=collide_volume_min+vel_cret*(collide_volume_max-collide_volume_min)/(_sqrt(mass_limit)*default_l_limit-Pars.vel_cret_sound);
-						::Sound->play_at_pos_unlimited(
-							sound,0,*((Fvector*)c->pos)
-							);
-						sound.set_volume(volume);
+						if(!mtl_pair->CollideSounds.empty())
+						{
+							ref_sound& sound= SELECT_RANDOM1(mtl_pair->CollideSounds);
+							float volume=collide_volume_min+vel_cret*(collide_volume_max-collide_volume_min)/(_sqrt(mass_limit)*default_l_limit-Pars.vel_cret_sound);
+							::Sound->play_at_pos_unlimited(
+								sound,0,*((Fvector*)c->pos)
+								);
+							sound.set_volume(volume);
+						}
+					}
+				}
+				else
+				{
+					if(data->ph_ref_object&&!mtl_pair->CollideSounds.empty())
+					{
+						CPHSoundPlayer* sp=NULL;
+						sp=data->ph_ref_object->ph_sound_player();
+						if(sp) sp->Play(mtl_pair,*(Fvector*)c->pos);
 					}
 				}
 			}
-			else
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if(square_cam_dist<SQUARE_PARTICLE_EFFECT_DIST)
 			{
-				if(data->ph_ref_object&&!mtl_pair->CollideSounds.empty())
+				if(vel_cret>Pars.vel_cret_particles && !mtl_pair->CollideParticles.empty())
 				{
-					CPHSoundPlayer* sp=NULL;
-					sp=data->ph_ref_object->ph_sound_player();
-					if(sp) sp->Play(mtl_pair,*(Fvector*)c->pos);
+					LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+					//отыграть партиклы столкновения материалов
+					Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHParticlesPlayCall>(*c,b_invert_normal,ps_name));
 				}
-			}
-			if(vel_cret>Pars.vel_cret_particles && !mtl_pair->CollideParticles.empty())
-			{
-				LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-				//отыграть партиклы столкновения материалов
-				Level().ph_commander().add_call(xr_new<CPHOnesCondition>(),xr_new<CPHParticlesPlayCall>(*c,b_invert_normal,ps_name));
 			}
 		}
 	}
