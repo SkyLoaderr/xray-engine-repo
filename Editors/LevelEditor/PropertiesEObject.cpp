@@ -160,7 +160,6 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
             	LPCSTR nm = TProperties::GetItemColumn(item,0);
             	if (nm&&nm[0]){
 	                m_Thumbnail = new EImageThumbnail(nm,EImageThumbnail::EITTexture);
-                    m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
                     lbWidth->Caption 	= m_Thumbnail->_Width();
                     lbHeight->Caption 	= m_Thumbnail->_Height();
                     lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";

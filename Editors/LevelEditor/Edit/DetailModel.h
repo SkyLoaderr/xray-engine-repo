@@ -66,6 +66,7 @@ public:
     LPCSTR				GetName			();
 	void				OnDeviceCreate	();
 	void				OnDeviceDestroy	();
+    void				DefferedLoad	();
 };
 DEFINE_VECTOR(CDetail*,DOVec,DOIt);
 

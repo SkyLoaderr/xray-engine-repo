@@ -42,6 +42,7 @@ CGlow::~CGlow()
 
 void CGlow::OnDeviceCreate()
 {
+	if (m_bDefLoad) return;
 	// создать заново shaders
 	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
 	m_bDefLoad = true;

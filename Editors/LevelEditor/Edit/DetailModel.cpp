@@ -41,22 +41,30 @@ void CDetail::Unload()
 	if (vertices)		{ xr_free(vertices);	vertices=0; }
 	if (indices)		{ xr_free(indices);		indices=0;	}
     Lib.RemoveEditObject(m_pRefs);
+    OnDeviceDestroy		();
 }
 
 LPCSTR CDetail::GetName	(){
     return m_pRefs?m_pRefs->GetName():m_sRefs.c_str();
 }
 
-void CDetail::OnDeviceCreate(){
+void CDetail::DefferedLoad()
+{
+}
+
+void CDetail::OnDeviceCreate()
+{
 	if (!m_pRefs)		return;
     CSurface* surf		= *m_pRefs->FirstSurface();
     VERIFY				(surf);
-    VERIFY				(surf->_Shader());
-    shader				= surf->_Shader();
+    AnsiString	s_name	= surf->_ShaderName();
+    AnsiString	t_name	= surf->_Texture();
+	shader				= Device.Shader.Create(s_name.c_str(),t_name.c_str());
 }
 
-void CDetail::OnDeviceDestroy(){
-    shader 				= 0;
+void CDetail::OnDeviceDestroy()
+{
+	Device.Shader.Delete(shader);
 }
 
 int CDetail::_AddVert(const Fvector& p, float u, float v)
@@ -65,8 +73,6 @@ int CDetail::_AddVert(const Fvector& p, float u, float v)
     for (DWORD k=0; k<number_vertices; k++)
     	if (vertices[k].similar(V)) return k;
     number_vertices++;
-//    if (1==number_vertices) vertices = (fvfVertexIn*)xr_malloc(number_vertices*sizeof(fvfVertexIn));
-//    else					
     vertices = (fvfVertexIn*)xr_realloc(vertices,number_vertices*sizeof(fvfVertexIn));
     vertices[number_vertices-1] = V;
     return number_vertices-1;
@@ -94,11 +100,6 @@ bool CDetail::Update	(LPCSTR name){
     Lib.RemoveEditObject(m_pRefs);
     m_pRefs				= R;
 
-    // create shader
-    CSurface* surf		= *m_pRefs->FirstSurface();
-    shader				= surf->_Shader();
-    R_ASSERT			(shader);
-
     // fill geometry
     CEditableMesh* M	= *m_pRefs->FirstMesh();
 	number_indices 		= M->GetFaceCount(false)*3;
@@ -120,6 +121,8 @@ bool CDetail::Update	(LPCSTR name){
     }
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
+    OnDeviceCreate		();
+    
     return true;
 }
 

@@ -145,7 +145,7 @@ void EDetailManager::Render(int priority, bool strictB2F)
             }else{
 				Device.SetTransform(D3DTS_WORLD,Fidentity);
                 if (fraBottomBar->miDrawDOBaseTexture->Checked)	m_Base.Render();
-                if (fraBottomBar->miDODrawObjects->Checked) 	CDetailManager::Render(Device.m_Camera.GetPosition());
+                if (fraBottomBar->miDODrawObjects->Checked) CDetailManager::Render(Device.m_Camera.GetPosition());
             }
         }
     }
