@@ -18,7 +18,9 @@ enum COMBINE_MODE
 //-----------------------------------------------------------------------------
 
 #define SHADOW_MAP_FORMAT	D3DFMT_R32F
-#define SHADOW_MAP_SIZE		512
+#define SHADOW_MAP_SIZE		1024
+#define OUT_WIDTH			800
+#define OUT_HEIGHT			600
 #define OVERLAY_SIZE		128
 #define DEPTH_RANGE			4.0f
 
@@ -204,8 +206,8 @@ CMyD3DApplication::CMyD3DApplication()
 	m_strWindowTitle					= _T	("xray2 : render");
 	m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
 	m_d3dEnumeration.AppMinStencilBits	= 1;
-	m_dwCreationWidth					= 512;
-	m_dwCreationHeight					= 512;
+	m_dwCreationWidth					= OUT_WIDTH;
+	m_dwCreationHeight					= OUT_HEIGHT;
 
 	m_pFont								= new CD3DFont(_T("Arial"), 12, D3DFONT_BOLD);
 
