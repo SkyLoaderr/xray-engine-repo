@@ -9,7 +9,7 @@ end
 
 function test_callback:callback(obj,action_type,index)
 	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
-	pos			= obj:patrol():point(obj:patrol():index("way00"))
+	pos			= obj:patrol():point(obj:patrol():index("wp00"))
 	printf		("[%f][%f][%f]",pos.x,pos.y,pos.z)
 end
 
