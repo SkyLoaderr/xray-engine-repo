@@ -4,7 +4,7 @@ namespace PAPI{
 
 extern void 			_pAddActionToList	(ParticleAction *S);
 extern void 			_pCallActionList	(PAVec* pa, ParticleEffect *pe);
-extern void 			_pCallAction		(ParticleAction* pa, ParticleEffect *pe);
+extern void 			_pCallAction		(ParticleAction* pa, ParticleEffect *pe, float dt);
 
 // Do not call this function.
 void _pSendAction(ParticleAction *S)
@@ -18,9 +18,7 @@ void _pSendAction(ParticleAction *S)
 	else
 	{
 		// Immediate mode. Execute it.
-		// This is a hack to give them local access to dt.
-		S->dt = _ps.dt;
-		_pCallAction		(S, _ps.peff);
+		_pCallAction		(S, _ps.peff, _ps.dt);
 	}
 }
 

@@ -19,7 +19,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 namespace PAPI{
 
 // static variables
-float ParticleAction::dt;
 //_ParticleState::ParticleEffectVec	_ParticleState::effect_vec;
 //_ParticleState::ParticleActionsVec	_ParticleState::alist_vec;
 
@@ -212,7 +211,7 @@ void ParticleActions::copy(ParticleActions* src)
 }
 ////////////////////////////////////////////////////////
 // Auxiliary calls
-void _pCallActionList(ParticleActions* pa, ParticleEffect *pe)
+void _pCallActionList(ParticleActions* pa, ParticleEffect *pe, float dt)
 {
 	// All these require a particle effect, so check for it.
 	if(pe == NULL)
@@ -220,17 +219,17 @@ void _pCallActionList(ParticleActions* pa, ParticleEffect *pe)
 	
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++)
-    	(*it)->Execute(pe);
+    	(*it)->Execute(pe,dt);
 }
 
-void _pCallAction(ParticleAction* pa, ParticleEffect *pe)
+void _pCallAction(ParticleAction* pa, ParticleEffect *pe, float dt)
 {
 	// All these require a particle effect, so check for it.
 	if(pe == NULL)
 		return;
 	
 	// Step through all the actions in the action list.
-    pa->Execute(pe);
+    pa->Execute(pe,dt);
 }
 
 // Add the incoming action to the end of the current action list.
@@ -463,12 +462,9 @@ PARTICLEDLL_API void pCallActionList(int action_list_num)
 		
 		if((pa==NULL)||pa->empty())	return; // ERROR
 		
-		// XXX A temporary hack.
-        ParticleAction::dt	= _ps.dt;
-		
 		_ps.in_call_list 	= TRUE;
 
-		_pCallActionList	(pa, _ps.peff);
+		_pCallActionList	(pa, _ps.peff, _ps.dt);
 
 		_ps.in_call_list 	= FALSE;
 	}

@@ -214,13 +214,12 @@ namespace PAPI
 			ALLOW_TRANSLATE	= (1<<0),
 			ALLOW_ROTATE	= (1<<1)
 		};
-		static float	dt;		// This is copied to here from global state.
 		Flags32			m_Flags;
 		PActionEnum		type;	// Type field
 		ParticleAction	(){m_Flags.zero();}
         
-		virtual void 	Execute		(ParticleEffect *pe)= 0;
-		virtual void 	Transform	(const Fmatrix& m)	= 0;
+		virtual void 	Execute		(ParticleEffect *pe, float dt)	= 0;
+		virtual void 	Transform	(const Fmatrix& m)				= 0;
 
 		virtual void 	Load		(IReader& F)=0;
 		virtual void 	Save		(IWriter& F)=0;
@@ -228,7 +227,7 @@ namespace PAPI
 
 #define _METHODS	virtual void 	Load		(IReader& F);\
                     virtual void 	Save		(IWriter& F);\
-                    virtual void 	Execute		(ParticleEffect *pe);\
+                    virtual void 	Execute		(ParticleEffect *pe, float dt);\
                     virtual void 	Transform	(const Fmatrix& m);
 
 	struct PARTICLEDLL_API PAAvoid : public ParticleAction
