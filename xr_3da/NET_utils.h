@@ -6,7 +6,7 @@
 #include "net_compressor.h"
 #pragma pack(push,1)
 
-const	u32		NET_PacketSizeLimit	= 4096;
+const	u32		NET_PacketSizeLimit	= 8192;
 
 struct	NET_Buffer	
 {
