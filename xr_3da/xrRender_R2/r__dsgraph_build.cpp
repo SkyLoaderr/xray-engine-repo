@@ -89,6 +89,8 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 		N->val.Matrix			= *RI.val_pTransform;
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
 	}
+#endif
+
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
@@ -100,7 +102,6 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 		N->val.Matrix			= *RI.val_pTransform;
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
 	}
-#endif
 
 	// the most common node
 	SPass&						pass	= *sh->Passes.front	();
@@ -162,6 +163,8 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.Matrix			= Fidentity;
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
 	}
+#endif
+
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
@@ -173,7 +176,6 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 		N->val.Matrix			= Fidentity;
 		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
 	}
-#endif
 
 	if	(val_feedback && counter_S==val_feedback_breakp)	val_feedback->rfeedback_static(pVisual);
 
