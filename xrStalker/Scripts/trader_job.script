@@ -3,6 +3,8 @@ function main()
 	wait(1000)
 	local 	actor = get_actor()
 	local 	trader = get_level_object("m_trader")
+	local 	box01 = get_level_object("box01")
+	local 	box02 = get_level_object("box02")
 	local 	stalker = get_level_object("tradeseller_stalker_0_1")
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
@@ -16,6 +18,12 @@ end
 function give_job_box01(first_speaker, second_speaker)
 
 	first_speaker:give_info_portion("trader_start2")
+
+end
+
+function give_job_box02(first_speaker, second_speaker)
+
+	first_speaker:give_info_portion("trader_start4")
 
 end
 
@@ -39,18 +47,33 @@ end
 function is_box_present(first_speaker, second_speaker)
 
 	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
-	if( first_speaker:object("device_atifact_merger")  ) then
+	if( first_speaker:object(box01)  ) then
 		return true
 	end
 	return false
 
 end
 
+function is_box02_present(first_speaker, second_speaker)
+
+	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
+	if( first_speaker:object(box02)  ) then
+		return true
+	end
+	return false
+
+end
 
 function give_box_to_trader(first_speaker, second_speaker)
-	local box = second_speaker:object("device_atifact_merger")
-	second_speaker:transfer_item (box, first_speaker)
+	local box = second_speaker:object(box01)
+	second_speaker:transfer_item (box01, first_speaker)
 	second_speaker:disable_info_portion ("trader_start2")
+end
+
+function give_box02_to_trader(first_speaker, second_speaker)
+	local box = second_speaker:object(box02)
+	second_speaker:transfer_item (box02, first_speaker)
+	second_speaker:disable_info_portion ("trader_start4")
 end
 
 

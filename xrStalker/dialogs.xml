@@ -110,6 +110,8 @@
 				<next>4</next>
 			</phrase>
 			<phrase id="3">
+				<dont_has_info>trader_start4</dont_has_info>
+				<dont_has_info>job_box02_finished</dont_has_info>
 				<text>Я возьмусь выкрасть кое-что с Агропрома.</text>
 				<next>5</next>
 			</phrase>
@@ -279,6 +281,24 @@
 			</phrase>
 		</phrase_list>
 	</dialog>
+
+	<dialog id="job_box02">
+        <precondition>trader_job.is_box02_present</precondition>
+ 
+		<phrase_list>
+			<phrase id="0">
+				<text>Я выполнил работу! Принес чемодан с Агропрома.</text>
+				<next>1</next>
+				<give_info>job_box02_finished</give_info>
+			</phrase>
+			<phrase id="1">
+				<text>Отлично, ты хорошо поработал. Вот твои деньги.</text>
+				<action>trader_job.give_box02_to_trader</action>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
 
 
 	<dialog id="hello_dialog">
