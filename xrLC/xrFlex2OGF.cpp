@@ -40,7 +40,7 @@ void CBuild::Flex2OGF()
 			TRY(pOGF->textures.push_back(T));
 			
 			try {
-				if (hasImplicitLighting(F))
+				if (F->hasImplicitLighting())
 				{
 					// specific lmap
 					string512	tn;

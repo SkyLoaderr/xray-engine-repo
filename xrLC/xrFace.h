@@ -122,10 +122,10 @@ public:
 	void*					pDeflector;		// does the face has LM-UV map?
 	svector<CLightmap*,1>	lmap_layers;
 
-	virtual Fvector2*		getTC0				( ) { return tc[0].uv; }
+	virtual Fvector2*		getTC0			( ) { return tc[0].uv; }
 
-	void			CalcNormal		();
-	void			CalcNormal2		();
+	void					CalcNormal		();
+	void					CalcNormal2		();
 
 	//------------------------------//
 	void Failure					();
@@ -181,13 +181,14 @@ public:
 		*B = v[edge2idx[e][1]];
 	}
 
-	float		CalcArea		();
-	float		CalcMaxEdge		();
-	void		CalcCenter		(Fvector &C);
-	BOOL		RenderEqualTo	(Face *F);
-	void		Unwarp			(int connect_edge, float u1, float v1, float u2, float v2);
-	void		OA_Unwarp		();
-	void		AddChannel		(Fvector2 &p1, Fvector2 &p2, Fvector2 &p3); 
+	float		CalcArea			();
+	float		CalcMaxEdge			();
+	void		CalcCenter			(Fvector &C);
+	BOOL		RenderEqualTo		(Face *F);
+	void		Unwarp				(int connect_edge, float u1, float v1, float u2, float v2);
+	void		OA_Unwarp			();
+	void		AddChannel			(Fvector2 &p1, Fvector2 &p2, Fvector2 &p3); 
+	BOOL		hasImplicitLighting	();
 
 	Face();
 	virtual ~Face();

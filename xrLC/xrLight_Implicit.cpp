@@ -4,15 +4,6 @@
 #include "xrThread.h"
 #include "hash2D.h"
 
-BOOL	hasImplicitLighting(Face* F)
-{
-	if (0==F)									return FALSE;
-	if (!F->Shader().flags.bRendering)			return FALSE;
-	b_material& M = pBuild->materials			[F->dwMaterial];
-	b_BuildTexture&	T  = pBuild->textures		[M.surfidx];
-	return (T.THM.flags.test(STextureParams::flImplicitLighted));
-}
-
 class ImplicitDeflector
 {
 public:
@@ -175,7 +166,7 @@ void CBuild::ImplicitLighting()
 	{
 		Face* F = *I;
 		if (F->pDeflector)				continue;
-		if (!hasImplicitLighting(F))	continue;
+		if (!F->hasImplicitLighting())	continue;
 		
 		Progress		(float(I-g_faces.begin())/float(g_faces.size()));
 		b_material&		M	= materials		[F->dwMaterial];

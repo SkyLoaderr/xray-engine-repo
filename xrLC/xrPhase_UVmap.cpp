@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
 
-extern BOOL	hasImplicitLighting		(Face* F);
-
 int			affected	= 0;
 void Face::OA_Unwarp()
 {
@@ -64,7 +62,7 @@ void	CBuild::xrPhase_UVmap()
 		Face*		Fvl = g_XSplit[SP]->front();
 		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
 		if (!Fvl->Shader().flags.bRendering) 	continue;	// do-not touch (skip)
-		if (hasImplicitLighting(Fvl))			continue;
+		if (Fvl->hasImplicitLighting())			continue;	// do-not touch (skip)
 		
 		//   find first poly that doesn't has mapping and start recursion
 		while (TRUE) {

@@ -100,14 +100,12 @@ void CBuild::Light()
 }
 
 //-----------------------------------------------------------------------
-extern BOOL	hasImplicitLighting		(Face* F);
-
 typedef	xr_multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator				mapVertIt;
 mapVert*								g_trans;
 xrCriticalSection						g_trans_CS;
 
-void	g_trans_register_internal	(Vertex* V)
+void	g_trans_register_internal		(Vertex* V)
 {
 	R_ASSERT	(V);
 

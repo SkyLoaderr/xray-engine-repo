@@ -28,7 +28,6 @@ void Face::OA_Unwarp()
 }
 
 extern void Detach				(vecFace* S);
-extern BOOL	hasImplicitLighting	(Face* F);
 
 void CBuild::BuildUVmap()
 {
@@ -47,7 +46,7 @@ void CBuild::BuildUVmap()
 		R_ASSERT(!g_XSplit[SP].empty());
 		Face*		Fvl = g_XSplit[SP][0];
 		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
-		if (hasImplicitLighting(Fvl))			continue;
+		if (Fvl->hasImplicitLighting())			continue;
 
 		//   find first poly that doesn't has mapping and start recursion
 		while (TRUE) {
