@@ -36,11 +36,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="x:\xrD3D9-Null.dll"
+				OutputFile="x:\D3D9-Null.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="xrD3D9-Null.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/xrD3D9-Null.pdb"
+				ProgramDatabaseFile="$(OutDir)/D3D9-Null.pdb"
 				SubSystem="2"
 				ImportLibrary="x:/xrD3D9-Null.lib"
 				TargetMachine="1"/>
