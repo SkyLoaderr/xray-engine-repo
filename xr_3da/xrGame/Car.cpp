@@ -810,6 +810,7 @@ void CCar::StartEngine()
 	m_car_sound->Drive();
 	b_engine_on=true;
 	m_current_rpm=0.f;
+	b_starting=true;
 }
 void CCar::StopEngine()
 {
@@ -1143,7 +1144,7 @@ void CCar::PhTune(dReal step)
 	if(m_repairing)Revert();
 	LimitWheels();
 	UpdateFuel(step);
-	if(fwp)
+	//if(fwp)
 	{	
 		UpdatePower();
 		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
@@ -1175,11 +1176,11 @@ void CCar::UpdateBack()
 			StopBreaking();
 		}
 	}
-	else
-	{
-		UpdatePower();
-		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
-	}
+	//else
+	//{
+	//	UpdatePower();
+	//	if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
+	//}
 }
 
 void CCar::PlayExhausts()
@@ -1358,6 +1359,10 @@ float CCar::EngineDriveSpeed()
 {
 	//float wheel_speed,drive_speed=dInfinity;
 	float calc_rpm=dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);
+	if(!b_clutch&&calc_rpm<m_min_rpm)
+	{
+		calc_rpm=m_min_rpm;
+	}
 	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;
