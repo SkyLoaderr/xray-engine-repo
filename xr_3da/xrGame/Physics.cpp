@@ -241,7 +241,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dGeomCreateUserData(Geoms[7]);
 	dGeomCreateUserData(Geoms[0]);
 	dGeomCreateUserData(Geoms[6]);
-
+	dGeomGetUserData(Geoms[5])->friction=500.f;
+	dGeomGetUserData(Geoms[7])->friction=500.f;
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
 	dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
@@ -968,7 +969,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
-	dBodySetPosition(m_body,mc.x,mc.y+0.0f,mc.z);
+	dBodySetPosition(m_body,mc.x,mc.y+60.0f,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
 	dMatrix3 R;

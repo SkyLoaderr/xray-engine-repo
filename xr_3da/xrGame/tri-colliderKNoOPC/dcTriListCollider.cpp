@@ -55,12 +55,12 @@ extern "C" int dSortTriBoxCollide (
 	Triangle tri;
 	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
 	dxGeomUserData* data=dGeomGetUserData(o1);
-	Triangle &neg_tri=data->neg_tri;
-	Triangle &b_neg_tri=data->b_neg_tri;
+	Triangle* neg_tri=&(data->neg_tri);
+	Triangle* b_neg_tri=&(data->b_neg_tri);
 	dReal* last_pos=data->last_pos;
 
-	bool &pushing_neg=data->pushing_neg;
-	bool &pushing_b_neg=data->pushing_b_neg;
+	bool* pushing_neg=&data->pushing_neg;
+	bool* pushing_b_neg=&data->pushing_b_neg;
 	pos_tries.clear	();
 	neg_tries.clear	();
 	//pos_dist=dInfinity,
@@ -75,33 +75,54 @@ extern "C" int dSortTriBoxCollide (
 
 	if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
 
-	if(pushing_neg){
+	if(*pushing_neg){
 		dReal sidePr=
-			dFabs(dDOT14(neg_tri.norm,R+0)*hside[0])+
-			dFabs(dDOT14(neg_tri.norm,R+1)*hside[1])+
-			dFabs(dDOT14(neg_tri.norm,R+2)*hside[2]);
-		neg_tri.dist=dDOT(p,neg_tri.norm)-neg_tri.pos;
-		neg_tri.depth=sidePr-neg_tri.dist;
-		if(neg_tri.dist<0.f)
-			neg_depth=neg_tri.depth;
+			dFabs(dDOT14(neg_tri->norm,R+0)*hside[0])+
+			dFabs(dDOT14(neg_tri->norm,R+1)*hside[1])+
+			dFabs(dDOT14(neg_tri->norm,R+2)*hside[2]);
+		neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
+		neg_tri->depth=sidePr-neg_tri->dist;
+		if(neg_tri->dist<0.f)
+			neg_depth=neg_tri->depth;
 		else
-			pushing_neg=false;
+			*pushing_neg=false;
 	}
 
-	if(pushing_b_neg){
+	if(*pushing_b_neg){
 		dReal sidePr=
-			dFabs(dDOT14(b_neg_tri.norm,R+0)*hside[0])+
-			dFabs(dDOT14(b_neg_tri.norm,R+1)*hside[1])+
-			dFabs(dDOT14(b_neg_tri.norm,R+2)*hside[2]);
-		b_neg_tri.dist=dDOT(p,b_neg_tri.norm)-b_neg_tri.pos;
-		b_neg_tri.depth=sidePr-b_neg_tri.dist;
-		if(b_neg_tri.dist<0.f)
-			b_neg_depth=b_neg_tri.depth;
+			dFabs(dDOT14(b_neg_tri->norm,R+0)*hside[0])+
+			dFabs(dDOT14(b_neg_tri->norm,R+1)*hside[1])+
+			dFabs(dDOT14(b_neg_tri->norm,R+2)*hside[2]);
+		b_neg_tri->dist=dDOT(p,b_neg_tri->norm)-b_neg_tri->pos;
+		b_neg_tri->depth=sidePr-b_neg_tri->dist;
+		if(b_neg_tri->dist<0.f)
+			b_neg_depth=b_neg_tri->depth;
 		else
-			pushing_b_neg=false;
+			*pushing_b_neg=false;
 	}
 
 	
+
+/*
+	if(pushing_neg){
+		ret+=dSortedTriBox(neg_tri->side0,neg_tri->side1,neg_tri->norm,
+			neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->dist,
+			o1,o2,flags,
+			CONTACT(contact, ret * skip),
+			skip);	
+		return ret;
+	}
+
+	if(pushing_b_neg){
+		ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
+			b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->dist,
+			o1,o2,flags,
+			CONTACT(contact, ret * skip),
+			skip);	
+		return ret;
+	}
+	
+*/
 
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
@@ -126,15 +147,17 @@ extern "C" int dSortTriBoxCollide (
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
 		if(tri.dist<0.f){
-		 if(!(dDOT(last_pos,tri.norm)-tri.pos<0.f)){
+		 if(!(dDOT(last_pos,tri.norm)-tri.pos<0.f))
+		 {
 			if(TriContainPoint(tri.v0,tri.v1,tri.v2,
 				tri.norm,tri.side0,
 				tri.side1,p)
 
 				){
-					if(neg_depth>tri.depth){
+					if(neg_depth>tri.depth)
+					{
 						neg_depth=tri.depth;
-						neg_tri=tri;
+						(*neg_tri)=tri;
 				//		pushing_neg_reset=true;
 					}
 
@@ -144,7 +167,7 @@ extern "C" int dSortTriBoxCollide (
 				b_count++;
 				if(b_neg_depth>tri.depth){
 					b_neg_depth=tri.depth;
-					b_neg_tri=tri;
+					(*b_neg_tri)=tri;
 				//	pushing_b_neg_reset=true;
 				}
 			}
@@ -156,39 +179,15 @@ extern "C" int dSortTriBoxCollide (
 		}
 	}
 
-/*
 
-	if(pushing_neg&&!pushing_neg_reset){
-		ret+=dSortedTriBox(neg_tri.side0,neg_tri.side1,neg_tri.norm,
-			neg_tri.v0,neg_tri.v1,neg_tri.v2,neg_tri.dist,
-			o1,o2,flags,
-			CONTACT(contact, ret * skip),
-			skip);	
-		return ret;
-	}
-
-	if(pushing_b_neg&&!pushing_b_neg_reset){
-		ret+=dSortedTriBox(b_neg_tri.side0,b_neg_tri.side1,b_neg_tri.norm,
-			b_neg_tri.v0,b_neg_tri.v1,b_neg_tri.v2,b_neg_tri.dist,
-			o1,o2,flags,
-			CONTACT(contact, ret * skip),
-			skip);	
-		return ret;
-	}
-	*/
 	vector<Triangle>::iterator i;
 	
-	for(i=pos_tries.begin();i!=pos_tries.end();i++)
-		ret+=dTriBox (i->v0,i->v1,i->v2,
-		o1,
-		o2,
-		3,
-		CONTACT(contact, ret * skip),   skip);
-
-pushing_neg=pushing_neg&&(!ret);
 
 
-//return ret;
+//(*pushing_neg)=(*pushing_neg)&&(!ret);
+
+
+
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
 
@@ -196,36 +195,41 @@ pushing_neg=pushing_neg&&(!ret);
 			if(TriContainPoint(i->v0,i->v1,i->v2,
 				i->norm,i->side0,
 				i->side1,p))
-				if((dDOT(neg_tri.norm,i->v0)-neg_tri.pos)<0.f||
-					(dDOT(neg_tri.norm,i->v1)-neg_tri.pos)<0.f||
-					(dDOT(neg_tri.norm,i->v2)-neg_tri.pos)<0.f
+				if((dDOT(neg_tri->norm,i->v0)-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,i->v1)-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,i->v2)-neg_tri->pos)<0.f
 					){
 						include=false;
 						break;
 					}
 		};
 		if(include){		
-			ret+=dSortedTriBox(neg_tri.side0,neg_tri.side1,neg_tri.norm,
-			neg_tri.v0,neg_tri.v1,neg_tri.v2,neg_tri.dist,
+			ret+=dSortedTriBox(neg_tri->side0,neg_tri->side1,neg_tri->norm,
+			neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->dist,
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_neg=!!ret;
+			*pushing_neg=!!ret;
 		}
 
 	}
 
-	pushing_b_neg=pushing_b_neg&&(!ret);
+	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 	//if(ret==0)
+	for(i=pos_tries.begin();i!=pos_tries.end();i++)
+		ret+=dTriBox (i->v0,i->v1,i->v2,
+		o1,
+		o2,
+		3,
+		CONTACT(contact, ret * skip),   skip);
 
-
-
-	if(b_neg_depth<dInfinity&&((b_count>1)||pushing_b_neg)&&ret==0){
+//((b_count>1)||(*pushing_b_neg))&&
+	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if(!(((dDOT(b_neg_tri.norm,i->v0)-b_neg_tri.pos)>0.f)&&
-				((dDOT(b_neg_tri.norm,i->v1)-b_neg_tri.pos)>0.f)&&
-				((dDOT(b_neg_tri.norm,i->v2)-b_neg_tri.pos)>0.f))
+			if(!(((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)>0.f)&&
+				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)>0.f)&&
+				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)>0.f))
 				){
 					include=false;
 					break;
@@ -233,12 +237,12 @@ pushing_neg=pushing_neg&&(!ret);
 		};
 		
 		if(include)	{	
-			ret+=dSortedTriBox(b_neg_tri.side0,b_neg_tri.side1,b_neg_tri.norm,
-			b_neg_tri.v0,b_neg_tri.v1,b_neg_tri.v2,b_neg_tri.dist,
+			ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
+			b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->dist,
 			o1,o2,flags,
 			CONTACT(contact, ret * skip),
 			skip);	
-			pushing_b_neg=!!ret;
+			*pushing_b_neg=!!ret;
 		}
 
 	}
