@@ -185,10 +185,10 @@ void __cdecl	crashthread			( void* )
 				};
 				u32*	_ptr;
 			}		rndptr;
-			rndptr._b0		= u8(::Random.randI(0,255));
-			rndptr._b1		= u8(::Random.randI(0,255));
-			rndptr._b2		= u8(::Random.randI(0,255));
-			rndptr._b3		= u8(::Random.randI(0,255));
+			rndptr._b0		= u8(::Random.randI(0,256));
+			rndptr._b1		= u8(::Random.randI(0,256));
+			rndptr._b2		= u8(::Random.randI(0,256));
+			rndptr._b3		= u8(::Random.randI(0,256));
 			*rndptr._ptr	= 0xBAADF00D;
 		} catch(...) {
 			// OK
