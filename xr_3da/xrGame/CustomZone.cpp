@@ -368,7 +368,7 @@ void CCustomZone::Affect(CObject* O)
 	
 	char l_pow[255]; 
 	sprintf(l_pow, "zone hit. %.1f", Power(pGameObject->Position().distance_to(P)));
-	if(bDebug) HUD().outMessage(0xffffffff,pGameObject->cName(), l_pow);
+	if(bDebug) HUD().outMessage(0xffffffff,*pGameObject->cName(), l_pow);
 	
 	Fvector hit_dir; 
 	hit_dir.set(::Random.randF(-.5f,.5f), 

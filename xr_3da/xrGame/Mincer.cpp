@@ -90,7 +90,7 @@ void CMincer::Affect(CObject* O)
 		char pow[255]; 
 		sprintf(pow, "zone hit. %.1f", Power(pObject->Position().distance_to(position),
 											 pObject->GetMass()));
-		if(bDebug) HUD().outMessage(0xffffffff,pObject->cName(), pow);
+		if(bDebug) HUD().outMessage(0xffffffff,*pObject->cName(), pow);
 		
 		Fvector dir; 
 		dir.set(::Random.randF(-.5f,.5f), 

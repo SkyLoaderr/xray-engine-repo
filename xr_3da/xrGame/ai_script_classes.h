@@ -71,8 +71,8 @@ public:
 	// CGameObject
 	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	SUB_CLS_ID,			CLASS_ID,						CLASS_ID(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
-	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				LPCSTR,							"");
-	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			LPCSTR,							"");
+	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				ref_str,						"");
+	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			ref_str,						"");
 	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,							u32(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,							FALSE);

@@ -46,7 +46,7 @@ void CRadioactiveZone::Affect(CObject* O)
 		XFORM().transform_tiny(P,CFORM()->getSphere().P);
 		char l_pow[255]; 
 		sprintf(l_pow, "zone hit. %.1f", Power(l_pO->Position().distance_to(P)));
-		if(bDebug) HUD().outMessage(0xffffffff,l_pO->cName(), l_pow);
+		if(bDebug) HUD().outMessage(0xffffffff,*l_pO->cName(), l_pow);
 		
 		Fvector l_dir; 
 		l_dir.set(0,0,0);
