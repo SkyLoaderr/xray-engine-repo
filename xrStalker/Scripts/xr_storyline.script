@@ -27,6 +27,7 @@ function set_storyline(object, char_ini)
 		if( char_ini:line_exist("novice3", "enemy_path") == true ) then
 			xr_motivator.storage[object:id()].novice3.enemy_path  = patrol(char_ini:r_string("novice3", "enemy_path") )
 		end
+		printf("____section is")
 		xr_motivator.storage[object:id()].novice3.enabled = true
 		object:set_start_dialog("loser_hello_dialog")
 		xr_trivial.add_novice3    (object)
