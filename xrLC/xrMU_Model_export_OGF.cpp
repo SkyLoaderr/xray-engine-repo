@@ -1,11 +1,13 @@
 #include "stdafx.h"
 
+#define	TRY(a) try { a; } catch (...) { clMsg("* E: %s", #a); }
+
 void xrMU_Reference::export_ogf()
 {
 	for (xrMU_Model::v_subdivs_it it=model->m_subdivs.begin(); it!=model->m_subdivs.end(); it++)
 	{
 		OGF*		pOGF	= xr_new<OGF> ();
-		b_material*	M		= &(materials[it->material]);	// and it's material
+		b_material*	M		= &(pBuild->materials[it->material]);	// and it's material
 		R_ASSERT	(M);
 
 		try {
@@ -15,8 +17,8 @@ void xrMU_Reference::export_ogf()
 
 			// Collect textures
 			OGF_Texture			T;
-			TRY(strcpy(T.name,textures[M->surfidx].name));
-			TRY(T.pSurface = &(textures[M->surfidx]));
+			TRY(strcpy(T.name,pBuild->textures[M->surfidx].name));
+			TRY(T.pSurface = &(pBuild->textures[M->surfidx]));
 			TRY(pOGF->textures.push_back(T));
 
 			// Collect faces & vertices
@@ -54,10 +56,10 @@ void xrMU_Reference::export_ogf()
 					TRY					(pOGF->_BuildFace(V1,V2,V3));
 					V1.UV.clear();	V2.UV.clear();	V3.UV.clear();
 				}
-			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
+			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",g_tree.size()); }
 		} catch (...)
 		{
-			clMsg("* ERROR: Flex2OGF, 1st part, model# %d",MODEL_ID);
+			clMsg("* ERROR: Flex2OGF, 1st part, model# %d",g_tree.size());
 		}
 
 		try {
@@ -69,7 +71,7 @@ void xrMU_Reference::export_ogf()
 			if (g_params.m_bStripify)				pOGF->Stripify			();
 		} catch (...)
 		{
-			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);
+			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",g_tree.size());
 		}
 
 		g_tree.push_back	(pOGF);
