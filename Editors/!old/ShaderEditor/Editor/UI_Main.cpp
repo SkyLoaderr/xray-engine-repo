@@ -201,7 +201,6 @@ void TUI::OnAppActivate()
      	pInput->OnAppActivate();
     }
     m_bAppActive 	= true;
-    Device.bActive  = true;
 }
 //---------------------------------------------------------------------------
 
@@ -214,7 +213,6 @@ void TUI::OnAppDeactivate()
     }
     HideHint();
     m_bAppActive 	= false;
-    Device.bActive  = false;
 }
 //---------------------------------------------------------------------------
 
