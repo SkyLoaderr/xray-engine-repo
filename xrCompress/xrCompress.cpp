@@ -21,6 +21,7 @@ struct	ALIAS
 };
 multimap<u32,ALIAS>		aliases;
 
+
 BOOL	testSKIP		(LPCSTR path)
 {
 	string256			p_name;
@@ -59,23 +60,28 @@ BOOL	testEqual		(LPCSTR path, CVirtualFileStream& base)
 	return 0==memcmp(test.Pointer(),base.Pointer(),base.Length());
 }
 
-ALIAS*	testALIAS		(CVirtualFileStream& base, u32& a_tests)
+ALIAS*	testALIAS		(CVirtualFileStream& base, u32 crc, u32& a_tests)
 {
 	multimap<u32,ALIAS>::iterator I = aliases.lower_bound(base.Length());
 
 	while (I!=aliases.end() && (I->first==base.Length()))
 	{
-		a_tests	++;
-		if (testEqual(I->second.path,base))	
+		if (I->second.crc == crc)
 		{
-			return	&I->second;
+			a_tests	++;
+			if (testEqual(I->second.path,base))	
+			{
+				return	&I->second;
+			}
 		}
 		I++;
 	}
 	return 0;
 }
 
-void Compress			(LPCSTR path)
+extern	u32		crc32_calc			(void* P, u32 size);
+
+void	Compress			(LPCSTR path)
 {
 	filesTOTAL			++;
 
@@ -87,12 +93,13 @@ void Compress			(LPCSTR path)
 	}
 
 	CVirtualFileStream		src	(path);
+	u32			c_crc32		= crc32_calc	(src.Pointer(),src.Length());
 	u32			c_ptr		= 0;
 	u32			c_size		= 0;
 	u32			c_mode		= 0;
 	u32			a_tests		= 0;
 
-	ALIAS*		A			= testALIAS(src,a_tests);
+	ALIAS*		A			= testALIAS	(src,c_crc32,a_tests);
 	printf				("%3da ",a_tests);
 	if (A) 
 	{
@@ -143,6 +150,7 @@ void Compress			(LPCSTR path)
 		ALIAS			R;
 		R.path			= strdup	(path);
 		R.size			= src.Length();
+		R.crc			= c_crc32;
 		R.c_mode		= c_mode;
 		R.c_ptr			= c_ptr;
 		R.c_size		= c_size;
