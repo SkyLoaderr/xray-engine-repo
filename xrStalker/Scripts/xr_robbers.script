@@ -76,7 +76,7 @@ function evaluator_need_robber:evaluate ()
 		end
 	end
 
-	return self.stor.enabled
+	return self.stor.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -94,6 +94,8 @@ function action_robber_activity:initialize()
 	self.object:set_desired_direction()
 
 	printf("action_robber_activity:initialize()")
+
+	self.initialized = true
 
 	self:reset_scheme()
 end
@@ -126,6 +128,11 @@ function register_robber(obj, team)
 end
 
 function action_robber_activity:reset_scheme()
+	printf("action_robber_activity: reset_scheme")
+	if not self.initialized then
+		return
+	end
+
 	--utils.trace(script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
 
 	self.object:set_detail_path_type(move.line)
@@ -617,6 +624,9 @@ function add_to_binder(npc, char_ini)
 	new_action:add_effect(world_property(properties["need_robber"], false))
 	manager:add_action(operators["action_robber"], new_action)
 
+	local st = xr_motivator.storage[npc:id()].robber
+	st.action = new_action
+
 	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	new_action:add_precondition(world_property(properties["need_robber"], false))
 
@@ -628,8 +638,8 @@ end
 
 -- Включение грабителя
 function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bait_self, bait_radius)
-	--utils.trace(script_name(), "set_robber called: object:name()='%s', team='%s', path_rob='%s'",
-	--	utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
+	printf("set_robber called: object:name()='%s', team='%s', path_rob='%s'",
+		utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
 
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].robber
@@ -651,7 +661,8 @@ function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bai
 	--end
 	
 	if st.action ~= nil then
-		st.action.reset_scheme(st.action)
+		printf("set_robber calling reset_scheme")
+		st.action:reset_scheme()
 	end
 	xr_motivator.checkStorage(object)
 end

@@ -63,6 +63,7 @@ zmey_guide_base        = zmey_actions + 550
 zmey_robber_guard_base = zmey_actions + 600
 zmey_walker_base       = zmey_actions + 650
 zmey_assassin_base     = zmey_actions + 700
+zmey_scared_base       = zmey_actions + 750
 
 -- Æåíÿ
 jon_actions = zmey_actions + 1024

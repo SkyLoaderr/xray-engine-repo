@@ -39,6 +39,7 @@ module ("xr_robber_guard")
 module ("xr_punch")
 module ("xr_talker")
 module ("xr_bodyguard")
+module ("xr_scared")
 module ("xr_camper2")
 module ("xr_sleeper")
 module ("xr_commander")
@@ -292,9 +293,14 @@ end
 --
 
 function get_level_object(obj_name)
-    local res       = level.object(obj_name)
+    local res = level.object(obj_name)
     while res == nil do
---        printf("get_level_object() is waiting for object \"%s\"", obj_name)
+
+    	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	-- !!!!! ме гюйнллемрюпхбюире, хмюве ме асдер бхдмн ньханй опх пюяярюмнбйе назейрнб !!!!!
+	-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        printf("get_level_object() is waiting for object \"%s\"", obj_name)
+
         res         = level.object(obj_name)
         wait        ()
     end

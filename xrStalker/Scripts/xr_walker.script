@@ -12,6 +12,7 @@ function evaluator_need_walker:evaluate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
+--[[
 class "evaluator_override_fight" (property_evaluator)
 
 function evaluator_override_fight:__init(storage) super()
@@ -25,6 +26,7 @@ function evaluator_override_fight:evaluate()
 	--end
   	return false
 end
+]]
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_walker_activity" (action_base)
@@ -44,11 +46,19 @@ function action_walker_activity:initialize()
 
 	self.move_mgr:initialize(self.object)
 
+	printf("initiz")
+	self.initialized = true
+
 	self:reset_scheme()
 end
 
 
 function action_walker_activity:reset_scheme()
+	printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
+	if not self.initialized then
+		return
+	end
+	
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
 	end
@@ -74,22 +84,23 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
 	if char_ini == nil  or char_ini:section_exist ("walker") == true then
+		printf("xr_walker: add_to_binder")
   		local operators	= {}
 	  	local properties  = {}
-
+		
 	   	local manager = npc:motivation_action_manager()
 
 		properties["event"] = xr_evaluators_id.reaction
 		properties["state_end"] = xr_evaluators_id.state_change
 	 	properties["need_walker"] = xr_evaluators_id.zmey_walker_base + 1
-		properties["override_fight"] = xr_evaluators_id.zmey_walker_base + 2
+		--properties["override_fight"] = xr_evaluators_id.zmey_walker_base + 2
 
 	 	operators["action_walker"] = xr_actions_id.zmey_walker_base + 1
 	 	operators["action_walker_2"] = xr_actions_id.zmey_walker_base + 2
 
 	   	-- // evaluators
 		manager:add_evaluator(properties["need_walker"], this.evaluator_need_walker(xr_motivator.storage[npc:id()].walker))
-		manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].walker))
+		--manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].walker))
 
 		local new_action = this.action_walker_activity(npc, "action_walker_activity", xr_motivator.storage[npc:id()].walker)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
@@ -100,18 +111,23 @@ function add_to_binder(npc, char_ini)
 	   	new_action:add_effect(world_property(properties["need_walker"], false))
 		manager:add_action(operators["action_walker"], new_action)
 
+		local st = xr_motivator.storage[npc:id()].walker
+		st.action = new_action
+
+--[[
 		local new_action = this.action_walker_activity(npc, "action_walker_activity", xr_motivator.storage[npc:id()].walker)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
-	  	--new_action:add_precondition(world_property(properties["need_walker"], true))
+	  	--------new_action:add_precondition(world_property(properties["need_walker"], true))
 		new_action:add_precondition(world_property(properties["override_fight"], true))
 	   	new_action:add_effect(world_property(stalker_ids.property_enemy, false))
 		manager:add_action(operators["action_walker_2"], new_action)
+]]
 
 	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	  	new_action:add_precondition(world_property(properties["need_walker"], false))
 
-		new_action = manager:action(stalker_ids.action_combat_planner)
-		new_action:add_precondition(world_property(properties["override_fight"], false))
+		--new_action = manager:action(stalker_ids.action_combat_planner)
+		--new_action:add_precondition(world_property(properties["override_fight"], false))
 
 		if char_ini ~= nil then
 			xr_walker.set_walker(npc)
@@ -127,6 +143,7 @@ end
 -- team [опционально] - команда для синхронизации
 --
 function set_walker(object, enabled, path_walk, path_look, team)
+	printf("_bp: set_walker (path_walk=%s)", path_walk)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].walker
 
@@ -139,7 +156,8 @@ function set_walker(object, enabled, path_walk, path_look, team)
 	st.path_look_info = nil -- не загружены.
 
 	if st.action ~= nil then
-		st.action.reset_scheme(st.action)
+		printf("_bp: set_walker: reset_scheme")
+		st.action:reset_scheme()
 	end
 	xr_motivator.checkStorage(object)
 end

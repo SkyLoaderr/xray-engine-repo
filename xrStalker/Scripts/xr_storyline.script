@@ -152,4 +152,7 @@ function set_storyline(object, char_ini)
 	}
 	bar_stalker.add_to_binder (object, char_ini)
 
+	-- Испуганный сталкер, которого убивает плоть или кровосос
+	xr_motivator.storage[object:id()].scared = {}
+	xr_scared.add_to_binder(object, char_ini)
 end

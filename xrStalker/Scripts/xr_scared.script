@@ -1,62 +1,37 @@
-local sounds = {}
+-- xr_scared
+--
+-- Created by: Andrey Fidrya, "Zmey", af@svitonline.com
+-- 
 
--- ƒл€ взаимодействи€ с агрессивной плотью (xr_scared_agro_flesh.script)
-scared_stalker = nil
-finish_me_off = false
-flesh_is_dead = false
-going_to_roof = false
-
-function action2(obj,...)
-    local act = entity_action()
-    local i = 1
-    while true do
-        if (arg[i] ~= nil) then
-            act:set_action(arg[i])
-        else
-            break
-        end
-        i = i + 1
-    end
-    if (obj ~= nil) then
-        obj:command(act,false)
-    end
-    return  entity_action(act)
-end
+monster_info = {}
 
 ---------------------------------------------------------------------------------------------------------------------
---Evaluators
-----------------------------------------------------------------------------------------------------------------------
---  онстанта
 class "evaluator_need_scared" (property_evaluator)
-function evaluator_need_scared:__init(storage) super ()
-  	self.a = storage
+
+function evaluator_need_scared:__init(storage) super()
+  	self.st = storage
 end
 
-function evaluator_need_scared:evaluate ()
-  	local tt
-
-  	tt = self.a.enabled == true
-
-	if tt and not this.scared_stalker then
-		this.scared_stalker = self.object
+function evaluator_need_scared:evaluate()
+	if self.st.enabled then
+		if not monster_info[self.st.monster] then
+			monster_info[self.st.monster] = { }
+		end
+		local mi = monster_info[self.st.monster]
+		if not mi.stalker then
+			mi.stalker = self.object
+		end
 	end
-	
-     	return tt
+
+  	return self.st.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
---Actions
-----------------------------------------------------------------------------------------------------------------------
--- ќбычное поведение
 class "action_scared_activity" (action_base)
-function action_scared_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-  self.a = storage
 
-    self.state_none = 0
-    self.state_standing_before_anim = 1
-    self.state_anim_playing = 3
-    self.state_moving = 4
-
+function action_scared_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+	self.st = storage
+	self.move_mgr = move_mgr.move_mgr()
 end
 
 function action_scared_activity:initialize()
@@ -67,360 +42,117 @@ function action_scared_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
-	self.object:set_callback(self, "waypoint_callback", game_object.movement)
+	self.move_mgr:initialize(self.object)
+
 	self:reset_scheme()
 end
 
+
 function action_scared_activity:reset_scheme()
-	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
-	self.path_main = self.a.path_main
-	self.path_hideout = self.a.path_hideout
-	self.path_roof = self.a.path_roof
-	self.path_active =  self.path_main
-
-	self.is_sitting = false
-
-	-- ‘лажок, включить если прибыли в путь, состо€щий из одной точки
-	self.arrived_to_single_point_path = false
-
-	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
-	-- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
-	self.last_look_index = nil
-
-	self.object:set_item(object.idle, nil)
-	self.object:set_detail_path_type(move.line)
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.run)
-	self.object:set_path_type(game_object.patrol_path)
-	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-	--self.object:set_mental_state(anim.free)
-	--self.object:set_sight(look.search, nil, 0)
-	self.object:set_sight(look.danger, nil, 0)
-
-	self.state = self.state_moving
-
-	self.last_index = -1
-
-	local pos = self.object:position()
-	local ptr = patrol(self.path_active)
-        local num_points = ptr:count()
-        for i = 0, num_points - 1 do
-		if ptr:flag(i, 0) then
-			local distance = pos:distance_to(ptr:point(i))
-			if distance <= 1 then
-				printf("simulating callback")
-				self:waypoint_callback(self.object, self.last_action_type, self.last_index)
-				break
-			end
-		end
+	if self.st.path_main_walk_info == nil then
+		self.st.path_main_walk_info = utils.path_parse_waypoints(self.st.path_main_walk)
+	end
+	if self.st.path_main_look_info == nil then
+		self.st.path_main_look_info = utils.path_parse_waypoints(self.st.path_main_look)
+	end
+	if self.st.path_hideout_walk_info == nil then
+		self.st.path_hideout_walk_info = utils.path_parse_waypoints(self.st.path_hideout_walk)
+	end
+	if self.st.path_hideout_look_info == nil then
+		self.st.path_hideout_look_info = utils.path_parse_waypoints(self.st.path_hideout_look)
+	end
+	if self.st.path_roof_walk_info == nil then
+		self.st.path_roof_walk_info = utils.path_parse_waypoints(self.st.path_roof_walk)
+	end
+	if self.st.path_roof_look_info == nil then
+		self.st.path_roof_look_info = utils.path_parse_waypoints(self.st.path_roof_look)
 	end
 
-	xr_reactions.add_rule(self.object, "ignore")
+	self.move_mgr:reset(self.st.path_main_walk, self.st.path_main_walk_info,
+		self.st.path_main_look, self.st.path_main_look_info,
+		nil,
+		{running = true, danger = true})
 end	
 
-function action_scared_activity:waypoint_callback(obj, action_type, index)
-    -- Ѕудет использоватьс€ позже дл€ вызова этой функции с целью иммитации коллбека (дл€ путей, состо€щих из одной точки):
-    self.last_action_type = action_type
-    self.last_index = index
-
-    if index == -1 then
-        return
-    end
-
-    local ptr = patrol(self.path_active)
-    if ptr:flag(index, 1) then
-        self.arrived_to_single_point_path = true
-        self.object:set_movement_type(move.stand)
-    else
-        self.arrived_to_single_point_path = false
-    end
-
-    local flagnum = nil
-    for f = 2, 31 do -- точка 0 зарезервирована дл€ начала пути, 1 - дл€ задани€ пути, состо€щего из одной точки
-        if ptr:flag(index, f) then
-            flagnum = f
-        end
-    end
-
-    -- ¬ыбрать случайно одну из точек, помеченных тем же самым флагом, чтобы посмотреть в нее:
-    if flagnum then
-        local pt_chosen = nil
-        local pt_found = 0
-
-        local num_points = ptr:count()
-        for i = 0, num_points - 1 do
-            if i ~= index and ptr:flag(i, flagnum) then
-              pt_found = pt_found + 1
-              local r = math.random(1, pt_found)
-              if r == 1 then
-                  pt_chosen = i
-              end
-            end
-        end
-
-        if pt_chosen then
-            if pt_chosen ~= self.last_look_index then
-              self.object:clear_animations () -- не играть анимацию во врем€ поворота!
-              self.expiration_time = device():time_global() + 1500; -- дать 100 мс на поворот
-              self:look_at_waypoint(pt_chosen) -- поворачиваемс€
-           else
-              self.expiration_time = 0 -- сразу же стартовать анимацию, уже смотрим в нужную сторону
-            end
-            self.state = self.state_standing_before_anim
-            self.object:set_movement_type(move.stand)
-        end
-    end
-end
-
--- ѕосмотреть в направлении указанной точки текущего маршрута
-function action_scared_activity:look_at_waypoint(pt)
-    local way = patrol (self.object:patrol ())
-    local look_pt = xr_scared.vector_copy_by_val(way:point(pt)):sub(self.object:position())
-    self.object:set_sight(look.direction, look_pt, 0)
-    self.last_look_index = pt
-end
-
 function action_scared_activity:execute()
-	--[[printf("_debug_scared [%s]: state [%d], animation_count [%d]",
-	self.object:name(), self.state, self.object:animation_count())]]
-
-	self.object:set_item(object.idle, nil)
-
-	if self.state == self.state_standing_before_anim and self.expiration_time and
-	   device():time_global() >= self.expiration_time then
-		--printf("_debug_scared [%s]: adding animations", self.object:name())
-		while self.object:animation_count() <= 1 do
-			if self.path_active == self.path_roof then
-				local animate = math.random(1, 1)
-				if animate == 1 then
-					self.object:add_animation("myach_1", false)
-				elseif animate == 2 then
-					self.object:add_animation("myach_2", false)
-				end
-				this.finish_me_off = true
-			elseif self.path_active == self.path_hideout then
-				if not self.is_sitting then
-					self.object:add_animation("waunded_sitdawn_0", false)
-					self.object:add_animation("waunded_idle_0", false)
-					self.is_sitting = true
-				else
-					self.object:add_animation("waunded_idle_0", false)
-				end
-			else
-				local animate = math.random(1, 10)
-				if animate == 1 then
-					self.object:add_animation("stoya_ruje_ 0", true)
-				elseif animate == 2 then
-					self.object:add_animation("vishka_3", false)
-				elseif animate == 3 then
-					self.object:add_animation("norm_torso_2_idle_1", false)
-				elseif animate == 4 then
-					self.object:add_animation("norm_torso_2_idle_2", true)
-				elseif animate == 5 then
-					self.object:add_animation("norm_torso_2_idle_3", false)
-				elseif animate == 6 then
-					self.object:add_animation("chasovoy_0", true)
-				elseif animate == 7 then
-					self.object:add_animation("chasovoy_1", true)
-				elseif animate == 8 then
-					self.object:add_animation("chasovoy_2", true)
-				elseif animate == 9 then
-					self.object:add_animation("chasovoy_3", true)
-				elseif animate == 10 then
-					self.object:add_animation("chasovoy_4", true)
-				end
-			end
-        	end
-		self.state = self.state_anim_playing
-	end
-
-	--printf("_debug_scared [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
-
-	local actor = level.actor()
-	if actor then
-		local pos = self.object:position()
-		local actor_pos = actor:position()
-		if this.flesh_is_dead then
-			if self.path_active ~= self.path_hideout then
-				self.arrived_to_single_point_path = false
-				self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
-				self.path_active = self.path_hideout
-				self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-				self.object:clear_animations()
-			end
-		elseif pos:distance_to(actor_pos) < 20 then
-			if self.path_active ~= self.path_roof then
-				this.going_to_roof = true
-				self.arrived_to_single_point_path = false
-				self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
-				self.path_active = self.path_roof
-				self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-				self.object:clear_animations()
-			end
-		end
-	end
-
-	if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
-		-- ќчищать анимации, только если собираемс€ идти дальше по пути...
-		-- Ќе очищать, если дальше будем сто€ть, т.к. иначе будут рывки
-		if not self.arrived_to_single_point_path then
-			self.object:clear_animations ()
-		end
-
-		self.state = self.state_moving
-
-		if self.arrived_to_single_point_path then
-			self:waypoint_callback(self.object, self.last_action_type, self.last_index)
-		else
-			self.last_look_index = nil
-			self.object:set_movement_type(move.run)
-			--self.object:set_sight(look.search, nil, 0)
-			self.object:set_sight(look.danger, nil, 0)
-		end
-	end
+	action_base.execute(self)
+	self.move_mgr:update()
 end
 
 function action_scared_activity:finalize()
-  --printf("_bp: FINALIZE")
-  self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгл€да уже не актуально
-
-    self.object:clear_callback(game_object.movement)
-    self.object:clear_animations()
-
-    local enemy = self.object:best_enemy()
-    if enemy then
-        if enemy:alive() and self.object:see(enemy) then
-            if not self.a.alarm_activated then
-              self.object:play_sound (sounds["soldier_alarm"], 1, 0, 1, 0, 3) -- was 1
-              self.a.alarm_activated = true
-            end
-        end
-    end
-
-    action_base.finalize(self)
+	self.move_mgr:finalize()
+	action_base.finalize(self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 --scared binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc)
-  --printf("_bp: add_to_binder (scared)")
-  local operators    = {}
-  local properties  = {}
+function add_to_binder(npc, char_ini)
+	if char_ini == nil  or char_ini:section_exist ("scared") == true then
+  		local operators	= {}
+	  	local properties  = {}
 
-  sounds["commander_snd"]     = xr_sounds_id.zmey_scared_base + 1
-  sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_scared_base + 2
-  sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_scared_base + 3
-  sounds["soldiers_replics_snd"]     = xr_sounds_id.zmey_scared_base + 4
-  sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_scared_base + 5
-  sounds["soldier_alarm"]     = xr_sounds_id.zmey_scared_base + 6
+	   	local manager = npc:motivation_action_manager()
 
-  npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
-     npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
-    npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+		properties["event"] = xr_evaluators_id.reaction
+		properties["state_end"] = xr_evaluators_id.state_change
+	 	properties["need_scared"] = xr_evaluators_id.zmey_scared_base + 1
 
-   local manager = npc:motivation_action_manager()
+	 	operators["action_scared"] = xr_actions_id.zmey_scared_base + 1
 
-  properties["need_scared"]   = xr_evaluators_id.zmey_scared_base + 1
-  properties["need_talker"]   = xr_evaluators_id.zmey_talker_base + 1
+	   	-- // evaluators
+		manager:add_evaluator(properties["need_scared"], this.evaluator_need_scared(xr_motivator.storage[npc:id()].scared))
 
-  operators["action_scared"]   = xr_actions_id.zmey_scared_base + 1
+		local new_action = this.action_scared_activity(npc, "action_scared_activity", xr_motivator.storage[npc:id()].scared)
+		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+		new_action:add_precondition(world_property(properties["need_scared"], true))
+		new_action:add_precondition(world_property(properties["event"], false))
+		new_action:add_precondition(world_property(properties["state_end"], true))
+	   	new_action:add_effect(world_property(properties["need_scared"], false))
+		manager:add_action(operators["action_scared"], new_action)
 
-   	-- // evaluators
-    	manager:add_evaluator (properties["need_scared"],   this.evaluator_need_scared  (xr_motivator.storage[npc:id()].scared))
+	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action:add_precondition(world_property(properties["need_scared"], false))
 
-	local new_action = this.action_scared_activity(npc, "action_scared_activity", xr_motivator.storage[npc:id()].scared)
-    	new_action:add_precondition    (world_property(stalker_ids.property_alive,   	true))
-    	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   	false))
-      	new_action:add_precondition    (world_property(properties["need_talker"],   	false))
-      	new_action:add_precondition    (world_property(properties["need_scared"],   	true))
-   	new_action:add_effect(world_property(properties["need_scared"], false))
-    	manager:add_action(operators["action_scared"], new_action)
-
-  	new_action = manager:action(stalker_ids.action_puzzle_solver)
-      	new_action:add_precondition    (world_property(properties["need_scared"],   	false))
+		if char_ini ~= nil then
+			xr_scared.set_scared(npc)
+		end
+	end
 end
 
--- функции
-function vector_copy_by_val(vec)
-  local newvec = vector()
-  newvec.x = vec.x
-  newvec.y = vec.y
-  newvec.z = vec.z
-  return newvec
-end
-
--- включение лагер€
-function set_scared(object, enable, path_main, path_hideout, path_roof)
-	-- enable - будет ли работать схема в принципе
-	-- path_main - основной патрульный путь
-	-- path_hideout - патрульный путь во врем€ дожд€
-	-- search_light - прожектор
+-- ¬ключение схемы
+function set_scared(object, enabled,
+		path_main_walk, path_main_look,
+		path_hideout_walk, path_hideout_look,
+		path_roof_walk, path_roof_look,
+		monster)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].scared
-	if enable == nil then
-	    	if char_ini:section_exist ("scared") == true then
-        		if char_ini:line_exist("scared", "enabled") == true then
-                		st.enabled = char_ini:r_bool("scared", "enabled")
-			else
-				st.enabled = false
-		        end
-		else
-			st.enabled = false
-		end
-	else
-		st.enabled = enable		
-	end	
-	if st.enabled == true then
-		if path_main == nil then
-		    	if char_ini:section_exist ("scared") == true then
-	        		if char_ini:line_exist("scared", "path_main") == true then
-		        	        st.path_main = char_ini:r_string("scared", "path_main")
-	        		else
-		        	    	st.enabled = false
-			        end
-			else
-				st.enabled = false
-			end
-		else
-			st.path_main = path_main
-		end
+
+	st.enabled = utils.conf_get_bool(char_ini, "scared", "enabled", enabled, object, true)
+	st.path_main_walk = utils.conf_get_string(char_ini, "scared", "path_main_walk", path_main_walk, object, true)
+	st.path_main_look = utils.conf_get_string(char_ini, "scared", "path_main_look", path_main_look, object, false)
+	st.path_hideout_walk = utils.conf_get_string(char_ini, "scared", "path_hideout_walk", path_hideout_walk, object, true)
+	st.path_hideout_look = utils.conf_get_string(char_ini, "scared", "path_hideout_look", path_hideout_look, object, false)
+	st.path_roof_walk = utils.conf_get_string(char_ini, "scared", "path_roof_walk", path_roof_walk, object, true)
+	st.path_roof_look = utils.conf_get_string(char_ini, "scared", "path_roof_look", path_roof_look, object, false)
+	st.monster = utils.conf_get_string(char_ini, "scared", "monster", monster, object, true)
+
+	if not monster_info[st.monster] then
+		monster_info[st.monster] = { }
 	end
-	if st.enabled == true then
-		if path_hideout == nil then
-		    	if char_ini:section_exist ("scared") == true then
-	        		if char_ini:line_exist("scared", "path_hideout") == true then
-		        	        st.path_hideout = char_ini:r_string("scared", "path_hideout")
-	        		else
-		        	    	st.enabled = false
-			        end
-			else
-	        	    	st.enabled = false
-			end
-		else
-			st.path_hideout = path_hideout
-		end
-	end
-	if st.enabled == true then
-		if path_roof == nil then
-		    	if char_ini:section_exist ("scared") == true then
-	        		if char_ini:line_exist("scared", "path_roof") == true then
-		        	        st.path_roof = char_ini:r_string("scared", "path_roof")
-	        		else
-		        	    	st.enabled = false
-			        end
-			else
-	        	    	st.enabled = false
-			end
-		else
-			st.path_roof = path_roof
-		end
-	end
+
+	st.path_main_walk_info = nil -- Ѕудут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_main_look_info = nil -- не загружены.
+	st.path_hideout_walk_info = nil -- Ѕудут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_hideout_look_info = nil -- не загружены.
+	st.path_roof_walk_info = nil -- Ѕудут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_roof_look_info = nil -- не загружены.
+
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
 	end
 	xr_motivator.checkStorage(object)
 end
+
