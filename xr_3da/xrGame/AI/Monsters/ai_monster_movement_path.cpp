@@ -17,7 +17,7 @@
 void CMonsterMovement::get_intermediate() 
 {
 	m_intermediate.node		= m_target.node;
-	
+
 	Fvector	dir;
 	if (m_target_type == eMoveToTarget) {
 		dir.sub						(m_target.position, Position());
@@ -229,7 +229,7 @@ bool CMonsterMovement::check_build_conditions()
 		return		true;
 	}
 	
-	if (m_intermediate.position.similar(m_target.position) || CDetailPathManager::actual()) {
+	if (m_intermediate.position.similar(m_target.position) || CDetailPathManager::actual() || Position().similar(m_target.position)) {
 		m_path_end	= true;
 		return		true;
 	}
