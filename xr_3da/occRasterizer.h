@@ -43,7 +43,7 @@ public:
 	
 	occTri**		get_frame	()			{ return &(bufFrame[0][0]);	}
 	float*			get_depth	()			{ return &(bufDepth[0][0]);	}
-	float*			get_depth_level	(int level)	
+	int*			get_depth_level	(int level)	
 	{
 		switch (level)
 		{
