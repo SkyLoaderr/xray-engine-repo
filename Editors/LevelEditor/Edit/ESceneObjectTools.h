@@ -18,6 +18,7 @@ protected:
     	flAppendRandomRotation	= (1<<31),
     };
     Flags32				m_Flags;
+	bool 				ExportBreakableObjects	(SExportStreams& F);
 public:
     Fvector				m_AppendRandomMinScale;
     Fvector				m_AppendRandomMaxScale;
@@ -45,6 +46,9 @@ public:
     BOOL				IsAppendRandomActive		(){return m_Flags.is(flAppendRandom);}
     BOOL				IsAppendRandomScaleActive	(){return m_Flags.is(flAppendRandomScale);}
     BOOL				IsAppendRandomRotationActive(){return m_Flags.is(flAppendRandomRotation);}
+
+    // tools
+    virtual bool		ExportGame         		(SExportStreams& F);
 };
 //---------------------------------------------------------------------------
 #endif

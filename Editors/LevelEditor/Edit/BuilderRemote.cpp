@@ -38,11 +38,11 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_Vertices);
-    F.w				(l_verts,sizeof(b_vertex)*l_vert_cnt);
+    F.w				(l_verts,sizeof(b_vertex)*l_vert_it); 	//. l_vert_cnt
     F.close_chunk	();
 
     F.open_chunk	(EB_Faces);
-    F.w				(l_faces,sizeof(b_face)*l_face_cnt);
+    F.w				(l_faces,sizeof(b_face)*l_face_it); 	//. l_face_cnt
     F.close_chunk	();
 
     F.open_chunk	(EB_Materials);
@@ -127,7 +127,8 @@ int SceneBuilder::CalculateSector(const Fvector& P, float R)
     return m_iDefaultSectorNum; // по умолчанию
 }
 
-void SceneBuilder::ResetStructures (){
+void SceneBuilder::ResetStructures ()
+{
     l_vert_cnt 				= 0;
 	l_face_cnt				= 0;
 	l_vert_it 				= 0;
@@ -205,6 +206,10 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains undefined game material.",surf->_Name());
         	bResult 		= FALSE; 
             break; 
+        }
+        if (M->Flags.is(SGameMtl::flBreakable)){
+        	ELog.Msg		(mtInformation,"Surface: '%s' contains breakable game material.",surf->_Name());
+            continue;
         }
         if (M->Flags.is(SGameMtl::flDynamic)){
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains non-static game material.",surf->_Name());

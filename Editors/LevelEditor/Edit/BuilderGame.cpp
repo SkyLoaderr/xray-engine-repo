@@ -12,8 +12,8 @@
 
 BOOL SceneBuilder::BuildGame()
 {
-	SExportStreams F;
-    Scene.ExportGame(F);
+	SExportStreams 		F;
+    Scene.ExportGame	(F);
 
     // save spawn
     AnsiString lev_spawn = m_LevelPath+"level.spawn";

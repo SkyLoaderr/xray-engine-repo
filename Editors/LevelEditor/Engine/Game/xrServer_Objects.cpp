@@ -232,11 +232,11 @@ CSE_Visual::~CSE_Visual						()
 {
 }
 
-void CSE_Visual::set_visual					(LPCSTR name)
+void CSE_Visual::set_visual					(LPCSTR name, bool load)
 {
 	strcpy						(visual_name,name); if (strext(visual_name)) *strext(visual_name) = 0;
 #ifdef _EDITOR
-	OnChangeVisual				(0);
+	if (load)					OnChangeVisual(0);
 #endif
 }
 

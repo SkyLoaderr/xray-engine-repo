@@ -16,7 +16,7 @@ ESceneObjectTools::ESceneObjectTools():ESceneCustomOTools(OBJCLASS_SCENEOBJECT)
     m_AppendRandomMaxScale.set		(1.f,1.f,1.f);
     m_AppendRandomMinRotation.set	(0.f,0.f,0.f);
     m_AppendRandomMaxRotation.set	(0.f,0.f,0.f);
-	m_Flags.zero();
+	m_Flags.zero	();
 }
 
 void ESceneObjectTools::CreateControls()
@@ -82,5 +82,4 @@ void ESceneObjectTools::FillAppendRandomProperties()
     TProperties::DestroyForm	(m_Props);
 }
 //----------------------------------------------------
-
 

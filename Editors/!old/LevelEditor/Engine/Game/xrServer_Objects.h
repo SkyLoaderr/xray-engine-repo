@@ -168,7 +168,7 @@ public:
 	void							visual_read		(NET_Packet& P);
 	void							visual_write	(NET_Packet& P);
 
-    void							set_visual		(LPCSTR name);
+    void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return visual_name;};
     
 #ifdef _EDITOR

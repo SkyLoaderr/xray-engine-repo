@@ -91,6 +91,14 @@ void ESceneObjectTools::SaveSelection(IWriter& F)
 }
 //----------------------------------------------------
 
+bool ESceneObjectTools::ExportGame(SExportStreams& F)
+{
+	if (!inherited::ExportGame(F)) return false;
 
-
+    // export breakable objects
+    if (!ExportBreakableObjects(F))return false;
+    
+	return true;
+}
+//----------------------------------------------------
 
