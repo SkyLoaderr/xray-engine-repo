@@ -92,28 +92,9 @@
 	</info_portion>
 
 	<info_portion id="location_test2">
-		<task>
-			<objective>
-				<text>test task primary</text>
-				<script_condition>info_test1.test_task1</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-		</task>
-		<task>
-			<objective>
-				<text>test task primary2</text>
-				<script_condition>info_test1.test_task3</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-		</task>
+		<task>task1</task>
+		<task>task2</task>
 		
-
 		<article>three</article>
 		<article>four</article>
 		<location >
