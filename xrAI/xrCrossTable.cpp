@@ -63,7 +63,6 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	int					iVertexCount	= tGraph.m_tGraphHeader.dwVertexCount;
 	int					iNodeCount		= tMap.m_header.count;
 	xr_vector<bool>		tMarks;
-	tMarks.resize		(tMap.m_header.count);
 	tMarks.assign		(tMap.m_header.count,false);
 	{
 		for (int i=0; i<iVertexCount; i++)

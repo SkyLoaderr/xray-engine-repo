@@ -308,21 +308,30 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	Msg							("%d bytes saved",int(tGraph.size()));
 }
 
-void vfRemoveIncoherentGraphPoints(CAI_Map *tpAI_Map)
+void vfRemoveIncoherentGraphPoints(CAI_Map *tpAI_Map, u32 &dwVertexCount)
 {
 	xr_vector<bool>		tMarks;
-	tMarks.resize		(tpAI_Map->m_header.count);
-	tMarks.assign		(tpAI_Map->m_header.count,false);
-	vfRecurseMark		(*tpAI_Map,tMarks,tpaGraph[0].tNodeID);
-	for (int i=0, j=0, n=int(tpaGraph.size()); i<n; i++)
-		if (!tMarks[tpaGraph[i].tNodeID]) {
+	xr_vector<bool>		tDisconnected;
+	tDisconnected.assign(tpaGraph.size(),true);
+	for (int k=0, j=0, n=(int)tpaGraph.size(); k<n; k++) {
+		tMarks.assign	(tpAI_Map->m_header.count,false);
+		vfRecurseMark	(*tpAI_Map,tMarks,tpaGraph[k].tNodeID);
+		for (int i=0; i<n; i++)
+			if (!tMarks[tpaGraph[i].tNodeID]) {
+				tDisconnected[k] = false;
+				Msg		("Graph point %d [%f][%f][%f] is disconnected",k,VPUSH(tpaGraph[k].tLocalPoint));
+				j++;
+				break;
+			}
+	}
+	for (int i=0; i<n; i++)
+		if (!tDisconnected[i]) {
 			tpaGraph.erase(tpaGraph.begin() + i);
-			Msg			("Graph point %d [%f][%f][%f] is disconnected",i+j,VPUSH(tpaGraph[i].tLocalPoint));
-			j++;
 			i--;
 			n--;
+			dwVertexCount--;
 		}
-	Msg					("%d graph points are disconnected (they are removed)",j);
+	Msg					("%d graph points are incoherent (they are removed)",j);
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -357,7 +366,7 @@ void xrBuildGraph(LPCSTR name)
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
 
 	Phase("Removing incoherent graph points");
-	vfRemoveIncoherentGraphPoints(tpAI_Map);
+	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
 
 	Phase("Allocating memory");
 	vfAllocateMemory();
