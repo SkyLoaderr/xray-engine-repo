@@ -76,7 +76,12 @@
 #define _inline			inline
 #define __inline		inline
 #define IC				inline
-#define ICF				__forceinline		// !!! this should be used only in critical places found by PROFILER
+#define ICF				__forceinline			// !!! this should be used only in critical places found by PROFILER
+#ifdef _EDITOR
+#	define ICN
+#else
+#	define ICN			__declspec (noinline)	
+#endif
 
 #ifndef DEBUG
 	#pragma inline_depth	( 254 )
