@@ -28,7 +28,6 @@ function loadJob(sj, gname, type)
 			leader_name = nil,
 			escape_path = gname.."_escape_0" }
 		table.insert(sj, t)			
---[[
 		t = { name = "guard",
 			object = nil, begin = nil, idle = 0,
 			prior = 10, state = 0,
@@ -47,6 +46,7 @@ function loadJob(sj, gname, type)
 			path_main = gname.."_guard_left",
 			path_hideout = gname.."_guard_left" }
 		table.insert(sj, t)			
+--[[
 		t = { name = "guard",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = 0,
