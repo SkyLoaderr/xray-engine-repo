@@ -197,7 +197,8 @@ CRenderTarget::CRenderTarget		()
 		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
 		if (Xdepth) rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A8R8G8B8);
 		else		rt_Color.create	(r2_RT_albedo,	w,h,D3DFMT_A16B16G16R16F);
-		if (RImplementation.o.ldr)	rt_Accumulator.create	(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
+		if (RImplementation.o.albedo_wo)	rt_Color_Blendable.create	(r2_RT_albedo_wo, w,h,D3DFMT_A8R8G8B8);
+		if (RImplementation.o.ldr)			rt_Accumulator.create		(r2_RT_accum,	  w,h,D3DFMT_A8R8G8B8);
 		else {
 			rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
 			if (!RImplementation.o.fp16_blend)
