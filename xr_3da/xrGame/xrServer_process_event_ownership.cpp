@@ -34,7 +34,7 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	case GAME_ASSAULT:
 		{
 			// Check if it's special game-play item
-			xrSE_Target*	T	= dynamic_cast<xrSE_Target*> (e_entity);
+			xrSE_Target_Assault*	T	= dynamic_cast<xrSE_Target_Assault*> (e_entity);
 			if (T && (1==T->g_team()) && (0==e_parent->g_team()))
 			{
 				// Task acomplished
