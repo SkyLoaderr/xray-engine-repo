@@ -216,7 +216,7 @@ bool CEditableObject::LoadSMotions(const char* fname)
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
             ELog.DlgMsg(mtError,"Load failed.",fname);
-            xr_delete(m_it);
+            xr_delete(&*m_it);
             FS.r_close(F);
             return false;
         }
@@ -295,7 +295,7 @@ int CEditableObject::PartIDByName(LPCSTR name)
 	for (BPIt it=m_BoneParts.begin(); it!=m_BoneParts.end(); it++)
     	if (it->alias==name) return it-m_BoneParts.begin();
     return -1;
-}
+} 
 
 LPCSTR CEditableObject::BoneNameByID(int id)
 {

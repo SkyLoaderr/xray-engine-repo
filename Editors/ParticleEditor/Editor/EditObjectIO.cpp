@@ -208,7 +208,7 @@ bool CEditableObject::Load(IReader& F){
 	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
     	        F.r_stringZ	(buf); bp_it->alias=buf;
 	            bp_it->bones.resize(F.r_u32());
-                F.r(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+                F.r(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
 	        }
     	}
 
@@ -300,7 +300,7 @@ void CEditableObject::Save(IWriter& F)
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.w_stringZ	(bp_it->alias.c_str());
             F.w_u32		(bp_it->bones.size());
-            F.w			(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+            F.w			(&*bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
         }
         F.close_chunk	();
     }

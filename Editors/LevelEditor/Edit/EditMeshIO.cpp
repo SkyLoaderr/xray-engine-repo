@@ -41,21 +41,21 @@ void CEditableMesh::SaveMesh(IWriter& F){
 
 	F.open_chunk	(EMESH_CHUNK_VERTS);
 	F.w_u32			(m_Points.size());
-    F.w				(m_Points.begin(), m_Points.size()*sizeof(Fvector));
+    F.w				(&*m_Points.begin(), m_Points.size()*sizeof(Fvector));
     for (AdjIt a_it=m_Adjs.begin(); a_it!=m_Adjs.end(); a_it++){
     	int sz 		= a_it->size(); VERIFY(sz<=255);
 		F.w_u8		(sz);
-        F.w			(a_it->begin(), sizeof(int)*sz);
+        F.w			(&*a_it->begin(), sizeof(int)*sz);
     }
 	F.close_chunk     ();
 
 	F.open_chunk	(EMESH_CHUNK_FACES);
 	F.w_u32			(m_Faces.size()); 		/* polygon count */
-    F.w				(m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
+    F.w				(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 	F.close_chunk  	();
 
 	F.open_chunk	(EMESH_CHUNK_SG);
-    F.w				(m_SGs.begin(), m_SGs.size()*sizeof(u32));
+    F.w				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
 	F.close_chunk  	();
 
 	F.open_chunk	(EMESH_CHUNK_VMREFS);
@@ -73,7 +73,7 @@ void CEditableMesh::SaveMesh(IWriter& F){
     	F.w_stringZ	(plp_it->first->_Name()); 	/* surface name*/
     	IntVec& 	pol_lst = plp_it->second;
         F.w_u32		(pol_lst.size());		/* surface-polygon indices*/
-        F.w			(pol_lst.begin(), sizeof(int)*pol_lst.size());
+        F.w			(&*pol_lst.begin(), sizeof(int)*pol_lst.size());
     }
 	F.close_chunk     ();
 
@@ -115,21 +115,21 @@ bool CEditableMesh::LoadMesh(IReader& F){
     if (cnt<=3) return false;
     m_Points.resize		(cnt);
     m_Adjs.resize		(cnt);
-	F.r					(m_Points.begin(), cnt*sizeof(Fvector));
+	F.r					(&*m_Points.begin(), cnt*sizeof(Fvector));
     for (AdjIt a_it=m_Adjs.begin(); a_it!=m_Adjs.end(); a_it++){
         cnt				= F.r_u8();
         a_it->resize	(cnt);
-        F.r				(a_it->begin(), sizeof(int)*cnt);
+        F.r				(&*a_it->begin(), sizeof(int)*cnt);
     }
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_FACES));
 	m_Faces.resize		(F.r_u32());
     if (m_Faces.size()==0) return false;
-	F.r					(m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
+	F.r					(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 
 	m_SGs.resize		(m_Faces.size(),-1);
 	if (F.find_chunk(EMESH_CHUNK_SG))
-		F.r				(m_SGs.begin(), m_SGs.size()*sizeof(u32));
+		F.r				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VMREFS));
     m_VMRefs.resize		(F.r_u32());
@@ -148,7 +148,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
         CSurface* surf	= m_Parent->FindSurfaceByName(surf_name, &surf_id); VERIFY(surf);
         IntVec&			face_lst = m_SurfFaces[surf];
         face_lst.resize	(F.r_u32());
-        F.r				(face_lst.begin(), face_lst.size()*sizeof(int));
+        F.r				(&*face_lst.begin(), face_lst.size()*sizeof(int));
     }
 
     if(F.find_chunk(EMESH_CHUNK_VMAPS_2)){

@@ -88,12 +88,12 @@ public:
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}
     IC float&		getW		(int idx)				{VERIFY(type==vmtWeight);	return vm[idx];}
     IC FloatVec&	getVM		()						{return vm;}
-    IC float*		getVMdata	()						{return vm.begin();}
-    IC float*		getVMdata	(int start)				{return vm.begin()+start*dim;}
+	IC float*		getVMdata	()						{return &*vm.begin();}
+    IC float*		getVMdata	(int start)				{return &*(vm.begin()+start*dim);}
     IC int			VMdatasize	()						{return vm.size()*sizeof(float);}
-    IC int*			getVIdata	()						{return vindices.begin();}
+    IC int*			getVIdata	()						{return &*vindices.begin();}
     IC int			VIdatasize	()						{return vindices.size()*sizeof(int);}
-    IC int*			getPIdata	()						{return pindices.begin();}
+    IC int*			getPIdata	()						{return &*pindices.begin();}
     IC int			PIdatasize	()						{return pindices.size()*sizeof(int);}
     IC int			size		()						{return vm.size()/dim;}
     IC void			resize		(int cnt)				{vm.resize(cnt*dim);vindices.resize(cnt);if (polymap) pindices.resize(cnt); }
@@ -102,7 +102,7 @@ public:
 	IC void			appendW		(float w)				{vm.push_back(w);}
 	IC void			appendVI	(int vi)				{vindices.push_back(vi);}
 	IC void			appendPI	(int pi)				{VERIFY(polymap); pindices.push_back(pi);}
-    IC void			copyfrom	(float* src, int cnt)	{resize(cnt); CopyMemory(vm.begin(),src,cnt*dim*4);}
+    IC void			copyfrom	(float* src, int cnt)	{resize(cnt); CopyMemory(&*vm.begin(),src,cnt*dim*4);}
 };
 DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
 DEFINE_VECTOR		(VMapPtSVec,VMRefsVec,VMRefsIt);
