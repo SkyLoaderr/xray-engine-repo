@@ -88,6 +88,6 @@
 		<rank>novice</rank>
 		<team>Lonewolf</team>
 		
-		<specific_character>default</specific_character>
+		<specific_character>actor</specific_character>
 	</character>
 </xml>
