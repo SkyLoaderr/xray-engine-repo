@@ -92,6 +92,9 @@ CAI_Stalker::CAI_Stalker			()
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
 
+	m_tpCurrentSound				= 0;
+	m_bPlayHumming					= false;
+
 //#ifdef LOG_PARAMETERS
 //	if (ST_VF)
 //		return;
@@ -130,9 +133,33 @@ void CAI_Stalker::Die				()
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 
-	::Sound->play_at_pos			(m_tpSoundDie[Random.randI(STALKER_SND_DIE_COUNT)],this,vPosition);
+	sound							&S  = m_tpSoundDie[::Random.randI(m_tpSoundDie.size())];
+	S.play_at_pos					(this,vPosition);
+	S.feedback->set_volume			(.4f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
+}
+
+void CAI_Stalker::LoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
+{
+	for (int j=0, N = _GetItemCount(prefix); j<N; j++) {
+		string128				fn, s;
+		LPSTR					S = (LPSTR)&s;
+		_GetItem				(prefix,j,S);
+		tpSounds.clear			();
+		if (FS.exist(fn,"$game_sounds$",S,".wav")){
+			tpSounds.push_back	(sound());
+			::Sound->create		(tpSounds.back(),TRUE,prefix,0);
+		}
+		for (u32 i=0; i<dwMaxCount; i++){
+			string64			name;
+			sprintf				(name,"%s%d",S,i);
+			if (FS.exist(fn,"$game_sounds$",name,".wav")){
+				tpSounds.push_back(sound());
+				::Sound->create(tpSounds.back(),TRUE,name,0);
+			}
+		}
+	}
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -210,14 +237,21 @@ void CAI_Stalker::Load				(LPCSTR section)
 
 	::Sound->create					(m_tpSoundStep[0],	TRUE,	"Actor\\StepL",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
 	::Sound->create					(m_tpSoundStep[1],	TRUE,	"Actor\\StepR",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	::Sound->create					(m_tpSoundHit[0],	TRUE,	"Actor\\hurt1",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create					(m_tpSoundHit[1],	TRUE,	"Actor\\hurt2",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create					(m_tpSoundHit[2],	TRUE,	"Actor\\hurt3",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create					(m_tpSoundHit[3],	TRUE,	"Actor\\hurt4",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create					(m_tpSoundDie[0],	TRUE,	"Actor\\die0",	SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create					(m_tpSoundDie[1],	TRUE,	"Actor\\die1",	SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create					(m_tpSoundDie[2],	TRUE,	"Actor\\die2",	SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create					(m_tpSoundDie[3],	TRUE,	"Actor\\die3",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+//	::Sound->create					(m_tpSoundHit[0],	TRUE,	"Actor\\hurt1",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+//	::Sound->create					(m_tpSoundHit[1],	TRUE,	"Actor\\hurt2",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+//	::Sound->create					(m_tpSoundHit[2],	TRUE,	"Actor\\hurt3",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+//	::Sound->create					(m_tpSoundHit[3],	TRUE,	"Actor\\hurt4",	SOUND_TYPE_MONSTER_INJURING_HUMAN);
+
+//	::Sound->create					(m_tpSoundDie[0],	TRUE,	"Actor\\die0",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+//	::Sound->create					(m_tpSoundDie[1],	TRUE,	"Actor\\die1",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+//	::Sound->create					(m_tpSoundDie[2],	TRUE,	"Actor\\die2",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+//	::Sound->create					(m_tpSoundDie[3],	TRUE,	"Actor\\die3",	SOUND_TYPE_MONSTER_DYING_HUMAN);
+
+	LoadSounds						(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
+	LoadSounds						(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
+	LoadSounds						(m_tpSoundHumming,pSettings->r_string(section,"sound_humming"),100);
+	LoadSounds						(m_tpSoundAlarm,pSettings->r_string(section,"sound_alarm"),100);
+	LoadSounds						(m_tpSoundSurrender,pSettings->r_string(section,"sound_surrender"),100);
 	
 	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
 	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");

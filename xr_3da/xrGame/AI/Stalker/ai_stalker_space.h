@@ -26,6 +26,8 @@
 
 #define R2D(x)							(angle_normalize(x)*180.f/PI)
 
+DEFINE_VECTOR							(sound,SOUND_VECTOR,SOUND_IT);
+
 //#define SILENCE
 
 #ifndef SILENCE

@@ -404,10 +404,8 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	if (tpGlobalAnimation) {
 		m_tpCurrentTorsoAnimation	= 0;
 		m_tpCurrentLegsAnimation	= 0;
-		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation) {
-			OUT_TEXT("Starting global animation");
+		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
 			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
-		}
 	}
 	else
 		if (g_Alive()) {
@@ -418,14 +416,10 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			vfAssignTorsoAnimation	(tpTorsoAnimation);
 			vfAssignLegsAnimation	(tpLegsAnimation);
 			
-			if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation)) {
-				OUT_TEXT("Starting torso animation");
+			if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
 				m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
-			}
-			if (tpLegsAnimation && (m_tpCurrentLegsAnimation != tpLegsAnimation)) {
-				OUT_TEXT("Starting legs animation");
+			if (tpLegsAnimation && (m_tpCurrentLegsAnimation != tpLegsAnimation))
 				m_tpCurrentLegsBlend	= tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
-			}
 			
 			if (tpTorsoAnimation && tpLegsAnimation){
 				if ((tpTorsoAnimation->flags & esmSyncPart) && (tpLegsAnimation->flags & esmSyncPart))

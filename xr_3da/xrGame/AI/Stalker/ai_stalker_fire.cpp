@@ -102,9 +102,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	tpKinematics->PlayFX(tpMotionDef,power_factor);
 
 	// Play hit-sound
-	sound& S = m_tpSoundHit[::Random.randI(STALKER_SND_HIT_COUNT)];
-	if (!S.feedback && g_Alive())
-		::Sound->play_at_pos(S,this,vPosition);
+	sound& S = m_tpSoundHit[::Random.randI(m_tpSoundHit.size())];
+	if (!S.feedback && g_Alive()) {
+		S.play_at_pos(this,eye_matrix.c);
+		S.feedback->set_volume(.4f);
+	}
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)

@@ -69,8 +69,14 @@ private:
 
 	// sound
 	sound					m_tpSoundStep[STALKER_SND_STEP_COUNT];
-	sound					m_tpSoundHit[STALKER_SND_HIT_COUNT];
-	sound					m_tpSoundDie[STALKER_SND_DIE_COUNT];
+	SOUND_VECTOR			m_tpSoundDie;
+	SOUND_VECTOR			m_tpSoundHit;
+	SOUND_VECTOR			m_tpSoundHumming;
+	SOUND_VECTOR			m_tpSoundAlarm;
+	SOUND_VECTOR			m_tpSoundSurrender;
+
+	sound					*m_tpCurrentSound;
+	bool					m_bPlayHumming;
 	
 	float					m_fTimeToStep;
 	bool					m_bStep;
@@ -305,6 +311,7 @@ private:
 			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);
 			void			vfUpdateVisibilityBySensitivity	();
 			bool			bfIf_I_SeePosition				(Fvector tPosition);
+			void			LoadSounds						(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount);
 
 			// physics
 			void			CreateSkeleton					();
