@@ -9,11 +9,7 @@ function evaluator_need_sleeper:__init(storage) super ()
   self.a = storage
 end
 function evaluator_need_sleeper:evaluate ()
-  local tt
-
-  tt = self.a.enabled == true
-
-      return tt
+      return self.a.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -31,16 +27,27 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
 	self.ptr = nil
 	self.ptrname = nil
 	self.points = {}	
+	self.state = 0 --' счетчик FSM
 end
 function action_sleeper_activity:initialize()
     action_base.initialize(self)
     self.object:set_node_evaluator()
     self.object:set_path_evaluator()
     self.object:set_desired_position()
-    self.object:set_desired_direction()
+    self.object:set_desired_direction()        
 end
 function action_sleeper_activity:execute()
+	action_base.execute(self)
+	self.object:set_item(object.deactivate, self.object:best_weapon())	
+	if xr_state.finish_state(self.object) ~= true then	
+		return
+	end
+	
 	if self.ptrname ~= self.a.path_main then
+		self.state = 0
+	end
+	
+	if self.state == 0 then	--' инициализация
 		self.ptr = patrol (self.a.path_main)
 		self.ptrname = self.a.path_main
 		for i=0, self.ptr:count()-1, 1 do
@@ -53,17 +60,30 @@ function action_sleeper_activity:execute()
 				end
 			end
 		end
-		pp = self.ptr:level_vertex_id(0)
-		xr_position.setPosition(self.object, pp)		
+		xr_state.change_state(self.object, 0)
+		self.state = 1			
 	end
 
-	if xr_position.onPosition(self.object) == true and xr_state.finish_state(self.object) == true then
+	if self.object:position():distance_to_sqr(level.vertex_position(self.ptr:level_vertex_id(0))) < 1 then
+		self.state = 3
+	end
+	
+	if self.state == 1 then	--' приход на точку
+		self.object:set_mental_state(anim.free)
+		self.object:set_sight(look.path_dir, nil, 0)
+		self.object:set_movement_type(move.walk)
+		self.object:set_path_type(game_object.level_path)
+		self.object:set_dest_level_vertex_id(self.ptr:level_vertex_id(0))
+		self.object:set_desired_direction()
+		self.state = 2		
+	end
+
+	if self.state == 3 then	--' спим
         if table.getn(self.points) > 0 then
 			local point = self.ptr:level_vertex_id(self.points[math.random(table.getn(self.points))])
 			local pt = level.vertex_position(point)
 			self.object:set_sight(look.point, pt, 0)
-		end
- 		self.object:set_item(object.deactivate, self.object:best_weapon())
+		end 		
 		xr_state.change_state(self.object, xr_state.sleep)
 
 		if self.timer.begin == nil then
@@ -112,7 +132,6 @@ function add_to_binder(npc, char_ini)
 
   	properties["need_sleeper"]   	= xr_evaluators_id.zmey_sleeper_base + 1
   	properties["state_end"]      	= xr_evaluators_id.state_change
-  	properties["position"]		= xr_evaluators_id.position
 
   	operators["action_sleeper"]   	= xr_actions_id.zmey_sleeper_base + 1
 
@@ -124,8 +143,7 @@ function add_to_binder(npc, char_ini)
   	action:add_precondition    	(world_property(stalker_ids.property_enemy,   	false))
   	action:add_precondition    	(world_property(properties["need_sleeper"],   	true))
   	action:add_precondition    	(world_property(properties["state_end"], 	true))
-  	action:add_precondition    	(world_property(properties["position"], 	true))
-  	action:add_effect(world_property(properties["need_sleeper"], false))
+ 	action:add_effect(world_property(properties["need_sleeper"], false))
   	manager:add_action(operators["action_sleeper"], action)
 
   	action = manager:action(stalker_ids.action_puzzle_solver)
