@@ -37,6 +37,7 @@ public:
 
 	virtual void renderable_Render() {inherited::renderable_Render();}
 	
+	virtual bool	Useful	() const {return false;	}
 protected:
 	Fvector				m_pos, m_vel;
 	CGameObject*		m_pOwner;

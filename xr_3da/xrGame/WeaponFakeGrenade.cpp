@@ -87,6 +87,8 @@ void CWeaponFakeGrenade::Load(LPCSTR section)
 	m_fJumpHeight = pSettings->r_float(section, "jump_height");
 
 	m_state = stInactive;
+
+	m_slot = NO_ACTIVE_SLOT;
 }
 
 static const u32 EXPLODE_TIME	= 5000;
