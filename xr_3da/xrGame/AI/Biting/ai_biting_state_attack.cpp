@@ -74,7 +74,6 @@ void CBitingAttack::Init()
 
 	bCanThreaten	= true;
 
-	temp_pos.set		(0.f,0.f,1.f);
 	m_dwTimeWalkingPath  = 0;
 
 	time_start_walk_away = 0;
@@ -91,6 +90,7 @@ void CBitingAttack::Init()
 	
 	bAngrySubStateActive = false;
 
+	search_vertex_id = u32(-1);
 }
 
 #define TIME_WALK_PATH 5000
@@ -140,26 +140,90 @@ void CBitingAttack::Run()
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// Проверить, достижим ли противник
+//	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) {
+//		if (!bAngrySubStateActive) {
+//			m_tSubAction = ACTION_WALK_END_PATH;
+//			bAngrySubStateActive = true;
+//		}
+//		
+//		m_tAction = ACTION_THREATEN2;
+//		WalkAngrySubState();
+//	} else {
+//		bAngrySubStateActive = false;
+//		LOG_EX2("Object Not Reachable = [%u]", *"*/ pMonster->ObjectNotReachable(m_tEnemy.obj) /*"*);
+//		LOG_EX2("Action != ACTION_ATTACK_MELEE = [%u]", *"*/ (m_tAction != ACTION_ATTACK_MELEE) /*"*);
+//	}
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) {
 		
-		if (!bAngrySubStateActive) {
-			m_tSubAction = ACTION_WALK_END_PATH;
-			bAngrySubStateActive = true;
+		// Try to find best node nearest to the point
+		xr_vector<u32> nodes;
+		ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(m_fDistMax-0.5f));
+		if (nodes.empty()) m_tAction = ACTION_WALK_ANGRY_AROUND;
+		else {
+			u32 nearest_node_id = u32(-1);
+			float dist_nearest = flt_max;
+
+			for (u32 i=0; i<nodes.size(); i++) {
+				float cur_dist = ai().level_graph().vertex_position(nodes[i]).distance_to(m_tEnemy.obj->Position());
+				if (cur_dist < dist_nearest) {
+					dist_nearest	= cur_dist;
+					nearest_node_id = nodes[i];
+				}
+			}
+
+			R_ASSERT(nearest_node_id != u32(-1));
+
+			m_tAction = ACTION_WALK_AWAY;
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+			
 		}
-		
-		SubActionStartTime	= m_dwCurrentTime;
-		WalkAngrySubState();
+	}
 
-	} else bAngrySubStateActive = false;
-
-
+	bool bNeedRebuildPath = false;
 	
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
+
+//	// -------------------------------------------------------------------------------------------
+//	// если враг потерян из вида
+//	if (m_tEnemy.time != m_dwCurrentTime) {
+//		if (!bSearchEnemy) {	// инициализация состояния только если потерял на расстоянии
+//			if (m_tEnemy.position.distance_to(pMonster->Position()) > 5.0f) {
+//				m_tAction = ACTION_SEARCH_ENEMY_INIT;
+//
+//				Fvector v;
+//				v.sub(ai().level_graph().vertex_position(m_tEnemy.node_id),pMonster->Position());
+//				v.normalize();
+//				Fvector next_pos;
+//				next_pos.mad(ai().level_graph().vertex_position(m_tEnemy.node_id),v,5.f);
+//				pMonster->HDebug->L_Add(next_pos,D3DCOLOR_XRGB(0,0,255));
+//
+//				search_vertex_id = ai().level_graph().check_position_in_direction(m_tEnemy.node_id, m_tEnemy.position, next_pos);
+//				if (search_vertex_id == u32(-1)) search_vertex_id = m_tEnemy.node_id;
+//
+//				pMonster->HDebug->M_Add(0,"INIT !!! SEARCH ENEMY ",D3DCOLOR_XRGB(255,0,0));
+//				pMonster->HDebug->L_Add(ai().level_graph().vertex_position(search_vertex_id),D3DCOLOR_XRGB(255,0,0));
+//			} 
+//		} else {				// continue
+//			m_tAction = ACTION_SEARCH_ENEMY;
+//			pMonster->HDebug->M_Add(0,"SEARCH ENEMY",D3DCOLOR_XRGB(255,0,128));
+//		}
+//	} else { 
+//		bSearchEnemy = false;
+//		pMonster->HDebug->M_Clear();
+//		pMonster->HDebug->L_Clear();
+//	}
+//	
+//	if ((m_tAction == ACTION_SEARCH_ENEMY) || (m_tAction == ACTION_SEARCH_ENEMY_INIT)) {
+//		SearchEnemy();
+//	}
+//	// -------------------------------------------------------------------------------------------
+
 
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
-			
+			LOG_EX("ATTACK: RUN");
+
 			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
 				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
 			DO_IN_TIME_INTERVAL_END();
@@ -167,6 +231,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
+			LOG_EX("ATTACK: ATTACK_MELEE");
 			pMonster->enable_movement(false);			
 			bCanThreaten			= false;
 
@@ -198,12 +263,14 @@ void CBitingAttack::Run()
 
 			break;
 		case ACTION_STEAL:
+			LOG_EX("ATTACK: STEAL");
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 			pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsSteal, pMonster->eVelocityParameterSteal);
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
 		
 		case ACTION_THREATEN: 
+			LOG_EX("ATTACK: THREATEN");
 			pMonster->enable_movement(false);
 
 			// Смотреть на врага 
@@ -215,13 +282,42 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
 			break;
 
-		case ACTION_WALK_ANGRY_AROUND:
 
-			pMonster->enable_movement(false);
-			pMonster->LookPosition(m_tEnemy.obj->Position(), PI_DIV_2);
-			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-			break;
+//		case ACTION_WALK_AWAY:
+//			pMonster->MotionMan.m_tAction = ACT_RUN;
+//			if (pMonster->MotionStats->is_good_motion(3)) break;
+//	
+//		case ACTION_WALK_ANGRY_AROUND:
+//			LOG_EX("ATTACK: WALK_ANGRY_AROUND");
+//			
+//			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,3000);
+//				bNeedRebuildPath = true;
+//			DO_IN_TIME_INTERVAL_END();
+//
+//			if (!pMonster->MotionStats->is_good_motion(5) || !pMonster->IsMovingOnPath()) {
+//				bNeedRebuildPath = true;
+//			}
+//
+//			if (bNeedRebuildPath) {
+//				xr_vector<u32> nodes;
+//				ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(10.f));
+//
+//				u32 vertex_id = nodes[::Random.randI(nodes.size())];
+//
+//				pMonster->MoveToTarget(
+//					ai().level_graph().vertex_position(vertex_id),
+//					vertex_id,
+//					pMonster->eVelocityParamsWalk,
+//					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
+//				);
+//			}
+//
+//			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+//			break;
+
 	}
+
+
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 
@@ -299,83 +395,92 @@ Fvector CBitingAttack::RandomPos(Fvector pos, float R)
 
 void CBitingAttack::WalkAngrySubState()
 {
-	
-	// 1. дойти до конца пути
-	// 2. смотреть на цель
-	// 3. пугать
-	// 4. построить путь не далеко
-	// 5. goto 1
-	
-	switch (m_tSubAction) {
-	case ACTION_WALK_END_PATH:
+//	// 1. дойти до конца пути
+//	// 2. смотреть на цель
+//	// 3. пугать
+//	// 4. построить путь не далеко
+//	// 5. goto 1
+//	
+//	switch (m_tSubAction) {
+//	case ACTION_WALK_END_PATH:
+//	
+//		LOG_EX("ATTACK: WALK_END_PATH");
+//		pMonster->HDebug->M_Add(0,"STATE0: WALK_END_PATH",D3DCOLOR_XRGB(255,0,128));
+//
+//		if (pMonster->IsMovingOnPath()) {
+//			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
+//				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsWalk, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
+//			DO_IN_TIME_INTERVAL_END();
+//
+//			pMonster->MotionMan.m_tAction = ACT_RUN;
+//		} else {
+//			m_tSubAction = ACTION_FACE_ENEMY;
+//		}
+//
+//		if (!pMonster->MotionStats->is_good_motion(3)) {
+//			m_tSubAction = ACTION_FACE_ENEMY;
+//		}
+//			
+//		break;
+//	case ACTION_FACE_ENEMY:
+//		LOG_EX("ATTACK: FACE_ENEMY");
+//		pMonster->HDebug->M_Add(0,"STATE1: FACE_ENEMY",D3DCOLOR_XRGB(255,0,128));		
+//		pMonster->enable_movement(false);
+//
+//		// Смотреть на врага 
+//		DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
+//			pMonster->FaceTarget(m_tEnemy.obj);
+//		DO_IN_TIME_INTERVAL_END();
+//
+//		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+//			
+//		if (angle_difference(pMonster->m_body.target.yaw,pMonster->m_body.current.yaw) < PI_DIV_6/6) {
+//			ThreatenTimeStarted = m_dwCurrentTime;
+//			m_tSubAction = ACTION_THREATEN2;
+//		}
+//
+//		break;
+//	case ACTION_THREATEN2:
+//		LOG_EX("ATTACK: THREATEN");
+//		pMonster->HDebug->M_Add(0,"STATE2: THREATEN",D3DCOLOR_XRGB(255,0,128));		
+//		pMonster->enable_movement(false);
+//			
+//		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+//		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+//
+//		if (ThreatenTimeStarted + 2000 < m_dwCurrentTime) {
+//			
+//			xr_vector<u32> nodes;
+//			ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(10.f));
+//			
+//			u32 vertex_id = nodes[::Random.randI(nodes.size())];
+//
+//			pMonster->MoveToTarget(
+//				ai().level_graph().vertex_position(vertex_id),
+//				vertex_id,
+//				pMonster->eVelocityParamsWalk,
+//				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
+//			);
+//
+//			m_tSubAction		= ACTION_WALK_AWAY;
+//		}
+//
+//		break;
+//
+//	case ACTION_WALK_AWAY:
+//		LOG_EX("ATTACK: WALK_AWAY");
+//		pMonster->HDebug->M_Add(0,"STATE3: WALK_AWAY",D3DCOLOR_XRGB(255,0,128));		
+//
+//		if (pMonster->IsMovingOnPath()) pMonster->MotionMan.m_tAction = ACT_RUN;
+//		else m_tSubAction = ACTION_FACE_ENEMY;
+//
+//		if (!pMonster->MotionStats->is_good_motion(3)) {
+//			m_tSubAction = ACTION_FACE_ENEMY;
+//		}
+//
+//		break;
+//	}
 
-		if (pMonster->IsMovingOnPath()) {
-			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
-				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
-			DO_IN_TIME_INTERVAL_END();
-
-			pMonster->MotionMan.m_tAction = ACT_RUN;
-		} else {
-			m_tSubAction = ACTION_FACE_ENEMY;
-		}
-
-		if (pMonster->IsObstacle(1000)) {
-			m_tSubAction = ACTION_FACE_ENEMY;
-		}
-			
-		break;
-	case ACTION_FACE_ENEMY:
-		
-		pMonster->enable_movement(false);
-
-		// Смотреть на врага 
-		DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-			pMonster->FaceTarget(m_tEnemy.obj);
-		DO_IN_TIME_INTERVAL_END();
-
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-			
-		if (angle_difference(pMonster->m_body.target.yaw,pMonster->m_body.current.yaw) < PI_DIV_6/6) {
-			ThreatenTimeStarted = m_dwCurrentTime;
-			m_tSubAction = ACTION_THREATEN2;
-		}
-		break;
-	case ACTION_THREATEN2:
-		pMonster->enable_movement(false);
-			
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-
-		if (ThreatenTimeStarted + 2500 < m_dwCurrentTime) {
-			
-			xr_vector<u32> nodes;
-			ai().graph_engine().search( ai().level_graph(), pMonster->level_vertex_id(), pMonster->level_vertex_id(), &nodes, CGraphEngine::CFlooder(10.f));
-			
-			u32 vertex_id = nodes[::Random.randI(nodes.size())];
-
-			pMonster->MoveToTarget(
-				ai().level_graph().vertex_position(vertex_id),
-				vertex_id,
-				pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand,
-				pMonster->eVelocityParameterRunNormal
-			);
-
-			m_tSubAction		= ACTION_WALK_AWAY;
-			SubActionStartTime	= m_dwCurrentTime;
-		}
-
-		break;
-
-	case ACTION_WALK_AWAY:
-		if (pMonster->IsMovingOnPath()) pMonster->MotionMan.m_tAction = ACT_RUN;
-		else m_tSubAction = ACTION_FACE_ENEMY;
-
-		if (pMonster->IsObstacle(1000)) {
-			m_tSubAction = ACTION_FACE_ENEMY;
-		}
-
-		break;
-	}
 }
 
 bool CBitingAttack::CanAttackFromBack()
@@ -394,16 +499,58 @@ bool CBitingAttack::CanAttackFromBack()
 	return false;
 }
 
+void CBitingAttack::SearchEnemy()
+{
+	bool bNeedRebuildPath = false;
 
-//void StartBadMotionCheck()
-//{
-//	TTime time_start = m_dwCurrentTime;
-//	bool b = false;
-//	Fvector pos;
-//	
-//
-//}
+	switch (m_tAction) {
+	case ACTION_SEARCH_ENEMY_INIT: 
 
+		LOG_EX("ATTACK: SEARCH_ENEMY_INIT");
+
+		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,1000);
+			pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+		DO_IN_TIME_INTERVAL_END();
+						
+		pMonster->MotionMan.m_tAction = ACT_RUN;
+
+		if (!pMonster->IsMovingOnPath()) {
+			m_tAction = ACTION_SEARCH_ENEMY;
+		}
+
+		break;
+	case ACTION_SEARCH_ENEMY:
+		// search_vertex_id - содержит исходную ноду
+		LOG_EX("ATTACK: SEARCH_ENEMY");
+
+		//if (pMonster->IsMovingOnPath()) bNeedRebuildPath = true;
+		
+		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,3000);
+			bNeedRebuildPath = true;
+		DO_IN_TIME_INTERVAL_END();
+
+		if (!pMonster->MotionStats->is_good_motion(5) || !pMonster->IsMovingOnPath()) {
+			bNeedRebuildPath = true;
+		}
+
+		if (bNeedRebuildPath) {
+			xr_vector<u32> nodes;
+			ai().graph_engine().search( ai().level_graph(), search_vertex_id, search_vertex_id, &nodes, CGraphEngine::CFlooder(10.f));
+
+			u32 vertex_id = nodes[::Random.randI(nodes.size())];
+
+			pMonster->MoveToTarget(
+				ai().level_graph().vertex_position(vertex_id),
+				vertex_id,
+				pMonster->eVelocityParamsWalk,
+				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
+			);
+		}
+
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		break;
+	}
+}
 
 
 

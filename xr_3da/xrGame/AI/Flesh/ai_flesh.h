@@ -22,6 +22,7 @@ public:
 	virtual void OnRender ();
 #endif
 
+	CBitingSearchEnemy	*stateSearchEnemy;
 
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 

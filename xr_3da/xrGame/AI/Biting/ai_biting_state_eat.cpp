@@ -10,6 +10,9 @@
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
 
+
+#define		EAT_WITHOUT_DRAG
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +66,6 @@ void CBitingEat::Init()
 	pMonster->flagEatNow = true;
 }
 
-
 void CBitingEat::Run()
 {
 	// ≈сли новый труп, снова инициализировать состо€ние 
@@ -75,37 +77,40 @@ void CBitingEat::Run()
 	Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemPos(pCorpse);
 	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
-	// temp show out
-	pMonster->dbg_info.set(nearest_bone_pos);
-
 	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;
 	else if (bRestAfterLunch) m_tAction = ACTION_LITTLE_REST;
 	else if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
 
 	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // рассто€ние, на которое уже оттащен труп
 
-	u32 node_id;
+	Fvector		approach_pos;
+	u32			approach_vertex_id;
+	
+	pMonster->HDebug->L_Clear();
 
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
-		
-		node_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
-		if (node_id == -1)pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
-		else pMonster->set_level_dest_vertex (node_id);
-		
-		pMonster->set_dest_position(nearest_bone_pos);
-		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
-		
+		pMonster->HDebug->M_Add(0,"APP_RUN",D3DCOLOR_XRGB(255,0,128));
+
+		approach_vertex_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
+		if (approach_vertex_id == -1) {
+			approach_vertex_id	= pCorpse->level_vertex_id();
+			approach_pos		= ai().level_graph().vertex_position(approach_vertex_id);
+		} else {
+			approach_pos = nearest_bone_pos;
+		}
+
+		pMonster->MoveToTarget(approach_pos,approach_vertex_id, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+		pMonster->HDebug->L_Add(approach_pos,D3DCOLOR_XRGB(255,0,128));
+
 		pMonster->MotionMan.m_tAction = ACT_RUN;
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
+		pMonster->HDebug->M_Add(0,"APP_WALK",D3DCOLOR_XRGB(255,0,128));
 
-		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
-		pMonster->set_dest_position(nearest_bone_pos);
-		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
-
+		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
 		if (cur_dist < m_fDistToCorpse) {
@@ -113,14 +118,21 @@ void CBitingEat::Run()
 			// если монстр подбежал к трупу, необходимо отыграть проверку трупа
 			pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
 			
-			m_tAction = ( (bCanDrag) ?   ACTION_PREPARE_DRAG : ACTION_EAT );
-			//m_tAction =  ACTION_EAT;
+#ifndef		EAT_WITHOUT_DRAG
+			m_tAction = ( (bCanDrag) ?  ACTION_PREPARE_DRAG : ACTION_EAT );
+#else	
+			m_tAction = ACTION_EAT;
+#endif
 			m_dwPrepareDrag	= m_dwCurrentTime;
+
 		}
 		break;
+
 	case ACTION_EAT:
-		pMonster->MotionMan.m_tAction = ACT_EAT;
-		pMonster->enable_movement	(false);
+		pMonster->HDebug->M_Add(0,"EAT",D3DCOLOR_XRGB(255,0,128));
+
+		pMonster->MotionMan.m_tAction	= ACT_EAT;
+		pMonster->enable_movement		(false);
 
 		bEating = true;
 		if (pMonster->GetSatiety() >= 1.0f) bHideAfterLunch = true;
@@ -175,6 +187,9 @@ void CBitingEat::Run()
 		if (cur_dist  + 0.2f  < m_fDistToCorpse) m_tAction = ACTION_EAT;
 		break;
 	case ACTION_PREPARE_DRAG:
+		pMonster->HDebug->M_Add(0,"PREPARE_DRAG",D3DCOLOR_XRGB(255,0,128));
+		LOG_EX("PREPARE DRAG");
+
 		if (m_dwPrepareDrag + 1000 < m_dwCurrentTime) {
 			// ≈сли труп крысы || если не получилось вз€ть
 			bDragging = false;
@@ -188,6 +203,9 @@ void CBitingEat::Run()
 					// тащить труп
 					bDragging = true;
 					m_tAction = ACTION_DRAG;
+				} else {
+					pMonster->HDebug->M_Add(0,"CAPTURE FAILED",D3DCOLOR_XRGB(255,0,128));
+					LOG_EX("CAPTURE FAILED");
 				}
 			} 
 		}
@@ -196,12 +214,22 @@ void CBitingEat::Run()
 		break;
 
 	case ACTION_DRAG:
-		
+		LOG_EX("DRAG");
+		pMonster->HDebug->M_Add(0,"DRAG",D3DCOLOR_XRGB(255,0,128));		
+
+		pMonster->SetPathParams(
+			CMovementManager::ePathTypeLevelPath, 
+			pMonster->level_vertex_id(), 
+			pMonster->Position(),
+			pMonster->eVelocityParameterDrag | pMonster->eVelocityParameterStand,
+			pMonster->eVelocityParameterDrag
+		); 
+
 		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist);
 
 		// ”становить параметры движени€
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 
-		pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
+		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl.PHCapture()) m_tAction = ACTION_EAT; 

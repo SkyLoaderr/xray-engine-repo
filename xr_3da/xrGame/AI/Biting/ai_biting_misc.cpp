@@ -187,6 +187,7 @@ void CAI_Biting::vfUpdateParameters()
 	bSpeedDiffer = ((ph_speed * 2.f) < m_fCurSpeed) && (m_fCurSpeed > 0.f);
 	if (bSpeedDiffer && (0 == time_start_speed_differ)) time_start_speed_differ = m_dwCurrentTime;
 	if (!bSpeedDiffer) time_start_speed_differ = 0;
+
 }
 
 bool CAI_Biting::IsStanding (TTime time)
@@ -196,6 +197,8 @@ bool CAI_Biting::IsStanding (TTime time)
 
 bool CAI_Biting::IsObstacle(TTime time)
 {
+	LOG_EX2("IsObstacle: %u", *"*/ bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime) /*"*);
+	
 	return (bSpeedDiffer && (time_start_speed_differ + time < m_dwCurrentTime));
 }
 
@@ -245,16 +248,6 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		vel_mask = eVelocityParameterDrag;
 		des_mask = eVelocityParameterDrag;
 
-		{
-			Fvector v;
-			v = Direction();
-			
-			float yaw,pitch;
-			v.getHP(yaw,pitch);
-			yaw = angle_normalize(yaw + PI);
-			v.setHP(yaw,pitch);
-			CDetailPathManager::set_start_direction(v);
-		}
 
 		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 

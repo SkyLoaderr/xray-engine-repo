@@ -121,6 +121,8 @@ class CBitingAttack : public IState {
 		ACTION_FACE_ENEMY,
 		ACTION_THREATEN2,
 		ACTION_WALK_END_PATH,
+		ACTION_SEARCH_ENEMY_INIT,
+		ACTION_SEARCH_ENEMY
 	} m_tAction,m_tSubAction;
 
 	VisionElem		m_tEnemy;
@@ -144,7 +146,6 @@ class CBitingAttack : public IState {
 
 	bool			bCanThreaten;
 
-	Fvector			temp_pos;
 	TTime			m_dwTimeWalkingPath;
 
 	bool			once_flag_1,once_flag_2;
@@ -159,8 +160,8 @@ class CBitingAttack : public IState {
 	
 	bool			bAngrySubStateActive;
 
-	TTime			SubActionStartTime;
-	Fvector			SubActionSavedPos;
+	u32				search_vertex_id;
+	bool			bSearchEnemy;
 
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
@@ -177,6 +178,8 @@ public:
 			void	WalkAngrySubState();
 
 			bool	CanAttackFromBack();
+			
+			void	SearchEnemy		();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -386,4 +389,26 @@ private:
 	virtual void	Run					();
 };
 
+
+class CBitingSearchEnemy : public IState {
+	typedef IState inherited;
+	CAI_Biting		*pMonster;
+
+	enum {
+		ACTION_SEARCH_ENEMY_INIT,
+		ACTION_SEARCH_ENEMY
+	} m_tAction;
+	
+	VisionElem		m_tEnemy;
+	u32				search_vertex_id;
+
+	TTime			RebuildPathInterval;
+
+public:
+	CBitingSearchEnemy(CAI_Biting *p);
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+	virtual void	Done				();
+};
 

@@ -18,6 +18,7 @@
 #include "../../path_manager_level_selector.h"
 
 #include "..\\ai_monster_debug.h"
+#include "..\\ai_monster_motion_stats.h"
 
 
 // flags
@@ -355,31 +356,6 @@ public:
 		bool	prev_hit;
 	} _as;
 
-
-// TEMP
-	struct s_dbg{
-		bool	active;
-		Fvector pos;
-
-		s_dbg() {active = true; node_id = 0;}
-		void set(const Fvector &f) {pos = f; active = true;}
-
-		DEFINE_MAP(u32,TTime,TNODES_MAP,TNODES_MAP_IT);
-		TNODES_MAP nodes;
-
-		DEFINE_VECTOR(u32, TNODES_VECTOR, TNODES_VECTOR_IT);
-		TNODES_VECTOR node_vec;
-
-		DEFINE_VECTOR(Fvector, VECTOR_VEC, VECTOR_VEC_IT);
-		VECTOR_VEC vec;
-
-		Fvector dir_from;
-		Fvector dir_to;
-
-		u32		node_id;
-	} dbg_info;
-
-	
 	// PathManagement Bridge
 	void MoveToTarget			(CEntity *entity,u32 vel_mask, u32 des_mask); 
 	void MoveToTarget			(const Fvector &pos, u32 node_id,u32 vel_mask, u32 des_mask);
@@ -405,8 +381,11 @@ public:
 	u32 GetNextGameVertex(float R);
 
 	
-	CMonsterDebug *HDebug;
+	CMonsterDebug	*HDebug;
+	CMotionStats	*MotionStats;
 
+
+	void OnRender();
 };
 
 

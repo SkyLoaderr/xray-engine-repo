@@ -682,6 +682,12 @@
 						RelativePath=".\ai\ai_monster_motion.h">
 					</File>
 					<File
+						RelativePath=".\ai\ai_monster_motion_stats.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_motion_stats.h">
+					</File>
+					<File
 						RelativePath=".\ai\ai_monster_share.h">
 					</File>
 					<File

@@ -26,6 +26,7 @@ CAI_Biting::CAI_Biting()
 
 
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
+	MotionStats						= xr_new<CMotionStats> (this);
 }
 
 CAI_Biting::~CAI_Biting()
@@ -37,6 +38,7 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_tSelectorCommon);
 
 	xr_delete(HDebug);
+	xr_delete(MotionStats);
 }
 
 void CAI_Biting::Init()
@@ -81,8 +83,6 @@ void CAI_Biting::Init()
 	bSpeedDiffer					= false;
 	time_start_speed_differ			= 0;
 
-	// debug
-	dbg_info.node_vec.clear();
 }
 
 void CAI_Biting::Die()
@@ -235,7 +235,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsWalkFwdDamaged,	_sd->m_fsWalkAngular		)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
 	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
 
 	return(TRUE);
 }
@@ -324,7 +324,7 @@ void CAI_Biting::UpdateCL()
 
 	m_pPhysics_support->in_UpdateCL();
 
-	HDebug->Update();
+	HDebug->M_Update();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
@@ -361,4 +361,12 @@ void CAI_Biting::MoraleBroadcast(float fValue)
 		
 		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < _sd->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
 	}
+}
+
+void CAI_Biting::OnRender()
+{
+	inherited::OnRender();
+	
+	HDebug->L_Update();
+	HDebug->HT_Update();
 }

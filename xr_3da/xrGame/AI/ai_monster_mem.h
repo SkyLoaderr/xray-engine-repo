@@ -103,6 +103,8 @@ class CSoundMemory
 
 	TTime					timeCurrent;			// текущее время
 
+	friend class CMonsterMemory;
+
 public:
 		void	HearSound				(const SoundElem &s);
 		void	HearSound				(CObject* who, int eType, const Fvector &Position, float power, TTime time);
@@ -215,6 +217,8 @@ class CVisionMemory
 	
 	VECTOR_VE				IgnoreObjects;
 	TTime					timeLastUpdateIgnoreObjects;
+
+	friend class CMonsterMemory;
 		
 public:
 	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 

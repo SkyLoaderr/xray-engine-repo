@@ -271,9 +271,11 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	
 	if (dt > 3) 
 		return;
-	
+
 	// *** general stuff
 	inherited::shedule_Update	(DT);
+
+	m_dwCurrentTime	= Level().timeServer();
 
 	VERIFY				(_valid(Position()));
 	if (Remote())		{

@@ -359,30 +359,7 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-	bool is_moving_action = IsMoving();
-	bool is_action_changed = prev_action != m_tAction;
-	TTime cur_time = Level().timeServer();
-
-	if (pMonster->CDetailPathManager::completed(pMonster->Position()) && is_moving_action) {
-		bad_motion_fixed = true;
-		cur_anim = eAnimStandIdle;
-		return;
-	}
-
-	if (is_action_changed) {
-		time_start_stand = 0;
-	}
-
-	if (is_moving_action && (0 == time_start_stand)) {
-		time_start_stand	= cur_time;
-	}
-
-	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
-		bad_motion_fixed = true;
-		cur_anim = eAnimStandIdle;	
-		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
-	}
-	prev_action = m_tAction;
+	if (!pMonster->MotionStats->is_good_motion(3)) cur_anim = eAnimStandIdle;
 }
 
 void CMotionManager::CheckReplacedAnim()

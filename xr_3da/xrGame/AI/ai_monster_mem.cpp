@@ -327,6 +327,19 @@ void CMonsterMemory::UpdateMemory()
 	UpdateHearing(curtime);
 
 	RemoveOldDangerousEnemies();
+
+	// AddVisualObjects if there's sounds from them
+	for (u32 i=0;i<Sounds.size();i++) {
+		if (Sounds[i].who && (Sounds[i].time == curtime)) {
+			for (u32 k = 0; k<Enemies.size(); k++) {
+				if ((Sounds[i].who->ID() == Enemies[k].obj->ID()) && (Enemies[k].time != curtime)) {
+					Enemies[k].time = curtime; 
+					LOG_EX("Vision memory updated with sound memory!");
+				}
+			}
+		}
+	}
+
 }
 
 void CMonsterMemory::AddDangerousEnemy(CObject *pO, TTime ttr)

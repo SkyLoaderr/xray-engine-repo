@@ -16,11 +16,11 @@ CMonsterDebug::~CMonsterDebug()
 	
 }
 
-void CMonsterDebug::Clear()
+void CMonsterDebug::M_Clear()
 {
 	_data.clear();
 }
-void CMonsterDebug::Add(u32 index, LPCSTR str, u32 col)
+void CMonsterDebug::M_Add(u32 index, LPCSTR str, u32 col)
 {
 	if (_data.size() < index) index = _data.size();
 
@@ -28,10 +28,11 @@ void CMonsterDebug::Add(u32 index, LPCSTR str, u32 col)
 	strcpy(new_elem.text, str);
 	new_elem.col = col;
 
-	_data.push_back(new_elem);
+	if (index < _data.size()) _data[index] = new_elem;
+	else _data.push_back(new_elem);
 }
 
-void CMonsterDebug::Update()
+void CMonsterDebug::M_Update()
 { 
 	if (!active) return;
 
@@ -53,7 +54,69 @@ void CMonsterDebug::Update()
 		HUD().pFontMedium->OutSet(x,y-=floor_height);
 		HUD().pFontMedium->OutNext(_data[i].text);
 	}
+
 }
 
+void CMonsterDebug::L_Add(const Fvector &pos, u32 col)
+{
+	for	(u32 i=0; i<_lines.size(); i++) {
+		if (_lines[i].pos.similar(pos)) return;
+	}
+	
+	_elem_line new_line;
+
+	new_line.pos = pos;
+	new_line.col = col;
+	
+	_lines.push_back(new_line);
+}
+
+void CMonsterDebug::L_Clear()
+{
+	_lines.clear();
+}
+
+void CMonsterDebug::L_Update()
+{
+	for (u32 i=0; i<_lines.size(); i++) {
+		RCache.dbg_DrawAABB(_lines[i].pos,0.35f,0.35f,0.35f,_lines[i].col);
+
+		Fvector upV;
+		upV = _lines[i].pos;
+		upV.y += 5.0f;
+
+		RCache.dbg_DrawLINE(Fidentity,_lines[i].pos,upV,_lines[i].col);
+	}
+}
+
+
+void CMonsterDebug::HT_Add(float x, float y, LPCSTR str)
+{
+	for	(u32 i=0; i<_text.size(); i++) {
+		if (strcmp(_text[i].text, str) == 0) return;
+	}
+
+	_elem_const new_text;
+		
+	strcpy(new_text.text, str);
+	
+	new_text.x	=	x;
+	new_text.y	=	y;
+	
+	_text.push_back(new_text);
+}
+
+void CMonsterDebug::HT_Clear()
+{
+	_text.clear();
+}
+
+void CMonsterDebug::HT_Update()
+{
+	for (u32 i=0; i<_text.size(); i++) {
+		HUD().pFontSmall->OutSet(_text[i].x,_text[i].y);
+		HUD().pFontSmall->OutNext(_text[i].text);
+	}
+}
 
 
