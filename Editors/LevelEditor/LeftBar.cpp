@@ -28,7 +28,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetLight->Tag      = etLight;
     ebTargetSound->Tag      = etSound;
     ebTargetGlow->Tag       = etGlow;
-    ebTargetRPoint->Tag     = etRPoint;
+    ebTargetSpawnPoint->Tag = etSpawnPoint;
     ebTargetWay->Tag  		= etWay;
     ebTargetSector->Tag 	= etSector;
     ebTargetPortal->Tag		= etPortal;
@@ -97,7 +97,7 @@ void TfraLeftBar::ChangeTarget(int tgt){
 	    case etLight:		btn=ebTargetLight; 		break;
 	    case etSound:		btn=ebTargetSound; 		break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
-	    case etRPoint:		btn=ebTargetRPoint; 	break;
+	    case etSpawnPoint:	btn=ebTargetSpawnPoint; break;
 	    case etWay:			btn=ebTargetWay; 		break;
 	    case etSector:		btn=ebTargetSector; 	break;
 	    case etPortal:		btn=ebTargetPortal; 	break;
@@ -211,6 +211,12 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_IMAGE_EDITOR );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::UpdateSceneTextures1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_RELOAD_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -561,5 +567,4 @@ void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 	UI.Command(COMMAND_SHOWPROPERTIES);
 }
 //---------------------------------------------------------------------------
-
 

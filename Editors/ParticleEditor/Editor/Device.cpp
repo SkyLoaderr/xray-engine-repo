@@ -391,17 +391,23 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
     UPDATEC(vc,pc,dwRequired);
 }
 
+void CRenderDevice::ReloadTextures()
+{
+	UI.SetStatus("Reload textures...");
+	Shader.ED_UpdateTextures(0);
+	UI.SetStatus("");
+}
 //------------------------------------------------------------------------------
 // если передан параметр modif - обновляем DX-Surface only и только из списка
-// иначе полная синхронизация 
+// иначе полная синхронизация
 //------------------------------------------------------------------------------
 void CRenderDevice::RefreshTextures(LPSTRVec* modif){
 	UI.SetStatus("Refresh textures...");
-    if (modif) Shader.ED_UpdateTextures(*modif);
+    if (modif) Shader.ED_UpdateTextures(modif);
 	else{
     	LPSTRVec modif_files;
     	ImageManager.SynchronizeTextures(true,true,false,0,&modif_files);
-        Shader.ED_UpdateTextures(modif_files);
+        Shader.ED_UpdateTextures(&modif_files);
         ImageManager.FreeModifVec(modif_files);
     }
 	UI.SetStatus("");

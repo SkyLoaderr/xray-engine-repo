@@ -2,6 +2,9 @@
 #define _SRV_ENTITIES_
 
 #include "xrMessages.h"
+#ifdef _EDITOR
+	#include "net_utils.h"
+#endif
 
 // refs
 class xrServerEntity;
@@ -68,7 +71,9 @@ public:
 	{
 		net_Ready			= FALSE;
 		ID					= 0xffff;
+        ID_Parent			= 0xffff;
 		owner				= 0;
+        s_flags				= 0;
 		ZeroMemory			(s_name,		sizeof(string64));
 		ZeroMemory			(s_name_replace,sizeof(string64));
 	}

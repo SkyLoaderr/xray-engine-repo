@@ -11,18 +11,17 @@
       intermediate\SceneClassList.obj intermediate\BuilderCore.obj 
       intermediate\BuilderRemote.obj intermediate\Sound.obj 
       intermediate\BuilderTexFiles.obj intermediate\BuilderLTX.obj 
-      intermediate\Glow.obj intermediate\TLSPRITE.obj intermediate\RPoint.obj 
-      intermediate\Log.obj intermediate\BuilderCF.obj 
-      intermediate\BuilderOGF.obj intermediate\frustum.obj 
-      intermediate\EditLibrary.obj intermediate\sector.obj 
-      intermediate\portal.obj intermediate\portalutils.obj 
-      intermediate\stdafx.obj intermediate\NumericVector.obj 
-      intermediate\EditMesh.obj intermediate\ShaderFunction.obj 
-      intermediate\EditObjectImport.obj intermediate\EditMeshIO.obj 
-      intermediate\EditMeshPick.obj intermediate\EditMeshModify.obj 
-      intermediate\Device.obj intermediate\SceneIO.obj 
-      intermediate\EditMeshRender.obj intermediate\Event.obj 
-      intermediate\TopBar.obj intermediate\LeftBar.obj 
+      intermediate\Glow.obj intermediate\TLSPRITE.obj intermediate\Log.obj 
+      intermediate\BuilderCF.obj intermediate\BuilderOGF.obj 
+      intermediate\frustum.obj intermediate\EditLibrary.obj 
+      intermediate\sector.obj intermediate\portal.obj 
+      intermediate\portalutils.obj intermediate\stdafx.obj 
+      intermediate\NumericVector.obj intermediate\EditMesh.obj 
+      intermediate\ShaderFunction.obj intermediate\EditObjectImport.obj 
+      intermediate\EditMeshIO.obj intermediate\EditMeshPick.obj 
+      intermediate\EditMeshModify.obj intermediate\Device.obj 
+      intermediate\SceneIO.obj intermediate\EditMeshRender.obj 
+      intermediate\Event.obj intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
       intermediate\PropertiesLight.obj intermediate\PropertiesSound.obj 
@@ -100,7 +99,8 @@
       intermediate\Blender_Model.obj intermediate\cpuid.obj 
       intermediate\_math.obj intermediate\xrSkin1W.obj 
       intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
-      intermediate\tga.obj"/>
+      intermediate\tga.obj intermediate\xrServer_Entities.obj 
+      intermediate\SpawnPoint.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -123,7 +123,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;edit;edit;Engine"/>
+    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;edit;edit;Engine;Engine\Game;edit"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -133,15 +133,16 @@
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
-    <LIBPATH value="lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
+    <INCLUDEPATH value="Engine\Game;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
+    <LIBPATH value="Engine\Game;lib\DX;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;edit;engine;Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components6\alexmx"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include -I$(BCB)\include\vcl 
-      -Iedit -Iengine -IEngine\CPU_Pipe -IEngine\Animations -IEngine\Blenders 
-      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
+    <IDLCFLAGS value="-IEngine\Game -Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include 
+      -I$(BCB)\include\vcl -Iedit -Iengine -IEngine\CPU_Pipe -IEngine\Animations 
+      -IEngine\Blenders -IP:\MagicFM_Borland\Sdk\Include 
+      -IR:\Borland\Components6\alexmx 
       -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
       -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 -b- 
@@ -178,7 +179,6 @@
       <FILE FILENAME="edit\BuilderLTX.cpp" FORMNAME="" UNITNAME="BuilderLTX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Glow.cpp" FORMNAME="" UNITNAME="Glow" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\RPoint.cpp" FORMNAME="" UNITNAME="RPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Log.cpp" FORMNAME="" UNITNAME="Log" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\BuilderOGF.cpp" FORMNAME="" UNITNAME="BuilderOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -376,6 +376,8 @@
       <FILE FILENAME="edit\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Entities.cpp" FORMNAME="" UNITNAME="xrServer_Entities" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -511,6 +511,8 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 
     AnsiString out_name=tex_name;
     Engine.FS.m_Textures.Update(out_name);
+    Engine.FS.VerifyPath(out_name.c_str());
+    
     CImage* I = new CImage();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();

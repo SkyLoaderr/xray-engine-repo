@@ -6,7 +6,8 @@
 #define _INCDEF_RPoint_H_
 
 #include "CustomObject.h"
-                                                    
+#include "xrServer_Entities.h"
+
 #define RPOINT_SIZE 0.5f
 
 class CFrustum;
@@ -14,25 +15,20 @@ class CFrustum;
 class CSpawnPoint : public CCustomObject {
     friend class    SceneBuilder;
 public:
-	enum EType{
-    	etPlayer,
-    	etEntity,
-        force_dword=(-1) 
-    };
-    struct Flags{
-    	DWORD		bActive:1;
-    };
-public:
-	xrServerEntity*	m_GameData;
-    Flags			m_Flags;
-    EType			m_Type;
-    string64		m_EntityRefs;
+	AnsiString		m_EntityRef;
+	xrServerEntity*	m_SpawnData;
+protected:
+    virtual Fvector& GetPosition	()				{ m_SpawnData?return m_SpawnData->o_Position:return FPosition; }
+    virtual void 	SetPosition		(Fvector& pos)	{ if (m_SpawnData) m_SpawnData->o_Position.set(pos) else FPosition.set(pos); UpdateTransform();}
+    virtual Fvector& GetRotation	()				{ m_SpawnData?return m_SpawnData->o_Position:return FPosition; }
+    virtual void 	SetRotation		(Fvector& rot)	{ if (m_SpawnData) m_SpawnData->o_Angle.set(pos); else PRotation.set(rot); UpdateTransform();}
 public:
 	                CSpawnPoint    	();
 	                CSpawnPoint    	( char *name );
     void            Construct   	();
 	virtual         ~CSpawnPoint   	();
 
+    void			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );
 	virtual bool    RayPick     	( float& distance,	Fvector& start,	Fvector& direction,
 		                          	  SRayPickInfo* pinf = NULL );

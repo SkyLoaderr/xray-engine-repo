@@ -1,9 +1,15 @@
 #include "stdafx.h"
-#include "xrServer.h"
-//#include "entity.h"
+#pragma hdrstop
+
+#ifdef _EDITOR
+	#include "xrServer_Entities.h"
+	#include "xr_ini.h"
+	#include "clsid_game.h"
+#else
+	#include "xrServer.h"
+#endif
 
 // EDITOR, NETWORK, SAVE, LOAD, DEMO
-
 void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 {
 	// generic
@@ -473,8 +479,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
 
-	switch (cls)
-	{
+	switch (cls){
 	case CLSID_OBJECT_ACTOR:	return new	xrSE_Actor;
 	case CLSID_OBJECT_DUMMY:	return new  xrSE_Dummy;
 	case CLSID_AI_HEN:			return new	xrSE_Enemy;

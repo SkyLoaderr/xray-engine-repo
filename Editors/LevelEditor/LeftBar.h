@@ -29,7 +29,7 @@ __published:	// IDE-managed Components
     TPanel *paFrames;
 	TFormStorage *fsStorage;
     TExtBtn *ebTargetGlow;
-    TExtBtn *ebTargetRPoint;
+	TExtBtn *ebTargetSpawnPoint;
 	TExtBtn *ebTargetWay;
 	TExtBtn *ebTargetSector;
 	TExtBtn *ebTargetPortal;
@@ -144,6 +144,18 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem10;
 	TMenuItem *N8;
 	TMenuItem *N9;
+	TMenuItem *N10;
+	TMenuItem *UpdateSceneTextures1;
+	TMenuItem *N11;
+	TMenuItem *N12;
+	TMenuItem *N13;
+	TMenuItem *N14;
+	TMenuItem *N15;
+	TMenuItem *N16;
+	TMenuItem *N17;
+	TMenuItem *N18;
+	TMenuItem *N19;
+	TMenuItem *N20;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -218,6 +230,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall MenuItem9Click(TObject *Sender);
+	void __fastcall UpdateSceneTextures1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

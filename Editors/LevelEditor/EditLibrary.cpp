@@ -331,19 +331,13 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
         int age;
     	if (m_pEditObject->GetReference()&&cbPreview->Checked){
-            AnsiString obj_name, tex_name, full_tex_name;
-            obj_name = ChangeFileExt(name,".object");
-            tex_name = ChangeFileExt(obj_name,".tga");
+            AnsiString tex_name;
+            tex_name = ChangeFileExt(name,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
             tex_name = Engine.FS.UpdateTextureNameWithFolder(tex_name);
-            full_tex_name = tex_name;
-            Engine.FS.m_Textures.Update(full_tex_name);
-            Engine.FS.VerifyPath(full_tex_name.c_str());
-            Engine.FS.m_Objects.Update(obj_name);
-            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), full_tex_name.c_str(),64,64,8,age);
+            ImageManager.CreateLODTexture(m_pEditObject->GetReference()->GetBox(), tex_name.c_str(),64,64,8,age);
             m_pEditObject->GetReference()->UpdateLODShader();
-//            ImageManager.
         	tvObjectsItemFocused(Sender);
 	    }else{
             ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");

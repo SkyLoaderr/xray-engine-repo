@@ -130,7 +130,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_REFRESH_TEXTURES:
 		Device.RefreshTextures(0);
 		break;
-
+	case COMMAND_RELOAD_TEXTURES:
+    	Device.ReloadTextures();
+    	break;
 	case COMMAND_CHANGE_AXIS:
     	fraTopBar->ChangeAxis(p1);
         break;

@@ -111,7 +111,6 @@ bool __fastcall TfrmImageLib::HideImageLib(){
     return true;
 }
 //---------------------------------------------------------------------------
-//---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
     InitItemsList(m_LastSelection.IsEmpty()?0:m_LastSelection.c_str());

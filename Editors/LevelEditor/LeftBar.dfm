@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 496
+  Height = 608
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -840,7 +840,7 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnClick = TargetClick
       end
-      object ebTargetRPoint: TExtBtn
+      object ebTargetSpawnPoint: TExtBtn
         Left = 2
         Top = 106
         Width = 120
@@ -852,7 +852,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '7. Respawn Point'
+        Caption = '7. Spawn Point'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1477,6 +1477,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 16
+    object N12: TMenuItem
+      Caption = '-'
+    end
     object Clear1: TMenuItem
       Caption = 'Clear'
       OnClick = ebClearClick
@@ -1523,6 +1526,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 32
+    object N13: TMenuItem
+      Caption = '-'
+    end
     object Options1: TMenuItem
       Caption = 'Options'
       OnClick = ebOptionsClick
@@ -1565,6 +1571,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 114
+    object N14: TMenuItem
+      Caption = '-'
+    end
     object ResetAniamation1: TMenuItem
       Caption = 'Reset Animation'
       OnClick = ebResetAnimationClick
@@ -1593,6 +1602,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 161
+    object N19: TMenuItem
+      Caption = '-'
+    end
     object Cut1: TMenuItem
       Caption = 'Cut'
       OnClick = ebCutClick
@@ -1606,6 +1618,13 @@ object fraLeftBar: TfraLeftBar
       Enabled = False
       OnClick = ebPasteClick
     end
+    object Delete1: TMenuItem
+      Caption = 'Delete'
+      OnClick = ebDeleteClick
+    end
+    object N20: TMenuItem
+      Caption = '-'
+    end
     object Undo1: TMenuItem
       Caption = 'Undo'
       OnClick = ebUndoClick
@@ -1613,10 +1632,6 @@ object fraLeftBar: TfraLeftBar
     object Redo1: TMenuItem
       Caption = 'Redo'
       OnClick = ebRedoClick
-    end
-    object Delete1: TMenuItem
-      Caption = 'Delete'
-      OnClick = ebDeleteClick
     end
   end
   object pmToolsSelection: TMxPopupMenu
@@ -1634,6 +1649,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 177
+    object N18: TMenuItem
+      Caption = '-'
+    end
     object Invert1: TMenuItem
       Caption = 'Invert'
       OnClick = ebInvertClick
@@ -1662,6 +1680,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 193
+    object N17: TMenuItem
+      Caption = '-'
+    end
     object HideSelected1: TMenuItem
       Caption = 'Hide Selected'
       OnClick = ebHideSelectedClick
@@ -1697,6 +1718,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 209
+    object N16: TMenuItem
+      Caption = '-'
+    end
     object LockSelection1: TMenuItem
       Caption = 'Lock Selected'
       OnClick = ebLockSelClick
@@ -1740,6 +1764,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 519
+    object N15: TMenuItem
+      Caption = '-'
+    end
     object MenuItem3: TMenuItem
       Caption = 'Make List From Selected'
       OnClick = ebSetSnapClick
@@ -1883,11 +1910,21 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 85
     Top = 66
+    object N11: TMenuItem
+      Caption = '-'
+    end
     object ImageEditor1: TMenuItem
       Caption = 'Image Editor'
       OnClick = ImageEditor1Click
     end
     object MenuItem8: TMenuItem
+      Caption = '-'
+    end
+    object UpdateSceneTextures1: TMenuItem
+      Caption = 'Reload Textures'
+      OnClick = UpdateSceneTextures1Click
+    end
+    object N10: TMenuItem
       Caption = '-'
     end
     object MenuItem9: TMenuItem

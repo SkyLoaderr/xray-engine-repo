@@ -93,6 +93,7 @@ public:
 	void 					Destroy			();
     void 					Resize			(int w, int h);
 	void 					RefreshTextures	(LPSTRVec* modif);
+	void 					ReloadTextures	();
 	void 					UnloadTextures	();
 
     void 					RenderNearer	(float f_Near);
