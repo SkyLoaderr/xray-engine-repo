@@ -242,6 +242,7 @@ void CUITradeWnd::Update()
 		{
 			m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
 			m_vDragDropItems[i].SetData(NULL);
+			m_vDragDropItems[i].SetCustomUpdate(NULL);
 
 			UpdatePrices();
 
@@ -557,6 +558,7 @@ void CUITradeWnd::UpdateLists()
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
+		m_vDragDropItems[i].SetCustomUpdate(NULL);
 	}
 
 	

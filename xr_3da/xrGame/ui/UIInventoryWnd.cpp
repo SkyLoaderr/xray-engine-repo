@@ -237,6 +237,7 @@ void CUIInventoryWnd::InitInventory()
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
+		m_vDragDropItems[i].SetCustomUpdate(NULL);
 	}
 
 		
@@ -486,7 +487,7 @@ bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //на пояс
 bool CUIInventoryWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent()->GetParent());
+	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
 
@@ -676,6 +677,7 @@ void CUIInventoryWnd::Update()
 			{
 				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
 				m_vDragDropItems[i].SetData(NULL);
+				m_vDragDropItems[i].SetCustomUpdate(NULL);
 			}
 		}
 	}
