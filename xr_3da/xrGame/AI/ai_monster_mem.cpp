@@ -101,7 +101,7 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 void CVisionMemory::Init(TTime mem_time) 
 {
-	MemoryTimeDef		= MemoryTime = mem_time;
+	MemoryTimeDefault	= MemoryTime = mem_time;
 	Selected.obj		= 0;
 	
 	pMonster = dynamic_cast<CCustomMonster *>(this);
@@ -180,13 +180,19 @@ void CVisionMemory::AddEnemy(const VisionElem &ve)
 	res = std::find(Enemies.begin(), Enemies.end(), ve);
 	if (res == Enemies.end()) Enemies.push_back(ve);
 	else *res = ve;
+
+	if (ve.obj == Selected.obj) {
+		Selected = ve;
+		SaveEnemy();
+	}
+
 }
 
 
 void CVisionMemory::SelectEnemy()
 {
 	if (Selected.obj) {
-		// враг ещё живой?
+		// враг уже не живой?
 		if (!Selected.obj->g_Alive()) Selected.obj = 0;
 
 		// Выбранный враг давно исчез из поля зрения?

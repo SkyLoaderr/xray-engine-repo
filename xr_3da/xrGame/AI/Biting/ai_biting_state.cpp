@@ -69,10 +69,31 @@ void CBitingRest::Reset()
 	
 }
 
+void CBitingRest::Init()
+{
+	IState::Init();
+
+	// если есть путь - дойти до конца (последствия преследования врага)
+	if (pMonster->AI_Path.TravelPath.empty()) {
+		m_bFollowPath = true;
+	} else m_bFollowPath = false;
+}
+
+
 void CBitingRest::Run()
 {
-	// проверить нужно ли провести перепланировку
-	if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
+	
+	if (m_bFollowPath) {
+		if ((pMonster->AI_Path.TravelPath.size() - 1) <= pMonster->AI_Path.TravelStart) m_bFollowPath = false;
+	}
+	
+	if (m_bFollowPath) {
+		m_tAction = ACTION_WALK;
+	} else {
+		// проверить нужно ли провести перепланировку
+		if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
+	}
+	
 
 	// FSM 2-го уровня
 	switch (m_tAction) {
@@ -136,8 +157,8 @@ void CBitingRest::Replanning()
 		m_tAction = ACTION_TURN;
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
-		dwMinRand = 1100;
-		dwMaxRand = 1200;
+		dwMinRand = 1000;
+		dwMaxRand = 1100;
 
 	}
 	
@@ -207,6 +228,8 @@ void CBitingAttack::Init()
 		m_fDistMin = 2.4f;
 		m_fDistMax = 3.8f;
 	}
+	
+	pMonster->SetMemoryTime(3000);
 
 	// Test
 	Msg("_ Attack Init _");
@@ -245,7 +268,7 @@ void CBitingAttack::Run()
 	u32 delay;
 
 	// если враг не виден - бежать к нему
-	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.position != m_tEnemy.obj->Position())) {
+	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
 		m_tAction = ACTION_RUN;
 	}
 
@@ -253,8 +276,9 @@ void CBitingAttack::Run()
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
-			pMonster->AI_Path.DestNode = m_tEnemy.node_id;
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.position, false, 0, delay);
+			//delay = ((m_tEnemy.position.distance_to(pMonster->Position()) < (m_fDistMax+4))? 0:300);
+			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -476,7 +500,7 @@ void CBitingDetour::Init()
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->SaveEnemy();
 
-	pMonster->SetInertia(15000);
+	SetInertia(15000);
 	pMonster->SetMemoryTime(15000);
 
 	Msg(" DETOUR init!");
@@ -768,12 +792,23 @@ void CAI_Biting::ControlAnimation()
 	if (!Motion.m_tSeq.Playing) {
 		
 		// Если нет пути и есть анимация движения, то играть анимацию отдыха
-		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) < AI_Path.TravelStart)) {
+		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
 			if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
 				m_tAnim = eMotionStandIdle;
 			}
 		}
-		
+
+		// если стоит на месте и пытается бежать...
+		int i = ps_Size();		
+		if (i > 1) {
+			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
+				if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
+					m_tAnim = eMotionStandIdle;
+				}
+			}
+		}
+
 		// если анимация изменилась, переназначить анимацию
 		if (m_tAnimPrevFrame != m_tAnim) {
 			FORCE_ANIMATION_SELECT();

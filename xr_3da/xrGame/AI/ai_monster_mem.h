@@ -145,7 +145,7 @@ public:
 	IC	void		SaveEnemy		() {if (Selected.obj) Saved = Selected;}
 
 	IC	void		SetMemoryTime	(TTime t) {MemoryTime = t;}
-	IC	void		SetMemoryTimeDef(TTime t) {MemoryTime = MemoryTimeDefault;}
+	IC	void		SetMemoryTimeDef() {MemoryTime = MemoryTimeDefault;}
 
 protected:
 		void		Init			(TTime mem_time);

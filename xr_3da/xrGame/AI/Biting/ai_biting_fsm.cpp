@@ -62,8 +62,7 @@ void CAI_Biting::Think()
 		else if (C && H && !I)		SetState(statePanic);
 		else if (C && !H && I)		SetState(statePanic);
 		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		
-			SetState(statePanic);
+		else if (D && H && I)		SetState(stateAttack);
 		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
 		else if (D && !H && I)		SetState(statePanic);
 		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
