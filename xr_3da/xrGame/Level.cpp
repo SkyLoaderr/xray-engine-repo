@@ -565,11 +565,9 @@ void CLevel::OnKeyboardPress(int key)
 	case DIK_RALT:
 		ShowLM	= TRUE;
 		return;
-		/*
-	case DIK_RALT:
-		pCreator->ChangeViewEntity	(CLSID_AI_HUMAN);
+	case DIK_BACK:
+		HW.Caps.bShowOverdraw		= !HW.Caps.bShowOverdraw;
 		return;
-		*/
 	}
 
 	switch (key_binding[key]) {
