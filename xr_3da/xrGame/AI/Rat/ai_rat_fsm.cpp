@@ -671,6 +671,8 @@ void CAI_Rat::EatCorpse()
 
 void CAI_Rat::vfUpdateSpawnPosition()
 {
+	if (!g_Alive())
+		return;
 	INIT_SQUAD_AND_LEADER;
 	if (this != Leader)	{
 		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);

@@ -145,6 +145,8 @@ void CAI_Stalker::Searching()
 
 void CAI_Stalker::vfUpdateSearchPosition()
 {
+	if (!g_Alive())
+		return;
 	INIT_SQUAD_AND_LEADER;
 	if (this != Leader)	{
 		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);

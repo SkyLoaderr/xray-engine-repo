@@ -201,8 +201,8 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (g_Health() <= 0)
-		tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
+	//if (g_Health() <= 0)
+	//	tpGlobalAnimation = m_tAnims.A[1]->m_tGlobal.A[0]->A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)

@@ -63,6 +63,23 @@ private:
 		u32					dwTime;
 	} SStalkerStates;
 
+	//HIT PHYS
+	float					m_saved_impulse;
+	Fvector					m_saved_hit_position;
+	Fvector					m_saved_hit_dir;
+	//PHYS
+	float					m_phMass;
+	//skeleton
+	float					skel_density_factor;
+	float					skel_airr_lin_factor;
+	float					skel_airr_ang_factor;
+	float					hinge_force_factor;
+	float					hinge_force_factor1;
+	float					hinge_force_factor2;
+	float					hinge_vel;
+	float					skel_fatal_impulse_factor;
+	int						skel_ddelay;
+
 	// Graph
 	_GRAPH_ID				m_tCurGP;
 	_GRAPH_ID				m_tNextGP;
@@ -144,6 +161,9 @@ private:
 			void			DropItem						();
 			void			vfUpdateSearchPosition			();
 			void			vfChooseNextGraphPoint			();
+			// physics
+			void			CreateSkeleton					();
+
 	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
 	{
 		yaw						= pitch = 0;
@@ -213,4 +233,7 @@ public:
 	virtual void			OnVisible						();
 	virtual void			Exec_Movement					(float dt);
 	virtual void			Exec_Look						(float dt);
+	virtual void			Update							(u32 dt);
+	virtual void			UpdateCL						();
+	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 };
