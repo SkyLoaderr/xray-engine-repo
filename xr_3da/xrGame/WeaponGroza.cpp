@@ -164,6 +164,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			bFlame			= FALSE;
 			break;
 		case eFire:
+			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 			break;
 		}
