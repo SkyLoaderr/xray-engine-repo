@@ -64,6 +64,15 @@ void occRasterizer::clear		()
 	fillDW_8x	(LPDWORD(bufDepth),		size,*LPDWORD(&f));
 }
 
+IC BOOL shared(occTri* T1, occTri* T2)
+{
+	if (T1==T2)					return TRUE;
+	if (T1->adjacent[0]==T2)	return TRUE;
+	if (T1->adjacent[1]==T2)	return TRUE;
+	if (T1->adjacent[2]==T2)	return TRUE;
+	return FALSE;
+}
+
 void occRasterizer::propagade	()
 {
 	// Clip-and-propagade zero level
@@ -71,8 +80,27 @@ void occRasterizer::propagade	()
 	{
 		for (int x=0; x<occ_dim_0; x++)
 		{
-			float d				= bufDepth[y+1][x+1];
-			clamp				(d,-1.8f,1.8f);
+			int					ox=x+1, oy=y+1;
+			
+			// Y-connect
+			int	pos		= oy*occ_dim+ox;
+			int	pos_up	= pos-occ_dim;
+			int	pos_down= pos+occ_dim;
+			
+			occTri**	pFrame	= get_frame();
+			float*		pDepth	= get_depth();
+			occTri* T1	= pFrame[pos_up		];
+			occTri* T2	= pFrame[pos_down	];
+			if (T1 && shared(T1,T2))	
+			{
+				float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
+				if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
+			}
+			
+
+			//
+			float d				= pDepth[pos];
+			clamp				(d,-1.9f,1.9f);
 			bufDepth_0[y][x]	= d2int(d);
 		}
 	}

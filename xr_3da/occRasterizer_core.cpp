@@ -315,6 +315,7 @@ void occRasterizer::rasterize	(occTri* T)
 		i_section_t1	();	// Rasterise Second Section
 	}
 
+	/*
 	// Rasterize (and Y-connect) edges
 	int ax			= iFloor(currentA[0]);
 	int ay			= iFloor(currentA[1]);
@@ -325,4 +326,5 @@ void occRasterizer::rasterize	(occTri* T)
 	i_edge			(ax,ay,bx,by);
 	i_edge			(ax,ay,cx,cy);
 	i_edge			(bx,by,cx,cy);
+	*/
 }
