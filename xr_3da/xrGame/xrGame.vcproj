@@ -8723,12 +8723,6 @@
 						RelativePath=".\ui\UIActorDiary.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIActorInfo.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIActorInfo.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIContracts.cpp">
 					</File>
 					<File
@@ -8813,6 +8807,22 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIColorAnimatorWrapper.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Statistics"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIActorInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIActorInfo.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIStalkersRankingWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIStalkersRankingWnd.h">
 					</File>
 				</Filter>
 			</Filter>
