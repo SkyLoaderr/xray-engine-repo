@@ -34,5 +34,6 @@ public:
 
 	virtual void 	PhDataUpdate		(dReal step);
 	virtual void 	PhTune				(dReal step) {}
+	virtual u8		get_legs_number		() {return BIPEDAL;}
 };
 

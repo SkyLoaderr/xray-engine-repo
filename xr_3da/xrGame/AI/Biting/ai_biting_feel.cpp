@@ -55,11 +55,14 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, float impulse,
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
 
-		dir.normalize();
+		// перевод из локальных координат в мировые вектора направления импульса
+		Fvector hit_dir;
+		XFORM().transform_dir(hit_dir,dir);
+		hit_dir.normalize();
 
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
-		pEntityNC->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
+		pEntityNC->Hit(fDamage,hit_dir,this,0,position_in_bone_space,impulse);
 		
 		if (dynamic_cast<CActor *>(pEntityNC)) SetAttackEffector();
 	}

@@ -17,6 +17,7 @@ public:
 
 	virtual	void	CheckSpecParams			(u32 spec_params);
 	virtual void	ProcessTurn				();
+	virtual u8		get_legs_number			() {return QUADRUPEDAL;}
 
 
 	// debug

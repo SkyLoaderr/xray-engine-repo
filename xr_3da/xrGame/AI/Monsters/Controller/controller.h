@@ -13,5 +13,6 @@ public:
 			void	Init				();
 	virtual void	StateSelector		();
 	virtual void	ProcessTurn			();
+	virtual u8		get_legs_number		() {return BIPEDAL;}
 };
 

@@ -580,15 +580,18 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	// получить параметры шага
 	SStepParam &step		= step_info.params;
 	TTime		cur_time	= Level().timeServer();
-	
+
+	// время одного цикла анимации
+	float cycle_anim_time	= GetAnimTime(*pMonster->cur_anim.name) / step.cycles;
+
 	for (u32 i=0; i<legs_num; i++) {
 		
 		// если событие уже обработано для этой ноги, то skip
-		if (step_info.activity[i].handled) continue;
+		if (step_info.activity[i].handled && (step_info.activity[i].cycle == step_info.cur_cycle)) continue;
 		
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
-		TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * step.step[i].time);
-		
+		TTime offset_time = pMonster->cur_anim.started + u32(1000 * (cycle_anim_time * step_info.cur_cycle + cycle_anim_time * step.step[i].time));
+
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 			
 			// Играть звук
@@ -610,21 +613,27 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 				// установить направление
 				pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
 				Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+				
 				// установить позицию
-				pos.c.set(pMonster->get_foot_position(u8(i)));
-
+				pos.c.set(pMonster->get_foot_position(ELegType(i)));
+				
 				ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 				Level().ps_needtoplay.push_back(ps);
 			}
 
 			// Play Camera FXs
 
-			step_info.activity[i].handled = true;
+			// обновить поле handle
+			step_info.activity[i].handled	= true;
+			step_info.activity[i].cycle		= step_info.cur_cycle;
 		}
 	}
 
+	// определить текущий цикл
+	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = u8(float(cur_time - pMonster->cur_anim.started) / (1000.f*cycle_anim_time));
+
 	// позиционировать играемые звуки
-	for (u32 i=0; i<legs_num; i++) {
+	for (i=0; i<legs_num; i++) {
 		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
 			step_info.activity[i].sound.set_position	(pMonster->Position());
 			step_info.activity[i].sound.set_volume		(step_info.params.step[i].power);
@@ -645,6 +654,7 @@ void CMotionManager::STEPS_Initialize()
 
 	for (u32 i=0; i<4; i++) step_info.activity[i].handled = false;
 
-	step_info.params = it->second;
+	step_info.params	= it->second;
+	step_info.cur_cycle = 0;
 }
 

@@ -114,6 +114,7 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
 	END_LOAD_SHARED_MOTION_DATA();
 

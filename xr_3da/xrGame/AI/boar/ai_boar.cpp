@@ -45,6 +45,9 @@ void CAI_Boar::Load(LPCSTR section)
 {
 	inherited::Load	(section);
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");

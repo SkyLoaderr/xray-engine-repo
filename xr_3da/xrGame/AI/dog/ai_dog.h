@@ -28,5 +28,6 @@ public:
 	virtual bool	CanExecRotationJump	() {return true;}
 
 	virtual void	ProcessTurn			();
+	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 
 };

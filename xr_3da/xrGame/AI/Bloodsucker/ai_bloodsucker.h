@@ -36,9 +36,8 @@ public:
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			LookPosition			(Fvector to_point, float angular_speed = PI_DIV_3);
 	virtual	void			PitchCorrection			() {}
+	virtual u8				get_legs_number			() {return BIPEDAL;}			
 
-			
-	
 	virtual	void			CheckSpecParams			(u32 spec_params);
 
 	float					m_fInvisibilityDist;			// дистанция до врага, на которой монстр может становиться нивидимым
@@ -56,7 +55,5 @@ public:
 
 
 	virtual	void			set_visible				(bool val);
-	virtual u8				get_legs_number			() {return BIPEDAL;}
-	virtual Fvector			get_foot_position		(u8 leg_id);
-
+	
 };

@@ -3,8 +3,6 @@
 #include "ai_bloodsucker_effector.h"
 #include "../ai_monsters_misc.h"
 
-#include "../../hudmanager.h"
-
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
 
@@ -297,23 +295,6 @@ void CAI_Bloodsucker::set_visible(bool val)
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 }
 
-Fvector	CAI_Bloodsucker::get_foot_position(u8 leg_id)
-{
-	CKinematics *pK = PKinematics(Visual());
-	Fmatrix bone_transform;
-
-	switch (leg_id) {
-		case 0:	bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_toe1")).mTransform;	break;
-		case 1: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_toe1")).mTransform;	break;
-	}
-
-	Fmatrix global_transform;
-	global_transform.set(XFORM());
-	global_transform.mulB(bone_transform);
-
-	return global_transform.c;
-}
-
 void CAI_Bloodsucker::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
@@ -334,7 +315,7 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
 		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
 		// установить позицию
-		pos.c.set(get_foot_position(u8(0)));
+		pos.c.set(get_foot_position(eFrontLeft));
 
 		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		Level().ps_needtoplay.push_back(ps);

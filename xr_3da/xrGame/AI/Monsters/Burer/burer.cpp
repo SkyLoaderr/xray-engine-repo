@@ -85,8 +85,6 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-	//MotionMan.AA_PushAttackAnimTest(eAnimAttack,	0, 600,	700,	STANDART_ATTACK, inherited::_sd->m_fHitPower, hit_dir);
-
 	END_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.accel_load			(section);

@@ -45,12 +45,6 @@ void CAI_Biting::Init()
 	// initializing class members
 	m_fGoingSpeed					= 0.f;
 	
-
-	m_fAttackSuccessProbability[0]	= .8f;
-	m_fAttackSuccessProbability[1]	= .6f;
-	m_fAttackSuccessProbability[2]	= .4f;
-	m_fAttackSuccessProbability[3]	= .2f;
-
 	CDetailPathManager::Init();
 
 	m_pPhysics_support				->in_Init();
@@ -76,6 +70,8 @@ void CAI_Biting::Init()
 	EnemyMemory.init_external		(this, 20000);
 	EnemyMan.init_external			(this);
 	SoundMemory.init_external		(this, 20000);
+
+	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
 }
 
 void CAI_Biting::reinit()
@@ -140,6 +136,9 @@ void CAI_Biting::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_steal"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
 
+
+	LoadFootBones();
+
 }
 
 void CAI_Biting::LoadShared(LPCSTR section)
@@ -186,19 +185,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
 	_sd->m_bUsedSquadAttackAlg			= pSettings->r_u8	(section,"squad_attack_algorithm");
-
-//	AddStepSound(section, eAnimWalkFwd,			"step_snd_walk");
-//	AddStepSound(section, eAnimWalkDamaged,		"step_snd_walk_dmg");
-//	AddStepSound(section, eAnimRun,				"step_snd_run");
-//	AddStepSound(section, eAnimRunDamaged,		"step_snd_run_dmg");
-//	AddStepSound(section, eAnimStandTurnLeft,	"step_snd_turn");
-//	AddStepSound(section, eAnimStandTurnRight,	"step_snd_turn");
-//	AddStepSound(section, eAnimSteal,			"step_snd_steal");
-//	AddStepSound(section, eAnimDragCorpse,		"step_snd_drag");
-//	AddStepSound(section, eAnimWalkTurnLeft,	"step_snd_walk");
-//	AddStepSound(section, eAnimWalkTurnRight,	"step_snd_walk");
-//	AddStepSound(section, eAnimRunTurnLeft,		"step_snd_run");
-//	AddStepSound(section, eAnimRunTurnRight,	"step_snd_run");
 
 	// Load attack postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
@@ -465,31 +451,6 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 }
 
 
-void CAI_Biting::AddStepSound(LPCSTR section, EMotionAnim a, LPCSTR name)
-{
-	LPCSTR		str;
-	str = pSettings->r_string(section,name);
-
-	string16	first,second;
-	_GetItem(str,0,first);
-	_GetItem(str,1,second);
-
-	SStepSound		step_snd;
-	step_snd.vol	= float(atof(first));
-	step_snd.freq	= float(atof(second));
-
-	_sd->step_sounds.insert				(mk_pair(a, step_snd));
-}
-
-void CAI_Biting::GetStepSound(EMotionAnim a, float &vol, float &freq) 
-{
-	STEP_SOUND_MAP_IT it = _sd->step_sounds.find(a);
-	if (it == _sd->step_sounds.end()) return;
-	
-	vol		= it->second.vol;
-	freq	= it->second.freq; 
-}
-
 bool CAI_Biting::useful(const CGameObject *object) const
 {
 	if (!CItemManager::useful(object))
@@ -558,17 +519,17 @@ float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
 }
 
 
-Fvector	CAI_Biting::get_foot_position(u8 leg_id)
+//////////////////////////////////////////////////////////////////////////
+// Function for foot processing
+//////////////////////////////////////////////////////////////////////////
+Fvector	CAI_Biting::get_foot_position(ELegType leg_type)
 {
+	R_ASSERT2(m_FootBones[leg_type] != BI_NONE, "foot bone had not been set");
+	
 	CKinematics *pK = PKinematics(Visual());
 	Fmatrix bone_transform;
 
-	switch (leg_id) {
-		case 0:	bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_finger0")).mTransform;	break;
-		case 1: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_finger0")).mTransform;	break;
-		case 2: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_toe0")).mTransform;		break;
-		case 3: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_toe0")).mTransform;		break;
-	}
+	bone_transform = pK->LL_GetBoneInstance(m_FootBones[leg_type]).mTransform;	
 
 	Fmatrix global_transform;
 	global_transform.set(XFORM());
@@ -576,3 +537,33 @@ Fvector	CAI_Biting::get_foot_position(u8 leg_id)
 
 	return global_transform.c;
 }
+
+void CAI_Biting::LoadFootBones()
+{
+
+	CInifile* ini		= PKinematics(Visual())->LL_UserData();
+	if(ini&&ini->section_exist("foot_bones")){
+		
+		CInifile::Sect& data		= ini->r_section("foot_bones");
+		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+			CInifile::Item& item	= *I;
+			
+			u16 index = PKinematics(Visual())->LL_BoneID(*item.second);
+			R_ASSERT3(index != BI_NONE, "foot bone not found", *item.second);
+			
+			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;
+			else if (xr_strcmp(*item.first, "front_right")== 0)		m_FootBones[eFrontRight]	= index;
+			else if (xr_strcmp(*item.first, "back_right")== 0)		m_FootBones[eBackRight]		= index;
+			else if (xr_strcmp(*item.first, "back_left")== 0)		m_FootBones[eBackLeft]		= index;
+		}
+	} else R_ASSERT("section [foot_bones] not found in monster user_data");
+
+	// проверка на соответсвие
+	int count = 0;
+	for (u32 i = 0; i < eLegsMaxNumber; i++) 
+		if (m_FootBones[i] != BI_NONE) count++;
+
+	R_ASSERT(count == get_legs_number());
+}
+
+//////////////////////////////////////////////////////////////////////////

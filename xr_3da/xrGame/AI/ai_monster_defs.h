@@ -354,6 +354,8 @@ struct SStepParam {
 		float	time;
 		float	power;
 	} step[4];
+
+	u8			cycles;
 };
 
 DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
@@ -370,11 +372,15 @@ struct SCurrentAnim {
 struct SStepInfo {
 	struct {
 		ref_sound		sound;
-		bool			handled;
+		
+		bool			handled;		// обработан
+		u8				cycle;			// цикл в котором отработан
 	} activity[4];
 	
 	SStepParam		params;
 	bool			disable;
+
+	u8				cur_cycle;
 
 	SStepInfo()		{disable = true;}
 };
@@ -394,7 +400,6 @@ enum EHitSide {
 };
 
 
-DEFINE_MAP		(EMotionAnim,		SStepSound,				STEP_SOUND_MAP,				STEP_SOUND_MAP_IT);
 DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,				ANIM_ITEM_MAP_IT);
 DEFINE_VECTOR	(STransition,		TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
 DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,			MOTION_ITEM_MAP_IT);
@@ -486,5 +491,16 @@ enum EDangerType {
 	eVeryStrong,
 	eNone
 };
+
+// важен порядок
+enum ELegType{
+	eFrontLeft,
+	eFrontRight,
+	eBackRight,
+	eBackLeft,
+
+	eLegsMaxNumber
+};
+
 
 

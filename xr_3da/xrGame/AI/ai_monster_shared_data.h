@@ -58,8 +58,6 @@ public:
 	float					m_fEatSlice;
 	float					m_fEatSliceWeight;
 
-	STEP_SOUND_MAP			step_sounds;
-
 	u8						m_bUsedSquadAttackAlg;
 
 	SAttackEffector			m_attack_effector;

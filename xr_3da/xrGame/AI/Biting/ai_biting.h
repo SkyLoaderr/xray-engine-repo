@@ -164,8 +164,12 @@ public:
 	virtual bool			ability_psi_attack				() {return false;}
 
 	// ---------------------------------------------------------------------------------
-	virtual u8				get_legs_number					() {return QUADRUPEDAL;}
-	virtual Fvector			get_foot_position				(u8 leg_id);
+			u16				m_FootBones[eLegsMaxNumber];
+
+			Fvector			get_foot_position				(ELegType leg_type);
+			void			LoadFootBones					();
+
+	virtual u8				get_legs_number					() = 0;
 	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);
@@ -206,10 +210,6 @@ public:
 	
 	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
-
-
-	// State properties
-	float					m_fAttackSuccessProbability[4];
 
 	// State flags
 	bool					m_bDamaged;
@@ -273,6 +273,7 @@ public:
 	bool					hear_dangerous_sound;
 	bool					hear_interesting_sound;
 
+	
 
 
 #ifdef DEBUG

@@ -223,9 +223,14 @@ void CMotionManager::STEPS_Load(LPCSTR section, u8 legs_num)
 	string16	cur_elem;
 
 	for (u32 i=0; pSettings->r_line(section,i,&anim_name,&val); ++i) {
+		_GetItem (val,0,cur_elem);
+		
+		anim.cycles	= u8(atoi(cur_elem));
+		R_ASSERT(anim.cycles >= 1);
+
 		for (u32 j=0;j<legs_num;j++) {
-			_GetItem	(val,j*2,cur_elem);		anim.step[j].time	= float(atof(cur_elem));
-			_GetItem	(val,j*2+1,cur_elem);	anim.step[j].power	= float(atof(cur_elem));
+			_GetItem	(val,1+j*2,cur_elem);		anim.step[j].time	= float(atof(cur_elem));
+			_GetItem	(val,1+j*2+1,cur_elem);		anim.step[j].power	= float(atof(cur_elem));
 		}
 		_sd->steps_map.insert(mk_pair(anim_name, anim));
 	}
