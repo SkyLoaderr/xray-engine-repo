@@ -38,8 +38,6 @@ struct MyPt
 struct MyEdge
 {
 	// Temporary data.
-	float	fError;
-	MeshPt*	pKept;	
 };
 
 struct MyTri
@@ -106,18 +104,6 @@ struct GeneralCollapseInfo
 
 struct Object
 {
-	xr_vector<MxQuadric*>	__quadrics;			// 1 per vertex
-
-	void					collect_quadrics	();
-	unsigned int			quadric_count		() const { return __quadrics.size(); }
-	MxQuadric&				quadric				(unsigned int i)       { return *(__quadrics[i]); }
-	const MxQuadric&		quadric				(unsigned int i) const { return *(__quadrics[i]); }
-	void					compute_face_quadric(MeshTri* tri, MxQuadric& Q);
-
-	void					compute_target_placement(MeshEdge *info);
-	void					compute_edge_info		(MeshEdge *info);
-
-
 	// The collapse list is ordered backwards,
 	// so ptr->ListNext() is the _previous_ collapse to ptr.
 	GeneralCollapseInfo		CollapseRoot;
@@ -139,12 +125,11 @@ struct Object
 
 	int			iCurSlidingWindowLevel;
 
+	void		compute_face_quadric		(MeshTri* tri, MxQuadric& Q);
 public:	
 				Object						();
 
 				~Object						();
-
-	void		initialize					();
 
 	// Check that this is sensible.
 	void		CheckObject					( void );

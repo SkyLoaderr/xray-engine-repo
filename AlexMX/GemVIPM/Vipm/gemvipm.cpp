@@ -67,7 +67,6 @@ CMyD3DApplication::CMyD3DApplication()
 	m_fSlidingWindowErrorTolerance = 0.1f;	// 10%
 
 	g_iMaxNumTrisDrawn = -1;	// No limit.
-	g_bShowVIPMInfo = FALSE;
 }
 
 
@@ -169,13 +168,8 @@ HRESULT CMyD3DApplication::FrameMove()
 // Sets menu items up correctly.
 void CMyD3DApplication::SetMenuItems()
 {
-	CheckMenuItem( GetMenu(m_hWnd), IDM_SHOW_VIPM_INFO,
-		   g_bShowVIPMInfo ? MF_CHECKED : MF_UNCHECKED );
-
 	CheckMenuItem( GetMenu(m_hWnd), IDM_CACHE_DISPLAY_ENABLE,
 		   ( g_iMaxNumTrisDrawn > 0 ) ? MF_CHECKED : MF_UNCHECKED );
-	CheckMenuItem( GetMenu(m_hWnd), IDM_CACHE_OPTIMISE_CHEAP,
-		   g_bUseFastButBadOptimise ? MF_CHECKED : MF_UNCHECKED );
 
 }
 
@@ -285,10 +279,6 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 
 		case IDM_CACHE_DISPLAY_ENABLE:
 			g_iMaxNumTrisDrawn = -g_iMaxNumTrisDrawn;
-			break;
-
-		case IDM_CACHE_OPTIMISE_CHEAP:
-			g_bUseFastButBadOptimise = !g_bUseFastButBadOptimise;
 			break;
 
 		case IDM_CACHE_DISPLAY_INC:

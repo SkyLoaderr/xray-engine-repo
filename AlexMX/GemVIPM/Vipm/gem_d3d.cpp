@@ -91,8 +91,9 @@ HRESULT CMyD3DApplication::Render()
 			int r_tmp=0, r_tris=0, r_edges=0;
 			RenderCurrentObject				(m_pObject->iCurSlidingWindowLevel,r_tris);
 			// Next level.
-			m_pd3dDevice->SetRenderState	(D3DRS_TEXTUREFACTOR, 0xff800000);
+			m_pd3dDevice->SetRenderState	(D3DRS_TEXTUREFACTOR, 0xff008000);
 			RenderCurrentObject				(m_pObject->iCurSlidingWindowLevel + 1,r_tmp);
+			r_tris+=r_tmp;
 
 			// Tweak the projection matrix so that things are a bit more visible.
 			m_pd3dDevice->SetTransform		(D3DTS_PROJECTION, &m_matProjCloseZbias);
@@ -107,10 +108,10 @@ HRESULT CMyD3DApplication::Render()
 			m_pFont->DrawText( 2, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats );
 
 			char strTemp[1000];
-			sprintf ( strTemp, "Sliding window level %i, error tolerance %f%%", m_pObject->iCurSlidingWindowLevel, m_fSlidingWindowErrorTolerance * 100.0f );
+			sprintf ( strTemp, "Sliding level: %i. Error: %f%%. Collapses: %i.", m_pObject->iCurSlidingWindowLevel, m_fSlidingWindowErrorTolerance * 100.0f, m_pObject->iNumCollapses);
 			m_pFont->DrawText( 2, 40, D3DCOLOR_ARGB(255,255,255,0), strTemp );
 
-			sprintf ( strTemp, "Faces: %i. Edges: %i", r_tris, r_edges);
+			sprintf ( strTemp, "Faces: %i. Edges: %i. Collapse: %i.", r_tris, r_edges,0);
 			m_pFont->DrawText( 2, 60, D3DCOLOR_ARGB(255,255,255,0), strTemp );
 
 			// End the scene.
@@ -190,7 +191,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		// Only needs doing once, but annoyingly requires a D3D device to do the init.
 		bAlreadyDone = TRUE;
 		CreateTestObject					();
-		m_pObject->MakeCurrentObjectFromPerm();
+//.		m_pObject->MakeCurrentObjectFromPerm();
 	}
 
 
@@ -279,9 +280,12 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS8* pCaps, DWORD dwBehavior,
 void CMyD3DApplication::CreateTestObject ()
 {
 	ASSERT ( m_pObject ); 
-	ASSERT ( m_pObject->PermPtRoot.ListNext() == NULL );
-	ASSERT ( m_pObject->PermTriRoot.ListNext() == NULL );
-	ASSERT ( m_pObject->PermEdgeRoot.ListNext() == NULL );
+
+	m_pObject->BinCurrentObject();
+
+	ASSERT ( m_pObject->CurPtRoot.ListNext() == NULL );
+	ASSERT ( m_pObject->CurTriRoot.ListNext() == NULL );
+	ASSERT ( m_pObject->CurEdgeRoot.ListNext() == NULL );
 
 #if 0
 	// Make a cube.
@@ -344,8 +348,8 @@ void CMyD3DApplication::CreateTestObject ()
 	//hres = D3DXCreateTeapot ( g_pd3dDevice, &pmeshTeapot, NULL );
 	// These are just some simpler test meshes
 	//hres = D3DXCreatePolygon ( g_pd3dDevice, 1.0f, 6, &pmeshTeapot, NULL );
-	hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 4, 6, &pmeshTeapot, NULL );
 	//hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 30, 15, &pmeshTeapot, NULL );
+	hres = D3DXCreateSphere ( g_pd3dDevice, 1.0f, 10, 10, &pmeshTeapot, NULL );
 
 	// OK, now extract the data.
 	int iNumVerts = pmeshTeapot->GetNumVertices();
@@ -368,7 +372,7 @@ void CMyD3DApplication::CreateTestObject ()
 
 	for ( int i = 0; i < iNumVerts; i++ )
 	{
-		ppPts[i] = new MeshPt ( &m_pObject->PermPtRoot );
+		ppPts[i] = new MeshPt ( &m_pObject->CurPtRoot );
 		ppPts[i]->mypt.vPos		= pFVF.Position();
 		ppPts[i]->mypt.vNorm	= pFVF.Normal();
 		ppPts[i]->mypt.fU		= 1.f;//float(rand())/32767.f;
@@ -417,7 +421,7 @@ void CMyD3DApplication::CreateTestObject ()
 			pIndex++;
 		}
 
-		MeshTri *ptri = new MeshTri ( ppt[0], ppt[1], ppt[2], &m_pObject->PermTriRoot, &m_pObject->PermEdgeRoot );
+		MeshTri *ptri = new MeshTri ( ppt[0], ppt[1], ppt[2], &m_pObject->CurTriRoot, &m_pObject->CurEdgeRoot );
 	}
 
 	hres = pIndexBuffer->Unlock();
@@ -431,14 +435,14 @@ void CMyD3DApplication::CreateTestObject ()
 
 	m_pObject->iFullNumTris = 0;
 	m_pObject->iFullNumPts	= 0;
-	MeshPt *pt = m_pObject->PermPtRoot.ListNext();
+	MeshPt *pt = m_pObject->CurPtRoot.ListNext();
 	while ( pt != NULL )
 	{
 		// All the pts had better be the same material.
 		pt = pt->ListNext();
 		m_pObject->iFullNumPts++;
 	}
-	MeshTri *tri = m_pObject->PermTriRoot.ListNext();
+	MeshTri *tri = m_pObject->CurTriRoot.ListNext();
 	while ( tri != NULL )
 	{
 		// All the pts had better be the same material.
@@ -446,11 +450,15 @@ void CMyD3DApplication::CreateTestObject ()
 		m_pObject->iFullNumTris++;
 	}
 
-	MeshEdge *edge = m_pObject->PermEdgeRoot.ListNext();
+	MeshEdge *edge = m_pObject->CurEdgeRoot.ListNext();
 	while ( edge != NULL )
 	{
 		edge = edge->ListNext();
 	}
+
+	m_pObject->iNumCollapses = 0;
+	m_pObject->iCurSlidingWindowLevel = 0;
+	m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
 }
 
 

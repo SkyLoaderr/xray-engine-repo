@@ -34,8 +34,6 @@ MeshPt* FindPt(Object* m_pObject, u32 idx)
 
 void CMyD3DApplication::CollapseAll()
 {
-	m_pObject->initialize			();
-
 	while (true){
 		// Find the best collapse you can.
 		// (how expensive is this? Ohhhh yes).

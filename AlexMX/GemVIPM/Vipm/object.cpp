@@ -256,12 +256,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 		pGCI->iNumTris++;
 	}
 
-	// recalculate quadrics
-	for ( MeshEdge *pEdge = pGCI->pptKeep->FirstEdge(); pEdge != NULL; pEdge = pEdge->ListNext() )
-		compute_edge_info(pEdge);
-
 	iNumCollapses++;
-
 }
 
 // Bin the last collapse.
@@ -455,31 +450,6 @@ void Object::compute_face_quadric(MeshTri* tri, MxQuadric& Q)
 	Q			= MxQuadric(v1, v2, v3, 0.f);
 }
 
-void Object::collect_quadrics()
-{
-	VERIFY		(__quadrics.empty());
-	__quadrics.resize		(iFullNumPts);
-	for(unsigned int j=0; j<quadric_count(); j++)
-		__quadrics[j] = new MxQuadric(QUAD_SIZE);
-
-	MeshTri *tri = CurTriRoot.ListNext();
-	while ( tri != NULL )
-	{
-		MxQuadric Q			(QUAD_SIZE);
-		compute_face_quadric(tri, Q);
-
-		MyPt& p1 = tri->pPt1->mypt;
-		MyPt& p2 = tri->pPt2->mypt;
-		MyPt& p3 = tri->pPt3->mypt;
-		
-		quadric(p1.dwIndex) += Q;
-		quadric(p2.dwIndex) += Q;
-		quadric(p3.dwIndex) += Q;
-		// All the pts had better be the same material.
-		tri = tri->ListNext();
-	}
-}
-
 float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, long bTryToCacheResult /*= FALSE*/ )
 {
 	if (1){
@@ -550,74 +520,3 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 		return qSum.FindError ( pptKept->mypt.vPos );
 	}
 }
-/*
-void Object::constrain_boundaries()
-{
-	MxVertexList star;
-	MxFaceList faces;
-
-	for(MxVertexID i=0; i<m->vert_count(); i++)
-	{
-		star.reset();
-		m->collect_vertex_star(i, star);
-
-		for(unsigned int j=0; j<(unsigned int)star.length(); j++){
-			if( i < star(j) )
-			{
-				faces.reset();
-				m->collect_edge_neighbors(i, star(j), faces);
-				if( faces.length() == 1 )
-					discontinuity_constraint(i, star(j), faces);
-			}
-		}
-	}
-}
-*/
-
-void Object::compute_target_placement(MeshEdge *info)
-{
-	u32 i=info->pPt1->mypt.dwIndex, j=info->pPt2->mypt.dwIndex;
-
-	const MxQuadric &Qi=quadric(i), &Qj=quadric(j);
-	MxQuadric Q=Qi;  Q+=Qj;
-
-	double e_min;
-
-	{
-		// Fall back only on endpoints
-		MxVector vi(QUAD_SIZE), vj(QUAD_SIZE);
-
-		pack_to_vector(vi, info->pPt1->mypt.vPos, info->pPt1->mypt.fU, info->pPt1->mypt.fV);
-		pack_to_vector(vj, info->pPt2->mypt.vPos, info->pPt2->mypt.fU, info->pPt2->mypt.fV);
-
-		double ei=Q(vi), ej=Q(vj);
-
-		if( ei<ej )	{ e_min = ei; info->myedge.pKept=info->pPt1; }
-		else		{ e_min = ej; info->myedge.pKept=info->pPt2; }
-	}
-
-	info->myedge.fError = e_min;
-}
-
-void Object::compute_edge_info(MeshEdge *info)
-{
-	compute_target_placement(info);
-//	finalize_edge_update	(info);
-}
-
-void Object::initialize()
-{
-	collect_quadrics		();
-
-	MeshEdge *edge;
-	edge = CurEdgeRoot.ListNext();
-	while ( edge != NULL )
-	{
-		compute_edge_info(edge);
-		// All the pts had better be the same material.
-		edge = edge->ListNext();
-	}
-
-//	constrain_boundaries	();
-}
-
