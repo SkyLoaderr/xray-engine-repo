@@ -54,19 +54,19 @@ void CBuild::Tesselate	()
 			Vertex*		V		= new Vertex;
 			V->P.lerp			(F->v[id1]->P, F->v[id2]->P, .5f);
 			UVpoint		UV;
-			UV.averageA			(F->tc.front()[id1],F->tc.front()[id2]);
+			UV.averageA			(F->tc.front().uv[id1],F->tc.front().uv[id2]);
 
 			// F1
 			Face* F1			= new Face;
 			F1->dwMaterial		= F->dwMaterial;
 			F1->SetVertices		(F->v[idB],F->v[id1],V);
-			F1->AddChannel		(F->tc.front()[idB],F->tc.front()[id1],UV);
+			F1->AddChannel		(F->tc.front().uv[idB],F->tc.front().uv[id1],UV);
 			
 			// F2
 			Face* F2			= new Face;
 			F2->dwMaterial		= F->dwMaterial;
 			F2->SetVertices		(F->v[idB],V,F->v[id2]);
-			F2->AddChannel		(F->tc.front()[idB],UV,F->tc.front()[id2]);
+			F2->AddChannel		(F->tc.front().uv[idB],UV,F->tc.front().uv[id2]);
 
 			// Destroy old face
 			_DELETE				(F);
@@ -76,7 +76,7 @@ void CBuild::Tesselate	()
 	}
 
 	// Remove ZEROed faces
-	g_faces.erase(remove(g_faces.begin(),g_faces.end(),0),g_faces.end());
+	g_faces.erase(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 
 	g_bUnregister		= TRUE;
 }
