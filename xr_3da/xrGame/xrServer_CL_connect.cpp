@@ -51,7 +51,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)						I->second->net_Processed	= FALSE;
-	for (I=entities.begin(); I!=E; I++)		Perform_connect_spawn(I->second,CL,P);
+	for (I=entities.begin(); I!=E; I++)		Perform_connect_spawn		(I->second,CL,P);
 
 	// Send "finished" signal
 	P.w_begin		(M_SV_CONFIG_FINISHED);
