@@ -379,8 +379,10 @@ void CLevel::OnFrame	()
 		}
 	}
 
+	/*
 	AI::Path path;
 	AI.q_Path(93,1417,path);
+	*/
 }
 
 void CLevel::OnRender()
