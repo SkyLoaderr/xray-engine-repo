@@ -83,108 +83,55 @@ public:
 };
 
 class NodeCompressed {
-//	u8				data[11];
-//	
-//	void link(u8 link_index, u32 value)
-//	{
-//		value			&= 0x001fffff;
-//		switch (link_index) {
-//			case 0 : {
-//				value	|= (*(u32*)data) & 0xffe00000;
-//				Memory.mem_copy(data, &value, sizeof(u32));
-//				break;
-//			}
-//			case 1 : {
-//				value	<<= 5;
-//				value	|= (*(u32*)(data + 2)) & 0xfc00001f;
-//				Memory.mem_copy(data + 2, &value, sizeof(u32));
-//				break;
-//			}
-//			case 2 : {
-//				value	<<= 2;
-//				value	|= (*(u32*)(data + 5)) & 0xff800003;
-//				Memory.mem_copy(data + 5, &value, sizeof(u32));
-//				break;
-//			}
-//			case 3 : {
-//				value	<<= 7;
-//				value	|= (*(u32*)(data + 7)) & 0xf000007f;
-//				Memory.mem_copy(data + 7, &value, sizeof(u32));
-//				break;
-//			}
-//			default : NODEFAULT;
-//		}
-//	}
-//	
-//	void light(u8 value)
-//	{
-//		data[10]		|= value << 4;
-//	}
-	u32				link0:24;
-	u32				link1:24;
-	u32				link2:24;
-	u32				link3:24;
-	u8				_light;
-
+	u8				data[11];
+	
 	void link(u8 link_index, u32 value)
 	{
+		value			&= 0x001fffff;
 		switch (link_index) {
 			case 0 : {
-				link0 = value;
+				value	|= (*(u32*)data) & 0xffe00000;
+				Memory.mem_copy(data, &value, sizeof(u32));
 				break;
 			}
 			case 1 : {
-				link1 = value;
+				value	<<= 5;
+				value	|= (*(u32*)(data + 2)) & 0xfc00001f;
+				Memory.mem_copy(data + 2, &value, sizeof(u32));
 				break;
 			}
 			case 2 : {
-				link2 = value;
+				value	<<= 2;
+				value	|= (*(u32*)(data + 5)) & 0xff800003;
+				Memory.mem_copy(data + 5, &value, sizeof(u32));
 				break;
 			}
 			case 3 : {
-				link3 = value;
+				value	<<= 7;
+				value	|= (*(u32*)(data + 7)) & 0xf000007f;
+				Memory.mem_copy(data + 7, &value, sizeof(u32));
 				break;
 			}
-			default : NODEFAULT;
 		}
 	}
+	
 	void light(u8 value)
 	{
-		_light		= value;
+		data[10]		|= value << 4;
 	}
-
 
 public:
 	u8				cover;
 	u16				plane;
 	NodePosition	p;
 
-//	u32	link(u8 index) const
-//	{
-//		switch (index) {
-//			case 0 :	return	((*(u32*)data) & 0x001fffff);
-//			case 1 :	return	(((*(u32*)(data + 2)) >> 5) & 0x001fffff);
-//			case 2 :	return	(((*(u32*)(data + 5)) >> 2) & 0x001fffff);
-//			case 3 :	return	(((*(u32*)(data + 7)) >> 7) & 0x001fffff);
-//			default :	NODEFAULT;
-//		}
-//#ifdef DEBUG
-//		return			(0);
-//#endif
-//	}
-//	
-//	u8	light() const
-//	{
-//		return			(data[10] >> 4);
-//	}
-//	
 	u32	link(u8 index) const
 	{
 		switch (index) {
-			case 0 :	return	(link0);
-			case 1 :	return	(link1);
-			case 2 :	return	(link2);
-			case 3 :	return	(link3);
+			case 0 :	return	((*(u32*)data) & 0x001fffff);
+			case 1 :	return	(((*(u32*)(data + 2)) >> 5) & 0x001fffff);
+			case 2 :	return	(((*(u32*)(data + 5)) >> 2) & 0x001fffff);
+			case 3 :	return	(((*(u32*)(data + 7)) >> 7) & 0x001fffff);
 			default :	NODEFAULT;
 		}
 #ifdef DEBUG
@@ -194,10 +141,9 @@ public:
 	
 	u8	light() const
 	{
-		return			(_light);
+		return			(data[10] >> 4);
 	}
 	
-
 	friend class CLevelGraph;
 	friend struct CNodeCompressed;
 };									// 2+5+1+11 = 19b
