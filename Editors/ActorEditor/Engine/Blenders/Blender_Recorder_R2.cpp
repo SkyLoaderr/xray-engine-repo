@@ -67,6 +67,10 @@ void	CBlender_Compile::r_Sampler_rtf	(LPCSTR name, LPCSTR texture, u32 element/*
 {
 	r_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT,element);
 }
+void	CBlender_Compile::r_Sampler_clf	(LPCSTR name, LPCSTR texture, u32 element/* =0 */)
+{
+	r_Sampler	(name,texture,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR,element);
+}
 
 void	CBlender_Compile::r_End			()
 {

@@ -81,6 +81,7 @@ public:
 	void				r_Constant			(LPCSTR name,	R_constant_setup* s);
 	void				r_Sampler			(LPCSTR name,	LPCSTR texture, u32		address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
 	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	u32		element=0);
+	void				r_Sampler_clf		(LPCSTR name,	LPCSTR texture,	u32		element=0);
 	void				r_End				();
 
 	CBlender_Compile	();

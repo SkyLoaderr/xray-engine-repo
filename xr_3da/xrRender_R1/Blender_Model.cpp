@@ -69,9 +69,10 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		C.PassEnd			();
 	} else {
 		LPCSTR	sname		= 0;
-		switch (C.iElement)	
+		LPCSTR	sname_ps	= 0;
+		switch (C.iElement)
 		{
-		case 0:	// Highest LOD
+		case SE_R1_NORMAL_HQ:	
 			sname				= "r1_model_def_hq"; 
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
@@ -79,12 +80,26 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.r_Sampler			("s_lmap",	"$user$projector", D3DTADDRESS_CLAMP, D3DTEXF_LINEAR, D3DTEXF_NONE,D3DTEXF_LINEAR);
 			C.r_End				();
 			break;
-		case 1:	// Lowest LOD
+		case SE_R1_NORMAL_LQ:
 			sname				= "r1_model_def_lq"; 
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_End				();
+			break;
+		case SE_R1_LPOINT:
+			break;
+		case SE_R1_LSPOT:
+			sname				= "r1_model_def_spot";
+			sname_ps			= "r1_add_spot";
+			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE);
+			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf		("s_lmap",	"effects\\light");
+			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
+			C.r_End				();
+			break;
+		case SE_R1_LMODELS:
 			break;
 		}
 	}
