@@ -816,22 +816,25 @@ void CActor::shedule_Update	(u32 DT)
 		m_pVehicleWeLookingAt			= dynamic_cast<CHolderCustom*>(RQ.O);
 		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
 		
-		// Анализируем какой объект мы видим, и назначаем соответсвующее
-		// действие по умолчанию, которое будет определять всплывающую 
-		// подсказку
-		if (m_pPersonWeLookingAt && pEntityAlive->g_Health() > 0)
-			m_eDefaultObjAction = eaaTalk;
+		if (Game().type == GAME_SINGLE)
+		{
+			// Анализируем какой объект мы видим, и назначаем соответсвующее
+			// действие по умолчанию, которое будет определять всплывающую 
+			// подсказку
+			if (m_pPersonWeLookingAt && pEntityAlive->g_Health() > 0)
+				m_eDefaultObjAction = eaaTalk;
 
-		else if (pEntityAlive)
-			m_eDefaultObjAction = eaaSearchCorpse;
+			else if (pEntityAlive)
+				m_eDefaultObjAction = eaaSearchCorpse;
 
-		else if (m_pVehicleWeLookingAt)
-			m_eDefaultObjAction = eaaOpenDoor;
+			else if (m_pVehicleWeLookingAt)
+				m_eDefaultObjAction = eaaOpenDoor;
 
-		else if (inventory().m_pTarget)
-			m_eDefaultObjAction = eaaPickup;
-		else 
-			m_eDefaultObjAction = eaaNoAction;
+			else if (inventory().m_pTarget)
+				m_eDefaultObjAction = eaaPickup;
+			else 
+				m_eDefaultObjAction = eaaNoAction;
+		};
 	}
 	else 
 	{

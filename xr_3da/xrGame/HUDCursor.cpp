@@ -12,12 +12,18 @@
 #include "Entity.h"
 
 #define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
+#define C_ON_FRIEND	D3DCOLOR_XRGB(0,0xff,0)
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 #define C_SIZE		0.025f
 #define NEAR_LIM	0.5f
 
 #define SHOW_INFO_SPEED	0.5f
 #define HIDE_INFO_SPEED	10.f
+
+float	g_fMinReconDist		= 2.0f;
+float	g_fMaxReconDist		= 50.0f;
+float	g_fMinReconSpeed	= 0.5f;
+float	g_fMaxReconSpeed	= 10.f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -96,12 +102,51 @@ void CHUDCursor::Render()
 
 			if (E && (E->g_Health()>0))
 			{
-				if (fuzzyShowInfo>0.5f)
+				if (Game().type == GAME_SINGLE)
 				{
-					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-					F->OutNext	("%s",*RQ.O->cName());
+					if (fuzzyShowInfo>0.5f)
+					{
+						F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
+						F->OutNext	("%s",*RQ.O->cName());
+					}
+					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 				}
-				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+				else
+				{
+					CEntityAlive*	pCurEnt = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+					if (pCurEnt)
+					{					
+						if (Game().type == GAME_DEATHMATCH)
+							C = C_ON_ENEMY;
+						else
+						{
+							if (E->g_Team() != pCurEnt->g_Team())
+								C = C_ON_ENEMY;
+							else 
+								C = C_ON_FRIEND;
+						};
+						if (dist >= g_fMinReconDist && dist <= g_fMaxReconDist)
+						{
+							float ddist = (dist - g_fMinReconDist)/(g_fMaxReconDist - g_fMinReconDist);
+							float dspeed = g_fMinReconSpeed + (g_fMaxReconSpeed - g_fMinReconSpeed)*ddist;
+							fuzzyShowInfo += Device.fTimeDelta/dspeed;
+						}
+						else
+						{
+							if (dist < g_fMinReconSpeed) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
+							else fuzzyShowInfo = 0;
+						};
+
+						if (fuzzyShowInfo>0.5f)
+						{
+							clamp(fuzzyShowInfo,0.f,1.f);
+							int alpha_C = iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f);
+							u8 alpha_b = u8(alpha_C & 0x00ff);
+							F->SetColor	(subst_alpha(C,alpha_b));
+							F->OutNext	("%s",*RQ.O->cName());
+						}
+					};
+				};
 			}
 			else if (l_pI)
 			{

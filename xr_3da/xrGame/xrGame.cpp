@@ -59,6 +59,12 @@ extern	int					lvInterp;
 extern	float				g_fMaxDesyncLen;
 extern	bool				g_bUnlimitedAmmo;
 
+extern	float	g_fMinReconDist		;
+extern	float	g_fMaxReconDist		;
+extern	float	g_fMinReconSpeed	;
+extern	float	g_fMaxReconSpeed	;
+
+
 // console commands
 class CCC_Spawn : public IConsole_Command
 {
@@ -972,6 +978,13 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
 		CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		0x1			);
 		CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
+
+		//Recon params
+		CMD4(CCC_Float,		"recon_min_dist",		&g_fMinReconDist,	1.0f, 50.0f);
+		CMD4(CCC_Float,		"recon_max_dist",		&g_fMaxReconDist,	50.0f, 100.0f);
+		CMD4(CCC_Float,		"recon_min_speed",		&g_fMinReconSpeed,	1.0f, 180.0f);
+		CMD4(CCC_Float,		"recon_max_speed",		&g_fMaxReconSpeed,	1.0f, 180.0f);
+
 
 
 		// keyboard binding
