@@ -501,7 +501,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u32		(l_dwaWeights[i]);
 	}
 
-	for (u16 i=0; i<l_wItemCount; i++)
+	for ( i=0; i<l_wItemCount; i++)
 		for (u16 j=0; j<m_wItemCount; j++)
 			if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
 				m_dwaWeights[j] = l_dwaWeights[i];
@@ -549,9 +549,9 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),			&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),			&m_fRadius,0.f,100.f);
 	string512					S;
-	for (u32 i=0; i<m_dwItemCount; i++) {
+	for (u32 i=0; i<m_wItemCount; i++) {
 		strcpy					(S,s_name);
-		strcat					(S,"\\",m_cppArtefactSections[i]);
+		strconcat				(S,"\\",m_cppArtefactSections[i]);
 		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,"Weight"),					m_dwaWeights + i,20,10000);
 	}
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Global probability"),&m_fGlobalProbability,0.f,1.f);
