@@ -124,11 +124,6 @@ function object_info_callback(obj)
 	end
 end
 
-function script_zone_init(obj)
-	obj:bind_object(xr_zones.zone_binder(obj))
-end
-
-
 function process_task_changing(actor, info)
 	--' Новое задание
 	if (info == "tutorial_artefact_start" and
