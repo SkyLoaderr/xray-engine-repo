@@ -8,7 +8,7 @@
 BOOL				SphereValid	(vector<Fvector>& geom, Fsphere& test)
 {
 	if (fis_gremlin(test.P.x) || fis_denormal(test.R))	{
-		clMsg	("*** Attention ***: Gremlin sphere")
+		clMsg	("*** Attention ***: Gremlin sphere");
 		return FALSE;
 	}
 
