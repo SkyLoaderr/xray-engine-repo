@@ -38,7 +38,7 @@ void CUIAnimatedStatic::Update()
 	if (m_bParamsChanged && 0 != m_uFrameCount)
 	{
 		// Пересчитаем время одного кадра
-		oneFrameDuration = m_uAnimationDuration / m_uFrameCount;
+		oneFrameDuration = iCeil(m_uAnimationDuration / static_cast<float>(m_uFrameCount));
 
 		SetFrame(0);
 
@@ -46,15 +46,16 @@ void CUIAnimatedStatic::Update()
 	}
 
 	// Прибавляем время кадра
-	m_uTimeElapsed += Device.dwTimeDelta;
+	static u32 aa = 0;
+	m_uTimeElapsed += Device.dwTimeGlobal - aa;
+	aa = Device.dwTimeGlobal;
 
 	// Если анимация закончилась
 	if (m_uTimeElapsed > m_uAnimationDuration)
 	{
-		Rewind();
+		Rewind(m_uAnimationDuration - m_uAnimationDuration);
 		if (!m_bCyclic)
 			Stop();
-//		return;
 	}
 
 	// Теперь вычисляем кадры в зависимости от времени

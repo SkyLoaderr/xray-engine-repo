@@ -47,7 +47,7 @@ public:
 	// Управление
 	void Play()											{ m_bPlaying = true; }
 	void Stop()											{ m_bPlaying = false; }
-	void Rewind()										{ m_uCurFrame = 0xffffffff; m_uTimeElapsed = 0; }
+	void Rewind(u32 delta = 0)							{ m_uCurFrame = 0xffffffff; m_uTimeElapsed = delta; }
 	// Флаг-признак циклического проигрывания
 	bool m_bCyclic;
 
