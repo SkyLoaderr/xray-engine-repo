@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_Recorder.h"
-#include "Blender.h"
+#include "blenders\Blender_Recorder.h"
+#include "blenders\Blender.h"
 
 void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
