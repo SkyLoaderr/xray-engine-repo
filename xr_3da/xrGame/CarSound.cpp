@@ -10,7 +10,7 @@ CCar::SCarSound::SCarSound(CCar* car)
 
 CCar::SCarSound::~SCarSound()
 {
-Destroy();
+	Destroy();
 }
 void CCar::SCarSound::Init()
 {
@@ -37,9 +37,9 @@ void CCar::SCarSound::Update()
 	{
 	case sndDrive:
 	case sndStarting:
-	snd_engine.set_frequency		(scale);
-	snd_engine.set_volume			(volume);
-	break;
+		snd_engine.set_frequency		(scale);
+		snd_engine.set_volume			(volume);
+		break;
 	case sndStalling:
 	case sndStoping:
 		u32 time_passed=Device.dwTimeGlobal-time_state_start;
@@ -49,49 +49,49 @@ void CCar::SCarSound::Update()
 			return;
 		}
 		snd_engine.set_volume(volume*1000.f/time_passed);
-	break;
+		break;
 	}
-	}
+}
 
-	void CCar::SCarSound::SwitchOn()
-	{
-		snd_engine.play_at_pos			(pcar,pcar->Position(),TRUE);
-	}
-	void CCar::SCarSound::Destroy()
-	{
-		SwitchOff();
-		snd_engine.destroy	();
-	}
+void CCar::SCarSound::SwitchOn()
+{
+	snd_engine.play_at_pos			(pcar,pcar->Position(),TRUE);
+}
+void CCar::SCarSound::Destroy()
+{
+	SwitchOff();
+	snd_engine.destroy	();
+}
 
-	void CCar::SCarSound::SwitchOff()
-	{
-		snd_engine.stop();
-		eCarSound=sndOff;
-	}
+void CCar::SCarSound::SwitchOff()
+{
+	snd_engine.stop();
+	eCarSound=sndOff;
+}
 
-	void CCar::SCarSound::Start()
-	{
-		if(eCarSound==sndOff) SwitchOn();
-		eCarSound=sndStarting;
-		time_state_start=Device.dwTimeGlobal;
-	}
+void CCar::SCarSound::Start()
+{
+	if(eCarSound==sndOff) SwitchOn();
+	eCarSound=sndStarting;
+	time_state_start=Device.dwTimeGlobal;
+}
 
-	void CCar::SCarSound::Stall()
-	{
-		eCarSound=sndStalling;
-		time_state_start=Device.dwTimeGlobal;
-	}
-	
-	void CCar::SCarSound::Stop()
-	{
-		eCarSound=sndStoping;
-		time_state_start=Device.dwTimeGlobal;
-	}
+void CCar::SCarSound::Stall()
+{
+	eCarSound=sndStalling;
+	time_state_start=Device.dwTimeGlobal;
+}
 
-	void CCar::SCarSound::Drive()
-	{
-		
-		if(eCarSound==sndOff) SwitchOn();
-		eCarSound=sndDrive;
-		time_state_start=Device.dwTimeGlobal;
-	}
+void CCar::SCarSound::Stop()
+{
+	eCarSound=sndStoping;
+	time_state_start=Device.dwTimeGlobal;
+}
+
+void CCar::SCarSound::Drive()
+{
+
+	if(eCarSound==sndOff) SwitchOn();
+	eCarSound=sndDrive;
+	time_state_start=Device.dwTimeGlobal;
+}
