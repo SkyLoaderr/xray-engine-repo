@@ -113,7 +113,7 @@ void CRender::LoadBuffers(CStream *fs)
 		FVF[i] = vFVF;
 
 		DWORD dwUsage = D3DUSAGE_WRITEONLY;
-		if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 		R_CHK(HW.pDevice->CreateVertexBuffer(
 			vCount*vSize,
 			dwUsage,
