@@ -358,12 +358,14 @@ void CFileSystem::BackupFile(FSPath *initial, const AnsiString& fname)
 {
     long tm; time(&tm);
 	AnsiString src_name = fname; initial->Update(src_name);
-	AnsiString dst_name;
-    dst_name.sprintf("%s%s_%x",initial->m_Add,fname.c_str(),tm);
-    m_ServerBackupRoot.Update(dst_name);
-    VerifyPath(dst_name.c_str());
-    CopyFileTo(src_name.c_str(),dst_name.c_str(),true);
-    WriteAccessLog(dst_name.c_str(),"Backup");
+    if (Exist(src_name.c_str())){
+        AnsiString dst_name;
+        dst_name.sprintf("%s%s.%x",initial->m_Add,fname.c_str(),tm);
+        m_ServerBackupRoot.Update(dst_name);
+        VerifyPath(dst_name.c_str());
+        CopyFileTo(src_name.c_str(),dst_name.c_str(),true);
+        WriteAccessLog(dst_name.c_str(),"Backup");
+    }
 }
 #endif
 
@@ -479,14 +481,21 @@ void CFileSystem::VerifyPath(LPCSTR path)
 
 LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 {
-    if (_GetItemCount(tex_name,'_')>1){
-        string256 _fn;
-        string256 fld;
-        _GetItem(tex_name,0,fld,'_');
-        sprintf(_fn,"%s\\%s",fld,tex_name);
-		strcpy(tex_name,_fn);
-    }
+	string256 _fn;
+	strcpy(tex_name,UpdateTextureNameWithFolder(tex_name, _fn));
 	return tex_name;
+}
+
+LPSTR CFileSystem::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
+{
+    if (_GetItemCount(src_name,'_')>1){
+        string256 fld;
+        _GetItem(src_name,0,fld,'_');
+        sprintf(dest_name,"%s\\%s",fld,src_name);
+    }else{
+		strcpy(dest_name,src_name);
+    }
+	return dest_name;
 }
 
 void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)

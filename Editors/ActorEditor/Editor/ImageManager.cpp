@@ -163,16 +163,18 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
     AnsiString p_textures;
     AnsiString src_name,dest_name;
     Engine.FS.m_Import.Update(p_import);
-    Engine.FS.m_Textures.Update(p_textures);
+    Engine.FS.m_Textures.Update(p_textures);       
 
     FilePairIt it	= files.begin();
 	FilePairIt _E 	= files.end();
 	for (; it!=_E; it++){
-		src_name 	= p_import	+ it->first;
-		dest_name 	= p_textures+ it->first;
-        Engine.FS.BackupFile	(&Engine.FS.m_Textures,it->first);
+		string256 fn; strcpy(fn,it->first.c_str());
+		src_name 	= p_import	+ AnsiString(fn);
+		Engine.FS.UpdateTextureNameWithFolder(fn);
+		dest_name 	= p_textures+ AnsiString(fn);
+        Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
 		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
-        Engine.FS.RegisterAccess(dest_name.c_str(),"Replace");
+        Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
     }
 }
 //------------------------------------------------------------------------------

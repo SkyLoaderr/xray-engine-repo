@@ -68,8 +68,18 @@ void __fastcall TfrmImageLib::CheckImageLib(){
     if (new_cnt){
     	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Found %d new texture(s).\nAppend to library?",new_cnt)==mrYes){
         	ImageManager.SafeCopyLocalToServer(texture_map);
-    		EditImageLib(AnsiString("Check image params"),true);
+	        Engine.FS.MarkFiles(&Engine.FS.m_Import,texture_map);
+            FileMap files=texture_map;
+            texture_map.clear();
+            string256 fn;
+            FilePairIt it=files.begin();
+            FilePairIt _E=files.end();
+            for (;it!=_E; it++)
+                texture_map[Engine.FS.UpdateTextureNameWithFolder(it->first.c_str(),fn)]=it->second;
+    		EditImageLib(AnsiString("Update images"),true);
     	}
+    }else{
+    	ELog.DlgMsg(mtInformation,"No new textures found.");
     }
 }
 
@@ -77,11 +87,9 @@ void __fastcall TfrmImageLib::UpdateImageLib(){
     SaveTextureParams();
     if (bCheckMode&&!texture_map.empty()){
     	LPSTRVec modif;
-        FileMap modif2;
         LockForm();
-		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif,&modif2);
+		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
         UnlockForm();
-        Engine.FS.MarkFiles(&Engine.FS.m_Import,modif2);
     	Device.RefreshTextures(&modif);
 		ImageManager.FreeModifVec(modif);
     }else{

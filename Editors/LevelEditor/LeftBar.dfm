@@ -1557,6 +1557,9 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Check New Textures'
       OnClick = Checknewtextures1Click
     end
+    object N8: TMenuItem
+      Caption = '-'
+    end
     object ResetAniamation1: TMenuItem
       Caption = 'Reset Animation'
       OnClick = ebResetAnimationClick

@@ -110,6 +110,7 @@ public:
 
     void		VerifyPath		(LPCSTR path);
 	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
+	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);
 
     BOOL		CheckLocking	(FSPath *initial, LPSTR fn, bool bOnlySelf, bool bMsg);
     BOOL		LockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
