@@ -51,15 +51,15 @@ void i_order	(float* A, float* B, float* C)
 }
 
 // Find the closest min/max pixels of a point
-int minPixel(float v)
+IC int minPixel(float v)
 {	return iCeil(v);	}
-int maxPixel(float v)
+IC int maxPixel(float v)
 {	return iFloor(v);	}
-void Vclamp(int& v, int a, int b)
+IC void Vclamp(int& v, int a, int b)
 {
 	if (v<a)	v=a; else if (v>=b) v=b-1;
 }
-BOOL shared(occTri* T1, occTri* T2)
+IC BOOL shared(occTri* T1, occTri* T2)
 {
 	if (0==T2)					return FALSE;
 	if (T1==T2)					return TRUE;
