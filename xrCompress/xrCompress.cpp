@@ -82,7 +82,7 @@ ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 
 extern	u32		crc32_calc			(void* P, u32 size);
 
-void	Compress			(LPCSTR path)
+void	Compress			(LPCSTR path, LPCSTR base)
 {
 	filesTOTAL			++;
 
@@ -93,7 +93,9 @@ void	Compress			(LPCSTR path)
 		return;
 	}
 
-	IReader*		src		=	FS.r_open	(path);
+	string256		fn;		strconcat(fn,base,"\\",path);
+
+	IReader*		src		=	FS.r_open	(fn);
 	bytesSRC				+=	src->length	();
 	u32			c_crc32		=	crc32_calc	(src->pointer(),src->length());
 	u32			c_ptr		=	0;
@@ -169,41 +171,6 @@ void	Compress			(LPCSTR path)
 	}
 }
 
-void Recurse		(const char* path);
-void ProcessOne		(_finddata_t& F, const char* path)
-{
-	string512		N;
-	strcpy			(N,path);
-	strcat			(N,F.name);
-	
-	if (F.attrib&_A_SUBDIR) {
-		if (0==strcmp(F.name,"."))	return;
-		if (0==strcmp(F.name,"..")) return;
-		strcat		(N,"\\");
-		Recurse		(N);
-	} else {
-		Compress	(strlwr(N));
-	}
-}
-
-void Recurse		(const char* path)
-{
-    _finddata_t		sFile;
-    int				hFile;
-	
-	string512		N;
-	strcpy			(N,path);
-	strcat			(N,"*.*");
-	
-    hFile=_findfirst(N, &sFile);
-	ProcessOne		(sFile,path);
-	
-    while			( _findnext( hFile, &sFile ) == 0 )
-		ProcessOne	(sFile,path);
-	
-    _findclose		( hFile );
-}
-
 int __cdecl main	(int argc, char* argv[])
 {
 	Core._initialize("xrCompress");
@@ -216,15 +183,23 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("[settings] SKIP: '*.key','build.*'\n");
 	printf			("[settings] VFS:  'level.*'\n");
 	printf			("\nCompressing files...");
-	if (0==chdir(argv[1]))
+
+	string256		folder;		strlwr(strconcat(folder,argv[1],"\\"));
+	xr_vector<char*>*	list	= FS.file_list_open	(folder,FS_ListFiles);
+	if (!list->empty())
 	{
 		u32				dwTimeStart	= timeGetTime();
 		string256		fname;
-		strconcat		(fname,"..\\",argv[1],".xrp");
+		strconcat		(fname,argv[1],".xrp");
 		unlink			(fname);
 		fs				= FS.w_open	(fname);
 		fs->open_chunk	(0);
-		Recurse			("");
+		//***main process***: BEGIN
+
+		for (u32 it=0; it<list->size(); it++)
+			Compress((*list)[it],argv[1]);
+
+		//***main process***: END
 		fs->close_chunk	();
 		bytesDST		= fs->tell	();
 		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
@@ -239,8 +214,8 @@ int __cdecl main	(int argc, char* argv[])
 			);
 	} else {
 		printf("ERROR: folder not found.\n");
-		return 3;
 	}
+	FS.file_list_close	(list);
 
 	Core._destroy		();
 	return 0;
