@@ -16,7 +16,8 @@
       Intermediate\SoundRender_Source.obj 
       Intermediate\SoundRender_Source_loader.obj 
       Intermediate\SoundRender_Target.obj Intermediate\stdafx.obj 
-      Intermediate\cl_collector.obj Intermediate\guids.obj"/>
+      Intermediate\cl_collector.obj Intermediate\guids.obj 
+      Intermediate\SoundRender_Cache.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -37,7 +38,7 @@
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore"/>
-    <LIBPATH value="c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\lib\psdk;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;..\Editors\lib\dx;..\Editors\lib;&quot;x:\&quot;"/>
+    <LIBPATH value="P:\xrCore;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\lib\psdk;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;..\Editors\lib\dx;..\Editors\lib;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
@@ -78,6 +79,7 @@
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="cl_collector.cpp" FORMNAME="" UNITNAME="cl_collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="guids.cpp" FORMNAME="" UNITNAME="guids" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Cache.cpp" FORMNAME="" UNITNAME="SoundRender_Cache" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

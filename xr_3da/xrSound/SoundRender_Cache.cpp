@@ -1,4 +1,6 @@
 #include "StdAfx.h"
+#pragma hdrstop
+
 #include ".\soundrender_cache.h"
 
 CSoundRender_Cache::CSoundRender_Cache	()
