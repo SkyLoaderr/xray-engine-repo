@@ -124,6 +124,7 @@ namespace PAPI{
         // effect
         virtual void				SetMaxParticles		(int effect_id, u32 max_particles)=0;
     	virtual void				GetParticles		(int effect_id, Particle*& particles, u32& cnt)=0;
+    	virtual u32					GetParticlesCount	(int effect_id)=0;
         
         // action
         virtual ParticleAction*		CreateAction		(PActionEnum type)=0;
