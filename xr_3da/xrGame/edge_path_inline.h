@@ -44,8 +44,9 @@ IC	void CEdgePathBuilder::get_edge_path	(xr_vector<_edge_type> &path, CGraphVert
 {
 	CGraphVertex			*t1 = best, *t2 = best->back();
 	for (u32 i=1; t2; t1 = t2, t2 = t2->back(), ++i) ;
+	u32						n = (u32)path.size(); 
 
-	path.resize				(--i);
+	path.resize				(n + --i);
 	t2						= best;
 
 	if (!reverse_order) {
@@ -55,7 +56,7 @@ IC	void CEdgePathBuilder::get_edge_path	(xr_vector<_edge_type> &path, CGraphVert
 			*I = t2->edge();
 	}
 	else {
-		xr_vector<_edge_type>::iterator	I = path.begin();
+		xr_vector<_edge_type>::iterator	I = path.begin() + n;
 		xr_vector<_edge_type>::iterator	E = path.end();
 		for (; t2->back() ; t2 = t2->back(), ++I)
 			*I = t2->edge();

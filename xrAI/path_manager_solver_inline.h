@@ -56,9 +56,9 @@ IC	bool CSolverPathManager::is_goal_reached		(const _index_type &vertex_id) cons
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const _index_type &CSolverPathManager::get_value(const_iterator &i) const
+IC	const _index_type &CSolverPathManager::get_value(const_iterator &i, bool reverse_search) const
 {
-	return					(graph->value(*best_node_index,i));
+	return					(graph->value(*best_node_index,i,reverse_search));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -82,10 +82,26 @@ IC	_dist_type CSolverPathManager::estimate			(const _index_type &vertex_id) cons
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CSolverPathManager::init_path				()
+{
+	if (m_edge_path)
+		m_edge_path->clear	();
+}
+
+TEMPLATE_SPECIALIZATION
+template <typename T>
+IC	void CSolverPathManager::create_path			(T &vertex, _DataStorage &data_storage, bool reverse_order)
+{
+	VERIFY					(this->data_storage);
+	if (m_edge_path)
+		data_storage.get_edge_path	(*m_edge_path,&vertex,reverse_order);
+}
+
+TEMPLATE_SPECIALIZATION
 template <typename T>
 IC	void CSolverPathManager::create_path			(T &vertex)
 {
-	VERIFY					(data_storage);
+	VERIFY					(this->data_storage);
 	if (m_edge_path)
 		data_storage->get_edge_path	(*m_edge_path,&vertex,true);
 }
