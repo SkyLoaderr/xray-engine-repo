@@ -139,7 +139,7 @@ bip01_r_toe0	 	 		= 0.02, 6, 0.2
 burn_immunity 				= 1.0				;коэффициенты иммунитета 
 strike_immunity 			= 1.0
 shock_immunity 				= 1.0
-wound_immunity				= 1.0
+wound_immunity				= 0.9
 radiation_immunity 			= 1.0
 telepatic_immunity 			= 1.0
 chemical_burn_immunity 		= 1.0
@@ -170,8 +170,8 @@ use_limping_state			= off
 limping_threshold			= 0.5
 
 ;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.0					;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+bleeding_v					= 0.0001						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.001					;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
 
 [stalker_terrain]
@@ -247,7 +247,7 @@ sound_perceive_section			= stalker_sound_perceive
 ;---VISIBILITY--------------------------------------------------------
 vision_danger_section			= stalker_vision_danger
 vision_free_section				= stalker_vision_free
-eye_fov							= 130	
+eye_fov							= 175	
 eye_range						= 70	
 far_plane_factor				= 1.0				; фактор дальности тумана
 fog_density_factor				= 0.05				; фактор плотности тумана
