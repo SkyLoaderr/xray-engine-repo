@@ -9,7 +9,7 @@
 	. TODO: Show mip-maps
 	. TODO: Fog-pass
 	. TODO: Usage list
-	. TODO: Load Cubemap
+	+ TODO: Load Cubemap
 	. TODO: Generate Cubemap
 
 	+ TODO: Weapons as 'native' objects
