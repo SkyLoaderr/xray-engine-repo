@@ -5,6 +5,12 @@
 <info_portion id="val_ambush_t1_started"></info_portion>
 <info_portion id="val_ambush_t1_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_plr_near"></info_portion>
+<info_portion id="val_ambush_t2_started"></info_portion>
+<info_portion id="val_ambush_t2_kill_plr"></info_portion>
+<info_portion id="val_ambush_t2_plr_near"></info_portion>
+<info_portion id="val_ambush_t3_started"></info_portion>
+<info_portion id="val_ambush_t3_kill_plr"></info_portion>
+<info_portion id="val_ambush_t3_plr_near"></info_portion>
 
 <!-- —цена 2 - кровосос падает с обрыва -->
 <info_portion id="val_bs_deactivate"></info_portion>
