@@ -65,7 +65,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 {
 	string64		op;
-	strconcat		(op,"//",name,"=");
+	strconcat		(op,"/",name,"=");
 	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
 	else				return def;
 }
@@ -74,12 +74,12 @@ string64&			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR 
 	static __declspec(thread) string64	ret;
 
 	string64		op;
-	strconcat		(op,"//",name,"=");
+	strconcat		(op,"/",name,"=");
 	LPCSTR			start	= strstr(lst,op);
 	if (start)		
 	{
 		LPCSTR			begin	= start + strlen(op); 
-		sscanf			(begin, "%[^\\]",ret);
+		sscanf			(begin, "%[^/]",ret);
 	}
 	else			
 	{
