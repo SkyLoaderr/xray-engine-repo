@@ -59,11 +59,12 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn:SetTextY(10)
 	self:Register(rbtn)	
 	rgroup:AttachChild(rbtn)	
---[[
+
 	rbtn = CUIRadioButton()
 	rbtn:SetWindowName("rbtn_tdm")
 	rbtn:SetAutoDelete(true)
 	rbtn:Init(rbtn_tdm_rect.x, rbtn_tdm_rect.y, rbtn_tdm_rect.width, rbtn_tdm_rect.height)
+	rbtn:SetFont(self.button_font)
 	rbtn:SetText("Team Death Match")
 	rbtn:SetTextAlign(CGameFont.alCenter)
 	rbtn:SetTextY(10)
@@ -74,12 +75,12 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn:SetWindowName("rbtn_ah")
 	rbtn:SetAutoDelete(true)
 	rbtn:Init(rbtn_ah_rect.x, rbtn_ah_rect.y, rbtn_ah_rect.width, rbtn_ah_rect.height)
+	rbtn:SetFont(self.button_font)
 	rbtn:SetText("Artefact Hunt")
 	rbtn:SetTextAlign(CGameFont.alCenter)
 	rbtn:SetTextY(10)
 	self:Register(rbtn)
 	rgroup:AttachChild(rbtn)	
-	]]
 end
 
 function gametype_tab:InitCallbacks()
