@@ -10,6 +10,7 @@
 #include "problem_solver.h"
 #include "graph_engine.h"
 #include "condition_evaluator.h"
+#include "random32.h"
 
 const u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
