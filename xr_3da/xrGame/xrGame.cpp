@@ -32,6 +32,8 @@
 
 #include "script_debugger.h"
 
+#include "ai/ai_monster_group.h"
+
 #pragma comment(lib,"ode.lib" )
 
 ENGINE_API
