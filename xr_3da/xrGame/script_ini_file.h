@@ -21,7 +21,9 @@ public:
 	virtual 			~CScriptIniFile		();
 			bool		line_exist			(LPCSTR S, LPCSTR L);
 			bool		section_exist		(LPCSTR S);
+#ifdef XRGAME_EXPORTS
 			int			r_clsid				(LPCSTR S, LPCSTR L);
+#endif
 			bool		r_bool				(LPCSTR S, LPCSTR L);
 			int			r_token				(LPCSTR S, LPCSTR L, const CScriptTokenList &token_list);
 			LPCSTR		update				(LPCSTR file_name);

@@ -20,7 +20,9 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def(					constructor<LPCSTR>())
 			.def("section_exist",	&CScriptIniFile::section_exist	)
 			.def("line_exist",		&CScriptIniFile::line_exist		)
+#ifdef XRGAME_EXPORTS
 			.def("r_clsid",			&CScriptIniFile::r_clsid		)
+#endif
 			.def("r_bool",			&CScriptIniFile::r_bool			)
 			.def("r_token",			&CScriptIniFile::r_token		)
 			.def("r_string",		(LPCSTR (CScriptIniFile::*)	(LPCSTR, LPCSTR))(CScriptIniFile::r_string))

@@ -43,10 +43,12 @@ bool CScriptIniFile::section_exist	(LPCSTR S)
 	return		(!!inherited::section_exist(S));
 }
 
+#ifdef XRGAME_EXPORTS
 int	 CScriptIniFile::r_clsid		(LPCSTR S, LPCSTR L)
 {
 	return		(object_factory().script_clsid(inherited::r_clsid(S,L)));
 }
+#endif
 
 bool CScriptIniFile::r_bool			(LPCSTR S, LPCSTR L)
 {

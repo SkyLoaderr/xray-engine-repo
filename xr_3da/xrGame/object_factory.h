@@ -9,7 +9,13 @@
 #pragma once
 
 #ifndef XRGAME_EXPORTS
-#	define	NO_XR_GAME
+#	define NO_XR_GAME
+#endif
+
+#ifndef NO_XR_GAME
+#	ifndef XRSE_FACTORY_AXPORTS
+#		define NO_SCRIPTS
+#	endif
 #endif
 
 #include "script_export_space.h"

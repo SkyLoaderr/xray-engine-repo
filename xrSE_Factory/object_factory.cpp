@@ -16,7 +16,6 @@
 #	include "script_space.h"
 #	include "ai_space.h"
 #	include "script_engine.h"
-
 #	include "xrServer_Objects_ALife_All.h"
 #	include "attachable_item.h"
 #endif
