@@ -2,7 +2,7 @@
 #define _HW_CAPS_
 #pragma once
 
-#define	CAP_VERSION(a,b)	(((a)<<4) | (b))
+#define	CAP_VERSION(a,b)	((a)*10 + (b))
 
 class ENGINE_API CHWCaps {
 public:
