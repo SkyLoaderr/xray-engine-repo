@@ -233,7 +233,7 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function load_dialog:AddItemToList(item)
-	local new_item = CUIListItem()
+	local new_item = CUIListItemEx()
 	--new_item:SetTextDateTime("date-time")
 	--new_item:SetTextFileName("file-name")
 	new_item:SetText("fuck")
