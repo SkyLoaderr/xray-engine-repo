@@ -77,7 +77,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler			("s_lmap",	"$user$projector", D3DTADDRESS_CLAMP, D3DTEXF_LINEAR, D3DTEXF_NONE,D3DTEXF_LINEAR);
+			C.r_Sampler_clf		("s_lmap",	"$user$projector");
 			C.r_End				();
 			break;
 		case SE_R1_NORMAL_LQ:
@@ -95,7 +95,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att");
+			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
 			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
 			C.r_Constant		("L_dynamic_pos",	&RImplementation.r1_dlight_binder_PR);
 			C.r_Constant		("L_dynamic_color",	&RImplementation.r1_dlight_binder_color);

@@ -31,14 +31,14 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 			if (FS.exist("$game_textures$",	fname))
 			{
 				// bump found
-				C.r_Pass			(r2v("r2_deffer_base_bump"),r2p("r2_deffer_base_aref_bump"),FALSE);
+				C.r_Pass		(r2v("r2_deffer_base_bump"),r2p("r2_deffer_base_aref_bump"),FALSE);
 				C.r_Sampler		("s_base",C.L_textures[0]);
-				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r_Sampler		("s_bump",fname,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
+				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r_Sampler		("s_bump",fname,false,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
 				else										C.r_Sampler		("s_bump",fname);
 				C.r_End			();
 			} else {
 				// flat
-				C.r_Pass			(r2v("r2_deffer_base_flat"),r2p("r2_deffer_base_aref_flat"),FALSE);
+				C.r_Pass		(r2v("r2_deffer_base_flat"),r2p("r2_deffer_base_aref_flat"),FALSE);
 				C.r_Sampler		("s_base",C.L_textures[0]);
 				C.r_End			();
 			}
