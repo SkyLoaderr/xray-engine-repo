@@ -31,7 +31,7 @@ CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size());	return Vis
 DWORD		CRender::getFVF				(int id)			{ VERIFY(id<FVF.size());		return FVF[id];		}
 IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<VB.size());			return VB[id];		}
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
-void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
+void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 
 void		CRender::flush				()					{ flush_Models();									}
