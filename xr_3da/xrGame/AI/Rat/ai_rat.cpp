@@ -25,13 +25,16 @@ CAI_Rat::CAI_Rat()
 	tpSavedEnemyNode = 0;
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
-	m_bAttackStart = false;
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiRatFollowMe;
 	m_bMobility = true;
-	m_bStartAttack = false;
+	m_bAttackStarted = false;
+	m_bAttackFinished = false;
+	m_bAttackGravitation = false;
 	m_tpEnemyBeingAttacked = 0;
 	m_dwLastUpdate = 0;
+	m_fSpin = 0.0;
+	m_fMultiplier = sinf(m_fSpin);
 }
 
 CAI_Rat::~CAI_Rat()
@@ -40,6 +43,16 @@ CAI_Rat::~CAI_Rat()
 	int i;
 	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+}
+
+void __stdcall CAI_Rat::SpinCallback(CBoneInstance* B)
+{
+	CAI_Rat*		M = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
+	Fmatrix				spin;
+
+	float fAlpha = PI/4;//acosf(M->tWatchDirection.dotproduct(M->Direction()))/3;
+	spin.rotateZ(fAlpha*M->m_fMultiplier);
+	B->mTransform.mul_43(spin);
 }
 
 void CAI_Rat::Load(CInifile* ini, const char* section)
@@ -80,7 +93,8 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
-	//int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
+	
+	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
 	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
@@ -213,6 +227,8 @@ IC void CAI_Rat::SetDirectionLook()
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.square_magnitude() > 0.000001) {
 			tWatchDirection.normalize();
+			if (tWatchDirection.y < -0.7f)
+				tWatchDirection.y *= -1.f;
 			q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
 			q_look.o_look_speed=_FB_look_speed;
 		}
@@ -256,13 +272,13 @@ IC bool CAI_Rat::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNo
 	/**/
 }
 
-IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour)
+IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour, const float fMinDistance)
 {
 	Fvector tCurrentSubNode;
 	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
 	//tCurrentSubNode.y = (tCurrentNeighbour.tLeftDown.y + tCurrentNeighbour.tRightUp.y)/2.f;
 	tCurrentSubNode.z = (tCurrentNeighbour.tLeftDown.z + tCurrentNeighbour.tRightUp.z)/2.f;
-	return(SQR(tLeaderPosition.x - tCurrentSubNode.x) + /**0*SQR(tLeaderPosition.y - tCurrentSubNode.y)/**/ + SQR(tLeaderPosition.z - tCurrentSubNode.z));
+	return(SQR(sqrt(SQR(tLeaderPosition.x - tCurrentSubNode.x) + /**0*SQR(tLeaderPosition.y - tCurrentSubNode.y)/**/ + SQR(tLeaderPosition.z - tCurrentSubNode.z)) - fMinDistance));
 }
 
 IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
@@ -494,7 +510,7 @@ int CAI_Rat::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPo
 	return(iMySubNode);
 }
 
-void CAI_Rat::FollowLeader(Fvector &tLeaderPosition) 
+void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, const float fMaxDistance) 
 {
 	Fvector tCurrentPosition = Position();
 	NodeCompressed* tpCurrentNode = AI_Node;
@@ -543,7 +559,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-				if (tpCurrentObject == this)
+				if ((tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
@@ -595,12 +611,12 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		//Fvector tLeaderPosition = Leader->Position();
 		DWORD dwTime = Level().timeServer();
 		int iBestI = -1;
-		float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
+		float fBestCost = SQR(sqrt(SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z)) - fMinDistance);
 		bool bMobility = false;
 		for ( i=0; i<tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
 				bMobility = true;
-				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
+				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i],fMinDistance);
 				if (fCurCost < fBestCost) {
 					iBestI = i;
 					fBestCost = fCurCost;
@@ -678,6 +694,46 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition)
 		else
 			m_bMobility = false;
 	}
+	DWORD dwCurTime = Level().timeServer();
+	m_fSpin += PI/50;
+	if (!AI_Path.TravelPath.empty())
+		m_fMultiplier *= sinf(m_fSpin);
+	else
+		m_fMultiplier *= 0.f;
+}
+
+void CAI_Rat::InFlight()
+{
+	// if no more health then rat is dead
+#ifdef WRITE_LOG
+	Msg("creature : %s, mode : %s",cName(),"InFlight");
+#endif
+	if (!m_bAttackFinished) {
+		SEnemySelected	Enemy;
+		SelectEnemy(Enemy);
+		if (!Enemy.Enemy) {
+			m_bAttackStarted = false;
+			eCurrentState = tStateStack.top();
+			tStateStack.pop();
+			return;
+		}
+		if (m_bAttackGravitation) {
+			q_action.setup(AI::AIC_Action::AttackBegin);
+			m_tpEnemyBeingAttacked = Enemy.Enemy;
+		}
+		q_look.setup(AI::AIC_Look::Look, AI::t_Object, &Enemy,1000);
+		q_look.o_look_speed=_FB_look_speed;
+		// checking flag to stop processing more states
+		m_fCurSpeed = m_fMaxSpeed;
+		bStopThinking = true;
+		return;
+	}
+	else {
+		m_bAttackStarted = false;
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		return;
+	}
 }
 
 void CAI_Rat::Attack()
@@ -717,32 +773,35 @@ void CAI_Rat::Attack()
 		}
 		else {
 			if (Enemy.bVisible) {
-				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-				// determining who is leader
-				CEntity* Leader = Squad.Leader;
-				if (!Squad.Groups[g_Group()].m_bLeaderViewsEnemy) {
-					Squad.Leader = this;
-					Squad.Groups[g_Group()].m_bLeaderViewsEnemy = true;
-				}
-				FollowLeader(Enemy.Enemy->Position());				
-				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
-					q_action.setup(AI::AIC_Action::AttackBegin);
-					m_tpEnemyBeingAttacked = Enemy.Enemy;
-					q_look.setup(
-						AI::AIC_Look::Look, 
-						AI::t_Object, 
-						&Enemy,
-						1000);
-					q_look.o_look_speed=_FB_look_speed;
+				float fDistance = ffGetDistance(Position(),Enemy.Enemy->Position());
+				if ((Enemy.Enemy) && (fDistance < SelectorAttack.fMaxEnemyDistance) && (fDistance > SelectorAttack.fMinEnemyDistance)) {
+					m_bAttackGravitation = true;
+					m_bAttackStarted = true;
+					m_bAttackFinished = false;
+					tStateStack.push(eCurrentState);
+					eCurrentState = aiRatInFlight;
+					return;
 				}
 				else {
+					/**/
+					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+					// determining who is leader
+					CEntity* Leader = Squad.Leader;
+					if (!Squad.Groups[g_Group()].m_bLeaderViewsEnemy) {
+						Squad.Leader = this;
+						Squad.Groups[g_Group()].m_bLeaderViewsEnemy = true;
+					}
+					m_tpEnemyBeingAttacked = Enemy.Enemy;
+					FollowLeader(Enemy.Enemy->Position(),SelectorAttack.fMinEnemyDistance);				
+					float fDistance = ffGetDistance(Position(),Enemy.Enemy->Position());
 					q_action.setup(AI::AIC_Action::AttackEnd);
 					SetDirectionLook();
+					// checking flag to stop processing more states
+					m_fCurSpeed = m_fMaxSpeed;
+					bStopThinking = true;
+					return;
+					/**/
 				}
-				// checking flag to stop processing more states
-				m_fCurSpeed = m_fMaxSpeed;
-				bStopThinking = true;
-				return;
 			}
 			else {
 				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
@@ -817,14 +876,14 @@ void CAI_Rat::FollowMe()
 		else {
 			// checking if I am under fire
 			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
+			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiRatUnderFire;
 				bStopThinking = true;
 				return;
 			}
 			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+				if ((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime)) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiRatSenseSomething;
 					bStopThinking = true;
@@ -893,13 +952,15 @@ void CAI_Rat::FreeHunting()
 		}
 		else {
 			// checking if I am under fire
-			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
+			DWORD dwCurTime = Level().timeServer();
+			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiRatUnderFire;
+				bStopThinking = true;
 				return;
 			}
 			else {
-				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
+				if ((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime)) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiRatSenseSomething;
 					return;
@@ -1062,13 +1123,15 @@ void CAI_Rat::Pursuit()
 			DWORD dwCurrentTime = Level().timeServer();
 			if (dwCurrentTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
 				// checking if I am under fire
-				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
+				DWORD dwCurTime = Level().timeServer();
+				if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiRatUnderFire;
+					bStopThinking = true;
 					return;
 				}
 				else {
-					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
+					if ((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime)) {
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiRatSenseSomething;
 						return;
@@ -1334,11 +1397,11 @@ void CAI_Rat::UnderFire()
 					// getting my current node
 					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 					// if we are going somewhere
+					SetDirectionLook();
 					if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 						m_fCurSpeed = m_fMinSpeed;
 					}
 					else {
-						SetDirectionLook();
 						q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMaxSpeed;
 					}
@@ -1423,6 +1486,10 @@ void CAI_Rat::Think()
 				Cover();
 				break;
 			}
+			case aiRatInFlight : {
+				InFlight();
+				break;
+			}
 		}
 	}
 	while (!bStopThinking);
@@ -1481,21 +1548,23 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			S = m_tpaDeathAnimations[::Random.randI(0,2)];
 	}
 	else {
-		if (m_bAttackStart) {
-			if ((m_tpCurrentBlend)
-				|| (m_tpCurrentBlend->noloop) || (m_current != m_tpaAttackAnimations[0])) {
-				if ((!(m_tpCurrentBlend->playing)) || (m_current != m_tpaAttackAnimations[0])) {
+		if (m_bAttackStarted) {
+			if (m_tpCurrentBlend) {
+				if (m_current != m_tpaAttackAnimations[0]) {
 					m_current = 0;
-					S = m_tpaAttackAnimations[0];//::Random.randI(0,3)];
-					m_bStartAttack = true;
+					S = m_tpaAttackAnimations[0];
 				}
 				else
-					S = m_current;
+					if (m_tpCurrentBlend->playing)
+						S = m_current;
+					else {
+						m_bAttackFinished = true;
+						S = 0;
+					}
 			}
 			else {
 				m_current = 0;
-				S = m_tpaAttackAnimations[0];//::Random.randI(0,3)];
-				m_bStartAttack = true;
+				S = m_tpaAttackAnimations[0];
 			}
 		}
 		else {
@@ -1538,14 +1607,13 @@ void CAI_Rat::Exec_Action	( float dt )
 			
 			DWORD dwTime = Level().timeServer();
 			
-			if (!m_bAttackStart)
-				m_dwAttackStartTime = dwTime;
+			//if (m_bAttackGravitation)
+			//	m_dwAttackStartTime = dwTime;
 			
-			m_bAttackStart = true;
-			
-			if (dwTime - m_dwAttackStartTime > m_dwHitInterval) {
+			q_action.Command = AI::AIC_Action::AttackEnd;
+			//if (dwTime - m_dwAttackStartTime > m_dwHitInterval) {
 				
-				m_dwAttackStartTime = dwTime;
+				//m_dwAttackStartTime = dwTime;
 				
 				Fvector tDirection;
 				tDirection.sub(m_tpEnemyBeingAttacked->Position(),this->Position());
@@ -1554,14 +1622,17 @@ void CAI_Rat::Exec_Action	( float dt )
 				if ((this->Local()) && (m_tpEnemyBeingAttacked) && (m_tpEnemyBeingAttacked->CLS_ID == CLSID_ENTITY))
 					if (m_tpEnemyBeingAttacked->g_Health() > 0)
 						m_tpEnemyBeingAttacked->Hit(m_fHitPower,tDirection,this);
-					else
-						m_bAttackStart = false;
-			}
+					else {
+						m_bAttackGravitation = false;
+						m_bAttackStarted = false;
+						m_bAttackFinished = true;
+					}
+			//}
 
 			break;
 		}
 		case AI::AIC_Action::AttackEnd: {
-			m_bAttackStart = false;
+			//m_bAttackStarted = false;
 			break;
 		}
 		default:
@@ -1573,13 +1644,14 @@ void CAI_Rat::Exec_Action	( float dt )
 
 void CAI_Rat::Exec_Movement	( float dt )
 {
-	if (!m_bAttackStart)
+	if (!m_bAttackStarted)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
 		/**/
-		if (m_tpEnemyBeingAttacked) {
+		if ((m_tpEnemyBeingAttacked) && (!m_bAttackFinished)) {
 			UpdateTransform	();
-			if (m_bStartAttack) {
+			if (m_bAttackGravitation) {
+				//Msg("calc gravity %d",Level().timeServer());
 				Fvector tAcceleration, tVelocity;
 				tAcceleration.sub(m_tpEnemyBeingAttacked->Position(),Position());
 				vfNormalizeSafe(tAcceleration);
@@ -1589,9 +1661,9 @@ void CAI_Rat::Exec_Movement	( float dt )
 				Movement.SetPosition(vPosition);
 				Movement.SetVelocity(tVelocity);
 				tAcceleration.set(0,0,0);
-				Movement.Calculate	(tAcceleration,0,6,dt,false);
+				Movement.Calculate	(tAcceleration,0,7,dt,false);
 				Movement.GetPosition(vPosition);
-				m_bStartAttack = false;
+				m_bAttackGravitation = false;
 			}
 			else {
 				Fvector tAcceleration;

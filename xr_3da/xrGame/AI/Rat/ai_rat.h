@@ -43,6 +43,7 @@ class CAI_Rat : public CCustomMonster
 		aiRatPursuit,
 		aiRatRetreat,
 		aiRatCover,
+		aiRatInFlight
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -77,7 +78,12 @@ class CAI_Rat : public CCustomMonster
 		float			m_fHitPower;
 		DWORD			m_dwHitInterval;
 
-		bool			m_bStartAttack;
+		bool			m_bAttackStarted;
+		bool			m_bAttackFinished;
+		bool			m_bAttackGravitation;
+		float			m_fMultiplier;
+		float			m_fSpin;
+		//DWORD			m_dwAttackStartTime;
 		vector<SSubNode> tpSubNodes;
 		DWORD			m_dwLastUpdate;
 		CBoneInstance*	m_tpBoneSpine;
@@ -99,6 +105,7 @@ class CAI_Rat : public CCustomMonster
 			void Pursuit();
 			void Retreat();
 			void Cover();
+			void InFlight();
 			bool bfCheckPath(AI::Path &Path);
 		IC  void SetDirectionLook();
 			int	 ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
@@ -107,7 +114,7 @@ class CAI_Rat : public CCustomMonster
 		IC	bool bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode);
 		IC	bool bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode);
 		//IC bool  bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode, const float fSubNodeSize);
-		IC float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour);
+		IC float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour, const float fMinDistance = 0.f);
 		IC	bool bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode);
 		IC float ffGetY(NodeCompressed &tNode, float X, float Z);
 	
@@ -128,16 +135,14 @@ class CAI_Rat : public CCustomMonster
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
-		void		  FollowLeader(Fvector &tLeaderPosition);
+				void  FollowLeader(Fvector &tLeaderPosition, const float fMinDistance = 0.f, const float fMaxDistance = 0.f);
 
 		virtual void  net_Export				(NET_Packet* P);				// export to server
 		virtual void  net_Import				(NET_Packet* P);				// import from server
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
 		virtual void  Exec_Movement				( float dt );
-
-		bool			m_bAttackStart;
-		DWORD			m_dwAttackStartTime;
+		static  void __stdcall SpinCallback(CBoneInstance* B);
 };
 		
 #endif

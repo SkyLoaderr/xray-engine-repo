@@ -54,8 +54,7 @@ CCustomMonster::CCustomMonster()
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
 	Weapons				= 0;
-	tWatchDirection.x	= 1.f;
-	tWatchDirection.y	= tWatchDirection.z = 0.f;
+	tWatchDirection = Direction();
 }
 
 CCustomMonster::~CCustomMonster()

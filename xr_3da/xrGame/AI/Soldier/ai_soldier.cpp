@@ -140,7 +140,9 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
 	float	f2	= float(g_strench);
-	return  f1*f2;
+	float   f3  = 1;
+	if (E==Level().CurrentEntity())  f3 = .5f;
+	return  f1*f2*f3;
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
@@ -431,7 +433,7 @@ void CAI_Soldier::Attack()
 							break;
 						}
 					
-				if (!bCanKillMember)
+				if ((!bCanKillMember) && (Weapons->ActiveWeapon()->GetAmmoElapsed()))
 					q_action.setup(AI::AIC_Action::FireBegin);
 				else
 					q_action.setup(AI::AIC_Action::FireEnd);
@@ -1242,7 +1244,7 @@ void CAI_Soldier::UnderFire()
 									break;
 								}
 							
-						if (!bCanKillMember)
+						if ((!bCanKillMember) && (Weapons->ActiveWeapon()->GetAmmoElapsed()))
 							q_action.setup(AI::AIC_Action::FireBegin);
 						else
 							q_action.setup(AI::AIC_Action::FireEnd);
