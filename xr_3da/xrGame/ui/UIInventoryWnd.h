@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "..\inventory.h"
+#include "../inventory.h"
 
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
@@ -162,6 +162,7 @@ protected:
 	//присоединение/отсоединение аддонов к оружию
 	void AttachAddon();
 	void DetachAddon(const char* addon_name);
+
 
 
 	//дополнительные списки для сортировки вещей
