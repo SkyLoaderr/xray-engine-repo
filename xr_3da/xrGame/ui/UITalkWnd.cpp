@@ -278,6 +278,14 @@ void CUITalkWnd::AskQuestion()
 	//игрок выбрал тему разговора
 	if(TopicMode())
 	{
+		if ( (UITalkDialogWnd.m_iClickedQuestion < 0) ||
+			(UITalkDialogWnd.m_iClickedQuestion >= m_pOurDialogManager->AvailableDialogs().size()) ) {
+
+			string128	s;
+			sprintf		(s,"ID = [%i] of selected question is out of range of available dialogs ",UITalkDialogWnd.m_iClickedQuestion);
+			VERIFY2(FALSE, s);
+		}
+
 		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UITalkDialogWnd.m_iClickedQuestion];
 		
 		m_pOurDialogManager->InitDialog(m_pOthersDialogManager, m_pCurrentDialog);
