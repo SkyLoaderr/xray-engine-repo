@@ -54,7 +54,6 @@ public:
 	float		x3;
 	float		y3;
 	float		z3;
-	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
 	SAIMapData	tData;
 	float		m_fSize2;
@@ -64,7 +63,6 @@ public:
 	IC CAIMapShortestPathNode(SAIMapData &tAIMapData)
 	{
 		tData					= tAIMapData;
-		m_dwLastBestNode		= u32(-1);
 		NodeCompressed &tNode1	= *tData.m_tpAI_Map->Node(tData.dwFinishNode);
 		x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 		y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
@@ -76,6 +74,12 @@ public:
 	IC void begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
 	{
 		tEnd = (tIterator = (NodeLink *)((BYTE *)tData.m_tpAI_Map->Node(dwNode) + sizeof(NodeCompressed))) + tData.m_tpAI_Map->Node(dwNode)->links;
+		
+		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwNode);
+
+		x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
+		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
+		z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
 	}
 
 	IC u32 get_value(CAIMapShortestPathNode::iterator &tIterator)
@@ -90,29 +94,13 @@ public:
 
 	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 	{
-		if (m_dwLastBestNode != dwStartNode) {
-			m_dwLastBestNode = dwStartNode;
-			NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwStartNode), &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
-			
-			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-			y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-			z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-			
-			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+		NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 
-			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
-		}
-		else {
-			NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
+		x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
+		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
+		z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 
-			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-
-			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
-		}
+		return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
 	}
 
 	IC float ffAnticipate(u32 dwStartNode)
