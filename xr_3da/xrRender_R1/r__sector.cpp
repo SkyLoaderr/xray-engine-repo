@@ -59,7 +59,7 @@ CSector::~CSector()
 //
 extern float r_ssaDISCARD;
 
-void CSector::traverse			(CFrustum &F, Fbox2& R)
+void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 {
 	// Register traversal process
 	if (r_marker	!=	PortalTraverser.i_marker)	{
@@ -108,15 +108,51 @@ void CSector::traverse			(CFrustum &F, Fbox2& R)
 		sPoly* P			= F.ClipPoly(S,D);
 		if (0==P)			continue;
 
-		// Cull by HOM
-		if ((PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && (!RImplementation.occ_visible(*P)))	continue;
+		// Scissor and optimized HOM-testing
+		Fbox2				scissor;
+		if (PortalTraverser.i_options&CPortalTraverser::VQ_SCISSOR)
+		{
+			// Build scissor rectangle in projection-space
+			Fbox2	bb;	bb.invalidate(); float depth = flt_max;
+			sPoly&	p	= *P;
+			for		(u32 v=0; v<p.size(); v++)	{
+				Fvector	t;	PortalTraverser.i_mXFORM_01.transform	(t,p[v]);
+				if (t.x < bb.min.x)	bb.min.x = t.x; else if (t.x > bb.max.x) bb.max.x = t.x;
+				if (t.y < bb.min.y)	bb.min.y = t.y; else if (t.y > bb.max.y) bb.max.y = t.y;
+				if (t.z < depth)	depth	 = t.z;
+			}
+
+			// perform intersection
+			if (bb.min.x > R_scissor.min.x)	scissor.min.x = bb.min.x; else scissor.min.x = R_scissor.min.x;
+			if (bb.min.y > R_scissor.min.y)	scissor.min.y = bb.min.y; else scissor.min.y = R_scissor.min.y;
+			if (bb.max.x < R_scissor.max.x) scissor.max.x = bb.max.x; else scissor.max.x = R_scissor.max.x;
+			if (bb.max.y < R_scissor.max.y) scissor.max.y = bb.max.y; else scissor.max.y = R_scissor.max.y;
+
+			// Check if box is non-empty
+			if (scissor.min.x >= scissor.max.x)	continue;
+			if (scissor.min.y >= scissor.max.y)	continue;
+
+			// Cull by HOM (faster algo)
+			if  (
+				(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
+				(!RImplementation.occ_visible(scissor,depth))
+				)	continue;
+		} else {
+			scissor	= R;
+
+			// Cull by HOM (slower algo)
+			if  (
+				(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
+				(!RImplementation.occ_visible(*P))
+				)	continue;
+		}
 
 		// Create _new_ frustum and recurse
 		CFrustum				Clip;
 		Clip.CreateFromPortal	(P,PortalTraverser.i_vBase,PortalTraverser.i_mXFORM);
 		PORTAL->marker			= PortalTraverser.i_marker;
 		PORTAL->bDualRender		= FALSE;
-		pSector->traverse		(Clip);
+		pSector->traverse		(Clip,scissor);
 	}
 }
 
