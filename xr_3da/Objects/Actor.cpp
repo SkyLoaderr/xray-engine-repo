@@ -979,26 +979,16 @@ void CActor::OnDeviceCreate()
 	}
 }
 
-float CActor::HitScale(int element)
+float CActor::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(pVisual);			VERIFY(V);
 	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
 	return hit_factor*scale;
 }
 
-void	CActor::BuyItem	(LPCSTR buf)
-{
-	// 
-	NET_Packet	P;
-	u_EventGen	(P,GE_BUY,ID());
-	P.w_string	(buf);
-	u_EventSend	(P);
-}
-
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
-
-void CActor::OnRender()
+void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 

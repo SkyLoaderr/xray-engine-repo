@@ -263,8 +263,6 @@ public:
 	virtual void						OnKeyboardRelease	(int dik);
 	virtual void						OnKeyboardHold		(int dik);
 
-	virtual void						BuyItem				(LPCSTR buf);
-
 	virtual void						Update				( u32 T ); 
 	virtual void						UpdateCL			( );
 	virtual void						OnVisible			( );
