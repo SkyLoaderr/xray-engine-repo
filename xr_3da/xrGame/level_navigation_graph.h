@@ -10,9 +10,9 @@
 
 #include "level_graph.h"
 
-//#ifdef AI_COMPILER
+#ifdef AI_COMPILER
 //#	define OPTIMAL_GRAPH
-//#endif
+#endif
 
 namespace LevelNavigationGraph {
 	struct CCellVertex;
@@ -146,10 +146,11 @@ protected:
 	IC		u32					vertex_id				(const CROSS_PTABLE::const_iterator &vertex) const;
 	IC		void				fill_cell				(u32 start_vertex_id, u32 link);
 	IC		void				fill_cells				();
-	IC		void				update_cells			(u32 &vertex_id, u32 &right, u32 &down);
+	IC		void				update_cell				(u32 start_vertex_id, u32 link);
+	IC		void				update_cells			(u32 vertex_id, u32 right, u32 down);
 	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down, u32 max_square);
 	IC		bool				select_sector			(u32 &vertex_id, u32 &right, u32 &down);
-	IC		void				build_sector			(u32 vertex_id, u32 right, u32 down, u32 &group_id);
+	IC		void				build_sector			(u32 vertex_id, u32 right, u32 down, u32 group_id);
 	IC		void				generate_sectors		();
 	IC		void				generate_edges			();
 

@@ -450,11 +450,36 @@ struct remove_cell_preciate {
 	}
 };
 
-IC	void CLevelNavigationGraph::update_cells	(u32 &vertex_id, u32 &right, u32 &down)
+IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 {
-#if 0
+	for (u32 current_vertex_id = start_vertex_id, i = 1; ;++i) {
+		u32					vertex_id = vertex(current_vertex_id)->link(link);
+		if (!valid_vertex_id(vertex_id))
+			break;
+
+		if (m_cross[vertex_id].m_mark)
+			break;
+
+		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
+			break;
+
+		m_cross[vertex_id].m_dirs[(link + 1) & 3] = (u16)i;
+
+		current_vertex_id	= vertex_id;
+	}
+}
+
+IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
+{
+#if 1
 	CROSS_PTABLE::iterator		I = remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate());
 	m_temp.erase				(I,m_temp.end());
+
+	for (u32 right_id = vertex_id, i=0; i<right; right_id = vertex(right_id)->link(1), ++i)
+		update_cell				(right_id,0);
+
+	for (u32 down_id = vertex_id, j=0; j<down; down_id = vertex(down_id)->link(2), ++j)
+		update_cell				(down_id,3);
 
 	std::sort					(m_temp.begin(),m_temp.end(),sort_cells_predicate());
 #else
@@ -549,10 +574,8 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 	CROSS_PTABLE::iterator	I = m_temp.begin();
 	CROSS_PTABLE::iterator	E = m_temp.end();
 	for ( ; I != E; ++I) {
-		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square) {
-//			Msg				("Square %6d (%3dx%3d)",max_square,right,down);
+		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square)
 			return			(true);
-		}
 
 		select_sector		(*I,current_right,current_down,max_square);
 
@@ -567,10 +590,10 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 	return					(!!max_square);
 }
 
-IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 &group_id)
+IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 group_id)
 {
-	++group_id;
-	u32							j, mask = left, down_id;
+	CCellVertex					*cell = 0;
+	u32							j, down_id, mask = left;
 	for (u32 right_id = vertex_id, i=0; i<_right; right_id = vertex(right_id)->link(1), ++i) {
 		m_cross[right_id].m_use	= mask | up;
 
@@ -578,16 +601,16 @@ IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _dow
 			mask				|= right;
 		
 		for (down_id = right_id, j=0; j<_down; down_id = vertex(down_id)->link(2), ++j) {
-			CCellVertex			&cell = m_cross[down_id];
-			VERIFY				(!cell.m_mark);
-			cell.m_mark			= group_id;
-			cell.m_use			|= mask;
+			cell				= &m_cross[down_id];
+			VERIFY				(!cell->m_mark);
+			cell->m_mark		= group_id;
+			cell->m_use			|= mask;
 			if (j == (_down-1)) {
-				cell.m_use		|= down;
+				cell->m_use		|= down;
 				break;
 			}
 		}
-		
+
 		mask					= 0;
 	}
 
@@ -615,7 +638,7 @@ IC	void CLevelNavigationGraph::generate_sectors()
 	Msg						("* Filling cells (%f seconds)",CPU::cycles2seconds*float(finish - start));
 	
 	while (select_sector(id,right,down)) {
-		build_sector		(id,right,down,group_id);
+		build_sector		(id,right,down,++group_id);
 		update_cells		(id,right,down);
 	}
 	finish					= CPU::GetCycleCount();
