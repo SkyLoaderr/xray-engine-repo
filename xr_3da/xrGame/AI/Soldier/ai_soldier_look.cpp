@@ -78,9 +78,11 @@ void CAI_Soldier::SetDirectionLook()
 		if (tWatchDirection.square_magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-//			r_torso_target.yaw += m_fAddAngle;
-//			while (r_torso_target.yaw > PI_MUL_2)
-//				r_torso_target.yaw -= PI_MUL_2;
+
+			r_torso_target.yaw += m_fAddAngle;
+			while (r_torso_target.yaw > PI_MUL_2)
+				r_torso_target.yaw -= PI_MUL_2;
+
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
 			q_look.o_look_speed=PI_DIV_4;
@@ -312,5 +314,47 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				}
 			}
 		}
+	}
+}
+
+void CAI_Soldier::soundEvent(CObject* who, int type, Fvector& Position, float power)
+{
+	#ifdef WRITE_LOG
+		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),type,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+	#endif
+	
+	if (who) {
+		
+		if (this == who)
+			return;
+
+		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+		if (tpEntity && !bfCheckForVisibility(tpEntity)) {
+			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(who);
+			if (tpCustomMonster) {
+				for (int j=0; j<tpaDynamicObjects.size(); j++)
+					if (tpCustomMonster == tpaDynamicObjects[j].tpEntity)
+						return;
+				
+				if (j >= tpaDynamicObjects.size()) {
+					//
+				}
+			}
+		}
+		else {
+			CActor *tpActor = dynamic_cast<CActor *>(who);
+			if (tpActor) {
+				for (int j=0; j<tpaDynamicObjects.size(); j++)
+					if (tpActor == tpaDynamicObjects[j].tpEntity)
+						return;
+				
+				if (j >= tpaDynamicObjects.size()) {
+					//
+				}
+			}
+		}
+	}
+	else {
+		//
 	}
 }

@@ -815,7 +815,7 @@ void CAI_Soldier::Patrol()
 	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 
-//	SetDirectionLook();
+	SetDirectionLook();
 }
 
 void CAI_Soldier::PatrolReturn()

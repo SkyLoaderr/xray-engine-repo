@@ -179,6 +179,16 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	}
 	else
+		tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0];
+
+	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
+		//Msg("restarting animation..."); 
+		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
+		if (tpGlobalAnimation) {
+			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
+		}
+	}
+		/**
 		switch (eCurrentState) {
 			case aiSoldierLyingDown : {
 				switch (m_cBodyState) {
@@ -687,4 +697,5 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
 		}
 	}
+		/**/
 }

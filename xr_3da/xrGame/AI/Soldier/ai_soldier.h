@@ -210,6 +210,7 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 		CBlend*				m_tpCurrentTorsoBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		char				m_cGestureState;
+		float				m_fAddAngle;
 
 		
 		// head turns
