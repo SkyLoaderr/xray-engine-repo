@@ -2,9 +2,9 @@
 
 <game_tasks_data>
 	<game_task id="val_suicide_find_lost_stalker">
-		<title>val_suicide_title_find_lost_stalker</title>
+		<title>val_suicide_find_lost_stalker</title>
 		<objective>
-			<text>val_suicide_find_lost_stalker</text>
+			<text>val_suicide_find_lost_stalker_0</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
