@@ -53,7 +53,7 @@ void CLightProjector::OnDeviceDestroy	()
 {
 	// Debug
 	Device.Shader.Delete					(sh_Screen	);
-	Device.Shader.DeleteGeom				(geom_Screen	);
+	Device.Shader.DeleteGeom				(geom_Screen);
 	
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
