@@ -1176,28 +1176,30 @@ void CAI_Soldier::OnSenseSomethingAlone()
 				GO_TO_NEW_STATE(aiSoldierPatrolHurt);
 			}
 			else {
-				Fvector tCurrentPosition = vPosition;
-				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
-				if (tWatchDirection.magnitude() > EPS_L) {
-					tWatchDirection.normalize();
-					mk_rotation(tWatchDirection,r_torso_target);
-					r_target.yaw = r_torso_target.yaw;
-					ASSIGN_SPINE_BONE;
-				}
-				
-				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
-
-				vfInitSelector(SelectorPatrol,Squad,Leader);
-		
-				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-
-				if (AI_Path.bNeedRebuild) {
-					vfBuildPathToDestinationPoint(0);
-				}
-				else {
-					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
-				}
+				m_bStateChanged = false;
+				GO_TO_PREV_STATE;
+//				Fvector tCurrentPosition = vPosition;
+//				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
+//				if (tWatchDirection.magnitude() > EPS_L) {
+//					tWatchDirection.normalize();
+//					mk_rotation(tWatchDirection,r_torso_target);
+//					r_target.yaw = r_torso_target.yaw;
+//					ASSIGN_SPINE_BONE;
+//				}
+//				
+//				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+//
+//				vfInitSelector(SelectorPatrol,Squad,Leader);
+//		
+//				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//
+//				if (AI_Path.bNeedRebuild) {
+//					vfBuildPathToDestinationPoint(0);
+//				}
+//				else {
+//					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+//				}
 			}
 		}
 		else {
