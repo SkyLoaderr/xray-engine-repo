@@ -126,6 +126,7 @@ void __cdecl mt_Thread(void *ptr) {
 
 void CRenderDevice::PreCache	(DWORD amount)
 {
+	Msg				("* PCACHE: start for %d...",amount);
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }
 
@@ -182,7 +183,6 @@ void CRenderDevice::Run			()
 					vCameraRight.crossproduct		(vCameraTop,vCameraDirection);
 
 					mView.build_camera_dir			(vCameraPosition,vCameraDirection,vCameraTop);
-					Msg								("precache: %d/%d",dwPrecacheFrame,dwPrecacheTotal);
 				}
 
 				// Matrices

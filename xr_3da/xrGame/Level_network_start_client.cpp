@@ -48,6 +48,7 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");
+		Device.PreCache						(1000);
 
 		if (strstr(Path.Current,"escape"))	Engine.Event.Signal	("level.weather.rain.start");
 
@@ -57,8 +58,7 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 	}
 	Device.Shader.DeferredLoad	(FALSE);
 	Device.Shader.DeferredUpload();
-	Device.PreCache				(1000);
 
-	pApp->LoadEnd	(); 
+	pApp->LoadEnd				(); 
 	return FALSE;
 }
