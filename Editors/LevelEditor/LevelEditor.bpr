@@ -121,9 +121,9 @@
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
       lib\xrHemisphere.lib"/>
-    <LIBRARIES value="elpackB6.lib editor.lib"/>
+    <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
-    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi bcbsmp.bpi"/>
+    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi"/>
     <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Engine\Animations;Engine\Game"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -151,7 +151,7 @@
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-Iintermediate -D&quot;&quot; -E1 -aa -Tpe -GD -x -v"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -393,7 +393,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=421
+Build=422
 Debug=1
 PreRelease=0
 Special=0
@@ -405,7 +405,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.421
+FileVersion=1.0.1.422
 InternalName=
 LegalCopyright=
 LegalTrademarks=

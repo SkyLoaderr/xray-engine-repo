@@ -597,6 +597,7 @@ Level:
 + Image Library access without clear
 + Export Tex Assos
 + ImageEditor без копирования
+- ImageEditor удаление текстур
 - DO - engine render 
 - осветить хемисферой лод
 - на спавнпоинтах рисовать иконки
