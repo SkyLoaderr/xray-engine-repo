@@ -626,13 +626,15 @@ function random_number (min_value, max_value)
     end
 end
 
+-- Время суток в мс
+-- Чугай
 local ms_per_day = 24 * 60 * 60 * 1000
-
 function day_time()
     return math.mod( game.time(), ms_per_day )
 end
 
--- парсит строку вида "ааа, ббб, ввв..." в таблицу { [1]="ааа", [2]="ббб", [3]="ввв", ... }
+-- парсит строку вида "ааа, ббб, ввв..." в таблицу { "ааа", "ббб", "ввв", ... }
+-- Чугай
 function parse_names( s )
     local t = {}
 
@@ -641,4 +643,26 @@ function parse_names( s )
     end
 
     return t
+end
+
+-- взвешенная случайная выборка из таблицы вида { obj1 = weight1, obj2 = weight2, ... }
+-- Возвращает один из obj. Веса >= 0
+-- Чугай
+function random_choice_weighted( a )
+    local sum = 0
+
+    for k, w in pairs( a ) do
+        sum = sum + w
+    end
+
+    local r = math.random( sum )
+    sum = 0
+
+    for k, w in pairs( a ) do
+        sum = sum + w
+        
+        if r <= sum then
+            return k
+        end
+    end
 end
