@@ -333,8 +333,11 @@ void __fastcall TProperties::AssignItems(PropItemVec& items)
 
     // create EL items
 	if (m_Flags.is(plItemFolders))	m_Folders->AssignItems	(folder_items,m_Flags.is(plFullExpand),m_Flags.is(plFullSort));
-//	else							
-    FillElItems				(m_Items);
+	// fill 
+	AnsiString full_sel_item;
+    if (m_Flags.is(plItemFolders)&&m_Folders->GetSelected())
+    	FHelper.MakeFullName(m_Folders->GetSelected(),0,full_sel_item);
+    FillElItems			(m_Items, full_sel_item.c_str());
 
     // end fill mode
     bModified			= false;
