@@ -129,6 +129,8 @@ void	FTreeVisual::Copy	(IRender_Visual *pSrc)
 
 	FTreeVisual	*pFrom		= dynamic_cast<FTreeVisual*> (pSrc);
 
+	PCOPY(geom);
+
 	PCOPY(pVertices);
 	PCOPY(vBase);
 	PCOPY(vCount);
@@ -163,7 +165,7 @@ void FTreeVisual_ST::Load		(const char* N, IReader *data, u32 dwFlags)
 void FTreeVisual_ST::Render		(float LOD)
 {
 	inherited::Render			(LOD);
-	RCache.set_Geometry			(hGeom);
+	RCache.set_Geometry			(geom);
 	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
 void FTreeVisual_ST::Copy		(IRender_Visual *pSrc)
@@ -205,7 +207,7 @@ void FTreeVisual_PM::Render		(float LOD)
 	}
 	VERIFY						(lod_id>=0 && lod_id<int(pSWI->count));
 	FSlideWindow& SW			= pSWI->sw[lod_id];
-	RCache.set_Geometry			(hGeom);
+	RCache.set_Geometry			(geom);
 	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
 }
 void FTreeVisual_PM::Copy		(IRender_Visual *pSrc)

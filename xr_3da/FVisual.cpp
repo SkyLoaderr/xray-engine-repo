@@ -9,11 +9,8 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
+#include "../fmesh.h"
 #include "fvisual.h"
-#include "fmesh.h"
-#ifndef _EDITOR
-	#include "render.h"
-#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -136,13 +133,17 @@ void	Fvisual::Copy			(IRender_Visual *pSrc)
 	IRender_Visual::Copy				(pSrc);
 
 	Fvisual	*pFrom				= dynamic_cast<Fvisual*> (pSrc);
-	
-	PCOPY(pVertices);
-	PCOPY(vBase);
-	PCOPY(vCount);
 
-	PCOPY(pIndices);
-	PCOPY(iBase);
-	PCOPY(iCount);
-	PCOPY(dwPrimitives);
+	PCOPY	(geom);
+
+	PCOPY	(pVertices);
+	PCOPY	(vBase);
+	PCOPY	(vCount);
+
+	PCOPY	(pIndices);
+	PCOPY	(iBase);
+	PCOPY	(iCount);
+	PCOPY	(dwPrimitives);
+
+	PCOPY	(m_fast);
 }
