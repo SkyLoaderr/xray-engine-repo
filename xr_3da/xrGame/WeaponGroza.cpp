@@ -184,7 +184,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 					Fvector		end;
 					end.direct	(vLastFP,vLastFD,100.f);
 					Fcolor		c; c.set(1,1,1,1);
-					Level().Tracers.Add(vLastFP,end,200,0.5f,1,c);
+					Level().Tracers.Add(vLastFP,end,300,0.5f,1,c);
 				}
 				
 				bFlame	= TRUE;

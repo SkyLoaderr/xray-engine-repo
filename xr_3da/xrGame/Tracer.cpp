@@ -7,7 +7,7 @@
 #include "..\fstaticrender.h"
 
 const DWORD	MAX_TRACERS	= (1024*3);
-const float TRACER_SIZE = 0.1f;
+const float TRACER_SIZE = 0.2f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
