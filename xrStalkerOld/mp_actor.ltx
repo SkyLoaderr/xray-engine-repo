@@ -16,8 +16,8 @@ crouch_coef 			= 0.2
 climb_coef				= 0.7
 air_control_param		= 0.1
 max_item_mass			= 40.0
-run_coef                = 2.4
-sprint_koef				= 2.
+run_coef                = 2.7 ; было 2.4
+sprint_koef				= 1.7 ; было 2.0
 run_back_coef			= 1.7
 walk_back_coef			= 0.8
 visual					= actors\hero\stalker_hood.ogf
@@ -73,12 +73,11 @@ material				= creatures\human
 camera_height_factor	= 0.85
 
 ;дисперсия стрельбы с учетом ходьбы и бега
-disp_base			 = 1.2		;угол (в градусах) разлета пуль, когда актер стоит на месте
-disp_vel_factor		 = 2.2		;на сколько увеличится дисперсия при скрости в 10 м/с (не обязательно при беге)
+disp_base			 = 1.7  		; 1.2 угол (в градусах) разлета пуль, когда актер стоит на месте
+disp_vel_factor		 = 3		; 5 на сколько увеличится дисперсия при скрости в 10 м/с (не обязательно при беге)
 disp_accel_factor	 = 0.83  	;еще на сколько увеличится, если актер бежит (+ скорость)
 disp_crouch_factor	 = -0.2 	;уменьшение если актер сидит
-
-disp_jump_factor	 = 2.0
+disp_jump_factor	 = 7 ; 2.0
 
 missile_throw_offset = 0.3, 0.5, 0.5
 
@@ -94,53 +93,53 @@ species				= human
 ;<hit_scale> - коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale> - коэфф. изменения величины открытой раны
 ;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
-default			 = 1.0, -1, 1.0
+default			 = 0, -1, 0.1
 bip01_pelvis 		 = 0.0, 10, 0.0	;от ядра до пояса
-bip01_spine 		 = 0.8, 10, 0.8	;в основном без шейпа
-bip01_spine1 		 = 0.8, 0, 0.8	;торс до шеи
-bip01_neck 			 = 5.0, 0, 1.0	;в основном без шейпа	
-bip01_head 			 = 5.0, 0, 1.0	;очень большой шейп
-eyelid_1 			 = 5.0, 0, 1.0	;очень большой шейп
-eye_left 			 = 5.0, 0, 1.0	;глаза
-eye_right 			 = 5.0, 0, 1.0	;глаза
-jaw_1 		 		 = 5.0, 0, 1.0	;рот от шеи до носа
+bip01_spine 		 = 0.5, 10, 0.8	;в основном без шейпа
+bip01_spine1 		 = 0.5, 0, 0.8	;торс до шеи
+bip01_neck 			 = 1.2, 0, 0.1	;в основном без шейпа	
+bip01_head 			 = 1.2, 0, 0.1	;очень большой шейп
+eyelid_1 			 = 1.2, 0, 0.1	;очень большой шейп
+eye_left 			 = 1.2, 0, 0.1	;глаза
+eye_right 			 = 1.2, 0, 0.1	;глаза
+jaw_1 		 	 = 1.2, 0, 0.1	;рот от шеи до носа
 
-bip01_l_clavicle	 = 0.1, 4, 0.7	;плечо + bip01_spine1
-bip01_l_upperarm	 = 0.05, 4, 0.6
-bip01_l_forearm	 	 = 0.05, 4, 0.5
-bip01_l_hand	 	 = 0.0, 4, 0.2
-bip01_l_finger0	 	 = 0.0, 4, 0.1
-bip01_l_finger01	 = 0.0, 4, 0.1
-bip01_l_finger02	 = 0.0, 4, 0.1
-bip01_l_finger1	 	 = 0.0, 4, 0.1
-bip01_l_finger11	 = 0.0, 4, 0.1
-bip01_l_finger12	 = 0.0, 4, 0.1
-bip01_l_finger2	 	 = 0.0, 4, 0.1
-bip01_l_finger21	 = 0.0, 4, 0.1
-bip01_l_finger22	 = 0.0, 4, 0.1
+bip01_l_clavicle	 = 0.2, 4, 0.7	;плечо + bip01_spine1
+bip01_l_upperarm	 = 0.2, 4, 0.6
+bip01_l_forearm	 	 = 0.2, 4, 0.5
+bip01_l_hand	 	 = 0.15, 4, 0.2
+bip01_l_finger0	 	 = 0.15, 4, 0.2
+bip01_l_finger01	 = 0.15, 4, 0.2
+bip01_l_finger02	 = 0.15, 4, 0.2
+bip01_l_finger1	 	 = 0.15, 4, 0.2
+bip01_l_finger11	 = 0.15, 4, 0.2
+bip01_l_finger12	 = 0.15, 4, 0.2
+bip01_l_finger2	 	 = 0.15, 4, 0.2
+bip01_l_finger21	 = 0.15, 4, 0.2
+bip01_l_finger22	 = 0.15, 4, 0.2
 
-bip01_r_clavicle	 = 0.1, 2, 0.7	;плечо + bip01_spine1 
-bip01_r_upperarm	 = 0.05, 2, 0.6
-bip01_r_forearm	 	 = 0.05, 2, 0.5
-bip01_r_hand	 	 = 0.0, 2, 0.2
-bip01_r_finger0	 	 = 0.0, 2, 0.1
-bip01_r_finger01	 = 0.0, 2, 0.1
-bip01_r_finger02	 = 0.0, 2, 0.1
-bip01_r_finger1	 	 = 0.0, 2, 0.1
-bip01_r_finger11	 = 0.0, 2, 0.1
-bip01_r_finger12	 = 0.0, 2, 0.1
-bip01_r_finger2	 	 = 0.0, 2, 0.1
-bip01_r_finger21	 = 0.0, 2, 0.1
-bip01_r_finger22	 = 0.0, 2, 0.1
+bip01_r_clavicle	 = 0.2, 2, 0.7	;плечо + bip01_spine1 
+bip01_r_upperarm	 = 0.2, 2, 0.6
+bip01_r_forearm	 	 = 0.2, 2, 0.5
+bip01_r_hand	 	 = 0.15, 2, 0.2
+bip01_r_finger0	 	 = 0.15, 2, 0.2
+bip01_r_finger01	 = 0.15, 2, 0.2
+bip01_r_finger02	 = 0.15, 2, 0.2
+bip01_r_finger1	 	 = 0.15, 2, 0.2
+bip01_r_finger11	 = 0.15, 2, 0.2
+bip01_r_finger12	 = 0.15, 2, 0.2
+bip01_r_finger2	 	 = 0.15, 2, 0.2
+bip01_r_finger21	 = 0.15, 2, 0.2
+bip01_r_finger22	 = 0.15, 2, 0.2
 
-bip01_l_thigh	 	 = 0.1, 8, 0.5	;бедро
-bip01_l_calf	 	 = 0.05, 8, 0.4	;голень
-bip01_l_foot	 	 = 0.02, 8, 0.3	;пятка
-bip01_l_toe0	 	 = 0.0, 8, 0.2	;пальцы
-bip01_r_thigh	 	 = 0.1, 6, 0.5	;бедро
-bip01_r_calf	 	 = 0.05, 6, 0.4	;голень
-bip01_r_foot	 	 = 0.02, 6, 0.3	;пятка
-bip01_r_toe0	 	 = 0.0, 6, 0.2	;пальцы
+bip01_l_thigh	 	 = 0.2, 8, 0.5	;бедро
+bip01_l_calf	 	 = 0.4, 8, 0.4	;голень
+bip01_l_foot	 	 = 0.2, 8, 0.3	;пятка
+bip01_l_toe0	 	 = 0.1, 8, 0.2	;пальцы
+bip01_r_thigh	 	 = 0.2, 6, 0.5	;бедро
+bip01_r_calf	 	 = 0.4, 6, 0.4	;голень
+bip01_r_foot	 	 = 0.2, 6, 0.3	;пятка
+bip01_r_toe0	 	 = 0.1, 6, 0.2	;пальцы
 
 
 [mp_actor_immunities]
@@ -183,11 +182,11 @@ jump_weight_power			=	0.0				;0.045					;умешьшение силы с прыжком с учетом веса
 overweight_jump_k			=	10				;10					;коэффициент влияние перегрузки прыжок с весом (умножается на jump_weight_power)
 
 stand_power				=	-0.007								
-walk_power				=	0.000001			;умешьшение силы за секнду во время ходьбы без учета веса ноши
+walk_power				=	-0.001			;умешьшение силы за секнду во время ходьбы без учета веса ноши
 walk_weight_power			=	0.00			;умешьшение силы за секнду во время ходьбы с учетом веса ноши, для максимального допустимого веса
 overweight_walk_k			=	10				;10					;коэффициент влияние перегрузки ноши (умножается на walk_weight_power)
-accel_k					=	1				;3						;коэффициент на бег (умножается walk_power, walk_weight_power)
-sprint_k				=	15000				;6						;коэффициент на "sprint" бег (умножается walk_power, walk_weight_power)
+accel_k					=	0.2				;3						;коэффициент на бег (умножается walk_power, walk_weight_power)
+sprint_k				=	-15				;6						;коэффициент на "sprint" бег (умножается walk_power, walk_weight_power)
 
 
 ; хромота
