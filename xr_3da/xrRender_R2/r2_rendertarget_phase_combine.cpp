@@ -69,7 +69,7 @@ void	CRenderTarget::phase_combine	()
 
 		// Draw COLOR
 		float dr					= ps_r2_ls_dynamic_range;
-		RCache.set_Element			(s_combine->E[0]);
+		RCache.set_Element			(s_combine->E[1]);
 		RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
 		RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
 		RCache.set_Geometry			(g_combine);
