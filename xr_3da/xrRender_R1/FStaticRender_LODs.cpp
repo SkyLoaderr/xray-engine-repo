@@ -52,7 +52,7 @@ void CRender::flush_LODs()
 		R_dsgraph::_LodItem		&P = lstLODs[i];
 		if (P.pVisual->hShader==cur_S)	cur_count++;
 		else {
-			vecGroups.push_back	(cur_count);
+			lstLODgroups.push_back	(cur_count);
 			cur_S				= &*(P.pVisual->hShader);
 			cur_count			= 1;
 		}
@@ -93,14 +93,14 @@ void CRender::flush_LODs()
 		_P.add(F.v[2].v,shift);	V->set	(_P,color(F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
 		_P.add(F.v[1].v,shift);	V->set	(_P,color(F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
-	vecGroups.push_back				(cur_count);
+	lstLODgroups.push_back				(cur_count);
 	RCache.Vertex.Unlock			(lstLODs.size()*4,firstV->hGeom->vb_stride);
 
 	// *** Render
 	int current=0;
-	for (u32 g=0; g<vecGroups.size(); g++)
+	for (u32 g=0; g<lstLODgroups.size(); g++)
 	{
-		int p_count				= vecGroups[g];
+		int p_count				= lstLODgroups[g];
 		RCache.set_Shader		(lstLODs[current].pVisual->hShader);
 		RCache.set_Geometry		(firstV->hGeom);
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
@@ -110,5 +110,5 @@ void CRender::flush_LODs()
 
 	mapLOD.clear	();
 	lstLODs.clear	();
-	vecGroups.clear	();
+	lstLODgroups.clear	();
 }

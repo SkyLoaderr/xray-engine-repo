@@ -47,9 +47,6 @@ void CRender::level_Load()
 	rmFar						();
 	rmNormal					();
 
-	matDetailTexturing			= Device.Resources->_CreateMatrix("$user$detail");
-	matFogPass					= Device.Resources->_CreateMatrix("$user$fog");
-
 	marker						= 0;
 
 	// VB
@@ -74,9 +71,6 @@ void CRender::level_Load()
 	pApp->LoadTitle				("Loading details...");
 	Details->Load				();
 
-	// Streams
-	hGeomPatches.create			(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	
 	// HOM
 	HOM.Load					();
 	
@@ -92,9 +86,6 @@ void CRender::level_Unload()
 
 	// HOM
 	HOM.Unload					();
-
-	//*** Streams
-	hGeomPatches.destroy		();
 
 	//*** Details
 	Details->Unload				();

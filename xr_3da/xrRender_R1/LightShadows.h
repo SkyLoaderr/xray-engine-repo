@@ -55,7 +55,7 @@ private:
 private:
 public:
 	void					set_object		(IRenderable*	O);
-	void					add_element		(NODE*			N);
+	void					add_element		(NODE&			N);
 	void					calculate		();
 	void					render			();
 

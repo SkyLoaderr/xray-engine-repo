@@ -108,10 +108,10 @@ void CLightShadows::set_object	(IRenderable* O)
 	}
 }
 
-void CLightShadows::add_element	(NODE* N)
+void CLightShadows::add_element	(NODE& N)
 {
 	if (0==current)	return;
-	casters.back()->nodes.push_back	(*N);
+	casters.back()->nodes.push_back	(N);
 }
 
 IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)

@@ -38,38 +38,33 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 
 	// Select shader
 #if		RENDER==R_R1
-	ShaderElement*		sh		= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+	ShaderElement*		sh	= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 #elif	RENDER==R_R2
-	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase]._get();
+	ShaderElement*		sh	= pVisual->hShader->E[RImplementation.phase]._get();
 #endif
+
+	// Create common node
+	_MatrixItem		item	= {SSA,val_pObject,pVisual,*val_pTransform,Center};
 
 	// Invisible elements exist only in R1
 #if RENDER==R_R1
 	if (val_bInvisible)	{
-		mapMatrixItem::TNode	C;
-		C.val.pObject			= val_pObject;
-		C.val.pVisual			= pVisual;
-		C.val.Matrix			= *val_pTransform;
-		L_Shadows->add_element	(&C);
+		L_Shadows->add_element	(item);
 	} else
 #endif
 
 	// HUD rendering
 	if (val_bHUD)		{
 		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
-		N->val.pObject			= val_pObject;
-		N->val.pVisual			= pVisual;
-		N->val.Matrix			= *val_pTransform;
+		N->val					= item;
 	} else 
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-		N->val.pObject			= val_pObject;
-		N->val.pVisual			= pVisual;
-		N->val.Matrix			= *val_pTransform;
+		N->val					= item;
 #if RENDER==R_R1
-		L_Shadows->add_element	(N);
+		L_Shadows->add_element	(item);
 #endif
 	} else
 
@@ -84,7 +79,6 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
 		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 		mapMatrixItems&				items	= Nvb->val;
-		_MatrixItem					item	= {SSA,val_pObject,pVisual,*val_pTransform,Center};
 		items.push_back						(item);
 
 #if RENDER==R_R1

@@ -30,5 +30,7 @@ public:
 	xr_vector<R_dsgraph::mapMatrixTextures::TNode*>				matTexturesTemp;
 	xr_vector<R_dsgraph::mapMatrixVB::TNode*>					matVB;
 
+	xr_vector<R_dsgraph::_LodItem>								lstLODs;
+	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
 };
