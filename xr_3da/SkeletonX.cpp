@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "SkeletonX.h"
 #include "BodyInstance.h"
 #include "fmesh.h"
