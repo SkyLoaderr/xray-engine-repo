@@ -294,12 +294,14 @@ void CLevel::OnFrame	()
 	
 	g_pGamePersistent->Environment.SetGameTime	(GetGameDayTimeSec(),GetGameTimeFactor());
 
-	ai().script_engine().script_process("level")->update();
+	Device.Statistic.Scripting.Begin	();
+	ai().script_engine().script_process	("level")->update();
+	Device.Statistic.Scripting.End		();
 
 	//просчитать полет пуль
-	Device.Statistic.TEST0.Begin();
-	BulletManager().Update		();
-	Device.Statistic.TEST0.End	();
+	Device.Statistic.TEST0.Begin		();
+	BulletManager().Update				();
+	Device.Statistic.TEST0.End			();
 }
 
 void CLevel::OnRender()

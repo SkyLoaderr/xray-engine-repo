@@ -97,9 +97,9 @@ namespace luabind { namespace detail
 	{
 		object_rep*		obj = static_cast<object_rep*>(lua_touserdata(L, -1));
 //#ifdef DEBUG	
-		//const char*			N	= obj->crep()->name();
-		//OutputDebugString	(N);
-		//OutputDebugString	("\n");
+		const char*			N	= obj->crep()->name();
+		OutputDebugString	(N);
+		OutputDebugString	("\n");
 //#endif
 		finalize		(L, obj->crep());
 

@@ -21,6 +21,7 @@ public:
 	CStatTimer	EngineTOTAL;		// 
 	CStatTimer	Sheduler;			// 
 	CStatTimer	UpdateClient;		// 
+	CStatTimer	Scripting;			// 
 	CStatTimer	Physics;			// movement+collision
 	CStatTimer	ph_collision;		// collision
 	CStatTimer	ph_core;			// collision

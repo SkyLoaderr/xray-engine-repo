@@ -31,6 +31,7 @@ void CStats::Show()
 		EngineTOTAL.FrameEnd		();	
 		Sheduler.FrameEnd			();	
 		UpdateClient.FrameEnd		();	
+		Scripting.FrameEnd			();	
 		Physics.FrameEnd			();	
 		ph_collision.FrameEnd		();
 		ph_core.FrameEnd			();
@@ -130,6 +131,7 @@ void CStats::Show()
 		F.OutNext	("Memory:      %2.2fa",fMem_calls);
 		F.OutNext	("uSheduled:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uClients:    %2.2fms, %2.1f%%",UpdateClient.result,	PPP(UpdateClient.result));
+		F.OutNext	("uScripts:    %2.2fms, %d",Scripting.result,Scripting.count);
 		F.OutNext	("spInsert:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_insert.result, PPP(g_SpatialSpace->stat_insert.result));
 		F.OutNext	("spRemove:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
@@ -217,6 +219,7 @@ void CStats::Show()
 		EngineTOTAL.FrameStart		();	
 		Sheduler.FrameStart			();	
 		UpdateClient.FrameStart		();	
+		Scripting.FrameStart		();	
 		Physics.FrameStart			();	
 		ph_collision.FrameStart		();
 		ph_core.FrameStart			();
