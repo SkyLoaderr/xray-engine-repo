@@ -119,8 +119,8 @@ function main()
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(3000)			
-		break
 		end
+		break
 	end
 
 
@@ -128,16 +128,16 @@ function main()
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
-		break
 		end
+		break
 	end
 
 
@@ -145,16 +145,16 @@ function main()
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(6000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 
@@ -162,144 +162,144 @@ function main()
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			rainbow_mojet_sidet_stalker:play_at_pos	(stalker2,stalker2:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_chert:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(3000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(8000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(8000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(5000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_kgm2:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(10000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_chto_za_chert:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(5000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(4000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(12000)			
-		break
 		end
+		break
 	end
 
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
 			prof_do_basi_bi_dobratsya:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(3000)			
-		break
 		end
+		break
 	end
 
 	while true do
