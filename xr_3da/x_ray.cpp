@@ -593,7 +593,7 @@ int doLauncher()
 
 	if(g_bBenchmark){ //perform benchmark cycle
 			string_path in_file;
-			FS.update_path(in_file,"$local_root$","tmp_benchmark.ini");
+			FS.update_path(in_file,"$server_root$","tmp_benchmark.ini");
 			CInifile ini(in_file);
 			int test_count = ini.line_count("benchmark");
 			LPCSTR test_name,t;
@@ -613,6 +613,10 @@ int doLauncher()
 			execUserScript();
 			Startup	 				();
 		}
+		InitLauncher();
+		int res = pLauncher(2);//show results
+		FreeLauncher();
+
 		Core._destroy			();
 		return 1;
 
