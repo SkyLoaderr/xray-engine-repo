@@ -96,6 +96,8 @@ void CCustomMonster::Exec_Look		( float dt )
 	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
 
 	mRotate.setHPB					(-NET_Last.o_model,0,0);
+
+	//
 	Engine.Sheduler.Slice			();
 }
 
@@ -117,11 +119,15 @@ void CCustomMonster::Exec_Action	( float dt )
 		break;
 	}
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
+
+	//
 	Engine.Sheduler.Slice			();
 }
 
 void CCustomMonster::Exec_Movement	( float dt )
 {
 	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);
+
+	//
 	Engine.Sheduler.Slice			();
 }
