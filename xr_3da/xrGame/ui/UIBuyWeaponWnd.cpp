@@ -916,10 +916,15 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 		CUIDragDropItemMP::AddonIDs		ID;
 		CUIDragDropItemMP				*pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
 
+		if (m_pCurrentDragDropItem->GetCost() > GetMoneyAmount())
+		{
+			return;
+		}
+		
 		if (pDDItemMP)
 		{
 			m_pCurrentDragDropItem = pDDItemMP;
-			UIPropertiesBox.AddItem(pDDItemMP->IsAddonAttached(ID) ? "Detach Addon" : "Attach Addon", 
+			UIPropertiesBox.AddItem("Attach Addon", 
 									NULL,
 									pDDItemMP->IsAddonAttached(ID) ? DETACH_SILENCER_ADDON + static_cast<int>(ID) : ATTACH_SILENCER_ADDON + static_cast<int>(ID));
 		}
@@ -941,8 +946,12 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 				{
 					// If addon detached
 				case 0:
-					strMenuItem = std::string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
-					UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON + i);
+					// Если денег на аддон хватает
+					if (GetAddonByID(m_pCurrentDragDropItem, static_cast<CUIDragDropItemMP::AddonIDs>(i))->GetCost() <= GetMoneyAmount())
+					{
+						strMenuItem = std::string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
+						UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON + i);
+					}
 					break;
 				case 1:
 					strMenuItem = std::string("Detach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];

@@ -39,7 +39,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 
 		if (bAttach)
 		{
-			if (m_AddonInfo[ID].iAttachStatus != 1)
+			if (m_AddonInfo[ID].iAttachStatus != 1 && pPossibleAddon->GetCost() <= this_inventory->GetMoneyAmount())
 			{
 				m_pAddon[ID] = pPossibleAddon;
 				m_pAddon[ID]->GetParent()->DetachChild(m_pAddon[ID]);
