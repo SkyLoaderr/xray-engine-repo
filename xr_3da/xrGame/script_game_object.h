@@ -379,6 +379,8 @@ public:
 			void				set_previous_point		(int point_index);
 			void				set_start_point			(int point_index);
 			u32					get_current_patrol_point_index();
+			bool				path_completed			() const;
+			void				patrol_path_make_inactual();
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			int					active_sound_count		(bool only_playing);

@@ -53,6 +53,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("set_previous_point",			&CScriptGameObject::set_previous_point)
 		.def("set_start_point",				&CScriptGameObject::set_start_point)
 		.def("get_current_point_index",		&CScriptGameObject::get_current_patrol_point_index)
+		.def("path_completed",				&CScriptGameObject::path_completed)
+		.def("patrol_path_make_inactual",	&CScriptGameObject::patrol_path_make_inactual)
 		.def("enable_memory_object",		&CScriptGameObject::enable_memory_object)
 		.def("active_sound_count",			(int (CScriptGameObject::*)())(&CScriptGameObject::active_sound_count))
 		.def("active_sound_count",			(int (CScriptGameObject::*)(bool))(&CScriptGameObject::active_sound_count))

@@ -570,3 +570,23 @@ bool CScriptGameObject::weapon_strapped	() const
 	return			(weapon->strapped_mode());
 
 }
+
+bool CScriptGameObject::path_completed	() const
+{
+	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member path_completed!");
+		return		(false);
+	}
+	return			(monster->movement().path_completed());
+}
+
+void CScriptGameObject::patrol_path_make_inactual	()
+{
+	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member patrol_path_make_inactual!");
+		return;
+	}
+	monster->movement().patrol_path_manager().make_inactual();
+}

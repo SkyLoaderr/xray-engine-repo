@@ -213,7 +213,6 @@ bool CStalkerMovementManager::script_control		()
 
 void CStalkerMovementManager::setup_movement_params	()
 {
-	m_current								= m_target;
 	inherited::set_path_type				(path_type());
 	detail_path_manager().set_path_type		(detail_path_type());
 	level_location_selector().set_evaluator	(node_evaluator());
@@ -240,9 +239,6 @@ void CStalkerMovementManager::setup_velocities		()
 {
 	// setup desirable velocities mask
 	// if we want to stand, do not setup velocity to prevent path rebuilding
-
-	if (movement_type() == eMovementTypeStand)
-		return;
 
 	int						velocity_mask = eVelocityPositiveVelocity;
 
@@ -321,23 +317,23 @@ void CStalkerMovementManager::setup_velocities		()
 void CStalkerMovementManager::parse_velocity_mask	()
 {
 	if (path().empty() || (detail_path_manager().curr_travel_point_index() != m_last_turn_index))
-		m_last_turn_index				= u32(-1);
+		m_last_turn_index		= u32(-1);
 
-	object().sight().enable	(true);
+	object().sight().enable		(true);
 
 	if (fis_zero(speed())) {
 		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
-			m_body.target.yaw			= m_head.current.yaw;
+			m_body.target.yaw	= m_head.current.yaw;
 	}
 
 	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= detail_path_manager().curr_travel_point_index())) {
-		object().m_fCurSpeed			= 0;
+		object().m_fCurSpeed	= 0;
 		if (mental_state() != eMentalStateDanger)
 			m_body.speed		= 1*PI_DIV_2;
 		else
 			m_body.speed		= PI_MUL_2;
-		set_desirable_speed				(object().m_fCurSpeed);
-		setup_head_speed				();
+		set_desirable_speed		(object().m_fCurSpeed);
+		setup_head_speed		();
 		return;
 	}
 
@@ -412,17 +408,19 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 void CStalkerMovementManager::update(u32 time_delta)
 {
-	setup_movement_params	();
+	m_current					= m_target;
+
+	if (movement_type() != eMovementTypeStand)
+		setup_movement_params	();
 
 	if (script_control())
 		return;
 
-	setup_velocities		();
+	if (movement_type() != eMovementTypeStand)
+		setup_velocities		();
 
 	if (movement_type() != eMovementTypeStand)
-		update_path			();
+		update_path				();
 
-	parse_velocity_mask		();
-
-//	set_desirable_speed		(0.f);
+	parse_velocity_mask			();
 }
