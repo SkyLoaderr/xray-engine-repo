@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "problem_solver.h"
 #include "graph_engine.h"
+#include "condition_evaluator.h"
 
 const u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
@@ -23445,7 +23446,7 @@ CState random_condition(u32 _max = 100, u32 _min = 20, u32 __max = 2, u32 __min 
 
 COperator *random_operator()
 {
-	return		(xr_new<COperator>(random_condition().conditions(),random_condition().conditions()));
+	return		(xr_new<COperator>(random_condition(),random_condition()));
 }
 
 LPSTR show_condition(const xr_vector<CCondition> &condition, LPSTR s)
@@ -23476,10 +23477,10 @@ void show_operator(const COperator &_operator, u32 i)
 {
 	string256				s;
 	char					*s1;
-	show_condition			(_operator.conditions(),s);
+	show_condition			(_operator.conditions().conditions(),s);
 	strcat					(s," -> ");
 	s1						= s + xr_strlen(s);
-	show_condition			(_operator.effects(),s1);
+	show_condition			(_operator.effects().conditions(),s1);
 	Msg						("operator  %2d : %s",i,s);
 }
 
@@ -23598,7 +23599,7 @@ void test_goap	()
 			VERIFY						(i != problem_solver.operators().end());
 			VERIFY						((*i).m_operator_id == *I);
 			show_operator				(*(*i).m_operator,(*i).m_operator_id);
-			VERIFY						((*i).m_operator->applicable(world_state.conditions(),problem_solver.current_state().conditions(),(*i).m_operator->conditions()));
+			VERIFY						((*i).m_operator->applicable(world_state,problem_solver.current_state(),(*i).m_operator->conditions()));
 			world_state					= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
 			show_condition				(world_state);
 		}
