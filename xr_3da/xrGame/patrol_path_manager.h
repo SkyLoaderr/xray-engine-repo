@@ -27,18 +27,18 @@ public:
 		ePatrolRouteTypeDummy = u32(-1),
 	};
 private:
-	const CLevel::SPath							*m_path;
-	ref_str										m_path_name;
-	EPatrolStartType							m_start_type;
-	EPatrolRouteType							m_route_type;
-	bool										m_actuality;
-	bool										m_failed;
-	bool										m_completed;
-	bool										m_random;
-	u32											m_curr_point_index;
-	u32											m_prev_point_index;
-	Fvector										m_dest_position;
-	const CScriptMonster::SMemberCallback		*m_callback;
+	const CLevel::SPath		*m_path;
+	ref_str					m_path_name;
+	EPatrolStartType		m_start_type;
+	EPatrolRouteType		m_route_type;
+	bool					m_actuality;
+	bool					m_failed;
+	bool					m_completed;
+	bool					m_random;
+	u32						m_curr_point_index;
+	u32						m_prev_point_index;
+	Fvector					m_dest_position;
+	const SMemberCallback	*m_callback;
 protected:
 	IC			bool	actual						() const;
 	IC			bool	completed					() const;
@@ -55,7 +55,7 @@ public:
 	IC	virtual			~CPatrolPathManager			();
 	IC			void	Init						();
 	IC	virtual	void	reinit						();
-	IC	virtual	void	set_callback				(const CScriptMonster::SMemberCallback &callback);
+	IC	virtual	void	set_callback				(const SMemberCallback &callback);
 	IC			void	make_inactual				();
 	
 	// for test only

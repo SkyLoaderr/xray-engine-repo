@@ -34,11 +34,6 @@ protected:
 	CEntityAction				*m_tpCurrentEntityAction;
 public:
 	CMotionDef					*m_tpScriptAnimation;
-	struct SMemberCallback {
-		luabind::functor<void>	*m_lua_function;
-		luabind::object			*m_lua_object;
-		ref_str					m_method_name;
-	};
 protected:
 	SMemberCallback				m_tpCallbacks[eActionTypeCount];
 	SMemberCallback				m_tSoundCallback;

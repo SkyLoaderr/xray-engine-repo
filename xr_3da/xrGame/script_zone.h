@@ -15,8 +15,8 @@
 class CLuaGameObject;
 
 class CScriptZone : public CGameObject, public Feel::Touch {
-	luabind::functor<void>	*m_tpOnEnter;
-	luabind::functor<void>	*m_tpOnExit;
+	SMemberCallback m_tpOnEnter;
+	SMemberCallback m_tpOnExit;
 public:
 	typedef	CGameObject	inherited;
 
@@ -25,8 +25,6 @@ public:
 	virtual void	reinit				();
 	virtual BOOL	net_Spawn			(LPVOID DC);
 
-//	virtual void	spatial_register	();
-//	virtual void	spatial_move		();
 	virtual void	Center				(Fvector& C)	const;
 	virtual float	Radius				() const;
 
@@ -34,7 +32,8 @@ public:
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
 	virtual BOOL	feel_touch_contact	(CObject* O);
-			void	set_callback		(const luabind::functor<void> &tpZoneCallback, bool bOnEnter);
+			void	set_callback		(const luabind::object &lua_object, LPCSTR method, bool bOnEnter);
+			void	set_callback		(const luabind::functor<void> &lua_function, bool bOnEnter);
 			void	clear_callback		(bool bOnEnter);
 #ifdef DEBUG
 	virtual	void	OnRender			();
