@@ -27,7 +27,8 @@ public:
 						CStalkerActionCombatBase	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		finalize					();
-			void		last_cover					(CCoverPoint *last_cover);
+	IC		void		last_cover					(CCoverPoint *last_cover);
+	IC		void		set_nearest_accessible_position	();
 };
 
 //////////////////////////////////////////////////////////////////////////

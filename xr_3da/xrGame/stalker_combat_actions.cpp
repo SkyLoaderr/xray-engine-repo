@@ -48,10 +48,22 @@ void CStalkerActionCombatBase::finalize				()
 	m_object->set_sound_mask	(0);
 }
 
-void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
+IC	void CStalkerActionCombatBase::last_cover			(CCoverPoint *last_cover)
 {
 	*m_last_cover				= last_cover;
 	m_object->agent_manager().member(m_object).cover(last_cover);
+}
+
+IC	void CStalkerActionCombatBase::set_nearest_accessible_position()
+{
+	Fvector								desired_position = m_object->Position();
+	u32									level_vertex_id = m_object->level_vertex_id();
+
+	if (!m_object->accessible(m_object->Position()))
+		level_vertex_id					= m_object->accessible_nearest(m_object->Position(),desired_position);
+
+	m_object->set_level_dest_vertex		(level_vertex_id);
+	m_object->set_desired_position		(&desired_position);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -240,8 +252,7 @@ void CStalkerActionGetReadyToKill::initialize	()
 	m_object->set_desired_direction		(0);
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex		(m_object->level_vertex_id());
-	m_object->set_desired_position		(&m_object->Position());
+	set_nearest_accessible_position		();
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeStand);
 	m_object->set_mental_state			(eMentalStateDanger);
@@ -310,8 +321,7 @@ void CStalkerActionKillEnemy::initialize		()
 	m_object->set_desired_direction		(0);
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex		(m_object->level_vertex_id());
-	m_object->set_desired_position		(&m_object->Position());
+	set_nearest_accessible_position		();
 	m_object->set_body_state			(eBodyStateCrouch);
 	m_object->set_movement_type			(eMovementTypeStand);
 	m_object->set_mental_state			(eMentalStateDanger);
@@ -419,10 +429,8 @@ void CStalkerActionTakeCover::execute		()
 		m_object->set_level_dest_vertex	(point->level_vertex_id());
 		m_object->set_desired_position	(&point->position());
 	}
-	else {
-		m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-		m_object->set_desired_position	(&m_object->Position());
-	}
+	else
+		set_nearest_accessible_position	();
 
 	if (m_object->visible_now(m_object->enemy()) && m_object->can_kill_enemy())
 		m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
@@ -499,8 +507,7 @@ void CStalkerActionLookOut::execute		()
 	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
 
 	if (current_cover(m_object) >= 3.f) {
-		m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-		m_object->set_desired_position	(&m_object->Position());
+		set_nearest_accessible_position	();
 		m_storage->set_property			(eWorldPropertyLookedOut,true);
 		return;
 	}
@@ -532,8 +539,7 @@ void CStalkerActionHoldPosition::initialize		()
 	m_object->set_desired_direction		(0);
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_level_dest_vertex		(m_object->level_vertex_id());
-	m_object->set_desired_position		(&m_object->Position());
+	set_nearest_accessible_position		();
 	m_object->set_body_state			(eBodyStateCrouch);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateDanger);
@@ -623,10 +629,8 @@ void CStalkerActionDetourEnemy::execute			()
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
 		}
-		else {
-			m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-			m_object->set_desired_position	(&m_object->Position());
-		}
+		else
+			set_nearest_accessible_position	();
 
 		if (m_object->path_completed())
 			m_storage->set_property			(eWorldPropertyEnemyDetoured,true);
@@ -686,10 +690,8 @@ void CStalkerActionSearchEnemy::execute			()
 			m_object->set_level_dest_vertex	(point->level_vertex_id());
 			m_object->set_desired_position	(&point->position());
 		}
-		else {
-			m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-			m_object->set_desired_position	(&m_object->Position());
-		}
+		else
+			set_nearest_accessible_position	();
 
 //		if (m_object->path_completed())
 //			m_object->CMemoryManager::enable(m_object->enemy(),false);
