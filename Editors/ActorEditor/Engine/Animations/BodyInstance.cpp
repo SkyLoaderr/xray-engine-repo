@@ -473,7 +473,7 @@ void	CKinematics::IBoneInstances_Create()
 {
 	R_ASSERT		(bones);
 	u32			size	= bones->size();
-	void*			ptr		= _aligned_malloc(size*sizeof(CBoneInstance),64);
+	void*			ptr		= xr_malloc(size*sizeof(CBoneInstance));
 #ifndef _EDITOR
 	R_ASSERT		(u32(ptr)%64 == 0);
 #endif
@@ -485,7 +485,7 @@ void	CKinematics::IBoneInstances_Create()
 void	CKinematics::IBoneInstances_Destroy()
 {
 	if (bone_instances) {
-		_aligned_free(bone_instances);
+		xr_free(bone_instances);
 		bone_instances = NULL;
 	}
 }
