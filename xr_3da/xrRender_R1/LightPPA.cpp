@@ -242,6 +242,7 @@ void CLightR_Manager::render_spot	()
 
 		//		3. Calculate visibility for light + build soring tree
 		VERIFY										(L->spatial.sector);
+		// RImplementation.marker					++;
 		RImplementation.r_pmask						(true,false);
 		RImplementation.r_dsgraph_render_subspace	(
 			L->spatial.sector,
@@ -259,9 +260,11 @@ void CLightR_Manager::render_spot	()
 
 		//		4. Dump sorting tree
 		//	RCache.set_ClipPlanes					(true,	&L_combine);
+		u32 _dbg_dip	= RCache.stat.calls;
 		if (bHUD)	g_pGameLevel->pHUD->Render_Last		();	
 		RImplementation.r_dsgraph_render_graph			(0);
 		if (bHUD)	RImplementation.r_dsgraph_render_hud();	
+		Msg	("%d : %d",it-selected_spot.begin(),RCache.stat.calls-_dbg_dip);
 		//	RCache.set_ClipPlanes					(false,	&L_combine);
 	}
 	//		??? grass ???
