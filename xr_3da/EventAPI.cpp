@@ -151,7 +151,8 @@ void msParse			(LPCSTR c)
 {
 	if ((0==stricmp(c,"quit")) || (0==stricmp(c,"exit"))) 
 	{
-		Console->Execute			("quit");
+		TerminateProcess	(GetCurrentProcess(),0);
+		Console->Execute	("quit");
 	}
 }
 #endif
