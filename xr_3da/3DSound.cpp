@@ -169,7 +169,7 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		 if (!conv)				{_FREE(pFormat); return NULL; }
+		if (!conv)				{_FREE(pFormat); return NULL; }
 
 		// Secondly convert to best format for 3D
 		CopyMemory				(pFormat,&wfxdest,sizeof(wfxdest));
@@ -315,7 +315,7 @@ void C3DSound::OnMove()
 			if ((fTimeRested<fTimeTotal)) {
 				// доигрываем
 				pBuffer->Stop();
-				pBuffer->Play(0,0,0);
+				pBuffer->Play(0,0,DSBPLAY_LOCSOFTWARE);
 			}
 		}
 	} else {
@@ -323,7 +323,7 @@ void C3DSound::OnMove()
 			bMustPlay	= false;
 			ps.dwMode	= DS3DMODE_NORMAL;
 			Update		( );
-			pBuffer->Play( 0, 0, bMustLoop?DSBPLAY_LOOPING:0 );
+			pBuffer->Play( 0, 0, DSBPLAY_LOCSOFTWARE | (bMustLoop?DSBPLAY_LOOPING:0));
 			dwStatus	|= DSBSTATUS_PLAYING;
 		} else {
 			if (old_Status&DSBSTATUS_PLAYING) 

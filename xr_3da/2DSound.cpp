@@ -187,14 +187,14 @@ void C2DSound::OnMove()
 			if ((fTimeRested<fTimeTotal)) {
 				// доигрываем
 				pBuffer->Stop();
-				pBuffer->Play(0,0,0);
+				pBuffer->Play(0,0,DSBPLAY_LOCSOFTWARE);
 			}
 		}
 	} else {
 		if (bMustPlay) {
 			bMustPlay	= false;
 			Update		( );
-			pBuffer->Play( 0, 0, bMustLoop?DSBPLAY_LOOPING:0 );
+			pBuffer->Play( 0, 0, DSBPLAY_LOCSOFTWARE | (bMustLoop?DSBPLAY_LOOPING:0) );
 			dwStatus	|= DSBSTATUS_PLAYING;
 		}
 	}

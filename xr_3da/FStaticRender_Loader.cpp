@@ -210,7 +210,7 @@ void CRender::LoadSectors(CStream* fs)
 	{
 		b_portal	P;
 		fs->Read(&P,sizeof(P));
-		if (i==64)	{
+		if (i!=63)	{
 			Portals[i].Setup(P.vertices,P.vert_count,
 				getSector(P.sector_front),
 				getSector(P.sector_back));
