@@ -150,6 +150,8 @@ add_to_type_list(CSE_ALifeItemArtefact)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 	u16								m_original_owner;
+	SPECIFIC_CHARACTER_INDEX		m_specific_character;
+	INFO_INDEX						info_portion;
 
 									CSE_ALifeItemPDA(LPCSTR caSection);
 	virtual							~CSE_ALifeItemPDA();

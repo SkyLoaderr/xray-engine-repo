@@ -572,6 +572,8 @@ void CSE_ALifeItemArtefact::FillProps		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	m_original_owner = 0xffff;
+	m_specific_character = NO_SPECIFIC_CHARACTER;
+	info_portion = NO_INFO_INDEX;
 }
 
 
