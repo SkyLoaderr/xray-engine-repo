@@ -54,7 +54,7 @@ void CActor::feel_touch_new				(CObject* O)
 			{
 				// Assault acomplished?
 				u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-				P.w_u16		(u16(W->ID()));
+				P.w_u16		(u16(T->ID()));
 				u_EventSend	(P);
 				return;
 			}
