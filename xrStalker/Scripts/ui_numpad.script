@@ -225,10 +225,6 @@ function numpad:OnButton_9_clicked()
 	self:AddNumber(9)
 end
 
-function numpad:OnButton_OK_clicked()
-
-end
-
 function numpad:OnButton_CANCEL_clicked()
 	self.owner:OnNumberReceive("")
 	self:GetHolder():start_stop_menu(self, true)
@@ -238,7 +234,7 @@ function numpad:OnButton_OK_clicked()
 	self:GetHolder():start_stop_menu(self, true)
 	local edit_window = self:GetStatic("edit_window")
 	local text = edit_window:GetText()
-	self.owner:OnNumberReceive("")
+	self.owner:OnNumberReceive(text)
 end
 
 
