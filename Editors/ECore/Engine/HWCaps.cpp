@@ -25,10 +25,8 @@ void CHWCaps::Update()
 	raster.dwStages				= caps.MaxSimultaneousTextures;
 	raster.bNonPow2				= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
 	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
-	raster.op_DP3				= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
-	raster.op_LERP				= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
-	raster.op_MAD				= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
-	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
+	raster.dwMRT_count			= (caps.NumSimultaneousRTs);
+	raster.b_MRT_mixdepth		= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_MRTINDEPENDENTBITDEPTHS)!=0;
 
 	// ***************** Info
 	Msg							("* GPU shading: vs(%x/%d.%d/%d), ps(%x/%d.%d/%d)",

@@ -19,13 +19,11 @@ public:
 	struct		caps_Raster
 	{
 		u32	dwRegisters		: 16;
-		u32	dwStages		: 8;		// number of tex-stages
+		u32	dwStages		: 4;		// number of tex-stages
+		u32	dwMRT_count		: 4;
+		u32 b_MRT_mixdepth	: 1;
 		u32	bNonPow2		: 1;
 		u32	bCubemap		: 1;
-		u32	op_DP3			: 1;
-		u32	op_LERP			: 1;
-		u32	op_MAD			: 1;
-		u32	op_reg_TEMP		: 1;
 	};
 public:
 	// force flags
