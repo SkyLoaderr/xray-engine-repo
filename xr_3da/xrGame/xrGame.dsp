@@ -239,6 +239,14 @@ SOURCE=.\Weapon.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\WeaponAutoRifle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponAutoRifle.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\WeaponHUD.cpp
 # End Source File
 # Begin Source File

@@ -6,7 +6,7 @@
 
 #define SND_RIC_COUNT 5
  
-class CWeaponAK74: public CWeaponMagazined
+class CWeaponAutoRifle: public CWeaponMagazined
 {
 private:
 	typedef CWeaponMagazined inherited;
@@ -42,8 +42,8 @@ protected:
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnAnimationEnd	();
 public:
-					CWeaponAK74		();
-	virtual			~CWeaponAK74	();
+					CWeaponAutoRifle	(LPCSTR name);
+	virtual			~CWeaponAutoRifle	();
 
 	virtual void	Load			(CInifile* ini, const char* section);
 	virtual void	Update			(float dt, BOOL bHUDView);

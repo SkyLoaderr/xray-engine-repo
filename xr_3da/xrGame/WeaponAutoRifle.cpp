@@ -16,14 +16,14 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAK74::CWeaponAK74() : CWeaponMagazined("AK74")
+CWeaponAutoRifle::CWeaponAutoRifle(LPCSTR name) : CWeaponMagazined(name)
 {
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
 }
 
-CWeaponAK74::~CWeaponAK74()
+CWeaponAutoRifle::~CWeaponAutoRifle()
 {
 	// sounds
 	SoundDestroy		(sndFireLoop	);
@@ -36,7 +36,8 @@ CWeaponAK74::~CWeaponAK74()
 	SoundDestroy		(sndRicochet[4]	);
 }
 
-void CWeaponAK74::Load	(CInifile* ini, const char* section){
+void CWeaponAutoRifle::Load	(CInifile* ini, const char* section)
+{
 	inherited::Load		(ini, section);
 	
 	iFlameDiv			= ini->ReadINT	(section,"flame_div");
@@ -64,7 +65,7 @@ void CWeaponAK74::Load	(CInifile* ini, const char* section){
 	mhud_shots.push_back( m_pHUD->animGet("shoot2"));
 }
 
-void CWeaponAK74::MediaLOAD		()
+void CWeaponAutoRifle::MediaLOAD		()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
@@ -74,35 +75,35 @@ void CWeaponAK74::MediaLOAD		()
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
 }
 
-void CWeaponAK74::MediaUNLOAD	()
+void CWeaponAutoRifle::MediaUNLOAD	()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
 }
 
-void CWeaponAK74::switch2_Idle	(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
 {
 	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 	m_pHUD->animPlay(mhud_idle);
 }
-void CWeaponAK74::switch2_Fire	(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 {
 	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 }
-void CWeaponAK74::switch2_Empty	(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Empty	(BOOL bHUDView)
 {
 	if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
-void CWeaponAK74::switch2_Reload(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
 	m_pHUD->animPlay			(mhud_reload,TRUE,this);
 }
-void CWeaponAK74::OnShot		(BOOL bHUDView)
+void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 {
 	if (bHUDView)	{
 		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
@@ -110,11 +111,11 @@ void CWeaponAK74::OnShot		(BOOL bHUDView)
 	}
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 }
-void CWeaponAK74::OnEmptyClick	(BOOL bHUDView)
+void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos	(sndEmptyClick,vLastFP);
 }
-void CWeaponAK74::OnDrawFlame	(BOOL bHUDView)
+void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 {
 	if (bHUDView &&	(0==Level().Cameras.GetEffector(cefShot)))	Level().Cameras.AddEffector(new CEffectorShot(camRelax,camDispersion));
 	
@@ -130,14 +131,14 @@ void CWeaponAK74::OnDrawFlame	(BOOL bHUDView)
 		P.add(D);
 	}
 }
-void CWeaponAK74::OnAnimationEnd()
+void CWeaponAutoRifle::OnAnimationEnd()
 {
 	switch (st_current)
 	{
 	case eReload:	ReloadMagazine();	break;	// End of reload animation
 	}
 }
-void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
+void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
 	pSounds->Play3DAtPos	(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
 	
@@ -159,7 +160,7 @@ void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide:
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }
-void CWeaponAK74::Update		(float dt, BOOL bHUDView)
+void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
 {
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
