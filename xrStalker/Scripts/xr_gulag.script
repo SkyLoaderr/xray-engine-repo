@@ -138,7 +138,7 @@ function fract:print()
 	end
 	printf("Jobs:")
 	for k,v in self.Job do
-		printf("name: %s, prior %d, state %d", v.name, v.prior, v.state)
+		printf("name: %s, prior %d", v.name, v.prior)
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
