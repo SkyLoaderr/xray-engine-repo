@@ -29,6 +29,7 @@ function random(low,up)
 	rnd		= rnd/10000
 	rnd		= rnd * (up - low)
 	rnd		= rnd + low
+	return	rnd
 end
 
 function action(obj,...)
