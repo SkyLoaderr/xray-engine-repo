@@ -312,6 +312,12 @@
 			<File
 				RelativePath="PhysicsShell.h">
 			</File>
+			<File
+				RelativePath="PlayerList.cpp">
+			</File>
+			<File
+				RelativePath="PlayerList.h">
+			</File>
 			<Filter
 				Name="Basic"
 				Filter="">

@@ -10,10 +10,17 @@ enum {
 	M_UPDATE				=0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 	M_DESTROY,					// TO:   Destroying
+
 	M_SV_CONFIG_GAME,
 	M_SV_CONFIG_FINISHED,
+
 	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
 	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
+
+	M_PLIST_ADD,
+	M_PLIST_REMOVE,
+	M_PLIST_UPDATE,
+
 	M_CHAT,						// DUAL:
 
 	M_EVENT,					// Game Event
@@ -61,6 +68,16 @@ M_EVENT
 	u32			dwTimestamp;
 	u16			type;
 	u16			destination;
+}
+
+M_PLIST_ADD
+{
+	u32			ID;
+	stringZ		name;
+}
+M_PLIST_REMOVE
+{
+	u32			ID;
 }
 
 M_SPAWN
@@ -240,6 +257,7 @@ GE_HIT									// попадание (пулей)
 GE_DIE
 {
 	u16			id_entity;				// dest=кто умер, entity=кому обязаны этим счастьем
+	u32			client;					// determined by server
 }
 */
 
