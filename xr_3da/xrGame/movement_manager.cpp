@@ -27,7 +27,7 @@ CMovementManager::~CMovementManager	()
 void CMovementManager::Init			()
 {
 	m_time_work						= 300*CPU::cycles_per_microsec;
-	m_speed							= 2.15f;
+	m_speed							= 0.f;
 	
 	set_enabled						(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
@@ -43,14 +43,6 @@ void CMovementManager::Init			()
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
-	Msg					("Position0 : [%f][%f][%f]",VPUSH(Position()));
-	{
-		Fvector				temp;
-		movement_control->GetPosition(temp);
-		Msg					("Position00 : [%f][%f][%f]",VPUSH(temp));
-//		movement_control->GetCharacterPosition(temp);
-//		Msg					("Position000 : [%f][%f][%f]",VPUSH(temp));
-	}
 	Fvector				motion;
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
@@ -58,7 +50,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 #endif
 
 	if (!get_enabled() || CDetailPathManager::m_path.empty() || (CDetailPathManager::m_path.size() - 1 <= CDetailPathManager::m_current_travel_point))	{
-		m_speed			= 0;
+		m_speed			= 0.f;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
 			motion.set	(0,0,0);
@@ -72,16 +64,14 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			Hit			(movement_control->gcontact_HealthLost,d,this,movement_control->ContactBone(),dest_position,0);
 		}
 #endif
-		Msg					("Position1 : [%f][%f][%f]",VPUSH(Position()));
 		return;
 	}
 
-	if (time_delta < EPS) {
-		Msg					("Position1 : [%f][%f][%f]",VPUSH(Position()));
+	if (time_delta < EPS)
 		return;
-	}
 #pragma todo("Dima to Kostia : Please change this piece of code to support paths with multiple desired velocities")
-	float				dist		=	CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed*time_delta;
+	float				speed		=	2.15f;//CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed
+	float				dist		=	speed*time_delta;
 	float				dist_save	=	dist;
 
 	dest_position		=	Position();
@@ -110,8 +100,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 	if (mdist < EPS_L) {
 		CDetailPathManager::m_current_travel_point = CDetailPathManager::m_path.size() - 1;
-		m_speed			= 0;
-		Msg				("Position1 : [%f][%f][%f]",VPUSH(Position()));
+		m_speed			= 0.f;
 		return;
 	}
 
@@ -148,16 +137,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 #endif
 	float				real_motion	= motion.magnitude() + dist_save-dist;
 	float				real_speed	= real_motion/time_delta;
-	m_speed				= 0.5f*m_speed + 0.5f*real_speed;
+	m_speed				= 0.5f*speed + 0.5f*real_speed;
 	Device.Statistic.Physics.End	();
-	Msg					("Position1 : [%f][%f][%f]",VPUSH(Position()));
-	{
-		Fvector				temp;
-		movement_control->GetPosition(temp);
-		Msg					("Position11 : [%f][%f][%f]",VPUSH(temp));
-//		movement_control->GetCharacterPosition(temp);
-//		Msg					("Position111 : [%f][%f][%f]",VPUSH(temp));
-	}
 }
 
 void CMovementManager::build_path()
