@@ -151,12 +151,6 @@ namespace Loki {
 #endif
 };
 
-#define final_object_type_list			Loki::NullType
-#define object_type_add(a)				typedef Loki::Typelist<a,final_object_type_list> object_type_list_##a;
-#define current_object_type_list(a)		object_type_list_##a
-
-#include "smart_container_types.h"
-
 template <typename T>
 struct pointer_type {
 	typedef DEFAULT_POINTER(T) result;
@@ -865,5 +859,3 @@ struct _container :
 
 template <typename type_list>
 struct _smart_container : public _container<typename Loki::TL::NoDuplicates<type_list>::Result> {};
-
-typedef _smart_container<final_object_type_list> smart_container;

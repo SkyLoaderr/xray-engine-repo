@@ -9,6 +9,14 @@
 #include "stdafx.h"	
 #include "smart_container.h"
 
+#define final_object_type_list			Loki::NullType
+#define object_type_add(a)				typedef Loki::Typelist<a,final_object_type_list> object_type_list_##a;
+#define current_object_type_list(a)		object_type_list_##a
+
+#include "smart_container_types.h"
+
+typedef _smart_container<final_object_type_list> smart_container;
+
 int __cdecl main()
 {
 	smart_container		container0, container1;
