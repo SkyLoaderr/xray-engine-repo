@@ -519,6 +519,7 @@ void CDeflector::Save()
 	}
 
 	// DEBUG: Lines
+	/*
 	{
 		// 5x expand
 		b_texture		temp;
@@ -560,6 +561,7 @@ void CDeflector::Save()
 		p.maketga		(temp.name);
 		_FREE			(temp.pSurface);
 	}
+	*/
 	
 	// Borders correction
 	for (DWORD _y=0; _y<512; _y++)
@@ -573,7 +575,8 @@ void CDeflector::Save()
 	}
 	for (DWORD ref=254; ref>0; ref--) ApplyBorders(lm,ref);
 
-	// DEBUG: Saving
+	// DEBUG: Saving	(32b.tga)
+	char	FN[_MAX_PATH];
 	{
 		sprintf			(lm.name,"L#%d",deflNameID);
 		TGAdesc			p;
@@ -585,11 +588,24 @@ void CDeflector::Save()
 		p.maketga		(lm.name);
 	}
 
-	// Saving
-	char FN[_MAX_PATH];
+	// Saving			(16b.dds)
+	{
+		sprintf	(lm.name,"L#%d",deflNameID				);
+		sprintf	(FN,"%s%sQ.dds",g_params.L_path,lm.name	);
+		BYTE*	raw_data		= LPBYTE(lm.pSurface);
+		DWORD	w				= lm.dwWidth;
+		DWORD	h				= lm.dwHeight;
+		DWORD	pitch			= w*4;
+
+		STextureParams fmt;
+		fmt.fmt					= STextureParams::tf565;
+		fmt.flag				= EF_DITHER | EF_NO_MIPMAP;
+		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
+	}
+
+	// Saving			(DXT1.dds)
 	sprintf	(lm.name,"L#%d",deflNameID);
 	sprintf	(FN,"%s%s.dds",g_params.L_path,lm.name);
-
 	R_ASSERT(xrDXTC_Compress(FN,eDXT1,FALSE,lm.pSurface,lm.dwWidth,lm.dwHeight,0xff));
 
 	_FREE			(lm.pSurface);

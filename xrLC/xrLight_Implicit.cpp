@@ -384,6 +384,7 @@ void CBuild::ImplicitLighting()
 			STextureParams* fmt		= &(TEX.THM);
 			DXTCompress				(out_name,raw_data,w,h,pitch,fmt,4);
 		}
+		/*
 		// Save markup
 		{
 			char	name[256];
@@ -401,5 +402,6 @@ void CBuild::ImplicitLighting()
 			p.maketga		(out_name);
 		}
 		_FREE(markup)
+		*/
 	}
 }
