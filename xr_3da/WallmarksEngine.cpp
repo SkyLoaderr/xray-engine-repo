@@ -112,7 +112,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	up.crossproduct		(sml_normal,right);
 	mView.build_camera	(from,at,up);
 	mScale.scale		(invsz,invsz,invsz);
-	mView.mul2			(mScale);
+	mView.mulA			(mScale);
 }
 
 void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, Shader* hShader, float sz)
@@ -126,7 +126,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	Fmatrix				mView,mRot;
 	BuildMatrix			(mView,1/sz,contact_point);
 	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
-	mView.mul2_43		(mRot);
+	mView.mulA_43		(mRot);
 	CFrustum			F;
 	F.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 

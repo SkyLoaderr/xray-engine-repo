@@ -89,7 +89,7 @@ void CObject::UpdateTransform( )
 	mScale.scale			(vScale);
 	mTranslate.translate	(vPosition);
 	svTransform.mul_43		(mTranslate,mRotate);
-	svTransform.mul_43		(mScale);
+	svTransform.mulB_43		(mScale);
 }
 
 void CObject::Load				( CInifile* ini, const char *section )

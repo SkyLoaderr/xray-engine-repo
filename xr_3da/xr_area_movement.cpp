@@ -588,12 +588,12 @@ void CObjectSpace::cl_Move( const CCFModel *object, const Fmatrix& X, const Fvec
 			mS.scale			(B.m_halfsize);
 			mEllipse.mul		(mR,mS);
 
-			Fmatrix				mEllipseInSSpace;
-			mEllipseInSSpace.mul(mInvXForm,mEllipse);
+			Fmatrix					mEllipseInSSpace;
+			mEllipseInSSpace.mul	(mInvXForm,mEllipse);
 			
-			Fmatrix				mScale2;
-			mScale2.scale		(1.1f,1.1f,1.1f);
-			mEllipseInSSpace.mul(mScale2);
+			Fmatrix					mScale2;
+			mScale2.scale			(1.1f,1.1f,1.1f);
+			mEllipseInSSpace.mulB	(mScale2);
 
 
 			// 3rd - set up structure

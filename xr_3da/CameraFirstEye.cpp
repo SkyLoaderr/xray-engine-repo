@@ -39,14 +39,14 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	rY.rotateY		(-noise_dangle.y);
 	rZ.rotateZ		(noise_dangle.z);
 	R.mul_43		(rY,rX);
-	R.mul_43		(rZ);
+	R.mulB_43		(rZ);
 	
-	mR.identity();
+	mR.identity		();
 	Fquaternion		Q;
 	Q.rotationYawPitchRoll(roll,yaw,pitch);
 	mR.rotation		(Q);
 	mR.transpose	();
-	mR.mul			(R);
+	mR.mulB			(R);
 	
 	vDirection.set	(mR.k);
 	vNormal.set		(mR.j);

@@ -52,13 +52,13 @@ public:
 				tc_trans	(xform,.5f,.5f);
 				if (tcm&tcmRotate) {
 					T.rotateZ		(rotate.Calculate(t)*t);
-					xform.mul2_43	(T);
+					xform.mulA_43	(T);
 				}
 				if (tcm&tcmScale) {
 					sU				= scaleU.Calculate(t);
 					sV				= scaleV.Calculate(t);
 					T.scale			(sU,sV,1);
-					xform.mul2_43	(T);
+					xform.mulA_43	(T);
 				}
 				if (tcm&tcmScroll) {
 					float u = scrollU.Calculate(t)*t; 
@@ -66,10 +66,10 @@ public:
                     u*=sU;
                     v*=sV;
 					tc_trans	(T, u, v );
-					xform.mul2_43(T);
+					xform.mulA_43	(T);
 				}
 				tc_trans		(T, -0.5f, -0.5f );
-				xform.mul_43	(T);
+				xform.mulB_43	(T);
 			}
 			return;
 		case modeS_refl:
