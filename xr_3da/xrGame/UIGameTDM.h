@@ -41,6 +41,8 @@ public:
 
 	virtual void		OnTeamSelect			(int Result);
 	virtual void		OnBuyMenu_Ok			();
+
+	virtual bool		CanBeReady				();
 protected:
 	void				InitBuyMenu				(s16 Team = -1);
 	/////////

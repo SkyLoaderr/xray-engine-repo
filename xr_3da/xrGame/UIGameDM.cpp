@@ -145,3 +145,18 @@ void CUIGameDM::OnBuyMenu_Ok	()
 
 	l_pPlayer->u_EventSend		(P);
 };
+
+bool		CUIGameDM::CanBeReady				()
+{
+	u8 res = 0xff;
+
+	res &=	pBuyMenu->GetWeaponIndex(KNIFE_SLOT);
+	res &=	pBuyMenu->GetWeaponIndex(PISTOL_SLOT);
+	res &=	pBuyMenu->GetWeaponIndex(RIFLE_SLOT);
+	res &=	pBuyMenu->GetWeaponIndex(GRENADE_SLOT);
+
+	if (res != 0xff) return true;
+
+	StartStopMenu(pBuyMenu);
+	return false;
+};

@@ -37,6 +37,9 @@ public:
 
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pBuyMenu; };
 
+	virtual bool		CanBeReady				();
+
+
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 //	CUIBuyWeaponWnd		UIBuyWeaponWnd;
