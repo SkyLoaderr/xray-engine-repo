@@ -131,7 +131,6 @@ void CDetailManager::hw_Unload()
 	_RELEASE					(hw_VB);
 }
 
-
 float	psDetail_w_rot1			= 30.f;
 float	psDetail_w_rot2			= 1.0f;
 float	psDetail_w_speed		= 2.f;

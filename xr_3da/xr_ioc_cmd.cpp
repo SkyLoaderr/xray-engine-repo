@@ -7,7 +7,6 @@
 #include "cameramanager.h"
 #include "environment.h"
 #include "xr_input.h"
-#include "fstaticrender_types.h"
 #include "xr_level_controller.h"
 #include "CustomHUD.h"
 
@@ -39,7 +38,6 @@ xr_token							vid_mode_token							[ ]={
 };
 xr_token							vid_bpp_token							[ ]={
 	{ "16",							16											},
-	{ "24",							24											},
 	{ "32",							32											},
 	{ 0,							0											}
 };
@@ -280,20 +278,7 @@ extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
-extern int			psSH_Blur;
-extern float		ssaDISCARD;
-extern float		ssaDONTSORT;
-extern float		ssaLOD_A;
-extern float		ssaLOD_B;
-extern float		ssaHZBvsTEX;
-extern float		psDetailDensity;
 extern int			psSheduler;
-extern float		psDetail_w_rot1;
-extern float		psDetail_w_rot2;
-extern float		psDetail_w_speed;
-extern float		psDetail_l_ambient;
-extern float		psDetail_l_aniso;
-extern int			psSupersample;
 extern Flags32		psEnvFlags;
 
 extern float		psTree_w_rot;
@@ -342,22 +327,13 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,rsPostprocess);
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,rsRefresh60hz);
 	
+	/*
 	CMD4(CCC_Float,		"rs_geometry_lod",		&QualityControl.fGeometryLOD, 0,2);
 	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512	);
 	CMD4(CCC_Float,		"rs_max_fps",			&QualityControl.fMaxFPS, 0, 512	);
-	CMD4(CCC_Float,		"rs_ssa_lod_a",			&ssaLOD_A,			16, 96		);
-	CMD4(CCC_Float,		"rs_ssa_lod_b",			&ssaLOD_B,			32, 64		);
-	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
-	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
-	CMD4(CCC_Float,		"rs_ssa_hzb_vs_tex",	&ssaHZBvsTEX,		16,	512		);
+	*/
 
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
-	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
-	CMD4(CCC_Float,		"rs_detail_w_rot1",		&psDetail_w_rot1,	1.f,180.f	);
-	CMD4(CCC_Float,		"rs_detail_w_rot2",		&psDetail_w_rot2,	1.f,180.f	);
-	CMD4(CCC_Float,		"rs_detail_w_speed",	&psDetail_w_speed,	1.f,4.f		);
-	CMD4(CCC_Float,		"rs_detail_l_ambient",	&psDetail_l_ambient,.5f,.95f	);
-	CMD4(CCC_Float,		"rs_detail_l_aniso",	&psDetail_l_aniso,	.1f,.5f		);
 
 	Fvector	tw_min,tw_max;
 	tw_min.set			(EPS,EPS,EPS);
@@ -374,8 +350,6 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"rs_glows_per_frame",	&psGlowsPerFrame,	2,		32	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
-	CMD4(CCC_Integer,	"rs_sh_blur",			&psSH_Blur,			0,		2	);
-	CMD4(CCC_Integer,	"rs_supersample",		&psSupersample,		0,		6	);
 	
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,3,		100	);
