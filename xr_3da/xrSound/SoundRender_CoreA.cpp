@@ -27,9 +27,9 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 
     // OpenAL device
     ALCubyte* 			        deviceSpecifier;
-    ALCubyte 			        deviceName[] = "DirectSound3D";
+//	ALCubyte 			        deviceName[] = "DirectSound3D";
     // OpenAL device
-    ALCdevice*	pDevice	        = alcOpenDevice		(deviceName);
+    ALCdevice*	pDevice	        = alcOpenDevice		(NULL);
     // Get the device specifier.
 #ifndef _EDITOR    
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
