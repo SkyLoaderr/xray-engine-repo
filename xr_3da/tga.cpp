@@ -56,7 +56,7 @@ void TGAdesc::maketga( IWriter& fs ){
 #ifdef XRLC
 void TGAdesc::maketga( char *fname )
 {
-	char FN[_MAX_PATH];
+	string_path FN;
 	sprintf(FN,(string(g_params.L_path)+"%s.tga").c_str(),fname);
 
 	CFS_File fs	(FN);

@@ -158,9 +158,9 @@ void CLocatorAPI::ProcessArchive(const char* path)
 	archives.push_back	(A);
 
 	// Create base path
-	string256			base;
+	string1024			base;
 	strcpy				(base,path);
-	*strext(base)		= 0;
+	if (strext(base))	*strext(base)	= 0;
 	strcat				(base,"\\");
 
 	// Read headers

@@ -187,7 +187,7 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 	// look next to the EXE first, as the one in System32 might be old 
 	// (e.g. Windows 2000)
 	HMODULE hDll	= NULL;
-	char szDbgHelpPath[_MAX_PATH];
+	string_path		szDbgHelpPath;
 
 	if (GetModuleFileName( NULL, szDbgHelpPath, _MAX_PATH ))
 	{
@@ -212,8 +212,8 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump" );
 		if (pDump)
 		{
-			char		szDumpPath	[_MAX_PATH];
-			char		szScratch	[_MAX_PATH];
+			string_path	szDumpPath;
+			string_path	szScratch;
 			string64	t_stemp;
 
 			// work out a good place for the dump file

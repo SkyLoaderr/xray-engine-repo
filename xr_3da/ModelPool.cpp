@@ -98,8 +98,8 @@ IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 {
 	IRender_Visual	*V;
-	string256		fn;
-	string256		name;
+	string512		fn;
+	string512		name;
 
 	// Add default ext if no ext at all
 	if (0==strext(N))	strconcat	(name,N,".ogf");

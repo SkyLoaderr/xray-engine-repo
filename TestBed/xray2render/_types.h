@@ -47,4 +47,6 @@ typedef	char	string1024	[1024];
 typedef	char	string2048	[2048];
 typedef	char	string4096	[4096];
 
+typedef	char	string_path	[_MAX_PATH];
+
 #endif
