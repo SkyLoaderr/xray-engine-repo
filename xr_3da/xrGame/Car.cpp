@@ -11,7 +11,7 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
-	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		true);
+	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
 }
 
 CCar::~CCar(void)
@@ -85,6 +85,9 @@ void	CCar::cam_Update			(float dt)
 	clCenter						(P);
 	Da.set							(0,0,0);
 
+	float yaw	= 0,p;
+	clXFORM().k.getHP(yaw,p);
+	camera->yaw						= yaw;
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }

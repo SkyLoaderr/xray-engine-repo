@@ -45,8 +45,8 @@ void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 	vNormal.set			(mR.j);
 
 	if (bRelativeLink){
-		parent->Rotation().transform_dir(vDirection);
-		parent->Rotation().transform_dir(vNormal);
+		parent->clXFORM().transform_dir(vDirection);
+		parent->clXFORM().transform_dir(vNormal);
 	}
 
 	Fvector				vDir;

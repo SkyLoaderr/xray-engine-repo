@@ -51,9 +51,9 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 	vDirection.set	(mR.k);
 	vNormal.set		(mR.j);
 
-	if (bRelativeLink){
-		parent->Rotation().transform_dir(vDirection);
-		parent->Rotation().transform_dir(vNormal);
+	if (bRelativeLink)	{
+		parent->clXFORM().transform_dir	(vDirection);
+		parent->clXFORM().transform_dir	(vNormal);
 	}
 
 	vPosition.set		(point);

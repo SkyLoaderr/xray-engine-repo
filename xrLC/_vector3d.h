@@ -278,7 +278,7 @@ public:
         y = _sp;
         z = _cp*_ch;
     }
-    IC	void	getHP	(T& h, T& p)
+    IC	void	getHP	(T& h, T& p) const
     {
         float hyp;
 
