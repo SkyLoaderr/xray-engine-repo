@@ -69,13 +69,11 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	UIItemImage.ClipperOn();
 	UIItemImageSize.set(UIItemImage.GetWidth(),UIItemImage.GetHeight());
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 {
-	if(pInvItem)
-	{
+	if(pInvItem){
 		CStringTable stbl;
 
 		string256 str;

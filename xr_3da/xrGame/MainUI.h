@@ -78,7 +78,8 @@ public:
 	int				ClientToScreenX					(int left, u32 align);
 	int				ClientToScreenY					(int top, u32 align);
 
-	void			PushScissor						(const Irect& r);
+	Irect			ScreenRect						();
+	void			PushScissor						(const Irect& r, bool overlapped=false);
 	void			PopScissor						();
 };
 
