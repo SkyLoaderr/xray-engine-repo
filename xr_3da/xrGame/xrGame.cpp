@@ -534,9 +534,14 @@ public:
 	  CConsoleCommand(N) 
 	  { bEmptyArgsHandled = TRUE; };
 	  virtual void Execute(LPCSTR args) {
-		  Console.Hide();
-		  char fn[256]; strconcat(fn,args,".xrdemo");
-		  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.3f));
+		  if (0==g_pGameLevel)
+		  {
+			  Msg	("! There are no level(s) started");
+		  } else {
+			  Console.Hide				();
+			  char fn[256]; strconcat	(fn,args,".xrdemo");
+			  g_pGameLevel->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.0f));
+		  }
 	  }
 };
 class CCC_Rain : public CConsoleCommand {

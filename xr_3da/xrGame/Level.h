@@ -18,9 +18,9 @@
 class CHUDManager;
 class CParticlesObject;
 
-#define DEFAULT_FOV 90.f
-
+#define DEFAULT_FOV				90.f
 const int maxGroups				= 32;
+
 class CSquad
 {
 public:

@@ -15,8 +15,8 @@
 
 CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time,FALSE)
 {
-	Msg("! Playing demo: %s",name);
-	Console.Execute("hud_weapon 0");
+	Msg				("! Playing demo: %s",name);
+	Console.Execute	("hud_weapon 0");
 	fStartTime	= 0;
 	fSpeed		= ms;
 	bCycle      = bc;
@@ -109,6 +109,11 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 	}
 	else
 	{
+		if (seq.empty()) {
+			g_pGameLevel->Cameras.RemoveEffector(cefDemo);
+			return TRUE;
+		}
+
 		fStartTime		+=	Device.fTimeDelta;
 		
 		float	ip;

@@ -282,7 +282,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 	} else if (E==eDisconnect) {
 		if (g_pGameLevel) {
 			Console.Hide			();
-			g_pGameLevel->net_Stop		();
+			g_pGameLevel->net_Stop	();
 			DEL_INSTANCE			(g_pGameLevel);
 			Console.Show			();
 		}
