@@ -262,58 +262,6 @@ SOURCE=.\DebugKernel.cpp
 SOURCE=.\DebugKernel.h
 # End Source File
 # End Group
-# Begin Group "Rapid"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\cl_bboxcollide.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_build.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_collector.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_collector.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_collide.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_defs.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_intersect.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_moments.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_overlap.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_RAPID.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_RAPID.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_raypick.cpp
-# End Source File
-# End Group
 # Begin Group "Generic"
 
 # PROP Default_Filter ""
