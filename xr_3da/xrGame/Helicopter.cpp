@@ -400,7 +400,6 @@ CHelicopter::Hit(	float P,
 void					
 CHelicopter::doHunt(CObject* dest)
 {
-	return;
 	if( m_curState==CHelicopter::eInitiateHunt				|| 
 		m_curState==CHelicopter::eMovingByAttackTraj		||
 		m_curState==CHelicopter::eInitiateWaitBetweenPatrol	||
