@@ -72,7 +72,7 @@ public:
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
 	void		r_dsgraph_insert_static							(IRender_Visual	*pVisual);
 
-	void		r_dsgraph_render_graph							(u32	_priority,	bool _clear);
+	void		r_dsgraph_render_graph							(u32	_priority,	bool _clear=true);
 	void		r_dsgraph_render_hud							();
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();
