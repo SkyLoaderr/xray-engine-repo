@@ -1,58 +1,6 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
     <!-- FINAL DIALOGS -->
-    <dialog id="general_pda_talk" pda="1">
-        <precondition>dialogs.is_bad_relation</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-            </phrase>
-            <phrase id="10">
-                <text />
-            </phrase>
-            <phrase id="2">
-                <text />
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="21">
-                <text />
-                <precondition>dialogs.want_trade</precondition>
-                <action>dialogs.trade_init</action>
-                <next>10</next>
-            </phrase>
-            <phrase id="22">
-                <text />
-                <precondition>dialogs.dont_want_trade</precondition>
-                <next>10</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="31">
-                <text />
-                <action>dialogs.helper_init</action>
-                <next>10</next>
-            </phrase>
-            <phrase id="32">
-                <text />
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="hello_dialog">
         <phrase_list>
             <phrase id="1">
@@ -81,7 +29,7 @@
         </phrase_list>
     </dialog>
     <dialog id="actor_help_wounded">
-		<precondition>dialogs.dialog_not_disable</precondition>
+        <precondition>dialogs.dialog_not_disable</precondition>
         <precondition>dialogs.is_opp_wounded</precondition>
         <phrase_list>
             <phrase id="141">
@@ -92,10 +40,6 @@
             </phrase>
             <phrase id="131">
                 <text>actor_help_wounded_131</text>
-            </phrase>
-            <phrase id="0">
-                <text>actor_help_wounded_0</text>
-                <next>1</next>
             </phrase>
             <phrase id="1">
                 <text>actor_help_wounded_1</text>
@@ -123,6 +67,144 @@
                 <precondition>dialogs.actor_have_medkit</precondition>
                 <action>dialogs.transfer_medkit</action>
                 <next>111</next>
+            </phrase>
+            <phrase id="0">
+                <text>actor_help_wounded_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="general_pda_talk" pda="1">
+        <precondition>dialogs.is_bad_relation</precondition>
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+            </phrase>
+            <phrase id="10">
+                <text></text>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <text></text>
+                <precondition>dialogs.want_trade</precondition>
+                <action>dialogs.trade_init</action>
+                <next>10</next>
+            </phrase>
+            <phrase id="22">
+                <text></text>
+                <precondition>dialogs.dont_want_trade</precondition>
+                <next>10</next>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="31">
+                <text></text>
+                <action>dialogs.helper_init</action>
+                <next>10</next>
+            </phrase>
+            <phrase id="32">
+                <text></text>
+                <next>10</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="companion_hire_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>companion_hire_dialog_1</text>
+            </phrase>
+            <phrase id="2">
+                <text>companion_hire_dialog_2</text>
+            </phrase>
+            <phrase id="0">
+                <text>companion_hire_dialog_0</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="companion_management_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text>companion_management_dialog_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+                <next>20</next>
+            </phrase>
+            <phrase id="11">
+                <text>companion_management_dialog_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="12">
+                <text>companion_management_dialog_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="121">
+                <text>companion_management_dialog_121</text>
+            </phrase>
+            <phrase id="13">
+                <text>companion_management_dialog_13</text>
+                <next>131</next>
+            </phrase>
+            <phrase id="131">
+                <text>companion_management_dialog_131</text>
+            </phrase>
+            <phrase id="111">
+                <text>companion_management_dialog_111</text>
+            </phrase>
+            <phrase id="14">
+                <text>companion_management_dialog_14</text>
+                <next>141</next>
+            </phrase>
+            <phrase id="141">
+                <text>companion_management_dialog_141</text>
+            </phrase>
+            <phrase id="15">
+                <text>companion_management_dialog_15</text>
+                <next>151</next>
+            </phrase>
+            <phrase id="151">
+                <text>companion_management_dialog_151</text>
+            </phrase>
+            <phrase id="16">
+                <text>companion_management_dialog_16</text>
+                <next>161</next>
+            </phrase>
+            <phrase id="161">
+                <text>companion_management_dialog_161</text>
+            </phrase>
+            <phrase id="0">
+                <text>companion_management_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="20">
+                <text>companion_management_dialog_20</text>
+                <next>201</next>
+            </phrase>
+            <phrase id="201">
+                <text>companion_management_dialog_201</text>
             </phrase>
         </phrase_list>
     </dialog>
