@@ -147,18 +147,18 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 	fs.w_u32		(vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bNeedNormals)	fs.w(V,6*sizeof(float));	// Position & normal
-		else				fs.w(V,3*sizeof(float));	// Position only
+		if (bNeedNormals)	fs.w(&*V,6*sizeof(float));	// Position & normal
+		else				fs.w(&*V,3*sizeof(float));	// Position only
 		if (bColors)		fs.w(&(V->Color),4);
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)
-			fs.w(V->UV.begin()+uv,2*sizeof(float));
+			fs.w(&*V->UV.begin()+uv,2*sizeof(float));
 	}
 	fs.close_chunk	();
 	
 	// Faces
 	fs.open_chunk(OGF_INDICES);
 	fs.w_u32	(faces.size()*3);
-	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(F,3*sizeof(WORD));
+	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(&*F,3*sizeof(WORD));
 	fs.close_chunk();
 }
 
@@ -189,8 +189,8 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 		g_VB.Begin		(FVF);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 		{
-			if (bNeedNormals)	g_VB.Add(V,6*sizeof(float));	// Position & normal
-			else				g_VB.Add(V,3*sizeof(float));	// Position only
+			if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
+			else				g_VB.Add(&*V,3*sizeof(float));	// Position only
 			if (bColors)		g_VB.Add(&(V->Color),4);
 			for (DWORD uv=0; uv<dwRelevantUV; uv++)
 				g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
@@ -205,7 +205,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 	fs.close_chunk	();
 	
 	// Faces
-	g_IB.Register	(LPWORD(faces.begin()),LPWORD(faces.end()),&ID,&Start);
+	g_IB.Register	(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ID,&Start);
 	fs.open_chunk	(OGF_ICONTAINER);
 	fs.w_u32		(ID);
 	fs.w_u32		(Start);
@@ -224,13 +224,13 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 		}
 		{
 			fs.open_chunk	(0x2);
-			fs.w			(pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
+			fs.w			(&*pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
 			fs.close_chunk	();
 		}
 		{
 			fs.open_chunk	(0x3);
 			fs.w_u32		(pmap_faces.size());
-			fs.w			(pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
+			fs.w			(&*pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
 			fs.close_chunk	();
 		}
 		fs.close_chunk();
@@ -272,8 +272,8 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	{
 		// Init
 		DWORD					V_Current,V_Minimal,FIX_Current;
-		WORD*					faces_affected	= (WORD*)pmap_faces.begin();
-		Vsplit*					vsplit			= (Vsplit*)pmap_vsplit.begin();
+		WORD*					faces_affected	= (WORD*)&*pmap_faces.begin();
+		Vsplit*					vsplit			= (Vsplit*)&*pmap_vsplit.begin();
 		V_Current				= V_Minimal		= dwMinVerts;
 		FIX_Current				= 0;
 		
@@ -285,7 +285,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 			if (dwSample==DWORD(samples-1))	dwCount = vertices.size	();
 			
 			if (V_Current!=dwCount) {
-				WORD* Indices	= (WORD*)faces.begin();
+				WORD* Indices	= (WORD*)&*faces.begin();
 				
 				// First cycle - try to improve quality
 				while (V_Current<dwCount) {
@@ -331,7 +331,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 			vecOGF_V		strip_verts;
 			try {
 				// Stripify
-				WORD* strip_F			= (WORD*)faces.begin(); 
+				WORD* strip_F			= (WORD*)&*faces.begin(); 
 				strip_indices.assign	(strip_F, strip_F+I_Current);
 				strip_permute.resize	(V_Current);
 				xrStripify				(strip_indices,strip_permute,g_params.m_vCacheSize,0);

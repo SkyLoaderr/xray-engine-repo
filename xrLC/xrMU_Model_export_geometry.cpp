@@ -85,6 +85,6 @@ void	xrMU_Model::export_geometry		()
 		}
 
 		// Indices
-		g_IB.Register	(LPWORD(it->ogf->faces.begin()),LPWORD(it->ogf->faces.end()),&it->ib_id,&it->ib_start);
+		g_IB.Register	(LPWORD(&*it->ogf->faces.begin()),LPWORD(&*it->ogf->faces.end()),&it->ib_id,&it->ib_start);
 	}
 }

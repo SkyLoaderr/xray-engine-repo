@@ -67,13 +67,13 @@ void OGF::Stripify()
 		xr_vector<WORD>	indices,permute;
 		
 		// Stripify
-		WORD* F			= (WORD*)faces.begin(); 
+		WORD* F			= (WORD*)&*faces.begin(); 
 		indices.assign	(F,F+(faces.size()*3));
 		permute.resize	(vertices.size());
 		xrStripify		(indices,permute,g_params.m_vCacheSize,0);
 		
 		// Copy faces
-		CopyMemory(faces.begin(),indices.begin(),indices.size()*sizeof(WORD));
+		CopyMemory		(&*faces.begin(),&*indices.begin(),indices.size()*sizeof(WORD));
 		
 		// Permute vertices
 		vecOGF_V temp_list = vertices;

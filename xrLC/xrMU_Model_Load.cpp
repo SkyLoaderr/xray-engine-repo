@@ -22,13 +22,13 @@ void xrMU_Model::Load	(IReader& F)
 	xr_vector<b_vertex>	b_vertices;
 	b_vertices.resize	(F.r_u32());
 	m_vertices.reserve	(b_vertices.size());
-	F.r					(b_vertices.begin(),b_vertices.size()*sizeof(b_vertex));
+	F.r					(&*b_vertices.begin(),b_vertices.size()*sizeof(b_vertex));
 
 	// READ: faces
 	xr_vector<b_face>		b_faces;
 	b_faces.resize		(F.r_u32());
 	m_faces.reserve		(b_faces.size());
-	F.r					(b_faces.begin(),b_faces.size()*sizeof(b_face));
+	F.r					(&*b_faces.begin(),b_faces.size()*sizeof(b_face));
 
 	// READ: lod-ID
 	F.r					(&m_lod_ID,2);
