@@ -1,6 +1,10 @@
-local time_walk = 60000
-local time_rest = 20000
+local time_walk 	= 60000
+local time_rest 	= 20000
 
+local time_to_speak = 10000     --Через какое время примерно зомби произносит фразы
+
+local walk_speak	= xr_sounds_id.zombe_walk_speak
+local stand_speak   = xr_sounds_id.zombe_stand_speak
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluator
 ---------------------------------------------------------------------------------------------------------------------
@@ -24,23 +28,51 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:initialize ()
     action_base.initialize 			(self)
+    self.a.time      = device():time_global() + time_to_speak
+    self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
 
     self.object:set_detail_path_type( move.line )
     self.object:set_movement_type   ( move.walk )
     self.object:set_body_state      ( move.standing )
     self.object:set_mental_state	( anim.free )
-    self.object:set_patrol_path		( "way3", patrol.nearest, patrol.continue, true )
+    self.object:set_patrol_path		( self.a.path, patrol.nearest, patrol.continue, true )
     self.object:set_path_type		( game_object.patrol_path )
     self.object:set_sight			( look.path_dir, nil, 0 )
     self.object:set_item            ( object.idle, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:execute ()
+    --Ходим, изредка произносим фразы
     action_base.execute 			(self)
+
     self.object:set_item            ( object.idle, self.object:best_weapon() )
     self.object:set_mental_state    ( anim.free )
-    self.object:set_sight           ( look.path_dir, nil, 0 )
-    self.object:set_path_type		( game_object.patrol_path )
+
+    if( device():time_global() > self.a.time ) then
+		--Давно уже ничего не говорили
+		self:speak()
+    end
+
+    if( self.a.stand and self.object:animation_count() == 0 ) then
+        --Если остановились и проиграли до конца анимацию, то снова идем
+        self.a.stand = false
+        printf( "1111111" )
+        self.object:set_movement_type( move.walk )
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function stalker_zombe_action:speak()
+    printf( "Speak" )
+    if( math.random() > 0.5 ) then
+    	self.object:play_sound( walk_speak, 1, 0, 1, 0, math.random( 0, 8 ) )
+    else
+        self.object:set_movement_type ( move.stand )
+        self.object:add_animation( "norm_torso_0_idle_1", true )
+		self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 4 ) )
+        self.a.stand = true
+    end
+
+    self.a.time = device():time_global() + ( 0.8 + math.random() ) * time_to_speak          --Запоминаем время, когда надо сказать следующую фразу( время всегда разное )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:finalize ()
@@ -52,30 +84,55 @@ end
 --patrol binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_zombe(obj)
+    printf( "id ========%d", obj:id() )
 
     local operators     = {}
     local properties    = {}
-	local st			= {}
+    local st            = {
+                            path     = nil,         --Путь, по которому ходить
+                            curState = 1,
+                            time     = 0,
+                            stand    = false,
+                            enabled  = true
+                          }
+    --Чтение данных из кастом даты
+    local char_ini = obj:spawn_ini()
+    if( char_ini:section_exist ("zombe") == true ) then
+        if( char_ini:line_exist("zombe", "path") == true ) then
+            st.path = char_ini:r_string("zombe", "path")
+            --printf( "Read path: %s", st.path )
+        else
+        	printf( "________Error.    Section zombe/path not found" )
+        end
+    else
+        printf( "________Error.    Section zombe not found" )
+    end
+
+    xr_motivator.storage[obj:id()] 		 = { zombe = {} }
+    xr_motivator.storage[obj:id()].zombe = st
 
     printf( "binding stalker zombe" )
-    --    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
 
-    properties[ "complete" ]          = xr_evaluators_id.jon_stalker_zombe
+    obj:add_sound ( "Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, stand_speak )
+    obj:add_sound ( "script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, walk_speak )
+
+    properties[ "zombee_alife" ]      = xr_evaluators_id.jon_stalker_zombe
     operators [ "stalker_zombe" ]     = xr_actions_id.jon_stalker_zombe
 
 
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "complete" ], const_evaluator ( false ) )
+    manager:add_evaluator ( properties[ "zombee_alife" ], const_evaluator( true )  )
 
-    local action = this.stalker_zombe_action ( "stalker_zombe_action", st )
+    local action = this.stalker_zombe_action ( "stalker_zombe_action", xr_motivator.storage[obj:id()].zombe )
+
     action:add_precondition         ( world_property ( stalker_ids.property_alive,   true ) )
     action:add_precondition         ( world_property ( stalker_ids.property_enemy,   false ) )
-    action:add_precondition         ( world_property ( properties[ "complete" ],     false ) )
-    action:add_effect               ( world_property ( properties[ "complete" ],     true ) )
+    action:add_precondition         ( world_property ( properties[ "zombee_alife" ], true ) )
+    action:add_effect               ( world_property ( properties[ "zombee_alife" ], false ) )
     manager:add_action              ( operators[ "stalker_zombe" ], action)
 
     action = manager:action (stalker_ids.action_free_no_alife)
-    action:add_precondition         ( world_property (properties["complete"],  true ) )
+    action:add_precondition         ( world_property (properties["zombee_alife"],     false ) )
 end
 
 -----------------------===========================------------------------------
@@ -256,10 +313,9 @@ function add_novice(obj)
     action:add_precondition         ( world_property (properties["work"],  false ) )
 end
 
-
-
 function bind_object( obj, name )
-	if( name == "zombe" ) then
+    if( global_sounds ) then printf( "= ========================" ) end
+    if( name == "zombe" ) then
     	this.add_zombe ( obj )
     elseif( name == "novice" ) then
     	this.add_novice( obj )
