@@ -55,7 +55,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 					tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
 				float dTemp = tpTemp->f;
 				TNode *tpTemp1 = tpTemp;
-				for (tpTemp = tpTemp->tpOpenedPrev; tpTemp; tpTemp = tpTemp->tpOpenedPrev)
+				for (tpTemp = tpTemp->tpOpenedPrev; ; tpTemp = tpTemp->tpOpenedPrev)
 					if (tpTemp->f <= dTemp) {
 						tpTemp1->tpOpenedNext = tpTemp->tpOpenedNext;
 						tpTemp1->tpOpenedPrev = tpTemp;

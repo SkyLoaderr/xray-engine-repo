@@ -13,7 +13,7 @@
 // Optimal paths
 //////////////////////////////////////////////////////////////////////////
 
-float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpaNodes)
+float CAI_Space::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpaNodes)
 {
 	SAIMapData			tData;
 	float				fDistance;
@@ -23,7 +23,7 @@ float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> 
 	return(fDistance);
 }
 
-float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks)
+float CAI_Space::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, bool bUseMarks)
 {
 	SAIMapData			tData;
 	float				fDistance;
@@ -33,7 +33,7 @@ float CAI_Space::vfFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	return(fDistance);
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
+float CAI_Space::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight, bool bUseMarks)
 {
 	SAIMapDataL			tData;
 	float				fDistance;
@@ -46,7 +46,7 @@ float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	return(fDistance);
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
+float CAI_Space::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, u32 dwEnemyNode, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	SAIMapDataE			tData;
 	float				fDistance;
@@ -62,7 +62,7 @@ float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Re
 	return(fDistance);
 }
 
-float CAI_Space::vfFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
+float CAI_Space::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	SAIMapDataF			tData;
 	float				fDistance;

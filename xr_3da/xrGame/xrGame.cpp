@@ -73,7 +73,7 @@ public:
 					if (min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",min(id1,id2));
 					else
-						Level().AI.vfFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+						Msg("* %7.2f",Level().AI.ffFindMinimalPath(id1,id2,Level().AI.m_tpaNodes));
 			else
 				Msg("! not enough parameters!");
 	}
