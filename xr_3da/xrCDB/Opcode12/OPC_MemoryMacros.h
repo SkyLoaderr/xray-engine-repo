@@ -21,7 +21,7 @@
 	//!	\see		CopyMemory
 	//!	\see		MoveMemory
 	//!	\warning	writes nb*4 bytes !
-	inline_ void StoreDwords(udword* dest, udword nb, udword value)
+/*	inline_ void StoreDwords(udword* dest, udword nb, udword value)
 	{
 		// The asm code below **SHOULD** be equivalent to one of those C versions
 		// or the other if your compiled is good: (checked on VC++ 6.0)
@@ -41,7 +41,7 @@
 		_asm pop ecx
 		_asm pop eax
 	}
-
+*/
 	#define SIZEOFOBJECT		sizeof(*this)									//!< Gives the size of current object. Avoid some mistakes (e.g. "sizeof(this)").
 	//#define CLEAROBJECT		{ memset(this, 0, SIZEOFOBJECT);	}			//!< Clears current object. Laziness is my business. HANDLE WITH CARE.
 	#define DELETESINGLE(x)		if (x) { delete x;				x = null; }		//!< Deletes an instance of a class.

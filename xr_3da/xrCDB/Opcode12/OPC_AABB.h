@@ -17,7 +17,7 @@
 //! Declarations of type-independent methods (implemented in the .cpp)
 #define AABB_COMMON_METHODS																							\
 	AABB&	Add(const AABB& aabb);																					\
-	float	CalculateBoxArea(const Point& eye, const Matrix4x4& mat, float width, float height, int& num)	const;	\
+	float	CalculateBoxArea(const icePoint& eye, const Matrix4x4& mat, float width, float height, int& num)	const;	\
 	bool	IsInside(const AABB& box)																		const;
 
 	enum AABBType
@@ -106,9 +106,9 @@
 		inline_			void		GetMax(Point& max)						const		{ max = mMax;								}
 
 		//! Get component of the box's min point along a given axis
-		inline_			float		GetMin(udword axis)						const		{ return mMin[axis];						}
+		inline_			float		GetMin(udword axis)						const		{ return ((const float*)mMin)[axis];						}
 		//! Get component of the box's max point along a given axis
-		inline_			float		GetMax(udword axis)						const		{ return mMax[axis];						}
+		inline_			float		GetMax(udword axis)						const		{ return ((const float*)mMax)[axis];						}
 
 		//! Get box center
 		inline_			void		GetCenter(Point& center)				const		{ center = (mMax + mMin)*0.5f;				}
@@ -116,9 +116,9 @@
 		inline_			void		GetExtents(Point& extents)				const		{ extents = (mMax - mMin)*0.5f;				}
 
 		//! Get component of the box's center along a given axis
-		inline_			float		GetCenter(udword axis)					const		{ return (mMax[axis] + mMin[axis])*0.5f;	}
+		inline_			float		GetCenter(udword axis)					const		{ return (((const float*)mMax)[axis] + ((const float*)mMin)[axis])*0.5f;	}
 		//! Get component of the box's extents along a given axis
-		inline_			float		GetExtents(udword axis)					const		{ return (mMax[axis] - mMin[axis])*0.5f;	}
+		inline_			float		GetExtents(udword axis)					const		{ return (((const float*)mMax)[axis] - ((const float*)mMin)[axis])*0.5f;	}
 
 		//! Get box diagonal
 		inline_			void		GetDiagonal(Point& diagonal)			const		{ diagonal = mMax - mMin;					}
@@ -158,7 +158,7 @@
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		inline_			bool		Intersect(const AABB& a, udword axis)	const
 						{
-							if(mMax[axis] < a.mMin[axis] || a.mMax[axis] < mMin[axis])	return false;
+							if(((const float*)mMax)[axis] < ((const float*)a.mMin)[axis] || ((const float*)a.mMax)[axis] < ((const float*)mMin)[axis])	return false;
 							return true;
 						}
 

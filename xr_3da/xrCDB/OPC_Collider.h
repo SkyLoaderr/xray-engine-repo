@@ -118,10 +118,10 @@
 		 *	\return		null if everything is ok, else a string describing the problem
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		virtual				const char*		ValidateSettings()	= 0
-							{
-								return "Collider::ValidateSettings: pure virtual function called!";
-							}
+		virtual				const char*		ValidateSettings()	= 0;
+//							{
+//								return "Collider::ValidateSettings: pure virtual function called!";
+//							}
 		protected:
 
 							udword			mFlags;		//!< Bit flags

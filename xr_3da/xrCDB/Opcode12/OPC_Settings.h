@@ -24,7 +24,7 @@
 	#define OPC_CPU_COMPARE
 
 	//! Use FCOMI / FCMOV on Pentium-Pro based processors (comment that line to use plain C++)
-	#define OPC_USE_FCOMI
+//	#define OPC_USE_FCOMI
 
 	//! Use epsilon value in tri-tri overlap test
 	#define OPC_TRITRI_EPSILON_TEST

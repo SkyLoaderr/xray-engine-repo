@@ -353,12 +353,12 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 
 #define PERFORM_QUANTIZATION														\
 	/* Quantize */																	\
-	mNodes[i].mAABB.mCenter[0] = sword(Nodes[i].mAABB.mCenter.x * CQuantCoeff.x);	\
-	mNodes[i].mAABB.mCenter[1] = sword(Nodes[i].mAABB.mCenter.y * CQuantCoeff.y);	\
-	mNodes[i].mAABB.mCenter[2] = sword(Nodes[i].mAABB.mCenter.z * CQuantCoeff.z);	\
-	mNodes[i].mAABB.mExtents[0] = uword(Nodes[i].mAABB.mExtents.x * EQuantCoeff.x);	\
-	mNodes[i].mAABB.mExtents[1] = uword(Nodes[i].mAABB.mExtents.y * EQuantCoeff.y);	\
-	mNodes[i].mAABB.mExtents[2] = uword(Nodes[i].mAABB.mExtents.z * EQuantCoeff.z);	\
+	((float*)mNodes[i].mAABB.mCenter)[0] = sword(Nodes[i].mAABB.mCenter.x * CQuantCoeff.x);	\
+	((float*)mNodes[i].mAABB.mCenter)[1] = sword(Nodes[i].mAABB.mCenter.y * CQuantCoeff.y);	\
+	((float*)mNodes[i].mAABB.mCenter)[2] = sword(Nodes[i].mAABB.mCenter.z * CQuantCoeff.z);	\
+	((float*)mNodes[i].mAABB.mExtents)[0] = uword(Nodes[i].mAABB.mExtents.x * EQuantCoeff.x);	\
+	((float*)mNodes[i].mAABB.mExtents)[1] = uword(Nodes[i].mAABB.mExtents.y * EQuantCoeff.y);	\
+	((float*)mNodes[i].mAABB.mExtents)[2] = uword(Nodes[i].mAABB.mExtents.z * EQuantCoeff.z);	\
 	/* Fix quantized boxes */														\
 	if(gFixQuantized)																\
 	{																				\
@@ -368,18 +368,18 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 		/* For each axis */															\
 		for(udword j=0;j<3;j++)														\
 		{	/* Dequantize the box center */											\
-			float qc = float(mNodes[i].mAABB.mCenter[j]) * mCenterCoeff[j];			\
+			float qc = float(((float*)mNodes[i].mAABB.mCenter)[j]) * ((float*)mCenterCoeff)[j];			\
 			bool FixMe=true;														\
 			do																		\
 			{	/* Dequantize the box extent */										\
-				float qe = float(mNodes[i].mAABB.mExtents[j]) * mExtentsCoeff[j];	\
+				float qe = float(((float*)mNodes[i].mAABB.mExtents)[j]) * ((float*)mExtentsCoeff)[j];	\
 				/* Compare real & dequantized values */								\
-				if(qc+qe<Max[j] || qc-qe>Min[j])	mNodes[i].mAABB.mExtents[j]++;	\
+				if(qc+qe<((float*)Max)[j] || qc-qe>((float*)Min)[j])	((float*)mNodes[i].mAABB.mExtents)[j]++;	\
 				else								FixMe=false;					\
 				/* Prevent wrapping */												\
-				if(!mNodes[i].mAABB.mExtents[j])									\
+				if(!((float*)mNodes[i].mAABB.mExtents)[j])									\
 				{																	\
-					mNodes[i].mAABB.mExtents[j]=0xffff;								\
+					((float*)mNodes[i].mAABB.mExtents)[j]=0xffff;								\
 					FixMe=false;													\
 				}																	\
 			}while(FixMe);															\

@@ -13,10 +13,10 @@
 
 //! Edge to edge test based on Franlin Antonio's gem: "Faster Line Segment Intersection", in Graphics Gems III, pp. 199-202
 #define EDGE_EDGE_TEST(V0, U0, U1)						\
-	Bx = U0[i0] - U1[i0];								\
-	By = U0[i1] - U1[i1];								\
-	Cx = V0[i0] - U0[i0];								\
-	Cy = V0[i1] - U0[i1];								\
+	Bx = ((const float*)U0)[i0] - ((const float*)U1)[i0];								\
+	By = ((const float*)U0)[i1] - ((const float*)U1)[i1];								\
+	Cx = ((const float*)V0)[i0] - ((const float*)U0)[i0];								\
+	Cy = ((const float*)V0)[i1] - ((const float*)U0)[i1];								\
 	f  = Ay*Bx - Ax*By;									\
 	d  = By*Cx - Bx*Cy;									\
 	if((f>0.0f && d>=0.0f && d<=f) || (f<0.0f && d<=0.0f && d>=f))	\
@@ -36,8 +36,8 @@
 #define EDGE_AGAINST_TRI_EDGES(V0, V1, U0, U1, U2)		\
 {														\
 	float Bx,By,Cx,Cy,d,f;								\
-	const float Ax = V1[i0] - V0[i0];					\
-	const float Ay = V1[i1] - V0[i1];					\
+	const float Ax = ((const float*)V1)[i0] - ((const float*)V0)[i0];					\
+	const float Ay = ((const float*)V1)[i1] - ((const float*)V0)[i1];					\
 	/* test edge U0,U1 against V0,V1 */					\
 	EDGE_EDGE_TEST(V0, U0, U1);							\
 	/* test edge U1,U2 against V0,V1 */					\
@@ -51,20 +51,20 @@
 {														\
 	/* is T1 completly inside T2? */					\
 	/* check if V0 is inside tri(U0,U1,U2) */			\
-	float a  = U1[i1] - U0[i1];							\
-	float b  = -(U1[i0] - U0[i0]);						\
-	float c  = -a*U0[i0] - b*U0[i1];					\
-	float d0 = a*V0[i0] + b*V0[i1] + c;					\
+	float a  = ((const float*)U1)[i1] - ((const float*)U0)[i1];							\
+	float b  = -(((const float*)U1)[i0] - ((const float*)U0)[i0]);						\
+	float c  = -a*((const float*)U0)[i0] - b*((const float*)U0)[i1];					\
+	float d0 = a*((const float*)V0)[i0] + b*((const float*)V0)[i1] + c;					\
 														\
-	a  = U2[i1] - U1[i1];								\
-	b  = -(U2[i0] - U1[i0]);							\
-	c  = -a*U1[i0] - b*U1[i1];							\
-	const float d1 = a*V0[i0] + b*V0[i1] + c;			\
+	a  = ((const float*)U2)[i1] - ((const float*)U1)[i1];								\
+	b  = -(((const float*)U2)[i0] - ((const float*)U1)[i0]);							\
+	c  = -a*((const float*)U1)[i0] - b*((const float*)U1)[i1];							\
+	const float d1 = a*((const float*)V0)[i0] + b*((const float*)V0)[i1] + c;			\
 														\
-	a  = U0[i1] - U2[i1];								\
-	b  = -(U0[i0] - U2[i0]);							\
-	c  = -a*U2[i0] - b*U2[i1];							\
-	const float d2 = a*V0[i0] + b*V0[i1] + c;			\
+	a  = ((const float*)U0)[i1] - ((const float*)U2)[i1];								\
+	b  = -(((const float*)U0)[i0] - ((const float*)U2)[i0]);							\
+	c  = -a*((const float*)U2)[i0] - b*((const float*)U2)[i1];							\
+	const float d2 = a*((const float*)V0)[i0] + b*((const float*)V0)[i1] + c;			\
 	if(d0*d1>0.0f)										\
 	{													\
 		if(d0*d2>0.0f) return TRUE;						\
@@ -78,9 +78,9 @@ BOOL CoplanarTriTri(const Point& n, const Point& v0, const Point& v1, const Poin
 	short i0,i1;
 	/* first project onto an axis-aligned plane, that maximizes the area */
 	/* of the triangles, compute indices: i0,i1. */
-	A[0] = _abs(n[0]);
-	A[1] = _abs(n[1]);
-	A[2] = _abs(n[2]);
+	A[0] = _abs(((float*)n)[0]);
+	A[1] = _abs(((float*)n)[1]);
+	A[2] = _abs(((float*)n)[2]);
 	if(A[0]>A[1])
 	{
 		if(A[0]>A[2])
@@ -233,21 +233,21 @@ inline_ BOOL AABBTreeCollider::TriTriOverlap(const Point& V0, const Point& V1, c
 	const Point D = N1^N2;
 
 	// Compute and index to the largest component of D
-	float max=_abs(D[0]);
+	float max=_abs(((const float*)D)[0]);
 	short index=0;
-	float bb=_abs(D[1]);
-	float cc=_abs(D[2]);
+	float bb=_abs(((const float*)D)[1]);
+	float cc=_abs(((const float*)D)[2]);
 	if(bb>max) max=bb,index=1;
 	if(cc>max) max=cc,index=2;
 
 	// This is the simplified projection onto L
-	const float vp0 = V0[index];
-	const float vp1 = V1[index];
-	const float vp2 = V2[index];
+	const float vp0 = ((const float*)V0)[index];
+	const float vp1 = ((const float*)V1)[index];
+	const float vp2 = ((const float*)V2)[index];
 
-	const float up0 = U0[index];
-	const float up1 = U1[index];
-	const float up2 = U2[index];
+	const float up0 = ((const float*)U0)[index];
+	const float up1 = ((const float*)U1)[index];
+	const float up2 = ((const float*)U2)[index];
 
 	// Compute interval for triangle 1
 	float a,b,c,x0,x1;

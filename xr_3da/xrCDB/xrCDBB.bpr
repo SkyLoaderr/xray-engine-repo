@@ -4,7 +4,21 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\xrCDBB.dll"/>
-    <OBJFILES value=""/>
+    <OBJFILES value="Intermediate\xrCDB_ray.obj Intermediate\OPC_AABB.obj 
+      Intermediate\OPC_AABBCollider.obj Intermediate\OPC_AABBTree.obj 
+      Intermediate\OPC_Collider.obj Intermediate\OPC_Common.obj 
+      Intermediate\OPC_Container.obj Intermediate\OPC_Matrix3x3.obj 
+      Intermediate\OPC_Matrix4x4.obj Intermediate\OPC_Model.obj 
+      Intermediate\OPC_OBB.obj Intermediate\OPC_OBBCollider.obj 
+      Intermediate\OPC_OptimizedTree.obj Intermediate\OPC_Plane.obj 
+      Intermediate\OPC_PlanesCollider.obj Intermediate\OPC_Point.obj 
+      Intermediate\OPC_Ray.obj Intermediate\OPC_RayCollider.obj 
+      Intermediate\OPC_SphereCollider.obj Intermediate\OPC_TreeBuilders.obj 
+      Intermediate\OPC_TreeCollider.obj Intermediate\OPC_Triangle.obj 
+      Intermediate\OPC_VolumeCollider.obj Intermediate\Opcode.obj 
+      Intermediate\StdAfx.obj Intermediate\xrCDB.obj Intermediate\xrCDB_box.obj 
+      Intermediate\xrCDB_Collector.obj Intermediate\xrCDB_frustum.obj 
+      Intermediate\Frustum.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -51,6 +65,36 @@
   </LINKER>
   <FILELIST>
       <FILE FILENAME="xrCDBB.bpf" FORMNAME="" UNITNAME="xrCDBB" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB_ray.cpp" FORMNAME="" UNITNAME="xrCDB_ray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_AABB.cpp" FORMNAME="" UNITNAME="OPC_AABB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_AABBCollider.cpp" FORMNAME="" UNITNAME="OPC_AABBCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_AABBTree.cpp" FORMNAME="" UNITNAME="OPC_AABBTree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Collider.cpp" FORMNAME="" UNITNAME="OPC_Collider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Common.cpp" FORMNAME="" UNITNAME="OPC_Common.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Container.cpp" FORMNAME="" UNITNAME="OPC_Container.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Matrix3x3.cpp" FORMNAME="" UNITNAME="OPC_Matrix3x3.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Matrix4x4.cpp" FORMNAME="" UNITNAME="OPC_Matrix4x4.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Model.cpp" FORMNAME="" UNITNAME="OPC_Model.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_OBB.cpp" FORMNAME="" UNITNAME="OPC_OBB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_OBBCollider.cpp" FORMNAME="" UNITNAME="OPC_OBBCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_OptimizedTree.cpp" FORMNAME="" UNITNAME="OPC_OptimizedTree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Plane.cpp" FORMNAME="" UNITNAME="OPC_Plane.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_PlanesCollider.cpp" FORMNAME="" UNITNAME="OPC_PlanesCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Point.cpp" FORMNAME="" UNITNAME="OPC_Point.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Ray.cpp" FORMNAME="" UNITNAME="OPC_Ray.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_RayCollider.cpp" FORMNAME="" UNITNAME="OPC_RayCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_SphereCollider.cpp" FORMNAME="" UNITNAME="OPC_SphereCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_TreeBuilders.cpp" FORMNAME="" UNITNAME="OPC_TreeBuilders.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_TreeCollider.cpp" FORMNAME="" UNITNAME="OPC_TreeCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_Triangle.cpp" FORMNAME="" UNITNAME="OPC_Triangle.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="OPC_VolumeCollider.cpp" FORMNAME="" UNITNAME="OPC_VolumeCollider.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Opcode.cpp" FORMNAME="" UNITNAME="Opcode.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StdAfx.cpp" FORMNAME="" UNITNAME="StdAfx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB.cpp" FORMNAME="" UNITNAME="xrCDB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB_box.cpp" FORMNAME="" UNITNAME="xrCDB_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB_Collector.cpp" FORMNAME="" UNITNAME="xrCDB_Collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB_frustum.cpp" FORMNAME="" UNITNAME="xrCDB_frustum.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Frustum.cpp" FORMNAME="" UNITNAME="Frustum.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

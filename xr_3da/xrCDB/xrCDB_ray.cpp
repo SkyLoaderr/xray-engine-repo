@@ -261,3 +261,6 @@ void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fve
 		}
 	}
 }
+
+
+

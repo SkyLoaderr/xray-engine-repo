@@ -38,21 +38,6 @@
 		return FR(FloatBits);
 	}
 
-	//! Fast square root for floating-point values.
-	inline_ float FastSqrt(float square)
-	{
-			float retval;
-
-			__asm {
-					mov             eax, square
-					sub             eax, 0x3F800000
-					sar             eax, 1
-					add             eax, 0x3F800000
-					mov             [retval], eax
-			}
-			return retval;
-	}
-
 	//! Saturates positive to zero.
 	inline_ float fsat(float f)
 	{
@@ -181,7 +166,7 @@
 	#define FCMOVNB_ST2	_asm	_emit	0xdb	_asm	_emit	0xc2
 
 	//! A global function to find MAX(a,b,c) using FCOMI/FCMOV
-	inline_ float FCMax3(float a, float b, float c)
+/*	inline_ float FCMax3(float a, float b, float c)
 	{
 		float Res;
 		_asm	fld		[a]
@@ -211,7 +196,7 @@
 		_asm	fcompp
 		return Res;
 	}
-
+*/
 	inline_ int ConvertToSortable(float f)
 	{
 		int& Fi = (int&)f;

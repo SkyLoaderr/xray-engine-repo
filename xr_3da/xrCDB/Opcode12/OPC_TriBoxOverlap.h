@@ -13,8 +13,8 @@ inline_ BOOL planeBoxOverlap(const Point& normal, const float d, const Point& ma
 	Point vmin, vmax;
 	for(udword q=0;q<=2;q++)
 	{
-		if(normal[q]>0.0f)	{ vmin[q]=-maxbox[q]; vmax[q]=maxbox[q]; }
-		else				{ vmin[q]=maxbox[q]; vmax[q]=-maxbox[q]; }
+		if(((const float*)normal)[q]>0.0f)	{ ((float*)vmin)[q]=-((const float*)maxbox)[q]; ((float*)vmax)[q]=((const float*)maxbox)[q]; }
+		else								{ ((float*)vmin)[q]=((const float*)maxbox)[q]; ((float*)vmax)[q]=-((const float*)maxbox)[q]; }
 	}
 	if((normal|vmin)+d>0.0f) return FALSE;
 	if((normal|vmax)+d>=0.0f) return TRUE;

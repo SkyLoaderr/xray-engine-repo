@@ -112,7 +112,7 @@
 		virtual									~AABBTreeOfAABBsBuilder()					{}
 
 		override(AABBTreeBuilder)	bool		ComputeGlobalBox(const udword* primitives, udword nb_prims, AABB& global_box)	const;
-		override(AABBTreeBuilder)	float		GetSplittingValue(udword index, udword axis)	const;
+		virtual	float		GetSplittingValue(udword index, udword axis)	const;
 
 		const						AABB*		mAABBList;			//!< Shortcut to an app-controlled list of AABBs.
 	};
