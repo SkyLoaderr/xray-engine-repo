@@ -127,7 +127,7 @@ function action_zoneguard_activity:execute()
 	end
 
 	if self.sound_activated then
-		printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
+		--printf("_bp: zoneguard: sound_update: maxidle = %d, sumidle = %s", self.snd.maxidle, self.snd.sumidle)
 		xr_sound.sound_update(self.object, self.snd)
 	end
 	
