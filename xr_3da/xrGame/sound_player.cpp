@@ -106,7 +106,7 @@ bool CSoundPlayer::check_sound_legacy(u32 internal_type) const
 		return						(false);
 	}
 
-//	VERIFY							(m_sounds.end() != J);
+	VERIFY							(m_sounds.end() != J);
 	const CSoundCollection			&sound = (*J).second;
 	if (sound.m_synchro_mask & m_sound_mask)
 		return						(false);

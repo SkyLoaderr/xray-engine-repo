@@ -138,7 +138,7 @@ void CStalkerMovementManager::reinit				()
 {
 	inherited::reinit					();
 	m_stalker->m_body.speed				= PI_MUL_2;
-	m_head.speed						= PI_DIV_2;
+	m_head.speed						= 3*PI_DIV_2;
 
 	m_current.m_use_desired_position	= false;
 	m_current.m_use_desired_direction	= false;

@@ -112,6 +112,7 @@ void CAI_Stalker::Die				()
 {
 	SelectAnimation					(XFORM().k,direction(),speed());
 
+	set_sound_mask					(0);
 	play							(eStalkerSoundDie);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
@@ -338,6 +339,7 @@ void CAI_Stalker::UpdateCL()
 	m_pPhysics_support->in_UpdateCL	();
 
 	if (g_Alive()) {
+		VERIFY						(!m_pPhysicsShell);
 		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
 		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
@@ -566,7 +568,6 @@ void CAI_Stalker::Think			()
 	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 	CSSetupManager::update			();
-//	Msg								("Active sounds %d, playing %d, stopped %d",CSoundPlayer::playing_sounds().size(),CSoundPlayer::active_sound_count(true),CSoundPlayer::active_sound_count() - CSoundPlayer::active_sound_count(true));
 }
 
 void CAI_Stalker::save (NET_Packet &output_packet)
