@@ -506,6 +506,11 @@ void  CMissile::UpdateFP()
 
 void CMissile::activate_physic_shell()
 {
+	if (!dynamic_cast<CMissile*>(H_Parent())) {
+		inherited::activate_physic_shell();
+		return;
+	}
+	
 	Fvector l_vel;
 	l_vel.set(m_throw_direction);
 	l_vel.normalize();

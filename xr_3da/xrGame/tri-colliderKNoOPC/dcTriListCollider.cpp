@@ -50,12 +50,8 @@ extern "C" int dSortTriBoxCollide (
 								   )
 {
 
-
-	//	Log("in dSortTriBoxCollide");
-	//Msg("%f",dInfinity);
 	int			ret	=	0;
 	Triangle	tri;
-	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
 	dxGeomUserData* data=dGeomGetUserData(o1);
 	Triangle* neg_tri=&(data->neg_tri);
 	Triangle* b_neg_tri=&(data->b_neg_tri);
@@ -64,22 +60,16 @@ extern "C" int dSortTriBoxCollide (
 	bool* pushing_neg=&data->pushing_neg;
 	bool* pushing_b_neg=&data->pushing_b_neg;
 	pos_tries.clear	();
-	//neg_tries.clear	();
-	//pos_dist=dInfinity,
 	dReal neg_depth=dInfinity,b_neg_depth=dInfinity;
-	//dReal max_proj=-dInfinity,proj;
 	const dReal* p=dGeomGetPosition(o1);
 	UINT	b_count		=0			;
 	bool	intersect	=	false	;
-	//dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
-
+	bool	no_last_pos	=last_pos[0]==-dInfinity;
 
 	dVector3 hside;
 	dGeomBoxGetLengths(o1,hside);
 	hside[0]/=2.f;hside[2]/=2.f;hside[2]/=2.f;
 	const dReal *R = dGeomGetRotation(o1);
-
-	//if(last_pos[0]==dInfinity) Memory.mem_copy(last_pos,p,sizeof(dVector3));
 
 	if(*pushing_neg){
 		dReal sidePr=
@@ -116,26 +106,6 @@ extern "C" int dSortTriBoxCollide (
 
 
 
-	/*
-	if(pushing_neg){
-	ret+=dSortedTriBox(neg_tri->side0,neg_tri->side1,neg_tri->norm,
-	neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->dist,
-	o1,o2,flags,
-	CONTACT(contact, ret * skip),
-	skip);	
-	return ret;
-	}
-
-	if(pushing_b_neg){
-	ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
-	b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->dist,
-	o1,o2,flags,
-	CONTACT(contact, ret * skip),
-	skip);	
-	return ret;
-	}
-
-	*/
 
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
@@ -167,7 +137,7 @@ extern "C" int dSortTriBoxCollide (
 				{
 					if(!(*pushing_neg||*pushing_b_neg))
 					{
-						if(last_pos[0]!=-dInfinity)
+						if(!no_last_pos)
 						{
 						
 						dVector3 tri_point;
@@ -197,7 +167,7 @@ extern "C" int dSortTriBoxCollide (
 							{
 								neg_depth=tri.depth;
 								(*neg_tri)=tri;
-								//		pushing_neg_reset=true;
+
 							}
 
 
@@ -207,14 +177,13 @@ extern "C" int dSortTriBoxCollide (
 						if(b_neg_depth>tri.depth){
 							b_neg_depth=tri.depth;
 							(*b_neg_tri)=tri;
-							//	pushing_b_neg_reset=true;
+
 						}
 					}
 				}
 		}
 		else{
 			pos_tries.push_back(tri);
-			//if(tri.dist<pos_dist) pos_dist=tri.dist;
 		}
 	}
 
@@ -222,32 +191,31 @@ extern "C" int dSortTriBoxCollide (
 	xr_vector<Triangle>::iterator i;
 
 
-
-	//(*pushing_neg)=(*pushing_neg)&&(!ret);
-
-
-
-	if(neg_depth<dInfinity&&ret==0&&intersect){
+	if(neg_depth<dInfinity&&ret==0&&intersect)
+	{
 		bool include = true;
-		/*
-		for(i=pos_tries.begin();pos_tries.end() != i;++i){
-		if(TriContainPoint(
-		//i->v0,i->v1,i->v2,
-		(dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
-		i->norm,i->side0,
-		i->side1,p))
-		if((dDOT(neg_tri->norm,(dReal*)i->T->verts[0])-neg_tri->pos)<0.f||
-		(dDOT(neg_tri->norm,(dReal*)i->T->verts[1])-neg_tri->pos)<0.f||
-		(dDOT(neg_tri->norm,(dReal*)i->T->verts[2])-neg_tri->pos)<0.f
-		){
-		include=false;
-		break;
-		}
-		};
-		*/		
+		if(no_last_pos)
+			for(i=pos_tries.begin();pos_tries.end() != i;++i)
+			{
+				if(TriContainPoint(
+					(dReal*)&V_array[i->T->verts[0]],
+					(dReal*)&V_array[i->T->verts[1]],
+					(dReal*)&V_array[i->T->verts[2]],
+					i->norm,i->side0,
+					i->side1,p))
+				if(
+					!((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-neg_tri->pos)>0.f)||
+					!((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-neg_tri->pos)>0.f)||
+					!((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-neg_tri->pos)>0.f)
+					){
+						include=false;
+						break;
+					}
+			};
+
 		if(include){		
-			ret+=dSortedTriBox(neg_tri->side0,neg_tri->side1,neg_tri->norm,
-				//neg_tri->v0,neg_tri->v1,neg_tri->v2,
+			ret+=dSortedTriBox(
+				neg_tri->side0,neg_tri->side1,neg_tri->norm,
 				neg_tri->T,
 				neg_tri->dist,
 				o1,o2,flags,
@@ -258,8 +226,7 @@ extern "C" int dSortTriBoxCollide (
 
 	}
 
-	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
-	//if(ret==0)
+
 	for(i=pos_tries.begin();pos_tries.end() != i;++i){
 		CDB::TRI* T=i->T;
 		ret+=dTriBox (
@@ -272,32 +239,32 @@ extern "C" int dSortTriBoxCollide (
 			3,
 			CONTACT(contact, ret * skip),   skip);
 
-		//for(int i=0;i<add;++i)
-
-		//ret+=add;
 	}
-	//((b_count>1)||(*pushing_b_neg))&&
+
+
 
 	if(b_neg_depth<dInfinity&&ret==0&&intersect){
 
 		bool include = true;
+		if(no_last_pos)
+			for(i=pos_tries.begin();pos_tries.end() != i;++i){
+				if(
+					!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-b_neg_tri->pos)>0.f)||
+					!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-b_neg_tri->pos)>0.f)||
+					!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-b_neg_tri->pos)>0.f)
 
-		for(i=pos_tries.begin();pos_tries.end() != i;++i){
-			if(
-				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-b_neg_tri->pos)>0.f)||
-				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-b_neg_tri->pos)>0.f)||
-				!((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-b_neg_tri->pos)>0.f)
-				
-				){
-					include=false;
-					break;
-				}
-		};
+					){
+						include=false;
+						break;
+					}
+			};
 
 		if(include)	
 		{	
-			ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
-				//b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,
+			ret+=dSortedTriBox(
+				b_neg_tri->side0,
+				b_neg_tri->side1,
+				b_neg_tri->norm,
 				b_neg_tri->T,
 				b_neg_tri->dist,
 				o1,o2,flags,
@@ -311,10 +278,8 @@ extern "C" int dSortTriBoxCollide (
 	return ret;
 }
 
-int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts, int Stride){
-
-	//	dcOBBTreeCollider& Collider = OBBCollider;
-
+int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts, int Stride)
+{
 
 
 	/* Get box */
@@ -325,11 +290,6 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	Fvector BoxExtents;
 
 	BoxCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Box));
-	//dVector3 BoxSides;///=(dReal*)BoxExtents;
-
-
-	//dGeomBoxGetLengths(Box, BoxSides);
-
 
 	dVector3 BoxSides;
 	dGeomBoxGetLengths(Box,BoxSides);
@@ -366,34 +326,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 		R_begin,R_end,T_array,V_array,AABB
 		);
 
-	/*
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
-	{
-	CDB::TRI* T = T_array + Res->id;
-	//
-	// T->verts[0];
-	// T->verts[1];
-	// T->verts[2];
 
-	// 
-	if(	true
-	//CDB::TestBBoxTri(RM,*BoxCenter,BoxExtents,T->verts,false)
-	)
-	{
-	///reinterpret_cast<dReal*> (&(*(T->verts))[1])
-	OutTriCount+=dTriBox ((dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
-	Box,
-	Geometry,
-	3,
-	CONTACT(Contacts, OutTriCount * Stride),   Stride);
-
-
-
-	}
-	}
-
-	return OutTriCount;
-	*/
 }
 
 
@@ -631,13 +564,6 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 float ContactDepth= dDOT(triAx,v0) - dDOT(SphereCenter,triAx) + SphereRadius;
 						 if (ContactDepth >= 0){
 
-
-
-
-
-
-							 //dContactGeom* Contact = CONTACT(Contacts, Skip);
-
 							 Contacts->normal[0] =-ContactNormal[0];
 							 Contacts->normal[1] =-ContactNormal[1];
 							 Contacts->normal[2] =-ContactNormal[2];
@@ -652,7 +578,6 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 							 ((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
 							 SURFACE(Contacts,0)->mode=T->material;
 							 //////////////////////////////////
-							 //	++OutTriCount;
 							 return 1;
 
 
@@ -679,7 +604,6 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 //Msg("%f",dInfinity);
 						 int ret=0;
 						 Triangle tri;
-						 //bool pushing_b_neg_reset=false,pushing_neg_reset=false;
 						 dxGeomUserData* data=dGeomGetUserData(o1);
 						 Triangle* neg_tri=&(data->neg_tri);
 						 Triangle* b_neg_tri=&(data->b_neg_tri);
@@ -695,13 +619,8 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 const dReal* p=dGeomGetPosition(o1);
 						 UINT b_count=0;
 						 bool intersect=false;
-						 //dVector3 pos_vect={last_pos[0]-p[0],last_pos[1]-p[1],last_pos[2]-p[2]};
-
-
+						 bool	no_last_pos	=last_pos[0]==-dInfinity;
 						 dReal sidePr=dGeomSphereGetRadius(o1);
-
-						 //if(last_pos[0]==dInfinity) Memory.mem_copy(last_pos,p,sizeof(dVector3));
-
 						 if(*pushing_neg){
 							 neg_tri->dist=dDOT(p,neg_tri->norm)-neg_tri->pos;
 							 neg_tri->depth=sidePr-neg_tri->dist;
@@ -754,7 +673,7 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 									 {
 										 if(!(*pushing_neg||*pushing_b_neg))
 										 {
-											 if(last_pos[0]!=-dInfinity)
+											 if(!no_last_pos)
 											 {
 
 												 dVector3 tri_point;
@@ -783,7 +702,6 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 												 {
 													 neg_depth=tri.depth;
 													 (*neg_tri)=tri;
-													 //		pushing_neg_reset=true;
 												 }
 
 
@@ -793,42 +711,37 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 											 if(b_neg_depth>tri.depth){
 												 b_neg_depth=tri.depth;
 												 (*b_neg_tri)=tri;
-												 //	pushing_b_neg_reset=true;
 											 }
 										 }
 									 }
 							 }
 							 else{
 								 pos_tries.push_back(tri);
-								 //if(tri.dist<pos_dist) pos_dist=tri.dist;
-							 }
+								 }
 						 }
-
 
 						 xr_vector<Triangle>::iterator i;
 
-
-
-						 //(*pushing_neg)=(*pushing_neg)&&(!ret);
-
-
-
 						 if(neg_depth<dInfinity&&ret==0&&intersect){
 							 bool include = true;
-							 /*
-							 for(i=pos_tries.begin();pos_tries.end() != i;++i){
-							 if(TriContainPoint((dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
-							 i->norm,i->side0,
-							 i->side1,p))
-							 if((dDOT(neg_tri->norm,(dReal*)i->T->verts[0])-neg_tri->pos)<0.f||
-							 (dDOT(neg_tri->norm,(dReal*)i->T->verts[1])-neg_tri->pos)<0.f||
-							 (dDOT(neg_tri->norm,(dReal*)i->T->verts[2])-neg_tri->pos)<0.f
-							 ){
-							 include=false;
-							 break;
-							 }
-							 };
-							 */	
+							 if(no_last_pos)
+								 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
+								 {
+									 if(TriContainPoint(
+										 (dReal*)&V_array[i->T->verts[0]],
+										 (dReal*)&V_array[i->T->verts[1]],
+										 (dReal*)&V_array[i->T->verts[2]],
+										 i->norm,i->side0,
+										 i->side1,p))
+										 if(
+											 !((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-neg_tri->pos)>0.f)||
+											 !((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-neg_tri->pos)>0.f)||
+											 !((dDOT(neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-neg_tri->pos)>0.f)
+											 ){
+												 include=false;
+												 break;
+											 }
+								 }
 							 if(include){
 								 ret+=dSortedTriSphere(
 									 (const dReal*)&V_array[neg_tri->T->verts[0]],
@@ -866,21 +779,22 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 						 //((b_count>1)||(*pushing_b_neg))&&
 						 if(b_neg_depth<dInfinity&&ret==0&&intersect){
 							 bool include = true;
-							 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
-							 {
-								CDB::TRI* T=i->T;
-								const dReal* v0= (const dReal*)&V_array[T->verts[0]];
-								const dReal* v1= (const dReal*)&V_array[T->verts[1]];
-								const dReal* v2= (const dReal*)&V_array[T->verts[2]];
-								 if(
-									 !((dDOT(b_neg_tri->norm,v0)-b_neg_tri->pos)>0.f)||
-									 !((dDOT(b_neg_tri->norm,v1)-b_neg_tri->pos)>0.f)||
-									 !((dDOT(b_neg_tri->norm,v2)-b_neg_tri->pos)>0.f)
-									){
-										 include=false;
-										 break;
-									 }
-							 };
+							 if(no_last_pos)
+								 for(i=pos_tries.begin();pos_tries.end()!=i;++i)
+								 {
+									 CDB::TRI* T=i->T;
+									 const dReal* v0= (const dReal*)&V_array[T->verts[0]];
+									 const dReal* v1= (const dReal*)&V_array[T->verts[1]];
+									 const dReal* v2= (const dReal*)&V_array[T->verts[2]];
+									 if(
+										 !((dDOT(b_neg_tri->norm,v0)-b_neg_tri->pos)>0.f)||
+										 !((dDOT(b_neg_tri->norm,v1)-b_neg_tri->pos)>0.f)||
+										 !((dDOT(b_neg_tri->norm,v2)-b_neg_tri->pos)>0.f)
+										 ){
+											 include=false;
+											 break;
+										 }
+								 };
 
 							 if(include)	{
 
