@@ -1613,12 +1613,6 @@
 			<Filter
 				Name="ARoute"
 				Filter="">
-				<File
-					RelativePath=".\AI_PathNodes.cpp">
-				</File>
-				<File
-					RelativePath=".\AI_PathNodes.h">
-				</File>
 				<Filter
 					Name="AStar"
 					Filter="">
@@ -1643,6 +1637,12 @@
 					Filter="">
 					<File
 						RelativePath=".\AI_Console.h">
+					</File>
+					<File
+						RelativePath=".\AI_PathNodes.cpp">
+					</File>
+					<File
+						RelativePath=".\AI_PathNodes.h">
 					</File>
 					<File
 						RelativePath=".\AI_Space.cpp">
