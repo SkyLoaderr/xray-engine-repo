@@ -1,9 +1,9 @@
 function main()
-	wait(10000)                                                                                                    
+	wait(15000)                                                                                                    
 	                                                                                                              
 	obj1     = get_level_object("m_boar_e0000")                                                                     
 	obj1:script(true,monster.script_name())                                                                                
-	
+
 	action(                                                                                                       
 	    obj1,                                                                                                      
 		move(move.act_walk_fwd, level.object("m_blood")),
