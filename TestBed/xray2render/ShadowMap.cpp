@@ -176,6 +176,10 @@ class CMyD3DApplication : public CD3DApplication
 	R_shader						s_Light_Direct;
 	R_shader						s_Light_Direct_smap;
 
+	vector<D3DXVECTOR4>				bloom_W;	// weight
+	vector<D3DXVECTOR4>				bloom_H;	// horizontal offsets
+	vector<D3DXVECTOR4>				bloom_V;	// vertical offsets
+
 	//  ************************
 	//	**** Shadow mapping ****
 	//  ************************
@@ -301,7 +305,8 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_NORMAL);
-		// RenderOverlay				();
+		RenderCombine_Bloom			();
+		RenderOverlay				();
 
 		// Output statistics
 		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -850,6 +855,9 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
 	s_Light_Direct_smap.compile		(m_pd3dDevice,"shaders\\D\\light_direct_smap.s");
 	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
+
+	// Create bloom filter
+	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.2f,2.f,w/2,h/2);
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
@@ -1578,11 +1586,17 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 
+	// setup weights
+	R_constant*	W							= s_Light_Direct_smap.constants.get("jitter");
+	J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
+
+
 	// TARGET: BLOOM-2
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
 	m_pd3dDevice->SetTexture				(0, d_Bloom_1		);
 
 	// Shader-params
+
 
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
