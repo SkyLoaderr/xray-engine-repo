@@ -8,7 +8,7 @@
 
 #pragma once
 
-#define USE_HASH
+#include "condition_config.h"
 
 #ifdef USE_HASH
 class CRandom32 {

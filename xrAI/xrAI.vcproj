@@ -548,6 +548,12 @@
 					</File>
 					<File
 						RelativePath=".\path_test.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\path_test.h">
@@ -620,6 +626,12 @@
 					</File>
 					<File
 						RelativePath=".\smooth_test.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<Filter
 						Name="algorithms"
@@ -888,6 +900,9 @@
 						<Filter
 							Name="problem_solver"
 							Filter="">
+							<File
+								RelativePath=".\condition_config.h">
+							</File>
 							<File
 								RelativePath=".\goap_test.cpp">
 							</File>

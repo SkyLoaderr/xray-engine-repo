@@ -10,8 +10,6 @@
 
 #include "operator_abstract.h"
 
-//#define INTENSIVE_MEMORY_USAGE
-
 template <
 	typename _condition_type,
 	typename _value_type,

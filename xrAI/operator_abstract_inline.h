@@ -187,7 +187,9 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result) const
 {
 	result.clear			();
+#ifdef USE_AFFECT
 	bool					changed = false;
+#endif
 	xr_vector<COperatorCondition>::const_iterator	i = effects().begin();
 	xr_vector<COperatorCondition>::const_iterator	e = effects().end();
 	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
@@ -206,13 +208,17 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 				if ((J != EE) && ((*J).condition() == (*i).condition())) {
 					if ((*J).value() != (*i).value()) {
 						result.add_condition(*i);
+#ifdef USE_AFFECT
 						changed	= true;
+#endif
 					}
 					++J;
 				}
 				else {
 					result.add_condition(*i);
+#ifdef USE_AFFECT
 					changed	= true;
+#endif
 				}
 				++i;
 			}
@@ -220,7 +226,9 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 				if ((*I).value() == (*i).value())
 					result.add_condition(*I);
 				else {
+#ifdef USE_AFFECT
 					changed	= true;
+#endif
 					while ((J != EE) && ((*J).condition() < (*i).condition()))
 						++J;
 					if ((J != EE) && ((*J).condition() == (*i).condition())) {
@@ -236,10 +244,12 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 			}
 
 	if (i == e) {
+#ifdef USE_AFFECT
 		if (!changed) {
 			result.clear	();
 			return			(result);
 		}
+#endif
 		for ( ; (I != E); ++I)
 			result.add_condition(*I);
 		return				(result);
@@ -251,24 +261,33 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 		else
 			if ((*J).condition() > (*i).condition()) {
 				result.add_condition(*i);
+#ifdef USE_AFFECT
 				changed		= true;
+#endif
 				++i;
 			}
 			else {
 				if ((*J).value() != (*i).value()) {
 					result.add_condition(*i);
+#ifdef USE_AFFECT
 					changed	= true;
+#endif
 				}
 				++J;
 				++i;
 			}
 
 	if ((J == EE) && (i != e))
-		for (changed = true ; (i != e); ++i)
+#ifdef USE_AFFECT
+		changed = true;
+#endif
+		for ( ; (i != e); ++i)
 			result.add_condition(*i);
 
+#ifdef USE_AFFECT
 	if (!changed)
 		result.clear		();
+#endif
 	return					(result);
 }
 

@@ -10,9 +10,9 @@
 #include "problem_solver.h"
 #include "graph_engine.h"
 
-const u32 world_state_dimension = 32;
-const u32 min_operator_count	= 16;
-const u32 max_operator_count	= 32;
+const u32 world_state_dimension = 8;
+const u32 min_operator_count	= 4;
+const u32 max_operator_count	= 8;
 typedef u32																		_condition_type;
 typedef u32																		_value_type;
 typedef u32																		_operator_id_type;
@@ -27,7 +27,7 @@ typedef CSProblemSolver::CState													_index_type;
 typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
 CRandom								random;
 
-CState random_condition(int _max = 100, int _min = 10, int __max = 2, int __min = 1)
+CState random_condition(int _max = 100, int _min = 20, int __max = 2, int __min = 1)
 {
 	CState		result;
 	for (u32 i=0; i<world_state_dimension; ++i)
@@ -84,7 +84,7 @@ void test_goap	()
 	u32 best_test						= 0;
 	u32 jj								= 0;
 	random.seed							(0);//u32(CPU::GetCycleCount()));
-	u64 start							= CPU::GetCycleCount();
+	u64 total							= 0;
 	for (u64 ii=0; ; ++ii) {
 		CSProblemSolver					problem_solver;
 		problem_solver.set_current_state(random_condition(100,100,4,1));
@@ -96,29 +96,31 @@ void test_goap	()
 
 		path.clear						();
 
-		if (ii == 137) {
-			ii = ii;
-			Msg							("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
-			++jj;
-			show_condition				(problem_solver.current_state());
-			show_condition				(problem_solver.target_state(),1);
-
-			{
-				CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
-				CSProblemSolver::const_iterator	E = problem_solver.operators().end();
-				for ( ; I != E; ++I)
-					show_operator			(*(*I).m_operator,(*I).m_operator_id);
-			}
-		}
+//		if (ii == 137) {
+////			Msg							("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
+//			++jj;
+//			show_condition				(problem_solver.current_state());
+//			show_condition				(problem_solver.target_state(),1);
+//
+//			{
+//				CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+//				CSProblemSolver::const_iterator	E = problem_solver.operators().end();
+//				for ( ; I != E; ++I)
+//					show_operator			(*(*I).m_operator,(*I).m_operator_id);
+//			}
+//		}
+		u64 start						= CPU::GetCycleCount();
 #ifdef INTENSIVE_MEMORY_USAGE
 		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
 #else
 		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
 #endif
-		if (ii == 137) {
-			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
-			FlushLog					();
-		}
+		u64 finish						= CPU::GetCycleCount();
+		total							+= finish - start;
+//		if (ii == 137) {
+//			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*total,graph_engine->solver_algorithm().data_storage().get_visited_node_count());
+//			FlushLog					();
+//		}
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
 		xr_vector<_edge_type>::iterator	E = path.end();
@@ -130,7 +132,7 @@ void test_goap	()
 		max_length						= path.size();
 		best_test						= jj;
 		
-		Msg								("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
+		Msg								("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*total);
 		++jj;
 		show_condition					(problem_solver.current_state());
 		show_condition					(problem_solver.target_state(),1);
