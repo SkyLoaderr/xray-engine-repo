@@ -35,6 +35,8 @@ class "generic_physics_binder" (object_binder)
 function generic_physics_binder:__init(obj) super(obj)
 	self.initialized = false
 	self.loaded = false
+	
+	xr_logic.load_generic_schemes(obj, modules.stype_item)
 end 
 
 function generic_physics_binder:reload(section)

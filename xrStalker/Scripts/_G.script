@@ -6,9 +6,9 @@ stypes = {} -- типы схем
 -- 	filename - имя файла, в котором реализована схема, без расширения
 -- 	scheme - имя схемы
 function load_scheme(filename, scheme, stype)
-	module(filename)
 	schemes[scheme] = filename
 	stypes[scheme] = stype
+	module(filename)
 end
 
 ----------------------------------------------------------------------

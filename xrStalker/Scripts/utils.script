@@ -439,7 +439,13 @@ end
 
 function ini_file(npc, filename)
 	if filename == "<customdata>" then
-		return npc:spawn_ini() or ini_file([[scripts\dummy.ltx]])
+		local ini = npc:spawn_ini()
+		if ini then
+			return ini
+		end
+--ini_file([[scripts\dummy]]) FIXME
+--		abort("zzz")
+		return ini_file([[scripts\dummy.ltx]])
 	else
 		return ini_file(filename)
 	end
