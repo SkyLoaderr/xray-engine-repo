@@ -67,7 +67,7 @@ public:
 	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i) const
 	{
 		VERIFY					(graph);
-		return					(graph->get_edge_weight(node_index1,node_index2));
+		return					(graph->get_edge_weight(node_index1,node_index2,i));
 	}
 
 	IC		_dist_type	estimate		(const _index_type vertex_id) const

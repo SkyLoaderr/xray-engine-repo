@@ -9,11 +9,6 @@ class CWeaponFakeGrenade;
 class CWeaponMagazinedWGrenade : public CWeaponMagazined
 {
 	typedef CWeaponMagazined inherited;
-protected:
-	enum EState
-	{
-		eSwitchingState = 256,	// for pistols, etc
-	};
 public:
 	CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoundType);
 	virtual ~CWeaponMagazinedWGrenade(void);

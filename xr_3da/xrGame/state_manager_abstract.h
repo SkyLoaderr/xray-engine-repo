@@ -38,18 +38,21 @@ class CStateManagerAbstract :
 	>
 {
 public:
-	typedef StateManagerAbstract::CStateAbstract<T> CState;
-	typedef CGraphManagerAbstract<CState,float,u32,u32> inherited;
+	typedef StateManagerAbstract::CStateAbstract<T>							CState;
+	typedef CGraphManagerAbstract<CState,float,u32,u32>						inherited;
+	typedef typename CGraphAbstract<CState,float,u32,u32>::vertex_iterator	state_iterator;
 private:
 
 protected:
 	virtual	void		add_state				(T *state, u32 state_id, u32 priority);
+	virtual	void		remove_state			(u32 state_id);
 	IC		void		add_transition			(u32 state_id0, u32 state_id1, float weight);
 	IC		void		add_transition			(u32 state_id0, u32 state_id1, float weight0, float weight1);
 	virtual	void		remove					(u32 state_id);
 	IC		T			&current_state			();
 	IC		T			&dest_state				();
 	IC		void		set_dest_state			(const u32 dest_state_id);
+	IC		void		set_current_state		(const u32 current_state_id);
 
 public:
 						CStateManagerAbstract	();

@@ -62,9 +62,9 @@ void CStateManagerAbstract::update			(u32 time_delta)
 {
 	execute							();
 	CSStateManagerAbstract::update	(time_delta);
-	CSStateManagerAbstract			*state_manager_abstract = dynamic_cast<CSStateManagerAbstract*>(&current_state());
-	if (state_manager_abstract)
-		state_manager_abstract->update(time_delta);
+	IGraphManager					*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
+	if (state_manager_interface)
+		state_manager_interface->update(time_delta);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -82,7 +82,7 @@ void CStateManagerAbstract::finalize		()
 }
 
 TEMPLATE_SPECIALIZATION
-bool CStateManagerAbstract::completed		()
+bool CStateManagerAbstract::completed		() const
 {
 	return							(current_state().completed());
 }
@@ -90,27 +90,35 @@ bool CStateManagerAbstract::completed		()
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::execute	()
 {
+//	if (!path().empty () && (path().size() < 2)) {
+//		VERIFY			(current_state_id() == path().front());
+//		go_path			();
+//	}
+
 	if (current_vertex_id() == dest_vertex_id()) {
-		current_state().execute		();
+		IGraphManager				*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
+		if (!state_manager_interface)
+			current_state().execute	();
 		return;
 	}
 
-	if (path().size() < 2)
+	if (path().empty())
 		return;
 
 	for (;;) {
 		if (!state(path().front()).completed()) {
-			state(path().front()).finalize();
+			state(path().front()).execute();
 			return;
 		}
+		state(path().front()).finalize();
 		go_path			();
 		state(path().front()).initialize();
+		state(path().front()).execute();
 		if (path().size() < 2) {
 			go_path			();
 			break;
 		}
 	}
-	current_state().execute();
 }
 
 TEMPLATE_SPECIALIZATION

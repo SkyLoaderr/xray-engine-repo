@@ -287,6 +287,10 @@ void CSightManager::update		(MonsterSpace::ELookType tLookType, const Fvector *t
 			stalker->m_head.target.pitch *= -1;
 			break;
 		}
+		case eLookTypeCurrentDirection : {
+			stalker->m_head.target	= stalker->m_head.current;
+			break;
+		}
 		default : NODEFAULT;
 	}
 	

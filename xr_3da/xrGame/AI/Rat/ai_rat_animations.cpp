@@ -12,11 +12,11 @@
 // sounds
 void CAI_Rat::vfLoadSounds()
 {
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_DYING);
+	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_ATTACKING);
+	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_TALKING);
 }
 
 // animations

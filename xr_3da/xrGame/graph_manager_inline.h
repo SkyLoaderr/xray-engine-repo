@@ -40,6 +40,7 @@ TEMPLATE_SPECIALIZATION
 void CAbstractGraphManager::reinit					(const _vertex_id_type start_vertex_id)
 {
 	VERIFY					(graph().vertex(start_vertex_id));
+
 	m_current_vertex_id		= m_dest_vertex_id = start_vertex_id;
 	m_path.clear			();
 	m_actuality				= true;
@@ -48,8 +49,17 @@ void CAbstractGraphManager::reinit					(const _vertex_id_type start_vertex_id)
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraphManager::set_dest_vertex_id	(const _vertex_id_type dest_vertex_id)
 {
+	VERIFY					(graph().vertex(dest_vertex_id));
 	m_actuality				= m_actuality && (m_dest_vertex_id == dest_vertex_id);
 	m_dest_vertex_id		= dest_vertex_id;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractGraphManager::set_current_vertex_id	(const _vertex_id_type current_vertex_id)
+{
+	VERIFY					(graph().vertex(current_vertex_id));
+	m_actuality				= m_actuality && (m_current_vertex_id == current_vertex_id);
+	m_current_vertex_id		= current_vertex_id;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -77,8 +87,19 @@ void CAbstractGraphManager::update	(u32 time_delta)
 		return;
 	m_actuality				= true;
 	m_path.clear			();
-	bool					successfull = ai().graph_engine().search(m_graph,current_vertex_id(),dest_vertex_id(),&m_path,CGraphEngine::CBaseParameters());
+	bool					successfull = ai().graph_engine().search(graph(),graph().vertex_index(current_vertex_id()),graph().vertex_index(dest_vertex_id()),&m_path,CGraphEngine::CBaseParameters());
 	VERIFY					(successfull);
+	VERIFY					(!m_path.empty());
+
+	xr_vector<u32>::iterator I = m_path.begin();
+	xr_vector<u32>::iterator E = m_path.end();
+	for ( ; I != E; ++I)
+		*I					= graph().vertices()[*I].vertex_id();
+
+	VERIFY					(dest_vertex_id() == m_path.back());
+
+	if (m_path.size() == 1)
+		m_path.clear();
 }
 
 TEMPLATE_SPECIALIZATION

@@ -13,44 +13,44 @@
 void CAI_Zombie::vfLoadSounds()
 {
 	// attack
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters/zombie/attack/zm1att_1",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[1],TRUE,"monsters/zombie/attack/zm1att_2",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[2],TRUE,"monsters/zombie/attack/zm1att_3",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
-	::Sound->create(m_tpaSoundAttack[3],TRUE,"monsters/zombie/attack/zm1att_4",SOUND_TYPE_MONSTER_ATTACKING_ANIMAL);
+	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters/zombie/attack/zm1att_1",SOUND_TYPE_MONSTER_ATTACKING);
+	::Sound->create(m_tpaSoundAttack[1],TRUE,"monsters/zombie/attack/zm1att_2",SOUND_TYPE_MONSTER_ATTACKING);
+	::Sound->create(m_tpaSoundAttack[2],TRUE,"monsters/zombie/attack/zm1att_3",SOUND_TYPE_MONSTER_ATTACKING);
+	::Sound->create(m_tpaSoundAttack[3],TRUE,"monsters/zombie/attack/zm1att_4",SOUND_TYPE_MONSTER_ATTACKING);
 
 	// death
-	::Sound->create(m_tpaSoundDeath[0],TRUE,"monsters/zombie/death/zm1die_1",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundDeath[1],TRUE,"monsters/zombie/death/zm1die_2",SOUND_TYPE_MONSTER_DYING_ANIMAL);
-	::Sound->create(m_tpaSoundDeath[2],TRUE,"monsters/zombie/death/zm1die_3",SOUND_TYPE_MONSTER_DYING_ANIMAL);
+	::Sound->create(m_tpaSoundDeath[0],TRUE,"monsters/zombie/death/zm1die_1",SOUND_TYPE_MONSTER_DYING);
+	::Sound->create(m_tpaSoundDeath[1],TRUE,"monsters/zombie/death/zm1die_2",SOUND_TYPE_MONSTER_DYING);
+	::Sound->create(m_tpaSoundDeath[2],TRUE,"monsters/zombie/death/zm1die_3",SOUND_TYPE_MONSTER_DYING);
 
 	// hit
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters/zombie/hit/zm2a1__1",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundHit[1],TRUE,"monsters/zombie/hit/zm2a1__2",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
-	::Sound->create(m_tpaSoundHit[2],TRUE,"monsters/zombie/hit/zm2a1__3",SOUND_TYPE_MONSTER_INJURING_ANIMAL);
+	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters/zombie/hit/zm2a1__1",SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create(m_tpaSoundHit[1],TRUE,"monsters/zombie/hit/zm2a1__2",SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create(m_tpaSoundHit[2],TRUE,"monsters/zombie/hit/zm2a1__3",SOUND_TYPE_MONSTER_INJURING);
 
 	// idle
-	::Sound->create(m_tpaSoundIdle[0],TRUE,"monsters/zombie/idle/hh1a0mo1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundIdle[1],TRUE,"monsters/zombie/idle/hh1a0mo2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundIdle[2],TRUE,"monsters/zombie/idle/hh1a0mo3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundIdle[0],TRUE,"monsters/zombie/idle/hh1a0mo1",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundIdle[1],TRUE,"monsters/zombie/idle/hh1a0mo2",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundIdle[2],TRUE,"monsters/zombie/idle/hh1a0mo3",SOUND_TYPE_MONSTER_TALKING);
 
 	// notice
-	::Sound->create(m_tpaSoundNotice[0],TRUE,"monsters/zombie/notice/hh1to1_1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundNotice[0],TRUE,"monsters/zombie/notice/hh1to1_1",SOUND_TYPE_MONSTER_TALKING);
 
 	// pursuit
-	::Sound->create(m_tpaSoundPursuit[0],TRUE,"monsters/zombie/pursuit/hh1a1__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[1],TRUE,"monsters/zombie/pursuit/hh1a1__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[2],TRUE,"monsters/zombie/pursuit/hh1a1__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[3],TRUE,"monsters/zombie/pursuit/hh1a1__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[4],TRUE,"monsters/zombie/pursuit/hh1a1__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundPursuit[5],TRUE,"monsters/zombie/pursuit/hh1a1__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundPursuit[0],TRUE,"monsters/zombie/pursuit/hh1a1__1",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundPursuit[1],TRUE,"monsters/zombie/pursuit/hh1a1__2",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundPursuit[2],TRUE,"monsters/zombie/pursuit/hh1a1__3",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundPursuit[3],TRUE,"monsters/zombie/pursuit/hh1a1__4",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundPursuit[4],TRUE,"monsters/zombie/pursuit/hh1a1__5",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundPursuit[5],TRUE,"monsters/zombie/pursuit/hh1a1__6",SOUND_TYPE_MONSTER_TALKING);
 
 	// resurrect
-	::Sound->create(m_tpaSoundResurrect[0],TRUE,"monsters/zombie/resurrect/hh1a3__1",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[1],TRUE,"monsters/zombie/resurrect/hh1a3__2",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[2],TRUE,"monsters/zombie/resurrect/hh1a3__3",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[3],TRUE,"monsters/zombie/resurrect/hh1a3__4",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[4],TRUE,"monsters/zombie/resurrect/hh1a3__5",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
-	::Sound->create(m_tpaSoundResurrect[5],TRUE,"monsters/zombie/resurrect/hh1a3__6",SOUND_TYPE_MONSTER_TALKING_ANIMAL);
+	::Sound->create(m_tpaSoundResurrect[0],TRUE,"monsters/zombie/resurrect/hh1a3__1",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundResurrect[1],TRUE,"monsters/zombie/resurrect/hh1a3__2",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundResurrect[2],TRUE,"monsters/zombie/resurrect/hh1a3__3",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundResurrect[3],TRUE,"monsters/zombie/resurrect/hh1a3__4",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundResurrect[4],TRUE,"monsters/zombie/resurrect/hh1a3__5",SOUND_TYPE_MONSTER_TALKING);
+	::Sound->create(m_tpaSoundResurrect[5],TRUE,"monsters/zombie/resurrect/hh1a3__6",SOUND_TYPE_MONSTER_TALKING);
 }
 
 void CAI_Zombie::vfLoadAnimations()

@@ -305,7 +305,7 @@ public:
 							CWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
-		m_tWatchType		= MonsterSpace::eLookTypePathDirection;
+		m_tWatchType		= MonsterSpace::eLookTypeCurrentDirection;
 		m_tWatchVector.set	(0,0,0);
 		m_tGoalType			= eGoalTypeCurrent;
 	}

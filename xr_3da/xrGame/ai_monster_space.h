@@ -38,6 +38,7 @@ namespace MonsterSpace {
 		eLookTypeLookOver,
 		eLookTypeLookFireOver,
 		eLookTypeDirection,
+		eLookTypeCurrentDirection
 	};
 
 	enum EDirectionType {
@@ -81,7 +82,10 @@ namespace MonsterSpace {
 		eObjectActionSwitch2,	
 		eObjectActionActivate,
 		eObjectActionDeactivate,
+		eObjectActionMisfire1,
+		eObjectActionEmpty1,
 		eObjectActionUse,
+		eObjectActionNoItems = eObjectActionIdle | u16(-1),
 		eObjectActionDummy = u32(-1)
 	};
 

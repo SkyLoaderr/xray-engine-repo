@@ -916,7 +916,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 	if(inherited::Action(cmd, flags)) return true;
 
 	//если оружие чем-то занято, то ничего не делать
-	if(bPending) return false;
+	if(IsPending()) return false;
 	
 	switch(cmd) 
 	{
@@ -1022,7 +1022,7 @@ const char* CWeapon::Name()
 	return m_tmpName;
 }
 
-int CWeapon::GetAmmoCurrent() 
+int CWeapon::GetAmmoCurrent()
 {
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
@@ -1088,7 +1088,7 @@ BOOL CWeapon::CheckForMisfire()
 	}
 }
 
-BOOL CWeapon::IsMisfire()
+BOOL CWeapon::IsMisfire() const
 {	
 	return bMisfire;
 }

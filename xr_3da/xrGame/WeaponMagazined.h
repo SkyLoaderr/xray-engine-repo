@@ -37,12 +37,6 @@ protected:
 	float			fTime;
 	BOOL			bFlame;
 protected:
-	enum EState
-	{
-		eFrozen		= 128,	// for pistols, etc
-		eMagEmpty
-	};
-protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void	OnMagazineEmpty	();
 

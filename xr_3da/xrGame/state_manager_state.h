@@ -37,8 +37,14 @@ public:
 	virtual	void		execute					();
 	virtual	void		finalize				();
 	virtual	void		update					(u32 time_delta);
-			bool		completed				();
+	virtual	bool		completed				() const;
 	IC		const xr_vector<u32> &sequence		() const;
+
+	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority)
+	{
+		CSStateManagerAbstract::add_state(state,state_id,priority);
+		state->reinit		(m_object);
+	}
 };
 
 #include "state_manager_state_inline.h"

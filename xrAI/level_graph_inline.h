@@ -294,31 +294,12 @@ IC	u8	CLevelGraph::CVertex::light() const
 
 IC	u32	CLevelGraph::CVertex::link(int index) const
 {
-	//	return		(NodeCompressed::link(u8(i)));
-	switch (index) {
-			case 0 :	return	((*(u32*)data) & 0x001fffff);
-			case 1 :	return	(((*(u32*)(data + 2)) >> 5) & 0x001fffff);
-			case 2 :	return	(((*(u32*)(data + 5)) >> 2) & 0x001fffff);
-			case 3 :	return	(((*(u32*)(data + 7)) >> 7) & 0x001fffff);
-			default :	NODEFAULT;
-	}
-#ifdef DEBUG
-	return			(0);
-#endif
+	return		(NodeCompressed::link(u8(index)));
 }
 
-IC	u8	CLevelGraph::CVertex::cover(u8 index) const
+IC	u16	CLevelGraph::CVertex::cover(u8 index) const
 {
-	switch (index) {
-			case 0 : return(cover0);
-			case 1 : return(cover1);
-			case 2 : return(cover2);
-			case 3 : return(cover3);
-			default : NODEFAULT;
-	}
-#ifdef DEBUG
-	return				(u8(-1));
-#endif
+	return		(NodeCompressed::cover(index));
 }
 
 IC	u16	CLevelGraph::CVertex::plane() const

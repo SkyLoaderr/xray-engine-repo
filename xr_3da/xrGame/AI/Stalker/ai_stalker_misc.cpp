@@ -62,8 +62,8 @@ void CAI_Stalker::vfSetParameters(
 		dwLookOverDelay
 	);
 	
-	if (!GetScriptControl())
-		CObjectHandler::update		(tWeaponState);
+//	if (!GetScriptControl())
+	CObjectHandler::set_dest_state	(tWeaponState);
 }
 
 bool CAI_Stalker::useful		(const CGameObject *object) const

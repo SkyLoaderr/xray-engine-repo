@@ -56,7 +56,7 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 			m_step_id								= m_step_id ^ 1;
 			m_time_to_step							= step_time;
 			if (mtl_pair->StepSounds.size() >= 2){
-				m_step_sound[m_step_id].clone		(mtl_pair->StepSounds[m_step_id]);
+				m_step_sound[m_step_id]				= mtl_pair->StepSounds[m_step_id];
 				m_step_sound[m_step_id].play_at_pos	(object,object->Position());
 			}
 		}

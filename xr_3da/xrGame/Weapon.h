@@ -202,7 +202,9 @@ public:
 		eShowing,
 		eHiding,
 		eHidden,
-		eMisfire
+		eMisfire,
+		eMagEmpty,
+		eSwitch,
 	};
 
 
@@ -278,13 +280,13 @@ public:
 	virtual void			Hide				()				= 0;
 	virtual void			Show				()				= 0;
 
-	   BOOL					IsMisfire			();
+	   BOOL					IsMisfire			() const;
 	   BOOL					CheckForMisfire		();
 
-	IC BOOL					IsWorking			()				{	return bWorking;							}
-	IC BOOL					IsValid				()				{	return iAmmoElapsed;						}
-	IC BOOL					IsVisible			()				{	return getVisible();						}	// Weapon change occur only after visibility change
-	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
+	IC BOOL					IsWorking			()	const		{	return bWorking;							}
+	IC BOOL					IsValid				()	const		{	return iAmmoElapsed;						}
+	IC BOOL					IsVisible			()	const		{	return getVisible();						}	// Weapon change occur only after visibility change
+	IC BOOL					IsUpdating			()	const		{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
 	virtual bool			IsHidden			()				{	return STATE == eHidden;}						// Does weapon is in hidden state
 	virtual bool			IsPending			()				{   return bPending;}
 	
@@ -292,9 +294,9 @@ public:
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
 	float					GetPrecision		();
-	IC LPCSTR				GetName				()				{	return *m_WpnName;							}
-	IC int					GetAmmoElapsed		()				{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
-	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
+	IC LPCSTR				GetName				()	const		{	return *m_WpnName;							}
+	IC int					GetAmmoElapsed		()	const		{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
+	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
 
 	//параметы оружия в зависимоти от его состояния исправности
 	float					GetConditionDispersionFactor	();

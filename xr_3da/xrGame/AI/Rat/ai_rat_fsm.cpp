@@ -464,7 +464,7 @@ void CAI_Rat::Pursuit()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostMemoryTime);
 
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET)) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT)) {
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 

@@ -457,6 +457,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("danger",					int(MonsterSpace::eLookTypeDanger)),
 				value("point",					int(MonsterSpace::eLookTypePoint)),
 				value("fire_point",				int(MonsterSpace::eLookTypeFirePoint)),
+				value("cur_dir",				int(MonsterSpace::eLookTypeCurrentDirection)),
 				value("direction",				int(MonsterSpace::eLookTypeDirection))
 			]
 			.def(								constructor<>())

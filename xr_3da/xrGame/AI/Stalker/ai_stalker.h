@@ -10,7 +10,6 @@
 
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
-#include "../../inventory.h"
 #include "../../object_handler.h"
 #include "../../sight_manager.h"
 #include "../../state_manager_stalker.h"
@@ -33,7 +32,6 @@ extern FILE	*ST_VF;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
-	public CInventoryOwner,
 	public CObjectHandler,
 	public CSightManager,
 	public CStalkerAnimations, 

@@ -38,8 +38,7 @@ void CAI_Stalker::Init()
 void CAI_Stalker::reinit			()
 {
 	CCustomMonster::reinit			();
-	CInventoryOwner::reinit			();
-	CObjectHandler::reinit			();
+	CObjectHandler::reinit			(this);
 	CSightManager::reinit			();
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
@@ -86,7 +85,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	setEnabled						(false);
 	
 	CCustomMonster::Load			(section);
-	CInventoryOwner::Load			(section);
 	CObjectHandler::Load			(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
@@ -115,11 +113,11 @@ void CAI_Stalker::Load				(LPCSTR section)
 	>								(section,"selector_cover");
 
 	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING_HUMAN,	0, u32(-1),				eStalkerSoundDie,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING_HUMAN,	1, u32(-1),				eStalkerSoundInjuring,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),	100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	4, u32(1 << 31) | 0,	eStalkerSoundHumming,	head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),	100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	2, u32(1 << 31) | 1,	eStalkerSoundAlarm,		head_bone_name);
-	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	3, u32(1 << 31) | 2,	eStalkerSoundSurrender,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(-1),				eStalkerSoundDie,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(-1),				eStalkerSoundInjuring,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(1 << 31) | 0,	eStalkerSoundHumming,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(1 << 31) | 1,	eStalkerSoundAlarm,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),100, SOUND_TYPE_MONSTER_TALKING,	3, u32(1 << 31) | 2,	eStalkerSoundSurrender,	head_bone_name);
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
@@ -280,7 +278,8 @@ void CAI_Stalker::UpdateCL(){
 	m_pPhysics_support->in_UpdateCL();
 
 	if (g_Alive()) {
-		float							s_k		= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
+		CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
+		float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
 		float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float							k		= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
 		float							tm		= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
@@ -413,7 +412,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	VERIFY				(_valid(Position()));
 }
 
-float CAI_Stalker::Radius()const
+float CAI_Stalker::Radius() const
 { 
 	float R		= inherited::Radius();
 	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());

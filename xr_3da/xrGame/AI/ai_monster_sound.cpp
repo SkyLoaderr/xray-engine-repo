@@ -23,7 +23,7 @@ void CMonsterSound::LoadSounds(LPCTSTR section)
 	g_vfLoadSounds(sndAttackHit,	pSettings->r_string(section,"sound_attack_hit"),	16,		SOUND_TYPE_MONSTER_ATTACKING);
 	g_vfLoadSounds(sndTakeDamage,	pSettings->r_string(section,"sound_take_damage"),	16,		SOUND_TYPE_MONSTER_INJURING);
 	g_vfLoadSounds(sndDie,			pSettings->r_string(section,"sound_die"),			16,		SOUND_TYPE_MONSTER_DYING);
-	g_vfLoadSounds(sndBkground,		pSettings->r_string(section,"sound_bkgnd"),			16,		SOUND_TYPE_MONSTER_WALKING);
+	g_vfLoadSounds(sndBkground,		pSettings->r_string(section,"sound_bkgnd"),			16,		SOUND_TYPE_MONSTER_STEP);
 }
 
 void CMonsterSound::ControlSound(TTime time)

@@ -133,10 +133,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 			break;
 		}
 		case CWatchAction::eGoalTypeCurrent : {
-			l_tWatchAction.m_tWatchType	= eLookTypeDirection;
-			l_tWatchAction.m_tWatchVector.setHP(-m_body.current.yaw,m_body.current.pitch);
-			m_body.target				= m_body.current;
-			m_head.target				= m_head.current;
+			l_tWatchAction.m_tWatchType	= eLookTypeCurrentDirection;
 			l_tWatchAction.m_bCompleted = true;
 			return						(false);
 		}

@@ -119,9 +119,33 @@ IC	const T	&CAbstractStateManager::dest_state	() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CAbstractStateManager::set_dest_state	(const u32 dest_state_id)
+IC	void CAbstractStateManager::set_dest_state			(const u32 dest_state_id)
 {
 	set_dest_vertex_id		(dest_state_id);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractStateManager::set_current_state		(const u32 current_state_id)
+{
+	set_current_vertex_id	(current_state_id);
+}
+
+TEMPLATE_SPECIALIZATION
+void CAbstractStateManager::remove_state	(u32 state_id)
+{
+	graph().remove_vertex	(state_id);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const u32 &CAbstractStateManager::current_state_id	() const
+{
+	return					(current_vertex_id());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const u32 &CAbstractStateManager::dest_state_id		() const
+{
+	return					(dest_vertex_id());
 }
 
 #undef TEMPLATE_SPECIALIZATION

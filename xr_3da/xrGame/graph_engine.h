@@ -46,12 +46,13 @@ protected:
 //	typedef CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,_index_type,u32,true,24,8> CDataStorage;
 	
 	CDataStorage					*m_data_storage;
+	u32								m_max_node_count;
 
 public:
 
 					CGraphEngine			(u32 max_node_count)
 	{
-		m_data_storage		= xr_new<CDataStorage>(max_node_count,_dist_type(0),_dist_type(2000));
+		m_data_storage		= xr_new<CDataStorage>(m_max_node_count = max_node_count,_dist_type(0),_dist_type(2000));
 	}
 
 	virtual			~CGraphEngine			()
@@ -133,5 +134,10 @@ public:
 		Device.Statistic.AI_Path.End();
 #endif
 		return						(successfull);
+	}
+
+	IC	u32	max_vertex_count() const
+	{
+		return						(m_max_node_count);
 	}
 };

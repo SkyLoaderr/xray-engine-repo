@@ -63,7 +63,6 @@ void CStateBaseAbstract::execute		()
 TEMPLATE_SPECIALIZATION
 void CStateBaseAbstract::finalize		()
 {
-	m_inertia_time		= 0;
 }
 
 TEMPLATE_SPECIALIZATION

@@ -251,17 +251,17 @@ void CActor::Load	(LPCSTR section )
 	// sounds
 	char buf[256];
 
-	sndLanding.g_type	= SOUND_TYPE_MONSTER_FALLING_HUMAN;
-	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4",						SOUND_TYPE_MONSTER_WALKING);
-	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger",			SOUND_TYPE_MONSTER_WALKING);
-	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING_HUMAN);
-	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING_HUMAN);
+	sndLanding.g_type	= SOUND_TYPE_WORLD_OBJECT_COLLIDING;
+	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4",						SOUND_TYPE_MONSTER_STEP);
+	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger",			SOUND_TYPE_MONSTER_STEP);
+	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
+	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING);
 
 //	m_PhysicMovementControl.ActivateBox	(0);
 	//m_PhysicMovementControl.ActivateBox	(0);
@@ -888,7 +888,7 @@ void CActor::UpdateCL()
 	if (g_Alive()) {
 		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
 		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
-		float				s_k	= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
 		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_id(),last_material_id());
 		CMaterialManager::update		(
@@ -1133,7 +1133,7 @@ void CActor::shedule_Update	(u32 DT)
 //
 //	// sounds update
 //	// Дима. Было 1.0(начальная громкость) и 0.85(если сидя), стало 0.2 и 0.5 соответственно
-//	float	s_k			=	ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+//	float	s_k			=	((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
 //	float	s_vol		=	s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 //	Fvector	s_pos		=	Position	();
 //	s_pos.y				+=	.15f;

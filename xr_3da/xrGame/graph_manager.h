@@ -9,6 +9,7 @@
 #pragma once
 
 #include "graph_abstract.h"
+#include "graph_manager_interface.h"
 
 template <
 	typename _Data,
@@ -16,7 +17,7 @@ template <
 	typename _vertex_id_type,
 	typename _vertex_index_type
 >
-class CGraphManagerAbstract {
+class CGraphManagerAbstract : public IGraphManager {
 public:
 	typedef CGraphAbstract<
 		_Data,
@@ -30,6 +31,9 @@ private:
 	_vertex_id_type				m_dest_vertex_id;
 	xr_vector<_vertex_id_type>	m_path;
 	bool						m_actuality;
+
+protected:
+	IC		void		set_current_vertex_id	(const _vertex_id_type dest_vertex_id);
 
 public:
 	IC					CGraphManagerAbstract	();

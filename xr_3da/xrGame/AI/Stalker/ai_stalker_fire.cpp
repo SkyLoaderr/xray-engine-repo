@@ -11,8 +11,6 @@
 #include "../../WeaponMagazined.h"
 #include "../../ai_script_actions.h"
 
-#define TIME_FIRE_DELTA		400
-
 float CAI_Stalker::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);

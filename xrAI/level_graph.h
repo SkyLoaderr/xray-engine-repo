@@ -32,7 +32,7 @@ public:
 	public:
 		IC	u32				link					(int i) const;
 		IC	u8				light					() const;
-		IC	u8				cover					(u8 index) const;
+		IC	u16				cover					(u8 index) const;
 		IC	u16				plane					() const;
 		IC	const CPosition &position				() const;
 		friend class CLevelGraph;

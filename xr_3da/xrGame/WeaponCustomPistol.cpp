@@ -17,6 +17,7 @@ void CWeaponCustomPistol::switch2_Fire	()
 {
 	if (fTime<=0)
 	{
+		bPending = true;
 		UpdateFP					();
 
 		// Fire
@@ -50,11 +51,14 @@ void CWeaponCustomPistol::OnEmptyClick	()
 }
 */
 
-void	CWeaponCustomPistol::state_Fire	(float dt) {
-	fTime					-=dt;
+void	CWeaponCustomPistol::state_Fire	(float dt) 
+{
+	fTime -=dt;
+	//if(fTime<=0) inherited::FireEnd();
 }
 void	CWeaponCustomPistol::state_MagEmpty	(float /**dt/**/) 
 {
+	inherited::FireEnd();
 }
 void CWeaponCustomPistol::OnAnimationEnd() {
 	switch(STATE) {
@@ -68,5 +72,9 @@ void CWeaponCustomPistol::OnAnimationEnd() {
 }
 
 void CWeaponCustomPistol::FireEnd() {
-	if(fTime<=0) inherited::FireEnd();
+	if(fTime<=0) 
+	{
+		bPending = false;
+		inherited::FireEnd();
+	}
 }
