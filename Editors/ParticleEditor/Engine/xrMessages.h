@@ -242,8 +242,6 @@ GE_OWNERSHIP_TAKE
 GE_OWNERSHIP_REJECT
 {
 	u16			id_entity;
-	direction	dir;
-	float		impulse;
 }
 GE_TRANSFER_AMMO
 {

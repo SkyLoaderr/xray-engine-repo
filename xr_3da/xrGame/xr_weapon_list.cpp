@@ -99,6 +99,24 @@ int	CWeaponList::weapon_remove		(CWeapon* W)		// remove, return last
 	return it-m_Weapons.begin();
 }
 
+void CWeaponList::weapon_die		()
+{
+	NET_Packet		P;
+
+	for (int it=0; it<m_Weapons.size(); it++)
+	{
+		if (it==m_iActiveWeapon)
+		{
+			m_pParent->u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
+			P.w_u16						(u16(O->ID()));
+			m_pParent->u_EventSend		(P);
+		} else {
+			m_pParent->u_EventGen		(P,GE_DESTROY,ID());
+			m_pParent->u_EventSend		(P);
+		}
+	}
+}
+
 BOOL CWeaponList::ActivateWeaponNext(BOOL ignore)
 {
 	if (m_Weapons.size()>1){

@@ -40,6 +40,7 @@ public:
 
 	int				weapon_add				(CWeapon* W);		// add, return index
 	int				weapon_remove			(CWeapon* W);		// remove, return last
+	void			weapon_die				();
 
 	void			Zoom					(BOOL bZoom);
 	void			Reload					();

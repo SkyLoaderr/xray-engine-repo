@@ -442,7 +442,7 @@ void CActor::UpdateCL()
 			die_hide			-=	.01f*dt;
 			if (die_hide>0)		{
 				Fmatrix					mScale,mTranslate;
-				float	down			= (1.f-die_hide)/.1f;
+				float	down			= (1.f-die_hide)/10.f;
 				vScale.set				(1,die_hide,1);
 				mScale.scale			(vScale);
 				mTranslate.translate	(vPosition.x,vPosition.y-down,vPosition.z);

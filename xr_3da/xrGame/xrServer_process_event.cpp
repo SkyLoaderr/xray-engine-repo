@@ -133,7 +133,18 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrServerEntity*		e_dest		=	ID_to_entity	(id_dest);	// кто должен быть уничтожен
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
-			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
+			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
+
+			// Parent-signal
+			if (0xffff != e_dest->ID_Parent)
+			{
+				P.w_begin			(M_EVENT);
+				P.w_u32				(timestamp);
+				P.w_u16				(GE_OWNERSHIP_REJECT);
+				P.w_u16				(e_dest->ID_Parent);
+				P.w_u16				(id_dest);
+				SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			}
 
 			// Everything OK, so perform entity-destroy
 			entity_Destroy		(e_dest);
