@@ -322,6 +322,10 @@ void CUIMainIngameWnd::Draw()
 		}
 		RenderQuickInfos();
 	}
+	else
+	{
+		UIPdaMsgListWnd.Draw();
+	}
 
 	// Render claws
 //	if (CUIAnimationBase::easPlayed == m_ClawsAnimation.GetState() && m_ClawsTexture.GetShader())
