@@ -2040,63 +2040,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_chimera"
-						Filter="">
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera.h">
-						</File>
-						<File
-							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
-						</File>
-						<Filter
-							Name="Movement Manager"
-							Filter="">
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_movement.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_movement.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="StateManager"
-							Filter="">
-						</Filter>
-						<Filter
-							Name="AnimationManager"
-							Filter="">
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_animation.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_animation.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="WatchManager"
-							Filter="">
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_watch.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_watch.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="BaseManager"
-							Filter="">
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_man.cpp">
-							</File>
-							<File
-								RelativePath=".\ai\chimera\ai_chimera_man.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
 						Name="ai_crow"
 						Filter="">
 						<File
@@ -2414,6 +2357,36 @@
 						<Filter
 							Name="Find Enemy"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_angry.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_angry_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_look.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_look_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_run.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_run_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_walk.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_find_enemy_walk_inline.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Dangerous Sound"
@@ -2451,6 +2424,10 @@
 						</Filter>
 						<Filter
 							Name="Eat"
+							Filter="">
+						</Filter>
+						<Filter
+							Name="General"
 							Filter="">
 						</Filter>
 					</Filter>

@@ -1,31 +1,23 @@
 #pragma once
 
-#include "../../../state_manager_state.h"
+#include "../../state.h"
 
 template<typename _Object>
-class	CStateChimeraThreaten : public CStateManagerState<_Object> {
+class	CStateChimeraThreaten : public CState<_Object> {
 protected:
-	typedef CStateManagerState<_Object> inherited;
+	typedef CState<_Object> inherited;
+	typedef CState<_Object>* state_ptr;
 
 	enum EAttackStates {
 		eStateWalk			= u32(0),
 		eStateThreaten,
-
-		eStateNumber
 	};
 
-	typedef typename CStateBase<_Object>* SSubStatePtr;
-	SSubStatePtr		states[eStateNumber];
-
 public:
-						CStateChimeraThreaten	(LPCSTR state_name, SSubStatePtr state_walk, SSubStatePtr state_threaten);
+						CStateChimeraThreaten	(_Object *obj, state_ptr state_walk, state_ptr state_threaten);
 	virtual				~CStateChimeraThreaten	();
-	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_Object *object);
 
-	virtual	void		initialize				();
 	virtual	void		execute					();
-	virtual	void		finalize				();
 };
 
 #include "chimera_state_threaten_inline.h"

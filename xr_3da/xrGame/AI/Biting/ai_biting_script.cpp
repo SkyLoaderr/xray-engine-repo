@@ -3,6 +3,7 @@
 #include "../../ai_script_actions.h"
 #include "../../phmovementcontrol.h"
 #include "../../sight_manager.h"
+#include "../ai_monster_debug.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
@@ -24,7 +25,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	}
 
 	CMonsterMovement::set_path_targeted();
-		
+
 	return			(true);		
 }
 

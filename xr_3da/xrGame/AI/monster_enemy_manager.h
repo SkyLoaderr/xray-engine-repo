@@ -36,6 +36,7 @@ public:
 	const CEntityAlive *get_enemy				() {return enemy;}
 	EDangerType			get_danger_type			() {return danger_type;}
 	const Fvector		&get_enemy_position		() {return position;}
+	u32					get_enemy_vertex		() {return vertex;}
 	TTime				get_enemy_time_last_seen() {return time_last_seen;}
 
 	Flags32				&get_flags				() {return flags;}

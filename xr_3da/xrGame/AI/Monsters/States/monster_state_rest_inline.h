@@ -20,7 +20,7 @@ CStateMonsterRestAbstract::~CStateMonsterRest	()
 
 
 TEMPLATE_SPECIALIZATION
-void CStateMonsterRestAbstract::reselect_state()
+void CStateMonsterRestAbstract::execute()
 {
 	bool bNormalSatiety =	(object->GetSatiety() > object->_sd->m_fMinSatiety) && 
 		(object->GetSatiety() < object->_sd->m_fMaxSatiety); 
@@ -30,5 +30,7 @@ void CStateMonsterRestAbstract::reselect_state()
 	} else {
 		select_state	(eStateWalkGraphPoint);
 	}
+
+	get_state_current()->execute();
 }
 

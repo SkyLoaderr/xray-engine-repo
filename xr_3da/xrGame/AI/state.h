@@ -17,21 +17,14 @@ public:
 	virtual bool 	check_completion		() {return false;}
 	virtual bool 	check_start_conditions	() {return true;}
 
-	virtual void 	update_data				() {}
 	virtual void	reselect_state			() {}	
 
-			
 			CSState *get_state				(u32 state_id);
-
+			CSState *get_state_current		();
 protected:
 			void 	select_state			(u32 new_state_id);	
 			void	add_state				(u32 state_id, CSState *s);
 
-			void	free_mem				();
-
-	
-	xr_map<u32, CSState*> substates;	
-	typedef typename xr_map<u32, CSState*>::iterator STATE_MAP_IT;		
 
 	u32				current_substate;
 	u32				prev_substate;
@@ -39,6 +32,13 @@ protected:
 	u32				time_state_started;
 
 	_Object			*object;
+
+private:
+			void	free_mem				();
+
+	xr_map<u32, CSState*> substates;	
+	typedef typename xr_map<u32, CSState*>::iterator STATE_MAP_IT;		
+
 };
 
 #include "state_inline.h"

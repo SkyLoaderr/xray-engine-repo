@@ -1,18 +1,16 @@
 #pragma once
 
-#include "../../../state_manager_state.h"
+#include "../../state.h"
 
 template<typename _Object>
-class CStateMonsterAttackMelee : public CStateBase<_Object> {
-	typedef CStateBase<_Object> inherited;
+class CStateMonsterAttackMelee : public CState<_Object> {
+	typedef CState<_Object> inherited;
 
 public:
-						CStateMonsterAttackMelee	(LPCSTR state_name);
+						CStateMonsterAttackMelee	(_Object *obj);
 	virtual				~CStateMonsterAttackMelee	();
 
-	virtual	void		initialize				();
-	virtual	void		execute					();
-	virtual	void		finalize				();
+	virtual	void		execute						();
 };
 
 #include "monster_state_attack_melee_inline.h"

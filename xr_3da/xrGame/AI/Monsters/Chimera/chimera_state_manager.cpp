@@ -4,6 +4,15 @@
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/monster_state_rest_walk_graph.h"
+#include "../states/monster_state_attack.h"
+#include "../states/monster_state_attack_melee.h"
+#include "../states/monster_state_attack_run.h"
+#include "../states/monster_state_find_enemy.h"
+#include "../states/monster_state_find_enemy_run.h"
+#include "../states/monster_state_find_enemy_look.h"
+#include "../states/monster_state_find_enemy_angry.h"
+#include "../states/monster_state_find_enemy_walk.h"
+
 
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
@@ -15,13 +24,23 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 		)
 	);
 
-//	add_state(
-//		eStateAttack, xr_new<CStateMonsterAttack<CChimera> > (
-//			xr_new<CStateMonsterAttackRun<CChimera> >, 
-//			xr_new<CStateMonsterAttackMelee<CChimera> >
-//		)
-//	);
-//
+	add_state(
+		eStateAttack, xr_new<CStateMonsterAttack<CChimera> > (obj,
+			xr_new<CStateMonsterAttackRun<CChimera> >(obj), 
+			xr_new<CStateMonsterAttackMelee<CChimera> >(obj)
+		)
+	);
+
+	add_state(
+		eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
+			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
+			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj),
+			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
+			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
+		)
+	);
+	
+	
 //	add_state(
 //		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (
 //			xr_new<CStateMonsterThreatenWalk<CChimera> >, 
@@ -42,24 +61,24 @@ CStateManagerChimera::~CStateManagerChimera()
 
 void CStateManagerChimera::execute()
 {
-	u32 state = u32(-1);
+	u32 state_id = u32(-1);
 
 	if (object->EnemyMan.get_enemy()) {
-		switch (object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = eStatePanic; break;
-			case eStrong:		
-			case eNormal:
-			case eWeak:						state = eStateAttack; break;
+		
+		if (object->EnemyMan.get_enemy_time_last_seen() != object->m_current_update) {
+			float dist = object->EnemyMan.get_enemy_position().distance_to(object->Position());
+
+			if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
+			else if (dist > 10.f) state_id = eStateFindEnemy;
 		}
-	} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
-		if (object->hear_dangerous_sound)			state = eStateInterestingSound;		
-		if (object->hear_interesting_sound)			state = eStateInterestingSound;	
-	} else	if (object->CorpseMan.get_corpse() && ((object->GetSatiety() < object->_sd->m_fMinSatiety) || object->flagEatNow))					
-		state = eStateEat;	
-	else									state = eStateRest;
+		if (state_id != eStateFindEnemy) state_id = eStateAttack;
+	}else state_id = eStateRest;
+	
+	select_state(state_id); 
 
-	state = eStateRest;
+	// выполнить текущее состояние
+	get_state_current()->execute();
 
-	select_state(state); 
+	prev_substate = current_substate;
 }
 

@@ -214,10 +214,9 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
-	
-	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
+//	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+//	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
+//	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 	
 	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	
@@ -275,6 +274,7 @@ void CAI_Biting::net_Export(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 		P.w					(&f1,						sizeof(f1));
 	}
+
 }
 
 void CAI_Biting::net_Import(NET_Packet& P)
@@ -321,6 +321,7 @@ void CAI_Biting::net_Import(NET_Packet& P)
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
+
 }
 
 void CAI_Biting::UpdateCL()
@@ -356,6 +357,7 @@ void CAI_Biting::UpdateCL()
 #ifdef DEBUG
 	HDebug->M_Update	();
 #endif
+
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
@@ -363,6 +365,7 @@ void CAI_Biting::shedule_Update(u32 dt)
 	inherited::shedule_Update(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
+
 }
 
 

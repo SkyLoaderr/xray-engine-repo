@@ -6,6 +6,7 @@ class CChimera;
 class CStateManagerChimera : public CState<CChimera> {
 	
 	typedef CState<CChimera> inherited;
+
 	enum {
 		eStateRest					 = u32(0),
 		eStateEat,
@@ -14,6 +15,7 @@ class CStateManagerChimera : public CState<CChimera> {
 		eStateThreaten,
 		eStateDangerousSound,
 		eStateInterestingSound,
+		eStateFindEnemy,
 	};
 
 public:

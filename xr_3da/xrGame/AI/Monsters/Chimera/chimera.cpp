@@ -2,6 +2,7 @@
 #include "chimera.h"
 #include "../../ai_monster_utils.h"
 #include "chimera_state_manager.h"
+#include "../../ai_monster_debug.h"
 
 CChimera::CChimera()
 {

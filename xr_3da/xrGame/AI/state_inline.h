@@ -16,6 +16,7 @@ CStateAbstract::CState(_Object *obj)
 TEMPLATE_SPECIALIZATION
 CStateAbstract::~CState() 
 {
+	free_mem();
 }
 
 
@@ -31,9 +32,6 @@ void CStateAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateAbstract::execute() 
 { 
-	// обновить данные состояния
-	update_data();
-
 	// если состояние не выбрано, перевыбрать
 	if (current_substate == u32(-1)) {
 		reselect_state();
@@ -48,10 +46,11 @@ void CStateAbstract::execute()
 	if (state->check_completion()) {
 		state->finalize();
 		current_substate = u32(-1);
-	} 
-
-	// сохранить текущее состояние
-	prev_substate = current_substate;
+	} else {
+		
+		// сохранить текущее состояние
+		prev_substate = current_substate;
+	}
 }
 
 TEMPLATE_SPECIALIZATION
@@ -88,6 +87,7 @@ void CStateAbstract::select_state(u32 new_state_id)
 
 	// установить новое состояние
 	state = get_state(current_substate = new_state_id);
+	
 	// инициализировать новое состояние
 	state->initialize();
 }
@@ -112,3 +112,13 @@ void CStateAbstract::free_mem()
 {
 	for (STATE_MAP_IT it = substates.begin(); it != substates.end(); it++) xr_delete(it->second);
 }
+
+TEMPLATE_SPECIALIZATION
+CStateAbstract *CStateAbstract::get_state_current()
+{
+	STATE_MAP_IT it = substates.find(current_substate);
+	VERIFY(it != substates.end());
+
+	return it->second;
+}
+

@@ -7,7 +7,7 @@
 #define CStateMonsterAttackRunAbstract CStateMonsterAttackRun<_Object>
 
 TEMPLATE_SPECIALIZATION
-CStateMonsterAttackRunAbstract::CStateMonsterAttackRun(LPCSTR state_name) : inherited(state_name)
+CStateMonsterAttackRunAbstract::CStateMonsterAttackRun(_Object *obj) : inherited(obj)
 {
 }
 
@@ -20,14 +20,13 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::initialize()
 {
 	inherited::initialize();
-	
 	m_time_path_rebuild	= 0;
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
-	float dist = m_object->EnemyMan.get_enemy()->Position().distance_to(m_object->Position());
+	float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
 
 	// проверить необходимость перестройки пути
 	bool b_need_rebuild = false;
@@ -39,21 +38,15 @@ void CStateMonsterAttackRunAbstract::execute()
 		m_time_path_rebuild = time_current;
 		b_need_rebuild		= true;
 	}
-	if (PATH_NEED_REBUILD()) b_need_rebuild = true;
+	if (object->IsPathEnd(2,0.5f)) b_need_rebuild = true;
 
-	if (b_need_rebuild)	m_object->MoveToTarget(m_object->EnemyMan.get_enemy());
+	if (b_need_rebuild)	object->MoveToTarget(object->EnemyMan.get_enemy());
 
 	// установка параметров функциональных блоков
-	m_object->MotionMan.m_tAction					= ACT_RUN;
-	m_object->CMonsterMovement::set_try_min_time	(false);
-	m_object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,m_object->_sd->m_dwAttackSndDelay);
-	m_object->MotionMan.accel_activate				(eAT_Aggressive);
-	m_object->MotionMan.accel_set_braking			(false);
-}
-
-TEMPLATE_SPECIALIZATION
-void CStateMonsterAttackRunAbstract::finalize()
-{
-	inherited::finalize();
+	object->MotionMan.m_tAction					= ACT_RUN;
+	object->CMonsterMovement::set_try_min_time	(false);
+	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->_sd->m_dwAttackSndDelay);
+	object->MotionMan.accel_activate			(eAT_Aggressive);
+	object->MotionMan.accel_set_braking			(false);
 }
 

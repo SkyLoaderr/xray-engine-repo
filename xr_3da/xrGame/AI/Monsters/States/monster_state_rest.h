@@ -17,7 +17,7 @@ public:
 						CStateMonsterRest		(_Object *obj, state_ptr state_sleep, state_ptr state_walk);
 	virtual				~CStateMonsterRest		();
 
-	virtual	void		reselect_state			();
+	virtual	void		execute					();
 };
 
 #include "monster_state_rest_inline.h"
