@@ -149,6 +149,116 @@ function loadJob(sj, gname, type, squad, groups)
 		table.insert(sj, t)			
 	end
 --'------------------------------------------------------------------------------------------------------
+--' Dolg kamp at the Garbage
+--'------------------------------------------------------------------------------------------------------
+	if type == "dolg_kamp" then	
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_point1"}
+		table.insert(sj, t)			
+		t = { name = "guard",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_point2"}
+		table.insert(sj, t)			
+
+
+	end
+
+
+--'------------------------------------------------------------------------------------------------------
+--' Stalkers meeteing in a round
+--'------------------------------------------------------------------------------------------------------
+	if type == "stalker_kamp" then	
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_center",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+	end
+--'------------------------------------------------------------------------------------------------------
 --' BANDITS CAMP. Sleepers и Walkers.  ол-во тех и тех определ€етс€ кол-вом путей на уровне
 --'------------------------------------------------------------------------------------------------------
 	if type == "bandits_camp" then	
@@ -229,7 +339,11 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
-
+	if type == "dolg_kamp" then
+		return function()
+			return 0
+		end
+	end
 	if type == "bandits_camp" then
 		return function()
 			return 0
