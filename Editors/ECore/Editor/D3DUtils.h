@@ -62,6 +62,8 @@ class ECORE_API CDrawUtilities{
 	SPrimitiveBuffer		m_WireCone;
     SPrimitiveBuffer		m_SolidSphere;
     SPrimitiveBuffer		m_WireSphere;
+    SPrimitiveBuffer		m_SolidSpherePart;
+    SPrimitiveBuffer		m_WireSpherePart;
     SPrimitiveBuffer		m_SolidCylinder;
     SPrimitiveBuffer		m_WireCylinder;
     SPrimitiveBuffer		m_SolidBox;
@@ -124,6 +126,7 @@ public:
         DrawSelectionBox(C,S,c);
     }
     void DrawIdentSphere	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
+    void DrawIdentSpherePart(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
     void DrawIdentCone		(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
 	void DrawIdentCylinder	(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);
     void DrawIdentBox		(bool bSolid, bool bWire, u32 clr_s, u32 clr_w);

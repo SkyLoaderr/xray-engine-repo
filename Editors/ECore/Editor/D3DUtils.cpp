@@ -7,6 +7,7 @@
 #include "d3dutils.h"
 #include "du_box.h"
 #include "du_sphere.h"
+#include "du_sphere_part.h"
 #include "du_cone.h"
 #include "du_cylinder.h"
 
@@ -110,14 +111,16 @@ void CDrawUtilities::UpdateGrid(int number_of_cell, float square_size, int subdi
 
 void CDrawUtilities::OnDeviceCreate()
 {
-    m_SolidBox.CreateFromData		(D3DPT_TRIANGLELIST,DU_BOX_NUMFACES,		D3DFVF_XYZ,du_box_vertices,		DU_BOX_NUMVERTEX,		du_box_faces,		DU_BOX_NUMFACES*3);
-	m_SolidCone.CreateFromData		(D3DPT_TRIANGLELIST,DU_CONE_NUMFACES,		D3DFVF_XYZ,du_cone_vertices,	DU_CONE_NUMVERTEX,		du_cone_faces,		DU_CONE_NUMFACES*3);
-	m_SolidSphere.CreateFromData	(D3DPT_TRIANGLELIST,DU_SPHERE_NUMFACES,		D3DFVF_XYZ,du_sphere_vertices,	DU_SPHERE_NUMVERTEX,	du_sphere_faces,	DU_SPHERE_NUMFACES*3);
-    m_SolidCylinder.CreateFromData	(D3DPT_TRIANGLELIST,DU_CYLINDER_NUMFACES,	D3DFVF_XYZ,du_cylinder_vertices,DU_CYLINDER_NUMVERTEX,	du_cylinder_faces,	DU_CYLINDER_NUMFACES*3);
-    m_WireBox.CreateFromData		(D3DPT_LINELIST,	DU_BOX_NUMLINES,		D3DFVF_XYZ,du_box_vertices,		DU_BOX_NUMVERTEX,		du_box_lines,		DU_BOX_NUMLINES*2);
-	m_WireCone.CreateFromData		(D3DPT_LINELIST,	DU_CONE_NUMLINES,		D3DFVF_XYZ,du_cone_vertices,	DU_CONE_NUMVERTEX,		du_cone_lines,		DU_CONE_NUMLINES*2);
-	m_WireSphere.CreateFromData		(D3DPT_LINELIST,	DU_SPHERE_NUMLINES,		D3DFVF_XYZ,du_sphere_verticesl,	DU_SPHERE_NUMVERTEXL,	du_sphere_lines,	DU_SPHERE_NUMLINES*2);
-    m_WireCylinder.CreateFromData	(D3DPT_LINELIST,	DU_CYLINDER_NUMLINES,	D3DFVF_XYZ,du_cylinder_vertices,DU_CYLINDER_NUMVERTEX,	du_cylinder_lines,	DU_CYLINDER_NUMLINES*2);
+    m_SolidBox.CreateFromData		(D3DPT_TRIANGLELIST,DU_BOX_NUMFACES,		D3DFVF_XYZ,du_box_vertices,			DU_BOX_NUMVERTEX,			du_box_faces,			DU_BOX_NUMFACES*3);
+	m_SolidCone.CreateFromData		(D3DPT_TRIANGLELIST,DU_CONE_NUMFACES,		D3DFVF_XYZ,du_cone_vertices,		DU_CONE_NUMVERTEX,			du_cone_faces,			DU_CONE_NUMFACES*3);
+	m_SolidSphere.CreateFromData	(D3DPT_TRIANGLELIST,DU_SPHERE_NUMFACES,		D3DFVF_XYZ,du_sphere_vertices,		DU_SPHERE_NUMVERTEX,		du_sphere_faces,		DU_SPHERE_NUMFACES*3);
+	m_SolidSpherePart.CreateFromData(D3DPT_TRIANGLELIST,DU_SPHERE_PART_NUMFACES,D3DFVF_XYZ,du_sphere_part_vertices,	DU_SPHERE_PART_NUMVERTEX,	du_sphere_part_faces,	DU_SPHERE_PART_NUMFACES*3);
+    m_SolidCylinder.CreateFromData	(D3DPT_TRIANGLELIST,DU_CYLINDER_NUMFACES,	D3DFVF_XYZ,du_cylinder_vertices,	DU_CYLINDER_NUMVERTEX,		du_cylinder_faces,		DU_CYLINDER_NUMFACES*3);
+    m_WireBox.CreateFromData		(D3DPT_LINELIST,	DU_BOX_NUMLINES,		D3DFVF_XYZ,du_box_vertices,			DU_BOX_NUMVERTEX,			du_box_lines,			DU_BOX_NUMLINES*2);
+	m_WireCone.CreateFromData		(D3DPT_LINELIST,	DU_CONE_NUMLINES,		D3DFVF_XYZ,du_cone_vertices,		DU_CONE_NUMVERTEX,			du_cone_lines,			DU_CONE_NUMLINES*2);
+	m_WireSphere.CreateFromData		(D3DPT_LINELIST,	DU_SPHERE_NUMLINES,		D3DFVF_XYZ,du_sphere_verticesl,		DU_SPHERE_NUMVERTEXL,		du_sphere_lines,		DU_SPHERE_NUMLINES*2);
+	m_WireSpherePart.CreateFromData	(D3DPT_LINELIST,	DU_SPHERE_PART_NUMLINES,D3DFVF_XYZ,du_sphere_part_vertices,	DU_SPHERE_PART_NUMVERTEX,	du_sphere_part_lines,	DU_SPHERE_PART_NUMLINES*3);
+    m_WireCylinder.CreateFromData	(D3DPT_LINELIST,	DU_CYLINDER_NUMLINES,	D3DFVF_XYZ,du_cylinder_vertices,	DU_CYLINDER_NUMVERTEX,		du_cylinder_lines,		DU_CYLINDER_NUMLINES*2);
 
 	for(int i=0;i<LINE_DIVISION;i++){
 		float angle = M_PI * 2.f * (i / (float)LINE_DIVISION);
@@ -155,14 +158,16 @@ void CDrawUtilities::OnDeviceCreate()
 
 void CDrawUtilities::OnDeviceDestroy()
 {
-    m_SolidBox.Destroy	();
-	m_SolidCone.Destroy		();
-	m_SolidSphere.Destroy	();
-    m_SolidCylinder.Destroy	();
-    m_WireBox.Destroy	();
-	m_WireCone.Destroy		();
-	m_WireSphere.Destroy	();
-    m_WireCylinder.Destroy	();
+    m_SolidBox.Destroy			();
+	m_SolidCone.Destroy			();
+	m_SolidSphere.Destroy		();
+	m_SolidSpherePart.Destroy	();
+    m_SolidCylinder.Destroy		();
+    m_WireBox.Destroy			();
+	m_WireCone.Destroy			();
+	m_WireSphere.Destroy		();
+	m_WireSpherePart.Destroy	();
+    m_WireCylinder.Destroy		();
 
 	vs_L.destroy		();
 	vs_TL.destroy		();
@@ -390,6 +395,21 @@ void CDrawUtilities::DrawIdentSphere	(bool bSolid, bool bWire, u32 clr_s, u32 cl
 		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
         Device.SetShader	(color_get_A(clr_s)>=254?Device.m_WireShader:Device.m_SelectionShader);
     	m_SolidSphere.Render();
+    }
+	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
+}
+
+void CDrawUtilities::DrawIdentSpherePart(bool bSolid, bool bWire, u32 clr_s, u32 clr_w)
+{
+    if (bWire){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_w);
+        Device.SetShader	(Device.m_WireShader);
+     	m_WireSpherePart.Render	();
+    }
+    if (bSolid){
+		Device.SetRS		(D3DRS_TEXTUREFACTOR,	clr_s);
+        Device.SetShader	(color_get_A(clr_s)>=254?Device.m_WireShader:Device.m_SelectionShader);
+    	m_SolidSpherePart.Render();
     }
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
