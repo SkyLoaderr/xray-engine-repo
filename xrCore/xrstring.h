@@ -1,6 +1,8 @@
+#ifndef xrstringH
+#define xrstringH
 #pragma once
-#pragma pack(push,4)
 
+#pragma pack(push,4)
 //////////////////////////////////////////////////////////////////////////
 typedef const char*		str_c;
 
@@ -52,7 +54,7 @@ public:
 
 	// assignment & accessors
 	ref_str&			operator=	(str_c rhs)						{	_set(rhs);	return (ref_str&)*this;				}
-	ref_str&			operator=	(ref_str rhs)					{	_set(rhs);	return (ref_str&)*this;				}
+	ref_str&			operator=	(ref_str const &rhs)			{	_set(rhs);	return (ref_str&)*this;				}
 	str_c				operator*	() const						{	return p_?p_->value:0;							}
 	bool				operator!	() const						{	return p_ == 0;									}
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
@@ -81,5 +83,6 @@ inline bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get()
 
 // externally visible swap
 inline void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);	}
-
 #pragma pack(pop)
+
+#endif

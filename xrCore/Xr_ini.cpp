@@ -276,7 +276,7 @@ LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 	else										{ Debug.fatal("Can't find variable '%s'",L); return 0; }
 #else
 #ifdef _EDITOR
-	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
+	if (A!=I.end() && strcmp(*A->first,L)==0)	return *A->second;
 	else										Debug.fatal("Can't find variable '%s'",L);
 #else
 	R_ASSERT(A!=I.end() && strcmp(*A->first,L)==0);

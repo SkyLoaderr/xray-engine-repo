@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "xrstring.h"
 
 XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;

@@ -140,10 +140,11 @@ void __fastcall TShellChangeThread::Execute(void)
             break;
         }else if (Obj>WAIT_OBJECT_0){
         	u32 idx		= Obj-WAIT_OBJECT_0-1;
-            R_ASSERT2	(idx<events.size(),"Index out of bounds.");
-            Path& P		= events[idx];
-            if (P.FChangeEvent)	Synchronize(P.FChangeEvent);
-            if (P.FWaitHandle) 	FindNextChangeNotification(P.FWaitHandle);
+            if (idx<events.size()){
+	            Path& P		= events[idx];
+    	        if (P.FChangeEvent)	Synchronize(P.FChangeEvent);
+        	    if (P.FWaitHandle) 	FindNextChangeNotification(P.FWaitHandle);
+            }
         }else 
         	return;
 /*
