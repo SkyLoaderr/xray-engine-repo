@@ -22,6 +22,7 @@ class "action_zombie_shoot" ( action_base )
 
 function action_zombie_shoot:__init( name, storage )  super ( nil, name )
 	self.st = storage
+	self.t  = {}
 end
 
 function action_zombie_shoot:initialize()
@@ -33,20 +34,38 @@ function action_zombie_shoot:initialize()
 	self.object:set_detail_path_type    ( move.line )
 end
 
+function action_zombie_shoot:set_state( state, be )
+	self.t.look_object   = be
+	self.t.look_position = be:position()
+	state_mgr.set_state( self.object, "patrol_fire", nil, nil, t )
+end
+
 function action_zombie_shoot:execute()
 	action_base.execute( self )
 
 	local be = self.object:best_enemy()
 
 	self.object:set_path_type           ( game_object.level_path )
-    self.object:set_dest_level_vertex_id( be:level_vertex_id() )
-    self.object:set_desired_position    ( be:position() )
 
-	if self.object:see( be ) then
-		state_mgr.set_state( self.object, "patrol_fire", nil, nil, { look_object = be, look_position = be:position() } )
-	else
-		state_mgr.set_state( self.object, "patrol",      nil, nil, { look_object = be, look_position = be:position() } )
-	end
+	if self.object:position():distance_to_sqr( be:position() ) > 9 then
+		self.object:set_dest_level_vertex_id( be:level_vertex_id() )
+		self.object:set_desired_position    ( be:position() )
+
+		if self.object:see( be ) then
+			self:set_state( "patrol_fire", be )
+		else
+			self:set_state( "patrol",      be )
+		end
+    else
+		self.object:set_dest_level_vertex_id( self.object:level_vertex_id() )
+		self.object:set_desired_position    ( self.object:position() )
+
+		if self.object:see( be ) then
+			self:set_state( "guard_fire",  be )
+		else
+			self:set_state( "guard_na",    be )
+		end
+	end    
 end
 
 function action_zombie_shoot:finalize()
