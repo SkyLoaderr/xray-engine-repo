@@ -73,37 +73,39 @@ void CFileSystem::OnCreate(){
 //	VERIFY( _ExeName );
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
-	strcpy(m_Local,"x:\\");
-    strcpy(m_Server,"\\\\X-Ray\\stalker$\\");
+	strcpy(m_Local,		"x:\\");
+    strcpy(m_Server,	"\\\\X-Ray\\stalker$\\");
+    strcpy(m_ServerData,"\\\\X-Ray\\stalkerdata$\\");
 
-	m_LocalRoot.Init  	(m_Local, 	"",               		"",     			"" );
-	m_ServerRoot.Init  	(m_Server, 	"",               		"",     			"" );
-    m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     			"" );
-    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"*.wav",			"Wave files" );
-	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     			"" );
-	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"*.vcf",			"Collision form files" );
-	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"*.ogf",			"Render model files" );
-    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"*.do",				"Detail object files" );
-    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","*.dds",			"Texture files" );
-	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"*.key",			"XRay model key" );
+	m_LocalRoot.Init  		(m_Local, 		"",               		"",     			"" );
+	m_ServerRoot.Init  		(m_Server, 		"",               		"",     			"" );
+    m_ServerDataRoot.Init	(m_ServerData, "",               		"",     			"" );
+    m_GameLevels.Init		(m_Server, 		"game\\data\\levels\\",	"",     			"" );
+    m_GameSounds.Init		(m_Server, 		"game\\data\\sounds\\",	"*.wav",			"Wave files" );
+	m_GameRoot.Init 		(m_Server, 		"game\\",         		"",     			"" );
+	m_GameCForms.Init		(m_Server, 		"game\\data\\cforms\\",	"*.vcf",			"Collision form files" );
+	m_GameMeshes.Init		(m_Server, 		"game\\data\\meshes\\",	"*.ogf",			"Render model files" );
+    m_GameDO.Init			(m_Server,  	"game\\data\\meshes\\",	"*.do",				"Detail object files" );
+    m_GameTextures.Init		(m_Server,		"game\\data\\textures\\","*.dds",			"Texture files" );
+	m_GameKeys.Init			(m_Server,  	"game\\data\\meshes\\",	"*.key",			"XRay model key" );
 
-	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups" );
-    m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects" );
-	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Object files" );
-    m_DetailObjects.Init(m_Local, 	"import\\",       		"*.dti",		 	"Detail indices" );
-	m_Envelope.Init  	(m_Local, 	"import\\",       		"*.env", 			"Envelope files" );
-	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anm",			"Object animation files" );
-	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anms",	    	"Object animation list files" );
-	m_SMotion.Init		(m_Local, 	"import\\", 		    "*.skl",			"Skeleton motion files" );
-	m_SMotions.Init		(m_Local, 	"import\\", 		    "*.skls",			"Skeleton motions files" );
-	m_Maps.Init     	(m_Server, 	"maps\\",         		"*.level",  		"Level files" );
-	m_Textures.Init 	(m_Server, 	"..\\texturest\\",     		"*.bmp;*.tga",		"Texture files" );
-	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     			"" );
+	m_Groups.Init   		(m_Server, 		"objects\\",       		"*.group", 			"Groups" );
+    m_Objects.Init  		(m_Server, 		"objects\\",       		"*.object;*.lwo",	"Editor objects" );
+	m_Import.Init  			(m_Local, 		"import\\",       		"*.object;*.lwo", 	"Object files" );
+    m_DetailObjects.Init	(m_Local, 		"import\\",       		"*.dti",		 	"Detail indices" );
+	m_Envelope.Init  		(m_Local, 		"import\\",       		"*.env", 			"Envelope files" );
+	m_OMotion.Init			(m_Local, 		"import\\", 		   	"*.anm",			"Object animation files" );
+	m_OMotions.Init			(m_Local, 		"import\\", 		    "*.anms",	    	"Object animation list files" );
+	m_SMotion.Init			(m_Local, 		"import\\", 		    "*.skl",			"Skeleton motion files" );
+	m_SMotions.Init			(m_Local, 		"import\\", 		    "*.skls",			"Skeleton motions files" );
+	m_Maps.Init     		(m_Server, 		"maps\\",         		"*.level",  		"Level files" );
+	m_Textures.Init 		(m_ServerData, 	"textures\\",     		"*.bmp;*.tga",		"Texture files" );
+	m_Temp.Init     		(m_Local, 		"temp\\",         		"",     			"" );
 
-    strcpy				(m_LastAccessFN,"access.ini"); 	m_ServerRoot.Update(m_LastAccessFN);
-    string256 fn; strcpy(fn,"access.log"); m_ServerRoot.Update(fn);
-    m_AccessLog			= new CLog();
-	m_AccessLog->Create	(fn,true);
+    strcpy					(m_LastAccessFN,"access.ini"); 	m_ServerDataRoot.Update(m_LastAccessFN);
+    string256 fn; strcpy(fn,"access.log"); m_ServerDataRoot.Update(fn);
+    m_AccessLog				= new CLog();
+	m_AccessLog->Create		(fn,true);
 }
 //----------------------------------------------------
 #ifdef _MSC_VER
@@ -471,14 +473,14 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 	return tex_name;
 }
 
-void CFileSystem::RegisterAccess(LPSTR fn)
+void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
 	ini->WriteString("last_access",fn,m_CompName);
     CInifile::Destroy(ini);
 
 	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"Lock:   '%s' from computer: '%s' by user: '%s' at %s %s",fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
+	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
@@ -506,7 +508,7 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
         	LPSTR lp_fn=fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
             R_ASSERT(I.second);
-            if (bLog) RegisterAccess(fname);
+            if (bLog) RegisterAccess("Lock",fname);
             bRes=true;
         }
     }

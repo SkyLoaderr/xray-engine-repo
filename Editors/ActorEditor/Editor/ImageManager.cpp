@@ -171,6 +171,7 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
 		src_name 	= p_import	+ it->first;
 		dest_name 	= p_textures+ it->first;
 		Engine.FS.CopyFileTo(src_name.c_str(),dest_name.c_str(),true);
+        Engine.FS.RegisterAccess(dest_name.c_str(),"Replace");
     }
 }
 //------------------------------------------------------------------------------

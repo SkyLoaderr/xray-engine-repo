@@ -36,13 +36,14 @@ class CFileSystem {
     HANDLEMap 	m_LockFiles;
     string256	m_LastAccessFN;
     CLog*		m_AccessLog;
-    void		RegisterAccess(LPSTR fn);
 public:
     string128 	m_UserName;
     string128 	m_CompName;
 public:
 	string256	m_Local;
 	string256	m_Server;
+	string256	m_ServerData;
+	FSPath 		m_ServerDataRoot;
 	FSPath 		m_ServerRoot;
 	FSPath 		m_LocalRoot;
 	FSPath 		m_GameRoot;
@@ -110,6 +111,8 @@ public:
     BOOL		LockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     BOOL		UnlockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
+
+    void		RegisterAccess	(LPSTR fn, LPSTR start_msg);
 };
 #endif /*_INCDEF_FileSystem_H_*/
 
