@@ -120,7 +120,10 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 
 void CBaseMonster::debug_fsm()
 {
-	if (!psAI_Flags.test(aiMonsterDebug)) return;
+	if (!psAI_Flags.test(aiMonsterDebug)) {
+		DBG().object_info(this,this).clear ();
+		return;
+	}
 	
 	EMonsterState state = StateMan->get_state_type();
 	
