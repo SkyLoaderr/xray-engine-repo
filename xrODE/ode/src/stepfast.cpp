@@ -21,7 +21,7 @@
 * LICENSE.TXT and LICENSE-BSD.TXT for more details.                     *
 *                                                                       *
 *************************************************************************/
-
+ 
 // This is the StepFast code by David Whittaker. This code is faster, but
 // sometimes less stable than, the original "big matrix" code.
 // Refer to the user's manual for more information.
@@ -47,7 +47,7 @@
 
 //#define RANDOM_JOINT_ORDER
 //#define FAST_FACTOR	//use a factorization approximation to the LCP solver (fast, theoretically less accurate)
-#define SLOW_LCP      //use the old LCP solver
+#define SLOW_LCP		//use the old LCP solver
 //#define NO_ISLANDS    //does not perform island creation code (3~4% of simulation time), body disabling doesn't work
 //#define TIMING
 
@@ -131,7 +131,6 @@ MultiplyAdd2_sym_p8p (dReal * A, dReal * B, dReal * C, int p, int Askip)
 
 
 // this assumes the 4th and 8th rows of B are zero.
-
 static void
 Multiply0_p81 (dReal * A, dReal * B, dReal * C, int p)
 {
@@ -175,7 +174,6 @@ MultiplyAdd0_p81 (dReal * A, dReal * B, dReal * C, int p)
 
 
 // this assumes the 4th and 8th rows of B are zero.
-
 static void
 Multiply1_8q1 (dReal * A, dReal * B, dReal * C, int q)
 {
@@ -638,14 +636,16 @@ dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * Gin
 void
 dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoint * const *_joints, int nj, dReal stepsize, int maxiterations)
 {
+	if ( 0 == (maxiterations%2)) maxiterations++;	// make 1 center iteration
+
 #   ifdef TIMING
 	dTimerNow ("preprocessing");
 #   endif
-	dxBody *bodyPair[2], *body;
-	dReal *GIPair[2], *GinvIPair[2];
+	dxBody	*bodyPair[2], *body;
+	dReal	*GIPair[2], *GinvIPair[2];
 	dxJoint *joint;
-	int iter, b, j, i;
-	dReal ministep = stepsize / maxiterations;
+	int		iter, b, j, i;
+	dReal	ministep = stepsize / maxiterations;
 
 	// make a local copy of the joint array, because we might want to modify it.
 	// (the "dxJoint *const*" declaration says we're allowed to modify the joints
@@ -756,7 +756,6 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			Jinfo[i].findex = findex + ofs[i];
 			//joints[i]->vtable->getInfo2 (joints[i], Jinfo+i);
 		}
-
 	}
 
 	dReal *	saveFacc	= (dReal *) ALLOCA (nb * 4 *	sizeof (dReal));
@@ -772,8 +771,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		}
 		bodies[b]->tag = b;
 	}
-
-	dReal tmp[12]	= { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	dReal tmp[12]		= { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	for (b = 0; b < nb; b++)
 	{
@@ -812,13 +810,20 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			body->facc[3] = 0;
 		}
 	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////small steps starts/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int jdir=1,jfrom=0,jto=nj;
-	float scale	= 1.f / float(maxiterations);
+	// .0625 .125 .25 .5 .25 .125 .0625
+	int halfiterations = maxiterations/2;
 	for (iter = 0; iter < maxiterations; iter++)	
 	{
+		float	scale	= 0;
+		if		(iter <  halfiterations )	scale = 1.f / powf(2.f,halfiterations-iter+1);
+		else if (iter == halfiterations )	scale = .5f;
+		else if (iter >	 halfiterations )	scale = 1.f / powf(2.f,iter-halfiterations+1);
+
 		dSetZero (cforces,			nb	* 8	);
 		dSetZero ((dReal*)ccounter,	nb		);
 
@@ -857,7 +862,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//modification: the calculated forces are added back to the facc and tacc
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)	{
-				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j],  stepsize /* stepsize ???*/, cforces, ccounter);
+				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j],  stepsize /*???*/, cforces, ccounter);
 			}
 		}
 
@@ -872,10 +877,9 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		for (b = 0; b < nb; b++) {
 			body = bodies[b];
 			if (0==ccounter[b])		continue;
-			dReal	invcounter		= 1; //dReal(1) / dReal(ccounter[b]);
 			for (j = 0; j < 4; j++)	{
-				body->facc[j] += scale*cforces[j + b*8]		* invcounter;
-				body->tacc[j] += scale*cforces[j + b*8 + 4]	* invcounter;
+				body->facc[j] += scale*cforces[j + b*8];
+				body->tacc[j] += scale*cforces[j + b*8 + 4];
 			}
 		}
 	}
