@@ -171,6 +171,7 @@ void CVisionMemory::AddObject(const VisionElem &ve)
 	res = std::find(Objects.begin(), Objects.end(), ve);
 	if (res == Objects.end()) Objects.push_back(ve);
 	else *res = ve;
+
 }
 
 void CVisionMemory::AddEnemy(const VisionElem &ve)

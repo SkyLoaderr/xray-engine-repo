@@ -105,8 +105,11 @@ class CBitingAttack : public IState {
 	TTime			m_dwFaceEnemyLastTime;
 	TTime			m_dwFaceEnemyLastTimeInterval;
 
-	u32				nStartStop;						
+	// регулировка приближением во время атаки
+	u32				nStartStop;						//!< количество	старт-стопов
 	u32				nDoDamage;						//!< Количество нанесённых повреждений
+
+	TTime			m_dwSuperMeleeStarted;
 
 public:
 	CBitingAttack(CAI_Biting *p);

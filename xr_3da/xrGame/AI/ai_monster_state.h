@@ -48,7 +48,8 @@ enum EMotionAnim {
 	eMotionLieDown,
 	eMotionStandUp,
 	eMotionCheckCorpse,
-	eMotionLieDownEat
+	eMotionLieDownEat,
+	eMotionAttackJump
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

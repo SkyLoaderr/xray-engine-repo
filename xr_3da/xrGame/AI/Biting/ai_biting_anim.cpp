@@ -41,6 +41,7 @@ namespace AI_Biting {
 		"lie_down_",			// 16
 		"stand_up_",			// 17
 		"liedown_eat_",			// 18
+		"attack_jump_",			// 19
 		0
 	};
 };
@@ -90,6 +91,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 
 			if (i2 == 9) FillAttackStructure(i3, m_dwCurrentUpdate);
 			else if (i2 == 10) FillAttackStructure(4, m_dwCurrentUpdate); // атака крыс
+			else if (i2 == 19) FillAttackStructure(5, m_dwCurrentUpdate); // атака крыс|прыжок
 			else m_tAttack.time_started = 0;
 
 		}
@@ -120,5 +122,6 @@ void CAI_Biting::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int 
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
+		case eMotionAttackJump:		index1 = 0; index2 = 19; index3 = -1;	break;
 	}
 }

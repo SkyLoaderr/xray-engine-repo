@@ -118,6 +118,7 @@ void CBitingRest::Run()
 		case ACTION_WALK_GRAPH_END:
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
+			break;
 	}
 }
 
@@ -162,7 +163,6 @@ void CBitingRest::Replanning()
 
 		dwMinRand = 1000;
 		dwMaxRand = 1100;
-
 	}
 	
 	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);
@@ -204,10 +204,11 @@ void CBitingAttack::Reset()
 	m_fDistMin			= 0.f;	
 	m_fDistMax			= 0.f;
 
-	m_dwFaceEnemyLastTime = 0;
+	m_dwFaceEnemyLastTime	= 0;
 	m_dwFaceEnemyLastTimeInterval = 1200;
 	
-	nStartStop = nDoDamage = 0;
+	nStartStop = nDoDamage	= 0;
+	m_dwSuperMeleeStarted	= 0;
 }
 
 void CBitingAttack::Init()
@@ -231,8 +232,8 @@ void CBitingAttack::Init()
 		m_fDistMin = 2.4f;
 		m_fDistMax = 3.8f;
 	}
-	
-	pMonster->SetMemoryTime(3000);
+	if (m_bAttackRat) pMonster->SetMemoryTimeDef();
+	else pMonster->SetMemoryTime(3000);
 
 	// Test
 	Msg("_ Attack Init _");
@@ -271,8 +272,10 @@ void CBitingAttack::Run()
 	u32 delay;
 
 	// если враг не виден - бежать к нему
-	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
-		m_tAction = ACTION_RUN;
+	if (!m_bAttackRat) {
+		if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
+			m_tAction = ACTION_RUN;
+		}
 	}
 
 	// Выполнение состояния
@@ -288,9 +291,20 @@ void CBitingAttack::Run()
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			// если враг под монстром подпрыгнуть и убить
-			float yaw, pitch;
+			// если враг крыса под монстром подпрыгнуть и убить
+			if (m_tEnemy.obj->Position().distance_to(pMonster->Position()) < 0.6f) {
+				if (!m_dwSuperMeleeStarted)	m_dwSuperMeleeStarted = m_dwCurrentTime;
 
+				if (m_dwSuperMeleeStarted + 1000 < m_dwCurrentTime) {
+					// прыгнуть
+					pMonster->Motion.m_tSeq.Add(eMotionAttackJump,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+					pMonster->Motion.m_tSeq.Switch();
+					m_dwSuperMeleeStarted = 0;
+				}
+			} else m_dwSuperMeleeStarted = 0;
+			
+			
+			float yaw, pitch;
 			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
 				// Смотреть на врага 
 				m_dwFaceEnemyLastTime = m_dwCurrentTime;

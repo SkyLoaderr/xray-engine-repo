@@ -179,6 +179,9 @@ void CAI_Biting::FillAttackStructure(u32 i, TTime t)
 	
 	m_tAttack.i_anim		= i;
 	m_tAttack.time_started	= t;
+	m_tAttack.b_fire_anyway = false;
+	m_tAttack.b_attack_rat	= false;
+
 	Fvector tempV;
 
 	switch (m_tAttack.i_anim) {
@@ -213,10 +216,16 @@ void CAI_Biting::FillAttackStructure(u32 i, TTime t)
 		case 4:
 			m_tAttack.time_from = 600;
 			m_tAttack.time_to	= 800;
-			m_tAttack.dist		= 0.6f;
+			m_tAttack.dist		= 2.6f;
 			Center(m_tAttack.TraceFrom);
-			tempV.set(0.f,Radius(),0.f);
-			m_tAttack.TraceFrom.sub(tempV);
+			tempV.set(-0.5f,0.f,0.5f);
+			m_tAttack.TraceFrom.add(tempV);
+			m_tAttack.b_attack_rat = true;
+			break;
+		case 5:
+			m_tAttack.time_from = 1000;
+			m_tAttack.time_to	= 1200;
+			m_tAttack.b_fire_anyway = true;
 			break;
 	}
 }

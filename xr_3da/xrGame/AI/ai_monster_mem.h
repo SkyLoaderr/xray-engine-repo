@@ -141,6 +141,7 @@ public:
 
 	IC	bool		GetEnemy		(VisionElem &ve) {return Get(ve);} 	
 	IC	bool		GetCorpse		(VisionElem &ve) {return Get(ve);}
+	IC	void		AddCorpse		(const VisionElem &ve) {AddObject(ve);}
 
 	IC	void		SaveEnemy		() {if (Selected.obj) Saved = Selected;}
 

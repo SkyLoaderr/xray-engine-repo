@@ -306,27 +306,67 @@ void CAI_Biting::UpdateCL()
 
 	if (m_tAttack.time_started != 0) {
 
-		//Msg("CurTime = [%i] Started = [%i] From [%i] To [%i]",cur_time,m_tAttack.time_started, m_tAttack.time_from, m_tAttack.time_to);
-
 		if ((m_tAttack.time_started + m_tAttack.time_from < cur_time) && 
 			(m_tAttack.time_started + m_tAttack.time_to > cur_time) && 
 			(m_tAttack.LastAttack + 1000 < cur_time)) {
 
-			// пробовать аттаковать
-			//Msg("Try to attack");
-			
-			this->setEnabled(false);
-			Collide::ray_query	l_rq;
+			// трассировка нужна?
+			if (m_tAttack.b_fire_anyway) DoDamage(ve.obj); // не нужна
+			else if (m_tAttack.b_attack_rat) {
+				
+				// TestIntersection конуса(копыта) и сферы(крысы)
+				bool Intersected = false;
 
-			if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
-				if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
-					// аттаковать
-					//Msg("-- ATTACK_NOW CurTime [%i], LastAttack [%i]",cur_time, m_tAttack.LastAttack);
+				float angle = PI_DIV_6;					// угол конуса
+				Fvector fromV = m_tAttack.TraceFrom;	// вершина конуса
+				Fvector dir;							// направление конуса
+				dir.set(0.f,-1.f,0.f);
+
+				float fInvSin = 1.0f/_sin(angle);
+				float fCosSqr = _cos(angle)*_cos(angle);
+
+				Fvector vC;		ve.obj->Center(vC);		// центр сферы
+				Fvector kCmV;	kCmV.sub(vC,fromV);
+				Fvector kD		= kCmV;
+				Fvector tempV	= dir;
+				tempV.mul(ve.obj->Radius()* fInvSin);
+				kD.add(tempV);
+
+				float fDSqrLen = kD.square_magnitude();
+				float fE = kD.dotproduct(dir);
+				if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr )
+				{
+					float fSinSqr = _sin(angle)*_sin(angle);
+
+					fDSqrLen = kCmV.square_magnitude();
+					fE = -kCmV.dotproduct(dir);
+					if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr )
+					{
+						float fRSqr = ve.obj->Radius()*ve.obj->Radius();
+						Intersected =  fDSqrLen <= fRSqr;
+					}else Intersected = true;
+				} else Intersected = false;
+					
+				if (Intersected) {
 					DoDamage(ve.obj);
 					m_tAttack.LastAttack = cur_time;
 				}
+
+			} else 	{ // нужна
+				this->setEnabled(false);
+				Collide::ray_query	l_rq;
+				
+				if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
+					if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
+						DoDamage(ve.obj);
+						m_tAttack.LastAttack = cur_time;
+					}
+				}
+
+				this->setEnabled(true);			
 			}
-			this->setEnabled(true);			
+
+			if (!ve.obj->g_Alive()) AddCorpse(ve);
 		}
 	}
 

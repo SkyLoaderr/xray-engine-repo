@@ -43,6 +43,8 @@ class CAI_Biting : public CCustomMonster,
 		float	dist;
 
 		TTime	LastAttack;
+		bool	b_fire_anyway;		// трассировка не нужна
+		bool	b_attack_rat;
 
 	} SAttackAnimation;
 
