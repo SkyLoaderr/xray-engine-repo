@@ -52,6 +52,7 @@ public:
 	typedef typename inherited::_edge_type			_action_id_type;
 	typedef CGraphEngine::CWorldProperty			CWorldProperty;
 	typedef CGraphEngine::CWorldState				CWorldState;
+	typedef _world_operator							_world_operator;
 
 protected:
 	bool						m_initialized;
@@ -61,6 +62,9 @@ protected:
 public:
 	bool						m_use_log;
 	string64					m_temp_string;
+
+public:
+	virtual	void				set_use_log				(bool value);
 #endif
 
 public:

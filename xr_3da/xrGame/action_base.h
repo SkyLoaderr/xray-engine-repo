@@ -48,9 +48,11 @@ protected:
 public:
 	LPCSTR						m_action_name;
 	bool						m_use_log;
+	bool						m_switched;
 
-protected:
+public:
 	virtual void				debug_log			(const EActionStates state_state) const;
+	virtual	void				set_use_log			(bool value);
 #endif
 
 public:

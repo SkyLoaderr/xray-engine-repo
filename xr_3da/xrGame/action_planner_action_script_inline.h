@@ -34,8 +34,7 @@ TEMPLATE_SPECIALIZATION
 void CSActionPlannerActionScript::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
 	VERIFY				(object);
-	inherited::reinit	(object->lua_game_object(),storage,clear_all);
-	m_object			= object;
+	VERIFY				(m_object);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -45,6 +44,7 @@ void CSActionPlannerActionScript::reinit		(CScriptGameObject *object, CPropertyS
 	inherited::reinit	(object,storage,clear_all);
 	m_object			= smart_cast<_object_type*>(object->object());
 	VERIFY				(m_object);
+	reinit				(m_object,storage,clear_all);
 }
 
 #undef TEMPLATE_SPECIALIZATION

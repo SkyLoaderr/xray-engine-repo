@@ -14,22 +14,22 @@ IC	CALifeKnownAnomaly::CALifeKnownAnomaly								()
 
 IC	ALife::EAnomalousZoneType	CALifeKnownAnomaly::type				() const
 {
-	return				(m_type);
+	return						(m_type);
 }
 
 IC	float						CALifeKnownAnomaly::power				() const
 {
-	return				(m_power);
+	return						(m_power);
 }
 
 IC	float						CALifeKnownAnomaly::distance			() const
 {
-	return				(m_distance);
+	return						(m_distance);
 }
 
 IC	ALife::_GRAPH_ID			CALifeKnownAnomaly::game_vertex_id		() const
 {
-	return				(m_game_vertex_id);
+	return						(m_game_vertex_id);
 }
 
 IC	void						CALifeKnownAnomaly::set_type			(const ALife::EAnomalousZoneType &type)

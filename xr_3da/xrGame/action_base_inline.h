@@ -64,6 +64,7 @@ void CBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool
 	m_storage			= storage;
 	m_inertia_time		= 0;
 #ifdef LOG_ACTION
+	m_switched			= false;
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateReinitialized);
 #endif
@@ -82,6 +83,8 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::initialize		()
 {
 #ifdef LOG_ACTION
+	VERIFY				(!m_switched);
+	m_switched			= true;
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateInitialized);
 #endif
@@ -93,8 +96,9 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::execute		()
 {
 #ifdef LOG_ACTION
-	if (m_use_log && xr_strlen(m_action_name))
+	if (m_use_log && xr_strlen(m_action_name) && m_switched)
 		debug_log		(eActionStateExecuted);
+	m_switched			= false;
 #endif
 }
 
@@ -102,6 +106,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::finalize		()
 {
 #ifdef LOG_ACTION
+	VERIFY				(!m_switched);
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateFinalized);
 #endif
@@ -172,6 +177,12 @@ IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 		}
 		default : NODEFAULT;
 	}
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CBaseAction::set_use_log		(bool value)
+{
+	m_use_log	= value;
 }
 #endif
 

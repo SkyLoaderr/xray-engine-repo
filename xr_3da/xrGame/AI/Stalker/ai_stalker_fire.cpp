@@ -13,6 +13,7 @@
 #include "../../ef_storage.h"
 #include "../../stalker_decision_space.h"
 #include "../../script_game_object.h"
+#include "../../customzone.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -296,10 +297,8 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 
 bool CAI_Stalker::undetected_anomaly	()
 {
-	return					(inside_anomaly() || m_anomaly_planner->CScriptActionPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
+	return					(inside_anomaly() || CMotivationActionManagerStalker::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
 }
-
-#include "../../customzone.h"
 
 bool CAI_Stalker::inside_anomaly		()
 {

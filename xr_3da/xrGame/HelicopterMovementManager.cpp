@@ -764,7 +764,7 @@ void CHelicopterMovManager::UpdatePatrolPath()
 void CHelicopterMovManager::addGoBySpecifiedPatrolPath	(float from_time)
 {
 	const CPatrolPath* pp = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
-	const xr_vector<CPatrolPath::CVertex>& vv = pp->vertices();
+	const xr_vector<CPatrolPath::CVertex*>& vv = pp->vertices();
 	CPatrolPath::const_vertex_iterator it_bg = vv.begin();
 	CPatrolPath::const_vertex_iterator it_end = vv.end();
 
@@ -782,7 +782,7 @@ void CHelicopterMovManager::addGoBySpecifiedPatrolPath	(float from_time)
 
 	xr_vector<Fvector> vAddedKeys;
 	for(;it_bg!=it_end; ++it_bg){
-		Fvector p = (*it_bg).data().position();
+		Fvector p = (*it_bg)->data().position();
 		getPathAltitude(p,m_heli->m_data.m_baseAltitude);
 		vAddedKeys.push_back( p );
 	}

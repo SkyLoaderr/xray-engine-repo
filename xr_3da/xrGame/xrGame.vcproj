@@ -656,53 +656,6 @@
 							</File>
 						</Filter>
 					</Filter>
-					<Filter
-						Name="StateManagement"
-						Filter="">
-						<File
-							RelativePath=".\state_management_config.h">
-						</File>
-						<Filter
-							Name="StateBase"
-							Filter="">
-							<File
-								RelativePath=".\state_base.h">
-							</File>
-							<File
-								RelativePath=".\state_base_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="StateInternal"
-							Filter="">
-							<File
-								RelativePath=".\state_internal.h">
-							</File>
-							<File
-								RelativePath=".\state_internal_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="StateManagerAbstract"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_abstract.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_abstract_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="StateManagerState"
-							Filter="">
-							<File
-								RelativePath=".\state_manager_state.h">
-							</File>
-							<File
-								RelativePath=".\state_manager_state_inline.h">
-							</File>
-						</Filter>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="LocationManager"
@@ -3134,14 +3087,101 @@
 								Name="actions"
 								Filter="">
 								<File
-									RelativePath=".\stalker_actions.cpp">
+									RelativePath=".\stalker_base_action.cpp">
 								</File>
 								<File
-									RelativePath=".\stalker_actions.h">
+									RelativePath=".\stalker_base_action.h">
 								</File>
-								<File
-									RelativePath=".\stalker_actions_inline.h">
-								</File>
+								<Filter
+									Name="alife"
+									Filter="">
+									<File
+										RelativePath=".\stalker_alife_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_alife_planner.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_alife_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_alife_actions.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="anomaly"
+									Filter="">
+									<File
+										RelativePath=".\stalker_anomaly_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_anomaly_planner.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_anomaly_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_anomaly_actions.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="combat"
+									Filter="">
+									<File
+										RelativePath=".\stalker_combat_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_combat_planner.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_combat_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_combat_actions.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="death"
+									Filter="">
+									<File
+										RelativePath=".\stalker_death_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_death_planner.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_death_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_death_actions.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="squad"
+									Filter="">
+									<File
+										RelativePath=".\stalker_squad_action.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_squad_action.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="motivations"
@@ -3338,19 +3378,26 @@
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
 					</File>
-				</Filter>
-				<Filter
-					Name="GraphManager"
-					Filter="">
-					<File
-						RelativePath=".\graph_manager.h">
-					</File>
-					<File
-						RelativePath=".\graph_manager_inline.h">
-					</File>
-					<File
-						RelativePath=".\graph_manager_interface.h">
-					</File>
+					<Filter
+						Name="GraphEdge"
+						Filter="">
+						<File
+							RelativePath=".\graph_edge.h">
+						</File>
+						<File
+							RelativePath=".\graph_edge_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="GraphVertex"
+						Filter="">
+						<File
+							RelativePath=".\graph_vertex.h">
+						</File>
+						<File
+							RelativePath=".\graph_vertex_inline.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="LevelGraph"

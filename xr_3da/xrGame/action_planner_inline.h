@@ -76,12 +76,8 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 	{
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I) {
-#ifdef LOG_ACTION
-			(*I).get_operator()->m_use_log = m_use_log;
-#endif
+		for ( ; I != E; ++I)
 			(*I).get_operator()->reinit(object,&m_storage,clear_all);
-		}
 	}
 	{
 		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
@@ -99,9 +95,6 @@ void CPlanner::reload				(LPCSTR section)
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I) {
-#ifdef LOG_ACTION
-			(*I).get_operator()->m_use_log = m_use_log;
-#endif
 			(*I).get_operator()->reload(section);
 		}
 	}
@@ -243,6 +236,19 @@ LPCSTR CPlanner::object_name		() const
 {
 	return			("");
 }
+
+#ifdef LOG_ACTION
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::set_use_log		(bool value)
+{
+	m_use_log							= value;
+	OPERATOR_VECTOR::iterator			I = m_operators.begin();
+	OPERATOR_VECTOR::iterator			E = m_operators.end();
+	for ( ; I != E; ++I)
+		(*I).get_operator()->set_use_log(m_use_log);
+}
+#endif
+
 #endif
 
 #undef TEMPLATE_SPECIALIZATION

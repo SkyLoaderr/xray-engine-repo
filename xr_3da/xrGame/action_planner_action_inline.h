@@ -38,9 +38,6 @@ void CPlanner::Load					(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
-#ifdef LOG_ACTION
-	inherited_planner::m_use_log = inherited_action::m_use_log;
-#endif
 	inherited_planner::reinit	(object,clear_all);
 	inherited_action::reinit	(object,storage,clear_all);
 	set_target_state			(effects());
@@ -49,9 +46,6 @@ void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool
 TEMPLATE_SPECIALIZATION
 void CPlanner::reload					(LPCSTR section)
 {
-#ifdef LOG_ACTION
-	inherited_planner::m_use_log = inherited_action::m_use_log;
-#endif
 	inherited_planner::reload	(section);
 	inherited_action::reload	(section);
 }
@@ -65,8 +59,8 @@ void CPlanner::initialize				()
 TEMPLATE_SPECIALIZATION
 void CPlanner::finalize				()
 {
-	inherited_action::finalize	();
 	current_action().finalize	();
+	inherited_action::finalize	();
 	m_initialized				= false;
 }
 
@@ -76,14 +70,32 @@ bool CPlanner::completed				() const
 	return						(inherited_action::completed());
 }
 
-TEMPLATE_SPECIALIZATION
-void CPlanner::execute				()
-{
 #ifdef LOG_ACTION
-	inherited_planner::m_use_log = inherited_action::m_use_log;
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::set_use_log			(bool value)
+{
+	inherited_action::set_use_log		(value);
+	inherited_planner::set_use_log		(value);
+}
 #endif
+
+TEMPLATE_SPECIALIZATION
+void CPlanner::execute					()
+{
 	inherited_action::execute	();
-	inherited_planner::update	();
+	update						();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_condition		(_world_operator *action, _condition_type condition_id, _value_type condition_value)
+{
+	inherited_planner::add_condition	(action,condition_id,condition_value);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_effect			(_world_operator *action, _condition_type condition_id, _value_type condition_value)
+{
+	inherited_planner::add_effect		(action,condition_id,condition_value);
 }
 
 #undef TEMPLATE_SPECIALIZATION
