@@ -154,7 +154,7 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		break;
 	case CLSID_OBJECT_W_FN2000:
 		pWeapon = new CWeaponFN2000	(); 
-		strcpy(sect_name,"wpn_groza");
+		strcpy(sect_name,"wpn_fn2000");
 		break;
 	case CLSID_OBJECT_W_AK74:
 		pWeapon = new CWeaponAK74	(); 
