@@ -684,34 +684,6 @@
 					RelativePath=".\Fmesh.h">
 				</File>
 				<Filter
-					Name="ShadowForm"
-					Filter="">
-					<File
-						RelativePath=".\FShadowForm.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\FShadowForm.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="Ordinal (normal)"
 					Filter="">
 					<File

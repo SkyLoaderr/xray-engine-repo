@@ -584,6 +584,11 @@ void FreeLauncher(){
 
 int doLauncher()
 {
+/*
+		InitLauncher();
+		int _res = pLauncher(2);//show results
+		FreeLauncher();
+return 0;*/
 	execUserScript();
 	InitLauncher();
 	int res = pLauncher(0);
