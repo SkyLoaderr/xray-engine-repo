@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "defines.h"
 #include "xrCrossTable.h"
-#include "ai_map.h"
 
 #define					START_DISTANCE_TO_SEARCH				16.f
 #define					MAX_DEPTH								8			// i.e. 2048 meters
@@ -35,7 +34,7 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, xr_vector<bool
 	tMarks[dwStartNodeID] = false;
 }
 
-void					vfRecurseMark(CAI_Map& tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
+void					vfRecurseMark(CAI_Map &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
 {
 	NodeCompressed		*tpNode = tMap.Node(dwStartNodeID);
 	NodeLink			*I = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));;
@@ -69,7 +68,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	{
 		for (int i=0; i<iVertexCount; i++)
 			vfRecurseMark(tMap,tMarks,tGraph.m_tpaGraph[i].tNodeID);
-		tMarks.flip();
+		tMarks.flip		();
 	}
 
 	tDistances.resize	(iVertexCount);

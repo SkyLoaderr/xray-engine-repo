@@ -20,6 +20,7 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "game_base.h"
 #include "xr_spawn_merge.h"
+#include "xrCrossTable.h"
 
 #define THREAD_COUNT				6
 
@@ -88,7 +89,7 @@ void vfLoadGraphPoints(LPCSTR name)
 	Status									("Vertexes being read : %d",i);
 }
 
-void vfRemoveDuplicateAIPoints()
+void vfRemoveDuplicateGraphPoints()
 {
 	Progress(0.0f);
 	for (int i=0, k=0, N = (int)tpaGraph.size(); i<N; i++)
@@ -307,6 +308,23 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	Msg							("%d bytes saved",int(tGraph.size()));
 }
 
+void vfRemoveIncoherentGraphPoints(CAI_Map *tpAI_Map)
+{
+	xr_vector<bool>		tMarks;
+	tMarks.resize		(tpAI_Map->m_header.count);
+	tMarks.assign		(tpAI_Map->m_header.count,false);
+	vfRecurseMark		(*tpAI_Map,tMarks,tpaGraph[0].tNodeID);
+	for (int i=0, j=0, n=int(tpaGraph.size()); i<n; i++)
+		if (!tMarks[tpaGraph[i].tNodeID]) {
+			tpaGraph.erase(tpaGraph.begin() + i);
+			Msg			("Graph point %d [%f][%f][%f] is disconnected",i+j,VPUSH(tpaGraph[i].tLocalPoint));
+			j++;
+			i--;
+			n--;
+		}
+	Msg					("%d graph points are disconnected (they are removed)",j);
+}
+
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;		// multithreading
@@ -330,13 +348,16 @@ void xrBuildGraph(LPCSTR name)
 	Msg("%d vertexes loaded",int(dwGraphPoints = tpaGraph.size()));
 
 	Phase("Removing duplicate graph points");
-	vfRemoveDuplicateAIPoints();
+	vfRemoveDuplicateGraphPoints();
 
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
 	tThreadManager.wait();
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
+
+	Phase("Removing incoherent graph points");
+	vfRemoveIncoherentGraphPoints(tpAI_Map);
 
 	Phase("Allocating memory");
 	vfAllocateMemory();
