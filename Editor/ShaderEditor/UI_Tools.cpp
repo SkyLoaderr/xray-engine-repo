@@ -91,13 +91,13 @@ void CShaderTools::OnDestroy(){
 }
 
 void CShaderTools::Render(){
-	if (m_EditObject) m_EditObject->RenderSingle(precalc_identity);
+	if (m_EditObject) m_EditObject->RenderSingle(Fidentity);
 }
 
 void CShaderTools::Update(){
 	switch (ActiveEditor()){
 	case aeEngine:
-    	if (m_EditObject) m_EditObject->RTL_Update(Device.fTimeDelta);
+    	if (m_EditObject) m_EditObject->OnFrame();
 	    SEngine.Update();
     break;
 	case aeCompiler:
@@ -182,9 +182,9 @@ void CShaderTools::OnShowHint(AStringVec& ss){
 	    Fvector p;
         float dist=UI.ZFar();
         SRayPickInfo pinf;
-    	if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,precalc_identity,&pinf)){
+    	if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
         	R_ASSERT(pinf.e_mesh);
-            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
             ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
             ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
             ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));

@@ -58,14 +58,15 @@
       Intermediate\SHEngineToolsProperties.obj 
       Intermediate\SHCompilerToolsProperties.obj 
       Intermediate\Blender_Shadow_Texture.obj 
-      Intermediate\Blender_Shadow_World.obj"/>
+      Intermediate\Blender_Shadow_World.obj Intermediate\NumericVector.obj 
+      Intermediate\SH_RT.obj Intermediate\SH_VS.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
-      Editor\TopBar.dfm Editor\PropertiesList.dfm"/>
+      Editor\TopBar.dfm Editor\PropertiesList.dfm Editor\NumericVector.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
       Lib\ETools.lib Lib\memmgr.lib Lib\xrCDB.lib"/>
@@ -115,7 +116,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=28
+Build=30
 Debug=1
 PreRelease=0
 Special=0
@@ -127,7 +128,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.28
+FileVersion=1.0.1.30
 InternalName=
 LegalCopyright=
 LegalTrademarks=
