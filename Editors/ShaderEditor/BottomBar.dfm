@@ -5,6 +5,8 @@ object fraBottomBar: TfraBottomBar
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
+  Color = 10528425
+  ParentColor = False
   TabOrder = 0
   object paBottomBar: TPanel
     Left = 0
@@ -12,38 +14,130 @@ object fraBottomBar: TfraBottomBar
     Width = 443
     Height = 17
     Align = alTop
-    BevelInner = bvLowered
-    BevelOuter = bvNone
-    Color = 10528425
+    BevelOuter = bvLowered
+    ParentColor = True
     TabOrder = 0
     object paInfo: TPanel
-      Left = 74
+      Left = 95
       Top = 1
-      Width = 310
+      Width = 347
       Height = 15
-      Align = alClient
-      Alignment = taLeftJustify
+      Align = alRight
       BevelOuter = bvNone
-      Color = 10528425
+      ParentColor = True
       TabOrder = 0
-      object paStatus: TPanel
-        Left = 116
+      object paSel: TPanel
+        Left = 0
         Top = 0
-        Width = 301
+        Width = 82
+        Height = 15
+        Align = alLeft
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'Sel: 0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 0
+      end
+      object paGridSquareSize: TPanel
+        Left = 289
+        Top = 0
+        Width = 58
+        Height = 15
+        Align = alRight
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'Grid: 0.1 m'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 1
+      end
+      object paUICursor: TPanel
+        Left = 205
+        Top = 0
+        Width = 84
+        Height = 15
+        Align = alRight
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
+        Caption = 'Cur: 2048, 2048'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 2
+      end
+      object paCamera: TPanel
+        Left = 82
+        Top = 0
+        Width = 123
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
         BevelInner = bvLowered
-        Color = 10528425
+        Caption = 'Cam: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMaroon
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 3
+      end
+    end
+    object paStatusBar: TPanel
+      Left = 176
+      Top = 1
+      Width = 322
+      Height = 15
+      Align = alClient
+      BevelOuter = bvNone
+      ParentColor = True
+      TabOrder = 1
+      object paStatusLabel: TPanel
+        Left = 0
+        Top = 0
+        Width = 48
+        Height = 15
+        Align = alLeft
+        BevelInner = bvRaised
+        BevelOuter = bvNone
+        Caption = 'Status:'
+        ParentColor = True
+        TabOrder = 0
+      end
+      object paStatus: TPanel
+        Left = 48
+        Top = 0
+        Width = 274
+        Height = 15
+        Align = alClient
+        Alignment = taLeftJustify
+        BevelInner = bvLowered
         Font.Charset = RUSSIAN_CHARSET
         Font.Color = clMaroon
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
+        ParentColor = True
         ParentFont = False
-        TabOrder = 0
+        TabOrder = 1
         object cgProgress: TCGauge
-          Left = 172
+          Left = 145
           Top = 2
           Width = 127
           Height = 11
@@ -59,133 +153,16 @@ object fraBottomBar: TfraBottomBar
           Visible = False
         end
       end
-      object paStatusLabel: TPanel
-        Left = 68
-        Top = 0
-        Width = 48
-        Height = 15
-        Align = alLeft
-        BevelInner = bvRaised
-        BevelOuter = bvNone
-        Caption = 'Status:'
-        Color = 10528425
-        TabOrder = 1
-      end
-      object paCamera: TPanel
-        Left = 86
-        Top = 0
-        Width = 130
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Cam: (123,123,123)'
-        Color = 10528425
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-      end
-      object paButtons: TPanel
-        Left = 0
-        Top = 0
-        Width = 68
-        Height = 15
-        Align = alLeft
-        BevelOuter = bvNone
-        Color = 10528425
-        TabOrder = 3
-        object ebLog: TExtBtn
-          Left = 0
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          HotColor = 15790320
-          CloseButton = False
-          Caption = 'Log'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Spacing = 0
-          FlatAlwaysEdge = True
-          OnClick = ebLogClick
-        end
-        object ebStat: TExtBtn
-          Left = 34
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          HotColor = 15790320
-          CloseButton = False
-          Caption = 'Stat'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Spacing = 0
-          FlatAlwaysEdge = True
-          OnClick = ebStatClick
-        end
-      end
-      object paUICursor: TPanel
-        Left = 216
-        Top = 0
-        Width = 94
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Cursor:1025, 2048'
-        Color = 10528425
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 4
-      end
-      object paSel: TPanel
-        Left = 28
-        Top = 0
-        Width = 58
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Color = 10528425
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 5
-      end
     end
-    object paMenu: TPanel
+    object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 73
+      Width = 175
       Height = 15
       Align = alLeft
       BevelOuter = bvNone
-      Color = 10528425
-      TabOrder = 1
+      ParentColor = True
+      TabOrder = 2
       object ebOptions: TExtBtn
         Left = 0
         Top = 0
@@ -193,7 +170,6 @@ object fraBottomBar: TfraBottomBar
         Height = 15
         Align = alNone
         BevelShow = False
-        HotColor = 15790320
         CloseTransparent = True
         Caption = 'Options'
         Font.Charset = DEFAULT_CHARSET
@@ -206,34 +182,73 @@ object fraBottomBar: TfraBottomBar
         FlatAlwaysEdge = True
         OnMouseDown = ebOptionsMouseDown
       end
-    end
-    object paGridSquareSize: TPanel
-      Left = 384
-      Top = 1
-      Width = 58
-      Height = 15
-      Align = alRight
-      Alignment = taLeftJustify
-      BevelInner = bvLowered
-      Caption = 'Grid: 0.1 m'
-      Color = 10528425
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clMaroon
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 2
+      object ebLog: TExtBtn
+        Left = 73
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Log'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        Spacing = 0
+        FlatAlwaysEdge = True
+        OnClick = ebLogClick
+      end
+      object ebStat: TExtBtn
+        Left = 107
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Stat'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        Spacing = 0
+        FlatAlwaysEdge = True
+        OnClick = ebStatClick
+      end
+      object ebStop: TExtBtn
+        Left = 141
+        Top = 0
+        Width = 34
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        CloseButton = False
+        Caption = 'Break'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Kind = knMinimize
+        ParentFont = False
+        FlatAlwaysEdge = True
+        OnClick = ebStopClick
+      end
     end
   end
   object fsStorage: TFormStorage
     IniSection = 'Bottom Bar'
-    Options = [fpState]
+    Options = []
     RegistryRoot = prLocalMachine
-    OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
-      'miDrawGrid.Checked'
       'N100.Checked'
       'N125.Checked'
       'N150.Checked'
@@ -241,35 +256,26 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawObjectJoints.Checked'
-      'ebStat.Down'
-      'miLightScene.Checked'
-      'miRealTime.Checked'
-      'miRenderEdgedFaces.Checked'
       'miRenderFillPoint.Checked'
       'miRenderFillSolid.Checked'
       'miRenderFillWireframe.Checked'
       'miRenderHWTransform.Checked'
-      'miRenderLinearFilter.Checked'
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
-      'miShowHint.Checked'
-      'miDrawObjectsPivot.Checked'
-      'miDrawBoneAxis.Checked'
-      'miDrawBoneNames.Checked'
-      'miDrawBoneShapes.Checked')
+      'miShowHint.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
   end
   object pmOptions: TMxPopupMenu
+    Alignment = paCenter
+    AutoHotkeys = maManual
     AutoPopup = False
-    MenuAnimation = [maTopToBottom]
     TrackButton = tbLeftButton
     OnPopup = pmOptionsPopup
-    MarginStartColor = 13158600
-    MarginEndColor = 1644825
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
     BKColor = 10528425
     SelColor = clBlack
     SelFontColor = 10526880
@@ -396,39 +402,6 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
-    object Objects1: TMenuItem
-      Caption = 'Objects'
-      GroupIndex = 4
-      object miDrawObjectJoints: TMenuItem
-        Caption = 'Draw Joints'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawBoneAxis: TMenuItem
-        Caption = 'Draw Bone Axis'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawBoneNames: TMenuItem
-        Caption = 'Draw Bone Names'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawBoneShapes: TMenuItem
-        Caption = 'Draw Bone Shapes'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object miDrawObjectsPivot: TMenuItem
-      Caption = 'Draw Objects Pivot'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object N4: TMenuItem
-      Caption = '-'
-      GroupIndex = 4
-    end
     object miDrawSafeRect: TMenuItem
       Caption = 'Draw Safe Rect'
       GroupIndex = 4
@@ -452,6 +425,33 @@ object fraBottomBar: TfraBottomBar
     object N1: TMenuItem
       Caption = '-'
       GroupIndex = 4
+    end
+    object miWeather: TMenuItem
+      Caption = 'Weather'
+      GroupIndex = 4
+      object miWeatherNone: TMenuItem
+        Tag = -1
+        Caption = 'none'
+        OnClick = miWeatherClick
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
+    end
+    object miFog: TMenuItem
+      Caption = 'Fog'
+      Checked = True
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
+    end
+    object N5: TMenuItem
+      Caption = '-'
+      GroupIndex = 4
+    end
+    object miMuteSounds: TMenuItem
+      Caption = 'Mute Sounds'
+      GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object miLightScene: TMenuItem
       Caption = 'Light Scene'
