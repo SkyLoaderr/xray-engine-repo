@@ -8,7 +8,11 @@ const u32	clStatic	= clQUERY_STATIC+clGET_TRIS;
 
 void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {
-	dwQueryID++;
+	Fvector		bc,bd;
+	Fbox		xf; 
+	xf.xform	(B,M);
+	xf.get_CD	(bc,bd);
+
 	q_result.Clear	();
 	XRC.box_options	(
 		(flags&clCOARSE?0:CDB::OPT_FULL_TEST)|
@@ -17,11 +21,6 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 
 	if ((flags&clStatic) == clStatic)
 	{
-		Fvector bc,bd;
-		Fbox	xf; 
-		xf.xform	(B,M);
-		xf.get_CD	(bc,bd);
-		
 		XRC.box_query	(&Static, bc, bd);
 		if (XRC.r_count())
 		{
@@ -31,23 +30,19 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 				q_result.AddTri(&Static.get_tris() [it->id]);
 		}
 	};
+
 	if (flags&clQUERY_DYNAMIC)
 	{
-		if ( GetNearest(M.c, B.getradius()) )
+		// Traverse object database
+		g_SpatialSpace.q_box	(0,STYPE_COLLIDEABLE,bc,bd);
+
+		// Determine visibility for dynamic part of scene
+		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 		{
-			for (NL_IT nl_item = q_nearest.begin(); nl_item!=q_nearest.end(); nl_item++)
-				(*nl_item)->CFORM()->_BoxQuery	(B,M,flags);
+			ISpatial*	spatial						= g_SpatialSpace.q_result[o_it];
+			CObject*	collidable					= dynamic_cast<CObject*>	(spatial);
+			if			(0==collidable)				continue;
+			collidable->collidable.model->_BoxQuery	(B,M,flags);
 		}
 	};
-	/*
-	if (bDebug) {
-		q_debug.AddBox(M,B);
-
-		if (q_result.boxes.size())
-		{
-			q_debug.boxes.append(q_result.boxes.begin(),q_result.boxes.size());
-		}
-	}
-	*/
 }
-

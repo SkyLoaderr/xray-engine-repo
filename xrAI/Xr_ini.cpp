@@ -129,6 +129,7 @@ void	CInifile::Load(IReader* F)
 				DATA.insert		(I,Current);
 				Current.clear	();
 			}
+#pragma todo("find real section-name-end ']'")
 			size_t L = strlen(str); str[L-1] = 0;
 			Current.Name = strlwr(xr_strdup(str+1));
 		} else {
@@ -179,11 +180,12 @@ void	CInifile::Load(IReader* F)
 void	CInifile::save_as( LPCSTR new_fname )
 {
 	// save if needed
-    if (new_fname&&new_fname[0]){
+    if (new_fname&&new_fname[0])
+	{
         xr_free(fName);
         fName		= xr_strdup(new_fname);
     }
-    R_ASSERT(fName&&fName[0]);
+    R_ASSERT		(fName&&fName[0]);
     IWriter* F		= FS.w_open(fName);
     char		temp[512],val[512];
     for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
@@ -198,23 +200,23 @@ void	CInifile::save_as( LPCSTR new_fname )
                     _decorate	(val,I.second);
                     if (I.comment) {
                         // name, value and comment
-                        sprintf	(temp,"%-24s = %-32s ;%s",I.first,val,I.comment);
+                        sprintf	(temp,"%8s%-24s = %-32s ;%s"," ",I.first,val,I.comment);
                     } else {
                         // only name and value
-                        sprintf	(temp,"%-24s = %-32s",I.first,val);
+                        sprintf	(temp,"%8s%-24s = %-32s"," ",I.first,val);
                     }
                 } else {
                     if (I.comment) {
                         // name and comment
-                        sprintf(temp,"%-24s   ;%s",I.first,I.comment);
+                        sprintf(temp,"%8s%-24s   ;%s"," ",I.first,I.comment);
                     } else {
                         // only name
-                        sprintf(temp,"%-24s",I.first);
+                        sprintf(temp,"%8s%-24s"," ",I.first);
                     }
                 }
             } else {
                 // no name, so no value
-                if (I.comment)	sprintf		(temp,";%s",I.comment);
+                if (I.comment)	sprintf		(temp,"%8s;%s"," ",I.comment);
                 else			temp[0] = 0;
             }
             _TrimRight			(temp);

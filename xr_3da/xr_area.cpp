@@ -15,7 +15,8 @@ IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
 void __stdcall _sound_event	(sound* S, float range)
 {
 #pragma todo("Check why sometimes 'S->feedback==0'")
-	if (S&&S->feedback){
+	if ( S&&S->feedback )
+	{
 		const CSound_params*	p	= S->feedback->get_params();
 		VERIFY					(p);
 
