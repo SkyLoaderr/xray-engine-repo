@@ -25,6 +25,8 @@ public:
     float					m_fVolume;
 	u32						m_uGameType;
 private:
+	void 					i_decompress_fr			(char* dest, u32 size);    
+	void 					i_decompress_hr			(char* dest, u32 size);
 	void					LoadWave 				(LPCSTR name, BOOL b3D);
 public:
 	CSoundRender_Source		();

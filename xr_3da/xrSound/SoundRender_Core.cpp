@@ -44,7 +44,8 @@ CSoundRender_Core::~CSoundRender_Core()
 
 void CSoundRender_Core::_initialize	(u64 window)
 {
-	Timer.Start			( );
+    Log							("EAX 2.0 extension:",bEAX?"present":"absent");
+	Timer.Start					( );
 
     // load environment
 	env_load					();
@@ -52,7 +53,7 @@ void CSoundRender_Core::_initialize	(u64 window)
 	bPresent					= TRUE;
 
 	// Cache
-	cache_bytes_per_line		= (sdef_target_block/8)*(wfm.nSamplesPerSec*4)/1000;
+	cache_bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
     cache.initialize			(psSoundCacheSizeMB*1024,cache_bytes_per_line);
 
     bReady						= TRUE;

@@ -8,6 +8,11 @@
 void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 {
 /*
+	Msg				("stream: %10s - %d",*source->fname,size);
+	Memory.mem_copy	(_dest,&source->m_buffer.front()+offset,size);
+	return;
+//*/
+/*
 	Memory.mem_fill	(_dest,0,size);	// debug only
 	//	Msg			("stream: %10s - %d",*source->fname,size);
 	int				dummy;

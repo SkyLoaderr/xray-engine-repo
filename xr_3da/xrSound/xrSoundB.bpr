@@ -19,7 +19,7 @@
       Intermediate\cl_collector.obj Intermediate\guids.obj 
       Intermediate\SoundRender_Cache.obj Intermediate\SoundRender_TargetA.obj 
       Intermediate\SoundRender_TargetD.obj Intermediate\SoundRender_CoreD.obj 
-      Intermediate\SoundRender_CoreA.obj"/>
+      Intermediate\SoundRender_CoreA.obj Intermediate\sound.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -51,8 +51,8 @@
       -IR:\SDK\ogg\ogg\include -IR:\SDK\ogg\vorbis\include 
       -IR:\SDK\eax20\Include -IR:\SDK\OpenAL\include -IR:\SDK\OpenAL\include\AL 
       -src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
-      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
+    <CFLAG1 value="-WD -vGc -vGt -vGd -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF 
+      -ff -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
@@ -62,7 +62,7 @@
   <LINKER>
     <ALLOBJ value="c0d32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="cg32.lib $(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -105,6 +105,7 @@
       <FILE FILENAME="SoundRender_TargetD.cpp" FORMNAME="" UNITNAME="SoundRender_TargetD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreD.cpp" FORMNAME="" UNITNAME="SoundRender_CoreD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_CoreA.cpp" FORMNAME="" UNITNAME="SoundRender_CoreA.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="sound.cpp" FORMNAME="" UNITNAME="sound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -211,7 +212,7 @@ Item4=!run
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=
+RunParams=-opena
 Launcher=
 UseLauncher=0
 DebugCWD=
@@ -225,7 +226,7 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=0
+LinkCGLIB=1
 
 [CORBA]
 AddServerUnit=1

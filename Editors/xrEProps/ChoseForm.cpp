@@ -45,6 +45,7 @@ void __fastcall TfrmChoseItem::FormCreate(TObject *Sender)
 void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 {
 	TProperties::DestroyForm		(m_Props);
+	xr_delete			(m_Thm);
 }
 //---------------------------------------------------------------------------
 

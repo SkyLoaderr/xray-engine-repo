@@ -21,12 +21,11 @@ CSoundRender_CoreA::~CSoundRender_CoreA	()
 void CSoundRender_CoreA::_initialize	(u64 window)
 {
 	bPresent			        = FALSE;
-	if (strstr			        ( Core.Params,"-nosound"))		return;
 
     // OpenAL device
     pDevice						= alcOpenDevice		(NULL);
 	if (pDevice == NULL){
-		Log						("Failed to create OpenAL device.");
+		Log						("OpenAL: Failed to create device.");
 		bPresent				= FALSE;
 		return;
 	}
@@ -39,7 +38,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // Create context
     pContext					= alcCreateContext	(pDevice,NULL);
 	if (0==pContext){
-		Log						("Failed to create OpenAL context.");
+		Log						("OpenAL: Failed to create context.");
 		bPresent				= FALSE;
 		alcCloseDevice			(pDevice); pDevice = 0;
 		return;
@@ -63,10 +62,9 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     if (eaxGet==NULL) bEAX 		= false;
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
-//.    
+//.            
 //	psSoundFreq = sf_22K;
-//	psSoundFreq = sf_44K;
-	switch	( psSoundFreq ){
+	switch	( psSoundFreq ){            
 	default:
 	case sf_22K:	wfm.nSamplesPerSec = 22050; break;
 	case sf_44K:	wfm.nSamplesPerSec = 44100; break;

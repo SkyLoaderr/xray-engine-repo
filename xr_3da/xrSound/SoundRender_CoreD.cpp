@@ -21,7 +21,6 @@ CSoundRender_CoreD::~CSoundRender_CoreD()
 void CSoundRender_CoreD::_initialize	(u64 window)
 {
 	bPresent			= FALSE;
-	if (strstr			( Core.Params,"-nosound"))		return;
 
 	// DirectX device
 	if( FAILED			( EAXDirectSoundCreate8( NULL, &pDevice, NULL ) ) )
@@ -50,6 +49,8 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	R_CHK						(pDevice->GetCaps (&dsCaps));
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
+//.    
+	psSoundFreq = sf_22K;
 	switch	( psSoundFreq )
 	{
 	default:
@@ -101,7 +102,6 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	                bEAX		= FALSE;
             }
             if (!bEAX){
-                Log				("EAX 2.0 not supported");
                 _RELEASE		(pExtensions);
             }
         }
@@ -118,6 +118,7 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
+	Msg				        	("DirectSound: Create device successfully.");
     // inherited initialize
     inherited::_initialize		(window);
 
