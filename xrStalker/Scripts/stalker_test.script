@@ -24,13 +24,19 @@ function main ()
 --	c				= a:point(a:nearest(get_level_object("localhost/dima"):position()));
 --	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
 	
-	action(
-	    stalker,                                                                                                      
-		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+--	action(
+--	    stalker,                                                                                                      
+--		move		(move.standing, move.walk, move.line, patrol ("way0000")),
 --		look		(look.fire_point, get_level_object("localhost/dima")),
-		look		(look.path_dir),
-		anim		(anim.free),
-		cond		(cond.move_end)
+--		look		(look.path_dir),
+--		anim		(anim.free),
+--		cond		(cond.move_end)
+--	)
+
+	action(
+		stalker,
+		look		()
+		cond		(cond.time_end,100000000)
 	)
 	
 	while stalker:action() do
