@@ -311,7 +311,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	}
 
 	CMovementManager::STravelPathPoint	point = path()[curr_travel_point_index()];
-	const CDetailPathManager::STravelParams &current_velocity = velocity(point.velocity);
+	CDetailPathManager::STravelParams	current_velocity = velocity(point.velocity);
 
 	if (fis_zero(current_velocity.linear_velocity)) {
 		setup_body_orientation		();
