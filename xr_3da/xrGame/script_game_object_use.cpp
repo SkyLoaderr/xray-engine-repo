@@ -274,6 +274,6 @@ void CScriptGameObject::set_fastcall(const luabind::functor<bool> &functor, cons
 	CPHScriptGameObjectCondition* c=xr_new<CPHScriptGameObjectCondition>(object,functor,m_game_object);
 	CPHDummiAction*				  a=xr_new<CPHDummiAction>();
 	CPHSriptReqGObjComparer cmpr(m_game_object);
-	Level().ph_commander().remove_calls(&cmpr);
-	Level().ph_commander().add_call(c,a);
+	Level().ph_commander_scripts().remove_calls(&cmpr);
+	Level().ph_commander_scripts().add_call(c,a);
 }
