@@ -198,52 +198,55 @@ bool CSightManager::need_correction	(float x1, float x2, float x3)
 void CSightManager::Exec_Look		(float dt)
 {
 	START_PROFILE("AI/Sight Manager/exec_look")
+	
+	CBoneRotation		&body = object().movement().m_body;
+	CBoneRotation		&head = object().movement().m_head;
+
 	// normalizing torso angles
-	object().movement().m_body.current.yaw		= angle_normalize_signed	(object().movement().m_body.current.yaw);
-	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
-	object().movement().m_body.target.yaw		= angle_normalize_signed	(object().movement().m_body.target.yaw);
-	object().movement().m_body.target.pitch		= angle_normalize_signed	(object().movement().m_body.target.pitch);
+	body.current.yaw	= angle_normalize_signed	(body.current.yaw);
+	body.current.pitch	= angle_normalize_signed	(body.current.pitch);
+	body.target.yaw		= angle_normalize_signed	(body.target.yaw);
+	body.target.pitch	= angle_normalize_signed	(body.target.pitch);
 
 	// normalizing head angles
-	object().movement().m_head.current.yaw		= angle_normalize_signed	(object().movement().m_head.current.yaw);
-	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
-	object().movement().m_head.target.yaw		= angle_normalize_signed	(object().movement().m_head.target.yaw);
-	object().movement().m_head.target.pitch		= angle_normalize_signed	(object().movement().m_head.target.pitch);
+	head.current.yaw	= angle_normalize_signed	(head.current.yaw);
+	head.current.pitch	= angle_normalize_signed	(head.current.pitch);
+	head.target.yaw		= angle_normalize_signed	(head.target.yaw);
+	head.target.pitch	= angle_normalize_signed	(head.target.pitch);
 
 	// updating torso angles
-	float							fSpeedFactor = 1.f;
+	float				fSpeedFactor = 1.f;
 
 #ifdef SIGHT_DEBUG
-//	Msg								("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+//	Msg					("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg					("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
-	vfValidateAngleDependency		(object().movement().m_body.current.yaw,object().movement().m_body.target.yaw,object().movement().m_head.current.yaw);
+	vfValidateAngleDependency		(body.current.yaw,body.target.yaw,head.current.yaw);
 	if (fis_zero(object().movement().speed()))
-		vfValidateAngleDependency	(object().movement().m_head.current.yaw,object().movement().m_head.target.yaw,object().movement().m_body.target.yaw);
+		vfValidateAngleDependency	(head.current.yaw,head.target.yaw,body.target.yaw);
 
-	m_object->angle_lerp_bounds		(object().movement().m_body.current.yaw,object().movement().m_body.target.yaw,fSpeedFactor*object().movement().m_body.speed,dt);
-	m_object->angle_lerp_bounds		(object().movement().m_body.current.pitch,object().movement().m_body.target.pitch,object().movement().m_body.speed,dt);
+	m_object->angle_lerp_bounds		(body.current.yaw,body.target.yaw,fSpeedFactor*body.speed,dt);
+	m_object->angle_lerp_bounds		(body.current.pitch,body.target.pitch,body.speed,dt);
 
-	m_object->angle_lerp_bounds		(object().movement().m_head.current.yaw,object().movement().m_head.target.yaw,object().movement().m_head.speed,dt);
-	m_object->angle_lerp_bounds		(object().movement().m_head.current.pitch,object().movement().m_head.target.pitch,object().movement().m_head.speed,dt);
+	m_object->angle_lerp_bounds		(head.current.yaw,head.target.yaw,head.speed,dt);
+	m_object->angle_lerp_bounds		(head.current.pitch,head.target.pitch,head.speed,dt);
 
 #ifdef SIGHT_DEBUG
 	// normalizing torso angles
-	object().movement().m_body.current.yaw		= angle_normalize_signed	(object().movement().m_body.current.yaw);
-	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
+	body.current.yaw	= angle_normalize_signed	(body.current.yaw);
+	body.current.pitch	= angle_normalize_signed	(body.current.pitch);
 
 	// normalizing head angles
-	object().movement().m_head.current.yaw		= angle_normalize_signed	(object().movement().m_head.current.yaw);
-	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
+	head.current.yaw	= angle_normalize_signed	(head.current.yaw);
+	head.current.pitch	= angle_normalize_signed	(head.current.pitch);
 
 //	Msg								("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
 //	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 	Fmatrix							mXFORM;
-//	mXFORM.setHPB					(-m_object->NET_Last.o_model,0,0);
-	mXFORM.setHPB					(-object().movement().body_orientation().current.yaw,0,0);
+	mXFORM.setHPB					(-body.current.yaw,0,0);
 	mXFORM.c.set					(m_object->Position());
 	m_object->XFORM().set			(mXFORM);
 	STOP_PROFILE
