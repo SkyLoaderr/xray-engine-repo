@@ -425,6 +425,7 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
+	Msg						("W: %s",Local()?"LOCAL":"REMOTE");
 
 	if (Remote() && NET.size())
 	{
