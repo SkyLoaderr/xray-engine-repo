@@ -27,6 +27,7 @@ void cl_light_XFORM::setup	(R_constant* C)					{
 }
 
 //////////////////////////////////////////////////////////////////////////
+/*
 IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
 	D.P.set	(P);
@@ -131,6 +132,59 @@ void CLightR_Manager::render_point	()
 	// Projection
 	Device.mProject._43 = _43;
 	RCache.set_xform_project	(Device.mProject);
+}
+*/
+
+void CLightR_Manager::render_point	()
+{
+	// for each light
+	for (xr_vector<light*>::iterator it=selected_spot.begin(); it!=selected_spot.end(); it++)
+	{
+		light*	L					= *it;
+
+		//		1. Calculate light frustum
+		Fvector						L_dir,L_up,L_right,L_pos;
+		Fmatrix						L_view,L_project,L_combine;
+		L_dir.set					(0,-1, 0);				
+		L_up.set					(0,	0, 1);				
+		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
+		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
+		float	_camrange			= 300.f;
+		L_pos.set					(L->position);			L_pos.y	+=	_camrange;
+		L_view.build_camera_dir		(L_pos,L_dir,L_up);
+		L_project.build_projection	(deg2rad(1.f),1.f,_camrange-L->range,_camrange+L->range);
+		L_combine.mul				(L_project,L_view);
+
+		//		2. Calculate matrix for TC-gen
+		float			fTexelOffs			= (.5f / SSM_tex_size);
+		float			fRange				= 1.f  / L->range;
+		float			fBias				= 0.f;
+		Fmatrix			m_TexelAdjust		= 
+		{
+			0.5f,				0.0f,				0.0f,			0.0f,
+			0.0f,				-0.5f,				0.0f,			0.0f,
+			0.0f,				0.0f,				fRange,			0.0f,
+			0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
+		};
+		Fmatrix		L_texgen;		L_texgen.mul	(m_TexelAdjust,L_combine);
+
+		//		2. Set global light-params to be used by shading
+		RImplementation.r1_dlight_light		= L;
+		RImplementation.r1_dlight_tcgen		= L_texgen;
+
+		//		3. Calculate visibility for light + build soring tree
+		RImplementation.r_pmask						(true,false);
+		RImplementation.r_dsgraph_render_subspace	(
+			L->spatial.sector,
+			L_combine,
+			L_pos,
+			TRUE
+			);
+
+		//		4. Dump sorting tree
+		RImplementation.r_dsgraph_render_graph		(0);
+	}
+	//		??? grass ???
 }
 
 void CLightR_Manager::render_spot	()
