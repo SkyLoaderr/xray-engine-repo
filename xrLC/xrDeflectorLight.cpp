@@ -56,9 +56,9 @@ IC void GET(
 	u32 pixel = lm.pSurface[y*lm.dwWidth + x];
 	if (color_get_A(pixel)<=ref) return;
 	
-	r+=RGBA_GETRED	(pixel);
-	g+=RGBA_GETGREEN(pixel);
-	b+=RGBA_GETBLUE	(pixel);
+	r+=color_get_R	(pixel);
+	g+=color_get_G	(pixel);
+	b+=color_get_B	(pixel);
 	count++;
 }
 
@@ -267,9 +267,9 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 			if (color_get_A(pixel)>=limit)	
 			{
 				u32 pixel_r	= scan_rest[x];
-				if (rms_diff(RGBA_GETRED(pixel_r),RGBA_GETRED(pixel))>rms)		goto fail;
-				if (rms_diff(RGBA_GETGREEN(pixel_r),RGBA_GETGREEN(pixel))>rms)	goto fail;
-				if (rms_diff(RGBA_GETBLUE(pixel_r),RGBA_GETBLUE(pixel))>rms)	goto fail;
+				if (rms_diff(color_get_R(pixel_r),color_get_R(pixel))>rms)		goto fail;
+				if (rms_diff(color_get_G(pixel_r),color_get_G(pixel))>rms)	goto fail;
+				if (rms_diff(color_get_B(pixel_r),color_get_B(pixel))>rms)	goto fail;
 			}
 		}
 	}
@@ -290,9 +290,9 @@ BOOL	__stdcall rms_test	(b_texture&	lm, u32 _r, u32 _g, u32 _b, u32 rms)
 		{
 			u32 pixel	= lm.pSurface	[y*lm.dwWidth+x];
 			if (color_get_A(pixel)>=254)	{
-				if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	return FALSE;
-				if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	return FALSE;
-				if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	return FALSE;
+				if (rms_diff(_r, color_get_R(pixel))>rms)	return FALSE;
+				if (rms_diff(_g, color_get_G(pixel))>rms)	return FALSE;
+				if (rms_diff(_b, color_get_B(pixel))>rms)	return FALSE;
 			}
 		}
 	}
@@ -311,9 +311,9 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 			u32 pixel	= lm.pSurface[y*lm.dwWidth+x];
 			if ((color_get_A(pixel))>=254)	
 			{
-				_r		+= RGBA_GETRED	(pixel);
-				_g		+= RGBA_GETGREEN(pixel);
-				_b		+= RGBA_GETBLUE	(pixel);
+				_r		+= color_get_R	(pixel);
+				_g		+= color_get_G(pixel);
+				_b		+= color_get_B	(pixel);
 				_count	++;
 			}
 		}
@@ -572,9 +572,9 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 			u32			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 			for (u32 pix=0; pix<size; pix++)	{
 				u32 pixel	= lm.pSurface	[pix];
-				if (RGBA_GETRED(pixel)>rms_discard)			{ bSkip=FALSE; break; }
-				if (RGBA_GETGREEN(pixel)>rms_discard)		{ bSkip=FALSE; break; }
-				if (RGBA_GETBLUE(pixel)>rms_discard)		{ bSkip=FALSE; break; }
+				if (color_get_R(pixel)>rms_discard)			{ bSkip=FALSE; break; }
+				if (color_get_G(pixel)>rms_discard)		{ bSkip=FALSE; break; }
+				if (color_get_B(pixel)>rms_discard)		{ bSkip=FALSE; break; }
 			}
 			if (bSkip)		{
 				_FREE			(lm.pSurface);
