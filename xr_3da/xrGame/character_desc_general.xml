@@ -78,7 +78,6 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 2 \n
-			knife \n
 			torch \n
 		</supplies>
 		
