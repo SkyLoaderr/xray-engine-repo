@@ -398,20 +398,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Artifacts"
-					Filter="">
-					<Filter
-						Name="Mercury Ball"
-						Filter="">
-						<File
-							RelativePath="MercuryBall.cpp">
-						</File>
-						<File
-							RelativePath="MercuryBall.h">
-						</File>
-					</Filter>
-				</Filter>
-				<Filter
 					Name="AI_Entity"
 					Filter="">
 					<File
@@ -1036,6 +1022,20 @@
 						<File
 							RelativePath="TargetAssault.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="Artifacts"
+						Filter="">
+						<Filter
+							Name="Mercury Ball"
+							Filter="">
+							<File
+								RelativePath="MercuryBall.cpp">
+							</File>
+							<File
+								RelativePath="MercuryBall.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 			</Filter>

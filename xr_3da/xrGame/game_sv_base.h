@@ -9,7 +9,8 @@
 
 class	game_sv_GameState	: public game_GameState
 {
-protected:
+public:
+	BOOL							sv_force_sync;
 public:
 	// Main accessors
 	virtual		void				Lock					();
@@ -20,6 +21,9 @@ public:
 	virtual		string64*			get_name_id				(u32 id);								// DPNID
 	virtual		u32					get_it_2_id				(u32 it);
 	virtual		u32					get_count				();
+	
+	// Signals
+	virtual		void				signal_Syncronize		();
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);

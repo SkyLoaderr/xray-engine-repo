@@ -69,7 +69,10 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
 	else				return def;
 }
-
+void				game_sv_GameState::signal_Syncronize		()
+{
+	sv_force_sync	= TRUE;
+}
 
 // Network
 void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
