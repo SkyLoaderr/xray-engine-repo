@@ -27,7 +27,7 @@
 	</list>
 
 	<!-- LOG LIST -->
-	<list x="20" y="20" width="550" height="425" item_height="16" active_bg="0">
+	<list x="20" y="20" width="550" height="415" item_height="16" active_bg="0">
 		<font font="letterica18" r="255" g="255" b="255"></font>
 	</list>
 
