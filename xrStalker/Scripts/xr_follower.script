@@ -160,7 +160,7 @@ function action_follow:initialize ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
-    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_item                  (object.activate, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.stand)
@@ -192,8 +192,13 @@ end
 --------------
 function action_follow:execute ()
     action_base.execute                 (self)
-    self.object:set_item                (object.idle, self.object:best_weapon ())
-        
+    
+    if self.object:active_item () ~= nil then
+       self.object:set_item                  (object.idle, self.object:best_weapon ())
+    else
+       self.object:set_item                  (object.activate, self.object:best_weapon ())     
+    end   
+            
     if self.stage == 0 then 
        if self:check_path () == false then
           self:update_stage_0 ()
@@ -286,7 +291,7 @@ function action_follow:update_stage_0 ()
     end   
 	   
 
-    if distance_between (self.a.leader, self.object) < (self.a.distance * 3) then
+    if self.object:position ():distance_to (level.vertex_position (self.a.leader:level_vertex_id ())) < (self.a.distance * 3) then
        self.object:set_movement_type         (move.walk)
        self.object:set_mental_state          (self.a.mental_state)
        self.object:set_sight                 (look.path_dir, nil, 0)
@@ -298,7 +303,7 @@ function action_follow:update_stage_0 ()
 end
 --------------
 function action_follow:update_stage_1 ()
-    if distance_between (self.a.leader, self.object) < (self.a.distance + self.a.distance * 0.5) then
+    if self.object:position ():distance_to (level.vertex_position (self.a.leader:level_vertex_id ())) < (self.a.distance + self.a.distance * 0.5) then
        self.stage = 0
        self:update_stage_0 ()
        return 
