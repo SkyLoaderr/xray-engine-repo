@@ -15,6 +15,7 @@ CHelicopterMovManager::~CHelicopterMovManager	()
 
 void	CHelicopterMovManager::load(LPCSTR		section)
 {
+	m_alt_korridor				= 0.1f;
 	m_baseAltitude				= 10.0f;
 	m_attackAltitude			= 5.0f;
 	m_basePatrolSpeed			= 20.0f;
@@ -34,6 +35,7 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 	m_attackAltitude			= pSettings->r_float(section,"attack_altitude");
 	m_basePatrolSpeed			= pSettings->r_float(section,"velocity");
 	m_baseAttackSpeed			= pSettings->r_float(section,"attack_velocity");
+	m_alt_korridor				= pSettings->r_float(section,"altitude_korridor");
 
 	m_time_delay_between_patrol	= pSettings->r_float(section,"time_delay_between_patrol");
 	m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");

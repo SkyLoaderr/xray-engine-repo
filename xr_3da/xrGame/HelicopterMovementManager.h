@@ -20,7 +20,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 {
 	bool							m_bLoop;
 	Fmatrix							m_XFORM;
-
+	float							m_alt_korridor;
 	float							m_baseAltitude;
 	float							m_attackAltitude;
 	float							m_basePatrolSpeed;
