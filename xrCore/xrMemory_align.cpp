@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include <errno.h>
+#include <malloc.h>
+
 #include "xrMemory_align.h"
 
 /***
@@ -77,7 +79,7 @@ void * __stdcall xr_aligned_malloc(
 *******************************************************************************/
 
 
-void * xr__aligned_offset_malloc(
+void * xr_aligned_offset_malloc(
 	size_t size,
 	size_t align,
 	size_t offset
