@@ -118,6 +118,11 @@ CStateAnimations::CStateAnimations	()
 	m_tInPlace	= xr_new<CAniFVector<caInPlaceNames> >();
 }
 
+CStateAnimations::CStateAnimations	(const CStateAnimations &anims)
+{
+	clone		(anims.m_tInPlace,m_tInPlace);
+}
+
 CStateAnimations::~CStateAnimations	()
 {
 	xr_delete	(m_tInPlace);
