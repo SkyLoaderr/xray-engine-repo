@@ -56,7 +56,7 @@ namespace AI_Biting {
 		eActionTypeStand,
 		eActionTypeTurn,
 		eActionTypeWalk,
-		eActionTypeAttack
+		eActionTypeAttack,
 	};
 
 	// Paths
@@ -83,11 +83,18 @@ namespace AI_Biting {
 		eActionIdle = 0,
 		eActionWalkFwd,
 		eActionWalkBkwd,
+		eActionWalkSpeed,
 		eActionTurnLeft,
 		eActionTurnRight,
-		eActionRun
+		eActionRun,
+		eActionRunSpeed,
+		eActionAttack
 	};
 
+	enum EStateFSM {
+		eRest, // стоять/лежать/сидеть на месте, отдыхать
+
+	};
 
 };
 

@@ -9,6 +9,9 @@
 #include "stdafx.h"
 
 #include "ai_biting.h"
+#include "ai_biting_space.h"
+
+using namespace AI_Biting;
 
 namespace AI_Biting {
 	LPCSTR caStateNames			[] = {
@@ -22,9 +25,11 @@ namespace AI_Biting {
 		"idle_",
 		"walk_fwd_",
 		"walk_bkwd_",
+		"walk_speed_",
 		"walk_ls_",
 		"walk_rs_",
 		"run_",
+		"run_speed_",
 		"attack_",
 		"eat_",
 		"damage_",
@@ -52,3 +57,71 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 //	}
 
 }
+
+// выбор анимации в соответствии с текущим состоянием объекта
+void CAI_Biting::vfSetAnimation(bool bForceChange)
+{
+	EPostureAnim PostureAnim_old = m_tPostureAnim;
+	EActionAnim ActionAnim_old = m_tActionAnim;
+
+	// тип положения тела
+	switch (m_tBodyState) {
+		case eBodyStateStand : 	// стоит
+			m_tPostureAnim = ePostureStand;
+			break;
+		case eBodyStateSit : 	// сидит
+			m_tPostureAnim = ePostureSit;
+			break;	
+		case eBodyStateLie : 	// ползёт
+			m_tPostureAnim = ePostureLie;
+			break;
+		default : NODEFAULT;
+	}
+
+	if ( m_tMovementType == eMovementTypeStand &&  
+		m_tStateType == eStateTypeNormal &&  
+		m_tMovementDir == eMovementDirectionNone &&
+		m_tActionType == eActionTypeStand)
+
+		m_tActionAnim = eActionIdle;		// на месте / отдыхаем
+
+	else if (m_tMovementType == eMovementTypeWalk && 
+		m_tStateType == eStateTypeNormal &&  
+		m_tMovementDir == eMovementDirectionForward && 
+		m_tActionType == eActionTypeWalk) 
+
+		m_tActionAnim = eActionWalkFwd;		// движение вперед
+
+	else if (m_tMovementType == eMovementTypeStand && 
+		m_tMovementDir == eMovementDirectionLeft && 
+		m_tActionType == eActionTypeTurn) 
+
+		m_tActionAnim = eActionTurnLeft;		// поворот на месте влево
+
+	else if (m_tMovementType == eMovementTypeStand && 
+		m_tMovementDir == eMovementDirectionRight && 
+		m_tActionType == eActionTypeTurn) 
+
+		// !!!! Изменить на eActionTurnRight когда будет анимация
+		m_tActionAnim = eActionTurnLeft;		// поворот на месте вправо
+
+	else if (m_tMovementType == eMovementTypeRun && 
+		m_tActionType == eActionTypeRun) 
+
+		m_tActionAnim = eActionRun;		// бег
+
+	else if (m_tMovementType == eMovementTypeStand && 
+		m_tActionType == eActionTypeAttack &&
+		m_tStateType == eStateTypeDanger) 
+
+		m_tActionAnim = eActionAttack;		// аттаковать
+
+	else if (m_tMovementType == eMovementTypeRun && 
+		m_tActionType == eActionTypeTurn ) 
+
+		m_tActionAnim = eActionRunSpeed;		// поворот на бегу
+
+	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange)
+		FORCE_ANIMATION_SELECT();
+}
+

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
+#include "..\\..\\actor.h"
 
 using namespace AI_Biting;
 
@@ -17,7 +18,11 @@ const float tempWalkFreeFactor = 1.7f;
 const float tempRunFactor = 5.0f;
 const float tempRunFreeFactor = 5.0f;
 const float tempPanicFactor = 3.2f;
+const float tempAttackDistance = 2.5f;
 
+const float min_angle = PI_DIV_6 / 2;
+
+#define _ATTACK_TEST_ON
 
 void CAI_Biting::Think()
 {
@@ -67,21 +72,56 @@ void CAI_Biting::Think()
 //		
 //	vfSetAnimation();
 
-	
 	m_fCurSpeed				= 1.0f;	
 
+#ifndef _ATTACK_TEST_ON
+
+	// RUN TESTING
+
 	vfUpdateDetourPoint();	
-	vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
-					eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
+	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+					eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
 	
 	
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	vfSetParameters(0, 0, false, m_tPathType,m_tBodyState, 
-			m_tMovementType, m_tStateType, 0);
+	vfSetParameters(0, 0, false, 0);
+
+#else
+	//////////////////////////////////////////////////////////////////////////
+	// ATTACK TESTING
+
+	vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+		eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
+
+	CActor *pActor = dynamic_cast <CActor*> (Level().CurrentEntity());
+	if (pActor) {
 
 
-	vfSetAnimation();
+		if (pActor->Position().distance_to(vPosition) <= tempAttackDistance) {
+			//AI_Path.TravelPath.clear();
 
+			AI_Path.DestNode = AI_NodeID;
+
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+				eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
+
+			vfSetParameters(0, &pActor->Position(), false, 0);
+			
+			if (m_tActionType == eActionTypeAttack) {
+				m_fCurSpeed				= 0.01f;		
+				r_torso_speed			= min_angle;
+			}
+		}  else {
+			AI_Path.DestNode = pActor->AI_NodeID;
+			vfSetParameters(0, &Level().CurrentEntity()->Position(), false, 0);
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////
+
+#endif
+
+	if (m_tActionType == eActionTypeAttack) vfSetAnimation(false);
+	else vfSetAnimation(true);
 }
 
 // –азвернуть объект в направление движени€
@@ -103,14 +143,9 @@ void CAI_Biting::SetDirectionLook()
 
 
 // построение пути и установка параметров скорости
-void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, Fvector *tpPoint)
+void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint)
 {
 	
-	m_tPathType		= tPathType;
-	m_tBodyState	= tBodyState;
-	m_tMovementType = tMovementType;
-	m_tStateType	= tStateType;
-
 	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition, bSearchNode);
 	
 	// если путь выбран
@@ -197,80 +232,34 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 		}
 	}
 	
-	if (!getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, PI_DIV_6)) {
-		m_fCurSpeed		= 0.f;
-		r_torso_speed	= PI;
-		if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + PI_DIV_6), r_torso_target.yaw, 5*PI_DIV_6))
-			// right
-			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
-		else 
-			// left
-			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+	// необходим поворот?
+	if (!getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, min_angle)) {
+		if (m_tMovementType == eMovementTypeRun) { 	// поворот на бегу
+
+			r_torso_speed	= PI;
+			m_fCurSpeed		= 3.0f;
+
+			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
+				// right
+				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+			else 
+				// left
+				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+
+		} else {									// поворот на месте
+			m_fCurSpeed		= PI_DIV_4;
+			r_torso_speed	= PI_DIV_2;
+
+			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
+				// right
+				vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+			else 
+				// left
+				vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+		}
 	}  
 
-
-
-
 }
-
-// выбор анимации в соответствии с текущим состо€нием объекта
-void CAI_Biting::vfSetAnimation()
-{
-	EPostureAnim PostureAnim_old = m_tPostureAnim;
-	EActionAnim ActionAnim_old = m_tActionAnim;
-	
-	// тип положени€ тела
-	switch (m_tBodyState) {
-		case eBodyStateStand : 	// стоит
-			m_tPostureAnim = ePostureStand;
-			break;
-		case eBodyStateSit : 	// сидит
-			m_tPostureAnim = ePostureSit;
-			break;	
-		case eBodyStateLie : 	// ползЄт
-			m_tPostureAnim = ePostureLie;
-			break;
-		default : NODEFAULT;
-	}
-
-
-	if ( m_tMovementType == eMovementTypeStand &&  
-		 m_tStateType == eStateTypeNormal &&  
-		 m_tMovementDir == eMovementDirectionNone &&
-		 m_tActionType == eActionTypeStand)
-		
-		 m_tActionAnim = eActionIdle;		// на месте / отдыхаем
-
-	else if (m_tMovementType == eMovementTypeWalk && 
-			 m_tStateType == eStateTypeNormal &&  
-			 m_tMovementDir == eMovementDirectionForward && 
-			 m_tActionType == eActionTypeWalk) 
-		
-		m_tActionAnim = eActionWalkFwd;		// движение вперед
-
-	else if (m_tMovementType == eMovementTypeStand && 
-			 m_tMovementDir == eMovementDirectionLeft && 
-			 m_tActionType == eActionTypeTurn) 
-
-		m_tActionAnim = eActionTurnLeft;		// поворот на месте влево
-
-	else if (m_tMovementType == eMovementTypeStand && 
-			 m_tMovementDir == eMovementDirectionRight && 
-			 m_tActionType == eActionTypeTurn) 
-		
-		// !!!! »зменить на eActionTurnRight когда будет анимаци€
-		m_tActionAnim = eActionTurnLeft;		// поворот на месте вправо
-	
-	else if (m_tMovementType == eMovementTypeRun && 
-			 m_tActionType == eActionTypeRun) 
-
-		m_tActionAnim = eActionRun;		// бег
-
-	
-	if ( (PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim))
-		FORCE_ANIMATION_SELECT();
-}
-
 
 // установка параметров движени€ и действий 
 void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_Biting::EMovementType l_move_type, 
@@ -282,3 +271,14 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 	m_tMovementDir		= l_move_dir;
 	m_tActionType		= l_action_type;
 }
+
+/*
+void CAI_Biting::InitRest()
+{
+	fTimeRestStarted = Level().timeServer();
+	fTimeToRest;
+}
+void CAI_Biting::Rest()
+{
+	
+}*/

@@ -174,11 +174,11 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 					}
 					else {
 						//if (dwCurNode != AI_Path.DestNode)
-						if (getAI().bfInsideNode(getAI().Node(dwCurNode),*tpDestinationPosition)) {
+						//if (getAI().bfInsideNode(getAI().Node(dwCurNode),*tpDestinationPosition)) {
 							tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
 							m_tpaPointNodes.push_back(AI_Path.DestNode);
 							m_tpaPoints.push_back(*tpDestinationPosition);
-						}
+						//}
 					}
 
 		if (!tpDestinationPosition && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
@@ -189,11 +189,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		//m_tpaDeviations.resize	(N = m_tpaPoints.size());
 		N = m_tpaPoints.size();
 
-		if (m_tPathType == ePathTypeStraight)
-			AI_Path.TravelPath.clear();
-		else
-			m_tpaTempPath.clear();
-
+		AI_Path.TravelPath.clear();
 		AI_Path.Nodes.clear		();
 
 		AI::CTravelNode	T;
@@ -205,28 +201,19 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			u32 n = m_tpaTravelPath.size();
 			for (u32 j= 0; j<n; j++) {
 				T.P = m_tpaTravelPath[j];
-				if (m_tPathType == ePathTypeStraight)
-					AI_Path.TravelPath.push_back(T);
-				else
-					m_tpaTempPath.push_back(T.P);
+				AI_Path.TravelPath.push_back(T);
 				AI_Path.Nodes.push_back(m_tpaNodes[j]);
 			}
 		}
 		
 		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
 		
-		if (m_tPathType == ePathTypeStraight) {
-			if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
-				if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {
-					T.P = *tpDestinationPosition;
-					AI_Path.TravelPath.push_back(T);
-				}
+		if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
+			if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {
+				T.P = *tpDestinationPosition;
+				AI_Path.TravelPath.push_back(T);
 			}
 		}
-		else
-			if (tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L)
-				if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1)
-					m_tpaTempPath.push_back(*tpDestinationPosition);
 
 		AI_Path.TravelStart = 0;
 		m_tPathState		= ePathStateSearchNode;
@@ -279,7 +266,9 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 				else
 					if (bSearchForNode && tpNodeEvaluator)
 						m_tPathState = ePathStateSearchNode;
-
+					else
+						if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+							m_tPathState = ePathStateBuildTravelLine;
 			break;
 									   }
 		case ePathStateBuildTravelLine : {

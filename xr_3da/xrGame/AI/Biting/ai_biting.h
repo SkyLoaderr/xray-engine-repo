@@ -70,8 +70,6 @@ private:
 	// работа с графом
 	void					vfUpdateDetourPoint();
 
-
-
 	float					m_fGoingSpeed;			
 
 	// Fields
@@ -128,9 +126,7 @@ private:
 	
 	// построение пути и установка параметров скорости
 	// tpPoint - куда смотреть при движении
-	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, 
-						 bool bSearchNode, AI_Biting::EPathType tPathType, AI_Biting::EBodyState tBodyState, 
-						 AI_Biting::EMovementType tMovementType, AI_Biting::EStateType tStateType,  Fvector *tpPoint = 0);
+	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0);
 	
 	
 	// Animation Parameters
@@ -138,8 +134,21 @@ private:
 	AI_Biting::EPostureAnim		m_tPostureAnim;
 
 	void vfSetMotionActionParams(AI_Biting::EBodyState, AI_Biting::EMovementType, AI_Biting::EMovementDir, AI_Biting::EStateType, AI_Biting::EActionType);
-	void vfSetAnimation();
+	void vfSetAnimation(bool bForceChange = false);
 
 	void SetDirectionLook();
+
+	//////////////////////////////////////////////////////////////////////////
+	// FSM
+	AI_Biting::EStateFSM	m_tStateFSM;
+		// Rest
+/*	void		InitRest();
+	void		Rest();
+	float		fTimeToRest;
+	float		fTimeRestStarted;
+	float		fTimeRestStand;
+	float		fTimeRestSit;
+	float		fTimeRestLie;
+*/	
 
 };
