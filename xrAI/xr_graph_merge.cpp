@@ -159,12 +159,12 @@ public:
 			string256								fName;
 			strconcat								(fName,S,"level.spawn");
 			IReader									*F = FS.r_open(fName);
-			IReader									*O = 0;
-			for (int id=0, i=0; 0!=(O = F->open_chunk(id)); id++)	{
+			u32										id;
+			IReader									*O = F->open_chunk_iterator(id);
+			for (int i=0; O; O = F->open_chunk_iterator(id,O))	{
 				NET_Packet							P;
 				P.B.count							= O->length();
 				O->r								(P.B.data,P.B.count);
-				O->close							();
 				u16									ID;
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);

@@ -80,7 +80,8 @@ CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
 	NET_Packet				net_packet;
 	net_packet.B.count		= chunk->length();
 	chunk->r				(net_packet.B.data,net_packet.B.count);
-	chunk->close			();
+//	we do not need to close chunk since we iterate on them
+//	chunk->close			();
 	u16						ID;
 	net_packet.r_begin		(ID);
 	R_ASSERT2				(M_SPAWN==ID,"ID doesn't match to the spawn-point ID!");
@@ -157,8 +158,9 @@ void CLevelSpawnConstructor::load_objects						()
 	FS.update_path				(file_name,"$game_levels$",*m_level.caLevelName);
 	strcat						(file_name,"\\level.spawn");
 	IReader						*level_spawn = FS.r_open(file_name);
-	IReader						*chunk = 0;
-	for (int id = 0; 0 != (chunk = level_spawn->open_chunk(id)); ++id) {
+	u32							id;
+	IReader						*chunk = level_spawn->open_chunk_iterator(id);
+	for ( ; chunk; chunk = level_spawn->open_chunk_iterator(id,chunk)) {
 		CSE_Abstract			*abstract = create_object(chunk);
 		if (abstract->m_tClassID == CLSID_AI_GRAPH) {
 			add_graph_point		(abstract);
