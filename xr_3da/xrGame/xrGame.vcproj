@@ -8959,6 +8959,12 @@
 					Name="TabControl"
 					Filter="">
 					<File
+						RelativePath=".\ui\UITabButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITabButton.h">
+					</File>
+					<File
 						RelativePath=".\ui\UITabControl.cpp">
 					</File>
 					<File

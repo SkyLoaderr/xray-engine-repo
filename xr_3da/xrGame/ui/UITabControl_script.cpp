@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UITabControl.h"
+#include "UITabButton.h"
 
 #include "../script_space.h"
 
@@ -25,8 +26,17 @@ void CUITabControl::script_register(lua_State *L)
 		.def("SetActiveButtonColor",				&CUITabControl::SetActiveButtonColor)
 		.def("GetActiveButtonColor",				&CUITabControl::GetActiveButtonColor)
 		.def("SetGlobalButtonColor",				&CUITabControl::SetGlobalButtonColor)
-		.def("GetGlobalButtonColor",				&CUITabControl::GetGlobalButtonColor)
-//		.def("",				&CUITabControl::)
+		.def("GetGlobalButtonColor",				&CUITabControl::GetGlobalButtonColor),
+
+		class_<CUITabButton, CUIButton>("CUITabButton")
+		.def(					constructor<>())
+		//.def("InitTexture",         /*(void (CUITabButton::*)(char*))*/ &CUITabButton::InitTexture)
+		//.def("InitTexture",         (void (CUITabButton::*)(char*, char*, char*)) &CUITabButton::InitTexture)
+		.def("SetColor",            (void (CUITabButton::*)(int, int, int)) &CUITabButton::SetColor)
+		.def("SetTextColor",        &CUITabButton::SetTextColor)
+		.def("AssociateWindow",     &CUITabButton::AssociateWindow)
+		.def("GetAssociatedWindow", &CUITabButton::GetAssociatedWindow)
+		.def("ShowAssociatedWindow",&CUITabButton::ShowAssociatedWindow)
 	];
 
 }
