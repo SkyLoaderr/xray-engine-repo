@@ -94,6 +94,7 @@ BOOL CCreator::Load(DWORD dwNum)
 	
 	// Textures
 	chunk = fs.OpenChunk	(fsL_STRINGS);
+	R_ASSERT		(chunk);
 	count = chunk->Rdword	();
 	LL_strings.resize		(count);
 	for(i=0; i<count; i++) {
