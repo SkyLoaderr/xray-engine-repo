@@ -93,6 +93,9 @@ class CBitingEat : public IState {
 	TTime			m_dwTimeStartRest;
 	TTime			rebuild_path;
 
+	bool			Captured;
+	TTime			m_dwLastImpulse;
+
 public:
 					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);
 

@@ -117,11 +117,16 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
 
-	// ƒобавить анимации атак
-	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnim(eAnimAttackFromBack,0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,-3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
-	MotionMan.AA_PushAttackAnim(eAnimAttackRat,		0, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
+//	// ƒобавить анимации атак
+//	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttackFromBack,0, 400,		600,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,-3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttackRat,		0, 600,		800,	Fvector().set(0.f,0.f,0.f),	Fvector().set(0.f,0.f,3.5f),	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
+
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,		0, 400,		600,	STANDART_ATTACK,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack,		1, 600,		800,	STANDART_ATTACK,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttackFromBack,0, 400,		600,	-PI_DIV_6 + PI, PI_DIV_6 + PI, -PI_DIV_6,PI_DIV_6, 3.5f,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttackRat,		0, 600,		800,	-PI_DIV_6, PI_DIV_6, -PI_DIV_3 - PI_DIV_2, PI_DIV_3 - PI_DIV_2, 2.f, inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
 
 	END_LOAD_SHARED_MOTION_DATA();
 }
@@ -200,7 +205,7 @@ bool CAI_Flesh::AA_CheckHit()
 		Fvector dir;
 		dir.sub(trace_to, trace_from);
 		float dist = dir.magnitude();
-		dir.normalize();
+		dir.normalize_safe();
 		
 		// делаем поправку на pitch (fix it)
 		Fvector new_dir;
@@ -210,19 +215,21 @@ bool CAI_Flesh::AA_CheckHit()
 		new_dir.sub(C2,C1);
 		new_dir.normalize();
 		dir.y = new_dir.y;
-		dir.normalize();
+		dir.normalize_safe();
 		
 		// перевод из локальных координат в мировые вектора направлени€ импульса
 		Fvector hit_dir;
 		XFORM().transform_dir(hit_dir,apt_anim.hit_dir);
 		hit_dir.normalize();
 
+#ifndef SIMPLE_ENEMY_HIT_TEST
+
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
 			HitEntity(ve.obj, apt_anim.damage,hit_dir);	// не нужна
 			was_hit = true;
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
-			
+
 			// TestIntersection конуса(копыта) и сферы(крысы)
 			Fvector dir;	dir.set(0.f,-1.f,0.f);		// направление конуса
 			Fvector vC;		ve.obj->Center(vC);			// центр сферы
@@ -239,6 +246,36 @@ bool CAI_Flesh::AA_CheckHit()
 			}
 		}
 
+#else
+		dist = 20.f;
+
+		bool should_hit = true;
+		Fvector d;
+		d.sub(C2,C1);
+		if (d.magnitude() > apt_anim.dist) should_hit = false;
+
+		float my_h,my_p;
+		float h,p;
+
+		Direction().getHP(my_h,my_p);
+		d.getHP(h,p);
+
+		float from	= angle_normalize(my_h + apt_anim.yaw_from);
+		float to	= angle_normalize(my_h + apt_anim.yaw_to);
+
+		if (!is_angle_between(h, from, to)) should_hit = false;
+
+		from	= angle_normalize(my_p + apt_anim.pitch_from);
+		to		= angle_normalize(my_p + apt_anim.pitch_to);
+
+		if (!is_angle_between(p, from, to)) should_hit = false;
+
+		if (should_hit) {
+			HitEntity(ve.obj, apt_anim.damage, hit_dir);
+			was_hit = true;
+		}
+
+#endif
 		if (!ve.obj->g_Alive()) AddCorpse(ve);	
 		
 		if (AS_Active()) AS_Check(was_hit);

@@ -39,7 +39,6 @@ void CAI_Biting::Think()
 	update_path								();
 	
 
-
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
 	

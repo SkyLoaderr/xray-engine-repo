@@ -72,10 +72,12 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, inherited::_sd->m_fsWalkFwdDamaged,	inherited::_sd->m_fsWalkAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular,			PS_STAND);
 	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, inherited::_sd->m_fsRunFwdDamaged,	inherited::_sd->m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, inherited::_sd->m_fsDrag,			inherited::_sd->m_fsWalkAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, 0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, 0,									0,										PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	
 	MotionMan.AddAnim(eAnimSitLieDown,		"sit_liedown_",			-1, 0,									0,										PS_SIT);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sitdown_",		-1, 0,									0,										PS_STAND);	
@@ -107,6 +109,8 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);	
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
 
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 800, STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+
 	END_LOAD_SHARED_MOTION_DATA();
 }
 
@@ -124,15 +128,20 @@ void CAI_PseudoDog::StateSelector()
 	else if (D && H && I)		SetState(stateAttack);
 	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
 	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	//else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	else if (D && !H && !I) 	SetState(statePanic);
 	else if (E && H && I)		SetState(stateAttack); 
 	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
+	//else if (E && !H && I) 		SetState(stateDetour); 
+	//else if (E && !H && !I)		SetState(stateDetour); 
+	else if (E && !H && I) 		SetState(stateAttack); 
+	else if (E && !H && !I)		SetState(stateAttack); 
 	else if (F && H && I) 		SetState(stateAttack); 		
 	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
+	//else if (F && !H && I)  	SetState(stateDetour); 
+	//else if (F && !H && !I) 	SetState(stateHide);
+	else if (F && !H && I)  	SetState(stateAttack); 
+	else if (F && !H && !I) 	SetState(stateAttack);
 	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
 	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)

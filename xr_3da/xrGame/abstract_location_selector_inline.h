@@ -112,6 +112,7 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 	m_failed	= 
 		!m_graph->valid_vertex_id(m_evaluator->selected_vertex_id()) || 
 		(m_evaluator->selected_vertex_id() == m_selected_vertex_id);
+	
 	if (!failed())
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
 }

@@ -346,6 +346,13 @@ CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone_id)));
 }
 
+CBoneInstance *CAI_Biting::GetEatBone()
+{
+	int bone = PKinematics(Visual())->LL_BoneID("bip01_ponytail2");
+	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone)));
+}
+
+
 void CAI_Biting::MoraleBroadcast(float fValue)
 {
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
@@ -364,3 +371,16 @@ void CAI_Biting::OnRender()
 	HDebug->L_Update();
 	HDebug->HT_Update();
 }
+
+bool CAI_Biting::is_angle_between(float yaw, float yaw_from, float yaw_to)
+{
+	float diff = angle_difference(yaw_from,yaw_to);
+	R_ASSERT(diff < PI);
+
+	float d1 = angle_difference(yaw,yaw_from);
+	float d2 = angle_difference(yaw,yaw_to);
+
+	if ((d1 < diff) && (d2<diff)) return true;
+	else return false;
+}
+

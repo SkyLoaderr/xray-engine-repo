@@ -72,10 +72,10 @@ void CMovementManager::update_path()
 {
 	time_start				();
 	
-	if (!CGamePathManager::evaluator())
+	if (!CGamePathManager::evaluator()) 		
 		CGamePathManager::set_evaluator	(m_base_game_selector);
 
-	if (!CLevelPathManager::evaluator())
+	if (!CLevelPathManager::evaluator()) 
 		CLevelPathManager::set_evaluator(m_base_level_selector);
 
 	if (!actual()) {

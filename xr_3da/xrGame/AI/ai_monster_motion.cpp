@@ -191,7 +191,14 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 	for (int i=0; ; ++i) {
 		if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
 		else if (0 != (tpMotionDef = PSkeletonAnimated(pVisual)->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
-		else break;
+		else {
+			if (i == 0) {
+				string128	s;
+				sprintf(s, "Error! No animation: %s", pmt_name);
+				R_ASSERT2(i != 0, s);
+			}
+			break;
+		}
 	}
 }
 
@@ -494,6 +501,31 @@ bool CMotionManager::AA_CheckTime(TTime cur_time, SAttackAnimation &anim)
 		return true;
 	}
 	return false;
+}
+
+void CMotionManager::AA_PushAttackAnimTest(EMotionAnim a, u32 i3, TTime from, TTime to, float y1, float y2, float p1, float p2, float dist, float damage, Fvector &dir, u32 flags)
+{
+	CHECK_SHARED_LOADED();	
+
+	SAttackAnimation anim;
+	anim.anim			= a;
+	anim.anim_i3		= i3;
+
+	anim.time_from		= from;
+	anim.time_to		= to;
+
+	anim.damage			= damage;
+	anim.hit_dir		= dir;
+
+	anim.flags			= flags;
+
+	anim.yaw_from		= y1;
+	anim.yaw_to			= y2;
+	anim.pitch_from		= p1;
+	anim.pitch_to		= p2;
+	anim.dist			= dist;
+
+	AA_PushAttackAnim	(anim);
 }
 
 EPState	CMotionManager::GetState (EMotionAnim a)

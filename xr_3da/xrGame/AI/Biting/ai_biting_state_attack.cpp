@@ -205,6 +205,7 @@ void CBitingAttack::Run()
 
 	bool bNeedRebuild = false;
 
+	float max_build_dist = 15.f;
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
@@ -217,7 +218,19 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_END();
 			
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
-			if (bNeedRebuild) pMonster->MoveToTarget(m_tEnemy.obj);
+			if (bNeedRebuild) {
+				
+				if (dist < max_build_dist) pMonster->MoveToTarget(m_tEnemy.obj);
+				else {
+					// find_nearest_point_to_point
+					Fvector pos;
+					Fvector dir;
+					dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
+					dir.normalize();
+					pos.mad(pMonster->Position(), dir, 15.f);
+					pMonster->Path_ApproachPoint(0, pos);
+				}
+			}
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную

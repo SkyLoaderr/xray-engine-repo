@@ -14,7 +14,7 @@ void CMovementManager::process_level_path()
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
 			CLevelLocationSelector::select_location(level_vertex_id(),CLevelPathManager::m_dest_vertex_id);
-			if (CLevelLocationSelector::failed())
+			if (CLevelLocationSelector::failed())				
 				break;
 			m_path_state		= ePathStateBuildLevelPath;
 			if (time_over())
@@ -65,8 +65,9 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStatePathVerification : {
-			if (!CLevelLocationSelector::actual(level_vertex_id(),path_completed()))
-				m_path_state	= ePathStateSelectLevelVertex;
+			
+			if (!CLevelLocationSelector::actual(level_vertex_id(),path_completed())) 
+				m_path_state	= ePathStateBuildLevelPath;
 			else
 			if (!CLevelPathManager::actual())
 				m_path_state	= ePathStateBuildLevelPath;

@@ -186,6 +186,14 @@ typedef struct {
 	float		damage;				// урон при данной атаке
 	Fvector		hit_dir;			// угол направления приложения силы к объекту
 
+	//-----------------------------------------
+	// temp 
+	float	yaw_from;
+	float	yaw_to;
+	float	pitch_from;
+	float	pitch_to;
+	float	dist;
+
 } SAttackAnimation;
 
 
@@ -336,7 +344,8 @@ public:
 	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, const Fvector &ray_from, const Fvector &ray_to, float damage, Fvector &dir, u32 flags = 0);
 	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
-
+	void		AA_PushAttackAnimTest	(EMotionAnim a, u32 i3, TTime from, TTime to, float y1, float y2, float p1, float p2, float dist, float damage, Fvector &dir, u32 flags = 0);
+	
 	// FX's
 	void		FX_LoadMap				(LPCSTR section);
 	void		FX_ConvertMap			();

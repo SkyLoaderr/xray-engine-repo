@@ -459,16 +459,16 @@
 							<File
 								RelativePath=".\abstract_location_selector_inline.h">
 							</File>
-						</Filter>
-						<Filter
-							Name="EnemyLocationPredictor"
-							Filter="">
-							<File
-								RelativePath=".\enemy_location_predictor.cpp">
-							</File>
-							<File
-								RelativePath=".\enemy_location_predictor.h">
-							</File>
+							<Filter
+								Name="EnemyLocationPredictor"
+								Filter="">
+								<File
+									RelativePath=".\enemy_location_predictor.cpp">
+								</File>
+								<File
+									RelativePath=".\enemy_location_predictor.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="GameLocationSelector"

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ai_boar.h"
 
-
 CAI_Boar::CAI_Boar()
 {
 	stateRest			= xr_new<CBitingRest>		(this);
@@ -93,9 +92,14 @@ void CAI_Boar::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,3.0f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,2.3f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+//	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	Fvector().set(0.f,0.f,0.f),		Fvector().set(0.f,0.f,3.0f), inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
+
 
 	END_LOAD_SHARED_MOTION_DATA();
 }
@@ -113,15 +117,18 @@ void CAI_Boar::StateSelector()
 	else if (D && H && I)		SetState(stateAttack);
 	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
 	else if (D && !H && I)		SetState(stateAttack);
-	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	//else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	else if (D && !H && !I)		SetState(statePanic);
 	else if (E && H && I)		SetState(stateAttack); 
 	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
+	//else if (E && !H && I) 		SetState(stateDetour); 
+	//else if (E && !H && !I)		SetState(stateDetour); 
+	else if (E && !H && I) 		SetState(stateAttack);
+	else if (E && !H && !I)		SetState(stateAttack);
 	else if (F && H && I) 		SetState(stateAttack); 		
 	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
+	//else if (F && !H && I)  	SetState(stateDetour); 
+	//else if (F && !H && !I) 	SetState(stateHide);
 	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
 	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)

@@ -33,7 +33,6 @@ class
 		_VertexEvaluator,
 		_vertex_id_type
 	> inherited;
-public:
 };
 
 #include "level_location_selector_inline.h"

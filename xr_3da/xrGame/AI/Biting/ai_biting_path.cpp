@@ -40,8 +40,6 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= level_vertex_id();		// текущий узел
 	S.m_tStartPosition	= Position();
-
-
 }
 
 // high level 
@@ -63,8 +61,11 @@ void CAI_Biting::Path_GetAwayFromPoint(const CEntity *pE, Fvector position, floa
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
 
-	LOG_EX2("GA_SEL:EnemyPos=[%f,%f,%f] enemy_dist=[min=%f][max=%f]", *"*/ VPUSH(m_tSelectorGetAway->m_tEnemyPosition), m_tSelectorGetAway->m_fMinEnemyDistance, m_tSelectorGetAway->m_fMaxEnemyDistance/*"*);
-	LOG_EX2("My Pos =[%f,%f,%f]", *"*/ VPUSH(Position()) /*"*);
+//	LOG_EX2("GA_SEL:EnemyPos=[%f,%f,%f] enemy_dist=[min=%f][max=%f]", *"*/ VPUSH(m_tSelectorGetAway->m_tEnemyPosition), m_tSelectorGetAway->m_fMinEnemyDistance, m_tSelectorGetAway->m_fMaxEnemyDistance/*"*);
+//	LOG_EX2("My Pos =[%f,%f,%f]", *"*/ VPUSH(Position()) /*"*);
+//		
+//	LOG_EX("----------------- SELECTOR_SHOW -------------------");
+	
 }
 
 

@@ -39,6 +39,10 @@
 #define MORALE_NORMAL	0.5f
 
 
+#define STANDART_ATTACK -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
+#define SIMPLE_ENEMY_HIT_TEST
+
+
 class CCharacterPhysicsSupport;
 class PathManagers::CAbstractVertexEvaluator;
 
@@ -234,6 +238,8 @@ public:
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);
 		
+			CBoneInstance *GetEatBone						();
+
 			// attack-stop
 			void			AS_Init							();
 			void			AS_Load							(LPCSTR section);
@@ -393,6 +399,11 @@ public:
 	CMotionStats	*MotionStats;
 
 	void OnRender();
+
+
+	bool	is_angle_between(float yaw, float yaw_from, float yaw_to);
+
+
 };
 
 
