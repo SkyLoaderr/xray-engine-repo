@@ -6,7 +6,7 @@
 #define	GI_THREADS		4
 const	u32				gi_num_photons		= 512;
 const	float			gi_optimal_range	= 15.f;
-const	float			gi_reflect			= .9f;
+const	float			gi_reflect			= .99f;
 const	float			gi_clip				= 0.05f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
@@ -92,7 +92,7 @@ public:
 				thProgress		= float(task_it)/float(task->size());
 			}
 			task_cs.Leave		();
-			if (dst.level>3)	continue;
+			if (dst.level>4)	continue;
 
 			// analyze
 			CRandom				random;
