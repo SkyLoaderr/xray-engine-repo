@@ -71,14 +71,6 @@ void CMotionManager::Init (CAI_Biting	*pM)
 // ¬озвращает false, если в смене анимации нет необходимости
 bool CMotionManager::PrepareAnimation()
 {
-	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
-	if (0 != m_tpCurAnim) return false;
-	
-	if (pCurAnimTriple && pCurAnimTriple->is_active()) {
-		if (pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
-	}
-
-
 	// проверка на отыгрывание анимации смерти
 	if (!pMonster->g_Alive()) 
 		if (should_play_die_anim) {
@@ -86,6 +78,16 @@ bool CMotionManager::PrepareAnimation()
 			if (_sd->m_tAnims.find(eAnimDie) != _sd->m_tAnims.end()) cur_anim = eAnimDie;
 			else return false;
 		} else return false;
+
+	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
+	
+	//CheckAnimWithPath();
+
+	if (0 != m_tpCurAnim) return false;
+	
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) {
+		if (pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
+	}
 
 	// получить элемент SAnimItem соответствующий cur_anim
 	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
@@ -99,6 +101,7 @@ bool CMotionManager::PrepareAnimation()
 		index = ::Random.randI(anim_it->second.pMotionVect.size());
 	}
 
+	
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
 
@@ -711,4 +714,31 @@ bool CMotionManager::TA_IsActive()
 	return false;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
+
+void CMotionManager::CheckAnimWithPath()
+{
+	ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.find(pMonster->cur_anim.anim);
+	VERIFY(_sd->m_tAnims.end() != item_it);
+
+	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
+	bool is_moving_on_path	= pMonster->IsMovingOnPath();
+
+	if ( is_moving_on_path && is_moving_anim) {
+		pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
+		return;
+	}
+
+	if (!is_moving_on_path && is_moving_anim) {
+		m_tpCurAnim = 0;
+		cur_anim = eAnimStandIdle;
+		pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
+		return;
+	}
+
+	if (is_moving_on_path && !is_moving_anim) {
+		pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
+		return;
+	}
+}
+
 

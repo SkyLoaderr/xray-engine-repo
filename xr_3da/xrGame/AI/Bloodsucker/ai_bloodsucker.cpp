@@ -44,6 +44,7 @@ void CAI_Bloodsucker::Init()
 	Bones.Reset();
 
 	invisible_vel.set				(0.1f, 0.1f);
+	visibility_steady				= true;
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -252,6 +253,8 @@ void CAI_Bloodsucker::UpdateCL()
 	inherited::UpdateCL();
 
 	// Blink processing
+	bool saved_steady	=	visibility_steady;
+
 	bool PrevVis	=	IsCurrentVisible();
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
@@ -264,7 +267,14 @@ void CAI_Bloodsucker::UpdateCL()
 			m_velocity_linear.current = m_velocity_linear.target = 0.f;
 		}
 	}
+	
+	if (CMonsterInvisibility::IsActiveBlinking()) visibility_steady = false;
+	else visibility_steady = true;
 
+	// начал мерцать
+	if ((saved_steady == true) && (visibility_steady == false)) {
+		CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	}
 }
 
 void CAI_Bloodsucker::StateSelector()
@@ -294,7 +304,6 @@ void CAI_Bloodsucker::StateSelector()
 void CAI_Bloodsucker::set_visible(bool val) 
 {
 	CMonsterInvisibility::Switch(val);
-	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 }
 
 void CAI_Bloodsucker::shedule_Update(u32 dt)

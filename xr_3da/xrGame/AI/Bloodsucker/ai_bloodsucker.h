@@ -22,6 +22,7 @@ class CAI_Bloodsucker : public CAI_Biting,
 
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
+	bool					visibility_steady;
 
 public:
 							CAI_Bloodsucker	();
