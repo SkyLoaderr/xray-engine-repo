@@ -14,28 +14,55 @@ function set_enemy( obj )
 end
 
 function main()
-	active = true
-	while not active do
-		wait()
-	end
-
-	local path = patrol( "way_raid_heli" )
 	local heli = get_level_object( "heli" )
-	local max_num = path:count() * 0.5 - 1
-	local pnt = 0
-    
---	enemy = get_actor()
 
-	while active do
-		heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 5 )
+	while true do
+		active = true
+		while not active do
+			wait()
+		end
+
+		heli:heli_go_by_patrol_path( "way_raid_heli" )
 		wait( 1000 ) -- чтобы update сработал у вертолёта
+
 		local t = heli:heli_last_point_time() * 1000
 
-		printf( "%d", pnt )
-      local dt = device():time_global() 
-		while t-3000 > dt and active and not enemy do
+		printf( "[raid_heli] BEGIN PATROL" )
+
+		while active and not enemy and device():time_global() < t do
 			wait()
-         dt = device():time_global() 
+		end
+
+		printf( "[raid_heli] PATROL IS FINISHED OR INTERRUPTED" )
+
+		if enemy then
+			printf( "[raid_heli] AIR ATTACK!" )
+			heli:air_attack( enemy )
+			wait( 1000 )
+			while heli:air_attack_active() and active do
+				wait()
+			end
+			printf( "[raid_heli] FIN AIR ATTACK!" )
+			enemy = nil
+		end
+	end
+
+--	enemy = get_actor()
+--[[
+	while active do
+		heli:heli_go_to_point( path:point( pnt + 1 ), path:point( pnt ), 0 )
+		wait( 200 ) -- чтобы update сработал у вертолёта
+
+		local t = heli:heli_last_point_time() * 1000
+		if not start then
+			t = t - 1000
+			start = false
+		end
+
+		printf( "%d -> %d", pnt, pnt + 1 )
+
+		while t > device():time_global() and active and not enemy do
+			wait()
 		end
 
 		if enemy then
@@ -53,5 +80,5 @@ function main()
 				pnt = 0
 			end
 		end
-	end
+	end]]
 end
