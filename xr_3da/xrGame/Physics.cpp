@@ -3705,7 +3705,10 @@ void CPHElement::unset_Pushout()
 }
 
 
+void CPHShell::SmoothElementsEnertia(float k)
+{
 
+}
 
 
 

@@ -19,7 +19,7 @@ const int dis_frames=11;
 
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
-const dReal world_cfm=1.1363636e-007f;
+const dReal world_cfm=1.1363636e-008f;
 const dReal world_erp=0.74545456f;
 const dReal world_spring=SPRING(world_cfm,world_erp);
 const dReal world_damping=DAMPING(world_cfm,world_erp);
@@ -362,6 +362,10 @@ public:
 	virtual float			getMass					(){return m_mass.mass;}
 	virtual void			setDensity				(float M);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
+	const dMass*			GetMass					()
+	{
+		return &m_mass;
+	}
 
 	virtual void			applyForce				(const Fvector& dir, float val){
 		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
@@ -598,6 +602,9 @@ public:
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};
 	virtual void StepFrameUpdate(dReal step){};
+
+
+	virtual void			SmoothElementsEnertia(float k);
 
 	dSpaceID GetSpace()
 	{

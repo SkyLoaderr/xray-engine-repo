@@ -734,10 +734,17 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 				// bone-space
 				CKinematics* V = PKinematics(RQ.O->Visual());
+				if(V)
+				{
 				Fmatrix& m_bone = (V->LL_GetInstance(RQ.element)).mTransform;
 				Fmatrix  m_inv_bone;
 				m_inv_bone.invert(m_bone);
 				m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
+				}
+				else
+				{
+				position_in_bone_space.set(p_in_object_space);
+				}
 
 				//  
 				NET_Packet		P;
