@@ -22,7 +22,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../mixkit/src,../libgfx/include,../../lib/"
+				AdditionalIncludeDirectories="../mixkit/src,../libgfx/include,../lib"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS"
 				RuntimeLibrary="5"
 				UsePrecompiledHeader="2"
@@ -71,7 +71,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../mixkit/src,../libgfx/include,../../lib/"
+				AdditionalIncludeDirectories="../mixkit/src,../libgfx/include,../lib"
 				PreprocessorDefinitions="NDEBUG;SAFETY=0;WIN32;_WINDOWS"
 				StringPooling="TRUE"
 				RuntimeLibrary="4"
