@@ -8,7 +8,8 @@ class "se_monster" (cse_alife_monster_base)
 function se_monster:__init (section) super (section)
 	self.ini = nil
 	self.spawner_present = false
-	self.check_distance = 0
+	self.check_distance = false
+	self.min_distance = 150
 end
 --------------------
 function se_monster:can_switch_offline ()
@@ -25,12 +26,18 @@ function se_monster:can_switch_online ()
 	end
 
 	if self.ini == nil then
-		self.ini = self:spawn_ini () 
+	    self.ini = self:spawn_ini () 
 		self.spawner_present = self.ini:section_exist ("spawner")
-		if self.ini ~= nil and self.spawner_present == true and self.ini:line_exist ("spawner", "min_distance") == true then
-		   self.check_distance = self.ini:r_u32 ("spawner", "min_distance")
-		   if self.check_distance == nil then 
-		      self.check_distance = 0
+		if self.ini ~= nil and self.spawner_present == true then
+		   if self.ini:line_exist ("spawner", "check_distance") == true then
+		      self.check_distance = self.ini:r_bool ("spawner", "check_distance")
+		      if self.check_distance == nil then self.check_distance = false end
+		      if self.ini:line_exist ("spawner", "min_distance") == true then
+		         self.min_distance = self.ini:r_u32 ("spawner", "min_distance")
+		      end   
+		   end   
+		   if self.min_distance == nil then 
+		      self.min_distance = 150
 		   end   
 		end
 	end
@@ -43,16 +50,16 @@ function se_monster:can_switch_online ()
 	
 	if self.online == false then
    	    -- если игрока нет, то в оффлайн
-        if db.actor == nil then 
-           return false 
-        end
+        if db.actor == nil then return false end
         
         --если задана дистанция проверки, то проверим.
-        if self.check_distance ~= 0 then
+        if self.check_distance == true then
+           --printf ("Check distance") 
            --получим позицию. 
            local pos = level.vertex_position (self.level_vertex_id)
             -- проверим дистанцию до игрока. если меньше требуемой, то от винта
-            if pos:distance_to (db.actor:position ()) < self.check_distance then
+            if pos:distance_to (db.actor:position ()) < self.min_distance then
+               --printf ("Check distance 1") 
                return false 
             end    
         end   
@@ -63,12 +70,14 @@ function se_monster:can_switch_online ()
         if xr_spawner.check_spawn (self) == true then 
            return true
         end
-        local pos = level.vertex_position (self.level_vertex_id)
-        -- проверим дистанцию до игрока. если больше требуемой, то от винта
-        if pos:distance_to (db.actor:position ()) > self.check_distance then
-           return false 
-        end    
-        return true
+        if self.check_distance == true then
+           local pos = level.vertex_position (self.level_vertex_id)
+           -- проверим дистанцию до игрока. если больше требуемой, то от винта
+           if pos:distance_to (db.actor:position ()) > self.min_distance then
+              return false 
+           end    
+        end   
+        return cse_alife_monster_base.can_switch_online (self)
     end    	    
 end    
 --------------------
