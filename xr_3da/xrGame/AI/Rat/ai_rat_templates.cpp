@@ -133,24 +133,6 @@ void CAI_Rat::vfAdjustSpeed()
 	}
 }
 
-void vfCheckForAI_MapConsistency(Fvector tPosition, u32 dwNodeID)
-{
-	u32				dwCurNode = dwNodeID;
-	NodeLink		*taLinks;
-	NodeCompressed	*tpNode = getAI().Node(dwCurNode);
-	int				iCount, iSavedIndex, iNextNode;
-	tpNode				= getAI().Node(dwCurNode);
-	taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-	iCount				= tpNode->links;
-	iSavedIndex			= -1;
-	for (int i=0; i < iCount; i++) {
-		iNextNode		= getAI().UnpackLink(taLinks[i]);
-		if (getAI().bfInsideNode(getAI().Node(iNextNode),tPosition)) {
-			iNextNode = iNextNode;
-		}
-	}
-}
-
 bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 {
 	// saving current parameters
@@ -267,11 +249,6 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 		m_fSafeSpeed	= m_fSpeed = EPS_S;
 		m_bNoWay		= true;
 		m_tHPB			= tSafeHPB;
-		vfCheckForAI_MapConsistency(Position(),AI_NodeID);
-		
-		dwNewNode = getAI().q_Node(AI_NodeID,Position());
-		tpNewNode = getAI().Node(dwNewNode);
-
 		XFORM().setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 		Position()		= tSavedPosition;
 		r_torso_target	= tSavedTorsoTarget;
