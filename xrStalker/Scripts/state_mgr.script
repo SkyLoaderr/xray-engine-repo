@@ -671,6 +671,8 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg, s
 		self.look_position = target.look_position
 		if target.look_object ~= nil then 
 			self.look_object = target.look_object:id()
+		else
+			self.look_object = nil
 		end
 		self.no_rotate = false
 	else
