@@ -81,6 +81,8 @@ void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
 {
 	string_path s;
 	FS.update_path(s,"$local_root$",file_name);
+	if(FS.exist(s))
+		FS.file_delete(s);
 
 	string1024 command;
 	string32 test_num;
