@@ -61,14 +61,6 @@ function main()
 	event:set_callback(script_01.on_enter,true)
 	event:set_callback(script_01.on_exit,false)
 
-	while stalker1:action() and stalker2:action() do
-		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == false then 
-
-			stalker1:script	(false, script_01.script_name())
-			stalker1:script	(true,  script_01.script_name())
-			stalker2:script	(false, script_01.script_name())
-			stalker2:script	(true,  script_01.script_name())
-
 --			wait(2000)
 			action(                                                                                                       
 			    stalker1,
@@ -108,11 +100,6 @@ function main()
 				cond	(cond.sound_end, 1000)
 			)
 --			wait(2000)
-			break		
-		end
-		wait()
-	end
-
 			action(                                                                                                       
 			    stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
