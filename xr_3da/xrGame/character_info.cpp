@@ -141,11 +141,11 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 			CSpecificCharacter spec_char;
 			spec_char.Load(i);
 
-			if(spec_char.Community() == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), data()->m_Community))
+			if(data()->m_Community == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), data()->m_Community))
 			{
-				if(spec_char.Reputation() == NO_REPUTATION || _abs(spec_char.Reputation() - data()->m_Reputation)<REPUTATION_DELTA)
+				if(data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - data()->m_Rank)<RANK_DELTA)
 				{
-					if(spec_char.Rank() == NO_RANK || _abs(spec_char.Rank() - data()->m_Rank)<RANK_DELTA)
+					if(data()->m_Reputation == NO_REPUTATION || _abs(spec_char.Reputation() - data()->m_Reputation)<REPUTATION_DELTA)
 					{
 						if(NO_SPECIFIC_CHARACTER == first_found_index)
 						{
