@@ -99,10 +99,10 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 
     TElTreeItem*		m_pCycleNode;
     TElTreeItem*		m_pFXNode;
-	void __fastcall		MotionOnAfterEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall		MotionOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 
-	void __fastcall 	FloatOnAfterEdit	(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	FloatOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 	FloatOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	FloatOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	FloatOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
 	EngineModel			m_RenderObject;

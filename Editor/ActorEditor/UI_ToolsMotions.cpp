@@ -147,7 +147,7 @@ xr_token					tfx_token		[ ]={
 	{ 0,					0				}
 };
 
-void CActorTools::MotionOnAfterEdit(PropValue* sender, LPVOID edit_val)
+void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	R_ASSERT(edit_val);
     if (0==*(LPDWORD)edit_val){
@@ -186,7 +186,7 @@ void CActorTools::FillMotionProperties()
             m_MotionProps->AddItem(m_pFXNode,PROP_TOKEN2,	"Start bone",m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst));
             m_MotionProps->AddItem(m_pFXNode,PROP_FLOAT, 	"Power", 	m_MotionProps->MakeFloatValue(&SM->fPower,	0.f,20.f,0.01f,2));
         }
-        MotionOnAfterEdit(TV,TV->val);
+        MotionOnAfterEdit(m_pFXNode,TV,TV->val);
     }else{
 		m_pCycleNode=0;
         m_pFXNode	=0;

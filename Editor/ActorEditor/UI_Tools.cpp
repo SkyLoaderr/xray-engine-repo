@@ -476,12 +476,12 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     }
 }
 
-void __fastcall CActorTools::FloatOnAfterEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::FloatOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
     *(float*)edit_val = deg2rad(*(float*)edit_val);
 }
 
-void __fastcall CActorTools::FloatOnBeforeEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CActorTools::FloatOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
     *(float*)edit_val = rad2deg(*(float*)edit_val);
 }
