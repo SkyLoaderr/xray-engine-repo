@@ -25,7 +25,7 @@ template <class T> T*	CSingleton<T>::_self		= NULL;
 template <class T> int	CSingleton<T>::_refcount	= 0;
 
 
-template<class SHARED_TYPE, class KEY_TYPE> class CSharedObj : public CSingleton<CSharedObj<T_shared> >
+template<class SHARED_TYPE, class KEY_TYPE> class CSharedObj : public CSingleton<CSharedObj<class SHARED_TYPE, class KEY_TYPE> >
 {
 	xr_map<KEY_TYPE, SHARED_TYPE*> _shared_tab;	
 	typedef typename xr_map<KEY_TYPE, SHARED_TYPE*>::iterator SHARED_DATA_MAP_IT;
