@@ -417,10 +417,10 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 		State.position.set(Position());
 	///////////////////////////////////////	
 	u16 NumItems = PHGetSyncItemsNumber();
-	if (H_Parent() || GameID() == 1) NumItems = 0;
+	if (H_Parent() || GameID() == GAME_SINGLE) NumItems = 0;
 
-	P.w_u16				(NumItems);
-	P.w_vec3			( State.position);
+	P.w_u16					( NumItems		);
+	P.w_vec3				( State.position);
 
 	if (!NumItems) return;
 
@@ -429,15 +429,13 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	P.w_vec3				( State.angular_vel);
 	P.w_vec3				( State.linear_vel);
 
-	P.w_vec3				( State.force);
-	P.w_vec3				( State.torque);
-
+	P.w_vec3				( State.force	);
+	P.w_vec3				( State.torque	);
 
 	P.w_float				( State.quaternion.x );
 	P.w_float				( State.quaternion.y );
 	P.w_float				( State.quaternion.z );
 	P.w_float				( State.quaternion.w );
-
 };
 
 void CInventoryItem::PH_B_CrPr		()
