@@ -18,6 +18,10 @@ function evaluator_new:evaluate()
 	self.a.evn:calculate()
 --	self.a.evn:print()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
+	if self.a.evn:ruleExist("ignore") == true then
+		return false
+	end
+
 	if self.a.id == nil and self.a.evn:isEvents() then
 		self.a.evn:get_event(self.a)
 	end
@@ -91,6 +95,7 @@ function action_wait:initialize()
 
 	xr_state.change_state(self.object, 0)
 	self.finish = false
+	self.check = nil
 end
 function action_wait:execute ()
 --	printf("[ACT] Reactions: Wait")
@@ -113,51 +118,62 @@ function action_wait:execute ()
 			self.a.id = nil			
 		end
 	else
-		if xr_state.finish_state(self.object) == true then
-			--идем проверять или стоим смотрим
-			if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
-				--обработка проверки
-				if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
-					-- если мы уже стоим в радиусе 3 метров от раздражителя - просто стоим и оглядываемся
-					if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
-						self.object:set_body_state(move.standing)
-						self.object:set_movement_type(move.stand)
+		--идем проверять или стоим смотрим
+		if ((self.a.isVisual ~= nil and self.a.isVisual > 0.75) or (self.a.isVisual == nil and self.a.watched == true)) then
+			if self.a.evn:ruleExist("no_check") == true then
+				self.check = false
+			else
+				self.check = true
+			end
+		else            	
+			self.check = false
+		end
+	end
 
-						self.t = math.random(3)+4
-						self.time = device():time_global()/1000
-
-						local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
-						self.object:set_sight(look.direction, dir, 0)
-					end     	
-				else
-					self.object:set_mental_state(anim.danger)
-					self.object:set_movement_type(move.walk)
-					self.object:set_path_type(game_object.level_path)
-					self.object:clear_animations()
-					-- медленно подходим к раздражителю
-					self.prisluh = nil
-					self.object:set_dest_level_vertex_id(self.a.position)
-					local pos = level.vertex_position(self.a.position)
-					pos.y = pos.y + 0.8
-					self.object:set_sight(look.point, pos, 0)
-		      			self.object:set_item(object.idle, self.object:best_weapon())
-		        	end
-				-- озвучка на проверку
-				globals.set_sound(self.object, self.sound_wait, false)
-			else            	
-				-- обрабатываем приглядывание
+	-- собственно сами действия
+	if xr_state.finish_state(self.object) == true then
+	if self.check == true then
+		-- идем проверять
+		if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
+			-- если мы уже стоим в радиусе 3 метров от раздражителя - просто стоим и оглядываемся
+			if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
+				self.object:set_body_state(move.standing)
 				self.object:set_movement_type(move.stand)
 
-				if self.prisluh ~= true then
-					self.prisluh = true
-					self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
-					self.object:add_animation("prisluh_8_0", false)
-					self.object:add_animation("prisluh_8_2", false)
-				end		
-				-- озвучка на поиск
-				globals.set_sound(self.object, self.sound_search, false)
-			end
-		end
+				self.t = math.random(3)+4
+				self.time = device():time_global()/1000
+
+				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+				self.object:set_sight(look.direction, dir, 0)
+			end     	
+		else
+			self.object:set_mental_state(anim.danger)
+			self.object:set_movement_type(move.walk)
+			self.object:set_path_type(game_object.level_path)
+			self.object:clear_animations()
+			-- медленно подходим к раздражителю
+			self.prisluh = nil
+			self.object:set_dest_level_vertex_id(self.a.position)
+			local pos = level.vertex_position(self.a.position)
+			pos.y = pos.y + 0.8
+			self.object:set_sight(look.point, pos, 0)
+      			self.object:set_item(object.idle, self.object:best_weapon())
+	       	end
+		-- озвучка на проверку
+		globals.set_sound(self.object, self.sound_wait, false)
+	end
+	if self.check == false then
+		-- просто стоим смотрим
+		self.object:set_movement_type(move.stand)
+		if self.prisluh ~= true then
+			self.prisluh = true
+			self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
+			self.object:add_animation("prisluh_8_0", false)
+			self.object:add_animation("prisluh_8_2", false)
+		end		
+		-- озвучка на поиск
+		globals.set_sound(self.object, self.sound_search, false)
+	end
 	end
 
 	-- надо проверять время на обработку раздражителя, если время закончилось - прекращать обработку
@@ -290,8 +306,9 @@ function events:__init(npc)
 	self.visio	= 0.25 		-- если объект виден
 	--Константы для настройки реакций
 --[[
-	"item"
-  	"item_visual"
+	"no_item" 	- игнорирует итемя
+	"no_check" 	- не ходит проверять
+	"ignore" 	- игнорирует все раздражители
 ]]
 end
 function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
@@ -496,10 +513,20 @@ function events:isRuled(obj)
 	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
 
 	for k,v in tt do
-		if v == "item" then
+		if v == "no_item" then
 			if self:type(obj) == "item" then
 				return true
 			end
+		end
+	end
+	return false
+end
+function events:ruleExist(rule)
+	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
+
+	for k,v in tt do
+		if v == rule then
+			return true
 		end
 	end
 	return false
@@ -837,5 +864,23 @@ function events:isTrash(obj)
 		return true
 	else
 		return false
+	end
+end
+
+function add_rule(obj, rule)
+	if xr_motivator.storage[obj:id()].reactions.rules.evn:ruleExist(rule) == false then
+		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
+	end
+end
+
+function remove_rule(obj, rule)
+	local tt = {}
+	for k,v in xr_motivator.storage[obj:id()].reactions.rules do
+		if v == rule then
+			table.insert(tt, k)
+		end
+	end
+	for k,v in tt do
+		table.delete(xr_motivator.storage[obj:id()].reactions.rules, v)
 	end
 end
