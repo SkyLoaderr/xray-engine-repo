@@ -33,7 +33,7 @@ function new_game_dlg:SetClGame(game_cl)
 end
 
 function new_game_dlg:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Options")
+	ui_base_dialog.base_dialog.InitControls(self, "New Game")
 	----- DATA
 	--->> BUTTONS	
 	local btn_easy_rect   = {x = self.btn_rect.x,
