@@ -1,29 +1,20 @@
 function main ()
 
 
-	local n1 = get_level_object ("naparnik1")
-	local n2 = get_level_object ("naparnik2")
-
-	n1:script (true, s_test.script_name ())
-	n2:script (true, s_test.script_name ())
-
-	action (n1, move (move.standing, move.walk, move.line, patrol ("boar_way")), 
-			look (look.search), anim (anim.free), cond (cond.move_end))
-	action (n2, move (move.standing, move.walk, move.line, patrol ("boar_way")), 
-			look (look.search), anim (anim.free), cond (cond.move_end))
+  local anims = classes.AnimationSet (1)
+  anims:add_animation ("stoya_ruje_ 0", true)
+  anims:add_animation ("vishka_1", true)
+  anims:add_animation ("vishka_2", true)
+  anims:add_animation ("vishka_3", true)
 
 
-	local stalker = get_level_object ("stalker")
-	local torch = get_level_object ("torch")
-	stalker:script (true, s_test.script_name ())
-	action (stalker, object (torch, object.activate), cond (cond.time_end, time_infinite))
+  local guard1 = classes.Guardian (get_level_object ("stalker"), s_test.script_name (), "way0000", anims)
 
-	wait (5000)
-	set_current_time (19, 00, 00)
-	wait (5000)
-	set_current_time (12, 00, 00)
+  while true do
+      guard1:process ()
+      wait ()
+      end
 
-	while stalker:action () do wait () end
+  guard1:finish ()
 
-	stalker:script (false, s_test.script_name ())
 end
