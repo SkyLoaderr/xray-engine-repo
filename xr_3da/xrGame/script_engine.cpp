@@ -17,14 +17,15 @@
 #	include "script_debugger.h"
 #endif
 
-extern void export_classes	(lua_State *L);
+extern void export_classes(lua_State *L);
 
-CScriptEngine::CScriptEngine	()
+CScriptEngine::CScriptEngine			()
 {
 //	lua_setgcthreshold		(lua(),64*1024);
 	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;
+	m_global_script_loaded	= false;
 	m_return_passed_object_functor = 0;
 #ifdef USE_DEBUGGER
 	m_scriptDebugger		= xr_new<CScriptDebugger>();
@@ -47,7 +48,7 @@ void CScriptEngine::unload				()
 	lua_settop				(lua(),m_stack_level);
 }
 
-int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
+int CScriptEngine::lua_panic			(CLuaVirtualMachine *L)
 {
 	script_log		(eLuaMessageTypeError,"PANIC");
 	if (!print_output(L,"unknown script"))
@@ -55,12 +56,12 @@ int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
 	return			(0);
 }
 
-void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
+void CScriptEngine::lua_hook_call		(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
 {
 	ai().script_engine().script_stack_tracker().script_hook(L,tpLuaDebug);
 }
 
-void CScriptEngine::lua_error(CLuaVirtualMachine *L)
+void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 {
 	print_error				(L,LUA_ERRRUN);
 
@@ -84,7 +85,7 @@ void lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
 #	include <strstream>
 #endif
 
-std::string to_string(luabind::object const& o)
+std::string to_string					(luabind::object const& o)
 {
 	using namespace luabind;
 	if (o.type() == LUA_TSTRING) return object_cast<std::string>(o);
@@ -110,7 +111,7 @@ std::string to_string(luabind::object const& o)
 	return s.str();
 }
 
-void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
+void strreplaceall						(std::string &str, LPCSTR S, LPCSTR N)
 {
 	LPSTR	A;
 	int		S_len = xr_strlen(S);
@@ -118,7 +119,7 @@ void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
 		str.replace(A - str.c_str(),S_len,N);
 }
 
-std::string &process_signature(std::string &str)
+std::string &process_signature				(std::string &str)
 {
 	strreplaceall	(str,"custom [","");
 	strreplaceall	(str,"]","");
@@ -128,7 +129,7 @@ std::string &process_signature(std::string &str)
 	return			(str);
 }
 
-std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
+std::string member_to_string			(luabind::object const& e, LPCSTR function_signature)
 {
 #if !defined(LUABIND_NO_ERROR_CHECKING)
     using namespace luabind;
@@ -183,7 +184,7 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 #endif
 }
 
-void print_class(lua_State *L, luabind::detail::class_rep *crep)
+void print_class						(lua_State *L, luabind::detail::class_rep *crep)
 {
 	std::string			S;
 	// print class and bases
@@ -267,7 +268,7 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 	Msg			("};\n");
 }
 
-void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR header, const std::string &indent)
+void print_free_functions				(lua_State *L, const luabind::object &object, LPCSTR header, const std::string &indent)
 {
 	u32							count = 0;
 	luabind::object::iterator	I = object.begin();
@@ -335,7 +336,7 @@ void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR h
 		Msg("%s};",indent.c_str());
 }
 
-void print_help(lua_State *L)
+void print_help							(lua_State *L)
 {
 	Msg					("\nList of the classes exported to LUA\n");
 	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
@@ -349,7 +350,7 @@ void print_help(lua_State *L)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-void CScriptEngine::script_export()
+void CScriptEngine::script_export		()
 {
 	luabind::open						(lua());
 	
@@ -384,7 +385,7 @@ void CScriptEngine::script_export()
 	m_stack_level						= lua_gettop(lua());
 }
 
-bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
+bool CScriptEngine::load_file			(LPCSTR caScriptName, bool bCall)
 {
 	VERIFY			(bCall);
 	string256		l_caNamespaceName;
@@ -444,7 +445,10 @@ void CScriptEngine::process	()
 	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
 		LPSTR					S2 = m_load_queue.front();
 		m_load_queue.pop_front	();
-		if (!xr_strlen(S2) || xr_strcmp(S2,"_G") || (m_reload_modules && i<n) || !namespace_loaded(S2)) {
+		R_ASSERT2				(xr_strcmp(S2,"_G"),"File name \"_G.script\" is reserved and cannot be used!");
+		if ((!*S2 && !m_global_script_loaded) || ((m_reload_modules && (i < n)) || !namespace_loaded(S2))) {
+			if (!*S2)
+				m_global_script_loaded = true;
 			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
 			Msg					("* loading script %s",S1);
 			load_file			(S,true);
@@ -499,10 +503,12 @@ bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &ob
 	string256				name_space, function;
 
 	parse_script_namespace	(function_to_call,name_space,function);
-	add_file				(name_space);
-	process					();
+	if (xr_strcmp(name_space,"_G")) {
+		add_file			(name_space);
+		process				();
+	}
 
-	if	(!this->object(name_space,function,LUA_TFUNCTION))
+	if (!this->object(name_space,function,LUA_TFUNCTION))
 		return				(false);
 
 	luabind::object			lua_namespace	= this->name_space(name_space);

@@ -89,18 +89,20 @@ void CScriptProcess::update()
 
 	run_scripts			();
 	run_strings			();
-	if (m_tpScripts.empty())	return;
+
+	if (m_tpScripts.empty())
+		return;
 
 	// update script
 	g_ca_stdout[0]		= 0;
-	u32		_id			= (++m_iterator)%m_tpScripts.size();
+	u32					_id	= (++m_iterator)%m_tpScripts.size();
 	if (!m_tpScripts[_id]->Update()) {
-			xr_delete			(m_tpScripts[_id]);
-			m_tpScripts.erase	(m_tpScripts.begin() + _id);
-			--m_iterator;		// try to avoid skipping
+		xr_delete			(m_tpScripts[_id]);
+		m_tpScripts.erase	(m_tpScripts.begin() + _id);
+		--m_iterator;		// try to avoid skipping
 	}
-	if (g_ca_stdout[0])
-	{
+
+	if (g_ca_stdout[0]) {
 		fputc							(0,stderr);
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"%s",g_ca_stdout);
 		fflush							(stderr);

@@ -35,6 +35,7 @@ protected:
 	bool						m_reload_modules;
 	ref_str						m_class_registrators;
 	luabind::object				*m_return_passed_object_functor;
+	bool						m_global_script_loaded;
 
 public:
 								CScriptEngine				();
