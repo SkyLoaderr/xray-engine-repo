@@ -42,20 +42,14 @@ void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
 // sounds
 void CAI_Soldier::vfLoadSounds()
 {
-	/**
-	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[2],"actor\\bhit_flesh-3",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[3],"actor\\bhit_helmet-1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[4],"actor\\bullet_hit1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[5],"actor\\bullet_hit2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create3D(sndHit[6],"actor\\ric_conc-1",0,SOUND_TYPE_WORLD_BULLET_RICOCHET);
-	pSounds->Create3D(sndHit[7],"actor\\ric_conc-2",0,SOUND_TYPE_WORLD_BULLET_RICOCHET);
+	pSounds->Create3D(sndHit[0],"actor\\hurt1",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create3D(sndHit[1],"actor\\hurt2",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create3D(sndHit[2],"actor\\hurt3",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create3D(sndHit[3],"actor\\hurt4",0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	pSounds->Create3D(sndDie[0],"actor\\die0",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create3D(sndDie[1],"actor\\die1",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create3D(sndDie[2],"actor\\die2",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create3D(sndDie[3],"actor\\die3",0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	/**/
 }
 
 // animations

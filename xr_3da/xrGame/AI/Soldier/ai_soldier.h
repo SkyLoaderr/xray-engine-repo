@@ -18,7 +18,7 @@
 class CAI_Soldier : public CCustomMonster, public soundListener
 {
 	enum ESoundCcount {
-		SND_HIT_COUNT=8,
+		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4
 	};
 
