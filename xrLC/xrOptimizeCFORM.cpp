@@ -34,7 +34,7 @@ void	CBuild::BuildCForm	()
 	_decimater		decimater(mesh);			// a decimater object, connected to a mesh
 	_HModQuadric	hModQuadric;				// use a quadric module
 	decimater.add	(hModQuadric);				// register module at the decimater
-	decimater.module(hModQuadric).set_max_err	(0.00001,false);	// error-limit
+	decimater.module(hModQuadric).set_max_err	(0.0001,false);	// error-limit
 
 	// Initializing mesh
 	Status			("Building base mesh : vertices[%d]...",g_vertices.size());
