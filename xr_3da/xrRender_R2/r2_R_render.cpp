@@ -197,7 +197,7 @@ void CRender::Render		()
 		marker									++;
 		phase									= PHASE_EMAP;
 		Target.phase_scene						();
-		for (int it=0; it<lstRecorded.size(); it++)	{
+		for (u32 it=0; it<lstRecorded.size(); it++)	{
 			r_dsgraph_insert_static				(lstRecorded[it]);
 		}
 		for (emapslice=ps_r2_emap_slices-1; emapslice>=0; emapslice--)
@@ -233,6 +233,7 @@ void CRender::Render		()
 	{
 		CTimer	T;							T.Start	();
 		BOOL	result						= FALSE;
+		HRESULT	hr							= S_FALSE;
 		while	((hr=q_sync_point->GetData	(&result,sizeof(result),D3DGETDATA_FLUSH))==S_FALSE) {
 			Sleep(0);
 			if (T.GetElapsed_ms() > 500)	{
