@@ -13,9 +13,9 @@
 #define LERP(t, a, b)	( a + t*(b-a) )
 #define PN_SETUP(i,b0,b1,r0,r1) \
 	t = vec[i] + 10000.f;\
-	b0 = ((int)t) & (B-1);\
+	b0 = iFloor(t) & (B-1);\
 	b1 = (b0+1) & (B-1);\
-	r0 = t - (int)t;\
+	r0 = t - iFloor(t);\
 	r1 = r0 - 1.f;
 
 static int		start = 1;
