@@ -24,15 +24,21 @@ void	xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 
 			if (c_dest	!= c_entity)		PerformMigration					(e_entity,c_parent,c_dest);
 
 			// Rebuild parentness
-			R_ASSERT				(0xffff != e_entity->ID_Parent);
-			e_entity->ID_Parent		= 0xffff;
-			xr_vector<u16>& C			= e_parent->children;
-			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),id_entity);
-			VERIFY					(c!=C.end());
-			C.erase					(c);
+			if (0xffff == e_entity->ID_Parent)
+			{
+				Msg						("! ERROR: can't detach independant object. entity[%s:%d], parent[%s:%d]",
+					e_entity->s_name_replace,id_entity,e_parent->s_name_replace,id_parent);
+			} else {
+				R_ASSERT				(0xffff != e_entity->ID_Parent);
+				e_entity->ID_Parent		= 0xffff;
+				xr_vector<u16>& C			= e_parent->children;
+				xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),id_entity);
+				VERIFY					(c!=C.end());
+				C.erase					(c);
 
-			// Signal to everyone (including sender)
-			SendBroadcast			(0xffffffff,P,MODE);
+				// Signal to everyone (including sender)
+				SendBroadcast			(0xffffffff,P,MODE);
+			}
 		}
 	}
 }
