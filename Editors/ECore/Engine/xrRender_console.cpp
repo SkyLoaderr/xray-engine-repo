@@ -85,13 +85,13 @@ void		xrRender_initconsole	()
 	CMD2(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
 
+	Fvector	tw_min,tw_max;
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
 	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
 	CMD4(CCC_Float,		"r__detail_rainbow_h",	&ps_r__Detail_rainbow_hemi,	.00f,	1.0f	);
 
-	Fvector	tw_min,tw_max;
 	tw_min.set			(EPS,EPS,EPS);
 	tw_max.set			(2,2,2);
 	CMD4(CCC_Float,		"r__d_tree_w_rot",		&ps_r__Tree_w_rot,			.01f,	100.f	);
