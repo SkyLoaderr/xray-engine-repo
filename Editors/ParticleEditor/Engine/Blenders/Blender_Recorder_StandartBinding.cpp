@@ -103,20 +103,19 @@ class cl_sun0_color	: public R_constant_setup {
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CSun&	sun				= *(g_pGameLevel->Environment->Suns.front());
-			result.set				(sun.Color().r,	sun.Color().g,	sun.Color().b,	0);
+			CEnvDescriptor&	desc	= g_pGameLevel->Environment->Current;
+			result.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z,	0);
 		}
 		RCache.set_c	(C,result);
 	}
 };	static cl_sun0_color		binder_sun0_color;
-
 class cl_sun0_dir_w	: public R_constant_setup {
 	u32			marker;
 	Fvector4	result;
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
-			CSun&	sun				= *(g_pGameLevel->Environment->Suns.front());
-			result.set				(sun.Direction().x,	sun.Direction().y,	sun.Direction().z,	0);
+			CEnvDescriptor&	desc	= g_pGameLevel->Environment->Current;
+			result.set				(desc.sun_dir.x,	desc.sun_dir.y, desc.sun_dir.z,	0);
 		}
 		RCache.set_c	(C,result);
 	}
@@ -127,14 +126,50 @@ class cl_sun0_dir_e	: public R_constant_setup {
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
 			Fvector D;
-			CSun&	sun				=	*(g_pGameLevel->Environment->Suns.front());
-			Device.mView.transform_dir	(D,sun.Direction());
+			CEnvDescriptor&	desc		= g_pGameLevel->Environment->Current;
+			Device.mView.transform_dir	(D,desc.sun_dir);
 			D.normalize					();
 			result.set					(D.x,D.y,D.z,0);
 		}
 		RCache.set_c	(C,result);
 	}
 };	static cl_sun0_dir_e		binder_sun0_dir_e;
+
+//
+class cl_lm_color	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CEnvDescriptor&	desc	= g_pGameLevel->Environment->Current;
+			result.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z,	0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_lm_color		binder_lm_color;
+class cl_amb_color	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CEnvDescriptor&	desc	= g_pGameLevel->Environment->Current;
+			result.set				(desc.ambient.x, desc.ambient.y, desc.ambient.z, 0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_amb_color		binder_amb_color;
+class cl_hemi_color	: public R_constant_setup {
+	u32			marker;
+	Fvector4	result;
+	virtual void setup	(R_constant* C)	{
+		if (marker!=Device.dwFrame)	{
+			CEnvDescriptor&	desc	= g_pGameLevel->Environment->Current;
+			result.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z, 0);
+		}
+		RCache.set_c	(C,result);
+	}
+};	static cl_hemi_color		binder_hemi_color;
+
 
 // Standart constant-binding
 void	CBlender_Compile::SetMapping	()
@@ -157,9 +192,12 @@ void	CBlender_Compile::SetMapping	()
 	r_Constant				("eye_normal",		&binder_eye_N);
 
 	// global-lighting (env params)
-	r_Constant				("sun0_color",		&binder_sun0_color);
-	r_Constant				("sun0_dir_w",		&binder_sun0_dir_w);
-	r_Constant				("sun0_dir_e",		&binder_sun0_dir_e);
+	r_Constant				("L_sun_color",		&binder_sun0_color);
+	r_Constant				("L_sun_dir_w",		&binder_sun0_dir_w);
+	r_Constant				("L_sun_dir_e",		&binder_sun0_dir_e);
+	r_Constant				("L_lmap_color",	&binder_lm_color);
+	r_Constant				("L_hemi_color",	&binder_hemi_color);
+	r_Constant				("L_ambient",		&binder_amb_color);
 
 	// detail
 	if (bDetail	&& detail_scaler)
