@@ -465,10 +465,12 @@ void CCustomZone::UpdateCL()
 		m_bZoneReady = true;
 	}
 
-	m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
+	if (Level().CurrentEntity()) {
+		m_fDistanceToCurEntity = Level().CurrentEntity()->Position().distance_to(Position());
 
-	if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
-		m_effector.Update(m_fDistanceToCurEntity);
+		if (EnableEffector())// && Level().CurrentEntity() && Level().CurrentEntity()->CLS_ID != CLSID_SPECTATOR)
+			m_effector.Update(m_fDistanceToCurEntity);
+	}
 
 	UpdateBlowoutLight	();
 }
