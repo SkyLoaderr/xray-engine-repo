@@ -222,12 +222,23 @@ function se_smart_terrain:STATE_Write( packet )
 		if self.Job then
 			packet:w_u8( table.getn( self.Job ) )
 
+			print_table( self.Job )
+
 			for i, v in self.Job do
-				packet:w_u32( v or 0 )
+				packet:w_u32( v )
+				printf( "job i=%d", i )
 			end
 		else
 			packet:w_u8( 0 )
 		end
+	end
+end
+
+function to_str(what)
+	if what == nil then
+		return "<nil>"
+	else
+		return tostring(what)
 	end
 end
 
@@ -251,12 +262,17 @@ function se_smart_terrain:STATE_Read( packet, size )
 		self.gulagN = nil
 	end
 
+	printf( "name=%s, script_version=%d", self:name(), self.script_version )
+	printf( "gulagN=%s", to_str( self.gulagN ) )
+
 	self.duration_end = r_CTime( packet )
 	self.idle_end     = r_CTime( packet )
 
 	-- список сталкеров
 	n = packet:r_u8()
 
+	printf( "stalkers=%s", to_str( n ) )
+	
 	for i = 1, n do
 		o_id = packet:r_u16()
 		self.stalkers[o_id] = {}
@@ -289,8 +305,10 @@ function se_smart_terrain:STATE_Read( packet, size )
 			self.Job = {}
 
 			n = packet:r_u8()
+			printf( "jobs=%d", n )
 			for i = 1, n do
 				table.insert( self.Job, packet:r_u32() )
+				printf( "job i=%d", i )
 			end
 		end
 	end
@@ -408,7 +426,9 @@ function cl_smart_terrain:__init( se_obj, ini )
 		-- восстановить параметры должностей, которые требуют сохранения
 		if se_obj.Job then
 			for i, v in se_obj.Job do
-				self.gulag.Job[i].begin = v
+				if v > 0 then
+					self.gulag.Job[i].begin = v
+				end
 			end
 		end
 	end
@@ -421,7 +441,7 @@ end
 
 -- сохранение клиентского объекта: обновляем серверный
 function cl_smart_terrain:save()
---	printf( "smart terrain client save" )
+	printf( "smart terrain client save" )
 	sim = alife()
 	o   = sim:object( self.id )
 
@@ -445,7 +465,7 @@ function cl_smart_terrain:save()
 
 		-- запомнить сохраняемые параметры работ
 		for i, v in self.gulag.Job do
-			table.insert( o.Job, v.begin )
+			table.insert( o.Job, v.begin or 0 )
 
 			-- для сталкера, занятого на этой работе, запомнить номер работы
 			if v.object then
