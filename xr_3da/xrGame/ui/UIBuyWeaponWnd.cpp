@@ -271,34 +271,29 @@ struct BoxInfo
 
 void CUIBuyWeaponWnd::InitWeaponBoxes()
 {
-	typedef boost::array<BoxInfo, 5> Boxes;
+	typedef boost::array<BoxInfo, 4> Boxes;
 	Boxes boxesDefs;
 
 	// Заполняем массив информации о ящиках
-	boxesDefs[0].texName		= "ui\\ui_inv_box_assault_rifles";
-	boxesDefs[0].filterString	= "assault_rifle";
+	boxesDefs[0].texName		= "ui\\ui_inv_box_misc_weapons";
+	boxesDefs[0].filterString	= "shotgun";
 	boxesDefs[0].gridHeight		= 2;
-	boxesDefs[0].gridWidth		= 5;
+	boxesDefs[0].gridWidth		= 4;
 
-	boxesDefs[1].texName		= "ui\\ui_inv_box_heavy_weapons";
-	boxesDefs[1].filterString	= "heavy_weapon";
+	boxesDefs[1].texName		= "ui\\ui_inv_box_assault_rifles";
+	boxesDefs[1].filterString	= "assault_rifle";
 	boxesDefs[1].gridHeight		= 2;
-	boxesDefs[1].gridWidth		= 6;
+	boxesDefs[1].gridWidth		= 5;
 
-	boxesDefs[2].texName		= "ui\\ui_inv_box_misc_weapons";
-	boxesDefs[2].filterString	= "misc";
+	boxesDefs[2].texName		= "ui\\ui_inv_box_sniper_rifles";
+	boxesDefs[2].filterString	= "sniper_rifle";
 	boxesDefs[2].gridHeight		= 2;
-	boxesDefs[2].gridWidth		= 5;
+	boxesDefs[2].gridWidth		= 6;
 
-	boxesDefs[3].texName		= "ui\\ui_inv_box_sniper_rifles";
-	boxesDefs[3].filterString	= "sniper_rifle";
+	boxesDefs[3].texName		= "ui\\ui_inv_box_heavy_weapons";
+	boxesDefs[3].filterString	= "heavy_weapon";
 	boxesDefs[3].gridHeight		= 2;
-	boxesDefs[3].gridWidth		= 5;
-
-	boxesDefs[4].texName		= "ui\\ui_inv_box_sub_machine_guns";
-	boxesDefs[4].filterString	= "submachine_gun";
-	boxesDefs[4].gridHeight		= 2;
-	boxesDefs[4].gridWidth		= 4;
+	boxesDefs[3].gridWidth		= 6;
 
 	// Последнему листу ассоциируем ящики с оружием
 	CUIDragDropList *pBoxesList = m_WeaponSubBags.back();
