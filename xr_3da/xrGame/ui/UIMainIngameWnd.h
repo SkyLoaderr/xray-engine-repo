@@ -268,6 +268,6 @@ protected:
 
     void				UpdatePickUpItem();
 public:
-	void				SetPickUpItem	(CInventoryItem* PickUpItem) {m_pPickUpItem = PickUpItem;};
+	void				SetPickUpItem	(CInventoryItem* PickUpItem);
 
 };

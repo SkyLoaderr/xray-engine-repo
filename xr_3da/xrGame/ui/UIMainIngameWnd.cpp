@@ -1435,6 +1435,13 @@ void CUIMainIngameWnd::SetBatteryCharge(float value)
 ////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+void CUIMainIngameWnd::SetPickUpItem	(CInventoryItem* PickUpItem)
+{
+	if (PickUpItem)
+		m_pPickUpItem = PickUpItem;
+	else
+		m_pPickUpItem = PickUpItem;
+};
 void CUIMainIngameWnd::UpdatePickUpItem	()
 {
 	if (!m_pPickUpItem) 
