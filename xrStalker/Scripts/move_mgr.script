@@ -449,7 +449,7 @@ function move_mgr:update_standing_state()
 end
 
 function move_mgr:waypoint_callback(obj, action_type, index)
-	--printf("move_mgr:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
+	printf("move_mgr:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
 	if index == -1 or index == nil then
 		printf("ERROR: move_mgr: waypoint_callback: index is -1 or nil")
 		return
