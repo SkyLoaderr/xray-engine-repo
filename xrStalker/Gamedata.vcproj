@@ -652,20 +652,27 @@
 				RelativePath=".\zones.ltx">
 			</File>
 		</Filter>
+		<Filter
+			Name="equipment"
+			Filter="">
+			<File
+				RelativePath=".\devices.ltx">
+			</File>
+			<File
+				RelativePath=".\items.ltx">
+			</File>
+			<File
+				RelativePath=".\outfit.ltx">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\actor.ltx">
-		</File>
-		<File
-			RelativePath=".\devices.ltx">
 		</File>
 		<File
 			RelativePath=".\game.ltx">
 		</File>
 		<File
 			RelativePath=".\immunities.ltx">
-		</File>
-		<File
-			RelativePath=".\items.ltx">
 		</File>
 		<File
 			RelativePath=".\System.ltx">
