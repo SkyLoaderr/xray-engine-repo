@@ -21,6 +21,7 @@ struct ZONE_INFO
 	float cur_freq;
 };
 
+class CInventoryOwner;
 
 class CCustomDetector :
 	public CInventoryItem,
@@ -54,13 +55,16 @@ protected:
 	void SoundCreate				(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy				(ref_sound& dest);
 
+	void StopAllSounds				();
+
 	bool m_bWorking;
 
 	float m_fRadius;
 	float m_fBuzzerRadius;
 
 	//если хоз€ин текущий актер
-	CActor* m_pCurrentActor;
+	CActor*				m_pCurrentActor;
+	CInventoryOwner*	m_pCurrentInvOwner;
 
 	//информаци€ об онаруживаемых зонах
 	DEFINE_MAP(CLASS_ID, ZONE_TYPE, ZONE_TYPE_MAP, ZONE_TYPE_MAP_IT);

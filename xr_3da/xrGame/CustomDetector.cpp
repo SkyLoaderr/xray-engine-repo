@@ -27,6 +27,7 @@ CCustomDetector::~CCustomDetector(void)
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
 {
 	m_pCurrentActor = NULL;
+	m_pCurrentInvOwner = NULL;
 
 	return		(inherited::net_Spawn(DC));
 }
@@ -147,6 +148,20 @@ void CCustomDetector::shedule_Update(u32 dt)
 */
 }
 
+void CCustomDetector::StopAllSounds()
+{
+	ZONE_TYPE_MAP_IT it;
+	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
+	{
+		ZONE_TYPE& zone_type = (*it).second;
+		zone_type.detect_snd->stop();
+	}
+
+	//выключить
+	m_buzzer.stop				();
+	m_noise.stop				();
+}
+
 void CCustomDetector::UpdateCL() 
 {
 	inherited::UpdateCL();
@@ -208,6 +223,7 @@ void CCustomDetector::feel_touch_new(CObject* O)
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"started to feel a zone.");
 		m_ZoneInfoMap[pZone].snd_time = 0;
+		m_pCurrentInvOwner->FoundZone(pZone);
 	}
 }
 
@@ -218,6 +234,7 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"stoped to feel a zone.");
 		m_ZoneInfoMap.erase(pZone);
+		m_pCurrentInvOwner->LostZone(pZone);
 	}
 }
 
@@ -245,6 +262,7 @@ void CCustomDetector::SoundDestroy(ref_sound& dest)
 void CCustomDetector::OnH_A_Chield() 
 {
 	m_pCurrentActor = dynamic_cast<CActor*>(H_Parent());
+	m_pCurrentInvOwner = dynamic_cast<CInventoryOwner*>(H_Parent());
 	inherited::OnH_A_Chield		();
 }
 
@@ -253,10 +271,12 @@ void CCustomDetector::OnH_B_Independent()
 	inherited::OnH_B_Independent();
 	
 	m_pCurrentActor = NULL;
+	m_pCurrentInvOwner = NULL;
 
-	//выключить
-	m_buzzer.stop				();
-	m_noise.stop				();
+	StopAllSounds();
+
+	m_ZoneInfoMap.clear();
+	Feel::Touch::feel_touch.clear();
 }
 
 #ifdef DEBUG

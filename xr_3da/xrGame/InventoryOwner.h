@@ -19,6 +19,7 @@ class CTrade;
 class CPda;
 class CCharacterInfo;
 class CEntityAlive;
+class CCustomZone;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:
@@ -120,6 +121,11 @@ public:
 	virtual float GetWeaponAccuracy			() const;
 	//максимальный переносимы вес
 	virtual float MaxCarryWeight			() const;
+
+	//////////////////////////////////////////////////////////////////////////
+	// работа с детекторами
+	virtual void FoundZone				(CCustomZone*);
+	virtual void LostZone				(CCustomZone*);
 
 	//////////////////////////////////////////////////////////////////////////
 	//игровые характеристики персонажа

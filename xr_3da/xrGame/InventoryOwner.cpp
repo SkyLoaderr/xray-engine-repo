@@ -372,3 +372,13 @@ LPCSTR	CInventoryOwner::Name () const
 {
 	return CharacterInfo().Name();
 }
+
+
+
+//для детекторов
+void CInventoryOwner::FoundZone	(CCustomZone*)
+{
+}
+void CInventoryOwner::LostZone	(CCustomZone*)
+{
+}

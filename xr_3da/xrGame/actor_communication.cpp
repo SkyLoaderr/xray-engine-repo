@@ -204,7 +204,8 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 
 	//добавить актерский диалог собеседника
 	CInventoryOwner* pInvOwnerPartner = dynamic_cast<CInventoryOwner*>(partner); VERIFY(pInvOwnerPartner);
-	AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialog()), partner);
+	if(pInvOwnerPartner->CharacterInfo().ActorDialog() != NO_DIALOG)
+		AddAvailableDialog(CPhraseDialog::IndexToId(pInvOwnerPartner->CharacterInfo().ActorDialog()), partner);
 
 	CPhraseDialogManager::UpdateAvailableDialogs(partner);
 }
