@@ -454,6 +454,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
     DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
     Irect		R;
     GetSlotTCRect(R,x,z);
+    Log->Msg(mtInformation,"TC [%d,%d]-[%d,%d]",R.x1,R.y1,R.x2,R.y2);
     SIndexDistVec best;
     // find best color index
     {
@@ -499,12 +500,12 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         alpha/=(cnt?float(cnt):1);
         alpha*=0.5f;
         for (DWORD i=0; i<best.size(); i++){
-        	float a=alpha;
-            float b=best[i].density[part];
-            float c=b*alpha/cnt;
+//        	float a=alpha;
+//			float b=best[i].density[part];
+//			float c=b*alpha/cnt;
             best[i].density[part] = cnt?(best[i].density[part]*alpha)/float(cnt):0;
-            float e=best[i].density[part];
-            e=0;
+//			float e=best[i].density[part];
+//			e=0;
         }
     }
 
@@ -529,10 +530,10 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
 
     // заполним палитру и установим Random'ы
     for(DWORD k=0; k<best.size(); k++){
-        slot->items[k].palette.a0 	= iFloor(best[k].density[0]*15);
-        slot->items[k].palette.a1 	= iFloor(best[k].density[1]*15);
-        slot->items[k].palette.a2 	= iFloor(best[k].density[2]*15);
-        slot->items[k].palette.a3 	= iFloor(best[k].density[3]*15);
+        slot->items[k].palette.a0 	= iFloor(best[k].density[0]*15+.5f);
+        slot->items[k].palette.a1 	= iFloor(best[k].density[1]*15+.5f);
+        slot->items[k].palette.a2 	= iFloor(best[k].density[2]*15+.5f);
+        slot->items[k].palette.a3 	= iFloor(best[k].density[3]*15+.5f);
         bool bReject;
         do{
             bReject					= false;
