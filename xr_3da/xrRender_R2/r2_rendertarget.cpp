@@ -374,7 +374,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 						// Normalize and store
 						Normal.normalize	();
-						Ivector			rgb	= vpack		(Normal.x);
+						Ivector			rgb	= vpack		(Normal);
 						*pBits				= color_rgba(rgb.x,rgb.y,rgb.z,0);
 					}
 				}
