@@ -87,6 +87,7 @@ public:
 	bool				Load            (IReader&);
 	void				Save            (IWriter&);
     void				Export			(IWriter&, LPCSTR tex_name, const Fvector2& offs, const Fvector2& scale, bool rot);
+    void				Export			(LPCSTR name);
 
 	bool				Update			(LPCSTR name);
 	virtual void		Unload			();

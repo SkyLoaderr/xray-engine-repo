@@ -206,7 +206,7 @@ void EDetail::Export(IWriter& F, LPCSTR tex_name, const Fvector2& offs, const Fv
 
     F.w_u32				(m_Flags.get());
     F.w_float			(m_fMinScale);
-    F.w_float			(m_fMinScale);
+    F.w_float			(m_fMaxScale);
 
     F.w_u32				(number_vertices);
     F.w_u32				(number_indices);
@@ -219,5 +219,16 @@ void EDetail::Export(IWriter& F, LPCSTR tex_name, const Fvector2& offs, const Fv
     F.w					(indices, 		number_indices*sizeof(WORD));
 
     xr_free				(rm_vertices);
+}
+
+void EDetail::Export(LPCSTR name)
+{
+    CSurface* surf		= *m_pRefs->FirstSurface();
+	R_ASSERT			(surf);
+    IWriter* F 			= FS.w_open(name);
+    Fvector2 offs		= {0,0,0};
+    Fvector2 scale		= {1,1,1};
+	Export				(*F,surf->_Texture(),offs,scale,false);
+    FS.w_close			(F);
 }
 
