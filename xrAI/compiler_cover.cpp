@@ -3,13 +3,14 @@
 
 #include "cl_defs.h"
 #include "cl_intersect.h"
+#include "cl_rapid.h"
 
 #include "xrThread.h"
 
 // -------------------------------- Ray pick
 typedef Fvector	RayCache[3];
 
-IC bool RayPick(XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache& C)
+IC bool RayPick(RAPID::XRCollide* DB, Fvector& P, Fvector& D, float r, RayCache& C)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
@@ -159,10 +160,10 @@ struct			Query
 		// ok
 		q_List.push_back	(ID);
 		
-		Query	(N.n1);
-		Query	(N.n2);
-		Query	(N.n3);
-		Query	(N.n4);
+		Perform	(N.n1);
+		Perform	(N.n2);
+		Perform	(N.n3);
+		Perform	(N.n4);
 	}
 };
 struct	RC { RayCache	C; };
@@ -179,7 +180,7 @@ public:
 	}
 	virtual void		Execute()
 	{
-		XRCollide		DB;
+		RAPID::XRCollide DB;
 		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
 		
 		vector<RC>		cache;
@@ -259,7 +260,7 @@ void	xrCover	()
 	// Start threads
 	CoverThread*			THP	[NUM_THREADS];
 	DWORD	stride			= g_nodes.size()/NUM_THREADS;
-	DWORD	last			= g_nodes.size()-stride*NUM_THREADS;
+	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		THP[thID]	= new CoverThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
 	
@@ -288,7 +289,7 @@ void	xrCover	()
 
 	Status	("Smoothing coverage mask...");
 	Nodes	Old = g_nodes;
-	for (N=0; N<g_nodes.size(); N++)
+	for (DWORD N=0; N<g_nodes.size(); N++)
 	{
 		Node&	Base		= Old[N];
 		Node&	Dest		= g_nodes[N];
