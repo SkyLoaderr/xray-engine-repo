@@ -88,6 +88,7 @@ float CMotivationSquad::evaluate	(u32 sub_motivation_id)
 				return	(0.f);
 
 	Debug.fatal			("Couldn't find child motivation!");
+	NODEFAULT;
 #ifdef DEBUG
 	return				(0.f);
 #endif
