@@ -555,8 +555,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 DrawText	(Surface->Handle, prop->GetDrawText().c_str(), &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             }break;
             case PROP_FCOLOR:{
-                R.Left 	-= 	4;
-                R.Bottom+= 	1;
+            	R.Left	-= 	3;
+            	R.Bottom+= 	1;
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
                 Surface->FrameRect(R);
@@ -569,8 +569,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->FillRect(R);
             }break;
             case PROP_VCOLOR:{
-                R.Left 	-= 	4;
-                R.Bottom+= 	1;
+            	R.Left	-= 	3;
+            	R.Bottom+= 	1;
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
                 Surface->FrameRect(R);
@@ -589,7 +589,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
                 Surface->FrameRect(R);
-                R.Right	-=	15;
+                R.Right	-=	1;
                 R.Left 	+= 	1;
                 R.Top	+=	1;
                 R.Bottom-= 	1;
@@ -597,25 +597,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 u32 C 	= (U32Value::TYPE)V->GetValue();
                 Surface->Brush->Color = (TColor)rgb2bgr(C);
                 Surface->FillRect(R);
-                R.Left	=	R.Right;
-                R.Right	+= 	15;
-                Surface->Brush->Color = (TColor)(color_rgba(color_get_A(C),color_get_A(C),color_get_A(C),0));
-                Surface->FillRect(R);
-                R.Left	-=	1;
-                R.Top	-=	1;
-                R.Bottom+= 	1;
-                R.Right	+= 	1;
-                Surface->Brush->Color 	= TColor(0x00000000);
-                Surface->FrameRect		(R);
-                Surface->Brush->Style 	= bsClear;
-		        Surface->Font->Color 	= clWhite;
-                R.Left	+=	6;
-                R.Top	+=	1;
-                DrawText	(Surface->Handle, "A", -1, &R, DT_LEFT | DT_SINGLELINE);
-                R.Left	-=	1;
-                R.Top	-=	1;
-		        Surface->Font->Color = clBlack;
-                DrawText	(Surface->Handle, "A", -1, &R, DT_LEFT | DT_SINGLELINE);
             }break;
             case PROP_FLAG:{
                 FlagValueCustom*  V	= dynamic_cast<FlagValueCustom*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -843,10 +824,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_WAVE: 			WaveFormClick	(item); 	break;
                 case PROP_VCOLOR:
                 case PROP_FCOLOR:
-                case PROP_COLOR:{
-                    bool alpha				= (prop->draw_rect.x2-X)<=15;
-                	ColorClick				(item,alpha); 	
-                }break;
+                case PROP_COLOR: 			ColorClick		(item); 	break;
                 case PROP_CHOOSE:			ChooseClick		(item); 	break;
                 case PROP_NUMERIC:			PrepareLWNumber	(item);		break;
 	            case PROP_CTEXT:
@@ -1085,7 +1063,7 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::ColorClick(TElTreeItem* item, bool alpha)
+void __fastcall TProperties::ColorClick(TElTreeItem* item)
 {
 	PropItem* prop = (PropItem*)item->Tag;
     switch (prop->type){
@@ -1123,13 +1101,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item, bool alpha)
 		U32Value* V			= dynamic_cast<U32Value*>(prop->GetFrontValue()); R_ASSERT(V);
         u32 edit_val		= V->GetValue();
         prop->BeforeEdit<U32Value,u32>(edit_val);
-        bool res			= false;
-        if (alpha){
-        	
-        }else{
-        	res				= SelectColor(&edit_val);
-        }
-        if (res){
+        if (SelectColor(&edit_val)){
             if (prop->AfterEdit<U32Value,u32>(edit_val))
                 if (prop->ApplyValue<U32Value,u32>(edit_val)){
                     item->RedrawItem(true);
