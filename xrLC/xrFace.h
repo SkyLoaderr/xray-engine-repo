@@ -36,29 +36,29 @@ public:
 	vecAdj		adjacent;
 
 	Vertex*		CreateCopy_NOADJ	();
-	IC BOOL	similar(Vertex &V, float eps)
+	IC BOOL		similar				(Vertex &V, float eps)
 	{
 		return P.similar(V.P,eps);
 	}
-	IC	Vertex*	CreateCopy()
+	IC	Vertex*	CreateCopy			()
 	{
 		Vertex* V = CreateCopy_NOADJ();
 		V->adjacent = adjacent;
 		return V;
 	}
-	IC	void	prep_add(Face* F)
+	IC	void	prep_add			(Face* F)
 	{
 		for (vecFaceIt I=adjacent.begin(); I!=adjacent.end(); I++)
 			if (F==(*I)) return;
 		adjacent.push_back(F);
 	}
-	IC	void	prep_remove(Face* F)
+	IC	void	prep_remove			(Face* F)
 	{
 		vecFaceIt	I = find(adjacent.begin(),adjacent.end(),F);
 		if (I!=adjacent.end())	adjacent.erase(I);
 	}
 
-	void	normalFromAdj();
+	void		normalFromAdj();
 
 	Vertex();
 	~Vertex();
