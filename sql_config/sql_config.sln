@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sql_config", "sql_config.vcproj", "{D9C2BD1F-40F0-4D71-BBD9-2D69C12F0BE4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MTSetup", "..\DRV_Setup\MTSetup.vcproj", "{1456EB13-697B-4FD9-A836-8D0FEAA28D6E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccProjectUniqueName0 = sql_config.vcproj
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {BA8E3C90-EDFF-44AE-A6CD-B3A9474175E0}
+		SccProjectUniqueName2 = ..\\DRV_Setup\\MTSetup.vcproj
+		SccProjectName2 = \u0022$/MTSetup\u0022,\u0020YLABAAAA
+		SccLocalPath2 = ..\\DRV_Setup
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{D9C2BD1F-40F0-4D71-BBD9-2D69C12F0BE4}.Debug.ActiveCfg = Debug|Win32
+		{D9C2BD1F-40F0-4D71-BBD9-2D69C12F0BE4}.Debug.Build.0 = Debug|Win32
+		{D9C2BD1F-40F0-4D71-BBD9-2D69C12F0BE4}.Release.ActiveCfg = Release|Win32
+		{D9C2BD1F-40F0-4D71-BBD9-2D69C12F0BE4}.Release.Build.0 = Release|Win32
+		{1456EB13-697B-4FD9-A836-8D0FEAA28D6E}.Debug.ActiveCfg = Debug|Win32
+		{1456EB13-697B-4FD9-A836-8D0FEAA28D6E}.Debug.Build.0 = Debug|Win32
+		{1456EB13-697B-4FD9-A836-8D0FEAA28D6E}.Release.ActiveCfg = Release|Win32
+		{1456EB13-697B-4FD9-A836-8D0FEAA28D6E}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
