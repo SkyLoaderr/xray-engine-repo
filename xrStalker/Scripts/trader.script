@@ -68,8 +68,6 @@ end
 function CTrader:reload(section)
 	object_binder.reload(self, section)
 
-	self:select_state()				// Выбираем состояние
-	
 	self.state	= idle				// Положение тела	
 	self.trade	= false
 	
