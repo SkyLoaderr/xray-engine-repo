@@ -184,13 +184,16 @@ function motivator_binder:reload (section)
     xr_motivator.storage[self.object:id()].patrol = {
         enabled = false,
             patrol_path = nil,
+            look_path = nil,
             escape_path = nil,
             raid_enabled = false,
             raid_path = nil,
+            raid_look = nil,
             raid_process = false,
             npc_id = -1,
             first_init = false,
-            patrol_end = false
+            patrol_end = false,
+            team = nil
     }
     --' Настройка follower
     xr_motivator.storage[self.object:id()].follower = {
@@ -238,7 +241,8 @@ function motivator_binder:reload (section)
 	if char_ini:section_exist("zones") == true then
 		xr_sleeper.add_to_binder	(self.object, nil)
 		xr_walker.add_to_binder		(self.object, nil)
-		xr_patrol.add_to_binder		(self.object, nil)
+	--	xr_patrol.add_to_binder		(self.object, nil)
+        xr_comm_ptr.add_to_binder   (self.object, nil)
 		xr_follower.add_to_binder	(self.object, nil)
 		xr_bodyguard.add_to_binder	(self.object, nil)
 		xr_sniper.add_to_binder		(self.object, nil)
@@ -248,7 +252,8 @@ function motivator_binder:reload (section)
 		xr_sniper.add_to_binder			(self.object, char_ini)
 		xr_ambush.add_to_binder			(self.object, char_ini)
 		xr_chaser.add_to_binder			(self.object, char_ini)
-		xr_patrol.add_to_binder			(self.object, char_ini)
+	--	xr_patrol.add_to_binder			(self.object, char_ini)
+        xr_comm_ptr.add_to_binder       (self.object, char_ini)
 		xr_follower.add_to_binder		(self.object, char_ini)
 		xr_commander.add_to_binder		(self.object, char_ini)
 		xr_bodyguard.add_to_binder		(self.object, char_ini)
