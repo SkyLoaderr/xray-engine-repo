@@ -35,17 +35,6 @@ function FSM:add_transition(from_state_num, to_state_num, cond_func)
 	end
 end
 
--- запускает на выполнение функцию проверки и перехода
--- в  новое состояние 
-function FSM:check_condition(to_state_num, cond_func)
-
-	printf("check_condition %d", to_state_num1)
-
-	if cond_func(self.npc) == true then
-		self.current_state = to_state_num
-	end
-end
-
 -- запуск бесконечного цикла FSM
 function FSM:run()
 	log	("you better run")
@@ -55,6 +44,7 @@ function FSM:run()
 		table.foreach(transition_vector, 
 					  function(to_state_num, cond_func) 
 							if cond_func(self.npc) == true then
+								printf("transition from %d to %d", self.current_state, to_state_num)
 								self.current_state = to_state_num
 								return true
 							end
@@ -70,22 +60,21 @@ end
 function if_see_actor(npc)
 	if npc:see(actor) == true then
 		log("saw a fucking actor")
+		return true
 	end
 
 	return false
 end
 
-function if_see_actor1(npc)
+function dont_see_actor(npc)
 	if npc:see(actor) == true then
-		log("saw a fucking stalker")
+		log("i lost a trace of this fucking actor")
+		return true
 	end
 
 	return false
 end
 
-function print(number, number)
-	printf("%d %d", number, number)
-end
 
 function main()
 	log	("script don't want to work!")
@@ -97,7 +86,7 @@ function main()
 	local fsm_stalker = fsm.FSM(stalker00)
 
 	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
-	fsm_stalker:add_transition(0, 2, fsm.if_see_actor1)
+	fsm_stalker:add_transition(1, 0, fsm.dont_see_actor)
 	fsm_stalker:run()
 
 	wait()
