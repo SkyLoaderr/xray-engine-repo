@@ -57,7 +57,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
             PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			ref_str().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	ref_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
             if (T->_Format().flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
-            	if (*T->_Format().detail_name){
+            	if (0!=T->_Format().detail_name.size()){
 	            	std::pair<RStringSetIt, bool> I=det_textures.insert(*T->_Format().detail_name);
 		            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail\\Texture"),	(ref_str*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
 	    	        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Detail\\Scale"),		ref_str().sprintf("%3.2f",T->_Format().detail_scale));

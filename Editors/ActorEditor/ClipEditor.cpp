@@ -399,7 +399,7 @@ void __fastcall TClipMaker::BPDragDrop(TObject *Sender, TObject *Source,
     CUIClip* src = sel_clip;
     if (P->Tag==-2){
         if (drag_state.Contains(ssAlt)){
-            ref_str s 		= tgt->fx;
+        	shared_str s 		= tgt->fx;
             tgt->fx 		= src->fx;
             src->fx 		= s;
         }else if (drag_state.Contains(ssCtrl)){
@@ -410,7 +410,7 @@ void __fastcall TClipMaker::BPDragDrop(TObject *Sender, TObject *Source,
         }
     }else{
         if (drag_state.Contains(ssAlt)){
-            ref_str s 		= tgt->cycles[P->Tag];
+            shared_str s 		= tgt->cycles[P->Tag];
             tgt->cycles[P->Tag] = src->cycles[P->Tag];
             src->cycles[P->Tag] = s;
         }else if (drag_state.Contains(ssCtrl)){
@@ -503,7 +503,7 @@ void TClipMaker::RealUpdateProperties()
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
-            ref_str tmp;
+            shared_str tmp;
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
@@ -526,7 +526,7 @@ void TClipMaker::SelectClip(CUIClip* clip)
 
 void TClipMaker::InsertClip()
 {
-	ref_str nm;
+	shared_str nm;
     m_ClipList->GenerateObjectName	(nm,0,"clip",true);
 	CUIClip* clip	= xr_new<CUIClip>(*nm,this,sel_clip?sel_clip->RunTime()-EPS_L:0);
     clips.push_back	(clip);
@@ -537,7 +537,7 @@ void TClipMaker::InsertClip()
 
 void TClipMaker::AppendClip()
 {
-	ref_str nm;
+	shared_str nm;
     m_ClipList->GenerateObjectName	(nm,0,"clip",true);
 	CUIClip* clip	= xr_new<CUIClip>(*nm,this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
     clips.push_back	(clip);

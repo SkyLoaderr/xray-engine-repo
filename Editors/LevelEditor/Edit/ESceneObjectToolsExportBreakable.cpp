@@ -174,8 +174,9 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
             SBPart*	P				= *p_it;
         	if (P->Valid()){
                 // export visual
-                AnsiString sn		= AnsiString().sprintf("meshes\\clmbl#%d.ogf",(p_it-parts.begin()));
-                std::string fn		= Scene->LevelPath()+sn.c_str();
+                AnsiString sn		= AnsiString().sprintf("clmbl#%d",(p_it-parts.begin()));
+/*
+                AnsiString fn		= AnsiString().sprintf("%smeshes\\%s.ogf",Scene->LevelPath().c_str(),sn.c_str());
                 IWriter* W			= FS.w_open(fn.c_str()); VERIFY(W);
                 if (!P->Export(*W)){
                     ELog.DlgMsg		(mtError,"Invalid climable object.");
@@ -183,17 +184,27 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     break;
                 }
                 FS.w_close			(W);
+*/
                 // export spawn object
                 {
                     AnsiString entity_ref		= "climable_object";
                     ISE_Abstract*	m_Data		= create_entity(entity_ref.c_str()); 	VERIFY(m_Data);
-                    CSE_Visual* m_Visual		= m_Data->visual();	VERIFY(m_Visual);
+                    ISE_Shape* m_Shape			= m_Data->shape();                      VERIFY(m_Shape);
+//					CSE_Visual* m_Visual		= m_Data->visual();	VERIFY(m_Visual);
                     // set params
                     strcpy	  					(m_Data->name(),entity_ref.c_str());
                     strcpy	  					(m_Data->name_replace(),sn.c_str());
                     m_Data->position().set		(P->m_RefOffset); 
                     m_Data->angle().set			(P->m_RefRotate);
-                    m_Visual->set_visual		(sn.c_str(),false);
+                    // set shape
+                    CShapeData::shape_def		shape;
+                    shape.type					= CShapeData::cfBox;
+                    shape.data.box.scale		((P->m_BBox.max.x-P->m_BBox.min.x)*0.5f,
+                    							(P->m_BBox.max.y-P->m_BBox.min.y)*0.5f,
+                                                (P->m_BBox.max.z-P->m_BBox.min.z)*0.5f);
+                    m_Shape->assign_shapes		(&shape,1);
+                    // set visual (empty)
+//.					m_Visual->set_visual		(sn.c_str(),false);
 
                     NET_Packet					Packet;
                     m_Data->Spawn_Write			(Packet,TRUE);
