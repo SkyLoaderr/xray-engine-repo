@@ -33,10 +33,6 @@
 --			stand		-	флаг, который указывает на то, стоит сталкер или сидит
 
 
-local max_attackers = 	2	--максимальное количество мутантов, которые могут атаковать сталкера
-local too_many		=	0	--сталкера атакуют многие
-local already		=	1	--мутант уже атакует данного сталкера	
-local added			=	2	--мутант добавлен в список атакующих
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -- Класс монстра
@@ -256,6 +252,9 @@ function main ()
 					 m_attack_wave2.Defender (get_level_object ("tower2"), scrname, nil, monsters, false),
 					 m_attack_wave2.Defender (get_level_object ("stalker_chief"), scrname, nil, monsters, true)
 					 }
+					 
+    local enter_zone = get_level_object ("barricade_zone")
+    enter_zone:set_callback (m_attack_wave2.on_zone_enter, true)
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:initialize ()
