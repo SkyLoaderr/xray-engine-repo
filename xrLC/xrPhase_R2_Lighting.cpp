@@ -63,11 +63,13 @@ public:
 void CBuild::Light_R2			()
 {
 	// start V-light
+	/*
 	CThreadManager			Threads;
 	u32	stride				= g_vertices.size()/NUM_THREADS;
 	u32	last				= g_vertices.size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CR2Light>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	*/
 
 	// impl
 	FPU::m64r				();
