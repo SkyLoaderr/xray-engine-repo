@@ -337,9 +337,10 @@ void CActor::ActorUse()
 		{
 			if (object)
 			{
+				if(smart_cast<CCar*>(object)) if(use_Vehicle(object))			return;
 				switch (object->CLS_ID)
 				{
-				case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
+				//case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
 				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
 				}
 			}
