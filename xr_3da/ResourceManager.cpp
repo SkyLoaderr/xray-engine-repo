@@ -124,7 +124,7 @@ void CResourceManager::_DeleteElement(const ShaderElement* S)
 	Msg	("! ERROR: Failed to find compiled 'shader-element'");
 }
 
-Shader*	CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CResourceManager::_cpp_Create	(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	CBlender_Compile	C;
 	Shader				S;
@@ -179,7 +179,7 @@ Shader*	CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_co
 	return N;
 }
 
-Shader*	CResourceManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	CBlender_Compile	C;
 	Shader				S;
@@ -229,6 +229,15 @@ Shader*	CResourceManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_textu
 	return N;
 }
 
+Shader*		CResourceManager::Create	(LPCSTR s_shader,	LPCSTR s_textures,	LPCSTR s_constants,	LPCSTR s_matrices)
+{
+	return	_cpp_Create	(s_shader,s_textures,s_constants,s_matrices);
+}
+Shader*		CResourceManager::Create	(IBlender*	B,		LPCSTR s_shader,	LPCSTR s_textures,	LPCSTR s_constants, LPCSTR s_matrices)
+{
+	return	_cpp_Create	(B,s_shader,s_textures,s_constants,s_matrices);
+}
+
 void CResourceManager::Delete(const Shader* S)
 {
 	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
@@ -249,6 +258,7 @@ void	CResourceManager::DeferredUnload	()
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Unload();
 }
+
 #ifdef _EDITOR
 void	CResourceManager::ED_UpdateTextures(AStringVec* names)
 {

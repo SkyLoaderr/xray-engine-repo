@@ -138,6 +138,10 @@ public:
 	ShaderElement*					_CreateElement		(CBlender_Compile& C);
 	void							_DeleteElement		(const ShaderElement* L);
 
+	Shader*							_cpp_Create			(LPCSTR s_shader=0, LPCSTR s_textures=0,	LPCSTR s_constants=0,	LPCSTR s_matrices=0);
+	Shader*							_cpp_Create			(IBlender*	B,		LPCSTR s_shader=0,		LPCSTR s_textures=0,	LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	Shader*							_lua_Create			(LPCSTR s_shader=0, LPCSTR s_textures=0);
+
 	CResourceManager			()
 	{
 		bDeferredLoad		= FALSE;
@@ -151,8 +155,8 @@ public:
 	void			OnDeviceDestroy		(BOOL   bKeepTextures);
 
 	// Creation/Destroying
-	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
-	Shader*			Create_B			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	Shader*			Create				(LPCSTR s_shader=0, LPCSTR s_textures=0,	LPCSTR s_constants=0,	LPCSTR s_matrices=0);
+	Shader*			Create				(IBlender*	B,		LPCSTR s_shader=0,		LPCSTR s_textures=0,	LPCSTR s_constants=0, LPCSTR s_matrices=0);
 	void			Delete				(const Shader*	S			);
 
 	SGeometry*		CreateGeom			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
