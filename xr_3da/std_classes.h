@@ -26,6 +26,7 @@
 
 // Weapons
 #define CLSID_OBJECT_W_M134		MK_CLSID('W','_','M','1','3','4',' ',' ')
+#define CLSID_OBJECT_W_M134_en	MK_CLSID('W','_','M','1','3','4','e','n')
 #define CLSID_OBJECT_W_GROZA	MK_CLSID('W','_','G','R','O','Z','A',' ')
 #define CLSID_OBJECT_W_PROTECTA	MK_CLSID('W','_','P','R','O','T',' ',' ')
 #define CLSID_OBJECT_W_RAIL		MK_CLSID('W','_','R','A','I','L',' ',' ')
