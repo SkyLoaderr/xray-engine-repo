@@ -458,7 +458,8 @@ function actor_kills(npc, fsm)
 
   log ("die")
 
-    npc.health = npc.health - 100
+    npc.health = npc.health - 1000
+
   end
 end
 
