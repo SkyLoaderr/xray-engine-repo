@@ -83,8 +83,8 @@ void CStats::Show()
 	{
 		static float	r_ps		= 0;
 		static float	b_ps		= 0;
-		r_ps						= .9f*r_ps + .1f*(clRAY.count/clRAY.result);
-		b_ps						= .9f*b_ps + .1f*(clBOX.count/clBOX.result);
+		r_ps						= .95f*r_ps + .05f*(clRAY.count/clRAY.result);
+		b_ps						= .95f*b_ps + .05f*(clBOX.count/clBOX.result);
 		
 		CFontHUD&	F = *((CFontHUD*)font);
 		F.Color		(0xFFFFFFFF	);
