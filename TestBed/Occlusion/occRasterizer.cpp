@@ -73,8 +73,7 @@ void occRasterizer::clear		()
 
 void occRasterizer::propagade	()
 {
-	propagade_depth<occ_dim1>	(bufDepth_1,bufDepth_0);
-	propagade_depth<occ_dim2>	(bufDepth_2,bufDepth_1);
-	propagade_depth<occ_dim3>	(bufDepth_3,bufDepth_2);
+	propagade_depth<occ_dim_1>	(bufDepth_1,bufDepth_0);
+	propagade_depth<occ_dim_2>	(bufDepth_2,bufDepth_1);
+	propagade_depth<occ_dim_3>	(bufDepth_3,bufDepth_2);
 }
-

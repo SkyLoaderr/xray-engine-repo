@@ -84,13 +84,13 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	
 	// guard-banding and clipping
 	int minT		= iFloor(startT), maxT = iCeil(endT);
-	Vclamp			(minT,1,occ_dim0-1);
-	Vclamp			(maxT,1,occ_dim0-1);
+	Vclamp			(minT,1,occ_dim-1);
+	Vclamp			(maxT,1,occ_dim-1);
 	if (minT >= maxT)		return;
 	
 	int minX		= iCeil(startX), maxX = iFloor(endX);
-	Vclamp			(minX,0,occ_dim0);
-	Vclamp			(maxX,0,occ_dim0);
+	Vclamp			(minX,0,occ_dim);
+	Vclamp			(maxX,0,occ_dim);
 	int limLeft,limRight;
 	if (minX >  maxX)	{ limLeft=maxX; limRight=minX;	}
 	else				{ limLeft=minX; limRight=maxX;	}
@@ -107,7 +107,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float*	pDepth	= Raster.get_depth();
 	
 	// left connector
-	int	i_base		= curY*occ_dim0;
+	int	i_base		= curY*occ_dim;
 	int i			= i_base+minT;
 	int limit		= i_base+limLeft;
 	for (; i<limit; i++, Z+=dZ)
@@ -141,11 +141,11 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 
 IC void i_test_micro( int x, int y)
 {
-	if (x<1) return; else if (x>=occ_dim0-1)	return;
-	if (y<1) return; else if (y>=occ_dim0-1)	return;
-	int	pos		= y*occ_dim0+x;
-	int	pos_up	= pos-occ_dim0;
-	int	pos_down= pos+occ_dim0;
+	if (x<1) return; else if (x>=occ_dim-1)	return;
+	if (y<1) return; else if (y>=occ_dim-1)	return;
+	int	pos		= y*occ_dim+x;
+	int	pos_up	= pos-occ_dim;
+	int	pos_down= pos+occ_dim;
 	
 	occTri**	pFrame	= Raster.get_frame();
 	occTri* T1	= pFrame[pos_up		];

@@ -148,13 +148,13 @@ int __cdecl main	(int argc, char* argv[])
 	Raster.propagade	();
 	
 	// copy into surface
-	for (int y=0; y<occ_dim0; y++)
+	for (int y=0; y<occ_dim_0; y++)
 	{
-		for (int x=0; x<occ_dim0; x++)
+		for (int x=0; x<occ_dim_0; x++)
 		{
-			float	A	= *(Raster.get_depth() + y*occ_dim0 + x);	if (A<0) A=0; else if (A>1) A=1;
+			float	A	= *(Raster.get_depth(0) + y*occ_dim_0 + x);	if (A<0) A=0; else if (A>1) A=1;
 			DWORD  gray	= iFloor(A*255.f);
-			DWORD  mask	= (*(Raster.get_frame() + y*occ_dim0 + x)) ? 255 : 0;
+			DWORD  mask	= (*(Raster.get_frame() + y*occ_dim_0 + x)) ? 255 : 0;
 			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
 			
 			for (int by=0; by<scale; by++)

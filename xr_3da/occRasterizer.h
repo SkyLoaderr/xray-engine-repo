@@ -37,9 +37,20 @@ public:
 	void			propagade	();
 	void			rasterize	(occTri* T);
 	
-	float*			get_depth	()	{ return &(bufDepth_0[0][0]);	}
-	occTri**		get_frame	()	{ return &(bufFrame[0][0]);		}
-
+	occTri**		get_frame	()			{ return &(bufFrame[0][0]);	}
+	float*			get_depth	()			{ return &(bufDepth[0][0]);	}
+	float*			get_depth	(int level)	
+	{
+		switch (level)
+		{
+		case 0:		return &(bufDepth_0[0][0]);	
+		case 1:		return &(bufDepth_1[0][0]);	
+		case 2:		return &(bufDepth_2[0][0]);	
+		case 3:		return &(bufDepth_3[0][0]);	
+		default:	return NULL;
+		}
+	}
+	
 	occRasterizer	();
 	~occRasterizer	();
 };
