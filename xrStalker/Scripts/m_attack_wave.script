@@ -1,6 +1,6 @@
 function boar_callback (obj, action_type, index)
 
-	if index < 0 or then return end
+	if index < 0 then return end
 
     local ptr = patrol (obj:patrol ())
 
