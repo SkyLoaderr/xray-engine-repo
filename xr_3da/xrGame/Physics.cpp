@@ -2157,21 +2157,23 @@ void CPHElement::DynamicAttach(CPHElement* E)
 void CPHShell::Activate(bool place_current_forms,bool disable){
 	if(bActive)
 		return;
-	m_ident=ph_world->AddObject(this);
 
-		//vector<CPHElement*>::iterator i;
-
-		//for(i=elements.begin();i!=elements.end();i++){
+		m_ident=ph_world->AddObject(this);
+		{
+		vector<CPHElement*>::iterator i;
+		if(place_current_forms)
+		for(i=elements.begin();i!=elements.end();i++)	{
 														//(*i)->Start();
 														//(*i)->SetTransform(m0);
-											//			(*i)->Activate();
-			//}
-		vector<CPHJoint*>::iterator i;
+														(*i)->Activate(mXFORM,disable);
+														}
+		}
 
-		for(i=joints.begin();i!=joints.end();i++){
-														(*i)->Activate();
-										
-			}
+		{
+		
+		vector<CPHJoint*>::iterator i;
+		for(i=joints.begin();i!=joints.end();i++) (*i)->Activate();
+		}
 	//SetPhObjectInElements();/////////////////////////////////////////////////////////////////////
 	bActive=true;
 	bActivating=true;
