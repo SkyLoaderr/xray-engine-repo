@@ -129,9 +129,12 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_RUN;
 	}
 
+	// проверить на возможность пугания
+	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+
 	// проверить на возможность прыжка
 	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
-	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+	if (pJumping && (m_tAction != ACTION_THREATEN)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 	
 	if (pMonster->m_PhysicMovementControl.JumpState()) {
 		pMonster->enable_movement(false);
@@ -139,14 +142,11 @@ void CBitingAttack::Run()
 	}
 
 	// проверить на возможность подкрадывания
-//	if (!m_bAttackRat) {
-//		if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
-//		if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
-//		if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
-//	}
-
-	// проверить на возможность пугания
-	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+	if (!m_bAttackRat && (pMonster->GetEnemyNumber()==1)) {
+		if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
+		if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
+		if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
+	}
 
 	// Проверить, достижим ли противник
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
@@ -454,54 +454,5 @@ bool CBitingAttack::CanAttackFromBack()
 	
 	return false;
 }
-
-void CBitingAttack::SearchEnemy()
-{
-	bool bNeedRebuildPath = false;
-
-	switch (m_tAction) {
-	case ACTION_SEARCH_ENEMY_INIT: 
-
-		LOG_EX("ATTACK: SEARCH_ENEMY_INIT");
-		pMonster->MotionMan.m_tAction = ACT_RUN;
-
-		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,1000);
-			pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id);
-		DO_IN_TIME_INTERVAL_END();
-						
-		
-		if (!pMonster->IsMovingOnPath()) {
-			m_tAction = ACTION_SEARCH_ENEMY;
-		}
-
-		break;
-	case ACTION_SEARCH_ENEMY:
-		// search_vertex_id - содержит исходную ноду
-		LOG_EX("ATTACK: SEARCH_ENEMY");
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-
-		//if (pMonster->IsMovingOnPath()) bNeedRebuildPath = true;
-		
-		DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,3000);
-			bNeedRebuildPath = true;
-		DO_IN_TIME_INTERVAL_END();
-
-		if (!pMonster->MotionStats->is_good_motion(5) || !pMonster->IsMovingOnPath()) {
-			bNeedRebuildPath = true;
-		}
-
-		if (bNeedRebuildPath) {
-			xr_vector<u32> nodes;
-			ai().graph_engine().search( ai().level_graph(), search_vertex_id, search_vertex_id, &nodes, CGraphEngine::CFlooder(10.f));
-
-			u32 vertex_id = nodes[::Random.randI(nodes.size())];
-
-			pMonster->MoveToTarget(ai().level_graph().vertex_position(vertex_id),vertex_id);
-		}
-
-		break;
-	}
-}
-
 
 

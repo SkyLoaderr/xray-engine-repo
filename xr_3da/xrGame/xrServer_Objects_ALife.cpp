@@ -953,6 +953,84 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeObjectSearchlight
+////////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeObjectSearchlight::CSE_ALifeObjectSearchlight(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	strcpy						(spot_texture,"");
+	strcpy						(animator,"");
+	spot_range					= 10.f;
+	spot_cone_angle				= PI_DIV_3;
+	color						= 0xffffffff;
+	spot_brightness				= 1.f;
+	glow_texture[0]				= 0;
+	glow_radius					= 0.1f;
+}
+
+CSE_ALifeObjectSearchlight::~CSE_ALifeObjectSearchlight()
+{
+}
+
+void CSE_ALifeObjectSearchlight::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read	(tNetPacket,size);
+
+	tNetPacket.r_u32		(color);
+	tNetPacket.r_string		(animator);
+	tNetPacket.r_string		(spot_texture);
+	tNetPacket.r_float		(spot_range);
+	tNetPacket.r_angle8		(spot_cone_angle);
+	tNetPacket.r_float		(spot_brightness);
+	tNetPacket.r_string		(glow_texture);
+	tNetPacket.r_float		(glow_radius);
+}
+
+void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_u32			(color);
+	tNetPacket.w_string			(animator);
+	tNetPacket.w_string			(spot_texture);
+	tNetPacket.w_float			(spot_range);
+	tNetPacket.w_angle8			(spot_cone_angle);
+	tNetPacket.w_float			(spot_brightness);
+	tNetPacket.w_string			(glow_texture);
+	tNetPacket.w_float			(glow_radius);
+}
+
+void CSE_ALifeObjectSearchlight::UPDATE_Read(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeObjectSearchlight::UPDATE_Write(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeObjectSearchlight::FillProp			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,	 values);
+	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
+}
+#endif
+
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeSchedulable
+////////////////////////////////////////////////////////////////////////////
+
 CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_tpCurrentBestWeapon		= 0;

@@ -241,6 +241,9 @@ public:
 	IC	void		SetMemoryTimeDef() {timeMemory = timeMemoryDefault;}
 
 		void		AddIgnoreObject	(const CEntity *pObj);
+		
+		u8			GetEnemyNumber	() {return u8(Enemies.size());}
+
 protected:
 		void		Init			(TTime mem_time);
 		void		Deinit			();

@@ -239,30 +239,49 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
+
 #ifdef _EDITOR
-	void __fastcall					OnChangeAnim	(PropValue* sender);
-	void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
-	void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
+		void __fastcall					OnChangeAnim	(PropValue* sender);
+		void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
+		void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
 #endif
-	enum{
-    	flPhysic					= (1<<0)
-    };
-	Flags16							flags;
-    float							mass;
+		enum{
+			flPhysic					= (1<<0)
+		};
+
+		Flags16							flags;
+		float							mass;
+		u32								color;
+		ref_str							startup_animation;
+		ref_str							color_animator;
+		ref_str							spot_texture;
+		ref_str							spot_bone;
+		float							spot_range;
+		float							spot_cone_angle;
+		float							spot_brightness;
+		ref_str							glow_texture;
+		float							glow_radius;
+		ref_str							fixed_bones;
+
+										CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
+		virtual							~CSE_ALifeObjectHangingLamp	();
+SERVER_ENTITY_DECLARE_END
+
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectSearchlight,CSE_ALifeDynamicObjectVisual)
+
 	u32								color;
-	ref_str							startup_animation;
-	ref_str							color_animator;
-	ref_str							spot_texture;
-	ref_str							spot_bone;
+	string64						animator;
+	string64						spot_texture;
 	float							spot_range;
 	float							spot_cone_angle;
-    float							spot_brightness;
-	ref_str							glow_texture;
+	float							spot_brightness;
+	string64						glow_texture;
 	float							glow_radius;
-    ref_str							fixed_bones;
 
-									CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
-    virtual							~CSE_ALifeObjectHangingLamp	();
+									CSE_ALifeObjectSearchlight	(LPCSTR caSection);
+	virtual							~CSE_ALifeObjectSearchlight	();
 SERVER_ENTITY_DECLARE_END
+
 
 #endif

@@ -713,6 +713,8 @@ void	CPHMovementControl::PHCaptureObject(CGameObject* object,u16 element)
 
 Fvector CPHMovementControl::PHCaptureGetNearestElemPos(CGameObject* object)
 {
+	R_ASSERT3((object->m_pPhysicsShell != NULL), "NO Phisics Shell for object ", object->cName());
+
 	CPhysicsElement *ph_elem =  object->m_pPhysicsShell->NearestToPoint(vPosition);
 
 	Fvector v;

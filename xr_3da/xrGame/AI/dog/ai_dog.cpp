@@ -82,7 +82,8 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSniff,			"stand_sniff_",			-1, 0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, 0,									0,										PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1, 0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, 0,									0,										PS_STAND);
 
 	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,									0,										PS_SIT);
@@ -139,6 +140,8 @@ void CAI_Dog::StateSelector()
 		SetState(stateEat);
 	else						SetState(stateRest); 
 
+	EMotionAnim anim = MotionMan.Seq_CurAnim();
+	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 
 	BonesInMotion(); 
 }
@@ -170,6 +173,9 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Y); 
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Z); 
 
+	// Temp
+	ChangeEntityMorale(0.1f);
+
 	return TRUE;
 }
 
@@ -177,6 +183,11 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
 		MotionMan.Seq_Add(eAnimCheckCorpse);
+		MotionMan.Seq_Switch();
+	}
+	
+	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
+		MotionMan.Seq_Add(eAnimThreaten);
 		MotionMan.Seq_Switch();
 	}
 }

@@ -423,7 +423,8 @@ public:
 	float	GetRealDistToEnemy();
 	void	WalkNextGraphPoint();
 
-	bool			b_try_min_time;
+	bool	b_try_min_time;
+
 };
 
 

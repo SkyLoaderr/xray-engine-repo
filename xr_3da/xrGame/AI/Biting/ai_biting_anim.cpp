@@ -74,7 +74,7 @@ bool CAI_Biting::AA_CheckHit()
 		
 		bool should_hit = true;
 		Fvector d;
-		d.sub(C2,C1);
+		d.sub(obj->Position(),Position());
 		if (d.magnitude() > apt_anim.dist) should_hit = false;
 		
 		float my_h,my_p;

@@ -3077,6 +3077,16 @@
 							RelativePath=".\DemoActorCameras.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="Searchlight"
+						Filter="">
+						<File
+							RelativePath=".\searchlight.cpp">
+						</File>
+						<File
+							RelativePath=".\searchlight.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Game Materials"
