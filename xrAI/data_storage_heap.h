@@ -255,7 +255,7 @@ public:
 		u32						memory_usage = 0;
 		u32						byte_count;
 		
-		byte_count				= (node_count/heap_count + 1)*heap_count*sizeof(CGraphNode*);
+		byte_count				= (node_count/heap_count + 1)*sizeof(CGraphNode*);
 		for (u32 i=0; i<heap_count; i++) {
 			heaps[i].heap		= (CGraphNode**)xr_malloc(byte_count);
 			ZeroMemory			(heaps[i].heap,byte_count);
@@ -445,7 +445,7 @@ public:
 		u32						memory_usage = 0;
 		u32						byte_count;
 		
-		byte_count				= (node_count/heap_count + 1)*heap_count*sizeof(CGraphNode*);
+		byte_count				= (node_count/heap_count + 1)*sizeof(CGraphNode*);
 		for (u32 i=0; i<heap_count; i++) {
 			heaps[i].heap		= (CGraphNode**)xr_malloc(byte_count);
 			ZeroMemory			(heaps[i].heap,byte_count);

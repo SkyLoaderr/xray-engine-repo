@@ -115,7 +115,7 @@
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrAI.pch"
-				AssemblerOutput="4"
+				AssemblerOutput="0"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -138,7 +138,8 @@
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"
 				SubSystem="2"
-				LargeAddressAware="0"/>
+				LargeAddressAware="0"
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -487,9 +488,6 @@
 					<Filter
 						Name="data_storages"
 						Filter="">
-						<File
-							RelativePath=".\data_storage.h">
-						</File>
 						<File
 							RelativePath=".\data_storage_base.h">
 						</File>

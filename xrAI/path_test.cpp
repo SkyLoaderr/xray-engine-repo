@@ -38,13 +38,18 @@ typedef CAI_Map																CGraph;
 //typedef CSE_ALifeGraph														CGraph;
 //typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
-//typedef CDataStorageBinaryHeapList<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
+//typedef CDataStorageUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageDLUL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
+//typedef CDataStorageBinaryHeapList<256,_dist_type,u32,u32,true,24,8>			CDataStorage;
+//typedef CDataStorageMultiBinaryHeap<1,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
+typedef CDataStorageBucketList<6*1024,false,_dist_type,u32,u32,true,24,8>				CDataStorage;
+//typedef CDataStoragePriorityQueue<boost::fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-typedef CDataStorageBucketList<6*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
+//typedef CDataStoragePriorityQueue<boost::pairing_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
