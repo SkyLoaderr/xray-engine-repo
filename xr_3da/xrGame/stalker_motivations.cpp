@@ -34,7 +34,7 @@ float CMotivationGlobal::evaluate	(u32 sub_motivation_id)
 			else
 				return	(0.f);
 
-	NODEFAULT;
+	Debug.fatal			("Couldn't find child motivation!");
 #ifdef DEBUG
 	return				(0.f);
 #endif
@@ -59,7 +59,7 @@ float CMotivationAlive::evaluate	(u32 sub_motivation_id)
 			else
 				return	(0.f);
 
-	NODEFAULT;
+	Debug.fatal			("Couldn't find child motivation!");
 #ifdef DEBUG
 	return				(0.f);
 #endif
