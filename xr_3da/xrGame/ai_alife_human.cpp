@@ -600,31 +600,31 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 		int						j = getAI().m_pfPersonalWeaponType->dwfGetWeaponType();
 		float					l_fCurrentValue = -1.f;
 		switch (tWeaponPriorityType) {
-				case eWeaponPriorityTypeKnife : {
-					if (j != 1)
-						continue;
-					l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
-					break;
-												}
-				case eWeaponPriorityTypeSecondary : {
-					if (j != 5)
-						continue;
-					l_fCurrentValue = getAI().m_pfSmallWeaponValue->ffGetValue();
-					break;
-													}
-				case eWeaponPriorityTypePrimary : {
-					if ((j != 6) && (j != 8) && (j != 9))
-						continue;
-					l_fCurrentValue = getAI().m_pfMainWeaponValue->ffGetValue();
-					break;
-												  }
-				case eWeaponPriorityTypeGrenade : {
-					if (j != 7)
-						continue;
-					l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
-					break;
-												  }
-				default : NODEFAULT;
+			case eWeaponPriorityTypeKnife : {
+				if (j != 1)
+					continue;
+				l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
+				break;
+			}
+			case eWeaponPriorityTypeSecondary : {
+				if (j != 5)
+					continue;
+				l_fCurrentValue = getAI().m_pfSmallWeaponValue->ffGetValue();
+				break;
+			}
+			case eWeaponPriorityTypePrimary : {
+				if ((j != 6) && (j != 8) && (j != 9))
+					continue;
+				l_fCurrentValue = getAI().m_pfMainWeaponValue->ffGetValue();
+				break;
+			}
+			case eWeaponPriorityTypeGrenade : {
+				if (j != 7)
+					continue;
+				l_fCurrentValue = getAI().m_pfItemValue->ffGetValue();
+				break;
+			}
+			default : NODEFAULT;
 		}
 		// choosing the best item
 		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
@@ -634,14 +634,21 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 	}
 	if (l_tpALifeItemBest) {
 		u32						l_dwCount = children.size();
+		
 		if (!tpObjectVector)
 			m_tpALife->vfAttachItem	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
 		else
 			children.push_back	(l_tpALifeItemBest->ID);
+		
 		attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),m_tpALife->m_tpItemVector,tpObjectVector);
-		ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		if (!tpObjectVector)
+		
+		if (!tpObjectVector) {
+			ITEM_P_IT				I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		}
+		else
+			remove_if			(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
+
 		return					(children.size() - l_dwCount);
 	}
 	return						(0);
@@ -651,8 +658,6 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 {
 #pragma todo("Dima to Dima : Add food and medikit items need count computations")
 	// choosing food
-	if (tpObjectVector)
-		sort					(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 	getAI().m_tpCurrentALifeMember	= this;
 	u32							l_dwCount = 0;
 	ITEM_P_IT					I = m_tpALife->m_tpItemVector.begin();
@@ -671,9 +676,12 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 		}
 	}
 	if (l_dwCount) {
-		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		if (!tpObjectVector)
+		if (!tpObjectVector) {
+			ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		}
+		else
+			remove_if(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
 	}
 	return					(l_dwCount);
 }
@@ -681,8 +689,6 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing medikits
-	if (tpObjectVector)
-		sort				(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 	u32						l_dwCount = 0;
 	ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 	ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
@@ -700,9 +706,13 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 		}
 	}
 	if (l_dwCount) {
-		ITEM_P_IT			I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-		if (!tpObjectVector)
+		if (!tpObjectVector) {
+			ITEM_P_IT		I = remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 			m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
+		}
+		else
+			remove_if		(children.begin(),children.end(),CRemoveNonAttachedItemsPredicate(m_tpALife));
+
 	}
 	return					(l_dwCount);
 }
@@ -710,8 +720,6 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 {
 	// choosing detector
-	if (tpObjectVector)
-		sort					(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 	CSE_ALifeInventoryItem		*l_tpALifeItemBest	= 0;
 	float						l_fItemBestValue	= -1.f;
 	getAI().m_tpCurrentALifeMember	= this;

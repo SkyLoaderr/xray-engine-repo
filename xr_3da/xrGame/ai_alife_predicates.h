@@ -9,6 +9,7 @@
 #ifndef AI_ALIFE_PREDICATESH
 #define AI_ALIFE_PREDICATESH
 #pragma once
+#include "ai_alife_registries.h"
 
 class CArtefactOrderPredicate {
 public:
@@ -80,6 +81,21 @@ public:
 	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem)
 	{
 		return						(tpALifeInventoryItem->bfAttached());
+	};
+};
+
+class CRemoveNonAttachedItemsPredicate {
+	CSE_ALifeObjectRegistry			*m_tpALifeObjectRegistry;
+public:
+
+									CRemoveNonAttachedItemsPredicate	(CSE_ALifeObjectRegistry *tpALifeObjectRegistry)
+	{
+		m_tpALifeObjectRegistry		= tpALifeObjectRegistry;
+	}
+
+	IC bool							operator()							(const _OBJECT_ID tObjectID)
+	{
+		return						(m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent == 0xffff);
 	};
 };
 
