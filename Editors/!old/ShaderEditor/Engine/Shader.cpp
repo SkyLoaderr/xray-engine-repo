@@ -59,6 +59,7 @@ ShaderElement::ShaderElement()
 	Flags.iPriority		= 1;
 	Flags.bStrictB2F	= FALSE;
 	Flags.bEmissive		= FALSE;
+	Flags.bDistort		= FALSE;
 	Flags.bElevation	= FALSE;
 }
 
