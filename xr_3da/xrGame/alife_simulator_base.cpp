@@ -242,11 +242,8 @@ void CALifeSimulatorBase::create	(CSE_ALifeObject *object)
 void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, bool alife_query)
 {
 	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
-	if (item && item->attached()) {
+	if (item && item->attached())
 		graph().detach				(*objects().object(item->base()->ID_Parent),item,objects().object(item->base()->ID_Parent)->m_tGraphID,alife_query);
-		if (object->m_bOnline)
-			graph().level().remove	(object);
-	}
 
 	objects().remove				(object->ID);
 	story_objects().remove			(object->m_story_id);
