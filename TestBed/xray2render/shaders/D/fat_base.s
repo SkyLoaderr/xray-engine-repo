@@ -2,7 +2,7 @@ struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
   float4 Normal: 	NORMAL;		// Object-space normal
-  float4 TexCoords: 	TEXCOORD0;	// Texture coordinates
+  float4 TexCoords: TEXCOORD0;	// Texture coordinates
 };
 
 struct 	v2p_out
@@ -37,15 +37,15 @@ uniform sampler2D 	s_texture;
 v2p_out v_main	( a2v  	IN )
 {
   // Calculate eye-space position and normal vectors.
-  float3 Pe 	= mul	(m_model2view, 		 IN.Position	);
-  float3 Ne 	= mul	((float3x3)m_model2view, IN.Normal	);
+  float3 Pe 	= mul	(m_model2view, 				IN.Position	);
+  float3 Ne 	= mul	((float3x3)m_model2view,	IN.Normal	);
 
   // Write output registers.
   v2p_out 	OUT;
-  OUT.HPos 	= mul	(m_model2view2projection,IN.Position	);
-  OUT.Pe 	= float4(Pe.x,Pe.y,Pe.z,0);
-  OUT.Ne 	= float4(Ne.x,Ne.y,Ne.z,0);
-  OUT.Tex0 	= IN.TexCoords;
+  OUT.HPos 		= mul	(m_model2view2projection,IN.Position	);
+  OUT.Pe 		= float4(Pe.x,Pe.y,Pe.z,0);
+  OUT.Ne 		= float4(Ne.x,Ne.y,Ne.z,0);
+  OUT.Tex0 		= IN.TexCoords;
 
   return OUT;
 }
