@@ -1461,12 +1461,12 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 	float scale = scale_x<scale_y?scale_x:scale_y;
 
 	UIPickUpItemIcon.GetUIStaticItem().SetOriginalRect(
-		m_iXPos * INV_GRID_WIDTH * scale,
-		m_iYPos * INV_GRID_HEIGHT * scale,
-		m_iGridWidth * INV_GRID_WIDTH * scale,
-		m_iGridHeight * INV_GRID_HEIGHT * scale);
+		m_iXPos * INV_GRID_WIDTH,
+		m_iYPos * INV_GRID_HEIGHT,
+		m_iGridWidth * INV_GRID_WIDTH,
+		m_iGridHeight * INV_GRID_HEIGHT);
 
-	UIPickUpItemIcon.SetTextureScaleXY(scale, scale);
+//	UIPickUpItemIcon.SetTextureScaleXY(scale, scale);
 	UIPickUpItemIcon.SetStretchTexture(true);
 
 	UIPickUpItemIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
@@ -1477,5 +1477,6 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 		m_iPickUpItemIconY + 
 		(m_iPickUpItemIconHeight - UIPickUpItemIcon.GetHeight())/2);
 
+	UIPickUpItemIcon.SetColor(color_rgba(255,255,255,192));
 	UIPickUpItemIcon.Show(true);
 };

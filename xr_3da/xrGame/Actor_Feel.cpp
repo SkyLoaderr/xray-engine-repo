@@ -132,7 +132,7 @@ void CActor::PickupModeUpdate()
 BOOL	g_b_COD_PickUpMode = FALSE;
 void	CActor::PickupModeUpdate_COD	()
 {
-	if (!g_b_COD_PickUpMode || eacFirstEye != cam_active || Level().CurrentViewEntity() != this) 
+	if (!g_b_COD_PickUpMode || eacFirstEye != cam_active || Level().CurrentViewEntity() != this || !g_Alive()) 
 	{
 		HUD().GetUI()->UIMainIngameWnd.SetPickUpItem(NULL);
 		return;
