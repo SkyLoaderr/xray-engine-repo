@@ -474,6 +474,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 			// searchlight 
 			.def(								constructor<const Fvector &,float,float>())
+			.def(								constructor<CLuaGameObject*,float,float>())
 
 			.def("object",						&CWatchAction::SetWatchObject)		// time
 			.def("direct",						&CWatchAction::SetWatchDirection)		// time

@@ -339,15 +339,26 @@ public:
 		SetWatchBone		(bone_to_watch);
 	}
 
-	// Searchlight look
+	// Searchlight look ///////////////////////////////////////////////
 							CWatchAction		(const Fvector &tTarget, float vel1, float vel2)
 	{
+		m_tpObjectToWatch	= 0;
 		m_tTargetPoint		= tTarget;
 		vel_bone_x			= vel1;
 		vel_bone_y			= vel2;
+		m_bCompleted		= false;
 	}
 
-
+							CWatchAction		(CLuaGameObject *tpObjectToWatch, float vel1, float vel2)
+	{
+		SetWatchObject		(tpObjectToWatch);
+		vel_bone_x			= vel1;
+		vel_bone_y			= vel2;
+		m_bCompleted		= false;
+	}
+	///////////////////////////////////////////////////////////////////
+	
+	
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
 
 			void			SetWatchType		(MonsterSpace::ELookType tWatchType)
