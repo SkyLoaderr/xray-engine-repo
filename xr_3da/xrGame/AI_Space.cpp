@@ -6,12 +6,7 @@
 #include "AI_Space.h"
 #include "gameobject.h"
 #include "hudmanager.h"
-
-// for a* search
-//#include "ai_a_star.h"
 #include "ai_console.h"
-//
-#include "ai_pathnodes.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
