@@ -1241,6 +1241,15 @@
 							RelativePath=".\scripts\ph_door.script">
 						</File>
 						<File
+							RelativePath=".\Scripts\ph_hit.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\ph_idle.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\ph_impulse.script">
+						</File>
+						<File
 							RelativePath=".\scripts\ph_test.script">
 						</File>
 					</Filter>

@@ -1,0 +1,222 @@
+----------------------------------------------------------------------------------------------------
+-- Physic objects binding
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+module("xr_motivator")
+module("xr_logic")
+module("modules")
+
+function init(obj)
+	xr_motivator.storage[obj:id()] = { }
+
+	local ini = obj:spawn_ini()
+	if not ini then
+		return
+	end
+
+	----------------------------------------------------------------------------------------
+	-- Старые схемы
+	----------------------------------------------------------------------------------------
+
+	if(ini:section_exist("door")) then
+		obj:bind_object(door_binder(obj))
+		return
+	end
+	if(ini:section_exist("animation")) then
+		obj:bind_object(handing_lamp_binder(obj))
+		return
+	end
+
+	----------------------------------------------------------------------------------------
+	-- Новые схемы
+	----------------------------------------------------------------------------------------
+
+	local new_binder = generic_physics_binder(obj, ini)
+	obj:bind_object(new_binder)
+end
+
+---------------------------------------------------------------------------------------------
+-- Общий биндер всех монстров
+---------------------------------------------------------------------------------------------
+class "generic_physics_binder" (object_binder)
+function generic_physics_binder:__init(obj, char_ini) super(obj)
+	self.ini = char_ini
+end 
+
+function generic_physics_binder:reload(section)
+	object_binder.reload(self, section)
+end
+
+function generic_physics_binder:reinit()
+	object_binder.reinit(self)
+
+	printf("generic_physics_binder:reinit()")
+
+	printf("_bp: generic_physics_binder: %s", self.object:name())
+	xr_motivator.storage[self.object:id()] = { }
+
+	self.st = xr_motivator.storage[self.object:id()]
+
+	----------------------------------------------------------------------------------------
+	-- Новые схемы
+	----------------------------------------------------------------------------------------
+	xr_logic.enable_scripts(self.object, self.ini, modules.stype_item)
+end
+
+function generic_physics_binder:update(delta)
+	object_binder.update(self, delta)
+
+	if self.st.active_section ~= nil then
+		xr_logic.non_goap_update_actions_event(self.object, self.st[self.st.active_scheme], delta)
+	end
+end
+
+function generic_physics_binder:net_destroy()
+	object_binder.net_destroy(self)
+end 
+
+--------------------------------------------------------------------------------
+class "door_binder" (object_binder)
+function door_binder:__init(obj) super(obj)
+	self.need_initialize	= true
+	self.joint				= nil
+	self.low_limits			= 0
+	self.hi_limits			= 0
+	self.angel				= 0
+	self.run				= 0
+	self.locked				= false
+end
+
+function door_binder:initialize()
+	object_binder.reinit(self)
+
+	local ini	= self.object:spawn_ini()
+	self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("door")
+	
+	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+    
+    self.object:set_nonscript_usable(false)
+    self.object:set_use_callback(self, "door_callback")
+    
+	local 		door_sign = string_table():get_by_id("doors_sign")
+	if(door_sign) then
+		self.object:set_tip_text(door_sign)
+	end
+
+	local variable = false
+
+	//self.locked		= utils.mob_get_bool(ini, "door", "locked", nil, self.object, false, false)
+	
+	if(ini:line_exist("door", "opened")) then
+		-- Есть данные о том, закрыта или открыта дверь
+		variable = ini:r_bool("door", "opened")
+
+		if(variable) then
+			self:open_door()
+		else
+			self:close_door()
+		end
+	else
+		self:close_door()
+	end
+
+	self.need_initialize	= false
+end
+
+function door_binder:update(delta)
+	object_binder.update(self, delta)
+	if(self.need_initialize) then
+		self:initialize()
+	end
+	
+	if(self.blockade) then
+		// Закрываем, а потом будем блокировать
+		self.angel  = self.joint:get_axis_angle(90)
+		printf("angel %f limits %f, %f", self.angel, self.low_limits, self.hi_limits)
+		if(self.angel >= self.hi_limits) then
+			// Закрыли до предела, будем блокировать
+			self.joint:set_max_force_and_velocity(10000, 1, 1)
+			self.blockade	= false
+		end
+	end
+end
+
+function door_binder:open_door()
+	self.joint:set_max_force_and_velocity(300, -3, 0)
+	self.blockade	= false
+end
+
+function door_binder:close_door()
+	self.joint:set_max_force_and_velocity(300, 3, 1)
+	self.blockade	= true									// Закрываем и блокируем	
+end
+
+function door_binder:set_lock(param)
+	self.locked		= param
+end
+
+function door_binder:door_callback(door, actor)
+	if(self.locked) then return end				// Пока дверь заблокирована
+
+	self.angel  = self.joint:get_axis_angle(90)
+
+	//self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+
+	if(self.angel - self.low_limits > self.hi_limits - self.angel) then
+		self:open_door()
+		//printf("blockade")
+	else
+		self:close_door()
+	end
+end
+
+class "handing_lamp_binder" (object_binder)
+function handing_lamp_binder:__init(obj) super(obj)
+	printf("Binding lamp")
+	self.type		= "low"
+	self.time		= 0
+	self.rnd		= 0
+	self.dir_x_axis = -1
+	self.dir_y_axis = -1
+	self.joint	= nil
+end
+
+function handing_lamp_binder:reload(section)
+	object_binder.reload(self, section)
+	
+	//'Читаем данные из кастом даты. Если неправильные данные, то ставим type = "low"
+	local ini	= self.object:spawn_ini()
+	if(ini:line_exist("animation", "type")) then
+		self.type = ini:r_string("animation", "type")
+		printf("read animation type: %s", self.type)
+	end
+	
+	if(self.type ~= "low" and self.type ~= "midle" and self.type ~= "hight") then
+		printf("WRONG TUNING HANDING LAMP")
+		self.type	= "low"
+	end
+	
+	self.time	= device():time_global()
+	self.dir_x_axis = 1
+	self.dir_z_axis	= 1
+	self.joint		= nil
+end
+
+function handing_lamp_binder:update(delta)
+	object_binder.update(self, delta)
+
+	if(self.joint == nil) then
+		self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("provod")
+	end	
+	
+	if(device():time_global() > self.time) then
+		self.joint:set_max_force_and_velocity(0.5 + math.random(), 0.1 * self.dir_x_axis, 0)
+		self.joint:set_max_force_and_velocity(0.5 + math.random(), 0.1 * self.dir_z_axis, 2)
+		self.dir_x_axis  = self.dir_x_axis * (-1)
+		self.dir_z_axis = self.dir_z_axis * (-1)
+		self.time    = device():time_global() + math.random(800, 1000)
+	end				
+end
