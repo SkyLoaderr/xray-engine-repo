@@ -366,38 +366,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create shaders
 	s_Scene2fat.compile	(m_pd3dDevice,"shaders\\D\\fat_base.s");
-	{
-		int za=0;
-	}
-
-	/*
-	// Create shadow map texture and retrieve surface
-	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
-		D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
-		return E_FAIL;
-	if (FAILED(m_pShadowMap->GetSurfaceLevel(0, &m_pShadowMapSurf)))
-		return E_FAIL;
-	// Create depth buffer for shadow map rendering
-	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 
-		D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
-		return E_FAIL;
-
-    m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-    // Create model shaders
-	SAFE_RELEASE(m_pSceneVS);
-	LoadVertexShader(m_pd3dDevice, "shaders\\shadowscene.vsh", &m_pSceneVS);
-	SAFE_RELEASE(m_pScenePS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\shadowscene.psh", &m_pScenePS);
-
-	// Create shadow map shaders
-	SAFE_RELEASE(m_pShadowMapVS);
-	LoadVertexShader(m_pd3dDevice, "shaders\\shadowmap.vsh", &m_pShadowMapVS);
-	SAFE_RELEASE(m_pShadowMapPS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\shadowmap.psh", &m_pShadowMapPS);
-	SAFE_RELEASE(m_pShowMapPS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\showmap.psh", &m_pShowMapPS);
-	*/
 
     m_ArcBall.SetWindow(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
     m_ArcBall.SetRadius(3.0f);
