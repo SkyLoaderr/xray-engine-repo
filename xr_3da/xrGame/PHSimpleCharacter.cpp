@@ -1038,10 +1038,10 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g1==m_hat_transform;
 	if(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform)
 	{
-		dNormalize3(m_control_force);
-		Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
-		f.normalize(),cn.normalize();
-		float product=f.x*cn.x+f.y*cn.y;
+		///dNormalize3(m_control_force);
+		//Fvector2 f={m_control_force[0],m_control_force[2]},cn={c->geom.normal[0],c->geom.normal[2]};
+		//f.normalize(),cn.normalize();
+		//float product=f.x*cn.x+f.y*cn.y;
 		//if(is_control&& (bo1	?	product<-0.0f	:	product>0.0f))
 			b_side_contact=true;
 
