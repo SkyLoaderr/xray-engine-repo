@@ -74,7 +74,7 @@ public:
 		if (I!=adjacent.end())	adjacent.erase(I);
 	}
 
-	void		normalFromAdj();
+	void		normalFromAdj		();
 
 	Vertex();
 	virtual ~Vertex();
