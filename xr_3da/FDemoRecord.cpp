@@ -71,8 +71,8 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	}
 
 
-	m_vVelocity.lerp		(m_vVelocity,m_vT,0.1f);
-	m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.1f);
+	m_vVelocity.lerp		(m_vVelocity,m_vT,0.3f);
+	m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
 
 	float acc = 1.f, acc_angle = 1.f;
 	if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
@@ -87,20 +87,20 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	// move
     Fvector vmove;
 
-    vmove.set				( m_Camera.k );
+    vmove.set				(m_Camera.k);
     vmove.normalize_safe	();
-    vmove.mul				( m_vT.z );
-    m_Position.add			( vmove );
+    vmove.mul				(m_vT.z);
+    m_Position.add			(vmove);
 
-    vmove.set				( m_Camera.i );
+    vmove.set				(m_Camera.i);
     vmove.normalize_safe	();
-    vmove.mul				( m_vT.x );
-    m_Position.add			( vmove );
+    vmove.mul				(m_vT.x);
+    m_Position.add			(vmove);
 	
-    vmove.set				( m_Camera.j );
+    vmove.set				(m_Camera.j);
     vmove.normalize_safe	();
-    vmove.mul				( m_vT.y );
-    m_Position.add			( vmove );
+    vmove.mul				(m_vT.y);
+    m_Position.add			(vmove);
 
 	m_Camera.setHPB			(m_HPB.x,m_HPB.y,m_HPB.z);
     m_Camera.translate_over	(m_Position);
@@ -152,10 +152,10 @@ void CDemoRecord::OnKeyboardHold	(int dik)
 
 void CDemoRecord::OnMouseMove		(int dx, int dy)
 {
-	float scale			= .75f;//psMouseSens;
+	float scale			= .5f;//psMouseSens;
 	if (dx||dy){
-		m_vR.y			+= float(dx)*scale;
-		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale;
+		m_vR.y			+= float(dx)*scale; // heading
+		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale; // pitch
 	}
 }
 
