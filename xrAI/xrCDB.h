@@ -65,9 +65,9 @@ namespace CDB
 			S_forcedword		= u32(-1)
 		};
 	private:
-		u32						status;		// 0=ready, 1=init, 2=building
 		xrCriticalSection		cs;
 		Opcode::OPCODE_Model*	tree;
+		u32						status;		// 0=ready, 1=init, 2=building
 
 		// tris
 		TRI*					tris;
