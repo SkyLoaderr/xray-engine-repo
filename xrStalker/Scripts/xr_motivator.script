@@ -332,7 +332,8 @@ xr_formation.add_to_binder( self.object )
 xr_motivator.storage[self.object:id ()].sos = 
     {
     enabled = false,
-    npc = nil
+    npc = nil,
+    code = 0
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
