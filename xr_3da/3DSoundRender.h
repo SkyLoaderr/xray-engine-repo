@@ -18,7 +18,7 @@ class ENGINE_API CSoundRender
 private:
 	struct SListener 
 	{
-		u32			dwSize;
+		u32				dwSize;
 		Fvector			vPosition;
 		Fvector			vVelocity;
 		Fvector			vOrientFront;
@@ -38,15 +38,14 @@ private:
 	vector <int>				refcounts;
 	vector <sound_defer>		defer;
 private:
-	CSound*						GetFreeSound		(int hSound);
-	int							FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq);
-	int							FindEmptySlot		();
-	int							Append				(CSound *p);
+	CSound*						GetFreeSound		(u32 hSound);
+	u32							FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq);
+	u32							FindEmptySlot		();
+	u32							Append				(CSound *p);
 public:
-	int							CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq=FALSE, BOOL bNotClip=FALSE );
-	int							CreateSound			(CInifile *pIni, LPCSTR section);
-	void						DeleteSound			(int& hSound);
-	void						Play				(int  hSound, sound* P, BOOL bLoop=false, int iLoopCnt=0);
+	u32							CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq=FALSE, BOOL bNotClip=FALSE );
+	void						DeleteSound			(u32& hSound);
+	void						Play				(u32  hSound, sound* P, BOOL bLoop=false, int iLoopCnt=0);
 
 	void						Reload				();
 

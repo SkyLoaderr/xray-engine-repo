@@ -89,25 +89,25 @@ void CSoundRender::OnMove()
 	}
 }
 
-int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
+u32 CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
 	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
 			if ((stricmp(sounds[i][0]->fName,name)==0)&&(_3D==sounds[i][0]->_3D)&&(_Freq==sounds[i][0]->_Freq))  
 				return i;
 		}
 	}
-	return -1;
+	return soundUndefinedHandle;
 }
 
-int CSoundRender::FindEmptySlot		()
+u32 CSoundRender::FindEmptySlot		()
 {
 	for (u32 i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()==0) return i;
 	}
-	return -1;
+	return soundUndefinedHandle;
 }
 
-int	CSoundRender::Append				(CSound *p)
+u32	CSoundRender::Append				(CSound *p)
 {
 	// empty slot not found - expand lists
 	vector <CSound *>	pv;
@@ -118,7 +118,7 @@ int	CSoundRender::Append				(CSound *p)
 	return i;
 }
 
-int	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotClip)
+u32	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotClip)
 {
 	int fnd;
 	if ((fnd=FindByName(name,_3D, _Freq))>=0) {
@@ -140,7 +140,7 @@ int	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotCli
 	return Append(pSnd);
 }
 
-void CSoundRender::DeleteSound		(int& hSound) 
+void CSoundRender::DeleteSound		(u32& hSound) 
 {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
@@ -154,10 +154,10 @@ void CSoundRender::DeleteSound		(int& hSound)
 		}
 		sounds[hSound].clear();
 	}
-	hSound = -1;
+	hSound = soundUndefinedHandle;
 }
 
-CSound* CSoundRender::GetFreeSound(int hSound) 
+CSound* CSoundRender::GetFreeSound	(u32 hSound) 
 {
 	VERIFY(hSound>=0);
 	VERIFY(hSound<int(sounds.size()));
@@ -173,7 +173,7 @@ CSound* CSoundRender::GetFreeSound(int hSound)
 	return pSnd;
 }
 
-void CSoundRender::Play(int hSound, sound* P, BOOL bLoop, int iLoopCnt)
+void CSoundRender::Play	(u32 hSound, sound* P, BOOL bLoop, int iLoopCnt)
 {
 	P->feedback			= GetFreeSound	(hSound);
 	P->feedback->Play	(P, bLoop, iLoopCnt);
