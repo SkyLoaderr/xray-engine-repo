@@ -252,7 +252,6 @@ enum{
 	flSavedData					= (1<<2),
 	flNotSave					= (1<<3),
 };
-ref_str							startup_animation;
 Flags8							_flags;
 SPHBonesData					saved_bones;
 u16								source_id;//for break only

@@ -204,19 +204,18 @@ bool CSE_ALifeTrader::interactive			() const
 	return						(false);
 }
 
-#ifdef _EDITOR
 void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
 {
     m_tpSupplies.resize			(supplies_count);
+#ifdef _EDITOR
 	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-}
 #endif
+}
 
 void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 {
 	inherited1::FillProp		(_pref,items);
 	inherited2::FillProp		(_pref,items);
-#ifdef _EDITOR
 	PHelper().CreateU32			(items, PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
 
 	ref_str						S;
@@ -224,7 +223,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 
     supplies_count				= m_tpSupplies.size();
 	PropValue					*V = PHelper().CreateS32(items, PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
-    V->OnChangeEvent.bind(this,&CSE_ALifeTrader::OnSuppliesCountChange);
+    V->OnChangeEvent.bind		(this,&CSE_ALifeTrader::OnSuppliesCountChange);
     
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
@@ -236,7 +235,6 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 		PHelper().CreateFloat	(items, PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
 		PHelper().CreateFloat	(items, PrepareKey(pref.c_str(),S.c_str(),"Max Factor"),&(*I).m_fMaxFactor,0.f, 1.f);
 	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -511,11 +509,6 @@ void CSE_ALifeTorridZone::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeTorridZone::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProp		(pref,	 values);
-#ifdef _EDITOR
-
-	// motion
-	CSE_Motion::FillProp		(PrepareKey(pref,s_name).c_str(),	 values);
-#endif
 }
 
 //-------------------------------------------------------------------------

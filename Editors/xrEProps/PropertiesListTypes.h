@@ -459,10 +459,10 @@ public:
         else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
         return			draw_val.c_str();
     }
-    virtual bool		Equal			(PropValue* val){return value->equal(*((FlagValue<T>*)val)->value,mask);}
+    virtual bool		Equal			(PropValue* val){return !!value->equal(*((FlagValue<T>*)val)->value,mask);}
     virtual const T&	GetValue		()				{return *value; }
     virtual void		ResetValue		()				{value->set(mask,init_value.is(mask));}
-    virtual bool		GetValueEx		()				{return value->is(mask);}
+    virtual bool		GetValueEx		()				{return !!value->is(mask);}
     bool				ApplyValue		(const T& val)
     {
         if (!val.equal(*value,mask)){

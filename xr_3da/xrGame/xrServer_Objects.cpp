@@ -585,8 +585,9 @@ CSE_PHSkeleton::~CSE_PHSkeleton()
 
 void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-
-	tNetPacket.r_stringZ	(startup_animation);
+	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(this);
+	R_ASSERT				(visual);
+	tNetPacket.r_stringZ	(visual->startup_animation);
 	tNetPacket.r_u8			(_flags.flags);
 	tNetPacket.r_u16		(source_id);
 	if (_flags.test(flSavedData)) {
@@ -596,9 +597,11 @@ void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_stringZ		(startup_animation);
-	tNetPacket.w_u8				(_flags.flags);
-	tNetPacket.w_u16			(source_id);
+	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(this);
+	R_ASSERT				(visual);
+	tNetPacket.w_stringZ	(visual->startup_animation);
+	tNetPacket.w_u8			(_flags.flags);
+	tNetPacket.w_u16		(source_id);
 	////////////////////////saving///////////////////////////////////////
 	if(_flags.test(flSavedData))
 	{

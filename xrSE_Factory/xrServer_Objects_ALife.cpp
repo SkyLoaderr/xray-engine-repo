@@ -289,12 +289,13 @@ void CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, 	items);
-#ifdef _EDITOR      
 	PHelper().CreateRText		(items,	PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
 	PHelper().CreateFloat		(items,	PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+#ifdef _EDITOR      
     ChooseValue* V;
     V=PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
     V->OnChooseFillEvent.bind	(this,&CSE_ALifeObject::OnChooseGroupControl);
+#endif
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
@@ -302,7 +303,6 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
 	PHelper().CreateRToken32	(items,	PrepareKey(pref,s_name,"ALife\\Story ID"),		&m_story_id,		&fp_data.story_names);
-#endif
 }
 
 bool CSE_ALifeObject::used_ai_locations		() const
@@ -487,9 +487,6 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-#ifdef _EDITOR
-	inherited2::FillProp		(PrepareKey(pref,s_name).c_str(),items);
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -724,9 +721,7 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 			data_load(tNetPacket);
 		}
 	}
-#ifdef _EDITOR    
-	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
-#endif
+	play_animation				();
 }
 
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
@@ -763,7 +758,6 @@ void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 }
 
 
-#ifdef _EDITOR
 xr_token po_types[]={
 	{ "Box",			epotBox			},
 	{ "Fixed chain",	epotFixedChain	},
@@ -774,9 +768,10 @@ xr_token po_types[]={
 
 void CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 {
-	PlayAnimation				(*startup_animation);
+	play_animation				();
 }
 
+#ifdef _EDITOR
 void CSE_ALifeObjectPhysic::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
@@ -800,11 +795,11 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited1::FillProp		(pref,	 values);
 	inherited2::FillProp		(pref,	 values);
 
-#ifdef _EDITOR
 	PHelper().CreateToken32		(values, PrepareKey(pref,s_name,"Type"), &type,	po_types);
-	PHelper().CreateFloat			(values, PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
-    PHelper().CreateFlag8			(values, PrepareKey(pref,s_name,"Active"), &flags, flActive);
+	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
+    PHelper().CreateFlag8		(values, PrepareKey(pref,s_name,"Active"), &_flags, flActive);
 
+#ifdef _EDITOR
     // motions
     if (visual && PSkeletonAnimated(visual))
     {
@@ -892,9 +887,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion>17)
 			tNetPacket.r_stringZ	(startup_animation);
 
-#ifdef _EDITOR    
-		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
-#endif
+		play_animation				();
 
 		if (m_wVersion > 42) {
 			tNetPacket.r_stringZ	(s_tmp);
@@ -916,9 +909,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float			(range);
     	tNetPacket.r_u16			(flags.flags);
 		tNetPacket.r_stringZ		(startup_animation);
-	#ifdef _EDITOR    
-		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
-	#endif
+		play_animation				();
 		tNetPacket.r_stringZ		(fixed_bones);
 		tNetPacket.r_float			(m_health);
 	}
@@ -983,13 +974,13 @@ void CSE_ALifeObjectHangingLamp::load(NET_Packet &tNetPacket)
 	inherited1::load(tNetPacket);
 	inherited2::load(tNetPacket);
 }
-#ifdef _EDITOR
-#include "ui_main.h"
 void CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 {
-	PlayAnimation				(*startup_animation);
+	play_animation				();
 }
 
+#ifdef _EDITOR
+#include "ui_main.h"
 void CSE_ALifeObjectHangingLamp::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
@@ -1007,19 +998,20 @@ void CSE_ALifeObjectHangingLamp::OnChooseBone(ChooseItemVec& lst)
     _E							= ll_bones->end();
     for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
+#endif
 
 void CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 {
+#ifdef _EDITOR
 	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-}
 #endif
+}
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProp		(pref,values);
 	inherited2::FillProp		(pref,values);
 
-#ifdef _EDITOR
     PropValue* P				= 0;
 	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
 	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Cast Shadow"),	&flags,			flCastShadow);
@@ -1040,6 +1032,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     if (flags.is(flTypeSpot))
 		PHelper().CreateAngle	(values, PrepareKey(pref,s_name,"Light\\Cone Angle"),	&spot_cone_angle,	deg2rad(1.f), deg2rad(120.f));
 
+#ifdef _EDITOR
 	// motions
     if (visual && PSkeletonAnimated(visual))
     {
@@ -1058,6 +1051,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         V        				= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Visual\\Guid bone"),		&guid_bone, smCustom);
         V->OnChooseFillEvent.bind(this,&CSE_ALifeObjectHangingLamp::OnChooseBone);
     }
+#endif
     if (flags.is(flPointAmbient)){
         PHelper().CreateFloat	(values, PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
         PHelper().CreateFloat	(values, PrepareKey(pref,s_name,"Ambient\\Power"),		&m_ambient_power);
@@ -1068,7 +1062,6 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	PHelper().CreateChoose		(values, PrepareKey(pref,s_name,"Glow\\Texture"),	    &glow_texture, 		smTexture,	"glow");
 	// game
 	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Game\\Health"),		&m_health,			0.f, 100.f);
-#endif
 }
 
 bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
@@ -1175,8 +1168,8 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
     tNetPacket.r_stringZ		(startup_animation);
 	tNetPacket.r_stringZ		(engine_sound);
 
+	CSE_Visual::play_animation	();
 #ifdef _EDITOR    
-	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
 	CSE_Motion::PlayMotion		();
 #endif
 }
@@ -1207,12 +1200,13 @@ void CSE_ALifeHelicopter::load		(NET_Packet &tNetPacket)
 	inherited1::load(tNetPacket);
 	inherited3::load(tNetPacket);
 }
-#ifdef _EDITOR
+
 void CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 {
-	CSE_Visual::PlayAnimation	(*startup_animation);
+	CSE_Visual::play_animation		();
 }
 
+#ifdef _EDITOR
 void CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
@@ -1235,11 +1229,9 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
         V->OnChangeEvent.bind	(this,&CSE_ALifeHelicopter::OnChangeAnim);
         V->OnChooseFillEvent.bind(this,&CSE_ALifeHelicopter::OnChooseAnim);
     }
-
-	CSE_Motion::FillProp		(PrepareKey(pref,s_name).c_str(),	 values);
-  
-    PHelper().CreateChoose		(values,	PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
 #endif
+
+    PHelper().CreateChoose		(values,	PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
 }
 
 bool CSE_ALifeHelicopter::used_ai_locations	() const

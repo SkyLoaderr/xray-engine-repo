@@ -35,7 +35,13 @@ add_to_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
 public:
+	enum {
+		flPlayAnimation				= u32(1 << 0),
+	};
+public:
 	ref_str							visual_name;
+	ref_str							startup_animation;
+	Flags32							m_visual_flags;
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
@@ -45,6 +51,11 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
+	IC	void						play_animation	()
+	{
+		m_visual_flags.set			(flPlayAnimation,TRUE);
+	}
+
 	virtual CSE_Visual* __stdcall	visual			() = 0;
 };
 add_to_type_list(CSE_Visual)

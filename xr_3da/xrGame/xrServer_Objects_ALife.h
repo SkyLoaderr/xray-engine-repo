@@ -237,8 +237,8 @@ add_to_type_list(CSE_ALifeLevelChanger)
 #define script_type_list save_type_list(CSE_ALifeLevelChanger)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
-#ifdef _EDITOR
 	void __stdcall 					OnChangeAnim	(PropValue* sender);
+#ifdef _EDITOR
 	void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
 	void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
 #endif
@@ -259,12 +259,12 @@ add_to_type_list(CSE_ALifeObjectPhysic)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 
-#ifdef _EDITOR
     void __stdcall 					OnChangeAnim	(PropValue* sender);
+#ifdef _EDITOR
     void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
     void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
-    void __stdcall 					OnChangeFlag	(PropValue* sender);
 #endif
+    void __stdcall 					OnChangeFlag	(PropValue* sender);
     enum{
         flPhysic					= (1<<0),
 		flCastShadow				= (1<<1),
@@ -287,7 +287,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVi
 // bones&motions
 	ref_str							guid_bone;
     ref_str							fixed_bones;
-    ref_str							startup_animation;
 // spot
 	float							spot_cone_angle;
 // ambient    
@@ -317,12 +316,11 @@ add_to_type_list(CSE_ALifeObjectProjector)
 #define script_type_list save_type_list(CSE_ALifeObjectProjector)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion,CSE_PHSkeleton)
-#ifdef _EDITOR
 	void __stdcall 					OnChangeAnim				(PropValue* sender);
+#ifdef _EDITOR
 	void __stdcall 					OnChooseAnim				(ChooseItemVec& lst);
 #endif
 	ref_str							engine_sound;
-	ref_str							startup_animation;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
 	virtual	void					load						(NET_Packet &tNetPacket);
