@@ -28,7 +28,7 @@ public:
 	////////////////////////////////////
 	//инициализация
 	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
-	virtual void Init(LPCSTR base_name, RECT* pRect);
+	virtual void Init(LPCSTR base_name, Irect* pRect);
 
 	//для статических спрайтов, перекрывающий окно
 	void InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset);
@@ -49,7 +49,7 @@ public:
 	CUIStatic*	GetTitleStatic(){return &UITitleText;};
 
 	bool		GetClipper()							{ return m_bClipper; }
-	void		SetClipper(bool value, RECT clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
+	void		SetClipper(bool value, Irect clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
 
 protected:
 
@@ -60,7 +60,7 @@ protected:
 	//основной фрейм 
 	CUIFrameRect m_UIWndFrame;
 
-	void		FrameClip(const RECT parentAbsR);
+	void		FrameClip(const Irect parentAbsR);
 	
 	//заголовки поверх него
 
@@ -78,7 +78,7 @@ protected:
 
 	// clipper
 	bool	m_bClipper;
-	RECT	m_ClipRect;
+	Irect	m_ClipRect;
 
 private:
 	inline void ClampMax_Zero(Irect &r);

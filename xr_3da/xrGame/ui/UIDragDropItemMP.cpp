@@ -129,7 +129,7 @@ void CUIDragDropItemMP::Draw()
 {
 	inherited::Draw();
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	//отцентрировать родительскую иконку по центру ее окна
 	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;

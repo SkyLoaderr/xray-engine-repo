@@ -21,7 +21,7 @@ CUIWindow::CUIWindow()
 
 
 	m_pKeyboardCapturer		=  NULL;
-	SetRect					(&m_WndRect, 0,0,0,0);
+	SetWndRect				(0,0,0,0);
 
 	m_bAutoDelete			= false;
 
@@ -46,14 +46,12 @@ CUIWindow::~CUIWindow()
 
 void CUIWindow::Init( int x, int y, int width, int height)
 {
-	SetRect(&m_WndRect, x, y, x+width, y+height);
+	SetWndRect(x, y, width, height);
 }
 
-void CUIWindow::Init(RECT* pRect)
+void CUIWindow::Init(Irect* pRect)
 {
-	Init(pRect->left, pRect->top, 
-		pRect->right - pRect->left, 
-		pRect->bottom - pRect->top);
+	SetWndRect(*pRect);
 }
 
 //
@@ -139,9 +137,9 @@ void CUIWindow::DetachAll()
 
 
 //абсолютные координаты, от начала экрана
-RECT CUIWindow::GetAbsoluteRect()
+Irect CUIWindow::GetAbsoluteRect()
 {
-	RECT rect;
+	Irect rect;
 
 
 	//окно самого верхнего уровня
@@ -202,8 +200,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 	//вызов из главного окна у которого нет предков
 	if(GetParent()== NULL)
 	{
-		RECT	l_tRect = GetWndRect();
-		if(!PtInRect(&l_tRect, cursor_pos))
+		Irect	l_tRect = GetWndRect();
+		if(!l_tRect.in(cursor_pos) /*PtInRect(&l_tRect, cursor_pos)*/ )
 			return;
 
 		//получить координаты относительно окна
@@ -232,8 +230,8 @@ void CUIWindow::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
-		RECT l_tRect = (*it)->GetWndRect();
-		if (PtInRect(&l_tRect, cursor_pos))
+		Irect l_tRect = (*it)->GetWndRect();
+		if (l_tRect.in(cursor_pos)/*PtInRect(&l_tRect, cursor_pos)*/ )
 		{
 			if((*it)->IsEnabled())
 			{

@@ -133,7 +133,7 @@ bool CUIProgressBar::ProgressInc()
 
 void CUIProgressBar::Draw()
 {
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	//нарисовать подложку
 	if(m_bBackgroundPresent)

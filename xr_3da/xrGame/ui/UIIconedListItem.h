@@ -43,7 +43,7 @@ protected:
 	// Иконка отображается
 	bool			m_bIconDraw;
 	// Запоминаем предыдущий AbsoluteRect
-	RECT			m_OldAbsoluteWndRect;
+	Irect			m_OldAbsoluteWndRect;
 };
 
 #endif	//UI_ICONED_LIST_ITEM_H_

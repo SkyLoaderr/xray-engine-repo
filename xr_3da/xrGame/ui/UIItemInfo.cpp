@@ -115,7 +115,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 
 		// –азместить текстуру по центру статика
 		Irect	r	= UIItemImage.GetUIStaticItem().GetOriginalRect();
-		RECT	r2	= UIItemImage.GetWndRect();
+		Irect	r2	= UIItemImage.GetWndRect();
 
 		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
 		{
@@ -177,6 +177,6 @@ void CUIItemInfo::AlignRight(CUIStatic &Item, int offset)
 		float	s	= Item.GetFont()->SizeOf(Item.GetText());
 				s	-= Item.GetFont()->SizeOf(fieldsCaptionColor);
 				s	-= Item.GetFont()->SizeOf("%cdefault");
-		Item.MoveWindow(static_cast<int>(GetWndRect().right - s) + offset, Item.GetWndRect().top);
+		Item.SetWndPos(static_cast<int>(GetWndRect().right - s) + offset, Item.GetWndRect().top);
 	}
 }

@@ -46,39 +46,50 @@ public:
 	virtual void	Init				();
 };
 
-class CUILocalMap: public CUIStatic{
+class CUILevelMap: public CUIStatic{
+	typedef  CUIStatic inherited;
+
 	Frect			m_LevelBox;
 public:
-					CUILocalMap			();
-	virtual			~CUILocalMap		();
+					CUILevelMap			();
+	virtual			~CUILevelMap		();
+
 };
-DEFINE_MAP(shared_str,CUILocalMap*,GameMaps,GameMapsPairIt);
+
+DEFINE_MAP(shared_str,CUILevelMap*,GameMaps,GameMapsPairIt);
 
 class CUIMapWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
+	enum lmFlags{lmMouseHold = 1,};
+	Flags32			m_flags;
 
-	CUIGlobalMap*	m_GlobalMap;
-	GameMaps		m_GameMaps;
+
+	CUILevelMap*		m_activeLevelMap;
+
+	CUIGlobalMap*		m_GlobalMap;
+	GameMaps			m_GameMaps;
 
 	CUIFrameWindow		m_UIMainFrame;
 	CUIScrollBar		m_UIMainScrollV,	m_UIMainScrollH;
+	CUIStatic			m_UILevelFrame;
 
 
 //	CUIFrameLineWnd		UIMainMapHeader;
-
 public:
 					CUIMapWnd				();
 	virtual			~CUIMapWnd				();
 
 	virtual void	Init					();
 	virtual void	Show					(bool status);
+	virtual void	Draw					();
+
+	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
 
 	void			InitGlobalMapObjectives	(){}
 	void			InitLocalMapObjectives	(){}
 
 	void			SetActivePoint			(const Fvector &vNewPoint){}
-	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
 
 };
 
@@ -97,7 +108,7 @@ private:
 	// —тандартное значение размеров пр€моугольника на кнопке-переключателе на глобальную карту.
 	// ћы сравниваем размеры прамоугольника показываемой карты, и если они равны, то данную карту
 	// не показываем (т.к. дл€ данного левела размеры карты не заданны)
-	RECT				m_rDefault;
+	Irect				m_rDefault;
 public:
 	// –ежимы карты
 	enum EMapModes

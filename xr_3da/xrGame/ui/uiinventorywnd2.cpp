@@ -29,7 +29,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	// Флаг-признак для невлючения пункта контекстного меню: Dreess Outfit, если костюм уже надет
 	bool bAlreadyDressed = false; 
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();
@@ -239,10 +239,9 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
                 if(!ToBag())
                 //если нельзя, то просто упорядочить элемент в своем списке
 				{
-					((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-										DetachChild(m_pCurrentDragDropItem);
-					((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-										AttachChild(m_pCurrentDragDropItem);
+					CUIWindow* w = m_pCurrentDragDropItem->GetParent();
+					w->DetachChild(m_pCurrentDragDropItem);
+					w->AttachChild(m_pCurrentDragDropItem);
 				}
 		m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
 										((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY());

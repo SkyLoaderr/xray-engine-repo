@@ -54,7 +54,7 @@ public:
 	//	virtual void SetInteractiveTextColor(u32 uColor) {}
 	// Переопределяем функцию получения абсолютных координат.
 	// Это нужно для выделения интерактивных элементов
-	virtual RECT GetAbsoluteSubRect();
+	virtual Irect GetAbsoluteSubRect();
 	// Вкл/выкл интреактивное поведение
 	bool	m_bInteractiveBahaviour;
 	// Назначаем ID нужному элементу

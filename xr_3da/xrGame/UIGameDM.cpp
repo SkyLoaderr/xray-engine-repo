@@ -74,7 +74,7 @@ void	CUIGameDM::Init				()
 	int ScreenW = UI_BASE_WIDTH;
 	int ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
-	RECT FrameRect = pFragList->GetFrameRect ();
+	Irect FrameRect = pFragList->GetFrameRect ();
 	int FrameW	= FrameRect.right - FrameRect.left;
 	int FrameH	= FrameRect.bottom - FrameRect.top;
 

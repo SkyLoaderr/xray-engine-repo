@@ -40,7 +40,7 @@ void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
 	inherited::Init(x,y, width, height);
 }
 
-void CUIFrameWindow::Init(LPCSTR base_name, RECT* pRect)
+void CUIFrameWindow::Init(LPCSTR base_name, Irect* pRect)
 {
 	Init(base_name, pRect->left, pRect->top, 
 				pRect->right - pRect->left, 
@@ -82,7 +82,7 @@ void CUIFrameWindow::InitLeftBottom(LPCSTR tex_name, int left_offset, int up_off
 //
 void CUIFrameWindow::Draw()
 {
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 
 	m_UIWndFrame.SetPos(rect.left, rect.top);
@@ -141,7 +141,7 @@ void CUIFrameWindow::SetColor(u32 cl)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIFrameWindow::FrameClip(const RECT parentAbsR)
+void CUIFrameWindow::FrameClip(const Irect parentAbsR)
 {
 	using std::min;
 	using std::max;
@@ -151,7 +151,7 @@ void CUIFrameWindow::FrameClip(const RECT parentAbsR)
 	if (!GetParent()) return;
 
 	// Клиппаем по границам окна-парента
-	RECT		ourAbsR		= GetAbsoluteRect();
+	Irect		ourAbsR		= GetAbsoluteRect();
 	CTexture	*T;
 	Ivector2	ts;
 	int			rem_x, rem_y, tile_x, tile_y;

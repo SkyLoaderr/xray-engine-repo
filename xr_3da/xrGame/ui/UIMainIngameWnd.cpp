@@ -297,10 +297,10 @@ void CUIMainIngameWnd::Init()
 
 	xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, &m_artefactPanel);
 	this->AttachChild(&m_artefactPanel);	
-	xr_vector<RECT> vRects;
+	xr_vector<Irect> vRects;
 
 /*	// uncoment to test ArtefactPanel
-	RECT rect;
+	Irect rect;
 	rect.left = 698; rect.right = 750;
 	rect.top = 0;    rect.bottom = 48;
 
@@ -507,7 +507,7 @@ void CUIMainIngameWnd::Update()
 					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale_x));
 					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale_y));
 
-					UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
+					UIWeaponIcon.SetWndPos(m_iWeaponIconX + 
 						(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
 						m_iWeaponIconY + 
 						(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
@@ -992,7 +992,7 @@ CUIPdaMsgListItem* CUIMainIngameWnd::AddMessageToList(LPCSTR message, CUIListWnd
 	pItem->SetData(p);
 	// set id to item. With this we can find item in list and for some manipulation
 	pItem->SetValue(iId);
-	pItem->UIMsgText.MoveWindow(0, 0);	
+	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->UIMsgText.SetText(message);	
 
 	return pItem;
@@ -1021,7 +1021,7 @@ void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCS
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRect, LPCSTR message, int iId, int iDelay)
+void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, Irect originalRect, LPCSTR message, int iId, int iDelay)
 {
 	CUIPdaMsgListItem* pItem = AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
 
@@ -1029,7 +1029,7 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 	{
 		pItem->UIIcon.InitTexture(textureName);
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
+		pItem->UIMsgText.SetWndPos(originalRect.right, 0/*originalRect.bottom*/);
 	}
 
 	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
@@ -1038,7 +1038,7 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 	{
 		pItem->UIIcon.InitTexture(textureName);
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
-		pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
+		pItem->UIMsgText.SetWndPos(originalRect.right, 0/*originalRect.bottom*/);
 	}
 }
 
@@ -1052,7 +1052,7 @@ void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
 	R_ASSERT(UIInfoMessages.GetFont());
 	pItem->UIMsgText.SetFont(UIInfoMessages.GetFont());
 	pItem->UIMsgText.SetTextColor(UIInfoMessages.GetTextColor());
-	pItem->UIMsgText.MoveWindow(-static_cast<int>(UIInfoMessages.GetFont()->SizeOf(message) / 2),
+	pItem->UIMsgText.SetWndPos(-static_cast<int>(UIInfoMessages.GetFont()->SizeOf(message) / 2),
 								pItem->UIMsgText.GetWndRect().top);
 	UIInfoMessages.ScrollToBegin();
 
@@ -1114,7 +1114,7 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 		
 	if(news.texture_name)
 	{
-		RECT rect;
+		Irect rect;
 		rect.left = news.x1;
 		rect.right = news.x2;
 		rect.top = news.y1;

@@ -62,7 +62,7 @@ void CUIMessageBox::AutoCenter()
 	int x = (GetParent()->GetWidth() - GetWidth())/2;
 	int y = (GetParent()->GetHeight() - GetHeight())/2;
 
-	MoveWindow(x,y);
+	SetWndPos(x,y);
 }
 
 void CUIMessageBox::Show()
@@ -200,7 +200,7 @@ void CUIMessageBox::SetText(LPCSTR str)
 	CGameFont *pFont = m_UIStatic.GetFont();
 	if (pFont)
 	{
-		m_UIStatic.MoveWindow(GetWidth() / 2 - static_cast<int>(pFont->SizeOf(str) / 2),
+		m_UIStatic.SetWndPos(GetWidth() / 2 - static_cast<int>(pFont->SizeOf(str) / 2),
 			GetHeight() / 2 - static_cast<int>(pFont->CurrentHeight()));
 	}
 	m_UIStatic.SetText(str);

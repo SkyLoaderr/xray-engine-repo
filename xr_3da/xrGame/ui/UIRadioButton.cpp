@@ -36,7 +36,7 @@ void CUIRadioButton::Draw()
 {
 	CUIButton::Draw();
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	//нарисовать галочку
 	if(m_bIsChecked)

@@ -165,11 +165,11 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			if (m_pActiveSubdialog == &UIContractsWnd)
 			{
 				VERIFY(m_pLeftHorisontalLine);
-				RECT r = m_pLeftHorisontalLine->GetWndRect();
-				m_pLeftHorisontalLine->MoveWindow(r.left, r.top - contractsOffset);
+				Irect r = m_pLeftHorisontalLine->GetWndRect();
+				m_pLeftHorisontalLine->SetWndPos(r.left, r.top - contractsOffset);
 			}
 
-			RECT r;
+			Irect r;
 
 			EDiaryIDs id;
 			if (m_pActorDiaryRoot->Find(pTVItem))
@@ -207,7 +207,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			case idContracts:
 				VERIFY(m_pLeftHorisontalLine);
 				r = m_pLeftHorisontalLine->GetWndRect();
-				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
+				m_pLeftHorisontalLine->SetWndPos(r.left, r.top + contractsOffset);
 				m_pActiveSubdialog = &UIContractsWnd;
 				SetContractTrader();
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));

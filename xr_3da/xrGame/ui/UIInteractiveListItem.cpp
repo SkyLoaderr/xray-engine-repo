@@ -89,9 +89,9 @@ void CUIInteractiveListItem::OnMouse(int x, int y, EUIMessages mouse_action)
 //-----------------------------------------------------------------------------/
 //  Получаем координаты интерактивного поля для подсветки
 //-----------------------------------------------------------------------------/
-RECT CUIInteractiveListItem::GetAbsoluteSubRect()
+Irect CUIInteractiveListItem::GetAbsoluteSubRect()
 {
-	RECT tmpRect = CUIWindow::GetAbsoluteRect();
+	Irect tmpRect = CUIWindow::GetAbsoluteRect();
 	if (itCurrIItem != vPositions.end())
 	{
 		tmpRect.left	+= (*itCurrIItem).pairScreenCrd.first;
@@ -123,7 +123,7 @@ void CUIInteractiveListItem::Draw()
 {
 	inherited::Draw();
 
-	RECT rect = GetAbsoluteSubRect();
+	Irect rect = GetAbsoluteSubRect();
 
 	// Подсвечиваем интерактивный элемент
 	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)

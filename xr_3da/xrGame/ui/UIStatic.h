@@ -65,11 +65,11 @@ public:
 	//пределы родительского окна
 	void TextureClipper(int offset_x = 0, 
 						int offset_y = 0,
-						RECT* pClipRect = NULL);
+						Irect* pClipRect = NULL);
 
 	void TextureClipper(int offset_x, 
 						int offset_y,
-						RECT* pClipRect, 
+						Irect* pClipRect, 
 						CUIStaticItem& UIStaticItem);
 
 	virtual void	SetTextureScaleXY		(float new_scale_x, float new_scale_y);
@@ -91,7 +91,7 @@ public:
 	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
 	bool GetStretchTexture() {return m_bStretchTexture;}
 
-	void SetClipRect(RECT r);
+	void SetClipRect(Irect r);
 	Irect GetClipRect();
 
 	// Работа с маской
@@ -103,7 +103,7 @@ public:
 	// "\n" реализуем таким образом wordwrap
 	static void PreprocessText(STRING &str, u32 width, CGameFont *pFont);
 	// Функция вывода текста
-	void DrawString(const RECT &rect);
+	void DrawString(const Irect &rect);
 	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
 	// надпись. Вот для этого и предназначена эта функция
 	enum EElipsisPosition
@@ -148,7 +148,7 @@ protected:
 	/////////////////////////////////////
 	//форматированный вывод текста
 	/////////////////////////////////////
-	void WordOut(const RECT &rect);
+	void WordOut(const Irect &rect);
 	void AddLetter(char letter);
 	u32 ReadColor(int pos, int& r, int& g, int& b);
 	
@@ -184,14 +184,14 @@ protected:
 
 	// Обрезка надписи
 	EElipsisPosition	m_ElipsisPos;
-	void Elipsis(const RECT &rect, EElipsisPosition elipsisPos);
+	void Elipsis(const Irect &rect, EElipsisPosition elipsisPos);
 	int	m_iElipsisIndent;
 
 	// Clip rect
-	RECT	m_ClipRect;
+	Irect	m_ClipRect;
 
 public:
-	static void Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
+	static void Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

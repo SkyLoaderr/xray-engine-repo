@@ -97,7 +97,7 @@ void CUIPropertiesBox::Show(int x, int y)
 	else
 		y_pos = y - (y+GetHeight()-iFloor( Device.dwHeight/UI()->GetScaleY() )  );
 		
-	MoveWindow(x_pos,y_pos);
+	SetWndPos(x_pos,y_pos);
 
 	inherited::Show(true);
 	inherited::Enable(true);

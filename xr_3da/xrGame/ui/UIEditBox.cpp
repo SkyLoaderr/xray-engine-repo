@@ -258,7 +258,7 @@ void CUIEditBox::Update()
 /*	
 
 		//нарисовать курсор
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 		float outX, outY;
 
 		STRING buf_str;
@@ -288,7 +288,7 @@ void  CUIEditBox::Draw()
 	if(m_bInputFocus)
 	{	
 		//нарисовать курсор
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 		float outX, outY;
 
 		STRING buf_str;

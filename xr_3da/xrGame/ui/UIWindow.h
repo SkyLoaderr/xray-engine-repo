@@ -29,34 +29,32 @@ public:
 
 	////////////////////////////////////
 	//инициализация
-	virtual void Init(int x, int y, int width, int height);
-	virtual void Init(RECT* pRect);
+	virtual void			Init				(int x, int y, int width, int height);
+	virtual void			Init				(Irect* pRect);
 
-	virtual CUIDragDropItem*	cast_drag_drop_item	()	{return NULL;}
+	virtual CUIDragDropItem*cast_drag_drop_item	()								{return NULL;}
 
 	////////////////////////////////////
 	//работа с дочерними и родительскими окнами
-	virtual void AttachChild(CUIWindow* pChild);
-	virtual void DetachChild(CUIWindow* pChild);
-	virtual bool IsChild(CUIWindow* pChild) const;
-	virtual void DetachAll();
-	int GetChildNum() {return m_ChildWndList.size();} 
+	virtual void			AttachChild			(CUIWindow* pChild);
+	virtual void			DetachChild			(CUIWindow* pChild);
+	virtual bool			IsChild				(CUIWindow* pChild) const;
+	virtual void			DetachAll			();
+	int						GetChildNum			()								{return m_ChildWndList.size();} 
 
-	void SetParent(CUIWindow* pNewParent);
-	CUIWindow* GetParent() {return m_pParentWnd;}
+	void					SetParent			(CUIWindow* pNewParent);
+	CUIWindow*				GetParent			()								{return m_pParentWnd;}
 	
 	//получить окно самого верхнего уровня
-	CUIWindow* GetTop() {if(m_pParentWnd == NULL)	
-								return  this;
-							else
-								return  m_pParentWnd->GetTop();}
+	CUIWindow*				GetTop				()								{if(m_pParentWnd == NULL) return  this; 
+																				else return  m_pParentWnd->GetTop();}
 
 
 	//поднять на вершину списка выбранное дочернее окно
-	virtual bool BringToTop(CUIWindow* pChild);
+	virtual bool			BringToTop			(CUIWindow* pChild);
 
 	//поднять на вершину списка всех родителей окна и его самого
-	virtual void BringAllToTop();
+	virtual void			BringAllToTop		();
 	
 
 	////////////////////////////////////
@@ -66,23 +64,23 @@ public:
 //	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
 //				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
-	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void OnMouseWheel(int direction);
+	virtual void			OnMouse				(int x, int y, EUIMessages mouse_action);
+	virtual void			OnMouseWheel		(int direction);
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
-	virtual void SetCapture(CUIWindow* pChildWindow, bool capture_status);
-	virtual CUIWindow* GetMouseCapturer(){return m_pMouseCapturer;}
+	virtual void			SetCapture			(CUIWindow* pChildWindow, bool capture_status);
+	virtual CUIWindow*		GetMouseCapturer	()													{return m_pMouseCapturer;}
 
 	//окошко, которому пересылаются сообщения,
 	//если NULL, то шлем на GetParent()
-	virtual void SetMessageTarget(CUIWindow* pWindow) {	m_pMessageTarget = pWindow;}
-	virtual CUIWindow* GetMessageTarget();
+	virtual void			SetMessageTarget	(CUIWindow* pWindow)								{m_pMessageTarget = pWindow;}
+	virtual CUIWindow*		GetMessageTarget	();
 
 	//реакция на клавиатуру
 //	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
-	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
-	virtual void SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status);
+	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
+	virtual void			SetKeyboardCapture	(CUIWindow* pChildWindow, bool capture_status);
 
 	
 	//список перечисление, на которые должна быть предусмотрена реакция
@@ -93,147 +91,144 @@ public:
 	//ф-ция должна переопределяться
 	//pWnd - указатель на окно, которое послало сообщение
 	//pData - указатель на дополнительные данные, которые могут понадобиться
-	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void			SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 	
 	
 
 	//запрещение/разрешение на ввод с клавиатуры
-	virtual void Enable(bool status) {m_bIsEnabled =  status;}
-	virtual bool IsEnabled() {return m_bIsEnabled;}
+	virtual void			Enable				(bool status)									{m_bIsEnabled=status;}
+	virtual bool			IsEnabled			()												{return m_bIsEnabled;}
 
 	//убрать/показать окно и его дочерние окна
-	virtual void Show(bool status) {m_bIsShown =  status; Enable(status); }
-	virtual bool IsShown() {return m_bIsShown;}
+	virtual void			Show				(bool status)									{m_bIsShown= status; Enable(status); }
+	virtual bool			IsShown				()												{return m_bIsShown;}
 	
 	////////////////////////////////////
 	//положение и размеры окна
 
 	//относительные координаты
-	RECT GetWndRect() {return m_WndRect;}
-	void SetWndRect(int x, int y, int width, int height) 
-						{SetRect(&m_WndRect,x,y,x+width,y+height);}
+	Irect					GetWndRect			()									{return m_WndRect;}
+	void					SetWndRect			(int x, int y, int width, int height) 		
+																					{m_WndRect.set(x,y,x+width,y+height); }
 
-	void SetWndRect(RECT r){m_WndRect = r;}
-	void SetWndRect(Irect r){VERIFY(sizeof(Irect)==sizeof(RECT)); m_WndRect = *(RECT*)&r;}
+	void					SetWndRect			(Irect r)							{m_WndRect = r;}
 
-	void MoveWindow(int x, int y)
-					{int w = GetWidth();
-					 int h = GetHeight();
-					 SetRect(&m_WndRect,x,y,x+w,y+h);}
-
+	void					SetWndPos			(int x, int y)						{int w = GetWidth();
+																					int h = GetHeight();
+																					m_WndRect.set(x,y,x+w,y+h);}
+	void					MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
+	void					MoveWndDelta		(int dx, int dy)					{	m_WndRect.x1+=dx;
+																						m_WndRect.x2+=dx;
+																						m_WndRect.y1+=dy;
+																						m_WndRect.y2+=dy;}
 
 
 	//абсолютные координаты
-	RECT GetAbsoluteRect();
+	Irect					GetAbsoluteRect		();
 
-	virtual int GetWidth() {return m_WndRect.right-m_WndRect.left;}
-	virtual void SetWidth(int width) {SetRect(&m_WndRect,
-										m_WndRect.left,
-										m_WndRect.top,
-										m_WndRect.left+width,
-										m_WndRect.bottom);}
+	virtual void			SetWidth			(int width)			{m_WndRect.right = m_WndRect.left+width;}
 
-	virtual int GetHeight() {return m_WndRect.bottom-m_WndRect.top;}
-	virtual void SetHeight(int height) {SetRect(&m_WndRect,
-										m_WndRect.left,
-										m_WndRect.top,
-										m_WndRect.right,
-										m_WndRect.top+height);}
+	virtual void			SetHeight			(int height)		{m_WndRect.bottom = m_WndRect.top+height;}
+
+	virtual int				GetWidth			()					{return m_WndRect.width();}
+	virtual int				GetHeight			()					{return m_WndRect.height();}
+
 
 
 
 	////////////////////////////////////
 	//прорисовка окна
-	virtual void Draw();
+	virtual void			Draw				();
 	//обновление окна передпрорисовкой
-	virtual void Update();
+	virtual void			Update				();
 
 
 	//для перевода окна и потомков в исходное состояние
-	virtual void Reset();
-	virtual void ResetAll();
+	virtual void			Reset				();
+	virtual void			ResetAll			();
 
 
 	//временно!!!! (а может уже и нет)
-	virtual void SetFont(CGameFont* pFont) {m_pFont = pFont;}
-	CGameFont* GetFont() {if(m_pFont) return m_pFont;
-							if(m_pParentWnd== NULL)	
-								return  m_pFont;
-							else
-								return  m_pParentWnd->GetFont();}
+	virtual void			SetFont				(CGameFont* pFont)			{ m_pFont = pFont;}
+	CGameFont*				GetFont				()							{if(m_pFont) return m_pFont;
+																				if(m_pParentWnd== NULL)	
+																					return  m_pFont;
+																				else
+																					return  m_pParentWnd->GetFont();}
 
 	DEF_LIST (WINDOW_LIST, CUIWindow*);
-	WINDOW_LIST& GetChildWndList() {return m_ChildWndList;}
+	WINDOW_LIST&			GetChildWndList		()							{return m_ChildWndList; }
 
 
-	bool IsAutoDelete() {return m_bAutoDelete;}
-	void SetAutoDelete(bool auto_delete) {m_bAutoDelete = auto_delete;}
+	bool					IsAutoDelete		()							{return m_bAutoDelete;}
+	void					SetAutoDelete		(bool auto_delete)			{m_bAutoDelete = auto_delete;}
 
 	// Name of the window
-	const shared_str	WindowName() const { return m_windowName; }
-	void			SetWindowName(LPCSTR wn) { m_windowName = wn; }
-	LPCSTR			WindowName_script() {return *m_windowName;}
-	CUIWindow*		FindChild(const shared_str name);
+	const shared_str		WindowName			() const					{ return m_windowName; }
+	void					SetWindowName		(LPCSTR wn)					{ m_windowName = wn; }
+	LPCSTR					WindowName_script	()							{return *m_windowName;}
+	CUIWindow*				FindChild			(const shared_str name);
 
-	void			EnableDoubleClick(bool value) { m_bDoubleClickEnabled = value; }
-	bool			IsDBClickEnabled() const { return m_bDoubleClickEnabled; }
+	void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
+	bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
 protected:
-	shared_str		m_windowName;
+	shared_str				m_windowName;
 	//список дочерних окон
-	WINDOW_LIST m_ChildWndList;
+	WINDOW_LIST				m_ChildWndList;
 	
 	//указатель на родительское окно
-	CUIWindow* m_pParentWnd;
+	CUIWindow*				m_pParentWnd;
 
 	//дочернее окно которое, захватило ввод мыши
-	CUIWindow* m_pMouseCapturer;
+	CUIWindow*				m_pMouseCapturer;
 	
 	//кто изначально иницировал
 	//захват фокуса, только он теперь
 	//может весь фокус и освободить
-	CUIWindow* m_pOrignMouseCapturer;
+	CUIWindow*				m_pOrignMouseCapturer;
 
 
 	//дочернее окно которое, захватило ввод клавиатуры
-	CUIWindow* m_pKeyboardCapturer;
+	CUIWindow*				m_pKeyboardCapturer;
 
 	//кому шлем сообщения
-	CUIWindow* m_pMessageTarget;
+	CUIWindow*				m_pMessageTarget;
 
 	//положение и размер окна, задается 
 	//относительно родительского окна
-	RECT m_WndRect;
+	Irect					m_WndRect;
 
 	//разрешен ли ввод пользователя
-	bool m_bIsEnabled;
+	bool					m_bIsEnabled;
 	//показывать ли окно
-	bool m_bIsShown;
+	bool					m_bIsShown;
 
 
 	/////////////
 	//указатель на используемый шрифт
 	//временно!!!!
-	CGameFont* m_pFont;
+	CGameFont*				m_pFont;
 
 
 	//время прошлого клика мышки
 	//для определения DoubleClick
-	u32 m_dwLastClickTime;
+	u32						m_dwLastClickTime;
 
 	//флаг автоматического удаления во время вызова деструктора
-	bool m_bAutoDelete;
+	bool					m_bAutoDelete;
 
 	// Флаг разрешающий/запрещающий генерацию даблклика
-	bool m_bDoubleClickEnabled;
+	bool					m_bDoubleClickEnabled;
 
 	// Если курсор над окном
-	bool			m_bCursorOverWindow;
+	bool					m_bCursorOverWindow;
 
 public:
-	bool			CursorOverWindow() const { return m_bCursorOverWindow; }
+	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
 	// Последняя позиция мышки
-	POINT cursor_pos;
+	Ivector2 cursor_pos;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
+
 };
 
 add_to_type_list(CUIWindow)

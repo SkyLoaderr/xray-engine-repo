@@ -97,9 +97,8 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 	if (GetUICursor()->IsVisible())
 	{ 
 		GetUICursor()->MoveBy(dx, dy);
-		OnMouse(static_cast<int>(GetUICursor()->GetPos().x /* / UI()->GetScaleX() */), 
-				static_cast<int>(GetUICursor()->GetPos().y /* / UI()->GetScaleY() */), 
-				WINDOW_MOUSE_MOVE);
+		Ivector2 cPos = GetUICursor()->GetPos();
+		OnMouse(cPos.x, cPos.y , WINDOW_MOUSE_MOVE);
 	}
 
 	return true;

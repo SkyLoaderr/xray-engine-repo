@@ -80,12 +80,29 @@ void CUIStatic::Init(int x, int y, int width, int height)
 //прорисовка
 //////////////////////////////////////////////////////////////////////////
 
+bool box2box_intersected(const Irect &b0, const Irect &b1)
+{
+	return !(b0.x1>b1.x2 || b0.x2<b1.x1 || b0.y1>b1.y2 ||  b0.y2<b1.y1);
+}
+
+bool box2box_intersection(const Irect &b0, const Irect &b1, Irect &result)
+{
+	if (!box2box_intersected(b0,b1))
+		return	(false);
+
+	result.x1	= _max(b0.x1,b1.x1);
+	result.y1	= _max(b0.y1,b1.y1);
+	result.x2	= _min(b0.x2,b1.x2);
+	result.y2	= _min(b0.y2,b1.y2);
+	return		(true);
+}
+
 void  CUIStatic::Draw()
 {
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 //		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
 		if(m_bClipper)
@@ -97,12 +114,23 @@ void  CUIStatic::Draw()
 				TextureClipper(0, 0, &m_ClipRect);
 		}
 
-		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
+		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
-		if(m_bStretchTexture)
+		if(m_bStretchTexture){
+			Fvector2 lt, rb;
+			int W			= GetWidth();
+			int H			= GetHeight();
+			Irect vis_rect	= m_UIStaticItem.GetRect();
+			lt.x			= float(vis_rect.x1)/W;
+			lt.y			= float(vis_rect.y1)/H;
+			rb.x			= float(vis_rect.x2)/W;
+			rb.y			= float(vis_rect.y2)/H;
+
+			m_UIStaticItem.Render(lt.x, lt.y, lt.x, rb.y, rb.x, rb.y, rb.x, lt.y);
+
 			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-		else
+//			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
+		}else
 			m_UIStaticItem.Render();
 	}
 
@@ -113,7 +141,7 @@ void  CUIStatic::Draw()
 	{
 		GetFont()->SetAligment(GetTextAlign());
 		GetFont()->SetColor(m_dwFontColor);
-		RECT r = GetAbsoluteRect();
+		Irect r = GetAbsoluteRect();
 		DrawString(r);
 	}
 }
@@ -127,7 +155,7 @@ void CUIStatic::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::WordOut(const RECT &rect)
+void CUIStatic::WordOut(const Irect &rect)
 {
 	//вывести слово
 
@@ -289,7 +317,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
+void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect)
 {
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
 }
@@ -299,10 +327,10 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 //относительно окна CUIStatic (используется для центрирования текстур)
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
+void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 							   CUIStaticItem& UIStaticItem)
 {
-	RECT parent_rect;
+	Irect parent_rect;
 	
 	if(pClipRect == NULL)
 		if(GetParent())
@@ -312,9 +340,9 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	else
 		parent_rect = *pClipRect;
 		
-	RECT rect = GetAbsoluteRect();
-	RECT wnd_rect = GetWndRect();
-	RECT out_rect;
+	Irect rect = GetAbsoluteRect();
+	Irect wnd_rect = GetWndRect();
+	Irect out_rect;
 
 
 	//проверить попадает ли изображение в окно
@@ -335,42 +363,27 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 	// out_rect - прямоугольная область в которую будет выводиться
 	// изображение, вычисляется с учетом положения относительно родительского
 	// окна, а также размеров прямоугольника на текстуре с изображением.
-	out_rect.top =   0;
-	out_rect.bottom = GetHeight();
-	out_rect.left =  0;
-	out_rect.right = GetWidth();
 
+	box2box_intersection(*((Irect*)&rect),*((Irect*)&parent_rect),*((Irect*)&out_rect));
+	out_rect.left	-= out_x;
+	out_rect.top	-= out_y;
+	out_rect.right	-= out_x;
+	out_rect.bottom -= out_y;
 
-	if(wnd_rect.left<0)
-	{
-		out_rect.left = -wnd_rect.left - offset_x;
+	if( m_bStretchTexture )
+		UIStaticItem.SetRect(out_rect);
+	else{
+		Irect r;
+		r.x1 = out_rect.left;
+		r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
+			out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
+
+		r.y1 = out_rect.top;
+		r.y2 = out_rect.bottom<UIStaticItem.GetOriginalRectScaled().height()?
+			out_rect.bottom:UIStaticItem.GetOriginalRectScaled().height();
+
+		UIStaticItem.SetRect(r);
 	}
-	else if(rect.right>parent_rect.right)
-	{
-		out_rect.right = GetWidth() - (rect.right-parent_rect.right) - offset_x;
-	}
-
-
-	if(wnd_rect.top<0)
-	{
-		out_rect.top = -wnd_rect.top - offset_y;
-	}
-	else if(rect.bottom>parent_rect.bottom)
-	{
-		out_rect.bottom = GetHeight() - (rect.bottom-parent_rect.bottom) - offset_y;
-	}
-	
-	Irect r;
-	r.x1 = out_rect.left;
-	r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
-		   out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
-
-	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom<UIStaticItem.GetOriginalRectScaled().height()?
-		   out_rect.bottom:UIStaticItem.GetOriginalRectScaled().height();
-
-	UIStaticItem.SetRect(r);
-	UIStaticItem.SetPos(out_x + offset_x , out_y  + offset_y);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -388,7 +401,7 @@ void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 {
 	m_bClipper = false;
 
-	RECT out_rect;
+	Irect out_rect;
 
 	out_rect.top =   0;
 	out_rect.bottom = GetHeight();
@@ -469,7 +482,7 @@ void CUIStatic::SetText(LPCSTR str)
 	str_len = m_sEdit.size();
 	buf_str.resize(str_len+1);
 
-	RECT r = GetAbsoluteRect();
+	Irect r = GetAbsoluteRect();
 	r.left += GetTextX() + m_iElipsisIndent;
 	Elipsis(r, m_ElipsisPos);
 }
@@ -502,7 +515,7 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 	if (m_pMask)
 	{
 		AttachChild(m_pMask);
-		RECT r		= GetWndRect();
+		Irect r		= GetWndRect();
 
 		m_pMask->SetWidth(r.right - r.left);
 		m_pMask->SetHeight(r.bottom - r.top);
@@ -609,7 +622,7 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::DrawString(const RECT &rect)
+void CUIStatic::DrawString(const Irect &rect)
 {
 	// Вывод текста
 
@@ -709,7 +722,7 @@ void CUIStatic::DrawString(const RECT &rect)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::Elipsis(const RECT &rect, EElipsisPosition elipsisPos)
+void CUIStatic::Elipsis(const Irect &rect, EElipsisPosition elipsisPos)
 {
 	if (eepNone == elipsisPos) return;
 
@@ -731,14 +744,14 @@ void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::SetClipRect(RECT r)
+void CUIStatic::SetClipRect(Irect r)
 {
 	m_ClipRect = r;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
+void CUIStatic::Elipsis(STRING &str, const Irect &rect, EElipsisPosition elipsisPos, CGameFont *pFont)
 {
 	if (eepNone == elipsisPos) return;
 

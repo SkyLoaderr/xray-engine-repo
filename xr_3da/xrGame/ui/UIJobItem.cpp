@@ -30,17 +30,17 @@ CUIJobItem::CUIJobItem(int leftOffest)
 	// Picture
 	AttachChild(&UIPicture);
 	xml_init.InitStatic(uiXml, "picture_static", 0, &UIPicture);
-	UIPicture.MoveWindow(UIPicture.GetWndRect().left + leftOffest, UIPicture.GetWndRect().top);
+	UIPicture.SetWndPos(UIPicture.GetWndRect().left + leftOffest, UIPicture.GetWndRect().top);
 
 	// Caption
 	AttachChild(&UICaption);
 	xml_init.InitStatic(uiXml, "caption_static", 0, &UICaption);
-	UICaption.MoveWindow(UICaption.GetWndRect().left + leftOffest, UICaption.GetWndRect().top);
+	UICaption.SetWndPos(UICaption.GetWndRect().left + leftOffest, UICaption.GetWndRect().top);
 
 	// Description
 	AttachChild(&UIDescription);
 	xml_init.InitStatic(uiXml, "description_static", 0, &UIDescription);
-	UIDescription.MoveWindow(UIDescription.GetWndRect().left + leftOffest, UIDescription.GetWndRect().top);
+	UIDescription.SetWndPos(UIDescription.GetWndRect().left + leftOffest, UIDescription.GetWndRect().top);
 
 	// Description
 	AttachChild(&UIAdditionalMaterials);
@@ -70,7 +70,7 @@ void CUIJobItem::SetPicture(LPCSTR texName, const Irect &originalRect, u32 color
 
 	UIPicture.SetOriginalRect(originalRect.x1, originalRect.y1, originalRect.x2, originalRect.y2);
 	UIPicture.ClipperOn();
-	RECT r = UIPicture.GetWndRect();
+	Irect r = UIPicture.GetWndRect();
 
 	float mx = 1.0f;
 	float my = 1.0f;

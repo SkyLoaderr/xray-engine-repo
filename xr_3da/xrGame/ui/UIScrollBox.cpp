@@ -97,10 +97,10 @@ void CUIScrollBox::OnMouse(int x, int y, EUIMessages mouse_action)
 
 				if(m_bIsHorizontal)
 				{
-					MoveWindow(GetWndRect().left+deltaX, GetWndRect().top);
+					SetWndPos(GetWndRect().left+deltaX, GetWndRect().top);
 				}
 				else
-					MoveWindow(GetWndRect().left, GetWndRect().top+deltaY);
+					SetWndPos(GetWndRect().left, GetWndRect().top+deltaY);
 
 				GetMessageTarget()->SendMessage(this, SCROLLBOX_MOVE);
 			}

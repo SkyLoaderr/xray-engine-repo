@@ -35,7 +35,7 @@ void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
 		it != artefacts.end(); it++)
 	{
 		const CArtefact* artefact = *it;
-		RECT rect;
+		Irect rect;
 		rect.left = artefact->GetXPos()*INV_GRID_WIDTH;
 		rect.top = artefact->GetYPos()*INV_GRID_HEIGHT;
 		rect.right = rect.left + artefact->GetGridWidth()*INV_GRID_WIDTH;
@@ -51,13 +51,13 @@ void CUIArtefactPanel::Draw(){
 		  int iHeight;
 		  int iWidth;
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	x = rect.left;
 	y = rect.top;	
 
 	for (ITr it = m_vRects.begin(); it != m_vRects.end(); ++it)
 	{
-		const RECT& r = *it;		
+		const Irect& r = *it;		
 
 		iHeight = (int)(m_si.GetScaleY()*(r.bottom - r.top));
 		iWidth  = (int)(m_si.GetScaleX()*(r.right - r.left));

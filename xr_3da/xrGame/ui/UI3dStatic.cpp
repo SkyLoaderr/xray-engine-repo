@@ -54,7 +54,7 @@ void  CUI3dStatic::Draw()
 {
 	if(m_pCurrentItem)
 	{
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 		// Apply scale
 		rect.top	= static_cast<int>(rect.top * UI()->GetScaleY());
 		rect.left	= static_cast<int>(rect.left * UI()->GetScaleX());

@@ -38,7 +38,7 @@ void CUICheckButton::Draw()
 {
 	inherited::Draw();
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	//нарисовать галочку
 	if(m_bIsChecked)

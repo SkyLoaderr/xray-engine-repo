@@ -74,12 +74,14 @@ void CUIWindow::script_register(lua_State *L)
 		def("GetFontGraffiti50Russian",	&GetFontGraffiti50Russian),
 		def("GetFontLetterica25",		&GetFontLetterica25),
 
-		class_<RECT>("RECT")
+		class_<Irect>("Irect")
 		.def(					constructor<>())
-		.def_readwrite("right",					&RECT::right)
-		.def_readwrite("left",					&RECT::left)
-		.def_readwrite("top",					&RECT::top)
-		.def_readwrite("bottom",				&RECT::bottom),
+		.def_readwrite("right",					&Irect::right)
+		.def_readwrite("left",					&Irect::left)
+		.def_readwrite("top",					&Irect::top)
+		.def_readwrite("bottom",				&Irect::bottom)
+		.def("width",							&Irect::width)
+		.def("height",							&Irect::height),
 
 		class_<CUIWindow>("CUIWindow")
 		.def(							constructor<>())
@@ -88,10 +90,10 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetAutoDelete",			&CUIWindow::SetAutoDelete)
 		.def("IsAutoDelete",			&CUIWindow::IsAutoDelete)
 
-		.def("SetWndRect",				(void (CUIWindow::*)(RECT))				 CUIWindow::SetWndRect)
+		.def("SetWndRect",				(void (CUIWindow::*)(Irect))				 CUIWindow::SetWndRect)
 		.def("SetWndRect",				(void (CUIWindow::*)(int,int,int,int))   CUIWindow::SetWndRect)
 		.def("Init",					(void (CUIWindow::*)(int,int,int,int))   CUIWindow::Init)
-		.def("Init",					(void (CUIWindow::*)(RECT*))			 CUIWindow::Init)
+		.def("Init",					(void (CUIWindow::*)(Irect*))			 CUIWindow::Init)
 		.def("GetWidth",				&CUIWindow::GetWidth)
 		.def("SetWidth",				&CUIWindow::SetWidth)
 		.def("GetHeight",				&CUIWindow::GetHeight)

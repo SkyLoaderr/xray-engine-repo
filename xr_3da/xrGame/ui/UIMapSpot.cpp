@@ -55,7 +55,7 @@ void CUIMapSpot::Draw()
 {
 	if(m_bHeading)
 	{
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 		if(m_bClipper) TextureClipper();
 		m_UIStaticItem.SetPos(rect.left, rect.top);
 		m_UIStaticItem.Render(m_fHeading);
@@ -74,8 +74,8 @@ void CUIMapSpot::Draw()
 
 		m_bArrowVisible = false;
 
-		RECT parentRect = p->GetAbsoluteRect();
-		RECT ourRect	= GetAbsoluteRect(), ourRect2 = GetAbsoluteRect();
+		Irect parentRect = p->GetAbsoluteRect();
+		Irect ourRect	= GetAbsoluteRect(), ourRect2 = GetAbsoluteRect();
 
 		// Clamp x coordinate
 		clamp(ourRect.left, parentRect.left - ourRect.right + ourRect.left, parentRect.right);

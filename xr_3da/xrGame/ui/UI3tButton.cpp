@@ -93,7 +93,7 @@ void CUI3tButton::SetDisabledTextColor(u32 color){
 }
 
 void CUI3tButton::Draw(){
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	m_background.Draw();
 

@@ -23,7 +23,7 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::AddPhrase()
 
 void CUIMultiTextStatic::Draw()
 {
-	RECT r = GetAbsoluteRect();
+	Irect r = GetAbsoluteRect();
 
 	for (Phrases_it it = m_vPhrases.begin(); it != m_vPhrases.end(); ++it)
 	{
@@ -93,7 +93,7 @@ void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 		STRING s;
 		CUIStatic::SetText(*str, s);
 
-		RECT r;
+		Irect r;
 		r.left		= 0;
 		r.right		= maxWidth;
 		r.top		= 0;

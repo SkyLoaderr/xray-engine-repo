@@ -354,7 +354,7 @@ void CUIBuyWeaponWnd::InitBackgroundStatics()
 	TABS_VECTOR *pTabV = UIWeaponsTabControl.GetButtonsVector();
 	int i = 1;
 
-	RECT r;
+	Irect r;
 	CUIMultiTextStatic::SinglePhrase * pSP;
 
 	r = UIStaticTabCtrl.GetAbsoluteRect();
@@ -930,12 +930,12 @@ void CUIBuyWeaponWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	if (WINDOW_LBUTTON_DOWN == mouse_action || WINDOW_RBUTTON_DOWN == mouse_action)
 	{
-		RECT	r = UIOutfitIcon.GetAbsoluteRect();
-		POINT	p;
+		Irect		r = UIOutfitIcon.GetAbsoluteRect();
+		Ivector2	p;
 		p.x = x;
 		p.y = y;
 
-		if (PtInRect(&r, p))
+		if ( r.in(p) /*PtInRect(&r, p)*/ )
 		{
 			SendMessage(&UIOutfitIcon, static_cast<s16>(mouse_action), NULL);
 		}
@@ -1075,7 +1075,7 @@ void CUIBuyWeaponWnd::Hide()
 void CUIBuyWeaponWnd::ActivatePropertiesBox()
 {
 	int x,y;
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	GetUICursor()->GetPos(x,y);
 
 	UIPropertiesBox.RemoveAll();
@@ -1919,7 +1919,7 @@ void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 	if (bOn)
 	{
 		R_ASSERT(activeTabIndex < UIWeaponsTabControl.GetTabsCount());
-		RECT r	= (*UIWeaponsTabControl.GetButtonsVector())[activeTabIndex]->GetAbsoluteRect();
+		Irect r	= (*UIWeaponsTabControl.GetButtonsVector())[activeTabIndex]->GetAbsoluteRect();
 		UIGreenIndicator.SetWndRect(r.left + 5, r.top + 22, uIndicatorWidth, uIndicatorHeight);
 		AttachChild(&UIGreenIndicator);
 	};	
@@ -2397,7 +2397,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 		UIItemInfo.UIItemImage.TextureOn();
 
 		// Центрируем или скейлим текстуру в зависимости от ее размера
-		RECT r2 = UIItemInfo.UIItemImage.GetWndRect();
+		Irect r2 = UIItemInfo.UIItemImage.GetWndRect();
 
 		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
 		{

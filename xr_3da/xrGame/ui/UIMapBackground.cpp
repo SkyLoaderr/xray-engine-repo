@@ -76,7 +76,7 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 
 void CUIMapBackground::InitMapBackground(const ref_shader &sh)
 {
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	landscape.SetPos(rect.left, rect.top);
 	landscape.SetRect(0, 0, GetWidth(), GetHeight());
 	landscape.SetShader(sh);
@@ -360,7 +360,7 @@ void CUIMapBackground::DrawFogOfWarCell(int x, int y)
 	
 	Level().FogOfWar().GetFogCellWorldPos(x,y,cell_world_pos);
 	ConvertToLocal(cell_world_pos, screen_pos);
-	m_fogOfWarCell.MoveWindow(screen_pos.x, screen_pos.y);
+	m_fogOfWarCell.SetWndPos(screen_pos.x, screen_pos.y);
 	m_fogOfWarCell.Update();
 	m_fogOfWarCell.Draw();
 }
@@ -399,8 +399,8 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 	{
 		GetParent()->SetCapture(this, cursor_on_button);
 		// Check for spot arrow hit
-		RECT r, absR = GetAbsoluteRect();
-		POINT p;
+		Irect r, absR = GetAbsoluteRect();
+		Ivector2 p;
 		p.x = x;
 		p.y = y;
 
@@ -420,7 +420,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 
 				if (NULL == focusHolder || pSpot == focusHolder)
 				{
-					if (PtInRect(&r, p))
+					if ( r.in(p)/*PtInRect(&r, p)*/)
 					{
 						if (NULL == focusHolder)
 						{
@@ -519,13 +519,13 @@ void CUIMapBackground::UpdateMapSpots()
 		
 		switch(m_vMapSpots[i]->m_eAlign) {
 		case CUIMapSpot::eBottom:
-            m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT);
+            m_vMapSpots[i]->SetWndPos(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT);
 			break;
 		case CUIMapSpot::eCenter:
-			m_vMapSpots[i]->MoveWindow(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT/2);
+			m_vMapSpots[i]->SetWndPos(pos.x - MAP_ICON_WIDTH/2, pos.y - MAP_ICON_HEIGHT/2);
 			break;
 		default:
-			m_vMapSpots[i]->MoveWindow(pos.x, pos.y);
+			m_vMapSpots[i]->SetWndPos(pos.x, pos.y);
 		}
 	}
 }

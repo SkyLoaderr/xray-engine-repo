@@ -91,7 +91,7 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 
 	if (pEatableItem->m_iPortionsNum > 1)
 	{
-		RECT rect = pItem->GetAbsoluteRect();
+		Irect rect = pItem->GetAbsoluteRect();
 
 		pItem->GetFont()->SetColor(0xffffffff);
 		if(pEatableItem->m_iPortionsNum>0)

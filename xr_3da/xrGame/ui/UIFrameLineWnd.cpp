@@ -47,7 +47,7 @@ void CUIFrameLineWnd::Init(LPCSTR base_name, int x, int y, int width, int height
 
 void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 
-	RECT rect = GetAbsoluteRect();	
+	Irect rect = GetAbsoluteRect();	
 
 	if (horizontal)
 	{
@@ -65,7 +65,7 @@ void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
 
 void CUIFrameLineWnd::Draw()
 {
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	UIFrameLine.SetPos(rect.left, rect.top);
 	UIFrameLine.Render();
 

@@ -56,7 +56,7 @@ CUIListItemPair::~CUIListItemPair(){
 
 void CUIListItemPair::Draw(){	
 	//CUIListItemEx::Draw();
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{		

@@ -128,11 +128,23 @@ void CUIGlobalMap::OnBtnMaximizedClick()
 }
 //////////////////////////////////////////////////////////////////////////
 
+CUILevelMap::CUILevelMap()
+{
+}
+
+CUILevelMap::~CUILevelMap()
+{}
+
+
+///////////////////////////////////////////////////////////////////////////
 CUIMapWnd::CUIMapWnd()
 {
+	m_activeLevelMap		= NULL;
 	m_GlobalMap				= xr_new<CUIGlobalMap>();
 	m_GlobalMap->SetAutoDelete(true);
 //	AttachChild				(m_GlobalMap);
+	m_activeLevelMap		= xr_new<CUILevelMap>();
+	m_flags.zero();
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -154,23 +166,35 @@ void CUIMapWnd::Init()
 
 	AttachChild(&m_UIMainFrame);
 	xml_init.InitFrameWindow(uiXml, "main_wnd:main_map_frame", 0, &m_UIMainFrame);
-	m_UIMainFrame.AttachChild(&m_UIMainScrollH);
-	m_UIMainFrame.AttachChild(&m_UIMainScrollV);
 
+	xml_init.InitStatic(uiXml, "main_wnd:main_map_frame:level_frame", 0, &m_UILevelFrame);
+	m_UIMainFrame.AttachChild(&m_UILevelFrame);
 
-	RECT r = m_UIMainFrame.GetWndRect();
+	Irect r = m_UILevelFrame.GetWndRect();
 
 	m_UIMainScrollV.Init(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
+	m_UIMainFrame.AttachChild(&m_UIMainScrollV);
 	m_UIMainScrollV.SetMessageTarget(this);
 	m_UIMainScrollV.Show(true);
 
 	m_UIMainScrollH.Init(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
+	m_UIMainFrame.AttachChild(&m_UIMainScrollH);
 	m_UIMainScrollH.SetMessageTarget(this);
 	m_UIMainScrollH.Show(true);
 
 //	AttachChild(&UIMainMapHeader);
 //	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
 
+	static int xx = 0;
+	static int yy = 0;
+
+	m_activeLevelMap->Init("ui\\ui_l2save",0,0,0,0);
+	m_activeLevelMap->SetWndRect(0,0,1024,1024);
+	m_activeLevelMap->SetWndPos(xx,yy);
+	m_activeLevelMap->SetStretchTexture(true);
+	m_activeLevelMap->ClipperOn();
+
+	m_UILevelFrame.AttachChild(m_activeLevelMap);
 }
 
 void CUIMapWnd::Show(bool status)
@@ -181,16 +205,51 @@ void CUIMapWnd::Show(bool status)
 		InitLocalMapObjectives			();
 //		SwitchMapMode					(emmLocal);
 //		SetLocalMap						(Level().name());
+	}else{
+		GetUICursor()->HoldMode(false);
 	}
+
 	inherited::Show(status);
-//	if (status)	inherited::Show();
-//	else		inherited::Hide();
 }
 
-void CUIMapWnd::OnMouse	(int x, int y, EUIMessages mouse_action)
+
+
+void CUIMapWnd::Draw()
 {
-	inherited::OnMouse(x, y, mouse_action);
+	if(m_activeLevelMap)
+		m_activeLevelMap->SetClipRect( m_UILevelFrame.GetAbsoluteRect() );
+
+	inherited::Draw();
+
 }
+
+
+void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
+{
+	inherited::OnMouse(x,y,mouse_action);
+
+	
+	if(m_activeLevelMap && CursorOverWindow() ){
+		switch (mouse_action){
+			case WINDOW_MOUSE_MOVE:
+				if(m_flags.test(lmMouseHold)){
+						m_activeLevelMap->MoveWndDelta( GetUICursor()->GetPosDelta() );
+				}break;
+
+			case WINDOW_LBUTTON_DOWN:{
+							GetUICursor()->HoldMode(true);
+							m_flags.set(lmMouseHold,TRUE);
+					   }break;
+
+			case WINDOW_LBUTTON_UP:{
+							GetUICursor()->HoldMode(false);
+							m_flags.set(lmMouseHold,FALSE);
+					   }break;
+		}	
+	};
+}
+
+
 /*
 using namespace InventoryUtilities;
 
@@ -316,7 +375,7 @@ void CUIMapWnd::Init()
 	UIMapGoals.Enable(false);
 	UIMapGoals.Show(false);
 
-	RECT r = UILocalMapBackground.GetWndRect();
+	Irect r = UILocalMapBackground.GetWndRect();
 
 	UIMainMapFrame.AttachChild(&UIMapBgndV);
 	UIMapBgndV.Init(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
@@ -418,7 +477,7 @@ void CUIMapWnd::InitLocalMapObjectives()
 		else
         	map_spot->SetShader(GetMapIconsShader());
 
-		map_spot->MoveWindow(P.x + left, P.y + top);
+		map_spot->SetWndPos(P.x + left, P.y + top);
 		map_spot->SetWidth(MAP_ICON_WIDTH*map_location.icon_width);
 		map_spot->SetHeight(MAP_ICON_HEIGHT*map_location.icon_height);
 		map_spot->GetUIStaticItem().SetOriginalRect(
@@ -462,7 +521,7 @@ void CUIMapWnd::InitLocalMapObjectives()
 	map_spot->SetHeight(MAP_ICON_HEIGHT);
 	map_spot->SetObjectID(0xffff);
 
-	map_spot->MoveWindow(P.x + left, P.y + top);
+	map_spot->SetWndPos(P.x + left, P.y + top);
 	map_spot->m_eAlign = CUIMapSpot::eCenter;
 	map_spot->m_sDescText.SetText("It's you.");
 	map_spot->m_sNameText.SetText("You");
@@ -524,7 +583,7 @@ void CUIMapWnd::InitGlobalMapObjectives()
 				 	{
 						if(map_location.global_map_text)
 							mapIt->second.obj.push_back(map_location.text);
-						RECT r	= mapIt->second.smallFrame->GetWndRect();
+						Irect r	= mapIt->second.smallFrame->GetWndRect();
 						r.top	= globalMapButtonHeight - r.top;
 						mapIt->second.visible = !(r.left == m_rDefault.left && r.top == m_rDefault.top);
 					}
@@ -538,7 +597,7 @@ void CUIMapWnd::InitGlobalMapObjectives()
 	mapIt = m_LocalMaps.find(Level().name());
 	if (m_LocalMaps.end() != mapIt)
 	{
-		RECT r	= mapIt->second.smallFrame->GetWndRect();
+		Irect r	= mapIt->second.smallFrame->GetWndRect();
 		r.top	= globalMapButtonHeight - r.top;
 		mapIt->second.visible = !(r.left == m_rDefault.left && r.top == m_rDefault.top);
 		mapIt->second.smallFrame->SetColor(ourLevelMapColor);
@@ -588,7 +647,7 @@ void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
 	map_spot->SetShader(GetCharIconsShader());
 	map_spot->SetWidth(MAP_ICON_WIDTH);
 	map_spot->SetHeight(MAP_ICON_HEIGHT);
-	map_spot->MoveWindow(P.x + left, P.y + top);
+	map_spot->SetWndPos(P.x + left, P.y + top);
 	map_spot->m_eAlign = CUIMapSpot::eCenter;
 	map_spot->m_sDescText.SetText("");
 	map_spot->m_sNameText.SetText("");
@@ -617,12 +676,12 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		if (MAPSPOT_FOCUS_RECEIVED == msg || MAPSPOT_ARROW_FOCUS_RECEIVED == msg){
 			if (m_pCurrentMap->m_pActiveMapSpot){
 				UIStaticInfo.Show(true);
-				RECT r	= m_pCurrentMap->m_pActiveMapSpot->GetAbsoluteRect();
-				RECT r2	= UIStaticInfo.GetParent()->GetAbsoluteRect();
+				Irect r	= m_pCurrentMap->m_pActiveMapSpot->GetAbsoluteRect();
+				Irect r2	= UIStaticInfo.GetParent()->GetAbsoluteRect();
 				
 				int left = r.right - r2.left;
 				int top = r.top + 2 - r2.top;
-				UIStaticInfo.MoveWindow(left, top);
+				UIStaticInfo.SetWndPos(left, top);
 			
 				//CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
@@ -721,16 +780,16 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 							it != UIMapTypeSwitch.GetChildWndList().end();
 							++it)
 		{
-			RECT r = (*it)->GetWndRect();
-			(*it)->MoveWindow(r.left - UIMapTypeSwitch.GetPushOffsetX(), r.top - UIMapTypeSwitch.GetPushOffsetY());
+			Irect r = (*it)->GetWndRect();
+			(*it)->SetWndPos(r.left - UIMapTypeSwitch.GetPushOffsetX(), r.top - UIMapTypeSwitch.GetPushOffsetY());
 		}
 	}else if (&UIMapTypeSwitch == pWnd && BUTTON_DOWN == msg){
 		for (WINDOW_LIST_it it = UIMapTypeSwitch.GetChildWndList().begin();
 							it != UIMapTypeSwitch.GetChildWndList().end();
 							++it)
 		{
-			RECT r = (*it)->GetWndRect();
-			(*it)->MoveWindow(r.left + UIMapTypeSwitch.GetPushOffsetX(), r.top + UIMapTypeSwitch.GetPushOffsetY());
+			Irect r = (*it)->GetWndRect();
+			(*it)->SetWndPos(r.left + UIMapTypeSwitch.GetPushOffsetX(), r.top + UIMapTypeSwitch.GetPushOffsetY());
 		}
 	}
 

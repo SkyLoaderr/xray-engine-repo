@@ -208,7 +208,7 @@ void  CUIButton::Draw()
 {
 //	CUIWindow::Draw();
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
@@ -254,36 +254,39 @@ void  CUIButton::Draw()
 
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
-			GetFont()->SetColor(m_HighlightColor);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			Irect r = GetClipRect();
+			CGameFont * F = GetFont();
+			F->SetColor(m_HighlightColor);
+
+			UI()->OutText(F, r, 
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(F, r, 
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, r,
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(F, r, 
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, r,
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, r,
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, r,
 				(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			UI()->OutText(GetFont(), GetClipRect(),
+			UI()->OutText(F, r,
 				(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);

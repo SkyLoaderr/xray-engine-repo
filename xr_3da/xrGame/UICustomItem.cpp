@@ -7,13 +7,15 @@
 //////////////////////////////////////////////////////////////////////
 CUICustomItem::CUICustomItem()
 {    
-	uAlign			= alNone;
-	uFlags			= 0;
-	iVisRect.lt.set	(0,0); iVisRect.rb.set(0,0);
-	eMirrorMode		= tmNone;
+	uAlign				= alNone;
+	uFlags				= 0;
+	iVisRect.set		(0,0,0,0);
+	iOriginalRect.set	(0,0,0,0);
+	iTextureRect.set	(0,0,0,0);
+	eMirrorMode			= tmNone;
 
-	fScaleX = 1.f;
-	fScaleY = 1.f;
+	fScaleX				= 1.f;
+	fScaleY				= 1.f;
 }
 //--------------------------------------------------------------------
 
@@ -215,6 +217,21 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 
 Irect CUICustomItem::GetOriginalRectScaled()
 {
+	Irect rect = iOriginalRect;
+
+	rect.x2		= rect.x1 + iFloor(rect.width()	 * GetScaleX() );
+	rect.y2		= rect.y1 + iFloor(rect.height() * GetScaleY() );
+
+	return rect;
+}
+
+Irect CUICustomItem::GetOriginalRect() const
+{
+	return iOriginalRect;
+}
+/*
+Irect CUICustomItem::GetOriginalRectScaled()
+{
 	Irect rect;
 	rect.x1 = iOriginalRect.x1;
 	rect.y1 = iOriginalRect.y1;
@@ -233,7 +250,9 @@ Irect CUICustomItem::GetOriginalRect() const
 	rect.y2 = iFloor(0.5f +rect.y1 + float(iOriginalRect.y2-iOriginalRect.y1));
 
 	return rect;
-}
+}*/
+
+
 void CUICustomItem::SetOriginalRect(int x, int y, int width, int height)
 {
 	iOriginalRect.set(x,y,x+width,y+height); 

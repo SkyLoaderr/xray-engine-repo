@@ -24,7 +24,7 @@ public:
 					CUIGlobalMapLocation	();
 	virtual			~CUIGlobalMapLocation	();
 
-	virtual void	Init					(int width, int height, RECT clipRect, LPCSTR frameBase);
+	virtual void	Init					(int width, int height, Irect clipRect, LPCSTR frameBase);
 	virtual void	Draw					();
 	void			SetColor				(const u32 cl) { UIBorder.SetColor(cl); }
 	// Имя карты

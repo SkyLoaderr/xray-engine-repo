@@ -61,7 +61,7 @@ public:
 	// Установить текст заголовка нужной колонки
 	void SetHeaderColumnText(u32 headerItem, const shared_str &text);
 	
-	RECT GetFrameRect () { return UIFrameWnd.GetWndRect();};
+	Irect GetFrameRect () { return UIFrameWnd.GetWndRect();};
 	void RemoveItem (const u32 Index) {UIStatsList.RemoveItem(Index);};
 protected:
 //	CUIButton			UIBtn;

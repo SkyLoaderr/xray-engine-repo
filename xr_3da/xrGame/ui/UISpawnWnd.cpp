@@ -93,7 +93,7 @@ void CUISpawnWnd::SetDisplayMode(bool bDual)
 {
 	m_bDual = bDual;
 
-	RECT frameCoords = UIFrameWndSecondary.GetWndRect();
+	Irect frameCoords = UIFrameWndSecondary.GetWndRect();
 	int updatedX, updatedY;
 
 	updatedY = UI_BASE_HEIGHT / 2 - (frameCoords.bottom - frameCoords.top) / 2;

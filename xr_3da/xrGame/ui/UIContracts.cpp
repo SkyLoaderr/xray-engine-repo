@@ -41,7 +41,7 @@ void CUIContractsWnd::Init()
 	CUIWindow wnd;
 	xml_init.InitWindow(uiXml, "window", 0, &wnd);
 
-	RECT r = wnd.GetWndRect();
+	Irect r = wnd.GetWndRect();
 	AttachChild(&UICharInfo);
 	UICharInfo.Init(r.left, r.top, r.right, r.bottom, CONTRACTS_CHAR_XML);
 	UICharInfo.m_bInfoAutoAdjust = false;

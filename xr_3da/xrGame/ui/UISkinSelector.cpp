@@ -62,7 +62,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 					CUIXmlInit::ApplyAlignY(0, alCenter),
 					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
-	RECT rect, r;
+	Irect rect, r;
 
 	// Читаем из xml файла параметры окна и контролов
 
@@ -131,13 +131,13 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	xml_init.InitButton(xml_doc, "button", 0, &UIOkBtn);
 	rect	= UIOkBtn.GetWndRect();
 
-	UIOkBtn.MoveWindow(UI_BASE_WIDTH / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
+	UIOkBtn.SetWndPos(UI_BASE_WIDTH / 2 - static_cast<int>((rect.right - rect.left) * 1.5),
 		r.bottom + r.top / 2 - UIOkBtn.GetHeight());
 
 	AttachChild(&UICancelBtn);
 	xml_init.InitButton(xml_doc, "button", 1, &UICancelBtn);
 	rect	= UICancelBtn.GetWndRect();
-	UICancelBtn.MoveWindow(UI_BASE_WIDTH / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
+	UICancelBtn.SetWndPos(UI_BASE_WIDTH / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
 		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
 
 	SetFont(HUD().Font().pFontHeaderRussian);
@@ -188,12 +188,12 @@ u32 CUISkinSelectorWnd::CalculateSkinWindowWidth() const
 
 void CUISkinSelectorWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	POINT activePoint;
+	Ivector2 activePoint;
 
 	activePoint.x = x;
 	activePoint.y = y;
 
-	RECT rect;
+	Irect rect;
 
 	// При нажатии на окно со скином, мы делаем его активным
 	if (mouse_action == WINDOW_LBUTTON_DOWN)
@@ -201,7 +201,7 @@ void CUISkinSelectorWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 		for (int i = 0; i < SKINS_COUNT; ++i)
 		{
 			rect = m_vSkinWindows[i].UIHighlight.GetAbsoluteRect();
-			if (PtInRect(&rect, activePoint) && i != m_uActiveIndex)
+			if ( rect.in(activePoint)/* PtInRect(&rect, activePoint)*/ && i != m_uActiveIndex)
 			{
 				SwitchSkin(static_cast<u8>(i));
 			}
@@ -236,7 +236,7 @@ void CUISkinSelectorWnd::InitializeSkins()
 	{
 		
 		AttachChild(&m_vSkinWindows[i].UIHighlight);
-		RECT r	= m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
+		Irect r	= m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
 
 		// Координаты бекграунда
 		r.bottom	-= border;
@@ -329,7 +329,7 @@ void CUISkinSelectorWnd::DrawKBAccelerators()
 {
 	for (u8 i = 0; i < SKINS_COUNT; ++i)
 	{
-		RECT rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
+		Irect rect = m_vSkinWindows[i].UIBackground.GetAbsoluteRect();
 
 		Irect r;
 		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);

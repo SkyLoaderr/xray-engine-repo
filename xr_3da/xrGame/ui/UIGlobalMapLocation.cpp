@@ -25,7 +25,7 @@ CUIGlobalMapLocation::~CUIGlobalMapLocation()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIGlobalMapLocation::Init(int width, int height, RECT clipRect, LPCSTR frameBase)
+void CUIGlobalMapLocation::Init(int width, int height, Irect clipRect, LPCSTR frameBase)
 {
 	UIBorder.Init(frameBase, 0, 0, width, height);
 	inherited::SetWidth(width);

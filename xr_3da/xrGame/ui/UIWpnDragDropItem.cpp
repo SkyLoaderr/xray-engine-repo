@@ -27,7 +27,7 @@ void CUIWpnDragDropItem::Draw()
 
 	if(!m_pWeapon)	return;
 
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 
 

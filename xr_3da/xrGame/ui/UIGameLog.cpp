@@ -33,7 +33,7 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	VERIFY(item);
 	
 	pItem->UIMsgText.SetText(msg.c_str());	
-	pItem->UIMsgText.MoveWindow(0, 0);	
+	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->SetData(animation);
 //	item->SetData(animation);
 //	item->SetText(msg.c_str());

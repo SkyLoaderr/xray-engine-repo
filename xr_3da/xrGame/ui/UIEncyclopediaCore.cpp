@@ -72,7 +72,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	if (m_pCurrArticle && m_pCurrArticle->data())
 	{
 		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-//		m_pCurrArticle->data()->image.MoveWindow(0, 0);
+//		m_pCurrArticle->data()->image.SetWndPos(0, 0);
 	}
 
 	// для начала проверим, что нажатый элемент не рутовый
@@ -80,8 +80,8 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 	{
 		// Image
 		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
-		img.MoveWindow(0, 0);
-		RECT r = pInfoList->GetAbsoluteRect();
+		img.SetWndPos(0, 0);
+		Irect r = pInfoList->GetAbsoluteRect();
 
 		img.SetClipRect(r);
 		UIImgMask.SetClipper(true, r);
@@ -184,7 +184,7 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index, bool bReaded)
 void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 {
 	// Выравниваем текстурку по центру листа
-	s.MoveWindow(((pInfoList->GetWndRect().right - pInfoList->GetWndRect().left) - (s.GetWndRect().right - s.GetWndRect().left) - 15) / 2, s.GetWndRect().top);
+	s.SetWndPos(((pInfoList->GetWndRect().right - pInfoList->GetWndRect().left) - (s.GetWndRect().right - s.GetWndRect().left) - 15) / 2, s.GetWndRect().top);
 
 	// Теперь добавляем в лист столько пустых айтемов, чтобы они полностью перекрыли нашу картинку
 	int emptyItemsCnt = iCeil(static_cast<float>(s.GetWndRect().bottom) / pInfoList->GetItemHeight());
@@ -201,12 +201,12 @@ void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if (pInfoList == pWnd && SCROLLBAR_VSCROLL == msg && m_pCurrArticle)
 	{
-		RECT r = m_pCurrArticle->data()->image.GetWndRect();
-		m_pCurrArticle->data()->image.MoveWindow(r.left,
+		Irect r = m_pCurrArticle->data()->image.GetWndRect();
+		m_pCurrArticle->data()->image.SetWndPos(r.left,
 			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
 		m_iCurrentInfoListPos = pInfoList->GetListPosition();
-//		RECT r = pItemImage->GetWndRect();
-//		pItemImage->MoveWindow(r.left,
+//		Irect r = pItemImage->GetWndRect();
+//		pItemImage->SetWndPos(r.left,
 //			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
 //		m_iCurrentInfoListPos = pInfoList->GetListPosition();
 	}
@@ -221,7 +221,7 @@ void CUIEncyclopediaCore::Show(bool status)
 		if (m_pCurrArticle)
 		{
 			pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-			m_pCurrArticle->data()->image.MoveWindow(0, 0);
+			m_pCurrArticle->data()->image.SetWndPos(0, 0);
 
 			m_pCurrArticle = NULL;
 		}

@@ -49,7 +49,7 @@ public:
 	void EnableDragDrop(bool bEnable)	{m_bDDEnabled = bEnable;}
 	bool IsDragDropEnabled() const		{ return m_bDDEnabled; }
 
-	POINT GetPreviousPos() {return m_previousPos;}
+	Ivector2 GetPreviousPos() {return m_previousPos;}
 
 
 	//размеры в сетке Drag&Drop
@@ -101,7 +101,7 @@ protected:
 	//включен ли drag drop
 	bool m_bDDEnabled;
 
-	POINT m_previousPos;
+	Ivector2 m_previousPos;
 
 	//размер и положение в сетке
 	//элементов Drag&Drop 

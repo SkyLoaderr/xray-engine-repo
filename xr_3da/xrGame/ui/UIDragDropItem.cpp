@@ -174,7 +174,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 					m_bNeedOldMousePosRecalc = false;
 				}
 				
-				MoveWindow(GetWndRect().left+deltaX,  GetWndRect().top+deltaY);
+				SetWndPos(GetWndRect().left+deltaX,  GetWndRect().top+deltaY);
 
 				GetTop()->SendMessage(this, DRAG_DROP_ITEM_MOVE);
 			}
@@ -197,7 +197,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 			ClipperOn();
 			
 			/////
-			//MoveWindow(m_previousPos.x,	m_previousPos.y);
+			//SetWndPos(m_previousPos.x,	m_previousPos.y);
 		}
 	}
 
@@ -213,7 +213,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, EUIMessages mouse_action)
 
 void CUIDragDropItem::Draw()
 {
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	//отцентрировать текстуру по центру ее окна
 	int right_offset = (GetWidth()-m_UIStaticItem.GetOriginalRectScaled().width())/2;
@@ -260,7 +260,7 @@ void CUIDragDropItem::Rescale(float scale_x, float scale_y)
 
 	SetWidth(newW);
 	SetHeight(newH);
-	MoveWindow(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
+	SetWndPos(GetWndRect().left + deltaW, GetWndRect().top + deltaH);
 }
 
 //////////////////////////////////////////////////////////////////////////

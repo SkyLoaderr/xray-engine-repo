@@ -178,33 +178,30 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 		if( !IsChild(pWnd) ) 
 		{
-			RECT rect = GetAbsoluteRect();
-			POINT pt_lt, pt_lb, pt_rt, pt_rb;
+			Irect rect = GetAbsoluteRect();
+			Ivector2 pt_lt, pt_lb, pt_rt, pt_rb;
+			Irect wnd_rect = pWnd->GetAbsoluteRect();
 			
-			pt_lt.x = pWnd->GetAbsoluteRect().left;
-			pt_lt.y = pWnd->GetAbsoluteRect().top;
+			pt_lt.x = wnd_rect.left;
+			pt_lt.y = wnd_rect.top;
 
-			pt_lb.x = pWnd->GetAbsoluteRect().left;
-			pt_lb.y = pWnd->GetAbsoluteRect().bottom;
+			pt_lb.x = wnd_rect.left;
+			pt_lb.y = wnd_rect.bottom;
 
-			pt_rt.x = pWnd->GetAbsoluteRect().right;
-			pt_rt.y = pWnd->GetAbsoluteRect().top;
+			pt_rt.x = wnd_rect.right;
+			pt_rt.y = wnd_rect.top;
 
-			pt_rb.x = pWnd->GetAbsoluteRect().right;
-			pt_rb.y = pWnd->GetAbsoluteRect().bottom;		
+			pt_rb.x = wnd_rect.right;
+			pt_rb.y = wnd_rect.bottom;		
 
-/*			if(PtInRect(&rect, pt_lt) || 
-			   PtInRect(&rect, pt_lb) ||
-			   PtInRect(&rect, pt_rt) ||
-			   PtInRect(&rect, pt_rb))*/
-			POINT pt_center;
-			pt_center.x = (pWnd->GetAbsoluteRect().right+
-						   pWnd->GetAbsoluteRect().left)/2;
-			pt_center.y = (pWnd->GetAbsoluteRect().top+
-						   pWnd->GetAbsoluteRect().bottom)/2;;
+			Ivector2 pt_center;
+			pt_center.x = (wnd_rect.right+
+						   wnd_rect.left)/2;
+			pt_center.y = (wnd_rect.top+
+						   wnd_rect.bottom)/2;;
 
 
-			if(PtInRect(&rect, pt_center) || pItem->NeedMoveWithoutRectCheck())
+			if( rect.in(pt_center)/*PtInRect(&rect, pt_center)*/ || pItem->NeedMoveWithoutRectCheck())
 			{
 
 				//отсоединить у прошлого родителя
@@ -423,8 +420,8 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 
 	//проверяем, можно ли разместить элемент на том месте на 
 	//котором он сейчас
-	RECT item_rect = pItem->GetAbsoluteRect();
-	RECT rect = GetAbsoluteRect();
+	Irect item_rect = pItem->GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 
 	if(item_rect.left - rect.left<0)
 		place_col = 0;
@@ -538,7 +535,7 @@ void CUIDragDropList::PlaceItemAtPos(int place_row, int place_col, CUIDragDropIt
 
 
 	//разместить само окно элемента
-	pItem->MoveWindow(place_col*GetCellWidth(),
+	pItem->SetWndPos(place_col*GetCellWidth(),
 		(place_row-m_iCurrentFirstRow)*GetCellHeight());
 
 	pItem->SetWidth(GetCellWidth()*pItem->GetGridWidth());
@@ -621,7 +618,7 @@ void CUIDragDropList::UpdateList()
 		{
 			int y = (pDragDropItem->GetGridRow()-m_iCurrentFirstRow)*GetCellHeight();
 			int x = (pDragDropItem->GetGridCol())*GetCellWidth();
-			pDragDropItem->MoveWindow(x, y);
+			pDragDropItem->SetWndPos(x, y);
 		}
 	}
 }

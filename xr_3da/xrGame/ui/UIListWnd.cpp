@@ -396,7 +396,7 @@ void CUIListWnd::Draw()
 
 	if(m_iFocusedItem != -1 && m_bActiveBackgroundEnable)
 	{
-		RECT rect = GetAbsoluteRect();
+		Irect rect = GetAbsoluteRect();
 		for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 		{
 			CUIListItem *pListItem2 = smart_cast<CUIListItem*>(*it);

@@ -79,7 +79,7 @@ void CUIInteractiveBackground<T>::Init(LPCSTR texture_e, int x, int y, int width
 
 template <class T>
 void CUIInteractiveBackground<T>::InitEnabledState(LPCSTR texture_e){
-	RECT r = GetWndRect();
+	Irect r = GetWndRect();
 
 	if (!m_stateEnabled)
 	{
@@ -95,7 +95,7 @@ void CUIInteractiveBackground<T>::InitEnabledState(LPCSTR texture_e){
 
 template <class T>
 void CUIInteractiveBackground<T>::InitDisabledState(LPCSTR texture_d){
-	RECT r = GetWndRect();
+	Irect r = GetWndRect();
 
 	if (!m_stateDisabled)
 	{
@@ -109,7 +109,7 @@ void CUIInteractiveBackground<T>::InitDisabledState(LPCSTR texture_d){
 
 template <class T>
 void CUIInteractiveBackground<T>::InitHighlightedState(LPCSTR texture_h){
-	RECT r = GetWndRect();
+	Irect r = GetWndRect();
     
 	if (!m_stateHighlighted)
 	{
@@ -123,7 +123,7 @@ void CUIInteractiveBackground<T>::InitHighlightedState(LPCSTR texture_h){
 
 template <class T>
 void CUIInteractiveBackground<T>::InitTouchedState(LPCSTR texture_d){
-	RECT r = GetWndRect();
+	Irect r = GetWndRect();
 
     if (!m_stateTouched)
 	{

@@ -93,7 +93,7 @@ void CUIScrollBar::UpdateScrollBar()
 									(float)(GetWidth()-2*SCROLLBAR_WIDTH)*
 									scrollbar_unit*m_iPageSize));
 		
-		m_ScrollBox.MoveWindow((int)(SCROLLBAR_WIDTH + 	
+		m_ScrollBox.SetWndPos((int)(SCROLLBAR_WIDTH + 	
 									(GetWidth()-2*SCROLLBAR_WIDTH)
 									*scrollbar_unit*(m_iScrollPos-m_iMinPos)),  
 							          m_ScrollBox.GetWndRect().top);
@@ -112,7 +112,7 @@ void CUIScrollBar::UpdateScrollBar()
 
 		m_ScrollBox.SetHeight(height);
 
-		m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
+		m_ScrollBox.SetWndPos(m_ScrollBox.GetWndRect().left,
 								iFloor( SCROLLBAR_HEIGHT+
 								(GetHeight()-2*SCROLLBAR_HEIGHT)*
 								scrollbar_unit*(m_iScrollPos-m_iMinPos)));
@@ -159,9 +159,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			//горизонтальный
 			{
 				if(m_ScrollBox.GetWndRect().left<=SCROLLBAR_WIDTH)
-					m_ScrollBox.MoveWindow(SCROLLBAR_WIDTH, m_ScrollBox.GetWndRect().top);
+					m_ScrollBox.SetWndPos(SCROLLBAR_WIDTH, m_ScrollBox.GetWndRect().top);
 				else if(m_ScrollBox.GetWndRect().right>=GetWidth() - SCROLLBAR_WIDTH)
-					m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
+					m_ScrollBox.SetWndPos(GetWidth() - SCROLLBAR_WIDTH - 
 											m_ScrollBox.GetWidth(), 
 											m_ScrollBox.GetWndRect().top);
 
@@ -184,10 +184,10 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			{
 				// limit vertical position (TOP) by position of button	
 				if(m_ScrollBox.GetWndRect().top <= SCROLLBAR_HEIGHT)
-					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left, SCROLLBAR_HEIGHT);
+					m_ScrollBox.SetWndPos(m_ScrollBox.GetWndRect().left, SCROLLBAR_HEIGHT);
 				// limit vertical position (BOTTOM) by position of button
 				else if(m_ScrollBox.GetWndRect().bottom >= GetHeight() - SCROLLBAR_HEIGHT)
-					m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
+					m_ScrollBox.SetWndPos(m_ScrollBox.GetWndRect().left,
 											GetHeight() - SCROLLBAR_HEIGHT - 
 											m_ScrollBox.GetHeight());
 
@@ -298,7 +298,7 @@ void CUIScrollBar::Draw()
 		m_StaticBackground.SetTile(1, GetHeight()/4>0?GetHeight()/4:1,
 							   0, GetHeight()%2);
 	}
-	RECT rect = GetAbsoluteRect();
+	Irect rect = GetAbsoluteRect();
 	m_StaticBackground.SetPos(rect.left,rect.top);
 	m_StaticBackground.Render();
 
