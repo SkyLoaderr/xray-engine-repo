@@ -63,7 +63,8 @@ void CEditableMesh::CreateRenderBuffers()
 }
 //----------------------------------------------------
 
-void CEditableMesh::ClearRenderBuffers(){
+void CEditableMesh::ClearRenderBuffers()
+{
     for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++){
         for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++){
 			Device.Shader._DeleteVS(rb_it->pVS);

@@ -64,7 +64,7 @@ void CEditableMesh::UnloadPNormals   ()
 {
 	if (!m_LoadState.is(LS_PNORMALS)) return;
 	m_PNormals.clear	();
-    m_LoadState.set(LS_PNORMALS);
+    m_LoadState.set(LS_PNORMALS,FALSE);
 }
 
 void CEditableMesh::UnloadSVertices	 ()
