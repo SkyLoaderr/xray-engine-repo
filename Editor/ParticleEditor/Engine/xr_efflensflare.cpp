@@ -101,7 +101,7 @@ void CLensFlare::OnDeviceDestroy()
 void CLensFlare::SetSource(float fRadius, const char* tex_name){
 	CFlare F;
 	F.fRadius	= fRadius;
-	F.hShader	= Device.Shader.Create("flares",tex_name,FALSE);
+	F.hShader	= Device.Shader.Create("particles\\add",tex_name,FALSE);
 	Flares.insert(Flares.begin(),F);
 }
 
@@ -110,7 +110,7 @@ void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const 
 	F.fRadius	= fRadius;
 	F.fOpacity	= fOpacity;
     F.fPosition	= fPosition;
-	F.hShader	= Device.Shader.Create("flares",tex_name,FALSE);
+	F.hShader	= Device.Shader.Create("particles\\add",tex_name,FALSE);
 	Flares.push_back(F);
 }
 

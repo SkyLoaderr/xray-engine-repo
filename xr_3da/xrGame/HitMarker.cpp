@@ -43,7 +43,7 @@ void CHitMarker::OnDeviceDestroy()
 void CHitMarker::OnDeviceCreate()
 {
 	REQ_CREATE	();
-	hShader		= Device.Shader.Create("hud\\hitmarker","hud_hitmarker");
+	hShader		= Device.Shader.Create("hud\\hitmarker","ui\\hud_hitmarker");
 	VS			= Device.Streams.Create(FVF::F_TL,4*3);
 }
 
