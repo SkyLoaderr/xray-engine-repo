@@ -235,7 +235,7 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 	_FREE		(pScaled);
 
 	// compare them
-	const DWORD limit = 255-BORDER;
+	const DWORD limit = 254-BORDER;
 	for (DWORD y=0; y<lm.dwHeight; y++)
 	{
 		LPDWORD	scan_lmap	= lm.pSurface+y*lm.dwWidth;
