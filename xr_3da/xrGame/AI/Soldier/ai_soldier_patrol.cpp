@@ -264,7 +264,7 @@ IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPos
 
 static int m_iPathCount = 0;
 
-void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, CList<CTravelNode> &tpaPath, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fSegmentSize = Level().AI.GetHeader().size*.5f, float fRadiusMin = 0.5f, float fRadiusMax = 1.5f)
+void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fSegmentSize = Level().AI.GetHeader().size*.5f, float fRadiusMin = 0.5f, float fRadiusMax = 1.5f)
 {
 	CTravelNode tTravelNode;
 	Fvector tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
