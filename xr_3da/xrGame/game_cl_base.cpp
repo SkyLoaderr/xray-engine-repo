@@ -61,8 +61,8 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	map<u32,Player>::iterator I	= players.find(ID);
 	if (I!=players.end())
 	{
-		Player& IP	= I->second;
-		CopyMemory	(&IP,&PS,sizeof(PS));
+		Player& IP		= I->second;
+		PSGP.memCopy	(&IP,&PS,sizeof(PS));
 	}
 }
 

@@ -39,7 +39,7 @@ static Fbox		bbCrouchBox;
 static Fvector	vFootCenter;
 static Fvector	vFootExt;
 
-u32			psActorFlags=0;
+Flags32			psActorFlags={0};
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -286,7 +286,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
 	{
 	case GAME_SINGLE:		
 		{
-			if (psActorFlags&AF_GODMODE)	return;
+			if (psActorFlags.test(AF_GODMODE))	return;
 			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
 		}
 		break;
@@ -307,7 +307,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	{
 	case GAME_SINGLE:		
 		{
-			if (psActorFlags&AF_GODMODE)	return;
+			if (psActorFlags.test(AF_GODMODE))	return;
 			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
 		}
 		break;

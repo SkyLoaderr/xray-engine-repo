@@ -218,8 +218,8 @@ public:
 
 	IC static BOOL			isAccelerated		(u32 mstate)	
 	{
-		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
-		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
+		if (mstate&mcAccel)	return psActorFlags.test(AF_ALWAYSRUN)?FALSE:TRUE ;
+		else				return psActorFlags.test(AF_ALWAYSRUN)?TRUE :FALSE;
 	}
 	IC BOOL					HUDview				( ) 
 	{ 
