@@ -2,21 +2,23 @@
 #include "xrServer.h"
 #include "hudmanager.h"
 
-void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent)
+void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, xrServerEntity* exist_entity)
 {
-	// read spawn information
-	string64			s_name;
-	P.r_string			(s_name);
-
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
-	xrServerEntity*	E	= entity_Create	(s_name); R_ASSERT2(E,"Can't create entity.");
-	E->Spawn_Read		(P);
-	if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid)))
-	{
-		Msg				("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
-		F_entity_Destroy(E);
-		return;
+	xrServerEntity*	E	= exist_entity;
+	if (!E){
+		// read spawn information
+		string64			s_name;
+		P.r_string			(s_name);
+		// create entity
+		E = entity_Create	(s_name); R_ASSERT2(E,"Can't create entity.");
+		E->Spawn_Read		(P);
+		if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid))){
+			Msg				("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
+			F_entity_Destroy(E);
+			return;
+		}
 	}
 
 	// check if we can assign entity to some client
