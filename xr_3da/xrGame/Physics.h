@@ -296,7 +296,12 @@ public:
 
 											
 																		};
-	~CPHShell				()							{if(bActive) Deactivate();}
+	~CPHShell				()							{if(bActive) Deactivate();
+															vector<CPHElement*>::iterator i;
+														for(i=elements.begin();i!=elements.end();i++)
+																							xr_delete(*i);
+														elements.clear();
+														}
 
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}

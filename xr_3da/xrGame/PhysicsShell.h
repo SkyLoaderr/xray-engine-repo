@@ -37,6 +37,7 @@ public:
 	virtual	void			add_Sphere				(const Fsphere&		V)								= 0;
 	virtual	void			add_Box					(const Fobb&		V)								= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
+	virtual ~CPhysicsElement	()																	{};
 };
 
 // ABSTRACT: 

@@ -1086,7 +1086,8 @@ void		CPHElement::Start(){
 
 void		CPHElement::Deactivate(){
 	destroy();
-//	bActive=false;
+	bActive=false;
+	bActivating=false;
 }
 void CPHElement::SetTransform(const Fmatrix &m0){
 	Fvector mc;
