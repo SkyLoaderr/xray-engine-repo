@@ -57,9 +57,8 @@ public:
 	ISpatial_NODE*				parent;					// parent node for "empty-members" optimization
 	ISpatial_NODE*				children		[8];	// children nodes
 	xr_vector<ISpatial*>		items;					// own items
-	Fbox						bb;						// lazy updated BB
 public:
-	void						_init			(ISpatial_NODE* _parent, Fbox& BB);
+	void						_init			(ISpatial_NODE* _parent);
 	void						_remove			(ISpatial*		_S);
 	void						_insert			(ISpatial*		_S);
 	BOOL						_empty			()						
@@ -103,7 +102,7 @@ public:
 	void							update			(u32 nodes=8);
 };
 
-extern ISpatial_DB					SpatialSpace;
+extern ISpatial_DB*					SpatialSpace;
 
 /*
 class ENGINE_API ISpatial_SPACE

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ispatial.h"
 
-ISpatial_DB		SpatialSpace;
+ISpatial_DB*	SpatialSpace		= NULL;
 
 static	Fvector	c_spatial_offset	[8]	= 
 {
@@ -47,13 +47,13 @@ void	ISpatial::spatial_move	()
 	//*** somehow it was determined that object has been moved
 	//*** check if we are supposed to correct it's spatial location
 	VERIFY		(spatial_node_ptr);
-	if			(spatial_inside())	return;
+	if			(spatial_inside())	return;		// ???
 	SpatialSpace->remove(this);
 	SpatialSpace->insert(this);
 }
 
 //////////////////////////////////////////////////////////////////////////
-void			ISpatial_NODE::_init			(ISpatial_NODE* _parent, Fbox& BB)				
+void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 {
 	parent		=	_parent;
 	children[0]	=	children[1]	=	children[2]	=	children[3]	=
@@ -145,7 +145,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 {
 	stat_insert.Begin	();
 	rt_insert_object	= S;
-	_insert				(root,v_center,f_bounds);
+	_insert				(m_root,v_center,f_bounds);
 	stat_insert.End		();
 }
 
