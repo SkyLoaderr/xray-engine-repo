@@ -9,7 +9,7 @@
     </string>
 
     <string id="bar_resque_scientific_information_gain">
-        <text>Получить от профессора Шарикова результаты исследований.</text>
+        <text>Получить от профессора Круглова результаты исследований.</text>
     </string>
 
     <string id="bar_resque_scientific_information_done">
@@ -26,7 +26,7 @@
     </string>
 
     <string id="bar_get_scientific_information_gain">
-        <text>Получить результаты исследований профессора Шарикова.</text>
+        <text>Получить результаты исследований профессора Круглова.</text>
     </string>
 
     <string id="bar_get_scientific_information_done">
@@ -64,10 +64,10 @@
 		<text>Добыть РГ-6 для генерала Воронина</text>
 	</string>
 	<string id="bar_dolg_find_max">
-		<text>Связаться с боевиком Свободы Максом и узнать, где хранится РГ-6</text>
+		<text>Втереться в доверие к повару Свободы и узнать, где хранится РГ-6</text>
 	</string>
 	<string id="bar_dolg_find_rg6">
-		<text>Проникнуть на территорию группировки Свободы и выкрасть РГ-6</text>
+		<text>Проникнуть на территорию группировки Свободы, найти и выкрасть РГ-6</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
 		<text>Принести РГ-6 генералу Воронину</text>
