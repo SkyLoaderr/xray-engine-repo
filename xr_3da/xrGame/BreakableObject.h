@@ -7,6 +7,7 @@
 #pragma once
 struct SGameMtl;
 #include "physicsshellholder.h"
+#include "ode_include.h"
 class CPHStaticGeomShell;
 
 class CBreakableObject: public CPhysicsShellHolder {

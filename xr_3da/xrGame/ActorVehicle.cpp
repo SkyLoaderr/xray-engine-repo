@@ -7,6 +7,8 @@
 #include "ActorEffector.h"
 #include "holder_custom.h"
 #include "Car.h"
+#include "../skeletonanimated.h"
+
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
 	if(!vehicle) return;

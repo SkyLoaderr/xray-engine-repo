@@ -9,6 +9,7 @@
 #include "actor.h"
 #include "car.h"
 #include "spectator.h"
+#include "../igame_level.h"
 
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()

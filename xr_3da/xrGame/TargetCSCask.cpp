@@ -3,6 +3,7 @@
 #include "targetcs.h"
 #include "xrmessages.h"
 #include "level.h"
+#include "../skeletonanimated.h"
 
 CTargetCSCask::CTargetCSCask(void) {}
 

@@ -20,6 +20,7 @@
 #include "game_cl_base.h"
 #include "infoportion.h"
 #include "alife_registry_wrappers.h"
+#include "../skeletonanimated.h"
 
 //static u32	g_dwStartTime		= 0;
 //static u32	g_dwLastUpdateTime	;

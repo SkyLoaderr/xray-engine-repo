@@ -9,6 +9,7 @@
 
 #include "HUDManager.h"
 #include "level.h"
+#include "../skeletoncustom.h"
 
 
 const float TIME_2_HIDE		= 5.f;

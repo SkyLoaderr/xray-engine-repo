@@ -36,6 +36,7 @@ class CCoverEvaluatorAngle;
 class CCoverEvaluatorSafe;
 class CAgentManager;
 class CALifeTask;
+class CMotionDef;
 
 class CAI_Stalker : 
 	public CCustomMonster, 

@@ -2,6 +2,8 @@
 #pragma hdrstop
 
 #include "PHNetState.h"
+#include "net_utils.h"
+
 //////////////////////////////////////8/////////////////////////////////////////////////////
 static void w_vec_q8(NET_Packet& P,const Fvector& vec,const Fvector& min,const Fvector& max)
 {

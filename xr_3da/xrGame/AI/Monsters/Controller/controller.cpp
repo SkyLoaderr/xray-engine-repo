@@ -9,6 +9,7 @@
 #include "../ai_monster_effector.h"
 #include "../../../hudmanager.h"
 #include "../../../ui.h"
+#include "../../../../skeletonanimated.h"
 
 CController::CController()
 {

@@ -51,18 +51,7 @@ public:
 	{
 		items.push_back	(I);
 	}
-	void				DrawItem			(CGameFont* F, int num, int col)
-	{
-		if (OnItemDraw)	{
-			OnItemDraw	(F,num,col);
-		}else{
-			switch(col){
-			case 0:						F->OutNext	("%d. %s",num,caption);	break;
-			case 1: if (!HasChildren())	F->OutNext	("%s",value0);			break;
-			default:	Debug.fatal		("CUICustomMenuItem::DrawItem - invalid usage");
-			}
-		}
-	}
+	void				DrawItem			(CGameFont* F, int num, int col);
 	IC BOOL					HasChildren			()			{return !items.empty();}
 	IC CUICustomMenuItem*	Parent				()			{return m_Parent;}
 	IC MIIt					FirstItem			()			{return items.begin();}

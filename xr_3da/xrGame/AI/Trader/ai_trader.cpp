@@ -17,6 +17,7 @@
 #include "../../script_space.h"
 #include "../../artifact.h"
 #include "../../xrserver.h"
+#include "../../../skeletonanimated.h"
 
 CAI_Trader::CAI_Trader()
 {

@@ -3,10 +3,13 @@
 
 #include "HangingLamp.h"
 #include "../LightAnimLibrary.h"
+#include "../xr_collide_form.h"
 #include "PhysicsShell.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
 #include "PHElement.h"
+#include "../skeletonanimated.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

@@ -245,11 +245,7 @@ protected:
 	/////////////////////////////////////////////////////////
 protected:
 	BOOL					m_bAnimTorsoPlayed;
-	static void				AnimTorsoPlayCallBack(CBlend* B)
-	{
-		CActor* actor		= (CActor*)B->CallbackParam;
-		actor->m_bAnimTorsoPlayed = FALSE;
-	}
+	static void				AnimTorsoPlayCallBack(CBlend* B);
 
 	// skeleton
 	static	float			skel_airr_lin_factor;

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "movement_manager.h"
+#include "profiler.h"
 
 void CMovementManager::process_level_path()
 {

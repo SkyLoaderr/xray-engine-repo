@@ -7,8 +7,8 @@
 #include "xrserver.h"
 #include "Inventory.h"
 #include "CustomZone.h"
-
-
+#include "../igame_persistent.h"
+#include "clsid_game.h"
 
 void	game_sv_Deathmatch::Create					(shared_str& options)
 {

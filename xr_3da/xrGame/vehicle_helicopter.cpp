@@ -13,6 +13,7 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 #include "actor.h"
+#include "../skeletonanimated.h"
 
 CVehicleHelicopter::CVehicleHelicopter		()
 {

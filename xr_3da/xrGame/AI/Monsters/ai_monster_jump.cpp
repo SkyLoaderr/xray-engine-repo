@@ -2,6 +2,7 @@
 #include "ai_monster_jump.h"
 #include "../custommonster.h"
 #include "../phmovementcontrol.h"
+#include "../../skeletoncustom.h"
 
 CJumping::CJumping()
 {

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "detail_path_manager.h"
 #include "ai_space.h"
+#include "profiler.h"
 
 template <typename T>
 IC	T sin_apb(T sina, T cosa, T sinb, T cosb)

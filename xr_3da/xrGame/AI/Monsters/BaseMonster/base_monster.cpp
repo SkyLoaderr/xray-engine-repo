@@ -17,6 +17,7 @@
 #include "../../../squad_hierarchy_holder.h"
 #include "../../../group_hierarchy_holder.h"
 #include "../../../phdestroyable.h"
+#include "../../../../skeletoncustom.h"
 
 CBaseMonster::CBaseMonster()
 {

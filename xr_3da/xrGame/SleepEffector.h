@@ -8,6 +8,7 @@
 
 #include "../effectorPP.h"
 #include "../effector.h"
+#include "../cameramanager.h"
 
 
 #define SLEEP_EFFECTOR_TYPE_ID 8

@@ -13,7 +13,7 @@
 #include "xrmessages.h"
 #include "physicsshellholder.h"
 #include "explosive.h"
-
+#include "net_utils.h"
 
 CBlackGraviArtefact::CBlackGraviArtefact(void) 
 {

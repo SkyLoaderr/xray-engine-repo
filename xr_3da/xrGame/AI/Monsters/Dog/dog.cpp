@@ -2,6 +2,7 @@
 #include "dog.h"
 #include "../ai_monster_utils.h"
 #include "dog_state_manager.h"
+#include "../../../../skeletonanimated.h"
 
 CAI_Dog::CAI_Dog()
 {

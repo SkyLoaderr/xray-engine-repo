@@ -11,6 +11,7 @@
 #include "../ai_monsters_misc.h"
 #include "../../game_graph.h"
 #include "../../magic_box3.h"
+#include "../../clsid_game.h"
 
 void CAI_Rat::vfSetFire(bool bFire)
 {

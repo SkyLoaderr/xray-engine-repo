@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "xrServer_Objects_ALife_All.h"
-
 #include "level.h"
 #include "game_cl_base.h"
 #include "net_queue.h"
-
 #include "ai_space.h"
 #include "game_level_cross_table.h"
 #include "client_spawn_manager.h"
+#include "../xr_object.h"
 
 void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {

@@ -8,6 +8,7 @@
 #include "../../../../CameraBase.h"
 #include "../../../xr_level_controller.h"
 #include "pseudodog_state_manager.h"
+#include "../../../../skeletonanimated.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {

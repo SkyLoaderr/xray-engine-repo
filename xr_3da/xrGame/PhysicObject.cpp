@@ -4,8 +4,7 @@
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
-
-
+#include "../skeletonanimated.h"
 
 CPhysicObject::CPhysicObject(void) 
 {

@@ -15,6 +15,8 @@
 #include "../../script_entity_action.h"
 #include "../../inventory.h"
 #include "../../fooditem.h"
+#include "../../clsid_game.h"
+#include "../../../skeletonanimated.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -109,6 +111,25 @@ LPCSTR caHeadNames			[] = {
 	"head_idle_0",
 	"head_talk_0",
 	0
+};
+
+CStateAnimations::CStateAnimations	()
+{
+	m_tInPlace	= xr_new<CAniFVector<caInPlaceNames> >();
+}
+
+CStateAnimations::~CStateAnimations	()
+{
+	xr_delete	(m_tInPlace);
+}
+
+void CStateAnimations::Load			(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
+{
+	string256			S;
+	m_tGlobal.Load		(tpKinematics,caBaseName);
+	m_tTorso.Load		(tpKinematics,strconcat(S,caBaseName,"torso_"));
+	m_tMoves.Load		(tpKinematics,caBaseName);
+	m_tInPlace->Load	(tpKinematics,caBaseName);
 };
 
 void __stdcall CStalkerAnimations::HeadCallback(CBoneInstance *B)
@@ -468,13 +489,13 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	if ((m_object->speed() < EPS_L) || (eMovementTypeStand == m_object->movement_type())) {
 		// standing
 		if (angle_difference(m_object->body_orientation().current.yaw,m_object->body_orientation().target.yaw) <= EPS_L) {
-			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[0];
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace->A[0];
 //			Msg				("%6d : Playing animation standing",Level().timeServer());
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));
 		}
 		else {
-			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[left_angle(-m_object->body_orientation().target.yaw,-m_object->body_orientation().current.yaw) ? 1 : 2];
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace->A[left_angle(-m_object->body_orientation().target.yaw,-m_object->body_orientation().current.yaw) ? 1 : 2];
 //			Msg				("%6d : Playing animation turn %s",Level().timeServer(),left ? "LEFT" : "RIGHT");
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->body_orientation().current.yaw)),((m_object->body_orientation().target.yaw)));
 //			Msg				("%6d : %f, %f",Level().timeServer(),((m_object->head_orientation().current.yaw)),((m_object->head_orientation().target.yaw)));

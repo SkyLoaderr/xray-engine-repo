@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../effectorPP.h"
+#include "../cameramanager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CPPEffectDistance

@@ -8,6 +8,8 @@
 #include "missile.h"
 #include "level.h"
 #include "Car.h"
+#include "../skeletonanimated.h"
+
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
 static const float y_head_factor		= 0.2f;

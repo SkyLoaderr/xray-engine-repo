@@ -6,6 +6,11 @@
 #include "PHStaticGeomShell.h"
 #include "PhysicsShell.h"
 #include "Physics.h"
+#include "../xr_collide_form.h"
+#include "net_utils.h"
+#include "clsid_game.h"
+#include "../skeletoncustom.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////

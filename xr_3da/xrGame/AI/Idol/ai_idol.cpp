@@ -12,6 +12,7 @@
 #include "../../inventory.h"
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
+#include "../../../skeletonanimated.h"
 
 CAI_Idol::CAI_Idol					()
 {
@@ -197,3 +198,10 @@ void CAI_Idol::g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D)
 		D.normalize_safe();
 	}
 }
+
+void CAI_Idol::AnimCallback	(CBlend* B)
+{
+	CAI_Idol		*tpIdol = (CAI_Idol*)B->CallbackParam;
+	tpIdol->m_bPlaying = false;
+}
+

@@ -6,6 +6,7 @@
 #include "Spectator.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "clsid_game.h"
 
 #define	TEAM0_MENU		"deathmatch_team0"
 

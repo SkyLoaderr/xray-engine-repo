@@ -8,6 +8,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "patrol_path_storage.h"
+#include "../x_ray.h"
 
 BOOL CLevel::Load_GameSpecific_Before()
 {

@@ -7,7 +7,10 @@
 #include "PhysicsShell.h"
 #include "PHSynchronize.h"
 #include "MathUtils.h"
+#include "../skeletoncustom.h"
+
 #define F_MAX         3.402823466e+38F
+
 u32 CPHSkeleton::remove_time=5000;
 
 bool IC CheckObjectSize(CKinematics* K)

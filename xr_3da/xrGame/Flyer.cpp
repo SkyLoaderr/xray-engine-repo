@@ -7,6 +7,7 @@
 #include "../CameraLook.h"
 #include "CameraFirstEye.h"
 #include "../environment.h"
+#include "../skeletoncustom.h"
 
 #define	FLY_ACCEL		10.0f
 #define	YAW_ACCEL		0.75f

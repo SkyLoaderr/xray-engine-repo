@@ -3,12 +3,12 @@
 // InfoDocument - документ, содержащий сюжетную информацию
 ///////////////////////////////////////////////////////////////
 #include "stdafx.h"
-
 #include "InfoDocument.h"
 #include "PhysicsShell.h"
 #include "PDA.h"
 #include "inventoryowner.h"
 #include "xrserver_objects_alife_items.h"
+#include "net_utils.h"
 
 CInfoDocument::CInfoDocument(void) 
 {

@@ -6,6 +6,7 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
+#include "../xr_object.h"
 #include "level_graph.h"
 #include "ai_object_location.h"
 #include "prefetch_manager.h"

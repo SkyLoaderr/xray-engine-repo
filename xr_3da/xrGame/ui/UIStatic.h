@@ -10,10 +10,9 @@
 
 #include "uiwindow.h"
 #include "uistring.h"
-
 #include "../uistaticitem.h"
-
 #include "../script_export_space.h"
+#include "../../gamefont.h"
 
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 

@@ -16,6 +16,7 @@
 #include "game_graph.h"
 #include "inventory.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "clsid_game.h"
 
 float CDistanceFunction::ffGetValue()
 {

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "snork.h"
 #include "snork_state_manager.h"
+#include "../../../../skeletonanimated.h"
 
 CSnork::CSnork()
 {

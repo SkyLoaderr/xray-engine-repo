@@ -3,6 +3,7 @@
 
 #pragma once
 
+class CMotionDef;
 
 #define ACTOR_HEIGHT 1.75f
 

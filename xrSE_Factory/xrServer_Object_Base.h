@@ -12,6 +12,9 @@
 #include "object_interfaces.h"
 #include "script_value_container.h"
 #include "alife_space.h"
+#include "client_id.h"
+
+class	NET_Packet;
 
 #pragma warning(push)
 #pragma warning(disable:4005)

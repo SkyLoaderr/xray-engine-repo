@@ -3,10 +3,12 @@
 #include "SpaceUtils.h"
 #include "GameObject.h"
 #include "PhysicsShellHolder.h"
+#include "../skeletoncustom.h"
+
 void CPHStaticGeomShell::get_spatial_params()
 {
-Fvector AABB;
-spatialParsFromDGeom(dSpacedGeometry(),spatial.center,AABB,spatial.radius);
+	Fvector					AABB;
+	spatialParsFromDGeom	(dSpacedGeometry(),spatial.center,AABB,spatial.radius);
 }
 
 void CPHStaticGeomShell::Activate(const Fmatrix& form)

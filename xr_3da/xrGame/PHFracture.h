@@ -2,8 +2,11 @@
 //
 #ifndef PH_FRACTURE_H
 #define PH_FRACTURE_H
+
 #include "PHDefs.h"
 #include "PHImpact.h"
+#include "ode_include.h"
+
 class CPHFracture;
 class CPHElement;
 

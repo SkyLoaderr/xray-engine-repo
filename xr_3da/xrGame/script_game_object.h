@@ -23,6 +23,8 @@ namespace MovementManager { enum EPathType;};
 namespace DetailPathManager { enum EDetailPathType;};
 namespace SightManager {enum ESightType;};
 
+class NET_Packet;
+
 namespace PatrolPathManager { 
 	enum EPatrolStartType;
 	enum EPatrolRouteType;

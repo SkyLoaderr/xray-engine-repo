@@ -13,6 +13,7 @@
 #include "stalker_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
 #include "script_game_object.h"
+#include "../skeletonanimated.h"
 
 using namespace StalkerDecisionSpace;
 

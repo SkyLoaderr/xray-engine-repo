@@ -1,5 +1,8 @@
 #ifndef D_TRI_COLLIDER_COMMON
 #define D_TRI_COLLIDER_COMMON
+
+#include "../ode_include.h"
+
 void dSetTriWallMark(dContactGeom* c,CDB::TRI* T);
 #include "../ExtendedGeom.h"
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))

@@ -4,8 +4,7 @@
 #include "phsynchronize.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
-
-
+#include "../skeletoncustom.h"
 
 CPhysicsSkeletonObject::CPhysicsSkeletonObject()
 {

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "../CameraDefs.h"
+#include "../cameramanager.h"
 
 enum ECameraEffectorType
 {

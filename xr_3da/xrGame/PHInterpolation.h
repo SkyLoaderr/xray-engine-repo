@@ -2,6 +2,8 @@
 #ifndef PHINTERPOLATON_H
 #define PHINTERPOLATON_H
 
+#include "ode_include.h"
+
 class CPHInterpolation {
 
 public:

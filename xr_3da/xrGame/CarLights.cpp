@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CarLights.h"
 #include "Car.h"
+#include "../skeletoncustom.h"
 
 SCarLight::SCarLight()
 {

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#include <dinput.h>
 #include "../xr_ioconsole.h"
 #include "../xr_input.h"
 #include "../xr_ioc_cmd.h"

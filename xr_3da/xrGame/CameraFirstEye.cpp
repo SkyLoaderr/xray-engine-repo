@@ -3,6 +3,7 @@
 
 #include "CameraFirstEye.h"
 #include "xr_level_controller.h"
+#include "../xr_object.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

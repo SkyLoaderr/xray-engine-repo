@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <dinput.h>
 #include "UISpawnWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

@@ -17,6 +17,7 @@
 
 #include "../effectorfall.h"
 #include "EffectorBobbing.h"
+#include "clsid_game.h"
 //#include "EffectorPPHit.h"
 //#include "EffectorHit.h"
 #include "ShootingHitEffector.h"
@@ -61,6 +62,7 @@
 #include "../cl_intersect.h"
 #include "ExtendedGeom.h"
 #include "alife_registry_wrappers.h"
+#include "../skeletonanimated.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -1325,4 +1327,10 @@ bool CActor:: ActivateBox(DWORD id)
 	ph_world->UnFreeze();
 	m_PhysicMovementControl->SetOjectContactCallback(saved_callback);
 	return ret;
+}
+
+void CActor::AnimTorsoPlayCallBack(CBlend* B)
+{
+	CActor* actor		= (CActor*)B->CallbackParam;
+	actor->m_bAnimTorsoPlayed = FALSE;
 }

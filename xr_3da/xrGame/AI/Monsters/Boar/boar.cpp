@@ -2,6 +2,7 @@
 #include "boar.h"
 #include "../ai_monster_utils.h"
 #include "boar_state_manager.h"
+#include "../../../../skeletoncustom.h"
 
 CAI_Boar::CAI_Boar()
 {

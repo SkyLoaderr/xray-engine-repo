@@ -13,6 +13,8 @@
 #include "team_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
+#include "clsid_game.h"
+#include "../skeletoncustom.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100

@@ -10,6 +10,7 @@
 #include "level.h"
 #include "xrmessages.h"
 #include "game_cl_base.h"
+#include "../skeletoncustom.h"
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
 	if(x>y)\

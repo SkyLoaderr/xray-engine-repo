@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "xrMessages.h"
 #include "GameSpy/CDKey/gcdkeyc.h"
+#include "../x_ray.h"
 
 #define	REGISTRY_CDKEY_STR	"Software\\S.T.A.L.K.E.R\\CDKey"
 

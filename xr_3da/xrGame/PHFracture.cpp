@@ -3,6 +3,8 @@
 #include "Physics.h"
 #include "PHElement.h"
 #include "PHShell.h"
+#include "../skeletoncustom.h"
+
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
 #include "../ode/src/joint.h"

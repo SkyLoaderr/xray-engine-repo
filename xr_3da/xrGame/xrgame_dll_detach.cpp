@@ -15,6 +15,7 @@
 #include "character_info.h"
 #include "specific_character.h"
 #include "character_community.h"
+#include "profiler.h"
 
 extern void show_smart_cast_stats					();
 extern void clear_smart_cast_stats					();

@@ -17,6 +17,7 @@
 #include "game_cl_base.h"
 #include "Actor.h"
 #include "string_table.h"
+#include "../skeletoncustom.h"
 
 CInventoryItem::CInventoryItem() 
 {

@@ -11,6 +11,9 @@
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
 
+class CMotionDef;
+class CBlend;
+
 class CAI_Idol : public CCustomMonster, public CInventoryOwner 
 {
 public:
@@ -40,12 +43,7 @@ public:
 	virtual void		HitImpulse		(float /**P/**/, Fvector &/**vWorldDir/**/, 	Fvector& /**vLocalDir/**/){};
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
 	
-	static void			AnimCallback	(CBlend* B)
-	{
-		CAI_Idol		*tpIdol = (CAI_Idol*)B->CallbackParam;
-		tpIdol->m_bPlaying = false;
-	}
-
+	static void			AnimCallback	(CBlend* B);
 	virtual void		g_fireParams	(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void		g_WeaponBones	(int &L, int &R1, int &R2);
 	virtual	float		ffGetFov		()const{return 150.f;}

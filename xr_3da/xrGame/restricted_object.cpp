@@ -16,6 +16,7 @@
 #include "space_restriction.h"
 #include "space_restriction_bridge.h"
 #include "space_restriction_base.h"
+#include "profiler.h"
 
 CRestrictedObject::~CRestrictedObject		()
 {

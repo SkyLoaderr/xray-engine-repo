@@ -17,6 +17,9 @@ class CODEGeom;
 class CPHSynchronize;
 class CPhysicsShellHolder;
 class CGameObject;
+class NET_Packet;
+struct SBoneShape;
+
 struct physicsBone
 {
 	CPhysicsJoint* joint;

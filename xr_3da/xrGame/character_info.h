@@ -9,6 +9,8 @@
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
+class NET_Packet;
+
 #ifndef AI_COMPILER
 	#include "specific_character.h"
 #endif

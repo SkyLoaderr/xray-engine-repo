@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "car.h"
-
+#include "../skeletoncustom.h"
 
 CCar::SCarSound::SCarSound(CCar* car)
 {

@@ -13,6 +13,7 @@
 #include "entity_alive.h"
 
 #include "actor.h"
+#include "../skeletoncustom.h"
 
 #define PLAYING_ANIM_TIME 10000
 

@@ -14,6 +14,7 @@
 #include "patrol_path_storage.h"
 #include "xrServer.h"
 #include "client_spawn_manager.h"
+#include "../igame_persistent.h"
 
 using namespace luabind;
 

@@ -7,8 +7,10 @@
 #pragma once
 
 class CWound;
+class NET_Packet;
 
 #include "hit_immunity.h"
+#include "../bone.h"
 
 class CEntityCondition: public CHitImmunity
 {

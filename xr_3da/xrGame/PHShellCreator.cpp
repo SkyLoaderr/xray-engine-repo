@@ -3,6 +3,8 @@
 #include "PhysicsShell.h"
 #include "gameobject.h"
 #include "physicsshellholder.h"
+#include "../skeletoncustom.h"
+
 void CPHShellSimpleCreator::CreatePhysicsShell()
 {
 	CPhysicsShellHolder* owner = smart_cast<CPhysicsShellHolder*>(this); VERIFY(owner);

@@ -24,6 +24,8 @@
 #include "../../xrserver.h"
 #include "../../xr_level_controller.h"
 #include "../../hudmanager.h"
+#include "../../clsid_game.h"
+#include "../../../skeletoncustom.h"
 
 CAI_Stalker::CAI_Stalker			()
 {

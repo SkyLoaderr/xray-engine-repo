@@ -1,10 +1,12 @@
 #ifndef		D_TRI_BOX_H
 #define		D_TRI_BOX_H
+
 #include "TriPrimitiveCollideClassDef.h"
+#include "../ode_include.h"
+
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
-
 
 IC float	dBoxProj(dxGeom* box,const dReal* normal)
 {

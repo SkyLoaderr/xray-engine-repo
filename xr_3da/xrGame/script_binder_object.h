@@ -12,6 +12,7 @@
 
 class CSE_ALifeObject;
 class CScriptGameObject;
+class NET_Packet;
 
 class CScriptBinderObject {
 public:

@@ -10,6 +10,8 @@
 #include "PHSplitedShell.h"
 #include "gameobject.h"
 #include "physicsshellholder.h"
+#include "../skeletoncustom.h"
+
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();

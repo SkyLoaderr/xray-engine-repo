@@ -9,6 +9,7 @@
 #pragma once
 
 #include "selector_manager.h"
+#include "profiler.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Graph,\

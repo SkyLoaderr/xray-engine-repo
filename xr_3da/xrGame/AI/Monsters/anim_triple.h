@@ -7,6 +7,8 @@ enum EStateAnimTriple {
 	eStateNone
 };
 
+class CMotionDef;
+
 class CAnimTriple {
 	EStateAnimTriple	cur_state;
 

@@ -4,6 +4,7 @@
 #include "PhysicsShellHolder.h"
 #include "game_cl_base.h"
 #include "level.h"
+#include "../skeletonanimated.h"
 
 xr_set<CArtefact*> CArtefact::m_all;
 

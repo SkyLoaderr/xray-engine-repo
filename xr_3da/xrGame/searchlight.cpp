@@ -3,6 +3,7 @@
 #include "../LightAnimLibrary.h"
 #include "script_entity_action.h"
 #include "xrServer_Objects_ALife.h"
+#include "../skeletoncustom.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

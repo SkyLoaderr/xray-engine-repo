@@ -9,6 +9,7 @@
 #pragma once
 
 class CScriptBinderObject;
+class NET_Packet;
 
 class CScriptBinder {
 protected:

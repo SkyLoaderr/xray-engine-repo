@@ -16,6 +16,7 @@
 class CScriptEntityAction;
 class CEntity;
 class CScriptGameObject;
+class CMotionDef;
 
 using namespace ScriptMonster;
 
@@ -43,18 +44,18 @@ public:
 protected:
 	typedef CGameObject inherited;
 	xr_deque<CScriptEntityAction*>	m_tpActionQueue;
-	bool						m_bScriptControl;
+	bool							m_bScriptControl;
 	shared_str						m_caScriptName;
-	CMotionDef					*m_tpNextAnimation;
+	CMotionDef						*m_tpNextAnimation;
 	CScriptEntityAction				*m_tpCurrentEntityAction;
 public:
-	CMotionDef					*m_tpScriptAnimation;
+	CMotionDef						*m_tpScriptAnimation;
 protected:
-	CScriptCallback				m_tpCallbacks[ScriptMonster::eActionTypeCount];
-	CScriptCallback				m_tSoundCallback;
-	CScriptCallback				m_tHitCallback;
-	ref_sound					*m_current_sound;
-	xr_vector<CSavedSound>		m_saved_sounds;
+	CScriptCallback					m_tpCallbacks[ScriptMonster::eActionTypeCount];
+	CScriptCallback					m_tSoundCallback;
+	CScriptCallback					m_tHitCallback;
+	ref_sound						*m_current_sound;
+	xr_vector<CSavedSound>			m_saved_sounds;
 
 public:
 								CScriptMonster			();

@@ -6,6 +6,7 @@
 #include "../../PHMovementControl.h"
 #include "anim_triple.h"
 #include "ai_monster_debug.h"
+#include "../../../skeletonanimated.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {

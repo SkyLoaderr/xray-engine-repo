@@ -3,6 +3,7 @@
 #include "game_base.h"
 #include "alife_space.h"
 #include "script_export_space.h"
+#include "client_id.h"
 
 class CSE_Abstract;
 class xrServer;

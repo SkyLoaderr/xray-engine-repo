@@ -2,7 +2,12 @@
 #define PH_GEOMETRY_OWNER_H
 #include "Geometry.h"
 #include "gamemtllib.h"
+
+
 DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
+
+struct SBoneShape;
+
 class CPHGeometryOwner
 {
 protected:

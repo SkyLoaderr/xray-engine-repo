@@ -5,6 +5,8 @@
 #include "../fmesh.h"
 #include "../xr_ioconsole.h"
 #include "gamemtllib.h"
+#include "../skeletoncustom.h"
+#include "profiler.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <dinput.h>
 #include "UICHTMenu.h"
 #include "HUDManager.h"
 #include "UICustomMenu.h"

@@ -9,6 +9,8 @@
 #include "script_game_object.h"
 #include "../LightAnimLibrary.h"
 #include "HelicopterMovementManager.h"
+#include "clsid_game.h"
+#include "../skeletonanimated.h"
 
 CHelicopter::CHelicopter()
 {

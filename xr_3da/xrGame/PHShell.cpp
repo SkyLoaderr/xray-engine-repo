@@ -10,6 +10,7 @@
 #include "SpaceUtils.h"
 #include "MathUtils.h"
 #include "PhysicsShellHolder.h"
+#include "../skeletoncustom.h"
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
 //#include "../ode/src/collision_kernel.h"

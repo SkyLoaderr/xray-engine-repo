@@ -4,6 +4,8 @@
 ///////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "ParticlesPlayer.h"
+#include "../xr_object.h"
+#include "../skeletoncustom.h"
 //-------------------------------------------------------------------------------------
 
 CParticlesPlayer::SParticlesInfo* CParticlesPlayer::SBoneInfo::FindParticles(const shared_str& ps_name)

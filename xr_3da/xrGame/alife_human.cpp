@@ -18,6 +18,7 @@
 #include "ef_storage.h"
 #include "alife_communication_space.h"
 #include "alife_event_personal.h"
+#include "clsid_game.h"
 
 using namespace ALife;
 using namespace ALifeCommunication;

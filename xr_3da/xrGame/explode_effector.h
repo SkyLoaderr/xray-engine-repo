@@ -1,6 +1,7 @@
 #pragma once
-#include "CameraEffector.h"
 
+#include "CameraEffector.h"
+#include "../cameramanager.h"
 
 #define EXPLODE_EFFECTOR_TYPE_ID	7
 

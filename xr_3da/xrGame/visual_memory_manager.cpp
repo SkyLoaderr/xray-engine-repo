@@ -10,6 +10,7 @@
 #include "visual_memory_manager.h"
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
+#include "../skeletoncustom.h"
 
 struct CNotYetVisibleObjectPredicate{
 	const CGameObject *m_game_object;

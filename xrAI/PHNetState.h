@@ -1,9 +1,7 @@
 #ifndef  PHNETSTATE_H
 #define  PHNETSTATE_H
 
-#ifndef XRGAME_EXPORTS
-#	include "net_utils.h"
-#endif
+class NET_Packet;
 
 struct SPHNetState
 {

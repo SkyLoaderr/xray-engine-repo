@@ -15,6 +15,9 @@
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
 
+class CMotionDef;
+class CBlend;
+
 class CAI_Rat : public CCustomMonster, public CEatableItem
 {
 	typedef	CCustomMonster	inherited;

@@ -19,6 +19,7 @@
 #include "xrserver.h"
 #include "level.h"
 #include "graph_engine.h"
+#include "../x_ray.h"
 
 using namespace ALife;
 

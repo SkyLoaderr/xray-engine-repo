@@ -8,6 +8,7 @@
 #include "hudmanager.h"
 #include "ui/UIChatWnd.h"
 #include "ui/UIChatLog.h"
+#include "clsid_game.h"
 
 game_cl_mp::game_cl_mp()
 {

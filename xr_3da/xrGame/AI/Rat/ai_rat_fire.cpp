@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "ai_rat_space.h"
+#include "../../clsid_game.h"
 
 using namespace RatSpace;
 

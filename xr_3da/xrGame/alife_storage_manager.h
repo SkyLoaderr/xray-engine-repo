@@ -10,6 +10,8 @@
 
 #include "alife_simulator_base.h"
 
+class NET_Packet;
+
 class CALifeStorageManager : public virtual CALifeSimulatorBase {
 	friend class CALifeUpdatePredicate;
 protected:

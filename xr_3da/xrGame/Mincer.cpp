@@ -5,6 +5,8 @@
 #include "level.h"
 #include "CustomZone.h"
 #include "PHDestroyable.h"
+#include "clsid_game.h"
+
 CMincer::CMincer(void) 
 {
 }

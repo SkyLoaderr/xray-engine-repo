@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xrGameSpyServer.h"
 #include "xrGameSpyServer_callbacks.h"
+#include "../igame_persistent.h"
 
 //--------------------------- QR2 callbacks ---------------------------------------
 void callback_serverkey(int keyid, qr2_buffer_t outbuf, void *userdata)

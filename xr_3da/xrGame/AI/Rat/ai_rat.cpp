@@ -14,6 +14,7 @@
 #include "../../game_level_cross_table.h"
 #include "../../xrserver_objects_alife_monsters.h"
 #include "ai_rat_space.h"
+#include "../../../skeletoncustom.h"
 
 using namespace RatSpace;
 

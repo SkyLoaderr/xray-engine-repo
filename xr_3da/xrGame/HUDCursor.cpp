@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "level.h"
 #include "game_cl_base.h"
+#include "../igame_persistent.h"
 
 #define C_ON_ENEMY	D3DCOLOR_XRGB(0xff,0,0)
 #define C_ON_FRIEND	D3DCOLOR_XRGB(0,0xff,0)

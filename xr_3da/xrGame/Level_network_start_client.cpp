@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "../resourcemanager.h"
-
 #include "HUDmanager.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
 #include "level.h"
+#include "../x_ray.h"
+#include "../igame_persistent.h"
 
 extern	pureFrame*				g_pNetProcessor;
 

@@ -3,6 +3,7 @@
 #include "WeaponHUD.h"
 #include "xr_level_controller.h"
 #include "level.h"
+#include "../skeletonanimated.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

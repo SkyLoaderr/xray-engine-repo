@@ -5,6 +5,7 @@
 #pragma once
 
 #include "CameraEffector.h"
+#include "../cameramanager.h"
 
 class CEffectorShot : public CCameraEffector
 {

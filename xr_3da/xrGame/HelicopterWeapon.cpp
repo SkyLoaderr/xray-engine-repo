@@ -2,6 +2,8 @@
 #include "helicopter.h"
 #include "ExplosiveRocket.h"
 #include "xrMessages.h"
+#include "net_utils.h"
+#include "../skeletoncustom.h"
 
 void __stdcall 
 CHelicopter::BoneMGunCallbackX(CBoneInstance *B)

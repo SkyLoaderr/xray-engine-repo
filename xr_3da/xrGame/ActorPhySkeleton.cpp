@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "actor.h"
+#include "../skeletoncustom.h"
 
 void CActor::create_Skeleton(){
 	if(m_pPhysicsShell) return;

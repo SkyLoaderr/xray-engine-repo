@@ -7,6 +7,7 @@
 #include "camerafirsteye.h"
 #include "script_entity_action.h"
 #include "xr_level_controller.h"
+#include "../skeletoncustom.h"
 
 void	CCar::OnMouseMove(int dx, int dy)
 {

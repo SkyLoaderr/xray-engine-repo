@@ -4,6 +4,7 @@
 
 class CInventory;
 class CActor;
+class CCameraBase;
 
 class CHolderCustom
 {

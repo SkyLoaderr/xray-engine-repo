@@ -19,6 +19,8 @@
 
 class CInventoryItem;
 class CArtefact;
+class CMotionDef;
+class CBlend;
 
 class CAI_Trader : public CEntityAlive, 
 				   public CInventoryOwner, 

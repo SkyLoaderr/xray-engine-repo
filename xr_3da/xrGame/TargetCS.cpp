@@ -3,6 +3,7 @@
 #include "targetcscask.h"
 #include "game_cl_base.h"
 #include "level.h"
+#include "../skeletonanimated.h"
 
 CTargetCS::CTargetCS()
 {

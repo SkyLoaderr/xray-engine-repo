@@ -1,6 +1,7 @@
 #pragma	once
 
 #include "../../../../effector.h"
+#include "../../../../cameramanager.h"
 
 #define BLOODSUCKER_EFFECTOR_TYPE_ID	6
 

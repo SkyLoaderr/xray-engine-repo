@@ -7,6 +7,7 @@
 #include "../fdemorecord.h"
 #include "../fdemoplay.h"
 #include "../environment.h"
+#include "../igame_persistent.h"
 #include "ParticlesObject.h"
 
 #include "Level.h"

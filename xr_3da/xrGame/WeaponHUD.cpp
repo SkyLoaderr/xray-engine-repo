@@ -7,10 +7,8 @@
 #include "stdafx.h"
 #include "WeaponHUD.h"
 #include "Weapon.h"
-
 #include "../Motion.h"
-
-
+#include "../skeletonanimated.h"
 
 SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 {	

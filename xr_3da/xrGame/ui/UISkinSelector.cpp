@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------/
 
 #include "StdAfx.h"
+#include <dinput.h>
 #include "UISkinSelector.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

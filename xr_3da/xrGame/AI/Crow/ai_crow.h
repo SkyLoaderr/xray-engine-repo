@@ -7,6 +7,10 @@
 #define __XRAY_AI_CROW__
 
 #include "../../entity_alive.h"
+
+class CMotionDef;
+class CBlend;
+
 class CAI_Crow : public CEntity
 {
 	typedef	CEntity inherited;

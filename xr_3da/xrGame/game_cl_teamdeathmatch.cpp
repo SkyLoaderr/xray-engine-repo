@@ -5,6 +5,7 @@
 #include "level.h"
 #include "UIGameTDM.h"
 #include "xr_level_controller.h"
+#include "clsid_game.h"
 
 #define	TEAM1_MENU		"teamdeathmatch_team1"
 #define	TEAM2_MENU		"teamdeathmatch_team2"

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "eatable_item.h"
 #include "xrmessages.h"
+#include "net_utils.h"
 
 ///////////////////////////////////////////
 // CEatableItem class 

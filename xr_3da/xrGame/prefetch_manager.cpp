@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "prefetch_manager.h"
+#include "../xr_object.h"
 
 CPrefetchManager::CPrefetchManager		()
 {

@@ -9,6 +9,8 @@
 #include "gamemtllib.h"
 #include "level.h"
 #include "xrmessages.h"
+#include "clsid_game.h"
+#include "../skeletoncustom.h"
 
 //константы shoot_factor, определ€ющие 
 //поведение пули при столкновении с объектом

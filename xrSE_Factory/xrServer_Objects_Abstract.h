@@ -13,10 +13,13 @@
 #include "xrServer_Space.h"
 #include "xrCDB.h"
 #include "ShapeData.h"
+
+class NET_Packet;
+
 #ifndef XRGAME_EXPORTS
 #	include "Sound.h"
-#	include "net_utils.h"
 #endif
+
 #include "xrEProps.h"
 
 #pragma warning(push)

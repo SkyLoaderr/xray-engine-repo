@@ -19,6 +19,7 @@ class CGameObject;
 class CEntityAlive;
 class CCustomZone;
 class CInfoPortionWrapper;
+class NET_Packet;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:

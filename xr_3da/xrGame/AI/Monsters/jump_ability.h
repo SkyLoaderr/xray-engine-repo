@@ -2,6 +2,7 @@
 
 class CAnimTriple;
 class CBaseMonster;
+class CMotionDef;
 
 class CJumpingAbility {
 	CBaseMonster	*m_object;

@@ -19,6 +19,7 @@
 #include "xrserver_objects_alife.h"
 #include "game_cl_base.h"
 #include "object_factory.h"
+#include "../skeletoncustom.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////

@@ -11,6 +11,8 @@
 #include "script_engine.h"
 #include "ai/stalker/ai_stalker_space.h"
 #include "ai_space.h"
+#include "../xr_object.h"
+#include "../skeletoncustom.h"
 
 CSoundPlayer::CSoundPlayer			()
 {

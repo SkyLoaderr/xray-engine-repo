@@ -12,6 +12,7 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "script_callback.h"
 #include "script_space.h"
+#include "../xr_collide_form.h"
 
 CScriptZone::CScriptZone		()
 {

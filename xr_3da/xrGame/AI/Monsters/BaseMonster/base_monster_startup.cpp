@@ -4,7 +4,7 @@
 #include "../../../phmovementcontrol.h"
 #include "../ai_monster_squad_manager.h"
 #include "../../../hudmanager.h"
-
+#include "../../../../skeletonanimated.h"
 
 void CBaseMonster::reload	(LPCSTR section)
 {

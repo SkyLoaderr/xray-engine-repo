@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "attachment_owner.h"
 #include "attachable_item.h"
+#include "../skeletoncustom.h"
 
 struct CStringPredicate {
 	bool		operator()	(const shared_str &s1, const shared_str &s2) const

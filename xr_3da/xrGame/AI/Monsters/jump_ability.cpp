@@ -3,6 +3,7 @@
 #include "anim_triple.h"
 #include "BaseMonster/base_monster.h"
 #include "../../PHMovementControl.h"
+#include "../../../skeletonanimated.h"
 
 CJumpingAbility::CJumpingAbility()
 {

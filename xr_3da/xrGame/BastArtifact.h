@@ -8,6 +8,8 @@
 #include "../feel_touch.h"
 
 #include "entity_alive.h"
+#include "ode_include.h"
+
 struct SGameMtl;
 
 DEFINE_VECTOR (CEntityAlive*, ALIVE_LIST, ALIVE_LIST_it);

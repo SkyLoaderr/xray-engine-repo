@@ -6,6 +6,8 @@
 #define AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_
 #pragma once
 
+#include "../igame_level.h"
+#include "net_client.h"
 #include "infoportiondefs.h"
 #include "script_export_space.h"
 #include "StatGraph.h"
@@ -119,8 +121,8 @@ public:
 	xr_vector<ref_sound*>		static_Sounds;
 
 	// startup options
-	shared_str						m_caServerOptions;
-	shared_str						m_caClientOptions;
+	shared_str					m_caServerOptions;
+	shared_str					m_caClientOptions;
 
 	// Starting/Loading
 	virtual BOOL				net_Start				( LPCSTR op_server, LPCSTR op_client);

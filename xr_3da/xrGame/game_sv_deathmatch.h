@@ -2,8 +2,7 @@
 
 #include "game_sv_mp.h"
 #include "inventory_space.h"
-
-
+#include "client_id.h"
 
 class	game_sv_Deathmatch			: public game_sv_mp
 {

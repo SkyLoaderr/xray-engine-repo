@@ -8,6 +8,7 @@
 #include "../Environment.h"
 #include "../CameraBase.h"
 #include "../CameraManager.h"
+#include "../igame_persistent.h"
 
 
 #include "CameraEffector.h"

@@ -13,11 +13,11 @@
 
 // server entities includes
 #include "xrServer_Objects_ALife_All.h"
+#include "clsid_game.h"
 
 // client entities includes
-#ifdef NO_XR_GAME
-#	include "clsid_game.h"
-#else
+#ifndef NO_XR_GAME
+#	include "../std_classes.h"
 #	include "level.h"
 #	include "gamepersistent.h"
 #	include "hudmanager.h"

@@ -27,6 +27,7 @@
 #include "script_ini_file.h"
 #include "script_zone.h"
 #include "script_callback.h"
+#include "../skeletoncustom.h"
 
 class CScriptBinderObject;
 

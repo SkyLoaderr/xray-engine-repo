@@ -7,6 +7,7 @@ typedef u32 TTime;
 // e.g. LOG_EX2("X = [%u], vector = [%f,%f,%f]", *"*/ m_dwCurrentTime, VPUSH(Position())  /*"*);
 
 //#define ENABLE_WRITE_LOG_EX
+class CBlend;
 
 #undef	LOG_EX
 #undef	LOG_EX2
@@ -79,6 +80,8 @@ typedef u32 TTime;
 #define STANDART_ATTACK					-PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,3.5f
 #define SIMPLE_ENEMY_HIT_TEST
 //#define TEST_EAT_STATE
+
+#include "../../cameramanager.h"
 
 // StepSounds
 struct SStepSound {
@@ -243,6 +246,7 @@ enum EPState {
 typedef		shared_str			anim_string;
 #define		DEFAULT_ANIM	eAnimStandIdle
 
+class CMotionDef;
 DEFINE_VECTOR	(CMotionDef*,		ANIM_VECTOR,			ANIM_IT);
 
 

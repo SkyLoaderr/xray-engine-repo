@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "step_manager.h"
 #include "custommonster.h"
+#include "../skeletonanimated.h"
 
 #define TIME_OFFSET 10
 
@@ -157,7 +158,7 @@ Fvector	CStepManager::get_foot_position(ELegType leg_type)
 {
 	R_ASSERT2(m_foot_bones[leg_type] != BI_NONE, "foot bone had not been set");
 
-	CKinematics *pK = PKinematics(m_object->Visual());
+	CKinematics *pK = smart_cast<CKinematics*>(m_object->Visual());
 	Fmatrix bone_transform;
 
 	bone_transform = pK->LL_GetBoneInstance(m_foot_bones[leg_type]).mTransform;	
@@ -171,14 +172,14 @@ Fvector	CStepManager::get_foot_position(ELegType leg_type)
 
 void CStepManager::reload_foot_bones()
 {
-	CInifile* ini = PKinematics(m_object->Visual())->LL_UserData();
+	CInifile* ini = smart_cast<CKinematics*>(m_object->Visual())->LL_UserData();
 	if(ini&&ini->section_exist("foot_bones")){
 
 		CInifile::Sect& data = ini->r_section("foot_bones");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
 			CInifile::Item& item	= *I;
 
-			u16 index = PKinematics(m_object->Visual())->LL_BoneID(*item.second);
+			u16 index = smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(*item.second);
 			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
 
 			if (xr_strcmp(*item.first, "front_left") == 0) 			m_foot_bones[eFrontLeft]	= index;

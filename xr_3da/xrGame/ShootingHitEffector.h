@@ -2,6 +2,7 @@
 
 #include "../effectorPP.h"
 #include "../effector.h"
+#include "../cameramanager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector

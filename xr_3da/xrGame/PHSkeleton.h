@@ -6,6 +6,8 @@ class CPhysicsShellHolder;
 class CSE_ALifePHSkeletonObject;
 class CSE_Abstract;
 class CSE_PHSkeleton;
+class NET_Packet;
+
 class CPHSkeleton
 {
 	bool				b_removing;

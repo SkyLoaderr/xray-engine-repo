@@ -19,6 +19,8 @@
 #ifdef PURE_DYNAMIC_CAST
 #	define smart_cast dynamic_cast
 #else
+#	include "../ispatial.h"
+#	include "../fbasicvisual.h"
 #	ifndef DECLARE_SPECIALIZATION
 #		include "smart_cast_impl0.h"
 #	else
@@ -45,6 +47,7 @@
 #		define cast_type_list save_cast_list	(IParticleCustom,	IRender_Visual)
 
 #		ifndef DO_NOT_DECLARE_TYPE_LIST
+			class ENGINE_API ISpatial;
 			namespace Feel { class ENGINE_API Sound; }
 			typedef Feel::Sound Feel__Sound;
 			template <> extern\

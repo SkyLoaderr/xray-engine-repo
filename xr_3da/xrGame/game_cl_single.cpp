@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "game_cl_single.h"
 #include "UIGameSP.h"
+#include "clsid_game.h"
 
 game_cl_Single::game_cl_Single()
 {

@@ -16,6 +16,8 @@
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
 #include "customzone.h"
+#include "clsid_game.h"
+#include "../skeletonanimated.h"
 
 #ifdef DEBUG
 Flags32		psAI_Flags	= {0};

@@ -19,6 +19,7 @@
 
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
+#include "../skeletoncustom.h"
 
 #define WEAPON_REMOVE_TIME		30000
 #define ROTATION_TIME			0.25f

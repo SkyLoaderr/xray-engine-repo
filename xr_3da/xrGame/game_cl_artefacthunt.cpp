@@ -4,6 +4,7 @@
 #include "hudmanager.h"
 #include "level.h"
 #include "UIGameAHunt.h"
+#include "clsid_game.h"
 
 #define	TEAM1_MENU		"artefacthunt_team1"
 #define	TEAM2_MENU		"artefacthunt_team2"

@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include <dinput.h>
 #include "../Entity.h"
 #include "../HUDManager.h"
 #include "../PDA.h"

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
+#include "../../clsid_game.h"
 
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {

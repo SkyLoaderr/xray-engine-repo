@@ -4,12 +4,12 @@
 #include "xrMessages.h"
 #include "Level.h"
 #include "ph_shell_interface.h"
+#include "../skeletoncustom.h"
 
-
-	CPhysicsShellHolder::CPhysicsShellHolder()
-	{
-		init();
-	}
+CPhysicsShellHolder::CPhysicsShellHolder()
+{
+	init();
+}
 
 void CPhysicsShellHolder::net_Destroy()
 {

@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include <dinput.h>
 #include "UIBuyWeaponWnd.h"
 
 #include "xrXMLParser.h"

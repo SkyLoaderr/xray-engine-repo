@@ -8,6 +8,7 @@
 #include "ActorEffector.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "../skeletoncustom.h"
 
 #define PLAYING_ANIM_TIME 10000
 

@@ -2,6 +2,7 @@
 #include "ai_monster_defs.h"
 
 class CCustomMonster;
+class CMotionDef;
 
 enum EJumpStateType {
 	JT_GLIDE,				

@@ -5,6 +5,7 @@
 #include "../../../actor.h"
 #include "../ai_monster_debug.h"
 #include "burer_state_manager.h"
+#include "../../../../skeletonanimated.h"
 
 CBurer::CBurer()
 {

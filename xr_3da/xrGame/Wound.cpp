@@ -3,9 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "wound.h"
-
+#include "net_utils.h"
 
 CWound::CWound(u16 bone_num)
 {

@@ -7083,6 +7083,9 @@
 					Name="NET Shared"
 					Filter="">
 					<File
+						RelativePath=".\client_id.h">
+					</File>
+					<File
 						RelativePath=".\NET_Client.h">
 					</File>
 					<File

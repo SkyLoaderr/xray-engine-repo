@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <dinput.h>
 #include "Actor.h"
 #include "Torch.h"
 #include "trade.h"
@@ -11,6 +12,8 @@
 #include "game_cl_base.h"
 #include "xr_level_controller.h"
 #include "UsableScriptObject.h"
+#include "clsid_game.h"
+
 void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;

@@ -14,6 +14,7 @@
 #include "../game_cl_base.h"
 #include "../xr_level_controller.h"
 #include "../Level.h"
+#include "../../xr_object.h"
 
 //////////////////////////////////////////////////////////////////////////
 

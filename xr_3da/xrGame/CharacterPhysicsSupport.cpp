@@ -3,6 +3,7 @@
 #include "PHMovementControl.h"
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
+#include "../skeletonanimated.h"
 
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {

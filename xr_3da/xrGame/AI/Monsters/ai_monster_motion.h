@@ -5,6 +5,7 @@
 class		CBaseMonster;
 class		CJumping;
 class		CAnimTriple;
+class		CMotionDef;
 
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {

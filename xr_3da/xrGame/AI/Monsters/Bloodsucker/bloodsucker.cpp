@@ -4,6 +4,7 @@
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
 #include "bloodsucker_state_manager.h"
+#include "../../../../skeletoncustom.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {

@@ -16,6 +16,8 @@
 #include "../team_hierarchy_holder.h"
 #include "../squad_hierarchy_holder.h"
 #include "../group_hierarchy_holder.h"
+#include "../../skeletonanimated.h"
+#include "ai_monsters_anims.h"
 
 bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
@@ -141,4 +143,19 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 					WRITE_QUERY_TO_LOG			("Retreat");
 					return						(a4);
 				}
+}
+
+void CAniVector::Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
+{
+	A.clear		();
+	string256	S1, S2;
+	CMotionDef	*tpMotionDef;
+	for (int i=0; ; ++i)
+		if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
+			A.push_back(tpMotionDef);
+		else
+			if (0 != (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
+				A.push_back(tpMotionDef);
+			else
+				break;
 }

@@ -13,6 +13,8 @@
 
 #include "../ai_monster_effector.h"
 #include "../../../hudmanager.h"
+#include "../../../clsid_game.h"
+#include "../../../../skeletonanimated.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
@@ -60,7 +62,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
-		pEntityNC->Hit(fDamage,hit_dir,this, PKinematics(pEntityNC->Visual())->LL_GetBoneRoot(),position_in_bone_space,impulse);
+		pEntityNC->Hit(fDamage,hit_dir,this, smart_cast<CKinematics*>(pEntityNC->Visual())->LL_GetBoneRoot(),position_in_bone_space,impulse);
 		//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation("monster");
 
 		if (smart_cast<CActor *>(pEntityNC)) SetAttackEffector();

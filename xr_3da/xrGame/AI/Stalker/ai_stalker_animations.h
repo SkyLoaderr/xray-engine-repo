@@ -10,6 +10,9 @@
 
 #include "../ai_monsters_anims.h"
 
+class CMotionDef;
+class CBlend;
+
 extern LPCSTR caStateNames			[];
 extern LPCSTR caWeaponNames			[];
 extern LPCSTR caWeaponActionNames	[];
@@ -36,16 +39,10 @@ public:
 	// legs
 	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
 	// in-place 
-	CAniFVector	  <caInPlaceNames>						m_tInPlace;
-
-	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
-	{
-		string256			S;
-		m_tGlobal.Load		(tpKinematics,caBaseName);
-		m_tTorso.Load		(tpKinematics,strconcat(S,caBaseName,"torso_"));
-		m_tMoves.Load		(tpKinematics,caBaseName);
-		m_tInPlace.Load		(tpKinematics,caBaseName);
-	};
+	CAniFVector	  <caInPlaceNames>						*m_tInPlace;
+					CStateAnimations	();
+	virtual			~CStateAnimations	();
+			void	Load				(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName);
 };
 
 class CStalkerAnimations {

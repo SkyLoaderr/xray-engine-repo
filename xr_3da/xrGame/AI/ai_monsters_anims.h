@@ -8,26 +8,16 @@
 
 #pragma once
 
+class CMotionDef;
+class CSkeletonAnimated;
+
 DEFINE_VECTOR	(CMotionDef*,ANIM_VECTOR, ANIM_IT);
 
 class CAniVector {
 public:
 	ANIM_VECTOR		A;
 
-	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
-	{
-		A.clear		();
-		string256	S1, S2;
-		CMotionDef	*tpMotionDef;
-		for (int i=0; ; ++i)
-			if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
-				A.push_back(tpMotionDef);
-			else
-				if (0 != (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,caBaseName,itoa(i,S2,10)))))
-					A.push_back(tpMotionDef);
-				else
-					break;
-	}
+	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName);
 };
 
 template <LPCSTR caBaseNames[]> class CAniFVector {

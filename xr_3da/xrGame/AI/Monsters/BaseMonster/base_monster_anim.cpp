@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "base_monster.h"
 #include "../ai_monster_utils.h"
+#include "../../../../skeletonanimated.h"
 
 static void __stdcall vfPlayEndCallBack(CBlend* B)
 {

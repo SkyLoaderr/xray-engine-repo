@@ -7,6 +7,7 @@
 #include "level.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "actor.h"
+#include "clsid_game.h"
 
 u32		g_dwMaxCorpses = 10;
 
