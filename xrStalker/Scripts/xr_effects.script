@@ -105,8 +105,8 @@ function garbage_monster_death (actor, npc)
     -- check for set gulag to normal mode
     if need_monsters > 5 then
        -- set gulag to normal state
-       if act:has_info ("gar_monsters_rush_wave1") then
-          act:disable_info_portion ("gar_monsters_rush_wave1") 
+       if actor:has_info ("gar_monsters_rush_wave1") then
+          actor:disable_info_portion ("gar_monsters_rush_wave1") 
           printf ("Return GULAG to start state")
        end   
     end
