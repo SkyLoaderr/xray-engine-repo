@@ -61,10 +61,12 @@ void	ISpatial::spatial_register	()
 	if (spatial.node_ptr)
 	{
 		// already registered - nothing to do
+		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	} else {
 		// register
 		g_SpatialSpace->insert	(this);
-		spatial.sector			= ::Render->detectSector(spatial.center);
+		spatial.sector			=	::Render->detectSector(spatial.center);
+		spatial.type			|=	STYPEFLAG_INVALIDSECTOR;
 	}
 }
 
