@@ -48,7 +48,7 @@ public:
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
 
-	virtual void		__stdcall	FillProps		(LPCSTR pref, PropItemVec &items);
+	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 
 	virtual CSE_Visual* __stdcall	visual			() = 0;
 };
@@ -69,7 +69,7 @@ public:
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
 
-	virtual void		__stdcall	FillProps		(LPCSTR pref, PropItemVec &items);
+	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 
 	virtual CSE_Motion* __stdcall	motion			() = 0;
 };
