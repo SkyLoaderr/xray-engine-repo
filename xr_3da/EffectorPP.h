@@ -13,6 +13,7 @@ class ENGINE_API CEffectorPP
 {
 	EEffectorPPType		eType;
 	friend class		CCameraManager;
+protected:
 	float				fLifeTime;
 public:
 	virtual	BOOL Process(SPPInfo &PPInfo);
