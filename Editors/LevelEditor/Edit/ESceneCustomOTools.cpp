@@ -142,8 +142,9 @@ void ESceneCustomOTools::RemoveSelection()
         if((*_F)->Selected()){
             if ((*_F)->OnSelectionRemove()){
                 ObjectIt _D = _F; _F++;
-                Scene->RemoveObject(*_D,false);
-                xr_delete	(*_D);
+                CCustomObject* obj 	= *_D; 
+                Scene->RemoveObject	(obj,false);
+                xr_delete			(obj);
             }else{
                 _F++;
             }
