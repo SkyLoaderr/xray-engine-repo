@@ -468,11 +468,11 @@ bool CExportObjectOGF::Prepare()
                     bResult 		= FALSE; 
                     break; 
                 }
-                if (!M->Flags.is(SGameMtl::flDynamic)){
-                    ELog.DlgMsg		(mtError,"Surface: '%s' contains non-dynamic game material.",surf->_Name());
-                    bResult 		= FALSE; 
-                    break; 
-                }
+//                if (!M->Flags.is(SGameMtl::flDynamic)){
+//                    ELog.DlgMsg		(mtError,"Surface: '%s' contains non-dynamic game material.",surf->_Name());
+//                    bResult 		= FALSE; 
+//                    break; 
+//                }
             	m_Splits.push_back(new SSplit(surf,m_Source->GetBox()));
                 split		= m_Splits.back();
             }
