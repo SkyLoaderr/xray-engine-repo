@@ -3,7 +3,7 @@
 
 const	float	aht_max_edge	= 4.0f;			// 2 m
 const	float	aht_min_edge	= 1.0f;			// 20 cm
-const	float	aht_min_err		= 8.f/255.f;	// ~10% error
+const	float	aht_min_err		= 16.f/255.f;	// ~10% error
 
 bool	is_CCW	(int _1, int _2)
 {
@@ -56,9 +56,9 @@ int		callback_edge_error		(Face* F)
 	base_color_c			c1; F->v[0]->C._get(c1);
 	base_color_c			c2; F->v[1]->C._get(c2);
 	base_color_c			c3; F->v[2]->C._get(c3);
-	bool	b1	= fsimilar(c1.hemi,c2.hemi,aht_min_err);
-	bool	b2	= fsimilar(c2.hemi,c3.hemi,aht_min_err);
-	bool	b3	= fsimilar(c3.hemi,c1.hemi,aht_min_err);
+	bool	b1	= fsimilar	(c1.hemi,c2.hemi,aht_min_err);
+	bool	b2	= fsimilar	(c2.hemi,c3.hemi,aht_min_err);
+	bool	b3	= fsimilar	(c3.hemi,c1.hemi,aht_min_err);
 	if (b1 && b2 && b3)		return	-1;		// don't touch flat-shaded triangle
 	else					return	max_id;	// tesselate longest edge
 }
@@ -126,7 +126,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Gathering lighting information...");
-	u_SmoothVertColors	(5);
+	u_SmoothVertColors	(7);
 }
 
 void CBuild::u_Tesselate	(tesscb_estimator* cb_E, tesscb_face* cb_F, tesscb_vertex* cb_V)
