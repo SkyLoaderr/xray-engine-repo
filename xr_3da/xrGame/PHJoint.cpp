@@ -30,8 +30,8 @@ void CPHJoint::CreateBall()
 	m_joint=dJointCreateBall(phWorld,0);
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
-	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
-	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+	CPHElement* first=(pFirst_element);
+	CPHElement* second=(pSecond_element);
 
 
 
@@ -99,8 +99,8 @@ void CPHJoint::CreateHinge()
 	Fvector axis;
 	
 
-	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
-	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+	CPHElement* first=(pFirst_element);
+	CPHElement* second=(pSecond_element);
 	first->GetGlobalTransformDynamic(&first_matrix);
 	second->GetGlobalTransformDynamic(&second_matrix);
 
@@ -150,8 +150,8 @@ void CPHJoint::CreateHinge2()
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
 	Fvector axis;
-	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
-	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+	CPHElement* first=(pFirst_element);
+	CPHElement* second=(pSecond_element);
 	first->GetGlobalTransformDynamic(&first_matrix);
 	second->GetGlobalTransformDynamic(&second_matrix);
 	pos.set(0,0,0);
@@ -245,8 +245,8 @@ void CPHJoint::CreateFullControl()
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
 	Fvector axis;
-	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
-	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+	CPHElement* first=(pFirst_element);
+	CPHElement* second=(pSecond_element);
 	dBodyID body1=0;
 	dBodyID body2=0;
 	if(first)
@@ -480,8 +480,11 @@ CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysics
 {
 
 	m_destroy_info=NULL;
-	pFirst_element=first;
-	pSecond_element=second; 
+	pFirstGeom	  =NULL;
+	pFirst_element=dynamic_cast<CPHElement*>(first);
+	pSecond_element=dynamic_cast<CPHElement*>(second); 
+	m_joint=NULL;
+	m_joint1=NULL;
 	eType=type;
 	bActive=false;
 
@@ -549,8 +552,10 @@ void CPHJoint::Activate()
 	if(m_destroy_info)
 	{
 		dJointSetFeedback(m_joint,m_destroy_info->JointFeedback());
-		dJointSetFeedback(m_joint1,m_destroy_info->JointFeedback());
-	}		
+		if(m_joint1)dJointSetFeedback(m_joint1,m_destroy_info->JointFeedback());
+	}
+	dJointSetData(m_joint,(void*)this);
+	if(m_joint1)dJointSetData(m_joint1,(void*)this);
 	bActive=true;
 }
 
@@ -570,15 +575,16 @@ void CPHJoint::Deactivate()
 
 	case full_control:			dJointDestroy(m_joint);
 		dJointDestroy(m_joint1);
+		m_joint1=NULL;
 		break;
 	}
-
+	m_joint=NULL;
 	bActive=false;
 }
 void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 {
 	Deactivate();
-	pFirst_element=dynamic_cast<CPhysicsElement*>(new_element);
+	pFirst_element=(new_element);
 	Activate();
 }
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
@@ -1053,7 +1059,14 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 			break;
 	}
 }
-
+CPhysicsElement* CPHJoint::PFirst_element()
+{
+	return dynamic_cast<CPhysicsElement*>(pFirst_element);
+}
+CPhysicsElement* CPHJoint::PSecond_element()
+{
+	return dynamic_cast<CPhysicsElement*>(pSecond_element);
+}
 void CPHJoint::SetBreakable(u16 bone_id,float force,float torque)
 {
 	if(!m_destroy_info)	m_destroy_info=xr_new<CPHJointDestroyInfo>(bone_id,force,torque);

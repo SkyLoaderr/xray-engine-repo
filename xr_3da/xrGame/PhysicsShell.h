@@ -114,7 +114,8 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual CPHFracture&	setGeomFracturable		(CPHFracture &fracture)							= 0;
+	virtual u16				setGeomFracturable		(CPHFracture &fracture)							= 0;
+	virtual CPHFracture&	Fracture				(u16 num)										= 0;
 	//get
 	virtual u16				numberOfGeoms			()												= 0;
 	virtual	dBodyID			get_body				()												= 0;
@@ -159,8 +160,6 @@ enum enumType{				//joint type
 
 
 protected:
-	CPhysicsElement* pFirst_element;
-	CPhysicsElement* pSecond_element;
 
 
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
@@ -169,8 +168,8 @@ public:
 	virtual ~CPhysicsJoint	()																{};
 		
 	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
-IC CPhysicsElement* PFirst_element			()												{return pFirst_element;};
-IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
+virtual CPhysicsElement* PFirst_element()												=0;
+virtual CPhysicsElement* PSecond_element()												=0;
 	virtual void Activate					()												=0;
 	virtual void Deactivate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;

@@ -710,6 +710,7 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,body_pos.x, body_pos.y, body_pos.z);
 	if(m_fratures_holder)
 	{
+		impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
 		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
 	
@@ -1362,12 +1363,17 @@ void CPHElement::PresetActive()
 	
 }
 
-CPHFracture&	CPHElement::setGeomFracturable(CPHFracture& fracture)
+u16	CPHElement::setGeomFracturable(CPHFracture& fracture)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
 	return m_fratures_holder->AddFracture(fracture);
 }
 
+CPHFracture& CPHElement::Fracture(u16 num)
+{
+	R_ASSERT2(m_fratures_holder,"no fractures!");
+	return m_fratures_holder->Fracture(num);
+}
 u16	CPHElement::numberOfGeoms()
 {
 	return (u16)m_geoms.size();

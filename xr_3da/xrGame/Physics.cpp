@@ -815,4 +815,15 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 		dBodyAddForce(body2,-force.x,-force.y,-force.z);
 	}
 }
+void __stdcall PushOutCallback2(bool& do_colide,dContact& c)
+{
+
+	dBodyID body1=dGeomGetBody(c.geom.g1);
+	dBodyID body2=dGeomGetBody(c.geom.g2);
+	if(!(body1&&body2)) 
+		return;
+
+	//c.surface.soft_cfm/=3.5f;
+	c.surface.soft_erp*=3.1623f;
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

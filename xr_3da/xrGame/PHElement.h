@@ -67,7 +67,7 @@ class CPHElement	:  public CPhysicsElement
 	u32							push_untill;			//->to shell ??
 	bool						bUpdate;				//->to shell ??
 public:
-
+	IC	CODEGeom*				Geom(u16 num){R_ASSERT2 (num<m_geoms.size(),"out of range"); return m_geoms[num]; }
 	/////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////
@@ -174,7 +174,8 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
-	virtual CPHFracture&	setGeomFracturable	(CPHFracture& fracture);
+	virtual u16				setGeomFracturable		(CPHFracture& fracture);
+	virtual CPHFracture&	Fracture				(u16 num);
 	virtual u16				numberOfGeoms			();
 	dGeomID					dSpacedGeometry			();
 			void			PassEndGeoms			(u16 from,u16 to,CPHElement* dest);

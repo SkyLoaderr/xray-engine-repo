@@ -162,19 +162,25 @@ bool CPHFracturesHolder::PhDataUpdate(CPHElement* element)
 	{
 		m_has_breaks=i->Update(element)||m_has_breaks;
 	}
+	m_impacts.clear();
 	return m_has_breaks;
+	
 }
 
 void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point,u16 id)
 {
 	m_impacts.push_back(SPHImpact(force,point,id));
 }
-CPHFracture& CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
+u16 CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
 {
 	m_fractures.push_back(fracture);
-	return m_fractures.back();
+	return u16(m_fractures.size()-1);
 }
-
+CPHFracture& CPHFracturesHolder::Fracture(u16 num)
+{
+	R_ASSERT2(num<m_fractures.size(),"out of range!");
+	return m_fractures[num];
+}
 void CPHFracturesHolder::DistributeAdditionalMass(u16 geom_num,const dMass& m)
 {
 	FRACTURE_I f_i=m_fractures.begin(),f_e=m_fractures.end();
@@ -196,7 +202,7 @@ void CPHFracturesHolder::SubFractureMass(u16 fracture_num)
 	FRACTURE_I fracture=f_i+fracture_num;
 	u16 start_geom=fracture->m_start_geom_num;
 	u16	end_geom  =fracture->m_end_geom_num;
-	dMass& second_mass=fracture->m_seccondM;
+	dMass& second_mass=fracture->m_secondM;
 	dMass& first_mass=fracture->m_firstM;
 	for(;f_i!=f_e;f_i++)
 	{
@@ -242,27 +248,176 @@ m_breaked=false;
 
 bool CPHFracture::Update(CPHElement* element)
 {
+	
 	////itterate through impacts & calculate 
-	//dBodyID body=element->get_body();
-	//CPHFracturesHolder* holder=element->FracturesHolder();
-	//PH_IMPACT_STORAGE&	impacts=holder->Impacts();
-	//int num=dBodyGetNumJoints(body);
-	//for(int i=0;i<num;i++)
-	//{
-	//	dJointID joint=dBodyGetJoint(body,i);
-	//	dJointFeedback* feedback=dJointGetFeedback(joint);
-	//	//R_ASSERT(feedback,"Feedback was not set!!!");
-	//
-	//}
+	dBodyID body=element->get_body();
+	//const Fvector& v_bodyvel=*((Fvector*)dBodyGetLinearVel(body));
+	CPHFracturesHolder* holder=element->FracturesHolder();
+	PH_IMPACT_STORAGE&	impacts=holder->Impacts();
+	
+	Fvector second_part_force,first_part_force,second_part_torque,first_part_torque;
+	second_part_force.set(0.f,0.f,0.f);
+	first_part_force.set(0.f,0.f,0.f);
+	second_part_torque.set(0.f,0.f,0.f);
+	first_part_torque.set(0.f,0.f,0.f);
 
-	m_breaked=true;
-	return m_breaked;
+	const Fvector& body_local_pos=element->mass_Center();
+	Fvector body_to_first, body_to_second;
+	body_to_first.sub(*((const Fvector*)m_firstM.c),body_local_pos);
+	body_to_second.sub(*((const Fvector*)m_secondM.c),body_local_pos);
+	float body_to_first_smag=body_to_first.square_magnitude();
+	float body_to_second_smag=body_to_second.square_magnitude();
+	int num=dBodyGetNumJoints(body);
+	for(int i=0;i<num;i++)
+	{
+	
+		bool applied_to_second=false;
+		dJointID joint=dBodyGetJoint(body,i);
+		dJointFeedback* feedback=dJointGetFeedback(joint);
+		R_ASSERT2(feedback,"Feedback was not set!!!");
+		dxJoint* b_joint=(dxJoint*) joint;
+		bool b_body_second=(b_joint->node[1].body==body);
+		if(dJointGetType(joint)==dJointTypeContact)
+		{
+			dxJointContact* c_joint=(dxJointContact*)joint;
+			dGeomID first_geom=c_joint->contact.geom.g1;
+			dGeomID second_geom=c_joint->contact.geom.g2;
+			if(dGeomGetClass(first_geom)==dGeomTransformClass)
+			{
+				first_geom=dGeomTransformGetGeom(first_geom);
+			}
+			if(dGeomGetClass(second_geom)==dGeomTransformClass)
+			{
+				second_geom=dGeomTransformGetGeom(second_geom);
+			}
+			dxGeomUserData* UserData;
+			UserData=dGeomGetUserData(first_geom);
+			if(UserData)
+			{
+				u16 el_position=UserData->element_position;
+				//define if the contact applied to second part;
+				if(el_position<element->numberOfGeoms()&&
+					el_position>=m_start_geom_num&&
+					el_position<m_end_geom_num&&
+					first_geom==element->Geom(el_position)->geometry()
+					) applied_to_second=true;
+			}
+			UserData=dGeomGetUserData(second_geom);
+			if(UserData)
+			{
+				u16 el_position=UserData->element_position;
+				if(el_position<element->numberOfGeoms()&&
+					el_position>=m_start_geom_num&&
+					el_position<m_end_geom_num&&
+					second_geom==element->Geom(el_position)->geometry()
+					) applied_to_second=true;
+			}
+
+		}
+		else
+		{
+			CPHJoint* J	= (CPHJoint*) dJointGetData(joint);
+			u16 el_position=J->RootGeom()->element_position();
+			if(element==J->PSecond_element()&&
+				el_position<element->numberOfGeoms()&&
+				el_position>=m_start_geom_num&&
+				el_position<m_end_geom_num
+				) applied_to_second=true;
+		}
+//accomulate forces applied by joints to first and second parts
+		if(applied_to_second)
+		{
+			if(b_body_second)
+			{
+				Fvector force;
+				force.crossproduct(body_to_second,*(const Fvector*)feedback->t2);
+				force.mul(1.f/body_to_second_smag);
+				second_part_force.add(force);
+				second_part_force.add(*(const Fvector*)feedback->f2);
+			}
+			else
+			{
+				Fvector force;
+				force.crossproduct(body_to_second,*(const Fvector*)feedback->t1);
+				force.mul(1.f/body_to_second_smag);
+				second_part_force.add(force);
+				second_part_force.add(*(const Fvector*)feedback->f1);
+			}
+		}
+		else
+		{
+			if(b_body_second)
+			{
+				Fvector force;
+				force.crossproduct(body_to_first,*(const Fvector*)feedback->t2);
+				force.mul(1.f/body_to_first_smag);
+				first_part_force.add(force);
+				first_part_force.add(*(const Fvector*)feedback->f2);
+			}
+			else
+			{
+				Fvector force;
+				force.crossproduct(body_to_first,*(const Fvector*)feedback->t1);
+				force.mul(1.f/body_to_first_smag);
+				first_part_force.add(force);
+				first_part_force.add(*(const Fvector*)feedback->f1);
+			}
+		}
+
+	}
+
+	PH_IMPACT_I i_i=impacts.begin(),i_e=impacts.end();
+	for(;i_i!=i_e;i_i++)
+	{
+		u16 geom = i_i->geom;
+	
+		if((geom>=m_start_geom_num&&geom<m_end_geom_num))
+		{
+			Fvector force;
+			force.set(i_i->force);
+			Fvector second_to_point;
+			second_to_point.sub(body_to_second,i_i->point);
+			second_part_force.add(force);
+			Fvector torque;
+			torque.crossproduct(second_to_point,force);
+			second_part_torque.add(torque);
+		}
+		else
+		{
+			Fvector force;
+			force.set(i_i->force);
+			Fvector first_to_point;
+			first_to_point.sub(body_to_first,i_i->point);
+			first_part_force.add(force);
+			Fvector torque;
+			torque.crossproduct(first_to_point,force);
+			second_part_torque.add(torque);
+		}
+	}
+	Fmatrix invIfirst,invIsecond;
+	invIfirst.set(*(const Fmatrix*)m_firstM.I);
+	invIsecond.set(*(const Fmatrix*)m_secondM.I);
+	invIfirst.invert();
+	invIsecond.invert();
+	
+	 dReal tmp[12];
+	// compute inverse inertia tensor in global frame
+	dMULTIPLY2_333 (tmp,(float*)&invIfirst,body->R);
+	dMULTIPLY0_333 ((float*)&invIfirst,body->R,tmp);
+
+	dMULTIPLY2_333 (tmp,(float*)&invIsecond,body->R);
+	dMULTIPLY0_333 ((float*)&invIsecond,body->R,tmp);
+
+	//both parts have eqiual start angular vel same as have body so we ignore it
+
+		m_breaked=true;
+		return m_breaked;
 }
 
 void CPHFracture::SetMassParts(const dMass& first,const dMass& second)
 {
 	m_firstM=first;
-	m_seccondM=second;
+	m_secondM=second;
 }
 
 void CPHFracture::MassAddToFirst(const dMass& m)
@@ -272,7 +427,7 @@ void CPHFracture::MassAddToFirst(const dMass& m)
 
 void CPHFracture::MassAddToSecond(const dMass& m)
 {
-	dMassAdd(&m_seccondM,&m);
+	dMassAdd(&m_secondM,&m);
 }
 void CPHFracture::MassSubFromFirst(const dMass& m)
 {
@@ -280,7 +435,7 @@ void CPHFracture::MassSubFromFirst(const dMass& m)
 }
 void CPHFracture::MassSubFromSecond(const dMass& m)
 {
-	dMassSub(&m_seccondM,&m);
+	dMassSub(&m_secondM,&m);
 }
 void CPHFracture::MassSetFirst(const dMass& m)
 {
@@ -288,15 +443,15 @@ void CPHFracture::MassSetFirst(const dMass& m)
 }
 void CPHFracture::MassSetSecond(const dMass& m)
 {
-	m_seccondM=m;
+	m_secondM=m;
 }
 void CPHFracture::MassUnsplitFromFirstToSecond(const dMass& m)
 {
 	dMassSub(&m_firstM,&m);
-	dMassAdd(&m_seccondM,&m);
+	dMassAdd(&m_secondM,&m);
 }
 void CPHFracture::MassSetZerro()
 {
 	dMassSetZero(&m_firstM);
-	dMassSetZero(&m_seccondM);
+	dMassSetZero(&m_secondM);
 }

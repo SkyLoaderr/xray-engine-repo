@@ -183,6 +183,7 @@ private:
 	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);
 	void ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask);
+	void SetJointRootGeom(CPhysicsElement* root_e,CPhysicsJoint* J);
 
 };
 #endif

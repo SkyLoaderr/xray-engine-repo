@@ -4,11 +4,17 @@
 #define PH_JOINT
 class CPHJointDestroyInfo;
 class CPHJoint: public CPhysicsJoint{
-
+///////////////////////////////////////////////////////
+	CPHElement* pFirst_element;
+	CPHElement* pSecond_element;
+	CODEGeom*		 pFirstGeom;
+	
+/////////////////////////////////////////////////////////
 	CPHShell					*pShell;
 	dJointID					m_joint;
 	dJointID					m_joint1;
 	CPHJointDestroyInfo			*m_destroy_info;
+	
 	float						m_erp;				 //joint erp
 	float						m_cfm;				 //joint cfm
 
@@ -75,6 +81,10 @@ class CPHJoint: public CPhysicsJoint{
 
 
 public:
+	virtual CPhysicsElement* PFirst_element ();
+	virtual CPhysicsElement* PSecond_element();
+	IC		CPHElement*		 PFirstElement(){return pFirst_element;}
+	IC		CPHElement*		 PSecondElement(){return pSecond_element;}
 	virtual void Activate					();
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
@@ -82,12 +92,14 @@ public:
 	virtual void SetBreakable				(u16 bone_id, float force, float torque)						;
 	//virtual bool Breaked					(){return m_destroy_info->Breaked();}
 	virtual dJointID GetDJoint				(){return m_joint;}
+	virtual dJointID GetDJoint1				(){return m_joint1;}
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num);
 	virtual void GetAxisDir					(int num,Fvector& axis,eVs& vs);
 	virtual void GetAxisDirDynamic			(int num,Fvector& axis);
 	virtual void GetAnchorDynamic			(Fvector& anchor);
 	virtual void Deactivate();
 			void ReattachFirstElement		(CPHElement* new_element);
+			CODEGeom*	&RootGeom					(){return pFirstGeom;}
 virtual CPHJointDestroyInfo*	JointDestroyInfo(){return m_destroy_info;}
 				 CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual		 ~CPHJoint();

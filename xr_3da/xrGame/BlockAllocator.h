@@ -32,7 +32,7 @@ public:
 		block_position=block_size;
 		block_count=0;
 	}
-#pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
+
 	~BlockAllocator()
 	{
 		xr_vector<T*>::iterator i=blocks.begin(),e=blocks.end();
