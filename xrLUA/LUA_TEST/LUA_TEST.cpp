@@ -20,6 +20,14 @@ extern "C"
 #include <luabind\\luabind.hpp>
 #pragma warning(default:4244)
 
+// I need this because we have to exclude option /EHsc (exception handling) from the project
+namespace boost {
+	void __stdcall throw_exception(const exception &A)
+	{
+		Debug.fatal("Boost exception raised %s",A.what());
+	}
+};
+
 using namespace luabind;
 
 void Log(LPCSTR S)
