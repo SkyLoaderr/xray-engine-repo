@@ -104,7 +104,8 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	Fvector velocity					=	mdir;
 	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
 	velocity.mul						(desirable_speed);//*1.25f
-	movement_control->SetVelocity		(velocity);
+	if(!movement_control->JumpState())
+				movement_control->SetVelocity		(velocity);
 
 	if ((tpNearestList.empty())) {  // нет физ. объектов
 		
