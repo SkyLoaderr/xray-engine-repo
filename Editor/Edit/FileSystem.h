@@ -44,7 +44,6 @@ public:
 	FSPath 	m_SMotions;
 	FSPath 	m_Objects;
 	FSPath 	m_Textures;
-	FSPath 	m_TexturesRender;
 	FSPath 	m_TexturesThumbnail;
 	FSPath 	m_Config;
 	FSPath 	m_Temp;

@@ -104,12 +104,16 @@ public:
     float			fAccrue;
     float			fFalloff;
     float			fPower;
+
+    void			Clear			();
 public:
 					CSMotion		();
 					CSMotion		(CSMotion* src);
 	virtual			~CSMotion		();
 
 	void			Evaluate		(int bone_idx, float t, Fvector& T, Fvector& R);
+
+    void			CopyMotion		(CSMotion* src);
 
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
 	void			SetStartBone	(const char* n)	{if(n) strcpy(cStartBone,n);strlwr(cStartBone);}

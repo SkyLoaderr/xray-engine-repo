@@ -176,16 +176,16 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF04000000BCAF8B0400000000FFFFFFFF000001000000746446000000
-              000000001027000000000150000000000000742C000000000000016500000000
-              000000000001000002000000230001000000000000000000000000BCAF8B0400
-              000000FFFFFFFF00000100000074643200000000000000102700000000015001
-              0000000000742C00000000000001650000000000000000000100000200000058
-              0001000000000000000000000000BCAF8B0400000000FFFFFFFF000001000000
-              746432000000000000001027000000000150020000000000742C000000000000
-              0165000000000000000000010000020000005900010000000000000000000000
-              00BCAF8B0400000000FFFFFFFF00000100000074643200000000000000102700
-              0000000150030000000000742C00000000000001650000000000000000000100
+              F8FFFFFF0400000034E39F0500000000FFFFFFFF000001000000064046000000
+              0000000010270000000001400000000000000740000000000000014000000000
+              00000000000100000200000023000100000000000000000000000034E39F0500
+              000000FFFFFFFF00000100000006403200000000000000102700000000014001
+              0000000000074000000000000001400000000000000000000100000200000058
+              000100000000000000000000000034E39F0500000000FFFFFFFF000001000000
+              0640320000000000000010270000000001400200000000000740000000000000
+              0140000000000000000000010000020000005900010000000000000000000000
+              0034E39F0500000000FFFFFFFF00000100000006403200000000000000102700
+              0000000140030000000000074000000000000001400000000000000000000100
               00020000005A0001000000000000000000000000}
             Tracking = True
             AllowDrag = True
@@ -245,19 +245,19 @@ object frmPropertiesObject: TfrmPropertiesObject
             ActiveFilterColor = clBlack
             Flat = True
             Sections.Data = {
-              F8FFFFFF050000000493AB0500000000FFFFFFFF0000010000000C0614000000
-              000000001027000000000005040000000000AE05000000000000010600000000
-              00000000000100000100000000010000000000000000000000000493AB050000
-              0000FFFFFFFF0000010000000C063C0000000000000010270000000001050000
-              00000000AE050000000000000106000000000000000000010000080000004D69
-              6E696D756D00010000000000000000000000000493AB0500000000FFFFFFFF00
-              00010000000C063C000000000000001027000000000105010000000000AE0500
-              00000000000106000000000000000000010000080000004D6178696D756D0001
-              0000000000000000000000000493AB0500000000FFFFFFFF0000010000000C06
-              3C000000000000001027000000000105020000000000AE050000000000000106
+              F8FFFFFF0500000034E39F0500000000FFFFFFFF000001000000064014000000
+              0000000010270000000000400400000000000740000000000000014000000000
+              000000000001000001000000000100000000000000000000000034E39F050000
+              0000FFFFFFFF00000100000006403C0000000000000010270000000001400000
+              0000000007400000000000000140000000000000000000010000080000004D69
+              6E696D756D000100000000000000000000000034E39F0500000000FFFFFFFF00
+              000100000006403C000000000000001027000000000140010000000000074000
+              00000000000140000000000000000000010000080000004D6178696D756D0001
+              00000000000000000000000034E39F0500000000FFFFFFFF0000010000000640
+              3C00000000000000102700000000014002000000000007400000000000000140
               0000000000000000000100000500000053697A65000100000000000000000000
-              00000493AB0500000000FFFFFFFF0000010000000C063C000000000000001027
-              000000000105030000000000AE05000000000000010600000000000000000001
+              000034E39F0500000000FFFFFFFF00000100000006403C000000000000001027
+              0000000001400300000000000740000000000000014000000000000000000001
               00000700000043656E7465720001000000000000000000000000}
             Tracking = True
             AllowDrag = True
@@ -1305,7 +1305,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           object GroupBox3: TGroupBox
             Left = 0
             Top = 0
-            Width = 222
+            Width = 223
             Height = 61
             Align = alClient
             Caption = ' Summary Info '
@@ -1356,7 +1356,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             end
           end
           object gbOMotionCommand: TGroupBox
-            Left = 222
+            Left = 223
             Top = 0
             Width = 141
             Height = 61
@@ -1372,6 +1372,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Append'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebOAppendMotionClick
@@ -1385,6 +1391,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Rename'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebORenameMotionClick
@@ -1398,6 +1410,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Delete'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebODeleteMotionClick
@@ -1411,6 +1429,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Clear'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebOMotionClearClick
@@ -1424,6 +1448,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Save'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebOMotionSaveClick
@@ -1437,6 +1467,12 @@ object frmPropertiesObject: TfrmPropertiesObject
               BevelShow = False
               CloseButton = False
               Caption = 'Load'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebOMotionLoadClick
@@ -1452,7 +1488,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Left = 0
           Top = 0
           Width = 223
-          Height = 235
+          Height = 220
           LeftPosition = 0
           ActiveBorderType = fbtSunken
           Align = alLeft
@@ -1591,7 +1627,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Left = 225
           Top = 0
           Width = 139
-          Height = 235
+          Height = 220
           Align = alRight
           Caption = ' Current Motion '
           TabOrder = 1
@@ -1841,9 +1877,9 @@ object frmPropertiesObject: TfrmPropertiesObject
         end
         object paSAnimBottom: TPanel
           Left = 0
-          Top = 235
+          Top = 220
           Width = 364
-          Height = 61
+          Height = 76
           Align = alBottom
           BevelOuter = bvNone
           TabOrder = 2
@@ -1851,7 +1887,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Left = 0
             Top = 0
             Width = 223
-            Height = 61
+            Height = 76
             Align = alClient
             Caption = ' Summary Info '
             TabOrder = 0
@@ -1926,7 +1962,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             Left = 223
             Top = 0
             Width = 141
-            Height = 61
+            Height = 76
             Align = alRight
             Caption = ' Motions '
             TabOrder = 1
@@ -1969,7 +2005,7 @@ object frmPropertiesObject: TfrmPropertiesObject
               OnClick = ebSRenameMotionClick
             end
             object ebSDeleteMotion: TExtBtn
-              Left = 4
+              Left = 71
               Top = 28
               Width = 67
               Height = 15
@@ -1988,8 +2024,8 @@ object frmPropertiesObject: TfrmPropertiesObject
               OnClick = ebSDeleteMotionClick
             end
             object ebSMotionClear: TExtBtn
-              Left = 71
-              Top = 28
+              Left = 4
+              Top = 43
               Width = 67
               Height = 15
               Align = alNone
@@ -2008,7 +2044,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             end
             object ebSMotionSave: TExtBtn
               Left = 4
-              Top = 43
+              Top = 58
               Width = 67
               Height = 15
               Align = alNone
@@ -2027,7 +2063,7 @@ object frmPropertiesObject: TfrmPropertiesObject
             end
             object ebSMotionLoad: TExtBtn
               Left = 71
-              Top = 43
+              Top = 58
               Width = 67
               Height = 15
               Align = alNone
@@ -2043,6 +2079,25 @@ object frmPropertiesObject: TfrmPropertiesObject
               Transparent = False
               FlatAlwaysEdge = True
               OnClick = ebSMotionLoadClick
+            end
+            object ebSReloadMotion: TExtBtn
+              Left = 4
+              Top = 28
+              Width = 67
+              Height = 15
+              Align = alNone
+              BevelShow = False
+              CloseButton = False
+              Caption = 'Reload'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+              Transparent = False
+              FlatAlwaysEdge = True
+              OnClick = ebSReloadMotionClick
             end
           end
         end

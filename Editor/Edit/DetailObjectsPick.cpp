@@ -63,6 +63,7 @@ int CDetailManager::FrustumSelect(bool flag){
         }
     }
     UI->RedrawScene();
+    return count;
 }
 
 int CDetailManager::SelectObjects(bool flag){

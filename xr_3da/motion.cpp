@@ -147,13 +147,34 @@ CSMotion::CSMotion(CSMotion* source):CCustomMotion(source){
 }
 
 CSMotion::~CSMotion(){
+	Clear();
+}
+
+void CSMotion::Clear(){
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++)
 		for (int ch=0; ch<ctMaxChannel; ch++) _DELETE(bm_it->envs[ch]);
 	bone_mots.clear();
 }
 
+void CSMotion::CopyMotion(CSMotion* source){
+	Clear();
+
+	iFrameStart		= source->iFrameStart;
+    iFrameEnd		= source->iFrameEnd;
+	fFPS			= source->fFPS;
+	st_BoneMotion*	src;
+	st_BoneMotion*	dest;
+    bone_mots.resize(source->bone_mots.size());
+    for(DWORD i=0; i<bone_mots.size(); i++){
+    	dest 		= &bone_mots[i];
+    	src 		= &source->bone_mots[i];
+		for (int ch=0; ch<ctMaxChannel; ch++)
+			dest->envs[ch] = new CEnvelope(src->envs[ch]);
+    }
+}
+
 void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R){
-	VERIFY(bone_idx<bone_mots.size());
+	VERIFY(bone_idx<(int)bone_mots.size());
 	CEnvelope** envs = bone_mots[bone_idx].envs;
 	T.x = envs[ctPositionX]->Evaluate(t);
 	T.y = envs[ctPositionY]->Evaluate(t);

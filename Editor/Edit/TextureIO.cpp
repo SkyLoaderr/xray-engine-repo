@@ -372,23 +372,18 @@ bool ETextureCore::SaveAsDDS(LPCSTR filename){
     bool bRes = DXTCompress(filename, (BYTE*)m_Pixels.begin(), m_Width, m_Height, m_Width*4, GetTextureParams(), 4);
     if (FS.FileLength(filename)==0) bRes=false;
     // change date-time
-    if (bRes){
-    	FS.SetFileAgeFrom(src_name, AnsiString(filename));
-        // copy to game folder
-	    AnsiString 	game_name = ChangeFileExt(m_ShortName,".dds");
-		FS.m_GameTextures.Update(game_name);
-        FS.CopyFileTo(filename,game_name.c_str(),true);
-    }
+    if (bRes) FS.SetFileAgeFrom(src_name, AnsiString(filename));
     Unload();
     return bRes;
 }
 
+// only implicit lighted
 bool ETextureCore::MakeGameTexture(LPCSTR filename){
 	VERIFY(m_Thm);
     if (!Valid()) return false;
 
     CheckVersionAndUpdateFiles();
-    
+
     STextureParams* TP=GetTextureParams();
     VERIFY(TP);
     if (TP->flag&EF_IMPLICIT_LIGHTED){
@@ -396,14 +391,6 @@ bool ETextureCore::MakeGameTexture(LPCSTR filename){
 	    AnsiString game_name=AnsiString(filename)+AnsiString(".tga");
 		FS.m_GameTextures.Update(game_name);
 	    return SaveAsTGA(game_name.c_str());
-    }else{
-	    // DDS
-    	AnsiString dds_name=AnsiString(m_ShortName)+AnsiString(".dds");
-		FS.m_TexturesRender.Update(dds_name);
-	    // save to game folder
-	    AnsiString game_name=AnsiString(filename)+AnsiString(".dds");
-		FS.m_GameTextures.Update(game_name);
-	    if (FS.CompareFileAge(game_name,dds_name)!=1) FS.CopyFileTo(dds_name.c_str(),game_name.c_str());
     }
     return true;
 }

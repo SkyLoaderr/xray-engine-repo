@@ -347,8 +347,8 @@ void __fastcall TfrmEditShaders::ebSaveClick(TObject *Sender)
 //        	if (node->Data)
 //            	if (node->Parent) SHLib->m_Folders[node->Parent->Text].push_back(node->Text);
         // save
-        SHLib->SaveLibrary();
         SHLib->Backup();
+        SHLib->SaveLibrary();
     }
 }
 //---------------------------------------------------------------------------

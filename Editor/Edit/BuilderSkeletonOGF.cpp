@@ -406,7 +406,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditObject* O){
                 Fmatrix mat;
                 Fquaternion q;
                 M->Evaluate(bone_id,t,T,R);
-                mat.setHPB(R.x,R.y,R.z);
+                mat.setHPB(-R.x,-R.y,R.z);
                 q.set(mat);
         		// Quantize quaternion
 	        	int	_x = int(q.x*KEY_Quant); clamp(_x,-32767,32767); short x =  _x; F.write(&x,2);

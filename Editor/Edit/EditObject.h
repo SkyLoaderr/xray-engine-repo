@@ -238,6 +238,7 @@ public:
     void			RemoveSMotion			(const char* name);
     bool			RenameSMotion			(const char* old_name, const char* new_name);
     CSMotion*		AppendSMotion			(const char* fname);
+    bool			ReloadSMotion			(CSMotion* M, const char* fname);
     void			ClearSMotions			();
     void			LoadSMotions			(const char* fname);
     void			SaveSMotions			(const char* fname);

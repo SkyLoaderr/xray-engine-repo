@@ -173,7 +173,7 @@ int ETextureCore::IfNeedUpdate(){
 	AnsiString thm_name=AnsiString(m_ShortName)+AnsiString(".thm");
 	FS.m_TexturesThumbnail.Update(thm_name);
 	AnsiString dds_name=AnsiString(m_ShortName)+AnsiString(".dds");
-	FS.m_TexturesRender.Update(dds_name);
+	FS.m_GameTextures.Update(dds_name);
 	return !((FS.CompareFileAge(tex_name,thm_name)==1)&&(FS.CompareFileAge(tex_name,dds_name)==1));
 }
 
@@ -192,7 +192,7 @@ bool ETextureCore::CheckVersionAndUpdateFiles(bool bDDS){
     if (bDDS){
         // check DDS version
         AnsiString dds_name=AnsiString(m_ShortName)+AnsiString(".dds");
-        FS.m_TexturesRender.Update(dds_name);
+        FS.m_GameTextures.Update(dds_name);
         int tex_dds = FS.CompareFileAge(tex_name,dds_name);
         if ((tex_dds==1)&&FS.FileLength(dds_name.c_str())) return true;
         if (!SaveAsDDS(dds_name.c_str())) return false;
@@ -211,7 +211,7 @@ bool ETextureCore::UpdateThumbnail(){
 bool ETextureCore::CreateDDSurface(){
 	AnsiString name;
     name 		= AnsiString(m_ShortName)+AnsiString(".dds");
-	FS.m_TexturesRender.Update(name);
+	FS.m_GameTextures.Update(name);
     // check file version if non equal remake
 	CheckVersionAndUpdateFiles();
  	HRESULT hr = CreateTexture(m_Surface, name.c_str(), &m_Width, &m_Height, &m_AlphaPresent);
@@ -238,14 +238,9 @@ void ETextureCore::SaveTextureParams(){
 	if (m_Thm){
     	// delete exist dds
         AnsiString gf;
-        // game
-        gf = m_ShortName;
-    	FS.m_GameTextures.Update(gf);
-        gf = ChangeFileExt(gf,".dds");
-        FS.DeleteFileByName(gf.c_str());
         // render
         gf = m_ShortName;
-    	FS.m_TexturesRender.Update(gf);
+    	FS.m_GameTextures.Update(gf);
         gf = ChangeFileExt(gf,".dds");
         FS.DeleteFileByName(gf.c_str());
         // save thm

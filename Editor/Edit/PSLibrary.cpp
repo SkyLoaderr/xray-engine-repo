@@ -30,7 +30,6 @@ PS::SDef* CPSLibrary::AddPS(const char* name, PS::SDef* src){
 void CPSLibrary::DeletePS(const char* nm){
     PS::SDef* sh = FindPS(nm);
     if (sh) m_PSs.erase(sh);
-    Sort();
 }
 
 void CPSLibrary::Sort(){
@@ -68,6 +67,7 @@ void CPSLibrary::Save(){
 	AnsiString fn;
     fn = PSLIB_FILENAME;
     FS.m_GameRoot.Update(fn);
+	psLibrary_Sort(m_PSs);
     Save(fn.c_str());
 }
 //----------------------------------------------------
@@ -106,17 +106,13 @@ void CPSLibrary::Reload(){
 }
 //----------------------------------------------------
 void CPSLibrary::Backup(){
-	AnsiString fn;
-    fn = PSLIB_BACKUPNAME;
-    FS.m_GameRoot.Update(fn);
-    Save(fn.c_str());
+	AnsiString fn = PSLIB_FILENAME;
+    FS.BackupFile(fn);
 }
 //----------------------------------------------------
 void CPSLibrary::RestoreBackup(){
-	AnsiString fn;
-    fn = PSLIB_BACKUPNAME;
-    FS.m_GameRoot.Update(fn);
-	Load(fn.c_str());
+	AnsiString fn = PSLIB_FILENAME;
+	if (FS.RestoreBackup(fn)==1) Load(fn.c_str());
 }
 //----------------------------------------------------
 PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent){

@@ -111,7 +111,11 @@ void __fastcall TfrmEditParticles::UpdateEmitter(){
 
 void __fastcall TfrmEditParticles::OnNameUpdate(){
 	if (!Visible()) return;
-    if (form->tvItems->Selected) form->tvItems->Selected->Text = form->m_SelectedPS->m_Name;
+    if (form->tvItems->Selected){
+    	form->tvItems->Selected->Text = form->m_SelectedPS->m_Name;
+	    form->SetCurrent(PSLib->FindPS(form->tvItems->Selected->Text.c_str()));
+    }
+    PSLib->Sort();
 }
 //---------------------------------------------------------------------------
 
@@ -302,8 +306,8 @@ void __fastcall TfrmEditParticles::ebSaveClick(TObject *Sender)
     else{
         ebSave->Enabled = false;
         // save
-        PSLib->Save();
         PSLib->Backup();
+        PSLib->Save();
     }
 }
 //---------------------------------------------------------------------------

@@ -8,7 +8,6 @@
 DEFINE_VECTOR(PS::SDef, PSList, PSIt);
 
 #define PSLIB_FILENAME "particles.xr"
-#define PSLIB_BACKUPNAME "particles.~xr"
 
 class CPSLibrary{
     PSList				m_PSs;

@@ -266,12 +266,16 @@ bool COccluder::SelectPoint(Fvector& start, Fvector& direction, bool bLeaveSel){
 }
 
 bool COccluder::SelectPoint(const CFrustum& frustum, bool bLeaveSel){
+	bool bRes = false;
     UpdatePoints3D();
 	if (!bLeaveSel) m_SelPoints.clear();
 	for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++){
-    	if (frustum.testSphere(*it,OCCLUDER_POINT_SEL_DIST))
+    	if (frustum.testSphere(*it,OCCLUDER_POINT_SEL_DIST)){
 			m_SelPoints.push_back(it-m_3DPoints.m_Points.begin());
+            bRes = true;
+        }
     }
+    return bRes;
 }
 
 void COccluder::Move( Fvector& amount ){

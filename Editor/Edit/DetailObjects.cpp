@@ -884,11 +884,14 @@ void CDetailManager::Save(CFS_Base& F){
 }
 
 void CDetailManager::Export(LPCSTR fn){
+    UI->ProgressStart	(4,"Making details...");
     m_Header.version	= DETAIL_VERSION;
 	CFS_Memory F;
     m_Header.object_count=m_Objects.size();
 	// header
 	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
+	UI->ProgressInc();
+
     // objects
 	F.open_chunk		(DETMGR_CHUNK_OBJECTS);
     for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
@@ -897,11 +900,16 @@ void CDetailManager::Export(LPCSTR fn){
 	    F.close_chunk	();
     }
     F.close_chunk		();
+	UI->ProgressInc();
+
     // slots
 	F.open_chunk		(DETMGR_CHUNK_SLOTS);
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
+	UI->ProgressInc();
 
     F.SaveTo			(fn,0);
+	UI->ProgressInc();
+    UI->ProgressEnd		();
 }
 

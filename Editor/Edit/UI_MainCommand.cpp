@@ -313,7 +313,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_MAKE_DETAILS:
 		if( !Scene->locked() ){
             if( !Builder->InProgress() )
-				Builder->MakeDetails( );
+				Builder->MakeDetails(true);
         }else{
 			Log->DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

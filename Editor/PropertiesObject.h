@@ -185,6 +185,7 @@ __published:	// IDE-managed Components
 	TComboBox *cbSStartMotionBone;
 	TMultiObjSpinEdit *seSMotionPower;
 	TMultiObjCheck *cbSMotionStopAtEnd;
+	TExtBtn *ebSReloadMotion;
     void __fastcall ebEditMeshClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -247,6 +248,7 @@ __published:	// IDE-managed Components
 	void __fastcall seSMotionSpeedLWChange(TObject *Sender, int Val);
 	void __fastcall ebSelectShaderClick(TObject *Sender);
 	void __fastcall ebSelectTextureClick(TObject *Sender);
+	void __fastcall ebSReloadMotionClick(TObject *Sender);
 private:	// User declarations
 	bool bMultiSelection;
     ETextureCore* tx_selected;

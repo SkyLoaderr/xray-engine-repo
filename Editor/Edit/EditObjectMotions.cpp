@@ -146,7 +146,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
         Fmatrix& parent = ((*b_it)->ParentIndex()>-1)?m_Bones[(*b_it)->ParentIndex()]->LTransform():precalc_identity;
         const Fvector& r = (*b_it)->Rotate();
         if (flag&WORLD_ORIENTATION){
-	        R.setHPB(r.x,r.y,r.z);
+	        R.setHPB(-r.x,-r.y,r.z);
             M.identity();
     	    M.c.set((*b_it)->Offset());
 			M.mul2(parent);
@@ -154,7 +154,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
             M.j.set(R.j);
             M.k.set(R.k);
         }else{
-            M.setHPB(r.x,r.y,r.z);
+            M.setHPB(-r.x,-r.y,r.z);
             M.c.set((*b_it)->Offset());
             M.mul2(parent);
         }
@@ -177,11 +177,11 @@ void CEditObject::RemoveSMotion(const char* name){
     CEditObject* _O = m_LibRef?m_LibRef:this;    VERIFY(_O);
     SMotionVec& lst = _O->m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
-        if ((stricmp((*m)->Name(),name)==0)){ 
+        if ((stricmp((*m)->Name(),name)==0)){
         	if (m_ActiveSMotion==*m) SetActiveSMotion(0);
             _DELETE(*m);
-        	_O->m_SMotions.erase(m); 
-            break; 
+        	_O->m_SMotions.erase(m);
+            break;
         }
 }
 
@@ -199,6 +199,21 @@ CSMotion* CEditObject::AppendSMotion(const char* fname){
 		Log->DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
     }
     return M;
+}
+
+bool CEditObject::ReloadSMotion(CSMotion* src, const char* fname){
+	VERIFY(IsSkeleton());
+	CSMotion* M = LoadSMotion(fname);
+    if (M){
+	  	if (CheckBoneCompliance(M)){
+        	src->CopyMotion(M);
+            return true;
+        }else                        Log->DlgMsg(mtError,"Motion file '%s' has different bone names. Reload failed.",fname);
+		_DELETE(M);
+    }else{
+		Log->DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
+    }
+    return false;
 }
 
 void CEditObject::ClearSMotions(){

@@ -41,6 +41,9 @@ void SceneBuilder::AddUniqueTexName( const char *name ){
 }
 //----------------------------------------------------
 
+//----------------------------------------------------
+// only implicit lighted
+//----------------------------------------------------
 bool SceneBuilder::WriteTextures(){
 	if( m_TexNames.empty() )
 		return true;

@@ -125,7 +125,8 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
 	if (bSetMode) return false;
 	if (m_PS){
     	// base
-        m_PS->SetName					(edName->Text.c_str());
+        if (m_PS->SetName				(edName->Text.c_str()))
+		    TfrmEditParticles::OnNameUpdate();
         m_PS->SetShader					(lbShader->Caption=="..."?"":lbShader->Caption.c_str());
         m_PS->SetTexture				(lbTexture->Caption=="..."?"":lbTexture->Caption.c_str());
         // params
@@ -180,7 +181,6 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
 		TfrmEditParticles::Modified();
 
         GetObjectsInfo();
-	    TfrmEditParticles::OnNameUpdate();
     }
     return true;
 }

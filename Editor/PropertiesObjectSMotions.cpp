@@ -87,6 +87,22 @@ void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
+{
+    if (selected_smotion){
+    	AnsiString fn;
+	    if (FS.GetOpenName(&FS.m_SMotion,fn)){
+    		if (m_EditObject->ReloadSMotion(selected_smotion,fn.c_str())){
+	        	Log->DlgMsg(mtInformation,"Motion '%s' reloaded.",selected_smotion->Name());
+		        seSMotionChange				(Sender);
+			    OnModified(Sender);
+            }
+        }else
+        	Log->DlgMsg(mtError,"Reload failed.");
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmPropertiesObject::ebSDeleteMotionClick(TObject *Sender)
 {
     if (tvSMotions->Selected){

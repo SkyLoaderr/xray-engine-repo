@@ -97,7 +97,7 @@ bool SceneBuilder::MakeLTX( ){
 	return true;
 }
 
-bool SceneBuilder::MakeDetails(){
+bool SceneBuilder::MakeDetails(bool bOkMessage){
 	bool error_flag = false;
 	AnsiString error_text;
     do{
@@ -111,9 +111,10 @@ bool SceneBuilder::MakeDetails(){
         // save details
 		Scene->m_DetailObjects->Export(fn.c_str());
     }while(0);
-	if( error_flag )  Log->DlgMsg(mtError,error_text.c_str());
+	if( error_flag )  	Log->DlgMsg(mtError,error_text.c_str());
+    else				if (bOkMessage) Log->DlgMsg(mtInformation,"Details succesfully exported.");
 
-	return true;
+	return error_flag;
 }
 
 //----------------------------
@@ -216,6 +217,7 @@ DWORD SceneBuilder::Thread(){
 		}
 
         if (NeedAbort()) break;
+		// only implicit lighted
 		if( !WriteTextures() ){
 			error_text="*ERROR: Failed to write textures....";
 			error_flag = true;

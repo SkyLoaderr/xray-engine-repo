@@ -52,7 +52,7 @@ bool CheckVersion(const AnsiString& f){
     int f1 = FS.CompareFileAge(tex_name,thm_name);
     // dds
     dds_name = ChangeFileExt(f,".dds");
-    FS.m_TexturesRender.Update(dds_name);
+    FS.m_GameTextures.Update(dds_name);
     int f2 = FS.CompareFileAge(tex_name,dds_name);
     return (f1==1)&&(f2==1);
 }
