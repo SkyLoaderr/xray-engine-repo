@@ -33,13 +33,17 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	ALife::PERSONAL_EVENT_P_VECTOR	m_tpEvents;
 	Flags32							m_trader_flags;
 
-#ifdef XRGAME_EXPORTS
 	////////////////////////////////////////////////////
 	//character profile info
+#ifndef  AI_COMPILER
 	PROFILE_INDEX					character_profile		();
 	void							set_character_profile	(PROFILE_INDEX);
 	SPECIFIC_CHARACTER_INDEX		specific_character		();
 	void							set_specific_character	(SPECIFIC_CHARACTER_INDEX);
+#endif
+
+#ifdef XRGAME_EXPORTS
+
 	ALife::ERelationType			get_relation			(u16 person_id);
 private:
 	bool							m_character_profile_init;

@@ -15,12 +15,12 @@
 
 #ifndef AI_COMPILER
 #	include "ai_space.h"
+#	include "character_info.h"
+#	include "specific_character.h"
 #endif
 
 #ifdef XRGAME_EXPORTS
 #	include "ef_storage.h"
-#	include "character_info.h"
-#	include "specific_character.h"
 #	include "game_graph.h"
 #endif
 
@@ -111,6 +111,10 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	relation_registry.Init(base()->ID);
 #endif
 }
+
+
+#ifndef AI_COMPILER
+
 
 #ifdef XRGAME_EXPORTS
 
@@ -268,6 +272,8 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 
 	return	m_iCharacterProfile;
 }
+
+#endif
 
 
 #ifdef XRGAME_EXPORTS
