@@ -29,7 +29,6 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	P_project.build_projection	(deg2rad(90.f),1.f,PSM_near_plane,L->range+EPS_S);
 	P_combine.mul				(P_project,P_view);
 
-	return						TRUE;
 	// Quick exit for frustum-frustum intersection
 	// If the center of light lies inside, all frustums will cause intersection
 	if (RImplementation.ViewBase.testSphere_dirty(L->position,EPS_S))	return			TRUE;
