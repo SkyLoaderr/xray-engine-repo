@@ -349,7 +349,7 @@ function military_lukash_dead (actor, npc)
     end
 end
 
-function military_courier_dead (actor, npc)
+function mil_courier_dead (actor, npc)
     if db.actor:dont_has_info ("mil_khutor_visited") then
        db.actor:set_task_state (task.fail, "mil_courier_job", 1)
     end    
