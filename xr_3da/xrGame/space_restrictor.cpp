@@ -11,6 +11,7 @@
 #include "xrServer_Objects_ALife.h"
 #include "level.h"
 #include "space_restriction_manager.h"
+#include "restriction_space.h"
 
 CSpaceRestrictor::~CSpaceRestrictor	()
 {
@@ -62,10 +63,10 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	setEnabled						(false);
 	setVisible						(false);
 
-	if (!ai().get_level_graph())
+	if (!ai().get_level_graph() || (RestrictionSpace::ERestrictorTypes(se_shape->m_space_restrictor_type) == RestrictionSpace::eRestrictorTypeNone))
 		return						(TRUE);
 
-	Level().space_restriction_manager().register_restrictor(this,RestrictionSpace::EDefaultRestrictorTypes(se_shape->m_default_space_restrictor_type));
+	Level().space_restriction_manager().register_restrictor(this,RestrictionSpace::ERestrictorTypes(se_shape->m_space_restrictor_type));
 
 	return							(TRUE);
 }

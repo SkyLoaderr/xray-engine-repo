@@ -93,11 +93,11 @@ protected:
 				256,
 				8*1024
 			>												CSolverVertexManager;
-//#ifdef AI_COMPILER
+#ifdef AI_COMPILER
 	typedef CVertexAllocatorFixed<1024*1024>				CVertexAllocator;
-//#else
-//	typedef CVertexAllocatorFixed<64*1024>					CVertexAllocator;
-//#endif
+#else
+	typedef CVertexAllocatorFixed<64*1024>					CVertexAllocator;
+#endif
 	typedef CVertexAllocatorFixed<8*1024>					CSolverVertexAllocator;
 
 	typedef CAStar<
@@ -107,9 +107,7 @@ protected:
 		CVertexAllocator
 	>														CAlgorithm;
 	
-//	typedef CDijkstra<
 	typedef CAStar<
-//	typedef CDijkstraBidirectional<
 		_solver_dist_type,
 		CSolverPriorityQueue,
 		CSolverVertexManager,

@@ -233,7 +233,7 @@ void CSpaceRestrictionManager::change_restrictions			(ALife::_OBJECT_ID id, ref_
 		restrict				(id,new_out_restrictions,new_in_restrictions);
 }
 
-void CSpaceRestrictionManager::on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions)
+void CSpaceRestrictionManager::on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions)
 {
 	CLIENT_RESTRICTIONS::const_iterator	I = m_clients->begin();
 	CLIENT_RESTRICTIONS::const_iterator	E = m_clients->end();

@@ -15,7 +15,7 @@ template <typename _1, typename _2> class intrusive_ptr;
 
 namespace RestrictionSpace {
 	struct CTimeIntrusiveBase;
-	enum EDefaultRestrictorTypes;
+	enum ERestrictorTypes;
 };
 
 namespace SpaceRestrictionHolder {
@@ -38,13 +38,13 @@ protected:
 	IC		void					collect_garbage					();
 	IC		ref_str					default_out_restrictions		() const;
 	IC		ref_str					default_in_restrictions			() const;
-	virtual void					on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions) = 0;
+	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions) = 0;
 
 public:
 	IC								CSpaceRestrictionHolder			();
 	virtual							~CSpaceRestrictionHolder		();
 			SpaceRestrictionHolder::CBaseRestrictionPtr	restriction	(ref_str space_restrictors);
-			void					register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type);
+			void					register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::ERestrictorTypes &restrictor_type);
 };
 
 #include "space_restriction_holder_inline.h"

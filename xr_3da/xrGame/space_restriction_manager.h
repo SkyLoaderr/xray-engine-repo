@@ -51,7 +51,7 @@ protected:
 	IC		CRestrictionPtr		restriction						(ALife::_OBJECT_ID id);
 			CRestrictionPtr		restriction						(ref_str out_restrictors, ref_str in_restrictors);
 	IC		void				collect_garbage					();
-	virtual void				on_default_restrictions_changed	(const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions);
+	virtual void				on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, ref_str old_restrictions, ref_str new_restrictions);
 	IC		bool				no_default_restrictions			(ref_str restrictions);
 	IC		void				restrict						(ALife::_OBJECT_ID id, CSpaceRestrictionManager::CRestrictionPtr restriction);
 

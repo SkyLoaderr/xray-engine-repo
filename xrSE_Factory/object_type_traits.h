@@ -26,6 +26,41 @@
 			enum { value = sizeof(detail::yes) == sizeof(select<T>(0)) };\
 		};
 
+	template <bool expression, typename T1, typename T2>
+	struct _if {
+		template <bool>
+		struct selector {
+			typedef T2 result;
+		};
+
+		template <>
+		struct selector<true> {
+			typedef T1 result;
+		};
+
+		typedef typename selector<expression>::result result;
+	};
+
+	template <typename T1, typename T2>
+	struct is_type {
+		template <typename T>
+		struct selector {
+			enum { value = false, };
+		};
+
+		template <>
+		struct selector<T1> {
+			enum { value = true, };
+		};
+
+		enum { value = selector<T2>::value, };
+	};
+
+	template <typename T>
+	struct type {
+		typedef T result;
+	};
+
 	namespace object_type_traits {
 		namespace detail {
 			struct yes {char a[1];};
@@ -103,17 +138,7 @@
 
 		template <typename T1, typename T2>
 		struct is_same {
-			template <typename T> static detail::yes select(detail::other<T>,detail::other<T>);
-								  static detail::no	 select(...);
-
-			enum { 
-				value = 
-					is_class<T1>::result && 
-					is_class<T2>::result && 
-					sizeof(detail::yes) == sizeof(
-						select(detail::other<T1>(),detail::other<T2>())
-					)
-			};
+			enum { value = is_type<T1,T2>::value };
 		};
 
 		template <typename T1, typename T2>
@@ -149,6 +174,7 @@
 					has_value_type<T>::value
 			};
 		};
+
 	};
 #endif
 #endif

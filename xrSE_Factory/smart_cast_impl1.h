@@ -24,17 +24,12 @@ namespace SmartDynamicCast {
 			typedef typename T::Head Head;
 			typedef typename T::Tail Tail;
 
-			template <typename P>
-			struct base_found {
-				typedef typename search_base<Tail>::result result;
-			};
-			
-			template <>
-			struct base_found<Base> {
-				typedef Head result;
-			};
-
-			typedef typename base_found<typename Head::Head>::result result;
+			typedef typename 
+				_if<
+					is_type<Base,typename Head::Head>::value,
+					Head,
+					typename search_base<Tail>::result
+				>::result result;
 		};
 		
 		template <>
@@ -69,27 +64,16 @@ namespace SmartDynamicCast {
 				typedef typename P::Tail	Tail;
 				typedef typename T::Head	PrevHead;
 
-				template <bool>
-				struct selector {
-					typedef typename CMatchHelper3<Tail>::result result;
-				};
-
-				template <>
-				struct selector<true> {
-					template <bool>
-					struct type_selector {
-						typedef Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Head,Loki::Typelist<Target,Loki::NullType> > > result;
-					};
-
-					template <>
-					struct type_selector<true> {
-						typedef Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Target,Loki::NullType> > result;
-					};
-
-					typedef typename type_selector<object_type_traits::is_same<Head,typename PrevHead::Head>::value>::result result;
-				};
-
-				typedef typename selector<has_conversion<Head,Target,List>::value>::result result;
+				typedef typename 
+					_if<
+						has_conversion<Head,Target,List>::value,
+						typename _if<
+							object_type_traits::is_same<Head,typename PrevHead::Head>::value,
+							Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Target,Loki::NullType> >,
+							Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Head,Loki::Typelist<Target,Loki::NullType> > >
+						>::result,
+						typename CMatchHelper3<Tail>::result
+					>::result result;
 			};
 
 			template <>
@@ -106,17 +90,12 @@ namespace SmartDynamicCast {
 			typedef typename T::Tail		Tail;
 			typedef typename Head::Tail		HeadTail;
 
-			template <bool>
-			struct selector {
-				typedef typename CMatchHelper<Tail>::result result;
-			};
-
-			template <>
-			struct selector<true> {
-				typedef typename CMatchHelper2<Head,T>::result result;
-			};
-
-			typedef typename selector<object_type_traits::is_base_and_derived<typename Head::Head,Source>::value || object_type_traits::is_same<typename Head::Head,Source>::value>::result result;
+			typedef typename 
+				_if<
+					object_type_traits::is_base_and_derived<typename Head::Head,Source>::value || object_type_traits::is_same<typename Head::Head,Source>::value,
+					typename CMatchHelper2<Head,T>::result,
+					typename CMatchHelper<Tail>::result
+				>::result result;
 		};
 
 		template <>

@@ -41,7 +41,7 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 	return					(bridge);
 }
 
-void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::EDefaultRestrictorTypes &restrictor_type)
+void CSpaceRestrictionHolder::register_restrictor				(CSpaceRestrictor *space_restrictor, const RestrictionSpace::ERestrictorTypes &restrictor_type)
 {
 	ref_str					space_restrictors = space_restrictor->cName();
 	if (restrictor_type != RestrictionSpace::eDefaultRestrictorTypeNone) {

@@ -212,7 +212,7 @@ add_to_type_list(CSE_ALifePHSkeletonObject)
 #define script_type_list save_type_list(CSE_ALifePHSkeletonObject)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSpaceRestrictor,CSE_ALifeDynamicObject,CSE_Shape)
-	u8								m_default_space_restrictor_type;
+	u8								m_space_restrictor_type;
 
 									CSE_ALifeSpaceRestrictor	(LPCSTR caSection);
 	virtual							~CSE_ALifeSpaceRestrictor	();

@@ -544,7 +544,7 @@ void CSE_ALifePHSkeletonObject::FillProps(LPCSTR pref, PropItemVec& items)
 CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
 {
 	m_flags.set					(flUseSwitches,FALSE);
-	m_default_space_restrictor_type	= RestrictionSpace::eDefaultRestrictorTypeNone;
+	m_space_restrictor_type		= RestrictionSpace::eRestrictorTypeNone;
 }
 
 CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
@@ -566,14 +566,14 @@ void CSE_ALifeSpaceRestrictor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	inherited1::STATE_Read		(tNetPacket,size);
 	cform_read					(tNetPacket);
 	if (m_wVersion > 74)
-		m_default_space_restrictor_type = tNetPacket.r_u8();
+		m_space_restrictor_type = tNetPacket.r_u8();
 }
 
 void CSE_ALifeSpaceRestrictor::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	cform_write					(tNetPacket);
-	tNetPacket.w_u8				(m_default_space_restrictor_type);
+	tNetPacket.w_u8				(m_space_restrictor_type);
 }
 
 void CSE_ALifeSpaceRestrictor::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -587,6 +587,7 @@ void CSE_ALifeSpaceRestrictor::UPDATE_Write	(NET_Packet	&tNetPacket)
 }
 
 xr_token defaul_retrictor_types[]={
+	{ "NOT restrictor",				RestrictionSpace::eRestrictorTypeNone},
 	{ "NONE default restrictor",	RestrictionSpace::eDefaultRestrictorTypeNone},
 	{ "OUT default restrictor",		RestrictionSpace::eDefaultRestrictorTypeOut	},
 	{ "IN default restrictor",		RestrictionSpace::eDefaultRestrictorTypeIn	},
@@ -596,7 +597,7 @@ xr_token defaul_retrictor_types[]={
 void CSE_ALifeSpaceRestrictor::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProps		(pref,items);
-	PHelper().CreateToken8		(items, PrepareKey(pref,s_name,"default restrictor type"), &m_default_space_restrictor_type,	defaul_retrictor_types);
+	PHelper().CreateToken8		(items, PrepareKey(pref,s_name,"restrictor type"), &m_space_restrictor_type,	defaul_retrictor_types);
 }
 
 ////////////////////////////////////////////////////////////////////////////
