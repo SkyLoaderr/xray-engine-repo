@@ -323,7 +323,7 @@ void CAI_Stalker::SearchEnemy()
 		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMinEnemyDistance;
 		vfSetParameters				(
 			&m_tSelectorFreeHunting,
-			&m_tSavedEnemyPosition,
+			0,//&m_tSavedEnemyPosition,
 			true,
 			eWeaponStateIdle,
 			ePathTypeStraight,
@@ -562,7 +562,13 @@ void CAI_Stalker::Think()
 		// going via graph nodes
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
+		float					yaw,pitch;
+		GetDirectionAngles		(yaw,pitch);
+		yaw						= angle_normalize_signed(-yaw);
+		if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6))
+			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+		else
+			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
 	}
 	
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;

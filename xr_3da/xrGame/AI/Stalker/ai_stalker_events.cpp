@@ -12,6 +12,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\targetcs.h"
 #include "..\\..\\customdetector.h"
+#include "..\\..\\bolt.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -155,9 +156,10 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	if (Remote())		return;
 
 	// Now, test for game specific logical objects to minimize traffic
-	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>		(O);
+	CInventoryItem		*I	= dynamic_cast<CInventoryItem*>	(O);
+	CBolt				*E	= dynamic_cast<CBolt*>			(O);
 
-	if (I) {
+	if (I && !E) {
 		Msg("Taking item %s!",I->cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());

@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\actor.h"
+#include "..\\..\\bolt.h"
 
 void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType)
 {
@@ -139,9 +140,11 @@ void CAI_Stalker::vfCheckForItems()
 	float fDistance = ffGetRange();
 	m_tpItemToTake = 0;
 	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
-		CInventoryItem *tpInventoryItem = dynamic_cast<CInventoryItem*>(m_tpaVisibleObjects[i]);
+		CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>	(m_tpaVisibleObjects[i]);
+		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
+
 #pragma todo("Check if rukzak is not full!!")
-		if (tpInventoryItem && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
+		if (tpInventoryItem && !tpBolt && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
 			fDistance		= tpInventoryItem->Position().distance_to(vPosition);
 			m_tpItemToTake	= tpInventoryItem;
 		}
