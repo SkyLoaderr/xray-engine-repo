@@ -123,7 +123,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Show statistic
 	extern	std::string make_time(u32 sec);
 
-	u32	dwEndTime		= timeGetTime();
+	u32	dwEndTime			= timeGetTime();
 	sprintf					(inf,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
 	clMsg					("Build succesful!\n%s",inf);
 	MessageBox				(logWindow,inf,"Congratulation!",MB_OK|MB_ICONINFORMATION);
