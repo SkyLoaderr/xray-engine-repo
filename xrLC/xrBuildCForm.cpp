@@ -101,7 +101,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 		Progress(p_total+=p_cost);		// progress
 	}
 	if (bCriticalErrCnt)
-		Msg("Critial error: Non solid geometry (%d faces)",bCriticalErrCnt);
+		Msg("MultipleEdges: %d faces",bCriticalErrCnt);
 
 	// Saving
 	CFS_Memory		MFS;
