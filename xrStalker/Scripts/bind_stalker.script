@@ -34,7 +34,7 @@ function actor_binder:reinit()
     object_binder.reinit(self)
 
 	--self.object:set_info_callback(self, "info_callback")
-	self.object:set_callback(game_object.inventory_info, self.info_callback, self)
+	self.object:set_callback(callback.inventory_info, self.info_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
