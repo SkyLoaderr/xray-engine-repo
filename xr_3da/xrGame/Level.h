@@ -24,6 +24,7 @@ class	CSpaceRestrictionManager;
 class	CSeniorityHierarchyHolder;
 class	CClientSpawnManager;
 class	CGameObject;
+class	CAutosaveManager;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -51,6 +52,8 @@ protected:
 	CSeniorityHierarchyHolder	*m_seniority_hierarchy_holder;
 	// client spawn_manager
 	CClientSpawnManager			*m_client_spawn_manager;
+	// autosave manager
+	CAutosaveManager			*m_autosave_manager;
 	// level name
 	shared_str					m_name;
 	// Local events
@@ -169,9 +172,10 @@ public:
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
 	
-	IC CSpaceRestrictionManager	&space_restriction_manager	();
-	IC CSeniorityHierarchyHolder &seniority_holder			();
-	IC CClientSpawnManager		&client_spawn_manager		();
+	IC CSpaceRestrictionManager		&space_restriction_manager	();
+	IC CSeniorityHierarchyHolder	&seniority_holder			();
+	IC CClientSpawnManager			&client_spawn_manager		();
+	IC CAutosaveManager				&autosave_manager			();
 
 	// C/D
 	CLevel();
@@ -257,6 +261,12 @@ IC CClientSpawnManager &CLevel::client_spawn_manager()
 {
 	VERIFY				(m_client_spawn_manager);
 	return				(*m_client_spawn_manager);
+}
+
+IC CAutosaveManager &CLevel::autosave_manager()
+{
+	VERIFY				(m_autosave_manager);
+	return				(*m_autosave_manager);
 }
 
 IC	shared_str	CLevel::name	() const

@@ -45,8 +45,8 @@ CAI_Stalker::~CAI_Stalker			()
 
 void CAI_Stalker::init()
 {
-	shedule.t_min					= 200;
-	shedule.t_max					= 1;
+	shedule.t_min					= 1;
+	shedule.t_max					= 200;
 	m_demo_mode						= false;
 }
 

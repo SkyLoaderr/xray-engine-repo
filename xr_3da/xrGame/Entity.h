@@ -135,6 +135,7 @@ public:
 	ALife::_TIME_ID			m_game_death_time;
 
 			void			set_death_time		();
+	virtual	void			set_ready_to_save	();
 };
 
 #endif // AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_

@@ -45,6 +45,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
 		net_packet.w_stringZ		("quick_save");
+		net_packet.w_u8				(0);
 		Send						(net_packet,net_flags(TRUE));
 		return;
 	}

@@ -12,11 +12,12 @@
 #include "enemy_manager.h"
 #include "ef_storage.h"
 #include "hit_memory_manager.h"
-
 #include "level.h"
 #include "actor.h"
 #include "ai/stalker/ai_stalker.h"
 #include "map_location.h"
+#include "clsid_game.h"
+#include "autosave_manager.h"
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {
@@ -46,6 +47,9 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 
 float CEnemyManager::evaluate				(const CEntityAlive *object) const
 {
+	if (object->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+		m_ready_to_save					= false;
+
 	ai().ef_storage().m_tpCurrentMember = m_self_entity_alive;
 	ai().ef_storage().m_tpCurrentEnemy	= object;
 	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
@@ -89,38 +93,27 @@ void CEnemyManager::reload					(LPCSTR section)
 
 CEnemyManager::CEnemyManager		()
 {
-	m_actor_enemy = NULL;
+	m_ready_to_save				= true;
 }
 
 void CEnemyManager::update					()
 {
+	if (!m_ready_to_save)
+		Level().autosave_manager().dec_not_ready();
+
+	m_ready_to_save				= true;
+	
 	inherited::update			();
 
-/*	if(selected())
-	{
-		if(m_actor_enemy && selected()->ID() != m_actor_enemy->ID())
-		{
-			Level().RemoveMapLocationByID(m_self_entity_alive->ID());
-		}
-		else if(!m_actor_enemy)
-		{
-			m_actor_enemy = smart_cast<const CActor*>(selected());
-			if(m_actor_enemy && smart_cast<const CAI_Stalker*>(m_self_entity_alive))
-			{
-				SMapLocation map_location;
-				map_location.attached_to_object = true;
-				map_location.object_id = m_self_entity_alive->ID();
-				map_location.icon_width = map_location.icon_height = 0;	
-				map_location.icon_color = 0xFFFF0000;
+	if (!m_ready_to_save)
+		Level().autosave_manager().inc_not_ready();
+}
 
-				map_location.icon_x = map_location.icon_y = 0;
-				map_location.text = "";
-				Level().AddMapLocation(map_location);
-			}
-		}
-	}
-	else if(!m_actor_enemy)
-	{
-		Level().RemoveMapLocationByID(m_self_entity_alive->ID());
-	}*/
+void CEnemyManager::set_ready_to_save		()
+{
+	if (m_ready_to_save)
+		return;
+
+	Level().autosave_manager().dec_not_ready();
+	m_ready_to_save				= true;
 }

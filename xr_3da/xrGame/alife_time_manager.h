@@ -20,14 +20,11 @@ private:
 	float							m_normal_time_factor;
 	u32								m_start_time;
 	u64								m_surge_interval;
-	u32								m_autosave_interval;
-	u32								m_last_autosave_time;
 
 private:
 	ALife::_TIME_ID					m_start_game_time;
 
 public:
-
 									CALifeTimeManager		(LPCSTR		section);
 	virtual							~CALifeTimeManager		();
 	virtual void					save					(IWriter	&memory_stream);
@@ -40,9 +37,6 @@ public:
 	IC		float					normal_time_factor		() const;
 	IC		ALife::_TIME_ID			next_surge_time			() const;
 	IC		ALife::_TIME_ID			last_surge_time			() const;
-	IC		u32						autosave_interval		() const;
-	IC		u32						last_autosave_time		() const;
-	IC		void					update_autosave_time	();
 };
 
 #include "alife_time_manager_inline.h"

@@ -42,6 +42,7 @@
 #include "seniority_hierarchy_holder.h"
 #include "space_restrictor.h"
 #include "client_spawn_manager.h"
+#include "autosave_manager.h"
 
 #include "ClimableObject.h"
 CPHWorld*	ph_world = 0;
@@ -97,6 +98,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	m_client_spawn_manager		= xr_new<CClientSpawnManager>();
 
+	m_autosave_manager			= xr_new<CAutosaveManager>();
+
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -147,6 +150,8 @@ CLevel::~CLevel()
 	xr_delete					(m_seniority_hierarchy_holder);
 	
 	xr_delete					(m_client_spawn_manager);
+
+	xr_delete					(m_autosave_manager);
 	
 	ai().script_engine().remove_script_process("level");
 
@@ -327,6 +332,8 @@ void CLevel::OnFrame	()
 	//Device.Statistic.Scripting.Begin	();
 	ai().script_engine().script_process	("level")->update();
 	//Device.Statistic.Scripting.End		();
+
+//	autosave_manager().update			();
 
 	//просчитать полет пуль
 	Device.Statistic.TEST0.Begin		();

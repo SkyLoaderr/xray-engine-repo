@@ -65,6 +65,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 
 void CEntity::Die() 
 {
+	set_ready_to_save	();
 	fEntityHealth = -1.f;
 	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 }
@@ -310,3 +311,7 @@ void CEntity::set_death_time	()
 
 bool CEntity::IsFocused			()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
 bool CEntity::IsMyCamera		()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}
+
+void CEntity::set_ready_to_save	()
+{
+}

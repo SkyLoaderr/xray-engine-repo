@@ -203,6 +203,7 @@ public:
 	virtual CAI_Rat				*dcast_Rat				() {return 0;}
 	
 	virtual void				UpdatePositionAnimation	();
+	virtual void				set_ready_to_save		();
 };
 
 #include "custommonster_inline.h"

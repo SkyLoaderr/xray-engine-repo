@@ -22,6 +22,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "PhysicsGamePars.h"
 #include "string_table.h"
+#include "autosave_manager.h"
 
 extern void show_smart_cast_stats		();
 extern void clear_smart_cast_stats		();
@@ -617,6 +618,12 @@ class CCC_ALifeSave : public IConsole_Command {
 public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
+		
+		if (!Level().autosave_manager().ready_for_autosave()) {
+			Msg		("! Cannot save the game right now!");
+			return;
+		}
+
 		string256	S;
 		S[0]		= 0;
 		sscanf		(args ,"%s",S);
@@ -624,6 +631,7 @@ public:
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
 			net_packet.w_stringZ("quick_save");
+			net_packet.w_u8		(0);
 			Level().Send		(net_packet,net_flags(TRUE));
 			return;
 		}
@@ -631,6 +639,7 @@ public:
 		NET_Packet			net_packet;
 		net_packet.w_begin	(M_SAVE_GAME);
 		net_packet.w_stringZ(S);
+		net_packet.w_u8		(1);
 		Level().Send		(net_packet,net_flags(TRUE));
 	}
 };

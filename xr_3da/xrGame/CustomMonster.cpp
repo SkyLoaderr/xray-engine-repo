@@ -848,3 +848,9 @@ BOOL CCustomMonster::feel_touch_contact		(CObject *O)
 
 	return		(FALSE);
 }
+
+void CCustomMonster::set_ready_to_save		()
+{
+	inherited::set_ready_to_save		();
+	CMemoryManager::set_ready_to_save	();
+}
