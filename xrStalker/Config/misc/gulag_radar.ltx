@@ -1,0 +1,62 @@
+;-------------------------------------------------------------------------------------------------
+;-- RADAR ANTENA
+;-------------------------------------------------------------------------------------------------
+
+; охрана ворот
+[logic@rad_antena_gate_walker1]
+active = walker1@rad_antena_gate
+
+[walker1@rad_antena_gate]
+path_walk = gate_walk1
+
+
+[logic@rad_antena_gate_walker2]
+active = walker2@rad_antena_gate
+
+[walker2@rad_antena_gate]
+path_walk = gate_walk2
+
+
+;шатающиес€ по территории
+[logic@rad_antena_walker1]
+active = walker1@rad_antena
+
+[walker1@rad_antena]
+path_walk = walk1
+
+
+[logic@rad_antena_walker2]
+active = walker2@rad_antena
+
+[walker2@rad_antena]
+path_walk = walk2
+
+
+[logic@rad_antena_walker3]
+active = walker3@rad_antena
+
+[walker3@rad_antena]
+path_walk = walk3
+
+
+[logic@rad_antena_walker4]
+active = walker4@rad_antena
+
+[walker4@rad_antena]
+path_walk = walk4
+
+
+[logic@rad_antena_walker5]
+active = walker5@rad_antena
+
+[walker5@rad_antena]
+path_walk = walk5
+
+
+; на мосту
+[logic@rad_antena_bridge_walker1]
+active = walker1@rad_antena_bridge
+
+[walker1@rad_antena_bridge]
+path_walk = bridge_walk1
+
