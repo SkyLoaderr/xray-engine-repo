@@ -528,8 +528,8 @@ namespace PAPI{
 	struct PASource : public ParticleAction
 	{
 		enum{
-			flVertexB_tracks	= (1<<0),// True to get positionB from position.
-			flSilent			= (1<<1),
+			flVertexB_tracks	= (1<<31),// True to get positionB from position.
+			flSilent			= (1<<30),
 		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
 		pDomain velocityL;	// Choose a velocity in this domain. (local_space)
@@ -542,7 +542,6 @@ namespace PAPI{
 		float particle_rate;// Particles to generate per unit time
 		float age;			// Initial age of the particles
 		float age_sigma;	// St. dev. of initial age of the particles
-		Flags32 flags;
 		pVector parent_vel;	
 		float parent_motion;
 
