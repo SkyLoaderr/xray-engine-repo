@@ -20,14 +20,6 @@ Comments:
 #endif // _nv_mathdecl_h_
 
 #include <assert.h>
-#include <math.h>
-
-#ifdef _WIN32
-#include <limits>
-#else
-#include <limits.h>
-#endif
-#include <float.h>
 
 typedef float nv_scalar;
 
