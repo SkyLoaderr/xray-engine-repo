@@ -1960,11 +1960,11 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 					if (uAddonFlags != 0)
 					{
 						if ((uAddonFlags & 1) != 0)
-							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true);
+							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
 						if ((uAddonFlags & 2) != 0)
 							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true);
 						if ((uAddonFlags & 4) != 0)
-							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
+							DDItemMP.AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true);
 					}
 
 //					IgnoreMoney(bPrevMoneyMode);
