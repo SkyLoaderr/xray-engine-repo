@@ -283,7 +283,7 @@ void CSHEngineTools::Load()
         {
             IReader*	fs		= F->open_chunk(0);
             while (fs&&!fs->eof())	{
-                fs->r_stringZ	(name);
+                fs->r_stringZ	(name,sizeof(name));
                 CConstant*		C = xr_new<CConstant>();
                 C->Load			(fs);
                 m_Constants.insert(mk_pair(xr_strdup(name),C));
@@ -295,7 +295,7 @@ void CSHEngineTools::Load()
         {
             IReader*	fs		= F->open_chunk(1);
             while (fs&&!fs->eof())	{
-                fs->r_stringZ	(name);
+                fs->r_stringZ	(name,sizeof(name));
                 CMatrix*		M = xr_new<CMatrix>();
                 M->Load			(fs);
                 m_Matrices.insert(mk_pair(xr_strdup(name),M));
@@ -511,12 +511,12 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     IReader data(M.pointer(), M.size());
     data.advance(sizeof(CBlender_DESC));
     DWORD type;
-    char key[255];
+    string256 key;
 
     while (!data.eof()){
         int sz=0;
         type = data.r_u32();
-        data.r_stringZ(key);
+        data.r_stringZ(key,sizeof(key));
         switch(type){
         case xrPID_MARKER:	break;
         case xrPID_MATRIX:
@@ -776,12 +776,12 @@ void CSHEngineTools::ParseBlender(IBlender* B, CParseBlender& P)
     IReader data(M.pointer(), M.size());
     data.advance(sizeof(CBlender_DESC));
     DWORD type;
-    char key[255];
+    string256 key;
 
     while (!data.eof()){
         int sz=0;
         type = data.r_u32();
-        data.r_stringZ(key);
+        data.r_stringZ(key,sizeof(key));
         switch(type){
         case xrPID_MARKER:							break;
         case xrPID_MATRIX:	sz=sizeof(string64); 	break;

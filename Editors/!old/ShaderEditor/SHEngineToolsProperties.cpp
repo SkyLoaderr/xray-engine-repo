@@ -125,7 +125,7 @@ void CSHEngineTools::RealUpdateProperties()
         CBlender_DESC* desc=(CBlender_DESC*)data.pointer();
         data.advance(sizeof(CBlender_DESC));
         DWORD type;
-        char key[255];
+        string256 key;
 
         PHelper().CreateCaption(items,"Type",m_CurrentBlender->getComment());
         PHelper().CreateCaption(items,"Owner",desc->cComputer);
@@ -137,7 +137,7 @@ void CSHEngineTools::RealUpdateProperties()
         while (!data.eof()){
             int sz=0;
             type = data.r_u32();     
-            data.r_stringZ(key);
+            data.r_stringZ(key,sizeof(key));
             switch(type){
             case xrPID_MARKER:
 	            marker_text = key;
