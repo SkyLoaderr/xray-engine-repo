@@ -117,7 +117,6 @@ void	xrLight			()
 
 		// calculation of luminocity
 		N.LightLevel = amount/float(LIGHT_Total);
-//		clamp(N.LightLevel,0.f,1.f);
 
 		if (0==i%32)	{
 			Progress(float(i)/float(g_nodes.size()));
