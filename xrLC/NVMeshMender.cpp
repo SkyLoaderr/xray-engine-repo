@@ -520,7 +520,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 							{
 								if ( output[ att ].Name_ == "tex0" ) 
 								{
-									output[ att ].floatVector_.push_back( newS ); // y
+									output[ att ].floatVector_.push_back( (float)newS ); // y
 									output[ att ].floatVector_.push_back( output[ att ].floatVector_[ indices[ theOneToChange ] * 3 + 1 ] ); // x
 									output[ att ].floatVector_.push_back( output[ att ].floatVector_[ indices[ theOneToChange ] * 3 + 2 ] ); // z
 								}
@@ -591,7 +591,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 								if ( output[ att ].Name_ == "tex0" ) 
 								{
 									output[ att ].floatVector_.push_back( output[ att ].floatVector_[ indices[ theOneToChange ] * 3 + 0 ] ); // x
-									output[ att ].floatVector_.push_back( newT ); // y
+									output[ att ].floatVector_.push_back( (float) newT ); // y
 									output[ att ].floatVector_.push_back( output[ att ].floatVector_[ indices[ theOneToChange ] * 3 + 2 ] ); // z
 								}
 								else

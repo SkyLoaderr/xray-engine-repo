@@ -724,7 +724,7 @@ mat4 & perspective(mat4& M, const nv_scalar fovy, const nv_scalar aspect, const 
 {
     nv_scalar xmin, xmax, ymin, ymax;
 
-    ymax = n * tanf(fovy * nv_to_rad * nv_zero_5);
+    ymax = n * tan(fovy * nv_to_rad * nv_zero_5);
     ymin = -ymax;
 
     xmin = ymin * aspect;
@@ -1253,9 +1253,9 @@ mat3& tangent_basis(mat3& basis, const vec3& v0, const vec3& v1, const vec3& v2,
 quat & trackball(quat& q, vec2& pt1, vec2& pt2, nv_scalar trackballsize)
 {
     vec3 a; // Axis of rotation
-    float phi;  // how much to rotate about axis
+    nv_scalar phi;  // how much to rotate about axis
     vec3 d;
-    float t;
+    nv_scalar t;
 
     if (pt1.x == pt2.x && pt1.y == pt2.y) 
     {
