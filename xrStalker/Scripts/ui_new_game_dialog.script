@@ -169,6 +169,7 @@ function new_game_dlg:OnButton_easy_clicked()
 end
 
 function new_game_dlg:OnButton_back_clicked()
+	level.start_stop_menu(self,true)
 end
 
 function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
