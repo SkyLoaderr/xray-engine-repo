@@ -45,6 +45,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->GetParent()->DetachChild(m_pAddon[ID]);
 				GetParent()->AttachChild(m_pAddon[ID]);
 				m_pAddon[ID]->Show(false);
+				m_pAddon[ID]->EnableDragDrop(false);
+				m_pAddon[ID]->Enable(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
 				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 
@@ -61,6 +63,8 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				GetParent()->DetachChild(m_pAddon[ID]);
 				m_pAddon[ID]->GetOwner()->AttachChild(m_pAddon[ID]);
 				m_pAddon[ID]->Show(true);
+				m_pAddon[ID]->EnableDragDrop(true);
+				m_pAddon[ID]->Enable(true);
 				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 				// Прибавляем денежку
 				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
