@@ -118,6 +118,7 @@ void CSoundPlayer::update			(float time_delta)
 {
 	START_PROFILE("AI/Sound Player/update")
 	remove_inappropriate_sounds		(m_sound_mask);
+	update_playing_sounds			();
 	STOP_PROFILE
 }
 
