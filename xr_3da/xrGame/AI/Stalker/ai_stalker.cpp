@@ -70,8 +70,6 @@ void CAI_Stalker::Init()
 	m_dwActionEndTime				= 0;
 	m_bHammerIsClutched				= false;
 
-	m_dwDeathTime					= 0;
-
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
 
