@@ -142,8 +142,8 @@ void	game_sv_CS::OnRoundStart	()
 	{
 		// init
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->kills				=	0;
-		ps->deaths				=	0;
+		//ps->kills				=	0;
+		//ps->deaths				=	0;
 
 		// spawn
 		LPCSTR	options			=	get_name_it	(it);
@@ -475,6 +475,8 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 
 	// Spawn "actor"
 	ps_who->team			= u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->kills				=	0;
+	ps_who->deaths				=	0;
 	xrSE_Spectator*		A	=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
