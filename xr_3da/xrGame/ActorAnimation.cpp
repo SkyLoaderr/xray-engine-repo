@@ -289,7 +289,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else if	(mstate_rl&mcClimb)		ST = &m_anims->m_climb;
 		else							ST = &m_anims->m_normal;
 
-		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
+		if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))	AS = &ST->m_run;
 		else							AS = &ST->m_walk;
 		// анимации
 		MotionID M_legs;
@@ -411,7 +411,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 		if (!M_legs)
 		{
-			if((mstate_rl&mcCrouch)&&!isAccelerated(mstate_rl))//!(mstate_rl&mcAccel))
+			if((mstate_rl&mcCrouch)&&!isActorAccelerated(mstate_rl, IsZoomAimingMode()))//!(mstate_rl&mcAccel))
 			{
 				M_legs=smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("cr_idle_1");
 			}
@@ -465,7 +465,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
 		string128 buf;
 		strcpy(buf,"");
-		if (isAccelerated(mstate_rl))		strcat(buf,"Accel ");
+		if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))		strcat(buf,"Accel ");
 		if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
 		if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
 		if (mstate_rl&mcBack)		strcat(buf,"Back ");

@@ -748,14 +748,14 @@ void CActor::UpdateCL()
 		PickupModeUpdate	();	
 
 		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
-		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+		float				tm = isActorAccelerated(mstate_real, IsZoomAimingMode())?(PI/(k*10.f)):(PI/(k*7.f));
 		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		float				s_vol = s_k * (isActorAccelerated(mstate_real, IsZoomAimingMode()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(material().self_material_idx(),material().last_material_idx());
 		
 		if(!m_holder)
 		{
-			material().set_run_mode(isAccelerated(mstate_real));
+			material().set_run_mode(isActorAccelerated(mstate_real, IsZoomAimingMode()));
 			material().update		(
 				Device.fTimeDelta,
 				s_vol,
@@ -897,7 +897,7 @@ void CActor::shedule_Update	(u32 DT)
 
 			if (NET_Last.mstate & mcCrouch)
 			{
-				if (isAccelerated(mstate_real))
+				if (isActorAccelerated(mstate_real, IsZoomAimingMode()))
 					m_PhysicMovementControl->ActivateBox(1, true);
 				else
 					m_PhysicMovementControl->ActivateBox(2, true);
@@ -925,7 +925,7 @@ void CActor::shedule_Update	(u32 DT)
 		pCamBobbing = xr_new<CEffectorBobbing>	();
 		EffectorManager().AddEffector			(pCamBobbing);
 	}
-	pCamBobbing->SetState						(mstate_real, conditions().IsLimping());
+	pCamBobbing->SetState						(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
 	//звук тяжелого дыхания при уталости и хромании
 	if(conditions().IsLimping() && g_Alive())
@@ -1433,7 +1433,7 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 	{
 		if(mstate_rl&mcCrouch)
 		{
-			if (!isAccelerated(mstate_rl))
+			if (!isActorAccelerated(mstate_rl, IsZoomAimingMode()))
 				motion_icon.ShowState(CUIMotionIcon::stCreep);
 			else
 				motion_icon.ShowState(CUIMotionIcon::stCrouch);

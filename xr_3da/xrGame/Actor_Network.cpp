@@ -41,7 +41,7 @@ BOOL		net_cl_inputguaranteed	= FALSE;
 void	CActor::ConvState(u32 mstate_rl, string128 *buf)
 {
 	strcpy(*buf,"");
-	if (isAccelerated(mstate_rl))		strcat(*buf,"Accel ");
+	if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))		strcat(*buf,"Accel ");
 	if (mstate_rl&mcCrouch)		strcat(*buf,"Crouch ");
 	if (mstate_rl&mcFwd)		strcat(*buf,"Fwd ");
 	if (mstate_rl&mcBack)		strcat(*buf,"Back ");

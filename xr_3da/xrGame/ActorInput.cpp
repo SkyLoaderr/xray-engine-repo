@@ -39,11 +39,11 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
 	case kL_LOOKOUT:
 					mstate_wishful |= mcLLookout;				
-					mstate_wishful &= ~mcAnyMove; 
+//					mstate_wishful &= ~mcAnyMove; 
 					break;
 	case kR_LOOKOUT:
 					mstate_wishful |= mcRLookout;				
-					mstate_wishful &= ~mcAnyMove; 
+//					mstate_wishful &= ~mcAnyMove; 
 					break;
 	case kFWD:		mstate_wishful |= mcFwd;					break;
 	case kBACK:		mstate_wishful |= mcBack;					break;

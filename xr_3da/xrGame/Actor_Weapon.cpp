@@ -27,7 +27,7 @@ float CActor::GetWeaponAccuracy() const
 		dispersion *= (1.f + (state.fAVelocity/VEL_A_MAX)*m_fDispVelFactor);
 //		Msg("--- base=[%f] angular disp=[%f]",m_fDispBase, dispersion);
 		// linear movement factor
-		bool bAccelerated = isAccelerated(mstate_real);
+		bool bAccelerated = isActorAccelerated(mstate_real, IsZoomAimingMode());
 		if( bAccelerated )
 			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*
 			m_fDispVelFactor*(1.f + m_fDispAccelFactor));

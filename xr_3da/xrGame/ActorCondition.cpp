@@ -79,7 +79,7 @@ void CActorCondition::UpdateCondition()
 //	if (object().Remote()) return;
 
 	if ((object().mstate_real&mcAnyMove)) {
-		ConditionWalk(object().inventory().TotalWeight()/object().inventory().GetMaxWeight(), object().isAccelerated(object().mstate_real), (object().mstate_real&mcSprint) != 0);
+		ConditionWalk(object().inventory().TotalWeight()/object().inventory().GetMaxWeight(), isActorAccelerated(object().mstate_real,object().IsZoomAimingMode()), (object().mstate_real&mcSprint) != 0);
 	}
 	else {
 		ConditionStand(object().inventory().TotalWeight()/object().inventory().GetMaxWeight());

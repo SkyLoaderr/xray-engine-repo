@@ -35,12 +35,16 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// Lookout
+	/*
 	if (mstate_real&mcAnyAction){
 		mstate_real			&= ~mcLookout;
 	}else{
 		if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
 		else						mstate_real		&= ~mcLookout;
 	}
+	*/
+	if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
+	else						mstate_real		&= ~mcLookout;
 	// закончить приземление
 	if (mstate_real&(mcLanding|mcLanding2)){
 		m_fLandingTime		-= dt;
@@ -110,7 +114,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		}
 	}
 
-	if(!CanAccelerate()&&isAccelerated(mstate_real))
+	if(!CanAccelerate()&&isActorAccelerated(mstate_real, IsZoomAimingMode()))
 	{
 		mstate_real				^=mcAccel; // toggle accel
 	};	
@@ -222,7 +226,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		{
 			m_PhysicMovementControl->EnableCharacter();
 			bool Crouched = false;
-			if (isAccelerated(mstate_wf))
+			if (isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 				Crouched = ActivateBox(1);
 			else
 				Crouched = ActivateBox(2);
@@ -234,20 +238,17 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 		if (((mstate_real&mcCrouch)))
 		{
-			if (!isAccelerated(mstate_real) && isAccelerated(mstate_wf))
-//			if(0==(mstate_real&mcAccel)&&(mstate_wf&mcAccel))
+			if (!isActorAccelerated(mstate_real, IsZoomAimingMode()) && isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 			{
 				m_PhysicMovementControl->EnableCharacter();
 				if(!ActivateBox(1))move	&=~mcAccel;
 			}
 
-			if (isAccelerated(mstate_real) && !isAccelerated(mstate_wf))
-//			if((mstate_real&mcAccel)&&0==(mstate_wf&mcAccel))
+			if (isActorAccelerated(mstate_real, IsZoomAimingMode()) && !isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 			{
 				m_PhysicMovementControl->EnableCharacter();
 				if(ActivateBox(2))mstate_real	&=~mcAccel;
 			}
-
 		}
 
 		if (!CanSprint())
@@ -262,7 +263,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			mstate_real|=mcSprint;
 		else
 			mstate_real&=~mcSprint;
-		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb)|| !isAccelerated(mstate_wf))
+		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb)|| !isActorAccelerated(mstate_wf, IsZoomAimingMode()))
 		{
 			mstate_real&=~mcSprint;
 			mstate_wishful&=~mcSprint;
@@ -271,7 +272,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// check player move state
 		if (mstate_real&mcAnyMove)
 		{
-			BOOL	bAccelerated		= isAccelerated(mstate_real)&&CanAccelerate();
+			BOOL	bAccelerated		= isActorAccelerated(mstate_real, IsZoomAimingMode())&&CanAccelerate();
 
 
 
@@ -489,28 +490,44 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 }
 
 
-bool	CActor::isAccelerated			(u32 mstate)
+bool	isActorAccelerated			(u32 mstate, bool ZoomMode) 
 {
+	bool res = false;
 	if (mstate&mcAccel)
-		return psActorFlags.test(AF_ALWAYSRUN)?false:true;
+		res = psActorFlags.test(AF_ALWAYSRUN)?false:true;
 	else
-		return psActorFlags.test(AF_ALWAYSRUN)?true :false;
+		res = psActorFlags.test(AF_ALWAYSRUN)?true :false;
+	if (mstate&(mcCrouch|mcClimb|mcJump|mcLanding|mcLanding2))
+		return res;
+	if (mstate & mcLookout || ZoomMode)
+		return false;
+	return res;
 }
 
 bool CActor::CanAccelerate			()
 {
 	bool can_accel = !conditions().IsLimping() &&
-		!m_PhysicMovementControl->PHCapture() &&
-		/*(!(mstate_real&mcBack) || psActorFlags.test(AF_RUN_BACKWARD)) &&*/
-		!m_bZoomAimingMode;
+		!m_PhysicMovementControl->PHCapture()
+//		&& !m_bZoomAimingMode
+//		&& !(mstate_real&mcLookout)
+		;		
 
 	return can_accel;
+}
+
+bool CActor::CanRun()
+{
+	bool can_run = !m_bZoomAimingMode && !(mstate_real&mcLookout);
+	return can_run;
 }
 
 bool CActor::CanSprint			()
 {
 	bool can_Sprint = CanAccelerate() && !conditions().IsCantSprint() &&
-						Game().PlayerCanSprint(this);
+						Game().PlayerCanSprint(this)
+						&& CanRun()
+						&& !(mstate_real&mcLStrafe || mstate_real&mcRStrafe)
+						;
 
 	return can_Sprint;
 }

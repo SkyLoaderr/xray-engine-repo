@@ -36,9 +36,10 @@ CEffectorBobbing::~CEffectorBobbing	()
 {
 }
 
-void CEffectorBobbing::SetState(u32 mstate, bool limping){
+void CEffectorBobbing::SetState(u32 mstate, bool limping, bool ZoomMode){
 	dwMState		= mstate;
 	is_limping		= limping;
+	m_bZoomMode		= ZoomMode;
 }
 
 
@@ -66,7 +67,7 @@ BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& /**f
 
 		float A, ST;
 
-		if(CActor::isAccelerated(dwMState))
+		if(isActorAccelerated(dwMState, m_bZoomMode))
 		{
 			A	= m_fAmplitudeRun*k;
 			ST	= m_fSpeedRun*fTime*k;

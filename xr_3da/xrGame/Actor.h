@@ -396,7 +396,6 @@ public:
 	void					g_sv_Orientate			(u32 mstate_rl, float dt);
 	void					g_Orientate				(u32 mstate_rl, float dt);
 	bool					g_LadderOrient			() ;
-	static bool				isAccelerated			(u32 mstate);
 	void					UpdateMotionIcon		(u32 mstate_rl);
 
 	bool					CanAccelerate			();
@@ -404,6 +403,7 @@ public:
 	bool					CanMove					();
 	float					CameraHeight			();
 	bool					CanSprint				();
+	bool					CanRun					();
 protected:
 	u32						mstate_wishful;
 	u32						mstate_old;
@@ -661,6 +661,8 @@ public:
 	virtual	void				OnCriticalWoundHealthLoss		();
 	virtual void				OnCriticalRadiationHealthLoss	();
 };
+
+IC bool		isActorAccelerated			(u32 mstate, bool ZoomMode);
 
 IC	CActorCondition	&CActor::conditions	() const
 {
