@@ -352,7 +352,9 @@ void CAI_Rat::CreateSkeleton(){
 
 void CAI_Rat::shedule_Update(u32 dt)
 {
+//	Msg					("%6d : rat before [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 	inherited::shedule_Update	(dt);
+//	Msg					("%6d : rat after  [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 }
 
 void CAI_Rat::UpdateCL(){
