@@ -61,7 +61,7 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 
 	Fmatrix				spin;
 	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_current.yaw, A->r_current.pitch, 0);
-	B->mTransform.mulB_43(spin);
+	B->mTransform.mul_43(spin);
 }
 
 void CAI_Soldier::vfLoadSounds()
@@ -327,7 +327,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing maximum viewable distance in the specified direction
 	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_current.yaw,r_current.pitch);
+	tCurrentWatchDirection.direct	(r_current.yaw,r_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
@@ -428,7 +428,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 bool CAI_Soldier::bfCheckIfCanKillMember()
 {
 	Fvector tFireVector, tMyPosition = Position();
-	tFireVector.setHP	(r_torso_current.yaw,r_torso_current.pitch);
+	tFireVector.direct	(r_torso_current.yaw,r_torso_current.pitch);
 	
 	bool bCanKillMember = false;
 
@@ -446,7 +446,7 @@ bool CAI_Soldier::bfCheckIfCanKillMember()
 IC bool CAI_Soldier::bfCheckIfCanKillEnemy() 
 {
 	Fvector tMyLook;
-	tMyLook.setHP	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
+	tMyLook.direct	(r_torso_current.yaw + PI/6,r_torso_current.pitch);
 	if (Enemy.Enemy) {
 		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
 		tFireVector.sub(tMyPosition,tEnemyPosition);
