@@ -182,7 +182,7 @@ STextureList*	CShaderManager::_CreateTextureList(STextureList& L)
 }
 void			CShaderManager::_DeleteTextureList(STextureList* &L)
 {
-	for (DWORD it=0; it<L->size(); it++)	_DeleteTexture	((*L)[it]);
+	for (DWORD it=0; it<L->size(); it++)	{ CTexture* T = (*L)[it]; _DeleteTexture(T); };
 	L->dwReference	--;
 	L = 0;
 }
@@ -209,7 +209,7 @@ SMatrixList*	CShaderManager::_CreateMatrixList(SMatrixList& L)
 void			CShaderManager::_DeleteMatrixList (	SMatrixList* &L )
 {
 	if (0==L)	return;
-	for (DWORD it=0; it<L->size(); it++)	_DeleteMatrix ((*L)[it]);
+	for (DWORD it=0; it<L->size(); it++)	{ CMatrix* M = (*L)[it]; _DeleteMatrix (M); };
 	L->dwReference	--;
 	L = 0;
 }
@@ -236,7 +236,7 @@ SConstantList*	CShaderManager::_CreateConstantList(SConstantList& L)
 void			CShaderManager::_DeleteConstantList(SConstantList* &L )
 {
 	if (0==L)	return;
-	for (DWORD it=0; it<L->size(); it++)	_DeleteConstant ((*L)[it]);
+	for (DWORD it=0; it<L->size(); it++)	{ CConstant* C = (*L)[it]; _DeleteConstant (C); };
 	L->dwReference	--;
 	L = 0;
 }
