@@ -144,14 +144,21 @@ function set_storyline(object, char_ini)
 	--Настройка ученого
     xr_motivator.storage[object:id()].scientist = {
                 path     = nil,         --Путь, по которому ходить
+				zone     = nil,			--Скриптовая зона, подход к бункеру и бункер
                 enabled  = false
     		}
         if(char_ini:section_exist ("scientist") == true) then
             xr_motivator.storage[object:id()].scientist.enabled = true            --Если есть секция новичка, то включаем эту схему
+
             if(char_ini:line_exist("scientist", "path") == true) then
             	xr_motivator.storage[object:id()].scientist.path     = char_ini:r_string("scientist", "path")
             end
-            xr_scientist.add_to_binder    (object)
+            if(char_ini:line_exist("scientist", "zone") == true) then
+                xr_motivator.storage[object:id()].scientist.zone     = char_ini:r_string("scientist", "zone")
+            end
+
+			object:set_start_dialog		("dark_laboratory_scientist_dialog")
+            xr_scientist.add_to_binder  (object)
      end
 
     --Охранника в баре у бармена
@@ -166,8 +173,8 @@ function set_storyline(object, char_ini)
             end
             xr_trivial.add_security    (object)
      end
-     
-     
+
+
      --Сталкеры в баре
      xr_motivator.storage[object:id()].bar_stalker = {enabled = false, interlocutor = nil, passive = false}
      if char_ini:section_exist ("bar_stalker") == true then
@@ -177,8 +184,8 @@ function set_storyline(object, char_ini)
         end
         if char_ini:line_exist ("bar_stalker", "passive") == true then
            xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
-        end   
+        end
         bar_stalker.add_to_binder (object)
-     end      
+     end
 
 end
