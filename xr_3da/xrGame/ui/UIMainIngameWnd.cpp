@@ -269,7 +269,7 @@ void CUIMainIngameWnd::Init()
 	
 	AttachChild(&UICarPanel);
 	xml_init.InitWindow(uiXml, "car_panel", 0, &UICarPanel);
-	UICarPanel.Show(true);
+//	UICarPanel.Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////
