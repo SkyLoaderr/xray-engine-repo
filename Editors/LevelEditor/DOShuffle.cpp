@@ -301,7 +301,7 @@ void __fastcall TfrmDOShuffle::ebAppendIndexClick(TObject *Sender)
 
 void __fastcall TfrmDOShuffle::RemoveColorIndex(TfrmOneColor* p){
 	form->ModifColorInd();
-	form->color_indices.erase(find(form->color_indices.begin(),form->color_indices.end(),p));
+	form->color_indices.erase(std::find(form->color_indices.begin(),form->color_indices.end(),p));
 }
 //---------------------------------------------------------------------------
 

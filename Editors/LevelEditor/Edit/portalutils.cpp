@@ -63,7 +63,7 @@ int CPortalUtils::CalculateSelectedPortals()
         for(ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++){
         	CSector* SF = ((CPortal*)(*_F))->m_SectorFront;
         	CSector* SB = ((CPortal*)(*_F))->m_SectorBack;
-            if ((find(s_lst.begin(),s_lst.end(),SF)!=s_lst.end())&&(find(s_lst.begin(),s_lst.end(),SB)!=s_lst.end()))
+            if ((std::find(s_lst.begin(),s_lst.end(),SF)!=s_lst.end())&&(std::find(s_lst.begin(),s_lst.end(),SB)!=s_lst.end()))
 				xr_delete(*_F);
         }
         ObjectIt _E = remove(p_lst.begin(),p_lst.end(),(CCustomObject*)0);
@@ -132,7 +132,7 @@ int CPortalUtils::CalculateAllPortals2()
 
         // transfer from list to vector
         ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
-        vector<CSector*> sectors;
+        xr_vector<CSector*> sectors;
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++) sectors.push_back((CSector*)(*_F));
 
         // calculate all portals
@@ -259,7 +259,7 @@ class sCollector
     };
    	struct sPortal
     {
-        deque<int> e;
+        xr_deque<int> e;
         CSector* s[2];
     };
 
@@ -420,8 +420,8 @@ public:
     	// sort inside edges
     	for (u32 i=0; i<edges.size(); i++){
         	sEdge& E = edges[i];
-            if (E.v[0]>E.v[1]) swap(E.v[0],E.v[1]);
-            if (E.s[0]>E.s[1]) swap(E.s[0],E.s[1]);
+            if (E.v[0]>E.v[1]) std::swap(E.v[0],E.v[1]);
+            if (E.s[0]>E.s[1]) std::swap(E.s[0],E.s[1]);
         }
 
         // remove equal
@@ -456,8 +456,8 @@ public:
                     if (E.s[1]!=current.s[1]) 	continue;
 
                     if (vLast ==E.v[0]) { E.used=true; current.e.push_back(i); bFound=true; break; }
-                    if (vLast ==E.v[1]) { E.used=true; swap(E.v[0],E.v[1]); current.e.push_back (i); bFound=true; break; }
-                    if (vFirst==E.v[0]) { E.used=true; swap(E.v[0],E.v[1]); current.e.push_front(i); bFound=true; break; }
+                    if (vLast ==E.v[1]) { E.used=true; std::swap(E.v[0],E.v[1]); current.e.push_back (i); bFound=true; break; }
+                    if (vFirst==E.v[0]) { E.used=true; std::swap(E.v[0],E.v[1]); current.e.push_front(i); bFound=true; break; }
                     if (vFirst==E.v[1]) { E.used=true; current.e.push_front(i); bFound=true; break; }
                 }
                 if (!bFound) break;
@@ -472,10 +472,10 @@ public:
 		    if (p_it->e.size()>1)
             {
             	// build vert-list
-                vector<int> 	vlist;
-                deque<int>&		elist=p_it->e;
+                xr_vector<int>	vlist;
+                xr_deque<int>&	elist=p_it->e;
                 vlist.reserve	(elist.size()*2);
-                for (deque<int>::iterator e=elist.begin(); e!=elist.end(); e++)
+                for (xr_deque<int>::iterator e=elist.begin(); e!=elist.end(); e++)
                 {
                 	vlist.push_back(edges[*e].v[0]);
                 	vlist.push_back(edges[*e].v[1]);

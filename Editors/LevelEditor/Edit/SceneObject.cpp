@@ -283,7 +283,7 @@ void CSceneObject::SetActiveSound(LPCSTR snd)
 
 bool CSceneObject::AppendSound(LPCSTR fname)
 {
-	if (find(m_Sounds.begin(),m_Sounds.end(),AnsiString(fname))!=m_Sounds.end()){
+	if (std::find(m_Sounds.begin(),m_Sounds.end(),AnsiString(fname))!=m_Sounds.end()){
     	return false;
     }else{
     	m_Sounds.push_back(fname);

@@ -27,8 +27,6 @@ void CEditableMesh::CreateRenderBuffers()
 
     VERIFY(m_PNormals.size());
 
-	UI.Command(COMMAND_EVICT_TEXTURES);
-
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         CSurface* _S = sp_it->first;
@@ -58,7 +56,7 @@ void CEditableMesh::CreateRenderBuffers()
             v_cnt				-= V_LIM;
             start_face			+= (_S->m_Flags.is(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
         }while(v_cnt>0);
-        if (num_verts>0) m_RenderBuffers.insert(make_pair(_S,rb_vec));
+        if (num_verts>0) m_RenderBuffers.insert(mk_pair(_S,rb_vec));
 		UI.ProgressInc();
     }
     UnloadPNormals();

@@ -274,7 +274,7 @@ void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
 {
     AStringVec modif;
     FS_QueryMap t_map;
-    t_map.insert(make_pair(tex_name,FS_QueryItem(0,age,0)));
+    t_map.insert(mk_pair(tex_name,FS_QueryItem(0,age,0)));
     SynchronizeTextures(true,true,true,&t_map,&modif);
     Device.RefreshTextures(&modif);
 }
@@ -398,7 +398,7 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
         FS.update_path			(fname,_textures_,it->first.c_str());
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
-        compl.insert			(make_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
+        compl.insert			(mk_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
     	UI.ProgressInc	(it->first.c_str());
 		if (UI.NeedAbort()) break;
     }
@@ -495,7 +495,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     Fvector C;
     Fvector S;
     bbox.getradius(S);
-    float R = max(S.x,S.z);
+    float R = _max(S.x,S.z);
     bbox.getcenter(C);
 
     Fmatrix save_projection	= Device.mProjection;

@@ -6,12 +6,11 @@
     <PROJECT value="x:\LevelEditor.exe"/>
     <OBJFILES value="intermediate\LevelEditor.obj intermediate\Library.obj 
       intermediate\Scene.obj intermediate\SceneUndo.obj 
-      intermediate\FileSystem.obj intermediate\SceneUtil.obj 
-      intermediate\D3DUtils.obj intermediate\Builder.obj 
-      intermediate\SceneClassList.obj intermediate\BuilderCore.obj 
-      intermediate\BuilderRemote.obj intermediate\BuilderTexFiles.obj 
-      intermediate\BuilderLTX.obj intermediate\Glow.obj 
-      intermediate\TLSPRITE.obj intermediate\BuilderCF.obj 
+      intermediate\SceneUtil.obj intermediate\D3DUtils.obj 
+      intermediate\Builder.obj intermediate\SceneClassList.obj 
+      intermediate\BuilderCore.obj intermediate\BuilderRemote.obj 
+      intermediate\BuilderTexFiles.obj intermediate\BuilderLTX.obj 
+      intermediate\Glow.obj intermediate\TLSPRITE.obj intermediate\BuilderCF.obj 
       intermediate\BuilderOGF.obj intermediate\EditLibrary.obj 
       intermediate\sector.obj intermediate\portal.obj 
       intermediate\portalutils.obj intermediate\stdafx.obj 
@@ -177,7 +176,6 @@
       <FILE FILENAME="edit\Library.cpp" FORMNAME="" UNITNAME="Library" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Scene.cpp" FORMNAME="" UNITNAME="Scene" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneUndo.cpp" FORMNAME="" UNITNAME="SceneUndo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneUtil.cpp" FORMNAME="" UNITNAME="SceneUtil" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Builder.cpp" FORMNAME="" UNITNAME="Builder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

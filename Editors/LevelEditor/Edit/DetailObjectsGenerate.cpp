@@ -297,18 +297,20 @@ void EDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& 
     if (idx>=0) best[idx].cnt[part]++;
 }
 
-u8 EDetailManager::GetRandomObject(u32 color_index){
+u8 EDetailManager::GetRandomObject(u32 color_index)
+{
 	ColorIndexPairIt CI=m_ColorIndices.find(color_index);
 	R_ASSERT(CI!=m_ColorIndices.end());
 	int k = DetailRandom.randI(0,CI->second.size());
-    DetailIt it = find(objects.begin(),objects.end(),CI->second[k]);
+    DetailIt it = std::find(objects.begin(),objects.end(),CI->second[k]);
     VERIFY(it!=objects.end());
 	return (it-objects.begin());
 }
 
-u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id){
+u8 EDetailManager::GetObject(ColorIndexPairIt& CI, u8 id)
+{
 	VERIFY(CI!=m_ColorIndices.end());
-    DOIt it = find(objects.begin(),objects.end(),CI->second[id]);
+    DOIt it = std::find(objects.begin(),objects.end(),CI->second[id]);
     VERIFY(it!=objects.end());
 	return (it-objects.begin());
 }
@@ -345,7 +347,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
             }
         }
     }
-    sort(best.begin(),best.end(),CompareWeightFunc);
+    std::sort(best.begin(),best.end(),CompareWeightFunc);
     // пройдем по 4 частям слота и определим плотность заполнения (учесть переворот V)
     Irect P[4];
     float dx=float(R.x2-R.x1)/2.f;
@@ -406,7 +408,7 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
         U8Vec elem; elem.resize(CI->second.size());
         for (U8It b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=b_it-elem.begin();
 //        best_rand A(DetailRandom);
-        random_shuffle(elem.begin(),elem.end());//,A);
+        std::random_shuffle(elem.begin(),elem.end());//,A);
         for (b_it=elem.begin(); b_it!=elem.end(); b_it++){
 			bool bNotFound=true;
             slot->items[k].id       = GetObject(CI,*b_it);

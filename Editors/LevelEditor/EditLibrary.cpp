@@ -175,7 +175,7 @@ void TfrmEditLibrary::OnModified(){
     form->ebSave->Enabled = true;
     CEditableObject* E=form->m_pEditObject->GetReference();
     if (E){
-    	modif_map.insert(make_pair(E->GetName(),FS_QueryItem(0,0,0)));
+    	modif_map.insert(mk_pair(E->GetName(),FS_QueryItem(0,0,0)));
     	E->Modified();
 		form->m_pEditObject->UpdateTransform();
     }
@@ -209,7 +209,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 
         if (cbPreview->Checked||m_Props->Visible){
         	if (m_Props->IsModified()&&m_pEditObject->GetReference())
-            	modif_map.insert(make_pair(m_pEditObject->GetRefName(),FS_QueryItem(0,0,0)));
+            	modif_map.insert(mk_pair(m_pEditObject->GetRefName(),FS_QueryItem(0,0,0)));
             ChangeReference(nm.c_str());
 		    if (cbPreview->Checked) mt = true;
         }
@@ -445,7 +445,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 		bool bNeedBreak=false;
 		AnsiString path; // нужен при multi-open для сохранения последнего пути
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-        	nm = ExtractFileName(*it);
+        	nm = ChangeFileExt(ExtractFileName(*it),"");
             CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
                 O->m_Version = FS.get_file_age(it->c_str());
@@ -462,14 +462,17 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             }
             xr_delete(O);
             if (bNeedBreak) break;
+
+            LPCSTR p = FS.get_path(_objects_)->m_Path;
+            if (path.Pos(p)>0) m_LastSelection = AnsiString(AnsiString(path.c_str()+strlen(p))+nm).LowerCase();
         }
         if (bNeedUpdate){
 			Lib.RefreshLibrary();
 			InitObjects();
-            //nfgngfnfnfgngfndfngggfddddddddfghfghghjgfjghjgfjkgfmdfjfjfggj
+	    	FHelper.RestoreSelection(tvObjects,m_LastSelection.c_str());
         }
         // refresh selected
-		RefreshSelected();
+//		RefreshSelected();
     }
 }
 //---------------------------------------------------------------------------

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "ELog.h"
-#include "FileSystem.h"
 #include "xrCPU_Pipe.h"
 
 class ENGINE_API CEngine

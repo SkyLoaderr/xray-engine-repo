@@ -21,7 +21,7 @@ enum EEditorState{
     esBuildLevel
 };
 
-typedef vector<EEditorState> EStateList;
+typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
 class TUI: public CController{
@@ -164,7 +164,7 @@ public:
     void 			BeginEState			(EEditorState st){ m_EditorState.push_back(st); }
     void 			EndEState			(){ m_EditorState.pop_back(); }
     void 			EndEState			(EEditorState st){
-    	VERIFY(find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end());
+    	VERIFY(std::find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end());
         for (EStateIt it=m_EditorState.end()-1; it>=m_EditorState.begin(); it--)
         	if (*it==st){
             	m_EditorState.erase(it,m_EditorState.end());
@@ -172,7 +172,7 @@ public:
             }
     }
     EEditorState 	GetEState			(){ return m_EditorState.back(); }
-    bool 			ContainEState		(EEditorState st){ return find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
+    bool 			ContainEState		(EEditorState st){ return std::find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
 
 	void 			ProgressInfo		(const char* text);
 	void 			ProgressStart		(float max_val, const char* text);

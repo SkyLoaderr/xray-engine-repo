@@ -256,7 +256,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
     UI.ProgressInc();
 
-    vector<FvectorVec>	bone_points;
+    xr_vector<FvectorVec>	bone_points;
 	bone_points.resize	(m_Source->BoneCount());
 
     FvectorVec vnormals;

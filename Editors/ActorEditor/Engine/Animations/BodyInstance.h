@@ -231,6 +231,7 @@ private:
 	};
 
 	typedef FHierrarhyVisual					inherited;
+public:
 	typedef xr_map<LPSTR,int,str_pred>			accel;
 	typedef xr_map<LPSTR,CMotionDef,str_pred>	mdef;
 private:
@@ -277,6 +278,8 @@ public:
 	int							LL_MotionID		(LPCSTR B);
 	int							LL_PartID		(LPCSTR B);
 
+	IC accel*					LL_Bones		(){return bone_map;}
+	IC accel*					LL_Motions		(){return motion_map;}
 	IC CBoneInstance&			LL_GetInstance	(int bone_id)
 	{
 		VERIFY((bone_id>=0)&&(bone_id<LL_BoneCount())); 

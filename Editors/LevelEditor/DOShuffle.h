@@ -90,7 +90,7 @@ private:	// User declarations
 
     EImageThumbnail* m_Thm;
 
-    vector<TfrmOneColor*> color_indices;
+    xr_vector<TfrmOneColor*> color_indices;
 
     void InitItemsList(const char* nm=0);
 	TElTreeItem* FindItem(const char* s);

@@ -116,7 +116,7 @@ IVisual*	CModelPool::Instance_Load(IReader* data)
 
 void CModelPool::OnDestroy()
 {
-	vector<ModelDef>::iterator	I;
+	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
 		I->model->Release();
@@ -142,7 +142,7 @@ IVisual* CModelPool::Create(const char* name)
 	strcpy(low_name,name); strlwr(low_name);
 
 	IVisual*				Model=0;
-	vector<ModelDef>::iterator	I;
+	xr_vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
 		if (I->name[0]&&(0==strcmp(I->name,low_name))) {
@@ -187,7 +187,7 @@ void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int prio
     switch (m_pVisual->Type){
     case MT_SKELETON:{
         CKinematics* pV					= (CKinematics*)m_pVisual;
-        vector<IVisual*>::iterator I,E;
+        xr_vector<IVisual*>::iterator I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
@@ -201,7 +201,7 @@ void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int prio
     }break;
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
-        vector<IVisual*>::iterator 		I,E;
+        xr_vector<IVisual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){

@@ -133,8 +133,8 @@ class CExportSkeleton{
         // Progressive
         int				I_Current;
         int				V_Minimal;
-        std::vector<Vsplit>	pmap_vsplit;
-        std::vector<WORD>	pmap_faces;
+        xr_vector<Vsplit>	pmap_vsplit;
+        xr_vector<WORD>		pmap_faces;
 
         void 			Save	(IWriter& F, BOOL b2Link);
 

@@ -94,7 +94,7 @@ public:
 public:
 	st_LevelOptions	m_LevelOp;
 
-    vector<CLight*> frame_light;
+    xr_vector<CLight*> frame_light;
 protected:
 	bool m_Valid;
 	int m_Locked;
@@ -103,8 +103,8 @@ protected:
 
 	ObjectMap  m_Objects;
 
-	deque<UndoItem> m_UndoStack;
-	deque<UndoItem> m_RedoStack;
+	xr_deque<UndoItem> m_UndoStack;
+	xr_deque<UndoItem> m_RedoStack;
 
 	TProperties* m_SummaryInfo;
 public:

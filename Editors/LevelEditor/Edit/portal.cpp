@@ -170,7 +170,7 @@ bool CPortal::Update(bool bLoadMode){
 	Simplify();
 
     if (!bLoadMode){
-        map<CSector*,int> A,B;
+        xr_map<CSector*,int> A,B;
         Fvector SF_dir, SB_dir;
         Fvector InvNorm;
         InvNorm.invert(m_Normal);
@@ -269,9 +269,10 @@ bool CPortal::Update(bool bLoadMode){
 }
 //------------------------------------------------------------------------------
 
-void CPortal::InvertOrientation(){
-    reverse(m_Vertices.begin(),m_Vertices.end());
-    reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
+void CPortal::InvertOrientation()
+{
+    std::reverse(m_Vertices.begin(),m_Vertices.end());
+    std::reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
     m_Normal.invert();
     UI.RedrawScene();
     Scene.UndoSave();
@@ -468,7 +469,7 @@ void CPortal::Simplify()
     float m=norm.magnitude();    VERIFY(fabsf(m)>EPS);    norm.div(m);
 
     if (norm.dotproduct(m_Normal)<0){
-    	reverse(m_SimplifyVertices.begin(), m_SimplifyVertices.end());
+    	std::reverse(m_SimplifyVertices.begin(), m_SimplifyVertices.end());
 	    m_Normal.invert(norm);
     }else{
 	    m_Normal.set(norm);

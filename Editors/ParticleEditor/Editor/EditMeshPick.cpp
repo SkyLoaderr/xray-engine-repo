@@ -118,7 +118,7 @@ bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector
 bool CEditableMesh::CHullPickMesh(PlaneVec& pl, const Fmatrix& parent){
 	u32 i=0;
 	Fvector p;
-    vector<bool> inside(m_Points.size(),true);
+    xr_vector<bool> inside(m_Points.size(),true);
     for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
         parent.transform_tiny(p,*v_it);
         for(PlaneIt p_it=pl.begin(); p_it!=pl.end(); p_it++)
@@ -133,7 +133,7 @@ bool CEditableMesh::CHullPickMesh(PlaneVec& pl, const Fmatrix& parent){
 void CEditableMesh::RecurseTri(int id)
 {
 	// Check if triangle already processed
-	if (find(sml_processed.begin(),sml_processed.end(),id)!=sml_processed.end())
+	if (std::find(sml_processed.begin(),sml_processed.end(),id)!=sml_processed.end())
 		return;
 
 	sml_processed.push_back(id);
@@ -164,8 +164,8 @@ void CEditableMesh::GetTiesFaces(int start_id, U32Vec& fl, float fSoftAngle, boo
     }else{
     	for (int k=0; k<3; k++)
         	fl.insert(fl.end(),m_Adjs[m_Faces[start_id].pv[k].pindex].begin(),m_Adjs[m_Faces[start_id].pv[k].pindex].end());
-        sort(fl.begin(),fl.end());
-        unique(fl.begin(),fl.end());
+        std::sort(fl.begin(),fl.end());
+        std::unique(fl.begin(),fl.end());
     }
 }
 //----------------------------------------------------

@@ -5,6 +5,10 @@
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
 
+#ifdef _EDITOR
+	#include "ui_main.h"
+#endif
+
 xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection)
 {
 	a_current			= 90;
@@ -632,18 +636,24 @@ void					xrSE_Visualed::visual_write(NET_Packet& P)
 
 #ifdef _EDITOR
 #include "BodyInstance.h"
+void 					xrSE_Visualed::PlayAnimation(LPCSTR name)
+{
+    // play motion if skeleton
+    if (PKinematics(visual)){ 
+	    play_animation	= name;
+        CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe(play_animation.c_str());
+        if (M) 			PKinematics(visual)->PlayCycle(M); 
+        PKinematics(visual)->Calculate();
+    }
+}
 void __fastcall			xrSE_Visualed::OnChangeVisual(PropValue* sender)
 {
 	Device.Models.Delete(visual);
     if (visual_name[0]){
-        visual				= Device.Models.Create(visual_name);
-        // play idle motion if skeleton
-        if (PKinematics(visual)){ 
-            CMotionDef* M	= PKinematics(visual)->ID_Cycle_Safe("$editor");
-            if (M) PKinematics(visual)->PlayCycle(M); 
-            PKinematics(visual)->Calculate();
-        }
+        visual			= Device.Models.Create(visual_name);
+        PlayAnimation	(play_animation.c_str());
     }
+	UI.Command			(COMMAND_UPDATE_PROPERTIES);
 }
 void 					xrSE_Visualed::FillProp(LPCSTR pref, PropItemVec& values)
 {
@@ -1463,6 +1473,7 @@ xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 {
 	flags.set				(flPhysic,TRUE);
     mass					= 10.f;
+    startup_animation[0]	= 0;
 	spot_texture[0]			= 0;
 	color_animator[0]		= 0;
 	spot_bone[0]			= 0;
@@ -1490,6 +1501,13 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
     	P.r_u16				(flags.flags);
     if (m_wVersion>12)
     	P.r_float			(mass);
+    if (m_wVersion>17)
+		P.r_string			(startup_animation);
+
+#ifdef _EDITOR    
+	PlayAnimation			(startup_animation[0]?startup_animation:"$editor");
+#endif
+
 	// internal
 	strlwr					(spot_bone);
 }
@@ -1506,10 +1524,15 @@ void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 	P.w_float				(spot_brightness);
    	P.w_u16					(flags.flags);
 	P.w_float				(mass);
+	P.w_string				(startup_animation);
 }
 void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
 #ifdef _EDITOR
+void __fastcall	xrSE_HangingLamp::OnChangeAnim(PropValue* sender)
+{
+	PlayAnimation			(startup_animation);
+}
 void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp		(pref,values);
@@ -1517,12 +1540,36 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateColor		(values, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
 	PHelper.CreateFlag16	(values, PHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
 	PHelper.CreateLightAnim	(values, PHelper.PrepareKey(pref,s_name,"Color animator"),	color_animator,		sizeof(color_animator));
-	PHelper.CreateText		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			sizeof(spot_bone));
 	PHelper.CreateTexture	(values, PHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
     PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
     PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
+
+    if (visual&&PKinematics(visual))
+    {
+    	CKinematics::accel*	ll_bones		= PKinematics(visual)->LL_Bones();
+    	CKinematics::accel* ll_motions		= PKinematics(visual)->LL_Motions();
+        CKinematics::accel::iterator _I, _E;
+        AStringVec vec;
+        bool bFound;
+        // bones
+        _I=ll_motions->begin();
+        _E=ll_motions->end();
+        bFound = false;
+        for (; _I!=_E; _I++){ vec.push_back(_I->first); if (!bFound&&startup_animation[0]&&(vec.back()==startup_animation)) bFound=true; }
+        if (!bFound) startup_animation[0]=0;
+        PropValue* P = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, &vec);
+        P->SetEvents		(0,0,OnChangeAnim);
+		// motions
+        vec.clear();
+        _I=ll_bones->begin();
+        _E=ll_bones->end();
+        bFound = false;
+        for (; _I!=_E; _I++){ vec.push_back(_I->first); if (!bFound&&spot_bone[0]&&(vec.back()==spot_bone)) bFound=true; }
+        if (!bFound) spot_bone[0]=0;
+		PHelper.CreateList	(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			&vec);
+    }
 }
 #endif
 

@@ -65,7 +65,7 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_Light_control);
-    for (vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
+    for (xr_vector<sb_light_control>::iterator lc_it=l_light_control.begin(); lc_it!=l_light_control.end(); lc_it++){
     	F.w			(lc_it->name,sizeof(lc_it->name));
     	F.w_u32		(lc_it->data.size());
     	F.w			(lc_it->data.begin(),sizeof(u32)*lc_it->data.size());

@@ -50,17 +50,20 @@ class xrSE_Visualed
 {
 public:
 #ifdef _EDITOR
+	AnsiString						play_animation;
 	IVisual*						visual;
     void __fastcall					OnChangeVisual		(PropValue* sender);
+    void 							PlayAnimation		(LPCSTR name);
 #endif
 	string64						visual_name;
 public:
 									xrSE_Visualed		(LPCSTR name=0)
     {
-    	strcpy			(visual_name,name?name:"");
+    	strcpy						(visual_name,name?name:"");
 #ifdef _EDITOR
-		visual			= 0;
-        OnChangeVisual	(0);
+		play_animation				= "$editor";
+		visual						= 0;
+        OnChangeVisual				(0);
 #endif
     }
 	void							visual_read			(NET_Packet& P);
@@ -96,12 +99,16 @@ xrSE_EDITOR_METHODS\
 };
 
 xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
+#ifdef _EDITOR
+	void __fastcall					OnChangeAnim	(PropValue* sender);
+#endif
 	enum{
     	flPhysic					= (1<<0)
     };
 	Flags16							flags;
     float							mass;
 	u32								color;
+	string32						startup_animation;
 	string64						color_animator;
 	string64						spot_texture;
 	string32						spot_bone;

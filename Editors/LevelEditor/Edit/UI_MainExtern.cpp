@@ -640,10 +640,10 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 
 	if(!(x1!=x2&&y1!=y2)) return false;
 
-	pt[0].set(min(x1,x2),min(y1,y2));
-	pt[1].set(max(x1,x2),min(y1,y2));
-	pt[2].set(max(x1,x2),max(y1,y2));
-	pt[3].set(min(x1,x2),max(y1,y2));
+	pt[0].set(_min(x1,x2),_min(y1,y2));
+	pt[1].set(_max(x1,x2),_min(y1,y2));
+	pt[2].set(_max(x1,x2),_max(y1,y2));
+	pt[3].set(_min(x1,x2),_max(y1,y2));
 
     SRayPickInfo pinf;
     for (int i=0; i<4; i++){

@@ -90,7 +90,7 @@ void CWayPoint::Select( int flag )
 }
 WPIt CWayPoint::HasLink(CWayPoint* P)
 {
-	return find(m_Links.begin(),m_Links.end(),P);
+	return std::find(m_Links.begin(),m_Links.end(),P);
 }
 void CWayPoint::InvertLink(CWayPoint* P)
 {
@@ -109,7 +109,7 @@ void CWayPoint::AppendLink(CWayPoint* P)
 }
 bool CWayPoint::DeleteLink(CWayPoint* P)
 {
-	WPIt it = find(m_Links.begin(),m_Links.end(),P);
+	WPIt it = std::find(m_Links.begin(),m_Links.end(),P);
 	if (it!=m_Links.end()){
 		m_Links.erase(it);
         UI.RedrawScene();
@@ -119,7 +119,7 @@ bool CWayPoint::DeleteLink(CWayPoint* P)
 }
 bool CWayPoint::AddSingleLink(CWayPoint* P)
 {
-	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
+	if (std::find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);
         UI.RedrawScene();
     	return true;
@@ -128,7 +128,7 @@ bool CWayPoint::AddSingleLink(CWayPoint* P)
 }
 bool CWayPoint::AddDoubleLink(CWayPoint* P)
 {
-	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
+	if (std::find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);
         P->AppendLink(this);
         UI.RedrawScene();
@@ -465,7 +465,7 @@ void CWayObject::Save(IWriter& F)
     	CWayPoint* W= *it;
     	int from	= it-m_WayPoints.begin();
         for (WPIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
-        	WPIt to	= find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
+        	WPIt to	= std::find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
 	    	F.w_u16	(from);
 	    	F.w_u16	(to-m_WayPoints.begin());
         }
@@ -505,7 +505,7 @@ bool CWayObject::ExportGame(SExportStreams& F){
             CWayPoint* W= *it;
             int from	= it-m_WayPoints.begin();
             for (WPIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++){
-                WPIt to	= find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
+                WPIt to	= std::find(m_WayPoints.begin(),m_WayPoints.end(),*l_it); R_ASSERT(to!=W->m_Links.end());
                 F.patrolpath.stream.w_u16	(from);
                 F.patrolpath.stream.w_u16	(to-m_WayPoints.begin());
             }

@@ -95,7 +95,7 @@ EScene::EScene(){
     for (int i=0; i<OBJCLASS_COUNT; i++){
         ObjectList lst;
         EObjClass cls = (EObjClass)i;
-        m_Objects.insert(make_pair(cls,lst));
+        m_Objects.insert(mk_pair(cls,lst));
     }
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
@@ -870,7 +870,7 @@ int EScene::AddToSnapList(){
     if (count){
     	count = 0;
 	    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		if (find(m_SnapObjects.begin(),m_SnapObjects.end(),*_F)==m_SnapObjects.end()){
+    		if (std::find(m_SnapObjects.begin(),m_SnapObjects.end(),*_F)==m_SnapObjects.end()){
 				m_SnapObjects.push_back(*_F);
 	            count++;
     	    }

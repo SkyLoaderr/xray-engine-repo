@@ -15,11 +15,11 @@ struct SVertex: public Fvector{
     SVertex(const Fvector& v){set(v);portal=-1;}
     IC void SetLink(int id, int i0, int i1){if (i0>=0)link[id].push_back(i0); if (i1>=0)link[id].push_back(i1);}
     IC void ConsolidateLink(){
-    	sort(link[0].begin(),link[0].end());
-    	sort(link[1].begin(),link[1].end());
-        set_intersection(	link[0].begin(),link[0].end(),
-        					link[1].begin(),link[1].end(),
-                        	inserter(ulink,ulink.begin()));
+    	std::sort(link[0].begin(),link[0].end());
+    	std::sort(link[1].begin(),link[1].end());
+        std::set_intersection(	link[0].begin(),link[0].end(),
+        						link[1].begin(),link[1].end(),
+                	        	inserter(ulink,ulink.begin()));
         VERIFY(ulink.size()<=2);
     }
 };

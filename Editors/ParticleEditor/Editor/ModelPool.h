@@ -18,7 +18,7 @@ class ENGINE_API CModelPool
 		IVisual*		model;
 	};
 
-	vector<ModelDef>	Models;
+	xr_vector<ModelDef>	Models;
 
 	void				OnDestroy			();
 public:

@@ -13,8 +13,8 @@
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
 		if (0!=txt[0]){
-    		if (txt[0]=='!') TfrmLog::AddMessage(mtError,AnsiString(txt+1));
-			else			TfrmLog::AddMessage(mtInformation,AnsiString(lntxt);
+    		if (txt[0]=='!')TfrmLog::AddMessage(mtError,AnsiString(txt+1));
+			else			TfrmLog::AddMessage(mtInformation,AnsiString(txt));
 		}
 	}
 #endif

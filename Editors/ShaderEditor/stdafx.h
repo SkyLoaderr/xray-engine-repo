@@ -114,12 +114,12 @@ DEFINE_VECTOR(u32*,LPU32Vec,LPU32It);
 #include "engine.h"
 #include "defines.h"
 
-struct str_pred : public binary_function<char*, char*, bool>
+struct str_pred : public std::binary_function<char*, char*, bool>
 {
     IC bool operator()(LPCSTR x, LPCSTR y) const
     {	return strcmp(x,y)<0;	}
 };
-struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
+struct astr_pred : public std::binary_function<AnsiString&, AnsiString&, bool>
 {
     IC bool operator()(AnsiString& x, AnsiString& y) const
     {	return x<y;	}

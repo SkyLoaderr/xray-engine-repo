@@ -218,7 +218,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             IntVec& a_lst	= MESH->m_Adjs[i];
                             Mpt.set			(Ipt.pos);
                             copy			(Ipt.pol,Ipt.pol+Ipt.npols,inserter(a_lst,a_lst.begin()));
-                            sort			(a_lst.begin(),a_lst.end());
+                            std::sort		(a_lst.begin(),a_lst.end());
                         }
                     }
                     if (!bResult) break;
@@ -274,7 +274,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             	// берем из points
                                 for (int vm_i=0; vm_i<vmpt_cnt; vm_i++){
 									if (Ipt.vm[vm_i].vmap->type!=ID_TXUV) continue;
-                                    if (find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
+                                    if (std::find(names.begin(),names.end(),Ipt.vm[vm_i].vmap->name)!=names.end()) continue;
 									vm_lst.push_back(st_VMapPt());
 									st_VMapPt& pt	= vm_lst.back();
 									pt.vmap_index	= VMIndices[Ipt.vm[vm_i].vmap]; // номер моей VMap
@@ -282,7 +282,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                                 }
 							}
 
-                            sort(vm_lst.begin(),vm_lst.end(),CompareFunc);
+                            std::sort(vm_lst.begin(),vm_lst.end(),CompareFunc);
 
 							// parse weight-map
                             int vm_cnt		=Ipt.nvmaps;

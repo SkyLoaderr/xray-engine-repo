@@ -182,10 +182,10 @@ public:
 	static void		NormalAlign		(Fvector& rot, const Fvector& up);
 };
 
-typedef std::list<CCustomObject*> ObjectList;
-typedef ObjectList::iterator ObjectIt;
-typedef std::map<EObjClass,ObjectList> ObjectMap;
-typedef ObjectMap::iterator ObjectPairIt;
+typedef xr_list<CCustomObject*> 		ObjectList;
+typedef ObjectList::iterator 			ObjectIt;
+typedef xr_map<EObjClass,ObjectList> 	ObjectMap;
+typedef ObjectMap::iterator 			ObjectPairIt;
 
 //----------------------------------------------------
 #endif /* _INCDEF_CustomObject_H_ */

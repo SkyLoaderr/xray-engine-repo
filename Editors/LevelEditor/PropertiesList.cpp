@@ -94,7 +94,7 @@ void TProperties::ClearParams(TElTreeItem* node)
     	for (TElTreeItem* item=node; item; item=item->GetNext()){
 			PropValue* V = (PropValue*)GetItemData(item);
             if (V){
-	            PropValuePairIt it=find(m_Values.begin(),m_Values.end(),V); VERIFY(it!=m_Values.end());
+	            PropValuePairIt it=std::find(m_Values.begin(),m_Values.end(),V); VERIFY(it!=m_Values.end());
     	        if (it){
 					m_Values.erase(it);
 					xr_delete(V);

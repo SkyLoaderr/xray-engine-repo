@@ -29,25 +29,25 @@ struct sb_light_control						// controller or "layer", 30fps
     U32Vec				data;
 };
 class SceneBuilder{
-	int						l_vert_cnt, l_vert_it;
-	int						l_face_cnt, l_face_it;
-    b_vertex*		        l_verts;
-    b_face*  		        l_faces;
-    SVertVec				l_svertices;
-    vector<b_mu_model>		l_mu_models;
-    vector<b_mu_reference>	l_mu_refs;
-    vector<b_lod>			l_lods;
-    vector<sb_light_control>l_light_control;
-    vector<b_light_static>	l_light_static;
-    vector<b_light_dynamic>	l_light_dynamic;
-    vector<b_texture>       l_textures;
-    vector<b_shader>        l_shaders;
-    vector<b_shader>        l_shaders_xrlc;
-    vector<b_material>      l_materials;
-    vector<b_vnormal>       l_vnormals;
-    vector<b_glow>          l_glows;
-    vector<b_portal>        l_portals;
-    vector<Flight>          l_light_keys;
+	int							l_vert_cnt, l_vert_it;
+	int							l_face_cnt, l_face_it;
+    b_vertex*		        	l_verts;
+    b_face*  		        	l_faces;
+    SVertVec					l_svertices;
+    xr_vector<b_mu_model>		l_mu_models;
+    xr_vector<b_mu_reference>	l_mu_refs;
+    xr_vector<b_lod>			l_lods;
+    xr_vector<sb_light_control>	l_light_control;
+    xr_vector<b_light_static>	l_light_static;
+    xr_vector<b_light_dynamic>	l_light_dynamic;
+    xr_vector<b_texture>       	l_textures;
+    xr_vector<b_shader>        	l_shaders;
+    xr_vector<b_shader>        	l_shaders_xrlc;
+    xr_vector<b_material>      	l_materials;
+    xr_vector<b_vnormal>       	l_vnormals;
+    xr_vector<b_glow>          	l_glows;
+    xr_vector<b_portal>        	l_portals;
+    xr_vector<Flight>          	l_light_keys;
 
     void    GetBBox         (u32 st_fid, u32 cnt, Fbox& box);
 

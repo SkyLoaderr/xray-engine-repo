@@ -60,15 +60,15 @@ private:	// User declarations
 	static TfrmPropertiesWayPoint* form;
     bool bLoadMode;
     bool bPointMode;
-    list<CCustomObject*>* 	m_Objects;
-    vector<CWayPoint*>		m_Points;
+    xr_list<CCustomObject*>* 	m_Objects;
+    xr_vector<CWayPoint*>		m_Points;
     void GetWayInfo     ();
     bool ApplyWayInfo   ();
     void GetPointInfo     ();
     bool ApplyPointInfo   ();
 public:		// User declarations
     __fastcall TfrmPropertiesWayPoint(TComponent* Owner);
-    static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);
+    static int __fastcall Run(xr_list<CCustomObject*>* pObjects, bool& bChange);
     static bool __fastcall Visible(){return !!form;}
 };
 //---------------------------------------------------------------------------

@@ -332,7 +332,7 @@ void CSector::GetCounts(int* objects, int* meshes, int* faces)
     }
 	if (meshes) *meshes=sector_items.size();
 	if (objects){
-        set<CSceneObject*> objs;
+        xr_set<CSceneObject*> objs;
 	    for (SItemIt it=sector_items.begin();it!=sector_items.end();it++)
         	objs.insert(it->object);
     	*objects=objs.size();

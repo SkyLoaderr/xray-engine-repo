@@ -85,7 +85,7 @@ void __fastcall TfrmImageLib::UpdateImageLib()
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
         	EFS.UpdateTextureNameWithFolder(it->first.c_str(),fn);
-            texture_map.insert(make_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
+            texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync
 		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
@@ -325,7 +325,7 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
         AnsiString 	fname;
         FS.update_path			(fname,_textures_,m_SelectedName.c_str());
 	    if (ImageManager.CheckCompliance(fname.c_str(),compl)){
-	    	compl_map.insert	(make_pair(m_SelectedName,FS_QueryItem(0,compl)));
+	    	compl_map.insert	(mk_pair(m_SelectedName,FS_QueryItem(0,compl)));
             tvItemsItemFocused(Sender);
         }else{
 	    	ELog.DlgMsg(mtError,"Some error found in check.");
