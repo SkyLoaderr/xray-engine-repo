@@ -69,6 +69,12 @@ void CUIBuyWeaponTab::Init(CUIXml& xml, char* path){
 
 		AddItem(newButton);
 	}
+
+	m_iStubIndex = tabsCount;	
+	CUITabButtonMP *stubButton = xr_new<CUITabButtonMP>();
+	AddItem(stubButton);
+
+	SetNewActiveTab(m_iStubIndex);
 	
 	xml.SetLocalRoot(xml.GetRoot());
 
@@ -81,7 +87,9 @@ void CUIBuyWeaponTab::Init(int x, int y, int width, int height){
 
 void CUIBuyWeaponTab::OnTabChange(int iCur, int iPrev){
 	CUITabControl::OnTabChange(iCur, iPrev);
-	SetActiveState(false);
+
+	if (m_iStubIndex != iCur)
+        SetActiveState(false);	
 }
 
 void CUIBuyWeaponTab::SetActiveState(bool bState){
@@ -91,6 +99,9 @@ void CUIBuyWeaponTab::SetActiveState(bool bState){
 
 	for(u32 i=0; i<m_ChildWndList.size(); ++i, ++it)
 		(*it)->Enable(bState);
+
+	if (bState)
+		SetNewActiveTab(m_iStubIndex);		
 
 	m_TabsArr[m_iPushedIndex]->Enable(true);
 }

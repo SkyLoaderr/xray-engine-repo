@@ -7,6 +7,7 @@
 // Copyright 2005 GSC Game World
 
 #include "StdAfx.h"
+#include <dinput.h>
 #include "UIBuyWeaponStd.h"
 #include "UIBag.h"
 #include "UIInventoryUtilities.h"
@@ -16,15 +17,17 @@
 
 using namespace InventoryUtilities;
 
-CUIBag::CUIBag(){
+CUIBag::CUIBag(CHECK_PROC proc){
 
 	m_mlCurrLevel	= mlRoot;
 	m_pCurrentDDItem = NULL;
+	this->m_iMoneyAmount = 10000;
 
-	for (int i = GROUP_2; i< GROUP_DEFAULT; i++)
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 	{
 		AttachChild(&m_groups[i]);
-		m_groups[i].SetCheckProc(BagProc);
+		m_groups[i].SetCheckProc(proc);
+		m_groups[i].SetItemsScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 	}
 
 
@@ -51,7 +54,73 @@ CUIBag::CUIBag(){
 }
 
 CUIBag::~CUIBag(){
+	xr_list<CUIDragDropItemMP*>::iterator it;
 
+	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+		delete *it;
+}
+
+void CUIBag::GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx){
+	grpNum	= (u8)(-1);
+	idx		= (u8)(-1);
+
+	for (u8 i = 0; i < m_wpnSectStorage.size(); ++i)
+	{
+		for (u8 j = 0; j < m_wpnSectStorage[i].size(); ++j)
+		{
+			if (sectionName == m_wpnSectStorage[i][j])
+			{
+				grpNum	= i;
+				idx		= j;
+				return;
+			}
+		}
+	}
+}
+
+u8 CUIBag::GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum){
+	sectionNum = 0;
+	u8 returnID = static_cast<u8>(-1);
+
+	if (!pDDItem)
+		return returnID;
+    
+	for (WPN_LISTS::const_iterator it = m_wpnSectStorage.begin(); it != m_wpnSectStorage.end(); ++it)
+	{
+		WPN_SECT_NAMES::difference_type diff = std::distance(
+			(*it).begin(), 
+			std::find(
+						(*it).begin(), 
+						(*it).end(), 
+						pDDItem->GetSectionName()
+					)
+															);
+		if (diff < static_cast<WPN_SECT_NAMES::difference_type>((*it).size()))
+		{
+			returnID = static_cast<u8>(diff);
+
+			// Проверяем на наличие приаттаченых аддонов к оружию
+			if (pDDItem->bAddonsAvailable)
+			{
+				u8	flags = 0;
+				for (int i = 0; i < 3; ++i)
+				{
+					if (1 == pDDItem->m_AddonInfo[i].iAttachStatus)
+						flags |= 1;
+
+					flags = flags << 1;
+				}
+				flags = flags << 4;
+
+				// В результате старшие 3 бита являются флагами признаков аддонов:
+				// FF - Scope, FE - Silencer, FD - Grenade Launcher
+				returnID |= flags;
+			}
+			return returnID;
+		}
+		++sectionNum;
+	}
+	return returnID;
 }
 
 MENU_LEVELS CUIBag::GetMenuLevel(){
@@ -69,9 +138,6 @@ bool CUIBag::SetMenuLevel(MENU_LEVELS level){
 
 	m_mlCurrLevel = level;
 
-	if (m_mlCurrLevel == mlRoot)
-		HideAll();
-
 	GetMessageTarget()->SendMessage(this, XR_MENU_LEVEL_CHANGED, NULL);
 
 	return true;
@@ -87,45 +153,106 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	
 	CUIXmlInit::InitStatic(xml, path, 0, this);
 
-	for (int i = GROUP_2; i<= GROUP_DEFAULT; i++)
-	{
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		CUIXmlInit::InitDragDropList(xml, "dragdrop_list_bag", 0, &m_groups[i]);
-		m_groups[i].SetMessageTarget(this);
-	}
 
 	InitBoxes();
-	InitWpnSectStorage();	
+	InitWpnSectStorage();
+	FillUpInfiniteItemsList();
 	FillUpGroups();
 	HideAll();
+}
+
+bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
+	xr_list<shared_str>::iterator it;
+
+	for (it = m_vInfiniteItemsList.begin(); it != m_vInfiniteItemsList.end(); ++it)
+        if (0 ==xr_strcmp(pDDItem->GetSectionName(), *it))
+			return true;
+
+    return false;
 }
 
 void CUIBag::Init(int x, int y, int width, int height){
 	CUIStatic::Init(x, y, width, height);
 }
 
-void CUIBag::Update(){
-	CUIDragDropItemMP* pNewDDItem;
-
-	xr_list<CUIDragDropItemMP*>::iterator it;
-
+void CUIBag::UpdateBuyPossibility(){
+	CUIDragDropItemMP* pDDItem;
+	CUIDragDropList* currentDDList;
 	int money = GetMoneyAmount();
 	bool flag;
 
-	for (it = m_allItems.begin(); it != m_allItems.end(); it++)
+	// disable items player can't buy
+
+	if (!(currentDDList = GetCurrentGroup()))
+		return;
+
+
+	DRAG_DROP_LIST ddList = currentDDList->GetDragDropItemsList();
+	DRAG_DROP_LIST_it it;
+
+	for (it = ddList.begin(); it != ddList.end(); ++it)
 	{
-		pNewDDItem = *it;
-        flag = !(pNewDDItem->GetCost() > money);
-        EnableDDItem(pNewDDItem, flag);
+		pDDItem = (CUIDragDropItemMP*)(*it);
+		flag = !(pDDItem->GetCost() > money);
+		EnableDDItem(pDDItem, flag);		
 	}
-        
+
+	//xr_list<CUIDragDropItemMP*>::iterator it;
+
+	//for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+	//	if (IsItemInBag(*it))
+	//	{
+	//		pNewDDItem = (CUIDragDropItemMP*)(*it);
+	//		flag = !(pNewDDItem->GetCost() > money);
+	//		EnableDDItem(pNewDDItem, flag);
+	//	}
+}
+
+CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
+	xr_list<CUIDragDropItemMP*>::iterator it;
+
+	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+		if (0 == xr_strcmp((*it)->GetSectionName(), sectionName))
+			return *it;
+
+	return NULL;
+}
+
+CUIDragDropItemMP* CUIBag::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
+	xr_list<CUIDragDropItemMP*>::iterator it;
+
+	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+        if (grpNum == (*it)->GetSectionGroupID() && uIndexInSlot == (*it)->GetPosInSectionsGroup())
+			return *it;
+
+	return NULL;
+}
+
+void CUIBag::ClearRealRepresentationFlags(){
+	xr_list<CUIDragDropItemMP*>::iterator it;
+
+	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
+	{
+		(*it)->m_bHasRealRepresentation = false;
+		EnableDDItem(*it);
+	}		
 }
 
 void CUIBag::EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable){
-	if (bEnable)
-        pDDItem->SetColor(cAbleToBuy);
-	else
-		pDDItem->SetColor(cUnableToBuy);
+	bool owned = pDDItem->m_bHasRealRepresentation;
+	u32 color = bEnable ? (owned ? cAbleToBuyOwned : cAbleToBuy) : cUnableToBuy;
+	pDDItem->SetColor(color);
+	pDDItem->EnableDragDrop(bEnable);
+}
 
+bool CUIBag::IsItemInBag(CUIDragDropItemMP* pDDItem){\
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+		if (m_groups[i].IsChild(pDDItem))
+			return true;
+
+	return false;
 }
 
 void CUIBag::Draw(){
@@ -134,90 +261,137 @@ void CUIBag::Draw(){
 
 void CUIBag::OnBoxDbClick(CUIDragDropItemMP* pDDItem){
 	R_ASSERT2(pDDItem, "OnBoxDbClick");
+	shared_str section = pDDItem->GetSectionName();
 
+	int iActiveSection = -1;
+
+	if		(  0 == xr_strcmp(m_boxesDefs[0].filterString, section) )
+		iActiveSection = GROUP_31;
+
+	else if (  0 == xr_strcmp(m_boxesDefs[1].filterString, section) )
+		iActiveSection = GROUP_32;
+
+	else if (  0 == xr_strcmp(m_boxesDefs[2].filterString, section) )
+		iActiveSection = GROUP_33;
+
+	else if (  0 == xr_strcmp(m_boxesDefs[3].filterString, section) )
+		iActiveSection = GROUP_34;
+
+	R_ASSERT2( (-1 != iActiveSection), "CUIBag::OnBoxDbClick - invalid section");
+
+	ShowSectionEx(iActiveSection);
 }
 
-void CUIBag::OnItemDbClick(CUIDragDropItemMP* pDDItem){
-	m_pCurrentDDItem = pDDItem;    
-}
+CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID){
+	R_ASSERT(pAddonOwner);
+	// Пробегаемся по списку вещей и ищем там нужный аддон
+	xr_list<CUIDragDropItemMP*>::iterator it;
 
-void CUIBag::OnItemDrag(CUIDragDropItemMP* pItem){
-//		PIItem pInvItem = (PIItem)((CUIDragDropItemMP*)pWnd)->GetData();
-//		SetCurrentItem(pInvItem);
-		if (m_pCurrentDDItem) m_pCurrentDDItem->Highlight(false);
-		m_pCurrentDDItem = pItem;
-
-		// Cкейлим и увеличиваем текстуру если разрещено перетаскивание
-		if (m_pCurrentDDItem->IsDragDropEnabled())
+	for (it = m_allItems.begin(); it!=m_allItems.end(); ++it)
+		for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
 		{
-			m_pCurrentDDItem->Rescale(1.0f,1.0f);
+			CUIDragDropItemMP::AddonIDs AID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+			if (pAddonOwner->m_AddonInfo[j].strAddonName == (*it)->GetSectionName() 
+				&& AID == ID)
+			{
+				return *it;
+			}
+		}
+	//for (int i = 0; i < m_iUsedItems; ++i)
+	//{
+	//	for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+	//	{
+	//		CUIDragDropItemMP::AddonIDs AID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+	//		if (pAddonOwner->m_AddonInfo[j].strAddonName == m_vDragDropItems[i].GetSectionName() &&
+	//			AID == ID)
+	//		{
+	//			return &m_vDragDropItems[i];
+	//		}
+	//	}
+	//}
+
+	return NULL;
+}
+
+void CUIBag::OnItemClick(CUIDragDropItemMP* pDDItem){
+	if (IsItemInBag(pDDItem))
+        m_pCurrentDDItem = pDDItem;
+}
+
+CUIDragDropItemMP * CUIBag::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
+{
+	R_ASSERT(pPossibleAddon);
+
+	for (int i = GROUP_2; i <=GROUP_34; i++)
+	{
+		if (!m_groups[i].GetDragDropItemsList().empty())
+		{
+			CUIDragDropItemMP * pDDItemMP = smart_cast<CUIDragDropItemMP*>(m_groups[i].GetDragDropItemsList().front());
+
+			if (pDDItemMP && pDDItemMP->bAddonsAvailable)
+			{
+				for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+				{
+					// Если один из типов аддонов
+					if (pPossibleAddon->GetSectionName() == pDDItemMP->m_AddonInfo[j].strAddonName)
+					{
+						ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+						return pDDItemMP;
+					}
+				}
+			}
 		}
 
-		// for BuyWeaponWnd
-		//// Disable highliht in all DD lists
-		//for (int i = 0; i < PDA_SLOT; ++i)
-		//{
-		//	UITopList[i].HighlightAllCells(false);
-		//}
+		if (GROUP_2 == i)
+			i = GROUP_31 - 1;
+	}
+
+	return NULL;
+}
+
+bool CUIBag::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
+{
+	R_ASSERT(pPossibleAddon);
+	if (!pPossibleAddon) return false;
+
+	xr_string str = pPossibleAddon->GetSectionName();
+	return str.find("addon") != xr_string::npos;
+}
+
+void CUIBag::OnItemDrop(CUIDragDropItemMP* pItem){
+	pItem->GetOwner()->SendMessage(pItem, DRAG_DROP_ITEM_DROP, NULL);
 }
 
 void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
+	CUIDragDropItemMP* pDDItem = smart_cast<CUIDragDropItemMP*>(pWnd);
 	switch (msg)
 	{
-	case DRAG_DROP_ITEM_DRAG:
-		OnItemDrag(smart_cast<CUIDragDropItemMP*>(pWnd));
-		break;
+	case DRAG_DROP_ITEM_DROP:
+		OnItemDrop(pDDItem);
+		return;
 
+		break;
 
 	case DRAG_DROP_ITEM_DB_CLICK:
 		if (GetMenuLevel() == mlBoxes)
-			OnBoxDbClick(smart_cast<CUIDragDropItemMP*>(pWnd));
+			OnBoxDbClick(pDDItem);
 		else
-			OnItemDbClick(smart_cast<CUIDragDropItemMP*>(pWnd));
-		//CUIDragDropItemMP	*pAddonOwner;
-
-		//m_pCurrentDragDropItem = smart_cast<CUIDragDropItemMP*>(pWnd);
-		//R_ASSERT(m_pCurrentDragDropItem);
-
-		//// Проверяем, а не находимся ли мы на уровне ящиков?
-		//if (m_pCurrentDragDropItem->GetParent() == m_WeaponSubBags.back())
-		//{
-		//	ApplyFilter(RIFLE_SLOT, weaponFilterName, m_pCurrentDragDropItem->GetSectionName());
-		//	if (mlRoot == m_mlCurrLevel) MenuLevelUp();
-		//	OnKeyboard(m_pCurrentDragDropItem->GetPosInSectionsGroup() + 2, WINDOW_KEY_PRESSED);
-		//}
-
-		//// Проверяем на возможность покупки этой вещи
-		//if (m_pCurrentDragDropItem->IsDragDropEnabled())
-		//{
-		//	CUIDragDropItemMP::AddonIDs addonID;	
-		//	pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
-
-		//	// "Поднять" вещь для освобождения занимаемого места
-		//	SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DRAG, NULL);
-	
-		//	//попытаться закинуть элемент в слот, рюкзак или на пояс
-		//	if(!ToSlot())
-		//		if(!ToBelt())
-		//			if(!ToBag())
-		//			//если нельзя, то просто упорядочить элемент в своем списке
-		//			{
-  //                      CUIWindow* pWindowParent = m_pCurrentDragDropItem->GetParent();
-  //                      pWindowParent->DetachChild(m_pCurrentDragDropItem);
-		//				pWindowParent->AttachChild(m_pCurrentDragDropItem);
-		//				m_pCurrentDragDropItem->Rescale(	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleX(),
-		//													((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScaleY()	);
-		//			}
-		//}
+			OnItemClick(pDDItem);
 		break;
 
 	case DRAG_DROP_ITEM_RBUTTON_CLICK:
-		break;
+		OnItemClick(pDDItem); break;
 
-	case DRAG_DROP_REFRESH_ACTIVE_ITEM:
-		if (this->m_pCurrentDDItem)
-			this->m_pCurrentDDItem->Highlight(true);
-		break;
+	case DRAG_DROP_ITEM_DRAG: // == LBUTTON_CLICK
+		OnItemClick(pDDItem); break;
+
+	//case DRAG_DROP_ITEM_RBUTTON_CLICK:
+	//	break;
+
+	//case DRAG_DROP_REFRESH_ACTIVE_ITEM:
+	//	if (this->m_pCurrentDDItem)
+	//		this->m_pCurrentDDItem->Highlight(true);
+	//	break;
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -227,24 +401,23 @@ void CUIBag::UpdateMoney(int iMoney){
 }
 
 void CUIBag::HideAll(){
-	for (int i = GROUP_2; i<= GROUP_DEFAULT; i++)
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		m_groups[i].Show(false);
-
-	SetMenuLevel(mlRoot);
 }
 
 // Init Boxes SLOT
 void CUIBag::InitBoxes(){
 	// Пробегаемся по всем ящичкам и создаем соответсвующие им айтемы
-	for (u32 i = 0; i < m_boxesDefs.size(); ++i)
+	for (u32 i = 0; i < 4; ++i)
 	{
 		CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
-		pNewDDItem->SetAutoDelete(false);
+		pNewDDItem->SetAutoDelete(true);
+		pNewDDItem->EnableDragDrop(false);
 
 		m_boxesDefs[i].pDDItem = pNewDDItem;
 
 		pNewDDItem->CUIStatic::Init(*m_boxesDefs[i].texName, 0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-//		pNewDDItem->SetTextureScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
+		pNewDDItem->Rescale(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 		pNewDDItem->SetStretchTexture(true);
 		pNewDDItem->SetColor(0xffffffff);
 		pNewDDItem->EnableDragDrop(false);
@@ -272,15 +445,128 @@ void CUIBag::InitBoxes(){
 		pNewDDItem->SetMessageTarget(this);
 		// Задаем специальную дополнительную функцию отрисовки, для
 		// отображения номера оружия в углу его иконки
-		//pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 	}
 }
 
+bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
+	int iGroup;
+
+	switch (GetMenuLevel())
+	{
+	case mlRoot:
+		R_ASSERT2(false,"error: CUIBag on level <mlRoot> can't handle keyboard");
+		break;
+	case mlBoxes:
+
+		if (DIK_ESCAPE == dik)
+		{
+			ShowSectionEx(-1);			return true;
+		}
+
+		switch (dik)
+		{
+		case DIK_1:
+			ShowSectionEx(GROUP_31);	return true;
+		case DIK_2:
+			ShowSectionEx(GROUP_32);	return true;
+		case DIK_3:
+			ShowSectionEx(GROUP_33);	return true;
+		case DIK_4:
+			ShowSectionEx(GROUP_34);	return true;
+		}
+		break;
+
+	case mlWpnSubType:		
+		iGroup = GetCurrentGroupIndex();
+		if (DIK_ESCAPE == dik)
+		{
+			if (iGroup >= GROUP_31 && iGroup <= GROUP_34 )
+				ShowSectionEx(GROUP_BOXES);
+			else
+				ShowSectionEx(-1);
+
+			return true;
+		}
+
+		if (dik <= DIK_0 && dik >= DIK_1)
+		{
+            CUIDragDropList* pDDList = GetCurrentGroup();
+			unsigned int index = static_cast<u32>(dik - 2);
+			if (pDDList->GetDragDropItemsList().size() >= index)
+			{
+				DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
+				
+				for (; it != pDDList->GetDragDropItemsList().end(); ++it)
+				{
+					CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
+					
+					if (pDDItemMP->GetPosInSectionsGroup() == index)
+					{
+						GetTop()->SendMessage(pDDItemMP, DRAG_DROP_ITEM_DB_CLICK, NULL);
+						return true;
+					}
+				}
+			}
+		}
+		break;
+	default:
+		NODEFAULT;
+	}
+
+	return false;
+}
+
+void CUIBag::BuyReaction(){
+
+}
+
+CUIDragDropList* CUIBag::GetCurrentGroup(){
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+		if(m_groups[i].IsShown())
+			return &m_groups[i];
+	return NULL;
+}
+
+int CUIBag::GetCurrentGroupIndex(){
+	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
+		if(m_groups[i].IsShown())
+			return i;
+
+	return GROUP_DEFAULT;
+}
+
+// for external using
 void CUIBag::ShowSection(int iSection){
-	R_ASSERT2(  (GROUP_2 <= iSection) && (iSection <= GROUP_6)   ,"invalid section number");
+	R_ASSERT2(  (GROUP_2 <= iSection) && (iSection <= GROUP_6 + 1), "CUIBag::ShowSection() - invalid section number");
 
 	HideAll();
-	m_groups[iSection].Show(true);
+
+	if (GROUP_6 + 1 != iSection)
+	{
+        m_groups[iSection].Show(true);
+
+		if ( GROUP_BOXES == iSection )
+			SetMenuLevel(mlBoxes);
+		else
+			SetMenuLevel(mlWpnSubType);
+	}
+	else
+		SetMenuLevel(mlRoot);
+}
+
+// for internal using
+void CUIBag::ShowSectionEx(int iSection){
+	HideAll();
+
+	if (-1 == iSection)
+	{
+		SetMenuLevel(mlRoot);	return;
+	}
+
+	R_ASSERT2((GROUP_2 <= iSection) && (iSection <= GROUP_34), "CUIBag::ShowSectionEx() - invalid section number");
+
+    m_groups[iSection].Show(true);
 
 	if ( GROUP_BOXES == iSection )
 		SetMenuLevel(mlBoxes);
@@ -341,13 +627,29 @@ void CUIBag::InitWpnSectStorage()
 	}
 }
 
+void CUIBag::FillUpInfiniteItemsList(){
+	string256 itemsList;
+	string16 item;
+	shared_str ssItem;
+	// Get infinite items list
+	if(!pSettings->section_exist("extended_settings"))
+		return;
+
+	std::strcpy(itemsList, pSettings->r_string("extended_settings", "infinite_items"));
+	int itemsCount	= _GetItemCount(itemsList);
+
+	for (int i = 0; i < itemsCount; i++)
+	{
+		_GetItem(itemsList, i, item);
+		ssItem = item;
+		m_vInfiniteItemsList.push_back(ssItem);
+	}
+}
 
 void CUIBag::FillUpGroups()
-{
+{	
 	for (WPN_LISTS::size_type i = 0; i < m_wpnSectStorage.size(); ++i)
-	{
 		FillUpGroup(static_cast<u32>(i));
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -357,15 +659,19 @@ void CUIBag::FillUpGroup(const u32 group)
 	for (WPN_SECT_NAMES::size_type j = 0; j < m_wpnSectStorage[group].size(); ++j)
 	{
 		CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
-		pNewDDItem->SetAutoDelete(false);
+		FillUpItem(pNewDDItem, group, static_cast<int>(j));
+		PutItemToGroup(pNewDDItem, group);
+		m_allItems.push_back(pNewDDItem);		
+	}
+}
 
-		//CUIDragDropItemMP& UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
+void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
+		pDDItem->SetAutoDelete(false);
 
-		pNewDDItem->CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-		pNewDDItem->SetShader(GetEquipmentIconsShader());
-//		pNewDDItem->SetTextureScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
-		pNewDDItem->SetStretchTexture(true);
-		pNewDDItem->SetColor(0xffffffff);
+		pDDItem->CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
+		pDDItem->SetShader(GetEquipmentIconsShader());
+		pDDItem->SetStretchTexture(true);
+		pDDItem->SetColor(0xffffffff);
 
 		//properties used by inventory menu
 		int iGridWidth	= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_width");
@@ -374,23 +680,22 @@ void CUIBag::FillUpGroup(const u32 group)
 		int iYPos		= pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "inv_grid_y");
 
 		u32 slot;
-
 		if(pSettings->line_exist(m_wpnSectStorage[group][j].c_str(), "slot"))
 			slot = pSettings->r_u32(m_wpnSectStorage[group][j].c_str(), "slot");
 		else
 			slot = NO_ACTIVE_SLOT;
 		
-		pNewDDItem->SetSlot(slot);
-		pNewDDItem->SetSectionGroupID(group);
-		pNewDDItem->SetPosInSectionsGroup(static_cast<u32>(j));
+		pDDItem->SetSlot(slot);
+		pDDItem->SetSectionGroupID(group);
+		pDDItem->SetPosInSectionsGroup(static_cast<u32>(j));
 
-		pNewDDItem->SetFont(UI()->Font()->pFontLetterica16Russian);
+		pDDItem->SetFont(UI()->Font()->pFontLetterica16Russian);
 
 		// Читаем стоимость оружия
 		if (pSettings->line_exist(m_StrSectionName, static_cast<xr_string>(m_wpnSectStorage[group][j] + "_cost").c_str()))
-			pNewDDItem->SetCost(pSettings->r_u32(m_StrSectionName, static_cast<xr_string>(m_wpnSectStorage[group][j] + "_cost").c_str()));
+			pDDItem->SetCost(pSettings->r_u32(m_StrSectionName, static_cast<xr_string>(m_wpnSectStorage[group][j] + "_cost").c_str()));
 		else if (pSettings->line_exist(m_StrPricesSection, m_wpnSectStorage[group][j].c_str()))
-			pNewDDItem->SetCost(pSettings->r_u32(m_StrPricesSection, m_wpnSectStorage[group][j].c_str()));
+			pDDItem->SetCost(pSettings->r_u32(m_StrPricesSection, m_wpnSectStorage[group][j].c_str()));
 		else
 		{
 			string256	buf;
@@ -399,12 +704,12 @@ void CUIBag::FillUpGroup(const u32 group)
 			R_ASSERT2(false, buf);
 		}
 
-		// Если на оружие не хватает денег, то запрещаем его перемещение и помечаем цветом, 
-		// что оно недоступно
-		if (pNewDDItem->GetCost() > GetMoneyAmount())
-		{
-			pNewDDItem->SetColor(cUnableToBuy);
-		}
+		//// Если на оружие не хватает денег, то запрещаем его перемещение и помечаем цветом, 
+		//// что оно недоступно
+		//if (pDDItem->GetCost() > GetMoneyAmount())
+		//{
+		//	pDDItem->SetColor(cUnableToBuy);
+		//}
 
 		// Для арморов читаем дополнительно координаты на текстуре с иконками персонажей для арморов
 		if (OUTFIT_SLOT == slot)
@@ -420,112 +725,123 @@ void CUIBag::FillUpGroup(const u32 group)
 
 					int m_iSkinX = 0, m_iSkinY = 0;
 					sscanf(pSettings->r_string("multiplayer_skins", *modelName), "%i,%i", &m_iSkinX, &m_iSkinY);
-					pNewDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinX));
-					pNewDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinY));
+					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinX));
+					pDDItem->m_fAdditionalInfo.push_back(static_cast<float>(m_iSkinY));
 				}
 		
 			}
-
-			// Изменяем мессажд таргет для возможности реакции на то, что костюм возвращается в слот
-
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ATTENTION
-			pNewDDItem->SetMessageTarget(this);
 		}
 
-		InitAddonsInfo(*pNewDDItem, m_wpnSectStorage[group][j]);
+		InitAddonsInfo(*pDDItem, m_wpnSectStorage[group][j]);
 
-		pNewDDItem->SetGridHeight(iGridHeight);
-		pNewDDItem->SetGridWidth(iGridWidth);
+		pDDItem->SetGridHeight(iGridHeight);
+		pDDItem->SetGridWidth(iGridWidth);
 
-		pNewDDItem->GetUIStaticItem().SetOriginalRect(
+		pDDItem->GetUIStaticItem().SetOriginalRect(
 			iXPos * INV_GRID_WIDTH,
 			iYPos * INV_GRID_HEIGHT,
 			iGridWidth * INV_GRID_WIDTH,
 			iGridHeight * INV_GRID_HEIGHT);
 
 
-		pNewDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());
-
-
-		// Количество доступных секций должно быть не больше затребованных
-		//R_ASSERT(group < m_WeaponSubBags.size());
-//		m_groups[slot].AttachChild(pNewDDItem);
-		PutItemToGroup(pNewDDItem, group);
-		//m_WeaponSubBags[group]->AttachChild(pNewDDItem);
-		//pNewDDItem->SetAutoDelete(false);
-
-		// Сохраняем указатель на лист "хозяин" вещи
-		//pNewDDItem->SetOwner(m_WeaponSubBags[group]);
-        
-		pNewDDItem->SetMessageTarget(this);
-
-		// Задаем специальную дополнительную функцию отрисовки, для
-		// отображения номера оружия в углу его иконки
-		//pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
-
-		m_allItems.push_back(pNewDDItem);
-	}
+		pDDItem->SetSectionName(m_wpnSectStorage[group][j].c_str());		
+		pDDItem->SetMessageTarget(this);
+		pDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		pDDItem->m_bIsInfinite = IsItemInfinite(pDDItem);
 }
 
-/// maybe i will delete this bullshit
-//void CUIBag::ClearWpnSubBags()
-//{
-//	// Без "секретной" секции с аддонами
-//	for (WEAPON_TYPES::size_type i = 0; i < m_WeaponSubBags.size() - 1; ++i)
-//	{
-//		ClearWpnSubBag(static_cast<u32>(i));
-//	}
-//}
+CUIDragDropItemMP* CUIBag::CreateCopy(CUIDragDropItemMP *pDDItem){
+#ifdef DEBUG
+	R_ASSERT2(pDDItem, "CUIBag::CreateCopy - argument is NULL");
+#endif
+	unsigned int group = pDDItem->GetSectionGroupID();
+	unsigned int index = pDDItem->GetPosInSectionsGroup();
 
-/// maybe i will delete this bullshit
-//void CUIBag::ClearWpnSubBag(const u32 group)
-//{
-//	for (DRAG_DROP_LIST_it it = m_WeaponSubBags[group]->GetDragDropItemsList().begin(); it != m_WeaponSubBags[group]->GetDragDropItemsList().end(); ++it)
-//	{
-//		for (int i = 0; i < m_iUsedItems; ++i)
-//		{
-//			if (&m_vDragDropItems[i] == (*it))
-//				m_iEmptyIndexes.insert(i);
-//		}
-//	}
-//	m_WeaponSubBags[group]->DropAll();
-//}
+	CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
+	pNewDDItem->SetAutoDelete(true);
+
+	FillUpItem(pNewDDItem, group, index);
+	PutItemToGroup(pNewDDItem, group);
+
+	m_vCopyList.push_back(pNewDDItem);
+
+	return pNewDDItem;
+}
+
+void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
+	shared_str section = pDDItem->GetSectionName();
+	//unsigned int group = pDDItem->GetSectionGroupID();
+
+	DRAG_DROP_LIST ddList = pDDItem->GetOwner()->GetDragDropItemsList();
+	DRAG_DROP_LIST_it it;
+
+	for (it = ddList.begin(); it != ddList.end(); ++it)
+	{
+        CUIDragDropItemMP* pItem = smart_cast<CUIDragDropItemMP*>(*it);
+		shared_str it_section = pItem->GetSectionName();
+		if (0 == xr_strcmp(section, it_section))
+		{
+			pItem->GetParent()->DetachChild(pItem);
+			m_vCopyList.remove(pItem);
+
+#ifdef DEBUG
+			DRAG_DROP_LIST ddList_2 = pDDItem->GetOwner()->GetDragDropItemsList();
+			DRAG_DROP_LIST_it it_2;
+
+		   	for (it_2 = ddList_2.begin(); it_2 != ddList_2.end(); ++it_2)
+			{
+		        CUIDragDropItemMP* pItem = smart_cast<CUIDragDropItemMP*>(*it_2);
+				if (0 == xr_strcmp(section, pItem->GetSectionName()))
+					R_ASSERT2(false, "CUIBag::DeleteCopy - two items with one section");
+			}
+#endif
+			return;
+		}
+	}
+    
+
+#ifdef DEBUG
+	R_ASSERT2(false, "CUIBag::DeleteCopy - copy not found");
+#endif
+}
 
 void CUIBag::PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup){
+	int iActiveSection = -1;
+	shared_str weapon_class;
+
 	switch (iGroup)
 	{
 	case 1:
-		m_groups[GROUP_2].AttachChild(pDDItem);
-		pDDItem->SetOwner(&m_groups[GROUP_2]);
-		break;
+		iActiveSection = GROUP_2;	break;
 	case 2:
-		if		(  xr_strcmp(m_boxesDefs[0].filterString, pSettings->r_string(pDDItem->GetSectionName(),weaponFilterName))  )
-			m_groups[GROUP_31].AttachChild(pDDItem);
-		else if (  xr_strcmp(m_boxesDefs[1].filterString, pSettings->r_string(pDDItem->GetSectionName(),weaponFilterName))  )
-			m_groups[GROUP_32].AttachChild(pDDItem);
-		else if (  xr_strcmp(m_boxesDefs[2].filterString, pSettings->r_string(pDDItem->GetSectionName(),weaponFilterName))  )
-			m_groups[GROUP_33].AttachChild(pDDItem);
-		else if (  xr_strcmp(m_boxesDefs[3].filterString, pSettings->r_string(pDDItem->GetSectionName(),weaponFilterName))  )
-			m_groups[GROUP_34].AttachChild(pDDItem);
-		else
-			R_ASSERT2(false, "invalid section for GROUP3");		
+		weapon_class = pSettings->r_string(pDDItem->GetSectionName(), weaponFilterName);
+
+		if		(  0 == xr_strcmp(m_boxesDefs[0].filterString, weapon_class) )
+			iActiveSection = GROUP_31;
+
+		else if (  0 == xr_strcmp(m_boxesDefs[1].filterString, weapon_class) )
+			iActiveSection = GROUP_32;
+
+		else if (  0 == xr_strcmp(m_boxesDefs[2].filterString, weapon_class) )
+			iActiveSection = GROUP_33;
+
+		else if (  0 == xr_strcmp(m_boxesDefs[3].filterString, weapon_class) )
+			iActiveSection = GROUP_34;
 		break;
 	case 3:
-		m_groups[GROUP_4].AttachChild(pDDItem);
-		pDDItem->SetOwner(&m_groups[GROUP_4]);
-		break;
+		iActiveSection = GROUP_4;	break;
 	case 4:
-		m_groups[GROUP_5].AttachChild(pDDItem);
-		pDDItem->SetOwner(&m_groups[GROUP_5]);
-		break;
+		iActiveSection = GROUP_5;	break;
 	case 5:
-		m_groups[GROUP_6].AttachChild(pDDItem);
-		pDDItem->SetOwner(&m_groups[GROUP_6]);
-		break;
+		iActiveSection = GROUP_6;	break;
 	default:
-		m_groups[GROUP_DEFAULT].AttachChild(pDDItem);
-		pDDItem->SetOwner(&m_groups[GROUP_DEFAULT]);
+		iActiveSection = GROUP_DEFAULT;
 	}
+
+	R_ASSERT2( (-1 != iActiveSection), "CUIBag::PutItemToGroup - invalid section");
+
+	m_groups[iActiveSection].AttachChild(pDDItem);
+	pDDItem->SetOwner(&m_groups[iActiveSection]);
 }
 
 void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName)
@@ -572,68 +888,3 @@ void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectio
 	}
 }
 
-//void WpnDrawIndex(CUIDragDropItem *pDDItem)
-//{
-//	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
-//	R_ASSERT(pDDItemMP);
-//	if (!pDDItemMP) return;
-//
-//	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
-//	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
-//
-//	pDDItemMP->GetFont()->SetColor(0xffffffff);
-//	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
-//		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
-//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
-//
-//	pDDItemMP->GetFont()->OnRender();
-//}
-
-bool CUIBag::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
-{
-	// Так как только 1 саббег в данный момент приаттачен к UIBagWnd, а pList может быть 
-	// и не этим приаттаченым листом, то адрес UIBagWnd мы сохранили в MessageTarget
-	CUIBag* pBag = smart_cast<CUIBag*>(pList->GetMessageTarget());
-	R_ASSERT2(pBag, "wrong parent addressed");
-
-	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pItem);
-
-	// У нас не может быть обычная вещь в этом диалоге.
-	R_ASSERT(pDDItemMP);
-	
-	// Удаляем аддоны, только в случае того, чтo вещь не имеет реального прототипа
-	pDDItemMP->AttachDetachAllAddons(false);
-
-	// Перемещаем вещь!!!!!!!!!!!!!!!!!!!
-	//static_cast<CUIDragDropList*>(pDDItemMP->GetParent())->
-	//	DetachChild(pDDItemMP);
-	//pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
-
-	// Применяем скейл
-	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScaleX(), pDDItemMP->GetOwner()->GetItemsScaleY());
-
-	// Если сняли костюм, то изменить цвет на белый иконки с изображением персонажа
-	//if (OUTFIT_SLOT == pDDItemMP->GetSlot())
-	//	this_inventory->UIOutfitIcon.SetColor(cAbleToBuy);
-
-	// И прибавляем к деньгам стоимость вещи.
-	//if (pDDItemMP->m_bAlreadyPaid)
-	//{
-	//	this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() +
-	//		static_cast<int>(pDDItemMP->GetCost() * (pDDItemMP->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
-
-	//	// Если у вещи есть аддоны, то прибавляем и также и их половинную стоимость
-	//	pDDItemMP->m_bAlreadyPaid = false;
-	//}
-
-	if (pDDItemMP->GetCost() > pBag->GetMoneyAmount() && !pDDItemMP->m_bHasRealRepresentation)
-		pDDItemMP->EnableDragDrop(false);
-
-	// Если это армор, то убедимся, что он стал видимым
-	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
-	{
-		pDDItemMP->Show(true);
-	}
-
-	return false;
-}

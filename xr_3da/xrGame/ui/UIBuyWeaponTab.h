@@ -26,4 +26,5 @@ private:
 
 	bool				m_bActiveState;
 	CUIStatic			m_staticBackground;
+	int					m_iStubIndex;
 };

@@ -13,7 +13,7 @@
 #include "UIDragDropList.h"
 #include "UIDragDropItemMP.h"
 
-#include <boost/array.hpp>
+#include "UIBuyWeaponStd.h"
 
 enum Groups {
 	GROUP_2,
@@ -25,7 +25,8 @@ enum Groups {
 	GROUP_32,
 	GROUP_33,
 	GROUP_34,
-	GROUP_DEFAULT
+	GROUP_DEFAULT,
+	NUMBER_OF_GROUPS
 };
 
 enum MENU_LEVELS { 
@@ -42,31 +43,48 @@ struct BoxInfo
 	CUIDragDropItemMP*	pDDItem;
 };
 
-// custom draw function for DragDropItem
-//void WpnDrawIndex(CUIDragDropItem *pDDItem);
-
 class CUIBag : public CUIStatic {	
 public:
-	CUIBag();
+	CUIBag(CHECK_PROC proc);
 	virtual ~CUIBag();
 
 	virtual void Init(CUIXml& pXml, const char* path, LPCSTR strSectionName, LPCSTR strPricesSection);
 	virtual void Init(int x, int y, int width, int height);
-	virtual	void Update();
-	virtual void UpdateMoney(int iMoney);
+//	virtual	void Update();
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+			void UpdateMoney(int iMoney);
+			void UpdateBuyPossibility();
 	virtual void Draw();
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
+
+			void BuyReaction();
+			//void ReturnAllChildren();
 			void HideAll();
-			void ShowSection(int iSection);
+			void ShowSection(int iSection);			
+			bool IsItemInBag(CUIDragDropItemMP* pDDItem);
+//			void PutItem(CUIDragDropItemMP* pDDItem);
+			void ClearRealRepresentationFlags();
+			void GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
+			u8 GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum);
+
+CUIDragDropItemMP*	GetCurrentItem(){return m_pCurrentDDItem;}
+CUIDragDropItemMP*	GetItemBySectoin(const char *sectionName);
+CUIDragDropItemMP*	GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot);
+CUIDragDropItemMP*	GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
+CUIDragDropItemMP*	IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);
+CUIDragDropItemMP*	CreateCopy(CUIDragDropItemMP *pDDItem);
+			void	DeleteCopy(CUIDragDropItemMP *pDDItem);
+			bool IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const;
 			
 	MENU_LEVELS  GetMenuLevel();
 protected:
 			bool SetMenuLevel(MENU_LEVELS level);
+			void ShowSectionEx(int iSection);
 			void EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable = true);			
 			void OnItemSelect();
 			void OnBoxDbClick(CUIDragDropItemMP* pDDItem);
-			void OnItemDbClick(CUIDragDropItemMP* pDDItem);
-			void OnItemDrag(CUIDragDropItemMP* pItem);
+			void OnItemClick(CUIDragDropItemMP* pDDItem);
+			void OnItemDrop(CUIDragDropItemMP* pItem);
     		int  GetMoneyAmount();
 
 	// INIT Functions
@@ -76,28 +94,28 @@ protected:
 			void InitWpnSectStorage();
 			void FillUpGroups();
 			void FillUpGroup(const u32 group);
-	static	bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-//			void ClearWpnSubBags();					// удал€ем все из секций
-//			void ClearWpnSubBag(const u32 slotNum); // удал€ем все из заданной секции
+			void FillUpItem(CUIDragDropItemMP* pDDItem, int iGroup, int j);
+			void FillUpInfiniteItemsList();
+			bool IsItemInfinite(CUIDragDropItemMP* pDDItem);
+CUIDragDropList* GetCurrentGroup();
+			int  GetCurrentGroupIndex();
 
-	shared_str			m_StrSectionName;
-	shared_str			m_StrPricesSection;
-	int					m_iMoneyAmount;
-	Irect				m_rectWorkSpace;
-	MENU_LEVELS			m_mlCurrLevel;
-	CUIDragDropItemMP*	m_pCurrentDDItem;
+	shared_str					m_StrSectionName;
+	shared_str					m_StrPricesSection;
+	int							m_iMoneyAmount;
+	Irect						m_rectWorkSpace;
+	MENU_LEVELS					m_mlCurrLevel;
+	CUIDragDropItemMP*			m_pCurrentDDItem;
+	xr_list<shared_str>			m_vInfiniteItemsList;
+	xr_list<CUIDragDropItemMP*>	m_vCopyList;
 
-	typedef boost::array<BoxInfo, 4> Boxes;
-	Boxes m_boxesDefs;
+	BoxInfo m_boxesDefs[4];
 
 	DEF_VECTOR(WPN_SECT_NAMES, xr_string); // vector of weapons. it represents ONE section 
 	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES); // vector of sections
 	WPN_LISTS	m_wpnSectStorage;
 
-	// bad code
-	// we update all items
-	// though we can update only visible
-	// maybe i'll fix it someday :)
+    // pointers to ALL items. 
 	xr_list<CUIDragDropItemMP*> m_allItems;
 
 	// “аблица соответсви€ имени армора с именами моделей персонажей. «аполн€етс€ на этапе считывани€ 
