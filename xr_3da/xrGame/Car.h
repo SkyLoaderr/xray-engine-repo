@@ -1,12 +1,11 @@
 #pragma once
-#include "gameobject.h"
+#include "entity.h"
 
 class CCar :				public CEntity
 {
 private:
 	CCameraBase*			camera;
 
-	void					cam_Set				(EActorCameras style);
 	void					cam_Update			(float dt, BOOL bZoom);
 
 	bool					HUDview				( ) { return IsFocused()&&(cam_active==eacFirstEye); }

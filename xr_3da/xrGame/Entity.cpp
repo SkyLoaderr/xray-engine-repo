@@ -74,20 +74,18 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	
 	// *** process hit calculations
 	// Calc impulse
-	Fvector vLocalDir;
-	float m = dir.magnitude();
-	R_ASSERT(m>EPS);
-	
-	float amount			=	2*float(perc)/Movement.GetMass();
-	dir.y					+=	0.1f;
-	Fvector I; I.mad		(Movement.vExternalImpulse,dir,amount/m);
-	Movement.vExternalImpulse.add(I);
+	Fvector					vLocalDir;
+	float					m = dir.magnitude();
+	R_ASSERT				(m>EPS);
 	
 	// convert impulse into local coordinate system
 	Fmatrix mInvXForm;
 	mInvXForm.invert		(svTransform);
 	mInvXForm.transform_dir	(vLocalDir,dir);
 	vLocalDir.invert		();
+
+	// hit impulse
+	HitImpulse				(dir,vLocalDir,perc);
 	
 	// Calc HitAmount
 	int iHitAmount, iOldHealth=iHealth;
@@ -184,7 +182,7 @@ void CEntity::Update	(DWORD dt)
 
 void CEntityAlive::Load	(CInifile* ini, LPCSTR section)
 {
-	inherited::Load		(init,section);
+	inherited::Load			(ini,section);
 
 	// Movement: General
 	Movement.SetParent		(this);
@@ -226,12 +224,18 @@ void CEntityAlive::Load	(CInifile* ini, LPCSTR section)
 	Movement.ActivateBox	(0);
 }
 
-BOOL CEntityAlive::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CEntityAlive::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
 	Movement.SetVelocity(0,0,0);
 	return				TRUE;
+}
+void CEntityAlive::HitImpulse	(Fvector& vWorldDir, Fvector& vLocalDir, float amount)
+{
+	float amount					=	2*float(amount)/Movement.GetMass();
+	dir.y							+=	0.1f;
+	Movement.vExternalImpulse.mad	(vWorldDir,amount/m);
 }
 
 CEntityAlive::CEntityAlive()

@@ -114,7 +114,8 @@ public:
 
 	// Health calculations
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
-	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who) = 0;
+	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who)		= 0;
+	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount)	= 0;
 	virtual void			Die					()	= 0;
 
 	// Fire control
@@ -132,7 +133,7 @@ class CEntityAlive			: public CEntity
 {
 private:
 	typedef	CEntity			inherited;			
-protected:
+public:
 	// movement
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
@@ -144,6 +145,7 @@ public:
 	// Core events
 	virtual void			Load				(CInifile* ini, LPCSTR section);
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 
 	// Visibility related
 	virtual void			GetVisible			(objVisible& R)	= 0;
