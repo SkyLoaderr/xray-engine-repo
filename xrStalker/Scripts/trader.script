@@ -58,7 +58,7 @@ function main()
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 and then 
+		if is_actor_entered and actor.health > 0 then 
 			printf("entered")
 			flush()
 			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
