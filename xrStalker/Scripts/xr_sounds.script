@@ -251,17 +251,20 @@ function load_common (obj, sounds_base)
               }
               }
 
-    themes["commander_agroprom"] =
-              {
-              {
-              sounds_base,
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, id ()),
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, id ()),
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, id ()),
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, id ()),
-              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, id ())
-              }
-              }
+	themes["commander_agroprom"] =
+    		{
+			{
+			sounds_base,
+			obj:add_sound ("script_replics\\military\\replics\\military_phrase_12",  1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\military_phrase_13",  1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_1", 1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_2", 1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_3", 1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_4", 1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_5", 1, snd_type.talk, 2, 1, id ()),
+			obj:add_sound ("script_replics\\military\\replics\\petrovich_mission_6", 1, snd_type.talk, 2, 1, id ())
+			}
+			}
 
     themes["trivial"] =
     --Звуки используемые в простеньких сюжетных скриптах

@@ -1,4 +1,4 @@
-local timeout = 60000
+local timeout = 10000
 local dist_for_report = 20
 local min_dist_to_report = 1
 
@@ -216,11 +216,21 @@ function action_report_soldier:create_report ()
     while table.getn (self.phrases) ~= 0 do
           table.remove (self.phrases, 1)
     end
-    table.insert (self.phrases, {namespace = report_soldier_start,   phrase = 0,   our = true})
-    table.insert (self.phrases, {namespace = report_commander_start, phrase = 0,   our = false})
-    table.insert (self.phrases, {namespace = report_soldier,         phrase = 0,   our = true})
-    table.insert (self.phrases, {namespace = report_commander,       phrase = 0,   our = false})
-    table.insert (self.phrases, {namespace = report_soldier_end,     phrase = 0,   our = true})
+
+-- ÂĞÅÌÅÍÍÀß ÇÀÒÛ×ÊÀ !!!
+    if self.theme == "commander_agroprom" then
+		table.insert (self.phrases, {our = true})
+		table.insert (self.phrases, {our = true})
+		for i = 1, 6 do
+			table.insert (self.phrases, {our = false})
+		end
+	else
+		table.insert (self.phrases, {namespace = report_soldier_start,   phrase = 0,   our = true})
+		table.insert (self.phrases, {namespace = report_commander_start, phrase = 0,   our = false})
+		table.insert (self.phrases, {namespace = report_soldier,         phrase = 0,   our = true})
+		table.insert (self.phrases, {namespace = report_commander,       phrase = 0,   our = false})
+		table.insert (self.phrases, {namespace = report_soldier_end,     phrase = 0,   our = true})
+	end
 
     self.object:set_sound_mask (2147483647)
     self.object:set_sound_mask (0)
