@@ -13,7 +13,8 @@ class CAI_Crow : public CEntityAlive//GameObject
 //	typedef	CGameObject inherited;
 	typedef	CEntityAlive inherited;
 	enum ECrowStates 	{
-		eDeathFall = 0,
+		eUndef		= -1,
+		eDeathFall	= 0,
 		eDeathDead,
 		eFlyIdle,
 		eFlyUp

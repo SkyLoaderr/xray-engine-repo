@@ -16,13 +16,9 @@
 
 void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 {
-	int max_idx			= MAX_ANIM_COUNT;
 	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
-	if (M){				
-		m_Animations.push_back(M);
-		max_idx--;
-	}
-	for (int i=0; i<max_idx; i++){
+	if (M)				m_Animations.push_back(M);
+	for (int i=0; (i<MAX_ANIM_COUNT)&&(m_Animations.size()<MAX_ANIM_COUNT); i++){
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s_%d",prefix,i);
 		M				= visual->ID_Cycle_Safe(sh_anim);
@@ -33,14 +29,12 @@ void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 
 void CAI_Crow::SSound::Load(LPCSTR prefix)
 {
-	int max_idx			= MAX_SND_COUNT;
 	string128 fn;
 	if (Engine.FS.Exist(fn,Path.Sounds,prefix,".wav")){
 		m_Sounds.push_back(sound());
 		pSounds->Create(m_Sounds.back(),TRUE,prefix,false,0);
-		max_idx--;
 	}
-	for (int i=0; i<1/*max_idx*/; i++){
+	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
 		if (Engine.FS.Exist(fn,Path.Sounds,name,".wav")){
@@ -75,7 +69,7 @@ void CAI_Crow::OnHitEndPlaying(CBlend* B)
 
 CAI_Crow::CAI_Crow()
 {
-	st_current			= eFlyIdle;
+	st_current			= eUndef;
 	st_target			= eFlyIdle;
 	vGoalDir.set		(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
 	vCurrentDir.set		(0,0,1);
@@ -110,7 +104,7 @@ void CAI_Crow::Load( LPCSTR section )
 	// sounds
 	m_Sounds.m_idle.Load		("monsters\\crow\\idle");
 	// play defaut
-	M->PlayCycle				(m_Anims.m_idle.GetRandom());
+//	M->PlayCycle				(m_Anims.m_idle.GetRandom());
 	
 	fSpeed						= pSettings->ReadFLOAT	(section,"speed");
 	fASpeed						= pSettings->ReadFLOAT	(section,"angular_speed");
@@ -195,15 +189,10 @@ void CAI_Crow::Update(DWORD DT)
 		}
 		fGoalChangeTime-=float(DT)/1000.f;
 		// sounds
-		static BOOL bSound=TRUE;
-		if (Level().iGetKeyState(DIK_G)) 
-			bSound=FALSE;
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
-			if (bSound){ 
-				pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
-				Level().HUD()->outMessage(0xffffffff,cName(),"cry");
-			}
+			pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			Level().HUD()->outMessage(0xffffffff,cName(),"cry");
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}
