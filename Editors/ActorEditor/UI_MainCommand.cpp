@@ -57,6 +57,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_EVICT_TEXTURES:
     	Device.Shader.Evict();
     	break;
+	case COMMAND_QUIT:
+    	Quit();
+    	break;
 	case COMMAND_EXIT:
     	bRes = Tools.IfModified();
         break;

@@ -102,6 +102,9 @@ void TUI::Idle()
     ShowObjectHint();
 
 	ResetBreak();
+	// check mail    
+    CheckMailslot	();
+    if (bNeedQuit) 	frmMain->Close();
 }
 //---------------------------------------------------------------------------
 
