@@ -93,6 +93,12 @@ void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Validate1Click(TObject *Sender)
+{
+	ExecCommand( COMMAND_VALIDATE );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
 	ExecCommand( COMMAND_REFRESH_TEXTURES );

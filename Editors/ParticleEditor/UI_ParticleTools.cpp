@@ -329,7 +329,15 @@ bool CParticleTools::Load(LPCSTR path, LPCSTR name)
 bool CParticleTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
 {
 	VERIFY			(m_bReady);
+
+    // validate
+    if (!Validate(false)){
+    	ELog.DlgMsg	(mtError,"Invalid particle's found. Validate library and try again.");
+        return false;
+    }
+
 	m_bModified 	= false;
+    
 	// backup
     EFS.BackupFile	(_game_data_,PSLIB_FILENAME);
 	// save   
@@ -347,6 +355,21 @@ void CParticleTools::Reload()
     // visual part
     m_ItemProps->ClearProperties();
     UpdateProperties(true);
+}
+
+bool CParticleTools::Validate(bool bMsg)
+{
+    if (bMsg)		ELog.Msg	(mtInformation,"Begin validation...");
+    PS::PEDIt _eI 	= ::Render->PSLibrary.FirstPED();
+    PS::PEDIt _eE 	= ::Render->PSLibrary.LastPED();
+    u32 error_cnt	= 0;
+    for (; _eI!=_eE; _eI++)
+    	if (!(*_eI)->Validate(bMsg)) error_cnt++;
+    if (bMsg){
+        if (error_cnt>0)ELog.DlgMsg	(mtError,"Validation FAILED! Found %d error's.",error_cnt);
+        else			ELog.DlgMsg	(mtInformation,"Validation OK.");
+    }
+    return error_cnt==0;
 }
 
 void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR ren_part, int level)

@@ -144,12 +144,15 @@ public:
     void				ResetPreviewObject	();
     void				EditPreviewPrefs	();
 
+    bool 				Validate			(bool bMsg);
+    
     // commands
     void 				CommandSelectPreviewObj	(u32 p1, u32 p2, u32& res);
 	void 				CommandEditPreviewProps	(u32 p1, u32 p2, u32& res);
 	void 				CommandSave				(u32 p1, u32 p2, u32& res);
 	void 				CommandSaveBackup		(u32 p1, u32 p2, u32& res);
 	void 				CommandReload			(u32 p1, u32 p2, u32& res);
+    void 				CommandValidate			(u32 p1, u32 p2, u32& res);
 	void 				CommandClear			(u32 p1, u32 p2, u32& res);
 	void 				CommandPlayCurrent		(u32 p1, u32 p2, u32& res);
 	void 				CommandStopCurrent		(u32 p1, u32 p2, u32& res);

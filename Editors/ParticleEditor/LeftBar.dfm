@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 537
+  Height = 686
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 537
+    Height = 686
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 333
+      Top = 482
       Width = 298
       Height = 3
       Cursor = crVSplit
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 84
       Width = 298
-      Height = 249
+      Height = 398
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -225,7 +225,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 234
+        Height = 383
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -359,7 +359,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 198
+          Height = 347
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -369,7 +369,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 336
+      Top = 485
       Width = 298
       Height = 200
       Align = alBottom
@@ -470,6 +470,13 @@ object fraLeftBar: TfraLeftBar
       OnClick = ebReloadClick
     end
     object N2: TMenuItem
+      Caption = '-'
+    end
+    object Validate1: TMenuItem
+      Caption = 'Validate'
+      OnClick = Validate1Click
+    end
+    object N8: TMenuItem
       Caption = '-'
     end
     object Import1: TMenuItem

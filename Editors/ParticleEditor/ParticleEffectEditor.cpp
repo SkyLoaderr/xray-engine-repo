@@ -283,5 +283,14 @@ void PS::CPEDef::Compile()
     m_Actions.seek	(0);
     m_Actions.w_u32 (cnt);
 }
+bool PS::CPEDef::Validate(bool bMsg)
+{
+    bool have_kill_old  = false;
+    for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
+    	if ((*it)->type==PAPI::PAKillOldID){ have_kill_old=true; break; }
+    if (bMsg&&(false==have_kill_old))
+    	Msg			("!.'%s': dosn't contains 'Kill Old' action. Owner - Modif: '%s' - '%s'",*m_Name,*m_OwnerName,*m_ModifName);
+    return have_kill_old;
+}
 #endif
 

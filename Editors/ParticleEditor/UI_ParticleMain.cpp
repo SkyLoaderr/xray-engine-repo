@@ -53,6 +53,10 @@ void CParticleTools::CommandReload(u32 p1, u32 p2, u32& res)
     Reload();
     ExecCommand(COMMAND_UPDATE_CAPTION);
 }
+void CParticleTools::CommandValidate(u32 p1, u32 p2, u32& res)
+{
+	Validate(true);
+}
 void CParticleTools::CommandClear(u32 p1, u32 p2, u32& res)
 {
     Device.m_Camera.Reset();
@@ -103,6 +107,7 @@ void CParticleMain::RegisterCommands()
 	REGISTER_CMD_C	(COMMAND_SAVE,            	PTools,CParticleTools::CommandSave);
 	REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,       PTools,CParticleTools::CommandSaveBackup);
 	REGISTER_CMD_C	(COMMAND_RELOAD,            PTools,CParticleTools::CommandReload);
+	REGISTER_CMD_C	(COMMAND_VALIDATE,          PTools,CParticleTools::CommandValidate);
 	REGISTER_CMD_C	(COMMAND_CLEAR,             PTools,CParticleTools::CommandClear);
 	REGISTER_CMD_C	(COMMAND_PLAY_CURRENT,      PTools,CParticleTools::CommandPlayCurrent);
 	REGISTER_CMD_C	(COMMAND_STOP_CURRENT,      PTools,CParticleTools::CommandStopCurrent);

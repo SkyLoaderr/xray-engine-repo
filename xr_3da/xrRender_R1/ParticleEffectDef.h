@@ -112,8 +112,8 @@ namespace PS
 #ifdef _EDITOR         
 // change Copy&Equal if variables changed
 	public:
-        shared_str				m_OwnerName;
-        shared_str				m_ModifName;
+        shared_str			m_OwnerName;
+        shared_str			m_ModifName;
         time_t				m_CreateTime;
         time_t				m_ModifTime;
         
@@ -141,6 +141,7 @@ namespace PS
 		void 				Compile				();
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
 		void __stdcall  	FillActionList		(ChooseItemVec& items, void* param);
+        bool 				Validate 			(bool bMsg);
 #endif
 	};
 };
