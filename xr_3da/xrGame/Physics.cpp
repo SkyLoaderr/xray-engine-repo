@@ -1246,7 +1246,12 @@ if(!bActive)
 	(*j)->Deactivate();
 
 ph_world->RemoveObject(m_ident);
+if(m_space) {
+dSpaceDestroy(m_space);
+m_space=NULL;
+}
 bActive=false;
+bActivating=false;
 }
 
 void CPHShell::PhDataUpdate(dReal step){
