@@ -87,6 +87,7 @@ void CHUDManager::Load()
 {
 	_DELETE			(pUI);
 	pUI				= new CUI(this);
+	pUI->Load		();
 }
 //--------------------------------------------------------------------
 void CHUDManager::OnFrame()

@@ -26,6 +26,14 @@ class CUIBuyMenu{
 		{
 			items.push_back(I);
 		}
+		void			OnItemDraw(CFontBase* F, int num)
+		{
+			if (items.empty()){
+				F->OutNext	("%-2d: %-32s %6d$",num,caption,tag);
+			}else{
+				F->OutNext	("%-2d: %-32s >",num,caption);
+			}
+		}
 	};
 	CMenuItem*			menu_root;	
 	CMenuItem*			menu_active;

@@ -8,46 +8,44 @@ CUIBuyMenu::CUIBuyMenu()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	menu_offs			= HUD->ClientToScreenScaledY(BUY_MENU_OFFS,alLeft|alTop)/HUD->pHUDFont->GetScale();
+	menu_root			= 0;
+	menu_active			= 0;
 }
 //--------------------------------------------------------------------
 
 CUIBuyMenu::~CUIBuyMenu()
 {
+	_DELETE(menu_root);
 }
 //--------------------------------------------------------------------
 
 void CUIBuyMenu::Load()
 {
-/*
-    menu_items.push_back(CMenuItem("Pistols"));
-	CMenuItem& M = menu_items.back();
-	M.AppendItem(CValueItem("PM",	200));
-	M.AppendItem(CValueItem("FORT",	350));
-	menu_items.push_back(CMenuItem("Automats"));
-	M = menu_items.back();
-	M.AppendItem(CValueItem("AK-74",	1000));
-	M.AppendItem(CValueItem("LR-300",	1500));
-	M.AppendItem(CValueItem("FN-2000",	2500));
-*/
+	menu_root = new CMenuItem("root",0);
+	CMenuItem* I=0;
+	I = new CMenuItem("Pistols",0);
+	I->AppendItem(new CMenuItem("PM",200));
+	I->AppendItem(new CMenuItem("FORT",350));
+	menu_root->AppendItem(I);
+	I = new CMenuItem("Automats",0);
+	I->AppendItem(new CMenuItem("AK-74",1000));
+	I->AppendItem(new CMenuItem("LR-300",1500));
+	I->AppendItem(new CMenuItem("FN-200",2500));
+	menu_root->AppendItem(I);
+	menu_active = menu_root;
 }
 //--------------------------------------------------------------------
 
 void CUIBuyMenu::OnFrame()
 {
-/*
 	if (menu_active){
 		CFontHUD* F		= (CFontHUD*)Level().HUD()->pHUDFont;
 		F->OutSet		(0,menu_offs);
 		F->Color		(0xFFFFFFFF);
 		int k=0;
-		for (MIIt it=menu_active->menu_items.begin(); it!=menu_active->menu_items.end(); it++,k++){
-			F->OutNext	("%-2d: %-32s",k,it->caption);
-		}
+		for (MIIt it=menu_active->items.begin(); it!=menu_active->items.end(); it++,k++)
+			(*it)->OnItemDraw(F,k);
 	}
-	F->OutNext			("1: FN 2000");
-	F->OutNext			("2: LR 300");
-	F->OutNext			("3: PM");
-*/
 }
 //--------------------------------------------------------------------
 
