@@ -16,7 +16,7 @@
 #define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 #define MAX_TIME_RANGE_SEARCH			150000.f
 #define	FIRE_ANGLE						PI/10
-#define DISTANCE_TO_STEP				1.f
+#define DISTANCE_TO_STEP				.85f
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
