@@ -6,7 +6,11 @@
 
 void CShaderManager::xrStartUp()
 {
+#ifdef M_BORLAND
+	CCompressedStream		FS("game\\shaders.xr","shENGINE");
+#else
 	CCompressedStream		FS("shaders.xr","shENGINE");
+#endif
 
 	// Load blenders
 	{
