@@ -22,7 +22,6 @@
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define TORSO_START_SPEED				PI_DIV_4
-#define DISTANCE_NEAR					0.f
 #define DISTANCE_TO_REACT				2.14f
 
 /**
@@ -1397,13 +1396,17 @@ void CAI_Soldier::OnSenseSomethingAlone()
 					GO_TO_NEW_STATE(aiSoldierPatrolHurt);
 				}
 				else {
-					m_bStateChanged = false;
-					GO_TO_PREV_STATE;
+					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+					GO_TO_NEW_STATE(aiSoldierPatrolDanger);
 				}
 			}
 			else {
-				m_bStateChanged = false;
-				GO_TO_PREV_STATE;
+				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+				GO_TO_NEW_STATE(aiSoldierPatrolDanger);
+//				m_bStateChanged = false;
+//				GO_TO_PREV_STATE;
 //				Fvector tCurrentPosition = vPosition;
 //				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
 //				if (tWatchDirection.magnitude() > EPS_L) {
@@ -1465,32 +1468,23 @@ void CAI_Soldier::OnPatrolHurt()
 	float fDistance = tWatchDirection.magnitude();
 	mk_rotation(tWatchDirection,r_torso_target);
 		
-	if (fDistance < DISTANCE_NEAR) {
-		r_torso_speed = TORSO_START_SPEED;
-		vfSetMovementType(BODY_STATE_CROUCH,0);
+	r_torso_speed = 1*PI_DIV_2;
+	if (m_cBodyState != BODY_STATE_LIE) {
+		Lie();
+		if (m_cBodyState == BODY_STATE_STAND)
+			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
+		else
+			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
 	}
-	else {
-		r_torso_speed = 1*PI_DIV_2;
-		if (m_cBodyState != BODY_STATE_LIE) {
-			Lie();
-			if (m_cBodyState == BODY_STATE_STAND)
-				m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
-			else
-				m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
-			SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
-		}
-		r_torso_speed = TORSO_START_SPEED;
-		r_torso_target.yaw = r_torso_current.yaw;
-	}
+	r_torso_speed = TORSO_START_SPEED;
+	r_torso_target.yaw = r_torso_current.yaw;
 
 	SelectEnemy(Enemy);
 
 	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
 		return;
                
-	if (fDistance < DISTANCE_NEAR)
-		CHECK_IF_SWITCH_TO_NEW_STATE(!m_bStateChanged,aiSoldierAttackAim);
-
 	CHECK_IF_GO_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
 
 	//dwHitTime = 0;
@@ -1525,6 +1519,117 @@ void CAI_Soldier::OnHurtAloneDefend()
 	tSavedEnemyPosition = tHitPosition;
 	
 	vfSetFire(false,Group);
+
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				
+			if (AI_Path.fSpeed > EPS_L)
+				SetDirectionLook();
+			else
+				vfAimAtEnemy();
+
+			if (dwCurTime - dwHitTime > 25000)
+				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			else
+				vfSetMovementType(m_cBodyState,m_fMinSpeed);
+
+			if (dwCurTime - dwHitTime > 45000) {
+				GO_TO_PREV_STATE;
+			}
+
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+			SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+				
+			vfAimAtEnemy();
+			
+			if (dwCurTime - dwHitTime > 25000)
+				vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+			else
+				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+			
+			break;
+		}
+		case BODY_STATE_LIE : {
+			vfAimAtEnemy();
+			
+			if (dwCurTime - dwHitTime > 7500) {
+				vfInitSelector(SelectorUnderFireCover,Squad,Leader);
+
+				SelectorUnderFireCover.m_tEnemyPosition = tHitPosition;
+				SelectorUnderFireCover.fOptEnemyDistance = vPosition.distance_to(tHitPosition) + 10.f;
+
+				if (AI_Path.bNeedRebuild)
+					vfBuildPathToDestinationPoint(0);
+				else
+					vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
+					
+				if ((dwCurTime - dwHitTime > 12000) && (m_cBodyState != BODY_STATE_STAND)) {
+					StandUp();
+					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
+					vfSetMovementType(m_cBodyState,0);
+					SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+				}
+			}
+			else {
+				vfInitSelector(SelectorUnderFireLine,Squad,Leader);
+
+				SelectorUnderFireLine.m_tEnemyPosition = tHitPosition;
+				SelectorUnderFireLine.fOptEnemyDistance = vPosition.distance_to(tHitPosition) + 10.f;
+
+				if (AI_Path.bNeedRebuild)
+					vfBuildPathToDestinationPoint(0);
+				else
+					vfSearchForBetterPositionWTime(SelectorUnderFireLine,Squad,Leader);
+			}
+			
+			vfSetMovementType(m_cBodyState,m_fMinSpeed);
+			break;
+		}
+	}
+}
+
+void CAI_Soldier::OnDangerAlone()
+{
+	WRITE_TO_LOG("Hurt alone defend");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
+
+	DWORD dwCurTime = Level().timeServer();
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (dwHitTime > m_dwLastRangeSearch),aiSoldierPatrolHurt)
+
+	INIT_SQUAD_AND_LEADER
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	m_dwLastRangeSearch = dwCurTime;
+	
+	tSavedEnemyPosition = tHitPosition;
+	
+	vfSetFire(false,Group);
+
+	vfSetMovementType(m_cBodyState,m_fMinSpeed);
 
 	switch (m_cBodyState) {
 		case BODY_STATE_STAND : {
@@ -1691,6 +1796,14 @@ void CAI_Soldier::Think()
 				Die();
 				break;
 			}
+			case aiSoldierWaitForAnimation : {
+				OnWaitingForAnimation();
+				break;
+			}
+			case aiSoldierWaitForTime : {
+				OnWaitingForTime();
+				break;
+			}
 			case aiSoldierPatrolRoute : {
 				OnPatrol();
 				break;
@@ -1751,12 +1864,8 @@ void CAI_Soldier::Think()
 				OnHurtAloneDefend();
 				break;
 			}
-			case aiSoldierWaitForAnimation : {
-				OnWaitingForAnimation();
-				break;
-			}
-			case aiSoldierWaitForTime : {
-				OnWaitingForTime();
+			case aiSoldierPatrolDanger : {
+				OnDangerAlone();
 				break;
 			}
 			/**/

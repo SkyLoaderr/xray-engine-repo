@@ -57,6 +57,8 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRecharge,
 		aiSoldierNoWeapon,
 		aiSoldierSteal,
+		aiSoldierWaitForAnimation,
+		aiSoldierWaitForTime,
 		//aiSoldierStandingUp,
 		//aiSoldierLyingDown,
 		aiSoldierAttackAim,
@@ -64,8 +66,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierPatrolHurt,
 		aiSoldierDefendFireAlone,
 		aiSoldierHurtAloneDefend,
-		aiSoldierWaitForAnimation,
-		aiSoldierWaitForTime,
+		aiSoldierPatrolDanger,
 	};
 	
 	enum EGestureStates {
@@ -356,8 +357,10 @@ class CAI_Soldier : public CCustomMonster
 		void OnUnderFire();
 		void OnJumping();
 		/**/
-		void Test();
+		//void Test();
 		void Die();
+		void OnWaitingForAnimation();
+		void OnWaitingForTime();
 		void OnPatrol();
 		void OnPatrolReturn();
 		void OnFollowLeaderPatrol();
@@ -373,10 +376,9 @@ class CAI_Soldier : public CCustomMonster
 		void OnAttackAim();
 		void OnPointAtSmth();
 		void OnPatrolHurt();
+		void OnDangerAlone();
 		void OnDefendFireAlone();
 		void OnHurtAloneDefend();
-		void OnWaitingForAnimation();
-		void OnWaitingForTime();
 
 		// miscellanious funtions	
 		SRotation tfGetOrientation(CEntity *tpEntity);
