@@ -22,7 +22,7 @@ CUIBag::CUIBag(CHECK_PROC proc){
 
 	m_mlCurrLevel	= mlRoot;
 	m_pCurrentDDItem = NULL;
-	this->m_iMoneyAmount = 10000;
+	m_iMoneyAmount = 10000;
 
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 	{
@@ -31,8 +31,8 @@ CUIBag::CUIBag(CHECK_PROC proc){
 		m_groups[i].SetItemsScaleXY(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
 	}
 
+	AttachChild(&m_btnBack);
 
-	// Заполняем массив информации о ящиках
 	m_boxesDefs[0].xmlTag		= "btn_bag_shotgun";
 	m_boxesDefs[0].filterString	= "shotgun";
 	m_boxesDefs[0].gridHeight		= 2;
@@ -116,11 +116,13 @@ bool CUIBag::SetMenuLevel(MENU_LEVELS level){
 	if (level < mlRoot || level > mlWpnSubType) 
 		return false;
 
+	m_btnBack.Enable(mlRoot != level);
+
 	// check we really change state
 	if (m_mlCurrLevel == level)
 		return false;
 
-	m_mlCurrLevel = level;
+	m_mlCurrLevel = level;	
 
 	GetMessageTarget()->SendMessage(this, XR_MENU_LEVEL_CHANGED, NULL);
 
@@ -140,11 +142,14 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		CUIXmlInit::InitDragDropList(xml, "dragdrop_list_bag", 0, &m_groups[i]);
 
+	CUIXmlInit::Init3tButton(xml, "bag_back_btn", 0, &m_btnBack);
+
 	InitBoxes(xml);
 	InitWpnSectStorage();
 	FillUpInfiniteItemsList();
 	FillUpGroups();
 	HideAll();
+	SetMenuLevel(mlRoot);
 }
 
 bool CUIBag::IsItemInfinite(CUIDragDropItemMP* pDDItem){
@@ -200,12 +205,6 @@ CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
 				return pDDItem;
 		}
 	}
-	//xr_list<CUIDragDropItemMP*>::iterator it;
-
-	//for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
-	//	if (0 == xr_strcmp((*it)->GetSectionName(), sectionName))
-	//		return *it;
-
 	return NULL;
 }
 
@@ -222,12 +221,6 @@ CUIDragDropItemMP* CUIBag::GetItemBySectoin(const u8 grpNum, u8 uIndexInSlot){
 		}
 	}
 
-	/*xr_list<CUIDragDropItemMP*>::iterator it;
-
-	for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
-        if (grpNum == (*it)->GetSectionGroupID() && uIndexInSlot == (*it)->GetPosInSectionsGroup())
-			return *it;
-	*/
 	return NULL;
 }
 
@@ -279,11 +272,6 @@ CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDrag
 	return NULL;
 }
 
-//void CUIBag::OnItemClick(CUIDragDropItemMP* pDDItem){
-//	if (IsItemInBag(pDDItem))
-//        m_pCurrentDDItem = pDDItem;
-//}
-
 bool CUIBag::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
 {
 	R_ASSERT(pPossibleAddon);
@@ -317,6 +305,11 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		OnItemDrop(pDDItem);
 		return;
 
+	case BUTTON_CLICKED:
+		if (&m_btnBack == pWnd)
+			OnBackClick();
+		break;
+
 	//case DRAG_DROP_ITEM_DB_CLICK:
 	//		OnItemClick(pDDItem);
 	//	break;
@@ -328,6 +321,29 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	//	OnItemClick(pDDItem); break;
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
+}
+
+void CUIBag::OnBackClick(){
+	int iGroup;
+
+	switch (GetMenuLevel())
+	{
+	case mlRoot:
+		R_ASSERT2(false,"error: CUIBag on level <mlRoot> can't handle OnBackClick");
+		break;
+	case mlBoxes:
+		ShowSectionEx(-1);
+		break;
+	case mlWpnSubType:		
+		iGroup = GetCurrentGroupIndex();
+		if (iGroup >= GROUP_31 && iGroup <= GROUP_34 )
+			ShowSectionEx(GROUP_BOXES);
+		else
+			ShowSectionEx(-1);
+		break;
+	default:
+		NODEFAULT;
+	}
 }
 
 void CUIBag::UpdateMoney(int iMoney){
@@ -359,6 +375,12 @@ void CUIBag::InitBoxes(CUIXml& xml){
 
 bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 	int iGroup;
+
+	if (DIK_ESCAPE == dik)
+	{
+		m_btnBack.OnClick();
+		return true;
+	}
 
 	switch (GetMenuLevel())
 	{
