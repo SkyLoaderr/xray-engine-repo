@@ -3,7 +3,7 @@
 -- Created:     28.10.2004
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
--- Version:     0.1
+-- Version:     0.7
 
 
 function main()
