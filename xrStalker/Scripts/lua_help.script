@@ -1,4 +1,5 @@
 List of the classes exported to LUA
+
 C++ class entity_memory_object : memory_object {
     property first_game_time;
     property first_level_time;
@@ -9,7 +10,7 @@ C++ class entity_memory_object : memory_object {
     property object_info;
     property self_info;
     property update_count;
-   
+    
     function object(const entity_memory_object&);
 };
 
@@ -251,68 +252,69 @@ C++ class game_player_flags {
 };
 
 C++ class key_bindings {
-    const kACCEL = 11;
+    const kACCEL = 12;
     const kBACK = 2;
-    const kBINOCULARS = 19;
-    const kBUY = 46;
-    const kCAM_1 = 13;
-    const kCAM_2 = 14;
-    const kCAM_3 = 15;
-    const kCAM_4 = 16;
-    const kCAM_ZOOM_IN = 17;
-    const kCAM_ZOOM_OUT = 18;
-    const kCHAT = 40;
-    const kCONSOLE = 43;
+    const kBINOCULARS = 20;
+    const kBUY = 49;
+    const kCAM_1 = 14;
+    const kCAM_2 = 15;
+    const kCAM_3 = 16;
+    const kCAM_4 = 17;
+    const kCAM_ZOOM_IN = 18;
+    const kCAM_ZOOM_OUT = 19;
+    const kCHAT = 42;
+    const kCONSOLE = 46;
     const kCROUCH = 10;
     const kDOWN = 8;
-    const kDROP = 38;
-    const kEXT_1 = 53;
-    const kEXT_10 = 62;
-    const kEXT_11 = 63;
-    const kEXT_12 = 64;
-    const kEXT_13 = 65;
-    const kEXT_14 = 66;
-    const kEXT_15 = 67;
-    const kEXT_2 = 54;
-    const kEXT_3 = 55;
-    const kEXT_4 = 56;
-    const kEXT_5 = 57;
-    const kEXT_6 = 58;
-    const kEXT_7 = 59;
-    const kEXT_8 = 60;
-    const kEXT_9 = 61;
+    const kDROP = 40;
+    const kEXT_1 = 56;
+    const kEXT_10 = 65;
+    const kEXT_11 = 66;
+    const kEXT_12 = 67;
+    const kEXT_13 = 68;
+    const kEXT_14 = 69;
+    const kEXT_15 = 70;
+    const kEXT_2 = 57;
+    const kEXT_3 = 58;
+    const kEXT_4 = 59;
+    const kEXT_5 = 60;
+    const kEXT_6 = 61;
+    const kEXT_7 = 62;
+    const kEXT_8 = 63;
+    const kEXT_9 = 64;
     const kFWD = 1;
-    const kINVENTORY = 45;
+    const kINVENTORY = 48;
     const kJUMP = 9;
     const kLEFT = 5;
     const kL_STRAFE = 3;
-    const kQUIT = 42;
-    const kREPAIR = 12;
+    const kNIGHT_VISION = 22;
+    const kQUIT = 45;
+    const kREPAIR = 13;
     const kRIGHT = 6;
     const kR_STRAFE = 4;
-    const kSCORES = 39;
-    const kSCREENSHOT = 41;
-    const kSKIN = 47;
-    const kTEAM = 48;
-    const kTORCH = 20;
+    const kSCORES = 41;
+    const kSCREENSHOT = 44;
+    const kSKIN = 50;
+    const kTEAM = 51;
+    const kTORCH = 21;
     const kUP = 7;
-    const kUSE = 37;
-    const kWPN_1 = 21;
-    const kWPN_2 = 22;
-    const kWPN_3 = 23;
-    const kWPN_4 = 24;
-    const kWPN_5 = 25;
-    const kWPN_6 = 26;
-    const kWPN_7 = 27;
-    const kWPN_8 = 28;
-    const kWPN_9 = 29;
-    const kWPN_AMMO = 35;
-    const kWPN_FIRE = 32;
-    const kWPN_FUNC = 36;
-    const kWPN_NEXT = 30;
-    const kWPN_PREV = 31;
-    const kWPN_RELOAD = 33;
-    const kWPN_ZOOM = 34;
+    const kUSE = 39;
+    const kWPN_1 = 23;
+    const kWPN_2 = 24;
+    const kWPN_3 = 25;
+    const kWPN_4 = 26;
+    const kWPN_5 = 27;
+    const kWPN_6 = 28;
+    const kWPN_7 = 29;
+    const kWPN_8 = 30;
+    const kWPN_9 = 31;
+    const kWPN_AMMO = 37;
+    const kWPN_FIRE = 34;
+    const kWPN_FUNC = 38;
+    const kWPN_NEXT = 32;
+    const kWPN_PREV = 33;
+    const kWPN_RELOAD = 35;
+    const kWPN_ZOOM = 36;
     
 };
 
@@ -367,8 +369,8 @@ C++ class snd_type {
 };
 
 C++ class ui_events {
-    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 48;
-    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 49;
+    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 54;
+    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 55;
     const BUTTON_CLICKED = 12;
     const BUTTON_DOWN = 13;
     const CHECK_BUTTON_RESET = 16;
@@ -380,44 +382,44 @@ C++ class ui_events {
     const DRAG_DROP_ITEM_RBUTTON_CLICK = 22;
     const DRAG_DROP_REFRESH_ACTIVE_ITEM = 23;
     const INTERACTIVE_ITEM_CLICK = 29;
-    const INVENTORY_ARTEFACT_MERGER_ACTIVATE = 55;
-    const INVENTORY_ARTEFACT_MERGER_DEACTIVATE = 56;
-    const INVENTORY_ATTACH_ADDON  = 57;
-    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 60;
-    const INVENTORY_DETACH_SCOPE_ADDON = 58;
-    const INVENTORY_DETACH_SILENCER_ADDON = 59;
-    const INVENTORY_DROP_ACTION = 50;
-    const INVENTORY_EAT_ACTION = 51;
-    const INVENTORY_TO_BAG_ACTION = 54;
-    const INVENTORY_TO_BELT_ACTION  = 52;
-    const INVENTORY_TO_SLOT_ACTION = 53;
+    const INVENTORY_ARTEFACT_MERGER_ACTIVATE = 61;
+    const INVENTORY_ARTEFACT_MERGER_DEACTIVATE = 62;
+    const INVENTORY_ATTACH_ADDON  = 63;
+    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 66;
+    const INVENTORY_DETACH_SCOPE_ADDON = 64;
+    const INVENTORY_DETACH_SILENCER_ADDON = 65;
+    const INVENTORY_DROP_ACTION = 56;
+    const INVENTORY_EAT_ACTION = 57;
+    const INVENTORY_TO_BAG_ACTION = 60;
+    const INVENTORY_TO_BELT_ACTION  = 58;
+    const INVENTORY_TO_SLOT_ACTION = 59;
     const LIST_ITEM_CLICKED = 28;
     const MAPSPOT_FOCUS_LOST = 38;
     const MAPSPOT_FOCUS_RECEIVED = 37;
-    const MAP_MOVED = 39;
+    const MAP_MOVED = 42;
     const MESSAGE_BOX_CANCEL_CLICKED = 34;
     const MESSAGE_BOX_NO_CLICKED = 33;
     const MESSAGE_BOX_OK_CLICKED = 31;
     const MESSAGE_BOX_YES_CLICKED = 32;
-    const OUTFIT_RETURNED_BACK = 47;
-    const PDA_CONTACTS_WND_CONTACT_SELECTED = 43;
-    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 41;
-    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 42;
-    const PDA_MAP_SET_ACTIVE_POINT = 40;
+    const OUTFIT_RETURNED_BACK = 53;
+    const PDA_CONTACTS_WND_CONTACT_SELECTED = 49;
+    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 47;
+    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 48;
+    const PDA_MAP_SET_ACTIVE_POINT = 43;
     const PROPERTY_CLICKED = 30;
     const RADIOBUTTON_SET = 17;
     const SCROLLBAR_HSCROLL = 27;
     const SCROLLBAR_VSCROLL = 26;
     const SCROLLBOX_MOVE = 24;
     const SCROLLBOX_STOP = 25;
-    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 45;
+    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 51;
     const STATIC_FOCUS_LOST = 11;
     const STATIC_FOCUS_RECEIVED = 10;
     const TAB_CHANGED = 14;
     const TALK_DIALOG_QUESTION_CLICKED = 36;
     const TALK_DIALOG_TRADE_BUTTON_CLICKED = 35;
-    const TRADE_WND_CLOSED = 44;
-    const UNDRESS_OUTFIT = 46;
+    const TRADE_WND_CLOSED = 50;
+    const UNDRESS_OUTFIT = 52;
     const WINDOW_KEYBOARD_CAPTURE_LOST = 9;
     const WINDOW_KEY_PRESSED = 6;
     const WINDOW_KEY_RELEASED = 7;
@@ -463,121 +465,124 @@ C++ class clsid {
     const art_rusty_hair = 10;
     const art_thorn = 11;
     const art_zuda = 12;
-    const artefact = 36;
+    const artefact = 37;
     const bloodsucker = 13;
     const boar = 14;
     const burer = 15;
-    const car = 46;
+    const car = 47;
     const chimera = 25;
     const controller = 16;
     const crow = 17;
-    const custom_target = 89;
-    const device_art_merger = 47;
-    const device_detector_simple = 49;
-    const device_pda = 48;
-    const device_torch = 50;
+    const custom_target = 92;
+    const device_art_merger = 48;
+    const device_detector_simple = 50;
+    const device_pda = 49;
+    const device_torch = 51;
     const dog_black = 18;
     const dog_red = 19;
-    const equ_exo = 51;
-    const equ_military = 52;
-    const equ_scientific = 53;
-    const equ_stalker = 54;
-    const event = 55;
+    const equ_exo = 52;
+    const equ_military = 53;
+    const equ_scientific = 54;
+    const equ_stalker = 55;
+    const event = 56;
     const flesh = 20;
     const flesh_group = 21;
     const fracture = 22;
-    const game = 59;
-    const game_cl_LastStanding = 42;
-    const game_cl_artefact_hunt = 40;
-    const game_cl_deathmatch = 41;
-    const game_cl_single = 43;
-    const game_cl_team_deathmatch = 44;
-    const game_sv_LastStanding = 85;
-    const game_sv_artefact_hunt = 83;
-    const game_sv_deathmatch = 84;
-    const game_sv_single = 86;
-    const game_sv_team_deathmatch = 87;
-    const game_ui_artefact_hunt = 93;
-    const game_ui_deathmatch = 94;
-    const game_ui_single = 95;
-    const game_ui_team_deathmatch = 96;
+    const game = 60;
+    const game_cl_LastStanding = 43;
+    const game_cl_artefact_hunt = 41;
+    const game_cl_deathmatch = 42;
+    const game_cl_single = 44;
+    const game_cl_team_deathmatch = 45;
+    const game_sv_LastStanding = 88;
+    const game_sv_artefact_hunt = 86;
+    const game_sv_deathmatch = 87;
+    const game_sv_single = 89;
+    const game_sv_team_deathmatch = 90;
+    const game_ui_artefact_hunt = 96;
+    const game_ui_deathmatch = 97;
+    const game_ui_single = 98;
+    const game_ui_team_deathmatch = 99;
     const graph_point = 24;
-    const hanging_lamp = 75;
-    const helicopter = 45;
-    const hud_manager = 62;
+    const hanging_lamp = 76;
+    const helicopter = 46;
+    const hud_manager = 63;
     const idol = 26;
-    const level = 58;
-    const level_changer = 71;
-    const net_target_assault = 88;
-    const net_target_cs = 90;
-    const net_target_cs_base = 91;
-    const net_target_cs_cask = 92;
-    const new_attachable_item = 72;
-    const obj_antirad = 63;
-    const obj_attachable = 64;
-    const obj_bolt = 65;
-    const obj_bottle = 66;
+    const level = 59;
+    const level_changer = 72;
+    const net_target_assault = 91;
+    const net_target_cs = 93;
+    const net_target_cs_base = 94;
+    const net_target_cs_cask = 95;
+    const obj_antirad = 64;
+    const obj_attachable = 65;
+    const obj_bolt = 66;
+    const obj_bottle = 67;
     const obj_breakable = 74;
-    const obj_document = 67;
-    const obj_explosive = 68;
-    const obj_food = 69;
-    const obj_medkit = 70;
-    const obj_phskeleton = 78;
-    const obj_physic = 76;
+    const obj_climable = 75;
+    const obj_document = 68;
+    const obj_explosive = 69;
+    const obj_food = 70;
+    const obj_medkit = 71;
+    const obj_phskeleton = 79;
+    const obj_physic = 77;
     const poltergeist = 27;
-    const projector = 77;
+    const projector = 78;
     const pseudo_gigant = 23;
     const rat = 28;
     const rat_group = 29;
-    const script_object = 80;
-    const script_zone = 79;
-    const soldier = 30;
-    const space_restrictor = 81;
-    const spawn_group = 31;
-    const spectator = 82;
-    const stalker = 32;
-    const team_base_zone = 126;
-    const torrid_zone = 127;
-    const trader = 33;
-    const wpn_ak74 = 97;
-    const wpn_ammo = 35;
-    const wpn_ammo_m209 = 37;
-    const wpn_ammo_og7b = 38;
-    const wpn_ammo_vog25 = 39;
-    const wpn_binocular = 98;
-    const wpn_fn2000 = 99;
-    const wpn_fort = 100;
-    const wpn_grenade_f1 = 56;
-    const wpn_grenade_fake = 57;
-    const wpn_grenade_launcher = 101;
-    const wpn_grenade_rgd5 = 60;
-    const wpn_grenade_rpg7 = 61;
-    const wpn_groza = 102;
-    const wpn_hpsa = 103;
-    const wpn_knife = 104;
-    const wpn_lr300 = 105;
-    const wpn_mounted = 106;
-    const wpn_pm = 107;
-    const wpn_rpg7 = 108;
-    const wpn_scope = 109;
-    const wpn_shotgun = 110;
-    const wpn_silencer = 111;
-    const wpn_svd = 112;
-    const wpn_svu = 113;
-    const wpn_usp45 = 114;
-    const wpn_val = 115;
-    const wpn_vintorez = 116;
-    const wpn_walther = 117;
-    const zombie = 34;
-    const zone = 128;
-    const zone_acid_fog = 118;
-    const zone_bfuzz = 119;
-    const zone_dead = 120;
-    const zone_galantine = 121;
-    const zone_mincer = 123;
-    const zone_mosquito_bald = 122;
-    const zone_radioactive = 124;
-    const zone_rusty_hair = 125;
+    const script_object = 81;
+    const script_zone = 80;
+    const smart_terrain = 82;
+    const smart_zone = 83;
+    const snork = 30;
+    const soldier = 31;
+    const space_restrictor = 84;
+    const spawn_group = 32;
+    const spectator = 85;
+    const stalker = 33;
+    const team_base_zone = 129;
+    const torrid_zone = 130;
+    const trader = 34;
+    const wpn_ak74 = 100;
+    const wpn_ammo = 36;
+    const wpn_ammo_m209 = 38;
+    const wpn_ammo_og7b = 39;
+    const wpn_ammo_vog25 = 40;
+    const wpn_binocular = 101;
+    const wpn_fn2000 = 102;
+    const wpn_fort = 103;
+    const wpn_grenade_f1 = 57;
+    const wpn_grenade_fake = 58;
+    const wpn_grenade_launcher = 104;
+    const wpn_grenade_rgd5 = 61;
+    const wpn_grenade_rpg7 = 62;
+    const wpn_groza = 105;
+    const wpn_hpsa = 106;
+    const wpn_knife = 107;
+    const wpn_lr300 = 108;
+    const wpn_mounted = 109;
+    const wpn_pm = 110;
+    const wpn_rpg7 = 111;
+    const wpn_scope = 112;
+    const wpn_shotgun = 113;
+    const wpn_silencer = 114;
+    const wpn_svd = 115;
+    const wpn_svu = 116;
+    const wpn_usp45 = 117;
+    const wpn_val = 118;
+    const wpn_vintorez = 119;
+    const wpn_walther = 120;
+    const zombie = 35;
+    const zone = 131;
+    const zone_acid_fog = 121;
+    const zone_bfuzz = 122;
+    const zone_dead = 123;
+    const zone_galantine = 124;
+    const zone_mincer = 126;
+    const zone_mosquito_bald = 125;
+    const zone_radioactive = 127;
+    const zone_rusty_hair = 128;
     
 };
 
@@ -1136,9 +1141,10 @@ C++ class artifact_merger {
     function destroy_black_drops(number);
 };
 
-C++ class attachable_item {
-    attachable_item ();
-    
+C++ class client_spawn_manager {
+    function remove(number, number);
+    function add(number, number, object, string);
+    function add(number, number, const function<void>&);
 };
 
 C++ class cover_point {
@@ -1191,38 +1197,35 @@ C++ class CHelicopter {
 };
 
 C++ class stalker_ids {
-    const action_aim_enemy = 16;
+    const action_accomplish_task = 5;
+    const action_aim_enemy = 15;
     const action_already_dead = 0;
-    const action_anomaly_planner = 31;
-    const action_camping = 22;
-    const action_combat_planner = 31;
+    const action_anomaly_planner = 28;
+    const action_camping = 19;
+    const action_combat_planner = 28;
     const action_dead = 1;
-    const action_death_planner = 29;
-    const action_find_ammo = 11;
-    const action_find_item_to_kill = 9;
+    const action_death_planner = 26;
+    const action_find_ammo = 14;
+    const action_find_item_to_kill = 12;
+    const action_follow_customer = 6;
     const action_free = 3;
     const action_free_no_alife = 2;
-    const action_gather_items = 4;
-    const action_get_enemy = 6;
-    const action_get_enemy_seen = 7;
-    const action_get_enemy_seen_moderate = 23;
-    const action_get_item_to_kill = 8;
-    const action_get_kill_distance = 5;
-    const action_get_ready_to_kill_aggressive = 14;
-    const action_get_ready_to_kill_avoid = 17;
-    const action_get_ready_to_kill_moderate = 20;
-    const action_get_ready_to_kill_very_aggressive = 12;
-    const action_kill_enemy_aggressive = 15;
-    const action_kill_enemy_avoid = 18;
-    const action_kill_enemy_moderate = 21;
-    const action_kill_enemy_very_aggressive = 13;
-    const action_make_item_killing = 10;
-    const action_puzzle_solver = 30;
-    const action_retreat_from_enemy = 19;
-    const action_script = 33;
-    const action_squad_action = 28;
-    const detect_anomaly = 27;
-    const get_out_of_anomaly = 26;
+    const action_gather_items = 7;
+    const action_get_enemy = 9;
+    const action_get_enemy_seen = 10;
+    const action_get_enemy_seen_moderate = 20;
+    const action_get_item_to_kill = 11;
+    const action_get_kill_distance = 8;
+    const action_get_ready_to_kill_moderate = 17;
+    const action_kill_enemy_moderate = 18;
+    const action_make_item_killing = 13;
+    const action_puzzle_solver = 27;
+    const action_reach_task_location = 4;
+    const action_retreat_from_enemy = 16;
+    const action_script = 30;
+    const action_squad_action = 25;
+    const detect_anomaly = 24;
+    const get_out_of_anomaly = 23;
     const motivation_alive = 1;
     const motivation_dead = 2;
     const motivation_global = 0;
@@ -1234,24 +1237,26 @@ C++ class stalker_ids {
     const property_alife = 3;
     const property_alive = 0;
     const property_already_dead = 2;
-    const property_anomaly = 19;
+    const property_anomaly = 22;
+    const property_customer_satisfied = 7;
     const property_dead = 1;
-    const property_enemy = 6;
-    const property_enemy_aimed = 14;
-    const property_fire_enough = 16;
-    const property_found_ammo = 11;
-    const property_found_item_to_kill = 9;
-    const property_inside_anomaly = 20;
-    const property_item_can_kill = 10;
-    const property_item_to_kill = 8;
-    const property_items = 5;
-    const property_kill_distance = 13;
+    const property_enemy = 9;
+    const property_enemy_aimed = 16;
+    const property_fire_enough = 18;
+    const property_found_ammo = 14;
+    const property_found_item_to_kill = 12;
+    const property_inside_anomaly = 23;
+    const property_item_can_kill = 13;
+    const property_item_to_kill = 11;
+    const property_items = 8;
     const property_puzzle_solved = 4;
-    const property_ready_to_kill = 12;
-    const property_safe_to_kill = 15;
-    const property_script = 21;
-    const property_see_enemy = 7;
-    const property_squad_action = 17;
+    const property_reach_task_location = 5;
+    const property_ready_to_kill = 15;
+    const property_safe_to_kill = 17;
+    const property_script = 24;
+    const property_see_enemy = 10;
+    const property_squad_action = 20;
+    const property_task_completed = 6;
     const sound_alarm = 3;
     const sound_attack = 6;
     const sound_backup = 5;
@@ -1259,7 +1264,9 @@ C++ class stalker_ids {
     const sound_humming = 2;
     const sound_injuring = 1;
     const sound_injuring_by_friend = 7;
-    const sound_script = 8;
+    const sound_panic_human = 8;
+    const sound_panic_monster = 9;
+    const sound_script = 10;
     const sound_surrender = 4;
     
 };
@@ -1302,9 +1309,10 @@ C++ class patrol {
     
     function level_vertex_id(number) const;
     function point(number) const;
-    function flag(number, number) const;
     function count() const;
+    function flag(number, number) const;
     function index(string) const;
+    function name(number) const;
     function get_nearest(const vector&) const;
 };
 
@@ -1375,62 +1383,73 @@ C++ class render_device {
 
 C++ class cse_anomalous_zone : cse_custom_zone,cse_alife_schedulable {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_anomalous_zone (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_car : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_car (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_creature_abstract (string);
     
@@ -1440,26 +1459,34 @@ C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
     function UPDATE_Read(net_packet&);
     function g_team();
     function clsid() const;
+    function health() const;
     function STATE_Write(net_packet&);
-    function init();
     function g_group();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function init();
     function g_squad();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function save(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trader_abstract {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_creature_actor (string);
     
@@ -1469,26 +1496,34 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
     function UPDATE_Read(net_packet&);
     function g_squad();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function init();
-    function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
-    function load(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function STATE_Write(net_packet&);
+    function load(net_packet&);
+    function init();
+    function g_team();
+    function section_name(const cse_abstract*);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function interactive() const;
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function save(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_team();
+    function health() const;
 };
 
 C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_creature_crow (string);
     
@@ -1498,116 +1533,134 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     function UPDATE_Read(net_packet&);
     function g_squad();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function init();
-    function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
-    function load(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function STATE_Write(net_packet&);
+    function load(net_packet&);
+    function init();
+    function g_team();
+    function section_name(const cse_abstract*);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function interactive() const;
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function save(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_team();
+    function health() const;
 };
 
 C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_custom_zone (string);
     
-    function STATE_Write(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
     function can_save() const;
-    function init();
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function save(net_packet&);
-    function clsid() const;
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function init();
+    function used_ai_locations() const;
+    function save(net_packet&);
+    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function used_ai_locations() const;
+    function name(const cse_abstract*);
 };
 
 C++ class cse_alife_dynamic_object : cse_alife_object {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_dynamic_object (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function UPDATE_Write(net_packet&);
-    function init();
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function save(net_packet&);
-    function STATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
-    function UPDATE_Read(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
     function can_switch_online() const;
-    function can_switch_offline() const;
+    function UPDATE_Read(net_packet&);
     function clsid() const;
-    function load(net_packet&);
+    function STATE_Write(net_packet&);
+    function init();
+    function section_name(const cse_abstract*);
+    function interactive() const;
+    function OnEvent(net_packet&, number, number, ClientID);
     function can_save() const;
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function can_switch_offline() const;
+    function UPDATE_Write(net_packet&);
+    function load(net_packet&);
+    function used_ai_locations() const;
 };
 
 C++ class cse_alife_dynamic_object_visual : cse_alife_dynamic_object,cse_visual {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_dynamic_object_visual (string);
     
-    function STATE_Write(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
     function can_save() const;
-    function init();
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function save(net_packet&);
-    function clsid() const;
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function init();
+    function used_ai_locations() const;
+    function save(net_packet&);
+    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function used_ai_locations() const;
+    function name(const cse_abstract*);
 };
 
 C++ class cse_alife_graph_point : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_graph_point (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_alife_group_abstract {
@@ -1615,88 +1668,108 @@ C++ class cse_alife_group_abstract {
 
 C++ class cse_alife_helicopter : cse_alife_dynamic_object_visual,cse_motion,cse_ph_skeleton {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_helicopter (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster_abstract {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_human_abstract (string);
     
     function used_ai_locations() const;
-    function save(net_packet&);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_squad();
-    function clsid() const;
-    function STATE_Write(net_packet&);
-    function init();
     function g_team();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function clsid() const;
+    function health() const;
+    function STATE_Write(net_packet&);
     function g_group();
+    function init();
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function save(net_packet&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function section_name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function g_squad();
 };
 
 C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_human_stalker (string);
     
-    function used_ai_locations() const;
-    function save(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_team();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function init();
-    function can_save() const;
-    function OnEvent(net_packet&, number, number, ClientID);
-    function load(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function g_squad();
     function STATE_Write(net_packet&);
+    function load(net_packet&);
+    function init();
+    function save(net_packet&);
+    function used_ai_locations() const;
+    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function interactive() const;
+    function STATE_Read(net_packet&, number);
+    function health() const;
+    function name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_squad();
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_alife_inventory_item {
@@ -1704,36 +1777,40 @@ C++ class cse_alife_inventory_item {
 
 C++ class cse_alife_item : cse_alife_dynamic_object_visual,cse_alife_inventory_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_item_ammo : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_ammo (string);
     
@@ -1744,23 +1821,27 @@ C++ class cse_alife_item_ammo : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_artefact : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_artefact (string);
     
@@ -1771,23 +1852,27 @@ C++ class cse_alife_item_artefact : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_bolt : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_bolt (string);
     
@@ -1798,23 +1883,27 @@ C++ class cse_alife_item_bolt : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_custom_outfit : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_custom_outfit (string);
     
@@ -1825,23 +1914,27 @@ C++ class cse_alife_item_custom_outfit : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_detector : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_detector (string);
     
@@ -1852,23 +1945,27 @@ C++ class cse_alife_item_detector : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_document : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_document (string);
     
@@ -1879,23 +1976,27 @@ C++ class cse_alife_item_document : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_explosive : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_explosive (string);
     
@@ -1906,23 +2007,27 @@ C++ class cse_alife_item_explosive : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_grenade : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_grenade (string);
     
@@ -1933,23 +2038,27 @@ C++ class cse_alife_item_grenade : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_pda : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_pda (string);
     
@@ -1960,23 +2069,27 @@ C++ class cse_alife_item_pda : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_torch : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_torch (string);
     
@@ -1987,23 +2100,27 @@ C++ class cse_alife_item_torch : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_item_weapon : cse_alife_item {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_item_weapon (string);
     
@@ -2014,49 +2131,60 @@ C++ class cse_alife_item_weapon : cse_alife_item {
     function clsid() const;
     function FillProps(string, class xr_vector<class PropItem *>&);
     function init();
-    function OnEvent(net_packet&, number, number, ClientID);
     function bfUseful();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function name(const cse_abstract*);
     function STATE_Write(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function interactive() const;
 };
 
 C++ class cse_alife_level_changer : cse_alife_space_restrictor {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_level_changer (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_schedulable {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_monster_abstract (string);
     
@@ -2067,427 +2195,562 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     function UPDATE_Read(net_packet&);
     function g_squad();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function init();
-    function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
-    function load(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function STATE_Write(net_packet&);
+    function load(net_packet&);
+    function init();
+    function g_team();
+    function section_name(const cse_abstract*);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function interactive() const;
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function save(net_packet&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_team();
+    function health() const;
 };
 
-C++ class cse_alife_monster_biting : cse_alife_monster_abstract,cse_ph_skeleton {
+C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
-    cse_alife_monster_biting (string);
+    cse_alife_monster_base (string);
     
     function used_ai_locations() const;
-    function save(net_packet&);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_squad();
-    function clsid() const;
-    function STATE_Write(net_packet&);
-    function init();
     function g_team();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function clsid() const;
+    function health() const;
+    function STATE_Write(net_packet&);
     function g_group();
+    function init();
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function save(net_packet&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function section_name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function g_squad();
 };
 
 C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory_item {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_monster_rat (string);
     
     function used_ai_locations() const;
-    function save(net_packet&);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_squad();
-    function clsid() const;
-    function STATE_Write(net_packet&);
-    function init();
     function g_team();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function clsid() const;
+    function health() const;
+    function STATE_Write(net_packet&);
     function g_group();
+    function init();
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function save(net_packet&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function section_name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function g_squad();
 };
 
 C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_monster_zombie (string);
     
     function used_ai_locations() const;
-    function save(net_packet&);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_squad();
-    function clsid() const;
-    function STATE_Write(net_packet&);
-    function init();
     function g_team();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function clsid() const;
+    function health() const;
+    function STATE_Write(net_packet&);
     function g_group();
+    function init();
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function save(net_packet&);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function section_name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function g_squad();
 };
 
 C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_mounted_weapon (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_object : cse_abstract {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_object (string);
     
-    function STATE_Write(net_packet&);
-    function can_save() const;
-    function init();
     function used_ai_locations() const;
     function save(net_packet&);
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function OnEvent(net_packet&, number, number, ClientID);
-    function UPDATE_Read(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
     function can_switch_online() const;
-    function can_switch_offline() const;
+    function UPDATE_Read(net_packet&);
     function clsid() const;
-    function load(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function init();
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function OnEvent(net_packet&, number, number, ClientID);
+    function STATE_Write(net_packet&);
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function interactive() const;
+    function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
+    function load(net_packet&);
+    function section_name(const cse_abstract*);
 };
 
 C++ class cse_alife_object_breakable : cse_alife_dynamic_object_visual {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_object_breakable (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
+    function UPDATE_Write(net_packet&);
+    function load(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
+};
+
+C++ class cse_alife_object_climable : cse_shape,cse_abstract {
+    property id;
+    property parent_id;
+    property position;
+    
+    cse_alife_object_climable (string);
+    
+    function STATE_Write(net_packet&);
+    function init();
+    function save(net_packet&);
+    function section_name(const cse_abstract*);
+    function UPDATE_Read(net_packet&);
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function can_save() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_alife_object_hanging_lamp : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_object_hanging_lamp (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_object_idol : cse_alife_human_abstract {
+    property group;
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
+    property squad;
+    property team;
     
     cse_alife_object_idol (string);
     
-    function used_ai_locations() const;
-    function save(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_team();
     function clsid() const;
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function init();
-    function can_save() const;
-    function OnEvent(net_packet&, number, number, ClientID);
-    function load(net_packet&);
-    function STATE_Read(net_packet&, number);
-    function interactive() const;
+    function g_squad();
     function STATE_Write(net_packet&);
+    function load(net_packet&);
+    function init();
+    function save(net_packet&);
+    function used_ai_locations() const;
+    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function interactive() const;
+    function STATE_Read(net_packet&, number);
+    function health() const;
+    function name(const cse_abstract*);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_squad();
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_alife_object_physic : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_object_physic (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_object_projector : cse_alife_dynamic_object_visual {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_object_projector (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_ph_skeleton_object : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_ph_skeleton_object (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_schedulable : ipure_schedulable_object {
 };
 
-C++ class cse_alife_space_restrictor : cse_alife_dynamic_object,cse_shape {
+C++ class cse_alife_smart_zone : cse_alife_space_restrictor,cse_alife_schedulable {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
-    cse_alife_space_restrictor (string);
+    cse_alife_smart_zone (string);
     
-    function STATE_Write(net_packet&);
+    function used_ai_locations() const;
+    function smart_touch(cse_alife_monster_abstract*);
     function can_save() const;
-    function init();
-    function FillProps(string, class xr_vector<class PropItem *>&);
-    function save(net_packet&);
-    function clsid() const;
-    function OnEvent(net_packet&, number, number, ClientID);
+    function update();
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function detect_probability();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function load(net_packet&);
+    function move_offline() const;
+    function move_offline(boolean);
+};
+
+C++ class cse_alife_space_restrictor : cse_alife_dynamic_object,cse_shape {
+    property id;
+    property level_vertex_id;
+    property online;
+    property parent_id;
+    property position;
+    
+    cse_alife_space_restrictor (string);
+    
+    function move_offline() const;
+    function move_offline(boolean);
+    function can_save() const;
+    function can_switch_online() const;
+    function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function init();
     function used_ai_locations() const;
+    function save(net_packet&);
+    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function STATE_Read(net_packet&, number);
+    function interactive() const;
+    function STATE_Write(net_packet&);
+    function can_switch_offline() const;
+    function UPDATE_Write(net_packet&);
+    function load(net_packet&);
+    function name(const cse_abstract*);
 };
 
 C++ class cse_alife_team_base_zone : cse_alife_space_restrictor {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_team_base_zone (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_torrid_zone : cse_custom_zone,cse_motion {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_torrid_zone (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_trader : cse_alife_dynamic_object_visual,cse_alife_trader_abstract {
     property id;
-    property name;
+    property level_vertex_id;
     property online;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_alife_trader (string);
     
-    function FillProps(string, class xr_vector<class PropItem *>&);
     function used_ai_locations() const;
-    function init();
-    function STATE_Write(net_packet&);
-    function save(net_packet&);
-    function UPDATE_Write(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function can_save() const;
+    function can_switch_online() const;
     function UPDATE_Read(net_packet&);
+    function clsid() const;
+    function STATE_Write(net_packet&);
+    function init();
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
+    function save(net_packet&);
     function STATE_Read(net_packet&, number);
     function interactive() const;
-    function can_switch_online() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
     function can_switch_offline() const;
-    function clsid() const;
+    function UPDATE_Write(net_packet&);
     function load(net_packet&);
-    function can_save() const;
+    function move_offline() const;
+    function move_offline(boolean);
 };
 
 C++ class cse_alife_trader_abstract {
@@ -2495,31 +2758,33 @@ C++ class cse_alife_trader_abstract {
 
 C++ class cse_abstract : cpure_server_object {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     function clsid() const;
+    function name(const cse_abstract*);
+    function section_name(const cse_abstract*);
 };
 
 C++ class cse_event : cse_shape,cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_event (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_motion {
@@ -2533,162 +2798,170 @@ C++ class cse_shape {
 
 C++ class cse_event : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_event (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_spectator : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_spectator (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_target : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_target (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_target_assault : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_target_assault (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_target_cs : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_target_cs (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_target_cs_base : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_target_cs_base (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_target_cs_cask : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_target_cs_cask (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_temporary : cse_abstract {
     property id;
-    property name;
     property parent_id;
-    property section_name;
+    property position;
     
     cse_temporary (string);
     
     function STATE_Write(net_packet&);
     function init();
     function save(net_packet&);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function UPDATE_Read(net_packet&);
     function STATE_Read(net_packet&, number);
-    function FillProps(string, class xr_vector<class PropItem *>&);
+    function name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
+    function UPDATE_Write(net_packet&);
     function clsid() const;
     function load(net_packet&);
-    function UPDATE_Write(net_packet&);
+    function FillProps(string, class xr_vector<class PropItem *>&);
 };
 
 C++ class cse_visual {
@@ -2741,13 +3014,15 @@ C++ class object_binder {
     
     object_binder (game_object*);
     
+    function save(net_packet*);
     function update(number);
-    function net_export(net_packet*);
-    function net_import(net_packet*);
-    function reinit();
-    function net_destroy();
-    function net_spawn(cse_alife_object*);
     function reload(string);
+    function load(reader*);
+    function net_destroy();
+    function reinit();
+    function net_export(net_packet*);
+    function net_spawn(cse_alife_object*);
+    function net_import(net_packet*);
 };
 
 C++ class effector {
@@ -2908,6 +3183,8 @@ C++ class game_object {
     function stop_talk();
     function set_path_type(enum MovementManager::EPathType);
     function get_ammo_total() const;
+    function give_game_news(string, string, number, number, number, number);
+    function active_zone_contact(number);
     function enable_memory_object(game_object*, boolean);
     function set_nonscript_usable(boolean);
     function set_tip_text_default();
@@ -2963,22 +3240,22 @@ C++ class game_object {
     function is_talking();
     function send_pda_message(enum EPdaMsg, game_object*);
     function set_character_reputation(number);
-    function set_sound_mask(number);
+    function get_task_state(string, number);
     function accessible(const vector&);
     function accessible(number);
     function spawn_ini() const;
-    function get_task_state(string, number);
-    function binded_object();
+    function set_sound_mask(number);
+    function set_manual_invisibility(boolean);
     function get_manual_invisibility();
     function clear_hit_callback(boolean);
-    function hit(hit&);
+    function hit(hit*);
+    function binded_object();
     function get_script() const;
-    function set_manual_invisibility(boolean);
+    function limping() const;
     function restore_sound_threshold();
     function in_restrictions();
-    function get_enemy() const;
     function set_body_state(enum MonsterSpace::EBodyState);
-    function limping() const;
+    function get_enemy() const;
     function character_community();
     function group() const;
     function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
@@ -3129,7 +3406,7 @@ C++ class move {
     move (enum MonsterSpace::EScriptMonsterMoveAction, game_object*, number, enum MonsterSpace::EScriptMonsterSpeedParam);
     
     function path(enum DetailPathManager::EDetailPathType);
-    function patrol(const class CPatrolPath*, class ref_str);
+    function patrol(const class CPatrolPath*, class shared_str);
     function body(enum MonsterSpace::EBodyState);
     function completed();
     function object(game_object*);
@@ -3343,6 +3620,11 @@ C++ class look {
     function direct(const vector&);
 };
 
+C++ class ce_script_zone : dll_pure {
+    ce_script_zone ();
+    
+};
+
 C++ class sound_params {
     property frequency;
     property max_distance;
@@ -3405,8 +3687,8 @@ C++ class CUIButton : CUIStatic {
 };
 
 C++ class CUICaption {
-    function setCaption(const class ref_str&, string, number, boolean);
-    function addCustomMessage(const class ref_str&, number, number, number, CGameFont*, enum CGameFont::EAligment, number, string);
+    function setCaption(const class shared_str&, string, number, boolean);
+    function addCustomMessage(const class shared_str&, number, number, number, CGameFont*, enum CGameFont::EAligment, number, string);
 };
 
 C++ class CUICheckButton : CUIButton {
@@ -4046,6 +4328,41 @@ C++ class ClientID {
 C++ class dll_pure {
 };
 
+C++ class reader {
+    function r_advance(number);
+    function r_u64(unsigned __int64&);
+    function r_u64();
+    function r_bool(reader*);
+    function r_dir(vector&);
+    function r_u8(number&);
+    function r_u8();
+    function r_eof(reader*);
+    function r_float_q8(number, number);
+    function r_vec3(vector&);
+    function r_stringZ(reader*);
+    function r_u16(number&);
+    function r_u16();
+    function r_float_q16(number, number);
+    function r_angle16();
+    function r_s64(__int64&);
+    function r_s64();
+    function r_float(number&);
+    function r_float();
+    function r_s32(number&);
+    function r_s32();
+    function r_elapsed() const;
+    function r_sdir(vector&);
+    function r_tell() const;
+    function r_s8(signed char&);
+    function r_s8();
+    function r_s16(number&);
+    function r_s16();
+    function r_seek(number);
+    function r_u32(number&);
+    function r_u32();
+    function r_angle8();
+};
+
 C++ class net_packet {
     net_packet ();
     
@@ -4125,44 +4442,44 @@ C++ class UIGame_custom_script : CUIGameCustom {
 
 C++ class CUIScriptWnd : CUIDialogWnd {
     CUIScriptWnd ();
-    function GetCheckButton(string);
-    function GetFrameLineWnd(string);
-    function GetPropertiesBox(string);
-    function GetListWnd(string);
-    function GetStatic(string);
-    function GetEditBox(string);
-    function GetTabControl(string);
-    function GetRadioGroup(string);
-    function GetDialogWnd(string);
-    function GetButton(string);
-    function GetMessageBox(string);
-    function GetProgressBar(string);
-    function GetRadioButton(string);
-    function GetFrameWindow(string);
     
-    function SetWndRect(RECT);
-    function SetWndRect(number, number, number, number);
     function Register(CUIWindow*);
     function Enable(boolean);
     function SetHeight(number);
+    function GetFrameLineWnd(string);
     function GetWidth();
+    function GetCheckButton(string);
     function DetachChild(CUIWindow*);
-    function AttachChild(CUIWindow*);
     function SetFont(CGameFont*);
     function IsShown();
     function Show(boolean);
     function GetHeight();
     function SetWidth(number);
     function IsEnabled();
+    function GetPropertiesBox(string);
     function GetFont();
     function AddCallback(string, number, const function<void>&);
     function AddCallback(string, number, object, string);
     function SetAutoDelete(boolean);
     function OnKeyboard(number, enum EUIMessages);
+    function GetListWnd(string);
+    function AttachChild(CUIWindow*);
+    function GetStatic(string);
+    function GetEditBox(string);
+    function GetTabControl(string);
+    function GetRadioGroup(string);
     function Init(number, number, number, number);
     function Init(RECT*);
+    function GetFrameWindow(string);
     function WindowName();
     function SetWindowName(string);
+    function GetDialogWnd(string);
+    function SetWndRect(RECT);
+    function SetWndRect(number, number, number, number);
+    function GetButton(string);
+    function GetMessageBox(string);
+    function GetProgressBar(string);
+    function GetRadioButton(string);
     function test();
     function Load(string);
     function IsAutoDelete();
@@ -4236,11 +4553,11 @@ C++ class game_cl_mp_script : game_cl_mp {
     function FillMapEntities(ZoneMapEntities&);
     function GetClientIDByOrderID(number);
     function net_import_state(net_packet&);
-    function StartMenu(CUIDialogWnd*);
-    function StopMenu(CUIDialogWnd*);
+    function StartMenu(CUIDialogWnd*, boolean);
+    function StopMenu(CUIDialogWnd*, boolean);
     function CanBeReady();
     function GetPlayersCount() const;
-    function StartStopMenu(CUIDialogWnd*);
+    function StartStopMenu(CUIDialogWnd*, boolean);
     function createPlayerState();
     function StartTime() const;
 };
@@ -4357,60 +4674,59 @@ List of the namespaces exported to LUA
 
  
 namespace  {
-    function GetFontArialN21Russian();
+    function bit_and(number, number);
+    function alife();
     function GetFontGraffiti32Russian();
+    function bit_or(number, number);
+    function GetFontArialN21Russian();
     function GetFontDI();
+    function module(string);
     function GetFontHeaderRussian();
+    function dik_to_bind(number);
+    function cast_planner_to_action(action_planner*);
     function GetFontGraffiti19Russian();
     function GetFontLetterica25();
     function GetFontMedium();
-    function GetFontLetterica16Russian();
+    function bit_xor(number, number);
     function GetFontSmall();
+    function user_name();
+    function log(string);
     function GetFontGraffiti22Russian();
     function GetFontLetterica18Russian();
     function GetFontBigDigit();
-    function GetFontHeaderEurope();
-    function GetFontGraffiti50Russian();
-
-    function bit_and(number, number);
-    function alife();
-    function bit_or(number, number);
-    function module(string);
-    function dik_to_bind(number);
-    function cast_planner_to_action(action_planner*);
-    function editor();
-    function user_name();
-    function GetARGB(number, number, number, number);
     function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
-    function bit_xor(number, number);
     function script_server_object_version();
     function device();
+    function GetFontGraffiti50Russian();
+    function GetFontLetterica16Russian();
+    function GetFontHeaderEurope();
     function flush();
-    function log(string);
+    function editor();
+    function GetARGB(number, number, number, number);
     function bit_not(number);
- 
-    namespace level {
-        function cover_in_direction(number, const vector&);
-        function get_weather();
-        function map_remove_object_icon(game_object*);
-        function get_time_factor();
-        function patrol_path_exists(string);
-        function name();
-        function vertex_position(number);
-        function set_time_factor(number);
-        function map_add_object_icon(game_object*, number);
-        function object(string);
-        function rain_factor();
-        function vertex_in_direction(number, vector, number);
-        function set_weather(string);
-        function actor();
-        function object_by_id(number);
-    };
  
     namespace game {
         function time();
     };
+ 
+    namespace level {
+        function map_remove_object_icon(game_object*);
+        function get_weather();
+        function vertex_in_direction(number, vector, number);
+        function set_weather(string);
+        function cover_in_direction(number, const vector&);
+        function actor();
+        function get_time_factor();
+        function patrol_path_exists(string);
+        function client_spawn_manager();
+        function map_add_object_icon(game_object*, number);
+        function object(string);
+        function name();
+        function vertex_position(number);
+        function set_time_factor(number);
+        function rain_factor();
+        function object_by_id(number);
+    };
 };
 End of list of the namespaces exported to LUA
-
