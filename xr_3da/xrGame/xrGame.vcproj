@@ -1853,16 +1853,6 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="Debug"
-								Filter="">
-								<File
-									RelativePath=".\ai\ai_monster_debug.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\ai_monster_debug.h">
-								</File>
-							</Filter>
-							<Filter
 								Name="Memory"
 								Filter="">
 								<File
@@ -1915,6 +1905,16 @@
 								<File
 									RelativePath=".\ai\state_inline.h">
 								</File>
+								<Filter
+									Name="Debug"
+									Filter="">
+									<File
+										RelativePath=".\ai\ai_monster_debug.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\ai_monster_debug.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="Movement"
@@ -2017,10 +2017,10 @@
 									Name="Invisibility"
 									Filter="">
 									<File
-										RelativePath=".\ai\ai_monster_invisibility.cpp">
+										RelativePath=".\ai\invisibility.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\ai_monster_invisibility.h">
+										RelativePath=".\ai\invisibility.h">
 									</File>
 								</Filter>
 								<Filter
@@ -2494,12 +2494,6 @@
 						<File
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
 						</File>
-						<File
-							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
-						</File>
 					</Filter>
 					<Filter
 						Name="Boar"
@@ -2842,6 +2836,16 @@
 						<File
 							RelativePath=".\ai\Monsters\Zombie\zombie_state_manager.h">
 						</File>
+						<Filter
+							Name="States"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Zombie\zombie_state_attack_run.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Zombie\zombie_state_attack_run_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -4698,19 +4702,6 @@
 					RelativePath="ai_sounds.h">
 				</File>
 			</Filter>
-			<Filter
-				Name="ASpace"
-				Filter="">
-				<File
-					RelativePath=".\ai_space.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_space.h">
-				</File>
-				<File
-					RelativePath=".\ai_space_inline.h">
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Core"
@@ -6478,6 +6469,12 @@
 						Name="Monsters"
 						Filter="">
 						<File
+							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
+						</File>
+						<File
 							RelativePath=".\ai\ai_monster_effector.cpp">
 						</File>
 						<File
@@ -7135,6 +7132,19 @@
 						RelativePath="xrServer_process_update.cpp">
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="ASpace"
+				Filter="">
+				<File
+					RelativePath=".\ai_space.cpp">
+				</File>
+				<File
+					RelativePath=".\ai_space.h">
+				</File>
+				<File
+					RelativePath=".\ai_space_inline.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

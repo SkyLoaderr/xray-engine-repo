@@ -42,6 +42,7 @@
 #include "AI_PhraseDialogManager.h"
 #include "character_info.h"
 #include "helicopter.h"
+#include "ai/bloodsucker/ai_bloodsucker.h"
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -84,7 +85,6 @@ BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetScriptControlName,CScript
 //BIND_FUNCTION02	(m_tpGameObject,	CScriptGameObject::AddAction,			CScriptMonster,	AddAction,			const CScriptEntityAction *,				bool,					const CScriptEntityAction *,	bool);
 //BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CScriptEntityAction *,				0);
 BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetEnemyStrength,	CScriptMonster,	get_enemy_strength,	int,								0);
-BIND_FUNCTION01	(m_tpGameObject,	CScriptGameObject::set_visible,		CScriptMonster,	set_visible,		bool,								bool);
 BIND_FUNCTION10	(m_tpGameObject,	CScriptGameObject::GetActionCount,		CScriptMonster,	GetActionCount,		u32,					0);
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -1365,3 +1365,30 @@ CPhysicsShell* CScriptGameObject::get_physics_shell() const
 	if(! ph_shell_holder) return NULL;
 	return ph_shell_holder->PPhysicsShell();
 }
+
+//CAI_Bloodsucker
+void CScriptGameObject::set_invisible(bool val)
+{
+	CAI_Bloodsucker		*monster = dynamic_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Bloodsucker : cannot access class member set_invisible!");
+		return;
+	}
+	
+	val ? monster->manual_activate() : monster->manual_deactivate();
+}
+
+void CScriptGameObject::set_manual_invisibility(bool val)
+{
+	CAI_Bloodsucker		*monster = dynamic_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Bloodsucker : cannot access class member set_manual_invisible!");
+		return;
+	}
+
+	val ? monster->set_manual_switch(true) : monster->set_manual_switch(false);
+}
+
+
+
+

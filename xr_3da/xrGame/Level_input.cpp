@@ -12,6 +12,8 @@
 #include "game_cl_base.h"
 #include "stalker_movement_manager.h"
 
+#include "ai/bloodsucker/ai_bloodsucker.h"
+
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
 #endif
@@ -200,27 +202,35 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-//	CObject			*obj		= Level().Objects.FindObjectByName("tele");
-
-
-//	if (obj) {
-//		CBurer		*monster	= dynamic_cast<CBurer *>(obj);
-//
-//		if (monster) {
-//			switch (key) {
-//			case DIK_1:
-//				monster->MotionMan.TA_Activate(&monster->anim_triple_gravi);
-//				break;
-//			case DIK_2:
-//				monster->MotionMan.TA_PointBreak();
-//				break;
-//			}
-//		}
-//	}
 
 //////////////////////////////////////////////////////////////////////////
 //	TEST	
 //////////////////////////////////////////////////////////////////////////
+#ifdef DEBUG
+	
+	CObject			*obj		= Level().Objects.FindObjectByName("monster");
+	if (obj) {
+		CAI_Bloodsucker		*monster	= dynamic_cast<CAI_Bloodsucker *>(obj);
+
+		if (monster) {
+			switch (key) {
+			case DIK_1:
+				monster->set_manual_switch(true);
+				break;
+			case DIK_2:
+				monster->set_manual_switch(false);
+				break;
+			case DIK_9:
+				monster->manual_activate();
+				break;
+			case DIK_0:
+				monster->manual_deactivate();
+				break;
+			}
+		}
+	}
+
+#endif
 
 }
 

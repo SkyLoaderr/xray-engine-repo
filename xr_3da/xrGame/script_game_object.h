@@ -137,7 +137,6 @@ public:
 //	_DECLARE_FUNCTION12	(AddAction,			void,const CScriptEntityAction *,				bool);
 //	_DECLARE_FUNCTION10	(GetCurrentAction,const CScriptEntityAction *);
 	_DECLARE_FUNCTION10	(GetEnemyStrength, int);
-	_DECLARE_FUNCTION11	(set_visible,		void,bool);
 
 
 			CScriptEntityAction	*GetCurrentAction	() const;
@@ -157,6 +156,10 @@ public:
 			CScriptGameObject	*GetFood			() const;
 			CScriptGameObject	*GetMedikit			() const;
 
+	// CAI_Bloodsucker
+	
+			void				set_invisible			(bool val);
+			void				set_manual_invisibility (bool val);
 
 
 	//////////////////////////////////////////////////////////////////////////

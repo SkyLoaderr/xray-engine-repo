@@ -160,7 +160,10 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("get_monster_hit_info",		&CScriptGameObject::GetMonsterHitInfo)
 			.def("bind_object",					&CScriptGameObject::bind_object,adopt(_2))
 			.def("motivation_action_manager",	&script_motivation_action_manager)
-			.def("set_visible",					&CScriptGameObject::set_visible)
+
+			// bloodsucker
+			.def("set_invisible",				&CScriptGameObject::set_invisible)
+			.def("set_manual_invisible",		&CScriptGameObject::set_manual_invisibility)
 
 			// movement manager
 			.def("set_body_state",				&CScriptGameObject::set_body_state			)
