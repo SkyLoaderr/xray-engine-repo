@@ -131,7 +131,7 @@ IC		void		gm_SetLighting		(CObject* O)
 			gm_SetAmbient		(0);
 			Render_Implementation.L_Projector.setup	(LT.Shadowed_Slot);
 		} else {
-			gm_SetAmbient		(iFloor(LT.ambient));
+			gm_SetAmbient		(iFloor(LT.ambient)/2);
 		}
 
 		// ambience
