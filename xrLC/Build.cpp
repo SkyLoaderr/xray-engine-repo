@@ -114,10 +114,12 @@ void CBuild::Run	(LPCSTR P)
 	BuildPortals				(*fs);
 
 	//****************************************** HEMI-Tesselate
+	/*
 	FPU::m64r					();
 	Phase						("Adaptive HT...");
 	mem_Compact					();
 	xrPhase_AdaptiveHT			();
+	*/
 
 	//****************************************** Building normals
 	FPU::m64r					();
