@@ -204,7 +204,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index
-                    first_face.v[k]=fv.pindex+point_offs;
+                    R_ASSERT2((fv.pindex+point_offs)<vert_it,"Index out of range");
+                    first_face.v[k] = fv.pindex+point_offs;
                     // uv maps
                     int offs = 0;
                     for (DWORD t=0; t<dwTexCnt; t++){

@@ -87,8 +87,9 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
         for (int k=0; k<3; k++){
             st_FaceVert& fv = face.pv[k];
             DWORD norm_id = f_index*3+k;
-	        VERIFY(norm_id<m_PNormals.size());
-            Fvector& PN = m_PNormals[norm_id];
+	        VERIFY2(norm_id<m_PNormals.size(),"Normal index out of range.");
+            VERIFY2(fv.pindex<m_Points.size(),"Point index out of range.");
+            Fvector& PN = m_PNormals[norm_id]; 
 			Fvector& V 	= m_Points[fv.pindex];
             int sz;
             if (dwFVF&D3DFVF_XYZ){
