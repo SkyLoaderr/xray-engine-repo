@@ -23,6 +23,14 @@ u32						u8_vec4			(base_basis N, u8 A=0)
 {
 	return				color_rgba		(N.x,N.y,N.z,A);
 }
+s16						s16_tc_base		(float uv)		// [-32 .. +32]
+{
+	const u32	max_tile	=	32;
+	const s32	quant		=	32768/max_tile;
+
+	s32			t			=	iFloor	(uv*float(quant)); clamp(t,-32768,32767);
+	return	s16	(t);
+}
 s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
 {
 	const u32	max_tile	=	1;
@@ -52,7 +60,24 @@ D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24 / 28
 	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
+D3DVERTEXELEMENT9		x_decl_vert		[] =	// 12+4
+{
+	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
+	{0, 12, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
 #pragma pack(push,1)
+struct  x_vert	{
+	Fvector3	P;
+	s16			tc0x,tc0y;
+
+	x_vert		(Fvector3 _P, Fvector2 tc_base)
+	{
+		P		= _P;
+		tc0x	= s16_tc_base(tc_base.x);
+		tc0y	= s16_tc_base(tc_base.y);
+	}
+};
 struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
@@ -98,7 +123,7 @@ struct  r1v_vert	{
 };
 #pragma pack(pop)
 
-#pragma comment (lib,"x:\\ETools.lib")
+#pragma comment			(lib,"x:\\ETools.lib")
 
 void OGF::Save			(IWriter &fs)
 {
@@ -167,7 +192,7 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(t,'.')) *strchr(t,'.')=0;
 		Tname			+= t;
 	}
-	string1024			sid;
+	string1024			sid	;
 	strconcat			(sid,
 		pBuild->shader_render[pBuild->materials[material].shader].name,
 		"/",
@@ -185,14 +210,10 @@ void OGF_Reference::Save	(IWriter &fs)
 	H.bs.r				= R;
 
 	// Vertices
-	fs.open_chunk		(OGF_VCONTAINER);
+	fs.open_chunk		(OGF_GCONTAINER);
 	fs.w_u32			(vb_id);
 	fs.w_u32			(vb_start);
 	fs.w_u32			((u32)model->vertices.size());
-	fs.close_chunk		();
-	
-	// Faces
-	fs.open_chunk		(OGF_ICONTAINER);
 	fs.w_u32			(ib_id);
 	fs.w_u32			(ib_start);
 	fs.w_u32			((u32)model->faces.size()*3);
@@ -247,9 +268,22 @@ void	OGF::PreSave			()
 {
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColored	=	(SH->flags.bLIGHT_Vertex);
+	VDeclarator		D;
+
+	// X-vertices/faces
+	{
+		D.set			(x_decl_vert);
+		x_VB.Begin		(D);
+		for (itXV V=x_vertices.begin(); V!=x_vertices.end(); V++)
+		{
+			x_vert		v	(V->P,V->UV[0]);
+			g_VB.Add		(&v,sizeof(v));
+		}
+		x_VB.End		(&xvb_id,&xvb_start);
+		x_IB.Register	(LPWORD(&*x_faces.begin()),LPWORD(&*x_faces.end()),&xib_id,&xib_start);
+	}
 
 	// Vertices
-	VDeclarator		D;
 	if	(bVertexColored){
 		// vertex-colored
 		D.set			(r1_decl_vert);
@@ -281,18 +315,15 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 //	clMsg			("- saving: normal or clod");
 
 	// Vertices
-	fs.open_chunk	(OGF_VCONTAINER);
+	fs.open_chunk	(OGF_GCONTAINER);
 	fs.w_u32		(vb_id);
 	fs.w_u32		(vb_start);
 	fs.w_u32		((u32)vertices.size());
-	fs.close_chunk	();
-	
-	// Faces
-	fs.open_chunk	(OGF_ICONTAINER);
 	fs.w_u32		(ib_id);
 	fs.w_u32		(ib_start);
 	fs.w_u32		((u32)faces.size()*3);
 	fs.close_chunk	();
+	
 /*
 //.
 	if (m_SWR.size()){

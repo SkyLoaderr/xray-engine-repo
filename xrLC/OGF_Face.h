@@ -120,11 +120,11 @@ struct OGF : public OGF_Base
 	u32					dwRelevantUV	;
 	u32					dwRelevantUVMASK;
 
-	u32					vb_id;
-	u32					vb_start;
-	u32					ib_id;
-	u32					ib_start;
-	u32					sw_id;
+	u32					vb_id	,	xvb_id;
+	u32					vb_start,	xvb_start;
+	u32					ib_id	,	xib_id;
+	u32					ib_start,	xib_start;
+	u32					sw_id	,	xsw_id;
 
 	OGF() : OGF_Base(0) {
 		m_SWI.count			= 0;
@@ -172,11 +172,11 @@ struct OGF_Reference : public OGF_Base
 	u32					material;
 	vecOGF_T			textures;
 
-	u32					vb_id;
+	u32					vb_id	;
 	u32					vb_start;
-	u32					ib_id;
+	u32					ib_id	;
 	u32					ib_start;
-	u32					sw_id;
+	u32					sw_id	;
 
 	Fmatrix				xform;
 	base_color_c		c_scale;

@@ -42,6 +42,8 @@ enum OGF_Chuncks {
 	OGF_S_DESC				= 18,	// * For skeletons only
 	OGF_S_MOTION_REFS		= 19,	// * For skeletons only
 	OGF_SWICONTAINER		= 20,	// * SlidingWindowItem record container
+	OGF_GCONTAINER			= 21,	// * both VB&IB
+	OGF_GCONTAINER_X		= 22,	// * both VB&IB, extended/fast geometry
     OGF_forcedword			= 0xFFFFFFFF         
 };							
 							
