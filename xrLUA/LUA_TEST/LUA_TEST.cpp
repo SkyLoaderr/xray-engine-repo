@@ -1224,22 +1224,87 @@ struct CDSC : public EDSD::DS<EDSIBA<EDSI,EDSB,EDSA,EDSBA>,GV> {
 	typedef typename EDSD::DS<EDSIBA<EDSI,EDSB,EDSA,EDSBA>,GV>::CGraphNode CGraphNode;
 };
 
+//template <typename _1>
+//struct A {
+//	struct AA {
+//		_1	i;
+//	};
+//
+//	template <typename _2>
+//	struct B {
+//		IC	B();
+//	};
+//
+//	AA		aa;
+//
+//	IC		A();
+//	IC	AA	&a();
+//};
+//
+//template <typename _1>
+//IC	A<_1>::A()
+//{
+//	printf("AAA");
+//}
+//
+//template <typename _1>
+//IC	typename A<_1>::AA	&A<_1>::a()
+//{
+//	printf	("%d",aa.i);
+//	return	(aa);
+//}
+//
+//template <typename _1>
+//template <typename _2>
+//IC	A<_1>::B<_2>::B()
+//{
+//	printf	("BBB");
+//}
+//
+template <template <typename _T> class T1>
+struct A {
+	struct AA : public T1<AA> {
+		AA	*pointerA;
+	};
+};
+
+template<template <typename _T> class T1 = CEmptyClassTemplate>
+struct B {
+	template <typename T2>
+	struct BB : public T1<T2> {
+		T2	*pointerB;
+	};
+};
+
+template <typename T>
+struct CClassTemplate {
+	int		x;
+	T		*X;
+};
+
 int __cdecl main(char argc, char *argv[])
 {
 //	typedef CEDSB<float>										_data_storage_base;
 //	typedef CEDSBA<_data_storage_base,CDSA>						_data_storage_base_allocator;
 //	typedef CEDSIBA<u32,_data_storage_base_allocator>			_data_storage_index_base_allocator;
 //	typedef CEDLSL<_data_storage_index_base_allocator>			_data_storage;
-	typedef CDSC<CESLSL,CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
-
-	_data_storage::CGraphNode	g;
-	g.f()		= 1.f;
-	g.g()		= 2.f;
-	g.h()		= 3.f;
-	g.index()	= 4;
-	g.back()	= &g;
-//	g.prev()	= &g;
-	g.next()	= &g;
+//	typedef CDSC<CESLSL,CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
+//
+//	A<int>::B<float>	AAA;
+//
+//	_data_storage::CGraphNode	g;
+//	g.f()		= 1.f;
+//	g.g()		= 2.f;
+//	g.h()		= 3.f;
+//	g.index()	= 4;
+//	g.back()	= &g;
+////	g.prev()	= &g;
+//	g.next()	= &g;
+	A<B<CClassTemplate>::BB>::AA	X;
+	X.pointerA	= &X;
+	X.pointerB	= &X;
+	X.x			= 1;
+	X.X			= &X;
 
 	return		(0);
 }
