@@ -435,14 +435,14 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("run",					int(MonsterSpace::eMovementTypeRun)),
 				value("stand",					int(MonsterSpace::eMovementTypeStand))
 			]
-//			.enum_("path")
-//			[
-//				value("line",					int(MonsterSpace::ePathTypeStraight)),
-//				value("dodge",					int(MonsterSpace::ePathTypeDodge)),
-//				value("criteria",				int(MonsterSpace::ePathTypeCriteria)),
-//				value("curve",					int(MonsterSpace::ePathTypeStraightDodge)),
-//				value("curve_criteria",			int(MonsterSpace::ePathTypeDodgeCriteria))
-//			]
+			.enum_("path")
+			[
+				value("line",					int(CDetailPathManager::eDetailPathTypeSmooth)),
+				value("dodge",					int(CDetailPathManager::eDetailPathTypeSmoothDodge)),
+				value("criteria",				int(CDetailPathManager::eDetailPathTypeSmoothCriteria)),
+				value("curve",					int(CDetailPathManager::eDetailPathTypeSmooth)),
+				value("curve_criteria",			int(CDetailPathManager::eDetailPathTypeSmoothCriteria))
+			]
 			.enum_("input")
 			[
 				value("none",					int(CMovementAction::eInputKeyNone)),
