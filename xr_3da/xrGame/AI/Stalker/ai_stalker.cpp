@@ -184,7 +184,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tGraphID))
 		set_game_vertex				(tpHuman->m_tGraphID);
-	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID))
+	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
 		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
