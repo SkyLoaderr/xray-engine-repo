@@ -57,7 +57,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib x:\xrXMLParser.lib"
 				ShowProgress="0"
 				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
@@ -1773,6 +1773,12 @@
 					Name="UIWindows"
 					Filter="">
 					<File
+						RelativePath=".\ui\UI3dStatic.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UI3dStatic.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIButton.cpp">
 					</File>
 					<File
@@ -1797,6 +1803,12 @@
 						RelativePath=".\ui\UIDragDropList.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIEditBox.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIEditBox.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIFrameWindow.cpp">
 					</File>
 					<File
@@ -1807,6 +1819,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIInventoryWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIMainIngameWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIMainIngameWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIMessageBox.cpp">
@@ -1851,10 +1869,22 @@
 						RelativePath=".\ui\UIStatic.h">
 					</File>
 					<File
+						RelativePath=".\ui\UITradeWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITradeWnd.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIWindow.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIWindow.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIXmlInit.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIXmlInit.h">
 					</File>
 				</Filter>
 			</Filter>

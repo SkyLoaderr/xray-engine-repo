@@ -26,6 +26,11 @@ void CInventoryItem::Load(LPCSTR section) {
 	m_weight = pSettings->r_float(section, "inv_weight");
 
 	m_cost = pSettings->r_u32(section, "cost");
+
+	//properties used by inventory menu
+	m_sIconTexture = pSettings->r_string(section, "inv_icon");
+	m_iGridWidth = pSettings->r_u32(section, "inv_grid_width");
+	m_iGridHeight = pSettings->r_u32(section, "inv_grid_height");
 }
 
 const char* CInventoryItem::Name() {
@@ -153,6 +158,106 @@ void SortRuckAndBelt(CInventory *pInventory) {
 	}
 }
 
+//проверяет есть ли доступное место в рюкзаке
+//для вещи
+//вещи размещаются по тому же принципу, что и 
+//в UIInventoryWnd: сначала самые объемные
+
+#define RUCK_HEIGHT 8
+#define RUCK_WIDTH 7
+
+
+//сравнивает элементы по пространству занимаемому ими в рюкзаке
+bool GreaterRoomInRuck(PIItem item1, PIItem item2)
+{
+	int item1_room = item1->m_iGridWidth*item1->m_iGridHeight;
+	int item2_room = item2->m_iGridWidth*item2->m_iGridHeight;
+
+	if(item1_room > item2_room)
+		return true;
+	else if (item1_room == item2_room)
+	{
+		if(item1->m_iGridWidth >= item2->m_iGridWidth)
+			return true;
+	}
+
+	return false;
+}
+
+
+bool FreeRuckRoom(CInventory *pInventory) 
+{
+	bool ruck_room[RUCK_HEIGHT][RUCK_WIDTH];
+
+	int i,j,k,m;
+	int place_row = 0,  place_col = 0;
+	bool found_place;
+	bool can_place;
+
+
+	for(i=0; i<RUCK_HEIGHT; i++)
+		for(j=0; j<RUCK_WIDTH; j++)
+			ruck_room[i][j] = false;
+
+
+	TIItemList ruck_list(pInventory->m_ruck);
+	
+	ruck_list.sort(GreaterRoomInRuck);
+	
+	found_place = true;
+
+	for(PPIItem it = ruck_list.begin(); (it != ruck_list.end()) && found_place; it++) 
+	{
+		PIItem pItem = *it;
+
+		//проверить можно ли разместить элемент,
+		//проверяем последовательно каждую клеточку
+		found_place = false;
+	
+		for(i=0; (i<RUCK_HEIGHT - pItem->m_iGridHeight+1) && !found_place; i++)
+		{
+			for(j=0; (j<RUCK_WIDTH - pItem->m_iGridWidth +1) && !found_place; j++)
+			{
+				can_place = true;
+
+				for(k=0; (k<pItem->m_iGridHeight) && can_place; k++)
+				{
+					for(m=0; (m<pItem->m_iGridWidth) && can_place; m++)
+					{
+						if(ruck_room[i+k][j+m])
+								can_place =  false;
+					}
+				}
+			
+				if(can_place)
+				{
+					found_place=true;	
+					place_row = i;
+					place_col = j;
+				}
+
+			}
+		}
+
+		//разместить элемент на найденном месте
+		if(found_place)
+		{
+			for(k=0; k<pItem->m_iGridHeight; k++)
+			{
+				for(m=0; m<pItem->m_iGridWidth; m++)
+				{
+					ruck_room[place_row+k][place_col+m] = true;
+				}
+			}
+		}
+	}
+
+	//для какого-то элемента места не нашлось
+	if(!found_place) return false;
+
+	return true;
+}
+
 CInventory::CInventory() {
 	m_takeDist = pSettings->r_float("inventory","take_dist"); // 2.f;
 	m_maxWeight = pSettings->r_float("inventory","max_weight"); // 40.f;
@@ -204,11 +309,11 @@ bool CInventory::Take(CGameObject *pObj) {
 				if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem)) {
 					m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 					return true;
-				} else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck) {
+				} else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck || !FreeRuckRoom(this)) {
 					if(Belt(l_pIItem)) return true;
 					else return !Drop(l_pIItem);
 				}
-			} else if(m_ruck.size() > m_maxRuck) {
+			} else if(m_ruck.size() > m_maxRuck || !FreeRuckRoom(this)) {
 				if(Belt(l_pIItem)) return true;
 				else return !Drop(l_pIItem);
 			}
@@ -261,10 +366,18 @@ bool CInventory::Slot(PIItem pIItem) {
 		if(!m_slots[pIItem->m_slot].m_pIItem) {
 			m_slots[pIItem->m_slot].m_pIItem = pIItem;
 			PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+			
+			//by Dandy, also perform search on the belt
+			 l_it = std::find(m_belt.begin(), m_belt.end(), pIItem); if(l_it != m_belt.end()) m_belt.erase(l_it);
+			
 			return true;
 		} else {
 			if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) {
 				PPIItem l_it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); if(l_it != m_ruck.end()) m_ruck.erase(l_it);
+
+				//by Dandy, also perform search on the belt
+				 l_it = std::find(m_belt.begin(), m_belt.end(), pIItem); if(l_it != m_belt.end()) m_belt.erase(l_it);
+
 				return true;
 			}
 		}
