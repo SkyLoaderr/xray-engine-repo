@@ -95,4 +95,3 @@ void	IVisual::Copy(IVisual *pFrom)
 	PCOPY(hGeom);
 	PCOPY(vis);
 }
-
