@@ -22,7 +22,7 @@ class CHUDCursor
 public:
 							CHUDCursor	();
 							~CHUDCursor	();
-
+	void					CursorOnFrame ();
 	void					Render		();
 	void					Load		();
 };

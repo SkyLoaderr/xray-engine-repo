@@ -193,13 +193,13 @@ CUIDialogWnd* main_input_receiver()
 void hide_indicators()
 {
 	HUD().GetUI()->HideIndicators();
-	psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+	psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 }
 
 void show_indicators()
 {
 	HUD().GetUI()->ShowIndicators();
-	psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+	psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 }
 
 

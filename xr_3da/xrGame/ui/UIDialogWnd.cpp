@@ -24,10 +24,6 @@ void CUIDialogWnd::Show()
 	inherited::Enable(true);
 	inherited::Show(true);
 
-//	m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
-//	if(m_bCrosshair) 
-//		psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
-
 
 	ResetAll();
 }
@@ -39,8 +35,6 @@ void CUIDialogWnd::Hide()
 	inherited::Enable(false);
 	inherited::Show(false);
 	
-//	if(m_bCrosshair) 
-//		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 }
 
 

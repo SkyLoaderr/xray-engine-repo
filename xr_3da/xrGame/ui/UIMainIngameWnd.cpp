@@ -350,9 +350,9 @@ void CUIMainIngameWnd::Draw()
 			scope_mode = true;
 		}
 
-		if(psHUD_Flags.test(HUD_CROSSHAIR))
+		if(psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT))
 		{
-			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+			psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 			m_bShowHudCrosshair = true;
 		}
 
@@ -373,7 +373,7 @@ void CUIMainIngameWnd::Draw()
 		if (m_bShowHudCrosshair && !zoom_mode)
 		{
 			m_bShowHudCrosshair = false;
-			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+			psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 		}
 		RenderQuickInfos();
 	}

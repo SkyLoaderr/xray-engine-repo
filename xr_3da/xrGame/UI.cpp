@@ -182,15 +182,15 @@ void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 		if( bDoHideIndicators && pDialog==MainInputReceiver() ){
 			ShowIndicators();
 			if(m_bCrosshair) 
-				psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+				psHUD_Flags.set(HUD_CROSSHAIR_RT, TRUE);
 		};
 
 	}else{
 		if(bDoHideIndicators){
 			HideIndicators();
-			m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
+			m_bCrosshair = !!psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT);
 			if(m_bCrosshair) 
-				psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+				psHUD_Flags.set(HUD_CROSSHAIR_RT, FALSE);
 		}
 	}
 

@@ -108,6 +108,7 @@ void CHUDManager::Load()
 void CHUDManager::OnFrame()
 {
 	if (pUI) pUI->UIOnFrame();
+	m_pHUDCursor->CursorOnFrame();
 }
 //--------------------------------------------------------------------
 
@@ -173,7 +174,7 @@ void  CHUDManager::RenderUI()
 		if(pUI && GetUICursor() && GetUICursor()->IsVisible())
 			GetUICursor()->Render();
 	}
-	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	
+	if (psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT) && !bAlready)	
 		m_pHUDCursor->Render();
 
 	// Recalc new scale factor if resolution was changed

@@ -66,6 +66,24 @@ void CHUDCursor::Load		()
 
 IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
 
+void CHUDCursor::CursorOnFrame ()
+{
+	Fvector		p1,p2,dir;
+
+	p1	= Device.vCameraPosition;
+	dir = Device.vCameraDirection;
+	
+	// Render cursor
+	float		dist=g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
+	
+	Level().CurrentEntity()->setEnabled(false);
+
+	if (Level().ObjectSpace.RayPick( p1, dir, dist, collide::rqtBoth, RQ ))
+		dist = RQ.range;
+
+	Level().CurrentEntity()->setEnabled(true);
+}
+
 void CHUDCursor::Render()
 {
 	Fvector		p1,p2,dir;
@@ -80,15 +98,15 @@ void CHUDCursor::Render()
 	
 	// Render cursor
 	float		dist=g_pGamePersistent->Environment.CurrentEnv.far_plane*0.99f;
-	
+/*	
 	Level().CurrentEntity()->setEnabled(false);
-	u32 C			= C_DEFAULT;
 
 	if (Level().ObjectSpace.RayPick( p1, dir, dist, collide::rqtBoth, RQ ))
 		dist = RQ.range;
 
 	Level().CurrentEntity()->setEnabled(true);
-
+*/
+	u32 C			= C_DEFAULT;
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	
 	FVF::TL			PT;

@@ -28,7 +28,7 @@ void CWeaponBM16::PlayReloadSound()
 	if(m_magazine.size()==1)
 		PlaySound	(m_sndReload1,vLastFP);
 	else
-		PlaySound	(sndShot,vLastFP);
+		PlaySound	(sndReload,vLastFP);
 }
 
 void CWeaponBM16::PlayAnimShoot()

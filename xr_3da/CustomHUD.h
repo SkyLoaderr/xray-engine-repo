@@ -10,6 +10,7 @@ ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_WEAPON				(1<<2)
 #define HUD_INFO				(1<<3)
 #define HUD_DRAW				(1<<4)
+#define HUD_CROSSHAIR_RT		(1<<5)
 
 class ENGINE_API IRender_Visual;
 class CUI;
