@@ -7,14 +7,14 @@ template <class T>
 void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
 	IReader*	O	= F.open_chunk(chunk);
-	u32		count	= O?(O->Length()/sizeof(T)):0;
+	u32		count	= O?(O->length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
 	{
 		dest.reserve(count);
-		dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+		dest.insert	(dest.begin(), (T*)O->pointer(), (T*)O->pointer() + count);
 	}
-	if (O)		O->Close	();
+	if (O)		O->close	();
 }
 
 extern u32*		Surface_Load	(char* name, u32& w, u32& h);
@@ -174,7 +174,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		{
 			F = FS.open_chunk(EB_Light_static);
 			b_light_static	temp;
-			u32 cnt			= F->Length()/sizeof(temp);
+			u32 cnt			= F->length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
 			{
 				R_Light		RL;
@@ -200,7 +200,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				R_ASSERT	(temp.controller_ID<L_layers.size());
 				L_layers	[temp.controller_ID].lights.push_back	(RL);
 			}
-			F->Close		();
+			F->close		();
 		}
 
 		// ***Search HEMI***
@@ -229,7 +229,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	{
 		Surface_Init		();
 		F = FS.open_chunk	(EB_Textures);
-		u32 tex_count	= F->Length()/sizeof(b_texture);
+		u32 tex_count	= F->length()/sizeof(b_texture);
 		for (u32 t=0; t<tex_count; t++)
 		{
 			Progress		(float(t)/float(tex_count));
@@ -245,10 +245,10 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 			strlwr			(N);
 			char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-			CCompressedStream THM	(th_name,THM_SIGN);
+			CCompressedReader THM	(th_name,THM_SIGN);
 
 			// analyze thumbnail information
-			R_ASSERT		(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+			R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
 			BOOL			bLOD=FALSE;
 			if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
 

@@ -62,7 +62,7 @@ void CBuild::Run	(string& P)
 	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
 	H.XRLC_version = XRCL_PRODUCTION_VERSION;
 	strcpy			(H.name,g_params.L_name);
-	fs.write		(&H,sizeof(H));
+	fs.w			(&H,sizeof(H));
 	fs.close_chunk	();
 
 	FPU::m64r		();
@@ -190,7 +190,7 @@ void CBuild::Run	(string& P)
 	for (u32 i=0; i<glows.size(); i++)
 	{
 		b_glow&	G = glows[i];
-		fs.write(&G,4*sizeof(float));
+		fs.w(&G,4*sizeof(float));
 		string T = textures		[materials[G.dwMaterial].surfidx].name;
 		string S = shader_render[materials[G.dwMaterial].shader].name;
 		fs.w_u32(RegisterString(T));
@@ -213,27 +213,27 @@ void CBuild::Run	(string& P)
 void CBuild::err_save	()
 {
 	string256		log_name,log_user;
-	u32			buffer_size		= 128;
+	u32				buffer_size		= 128;
 	GetUserName		(log_user,(DWORD*)&buffer_size);
 	strconcat		(log_name,"build_",strlwr(log_user),".err");
 
-	CFS_File		err(log_name);
+	CFileWriter		err(log_name);
 
 	// t-junction
 	err.open_chunk	(0);
 	err.w_u32		(err_tjunction.size()/(1*sizeof(Fvector)));
-	err.write		(err_tjunction.pointer(), err_tjunction.size());
+	err.w			(err_tjunction.pointer(), err_tjunction.size());
 	err.close_chunk	();
 
 	// m-edje
 	err.open_chunk	(1);
 	err.w_u32		(err_multiedge.size()/(2*sizeof(Fvector)));
-	err.write		(err_multiedge.pointer(), err_multiedge.size());
+	err.w			(err_multiedge.pointer(), err_multiedge.size());
 	err.close_chunk	();
 
 	// invalid
 	err.open_chunk	(2);
 	err.w_u32		(err_invalid.size()/(3*sizeof(Fvector)));
-	err.write		(err_invalid.pointer(), err_invalid.size());
+	err.w			(err_invalid.pointer(), err_invalid.size());
 	err.close_chunk	();
 }
