@@ -133,6 +133,13 @@ public:
 			void		UpdateSleep();
 
 protected:
+	//хромание
+	virtual bool		IsLimping() const {return CActorCondition::IsLimping();	}
+	//звук тяжелого дыхания
+	ref_sound			m_HeavyBreathSnd;
+	bool				m_bHeavyBreathSndPlaying;
+
+protected:
 	//Sleep params
 	//время когда актера надо разбудить
 	ALife::_TIME_ID			m_dwWakeUpTime;
@@ -152,10 +159,6 @@ protected:
 	bool					bDeathInit;
 
 	// media
-	BOOL					bStep;
-	ref_sound				sndLanding;
-	ref_sound				sndZoneHeart;
-	ref_sound				sndZoneDetector;
 	ref_sound				sndHit[SND_HIT_COUNT];
 	ref_sound				sndDie[SND_DIE_COUNT];
 

@@ -81,13 +81,6 @@ protected:
 	//конпка активации окошка сна
 	CUIButton			UISleepButton;
 
-	CUIButton			UIButton1;
-	CUIButton			UIButton2;
-	CUIButton			UIButton3;
-	CUIButton			UIButton4;
-	CUIButton			UIButton5;
-	CUIButton			UIButton6;
-
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;

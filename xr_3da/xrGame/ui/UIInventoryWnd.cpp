@@ -153,19 +153,7 @@ void CUIInventoryWnd::Init()
 	UISleepWnd.Init();
 	UISleepWnd.Hide();
 	
-/*	AttachChild(&UIButton1);
-	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
-	AttachChild(&UIButton2);
-	xml_init.InitButton(uiXml, "button", 1, &UIButton2);
-	AttachChild(&UIButton3);
-	xml_init.InitButton(uiXml, "button", 2, &UIButton3);
-	AttachChild(&UIButton4);
-	xml_init.InitButton(uiXml, "button", 3, &UIButton4);
-	AttachChild(&UIButton5);
-	xml_init.InitButton(uiXml, "button", 4, &UIButton5);
-	AttachChild(&UIButton6);
-	xml_init.InitButton(uiXml, "button", 5, &UIButton6);*/
-	
+
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -722,61 +710,6 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			else
 				pActor->Awoke();
 				*/
-	}
-	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->Sleep(1.f/6.f);
-		}
-	}
-	else if(pWnd == &UIButton2 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->Sleep(1.f);
-		}
-	}
-	else if(pWnd == &UIButton3 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->Sleep(1.f/60.f);
-		}
-	}
-	else if(pWnd == &UIButton4 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->ChangeHealth(pActor->m_fMedkit);
-			pActor->ChangeBleeding(pActor->m_fMedkitWound);
-		}
-	}
-	else if(pWnd == &UIButton5 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->ChangeRadiation(-pActor->m_fAntirad);
-		}
-	}
-	else if(pWnd == &UIButton6 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		
-		if(pActor)
-		{
-			pActor->ChangeSatiety(0.1f);
-		}
 	}
 	else if (CUIOutfitSlot::UNDRESS_OUTFIT == msg)
 	{

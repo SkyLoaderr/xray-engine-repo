@@ -615,8 +615,6 @@ void CActor::net_Destroy	()
 
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
 	CInventoryOwner::net_Destroy();
-	::Sound->destroy			(sndZoneHeart);
-	::Sound->destroy			(sndZoneDetector);
 
 	u32 it;
 	for (it=0; it<SND_HIT_COUNT; ++it)	::Sound->destroy	(sndHit[it]);

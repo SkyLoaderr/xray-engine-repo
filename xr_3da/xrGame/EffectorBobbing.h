@@ -11,13 +11,23 @@ class CEffectorBobbing : public CCameraEffector
 	float	fYAmplitude;
 	float	fSpeed;
 
-	u32	dwMState;
+	u32		dwMState;
 	float	fReminderFactor;
+	bool	is_limping;
+
+	float	m_fAmplitudeRun;
+	float	m_fAmplitudeWalk;
+	float	m_fAmplitudeLimp;
+
+	float	m_fSpeedRun;
+	float	m_fSpeedWalk;
+	float	m_fSpeedLimp;
+
 public:
 			CEffectorBobbing	();
 	virtual ~CEffectorBobbing	();
 	virtual	BOOL	Process		(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);
-	void	SetState			(u32 st);
+	void	SetState			(u32 st, bool limping);
 };
 
 #endif //_EFFECTOR_BOBBING_H

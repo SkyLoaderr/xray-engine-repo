@@ -6,6 +6,13 @@
 #include "actor_defs.h"
 
 
+#define BOBBING_SECT "bobbing_effector"
+
+#define CROUCH_FACTOR	0.75f
+#define SPEED_REMINDER	5.f 
+
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -14,22 +21,26 @@ CEffectorBobbing::CEffectorBobbing() : CCameraEffector(eCEBobbing,10000.f,FALSE)
 {
 	fTime			= 0;
 	fReminderFactor	= 0;
+	is_limping		= false;
+
+	m_fAmplitudeRun		= pSettings->r_float(BOBBING_SECT, "run_amplitude");
+	m_fAmplitudeWalk	= pSettings->r_float(BOBBING_SECT, "walk_amplitude");
+	m_fAmplitudeLimp	= pSettings->r_float(BOBBING_SECT, "limp_amplitude");
+
+	m_fSpeedRun			= pSettings->r_float(BOBBING_SECT, "run_speed");
+	m_fSpeedWalk		= pSettings->r_float(BOBBING_SECT, "walk_speed");
+	m_fSpeedLimp		= pSettings->r_float(BOBBING_SECT, "limp_speed");
 }
 
 CEffectorBobbing::~CEffectorBobbing	()
 {
 }
 
-void CEffectorBobbing::SetState(u32 mstate){
+void CEffectorBobbing::SetState(u32 mstate, bool limping){
 	dwMState		= mstate;
+	is_limping		= limping;
 }
 
-#define AMPLITUDE_RUN	0.0075f
-#define AMPLITUDE_WALK	0.005f
-#define SPEED_RUN		10.f
-#define SPEED_WALK		7.f
-#define CROUCH_FACTOR	0.75f
-#define SPEED_REMINDER	5.f 
 
 BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& /**fFov/**/, float& /**fFar/**/, float& /**fAspect/**/)
 {
@@ -52,8 +63,24 @@ BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& /**f
 		// apply footstep bobbing effect
 		Fvector dangle;
 		float k		= ((dwMState& ACTOR_DEFS::mcCrouch)?CROUCH_FACTOR:1.f);
-		float A		= (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
-		float ST	= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
+
+		float A, ST;
+
+		if(CActor::isAccelerated(dwMState))
+		{
+			A	= m_fAmplitudeRun*k;
+			ST	= m_fSpeedRun*fTime*k;
+		}
+		else if(is_limping)
+		{
+			A	= m_fAmplitudeLimp*k;
+			ST	= m_fSpeedLimp*fTime*k;
+		}
+		else
+		{
+			A	= m_fAmplitudeWalk*k;
+			ST	= m_fSpeedWalk*fTime*k;
+		}
 	
 		float _sinA	= _abs(_sin(ST)*A)*fReminderFactor;
 		float _cosA	= _cos(ST)*A*fReminderFactor;

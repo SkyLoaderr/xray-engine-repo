@@ -366,7 +366,7 @@ bool	CActor::isAccelerated			(u32 mstate)
 
 bool CActor::CanAccelerate			()
 {
-	bool can_accel = 
+	bool can_accel = !IsLimping() &&
 		!m_PhysicMovementControl->PHCapture() &&
 		(!(mstate_real&mcBack) || psActorFlags.test(AF_RUN_BACKWARD)) &&
 		!m_bZoomAimingMode;
@@ -376,7 +376,8 @@ bool CActor::CanAccelerate			()
 
 bool	CActor::CanJump				()
 {
-	bool can_Jump = !m_PhysicMovementControl->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
+	bool can_Jump = !IsLimping() &&
+		!m_PhysicMovementControl->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
 		&& !m_bJumpKeyPressed &&!m_bZoomAimingMode;
 
 	return can_Jump;

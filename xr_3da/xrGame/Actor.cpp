@@ -107,8 +107,6 @@ CActor::CActor() : CEntityAlive()
 	r_model_yaw_delta		= 0;
 	r_model_yaw_dest		= 0;
 
-	bStep					= FALSE;
-
 	b_DropActivated			= 0;
 	f_DropPower				= 0.f;
 
@@ -151,6 +149,8 @@ CActor::CActor() : CEntityAlive()
 	m_bZoomAimingMode = false;
 
 	m_eDefaultObjAction = eaaNoAction;
+
+	m_bHeavyBreathSndPlaying = false;
 }
 
 
@@ -163,9 +163,7 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; ++i) xr_delete(cameras[i]);
 
 	// sounds 2D
-	::Sound->destroy(sndZoneHeart);
-	::Sound->destroy(sndZoneDetector);
-
+	m_HeavyBreathSnd.destroy();
 	// sounds 3D
 	for (i=0; i<SND_HIT_COUNT; ++i) ::Sound->destroy(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; ++i) ::Sound->destroy(sndDie[i]);
@@ -247,14 +245,6 @@ void CActor::Load	(LPCSTR section )
 	m_PhysicMovementControl->SetMass		(mass);
 
 
-	// m_PhysicMovementControl: Frictions
-
-	//float af, gf, wf;
-	//af					= pSettings->r_float	(section,"ph_friction_air"	);
-	//gf					= pSettings->r_float	(section,"ph_friction_ground");
-	//wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	//m_PhysicMovementControl->SetFriction	(af,wf,gf);
-
 	// BOX activate
 	m_PhysicMovementControl->ActivateBox	(0);
 
@@ -289,24 +279,24 @@ void CActor::Load	(LPCSTR section )
 	LoadSleepEffector		("sleep_effector");
 
 	//загрузить параметры смещения firepoint
-	m_vMissileOffset	= pSettings->r_fvector3(section,"missile_throw_offset");	
+	m_vMissileOffset	= pSettings->r_fvector3(section,"missile_throw_offset");
 
 	//Weapons				= xr_new<CWeaponList> (this);
 
 	// sounds
 	char buf[256];
 
-	sndLanding.g_type	= SOUND_TYPE_WORLD_OBJECT_COLLIDING;
-	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4",						SOUND_TYPE_MONSTER_STEP);
-	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger",			SOUND_TYPE_MONSTER_STEP);
 	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,*cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,*cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,*cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING);
 	::Sound->create		(sndHit[3],			TRUE,	strconcat(buf,*cName(),"\\hurt4"),SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,*cName(),"\\die0"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,*cName(),"\\die1"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING);
-	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[0],			TRUE,	strconcat(buf,*cName(),"\\die0"), SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[1],			TRUE,	strconcat(buf,*cName(),"\\die1"), SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,*cName(),"\\die2"), SOUND_TYPE_MONSTER_DYING);
+	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,*cName(),"\\die3"), SOUND_TYPE_MONSTER_DYING);
+
+	m_HeavyBreathSnd.create(FALSE, pSettings->r_string(section,"heavy_breath_snd"), SOUND_TYPE_MONSTER_INJURING);
+	m_bHeavyBreathSndPlaying = false;
 
 	cam_Set					(eacFirstEye);
 
@@ -689,7 +679,7 @@ void CActor::UpdateCL()
 		);
 
 		// landing sounds
-		if (mtl_pair && !sndLanding.feedback && (mstate_real & (mcLanding | mcLanding2))){
+		if (mtl_pair && (mstate_real & (mcLanding | mcLanding2))){
 			if (!mtl_pair->CollideSounds.empty()){
 				Fvector	s_pos		=	Position	();
 				s_pos.y				+=	.15f;
@@ -838,8 +828,32 @@ void CActor::shedule_Update	(u32 DT)
 		pCamBobbing = xr_new<CEffectorBobbing>	();
 		EffectorManager().AddEffector			(pCamBobbing);
 	}
-	pCamBobbing->SetState						(mstate_real);
+	pCamBobbing->SetState						(mstate_real, IsLimping());
 
+	//звук тяжелого дыхания при уталости и хромании
+	if(IsLimping())
+	{
+		if(!m_bHeavyBreathSndPlaying)
+		{
+			Fvector pos;
+			pos.set(Position());
+			pos.y += 1.7f;
+			m_HeavyBreathSnd.play_at_pos(this, pos, sm_Looped | sm_2D);
+			m_bHeavyBreathSndPlaying = true;
+		}
+		else
+		{
+			Fvector pos;
+			pos.set(Position());
+			pos.y += 1.7f;
+			m_HeavyBreathSnd.set_position(pos);
+		}
+	} 
+	else if(m_bHeavyBreathSndPlaying)
+	{
+		m_bHeavyBreathSndPlaying = false;
+		m_HeavyBreathSnd.stop();
+	}
 
 	//если в режиме HUD, то сама модель актера не рисуется
 	setVisible				(!HUDview	());

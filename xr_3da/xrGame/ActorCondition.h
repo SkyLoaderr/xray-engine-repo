@@ -20,15 +20,11 @@ public:
 
 	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();
-	
-	
-	float m_fMedkit;
-	float m_fMedkitWound;
-	float m_fAntirad;
 
 protected:
 	void ConditionJump(float weight);
 	void ConditionAccel(float weight);
+
 
 	float m_fAlcohol;
 
@@ -37,7 +33,13 @@ protected:
 	float m_fJumpPower;
 	float m_fAccelPower;
 
+protected:
+	//хромание при потере сил и здоровья
+	virtual bool IsLimping() const;
 
+	//порог силы и здоровья меньше которого актер начинает хромать
+	float m_fLimpingPower;
+	float m_fLimpingHealth;
 };
 
 #endif //_ACTOR_CONDITION_H_
