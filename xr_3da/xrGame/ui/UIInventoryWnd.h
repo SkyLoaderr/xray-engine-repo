@@ -20,6 +20,7 @@
 
 
 
+
 class CArtifact;
 
 
@@ -50,6 +51,9 @@ public:
 	//для работы с сочетателем артефактом извне
 	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
 	void AddArtifactToMerger(CArtifact* pArtifact);
+	//для добавления новых предметов во время работы с интерфейсом (например 
+	//отсоединенных аддонов)
+	void AddItemToBag(PIItem pItem);
 protected:
 
 	CUIFrameWindow		UIBagWnd;
@@ -99,7 +103,9 @@ protected:
 	//менюшка для работы с устройством производства артефактов
 	CUIArtifactMerger UIArtifactMergerWnd;
 
-    
+		
+	//DEFINE_VECTOR (CUIDragDropItem, DRAG_DROP_LIST, DRAG_DROP_LIST_it);
+
 	static const int MAX_ITEMS = 70;
 	CUIDragDropItem m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
@@ -124,16 +130,6 @@ protected:
 	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
 
-	//сравнивает элементы по пространству занимаемому ими в рюкзаке
-/*	//для сортировки
-	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
-	//для надписей на иконках с оружием
-	static void AmmoUpdateProc(CUIDragDropItem* pItem);
-	//для надписей на иконках с едой
-	static void FoodUpdateProc(CUIDragDropItem* pItem);*/
-
-	
-	
 	//для запуска меню по правой клавиши
 	void ActivatePropertiesBox();
 
@@ -141,7 +137,8 @@ protected:
 	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, 
 		  TO_SLOT_ACTION, TO_BAG_ACTION,
 		  ARTIFACT_MERGER_ACTIVATE,
-		  ARTIFACT_MERGER_DEACTIVATE};
+		  ARTIFACT_MERGER_DEACTIVATE,
+  		  ATTACH_ADDON, DETACH_ADDON};
 
 	//выбросить элемент
 	void DropItem();
@@ -158,7 +155,16 @@ protected:
 	void StartArtifactMerger();
 	void StopArtifactMerger();
 
+	//присоединение/отсоединение аддонов к оружию
+	void AttachAddon();
+	void DetachAddon();
+
 
 	//дополнительные списки для сортировки вещей
 	TIItemList ruck_list;
+	
+	//вещь к которой мы присоединяем add-on
+	PIItem	m_pItemToUpgrade;
+	//имя того аддона который отсоединяем
+	ref_str m_sAddonName;
 };

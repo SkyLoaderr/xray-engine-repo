@@ -16,6 +16,11 @@
 #include "..\\hudmanager.h"
 #include "..\\ArtifactMerger.h"
 
+#include "..\\weapon.h"
+#include "..\\silencer.h"
+#include "..\\scope.h"
+#include "..\\grenadelauncher.h"
+
 #include "..\\ai_script_space.h"
 #include "..\\ai_script_processor.h"
 
@@ -37,6 +42,8 @@ CUIInventoryWnd::CUIInventoryWnd()
 
 	m_pCurrentItem = NULL;
 	m_pCurrentDragDropItem = NULL;
+	m_pItemToUpgrade = NULL;
+	m_sAddonName = NULL;
 
 	Init();
 
@@ -588,6 +595,13 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case ARTIFACT_MERGER_DEACTIVATE:
 				StopArtifactMerger();
 				break;
+			case ATTACH_ADDON:
+				AttachAddon();
+				break;
+			case DETACH_ADDON:
+				DetachAddon();
+				break;
+
 			}
 		}
 	}
@@ -603,57 +617,57 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	//кнопки cheats
 	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->Sleep(1.f/6.f);
+			pActor->Sleep(1.f/6.f);
 		}
 	}
 	else if(pWnd == &UIButton2 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->Sleep(1.f);
+			pActor->Sleep(1.f);
 		}
 	}
 	else if(pWnd == &UIButton3 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->Sleep(1.f/60.f);
+			pActor->Sleep(1.f/60.f);
 		}
 	}
 	else if(pWnd == &UIButton4 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->ChangeHealth(l_pA->m_fMedkit);
-			l_pA->ChangeBleeding(l_pA->m_fMedkitWound);
+			pActor->ChangeHealth(pActor->m_fMedkit);
+			pActor->ChangeBleeding(pActor->m_fMedkitWound);
 		}
 	}
 	else if(pWnd == &UIButton5 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->ChangeRadiation(-l_pA->m_fAntirad);
+			pActor->ChangeRadiation(-pActor->m_fAntirad);
 		}
 	}
 	else if(pWnd == &UIButton6 && msg == CUIButton::BUTTON_CLICKED)
 	{
-		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
-		if(l_pA)
+		if(pActor)
 		{
-			l_pA->ChangeSatiety(0.1f);
+			pActor->ChangeSatiety(0.1f);
 		}
 	}
 
@@ -692,7 +706,7 @@ void CUIInventoryWnd::Draw()
 
 void CUIInventoryWnd::Update()
 {
-	//CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	//CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	CEntityAlive *pEntityAlive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 
 	if(pEntityAlive) 
@@ -748,7 +762,8 @@ void CUIInventoryWnd::EatItem()
 	
 	if(!m_pCurrentItem->Useful())
 	{
-		m_pCurrentDragDropItem->GetParent()->DetachChild(m_pCurrentDragDropItem);
+		(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+												DetachChild(m_pCurrentDragDropItem);
 		m_pCurrentItem = NULL;
 		m_pCurrentDragDropItem = NULL;
 	}
@@ -756,9 +771,9 @@ void CUIInventoryWnd::EatItem()
 	/*m_pCurrentItem->Drop();
 	
 	NET_Packet P;
-	l_pA->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
+	pActor->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
 	P.w_u16(u16(m_pCurrentItem->ID()));
-	l_pA->u_EventSend(P);*/
+	pActor->u_EventSend(P);*/
 }
 
 
@@ -781,6 +796,11 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
 	CArtifactMerger* pArtifactMerger = dynamic_cast<CArtifactMerger*>(m_pCurrentItem);
 	
+	CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pCurrentItem);
+	CScope* pScope = dynamic_cast<CScope*>(m_pCurrentItem);
+	CSilencer* pSilencer = dynamic_cast<CSilencer*>(m_pCurrentItem);
+	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(m_pCurrentItem);
+	
 
 	if(m_pCurrentItem->m_slot<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
@@ -801,7 +821,46 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	{
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
 	}
-
+	
+	if(pWeapon)
+	{
+		if(pWeapon->IsGreandeLauncherAttached())
+		{
+			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, DETACH_ADDON);
+		}
+		if(pWeapon->IsScopeAttached())
+		{
+			m_sAddonName = pWeapon->GetScopeName();
+			UIPropertiesBox.AddItem("Detach scope",  NULL, DETACH_ADDON);
+		}
+		if(pWeapon->IsSilencerAttached())
+		{
+			UIPropertiesBox.AddItem("Detach silencer",  NULL, DETACH_ADDON);
+		}
+	}
+	
+	//присоединение аддонов к активному слоту (2 или 3)
+	if(pScope)
+	{
+		if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
+		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pScope))
+		 {
+			 UIPropertiesBox.AddItem("Attach scope to pitol",  NULL, ATTACH_ADDON);
+			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+		 }
+		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
+			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pScope))
+		 {
+			 UIPropertiesBox.AddItem("Attach scope to rifle",  NULL, ATTACH_ADDON);
+			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+		 }
+	}
+	else if(pSilencer)
+	{
+	}
+	else if(pGrenadeLauncher)
+	{
+	}
 	
 	
 	if(pEatableItem)
@@ -929,4 +988,40 @@ void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
 	UIDragDropItem.SetData(pArtifact);
 	m_iUsedItems++;
 	UIArtifactMergerWnd.UIArtifactList.AttachChild(&UIDragDropItem);
+}
+
+void CUIInventoryWnd::AddItemToBag(PIItem pItem)
+{
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+	UIDragDropItem.SetShader(GetEquipmentIconsShader());
+	UIDragDropItem.SetGridHeight(pItem->m_iGridHeight);
+	UIDragDropItem.SetGridWidth(pItem->m_iGridWidth);
+	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										pItem->m_iXPos*INV_GRID_WIDTH,
+										pItem->m_iYPos*INV_GRID_HEIGHT,
+										pItem->m_iGridWidth*INV_GRID_WIDTH,
+										pItem->m_iGridHeight*INV_GRID_HEIGHT);
+	UIDragDropItem.SetData(pItem);
+	m_iUsedItems++;
+	UIBagList.AttachChild(&UIDragDropItem);
+}
+
+void CUIInventoryWnd::AttachAddon()
+{
+	R_ASSERT(m_pItemToUpgrade);
+	m_pItemToUpgrade->Attach(m_pCurrentItem);
+
+	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+									DetachChild(m_pCurrentDragDropItem);
+	m_pCurrentItem = NULL;
+	m_pCurrentDragDropItem = NULL;
+
+	m_pItemToUpgrade = NULL;
+}
+void CUIInventoryWnd::DetachAddon()
+{
+	R_ASSERT(*m_sAddonName);
+	m_pCurrentItem->Detach(*m_sAddonName);
+	m_sAddonName = NULL;
 }
