@@ -176,50 +176,11 @@ function action_wait:finalize()
     self.object:clear_animations()
 end
 function action_wait:set_prisluh(prisluh)
-	if prisluh == false then
-		-- действия по окончанию прислушивания
-		if self.a.evn:ruleExist("silence") ~= true then
-			globals.set_sound(self.object, self.sound_relax, true)
-		end
-
-		self.object:clear_animations()
-		self.object:add_animation("prisluh_2_idle_7", true)
-		self.anim.begin = nil
-		return
-	end
 	if prisluh == true then
-		if self.anim.begin == nil then
-			-- действия по началу прислушивания
-			self.anim.begin = device():time_global()/1000
-			self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
-			self.object:clear_animations()
-			self.object:add_animation("prisluh_2_idle_0", true)
-			self.object:add_animation("prisluh_2_idle_1", true)
-		else
-			if device():time_global()/1000 - self.anim.begin > self.anim.idle then
-				if self.object:animation_count() <= 1 then
-				self.anim.begin = device():time_global()/1000
-				self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
-				-- рандомайзинги прислушивания
-				if math.random(100) <= self.anim.rnd then
-					local r
-					if self.anim.lastanim == nil then
-						r = math.random(table.getn(self.anim.anims))
-					else
-						r = math.random(table.getn(self.anim.anims)-1)
-						if r >= self.anim.lastanim then
-							r = r + 1
-						end
-					end
-					self.anim.lastanim = r
-					-- дать анимацию Ж)
-					self.object:clear_animations()
-					self.object:add_animation(self.anim.anims[r], true)
-					self.object:add_animation("prisluh_2_idle_1", true)
-				end
-				end
-			end
-		end
+		xr_state.anim_update("prisluh", self.object)
+	end
+	if prisluh == false then
+		xr_state.anim_update(nil, self.object)
 	end
 end
 
