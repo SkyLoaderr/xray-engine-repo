@@ -133,17 +133,17 @@ void CAI_Rat::FreeHunting()
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
 	}
-//	else 
-//		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)) {
-//			m_dwLastRangeSearch = Level().timeServer();
-//			Fvector tTemp;
-//			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-//			tTemp.normalize_safe();
-//			tTemp.mul(UNDER_FIRE_DISTANCE);
-//			m_tSpawnPosition.add(vPosition,tTemp);
-//			m_fGoalChangeTime = 0;
-//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
-//		}
+	else 
+		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)) {
+			m_dwLastRangeSearch = Level().timeServer();
+			Fvector tTemp;
+			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+			tTemp.normalize_safe();
+			tTemp.mul(UNDER_FIRE_DISTANCE);
+			m_tSpawnPosition.add(vPosition,tTemp);
+			m_fGoalChangeTime = 0;
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+		}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);

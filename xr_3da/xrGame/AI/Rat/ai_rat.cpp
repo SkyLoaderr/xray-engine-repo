@@ -38,6 +38,7 @@ CAI_Rat::CAI_Rat()
 	m_dwStandLookTime		= 5000;
 	m_tLastSound.tpEntity	= 0;
 	m_tLastSound.dwTime		= 0;
+	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
 	m_bNoWay				= false;
 }
 
