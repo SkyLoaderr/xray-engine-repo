@@ -18,6 +18,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 	m_ajoint				=NULL;
 	m_body					=NULL;
 	b_failed				=false;
+	b_disabled				=false;
 	e_state					=cstPulling;
 
 	if(!a_taget_object							||
@@ -94,6 +95,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u
 	m_ajoint				=NULL;
 	m_body					=NULL;
 	b_failed				=false;
+	b_disabled				=false;
 	e_state					=cstPulling;
 
 	if(!a_taget_object							||

@@ -819,6 +819,7 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
 	m_body_interpolation.ResetPositions();
+	CPHObject::spatial_move();
 }
 
 

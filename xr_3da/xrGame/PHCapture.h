@@ -34,6 +34,7 @@ CBoneInstance		*m_capture_bone;
 dBodyID				m_body;
 bool				b_failed;
 bool				b_collide;
+bool				b_disabled;
 
 
 private:

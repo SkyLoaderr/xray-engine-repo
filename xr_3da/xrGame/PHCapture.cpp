@@ -46,13 +46,14 @@ void CPHCapture::PhTune(dReal /**step/**/)
 	if(b_failed) return;
 	bool act_capturer=m_character->CPHObject::IsActive();
 	bool act_taget=m_taget_object->PPhysicsShell()->isEnabled();
+	b_disabled=!act_capturer&&!act_taget;
 	switch(e_state) 
 	{
 	case cstPulling:  ;
 		break;
-	case cstCaptured: if(!act_capturer&&!act_taget)dBodyDisable(m_body);
+	case cstCaptured: if(b_disabled)dBodyDisable(m_body);
 		break;
-	case cstReleased: m_taget_element->Enable();
+	case cstReleased: ;
 		break;
 	default: NODEFAULT;
 	}
@@ -204,7 +205,12 @@ void CPHCapture::CapturedUpdate()
 
 void CPHCapture::ReleasedUpdate()
 {
-	if(!b_collide) b_failed=true;
+	if(b_disabled) return;
+	if(!b_collide) 
+	{
+		b_failed=true;
+		m_taget_element->Enable();
+	}
 	b_collide=false;
 }
 
@@ -262,8 +268,9 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 			{
 				do_colide = false;
 				capture->m_taget_element->Enable();
+				if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 			}
-			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+			
 		}
 
 
@@ -279,8 +286,9 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 			{
 				do_colide = false;
 				capture->m_taget_element->Enable();
+				if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
 			}
-			if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+			
 		}
 
 	}
