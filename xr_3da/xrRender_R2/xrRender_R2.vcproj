@@ -550,6 +550,12 @@
 					RelativePath="Blender_detail_still.h">
 				</File>
 				<File
+					RelativePath=".\Blender_Model_EbB.cpp">
+				</File>
+				<File
+					RelativePath=".\Blender_Model_EbB.h">
+				</File>
+				<File
 					RelativePath="Blender_Screen_SET.cpp">
 				</File>
 				<File
