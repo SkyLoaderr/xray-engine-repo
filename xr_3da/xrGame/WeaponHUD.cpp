@@ -31,7 +31,7 @@ CWeaponHUD::~CWeaponHUD()
 	Device.seqDevDestroy.Remove	(this);
 
 	_FREE						(pVisualName);
-	::Render.Models.Delete		(pVisual);
+	::Render->model_Delete		(pVisual);
 }
 
 void CWeaponHUD::Load(CInifile* ini, const char* section)
@@ -47,7 +47,7 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 
 	// Visual
 	pVisualName					= strdup(ini->ReadSTRING(section, "visual"));
-	pVisual						= ::Render.Models.Create(pVisualName);
+	pVisual						= ::Render->model_Create(pVisualName);
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 
 	// fire bone	
@@ -68,11 +68,11 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 
 void CWeaponHUD::OnDeviceDestroy	()
 {
-	::Render.Models.Delete		(pVisual);
+	::Render->model_Delete		(pVisual);
 }
 void CWeaponHUD::OnDeviceCreate	()
 {
-	pVisual						= ::Render.Models.Create(pVisualName);
+	pVisual						= ::Render->model_Create(pVisualName);
 }
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {

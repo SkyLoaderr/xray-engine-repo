@@ -320,9 +320,9 @@ void CWeaponMagazined::Render(BOOL bHUDView)
 	else
 	{
 		// Actor render
-		::Render.set_Transform		(&svTransform);
-		::Render.set_LightLevel		(iFloor(m_pParent->AI_Lighting));
-		::Render.add_leafs_Dynamic	(Visual());
+		::Render->set_Transform		(&svTransform);
+		::Render->set_LightLevel	(iFloor(m_pParent->AI_Lighting));
+		::Render->add_Visual		(Visual());
 	}
 	if (((eFire==st_current) || (eReload==st_current))&& bFlame) 
 	{
@@ -424,7 +424,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		
-		CSector* S			= ::Render.getSector(pTri->sector);
+		CSector* S			= ::Render->getSector(pTri->sector);
 		
 		// smoke
 		CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
