@@ -11,7 +11,7 @@ local leader_free                       = 6
 -------------------------------------------------------------------------
 class "evaluator_chaser" (property_evaluator)
 ------------------
-function evaluator_chaser:__init (storage, name) super ()
+function evaluator_chaser:__init (storage, name) super (nil, name)
     self.a = storage
 end
 ------------------
@@ -25,7 +25,7 @@ end
 -------------------------------------------------------------------------
 class "evaluator_chaser_enable" (property_evaluator)
 ------------------
-function evaluator_chaser_enable:__init (storage, name) super ()
+function evaluator_chaser_enable:__init (storage, name) super (nil, name)
     self.a = storage
 end
 ------------------
@@ -38,7 +38,7 @@ end
 -------------------------------------------------------------------------
 class "evaluator_return" (property_evaluator)
 ------------------
-function evaluator_return:__init (storage, name) super ()
+function evaluator_return:__init (storage, name) super (nil, name)
     self.a = storage
 end
 ------------------
@@ -203,9 +203,9 @@ function add_to_binder (npc, ini)
 
 
     local manager = npc:motivation_action_manager ()
-    manager:add_evaluator (properties["enabled"], this.evaluator_chaser_enable (xr_motivator.storage[npc:id ()].chaser, "evaluator_chaser_enabled"))
-    manager:add_evaluator (properties["chase"], this.evaluator_chaser (xr_motivator.storage[npc:id ()].chaser, "evaluator_chaser"))
-    manager:add_evaluator (properties["return"], this.evaluator_return (xr_motivator.storage[npc:id ()].chaser, "evaluator_return"))
+    manager:add_evaluator (properties["enabled"], this.evaluator_chaser_enable (xr_motivator.storage[npc:id ()].chaser, "chaser_enabled"))
+    manager:add_evaluator (properties["chase"], this.evaluator_chaser (xr_motivator.storage[npc:id ()].chaser, "chaser_chase"))
+    manager:add_evaluator (properties["return"], this.evaluator_return (xr_motivator.storage[npc:id ()].chaser, "chaser_return"))
 
     local action = this.action_chase (xr_motivator.storage[npc:id ()].chaser, "action_chase")
      action:add_precondition       (world_property (stalker_ids.property_alive,    true))
