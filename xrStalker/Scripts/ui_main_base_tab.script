@@ -16,6 +16,7 @@ function main_base_tab:__finalize()
 end
 
 function main_base_tab:InitControls(x, y)
+	self:SetAutoDelete(true)	
 	self.main_rect = {}
 	self.main_rect.x = 0
 	self.main_rect.y = 0 
