@@ -85,7 +85,7 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	vsprintf(S1,caFormat,l_tMarker);
 
 #ifdef ENGINE_BUILD
-	Msg("[LUA Output] : %s",S2);
+	// Msg("[LUA Output] : %s",S2);
 #else
 	getAI().m_tpLuaOutput->w_string(S2);
 #endif

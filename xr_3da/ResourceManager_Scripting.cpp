@@ -56,6 +56,13 @@ public:
 	adopt_sampler			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
 };
 
+
+void LuaLog(LPCSTR caMessage)
+{
+	Lua::LuaOut	(Lua::eLuaMessageTypeMessage,"%s",caMessage);
+}
+
+
 // export
 void	CResourceManager::LS_Load			()
 {
@@ -70,9 +77,11 @@ void	CResourceManager::LS_Load			()
 	luaopen_table	(LSVM);
 	luaopen_string	(LSVM);
 	luaopen_math	(LSVM);
-	luaopen_debug	(LSVM);
 
 	luabind::open	(LSVM);
+
+	function		(LSVM, "log",	LuaLog);
+
 	class_<adopt_sampler>("_sampler")
 		.def(								constructor<const adopt_sampler&>())
 		.def("texture",						&adopt_sampler::_texture		)
@@ -112,7 +121,8 @@ void	CResourceManager::LS_Load			()
 	{
 		string256						namesp,fn;
 		strcpy							(namesp,(*folder)[it]);
-		if		(strext(namesp))		*strext(namesp)=0;
+		if		(strext(namesp))		*strext	(namesp)=0;
+		if		(0==namesp[0])			strcpy	(namesp,"_G");
 		FS.update_path					(fn,"$game_shaders$",(*folder)[it]);
 		Script::bfLoadFileIntoNamespace	(LSVM,fn,namesp,true);
 	}
