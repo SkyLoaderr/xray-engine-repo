@@ -4,7 +4,7 @@
 #include "detailmanager.h"
 
 const int			quant	= 16384;
-const int			c_hdr	= 5;
+const int			c_hdr	= 13;
 const int			c_base	= c_hdr;
 const int			c_size	= 4;
 
@@ -83,7 +83,7 @@ void CDetailManager::hw_Load()
 					pV->z	=	vP.z;
 					pV->u	=	QC(D.vertices[v].u);
 					pV->v	=	QC(D.vertices[v].v);
-					pV->t	=	0;
+					pV->t	=	QC(vP.y/(D.bv_bb.max.y-D.bv_bb.min.y));
 					pV->mid	=	short(mid);
 					pV++;
 				}
@@ -127,11 +127,25 @@ void CDetailManager::hw_Render()
 	// float	fPhaseZ		=	sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
 
 	// Render-prepare
+	float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/30;
+	Fvector dir2D;
+	dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
+	dir2D.normalize		();
+
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);
-	VSC.set					(0,scale,scale,scale,1.f);
-	VSC.set					(1,Device.mFullTransform);
-	VSC.flush				(0,c_hdr);
+	VSC.set				(0,	scale,		scale,		scale,		1.f);						// consts
+	VSC.set				(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*2.f);	// wave
+	VSC.set				(2,	dir2D);															// wind-dir
+	VSC.set				(3,	Device.mFullTransform);
+	VSC.set				(7,	0,			.5f,		1,			0);
+	VSC.set				(8,	0.25f,		-9,			0.75f,		0.1591549f);
+	VSC.set				(9, 24.9808f,	-24.9808f,	-60.14581f,	60.14581f);
+	VSC.set				(10,85.45379f,	-85.45379f,	-64.93935f,	64.93935f);
+	VSC.set				(11,19.73921f,	-19.73921f,	-1,			1);
+	VSC.set				(12,0.1f,		0,			2,			0);
+	VSC.set				(13,0,			0,			0,			0);
+	VSC.flush			(0,	c_hdr);
 	
 	// Matrices and offsets
 	DWORD		vOffset	=	0;

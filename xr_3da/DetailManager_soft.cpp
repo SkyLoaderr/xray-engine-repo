@@ -89,13 +89,13 @@ void CDetailManager::soft_Render	()
 
 					//
 					float	tm			= Device.fTimeGlobal*2.f; 
-					float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/30;
 					float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 					float	cx			= 1.f/5.f;
 					float	cy			= 1.f/7.f;
 					float	cz			= 1.f/3.f;
 					Fvector&	B		= mXform.c;
 					Fvector dir2D,ldir;
+					float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/30;
 					dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
 					dir2D.normalize		();
 					ldir.set			(0,-1,0);
