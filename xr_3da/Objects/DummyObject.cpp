@@ -106,7 +106,7 @@ void CDummyObject::Load	(CInifile* ini, const char* section)
 		pSounds->Create3D(sndDummy,N);
 	}
 
-	DetectSector();
+	Sector_Detect();
 }
 
 void CDummyObject::PlayDemo		(LPCSTR N)

@@ -6,10 +6,8 @@
 #define AFX_AI_SPACE_H__58DA6D1C_2A38_4242_8327_A4EDF2D8EC0C__INCLUDED_
 #pragma once
 
-#include "virtualvector.h"
-#include "xrLevel.h"
-#include "xr_list.h"
-#include "xr_qlist.h"
+//#include "virtualvector.h"
+#include "..\xrLevel.h"
 
 namespace AI {
 	class ENGINE_API NodeEstimator

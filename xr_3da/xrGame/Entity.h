@@ -8,6 +8,7 @@
 
 #include "movementcontrol.h"
 #include "ai_goals.h"
+#include "gameobject.h"
 
 // refs
 class ENGINE_API CCameraBase;

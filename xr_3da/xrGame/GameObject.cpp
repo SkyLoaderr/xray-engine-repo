@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "GameObject.h"
+#include "..\fstaticrender.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -28,13 +29,13 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector4& o_pos)
 	// AI-DB connectivity
 	Fvector				nPos = vPosition;
 	nPos.y				+= .1f;
-	int node			= pCreator->AI.q_LoadSearch(nPos);
+	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
 		Msg				("! ERROR: AI node not found. (%f,%f,%f)",nPos.x,nPos.y,nPos.z);
 		R_ASSERT		(node>=0);
 	}
 	AI_NodeID			= DWORD(node);
-	AI_Node				= pCreator->AI.Node(AI_NodeID);
+	AI_Node				= Level().AI.Node(AI_NodeID);
 	AI_Lighting			= (AI_Node?float(AI_Node->light):255);
 }
 
@@ -46,8 +47,8 @@ void CGameObject::Sector_Detect	()
 		Fvector		Pos;
 		pVisual->bv_BBox.getcenter	(Pos);
 		Pos.add		(vPosition);
-		AI_NodeID	= pCreator->AI.q_Node	(AI_NodeID,vPosition);
-		AI_Node		= pCreator->AI.Node		(AI_NodeID);
+		AI_NodeID	= Level().AI.q_Node	(AI_NodeID,vPosition);
+		AI_Node		= Level().AI.Node	(AI_NodeID);
 	}
 	
 	// Perform sector detection

@@ -10,6 +10,7 @@
 #include "group.h"
 #include "tracer.h"
 #include "dynamicheightmap.h"
+#include "ai_space.h"
 #include "..\fixedset.h"
 
 class CHUDManager;
