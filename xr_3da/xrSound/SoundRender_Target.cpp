@@ -245,7 +245,8 @@ void	CSoundRender_Target::fill_parameters()
 
 void	CSoundRender_Target::fill_block		()
 {
-	VERIFY			(pEmitter);
+#pragma todo("check why pEmitter is NULL")
+	if (0==pEmitter)	return;
 
 	// Obtain memory address of write block. This will be in two parts if the block wraps around.
     LPVOID			ptr1, ptr2;
