@@ -116,6 +116,7 @@ namespace PAPI{
 		PATargetVelocityID,	// 
 		PATargetVelocityDID,// 
 		PAVortexID,			// 
+        PATurbulenceID,     //
 		action_enum_force_dword = u32(-1)
 	};
     class ParticleAction;
