@@ -55,14 +55,12 @@ BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 		}
 	}
 
+	shape->ComputeBounds			();
+
 	BOOL							result = inherited::net_Spawn(data);
 	
 	if (!result)
 		return						(FALSE);
-
-	shape->ComputeBounds			();
-	Fvector							P;
-	XFORM().transform_tiny			(P,CFORM()->getSphere().P);
 
 	shedule_unregister				();
 	setEnabled						(false);
@@ -160,7 +158,6 @@ BOOL CSpaceRestrictor::UsedAI_Locations	()
 void CSpaceRestrictor::spatial_move		()
 {
 	actual		(false);
-	Msg			("%6d : %s CSpaceRestrictor::spatial_move() called",Device.dwTimeGlobal,*cName());
 }
 #endif
 

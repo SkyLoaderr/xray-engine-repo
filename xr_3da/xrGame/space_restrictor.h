@@ -10,7 +10,7 @@
 
 #include "gameobject.h"
 
-//#define PRECOMPUTED_INSIDE
+#define PRECOMPUTED_INSIDE
 
 class CSpaceRestrictor : public CGameObject {
 private:
