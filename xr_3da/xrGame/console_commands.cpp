@@ -642,7 +642,7 @@ public:
 //			return;
 //		}
 
-		string256	S;
+		string_path	S,S1;
 		S[0]		= 0;
 		sscanf		(args ,"%s",S);
 		if (!xr_strlen(S)) {
@@ -650,15 +650,19 @@ public:
 			net_packet.w_begin	(M_SAVE_GAME);
 			net_packet.w_stringZ("quick_save");
 			net_packet.w_u8		(0);
+			strcpy				(S,"quick_save");
 			Level().Send		(net_packet,net_flags(TRUE));
-			return;
+		}
+		else {
+			NET_Packet			net_packet;
+			net_packet.w_begin	(M_SAVE_GAME);
+			net_packet.w_stringZ(S);
+			net_packet.w_u8		(1);
+			Level().Send		(net_packet,net_flags(TRUE));
 		}
 
-		NET_Packet			net_packet;
-		net_packet.w_begin	(M_SAVE_GAME);
-		net_packet.w_stringZ(S);
-		net_packet.w_u8		(1);
-		Level().Send		(net_packet,net_flags(TRUE));
+		FS.update_path			(S1,"$game_saves$",S);
+		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S);
 	}
 };
 
