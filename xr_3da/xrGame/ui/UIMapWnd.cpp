@@ -177,7 +177,7 @@ void CUIMapWnd::SetLocalMap(const ref_str &levelName)
 	UILocalMapBackground.m_pActiveMapSpot = NULL;
 
 	LocalMaps_it currentMapIt = m_LocalMaps.find(levelName);
-	R_ASSERT(m_LocalMaps.end() != currentMapIt);
+	R_ASSERT2(m_LocalMaps.end() != currentMapIt, "Map data for current level is absent.\nMost possible reason - this level not included in game graph");
 
 	UILocalMapBackground.m_LevelBox.x1 = currentMapIt->second.mapDimentions.x;
 	UILocalMapBackground.m_LevelBox.z1 = currentMapIt->second.mapDimentions.z;
