@@ -361,7 +361,7 @@
 		<rank>70</rank>
 		<reputation>90</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog</visual>
+		<visual>actors\nauchniy\nauchniy_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_spas12 \n

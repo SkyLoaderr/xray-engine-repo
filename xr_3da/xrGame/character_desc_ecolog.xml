@@ -16,7 +16,7 @@
 		<rank>50</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog</visual>
+		<visual>actors\nauchniy\nauchniy_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -44,7 +44,7 @@
 		<rank>50</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog</visual>
+		<visual>actors\nauchniy\nauchniy_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
@@ -74,7 +74,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog_military</visual>
+		<visual>actors\nauchniy\nauchniy_0</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -102,7 +102,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\ecolog\stalker_ecolog</visual>
+		<visual>actors\nauchniy\nauchniy_0</visual>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
