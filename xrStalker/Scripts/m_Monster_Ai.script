@@ -144,6 +144,12 @@ function m_Monster:id()
 	return 0
 end
 
+function m_Monster:__finalize()
+    self.memory.sound     = nil
+    self.memory.hit		  = nil
+    self.memory.enemy     = nil
+	self.memory			  = nil
+end
 --  id классов
 --  0 - m_Monster
 --  1 - stateAttack
