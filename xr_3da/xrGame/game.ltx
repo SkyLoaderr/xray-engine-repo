@@ -14,6 +14,7 @@ l07_military_proba
 selo2
 zmey_test1
 zmey_test2
+zmey_escape
 dx9_workshop
 l06u_labx16
 l03u_agroprom_r
@@ -84,6 +85,11 @@ global_rect		= 0.0,0.0,	500.0,1000.0
 bound_rect      = -493.863,-908.157, 478.423,1050.880
 
 [L01_escape_ai]
+texture         = ui\ui_escape
+global_rect		= 0.0,0.0,	500.0,1000.0
+bound_rect      = -493.863,-908.157, 478.423,1050.880
+
+[zmey_escape]
 texture         = ui\ui_escape
 global_rect		= 0.0,0.0,	500.0,1000.0
 bound_rect      = -493.863,-908.157, 478.423,1050.880
@@ -279,6 +285,7 @@ level138
 level139
 level140
 level141
+level142
 
 [level01]
   name    = fog_dima1
@@ -1102,6 +1109,15 @@ level141
  caption = "shyshkin_occl"
  offset  = 1800.0,     -1500.0,    1000.0
  id   = 141
+
+[level142]
+ name   = zmey_escape
+ caption = "zmey_escape"
+ offset  = -2000.0,     2500.0,    0.0
+ level_map = ui\ui_map_escape   
+ ui_map_coords = 508,     340,    146,    293
+ ui_map_dims   = -490.7,  504.8,  -1081,  1114.2
+ id   = 142
 
 
 [location_0]
