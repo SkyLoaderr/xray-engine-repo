@@ -14,7 +14,7 @@ public:
 	u32				dwFrame;
 public:
 	virtual void	set_active		(bool b);
-	virtual void	set_shadow		(bool b)						{ bShadow=b;			}
+	virtual void	set_shadow		(bool b)						{ flags.bShadow=b;		}
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);		}
 	virtual void	set_range		(float R)						{ sphere.R = R;			}
 	virtual void	set_color		(const Fcolor& C)				{ color.set(C);			}
