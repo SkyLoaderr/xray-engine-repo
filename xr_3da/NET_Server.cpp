@@ -256,7 +256,9 @@ HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
 				// Decompress message
 				NET_Packet P;
 				pDecompress		(P,m_data,m_size);
+				csMessage.Enter	();
 				DWORD	result	= OnMessage(P,m_sender);
+				csMessage.Leave	();
 				if (result)		SendBroadcast(m_sender,P,result);
 			}
         }

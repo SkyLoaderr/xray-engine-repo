@@ -48,6 +48,9 @@ protected:
 	void					config_Load			();
 	void					config_Save			();
 
+	// 
+	CCriticalSection		csMessage;
+
 	// Utilities
 	void					pCompress			(NET_Packet& D, NET_Packet& S);
 	void					pDecompress			(NET_Packet& D, void* data, DWORD size);
