@@ -36,6 +36,8 @@ public:
 
 public:
 	struct		_options	{
+		u32		bug					: 1;
+
 		u32		smapsize			: 16;
 		u32		depth16				: 1;
 		u32		mrt					: 1;
