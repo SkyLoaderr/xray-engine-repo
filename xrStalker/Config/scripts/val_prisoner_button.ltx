@@ -1,5 +1,10 @@
 [logic]
-active = ph_button
+active = ph_button@locked
 
-[ph_button]
-on_info = {-val_prisoner_door_unlocked} %+val_prisoner_door_unlocked%, %-val_prisoner_door_unlocked%
+[ph_button@locked]
+anim = button_false
+on_info = {-val_prisoner_door_unlocked} ph_button@unlocked %+val_prisoner_door_unlocked%
+
+[ph_button@unlocked]
+anim = button_true
+on_info = {+val_prisoner_door_unlocked} ph_button@locked %-val_prisoner_door_unlocked%
