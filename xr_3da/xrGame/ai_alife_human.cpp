@@ -359,8 +359,10 @@ void CSE_ALifeHumanAbstract::attach_available_ammo(CSE_ALifeItemWeapon *tpALifeI
 void CSE_ALifeHumanAbstract::vfProcessItems()
 {
 	m_tpALife->m_tpItemVector.clear();
-	for (int I=0; I<(int)m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.size(); I++) {
-		CSE_ALifeItem			*tpALifeItem = dynamic_cast<CSE_ALifeItem *>(m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects[I]);
+	D_OBJECT_PAIR_IT	I = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.begin();
+	D_OBJECT_PAIR_IT	E = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem	*tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
 		if (tpALifeItem && !tpALifeItem->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
 			m_tpALife->m_tpItemVector.push_back(tpALifeItem);
 	}

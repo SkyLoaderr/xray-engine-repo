@@ -295,14 +295,15 @@ namespace ALife {
 #endif
 	}
 
-	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
-	DEFINE_VECTOR	(SArtefactOrder,			ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
+	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
 
 	typedef struct tagSGraphPoint {
-		D_OBJECT_P_VECTOR		tpObjects;
-		EVENT_P_VECTOR			tpEvents;
+		D_OBJECT_MAP			tpObjects;
+		EVENT_MAP				tpEvents;
 	} SGraphPoint;
+
+	DEFINE_VECTOR	(SArtefactOrder,			ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
 
 	struct SArtefactTraderOrder {
 		string64				m_caSection;
@@ -310,6 +311,8 @@ namespace ALife {
 		ARTEFACT_ORDER_VECTOR	m_tpOrders;
 	};
 
+	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
 	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
@@ -337,13 +340,11 @@ namespace ALife {
 	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_IT);
 	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);
 	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
+	DEFINE_SET		(CSE_ALifeDynamicObject*,	D_OBJECT_SET,					D_OBJECT_SET_IT);
 
 	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
-	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
-	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
-	DEFINE_MAP		(_LEVEL_ID,					D_OBJECT_P_MAP*,				D_OBJECT_P_MAP_MAP,			D_OBJECT_P_MAP_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
 	DEFINE_MAP		(_LEVEL_ID,					SLevel,							LEVEL_MAP,					LEVEL_PAIR_IT);
 

@@ -24,8 +24,6 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 		vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 	}
-	if (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID)
-		vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
 
 	tpSE_Abstract->m_bALifeControl	= false;
 
@@ -79,7 +77,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	
 	if (bRemoveFromRegistries) {
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
-		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+		vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 }
 
@@ -119,7 +117,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	
 	if (bAddToRegistries) {
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
-		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID,false);
 	}
 }
 
@@ -340,21 +338,27 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 								break;
 				}
 				// checking if group is not empty
-				if (tpALifeAbstractGroup->m_tpMembers.size() && (i == N)) {
-					// checking if the group wants to switch offline during the given amount of time
-					if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
-						// switching the group offline
-						vfSwitchObjectOffline(I);
+				if (tpALifeAbstractGroup->m_tpMembers.size()) {
+					if (i == N) {
+						// checking if the group wants to switch offline during the given amount of time
+						if (Device.TimerAsync() -  I->m_dwLastSwitchTime > m_dwSwitchDelay)
+							// switching the group offline
+							vfSwitchObjectOffline(I);
+					}
+					else
+						// group is not ready to switch offline, therefore
+						// set its start time to from which it wants to switch offline to the current time
+						I->m_dwLastSwitchTime = Device.TimerAsync();
 				}
 				else
-					// group is not ready to switch offline, therefore
-					// set its start time to from which it wants to switch offline to the current time
-					I->m_dwLastSwitchTime = Device.TimerAsync();
+					vfReleaseObject(I);
 			}
 		}
 		else {
+#ifdef ALIFE_LOG
 			// checking if parent is online too
 			R_ASSERT2			(!dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent)) || (dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(I->ID_Parent))->fHealth >= EPS_L),"Parent offline, item online...");
+#endif
 			R_ASSERT2			(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
 		}
 	}

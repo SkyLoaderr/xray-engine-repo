@@ -76,6 +76,9 @@ CLevel::~CLevel()
 	xr_delete			(tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
+#ifdef DEBUG	
+	FlushLog			();
+#endif
 }
 
 // Game interface ////////////////////////////////////////////////////

@@ -12,26 +12,26 @@
 
 CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 {
-	m_tpServer			= tpServer;
-	m_bLoaded			= false;
-	m_tpActor			= 0;
-	m_caSaveName[0]		= 0;
-	shedule_register	();
-	m_bFirstUpdate		= true;
+	m_tpServer				= tpServer;
+	m_bLoaded				= false;
+	m_tpActor				= 0;
+	m_caSaveName[0]			= 0;
+	shedule_register		();
+	m_bFirstUpdate			= true;
 	for (int i=0; i<2; i++) {
 		m_tpaCombatGroups[i].clear();
 		m_tpaCombatGroups[i].reserve(255);
 	}
-	getAI().m_tpALife	= this;
+	getAI().m_tpALife		= this;
 	m_dwInventorySlotCount	= pSettings->r_u32("inventory","slots");
-	m_tpWeaponVector.resize(m_dwInventorySlotCount);
-	m_baMarks.assign	(u16(-1),false);
-	m_tpGraphPointObjects.reserve(256);
+	m_tpWeaponVector.resize	(m_dwInventorySlotCount);
+	m_baMarks.assign		(u16(-1),false);
+	m_qwCycleCounter		= u64(-1);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
 {
-	shedule_unregister	();
+	shedule_unregister		();
 	D_OBJECT_PAIR_IT		I = m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT		E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
@@ -101,21 +101,6 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 				vfAddEventToGraphPoint	((*I).second,(*I).second->m_tGraphID);
 		}
 	}
-
-	vfSetupScheduledObjects				();
-}
-
-void CSE_ALifeSimulator::vfSetupScheduledObjects()
-{
-	// setting up the first switched object
-	R_ASSERT2					(m_tpCurrentLevel->begin() != m_tpCurrentLevel->end(),"It is impossible, because at least actor must be in the switch objects map");
-	m_tNextFirstSwitchObjectID	= (*(m_tpCurrentLevel->begin())).second->ID;
-
-	// setting up the first scheduled object
-	if (m_tpScheduledObjects.size())
-		m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;
-	else
-		m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
 }
 
 void CSE_ALifeSimulator::Save()

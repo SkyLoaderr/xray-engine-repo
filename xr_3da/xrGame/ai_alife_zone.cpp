@@ -12,6 +12,7 @@
 
 void CSE_ALifeAnomalousZone::Update()
 {
+	R_ASSERT3					(false,"This function shouldn't be called!",s_name_replace);
 //	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
 //	m_tpALife->vfCheckForInteraction(this);
 }

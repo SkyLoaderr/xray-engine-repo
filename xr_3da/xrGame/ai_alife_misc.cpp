@@ -28,18 +28,19 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable, _GRAPH_ID tGraphID)
 {
 	CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeSchedulable);
-	m_tpGraphPointObjects.clear	();
-	m_tpGraphPointObjects.insert(m_tpGraphPointObjects.end(),m_tpGraphObjects[tGraphID].tpObjects.begin(),m_tpGraphObjects[tGraphID].tpObjects.end());
-	D_OBJECT_P_IT				I = m_tpGraphPointObjects.begin();
-	D_OBJECT_P_IT				E = m_tpGraphPointObjects.end();
+#pragma todo("Dima to Dima : Instead of copying map to map we have to implement more complex and efficient data processing while adding and removing objects to/from graph point")
+	m_tpGraphPointObjects		= m_tpGraphObjects[tGraphID].tpObjects;
+
+	D_OBJECT_PAIR_IT			I = m_tpGraphPointObjects.begin();
+	D_OBJECT_PAIR_IT			E = m_tpGraphPointObjects.end();
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
 	bool						l_bMutualDetection;
 	for ( ; I != E; I++) {
-		if ((*I)->ID == tpALifeSchedulable->ID)
+		if ((*I).first == tpALifeSchedulable->ID)
 			continue;
 
-		CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(*I);
+		CSE_ALifeSchedulable	*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>((*I).second);
 		if (!l_tpALifeSchedulable)
 			continue;
 

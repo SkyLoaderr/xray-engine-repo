@@ -91,26 +91,25 @@ public:
 class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
 public:
 	typedef CSE_ALifeAStar inherited;
-	D_OBJECT_P_MAP_MAP				m_tLevelMap;
 	CSE_ALifeCreatureActor			*m_tpActor;
-	D_OBJECT_P_MAP					*m_tpCurrentLevel;
-#pragma todo("Dima to Dima : Change object and event vectors to maps or sets")
-	GRAPH_POINT_VECTOR				m_tpGraphObjects;					// по точке графа получить все 
-	GRAPH_VECTOR					m_tpTerrain[LOCATION_TYPE_COUNT][LOCATION_COUNT];	
-																		// массив списков: по идетнификатору 
-       																	//	местности получить список точек 
-																		//  графа
+	bool							m_bSwitchChanged;
 	_OBJECT_ID						m_tNextFirstSwitchObjectID;
 	_LEVEL_ID						m_tCurrentLevelID;
+	D_OBJECT_MAP					*m_tpCurrentLevel;
+	GRAPH_POINT_VECTOR				m_tpGraphObjects;									// по точке графа получить все 
+	GRAPH_VECTOR					m_tpTerrain[LOCATION_TYPE_COUNT][LOCATION_COUNT];	
+																						// массив списков: по идетнификатору 
+																						//	местности получить список точек 
+																						//  графа
 
 
 									CSE_ALifeGraphRegistry		();
+									~CSE_ALifeGraphRegistry		();
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject	*tpALifeDynamicObject);
-			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphID);
-			void					vfAddObjectToGraphPoint		(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tNextGraphPointID);
+			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphID,			bool bUpdateSwitchObjects = true);
+			void					vfAddObjectToGraphPoint		(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tNextGraphPointID,	bool bUpdateSwitchObjects = true);
 			void					vfChangeObjectGraphPoint	(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphPointID,		_GRAPH_ID tNextGraphPointID);
 			// events
 			void					vfRemoveEventFromGraphPoint	(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphID);
@@ -134,11 +133,12 @@ class CSE_ALifeScheduleRegistry {
 public:
 	SCHEDULE_P_MAP					m_tpScheduledObjects;	// массив обновляемых объектов
 	_OBJECT_ID						m_tNextFirstProcessObjectID;
+	bool							m_bUpdateChanged;
 
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			void					vfAddObjectToScheduled		(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			void					vfRemoveObjectFromScheduled	(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			void					vfAddObjectToScheduled		(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
+			void					vfRemoveObjectFromScheduled	(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);
 };
 
 class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {

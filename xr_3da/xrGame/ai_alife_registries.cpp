@@ -193,6 +193,12 @@ void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeGraphRegistry::CSE_ALifeGraphRegistry() : CSE_ALifeAStar()
 {
+	m_tpCurrentLevel			= 0;
+}
+
+CSE_ALifeGraphRegistry::~CSE_ALifeGraphRegistry()
+{
+	xr_delete					(m_tpCurrentLevel);
 }
 
 void CSE_ALifeGraphRegistry::Init()
@@ -218,8 +224,11 @@ void CSE_ALifeGraphRegistry::Init()
 		}
 	}
 	
+	xr_delete						(m_tpCurrentLevel);
+	
 	m_tpCurrentLevel			= 0;
 	m_tpActor					= 0;
+	m_tNextFirstSwitchObjectID	= _OBJECT_ID(-1);
 }
 
 void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -231,22 +240,16 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 		R_ASSERT2			(m_tpActor,"Invalid flag M_SPAWN_OBJECT_ASPLAYER for non-actor object!");
 	}
 
-	u8 dwLevelID = getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
-
-	D_OBJECT_P_MAP_PAIR_IT I = m_tLevelMap.find(dwLevelID);
-	if (I == m_tLevelMap.end()) {
-		D_OBJECT_P_MAP	*tpTemp = xr_new<D_OBJECT_P_MAP>();
-		tpTemp->insert		(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
-		m_tLevelMap.insert	(std::make_pair(dwLevelID,tpTemp));
-	}
-	else
-		(*I).second->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
-
 	if (m_tpActor && !m_tpCurrentLevel) {
-		I = m_tLevelMap.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
-		R_ASSERT2(I != m_tLevelMap.end(),"Can't find corresponding to actor level!");
-		m_tpCurrentLevel = (*I).second;
-		m_tCurrentLevelID = (*I).first;
+		m_tpCurrentLevel			= xr_new<D_OBJECT_P_MAP>();
+		m_tCurrentLevelID			= getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID;
+		for (int i=0, n=getAI().GraphHeader().dwVertexCount; i<n; i++)
+			if (getAI().m_tpaGraph[i].tLevelID == m_tCurrentLevelID) {
+				D_OBJECT_PAIR_IT	I = m_tpGraphObjects[i].tpObjects.begin();
+				D_OBJECT_PAIR_IT	E = m_tpGraphObjects[i].tpObjects.end();
+				for ( ; I != E; I++)
+					m_tpCurrentLevel->insert(std::make_pair((*I).first,(*I).second));
+			}
 	}
 
 	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
@@ -254,52 +257,43 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 		vfAddObjectToGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 }
 
-void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID, bool bUpdateSwitchObjects)
 {
-	D_OBJECT_P_PAIR_IT		I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
-	R_ASSERT2				(I != m_tpCurrentLevel->end(),"Object not found in the level map!");
-	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
-		if (++J == m_tpCurrentLevel->end())
-			J = m_tpCurrentLevel->begin();
-		if (J != m_tpCurrentLevel->end())
-			m_tNextFirstSwitchObjectID	= (*J).second->ID;
-		else
-			m_tNextFirstSwitchObjectID	= _OBJECT_ID(0xffff);
+#ifdef ALIFE_LOG
+	Msg("[LSS] : adding object [%s][%d] to graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tNextGraphPointID);
+#endif
+	R_ASSERT2					(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject),"Can't add a trader to the graph point!");
+	D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tNextGraphPointID].tpObjects.find(tpALifeDynamicObject->ID);
+	R_ASSERT3					(I == m_tpGraphObjects[tNextGraphPointID].tpObjects.end(),"Specified object has already found on the given graph point!",tpALifeDynamicObject->s_name_replace);
+	m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+	tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
+	
+	if (bUpdateSwitchObjects && m_tpCurrentLevel && (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID)) {
+		I						= m_tpCurrentLevel->find(tpALifeDynamicObject->ID);
+		R_ASSERT2				(I == m_tpCurrentLevel->end(),"Specified object has been already found in the current level map");
+		m_tpCurrentLevel->insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+		m_bSwitchChanged		= true;
 	}
-	m_tpCurrentLevel->erase(I);
 }
 
-void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
+void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID, bool bUpdateSwitchObjects)
 {
 	if (dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
 		return;
 
-	D_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	D_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
-	bool							bOk = false;
-	for ( ; I != E; I++)
-		if ((*I) == tpALifeDynamicObject) {
-			m_tpGraphObjects[tGraphID].tpObjects.erase(I);
-			bOk = true;
-			break;
-		}
-
-	if (!bOk) {
-		FlushLog();
-	}
-	R_ASSERT3						(bOk,"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
 #ifdef ALIFE_LOG
 	Msg("[LSS] : removing object [%s][%d] from graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tGraphID);
 #endif
-}
-
-void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
-{
-	m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
-	tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
-#ifdef ALIFE_LOG
-	Msg("[LSS] : adding object [%s][%d] to graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tNextGraphPointID);
-#endif
+	D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeDynamicObject->ID);
+	R_ASSERT3					(I != m_tpGraphObjects[tGraphID].tpObjects.end(),"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
+	m_tpGraphObjects[tGraphID].tpObjects.erase(I);
+	
+	if (bUpdateSwitchObjects && m_tpCurrentLevel && (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID)) {
+		I						= m_tpCurrentLevel->find(tpALifeDynamicObject->ID);
+		R_ASSERT2				(I != m_tpCurrentLevel->end(),"Specified object hasn't been already found in the current level map");
+		m_tpCurrentLevel->erase	(I);
+		m_bSwitchChanged		= true;
+	}
 }
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
@@ -309,29 +303,27 @@ void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tp
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;
 	tpALifeDynamicObject->o_Position	= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLocalPoint;
 	tpALifeDynamicObject->m_tNodeID		= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tNodeID;
-
-	if ((getAI().m_tpaGraph[tGraphPointID].tLevelID == m_tCurrentLevelID) && (getAI().m_tpaGraph[tNextGraphPointID].tLevelID != m_tCurrentLevelID))
-		vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
-	else
-		if ((getAI().m_tpaGraph[tGraphPointID].tLevelID != m_tCurrentLevelID) && (getAI().m_tpaGraph[tNextGraphPointID].tLevelID == m_tCurrentLevelID))
-			m_tpCurrentLevel->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
 // events
 void CSE_ALifeGraphRegistry::vfRemoveEventFromGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphID)
 {
-	EVENT_P_IT						I = m_tpGraphObjects[tGraphID].tpEvents.begin();
-	EVENT_P_IT						E = m_tpGraphObjects[tGraphID].tpEvents.end();
-	for ( ; I != E; I++)
-		if ((*I) == tpEvent) {
-			m_tpGraphObjects[tGraphID].tpEvents.erase(I);
-			break;
-		}
+	EVENT_PAIR_IT				I = m_tpGraphObjects[tGraphID].tpEvents.find(tpEvent->m_tEventID);
+	R_ASSERT2					(I != m_tpGraphObjects[tGraphID].tpEvents.end(),"Specified object not found on the given graph point!");
+	m_tpGraphObjects[tGraphID].tpEvents.erase(I);
+#ifdef ALIFE_LOG
+	Msg("[LSS] : removing event [%d] from graph point %d",tpEvent->m_tEventID,tGraphID);
+#endif
 }
 
 void CSE_ALifeGraphRegistry::vfAddEventToGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tNextGraphPointID)
 {
-	m_tpGraphObjects[tNextGraphPointID].tpEvents.push_back(tpEvent);
+	EVENT_PAIR_IT				I = m_tpGraphObjects[tNextGraphPointID].tpEvents.find(tpEvent->m_tEventID);
+	R_ASSERT2					(I == m_tpGraphObjects[tNextGraphPointID].tpEvents.end(),"Specified object has been already found on the given graph point!");
+	m_tpGraphObjects[tNextGraphPointID].tpEvents.insert(std::make_pair(tpEvent->m_tEventID,tpEvent));
+#ifdef ALIFE_LOG
+	Msg("[LSS] : adding event [%d] from graph point %d",tpEvent->m_tEventID,tNextGraphPointID);
+#endif
 }
 
 void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
@@ -345,11 +337,8 @@ void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 #ifdef ALIFE_LOG
 	Msg							("[LSS] : Attaching item [%s][%d] to [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
 #endif
-	if (bALifeRequest) {
+	if (bALifeRequest)
 		vfRemoveObjectFromGraphPoint	(tpALifeItem,tGraphID);
-		//if (getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tLevelID == m_tCurrentLevelID)
-		//	vfRemoveObjectFromCurrentLevel	(tpALifeItem);
-	}
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
@@ -370,8 +359,6 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	Msg							("[LSS] : Detaching item [%s][%d] from [%s][%d]",tpALifeItem->s_name_replace,tpALifeItem->ID,tAbstract.s_name_replace,tAbstract.ID);
 #endif
 	vfAddObjectToGraphPoint		(tpALifeItem,tGraphID);
-//	if (getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tLevelID == m_tCurrentLevelID)
-//		m_tpCurrentLevel->insert(std::make_pair(tpALifeItem->ID,tpALifeItem));
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
 	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
@@ -450,6 +437,7 @@ CSE_ALifeTrader *CSE_ALifeTraderRegistry::tpfGetNearestSuitableTrader(CSE_ALifeH
 void CSE_ALifeScheduleRegistry::Init()
 {
 	m_tpScheduledObjects.clear	();
+	m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
 }
 
 void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -459,7 +447,7 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 	vfAddObjectToScheduled		(tpALifeDynamicObject);
 }
 
-void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
 	R_ASSERT2					(!tpALifeDynamicObject->m_bOnline,"Can't add to scheduled objects online object!");
 	
@@ -472,16 +460,23 @@ void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *t
 		return;
 
 	CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
-	if (l_tpALifeAnomalousZone && (l_tpALifeAnomalousZone->m_maxPower < EPS_L))
+#pragma todo("Dima to Dima : Change this line if CSE_ALifeAnomalousZone::Update() is not empty, this is just a performance trick")
+	//	if (l_tpALifeAnomalousZone && (l_tpALifeAnomalousZone->m_maxPower < EPS_L))
+	if (l_tpALifeAnomalousZone)
 		return;
 
+	if (!bUpdateSchedulableObjects)
+		return;
+	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID);
+	R_ASSERT2					(I == m_tpScheduledObjects.end(),"Specified object has been already found in the scheduled objects registry");
 	m_tpScheduledObjects.insert	(std::make_pair(l_tpALifeSchedulable->ID,l_tpALifeSchedulable));
+	m_bUpdateChanged			= true;
 
 	if (m_tNextFirstProcessObjectID == _OBJECT_ID(-1))
 		m_tNextFirstProcessObjectID = l_tpALifeSchedulable->ID;
 }
 
-void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
 //	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
 	
@@ -497,8 +492,11 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0) && (m_tpScheduledObjects.find(tpALifeDynamicObject->ID) == m_tpScheduledObjects.end()))
 		return;
 
+	if (!bUpdateSchedulableObjects)
+		return;
 	SCHEDULE_P_PAIR_IT			I = m_tpScheduledObjects.find(l_tpALifeSchedulable->ID), J = I;
-	R_ASSERT2					(I != m_tpScheduledObjects.end(),"Object not found on the level map!");
+	R_ASSERT2					(I != m_tpScheduledObjects.end(),"Specified object hasn't been found in the scheduled objects registry!");
+	
 	if (m_tNextFirstProcessObjectID == l_tpALifeSchedulable->ID) {
 		if (++J == m_tpScheduledObjects.end())
 			J = m_tpScheduledObjects.begin();
@@ -507,7 +505,9 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 		else
 			m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
 	}
-	m_tpScheduledObjects.erase(I);
+	
+	m_tpScheduledObjects.erase	(I);
+	m_bUpdateChanged			= true;
 }
 
 ////////////////////////////////////////////////////////////////////////////

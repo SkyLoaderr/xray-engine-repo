@@ -324,14 +324,14 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 					vfAssignDeathPosition						(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 					l_tpALifeMonsterAbstract->vfDetachAll		(l_tpALifeMonsterAbstract->m_tGraphID);
 					R_ASSERT									(l_tpALifeMonsterAbstract->children.empty());
-					Fvector										l_tPosition = l_tpALifeMonsterAbstract->o_Position;
 					vfUpdateDynamicData							(l_tpALifeMonsterAbstract);
-					l_tpALifeMonsterAbstract->o_Position		= l_tPosition;
 					l_tpALifeAbstractGroup->m_wCount--;
 					I--;
 					N--;
 				}
 			}
+			if (!m_tpaCombatObjects[i]->bfActive())
+				vfReleaseObject(m_tpaCombatObjects[i]);
 		}
 		else {
 			m_tpaCombatObjects[i]->vfUpdateWeaponAmmo			();
@@ -342,10 +342,10 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 				l_tpALifeMonsterAbstract->vfDetachAll			(l_tpALifeMonsterAbstract->m_tGraphID);
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());
-				Fvector											l_tPosition = l_tpALifeMonsterAbstract->o_Position;
+				vfRemoveObjectFromScheduled						(l_tpALifeMonsterAbstract);
 				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1) {
-					vfChangeObjectGraphPoint					(l_tpALifeMonsterAbstract,l_tGraphID1,l_tpALifeMonsterAbstract->m_tGraphID);
-					l_tpALifeMonsterAbstract->o_Position		= l_tPosition;
+					vfRemoveObjectFromGraphPoint				(l_tpALifeMonsterAbstract,l_tGraphID1);
+					vfAddObjectToGraphPoint						(l_tpALifeMonsterAbstract,l_tpALifeMonsterAbstract->m_tGraphID);
 				}
 			}
 		}

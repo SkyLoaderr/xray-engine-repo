@@ -30,6 +30,7 @@ public:
 #endif
 #endif
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
+	u64								m_qwUpdateCounter;
 
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 #ifndef _EDITOR
@@ -212,12 +213,9 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	_TIME_ID						m_tTimeID;
 	u32								m_dwLastSwitchTime;
+	u64								m_qwSwitchCounter;
 	
-									CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
-	{
-		m_tTimeID					= 0;
-		m_dwLastSwitchTime			= 1;
-	}
+									CSE_ALifeDynamicObject(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)

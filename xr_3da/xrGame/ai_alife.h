@@ -32,6 +32,7 @@ class CSE_ALifeSimulator :
 	string256						m_caSaveName;
 	bool							m_bFirstUpdate;
 	u32								m_dwMaxCombatIterationCount;
+	u64								m_qwCycleCounter;
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;
@@ -40,14 +41,13 @@ class CSE_ALifeSimulator :
 	// temporary buffers for combats
 	SCHEDULE_P_VECTOR				m_tpaCombatGroups[2];
 	CSE_ALifeSchedulable			*m_tpaCombatObjects[2];
-	D_OBJECT_P_VECTOR				m_tpGraphPointObjects;
+	D_OBJECT_MAP					m_tpGraphPointObjects;
 
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject,		CSE_ALifeDynamicObject *tpALifeDynamicObject,			_SPAWN_ID tSpawnID);
-			void					vfSetupScheduledObjects		();
 			void					vfPrintTime					(LPCSTR						S,							_TIME_ID				tTimeID);
 			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID				tGraphID,						CSE_ALifeSchedulable *tpALifeSchedulable = 0);
 			void					vfAssignArtefactPosition	(CSE_ALifeAnomalousZone		*tpALifeAnomalousZone,		CSE_ALifeDynamicObject	*tpALifeDynamicObject);
