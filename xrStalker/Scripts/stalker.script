@@ -24,7 +24,9 @@ function actor_binder:reinit()
     object_binder.reinit(self)
 
 	printf("SET DEFAULT INFOS")
-	if self.object:dont_has_info("storyline_actor_start") then
+	if self.object:dont_has_info("storyline_actor_start") and
+	   level.name() == "l01_escape"		
+	then
 		self.object:give_info_portion("encyclopedy")
 		self.object:give_info_portion("storyline_actor_start")
 		self.object:give_info_portion("level_changer_icons")
