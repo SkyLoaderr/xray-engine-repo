@@ -620,7 +620,7 @@
 							RelativePath="AI\Stalker\ai_stalker_fire.cpp">
 						</File>
 						<File
-							RelativePath="ai_stalker_fsm.cpp">
+							RelativePath="AI\Stalker\ai_stalker_fsm.cpp">
 						</File>
 						<File
 							RelativePath="AI\Stalker\ai_stalker_look.cpp">
