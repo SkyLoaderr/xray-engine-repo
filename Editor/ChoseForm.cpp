@@ -46,10 +46,12 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, 
     form->tvItems->Items->Clear		();
     // fill object list
 	AnsiString fld;
-    AStringVec& lst = Lib.Objects();
-    for (AStringIt it=lst.begin(); it!=lst.end(); it++)
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->c_str(),fld))==0)))
-			FOLDER::AppendObject(form->tvItems,it->c_str());
+    FileMap& lst = Lib.Objects();
+    FilePairIt it=lst.begin();
+    FilePairIt _E=lst.end();   // check without extension
+    for (; it!=_E; it++)
+		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->first.c_str(),fld))==0)))
+			FOLDER::AppendObject(form->tvItems,it->first.c_str());
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show
@@ -138,10 +140,12 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill
-    AStringVec lst;
-    if (ImageManager.GetFiles(lst))
-        for (AStringIt it=lst.begin(); it!=lst.end(); it++)
-        	FOLDER::AppendObject(form->tvItems,it->c_str());
+    FileMap lst;
+    FilePairIt it=lst.begin();
+    FilePairIt _E=lst.end();   // check without extension
+    if (ImageManager.GetTextures(lst))
+	    for (; it!=_E; it++)
+        	FOLDER::AppendObject(form->tvItems,it->first.c_str());
     // redraw
 	form->tvItems->IsUpdating		= false;
 

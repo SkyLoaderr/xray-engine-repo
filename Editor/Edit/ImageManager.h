@@ -14,12 +14,14 @@ class CImageManager{
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
-	int			GetModifiedFiles	(AStringVec& files);
-	void		SynchronizeTexture	(const AnsiString& src_name);
-	void		SynchronizeTextures	(LPSTRVec* files=0);
+	// sync routines
+    int			GetTextures			(FileMap& files);
+	int			GetModifiedTextures	(FileMap& files);
+	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_map, LPSTRVec* sync_list);
+    void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) _FREE(*it);};
+	// make/update routines
     void		CreateThumbnail		(EImageThumbnail* THM, const AnsiString& src_name);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);
-    int			GetFiles			(AStringVec& files);
     bool		LoadTextureData		(const AnsiString& src_name, DWORDVec& data, int& w, int& h);
 };
 

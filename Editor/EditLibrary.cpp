@@ -203,12 +203,11 @@ void TfrmEditLibrary::InitObjects()
 {
 	tvObjects->IsUpdating		= true;
     tvObjects->Items->Clear();
-    AStringVec& lst = Lib.Objects();
-    AnsiString nm;
-    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-        nm = ChangeFileExt(*it,"");
-        FOLDER::AppendObject(tvObjects,nm.c_str());
-    }
+    FileMap& lst = Lib.Objects();
+    FilePairIt it=lst.begin();
+    FilePairIt _E=lst.end();   // check without extension
+    for(; it!=_E; it++)
+        FOLDER::AppendObject(tvObjects,it->first.c_str());
 	tvObjects->IsUpdating		= false;
 }
 //---------------------------------------------------------------------------
@@ -262,13 +261,14 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     int src_age = 0;
 	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
-   	    CEditableObject* obj = Lib.GetEditObject(name.c_str());
+        int age;
+   	    CEditableObject* obj = Lib.GetEditObject(name.c_str(),&age);
     	if (obj&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
             obj_name = ChangeFileExt(obj->GetName(),".object");
             tex_name = ChangeFileExt(obj_name,".thm");
             FS.m_Objects.Update(obj_name);
-            src_age = FS.GetFileAge(obj_name);
+            src_age = age;
             if (Device.MakeScreenshot(pixels,w,h)){
 	            EImageThumbnail tex(tex_name.c_str(),EImageThumbnail::EITObject,false);
     	        tex.CreateFromData(pixels.begin(),w,h);

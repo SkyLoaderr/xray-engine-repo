@@ -64,8 +64,8 @@ private:	// User declarations
     Fvector init_cam_hpb;
     Fvector init_cam_pos;
     void OnModified();
-    static AStringVec check_tex_list;
-    static AStringVec modif_tex_list;
+    static FileMap texture_map;
+    static FileMap modif_map;
 	void __fastcall SaveTextureParams();
     bool bCheckMode;
     TfrmProperties* ImageProps;

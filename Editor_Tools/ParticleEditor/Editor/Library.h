@@ -17,10 +17,10 @@ class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 	bool				m_bReady;
 	friend class TfrmChoseObject;
 	EditObjMap			m_EditObjects;
-    AStringVec			m_Objects;
+    FileMap				m_Objects;
     AnsiString			m_Current;
 
-    CEditableObject*	LoadEditObject		(LPCSTR name);
+    CEditableObject*	LoadEditObject		(LPCSTR name, int age);
 public:
 						ELibrary			();
 	virtual 			~ELibrary			();
@@ -39,10 +39,10 @@ public:
 
     void				SetCurrentObject	(LPCSTR T);
     LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
-    CEditableObject*	GetEditObject		(LPCSTR name);
+    CEditableObject*	GetEditObject		(LPCSTR name,int* age=0);
 
 	int 				ObjectCount        	();
-	AStringVec&			Objects	        	(){return m_Objects;}
+	FileMap&			Objects	        	(){return m_Objects;}
 
 	virtual		void	OnDeviceCreate		();
 	virtual		void	OnDeviceDestroy		();

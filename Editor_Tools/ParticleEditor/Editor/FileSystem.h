@@ -19,13 +19,13 @@ public:
 	void VerifyPath();
 };
 
-DEFINE_MAP(AnsiString,int,FindDataMap,FindDataPairIt);
+DEFINE_MAP(AnsiString,int,FileMap,FilePairIt);
 
 class CFileSystem {
 	void 	ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
 	void 	Recurse(const char* path);
 
-	FindDataMap* m_FindItems;
+	FileMap* m_FindItems;
     LPSTR 	ext_mask;
 	bool 	bClampExt;
     int		path_size;
@@ -77,7 +77,7 @@ public:
 	void 	BackupFile		(const AnsiString& fn);
 	bool 	RestoreBackup	(const AnsiString& fn);
 
-    int		GetFiles		(LPCSTR path, FindDataMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
+    int		GetFiles		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
 
     void	VerifyPath		(LPCSTR path);
 };

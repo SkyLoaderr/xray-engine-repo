@@ -11,21 +11,6 @@
 #include "SceneClassList.h"
 
 //----------------------------------------------------
-/*
-bool CLibObject::ImportFrom(const char* name){
-    _DELETE(m_EditObject);
-    m_EditObject = new CEditableObject(this);
-    if (FS.Exist(name, true))
-        if (m_EditObject->Load(name)){
-        	m_SrcName = ExtractFileName(AnsiString(name));
-            m_EditObject->m_ObjVer.f_age = FS.GetFileAge(AnsiString(name));
-            return true;
-        }
-    _DELETE(m_EditObject);
-    return false;
-}
-*/
-//----------------------------------------------------
 ELibrary Lib;
 //----------------------------------------------------
 static bool sort_pred(AnsiString& A, AnsiString& B)
@@ -44,14 +29,7 @@ ELibrary::~ELibrary(){
 
 void ELibrary::OnCreate(){
 	m_Current = "";
-    int count = strlen(FS.m_Objects.m_Path);
-    FindDataMap lst;
-    FS.GetFiles(FS.m_Objects.m_Path,lst,true,true,"*.object");
-    m_Objects.resize(lst.size());
-    AStringIt s_it=m_Objects.begin();
-    for (FindDataPairIt it=lst.begin(); it!=lst.end(); it++)
-		*s_it = it->first;
-	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
+    FS.GetFiles(FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_bReady = true;
@@ -77,8 +55,8 @@ void ELibrary::OnDestroy(){
 
 void ELibrary::SetCurrentObject(LPCSTR T){
 	VERIFY(m_bReady);
-    bool b = binary_search(m_Objects.begin(),m_Objects.end(),AnsiString(T),sort_pred);
-    if (b) m_Current = T;
+    FilePairIt it = m_Objects.find(T);
+    if (it!=m_Objects.end()) m_Current = T;
 }
 int ELibrary::ObjectCount(){
 	VERIFY(m_bReady);
@@ -127,14 +105,14 @@ void ELibrary::OnDeviceDestroy(){
 }
 //---------------------------------------------------------------------------
 
-CEditableObject* ELibrary::LoadEditObject(LPCSTR name){
+CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = new CEditableObject(name);
     AnsiString fn=ChangeFileExt(name,".object");
     FS.m_Objects.Update(fn);
     if (FS.Exist(fn.c_str(), true))
         if (m_EditObject->Load(fn.c_str())){
-            m_EditObject->m_ObjVer.f_age = FS.GetFileAge(fn);
+            m_EditObject->m_ObjVer.f_age = age;
             return m_EditObject;
         }
     _DELETE(m_EditObject);
@@ -142,16 +120,17 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name){
 }
 //---------------------------------------------------------------------------
 
-CEditableObject* ELibrary::GetEditObject(LPCSTR name)
+CEditableObject* ELibrary::GetEditObject(LPCSTR name,int* age)
 {
 	VERIFY(m_bReady);
     R_ASSERT(name&&name[0]);
     CEditableObject* m_EditObject = 0;
-	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(name),sort_pred);
-    if (P==m_Objects.end()) return 0;
-	EditObjPairIt it = m_EditObjects.find(AnsiString(name));
+    FilePairIt p_it = m_Objects.find(name);
+    if (p_it==m_Objects.end()) return 0;
+    if (age) *age = p_it->second;
+	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
-    else if (m_EditObject=LoadEditObject(name))
+    else if (m_EditObject=LoadEditObject(name,p_it->second))
 		m_EditObjects[name] = m_EditObject;
 	return m_EditObject;
 }
@@ -161,7 +140,7 @@ void ELibrary::UnloadObject(LPCSTR N)
 {
 	VERIFY(m_bReady);
 	R_ASSERT(N&&N[0]);
-	EditObjPairIt it = m_EditObjects.find(AnsiString(N));
+	EditObjPairIt it = m_EditObjects.find(N);
     if (it!=m_EditObjects.end()){
     	delete it->second;
 		m_EditObjects.erase(it);

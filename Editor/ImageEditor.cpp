@@ -14,8 +14,8 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
-AStringVec TfrmImageLib::check_tex_list;
-AStringVec TfrmImageLib::modif_tex_list;
+FileMap TfrmImageLib::texture_map;
+FileMap TfrmImageLib::modif_map;
 //---------------------------------------------------------------------------
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
@@ -30,8 +30,9 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         form->Caption = title;
 	    form->bCheckMode = bCheck;
 
-        if (form->bCheckMode) form->ebClose->Caption = "Update&&Close";
-		form->modif_tex_list.clear();
+        if (form->bCheckMode) 	form->ebClose->Caption = "Update&&Close";
+        else					ImageManager.GetTextures(texture_map);
+		form->modif_map.clear();
         form->m_Thm = 0;
         form->m_SelectedName = "";
 
@@ -45,16 +46,18 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::CheckImageLib(){
-	check_tex_list.clear();
-    if (ImageManager.GetModifiedFiles(check_tex_list))
+	texture_map.clear();
+    if (ImageManager.GetModifiedTextures(texture_map)){
+		ImageManager.SynchronizeTextures(true,false,false,&texture_map,0);
     	EditImageLib(AnsiString("Check image params"),true);
+    }
 }
 
 bool __fastcall TfrmImageLib::HideImageLib(){
 	if (form){
     	form->Close();
-    	check_tex_list.clear();
-		modif_tex_list.clear();
+    	texture_map.clear();
+		modif_map.clear();
     }
     return true;
 }
@@ -69,13 +72,10 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
     InitItemsList();
     UI.BeginEState(esEditImages);
 
-    if (bCheckMode&&check_tex_list.size()){
-	    // select first item
-    	TElTreeItem* node = tvItems->Items->LookForItem(0,check_tex_list[0],0,0,false,true,false,true,true);
-	    if (node){
-    		tvItems->Selected = node;
-			tvItems->EnsureVisible(node);
-    	}
+    TElTreeItem* node = tvItems->Items->GetFirstNode();
+    if (node){
+        tvItems->Selected = node;
+        tvItems->EnsureVisible(node);
     }
 }
 //---------------------------------------------------------------------------
@@ -85,21 +85,19 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
     form->Enabled = false;
 
     SaveTextureParams();
-    if (bCheckMode&&!check_tex_list.empty()){
-	    UI.Command(COMMAND_REFRESH_TEXTURES);
-//		ImageManager.SynchronizeTextures(); внутри команды определено
+    if (bCheckMode&&!texture_map.empty()){
+    	LPSTRVec modif;
+		ImageManager.SynchronizeTextures(true,true,false,&texture_map,&modif);
+    	Device.RefreshTextures(&modif);
+		ImageManager.FreeModifVec(modif);
     }else{
 	    // save game textures
-        if (modif_tex_list.size())
-			UI.Command(COMMAND_REFRESH_TEXTURES);
-/*
-        UI.ProgressStart(modif_tex_list.size(),"Save modified textures...");
-    	for (AStringIt it=modif_tex_list.begin(); it!=modif_tex_list.end(); it++){
-			ImageManager.CreateGameTexture(it->c_str());
-            UI.ProgressInc();
+        if (modif_map.size()){
+            LPSTRVec modif;
+            ImageManager.SynchronizeTextures(true,true,true,&modif_map,&modif);
+            Device.RefreshTextures(&modif);
+            ImageManager.FreeModifVec(modif);
         }
-        UI.ProgressEnd();
-*/
 	}
 
 	_DELETE(m_Thm);
@@ -121,17 +119,10 @@ void TfrmImageLib::InitItemsList(const char* nm)
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // fill
-    if (bCheckMode||check_tex_list.size()){
-    	for (AStringIt it=check_tex_list.begin(); it!=check_tex_list.end(); it++)
-        	FOLDER::AppendObject(tvItems,it->c_str());
-//            form->AddItem(0,s->c_str());
-    }else{
-    	AStringVec lst;
-    	ImageManager.GetFiles(lst);
-        for (AStringIt it=lst.begin(); it!=lst.end(); it++)
-        	FOLDER::AppendObject(tvItems,it->c_str());
-//            form->AddItem(0,it->c_str());
-    }
+	FilePairIt it = texture_map.begin();
+	FilePairIt _E = texture_map.end();
+    for (; it!=_E; it++)
+        FOLDER::AppendObject(tvItems,it->first.c_str());
 
     // redraw
     if (nm)
@@ -157,8 +148,8 @@ void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 void __fastcall TfrmImageLib::SaveTextureParams(){
 	if (m_Thm&&ImageProps->IsModified()){
         m_Thm->Save();
-        if (find(modif_tex_list.begin(),modif_tex_list.end(),m_SelectedName)==modif_tex_list.end())
-        	modif_tex_list.push_back(m_SelectedName);
+	    FilePairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
+        modif_map.insert(*it);
     }
 }
 

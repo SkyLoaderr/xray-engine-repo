@@ -228,7 +228,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
 
 	case COMMAND_REFRESH_TEXTURES:
-		Device.RefreshTextures();
+		Device.RefreshTextures(0);
 		break;
 
     case COMMAND_UNLOAD_TEXTURES:

@@ -228,22 +228,6 @@ void CFileSystem::SetFileAge( const AnsiString& name, int age ){
     tm.modtime	= age;
     _utime(name.c_str(),&tm);
 }
-/*
-//----------------------------------------------------
-void CFileSystem::SetFileAgeFrom(const AnsiString& src_name, const AnsiString& dest_name){
-	FILETIME FT;
-//	BOOL res = GetFileAge(src_name,FT); R_ASSERT(res);
-//	SetFileAge(dest_name,FT);
-}
-//----------------------------------------------------
-int CFileSystem::CompareFileAge(const AnsiString& fn1, const AnsiString& fn2){
-	int FT1, FT2;
-	BOOL fn1_res = GetFileAge(fn1,FT1);
-	BOOL fn2_res = GetFileAge(fn2,FT2);
-	if (!fn1_res||!fn2_res) return -1;
-//	return (0==CompareFileTime(&FT1,&FT2));
-}
-*/
 //----------------------------------------------------
 //
 //----------------------------------------------------
@@ -350,7 +334,7 @@ void CFileSystem::Recurse(const char* path)
 */
 }
 
-int CFileSystem::GetFiles(LPCSTR path, FindDataMap& items, bool clamp_path, bool clamp_ext, LPCSTR ext_m)
+int CFileSystem::GetFiles(LPCSTR path, FileMap& items, bool clamp_path, bool clamp_ext, LPCSTR ext_m)
 {
     ext_mask		= strdup(ext_m);
 	m_FindItems		= &items;
