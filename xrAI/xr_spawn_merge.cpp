@@ -80,14 +80,14 @@ public:
 		m_level_changers		= level_changers;
 		m_ini					= ini;
 		string256				fName;
-		FS.update_path			(fName,name,m_tLevel.caLevelName);
+		FS.update_path			(fName,name,*m_tLevel.caLevelName);
 		strcat					(fName,"\\");
 		m_tpAI_Map				= xr_new<CLevelGraph>(fName);
 		// loading cross table 
 		strcat					(fName,CROSS_TABLE_NAME);
 		m_tpCrossTable			= xr_new<CGameLevelCrossTable>(fName);
 		// loading spawn points
-		FS.update_path			(fName,name,m_tLevel.caLevelName);
+		FS.update_path			(fName,name,*m_tLevel.caLevelName);
 		strcat					(fName,"\\level.spawn");
 		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
@@ -488,7 +488,7 @@ public:
 					continue;
 			}
 			tLevel.tOffset			= (*I).offset;
-			strcpy					(tLevel.caLevelName,(*I).name);
+			tLevel.caLevelName		= (*I).name;
 			tLevel.tLevelID			= (*I).id;
 			Msg						("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
 			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset,&level_changers,Ini));

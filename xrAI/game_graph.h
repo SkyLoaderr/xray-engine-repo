@@ -23,12 +23,14 @@ class CGameGraph {
 public:
 
 	class SLevel {
-		string256				caLevelName;
+		ref_str					caLevelName;
 		Fvector					tOffset;
 		ALife::_LEVEL_ID		tLevelID;
+		ref_str					m_section;
+
 	public:
 		IC LPCSTR name() const {
-			return				(caLevelName);
+			return				(*caLevelName);
 		}
 
 		IC const Fvector &offset() const {
@@ -37,6 +39,10 @@ public:
 
 		IC ALife::_LEVEL_ID id() const {
 			return				(tLevelID);
+		}
+
+		IC ref_str section() const {
+			return				(m_section);
 		}
 
 		friend class CGameGraph;

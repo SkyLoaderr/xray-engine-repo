@@ -408,7 +408,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 				VERIFY3	((*I).id != id,"Duplicated level id in the game.ltx",S);
 			}
 		}
-		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset")));
+		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset"),N));
 	}
 }
 
@@ -437,7 +437,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	xr_set<CLevelInfo>::const_iterator	E = levels.end();
 	for ( ; I != E; ++I) {
 		tLevel.tOffset				= (*I).offset;
-		strcpy						(tLevel.caLevelName,(*I).name);
+		tLevel.caLevelName			= (*I).name;
 		strcpy						(S1,(*I).name);
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");

@@ -258,7 +258,8 @@ public:
 		CGameGraph::SLevel			tLevel;
 		tLevel.tOffset.set			(0,0,0);
 		tLevel.tLevelID				= 0;
-		Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
+		tLevel.caLevelName			= name;
+		tLevel.m_section			= "";
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
 		tGraph.w_u32				(tGraphHeader.dwVersion);
 		tGraph.w_u32				(tGraphHeader.dwLevelCount);

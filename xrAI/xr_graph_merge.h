@@ -12,10 +12,12 @@ struct CLevelInfo {
 	u32				id;
 	LPSTR			name;
 	Fvector			offset;
+	ref_str			m_section;
 
-	CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset) :
+	CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset, ref_str section) :
 		id(_id),
-		offset(_offset)
+		offset(_offset),
+		m_section(section)
 	{
 		name		= strlwr(xr_strdup(_name));
 	}
