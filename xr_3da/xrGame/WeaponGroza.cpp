@@ -177,15 +177,14 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			m_pParent->g_fireParams(p1,d);
 			
 			// bullet_trace
-			/*
 			{
 				UpdateFP	(bHUDView);
-				Fvector		b1,b2;
-				b1.direct	(vLastFP,vLastFD,.0f);
-				b2.direct	(p1,d,30);
-				::Render.add_Line(b1,b2,.05f,D3DCOLOR_XRGB(255,0,0),hBulletTracer);
+				Fvector		end;
+				end.direct	(vLastFP,vLastFD,100.f);
+				Fcolor		c; c.set(1,0,0,1);
+				Level().Tracers.Add(vLastFP,end,10,0.9f,1,c);
+//				::Render.add_Line(b1,b2,.05f,D3DCOLOR_XRGB(255,0,0),hBulletTracer);
 			}
-			*/
 			
 			while (fTime<0)
 			{

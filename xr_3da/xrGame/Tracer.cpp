@@ -7,7 +7,7 @@
 #include "..\fstaticrender.h"
 
 const DWORD	MAX_TRACERS	= 1024;
-const float TRACER_SIZE = 0.1f;
+const float TRACER_SIZE = 0.05f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -30,7 +30,7 @@ void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, f
 	Bullet&	B			= bullets.back();
 
 	Fvector	path;
-	path.sub			(from,to);
+	path.sub			(to,from);
 
 	B.target.set		(to);
 	B.dir.normalize		(path);
@@ -88,6 +88,10 @@ void	CTracer::Render	()
 
 	DWORD vCount = verts-start;
 	VS->Unlock				(vCount);
-	Device.Shader.Set		(sh_Tracer);
-	Device.Primitive.Draw	(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+	
+	if (vCount)	{
+		HW.pDevice->SetTransform(D3DTS_WORLD, precalc_identity.d3d());
+		Device.Shader.Set		(sh_Tracer);
+		Device.Primitive.Draw	(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+	}
 }
