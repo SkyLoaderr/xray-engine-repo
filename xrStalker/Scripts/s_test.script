@@ -17,7 +17,8 @@ function main ()
 	local ak = get_level_object ("ak")
 	stalker:script (true, s_test.script_name ())
 
-	action (stalker, object (ak, object.take), cond (cond.object_end))
+--	action (stalker, object (ak, object.take), cond (cond.object_end))
+	ak:set_queue_size (2)
 	action (stalker, move (move.standing, move.walk, move.line, patrol ("boar_way")),
 			anim (anim.danger), look (look.fire_point, get_actor ()), object (ak, object.fire1), cond (cond.move_end))
 
