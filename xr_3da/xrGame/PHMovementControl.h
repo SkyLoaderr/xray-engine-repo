@@ -17,6 +17,9 @@ void				PHCaptureObject(CGameObject* object);
 void				PHCaptureObject(CGameObject* object,int element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
+void				Jump(const Fvector &jump_velocity);
+void				Jump(const Fvector &start_point, const Fvector &end_point, float time);
+void				Jump(const Fvector &end_point, float time);
 bool			b_exect_position;
 public:
 

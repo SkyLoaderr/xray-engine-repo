@@ -725,5 +725,23 @@ void	CPHMovementControl::DeleteCharacterObject()
 	xr_delete(m_capture);
 }
 
+void CPHMovementControl::Jump(const Fvector &jump_velocity)
+{
+	m_character->Jump(jump_velocity);
+}
 
+void CPHMovementControl::Jump(const Fvector &end_point, float time)
+{
+Jump(vPosition,end_point,time);
+}
+void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, float time)
+{
+Fvector velosity;
+velosity.x=end_point.x-start_point.x;
+velosity.z=end_point.z-start_point.z;
 
+velosity.x/=time;
+velosity.z/=time;
+velosity.y=time*world_gravity/2.f+(end_point.y-start_point.y)/time;
+Jump(velosity);
+}
