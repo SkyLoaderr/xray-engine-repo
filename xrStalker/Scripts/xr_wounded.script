@@ -296,10 +296,16 @@ function action_idle:initialize ()
     self.object:add_animation ("waunded_idle_0", true)
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
+    
 end
 ------------
 function action_idle:execute ()
     action_base.execute (self)
+
+    if self.object:active_item () ~= nil then
+       self.object:set_item (object.deactivate, self.object:active_item ())
+    end   
+
     if self.object:animation_count () < 2 then 
        self.object:add_animation ("waunded_idle_0", true)
     end    
@@ -343,12 +349,9 @@ function action_help:initialize ()
     action_base.initialize (self)
     self.object:set_movement_type         (move.stand)
     self.first = false
+    
     self.object:enable_talk ()
-    --if self.a.dialog == nil then
-       --self.object:set_start_dialog ("tutorial_wounded")
-    --else
-       --self.object:set_start_dialog (self.a.dialog)    
-    --end   
+    
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
     
@@ -369,6 +372,10 @@ end
 ------------
 function action_help:execute ()
     action_base.execute (self)
+    
+    if self.object:active_item () ~= nil then
+       self.object:set_item (object.deactivate, self.object:active_item ())
+    end   
     
     if distance_between (self.object, self.a.npc) < 40 and self.first == false then
        if self.object:active_sound_count () ~= 0 then
@@ -557,11 +564,8 @@ end
 ------------------------------------------------------------------------------------------
 function add_to_binder (object, ini, scheme, section, st)
 
-    printf ("XR_WOUNDED:ADD_TO_BINDER CALLED")
     local operators     = {}
     local properties    = {}
-    
-    --local st = xr_motivator.storage[object:id()].wounded
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
