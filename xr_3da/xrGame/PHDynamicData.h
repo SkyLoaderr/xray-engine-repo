@@ -5,6 +5,7 @@
 
 #include "ode_include.h"
 #include "PHInterpolation.h"
+#include "MathUtils.h"
 #if !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)
 #define AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_
 
@@ -64,8 +65,8 @@ public:
 			DMXPStoFMX(dGeomGetRotation(dGeomTransformGetGeom(transform)),P0,Transform);
 	
 
-			Memory.mem_copy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(transform)),sizeof(Fvector));
-			Memory.mem_copy(&Translate1,dBodyGetPosition(body),sizeof(Fvector));
+			dVectorSet((dReal*)&Translate,dGeomGetPosition(dGeomTransformGetGeom(transform)));
+			dVectorSet((dReal*)&Translate1,dBodyGetPosition(body));
 
 			aTransform.identity();
 			aTransform.translate_over(Translate);

@@ -5,7 +5,7 @@
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
 #include "Geometry.h"
-
+#include "MathUtils.h"
 
 
 
@@ -292,11 +292,11 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				dQuaternion safe_q1, safe_q2;
 				CPhysicsElement* el1=dynamic_cast<CPHElement*>(split_elem.first),*el2=joint->PSecond_element();
 				dBodyID body1=el1->get_body(), body2=el2->get_body();
-				Memory.mem_copy(safe_pos1,dBodyGetPosition(body1),sizeof(dVector3));
-				Memory.mem_copy(safe_pos2,dBodyGetPosition(body2),sizeof(dVector3));
+				dVectorSet(safe_pos1,dBodyGetPosition(body1));
+				dVectorSet(safe_pos2,dBodyGetPosition(body2));
 
-				Memory.mem_copy(safe_q1,dBodyGetQuaternion(body1),sizeof(dQuaternion));
-				Memory.mem_copy(safe_q2,dBodyGetQuaternion(body2),sizeof(dQuaternion));
+				dQuaternionSet(safe_q1,dBodyGetQuaternion(body1));
+				dQuaternionSet(safe_q2,dBodyGetQuaternion(body2));
 				
 				//m_pShell->PlaceBindToElForms();
 				
@@ -305,11 +305,11 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 				el2->SetTransform(bones_bind_forms[el2->m_SelfID]);
 				joint->ReattachFirstElement(split_elem.first);
 
-				Memory.mem_copy(const_cast<dReal*>(dBodyGetPosition(body1)),safe_pos1,sizeof(dVector3));
-				Memory.mem_copy(const_cast<dReal*>(dBodyGetPosition(body2)),safe_pos2,sizeof(dVector3));
+				dVectorSet(const_cast<dReal*>(dBodyGetPosition(body1)),safe_pos1);
+				dVectorSet(const_cast<dReal*>(dBodyGetPosition(body2)),safe_pos2);
 
-				Memory.mem_copy(const_cast<dReal*>(dBodyGetQuaternion(body1)),safe_q1,sizeof(dQuaternion));
-				Memory.mem_copy(const_cast<dReal*>(dBodyGetQuaternion(body2)),safe_q2,sizeof(dQuaternion));
+				dQuaternionSet(const_cast<dReal*>(dBodyGetQuaternion(body1)),safe_q1);
+				dQuaternionSet(const_cast<dReal*>(dBodyGetQuaternion(body2)),safe_q2);
 
 				dBodySetPosition(body1,safe_pos1[0],safe_pos1[1],safe_pos1[2]);
 				dBodySetPosition(body2,safe_pos2[0],safe_pos2[1],safe_pos2[2]);

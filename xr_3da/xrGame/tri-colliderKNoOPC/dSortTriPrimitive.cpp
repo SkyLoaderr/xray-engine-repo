@@ -4,6 +4,7 @@
 #include "dTriColliderCommon.h"
 #include "dTriColliderMath.h"
 #include "__aabb_tri.h"
+#include "../MathUtils.h"
 static 	xr_vector<Triangle> pos_tries;
 static 	xr_vector<Triangle> neg_tries;
 
@@ -244,6 +245,6 @@ int dSortTriPrimitiveCollide (
 		}
 
 	}
-	Memory.mem_copy(last_pos,p,sizeof(dVector3));
+	dVectorSet(last_pos,p);
 	return ret;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "PHCharacter.h"
 #include "Physics.h"
-
+#include "MathUtils.h"
 
 class CPHSimpleCharacter : public CPHCharacter
 {
@@ -191,8 +191,8 @@ IC	void		SafeAndLimitVelocity						()
 			m_safe_position[2]-m_safe_velocity[2]*fixed_step);
 
 
-		Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-		Memory.mem_copy(m_safe_velocity,linear_velocity,sizeof(dVector3));
+		dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+		dVectorSet(m_safe_velocity,linear_velocity);
 
 	}
 	

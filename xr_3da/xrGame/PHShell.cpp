@@ -8,6 +8,7 @@
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
 #include "SpaceUtils.h"
+#include "MathUtils.h"
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
 //#include "../ode/src/collision_kernel.h"
@@ -398,13 +399,13 @@ void CPHShell::SmoothElementsInertia(float k)
 	{
 		dVector3 tmp;
 		dMass* m=(*i)->getMassTensor();
-		Memory.mem_copy(tmp,m->c,sizeof(dVector3));
+		dVectorSet(tmp,m->c);
 
 		m->mass*=krc;
 		for(int j=0;j<4*3;++j) m->I[j]*=krc;
 		dMassAdd(m,&m_avrg);
 
-		Memory.mem_copy(m->c,tmp,sizeof(dVector3));
+		dVectorSet(m->c,tmp);
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHFracture.h"
 #include "PHContactBodyEffector.h"
+#include "MathUtils.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -246,10 +247,8 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	SetTransform(m0);
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 
-
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
-
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////
@@ -291,9 +290,8 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 
 	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
 
-
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 
 	//////////////////////////////////////////////////////////////
@@ -419,8 +417,8 @@ void CPHElement::PhDataUpdate(dReal step){
 	}
 	else
 	{
-		Memory.mem_copy(m_safe_position,position,sizeof(dVector3));
-		Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+		dVectorSet(m_safe_position,position);
+		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	}
 
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
@@ -589,9 +587,8 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 	{
 		SetTransform(mXFORM);
 	}
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
-
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////
@@ -633,8 +630,9 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 		globe.mul(start_from,mXFORM);
 		SetTransform(globe);
 	}
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+
 }
 
 void CPHElement::Activate(const Fmatrix& start_from,bool disable){
@@ -648,8 +646,9 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 		globe.mul(start_from,mXFORM);
 		SetTransform(globe);
 	}
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+
 
 
 	//////////////////////////////////////////////////////////////
@@ -836,7 +835,8 @@ void CPHElement::get_LinearVel(Fvector& velocity)
 		velocity.set(0,0,0);
 		return;
 	}
-	Memory.mem_copy(&velocity,dBodyGetLinearVel(m_body),sizeof(Fvector));
+	dVectorSet((dReal*)&velocity,dBodyGetLinearVel(m_body));
+	
 }
 void CPHElement::get_AngularVel	(Fvector& velocity)
 {
@@ -845,7 +845,7 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 		velocity.set(0,0,0);
 		return;
 	}
-	Memory.mem_copy(&velocity,dBodyGetAngularVel(m_body),sizeof(Fvector));
+	dVectorSet((dReal*)&velocity,dBodyGetAngularVel(m_body));
 }
 
 void CPHElement::set_LinearVel			  (const Fvector& velocity)
@@ -1191,9 +1191,8 @@ void CPHElement::PresetActive()
 		m_shell->m_object_in_root.invert();
 
 	}
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
-	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
-
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
 	//initializing values for disabling//////////////////////////

@@ -122,3 +122,17 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,U16Vec
 	}
 	return pPhysicsShell;
 }
+
+CPhysicsShell*	P_build_SimpleShell(CGameObject* obj,float mass,bool not_active_state)
+{
+	CPhysicsShell* pPhysicsShell		= P_create_Shell();
+	Fobb obb; obj->Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
+	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
+	pPhysicsShell->add_Element(E);
+	pPhysicsShell->setMass(mass);
+	if(!obj->H_Parent())
+		pPhysicsShell->Activate(obj->XFORM(),0,obj->XFORM(),not_active_state);
+	pPhysicsShell->mDesired.identity();
+	pPhysicsShell->fDesiredStrength = 0.f;
+	return pPhysicsShell;
+}

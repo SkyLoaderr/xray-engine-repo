@@ -4,7 +4,30 @@
 struct dxBox {
 	dVector3 side;	// side lengths (x,y,z)
 };
+/*
+class BoxTri
+{
+	IC	static float Proj  (dxGeom* box,const dReal* normal){return dBoxProj(box,normal);}
+		static int	 Colide(
+							const dReal* v0,const dReal* v1,const dReal* v2,
+							CDB::TRI* T,
+							dxGeom *o1,dxGeom *o2,
+							int flags, dContactGeom *contact, int skip
+							);
+		static int	ColidePlain(
+							    const dReal* triSideAx0,const dReal* triSideAx1,
+							    const dReal* triAx,
+							    //const dReal* v0,
+							    //const dReal* v1,
+							    //const dReal* v2,
+							    CDB::TRI* T,
+							    dReal dist,
+							    dxGeom *o1, dxGeom *o2,
+							    int flags, dContactGeom *contact, int skip
+							    );
 
+};
+*/
 float	dBoxProj(dxGeom* box,const dReal* normal);
 int dTriBox (
 			 const dReal* v0,const dReal* v1,const dReal* v2,

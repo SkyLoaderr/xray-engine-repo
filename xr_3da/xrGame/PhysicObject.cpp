@@ -174,21 +174,15 @@ void CPhysicObject::RecursiveBonesCheck(u16 id)
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	
 	if(m_pPhysicsShell) return;
-	m_pPhysicsShell		= P_create_Shell();
+
 	switch(m_type) {
 		case epotBox : {
-			Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
-			CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
-			m_pPhysicsShell->add_Element(E);
-			m_pPhysicsShell->setMass(m_mass);
-			if(!H_Parent())
-				m_pPhysicsShell->Activate(XFORM(),0,XFORM(),!po->flags.test(CSE_ALifeObjectPhysic::flActive));
-			m_pPhysicsShell->mDesired.identity();
-			m_pPhysicsShell->fDesiredStrength = 0.f;
+			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->flags.test(CSE_ALifeObjectPhysic::flActive));
 		} break;
 		case epotFixedChain : 
 		case epotFreeChain  :
-			{
+			{	
+			m_pPhysicsShell		= P_create_Shell();
 			m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
 			AddElement(0,PKinematics(Visual())->LL_GetBoneRoot());
 			m_pPhysicsShell->setMass1(m_mass);

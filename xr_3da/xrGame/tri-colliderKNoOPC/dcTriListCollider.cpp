@@ -5,6 +5,7 @@
 #include "dTriCollideK.h"
 #include "dSortTriPrimitive.h"
 #include "../dCylinder/dCylinder.h"
+#include "../MathUtils.h"
 dcTriListCollider::dcTriListCollider(dxGeom* Geometry)
 {
 	this->Geometry = Geometry;
@@ -54,7 +55,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 
 	dVector3 BoxSides;
 	dGeomBoxGetLengths(Box,BoxSides);
-	Memory.mem_copy( &BoxExtents,&BoxSides,sizeof(Fvector));
+	dVectorSet((dReal*)&BoxExtents,(dReal*)&BoxSides);
 
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
@@ -179,7 +180,7 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 						 Fvector AABB;
 						 Fvector SphereCenterF;
 
-						 Memory.mem_copy(&SphereCenterF,SphereCenter,sizeof(Fvector));
+						 dVectorSet((dReal*)&SphereCenterF,SphereCenter);
 
 
 						 // Make AABB 

@@ -1,6 +1,21 @@
 #ifndef MATH_UTILS_H
 #define MATH_UTILS_H
-IC		dVectorAdd(dReal* v,const dReal* av)
+
+IC	void	dVectorSet(dReal* vd,const dReal* vs)
+{
+	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];
+}
+IC	void	dVector4Set(dReal* vd,const dReal* vs)
+{
+	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];vd[3]=vs[3];
+}
+IC void		dQuaternionSet(dReal* vd,const dReal* vs)
+{
+	dVector4Set(vd,vs);
+}
+
+
+IC	void	dVectorAdd(dReal* v,const dReal* av)
 {
 	v[0]+=av[0];	v[1]+=av[1];	v[2]+=av[2];
 }
@@ -21,7 +36,7 @@ IC	void	dVectorSub(dReal* v,const dReal* av0,const dReal* av1)
 
 IC	void	dVectorDeviation(const dReal* vector3_from,const dReal* vector3_to,dReal* vector_dev)
 {
-	dVectorSub(vector3_from,vector3_to,vector_dev);
+	dVectorSub(vector_dev,vector3_to,vector3_from);
 }
 
 IC	void	dVectorDeviationAdd(const dReal* vector3_from,const dReal* vector3_to,dReal* vector_dev)

@@ -386,14 +386,15 @@ void CAI_Crow::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvec
 //---------------------------------------------------------------------
 void CAI_Crow::CreateSkeleton()
 {
-	m_pPhysicsShell=P_create_Shell();
-	Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
-	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
-	m_pPhysicsShell->add_Element(E);
-	m_pPhysicsShell->setMass(0.3f);
+	//m_pPhysicsShell=P_create_Shell();
+	//Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
+	//CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
+	//m_pPhysicsShell->add_Element(E);
+	//m_pPhysicsShell->setMass(0.3f);
+	//m_pPhysicsShell->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
+	//m_pPhysicsShell->Activate(XFORM(),0,XFORM());
+	m_pPhysicsShell=P_build_SimpleShell(this,0.3f,false);
 	m_pPhysicsShell->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
-	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-
 }
 
 void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)

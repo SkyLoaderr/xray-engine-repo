@@ -11,6 +11,7 @@
 #include "ui/uistatic.h"
 #include "SpaceUtils.h"
 #include "PhysicsGamePars.h"
+#include "MathUtils.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
@@ -394,7 +395,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	//if(!b_exist)return;
 	b_air_contact_state=!is_contact;
 	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
-	if(!b_death_pos)Memory.mem_copy(m_death_position,dGeomGetPosition(m_wheel),sizeof(dVector3));
+	if(!b_death_pos)dVectorSet(m_death_position,dGeomGetPosition(m_wheel));
 	CPHContactBodyEffector* contact_effector=
 		(CPHContactBodyEffector*) dBodyGetData(m_body);
 	if(contact_effector)contact_effector->Apply();
@@ -435,7 +436,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	//save depart position
 	if(b_depart) 
-		Memory.mem_copy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+		dVectorSet(m_depart_position,dBodyGetPosition(m_body));
 
 	const dReal* velocity=dBodyGetLinearVel(m_body);
 	dReal linear_vel_smag=dDOT(velocity,velocity);
@@ -504,7 +505,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 				dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
 				(m_wall_contact_position[2]-m_ground_contact_position[2]))>0.05f &&//0.01f//*m_control_force[2]
 				m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
-				Memory.mem_copy(m_clamb_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+				dVectorSet(m_clamb_depart_position,dBodyGetPosition(m_body));
 	}
 
 	else b_clamb_jump=ValidateWalkOn();
@@ -515,7 +516,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		b_lose_control=true;
 		dBodySetLinearVel(m_body,m_jump_accel.x,m_jump_accel.y,m_jump_accel.z);//vel[1]+
 		//Log("jmp",m_jump_accel);
-		Memory.mem_copy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
+		dVectorSet(m_jump_depart_position,dBodyGetPosition(m_body));
 		//m_jump_accel=m_acceleration;
 		b_jump=false;
 		b_jumping=true;
@@ -764,7 +765,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		}
 		else{
 			//fvdir[0]=0.f;fvdir[1]=0.f;fvdir[2]=0.f;//
-			Memory.mem_copy(fvdir,accel,sizeof(dVector3));
+			dVectorSet(fvdir,accel);
 			dNormalize3(fvdir);
 			m_control_force[0]+=fvdir[0]*m.mass*30.f;
 			m_control_force[1]+=fvdir[1]*m.mass*30.f;
@@ -881,7 +882,7 @@ void CPHSimpleCharacter::GetPosition(Fvector& vpos){
 	const dReal* pos=dBodyGetPosition(m_body);
 
 
-	Memory.mem_copy(&vpos,pos,sizeof(Fvector));
+	dVectorSet((dReal*)&vpos,pos);
 	vpos.y-=m_radius;
 }
 
@@ -892,7 +893,7 @@ void CPHSimpleCharacter::GetVelocity(Fvector& vvel){
 		return ;
 	}
 	const dReal* vel=dBodyGetLinearVel(m_body);
-	Memory.mem_copy(&vvel,vel,sizeof(Fvector));
+	dVectorSet((dReal*)&vvel,vel);
 	return;
 }
 
@@ -1220,7 +1221,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 		///////////////////////////////////
 		if(c->geom.g1==m_wheel){
-			Memory.mem_copy(m_death_position,dGeomGetPosition(c->geom.g1),sizeof(dVector3));
+			dVectorSet(m_death_position,dGeomGetPosition(c->geom.g1));
 			m_death_position[1]+=c->geom.depth;
 			if(dGeomGetUserData(c->geom.g1)->pushing_neg)
 				m_death_position[1]=dGeomGetUserData(c->geom.g1)->neg_tri.pos;
@@ -1235,7 +1236,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 			m_ground_contact_normal[0]=c->geom.normal[0];
 			m_ground_contact_normal[1]=c->geom.normal[1];
 			m_ground_contact_normal[2]=c->geom.normal[2];
-			Memory.mem_copy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
+			dVectorSet(m_ground_contact_position,c->geom.pos);
 			b_valide_ground_contact=true;
 		}
 
@@ -1248,14 +1249,14 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 			m_wall_contact_normal[0]=c->geom.normal[0];
 			m_wall_contact_normal[1]=c->geom.normal[1];
 			m_wall_contact_normal[2]=c->geom.normal[2];
-			Memory.mem_copy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
+			dVectorSet(m_wall_contact_position,c->geom.pos);
 			b_valide_wall_contact=true;
 		}
 
 	}
 	else{
 		if(c->geom.g2==m_wheel){
-			Memory.mem_copy(m_death_position,dGeomGetPosition(c->geom.g2),sizeof(dVector3));
+			dVectorSet(m_death_position,dGeomGetPosition(c->geom.g2));
 			m_death_position[1]+=c->geom.depth;
 			if(dGeomGetUserData(c->geom.g2)->pushing_neg)
 				m_death_position[1]=dGeomGetUserData(c->geom.g2)->neg_tri.pos;
@@ -1269,7 +1270,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 			m_ground_contact_normal[0]=-c->geom.normal[0];
 			m_ground_contact_normal[1]=-c->geom.normal[1];
 			m_ground_contact_normal[2]=-c->geom.normal[2];
-			Memory.mem_copy(m_ground_contact_position,c->geom.pos,sizeof(dVector3));
+			dVectorSet(m_ground_contact_position,c->geom.pos);
 			b_valide_ground_contact=true;
 		}
 		if(c->geom.normal[0]*m_acceleration.x+
@@ -1281,7 +1282,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 			m_wall_contact_normal[0]=-c->geom.normal[0];
 			m_wall_contact_normal[1]=-c->geom.normal[1];
 			m_wall_contact_normal[2]=-c->geom.normal[2];
-			Memory.mem_copy(m_wall_contact_position,c->geom.pos,sizeof(dVector3));
+			dVectorSet(m_wall_contact_position,c->geom.pos);
 			b_valide_wall_contact=true;
 		}
 	}
