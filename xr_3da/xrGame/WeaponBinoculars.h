@@ -10,6 +10,7 @@ private:
 	typedef CWeapon inherited;
 protected:
 	float			fMaxZoomFactor;
+	float			fGyroSpeed;
 	// Media :: sounds
 	sound			sndZoomIn;
 	sound			sndZoomOut;
@@ -30,8 +31,7 @@ protected:
 	enum EState
 	{
 		eIdle,
-		eZoomIn,
-		eZoomOut,
+		eZooming,
 		eShowing,
 		eHiding
 	};
@@ -39,11 +39,14 @@ protected:
 	virtual void	switch2_Idle	(BOOL bHUD);
 	virtual void	switch2_Hiding	(BOOL bHUD);
 	virtual void	switch2_Showing	(BOOL bHUD);
+	virtual void	switch2_Zooming	(BOOL bHUD);
 	virtual void	OnShow			();
 	virtual void	OnHide			();
 	virtual void	OnZoomIn		();
 	virtual void	OnZoomOut		();
 	virtual void	OnAnimationEnd	();
+
+	void			state_Zooming	(BOOL bHUD, float dt);
 public:
 					CWeaponBinoculars(); 
 	virtual			~CWeaponBinoculars();
@@ -56,7 +59,7 @@ public:
 	virtual void	Hide			();
 	virtual void	Show			();
 
-	virtual float	GetZoomFactor	()		{ return fMaxZoomFactor; }
+	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__

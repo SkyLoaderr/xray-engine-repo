@@ -76,19 +76,19 @@ void CWeapon::animGet(MotionSVec& lst, LPCSTR prefix)
 	}
 }
 
-void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType)
+void CWeapon::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq)
 {
 	string256	name,temp;
 	strconcat	(name,"weapons\\",GetName(),"_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create(dest,TRUE,name,FALSE,iType);
+		pSounds->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
 	strconcat	(name,"weapons\\","generic_",s_name);
 	if (Engine.FS.Exist(temp,Path.Sounds,name,".wav"))	
 	{
-		pSounds->Create(dest,TRUE,name,FALSE,iType);
+		pSounds->Create(dest,TRUE,name,bCtrlFreq,iType);
 		return;
 	}
 	Device.Fatal("Can't find sound '%s' for weapon '%s'",name,GetName());

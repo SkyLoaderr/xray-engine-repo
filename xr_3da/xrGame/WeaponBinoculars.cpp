@@ -14,6 +14,7 @@
 CWeaponBinoculars::CWeaponBinoculars() : CWeapon("BINOCULARS")
 {
 	fMaxZoomFactor		= 35.f;
+	fGyroSpeed			= 0.f;
 }
 
 CWeaponBinoculars::~CWeaponBinoculars()
@@ -65,7 +66,7 @@ void CWeaponBinoculars::Load(CInifile* ini, const char* section)
 	// Sounds
 	SoundCreate			(sndShow,		"draw");
 	SoundCreate			(sndHide,		"holster");
-	SoundCreate			(sndGyro,		"gyro");
+	SoundCreate			(sndGyro,		"gyro",0,TRUE);
 	SoundCreate			(sndZoomIn,		"zoomin");
 	SoundCreate			(sndZoomOut,	"zoomout");
 	
@@ -180,8 +181,19 @@ void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
 		case eHiding:
 			switch2_Hiding	(bHUDView);
 			break;
+		case eZooming:
+			switch2_Zooming	(bHUDView);
+			break;
 		}
 		st_current = st_target;
+	}
+
+	// cycle update
+	switch (st_current)
+	{
+	case eZooming:
+		state_Zooming	(bHUDView,dt);
+		break;
 	}
 
 	bVisible			= TRUE;
@@ -214,14 +226,14 @@ void CWeaponBinoculars::OnHide	()
 void CWeaponBinoculars::OnZoomIn()
 {
 	inherited::OnZoomIn			();
-	pSounds->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
-	pSounds->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
+	st_target	= eZooming;
+	fGyroSpeed  = 0;
 }
 void CWeaponBinoculars::OnZoomOut()
 {
 	inherited::OnZoomOut();
-	pSounds->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
-	if (sndGyro.feedback)		sndGyro.feedback->Stop();
+	st_target	= eIdle;
+	fGyroSpeed  = 0;
 }
 void CWeaponBinoculars::OnAnimationEnd()
 {
@@ -231,8 +243,30 @@ void CWeaponBinoculars::OnAnimationEnd()
 	case eShowing:	st_target = eIdle;		break;	// End of Show
 	}
 }
+void CWeaponBinoculars::state_Zooming(BOOL bHUDView,float dt)
+{
+	fGyroSpeed += dt;
+	if (sndGyro.feedback){
+		sndGyro.feedback->SetPosition(vLastFP);
+		float k = sqrtf(fGyroSpeed);
+		clamp(k,0.f,1.f); k = 0.6f*k+0.4f;
+		sndGyro.feedback->SetFrequencyScale(k);
+	}
+}
+void CWeaponBinoculars::switch2_Zooming(BOOL bHUDView)
+{
+	pSounds->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
+	pSounds->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
+}
 void CWeaponBinoculars::switch2_Idle	(BOOL bHUDView)
 {
+	switch (st_current)
+	{
+	case eZooming: 
+		pSounds->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
+		if (sndGyro.feedback)		sndGyro.feedback->Stop();
+		break;
+	}
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponBinoculars::switch2_Hiding(BOOL bHUDView)

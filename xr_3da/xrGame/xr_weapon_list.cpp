@@ -85,12 +85,14 @@ BOOL CWeaponList::WeaponChange(int idx)
 	if (idx==m_iActiveWeapon)											return false;
 	if ((idx<0) || (idx>=int(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
 
+	// Zoom - off
+	Zoom				(FALSE);
+
 	// Stop current weapon
 	if (m_iActiveWeapon>=0)	m_Weapons[m_iActiveWeapon]->Hide	();
 
 	// Select new
 	m_iSelectedWeapon	= idx;
-	Zoom				(FALSE);
 	return true;
 }
 
