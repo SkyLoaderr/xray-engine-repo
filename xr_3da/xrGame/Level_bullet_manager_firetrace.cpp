@@ -208,7 +208,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	//сила хита физического импульса
 	//вычисляется с учетом пробиваемости материалов
 	float material_pierce = 1.f - shoot_factor * bullet->pierce_k;
-	clamp(material_pierce, 0.f, 1.f);
+	clamp(material_pierce, 0.1f, 1.f);
 	float impulse = bullet->hit_impulse*material_pierce*
 		bullet->impulse_k*speed_factor;
 

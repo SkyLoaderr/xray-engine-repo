@@ -306,7 +306,7 @@ void CPhysicObject::shedule_Update(u32 dt)
 
 
 	
-	if(b_removing&&Device.dwTimeGlobal-m_unsplit_time>remove_time) 
+	if(b_removing&&(Device.dwTimeGlobal-m_unsplit_time)*phTimefactor>remove_time) 
 	{
 		NET_Packet			P;
 		u_EventGen			(P,GE_DESTROY,ID());
@@ -436,7 +436,7 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
 		
 	newPhysicsShell->set_PhysicsRefObject(O);
-	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
+	//newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	O->setVisible(true);
 	O->setEnabled(true);

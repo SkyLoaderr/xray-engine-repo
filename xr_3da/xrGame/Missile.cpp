@@ -555,7 +555,7 @@ void CMissile::activate_physic_shell()
 	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
 
 	XFORM().set(m_throw_matrix);
-	m_pPhysicsShell->Activate	(XFORM(), l_vel, a_vel);
+	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	PKinematics(Visual())->Calculate();
 }
 
