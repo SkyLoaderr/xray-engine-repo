@@ -165,7 +165,7 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 		//	material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
 		//else
 		//	material=GMLib.GetMaterialByIdx(l_pUD2->material);
-		material=material_2;
+		material=material_1;
 
 	}else{
 		vUp.set(*(Fvector*)&c.geom.normal);	
@@ -174,7 +174,7 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c 
 		//	material=GMLib.GetMaterialByIdx((u16)c.surface.mode);
 		//else
 		//	material=GMLib.GetMaterialByIdx(l_pUD1->material);
-		material=material_1;
+		material=material_2;
 
 	}
 	VERIFY(material);
