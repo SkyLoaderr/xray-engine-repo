@@ -1855,6 +1855,14 @@
 						<Filter
 							Name="mini_max"
 							>
+							<File
+								RelativePath=".\mini_max.h"
+								>
+							</File>
+							<File
+								RelativePath=".\mini_max_inline.h"
+								>
+							</File>
 						</Filter>
 						<Filter
 							Name="pvs"
