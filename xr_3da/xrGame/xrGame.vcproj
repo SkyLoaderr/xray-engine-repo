@@ -4472,6 +4472,16 @@
 							RelativePath=".\script_task_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptFlags"
+						Filter="">
+						<File
+							RelativePath=".\script_flags.h">
+						</File>
+						<File
+							RelativePath=".\script_flags_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
