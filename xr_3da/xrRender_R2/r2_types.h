@@ -32,8 +32,8 @@
 const		float				SMAP_near_plane		= .1f	;
 
 const		u32					SMAP_adapt_min		= 32	;
-const		u32					SMAP_adapt_optimal	= 512	;
-const		u32					SMAP_adapt_max		= 1024	;
+const		u32					SMAP_adapt_optimal	= 768	;
+const		u32					SMAP_adapt_max		= 1536	;
 
 const		u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
 const		u32					TEX_material_LdotH	= 256	;	// specular,	Y
