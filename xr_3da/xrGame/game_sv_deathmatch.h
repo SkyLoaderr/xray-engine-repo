@@ -27,4 +27,5 @@ public:
 
 	// Main
 	virtual		void				Update					();
+				BOOL				AllPlayers_Ready		();
 };

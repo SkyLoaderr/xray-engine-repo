@@ -20,6 +20,7 @@ enum {
 
 	M_EVENT,					// Game Event
 	M_CL_INPUT,					// Client Input Data
+	M_CLIENTREADY,				// Client has finished to load level and are ready to play
 	MSG_FORCEDWORD				= u32(-1)
 };
 

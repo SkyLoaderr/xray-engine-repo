@@ -77,12 +77,27 @@ void	game_sv_Deathmatch::Update					()
 		break;
 	case GAME_PHASE_PENDING:
 		{
-			if ((Device.TimerAsync()-start_time)>u32(10*1000))
+			if ((Device.TimerAsync()-start_time)>u32(10*1000) && AllPlayers_Ready())
 				OnRoundStart();
 		}
 		break;
 	}
 }
+
+BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
+{
+	// Check if all players ready
+	u32		cnt		= get_count	();
+	u32		ready	= 0;
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		game_PlayerState* ps		=	get_it	(it);
+		if (ps->flags & GAME_PLAYER_FLAG_READY)	++ready;
+	}
+
+	if (ready == cnt) return TRUE;
+	return FALSE;
+};
 	
 BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 {
@@ -143,38 +158,49 @@ BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
 
 void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 {
-	if	(GAME_PHASE_INPROGRESS == phase) return;
-
-	game_PlayerState*	ps	=	get_id	(id);
-	if (ps)
+//	if	(GAME_PHASE_INPROGRESS == phase) return;
+	switch (phase)
 	{
-		if (ps->flags & GAME_PLAYER_FLAG_READY)	
+	case GAME_PHASE_PENDING:
 		{
-			ps->flags &= ~GAME_PLAYER_FLAG_READY;
-		} else {
-			ps->flags |= GAME_PLAYER_FLAG_READY;
-
-			// Check if all players ready
-			u32		cnt		= get_count	();
-			u32		ready	= 0;
-			for		(u32 it=0; it<cnt; ++it)	
+			game_PlayerState*	ps	=	get_id	(id);
+			if (ps)
 			{
-				ps		=	get_it	(it);
-				if (ps->flags & GAME_PLAYER_FLAG_READY)	++ready;
-			}
+				if (ps->flags & GAME_PLAYER_FLAG_READY)	
+				{
+					ps->flags &= ~GAME_PLAYER_FLAG_READY;
+				} 
+				else 
+				{
+					ps->flags |= GAME_PLAYER_FLAG_READY;
 
-			if (ready == cnt)
-			{
-				OnRoundStart	();
-			}
-		}
-	}
+					if (AllPlayers_Ready())
+					{
+						OnRoundStart	();
+					};
+				};
+			};
+		}break;
+	case GAME_PHASE_INPROGRESS:
+		{
+			LPCSTR	options			=	get_name_id	(id);
+
+			// Spawn "actor"
+			CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
+			CSE_ALifeCreatureActor				*A	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
+			strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+			A->s_team				=	u8(0);																	// no-team
+			A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
+			assign_RP				(A);
+			spawn_end				(A,id);
+		}break;
+	};
 }
 
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
 	__super::OnPlayerConnect	(id_who);
-
+/*
 	LPCSTR	options			=	get_name_id	(id_who);
 
 	// Spawn "actor"
@@ -185,6 +211,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
+*/
 }
 
 
@@ -202,18 +229,21 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	
 	// Remove everything
 	xr_vector<u16>*	C				=	get_children(id_who);
-	xr_vector<u16>::iterator i,e;
-	i=C->begin();
-	e=C->end();
-	for(;i!=e;++i)
-//	while(C->size())
+	if (C)
 	{
-		u16		eid						= (*i);
-		
-		CSE_Abstract*		what		= S->ID_to_entity(eid);
-		if (!what) continue;
-		S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
-	}
+		xr_vector<u16>::iterator i,e;
+		i=C->begin();
+		e=C->end();
+		for(;i!=e;++i)
+			//	while(C->size())
+		{
+			u16		eid						= (*i);
+
+			CSE_Abstract*		what		= S->ID_to_entity(eid);
+			if (!what) continue;
+			S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
+		}
+	};
 	CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 	S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
 
