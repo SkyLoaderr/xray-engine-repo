@@ -57,7 +57,7 @@ public:
 	DWORD_VECTOR				m_tpGraphNodes;
 	CAI_Map						*m_tpAI_Map;
 
-								CSpawn(const SLevel &tLevel, u32 dwLevelID) : CThread(dwLevelID)
+								CSpawn(const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -75,6 +75,7 @@ public:
 		CStream					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
+		map<u32,vector<CALifeObject*> >	tpSGMap;
 		while (0!=(S = SP->OpenChunk(S_id)))
 		{
 			P.B.count			= S->Length();
@@ -93,14 +94,44 @@ public:
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
 				CALifeObject	*tpALifeObject = dynamic_cast<CALifeObject*>(E);
-				if (tpALifeObject)
+				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
+					map<u32,vector<CALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
+					if (I == tpSGMap.end()) {
+						vector<CALifeObject*> tpTemp;
+						tpTemp.clear();
+						tpTemp.push_back(tpALifeObject);
+						tpSGMap.insert(make_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
+					}
+					else
+						(*I).second.push_back(tpALifeObject);
+				}
+				else
+					xr_delete(E);
 			}
 			else
 				xr_delete(E);
 			S_id++;
 		}
 		R_ASSERT(m_tpSpawnPoints.size());
+		ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
+		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
+		for ( ; I != E; I++) {
+			map<u32,vector<CALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
+			if (J != tpSGMap.end()) {
+				if ((*I)->m_dwSpawnGroup) {
+					for (u32 i=0; i<(*J).second.size(); i++)
+						(*J).second[i]->m_dwSpawnGroup = *dwGroupOffset;
+					++*dwGroupOffset;
+				}
+				else {
+					for (u32 i=0; i<(*J).second.size(); i++)
+						(*J).second[i]->m_dwSpawnGroup = (*dwGroupOffset)++;
+				}
+				(*J).second.clear();
+			}
+		}
+
 		m_dwAStarStaticCounter	= 0;
 		u32 S1					= (m_tpAI_Map->m_header.count + 2)*sizeof(SNode);
 		m_tpHeap				= (SNode *)xr_malloc(S1);
@@ -253,6 +284,7 @@ void xrMergeSpawns()
 	tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
 	tSpawnHeader.dwLevelCount	= 0;
 	tSpawnHeader.dwSpawnCount	= 0;
+	u32							dwGroupOffset = 0;
 	vector<CSpawn *>			tpLevels;
 	SLevel						tLevel;
     LPCSTR						N,V;
@@ -263,7 +295,7 @@ void xrMergeSpawns()
 		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->ReadINT(N,"id");
-		tpLevels.push_back		(xr_new<CSpawn>(tLevel,id));
+		tpLevels.push_back		(xr_new<CSpawn>(tLevel,id,&dwGroupOffset));
     }
 	R_ASSERT					(tpLevels.size());
 	
