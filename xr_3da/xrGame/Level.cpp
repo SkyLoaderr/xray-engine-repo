@@ -157,6 +157,21 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 		// Signal main actor spawn
 		g_cl_Spawn	("actor", -1, 0, 0, 0);
+		FILE_NAME	fn_spawn;
+		if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
+		{
+			CFileStream		SP(fn_spawn);
+			NET_Packet		P;
+			CStream*		S		= 0;
+			int				S_id	= 0;
+			while (0!=(S = SP.OpenChunk(S_id)))
+			{
+				P.B.count	= S->Length();
+				S->Read		(P.B.data,P.B.count);
+				S->Close	();
+				Send		(P,net_flags(TRUE));
+			}
+		}
 
 		// And receiving spawn information (game-state)
 		BOOL bFinished	= FALSE;
