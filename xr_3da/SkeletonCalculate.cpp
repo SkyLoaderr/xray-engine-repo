@@ -56,15 +56,6 @@ void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 		int				count	=	M.Keys.size();
 		CKeyQ&			K1		=	M.Keys[(frame+0)%count];
 		CKeyQ&			K2		=	M.Keys[(frame+1)%count];
-
-		/*
-		D->Q.x					= float(K1.x)*KEY_QuantI;
-		D->Q.y					= float(K1.y)*KEY_QuantI;
-		D->Q.z					= float(K1.z)*KEY_QuantI;
-		D->Q.w					= float(K1.w)*KEY_QuantI;
-		D->T.set				(K1.T);
-		*/
-
 		PSGP.blerp				(D,&K1,&K2,delta);
 	}
 
