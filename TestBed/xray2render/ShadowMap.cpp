@@ -245,7 +245,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_DBG_ACCUMULATOR);
-		RenderOverlay				();
+		// RenderOverlay				();
 
 		// Output statistics
 		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -828,7 +828,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	// Set new render targets
 	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
 	m_pd3dDevice->SetRenderTarget			(0, d_Accumulator_S	);
-	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x10101010, 1.0f, 0L);
 
 	// samplers and texture (POS)
 	m_pd3dDevice->SetTexture				(0, d_Position);
