@@ -6,7 +6,7 @@ struct xr_token;
 
 #ifdef __BORLANDC__
 	XRCORE_API 	AnsiString&	_Trim					( AnsiString& str );
-	XRCORE_API 	LPCSTR		_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
+	XRCORE_API 	LPCSTR		_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="", bool trim=true);
 	XRCORE_API 	LPCSTR		_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
 	XRCORE_API 	LPCSTR		_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
 	XRCORE_API 	AnsiString	_ListToSequence			( const AStringVec& lst );
@@ -19,7 +19,7 @@ struct xr_token;
 #endif
 
 XRCORE_API int		    __stdcall	_GetItemCount			( LPCSTR , char separator=',');
-XRCORE_API LPSTR	    __stdcall	_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="" );
+XRCORE_API LPSTR	    __stdcall	_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="", bool trim=true );
 XRCORE_API LPSTR	    __stdcall	_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
 XRCORE_API LPCSTR	    __stdcall	_SetPos					( LPCSTR src, u32 pos, char separator=',' );
 XRCORE_API LPCSTR	    __stdcall	_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );
@@ -38,8 +38,8 @@ XRCORE_API std::string& __stdcall	_Trim					( std::string& src );
 XRCORE_API std::string& __stdcall	_TrimLeft				( std::string& src );
 XRCORE_API std::string& __stdcall	_TrimRight				( std::string& src );
 XRCORE_API LPCSTR		__stdcall 	_CopyVal 				( LPCSTR src, std::string& dst, char separator=',' );
-XRCORE_API LPCSTR		__stdcall	_GetItem				( LPCSTR src, int, std::string& p, char separator=',', LPCSTR ="" );
+XRCORE_API LPCSTR		__stdcall	_GetItem				( LPCSTR src, int, std::string& p, char separator=',', LPCSTR ="", bool trim=true );
 XRCORE_API std::string	__stdcall	_ListToSequence			( const SStringVec& lst );
-XRCORE_API shared_str		__stdcall	_ListToSequence			( const RStringVec& lst );
+XRCORE_API shared_str	__stdcall	_ListToSequence			( const RStringVec& lst );
 
 #endif

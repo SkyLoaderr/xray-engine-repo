@@ -66,20 +66,21 @@ public:
 		T denom = n.dotproduct(D);
 	
 		if (_abs(denom)<EPS_S)  // normal is orthogonal to vector3, cant intersect
-			return false;
+			return FALSE;
 	
 		dist = -(numer / denom);
-		return true;
+		return ((dist>0.f)||fis_zero(dist));
 	}
 	IC BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) 
 	{
 		T numer = classify(P);
 		T denom = n.dotproduct(D);
-	
-		if (_abs(denom)<EPS_S) return false; // normal is orthogonal to vector3, cant intersect
+
+		if (_abs(denom)<EPS_S) return FALSE; // normal is orthogonal to vector3, cant intersect
 		else {
-			dest.mad(P,D,-(numer / denom));
-			return true;
+	        float dist	= -(numer / denom);
+			dest.mad	(P,D,dist);
+			return 		((dist>0.f)||fis_zero(dist));
 		}
 	}
 	IC	BOOL	intersect (

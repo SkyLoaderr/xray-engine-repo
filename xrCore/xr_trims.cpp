@@ -68,13 +68,13 @@ int	_GetItemCount ( LPCSTR src, char separator )
 	return		cnt;
 }
 
-LPSTR _GetItem ( LPCSTR src, int index, LPSTR dst, char separator, LPCSTR def )
+LPSTR _GetItem ( LPCSTR src, int index, LPSTR dst, char separator, LPCSTR def, bool trim )
 {
 	LPCSTR	ptr;
 	ptr			= _SetPos	( src, index, separator );
 	if( ptr )	_CopyVal	( ptr, dst, separator );
 		else	strcpy		( dst, def );
-	_Trim		( dst );
+	if (trim)	_Trim		( dst );
 	return		dst;
 }
 
@@ -226,13 +226,13 @@ LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char
 	return dst.c_str();
 }
 
-LPCSTR _GetItem ( LPCSTR src, int index, AnsiString& dst, char separator, LPCSTR def )
+LPCSTR _GetItem ( LPCSTR src, int index, AnsiString& dst, char separator, LPCSTR def, bool trim )
 {
 	LPCSTR	ptr;
 	ptr			= _SetPos	( src, index, separator );
 	if( ptr )	_CopyVal	( ptr, dst, separator );
 	else	dst = def;
-	dst 		= dst.Trim();
+	if (trim)	dst			= dst.Trim();
 	return		dst.c_str();
 }
 
@@ -377,13 +377,13 @@ LPCSTR _CopyVal ( LPCSTR src, std::string& dst, char separator )
 	return		dst.c_str();
 }
 
-LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCSTR def )
+LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCSTR def, bool trim )
 {
 	LPCSTR	ptr;
 	ptr			= _SetPos	( src, index, separator );
 	if( ptr )	_CopyVal	( ptr, dst, separator );
 	else	dst = def;
-	_Trim		(dst);
+	if (trim)	_Trim		(dst);
 	return		dst.c_str	();
 }
 
