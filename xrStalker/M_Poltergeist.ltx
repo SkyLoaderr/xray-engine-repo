@@ -2,7 +2,9 @@
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
-stand_attack_0	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_1	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+
 
 [m_poltergeist_step_params]                left             right            right           left
 ;------------------------------------------------------------------------------------------------------------------
@@ -194,8 +196,8 @@ DynamicObjectsCount		= 32
 squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
 
-attack_params			= m_pseudodog_attack_params
-step_params				= m_pseudodog_step_params
+attack_params			= m_poltergeist_attack_params
+step_params				= m_poltergeist_step_params
 
 anger_hunger_threshold	= 0.1
 anger_loud_threshold	= 0.7
