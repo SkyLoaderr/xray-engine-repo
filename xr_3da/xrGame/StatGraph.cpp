@@ -146,7 +146,7 @@ void CStatGraph::RenderLines( FVF::TL0uv** ppv, ElementsDeq* pelements )
 	float elem_factor	= float(rb.y-lt.y)/float(mx-mn);
 	float base_y		= float(rb.y)+(mn*elem_factor);
 
-	for (ElementsDeqIt it=pelements->begin()+1; it!=pelements->end(); it++)
+	for (ElementsDeqIt it=pelements->begin()+1; it<pelements->end(); it++)
 	{
 		ElementsDeqIt it_prev = it-1;
 		float X0	= float(it_prev-pelements->begin())*elem_offs+lt.x;
@@ -170,7 +170,7 @@ void CStatGraph::RenderBarLines( FVF::TL0uv** ppv, ElementsDeq* pelements )
 	float elem_factor	= float(rb.y-lt.y)/float(mx-mn);
 	float base_y		= float(rb.y)+(mn*elem_factor);
 
-	for (ElementsDeqIt it=pelements->begin()+1; it!=pelements->end(); it++)
+	for (ElementsDeqIt it=pelements->begin()+1; it<pelements->end(); it++)
 	{
 		ElementsDeqIt it_prev = it-1;
 		float X0	= float(it_prev-pelements->begin())*elem_offs+lt.x+elem_offs;
