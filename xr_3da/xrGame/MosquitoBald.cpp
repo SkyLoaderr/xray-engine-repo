@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "mosquitobald.h"
 #include "hudmanager.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 static
 f32 g_pp_fade = 2000.f;
@@ -55,7 +55,7 @@ void CMosquitoBald::Affect(CObject* O) {
 			l_P.w_float			(impulse);
 			l_pO->u_EventSend		(l_P);
 
-			CPGObject* pStaticPG = xr_new<CPGObject>(m_pHitEffect,l_pO->Sector()); pStaticPG->play_at_pos(l_pO->Position());
+			CParticlesObject* pStaticPG = xr_new<CParticlesObject>(m_pHitEffect,l_pO->Sector()); pStaticPG->play_at_pos(l_pO->Position());
 		}
 	}
 }

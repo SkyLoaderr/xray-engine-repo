@@ -15,7 +15,7 @@
 #include "net_queue.h"
 
 class CHUDManager;
-class CPGObject;
+class CParticlesObject;
 
 #define DEFAULT_FOV 90.f
 
@@ -55,8 +55,8 @@ protected:
 	EVENT						eEntitySpawn;
 public:
 	// static particles
-	DEFINE_VECTOR(CPGObject*,PGOVec,PGOIt);
-	PGOVec						m_StaticParticles;
+	DEFINE_VECTOR(CParticlesObject*,POVec,POIt);
+	POVec						m_StaticParticles;
 
 	game_cl_GameState			game;
 	BOOL						game_configured;

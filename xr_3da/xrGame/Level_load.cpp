@@ -3,7 +3,7 @@
 #include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ai\ai_selector_template.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -255,7 +255,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	if (FS.exist(fn_game, "$level$", "level.ps_static")) {
 		IReader *F = FS.r_open	(fn_game);
 		IRender_Sector* S;
-		CPGObject*		pStaticPG;
+		CParticlesObject* pStaticPG;
 		int				chunk = 0;
 		string256		ref_name;
 		Fmatrix			transform;
@@ -263,7 +263,7 @@ BOOL CLevel::Load_GameSpecific_After()
 			OBJ->r_stringZ				(ref_name);
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
-			pStaticPG					= xr_new<CPGObject>			(ref_name,S,false);
+			pStaticPG					= xr_new<CParticlesObject>			(ref_name,S,false);
 			pStaticPG->SetTransform		(transform);
 			pStaticPG->Play				();
 			m_StaticParticles.push_back	(pStaticPG);

@@ -100,7 +100,7 @@ neutral
 	{
 		int					bone_id;
 		Fmatrix				transform;
-		CPGObject*			p_pgobject;
+		CParticlesObject*			p_pgobject;
 		CPhysicsElement*	pelement;
 		CCar*				pcar;
 		void Init();

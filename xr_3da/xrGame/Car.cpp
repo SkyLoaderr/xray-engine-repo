@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 #include "Physics.h"
 #include "car.h"
 #include "hudmanager.h"
@@ -1043,7 +1043,7 @@ void CCar::SExhaust::Init()
 	pelement->InterpolateGlobalTransform(&element_transform);
 	element_transform.invert();
 	transform.mulA(element_transform);
-	p_pgobject=xr_new<CPGObject>("vehiclefx\\exhaust_1",pcar->Sector(),false);
+	p_pgobject=xr_new<CParticlesObject>("vehiclefx\\exhaust_1",pcar->Sector(),false);
 	p_pgobject->SetTransform(pcar->XFORM());
 }
 

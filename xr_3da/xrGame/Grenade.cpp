@@ -4,7 +4,7 @@
 #include "WeaponHUD.h"
 #include "entity.h"
 #include "PSObject.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
 static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
@@ -243,9 +243,9 @@ void CGrenade::Explode() {
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
+		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
 	}
 	m_pLight->set_position(Position()); m_pLight->set_active(true);
 	setEnabled(true);

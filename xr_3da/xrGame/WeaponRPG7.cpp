@@ -4,7 +4,7 @@
 #include "entity.h"
 #include "extendedgeom.h"
 #include "PSObject.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
 static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
@@ -157,7 +157,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_explodeTime	= EXPLODE_TIME;
 	m_flashTime		= FLASH_TIME;
 	setVisible(false);
-	xr_list<CPGObject*>::iterator l_it;
+	xr_list<CParticlesObject*>::iterator l_it;
 	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
@@ -225,10 +225,10 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
+		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
@@ -396,10 +396,10 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		m_state			= stEngine;
 		m_engineTime	= ENGINE_TIME;
 
-		CPGObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
+		CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) {
-			pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
+			pStaticPG = xr_new<CParticlesObject>(m_trailEffects[i],Sector(),false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_trailEffectsPSs.push_back(pStaticPG);
@@ -443,7 +443,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			if(m_engineTime <= 0) {
 				m_state		= stFlying;
 				// остановить двигатель
-				xr_list<CPGObject*>::iterator l_it;
+				xr_list<CParticlesObject*>::iterator l_it;
 				for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 			}else{
 				// двигатель все еще работает
@@ -454,7 +454,7 @@ void CWeaponRPG7Grenade::UpdateCL() {
 				l_dir.set(0, 1.f, 0);
 				l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 				m_pPhysicsShell->applyImpulse(l_dir, l_force);
-				xr_list<CPGObject*>::iterator l_it;
+				xr_list<CParticlesObject*>::iterator l_it;
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
@@ -637,8 +637,8 @@ void CWeaponRPG7::switch2_Fire	()
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
 
-		CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-		pStaticPG = xr_new<CPGObject>("weapons\\rpg_shoot_01",Sector());
+		CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+		pStaticPG = xr_new<CParticlesObject>("weapons\\rpg_shoot_01",Sector());
 		Fmatrix l_pos; l_pos.set(XFORM()); //l_pos.c.set(p1);
 		pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 	//for(s32 i = 0; i < l_c; i++) {

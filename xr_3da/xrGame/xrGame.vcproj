@@ -1531,10 +1531,10 @@
 				Name="_particles"
 				Filter="">
 				<File
-					RelativePath=".\PGObject.cpp">
+					RelativePath=".\ParticlesObject.cpp">
 				</File>
 				<File
-					RelativePath=".\PGObject.h">
+					RelativePath=".\ParticlesObject.h">
 				</File>
 				<File
 					RelativePath=".\PSObject.cpp">

@@ -51,7 +51,7 @@ public:
 	xr_vector<LPCSTR>	m_effects;
 	char				m_trailEffectsSTR[255];
 	xr_vector<LPCSTR>	m_trailEffects;
-	xr_list<CPGObject*>	m_trailEffectsPSs;
+	xr_list<CParticlesObject*>	m_trailEffectsPSs;
 	IRender_Light*		m_pLight;
 	Fcolor				m_lightColor;
 	Fcolor				m_curColor;

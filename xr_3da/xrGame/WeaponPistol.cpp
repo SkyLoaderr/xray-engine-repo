@@ -2,7 +2,7 @@
 #include "weaponpistol.h"
 #include "WeaponHUD.h"
 #include "effectorshot.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 CWeaponPistol::CWeaponPistol(LPCSTR name) : CWeaponCustomPistol(name)
 {
@@ -90,8 +90,8 @@ void CWeaponPistol::OnShot		()
 	// Shell Drop
 	OnShellDrop					();
 
-	CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+	CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+	pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
 	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 #pragma todo("Oles to Yura : 'ps_Element(0).dwTime' in game time, not in global time")
 	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);

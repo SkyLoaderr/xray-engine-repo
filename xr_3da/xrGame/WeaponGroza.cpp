@@ -71,8 +71,8 @@ CWeaponGroza::~CWeaponGroza(void) {
 //	//// Shell Drop
 //	//OnShellDrop					();
 //
-//	//CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-//	//pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+//	//CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+//	//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
 //	//Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 //	//Fvector l_vel; l_vel.sub(Position(),ps_Element(0).Position()); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
 //	//pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();

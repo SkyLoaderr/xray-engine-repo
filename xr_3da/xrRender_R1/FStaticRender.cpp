@@ -61,9 +61,23 @@ IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
-	VERIFY					(source);
-	return Models->CreatePE	(source);
+	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);		VERIFY(SE);
+	return				Models->CreatePE	(SE);
+}
+IRender_Visual*			CRender::model_CreatePG			(LPCSTR name)	
+{ 
+	PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY(SG);
+	return				Models->CreatePG	(SG);
+}
+
+IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
+{ 
+	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);
+	if (SE) return		Models->CreatePE	(SE);
+	else{
+		PS::CPGDef*	SG	= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
+		return			Models->CreatePG	(SG);
+	}
 }
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}

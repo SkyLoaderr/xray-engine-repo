@@ -3,7 +3,7 @@
 #include "WeaponHUD.h"
 #include "entity.h"
 #include "PSObject.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 #include "extendedgeom.h"
 #include "effectorshot.h"
 
@@ -144,7 +144,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 	m_flashTime		= FLASH_TIME;
 	Position().set(pos);
 	setVisible(false);
-	//list<CPGObject*>::iterator l_it;
+	//list<CParticlesObject*>::iterator l_it;
 	//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
@@ -212,10 +212,10 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
+		pStaticPG = xr_new<CParticlesObject>(m_effects[i],Sector());
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
@@ -383,10 +383,10 @@ void CWeaponFakeGrenade::OnH_B_Independent() {
 		m_state			= stEngine;
 		m_engineTime	= ENGINE_TIME;
 
-		//CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
+		//CParticlesObject* pStaticPG; s32 l_c = m_trailEffects.size();
 		//Fmatrix l_m; l_m.set(XFORM());// GetBasis(normal, l_m.k, l_m.i);
 		//for(s32 i = 0; i < l_c; i++) {
-		//	pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
+		//	pStaticPG = xr_new<CParticlesObject>(m_trailEffects[i],Sector(),false);
 		//	pStaticPG->SetTransform(l_m);
 		//	pStaticPG->Play();
 		//	m_trailEffectsPSs.push_back(pStaticPG);
@@ -430,7 +430,7 @@ void CWeaponFakeGrenade::UpdateCL() {
 			if(m_engineTime <= 0) {
 				m_state		= stFlying;
 				// остановить двигатель
-				xr_list<CPGObject*>::iterator l_it;
+				xr_list<CParticlesObject*>::iterator l_it;
 				//for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
 			}else{
 				// двигатель все еще работает
@@ -441,7 +441,7 @@ void CWeaponFakeGrenade::UpdateCL() {
 				l_dir.set(0, 1.f, 0);
 				l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 				//m_pPhysicsShell->applyImpulse(l_dir, l_force);
-				xr_list<CPGObject*>::iterator l_it;
+				xr_list<CParticlesObject*>::iterator l_it;
 				Fvector vel;
 				m_pPhysicsShell->get_LinearVel(vel);
 				// обновить эффекты
@@ -587,8 +587,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 			S->Shot					(camDispersion);
 			m_pHUD->animPlay(mhud_shots_g[Random.randI(mhud_shots_g.size())],TRUE,this);
 		}
-		CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-		pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+		CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
 		Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 #pragma todo("Oles to Yura : 'ps_Element(0).dwTime' in game time, not in global time")
 		Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
@@ -615,8 +615,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	//// Shell Drop
 	//OnShellDrop					();
 
-	//CPGObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-	//pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
+	//CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
+	//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
 	//Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 	//Fvector l_vel; l_vel.sub(Position(),ps_Element(0).Position()); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
 	//pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();

@@ -3,7 +3,7 @@
 #include "customzone.h"
 #include "actor.h"
 #include "hudmanager.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 CCustomZone::CCustomZone(void) 
 {
@@ -49,12 +49,12 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 		//	setVisible(true);
 		setEnabled(true);
 
-		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
+		CParticlesObject* pStaticPG; s32 l_c = (int)m_effects.size();
 		Fmatrix l_m; l_m.set(renderable.xform);
 		for(s32 i = 0; i < l_c; i++) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
-			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
+			pStaticPG = xr_new<CParticlesObject>(m_effects[i],l_pRS,false);
 			pStaticPG->SetTransform(l_m);
 			pStaticPG->Play();
 			m_effectsPSs.push_back(pStaticPG);

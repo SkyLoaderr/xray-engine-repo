@@ -53,7 +53,7 @@ public:
 
 	char m_effectsSTR[255];
 	xr_vector<LPCSTR> m_effects;
-	xr_list<CPGObject*> m_effectsPSs;
+	xr_list<CParticlesObject*> m_effectsPSs;
 
 	//virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){}
 };

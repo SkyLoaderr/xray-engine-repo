@@ -47,6 +47,7 @@ public:
 
 	IRender_Visual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
 	IRender_Visual*			CreatePE			(PS::CPEDef* source);
+	IRender_Visual*			CreatePG			(PS::CPGDef* source);
 	IRender_Visual*			Create				(LPCSTR name);
 	IRender_Visual*			Create				(LPCSTR name, IReader* data);
 	void					Delete				(IRender_Visual* &V);

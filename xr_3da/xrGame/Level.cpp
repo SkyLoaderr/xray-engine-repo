@@ -7,7 +7,7 @@
 #include "..\fdemorecord.h"
 #include "..\fdemoplay.h"
 #include "..\environment.h"
-#include "PGObject.h"
+#include "ParticlesObject.h"
 
 #include "Level.h"
 #include "entity.h"
@@ -62,7 +62,7 @@ CLevel::~CLevel()
 	}
 
 	// destroy PSs
-	for (PGOIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)
+	for (POIt p_it=m_StaticParticles.begin(); p_it!=m_StaticParticles.end(); p_it++)
 		xr_delete		(*p_it);
 	m_StaticParticles.clear();
 
