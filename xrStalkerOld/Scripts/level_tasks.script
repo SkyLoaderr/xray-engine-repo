@@ -471,6 +471,7 @@ function process_map_spot(info_id)
 	elseif info_id == "escape_dynamite_have" then
 		add_location(006, "esc_wolf_location")
 		remove_location(007, "esc_dynamite_location")
+		remove_location(009, "esc_bridge_stalkers_location")
 	
 	elseif info_id == "escape_dynamite_done" then
 		remove_location(006, "esc_wolf_location")
@@ -711,11 +712,11 @@ function process_map_spot(info_id)
 
 end
 
-
 function add_location(sid, location)
 	local sim = alife()
 	if sim then
 		obj = sim:story_object(sid)
+		
 		if obj then
 			level.map_add_object_spot(obj.id, location, "")
 		end
@@ -725,7 +726,7 @@ function remove_location(sid, location)
 	local sim = alife()
 	if sim then
 		obj = sim:story_object(sid)
-		if obj then
+		if obj and level.map_has_object_spot(obj.id, location) then
 			level.map_remove_object_spot(obj.id, location)
 		end
 	end
