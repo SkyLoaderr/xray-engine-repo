@@ -1169,6 +1169,12 @@
 						RelativePath=".\shared_data.h">
 					</File>
 					<File
+						RelativePath=".\specific_character.cpp">
+					</File>
+					<File
+						RelativePath=".\specific_character.h">
+					</File>
+					<File
 						RelativePath=".\tinyxml.h">
 					</File>
 					<File

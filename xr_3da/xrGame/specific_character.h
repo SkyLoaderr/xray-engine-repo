@@ -118,11 +118,11 @@ public:
 	LPCSTR						Name		() const ;
 	LPCSTR						Bio			() const ;
 	const CHARACTER_COMMUNITY&	Community	() const ;
-	CHARACTER_RANK				Rank		() const ;
-	CHARACTER_REPUTATION		Reputation	() const ;
 #endif
 
-	LPCSTR					Visual		() const ;
+	CHARACTER_RANK				Rank		() const ;
+	CHARACTER_REPUTATION		Reputation	() const ;
+	LPCSTR						Visual		() const ;
 
 #ifdef  XRGAME_EXPORTS
 	LPCSTR					SupplySpawn	() const ;

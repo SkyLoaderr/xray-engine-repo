@@ -52,10 +52,10 @@ private:
 	PROFILE_INDEX					m_iCharacterProfile;
 	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
 
-#ifdef XRGAME_EXPORTS
 	//буферный вектор проверенных персонажей
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
 
+#ifdef XRGAME_EXPORTS
 	//реестр  отношений с другими персонажами
 	RELATION_REGISTRY				relation_registry;
 #endif

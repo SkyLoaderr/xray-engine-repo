@@ -9,10 +9,12 @@
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
+#ifndef AI_COMPILER
+	#include "specific_character.h"
+#endif
 
 #ifdef XRGAME_EXPORTS
 	#include "PhraseDialogDefs.h"
-	#include "specific_character.h"
 	#include "relation_registry.h"
 	#include "character_community.h"
 #endif
@@ -23,7 +25,6 @@
 //////////////////////////////////////////////////////////////////////////
 struct SCharacterProfile : CSharedResource
 {
-#ifdef XRGAME_EXPORTS
 	SCharacterProfile ();
 	virtual ~SCharacterProfile ();
 
@@ -35,7 +36,6 @@ struct SCharacterProfile : CSharedResource
 	CHARACTER_CLASS			m_Class;
 	CHARACTER_RANK			m_Rank;
 	CHARACTER_REPUTATION	m_Reputation;
-#endif
 };
 
 
@@ -54,7 +54,7 @@ private:
 	friend CSE_ALifeTraderAbstract;
 public:
 
-#ifdef XRGAME_EXPORTS
+
 
 	CCharacterInfo();
 	~CCharacterInfo();
@@ -62,7 +62,7 @@ public:
 	virtual void Load	(PROFILE_ID id);
 	virtual void Load	(PROFILE_INDEX index);
 
-
+#ifdef XRGAME_EXPORTS
 	void load	(IReader&);
 	void save	(NET_Packet&);
 
@@ -78,7 +78,7 @@ protected:
 
 	static void	 InitXmlIdToIndex	();
 
-#ifdef XRGAME_EXPORTS
+
 	//загрузка из XML файла
 	virtual void load_shared		(LPCSTR);
 
@@ -88,15 +88,19 @@ protected:
 	//индекс данных о конкретном персонаже, который
 	//используетс€ в данном экземпл€ре класса
 	SPECIFIC_CHARACTER_INDEX m_iSpecificCharacterIndex;
+
+#ifdef XRGAME_EXPORTS
 	//загруженна€ информаци€ о конкретном персонаже
 	CSpecificCharacter m_SpecificCharacter;
+#endif
 
 public:
 
+
+#ifdef XRGAME_EXPORTS
 	LPCSTR						Name()				const;
 	LPCSTR						Bio()				const;
 	const CHARACTER_COMMUNITY&	Community()			const;
-
 	CHARACTER_RANK				Rank()				const;
 	CHARACTER_REPUTATION		Reputation()		const;
 
@@ -114,7 +118,12 @@ public:
 	const DIALOG_INDEX_VECTOR&	ActorDialogs()	const;
 
 	RELATION_REGISTRY&			Relations ();
+#endif
+
 protected:
+
+
+#ifdef XRGAME_EXPORTS
 	//наши отношени€ с другими персонажами
 	RELATION_REGISTRY relation_registry;
 

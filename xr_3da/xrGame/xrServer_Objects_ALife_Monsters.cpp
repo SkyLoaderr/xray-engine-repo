@@ -133,12 +133,12 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
 		return m_iSpecificCharacter;
 
-#ifdef XRGAME_EXPORTS
 
 	VERIFY(character_profile() != NO_PROFILE);
 	CCharacterInfo char_info;
 	char_info.Load(character_profile());
 
+#ifdef XRGAME_EXPORTS
 	//профиль задан индексом
 	if(NO_SPECIFIC_CHARACTER != char_info.m_iSpecificCharacterIndex)
 	{
@@ -167,7 +167,10 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 			for(std::size_t j=0; j<spec_char.data()->m_Classes.size(); j++)
 			{
 				if(char_info.data()->m_Class == spec_char.data()->m_Classes[j])
+				{
+					class_found = true;
 					break;
+				}
 			}
 			
 			if(char_info.data()->m_Class == NO_CHARACTER_CLASS || class_found)

@@ -5,12 +5,14 @@
 
 #include "stdafx.h"
 #include "specific_character.h"
+
+#ifdef  XRGAME_EXPORTS
 #include "PhraseDialog.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 
-#ifdef  XRGAME_EXPORTS
+
 
 SSpecificCharacterData::SSpecificCharacterData()
 {

@@ -1498,7 +1498,8 @@ void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
 
 void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
 {
-//	set_visual					("");
+	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
+	specific_character();
 	base()->set_editor_flag		(ISE_Abstract::flVisualChange);
 }
 

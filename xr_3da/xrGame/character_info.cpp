@@ -18,6 +18,8 @@
 #include "PhraseDialog.h"
 #include "alife_registry_container_composition.h"
 
+#endif
+
 
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
@@ -40,8 +42,10 @@ CCharacterInfo::CCharacterInfo()
 	m_iProfileIndex = NO_PROFILE;
 	m_iSpecificCharacterIndex = NO_SPECIFIC_CHARACTER;
 
+#ifdef XRGAME_EXPORTS
 	m_CurrentRank = NO_RANK;
 	m_CurrentReputation = NO_REPUTATION;
+#endif
 }
 
 
@@ -61,6 +65,8 @@ void CCharacterInfo::Load(PROFILE_INDEX index)
 	inherited_shared::load_shared(m_iProfileIndex, NULL);
 }
 
+#ifdef XRGAME_EXPORTS
+
 void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 {
 	R_ASSERT(new_index != NO_SPECIFIC_CHARACTER);
@@ -74,6 +80,9 @@ void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
 	if(Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community());
 }
+
+
+#endif
 
 void CCharacterInfo::load_shared	(LPCSTR)
 {
@@ -118,6 +127,7 @@ void CCharacterInfo::load_shared	(LPCSTR)
 		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
 }
 
+#ifdef XRGAME_EXPORTS
 
 LPCSTR CCharacterInfo::Name() const
 {
@@ -130,6 +140,8 @@ LPCSTR CCharacterInfo::Bio() const
 	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 	return 	m_SpecificCharacter.Bio();
 }
+
+
 CHARACTER_RANK CCharacterInfo::Rank() const
 {
 	return	m_CurrentRank;
