@@ -113,9 +113,9 @@ CListValue* 	CPropHelper::CreateCList	(PropItemVec& items, ref_str key, LPSTR va
 {   return		(CListValue*)	AppendValue	(items,key,xr_new<CListValue>(val,sz,lst,cnt),PROP_CLIST);       			}
 CTextValue* 	CPropHelper::CreateCName	(PropItemVec& items, ref_str key, LPSTR val, u32 sz, ListItem* owner)
 {   CTextValue* V					= (CTextValue*) CreateCText	(items,key,val,sz);
-    V->OnAfterEditEvent.bind		(this,&CPropHelper::NameAfterEdit);
+    V->OnAfterEditEvent.bind		(this,&CPropHelper::CNameAfterEdit);
     V->OnBeforeEditEvent.bind		(this,&CPropHelper::NameBeforeEdit);
-    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::NameDraw);
+    V->Owner()->OnDrawTextEvent.bind(this,&CPropHelper::CNameDraw);
     V->tag							= (u32)owner; VERIFY(owner);
     if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
     return V;					

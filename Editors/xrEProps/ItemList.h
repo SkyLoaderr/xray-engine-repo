@@ -74,7 +74,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsCompareItems(TObject *Sender, TElTreeItem *Item1,
           TElTreeItem *Item2, int &res);
 private:	// User declarations
-    AStringVec 			last_selected_items;
+    RStringVec 			last_selected_items;
 
     ListItemsVec 		m_Items;
     void 				ClearParams				(TElTreeItem* node=0);
@@ -128,7 +128,7 @@ public:		// User declarations
     virtual void 		AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false);
     bool 				IsFocused				(){return tvItems->Focused();}
 
-    virtual int  		GetSelected				(ElItemsVec& items);
+    virtual int  		GetSelected				(RStringVec& items);
     virtual int  		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     virtual TElTreeItem*GetSelected				(){R_ASSERT(!tvItems->MultiSelect); return (tvItems->MultiSelect)?0:tvItems->Selected;}
     virtual ListItem*	FindItem				(LPCSTR full_name);

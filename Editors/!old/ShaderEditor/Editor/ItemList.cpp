@@ -99,15 +99,8 @@ void TItemList::ClearParams(TElTreeItem* node)
     	Debug.fatal("ClearParams - node");
     }else{
         // save last selected items
-        ElItemsVec items;
         last_selected_items.clear();
-        if (GetSelected(items)){
-            for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
-                AnsiString s;
-                FHelper.MakeFullName(*l_it,0,s);
-                last_selected_items.push_back(s);
-            }
-        }
+        GetSelected		(last_selected_items);
         // store
         if (m_Flags.is(ilFolderStore)&&tvItems->Items->Count){
 	        FolderStore.clear();
@@ -280,16 +273,15 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     }
 
     // expand sel items
-    ElItemsVec el_list;
-    for (AStringIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
-    	el_list.push_back(FHelper.ExpandItem(tvItems,*s_it));
+    for (RStringVecIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
+    	FHelper.ExpandItem	(tvItems,**s_it);
 
 	UnlockUpdating			();
 
     // restore selection
     tvItems->DeselectAll	();
-	for (ElItemsIt el_it=el_list.begin(); el_it!=el_list.end(); el_it++)
-	    FHelper.RestoreSelection(tvItems,*el_it,true);
+    for (s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
+	    FHelper.RestoreSelection(tvItems,**s_it,true);
 
     // check size
 	tvItemsResize			(0);
@@ -345,10 +337,13 @@ void __fastcall TItemList::tvItemsMouseUp(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-int __fastcall TItemList::GetSelected(ElItemsVec& items)
+int __fastcall TItemList::GetSelected(RStringVec& items)
 {
-    for (TElTreeItem* item = tvItems->GetNextSelected(0); item; item = tvItems->GetNextSelected(item))
-        items.push_back	(item);
+    for (TElTreeItem* item = tvItems->GetNextSelected(0); item; item = tvItems->GetNextSelected(item)){
+    	AnsiString 			nm;
+    	FHelper.MakeFullName(item,0,nm);
+        items.push_back		(nm.c_str());
+    }
     return items.size();
 }
 
@@ -540,9 +535,10 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 	if (m_Flags.is(ilEditMenu)){
-		if (Key==VK_DELETE) 
+		if (Key==VK_DELETE){
 			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemoveEvent))
             	if (!OnModifiedEvent.empty()) OnModifiedEvent();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -553,21 +549,18 @@ void TItemList::LoadSelection(TFormStorage* storage)
     int cnt 			= storage->ReadInteger("sel_cnt",0);
     for (int k=0; k<cnt;k++){
     	AnsiString tmp = storage->ReadString(AnsiString().sprintf("sel%d",k),"");
-        if (!tmp.IsEmpty())last_selected_items.push_back(tmp);
+        if (!tmp.IsEmpty())last_selected_items.push_back(tmp.c_str());
     }
 }
 //---------------------------------------------------------------------------
 
 void TItemList::SaveSelection(TFormStorage* storage)
 {
-    ElItemsVec items;
+    RStringVec items;
     if (GetSelected(items)){
 	    storage->WriteInteger("sel_cnt",items.size());
-        for (ElItemsIt l_it=items.begin(); l_it!=items.end(); l_it++){
-            AnsiString s;
-            FHelper.MakeFullName(*l_it,0,s);
-	    	storage->WriteString(AnsiString().sprintf("sel%d",l_it-items.begin()),s);
-        }
+        for (RStringVecIt l_it=items.begin(); l_it!=items.end(); l_it++)
+	    	storage->WriteString(AnsiString().sprintf("sel%d",l_it-items.begin()),**l_it);
     }
 //    for (AStringIt s_it=last_selected_items.begin(); s_it!=last_selected_items.end(); s_it++)
 //    	storage->WriteString(AnsiString().sprintf("sel%d",s_it-last_selected_items.begin()),*s_it);
@@ -600,22 +593,22 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 {
 	on_remove 	= on_remove.empty()?OnItemRemoveEvent:on_remove;
 	VERIFY		(!on_remove.empty());
-    ElItemsVec sel_items;
+    RStringVec sel_items;
     if (GetSelected(sel_items)){
     	tvItems->IsUpdating = true; // LockUpdating нельзя
     	DeselectAll					();
         tvItemsAfterSelectionChange	(0);
         bool bSelChanged=false;
         bool bRes=false;
-        for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
-			if (!FHelper.RemoveItem(tvItems,*it,on_remove.empty()?OnItemRemoveEvent:on_remove)){
-            	AnsiString fn;
-                FHelper.MakeFullName(*it,0,fn);
-            	SelectItem(fn.c_str(),true,true,false);
+        for (RStringVecIt it=sel_items.begin(); it!=sel_items.end(); it++){
+        	TElTreeItem* pNode	= FHelper.FindItem(tvItems,**it);
+			if (!FHelper.RemoveItem(tvItems,pNode,on_remove.empty()?OnItemRemoveEvent:on_remove)){
+            	SelectItem(**it,true,true,false);
                 bSelChanged=true;
             }else{
             	bRes = true;
             }
+        }
         if (bSelChanged||bRes){
             tvItemsAfterSelectionChange	(0);
             if (bRes&&!OnModifiedEvent.empty())	OnModifiedEvent(); 
@@ -628,9 +621,12 @@ void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 void TItemList::RenameSelItem()
 {
 	VERIFY(m_Flags.is(ilEditMenu));
-    ElItemsVec sel_items;
+    RStringVec sel_items;
     if (1==GetSelected(sel_items)){
-		if (sel_items.back()) tvItems->EditItem(sel_items.back(),-1);
+		if (sel_items.back().size()){ 
+        	TElTreeItem* pNode	= FHelper.FindItem(tvItems,*sel_items.back());
+        	tvItems->EditItem	(pNode,-1);
+        }
         tvItemsAfterSelectionChange	(0);
     }
 }

@@ -28,7 +28,6 @@ typedef fastdelegate::FastDelegate0 		  					TOnModifiedEvent;
 
 #ifdef __BORLANDC__
 #	include "mxPlacemnt.hpp"
-	DEFINE_VECTOR	(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef fastdelegate::FastDelegate1<TElTreeItem*>			TOnILItemFocused;
 	//---------------------------------------------------------------------------
 	void XR_EPROPS_API CheckWindowPos(TForm* form);
@@ -40,7 +39,7 @@ typedef fastdelegate::FastDelegate0 		  					TOnModifiedEvent;
 //------------------------------------------------------------------------------
 IC std::string FolderAppend	(LPCSTR val)
 {
-	std::string	tmp 	= val;
+	std::string	tmp 	= (val&&val[0])?val:"";
     if (val&&val[0])tmp	+= "\\";
     return 	tmp;
 }
