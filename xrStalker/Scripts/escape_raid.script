@@ -1,5 +1,6 @@
 local members = {}
 local moved = {}
+local zone = nil
 
 
 -------------------------------------------------------------------------
@@ -25,7 +26,9 @@ end
 
 -------------------------------------------------------------------------
 function start_raid ()
+    if zone == nil then return end
     -- пошла жара !!!
+    zone.raid_wait = device ():time_global ()
     for a = 1, table.getn (members), 1 do
         this.switch_online (members[a])
     end
@@ -41,9 +44,19 @@ function escape_raid:__init (zone, ini)
     self.ini_ok = true
     printf ("Zone %s is added to binder", zone:name ())
     self.time = 0
+    self.raid_wait = 0
+    zone = self
 end
 -----------------------
 function escape_raid:on_enter (obj)
+    if self.raid_wait ~= 0 then
+       if device ():time_global () - self.raid_wait > 20000 then
+          self.raid_wait = 0
+       else
+          return   
+       end
+    end   
+           
     -- наш ли мужик приперся. Если нет, то проигнорируем.
     local ini = obj:spawn_ini ()
     if ini == nil or ini:section_exist ("escape_raid") == false then
@@ -88,7 +101,7 @@ end
 -----------------------
 function escape_raid:on_leave (obj)
     if self.time ~= 0 then
-       if device ():time_global () - self.time < 10000 then 
+       if device ():time_global () - self.time < 20000 then 
           return 
        else 
           self.time = 0  
