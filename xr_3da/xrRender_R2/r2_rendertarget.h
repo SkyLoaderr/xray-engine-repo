@@ -23,10 +23,14 @@ private:
 	CBlender*					b_bloom;
 	CBlender*					b_combine;
 
-	//
+	// MRT-path
 	CRT*						rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)
 	CRT*						rt_Normal;		// 64bit, fat	(x,y,z,?)				(eye-space)
 	CRT*						rt_Color;		// 64bit, fat	(r,g,b,specular-gloss)
+
+	// MET-path
+	CRT*						rt_Deffer;		// NVE3, 8*4_8*4_16*2_16*2 = 128bit
+
 	CRT*						rt_Accumulator;	// 32bit		(r,g,b,specular)
 	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)

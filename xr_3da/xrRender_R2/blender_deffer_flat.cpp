@@ -19,6 +19,7 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 
+	// codepath is the same, only the shaders differ
 	switch(C.iElement) 
 	{
 	case 0: 	// deffer
