@@ -29,8 +29,9 @@ enum
 {
 	STYPE_RENDERABLE			= (1<<0),
 	STYPE_LIGHTSOURCE			= (1<<1),
-	STYPE_VISIBLEFORAI			= (1<<2),
-	STYPE_COLLIDEABLE			= (1<<3),
+	STYPE_COLLIDEABLE			= (1<<2),
+	STYPE_VISIBLEFORAI			= (1<<3),
+	STYPE_REACTTOSOUND			= (1<<4),
 };
 //////////////////////////////////////////////////////////////////////////
 // Comment: 
