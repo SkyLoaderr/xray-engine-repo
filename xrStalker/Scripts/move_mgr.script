@@ -423,7 +423,7 @@ end
 
 function move_mgr:turn_end_callback()
 	if self.retval_after_rotation then
-		if not self.move_cb_func then
+		if not self.move_cb_info then
 			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
 				"callback function wasn't registered in move_mgr:reset()",
 				self.object:name(), self.path_look)
