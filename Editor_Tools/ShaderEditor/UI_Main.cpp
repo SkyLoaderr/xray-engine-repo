@@ -28,6 +28,7 @@ TUI::TUI()
 	m_CurrentRStart.set(0,0,0);
 	m_CurrentRNorm.set(0,0,0);
 
+	m_Cursor = 0;
 	DU::InitUtilLibrary();
 
     bRedraw = false;
@@ -49,6 +50,7 @@ TUI::TUI()
 //---------------------------------------------------------------------------
 TUI::~TUI()
 {
+	_DELETE(m_Cursor);
     _DELETE(Lib);
 }
 

@@ -15,6 +15,7 @@ class CCustomObject;
 class TUI_Tools;
 class TUI_Tools;
 class CShaderTools;
+class C3DCursor;
 //class CTexturizer;
 //------------------------------------------------------------------------------
 class TUI: public CController{
@@ -57,6 +58,7 @@ public:
 	// hidden ops
 	Ipoint m_StartCpH;
 	Ipoint m_DeltaCpH;
+	C3DCursor*   m_Cursor;
 protected:
 	bool m_MouseCaptured;
 	bool m_MouseMultiClickCaptured;
