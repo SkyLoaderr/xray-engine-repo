@@ -1,0 +1,86 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbis_dynamic", "vorbis_dynamic.vcproj", "{9D49E42A-6760-4F94-BDCD-123B4B9E66B5}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbis_static", "vorbis_static.vcproj", "{399832F2-4272-4D2D-997A-04942590894D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisenc_dynamic", "vorbisenc_dynamic.vcproj", "{2640935A-A0DA-420A-9762-9A1F6DED4915}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5} = {9D49E42A-6760-4F94-BDCD-123B4B9E66B5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisenc_static", "vorbisenc_static.vcproj", "{52CE0161-5703-41E8-8CD2-810BA322DB3F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{399832F2-4272-4D2D-997A-04942590894D} = {399832F2-4272-4D2D-997A-04942590894D}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisfile_dynamic", "vorbisfile_dynamic.vcproj", "{8743AA7A-D4A3-4E25-BD6E-9A21B66FB7FD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5} = {9D49E42A-6760-4F94-BDCD-123B4B9E66B5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisfile_static", "vorbisfile_static.vcproj", "{4224A03B-FD70-4A2A-965D-A5AA950297CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{399832F2-4272-4D2D-997A-04942590894D} = {399832F2-4272-4D2D-997A-04942590894D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 4
+		SccProjectName0 = \u0022$/External\u0020Library/OGG/vorbis\u0022,\u0020CWSAAAAA
+		SccLocalPath0 = ..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = win32\\
+		SolutionUniqueID = {E343830C-CF62-481E-A071-A5916D387B05}
+		SccProjectUniqueName1 = vorbis_dynamic.vcproj
+		SccLocalPath1 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = win32\\
+		SccProjectUniqueName2 = vorbisenc_dynamic.vcproj
+		SccLocalPath2 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection2 = win32\\
+		SccProjectUniqueName3 = vorbisfile_dynamic.vcproj
+		SccLocalPath3 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection3 = win32\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5}.Debug.ActiveCfg = Debug|Win32
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5}.Debug.Build.0 = Debug|Win32
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5}.Release.ActiveCfg = Release|Win32
+		{9D49E42A-6760-4F94-BDCD-123B4B9E66B5}.Release.Build.0 = Release|Win32
+		{399832F2-4272-4D2D-997A-04942590894D}.Debug.ActiveCfg = Debug|Win32
+		{399832F2-4272-4D2D-997A-04942590894D}.Debug.Build.0 = Debug|Win32
+		{399832F2-4272-4D2D-997A-04942590894D}.Release.ActiveCfg = Release|Win32
+		{399832F2-4272-4D2D-997A-04942590894D}.Release.Build.0 = Release|Win32
+		{2640935A-A0DA-420A-9762-9A1F6DED4915}.Debug.ActiveCfg = Debug|Win32
+		{2640935A-A0DA-420A-9762-9A1F6DED4915}.Debug.Build.0 = Debug|Win32
+		{2640935A-A0DA-420A-9762-9A1F6DED4915}.Release.ActiveCfg = Release|Win32
+		{2640935A-A0DA-420A-9762-9A1F6DED4915}.Release.Build.0 = Release|Win32
+		{52CE0161-5703-41E8-8CD2-810BA322DB3F}.Debug.ActiveCfg = Debug|Win32
+		{52CE0161-5703-41E8-8CD2-810BA322DB3F}.Debug.Build.0 = Debug|Win32
+		{52CE0161-5703-41E8-8CD2-810BA322DB3F}.Release.ActiveCfg = Release|Win32
+		{52CE0161-5703-41E8-8CD2-810BA322DB3F}.Release.Build.0 = Release|Win32
+		{8743AA7A-D4A3-4E25-BD6E-9A21B66FB7FD}.Debug.ActiveCfg = Debug|Win32
+		{8743AA7A-D4A3-4E25-BD6E-9A21B66FB7FD}.Debug.Build.0 = Debug|Win32
+		{8743AA7A-D4A3-4E25-BD6E-9A21B66FB7FD}.Release.ActiveCfg = Release|Win32
+		{8743AA7A-D4A3-4E25-BD6E-9A21B66FB7FD}.Release.Build.0 = Release|Win32
+		{4224A03B-FD70-4A2A-965D-A5AA950297CC}.Debug.ActiveCfg = Debug|Win32
+		{4224A03B-FD70-4A2A-965D-A5AA950297CC}.Debug.Build.0 = Debug|Win32
+		{4224A03B-FD70-4A2A-965D-A5AA950297CC}.Release.ActiveCfg = Release|Win32
+		{4224A03B-FD70-4A2A-965D-A5AA950297CC}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
