@@ -307,4 +307,5 @@ private:
 
 	SAttackAnimation	m_tAttack;
 	void				FillAttackStructure(u32, TTime);
+	void				vfBuildTravelLine(const Fvector &tpDestinationPosition, const Fvector& current_pos);
 };
