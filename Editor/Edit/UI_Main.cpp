@@ -280,6 +280,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 
 void TUI::Redraw(){
 // set render state
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     // filter
     for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
         if( bRenderFilter ){
@@ -447,12 +448,14 @@ void TUI::ShowObjectHint(){
 
 bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
+	m_KeyState = Shift;
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
     return m_Tools->KeyDown(Key, Shift);
 }
 
 bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
 {
+	m_KeyState = Shift;
 	if (Device.m_Camera.KeyUp(Key,Shift)) return true;
     return m_Tools->KeyUp(Key, Shift);
 }
@@ -481,17 +484,17 @@ void TUI::OnMousePress(int btn){
 //    if(m_MouseCaptured||Device.m_Camera.IsMoving()) return;
     if(m_MouseCaptured) return;
 
+    // test owner
+    Ipoint pt;
+	iGetMousePosReal(Device.m_hRenderWnd, pt);
+    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
+    if (ctr!=m_D3DWindow) return;
+
     bMouseInUse = true;
 
-    TShiftState Shift;
-    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
-    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
-    if (iGetBtnState(0))			Shift << ssLeft;
-    if (iGetBtnState(1))			Shift << ssRight;
+    TShiftState Shift = m_KeyState;
+    if (iGetBtnState(0)) Shift << ssLeft;
+    if (iGetBtnState(1)) Shift << ssRight;
 
     // camera activate
     if(!Device.m_Camera.MoveStart(Shift)){
@@ -501,12 +504,10 @@ void TUI::OnMousePress(int btn){
         }
         if( !m_MouseCaptured ){
             if( m_Tools->HiddenMode() ){
-				iGetMousePosReal(m_StartCpH);
+				iGetMousePosScreen(m_StartCpH);
                 m_DeltaCpH.set(0,0);
             }else{
-                iGetMousePosReal(m_CurrentCp);
-                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
-                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 m_StartCp = m_CurrentCp;
 
                 Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
@@ -526,15 +527,9 @@ void TUI::OnMousePress(int btn){
 void TUI::OnMouseRelease(int btn){
 	if(!g_bEditorValid) return;
 
-    TShiftState Shift;
-    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
-    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
-    if (iGetBtnState(0))			Shift << ssLeft;
-    if (iGetBtnState(1))			Shift << ssRight;
+    TShiftState Shift = m_KeyState;
+    if (iGetBtnState(0)) Shift << ssLeft;
+    if (iGetBtnState(1)) Shift << ssRight;
 
     if( Device.m_Camera.IsMoving() ){
         if (Device.m_Camera.MoveEnd(Shift)) bMouseInUse = false;
@@ -546,9 +541,7 @@ void TUI::OnMouseRelease(int btn){
 //                m_DeltaCpH.x -= m_CenterCpH.x;
 //                m_DeltaCpH.y -= m_CenterCpH.y;
             }else{
-                iGetMousePosReal(m_CurrentCp);
-                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
-                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
             }
             if( m_Tools->MouseEnd(Shift) ){
@@ -565,20 +558,14 @@ void TUI::OnMouseRelease(int btn){
     m_Tools->Update();
     RedrawScene();
 }
-void TUI::OnMouseHold(int btn){
-}
 void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
-    TShiftState Shift;
-    if (iGetKeyState(DIK_LSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_RSHIFT)) 	Shift << ssShift;
-    if (iGetKeyState(DIK_LALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_RALT)) 	Shift << ssAlt;
-    if (iGetKeyState(DIK_LCONTROL))	Shift << ssCtrl;
-    if (iGetKeyState(DIK_RCONTROL)) Shift << ssCtrl;
-    if (iGetBtnState(0))			Shift << ssLeft;
-    if (iGetBtnState(1))			Shift << ssRight;
+
+    TShiftState Shift = m_KeyState;
+    if (iGetBtnState(0)) Shift << ssLeft;
+    if (iGetBtnState(1)) Shift << ssRight;
+
 	if (!Device.m_Camera.Process(Shift)){
         if( m_MouseCaptured || m_MouseMultiClickCaptured ){
             if( m_Tools->HiddenMode() ){
@@ -591,10 +578,7 @@ void TUI::OnMouseMove(int x, int y){
                 	m_Tools->MouseMove(Shift);
                 }
             }else{
-                iGetMousePosReal(m_CurrentCp);
-                ClientToScreen(Device.m_hWnd,(LPPOINT)&m_CurrentCp);
-                ScreenToClient(Device.m_hRenderWnd,(LPPOINT)&m_CurrentCp);
-
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
                 Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
                 m_Tools->MouseMove(Shift);
             }
@@ -603,20 +587,11 @@ void TUI::OnMouseMove(int x, int y){
         }
     }
     if (!bRayUpdated){
-		iGetMousePosReal(m_CurrentCp);
+		iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
     }
     if (m_Cursor->GetVisible()) UI->RedrawScene();
     // Out cursor pos
     OutUICursorPos();
-}
-void TUI::OnMouseStop(int x, int y){
-}
-
-void TUI::OnKeyboardPress(int dik){
-}
-void TUI::OnKeyboardRelease(int dik){
-}
-void TUI::OnKeyboardHold(int dik){
 }
 

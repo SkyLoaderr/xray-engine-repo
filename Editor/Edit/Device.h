@@ -5,6 +5,7 @@
 #include "frustum.h"
 #include "ShaderManager.h"
 #include "hw.h"
+#include "pure.h"
 #include "ftimer.h"
 #include "estats.h"
 #include "primitivesR.h"
@@ -69,6 +70,11 @@ public:
 	CStats					Statistic;
 
 	CFontHUD* 				pHUDFont;
+
+	// registrators
+	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
+	CRegistrator <pureDeviceCreate>		seqDevCreate;
+	CRegistrator <pureFrame>			seqFrame;
 public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();

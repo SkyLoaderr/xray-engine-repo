@@ -25,7 +25,7 @@ struct SVertex: public Fvector{
 DEFINE_VECTOR(SVertex,SVertexVec,SVertexIt)
 
 class CPortalUtils{
-	void FindSVertexLinks(int id, CSector* S, SVertexVec& V);
+//	void FindSVertexLinks(int id, CSector* S, SVertexVec& V);
 	int  CalculateSelectedPortals(vector<CSector*>& sectors);
 public:
 	bool CalculateConvexHull(FvectorVec& points);
@@ -38,8 +38,9 @@ public:
 	bool CreateDefaultSector();
 	bool RemoveDefaultSector();
 
-	bool IsFaceUsed(CEditObject* o, CEditMesh* m, DWORD f_id);
-	void TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl); // remove used from list
+//	bool IsFaceUsed(CEditObject* o, CEditMesh* m, DWORD f_id);
+//	void TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl); // remove used from list
+	CSector* FindSector(CEditObject* o, CEditMesh* m);
 
 	void CreateDebugCollection();
     bool Validate(bool bMsg);

@@ -141,3 +141,4 @@ void __fastcall TfraSector::ExtBtn3Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+

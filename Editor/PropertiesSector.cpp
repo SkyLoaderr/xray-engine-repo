@@ -5,6 +5,7 @@
 #include "SceneClassList.h"
 #include "Sector.h"
 #include "ui_main.h"
+#include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "CSPIN"
@@ -38,12 +39,15 @@ void TfrmPropertiesSector::GetObjectsInfo(){
 	CSector *_O = (CSector*)(*_F);
 
 	mcSectorColor->ObjFirstInit( _O->sector_color.get_windows() );
+    edName->Text = _O->m_Name;
 
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_SECTOR );
     	_O = (CSector *)(*_F);
 		mcSectorColor->ObjNextInit( _O->sector_color.get_windows() );
+	    edName->Text = "< Multiple selection >";
+        edName->Enabled = false;
 	}
 
     if (m_Objects->size()==1) gbSector->Caption = AnsiString("Sector: '")+AnsiString((*m_Objects->begin())->GetName())+AnsiString("'");
@@ -59,6 +63,18 @@ bool TfrmPropertiesSector::ApplyObjectsInfo(){
         int c;
         if (mcSectorColor->ObjApply(c)){  _O->sector_color.set_windows(c); }
     }
+    if (m_Objects->size()==1){
+	    CSector *_O = (CSector*)(m_Objects->front());
+        if (!edName->Text.Length()){
+            ELog.DlgMsg(mtError,"Enter Object Name!");
+            return false;
+        }else{
+            if (Scene->FindObjectByName(edName->Text.c_str(),_O)){
+		    	ELog.DlgMsg(mtError,"Object Name already found in scene! Enter new name.");
+                return false;
+            }
+        }
+    }
     return true;
 }
 
@@ -73,6 +89,7 @@ void __fastcall TfrmPropertiesSector::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesSector::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
+    edName->Enabled		= true;
 }
 //---------------------------------------------------------------------------
 

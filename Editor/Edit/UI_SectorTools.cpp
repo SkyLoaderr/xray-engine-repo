@@ -54,30 +54,16 @@ void TUI_ControlSectorAdd::AddFace(){
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
-		if (fraSector->ebUseTies->Down){
-            DWORDVec fl;
-            pinf.mesh->GetTiesFaces(pinf.rp_inf.id, fl, fraSector->seSoftAngle->Value, fraSector->ebSoftRecursive->Down);
-            sector->AddFaces(pinf.obj,pinf.mesh,fl);
-        }else{
-            sector->AddFace(pinf.obj,pinf.mesh,pinf.rp_inf.id);
-        }
-    }
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false))
+		sector->AddMesh(pinf.obj,pinf.mesh);
 }
 
 void TUI_ControlSectorAdd::DelFace(){
     m_Action = saDelFace;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
-		if (fraSector->ebUseTies->Down){
-            DWORDVec fl;
-            pinf.mesh->GetTiesFaces(pinf.rp_inf.id, fl, fraSector->seSoftAngle->Value, fraSector->ebSoftRecursive->Down);
-            sector->DelFaces(pinf.obj,pinf.mesh,fl);
-        }else{
-            sector->DelFace(pinf.obj,pinf.mesh,pinf.rp_inf.id);
-        }
-    }
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false))
+		sector->DelMesh(pinf.obj,pinf.mesh);
 }
 
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
@@ -129,9 +115,8 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                     for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
                         fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);
-                        (*m_def)->FrustumPickFaces(frustum,matrix,fl);
-                        if (fraSector->ebAddFace->Down)	sector->AddFaces(O_ref,*m_def,fl);
-                        if (fraSector->ebDelFace->Down)	sector->DelFaces(O_ref,*m_def,fl);
+                        if (fraSector->ebAddFace->Down)	sector->AddMesh(O_ref,*m_def);
+                        if (fraSector->ebDelFace->Down)	sector->DelMesh(O_ref,*m_def);
                     }
                 }
             }

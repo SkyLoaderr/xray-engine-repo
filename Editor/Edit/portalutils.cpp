@@ -35,7 +35,7 @@ void CPortalUtils::RemoveSectorPortal(CSector* S){
 
 	UI->EndEState();
 }
-
+/*
 void CPortalUtils::FindSVertexLinks(int sid, CSector* S, SVertexVec& V){
     Fmatrix parent;
     int idx[3];
@@ -59,7 +59,7 @@ void CPortalUtils::FindSVertexLinks(int sid, CSector* S, SVertexVec& V){
         }
     }
 }
-/*
+
 int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
     VERIFY(SF!=SB);
     int bResult=0;
@@ -263,7 +263,7 @@ int CPortalUtils::CalculateAllPortals2(){
     return bResult;
 }
 //---------------------------------------------------------------------------
-
+/*
 bool CPortalUtils::IsFaceUsed(CEditObject* o, CEditMesh* m, DWORD f_id){
 	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
 	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
@@ -278,7 +278,13 @@ void CPortalUtils::TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl){
     for(;_F!=_E;_F++)
     	((CSector*)(*_F))->TestUsedFaces(o,m,fl);
 }
-
+*/
+CSector* FindSector(CEditObject* o, CEditMesh* m){
+	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
+	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+    for(;_F!=_E;_F++) if (((CSector*)(*_F))->Contains(o,m)) return (CSector*)(*_E);
+    return 0;
+}
 
 bool CPortalUtils::Validate(bool bMsg){
 	UI->BeginEState(esSceneLocked);
@@ -294,7 +300,7 @@ bool CPortalUtils::Validate(bool bMsg){
 			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
             bResult = true;
         }
-        if (f_cnt&&ELog.DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
+/*        if (f_cnt&&ELog.DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
         	const Fvector* PT[3];
 	        for (SItemIt it=sector_def->sector_items.begin(); it!=sector_def->sector_items.end(); it++){
             	ELog.Msg(mtError,"Object: %s", it->object->GetName());
@@ -304,6 +310,7 @@ bool CPortalUtils::Validate(bool bMsg){
                 }
             }
         }
+*/
         _DELETE(sector_def);
 
         // verify sectors
@@ -690,13 +697,15 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
         CSector* S=sectors[i];
         for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
             s_it->GetTransform(T);
-            FvectorVec& m_vert=s_it->mesh->m_Points;
-            for (DWORDIt f_it=s_it->Face_IDs.begin(); f_it!=s_it->Face_IDs.end(); f_it++){
+            FvectorVec& m_verts=s_it->mesh->m_Points;
+            FaceIt _S=s_it->mesh->m_Faces.begin();
+            FaceIt _E=s_it->mesh->m_Faces.end();
+            for (FaceIt f_it=_S; f_it!=_E; f_it++){
                 Fvector v0, v1, v2;
-                st_Face& P=s_it->mesh->m_Faces[*f_it];
-                T.transform_tiny(v0,m_vert[P.pv[0].pindex]);
-                T.transform_tiny(v1,m_vert[P.pv[1].pindex]);
-                T.transform_tiny(v2,m_vert[P.pv[2].pindex]);
+                st_Face& P=*f_it;
+                T.transform_tiny(v0,m_verts[P.pv[0].pindex]);
+                T.transform_tiny(v1,m_verts[P.pv[1].pindex]);
+                T.transform_tiny(v2,m_verts[P.pv[2].pindex]);
                 CL->add_face(v0,v1,v2,i);
             }
         }

@@ -1,8 +1,8 @@
 object fraSector: TfraSector
   Left = 0
   Top = 0
-  Width = 443
-  Height = 277
+  Width = 123
+  Height = 322
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -22,16 +22,16 @@ object fraSector: TfraSector
   object paSectorActions: TPanel
     Left = 0
     Top = 125
-    Width = 443
-    Height = 144
+    Width = 123
+    Height = 98
     Align = alTop
     ParentColor = True
     TabOrder = 1
     Visible = False
     object ebAddFace: TExtBtn
-      Left = 42
-      Top = 65
-      Width = 39
+      Left = 59
+      Top = 67
+      Width = 29
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -39,7 +39,7 @@ object fraSector: TfraSector
       HotTrack = True
       CloseButton = False
       GroupIndex = 1
-      Caption = '+F'
+      Caption = '+M'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -82,15 +82,16 @@ object fraSector: TfraSector
         FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
         C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
+      Margin = 0
       NumGlyphs = 4
       ParentFont = False
+      Spacing = 0
       Transparent = False
     end
     object ebDelFace: TExtBtn
-      Left = 82
-      Top = 65
-      Width = 39
+      Left = 92
+      Top = 67
+      Width = 29
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -98,7 +99,7 @@ object fraSector: TfraSector
       HotTrack = True
       CloseButton = False
       GroupIndex = 1
-      Caption = '-F'
+      Caption = '-M'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -141,15 +142,16 @@ object fraSector: TfraSector
         FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
         C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
+      Margin = 0
       NumGlyphs = 4
       ParentFont = False
+      Spacing = 0
       Transparent = False
     end
     object ebFaceBoxPick: TExtBtn
-      Left = 42
-      Top = 80
-      Width = 79
+      Left = 2
+      Top = 82
+      Width = 119
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -200,159 +202,23 @@ object fraSector: TfraSector
         FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
         C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
+      Margin = 13
       NumGlyphs = 4
       ParentFont = False
       Transparent = False
     end
     object RxLabel1: TRxLabel
-      Left = 4
-      Top = 66
-      Width = 34
+      Left = 16
+      Top = 68
+      Width = 42
       Height = 13
-      Caption = 'Faces:'
+      Caption = 'Meshes:'
       ShadowColor = 15263976
-    end
-    object RxLabel2: TRxLabel
-      Left = 4
-      Top = 80
-      Width = 32
-      Height = 13
-      Caption = 'Mode:'
-      ShadowColor = 15263976
-    end
-    object ebUseTies: TExtBtn
-      Left = 42
-      Top = 95
-      Width = 79
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      GroupIndex = 2
-      Caption = 'Use Ties'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Glyph.Data = {
-        6E040000424D6E04000000000000360000002800000028000000090000000100
-        18000000000038040000120B0000120B00000000000000000000FF00FF000000
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-        00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-        FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-        FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-        999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-        99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-        9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-        999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-        99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-        FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-        FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
-      NumGlyphs = 4
-      ParentFont = False
-      Transparent = False
-    end
-    object RxLabel3: TRxLabel
-      Left = 4
-      Top = 110
-      Width = 96
-      Height = 13
-      Caption = 'Soft selection (deg):'
-      BiDiMode = bdLeftToRight
-      ParentBiDiMode = False
-      ShadowColor = 15263976
-    end
-    object ebSoftRecursive: TExtBtn
-      Left = 2
-      Top = 125
-      Width = 61
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      CloseButton = False
-      GroupIndex = 3
-      Caption = 'Recurse'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Glyph.Data = {
-        6E040000424D6E04000000000000360000002800000028000000090000000100
-        18000000000038040000120B0000120B00000000000000000000FF00FF000000
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-        00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-        FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-        FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-        999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-        99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-        9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-        999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-        99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-        FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-        FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
-      NumGlyphs = 4
-      ParentFont = False
-      Transparent = False
     end
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -388,18 +254,19 @@ object fraSector: TfraSector
     object ebCreateNew: TExtBtn
       Left = 2
       Top = 16
-      Width = 120
+      Width = 119
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = 'Create New'
+      Caption = 'New'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ebCreateNewClick
@@ -407,7 +274,7 @@ object fraSector: TfraSector
     object ebCreateDefault: TExtBtn
       Left = 2
       Top = 31
-      Width = 120
+      Width = 119
       Height = 15
       Align = alNone
       BevelShow = False
@@ -419,14 +286,15 @@ object fraSector: TfraSector
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ebCreateDefaultClick
     end
     object ebRemoveDefault: TExtBtn
       Left = 2
-      Top = 46
-      Width = 120
+      Top = 47
+      Width = 119
       Height = 15
       Align = alNone
       BevelShow = False
@@ -438,36 +306,22 @@ object fraSector: TfraSector
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ebRemoveDefaultClick
     end
     object Bevel1: TBevel
       Left = 1
-      Top = 62
+      Top = 64
       Width = 151
       Height = 2
-    end
-    object seSoftAngle: TMultiObjSpinEdit
-      Left = 64
-      Top = 124
-      Width = 49
-      Height = 18
-      LWSensitivity = 0.1
-      ButtonKind = bkLightWave
-      Decimal = 1
-      Increment = 0.1
-      MaxValue = 360
-      ValueType = vtFloat
-      Value = 30
-      AutoSize = False
-      TabOrder = 0
     end
   end
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 123
     Height = 125
     Align = alTop
     ParentColor = True
@@ -497,8 +351,9 @@ object fraSector: TfraSector
     object lbFacesCount: TRxLabel
       Left = 51
       Top = 110
-      Width = 28
+      Width = 70
       Height = 13
+      AutoSize = False
       Caption = 'faces'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clMaroon
@@ -523,6 +378,7 @@ object fraSector: TfraSector
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ebValidateClick
@@ -530,7 +386,7 @@ object fraSector: TfraSector
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -578,6 +434,7 @@ object fraSector: TfraSector
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ExtBtn3Click
@@ -636,7 +493,7 @@ object fraSector: TfraSector
         FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
         C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 2
+      Margin = 13
       NumGlyphs = 4
       ParentFont = False
       Transparent = False
@@ -656,14 +513,15 @@ object fraSector: TfraSector
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 13
       ParentFont = False
       Transparent = False
       OnClick = ebCaptureInsideVolumeClick
     end
     object cbItems: TComboBox
-      Left = 4
+      Left = 18
       Top = 91
-      Width = 109
+      Width = 103
       Height = 18
       Style = csOwnerDrawVariable
       Color = 14869218

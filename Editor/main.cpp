@@ -35,7 +35,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     fraTopBar   = new TfraTopBar(0);
 	fsMainForm->RestoreFormPlacement();
 	if (!UI->Init(D3DWindow)) exit(-1);
-    pInput		= new CInput(FALSE);
+    pInput		= new CInput(FALSE,mouse_device_key);
     UI->iCapture();
 	Device.InitTimer();
 }
@@ -127,12 +127,6 @@ void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    ShiftMouse = Shift;
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmMain::D3DWindowKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
@@ -322,7 +316,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
         if (UI->IsMouseInUse()){
 			// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
         	POINT pt; GetCursorPos(&pt); pt=D3DWindow->ScreenToClient(pt);
-        	D3DWindow->OnMouseUp(this,mbLeft,ShiftMouse,pt.x,pt.y); // mbLeft - не важно что передавать
+            UI->OnMouseRelease(0);
         }
     }else{
     	paWindow->Color=clGray;

@@ -179,6 +179,7 @@ USEUNIT("shared\XR_CustomFont.cpp");
 USEUNIT("shared\XR_HUDFont.cpp");
 USELIB("lib\DX\dinput.lib");
 USEUNIT("lib\DX\c_dinput.cpp");
+USEUNIT("shared\pure.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -194,7 +194,7 @@ void CEditMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORD
 
 void CEditMesh::RenderEdge(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
-
+/*
 	Device.SetTransform(D3DTS_WORLD,parent);
 	Device.Shader.Set(Device.m_WireShader);
 	Device.RenderNearer(0.001);
@@ -212,28 +212,49 @@ void CEditMesh::RenderEdge(Fmatrix& parent, DWORD color){
 
     Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
     Device.ResetNearer();
+*/
+
+	Device.SetTransform(D3DTS_WORLD,parent);
+	Device.Shader.Set(Device.m_WireShader);
+	Device.RenderNearer(0.001);
+
+    // render
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
+    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+    for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+		RBVector& rb_vec = p_it->second;
+	    DWORD vBase;
+    	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
+			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
+			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+			rb_it->stream->Unlock(rb_it->dwNumVertex);
+			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+		}
+    }
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
+    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    Device.ResetNearer();
 }
 //----------------------------------------------------
 
 void CEditMesh::RenderSelection(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
-
 	Fvector C; float r;
     Fbox bb; bb.set(m_Box);
     bb.transform(parent);
     bb.getsphere(C,r);
 	if (!Device.m_Frustum.testSphere(C,r)) return;
-//	RBVector& rb_vec = m_RenderBuffers.find(S)->second;
-//    for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-//		Device.DPVB(D3DPT_TRIANGLELIST, rb_it->buffer, rb_it->dwStartVertex, rb_it->dwNumVertex);
-    RB_cnt = 0;
-    for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-        for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[f_it->pv[k].pindex]);
-        if (RB_cnt==MAX_VERT_COUNT){
-        	DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
-			RB_cnt = 0;
-        }
+    // render
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
+    for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
+		RBVector& rb_vec = p_it->second;
+	    DWORD vBase;
+    	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++){
+			LPBYTE pv = (LPBYTE)rb_it->stream->Lock(rb_it->dwNumVertex,vBase);
+			CopyMemory(pv,rb_it->buffer,rb_it->buffer_size);
+			rb_it->stream->Unlock(rb_it->dwNumVertex);
+			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
+		}
     }
-    if (RB_cnt) DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
 }
 

@@ -25,56 +25,12 @@ class CSectorItem{
     friend class CPortalUtils;
 	CEditObject* object;
 	CEditMesh* mesh;
-	DWORDVec Face_IDs;
-    BOOLVec mask;
 public:
     CSectorItem		();
     CSectorItem		(CEditObject* o, CEditMesh* m);
     void GetTransform(Fmatrix& parent);
     bool IsItem		(const char* O, const char* M);
     IC bool IsItem	(CEditObject* o, CEditMesh* m){ return (o==object)&&(m==mesh); }
-    IC void Add		(int f_id){
-		if (find(Face_IDs.begin(),Face_IDs.end(),f_id)==Face_IDs.end()){
-            if (!PortalUtils.IsFaceUsed(object,mesh,f_id)){
-	        	Face_IDs.push_back(f_id);
-	            mask[f_id]=true;
-            }
-        }
-    }
-    IC void Add		(DWORDVec& fl){
-    	DWORDVec temp=fl;
-    	PortalUtils.TestUsedFaces(object,mesh,temp);
-//    	Face_IDs.insert(Face_IDs.end(),temp.begin(),temp.end());
-//    	Unique();
-        for (DWORDIt it=temp.begin(); it!=temp.end(); it++){
-        	if (!mask[*it]){
-            	mask[*it] = true;
-                Face_IDs.push_back(*it);
-            }
-        }
-//        for (DWORDIt it=fl.begin(); it!=fl.end(); it++)
-//        	Add		(*it);
-    }
-    IC void Del		(int f_id){
-    	DWORDIt it=find(Face_IDs.begin(),Face_IDs.end(),f_id);
-        if (it==Face_IDs.end()) return;
-        Face_IDs.erase(it);
-		mask[f_id]=false;
-    }
-    IC void Del		(DWORDVec& fl){
-    	sort(Face_IDs.begin(),Face_IDs.end());
-    	sort(fl.begin(),fl.end());
-		DWORDVec new_fl(Face_IDs.size());
-        DWORDIt end_it=set_difference(Face_IDs.begin(),Face_IDs.end(),fl.begin(), fl.end(), new_fl.begin());
-        Face_IDs.clear();
-        Face_IDs.insert(Face_IDs.end(),new_fl.begin(),end_it);
-        for (DWORDIt it=fl.begin(); it!=fl.end(); it++) mask[*it]=false;
-    }
-    IC void Unique	(){
-    	sort(Face_IDs.begin(),Face_IDs.end());
-    	DWORDIt i=unique(Face_IDs.begin(),Face_IDs.end());
-        Face_IDs.erase(i,Face_IDs.end());
-    }
 };
 
 #pragma pack(push,1)
@@ -139,14 +95,11 @@ public:
     void			Update		(bool bNeedCreateCHull);
     void			SectorChanged(bool bNeedCreateCHull);
 
-	void			AddFace		(CEditObject* O, CEditMesh* M, int f_id);
-	void			AddFaces	(CEditObject* O, CEditMesh* M, DWORDVec& fl);
-	void			DelFace		(CEditObject* O, CEditMesh* M, int f_id);
-	void			DelFaces	(CEditObject* O, CEditMesh* M, DWORDVec& fl);
+	void			AddMesh		(CEditObject* O, CEditMesh* M);
+	void			DelMesh		(CEditObject* O, CEditMesh* M);
 
-    bool			IsFaceUsed	(CEditObject* O, CEditMesh* M, int f_id);
-    void			TestUsedFaces(CEditObject* O, CEditMesh* M, DWORDVec& fl);
     bool			IsDefault	(){return m_bDefault;}
+    bool			Contains	(CEditObject* O, CEditMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
 
     void			CaptureInsideVolume();
     void			CaptureAllUnusedFaces();

@@ -21,16 +21,14 @@
 #include "cl_collector.h"
 #include "MgcConvexHull3D.h"
 
-#define SECTOR_VERSION   					0x0010
+#define SECTOR_VERSION   					0x0011
 //----------------------------------------------------
 #define SECTOR_CHUNK_VERSION				0xF010
 #define SECTOR_CHUNK_COLOR					0xF020
 #define SECTOR_CHUNK_PRIVATE				0xF025
 #define SECTOR_CHUNK_ITEMS					0xF030
-#define 	SECTOR_CHUNK_ITEM_OBJECT		0xF031
-#define 	SECTOR_CHUNK_ITEM_FACES			0xF032
-#define SECTOR_CHUNK_CHULL_DATA				0xF040
-#define SECTOR_CHUNK_CHULL_DATA2			0xF041
+#define 	SECTOR_CHUNK_ONE_ITEM			0xF031
+#define SECTOR_CHUNK_CHULL_DATA				0xF041
 //----------------------------------------------------
 CSectorItem::CSectorItem(){
 	object=NULL;
@@ -39,8 +37,6 @@ CSectorItem::CSectorItem(){
 CSectorItem::CSectorItem(CEditObject* o, CEditMesh* m){
 	object=o;
     mesh=m;
-    mask.resize(m->m_Faces.size());
-    fill(mask.begin(),mask.end(),false);
 }
 void CSectorItem::GetTransform(Fmatrix& parent){
 	object->GetFullTransformToWorld(parent);
@@ -49,28 +45,7 @@ bool CSectorItem::IsItem(const char* O, const char* M){
 	return (0==strcmp(O,object->GetName()))&&(0==strcmp(M,mesh->GetName()));
 }
 //------------------------------------------------------------------------------
-bool CSector::IsFaceUsed(CEditObject* O, CEditMesh* M, int f_id){
-	SItemIt s_it;
-	if (FindSectorItem(O, M, s_it)){
-    	return s_it->mask[f_id];
-    }
-    return false;
-}
-//----------------------------------------------------
-class FindMaskFaces{
-	BOOLVec& ref;
-public:
-    FindMaskFaces(BOOLVec& a):ref(a) {};
-    bool operator() (DWORD &f) { return ref[f]; }
-};
-void CSector::TestUsedFaces(CEditObject* O, CEditMesh* M, DWORDVec& fl){
-	SItemIt s_it;
-	if (FindSectorItem(O, M, s_it)){
-    	DWORDIt r_end = remove_if(fl.begin(), fl.end(), FindMaskFaces(s_it->mask));
-        fl.erase(r_end,fl.end());
-    }
-}
-//----------------------------------------------------
+
 CSector::CSector( char *name ):SceneObject(){
 	Construct();
 	strcpy( m_Name, name );
@@ -105,32 +80,15 @@ bool CSector::FindSectorItem(CEditObject* o, CEditMesh* m, SItemIt& it){
     return false;
 }
 
-void CSector::AddFace	(CEditObject* O, CEditMesh* M, int f_id){
+void CSector::AddMesh	(CEditObject* O, CEditMesh* M){
 	SItemIt it;
-    if (FindSectorItem(O, M, it)) (*it).Add(f_id);
-    else{
+    if (!FindSectorItem(O, M, it))
      	sector_items.push_back(CSectorItem(O, M));
-        sector_items.back().Add(f_id);
-    }
 }
 
-void CSector::AddFaces	(CEditObject* O, CEditMesh* M, DWORDVec& fl){
+void CSector::DelMesh	(CEditObject* O, CEditMesh* M){
 	SItemIt it;
-    if (FindSectorItem(O, M, it)) (*it).Add(fl);
-    else{
-     	sector_items.push_back(CSectorItem(O, M));
-        sector_items.back().Add(fl);
-    }
-}
-
-void CSector::DelFace	(CEditObject* O, CEditMesh* M, int f_id){
-	SItemIt it;
-    if (FindSectorItem(O, M, it)) (*it).Del(f_id);
-}
-
-void CSector::DelFaces	(CEditObject* O, CEditMesh* M, DWORDVec& fl){
-	SItemIt it;
-    if (FindSectorItem(O, M, it)) (*it).Del(fl);
+    if (FindSectorItem(O, M, it)) sector_items.erase(it);
 }
 
 bool CSector::GetBox( Fbox& box ){
@@ -250,22 +208,18 @@ void CSector::MakeCHull	(){
     }
 	UI->ProgressInc();
 
-    //2. XForm+Pack
-    RAPID::CollectorPacked cp(bbox);
+    //2. XForm
+    FvectorVec Points;
     for (s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
         s_it->GetTransform(parent);
         FvectorVec& m_vert=s_it->mesh->m_Points;
-        for (DWORDIt f_it=s_it->Face_IDs.begin(); f_it!=s_it->Face_IDs.end(); f_it++){
-            Fvector v0, v1, v2;
-            st_Face& P=s_it->mesh->m_Faces[*f_it];
-            parent.transform_tiny(v0,m_vert[P.pv[0].pindex]);
-            parent.transform_tiny(v1,m_vert[P.pv[1].pindex]);
-            parent.transform_tiny(v2,m_vert[P.pv[2].pindex]);
-            cp.add_face(v0,v1,v2,0,0,0,0,0,0);
+        for (FvectorIt p_it=m_vert.begin(); p_it!=m_vert.end(); p_it++){
+        	Points.push_back(Fvector());
+            parent.transform_tiny(Points.back(),*p_it);
         }
     }
 	UI->ProgressInc();
-    if (cp.getVS()<4){
+    if (Points.size()<4){
 		UI->ProgressEnd();
     	return;
     }
@@ -277,7 +231,7 @@ void CSector::MakeCHull	(){
 //		Mgc::ConvexHull3D::QuantityFactor()	=64;
 
         //3. Hull
-        chull=new Mgc::ConvexHull3D(cp.getVS(), (const Mgc::Vector3*)cp.getV());
+        chull=new Mgc::ConvexHull3D(Points.size(), (const Mgc::Vector3*)Points.begin());
         int err_code=chull->Compute();
         if (err_code==CHULL3D_OK){
 	        m_CHSectorFaces.assign((CHFace*)chull->GetTriangles(),(CHFace*)(chull->GetTriangles()+chull->GetTriangleQuantity()));
@@ -288,7 +242,7 @@ void CSector::MakeCHull	(){
         	UI->ProgressInc();
 
             //4. Vertices+Faces remapping
-            OptimizeVertices(m_CHSectorFaces,cp.getV_Vec(),m_CHSectorVertices);
+            OptimizeVertices(m_CHSectorFaces,Points,m_CHSectorVertices);
 			UI->ProgressInc();
 
             //5. Planes
@@ -368,7 +322,7 @@ void CSector::Render( Fmatrix& parent, ERenderPriority flag ){
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
-                it->mesh->RenderList( matrix, color.get(), false, it->Face_IDs );
+                it->mesh->RenderSelection( matrix, color.get() );
             }
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
@@ -383,7 +337,7 @@ void CSector::Render( Fmatrix& parent, ERenderPriority flag ){
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
-                it->mesh->RenderList( matrix, color.get(), true, it->Face_IDs );
+                it->mesh->RenderEdge( matrix, color.get() );
             }
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
@@ -437,15 +391,6 @@ void CSector::SectorChanged(bool bNeedCreateCHull){
 //----------------------------------------------------
 
 void CSector::Update(bool bNeedCreateCHull){
-	SItemIt it = sector_items.begin();
-    for(;it!=sector_items.end();it++){
-		if (it->mask.size()==0){
-	    	it->mask.resize(it->mesh->m_Faces.size());
-		    fill(it->mask.begin(),it->mask.end(),false);
-            for(DWORDIt f_it=it->Face_IDs.begin(); f_it!=it->Face_IDs.end(); f_it++)
-            	it->mask[*f_it]=true;
-    	}
-    }
 	if (bNeedCreateCHull){
     	UI->SetStatus("Sector updating...");
     	MakeCHull();
@@ -488,7 +433,7 @@ void CSector::OnSceneUpdate(){
 void CSector::CaptureInsideVolume(){
 	// test all mesh faces
 	// fill object list (test bounding sphere intersection)
-    ObjectList lst;
+/*    ObjectList lst;
 	if (m_bNeedUpdateCHull) MakeCHull();
 	if (Scene->SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_EDITOBJECT, lst)){
     // test all object meshes
@@ -509,11 +454,13 @@ void CSector::CaptureInsideVolume(){
         MakeCHull();
 		UI->RedrawScene();
     }
+*/
+	ELog.DlgMsg(mtInformation,"Function not implemented.");
 }
 //----------------------------------------------------
 
 void CSector::CaptureAllUnusedFaces(){
-    DWORDVec fl;
+/*    DWORDVec fl;
     CEditObject *O_ref=NULL, *O_lib=NULL;
     ObjectList& lst=Scene->ListObj(OBJCLASS_EDITOBJECT);
     // ignore dynamic objects
@@ -532,6 +479,7 @@ void CSector::CaptureAllUnusedFaces(){
     UI->ProgressEnd();
     MakeCHull();
     UI->RedrawScene();
+*/	ELog.DlgMsg(mtInformation,"Function not implemented.");
 }
 
 //----------------------------------------------------
@@ -563,7 +511,7 @@ EVisible CSector::TestCHullSphereIntersection(const Fvector&P, float R){
 int CSector::GetSectorFacesCount(){
 	int count=0;
     for (SItemIt it=sector_items.begin();it!=sector_items.end();it++)
-        count+=it->Face_IDs.size();
+        count+=it->mesh->GetFaceCount(true);
     return count;
 }
 //----------------------------------------------------
@@ -575,7 +523,7 @@ void CSector::LoadSectorDef( CStream* F ){
     CSectorItem sitem;
 
 	// sector item
-    R_ASSERT(F->FindChunk(SECTOR_CHUNK_ITEM_OBJECT));
+    R_ASSERT(F->FindChunk(SECTOR_CHUNK_ONE_ITEM));
 	F->RstringZ(o_name);
 	sitem.object=(CEditObject*)Scene->FindObjectByName(o_name,OBJCLASS_EDITOBJECT);
     if (sitem.object==0){
@@ -595,10 +543,6 @@ void CSector::LoadSectorDef( CStream* F ){
         m_bHasLoadError = true;
         return;
     }
-
-    R_ASSERT(F->FindChunk(SECTOR_CHUNK_ITEM_FACES));
-	sitem.Face_IDs.resize(F->Rdword());
-	F->Read(sitem.Face_IDs.begin(), sitem.Face_IDs.size()*sizeof(DWORD));
 
     sector_items.push_back(sitem);
 }
@@ -621,7 +565,7 @@ bool CSector::Load(CStream& F){
     m_bDefault 		= F.Rbyte();
 	m_bNeedUpdateCHull= F.Rbyte();
 
-	if (F.FindChunk(SECTOR_CHUNK_CHULL_DATA2)){
+	if (F.FindChunk(SECTOR_CHUNK_CHULL_DATA)){
         int cnt;
         cnt		   		= F.Rdword();
         m_CHSectorFaces.resize(cnt);
@@ -668,7 +612,7 @@ void CSector::Save(CFS_Base& F){
 	F.Wbyte			(m_bNeedUpdateCHull);
 	F.close_chunk	();
 
-	F.open_chunk	(SECTOR_CHUNK_CHULL_DATA2);
+	F.open_chunk	(SECTOR_CHUNK_CHULL_DATA);
     F.Wdword		(m_CHSectorFaces.size());
     F.write			(m_CHSectorFaces.begin(),m_CHSectorFaces.size()*sizeof(CHFace));
     F.Wdword		(m_CHSectorVertices.size());
@@ -683,14 +627,9 @@ void CSector::Save(CFS_Base& F){
     int count=0;
     for(SItemIt it=sector_items.begin(); it!=sector_items.end(); it++){
         F.open_chunk(count); count++;
-            F.open_chunk(SECTOR_CHUNK_ITEM_OBJECT);
+            F.open_chunk(SECTOR_CHUNK_ONE_ITEM);
             F.WstringZ	(it->object->GetName());
             F.WstringZ	(it->mesh->GetName());
-	        F.close_chunk();
-
-            F.open_chunk(SECTOR_CHUNK_ITEM_FACES);
-            F.Wdword	(it->Face_IDs.size());
-            F.write		(it->Face_IDs.begin(),it->Face_IDs.size()*sizeof(DWORD));
 	        F.close_chunk();
         F.close_chunk();
     }

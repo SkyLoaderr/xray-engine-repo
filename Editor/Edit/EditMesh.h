@@ -82,6 +82,7 @@ DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 //refs
 struct st_RenderBuffer;
 struct st_Surface;
+class CSector;
 
 struct st_RenderBuffer{
     DWORD			dwStartVertex;
@@ -110,6 +111,7 @@ class CEditMesh {
 	char m_Name[MAX_OBJ_NAME];
 
     CEditObject*	m_Parent;
+    CSector*		m_Sector;
 
     RAPID::Model*	m_CFModel;
 
@@ -199,6 +201,8 @@ public:
 
     // debug
     void			DumpAdjacency			();
+
+	void 			OnSynchronize			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_StaticMesh_H_*/

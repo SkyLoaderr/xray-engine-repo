@@ -234,9 +234,13 @@ void ELibrary::Clear(){
 ELibrary::ELibrary(){
 	m_Valid = false;
 	m_Current = 0;
+	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
+	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 
 ELibrary::~ELibrary(){
+	Device.seqDevCreate.Remove(this);
+	Device.seqDevDestroy.Remove(this);
 	m_Objects.clear();
 	VERIFY( m_Valid == false );
 }
@@ -305,5 +309,15 @@ void ELibrary::Clean(){
 	    } while (FindNext(sr) == 0);
 	    FindClose(sr);
 	}
+}
+
+void ELibrary::OnDeviceCreate(){
+    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
+    	if ((*it)->IsLoaded()) (*it)->GetReference()->OnDeviceCreate();
+}
+
+void ELibrary::OnDeviceDestroy(){
+    for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
+    	if ((*it)->IsLoaded()) (*it)->GetReference()->OnDeviceDestroy();
 }
 

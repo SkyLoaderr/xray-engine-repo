@@ -244,7 +244,6 @@ object fraBottomBar: TfraBottomBar
       'N75.Checked'
       'miDrawSectorFaces.Checked'
       'miDrawAnimateLight.Checked'
-      'miDrawHiddenMeshes.Checked'
       'miDrawObjectBones.Checked'
       'miObjectLoopedAnimation.Checked'
       'miDrawSky.Checked'
@@ -399,11 +398,6 @@ object fraBottomBar: TfraBottomBar
     object Objects1: TMenuItem
       Caption = 'Objects'
       GroupIndex = 4
-      object miDrawHiddenMeshes: TMenuItem
-        Caption = 'Draw Hidden Meshes'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
       object miDrawObjectBones: TMenuItem
         Caption = 'Draw Bones'
         OnClick = ClickOptionsMenuItem

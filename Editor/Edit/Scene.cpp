@@ -106,9 +106,13 @@ EScene::EScene(){
     m_DetailObjects	= new CDetailManager();
     m_SkyDome = 0;
     ClearSnapList();
+	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
+	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 
 EScene::~EScene(){
+	Device.seqDevCreate.Remove(this);
+	Device.seqDevDestroy.Remove(this);
 	VERIFY( m_Valid == false );
     m_SnapObjects.clear();
 }

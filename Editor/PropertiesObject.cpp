@@ -151,11 +151,17 @@ void TfrmPropertiesObject::GetObjectsInfo(){
 bool TfrmPropertiesObject::ApplyObjectsInfo(){
     if (!bMultiSelection){
         if (!edName->Text.Length()){
-            MessageDlg("Enter Object Name!", mtError, TMsgDlgButtons() << mbOK, 0);
+            ELog.DlgMsg(mtError,"Enter Object Name!");
             return false;
+        }else{
+			if (!m_EditObject->IsReference()&&Scene->FindObjectByName(edName->Text.c_str(),m_EditObject)){
+            	// test only in scene (in lib tested separately)
+		    	ELog.DlgMsg(mtError,"Object Name already found in scene! Enter new name.");
+                return false;
+            }
         }
         if (!tvMeshes->Items->Count){
-            MessageDlg("Add mesh!", mtError, TMsgDlgButtons() << mbOK, 0);
+            ELog.DlgMsg(mtError,"Add mesh!");
             return false;
         }
         VERIFY( m_EditObject->ClassID()==OBJCLASS_EDITOBJECT );

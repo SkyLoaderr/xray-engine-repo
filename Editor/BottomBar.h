@@ -47,7 +47,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawAnimateLight;
 	TPanel *paCameraPos;
 	TMenuItem *Objects1;
-	TMenuItem *miDrawHiddenMeshes;
 	TMenuItem *N5;
 	TPanel *paButtons;
 	TExtBtn *ebLog;

@@ -38,6 +38,8 @@ class TUI: public CController{
     friend class TfrmEditorPreferences;
 	char m_LastFileName[MAX_PATH];
     TD3DWindow* m_D3DWindow;
+
+    TShiftState m_KeyState;
 protected:
     EStateList m_EditorState;
 public:
@@ -182,13 +184,7 @@ public:
 	// direct input
 	virtual void OnMousePress			(int btn);
 	virtual void OnMouseRelease			(int btn);
-	virtual void OnMouseHold			(int btn);
 	virtual void OnMouseMove			(int x, int y);
-	virtual void OnMouseStop			(int x, int y);
-
-	virtual void OnKeyboardPress		(int dik);
-	virtual void OnKeyboardRelease		(int dik);
-	virtual void OnKeyboardHold			(int dik);
 };
 extern TUI* UI;
 #endif

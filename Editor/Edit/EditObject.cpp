@@ -426,12 +426,6 @@ void CEditObject::RenderSelection(Fmatrix& parent){
 		Device.RenderNearer(0.0005);
         for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
 			(*_M)->RenderSelection(parent, c);
-// проба рендерить целым мешем из буфера
-//        for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-//            for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-//                if ((*_M)->m_Visible||fraBottomBar->miDrawHiddenMeshes->Checked)
-//                    (*_M)->RenderSelection(parent, c, *s_it);
-//        }
 	    Device.ResetNearer();
     }
 }
@@ -668,25 +662,19 @@ st_Surface*	CEditObject::FindSurfaceByName(const char* surf_name, int* s_id){
 
 
 void CEditObject::OnDeviceCreate(){
-	if (m_LibRef) m_LibRef->OnDeviceCreate();
-	else{
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	UpdateRenderBuffers();
 	// создать заново shaders
-		for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-			(*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
-    }
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+        (*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
 }
 
 void CEditObject::OnDeviceDestroy(){
-	if (m_LibRef) 	m_LibRef->OnDeviceDestroy();
-	else{
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	ClearRenderBuffers();
 		// удалить shaders
-		for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-			if ((*s_it)->shader) Device.Shader.Delete((*s_it)->shader);
-    }
+    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+        if ((*s_it)->shader) Device.Shader.Delete((*s_it)->shader);
 }
 
 void CEditObject::LightenObject(){
@@ -698,4 +686,10 @@ void CEditObject::LightenObject(){
     ClearRenderBuffers();
 }
 
+void CEditObject::OnSynchronize(){
+	EditMeshIt m = m_Meshes.begin();
+	for(;m!=m_Meshes.end();m++){
+    	(*m)->OnSynchronize();
+    }
+}
 

@@ -271,6 +271,7 @@ public:
     // device dependent routine
 	virtual void 	OnDeviceCreate 			();
 	virtual void 	OnDeviceDestroy			();
+	virtual void 	OnSynchronize			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

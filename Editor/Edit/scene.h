@@ -8,6 +8,7 @@
 #include "SceneClassList.h"
 #include "SceneGraph.h"
 #include "Communicate.h"
+#include "pure.h"
 
 //refs
 struct FSChunkDef;
@@ -76,7 +77,10 @@ struct st_GroupItem{
 
 DEFINE_MAP(int,st_GroupItem,GroupMap,GroupPairIt);
 
-class EScene {
+class EScene:
+	public pureDeviceCreate,
+	public pureDeviceDestroy
+{
 public:
 	// addition objects
     CDPatchSystem* 	m_DetailPatches;
@@ -231,15 +235,15 @@ public:
     bool Validate(bool bNeedMsg=false, bool bTestPortal=true);
     void OnObjectsUpdate();
 
-	EScene();
-	virtual ~EScene();
+					EScene();
+	virtual 		~EScene();
 
-	void 	OnDeviceCreate();
-	void 	OnDeviceDestroy();
+	virtual	void	OnDeviceCreate		();
+	virtual	void	OnDeviceDestroy		();
 
-	void 	OnShowHint(AStringVec& dest);
+	void 			OnShowHint(AStringVec& dest);
 
-    void	SynchronizeObjects();
+    void			SynchronizeObjects();
 };
 
 //----------------------------------------------------

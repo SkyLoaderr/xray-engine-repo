@@ -63,8 +63,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Edit1;
         void __fastcall FormCreate(TObject *Sender);
     void __fastcall D3DWindowResize(TObject *Sender);
-    void __fastcall D3DWindowMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
     void __fastcall D3DWindowKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall D3DWindowKeyUp(TObject *Sender, WORD &Key,
@@ -104,9 +102,8 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 
-    TShiftState ShiftMouse;
-    TShiftState ShiftKey;
-    HINSTANCE m_HInstance;
+	TShiftState	ShiftKey;
+    HINSTANCE 	m_HInstance;
 
     void __fastcall ApplyShortCut(WORD Key, TShiftState Shift);
 public:		// User declarations

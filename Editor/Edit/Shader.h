@@ -5,6 +5,7 @@
 #define _INCDEF_Shader_H_
 
 #include "XRShaderLib.h"
+#include "pure.h"
 
 DEFINE_VECTOR(SH_ShaderDef, ShaderList, ShaderIt);
 

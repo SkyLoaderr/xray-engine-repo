@@ -31,6 +31,9 @@ __published:	// IDE-managed Components
 	TGroupBox *gbSector;
 	TRxLabel *RxLabel5;
 	TMultiObjColor *mcSectorColor;
+	TBevel *Bevel2;
+	TEdit *edName;
+	TRxLabel *RxLabel1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

@@ -10,6 +10,7 @@
 #include "UI_Main.h"
 #include "EditObject.h"
 #include "Bone.h"
+#include "Sector.h"
 
 CEditMesh::~CEditMesh(){
 	Clear();
@@ -22,6 +23,7 @@ void CEditMesh::Construct(){
     m_CFModel	= 0;
     m_Name[0]	= 0;
     m_LoadState	= 0;
+    m_Sector	= 0;
 }
 
 void CEditMesh::Clear(){
@@ -256,5 +258,9 @@ void CEditMesh::DumpAdjacency(){
         for (DWORD j=0; j<a_lst.size(); j++) s+=" "+AnsiString(a_lst[j]);
 		ELog.Msg(mtInformation,s.c_str());
     }
+}
+
+void CEditMesh::OnSynchronize(){
+    m_Sector = PortalUtils.FindSector(m_Parent,this);
 }
 

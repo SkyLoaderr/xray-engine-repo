@@ -169,19 +169,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
 	    mesh->UnloadFNormals();
     }
     // массив фейсов с указанием к какому сектору он принадлежит
-    INTVec sector_faces;
-	sector_faces.resize(mesh->GetFaceCount(false));
-    fill(sector_faces.begin(),sector_faces.end(),m_iDefaultSectorNum);
-	// пройдемся по всем секторам и определим принадлежность фейсов
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++){
-    	CSector* _S=(CSector*)(*_F);
-		SItemIt s_it;
-		if (_S->FindSectorItem(parent->GetName(), mesh->GetName(), s_it))
-        	for (DWORDIt f_it=s_it->Face_IDs.begin(); f_it!=s_it->Face_IDs.end(); f_it++)
-            	sector_faces[*f_it]=_S->sector_num;
-	}
+    int sect_num = mesh->m_Sector?mesh->m_Sector->sector_num:m_iDefaultSectorNum;
 
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
@@ -192,7 +180,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
                 b_face& new_face = l_faces[l_faces_it++];
-                new_face.dwMaterial = BuildMaterial(mesh,surf,sector_faces[*f_it]);
+                new_face.dwMaterial = BuildMaterial(mesh,surf,sect_num);
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index

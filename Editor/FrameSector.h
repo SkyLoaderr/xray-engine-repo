@@ -24,11 +24,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebDelFace;
     TExtBtn *ebFaceBoxPick;
 	TRxLabel *RxLabel1;
-	TRxLabel *RxLabel2;
-	TExtBtn *ebUseTies;
-	TRxLabel *RxLabel3;
-	TMultiObjSpinEdit *seSoftAngle;
-	TExtBtn *ebSoftRecursive;
 	TPanel *paCommands;
 	TRxLabel *RxLabel4;
 	TRxLabel *RxLabel6;

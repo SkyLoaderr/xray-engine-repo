@@ -6,6 +6,7 @@
 #define _INCDEF_Library_H_
 
 #include "SceneObject.h"
+#include "pure.h"
 //----------------------------------------------------
 class ETexture;
 class SceneObject;
@@ -58,7 +59,10 @@ public:
 DEFINE_VECTOR(CLibObject*, LibObjVect, LibObjIt);
 
 //----------------------------------------------------
-class ELibrary {
+class ELibrary:
+	public pureDeviceCreate,
+	public pureDeviceDestroy
+{
 	friend class TfrmChoseObject;
 public:
 	bool m_Valid;
@@ -99,6 +103,9 @@ public:
 
 						ELibrary			();
 	virtual 			~ELibrary			();
+
+	virtual		void	OnDeviceCreate		();
+	virtual		void	OnDeviceDestroy		();
 };
 
 extern ELibrary* Lib;

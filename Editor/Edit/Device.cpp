@@ -67,7 +67,7 @@ bool CRenderDevice::Create(HANDLE handle){
 	if (bReady)	return false;
 	ELog.Msg(mtInformation,"Starting RENDER device...");
 
-    m_hWnd				= frmMain->Handle;// Application->Handle;
+    m_hWnd				= frmMain->Handle;
     m_hRenderWnd		= handle;
 
 	HW.CreateDevice		(handle,dwWidth,dwHeight);
@@ -76,11 +76,6 @@ bool CRenderDevice::Create(HANDLE handle){
 	bReady				= TRUE;
 
 	dwFrame				= 0;
-	// Signal everyone - device created
-    Shader.Initialize	();
-    m_NullShader 		= Shader.Create();
-    m_WireShader 		= Shader.Create("$ed_wire");
-    m_SelectionShader 	= Shader.Create("$ed_selection");
 
     OnDeviceCreate();
 
@@ -96,65 +91,60 @@ void CRenderDevice::Destroy(){
 
 	HW.Validate					();
 
-	if (m_NullShader) Shader.Delete(m_NullShader);
-	if (m_WireShader) Shader.Delete(m_WireShader);
-	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
-
 	// before destroy
 	bReady 						= FALSE;
-	OnDeviceDestroy();
-    Shader.Clear();
+	OnDeviceDestroy				();
 
 	// real destroy
-	_RELEASE					(Streams_QuadIB);
 	HW.DestroyDevice			();
+
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 
 void CRenderDevice::OnDeviceCreate(){
+	// Shaders part
+    Shader.Initialize	();
+    m_NullShader 		= Shader.Create();
+    m_WireShader 		= Shader.Create("$ed_wire");
+    m_SelectionShader 	= Shader.Create("$ed_selection");
+    
 	// General Render States
 	HW.Caps.Update();
 	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
 	{
 		if (psDeviceFlags&rsAnisotropic)	{
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC ));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC ));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAXANISOTROPY, 16				));
+			Device.SetTSS(i,D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC	);
+			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC );
+			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
+			Device.SetTSS(i, D3DTSS_MAXANISOTROPY, 16				);
 		} else {
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
+			Device.SetTSS(i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		);
+			Device.SetTSS(i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		);
+			Device.SetTSS(i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		);
 		}
 		float fBias = -1.f;
 		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DITHERENABLE,		TRUE				));
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_COLORVERTEX,		TRUE				));
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,	FALSE				));
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			TRUE				));
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_SHADEMODE,		D3DSHADE_GOURAUD	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_CULLMODE,			D3DCULL_CCW			));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC,		D3DCMP_GREATER		));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_LOCALVIEWER,		FALSE				));
+	Device.SetRS(D3DRS_DITHERENABLE,	TRUE				);
+    Device.SetRS(D3DRS_COLORVERTEX,		TRUE				);
+    Device.SetRS(D3DRS_STENCILENABLE,	FALSE				);
+    Device.SetRS(D3DRS_ZENABLE,			TRUE				);
+    Device.SetRS(D3DRS_SHADEMODE,		D3DSHADE_GOURAUD	);
+	Device.SetRS(D3DRS_CULLMODE,		D3DCULL_CCW			);
+	Device.SetRS(D3DRS_ALPHAFUNC,		D3DCMP_GREATER		);
+	Device.SetRS(D3DRS_LOCALVIEWER,		FALSE				);
 
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	));
-
-	if (psDeviceFlags&rsWireframe)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_WIREFRAME	)); }
-	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_SOLID		)); }
-	if (psDeviceFlags&rsAntialias)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,TRUE				));	}
-	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,FALSE				)); }
-	if (psDeviceFlags&rsNormalize)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	TRUE				)); }
-	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	FALSE				)); }
+	Device.SetRS(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	Device.SetRS(D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL);
+	Device.SetRS(D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL);
+	Device.SetRS(D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	);
 
     ResetMaterial();
 	// signal another objects
     Shader.OnDeviceCreate		();
+	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
-    Scene->OnDeviceCreate		();
+//    Scene->OnDeviceCreate		();
 
     UpdateFog();
 
@@ -189,11 +179,21 @@ void CRenderDevice::OnDeviceCreate(){
 }
 
 void CRenderDevice::OnDeviceDestroy(){
+	if (m_NullShader) Shader.Delete(m_NullShader);
+	if (m_WireShader) Shader.Delete(m_WireShader);
+	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
+
 	_DELETE(pHUDFont);
-    Scene->OnDeviceDestroy		();
+	seqDevDestroy.Process		(rp_DeviceDestroy);
+
+//    Scene->OnDeviceDestroy		();
     Shader.OnDeviceDestroy		();
+	Shader.Clear				();
+
 	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
+
+	_RELEASE					(Streams_QuadIB);
 }
 
 void CRenderDevice::UpdateFog(){
@@ -372,16 +372,22 @@ void CRenderDevice::Validate()
 }
 
 void CRenderDevice::ReloadShaders(){
+	OnDeviceDestroy();
+	OnDeviceCreate();
+/*    Lib->OnDeviceDestroy();
+
 	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
-    UI->Command(COMMAND_UNLOAD_LIBMESHES);
     Shader.Reload();
 
     m_NullShader 		= Shader.Create();
     m_WireShader 		= Shader.Create("$ed_wire");
     m_SelectionShader 	= Shader.Create("$ed_selection");
+
+    Lib->OnDeviceCreate();
+*/
 }
 
 void CRenderDevice::RefreshTextures(bool bOnlyNew){

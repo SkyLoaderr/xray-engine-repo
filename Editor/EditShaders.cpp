@@ -213,6 +213,7 @@ void TfrmEditShaders::OnModified(){
 void __fastcall TfrmEditShaders::tvShadersItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
+	if (Item==tvShaders->Selected) return;
 	m_SelectedShader = 0;
     if (cbPreview->Checked&&Item->Data&&UI->ContainEState(esEditShaders))
         m_SelectedShader = SHLib->FindShader(Item->Text);
