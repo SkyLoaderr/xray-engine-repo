@@ -25,8 +25,8 @@ extern volatile BOOL bClose;
 static const char* h_str = 
 	"The following keys are supported / required:\n"
 	"-? or -h	== this help\n"
-	"-f<NAME>	== compile level in x:\\game\\data\\<NAME>\\\n"
 	"-o			== modify build options\n"
+	"-f<NAME>	== compile level in x:\\GameData\\Levels\\<NAME>\\\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
 
@@ -62,7 +62,7 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Load project
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
-	string prjName			= "game\\data\\levels\\"+string(name)+"\\build.prj";
+	string prjName			= "gamedata\\levels\\"+string(name)+"\\build.prj";
 	Phase					("Reading project...");
 
 	string32	ID			= BUILD_PROJECT_MARK;
@@ -105,7 +105,7 @@ void Startup(LPSTR     lpCmdLine)
 	_DELETE					(F);
 	
 	// Call for builder
-	pBuild->Run				("game\\data\\levels\\"+string(name));
+	pBuild->Run				("gamedata\\levels\\"+string(name));
 	delete					pBuild;
 
 	// Show statistic
