@@ -101,13 +101,16 @@ void CAI_Stalker::vfSetParameters(
 			}
 			switch (m_tMovementType) {
 				case eMovementTypeWalk : {
+					m_body.speed	= PI_MUL_2;
+					m_head.speed	= 3*PI_DIV_2;
 					switch (m_tMentalState) {
 						case eMentalStateDanger : {
 							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
 							break;
 						}
 						case eMentalStateFree : {
-							m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
+							m_fCurSpeed		*= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
+//							m_body.speed	= PI_DIV_4;
 							break;
 						}
 						case eMentalStatePanic : {
@@ -115,8 +118,6 @@ void CAI_Stalker::vfSetParameters(
 							break;
 						}
 					}
-					m_body.speed	= PI_MUL_2;
-					m_head.speed	= 3*PI_DIV_2;
 					break;
 				}
 				case eMovementTypeRun : {

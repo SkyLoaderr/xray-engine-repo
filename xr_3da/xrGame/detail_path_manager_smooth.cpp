@@ -375,13 +375,19 @@ bool CDetailPathManager::compute_path(
 	return					(true);
 }
 
+void write_trajectory_point(const CDetailPathManager::STrajectoryPoint point, LPCSTR point_desc)
+{
+	Msg						("\n%s",point_desc);
+	Msg						("[%f][%f][%f]",VPUSH(ai().level_graph().v3d(point.position)));
+	Msg						("[%f][%f][%f]",VPUSH(ai().level_graph().v3d(point.direction)));
+}
+
 void CDetailPathManager::build_smooth_path		(
 	const xr_vector<u32>	&level_path, 
 	u32						intermediate_index
 )
 {
 	build_straight_path(level_path,intermediate_index);
-	m_actuality								= true;
 	m_current_travel_point					= 0;
 //	Device.Statistic.AI_Range.Begin			();
 //
@@ -396,12 +402,23 @@ void CDetailPathManager::build_smooth_path		(
 //	dest.direction							= ai().level_graph().v2d(Fvector().sub(ai().level_graph().vertex_position(level_path.back()),ai().level_graph().vertex_position(level_path.front())));
 //	dest.vertex_id							= level_path.back();
 //
+//	write_trajectory_point					(start,"start");
+//	write_trajectory_point					(dest,"dest");
+//
 //	VERIFY									(!level_path.empty());
 //	VERIFY									(level_path.size() > intermediate_index);
 //
 //	m_current_travel_point					= 0;
-//	start.direction.normalize				();
-//	dest.direction.normalize				();
+//	if (start.direction.square_magnitude() < EPS_L)
+//		start.direction.set					(0.f,1.f);
+//	else
+//		start.direction.normalize			();
+//
+//	if (dest.direction.square_magnitude() < EPS_L)
+//		dest.direction.set					(0.f,1.f);
+//	else
+//		dest.direction.normalize			();
+//
 //	m_path.clear							();
 //
 //	if (level_path.size() == 1) {
