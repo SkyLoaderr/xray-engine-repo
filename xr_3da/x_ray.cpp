@@ -43,6 +43,14 @@ void Startup()
 	}
 	Console.ExecuteScript		(Console.ConfigFile);
 
+	// Name
+	if (strstr(Engine.Params,"-name ")) {
+		string64				c_name,cmd;
+		sscanf					(strstr(Engine.Params,"-name ")+6,"%s",c_name);
+		strconcat				(cmd,"net_name ",c_name);
+		Console.Execute			(cmd);
+	}
+
 	// Creation
 	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
 
