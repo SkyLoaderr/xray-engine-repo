@@ -337,14 +337,14 @@ void CAI_Zombie::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	vfSaveEnemy();
-
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive());
+
+	vfSaveEnemy();
 
 	Fvector tDistance;
 	tDistance.sub(Position(),m_Enemy.Enemy->Position());
