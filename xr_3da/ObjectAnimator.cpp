@@ -76,7 +76,7 @@ void CObjectAnimator::OnFrame()
 		Fvector R,P;
 		m_Current->_Evaluate(m_MParam.Frame(),P,R);
 		m_MParam.Update	(Device.fTimeDelta,1.f,bLoop);
-		m_XFORM.setXYZ	(R);
+		m_XFORM.setXYZi	(R.y,R.x,R.z);
         m_XFORM.translate_over(P);
 	}
 }
@@ -88,6 +88,7 @@ COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
         if ((it!=m_Motions.end())&&(0==xr_strcmp((*it)->Name(),name))){
             bLoop 		= loop;
             SetActiveMotion(*it);
+			m_MParam.Play	();
             return 		*it;
         }else{
             Debug.fatal	("OBJ ANIM::Cycle '%s' not found.",name);
@@ -97,6 +98,7 @@ COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
         if (!m_Motions.empty()){
             bLoop 		= loop;
             SetActiveMotion(m_Motions.front());
+			m_MParam.Play	();
             return 		m_Motions.front();
         }else{
             Debug.fatal	("OBJ ANIM::Cycle '%s' not found.",name);
@@ -108,6 +110,7 @@ COMotion* CObjectAnimator::Play(bool loop, LPCSTR name)
 void CObjectAnimator::Stop()
 {
 	SetActiveMotion		(0);
+	m_MParam.Stop		();
 }
 
 #ifdef _EDITOR

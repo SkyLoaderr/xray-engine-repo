@@ -1042,7 +1042,7 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
     CSE_Motion::motion_read		(tNetPacket);
     
     tNetPacket.r_string			(startup_animation);
-//	tNetPacket.r_string			(engine_sound);
+	tNetPacket.r_string			(engine_sound);
 
 #ifdef _EDITOR    
 	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
