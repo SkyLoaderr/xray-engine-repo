@@ -142,7 +142,7 @@ void CAI_Bloodsucker::StateSelector()
 {
 	VisionElem ve;
 
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad(g_Squad());
+	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	if (pSquad->GetLeader() == this) pSquad->ProcessGroupIntel();
 	GTask &pTask = pSquad->GetTask(this);
 
