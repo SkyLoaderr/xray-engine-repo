@@ -1259,6 +1259,9 @@
 						Name="Stalker"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\xr_attendant.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_camper.script">
 						</File>
 						<File
