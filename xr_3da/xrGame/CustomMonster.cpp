@@ -232,7 +232,8 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 				}else{
 					S = AState->ls;
 				}
-			}else if (dot<-0.7f){
+			}else //if (dot<-0.7f)
+			{
 				S = AState->back;
 			}
 		}

@@ -28,6 +28,7 @@ CAI_Zomby::CAI_Zomby()
 	m_bAttackStart = false;
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiZombyFollowMe;
+	m_bMobility = false;
 }
 
 CAI_Zomby::~CAI_Zomby()
@@ -788,10 +789,13 @@ void CAI_Zomby::Attack()
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
 						AI_Path.BuildTravelLine(Position());
+						m_bMobility = true;
 					}
-					else
+					else {
 					// if path is too short then clear it (patch for ExecMove)
 						AI_Path.TravelPath.clear();
+						m_bMobility = false;
+					}
 				}
 				q_look.setup(
 					AI::AIC_Look::Look, 
@@ -922,11 +926,13 @@ void CAI_Zomby::FollowMe()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
+								m_bMobility = true;
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
 								AI_Path.bNeedRebuild = FALSE;
+								m_bMobility = false;
 							}
 						} 
 						else {
@@ -1052,10 +1058,13 @@ void CAI_Zomby::FreeHunting()
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							AI_Path.BuildTravelLine(Position());
+							m_bMobility = true;
 						}
-						else
+						else {
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
+							m_bMobility = false;
+						}
 					} 
 					else {
 						// fill arrays of members and exclude myself
@@ -1192,11 +1201,13 @@ void CAI_Zomby::Pursuit()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
+								m_bMobility = true;
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
 								AI_Path.bNeedRebuild = FALSE;
+								m_bMobility = false;
 							}
 						} 
 						else {
@@ -1355,11 +1366,13 @@ void CAI_Zomby::UnderFire()
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							AI_Path.BuildTravelLine(Position());
+							m_bMobility = true;
 						}
 						else {
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
 							AI_Path.bNeedRebuild = FALSE;
+							m_bMobility = false;
 						}
 					} 
 					else {
@@ -1549,7 +1562,7 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 			}
 		}
 		else {
-			if (speed<0.2f)
+			if (!m_bMobility)//(speed<0.2f)
 				S = m_idle;
 			else {
 				Fvector view = _view; 
@@ -1568,7 +1581,7 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 					if (dot>0.7f)
 						S = AState->fwd;
 					else
-						/**
+						/**/
 						if ((dot<=0.7f)&&(dot>=-0.7f)) {
 							Fvector cross; 
 							cross.crossproduct(view,move);
@@ -1577,10 +1590,10 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 							else
 								S = AState->ls;
 						}
-							//if (dot<-0.7f)
 						else 
+							//if (dot<-0.7f)
+								S = AState->back;
 						/**/
-							S = AState->back;
 			}
 		}
 	}

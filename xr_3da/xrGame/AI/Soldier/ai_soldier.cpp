@@ -1189,7 +1189,8 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				}else{
 					S = AState->ls;
 				}
-			}else if (dot<-0.7f){
+			}else //if (dot<-0.7f)
+			{
 				S = AState->back;
 			}
 		}

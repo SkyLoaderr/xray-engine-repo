@@ -1566,7 +1566,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 				//|| (m_tpCurrentBlend->noloop)
 				if ((!(m_tpCurrentBlend->playing)) ) {
 					m_current = 0;
-					S = m_tpaAttackAnimations[1];//::Random.randI(0,3)];
+					S = m_tpaAttackAnimations[0];//::Random.randI(0,3)];
 					m_bStartAttack = true;
 				}
 				else
@@ -1574,7 +1574,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			}
 			else {
 				m_current = 0;
-				S = m_tpaAttackAnimations[1];//::Random.randI(0,3)];
+				S = m_tpaAttackAnimations[0];//::Random.randI(0,3)];
 				m_bStartAttack = true;
 			}
 		}
@@ -1669,7 +1669,7 @@ void CAI_Rat::Exec_Movement	( float dt )
 				Movement.SetPosition(vPosition);
 				Movement.SetVelocity(tVelocity);
 				tAcceleration.set(0,0,0);
-				Movement.Calculate	(tAcceleration,0,0,dt,false);
+				Movement.Calculate	(tAcceleration,0,7,dt,false);
 				Movement.GetPosition(vPosition);
 				m_bStartAttack = false;
 			}
