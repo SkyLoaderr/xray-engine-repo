@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 #include "PHDynamicData.h"
-#include "Physics.h"
+
 #include "ExtendedGeom.h"
 #include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
@@ -324,19 +324,9 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
 
 void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	///////////////////
-	const dReal		*pos					=dBodyGetPosition(m_body);
 
-	if(!dV_valid(pos))
-		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
-		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
-		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
-	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
-	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
-	if(!dV_valid(linear_velocity))
-		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
-
-	Memory.mem_copy(m_safe_velocity,linear_velocity,sizeof(dVector3));
+	SafeAndLimitVelocity();
 
 	if( !dBodyIsEnabled(m_body)) {
 		if(!ph_world->IsFreezed())b_lose_control=false;
@@ -367,19 +357,13 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	m_contact_count=0;
 
 
-
-
-
-
-
-
 	dMatrix3 R;
 	dRSetIdentity (R);
 	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodySetRotation(m_body,R);
 
 	dMass mass;
-
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
 	dReal			linear_velocity_mag		=_sqrt(dDOT(linear_velocity,linear_velocity));
 	dBodyGetMass(m_body,&mass);
 	dReal l_air=linear_velocity_mag*default_k_l;//force/velocity !!!
@@ -531,22 +515,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	ApplyAcceleration();
 	
-	//limit velocity
-	dReal l_limit;
-	if(is_control&&!b_lose_control) 
-		l_limit = m_max_velocity/phTimefactor;
-	else			
-		l_limit=10.f/fixed_step;
 
-	dReal mag;
-	const dReal* vel = dBodyGetLinearVel(m_body);
-	if(!dV_valid(vel))
-		dBodySetLinearVel(m_body,0.f,0.f,0.f);
-	mag=_sqrt(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
-	if(mag>l_limit){
-		dReal f=mag/l_limit;
-		dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
-	}
 
 	dReal* chVel=const_cast<dReal*>(dBodyGetLinearVel(m_body));
 	//if(b_jump)

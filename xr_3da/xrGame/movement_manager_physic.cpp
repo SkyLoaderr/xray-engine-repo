@@ -111,7 +111,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		} else {
 			movement_control->b_exect_position	=	true;
 			Fvector velocity					=	mdir;
-			velocity.mul						(desirable_speed*1.25f);
+			velocity.mul						(desirable_speed);//*1.25f
 			movement_control->SetVelocity		(velocity);
 		}
 	} else { // וסעü פטח. מבתוךעû
