@@ -69,3 +69,17 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	self:AttachChild(self.main_frame)
 end
 
+function options_base_tab:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	
+	DIK_RETURN = 28
+	WINDOW_KEY_PRESSED = 6
+	
+	local bind = dik_to_bind(dik)
+	if bind == key_bindings.kQUIT then
+		level.start_stop_menu(self,true)
+	end  
+
+	return true
+end
+
