@@ -15,12 +15,19 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+const DWORD				 XR_MAX_PORTAL_VERTS	= 6;
 struct b_occluder
 {
-	WORD			sector;
-	WORD			vert_count;
-	Fvector			vertices[6];
+	WORD				sector;				
+	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
 };
+struct b_portal
+{
+	WORD				sector_front;
+	WORD				sector_back;
+	svector<Fvector,XR_MAX_PORTAL_VERTS>	vertices;
+};
+//////////////////////////////////////////////////////////////////////
 
 void COccluderSystem::Load(CStream *fs)
 {
@@ -38,7 +45,7 @@ void COccluderSystem::Load(CStream *fs)
 		fs->Read	(&L,one);
 
 		// register
-		for (int j=0; j<L.vert_count; j++)
+		for (int j=0; j<L.vertices.size(); j++)
 			occluders[I].push_back(L.vertices[j]);
 	}
 }
