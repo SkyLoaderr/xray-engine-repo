@@ -11,16 +11,18 @@
 //структура, описывающая пулю и ее свойства в полете
 struct SBullet
 {
-	SBullet(const Fvector& position,
-			const Fvector& direction,
-			float start_speed,
-			float power,
-			float impulse,
-			u16	sender_id,
-			ALife::EHitType e_hit_type,
-			const CCartridge& cartridge);
+	SBullet();
 	~SBullet();
 
+	void Init(const Fvector& position,
+		const Fvector& direction,
+		float start_speed,
+		float power,
+		float impulse,
+		u16	sender_id,
+		ALife::EHitType e_hit_type,
+		float maximum_distance,
+		const CCartridge& cartridge);
 
 	//номер кадра на котором была запущена пуля
 	u32				frame_num;
@@ -34,10 +36,14 @@ struct SBullet
 	float			hit_power;
 	float			hit_impulse;
 
+	//дистанция которую пуля пролетела
+	float			fly_dist;
+
 	//ID персонажа который иницировал действие
 	u16				parent_id;		
 
 	//коэфициенты и параметры патрона
+	float			max_dist;
 	float			dist_k;
 	float			hit_k;
 	float			impulse_k;
@@ -47,6 +53,7 @@ struct SBullet
 	//тип наносимого хита
 	ALife::EHitType hit_type;
 
+	//для отладки
 	//предыдущая позиция
 	Fvector			prev_pos;
 };

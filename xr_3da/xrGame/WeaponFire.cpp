@@ -79,12 +79,16 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 		ALife::EHitType e_hit_type,
 		const CCartridge& cartridge
 		 */
-		Level().BulletManager().AddBullet(xr_new<SBullet>(P, D , m_fStartBulletSpeed,
-													float(iHitPower),
-													fHitImpulse,
-													H_Parent()->ID(),
-													ALife::eHitTypeFireWound,
-													l_cartridge));
+		
+		SBullet* bullet =  xr_new<SBullet>();
+		bullet->Init(P, D , m_fStartBulletSpeed,
+			float(iHitPower),
+			fHitImpulse,
+			H_Parent()->ID(),
+			ALife::eHitTypeFireWound,
+			fireDistance,
+			l_cartridge);
+		Level().BulletManager().AddBullet(bullet);
 		/*
 		// ...and trace line
 		m_vEndPoint.mad(m_vCurrentShootPos,	m_vCurrentShootDir,fireDistance*l_cartridge.m_kDist);

@@ -14,29 +14,42 @@
 
 
 
-SBullet::SBullet(const Fvector& position,
-				const Fvector& direction,
-				float start_speed,
-				float power,
-				float impulse,
-				u16	sender_id,
-				ALife::EHitType e_hit_type,
-				const CCartridge& cartridge)
+SBullet::SBullet()
+{
+}
+
+SBullet::~SBullet()
+{
+}
+
+
+void SBullet::Init(const Fvector& position,
+				   const Fvector& direction,
+				   float start_speed,
+				   float power,
+				   float impulse,
+				   u16	sender_id,
+				   ALife::EHitType e_hit_type,
+				   float maximum_distance,
+				   const CCartridge& cartridge)
 {
 	pos = position;
 
 	speed = start_speed;
 	VERIFY(speed>0);
-	
+
 	dir = direction;
 	VERIFY(dir.magnitude()>0);
 	dir.normalize();
 
 	hit_power		= power;
 	hit_impulse		= impulse;
+	fly_dist		= 0;
+
 	parent_id		= sender_id;
 	hit_type		= e_hit_type;
-	
+
+	max_dist		= maximum_distance;
 	dist_k			= cartridge.m_kDist;
 	hit_k			= cartridge.m_kHit;
 	impulse_k		= cartridge.m_kImpulse;
@@ -45,9 +58,6 @@ SBullet::SBullet(const Fvector& position,
 	wallmark_size	= cartridge.fWallmarkSize;
 }
 
-SBullet::~SBullet()
-{
-}
 
 //////////////////////////////////////////////////////////
 //
@@ -354,28 +364,36 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	float delta_time_sec = float(delta_time)/1000.f;
 	float range = bullet->speed*delta_time_sec;
 	
+	float max_range = bullet->max_dist - bullet->fly_dist;
+	if(range>max_range) range = max_range;
+
+
 	Collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,Collide::rqtBoth);
-	Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
-	
-		
-	//изменить положение пули
+	BOOL result = FALSE;
+	result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
+
+    //изменить положение пули
 	bullet->prev_pos = bullet->pos;
 	bullet->pos.mad(bullet->pos, bullet->dir, range);
+	bullet->fly_dist += range;
+	
+	if(bullet->fly_dist>=bullet->max_dist)
+		return false;
+
+	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
+	if(!level_box.contains(bullet->pos))
+		return false;
 
 
 	//изменить скорость и направление ее полета
 	//с учетом гравитации
 	bullet->dir.y -= (GRAVITY_CONST*delta_time_sec)/bullet->speed;
+	bullet->dir.normalize();
 	
 
 	if(bullet->hit_power<HIT_POWER_EPSILON)
 		return false;
 
-	
-
-	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
-	if(!level_box.contains(bullet->pos))
-		return false;
 
 	return true;
 }
