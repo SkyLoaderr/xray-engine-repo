@@ -58,6 +58,31 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		pIndices			= RImplementation.getIB		(ID);
 		pIndices->AddRef	();
 		loaded_f			= true;
+
+#if RENDER==R_R2
+		// check for fast-vertices
+		if (data->find_chunk(OGF_FASTPATH))		{
+			// we have fast-mesh
+			m_fast						= xr_new<IRender_Mesh>	();
+
+			// verts
+			D3DVERTEXELEMENT9*	fmt		= 0;
+			ID							= data->r_u32			();
+			m_fast->vBase				= data->r_u32			();
+			m_fast->vCount				= data->r_u32			();
+			m_fast->pVertices			= RImplementation.getVB	(ID,true);
+			m_fast->pVertices->AddRef	();
+			fmt							= RImplementation.getVB_Format(ID,true);
+
+			// indices
+			ID							= data->r_u32			();
+			m_fast->iBase				= data->r_u32			();
+			m_fast->iCount				= data->r_u32			();
+			m_fast->dwPrimitives		= iCount/3;
+			m_fast->pIndices			= RImplementation.getIB		(ID);
+			m_fast->pIndices->AddRef	();
+		}
+#endif
 	}
 
 	// read vertices
