@@ -69,7 +69,7 @@ struct NodeCompressed
 	u64				link2	:21;
 	u64				link3	:21;
 
-	IC get_link		(int i) const
+	IC u32 get_link	(int i) const
 	{
 		switch (i) {
 			case 0 :	return link0;
