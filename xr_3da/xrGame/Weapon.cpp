@@ -192,18 +192,6 @@ void CWeapon::UpdateXForm	()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
-
-		//
-		if (hud_mode)
-		{
-			if (m_pHUD)
-			{
-				Fmatrix							trans;
-				Level().Cameras.affected_Matrix	(trans);
-				m_pHUD->UpdatePosition			(trans);
-			}
-		} else {
-		}
 	}
 }
 
@@ -213,7 +201,8 @@ void CWeapon::UpdateFP		()
 	{
 		dwFP_Frame = Device.dwFrame;
 
-		UpdateXForm		();
+		UpdateXForm			();
+		UpdateHudPosition	();
 
 		if (hud_mode && (0!=H_Parent()))// && Local())
 		{
@@ -262,13 +251,7 @@ void CWeapon::UpdateFP		()
 			//vLastSD = sd;
 			vLastSD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastSD);
-
-					
-
-/*			HUD().pHUDFont->Color	(0xffffffff);
-			HUD().pHUDFont->OutSet	(400,300);
-			HUD().pHUDFont->OutNext	("%3.2f,  %3.2f,  %3.2f",vLastFD.x,vLastFD.y,vLastFD.z);
-*/		}
+		}
 	}
 }
 
@@ -322,9 +305,6 @@ void CWeapon::Load		(LPCSTR section)
 	}
 	else
 		m_ammoName = 0;
-
-#pragma todo("Dandy: remove m_resource m_abrasion")
-	m_resource = m_abrasion = pSettings->r_float(section,"resource");
 
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
@@ -400,7 +380,7 @@ void CWeapon::Load		(LPCSTR section)
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
-
+	// 
 	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
 
@@ -495,31 +475,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	VERIFY						(m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-/*
-	if (0==m_pPhysicsShell)
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
 
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
 
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setDensity			(500.f);//400 - ieioiinou o.a. - ianna 1 i^3!
-		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
-		m_pPhysicsShell->set_PhysicsRefObject(this);
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-	}
-*/
 	UpdateAddonsVisibility();
 
 	//подготовить объекты партиклов
@@ -613,7 +570,7 @@ void CWeapon::OnH_B_Independent	()
 
 	hud_mode					= FALSE;
 	UpdateXForm					();
-//	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
+
 	if(m_pPhysicsShell) 
 	{
 		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
@@ -639,59 +596,10 @@ void CWeapon::OnH_B_Chield		()
 
 	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
 
-/*	if(Local()) 
-	{
-		OnStateSwitch(eShowing);
-	}*/
-
-	/*
-	if (Local() && (0xffff!=respawnPhantom)) 
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
-		u_EventSend		(P);
-		respawnPhantom	= 0xffff;
-	}
-	*/
 
 }
 
-int CWeapon::Ammo_eject		()
-{
-	int		save = /*iAmmoCurrent+*/iAmmoElapsed; 
-	/*iAmmoCurrent = */iAmmoElapsed = 0; 
 
-	/*
-	if (Local() && (0xffff!=respawnPhantom)) 
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
-		u_EventSend		(P);
-	}
-	*/
-
-	return	save;  
-}
-
-void CWeapon::Ammo_add(int /**iValue/**/) 
-{
-	//SpawnAmmo();
-	//iAmmoCurrent+=iValue;
-}
-
-/*
-void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
-{
-	float invf		= 1.f-f;
-	flags			= (f<0.5f)?A.flags:B.flags;
-	ammo_current	= u16(iFloor(invf*float(A.ammo_current)+f*float(B.ammo_current)));
-	ammo_elapsed	= u16(iFloor(invf*float(A.ammo_elapsed)+f*float(B.ammo_elapsed)));
-	pos.lerp		(A.pos,B.pos,f);
-	angles.x		= angle_lerp	(A.angles.x,B.angles.x,	f);
-	angles.y		= angle_lerp	(A.angles.y,B.angles.y,	f);
-	angles.z		= angle_lerp	(A.angles.z,B.angles.z,	f);
-}
-*/
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
@@ -719,19 +627,6 @@ void CWeapon::UpdateCL		()
 	make_Interpolation();
 }
 
-void CWeapon::SwitchState(u32 S)
-{
-	//R_ASSERT(S <= eHidden);
-	if (Local() && /*??????? (S!=STATE) ??????? &&*/ (S!=NEXT_STATE))	
-	{
-		// !!! Just single entry for given state !!!
-		NEXT_STATE		= S;	// Very-very important line of code!!! :)
-		NET_Packet		P;
-		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
-		P.w_u8			(u8(S));
-		u_EventSend		(P);
-	}
-}
 
 void CWeapon::renderable_Render		()
 {
@@ -792,39 +687,6 @@ void CWeapon::Light_Render	(Fvector& P)
 	light_render->set_range		(light_build_range*light_scale);
 }
 
-
-void CWeapon::OnEvent		(NET_Packet& P, u16 type)
-{
-	inherited::OnEvent		(P,type);
-	switch (type)
-	{
-	case GE_WPN_STATE_CHANGE:
-		{
-			u8				S;
-			P.r_u8			(S);
-			OnStateSwitch	(u32(S));
-		}
-		break;
-	case GE_WPN_AMMO_ADD:
-		{
-			u16 amount;
-			P.r_u16			(amount);
-			Ammo_add		(amount);
-		}
-		break;
-	}
-}
-
-bool CWeapon::Activate() 
-{
-	Show();
-	return true;
-}
-
-void CWeapon::Deactivate() 
-{
-	Hide();
-}
 
 bool CWeapon::Action(s32 cmd, u32 flags) 
 {
