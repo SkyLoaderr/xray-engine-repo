@@ -113,7 +113,7 @@ public:
 	void	SaveTREE				(CFS_Base &fs);
 	void	SaveSectors				(CFS_Base &fs);
 
-	CBuild	(b_params& P, CStream&  FS);
+	CBuild	(const b_params& P, const CStream&  FS);
 	~CBuild	();
 };
 

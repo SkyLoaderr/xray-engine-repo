@@ -36,7 +36,7 @@ public:
 	// kernel
 	virtual void	write	(const void* ptr, u32 count)	= 0;
 	virtual void	seek	(u32 pos)						= 0;
-	virtual u32	tell	()								= 0;
+	virtual u32		tell	()								= 0;
 
 	// generalized writing functions
 	IC void	Wdword(u32 d)
@@ -61,10 +61,10 @@ public:
 	{	write(&v,4*sizeof(float));	}
 
 	// generalized chunking
-	u32		align				();
+	u32			align				();
 	void		open_chunk			(u32 type);
 	void		close_chunk			();
-	u32		chunk_size			();					// returns size of currently opened chunk, 0 otherwise
+	u32			chunk_size			();					// returns size of currently opened chunk, 0 otherwise
 	void		write_compressed	(void* ptr, u32 count);
 	void		write_chunk			(u32 type, void* data, u32 size);
 };
@@ -72,9 +72,9 @@ public:
 class ENGINE_API CFS_Memory : public CFS_Base
 {
 	BYTE*		data;
-	u32		position;
-	u32		mem_size;
-	u32		file_size;
+	u32			position;
+	u32			mem_size;
+	u32			file_size;
 public:
 	CFS_Memory() {
 		data		= 0;
@@ -94,7 +94,7 @@ public:
 
 	// specific
 	BYTE*	pointer	()	{ return data; }
-	u32	size	()	{ return file_size;	}
+	u32		size	()	{ return file_size;	}
 	void	clear	()  { file_size=0; position=0;	}
 	void	SaveTo	(const char* fn, const char* sign);
 };
@@ -142,7 +142,7 @@ protected:
 			return ((p%16)+1)*16 - p;
 		} return 0;
 	}
-	IC BOOL isTerm(char a)		{ return (a==13)||(a==10); };
+	IC BOOL		isTerm(char a) const	{ return (a==13)||(a==10); };
 public:
 	CStream		()
 	{
@@ -156,17 +156,17 @@ public:
 	};
 	virtual ~CStream() {};
 
-	IC int	Elapsed(void)			// сколько байт осталось
+	IC int	Elapsed(void)		const	// сколько байт осталось
 	{	return Size-Pos;		};
-	IC BOOL	Eof(void)				// есть ли еще данные для чтения
+	IC BOOL	Eof(void)			const	// есть ли еще данные для чтения
 	{	return Elapsed()<=0;	};
-	IC int	Tell(void)				// позиция указателя чтения
+	IC int	Tell(void)			const	// позиция указателя чтения
 	{	return Pos;				};
-	IC int	Length(void)			// размер файла
+	IC int	Length(void)		const	// размер файла
 	{	return Size;			};
-	IC void* Pointer(void)			// указатель на память
+	IC void* Pointer(void)		const	// указатель на память
 	{	return &(data[Pos]);	};
-	IC void	Seek(int ptr)			// перемещение указателя
+	IC void	Seek(int ptr)				// перемещение указателя
 	{	Pos=ptr;	VERIFY((Pos<=Size) && (Pos>=0));	};
 	IC void	Advance(int cnt)		// перемещение указателя
 	{	Pos+=cnt;	VERIFY((Pos<=Size) && (Pos>=0));	};
