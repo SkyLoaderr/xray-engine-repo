@@ -19,6 +19,7 @@ typedef svector<string64,4>	sh_list;
 
 class	ENGINE_API			CBlender_Compile;
 class	ENGINE_API			IBlender;
+#define	SHADER_PASSES_MAX	2
 
 #pragma pack(push,4)
 
@@ -83,8 +84,8 @@ public:
 		u32	bLighting	:	1;
 	};
 public:
-	SFlags				Flags;
-	svector<ref_pass,2>	Passes;
+	SFlags								Flags;
+	svector<ref_pass,SHADER_PASSES_MAX>	Passes;
 
 						ShaderElement	();
 						~ShaderElement	();
