@@ -321,8 +321,7 @@ void CLevel::OnFrame	()
 	g_pGamePersistent->Environment.SetGameTime	(GetGameDayTimeSec(),GetGameTimeFactor());
 
 	//Device.Statistic.Scripting.Begin	();
-	if ((Device.dwFrame % 10) == 0)
-		ai().script_engine().script_process	("level")->update();
+	ai().script_engine().script_process	("level")->update();
 	//Device.Statistic.Scripting.End		();
 
 	//просчитать полет пуль

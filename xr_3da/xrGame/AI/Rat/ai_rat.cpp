@@ -209,10 +209,15 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
 
 	m_tOldPosition.set				(Position());
-	m_tSpawnPosition.set			(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
+	if (g_Alive())
+		m_tSpawnPosition.set		(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
+	else
+		m_tSpawnPosition.set		(Position());
 	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
 	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
-	vfAddActiveMember				(true);
+	if (g_Alive())
+		vfAddActiveMember			(true);
+
 	m_bStateChanged					= true;
 	set_game_vertex					(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 
@@ -222,11 +227,11 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	enable_movement					(false);
 
-	INIT_SQUAD_AND_LEADER;
-
 	vfLoadAnimations				();
 
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwLastActionTime = 0;
+	if (g_Alive())
+		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwLastActionTime = 0;
+
 	return							(TRUE);
 }
 

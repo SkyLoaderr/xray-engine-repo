@@ -656,15 +656,18 @@ void CAI_Rat::vfUpdateSpawnPosition()
 {
 	if (!g_Alive())
 		return;
-	INIT_SQUAD_AND_LEADER;
-	if (this != Leader)	{
-		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
-		if (tpLeader) {
-			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
+
+	CEntity			*leader = Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader();
+	VERIFY			(leader);
+
+	if (ID() != leader->ID())	{
+		CAI_Rat		*rat_leader = dynamic_cast<CAI_Rat*>(leader);
+		if (rat_leader) {
+			if (m_tSafeSpawnPosition.distance_to(rat_leader->m_tSafeSpawnPosition) > EPS_L) {
 				vfAddActiveMember(true);
 				m_eCurrentState = aiRatFreeHuntingActive;
 			}
-			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
+			m_tSafeSpawnPosition = rat_leader->m_tSafeSpawnPosition;
 		}
 	}
 	else {
