@@ -305,11 +305,16 @@ end
 
 function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
-	local shift = 0
-	local color = GetARGB(255,0,255,255)
-	local parse = true
+	--local shift = 0
+	--local color = GetARGB(255,0,255,255)
+	--local parse = true
 	
-	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
+	local new_item = CUIListItemEx();
+	new_item:SetText(item)
+	new_item:SetPerformTextLimit(true)
+	
+	--list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
+	list_box:AddItem(new_item)
 	
 end
 
