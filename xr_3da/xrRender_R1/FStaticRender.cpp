@@ -202,9 +202,10 @@ void CRender::Calculate				()
 
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
+	float	fov_factor				=	90.f / Device.fFOV;
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
-	g_fSCREEN						=	float(T->get_width()*T->get_height());
+	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
 	g_fLOD							=	g_fLOD_scale;
 	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)/g_fSCREEN;
