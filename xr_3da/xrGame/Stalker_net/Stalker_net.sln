@@ -1,0 +1,31 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stalker_net", "Stalker_net\Stalker_net.vcproj", "{AF9ACB0D-451A-4878-A04C-0B9E221CC705}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {B4513773-0EA3-4B48-AA1F-1D07CE5D5825}
+		SccProjectUniqueName1 = Stalker_net\\Stalker_net.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = Stalker_net\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Debug.ActiveCfg = Debug|Win32
+		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Debug.Build.0 = Debug|Win32
+		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Release.ActiveCfg = Release|Win32
+		{AF9ACB0D-451A-4878-A04C-0B9E221CC705}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
