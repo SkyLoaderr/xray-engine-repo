@@ -150,7 +150,7 @@ void CStalkerMovementManager::update(
 
 	switch (m_tMentalState) {
 		case eMentalStateDanger : {
-			velocity_mask	|= eMovementParameterDanger | eMovementParameterNegativeVelocity;
+			velocity_mask	|= eMovementParameterDanger;
 			break;
 		}
 		case eMentalStateFree : {
