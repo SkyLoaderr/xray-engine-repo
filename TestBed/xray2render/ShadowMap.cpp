@@ -1589,6 +1589,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
+	/*
 	m_pd3dDevice->SetTexture				(1, NULL);
 
 	// ***** Begin filtering *****
@@ -1633,6 +1634,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	*/
 
 	// Cleanup
 	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
