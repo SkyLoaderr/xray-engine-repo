@@ -124,9 +124,9 @@ void CLightmap::Save()
 			if (lm.marker[offset]>=(254-BORDER))	lm.marker[offset]=255; else lm.marker[offset]=0;
 		}
 	}
-	for (u32 ref=254; ref>0; ref--) {
+	for (u32 ref=254; ref>(254-16); ref--) {
 		ApplyBorders	(lm,ref);
-		Progress		(1.f - float(ref)/254.f);
+		Progress		(1.f - float(ref)/float(254-16));
 	}
 	Progress			(1.f);
 

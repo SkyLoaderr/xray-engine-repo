@@ -7,7 +7,8 @@
 const	u32				gi_num_photons		= 512;
 const	float			gi_optimal_range	= 15.f;
 const	float			gi_reflect			= .99f;
-const	float			gi_clip				= 0.05f;
+const	float			gi_clip				= 0.001f;
+const	u32				gi_maxlevel			= 5;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
@@ -54,8 +55,8 @@ Fvector		GetPixel_7x7		(CDB::RESULT& rpinf)
 		}
 	}
 	R.div	(49.f);
-	//R.add	(1.f);	// make it appear more like white material
-	//R.div	(2.f);
+	R.add	(1.f);	// make it appear more like white material
+	R.div	(2.f);
 	return	R;
 }
 
@@ -83,25 +84,26 @@ public:
 				task_cs.Leave	();
 				return;
 			} else {
-				src				= (*task)[task_it];
-				dst				= src;
-				if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
-				dst.type		= LT_SECONDARY;
-				dst.level		++;
-				task_it			++;
-				thProgress		= float(task_it)/float(task->size());
+				src					= (*task)[task_it];
+				if (0==src.level)	src.range	*= 1.5f;
+				dst					= src;
+				// if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				dst.type			= LT_SECONDARY;
+				dst.level			++;
+				task_it				++;
+				thProgress			= float(task_it)/float(task->size());
 			}
-			task_cs.Leave		();
-			if (dst.level>4)	continue;
+			task_cs.Leave				();
+			if (dst.level>gi_maxlevel)	continue;
 
 			// analyze
 			CRandom				random;
 			random.seed			(0x12071980);
 			float	factor		= _sqrt(src.range / gi_optimal_range);		// smaller lights get smaller amount of photons
 			if (LT_SECONDARY == src.type)	factor *= (1 / (dst.level+1));	// secondary lights get half the photons
-					factor		*= _sqrt(src.energy / 2.f);					// 2.f is optimal energy = baseline
+					factor		*= _sqrt(src.energy);						// 2.f is optimal energy = baseline
 			int		count		= iCeil( factor * float(gi_num_photons) );
-			float	_clip		= (_sqrt(src.energy)/10.f + gi_clip)/2.f;
+			float	_clip		= (_sqrt(src.energy)/20.f + gi_clip)/2.f;
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
 				switch	(src.type)		{
@@ -143,7 +145,7 @@ public:
 				float	_r1			= src.range * _sqrt(dst.energy / src.energy);
 				float	_r2			= (dst.energy - _clip)/_clip;
 				float	_r3			= src.range;
-				dst.range			= 1.5f * ( (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f );	// empirical
+				dst.range			= 20.f * ( (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f );	// empirical
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer
@@ -188,11 +190,11 @@ void	CBuild::xrPhase_Radiosity	()
 			else						{ task->erase	(task->begin()+l); l--; }
 		}
 	}
-	float	_scale			= 2*_energy_before / _energy_after;
+	float	_scale			= 1*_energy_before / _energy_after;
 	for (int l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
-		if (LT_SECONDARY == L.type)	L.energy		*= _scale;
+		if (LT_SECONDARY == L.type)		L.energy	*= _scale;
 	}
 
 	// info
