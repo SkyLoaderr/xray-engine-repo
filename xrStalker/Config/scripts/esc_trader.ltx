@@ -82,7 +82,7 @@ dialog_cond = {-tutorial_artefact_start}, {-esc_trader_can_leave}
 anim = idle_0_def_0
 on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, {~50} mob_remark@idle_0_spec_scratch_0, mob_remark@idle_0_def_0
 on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
-on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1 %+esc_trader_map_quest_1_played%,   {+esc_trader_newbie -tutorial_artefact_start} mob_remark@newbie_pda %-ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
+on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1_experienced %+esc_trader_map_quest_1_played%,   {+esc_trader_newbie -tutorial_artefact_start} mob_remark@newbie_pda %-ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
 ; сняли ui_pda_jobs_current, ui_pda_contacts и ui_pda_map_local, чтобы не реагировать, если игрок его включал до этого
 
 ; ------------------------------------------------------------------------------------------------------
@@ -111,13 +111,21 @@ on_info = {+esc_trader_experienced} mob_remark@idle_0_def_0, {+esc_trader_newbie
 ; ЗАДАНИЕ
 ; ------------------------------------------------------------------------------------------------------
 
-[mob_remark@map_quest_1]
+[mob_remark@map_quest_1_experienced]
 dialog_cond = {-tutorial_artefact_start}, {-esc_trader_can_leave}
 anim = idle_0_talk_2
 anim_head = head_anim_normal
 snd = trader_map_quest_1
-on_signal = action_end | mob_remark@idle_0_def_0 %+tutorial_artefact_start -esc_trader_experienced%
+on_signal = action_end | mob_remark@idle_0_def_0 %-esc_trader_experienced%
 on_info = {+esc_trader_can_leave} mob_remark@idle_0_def_0 ; обрывать фразу FIXME
+
+[mob_remark@map_quest_1_newbie]
+dialog_cond = {-tutorial_artefact_start}, {-esc_trader_can_leave}
+anim = idle_0_talk_2
+anim_head = head_anim_normal
+snd = trader_map_quest_1
+on_signal = action_end | mob_remark@idle_0_def_0 %-esc_trader_newbie +esc_trader_can_leave%
+on_info = {+esc_trader_can_leave} mob_remark@idle_0_def_0 %-esc_trader_newbie% ; обрывать фразу FIXME
 
 ; ------------------------------------------------------------------------------------------------------
 ; ОБРАБОТА НОВИЧКА
@@ -193,14 +201,14 @@ on_signal = action_end | mob_remark@newbie_map %-ui_pda_map_local%
 anim = idle_0_talk_2
 anim_head = head_anim_normal
 snd = trader_map_on_1
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 on_signal = action_end | mob_remark@before_map2
 
 [mob_remark@before_map2]
 ;dialog_enabled = false
 anim = idle_0_def_0
 tip = tips_esc_trader_activate_map
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 on_signal = action_end | mob_remark@map2
 
 [mob_remark@map2]
@@ -208,21 +216,21 @@ on_signal = action_end | mob_remark@map2
 anim = idle_0_talk_2
 anim_head = head_anim_normal
 snd = trader_map_on_2
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 on_signal = action_end | mob_remark@before_map3
 
 [mob_remark@before_map3]
 ;dialog_enabled = false
 anim = idle_0_def_0
 tip = tips_esc_trader_activate_map
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 on_signal = action_end | mob_remark@map3
 
 [mob_remark@map3]
 ;dialog_enabled = false
 anim = idle_0_talk_2
 anim_head = head_anim_normal
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 snd = trader_map_on_3
 on_signal = action_end | mob_remark@map_wait
 
@@ -230,6 +238,6 @@ on_signal = action_end | mob_remark@map_wait
 ;dialog_enabled = false
 anim = idle_0_def_0
 tip = tips_esc_trader_activate_map
-on_info = {+ui_pda_map_local} mob_remark@map_quest_1
+on_info = {+ui_pda_map_local} mob_remark@map_quest_1_newbie %+tutorial_artefact_start%
 on_signal = action_end | mob_remark@map_wait
 
