@@ -195,7 +195,7 @@ void CLensFlare::OnFrame()
 	BOOL		o_enable	= FALSE;
 	if (o_main)
 	{
-		o_enable			=	o_main->getEnabled():
+		o_enable		=	o_main->getEnabled();
 		o_main->setEnabled	(FALSE);
 	}
 	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f) )
