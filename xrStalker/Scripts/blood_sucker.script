@@ -418,7 +418,7 @@ function CStateRest:execute()
         	action(self.npc, move(move.walk_fwd, self.path:point(0)), sound(sound.idle), cond(cond.move_end))
         end
         action(self.npc, anim(anim.turn, 0), look(look.point, self.path:point(1)), cond(cond.look_end))
-        action(self.npc, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 60000))
+        action(self.npc, anim(anim.sit_idle, 0), sound(sound.idle, 10000), cond(cond.time_end, 60000))
     end
 end
 
@@ -540,6 +540,35 @@ function CStatePatrolCorpse:finalize()
 end
 
 function CStatePatrolCorpse:id()
+    return s_rest
+end
+
+
+--------------------------------------------------------------------------------
+----                              State Rest                                ----
+--------------------------------------------------------------------------------
+
+class "CStateRestPanic"
+function CStateRestPanic:__init(_npc, _mem)
+    self.npc        = _npc
+    self.memory     = _mem
+    self.way        = self.npc:spawn_ini():r_string("blood_sucker", "path")
+end
+
+function CStateRestPanic:initialize()
+    reset_action(self.npc, this.script_name())
+end
+
+function CStateRestPanic:execute()
+    if(self.npc:action() == nil) then
+        action(self.npc, move(move.run_fwd, patrol(self.way, patrol.nearest, patrol.continue, true)), sound(sound.panic), cond(cond.move_end))
+    end
+end
+
+function CStateRestPanic:finalize()
+end
+
+function CStateRestPanic:id()
     return s_rest
 end
 
