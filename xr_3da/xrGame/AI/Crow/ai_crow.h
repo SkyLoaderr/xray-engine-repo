@@ -7,9 +7,9 @@
 #define __XRAY_AI_CROW__
 
 #include "../../entity_alive.h"
-class CAI_Crow : public CEntityAlive
+class CAI_Crow : public CEntity
 {
-	typedef	CEntityAlive inherited;
+	typedef	CEntity inherited;
 	enum ECrowStates 	{
 		eUndef		= -1,
 		eDeathFall	= 0,
