@@ -23,6 +23,7 @@ const	float		S_tess		= .5f;
 const	int 		S_ambient	= 64;
 const	int 		S_clip		= 256-24;
 const	D3DFORMAT	S_rtf		= D3DFMT_A8R8G8B8;
+const	float		S_blur_kernel	= .5f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -44,9 +45,9 @@ CLightShadows::CLightShadows()
 	sh_Texture.create		("effects\\shadow_texture");
 	sh_World.create			("effects\\shadow_world",	RTname);
 	geom_World.create		(FVF::F_LIT,	RCache.Vertex.Buffer(), NULL);
-	sh_BlurTR.create		("effects\\blur",			RTtemp2);
-	sh_BlurRT.create		("effects\\blur",			RTname2);
-	geom_Blur.create		(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+	sh_BlurTR.create		("blur4",		RTtemp2);
+	sh_BlurRT.create		("blur4",		RTname2);
+	geom_Blur.create		(FVF::F_TL4uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// Debug
 	sh_Screen.create		("effects\\screen_set",RTname);
@@ -282,48 +283,18 @@ void CLightShadows::calculate	()
 	// Blur
 	if (bRTS)
 	{
-		float							dim				= S_rt_size;
-		Fvector2						shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
-		p0.set							(.5f/dim, .5f/dim);
-		p1.set							((dim+.5f)/dim, (dim+.5f)/dim);
-		shift.set(.5f/dim, .5f/dim); a0.add(p0,shift); a1.add(p1,shift); b0.sub(p0,shift); b1.sub(p1,shift);
-		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
-		
 		// Fill VB
-		u32 C							=	0xffffffff, Offset;
-		FVF::TL2uv* pv					=	(FVF::TL2uv*) RCache.Vertex.Lock(8,geom_Blur->vb_stride,Offset);
-		pv->set							(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
-		pv->set							(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
-		pv->set							(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
-		pv->set							(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
-		
-		pv->set							(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
-		pv->set							(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
-		pv->set							(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
-		pv->set							(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
-		RCache.Vertex.Unlock	(8,geom_Blur->vb_stride);
+		u32							Offset;
+		FVF::TL4uv* pv				= (FVF::TL4uv*) RCache.Vertex.Lock	(4,geom_Blur.stride(),Offset);
+		RImplementation.ApplyBlur4	(pv,S_rt_size,S_rt_size,S_blur_kernel);
+		RCache.Vertex.Unlock		(4,geom_Blur.stride());
 		
 		// Actual rendering (pass0, temp2real)
-		RCache.set_RT			(RT->pRT	);
-		RCache.set_ZB			(RImplementation.Target->pTempZB	);
-		RCache.set_Shader		(sh_BlurTR	);
-		RCache.set_Geometry		(geom_Blur	);
-		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-		
-		for (int it=0; it<ps_r1_SH_Blur; it++)	
-		{
-			// Actual rendering (pass1, real2temp)
-			RCache.set_RT			(RT_temp->pRT);
-			RCache.set_Shader		(sh_BlurRT	);
-			RCache.set_Geometry		(geom_Blur	);
-			RCache.Render			(D3DPT_TRIANGLELIST,Offset+4,0,4,0,2);
-			
-			// Actual rendering (pass2, temp2real)
-			RCache.set_RT			(RT->pRT	);
-			RCache.set_Shader		(sh_BlurTR	);
-			RCache.set_Geometry		(geom_Blur	);
-			RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-		}
+		RCache.set_RT				(RT->pRT	);
+		RCache.set_ZB				(RImplementation.Target->pTempZB	);
+		RCache.set_Shader			(sh_BlurTR	);
+		RCache.set_Geometry			(geom_Blur	);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 	
 	// Finita la comedia

@@ -16,6 +16,7 @@ const	float		P_distance2	= P_distance*P_distance;
 const	float		P_cam_dist	= 200;
 const	float		P_cam_range = 7.f;
 const	D3DFORMAT	P_rtf		= D3DFMT_A8R8G8B8;
+const	float		P_blur_kernel	= .5f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -34,9 +35,9 @@ CLightProjector::CLightProjector()
 	// 
 	RT.create			(RTname,P_rt_size,P_rt_size,P_rtf);
 	RT_temp.create		(RTtemp,P_rt_size,P_rt_size,P_rtf);
-	sh_BlurTR.create	("effects\\blur",			RTtemp2);
-	sh_BlurRT.create	("effects\\blur",			RTname2);
-	geom_Blur.create	(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
+	sh_BlurTR.create	("blur4",		RTtemp2);
+	sh_BlurRT.create	("blur4",		RTname2);
+	geom_Blur.create	(FVF::F_TL4uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// Debug
 	sh_Screen.create	("effects\\screen_set",RTname);
@@ -249,33 +250,18 @@ void CLightProjector::calculate	()
 
 	// Blur
 	{
-		float						dim				= P_rt_size;
-		Fvector2					shift,p0,p1,a0,a1,b0,b1,c0,c1,d0,d1;
-		p0.set						(.5f/dim, .5f/dim);
-		p1.set						((dim+.5f)/dim, (dim+.5f)/dim);
-		shift.set(.5f/dim, .5f/dim); a0.add(p0,shift); a1.add(p1,shift); b0.sub(p0,shift); b1.sub(p1,shift);
-		shift.set(.5f/dim,-.5f/dim); c0.add(p0,shift); c1.add(p1,shift); d0.sub(p0,shift); d1.sub(p1,shift);
-		
-		// Fill VB
-		u32 C					=	0xffffffff, Offset;
-		FVF::TL2uv* pv			=	(FVF::TL2uv*) RCache.Vertex.Lock	(8,geom_Blur->vb_stride,Offset);
-		pv->set					(0.f,	dim,	C, a0.x, a1.y, b0.x, b1.y);	pv++;
-		pv->set					(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
-		pv->set					(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
-		pv->set					(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
-		
-		pv->set					(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
-		pv->set					(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
-		pv->set					(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
-		pv->set					(dim,	0.f,	C, c1.x, c0.y, d1.x, d0.y);	pv++;
-		RCache.Vertex.Unlock	(8,geom_Blur->vb_stride);
-		
+		// Fill vertex buffer
+		u32							Offset;
+		FVF::TL4uv* pv				= (FVF::TL4uv*) RCache.Vertex.Lock	(4,geom_Blur.stride(),Offset);
+		RImplementation.ApplyBlur4	(pv,P_rt_size,P_rt_size,P_blur_kernel);
+		RCache.Vertex.Unlock		(4,geom_Blur.stride());
+
 		// Actual rendering (pass0, temp2real)
-		RCache.set_RT			(RT->pRT);
-		RCache.set_ZB			(NULL);
-		RCache.set_Shader		(sh_BlurTR	);
-		RCache.set_Geometry		(geom_Blur	);
-		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		RCache.set_RT				(RT->pRT);
+		RCache.set_ZB				(NULL);
+		RCache.set_Shader			(sh_BlurTR	);
+		RCache.set_Geometry			(geom_Blur	);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
 	// Finita la comedia

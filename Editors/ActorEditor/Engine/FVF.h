@@ -90,6 +90,25 @@ namespace FVF {
 		};
 	};
 	const u32 F_TL2uv	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX2;
+
+	struct TL4uv {
+		Fvector4	p;
+		u32			color;
+		Fvector4	uv[2];
+		IC void	set	(const TL4uv& src)
+		{	*this = src; };
+		IC void	set	(float x, float y, u32 c, Fvector2& t0, Fvector2& t1)
+		{	set	(x,y,.0001f,.9999f,c,t0.x,t0.y,t1.x,t1.y);	};
+		IC void	set	(float x, float y, float z, float w, u32 c, Fvector2& t0, Fvector2& t1)
+		{	set	(x,y,z,w,c,t0.x,t0.y,t1.x,t1.y);			};
+		IC void	set	(float x, float y, u32 c, float u, float v, float u2, float v2)
+		{	set	(x,y,.0001f,.9999f,c,u,v,u2,v2); };
+		IC void	set	(int x, int y, u32 c, float u, float v, float u2, float v2)
+		{	set	(float(x),float(y),.0001f,.9999f,c,u,v,u2,v2); };
+		IC void	set	(float x, float y, float z, float w, u32 c, float u, float v, float u2, float v2)
+		{	p.set	(x,y,z,w); color = c; uv[0].x=u; uv[0].y=v;	uv[1].x=u2; uv[1].y=v2;	};
+	};
+	const u32 F_TL4uv	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX4;
 };
 #pragma pack(pop)
 

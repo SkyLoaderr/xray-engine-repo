@@ -397,3 +397,20 @@ void	CRender::Render		()
 
 	Device.Statistic.RenderDUMP.End();
 }
+
+
+void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
+{
+	float	_w					= float(w);
+	float	_h					= float(h);
+	float	kw					= (1.f/_w)*k;
+	float	kh					= (1.f/_h)*k;
+	p0.set						(.5f/_w, .5f/_h);
+	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+
+	// Fill vertex buffer
+	pv->p.set(EPS,			float(_h+EPS),	EPS,1.f); pv->uv0.set(p0.x-kw,p1.y-kh);pv->uv1.set(p0.x+kw,p1.y+kh);pv->uv2.set(p0.x+kw,p1.y-kh);pv->uv3.set(p0.x-kw,p1.y+kh);pv++;
+	pv->p.set(EPS,			EPS,			EPS,1.f); pv->uv0.set(p0.x-kw,p0.y-kh);pv->uv1.set(p0.x+kw,p0.y+kh);pv->uv2.set(p0.x+kw,p0.y-kh);pv->uv3.set(p0.x-kw,p0.y+kh);pv++;
+	pv->p.set(float(_w+EPS),float(_h+EPS),	EPS,1.f); pv->uv0.set(p1.x-kw,p1.y-kh);pv->uv1.set(p1.x+kw,p1.y+kh);pv->uv2.set(p1.x+kw,p1.y-kh);pv->uv3.set(p1.x-kw,p1.y+kh);pv++;
+	pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->uv0.set(p1.x-kw,p0.y-kh);pv->uv1.set(p1.x+kw,p0.y+kh);pv->uv2.set(p1.x+kw,p0.y-kh);pv->uv3.set(p1.x-kw,p0.y+kh);pv++;
+}
