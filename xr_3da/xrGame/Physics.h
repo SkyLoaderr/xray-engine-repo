@@ -31,6 +31,7 @@ public:
 	void Steer1(const char& velocity, const char& steering);
 	void Steer(const char& steering);
 	void Drive(const char& velocity);
+	void JointTune(dReal step);
 	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
 	void SetPosition(Fvector pos){
 	const dReal* currentPos=dBodyGetPosition(Bodies[0]);	

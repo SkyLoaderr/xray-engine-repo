@@ -165,8 +165,8 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 80);
 
-		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.4f);
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.005f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.3f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.0003f);
 	}
 
 	GeomsGroup = dCreateGeomGroup(space);  
@@ -190,7 +190,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
 
 	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
-	VelocityRate=1;
+	VelocityRate=3;
 
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
@@ -200,7 +200,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	// car body
 	//dMass m;
 	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
-	dMassAdjust(&m, 1500); // mass
+	dMassAdjust(&m, 800.f); // mass
 
 	Bodies[0] = dBodyCreate(world);
 	dBodySetMass(Bodies[0], &m);
@@ -227,7 +227,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 	// wheel bodies
 	dMassSetSphere(&m, 1, wheelRadius); // density, radius
-	dMassAdjust(&m, 10); // mass
+	dMassAdjust(&m, 20); // mass
 	dQuaternion q;
 	dQFromAxisAndAngle(q, 1, 0, 0, M_PI * 0.5);
 	UINT i;
@@ -266,10 +266,15 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.02f);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax2, 800);
+		dJointSetHinge2Param(Joints[i], dParamFMax2, 400);
+		dReal k_p=20000.f;
+		dReal k_d=1000.f;
+		dReal h=0.02222f;
+			
 
-		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.3f);
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.0002f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
+
 	}
 
 	GeomsGroup = dCreateGeomGroup(space);  
@@ -281,6 +286,18 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dynamic data
 CreateDynamicData();
 
+}
+////////////////////////////////////////////////////////////////
+void CPHJeep::JointTune(dReal step){
+	for(UINT i = 0; i < 4; ++i)
+	{
+		dReal k_p=20000.f;
+		dReal k_d=1000.f;
+		dReal h=0.02222f;
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
+
+	}
 }
 /////////
 void CPHJeep::Destroy(){
@@ -346,8 +363,8 @@ void CPHJeep::Steer1(const char& velocity, const char& steering)
 		break;
 	}
 }
-////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////
 void CPHJeep::CreateDynamicData(){
 DynamicData.Create(4,Bodies[0]);
 DynamicData.SetChild(0,0,Bodies[1]);
@@ -362,8 +379,8 @@ DynamicData.SetAsZeroRecursive();
 
 void CPHJeep::Steer(const char& steering)
 {
-	static const dReal steeringRate = M_PI * 2 / 6;
-	static const dReal steeringLimit = M_PI / 3;
+	static const dReal steeringRate = M_PI * 2 / 5;
+	static const dReal steeringLimit = M_PI / 4;
 	
 	ULONG i;
 	switch(steering)
@@ -438,8 +455,12 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	Jeep.Create(Space,phWorld);
 	Gun.Create(Space);
-	dWorldSetCFM(phWorld, 0.0001f);
-	dWorldSetERP(phWorld, 0.9999f);
+	dReal k_p=500000.f;
+	dReal k_d=2000.f;
+	dReal h=0.02222f;
+	dWorldSetERP(phWorld,  h*k_p / (h*k_p + k_d));
+	dWorldSetCFM(phWorld,  1.f / (h*k_p + k_d));
+	
 	Jeep.DynamicData.CalculateData();
 }
 
@@ -461,16 +482,27 @@ void CPHWorld::Destroy(){
 void CPHWorld::Step(dReal step){
 			// compute contact joints and forces
 	///return;
+	if(step<=0.02f){
+			
+
+			const dReal k_p=500000.f;
+			const dReal k_d=2000.f;
+		
+			dWorldSetERP(phWorld,  step*k_p / (step*k_p + k_d));
+			dWorldSetCFM(phWorld,  1.f / (step*k_p + k_d));
+
+			Jeep.JointTune(step);
+
 			dSpaceCollide(Space, 0, &NearCallback);
 		
-			
+			/*
 			if(isShooting&&bulletContact.geom.pos[0]!=dInfinity){
 				dJointID c = dJointCreateContact(phWorld, ContactGroup, &bulletContact);
 				dJointAttach(c, dGeomGetBody(bulletContact.geom.g1), dGeomGetBody(bulletContact.geom.g2));
 				
 				}
 			
-		
+		*/
 			
 				
 			dWorldStep(phWorld, step);
@@ -478,11 +510,34 @@ void CPHWorld::Step(dReal step){
 	
 			dJointGroupEmpty(ContactGroup);
 	
-			isShooting=false;
-			bulletContact.geom.pos[0]=dInfinity;
+			//isShooting=false;
+			//bulletContact.geom.pos[0]=dInfinity;
+				
+	}
+	else{
+		UINT n=(UINT)(step/0.02f)+1;
+		for(int i=0; i<n;i++)
+		{
+			const dReal k_p=500000.f;
+			const dReal k_d=2000.f;
+		
+			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
+			dWorldSetCFM(phWorld,  1.f / (step*k_p/n + k_d));
+
+			Jeep.JointTune(step/n);
+			dSpaceCollide(Space, 0, &NearCallback);
+				
+			dWorldStep(phWorld, step/n);
+			Jeep.DynamicData.CalculateData();
+	
+			dJointGroupEmpty(ContactGroup);
+	
+		
+
 		}
+	}
 
-
+}
 
 static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		const ULONG N = 100;
@@ -548,7 +603,7 @@ else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
 
         contacts[i].surface.mode = dContactBounce;
 		contacts[i].surface.mu = 2500.f;
-		contacts[i].surface.bounce = 0.3f;
+		contacts[i].surface.bounce = 0.1f;
 		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(o2));
@@ -561,7 +616,7 @@ else
 
         contacts[i].surface.mode = dContactBounce;
 		contacts[i].surface.mu = 2500.f;
-		contacts[i].surface.bounce = 0.01f;
+		contacts[i].surface.bounce = 0.1f;
 		contacts[i].surface.bounce_vel =0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
