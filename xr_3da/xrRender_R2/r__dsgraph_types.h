@@ -47,10 +47,10 @@ namespace R_dsgraph
 	typedef mapMatrixVS			mapMatrix_T;
 
 	// Top level
-	typedef FixedMAP<float,_MatrixItem>				mapSorted_T;
+	typedef FixedMAP<float,_MatrixItemS>			mapSorted_T;
 	typedef mapSorted_T::TNode						mapSorted_Node;
 
-	typedef FixedMAP<float,_MatrixItem>				mapHUD_T;
+	typedef FixedMAP<float,_MatrixItemS>			mapHUD_T;
 	typedef mapHUD_T::TNode							mapHUD_Node;
 
 	typedef FixedMAP<float,_LodItem>				mapLOD_T;

@@ -48,9 +48,9 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 	// HUD rendering
 	if (RI.val_bHUD)			{
-		_MatrixItem		itemS	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform,ref_selement(sh)};
+		_MatrixItemS	itemS	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform,ref_selement(sh)};
 		mapHUD_Node* N			= mapHUD.insertInAnyWay		(distSQ);
-		N->val					= item;
+		N->val					= itemS;
 		return;
 	}
 
@@ -62,7 +62,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {
-		_MatrixItem		itemS	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform,ref_selement(sh)};
+		_MatrixItemS	itemS	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform,ref_selement(sh)};
 		mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
 		N->val					= itemS;
 		return;

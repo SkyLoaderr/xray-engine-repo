@@ -62,7 +62,7 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 void __fastcall sorted_L1		(mapSorted_Node *N)
 {
 	IRender_Visual *V			= N->val.pVisual;
-	RCache.set_Element			(RImplementation.rimp_select_sh_dynamic(V,N->key));
+	RCache.set_Element			(N->val.se);
 	RCache.set_xform_world		(N->val.Matrix);
 #if RENDER==R_R1
 	RImplementation.ApplyObject	(N->val.pObject);
