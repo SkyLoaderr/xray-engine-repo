@@ -199,7 +199,10 @@ void CBuild::LightVertex()
 		for (v=0; v<VL.size(); v++)
 		{
 			Fcolor				R;
-			R.lerp				(VL[v]->Color,C,.5f);
+			R.lerp				(VL[v]->Color,C,1.f);
+			R.r					= _max(R.r,VL[v]->Color.r);
+			R.g					= _max(R.g,VL[v]->Color.g);
+			R.b					= _max(R.b,VL[v]->Color.b);
 			VL[v]->Color.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
 			VL[v]->Color.mul_rgb(.5f);
 			VL[v]->Color.a		= 1.f;
