@@ -74,6 +74,11 @@ void					CRender::create					()
 	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
 	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
 
+	// gloss
+	char*	g			= strstr(Core.Params,"-gloss ");
+	o.forcegloss		= g?	TRUE	:FALSE	;
+	o.forcegloss_v		= float	(atoi	(g+xr_strlen("-gloss ")))/255.f;
+
 	// options
 	o.ldr				= (strstr(Core.Params,"-ldr"))?			TRUE	:FALSE	;
 	o.sunfilter			= (strstr(Core.Params,"-sunfilter"))?	TRUE	:FALSE	;
@@ -272,6 +277,7 @@ HRESULT	CRender::shader_compile			(
 	int								def_it			= 0;
     CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
 	char							c_smapsize		[32];
+	char							c_gloss			[32];
 	if (pDefines)	{
 		// transfer existing defines
 		for (;;def_it++)	{
@@ -316,6 +322,13 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
+	if (o.forcegloss)		{
+		sprintf						(c_gloss,"%f",o.forcegloss_v);
+		defines[def_it].Name		=	"FORCE_GLOSS";
+		defines[def_it].Definition	=	c_gloss;
+		def_it						++;
+	}
+
 	// skinning
 	if (m_skinning<0)		{
 		defines[def_it].Name		=	"SKIN_NONE";

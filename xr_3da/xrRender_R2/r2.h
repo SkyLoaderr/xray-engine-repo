@@ -52,6 +52,9 @@ public:
 		u32		Tshadows	: 1;						// transluent shadows
 		u32		distortion	: 1;
 		u32		disasm		: 1;
+
+		u32		forcegloss	: 1;
+		float	forcegloss_v;
 	}			o;
 	struct		_stats		{
 		u32		l_total,	l_visible;
