@@ -22,7 +22,7 @@ function action_hit:reset_scheme()
 	local h = hit()
 	h.power     = self.st.power
 	h.impulse   = self.st.impulse
-	--h.bone(self.st.bone)
+	h:bone(self.st.bone)
 	h.type      = hit.strike
 	h.direction = utils.vector_copy_by_val(p1):sub(p2)
 	h.draftsman = self.object
@@ -30,6 +30,7 @@ function action_hit:reset_scheme()
 	
 	--printf("_hr: action_hit:reset_scheme: p1=%f,%f,%f", p1.x, p1.y, p1.z)
 	--printf("_hr: action_hit:reset_scheme: p2=%f,%f,%f", p2.x, p2.y, p2.z)
+	--printf("_hr: action_hit:reset_scheme: bone = %d", h.bone)
 	printf("_hr: action_hit:reset_scheme: direction=%f,%f,%f", h.direction.x, h.direction.y, h.direction.z)
 end
 
@@ -89,17 +90,4 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.impulse  = utils.cfg_get_number(ini, section, "impulse", npc, false, 1000)
 	st.bone     = utils.cfg_get_string(ini, section, "bone", npc, true, "")
 	st.dir_path = utils.cfg_get_string(ini, section, "dir_path", npc, true, "")
---[[
-	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
-	if not st.locked then
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")
-		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
-	else
-		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
-	end
-	st.snd_init        = utils.cfg_get_string(ini, section, "snd_init", npc, false, "")
-	st.snd_open_start  = utils.cfg_get_string(ini, section, "snd_open_start", npc, false, "")
-	st.snd_close_start = utils.cfg_get_string(ini, section, "snd_close_start", npc, false, "")
-	st.snd_close_stop  = utils.cfg_get_string(ini, section, "snd_close_stop", npc, false, "")
---]]
 end
