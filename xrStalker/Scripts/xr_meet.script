@@ -38,6 +38,16 @@ function evaluator_contact:evaluate()
 		self.a.actor = nil
 	end	
 
+
+	if self.mgr == nil then
+		self.mgr = self.object:motivation_action_manager()
+	end
+	if self.mgr:initialized() then
+		if self.mgr:evaluator(stalker_ids.property_enemy):evaluate() then
+			return false
+		end
+	end
+	
 	if self.a.actor ~= nil and self.a.over == false then
 		xr_reactions.add_rule(self.object, "ignore")
 		return true
@@ -379,7 +389,11 @@ function add_to_binder(object, char_ini)
 end
 
 function override_meet(npc, flag)
-	db.storage[npc:id()].meet.over = flag
+	if flag == true then
+		db.storage[npc:id()].meet.enabled = false
+	else
+		db.storage[npc:id()].meet.enabled = true
+	end
 end
 
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
