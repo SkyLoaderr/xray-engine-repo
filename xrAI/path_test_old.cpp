@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_nodes.h"
 
-#define TEST_COUNT 10000
+#define TEST_COUNT 1000
 
 class CSearch {
 	u32					m_dwAStarStaticCounter;

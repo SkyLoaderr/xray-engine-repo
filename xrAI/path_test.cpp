@@ -28,7 +28,7 @@
 #include "path_test_old.h"
 #include "path_test.h"
 
-#define TEST_COUNT 10000
+#define TEST_COUNT 1000
 
 #define ROWS	300
 #define COLUMNS 300
@@ -38,12 +38,13 @@ typedef CAI_Map																CGraph;
 //typedef CSE_ALifeGraph														CGraph;
 //typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
+typedef CDataStorageBinaryHeapList<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
 //typedef CDataStorageDLSL<_dist_type,u32,u32,true,24,8>						CDataStorage;
 //typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
-typedef CDataStorageBucketList<8*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
+//typedef CDataStorageBucketList<6*1024,_dist_type,u32,u32,true,24,8>				CDataStorage;
 typedef CPathManager<CGraph,CDataStorage,_dist_type,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CGraph,u32,_dist_type>		CAStarSearch;
 
@@ -58,8 +59,8 @@ void path_test(LPCSTR caLevelName)
 	else
 		strcpy				(fName,caLevelName);
 	CGraph					*graph			= xr_new<CGraph>				(fName);
-	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count(),_dist_type(0),_dist_type(2000));
-//	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
+//	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count(),_dist_type(0),_dist_type(2000));
+	CDataStorage			*data_storage	= xr_new<CDataStorage>			(graph->get_node_count());
 	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	

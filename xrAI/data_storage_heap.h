@@ -170,7 +170,176 @@ public:
 	}
 };
 
-namespace DataStorageMultiBinaryHeap {
+template <
+	u32			heap_count,
+	typename	_dist_type				= float, 
+	typename	_index_type				= u32, 
+	typename	_path_id_type			= u32, 
+	bool		bEuclidianHeuristics	= true, 
+	u8			index_bits				= 24, 
+	u8			mask_bits				= 8
+>	
+class CDataStorageMultiBinaryHeap :
+	public CDataStorageBaseIndexBlock <
+		DataStorageHeap::SGraphNode<
+			_dist_type,
+			_index_type,
+			index_bits,
+			mask_bits
+		>,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
+		_dist_type,
+		_index_type,
+		_path_id_type,
+		bEuclidianHeuristics,
+		index_bits,
+		mask_bits
+	>
+{
+public:
+	typedef DataStorageHeap::SGraphNode<
+		_dist_type,
+		_index_type,
+		index_bits,
+		mask_bits
+	> CGraphNode;
+protected:	
+	typedef CDataStorageBaseIndexBlock <
+		CGraphNode,
+		DataStorageBaseIndex::SGraphIndexNode<
+			DataStorageHeap::SGraphNode<
+				_dist_type,
+				_index_type,
+				index_bits,
+				mask_bits
+			>,
+			_path_id_type
+		>,
+		_dist_type,
+		_index_type,
+		_path_id_type,
+		bEuclidianHeuristics,
+		index_bits,
+		mask_bits
+	> inherited;
+
+	class CGraphNodePredicate {
+	public:
+		IC			bool	operator()(CGraphNode *node1, CGraphNode *node2)
+		{
+			return				(node1->f() > node2->f());
+		};
+	};
+
+	struct SBinaryHeap {
+		CGraphNode			**heap;
+		CGraphNode			**heap_head;
+		CGraphNode			**heap_tail;
+	};
+
+	SBinaryHeap				heaps[heap_count];
+	SBinaryHeap				*best_heap;
+
+public:
+						CDataStorageMultiBinaryHeap(const _index_type node_count) : 
+							inherited(node_count)
+	{
+		u32						memory_usage = 0;
+		u32						byte_count;
+		
+		byte_count				= (node_count/heap_count + 1)*heap_count*sizeof(CGraphNode*);
+		for (u32 i=0; i<heap_count; i++) {
+			heaps[i].heap		= (CGraphNode**)xr_malloc(byte_count);
+			ZeroMemory			(heaps[i].heap,byte_count);
+			memory_usage		+= byte_count;
+		}
+
+		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
+	}
+
+	virtual				~CDataStorageMultiBinaryHeap()
+	{
+		for (u32 i=0; i<heap_count; i++)
+			xr_free				(heaps[i].heap);
+	}
+
+	IC		void		init			()
+	{
+		inherited::init			();
+		for (u32 i=0; i<heap_count; i++)
+			heaps[i].heap_head	= heaps[i].heap_tail = heaps[i].heap;
+	}
+
+	IC		bool		is_opened_empty	() const
+	{
+		for (u32 i=0; i<heap_count; i++) {
+			VERIFY				(heaps[i].heap_head <= heaps[i].heap_tail);
+			if (heaps[i].heap_head != heaps[i].heap_tail)
+				return			(false);
+		}
+		return					(true);
+	}
+
+	IC		void		add_opened		(CGraphNode &node)
+	{
+		node.open_close_mask	= 1;
+		SBinaryHeap				&heap = heaps[node.index() % heap_count];
+		VERIFY					(heap.heap_head <= heap.heap_tail);
+		*heap.heap_tail			= &node;
+		std::push_heap			(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
+	}
+
+	IC		void		decrease_opened	(CGraphNode &node, _dist_type value)
+	{
+		VERIFY					(!is_opened_empty());
+		SBinaryHeap				&heap = heaps[node.index() % heap_count];
+		for (CGraphNode **i = heap.heap_head; *i != &node; ++i);
+		std::push_heap			(heap.heap_head,i + 1,CGraphNodePredicate());
+	}
+
+	IC		void		remove_best_opened	()
+	{
+		VERIFY					(!is_opened_empty());
+		std::pop_heap			(best_heap->heap_head,best_heap->heap_tail--,CGraphNodePredicate());
+	}
+
+	IC		void		add_best_closed		()
+	{
+		VERIFY					(!is_opened_empty());
+		(*best_heap->heap_head)->open_close_mask = 0;
+	}
+
+	IC		CGraphNode	&get_best		()
+	{
+		VERIFY					(!is_opened_empty());
+		best_heap				= 0;
+		_dist_type				f = _dist_type(0x7fffffff);
+		for (u32 i=0; i<heap_count; i++) {
+			if ((heaps[i].heap_head < heaps[i].heap_tail) && (*heaps[i].heap_head)->f() < f) {
+				best_heap		= heaps + i;
+				f				= (*heaps[i].heap_head)->f();
+			}
+		}
+		VERIFY					(best_heap);
+		return					(**best_heap->heap_head);
+	}
+
+	IC		void		get_path		(xr_vector<_index_type> &path)
+	{
+		VERIFY					(!is_opened_empty());
+		inherited::get_path		(path,&get_best());
+	}
+};
+
+namespace DataStorageBinaryHeapList {
 	#pragma pack(push,4)
 	template <
 		typename _dist_type, 
@@ -202,16 +371,16 @@ template <
 	u8			index_bits				= 24, 
 	u8			mask_bits				= 8
 >	
-class CDataStorageMultiBinaryHeap :
+class CDataStorageBinaryHeapList :
 	public CDataStorageBaseIndexBlock <
-		DataStorageMultiBinaryHeap::SGraphNode<
+		DataStorageBinaryHeapList::SGraphNode<
 			_dist_type,
 			_index_type,
 			index_bits,
 			mask_bits
 		>,
 		DataStorageBaseIndex::SGraphIndexNode<
-			DataStorageMultiBinaryHeap::SGraphNode<
+			DataStorageBinaryHeapList::SGraphNode<
 				_dist_type,
 				_index_type,
 				index_bits,
@@ -228,7 +397,7 @@ class CDataStorageMultiBinaryHeap :
 	>
 {
 public:
-	typedef DataStorageMultiBinaryHeap::SGraphNode<
+	typedef DataStorageBinaryHeapList::SGraphNode<
 		_dist_type,
 		_index_type,
 		index_bits,
@@ -269,7 +438,7 @@ protected:
 	CGraphNode				*list_tail;
 
 public:
-						CDataStorageMultiBinaryHeap(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
+						CDataStorageBinaryHeapList(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1))) :
 							inherited(node_count + 2)
 	{
 		max_distance			= _max_distance;
@@ -286,7 +455,7 @@ public:
 		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
-	virtual				~CDataStorageMultiBinaryHeap()
+	virtual				~CDataStorageBinaryHeapList()
 	{
 		for (u32 i=0; i<heap_count; i++)
 			xr_free				(heaps[i].heap);
@@ -336,12 +505,6 @@ public:
 				node.prev		= i;
 				i->next->prev	= &node;
 				i->next			= &node;
-//				for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//					VERIFY(i->prev->f() <= i->f());
-//				}
-//				for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//					VERIFY(i->prev->f() <= i->f());
-//				}
 				return;
 			}
 		VERIFY					(false);
@@ -349,24 +512,12 @@ public:
 
 	IC		void		push_back		(CGraphNode &node)
 	{
-//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
-//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
 		for (CGraphNode *i = node.next; ;i = i->next)
 			if (i->f() >= node.f()) {
 				node.next		= i;
 				node.prev		= i->prev;
 				i->prev->next	= &node;
 				i->prev			= &node;
-//				for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//					VERIFY(i->prev->f() <= i->f());
-//				}
-//				for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//					VERIFY(i->prev->f() <= i->f());
-//				}
 				return;
 			}
 		VERIFY					(false);
@@ -376,7 +527,6 @@ public:
 	{
 		old_head->prev->next = old_head->next;
 		new_head->prev = old_head->next->prev = old_head->prev;
-//		new_head->prev = list_tail->prev;
 		push_front			(*new_head);
 	}
 
@@ -384,7 +534,6 @@ public:
 	{
 		new_head->next = old_head->prev->next = old_head->next;
 		old_head->next->prev = old_head->prev;
-//		new_head->next = list_head->next;
 		push_back			(*new_head);
 	}
 
@@ -396,19 +545,12 @@ public:
 
 	IC		void		add_opened		(CGraphNode &node)
 	{
-//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
-//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
 		node.open_close_mask	= 1;
 		SBinaryHeap				&heap = heaps[compute_heap_index(node.index())];
 		VERIFY					(heap.heap_head <= heap.heap_tail);
 		if (heap.heap_head == heap.heap_tail) {
 			*heap.heap_tail		= &node;
 			++heap.heap_tail;
-			//std::push_heap		(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
 			(*heap.heap_head)->next = list_head->next;
 			push_back			(**heap.heap_head);
 			return;
@@ -439,12 +581,6 @@ public:
 	IC		void		remove_best_opened	()
 	{
 		VERIFY					(!is_opened_empty());
-//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
-//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
 		SBinaryHeap				*best_heap = heaps + compute_heap_index(list_head->next->index());
 		CGraphNode				*heap_head = *best_heap->heap_head;
 		std::pop_heap			(best_heap->heap_head,best_heap->heap_tail--,CGraphNodePredicate());
@@ -459,12 +595,6 @@ public:
 	IC		CGraphNode	&get_best		()
 	{
 		VERIFY					(!is_opened_empty());
-//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
-//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-//			VERIFY(i->prev->f() <= i->f());
-//		}
 		return					(*list_head->next);
 	}
 };
