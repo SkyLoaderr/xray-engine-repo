@@ -61,8 +61,8 @@ float		ps_r2_ls_depth_scale		= 1.00001f;			// 1.00001f
 float		ps_r2_ls_depth_bias			= -0.0001f;			// -0.0001f
 float		ps_r2_ls_squality			= 1.0f;				// 1.00f
 float		ps_r2_sun_projection		= 0.2f;				// 0.3f
-float		ps_r2_sun_depth_scale		= 1.00001f;			// 1.00001f
-float		ps_r2_sun_depth_bias		= -0.0001f;			// -0.0001f
+float		ps_r2_sun_depth_scale		= 1.00000f;			// 1.00001f
+float		ps_r2_sun_depth_bias		= -0.0005f;			// -0.0005f
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
