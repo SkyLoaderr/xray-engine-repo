@@ -1187,7 +1187,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 
 	// Set the transform matrices
-	D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -4.0f);
+	D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -3.5f);
 	D3DXVECTOR3 vLookatPt		= D3DXVECTOR3(0.0f, 2.0f,  0.0f);
 	D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
 	FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
