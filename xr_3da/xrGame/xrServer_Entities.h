@@ -166,6 +166,11 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
 xrSE_DECLARE_END
 
+//***** Health
+xrSE_DECLARE_BEGIN(xrSE_Health,xrServerEntity)
+	u8						amount;
+xrSE_DECLARE_END
+
 //***** Actor
 xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	u32						timestamp;

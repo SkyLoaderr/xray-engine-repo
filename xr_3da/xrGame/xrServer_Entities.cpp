@@ -248,6 +248,20 @@ void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
   	inherited::FillProp(pref,values);
 }
 #endif
+
+//***** Crow
+void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
+void xrSE_Crow::STATE_Write			(NET_Packet& P)				{	P.w_u8(amount);	};
+void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
+void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
+#ifdef _EDITOR
+void xrSE_Crow::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+	inherited::FillProp(pref,values);
+	FILL_PROP_EX(values,	pref, "Health amount",	&amount,	PROP::CreateU8(0,255));
+}
+#endif
+
 //***** Actor
 void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
 void xrSE_Actor::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
@@ -451,6 +465,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_W_PM:			return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_FORT:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_BINOCULAR:	return new	xrSE_Weapon;
+	case CLSID_OBJECT_HEALTH:		return new	xrSE_Health;
 	}
 	return 0;
 }

@@ -105,11 +105,6 @@ public:
 	IC	void		PackPosition	(NodePosition& Pdest, const Fvector& Psrc)
 	{
 		float sp = 1/m_header.size;
-		/**
-		int px	= iFloor(Psrc.x*sp+EPS_L);
-		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
-		int pz	= iFloor(Psrc.z*sp+EPS_L);
-		/**/
 		int px	= iFloor(Psrc.x*sp+EPS_L + .5f);
 		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
 		int pz	= iFloor(Psrc.z*sp+EPS_L + .5f);
