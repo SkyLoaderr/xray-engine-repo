@@ -237,7 +237,7 @@ function action_sniper_idle:init_state_sit_down  ()
     self.object:set_detail_path_type  (move.line)
       self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item              (object.activate, self.object:best_weapon())
---        self.object:set_desired_direction  ( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
+        self.object:set_desired_direction  ( this.point_with_bit(self.a.point_path, 2):sub(self.object:position()) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -337,6 +337,7 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:finalize ()
+    printf("idle finalize")
     action_base.finalize     (self)
     self.object:clear_callback   (game_object.movement)
 end
@@ -552,13 +553,6 @@ function action_camper:select_look_point()
   --Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
   for i = 3, 20 do
 --        printf("point %d  bit %d", self.camper_point, i)
-        printf("camper_point %d", self.camper_point)
-        if(self.a.point_path:flag(self.camper_point, 3)) then
-          printf("flag 3 enabled")
-        else
-          printf("flag 3 disabled")
-        end
-        printf("i = %d", i)
         if(self.a.point_path:flag(self.camper_point, i)) then
           self.look_point  = this.point_with_bit(self.a.point_path, i, self.camper_point)
             return
@@ -573,6 +567,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:finalize ()
+    printf("camper finalize")
     action_base.finalize     (self)
     self.object:clear_callback   (game_object.movement)
 end
