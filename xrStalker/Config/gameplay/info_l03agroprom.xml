@@ -3,6 +3,7 @@
 <game_information_portions>
 
     <info_portion id="agroprom_military_case">
+		<task>agroprom_get_military_documents</task>
     </info_portion>
     <info_portion id="agroprom_military_case_have">
     </info_portion>
