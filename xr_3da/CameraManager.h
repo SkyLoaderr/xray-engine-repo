@@ -20,6 +20,7 @@ struct SPPInfo {
 		}
 		IC SColor& operator += (const SColor &ppi)				{
 			r += ppi.r; g += ppi.g; b += ppi.b; 
+			return *this;
 		}
 		IC void set		(float _r, float _g, float _b)			{
 			r=_r;g=_g;b=_b;
