@@ -2,7 +2,8 @@
 #include "..\irenderable.h"
 
 const	float	tweak_COP_initial_offs			= 100000.f	;
-const	float	tweak_ortho_xform_initial_offs	= 100.f		;	//. ?
+const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
+const	float	tweak_guaranteed_range			= 20.f		;	//. ?
 
 //////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
@@ -278,6 +279,7 @@ public:
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
 Fvector3		wform	(Fmatrix& m, Fvector3& v)
 {
 	Fvector4	r;
@@ -289,6 +291,65 @@ Fvector3		wform	(Fmatrix& m, Fvector3& v)
 	Fvector3	r3 = { r.x/r.w, r.y/r.w, r.z/r.w };
 	return		r3;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// OLES: naive 3D clipper - roubustness around 0, but works for this sample
+// note: normals points to 'outside'
+//////////////////////////////////////////////////////////////////////////
+const	float	_eps	= 0.000001f;
+struct	DumbClipper
+{
+	xr_vector<D3DXPLANE>	planes;
+	BOOL					clip	(D3DXVECTOR3& p0, D3DXVECTOR3& p1)		// returns TRUE if result meaningfull
+	{
+		float		denum;
+		D3DXVECTOR3	D;
+		for (int it=0; it<int(planes.size()); it++)
+		{
+			D3DXPLANE&	P		= planes			[it];
+			float		cls0	= D3DXPlaneDotCoord	(&P,&p0);
+			float		cls1	= D3DXPlaneDotCoord	(&P,&p1);
+			if (cls0>0 && cls1>0)	return			false;	// fully outside
+
+			if (cls0>0)	{
+				// clip p0
+				D			= p1-p0;
+				denum		= D3DXPlaneDotNormal(&P,&D);
+				if (denum!=0) p0 += - D * cls0 / denum;
+			}
+			if (cls1>0)	{
+				// clip p1
+				D			= p0-p1;
+				denum		= D3DXPlaneDotNormal(&P,&D);
+				if (denum!=0) p1 += - D * cls1 / denum;
+			}
+		}
+		return	true;
+	}
+	D3DXVECTOR3			point		(Fbox& bb, int i) const { return D3DXVECTOR3( (i&1)?bb.min.x:bb.max.x, (i&2)?bb.min.y:bb.max.y, (i&4)?bb.min.z:bb.max.z );  }
+	Fbox				clipped_AABB(xr_vector<Fbox>& src, Fmatrix& xf)
+	{
+		Fbox3		result;		result.invalidate		();
+		for (int it=0; it<int(src.size()); it++)		{
+			Fbox&	bb		= src	[it];
+			for (int c0=0; c0<8; c0++)
+			{
+				for (int c1=0; c1<8; c1++)
+				{
+					if (c0==c1)			continue;
+					D3DXVECTOR3		p0	= point(bb,c0);
+					D3DXVECTOR3		p1	= point(bb,c1);
+					if (!clip(p0,p1))	continue;
+					Fvector			x0	= wform			(xf,*((Fvector*)(&p0)));
+					Fvector			x1	= wform			(xf,*((Fvector*)(&p1)));
+					result.modify	(x0	);
+					result.modify	(x1	);
+				}
+			}
+		}
+		return			result;
+	}
+};
 
 template <class _Tp>
 inline const _Tp& min(const _Tp& __a, const _Tp& __b) {
@@ -644,10 +705,21 @@ void CRender::render_sun				()
 	// perform "refit" or "focusing" on relevant
 	if	(ps_r2_ls_flags.test(R2FLAG_SUN_FOCUS))
 	{
-		FPU::m64r			();
-		Fmatrix&	xform	= *((Fmatrix*)&m_LightViewProj);
+		FPU::m64r				();
+
+		// create clipper
+		DumbClipper	view_clipper;
+		Fmatrix&	xform		= *((Fmatrix*)&m_LightViewProj);
+		CFrustum	view_planes	; view_planes.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_ALL);
+		for		(u32 p=0; p<view_planes.p_count; p++)
+		{
+			Fplane&		P	= view_planes.planes	[p];
+			view_clipper.planes.push_back(D3DXPLANE(P.n.x,P.n.y,P.n.z,P.d));
+		}
+
+		// 
 		Fbox3		b_casters, b_receivers;
-		Fvector3	pt		;
+		Fvector3	pt			;
 
 		// casters
 		b_casters.invalidate	();
@@ -662,13 +734,26 @@ void CRender::render_sun				()
 
 		// receivers
 		b_receivers.invalidate	();
-		for		(u32 c=0; c<s_receivers.size(); c++)	{
-			for		(int e=0; e<8; e++)
-			{
-				s_receivers[c].getpoint	(e,pt);
-				pt				= wform	(xform,pt);
-				b_receivers.modify		(pt);
-			}
+		b_receivers		= view_clipper.clipped_AABB	(s_receivers,xform);
+		// calculate view-frustum bounds in world space
+		// note: D3D uses [0..1] range for Z
+		static Fvector3		corners [8]			= {
+			{ -1, -1,  0 },		{ -1, -1, +1},
+			{ -1, +1, +1 },		{ -1, +1,  0},
+			{ +1, +1, +1 },		{ +1, +1,  0},
+			{ +1, -1, +1},		{ +1, -1,  0}
+		};
+		Fmatrix	ex_project, ex_full, ex_full_inverse;
+		{
+			ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,tweak_guaranteed_range); 
+			ex_full.mul					(ex_project,Device.mView);
+			D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
+		}
+		for		(int e=0; e<8; e++)
+		{
+			pt				= wform	(ex_full_inverse,corners[e]);	// world space
+			pt				= wform	(xform,pt);						// trapezoid space
+			b_receivers.modify		(pt);
 		}
 
 		// some tweaking
@@ -685,10 +770,24 @@ void CRender::render_sun				()
 		if (b_casters.max.z>+1)		b_casters.max.z		=+1;
 
 		// refit?
+		/*
 		const float EPS				= 0.001f;
 		D3DXMATRIX					refit;
 		D3DXMatrixOrthoOffCenterLH	( &refit, b_receivers.min.x, b_receivers.max.x, b_receivers.min.y, b_receivers.max.y, b_casters.min.z-EPS, b_casters.max.z+EPS );
 		D3DXMatrixMultiply			( &m_LightViewProj, &m_LightViewProj, &refit);
+		*/
+
+		float boxWidth  = b_receivers.max.x - b_receivers.min.x;
+		float boxHeight = b_receivers.max.y - b_receivers.min.y;
+		//  the divide by two's cancel out in the translation, but included for clarity
+		float boxX		= (b_receivers.max.x+b_receivers.min.x) / 2.f;
+		float boxY		= (b_receivers.max.y+b_receivers.min.y) / 2.f;
+		D3DXMATRIX trapezoidUnitCube	( 2.f/boxWidth,			0.f,					0.f, 0.f,
+													0.f,		2.f/boxHeight,			0.f, 0.f,
+													0.f,		0.f,					1.f, 0.f,
+										-2.f*boxX/boxWidth,		-2.f*boxY/boxHeight,	0.f, 1.f );
+		D3DXMatrixMultiply			( &m_LightViewProj, &m_LightViewProj, &trapezoidUnitCube);
+		//D3DXMatrixMultiply( &trapezoid_space, &trapezoid_space, &trapezoidUnitCube );
 		FPU::m24r					();
 	}
 
