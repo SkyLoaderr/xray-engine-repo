@@ -1126,7 +1126,7 @@ void CCustomZone::SpawnArtefact()
 {
 	//вычислить согласно распределению вероятностей
 	//какой артефакт из списка ставить
-	float rnd = ::Random.randF(.0f,1.f);
+	float rnd = ::Random.randF(.0f,1.f-EPS_L);
 	float prob_threshold = 0.f;
 	
 	std::size_t i=0;
