@@ -255,20 +255,8 @@ void vfOptimizeGraph(u32 dwEdgeCount)
 	Progress(1.0f);
 }
 
-//void vfSaveEdges(LPCSTR name, u32 dwEdgeCount)
-//{
-//	FILE_NAME	fName;
-//	strconcat	(fName,name,"level.edges");
-//	
-//	CFS_Memory	tGraph;
-//	for (int i=0; i<(int)dwEdgeCount; i++)
-//		tGraph.Wfloat(tpaEdges[i].fPathDistance);
-//	tGraph.SaveTo(fName,0);
-//}
-//
 void xrBuildGraph(LPCSTR name)
 {
-	/**/
 	CThreadManager		tThreadManager;
 	CCriticalSection	tCriticalSection;
 
@@ -319,7 +307,6 @@ void xrBuildGraph(LPCSTR name)
 
 	Phase("Sorting edges");
 	Progress(0.0f);
-	//vfSaveEdges(name,dwEdgeCount);
 	vfQuickSortEdges(tpaEdges,dwaSortOrder,dwEdgeCount);
 	Progress(1.0f);
 
@@ -340,17 +327,4 @@ void xrBuildGraph(LPCSTR name)
 	Progress(1.0f);
 	
 	Msg("\nBuilding level %s successfully completed",name);
-
-//	FILE_NAME	fName;
-//	strconcat	(fName,name,"level.edges");
-//	CStream *tEdges = new CVirtualFileStream(fName);
-//	u32 dwEdgeCount = 195158;
-//	tpaEdges = (SGraphEdge *)xr_malloc(dwEdgeCount*sizeof(SGraphEdge));
-//	dwaSortOrder = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
-//	for (int i=0; i<(int)dwEdgeCount; i++) {
-//        tpaEdges[i].fPathDistance = tEdges->Rfloat();
-//		dwaSortOrder[i] = i;
-//		//Msg("%7d %7.2f",i,tpaEdges[i].fPathDistance);
-//	}
-//	vfQuickSortEdges(tpaEdges,dwaSortOrder,dwEdgeCount);
 }
