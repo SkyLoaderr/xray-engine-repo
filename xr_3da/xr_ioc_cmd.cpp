@@ -308,21 +308,22 @@ void CCC_Register()
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
 	CMD1(CCC_E_Signal,	"e_signal"				);
+
+	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,		rsWireframe);
+	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,		rsClearBB);
+	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);
+
+	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
+	CMD4(CCC_Float,		"rs_dt_range",			&rsDT_Range,		5,		50	);
 #endif
 
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
-	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,		rsWireframe);
 	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,		rsWarmHZB);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen);
-	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,		rsClearBB);
-	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);
-	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,		rsRefresh60hz);
-
+	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
 	CMD4(CCC_Float,		"rs_vis_distance",		&psVisDistance,		0.1f,	1.0f);
-
-	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
@@ -330,7 +331,6 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
-	CMD4(CCC_Float,		"rs_dt_range",			&rsDT_Range,		5,		50	);
 	
 	// Texture manager	
 	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,				0,	4	);
