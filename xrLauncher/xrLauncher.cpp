@@ -5,8 +5,8 @@
 #include "xrLauncher_main_frm.h"
 
 
-
-int RunXRLauncher(int initial_state)
+ 
+int __cdecl RunXRLauncher(int initial_state)
 {
 
 //	xrLauncher::xrLauncherControl* frm = new xrLauncher::xrLauncherControl();

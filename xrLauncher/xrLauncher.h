@@ -6,7 +6,7 @@
 #define XRLAUNCHER_API __declspec(dllimport)
 #endif
 
-extern "C" __declspec(dllexport) int RunXRLauncher();
+extern "C" __declspec(dllexport) int __cdecl RunXRLauncher(int);
 
 struct SmodInfo{
 	ref_str		m_mod_name;

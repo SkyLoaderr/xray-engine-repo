@@ -123,6 +123,7 @@ namespace xrLauncher
 			this->button1->Size = System::Drawing::Size(88, 24);
 			this->button1->TabIndex = 14;
 			this->button1->Text = S"Ok";
+			this->button1->Click += new System::EventHandler(this, button1_Click);
 			// 
 			// label1
 			// 
@@ -163,11 +164,24 @@ namespace xrLauncher
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_about_dlg";
+			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = S"xrLauncher_about_dlg";
+			this->KeyDown += new System::Windows::Forms::KeyEventHandler(this, xrLauncher_about_dlg_KeyDown);
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}		
-	};
+	private: System::Void xrLauncher_about_dlg_KeyDown(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
+			 {
+				if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
+					button1_Click(0,0);
+			 }
+
+private: System::Void button1_Click(System::Object *  sender, System::EventArgs *  e)
+		 {
+			 Close();
+		 }
+
+};
 }

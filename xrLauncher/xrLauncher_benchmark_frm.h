@@ -173,6 +173,7 @@ namespace xrLauncher
 			this->cancelBtn->Size = System::Drawing::Size(104, 26);
 			this->cancelBtn->TabIndex = 6;
 			this->cancelBtn->Text = S"Cancel";
+			this->cancelBtn->Click += new System::EventHandler(this, cancelBtn_Click);
 			// 
 			// xrLauncher_benchmark_frm
 			// 
@@ -183,16 +184,28 @@ namespace xrLauncher
 			this->Controls->Add(this->nosoundCheckBox);
 			this->Controls->Add(this->qualityComboBox);
 			this->Controls->Add(this->panel1);
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_benchmark_frm";
 			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = S"xrLauncher_benchmark_frm";
+			this->KeyDown += new System::Windows::Forms::KeyEventHandler(this, xrLauncher_benchmark_frm_KeyDown);
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}		
 	private: System::Void runBenchmarkBtn_Click(System::Object *  sender, System::EventArgs *  e);
+
+private: System::Void cancelBtn_Click(System::Object *  sender, System::EventArgs *  e)
+		 {
+			 _Close(0);
+		 }
+
+private: System::Void xrLauncher_benchmark_frm_KeyDown(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
+		 {
+			 if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
+				cancelBtn_Click(0,0);
+		 }
 
 };
 }

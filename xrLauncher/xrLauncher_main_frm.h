@@ -212,6 +212,7 @@ namespace xrLauncher
 			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = S"xrLauncher_main_frm";
+			this->KeyDown += new System::Windows::Forms::KeyEventHandler(this, xrLauncher_main_frm_KeyDown);
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
@@ -283,6 +284,12 @@ private: System::Void btn_key_up(System::Object *  sender, System::Windows::Form
 private: System::Void aboutBtn_Click(System::Object *  sender, System::EventArgs *  e);
 
 private: System::Void benchmarkBtn_Click(System::Object *  sender, System::EventArgs *  e);
+
+private: System::Void xrLauncher_main_frm_KeyDown(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
+		 {
+			 if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
+				_Close(0);
+		 }
 
 };
 }

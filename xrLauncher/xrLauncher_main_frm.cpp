@@ -140,10 +140,9 @@ System::Void xrLauncher_main_frm::benchmarkBtn_Click(System::Object *  sender, S
 	if(!m_benchmark_dlg)
 		m_benchmark_dlg = new xrLauncher_benchmark_frm();
 
-/*	m_benchmark_dlg->Init();
-	m_benchmark_dlg->ShowDialog();
-*/
-	m_benchmark_dlg->_Show(0);
+	int res = m_benchmark_dlg->_Show(0);
+	if (1==res)//run benchmark???
+		_Close(1);
 	
 }
 
