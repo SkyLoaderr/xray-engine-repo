@@ -289,12 +289,22 @@ bool CPortalUtils::Validate(bool bMsg){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedFaces();
         int f_cnt=sector_def->GetSectorFacesCount();
-        delete sector_def;
 		if (f_cnt!=0){	if (bMsg) Log->DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
         }else{
 			if (bMsg) Log->DlgMsg(mtInformation,"Validation OK!");
             bResult = true;
         }
+        if (f_cnt&&Log->DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
+        	const Fvector* PT[3];
+	        for (SItemIt it=sector_def->sector_items.begin(); it!=sector_def->sector_items.end(); it++){
+            	Log->Msg(mtError,"Object: %s", it->object->GetName());
+                for (DWORDIt dw_it=it->Face_IDs.begin(); dw_it!=it->Face_IDs.end(); dw_it++){
+					it->mesh->GetFacePT(*dw_it, PT);
+	            	Log->Msg(mtError," PT: [%3.2f, %3.2f, %3.2f]", PT[0]->x, PT[0]->y, PT[0]->z);
+                }
+            }
+        }
+        _DELETE(sector_def);
 
         // verify sectors
         ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);

@@ -93,6 +93,7 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
         cbAnimEnabled->Checked			= m_PS->m_dwFlag&PS_FRAME_ENABLED;
         cbAnimAnimate->Checked			= m_PS->m_dwFlag&PS_FRAME_ANIMATE;
         cbAnimRandomInitialFrame->Checked=m_PS->m_dwFlag&PS_FRAME_RND_INIT;
+        cbAnimRandomPlaybackDir->Checked= m_PS->m_dwFlag&PS_FRAME_RND_PLAYBACK_DIR;
         seAnimFrameCount->ObjFirstInit	(m_PS->m_Animation.m_iFrameCount);
         seAnimSpeed->ObjFirstInit		(m_PS->m_Animation.m_fSpeed);
         seAnimSpeedVar->ObjFirstInit	(m_PS->m_Animation.m_fSpeedVar);
@@ -184,6 +185,7 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
         m_PS->m_dwFlag					|= (cbAnimEnabled->Checked?PS_FRAME_ENABLED:0);
         m_PS->m_dwFlag					|= (cbAnimAnimate->Checked?PS_FRAME_ANIMATE:0);
         m_PS->m_dwFlag					|= (cbAnimRandomInitialFrame->Checked?PS_FRAME_RND_INIT:0);
+        m_PS->m_dwFlag					|= (cbAnimRandomPlaybackDir->Checked?PS_FRAME_RND_PLAYBACK_DIR:0);
 
 		TfrmEditParticles::Modified();
 

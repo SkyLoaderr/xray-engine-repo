@@ -366,7 +366,7 @@ void SceneBuilder::BuildOccluder(b_occluder* b, COccluder* e){
     R_ASSERT(b->vert_count<=MAX_OCCLUDER_POINTS);
     R_ASSERT(b->vert_count>=MIN_OCCLUDER_POINTS);
     CopyMemory(b->vertices,e->Get3DPoints().begin(),sizeof(Fvector)*b->vert_count);
-    b->sector=CalculateSector(e->m_vCenter,e->m_vPlaneSize.magnitude());
+    b->sector=m_iDefaultSectorNum;//CalculateSector(e->m_vCenter,e->m_vPlaneSize.magnitude());
 }
 //------------------------------------------------------------------------------
 

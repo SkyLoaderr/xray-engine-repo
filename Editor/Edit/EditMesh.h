@@ -164,6 +164,7 @@ public:
 	void            GetBox					(Fbox& box){box.set(m_Box);}
 	st_Surface*		GetSurfaceByFaceID		(int fid);
 	st_Surface*		GetFaceTC				(int fid, const Fvector2* tc[3]);
+	st_Surface*		GetFacePT				(int fid, const Fvector* pt[3]);
 	IC BOOL 		Visible					(){return m_Visible; }
 	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
 

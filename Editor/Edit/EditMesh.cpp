@@ -216,6 +216,16 @@ st_Surface* CEditMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
     return surf;
 }
 
+st_Surface* CEditMesh::GetFacePT(int fid, const Fvector* pt[3]){
+    st_Surface* surf = GetSurfaceByFaceID(fid);
+    VERIFY(surf);
+
+	st_Face& F = m_Faces[fid];
+    for (int k=0; k<3; k++)
+    	pt[k] = &m_Points[F.pv[k].pindex];
+    return surf;
+}
+
 int CEditMesh::GetFaceCount(bool bMatch2Sided){
 	int f_cnt = 0;
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){

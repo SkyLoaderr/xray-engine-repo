@@ -149,6 +149,8 @@ __published:	// IDE-managed Components
 	TMultiObjCheck *cbAnimAnimate;
 	TRxLabel *RxLabel43;
 	TMultiObjCheck *cbAnimRandomInitialFrame;
+	TRxLabel *RxLabel44;
+	TMultiObjCheck *cbAnimRandomPlaybackDir;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormShow(TObject *Sender);
