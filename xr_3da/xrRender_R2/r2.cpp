@@ -131,7 +131,7 @@ void CRender::OnDeviceCreate	()
 	REQ_CREATE					();
 	Target.OnDeviceCreate		();
 
-	PSystems.xrStartUp			();
+	PSystems.OnCreate			();
 	PSystems.OnDeviceCreate		();
 	level_Load					();
 
@@ -142,7 +142,7 @@ void CRender::OnDeviceDestroy	()
 {
 	level_Unload				();
 	PSystems.OnDeviceDestroy	();
-	PSystems.xrShutDown			();
+	PSystems.OnDestroy			();
 
 	Target.OnDeviceDestroy		();
 }
