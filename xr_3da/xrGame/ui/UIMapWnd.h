@@ -35,6 +35,7 @@ public:
 	Irect			ConvertRealToLocal  (const Fvector2& src);// meters->pixels (relatively own left-top pos)
 	void			FitToWidth			(u32 width);
 	void			FitToHeight			(u32 height);
+	const Frect&    BoundRect			()const					{return m_BoundRect;};
 };
 
 

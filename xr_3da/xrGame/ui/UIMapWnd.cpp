@@ -62,6 +62,12 @@ void CUICustomMap::FitToWidth	(u32 width)
 
 void CUICustomMap::FitToHeight	(u32 height)
 {
+	float kH = m_BoundRect.height()/m_BoundRect.width();
+	int h = height;
+	int w = iFloor(kH*height);
+	SetWndRect(0,0,w,h);
+	
+	m_zoom_factor = m_BoundRect.height()/h;
 }
 
 
@@ -257,7 +263,8 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			l->Init(it->first, gameLtx);
-			l->FitToWidth( m_UILevelFrame.GetWidth() );
+			if( l->BoundRect().width() > l->BoundRect().height() )	l->FitToHeight( m_UILevelFrame.GetHeight()	);
+			else													l->FitToWidth(	m_UILevelFrame.GetWidth()	);
 		}
 	}
 }
@@ -304,7 +311,6 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	inherited::OnMouse(x,y,mouse_action);
 
-		
 	if(m_activeLevelMap && m_UILevelFrame.GetAbsoluteRect().in( GetUICursor()->GetPos() ) ){
 		switch (mouse_action){
 			case WINDOW_MOUSE_MOVE:
