@@ -834,12 +834,13 @@ void	CActor::ResetCallbacks()
 
 void	CActor::OnChangeVisual()
 {
+	m_pPhysics_support->in_ChangeVisual();
+	//-------------------------------------------------------------------------------
 	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
 	VERIFY				(V);
 	SetCallbacks		();
 	m_anims->Create			(V);
 	m_vehicle_anims->Create			(V);
-//	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
 	CDamageManager::reload(*cNameSect(),pSettings);
 	//-------------------------------------------------------------------------------
 	m_head				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head");
@@ -848,8 +849,6 @@ void	CActor::OnChangeVisual()
 	m_r_finger2			= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(*cNameSect(),"weapon_bone2"));
 	//-------------------------------------------------------------------------------
 	reattach_items();
-	//-------------------------------------------------------------------------------
-	m_pPhysics_support->in_ChangeVisual();
 	//-------------------------------------------------------------------------------
 	m_current_head = 0;
 	m_current_legs = 0;
