@@ -75,11 +75,11 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     tvOptions->Items->AddChild(root,"Level options");
     tvOptions->Items->AddChild(root,"Level environment");
     tvOptions->Items->AddChild(root,"Level script");
-	edLevelName->Text		= Scene->m_LevelOp.m_LevelName;
-	edLevelPath->Text		= Scene->m_LevelOp.m_FNLevelPath;
-	seCurEnv->Value			= Scene->m_LevelOp.m_CurEnv;
-	mmText->Text			= Scene->m_LevelOp.m_BOPText;
-	edSkydomeObjectName->Text = Scene->m_LevelOp.m_SkydomeObjName;
+	edLevelName->Text		= Scene.m_LevelOp.m_LevelName;
+	edLevelPath->Text		= Scene.m_LevelOp.m_FNLevelPath;
+	seCurEnv->Value			= Scene.m_LevelOp.m_CurEnv;
+	mmText->Text			= Scene.m_LevelOp.m_BOPText;
+	edSkydomeObjectName->Text = Scene.m_LevelOp.m_SkydomeObjName;
 
     tsLevelScript->Enabled = true;
     tsLevelOptions->Enabled = true;
@@ -225,14 +225,14 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-	Scene->m_LevelOp.m_LevelName 	= edLevelName->Text;  	// Level Name
-	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
-	Scene->m_LevelOp.m_BOPText		= mmText->Text;			// Text
-	Scene->m_LevelOp.m_CurEnv		= seCurEnv->Value;
+	Scene.m_LevelOp.m_LevelName 	= edLevelName->Text;  	// Level Name
+	Scene.m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
+	Scene.m_LevelOp.m_BOPText		= mmText->Text;			// Text
+	Scene.m_LevelOp.m_CurEnv		= seCurEnv->Value;
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++)
     	(*f_it)->UpdateEnvData();
-	Scene->m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
-    Scene->UpdateSkydome();
+	Scene.m_LevelOp.m_SkydomeObjName = edSkydomeObjectName->Text;
+    Scene.UpdateSkydome();
 #endif
     SetSceneParams();
     Close();
@@ -298,7 +298,7 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,SKYDOME_FOLDER,0);
 	if (!N) return;
 
-	CEditableObject* O = Lib->GetEditObject(N);
+	CEditableObject* O = Lib.GetEditObject(N);
 	if (!O){
     	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return;
@@ -325,7 +325,7 @@ void __fastcall TfrmSceneProperties::EnvsUpdate(){
 	// delete all created forms
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) _DELETE(*f_it);
 	// create forms
-	m_frmEnvs.resize(Scene->m_LevelOp.m_Envs.size());
+	m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++){
 	    *f_it = new TfrmOneEnvironment(sbEnvs);
         (*f_it)->Parent = sbEnvs;
@@ -333,9 +333,9 @@ void __fastcall TfrmSceneProperties::EnvsUpdate(){
         (*f_it)->gbEnv->Caption = temp;
         (*f_it)->HideEnv();
     }
-    seCurEnv->Value = Scene->m_LevelOp.m_CurEnv;
+    seCurEnv->Value = Scene.m_LevelOp.m_CurEnv;
 
-    EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
+    EnvIt e_it=Scene.m_LevelOp.m_Envs.begin();
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
 
@@ -363,7 +363,7 @@ void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
 	// delete all created forms
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++) _DELETE(*f_it);
 	// create forms
-	m_frmEnvs.resize(Scene->m_LevelOp.m_Envs.size());
+	m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++){
 	    *f_it = new TfrmOneEnvironment(sbEnvs);
         (*f_it)->Parent = sbEnvs;
@@ -371,10 +371,10 @@ void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
         (*f_it)->gbEnv->Caption = temp;
         (*f_it)->HideEnv();
     }
-    seEnvCount->Value = Scene->m_LevelOp.m_Envs.size();
-    seCurEnv->Value = Scene->m_LevelOp.m_CurEnv;
+    seEnvCount->Value = Scene.m_LevelOp.m_Envs.size();
+    seCurEnv->Value = Scene.m_LevelOp.m_CurEnv;
 
-    EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
+    EnvIt e_it=Scene.m_LevelOp.m_Envs.begin();
     for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
 	bUpdateMode = false;
@@ -388,25 +388,25 @@ void __fastcall TfrmSceneProperties::seEnvCountChange(TObject *Sender)
     seCurEnv->MaxValue = seEnvCount->Value-1;
 
 	if (bUpdateMode) return;
-	Scene->m_LevelOp.m_Envs.resize(seEnvCount->Value);
+	Scene.m_LevelOp.m_Envs.resize(seEnvCount->Value);
     if (seCurEnv->Value>seCurEnv->MaxValue) seCurEnv->Value=seCurEnv->MaxValue;
 
-    if (m_frmEnvs.size()==Scene->m_LevelOp.m_Envs.size()) return;
+    if (m_frmEnvs.size()==Scene.m_LevelOp.m_Envs.size()) return;
 
-    if (m_frmEnvs.size()>Scene->m_LevelOp.m_Envs.size()){
+    if (m_frmEnvs.size()>Scene.m_LevelOp.m_Envs.size()){
     	// delete unused
         _DELETE(m_frmEnvs.back());
-        m_frmEnvs.resize(Scene->m_LevelOp.m_Envs.size());
+        m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
     }else{
     	// create new form
-		m_frmEnvs.resize(Scene->m_LevelOp.m_Envs.size());
+		m_frmEnvs.resize(Scene.m_LevelOp.m_Envs.size());
         m_frmEnvs.back() = new TfrmOneEnvironment(sbEnvs);;
         m_frmEnvs.back()->Parent = sbEnvs;
         AnsiString temp; temp.sprintf("Env #%d", m_frmEnvs.size()-1);
         m_frmEnvs.back()->gbEnv->Caption = temp;
         m_frmEnvs.back()->HideEnv();
     }
-    EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
+    EnvIt e_it=Scene.m_LevelOp.m_Envs.begin();
     for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
 #endif

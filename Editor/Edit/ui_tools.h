@@ -61,10 +61,11 @@ class TUI_Tools{
     void __fastcall SetTarget   	(int tgt,bool bForced=false);
 
 public:
-                    TUI_Tools		(TPanel* p);
+                    TUI_Tools		();
     virtual         ~TUI_Tools		();
 
-    void            Clear       	();
+    void 			OnCreate		();
+    void            OnDestroy      	();
     void            Reset       	();
 
     IC int          GetTarget   	(){return target;}
@@ -93,7 +94,9 @@ public:
     bool __fastcall KeyDown     	(WORD Key, TShiftState Shift);
     bool __fastcall KeyUp       	(WORD Key, TShiftState Shift);
     bool __fastcall KeyPress    	(WORD Key, TShiftState Shift);
+    EObjClass 		CurrentClassID();
 };
+extern TUI_Tools Tools;
 extern void ResetActionToSelect();
 extern TShiftState ssRBOnly;
 extern void _fastcall PanelMinimizeClick(TObject *Sender);

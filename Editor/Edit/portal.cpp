@@ -393,11 +393,11 @@ bool CPortal::Load(CStream& F){
 
 	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_FRONT)){
         F.RstringZ	(buf);
-        m_SectorFront=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
+        m_SectorFront=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_BACK)){
         F.RstringZ	(buf);
-		m_SectorBack=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
+		m_SectorBack=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 
     if (!m_SectorBack||!m_SectorFront){

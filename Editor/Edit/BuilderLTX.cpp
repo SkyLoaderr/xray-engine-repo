@@ -44,7 +44,7 @@ void AppendDataToSection(CInifile* pIni, AnsiString& section, char* value){
 
 bool SceneBuilder::BuildLTX(){
 	bool bResult=true;
-	int objcount = Scene->ObjCount();
+	int objcount = Scene.ObjCount();
 	if( objcount <= 0 ) return true;
 
 	char ltx_filename[MAX_PATH];
@@ -56,13 +56,13 @@ bool SceneBuilder::BuildLTX(){
 
 	// -- defaults --
     CFS_Memory F;
-	if( !Scene->m_LevelOp.m_BOPText.IsEmpty() )
-		F.WstringZ( Scene->m_LevelOp.m_BOPText.c_str() );
+	if( !Scene.m_LevelOp.m_BOPText.IsEmpty() )
+		F.WstringZ( Scene.m_LevelOp.m_BOPText.c_str() );
 	F.SaveTo(ltx_filename,0);
 
     CInifile* pIni = new CInifile(ltx_filename,false);
 
-	Scene->WriteToLTX(pIni);
+	Scene.WriteToLTX(pIni);
 
     // required strings
     pIni->WriteString("static_sounds",		"; sounds","");
@@ -70,8 +70,8 @@ bool SceneBuilder::BuildLTX(){
     pIni->WriteString("mobileobjects",		"; mobile objects","");
 
 	// -- mobile objects --
-    ObjectIt i = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt i = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;i!=_E;i++){
         CSceneObject *obj = (CSceneObject*)(*i);
         if( obj->IsDynamic() ){
@@ -87,8 +87,8 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add event --
-	i   = Scene->FirstObj(OBJCLASS_EVENT);
-    _E  = Scene->LastObj(OBJCLASS_EVENT);
+	i   = Scene.FirstObj(OBJCLASS_EVENT);
+    _E  = Scene.LastObj(OBJCLASS_EVENT);
     for(;i!=_E;i++){
         CEvent *obj = (CEvent*)(*i);
         if( obj->eEventType==CEvent::eetBox ){
@@ -107,9 +107,9 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add static sounds --
-	if (Scene->ObjCount(OBJCLASS_SOUND)) {
-		i = Scene->FirstObj(OBJCLASS_SOUND);
-        _E  = Scene->LastObj(OBJCLASS_SOUND);
+	if (Scene.ObjCount(OBJCLASS_SOUND)) {
+		i = Scene.FirstObj(OBJCLASS_SOUND);
+        _E  = Scene.LastObj(OBJCLASS_SOUND);
         for(;i!=_E;i++){
             CSound *s = (CSound *)(*i);
             if (strlen(s->m_fName)==0){
@@ -122,10 +122,10 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add flares --
-	if (Scene->ObjCount(OBJCLASS_LIGHT)) {
+	if (Scene.ObjCount(OBJCLASS_LIGHT)) {
         AnsiString suns;
-		i = Scene->FirstObj(OBJCLASS_LIGHT);
-        _E  = Scene->LastObj(OBJCLASS_LIGHT);
+		i = Scene.FirstObj(OBJCLASS_LIGHT);
+        _E  = Scene.LastObj(OBJCLASS_LIGHT);
         for(;i!=_E;i++){
             CLight *l = (CLight *)(*i);
             if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
@@ -144,9 +144,9 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add respawn point --
-	if (Scene->ObjCount(OBJCLASS_RPOINT)) {
-		i = Scene->FirstObj(OBJCLASS_RPOINT);
-        _E  = Scene->LastObj(OBJCLASS_RPOINT);
+	if (Scene.ObjCount(OBJCLASS_RPOINT)) {
+		i = Scene.FirstObj(OBJCLASS_RPOINT);
+        _E  = Scene.LastObj(OBJCLASS_RPOINT);
         AnsiString temp;
         for(;i!=_E;i++){
             CRPoint *rpt = (CRPoint *)(*i);
@@ -156,9 +156,9 @@ bool SceneBuilder::BuildLTX(){
 	}
 
 	// -- add ai-traffic --
-	if (Scene->ObjCount(OBJCLASS_AITPOINT)) {
-		i = Scene->FirstObj(OBJCLASS_AITPOINT);
-        _E  = Scene->LastObj(OBJCLASS_AITPOINT);
+	if (Scene.ObjCount(OBJCLASS_AITPOINT)) {
+		i = Scene.FirstObj(OBJCLASS_AITPOINT);
+        _E  = Scene.LastObj(OBJCLASS_AITPOINT);
         AnsiString temp;
         for(;i!=_E;i++){
         	CAITPoint* P = (CAITPoint*)(*i);

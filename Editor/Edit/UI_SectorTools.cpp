@@ -55,7 +55,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -63,7 +63,7 @@ void TUI_ControlSectorAdd::DelMesh(){
     m_Action = saDelMesh;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -111,7 +111,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
             CFrustum frustum;
             ObjectList lst;
             if (UI.SelectionFrustum(frustum)){;
-                Scene->FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
+                Scene.FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                     O_ref = (CSceneObject*)(*_F);
                     O_lib = O_ref->GetRef();
@@ -130,7 +130,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
         case saMeshBoxSelection:
         	sector->SectorChanged(fraSector->ebAutoUpdateConvex->Down);
             fraSector->OnSectorUpdate();
-			Scene->UndoSave();
+			Scene.UndoSave();
         break;
         }
     }

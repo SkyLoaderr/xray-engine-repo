@@ -39,13 +39,13 @@ bool SceneBuilder::Execute( ){
 	UI.Command(COMMAND_SAVE);
 
     // check debug
-	if ((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0))
+	if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0))
     	if (ELog.DlgMsg(mtConfirmation,"Can't find sector and portal in scene. Create default?")==mrYes)
         	PortalUtils.CreateDebugCollection();
 
 
     // validate scene
-    if (!Scene->Validate()){
+    if (!Scene.Validate()){
     	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
 		UI.Command(COMMAND_RELOAD);
         return false;
@@ -75,7 +75,7 @@ bool SceneBuilder::MakeLTX( ){
 	UI.Command(COMMAND_SAVE);
 
     // validate scene
-    if (!Scene->Validate(false,false)){
+    if (!Scene.Validate(false,false)){
     	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
 		UI.Command(COMMAND_RELOAD);
         return false;
@@ -108,7 +108,7 @@ bool SceneBuilder::MakeDetails(bool bOkMessage){
         AnsiString fn="level.details";
         m_LevelPath.Update(fn);
         // save details
-		Scene->m_DetailObjects->Export(fn.c_str());
+		Scene.m_DetailObjects->Export(fn.c_str());
     }while(0);
 	if( error_flag )  	ELog.DlgMsg(mtError,error_text.c_str());
     else				if (bOkMessage) ELog.DlgMsg(mtInformation,"Details succesfully exported.");
@@ -118,8 +118,6 @@ bool SceneBuilder::MakeDetails(bool bOkMessage){
 
 //----------------------------
 DWORD SceneBuilder::Thread(){
-	VERIFY( Scene );
-
 	bool error_flag = false;
 	AnsiString error_text;
 	do{
@@ -217,8 +215,6 @@ DWORD SceneBuilder::Thread(){
 
 //----------------------------
 DWORD SceneBuilder::ThreadMakeLTX(){
-	VERIFY( Scene );
-
 	bool error_flag = false;
 	AnsiString error_text;
 	do{

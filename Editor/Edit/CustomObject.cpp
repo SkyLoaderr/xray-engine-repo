@@ -22,7 +22,7 @@ void CCustomObject::Select( BOOL flag ){
     if (m_Visible&&(m_Selected!=flag)){
         m_Selected = flag;
         UI.RedrawScene();
-//		Scene->UndoSave();
+//		Scene.UndoSave();
     }
 };
 

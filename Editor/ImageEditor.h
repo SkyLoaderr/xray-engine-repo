@@ -71,9 +71,6 @@ private:	// User declarations
     TfrmProperties* ImageProps;
 public:		// User declarations
     __fastcall TfrmImageLib(TComponent* Owner);
-
-    static void __fastcall OnRender(){;}
-    static void __fastcall OnIdle(){;}
 // static function
     static void __fastcall CheckImageLib();
     static void __fastcall EditImageLib(AnsiString& title, bool bCheck=false);

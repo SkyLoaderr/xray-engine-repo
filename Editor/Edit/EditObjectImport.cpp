@@ -55,7 +55,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     AnsiString shader_name;
                     if (Isf->nshaders&&(stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
     //                	XRShader* sh_info = (XRShader*)Isf->shader->data;
-    //	                Osf->shader = SHLib->FindShader(sh_info->sh_name);
+    //	                Osf->shader = SHLib.FindShader(sh_info->sh_name);
                         shader_name = (char*)Isf->shader->data;
                     }
                     if (!Device.Shader._FindBlender(shader_name.c_str())){

@@ -26,17 +26,33 @@
 #define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
 #define ATTACH_FRAME(a,b) if (a){ (a)->Parent = (b);}
 
+TUI_Tools Tools;
+
 TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
-TUI_Tools::TUI_Tools(TPanel* p)
+TUI_Tools::TUI_Tools()
 {
-    UI.m_Tools      = this;
+}
+//---------------------------------------------------------------------------
+TUI_Tools::~TUI_Tools()
+{
+    for (DWORD i=0; i<etMaxTarget; i++) _DELETE(m_pTools[i]);
+}
+//---------------------------------------------------------------------------
+
+TFrame*	TUI_Tools::GetFrame(){
+	if (pCurTools) return pCurTools->pFrame;
+    return 0;
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::OnCreate(){
     target          = -1;
     action          = -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
     pCurTools       = 0;
     ssRBOnly << ssRight;
-    paParent = p;   VERIFY(p);
+    paParent = fraLeftBar->paFrames;   VERIFY(paParent);
     bNeedChangeAction=false;
     bNeedChangeTarget=false;
 // create tools
@@ -56,19 +72,8 @@ TUI_Tools::TUI_Tools(TPanel* p)
     for (DWORD i=0; i<etMaxTarget; i++) VERIFY2(m_pTools[i], "Can't find specify tools.");
 }
 //---------------------------------------------------------------------------
-TUI_Tools::~TUI_Tools()
-{
-    for (DWORD i=0; i<etMaxTarget; i++) _DELETE(m_pTools[i]);
-}
-//---------------------------------------------------------------------------
 
-TFrame*	TUI_Tools::GetFrame(){
-	if (pCurTools) return pCurTools->pFrame;
-    return 0;
-}
-//---------------------------------------------------------------------------
-
-void TUI_Tools::Clear(){
+void TUI_Tools::OnDestroy(){
     pCurTools->OnDeactivate();
 }
 //---------------------------------------------------------------------------
@@ -243,6 +248,11 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
         pa->Tag    = 0;
     }
     UI.Command(COMMAND_UPDATE_TOOLBAR);
+}
+//---------------------------------------------------------------------------
+
+EObjClass TUI_Tools::CurrentClassID(){
+	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:GetTargetClassID();
 }
 //---------------------------------------------------------------------------
 

@@ -8,8 +8,21 @@
 #include "xrParticlesLib.h"
 #include "ChoseForm.h"
 
-CPSLibrary* PSLib;
+CPSLibrary PSLib;
 //----------------------------------------------------
+void CPSLibrary::OnCreate(){
+	AnsiString fn;
+    fn = PSLIB_FILENAME;
+    FS.m_GameRoot.Update(fn);
+	if (FS.Exist(fn.c_str(),true)){
+    	if (!Load(fn.c_str())) ELog.DlgMsg(mtInformation,"PS Library: Unsupported version.");
+    }
+}
+
+void CPSLibrary::OnDestroy(){
+    m_PSs.clear();
+}
+
 PS::SDef* CPSLibrary::FindPS(const char* name){
 	return psLibrary_Find(name,m_PSs);
 }
@@ -33,19 +46,6 @@ void CPSLibrary::DeletePS(const char* nm){
 
 void CPSLibrary::Sort(){
 	psLibrary_Sort(m_PSs);
-}
-
-void CPSLibrary::Init(){
-	AnsiString fn;
-    fn = PSLIB_FILENAME;
-    FS.m_GameRoot.Update(fn);
-	if (FS.Exist(fn.c_str(),true)){
-    	if (!Load(fn.c_str())) ELog.DlgMsg(mtInformation,"PS Library: Unsupported version.");
-    }
-}
-
-void CPSLibrary::Clear(){
-    m_PSs.clear();
 }
 
 char* CPSLibrary::GenerateName(char* buffer, const char* pref){
@@ -78,7 +78,7 @@ int CPSLibrary::Merge(const char* nm){
 	int cnt = 0;
     CPSLibrary L0;
     CPSLibrary L1;
-    L0.Init();
+    L0.OnCreate();
     L1.Load(nm);
     for (PSIt l0_it=L0.FirstPS(); l0_it!=L0.LastPS(); l0_it++){
         PS::SDef* l1 = L1.FindPS(l0_it->m_Name);
@@ -99,8 +99,8 @@ int CPSLibrary::Merge(const char* nm){
 }
 //----------------------------------------------------
 void CPSLibrary::Reload(){
-	Clear();
-    Init();
+	OnDestroy();
+    OnCreate();
 	ELog.Msg( mtInformation, "PS Library was succesfully reloaded." );
 }
 //----------------------------------------------------

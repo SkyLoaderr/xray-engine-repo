@@ -34,11 +34,11 @@ void __fastcall TfraOccluder::TopClick(TObject *Sender)
 void __fastcall TfraOccluder::ebOptimizeClick(TObject *Sender)
 {
 	ObjectList lst;
-    if (Scene->GetQueryObjects(lst,OBJCLASS_OCCLUDER)){
+    if (Scene.GetQueryObjects(lst,OBJCLASS_OCCLUDER)){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
         	((COccluder*)*it)->Optimize();
     }
-    Scene->UndoSave();
+    Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 

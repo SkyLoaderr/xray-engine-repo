@@ -65,7 +65,7 @@ void CGlow::Render(int priority, bool strictB2F){
 		Device.SetTransform(D3DTS_WORLD,precalc_identity);
         if (Device.m_Frustum.testSphere(m_Position,m_Range)){
         	// рендерим Glow
-//        	if (!Scene->RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
+//        	if (!Scene.RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
                 m_RenderSprite.Render(m_Position,m_Range);

@@ -16,8 +16,8 @@
 //----------------------------------------------------
 bool SceneBuilder::PreparePath(){
     char temp[1024];
-    strcpy(temp, Scene->m_LevelOp.m_FNLevelPath.c_str());
-    if(!ExtractFileDrive(Scene->m_LevelOp.m_FNLevelPath).Length())FS.m_GameLevels.Update(temp);
+    strcpy(temp, Scene.m_LevelOp.m_FNLevelPath.c_str());
+    if(!ExtractFileDrive(Scene.m_LevelOp.m_FNLevelPath).Length())FS.m_GameLevels.Update(temp);
    	m_LevelPath.Init( temp, "\\", "", "");
     return true;
 }
@@ -57,13 +57,13 @@ bool SceneBuilder::PrepareFolders(){
 }
 
 bool SceneBuilder::LightenObjects(){
-	int objcount = Scene->ObjCount(OBJCLASS_SCENEOBJECT);
+	int objcount = Scene.ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;
 
 	UI.ProgressStart(objcount, "Lighten objects...");
     // unload cform, point normals, render buffers
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
     	CEditableObject* O = ((CSceneObject*)(*_F))->GetRef();
         if (UI.NeedAbort()) break; // break building
@@ -78,12 +78,12 @@ bool SceneBuilder::LightenObjects(){
 }
 
 bool SceneBuilder::UngroupAndUnlockObjects(){
-	int objcount = Scene->ObjCount();
+	int objcount = Scene.ObjCount();
 	if( objcount <= 0 ) return true;
 
 	UI.ProgressStart(objcount, "Ungroup and unlock objects...");
 
-    for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (UI.NeedAbort()) break; // break building
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
@@ -99,19 +99,19 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
 }
 
 bool SceneBuilder::GetShift(){
-	if (!Scene->GetBox(m_LevelBox,OBJCLASS_SCENEOBJECT)) return true;
+	if (!Scene.GetBox(m_LevelBox,OBJCLASS_SCENEOBJECT)) return true;
     m_LevelBox.getcenter(m_LevelShift); m_LevelShift.mul(-1.f);
 	m_LevelBox.offset(m_LevelShift);
 	return true;
 }
 
 bool SceneBuilder::ShiftLevel(){
-	int objcount = Scene->ObjCount();
+	int objcount = Scene.ObjCount();
 	if( objcount <= 0 ) return true;
 
 	UI.ProgressStart(objcount, "Shift level...");
 /*
-    for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (NeedAbort()) break; // break building
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
@@ -121,7 +121,7 @@ bool SceneBuilder::ShiftLevel(){
         }
 	}
 
-    Scene->m_DetailPatches->MoveDPatches( m_LevelShift );
+    Scene.m_DetailPatches->MoveDPatches( m_LevelShift );
 */
   	UI.ProgressEnd();
 
@@ -132,11 +132,11 @@ bool SceneBuilder::ShiftLevel(){
 bool SceneBuilder::RenumerateSectors(){
 	m_iDefaultSectorNum	= -1;
 
-	UI.ProgressStart(Scene->ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
+	UI.ProgressStart(Scene.ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");
 
 	int sector_num = 0;
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++,sector_num++){
     	CSector* _S=(CSector*)(*_F);
         _S->sector_num = sector_num;
@@ -146,6 +146,6 @@ bool SceneBuilder::RenumerateSectors(){
 
 	UI.ProgressEnd();
 
-	if (m_iDefaultSectorNum<0) m_iDefaultSectorNum=Scene->ObjCount(OBJCLASS_SECTOR);
+	if (m_iDefaultSectorNum<0) m_iDefaultSectorNum=Scene.ObjCount(OBJCLASS_SECTOR);
 	return true;
 }

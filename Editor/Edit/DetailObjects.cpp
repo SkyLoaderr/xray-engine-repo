@@ -87,7 +87,7 @@ void CDetail::OnDeviceDestroy(){
 
 bool CDetail::Update	(LPCSTR name){
     // update link
-    m_pRefs				= Lib->GetEditObject(name);
+    m_pRefs				= Lib.GetEditObject(name);
     if (!m_pRefs){
         ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
         return false;
@@ -335,7 +335,7 @@ void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
 }
 
 bool CDetailManager::Initialize(LPCSTR tex_name){
-	if (!fraLeftBar->ebEnableSnapList->Down||Scene->m_SnapObjects.empty()){
+	if (!fraLeftBar->ebEnableSnapList->Down||Scene.m_SnapObjects.empty()){
     	ELog.DlgMsg(mtError,"Fill snap list and activate before generating slots!");
     	return false;
     }
@@ -346,7 +346,7 @@ bool CDetailManager::Initialize(LPCSTR tex_name){
     }
 
     m_SnapObjects.clear();
-    m_SnapObjects = Scene->m_SnapObjects;
+    m_SnapObjects = Scene.m_SnapObjects;
 
     // create base texture
 	if (!UpdateBaseTexture(tex_name))	return false;
@@ -400,7 +400,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     bbox.max.set		(rect.x2, slot.y_max, rect.y2);
 
     SBoxPickInfoVec pinf;
-    if (Scene->BoxPick(bbox,pinf,&m_SnapObjects)){
+    if (Scene.BoxPick(bbox,pinf,&m_SnapObjects)){
 		bbox.grow		(EPS_L);
     	Fplane			frustum_planes[4];
 		frustum_planes[0].build(bbox.min,left_vec);
@@ -437,7 +437,7 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
 
 bool CDetailManager::UpdateBBox(){
     // get bounding box
-	if (!Scene->GetBox(m_BBox,m_SnapObjects)) return false;
+	if (!Scene.GetBox(m_BBox,m_SnapObjects)) return false;
 
     // fill header
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE+0.5f);
@@ -785,12 +785,12 @@ bool CDetailManager::Load_V1(CStream& F){
 		cnt 			= F.Rdword(); VERIFY(cnt);
         for (int i=0; i<cnt; i++){
         	F.RstringZ	(buf);
-            CCustomObject* O = Scene->FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
+            CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
             if (!O)		ELog.Msg(mtError,"DetailManager: Can't find snap object '%s'.",buf);
             else		m_SnapObjects.push_back(O);
         }
     }else{
-    	m_SnapObjects	= Scene->m_SnapObjects;
+    	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
     InvalidateCache		();
@@ -868,15 +868,15 @@ bool CDetailManager::Load(CStream& F){
         if (cnt){
 	        for (int i=0; i<cnt; i++){
     	    	F.RstringZ	(buf);
-        	    CCustomObject* O = Scene->FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
+        	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
             	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }
         }else{
-	    	m_SnapObjects= Scene->m_SnapObjects;
+	    	m_SnapObjects= Scene.m_SnapObjects;
         }
     }else{
-    	m_SnapObjects	= Scene->m_SnapObjects;
+    	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
     InvalidateCache		();

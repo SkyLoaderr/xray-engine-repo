@@ -215,6 +215,7 @@ public:
 
     // load/save methods
 	void 			LoadMeshDef				(FSChunkDef *chunk);
+	bool 			Reload					(){;}
 	bool 			Load					(const char* fname);
 	bool 			LoadObject				(const char* fname);
 	void 			SaveObject				(const char* fname);

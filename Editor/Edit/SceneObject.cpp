@@ -84,7 +84,7 @@ bool __inline CSceneObject::IsRender(){
 }
 
 void CSceneObject::Render(int priority, bool strictB2F){
-    Scene->TurnLightsForObject(this);
+    Scene.TurnLightsForObject(this);
 	m_pRefs->Render(mTransform, priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Selected()){

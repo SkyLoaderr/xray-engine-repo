@@ -72,14 +72,12 @@ USELIB("lib\xrProgressive.lib");
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("OneEnvironment.cpp", frmOneEnvironment);
 USELIB("lib\MagicFMd.lib");
-USEFORM("EditParticles.cpp", frmEditParticles);
 USEUNIT("edit\PSLibrary.cpp");
 USEFORM("PropertiesPS.cpp", frmPropertiesPS);
 USEUNIT("edit\PSObject.cpp");
 USEUNIT("engine\xrParticlesLib.cpp");
 USE("engine\Particle.h", File);
 USE("engine\ParticleSystem.h", File);
-USEFORM("PropertiesPSDef.cpp", frmPropertiesPSDef);
 USEFORM("ChoseForm.cpp", frmChoseItem);
 USEUNIT("engine\_quaternion.cpp");
 USEUNIT("engine\_compressed_normal.cpp");
@@ -195,6 +193,7 @@ USERES("resource.res");
 USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
 USEUNIT("edit\EStats.cpp");
+USEUNIT("edit\UI_MainExtern.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

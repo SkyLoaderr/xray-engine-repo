@@ -26,7 +26,7 @@ bool CLibObject::ImportFrom(const char* name){
 }
 */
 //----------------------------------------------------
-ELibrary* Lib;
+ELibrary Lib;
 //----------------------------------------------------
 static bool sort_pred(AnsiString& A, AnsiString& B)
 {	return A<B; }
@@ -34,19 +34,14 @@ static bool sort_pred(AnsiString& A, AnsiString& B)
 
 ELibrary::ELibrary(){
 	m_Current = "";
-	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
-	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 //----------------------------------------------------
 
 ELibrary::~ELibrary(){
-	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
-	Clear();
 }
 //----------------------------------------------------
 
-void ELibrary::Init(){
+void ELibrary::OnCreate(){
 	m_Current = "";
     int count = strlen(FS.m_Objects.m_Path);
     AStringVec& lst = FS.GetFiles(FS.m_Objects.m_Path);
@@ -55,10 +50,14 @@ void ELibrary::Init(){
         if (ext==".object") m_Objects.push_back(it->Delete(1,count));
     }
 	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
+	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
+	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 //----------------------------------------------------
 
-void ELibrary::Clear(){
+void ELibrary::OnDestroy(){
+	Device.seqDevCreate.Remove(this);
+	Device.seqDevDestroy.Remove(this);
 	m_Current = "";
 
     // remove all instance CEditableObject
@@ -89,8 +88,8 @@ void ELibrary::UnloadMeshes(){
 }
 //----------------------------------------------------
 void ELibrary::ReloadLibrary(){
-    Clear();
-    Init();
+    OnDestroy();
+    OnCreate();
 }
 //----------------------------------------------------
 void ELibrary::RefreshLibrary(){

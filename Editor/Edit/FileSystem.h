@@ -51,7 +51,7 @@ public:
 public:
 			CFileSystem		();
 	virtual ~CFileSystem	();
-    void 	Init			();
+    void 	OnCreate		();
 
 	bool 	GetOpenName		(FSPath *initial, char *buffer);
 	bool 	GetSaveName		(FSPath *initial, char *buffer);

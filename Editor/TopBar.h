@@ -58,7 +58,8 @@ __published:	// IDE-managed Components
     void __fastcall ebViewClick(TObject *Sender);
 	void __fastcall ebZoomExtentsClick(TObject *Sender);
 	void __fastcall ebZoomExtentsSelectedClick(TObject *Sender);
-	void __fastcall ebCameraPlaneClick(TObject *Sender);
+	void __fastcall ebCameraStyleClick(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraTopBar(TComponent* Owner);

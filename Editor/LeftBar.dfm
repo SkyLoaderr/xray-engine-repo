@@ -30,7 +30,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 123
-      Height = 144
+      Height = 129
       Hint = 'Scene commands'
       Align = alTop
       ParentShowHint = False
@@ -156,7 +156,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebObjectList: TExtBtn
         Left = 2
-        Top = 93
+        Top = 78
         Width = 120
         Height = 15
         Align = alNone
@@ -176,7 +176,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebSceneCommands: TExtBtn
         Left = 2
-        Top = 110
+        Top = 95
         Width = 120
         Height = 15
         Align = alNone
@@ -206,7 +206,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 127
+        Top = 112
         Width = 120
         Height = 15
         Align = alNone
@@ -224,29 +224,9 @@ object fraLeftBar: TfraLeftBar
         Transparent = False
         OnClick = ebEditorPreferencesClick
       end
-      object ebParticleEditor: TExtBtn
-        Left = 2
-        Top = 63
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        CloseButton = False
-        Caption = 'Particle Editor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        Transparent = False
-        OnClick = ebParticleEditorClick
-      end
       object ebImageEditor: TExtBtn
         Left = 2
-        Top = 78
+        Top = 63
         Width = 120
         Height = 15
         Align = alNone
@@ -267,7 +247,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paEdit: TPanel
       Left = 1
-      Top = 145
+      Top = 130
       Width = 123
       Height = 144
       Align = alTop
@@ -529,7 +509,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paTarget: TPanel
       Left = 1
-      Top = 289
+      Top = 274
       Width = 123
       Height = 199
       Align = alTop
@@ -1294,7 +1274,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 488
+      Top = 473
       Width = 123
       Height = 106
       Align = alTop
@@ -1428,7 +1408,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 2
+    Version = 3
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1507,7 +1487,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msBtnLowered
     Left = 85
-    Top = 130
+    Top = 98
     object Refresh1: TMenuItem
       Caption = 'RefreshTextures'
       OnClick = ebRefreshEditorClick

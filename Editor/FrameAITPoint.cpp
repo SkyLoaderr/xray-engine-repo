@@ -34,7 +34,7 @@ void __fastcall TfraAITPoint::ebAddLinksClick(TObject *Sender)
 {
 	int cnt=0;
 	ObjectList objset;
-	if (Scene->GetQueryObjects(objset, OBJCLASS_AITPOINT, 1, 1, 0)){
+	if (Scene.GetQueryObjects(objset, OBJCLASS_AITPOINT, 1, 1, 0)){
     	ObjectIt _A0=objset.begin();
     	ObjectIt _A1=objset.end(); _A1--;
     	ObjectIt _B1=objset.end();
@@ -47,7 +47,7 @@ void __fastcall TfraAITPoint::ebAddLinksClick(TObject *Sender)
             }
         }
     }
-    if (cnt) Scene->UndoSave();
+    if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ void __fastcall TfraAITPoint::ebRemoveLinksClick(TObject *Sender)
 {
 	int cnt=0;
 	ObjectList objset;
-	if (Scene->GetQueryObjects(objset, OBJCLASS_AITPOINT, 1, 1, 0)){
+	if (Scene.GetQueryObjects(objset, OBJCLASS_AITPOINT, 1, 1, 0)){
     	ObjectIt _A0=objset.begin();
     	ObjectIt _A1=objset.end(); _A1--;
     	ObjectIt _B1=objset.end();
@@ -68,7 +68,7 @@ void __fastcall TfraAITPoint::ebRemoveLinksClick(TObject *Sender)
             }
         }
     }
-    if (cnt) Scene->UndoSave();
+    if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 

@@ -15,6 +15,7 @@
 #include "MgcConvexHull2D.h"
 #include "MgcAppr3DPlaneFit.h"
 #include "FrameOccluder.h"
+#include "UI_Tools.h"
 
 #define OCCLUDER_POINT_SEL_DIST				0.1f
 
@@ -235,7 +236,7 @@ bool COccluder::SelectPoint(Fvector& start, Fvector& direction, bool bLeaveSel){
     if(RayPick(distance,start, direction,0)){
         Fvector I;
         I.direct(start,direction,distance);
-        TfraOccluder* F = (TfraOccluder*)UI.m_Tools->GetFrame();
+        TfraOccluder* F = (TfraOccluder*)Tools.GetFrame();
         VERIFY(F);
         // select point
         float dist=flt_max;

@@ -44,10 +44,10 @@ void __fastcall TfraPS::ebDeselectByRefsClick(TObject *Sender)
 }
 
 void __fastcall TfraPS::SelByRef( bool flag ){
-	PS::SDef *PS = (PS::SDef*)PSLib->ChoosePS(false);
+	PS::SDef *PS = (PS::SDef*)PSLib.ChoosePS(false);
 	if(PS){
-		ObjectIt _F = Scene->FirstObj(OBJCLASS_PS);
-        ObjectIt _E = Scene->LastObj(OBJCLASS_PS);
+		ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
+        ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
 		for(;_F!=_E;_F++){
 			if( (*_F)->Visible() ){
 				CPSObject *_O = (CPSObject *)(*_F);
@@ -60,7 +60,7 @@ void __fastcall TfraPS::SelByRef( bool flag ){
 
 //----------------------------------------------------
 void __fastcall TfraPS::OutCurrentName(){
-	PS::SDef* PS = PSLib->GetCurrentPS();
+	PS::SDef* PS = PSLib.GetCurrentPS();
     if (PS) lbSelectObjectName->Caption = PS->m_Name;
     else	lbSelectObjectName->Caption = "...";
 }
@@ -70,7 +70,7 @@ void __fastcall TfraPS::OutCurrentName(){
 //---------------------------------------------------------------------------
 void __fastcall TfraPS::ebSelectClick(TObject *Sender)
 {
-	PSLib->ChoosePS();
+	PSLib.ChoosePS();
     OutCurrentName();
 }
 //---------------------------------------------------------------------------

@@ -190,7 +190,7 @@ void CAITPoint::OnSynchronize(){
 	m_Links.resize(m_NameLinks.size());
     ObjectIt o_it = m_Links.begin();
 	for (AStringIt s_it=m_NameLinks.begin(); s_it!=m_NameLinks.end(); s_it++,o_it++){
-    	*o_it = Scene->FindObjectByName(s_it->c_str(),OBJCLASS_AITPOINT);
+    	*o_it = Scene.FindObjectByName(s_it->c_str(),OBJCLASS_AITPOINT);
         R_ASSERT(*o_it);
     }
     m_NameLinks.clear();

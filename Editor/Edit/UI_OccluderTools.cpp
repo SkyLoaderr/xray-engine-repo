@@ -77,7 +77,7 @@ void TUI_ControlOccluderMove::OnExit (){
 bool __fastcall TUI_ControlOccluderMove::Start(TShiftState Shift){
 	if (pFrame->ebModePoint->Down){
 	    MovingStart(Shift);
-		obj = (COccluder*)Scene->GetQueryObject(OBJCLASS_OCCLUDER);
+		obj = (COccluder*)Scene.GetQueryObject(OBJCLASS_OCCLUDER);
     	return true;
     }else{
 	    return MovingStart(Shift);
@@ -115,7 +115,7 @@ bool __fastcall TUI_ControlOccluderSelect::Start(TShiftState Shift){
 	if (pFrame->ebModePlane->Down){
 	    return SelectStart(Shift);
     }else{
-        obj 	= (COccluder*)Scene->GetQueryObject(OBJCLASS_OCCLUDER);
+        obj 	= (COccluder*)Scene.GetQueryObject(OBJCLASS_OCCLUDER);
   		if (obj){
 	        bBoxSelection	= !obj->SelectPoint(UI.m_CurrentRStart,UI.m_CurrentRNorm,Shift.Contains(ssCtrl));
 

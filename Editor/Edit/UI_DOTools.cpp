@@ -46,13 +46,13 @@ bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
         char namebuffer[MAX_OBJ_NAME];
         CDOCluster* obj=0;
-        Scene->GenObjectName(OBJCLASS_DOCLUSTER, namebuffer);
+        Scene.GenObjectName(OBJCLASS_DOCLUSTER, namebuffer);
         obj = (CDOCluster*)NewObjectFromClassID(OBJCLASS_DOCLUSTER);
         strcpy(obj->GetName(),namebuffer);
         obj->Move( p );
-        Scene->SelectObjects(false,OBJCLASS_DOCLUSTER);
+        Scene.SelectObjects(false,OBJCLASS_DOCLUSTER);
 //        if (obj->AppendCluster(fraDO->seClusterDensity->Value)){
-//            Scene->AddObject(obj);
+//            Scene.AddObject(obj);
 //            if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
 //            if (!Shift.Contains(ssAlt)) ResetActionToSelect();
 //        }else{

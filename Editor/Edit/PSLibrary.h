@@ -23,8 +23,8 @@ public:
     IC PSIt				LastPS			()	{return m_PSs.end();}
     IC int				PSCount			()	{return m_PSs.size();}
 
-    void				Init			();
-    void				Clear			();
+    void				OnCreate		();
+    void				OnDestroy		();
     int 				Merge			(const char* nm);
     void				Save			();
     void				Reload			();
@@ -44,6 +44,6 @@ public:
     bool 				Validate		(){return true;}
 };
 
-extern CPSLibrary* PSLib;
+extern CPSLibrary PSLib;
 #endif /*_INCDEF_PSLibrary_H_*/
 

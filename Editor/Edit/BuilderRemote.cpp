@@ -108,8 +108,8 @@ bool BuildIsDone(void)
 };
 */
 int SceneBuilder::CalculateSector(const Fvector& P, float R){
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
     	CSector* _S=(CSector*)(*_F);
         EVisible vis=_S->TestCHullSphereIntersection(P,R);
@@ -265,8 +265,8 @@ void SceneBuilder::BuildLight(b_light* b, CLight* e){
 
     if (b->type==D3DLIGHT_POINT){
         // test fully and partial inside
-        ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-        ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+        ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+        ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
         for(;_F!=_E;_F++){
 			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
@@ -275,7 +275,7 @@ void SceneBuilder::BuildLight(b_light* b, CLight* e){
             	b->sectors.push_back(_S->sector_num);
         }
         // test partial outside
-        _F = Scene->FirstObj(OBJCLASS_SECTOR);
+        _F = Scene.FirstObj(OBJCLASS_SECTOR);
         for(;_F!=_E;_F++){
 			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
@@ -444,33 +444,33 @@ bool SceneBuilder::RemoteStaticBuild()
 
     ResetStructures();
 
-	int objcount = Scene->ObjCount();
+	int objcount = Scene.ObjCount();
 	if( objcount <= 0 )	return true;
 
 // Build Options
     ZeroMemory(&TSData, sizeof(b_transfer));
 	TSData._version = XRCL_CURRENT_VERSION;
-    CopyMemory(&TSData.params,&Scene->m_BuildParams,sizeof(b_params));
-    strcpy(TSData.params.L_name,Scene->m_LevelOp.m_LevelName.c_str());
+    CopyMemory(&TSData.params,&Scene.m_BuildParams,sizeof(b_params));
+    strcpy(TSData.params.L_name,Scene.m_LevelOp.m_LevelName.c_str());
     strcpy(TSData.params.L_path,"");
     m_LevelPath.Update(TSData.params.L_path);
 
 // lights
     int cur_light = 0;
-	TSData.light_count  = Scene->ObjCount(OBJCLASS_LIGHT);
+	TSData.light_count  = Scene.ObjCount(OBJCLASS_LIGHT);
     TSData.lights = 0;
     if (TSData.light_count){
     	TSData.lights   = new b_light[TSData.light_count];
     }
 
-    UI.ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Allocating memory for static faces and vertices...");
+    UI.ProgressStart(Scene.ObjCount(OBJCLASS_SCENEOBJECT),"Allocating memory for static faces and vertices...");
 // compute vertex/face count
     l_vertices_cnt	= 0;
     l_faces_cnt 	= 0;
 	l_vertices_it 	= 0;
 	l_faces_it		= 0;
-    ObjectIt _O = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _O = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
 	    UI.ProgressInc();
@@ -482,10 +482,10 @@ bool SceneBuilder::RemoteStaticBuild()
 	l_faces		= new b_face[l_faces_cnt];
 	l_vertices	= new b_vertex[l_vertices_cnt];
 
-    UI.ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Filling static mesh data...");
+    UI.ProgressStart(Scene.ObjCount(OBJCLASS_SCENEOBJECT),"Filling static mesh data...");
 // parse scene
 	int i=0;
-    for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		    UI.ProgressUpdate(i++);

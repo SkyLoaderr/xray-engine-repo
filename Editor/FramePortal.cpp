@@ -41,8 +41,8 @@ void __fastcall TfraPortal::FindAndSelectPortalInList(const char* _name){
 void __fastcall TfraPortal::OnChange(){
 	AnsiString cur="";
     cbItems->Items->Clear();
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_PORTAL);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_PORTAL);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_PORTAL);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_PORTAL);
     for(;_F!=_E;_F++){
     	cbItems->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
         if ((*_F)->Selected()&&(*_F)->Visible())
@@ -56,10 +56,10 @@ void __fastcall TfraPortal::OnChange(){
 void __fastcall TfraPortal::ebCreateNewClick(TObject *Sender)
 {
 	char namebuffer[MAX_OBJ_NAME];
-	Scene->GenObjectName( OBJCLASS_PORTAL, namebuffer );
+	Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
 	CPortal* _O = new CPortal(namebuffer);
-	Scene->SelectObjects(false,OBJCLASS_PORTAL);
-	Scene->AddObject( _O );
+	Scene.SelectObjects(false,OBJCLASS_PORTAL);
+	Scene.AddObject( _O );
     FindAndSelectPortalInList(namebuffer);
 }
 //---------------------------------------------------------------------------
@@ -68,7 +68,7 @@ void __fastcall TfraPortal::cbItemsChange(TObject *Sender)
 {
 	if (cbItems->ItemIndex>-1){
     	CPortal* _O=(CPortal*)cbItems->Items->Objects[cbItems->ItemIndex];
-		Scene->SelectObjects(false,OBJCLASS_PORTAL);
+		Scene.SelectObjects(false,OBJCLASS_PORTAL);
         _O->Select(true);
 	    lbFrontSector->Caption 	= _O->m_SectorFront->GetName();
     	lbBackSector->Caption 	= _O->m_SectorBack->GetName();
@@ -120,8 +120,8 @@ void __fastcall TfraPortal::ShowCompute(bool bVisible){
 //		AnsiString curB=cbSectorBack->Items->Strings[cbSectorBack->ItemIndex];
         cbSectorFront->Items->Clear();
         cbSectorBack->Items->Clear();
-        ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-        ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+        ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+        ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
         for(;_F!=_E;_F++){
             cbSectorFront->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
             cbSectorBack->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
@@ -141,7 +141,7 @@ void __fastcall TfraPortal::cbSectorChange(TObject *Sender)
     if ((cbSectorFront->ItemIndex>-1)&&(cbSectorBack->ItemIndex>-1)&&(cbSectorFront->Items->Strings[cbSectorFront->ItemIndex]!=cbSectorBack->Items->Strings[cbSectorBack->ItemIndex]))
         	ebCompute->Enabled=true;
 	else 	ebCompute->Enabled=false;
-	Scene->SelectObjects(false,OBJCLASS_SECTOR);
+	Scene.SelectObjects(false,OBJCLASS_SECTOR);
 	if (cbSectorFront->ItemIndex>-1){
     	CSector* _O=(CSector*)cbSectorFront->Items->Objects[cbSectorFront->ItemIndex];
         _O->Select(true);

@@ -37,7 +37,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         form->m_SelectedName = "";
 
         // scene locking
-        Scene->lock();
+        Scene.lock();
     }
 
     form->Show();
@@ -118,7 +118,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 	form = 0;
 	Action = caFree;
 
-	Scene->unlock();
+	Scene.unlock();
     UI.EndEState(esEditImages);
 }
 //---------------------------------------------------------------------------

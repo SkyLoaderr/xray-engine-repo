@@ -24,8 +24,8 @@ public:
 						ELibrary			();
 	virtual 			~ELibrary			();
 
-	void 				Init				();
-	void 				Clear				();
+	void 				OnCreate			();
+	void 				OnDestroy			();
 	void 				Save				();
 
     void 				ReloadLibrary		();
@@ -47,7 +47,7 @@ public:
 	virtual		void	OnDeviceDestroy		();
 };
 
-extern ELibrary* Lib;
+extern ELibrary Lib;
 #define SKYDOME_FOLDER 		"$SkyDome"
 #define DETAILOBJECT_FOLDER	"$Detail Objects"
 //----------------------------------------------------

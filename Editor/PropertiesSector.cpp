@@ -62,7 +62,7 @@ bool TfrmPropertiesSector::ApplyObjectsInfo(){
             ELog.DlgMsg(mtError,"Enter Object Name!");
             return false;
         }else{
-            if (Scene->FindObjectByName(edName->Text.c_str(),_O)){
+            if (Scene.FindObjectByName(edName->Text.c_str(),_O)){
 		    	ELog.DlgMsg(mtError,"Object Name already found in scene! Enter new name.");
                 return false;
             }

@@ -3,7 +3,6 @@
 #define UI_MainH
 
 #include "RenderWindow.hpp"
-#include "ui_tools.h"
 #include "device.h"
 #include "UI_MainCommand.h"
 #include "ColorPicker.h"
@@ -22,7 +21,6 @@ enum EEditorState{
 	esSceneLocked,
     esEditScene,
     esEditLibrary,
-    esEditParticles,
     esEditImages,
     esBuildLevel
 };
@@ -66,8 +64,6 @@ protected:
     void D3D_CreateStateBlocks();
     void D3D_DestroyStateBlocks();
 public:
-    TUI_Tools*          m_Tools;
-
 	// non-hidden ops
 	Ipoint m_StartCp;
 	Ipoint m_CurrentCp;
@@ -114,7 +110,7 @@ public:
 
     IC float ZFar()						{	return Device.m_Camera.m_Zfar; }
 
-    bool OnCreate						(TD3DWindow* wnd);
+    bool OnCreate						();
     void OnDestroy						();
 
     char* GetEditFileName()             {   return m_LastFileName; }
@@ -170,15 +166,13 @@ public:
     void OutCameraPos();
     void SetStatus(LPSTR s);
 
-    EObjClass CurrentClassID();
-
 	// direct input
 	virtual void OnMousePress			(int btn);
 	virtual void OnMouseRelease			(int btn);
 	virtual void OnMouseMove			(int x, int y);
 
-    void OnAppActivate					(){;}
-    void OnAppDeactivate                (){;}
+    void OnAppActivate					();
+    void OnAppDeactivate                ();
 
     bool    NeedAbort               	(){Application->ProcessMessages(); return bNeedAbort;}
     void 	NeedBreak					(){bNeedAbort = true;}

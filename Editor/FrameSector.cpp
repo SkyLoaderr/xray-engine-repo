@@ -38,8 +38,8 @@ void __fastcall TfraSector::FindAndSelectSectorInList(const char* _name){
 void __fastcall TfraSector::OnChange(){
 	AnsiString cur="";
     cbItems->Items->Clear();
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
     	cbItems->Items->AddObject((*_F)->GetName(),(TObject*)(*_F));
         if ((*_F)->Selected()&&(*_F)->Visible())
@@ -65,10 +65,10 @@ void __fastcall TfraSector::OnSectorUpdate(){
 void __fastcall TfraSector::ebCreateNewClick(TObject *Sender)
 {
 	char namebuffer[MAX_OBJ_NAME];
-	Scene->GenObjectName( OBJCLASS_SECTOR, namebuffer );
+	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
 	CSector* _O = new CSector(namebuffer);
-	Scene->SelectObjects(false,OBJCLASS_SECTOR);
-	Scene->AddObject( _O );
+	Scene.SelectObjects(false,OBJCLASS_SECTOR);
+	Scene.AddObject( _O );
     FindAndSelectSectorInList(namebuffer);
 }
 //---------------------------------------------------------------------------
@@ -77,7 +77,7 @@ void __fastcall TfraSector::cbItemsChange(TObject *Sender)
 {
 	if (cbItems->ItemIndex>-1){
     	CSector* _O=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
-		Scene->SelectObjects(false,OBJCLASS_SECTOR);
+		Scene.SelectObjects(false,OBJCLASS_SECTOR);
         _O->Select(true);
     }
     OnSectorUpdate();
@@ -90,14 +90,14 @@ void __fastcall TfraSector::ebCaptureInsideVolumeClick(TObject *Sender)
 		CSector* sector=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
     	sector->CaptureInsideVolume();
 	    OnSectorUpdate();
-        Scene->UndoSave();
+        Scene.UndoSave();
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraSector::ebCreateDefaultClick(TObject *Sender)
 {
-    CCustomObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
+    CCustomObject* O=Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
 	if (O) ELog.DlgMsg(mtInformation,"Default sector already present. Remove this and try again.");
     else{
 		if (!PortalUtils.CreateDefaultSector()) ELog.DlgMsg(mtInformation,"Default can't created.");
@@ -119,19 +119,19 @@ void __fastcall TfraSector::ebValidateClick(TObject *Sender)
 
 void __fastcall TfraSector::ExtBtn3Click(TObject *Sender)
 {
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
 		CSector* sector=(CSector*)(*_F);
         if (sector->Selected()&&sector->Visible()) sector->Update(true);
     }
     OnSectorUpdate();
-    Scene->UndoSave();
+    Scene.UndoSave();
 /*	if (cbItems->ItemIndex>-1){
 		CSector* sector=(CSector*)cbItems->Items->Objects[cbItems->ItemIndex];
         sector->Update(true);
         OnSectorUpdate();
-        Scene->UndoSave();
+        Scene.UndoSave();
     }
 */
 }

@@ -1,106 +1,23 @@
 //---------------------------------------------------------------------------
-
 #include "stdafx.h"
 #pragma hdrstop
 
 #include "UI_Main.h"
-#include "D3DUtils.h"
-#include "Shader.h"
-#include "Cursor3D.h"
-
-#include "leftbar.h"
+#include "UI_Tools.h"
+#include "EditLibrary.h"
+#include "ImageEditor.h"
 #include "topbar.h"
-#include "bottombar.h"
+#include "leftbar.h"
+#include "scene.h"
 #include "EditorPref.h"
-#include "main.h"
+#include "D3DUtils.h"
+#include "Cursor3D.h"
+#include "bottombar.h"
 #include "xr_trims.h"
-
+#include "main.h"
 #include "xr_input.h"
-//#include "EditLibrary.h"
-//#include "EditParticles.h"
-//#include "ImageEditor.h"
-//#include "ImageManager.h"
-
-TUI UI;
 
 bool g_bEditorValid = false;
-TUI::TUI()
-{
-    m_D3DWindow = 0;
-    bNeedAbort   = false;
-
-	m_StartRStart.set(0,0,0);
-	m_StartRNorm.set(0,0,0);
-	m_CurrentRStart.set(0,0,0);
-	m_CurrentRNorm.set(0,0,0);
-
-    m_Tools         = 0;
-    m_Cursor        = 0;
-
-	DU::InitUtilLibrary();
-
-    bRedraw = false;
-	bResize = true;
-    bUpdateScene = false;
-
-	m_Pivot.set( 0, 0, 0 );
-    m_MoveSnap = 0.1f;
-	m_AngleSnap = deg2rad( 5.f );
-
-	m_MouseCaptured = false;
-    m_MouseMultiClickCaptured = false;
- 	m_SelectionRect = false;
-    bMouseInUse		= false;
-
-	m_LastFileName[0]= 0;
-
-    fHintPause      = 0.5f;
-    fHintPauseTime  = fHintPause;
-    fHintHide       = 15.f;
-    fHintHideTime   = 0.f;
-    bHintShowing    = false;
-
-// create base class
-    ELog.Create		("ed.log");
-}
-//---------------------------------------------------------------------------
-TUI::~TUI()
-{
-    VERIFY(m_EditorState.size()==0);
-    _DELETE(m_Tools);
-    _DELETE(m_Cursor);
-}
-
-bool TUI::OnCreate(){
-    pInput			= new CInput(FALSE,mouse_device_key);
-    UI.iCapture		();
-	Device.InitTimer();
-
-    m_D3DWindow 	= frmMain->D3DWindow;
-    VERIFY(m_D3DWindow);
-    Device.Initialize();
-
-    m_Tools         = new TUI_Tools(fraLeftBar->paFrames);
-    m_Cursor        = new C3DCursor();
-
-	g_bEditorValid  = true;
-
-    XRC.RayMode		(RAY_CULL);
-
-    return true;
-}
-
-void TUI::OnDestroy()
-{
-	UI.iRelease			();
-    EndEState();
-	DU::UninitUtilLibrary();
-
-    m_Tools->Clear();
-
-    Device.ShutDown	();
-    g_bEditorValid = false;
-}
 
 bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap){
     // pick object geometry
@@ -109,8 +26,8 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         SRayPickInfo pinf;
 	    EEditorState est = GetEState();
         switch(est){
-//S        case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
-//S        case esEditScene:		bPickObject = !!Scene->RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,true); break;
+        case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
+        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,true); break;
         default: THROW;
         }
         if (bPickObject){
@@ -150,11 +67,6 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
     }
 	return true;
 }
-
-bool TUI::IsModified()
-{
-	return Command(COMMAND_CHECK_MODIFIED);
-}
 //----------------------------------------------------
 
 bool TUI::SelectionFrustum(CFrustum& frustum){
@@ -178,7 +90,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
 			pinf.rp_inf.range = Device.m_Camera.m_Zfar; // max pick range
-//S            if (Scene->RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+            if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 	            if (pinf.rp_inf.range > depth) depth = pinf.rp_inf.range;
         }
     }
@@ -236,10 +148,8 @@ void TUI::Redraw(){
 
 	    EEditorState est = GetEState();
         switch(est){
-//S        case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
-//S        case esEditParticles: 	TfrmEditParticles::OnRender(); break;
-//S        case esEditImages:	 	TfrmImageLib::OnRender(); break;
-//S        case esEditScene:		Scene->Render(&precalc_identity); break;
+        case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
+        case esEditScene:		Scene.Render(&precalc_identity); break;
         }
 
     // draw selection rect
@@ -258,27 +168,24 @@ void TUI::Redraw(){
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
     if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
-	Command(COMMAND_OUT_INFO);
+	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
 }
 //---------------------------------------------------------------------------
 void TUI::Idle()
 {
+    pInput->OnFrame();
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(5);
 	Device.UpdateTimer();
     EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditParticles)||(est==esEditImages)){
-//S    	switch(est){
-//S    	case esEditParticles: 	TfrmEditParticles::OnIdle(); break;
-//S    	case esEditImages: 		TfrmImageLib::OnIdle(); break;
-//S		}
+    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditImages)){
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
-//S            Scene->Update(Device.fTimeDelta);
+            Scene.Update(Device.fTimeDelta);
         	Redraw();
         }
-		m_Tools->Update();
+		Tools.Update();
     }
         // show hint
     ShowObjectHint();
@@ -286,16 +193,23 @@ void TUI::Idle()
 	ResetBreak();
 }
 //---------------------------------------------------------------------------
-void TUI::EnableSelectionRect( bool flag ){
-	m_SelectionRect = flag;
-	m_SelEnd.x = m_SelStart.x = 0;
-	m_SelEnd.y = m_SelStart.y = 0;
+void TUI::RealUpdateScene(){
+	if (GetEState()==esEditScene){
+	    Scene.OnObjectsUpdate();
+    	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами
+	    RedrawScene();
+    }
+    bUpdateScene = false;
 }
+//---------------------------------------------------------------------------
 
-void TUI::UpdateSelectionRect( const Ipoint& from, const Ipoint& to ){
-	m_SelStart.set(from);
-	m_SelEnd.set(to);
+void ResetActionToSelect()
+{
+    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
 }
+//---------------------------------------------------------------------------
+
+
 
 static int iLastMouseX=0;
 static int iLastMouseY=0;
@@ -322,10 +236,14 @@ bool TUI::ShowHint(const AStringVec& SS){
     }else bHintShowing = false;
     return bHintShowing;
 }
+//---------------------------------------------------------------------------
+
 void TUI::HideHint(){
     bHintShowing = false;
     _DELETE(pHintWindow);
 }
+//---------------------------------------------------------------------------
+
 void TUI::ShowObjectHint(){
     if (!fraBottomBar->miShowHint->Checked) return;
 
@@ -357,179 +275,11 @@ void TUI::ShowObjectHint(){
     if (fHintPauseTime<0){
         fHintPauseTime = fHintPause+1;
         AStringVec SS;
-//S        Scene->OnShowHint(SS);
+        Scene.OnShowHint(SS);
         if (ShowHint(SS)) fHintHideTime = fHintHide;
     }else{
         fHintPauseTime -= Device.fTimeDelta;
     }
 }
-
-bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
-{
-	m_ShiftState = Shift;
-    if (m_ShiftState.Contains(ssLeft)) Log("LB press.");
-	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
-    return m_Tools->KeyDown(Key, Shift);
-}
-
-bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
-{
-	m_ShiftState = Shift;
-	if (Device.m_Camera.KeyUp(Key,Shift)) return true;
-    return m_Tools->KeyUp(Key, Shift);
-}
-
-bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
-{
-    return m_Tools->KeyPress(Key, Shift);
-}
-
-//----------------------------------------------------
-void TUI::RealUpdateScene(){
-	if (GetEState()==esEditScene){
-//S	    Scene->OnObjectsUpdate();
-    	m_Tools->OnObjectsUpdate(); // обновить все что как-то связано с объектами
-	    RedrawScene();
-    }
-    bUpdateScene = false;
-}
-
-EObjClass TUI::CurrentClassID(){
-	return (fraLeftBar->ebIgnoreTarget->Down)?OBJCLASS_DUMMY:m_Tools->GetTargetClassID();
-}
-
-void TUI::OnMousePress(int btn){
-	if(!g_bEditorValid) return;
-    if(m_MouseCaptured) return;
-
-    // test owner
-    Ipoint pt;
-	iGetMousePosScreen(pt);
-    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
-    if (ctr!=m_D3DWindow) return;
-
-    bMouseInUse = true;
-
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
-
-    // camera activate
-    if(!Device.m_Camera.MoveStart(m_ShiftState)){
-//S        if( Scene->locked() )
-        {
-		    EEditorState est = GetEState();
-            switch(est){
-            case esEditLibrary:{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                m_StartCp = m_CurrentCp;
-                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
-				SRayPickInfo pinf;
-//S                TfrmEditLibrary::RayPick(m_CurrentRStart,m_CurrentRNorm,&pinf);
-            }break;
-            case esEditParticles: 	break;
-            case esEditImages: 		break;
-            }
-            return;
-        }
-        if( !m_MouseCaptured ){
-            if( m_Tools->HiddenMode() ){
-				iGetMousePosScreen(m_StartCpH);
-                m_DeltaCpH.set(0,0);
-            }else{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                m_StartCp = m_CurrentCp;
-
-                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
-            }
-
-            if(m_Tools->MouseStart(m_ShiftState)){
-                if(m_Tools->HiddenMode()) ShowCursor( FALSE );
-                m_MouseCaptured = true;
-            }
-        }
-    }
-    RedrawScene();
-}
-
-void TUI::OnMouseRelease(int btn){
-	if(!g_bEditorValid) return;
-
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
-
-    if( Device.m_Camera.IsMoving() ){
-        if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
-    }else{
-	    bMouseInUse = false;
-        if( m_MouseCaptured ){
-            if( !m_Tools->HiddenMode() ){
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
-            }
-            if( m_Tools->MouseEnd(m_ShiftState) ){
-                if( m_Tools->HiddenMode() ){
-                    SetCursorPos(m_StartCpH.x,m_StartCpH.y);
-                    ShowCursor( TRUE );
-                }
-                m_MouseCaptured = false;
-            }
-        }
-    }
-    // update tools (change action)
-    m_Tools->Update();
-    RedrawScene();
-}
-void TUI::OnMouseMove(int x, int y){
-	if(!g_bEditorValid) return;
-    bool bRayUpdated = false;
-
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
-
-	if (!Device.m_Camera.Process(m_ShiftState,x,y)){
-        if( m_MouseCaptured || m_MouseMultiClickCaptured ){
-            if( m_Tools->HiddenMode() ){
-				m_DeltaCpH.set(x,y);
-                if( m_DeltaCpH.x || m_DeltaCpH.y ){
-                	m_Tools->MouseMove(m_ShiftState);
-                }
-            }else{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
-                m_Tools->MouseMove(m_ShiftState);
-            }
-		    RedrawScene();
-            bRayUpdated = true;
-        }
-    }
-    if (!bRayUpdated){
-		iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-        Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp);
-    }
-    if (m_Cursor->GetVisible()) RedrawScene();
-    // Out cursor pos
-    OutUICursorPos();
-}
-
-void TUI::ShowContextMenu(int cls)
-{
-    if (g_bEditorValid){
-        POINT pt;
-        GetCursorPos(&pt);
-		fraLeftBar->miProperties->Enabled = false;
-//S        if (Scene->SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
-        RedrawScene(true);
-	    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
-        fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
-    }
-}
-
-void ResetActionToSelect()
-{
-    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
-}
 //---------------------------------------------------------------------------
-
 

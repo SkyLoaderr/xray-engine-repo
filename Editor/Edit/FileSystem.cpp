@@ -59,7 +59,7 @@ CFileSystem::~CFileSystem(){
 	if (hFindHandle!=-1) _findclose(hFindHandle);
 }
 
-void CFileSystem::Init(){
+void CFileSystem::OnCreate(){
 //	VERIFY( _ExeName );
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );

@@ -81,7 +81,7 @@ void TUI_CustomTools::ResetSubTarget(){
 
 void TUI_CustomTools::ShowProperties(){
     ObjectList objset;
-    Scene->GetQueryObjects(objset,objclass);
+    Scene.GetQueryObjects(objset,objclass);
     bool bChange=false;
     if(!objset.empty()){
 	    switch(objclass){
@@ -98,7 +98,7 @@ void TUI_CustomTools::ShowProperties(){
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
     	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }
-        if (bChange) Scene->UndoSave();
+        if (bChange) Scene.UndoSave();
         UI.RedrawScene();
 	}
 }
@@ -106,7 +106,7 @@ void TUI_CustomTools::ShowProperties(){
 void TUI_CustomTools::SetNumPosition(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene->GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
     	Fvector V;
         if (objset.front()->GetPosition(V)){
@@ -117,7 +117,7 @@ void TUI_CustomTools::SetNumPosition(CCustomObject* O){
                 	(*_F)->SetPosition(V);
                     (*_F)->UpdateTransform();
                 }
-                Scene->UndoSave();
+                Scene.UndoSave();
             }
         }
     }
@@ -126,7 +126,7 @@ void TUI_CustomTools::SetNumPosition(CCustomObject* O){
 void TUI_CustomTools::SetNumRotation(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene->GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
     	Fvector V;
         if (objset.front()->GetRotate(V)){
@@ -141,7 +141,7 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
                 	(*_F)->SetRotate(V);
                     (*_F)->UpdateTransform();
                 }
-                Scene->UndoSave();
+                Scene.UndoSave();
             }
         }
     }
@@ -150,7 +150,7 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
 void TUI_CustomTools::SetNumScale(CCustomObject* O){
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene->GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,objclass);
 	if( !objset.empty() ){
     	Fvector V;
         if (objset.front()->GetScale(V)){
@@ -163,7 +163,7 @@ void TUI_CustomTools::SetNumScale(CCustomObject* O){
                 	(*_F)->SetScale(V);
                     (*_F)->UpdateTransform();
                 }
-                Scene->UndoSave();
+                Scene.UndoSave();
             }
         }
     }

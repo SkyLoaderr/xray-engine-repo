@@ -187,7 +187,7 @@ public:
 	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
 	CCustomObject* FindObjectByName	(char *name, EObjClass classfilter);
-    CCustomObject* FindObjectByName   (char *name, CCustomObject* pass_object);
+    CCustomObject* FindObjectByName	(char *name, CCustomObject* pass_object);
     bool FindDuplicateName          ();
 
 	void UndoClear					();
@@ -220,31 +220,31 @@ public:
     }
 public:
 
-	void Init();
-	void Clear();
-    void Modified();
-    bool IfModified();
-	bool IsModified();
+	void 			OnCreate		();
+	void 			OnDestroy		();
+    void 			Modified		();
+    bool 			IfModified		();
+	bool 			IsModified		();
 
-    int GetUndoCount(){return m_UndoStack.size();}
-    int GetRedoCount(){return m_RedoStack.size();}
+    int 			GetUndoCount	(){return m_UndoStack.size();}
+    int 			GetRedoCount	(){return m_RedoStack.size();}
 
-    bool Validate(bool bNeedMsg=false, bool bTestPortal=true);
-    void OnObjectsUpdate();
+    bool 			Validate		(bool bNeedMsg=false, bool bTestPortal=true);
+    void 			OnObjectsUpdate	();
 
-					EScene();
-	virtual 		~EScene();
+					EScene			();
+	virtual 		~EScene			();
 
-	virtual	void	OnDeviceCreate		();
-	virtual	void	OnDeviceDestroy		();
+	virtual	void	OnDeviceCreate	();
+	virtual	void	OnDeviceDestroy	();
 
-	void 			OnShowHint(AStringVec& dest);
+	void 			OnShowHint		(AStringVec& dest);
 
     void			SynchronizeObjects();
 };
 
 //----------------------------------------------------
-extern EScene* Scene;
+extern EScene Scene;
 //----------------------------------------------------
 
 #endif /*_INCDEF_Scene_H_*/

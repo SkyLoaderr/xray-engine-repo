@@ -260,7 +260,7 @@ void CRenderDevice::OnDeviceDestroy(){
 #ifdef _LEVEL_EDITOR
 #include "scene.h"
 void CRenderDevice::UpdateFog(){
-	st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
+	st_Environment& E	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
     UpdateFog (E.m_FogColor.get(),(psDeviceFlags&rsFog)?E.m_Fogness:0,(psDeviceFlags&rsFog)?E.m_ViewDist:UI.ZFar());
 }
 #endif
@@ -436,7 +436,7 @@ void CRenderDevice::ReloadShaders(){
 	OnDeviceDestroy();
 	OnDeviceCreate();
 //S
-/*    Lib->OnDeviceDestroy();
+/*    Lib.OnDeviceDestroy();
 
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
@@ -446,7 +446,7 @@ void CRenderDevice::ReloadShaders(){
     m_WireShader 		= Shader.Create("$ed_wire");
     m_SelectionShader 	= Shader.Create("$ed_selection");
 
-    Lib->OnDeviceCreate();
+    Lib.OnDeviceCreate();
 */
 }
 

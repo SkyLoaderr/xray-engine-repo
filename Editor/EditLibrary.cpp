@@ -46,7 +46,7 @@ void __fastcall TfrmEditLibrary::ShowEditor()
 {
 	if (!form){
     	form = new TfrmEditLibrary(0);
-		Scene->lock();
+		Scene.lock();
     }
     form->Show();
 }
@@ -118,9 +118,9 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 	Action = caFree;
 
     TfrmPropertiesObject::HideProperties();
-	Scene->unlock();
-//    Lib->ResetAnimation();
-    Lib->SetCurrentObject("");
+	Scene.unlock();
+//    Lib.ResetAnimation();
+    Lib.SetCurrentObject("");
     UI.EndEState(esEditLibrary);
     UI.Command(COMMAND_CLEAR);
     // remove directional light
@@ -171,7 +171,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         }
 
         if (cbPreview->Checked||TfrmPropertiesObject::Visible()){
-            m_SelectedObject = Lib->GetEditObject(nm.c_str());
+            m_SelectedObject = Lib.GetEditObject(nm.c_str());
             R_ASSERT(m_SelectedObject);
             ZoomObject();
 		    ebMakeThm->Enabled = true;
@@ -192,7 +192,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-	    m_SelectedObject = Lib->GetEditObject(name.c_str());
+	    m_SelectedObject = Lib.GetEditObject(name.c_str());
     	R_ASSERT(m_SelectedObject);
 	    ebMakeThm->Enabled = true;
         ZoomObject();
@@ -204,7 +204,7 @@ void TfrmEditLibrary::InitObjects()
 {
 	tvObjects->IsUpdating		= true;
     tvObjects->Items->Clear();
-    AStringVec& lst = Lib->Objects();
+    AStringVec& lst = Lib.Objects();
     AnsiString nm;
     for(AStringIt it=lst.begin(); it!=lst.end(); it++){
         nm = ChangeFileExt(*it,"");
@@ -228,7 +228,7 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
     if (FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-	    m_SelectedObject = Lib->GetEditObject(name.c_str());
+	    m_SelectedObject = Lib.GetEditObject(name.c_str());
     	R_ASSERT(m_SelectedObject);
         TfrmPropertiesObject::SetCurrent(m_SelectedObject);
         TfrmPropertiesObject::ShowProperties();
@@ -240,7 +240,7 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 {
 	ebSave->Enabled = false;
-    Lib->Save();
+    Lib.Save();
 }
 //---------------------------------------------------------------------------
 
@@ -264,7 +264,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     int src_age = 0;
 	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
-   	    CEditableObject* obj = Lib->GetEditObject(name.c_str());
+   	    CEditableObject* obj = Lib.GetEditObject(name.c_str());
     	if (obj&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
             obj_name = ChangeFileExt(obj->GetName(),".object");
@@ -354,7 +354,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 			fn = ChangeFileExt(nm,".object");
 		    if (FS.GetSaveName(&FS.m_Objects,fn)){
             	O->SaveObject(fn.c_str());
-                Lib->ReloadLibrary();
+                Lib.ReloadLibrary();
                 InitObjects();
             }
         }

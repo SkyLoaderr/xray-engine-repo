@@ -101,7 +101,7 @@ void __fastcall TfrmPropertiesObject::ebCancelClick(TObject *Sender)
 {
     Close();
     if (m_EditObject&&IsModified()){
-    	Lib->UnloadObject(m_EditObject->GetName());
+    	Lib.UnloadObject(m_EditObject->GetName());
         m_EditObject = 0;
 		TfrmEditLibrary::RefreshSelected();
     }

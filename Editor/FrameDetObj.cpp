@@ -40,10 +40,10 @@ void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
 //S
 /*
-	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene->m_DetailObjects->m_pBaseTexture)?Scene->m_DetailObjects->m_pBaseTexture->name():0);
+	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene.m_DetailObjects->m_pBaseTexture)?Scene.m_DetailObjects->m_pBaseTexture->name():0);
     if (T){
-		Scene->m_DetailObjects->Initialize(T);
-    	Scene->UndoSave();
+		Scene.m_DetailObjects->Initialize(T);
+    	Scene.UndoSave();
     }
 */
 }
@@ -52,30 +52,30 @@ void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 void __fastcall TfraDetailObject::ExtBtn5Click(TObject *Sender)
 {
 	if (TfrmDOShuffle::Run())
-    	Scene->UndoSave();
+    	Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraDetailObject::ebUpdateObjectsClick(TObject *Sender)
 {
-	if (Scene->m_DetailObjects->UpdateObjects(true,false))
-		Scene->UndoSave();
+	if (Scene.m_DetailObjects->UpdateObjects(true,false))
+		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
       TObject *Sender)
 {
-	if (Scene->m_DetailObjects->UpdateObjects(false,true))
-		Scene->UndoSave();
+	if (Scene.m_DetailObjects->UpdateObjects(false,true))
+		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 {
-	if (Scene->m_DetailObjects->Reinitialize())
-		Scene->UndoSave();
+	if (Scene.m_DetailObjects->Reinitialize())
+		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 

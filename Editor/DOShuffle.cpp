@@ -47,12 +47,12 @@ void TfrmDOShuffle::GetInfo(){
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // fill
-    CDetailManager* DM=Scene->m_DetailObjects;
+    CDetailManager* DM=Scene.m_DetailObjects;
     VERIFY(DM);
     // objects
     for (DOIt d_it=DM->m_Objects.begin(); d_it!=DM->m_Objects.end(); d_it++){
     	SDOData* dd = new SDOData;
-        dd->O = Lib->GetEditObject((*d_it)->GetName());
+        dd->O = Lib.GetEditObject((*d_it)->GetName());
         VERIFY(dd->O);
         dd->m_fMinScale 		= (*d_it)->m_fMinScale;
         dd->m_fMaxScale 		= (*d_it)->m_fMaxScale;
@@ -77,7 +77,7 @@ void TfrmDOShuffle::GetInfo(){
 }
 
 void TfrmDOShuffle::ApplyInfo(){
-    CDetailManager* DM=Scene->m_DetailObjects;
+    CDetailManager* DM=Scene.m_DetailObjects;
     VERIFY(DM);
     // update objects
     DM->MarkAllObjectsAsDel();
@@ -184,7 +184,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 //S    _DELETE(sel_thm);
 
     if (ModalResult==mrOk)
-		Scene->m_DetailObjects->InvalidateCache();
+		Scene.m_DetailObjects->InvalidateCache();
 
 	Action = caFree;
     form = 0;
@@ -285,7 +285,7 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
         	if (!FindItem(s_it->c_str())){
                 SDOData* dd = new SDOData;
-                dd->O = Lib->GetEditObject(s_it->c_str());
+                dd->O = Lib.GetEditObject(s_it->c_str());
                 VERIFY(dd->O);
                 dd->m_fMinScale 		= 0.5f;
                 dd->m_fMaxScale 		= 2.f;

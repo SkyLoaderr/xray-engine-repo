@@ -402,7 +402,7 @@ void CSector::Update(bool bNeedCreateCHull){
 //----------------------------------------------------
 void CSector::OnDestroy( ){
     // remove existence sector portal
-    ObjectList& lst = Scene->ListObj(OBJCLASS_PORTAL);
+    ObjectList& lst = Scene.ListObj(OBJCLASS_PORTAL);
     ObjectIt _F = lst.begin();
     while(_F!=lst.end()){
     	CPortal* P=(CPortal*)(*_F);
@@ -419,7 +419,7 @@ void CSector::OnDestroy( ){
 void CSector::OnSceneUpdate(){
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
-    	if (!(Scene->ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetRef()->ContainsMesh(it->mesh))){
+    	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetRef()->ContainsMesh(it->mesh))){
             sector_items.erase(it); it--;
             bUpdate=true;
         }
@@ -436,7 +436,7 @@ void CSector::CaptureInsideVolume(){
 	// fill object list (test bounding sphere intersection)
     ObjectList lst;
 	if (m_bNeedUpdateCHull) MakeCHull();
-	if (Scene->SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
+	if (Scene.SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
     // test all object meshes
         Fmatrix matrix;
 	    CSceneObject *obj=NULL;
@@ -460,7 +460,7 @@ void CSector::CaptureInsideVolume(){
 void CSector::CaptureAllUnusedMeshes(){
     DWORDVec fl;
     CSceneObject *obj=NULL;
-    ObjectList& lst=Scene->ListObj(OBJCLASS_SCENEOBJECT);
+    ObjectList& lst=Scene.ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
     UI.ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
@@ -519,7 +519,7 @@ void CSector::LoadSectorDef( CStream* F ){
 	// sector item
     R_ASSERT(F->FindChunk(SECTOR_CHUNK_ONE_ITEM));
 	F->RstringZ(o_name);
-	sitem.object=(CSceneObject*)Scene->FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
+	sitem.object=(CSceneObject*)Scene.FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
     if (sitem.object==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
         m_bHasLoadError = true;

@@ -13,7 +13,6 @@ TfrmMain *frmMain;
 #include "topbar.h"
 #include "leftbar.h"
 #include "bottombar.h"
-#include "xr_input.h"
 
 //---------------------------------------------------------------------------
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
@@ -23,10 +22,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     fraLeftBar  = new TfraLeftBar(0);
     fraTopBar   = new TfraTopBar(0);
 	fsMainForm->RestoreFormPlacement();
-	if (!UI.OnCreate(D3DWindow)) exit(-1);
-    pInput		= new CInput(FALSE,mouse_device_key);
-    UI.iCapture();
-	Device.InitTimer();
+    if (!UI.Command(COMMAND_INITIALIZE)) exit(-1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
@@ -47,14 +43,14 @@ void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
     fraBottomBar->fsStorage->SaveFormPlacement();
     fraTopBar->fsStorage->SaveFormPlacement();
 
-	UI.iRelease			();
+    UI.Command(COMMAND_DESTROY);
+
     fraTopBar->Parent       = 0;
     fraLeftBar->Parent      = 0;
     fraBottomBar->Parent    = 0;
     _DELETE(fraLeftBar);
     _DELETE(fraTopBar);
     _DELETE(fraBottomBar);
-    _DELETE(pInput);
 
     Application->OnIdle     = 0;
 }
@@ -101,7 +97,6 @@ void __fastcall TfrmMain::TopClick(TObject *Sender)
 void __fastcall TfrmMain::IdleHandler(TObject *Sender, bool &Done)
 {
     Done = false;
-    pInput->OnFrame();
     if (g_bEditorValid) UI.Idle();
 }
 void __fastcall TfrmMain::D3DWindowResize(TObject *Sender)
@@ -198,13 +193,13 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
-	pInput->OnAppActivate();
+	UI.OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 {
-	pInput->OnAppDeactivate();
+	UI.OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 

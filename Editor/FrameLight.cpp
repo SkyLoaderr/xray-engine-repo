@@ -29,8 +29,8 @@ void __fastcall TfraLight::ExpandClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void TfraLight::UseInD3D(bool bAll, bool bFlag){
-	ObjectIt _F = Scene->FirstObj(OBJCLASS_LIGHT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_LIGHT);
+	ObjectIt _F = Scene.FirstObj(OBJCLASS_LIGHT);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_LIGHT);
 	for(;_F!=_E;_F++){
 		CLight* L=(CLight*)*_F;
     	if(bAll){

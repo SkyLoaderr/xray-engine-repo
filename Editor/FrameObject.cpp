@@ -59,12 +59,12 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 void TfraObject::SelByRefObject( bool flag ){
     ObjectList objlist;
     LPCSTR sel_name=0;
-    if (Scene->GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
+    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
         sel_name = ((CSceneObject*)objlist.front())->GetName();
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,sel_name);
     if (!N) return;
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++)
     {
         if((*_F)->Visible() )
@@ -83,14 +83,14 @@ void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 {
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,0);
     if (!N) return;
-    Lib->SetCurrentObject(N);
+    Lib.SetCurrentObject(N);
     // set current object
     OutCurrentName();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OutCurrentName(){
-	LPCSTR N = Lib->GetCurrentObject();
-	ebCurObj->Caption = (N&&N[0])?Lib->GetCurrentObject():"<none>";
+	LPCSTR N = Lib.GetCurrentObject();
+	ebCurObj->Caption = (N&&N[0])?Lib.GetCurrentObject():"<none>";
 }
 //---------------------------------------------------------------------------
 

@@ -1544,7 +1544,7 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
       Transparent = False
-      OnClick = ebCameraPlaneClick
+      OnClick = ebCameraStyleClick
     end
     object ebCameraArcBall: TExtBtn
       Tag = 1
@@ -1568,7 +1568,7 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
       Transparent = False
-      OnClick = ebCameraPlaneClick
+      OnClick = ebCameraStyleClick
     end
     object ebCameraFly: TExtBtn
       Tag = 2
@@ -1592,7 +1592,7 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
       Transparent = False
-      OnClick = ebCameraPlaneClick
+      OnClick = ebCameraStyleClick
     end
   end
   object Panel1: TPanel
@@ -1754,6 +1754,7 @@ object fraTopBar: TfraTopBar
     IniSection = 'Top Bar'
     Options = []
     RegistryRoot = prLocalMachine
+    OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'ebASnap.Down'
       'ebAxisX.Down'

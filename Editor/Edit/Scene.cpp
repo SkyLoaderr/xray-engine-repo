@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "FS.h"
 #include "ui_main.h"
+#include "ui_tools.h"
 #include "Frustum.h"
 #include "SceneObject.h"
 #include "DetailObjects.h"
@@ -19,7 +20,7 @@
 #include "bottombar.h"
 #include "leftbar.h"
 //----------------------------------------------------
-EScene* Scene;
+EScene Scene;
 //----------------------------------------------------
 void st_Environment::Reset(){
     m_ViewDist		= 500;
@@ -90,7 +91,6 @@ void st_LevelOptions::Reset(){
 #define MAX_VISUALS 4096
 
 EScene::EScene(){
-	Scene = this;
 	m_Valid = false;
 	m_Locked = 0;
     for (int i=0; i<OBJCLASS_COUNT; i++){
@@ -105,18 +105,16 @@ EScene::EScene(){
     m_DetailObjects	= new CDetailManager();
     m_SkyDome = 0;
     ClearSnapList();
-	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
-	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
 
 EScene::~EScene(){
-	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
 	VERIFY( m_Valid == false );
     m_SnapObjects.clear();
 }
 
-void EScene::Init(){
+void EScene::OnCreate(){
+	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
+	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 	m_LastAvailObject = 0;
     m_LevelOp.Reset();
 	ELog.Msg( mtInformation, "Scene: initialized" );
@@ -125,7 +123,11 @@ void EScene::Init(){
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 
-void EScene::Clear(){
+void EScene::OnDestroy(){
+    Unload		();
+    UndoClear	();
+	Device.seqDevCreate.Remove(this);
+	Device.seqDevDestroy.Remove(this);
 	ELog.Msg( mtInformation, "Scene: cleared" );
 	m_LastAvailObject = 0;
 	m_Valid = false;
@@ -190,7 +192,7 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
                     if( (*_F)->FrustumPick(frustum) ){
                         (*_F)->Select( flag );
 				        if((*_F)->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down)
-                        	Scene->GroupSelect((*_F)->GetGroupIndex(),flag,false);
+                        	GroupSelect((*_F)->GetGroupIndex(),flag,false);
                         count++;
                     }
                 }
@@ -508,7 +510,7 @@ void EScene::Render( Fmatrix *_Camera ){
 void EScene::UpdateSkydome(){
 	_DELETE(m_SkyDome);
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
-        CEditableObject* O = Lib->GetEditObject(m_LevelOp.m_SkydomeObjName.c_str());
+        CEditableObject* O = Lib.GetEditObject(m_LevelOp.m_SkydomeObjName.c_str());
         if (!O){
         	ELog.DlgMsg(mtError,"Object %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
             return;
@@ -617,7 +619,7 @@ bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
         return false;
     }
 
-//	if(!Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR)){
+//	if(!Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR)){
 //    	ELog.DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
 //        return false;
 //	}
@@ -745,7 +747,7 @@ void EScene::ZoomExtents( BOOL bSel ){
                     if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
         }
     }else{
-    	EObjClass cls = UI.CurrentClassID();
+    	EObjClass cls = Tools.CurrentClassID();
     	ObjectIt _F = FirstObj(cls);
 	    ObjectIt _E = LastObj(cls);
     	for(;_F!=_E;_F++)
@@ -810,7 +812,7 @@ void EScene::GroupCreate(bool bMsg){
 		if (bMsg) ELog.DlgMsg(mtError,"Ignore groups checked. Group can't created.");
     	return;
 	}
-    EObjClass cls = UI.CurrentClassID();
+    EObjClass cls = Tools.CurrentClassID();
 	// validate objects
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
@@ -986,7 +988,7 @@ void EScene::SynchronizeObjects(){
 }
 
 void EScene::OnShowHint(AStringVec& dest){
-    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.CurrentClassID(),0,true,false);
+    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,false);
     if (obj) obj->OnShowHint(dest);
 }
 

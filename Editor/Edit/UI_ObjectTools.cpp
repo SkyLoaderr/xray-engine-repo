@@ -46,17 +46,17 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p;
 	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)) return false;
-    LPCSTR N = Lib->GetCurrentObject();
+    LPCSTR N = Lib.GetCurrentObject();
     if(!N){
     	fraObject->ebCurObjClick(0);
-	    N = Lib->GetCurrentObject();
+	    N = Lib.GetCurrentObject();
 
     }
-    CEditableObject* ref = Lib->GetEditObject(Lib->GetCurrentObject());
+    CEditableObject* ref = Lib.GetEditObject(Lib.GetCurrentObject());
 	if(ref){
         if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
             char namebuffer[MAX_OBJ_NAME];
-            Scene->GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
+            Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
             CSceneObject *obj = new CSceneObject(namebuffer);
             obj->SetRef(ref);
             if (fraLeftBar->ebRandomAdd->Down){
@@ -76,8 +76,8 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
                 }
             }
             obj->Move(p);
-            Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
-            Scene->AddObject( obj );
+            Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
+            Scene.AddObject( obj );
             if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
             if (!Shift.Contains(ssAlt)) ResetActionToSelect();
         }

@@ -109,9 +109,19 @@ void __fastcall TfraTopBar::ebZoomExtentsSelectedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraTopBar::ebCameraPlaneClick(TObject *Sender)
+void __fastcall TfraTopBar::ebCameraStyleClick(TObject *Sender)
 {
 	Device.m_Camera.SetStyle(((TExtBtn*)Sender)->Tag);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfraTopBar::fsStorageRestorePlacement(TObject *Sender)
+{
+	if (ebCameraPlane->Down) 			Device.m_Camera.SetStyle(csPlaneMove);
+	else if (ebCameraArcBall->Down) 	Device.m_Camera.SetStyle(cs3DArcBall);
+	else if (ebCameraFly->Down) 		Device.m_Camera.SetStyle(csFreeFly);
+    UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 

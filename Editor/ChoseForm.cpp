@@ -46,7 +46,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     form->tvItems->Items->Clear		();
     // fill object list
 	AnsiString fld;
-    AStringVec& lst = Lib->Objects();
+    AStringVec& lst = Lib.Objects();
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
 		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->c_str(),fld))==0)))
 			if (!bExcludeSystem||(bExcludeSystem&&(it->c_str()[0]!='$')))
@@ -118,7 +118,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
     form->tvItems->Items->Clear();
 	AnsiString fld;
     // fill
-    for (PS::SDef* S=PSLib->FirstPS(); S!=PSLib->LastPS(); S++){
+    for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++){
 		if (!start_folder||(start_folder&&stricmp(start_folder,FOLDER::GetFolderName(S->m_Name,fld))))
 			FOLDER::AppendObject(form->tvItems,S->m_Name);
     }

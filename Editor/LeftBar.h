@@ -97,7 +97,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Save2;
 	TMenuItem *Destroy1;
 	TMenuItem *DestroyAll1;
-	TExtBtn *ebParticleEditor;
 	TExtBtn *ebTargetPS;
 	TExtBtn *ebImageEditor;
 	TPanel *paSnapList;
@@ -197,7 +196,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ExtBtn9MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebParticleEditorClick(TObject *Sender);
 	void __fastcall ebImageEditorClick(TObject *Sender);
 	void __fastcall ebClearSnapClick(TObject *Sender);
 	void __fastcall ebSetSnapClick(TObject *Sender);

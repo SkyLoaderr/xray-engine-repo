@@ -67,12 +67,12 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift)
     CCustomObject* obj=0;
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
 		char namebuffer[MAX_OBJ_NAME];
-		Scene->GenObjectName(parent_tool->objclass, namebuffer);
+		Scene.GenObjectName(parent_tool->objclass, namebuffer);
 		obj = NewObjectFromClassID(parent_tool->objclass);
         strcpy(obj->GetName(),namebuffer);
 		obj->Move( p );
-        Scene->SelectObjects(false,parent_tool->objclass);
-		Scene->AddObject(obj);
+        Scene.SelectObjects(false,parent_tool->objclass);
+		Scene.AddObject(obj);
 		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
@@ -96,25 +96,25 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 // total select
 //------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
-	EObjClass cls = UI.CurrentClassID();
+	EObjClass cls = Tools.CurrentClassID();
 
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
-    if (!Shift.Contains(ssCtrl)) Scene->SelectObjects( false, cls);
+    if (!Shift.Contains(ssCtrl)) Scene.SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene->RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, false);
+    CCustomObject *obj = Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, false);
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
         if(obj){
-	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene->GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
+	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene.GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
         	else obj->Select((obj->Selected())?false:true);
         }
         return true;
     } else {
         if( obj ){
-	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene->GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
+	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene.GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
             else obj->Select(obj->Selected()?false:true);
         }
     }
@@ -130,7 +130,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI.EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene->FrustumSelect(true,fraLeftBar->ebIgnoreTarget->Down?OBJCLASS_DUMMY:parent_tool->objclass);
+        Scene.FrustumSelect(true,fraLeftBar->ebIgnoreTarget->Down?OBJCLASS_DUMMY:parent_tool->objclass);
     }
     return true;
 }
@@ -139,10 +139,10 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
 // moving
 //------------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
-	EObjClass cls = UI.CurrentClassID();
+	EObjClass cls = Tools.CurrentClassID();
 
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
-    if(Scene->SelectionCount(true,cls)==0) return false;
+    if(Scene.SelectionCount(true,cls)==0) return false;
 
     if (fraTopBar->ebAxisY->Down){
 		m_MovingXVector.set(0,0,0);
@@ -183,9 +183,9 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 {
 	Fvector amount;
 	if (DefaultMovingProcess(_Shift,amount)){
-		EObjClass cls = UI.CurrentClassID();
+		EObjClass cls = Tools.CurrentClassID();
 		bool flt = cls!=OBJCLASS_DUMMY;
-        for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+        for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
@@ -196,7 +196,7 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 
 bool __fastcall TUI_CustomControl::MovingEnd(TShiftState _Shift)
 {
-	Scene->UndoSave();
+	Scene.UndoSave();
     return true;
 }
 
@@ -205,10 +205,10 @@ bool __fastcall TUI_CustomControl::MovingEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 {
-	EObjClass cls = UI.CurrentClassID();
+	EObjClass cls = Tools.CurrentClassID();
 
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
-    if(Scene->SelectionCount(true,cls)==0) return false;
+    if(Scene.SelectionCount(true,cls)==0) return false;
 
     m_RotateCenter.set( UI.pivot() );
     m_RotateVector.set(0,0,0);
@@ -228,7 +228,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 
 		bool flt = !fraLeftBar->ebIgnoreTarget->Down;
         bool grp = !fraLeftBar->ebIgnoreGroup->Down;
-        for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+        for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
             ObjectList& lst = (*it).second;
             if (!flt||(parent_tool->objclass==(*it).first))
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
@@ -236,9 +236,9 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 						if (grp&&(*_F)->IsInGroup()){
 	                    	if (flt) continue;
                         	int idx = (*_F)->GetGroupIndex();
-							Scene->GroupUpdateBox(idx);
+							Scene.GroupUpdateBox(idx);
                             Fvector C;
-                            Scene->GetGroupItem(idx).box.getcenter(C);
+                            Scene.GetGroupItem(idx).box.getcenter(C);
                             (*_F)->Rotate( C, m_RotateVector, amount );
                         }else{
                             if( fraTopBar->ebCSLocal->Down ){
@@ -253,7 +253,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 }
 bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 {
-	Scene->UndoSave();
+	Scene.UndoSave();
     return true;
 }
 
@@ -262,9 +262,9 @@ bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 {
-	EObjClass cls = UI.CurrentClassID();
+	EObjClass cls = Tools.CurrentClassID();
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
-    if(Scene->SelectionCount(true,cls)==0) return false;
+    if(Scene.SelectionCount(true,cls)==0) return false;
 	m_ScaleCenter.set( UI.pivot() );
 	return true;
 }
@@ -285,16 +285,16 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
 
     bool flt = !fraLeftBar->ebIgnoreTarget->Down;
 	bool grp = !fraLeftBar->ebIgnoreGroup->Down;
-    for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
+    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (!flt||(parent_tool->objclass==(*it).first))
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if((*_F)->Visible()&&(*_F)->Selected()){
                     if (grp&&(*_F)->IsInGroup()){
                         int idx = (*_F)->GetGroupIndex();
-                        Scene->GroupUpdateBox(idx);
+                        Scene.GroupUpdateBox(idx);
                         Fvector C;
-                        Scene->GetGroupItem(idx).box.getcenter(C);
+                        Scene.GetGroupItem(idx).box.getcenter(C);
                         (*_F)->Scale( C, amount );
                     }else{
                         if( fraTopBar->ebCSLocal->Down ){
@@ -308,7 +308,7 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
 }
 bool __fastcall TUI_CustomControl::ScaleEnd(TShiftState _Shift)
 {
-	Scene->UndoSave();
+	Scene.UndoSave();
     return true;
 }
 //------------------------------------------------------------------------------

@@ -441,12 +441,6 @@ void __fastcall TfraLeftBar::ExtBtn9MouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebParticleEditorClick(TObject *Sender)
-{
-	UI.Command(COMMAND_PARTICLE_EDITOR);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebImageEditorClick(TObject *Sender)
 {
 	UI.Command(COMMAND_IMAGE_EDITOR);
@@ -473,10 +467,10 @@ void __fastcall TfraLeftBar::miAddSelectedToListClick(TObject *Sender)
 void __fastcall TfraLeftBar::UpdateSnapList()
 {
 	lbSnapList->Items->Clear();
-    if (!Scene->m_SnapObjects.empty()){
+    if (!Scene.m_SnapObjects.empty()){
     	int idx=0;
-        ObjectIt _F=Scene->m_SnapObjects.begin();
-    	for (;_F!=Scene->m_SnapObjects.end(); _F++,idx++){
+        ObjectIt _F=Scene.m_SnapObjects.begin();
+    	for (;_F!=Scene.m_SnapObjects.end(); _F++,idx++){
         	AnsiString s; s.sprintf("%d: %s",idx,(*_F)->GetName());
         	lbSnapList->Items->Add(s);
         }
