@@ -45,7 +45,6 @@ private:
 	CGameLevelCrossTable				*m_cross_table;
 	CGraphEngine						*m_graph_engine;
 
-
 protected:
 			void						init								();
 			void						load_objects						();

@@ -79,12 +79,12 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 
 	// load levels
 	CGameGraph::SLevel					level;
+	string256							J;
 	LEVEL_INFO_STORAGE::const_iterator	I = m_levels.begin();
 	LEVEL_INFO_STORAGE::const_iterator	E = m_levels.end();
 	for ( ; I != E; ++I) {
 		if (xr_strlen(name)) {
 			u32							N = _GetItemCount(name);
-			string16					J;
 			bool						found = false;
 			for (u32 i=0; i<N; ++i)
 				if (!xr_strcmp(_GetItem(name,i,J),(*I).name)) {
@@ -158,15 +158,6 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	stream.close_chunk				();
 
 	stream.save_to					(*spawn_name(output));
-
-	// TEST
-	SPAWN_GRAPH						test;
-	IReader							*reader = FS.r_open(*spawn_name(output)), *chunk;
-
-	chunk							= reader->open_chunk(1);
-	load_data						(test,*chunk);
-
-	FS.r_close						(reader);
 }
 
 shared_str CGameSpawnConstructor::spawn_name	(LPCSTR output)

@@ -88,7 +88,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	if (xr_strlen(name))
 		strcat			(name,"\\");
-	char				prjName[256];
+	string4096			prjName;
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);
 

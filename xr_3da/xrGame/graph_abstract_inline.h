@@ -59,6 +59,9 @@ IC	void CAbstractGraph::save			(IWriter &stream)
 	stream.open_chunk		(2);
 	I						= B;
 	for ( ; I != E; ++I) {
+		if ((*I)->edges().empty())
+			continue;
+
 		stream.open_chunk	(u32(I - B));
 
 		stream.w_u32		((*I)->edges().size());
@@ -86,6 +89,7 @@ IC	void CAbstractGraph::load			(IReader &stream)
 
 	chunk0						= stream.open_chunk(0);
 	u32							n = chunk0->r_u32();
+	chunk0->close				();
 
 	chunk0						= stream.open_chunk(1);
 	for (u32 i=0; i<n; ++i) {
@@ -94,26 +98,34 @@ IC	void CAbstractGraph::load			(IReader &stream)
 		{
 			chunk2				= chunk1->open_chunk(0);
 			load_data			(data,*chunk2);
+			chunk2->close		();
 
 			chunk2				= chunk1->open_chunk(1);
 			load_data			(vertex_id,*chunk2);
+			chunk2->close		();
 
 			add_vertex			(data,vertex_id);
 		}
+		chunk1->close			();
 	}
+	chunk0->close				();
 
 	chunk0						= stream.open_chunk(2);
 	const_vertex_iterator		I = m_vertices.begin(), B = I;
 	const_vertex_iterator		E = m_vertices.end();
 	for ( ; I != E; ++I) {
 		chunk1					= chunk0->open_chunk(u32(I - B));
+		if (!chunk1)
+			continue;
 		u32						n = chunk1->r_u32();
 		for (u32 i=0; i<n; ++i) {
 			load_data			(vertex_id,*chunk1);
 			load_data			(edge_weight,*chunk1);
 			add_edge			((*I)->vertex_id(),vertex_id,edge_weight);
 		}
+		chunk1->close			();
 	}
+	chunk0->close				();
 }
 
 TEMPLATE_SPECIALIZATION

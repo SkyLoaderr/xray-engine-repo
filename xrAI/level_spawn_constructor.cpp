@@ -20,9 +20,14 @@
 
 CLevelSpawnConstructor::~CLevelSpawnConstructor					()
 {
-	xr_delete				(m_level_graph);
-	xr_delete				(m_cross_table);
-	xr_delete				(m_graph_engine);
+	GRAPH_POINT_STORAGE::iterator	I = m_graph_points.begin();
+	GRAPH_POINT_STORAGE::iterator	E = m_graph_points.end();
+	for ( ; I != E; ++I)
+		F_entity_Destroy			((CSE_Abstract*&)(*I));
+
+	VERIFY					(!m_level_graph);
+	VERIFY					(!m_cross_table);
+	VERIFY					(!m_graph_engine);
 }
 
 IC	const CGameGraph &CLevelSpawnConstructor::game_graph		() const
@@ -66,9 +71,6 @@ void CLevelSpawnConstructor::init								()
 	// loading cross table 
 	strcat					(file_name,CROSS_TABLE_NAME);
 	m_cross_table			= xr_new<CGameLevelCrossTable>(file_name);
-
-	// create graph engine
-	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
 }
 
 CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
@@ -103,7 +105,7 @@ void CLevelSpawnConstructor::add_spawn_group					(CSE_Abstract			*abstract)
 {
 	CSE_SpawnGroup			*spawn_group = smart_cast<CSE_SpawnGroup*>(abstract);
 	R_ASSERT				(spawn_group);
-	m_spawn_groups.insert	(std::make_pair(spawn_group->s_name,spawn_group));
+	m_spawn_groups.insert	(std::make_pair(spawn_group->s_name_replace,spawn_group));
 	add_free_object			(abstract);
 }
 
@@ -197,9 +199,9 @@ void CLevelSpawnConstructor::load_objects						()
 IC	float CLevelSpawnConstructor::normalize_probability			(const GROUP_OBJECTS &group)
 {
 	GROUP_OBJECTS::const_iterator	I = group.begin();
-	GROUP_OBJECTS::const_iterator	abstract = group.end();
+	GROUP_OBJECTS::const_iterator	E = group.end();
 	float							result = 0.f;
-	for ( ; I != abstract; I++)
+	for ( ; I != E; I++)
 		result						+= (*I)->m_fProbability;
 	return							(result);
 }
@@ -219,21 +221,23 @@ IC	void CLevelSpawnConstructor::normalize_probability			(CSE_ALifeAnomalousZone 
 IC	void CLevelSpawnConstructor::free_group_objects					()
 {
 	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.begin();
-	SPAWN_GRPOUP_OBJECTS::iterator	abstract = m_spawn_objects.end();
-	for ( ; I != abstract; I++)
+	SPAWN_GRPOUP_OBJECTS::iterator	E = m_spawn_objects.end();
+	for ( ; I != E; I++)
 		xr_delete		((*I).second);
 }
 
 void CLevelSpawnConstructor::fill_spawn_groups					()
 {
 	SPAWN_GRPOUP_OBJECTS::iterator				I = m_spawn_objects.begin();
-	SPAWN_GRPOUP_OBJECTS::iterator				abstract = m_spawn_objects.end();
+	SPAWN_GRPOUP_OBJECTS::iterator				E = m_spawn_objects.end();
 	
-	for ( ; I != abstract; I++) {
+	for ( ; I != E; I++) {
 		R_ASSERT								(xr_strlen(*(*I).first));
-		SPAWN_GROUPS::iterator					J = m_spawn_groups.find((*I).first);
-		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found! (%s)",(*(*I).second)[0]->s_name_replace);
 		R_ASSERT								((*I).second);
+		SPAWN_GROUPS::iterator					J = m_spawn_groups.find((*I).first);
+		if (J == m_spawn_groups.end())
+			clMsg								("! ERROR (spawn group not found!) : %s",*(*I).first);
+		R_ASSERT3								(J != m_spawn_groups.end(),"Specified group control not found!",(*(*I).second)[0]->s_name_replace);
 		
 		float									accumulator = normalize_probability(*(*I).second) / (*J).second->m_fGroupProbability;
 		GROUP_OBJECTS::iterator					i = (*I).second->begin();
@@ -289,7 +293,7 @@ void CLevelSpawnConstructor::correct_objects					()
 		VERIFY				(level_graph().valid_vertex_id(m_spawns[i]->m_tNodeID));
 		if (m_spawns[i]->used_ai_locations() && !level_graph().inside(level_graph().vertex(m_spawns[i]->m_tNodeID),m_spawns[i]->o_Position)) {
 			Fvector			new_position = level_graph().vertex_position(m_spawns[i]->m_tNodeID);
-			Msg				("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->s_name_replace,VPUSH(m_spawns[i]->o_Position),VPUSH(new_position));
+			clMsg			("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->s_name_replace,VPUSH(m_spawns[i]->o_Position),VPUSH(new_position));
 			m_spawns[i]->o_Position	= new_position;
 		}
 		u32 dwBest = cross_table().vertex(m_spawns[i]->m_tNodeID).game_vertex_id();
@@ -312,11 +316,14 @@ void CLevelSpawnConstructor::correct_objects					()
 
 void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 {
+	// create graph engine
+	m_graph_engine			= xr_new<CGraphEngine>(m_level_graph->header().vertex_count());
+
 	xr_vector<u32>			l_tpaStack;
 	l_tpaStack.reserve		(1024);
 	SPAWN_STORAGE::iterator	B = m_spawns.begin(), I = B;
-	SPAWN_STORAGE::iterator	abstract = m_spawns.end();
-	for ( ; I != abstract; I++) {
+	SPAWN_STORAGE::iterator	E = m_spawns.end();
+	for ( ; I != E; I++) {
 		CSE_ALifeAnomalousZone *zone = smart_cast<CSE_ALifeAnomalousZone*>(*I);
 		if (!zone)
 			continue;
@@ -328,9 +335,9 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 			zone->m_dwStartIndex			= m_level_points.size();
 			m_level_points.resize							(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
 			xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
-			xr_vector<CGameGraph::CLevelPoint>::iterator	abstract = m_level_points.end();
+			xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
 			xr_vector<u32>::iterator						i = l_tpaStack.begin();
-			for ( ; I != abstract; I++, i++) {
+			for ( ; I != E; I++, i++) {
 				(*I).tNodeID	= *i;
 				(*I).tPoint		= level_graph().vertex_position(*i);
 				(*I).fDistance	= cross_table().vertex(*i).distance();
@@ -341,9 +348,9 @@ void CLevelSpawnConstructor::generate_artefact_spawn_positions	()
 			zone->m_dwStartIndex			= m_level_points.size();
 			m_level_points.resize							(zone->m_dwStartIndex + zone->m_wArtefactSpawnCount);
 			xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_level_points.begin() + zone->m_dwStartIndex;
-			xr_vector<CGameGraph::CLevelPoint>::iterator	abstract = m_level_points.end();
+			xr_vector<CGameGraph::CLevelPoint>::iterator	E = m_level_points.end();
 			xr_vector<u32>::iterator						i = l_tpaStack.begin();
-			for ( ; I != abstract; I++, i++) {
+			for ( ; I != E; I++, i++) {
 				(*I).tNodeID	= *i;
 				(*I).tPoint		= level_graph().vertex_position(*i);
 				(*I).fDistance	= cross_table().vertex(*i).distance();
@@ -361,8 +368,8 @@ void CLevelSpawnConstructor::fill_level_changers				()
 
 		bool found = false;
 		GRAPH_POINT_STORAGE::const_iterator I = m_graph_points.begin();
-		GRAPH_POINT_STORAGE::const_iterator abstract = m_graph_points.end();
-		for ( ; I != abstract; ++I)
+		GRAPH_POINT_STORAGE::const_iterator E = m_graph_points.end();
+		for ( ; I != E; ++I)
 			if (!xr_strcmp(*level_changers()[i]->m_caLevelPointToChange,(*I)->s_name_replace)) {
 				bool ok = false;
 				for (u32 ii=0, nn = game_graph().header().vertex_count(); ii<nn; ++ii) {
@@ -386,7 +393,7 @@ void CLevelSpawnConstructor::fill_level_changers				()
 			}
 
 		if (!found) {
-			Msg				("Graph point %s not found (level changer %s)",*level_changers()[i]->m_caLevelPointToChange,level_changers()[i]->s_name_replace);
+			clMsg			("Graph point %s not found (level changer %s)",*level_changers()[i]->m_caLevelPointToChange,level_changers()[i]->s_name_replace);
 			VERIFY			(false);
 		}
 	}
@@ -400,7 +407,7 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 	for ( ; I != E; ++I) {
 		CSE_Abstract					*abstract = *I;
 		CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(abstract);
-		R_ASSERT3						(alife_object->m_tNodeID && (alife_object->m_tNodeID < level_graph().header().vertex_count()),"Invalid node for object ",alife_object->s_name_replace);
+//		R_ASSERT3						(level_graph().valid_vertex_id(alife_object->m_tNodeID),"Invalid node for object ",alife_object->s_name_replace);
 		R_ASSERT2						(alife_object,"Non-ALife object!");
 		VERIFY							(game_graph().vertex(alife_object->m_tGraphID)->level_id() == m_level.id());
 		alife_object->m_caGroupControl	= "";
@@ -416,11 +423,17 @@ void CLevelSpawnConstructor::update_artefact_spawn_positions	()
 
 void CLevelSpawnConstructor::Execute							()
 {
-	init								();
 	load_objects						();
 	fill_spawn_groups					();
+	
+	init								();
+	
 	correct_objects						();
 	generate_artefact_spawn_positions	();
+
+	xr_delete							(m_level_graph);
+	xr_delete							(m_cross_table);
+	xr_delete							(m_graph_engine);
 }
 
 void CLevelSpawnConstructor::update								()
