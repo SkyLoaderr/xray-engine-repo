@@ -2,6 +2,8 @@
 #include "Actor.h"
 #include "ActorAnimation.h"
 #include "..\xr_level_controller.h"
+#include "hudmanager.h"
+#include "UI.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
@@ -68,6 +70,8 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base){
 
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
+	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
+	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
 }
 
 void CActor::g_SetAnimation( DWORD mstate_rl )
@@ -88,29 +92,24 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 		CMotionDef* M_torso	= 0;
 		CMotionDef* M_all	= 0;
 		
-		if (mstate_rl&mcFwd)			M_legs = AS->legs_fwd;
-		else if (mstate_rl&mcBack)		M_legs = AS->legs_back;
-		else if (mstate_rl&mcLStrafe)	M_legs = AS->legs_ls;
-		else if (mstate_rl&mcRStrafe)	M_legs = AS->legs_rs;
-		else if (mstate_rl&mcJump){
-			if ((m_current_legs==ST->jump_begin)&&(!m_current_legs_blend->playing)){
-				M_legs = ST->jump_idle;
-			}else if (m_current_legs==ST->jump_idle){
-				M_legs = ST->jump_idle;
-			}else{ 
-				M_legs = ST->jump_begin;
-			}
-		}
-		else if (mstate_rl&mcTurn)		M_legs = ST->legs_turn;
+		if		(mstate_rl&mcLanding)	M_legs	= ST->landing[0];
+		else if (mstate_rl&mcLanding2)	M_legs	= ST->landing[1];
+		else if (mstate_rl&mcTurn)		M_legs	= ST->legs_turn;
+		else if (mstate_rl&mcFall)		M_legs	= ST->jump_idle;
+		else if (mstate_rl&mcJump)		M_legs	= ST->jump_begin;
+		else if (mstate_rl&mcFwd)		M_legs	= AS->legs_fwd;
+		else if (mstate_rl&mcBack)		M_legs	= AS->legs_back;
+		else if (mstate_rl&mcLStrafe)	M_legs	= AS->legs_ls;
+		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 		
 		// на ноги есть анимация - установим еще и на торс / иначе Idle для всего
 		if (M_legs)						M_torso = ST->torso_aim;
-		else							M_all = ST->idle;
+		else							M_all	= ST->idle;
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
 		if (M_all){
 			if(m_current_torso!=M_all){ 
-				PKinematics	(pVisual)->PlayCycle(M_all);
+				m_current_legs_blend = PKinematics	(pVisual)->PlayCycle(M_all);
 				m_current_torso = M_all;
 				m_current_legs	= M_all;
 			}
@@ -124,13 +123,6 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 				m_current_legs=M_legs;
 			}
 		}
-		
-		// end of turn
-		/*		if (M_legs == AS->legs_turn){
-		if (!m_current_legs_blend->playing)
-		mstate_real &= ~mcTurn;
-		}
-		*/
 	}else{
 		if (m_current_legs||m_current_torso){
 			SActorState* ST = 0;
@@ -142,5 +134,35 @@ void CActor::g_SetAnimation( DWORD mstate_rl )
 			PKinematics	(pVisual)->PlayCycle(ST->death);
 		}
 	}
+#ifdef _DEBUG
+	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
+	string128 buf;
+	strcpy(buf,"");
+	if (mstate_rl&mcAccel)		strcat(buf,"Accel ");
+	if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
+	if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
+	if (mstate_rl&mcBack)		strcat(buf,"Back ");
+	if (mstate_rl&mcLStrafe)	strcat(buf,"LStrafe ");
+	if (mstate_rl&mcRStrafe)	strcat(buf,"RStrafe ");
+	if (mstate_rl&mcJump)		strcat(buf,"Jump ");
+	if (mstate_rl&mcFall)		strcat(buf,"Fall ");
+	if (mstate_rl&mcTurn)		strcat(buf,"Turn ");
+	if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
+	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->OutSet(120,450);
+	HUD->pHUDFont->OutNext("MSTATE:     [%s]",buf);
+//	if (buf[0]) 
+//		Msg("%s",buf);
+	switch (Movement.Environment())
+	{
+	case CMovementControl::peOnGround:	strcpy(buf,"ground");			break;
+	case CMovementControl::peInAir:		strcpy(buf,"air");				break;
+	case CMovementControl::peAtWall:	strcpy(buf,"wall");				break;
+	}
+	HUD->pHUDFont->OutNext	(buf);
+	HUD->pHUDFont->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
+	HUD->pHUDFont->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+#endif
 }
 

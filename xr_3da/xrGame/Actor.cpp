@@ -27,7 +27,11 @@ const float		respawn_auto	= 7.f;
 
 #include "targetassault.h"
 
-#define SND_STEP_TIME	1.f
+static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
+static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
+static const float	s_fFallTime			= 0.2f;
+static const float	s_fJumpTime			= 0.3f;
+static const float	s_fJumpGroundTime	= 0.1f;	// для снятия флажка Jump если на земле
 
 static Fbox		bbStandBox;
 static Fbox		bbCrouchBox;
@@ -47,7 +51,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
 	P.w_vec3			(vPosition);
-	P.w_u8				(u8(mstate_real));
+	P.w_u16				(u16(mstate_real));
 	P.w_angle8			(r_model_yaw);
 	P.w_angle8			(r_torso.yaw);
 	P.w_angle8			(r_torso.pitch);
@@ -67,11 +71,12 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	R_ASSERT			(Remote());
 	net_update			N;
 
-	u8	 flags, tmp;
+	u8	flags;
+	u16	tmp;
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);
-	P.r_u8				(tmp			); N.mstate = DWORD(tmp);
+	P.r_u16				(tmp			); N.mstate = DWORD(tmp);
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
@@ -124,6 +129,8 @@ CActor::CActor() : CEntityAlive()
 
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
+
+	m_fFallTime				= s_fFallTime;
 }
 
 CActor::~CActor()
@@ -213,7 +220,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	mstate_wishful			= 0;
 	mstate_real				= 0;
 	m_bJumpKeyPressed		= FALSE;
-	m_bJumpInProgress		= FALSE;
 
 	// *** weapons
 	if (Local()) 			Weapons->ActivateWeaponID	(0);
@@ -330,9 +336,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	{
 		pSounds->PlayAtPos					(sndLanding,this,Position());
 
-		Fvector correctV					= Movement.GetVelocity	();
-		correctV.mul						(.7f);
-		Movement.SetVelocity				(correctV);
+		Movement.SetVelocity				(0.f,0.f,0.f);
 
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
@@ -486,7 +490,7 @@ void CActor::Update	(DWORD DT)
 		g_Physics				(NET_SavedAccel,Jump,dt);
 		Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
 		feel_touch_update		(C,R);
-		g_cl_ValidateMState		(mstate_wishful);
+		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
 		
 		// Dropping
@@ -604,7 +608,7 @@ void CActor::OnVisible()
 	if (W)					W->OnVisible		();
 }
 
-void CActor::g_cl_ValidateMState(DWORD mstate_wf)
+void CActor::g_cl_ValidateMState(float dt, DWORD mstate_wf)
 {
 	// изменилось состояние
 	if (mstate_wf != mstate_real)
@@ -623,18 +627,46 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 			}
 		}
 	}
-	// закончить прыжок
-	if (mstate_real&mcJump)
-		if (Movement.gcontact_Was)	{
-			m_bJumpInProgress	=	FALSE;
-			mstate_real			&= ~mcJump;
+	// закончить приземление
+	if (mstate_real&(mcLanding|mcLanding2)){
+		m_fLandingTime		-= dt;
+		if (m_fLandingTime<=0.f){
+			mstate_real		&=~	(mcLanding|mcLanding2);
+			mstate_real		&=~	(mcFall|mcJump);
 		}
-	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed = FALSE;
+	}
+	// закончить падение
+	if (Movement.gcontact_Was){
+		if (mstate_real&mcFall){
+			if (Movement.GetContactSpeed()>4.f){
+				if (fis_zero(Movement.gcontact_HealthLost)){	
+					m_fLandingTime	= s_fLandingTime1;
+					mstate_real		|= mcLanding;
+				}else{
+					m_fLandingTime	= s_fLandingTime2;
+					mstate_real		|= mcLanding2;
+				}
+			}
+		}
+		m_bJumpKeyPressed	= TRUE;
+		m_fJumpTime			= s_fJumpTime;
+		mstate_real			&=~	(mcFall|mcJump);
+	}
+	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed	=	FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
-	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&mcJump))) || Movement.bSleep) 
+	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&mcFall))) || Movement.bSleep) 
 	{
 		mstate_real				&=~ mcAnyMove;
+	}
+	if (Movement.Environment()==CMovementControl::peOnGround)
+	{
+		// если на земле гарантированно снимать флажок Jump
+		if (((s_fJumpTime-m_fJumpTime)>s_fJumpGroundTime)&&(mstate_real&mcJump))
+		{
+			mstate_real			&=~	mcJump;
+			m_fJumpTime			= s_fJumpTime;
+		}
 	}
 }
 
@@ -643,26 +675,32 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
 
-	if (m_bJumpInProgress && (Movement.Environment()==CMovementControl::peInAir)) 
+	if (!(mstate_real&mcFall) && (Movement.Environment()==CMovementControl::peInAir)) 
 	{
-		mstate_real			|=	mcJump;
-		m_bJumpInProgress	=	FALSE;
+		m_fFallTime				-=	dt;
+		if (m_fFallTime<=0.f){
+			m_fFallTime			=	s_fFallTime;
+			mstate_real			|=	mcFall;
+			mstate_real			&=~	mcJump;
+		}
 	}
 
 	if (Movement.Environment()==CMovementControl::peOnGround)
 	{
 		// jump
-		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && !m_bJumpKeyPressed)
+		m_fJumpTime				-=	dt;
+		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed)
 		{
+			mstate_real			|=	mcJump;
 			m_bJumpKeyPressed	=	TRUE;
-			m_bJumpInProgress	=	TRUE;
-			Jump = (mstate_wf&mcCrouch)?m_fJumpSpeed*.8f:m_fJumpSpeed;
+			Jump				= m_fJumpSpeed;
+			m_fJumpTime			= s_fJumpTime;
 		}
 
 		// crouch
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
-			mstate_real |= mcCrouch;
+			mstate_real			|=	mcCrouch;
 			Movement.ActivateBox(1);
 		}
 		
@@ -693,14 +731,12 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 				if (bAccelerated)			scale *= m_fRunFactor;
 				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
 				vControlAccel.mul			(scale);
-			} else {
-				mstate_real	&= ~mcAnyMove;
+			}else{
+//				mstate_real	&= ~mcAnyMove;
 			}
 		}
-	}
-	else
-	{
-		mstate_real			&=~ mcAnyMove;
+	}else{
+//		mstate_real			&=~ mcAnyMove;
 	}
 
 	// transform local dir to world dir
@@ -717,18 +753,22 @@ void CActor::g_Orientate	(DWORD mstate_rl, float dt)
 	{
 	case mcFwd+mcLStrafe:
 	case mcBack+mcRStrafe:
-		calc_yaw = +PI_DIV_4; break;
+		calc_yaw = +PI_DIV_4; 
+		break;
 	case mcFwd+mcRStrafe:
-	case mcBack+mcLStrafe:
-		calc_yaw = -PI_DIV_4; break;
+	case mcBack+mcLStrafe: 
+		calc_yaw = -PI_DIV_4; 
+		break;
 	case mcLStrafe:
-		calc_yaw = +PI_DIV_3-EPS_L; break;
+		calc_yaw = +PI_DIV_3-EPS_L; 
+		break;
 	case mcRStrafe:
-		calc_yaw = -PI_DIV_2+EPS_L; break;
+		calc_yaw = -PI_DIV_2+EPS_L; 
+		break;
 	}
 	
 	// lerp angle for "effect" and capture torso data from camera
-	angle_lerp		(r_model_yaw_delta,calc_yaw,PI_MUL_2,dt);
+	angle_lerp		(r_model_yaw_delta,calc_yaw,PI_MUL_4,dt);
 
 	// build matrix
 	mRotate.rotateY		(-(r_model_yaw + r_model_yaw_delta));
@@ -743,7 +783,7 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 		r_torso.pitch	=	cameras[cam_active]->GetWorldPitch	();
 	}
 
-	// если хоть что-то нажато - выровнять модель по камере
+	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
 		r_model_yaw		= angle_normalize(r_torso.yaw);
 		mstate_real		&=~mcTurn;
@@ -755,11 +795,12 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 			// 
 			mstate_real	|= mcTurn;
 		}
-		if (_abs(r_model_yaw-r_model_yaw_dest)<EPS_L)
+		if (_abs(r_model_yaw-r_model_yaw_dest)<EPS_L){
 			mstate_real	&=~mcTurn;
-
-		if (mstate_rl&mcTurn)
-			angle_lerp	(r_model_yaw,r_model_yaw_dest,PI_MUL_4,dt);
+		}
+		if (mstate_rl&mcTurn){
+			angle_lerp	(r_model_yaw,r_model_yaw_dest,PI_MUL_2,dt);
+		}
 	}
 }
 

@@ -48,6 +48,8 @@ public:
 		mcTurn		= 0x0040,
 		mcJump		= 0x0080,
 		mcFall		= 0x0100,
+		mcLanding	= 0x0200,
+		mcLanding2	= 0x0400,
 
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};
@@ -88,6 +90,7 @@ protected:
 		CMotionDef*			idle;
 		CMotionDef*			jump_begin;
 		CMotionDef*			jump_idle;
+		CMotionDef*			landing[2];
 		CMotionDef*			legs_turn;
 		CMotionDef*			death;
 		SAnimState			m_walk;
@@ -102,13 +105,16 @@ public:
 	CMotionDef*				m_current_torso;
 	SActorState				m_normal;
 	SActorState				m_crouch;
-
 protected:
 	// Rotation
 	SRotation				r_torso;
 	float					r_model_yaw_dest;
 	float					r_model_yaw;			// orientation of model
 	float					r_model_yaw_delta;		// effect on multiple "strafe"+"something"
+
+	float					m_fLandingTime;
+	float					m_fJumpTime;
+	float					m_fFallTime;
 
 	DWORD					patch_frame;
 	Fvector					patch_position;
@@ -121,7 +127,7 @@ private:
 	DWORD					mstate_wishful;	
 	DWORD					mstate_real;	
 
-	BOOL					m_bJumpKeyPressed, m_bJumpInProgress;
+	BOOL					m_bJumpKeyPressed;//, m_bJumpInProgress;
 
 	float					m_fWalkAccel;
 	float					m_fJumpSpeed;
@@ -175,7 +181,7 @@ private:
 
 	//------------------------------
 	void					g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
-	void					g_cl_ValidateMState		(DWORD mstate_wf);
+	void					g_cl_ValidateMState		(float dt, DWORD mstate_wf);
 	void					g_cl_Orientate			(DWORD mstate_rl, float dt);
 	void					g_sv_Orientate			(DWORD mstate_rl, float dt);
 	void					g_Orientate				(DWORD mstate_rl, float dt);

@@ -63,6 +63,10 @@ CMovementControl::CMovementControl()
 	fFriction			= fAirFriction;
 	bIsAffectedByGravity= TRUE;
 	fActualVelocity		= 0;
+	m_fGroundDelayFactor= 1.f;
+	gcontact_HealthLost = 0;
+	fContactSpeed		= 0.f;
+	vLastMotionY		= 0.f;
 }
 
 CMovementControl::~CMovementControl()
@@ -119,7 +123,7 @@ float Integrate1D_to	(float v, float &s, float& a,  float f, float s_desired)
 	return v0;
 }
 
-void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f)
+void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f, float yf=1.f)
 {
 	float	Q		= 1.f/float(psPhysicsFPS);
 	int		steps	= iFloor(dt/Q);	// note: round-towards-zero
@@ -131,7 +135,8 @@ void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f)
 		// velocity
 		v0.set(v);
 		v.x += a.x*Q - (v0.x + a.x*Q)*QmulF;
-		v.y += a.y*Q - (v0.y + a.y*Q)*QmulF;
+//		v.y += a.y*Q - (v0.y + a.y*Q)*QmulF;
+		v.y += a.y*Q - (v0.y + a.y*Q)*(QmulF*yf);
 		v.z += a.z*Q - (v0.z + a.z*Q)*QmulF;
 
 		// motion
@@ -146,7 +151,8 @@ void Integrate(Fvector& v, Fvector &s, Fvector& a, float dt, float f)
 	// velocity
 	v0.set	(v);
 	v.x += a.x*Q - (v0.x + a.x*Q)*QmulF;
-	v.y += a.y*Q - (v0.y + a.y*Q)*QmulF;
+//	v.y += a.y*Q - (v0.y + a.y*Q)*QmulF;
+	v.y += a.y*Q - (v0.y + a.y*Q)*(QmulF*yf);
 	v.z += a.z*Q - (v0.z + a.z*Q)*QmulF;
 
 	// motion
@@ -177,8 +183,11 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 
 	// sample iterations
 	Fvector		S; S.set(0,0,0);
-	Integrate	(v,S,a,100,friction);
+	Integrate	(v,S,a,100,friction,1.f);
 }
+
+static const float s_fGroundDelaySpeed		= 10.f;
+static const float s_fMaxGroundDelayFactor	= 30.f;
 
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
@@ -196,18 +205,20 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// Check for Sleep-State
 	bSleep = FALSE;
 	float a_speed = _abs(ang_speed);
+	float accel_mag = vAccel.magnitude();
 	switch (eEnvironment)
 	{
 	case peOnGround:
-		bSleep = (vAccel.magnitude()<EPS) && (fLastMotionMag<EPS_L) && (!bJump) && (a_speed<EPS_S);
+		bSleep = (accel_mag<EPS) && (fLastMotionMag<EPS_L) && (!bJump) && (a_speed<EPS_S);
 		break;
 	default:
-		bSleep = (vAccel.magnitude()<EPS) && (!bIsAffectedByGravity) && (fLastMotionMag<EPS_L) && (!bJump) && (a_speed<EPS_S);
+		bSleep = (accel_mag<EPS) && (!bIsAffectedByGravity) && (fLastMotionMag<EPS_L) && (!bJump) && (a_speed<EPS_S);
 		break;
 	}
 	if (bSleep)	{
 		fLastMotionMag		= 0;
 		fActualVelocity		= 0;
+		vVelocity.set		(0,0,0);
 		return;
 	}
 
@@ -216,18 +227,26 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// Calculate gravity
 	float gravity;
 	gravity = psGravity;
-	if (eEnvironment==peOnGround && !bJump) gravity *= 0.5f;
 	vAccel.y -= bIsAffectedByGravity?gravity:0;
 
 	// Physics integration
 	vExternalImpulse.set(0,0,0);
 	motion.set			(0,0,0);
 	if (bJump)			{
+		vVelocity.x	*= 0.9f;
+		vVelocity.z	*= 0.9f;
 		vVelocity.y = 0; 
 		vAccel.y	= vAccel.y+psGravity+jump/dt;
 		fFriction	= fAirFriction;
 	}
-	Integrate		(vVelocity,motion,vAccel,dt,fFriction);
+
+	// stay ground friction
+	if ((eEnvironment==peOnGround)&&(_Accel.magnitude()<EPS_L)){
+		m_fGroundDelayFactor += s_fGroundDelaySpeed*dt;
+		clamp(m_fGroundDelayFactor,1.f,s_fMaxGroundDelayFactor);
+	}else m_fGroundDelayFactor = 1.f;
+ 
+	Integrate	(vVelocity,motion,vAccel,dt,fFriction*m_fGroundDelayFactor,((vLastMotionY+EPS_L)<0)?0.5f:2.f);
 
 	// Calculate collisions
 	Fvector	final_pos,final_vel;
@@ -243,14 +262,18 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	float s_calc	= motion.magnitude();	// length of motion - dS - requested
 	motion.sub		(final_pos,vPosition);	// motion - resulting
 
+	vLastMotionY	= final_pos.y-vPosition.y;
+
 	if (peAtWall==eEnvironment)
 	{
 		float s_dummy	= 0;
 		float s_desired	= motion.y;
 		vVelocity.y		= Integrate1D_to	(fVelocityY,s_dummy,vAccel.y,fOldFriction,s_desired);
+/*
 #ifdef _DEBUG		
 		Msg				("o:%f / n:%f",fVelocityY,vVelocity.y);
 #endif
+*/
 	}
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
@@ -262,11 +285,10 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	{
 		s_res					= motion.magnitude();	
 		// не ставить final_vel.dotproduct(vel_dir)< (=) 0.f равным нулю!!!
-		if ((final_vel.dotproduct(vel_dir)<0.f) || (s_res/s_calc)<0.00001f){ 
+		if ((final_vel.dotproduct(vel_dir)<0.f) || (s_res/s_calc)<0.001f){ 
 			vVelocity.set	(0,0,0);
 			final_pos.set	(vPosition);
 			s_res			= 0;
-			// dummy_s???
 		} else {
 			vPosition.set	(final_pos);
 		}
@@ -306,25 +328,26 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		gcontact_HealthLost = 0;
 		if (s_res<=s_calc)	
 		{
-			float		dummy_s			= 0;
-			float		a				= vAccel.magnitude();
-			float		contact_speed	= Integrate1D_to	(fVelocityBefore,dummy_s,a,fOldFriction,s_res);
+			float		dummy_s	= 0;
+			float		a		= vAccel.magnitude();
+			fContactSpeed		= Integrate1D_to	(fVelocityBefore,dummy_s,a,fOldFriction,s_res);
 			// s_res, dummy_s ???
-
+/*
 #ifdef _DEBUG		
 			Msg	("dummy_s: %2.3f, sres: %2.3f, scalc: %2.1f, old_aspeed: %2.3f, cspeed: %2.3f (min: %2.1f)",
-				dummy_s,s_res,s_calc,fVelocityBefore,contact_speed,fMinCrashSpeed);
+				dummy_s,s_res,s_calc,fVelocityBefore,fContactSpeed,fMinCrashSpeed);
 #endif
+*/
 			// contact with ground
-			gcontact_Power				= contact_speed/fMaxCrashSpeed;
+			gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
 			gcontact_HealthLost			= 0;
-			if (contact_speed>fMinCrashSpeed) 
+			if (fContactSpeed>fMinCrashSpeed) 
 			{
 				//float k=10000.f/(B-A);
 				//float dh=sqrtf((dv-A)*k);
 				gcontact_HealthLost = 
-					(100*(contact_speed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+					(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 			}
 		}
 	}
@@ -373,7 +396,7 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 			{
 				Fvector N; 
 				N.mknormal(T.p[0],T.p[1],T.p[2]);
-				if ((N.y>.0f))
+				if ((N.y>.7f))
 				{
 					eEnvironment=peOnGround;
 					return;

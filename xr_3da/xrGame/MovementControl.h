@@ -18,6 +18,7 @@ public:
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
+	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
 	CObject*			pObject;
@@ -43,6 +44,8 @@ private:
 	float				fLastMotionMag;
 
 	float				fActualVelocity;
+	float				fContactSpeed;
+	float				vLastMotionY;
 public:
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
@@ -60,7 +63,6 @@ public:
 		fAirFriction	= air;
 		fWallFriction	= wall;
 		fGroundFriction	= ground;
-//		fAirResistFactor= 1-a_res; clamp(fAirResistFactor,0.001f,1.f);
 	}
 
 	float				GetCurrentFriction()		{ return fFriction; }
@@ -68,6 +70,7 @@ public:
 	const Fvector&		GetVelocity		( )			{ return vVelocity;	}
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
+	float				GetContactSpeed	()			{ return fContactSpeed; }
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);}
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction);

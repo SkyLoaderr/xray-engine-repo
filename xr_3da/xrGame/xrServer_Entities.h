@@ -178,7 +178,7 @@ xrSE_DECLARE_END
 xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	u32						timestamp;
 	u8						flags;
-	u8						mstate;
+	u16						mstate;
 	float					model_yaw;
 	SRotation				torso;
 	Fvector					accel;

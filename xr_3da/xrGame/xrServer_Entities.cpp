@@ -279,7 +279,7 @@ void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 	P.r_u32				(timestamp	);
 	P.r_u8				(flags		);
 	P.r_vec3			(o_Position	);
-	P.r_u8				(mstate		);
+	P.r_u16				(mstate		);
 	P.r_angle8			(model_yaw	);
 	P.r_angle8			(torso.yaw	);
 	P.r_angle8			(torso.pitch);
@@ -294,7 +294,7 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 	P.w_u32				(timestamp	);
 	P.w_u8				(flags		);
 	P.w_vec3			(o_Position	);
-	P.w_u8				(mstate		);
+	P.w_u16				(mstate		);
 	P.w_angle8			(model_yaw	);
 	P.w_angle8			(torso.yaw	);
 	P.w_angle8			(torso.pitch);
