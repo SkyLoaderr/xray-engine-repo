@@ -15,6 +15,9 @@
 #define	r2_RT_bloom1		"$user$bloom1"			// ---
 #define	r2_RT_bloom2		"$user$bloom2"			// ---
 
+#define r2_RT_luminance_tmp	"$user$lum_tmp"
+#define r2_RT_luminance		"$user$lum"
+
 #define	r2_RT_smap_d_surf	"$user$smap_d_surf"		// ---	directional
 #define	r2_RT_smap_d_depth	"$user$smap_d_depth"	// ---	directional
 #define	r2_RT_smap_p		"$user$smap_p"			// ---	point
