@@ -43,7 +43,10 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateDanger);
 	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	if (enemy())
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
+	else
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	set_property						(eWorldPropertyAnomaly,true);
 }
 
@@ -113,8 +116,10 @@ void CStalkerActionDetectAnomaly::execute	()
 {
 	inherited::execute				();
 
-	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
-
-	if (completed() || m_object->enemy())
+	if (completed() || m_object->enemy()) {
 		set_property				(eWorldPropertyAnomaly,false);
+		return;
+	}
+	
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
 }
