@@ -12,8 +12,7 @@
 class ENGINE_API CShaderManager
 {
 private:
-	struct str_pred : public std::binary_function<char*, char*, bool>
-	{
+	struct str_pred : public std::binary_function<char*, char*, bool>	{
 		IC bool operator()(LPCSTR x, LPCSTR y) const
 		{	return strcmp(x,y)<0;	}
 	};
