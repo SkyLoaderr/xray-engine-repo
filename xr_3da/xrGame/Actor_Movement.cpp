@@ -214,10 +214,13 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// crouch
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
-			
 			m_PhysicMovementControl->EnableCharacter();
-			if(ActivateBox(2))mstate_real			|=	mcCrouch;
-
+			bool Crouched = false;
+			if (isAccelerated(mstate_wf))
+				Crouched = ActivateBox(1);
+			else
+				Crouched = ActivateBox(2);
+			if (Crouched) mstate_real			|=	mcCrouch;
 		}
 
 		// mask input into "real" state
