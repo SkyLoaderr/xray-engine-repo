@@ -101,6 +101,7 @@ public:
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 	u32						m_dwDeathTime;
+	float					m_fFood;
 public:
 	// General
 	CEntityAlive			();

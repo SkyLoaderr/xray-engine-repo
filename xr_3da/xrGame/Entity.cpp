@@ -243,6 +243,7 @@ void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocal
 CEntityAlive::CEntityAlive()
 {
 	m_dwDeathTime = 0;
+	m_fFood		  = Movement.GetMass();
 }
 
 CEntityAlive::~CEntityAlive()
