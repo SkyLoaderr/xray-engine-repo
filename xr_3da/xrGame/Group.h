@@ -16,17 +16,12 @@ typedef struct tagSSearchPlace {
 	float	m_cost;
 } SSearchPlace;
 
-//typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
-//typedef svector<u32,MAX_GROUP_SIZE>							MemberNodes;
-//typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
-//typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
 typedef xr_vector<Fvector>										MemberPlacement;
 typedef xr_vector<u32>											MemberNodes;
 typedef xr_vector<SSearchPlace>									SuspiciousNodes;
 typedef xr_vector<bool>											SuspiciousGroups;
 
-class CGroup
-{
+class CGroup {
 public:
 	u32							Flags;
 
@@ -74,5 +69,5 @@ public:
 	void						GetAliveMemberPlacementN	(MemberNodes& P, CEntity* Me);
 	void						GetAliveMemberDedicationN	(MemberNodes& P, CEntity* Me);
 	void						GetAliveMemberInfo			(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me);
-	const Fvector&				GetCentroid();
+	const Fvector				&GetCentroid				();
 };

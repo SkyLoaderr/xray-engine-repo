@@ -6,8 +6,7 @@
 #define AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_
 #pragma once
 
-#include "group.h"
-#include "memory_space.h"
+#include "team.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -20,47 +19,12 @@ class	NET_Queue_Event;
 class	CSE_Abstract;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
-
 #define DEFAULT_FOV				90.f
-const int maxGroups				= 32;
 
-class CSquad {
-public:
-	CEntity						*Leader;
-	xr_vector<CGroup>			Groups;
-	xr_vector<CVisibleObject>	m_visible_objects;
-	xr_vector<CSoundObject>		m_sound_objects;
-	xr_vector<CHitObject>		m_hit_objects;
-	u32							m_member_count;
-
-								CSquad() : 
-									Leader(0),
-									m_member_count(0)
-	{
-	}
-
-								~CSquad()
-	{
-	}
-
-	bool						Empty			(){return Groups.empty();}
-	int							Size			(){return Groups.size();}
-};
-
-const int maxTeams				= 32;
-const int maxSquads				= 32;
 const int maxRP					= 64;
+const int maxTeams				= 32;
 
-class CTeam
-{
-public:
-	svector<CSquad,maxSquads>	Squads;
-};
-
-//by Dandy
-//for the fog over the map
 class CFogOfWar;
-//менеджер полета пуль
 class CBulletManager;
 
 class CLevel					: public IGame_Level, public IPureClient

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "group.h"
 #include "entity.h"
 #include "custommonster.h"
 #include "ai_space.h"

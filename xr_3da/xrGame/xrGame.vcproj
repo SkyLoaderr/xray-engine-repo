@@ -3832,12 +3832,6 @@
 					Name="Level"
 					Filter="">
 					<File
-						RelativePath=".\Group.cpp">
-					</File>
-					<File
-						RelativePath=".\Group.h">
-					</File>
-					<File
 						RelativePath=".\Level.cpp">
 					</File>
 					<File
@@ -3909,6 +3903,36 @@
 						</File>
 						<File
 							RelativePath=".\Tracer.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="group"
+						Filter="">
+						<File
+							RelativePath=".\Group.cpp">
+						</File>
+						<File
+							RelativePath=".\Group.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="squad"
+						Filter="">
+						<File
+							RelativePath=".\squad.cpp">
+						</File>
+						<File
+							RelativePath=".\squad.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="team"
+						Filter="">
+						<File
+							RelativePath=".\team.cpp">
+						</File>
+						<File
+							RelativePath=".\team.h">
 						</File>
 					</Filter>
 				</Filter>
