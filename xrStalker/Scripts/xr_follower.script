@@ -1,53 +1,3 @@
-local animations = {
-                   {anim = "stoya_ruje_ 0",       flag = true},
-                   {anim = "vishka_3",            flag = false},
-                   {anim = "norm_torso_2_idle_1", flag = false},
-                   {anim = "norm_torso_2_idle_2", flag = true},
-                   {anim = "norm_torso_2_idle_3", flag = false},
-                   {anim = "norm_torso_2_idle_4", flag = true},
-                   {anim = "norm_torso_2_idle_5", flag = false},
-                   {anim = "norm_torso_2_idle_6", flag = false}
-                   }
-
-
-local anim_pris = {
-                  {anim = "prisluh_0", flag = false},
-                  {anim = "prisluh_1", flag = false},
-                  {anim = "prisluh_2", flag = false}
-                  }
-                  
-local anim_raid = {
-                  {anim = "spetsnaz_0", flag = false},
-                  {anim = "spetsnaz_1", flag = false},
-                  {anim = "spetsnaz_2", flag = false},
-                  {anim = "spetsnaz_3", flag = false},
-                  {anim = "spetsnaz_4", flag = false},
-                  {anim = "spetsnaz_5", flag = false},
-                  {anim = "spetsnaz_6", flag = false},
-                  {anim = "spetsnaz_7", flag = false}
-                  }
-                  
-local anim_find_stop = {
-                  {anim = "poisk_idle_0", flag = true},                  
-                  {anim = "poisk_idle_1", flag = true},                  
-                  {anim = "poisk_idle_2", flag = true},
-                  {anim = "poisk_idle_3", flag = true},
-                  {anim = "poisk_idle_4", flag = true},
-                  {anim = "poisk_idle_5", flag = true}
-                  }
-
-local anim_find_move = {
-                  {anim = "poisk_walk_0", flag = true},
-                  {anim = "poisk_walk_1", flag = true},
-                  {anim = "poisk_walk_2", flag = true},
-                  {anim = "poisk_walk_3", flag = true}
-                  }                                      
-
---local commander_snd                     = xr_sounds_id.sound_patrol_base
---local soldiers_idle_snd                 = commander_snd + 1
---local soldiers_hear_snd                 = commander_snd + 2
---local soldiers_idle2_snd                = commander_snd + 3
---local soldiers_replics_snd              = commander_snd + 4
 
 local leader_no_command					= 0
 local leader_move                       = 1
@@ -77,6 +27,7 @@ function evaluator_leader_present:evaluate ()
              return false 
           end   
        end
+       printf ("Leader name : %s", self.a.leader_name)
        self.a.leader = level.object (self.a.leader_name)
        if self.a.leader == nil then 
           return false 
@@ -163,9 +114,7 @@ end
 function action_leader_wait:execute ()
     action_base.execute                 (self)
     self.object:set_item                (object.idle, self.object:best_weapon ())
-    if self.object:animation_count () < 2 then
-       self:set_animation ()
-    end    
+    xr_state.anim_update ("idle", self.object)
 end
 --------------
 function action_leader_wait:finalize ()
@@ -173,15 +122,6 @@ function action_leader_wait:finalize ()
     self.object:clear_animations ()
 end
 --------------
-function action_leader_wait:set_animation ()
-
-    self.current_animation = self.current_animation + 1
-    if self.current_animation > table.getn (animations) then
-       self.current_animation = 1
-    end
-
-    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
-end
 
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -193,8 +133,6 @@ function action_follow:__init (name, storage) super (nil, name)
     self.stage = 0
     self.leader_v_id = -1
     self.last_time = 0
-    self.current_animation = math.random (1, table.getn (animations))
-    self.current_phrase = math.random (0, num_phrases)
     self.mental_state = anim.free
     self.time = 0
     self.dist = self.a.distance
@@ -351,14 +289,8 @@ function action_follow:check_path ()
     
     if self.a.leader_command == leader_stop then
        self.object:set_movement_type (move.stand)
-       if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then 
-          self.stage = 2  
-          return false
-       end
-       self.object:set_sight (look.direction, self.a.look_dir, 0)
-       self.stage = 4
-       self.time = device ():time_global ()        
-       return true
+       self.stage = 2  
+       return false
     end   
     
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
@@ -458,10 +390,11 @@ function action_follow:update_stage_2 ()
        self.object:clear_animations ()
        return
     end 
-    if self.object:animation_count () <= 1 then
-       self:set_animation ()
-    end    
+    --if self.object:animation_count () <= 1 then
+       --self:set_animation ()
+    --end    
     self.object:set_movement_type (move.stand)
+    xr_state.anim_update ("idle", self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function action_follow:update_stage_4 ()
@@ -471,198 +404,9 @@ function action_follow:update_stage_4 ()
     end    
 end
 ----------------------------------------------------------------------------------------------------------------------
-function action_follow:set_animation ()
-
-    self.current_animation = self.current_animation + 1
-    if self.current_animation > table.getn (animations) then
-       self.current_animation = 1
-    end
-
-    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
-end
 
 
 
---[[
--- рейд
-class "action_raid" (action_base)
---------------
-function action_raid:__init (name, storage) super (nil, name)
-	self.a = storage
-    self.current_animation = 0
-    self.move_type = move.walk
-    self.body_state = move.standing
-    self.mental_state = anim.free
-    self.stage = 0
-    self.in_find = false
-    self.path_type = patrol.start
-    self.first_init = true
-end
---------------
-function action_raid:initialize ()
-    action_base.initialize (self)
-    
-    self.object:set_callback (self, "move_callback", game_object.movement)
-    self.object:clear_animations ()
-    
-    self.object:set_node_evaluator        ()
-    self.object:set_path_evaluator        ()
-    self.object:set_desired_position      ()
-    self.object:set_desired_direction     ()
-    self.object:set_item                  (object.idle, self.object:best_weapon ())
-    self.object:set_detail_path_type      (move.line)
-    self.object:set_body_state            (self.body_state)
-    self.object:set_movement_type         (self.move_type)
-    self.object:set_path_type             (game_object.patrol_path)
-    if self.first_init == true then 
-       self.path_type = patrol.start
-       self.first_init = false
-    else 
-       self.path_type = patrol.nearest 
-    end 
-    self.object:set_patrol_path           (self.a.raid_path, self.path_type, patrol.continue, true)
-    self.object:set_mental_state          (self.mental_state)
-    self.object:set_sight                 (look.path_dir, nil, 0)
-    self.stage = 0
-    self.in_find = false
-end
---------------
-function action_raid:execute ()
-    action_base.execute                 (self)
-    if self.stage == 0 then
-       return  
-    elseif self.stage == 1 then
-           if self.object:animation_count () == 0 then
-              self.object:set_body_state            (self.body_state)
-              self.object:set_movement_type         (self.move_type)
-              self.object:set_mental_state          (self.mental_state)
-              if self.in_find == true then
-                 local num = math.random (1, 4)
-                 self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
-                 self.stage = 2
-              else
-                 self.stage = 0   
-              end   
-           end
-    elseif self.stage == 2 then
-           self:update_stage2 ()
-    end      
-           
-end
---------------
-function action_raid:finalize ()
-    action_base.finalize (self)
-    self.object:clear_animations ()
-    self.object:clear_callback (game_object.movement)
-end
---------------
-function action_raid:set_animation ()
-
-    self.current_animation = self.current_animation + 1
-    if self.current_animation > table.getn (animations) then
-       self.current_animation = 1
-    end
-
-    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
-end
---------------
-function action_raid:update_stage2 ()
-    if self.object:animation_count () >= 2 then return end
-    local num = math.random (1, 4)
-    self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
-end
---------------
-function action_raid:move_callback (obj, action_type, index)
-    if index == -1 then return end
-    
-    local ptr = patrol (self.object:patrol ())
-    if ptr:flag (index, 4) == true then
-       self.a.raid_enabled = false
-       self.first_init = true
-       return
-    end   
-    
-    if ptr:flag (index, 8) == true then
-       self.object:set_movement_type (move.stand)
-       self.move_type = move.walk
-       self.body_state = move.standing
-       self.mental_state = anim.free
-       self.object:set_body_state            (move.standing)
-       self.object:set_movement_type         (move.walk)
-       self.object:set_mental_state          (anim.free)
-       return
-    end
-
-    if ptr:flag (index, 9) == true then
-       self.object:set_movement_type (move.stand)
-       self.body_state = move.standing
-       self.move_type = move.run
-       self.mental_state = anim.danger
-       self.object:set_body_state            (move.standing)
-       self.object:set_movement_type         (move.run)
-       self.object:set_mental_state          (anim.danger)
-       return
-    end
-    
-    if ptr:flag (index, 10) == true then
-       self.object:set_movement_type (move.stand)
-       self.move_type = move.run
-       self.body_state = move.crouch
-       self.mental_state = anim.danger
-       self.object:set_body_state            (move.crouch)
-       self.object:set_movement_type         (move.run)
-       self.object:set_mental_state          (anim.danger)
-       return
-    end
-        
-    if ptr:flag (index, 11) == true then
-       self.object:set_movement_type (move.stand)
-       self.object:set_mental_state (anim.free)
-       local num
-       if self.in_find == false then
-          if self.body_state == move.crouch then     
-             num = math.random (1, 4)  
-          else
-             num = math.random (5, 8)
-          end
-          self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
-       else
-          num = math.random (1, 6)
-          self.object:clear_animations ()
-          self.object:add_animation (anim_find_stop[num].anim,  anim_find_stop[num].flag)
-       end    
-       self.stage = 1
-       return 
-    end
-    
-    if ptr:flag (index, 12) == true then
-       self.in_find = true
-       --self.move_type = move.run
-       --self.body_state = move.crouch
-       --self.mental_state = anim.danger
-       --self.object:set_body_state            (move.crouch)
-       --self.object:set_movement_type         (move.run)
-       --self.object:set_mental_state          (anim.danger)
-       --self.stage = 2
-       --local num = math.random (1, 4)
-       --self.object:add_animation (anim_find_move[num].anim,  anim_find_move[num].flag)
-       return 
-    end   
-    
-    if ptr:flag (index, 13) == true then
-       --self.move_type = move.walk
-       --self.body_state = move.standing
-       --self.mental_state = anim.danger
-       --self.object:set_body_state            (move.standing)
-       --self.object:set_movement_type         (move.walk)
-       --self.object:set_mental_state          (anim.danger)
-       --self.object:clear_animations ()
-       self.in_find = false
-       --self.stage = 0
-    end   
-        
-end
-]]--
 
 ---------------------------------------------------------------------------------------------------------------------
 class "action_raid" (action_base)
@@ -781,7 +525,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.raid_path    = utils.cfg_get_string (ini, section, "raid_path",   npc, false, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
-    st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, false, "empty")
+    st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, false, "")
     
     if st.leader_name == "empty" then st.leader_name = nil end
 	
