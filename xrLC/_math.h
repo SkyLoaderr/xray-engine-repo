@@ -4,12 +4,12 @@
 #include "cpuid.h"
 
 namespace FPU {
-	XRCORE_API void	__stdcall	m24		();
-	XRCORE_API void	__stdcall	m24r	();	
-	XRCORE_API void	__stdcall	m53		();	
-	XRCORE_API void	__stdcall	m53r	();	
-	XRCORE_API void	__stdcall	m64		();	
-	XRCORE_API void	__stdcall	m64r	();	
+	XRCORE_API void	m24		();
+	XRCORE_API void	m24r	();	
+	XRCORE_API void	m53		();	
+	XRCORE_API void	m53r	();	
+	XRCORE_API void	m64		();	
+	XRCORE_API void	m64r	();	
 };
 namespace CPU {
 	XRCORE_API extern u64				cycles_per_second;
