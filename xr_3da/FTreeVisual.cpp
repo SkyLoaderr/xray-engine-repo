@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ftreevisual.h"
+#include "..\environment.h"
 #include "..\igame_level.h"
 #include "..\fmesh.h"
 #include "..\xr_effsun.h"
+
+#include "ftreevisual.h"
 
 FTreeVisual::FTreeVisual	(void)
 {
