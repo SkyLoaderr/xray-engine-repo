@@ -95,7 +95,8 @@ CWeaponM134::~CWeaponM134()
 	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
-void CWeaponM134::Load(CInifile* ini, const char* section){
+void CWeaponM134::Load(CInifile* ini, const char* section)
+{
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
