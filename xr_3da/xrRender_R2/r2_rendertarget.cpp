@@ -234,7 +234,7 @@ void	CRenderTarget::OnDeviceCreate	()
 				for (u32 x=0; x<TEX_float2rgb; x++)
 				{
 					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-					*p			=	color_rgba	(y,x,0,0);
+					*p			=	color_rgba	(x,y,0,0);
 				}
 			}
 			R_CHK						(t_encodeRG_surf->UnlockRect	(0));
