@@ -65,8 +65,8 @@ function actor_enemy(actor, npc)
 end
 
 function val_enemy_captive(actor, npc)
-	--return db.storage[npc:id()].enemy:id() == actor:id()
-	return true
+	-- FIXME: use SID!!!
+	return db.storage[npc:id()].enemy:name() == "val_escort_captive"
 end    
 
 function actor_wears_bandit_outfit(actor, npc)
