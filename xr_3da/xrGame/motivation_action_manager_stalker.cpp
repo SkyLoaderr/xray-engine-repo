@@ -48,11 +48,6 @@ void CMotivationActionManagerStalker::Load				(LPCSTR section)
 
 void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_all)
 {
-	clear					();
-	add_motivations			();
-	add_evaluators			();
-	add_actions				();
-
 	inherited::reinit		(object,clear_all);
 
 	m_storage.set_property	(eWorldPropertyDead,false);
@@ -65,6 +60,11 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 void CMotivationActionManagerStalker::reload			(LPCSTR section)
 {
 	inherited::reload		(section);
+
+	clear					();
+	add_motivations			();
+	add_evaluators			();
+	add_actions				();
 }
 
 void CMotivationActionManagerStalker::update			(u32 time_delta)
