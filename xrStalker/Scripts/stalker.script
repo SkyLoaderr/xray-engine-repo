@@ -178,5 +178,5 @@ function init		(obj)
        xr_patrol.AddToPatrol (command, group, member, obj)
        return
     end
-	obj:bind_object	(this.stalker_binder(obj))
+--	obj:bind_object	(this.stalker_binder(obj))
 end
