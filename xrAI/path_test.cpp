@@ -15,7 +15,7 @@
 #include "path_test_old.h"
 
 typedef CDataStorage<float,u32,u32,true,24,8>							CHeapDataStorage;
-typedef CPathManager<CAI_Map,CHeapDataStorage,float,u32,u32>			CDistancePathManager;
+typedef CPathManager1<CHeapDataStorage,float,u32,u32>			CDistancePathManager;
 typedef CAStar<CHeapDataStorage,CDistancePathManager,CAI_Map,u32,float>	CAStarSearch;
 
 #define TIME_TEST
@@ -25,7 +25,7 @@ void path_test(LPCSTR caLevelName)
 	xr_vector<u32>			path, path1;
 	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
 	CHeapDataStorage		*data_storage	= xr_new<CHeapDataStorage>		(graph->get_node_count());
-	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	();
+	CDistancePathManager	*path_manager	= xr_new<CDistancePathManager>	(graph,data_storage);
 	CAStarSearch			*a_star			= xr_new<CAStarSearch>			();
 	
 	Msg						("Total %d nodes",graph->get_node_count() - 1);
@@ -38,8 +38,6 @@ void path_test(LPCSTR caLevelName)
 	start					= CPU::GetCycleCount();
 	for (int i=0; i<100; ++i) {
 		path_manager->setup		(
-			graph,
-			data_storage,
 			&path,
 			1 + i,
 			graph->get_node_count() - 1 - i
