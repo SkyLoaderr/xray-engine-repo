@@ -229,46 +229,20 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 	POOL_IT	it			=	Pool.find	(low_name);
 	if (it!=Pool.end())
 	{
- 
 		// 1. Instance found
-		Model				=	it->second;
+        IRender_Visual*		Model	= it->second;
 		Model->Spawn		();
 		Pool.erase			(it);
- 
 	} else {
-		// 1. Search for already loaded model (reference, base model)
-		IRender_Visual* Base		= Instance_Find		(low_name);
-
-		if (0!=Base) 
-		{
-			// 2. If found - return (cloned) reference
-			Model			= Instance_Duplicate(Base);
-			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
-		} else {
-			bAllowChildrenDuplicate	= FALSE;
-			// 3. If not found
-			if (data)		Model = Instance_Load(low_name,data,TRUE);
-            else			Model = Instance_Load(low_name,TRUE);
-			bAllowChildrenDuplicate	= TRUE;
-#ifdef _EDITOR
-			if (!Model)		return 0;
-#endif
-			Model			= Instance_Duplicate(Model);
-			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
-		}
-	}
-
-	return	Model;
-/*    
 		// 1. Search for already loaded model (reference, base model)
 		IRender_Visual* Base		= Instance_Find		(low_name);
 
 		if (0==Base){
 			// 2. If not found
-			bAllowChildrenDiplicate	= FALSE;
-			if (data)		Base = Instance_Load(low_name,data);
-            else			Base = Instance_Load(low_name);
-			bAllowChildrenDiplicate	= TRUE;
+			bAllowChildrenDuplicate	= FALSE;
+			if (data)		Base = Instance_Load(low_name,data,TRUE);
+            else			Base = Instance_Load(low_name,TRUE);
+			bAllowChildrenDuplicate	= TRUE;
 #ifdef _EDITOR
 			if (!Base)		return 0;
 #endif
@@ -278,8 +252,6 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
         Registry.insert		(mk_pair(Model,xr_strdup(low_name)));
         return				Model;
 	}
-*/
-    
 }
 
 IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
