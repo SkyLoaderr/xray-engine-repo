@@ -2,7 +2,7 @@
 #define __C__
 
 // maps unsigned 8 bits/channel to D3DCOLOR
-IC u32	color_argb	(u32 a, u32 r, u32 g, u32 b)	{	return ((a&0xff)<<24)|((r&0xff)<<16)|((g&0xff)<<8)|(b&0xff);	}
+IC u32	color_argb	(u32 a, u32 r, u32 g, u32 b)	{	return ((a&0xff)<<24)|((b&0xff)<<16)|((g&0xff)<<8)|(r&0xff);	}
 IC u32	color_rgba	(u32 a, u32 r, u32 g, u32 b)	{	return color_argb(a,r,g,b);		}
 IC u32	color_xrgb	(u32 r, u32 g, u32 b)			{	return color_argb(0xff,r,g,b);	}
 
