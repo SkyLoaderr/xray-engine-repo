@@ -36,12 +36,7 @@ function main_menu:InitControls()
 	local captiontxt_rect = {x = caption_rect.width/2,
 							 y = caption_rect.height/2,
 							 width = 0,
-							 height = 0}
-	local info_rect       = {x = 0, 
-						     y = caption_rect.y + caption_rect.height + indent,
-						     width = 150, 
-						     height = 300}
-	info_rect.x = main_rect.width - info_rect.width - indent
+							 height = 0}		
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
 							 height = 40,
@@ -50,16 +45,7 @@ function main_menu:InitControls()
 	local btn_cancel_rect = {x = btn_ok_rect.x + btn_ok_rect.width + indent,
 							 y = btn_ok_rect.y,
 							 height = btn_ok_rect.height,
-							 width  = btn_ok_rect.width}
-	local list_rect       = {x = indent,
-						     y = caption_rect.y + caption_rect.height + indent,
-						     width = 0,
-						     height = 0}
-	list_rect.width  = main_rect.width - indent*3 - info_rect.width
-	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
-	local message_rect   = {x = 0, y = 0, width = 550, height = 300}
-	--message_rect.x = (main_rect.width - message_rect.width)/2
-	--message_rect.y = (main_rect.height - message_rect.height)/2
+							 width  = btn_ok_rect.width}	
 	
 	----- CODE -------
 	
@@ -87,29 +73,7 @@ function main_menu:InitControls()
 	txt_caption:SetText("MAIN_MENU")
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
-	main_frame:AttachChild(txt_caption)
-	
-	-- INFO box --
-	local frame_info = CUIFrameWindow()  --background for ListView
-    frame_info:SetAutoDelete(true)
-    frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-    main_frame:AttachChild(frame_info)	
-
-
-	------------LIST-----------------
-    local txt_list   = CUIFrameWindow()  --background for ListView
-    txt_list:SetAutoDelete(true)
-    txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
-    -- txt_list:ClipperOn()
-    main_frame:AttachChild(txt_list) 
-
-    local list_wnd = CUIListWnd()
-    list_wnd:SetAutoDelete(true)
-    list_wnd:SetWindowName("list_window")
-    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
-    list_wnd:SetItemHeight(25)
-    list_wnd:EnableScrollBar(true)
-    main_frame:AttachChild(list_wnd)
+	main_frame:AttachChild(txt_caption)	
 
 --------------------------------------- 
     local btn   = CUIButton()
