@@ -7,26 +7,49 @@
 
 #include "LocatorAPI_borland.h"
 
-int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR ext_mask)
+struct fl_mask{
+	bool 	b_cmp_nm;
+    bool	b_cmp_ext;
+	ref_str nm;
+    ref_str ext;
+    fl_mask():b_cmp_nm(false),b_cmp_ext(false){};
+};
+
+DEFINE_VECTOR(fl_mask,FLMaskVec,FLMaskVecIt);
+int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mask)
 {
+	R_ASSERT		(path&&path[0]);
 	VERIFY			(flags);
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
 	string256		N;
-	if (initial&&initial[0]) update_path(N,initial,"");
+	if (FS.path_exist(path))	update_path(N,path,"");
+    else						strcpy(N,path);
 
 	file			desc;
 	desc.name		= N;
 	files_it	I 	= files.find(desc);
 	if (I==files.end())	return 0;
 
-	LPSTRVec exts;
-	if (ext_mask){
-		int cnt		= _GetItemCount(ext_mask);
-		string32	buf;
-		for (int k=0; k<cnt; k++)
-			exts.push_back(xr_strdup(_GetItem(ext_mask,k,buf)));
+    BOOL b_mask 	= FALSE;
+	FLMaskVec 		masks;
+	if (mask){
+		int cnt		= _GetItemCount(mask);
+		string64	buf;
+		for (int k=0; k<cnt; k++){
+        	_GetItem(mask,k,buf);
+            fl_mask item;
+        	// name
+			string64 nm;
+        	_GetItem(buf,0,nm,'.'); 
+			if (nm&&nm[0]&&(nm[0]!='*'))	{	item.nm=nm; item.b_cmp_nm=true;		}
+			// extension
+            LPCSTR ext	= strext(buf);
+			if (ext&&ext[0]&&(ext[1]!='*'))	{	item.ext=ext; item.b_cmp_ext=true; 	}
+            masks.push_back(item);
+        }
+        b_mask		= !masks.empty();
 	}
 
 	size_t base_len	= strlen(N);
@@ -34,39 +57,43 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR 
 	{
 		const file& entry = *I;
 		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
-		const char* end_symbol = entry.name+strlen(entry.name)-1;
+		LPCSTR end_symbol = entry.name+strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
 			// file
 			if ((flags&FS_ListFiles) == 0)	continue;
 			LPCSTR entry_begin 		= entry.name+base_len;
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			// check extension
-			if (ext_mask){
-				LPCSTR ext 			= strext(entry_begin);
-				if (ext){
-					bool bFound			= false;
-					for (LPSTRIt it=exts.begin(); it!=exts.end(); it++)
-						if (0==strcmp(ext,*it)) bFound=true;
-					if (!bFound)		continue;
-				}
+			if (b_mask){
+                string128 tmp;
+                ref_str nm 			= _GetItem(entry_begin,0,tmp,'.');
+				ref_str ext 		= strext(entry_begin);
+                bool bOK			= false;
+                for (FLMaskVecIt it=masks.begin(); it!=masks.end(); it++){
+                	bool bNM		= true;
+                    bool bEXT		= true;
+                    if (it->b_cmp_nm&&nm.size())	if (nm!=it->nm) 	bNM =false;
+                    if (it->b_cmp_ext&&ext.size())	if (ext!=it->ext) 	bEXT=false;
+                    bOK				= bNM&&bEXT;
+                    if (bOK)		break;
+                }
+                if (!bOK)			continue;
 			}
 			AnsiString fn			= entry_begin;
 			// insert file entry
 			if (flags&FS_ClampExt)	fn = ChangeFileExt(fn,"");
 			u32 fl = (entry.vfs?FS_QueryItem::flVFS:0);
-			dest.insert(mk_pair(fn,FS_QueryItem(entry.size_real,entry.modif,fl)));
+			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
 		} else {
 			// folder
 			if ((flags&FS_ListFolders) == 0)continue;
-			const char* entry_begin = entry.name+base_len;
+			LPCSTR entry_begin 		= entry.name+base_len;
 
 			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
 			u32 fl = FS_QueryItem::flSubDir|(entry.vfs?FS_QueryItem::flVFS:0);
 			dest.insert(mk_pair(entry_begin,FS_QueryItem(entry.size_real,entry.modif,fl)));
 		}
 	}
-	for (LPSTRIt it=exts.begin(); it!=exts.end(); it++)
-		xr_free(*it);
 	return dest.size();
 }
 
