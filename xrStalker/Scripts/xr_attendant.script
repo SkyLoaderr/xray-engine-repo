@@ -225,6 +225,12 @@ function action_follow:calculate_position ()
        end
     end
     
+    if self.object:accessible (l_vid) == false then
+       l_vid = self.object:level_vertex_id ()
+       if self.object:accessible (l_vid) == false then
+          l_vid = self.object:nearest_accessible_position ()
+       end   
+    end    
     local need_id = self.object:vertex_in_direction (l_vid, dir, dist)
     if need_id == -1 then
        need_id = l_vid
