@@ -29,8 +29,8 @@
 // Abstract 'Pure' class for DLL interface
 class ENGINE_API DLL_Pure {
 public:
-	CLASS_ID			CLS_ID;
-	CLASS_ID			SUB_CLS_ID;
+	CLASS_ID				CLS_ID;
+	CLASS_ID				SUB_CLS_ID;
 
 	DLL_Pure(void *params)	{CLS_ID=SUB_CLS_ID=0; };
 	DLL_Pure()				{CLS_ID=SUB_CLS_ID=0; };
@@ -38,7 +38,6 @@ public:
 };
 
 // Class creation/destroying interface
-class ENGINE_API CObject;
 extern "C" {
 typedef DLL_API  DLL_Pure*	  __cdecl Factory_Create	(CLASS_ID	CLS_ID);
 typedef DLL_API  void		  __cdecl Factory_Destroy	(DLL_Pure*	O);

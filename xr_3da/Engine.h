@@ -12,7 +12,6 @@
 #include "eventAPI.h"
 #include "locatorAPI.h"
 #include "xrCPU_Pipe.h"
-#include "_math.h"
 
 class ENGINE_API CEngine
 {
