@@ -87,10 +87,6 @@ class CAI_Zombie : public CCustomMonster
 		CBlend*				m_tpCurrentTorsoBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		
-		// head turns
-		static void __stdcall HeadSpinCallback(CBoneInstance*);
-		static void __stdcall SpineSpinCallback(CBoneInstance*);
-		
 		// media
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
@@ -200,7 +196,6 @@ class CAI_Zombie : public CCustomMonster
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
 		void vfLoadSelectors(LPCSTR section);
-		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);

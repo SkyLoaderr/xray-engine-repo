@@ -95,7 +95,7 @@ void CAI_Rat::vfAimAtEnemy()
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
-	r_spine_target.yaw = r_target.yaw = r_torso_target.yaw;
+	r_target.yaw = r_torso_target.yaw;
 	//r_target.yaw += PI_DIV_6;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	//q_look.o_look_speed=_FB_look_speed;

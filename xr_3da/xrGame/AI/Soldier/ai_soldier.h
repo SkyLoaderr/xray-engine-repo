@@ -295,7 +295,7 @@ class CAI_Soldier : public CCustomMonster
 
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
-		static void __stdcall SpineSpinCallback(CBoneInstance*);
+		static void	__stdcall LegsSpinCallback(CBoneInstance*);
 		
 		// mea
 		sound			sndHit[SND_HIT_COUNT];

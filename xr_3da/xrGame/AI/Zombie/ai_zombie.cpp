@@ -95,7 +95,6 @@ void CAI_Zombie::Load(LPCSTR section)
 	vfLoadSounds();
 	vfLoadAnimations();
 	vfLoadSelectors(section);
-	vfAssignBones(pSettings,section);
 	
 	// visibility
 	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");

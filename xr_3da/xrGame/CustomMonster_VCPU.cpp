@@ -92,9 +92,6 @@ void CCustomMonster::Exec_Look		( float dt )
 	
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 	
-	a1 = u_lerp_angle(r_spine_current.yaw,	r_spine_target.yaw,	r_spine_speed, dt);
-	a2 = u_lerp_angle(r_spine_current.pitch,	r_spine_target.pitch,	r_spine_speed, dt);
-	
 	a1 = u_lerp_angle(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
 	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
 

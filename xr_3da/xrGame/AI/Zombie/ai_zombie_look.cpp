@@ -77,7 +77,7 @@ void CAI_Zombie::SetDirectionLook()
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
 			r_target.yaw = r_torso_target.yaw;
-			ASSIGN_SPINE_BONE;
+			//ASSIGN_SPINE_BONE;
 			//q_look.o_look_speed=PI_DIV_4;
 		}
 	}
@@ -106,9 +106,6 @@ void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			}
 			
 			r_target.yaw = fBestAngle;
-			if (bSpine) {
-				ASSIGN_SPINE_BONE;
-			}
 			//q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			//r_target.yaw += PI_DIV_6;
@@ -126,7 +123,7 @@ void CAI_Zombie::vfAimAtEnemy()
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
-	ASSIGN_SPINE_BONE;
+//	ASSIGN_SPINE_BONE;
 	r_torso_target.pitch = 0;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	//q_look.o_look_speed=_FB_look_speed;

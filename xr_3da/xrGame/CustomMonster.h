@@ -99,7 +99,7 @@ public:
 	virtual void		Think() = 0;
 
 	// Rotation
-	SRotation			r_current,r_target, r_torso_current, r_torso_target, r_spine_current, r_spine_target;
+	SRotation			r_current,r_target, r_torso_current, r_torso_target;
 	float				r_spine_speed, r_torso_speed;
 
 	// Motions

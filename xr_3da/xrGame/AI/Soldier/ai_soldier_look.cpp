@@ -438,5 +438,5 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	r_torso_target.yaw -= m_fAddWeaponAngle;
 	r_target.yaw = r_torso_target.yaw;
 
-	ASSIGN_SPINE_BONE;
+	//ASSIGN_SPINE_BONE;
 }

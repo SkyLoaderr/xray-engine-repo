@@ -11,34 +11,6 @@
 
 #define TORSO_ANGLE_DELTA				(PI/30.f)
 
-// bones
-void CAI_Zombie::vfAssignBones(CInifile *ini, const char *section)
-{
-	//int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	//PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
-	
-	//int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
-	//PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
-}
-
-void __stdcall CAI_Zombie::HeadSpinCallback(CBoneInstance* B)
-{
-	CAI_Zombie*		A = dynamic_cast<CAI_Zombie*> (static_cast<CObject*>(B->Callback_Param));
-	
-	Fmatrix				spin;
-	spin.setXYZ			(A->r_current.yaw - A->r_torso_current.yaw, A->r_current.pitch, 0);
-	B->mTransform.mulB_43(spin);
-}
-
-void __stdcall CAI_Zombie::SpineSpinCallback(CBoneInstance* B)
-{
-	CAI_Zombie*		A = dynamic_cast<CAI_Zombie*> (static_cast<CObject*>(B->Callback_Param));
-	
-	Fmatrix				spin;
-	spin.setXYZ			(A->r_spine_current.yaw - A->r_torso_current.yaw, A->r_spine_current.pitch, 0);
-	B->mTransform.mulB_43(spin);
-}
-
 // sounds
 void CAI_Zombie::vfLoadSounds()
 {
