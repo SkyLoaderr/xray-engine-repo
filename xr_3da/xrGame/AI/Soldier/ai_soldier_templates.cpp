@@ -249,13 +249,13 @@ void CAI_Soldier::vfSetMovementType(char cBodyState, float fSpeed)
 		}
 		case BODY_STATE_CROUCH : {
 			Squat();
-			m_fCurSpeed = m_fCrouchCoefficient*fSpeed;
+			m_fCurSpeed = fSpeed;//m_fCrouchCoefficient*fSpeed;
 			r_torso_speed = 3*PI_DIV_4;
 			break;
 		}
 		case BODY_STATE_LIE : {
 			Lie();
-			m_fCurSpeed = 3*m_fCrouchCoefficient*fSpeed;
+			m_fCurSpeed = fSpeed;//3*m_fCrouchCoefficient*fSpeed;
 			r_torso_speed = PI_DIV_2;
 			break;
 		}

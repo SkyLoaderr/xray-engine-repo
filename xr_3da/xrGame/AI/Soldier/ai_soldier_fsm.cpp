@@ -591,61 +591,6 @@ void CAI_Soldier::OnPursuit()
 		vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
-void CAI_Soldier::OnRecharge()
-{
-	
-	WRITE_TO_LOG("Recharging...");
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
-	
-	SelectEnemy(Enemy);
-
-	//CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy)
-	
-	DWORD dwCurTime = Level().timeServer();
-	
-	INIT_SQUAD_AND_LEADER;
-
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	vfInitSelector(SelectorReload,Squad,Leader);
-
-	if (Enemy.Enemy) {
-		if (AI_Path.bNeedRebuild)
-			vfBuildPathToDestinationPoint(0);
-		else
-			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
-		
-//		tWatchDirection.sub(Enemy.Enemy->Position(),Position());
-//		
-//		if (tWatchDirection.magnitude() > 0.0001f)
-//			SetSmartLook(AI_Node,tWatchDirection);
-//		else
-//			SetLessCoverLook(AI_Node);
-	}
-	else {
-//		SetLessCoverLook(AI_Node);
-	}
-	
-	SetDirectionLook();
-	
-	vfSetFire(false,Group);
-	
-	if (Weapons->ActiveWeapon())
-		Weapons->ActiveWeapon()->Reload();
-
-	//if (AI_Path.TravelPath.size() <= AI_Path.TravelStart)
-		vfSetMovementType(m_cBodyState,m_fMinSpeed);
-	//else
-	//	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
-	// stop processing more rules
-	
-}
-
 void CAI_Soldier::OnRetreat()
 {
 	WRITE_TO_LOG("Retreating...");
@@ -715,6 +660,45 @@ void CAI_Soldier::Die()
 
 	//bActive = false;
 	bEnabled = false;
+}
+
+void CAI_Soldier::OnTurnOver()
+{
+	WRITE_TO_LOG("Turning over...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		
+	SelectEnemy(Enemy);
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierUnderFire)
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
+
+	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
+		m_ePreviousState = tStateStack.top();
+		GO_TO_PREV_STATE
+	}
+
+	vfSetFire(m_bFiring,Group);
+
+	if (!AI_Path.TravelPath.empty())
+		AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
+	else
+		AI_Path.TravelStart = 0;
+	
+	vfSetMovementType(m_cBodyState,0);
+
+	r_torso_speed = PI_DIV_2/1;
+	r_spine_speed = PI_DIV_2/1;
+	q_look.o_look_speed = PI_DIV_2/1;
 }
 
 void CAI_Soldier::OnPatrolReturn()
@@ -998,7 +982,7 @@ void CAI_Soldier::OnPatrol()
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
 			AI_Path.TravelPath.clear();
-			SWITCH_TO_NEW_STATE(aiSoldierSenseSomething);
+			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
 		}
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
@@ -1043,7 +1027,7 @@ void CAI_Soldier::OnPatrol()
 		
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,true);
 		
-		m_dwCreatePathAttempts++;
+			m_dwCreatePathAttempts++;
 		Msg("paths : %d",m_dwCreatePathAttempts);
 		// invert path if needed
 		if (AI_Path.TravelPath.size()) {
@@ -1067,7 +1051,7 @@ void CAI_Soldier::OnPatrol()
 	//SetDirectionLook();
 }
 
-void CAI_Soldier::OnSenseSomething()
+void CAI_Soldier::OnSenseSomethingAlone()
 {
 	WRITE_TO_LOG("Sense something");
 
@@ -1075,17 +1059,13 @@ void CAI_Soldier::OnSenseSomething()
 	
 	SelectEnemy(Enemy);
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFireAlone)
 	
 	DWORD dwCurTime = Level().timeServer();
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
-	
 	INIT_SQUAD_AND_LEADER;
 	
 	CGroup &Group = Squad.Groups[g_Group()];
-	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
 	int iSoundIndex;
 	
@@ -1096,9 +1076,7 @@ void CAI_Soldier::OnSenseSomething()
 
 	if (iSoundIndex >= 0) {
 		m_iSoundIndex = iSoundIndex;
-		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
- 			//AI_Path.TravelPath.clear();
-			
+		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
 			Fvector tCurrentPosition = vPosition;
 			tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
 			if (tWatchDirection.magnitude() > EPS_L) {
@@ -1111,12 +1089,13 @@ void CAI_Soldier::OnSenseSomething()
 			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6)
 				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 
-			SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-
 			vfInitSelector(SelectorPatrol,Squad,Leader);
 	
-			if (AI_Path.bNeedRebuild)
+			SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+
+			if (AI_Path.bNeedRebuild) {
 				vfBuildPathToDestinationPoint(0);
+			}
 			else {
 				//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
 				vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
@@ -1157,43 +1136,124 @@ void CAI_Soldier::OnSenseSomething()
 
 }
 
-void CAI_Soldier::OnTurnOver()
+void CAI_Soldier::OnAttackFireAlone()
 {
-	WRITE_TO_LOG("Turning over...");
+	WRITE_TO_LOG("Shooting enemy alone...");
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-		
-	SelectEnemy(Enemy);
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	SelectEnemy(Enemy);
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierUnderFire)
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
+	
+	if (!(Enemy.Enemy)) {
+		vfSetFire(false,getGroup());
+		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		//GO_TO_NEW_STATE(aiSoldierPursuit);
+		GO_TO_PREV_STATE;
+	}
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierFindEnemy)
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+
+	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackRun)
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
+
+	AI_Path.TravelPath.clear();
+	
+	vfSaveEnemy();
+
+	//if (!m_bFiring)
+	vfAimAtEnemy();
+	
+	vfSetFire(true,Group);
+	
+	//vfSetMovementType(m_cBodyState,0);
+	if (m_cBodyState != BODY_STATE_STAND)
+		vfSetMovementType(m_cBodyState,0);
+	else
+		vfSetMovementType(BODY_STATE_CROUCH,0);
+}
+
+void CAI_Soldier::OnLookingOver()
+{
+	WRITE_TO_LOG("Looking over...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	
+	DWORD dwCurTime = Level().timeServer();
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	
+	for (int i=0; i<tpaDynamicSounds.size(); i++)
+		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
+			SelectSound(m_iSoundIndex);
+			AI_Path.TravelPath.clear();
+			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+		}
+
+	AI_Path.TravelPath.clear();
+	
+	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,0)
+}
+
+void CAI_Soldier::OnRecharge()
+{
+	
+	WRITE_TO_LOG("Recharging...");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
+	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())))
+	
+	SelectEnemy(Enemy);
+
+	//CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy)
+	
+	DWORD dwCurTime = Level().timeServer();
 	
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
+	vfInitSelector(SelectorReload,Squad,Leader);
 
-	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
-		m_ePreviousState = tStateStack.top();
-		GO_TO_PREV_STATE
+	if (Enemy.Enemy) {
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
 	}
-
-	vfSetFire(m_bFiring,Group);
-
-	if (!AI_Path.TravelPath.empty())
-		AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
-	else
-		AI_Path.TravelStart = 0;
 	
-	vfSetMovementType(m_cBodyState,0);
+	SetDirectionLook();
+	
+	vfSetFire(false,Group);
+	
+	if (Weapons->ActiveWeapon())
+		Weapons->ActiveWeapon()->Reload();
 
-	r_torso_speed = PI_DIV_4/1;
-	r_spine_speed = PI_DIV_4/1;
-	q_look.o_look_speed = PI_DIV_4/1;
+	vfSetMovementType(m_cBodyState,m_fMinSpeed);
 }
 
 void CAI_Soldier::Think()
@@ -1283,10 +1343,6 @@ void CAI_Soldier::Think()
 				NoWeapon();
 				break;
 			}
-			case aiSoldierRecharge : {
-				Recharge();
-				break;
-			}
 			/**/
 			case aiSoldierDie : {
 				Die();
@@ -1304,12 +1360,24 @@ void CAI_Soldier::Think()
 				OnFollowLeaderPatrol();
 				break;
 			}
-			case aiSoldierSenseSomething: {
-				OnSenseSomething();
+			case aiSoldierSenseSomethingAlone: {
+				OnSenseSomethingAlone();
 				break;
 			}
 			case aiSoldierTurnOver : {
 				OnTurnOver();
+				break;
+			}
+			case aiSoldierLookingOver : {
+				OnLookingOver();
+				break;
+			}
+			case aiSoldierAttackFireAlone : {
+				OnAttackFireAlone();
+				break;
+			}
+			case aiSoldierRecharge : {
+				OnRecharge();
 				break;
 			}
 		}

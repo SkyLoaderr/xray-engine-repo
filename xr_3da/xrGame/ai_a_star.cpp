@@ -17,7 +17,7 @@
 #define mNodeStructure(x)		(*(this->Node(x)))
 #define mNode(x)				(this->Node(x))
 #define MAX_VALUE				100000.0
-#define MAX_NODES				4096
+#define MAX_NODES				65536
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
@@ -35,7 +35,7 @@ IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 
-	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+	float fCover = 1/((float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
 
 	float fLight = (float)(tNode1.light)/255.f;
 	

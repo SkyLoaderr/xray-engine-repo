@@ -55,8 +55,11 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierPatrolReturnToRoute,
 		aiSoldierPatrolRoute,
 		aiSoldierFollowLeaderPatrol,
-		aiSoldierSenseSomething,
+		aiSoldierSenseSomethingAlone,
 		aiSoldierTurnOver,
+		aiSoldierLookingOver,
+		aiSoldierAttackFireAlone,
+		aiSoldierRecharge,
 	};
 	
 	enum EGestureStates {
@@ -348,14 +351,16 @@ class CAI_Soldier : public CCustomMonster
 		void OnJumping();
 		void OnLyingDown();
 		void OnNoWeapon();
-		void OnRecharge();
 		/**/
 		void Die();
 		void OnPatrol();
 		void OnPatrolReturn();
 		void OnFollowLeaderPatrol();
-		void OnSenseSomething();
+		void OnSenseSomethingAlone();
 		void OnTurnOver();
+		void OnLookingOver();
+		void OnAttackFireAlone();
+		void OnRecharge();
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);
