@@ -187,8 +187,8 @@ int	CDebugKernel::LogStack(EXCEPTION_POINTERS *pex)
 {
 	UpdateStack(pex,1);
 	Log("*****\nStack dump:\n*****");
-	for (vector<string>::iterator I=Stack.begin(); I!=Stack.end(); I++)
-		Log(I->c_str());
+	for (vector<LPSTR>::iterator I=Stack.begin(); I!=Stack.end(); I++)
+		Log(*I);
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 //------------------------------------------------------------------------------------------------------------------------

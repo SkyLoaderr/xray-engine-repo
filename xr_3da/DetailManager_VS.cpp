@@ -98,9 +98,9 @@ void CDetailManager::hw_Load()
 			u16		offset	=	0;
 			for (u32 batch=0; batch<hw_BatchSize; batch++)
 			{
-				for (u32 i=0; i<D.number_indices; i++)
+				for (u32 i=0; i<u32(D.number_indices); i++)
 					*pI++	=	u16(u16(D.indices[i]) + u16(offset));
-				offset		+=	u16(D.number_vertices);
+				offset		=	offset+u16(D.number_vertices);
 			}
 		}
 		R_CHK			(hw_IB->Unlock());

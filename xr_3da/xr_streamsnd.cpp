@@ -12,7 +12,7 @@ const DWORD dsBufferSize  = 88*1024;
 
 CSoundStream::CSoundStream	( )
 {
-	fName				= "";
+	fName				= 0;
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
 	fBaseVolume			= 1.0f;
@@ -174,7 +174,10 @@ void CSoundStream::OnMove		( )
 
 void CSoundStream::Load( LPCSTR name )
 {
-	if (name)	fName = name;
+	if (name)	{
+		_FREE	(fName);
+		fName	= xr_strdup(name);
+	}
 	LoadADPCM	( );
 	bNeedUpdate = true;
 }
@@ -183,9 +186,10 @@ void CSoundStream::Load( CInifile* ini, LPCSTR section )
 {
 	VERIFY(ini && section);
 
-	fName	= ini->ReadSTRING	( section, "fname" );
+	_FREE	(fName);
+	fName	= xr_strdup			(ini->ReadSTRING( section, "fname" ));
 	fVolume	= ini->ReadFLOAT	( section, "volume");
-	Load( LPSTR(0));
+	Load	( LPSTR(0));
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -275,13 +279,12 @@ void CSoundStream::LoadADPCM( )
 	sxr_hdr			hdr;
 
 	FILE_NAME		fn;
-	sprintf			(fn,"%s%s.wav",Path.Sounds,fName.c_str());
+	sprintf			(fn,"%s%s.wav",Path.Sounds,fName);
 
 	DataPos			= NULL;
 
     hf=_open		(fn,O_RDONLY|O_BINARY);
 	R_ASSERT		(hf>=0);
-//    VERIFY2			(,"Can't open input file");
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);
     memcpy			(buf,riff.id,4); buf[4]=0;

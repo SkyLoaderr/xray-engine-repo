@@ -9,7 +9,7 @@
 class CDebugKernel
 {
 private:
-	vector<string>	Stack;
+	vector<LPSTR>	Stack;
 
 	BOOL            GetFunctionName(HINSTANCE instance, void *pointer, char* fn_name);
 	int             UpdateStack(EXCEPTION_POINTERS *pex, int iSkip=3 );
@@ -20,7 +20,10 @@ public:
 	int				LogStack(EXCEPTION_POINTERS *pex);
 	void            Update	();
 	DWORD           GetCount()			{return Stack.size();}
-    const char*		GetName	(DWORD num)	{return Stack[num].c_str();  }
+    LPCSTR			GetName	(DWORD num)	{return Stack[num];  }
+
+	CDebugKernel();
+	~CDebugKernel();
 };
 
 extern CDebugKernel Debug;

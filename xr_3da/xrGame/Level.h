@@ -94,8 +94,7 @@ public:
 		PATH_BIDIRECTIONAL	= DWORD(2),
 	};
 	
-	DEFINE_MAP(string,SPath,SPathMap,SPathPairIt);
-
+	DEFINE_MAP					(LPSTR,SPath,SPathMap,SPathPairIt);
 	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading

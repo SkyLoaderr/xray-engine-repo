@@ -23,7 +23,7 @@ protected:
 	
 private:
 	friend class			CMusicStream;
-	string					fName;
+	LPSTR					fName;
 
 	float 					fVolume;
 	float 					fRealVolume;
