@@ -11,13 +11,13 @@ enum
 };
 enum
 {
-	RC_1x1		= 0,		// vector1, or scalar
-	RC_1x4,					// vector4
-	RC_3x4,					// 4x3 matrix, transpose
-	RC_4x4,					// 4x4 matrix, transpose
-	RC_1x4a,				// array: vector4
-	RC_3x4a,				// array: 4x3 matrix, transpose
-	RC_4x4a					// array: 4x4 matrix, transpose
+	RC_1x1		= 0,					// vector1, or scalar
+	RC_1x4,								// vector4
+	RC_3x4,								// 4x3 matrix, transpose
+	RC_4x4,								// 4x4 matrix, transpose
+	RC_1x4a,							// array: vector4
+	RC_3x4a,							// array: 4x3 matrix, transpose
+	RC_4x4a								// array: 4x4 matrix, transpose
 };
 enum
 {
@@ -61,12 +61,26 @@ struct	R_constant
 	}
 };
 
+// standart mapping (xforms, etc)
+struct	R_mapping						
+{
+	BOOL					empty;
+	R_constant*				c_w;
+	R_constant*				c_v;
+	R_constant*				c_p;
+	R_constant*				c_wv;
+	R_constant*				c_vp;
+	R_constant*				c_wvp;	
+};
+
 class	ENGINE_API R_constant_table
 {
 private:
 	typedef svector<R_constant*,32>		c_table;
 
 	c_table					table;
+	R_mapping				mapping;
+
 	void					fatal		(LPCSTR s);
 public:
 	BOOL					parse		(D3DXSHADER_CONSTANTTABLE* desc, u16 destination);

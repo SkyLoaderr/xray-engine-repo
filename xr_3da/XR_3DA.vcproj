@@ -671,6 +671,18 @@
 						RelativePath="R_Backend_Runtime.h">
 					</File>
 					<File
+						RelativePath="R_Backend_xform.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="R_Backend_xform.h">
+					</File>
+					<File
 						RelativePath="R_DStreams.cpp">
 					</File>
 					<File
