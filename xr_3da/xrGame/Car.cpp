@@ -56,6 +56,10 @@ CCar::CCar(void)
 	m_doors_torque_factor = 2.f;
 	m_power_increment_factor=0.5f;
 	m_rpm_increment_factor=0.5f;
+	b_breaks=false;
+	m_break_start=0.f;
+	m_break_time=1.;
+	m_breaks_to_back_rate=1.f;
 }
 
 CCar::~CCar(void)
@@ -163,6 +167,7 @@ void	CCar::net_Destroy()
 	CPHSkeleton::RespawnInit();
 	m_damage_particles.Clear();
 	CPHCollisionDamageReceiver::Clear();
+	b_breaks=false;
 }
 
 void CCar::net_Save(NET_Packet& P)
@@ -232,6 +237,11 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 			i->second.RestoreNetState(*ii);
 		}
 	}
+
+	PKinematics(Visual())->CalculateBones_Invalidate();//this need to call callbacks
+	PKinematics(Visual())->CalculateBones	();
+	VisualUpdate();
+
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {
@@ -542,6 +552,14 @@ void CCar::ParseDefinitions()
 	m_break_torque		=		ini->r_float("car_definition","break_torque");
 	m_hand_break_torque	=		ini->r_float("car_definition","break_torque");
 
+	if(ini->line_exist("car_definition","hand_break_torque"))
+	{
+		m_hand_break_torque=ini->r_float("car_definition","hand_break_torque");
+	}
+	if(ini->line_exist("car_definition","break_time"))
+	{
+		m_break_time=ini->r_float("car_definition","break_time");
+	}
 	/////////////////////////transmission////////////////////////////////////////////////////////////////////////
 	float main_gear_ratio=ini->r_float("car_definition","main_gear_ratio");
 
@@ -722,7 +740,7 @@ void CCar::Init()
 
 	CDamageManager::reload("car_definition",ini);
 	
-	Break();
+	HandBreak();
 	Transmision(1);
 }
 
@@ -745,7 +763,7 @@ void CCar::NeutralDrive()
 		i->Neutral();
 	e_state_drive=neutral;
 }
-void CCar::Unbreak()
+void CCar::ReleaseHandBreak()
 {
 	xr_vector<SWheelBreak>::iterator i,e;
 	i=m_breaking_wheels.begin();
@@ -846,7 +864,7 @@ void CCar::UpdatePower()
 		i->UpdatePower();
 
 	if(brp)
-		Break();
+		HandBreak();
 }
 
 void CCar::SteerRight()
@@ -895,15 +913,27 @@ void CCar::LimitWheels()
 	for(;i!=e;++i)
 		i->Limit();
 }
-void CCar::Break()
+void CCar::HandBreak()
 {
 	xr_vector<SWheelBreak>::iterator i,e;
 	i=m_breaking_wheels.begin();
 	e=m_breaking_wheels.end();
 	for(;i!=e;++i)
-		i->Break();
+		i->HandBreak();
 }
 
+void CCar::StartBreaking()
+{
+	if(!b_breaks)
+	{
+		b_breaks=true;
+		m_break_start=Device.fTimeGlobal;
+	}
+}
+void CCar::StopBreaking()
+{
+	b_breaks=false;
+}
 void CCar::PressRight()
 {
 	if(lsp)
@@ -933,10 +963,7 @@ void CCar::PressForward()
 	}
 	else 
 	{
-		Clutch();
-		if(0==m_current_transmission_num) Transmision(1);
-		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
-		Drive();
+		DriveForward();
 	}
 	fwp=true;
 }
@@ -949,19 +976,33 @@ void CCar::PressBack()
 	}
 	else 
 	{
-		Clutch();
-		Transmision(0);
-		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
-		Drive();
+		//DriveBack();
+		Unclutch();
+		NeutralDrive();
+		StartBreaking();
 	}
 	bkp=true;
 }
 void CCar::PressBreaks()
 {
-	Break();
+	HandBreak();
 	brp=true;
 }
 
+void CCar::DriveBack()
+{
+	Clutch();
+	Transmision(0);
+	if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
+	Drive();
+}
+void CCar::DriveForward()
+{
+	Clutch();
+	if(0==m_current_transmission_num) Transmision(1);
+	if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
+	Drive();
+}
 void CCar::ReleaseRight()
 {
 	if(lsp)
@@ -1011,9 +1052,11 @@ void CCar::ReleaseBack()
 	}
 	bkp=false;
 }
+
+
 void CCar::ReleaseBreaks()
 {
-	Unbreak();
+	ReleaseHandBreak();
 	brp=false;
 }
 
@@ -1087,15 +1130,44 @@ void CCar::PhTune(dReal step)
 	if(m_repairing)Revert();
 	LimitWheels();
 	UpdateFuel(step);
-	if(fwp||bkp)
+	if(fwp)
 	{	
 		UpdatePower();
 		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 	}
-
-
+	if(bkp)
+	{
+		UpdateBack();
+	}
+	
 }
-
+void CCar::UpdateBack()
+{
+	if(b_breaks)
+	{
+		float k=1.f;
+		float time=(Device.fTimeGlobal-m_break_start);
+		if(time<m_break_time)
+		{
+			k*=(time/m_break_time);
+		}
+		xr_vector<SWheelBreak>::iterator i,e;
+		i=m_breaking_wheels.begin();
+		e=m_breaking_wheels.end();
+		for(;i!=e;++i)
+				i->Break(k);
+		if(DriveWheelsMeanAngleRate()<m_breaks_to_back_rate)
+		{
+			DriveBack();
+			StopBreaking();
+		}
+	}
+	else
+	{
+		UpdatePower();
+		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
+	}
+}
 
 void CCar::PlayExhausts()
 {
@@ -1256,20 +1328,23 @@ float CCar::EnginePower()
 	value = Parabola(m_current_rpm);
 	return value * m_power_increment_factor+m_current_engine_power*(1.f-m_power_increment_factor);
 }
-
-float CCar::EngineDriveSpeed()
+float CCar::DriveWheelsMeanAngleRate()
 {
-	//float wheel_speed,drive_speed=dInfinity;
-	float drive_speed=0.f;
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
+	float drive_speed=0.f;
 	for(;i!=e;++i)
 	{
 		drive_speed+=i->ASpeed();
 		//if(wheel_speed<drive_speed)drive_speed=wheel_speed;
 	}
-	float calc_rpm=dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size();
+	return drive_speed/m_driving_wheels.size();
+}
+float CCar::EngineDriveSpeed()
+{
+	//float wheel_speed,drive_speed=dInfinity;
+	float calc_rpm=dFabs(DriveWheelsMeanAngleRate()*m_current_gear_ratio);
 	return		(1.f-m_rpm_increment_factor)*m_current_rpm+m_rpm_increment_factor*calc_rpm;
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;

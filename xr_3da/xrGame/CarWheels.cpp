@@ -165,7 +165,7 @@ float CCar::SWheelDrive::ASpeed()
 {
 	CPhysicsJoint* J=pwheel->joint;
 	if(!J) return 0.f;
-	return dFabs(dJointGetHinge2Angle2Rate(J->GetDJoint()));
+	return (dJointGetHinge2Angle2Rate(J->GetDJoint()))*pos_fvd;//dFabs
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCar::SWheelSteer::Init()
@@ -277,14 +277,14 @@ void CCar::SWheelBreak::Init()
 	hand_break_torque=pwheel->car->m_hand_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
 }
 
-void CCar::SWheelBreak::Break()
+void CCar::SWheelBreak::Break(float k)
 {
-	pwheel->ApplyDriveAxisVelTorque(0.f,100000.f*break_torque);
+	pwheel->ApplyDriveAxisVelTorque(0.f,100000.f*break_torque*k);
 }
 
 void CCar::SWheelBreak::HandBreak()
 {
-	pwheel->ApplyDriveAxisVelTorque(0.f,hand_break_torque);
+	pwheel->ApplyDriveAxisVelTorque(0.f,100000.f*hand_break_torque);
 }
 
 void CCar::SWheelBreak::Neutral()

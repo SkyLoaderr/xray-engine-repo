@@ -72,16 +72,24 @@ public:
 	};
 
 	eStateSteer e_state_steer;
+
 	bool b_wheels_limited;
 	bool b_engine_on;
 	bool b_clutch;
 	bool b_starting;
 	bool b_stalling;
+	bool b_breaks;
+
 	u32	 m_dwStartTime;
 	float m_fuel;
 	float m_fuel_tank;
 	float m_fuel_consumption;
 	u16	  m_driver_anim_type;
+
+	float   m_break_start;
+	float	m_break_time;
+	float	m_breaks_to_back_rate;
+
 	struct SWheel: 
 	public CDamagableHealthItem
 	{
@@ -103,6 +111,7 @@ public:
 		void SetSteerLoLimit		(float lo);
 		void SetSteerHiLimit		(float hi);
 		void SetSteerLimits			(float hi,float lo);
+
 virtual void ApplyDamage			(u16 level);
 		SWheel(CCar* acar)
 		{
@@ -120,8 +129,8 @@ virtual void ApplyDamage			(u16 level);
 		void  Init();
 		void  Drive();
 		void  Neutral();
+		void  UpdatePower();
 		float ASpeed();
-		void UpdatePower();
 	};
 	struct SWheelSteer 
 	{
@@ -148,7 +157,7 @@ virtual void ApplyDamage			(u16 level);
 		float break_torque;
 		float hand_break_torque;
 		void Init();
-		void Break();
+		void Break(float k);
 		void HandBreak();
 		void Neutral();
 	};
@@ -373,6 +382,7 @@ private:
 	}
 	float EnginePower();
 	float EngineDriveSpeed();
+	float DriveWheelsMeanAngleRate();
 	/////////////////////////////////////////////////////////////////////////	
 	void SteerRight();
 	void SteerLeft();
@@ -393,9 +403,16 @@ private:
 	void ReleaseBack();
 	void ReleaseBreaks();
 
-	void Revert();
-	void Break();
-	void Unbreak();
+	void Revert							();
+
+	void StartBreaking					();
+	void StopBreaking					();
+	void UpdateBack						();
+
+	void HandBreak						();
+	void ReleaseHandBreak				();
+	void DriveForward					();
+	void DriveBack						();
 	void ParseDefinitions				();
 	void CreateSkeleton					();//creates m_pPhysicsShell
 	void Init							();
