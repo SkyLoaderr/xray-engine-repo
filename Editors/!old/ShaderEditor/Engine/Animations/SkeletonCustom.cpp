@@ -315,12 +315,13 @@ void CKinematics::CalculateBones_Invalidate	()
 void CKinematics::Spawn	()
 {
 	inherited::Spawn		();
-
+	// bones
 	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
-
 	Update_Callback				= NULL;
 	CalculateBones_Invalidate	();
+	// wallmarks
+	ClearWallmarks	();
 }
 
 void CKinematics::Release()
@@ -551,4 +552,11 @@ void CKinematics::RenderWallmark(CSkeletonWallmark* wm, FVF::LIT* &V)
 		}
 	}
 	wm->XFORM()->transform_tiny(wm->m_Bounds.P,wm->m_LocalBounds.P);
+}
+
+void CKinematics::ClearWallmarks()
+{
+	for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++)
+		xr_delete	(*it);
+	wallmarks.clear ();
 }
