@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "script_stack_tracker.h"
+#include "script_storage_space.h"
+#include "script_engine.h"
 
 CScriptStackTracker::~CScriptStackTracker	()
 {
@@ -50,17 +52,17 @@ void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 
 void CScriptStackTracker::print_error	(CLuaVirtualMachine *L)
 {
-	VERIFY				(L && (m_virtual_machine == L));
+	VERIFY					(L && (m_virtual_machine == L));
 
 	for (int j=m_current_stack_level - 1, k=0; j>0; --j, ++k) {
-		lua_Debug		l_tDebugInfo = m_stack[j];
+		lua_Debug			l_tDebugInfo = m_stack[j];
 		if (!l_tDebugInfo.name)
-			Msg			("%2d : [C  ] C source code : %s",k,l_tDebugInfo.short_src);
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] C source code : %s",k,l_tDebugInfo.short_src);
 		else
 			if (!xr_strcmp(l_tDebugInfo.what,"C"))
-				Msg		("%2d : [C  ] C source code : %s",k,l_tDebugInfo.name);
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] C source code : %s",k,l_tDebugInfo.name);
 			else
-				Msg		("%2d : [%s] %s(%d) : %s",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
 	}
-	m_current_stack_level = 0;
+	m_current_stack_level	= 0;
 }
