@@ -235,7 +235,7 @@ void CInput::OnAppActivate		(void)
 	SetAllAcquire	( true );
 }
 
-void CInput::OnAppDeactivate		(void)
+void CInput::OnAppDeactivate	(void)
 {
 	SetAllAcquire	( false );
 }
@@ -243,7 +243,7 @@ void CInput::OnAppDeactivate		(void)
 void CInput::OnFrame			(void)
 {
 	Device.Statistic.Input.Begin();
-	dwCurTime = timeGetTime();
+	dwCurTime = timeGetTime		();
 	if (pKeyboard)	KeyUpdate	();
 	if (pMouse)		MouseUpdate ();
 	Device.Statistic.Input.End	();
