@@ -10,7 +10,6 @@
 #include "xrServer_Objects.h"
 #include "xrMessages.h"
 #include "game_base_space.h"
-#include "script_value_container_impl.h"
 
 #ifndef XRSE_FACTORY_EXPORTS
 #	include "xrEProps.h"
@@ -22,6 +21,8 @@
 		return(*(IPropHelper*)0);
 #	endif
 	}
+#else
+#	include "script_value_container_impl.h"
 #endif
 
 LPCSTR script_section = "script";
