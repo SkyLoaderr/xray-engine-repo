@@ -11,12 +11,12 @@
 #include "processor_info.h"
 
 namespace CPU {
+	CProcessorInfo		processor_info;
 	u64					cycles_per_second;
 	u64					cycles_overhead;
 	u64					timer_overhead;
 	float				cycles2seconds;
 	float				cycles2milisec;
-	CProcessorInfo		ID;
 
 	#pragma warning(disable:4035)
 	IC	u64				cycles()

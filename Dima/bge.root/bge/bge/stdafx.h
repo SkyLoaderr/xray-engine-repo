@@ -8,12 +8,15 @@
 
 #pragma once
 
+#define _CRT_INSECURE_DEPRECATE
+
 #include <algorithm>
 #include <vector>
 #include <list>
 #include <stack>
 #include <map>
 #include <windows.h>
+
 // types
 typedef	signed		char	s8;
 typedef	unsigned	char	u8;
@@ -59,11 +62,12 @@ typedef const char*			LPCSTR;
     #else
 		#define NODEFAULT	__assume(0)
     #endif
+
 	#define VERIFY(expr)
 #endif
 
 template<typename T>
-IC	void xr_delete	(T *&ptr)
+IC	void c_delete	(T *&ptr)
 {
 	if (ptr) {
 		delete		ptr;
@@ -72,7 +76,7 @@ IC	void xr_delete	(T *&ptr)
 }
 
 template<typename T>
-IC	void xr_free	(T *&ptr)
+IC	void c_free		(T *&ptr)
 {
 	if (ptr) {
 		free		(ptr);
