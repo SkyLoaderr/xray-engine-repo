@@ -18,7 +18,7 @@ void	game_sv_Deathmatch::Create					(ref_str& options)
 	timelimit			= get_option_i		(*options,"timelimit",0)*60000;	// in (ms)
 	damageblocklimit	= get_option_i		(*options,"dmgblock",5)*1000;	// in (ms)
 
-	if (get_option_i(*options,"anomalies",0) != 0)
+	if (get_option_i(*options,"ans",1) != 0)
 		m_bAnomaliesEnabled	= true;
 	else 
 		m_bAnomaliesEnabled	= false;
