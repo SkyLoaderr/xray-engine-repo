@@ -70,6 +70,10 @@ class CWeaponHUD
 
 	//остановление таймера текущей анимации, и вызов callback
 	void				StopCurrentAnim	();
+
+	//поворот и смещение для режима приближения
+	float				m_fZoomRotateY;
+	Fvector				m_fZoomOffset;
 public:
 						CWeaponHUD		();
 						CWeaponHUD		(CHudItem* pHudItem);
