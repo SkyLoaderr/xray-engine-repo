@@ -116,6 +116,7 @@ public:
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
 			void					vfAppendItemList			(OBJECT_VECTOR &tObjectVector, ITEM_P_VECTOR &tItemList);
 			ECombatAction			tfChooseCombatAction		(int						iCombatGroupIndex);
+			ERelationType			tfGetRelationType			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract*tpALifeMonsterAbstract2);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

@@ -135,10 +135,9 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			m_tCombatType			= eCombatTypeMonsterAnomaly;
 		}
 		else {
-			m_tCombatType			= eCombatTypeMonsterMonster;
-#pragma todo("Implement relationship verification here")			
-			if (l_tpALifeMonsterAbstract1->g_team() == l_tpALifeMonsterAbstract2->g_team())
+			if (tfGetRelationType(l_tpALifeMonsterAbstract1,l_tpALifeMonsterAbstract2) != eRelationTypeFriend)
 				return(false);
+			m_tCombatType			= eCombatTypeMonsterMonster;
 		}
 	}
 	

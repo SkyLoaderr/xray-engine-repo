@@ -144,3 +144,11 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 	// update events
 #pragma todo("Dima to Dima: Update events")
 }
+
+ERelationType CSE_ALifeSimulator::tfGetRelationType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2)
+{
+	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team())
+		return(eRelationTypeEnemy);
+	else
+		return(eRelationTypeFriend);
+}
