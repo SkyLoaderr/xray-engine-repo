@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- CONTACTS BACKGROUND -->
 	<contacts_frame_window x="75" y="60" width="445" height="505" a="90">
@@ -14,6 +14,6 @@
 	</cntd_frame_line>
 
 	<!-- CONTACT LIST -->
-	<list x="20" y="80" width="390" height="400" item_height = "74"></list>
+	<list x="20" y="80" width="390" height="440" item_height = "74"></list>
 
 </window>
