@@ -1,5 +1,8 @@
 #pragma once
 
+class CSE_Abstract;
+class CPhysicsShellHolder;
+
 class CPHDestroyableNotificate
 {
 public:
