@@ -212,17 +212,18 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	// Read headers
 	IReader* hdr		= open_chunk(A.hSrcFile,1); R_ASSERT(hdr);
 //	IReader*	hdr		= A.vfs->open_chunk(1);
-//	RStringVec	fv;
+	RStringVec	fv;
 	while (!hdr->eof())
 	{
 		string_path		name,full;
 		hdr->r_stringZ	(name);
 		strconcat		(full,base,name);
-//		fv.push_back(full);
 		size_t vfs		= archives.size()-1;
 		u32 ptr			= hdr->r_u32();
 		u32 size_real	= hdr->r_u32();
 		u32 size_compr	= hdr->r_u32();
+/*		if(ptr)
+			fv.push_back	(full);*/
 		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
@@ -231,8 +232,13 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 //	A.vfs->seek			(0);
 /*
 	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
+		if(!FS.path_exist("$s_dir$"))
+			continue;
+
 		IReader* ird = FS.r_open(**it);
-		IWriter* iwr = FS.w_open("$s_dir$",**it);
+		LPCSTR pth = **it + xr_strlen(base);
+		
+		IWriter* iwr = FS.w_open("$s_dir$",pth);//**it);
 
 		iwr->w(ird->pointer(),ird->length());
 		FS.w_close(iwr);
@@ -464,7 +470,7 @@ xr_vector<char*>* CLocatorAPI::file_list_open			(const char* _path, u32 flags)
 	check_pathes	();
 
 	std::string		N;
-	if (FS.path_exist(_path))	update_path(N,_path,"");
+	if (path_exist(_path))	update_path(N,_path,"");
 	else						N=_path;
 
 	file			desc;
@@ -529,7 +535,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
     check_pathes	();
                
 	std::string		N;
-	if (FS.path_exist(path))	update_path(N,path,"");
+	if (path_exist(path))	update_path(N,path,"");
     else						N=path;
 
 	file			desc;
@@ -609,7 +615,7 @@ bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool c
     check_pathes		();
 
 	std::string			N;
-	if (FS.path_exist(path))	update_path(N,path,name);
+	if (path_exist(path))	update_path(N,path,name);
     else						N=std::string(path)+name;
 
 	file				desc;
