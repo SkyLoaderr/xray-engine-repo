@@ -73,7 +73,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 
 public:
 	typedef CSE_Abstract inherited;
-	ALife::_CLASS_ID				m_tClassID;
 	ALife::_GRAPH_ID				m_tGraphID;
 	ALife::_SPAWN_ID				m_tSpawnID;
 	float							m_fDistance;

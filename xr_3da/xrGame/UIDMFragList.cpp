@@ -41,17 +41,17 @@ CUIStatsListItem*		CUIDMFragList::GetItem			(int index)
 
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
 {
-	return ((game_cl_GameState::Player*)v1)->kills>((game_cl_GameState::Player*)v2)->kills;
+	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
 };
 
 void	CUIDMFragList::UpdateItemsList ()
 {
-	xr_map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
-	xr_map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
+	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
+	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
 
 	// create temporary map (sort by kills)
 	items.clear			();
-	for (;I!=E;++I)		items.push_back(&I->second);
+	for (;I!=E;++I)		items.push_back(I->second);
 	std::sort			(items.begin(),items.end(),pred_player);
 }
 
@@ -59,9 +59,9 @@ bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 {
 	if (ItemID>= items.size()) return false;
 
-	game_cl_GameState::Player* P = (game_cl_GameState::Player*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
+	game_PlayerState* P = (game_PlayerState*)(items[ItemID]);//(game_cl_GameState::Player*)*mI;
 
-	if (P->flags&GAME_PLAYER_FLAG_LOCAL) SelectItem(ItemID);
+	if (P->testFlag(GAME_PLAYER_FLAG_LOCAL) ) SelectItem(ItemID);
 
 	char Text[1024];
 	pItem->FieldsVector[0]->SetText(P->name);

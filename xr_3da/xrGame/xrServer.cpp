@@ -9,11 +9,26 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "ai_space.h"
+
+#include "script_space.h"
 //#include "script_engine.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+xrClientData::xrClientData	():IClient(Device.GetTimerGlobal())
+{
+	ps			= Level().Server->game->createPlayerState();
+	ps->clear();
+
+	owner		= NULL;
+	net_Ready	= FALSE;
+}
+xrClientData::~xrClientData()
+{
+	xr_delete(ps);
+}
+
 
 xrServer::xrServer():IPureServer(Device.GetTimerGlobal())
 {
@@ -26,9 +41,9 @@ xrServer::~xrServer()
 }
 
 //--------------------------------------------------------------------
-xrClientData*	xrServer::ID_to_client		(DPNID ID)
+xrClientData*	xrServer::ID_to_client		(ClientID ID)
 {
-	if (0==ID)			return 0;
+	if (0==ID.value())			return 0;
 	csPlayers.Enter		();
 	for (u32 client=0; client<net_Players.size(); ++client)
 	{
@@ -78,6 +93,7 @@ void xrServer::Update	()
 	VERIFY						(verify_entities());
 
 	// game update
+	game->ProcessDelayedEvent();
 	game->Update	();
 
 	// spawn queue
@@ -93,7 +109,8 @@ void xrServer::Update	()
 		E->Spawn_Write		(Packet,FALSE);
 		u16					ID;
 		Packet.r_begin		(ID);	R_ASSERT(M_SPAWN==ID);
-		Process_spawn		(Packet,0xffff);
+		ClientID clientID; clientID.set(0xffff);
+		Process_spawn		(Packet,clientID);
 	}
 
 	// 
@@ -112,8 +129,10 @@ void xrServer::Update	()
 		// GameUpdate
 		++(Client->game_replicate_id);
 		u32		g_it				= (Client->game_replicate_id % client_Count());
-		u32		g_id				= net_Players[g_it]->ID;
+//		u32		g_id				= net_Players[g_it]->ID;
+		ClientID g_id 				= net_Players[g_it]->ID;
 		game->net_Export_Update		(Packet,Client->ID,g_id);
+
 		if (!Client->flags.bLocal)	game->net_Export_GameTime(Packet);
 
 		if (!Client->flags.bLocal || client_Count() == 1)
@@ -153,7 +172,7 @@ void xrServer::Update	()
 	csPlayers.Leave	();
 }
 
-u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadcasting with "flags" as returned
+u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
 	u16			type;
 	P.r_begin	(type);
@@ -215,7 +234,8 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		}break;
 	case M_GAMEMESSAGE:
 		{
-			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
 			VERIFY					(verify_entities());
 		}break;
 	case M_CLIENTREADY:
@@ -234,8 +254,10 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 		}break;
 	case M_CHANGE_LEVEL:
 		{
-			if (game->change_level(P,sender))
-				SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+			if (game->change_level(P,sender)){
+				ClientID clientID;clientID.setBroadcast();
+				SendBroadcast		(clientID,P,net_flags(TRUE,TRUE));
+				}
 			VERIFY					(verify_entities());
 		}break;
 	case M_SAVE_GAME:
@@ -246,12 +268,14 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	case M_LOAD_GAME:
 		{
 			game->load_game			(P,sender);
-			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
 			VERIFY					(verify_entities());
 		}break;
 	case M_RELOAD_GAME:
 		{
-			SendBroadcast			(0xffffffff,P,net_flags(TRUE,TRUE));
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast			(clientID,P,net_flags(TRUE,TRUE));
 			VERIFY					(verify_entities());
 		}break;
 	case M_SAVE_PACKET:
@@ -268,7 +292,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	return							(0);
 }
 
-void xrServer::SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
+void xrServer::SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
 	if (SV_Client && SV_Client->ID==ID)
 	{
@@ -288,6 +312,7 @@ CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 {
 	R_ASSERT					(P);
+	P->owner = NULL;
 	entities.erase				(P->ID);
 	m_tID_Generator.vfFreeID	(P->ID,Device.TimerAsync());
 	if (!ai().get_alife() || !P->m_bALifeControl)	
@@ -322,7 +347,7 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 	};
 
 	IDirectPlay8Address* pAddr = NULL;
-	CHK_DX(NET->GetClientAddress(CL->ID, &pAddr, 0));
+	CHK_DX(NET->GetClientAddress(CL->ID.value(), &pAddr, 0));
 
 	if (pAddr) {
 
@@ -383,7 +408,7 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 
 bool		xrServer::OnCL_QueryHost		() 
 {
-	if (Game().type == GAME_SINGLE) return false;
+	if (GameID() == GAME_SINGLE) return false;
 	return (client_Count() != 0); 
 };
 

@@ -103,8 +103,10 @@ void CLevel::ClientSave	()
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// optimize the case when server located in our memory
-	if (Server && game_configured && OnServer())	Server->OnMessage	(P,Game().local_svdpnid	);
-	else											IPureClient::Send	(P,dwFlags,dwTimeout	);
+	if (Server && game_configured && OnServer()){
+		
+		Server->OnMessage	(P,Game().local_svdpnid	);
+	}else											IPureClient::Send	(P,dwFlags,dwTimeout	);
 }
 
 void CLevel::net_Update	()

@@ -77,8 +77,15 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	SendTo							(CL->ID,P,mode);
 */
 	//
-	
-	game->OnPlayerConnect			(CL->ID);
+	NET_Packet P;
+	P.B.count = 0;
+	P.w_clientID(CL->ID);
+	P.r_pos = 0;
+	ClientID clientID;clientID.set(0);
+//	game->OnEvent(P,GAME_EVENT_PLAYER_CONNECTED, 0, clientID);
+	game->AddDelayedEvent(P,GAME_EVENT_PLAYER_CONNECTED, 0, clientID);
+//	game->OnPlayerConnect			(CL->ID);
+
 	csPlayers.Leave					();
 
 	

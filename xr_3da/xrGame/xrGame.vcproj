@@ -4725,6 +4725,26 @@
 							RelativePath=".\script_string_table_script.cpp">
 						</File>
 					</Filter>
+					<Filter
+						Name="UI"
+						Filter="">
+						<File
+							RelativePath=".\script_ui_registrator.h">
+						</File>
+						<File
+							RelativePath=".\ui_export_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="KeyBindings"
+						Filter="">
+						<File
+							RelativePath=".\key_binding_registrator.h">
+						</File>
+						<File
+							RelativePath=".\key_binding_registrator_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptDebugger"
@@ -7062,12 +7082,6 @@
 					<Filter
 						Name="client"
 						Filter="">
-						<File
-							RelativePath="game_cl_base.cpp">
-						</File>
-						<File
-							RelativePath="game_cl_base.h">
-						</File>
 						<Filter
 							Name="artefact_hunt"
 							Filter="">
@@ -7086,6 +7100,9 @@
 							</File>
 							<File
 								RelativePath=".\game_cl_deathmatch.h">
+							</File>
+							<File
+								RelativePath=".\game_cl_deathmatch_buywnd.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -7108,6 +7125,39 @@
 								RelativePath=".\game_cl_single.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="base"
+							Filter="">
+							<File
+								RelativePath="game_cl_base.cpp">
+							</File>
+							<File
+								RelativePath="game_cl_base.h">
+							</File>
+							<File
+								RelativePath=".\game_cl_base_script.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="mp"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_mp.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_mp.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="mp_script"
+							Filter="">
+							<File
+								RelativePath=".\game_cl_mp_script.cpp">
+							</File>
+							<File
+								RelativePath=".\game_cl_mp_script.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="server"
@@ -7121,6 +7171,12 @@
 						<File
 							RelativePath=".\game_sv_base_script.cpp">
 						</File>
+						<File
+							RelativePath=".\game_sv_event_queue.cpp">
+						</File>
+						<File
+							RelativePath=".\game_sv_event_queue.h">
+						</File>
 						<Filter
 							Name="artefact_hunt"
 							Filter="">
@@ -7129,6 +7185,9 @@
 							</File>
 							<File
 								RelativePath=".\game_sv_artefacthunt.h">
+							</File>
+							<File
+								RelativePath=".\game_sv_artefacthunt_process_event.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -7142,9 +7201,6 @@
 							</File>
 							<File
 								RelativePath=".\game_sv_deathmatch_process_event.cpp">
-							</File>
-							<File
-								RelativePath=".\game_sv_deathmatch_script.cpp">
 							</File>
 						</Filter>
 						<Filter
@@ -7168,6 +7224,29 @@
 							</File>
 							<File
 								RelativePath=".\game_sv_teamdeathmatch_process_event.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="mp"
+							Filter="">
+							<File
+								RelativePath=".\game_sv_mp.cpp">
+							</File>
+							<File
+								RelativePath=".\game_sv_mp.h">
+							</File>
+							<File
+								RelativePath=".\game_sv_mp_team.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="mp_script"
+							Filter="">
+							<File
+								RelativePath=".\game_sv_mp_script.cpp">
+							</File>
+							<File
+								RelativePath=".\game_sv_mp_script.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -8514,6 +8593,16 @@
 					</File>
 					<File
 						RelativePath=".\UIGameAHunt.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Game_custom_script"
+					Filter="">
+					<File
+						RelativePath=".\UIGame_custom_script.cpp">
+					</File>
+					<File
+						RelativePath=".\UIGame_custom_script.h">
 					</File>
 				</Filter>
 			</Filter>

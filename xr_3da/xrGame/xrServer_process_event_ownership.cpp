@@ -2,7 +2,7 @@
 #include "xrserver.h"
 #include "xrserver_objects.h"
 
-void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u16 ID)
+void xrServer::Process_event_ownership(NET_Packet& P, ClientID sender, u32 time, u16 ID)
 {
 	u32				MODE		= net_flags		(TRUE,TRUE);
 
@@ -19,10 +19,11 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	xrClientData*		c_from		= ID_to_client	(sender);
 	if (c_parent != c_from)					return;	//. hack
 	//R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
+	
 
+	// Game allows ownership of entity
 	if (game->OnTouch	(id_parent,id_entity))
 	{
-		// Game allows ownership of entity
 
 		// Perform migration if needed
 		if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
@@ -32,6 +33,8 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 		e_parent->children.push_back(id_entity);
 
 		// Signal to everyone (including sender)
-		SendBroadcast		(0xffffffff,P,MODE);
+		ClientID clientID;clientID.setBroadcast();
+		SendBroadcast		(clientID,P,MODE);
 	}
+
 }

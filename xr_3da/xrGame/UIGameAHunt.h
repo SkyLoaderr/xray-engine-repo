@@ -25,17 +25,6 @@ private:
 	game_cl_ArtefactHunt * m_game;
 	typedef CUIGameTDM inherited;
 
-protected:
-	/*
-	CUIAHuntFragList*		pFragListT1;
-	CUIAHuntFragList*		pFragListT2;
-	CUIAHuntPlayerList*		pPlayerListT1;
-	CUIAHuntPlayerList*		pPlayerListT2;
-
-	CUISpawnWnd*		pUITeamSelectWnd;
-
-	CUIBuyWeaponWnd*	pBuyMenu;
-	*/
 public:
 	virtual void		SetClGame				(game_cl_GameState* g);
 	CUIGameAHunt								();
@@ -43,14 +32,12 @@ public:
 
 	virtual	void		Init					();
 
-	virtual void		OnFrame					();
 
-	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
-	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
-
-	virtual BOOL		CanCallBuyMenu			();
-
-	virtual bool		CanBeReady				();
+// moved to game_cl_artefactHunt
+//	virtual BOOL		CanCallBuyMenu			();
+//	virtual bool		CanBeReady				();
+//	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
+//	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 	
 			void		SetReinforcementCaption	(LPCSTR str);
 			void		SetScoreCaption			(LPCSTR str);

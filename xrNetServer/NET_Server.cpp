@@ -123,7 +123,8 @@ void IPureServer::Reparse	()
 {
 	config_Save			();
 	config_Load			();
-	SendBroadcast_LL	(0,&msgConfig,sizeof(msgConfig));
+	ClientID ID;ID.set(0);
+	SendBroadcast_LL	(ID,&msgConfig,sizeof(msgConfig));
 }
 
 BOOL IPureServer::Connect(LPCSTR options)
@@ -241,17 +242,27 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			if (_hr==DPNERR_INVALIDPLAYER)	break;	// server player
 			CHK_DX					(_hr);
 			
+			
+			string256				cname;
+			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
+			
+			bool bLocal = (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
+			ClientID clientID; clientID.set(msg->dpnidPlayer);
+			new_client(clientID, cname, bLocal);
+
+/*			
+			// register player
+			csPlayers.Enter			();
 			// setup structure
 			IClient*				P = client_Create();
-			P->ID					= msg->dpnidPlayer;
+			VERIFY(P);
+			P->ID.set(msg->dpnidPlayer);
 			P->flags.bLocal			= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
 			P->flags.bConnected		= TRUE;
 			string256				cname;
 			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
 			P->Name					= cname;
 
-			// register player
-			csPlayers.Enter			();
 			net_Players.push_back	(P);
 			csPlayers.Leave			();
 			
@@ -260,6 +271,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 			// gen message
 			OnCL_Connected			(P);
+*/			
         }
 		break;
 	case DPN_MSGID_DESTROY_PLAYER:
@@ -268,7 +280,8 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 			csPlayers.Enter			();
 			for (u32 I=0; I<net_Players.size(); I++)
-				if (net_Players[I]->ID==msg->dpnidPlayer)
+//				if (net_Players[I]->ID==msg->dpnidPlayer)
+				if (net_Players[I]->ID.compare(msg->dpnidPlayer) )
 				{
 					// gen message
 					net_Players[I]->flags.bConnected	= FALSE;
@@ -297,16 +310,18 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				{
 					// ping - save server time and reply
 					m_ping->dwTime_Server	= TimerAsync(device_timer);
-					IPureServer::SendTo_LL	(m_sender,m_data,m_size,net_flags(FALSE,FALSE,TRUE));
+					ClientID ID; ID.set(m_sender);
+					IPureServer::SendTo_LL	(ID,m_data,m_size,net_flags(FALSE,FALSE,TRUE));
 				}
 			} else {
 				// Decompress message
 				NET_Packet P;
 				pDecompress		(P,m_data,m_size);
 				csMessage.Enter	();
-				u32	result		= OnMessage(P,m_sender);
+				ClientID ID; ID.set(m_sender);
+				u32	result		= OnMessage(P,ID);
 				csMessage.Leave	();
-				if (result)		SendBroadcast(m_sender,P,result);
+				if (result)		SendBroadcast(ID,P,result);
 			}
         }
         break;
@@ -315,7 +330,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
     return S_OK;
 }
 
-void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
+void	IPureServer::SendTo_LL(ClientID ID/*DPNID ID*/, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
 	// send it
 	DPN_BUFFER_DESC		desc;
@@ -330,7 +345,7 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 		stats.dwBytesSended = 0;
 		stats.dwSendTime = time_global;
 	};
-	if (ID)
+	if ( ID.value() )
 		stats.dwBytesSended += size;
 #endif
 
@@ -340,7 +355,7 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 
     DPNHANDLE	hAsync	= 0;
 	HRESULT		_hr		= NET->SendTo(
-		ID,
+		ID.value(),
 		&desc,1,
 		dwTimeout,
 		0,&hAsync,
@@ -351,7 +366,7 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 	R_CHK		(_hr);
 }
 
-void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
+void	IPureServer::SendTo		(ClientID ID/*DPNID ID*/, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
 	// first - compress message and setup buffer
 	NET_Packet	Compressed;
@@ -360,7 +375,7 @@ void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	SendTo_LL(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
 }
 
-void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, u32 size, u32 dwFlags)
+void	IPureServer::SendBroadcast_LL(ClientID exclude, void* data, u32 size, u32 dwFlags)
 {
 	csPlayers.Enter	();
 	for (u32 I=0; I<net_Players.size(); I++)
@@ -373,7 +388,7 @@ void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, u32 size, u32 dwFl
 	csPlayers.Leave	();
 }
 
-void	IPureServer::SendBroadcast(DPNID exclude, NET_Packet& P, u32 dwFlags)
+void	IPureServer::SendBroadcast(ClientID exclude, NET_Packet& P, u32 dwFlags)
 {
 	// Perform broadcasting
 	NET_Packet			BCast;
@@ -381,7 +396,7 @@ void	IPureServer::SendBroadcast(DPNID exclude, NET_Packet& P, u32 dwFlags)
 	SendBroadcast_LL	(exclude, BCast.B.data, BCast.B.count, dwFlags);
 }
 
-u32	IPureServer::OnMessage	(NET_Packet& P, DPNID sender)	// Non-Zero means broadcasting with "flags" as returned
+u32	IPureServer::OnMessage	(NET_Packet& P, ClientID sender)	// Non-Zero means broadcasting with "flags" as returned
 {
 	/*
 	u16 m_type;
@@ -429,7 +444,7 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 	{
 		// check queue for "empty" state
 		DWORD				dwPending;
-		hr					= NET->GetSendQueueInfo(C->ID,&dwPending,0,0);
+		hr					= NET->GetSendQueueInfo(C->ID.value(),&dwPending,0,0);
 		if (FAILED(hr))		return FALSE;
 
 		if (dwPending > u32(psNET_ServerPending))	
@@ -442,7 +457,7 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 		DPN_CONNECTION_INFO	CI;
 		ZeroMemory			(&CI,sizeof(CI));
 		CI.dwSize			= sizeof(CI);
-		hr					= NET->GetConnectionInfo(C->ID,&CI,0);
+		hr					= NET->GetConnectionInfo(C->ID.value(),&CI,0);
 		if (FAILED(hr))		return FALSE;
 		C->stats.Update		(CI);
 

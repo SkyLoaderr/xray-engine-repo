@@ -42,7 +42,7 @@ void CSpectator::UpdateCL()
 	if (g_pGameLevel->CurrentViewEntity()==this){
 		if (eacFreeFly!=cam_active){
 			int idx			= 0;
-			game_cl_GameState::Player* P = Game().local_player;
+			game_PlayerState* P = Game().local_player;
 			if (P&&(P->team>=0)&&(P->team<(int)Level().Teams.size())){
 				CTeam& T		= Level().Teams[P->team];
 				for (u32 i=0; i<T.Squads.size(); ++i){
@@ -85,10 +85,10 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
 
-	if (kJUMP == cmd || kWPN_FIRE == cmd)
+/*	if (kWPN_FIRE == cmd)
 	{
-		if ((GAME_PHASE_PENDING	== Game().phase && kWPN_FIRE == cmd) || 
-			(kJUMP == cmd && GAME_PHASE_INPROGRESS	== Game().phase && HUD().GetUI()->UIGame()->CanBeReady()))
+		if ((GAME_PHASE_PENDING	== Game().phase) || 
+			(GAME_PHASE_INPROGRESS	== Game().phase && HUD().GetUI()->UIGame()->CanBeReady()))
 		{
 			NET_Packet			P;
 //			u_EventGen			(P,GEG_PLAYER_READY,ID());
@@ -102,7 +102,7 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 		else
 			return;
 	};
-
+*/
 	switch(cmd) 
 	{
 	case kACCEL:
@@ -232,13 +232,12 @@ void CSpectator::cam_Update	(CActor* A)
 		cam->Update					(point,dangle);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
-		/*
-		if (Game().phase != GAME_PHASE_PENDING)
+		if (true || Game().Phase() != GAME_PHASE_PENDING)
 		{
 			HUD().pFontDI->SetColor		(0xffffffff);
 			HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
 		};
-		*/
+		
 	};
 }
 

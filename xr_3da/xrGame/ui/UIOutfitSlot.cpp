@@ -64,7 +64,7 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	//в этот слот могут помещаться только костюмы
 	R_ASSERT(pOutfit);
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		SetMPOutfit();
 	}
@@ -94,7 +94,7 @@ void CUIOutfitSlot::DetachChild(CUIWindow *pChild)
 //-----------------------------------------------------------------------------/
 void CUIOutfitSlot::SetOriginalOutfit()
 {
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		SetMPOutfit();
 	}
@@ -166,6 +166,7 @@ void CUIOutfitSlot::SetMPOutfit()
 {
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	CObject *pInvOwner = dynamic_cast<CObject*>(Level().CurrentEntity());
+	if (!pInvOwner) return;
 	if (pInvOwner->cNameVisual() == NULL) return;
 
 	std::string a = *pInvOwner->cNameVisual();
@@ -180,8 +181,11 @@ void CUIOutfitSlot::SetMPOutfit()
 		a.erase(a.size() - 4);
 
 	int m_iSkinX = 0, m_iSkinY = 0;
-	sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
+	
+	if( pSettings->line_exist("multiplayer_skins", a.c_str())){
+		sscanf(pSettings->r_string("multiplayer_skins", a.c_str()), "%i,%i", &m_iSkinX, &m_iSkinY);
 
-	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
-		m_iSkinX, m_iSkinY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT); 
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
+			m_iSkinX, m_iSkinY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT); 
+	}
 }

@@ -8,7 +8,7 @@
 CUIGameSP::CUIGameSP()
 {
 	m_game			= NULL;
-	m_pUserMenu		= NULL;
+//	m_pUserMenu		= NULL;
 //	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"artefacthunt_team1", (char*)"artefacthunt_base_cost");
 }
 
@@ -33,28 +33,30 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	switch (dik)
 	{
 	case DIK_I: 
-		StartStopMenu(&InventoryMenu);
+		m_game->StartStopMenu(&InventoryMenu);
 		return true;
 		break;
 	case DIK_P:
-		StartStopMenu(&PdaMenu);
+		m_game->StartStopMenu(&PdaMenu);
 		PdaMenu.ChangeActiveTab(CUIPdaWnd::TAB_COMM);
 		return true;
 		break;
 	case DIK_M:
-		StartStopMenu(&PdaMenu);
+		m_game->StartStopMenu(&PdaMenu);
 		PdaMenu.ChangeActiveTab(CUIPdaWnd::TAB_MAP);
 		return true;
 		break;
-//	case DIK_B:
+/*
+	case DIK_B:
 ///		StartStopMenu(&UIStatsWnd);
-//		StartStopMenu(pUIBuyWeaponWnd);
-//		return true;
-//		break;
+		StartStopMenu(pUIBuyWeaponWnd);
+		return true;
+		break;
+*/
 	case DIK_ESCAPE:
-		if(m_pUserMenu)
+		if(m_pMainInputReceiver)//m_pUserMenu)
 		{
-			StartStopMenu(m_pUserMenu);
+			m_game->StartStopMenu(m_pMainInputReceiver);//m_pUserMenu);
 			return true;
 		}
 		break;
@@ -67,10 +69,10 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && pActor->g_Alive() && !pActor->GetPower())
 	{
-			if(m_pUserMenu == NULL)
+			if(m_pMainInputReceiver/*m_pUserMenu*/ == NULL)
 			{
 				//start the inventory menu
-				StartStopMenu(&InventoryMenu);
+				m_game->StartStopMenu(&InventoryMenu);
 				return true;
 			}
 	}
@@ -88,12 +90,12 @@ bool CUIGameSP::IR_OnKeyboardRelease(int dik)
 
 void CUIGameSP::StartTalk()
 {
-	StartStopMenu(&TalkMenu);
+	m_game->StartStopMenu(&TalkMenu);
 }
 void CUIGameSP::StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 							 CInventory* pOthersInv, CGameObject* pOthersObject)
 {
 	UICarBodyMenu.InitCarBody(pOurInv,  pOurObject,
 		                      pOthersInv, pOthersObject);
-	StartStopMenu(&UICarBodyMenu);
+	m_game->StartStopMenu(&UICarBodyMenu);
 }

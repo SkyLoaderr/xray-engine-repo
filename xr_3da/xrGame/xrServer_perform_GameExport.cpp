@@ -16,7 +16,7 @@ void xrServer::Perform_game_export	()
 	csPlayers.Enter		();
 	for (u32 client=0; client<net_Players.size(); ++client)
 	{
-		u32 ID							= net_Players[client]->ID;
+		ClientID ID						= net_Players[client]->ID;
 		P.w_begin						(M_SV_CONFIG_GAME);
 		game->net_Export_State			(P,ID);
 		SendTo							(ID,P,mode);

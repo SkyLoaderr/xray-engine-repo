@@ -16,6 +16,8 @@
 #include "../PhraseDialog.h"
 #include "../PhraseDialogManager.h"
 
+#include "../game_cl_base.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -198,8 +200,9 @@ void CUITalkWnd::Update()
 	//остановить разговор, если нужно
 	if (m_pActor && !m_pActor->IsTalking())
 	{
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(pGameSP) pGameSP->StartStopMenu(this);
+//		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+//		if(pGameSP) pGameSP->StartStopMenu(this);
+		Game().StartStopMenu(this);
 	}
 
 	inherited::Update();

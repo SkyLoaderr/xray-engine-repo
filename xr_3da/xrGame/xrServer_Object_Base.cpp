@@ -11,6 +11,7 @@
 #include "xrMessages.h"
 #include "game_base_space.h"
 #include "script_value_container_impl.h"
+#include "object_factory.h"
 
 #ifndef XRSE_FACTORY_EXPORTS
 #	include "xrEProps.h"
@@ -81,6 +82,8 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_bALifeControl				= false;
 	m_wVersion					= 0;
 	m_script_version			= 0;
+	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));	
+	m_script_clsid				= object_factory().script_clsid(m_tClassID);
 
 	client_data.clear			();
 }

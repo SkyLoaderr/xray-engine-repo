@@ -27,7 +27,8 @@ void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abst
 	P.w_u16					(GE_OWNERSHIP_REJECT);
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
-	SendBroadcast			(0xffffffff,P,MODE);
+	ClientID clientID;clientID.setBroadcast();
+	SendBroadcast			(clientID,P,MODE);
 	//Log						("A");
 
 	// 3. Attach "TO"
@@ -38,7 +39,9 @@ void xrServer::Perform_transfer(CSE_Abstract* what, CSE_Abstract* from, CSE_Abst
 	P.w_u16					(GE_OWNERSHIP_TAKE);
 	P.w_u16					(to->ID);
 	P.w_u16					(what->ID);
-	SendBroadcast			(0xffffffff,P,MODE);
+
+	clientID.setBroadcast();
+	SendBroadcast			(clientID,P,MODE);
 	//Log						("C");
 }
 
@@ -61,5 +64,6 @@ void xrServer::Perform_reject(CSE_Abstract* what, CSE_Abstract* from)
 	P.r_u32					(time);
 	P.r_u16					(dummy);
 	P.r_u16					(dummy);
-	Process_event_reject	(P,0xffffffff,time,from->ID,what->ID);
+	ClientID clientID;clientID.setBroadcast();
+	Process_event_reject	(P,clientID,time,from->ID,what->ID);
 }

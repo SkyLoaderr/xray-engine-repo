@@ -4,6 +4,7 @@
 #include "UIXmlInit.h"
 #include "../hudmanager.h"
 #include "../level.h"
+#include "../game_cl_teamdeathmatch.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -127,8 +128,9 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 //			pCallbackFunc(m_iResult+1);
 //			m_iResult = -1;
 //		};
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
-		HUD().GetUI()->UIGame()->OnTeamSelect(m_iResult);
+		Game().StartStopMenu(this);
+		game_cl_TeamDeathmatch * dm = dynamic_cast<game_cl_TeamDeathmatch *>(&(Game()));
+		dm->OnTeamSelect(m_iResult);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -140,7 +142,7 @@ bool CUISpawnWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 {
 	if (KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
 	{
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
+		Game().StartStopMenu(this);
 		return true;
 	}
 

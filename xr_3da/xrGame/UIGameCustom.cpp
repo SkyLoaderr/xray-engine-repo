@@ -4,11 +4,10 @@
 
 CUIGameCustom::CUIGameCustom()
 {
-	uFlags			= 0;
-	m_pUserMenu		= NULL;
-
-	shedule.t_min	= 5;
-	shedule.t_max	= 20;
+	m_pMainInputReceiver	= NULL;
+	uFlags					= 0;
+	shedule.t_min			= 5;
+	shedule.t_max			= 20;
 	shedule_register();
 }
 
@@ -17,35 +16,8 @@ CUIGameCustom::~CUIGameCustom()
 	shedule_unregister();
 }
 
-bool CUIGameCustom::IR_OnMouseMove(int dx,int dy)
-{
-	if(m_pUserMenu)
-	{
-		if(m_pUserMenu->IR_OnMouseMove(dx, dy)) 
-			return true;
-	}
 
-	return false;
-}
 
-void CUIGameCustom::StartStopMenu(CUIDialogWnd* pDialog)
-{
-	if(m_pUserMenu == NULL)
-	{
-		//show menu 
-		m_pUserMenu = pDialog;
-		m_pUserMenu->Show();
-	}
-	else
-	{
-        if(m_pUserMenu == pDialog)
-		{
-			//hide menu 
-            m_pUserMenu->Hide();
-			m_pUserMenu = NULL;
-		}
-	}
-}
 
 float CUIGameCustom::shedule_Scale		() 
 {
@@ -56,47 +28,86 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	if(m_pUserMenu)
-	{
-		m_pUserMenu->Update();
-	}
+	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	for(; it!=m_dialogsToRender.end();++it)
+		(*it)->Update();
+
 }
 
 void CUIGameCustom::OnFrame() 
-{
-	if(m_pUserMenu)
-	{
-	//	m_pUserMenu->Update();
-	}
-	
-}
+{}
 
 void CUIGameCustom::Render()
 {
-	if(m_pUserMenu)
-	{
-		m_pUserMenu->Draw();
-	}
+	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	for(; it!=m_dialogsToRender.end();++it)
+		(*it)->Draw();
 
 	m_gameCaptions.Draw();
 }
 
 bool CUIGameCustom::IR_OnKeyboardPress(int dik) 
 {
-	if(m_pUserMenu)
+	if(m_pMainInputReceiver)
 	{
-		if(m_pUserMenu->IR_OnKeyboardPress(dik)) 
+		if(m_pMainInputReceiver->IR_OnKeyboardPress(dik)) 
 			return true;
 	}
+
 	return false;
 }
 
 bool CUIGameCustom::IR_OnKeyboardRelease(int dik) 
 {
-	if(m_pUserMenu)
+	if(m_pMainInputReceiver)
 	{
-		if(m_pUserMenu->IR_OnKeyboardRelease(dik)) 
+		if(m_pMainInputReceiver->IR_OnKeyboardRelease(dik)) 
 			return true;
 	}
 	return false;
+}
+
+bool CUIGameCustom::IR_OnMouseMove(int dx,int dy)
+{
+	if(m_pMainInputReceiver)
+	{
+		if(m_pMainInputReceiver->IR_OnMouseMove(dx, dy)) 
+			return true;
+	}
+return false;
+}
+
+void CUIGameCustom::AddDialogToRender(CUIWindow* pDialog)
+{
+	if(std::find(m_dialogsToRender.begin(), m_dialogsToRender.end(), pDialog) == m_dialogsToRender.end() )
+	{
+		m_dialogsToRender.push_back(pDialog);
+		pDialog->Show(true);
+	}
+}
+
+void CUIGameCustom::RemoveDialogToRender(CUIWindow* pDialog)
+{
+	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),pDialog);
+	if(it != m_dialogsToRender.end())
+	{
+		(*it)->Show(false);
+		m_dialogsToRender.erase(it);
+	}
+}
+
+#include "script_space.h"
+using namespace luabind;
+
+
+
+void CUIGameCustom::script_register(lua_State *L)
+{
+	module(L)
+		[
+			luabind::class_< CUIGameCustom >("CUIGameCustom")
+			.def("AddDialogToRender", &CUIGameCustom::AddDialogToRender)
+			.def("RemoveDialogToRender", &CUIGameCustom::RemoveDialogToRender)
+
+		];
 }

@@ -9,6 +9,8 @@
 #include"../hudmanager.h"
 #include"../level.h"
 
+#include "../game_cl_deathmatch.h"
+
 // Constants
 const char * const	SKIN_SELECTOR_XML		= "skin_selector.xml";
 const u32			clActive				= 0xffffffff;
@@ -147,13 +149,16 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	if (&UIOkBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
 		// Нажали ОК.
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
-		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
+		Game().StartStopMenu(this);
+//		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
+		game_cl_Deathmatch * dm = dynamic_cast<game_cl_Deathmatch *>(&(Game()));
+		dm->OnSkinMenu_Ok();
+
 	}
 	else if (&UICancelBtn == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
 		// Нажали Cancel.
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
+		Game().StartStopMenu(this);
 //		HUD().GetUI()->UIGame()->OnSkinMenu_Cancel();
 	}
 

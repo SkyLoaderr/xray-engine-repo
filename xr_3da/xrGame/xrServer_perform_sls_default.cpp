@@ -8,7 +8,7 @@
 void xrServer::SLS_Default	()
 {
 	// Spawn all other objects
-	if ((game->type == GAME_SINGLE) && ai().get_alife())
+	if ((game->Type() == GAME_SINGLE) && ai().get_alife())
 		return;
 	
 	string256				fn_spawn;
@@ -25,7 +25,8 @@ void xrServer::SLS_Default	()
 			u16				ID;
 			P.r_begin		(ID);
 			R_ASSERT		(M_SPAWN==ID);
-			Process_spawn	(P,0);
+			ClientID clientID;clientID.set(0);
+			Process_spawn	(P,clientID);
 
 			++S_id;
 		}

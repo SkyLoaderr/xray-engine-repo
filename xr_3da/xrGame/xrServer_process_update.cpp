@@ -2,7 +2,7 @@
 #include "xrServer.h"
 #include "xrServer_Objects.h"
 
-void xrServer::Process_update(NET_Packet& P, DPNID sender)
+void xrServer::Process_update(NET_Packet& P, ClientID sender)
 {
 	xrClientData* CL		= ID_to_client(sender);
 	if (CL)	CL->net_Ready	= TRUE;
@@ -28,7 +28,7 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 	}
 }
 
-void xrServer::Process_save(NET_Packet& P, DPNID sender)
+void xrServer::Process_save(NET_Packet& P, ClientID sender)
 {
 	xrClientData* CL		= ID_to_client(sender);
 	if (CL)	CL->net_Ready	= TRUE;

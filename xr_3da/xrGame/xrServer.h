@@ -22,13 +22,10 @@ public:
 	BOOL					net_Ready;
 	u32						game_replicate_id;
 
-	game_PlayerState		ps;
+	game_PlayerState*		ps;
 
-	xrClientData	():IClient(Device.GetTimerGlobal())
-	{
-		owner		= NULL;
-		net_Ready	= FALSE;
-	}
+	xrClientData			();
+	virtual ~xrClientData	();
 };
 
 
@@ -78,17 +75,20 @@ public:
 	void					Perform_reject			(CSE_Abstract* what, CSE_Abstract* from);
 	void					Perform_destroy			(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recursive = TRUE);
 
-	CSE_Abstract*			Process_spawn			(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CSE_Abstract* tpExistedEntity=0);
-	void					Process_update			(NET_Packet& P, DPNID sender);
-	void					Process_save			(NET_Packet& P, DPNID sender);
-	void					Process_event			(NET_Packet& P, DPNID sender);
-	void					Process_event_ownership	(NET_Packet& P, DPNID sender, u32 time, u16 ID);
-	bool					Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID, u16 id_entity, bool send_message = true);
-	void					Process_event_destroy	(NET_Packet& P, DPNID sender, u32 time, u16 ID, NET_Packet* pEPack);
+	CSE_Abstract*			Process_spawn			(NET_Packet& P, ClientID sender, BOOL bSpawnWithClientsMainEntityAsParent=FALSE, CSE_Abstract* tpExistedEntity=0);
+	void					Process_update			(NET_Packet& P, ClientID sender);
+	void					Process_save			(NET_Packet& P, ClientID sender);
+	void					Process_event			(NET_Packet& P, ClientID sender);
+	void					Process_event_ownership	(NET_Packet& P, ClientID sender, u32 time, u16 ID);
+	bool					Process_event_reject	(NET_Packet& P, ClientID sender, u32 time, u16 ID, u16 id_entity, bool send_message = true);
+	void					Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, u16 ID, NET_Packet* pEPack);
 	
 	xrClientData*			SelectBestClientToMigrateTo		(CSE_Abstract* E, BOOL bForceAnother=FALSE);
 
 	void					SendConnectionData		(IClient* _CL);
+	void					AttachNewClient			(IClient* CL);
+protected:
+	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal);
 
 public:
 	// constr / destr
@@ -96,11 +96,11 @@ public:
 	virtual ~xrServer		();
 
 	// extended functionality
-	virtual u32				OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
+	virtual u32				OnMessage			(NET_Packet& P, ClientID sender);	// Non-Zero means broadcasting with "flags" as returned
 	virtual void			OnCL_Connected		(IClient* CL);
 	virtual void			OnCL_Disconnected	(IClient* CL);
 	virtual bool			OnCL_QueryHost		();
-	virtual void			SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	virtual void			SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 
 	virtual IClient*		client_Create		();								// create client info
 	virtual void			client_Replicate	();								// replicate current state to client
@@ -115,7 +115,7 @@ public:
 	IC void					clients_Lock		()			{	csPlayers.Enter();	}
 	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
 
-	xrClientData*			ID_to_client		(DPNID ID);
+	xrClientData*			ID_to_client		(ClientID ID);
 	CSE_Abstract*			ID_to_entity		(u16 ID);
 
 	// main

@@ -257,7 +257,7 @@ void CLevel::OnFrame	()
 
 	// Draw client/server stats
 	CGameFont* F = HUD().pFontDI;
-	if (Server)
+	if ( IsServer() )
 	{
 		if (psDeviceFlags.test(rsStatistic))
 		{
@@ -286,7 +286,7 @@ void CLevel::OnFrame	()
 					C->stats.dwTimesBlocked
 					);
 			}
-			if (OnClient())
+			if (IsClient())
 			{
 				F->OutNext("P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d), Sended(%2d), SPS(%2d)",
 					//Server->game->get_option_s(C->Name,"name",C->Name),
@@ -357,7 +357,7 @@ void CLevel::OnRender()
 			if (pCustomZone)
 				pCustomZone->OnRender();
 		}
-		if (Game().type != GAME_SINGLE)
+		if (GameID() != GAME_SINGLE)
 		{
 			xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 			xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
@@ -536,7 +536,7 @@ bool				CLevel::InterpolationDisabled	()
 
 void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 {
-	if (Game().type == GAME_SINGLE)	return;
+	if (GameID() == GAME_SINGLE)	return;
 
 //#pragma todo("Oles to all: highly inefficient and slow!!!")
 //fixed (Andy)
@@ -602,17 +602,21 @@ void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
 
 bool CLevel::IsServer ()
 {
+//	return (!!Server);
+
 	if (!Server) return false;
 	return (Server->client_Count() != 0);
+
 }
 
 bool CLevel::IsClient ()
 {
+//	return (!Server);
 	if (!Server) return true;
 	return (Server->client_Count() == 0);
 }
 
 u32	GameID()
 {
-	return Game().type;
+	return Game().Type();
 }

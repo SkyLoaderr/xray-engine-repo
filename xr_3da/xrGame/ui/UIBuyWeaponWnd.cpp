@@ -13,7 +13,7 @@
 #include "../level.h"
 #include "UIInventoryUtilities.h"
 #include "../InfoPortion.h"
-#include "../game_cl_base.h"
+#include "../game_cl_Deathmatch.h"
 #include "../string_table.h"
 
 #include <boost/array.hpp>
@@ -847,13 +847,17 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg && CanBuyAllItems())
 	{
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
-		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
+//		HUD().GetUI()->UIGame()->StartStopMenu(this);
+//		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
+		Game().StartStopMenu(this);
+		game_cl_Deathmatch * dm = dynamic_cast<game_cl_Deathmatch *>(&(Game()));
+		dm->OnBuyMenu_Ok();
 	}
 	else if (&UIBtnCancel == pWnd && CUIButton::BUTTON_CLICKED == msg)
 	{
-		HUD().GetUI()->UIGame()->StartStopMenu(this);
-		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
+//		HUD().GetUI()->UIGame()->StartStopMenu(this);
+//		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
+		Game().StartStopMenu(this);
 	}
 	// Так как у нас при наведении меняется текстура, то обрабатываем эту ситуацию
 	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
@@ -999,7 +1003,7 @@ void CUIBuyWeaponWnd::Show()
 	m_pMouseCapturer = NULL;
 	inherited::Show();
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
@@ -1014,7 +1018,7 @@ void CUIBuyWeaponWnd::Hide()
 {
 	inherited::Hide();
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;

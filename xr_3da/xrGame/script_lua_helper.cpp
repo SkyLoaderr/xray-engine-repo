@@ -59,7 +59,6 @@ int CDbgLuaHelper::PrepareLua(lua_State* l)
 	// call this function immediatly before calling lua_pcall. 
 	//returns index in stack for errorFunc
 //	return 0;
-
 	lua_register(l, "DEBUGGER_ERRORMESSAGE", errormessageLua );
 	lua_sethook(l, hookLua, LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 
@@ -91,7 +90,14 @@ int CDbgLuaHelper::OutputTop(lua_State* L)
 void CDbgLuaHelper::errormessageLuaBind(lua_State* l)
 {
 	L = l;
-	errormessageLua(L);
+//	errormessageLua(L);
+
+	char err_msg[8192];
+	sprintf(err_msg,"%s",lua_tostring(L,-1));
+	CScriptDebugger::GetDebugger()->Write(err_msg);
+	CScriptDebugger::GetDebugger()->Write("\n");
+	CScriptDebugger::GetDebugger()->ErrorBreak();
+	Debug.fatal("LUABIND error");
 }
 
 int CDbgLuaHelper::errormessageLua(lua_State* l)
@@ -161,6 +167,7 @@ int CDbgLuaHelper::errormessageLua(lua_State* l)
 	if ( ar.source[0] == '@' )
 		szSource=ar.source+1;
 	CScriptDebugger::GetDebugger()->ErrorBreak(szSource, ar.currentline);
+	Debug.fatal("LUA error");
 
 	return 0;
 }
@@ -193,19 +200,49 @@ void CDbgLuaHelper::func_hook (lua_State *l, lua_Debug *ar)
 	CScriptDebugger::GetDebugger()->FunctionHook(szSource, ar->currentline, ar->event==LUA_HOOKCALL);
 }
 
+void print_stack(lua_State *L)
+{
+	Msg(" ");
+	for (int i=0; lua_type(L, -i-1); i++)
+		Msg("%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
+}
+
 int CDbgLuaHelper::hookLuaBind (lua_State *l)
 {
 	L =l;
+	int top1 = lua_gettop(L);
+	
+	Msg	("hookLuaBind start");
+	print_stack(L);
+
+	if (lua_isstring(L,-1))
+		errormessageLuaBind(L);
+//		Msg("Tope string %s",lua_tostring(L,-1));
+	
 	lua_Debug ar;
 	lua_getstack(L,0,&ar);
 	lua_getinfo (L,"lnuS",&ar);
 	hookLua(L,&ar);
+	
+	Msg	("hookLuaBind end");
+	print_stack(L);
+
+	if (lua_isstring(L,-1))
+		Msg("Tope string %s",lua_tostring(L,-1));
+
+	int top2 = lua_gettop(L);
+	VERIFY(top2==top1);
 	return 0;
 }
 
 void CDbgLuaHelper::hookLua (lua_State *l, lua_Debug *ar)
 {
 	L = l;
+	int top1 = lua_gettop(L);
+	
+//	Msg	("hookLua start");
+//	print_stack(L);
+	
 	switch(ar->event)
 	{
 	case LUA_HOOKTAILRET:
@@ -217,6 +254,12 @@ void CDbgLuaHelper::hookLua (lua_State *l, lua_Debug *ar)
 		line_hook(L,ar);
 		break;
 	}
+	
+//	Msg	("hookLua end");
+//	print_stack(L);
+	
+	int top2 = lua_gettop(L);
+	VERIFY(top2==top1);
 }
 
 const char* CDbgLuaHelper::GetSource() 
@@ -469,7 +512,7 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 			var.szValue[0]=0;
 			CScriptDebugger::GetDebugger()->AddLocalVariable(var);
 			if(bOpenTable)
-				DrawTable(l, name);
+				DrawTable(l, name, false);
 			return;
 		break;
 
@@ -508,7 +551,7 @@ void CDbgLuaHelper::DrawTable(lua_State *l, LPCSTR S, bool bRecursive)
 		sprintf(stype,"%s",lua_typename(l, lua_type(l, -1)));
 		sprintf(sname,"%s",lua_tostring(l, -2));
 		sprintf(sFullName,"%s.%s",S,sname);
-		DrawVariable(l, sFullName, true);
+		DrawVariable(l, sFullName, false);
 
 		lua_pop		(l, 1);  /* removes `value'; keeps `key' for next iteration */
 	}

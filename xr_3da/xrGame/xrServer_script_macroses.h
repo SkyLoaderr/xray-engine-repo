@@ -12,6 +12,8 @@
 #include "xrEProps.h"
 
 //#define USE_WRITER_READER
+class CSE_Abstract;
+class NET_Packet;
 
 #ifndef USE_WRITER_READER
 #	define INHERIT_PURE \
@@ -32,7 +34,7 @@
 	DEFINE_LUA_WRAPPER_METHOD_R2P1_V1	(UPDATE_Write,	NET_Packet)\
 	DEFINE_LUA_WRAPPER_METHOD_R2P1_V1	(UPDATE_Read,	NET_Packet)\
 	DEFINE_LUA_WRAPPER_METHOD_R2P2_V2	(FillProps,		LPCSTR,	PropItemVec)\
-	DEFINE_LUA_WRAPPER_METHOD_R2P1_V4	(OnEvent,		NET_Packet, u16, u32, u32)\
+	DEFINE_LUA_WRAPPER_METHOD_R2P1_V4	(OnEvent,		NET_Packet, u16, u32, ClientID)\
 	DEFINE_LUA_WRAPPER_METHOD_0			(init,			CSE_Abstract*)
 
 #define INHERIT_ALIFE \

@@ -40,6 +40,7 @@ void CSE_Abstract::script_register(lua_State *L)
 			.def_readonly("parent_id",		&CSE_Abstract::ID_Parent)
 			.def_readonly("section_name",	&CSE_Abstract::s_name)
 			.def_readonly("name",			&CSE_Abstract::s_name_replace)
+			.def("clsid",					&CSE_Abstract::script_clsid)
 //			.def(		constructor<LPCSTR>())
 	];
 }

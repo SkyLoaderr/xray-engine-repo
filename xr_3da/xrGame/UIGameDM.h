@@ -31,30 +31,31 @@ protected:
 		flShowFragList	= (1<<1),
 		fl_force_dword	= u32(-1)	};
 
-	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
-	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
-	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
 
 	DEF_VECTOR			(FRAGS_LISTS, CUIDMFragList*);
 	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
-	DEF_VECTOR			(TEAMS_LIST, std::string);
-	DEF_VECTOR			(PRESET_ITEMS, s16);
 
-	FRAGS_LISTS				m_aFragsLists;
-	PLAYERS_LISTS			m_aPlayersLists;
-	TEAMS_LIST				m_aTeamSections;
+//  moved to game_cl_deathmatch
+//	DEF_VECTOR			(TEAMS_LIST, std::string);
+//	DEF_VECTOR			(PRESET_ITEMS, s16);
 
-	CUIBuyWeaponWnd*		pBuyMenuTeam0;
-	CUIBuyWeaponWnd*		pCurBuyMenu;
+	CUIWindow*				m_pFragLists;
+	CUIWindow*				m_pPlayerLists;
+//	FRAGS_LISTS				m_aFragsLists;
+//	PLAYERS_LISTS			m_aPlayersLists;
 
-	PRESET_ITEMS			PresetItemsTeam0;
-	PRESET_ITEMS*			pCurPresetItems;
+//  moved to game_cl_deathmatch
+//	TEAMS_LIST				m_aTeamSections;
+//	CUIBuyWeaponWnd*		pBuyMenuTeam0;
+//	CUIBuyWeaponWnd*		pCurBuyMenu;
 
+//	PRESET_ITEMS			PresetItemsTeam0;
+//	PRESET_ITEMS*			pCurPresetItems;
 
-	CUISkinSelectorWnd*		pSkinMenuTeam0;
-	CUISkinSelectorWnd*		pCurSkinMenu;
+//	CUISkinSelectorWnd*		pSkinMenuTeam0;
+//	CUISkinSelectorWnd*		pCurSkinMenu;
 	
-	BOOL					m_bSkinSelected;
+//	BOOL					m_bSkinSelected;
 
 	ref_str					m_time_caption;		
 	ref_str					m_spectrmode_caption;		
@@ -65,18 +66,18 @@ protected:
 
 	virtual	void					ClearLists				();
 	
-	virtual CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
 
-	virtual CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
-
-	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
 	//-----------------------------------------------------------------------------
-	s16								m_iCurrentPlayersMoney;
+//	s16								m_iCurrentPlayersMoney;
 
-	virtual	void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
+//  moved to game_cl_deathmatch
+//	virtual CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
+//	virtual CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
+//	virtual	void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
+//	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
 
 public:
-	BOOL							m_bBuyEnabled;
+//	BOOL							m_bBuyEnabled;
 
 									CUIGameDM				();
 	virtual 						~CUIGameDM				();
@@ -84,26 +85,27 @@ public:
 	virtual void					SetClGame				(game_cl_GameState* g);
 	virtual	void					Init					();
 
-	virtual	void					SetCurrentBuyMenu		()	;//{pCurBuyMenu = pBuyMenuTeam0; };
-	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
+//  moved to game_cl_deathmatch
+//	virtual	void					SetCurrentBuyMenu		()	;//{pCurBuyMenu = pBuyMenuTeam0; };
+//	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
+//	virtual void					OnBuyMenu_Ok			();
+//	virtual void					OnSkinMenu_Ok			();
+//	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
+//	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };
+//	virtual bool					CanBeReady				();
+//	virtual BOOL					CanCallBuyMenu			();
+//	virtual	void					SetBuyMenuItems			();
 
-	virtual void					Render					();
-	virtual void					OnFrame					();
+//	virtual void					Render					();
+//	virtual void					OnFrame					();
 
-	virtual bool					IR_OnKeyboardPress		(int dik);
-	virtual bool					IR_OnKeyboardRelease	(int dik);
+//	virtual bool					IR_OnKeyboardPress		(int dik);
+//	virtual bool					IR_OnKeyboardRelease	(int dik);
 
-	virtual void					OnBuyMenu_Ok			();
-	virtual void					OnSkinMenu_Ok			();
 
-	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
-	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };
 
-	virtual bool					CanBeReady				();
-	virtual BOOL					CanCallBuyMenu			();
 
-	virtual	void					SetBuyMenuItems			();
-	virtual void					ClearBuyMenu			();
+//	virtual void					ClearBuyMenu			();
 
 			void					SetTimeMsgCaption		(LPCSTR str);
 			void					SetSpectrModeMsgCaption		(LPCSTR str);
@@ -111,11 +113,13 @@ public:
 			void					SetSpectatorMsgCaption			(LPCSTR str);
 			void					SetPressJumpMsgCaption			(LPCSTR str);
 			void					SetPressBuyMsgCaption			(LPCSTR str);
-	/////////
-	CUIInventoryWnd					InventoryMenu;
-//	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
 
-//	CUIBuyWeaponWnd		UIBuyWeaponWnd;
-//	CUIStatsWnd*		pUIStatsWnd;
+//	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
+			void					ShowFragList			(bool bShow);
+			void					ShowPlayersList			(bool bShow);
+
+// moved to game_cl_deathmatch
+//	CUIInventoryWnd					InventoryMenu;
+
 };
 #endif // __XR_UIGAMEDM_H__

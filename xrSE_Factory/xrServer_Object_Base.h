@@ -51,6 +51,8 @@ public:
 	// update data
 	Fvector							o_Position;
 	Fvector							o_Angle;
+	CLASS_ID						m_tClassID;
+	int								m_script_clsid;
 
 	// for ALife control
 	bool							m_bALifeControl;
@@ -65,7 +67,7 @@ public:
 	
 									CSE_Abstract	(LPCSTR caSection);
 	virtual							~CSE_Abstract	();
-	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
+	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender ){};
 	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 	//
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
@@ -87,7 +89,7 @@ public:
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init			();
 	// end of the virtual inheritance dependant code
-	// editor integration
+	IC		int						script_clsid	() const					{VERIFY(m_script_clsid >= 0); return (m_script_clsid);}
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)

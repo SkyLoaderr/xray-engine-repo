@@ -14,8 +14,15 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 //	};
 
 	// Game config (all, info includes deleted player now, excludes at the next cl-update)
-	if (SV_Client) game->OnPlayerDisconnect(CL->ID);
-	game->signal_Syncronize	();
+	NET_Packet P;
+	P.B.count = 0;
+	P.w_clientID(CL->ID);
+	P.r_pos = 0;
+	ClientID clientID;clientID.set(0);
+//	game->OnEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);
+	game->AddDelayedEvent(P,GAME_EVENT_PLAYER_DISCONNECTED, 0, clientID);
+//	if (SV_Client) game->OnPlayerDisconnect(CL->ID);
+//	game->signal_Syncronize	();
 
 	//
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();

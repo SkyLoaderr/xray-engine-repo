@@ -16,7 +16,7 @@
 
 #define MSGS_OFFS 510
 
-#define	TEAM0_MENU		"deathmatch_team0"
+//#define	TEAM0_MENU		"deathmatch_team0"
 #define TIME_MSG_COLOR		0xffff0000
 #define SPECTRMODE_MSG_COLOR		0xffff0000
 #define NORMAL_MSG_COLOR	0xffffffff
@@ -24,9 +24,10 @@
 CUIGameDM::CUIGameDM()
 {
 	m_game			= NULL; 
-	ClearLists ();
-	
-	pBuyMenuTeam0	= NULL;
+	m_pFragLists					= xr_new<CUIWindow>();
+	m_pPlayerLists					= xr_new<CUIWindow>();
+//moved to game_cl_deathmatch	
+/*	pBuyMenuTeam0	= NULL;
 	pCurBuyMenu		= NULL;
 	
 	PresetItemsTeam0.clear();
@@ -38,6 +39,8 @@ CUIGameDM::CUIGameDM()
 	m_bBuyEnabled	= TRUE;
 
 	m_bSkinSelected	= TRUE;
+
+	m_iCurrentPlayersMoney = 0;*/
 
 /*
 	TimeMsgStatic.SetFont			(HUD().pFontDI);
@@ -61,7 +64,6 @@ CUIGameDM::CUIGameDM()
 //	m_gameCaptions.customizeMessage(m_time_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 
 	//-----------------------------------------------------------------------
-	m_iCurrentPlayersMoney = 0;
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)
@@ -76,6 +78,9 @@ void	CUIGameDM::Init				()
 
 	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
+	pFragList->SetAutoDelete(true);
+	pPlayerList->SetAutoDelete(true);
+
 
 	int ScreenW = Device.dwWidth;
 	int ScreenH = Device.dwHeight;
@@ -86,55 +91,53 @@ void	CUIGameDM::Init				()
 
 	pFragList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 
-	m_aFragsLists.push_back(pFragList);
+
+	m_pFragLists->AttachChild(pFragList);
 	//-----------------------------------------------------------
 	FrameRect = pPlayerList->GetFrameRect ();
 	FrameW	= FrameRect.right - FrameRect.left;
 	FrameH	= FrameRect.bottom - FrameRect.top;
-
 	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
-	m_aPlayersLists.push_back(pPlayerList);
-	//-----------------------------------------------------------
-	string64	Team0;
-	std::strcpy(Team0, TEAM0_MENU);
-	m_aTeamSections.push_back(Team0);
-	//-----------------------------------------------------------
-	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
-	pCurBuyMenu		= pBuyMenuTeam0;
-	//-----------------------------------------------------------
-	pSkinMenuTeam0	= InitSkinMenu(0);
-	pCurSkinMenu	= pSkinMenuTeam0;
+
+	m_pPlayerLists->AttachChild(pPlayerList);
+
+// moved to game_cl_deathmatch
+//	//-----------------------------------------------------------
+//	string64	Team0;
+//	std::strcpy(Team0, TEAM0_MENU);
+//	m_aTeamSections.push_back(Team0);
+//	//-----------------------------------------------------------
+//	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
+//	pCurBuyMenu		= pBuyMenuTeam0;
+//	//-----------------------------------------------------------
+//	pSkinMenuTeam0	= InitSkinMenu(0);
+//	pCurSkinMenu	= pSkinMenuTeam0;
 };
 //--------------------------------------------------------------------
 
 void	CUIGameDM::ClearLists ()
 {
-	for (u32 i=0; i<m_aFragsLists.size(); ++i)
-	{
-		xr_delete(m_aFragsLists[i]);
-	}
-	m_aFragsLists.clear();
-
-	for (u32 i=0; i<m_aPlayersLists.size(); ++i)
-	{
-		xr_delete(m_aPlayersLists[i]);
-	}
-	m_aPlayersLists.clear();
-
-	m_aTeamSections.clear();
+	m_pFragLists->DetachAll();
+	m_pPlayerLists->DetachAll();
 }
 //--------------------------------------------------------------------
 CUIGameDM::~CUIGameDM()
 {
 	ClearLists();
+	xr_delete(m_pFragLists);
+	xr_delete(m_pPlayerLists);
 
-	xr_delete(pBuyMenuTeam0);
+// moved to game_cl_deathmatch
+//	xr_delete(pBuyMenuTeam0);
 }
 //--------------------------------------------------------------------
-
+/*
 void CUIGameDM::OnFrame()
 {
 	inherited::OnFrame();
+//	m_pPlayerLists->Update();
+
+
 
 	switch (m_game->phase){
 	case GAME_PHASE_PENDING: 
@@ -173,13 +176,10 @@ void CUIGameDM::OnFrame()
 					sprintf(S,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 					SetTimeMsgCaption(S);
 
-//					TimeMsgStatic.Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 				}
 				else
 				{
 					SetTimeMsgCaption("00:00:00");
-//					TimeMsgDyn.Out				(0.f,-0.95f,"00:00:00");
-//					TimeMsgDyn.Update			();
 				}
 			};
 			if (!m_bSkinSelected)
@@ -225,19 +225,19 @@ void CUIGameDM::OnFrame()
 					SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
 					SetPressJumpMsgCaption("Press Jump to start");
 					SetPressBuyMsgCaption("Press 'B' to access buy menu");
-					/*
-					HUD().pFontDI->SetAligment		(CGameFont::alCenter);
-
-					HUD().pFontDI->SetColor		(0xffffffff);
-					HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
-
-					float OldSize = HUD().pFontDI->GetSize			();
-
-					HUD().pFontDI->SetSize		(0.02f);
-					HUD().pFontDI->SetColor		(0xffffffff);
-					HUD().pFontDI->Out			(0.f,0.9f,"Press Jump to start");
-					HUD().pFontDI->SetSize		(OldSize);
-					*/
+					
+//					HUD().pFontDI->SetAligment		(CGameFont::alCenter);
+//
+//					HUD().pFontDI->SetColor		(0xffffffff);
+//					HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
+//
+//					float OldSize = HUD().pFontDI->GetSize			();
+//
+//					HUD().pFontDI->SetSize		(0.02f);
+//					HUD().pFontDI->SetColor		(0xffffffff);
+//					HUD().pFontDI->Out			(0.f,0.9f,"Press Jump to start");
+//					HUD().pFontDI->SetSize		(OldSize);
+					
 				};
 			};
 		}break;
@@ -247,12 +247,15 @@ void CUIGameDM::OnFrame()
 	{
 		StartStopMenu(pCurBuyMenu);
 	};
-}
-//--------------------------------------------------------------------
 
+}*/
+//--------------------------------------------------------------------
+/*
 void CUIGameDM::Render()
 {
 	inherited::Render();
+
+//	m_pPlayerLists->Draw();
 
 	switch (m_game->phase){
 	case GAME_PHASE_PENDING:
@@ -272,9 +275,10 @@ void CUIGameDM::Render()
 			};
 		}break;
 	}
-}
-//--------------------------------------------------------------------
 
+}*/
+//--------------------------------------------------------------------
+/*
 bool CUIGameDM::IR_OnKeyboardPress(int dik)
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
@@ -336,10 +340,11 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			}break;
 		}
 	}
-	return false;
-}
-//--------------------------------------------------------------------
 
+	return false;
+}*/
+//--------------------------------------------------------------------
+/*
 bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 {
 	if(inherited::IR_OnKeyboardRelease(dik)) return true;
@@ -348,17 +353,15 @@ bool CUIGameDM::IR_OnKeyboardRelease(int dik)
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:
-			/*
-			pFragList->Hide();
-			m_pUserMenu = NULL;			
-			*/
 			SetFlag		(flShowFragList,FALSE);	
 			return true;
 		}
 	}
+
 	return false;
-}
+}*/
 //--------------------------------------------------------------------
+/* moved to game_cl_deathmatch
 static	u16 SlotsToCheck [] = {
 	KNIFE_SLOT		,			// 0
 		PISTOL_SLOT		,		// 1
@@ -380,7 +383,6 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	if (!Pl) return;
 
 	NET_Packet		P;
-//	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 	l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
 	P.w_u16(GAME_EVENT_PLAYER_BUY_FINISHED);
 	//-------------------------------------------------------------------------------
@@ -445,7 +447,6 @@ bool		CUIGameDM::CanBeReady				()
 	OnBuyMenu_Ok();
 	return true;
 };
-
 //--------------------------------------------------------------------
 CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(LPCSTR BasePriceSection, s16 Team)
 {
@@ -476,6 +477,7 @@ CUISkinSelectorWnd*		CUIGameDM::InitSkinMenu			(s16 Team)
 	
 	return pMenu;
 };
+
 //--------------------------------------------------------------------
 void		CUIGameDM::OnSkinMenu_Ok			()
 {
@@ -485,8 +487,6 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	if(!l_pPlayer) return;
 
 	NET_Packet		P;
-//	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_SKIN,l_pPlayer->ID()	);
-
 	l_pPlayer->u_EventGen		(P,GE_GAME_EVENT,l_pPlayer->ID()	);
 	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
 
@@ -498,6 +498,7 @@ void		CUIGameDM::OnSkinMenu_Ok			()
 	if (pCurBuyMenu) 
 		pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
 };
+
 
 BOOL		CUIGameDM::CanCallBuyMenu			()
 {
@@ -621,15 +622,15 @@ void		CUIGameDM::SetBuyMenuItems		()
 	{
 		//проверяем предметы которые есть у игрока
 
-		/*
-		TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
-		TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
 		
-		for ( ; I != E; ++I) 
-		{
-			CheckItem((*I), &TmpPresetItems);
-		};
-		*/
+//		TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
+//		TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
+//		
+//		for ( ; I != E; ++I) 
+//		{
+//			CheckItem((*I), &TmpPresetItems);
+//		};
+		
 
 		//проверяем пояс
 		TIItemList::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
@@ -664,10 +665,27 @@ void		CUIGameDM::SetBuyMenuItems		()
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 	pCurBuyMenu->CheckBuyAvailabilityInSlots();
 };
-
+*/
 void CUIGameDM::SetTimeMsgCaption		(LPCSTR str)
 {
 		m_gameCaptions.setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
+}
+
+void CUIGameDM::ShowFragList			(bool bShow)
+{
+	if(bShow)
+		AddDialogToRender(m_pFragLists);
+	else
+		RemoveDialogToRender(m_pFragLists);
+
+}
+
+void CUIGameDM::ShowPlayersList			(bool bShow)
+{
+	if(bShow)
+		AddDialogToRender(m_pPlayerLists);
+	else
+		RemoveDialogToRender(m_pPlayerLists);
 }
 
 void CUIGameDM::SetSpectrModeMsgCaption		(LPCSTR str)

@@ -243,7 +243,7 @@ void CUIInventoryWnd::InitInventory()
 	//инициализировать информацию о персонаже
 	UICharacterInfo.InitCharacter(pInvOwner);
 
-	if (GAME_SINGLE != Game().type)
+	if (GAME_SINGLE != GameID())
 	{
 		UIOutfitSlot.SetMPOutfit();
 	}
@@ -366,7 +366,7 @@ void CUIInventoryWnd::InitInventory()
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (Game().type != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
+				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
 					continue;
 			}
 
@@ -418,7 +418,7 @@ void CUIInventoryWnd::InitInventory()
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (Game().type != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
+				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
 					continue;
 			}
 
@@ -720,12 +720,14 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 		
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(!pGameSP) return;
-		
+//		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+//		if(!pGameSP) return;
+		if(GameID() != GAME_SINGLE)
+			return;
+
 		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
 		StopSleepWnd();
-		pGameSP->StartStopMenu(this);
+		Game().StartStopMenu(this);
 	}
 	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::CLOSE_BUTTON_CLICKED)
 	{
@@ -927,7 +929,7 @@ void CUIInventoryWnd::Show()
 	inherited::Show();
 	m_pCurrentDragDropItem = NULL;
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
@@ -950,7 +952,7 @@ void CUIInventoryWnd::Hide()
 	}
 	inherited::Hide();
 
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
@@ -1322,7 +1324,7 @@ void  CUIInventoryWnd::StopSleepWnd()
 	UISleepButton.Reset();
 
 	// Для мультиплеера мы ее отключаем кнопку сна
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		UISleepButton.SetTextColor(0xff808080);
 		UISleepButton.GetUIStaticItem().SetColor(0xff808080);

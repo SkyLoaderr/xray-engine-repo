@@ -2,8 +2,9 @@
 #include "xrServer.h"
 #include "hudmanager.h"
 #include "xrserver_objects.h"
+#include "game_sv_mp_script.h"//fake
 
-CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
+CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
 {
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
@@ -15,7 +16,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWi
 		// create entity
 		E = entity_Create	(s_name); R_ASSERT3(E,"Can't create entity.",s_name);
 		E->Spawn_Read		(P);
-		if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid))){
+		if (!((game->Type()==E->s_gameid)||(GAME_ANY==E->s_gameid))){
 			// Msg			("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
 			F_entity_Destroy(E);
 			return NULL;
@@ -93,7 +94,7 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWi
 			CSE_Abstract					*e_parent = ID_to_entity(E->ID_Parent);
 			R_ASSERT						(e_parent);
 			
-			if (!tpExistedEntity)
+			if (!tpExistedEntity && !dynamic_cast<game_sv_mp_script*>(game) )
 				game->OnTouch				(E->ID_Parent,E->ID);
 
 			e_parent->children.push_back	(E->ID);
@@ -119,7 +120,8 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWi
 		E->Spawn_Write		(Packet,FALSE	);
 //		if (E->s_flags.is(M_SPAWN_UPDATE))
 //			E->UPDATE_Write	(Packet);
-		SendBroadcast		(0,		Packet,net_flags(TRUE,TRUE));
+		ClientID clientID;clientID.set(0);
+		SendBroadcast		(clientID, Packet, net_flags(TRUE,TRUE));
 	}
 
 	// log

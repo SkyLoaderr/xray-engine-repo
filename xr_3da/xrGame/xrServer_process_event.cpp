@@ -9,7 +9,7 @@
 #include "ai_space.h"
 #include "alife_object_registry.h"
 
-void xrServer::Process_event	(NET_Packet& P, DPNID sender)
+void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 {
 	u32			timestamp;
 	u16			type;
@@ -44,7 +44,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			u16		game_event_type;
 			P.r_u16(game_event_type);
-			game->OnEvent(P,game_event_type,timestamp,sender);
+//			game->OnEvent(P,game_event_type,timestamp,sender);
+			game->AddDelayedEvent(P,game_event_type,timestamp,sender);
 		}
 /* // moved to game_sv_teamdeathmatch
 	case GEG_PLAYER_CHANGE_TEAM: //cs & TDM
@@ -95,14 +96,16 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //			VERIFY					(verify_entities());
 		}break;
 */
-	case GE_INFO_TRANSFER:
-		SendBroadcast			(0xffffffff,P,MODE);
+	case GE_INFO_TRANSFER:{
+		ClientID clientID;clientID.setBroadcast();
+		SendBroadcast			(clientID,P,MODE);
 //		VERIFY					(verify_entities());
-		break;
-	case GE_PDA:
-		SendBroadcast			(0xffffffff,P,MODE);
+		}break;
+	case GE_PDA:{
+		ClientID clientID;clientID.setBroadcast();
+		SendBroadcast			(clientID,P,MODE);
 //		VERIFY					(verify_entities());
-		break;
+		}break;
 	case GE_INV_ACTION:
 		{
 			xrClientData* CL		= ID_to_client(sender);
@@ -110,7 +113,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 //			VERIFY					(verify_entities());
 		}break;
-	case GE_BUY: //cs & dm
+/*	case GE_BUY: //cs & dm
 		{
 			string64			i_name;
 			P.r_stringZ			(i_name);
@@ -124,7 +127,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 //			VERIFY					(verify_entities());
 		}
-		break;
+		break;*/
 	case GE_RESPAWN:
 		{
 			CSE_Abstract*		E	= game->get_entity_from_eid	(destination);
@@ -141,10 +144,11 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		}
 		break;
 	case GE_WPN_STATE_CHANGE:
-	case GE_ZONE_STATE_CHANGE:
-		SendBroadcast			(0xffffffff,P,MODE);
+	case GE_ZONE_STATE_CHANGE:{
+		ClientID clientID;clientID.setBroadcast();
+		SendBroadcast			(clientID,P,MODE);
 //		VERIFY					(verify_entities());
-		break;
+		}break;
 	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
 		{
@@ -176,7 +180,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_from == c_parent);						// assure client ownership of event
 
 			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,MODE);
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast		(clientID,P,MODE);
 
 			// Perfrom real destroy
 			entity_Destroy		(e_entity	);
@@ -186,10 +191,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GE_HIT:
 		{
 			// Parse message
-			u16					id_dest		=	destination, id_src;
-			P.r_u16				(id_src);
+//last	u16					id_dest		=	destination, id_src;
+//last	P.r_u16				(id_src);
 			/*CSE_Abstract*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
-			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
+			
+//last		CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
+
 //			xrClientData*		c_src		= e_src->owner;
 //			xrClientData*		c_from		= ID_to_client	(sender);
 //			R_ASSERT			(c_src == c_from);							// assure client ownership of event
@@ -197,11 +204,13 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //			CSE_Abstract*		e_hitter = e_src;
 //			CSE_Abstract*		e_hitted = receiver;
 
-			game->OnHit(id_src, id_dest, P);
+//last	game->OnHit(id_src, id_dest, P);*/
+			P.r_pos -=2;
+			game->AddDelayedEvent(P,GAME_EVENT_ON_HIT, 0, ClientID() );
 			
 			// Signal just to destination (тому, кто повредился)
-			SendBroadcast		(0xffffffff,P,MODE);
-//			VERIFY				(verify_entities());
+//last	ClientID clientID;clientID.setBroadcast();
+//last	SendBroadcast		(clientID,P,MODE);
 		}
 		break;
 	case GE_DIE:
@@ -214,19 +223,19 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData *l_pC	= ID_to_client(sender);
 //			VERIFY				(game && l_pC && l_pC->owner);
 			VERIFY				(game && l_pC);
-			if ((game->type != GAME_SINGLE) && l_pC && l_pC->owner)
+			if ((game->Type() != GAME_SINGLE) && l_pC && l_pC->owner)
 			{
 				Msg					("* [%2d] killed by [%2d] - sended by [%s:%2d]", id_dest, id_src, game->get_option_s(*l_pC->Name,"name","Player"), l_pC->owner->ID);
 			}
 
 			CSE_Abstract*		e_dest		= game->get_entity_from_eid	(id_dest);	// кто умер
 			VERIFY				(e_dest);
-			if (game->type != GAME_SINGLE)
+			if (game->Type() != GAME_SINGLE)
 				Msg				("* [%2d] is [%s:%s]", id_dest, e_dest->s_name, e_dest->s_name_replace);
 			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	);	// кто убил
 			VERIFY				(e_src);
 			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
-			if (game->type != GAME_SINGLE)
+			if (game->Type() != GAME_SINGLE)
 				Msg				("* [%2d] is [%s:%s]", id_src, e_src->s_name, e_src->s_name_replace);
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
@@ -235,13 +244,18 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //			R_ASSERT2			(c_dest == c_from, "Security error (SSU :)");// assure client ownership of event
 
 			//
-			if (e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-			{
-				game->OnPlayerKilled		(c_dest->ID);
-			};
+			
+			if (/*e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && */e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
+				//game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
 
-			if (e_src->s_flags.is(M_SPAWN_OBJECT_ASPLAYER) && e_dest->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
-				game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
+				NET_Packet P_;
+				P_.B.count = 0;
+				P_.w_clientID(c_src->ID);
+				P_.w_clientID(c_dest->ID);
+				P_.r_pos = 0;
+				ClientID clientID;clientID.set(0);
+//				game->OnEvent(P_,GAME_EVENT_PLAYER_KILLED, 0, clientID);
+				game->AddDelayedEvent(P_,GAME_EVENT_PLAYER_KILLED, 0, clientID);
 			}
 
 			if (c_src->owner->ID == id_src) {
@@ -251,16 +265,17 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				P.w_u16				(type);
 				P.w_u16				(destination);
 				P.w_u16				(id_src);
-				P.w_u32				(c_src->ID);
+				P.w_clientID		(c_src->ID);
 			}
-
-			SendBroadcast			(0xffffffff,P,MODE);
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast			(clientID,P,MODE);
 			VERIFY					(verify_entities());
 		}
 		break;
 	case GE_GRENADE_EXPLODE:
 		{
-			SendBroadcast		(0xffffffff,P,MODE);
+			ClientID clientID;clientID.setBroadcast();
+			SendBroadcast		(clientID,P,MODE);
 //			VERIFY				(verify_entities());
 		}break;
 	case GE_ADDON_ATTACH:

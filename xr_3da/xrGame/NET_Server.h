@@ -2,6 +2,7 @@
 
 #include "net_shared.h"
 
+
 class XRNETSERVER_API IClient
 {
 	struct Flags
@@ -12,7 +13,7 @@ class XRNETSERVER_API IClient
 public:
 	IClientStatistic	stats;
 
-	DPNID				ID;
+	ClientID			ID;
 	ref_str				Name;
 	Flags				flags;	// local/host/normal
 	u32					dwTime_LastUpdate;
@@ -68,12 +69,15 @@ protected:
 	// Utilities
 	void					pCompress			(NET_Packet& D, NET_Packet& S);
 	void					pDecompress			(NET_Packet& D, void* data, u32 size);
-	void					client_link_aborted	(DPNID ID	);
+	void					client_link_aborted	(ClientID/*DPNID*/ ID	);
 	void					client_link_aborted	(IClient* C	);
 	
 	// Statistic
 	IServerStatistic		stats;
 	CTimer*					device_timer;
+
+	virtual void			new_client			(ClientID clientID, LPCSTR name, bool bLocal)   =0;
+
 public:
 	IPureServer				(CTimer* timer);
 	virtual ~IPureServer	();
@@ -84,17 +88,17 @@ public:
 	virtual void			Reparse				();									// Reparse configuration and freq data
 
 	// send
-	virtual void			SendTo_LL			(DPNID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
-	void					SendTo				(DPNID ID, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
-	void					SendBroadcast_LL	(DPNID exclude, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED);
-	void					SendBroadcast		(DPNID exclude, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED);
+	virtual void			SendTo_LL			(ClientID/*DPNID*/ ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	void					SendTo				(ClientID/*DPNID*/ ID, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	void					SendBroadcast_LL	(ClientID/*DPNID*/ exclude, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED);
+	void					SendBroadcast		(ClientID/*DPNID*/ exclude, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED);
 
 	// statistic
 	const IServerStatistic*	GetStatistic		() { return &stats; }
 	void					ClearStatistic		();
 
 	// extended functionality
-	virtual u32				OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
+	virtual u32				OnMessage			(NET_Packet& P, ClientID/*DPNID*/ sender);	// Non-Zero means broadcasting with "flags" as returned
 	virtual void			OnCL_Connected		(IClient* C);
 	virtual void			OnCL_Disconnected	(IClient* C);
 	virtual bool			OnCL_QueryHost		()		{ return true; };
@@ -107,4 +111,5 @@ public:
 	IC IClient*				client_Get			(u32 num)	{ return net_Players[num]; }
 	
 	BOOL					HasBandwidth		(IClient* C);
+
 };

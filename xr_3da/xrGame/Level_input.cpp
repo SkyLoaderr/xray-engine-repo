@@ -24,7 +24,8 @@ extern EStalkerBehaviour	g_stalker_behaviour;
 void CLevel::IR_OnKeyboardPress(int key)
 {
 //	if (pHUD->IsUIActive())			
-	if (pHUD->GetUI()->OnKeyboardPress(key)) return;
+	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
+	if ( Game().IR_OnKeyboardPress(key) ) return;
 
 	switch (key) {
 #ifdef DEBUG
@@ -253,6 +254,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 {
 //	if (pHUD->IsUIActive()) 
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
+	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= dynamic_cast<IInputReceiver*>	(CurrentEntity());

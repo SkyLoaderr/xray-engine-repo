@@ -16,13 +16,16 @@ void xrServer::SLS_Load	(IReader& fs)
 		P.B.count			= F->r_u16();
 		F->r				(P.B.data,P.B.count);
 		P.r_begin			(u_id);	R_ASSERT	(M_SPAWN==u_id);
-		Process_spawn		(P,0);
+		ClientID	clientID;clientID.set(0);
+		Process_spawn		(P,clientID);
 
 		// Update
 		P.B.count			= F->r_u16();
 		F->r				(P.B.data,P.B.count);
 		P.r_begin			(u_id);	R_ASSERT	(M_UPDATE==u_id);
-		Process_update		(P,0);
+		
+		clientID.set(0);
+		Process_update		(P,clientID);
 
 		// Close
 		F->close			();

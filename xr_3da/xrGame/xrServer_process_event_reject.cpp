@@ -2,7 +2,7 @@
 #include "xrserver.h"
 #include "xrserver_objects.h"
 
-bool xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 ID, u16 id_entity, bool send_message)
+bool xrServer::Process_event_reject	(NET_Packet& P, ClientID sender, u32 time, u16 ID, u16 id_entity, bool send_message)
 {
 	DWORD		MODE		= net_flags(TRUE,TRUE);
 
@@ -41,8 +41,10 @@ bool xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 
 	C.erase				(c);
 
 	// Signal to everyone (including sender)
-	if (send_message)
-		SendBroadcast	(0xffffffff,P,MODE);
+	if (send_message){
+		ClientID clientID;clientID.setBroadcast();
+		SendBroadcast	(clientID,P,MODE);
+	}
 	
 	return				(true);
 }

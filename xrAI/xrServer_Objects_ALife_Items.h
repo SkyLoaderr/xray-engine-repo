@@ -121,7 +121,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual							~CSE_ALifeItemWeapon();
-	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender );
+	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, ClientID sender );
 	u8								get_slot		();
 	u16								get_ammo_limit	();
 	u16								get_ammo_total	();

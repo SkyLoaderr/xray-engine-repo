@@ -10,9 +10,9 @@
 #include "game_cl_ArtefactHunt.h"
 
 #define MSGS_OFFS 510
-
-#define	TEAM1_MENU		"artefacthunt_team1"
-#define	TEAM2_MENU		"artefacthunt_team2"
+//  moved to game_cl_artefactHunt
+//	#define	TEAM1_MENU		"artefacthunt_team1"
+//	#define	TEAM2_MENU		"artefacthunt_team2"
 
 #define BUY_MSG_COLOR		0xffffff00
 #define SCORE_MSG_COLOR		0xffffffff
@@ -22,7 +22,7 @@
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt()
 {
-	m_bBuyEnabled = TRUE;
+//	m_bBuyEnabled = TRUE;
 }
 //--------------------------------------------------------------------
 void CUIGameAHunt::SetClGame (game_cl_GameState* g)
@@ -35,8 +35,8 @@ void CUIGameAHunt::SetClGame (game_cl_GameState* g)
 void CUIGameAHunt::Init	()
 {
 	//-----------------------------------------------------------
-	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();
-	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();
+	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();pFragListT1->SetAutoDelete(true);
+	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();pFragListT2->SetAutoDelete(true);
 
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
@@ -56,12 +56,14 @@ void CUIGameAHunt::Init	()
 
 	pFragListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-	m_aFragsLists.push_back(pFragListT1);
-	m_aFragsLists.push_back(pFragListT2);
+//	m_aFragsLists.push_back(pFragListT1);
+	m_pFragLists->AttachChild(pFragListT1);
+//	m_aFragsLists.push_back(pFragListT2);
+	m_pFragLists->AttachChild(pFragListT2);
 	//-----------------------------------------------------------
 
-	CUIAHuntPlayerList* pPlayerListT1	= xr_new<CUIAHuntPlayerList>	();
-	CUIAHuntPlayerList* pPlayerListT2	= xr_new<CUIAHuntPlayerList>	();
+	CUIAHuntPlayerList* pPlayerListT1	= xr_new<CUIAHuntPlayerList>	();pPlayerListT1->SetAutoDelete(true);
+	CUIAHuntPlayerList* pPlayerListT2	= xr_new<CUIAHuntPlayerList>	();pPlayerListT2->SetAutoDelete(true);
 
 	pPlayerListT1->Init(1);
 	pPlayerListT2->Init(2);
@@ -78,20 +80,23 @@ void CUIGameAHunt::Init	()
 
 	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-	m_aPlayersLists.push_back(pPlayerListT1);
-	m_aPlayersLists.push_back(pPlayerListT2);
+//	m_aPlayersLists.push_back(pPlayerListT1);
+	m_pPlayerLists->AttachChild(pPlayerListT1);
+//	m_aPlayersLists.push_back(pPlayerListT2);
+	m_pPlayerLists->AttachChild(pPlayerListT2);
 	//-----------------------------------------------------------
-	string64	Team1, Team2;
-	std::strcpy(Team1, TEAM1_MENU);
-	std::strcpy(Team2, TEAM2_MENU);
-	m_aTeamSections.push_back(Team1);
-	m_aTeamSections.push_back(Team2);
-	//----------------------------------------------------------------
-	pBuyMenuTeam1 = InitBuyMenu("artefacthunt_base_cost", 1);
-	pBuyMenuTeam2 = InitBuyMenu("artefacthunt_base_cost", 2);
-	//----------------------------------------------------------------
-	pSkinMenuTeam1 = InitSkinMenu(1);
-	pSkinMenuTeam2 = InitSkinMenu(2);
+// moved to game_cl_artefactHunt
+//	string64	Team1, Team2;
+//	std::strcpy(Team1, TEAM1_MENU);
+//	std::strcpy(Team2, TEAM2_MENU);
+//	m_aTeamSections.push_back(Team1);
+//	m_aTeamSections.push_back(Team2);
+//	//----------------------------------------------------------------
+//	pBuyMenuTeam1 = InitBuyMenu("artefacthunt_base_cost", 1);
+//	pBuyMenuTeam2 = InitBuyMenu("artefacthunt_base_cost", 2);
+//	//----------------------------------------------------------------
+//	pSkinMenuTeam1 = InitSkinMenu(1);
+//	pSkinMenuTeam2 = InitSkinMenu(2);
 	//----------------------------------------------------------------
 
 	m_reinforcement_caption			=	"ah_reinforcement";		
@@ -116,7 +121,10 @@ void CUIGameAHunt::Init	()
 CUIGameAHunt::~CUIGameAHunt()
 {
 }
+
+
 ///-------------------------------------------------------------------
+/* moved to game_cl_artefactHunt
 void		CUIGameAHunt::OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
 {
 	CActor* pActor = dynamic_cast<CActor*> (tpObject);
@@ -134,88 +142,7 @@ void CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTea
 		m_bBuyEnabled = FALSE;
 	};
 };
-//--------------------------------------------------------------------
-void CUIGameAHunt::OnFrame()
-{
-	inherited::OnFrame();
-/*
-	HUD().pFontDI->SetSize	(0.02f);
-	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 
-	SetBuyMsgCaption("");
-	SetScoreCaption("");
-	SetTodoCaption("");
-	SetRoundResultCaption("");
-
-	switch (m_game->phase)
-	{
-	case GAME_PHASE_INPROGRESS:
-		{
-			///HUD().GetUI()->ShowIndicators();
-
-			if (m_bBuyEnabled)
-			{
-				if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
-				{
-					SetBuyMsgCaption("Press B to access Buy Menu");
-				};
-			};
-
-			if (pCurActor && !pCurBuyMenu->IsShown())
-			{
-				game_TeamState team0 = m_game->teams[0];
-				game_TeamState team1 = m_game->teams[1];
-
-				string256 S;
-				sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-								m_game->teams[pCurActor->g_Team()-1].score, 
-								m_game->teams[1 - (pCurActor->g_Team()-1)].score, 
-								m_game->artefactsNum);
-				SetScoreCaption(S);
-
-	
-			if ( (m_game->artefactBearerID==0) && (m_game->artefactID!=0) )
-				{
-					SetTodoCaption("Grab the Artefact");
-				}
-				else
-				{
-					if (m_game->teamInPossession != pCurActor->g_Team())
-					{
-						SetTodoCaption("Stop ArtefactBearer");
-					}
-					else
-					{
-						if (pCurActor->ID() == m_game->artefactBearerID)
-						{
-							SetTodoCaption("You got the Artefact. Bring it to your base.");
-						}
-						else
-						{
-							SetTodoCaption("Protect your ArtefactBearer");
-						};
-					};
-				};
-			};
-		}break;
-	case GAME_PHASE_TEAM1_SCORES:
-		{
-			HUD().GetUI()->HideIndicators();
-			SetRoundResultCaption("Team Green WINS!");
-		}break;
-	case GAME_PHASE_TEAM2_SCORES:
-		{
-			HUD().GetUI()->HideIndicators();
-			SetRoundResultCaption("Team Blue WINS!");
-		}break;
-	default:
-		{
-			
-		}break;
-	};
-*/
-};
-//--------------------------------------------------------------------
 BOOL		CUIGameAHunt::CanCallBuyMenu			()
 {
 	if (!m_bBuyEnabled) return FALSE;
@@ -241,7 +168,7 @@ bool		CUIGameAHunt::CanBeReady				()
 		ClearBuyMenu();
 
 	return true;
-};
+};*/
 
 void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
 {

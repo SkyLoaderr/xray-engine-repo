@@ -12,7 +12,7 @@
 
 #include "../HUDManager.h"
 #include "../level.h"
-
+#include "../game_cl_base.h"
 //////////////////////////////////////////////////////////////////////////
 
 const char * const PDA_XML					= "pda.xml";
@@ -143,7 +143,8 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		else if (CUIButton::BUTTON_FOCUS_LOST == msg)
 			UIOffButton.TextureOff();
 		else if (CUIButton::BUTTON_CLICKED == msg)
-			HUD().GetUI()->UIGame()->StartStopMenu(this);
+			Game().StartStopMenu(this);
+			//HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
 	else
 	{

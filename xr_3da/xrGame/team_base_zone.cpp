@@ -13,6 +13,7 @@
 #include "HUDManager.h"
 #include "level.h"
 #include "xrserver.h"
+#include "game_cl_base.h"
 
 CTeamBaseZone::CTeamBaseZone		()
 {
@@ -87,34 +88,34 @@ void CTeamBaseZone::shedule_Update(u32 dt)
 
 void CTeamBaseZone::feel_touch_new	(CObject *tpObject)
 {
-	HUD().GetUI()->UIGame()->OnObjectEnterTeamBase(tpObject, this);
+/*	HUD().GetUI()->UIGame()->OnObjectEnterTeamBase(tpObject, this);
 	if (OnServer()) Level().Server->game->OnObjectEnterTeamBase(tpObject->ID(), ID());
-	
-/*	NET_Packet			P;
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_TEAM_BASE);
-	P.w_u8				(1);
+*/	
+	NET_Packet			P;
+	P.B.count			=0;
+	P.w_u32			( GAME_EVENT_PLAYER_ENTER_TEAM_BASE );
+	P.w_u16				( tpObject->ID() );
 	P.w_u8				( GetZoneTeam() );
-	P.w_u16				(tpObject->ID() );
-	u_EventSend			(P);
-*/
+	P.r_pos				= 0;
+
+	Game().OnGameMessage(P);
+
 }
 
 void CTeamBaseZone::feel_touch_delete	(CObject *tpObject)
 {
-	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);		// 
+/*	HUD().GetUI()->UIGame()->OnObjectLeaveTeamBase(tpObject, this);		// 
 	if (OnServer()) Level().Server->game->OnObjectLeaveTeamBase(tpObject->ID(), ID());
-
-/*	
-if (OnServer())
-	NET_Packet			P;
-	P.w_begin			(M_GAMEMESSAGE);
-	P.w_u32				(GMSG_TEAM_BASE);
-	P.w_u8				(0);
-	P.w_u8				( GetZoneTeam() );
-	P.w_u16				(tpObject->ID() );
-	u_EventSend			(P);
 */
+	
+	NET_Packet			P;
+	P.B.count			=0;
+	P.w_u32			( GAME_EVENT_PLAYER_LEAVE_TEAM_BASE );
+	P.w_u16				( tpObject->ID() );
+	P.w_u8				( GetZoneTeam() );
+	P.r_pos				= 0;
+
+	Game().OnGameMessage(P);
 }
 
 BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)

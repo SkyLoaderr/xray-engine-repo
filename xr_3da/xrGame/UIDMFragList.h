@@ -30,6 +30,8 @@ public:
 //	void			Init			();
 //	virtual void	OnFrame			();
 };
+
+
 /*
 
 //#include "uilistbox.h"

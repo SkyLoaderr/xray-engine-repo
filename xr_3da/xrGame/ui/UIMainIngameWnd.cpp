@@ -138,7 +138,7 @@ void CUIMainIngameWnd::Init()
 
 	// У нас отдельные конфигурации листа для SP, и MP modes
 	CUIXml uiXml2;
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 		uiXml2.Init("$game_data$", PDA_INGAME_MULTIPLAYER_CFG);
 	else
 		uiXml2.Init("$game_data$", PDA_INGAME_SINGLEPLAYER_CFG);
@@ -237,7 +237,7 @@ void CUIMainIngameWnd::Init()
 	}
 
 	// Money
-	if (Game().type != GAME_SINGLE)
+	if (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH || GameID() == GAME_ARTEFACTHUNT)
 	{
 		AttachChild(&UIMoneyIndicator);
 		xml_init.InitMultiTextStatic(uiXml, "money_mt_static", 0, &UIMoneyIndicator);

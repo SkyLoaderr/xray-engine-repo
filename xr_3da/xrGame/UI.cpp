@@ -34,6 +34,8 @@ CUI::CUI(CHUDManager* p)
 	msgs_offs		= (float)m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
 
 	m_bShowIndicators = true;
+
+
 }
 //--------------------------------------------------------------------
 
@@ -48,6 +50,7 @@ CUI::~CUI()
 void CUI::Load()
 {
 	pUIGame = Game().createGameUI();
+	//pUIGame->IR_OnKeyboardPress(8);
 	R_ASSERT(pUIGame);
 }
 //--------------------------------------------------------------------
@@ -150,7 +153,7 @@ bool CUI::Render()
 	return false;
 }
 //--------------------------------------------------------------------
-bool CUI::OnKeyboardPress(int dik)
+bool CUI::IR_OnKeyboardPress(int dik)
 {
 /*#ifdef UI_INTERFACE_ON
 	if(dik==MOUSE_1)

@@ -27,7 +27,8 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recu
 	P.w_u16				(GE_DESTROY);
 	P.w_u16				(tpSE_Abstract->ID);
 
-	SendBroadcast		(0xffffffff,P,mode);
+	ClientID clientID;clientID.setBroadcast();
+	SendBroadcast		(clientID,P,mode);
 
 	entity_Destroy		(tpSE_Abstract);
 }
@@ -35,7 +36,7 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recu
 void xrServer::SLS_Clear		()
 {
 	// Don't do anything if game in ALife mode
-	if ((game->type == GAME_SINGLE) && ai().get_alife())
+	if ((game->Type() == GAME_SINGLE) && ai().get_alife())
 		return;
 
 	// Collect entities

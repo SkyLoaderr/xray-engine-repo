@@ -10,6 +10,7 @@
 #include "script_net_packet.h"
 #include "script_space.h"
 #include "net_utils.h"
+#include <luabind/operator.hpp>
 //#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
@@ -36,6 +37,13 @@ bool r_bool(NET_Packet *self)
 	return			(!!self->r_u8());
 }
 
+ClientID r_clientID(NET_Packet *self)
+{
+	ClientID		clientID;
+	self->r_clientID(clientID);
+	return clientID;
+}
+
 extern u16	script_server_object_version	();
 
 void CScriptNetPacket::script_register(lua_State *L)
@@ -43,6 +51,12 @@ void CScriptNetPacket::script_register(lua_State *L)
 	module(L)
 	[
 		def("script_server_object_version", &script_server_object_version),
+		
+		class_<ClientID>("ClientID")
+			.def(					constructor<>()				)
+			.def("value",			&ClientID::value			)
+			.def("set",				&ClientID::set				)
+			.def(self == other<ClientID>()),
 
 		class_<NET_Packet>("net_packet")
 			.def(					constructor<>()				)
@@ -70,6 +84,7 @@ void CScriptNetPacket::script_register(lua_State *L)
 			.def("w_sdir",			&NET_Packet::w_sdir			)
 			.def("w_stringZ",		(void (NET_Packet::*)(LPCSTR))(&NET_Packet::w_stringZ	))
 			.def("w_matrix",		&NET_Packet::w_matrix		)
+			.def("w_clientID",		&NET_Packet::w_clientID		)
 			.def("w_chunk_open8",	&NET_Packet::w_chunk_open8	)
 			.def("w_chunk_close8",	&NET_Packet::w_chunk_close8	)
 			.def("r_begin",			&NET_Packet::r_begin		)
@@ -106,6 +121,7 @@ void CScriptNetPacket::script_register(lua_State *L)
 			.def("r_sdir",			&NET_Packet::r_sdir			)
 			.def("r_stringZ",		&r_stringZ)
 			.def("r_matrix",		&NET_Packet::r_matrix		)
+			.def("r_clientID",		&r_clientID					)
 			.def("r_elapsed",		&NET_Packet::r_elapsed		)
 			.def("r_advance",		&NET_Packet::r_advance		)
 			.def("r_eof",			&r_eof						)
