@@ -82,6 +82,7 @@ function motivator_binder:reinit()
 //		need_follow = false
 //    }
 //	xr_sos.add_to_binder(self.object, char_ini)
+    military_radio.add_to_binder (self.object, char_ini)
 
 	--xr_combat.set_combat_checker(self.object, char_ini, "combat", "combat")
 ----------------------------------------------------------------------------------------------------------------------
