@@ -1,6 +1,6 @@
 class "C_new_game_sv_Deathmatch" (game_sv_Deathmatch)
 
-function C_new_game_sv_Deathmatch:__init() super()
+function C_new_game_sv_Deathmatch:__init(server) super(server)
 	printf		("C_new_game_sv_Deathmatch::C_new_game_sv_Deathmatch called!")
 end
 
