@@ -231,6 +231,15 @@ bool CInventory::Drop(CGameObject *pObj) {
 	return false;
 }
 
+bool CInventory::DropAll() {
+	PSPIItem l_it;
+	for(l_it = m_all.begin(); l_it != m_all.end(); l_it++) {
+		PIItem l_pIItem = *l_it;
+		Ruck(l_pIItem); l_pIItem->Drop();
+	}
+	return true;
+}
+
 bool CInventory::Slot(PIItem pIItem) {
 	if(pIItem->m_slot < m_slots.size()) {
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);

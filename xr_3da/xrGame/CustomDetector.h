@@ -21,6 +21,7 @@ public:
 
 	virtual void Update(u32 dt);
 	virtual void UpdateCL();
+	virtual void OnVisible();
 
 	virtual void feel_touch_new(CObject* O);
 	virtual void feel_touch_delete(CObject* O);

@@ -12,15 +12,32 @@ CCustomDetector::~CCustomDetector(void) {
 BOOL CCustomDetector::net_Spawn(LPVOID DC) {
 	BOOL res = inherited::net_Spawn(DC);
 
-	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-	cfModel						= shape;
-	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
-	shape->add_sphere			(S);
-	shape->ComputeBounds						();
-#pragma todo("@@@ WT: Check if detector will work w/o registration.")
-	pCreator->ObjectSpace.Object_Register		(this);
-	cfModel->OnMove								();
+	CKinematics* V = PKinematics(Visual());
+	if(V) V->PlayCycle("idle");
 
+	if (0==m_pPhysicsShell) {
+		// Physics (Box)
+		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
+		// Physics (Elements)
+		CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
+		// Physics (Shell)
+		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element(E);
+		m_pPhysicsShell->setDensity(2000.f);
+		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity();
+		m_pPhysicsShell->fDesiredStrength = 0.f;
+	}
+//	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
+//	cfModel						= shape;
+//	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
+//	shape->add_sphere			(S);
+//	shape->ComputeBounds						();
+//#pragma todo("@@@ WT: Check if detector will work w/o registration.")
+//	pCreator->ObjectSpace.Object_Register		(this);
+//	cfModel->OnMove								();
+
+	setVisible(true);
 	setEnabled(true);
 
 	return res;
@@ -60,6 +77,8 @@ void CCustomDetector::Load(LPCSTR section) {
 }
 
 void CCustomDetector::net_Destroy() {
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	SoundDestroy(m_noise);
 	map<CLASS_ID, sound*>::iterator l_it;
@@ -124,6 +143,11 @@ void CCustomDetector::UpdateCL() {
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
 	*/
+	if(getVisible() && m_pPhysicsShell) {
+		m_pPhysicsShell->Update	();
+		svTransform.set			(m_pPhysicsShell->mXFORM);
+		vPosition.set			(svTransform.c);
+	}
 }
 
 void CCustomDetector::feel_touch_new(CObject* O) {
@@ -162,14 +186,14 @@ void CCustomDetector::SoundDestroy(sound& dest) {
 
 void CCustomDetector::OnH_A_Chield() {
 	inherited::OnH_A_Chield		();
-//	setVisible					(false);
-	setEnabled					(true);
+	setVisible					(false);
+	setEnabled					(false);
 }
 
 void CCustomDetector::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
-//	setVisible					(true);
-	setEnabled					(false);
+	setVisible					(true);
+	setEnabled					(true);
 	m_buzzer.stop				();
 	m_noise.stop				();
 	//NET_Packet			P;
@@ -185,4 +209,11 @@ void CCustomDetector::OnRender() {
 	Fvector l_p; l_p.set(0, 1.f, 0); clTransform.transform(l_p, l_p);
 	l_ball.translate_add(l_p);
 	RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(255,0,255));
+}
+
+void CCustomDetector::OnVisible() {
+	if(getVisible() && !H_Parent()) {
+		::Render->set_Transform		(&clTransform);
+		::Render->add_Visual		(Visual());
+	}
 }
