@@ -208,7 +208,8 @@ void CShaderTools::OnShowHint(AStringVec& ss){
             ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
             ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
             ss.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
-            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->IsFlag(CSurface::sf2Sided)?"on":"off"));
+            ss.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
+            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
         }
     }
 }

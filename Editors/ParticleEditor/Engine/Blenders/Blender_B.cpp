@@ -14,7 +14,7 @@
 CBlender_B::CBlender_B	()
 {
 	description.CLS			= B_B;
-	description.version		= 1;
+	description.version		= 2;
 }
 
 CBlender_B::~CBlender_B	()

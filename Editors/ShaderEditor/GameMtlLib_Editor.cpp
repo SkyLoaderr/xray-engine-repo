@@ -17,11 +17,11 @@ void SGameMtl::FillProp		(PropValueVec& values)
 	FILL_PROP(values, 		"Name",						name,  		   			P=PHelper.CreateText(sizeof(name),0,FHelper.NameAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
     P->tag					= (int)FHelper.FindObject(fraLeftBar->tvMaterial,name); VERIFY(P->tag);
 	// flags
-    FILL_PROP(values,		"Flags\\Breakable",			&Flags.m_Flags,			PHelper.CreateFlag(flBreakable));
-    FILL_PROP(values,		"Flags\\Shootable",			&Flags.m_Flags,			PHelper.CreateFlag(flShootable));
-    FILL_PROP(values,		"Flags\\Bounceable",		&Flags.m_Flags,			PHelper.CreateFlag(flBounceable));
-    FILL_PROP(values,		"Flags\\Wheeltrace",		&Flags.m_Flags,			PHelper.CreateFlag(flWheeltrace));
-    FILL_PROP(values,		"Flags\\Bloodmark",			&Flags.m_Flags,			PHelper.CreateFlag(flBloodmark));
+    FILL_PROP(values,		"Flags\\Breakable",			&Flags.flags,			PHelper.CreateFlag(flBreakable));
+    FILL_PROP(values,		"Flags\\Shootable",			&Flags.flags,			PHelper.CreateFlag(flShootable));
+    FILL_PROP(values,		"Flags\\Bounceable",		&Flags.flags,			PHelper.CreateFlag(flBounceable));
+    FILL_PROP(values,		"Flags\\Wheeltrace",		&Flags.flags,			PHelper.CreateFlag(flWheeltrace));
+    FILL_PROP(values,		"Flags\\Bloodmark",			&Flags.flags,			PHelper.CreateFlag(flBloodmark));
     // physics part
     FILL_PROP(values,		"Physics\\Friction",		&fPHFriction,			PHelper.CreateFloat());
     FILL_PROP(values,		"Physics\\Dumping",			&fPHDumping,			PHelper.CreateFloat());
@@ -285,7 +285,7 @@ void SGameMtl::Save(CFS_Base& fs)
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_FLAGS);
-    fs.Wdword				(Flags.m_Flags);
+    fs.Wdword				(Flags.get());
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_PHYSICS);
@@ -313,7 +313,7 @@ void SGameMtlPair::Load(CStream& fs)
     mtl1				= fs.Rdword();
     ID					= fs.Rdword();
     ID_parent			= fs.Rdword();
-    OwnProps.m_Flags	= fs.Rdword();
+    OwnProps.set		(fs.Rdword());
 
     R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_FLOTATION));
     fFlotation			= fs.Rfloat();
@@ -340,7 +340,7 @@ void SGameMtlPair::Save(CFS_Base& fs)
     fs.Wdword			(mtl1);
     fs.Wdword			(ID);
     fs.Wdword			(ID_parent);
-    fs.Wdword			(OwnProps.m_Flags);
+    fs.Wdword			(OwnProps.get());
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_FLOTATION);

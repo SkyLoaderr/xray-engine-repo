@@ -66,7 +66,8 @@
       Intermediate\defines.obj Intermediate\GameFont.obj 
       Intermediate\SHGameMaterialTools.obj Intermediate\GameMtlLib.obj 
       Intermediate\PSLibrary.obj Intermediate\xrParticlesLib.obj 
-      Intermediate\Blender_Model_EbB.obj Intermediate\GameMtlLib_Editor.obj"/>
+      Intermediate\Blender_Model_EbB.obj Intermediate\GameMtlLib_Editor.obj 
+      Intermediate\Blender_B.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -262,6 +263,7 @@
       <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="GameMtlLib_Editor.cpp" FORMNAME="" UNITNAME="GameMtlLib_Editor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
