@@ -186,7 +186,6 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 		ai().level_graph().ref_dec	(level_vertex_id());
 
 	set_level_vertex				(l_dwNewLevelVertexID);
-	set_level_vertex				(ai().level_graph().vertex(level_vertex_id()));
 
 	ai().level_graph().ref_add		(level_vertex_id());
 
