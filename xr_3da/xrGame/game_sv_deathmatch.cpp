@@ -116,10 +116,17 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		}
 		
-		CSE_ALifeInventoryItem* pI			=	dynamic_cast<CSE_ALifeInventoryItem*> (e_what);
-		if (pI)
+		CSE_ALifeItemAmmo* pIAmmo			=	dynamic_cast<CSE_ALifeItemAmmo*> (e_what);
+		if (pIAmmo)
 		{
-			//Inventory Item
+			//Ammo
+			return TRUE;
+		};
+
+		CSE_ALifeItemGrenade* pIGrenade			=	dynamic_cast<CSE_ALifeItemGrenade*> (e_what);
+		if (pIGrenade)
+		{
+			//Ammo
 			return TRUE;
 		};
 	}
