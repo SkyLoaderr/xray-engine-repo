@@ -489,12 +489,8 @@ void CCustomZone::UpdateCL()
 			m_effector.Update(m_fDistanceToCurEntity);
 	}
 
-	UpdateBlowoutLight	();
-	if(m_idle_sound.feedback)m_idle_sound.set_position(XFORM().c);
-	if(m_blowout_sound.feedback)m_blowout_sound.set_position(XFORM().c);
-	if(m_hit_sound.feedback)m_hit_sound.set_position(XFORM().c);
-	if(m_entrance_sound.feedback)m_entrance_sound.set_position(XFORM().c);
-
+	if(m_pLight && m_pLight->get_active())
+		UpdateBlowoutLight	();
 }
 
 void CCustomZone::shedule_Update(u32 dt)
@@ -913,8 +909,6 @@ void  CCustomZone::StopBlowoutLight		()
 
 void CCustomZone::UpdateBlowoutLight	()
 {
-	if(!m_pLight || !m_pLight->get_active()) return;
-
 	if(m_fLightTimeLeft>0)
 	{
 		m_fLightTimeLeft -= Device.fTimeDelta;
