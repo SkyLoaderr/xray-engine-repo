@@ -522,7 +522,7 @@ void CObjectSpace::cl_Move( const CCFModel *object, const Fmatrix& X, const Fvec
 	{
 		CCFModel *O			= (CCFModel *)object;
 		O->Enable			(false);
-		if (bDynamic)		{
+		if (bDynamic && bStatic)		{
 			BoxQuery		(bb,X,clGET_TRIS|clGET_BOXES|clQUERY_TOPLEVEL|clQUERY_DYNAMIC);
 			if (q_result.boxes.size() || q_result.tris.size())
 				BoxQuery	(bb,X,clGET_TRIS|clGET_BOXES|clQUERY_TOPLEVEL|clQUERY_STATIC|clQUERY_DYNAMIC);
