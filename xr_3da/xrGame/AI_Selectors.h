@@ -85,8 +85,6 @@ public:
 			fMaxHeightDistance,
 			fMaxHeightDistanceWeight,
 
-			fLeaderViewDeviationWeight,
-			
 			fMemberViewDeviationWeight,
 			
 			fEnemyViewDeviationWeight,
