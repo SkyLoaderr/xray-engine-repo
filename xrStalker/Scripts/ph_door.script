@@ -17,14 +17,14 @@ function action_door:__finalize()
 	printf	("action_door::~action_door() called")
 end
 
-function action_door:reset_scheme()
+function action_door:reset_scheme(loading)
 	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
 	self.initialized = false
 	
-	self:initialize()
+	self:initialize(loading)
 end
 
-function action_door:initialize()
+function action_door:initialize(loading)
 	local ph_shell = self.object:get_physics_shell()
 	if not ph_shell then
 		return

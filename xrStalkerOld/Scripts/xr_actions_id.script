@@ -78,8 +78,9 @@ zmey_walker_base       = zmey_actions + 480
 zmey_assassin_base     = zmey_actions + 510
 zmey_scared_base       = zmey_actions + 540
 zmey_zoneguard_base    = zmey_actions + 570
-zmey_test_base        = zmey_actions + 600
+zmey_test_base         = zmey_actions + 600
 zmey_remark_base       = zmey_actions + 630
+zmey_companion_base    = zmey_actions + 660
 
 -- Æåíÿ
 jon_actions = zmey_actions + 1024

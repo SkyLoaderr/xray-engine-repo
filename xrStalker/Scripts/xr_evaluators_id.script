@@ -71,6 +71,7 @@ zmey_scared_base                    = id_start + 4430
 zmey_zoneguard_base                 = id_start + 4460
 zmey_test_base                      = id_start + 4490
 zmey_remark_base                    = id_start + 4520
+zmey_companion_base                 = id_start + 4550
 
 jon_stalker_zombie      = id_start + 5000
 jon_stalker_novice      = id_start + 5001

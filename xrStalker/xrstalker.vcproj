@@ -594,9 +594,6 @@
 					<File
 						RelativePath=".\Config\text\rus\ui_st_inventory.xml">
 					</File>
-					<File
-						RelativePath=".\Config\text\rus\ui_st_pda.xml">
-					</File>
 				</Filter>
 				<Filter
 					Name="eng"
@@ -1661,6 +1658,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\xr_combat_zombied.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\xr_companion.script">
 						</File>
 						<File
 							RelativePath=".\scripts\xr_death.script">
