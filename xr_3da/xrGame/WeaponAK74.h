@@ -1,13 +1,11 @@
-#ifndef __XR_WEAPON_GROZA_H__
-#define __XR_WEAPON_GROZA_H__
+#ifndef __XR_WEAPON_AK74_H__
+#define __XR_WEAPON_AK74_H__
 #pragma once
 
 #include "weapon.h"
 
-class ENGINE_API C3DSound;
-
 #define SND_RIC_COUNT 5
-
+ 
 class CWeaponAK74: public CWeapon
 {
 	enum EAK74State
@@ -70,4 +68,4 @@ public:
 	virtual void	OnDeviceDestroy	();
 };
 
-#endif //__XR_WEAPON_GROZA_H__
+#endif //__XR_WEAPON_AK74_H__

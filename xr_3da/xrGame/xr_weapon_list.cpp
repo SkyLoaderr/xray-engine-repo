@@ -139,8 +139,8 @@ void CWeaponList::Zoom(BOOL bZoom)
 
 CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 {
-	char sect_name[256];
-	CWeapon* pWeapon= 0;
+	string128	sect_name;
+	CWeapon*	pWeapon	= NULL;
 	switch (cls)
 	{
 	case CLSID_OBJECT_W_M134:
@@ -159,16 +159,13 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		pWeapon = new CWeaponAK74(); 
 		strcpy(sect_name,"wpn_ak74");
 		break;
-	case CLSID_OBJECT_W_RAIL:		break;
-	case CLSID_OBJECT_W_ROCKET:		break;
 	}
 
 	// load weapon
-	R_ASSERT(pWeapon);
+	R_ASSERT			(pWeapon);
 	pWeapon->SUB_CLS_ID = cls;
 	pWeapon->Load		(pSettings,sect_name);
 	pWeapon->SetParent	(m_pParent,this);
-	
 	m_Weapons.push_back	(pWeapon);
 	return pWeapon;
 }
