@@ -1,11 +1,13 @@
 #pragma once
 
-#include "game_sv_base.h"
+#include "game_sv_mp.h"
 #include "inventory_space.h"
 
-class	game_sv_Deathmatch			: public game_sv_GameState
+
+
+class	game_sv_Deathmatch			: public game_sv_mp
 {
-	typedef game_sv_GameState inherited;
+	typedef game_sv_mp inherited;
 protected:
 	struct		RPointData
 	{
@@ -13,78 +15,11 @@ protected:
 		float	MinEnemyDist;
 
 		RPointData(u32 ID, float Dist):
-		PointID(ID),
-		MinEnemyDist(Dist)
-		{
-		};
-
-		bool operator<(const RPointData &x)
-		{
-			return MinEnemyDist < x.MinEnemyDist;
-		};
+		PointID(ID),MinEnemyDist(Dist){};
+		bool operator<(const RPointData &x)	{return MinEnemyDist < x.MinEnemyDist;};
 	};
 
-	//
-//	typedef	std::pair<std::string, s16>					WPN_DATA;
-	// массив в котором хран€тс€ названи€ секций дл€ оружи€  в слоте
-//	DEF_MAP(WPN_SLOT_NAMES, s16, WPN_DATA);
-//	typedef xr_map<s16, std::pair<std::string, s16> >	WPN_SLOT_NAMES;
-	// ¬ектор массивов с именами оружи€ в слотах
-//	DEF_VECTOR(TEAM_WPN_LIST, WPN_SLOT_NAMES);	
 
-	//структура данных по оружию
-	struct		WeaponDataStruct
-	{
-		u16				SlotItem_ID		;    //SlotID << 8 | ItemID;
-		std::string		WeaponName		;
-		u16				Cost			;
-		bool			operator	==		(s16 ID){return		(SlotItem_ID == ID);}
-		bool			operator	==		(LPCSTR name){int res = xr_strcmp(WeaponName.c_str(), name);return	res	 == 0;}
-	};
-
-	DEF_VECTOR(TEAM_WPN_LIST, WeaponDataStruct);
-
-	// ¬ектор имен скинов комманды
-	DEF_VECTOR(TEAM_SKINS_NAMES, std::string);	
-
-	// ¬ектор имен скинов комманды
-	DEF_VECTOR(DEF_ITEMS_LIST, u16);	
-
-	//структура данных по команде
-	struct		TeamStruct
-	{
-		string256			caSection;		// им€ секции комманды
-		TEAM_SKINS_NAMES	aSkins;			// список скинов дл€ команды
-		TEAM_WPN_LIST		aWeapons;		// список оружи€ дл€ команды
-		DEF_ITEMS_LIST		aDefaultItems;	// список предметов по умолчанию
-
-		//---- Money -------------------
-		s16					m_iM_Start			;
-		s16					m_iM_Min			;
-		
-		s16					m_iM_KillRival		;
-		s16					m_iM_KillSelf		;
-		s16					m_iM_KillTeam		;
-
-		s16					m_iM_TargetRival	;
-		s16					m_iM_TargetTeam		;
-		s16					m_iM_TargetSucceed	;
-		s16					m_iM_TargetSucceedAll	;
-
-		s16					m_iM_RoundWin		;
-		s16					m_iM_RoundLoose		;
-		s16					m_iM_RoundDraw		;		
-	};
-
-	//массив данных по командам
-	DEF_DEQUE(TEAM_DATA_LIST, TeamStruct);
-
-	TEAM_DATA_LIST					TeamList;
-
-	//список трупов дл€ удалени€
-	DEF_DEQUE(CORPSE_LIST, u16);
-
-	CORPSE_LIST						m_CorpseList;
 
 	ref_str							m_sBaseWeaponCostSection;
 	
@@ -109,20 +44,20 @@ protected:
 	void							SM_SwitchOnPlayer		(CObject* pNewObject);//(game_PlayerState* ps);
 
 protected:
-	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
-	virtual		void				OnPlayerWantsDie		(u32 id_who);
-	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 
 
-	void							AllowDeadBodyRemove		(u32 id);
-	void							SpawnPlayer				(u32 id, LPCSTR N);
-	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
-//	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
-	void							SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons = 0);
-	void							KillPlayer				(u32 id_who);
-	virtual		void				RespawnPlayer			(u32 id_who, bool NoSpectator);
+	virtual		bool				checkForTimeLimit		();
+	virtual		bool				checkForFragLimit		();
+	virtual		bool				checkForRoundStart		();
+	virtual		bool				checkForRoundEnd		();
 
-	game_sv_Deathmatch::TeamStruct*	GetTeamData				(u8 Team);
+//	virtual		void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
+//	virtual		void				OnPlayerWantsDie		(ClientID id_who);
+	virtual		void				OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P);
+
+//	void							SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons = 0);
+//	void							KillPlayer				(ClientID id_who);
+
 
 	virtual	void					CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 public:
@@ -130,30 +65,30 @@ public:
 	virtual		void				Create					(ref_str &options);
 
 	virtual		LPCSTR				type_name				() const { return "deathmatch";};
-	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);
+	virtual		void				net_Export_State		(NET_Packet& P, ClientID id_to);
 
-	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender );
-
-	// Events
-	virtual		void				OnRoundStart			();										// старт раунда
+	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 
 	virtual		void				OnTeamScore				(u32 /**team/**/)						;		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничь€
+
+	// Events
+	virtual		void				OnRoundStart			();												// старт раунда
+
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
-	virtual		void				OnDestroyObject			(u16 eid_who);			
 
-	virtual		void				OnPlayerConnect			(u32 id_who);
-	virtual		void				OnPlayerDisconnect		(u32 id_who);
-	virtual		void				OnPlayerReady			(u32 id_who);
-	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
-	virtual		void				OnPlayerKilled			(u32 id_killed);
-
+	virtual		void				OnPlayerConnect			(ClientID id_who);
+	virtual		void				OnPlayerDisconnect		(ClientID id_who);
+	virtual		void				OnPlayerReady			(ClientID id_who);
+	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
+				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
+	
 	virtual		void				OnFraglimitExceed		();
 	virtual		void				OnTimelimitExceed		();
-
+	virtual		void				OnDestroyObject			(u16 eid_who);
 	// Main
 	virtual		void				Update					();
 				BOOL				AllPlayers_Ready		();
@@ -179,14 +114,15 @@ public:
 	virtual		void				LoadAnomalySets			();
 	virtual		void				StartAnomalies			();
 
-	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
+//	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
-	virtual		void				Money_SetStart			(u32	id_who);
+	virtual		void				Money_SetStart			(ClientID	id_who);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
-				int					GetTeamScore(u32 idx);
-				void				SetTeamScore(u32 idx, int val);
+				int					GetTeamScore			(u32 idx);
+				void				SetTeamScore			(u32 idx, int val);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_Deathmatch)

@@ -24,7 +24,7 @@ void	game_sv_Single::Create			(ref_str& options)
 	if (strstr(*options,"/alife"))
 		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);
 
-	switch_Phase		(GAME_PHASE_PENDING);
+	switch_Phase		(GAME_PHASE_INPROGRESS);
 }
 
 CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
@@ -146,25 +146,19 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 	return					(TRUE);
 }
 
-void	game_sv_Single::OnRoundStart	()
-{
-}
 
 void	game_sv_Single::Update			()
 {
-	__super::Update	();
-	switch(phase) 	{
+	inherited::Update	();
+/*	switch(phase) 	{
 		case GAME_PHASE_PENDING : {
 			OnRoundStart();
 			switch_Phase(GAME_PHASE_INPROGRESS);
 			break;
 		}
-	}
+	}*/
 }
 
-void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
-{
-}
 
 ALife::_TIME_ID game_sv_Single::GetGameTime		()
 {
@@ -190,7 +184,7 @@ void game_sv_Single::SetGameTimeFactor		(const float fTimeFactor)
 		return(inherited::SetGameTimeFactor(fTimeFactor));
 }
 
-bool game_sv_Single::change_level			(NET_Packet &net_packet, DPNID sender)
+bool game_sv_Single::change_level			(NET_Packet &net_packet, ClientID sender)
 {
 	if (ai().get_alife())
 		return					(alife().change_level(net_packet));
@@ -198,7 +192,7 @@ bool game_sv_Single::change_level			(NET_Packet &net_packet, DPNID sender)
 		return					(true);
 }
 
-void game_sv_Single::save_game				(NET_Packet &net_packet, DPNID sender)
+void game_sv_Single::save_game				(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return;
@@ -210,7 +204,7 @@ void game_sv_Single::save_game				(NET_Packet &net_packet, DPNID sender)
 	alife().save				(*game_name);
 }
 
-bool game_sv_Single::load_game				(NET_Packet &net_packet, DPNID sender)
+bool game_sv_Single::load_game				(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return					(inherited::load_game(net_packet,sender));
@@ -219,28 +213,14 @@ bool game_sv_Single::load_game				(NET_Packet &net_packet, DPNID sender)
 	return						(alife().load_game(*game_name,true));
 }
 
-void game_sv_Single::reload_game			(NET_Packet &net_packet, DPNID sender)
+void game_sv_Single::reload_game			(NET_Packet &net_packet, ClientID sender)
 {
 }
 
-void game_sv_Single::switch_distance		(NET_Packet &net_packet, DPNID sender)
+void game_sv_Single::switch_distance		(NET_Packet &net_packet, ClientID sender)
 {
 	if (!ai().get_alife())
 		return;
 
 	alife().set_switch_distance	(net_packet.r_float());
-}
-
-
-void	game_sv_Single::OnEvent (NET_Packet &P, u16 type, u32 time, u32 sender )
-{
-
-	switch	(type)
-	{
-	case GAME_EVENT_PLAYER_READY:
-		break;
-
-	default:
-		inherited::OnEvent(P, type, time, sender);
-	}
 }
