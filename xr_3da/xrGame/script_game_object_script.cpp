@@ -28,15 +28,6 @@
 
 using namespace luabind;
 
-template <typename T>
-T	*CScriptGameObject::motivation_action_manager()
-{
-	T	*manager = dynamic_cast<T*>(m_tpGameObject);
-	if (!manager)
-		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
-	return					(manager);
-}
-
 CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
 {
 	return		(obj->motivation_action_manager<CScriptMotivationActionManager>());

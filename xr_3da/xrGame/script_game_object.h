@@ -244,8 +244,15 @@ public:
 			CScriptSoundInfo		GetSoundInfo	();
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
-			template <typename T>
-			T	*motivation_action_manager();
+	template <typename T>
+	IC		T	*CScriptGameObject::motivation_action_manager()
+	{
+		T	*manager = dynamic_cast<T*>(m_tpGameObject);
+		if (!manager)
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
+		return					(manager);
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
