@@ -85,6 +85,7 @@ public:
     int		GetFiles		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
 
     void	VerifyPath		(LPCSTR path);
+	LPSTR	UpdateTextureNameWithFolder(LPSTR tex_name);
 };
 extern CFileSystem FS;
 #endif /*_INCDEF_FileSystem_H_*/
