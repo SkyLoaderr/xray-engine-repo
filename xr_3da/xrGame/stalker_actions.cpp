@@ -413,9 +413,10 @@ void CStalkerActionGetItemToKill::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
-	m_object->CSightManager::clear();
-	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
-	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
+//	m_object->CSightManager::clear();
+//	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePathDirection)));//,m_object->m_best_found_item_to_kill->Position(),false)));
+//	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,3000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
+	m_object->CSightManager::setup(CSightAction(m_object->m_best_found_item_to_kill,true));//,m_object->m_best_found_item_to_kill->Position(),false)));
 }
 
 void CStalkerActionGetItemToKill::finalize	()
@@ -451,7 +452,7 @@ void CStalkerActionGetItemToKill::execute	()
 //	m_object->setup					(SightManager::eSightTypeSearch);
 
 //	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
-	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
+//	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
 	m_object->set_goal				(eObjectActionIdle);
 }
 
