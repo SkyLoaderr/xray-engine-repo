@@ -35,14 +35,16 @@ private:
 		ePathStateSelectEnemyVertex,
 		ePathStateDummy = u32(-1),
 	};
-	
+
+public:
 	enum EPathType {
 		ePathTypeGamePath = u32(0),
 		ePathTypeLevelPath,
 		ePathTypeEnemySearch,
-		ePathStateDummy = u32(-1),
+		ePathTypeDummy = u32(-1),
 	};
-	
+
+private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
 	EPathType								m_path_type_previous;
