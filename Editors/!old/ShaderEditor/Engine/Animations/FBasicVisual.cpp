@@ -46,7 +46,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 		R_ASSERT2			(hdr.format_version==xrOGF_FormatVersion, "Invalid visual version");
 		Type				= hdr.type;
 		if (hdr.shader_id)	hShader	= ::Render->getShader(hdr.shader_id);
-		vis.box.set			(hdr.bb.min,hdr.bb.max	);
+		vis.box.set			(hdr.bb.min,hdr.bb.max	);	
 		vis.sphere.set		(hdr.bs.c,	hdr.bs.r	);
 	} else {
 		Debug.fatal			("Invalid visual");
