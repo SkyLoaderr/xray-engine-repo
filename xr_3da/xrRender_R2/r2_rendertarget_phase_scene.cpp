@@ -12,9 +12,9 @@ void	CRenderTarget::phase_scene		()
 	RImplementation.rmNormal			();
 
 	// Clear
-	CHK_DX(HW.pDevice->Clear			(0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x00, 1.0f, 0L));
+	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x00, 1.0f, 0L));
 
-	// Stencil
+	// Stencil - write 0x1 at pixel pos
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_TWOSIDEDSTENCILMODE,FALSE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS		));
@@ -26,5 +26,5 @@ void	CRenderTarget::phase_scene		()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 
 	// Misc
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));	// draw only front-faces
 }
