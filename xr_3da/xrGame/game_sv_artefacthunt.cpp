@@ -372,7 +372,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(GE_DESTROY);
 	P.w_u16				(m_dwArtefactID);
 
-	u_EventSend(P);
+	Level().Send(P,net_flags(TRUE,TRUE));
 	//-----------------------------------------------
 	P.w_begin			(M_GAMEMESSAGE);
 	P.w_u32				(GMSG_ARTEFACT_ONBASE);
@@ -390,6 +390,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 
 void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
+	if (OnClient()) return;
 	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
 	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
 
@@ -400,31 +401,35 @@ void	game_sv_ArtefactHunt::Update			()
 {
 	inherited::Update	();
 
-	if (m_dwArtefactSpawnTime == 0)
-	{
-		m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
-	}
-	else
-	{
-		if (m_dwArtefactSpawnTime != -1 && u32(m_dwArtefactSpawnTime) < Device.dwTimeGlobal)
-		{
-			m_dwArtefactSpawnTime = -1;
-			//time to spawn Artefact;
-			SpawnArtefact();
-		};
-	};
-
 	switch(phase) 	{
 		case GAME_PHASE_TEAM1_SCORES :
 		case GAME_PHASE_TEAM2_SCORES :
 		case GAME_PHASE_TEAMS_IN_A_DRAW :
-		case GAME_PHASE_INPROGRESS : {
-			if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
-			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
-									 } break;
-		case GAME_PHASE_PENDING : {
-			if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
-								  } break;
+			//		case GAME_PHASE_INPROGRESS : 
+			{
+				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+				if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
+			} break;
+		case GAME_PHASE_PENDING : 
+			{
+				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
+			} break;			
+		case GAME_PHASE_INPROGRESS:
+			{
+				if (m_dwArtefactSpawnTime == 0)
+				{
+					m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
+				}
+				else
+				{
+					if (m_dwArtefactSpawnTime != -1 && u32(m_dwArtefactSpawnTime) < Device.dwTimeGlobal)
+					{
+						m_dwArtefactSpawnTime = -1;
+						//time to spawn Artefact;
+						SpawnArtefact();
+					};
+				};
+			}break;
 	}
 
 }

@@ -107,18 +107,41 @@ void			CUIGameAHunt::OnFrame()
 {
 	inherited::OnFrame();	
 
-	if (m_bBuyEnabled)
+	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+	switch (Game().phase)
 	{
-		if (Game().phase != GAME_PHASE_PENDING)
+	case GAME_PHASE_INPROGRESS:
 		{
-			CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
-			if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
+			HUD().GetUI()->ShowIndicators();
+
+			if (m_bBuyEnabled)
 			{
-				HUD().pFontDI->SetColor		(0xffffff00);
-				HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
+				if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
+				{
+					HUD().pFontDI->SetColor		(0xffffff00);
+					HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
+				};
 			};
-		};
-	}
+		}break;
+	case GAME_PHASE_TEAM1_SCORES:
+		{
+			HUD().GetUI()->HideIndicators();
+
+			HUD().pFontDI->SetColor		(0xfff0fff0);
+			HUD().pFontDI->Out			(0.f,0.0f,"Team Red WINS!");
+		}break;
+	case GAME_PHASE_TEAM2_SCORES:
+		{
+			HUD().GetUI()->HideIndicators();
+
+			HUD().pFontDI->SetColor		(0xfff0fff0);
+			HUD().pFontDI->Out			(0.f,0.0f,"Team Blue WINS!");
+		}break;
+	default:
+		{
+			
+		}break;
+	};
 };
 //--------------------------------------------------------------------
 void CUIGameAHunt::OnBuyMenu_Ok	()
