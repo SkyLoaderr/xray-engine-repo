@@ -54,6 +54,7 @@ void	CEffect_Rain::OnDeviceDestroy	()
 {
 	REQ_DESTROY			();
 	Device.Shader.Delete(SH);
+	p_destroy			();
 }
 
 void	CEffect_Rain::OnDeviceCreate	()
@@ -61,6 +62,7 @@ void	CEffect_Rain::OnDeviceCreate	()
 	REQ_CREATE			();
 	SH					= Device.Shader.Create	("effects\\rain","effects\\rain");
 	VS					= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
+	p_create			();
 }
 
 void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
@@ -88,7 +90,7 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 }
 
 // initialize particles pool
-void CEffect_Rain::p_initialize()
+void CEffect_Rain::p_create		()
 {
 	// pool
 	particle_pool.resize	(max_particles);
@@ -99,10 +101,26 @@ void CEffect_Rain::p_initialize()
 		P.next			= (it<(particle_pool.size()-1))?(&particle_pool[it+1]):0;
 		P.visual		= (CPSVisual*) ::Render.Models.CreatePS("rain_drops",&P.emitter);
 	}
-
+	
 	// active and idle lists
 	particle_active	= 0;
 	particle_idle	= &particle_pool.front();
+}
+
+// destroy particles pool
+void CEffect_Rain::p_destroy	()
+{
+	// active and idle lists
+	particle_active	= 0;
+	particle_idle	= 0;
+	
+	// pool
+	for (DWORD it=0; it<particle_pool.size(); it++)
+	{
+		Particle&	P	= particle_pool[it];
+		::Render.Models.Delete	(P.visual);
+	}
+	particle_pool.clear	();
 }
 
 // delete node from list

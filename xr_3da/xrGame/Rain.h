@@ -56,7 +56,9 @@ private:
 	float				snd_Ambient_volume;
 
 	// Utilities
-	void				p_initialize	();
+	void				p_create		();
+	void				p_destroy		();
+
 	void				p_remove		(Particle* P, Particle* &LST);
 	void				p_insert		(Particle* P, Particle* &LST);
 	Particle*			p_allocate		();
