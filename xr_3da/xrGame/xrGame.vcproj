@@ -534,6 +534,9 @@
 					<File
 						RelativePath=".\Ai\Biting\ai_biting_state_squadtask.cpp">
 					</File>
+					<File
+						RelativePath=".\ai\biting\ai_biting_state_test.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_bloodsucker"

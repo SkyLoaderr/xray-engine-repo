@@ -68,6 +68,7 @@ void CAI_Biting::Init()
 
 	// Инициализация параметров анимации	
 	MotionMan.Init					(this);
+
 }
 
 void CAI_Biting::Die()
@@ -203,7 +204,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 	
-	R_ASSERT2						(ai().get_level_graph() && ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
+	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	m_tNextGP						= m_tCurGP = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();
 	
 	// Установить новый Visual, перезагрузить анимации

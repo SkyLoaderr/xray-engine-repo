@@ -120,6 +120,69 @@ void CLevel::IR_OnKeyboardPress(int key)
 		if (CurrentEntity())		CurrentEntity()->IR_OnKeyboardPress(key_binding[key]);
 		break;
 	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Squad Testing
+
+	CMonsterSquad	*pSquad;;
+	GTask			temp_task;
+
+	switch (key) {
+		case DIK_1:
+			// Cover
+			temp_task.state.type		= TS_REQUEST;
+			temp_task.state.command		= SC_COVER;
+			temp_task.state.ttl			= timeServer() + 3000;
+
+			temp_task.target.entity		= CurrentEntity();
+			temp_task.target.pos		= CurrentEntity()->Position();
+
+			break;
+		case DIK_2:
+			// Follow
+			temp_task.state.type		= TS_REQUEST;
+			temp_task.state.command		= SC_FOLLOW;
+			temp_task.state.ttl			= timeServer() + 3000;
+
+			temp_task.target.entity		= CurrentEntity();
+			temp_task.target.pos		= CurrentEntity()->Position();
+
+			break;
+		case DIK_3:
+			// FEEL_DANGER
+			temp_task.state.type		= TS_REQUEST;
+			temp_task.state.command		= SC_FEEL_DANGER;
+			temp_task.state.ttl			= timeServer() + 3000;
+
+			temp_task.target.entity		= CurrentEntity();
+			temp_task.target.pos		= CurrentEntity()->Position();
+
+			break;
+		case DIK_4:
+			// EXPLORE
+			temp_task.state.type		= TS_REQUEST;
+			temp_task.state.command		= SC_EXPLORE;
+			temp_task.state.ttl			= timeServer() + 3000;
+
+			temp_task.target.entity		= 0;
+			temp_task.target.pos		= CurrentEntity()->Position();
+			
+			CAI_ObjectLocation *pOL		= dynamic_cast<CAI_ObjectLocation *>(CurrentEntity());
+			R_ASSERT(pOL);
+			temp_task.target.node		= pOL->level_vertex_id();
+
+			break;
+	}
+		
+	if (key == DIK_1 || key == DIK_2 || key == DIK_3 || key == DIK_4) {
+		for (u8 i=0;i<10; i++) {
+			pSquad = SquadMan.GetSquad(i);
+			if (pSquad) pSquad->ProcessGroupIntel(temp_task);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 }
 
 void CLevel::IR_OnKeyboardRelease(int key)

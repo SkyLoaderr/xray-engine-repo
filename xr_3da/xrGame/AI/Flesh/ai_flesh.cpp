@@ -16,6 +16,8 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
+	stateTest			= xr_new<CBitingTest>		(this);
+
 	Init();
 }
 
@@ -30,6 +32,8 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
+
+	xr_delete(stateTest);
 }
 
 void CAI_Flesh::Init()
@@ -45,6 +49,15 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
+
+
+	m_movement_params.insert(std::make_pair(eMovementParameterStand		,STravelParams(0.f,	inherited::_sd->m_fsTurnNormalAngular)));
+	m_movement_params.insert(std::make_pair(eMovementParameterWalkFree	,STravelParams(inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular)));
+	m_movement_params.insert(std::make_pair(eMovementParameterRunFree	,STravelParams(inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular )));
+
+	set_velocity_mask		(eMovementParameterWalkFree);
+	set_desirable_mask		(eMovementParameterWalkFree);
+
 
 	return TRUE;
 }
@@ -120,6 +133,12 @@ void CAI_Flesh::Load(LPCSTR section)
 
 void CAI_Flesh::StateSelector()
 {
+	
+	SetState(stateTest);
+	return;
+
+	// ---------------------------------------------------------------------------------
+
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);

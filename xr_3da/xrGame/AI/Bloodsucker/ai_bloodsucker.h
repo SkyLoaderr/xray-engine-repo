@@ -60,11 +60,14 @@ public:
 
 	void					ProcessTask					(bool bInit);
 
-	void					DBG_TranslateTask			(const GTask *pTask);
+	void					DBG_TranslateTaskBefore		();
+	void					DBG_TranslateTaskAfter		();
+	
 	bool					IsTaskMustFinished			();
 	void					ProcessSquad				();
 
 	IState					*pState; // временное состояние
+	void					SquadDebug();
 	// ---------------------------------------------------------------------------------
 
 };

@@ -136,6 +136,16 @@ class CAI_Biting : public CCustomMonster,
 	typedef CMovementManager				MoveMan;
 
 public:
+
+	enum EMovementParameters {
+		eMovementParameterStand						= u32(1) <<  1,
+		eMovementParameterWalkFree					= u32(1) <<  2,
+		eMovementParameterRunFree					= u32(1) <<  3,
+	};
+
+
+
+public:
 	
 	// friend definitions
 	friend	class			CMotionManager;
@@ -172,6 +182,8 @@ public:
 			void			Path_CoverFromPoint				(CEntity *pE, Fvector position);
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
 			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
+
+			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos);
 
 	// Other
 			void			vfUpdateParameters				();
@@ -292,6 +304,8 @@ public:
 	CBitingExploreNDE		*stateExploreNDE;
 	CBitingSquadTask		*stateSquadTask;
 	
+	CBitingTest				*stateTest;
+
 	friend	class			CBitingRest;
 	friend  class 			CBitingAttack;
 	friend	class 			CBitingEat;
@@ -302,6 +316,8 @@ public:
 	friend	class 			CBitingExploreDE;
 	friend	class 			CBitingExploreNDE;
 	friend	class 			CBitingSquadTask;
+
+	friend	class			CBitingRest;
 
 	// State flags
 	bool					flagEatNow;				// true - сейчас монстр ест
@@ -342,6 +358,7 @@ public:
 	void InitSelectorCommon		(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max);
 	void Path_CommonSelector	(CEntity *pE, Fvector position);
 
+	Fvector	RandomPosInR(const Fvector &p, float r);
 };
 
 

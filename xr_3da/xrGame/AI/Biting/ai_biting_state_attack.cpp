@@ -127,10 +127,9 @@ void CBitingAttack::Run()
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// Проверить, достижим ли противник
-
-//	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
-//		m_tAction = ACTION_WALK_ANGRY_AROUND;
-//	}
+	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
+		m_tAction = ACTION_WALK_ANGRY_AROUND;
+	}
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -196,7 +195,7 @@ void CBitingAttack::Run()
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
-		bool			bActorIsEnemy = (dynamic_cast<CActor*>(m_tEnemy.obj) == 0);	// set !=0 to work
+		bool			bActorIsEnemy = (dynamic_cast<CActor*>(m_tEnemy.obj) != 0);	// set !=0 to work
 
 		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
 			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {

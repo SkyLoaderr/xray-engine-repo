@@ -42,6 +42,8 @@ void CAI_Bloodsucker::Init()
 	Bones.Reset();
 
 	last_time_finished				= 0;
+
+	task							= 0;
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -177,6 +179,8 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 
 	Bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
 	Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
+
+	m_head = m_body;
 }
 
 void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
@@ -204,6 +208,12 @@ void CAI_Bloodsucker::CheckSpecParams(u32 spec_params)
 		MotionMan.SetCurAnim(eAnimThreaten);
 		return;
 	}
+
+	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+		MotionMan.SetCurAnim(eAnimLookAround);
+		return;
+	}
+
 }
 
 
@@ -227,6 +237,9 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
+
+	SquadDebug();
+
 }
 
 void CAI_Bloodsucker::StateSelector()
@@ -234,8 +247,7 @@ void CAI_Bloodsucker::StateSelector()
 	VisionElem ve;
 
 	// save CurrentState
-	IState *pState;
-	
+	pState = CurrentState;
 
 	if (C && H && I)			pState = statePanic; 
 	else if (C && H && !I)		pState = statePanic;
@@ -262,8 +274,7 @@ void CAI_Bloodsucker::StateSelector()
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 	
-	//ProcessSquad();
-
+	ProcessSquad();
 	SetState(pState);
 }
 
@@ -272,21 +283,39 @@ void CAI_Bloodsucker::StateSelector()
 // Process Squad AI
 
 
-void CAI_Bloodsucker::DBG_TranslateTask(const GTask *pTask)
+void CAI_Bloodsucker::DBG_TranslateTaskBefore()
 {
 
-	LOG_EX2("SQUAD:: [M =%s] Getting task: ", *"*/ cName() /*"*);
+	LOG_EX2("SQUAD:: [M =%s] Getting task [time = %u]: ", *"*/ cName(), m_dwCurrentTime /*"*);
 
 	string32 s_type;
 
-	switch (pTask->state.type) {
+	switch (task->state.type) {
 		case TS_REQUEST:	strcpy(s_type, "TS_REQUEST");	break;
 		case TS_PROGRESS:	strcpy(s_type, "TS_PROGRESS");	break;
 		case TS_REFUSED:	strcpy(s_type, "TS_REFUSED");	break;
 	}	
 
-	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, pTask->state.ttl /*"*);
+	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, task->state.ttl /*"*);
 }
+
+void CAI_Bloodsucker::DBG_TranslateTaskAfter()
+{
+
+	LOG_EX2("SQUAD:: [M =%s] After: Task [time = %u]: ", *"*/ cName(), m_dwCurrentTime /*"*);
+
+	string32 s_type;
+
+	switch (task->state.type) {
+		case TS_REQUEST:	strcpy(s_type, "TS_REQUEST");	break;
+		case TS_PROGRESS:	strcpy(s_type, "TS_PROGRESS");	break;
+		case TS_REFUSED:	strcpy(s_type, "TS_REFUSED");	break;
+	}	
+
+	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, task->state.ttl /*"*);
+	LOG_EX2("SQUAD:: [M =%s] ------------------------------------ ", *"*/ cName() /*"*);
+}
+
 
 // ----------------------------------------------------------------------------------------------
 
@@ -299,23 +328,25 @@ void CAI_Bloodsucker::ProcessSquad()
 	if ((pSquad->GetLeader() == this) && ShouldReplan()) pSquad->ProcessGroupIntel();
 	
 	// получить свою задачу
-	GTask *task = &pSquad->GetTask(this);
+	task = &pSquad->GetTask(this);
 
-	
-	DBG_TranslateTask(task);
+	//DBG_TranslateTaskBefore();
 
-	
 	// ѕроверить на завершение задачи
 	if (IsTaskActive() && IsTaskMustFinished()) StopTask();
 	
 	// ћожет быть запущена задача?
 	if (CanExecuteSquadTask()) {
+		
+		bool bInitTask = !IsTaskActive();
+
 		// ќбновить состо€ние задачи
 		UpdateTaskStatus();
 		// ¬ыполнить задачу
-		ProcessTask(!IsTaskActive());
+		ProcessTask(bInitTask);
 	} else if (IsTaskActive()) StopTask();
 
+	//DBG_TranslateTaskAfter();
 }
 
 // ----------------------------------------------------------------------------------------------
@@ -333,6 +364,9 @@ bool CAI_Bloodsucker::IsTaskActive()
 // ----------------------------------------------------------------------------------------------
 bool CAI_Bloodsucker::IsTaskMustFinished()
 { 
+	// сначала проверить задачу на завершение
+	if (task->state.ttl < m_dwCurrentTime) return true;
+	
 	if (task->state.command == SC_FOLLOW) {
 		if (task->target.pos.distance_to(Position()) < 1.0f) return true;
 	}
@@ -398,7 +432,7 @@ bool CAI_Bloodsucker::CheckCanSetWithConditions()
 
 bool CAI_Bloodsucker::SquadTaskIsHigherPriority() 
 {
-	return (Level().SquadMan.TransformPriority(task->state.command) > CurrentState->GetPriority());
+	return (Level().SquadMan.TransformPriority(task->state.command) > pState->GetPriority());
 }
 
 // ----------------------------------------------------------------------------------------------
@@ -409,12 +443,12 @@ void CAI_Bloodsucker::UpdateTaskStatus()
 
 	if (!IsTaskActive()) {// first time
 		switch (task->state.command) {
-		case SC_EXPLORE:		ttl = 2000;		break;
+		case SC_EXPLORE:		ttl = 10000;	break;
 		case SC_ATTACK:			ttl = 5000;		break;
 		case SC_THREATEN:		ttl = 3000;		break;
 		case SC_COVER:			ttl = 10000;	break;
 		case SC_FOLLOW:			ttl = 10000;	break;
-		case SC_FEEL_DANGER:	ttl = 10000;	break;
+		case SC_FEEL_DANGER:	ttl = 20000;	break;
 		}
 
 		task->state.type	= TS_PROGRESS;
@@ -435,10 +469,74 @@ bool CAI_Bloodsucker::ShouldReplan()
 
 void CAI_Bloodsucker::ProcessTask(bool bInit)
 {
-	LOG_EX2("SQUAD:: Processing Task:  Init = [%u]", *"*/ bInit /*"*);
-
-	//SetSquadState(stateSquadTask);
+	pState = stateSquadTask;
 }
-
  
 // ----------------------------------------------------------------------------------------------
+
+void CAI_Bloodsucker::SquadDebug()
+{
+	
+	bool bThisIsLeader = Level().SquadMan.GetSquad((u8)g_Squad())->GetLeader() == this;
+
+	if (bThisIsLeader) {
+		HUD().pFontMedium->OutSet	(float(Device.dwWidth/2)-20.f,10.0f);
+		HUD().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,255,255));
+		HUD().pFontMedium->OutNext	("TIME: %d", Level().timeServer());
+	}
+
+	Fmatrix res;
+	res.mul(Device.mFullTransform,XFORM());
+
+	Fvector3 v_src;
+	Fvector4 v_res;
+	v_src.set(0.f,2.2f,0.f);
+
+	res.transform(v_res,v_src);
+
+	if (v_res.z < 0 || v_res.w < 0)	return;
+	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
+
+	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
+	
+	// Show name
+	HUD().pFontMedium->SetColor(0xff9999bb);
+	HUD().pFontMedium->OutSet(x,y);
+	
+	if (bThisIsLeader) HUD().pFontMedium->OutNext("L:%s", cName());
+	else HUD().pFontMedium->OutNext("%s", cName());
+
+	// Show task
+	HUD().pFontMedium->SetColor(0xffffff33);
+	HUD().pFontMedium->OutSet(x,y-=20);
+	
+	if (!task) return;
+
+	string32 s,s1,s2;
+	if (!IsTaskActive()) strcpy(s,"T: NA");
+	else {
+		switch (task->state.type) {
+			case TS_PROGRESS:	strcpy(s,"T:PRG"); break;
+			case TS_REQUEST:	strcpy(s,"T:REQ");	break;
+			case TS_REFUSED:	strcpy(s,"T:REF");	break;
+		}
+
+		if (task->state.type != TS_REFUSED) {
+
+			switch (task->state.command) {
+			case SC_EXPLORE:		strcpy(s2,"EXP");		break;
+			case SC_ATTACK:			strcpy(s2,"ATT");		break;
+			case SC_THREATEN:		strcpy(s2,"THR");		break;
+			case SC_COVER:			strcpy(s2,"COV");		break;
+			case SC_FOLLOW:			strcpy(s2,"FOL");		break;
+			case SC_FEEL_DANGER:	strcpy(s2,"DNG");		break;
+			}
+
+			itoa(task->state.ttl,s1,10);
+			strconcat(s,s,"|TTL:",s1,"|C:", s2);
+		}
+	}
+
+	HUD().pFontMedium->OutNext("%s",s);
+}

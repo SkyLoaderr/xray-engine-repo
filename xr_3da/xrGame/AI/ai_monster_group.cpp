@@ -2,6 +2,7 @@
 #include "ai_monster_group.h"
 #include "..\\entity.h"
 #include "ai_monster_defs.h"
+#include "..\\movement_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // SQUAD MANAGER Implementation
@@ -65,6 +66,7 @@ u8 CSquadManager::TransformPriority(ESquadCommand com)
 	case SC_COVER:			ret_val = 20;		break;
 	case SC_FOLLOW:			ret_val = 15;		break;
 	case SC_FEEL_DANGER:	ret_val = 20;		break;
+	case SC_NONE:			ret_val = 0;		break;
 	}
 
 	return ret_val;
@@ -112,64 +114,79 @@ GTask &CMonsterSquad::GetTask(CEntity *pE)
 
 void CMonsterSquad::ProcessGroupIntel()
 {
-	ENTITY_VEC	enemies, members;
+	// Получить тактические данные:
+	// 1. Информация о лидере (его состояние, цель)
+	// 2. Список и расположение членов группы
+	// 3. Список и расположение врагов
+	
+	
+	// получить целевую ноду лидера
+	CMovementManager *pM = dynamic_cast<CMovementManager *>(leader);
+	if (!pM) return;
+	
+	if ((pM->speed() < EPS_L) || pM->CDetailPathManager::completed(pM->Position()))
+		dest_node = pM->level_vertex_id();
+	else {
+		dest_node = pM->CDetailPathManager::path()[pM->CDetailPathManager::path().size()-1].vertex_id;
+	}
+	
+	// получить всех членов группы
+	u32 num = members.size();
+	members.clear();
+	members.reserve(num);
 
 	// получить тактические данные о группе
 	for (SQUAD_MAP_IT it = squad.begin(); it != squad.end(); it++) 
 		if (it->first->g_Alive()) members.push_back(it->first);
 
-	//if (members.size() < 2) return;
-
-	// получить тактические данные о противнике
-	//objVisible &temp_enemies = GetKnownEnemies();
-	objVisible &temp_enemies = Level().Teams[leader->g_Team()].Squads[leader->g_Squad()].KnownEnemys;
-
-	for (int i=0, n=temp_enemies.size(); i<n; i++) {
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(temp_enemies[i].key);
-		if (pE->g_Alive()) enemies.push_back(pE);
+	// Выбрать действие
+	
+	switch (leader_state) {
+	case LS_IDLE:
+		TaskIdle();
+		break;
 	}
-
-	// распределить задачи
-	CommonAttack(enemies,members);
 
 }
 
-
-void CMonsterSquad::CommonAttack(ENTITY_VEC &enemies, ENTITY_VEC &members)
+bool CMonsterSquad::ActiveTask(GTask *task)
 {
-//	for (ENTITY_VEC_IT it = members.begin();it != members.end(); it++) {
-//		GTask &pTask= GetTask(*it);
-//
-//		if ((pTask.state.type == TS_REQUEST) || (pTask.state.ttl < Level().timeServer())) {
-//			pTask.state.command		= SC_ATTACK;
-//			pTask.state.type		= TS_REQUEST;
-//			pTask.state.ttl			= Level().timeServer() + 3000;
-//			pTask.target.entity		= GetNearestEnemy(*it,&enemies);
-//			if (pTask.target.entity) pTask.target.pos = pTask.target.entity->Position();  
-//		}
-//	}
+	if (task->state.type == TS_PROGRESS) {
+		if (task->state.ttl > Level().timeServer()) return true;
+		else task->state.ttl = 0;
+}
 
-	for (ENTITY_VEC_IT it = members.begin();it != members.end(); it++) {
-		GTask &pTask= GetTask(*it);
+	return false;	
+}
 
-		if ((pTask.state.type == TS_REQUEST) || (pTask.state.ttl < Level().timeServer())) {
-			
-			if (pTask.state.type == TS_REQUEST) 
-				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
-			else if (pTask.state.type == TS_PROGRESS)
-				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
-			
-			pTask.state.command		= SC_FOLLOW;
-			
-			pTask.state.type		= TS_REQUEST;
-			pTask.state.ttl			= Level().timeServer() + 3000;
-			//pTask.target.entity		= GetNearestEnemy(*it,&enemies);
-			//if (pTask.target.entity) pTask.target.pos = pTask.target.entity->Position();  
-			pTask.target.pos = Level().CurrentEntity()->Position();
+void CMonsterSquad::ProcessGroupIntel(const GTask &task)
+{
+	// получить тактические данные о группе
+	for (SQUAD_MAP_IT it = squad.begin(); it != squad.end(); it++) {
+		if (it->first->g_Alive()) {
+			// всем в группе выполнять задачу task
+			GTask &pTask= GetTask(it->first);
+
+			if (ActiveTask(&pTask)) {
+				u8 p1, p2;
+
+				p1 = Level().SquadMan.TransformPriority(pTask.state.command);
+				p2 = Level().SquadMan.TransformPriority(task.state.command);
+				
+				// проверить приоритет новой задачи и текущей
+				if (p1 < p2) {
+					pTask = task;
+					pTask.state.type = TS_REQUEST;
+				}
+			} else {
+				pTask = task;
+				pTask.state.type = TS_REQUEST;
+			}
 		}
 	}
 
 }
+
 
 CEntity	*CMonsterSquad::GetNearestEnemy(CEntity *t, ENTITY_VEC *ev)
 {
@@ -209,5 +226,108 @@ void CMonsterSquad::Dump()
 	}
 
 	LOG_EX2("SQUAD:: ----- END Dump for squad #%u -------", *"*/ id /*"*);
+}
+
+// по-возрастанию
+class CSortCoverPredicate {
+public:
+	bool	operator() (u32 node1, u32 node2)
+	{
+		return	(ai().level_graph().vertex_cover(node1) > ai().level_graph().vertex_cover(node2));
+	};
+};
+
+void CMonsterSquad::TaskIdle()
+{
+	u32 member_num = members.size();
+	u32 cur_index = 0;
+
+	// Определить центр тяжести  
+	Fvector centroid = leader->Position();			
+
+	// вектор к цели
+	Fvector dir;
+	Fvector dest_pos = ai().level_graph().vertex_position(dest_node);
+
+	dir = dest_pos.sub(leader->Position());
+	if (fis_zero(dir.square_magnitude())) dir = leader->Direction();
+
+	// выбрать ковер-ноды
+	xr_vector<u32> nodes;
+	float radius = 10.0f;
+
+	ai().graph_engine().search( ai().level_graph(), leader->level_vertex_id(), leader->level_vertex_id(), &nodes, CGraphEngine::CFlooder(radius));
+	
+	// сортировать ноды
+	sort(nodes.begin(), nodes.end(), CSortCoverPredicate());
+
+	for (ENTITY_VEC_IT it = members.begin();it != members.end(); it++) {
+		cur_index++;
+		float part = (cur_index * 100.f) / member_num;
+
+		GTask new_task;
+
+		new_task.state.ttl		= Level().timeServer() + 3000;
+		new_task.state.need_reset	= false;
+
+		if (part <= 10) {						
+			new_task.state.command	= SC_COVER;
+			new_task.target.entity	= leader;
+		} else if (part <= 50) {
+			new_task.state.command	= SC_EXPLORE;
+			Explore(nodes, centroid, dir, *it, &new_task);
+		} else	{								
+			new_task.state.command	= SC_FOLLOW;
+			new_task.target.entity	= leader;
+		}
+
+		AskMember(*it,new_task);
+	}
+}
+
+void CMonsterSquad::Explore(xr_vector<u32> &nodes, const Fvector &centroid, const Fvector &dir, CEntity *pE, GTask *pTask) 
+{
+	float	best_cost	= 0.f;
+	u32		best_node	= nodes[0]; 
+	u32		index		= 0;
+		
+	for (u32 i=0; i<nodes.size(); i++) {
+		// cost = cover * distance_to_member * distance_to_centroid
+		float cur_cost = ai().level_graph().vertex_cover(nodes[i]) * 
+			ai().level_graph().vertex_position(nodes[i]).distance_to(pE->Position()) *
+			ai().level_graph().vertex_position(nodes[i]).distance_to(centroid);
+
+		if (cur_cost > best_cost) {
+			best_cost	= cur_cost;
+			best_node	= nodes[i];
+			index		= i;
+		}
+	}
+	
+	nodes.erase(nodes.begin() + index);
+
+	// prepare task
+	pTask->target.pos		= ai().level_graph().vertex_position(best_node);
+	pTask->target.node		= best_node;
+	pTask->target.entity	= 0;
+}
+
+void CMonsterSquad::AskMember(CEntity *pE, const GTask &new_task) 
+{
+	GTask &cur_task= GetTask(pE);
+
+	if ((cur_task.state.ttl > Level().timeServer()) && (cur_task.state.command == TS_REFUSED)) return;
+	
+	if ((ActiveTask(&cur_task) && IsPriorityHigher(new_task.state.command, cur_task.state.command)) || !ActiveTask(&cur_task)) {
+		cur_task = new_task;
+		cur_task.state.need_reset = true;
+		cur_task.state.type = TS_REQUEST;
+	}
+
+}
+
+bool CMonsterSquad::IsPriorityHigher(ESquadCommand com_new, ESquadCommand com_old)
+{
+	return (Level().SquadMan.TransformPriority(com_new) >  Level().SquadMan.TransformPriority(com_old));
 }
 

@@ -332,11 +332,37 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
+// Тестовое состояние CBitingTest
+//////////////////////////////////////////////////////////////////////////
+
+class CBitingTest : public IState {
+	typedef IState inherited;
+	CAI_Biting		*pMonster;
+public:
+	CBitingTest(CAI_Biting *p);
+	
+	void Init();
+	void Run();
+};
+
+//////////////////////////////////////////////////////////////////////////
 // Выполнение задач группового интелекта
 //////////////////////////////////////////////////////////////////////////
 class CBitingSquadTask : public IState {
 	typedef IState inherited;
 	CAI_Biting		*pMonster;
+
+	enum {
+		ACTION_DANGER_1,
+		ACTION_DANGER_2,
+		ACTION_DANGER_3,
+		ACTION_DANGER_4
+	} m_tAction;
+
+	bool			flag_once_1;
+	Fvector			saved_pos;
+	TTime			time_last_switch;
+
 public:
 	CBitingSquadTask (CAI_Biting *p);
 private:

@@ -226,7 +226,7 @@ bool CMotionManager::PrepareAnimation()
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
 	
-	LOG_EX2("SET_ANIM = [%s]", *"*/ *anim_it->second.target_name /*"*);
+	//LOG_EX2("SET_ANIM = [%s]", *"*/ *anim_it->second.target_name /*"*);
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);

@@ -55,7 +55,7 @@ CLevel::CLevel()
 	m_tpScriptProcessor			= 0;
 
 #ifdef DEBUG
-	m_bSynchronization			= false;
+	//m_bSynchronization			= false;
 #endif
 }
 

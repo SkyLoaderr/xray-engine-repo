@@ -240,3 +240,27 @@ void CAI_Biting::Path_CommonSelector(CEntity *pE, Fvector position)
 	CLevelLocationSelector::set_evaluator(m_tSelectorCommon);
 }
 
+Fvector CAI_Biting::RandomPosInR(const Fvector &p, float R)
+{
+	Fvector v;
+	v = p;
+	v.x += ::Random.randF(-R,R);
+	v.z += ::Random.randF(-R,R);
+
+	return v;
+}
+
+void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos)
+{
+	set_level_dest_vertex(dest_vertex_id);
+	set_dest_position(dest_pos);
+	set_path_type (path_type);
+}
+
+
+//bool CAI_Biting::IsGoodMovement() 
+//{
+//	if (IsMoveAlongPathFinished() || CDetailPathManager) {
+//
+//	}
+//}

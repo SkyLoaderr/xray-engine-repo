@@ -31,6 +31,8 @@ void CBitingRest::Init()
 {
 	IState::Init();
 
+	LOG_EX("-REST_INIT");
+
 	// если есть путь - дойти до конца (последствия преследования врага)
 	if (!pMonster->path_completed()) {
 		m_bFollowPath = true;
