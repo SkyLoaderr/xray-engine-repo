@@ -212,9 +212,9 @@ public:
 
 	// Lighting/glowing
 	virtual IRender_Light*			light_create			()											= 0;
-	virtual void					light_destroy			(IRender_Light* p_)							{ p_->set_active(false);	};
+	virtual void					light_destroy			(IRender_Light* p_)							{ };
 	virtual IRender_Glow*			glow_create				()											= 0;
-	virtual void					glow_destroy			(IRender_Glow* p_)							{ p_->set_active(false);	};
+	virtual void					glow_destroy			(IRender_Glow* p_)							{ };
 
 	// Models
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;

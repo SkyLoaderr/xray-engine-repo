@@ -34,9 +34,7 @@ light::~light	()
 #if RENDER==R_R2 
 	for (int f=0; f<6; f++)	xr_delete(omnipart[f]);
 #endif
-	// by Dima
 	set_active	(false);
-	// end
 }
 
 #if RENDER==R_R2 

@@ -30,6 +30,7 @@ CGlow::CGlow()				{
 }
 CGlow::~CGlow()
 {
+	set_active		(false);
 	shader.destroy	();
 }
 
