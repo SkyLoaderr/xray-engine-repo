@@ -72,8 +72,6 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	c_wind				= T.get	("wind");
 	c_c_bias			= T.get	("c_bias");
 	c_c_scale			= T.get	("c_scale");
-	c_eye				= T.get	("v_eye");
-	c_fog				= T.get	("fog");
 	c_l_dir				= T.get	("l_dir");
 	c_l_color			= T.get	("l_color");
 }
@@ -158,9 +156,6 @@ void	FTreeVisual::Copy			(IRender_Visual *pSrc)
 	PCOPY(xform);
 	PCOPY(c_scale);
 	PCOPY(c_bias);
-
-	PCOPY(c_eye);
-	PCOPY(c_fog);
 
 	PCOPY(c_l_dir);
 	PCOPY(c_l_color);
