@@ -585,7 +585,7 @@ int	lua_getlineinfofromproto(Proto* p,int* lines)
 	int i;
 
  	if(lines!=NULL)
- 		memcpy(lines,p->lineinfo,sizeof(int)*p->sizelineinfo);	
+ 		Memory::mem_copy(lines,p->lineinfo,sizeof(int)*p->sizelineinfo);	
  	size+=p->sizelineinfo;	
  	
  	for (i=0; i<p->sizep; i++)

@@ -66,13 +66,13 @@ void CConsoleUI::show_header(const vector<LPCSTR> &strings)
 		size_t				n = strlen(*I);
 		bool				parity = !((display_width - n) & 1);
 		size_t				count = ((display_width - 2 - n)/2 + (parity ? 0 : 1));
-		memset				(temp,' ',count*sizeof(char));
+		Memory::mem_fill	(temp,' ',count*sizeof(char));
 		temp[count]			= 0;
 		strcat				(temp,*I);
 		n					= strlen(temp);
 		if (!parity)
 			--count;
-		memset				(temp + n,' ',count*sizeof(char));
+		Memory::mem_fill	(temp + n,' ',count*sizeof(char));
 		temp[n+count]		= 0;
 		log					("%c%s%c\n",SHAPE_CHARACTER,temp,SHAPE_CHARACTER);
 	}
@@ -88,7 +88,7 @@ void CConsoleUI::show_header()
 	vector<LPCSTR>			strings;
 	
 	char					string[display_width-1];
-	memset					(string,SHAPE_CHARACTER,(display_width - 2)*sizeof(char));
+	Memory::mem_fill		(string,SHAPE_CHARACTER,(display_width - 2)*sizeof(char));
 	string[display_width - 2] = 0;
 
 	strings.push_back		(string);

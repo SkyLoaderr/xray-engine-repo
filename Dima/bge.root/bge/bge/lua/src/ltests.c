@@ -119,7 +119,7 @@ void *debug_realloc (void *block, size_t oldsize, size_t size) {
     newblock = dlmalloc(realsize);  /* alloc a new block */
     if (newblock == NULL) return NULL;
     if (block) {
-      memcpy(cast(char *, newblock)+HEADER, block, commonsize);
+      Memory::mem_copy(cast(char *, newblock)+HEADER, block, commonsize);
       freeblock(block, oldsize);  /* erase (and check) old copy */
     }
     /* initialize new part of the block with something `weird' */

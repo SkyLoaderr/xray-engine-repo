@@ -9,5 +9,7 @@
 #pragma once
 
 namespace Memory {
-	void	init	();
+	void	init		();
+	void	mem_copy	(void *dest, const void *src, size_t size);
+	void	mem_fill	(void *dest, char val,  size_t size);
 };

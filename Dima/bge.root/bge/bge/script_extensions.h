@@ -14,6 +14,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "memory.h"
 #include "src/xr_LuaAllocator.h"
 
 #define xr_strlen strlen
