@@ -126,4 +126,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
 									CSE_ALifeItemDocument(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDocument();
 SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
+	u32								m_dwTimeStamp;
+									CSE_ALifeItemGrenade(LPCSTR caSection);
+	virtual							~CSE_ALifeItemGrenade();
+SERVER_ENTITY_DECLARE_END
 #endif

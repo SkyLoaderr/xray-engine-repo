@@ -35,6 +35,9 @@ public:
 	virtual bool Useful();
 	virtual u32 State(u32 state);
 
+	virtual void						net_Import			(NET_Packet& P);					// import from server
+	virtual void						net_Export			(NET_Packet& P);					// export to server
+
 protected:
 
 	CGrenade *m_pFake;
@@ -59,4 +62,13 @@ protected:
 	//звуки
 	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
+protected:
+	struct	net_update 		
+	{
+		u32					dwTimeStamp;
+		Fvector				pos,angles;
+//		void	lerp		(net_update& A,net_update& B, float f);
+	};
+	xr_deque<net_update>	NET;
+	net_update				NET_Last;
 };

@@ -482,6 +482,15 @@ void CGrenade::UpdateCL()
 		else m_pLight->set_range(0);
 	} 
 	else m_pLight->set_active(false);
+
+	if (Remote() && NET.size())
+	{
+		net_update N = NET.back();
+		NET.pop_back();
+		NET_Last = N;
+
+		Position().set(NET_Last.pos);
+	};
 }
 
 bool CGrenade::Action(s32 cmd, u32 flags) 
@@ -546,3 +555,31 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 	}
 	return false;
 }
+
+void CGrenade::net_Import			(NET_Packet& P) 
+{
+	net_update			N;
+
+	P.r_u32					( N.dwTimeStamp );
+	P.r_vec3				( N.pos	);
+	P.r_angle8				( N.angles.x);
+	P.r_angle8				( N.angles.y);
+	P.r_angle8				( N.angles.z);
+
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
+	{
+		NET.push_back			(N);
+	}
+};
+
+void CGrenade::net_Export			(NET_Packet& P) 
+{
+	P.w_u32				(Level().timeServer());
+	P.w_vec3			(Position()	);
+
+	float					_x,_y,_z;
+	XFORM().getHPB			(_y,_x,_z);
+	P.w_angle8				(_x);
+	P.w_angle8				(_y);
+	P.w_angle8				(_z);
+};

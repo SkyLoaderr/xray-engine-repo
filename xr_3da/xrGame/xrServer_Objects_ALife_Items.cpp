@@ -572,3 +572,56 @@ void CSE_ALifeItemDocument::FillProp		(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU16			(items, FHelper.PrepareKey(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemGrenade
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemGrenade::CSE_ALifeItemGrenade	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	m_dwTimeStamp = 0;
+}
+
+CSE_ALifeItemGrenade::~CSE_ALifeItemGrenade	()
+{
+}
+
+void CSE_ALifeItemGrenade::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeItemGrenade::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+
+
+	tNetPacket.r_u32			(m_dwTimeStamp);
+	tNetPacket.r_vec3			(o_Position	);
+	tNetPacket.r_angle8			(o_Angle.x	);
+	tNetPacket.r_angle8			(o_Angle.y	);
+	tNetPacket.r_angle8			(o_Angle.z	);
+
+}
+
+void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+
+	tNetPacket.w_u32			(m_dwTimeStamp);
+	tNetPacket.w_vec3			(o_Position	);
+	tNetPacket.w_angle8			(o_Angle.x	);
+	tNetPacket.w_angle8			(o_Angle.y	);
+	tNetPacket.w_angle8			(o_Angle.z	);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+}
+#endif

@@ -55,7 +55,7 @@
 // 38 - CSE_ALifeHumanAbstract			appended with the equipment and weapon preferences
 // 39 - CSE_ALifeAnomalousZone			appended with the start power property
 // 40 - CSE_ALifeObjectPhysic			appended with activate flag
-// 41 - CSE_ALifeItemWeapon				appended with weapon addons state flag
+//		and CSE_ALifeItemWeapon			appended with weapon addons state flag
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

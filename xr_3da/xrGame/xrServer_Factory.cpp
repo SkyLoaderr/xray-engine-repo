@@ -127,8 +127,8 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_TARGET_CS:			return xr_new<CSE_Target_CS>					(caSection);
 		case CLSID_TARGET_CS_CASK:		return xr_new<CSE_Target_CS_Cask>				(caSection);
 		case CLSID_IITEM_BOLT:			return xr_new<CSE_ALifeDynamicObject>			(caSection);
-		case CLSID_GRENADE_F1:			return xr_new<CSE_ALifeItem>					(caSection);
-		case CLSID_GRENADE_RGD5:		return xr_new<CSE_ALifeItem>					(caSection);
+		case CLSID_GRENADE_F1:			return xr_new<CSE_ALifeItemGrenade>				(caSection);
+		case CLSID_GRENADE_RGD5:		return xr_new<CSE_ALifeItemGrenade>				(caSection);
 		case CLSID_DEVICE_TORCH:		return xr_new<CSE_ALifeItemTorch>				(caSection);			// Visualed
 		case CLSID_OBJECT_PHYSIC:		return xr_new<CSE_ALifeObjectPhysic>			(caSection);            // Visualed
 
