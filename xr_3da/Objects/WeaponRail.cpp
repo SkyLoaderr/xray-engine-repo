@@ -27,8 +27,6 @@ CWeaponRail::CWeaponRail() : CWeapon("rail")
 
 CWeaponRail::~CWeaponRail()
 {
-	Device.Shader.Delete(hWallmark);
-
 	pSounds->Delete3D(sndFire);
 }
 
