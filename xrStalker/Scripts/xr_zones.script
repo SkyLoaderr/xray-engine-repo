@@ -376,8 +376,6 @@ end
 -- callback на вход в зону
 function zone_gulags:on_enter( obj )
 	if get_clsid( obj ) == clsid.stalker then
-		local ini = obj:spawn_ini()
-
 		if self.gulag then
 			self:add_stalker( obj )
 		else
