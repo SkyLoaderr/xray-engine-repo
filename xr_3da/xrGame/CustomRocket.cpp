@@ -220,6 +220,8 @@ void CCustomRocket::Load(LPCSTR section)
 
 void  CCustomRocket::reload		(LPCSTR section)
 {
+	inherited::reload	(section);
+
 	m_eState = eInactive;
 
 	m_bEnginePresent = !!pSettings->r_bool(section, "engine_present");
