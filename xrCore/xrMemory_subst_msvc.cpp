@@ -102,11 +102,13 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	if (mem_generic==p_current)
 	{
 		u32		_footer			=	debug_mode?4:0;
+#ifdef DEBUG
 		if		(debug_mode)	{
 			g_bDbgFillMemory	= false;
 			dbg_unregister		(P);
 			g_bDbgFillMemory	= true;
 		}
+#endif
 		void*	_real2			=	xr_aligned_offset_realloc	(_real,size+_footer,16,0x1);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
