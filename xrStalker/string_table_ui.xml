@@ -1,0 +1,11 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<!-- таблица строк общего назначения -->
+<string_table>
+	<string id="t1">
+		<text>This is a GENERAL test string</text>
+	</string>
+	<string id="t2">
+		<text>This is a another GENERAL test string</text>
+	</string>
+</string_table>
+
