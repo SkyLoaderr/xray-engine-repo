@@ -126,7 +126,7 @@ void CBuild::xrPhase_Subdivide()
 				it --;
 			}
 		}
-		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),0);
+		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
 		g_vertices.erase	(_end,g_vertices.end());
 
 		g_bUnregister		= true;
