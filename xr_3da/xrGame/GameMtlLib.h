@@ -30,7 +30,7 @@
 #define GAMEMTL_SUBITEM_COUNT			4
 
 #define GAMEMTL_NONE					u32(-1)
-#define GAMEMTL_FILENAME				"gamemtl2.xr"
+#define GAMEMTL_FILENAME				"gamemtl.xr"
 
 #ifdef _EDITOR
 #define GM_NON_GAME
@@ -159,6 +159,7 @@ public:
     PropValue*			propCollideParticles;
     PropValue*			propCollideMarks;
     void __fastcall 	OnFlagChange	(PropValue* sender);
+	void __fastcall 	OnParentClick	(PropValue* sender, bool& bModif);
 #endif
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)
@@ -178,6 +179,8 @@ public:
 	IC bool				IsPair			(int m0, int m1){return !!(((mtl0==m0)&&(mtl1==m1))||((mtl0==m1)&&(mtl1==m0)));}
     void				Save			(IWriter& fs);
     void				Load			(IReader& fs);
+    IC int 				GetParent		(){return ID_parent;}
+    BOOL				SetParent		(int parent);
 #ifdef _EDITOR
 	void 				FillProp		(PropItemVec& values);
     void				TransferFromParent(SGameMtlPair* parent);
@@ -272,9 +275,12 @@ public:
 
 // material pair routine
 #ifdef _EDITOR
+	BOOL				UpdateMtlPairs		(SGameMtl* src);
+	BOOL				UpdateMtlPairs		();
 	LPCSTR				MtlPairToName		(int mtl0, int mtl1);
 	void				NameToMtlPair		(LPCSTR name, int& mtl0, int& mtl1);
 	void				MtlNameToMtlPair	(LPCSTR name, int& mtl0, int& mtl1);
+	SGameMtlPair*		CreateMaterialPair	(int m0, int m1, SGameMtlPair* parent=0);
 	SGameMtlPair*		AppendMaterialPair	(int m0, int m1, SGameMtlPair* parent=0);
 	void				RemoveMaterialPair	(LPCSTR name);
 	void				RemoveMaterialPair	(GameMtlPairIt rem_it);
@@ -285,7 +291,6 @@ public:
 	GameMtlPairIt		GetMaterialPairIt	(int mtl0, int mtl1);
 	SGameMtlPair*		GetMaterialPair		(int mtl0, int mtl1);
 	SGameMtlPair*		GetMaterialPair		(LPCSTR name);
-    int					GetParents			(SGameMtlPair* obj, GameMtlPairVec& lst);
 #endif
 
 	// game
