@@ -33,9 +33,9 @@ void			CFrustum::_add			(Fplane &P)
 void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
 {
 	VERIFY(p_count<FRUSTUM_MAXPLANES);
-	planes[p_count].build	(P1,P2,P3);
-	planes[p_count].cache	();
-	p_count					++;
+	planes[p_count].build_precise	(P1,P2,P3);
+	planes[p_count].cache			();
+	p_count							++;
 }
  
 #define			mx			0

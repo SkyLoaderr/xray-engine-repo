@@ -29,6 +29,13 @@ public:
 		d = -n.dotproduct(v1);
 		return *this;
 	}
+	IC	SelfRef	build_precise	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
+	{
+		_vector3<T> t1,t2;
+		n.crossproduct(t1.sub(v1,v2), t2.sub(v1,v3)); exact_normalize(n);
+		d = -n.dotproduct(v1);
+		return *this;
+	}
 	IC	SelfRef	build(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		d			= - n.normalize(_n).dotproduct(_p);
