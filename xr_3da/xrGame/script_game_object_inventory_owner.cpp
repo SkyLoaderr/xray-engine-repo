@@ -572,6 +572,7 @@ bool CScriptGameObject::accessible_vertex_id(u32 level_vertex_id)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
 		return								(false);
 	}
+	THROW2									(ai().level_graph().valid_vertex_id(level_vertex_id),"Cannot check if level vertex id is accessible, because it is invalid");
 	return									(monster->movement().restrictions().accessible(level_vertex_id));
 }
 
