@@ -96,11 +96,14 @@ void CBuild::Run	(string& P)
 	CalcNormals					();
 
 	//****************************************** T-Basis
-	FPU::m64r					();
-	Phase						("Building tangent-basis...");
-	xrPhase_TangentBasis		();
-	mem_Compact					();
-	
+	if (b_R2)	//****************************** R2 only
+	{
+		FPU::m64r					();
+		Phase						("Building tangent-basis...");
+		xrPhase_TangentBasis		();
+		mem_Compact					();
+	}
+
 	//****************************************** Collision DB
 	FPU::m64r();
 	Phase						("Building collision database...");
@@ -131,11 +134,14 @@ void CBuild::Run	(string& P)
 	IsolateVertices				();
 
 	//****************************************** UV mapping
-	FPU::m64r					();
-	Phase						("Build UV mapping...");
-	mem_Compact					();
-	xrPhase_UVmap				();
-	IsolateVertices				();
+	if (!b_R2)	//****************************** R1 only
+	{
+		FPU::m64r					();
+		Phase						("Build UV mapping...");
+		mem_Compact					();
+		xrPhase_UVmap				();
+		IsolateVertices				();
+	}
 
 	//****************************************** Subdivide geometry
 	FPU::m64r					();

@@ -52,29 +52,34 @@ public:
 void CBuild::Light()
 {
 	//****************************************** Implicit
-	FPU::m64r		();
-	Phase			("LIGHT: Implicit...");
-	mem_Compact		();
-
-	ImplicitLighting();
+	if (!b_R2)	//****************************** R1 only
+	{
+		FPU::m64r		();
+		Phase			("LIGHT: Implicit...");
+		mem_Compact		();
+		ImplicitLighting();
+	}
 
 	//****************************************** Lmaps
-	FPU::m64r		();
-	Phase			("LIGHT: LMaps...");
-	mem_Compact		();
+	if (!b_R2)	//****************************** R1 only
+	{
+		FPU::m64r		();
+		Phase			("LIGHT: LMaps...");
+		mem_Compact		();
 
-	// Randomize deflectors
-	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
-	for				(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
+		// Randomize deflectors
+		random_shuffle	(g_deflectors.begin(),g_deflectors.end());
+		for				(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
-	// Main process (4 threads)
-	Status			("Lighting...");
-	CThreadManager	threads;
-	const	DWORD	thNUM	= 4;
-	u32	dwTimeStart	= timeGetTime();
-	for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
-	threads.wait	(500);
-	clMsg			("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+		// Main process (4 threads)
+		Status			("Lighting...");
+		CThreadManager	threads;
+		const	DWORD	thNUM	= 4;
+		u32	dwTimeStart	= timeGetTime();
+		for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
+		threads.wait	(500);
+		clMsg			("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+	}
 
 	//****************************************** Vertex
 	FPU::m64r		();
@@ -84,11 +89,14 @@ void CBuild::Light()
 	LightVertex		();
 
 	//****************************************** Merge LMAPS
-	FPU::m64r		();
-	Phase			("LIGHT: Merging lightmaps...");
-	mem_Compact		();
+	if (!b_R2)	//****************************** R1 only
+	{
+		FPU::m64r		();
+		Phase			("LIGHT: Merging lightmaps...");
+		mem_Compact		();
 
-	xrPhase_MergeLM	();
+		xrPhase_MergeLM	();
+	}
 }
 
 //-----------------------------------------------------------------------
