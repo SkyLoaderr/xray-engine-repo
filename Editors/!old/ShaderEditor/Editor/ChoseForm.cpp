@@ -344,7 +344,7 @@ void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
     	if (ebExt->Down&&!E.on_sel.empty()){
         	SChooseItem* itm 	= (SChooseItem*)Item->Tag;
             if (!E.on_thm.empty()){
-            	E.on_thm(*itm->name,paImage->Canvas->Handle,Irect().set(0,0,paImage->Width,paImage->Height));
+            	E.on_thm(*itm->name,paImage->Canvas->Handle,Irect().set(0,0,paImage->Width,paImage->Height),false);
             }
         }        	
     }

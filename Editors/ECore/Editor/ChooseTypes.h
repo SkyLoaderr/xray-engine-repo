@@ -30,15 +30,15 @@ struct SChooseItem{
 DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
 
 // typedef
-typedef fastdelegate::FastDelegate2<ChooseItemVec&,void*>		TOnChooseFillItems;
-typedef fastdelegate::FastDelegate2<SChooseItem*, PropItemVec&>	TOnChooseSelectItem;
-typedef fastdelegate::FastDelegate3<LPCSTR, HDC, const Irect&>	TOnDrawThumbnail;
-typedef fastdelegate::FastDelegate0								TOnChooseClose;
+typedef fastdelegate::FastDelegate2<ChooseItemVec&,void*>			 	TOnChooseFillItems;
+typedef fastdelegate::FastDelegate2<SChooseItem*, PropItemVec&>		 	TOnChooseSelectItem;
+typedef fastdelegate::FastDelegate4<LPCSTR, HDC, const Irect&, bool>	TOnDrawThumbnail;
+typedef fastdelegate::FastDelegate0									 	TOnChooseClose;
 
 typedef void (*TOnChooseFillEvents)();
 
 struct SChooseEvents{
-	shared_str				caption;
+	shared_str			caption;
     TOnChooseFillItems	on_fill;
     TOnChooseSelectItem	on_sel;
     TOnDrawThumbnail    on_thm;
