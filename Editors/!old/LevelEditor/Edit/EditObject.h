@@ -132,7 +132,6 @@ public:
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
-DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
@@ -311,6 +310,7 @@ public:
     // render methods
 	void 			Render					(const Fmatrix& parent, int priority, bool strictB2F);
 	void 			RenderSelection			(const Fmatrix& parent, CEditableMesh* m=0, u32 c=0x40E64646);
+	void 			RenderSurface			(const Fmatrix& parent, CSurface* s=0, u32 c=0x40E64646);
 	void 			RenderEdge				(const Fmatrix& parent, CEditableMesh* m=0, u32 c=0xFFC0C0C0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
