@@ -73,10 +73,24 @@ namespace ALife {
 		u32											dwMaxTime;
 	} STerrainPlace;
 
-	struct SArtefactOrder {
+	struct SArtefactOrder : public IPureSerializeObject {
 		shared_str				m_section;
 		u32						m_count;
 		u32						m_price;
+
+		virtual void load(NET_Packet &packet)
+		{
+			packet.r_stringZ	(m_section);
+			packet.r_u32		(m_count);
+			packet.r_u32		(m_price);
+		}
+
+		virtual void save(NET_Packet &packet)
+		{
+			packet.w_stringZ	(m_section);
+			packet.w_u32		(m_count);
+			packet.w_u32		(m_price);
+		}
 	};
 
 	struct SOrganizationOrder {
