@@ -41,7 +41,7 @@ class CDeflector
 {
 public:
 	xr_vector<UVtri>			UVpolys;
-	Fvector						N;
+	Fvector						normal;
 	lm_layer					layer;
 	Fsphere						Sphere;
 	

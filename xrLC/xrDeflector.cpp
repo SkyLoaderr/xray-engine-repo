@@ -160,8 +160,8 @@ VOID CDeflector::OA_Export()
 		density	+= F->Shader().lm_density;
 		fcount	+= 1.f;
 	}
-	N.normalize();
-	density /= fcount;
+	N.normalize	();
+	density		/= fcount;
 	
 	// Orbitrary Oriented Ortho - Projection
 	Fmatrix		mView;
@@ -190,9 +190,9 @@ VOID CDeflector::OA_Export()
 	bb.getsphere(Sphere.P,Sphere.R);
 
 	// UV rect
-	Fvector2	min,max,size;
-	GetRect		(min,max);
-	size.sub	(max,min);
+	Fvector2		min,max,size;
+	GetRect			(min,max);
+	size.sub		(max,min);
 
 	// Surface
 	u32 dwWidth		= iCeil(size.x*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
