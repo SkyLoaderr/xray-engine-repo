@@ -120,8 +120,6 @@ bool CMotionManager::PrepareAnimation()
 	pMonster->cur_anim.anim		= cur_anim;
 	pMonster->cur_anim.index	= u8(index);
 	pMonster->cur_anim.started	= Level().timeServer();
-	
-	Msg("Set Anim = [%s%u]", *pMonster->cur_anim.name, pMonster->cur_anim.index);
 
 	// инициализировать информацию о текущей анимации шагания
 	STEPS_Initialize();
