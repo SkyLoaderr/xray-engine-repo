@@ -142,7 +142,7 @@ void CAI_Dog::StateSelector()
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
 	
-	BonesInMotion(); 
+	//BonesInMotion(); 
 
 	// Temp
 	ChangeEntityMorale(-0.5f);
@@ -152,8 +152,13 @@ void CAI_Dog::StateSelector()
 
 void __stdcall CAI_Dog::BoneCallback(CBoneInstance *B)
 {
-	//CAI_Dog*	this_class = dynamic_cast<CAI_Dog*> (static_cast<CObject*>(B->Callback_Param));
-	//this_class->Bones.Update(B, Level().timeServer());
+//	CAI_Dog		*P = dynamic_cast<CAI_Dog*> (static_cast<CObject*>(B->Callback_Param));
+//	if (!P->look_at_enemy) return;
+//
+//	Fmatrix M;
+//	M.setXYZi (0.0f,0.0f,P->_cur_delta);
+//	B->mTransform.mulB(M);
+
 }
 
 BOOL CAI_Dog::net_Spawn (LPVOID DC) 
@@ -167,14 +172,21 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine2")).set_callback(BoneCallback,this);
 	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).set_callback(BoneCallback,this);
 
-	Bones.Reset();
-	Bones.AddBone(GetBoneInstance("bone01"), AXIS_Y); 
-	
-	Bones.AddBone(GetBoneInstance("bip01_spine1"), AXIS_Z); 
-	Bones.AddBone(GetBoneInstance("bip01_spine2"), AXIS_Z); 
-	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_X); 
-	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Y); 
-	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Z); 
+//	Bones.Reset();
+//	Bones.AddBone(GetBoneInstance("bone01"), AXIS_Y); 
+//	
+//	Bones.AddBone(GetBoneInstance("bip01_spine1"), AXIS_Z); 
+//	Bones.AddBone(GetBoneInstance("bip01_spine2"), AXIS_Z); 
+//	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_X); 
+//	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Y); 
+//	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_Z); 
+
+//	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine2"));
+//	BI.set_callback(BoneCallback,this);
+//
+//	_cur_delta		= _target_delta = 0.f;
+//	_velocity		= PI_DIV_2;
+//	look_at_enemy	= false;
 
 	return TRUE;
 }
@@ -291,6 +303,8 @@ void CAI_Dog::UpdateCL()
 		// !!!
 		// LookPosition(pE->Position());
 	}
+
+//	angle_lerp(_cur_delta, _target_delta, _velocity, Device.fTimeDelta);
 }
 
 void CAI_Dog::OnJumpStop()

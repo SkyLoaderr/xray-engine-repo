@@ -30,6 +30,9 @@ public:
 
 private:
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
+			float	_velocity;
+			float	_cur_delta, _target_delta;
+			bool	look_at_enemy;
 	
 			void	BonesInMotion		();
 };

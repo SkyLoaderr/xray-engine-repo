@@ -136,6 +136,7 @@ namespace MonsterSpace {
 		eMonsterSoundBkgnd,
 		eMonsterSoundLanding,
 		eMonsterSoundSteal,
+		eMonsterSoundPanic,
 		eMonsterSoundDummy		= u32(-1),
 	};
 

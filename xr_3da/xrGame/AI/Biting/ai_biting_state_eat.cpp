@@ -119,6 +119,8 @@ void CBitingEat::Run()
 		if (bNeedRebuild) pMonster->MoveToTarget(approach_pos,approach_vertex_id);
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
+
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
 
@@ -138,6 +140,8 @@ void CBitingEat::Run()
 			m_dwPrepareDrag	= m_dwCurrentTime;
 
 		}
+
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_EAT:
@@ -174,9 +178,11 @@ void CBitingEat::Run()
 //		
 //		DO_IN_TIME_INTERVAL_END();
 
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundEat, 0,0,pMonster->_sd->m_dwEatSndDelay);
+
 		break;
 	
-	case ACTION_GET_HIDE: {
+	case ACTION_GET_HIDE: 
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;		
 
@@ -188,7 +194,7 @@ void CBitingEat::Run()
 			bRestAfterLunch	= true;
 			m_dwTimeStartRest = m_dwCurrentTime;
 		}
-						  }
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);		
 		break;
 	case ACTION_LITTLE_REST:
 		pMonster->MotionMan.m_tAction = ACT_REST; 
@@ -198,6 +204,8 @@ void CBitingEat::Run()
 			bRestAfterLunch			= false; 
 			pMonster->AddIgnoreObject(pCorpse);
 		}
+
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_WALK:
@@ -208,6 +216,7 @@ void CBitingEat::Run()
 		if (cur_dist < m_fDistToCorpse) {
 			m_tAction = ACTION_EAT;
 		}
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	case ACTION_PREPARE_DRAG:
 
@@ -229,6 +238,7 @@ void CBitingEat::Run()
 		}
 
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 
 	case ACTION_DRAG:
@@ -249,10 +259,10 @@ void CBitingEat::Run()
 			bDragging = false; 
 			m_tAction = ACTION_EAT;
 		}
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	}
 	
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundEat, 0,0,pMonster->_sd->m_dwEatSndDelay);
 }
 
 void CBitingEat::Done()
