@@ -63,21 +63,27 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 	R_ASSERT		(Members.size()<16);
 	MP.clear		();
 	vCentroid.set	(0,0,0);
-	for (DWORD I=0; I<Members.size(); I++) 
-	{
-		CEntity*		E = Members[I];
-		const Fvector&	P = E->Position();
-		vCentroid.add	(P);
-		if (E!=Me)	{
-			CCustomMonster* M = (CCustomMonster*)E;
-			Fvector	P1,P2,C;
+	for (DWORD I=0; I<Members.size(); I++) {
+		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+			CEntity*		E = Members[I];
+			const Fvector&	P = E->Position();
+			MP.push_back				(P);
+		}
+		else {
+			CEntity*		E = Members[I];
+			const Fvector&	P = E->Position();
+			vCentroid.add	(P);
+			if (E!=Me)	{
+				CCustomMonster* M = (CCustomMonster*)E;
+				Fvector	P1,P2,C;
 
-			NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-			Level().AI.UnpackPosition	(P1,NC->p0);
-			Level().AI.UnpackPosition	(P2,NC->p1);
-			C.lerp						(P1,P2,.5f);
+				NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
+				Level().AI.UnpackPosition	(P1,NC->p0);
+				Level().AI.UnpackPosition	(P2,NC->p1);
+				C.lerp						(P1,P2,.5f);
 
-			MP.push_back				(C);
+				MP.push_back				(C);
+			}
 		}
 	}
 	vCentroid.div	(float(Members.size()));
@@ -87,12 +93,15 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<16);
 	MP.clear		();
-	for (DWORD I=0; I<Members.size(); I++) 
-	{
-		CEntity*		E = Members[I];
-		if (E!=Me)	{
-			CCustomMonster* M = (CCustomMonster*)E;
-			MP.push_back		(M->AI_Path.DestNode);
+	for (DWORD I=0; I<Members.size(); I++) {
+		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+			MP.push_back(Members[I]->AI_NodeID);
+		else {
+			CEntity*		E = Members[I];
+			if (E!=Me)	{
+				CCustomMonster* M = (CCustomMonster*)E;
+				MP.push_back		(M->AI_Path.DestNode);
+			}
 		}
 	}
 }
@@ -105,19 +114,29 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 	P2.clear();
 	P3.clear();
 	for (DWORD I=0; I<Members.size(); I++) {
-		CEntity*E = Members[I];
-		if (E!=Me) {
-			CCustomMonster* M = (CCustomMonster*)E;
+		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+			CEntity*E = Members[I];
 			const Fvector&	P = E->Position();
-			Fvector	_P1,_P2,C;
-			NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-			Level().AI.UnpackPosition(_P1,NC->p0);
-			Level().AI.UnpackPosition(_P2,NC->p1);
-			C.lerp(_P1,_P2,.5f);
 			P0.push_back(P);
-			P1.push_back(M->AI_NodeID);
-			P2.push_back(C);
-			P3.push_back(M->AI_Path.DestNode);
+			P1.push_back(E->AI_NodeID);
+			P2.push_back(P);
+			P3.push_back(E->AI_NodeID);
+		}
+		else {
+			CEntity*E = Members[I];
+			if (E!=Me) {
+				CCustomMonster* M = (CCustomMonster*)E;
+				const Fvector&	P = E->Position();
+				Fvector	_P1,_P2,C;
+				NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
+				Level().AI.UnpackPosition(_P1,NC->p0);
+				Level().AI.UnpackPosition(_P2,NC->p1);
+				C.lerp(_P1,_P2,.5f);
+				P0.push_back(P);
+				P1.push_back(M->AI_NodeID);
+				P2.push_back(C);
+				P3.push_back(M->AI_Path.DestNode);
+			}
 		}
 	}
 }
@@ -155,19 +174,26 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
-			CEntity*		E = Members[I];
-			const Fvector&	P = E->Position();
-			vCentroid.add	(P);
-			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
-				Fvector	P1,P2,C;
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+				CEntity*		E = Members[I];
+				const Fvector&	P = E->Position();
+				MP.push_back				(P);
+			}
+			else {
+				CEntity*		E = Members[I];
+				const Fvector&	P = E->Position();
+				vCentroid.add	(P);
+				if (E!=Me)	{
+					CCustomMonster* M = (CCustomMonster*)E;
+					Fvector	P1,P2,C;
 
-				NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-				Level().AI.UnpackPosition	(P1,NC->p0);
-				Level().AI.UnpackPosition	(P2,NC->p1);
-				C.lerp						(P1,P2,.5f);
+					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
+					Level().AI.UnpackPosition	(P1,NC->p0);
+					Level().AI.UnpackPosition	(P2,NC->p1);
+					C.lerp						(P1,P2,.5f);
 
-				MP.push_back				(C);
+					MP.push_back				(C);
+				}
 			}
 		}
 	vCentroid.div	(float(Members.size()));
@@ -179,10 +205,14 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
-			CEntity*		E = Members[I];
-			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
-				MP.push_back		(M->AI_Path.DestNode);
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+				MP.push_back(Members[I]->AI_NodeID);
+			else {
+				CEntity*		E = Members[I];
+				if (E!=Me)	{
+					CCustomMonster* M = (CCustomMonster*)E;
+					MP.push_back		(M->AI_Path.DestNode);
+				}
 			}
 		}
 }
@@ -196,19 +226,29 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 	P3.clear();
 	for (DWORD I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
-			CEntity*E = Members[I];
-			if (E!=Me) {
-				CCustomMonster* M = (CCustomMonster*)E;
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+				CEntity*E = Members[I];
 				const Fvector&	P = E->Position();
-				Fvector	_P1,_P2,C;
-				NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-				Level().AI.UnpackPosition(_P1,NC->p0);
-				Level().AI.UnpackPosition(_P2,NC->p1);
-				C.lerp(_P1,_P2,.5f);
 				P0.push_back(P);
-				P1.push_back(M->AI_NodeID);
-				P2.push_back(C);
-				P3.push_back(M->AI_Path.DestNode);
+				P1.push_back(E->AI_NodeID);
+				P2.push_back(P);
+				P3.push_back(E->AI_NodeID);
+			}
+			else {
+				CEntity*E = Members[I];
+				if (E!=Me) {
+					CCustomMonster* M = (CCustomMonster*)E;
+					const Fvector&	P = E->Position();
+					Fvector	_P1,_P2,C;
+					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
+					Level().AI.UnpackPosition(_P1,NC->p0);
+					Level().AI.UnpackPosition(_P2,NC->p1);
+					C.lerp(_P1,_P2,.5f);
+					P0.push_back(P);
+					P1.push_back(M->AI_NodeID);
+					P2.push_back(C);
+					P3.push_back(M->AI_Path.DestNode);
+				}
 			}
 		}
 }
@@ -239,14 +279,13 @@ void CGroup::GetAliveMemberPlacementNWithLeader(MemberNodes& MP, CEntity* Me, CE
 	R_ASSERT		(Members.size()<16);
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
-		if (Members[I]->g_Health() > 0) {
-			CEntity*	E = Members[I];
-			if (E!=Me)	MP.push_back(E->AI_NodeID);
-		}
-	if (Leader->g_Health() > 0) {
-		CEntity*	E = Leader;
-		if (E!=Me)	MP.push_back(E->AI_NodeID);
-	}
+		if (Members[I]->g_Health() > 0)
+			if (Members[I]!=Me)	
+				MP.push_back(Members[I]->AI_NodeID);
+	
+	if (Leader->g_Health() > 0)
+		if (Leader!=Me)	
+			MP.push_back(Leader->AI_NodeID);
 }
 
 void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me, CEntity* Leader)
@@ -256,7 +295,36 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 	vCentroid.set	(0,0,0);
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
-			CEntity*		E = Members[I];
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+				CEntity*		E = Members[I];
+				const Fvector&	P = E->Position();
+				MP.push_back				(P);
+			}
+			else {
+				CEntity*		E = Members[I];
+				const Fvector&	P = E->Position();
+				vCentroid.add	(P);
+				if (E!=Me)	{
+					CCustomMonster* M = (CCustomMonster*)E;
+					Fvector	P1,P2,C;
+
+					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
+					Level().AI.UnpackPosition	(P1,NC->p0);
+					Level().AI.UnpackPosition	(P2,NC->p1);
+					C.lerp						(P1,P2,.5f);
+
+					MP.push_back				(C);
+				}
+			}
+		}
+	if (Leader->g_Health() > 0) {
+		if (Leader->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+			CEntity*		E = Leader;
+			const Fvector&	P = E->Position();
+			MP.push_back	(P);
+		}
+		else {
+			CEntity*		E = Leader;
 			const Fvector&	P = E->Position();
 			vCentroid.add	(P);
 			if (E!=Me)	{
@@ -271,21 +339,6 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 				MP.push_back				(C);
 			}
 		}
-	if (Leader->g_Health() > 0) {
-		CEntity*		E = Leader;
-		const Fvector&	P = E->Position();
-		vCentroid.add	(P);
-		if (E!=Me)	{
-			CCustomMonster* M = (CCustomMonster*)E;
-			Fvector	P1,P2,C;
-
-			NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
-			Level().AI.UnpackPosition	(P1,NC->p0);
-			Level().AI.UnpackPosition	(P2,NC->p1);
-			C.lerp						(P1,P2,.5f);
-
-			MP.push_back				(C);
-		}
 	}
 	vCentroid.div	(float(Members.size()));
 }
@@ -296,17 +349,25 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 	MP.clear		();
 	for (DWORD I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
-			CEntity*		E = Members[I];
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+				MP.push_back(Members[I]->AI_NodeID);
+			else {
+				CEntity*		E = Members[I];
+				if (E!=Me)	{
+					CCustomMonster* M = (CCustomMonster*)E;
+					MP.push_back		(M->AI_Path.DestNode);
+				}
+			}
+		}
+	if (Leader->g_Health() > 0) {
+		if (Leader->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+			MP.push_back(Leader->AI_NodeID);
+		else {
+			CEntity*		E = Leader;
 			if (E!=Me)	{
 				CCustomMonster* M = (CCustomMonster*)E;
 				MP.push_back		(M->AI_Path.DestNode);
 			}
-		}
-	if (Leader->g_Health() > 0) {
-		CEntity*		E = Leader;
-		if (E!=Me)	{
-			CCustomMonster* M = (CCustomMonster*)E;
-			MP.push_back		(M->AI_Path.DestNode);
 		}
 	}
 }
@@ -320,7 +381,43 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 	P3.clear();
 	for (DWORD I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
-			CEntity*E = Members[I];
+			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+				CEntity*E = Members[I];
+				const Fvector&	P = E->Position();
+				P0.push_back(P);
+				P1.push_back(E->AI_NodeID);
+				P2.push_back(P);
+				P3.push_back(E->AI_NodeID);
+			}
+			else {
+				CEntity*E = Members[I];
+				if (E!=Me) {
+					CCustomMonster* M = (CCustomMonster*)E;
+					const Fvector&	P = E->Position();
+					Fvector	_P1,_P2,C;
+					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
+					Level().AI.UnpackPosition(_P1,NC->p0);
+					Level().AI.UnpackPosition(_P2,NC->p1);
+					C.lerp(_P1,_P2,.5f);
+					P0.push_back(P);
+					P1.push_back(M->AI_NodeID);
+					P2.push_back(C);
+					P3.push_back(M->AI_Path.DestNode);
+				}
+			}
+		}
+		
+	if (Leader->g_Health() > 0) {
+		if (Leader->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
+			CEntity*E = Leader;
+			const Fvector&	P = E->Position();
+			P0.push_back(P);
+			P1.push_back(E->AI_NodeID);
+			P2.push_back(P);
+			P3.push_back(E->AI_NodeID);
+		}
+		else {
+			CEntity*E = Leader;
 			if (E!=Me) {
 				CCustomMonster* M = (CCustomMonster*)E;
 				const Fvector&	P = E->Position();
@@ -334,21 +431,6 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 				P2.push_back(C);
 				P3.push_back(M->AI_Path.DestNode);
 			}
-		}
-	if (Leader->g_Health() > 0) {
-		CEntity*E = Leader;
-		if (E!=Me) {
-			CCustomMonster* M = (CCustomMonster*)E;
-			const Fvector&	P = E->Position();
-			Fvector	_P1,_P2,C;
-			NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
-			Level().AI.UnpackPosition(_P1,NC->p0);
-			Level().AI.UnpackPosition(_P2,NC->p1);
-			C.lerp(_P1,_P2,.5f);
-			P0.push_back(P);
-			P1.push_back(M->AI_NodeID);
-			P2.push_back(C);
-			P3.push_back(M->AI_Path.DestNode);
 		}
 	}
 }
