@@ -20,69 +20,11 @@
 #include "ispatial.h"
 #include "CopyProtection.h"
 
-// AVI-support
-#include <MMSystem.h>
-#include <mciavi.h>
-
 //---------------------------------------------------------------------
-static	BOOL	g_bIntroFinished	= FALSE;
-void __cdecl	Intro	( void* fn )
-{
-	char *filename		= (char*)fn;
-	MCIERROR			me;
-	MCI_OPEN_PARMS		openparams;
-	MCI_PLAY_PARMS		playparams;
-	MCI_GENERIC_PARMS	closeparams;
-
-	do	{
-		// open
-		ZeroMemory		(&openparams,sizeof(openparams));
-		openparams.lpstrDeviceType  = "avivideo";
-		openparams.lpstrElementName = filename;
-		me = mciSendCommand(0, MCI_OPEN,
-			MCI_WAIT|MCI_OPEN_TYPE|MCI_OPEN_ELEMENT,
-			(DWORD) &openparams );
-
-		if( me )		break;
-
-		// play
-		ZeroMemory		(&playparams,sizeof(playparams));
-		me = mciSendCommand( openparams.wDeviceID,MCI_PLAY,
-			MCI_MCIAVI_PLAY_FULLSCREEN|MCI_WAIT,
-			(DWORD) &playparams);
-
-		if( me )		break;
-
-		// close
-		ZeroMemory		(&closeparams,sizeof(closeparams));
-		me = mciSendCommand( openparams.wDeviceID,
-			MCI_CLOSE, MCI_WAIT,
-			(DWORD) &closeparams);
-
-		if( me )		break;
-	}
-	while	(0);
-	g_bIntroFinished	= TRUE;
-}
-
-#include <dshow.h> 
-void  __cdecl	IntroDSHOW	( void* fn )
-{ 
-	char *filename		= (char*)fn;
-	IGraphBuilder	*pGraph			;
-	IMediaControl	*pMediaControl	;
-	IMediaEvent		*pEvent			;
-	CoInitialize	(NULL);			// Create the filter graph manager and query for interfaces. CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC_SERVER, IID_IGraphBuilder, (void **)&pGraph); 
-	pGraph->QueryInterface		(IID_IMediaControl,	(void **)&pMediaControl	); 
-	pGraph->QueryInterface		(IID_IMediaEvent,	(void **)&pEvent		);
-	// Build the graph. IMPORTANT: Change string to a file on your system. 
-	pGraph->RenderFile			(filename, NULL);		// Run the graph. pMediaControl->Run(); // Wait for completion. long evCode; 
-	pEvent->WaitForCompletion	(INFINITE, &evCode);	// Clean up. pMediaControl->Release(); 
-	pEvent->Release				(); 
-	pGraph->Release				(); 
-//	CoUninitialize				(); 
-} 
-
+BOOL	g_bIntroFinished		= FALSE;
+extern	void	__cdecl	Intro		( void* fn );
+extern	void	__cdecl	Intro_DSHOW	( void* fn );
+extern	int PASCAL IntroDSHOW_wnd	(HINSTANCE hInstC, HINSTANCE hInstP, LPSTR lpCmdLine, int nCmdShow);
 //---------------------------------------------------------------------
 // 2446363
 // umbt@ukr.net
@@ -338,6 +280,17 @@ void	test_rtc	()
 */
 extern void	testbed	(void);
 
+// video
+static	HINSTANCE	g_hInstance		;
+static	HINSTANCE	g_hPrevInstance	;
+static	int			g_nCmdShow		;
+
+void	__cdecl		intro_dshow_x	(void*)
+{
+	IntroDSHOW_wnd		(g_hInstance,g_hPrevInstance,"GameData\\Stalker_Intro.avi",g_nCmdShow);
+	g_bIntroFinished	= TRUE	;
+}
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
@@ -347,10 +300,17 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	logoWindow = CreateDialog	(GetModuleHandle(NULL),	MAKEINTRESOURCE(IDD_STARTUP), 0, logDlgProc );
 
 	// AVI
+	/*
+	if (!IsDebuggerPresent())
 	{
-		_beginthread			(Intro,0,"GameData\\Stalker_Intro.avi");
+		g_hInstance				= hInstance;
+		g_hPrevInstance			= hPrevInstance;
+		g_nCmdShow				= nCmdShow;
+		_beginthread			(Intro_DSHOW,0,"GameData\\Stalker_Intro.avi");
+		// _beginthread			(intro_dshow_x,0,0);
 		Sleep					(100);
 	}
+	*/
 
 	// Core
 	Core._initialize		("xray",NULL);

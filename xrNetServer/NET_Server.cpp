@@ -145,7 +145,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 
 	strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
-	if (strchr(options,'/'))	strcpy(session_options, strchr(options,'/')+1);
+	if (strchr(options,'/'))		strcpy(session_options, strchr(options,'/')+1);
 	if (strstr(options, "psw="))
 	{
 		char* PSW = strstr(options, "psw=") + 4;
