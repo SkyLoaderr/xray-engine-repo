@@ -89,6 +89,7 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &
 
 LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 {
+	Log						("----- 2D sound!!! ",pName);
 	DSBUFFERDESC			dsBD = {0};
 	LPDIRECTSOUNDBUFFER		pBuf = NULL;
 
@@ -100,7 +101,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	// Load file into memory and parse WAV-format
 	destructor<CStream>		data	(Engine.FS.Open(pName));
 	WAVEFORMATEX*			pFormat;
-	u32					dwLen;
+	u32						dwLen;
 	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
 	if (!wavedata)			return NULL;
 

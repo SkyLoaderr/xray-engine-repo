@@ -88,16 +88,16 @@ public:
 #ifndef NO_XR_3DBUFFER
 typedef struct _3dbuffer{
 public:
-    u32			dwSize;
+    u32				dwSize;
     Fvector			vPosition;
     Fvector			vVelocity;
-    u32			dwInsideConeAngle;
-    u32			dwOutsideConeAngle;
+    u32				dwInsideConeAngle;
+    u32				dwOutsideConeAngle;
     Fvector			vConeOrientation;
     int				lConeOutsideVolume;
     float			flMinDistance;
     float			flMaxDistance;
-    u32			dwMode;
+    u32				dwMode;
 	
 	IC	DS3DBUFFER *d3d(void) { return (DS3DBUFFER *)this; };
 	IC	void	Init( )
@@ -126,7 +126,7 @@ public:
 		lConeOutsideVolume	= b.lConeOutsideVolume;
 		dwMode				= b.dwMode;
 	}
-}F3dbuffer;
+} F3dbuffer;
 #endif
 
 #endif
