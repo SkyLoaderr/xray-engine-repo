@@ -185,8 +185,8 @@ public:
 	CCC_ServerLoad(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		if (g_pGameLevel)	{
-			Log("! Please disconnect/unload first");
-			return;
+			Log		("! Please disconnect/unload first");
+			return	;
 		}
 		string256	fn;
 		if (FS.exist(fn,"",args,".save"))

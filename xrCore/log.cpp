@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifdef DEBUG
+#include "xrCore_platform.h"
+#endif
+
 #include <time.h>
-//#include "errors.h"
 #include "resource.h"
 #include "log.h"
 
@@ -46,7 +49,7 @@ void AddOne				(const char *split)
 	logCS.Leave			();
 }
 
-void Log(const char *s) 
+void Log				(const char *s) 
 {
 	if 		(no_log) return;
 	int		i,j;
@@ -66,7 +69,7 @@ void Log(const char *s)
 	AddOne(split);
 }
 
-void __cdecl Msg( const char *format, ...)
+void __cdecl Msg		( const char *format, ...)
 {
 	va_list mark;
 	string1024	buf;
@@ -76,7 +79,7 @@ void __cdecl Msg( const char *format, ...)
 	if (sz)		Log(buf);
 }
 
-void Log(const char *msg, const char *dop) {
+void Log				(const char *msg, const char *dop) {
 	char buf[1024];
 
 	if (dop)	sprintf(buf,"%s %s",msg,dop);
@@ -85,35 +88,35 @@ void Log(const char *msg, const char *dop) {
 	Log		(buf);
 }
 
-void Log(const char *msg, u32 dop) {
+void Log				(const char *msg, u32 dop) {
 	char buf[1024];
 
 	sprintf	(buf,"%s %d",msg,dop);
 	Log		(buf);
 }
 
-void Log(const char *msg, int dop) {
+void Log				(const char *msg, int dop) {
 	char buf[1024];
 
 	sprintf	(buf,"%s %d",msg,dop);
 	Log		(buf);
 }
 
-void Log(const char *msg, float dop) {
+void Log				(const char *msg, float dop) {
 	char buf[1024];
 
 	sprintf	(buf,"%s %f",msg,dop);
 	Log		(buf);
 }
 
-void Log(const char *msg, const Fvector &dop) {
+void Log				(const char *msg, const Fvector &dop) {
 	char buf[1024];
 
 	sprintf	(buf,"%s (%f,%f,%f)",msg,dop.x,dop.y,dop.z);
 	Log		(buf);
 }
 
-void Log	(const char *msg, const Fmatrix &dop)	{
+void Log				(const char *msg, const Fmatrix &dop)	{
 	char	buf	[1024];
 
 	sprintf	(buf,"%s:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n",msg,dop.i.x,dop.i.y,dop.i.z,dop._14_
@@ -123,8 +126,8 @@ void Log	(const char *msg, const Fmatrix &dop)	{
 	Log		(buf);
 }
 
-void LogWinErr	(const char *msg, long err_code)	{
-	Msg			("%s: %s",msg,Debug.error2string(err_code)	);
+void LogWinErr			(const char *msg, long err_code)	{
+	Msg					("%s: %s",msg,Debug.error2string(err_code)	);
 }
 
 static char *month[12] = {

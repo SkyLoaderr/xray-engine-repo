@@ -74,8 +74,14 @@ void Startup				( )
 	CSound_manager_interface::_create					(u64(Device.m_hWnd));
 
 	// ...command line for auto start
-	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
-	if (pStartup)				Console->Execute	(pStartup+1);
+	{
+		LPCSTR	pStartup			= strstr				(Core.Params,"-start ");
+		if (pStartup)				Console->Execute		(pStartup+1);
+	}
+	{
+		LPCSTR	pStartup			= strstr				(Core.Params,"-load ");
+		if (pStartup)				Console->Execute		(pStartup+1);
+	}
 
 	// Initialize APP
 	Device.Create				( );
@@ -277,9 +283,9 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 
 		// start any console command
 		if (strstr(Core.Params,"-$")) {
-			string256			buf,cmd,param;
-			sscanf				(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
-			strconcat			(buf,cmd," ",param);
+			string256				buf,cmd,param;
+			sscanf					(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
+			strconcat				(buf,cmd," ",param);
 			Console->Execute		(buf);
 		}
 	} else if (E==eDisconnect) {
