@@ -131,11 +131,12 @@ function Defender:process ()
 	--найдем врага
 	local dist = 10000000
 	local enemy = nil
+	local tdist
 	for a = 1, table.getn (self.monsters), 1 do
 	    local monster = self.monsters[a]
 	    printf ("Monster : %s", monster.npc:name ())
 	    if monster.npc:alive () == true then
-	       local tdist = distance_between (monster.npc, self.npc)
+	       tdist = distance_between (monster.npc, self.npc)
 	       printf ("Distance from stalker to monster - %f", tdist)
 	       if tdist < dist then
 	          printf ("tdist less then dist")
