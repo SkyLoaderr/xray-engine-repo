@@ -22,7 +22,25 @@ function action_car:reset_scheme()
 	action(self.object, object("left_light", object.activate), cond(cond.time_end, 1000))
 	action(self.object, object("right_light", object.activate), cond(cond.time_end, 1000))
 
-	action(self.object, move(move.on + move.fwd), cond(cond.time_end, time_infinite))                                                                                                             
+	action(self.object,
+		move(move.on + move.fwd, 500),
+		object("right_light", object.activate),
+		object("left_light", object.activate),
+		cond(cond.time_end, 500))
+	--[[
+	action(self.object,
+		move(move.on + move.fwd + move.right, 10),
+		cond(cond.time_end, 1000))
+	action(self.object,
+		move(move.on + move.back + move.right, 10),
+		cond(cond.time_end, 1000))
+	action(self.object,
+		move(move.off, 0),
+		cond(cond.time_end, 100))
+	action(self.object,
+		object("left_door", object.activate),
+		cond(cond.time_end, time_infinite))
+	--]]
 
 --[[
 	action(self.object,

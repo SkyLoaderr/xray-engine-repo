@@ -116,7 +116,8 @@ function generic_scheme_overrides(npc)
 
 --[[
 -- Предназначение:
---	вызывается на reinit-е объекта, активирует для него исходную схему, исходя из данных в секции [section]
+--      вызывается при включении набора скриптов через секцию logic у персонажа. Если в секции logic присутствует только
+--      поле cfg, использует конфигурационный файл, заданный в этом поле, и возвращает новый ini file.
 -- Здесь:
 --	npc - персонаж, для которого будет активирована схема
 --	ini - его customdata
@@ -136,7 +137,7 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 		if not gulag_name then
 			-- Общие схемы должны работать и без logic:
 			actual_ini_filename = ini_filename
-			actual_ini = ini -- этот персонаж включается не Gulag-ом и не обязательно должен иметь секцию logic
+			actual_ini = ini -- персонаж не обязательно должен иметь секцию logic
 		else
 			-- Иначе это персонаж Gulag-а и ему не задали работу:
 			utils.abort("ERROR: object '%s': unable to find section '%s'", npc:name(), section_logic)
@@ -144,14 +145,19 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 	else
 		local filename = utils.cfg_get_string(ini, section_logic, "cfg", npc, false, "")
 		if filename then
-			--printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), filename)
+			printf("_bp: enable_scripts: object '%s' has external configuration file '%s'", npc:name(), filename)
+			-- Рекурсивно обработать конфигурационный файл, на который ссылается поле cfg
 			actual_ini_filename = filename
 			actual_ini = ini_file(filename)
+			return configure_schemes(npc, actual_ini, actual_ini_filename, stype, section_logic, gulag_name)
+			--[[
 			if actual_ini:line_count(section_logic) == 0 then
 				utils.abort("file '%s' does not exist or is empty, or has no section '%s'",
 					filename, section_logic)
 			end
+			--]]
 		else
+			printf("_bp: enable_scripts: object '%s' has NO external configuration file, using '%s'", npc:name(), ini_filename)
 			actual_ini_filename = ini_filename
 			actual_ini = ini
 		end
@@ -175,6 +181,8 @@ function configure_schemes(npc, ini, ini_filename, stype, section_logic, gulag_n
 	st.ini = actual_ini
 	st.ini_filename = actual_ini_filename
 	st.section_logic = section_logic
+
+	return st.ini
 end
 
 -- Вызывается биндером с целью определить первую активную схему
@@ -1019,13 +1027,13 @@ function initialize_obj(obj, st, loaded, actor, stype)
 	if not loaded then
 		local ini_filename = "<customdata>"
 		local ini = utils.get_customdata_or_ini_file(obj, ini_filename)
-		xr_logic.configure_schemes(obj, ini, ini_filename, stype, "logic", nil)
+		ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, "logic", nil)
 		local sect = xr_logic.determine_section_to_activate(obj, ini, "logic", actor)
 		xr_logic.activate_by_section(obj, ini, sect)
 	else
 		local ini_filename = st.loaded_ini_filename
 		local ini = utils.get_customdata_or_ini_file(obj, ini_filename)
-		xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
+		ini = xr_logic.configure_schemes(obj, ini, ini_filename, stype, st.loaded_section_logic, st.loaded_gulag_name)
 		xr_logic.activate_by_section(obj, ini, st.loaded_active_section)
 	end
 end
