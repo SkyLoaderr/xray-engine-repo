@@ -52,7 +52,7 @@ void MxQSlim::collect_quadrics()
 	Vec4 p = (weighting_policy==MX_WEIGHT_RAWNORMALS) ?
 		    triangle_raw_plane<Vec3,Vec4>(v1, v2, v3):
 		    triangle_plane<Vec3,Vec4>(v1, v2, v3);
-	Quadric Q(p[X], p[Y], p[Z], p[W], m->compute_face_area(i));
+	Quadric Q(p[0], p[1], p[2], p[3], m->compute_face_area(i));
 
 	switch( weighting_policy )
 	{
@@ -339,7 +339,7 @@ void MxEdgeQSlim::compute_target_placement(MxQSlimEdge *info)
     double e_min;
 
     if( placement_policy==MX_PLACE_OPTIMAL &&
-	Q.optimize(&info->vnew[X], &info->vnew[Y], &info->vnew[Z]) )
+	Q.optimize(&info->vnew[0], &info->vnew[1], &info->vnew[2]) )
     {
 	e_min = Q(info->vnew);
     }
@@ -366,9 +366,9 @@ void MxEdgeQSlim::compute_target_placement(MxQSlimEdge *info)
 	    }
 	}
 
-	info->vnew[X] = (float)best[X];
-	info->vnew[Y] = (float)best[Y];
-	info->vnew[Z] = (float)best[Z];
+	info->vnew[0] = (float)best[0];
+	info->vnew[1] = (float)best[1];
+	info->vnew[2] = (float)best[2];
     }
 
     if( weighting_policy == MX_WEIGHT_AREA_AVG )
@@ -457,14 +457,14 @@ void MxEdgeQSlim::update_pre_contract(const MxPairContraction& conx)
     {
 	MxQSlimEdge *e = edge_links(v2)(i);
 	MxVertexID u = (e->v1==v2)?e->v2:e->v1;
-	SanityCheck( e->v1==v2 || e->v2==v2 );
-	SanityCheck( u!=v2 );
+	VERIFY( e->v1==v2 || e->v2==v2 );
+	VERIFY( u!=v2 );
 
 	if( u==v1 || varray_find(star, u) )
 	{
 	    // This is a useless link --- kill it
 	    bool found = varray_find(edge_links(u), e, &j);
-	    assert( found );
+	    VERIFY( found );
 	    edge_links(u).remove(j);
 	    heap.remove(e);
 	    if( u!=v1 ) xr_delete(e); // (v1,v2) will be deleted later
@@ -515,7 +515,7 @@ void MxEdgeQSlim::update_post_expand(const MxPairContraction& conx)
     unsigned int i;
 
     star.reset(); star2.reset();
-    PRECAUTION(edge_links(conx.v2).reset());
+//.	PRECAUTION(edge_links(conx.v2).reset());
     m->collect_vertex_star(conx.v1, star);
     m->collect_vertex_star(conx.v2, star2);
 
@@ -524,8 +524,8 @@ void MxEdgeQSlim::update_post_expand(const MxPairContraction& conx)
     {
 	MxQSlimEdge *e = edge_links(v1)(i);
 	MxVertexID u = (e->v1==v1)?e->v2:e->v1;
-	SanityCheck( e->v1==v1 || e->v2==v1 );
-	SanityCheck( u!=v1 && u!=v2 );
+	VERIFY( e->v1==v1 || e->v2==v1 );
+	VERIFY( u!=v1 && u!=v2 );
 
 	bool v1_linked = varray_find(star, u);
 	bool v2_linked = varray_find(star2, u);
@@ -540,7 +540,7 @@ void MxEdgeQSlim::update_post_expand(const MxPairContraction& conx)
 	    // !! BUG: I expected this to be true, but it's not.
 	    //         Need to find out why, and whether it's my
 	    //         expectation or the code that's wrong.
-	    // SanityCheck(v2_linked);
+	    // VERIFY(v2_linked);
 	    e->v1 = v2;
 	    e->v2 = u;
 	    edge_links(v2).add(e);
@@ -622,7 +622,7 @@ void MxFaceQSlim::compute_face_info(MxFaceID f)
     Q += Qk;
 
     if( placement_policy == MX_PLACE_OPTIMAL &&
-	Q.optimize(&info.vnew[X], &info.vnew[Y], &info.vnew[Z]) )
+	Q.optimize(&info.vnew[0], &info.vnew[1], &info.vnew[2]) )
     {
       info.heap_key(float(-Q(info.vnew)));
     }
@@ -638,9 +638,9 @@ void MxFaceQSlim::compute_face_info(MxFaceID f)
       else if( e2<=e1 && e2<=e3 ) { e_min=e2; best=v2; }
       else { e_min=e3; best=v3; }
 
-      info.vnew[X] = (float)best[X];
-      info.vnew[Y] = (float)best[Y];
-      info.vnew[Z] = (float)best[Z];
+      info.vnew[0] = (float)best[0];
+      info.vnew[1] = (float)best[1];
+      info.vnew[2] = (float)best[2];
       info.heap_key(float(-e_min));
     }
 

@@ -182,12 +182,6 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath=".\src\mixmsg.cxx">
-			</File>
-			<File
-				RelativePath=".\src\mixmsg.h">
-			</File>
-			<File
 				RelativePath=".\src\MxBlock.h">
 			</File>
 			<File

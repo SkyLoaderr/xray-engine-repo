@@ -47,8 +47,8 @@ MxVertexID MxStdModel::alloc_vertex(float x, float y, float z)
 
     face_links.add(xr_new<MxFaceList>());
     unsigned int l = face_links.last_id();
-    SanityCheck( l == id );
-    SanityCheck( neighbors(id).length() == 0 );
+    VERIFY( l == id );
+    VERIFY( neighbors(id).length() == 0 );
 
     return id;
 }
@@ -95,7 +95,7 @@ MxStdModel *MxStdModel::clone()
 
 void MxStdModel::mark_neighborhood(MxVertexID vid, unsigned short mark)
 {
-    AssertBound( vid < vert_count() ); 
+    VERIFY( vid < vert_count() ); 
 
     for(unsigned int i=0; i<(unsigned int)neighbors(vid).length(); i++)
     {
@@ -106,7 +106,7 @@ void MxStdModel::mark_neighborhood(MxVertexID vid, unsigned short mark)
 
 void MxStdModel::collect_unmarked_neighbors(MxVertexID vid,MxFaceList& faces)
 {
-    AssertBound( vid < vert_count() ); 
+    VERIFY( vid < vert_count() ); 
 
     for(unsigned int i=0; i<(unsigned int)neighbors(vid).length(); i++)
     {
@@ -121,7 +121,7 @@ void MxStdModel::collect_unmarked_neighbors(MxVertexID vid,MxFaceList& faces)
 
 void MxStdModel::mark_neighborhood_delta(MxVertexID vid, short delta)
 {
-    AssertBound( vid < vert_count() );
+    VERIFY( vid < vert_count() );
     for(unsigned int i=0; i<(unsigned int)neighbors(vid).length(); i++)
     {
 	unsigned int f = neighbors(vid)(i);
@@ -132,7 +132,7 @@ void MxStdModel::mark_neighborhood_delta(MxVertexID vid, short delta)
 void MxStdModel::partition_marked_neighbors(MxVertexID v, unsigned short pivot,
 					    MxFaceList& lo, MxFaceList& hi)
 {
-    AssertBound( v < vert_count() );
+    VERIFY( v < vert_count() );
     for(unsigned int i=0; i<(unsigned int)neighbors(v).length(); i++)
     {
 	unsigned int f = neighbors(v)(i);
@@ -254,35 +254,31 @@ void MxStdModel::synthesize_normals(unsigned int start)
 {
     float n[3];
 
-    if( normal_binding() == MX_PERFACE )
-    {
-	for(MxFaceID f=start; f<face_count(); f++)
+	if( normal_binding() == MX_PERFACE )
 	{
-	    compute_face_normal(f, n);
-	    add_normal(n[X], n[Y], n[Z]);
-	}
-    }
-    else if( normal_binding() == MX_PERVERTEX )
-    {
-	for(MxVertexID v=start; v<vert_count(); v++)
-	{
-	    compute_vertex_normal(v, n);
-	    add_normal(n[X], n[Y], n[Z]);
-	}
-    }
-    else
-	mxmsg_signal(MXMSG_WARN, "Unsupported normal binding.",
-		     "MxStdModel::synthesize_normals");
+		for(MxFaceID f=start; f<face_count(); f++)
+		{
+			compute_face_normal(f, n);
+			add_normal(n[0], n[1], n[2]);
+		}
+	}else if( normal_binding() == MX_PERVERTEX ){
+		for(MxVertexID v=start; v<vert_count(); v++)
+		{
+			compute_vertex_normal(v, n);
+			add_normal(n[0], n[1], n[2]);
+		}
+	}else
+		Debug.fatal("Unsupported normal binding.");
 }
 
 
 
 void MxStdModel::remap_vertex(unsigned int from, unsigned int to)
 {
-    AssertBound( from < vert_count() ); 
-    AssertBound( to < vert_count() ); 
-    SanityCheck( vertex_is_valid(from) );
-    SanityCheck( vertex_is_valid(to) );
+    VERIFY( from < vert_count() ); 
+    VERIFY( to < vert_count() ); 
+    VERIFY( vertex_is_valid(from) );
+    VERIFY( vertex_is_valid(to) );
     
     for(unsigned int i=0; i<(unsigned int)neighbors(from).length(); i++)
 	face(neighbors(from)(i)).remap_vertex(from, to);
@@ -300,9 +296,9 @@ unsigned int MxStdModel::split_edge(unsigned int a, unsigned int b)
     float *v1 = vertex(a), *v2 = vertex(b);
 
     return split_edge(a, b,
-                      (v1[X] + v2[X])/2.0f,
-                      (v1[Y] + v2[Y])/2.0f,
-                      (v1[Z] + v2[Z])/2.0f);
+                      (v1[0] + v2[0])/2.0f,
+                      (v1[1] + v2[1])/2.0f,
+                      (v1[2] + v2[2])/2.0f);
 }
 
 static
@@ -316,13 +312,13 @@ void remove_neighbor(MxFaceList& faces, unsigned int f)
 unsigned int MxStdModel::split_edge(unsigned int v1, unsigned int v2,
 			    float x, float y, float z)
 {
-    AssertBound( v1 < vert_count() );   AssertBound( v2 < vert_count() );
-    SanityCheck( vertex_is_valid(v1) ); SanityCheck( vertex_is_valid(v2) );
-    SanityCheck( v1 != v2 );
+    VERIFY( v1 < vert_count() );   VERIFY( v2 < vert_count() );
+    VERIFY( vertex_is_valid(v1) ); VERIFY( vertex_is_valid(v2) );
+    VERIFY( v1 != v2 );
 
     MxFaceList faces;
     collect_edge_neighbors(v1, v2, faces);
-    SanityCheck( faces.length() > 0 );
+    VERIFY( faces.length() > 0 );
 
     unsigned int vnew = add_vertex(x,y,z);
 
@@ -330,8 +326,8 @@ unsigned int MxStdModel::split_edge(unsigned int v1, unsigned int v2,
     {
 	unsigned int f = faces(i);
 	unsigned int v3 = face(f).opposite_vertex(v1, v2);
-	SanityCheck( v3!=v1 && v3!=v2 );
-	SanityCheck( vertex_is_valid(v3) );
+	VERIFY( v3!=v1 && v3!=v2 );
+	VERIFY( vertex_is_valid(v3) );
 
 	// in f, remap v2-->vnew
 	face(f).remap_vertex(v2, vnew);
@@ -444,17 +440,17 @@ void MxStdModel::unlink_face(MxFaceID fid)
     { found++; neighbors(f(1)).remove(j); }
     if( varray_find(neighbors(f(2)), fid, &j) )
     { found++; neighbors(f(2)).remove(j); }
-    SanityCheck( found > 0 );
-    SanityCheck( !varray_find(neighbors(f(0)), fid, &j) );
-    SanityCheck( !varray_find(neighbors(f(1)), fid, &j) );
-    SanityCheck( !varray_find(neighbors(f(2)), fid, &j) );
+    VERIFY( found > 0 );
+    VERIFY( !varray_find(neighbors(f(0)), fid, &j) );
+    VERIFY( !varray_find(neighbors(f(1)), fid, &j) );
+    VERIFY( !varray_find(neighbors(f(2)), fid, &j) );
 }
 
 void MxStdModel::remove_degeneracy(MxFaceList& faces)
 {
     for(unsigned int i=0; i<(unsigned int)faces.length(); i++)
     {
-	SanityCheck( face_is_valid(faces(i)) );
+	VERIFY( face_is_valid(faces(i)) );
 	MxFace& f = face(faces(i));
 
 	if( f(0)==f(1) || f(1)==f(2) || f(0)==f(2) )
@@ -476,8 +472,8 @@ void MxStdModel::compute_contraction(MxVertexID v1, MxVertexID v2,
     }
     else
     {
-	conx->dv1[X] = conx->dv1[Y] = conx->dv1[Z] = 0.0;
-	conx->dv2[X] = conx->dv2[Y] = conx->dv2[Z] = 0.0;
+	conx->dv1[0] = conx->dv1[1] = conx->dv1[2] = 0.0;
+	conx->dv2[0] = conx->dv2[1] = conx->dv2[2] = 0.0;
     }
 
     conx->delta_faces.reset();
@@ -565,7 +561,7 @@ void MxStdModel::apply_expansion(const MxPairExpansion& conx)
 	face(fid).remap_vertex(v1, v2);
 	neighbors(v2).add(fid);
 	bool found = varray_find(neighbors(v1), fid, &j);
-	SanityCheck( found );
+	VERIFY( found );
 	neighbors(v1).remove(j);
     }
 
@@ -605,15 +601,14 @@ void MxStdModel::compute_contraction(MxFaceID fid, MxFaceContraction *conx)
     const MxFace& f = face(fid);
 
     conx->f = fid;
-    conx->dv1[X] = conx->dv1[Y] = conx->dv1[Z] = 0.0;
-    conx->dv2[X] = conx->dv2[Y] = conx->dv2[Z] = 0.0;
-    conx->dv3[X] = conx->dv3[Y] = conx->dv3[Z] = 0.0;
+    conx->dv1[0] = conx->dv1[1] = conx->dv1[2] = 0.0;
+    conx->dv2[0] = conx->dv2[1] = conx->dv2[2] = 0.0;
+    conx->dv3[0] = conx->dv3[1] = conx->dv3[2] = 0.0;
 
     conx->delta_faces.reset();
     conx->dead_faces.reset();
 
-
-    PARANOID( mark_neighborhood(f[0], 0) );
+    mark_neighborhood(f[0], 0);
     mark_neighborhood(f[1], 0);
     mark_neighborhood(f[2], 0);
 
@@ -641,9 +636,9 @@ void MxStdModel::contract(MxVertexID v1, MxVertexID v2, MxVertexID v3,
     collect_unmarked_neighbors(v3, changed);
 
     // Move v1 to vnew
-    vertex(v1)(0) = vnew[X];
-    vertex(v1)(1) = vnew[Y];
-    vertex(v1)(2) = vnew[Z];
+    vertex(v1)(0) = vnew[0];
+    vertex(v1)(1) = vnew[1];
+    vertex(v1)(2) = vnew[2];
 
     // Replace occurrences of v2 & v3 with v1
     remap_vertex(v2, v1);
@@ -682,9 +677,9 @@ void MxStdModel::contract(MxVertexID v1, const MxVertexList& rest,
 	collect_unmarked_neighbors(rest(i), changed);
 
     // Move v1 to vnew
-    vertex(v1)(0) = vnew[X];
-    vertex(v1)(1) = vnew[Y];
-    vertex(v1)(2) = vnew[Z];
+    vertex(v1)(0) = vnew[0];
+    vertex(v1)(1) = vnew[1];
+    vertex(v1)(2) = vnew[2];
 
     // Replace all occurrences of vi with v1
     for(i=0; i<(unsigned int)rest.length(); i++)
@@ -707,7 +702,7 @@ float *MxStdModel::vertex_position(MxVertexID v)
 
 MxVertexID& MxStdModel::vertex_proxy_parent(MxVertexID v)
 {
-    SanityCheck( vertex_is_proxy(v) );
+    VERIFY( vertex_is_proxy(v) );
     return vertex(v).as.proxy.parent;
 }
 

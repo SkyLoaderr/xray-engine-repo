@@ -1,24 +1,5 @@
 #include "xrCore.h"
 
-#if !defined(HAVE_RINT)
-inline double rint(double x) { return floor(x + 0.5); }
-#endif
-
-#  define AssertBound(t)	VERIFY(t)
-#  define SanityCheck(t)	VERIFY(t)
-
-#ifdef UINT_MAX
-#  define MXID_NIL UINT_MAX
-#else
-#  define MXID_NIL 0xffffffffU
-#endif
-
-#define HAVE_CASTING_LIMITS 1
-
-#ifndef MIX_NO_AXIS_NAMES
-	enum Axis {X=0, Y=1, Z=2, W=3};
-#endif
-
 #include "../../QSCore/src/MxStdModel.h"
 #include "../../QSCore/src/MxQSlim.h"
 
