@@ -722,3 +722,11 @@ end
 function yaw( v1, v2 )
     return  math.acos( ( (v1.x*v2.x) + (v1.z*v2.z ) ) / ( math.sqrt(v1.x*v1.x + v1.z*v1.z ) * math.sqrt(v2.x*v2.x + v2.z*v2.z ) ) )
 end
+
+
+-- очистка таблицы
+function clear_table (t)
+    while table.getn (t) do
+          table.remove (t, 1)
+    end
+end          
