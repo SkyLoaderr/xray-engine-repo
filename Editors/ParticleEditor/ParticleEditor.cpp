@@ -10,6 +10,7 @@ USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
 USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
+USEFORM("Editor\TextForm.cpp", frmText);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
