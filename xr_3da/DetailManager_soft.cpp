@@ -107,8 +107,8 @@ void CDetailManager::soft_Render	()
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
-						float	frac		= .1f*src.y/height;							// fraction of model height
-						float	inten		= H * sinf	(tm + pos.x*cx+pos.y*cy+pos.z*cz);
+						float	frac		= src.y/height;							// fraction of model height
+						float	inten		= .1f * H * sinf		(tm + pos.x*cx+pos.y*cy+pos.z*cz);
 
 						//
 						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
