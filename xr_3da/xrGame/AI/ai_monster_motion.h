@@ -229,6 +229,9 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 
 	bool					should_play_die_anim;	// должен отыгрывать анимацию смерти
 
+	bool					b_end_transition;		// запомнить анимацию конца перехода
+	EMotionAnim				saved_anim;
+
 public:
 	
 	EAction					m_tAction;

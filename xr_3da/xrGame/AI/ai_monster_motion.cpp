@@ -33,6 +33,9 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	Seq_Init				();
 
 	AA_Clear				();
+
+	b_end_transition		= false;
+	saved_anim				= cur_anim;
 }
 
 // «агрузка параметров анимации. ¬ызывать необходимо на Monster::Load
@@ -257,7 +260,11 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 		if ((++I) == _sd->m_tTransitions.end()) break;
 	}
 
-	if (bActivated) Seq_Switch();
+	if (bActivated) {
+		b_end_transition = true;		
+		saved_anim = to;
+		Seq_Switch();
+	}
 }
 
 // ¬ соответствии текущему действию m_tAction, назначить соответсвующию анимацию и параметры движени€
@@ -288,6 +295,7 @@ void CMotionManager::ProcessAction()
 					if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
 					else													cur_anim = MI.turn.anim_left; 	// влево
 
+					// ѕроверить, €вл€етс€ ли это хорошим методом
 					Seq_Add(cur_anim);
 					Seq_Switch();
 				}
@@ -299,7 +307,7 @@ void CMotionManager::ProcessAction()
 			pMonster->CheckSpecParams(spec_params); 
 
 			if (!seq_playing) {
-				// проверить подмну анимаций
+				// проверить подмену анимаций
 				CheckReplacedAnim();
 
 				// если монстр стоит на месте и играет анимацию движени€, прин€ть stand_idle
@@ -443,8 +451,12 @@ void CMotionManager::Seq_Finish()
 {
 	Seq_Init(); 
 
-	prev_anim = cur_anim = _sd->m_tMotions[m_tAction].anim;
-
+	if (b_end_transition) { 
+		prev_anim = cur_anim = saved_anim;
+		b_end_transition = false;
+	} else {
+		prev_anim = cur_anim = _sd->m_tMotions[m_tAction].anim;
+	}
 }
 
 
