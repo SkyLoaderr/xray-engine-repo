@@ -127,7 +127,10 @@
 	<info_portion id="val_borov_info_gain"></info_portion>
 	<info_portion id="bar_kill_borov_done"></info_portion>
 
-	<info_portion id="bar_kill_svoboda_ambush_start"></info_portion>
+	<info_portion id="bar_kill_svoboda_ambush_start">
+		<task>bar_dolg_svoboda_ambush_quest</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 
