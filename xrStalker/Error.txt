@@ -103,7 +103,7 @@ To DIMA:
 
 TO YURA
 - wallmark на материаллы. спецэффекты от попаданий (партиклы и т.д. и т.п)
-- апгрейды оружия
++ апгрейды оружия
 +J mouse sensitivity up in inventory 
 
 To JIM:
