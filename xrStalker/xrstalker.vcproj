@@ -1257,6 +1257,9 @@
 							RelativePath=".\Scripts\ph_camera.script">
 						</File>
 						<File
+							RelativePath=".\scripts\ph_car.script">
+						</File>
+						<File
 							RelativePath=".\scripts\ph_door.script">
 						</File>
 						<File
