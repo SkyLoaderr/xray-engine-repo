@@ -69,6 +69,8 @@
 		</location>
 		<location >
 			<level>ai_test</level>
+			<x>0</x>
+			<y>0</y>
 			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
 			<text>Quest1 at agroprom</text>
 		</location>
