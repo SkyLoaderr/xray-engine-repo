@@ -424,6 +424,10 @@ function state_manager:__init(npc)
 end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s", state_name)
+	if state_lib.states[self.st.target_state] == nil then
+		printf("ERROR: ILLEGAL SET STATE CALLED!!!")
+	end
+	
 --	if target then
 --		if target.look_position then
 --			printf("look position: %s %s %s", target.look_position.x,
