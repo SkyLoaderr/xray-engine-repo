@@ -49,7 +49,7 @@ void CBuild::xrPhase_TangentBasis()
 	input[0].Name_= "position";	xr_vector<float>&	v_position	= input[0].floatVector_;	v_position.reserve	(v_count_reserve);
 	input[1].Name_= "normal";	xr_vector<float>&	v_normal	= input[1].floatVector_;	v_normal.reserve	(v_count_reserve);
 	input[2].Name_= "tex0";		xr_vector<float>&	v_tc		= input[2].floatVector_;	v_tc.reserve		(v_count_reserve);
-	input[3].Name_= "indices";	xr_vector<int>&	v_indices	= input[3].intVector_;		v_indices.reserve	(i_count_reserve);
+	input[3].Name_= "indices";	xr_vector<int>&		v_indices	= input[3].intVector_;		v_indices.reserve	(i_count_reserve);
 
 	output.push_back(NVMeshMender::VertexAttribute());	// tex0
 	output.push_back(NVMeshMender::VertexAttribute());	// tangent

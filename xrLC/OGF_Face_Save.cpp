@@ -249,12 +249,10 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 
 	// Vertices
 	u32 ID,Start;
+	VDeclarator		D;
 	if (b_R2)
 	{
-		VDeclarator		D;
 		D.set			(r2_decl);
-
-		u32 t;
 		g_VB.Begin		(D);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 		{
@@ -263,7 +261,6 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 		}
 		g_VB.End		(&ID,&Start);
 	} else {
-		VDeclarator		D;
 		if	(bVertexColored)	
 		{
 			// vertex-colored
