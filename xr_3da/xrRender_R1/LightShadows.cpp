@@ -233,7 +233,7 @@ void CLightShadows::calculate	()
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			p_near	= eps;
 			if (p_far<(p_near+eps))	p_far	= p_near+eps;
-			if (p_hat>1)			continue;
+			if (p_hat>0.9f)			continue;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
 			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
