@@ -23,6 +23,11 @@ end
 class "action_sleeper_activity" (action_base)
 function action_sleeper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
     self.a = storage
+	self.timer = {begin = nil,
+			idle = nil,
+			maxidle = 10,
+			sumidle = 20,
+			random = 50 }
 end
 function action_sleeper_activity:initialize()
     action_base.initialize(self)
@@ -50,15 +55,35 @@ function action_sleeper_activity:initialize()
 	end
 end
 function action_sleeper_activity:execute()
-	if xr_position.onPosition(self.object) == true then
+	if xr_position.onPosition(self.object) == true and xr_state.finish_state(self.object) == true then
         	if table.getn(self.points) > 0 then
 			local point = self.ptr:level_vertex_id(self.points[math.random(table.getn(self.points))])
 			local pt = level.vertex_position(point)
 			self.object:set_sight(look.point, pt, 0)
 		end
-
  		self.object:set_item(object.deactivate, self.object:best_weapon())
 		xr_state.change_state(self.object, 4)
+
+		if self.timer.begin == nil then
+			--начальная инициализация
+			self.timer.begin = device():time_global()/1000
+			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
+		end
+
+		if device():time_global()/1000 - self.timer.begin > self.timer.idle then
+			self.timer.begin = device():time_global()/1000
+			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
+
+			if math.random(100) < self.timer.random then
+				-- добавление рандомных анимаций
+				self.object:clear_animations()
+        			self.object:add_animation("spit_1",true)	
+				a = xr_state.getIdle(4)
+				if a ~= nil then
+					self.object:add_animation(a, true)
+				end
+			end
+		end		
 	end
 end
 function action_sleeper_activity:finalize()

@@ -166,7 +166,7 @@ function change_state(object, new, emerg)
 		end
 
 		-- установка айдлов
-		if new == 0 then
+--[[		if new == 0 then
 		elseif new == 1 then
 			object:add_animation("stalker_1_2", true)
 		elseif new == 2 then
@@ -175,6 +175,11 @@ function change_state(object, new, emerg)
 			object:add_animation("stalker_3_2", true)
 		elseif new == 4 then
 			object:add_animation("spit_2", true)
+		end
+]]
+		a = xr_state.getIdle(new)
+		if a ~= nil then
+			object:add_animation(a, true)
 		end
 
 	      	st.target_state = new
@@ -188,6 +193,16 @@ function change_state(object, new, emerg)
 	end
 end
 function getIdle(id)
+		if id == 0 then
+		elseif id == 1 then
+			return "stalker_1_2"
+		elseif id == 2 then
+			return "stalker_2_1"
+		elseif id == 3 then
+			return "stalker_3_2"
+		elseif id == 4 then
+			return "spit_2"
+		end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -236,5 +251,4 @@ function add_to_binder(object)
 
 --		end
 --	end
-
 end
