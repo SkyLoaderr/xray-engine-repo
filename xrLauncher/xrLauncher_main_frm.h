@@ -155,7 +155,12 @@ namespace xrLauncher
 			this->mainTextBox->Name = S"mainTextBox";
 			this->mainTextBox->Size = System::Drawing::Size(208, 146);
 			this->mainTextBox->TabIndex = 3;
-			this->mainTextBox->Text = S"textBox";
+			this->mainTextBox->Text = S"Chernobyl zone was lit by an intolerably bright light. The clouds were evaporatin" 
+				S"g in the silver bright sky with a thunder and earthquake to follow. People fell " 
+				S"on the ground facedown closing their bleeding eyes and ears. The glow spread ove" 
+				S"r an immense territory which was subsequently called the Zone. People ran away s" 
+				S"aving their lives. It looked like a radioactive explosion at the nuclear plant o" 
+				S"ccurred.";
 			// 
 			// benchmarkBtn
 			// 
@@ -237,36 +242,36 @@ private: System::Void playBtn_Click(System::Object *  sender, System::EventArgs 
 
 private: System::Void btn_mouse_down(System::Object *  sender, System::Windows::Forms::MouseEventArgs *  e)
 		 {
-			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
+/*			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
 			if(!btn->Enabled)
 				return;
 
-			btn->ImageIndex = 1;
+			btn->ImageIndex = 1;*/
 		 }
 
 private: System::Void btn_mouse_up(System::Object *  sender, System::Windows::Forms::MouseEventArgs *  e)
 		 {
-			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
+/*			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
 			if(!btn->Enabled)
 				return;
 
-			btn->ImageIndex = 0;
+			btn->ImageIndex = 0;*/
 		 }
 
 
 
 private: System::Void btn_enabled_changed(System::Object *  sender, System::EventArgs *  e)
 		 {
-			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
+/*			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
 			if(btn->Enabled)
 				btn->ImageIndex = 0;
-			btn->ImageIndex = 2;
+			btn->ImageIndex = 2;*/
 		
 		 }
 
 private: System::Void btn_key_down(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
 		 {
-			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
+/*			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
 			if(!(e->KeyCode == Keys::Space))
 				return;
 
@@ -274,12 +279,12 @@ private: System::Void btn_key_down(System::Object *  sender, System::Windows::Fo
 				return;
 
 			btn->ImageIndex = 1;
-
+*/
 		 }
 
 private: System::Void btn_key_up(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
 		 {
-			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
+/*			System::Windows::Forms::Button* btn = static_cast<System::Windows::Forms::Button*>(sender);
 			if(!(e->KeyCode == Keys::Space))
 				return;
 
@@ -287,6 +292,7 @@ private: System::Void btn_key_up(System::Object *  sender, System::Windows::Form
 				return;
 
 			btn->ImageIndex = 0;
+*/
 		 }
 
 private: System::Void aboutBtn_Click(System::Object *  sender, System::EventArgs *  e);
@@ -295,8 +301,8 @@ private: System::Void benchmarkBtn_Click(System::Object *  sender, System::Event
 
 private: System::Void xrLauncher_main_frm_KeyDown(System::Object *  sender, System::Windows::Forms::KeyEventArgs *  e)
 		 {
-			 if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
-				_Close(0);
+/*			 if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
+				_Close(0);*/
 		 }
 
 };

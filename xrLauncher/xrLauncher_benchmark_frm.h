@@ -56,6 +56,7 @@ namespace xrLauncher
 	private: System::Windows::Forms::CheckBox *  nosoundCheckBox;
 	private: System::Windows::Forms::Button *  runBenchmarkBtn;
 	private: System::Windows::Forms::Button *  cancelBtn;
+	private: System::Windows::Forms::Panel *  panel2;
 
 	private:
 		/// <summary>
@@ -78,7 +79,9 @@ namespace xrLauncher
 			this->nosoundCheckBox = new System::Windows::Forms::CheckBox();
 			this->runBenchmarkBtn = new System::Windows::Forms::Button();
 			this->cancelBtn = new System::Windows::Forms::Button();
+			this->panel2 = new System::Windows::Forms::Panel();
 			this->panel1->SuspendLayout();
+			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel1
@@ -175,15 +178,24 @@ namespace xrLauncher
 			this->cancelBtn->Text = S"Cancel";
 			this->cancelBtn->Click += new System::EventHandler(this, cancelBtn_Click);
 			// 
+			// panel2
+			// 
+			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel2->Controls->Add(this->cancelBtn);
+			this->panel2->Controls->Add(this->runBenchmarkBtn);
+			this->panel2->Controls->Add(this->nosoundCheckBox);
+			this->panel2->Controls->Add(this->qualityComboBox);
+			this->panel2->Controls->Add(this->panel1);
+			this->panel2->Location = System::Drawing::Point(0, 0);
+			this->panel2->Name = S"panel2";
+			this->panel2->Size = System::Drawing::Size(320, 160);
+			this->panel2->TabIndex = 7;
+			// 
 			// xrLauncher_benchmark_frm
 			// 
 			this->AutoScaleBaseSize = System::Drawing::Size(5, 13);
-			this->ClientSize = System::Drawing::Size(320, 158);
-			this->Controls->Add(this->cancelBtn);
-			this->Controls->Add(this->runBenchmarkBtn);
-			this->Controls->Add(this->nosoundCheckBox);
-			this->Controls->Add(this->qualityComboBox);
-			this->Controls->Add(this->panel1);
+			this->ClientSize = System::Drawing::Size(320, 160);
+			this->Controls->Add(this->panel2);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_benchmark_frm";
 			this->ShowInTaskbar = false;
@@ -191,6 +203,7 @@ namespace xrLauncher
 			this->Text = S"xrLauncher_benchmark_frm";
 			this->KeyDown += new System::Windows::Forms::KeyEventHandler(this, xrLauncher_benchmark_frm_KeyDown);
 			this->panel1->ResumeLayout(false);
+			this->panel2->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}		
