@@ -30,7 +30,7 @@ class CUIDragDropItemMP: public CUIDragDropItem
 	// xранение порядкового номера оружия в секции
 	u32				posInSection;
 	// Имя секции оружия
-	string128		strName;
+	shared_str		strName;
 	// Запоминаем адрес "хозяина"
 	CUIDragDropList *m_pOwner;
 	// Игровая стоимость вещи

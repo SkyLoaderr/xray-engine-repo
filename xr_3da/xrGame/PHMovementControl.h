@@ -60,7 +60,6 @@ private:
 
 	CPHCharacter*		m_character;
 	CPHCapture  *		m_capture;
-	//string16			m_capture_bone;
 
 	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;

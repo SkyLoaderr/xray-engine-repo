@@ -42,7 +42,7 @@ public:
 	xrClientData*					owner;
 
 	// spawn data
-	string64						s_name;
+	shared_str						s_name;
 	string64						s_name_replace;
 	u8								s_gameid;
 	u8								s_RP;

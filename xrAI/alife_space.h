@@ -74,7 +74,7 @@ namespace ALife {
 	} STerrainPlace;
 
 	struct SArtefactOrder {
-		string64				m_section;
+		shared_str				m_section;
 		u32						m_count;
 		u32						m_price;
 	};
@@ -333,7 +333,7 @@ namespace ALife {
 	DEFINE_VECTOR	(SArtefactOrder,			ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
 
 	struct SArtefactTraderOrder {
-		string64				m_caSection;
+		shared_str				m_caSection;
 		u32						m_dwTotalCount;
 		ARTEFACT_ORDER_VECTOR	m_tpOrders;
 	};

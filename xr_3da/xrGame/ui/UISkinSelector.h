@@ -50,7 +50,7 @@ public:
 
 protected:
 	// Запоминаем имя секции откуда читать инфу о скинах
-	string32		m_strSection;
+	shared_str		m_strSection;
 
 	// Индекс текущего выбранного скина
 	u8				m_uActiveIndex;

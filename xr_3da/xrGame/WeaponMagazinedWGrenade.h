@@ -83,17 +83,15 @@ public:
 
 	//дополнительные параметры патронов 
 	//для подствольника
-	CWeaponAmmo* m_pAmmo2;
-	char m_ammoSect2[255];
-	xr_vector<shared_str> m_ammoTypes2;
-	u32 m_ammoType2;
-	shared_str m_ammoName2;
-	int iMagazineSize2;
-	xr_stack<CCartridge> m_magazine2;
-	
-	bool m_bGrenadeMode;
-
-	Fvector* m_pGrenadePoint;
+	CWeaponAmmo*			m_pAmmo2;
+	shared_str				m_ammoSect2;
+	xr_vector<shared_str>	m_ammoTypes2;
+	u32						m_ammoType2;
+	shared_str				m_ammoName2;
+	int						iMagazineSize2;
+	xr_stack<CCartridge>	m_magazine2;
+	bool					m_bGrenadeMode;
+	Fvector*				m_pGrenadePoint;
 
 	virtual void UpdateGrenadeVisibility(bool visibility);
 

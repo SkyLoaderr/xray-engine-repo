@@ -28,17 +28,16 @@ public:
 
 private:
 	xr_vector<shared_str>				m_temp;
-	string4096						m_temp_string;
-	RESTRICTIONS					m_restrictions;
+	RESTRICTIONS						m_restrictions;
 	shared_str							m_default_out_restrictions;
 	shared_str							m_default_in_restrictions;
 
 protected:
 	IC		shared_str					normalize_string				(shared_str space_restrictors);
-	IC		void					collect_garbage					();
+	IC		void						collect_garbage					();
 	IC		shared_str					default_out_restrictions		() const;
 	IC		shared_str					default_in_restrictions			() const;
-	virtual void					on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions) = 0;
+	virtual void						on_default_restrictions_changed	(const RestrictionSpace::ERestrictorTypes &restrictor_type, shared_str old_restrictions, shared_str new_restrictions) = 0;
 
 public:
 	IC								CSpaceRestrictionHolder			();

@@ -583,7 +583,6 @@ public:
 	struct Item {
 		u32				ID;
 		string64		str;
-
 	};
 	u32					cnt;
     const Item*			items;

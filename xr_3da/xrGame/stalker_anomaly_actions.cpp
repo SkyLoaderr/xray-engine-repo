@@ -64,6 +64,7 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 {
 	inherited::execute					();
 
+	string512							m_temp;
 	strcpy								(m_temp,"");
 	xr_vector<CObject*>::const_iterator	I = m_object->feel_touch.begin();
 	xr_vector<CObject*>::const_iterator	E = m_object->feel_touch.end();

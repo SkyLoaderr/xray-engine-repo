@@ -5,7 +5,7 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 {
 	// Uber-parse
 	string256		fname,fnameA,fnameB;
-	strcpy			(fname,C.L_textures[0]);	if (strext(fname)) *strext(fname)=0;
+	strcpy			(fname,*C.L_textures[0]);	if (strext(fname)) *strext(fname)=0;
 	ref_texture		_t;		_t.create			(fname);
 	bool			bump	= _t.bump_exist		();
 
@@ -17,6 +17,7 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 		if (tex[0]=='l' && tex[1]=='m' && tex[2]=='a' && tex[3]=='p')	lmap = true	;
 		else															lmap = false;
 	}
+
 
 	string256		ps,vs,dt;
 	strconcat		(vs,"deffer_", _vspec, lmap?"lmh":""	);

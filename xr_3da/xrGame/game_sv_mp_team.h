@@ -23,7 +23,7 @@
 	//структура данных по команде
 	struct		TeamStruct
 	{
-		string256			caSection;		// имя секции комманды
+		shared_str			caSection;		// имя секции комманды
 		TEAM_SKINS_NAMES	aSkins;			// список скинов для команды
 		TEAM_WPN_LIST		aWeapons;		// список оружия для команды
 		DEF_ITEMS_LIST		aDefaultItems;	// список предметов по умолчанию

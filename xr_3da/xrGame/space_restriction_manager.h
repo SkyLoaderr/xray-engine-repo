@@ -29,9 +29,6 @@ protected:
 	typedef xr_map<ALife::_OBJECT_ID,CRestrictionPtr>			CLIENT_RESTRICTIONS;
 
 private:
-	mutable	string4096			m_temp;
-	mutable	string4096			m_temp1;
-	mutable	string4096			m_temp2;
 
 protected:
 	SPACE_RESTRICTIONS			m_space_restrictions;
