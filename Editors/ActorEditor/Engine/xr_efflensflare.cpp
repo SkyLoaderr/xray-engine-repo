@@ -77,8 +77,9 @@ void CLensFlare::OnDeviceCreate()
 
 		Cnt+=4;
 	}
-	P.VB_Create(FVF::F_LIT, MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
-	P.IB_Create(0, MAX_Flares*2*3, D3DUSAGE_WRITEONLY, Indices);
+	P.VB_Create		(FVF::F_LIT, 2*MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
+	P.IB_Create		(0, 2*MAX_Flares*2*3,		D3DUSAGE_WRITEONLY,			Indices);
+
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader(m_Gradient.texture);
 	m_Source.hShader	= CreateSourceShader(m_Source.texture);
@@ -87,8 +88,9 @@ void CLensFlare::OnDeviceCreate()
 
 void CLensFlare::OnDeviceDestroy()
 {
-	P.IB_Destroy();
-	P.VB_Destroy();
+	P.IB_Destroy	();
+	P.VB_Destroy	();
+
 	// shaders
 	if (m_Gradient.hShader) Device.Shader.Delete(m_Gradient.hShader);
 	if (m_Source.hShader)	Device.Shader.Delete(m_Source.hShader);

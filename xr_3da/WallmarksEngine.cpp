@@ -107,13 +107,13 @@ IC void RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, C
 	sml_processed.push_back(T);
 	
 	// Some vars
-	sml_poly_src.clear	();
-	sml_poly_src.push_back(*T->verts[0]);
-	sml_poly_src.push_back(*T->verts[1]);
-	sml_poly_src.push_back(*T->verts[2]);
-	sml_poly_dest.clear	();
+	sml_poly_src.clear		();
+	sml_poly_src.push_back	(*T->verts[0]);
+	sml_poly_src.push_back	(*T->verts[1]);
+	sml_poly_src.push_back	(*T->verts[2]);
+	sml_poly_dest.clear		();
 	
-	sPoly* P = F.ClipPoly (sml_poly_src, sml_poly_dest);
+	sPoly* P = F.ClipPoly	(sml_poly_src, sml_poly_dest);
 	
 	if (P) {
 		// Create vertices and triangulate poly (tri-fan style triangulation)
