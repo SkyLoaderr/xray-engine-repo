@@ -64,9 +64,9 @@ public:
 	virtual ~IPureServer	();
 	HRESULT					net_Handler			(DWORD dwMessageType, PVOID pMessage);
 	
-	BOOL					Connect				(LPCSTR session_name);
-	void					Disconnect			();
-	void					Reparse				();									// Reparse configuration and freq data
+	virtual BOOL			Connect				(LPCSTR session_name);
+	virtual void			Disconnect			();
+	virtual void			Reparse				();									// Reparse configuration and freq data
 
 	// send
 	void					SendTo_LL			(DPNID ID, void* data, DWORD size, DWORD dwFlags=DPNSEND_GUARANTEED, DWORD dwTimeout=0);
@@ -79,12 +79,12 @@ public:
 
 	// extended functionality
 	virtual DWORD			OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
-	virtual void			OnCL_Connected		(IClient* CL);
-	virtual void			OnCL_Disconnected	(IClient* CL);
+	virtual void			OnCL_Connected		(IClient* C);
+	virtual void			OnCL_Disconnected	(IClient* C);
 
-	virtual IClient*		client_Create		()	= 0;						// create client info
-	virtual void			client_Replicate	()	= 0;						// replicate current state to client
-	virtual void			client_Destroy		(IClient* C) = 0;				// destroy client info
+	virtual IClient*		client_Create		()				= 0;			// create client info
+	virtual void			client_Replicate	()				= 0;			// replicate current state to client
+	virtual void			client_Destroy		(IClient* C)	= 0;			// destroy client info
 
 	IC DWORD				client_Count		()	{ return net_Players.size(); }
 	IC IClient*				client_Get			(DWORD num)	{ return net_Players[num]; }
