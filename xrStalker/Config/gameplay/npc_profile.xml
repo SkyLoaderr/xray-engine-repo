@@ -286,5 +286,9 @@
 		<class>stalker_bar_leader</class>
 	</character>
 
+	<character id="bar_bar_osvedomitel">
+		<class>stalker_bar_osvedomitel</class>
+	</character>
+
 
 </xml>

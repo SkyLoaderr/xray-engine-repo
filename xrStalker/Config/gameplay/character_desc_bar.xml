@@ -220,5 +220,29 @@
 	</specific_character>	
 
 
+<!---------------------------BAR OSVEDOMITEL---------------------->
+	<specific_character id="bar_bar_osvedomitel" team_default = "1">
+		<name>Осведомитель</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Таинственный сталкер, который слишком много знает. Торгует информацией в баре.</bio>
+
+		<class>stalker_bar_osvedomitel</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\bandit\stalker_bandit_master</visual>
+		<supplies>
+			[spawn] \n
+			ammo_5.56x45_ss190 \n
+		</supplies>
+		
+		<start_dialog>bar_bar_osvedomitel_start</start_dialog>
+		<actor_dialog>bar_bar_osvedomitel_trade_info</actor_dialog>
+	</specific_character>	
+
+
 </xml>
 
