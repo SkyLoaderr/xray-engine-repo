@@ -236,16 +236,52 @@ IRender_Visual* CModelPool::Create(LPCSTR name, IReader* data)
 	return					Instance_Duplicate(Instance_Load(name,data));
 }
 
-void	CModelPool::Delete(IRender_Visual* &V)
+void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
 {
+	if (bDiscard)			Discard(V); 
+	else 
+	{
+		//
+		REGISTRY_IT	it		= Registry.find	(V);
+		if (it!=Registry.end())
+		{
+			// Registry entry found - move it to pool
+			Pool.insert			(mk_pair(it->second,V));
+		} else {
+			// Registry entry not-found - just special type of visual / particles / etc.
+			xr_delete			(V);
+		}
+	}
+	V	=	NULL;
+}
+
+void	CModelPool::Discard	(IRender_Visual* &V)
+{
+	//
 	REGISTRY_IT	it		= Registry.find	(V);
 	if (it!=Registry.end())
 	{
-		// Registry entry found - move it to pool
-		Pool.insert			(mk_pair(it->second,V));
+		// Pool - OK
+
+		// Base
+		LPCSTR	name	= it->second;
+		for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++)
+		{
+			if (I->name[0] && (0==strcmp(I->name,name))) 
+			{
+				xr_delete		(I->model);	
+				Models.erase	(I);
+				break;
+			}
+		}
+
+		// Registry
+		xr_delete		(V);	
+		xr_free			(name);
+		Registry.erase	(it);
 	} else {
 		// Registry entry not-found - just special type of visual / particles / etc.
-		xr_delete			(V);
+		xr_delete		(V);
 	}
 	V	=	NULL;
 }

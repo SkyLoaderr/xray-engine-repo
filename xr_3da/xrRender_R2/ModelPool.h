@@ -22,7 +22,7 @@ private:
 	};
 	struct ModelDef
 	{
-		string128		name;
+		string128			name;
 		IRender_Visual*		model;
 	};
 
@@ -50,7 +50,8 @@ public:
 	IRender_Visual*			CreatePG			(PS::CPGDef* source);
 	IRender_Visual*			Create				(LPCSTR name);
 	IRender_Visual*			Create				(LPCSTR name, IReader* data);
-	void					Delete				(IRender_Visual* &V);
+	void					Delete				(IRender_Visual* &V, BOOL bDiscard=FALSE);
+	void					Discard				(IRender_Visual* &V);
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 

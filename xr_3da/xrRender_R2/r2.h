@@ -149,7 +149,7 @@ public:
 	virtual IRender_Visual*			model_Create				(LPCSTR name);
 	virtual IRender_Visual*			model_Create				(LPCSTR name, IReader* data);
 	virtual IRender_Visual*			model_Duplicate				(IRender_Visual*	V);
-	virtual void					model_Delete				(IRender_Visual* &	V);
+	virtual void					model_Delete				(IRender_Visual* &	V, BOOL bDiscard);
 	virtual void 					model_Delete				(IRender_DetailModel* & F);
 	virtual void					model_Logging				(BOOL bEnable)				{ Models.Logging(bEnable);	}
 

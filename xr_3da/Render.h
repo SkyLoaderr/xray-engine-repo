@@ -157,44 +157,44 @@ public:
 	virtual void					add_Patch				(ref_shader& S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
-	virtual IBlender*				blender_create			(CLASS_ID cls)							= 0;
-	virtual void					blender_destroy			(IBlender* &)							= 0;
+	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;
+	virtual void					blender_destroy			(IBlender* &)								= 0;
 
-	virtual IRender_ObjectSpecific*	ros_create				(IRenderable* parent)					= 0;
-	virtual void					ros_destroy				(IRender_ObjectSpecific* &)				= 0;
+	virtual IRender_ObjectSpecific*	ros_create				(IRenderable* parent)						= 0;
+	virtual void					ros_destroy				(IRender_ObjectSpecific* &)					= 0;
 
 	// Lighting
-	virtual IRender_Light*			light_create			()										= 0;
-	virtual void					light_destroy			(IRender_Light* &)						= 0;
+	virtual IRender_Light*			light_create			()											= 0;
+	virtual void					light_destroy			(IRender_Light* &)							= 0;
 
 	// Models
-	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
-	virtual IRender_Visual*			model_CreatePE			(LPCSTR name)							= 0;
-	virtual IRender_Visual*			model_CreatePG			(LPCSTR name)							= 0;
-	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)							= 0;
-	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)							= 0;
-	virtual IRender_Visual*			model_Create			(LPCSTR name)							= 0;
-	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data)			= 0;
-	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V)					= 0;
-	virtual void					model_Delete			(IRender_Visual* &	V)					= 0;
-	virtual void 					model_Delete			(IRender_DetailModel* & F)				= 0;
-	virtual void					model_Logging			(BOOL bEnable)							= 0;
+	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E)				= 0;
+	virtual IRender_Visual*			model_CreatePE			(LPCSTR name)								= 0;
+	virtual IRender_Visual*			model_CreatePG			(LPCSTR name)								= 0;
+	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;
+	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)								= 0;
+	virtual IRender_Visual*			model_Create			(LPCSTR name)								= 0;
+	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data)				= 0;
+	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V)						= 0;
+	virtual void					model_Delete			(IRender_Visual* &	V, BOOL bDiscard=FALSE)	= 0;
+	virtual void 					model_Delete			(IRender_DetailModel* & F)					= 0;
+	virtual void					model_Logging			(BOOL bEnable)								= 0;
 
 	// Occlusion culling
-	virtual BOOL					occ_visible				(vis_data&	V)							= 0;
-	virtual BOOL					occ_visible				(Fbox&		B)							= 0;
-	virtual BOOL					occ_visible				(sPoly&		P)							= 0;
+	virtual BOOL					occ_visible				(vis_data&	V)								= 0;
+	virtual BOOL					occ_visible				(Fbox&		B)								= 0;
+	virtual BOOL					occ_visible				(sPoly&		P)								= 0;
 
 	// Main
-	virtual void					Calculate				()										= 0;
-	virtual void					Render					()										= 0;
-	virtual void					RenderBox				(IRender_Sector* S, Fbox& BB, int sh)	= 0;
-	virtual void					Screenshot				(LPCSTR postfix=0, BOOL bSquare=FALSE)	= 0;
+	virtual void					Calculate				()											= 0;
+	virtual void					Render					()											= 0;
+	virtual void					RenderBox				(IRender_Sector* S, Fbox& BB, int sh)		= 0;
+	virtual void					Screenshot				(LPCSTR postfix=0, BOOL bSquare=FALSE)		= 0;
 
 	// Render mode
-	virtual void					rmNear					()										= 0;
-	virtual void					rmFar					()										= 0;
-	virtual void					rmNormal				()										= 0;
+	virtual void					rmNear					()											= 0;
+	virtual void					rmFar					()											= 0;
+	virtual void					rmNormal				()											= 0;
 
 	// Constructor/destructor
 	virtual ~IRender_interface();

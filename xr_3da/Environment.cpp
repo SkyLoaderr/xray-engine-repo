@@ -35,7 +35,7 @@ CEnvironment::~CEnvironment()
 {
 	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
 
-	Render->model_Delete	(pSkydome);
+	Render->model_Delete	(pSkydome,TRUE);
 }
 
 void CEnvironment::Load(CInifile *pIni, char *section)
