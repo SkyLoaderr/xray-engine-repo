@@ -56,6 +56,9 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
 	eHandDependence		= CWeapon::EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
 
+	// slot
+	iSlotBinding		= pSettings->ReadINT		(section,"slot");
+
 	setVisible			(FALSE);
 
 	// Sounds

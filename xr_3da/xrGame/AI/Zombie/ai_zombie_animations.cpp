@@ -53,7 +53,6 @@ void CAI_Zombie::vfLoadSounds()
 	pSounds->Create(m_tpaSoundResurrect[5],TRUE,"monsters\\zombie\\resurrect\\hh1a3__6",0,SOUND_TYPE_MONSTER_TALKING_ANIMAL);
 }
 
-// animations
 void CAI_Zombie::vfLoadAnimations()
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
@@ -145,7 +144,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 				
 				if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
 					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[2];
 			}
 			else
 				if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
@@ -156,7 +154,14 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
 						if (m_fSpeed < 0.2f) {
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+							for (int i=0 ;i<2; i++)
+								if (m_tZombieAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+									break;
+								}
+							
+							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
 						}
 						else
 							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
@@ -174,7 +179,14 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 					else
 						if (m_fSpeed < 0.2f) {
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+							for (int i=0 ;i<2; i++)
+								if (m_tZombieAnimations.tNormal.tGlobal.tpaIdle[i] == m_tpCurrentGlobalAnimation) {
+									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+									break;
+								}
+							
+							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
 						}
 						else
 							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
