@@ -249,7 +249,6 @@ DWORD	CInifile::LineCount	(LPCSTR Sname)
 	for (; I!=S.end(); I++)	if (I->first) C++;
 	return  C;
 }                 
-}
 
 CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 {
