@@ -122,7 +122,7 @@ public:
 	}
 	IC	void		blend_remove(CBlend* H)
 	{
-		CBlend** I = find(Blend.begin(),Blend.end(),H);
+		CBlend** I = std::find(Blend.begin(),Blend.end(),H);
 		if (I!=Blend.end())	Blend.erase(I);
 	}
 	IC	void		set_callback(BoneCallback C, void* Param)
