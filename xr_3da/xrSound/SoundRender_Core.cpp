@@ -181,8 +181,6 @@ void CSoundRender_Core::_initialize	(u64 window)
     cache.initialize			(psSoundCacheSizeMB*1024,bytes_per_line);
 }
 
-
-
 void CSoundRender_Core::_destroy	()
 {
 	cache.destroy				();
