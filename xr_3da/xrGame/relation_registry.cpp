@@ -55,10 +55,20 @@ void SRelation::SetGoodwill(CHARACTER_GOODWILL new_goodwill)
 	m_iGoodwill = new_goodwill;
 }
 
+RELATION_REGISTRY::RELATION_MAP_SPOTS::RELATION_MAP_SPOTS()
+{
+	spot_names[ALife::eRelationTypeFriend]		= "friend_location";
+	spot_names[ALife::eRelationTypeNeutral]		= "neutral_location";
+	spot_names[ALife::eRelationTypeEnemy]		= "enemy_location";
+	spot_names[ALife::eRelationTypeWorstEnemy]	= "enemy_location";
+	spot_names[ALife::eRelationTypeWorstEnemy]	= "enemy_location";
+	spot_names[ALife::eRelationTypeLast]		= "neutral_location";
+}
 //////////////////////////////////////////////////////////////////////////
 
-CRelationRegistryWrapper* RELATION_REGISTRY::m_relation_registry = NULL;
-RELATION_REGISTRY::FIGHT_VECTOR* RELATION_REGISTRY::m_fight_registry = NULL;
+CRelationRegistryWrapper*					RELATION_REGISTRY::m_relation_registry	= NULL;
+RELATION_REGISTRY::FIGHT_VECTOR*			RELATION_REGISTRY::m_fight_registry		= NULL;
+RELATION_REGISTRY::RELATION_MAP_SPOTS*		RELATION_REGISTRY::m_spot_names			= NULL;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,8 +105,15 @@ void RELATION_REGISTRY::clear_relation_registry()
 {
 	xr_delete(m_relation_registry);
 	xr_delete(m_fight_registry);
+	xr_delete(m_spot_names);
 }
 
+const shared_str& RELATION_REGISTRY::GetSpotName(ALife::ERelationType& type)
+{
+	if(!m_spot_names)
+		m_spot_names = xr_new<RELATION_MAP_SPOTS>();
+	return m_spot_names->GetSpotName(type);
+}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -135,6 +152,22 @@ void RELATION_REGISTRY::SetGoodwill 	(u16 from, u16 to, CHARACTER_GOODWILL goodw
 	//командной добится нужно отношения
 	clamp(goodwill, -1000, 1000);
 	relation_data.personal[to].SetGoodwill(goodwill);
+
+////
+#if 0 
+tyta
+	if(g_pGameLevel){
+
+	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+	relation =  GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
+
+
+	Level().MapManager().AddMapLocation(RELATION_REGISTRY().GetSpotName(relation), GO->ID() );
+
+		if(Level().MapManager()->HasMapLocation(,from);
+	}
+#endif
+////
 }
 
 

@@ -26,6 +26,7 @@
 
 CInventoryItem::CInventoryItem() 
 {
+
 	m_weight = 100.f;
 	m_slot = NO_ACTIVE_SLOT;
 	m_belt = false;
@@ -53,6 +54,7 @@ CInventoryItem::CInventoryItem()
 #endif
 	m_eItemPlace = eItemPlaceUndefined;
 	m_Description = "";
+
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -771,7 +773,8 @@ void CInventoryItem::reload		(LPCSTR section)
 
 void CInventoryItem::reinit		()
 {
-	m_pInventory		= 0;
+	m_pInventory	= NULL;
+	m_eItemPlace	= eItemPlaceUndefined;
 }
 
 bool CInventoryItem::can_kill			() const

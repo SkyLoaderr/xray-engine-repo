@@ -93,7 +93,14 @@ public:
 		ALife::ERelationType	defender_to_attacker;	//как относился атакованый к нападавшему во время начальной атаки
 	};
 
-
+	struct RELATION_MAP_SPOTS
+	{
+		RELATION_MAP_SPOTS	();
+		shared_str			spot_names[ALife::eRelationTypeLast+1];
+		const shared_str&	GetSpotName (ALife::ERelationType& type){
+									if(type<ALife::eRelationTypeLast)return spot_names[type];
+									else return spot_names[ALife::eRelationTypeLast];};
+	};
 	//зарегистрировать драку (реакция на Hit в EntityAlive)
 	void FightRegister (u16 attacker, u16 defender, ALife::ERelationType defender_to_attacker, float hit_amount);
 	void UpdateFightRegister ();
@@ -104,8 +111,9 @@ private:
 	static FIGHT_VECTOR&						fight_registry();
 	
 	FIGHT_DATA*									FindFight(u16 object_id, bool by_attacker = true);
-	
+	static RELATION_MAP_SPOTS*					m_spot_names;
 public:
+	const shared_str&							GetSpotName			(ALife::ERelationType& type);
 	static CRelationRegistryWrapper&			relation_registry();
 	static void									clear_relation_registry();
 private:
