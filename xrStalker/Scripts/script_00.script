@@ -53,6 +53,26 @@ function main()
 	local prof_vzdoh = sound_object("scripts\\stalker_prof\\prof_vzdoh")
 	local prof_valim_otsuda = sound_object("scripts\\stalker_prof\\prof_valim_otsuda")
 	local prof_zaslujil_eto_zasranec = sound_object("scripts\\stalker_prof_replics\\prof_zaslujil_eto_zasranec")
+	local rainbow_za_namy_sledyat = sound_object("scripts\\stalker_rainbow\\rainbow_za_namy_sledyat")
+
+	local prof_u_menya_toje = sound_object("scripts\\stalker_prof\\prof_u_menya_toje")
+	local prof_blin = sound_object("scripts\\stalker_prof\\prof_blin")
+	local prof_do_basi_bi_dobratsya = sound_object("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya")
+	local prof_luche_ne_privlekat_vnimanie = sound_object("scripts\\stalker_prof\\prof_luche_ne_privlekat_vnimanie")
+	local prof_mi_tebya_otpuskaem = sound_object("scripts\\stalker_prof\\prof_mi_tebya_otpuskaem")
+	local prof_nado_je = sound_object("scripts\\stalker_prof\\prof_nado_je")
+	local prof_padla_podslushivala = sound_object("scripts\\stalker_prof\\prof_padla_podslushivala")
+	local prof_siviy_che_delat_budem = sound_object("scripts\\stalker_prof\\prof_siviy_che_delat_budem")
+	local prof_stoyat_pristrelu = sound_object("scripts\\stalker_prof\\prof_stoyat_pristrelu")
+	local prof_tupie_novichki = sound_object("scripts\\stalker_prof\\prof_tupie_novichki")
+	local prof_uviju_pristrelu = sound_object("scripts\\stalker_prof\\prof_uviju_pristrelu")
+
+	local rainbow_mochi_ego = sound_object("scripts\\stalker_rainbow\\rainbow_mochi_ego")
+	local rainbow_otpusti_ego = sound_object("scripts\\stalker_rainbow\\rainbow_otpusti_ego")
+	local rainbow_suchenok_s_pistoletikom = sound_object("scripts\\stalker_rainbow\\rainbow_suchenok_s_pistoletikom")
+	local rainbow_tak_i_znal_ktoto_pryatalsya = sound_object("scripts\\stalker_rainbow\\rainbow_tak_i_znal_ktoto_pryatalsya")
+	local rainbow_ti_chto_gluhoy = sound_object("scripts\\stalker_rainbow\\rainbow_ti_chto_gluhoy")
+	local rainbow_tupih_hvataet = sound_object("scripts\\stalker_rainbow\\rainbow_tupih_hvataet")
 
 	event:clear_callback(true)
 	event:clear_callback(false)
@@ -61,19 +81,6 @@ function main()
 	event:set_callback(this.on_exit,false)
 
 	wait(1000)			
-	stalker1:script	(true,this.script_name())
-	stalker2:script	(true,this.script_name())
-
-			action(                                                                                                       
-			    stalker1,
-			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				cond	(cond.time_end, 200000)
-			)
-			action(                                                                                                       
-			    stalker2,
-			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				cond	(cond.time_end, 200000)
-			)
 
 			wait(2000)			
 			printf("entered")
@@ -129,20 +136,96 @@ function main()
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 
+			printf("entered")
+			flush()
+			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
+
+			printf("entered")
+			flush()
+			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_do_basi_bi_dobratsya:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+
+			printf("entered")
+			flush()
+			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
+
+			printf("entered")
+			flush()
+			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+
+
+	while stalker1:action() and stalker2:action() do
+		if stalker1:see(actor) or stalker2:see(actor) then
+			printf("script 2!")
+			flush()
+			stalker1:script	(false, this.script_name())
+			stalker1:script	(true,  this.script_name())
+			stalker2:script	(false, this.script_name())
+			stalker2:script	(true,  this.script_name())
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 20000)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 20000)
+			)
+
+
+			prof_padla_podslushivala:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_padla_podslushivala:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(2000)			
+
+			printf("entered")
+			flush()
+			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
+			wait(2000)			
+
+
+			)
+			break
+		end
+		wait()			
+	end
+
 	while stalker1:action() and stalker2:action() do
 	    wait	()
 	end
 
-	event:clear_callback(true)
-	event:clear_callback(false)
-
 	stalker1:script	(false, this.script_name())
 	stalker2:script	(false, this.script_name())
+
+	event:clear_callback(true)
+	event:clear_callback(false)
 
 	while true do
 		if actor.health <= 0 and stalker1.health > 0 then
 		wait(2000)			
 			prof_zaslujil_eto_zasranec:play_at_pos		(stalker1,stalker1:position(),0);
+		wait(4000)			
+			prof_tupie_novichki:play_at_pos		(stalker1,stalker1:position(),0);
+		wait(3000)			
+			rainbow_tupih_hvataet
 			break
 		end
 		wait()			
