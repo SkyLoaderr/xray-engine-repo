@@ -361,14 +361,14 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
 		D.G[i].id		= DS.items[i].id;
-		D.G.items.clear	();
+		D.G[i].items.clear	();
 	}
 }
 
 const	float phase_range = PI/16;
 void CDetailManager::UpdateCache	(int limit)
 {
-	for (int entry=0; limit && (entry<cache.size()); entry++)
+	for (DWORD entry=0; limit && (entry<cache.size()); entry++)
 	{
 		if (cache[entry].type != stPending)	continue;
 		
