@@ -38,9 +38,9 @@
 		__forceinline	Point&		Zero()											{ x =			y =			z = 0.0f;					return *this;	}
 
 		//! + infinity
-		__forceinline	Point&		SetPlusInfinity()								{ x =			y =			z = MAX_FLOAT;				return *this;	}
+		__forceinline	Point&		SetPlusInfinity()								{ x =			y =			z = flt_max;				return *this;	}
 		//! - infinity
-		__forceinline	Point&		SetMinusInfinity()								{ x =			y =			z = MIN_FLOAT;				return *this;	}
+		__forceinline	Point&		SetMinusInfinity()								{ x =			y =			z = flt_min;				return *this;	}
 
 		//! Set unit random vector
 						Point&		UnitRandomVector()
