@@ -425,7 +425,11 @@ objQualifier* CCustomMonster::GetQualifier	()
 void CCustomMonster::GetVisible			(objVisible& R)
 {
 	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-	for (; I!=E; I++)	if (positive(I->fuzzy)) R.insert(I->O);
+	for (; I!=E; I++)	if (positive(I->fuzzy)) {
+		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
+		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend))
+			R.insert(I->O);
+	}
 }
 
 void CCustomMonster::eye_pp_s0			( )

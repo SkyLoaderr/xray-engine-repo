@@ -114,27 +114,20 @@ void CAI_Stalker::vfUpdateSearchPosition()
 {
 	if (!g_Alive())
 		return;
+	
 	INIT_SQUAD_AND_LEADER;
+	
 	if (this != Leader)	{
-		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
-		if (tpLeader) {
-//			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
-//				m_eCurrentState = eStalkerStateSearching;
+		CAI_Stalker *tpLeader			= dynamic_cast<CAI_Stalker*>(Leader);
+		if (tpLeader)
 			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
-		}
 	}
-	else {
+	else
 		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 			vfChooseNextGraphPoint		();
 			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-//			if (m_eCurrentState == eStalkerStateAccomplishingTask)
-//				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 		}
-//		else
-//			if (m_eCurrentState == eStalkerStateAccomplishingTask)
-//				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	}
 }
 
 void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
@@ -146,7 +139,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	if (VisibleEnemies.size())
+	if (VisibleEnemies.size()) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
 			case 0 : 
 				C = true;
@@ -164,6 +157,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				G = true;
 				break;
 		}
+	}
 	K					= C | D | E | F | G;
 	I					= false;
 	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
@@ -214,5 +208,6 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	L = false;
 
 	vfCheckForItems();
+	
 	M = !!m_tpItemToTake;
 }

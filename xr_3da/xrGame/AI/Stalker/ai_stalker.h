@@ -343,6 +343,14 @@ private:
 		m_tpaSearchPositions.push_back	(tSearch);
 	}
 
+	IC	ERelationType	bfGetRelation(CEntityAlive *tpEntityAlive)
+	{
+		if (tpEntityAlive->g_Team() != g_Team())
+			return(eRelationTypeEnemy);
+		else
+			return(eRelationTypeFriend);
+	}
+
 public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker						();
