@@ -10,12 +10,21 @@
 #define XRAY_AI_ALIFE_TEMPLATES
 
 template <class T>
-void free_vector(xr_vector<T *> &tpVector)
+void free_object_vector(xr_vector<T *> &tpVector)
 {
 	xr_vector<T *>::iterator	I = tpVector.begin();
 	xr_vector<T *>::iterator	E = tpVector.end();
 	for ( ; I != E; I++)
 		xr_delete				(*I);
+};
+
+template <class T>
+void free_malloc_vector(xr_vector<T *> &tpVector)
+{
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++)
+		xr_free					(*I);
 };
 
 template <class T1, class T2>

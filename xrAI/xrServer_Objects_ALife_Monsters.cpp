@@ -17,7 +17,7 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
 {
-	free_vector					(m_tpEvents);
+	free_object_vector			(m_tpEvents);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
@@ -562,7 +562,7 @@ void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
-	free_vector					(m_tpTasks);
+	free_object_vector			(m_tpTasks);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)

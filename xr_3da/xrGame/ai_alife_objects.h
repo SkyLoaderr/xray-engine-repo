@@ -175,62 +175,14 @@ public:
 	_TIME_ID						m_tResearchTime;
 	DEMAND_P_VECTOR					m_tpArtefactDemand;
 	NEED_P_VECTOR					m_tpArtefactNeed;
+	LPCSTR_VECTOR					m_tpDependency;
+	CLSID_VECTOR					m_tpClassIDs;
 
 
-									CSE_ALifeDiscovery(LPCSTR caSection)
-	{
-		m_caDiscoveryIdentifier		= pSettings->r_string	(caSection,"name");
-		m_fSuccessProbability		= pSettings->r_float	(caSection,"success_probability");
-		m_fDestroyProbability		= pSettings->r_float	(caSection,"destroy_probability");
-		m_tFreezeTime				= (_TIME_ID)pSettings->r_u32(caSection,"destroy_freeze_time")*24*60*1000;
-		m_tResearchTime				= (_TIME_ID)pSettings->r_u32(caSection,"research_time")*24*60*1000;
-		
-		LPCSTR						S;
-		string64					S1;
-		{
-			S						= pSettings->r_string	(caSection,"demand_on_success");
-			R_ASSERT2				(!(_GetItemCount(S) % 5),"Invalid argument count in the discovery object section!");
-			m_tpArtefactDemand.resize(_GetItemCount(S)/5);
-			DEMAND_P_IT				B = m_tpArtefactDemand.begin(), I = B;
-			DEMAND_P_IT				E = m_tpArtefactDemand.end();
-			for ( ; I != E; I++)
-				*I = xr_new<CSE_ALifeArtefactDemand>(_GetItem(S,5*int(I - B) + 0,S1),atoi(_GetItem(S,5*int(I - B) + 1,S1)),atoi(_GetItem(S,5*int(I - B) + 2,S1)),atoi(_GetItem(S,5*int(I - B) + 3,S1)),atoi(_GetItem(S,5*int(I - B) + 4,S1)));
-		}
-
-		{
-			S						= pSettings->r_string	(caSection,"artefacts");
-			R_ASSERT2				(!(_GetItemCount(S) % 2),"Invalid argument count in the discovery object section!");
-			m_tpArtefactNeed.resize	(_GetItemCount(S)/2);
-			NEED_P_IT				B = m_tpArtefactNeed.begin(), I = B;
-			NEED_P_IT				E = m_tpArtefactNeed.end();
-			for ( ; I != E; I++)
-				*I = xr_new<CSE_ALifeArtefactNeed>(_GetItem(S,2*int(I - B) + 0,S1),atoi(_GetItem(S,2*int(I - B) + 1,S1)));
-		}
-	}
-
-	virtual							~CSE_ALifeDiscovery()
-	{
-	}
-
-	virtual void					Save(IWriter	&tMemoryStream)
-	{
-		{
-			DEMAND_P_IT				I = m_tpArtefactDemand.begin();
-			DEMAND_P_IT				E = m_tpArtefactDemand.end();
-			for ( ; I != E; I++)
-				(*I)->Save			(tMemoryStream);
-		}
-	}
-
-	virtual void					Load(IReader	&tFileStream)
-	{
-		{
-			DEMAND_P_IT				I = m_tpArtefactDemand.begin();
-			DEMAND_P_IT				E = m_tpArtefactDemand.end();
-			for ( ; I != E; I++)
-				(*I)->Load			(tFileStream);
-		}
-	};
+									CSE_ALifeDiscovery	(LPCSTR caSection);
+	virtual							~CSE_ALifeDiscovery	();
+	virtual void					Save				(IWriter &tMemoryStream);
+	virtual void					Load				(IReader &tFileStream);
 };
 
 class CSE_ALifeOrganization : public IPureALifeLSObject {
@@ -243,11 +195,11 @@ public:
 	{
 	}
 
-	virtual void					Save(IWriter	&tMemoryStream)
+	virtual void					Save				(IWriter &tMemoryStream)
 	{
 	}
 
-	virtual void					Load(IReader	&tFileStream)
+	virtual void					Load				(IReader &tFileStream)
 	{
-	};
+	}
 };

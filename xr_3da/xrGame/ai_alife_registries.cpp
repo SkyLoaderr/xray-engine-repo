@@ -395,12 +395,12 @@ CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
-	free_vector					(m_tpSpawnPoints);
+	free_object_vector				(m_tpSpawnPoints);
 }
 
 void CSE_ALifeSpawnRegistry::Init()
 {
-	free_vector					(m_tpSpawnPoints);
+	free_object_vector				(m_tpSpawnPoints);
 }
 
 void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
@@ -464,7 +464,7 @@ CSE_ALifeAnomalyRegistry::~CSE_ALifeAnomalyRegistry()
 	ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
 	ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
 	for ( ; I != E; I++)
-		free_vector				(*I);
+		free_object_vector		(*I);
 }
 
 void CSE_ALifeAnomalyRegistry::Save(IWriter &tMemoryStream)
