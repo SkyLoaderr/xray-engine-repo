@@ -1001,7 +1001,7 @@ SOURCE=.\XR_IOConsole.cpp
 SOURCE=.\XR_IOConsole.h
 # End Source File
 # End Group
-# Begin Group "Main"
+# Begin Group "Core"
 
 # PROP Default_Filter ""
 # Begin Source File

@@ -11,13 +11,19 @@
 class ENGINE_API CShaderManager
 {
 private:
+	struct str_pred : public binary_function<char*, char*, bool> 
+	{	
+		IC bool operator()(LPCSTR x, LPCSTR y) const
+		{	return strcmp(x,y)<0;	}
+	};
+	
 	// data
-	map<LPSTR,CShader*>				shaders;
-	map<LPSTR,CTexture *>			textures;
+	map<LPSTR,CShader*,str_pred>	shaders;
+	map<LPSTR,CTexture*,str_pred>	textures;
 
-	map<LPSTR,CConstant*>			constants;
-	map<LPSTR,CMatrix*>				matrices;
-	map<LPSTR,CBlender*>			blenders;
+	map<LPSTR,CConstant*,str_pred>	constants;
+	map<LPSTR,CMatrix*,str_pred>	matrices;
+	map<LPSTR,CBlender*,str_pred>	blenders;
 
 	vector<CTextureArray*>			comb_textures;
 	vector<CConstantArray*>			comb_constants;
@@ -42,8 +48,9 @@ private:
 		DWORD						changes;
 	} cache;
 public:
-	CTexture*						_CreateTexture	(LPCSTR Name);
+	CBlender*						_CreateBlender	(LPCSTR Name);
 	CShader*						_CreateShader	(LPCSTR Name);
+	CTexture*						_CreateTexture	(LPCSTR Name);
 	CConstant*						_CreateConstant (LPCSTR Name);
 	CMatrix*						_CreateMatrix	(LPCSTR Name);
 	DWORD							_GetMemoryUsage	();
