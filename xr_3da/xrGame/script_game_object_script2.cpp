@@ -73,10 +73,6 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.property("circumspection",			&CScriptGameObject::GetCircumspection,	&CScriptGameObject::SetCircumspection)
 		.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
 
-		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&))CScriptGameObject::AddEventCallback)
-		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&, const luabind::object&))CScriptGameObject::AddEventCallback)
-		.def("RemoveEventCallback",			&CScriptGameObject::RemoveEventCallback)
-
 		.def("position",					&CScriptGameObject::Position)
 		.def("direction",					&CScriptGameObject::Direction)
 		.def("clsid",						&CScriptGameObject::clsid)

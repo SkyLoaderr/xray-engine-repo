@@ -10,7 +10,6 @@
 #include "base_monster.h"
 #include "../../../actor.h"
 #include "../../../ActorEffector.h"
-
 #include "../ai_monster_effector.h"
 #include "../../../hudmanager.h"
 #include "../../../clsid_game.h"
@@ -19,7 +18,7 @@
 #include "../../../level.h"
 #include "../../../script_callback_ex.h"
 #include "../../../script_game_object.h"
-
+#include "../../../game_object_space.h"
 
 void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr user_data, const Fvector &Position, float power)
 {

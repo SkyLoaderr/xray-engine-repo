@@ -20,36 +20,6 @@ struct ScriptCallbackInfo{
 	ScriptCallbackInfo():m_event(-1){}
 };
 
-
-void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
-{
-	ScriptCallbackInfo* c = NULL;
-	c = xr_new<ScriptCallbackInfo>();
-	m_callbacks.insert( mk_pair(event,c) );
-
-	c->m_callback.set	(lua_function);
-	c->m_event			= event;
-}
-
-void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function, const luabind::object &lua_object)
-{
-	ScriptCallbackInfo* c = NULL;
-	c = xr_new<ScriptCallbackInfo>();
-	m_callbacks.insert( mk_pair(event,c) );
-
-	c->m_callback.set	(lua_function,lua_object);
-	c->m_event			= event;
-}
-
-void CScriptGameObject::RemoveEventCallback			(s16 event)
-{
-	CALLBACK_IT it = m_callbacks.find(event);
-	if(it!=m_callbacks.end()){
-		xr_delete(it->second);
-		m_callbacks.erase(it);
-	}
-}
-
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
@@ -57,6 +27,7 @@ void CScriptGameObject::SetTipText (LPCSTR tip_text)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_tip_text(tip_text);
 }
+
 void CScriptGameObject::SetTipTextDefault ()
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
@@ -135,7 +106,6 @@ CScriptGameObject::CScriptGameObject		(CGameObject *game_object)
 
 CScriptGameObject::~CScriptGameObject		()
 {
-	delete_data		(m_callbacks);
 }
 
 CScriptGameObject *CScriptGameObject::Parent				() const
@@ -253,13 +223,3 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	}
 	return			(ret_val);
 }
-
-void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
-{
-	P.read_start();
-	CALLBACK_IT it = m_callbacks.find(event);
-	if(it==m_callbacks.end())
-		return;
-	((*it).second->m_callback)(&P);
-}
-

@@ -13,6 +13,7 @@
 #include "script_space.h"
 #include "../xr_collide_form.h"
 #include "script_callback_ex.h"
+#include "game_object_space.h"
 
 CScriptZone::CScriptZone		()
 {

@@ -23,6 +23,7 @@
 #include "../../sound_player.h"
 #include "../../level.h"
 #include "../../script_callback_ex.h"
+#include "../../game_object_space.h"
 
 CAI_Trader::CAI_Trader()
 {

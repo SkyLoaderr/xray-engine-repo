@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "script_game_object.h"
 #include "script_callback_ex.h"
+#include "game_object_space.h"
 
 using namespace luabind;
 

@@ -5866,7 +5866,7 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="CollideVavidator"
+							Name="CollideValidator"
 							Filter="">
 							<File
 								RelativePath=".\PHCollideValidator.cpp">
