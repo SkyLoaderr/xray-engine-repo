@@ -371,7 +371,7 @@ bool CDetailPathManager::compute_path(
 			if (!fis_zero(dest.linear_velocity) && (dest.linear_velocity < 0.f))
 				dest.direction.mul	(-1.f);
 			m_temp_path.clear		();
-			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,straight_line_index,(*i).index)) {
+			if (compute_trajectory(start,dest,m_tpTravelLine ? &m_temp_path : 0,time,(*I).index,real_straight_line_index,(*i).index)) {
 				if (!m_try_min_time || (time < min_time)) {
 					min_time		= time;
 					if (m_tpTravelLine) {
