@@ -9,6 +9,7 @@
 #pragma once
 
 #include "motivation.h"
+#include "graph_engine.h"
 
 template <typename _object_type>
 class CMotivationAction : public CMotivation<_object_type> {

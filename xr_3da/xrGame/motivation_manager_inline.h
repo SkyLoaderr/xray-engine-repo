@@ -42,10 +42,9 @@ void CSMotivationManager::reinit				(_object_type *object, bool clear_all)
 		m_motivations.clear	();
 		m_actions.clear		();
 	}
-	m_object				= object;
 	
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i].data().reinit(object);
+		graph().vertices()[i].data()->reinit(object);
 
 	m_selected_id			= u32(-1);
 	m_actuality				= false;
@@ -55,14 +54,14 @@ TEMPLATE_SPECIALIZATION
 void CSMotivationManager::Load					(LPCSTR section)
 {
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i].data().Load(section);
+		graph().vertices()[i].data()->Load(section);
 }
 
 TEMPLATE_SPECIALIZATION
 void CSMotivationManager::reload				(LPCSTR section)
 {
 	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i].data().reload(section);
+		graph().vertices()[i].data()->reload(section);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -114,7 +113,7 @@ IC	void CSMotivationManager::remove_connection	(u32 motivation_id, u32 sub_motiv
 TEMPLATE_SPECIALIZATION
 IC	const typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(u32 motivation_id) const
 {
-	return				(&m_graph->vertex(m_selected_id)->data());
+	return				(m_graph->vertex(m_selected_id)->data());
 }
 
 TEMPLATE_SPECIALIZATION
@@ -217,7 +216,7 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	float				total_value	= 0.f;
 	for ( ; I != E; ++I) {
 		u32				vertex_id = graph().vertex((*I).vertex_index())->vertex_id();
-		float			value = vertex->data().evaluate(vertex_id);
+		float			value = vertex->data()->evaluate(vertex_id);
 		total_value		+= value;
 		VERIFY			(total_value <= (1.f + EPS_L));
 		value			*= weight;

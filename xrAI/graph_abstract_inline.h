@@ -126,7 +126,7 @@ IC	void CAbstractGraph::remove_edge		(const _vertex_id_type vertex_id0, const _v
 TEMPLATE_SPECIALIZATION
 IC	_vertex_index_type CAbstractGraph::vertex_count	() const
 {
-	return				(m_vertices.size());
+	return				(_vertex_index_type(m_vertices.size()));
 }
 
 TEMPLATE_SPECIALIZATION

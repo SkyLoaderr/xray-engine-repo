@@ -1160,7 +1160,7 @@ void CAI_Stalker::Think()
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
 #else
-	CMotivationActionManager::update(Level().timeServer() - m_dwLastUpdateTime);
+	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
 #endif
 //	CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
 }

@@ -11,30 +11,35 @@
 #define TEMPLATE_SPECIALIZATION \
 	template <\
 		typename _object_type,\
-		template <typename _object_type> class _motivation_type = CMotivation\
+		template <typename _object_type> class _motivation_type\
 	>
 
 #define CSMotivationActionManager CMotivationActionManager<_object_type,_motivation_type>
 
 TEMPLATE_SPECIALIZATION
+CSMotivationActionManager::~CMotivationActionManager	()
+{
+}
+
+TEMPLATE_SPECIALIZATION
 void CSMotivationActionManager::reinit	(_object_type *object, bool clear_all)
 {
 	CSMotivationManager::reinit	(object,clear_all);
-	CSActionManager::reinit		(object,clear_all);
+	CSActionPlanner::reinit		(object,clear_all);
 }
 
 TEMPLATE_SPECIALIZATION
 void CSMotivationActionManager::Load	(LPCSTR section)
 {
 	CSMotivationManager::Load	(section);
-	CSActionManager::Load		(section);
+	CSActionPlanner::Load		(section);
 }
 
 TEMPLATE_SPECIALIZATION
 void CSMotivationActionManager::reload	(LPCSTR section)
 {
 	CSMotivationManager::reload	(section);
-	CSActionManager::reload		(section);
+	CSActionPlanner::reload		(section);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -45,9 +50,9 @@ void CSMotivationActionManager::update	(u32 time_delta)
 	const CSMotivation					*motivation = CSMotivationManager::selected	();
 	const CSMotivationAction			*action		= dynamic_cast<const CSMotivationAction*>(motivation);
 	VERIFY								(action);
-	CSActionManager::set_target_state	(action->goal());
+	CSActionPlanner::set_target_state	(action->goal());
 
-	CSActionManager::update				(time_delta);
+	CSActionPlanner::update				(time_delta);
 }
 
 #undef TEMPLATE_SPECIALIZATION

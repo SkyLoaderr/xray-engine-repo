@@ -58,7 +58,7 @@ void CAI_Stalker::reinit			()
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reinit	(this);
 #else
-	CSMotivationActionManager::reinit(this,false);
+	CMotivationActionManagerStalker::reinit(this,false);
 #endif
 
 	m_pPhysics_support->in_Init		();
@@ -83,7 +83,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::reload	(section);
 #else
-	CSMotivationActionManager::reload(section);
+	CMotivationActionManagerStalker::reload(section);
 #endif
 }
 
@@ -114,7 +114,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 #ifdef OLD_DECISION_BLOCK
 	CStateManagerStalker::Load		(section);
 #else
-	CSMotivationActionManager::Load	(section);
+	CMotivationActionManagerStalker::Load	(section);
 #endif
 
 	CSelectorManager::add<

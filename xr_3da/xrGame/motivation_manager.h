@@ -19,7 +19,7 @@ class CMotivationManager {
 public:
 	typedef _motivation_type<_object_type>	CSMotivation;
 	typedef CGraphAbstract<
-		CSMotivation,
+		CSMotivation*,
 		float,
 		u32,
 		u16
@@ -32,7 +32,6 @@ protected:
 	u32								m_selected_id;
 	bool							m_actuality;
 	xr_set<u32>						m_temp;
-	_object_type					*m_object;			
 
 protected:
 	IC		CSGraphAbstract			&graph				();

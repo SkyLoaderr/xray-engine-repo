@@ -27,7 +27,7 @@
 #ifdef OLD_DECISION_BLOCK
 	#include "../../state_manager_stalker.h"
 #else
-	#include "../../motivation_action_manager.h"
+	#include "../../motivation_action_manager_stalker.h"
 #endif
 
 using namespace StalkerSpace;
@@ -55,15 +55,12 @@ class CAI_Stalker :
 #ifdef OLD_DECISION_BLOCK
 	public CStateManagerStalker
 #else
-	public CMotivationActionManager<CAI_Stalker>
+	public CMotivationActionManagerStalker
 #endif
 {
 private:
 	typedef CCustomMonster							inherited;
 	typedef CStateInternal<CAI_Stalker>				CSStateInternal;
-#ifndef OLD_DECISION_BLOCK
-	typedef CMotivationActionManager<CAI_Stalker>	CSMotivationActionManager;
-#endif
 	
 	u32							m_dwParticularState;
 	ALife::ETaskState			m_tTaskState;
