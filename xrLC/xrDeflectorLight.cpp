@@ -399,7 +399,7 @@ VOID CDeflector::Light(HASH& H)
 	Fbox bb;		bb.invalidate	();
 	for (DWORD fid=0; fid<tris.size(); fid++)
 	{
-		Face*	F		= T->owner;
+		Face*	F		= tris[fid].owner;
 		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
 	}
 	bb.getsphere(Center,Radius);
@@ -418,7 +418,7 @@ VOID CDeflector::Light(HASH& H)
 	}
 
 	// Calculate and fill borders
-	L_Calculate	(hash);
+	L_Calculate	(H);
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
 	// Compression
@@ -431,7 +431,7 @@ VOID CDeflector::Light(HASH& H)
 		lm.dwWidth	= w;
 		lm.dwHeight	= h;
 		_FREE		(lm.pSurface);
-		L_Calculate	(hash);
+		L_Calculate	(H);
 	}
 
 	// Expand with borders

@@ -9,7 +9,7 @@ class CLMThread : public CThread
 public:
 	CDeflector *		volatile	defl;
 	BOOL				volatile	bContinue;
-	CDeflector::HASH				hash;
+	HASH							H;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{
@@ -22,7 +22,7 @@ public:
 	{
 		while (bContinue) 
 		{
-			defl->Light	();
+			defl->Light	(H);
 			defl = 0;
 			
 			while ((0==defl) && bContinue) Sleep(1);
