@@ -132,7 +132,7 @@ function main_menu:InitControls()
 
 	----- DATA ----
 	local btn_new_rect    = {x = self.btn_rect.x,
-							 y = self.top_align_y,
+							 y = self.btn_rect.y,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 							 
