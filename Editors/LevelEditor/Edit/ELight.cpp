@@ -331,7 +331,7 @@ void CLight::FillPointProp(LPCSTR pref, PropValueVec& values)
 void CLight::FillSpotProp(LPCSTR pref, PropValueVec& values)
 {
 	FILL_PROP_EX(values,	pref, "Range",					&m_D3D.range,			PHelper.CreateFloat	(0.1f,1000.f));
-	FILL_PROP_EX(values,	pref, "Cone Angle",				&m_D3D.phi,				PHelper.CreateFloat	(0.1f,120.f,0.01f,2,PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit,PHelper.floatRDOnDraw));
+	FILL_PROP_EX(values,	pref, "Cone Angle",				&m_D3D.phi,				PHelper.CreateFloat	(0.1f,120.f,0.01f,2,0,PHelper.floatRDOnAfterEdit,PHelper.floatRDOnBeforeEdit,PHelper.floatRDOnDraw));
 	FILL_PROP_EX(values,	pref, "Attenuation\\Texture",	&m_SpotAttTex,			PHelper.CreateATexture());
 }
 //----------------------------------------------------

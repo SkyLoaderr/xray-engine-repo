@@ -48,6 +48,7 @@ public:
     AnsiString		m_VMap;		//
     AnsiString		m_ShaderName;
     AnsiString		m_ShaderXRLCName;
+    AnsiString		m_GameMtlName;
     Shader*			m_Shader;
     DWORD			m_dwFlags;
     DWORD			m_dwFVF;
@@ -62,6 +63,7 @@ public:
 public:
 	CSurface		()
 	{
+    	m_GameMtlName="default";
 		m_Shader	= 0;
 		m_dwFlags	= 0;
 		m_dwFVF		= 0;
@@ -83,6 +85,7 @@ public:
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC Shader*		_Shader			()const {return m_Shader;}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
+    IC LPCSTR		_GameMtlName	()const {return m_GameMtlName.c_str();}
     IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
     IC DWORD		_FVF			()const {return m_dwFVF;}
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
@@ -90,6 +93,7 @@ public:
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
+    IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;}
 	IC void			SetFlag			(EFlags flag, bool val){if (val) m_dwFlags|=flag; else m_dwFlags&=~flag;}
     IC bool			IsFlag			(EFlags flag)const {return !!(m_dwFlags&flag);}
     IC DWORD		GetFlags		()const {return m_dwFlags;}
@@ -373,6 +377,7 @@ public:
 #define EOBJ_CHUNK_FLAGS           	0x0903
 #define EOBJ_CHUNK_SURFACES			0x0905
 #define EOBJ_CHUNK_SURFACES2		0x0906
+#define EOBJ_CHUNK_SURFACES3		0x0907
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912

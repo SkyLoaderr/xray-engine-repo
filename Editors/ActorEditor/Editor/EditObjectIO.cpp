@@ -99,7 +99,24 @@ bool CEditableObject::Load(CStream& F){
         // file version
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
         // surfaces
-        if (F.FindChunk(EOBJ_CHUNK_SURFACES2)){
+        if (F.FindChunk(EOBJ_CHUNK_SURFACES3)){
+            DWORD cnt = F.Rdword();
+            m_Surfaces.resize(cnt);
+            for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+                *s_it 		= new CSurface();
+                F.RstringZ	(buf);	(*s_it)->SetName		(buf);
+                F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
+                F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
+                F.RstringZ	(buf);	(*s_it)->SetGameMtl		(buf);
+                F.RstringZ	(buf); 	(*s_it)->SetTexture		(buf);
+                F.RstringZ	(buf); 	(*s_it)->SetVMap		(buf);
+                (*s_it)->SetFlags	(F.Rdword());
+                (*s_it)->SetFVF		(F.Rdword());
+                cnt 				= F.Rdword();
+                if (cnt>1) ELog.DlgMsg(mtError,"Object surface '%s' has more than one TC's.",buf);
+                R_ASSERT(1<=cnt);
+            }
+        }else if (F.FindChunk(EOBJ_CHUNK_SURFACES2)){
             DWORD cnt = F.Rdword();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
@@ -233,12 +250,13 @@ void CEditableObject::Save(CFS_Base& F){
     }
     F.close_chunk	();
     // surfaces
-    F.open_chunk	(EOBJ_CHUNK_SURFACES2);
+    F.open_chunk	(EOBJ_CHUNK_SURFACES3);
     F.Wdword		(m_Surfaces.size());
     for (SurfaceIt sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
         F.WstringZ	((*sf_it)->_Name			());
         F.WstringZ	((*sf_it)->_ShaderName		());
         F.WstringZ	((*sf_it)->_ShaderXRLCName	());
+        F.WstringZ	((*sf_it)->_GameMtlName		());
 		F.WstringZ	((*sf_it)->_Texture			());
 		F.WstringZ	((*sf_it)->_VMap			());
         F.Wdword	((*sf_it)->GetFlags			());

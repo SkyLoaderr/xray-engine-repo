@@ -30,15 +30,20 @@
 #define GAMEMTL_NONE	u32(-1)
 
 #ifdef _EDITOR
- #define SoundSVec4 	AnsiString
- #define PSSVec4 		AnsiString
- #define ShaderSVec4 	AnsiString
+	#define SoundSVec4 	AnsiString
+	#define PSSVec4 		AnsiString
+	#define ShaderSVec4 	AnsiString
 #else
- class CPS;
-
- DEFINE_SVECTOR(sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
- DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
- DEFINE_SVECTOR(Shader*,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
+	#ifdef _MAX_PLUGIN
+		#define SoundSVec4 	AnsiString
+		#define PSSVec4 		AnsiString
+		#define ShaderSVec4 	AnsiString
+	#else
+		class CPS;
+		DEFINE_SVECTOR(sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
+		DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
+	DEFINE_SVECTOR(Shader*,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
+	#endif
 #endif
 
 struct SGameMtl{

@@ -115,6 +115,7 @@ void CRenderDevice::Initialize()
 void CRenderDevice::ShutDown()
 {
 	ShaderXRLC.Unload	();
+	GMLib.Unload		();
 
 	// destroy context
 	Destroy				();

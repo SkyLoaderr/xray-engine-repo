@@ -6,6 +6,40 @@
 
 CGameMtlLibrary GMLib;
 
+#ifdef _EDITOR
+SGameMtlPair::~SGameMtlPair		()
+{
+}
+void SGameMtlPair::Load(CStream& fs)
+{
+	string128			buf;
+
+	R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_PAIR));
+    mtl0				= fs.Rdword();
+    mtl1				= fs.Rdword();
+    ID					= fs.Rdword();
+    ID_parent			= fs.Rdword();
+    OwnProps.m_Flags	= fs.Rdword();
+
+    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_FLOTATION));
+    fFlotation			= fs.Rfloat();
+
+    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_BREAKING));
+    fs.RstringZ			(buf); 	BreakingSounds	= buf;
+    
+    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_STEP));
+    fs.RstringZ			(buf);	StepSounds		= buf;
+    
+    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+    fs.RstringZ			(buf);	CollideSounds	= buf;
+    
+    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_HIT));
+    fs.RstringZ			(buf);	HitSounds		= buf;
+    fs.RstringZ			(buf);	HitParticles	= buf;
+    fs.RstringZ			(buf);	HitMarks		= buf;
+}
+#endif
+
 void SGameMtl::Load(CStream& fs)
 {
 	R_ASSERT(fs.FindChunk(GAMEMTL_CHUNK_MAIN));

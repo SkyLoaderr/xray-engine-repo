@@ -341,11 +341,12 @@ void CEditableObject::FillPropSurf(LPCSTR pref, PropValueVec& values, TOnChange 
         CSurface* SURF	= *s_it;
         AnsiString nm 	= AnsiString("Surfaces\\")+SURF->_Name();
         int face_cnt 	= GetSurfFaceCount(SURF->_Name());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PHelper.CreateATexture(0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PHelper.CreateAEShader(0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PHelper.CreateACShader());
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_dwFlags,		PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
-        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), AnsiString(face_cnt).c_str(), PHelper.CreateMarker());
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Texture").c_str(), 		&SURF->m_Texture, 				PHelper.CreateATexture(0,0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName, 			PHelper.CreateAEShader(0,0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Compile").c_str(), 		&SURF->m_ShaderXRLCName,		PHelper.CreateACShader());
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Game Mtl").c_str(),		&SURF->m_GameMtlName,			PHelper.CreateAGameMtl());
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\2 Sided").c_str(), 		&SURF->m_dwFlags,				PHelper.CreateFlag(CSurface::sf2Sided,0,0,0,0,onchange));
+        FILL_PROP_EX(values, pref, AnsiString(nm+"\\Face count").c_str(), 	AnsiString(face_cnt).c_str(), 	PHelper.CreateMarker());
     }
 }
 //---------------------------------------------------------------------------
