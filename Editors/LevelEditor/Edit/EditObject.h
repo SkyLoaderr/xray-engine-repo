@@ -152,10 +152,9 @@ struct st_AnimParam{
     float			min_t;
     float			max_t;
     bool			bPlay;
-    bool 			bLooped;
-    void			Set		(CCustomMotion* M, bool loop);
+    void			Set		(CCustomMotion* M);
     float			Frame	()			{ return t;}
-    void			Update	(float dt, float speed=1.f);
+    void			Update	(float dt, float speed, bool loop);
     void			Play	(){bPlay=true; t=min_t;}
     void			Stop	(){bPlay=false; t=min_t;}
     void			Pause	(){bPlay=!bPlay;}
@@ -309,10 +308,10 @@ public:
 
 	bool 			LoadBoneData			(IReader& F);
 	void 			SaveBoneData			(IWriter& F);
-	void 			ResetAnimation			();
     void			ResetBones				();
-	CSMotion*		ResetSAnimation			();
+	CSMotion*		ResetSAnimation			(bool bGotoBindPose=true);
     void			CalculateAnimation		(bool bGenInvMat=false);
+	void			GotoBindPose			();
 
     // statistics methods
     int 			GetFaceCount			();
@@ -348,7 +347,7 @@ public:
 	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& parent);
 	void 			SelectBones				(bool bVal);
 	void 			SelectBone				(CBone* b, bool bVal);
-    void			ClampByLimits			();
+    void			ClampByLimits			(bool bSelOnly);
 #endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);

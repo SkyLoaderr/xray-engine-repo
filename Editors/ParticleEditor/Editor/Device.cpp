@@ -245,7 +245,8 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     UI.RedrawScene	();
 }
 
-void CRenderDevice::Begin( ){
+void CRenderDevice::Begin()
+{
 	VERIFY(bReady);
 	HW.Validate	();
     if (HW.pDevice->TestCooperativeLevel()!=D3D_OK){
@@ -264,7 +265,8 @@ void CRenderDevice::Begin( ){
 }
 
 //---------------------------------------------------------------------------
-void CRenderDevice::End(){
+void CRenderDevice::End()
+{
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
@@ -280,7 +282,8 @@ void CRenderDevice::End(){
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
-void CRenderDevice::UpdateView(){
+void CRenderDevice::UpdateView()
+{
 // set camera matrix
 	m_Camera.GetView(mView);
 
@@ -291,11 +294,12 @@ void CRenderDevice::UpdateView(){
     ::Render->ViewBase.CreateFromMatrix(mFullTransform,FRUSTUM_P_ALL);
 }
 
-void CRenderDevice::UpdateTimer(){
+void CRenderDevice::UpdateTimer()
+{
 	dwFrame++;
 
 	// Timer
-	float fPreviousFrameTime = Timer.Get(); Timer.Start();	// previous frame
+	float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
 	fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;	// smooth random system activity - worst case ~7% error
 	if (fTimeDelta>1.f) fTimeDelta=1.f;							// limit to 1 fps minimum
 

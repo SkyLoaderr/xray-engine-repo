@@ -65,6 +65,7 @@ typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOI
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnClick)			(PropValue* sender);
+typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified);
 typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
@@ -263,7 +264,7 @@ public:
 	AStringVec			value;
     int					btn_num;
     TRect				draw_rect;
-    TOnClick			OnBtnClickEvent;
+    TOnBtnClick			OnBtnClickEvent;
 public:
 						ButtonValue		(AnsiString val)
 	{
@@ -278,7 +279,7 @@ public:
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}
     virtual	bool		ApplyValue		(LPVOID val){return false;}
-    bool				OnBtnClick		(){if(OnBtnClickEvent){ OnBtnClickEvent(this); return true;}else return false;}
+    bool				OnBtnClick		(){if(OnBtnClickEvent){ bool bDModif=true; OnBtnClickEvent(this,bDModif); return bDModif;}else return false;}
 };
 
 class TextValue: public PropValue{

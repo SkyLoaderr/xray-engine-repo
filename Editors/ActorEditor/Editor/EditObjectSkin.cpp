@@ -368,8 +368,8 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
             for (int k=0; k<3; k++){
                 st_FaceVert& 	fv = face.pv[k];
                 st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
-		        bone_points[sv.bone0].push_back(sv.offs0);
-		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);
+		        bone_points[sv.bone0].push_back(sv.offs0);       
+//		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);
             }
         }
     }
@@ -386,10 +386,10 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     return true;
 }
  
-void CEditableObject::ClampByLimits()
+void CEditableObject::ClampByLimits(bool bSelOnly)
 {
     BoneVec& lst 	= m_Bones;    
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-    	(*b_it)->ClampByLimits();
+    	if (!bSelOnly||(bSelOnly&&(*b_it)->Selected())) (*b_it)->ClampByLimits();
 }
 

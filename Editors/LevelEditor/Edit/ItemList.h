@@ -45,6 +45,8 @@ __published:	// IDE-managed Components
 	void __fastcall 	tvItemsMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall 	tvItemsMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
 	void __fastcall tvItemsAfterSelectionChange(TObject *Sender);
+	void __fastcall tvItemsItemDraw(TObject *Sender, TElTreeItem *Item,
+          TCanvas *Surface, TRect &R, int SectionIndex);
 public:
     typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
     typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);

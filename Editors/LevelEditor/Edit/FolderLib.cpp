@@ -8,6 +8,7 @@
 #pragma package(smart_init)
 
 CFolderHelper FHelper;
+AnsiString CFolderHelper::XKey;
 
 static TElTreeItem*			DragItem;
 
@@ -391,31 +392,6 @@ void CFolderHelper::StartDrag(TObject *Sender, TDragObject *&DragObject)
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
 	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
   	else					DragItem = 0;
-}
-//---------------------------------------------------------------------------
-
-bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiString& N)
-{
-	VERIFY(node);
-	N=N.LowerCase();
-    if (N.IsEmpty()){ N=value; return false; }
-	int cnt=_GetItemCount(N.c_str(),'\\');
-    if (cnt>1)		{ N=value; return false; }
-    VERIFY(node);
-
-    for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){
-        if ((itm->Text==N)&&(itm!=node)){
-	        N=value;
-            return false;
-        }
-    }
-    // all right
-    node->Text=N;
-	cnt=_GetItemCount(value.c_str(),'\\');
-    AnsiString new_name;
-	_ReplaceItem(value.c_str(),cnt-1,N.c_str(),new_name,'\\');
-    N=new_name;
-    return true;
 }
 //---------------------------------------------------------------------------
 

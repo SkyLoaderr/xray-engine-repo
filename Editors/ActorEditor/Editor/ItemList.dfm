@@ -189,6 +189,7 @@ object ItemList: TItemList
     BkColor = clGray
     OnAfterSelectionChange = tvItemsAfterSelectionChange
     OnItemChange = tvItemsItemChange
+    OnItemDraw = tvItemsItemDraw
     OnItemFocused = tvItemsItemFocused
     OnClick = tvItemsClick
     OnMouseDown = tvItemsMouseDown

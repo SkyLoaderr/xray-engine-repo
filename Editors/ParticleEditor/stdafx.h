@@ -112,12 +112,12 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 
 	#include "xrXRC.h"
-	#include "net_utils.h"
 
 	#include "CustomObject.h"
 #endif
 
 #ifdef _LEVEL_EDITOR
+	#include "net_utils.h"
 	#define _EDITOR_FILE_NAME_ 	"level"
 	#define _EDITOR_NAME_ 		"Level Editor"
 #else

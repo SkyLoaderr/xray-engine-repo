@@ -19,27 +19,27 @@ void __fastcall	CEditableObject::OnChangeShader(PropValue* prop)
 void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec& items)
 {
     PropValue* V;
-    V=PHelper.CreateATexture(items, PHelper.PrepareKey(pref,"Texture"), 	&SURF->m_Texture);					V->OnChangeEvent=OnChangeShader;
-    V=PHelper.CreateAEShader(items, PHelper.PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName);				V->OnChangeEvent=OnChangeShader;
-    V=PHelper.CreateACShader(items, PHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName);
-    V=PHelper.CreateAGameMtl(items, PHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName);				V->OnChangeEvent=SURF->OnChangeGameMtl;
-    V=PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
+    V=PHelper.CreateATexture(items, FHelper.PrepareKey(pref,"Texture"), 	&SURF->m_Texture);					V->OnChangeEvent=OnChangeShader;
+    V=PHelper.CreateAEShader(items, FHelper.PrepareKey(pref,"Shader"), 		&SURF->m_ShaderName);				V->OnChangeEvent=OnChangeShader;
+    V=PHelper.CreateACShader(items, FHelper.PrepareKey(pref,"Compile"), 	&SURF->m_ShaderXRLCName);
+    V=PHelper.CreateAGameMtl(items, FHelper.PrepareKey(pref,"Game Mtl"),	&SURF->m_GameMtlName);				V->OnChangeEvent=SURF->OnChangeGameMtl;
+    V=PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"2 Sided"), 	&SURF->m_Flags, CSurface::sf2Sided);V->OnChangeEvent=OnChangeShader;
 }
 //---------------------------------------------------------------------------
 
 void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V=0;
-	PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent=OnChangeTransform;
-    V=PHelper.CreateAngle3	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	V->OnChangeEvent=OnChangeTransform;
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent=OnChangeTransform;
-    V=PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,"Transform\\BBox Min"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().min)));
-    V=PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,"Transform\\BBox Max"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().max)));
+	PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
+    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
+    V=PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->OnChangeEvent=OnChangeTransform;
+    V=PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);	V->OnChangeEvent=OnChangeTransform;
+    V=PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->OnChangeEvent=OnChangeTransform;
+    V=PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Transform\\BBox Min"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().min)));
+    V=PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Transform\\BBox Max"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(GetBox().max)));
 
     FillSummaryProps		(pref,items);
 }
@@ -48,13 +48,13 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 {
     AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
-    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"Geometry\\Object"),t.c_str());
+    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Geometry\\Object"),t.c_str());
     for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
         CEditableMesh* MESH=*m_it;
         t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-	    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,AnsiString(AnsiString("Geometry\\Meshes\\")+MESH->GetName()).c_str()),t.c_str());
+	    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,AnsiString(AnsiString("Geometry\\Meshes\\")+MESH->GetName()).c_str()),t.c_str());
     }
-    PHelper.CreateAText(items,PHelper.PrepareKey(pref, "Game options\\Script"),&m_ClassScript);
+    PHelper.CreateAText(items,FHelper.PrepareKey(pref, "Game options\\Script"),&m_ClassScript);
 }
 //---------------------------------------------------------------------------
 
@@ -78,29 +78,29 @@ AnsiString MakeFullBonePath(BoneVec& lst, CBone* bone)
 
 void CEditableObject::FillSurfaceList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
-	if (pref) LHelper.CreateItem(items, pref,  0, modeID);
+	if (pref) LHelper.CreateItem(items, pref, modeID);
     for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++)
-        LHelper.CreateItem(items, pref, (*s_it)->_Name(),  modeID);
+        LHelper.CreateItem(items, FHelper.PrepareKey(pref, (*s_it)->_Name()), modeID, 0, *s_it);
 }
 //---------------------------------------------------------------------------
 
 void CEditableObject::FillBoneList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
     BoneVec& b_lst 		= Bones();
-	if (pref) LHelper.CreateItem(items, pref,  0, modeID);
+	if (pref) LHelper.CreateItem(items, pref,  modeID);
     for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++){
     	AnsiString pt	= MakeFullBonePath(b_lst,*b_it);
-    	LPCSTR path		= pt.IsEmpty()?pref:LHelper.PrepareKey(pref, pt.c_str());
-        LHelper.CreateItem(items, path, (*b_it)->Name(), modeID);
+    	LPCSTR path		= pt.IsEmpty()?pref:FHelper.PrepareKey(pref, pt.c_str());
+        LHelper.CreateItem(items, FHelper.PrepareKey(path, (*b_it)->Name()), modeID, 0, *b_it);
     }
 }
 
 void CEditableObject::FillMotionList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
     SMotionVec&	m_lst	= SMotions();
-	if (pref) LHelper.CreateItem(items, pref,  0, modeID);
-    for (SMotionIt it=m_lst.begin(); it!=m_lst.end(); it++)
-        LHelper.CreateItem(items, pref, (*it)->Name(), modeID);
+	if (pref) LHelper.CreateItem(items, pref,  modeID);
+    for (SMotionIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++)
+        LHelper.CreateItem(items, FHelper.PrepareKey(pref, (*m_it)->Name()), modeID, 0, *m_it);
 }
 
 

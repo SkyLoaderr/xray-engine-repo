@@ -26,31 +26,7 @@ class CPropHelper{
         return val;
     }
 //------------------------------------------------------------------------------
-	static AnsiString XKey;
-    IC AnsiString		FolderAppend	(LPCSTR val)
-    {
-    	if (val&&val[0]) return AnsiString(val)+"\\";
-        return   		"";
-    }
 public:
-    IC LPCSTR			PrepareKey		(LPCSTR pref, LPCSTR key)
-    {
-        R_ASSERT(key);
-    	XKey			= FolderAppend(pref)+AnsiString(key);
-        return XKey.c_str();
-    }
-    IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
-    {
-        R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key);
-        return XKey.c_str();
-    }
-    IC LPCSTR			PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
-    {
-        R_ASSERT(key);
-    	XKey			= FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
-        return XKey.c_str();
-    }
     IC PropItem* 		FindItem		(PropItemVec& items,	LPCSTR key, EPropType type)
     {
     	for (PropItemIt it=items.begin(); it!=items.end(); it++)
@@ -110,6 +86,7 @@ public:
         *(float*)draw_val = rad2deg(*(float*)draw_val);
     }
 
+    // name
     void __fastcall		NameAfterEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameBeforeEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameDraw		(PropValue* sender, LPVOID draw_val);
@@ -223,12 +200,13 @@ public:
 	    V->Owner()->OnDrawTextEvent		= FvectorRDOnDraw;
         return V;					
     }
-    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, int tag)  
+    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, ListItem* owner)  
     {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
         V->Owner()->OnAfterEditEvent   	= NameAfterEdit;
         V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
         V->Owner()->OnDrawTextEvent 	= NameDraw;
-        V->Owner()->tag					= tag;
+        V->Owner()->tag					= (int)owner;
+	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
     IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, LPCSTR key, LPSTR val, int lim, EObjClass cls, LPCSTR type)

@@ -27,24 +27,22 @@ public:
 	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
 };
 //----------------------------------------------------
-void st_AnimParam::Set(CCustomMotion* M, bool loop)
+void st_AnimParam::Set(CCustomMotion* M)
 {
 	t=0;
     min_t=(float)M->FrameStart()/M->FPS();
     max_t=(float)M->FrameEnd()/M->FPS();
-    bPlay=false;
-	bLooped=loop;
+    bPlay=true;
 }
-void st_AnimParam::Update(float dt, float speed)
+void st_AnimParam::Update(float dt, float speed, bool loop)
 {
 	if (!bPlay) return;
 	t+=speed*dt;
     if (t>max_t){
 #ifdef _EDITOR
-		if (bLooped) t=min_t;
-		else
+		if (loop) t=t-max_t+min_t; else
 #endif
-			t=max_t;
+		t=max_t;
 	}
 }
 
@@ -60,7 +58,7 @@ void CEditableObject::OnFrame()
 	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
                 (*b_it)->Update(T,R);
             }
-            m_SMParam.Update(Device.fTimeDelta,m_ActiveSMotion->fSpeed);
+            m_SMParam.Update(Device.fTimeDelta,m_ActiveSMotion->fSpeed,!m_ActiveSMotion->m_Flags.is(esmStopAtEnd));
         }else{
 		    //for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
         }
@@ -69,16 +67,22 @@ void CEditableObject::OnFrame()
 }
 #endif
 
-CSMotion* CEditableObject::ResetSAnimation()
+void CEditableObject::GotoBindPose()
+{
+    BoneVec& lst = m_Bones;
+    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
+    CalculateAnimation();
+#ifdef _EDITOR
+    UI.RedrawScene();
+#endif
+}
+
+CSMotion* CEditableObject::ResetSAnimation(bool bGotoBindPose)
 {
 	CSMotion* M=m_ActiveSMotion;
 	SetActiveSMotion(0);
+    if (bGotoBindPose) GotoBindPose();
     return M;
-}
-
-void CEditableObject::ResetAnimation()
-{
-    ResetSAnimation();
 }
 
 //----------------------------------------------------
@@ -133,13 +137,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat)
 void CEditableObject::SetActiveSMotion(CSMotion* mot)
 {
 	m_ActiveSMotion=mot;
-	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->m_Flags.is(esmStopAtEnd));
-    BoneVec& lst = m_Bones;
-    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
-	CalculateAnimation();
-#ifdef _EDITOR
-    UI.RedrawScene();
-#endif
+	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion);
 }
 
 bool CEditableObject::RemoveSMotion(const char* name)

@@ -132,15 +132,15 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnMotionNameChange		(PropValue* sender);
 
-	void __fastcall 	OnMotionFileClick		(PropValue* sender);
-	void __fastcall 	OnMotionEditClick		(PropValue* sender);
-	void __fastcall 	OnMotionControlClick	(PropValue* sender);
+	void __fastcall 	OnMotionFileClick		(PropValue* sender, bool& bModif);
+	void __fastcall 	OnMotionEditClick		(PropValue* sender, bool& bModif);
+	void __fastcall 	OnMotionControlClick	(PropValue* sender, bool& bModif);
 
     void __fastcall 	OnObjectItemFocused		(ListItemsVec& items);
 
-    void __fastcall		OnBoneShapeClick  		(PropValue* sender);
-    void __fastcall		OnBoneEditClick			(PropValue* sender);
-    void __fastcall		OnBoneFileClick			(PropValue* sender);
+    void __fastcall		OnBoneShapeClick  		(PropValue* sender, bool& bModif);
+    void __fastcall		OnBoneEditClick			(PropValue* sender, bool& bModif);
+    void __fastcall		OnBoneFileClick			(PropValue* sender, bool& bModif);
     void __fastcall		OnBoneLimitsChange		(PropValue* sender);
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
@@ -199,7 +199,9 @@ public:
 
     bool				IfModified			();
     bool				IsModified			(){return m_bObjectModified;}
-    void				Modified			(bool bInternal=false); 
+    void				Modified			(); 
+    void __fastcall		OnItemModified		(void); 
+
     void __fastcall		OnBoneModified		(void);
     void __fastcall		OnObjectModified	(void);
     void __fastcall		OnMotionDefsModified(void); 

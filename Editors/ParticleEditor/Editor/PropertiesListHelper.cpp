@@ -2,15 +2,15 @@
 #pragma hdrstop
 
 #include "PropertiesListHelper.h"
+#include "ItemListHelper.h"
 #include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 
 CPropHelper PHelper;
-AnsiString CPropHelper::XKey;
 
 void CPropHelper::NameAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	FHelper.NameAfterEdit((TElTreeItem*)sender->tag,((TextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);
+	LHelper.NameAfterEdit((ListItem*)sender->tag,((TextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);
 }
 //---------------------------------------------------------------------------
 

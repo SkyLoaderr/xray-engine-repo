@@ -132,6 +132,12 @@ void CEditableMesh::GeneratePNormals()
                 N.normalize_safe();
 		    }else{
                 N.set		(FN);
+                N.set		(0,0,0);
+                IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+                VERIFY(a_lst.size());
+                for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
+                    N.add	(m_FNormals[*i_it]);
+                N.normalize_safe();
             }
         }
     }
@@ -145,7 +151,7 @@ void CEditableMesh::GenerateSVertices()
 {
 	if (!m_Parent->IsSkeleton()) return;
 
-    m_Parent->ResetAnimation();
+    CSMotion* active_motion=m_Parent->ResetSAnimation();
     m_Parent->CalculateAnimation(true);
 	m_SVertices.resize(m_Faces.size()*3);
 
@@ -210,6 +216,8 @@ void CEditableMesh::GenerateSVertices()
 	}
 
     m_LoadState.set(LS_SVERTICES,TRUE);
+    // restore active motion
+    m_Parent->SetActiveSMotion(active_motion);
 }
 #endif
 

@@ -1,9 +1,3 @@
-//------------------------------------------------------------------------------
-// - Events:
-//	- OnBeforeEdit
-// 	- OnDrawValue
-//------------------------------------------------------------------------------
-
 #include "stdafx.h"
 #pragma hdrstop
 
@@ -329,6 +323,10 @@ void __fastcall TItemList::RefreshForm()
 	tvItems->Repaint		();
 }
 
-
-
+void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
+      TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
+{
+//	
+}
+//---------------------------------------------------------------------------
 

@@ -340,7 +340,7 @@ void DrawButton(TRect R, TCanvas* Surface, LPCSTR caption, bool bDown, bool bSel
     Surface->Pen->Color 	= b;
     Surface->LineTo			(R.right,R.bottom);
     Surface->LineTo			(R.left-1,R.bottom);
-    R.Left 					+= 	1;
+    R.Left 					+= 	2;
     R.Right					-=	1;
     R.Bottom				-= 	1;
     R.Top					+=	1;
@@ -348,7 +348,7 @@ void DrawButton(TRect R, TCanvas* Surface, LPCSTR caption, bool bDown, bool bSel
 	Surface->Brush->Color 	= bSelected?TColor(0x00858585):TColor(0x00808080);
 	Surface->FillRect		(R);
     Surface->Font->Color 	= clBlack;
-    DrawText				(Surface->Handle, caption, -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+    DrawText				(Surface->Handle, caption, -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 }
 void DrawButtons(TRect R, TCanvas* Surface, AStringVec& lst, int down_btn, bool bSelected)
 {

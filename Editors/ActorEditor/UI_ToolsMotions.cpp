@@ -145,10 +145,12 @@ void CActorTools::OnMotionDefsModified()
             fraLeftBar->SetRenderStyle(false);
         }
     }
+    UndoSave			();
 }
 
 void CActorTools::OnGeometryModified()
 {
+	Modified			();
     if (fraLeftBar->ebRenderEngineStyle->Down){
 		m_Flags.set		(flUpdateGeometry,FALSE);
         if (m_RenderObject.UpdateVisual(m_pEditObject,true,false,false)){
@@ -158,6 +160,7 @@ void CActorTools::OnGeometryModified()
             fraLeftBar->SetRenderStyle(false);
         }
     }
+    UndoSave			();
 }
 //---------------------------------------------------------------------------
 
@@ -174,31 +177,19 @@ LPCSTR GenerateSMotionName(CEditableObject* object, AnsiString& nm)
 bool CActorTools::AppendMotion(AnsiString& name, LPCSTR fn)
 {
 	VERIFY(m_pEditObject);
-    if (m_pEditObject->AppendSMotion(GenerateSMotionName(m_pEditObject,name),fn)){
-	    OnMotionKeysModified();
-		return true;
-    }
-	return false;
+    return m_pEditObject->AppendSMotion(GenerateSMotionName(m_pEditObject,name),fn);
 }
 
 bool CActorTools::RemoveMotion(LPCSTR name)
 {
 	VERIFY(m_pEditObject);
-    if (m_pEditObject->RemoveSMotion(name)){
-	    OnMotionKeysModified();
-		return true;
-    }
-	return false;
+    return m_pEditObject->RemoveSMotion(name);
 }
 
 bool CActorTools::LoadMotions(LPCSTR name)
 {
 	VERIFY(m_pEditObject);
-    if (m_pEditObject->LoadSMotions(name)){
-	    OnMotionKeysModified();
-		return true;
-    }
-	return false;
+    return m_pEditObject->LoadSMotions(name);
 }
 
 bool CActorTools::SaveMotions(LPCSTR name)
@@ -257,12 +248,9 @@ void CActorTools::PauseMotion()
 bool CActorTools::RenameMotion(LPCSTR old_name, LPCSTR new_name)
 {
 	R_ASSERT(m_pEditObject);
-	CSMotion* M = m_pEditObject->FindSMotionByName(old_name);
-    R_ASSERT(M);
-	CSMotion* MN = m_pEditObject->FindSMotionByName(new_name);
-    R_ASSERT(!MN);
+	CSMotion* M = m_pEditObject->FindSMotionByName(old_name);	R_ASSERT(M);
+	CSMotion* MN = m_pEditObject->FindSMotionByName(new_name);	R_ASSERT(!MN);
     M->SetName(new_name);
-    OnMotionKeysModified();
     return true;
 }
 

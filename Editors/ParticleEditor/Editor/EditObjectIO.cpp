@@ -28,7 +28,7 @@ bool CEditableObject::LoadObject(const char* fname)
 {
     IReader* F = FS.r_open(fname); R_ASSERT(F);
     IReader* OBJ = F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
-    R_ASSERT(OBJ);
+    R_ASSERT2(OBJ,"Corrupted file.");
     bool bRes = Load(*OBJ);
     OBJ->close();
 	FS.r_close(F);
@@ -217,7 +217,7 @@ bool CEditableObject::Load(IReader& F){
     	    F.r_fvector3	(a_vRotate);
 		}
 
-        ResetAnimation();
+        ResetSAnimation();
 
         if (!bRes) break;
         UpdateBox();

@@ -140,7 +140,7 @@ bool CActorTools::OnCreate()
 
     // props
     m_ObjectItems 	= TItemList::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectItemFocused);
-    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnMotionDefsModified);
+    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
 
     // key bar
@@ -171,11 +171,10 @@ void CActorTools::OnDestroy()
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::Modified(bool bInternal)
+void CActorTools::Modified()
 {
 	m_bObjectModified	= true;
     UI.Command			(COMMAND_UPDATE_CAPTION);
-	if (!bInternal)		UndoSave(); 
 }
 //---------------------------------------------------------------------------
 
@@ -194,10 +193,8 @@ bool CActorTools::IfModified(){
 
 void CActorTools::OnObjectModified()
 {
-	Modified				();
     m_Flags.set				(flUpdateGeometry,TRUE);
     OnGeometryModified		();
-	UI.Command				(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -410,6 +407,17 @@ void CActorTools::OnShowHint(AStringVec& SS)
 {
 }
 
+void CActorTools::OnItemModified()
+{
+	switch(m_EditMode){
+    case emObject:      OnObjectModified();		break;
+    case emMotion: 		OnMotionDefsModified();	break;
+    case emBone:      	OnBoneModified();		break;
+    case emSurface:     OnObjectModified();		break;
+    case emMesh:		break;
+    }
+}
+
 void CActorTools::ChangeAction(EAction action)
 {
 	switch(action){
@@ -480,31 +488,19 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
     case eaAdd: 	break;
     case eaMove:{
     	switch (m_EditMode){
-        case emObject:
-			OnMotionKeysModified();
-//.            m_ObjectItems->RefreshForm();
-        break;
-        case emBone:
-	        OnBoneModified();
-        break;
+        case emObject:	OnMotionKeysModified();	break;
+        case emBone:	OnBoneModified();		break;
         }
     }break;
     case eaRotate:{
     	switch (m_EditMode){
-        case emObject:
-			OnMotionKeysModified();
-//.            m_ObjectItems->RefreshForm();
-        break;
-        case emBone:
-	        OnBoneModified();
-        break;
+        case emObject:	OnMotionKeysModified();	break;
+        case emBone:	OnBoneModified();		break;
         }
     }break;
     case eaScale:{
     	switch (m_EditMode){
-        case emBone:
-	        OnBoneModified();
-        break;
+        case emBone:	OnBoneModified();		break;
         }
     }break;
     }
@@ -513,9 +509,9 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 
 void __fastcall CActorTools::OnBoneModified(void)
 {
+	Modified				();
 	RefreshSubProperties	();
-    Modified				();
-	UI.Command				(COMMAND_UPDATE_CAPTION);
+    UndoSave				();
 }
 
 void __fastcall CActorTools::MouseMove(TShiftState Shift)
@@ -541,9 +537,6 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
     	switch (m_EditMode){
         case emObject:
             m_pEditObject->a_vPosition.add(amount);
-//			OnMotionKeysModified();
-//            m_ObjectProps->RefreshForm();
-//            OnObjectModified();
         break;
         case emBone:
         	if (Shift.Contains(ssCtrl)){
@@ -552,7 +545,6 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeMove(amount);
             }
-//	        OnBoneModified();
         break;
         }
     }break;
@@ -562,9 +554,6 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
     	switch (m_EditMode){
         case emObject:
             m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
-//			OnMotionKeysModified();
-//            m_ObjectProps->RefreshForm();
-//            OnObjectModified();
         break;
         case emBone:{
             BoneVec lst;
@@ -579,7 +568,6 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->BoneRotate(rot);
                 }
             }
-//	        OnBoneModified();
         }break;
         }
     }break;
@@ -602,14 +590,11 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                 if (m_pEditObject->GetSelectedBones(lst))
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeScale(amount);
-//    	        OnBoneModified();
 			}
         break;
         }
-//        m_EditObject->t_vScale.add(amount);
     }break;
     }
-//    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }
 
 void CActorTools::WorldMotionRotate(const Fvector& R)
