@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "fstaticrender.h"
-#include "..\xr_ioconsole.h"
 #include "..\fbasicvisual.h"
 #include "..\fcached.h"
 #include "..\xr_object.h"
@@ -179,11 +178,11 @@ CRender::~CRender()
 {
 }
 
-extern float		ssaDISCARD,	r_ssaDISCARD;
-extern float		ssaDONTSORT,r_ssaDONTSORT;
-extern float		ssaLOD_A,	r_ssaLOD_A;
-extern float		ssaLOD_B,	r_ssaLOD_B;
-extern float		ssaHZBvsTEX,r_ssaHZBvsTEX;
+extern float		r_ssaDISCARD;
+extern float		r_ssaDONTSORT;
+extern float		r_ssaLOD_A;
+extern float		r_ssaLOD_B;
+extern float		r_ssaHZBvsTEX;
 
 void CRender::Calculate()
 {
@@ -195,11 +194,11 @@ void CRender::Calculate()
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height());
 	g_fLOD							=	QualityControl.fGeometryLOD*g_fLOD_scale;
-	r_ssaDISCARD					=	(ssaDISCARD*ssaDISCARD)/g_fSCREEN;
-	r_ssaDONTSORT					=	(ssaDONTSORT*ssaDONTSORT)/g_fSCREEN;
-	r_ssaLOD_A						=	(ssaLOD_A*ssaLOD_A)/g_fSCREEN;
-	r_ssaLOD_B						=	(ssaLOD_B*ssaLOD_B)/g_fSCREEN;
-	r_ssaHZBvsTEX					=	(ssaHZBvsTEX*ssaHZBvsTEX)/g_fSCREEN;
+	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)/g_fSCREEN;
+	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)/g_fSCREEN;
+	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)/g_fSCREEN;
+	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B)/g_fSCREEN;
+	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX)/g_fSCREEN;
 	
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);

@@ -3,6 +3,34 @@
 #include "..\xr_ioc_cmd.h"
 #include "xrRender_console.h"
 
+// Common
+int			ps_r__Supersample		= 0;
+
+float		ps_r__Detail_w_rot1		= 30.f;
+float		ps_r__Detail_w_rot2		= 1.f;
+float		ps_r__Detail_w_speed	= 2.f;
+float		ps_r__Detail_l_ambient	= 0.9f;
+float		ps_r__Detail_l_aniso	= 0.25f;
+float		ps_r__Detail_density	= 0.15f;
+
+// R1
+float		ps_r1_ssaDISCARD		= 4.f;
+float		ps_r1_ssaDONTSORT		= 32.f;
+float		ps_r1_ssaLOD_A			= 64.f;
+float		ps_r1_ssaLOD_B			= 48.f;
+float		ps_r1_ssaHZBvsTEX		= 256.f;
+
+// R1-specific
+int			ps_r1_GlowsPerFrame		= 16;	// r1-only
+int			ps_r1_SH_Blur			= 0;	// r1-only
+
+// R2
+float		ps_r2_ssaDISCARD		= 4.f;
+float		ps_r2_ssaDONTSORT		= 32.f;
+float		ps_r2_ssaLOD_A			= 64.f;
+float		ps_r2_ssaLOD_B			= 48.f;
+float		ps_r2_ssaHZBvsTEX		= 256.f;
+
 extern void			xrRender_initconsole	()
 {
 	// Common
