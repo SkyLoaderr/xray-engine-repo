@@ -101,7 +101,7 @@ public:
 	};
 protected:
 	xr_map<u32,STravelParams>					m_movement_params;
-
+	u32											m_current_travel_point;
 private:
 	enum EDirectionType {
 		eDirectionTypeFP = u32(0),
@@ -114,7 +114,7 @@ private:
 		eDirectionTypeNP = eDirectionTypeFN | eDirectionTypeSP, // the first linear velocity is negative, the second one - positive
 	};
 
-	u32											m_current_travel_point;
+
 	bool										m_actuality;
 	bool										m_failed;
 	bool										m_collision;

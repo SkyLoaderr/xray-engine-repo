@@ -83,7 +83,6 @@ private:
 	u64										m_time_work;
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
-	float									m_speed;
 	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
 	u32										m_dwFrameReinit;
@@ -91,6 +90,8 @@ private:
 	u32										m_refresh_rate;
 	u32										m_last_update;
 
+protected:
+	float									m_speed;
 public:
 	MonsterSpace::SBoneRotation				m_body;
 
@@ -137,7 +138,7 @@ public:
 	IC		void	set_refresh_rate		(u32 refresh_rate);
 	IC		u32		refresh_rate			() const;
 			void	update_path				();
-			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
+	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
 
 	virtual void	on_travel_point_change	() {}

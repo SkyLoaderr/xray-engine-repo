@@ -2818,6 +2818,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_movement.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
