@@ -24,7 +24,6 @@ CGameObject::~CGameObject()
 
 void CGameObject::net_Destroy	()
 {
-	Log					("~~~!!!~~~ CL: destroy ",cName());
 	setReady									(FALSE);
 	pCreator->Objects.net_Unregister			(this);
 	pCreator->ObjectSpace.Object_Unregister		(this);

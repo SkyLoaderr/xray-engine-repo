@@ -71,8 +71,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			SendBroadcast		(0xffffffff,P,MODE);
 
 			// Perfrom real destroy
-			Log					("~~~!!!~~~ SV: destroy ",e_entity->s_name);
-
 			entity_Destroy		(e_entity	);
 			entities.erase		(id_entity	);
 		}

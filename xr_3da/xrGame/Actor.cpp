@@ -161,11 +161,11 @@ void CActor::Load		(LPCSTR section )
 
 	// sounds
 	char buf[256];
-	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
-	pSounds->Create		(sndZoneHeart,		FALSE,	"heart\\4");
-	pSounds->Create		(sndZoneDetector,	FALSE,	"detectors\\geiger",	TRUE);
+	pSounds->Create		(sndStep[0],		TRUE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	pSounds->Create		(sndStep[1],		TRUE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	pSounds->Create		(sndLanding,		TRUE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
+	pSounds->Create		(sndZoneHeart,		TRUE,	"heart\\4");
+	pSounds->Create		(sndZoneDetector,	TRUE,	"detectors\\geiger",	TRUE);
 	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
