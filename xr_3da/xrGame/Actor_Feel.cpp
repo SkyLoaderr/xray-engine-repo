@@ -35,8 +35,8 @@ void CActor::feel_touch_delete	(CObject* O)
 	if (!g_Alive())		return;
 	if (Remote())		return;
 
-	CTargetCSBase*	CSt	= dynamic_cast<CTargetCSBase*>	(O);
-	if (T)
+	CTargetCSBase*	CSb	= dynamic_cast<CTargetCSBase*>	(O);
+	if (CSb)
 	{
 		// Generate event
 		NET_Packet		P;
