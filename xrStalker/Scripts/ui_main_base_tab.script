@@ -31,6 +31,6 @@ function main_base_tab:InitControls(x, y)
 	self.btn.font = GetFontLetterica25()
 	
 	-- CODE
-	self:init(x, y, main_rect.width, main_rect.height)
+	self:init(x, y, self.main_rect.width, self.main_rect.height)
 end
 
