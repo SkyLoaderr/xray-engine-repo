@@ -59,9 +59,9 @@ bool XRXMLPARSER_API CUIXml::Init(LPCSTR path, const char* xml_filename)
 }
 
 
-CkXml* CUIXml::NavigateToNode(const char* path, int node_index)
+XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 {
-	CkXml* node = NULL;
+	XML_NODE* node = NULL;
 
 	char* buf_str;	
 	
@@ -102,16 +102,30 @@ CkXml* CUIXml::NavigateToNode(const char* path, int node_index)
 
 char* CUIXml::Read(const char *path, int index, const char*  default_str_val)
 {
-	CkXml* node = NavigateToNode(path, index);
+	XML_NODE* node = NavigateToNode(path, index);
+	return Read(node,  default_str_val);
+}
 
-	
+
+char* CUIXml::Read(XML_NODE* node,  const char*  default_str_val)
+{
 	if(node == NULL)
 		return (char*)default_str_val;
 	else
 		return (char*)node->get_Content();
 }
 
+int XRXMLPARSER_API CUIXml::ReadInt(XML_NODE* node, int default_int_val)
+{
+	char* result_str = Read(node, NULL ); 
 
+	if(result_str==NULL)
+	{
+		return default_int_val;
+	}
+
+	return atoi(result_str);
+}
 int XRXMLPARSER_API CUIXml::ReadInt(const char *path, int index, int default_int_val)
 {
 	char* result_str = Read(path, index, NULL ); 
@@ -128,8 +142,12 @@ int XRXMLPARSER_API CUIXml::ReadInt(const char *path, int index, int default_int
 char* CUIXml::ReadAttrib(const char *path,  int index, 
 					const char *attrib, const char*  default_str_val)
 {
-	CkXml* node = NavigateToNode(path, index);
+	XML_NODE* node = NavigateToNode(path, index);
 	
+	return ReadAttrib(node, attrib, default_str_val);
+}
+char* CUIXml::ReadAttrib(XML_NODE* node, const char *attrib, const char*  default_str_val)
+{
 	if(node == NULL)
 		return (char*)default_str_val;
 	else
@@ -151,6 +169,19 @@ char* CUIXml::ReadAttrib(const char *path,  int index,
 	}
 }
 
+int XRXMLPARSER_API CUIXml::ReadAttribInt(XML_NODE* node,
+					const char *attrib, int default_int_val)
+{
+	char* result_str = ReadAttrib(node, attrib, NULL); 
+
+	if(result_str==NULL)
+	{
+		return default_int_val;
+	}
+
+	return atoi(result_str);
+}
+
 int XRXMLPARSER_API CUIXml::ReadAttribInt(const char *path, int index,  
 					const char *attrib, int default_int_val)
 {
@@ -162,12 +193,13 @@ int XRXMLPARSER_API CUIXml::ReadAttribInt(const char *path, int index,
 	}
 
 	return atoi(result_str);
-
 }
+
+
 
 int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
 {
-	CkXml* node = NULL;
+	XML_NODE* node = NULL;
 	
 	if(path!=NULL)
 	{
@@ -185,3 +217,6 @@ int XRXMLPARSER_API CUIXml::GetNodesNum(const char *path, int index, const char*
 
 	return node->NumChildrenHavingTag(tag_name);
 }
+
+
+//public Xml *SearchForAttribute(Xml *afterNode , String *tagName , String *attributeName , String *attributeValuePattern);

@@ -31,8 +31,12 @@ XRXMLPARSER_API void FunctionSampleExport();
 #pragma once
 
 
+typedef CkXml XML_NODE;
+
+
 class XRXMLPARSER_API CUIXml  
 {
+
 public:
 	CUIXml();
 	virtual ~CUIXml();
@@ -40,12 +44,19 @@ public:
 	bool Init(LPCSTR path, const char* xml_filename);
 	
 	char* Read(const char *path, int index,  const char*  default_str_val = "" );
+	char* Read(XML_NODE* node,  const char*  default_str_val = "" );
+	
 	int   ReadInt(const char *path, int index,  int default_int_val = 0);
+	int   ReadInt(XML_NODE* node,  int default_int_val = 0);
 
 	char* ReadAttrib(const char *path,  int index, 
 						const char *attrib, const char*  default_str_val = "");
+	char* ReadAttrib(XML_NODE* node,
+						const char *attrib, const char*  default_str_val = "");
 
 	int   ReadAttribInt(const char *path, int index,  
+							const char *attrib, int default_int_val = 0);
+	int   ReadAttribInt(XML_NODE* node,
 							const char *attrib, int default_int_val = 0);
 
 
@@ -54,18 +65,14 @@ public:
 	int GetNodesNum(const char *path, int index, const char* tag_name);
 	
 	
-
-protected:
-	
 	//переместиться по XML дереву 
 	//путь задается в форме PARENT:CHILD:CHIDLS_CHILD
 	//node_index - номер, если узлов с одним именем несколько
-	CkXml* NavigateToNode(const char* path, int node_index = 0);
+	XML_NODE* NavigateToNode(const char* path, int node_index = 0);
 
 
-	CkXml m_root;
-
-
+protected:
+	XML_NODE m_root;
 };
 
 #endif //xrXMLParserH
