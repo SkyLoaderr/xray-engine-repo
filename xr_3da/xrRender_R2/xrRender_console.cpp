@@ -122,11 +122,24 @@ public:
 		}
 	}
 };
+class CCC_Screenshot : public IConsole_Command
+{
+public:
+	CCC_Screenshot(LPCSTR N) : IConsole_Command(N)  { };
+	virtual void Execute(LPCSTR args) {
+		string_path	name;	name[0]=0;
+		sscanf		(args,"%s",	name);
+		LPCSTR		image	= xr_strlen(name)?name:0;
+		::Render->Screenshot(IRender_interface::SM_NORMAL,image);
+	}
+};
 
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {
 	// Common
+	CMD1(CCC_Screenshot,"screenshot"			);
+
 //	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
 	CMD2(CCC_tf_Aniso,	"r__tf_aniso",			&ps_r__tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r__tf_mipbias",		&ps_r__tf_Mipbias			);
