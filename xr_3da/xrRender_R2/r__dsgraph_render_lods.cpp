@@ -40,7 +40,7 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 {
 	mapLOD.getRL				(lstLODs);
 	if (lstLODs.empty())		return;
-
+ 
 	// *** Fill VB and generate groups
 	IRender_Visual*				firstV		= lstLODs[0].pVisual;
 	ref_shader					cur_S		= &*firstV->hShader;
