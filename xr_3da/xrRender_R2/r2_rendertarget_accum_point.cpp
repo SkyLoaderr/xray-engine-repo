@@ -138,6 +138,3 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	//
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 }
-
-/*
-*/
