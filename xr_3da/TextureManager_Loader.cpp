@@ -114,7 +114,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (map<LPSTR,CVS*,str_pred>::iterator v=vs.begin(); v!=vs.end(); v++)
 	{
 		if (0!=v->second->dwReference)
-			Device.Fatal("Vertex shader still referenced: %s",v->first);
+			Device.Fatal("Vertex shader still referenced: '%s'",v->first);
 		xr_free		(v->first);
 		if (!v->second->bFFP)	R_CHK		(HW.pDevice->DeleteVertexShader(v->second->dwHandle));
 		delete		v->second;
