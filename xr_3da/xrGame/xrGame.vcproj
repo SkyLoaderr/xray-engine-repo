@@ -243,82 +243,6 @@
 			<Tool
 				Name="VCWebDeploymentTool"/>
 		</Configuration>
-		<Configuration
-			Name="Mixed (for debug only)|Win32"
-			OutputDirectory="Mixed (for debug only)"
-			IntermediateDirectory="Mixed (for debug only)"
-			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			WholeProgramOptimization="FALSE">
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				GlobalOptimizations="TRUE"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="FALSE"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="FALSE"
-				SmallerTypeCheck="FALSE"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/xrGame.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				BrowseInformation="0"
-				WarningLevel="4"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"/>
-			<Tool
-				Name="VCCustomBuildTool"/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
-				OutputFile="x:\xrGame.dll"
-				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories=""
-				GenerateDebugInformation="TRUE"
-				GenerateMapFile="TRUE"
-				MapFileName="x:\xrGame.map"
-				MapExports="TRUE"
-				MapLines="TRUE"
-				ImportLibrary="x:\xrGame.lib"/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName="x:\xrGame.tlb"/>
-			<Tool
-				Name="VCPostBuildEventTool"/>
-			<Tool
-				Name="VCPreBuildEventTool"/>
-			<Tool
-				Name="VCPreLinkEventTool"/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1049"/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-		</Configuration>
 	</Configurations>
 	<Files>
 		<Filter
@@ -340,12 +264,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed (for debug only)|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
@@ -441,12 +359,6 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
@@ -817,12 +729,6 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed (for debug only)|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\CustomEvent.h">
@@ -947,12 +853,6 @@
 									<Tool
 										Name="VCCLCompilerTool"/>
 								</FileConfiguration>
-								<FileConfiguration
-									Name="Mixed (for debug only)|Win32"
-									ExcludedFromBuild="TRUE">
-									<Tool
-										Name="VCCLCompilerTool"/>
-								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\WeaponM134.h">
@@ -981,12 +881,6 @@
 									<Tool
 										Name="VCCLCompilerTool"/>
 								</FileConfiguration>
-								<FileConfiguration
-									Name="Mixed (for debug only)|Win32"
-									ExcludedFromBuild="TRUE">
-									<Tool
-										Name="VCCLCompilerTool"/>
-								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\WeaponRail.h">
@@ -1011,12 +905,6 @@
 								</FileConfiguration>
 								<FileConfiguration
 									Name="Release|Win32"
-									ExcludedFromBuild="TRUE">
-									<Tool
-										Name="VCCLCompilerTool"/>
-								</FileConfiguration>
-								<FileConfiguration
-									Name="Mixed (for debug only)|Win32"
 									ExcludedFromBuild="TRUE">
 									<Tool
 										Name="VCCLCompilerTool"/>
@@ -1318,12 +1206,6 @@
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
-							<FileConfiguration
-								Name="Mixed (for debug only)|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Flyer.h">
@@ -1348,12 +1230,6 @@
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
-							<FileConfiguration
-								Name="Mixed (for debug only)|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\FlyerInput.cpp">
@@ -1371,12 +1247,6 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Mixed (for debug only)|Win32"
 								ExcludedFromBuild="TRUE">
 								<Tool
 									Name="VCCLCompilerTool"/>
@@ -1758,12 +1628,6 @@
 						<Tool
 							Name="VCCLCompilerTool"/>
 					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\DynamicHeightMap.h">
@@ -2000,12 +1864,6 @@
 					</FileConfiguration>
 					<FileConfiguration
 						Name="Release|Win32"
-						ExcludedFromBuild="TRUE">
-						<Tool
-							Name="VCCLCompilerTool"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed (for debug only)|Win32"
 						ExcludedFromBuild="TRUE">
 						<Tool
 							Name="VCCLCompilerTool"/>
