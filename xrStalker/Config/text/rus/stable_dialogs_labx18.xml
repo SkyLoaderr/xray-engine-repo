@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+    <string id="dar_explorer_dialog_0">
+        <text>Темно здесь - нифига не видно. Бюреры кругом... Чувак, ты как сюда попал?</text>
+    </string>
+    <string id="dar_explorer_dialog_1">
+        <text>Дела у меня тут. Ищу кое-что.</text>
+    </string>
+    <string id="dar_explorer_dialog_11">
+        <text>Что же ты ищешь?.. я слыхал здесь много интересного можно найти...</text>
+    </string>
+    <string id="dar_explorer_dialog_2">
+        <text>Сам не знаю как сюда занесло, убраться бы отсюда поскорее.</text>
+    </string>
+    <string id="dar_explorer_dialog_21">
+        <text>Вали отсюда пока жив. Это место не для таких как ты...</text>
+    </string>
+</string_table>
