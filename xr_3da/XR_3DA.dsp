@@ -888,6 +888,10 @@ SOURCE=.\SH_Matrix.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\SH_RT.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\SH_Texture.cpp
 # End Source File
 # Begin Source File
@@ -2823,10 +2827,6 @@ SOURCE=.\features.txt
 # Begin Source File
 
 SOURCE=.\plan_last_month.txt
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_RT.h
 # End Source File
 # Begin Source File
 
