@@ -183,7 +183,7 @@ end
 function action_follow:finalize ()
     action_base.finalize (self)
     if self.index ~= nil then
-       table.remove (db.storage[self.st.leader_id].followers, self.index)
+       --table.remove (db.storage[self.st.leader_id].followers, self.index)
        self.index = nil
     end   
 end
