@@ -117,12 +117,12 @@ object Properties: TProperties
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF02000000C03E980500000000FFFFFFFF00000100010061747D000000
+      F4FFFFFF02000000F4BF960E00000000FFFFFFFF00000100010061747D000000
       32000000102700000000003014B2950400000000000034330000000000000135
       0000000000000000000100000000000030303030303030303030303030303030
       3030303030303030303030303030303030313030303030303030303030303030
       3030303030303030303046464646464690000000040000004B65790001000000
-      000000000000000000C03E980500000000FFFFFFFF0000010101006174590000
+      000000000000000000F4BF960E00000000FFFFFFFF0000010101006174590000
       00320000001027000000000030ECB69504010000000000343300000000000001
       3500000000000000000001000000000000303030303030303030303030303030
       3030303030303030303030303030303030303130303030303030303030303030
@@ -208,6 +208,7 @@ object Properties: TProperties
     OnItemFocused = tvPropertiesItemFocused
     OnClick = tvPropertiesClick
     OnMouseDown = tvPropertiesMouseDown
+    OnMouseMove = tvPropertiesMouseMove
     OnMouseUp = tvPropertiesMouseUp
   end
   object seNumber: TMultiObjSpinEdit
@@ -270,7 +271,6 @@ object Properties: TProperties
   end
   object pmEnum: TMxPopupMenu
     Alignment = paCenter
-    TrackButton = tbLeftButton
     MarginStartColor = 10921638
     MarginEndColor = 2763306
     BKColor = 10528425
@@ -320,5 +320,18 @@ object Properties: TProperties
       Caption = 'Draw Thumbnails'
       OnClick = miDrawThumbnailsClick
     end
+  end
+  object pmItems: TMxPopupMenu
+    Alignment = paCenter
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Top = 88
   end
 end

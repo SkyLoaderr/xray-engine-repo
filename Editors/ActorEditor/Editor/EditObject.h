@@ -4,6 +4,7 @@
 #include "Bone.h"
 #include "SceneClassList.h"
 #ifdef _EDITOR
+	#include "PropertiesListTypes.h"
 //	#include "PropertiesListHelper.h"
 	#include "GameMtlLib.h"
 #endif
@@ -42,20 +43,21 @@ class XRayMtl;
 class CSurface
 {
     u32				m_GameMtlID;
+    Shader*			m_Shader;
+	enum ERTFlags{
+         rtValidShader	= (1<<0),
+	};
 public:
 	enum EFlags{
-    	sf2Sided	= (1<<0),
+    	sf2Sided		= (1<<0),
         sfValidGameMtlID= (1<<1),
-    	sfForceDWORD= (-1)
     };
-
 	AnsiString		m_Name;
     AnsiString		m_Texture;	//
     AnsiString		m_VMap;		//
     AnsiString		m_ShaderName;
     AnsiString		m_ShaderXRLCName;
     AnsiString		m_GameMtlName;
-    Shader*			m_Shader;
     Flags32			m_Flags;
     u32				m_dwFVF;
 #ifdef _MAX_EXPORT
@@ -65,6 +67,7 @@ public:
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
 #endif
+    Flags32			m_RTFlags;
 	u32				tag;
 public:
 	CSurface		()
@@ -72,7 +75,8 @@ public:
     	m_GameMtlName="default";
         m_GameMtlID	= GAMEMTL_NONE;
 		m_Shader	= 0;
-		m_Flags.zero();
+        m_RTFlags.zero	();
+		m_Flags.zero	();
 		m_dwFVF		= 0;
 #ifdef _MAX_EXPORT
 		mtl			= 0;
@@ -86,29 +90,25 @@ public:
 #ifdef _EDITOR
 					~CSurface		(){R_ASSERT(!m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
-    IC int			_Priority		()const {return m_Shader?m_Shader->E[0]->Flags.iPriority:1;}
-    IC bool			_StrictB2F		()const {return m_Shader?m_Shader->E[0]->Flags.bStrictB2F:false;}
+    IC int			_Priority		() {return _Shader()?_Shader()->E[0]->Flags.iPriority:1;}
+    IC bool			_StrictB2F		() {return _Shader()?_Shader()->E[0]->Flags.bStrictB2F:false;}
 #endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
-    IC Shader*		_Shader			()const {return m_Shader;}
+    IC Shader*		_Shader			() 		{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
     IC LPCSTR		_GameMtlName	()const {return m_GameMtlName.c_str();}
     IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
-    IC u32		_FVF			()const {return m_dwFVF;}
+    IC u32			_FVF			()const {return m_dwFVF;}
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-    IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
+    IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name; OnDeviceDestroy();}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
     IC void			SetFVF			(u32 fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){string256 buf; strcpy(buf,name); if(strext(buf)) *strext(buf)=0; m_Texture=buf;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
-	void __fastcall OnChangeGameMtl	(PropValue* sender)
-    {
-	    m_Flags.set(sfValidGameMtlID,FALSE);
-    }
     IC u32			_GameMtl		()
     {
     	if (!m_Flags.is(sfValidGameMtlID)){
@@ -119,10 +119,18 @@ public:
     }
     IC void			OnDeviceCreate	()
     { 
+        R_ASSERT(!m_RTFlags.is(rtValidShader));
     	if (m_ShaderName.Length()&&m_Texture.Length()) 	m_Shader = Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str()); 
         else                                       		m_Shader = Device.Shader.Create("editor\\wire");
+        m_RTFlags.set(rtValidShader,TRUE);
     }
-    IC void			OnDeviceDestroy	(){Device.Shader.Delete(m_Shader);}
+    IC void			OnDeviceDestroy	()
+    {
+    	Device.Shader.Delete(m_Shader);
+        m_RTFlags.set(rtValidShader,FALSE);
+    }
+	// properties
+	void __fastcall OnChangeGameMtl	(PropValue* sender){ m_Flags.set(sfValidGameMtlID,FALSE); }
 #endif
 };
 
@@ -222,8 +230,8 @@ protected:
     void			DefferedLoadRP			();
     void			DefferedUnloadRP		();
 
-    void __fastcall	OnChangeShader			(PropValue* prop);
 	void __fastcall OnChangeTransform		(PropValue* prop);
+    void __fastcall	OnChangeShader			(PropValue* prop);
 public:
 	enum{
 	    LS_RBUFFERS	= (1<<0),
@@ -322,6 +330,11 @@ public:
     bool 			BoxPick					(CSceneObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
+
+    // bone part
+    void			SkinSelect				(bool flag);
+	CBone* 			SkinRayPick				(const Fvector& S, const Fvector& D, const Fmatrix& inv_parent);
+    CBone*			SkinBoxPick				(const Fbox& box, const Fmatrix& inv_parent);
 #endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);
@@ -347,7 +360,15 @@ public:
   	bool 			Load					(IReader&);
 	void 			Save					(IWriter&);
 #ifdef _EDITOR
-    void			FillPropSurf			(LPCSTR pref, PropItemVec& items);
+    enum{
+        fptMotion,
+        fptBone,
+        fptSurface,
+        fptMesh
+    };
+    void			FillSurfacesProps		(LPCSTR pref, PropItemVec& items);
+    void			FillSurfaceProps		(CSurface* surf, LPCSTR pref, PropItemVec& items);
+	void 			FillSkinProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillSummaryProps		(LPCSTR pref, PropItemVec& items);
 	bool			CheckShaderCompatible	();

@@ -1,6 +1,6 @@
 //----------------------------------------------------
-#ifndef _Bone_H_
-#define _Bone_H_
+#ifndef BoneH
+#define BoneH
 
 #ifdef _LW_EXPORT
 #include <lwrender.h>
@@ -25,8 +25,18 @@ class CBone{
     Fmatrix			last_transform;
     Fmatrix			last_i_transform;
 	int				parent_idx;
+
 public:
-					CBone			(){name[0]=0;parent[0]=0;wmap[0]=0;rest_length=0;}
+    // editor part
+    Flags8			flags;    
+	enum{
+    	flSelected	= (1<<0),
+    };
+    // limit
+//    Fvector			axis;
+//    Fvector2		lim;
+public:
+					CBone			(){flags.zero();name[0]=0;parent[0]=0;wmap[0]=0;rest_length=0;}
 	virtual			~CBone			();
 
 	void			SetName			(const char* p){if(p) strcpy(name,p); strlwr(name); }

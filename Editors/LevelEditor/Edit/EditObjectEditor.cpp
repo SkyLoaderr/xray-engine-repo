@@ -3,7 +3,6 @@
 
 #include "EditObject.h"
 #include "EditMesh.h"
-#include "bottombar.h"
 #include "motion.h"
 #include "bone.h"
 #include "ExportSkeleton.h"
@@ -122,12 +121,6 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     }
 }
 
-void CEditableObject::RenderSkeletonSingle(const Fmatrix& parent)
-{
-	RenderSingle(parent);
-    if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
-}
-
 void CEditableObject::RenderSingle(const Fmatrix& parent)
 {
 	for (int i=0; i<4; i++){
@@ -139,28 +132,8 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
 }
 
-void CEditableObject::RenderBones(const Fmatrix& parent){
-	if (IsSkeleton()){
-        // render
-        RCache.set_xform_world(parent);
-        Device.SetShader(Device.m_WireShader);
-		BoneVec& lst = m_Bones;
-        for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
-            Fmatrix& M 	= (*b_it)->LTransform();
-            Fvector& p1	= M.c;
-            u32 c 		= D3DCOLOR_RGBA(255,255,0,255);
-            DU.DrawRomboid	(p1,0.025,c);
-            if ((*b_it)->ParentIndex()>-1){
-				Fvector& p2 = lst[(*b_it)->ParentIndex()]->LTransform().c;
-        	    DU.DrawLine	(p1,p2,c);
-            }
-			if (fraBottomBar->miDrawBoneAxis->Checked) DU.DrawObjectAxis(M,0.03f);
-			if (fraBottomBar->miDrawBoneNames->Checked) DU.DrawText(p1,(*b_it)->Name());
-        }
-    }
-}
-
-void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32 color){
+void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32 color)
+{
     if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
     Device.SetShader(Device.m_WireShader);
@@ -283,9 +256,6 @@ void CEditableObject::DefferedLoadRP()
     //..
 /*/
 
-	// создать заново shaders
-    for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->OnDeviceCreate();
 //*/
 	// создать LOD shader
 	AnsiString l_name = GetLODTextureName();
@@ -298,6 +268,7 @@ void CEditableObject::DefferedLoadRP()
 void CEditableObject::DefferedUnloadRP()
 {
 	if (!(m_LoadState.is(LS_RBUFFERS))) return;
+    // удалить буфера
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	if (*_M) (*_M)->ClearRenderBuffers();
 	// удалить shaders
@@ -352,64 +323,9 @@ bool CEditableObject::PrepareSkeletonOGF(IWriter& F)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall	CEditableObject::OnChangeShader(PropValue* prop)
-{
-    OnDeviceDestroy	();
-    UI.RedrawScene	();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall CEditableObject::OnChangeTransform(PropValue* sender)
 {
 	UI.RedrawScene();
-}
-//---------------------------------------------------------------------------
-
-void CEditableObject::FillPropSurf(LPCSTR pref, PropItemVec& items)
-{
-    for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
-        CSurface* SURF			= *s_it;
-        AnsiString nm 			= AnsiString(pref)+AnsiString("Surfaces\\")+SURF->_Name();
-        AnsiString f_cnt		= GetSurfFaceCount(SURF->_Name());
-        PropValue* V=0;
-		V=PHelper.CreateATexture(items, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture);					V->SetEvents(0,0,OnChangeShader);
-        V=PHelper.CreateAEShader(items, AnsiString(nm+"\\Shader").c_str(), 		&SURF->m_ShaderName);				V->SetEvents(0,0,OnChangeShader);
-        PHelper.CreateACShader	(items, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName);
-        V=PHelper.CreateAGameMtl(items, AnsiString(nm+"\\Game Mtl").c_str(),	&SURF->m_GameMtlName);				V->SetEvents(0,0,SURF->OnChangeGameMtl);
-        V=PHelper.CreateFlag32	(items, AnsiString(nm+"\\2 Sided").c_str(), 	&SURF->m_Flags, CSurface::sf2Sided);V->SetEvents(0,0,OnChangeShader);
-        PHelper.CreateCaption	(items, AnsiString(nm+"\\Face count").c_str(),  f_cnt.c_str());
-    }
-}
-//---------------------------------------------------------------------------
-
-void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
-{
-	PropValue* V=0;
-	PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);
-    PHelper.CreateFlag32	(items,	PHelper.PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 	V->SetEvents(0,0,OnChangeTransform);
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);
-    V->SetEvents			(PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,OnChangeTransform);
-    V->Owner()->SetEvents	(PHelper.FvectorRDOnDraw);
-    V=PHelper.CreateVector	(items, PHelper.PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);	V->SetEvents(0,0,OnChangeTransform);
-
-    FillSummaryProps		(pref,items);
-}
-//---------------------------------------------------------------------------
-
-void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
-{
-    AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
-    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"Summary\\Object"),t.c_str());
-    for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
-        CEditableMesh* MESH=*m_it;
-        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-	    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str()),t.c_str());
-    }
-    PHelper.CreateAText(items,PHelper.PrepareKey(pref, "Game options\\Script"),&m_ClassScript);
 }
 //---------------------------------------------------------------------------
 

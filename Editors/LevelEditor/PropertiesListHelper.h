@@ -3,6 +3,7 @@
 #define PropertiesListHelperH
 
 #include "PropertiesListTypes.h"
+#include "FolderLib.h"
 
 //---------------------------------------------------------------------------
 class CPropHelper{
@@ -206,14 +207,24 @@ public:
     
     IC FloatValue* 		CreateAngle		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);
-    	V->SetEvents	(floatRDOnAfterEdit,floatRDOnBeforeEdit); 
-	    V->Owner()->SetEvents(floatRDOnDraw);
+    	V->OnAfterEditEvent			= floatRDOnAfterEdit;
+        V->OnBeforeEditEvent		= floatRDOnBeforeEdit; 
+	    V->Owner()->OnDrawTextEvent = floatRDOnDraw;
         return V;						
     }
-    IC VectorValue* 	CreateAngle3	(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
+    IC VectorValue* 	CreateAngle3	(PropItemVec& items, LPCSTR key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   VectorValue* V	= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
-    	V->SetEvents	(FvectorRDOnAfterEdit,FvectorRDOnBeforeEdit); 
-	    V->Owner()->SetEvents(FvectorRDOnDraw);
+    	V->OnAfterEditEvent			= FvectorRDOnAfterEdit;
+        V->OnBeforeEditEvent		= FvectorRDOnBeforeEdit;
+	    V->Owner()->OnDrawTextEvent	= FvectorRDOnDraw;
+        return V;					
+    }
+    IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, int tag)
+    {   TextValue* V	= (TextValue*)		CreateText	(items,key,val,lim);
+        V->OnAfterEditEvent			= FHelper.NameAfterEdit;
+        V->OnBeforeEditEvent		= FHelper.NameBeforeEdit;
+        V->Owner()->OnDrawTextEvent = FHelper.NameDraw;
+        V->Owner()->tag				= tag;
         return V;					
     }
 

@@ -20,27 +20,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_MAKE_PREVIEW:  
     	Tools.MakePreview();
     	break;
-	case COMMAND_LOAD_MOTIONS:{
-    	if (!Tools.CurrentObject()){
-        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
-        	bRes=false;
-        	break;
-        }
-		AnsiString fn;
-		if (EFS.GetOpenName("$smotions$",fn)){
-        	Tools.LoadMotions(fn.c_str());
-            fraLeftBar->UpdateMotionList();
-        }
-        }break;
-	case COMMAND_SAVE_MOTIONS:{
-    	if (!Tools.CurrentObject()){
-        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
-        	bRes=false;
-        	break;
-        }
-		AnsiString fn;
-		if (EFS.GetSaveName("$smotions$",fn)) Tools.SaveMotions(fn.c_str());
-        }break;
     case COMMAND_SAVE_BACKUP:{
     	AnsiString fn = AnsiString(Core.UserName)+"_backup.object";
         FS.update_path("$objects$",fn);
@@ -97,7 +76,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetAsync());
 			if (Command( COMMAND_SAVEAS )){
 	            EFS.MarkFile(fn.c_str(),true);
-			    fraLeftBar->UpdateMotionList();
+//.			    fraLeftBar->UpdateMotionList();
             }else{
             	Command( COMMAND_CLEAR );
             }
@@ -135,8 +114,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			strcpy(m_LastFileName,fn.c_str());
             ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetAsync());
 			fraLeftBar->AppendRecentFile(m_LastFileName);
-		    fraLeftBar->UpdateMotionList();
-        	Command(COMMAND_UPDATE_CAPTION);
+//.		    fraLeftBar->UpdateMotionList();
+        	Command	(COMMAND_UPDATE_CAPTION);
+	        Command	(COMMAND_UPDATE_PROPERTIES);
 			// lock
 			EFS.LockFile(0,m_LastFileName);
         }
@@ -149,7 +129,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			m_LastFileName[0]=0;
 			Device.m_Camera.Reset();
             Tools.Clear();
-			Command(COMMAND_UPDATE_CAPTION);
+			Command	(COMMAND_UPDATE_CAPTION);
+	        Command	(COMMAND_UPDATE_PROPERTIES);
 		}
 		break;
     case COMMAND_PREVIEW_OBJ_PREF:

@@ -56,7 +56,7 @@ class TUI_CustomTools;
         }
         IC int r_count		()
         {
-        	results.size	();
+        	return results.size();
         }
         IC SResult* r_begin	()
         {

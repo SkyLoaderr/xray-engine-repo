@@ -175,7 +175,7 @@ void TUI::MousePress(TShiftState Shift, int X, int Y)
 
     // camera activate
     if(!Device.m_Camera.MoveStart(m_ShiftState)){
-    	if (Tools.Pick()) return;
+    	if (Tools.Pick(Shift)) return;
         if( !m_MouseCaptured ){
             if( Tools.HiddenMode() ){
 				iGetMousePosScreen(m_StartCpH);

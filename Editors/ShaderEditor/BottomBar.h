@@ -68,6 +68,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawObjectsPivot;
 	TMenuItem *miDrawSafeRect;
 	TPanel *paSel;
+	TMenuItem *miDrawBoneAxis;
+	TMenuItem *miDrawBoneNames;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

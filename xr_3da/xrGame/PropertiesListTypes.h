@@ -67,6 +67,7 @@ typedef void 	__fastcall (__closure *TOnClick)			(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
+typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 //------------------------------------------------------------------------------
 
 class PropValue{
@@ -74,6 +75,7 @@ class PropValue{
     friend class		PropItem;
 	PropItem*			m_Owner;
 	// base events
+public:
     TAfterEdit			OnAfterEditEvent;
     TBeforeEdit			OnBeforeEditEvent;
     TOnChange			OnChangeEvent;
@@ -86,14 +88,6 @@ public:
     virtual bool		Equal			(PropValue* prop)=0;
     virtual bool		ApplyValue		(LPVOID _val)=0;
     IC PropItem*		Owner			(){return m_Owner;}
-    void				SetEvents		(TAfterEdit	after=0, TBeforeEdit before=0, TOnChange change=0, TOnClick on_ext_click=0, TOnClick on_click=0)
-    {
-    	OnAfterEditEvent	= after;
-        OnBeforeEditEvent	= before;
-        OnChangeEvent		= change;
-		OnExtClickEvent		= on_ext_click;
-        OnClickEvent		= on_click;
-    }
 };
 //------------------------------------------------------------------------------
 
@@ -145,8 +139,10 @@ class PropItem{
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
     PropValueVec		values;
 // events
+public:
     TOnDrawTextEvent	OnDrawTextEvent;
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
+    TOnPropItemFocused	OnItemFocused;
 public:
     int 				tag;
     int					subitem;		// multiple selection for each item (SelectTexture for example)
@@ -162,7 +158,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawTextEvent(0),OnDrawCanvasEvent(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnDrawTextEvent(0),OnDrawCanvasEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -170,11 +166,6 @@ public:
     	xr_free			(key);
     };
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
-    void				SetEvents		(TOnDrawTextEvent on_draw_text=0, TOnDrawCanvasEvent on_draw_canvas=0)
-    {
-    	OnDrawTextEvent		= on_draw_text;
-        OnDrawCanvasEvent	= on_draw_canvas;
-    }
     void				SetName			(LPCSTR name){key=xr_strdup(name);}
     IC void				ResetValues		()
     {
@@ -222,6 +213,8 @@ public:
     IC PropValue*		GetFrontValue	(){VERIFY(!values.empty()); return values.front(); };
     IC EPropType		Type			(){return type;}
 	IC TElTreeItem*		Item			(){return item;}
+	IC TElTreeItem**	LPItem			(){return &item;}
+	IC LPCSTR			Key				(){return key;}
 
 	IC void				OnBeforeEdit	(LPVOID edit_val)
     {
@@ -285,7 +278,7 @@ public:
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val){return true;}
     virtual	bool		ApplyValue		(LPVOID val){return false;}
-    bool				OnBtnClick		(int btn){btn_num=btn; if(OnBtnClickEvent){ OnBtnClickEvent(this); return true;}else return false;}
+    bool				OnBtnClick		(){if(OnBtnClickEvent){ OnBtnClickEvent(this); return true;}else return false;}
 };
 
 class TextValue: public PropValue{

@@ -4,10 +4,12 @@
 #include "bone.h"
 #include "envelope.h"
 
-CBone::~CBone(){
+CBone::~CBone()
+{
 }
 
-void CBone::Save(IWriter& F){
+void CBone::Save(IWriter& F)
+{
 #ifdef _LW_EXPORT
 	extern char* ReplaceSpace(char* s);
 	ReplaceSpace(name);		strlwr(name);
@@ -21,7 +23,8 @@ void CBone::Save(IWriter& F){
 	F.w_float	(rest_length);
 }
 
-void CBone::Load(IReader& F){
+void CBone::Load(IReader& F)
+{
 	F.r_stringZ	(name);
 	F.r_stringZ	(parent);
 	F.r_stringZ	(wmap);

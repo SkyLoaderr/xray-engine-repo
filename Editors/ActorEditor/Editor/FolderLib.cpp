@@ -157,6 +157,9 @@ TElTreeItem* CFolderHelper::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem*
         if(!node){
             if (last_valid_node) *last_valid_node=last_node;
             if (last_valid_idx) *last_valid_idx=--itm;
+        }else{
+            if (last_valid_node) *last_valid_node=node;
+            if (last_valid_idx) *last_valid_idx=--itm;
         }
         return node;
     }else
@@ -251,8 +254,9 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, LPCSTR full_name)
 	char fld[128];
 	int fld_cnt = _GetItemCount(full_name,'\\')-1;
     _GetItems(full_name,0,fld_cnt,fld,'\\');
-    TElTreeItem* fld_node = fld[0]?FindFolder(tv,fld,&last_node,&idx):0;
-
+//.
+    TElTreeItem* fld_node = fld[0]?FindItem/*FindFolder*/(tv,fld,&last_node,&idx):0;
+//.
     if (!fld_node){
 	    fld_node = last_node;
     	for (int itm=idx; itm<fld_cnt; itm++){
@@ -527,7 +531,7 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
 {
 	if (node){
 	    tv->IsUpdating 	= true;
-        TElTreeItem* folder	= node->Parent;
+        TElTreeItem* folder	= node;//->Parent;
         while(folder){
 			if (folder) folder->Expand(false);
         	if (folder->Parent){
@@ -540,7 +544,9 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
 }
 TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, LPCSTR full_name)
 {
-	return ExpandItem(tv,FindItem(tv,full_name));
+	TElTreeItem* last_valid=0;
+    FindItem(tv,full_name,&last_valid);
+	return ExpandItem(tv,last_valid);
 }
 TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node)
 {

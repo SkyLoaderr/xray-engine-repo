@@ -18,6 +18,7 @@
 #include "fmesh.h"
 #include "KeyBar.h"
 #include "main.h"
+#include "folderlib.h"
 
 //------------------------------------------------------------------------------
 CActorTools Tools;
@@ -32,7 +33,7 @@ void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
     val					= s->ReadInteger("preview_speed",0); 	m_fSpeed 	= *((float*)&val);
     val					= s->ReadInteger("preview_segment",0); 	m_fSegment	= *((float*)&val);
     m_Flags.set			(s->ReadInteger("preview_flags",0));
-    m_ScrollAxis		= s->ReadInteger("preview_scaxis",0);
+    m_ScrollAxis		= (EScrollAxis)s->ReadInteger("preview_scaxis",0);
 }
 
 void CActorTools::PreviewModel::SaveParams(TFormStorage* s)
@@ -117,15 +118,11 @@ CActorTools::CActorTools()
 {
 	m_pEditObject		= 0;
     m_bObjectModified	= false;
-    m_bMotionModified	= false;
-    m_bNeedUpdateMotionKeys	= false;
-    m_bNeedUpdateMotionDefs = false;
-    m_bNeedUpdateGeometry = false;
     m_ObjectProps 		= 0;
-    m_MotionProps 		= 0;
+    m_ItemProps 		= 0;
     m_bReady			= false;
     m_KeyBar			= 0;
-    m_bNeedRefreshShaders= false;
+    m_Flags.zero		();
 }
 //---------------------------------------------------------------------------
 
@@ -134,13 +131,14 @@ CActorTools::~CActorTools()
 }
 //---------------------------------------------------------------------------
 
-bool CActorTools::OnCreate(){
+bool CActorTools::OnCreate()
+{
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectProps = TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectModified);
-    m_MotionProps = TProperties::CreateForm(fraLeftBar->paMotionProps,alClient,OnMotionDefsModified);
+    m_ObjectProps 	= TProperties::CreateForm(fraLeftBar->paObjectProps,alClient,OnObjectModified,OnObjectItemFocused);
+    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnMotionDefsModified);
     m_PreviewObject.OnCreate();
 
     // key bar
@@ -153,13 +151,14 @@ bool CActorTools::OnCreate(){
     return true;
 }
 
-void CActorTools::OnDestroy(){
+void CActorTools::OnDestroy()
+{
 	VERIFY(m_bReady);
     m_bReady			= false;
 
 	// unlock
 	TProperties::DestroyForm(m_ObjectProps);
-	TProperties::DestroyForm(m_MotionProps);
+	TProperties::DestroyForm(m_ItemProps);
     m_PreviewObject.OnDestroy();
 
     m_PreviewObject.Clear();
@@ -174,8 +173,8 @@ bool CActorTools::IfModified(){
     if (IsModified()){
         int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI.GetEditFileName());
         switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else{ m_bObjectModified = false; m_bMotionModified = false; }break;
-        case mrNo: m_bObjectModified = false; m_bMotionModified = false; break;
+        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
+        case mrNo: m_bObjectModified = false; break;
         case mrCancel: return false;
         }
     }
@@ -187,13 +186,14 @@ void CActorTools::OnObjectModified()
 {
 	if (m_pEditObject) 		m_pEditObject->Modified();
 	m_bObjectModified 		= true;
-    m_bNeedUpdateGeometry 	= true;
+    m_Flags.set				(flUpdateGeometry,TRUE);
     OnGeometryModified		();
 	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::SetPreviewObjectPrefs(){
+void CActorTools::SetPreviewObjectPrefs()
+{
 	m_PreviewObject.SetPreferences();
 }
 //---------------------------------------------------------------------------
@@ -229,7 +229,8 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::Render(){
+void CActorTools::Render()
+{
 	if (!m_bReady) return;
     m_PreviewObject.Render();
 	if (m_pEditObject){
@@ -251,7 +252,8 @@ void CActorTools::Render(){
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::OnFrame(){
+void CActorTools::OnFrame()
+{
 	if (!m_bReady) return;
     if (m_KeyBar) m_KeyBar->UpdateBar();
     m_PreviewObject.Update();
@@ -260,19 +262,29 @@ void CActorTools::OnFrame(){
         	PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
     	m_pEditObject->OnFrame();
     }
-    if (m_bNeedRefreshShaders){
+    if (m_Flags.is(flRefreshShaders)){
+    	m_Flags.set(flRefreshShaders,FALSE);
         m_pEditObject->OnDeviceDestroy();
-        m_bNeedRefreshShaders= false;
+    }
+    if (m_Flags.is(flRefreshSubProps)){
+    	m_Flags.set(flRefreshSubProps,FALSE);
+		OnObjectItemFocused(m_ObjectProps->tvProperties->Selected);
+    }
+	if (m_Flags.is(flUpdateProperties)){
+		m_Flags.set(flUpdateProperties,FALSE);
+        RealUpdateProperties();
     }
 }
 
-void CActorTools::ZoomObject(bool bSelOnly){
+void CActorTools::ZoomObject(bool bSelOnly)
+{
 	VERIFY(m_bReady);
     if (m_pEditObject)
         Device.m_Camera.ZoomExtents(m_pEditObject->GetBox());
 }
 
-void CActorTools::OnDeviceCreate(){
+void CActorTools::OnDeviceCreate()
+{
 	VERIFY(m_bReady);
     // add directional light
     Flight L;
@@ -316,7 +328,8 @@ void CActorTools::OnDeviceDestroy(){
     }
 }
 
-void CActorTools::Clear(){
+void CActorTools::Clear()
+{
 	VERIFY(m_bReady);
 
     // delete visuals
@@ -324,14 +337,10 @@ void CActorTools::Clear(){
     m_RenderObject.Clear();
 //	m_PreviewObject.Clear();
     m_ObjectProps->ClearProperties();
-    m_MotionProps->ClearProperties();
-    fraLeftBar->SkeletonPartEnabled(false);
+    m_ItemProps->ClearProperties();
 
 	m_bObjectModified 	= false;
-	m_bMotionModified 	= false;
-    m_bNeedUpdateMotionKeys = false;
-	m_bNeedUpdateMotionDefs = false;
-    m_bNeedUpdateGeometry = false;
+	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     
     UI.RedrawScene();
 }
@@ -349,7 +358,6 @@ bool CActorTools::Load(LPCSTR name)
             // delete visual
             m_RenderObject.Clear();
             fraLeftBar->SetRenderStyle(false);
-            fraLeftBar->SkeletonPartEnabled(m_pEditObject->IsSkeleton());
             return true;
         }
 //        else{ ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name); }
@@ -366,7 +374,7 @@ bool CActorTools::Save(LPCSTR name)
 	VERIFY(m_bReady);
     if (m_pEditObject){
     	m_pEditObject->SaveObject(name);
-		m_bObjectModified = false; m_bMotionModified = false;
+		m_bObjectModified = false;
         return true;
     }
 	return false;
@@ -519,31 +527,6 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     }
 }
 
-void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
-{
-    OnMotionKeysModified();
-	UI.RedrawScene();
-}
-//---------------------------------------------------------------------------
-
-void CActorTools::FillObjectProperties()
-{
-	R_ASSERT(m_pEditObject);
-
-	PropItemVec items;
-	PropValue* V=0;
-	PHelper.CreateFlag32	(items, "Make Progressive",		&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
-    V=PHelper.CreateVector	(items, "Transform\\Position",	&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
-    V->SetEvents(0,0,OnChangeTransform);
-    V=PHelper.CreateVector	(items, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);
-    V->SetEvents			(PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,OnChangeTransform);
-    V->Owner()->SetEvents	(PHelper.FvectorRDOnDraw);
-    m_pEditObject->FillPropSurf		(0,items);
-    m_pEditObject->FillSummaryProps	(0,items);
-    
-	m_ObjectProps->AssignItems(items,false);
-}
-                               
 void CActorTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
 	s_fog		= UI.ZFar();
@@ -556,4 +539,16 @@ LPCSTR CActorTools::GetInfo()
 	return 0;
 }
 
+extern AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone);
+
+bool CActorTools::Pick(TShiftState Shift)
+{
+	if (m_pEditObject){
+//		if (!Shift.Contains(ssCtrl)) 
+        m_pEditObject->SkinSelect(false);
+		CBone* B 	= m_pEditObject->SkinRayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity);
+        SelectBoneProperies(B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
+        return !!B;
+    }else return false;
+}
 

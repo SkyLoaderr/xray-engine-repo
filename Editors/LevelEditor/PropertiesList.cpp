@@ -106,6 +106,7 @@ void TProperties::ClearParams(TElTreeItem* node)
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		xr_delete	(*it);
 		m_Items.clear();
+	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
 		tvProperties->IsUpdating 	= true;
 	    tvProperties->Items->Clear	();
     	tvProperties->IsUpdating 	= false;
@@ -125,9 +126,13 @@ void __fastcall TProperties::ClearProperties()
     ClearParams			();
 }
 //---------------------------------------------------------------------------
+void __fastcall TProperties::SelectItem(const AnsiString& full_name)
+{
+    FHelper.RestoreSelection	(tvProperties,full_name.c_str());
+}
+//---------------------------------------------------------------------------
 
-__fastcall TProperties::TProperties(TComponent* Owner)
-	: TForm(Owner)
+__fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 {
 	m_FirstClickItem= 0;
 	bModified 		= false;
@@ -237,7 +242,7 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
    	HideExtBtn			();
 	CancelEditControl	();
     // clear values
-    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
+//    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
     ClearParams();
     tvProperties->Items->Clear();
     // fill values
@@ -537,209 +542,241 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	TSTItemPart 	IP=(TSTItemPart)0;
     int				HC=0;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,IP,HC);
-  	if (item&&(HC==1)&&(Button==mbLeft)){
-		if (!item->Enabled) return;
-		PropItem* prop = (PropItem*)item->Tag;
-		// ѕроверить чтобы не нажимать 2 раза дл€ кнопок
-    	if (prop&&(PROP_BUTTON==prop->type)) m_FirstClickItem=item;
-    	if (m_FirstClickItem==item){
-            if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
-            pmEnum->Tag = (int)item;
-            switch(prop->type){
-            case PROP_CAPTION: break;
-            case PROP_BUTTON:{
-                ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
-                int btn_num					= iFloor((X-FV->draw_rect.left)*(float(FV->value.size())/float(FV->draw_rect.Width())));
-                for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
-                	ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
-                    if (V->OnBtnClick(btn_num)){
-						Modified			();
-	                    RefreshForm			();
+  	if (item){
+    	if ((HC==1)&&(Button==mbLeft)){
+            if (!item->Enabled) return;
+            PropItem* prop = (PropItem*)item->Tag;
+            // ѕроверить чтобы не нажимать 2 раза дл€ кнопок
+            if (prop&&(PROP_BUTTON==prop->type)) m_FirstClickItem=item;
+            if (m_FirstClickItem==item){
+                if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
+                pmEnum->Tag = (int)item;
+                switch(prop->type){
+                case PROP_CAPTION: break;
+                case PROP_BUTTON:{
+                    ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
+                    int btn_num					= iFloor((X-FV->draw_rect.left)*(float(FV->value.size())/float(FV->draw_rect.Width())));
+                    for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
+                        ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
+                        V->btn_num				= btn_num;
                     }
-                }
-                item->RedrawItem			(true);
-            }break;
-            case PROP_FLAG8:{
-                Flag8Value* V				= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Flags8 new_val 				= V->GetValue(); new_val.invert(V->mask);
-                prop->OnAfterEdit			(&new_val);
-                if (prop->ApplyValue(&new_val)){
-                    Modified				();
-                    RefreshForm				();
-                }
-            }break;
-            case PROP_FLAG16:{
-                Flag16Value* V				= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Flags16 new_val 			= V->GetValue(); new_val.invert(V->mask);
-                prop->OnAfterEdit			(&new_val);
-                if (prop->ApplyValue(&new_val)){
-                    Modified				();
-                    RefreshForm				();
-                }
-            }break;
-            case PROP_FLAG32:{
-                Flag32Value* V				= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-                Flags32 new_val 			= V->GetValue(); new_val.invert(V->mask);
-                prop->OnAfterEdit			(&new_val);
-                if (prop->ApplyValue(&new_val)){
-                    Modified				();
-                    RefreshForm				();
-                }
-            }break;
-            case PROP_BOOLEAN:{
-                BOOLValue* V				= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
-                BOOL new_val 				= !V->GetValue();
-                prop->OnAfterEdit			(&new_val);
-                if (prop->ApplyValue(&new_val)){
-                    Modified				();
-                    RefreshForm				();
-                }
-            }break;
-            case PROP_TOKEN:{
-                pmEnum->Items->Clear();
-                TokenValue* T				= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
-                xr_token* token_list 		= T->token;
-                TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 				= "-";
-                pmEnum->Items->Add			(mi);
-                for(int i=0; token_list[i].name; i++){
-                    mi 			= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= i;
-                    mi->Caption = token_list[i].name;
-                    mi->OnClick = PMItemClick;
+                    item->RedrawItem			(true);
+                }break;
+                case PROP_FLAG8:{
+                    Flag8Value* V				= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
+                    Flags8 new_val 				= V->GetValue(); new_val.invert(V->mask);
+                    prop->OnAfterEdit			(&new_val);
+                    if (prop->ApplyValue(&new_val)){
+                        Modified				();
+                        RefreshForm				();
+                    }
+                }break;
+                case PROP_FLAG16:{
+                    Flag16Value* V				= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
+                    Flags16 new_val 			= V->GetValue(); new_val.invert(V->mask);
+                    prop->OnAfterEdit			(&new_val);
+                    if (prop->ApplyValue(&new_val)){
+                        Modified				();
+                        RefreshForm				();
+                    }
+                }break;
+                case PROP_FLAG32:{
+                    Flag32Value* V				= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
+                    Flags32 new_val 			= V->GetValue(); new_val.invert(V->mask);
+                    prop->OnAfterEdit			(&new_val);
+                    if (prop->ApplyValue(&new_val)){
+                        Modified				();
+                        RefreshForm				();
+                    }
+                }break;
+                case PROP_BOOLEAN:{
+                    BOOLValue* V				= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
+                    BOOL new_val 				= !V->GetValue();
+                    prop->OnAfterEdit			(&new_val);
+                    if (prop->ApplyValue(&new_val)){
+                        Modified				();
+                        RefreshForm				();
+                    }
+                }break;
+                case PROP_TOKEN:{
+                    pmEnum->Items->Clear();
+                    TokenValue* T				= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
+                    xr_token* token_list 		= T->token;
+                    TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 				= "-";
+                    pmEnum->Items->Add			(mi);
+                    for(int i=0; token_list[i].name; i++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= i;
+                        mi->Caption = token_list[i].name;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                case PROP_TOKEN2:{
+                    pmEnum->Items->Clear();
+                    TokenValue2* T	= dynamic_cast<TokenValue2*>(prop->GetFrontValue()); R_ASSERT(T);
+                    AStringVec& lst = T->items;
+                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                }
-            }break;
-            case PROP_TOKEN2:{
-                pmEnum->Items->Clear();
-                TokenValue2* T	= dynamic_cast<TokenValue2*>(prop->GetFrontValue()); R_ASSERT(T);
-                AStringVec& lst = T->items;
-                TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 	= "-";
-                pmEnum->Items->Add(mi);
-                for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                    mi 			= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= it-lst.begin();
-                    mi->Caption = *it;
-                    mi->OnClick = PMItemClick;
+                    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= it-lst.begin();
+                        mi->Caption = *it;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                case PROP_TOKEN3:{
+                    pmEnum->Items->Clear();
+                    TokenValue3* T	= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
+                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                }
-            }break;
-            case PROP_TOKEN3:{
-                pmEnum->Items->Clear();
-                TokenValue3* T	= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
-                TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 	= "-";
-                pmEnum->Items->Add(mi);
-                for (u32 i=0; i<T->cnt; i++){
-                    mi 			= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= i;
-                    mi->Caption = T->items[i].str;
-                    mi->OnClick = PMItemClick;
+                    for (u32 i=0; i<T->cnt; i++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= i;
+                        mi->Caption = T->items[i].str;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                case PROP_TOKEN4:{
+                    pmEnum->Items->Clear();
+                    TokenValue4* T	= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
+                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                }
-            }break;
-            case PROP_TOKEN4:{
-                pmEnum->Items->Clear();
-                TokenValue4* T	= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
-                TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 	= "-";
-                pmEnum->Items->Add(mi);
-                for (TokenValue4::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
-                    mi 			= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= it-T->items->begin();
-                    mi->Caption = it->str;
-                    mi->OnClick = PMItemClick;
+                    for (TokenValue4::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= it-T->items->begin();
+                        mi->Caption = it->str;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                case PROP_LIST:{
+                    pmEnum->Items->Clear();
+                    ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
+                    AStringVec& lst = T->items;
+                    TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                }
-            }break;
-            case PROP_LIST:{
-                pmEnum->Items->Clear();
-                ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
-                AStringVec& lst = T->items;
-                TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 	= "-";
-                pmEnum->Items->Add(mi);
-                for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                    mi 			= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= it-lst.begin();
-                    mi->Caption = *it;
-                    mi->OnClick = PMItemClick;
-                    pmEnum->Items->Add(mi);
-                }
-            }break;
-            case PROP_VECTOR: 			VectorClick(item); 			break;
-            case PROP_WAVE: 			WaveFormClick(item); 		break;
-            case PROP_FCOLOR:
-            case PROP_COLOR: 			ColorClick(item); 			break;
-            case PROP_GAMEMTL:
-            case PROP_LIBPS:
-            case PROP_LIBPG:
-            case PROP_SOUNDSRC:
-            case PROP_SOUNDENV:
-            case PROP_LIGHTANIM:
-            case PROP_LIBOBJECT:
-            case PROP_GAMEOBJECT:
-            case PROP_ENTITY:
-            case PROP_TEXTURE:
-            case PROP_ESHADER:
-            case PROP_CSHADER:		CustomTextClick(item);      break;
-            case PROP_A_LIBOBJECT:
-            case PROP_A_GAMEMTL:
-            case PROP_A_LIBPS:
-            case PROP_A_LIBPG:
-            case PROP_A_SOUNDSRC:
-            case PROP_A_SOUNDENV:
-            case PROP_A_TEXTURE:
-            case PROP_A_ESHADER:
-            case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
-            case PROP_U8:
-            case PROP_U16:
-            case PROP_U32:
-            case PROP_S8:
-            case PROP_S16:
-            case PROP_S32:
-            case PROP_FLOAT:
-                PrepareLWNumber(item);
-            break;
-            case PROP_A_TEXT:
-            case PROP_TEXT:
-                PrepareLWText(item);
-            break;
-            case PROP_TEXTURE2:{
-                pmEnum->Items->Clear();
-                TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
-                mi->Caption 	= "-";
-                pmEnum->Items->Add(mi);
-                for (u32 i=0; i<TSTRING_COUNT; i++){
-                    mi = xr_new<TMenuItem>((TComponent*)0);
-                    mi->Tag		= i;
-                    mi->Caption = TEXTUREString[i];
-                    mi->OnClick = PMItemClick;
-                    pmEnum->Items->Add(mi);
-                }
-            }break;
-            default:
-				THROW2("Unknown prop type");
-            };
-            switch(prop->type){
-            case PROP_TOKEN:
-            case PROP_TOKEN2:
-            case PROP_TOKEN3:
-            case PROP_TOKEN4:
-            case PROP_LIST:
-            case PROP_TEXTURE2:
-                TPoint P; P.x = X; P.y = Y;
-                P=tvProperties->ClientToScreen(P);
-                pmEnum->Popup(P.x,P.y-10);
+                    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
+                        mi 			= xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= it-lst.begin();
+                        mi->Caption = *it;
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                case PROP_VECTOR: 			VectorClick(item); 			break;
+                case PROP_WAVE: 			WaveFormClick(item); 		break;
+                case PROP_FCOLOR:
+                case PROP_COLOR: 			ColorClick(item); 			break;
+                case PROP_GAMEMTL:
+                case PROP_LIBPS:
+                case PROP_LIBPG:
+                case PROP_SOUNDSRC:
+                case PROP_SOUNDENV:
+                case PROP_LIGHTANIM:
+                case PROP_LIBOBJECT:
+                case PROP_GAMEOBJECT:
+                case PROP_ENTITY:
+                case PROP_TEXTURE:
+                case PROP_ESHADER:
+                case PROP_CSHADER:		CustomTextClick(item);      break;
+                case PROP_A_LIBOBJECT:
+                case PROP_A_GAMEMTL:
+                case PROP_A_LIBPS:
+                case PROP_A_LIBPG:
+                case PROP_A_SOUNDSRC:
+                case PROP_A_SOUNDENV:
+                case PROP_A_TEXTURE:
+                case PROP_A_ESHADER:
+                case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
+                case PROP_U8:
+                case PROP_U16:
+                case PROP_U32:
+                case PROP_S8:
+                case PROP_S16:
+                case PROP_S32:
+                case PROP_FLOAT:
+                    PrepareLWNumber(item);
                 break;
-	        };
-    	}
-        if (prop) prop->OnClick();
+                case PROP_A_TEXT:
+                case PROP_TEXT:
+                    PrepareLWText(item);
+                break;
+                case PROP_TEXTURE2:{
+                    pmEnum->Items->Clear();
+                    TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
+                    mi->Caption 	= "-";
+                    pmEnum->Items->Add(mi);
+                    for (u32 i=0; i<TSTRING_COUNT; i++){
+                        mi = xr_new<TMenuItem>((TComponent*)0);
+                        mi->Tag		= i;
+                        mi->Caption = TEXTUREString[i];
+                        mi->OnClick = PMItemClick;
+                        pmEnum->Items->Add(mi);
+                    }
+                }break;
+                default:
+                    THROW2("Unknown prop type");
+                };
+                switch(prop->type){
+                case PROP_TOKEN:
+                case PROP_TOKEN2:
+                case PROP_TOKEN3:
+                case PROP_TOKEN4:
+                case PROP_LIST:
+                case PROP_TEXTURE2:
+                    TPoint P; P.x = X; P.y = Y;
+                    P=tvProperties->ClientToScreen(P);
+                    pmEnum->Popup(P.x,P.y-10);
+                    break;
+                };
+            }
+	        if (prop) prop->OnClick();
+        }else if (Button==mbRight){
+            TPoint P; P.x = X; P.y = Y;
+            P=tvProperties->ClientToScreen(P);
+            pmItems->Popup(P.x,P.y-10);
+        }
     };
     m_FirstClickItem = item;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TProperties::tvPropertiesMouseMove(TObject *Sender,
+      TShiftState Shift, int X, int Y)
+{
+	if (tvProperties->Selected){
+		TElTreeItem* item 	= tvProperties->Selected;
+		PropItem* prop 		= (PropItem*)item->Tag;
+		if (!item->Enabled) return;
+		if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
+        switch(prop->type){
+        case PROP_BUTTON:{
+        	if (Shift.Contains(ssLeft)){
+                ButtonValue* V				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
+                Y							-= tvProperties->HeaderHeight;
+                int btn_num					= -1;
+                if (((Y>V->draw_rect.top)&&(Y<V->draw_rect.bottom))&&((X>V->draw_rect.left)&&(Y<V->draw_rect.right)))
+                	btn_num					= iFloor((X-V->draw_rect.left)*(float(V->value.size())/float(V->draw_rect.Width())));
+                for (PropItem::PropValueIt it=prop->values.begin(); it!=prop->values.end(); it++){
+                    ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
+                    V->btn_num				= btn_num;
+                }
+                item->RedrawItem			(true);
+            }
+        }break;
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -752,6 +789,12 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
         case PROP_BUTTON:{
         	if (Button==mbLeft){
                 ButtonValue* V		= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
+                if (V->btn_num!=-1){
+	                if (V->OnBtnClick()){
+    	                Modified			();
+        	            RefreshForm			();
+            	    }
+                }
                 V->btn_num			= -1;
                 item->RedrawItem	(true);
             }
@@ -1317,12 +1360,13 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
 
 void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
-	if (OnItemFocused) OnItemFocused(tvProperties->Selected);
+	if (OnItemFocused) 	OnItemFocused(tvProperties->Selected);
     HideExtBtn			();
 	if (tvProperties->Selected){
         PropItem* prop 		= (PropItem*)tvProperties->Selected->Tag;
         if (prop&&prop->m_Flags.is(PropItem::flShowExtBtn))
             pbExtBtn->Tag	= (int)prop;
+        if (prop&&prop->OnItemFocused)prop->OnItemFocused(prop);
     }
 	m_FirstClickItem 	= 0;
 }
@@ -1428,5 +1472,6 @@ void __fastcall TProperties::RefreshForm()
 	tvProperties->IsUpdating 	= false;
 	tvProperties->Repaint();
 }
+
 
 

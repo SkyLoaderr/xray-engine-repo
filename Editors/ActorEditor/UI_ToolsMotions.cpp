@@ -94,7 +94,7 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
                 	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
                     CBlend* B=0;
                     if (D){
-                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?fraLeftBar->ebMixMotion->Down:false,0,0);
+                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?true:false,0,0);
                         if (idx==k) m_pBlend = B;
                     }
     	    	}
@@ -118,11 +118,11 @@ void CActorTools::EngineModel::SaveParams(TFormStorage* s)
 
 void CActorTools::OnMotionKeysModified()
 {
-	m_bMotionModified = true;
+	m_bObjectModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
-    m_bNeedUpdateMotionKeys = true;
+	m_Flags.set			(flUpdateMotionKeys,TRUE);
     if (fraLeftBar->ebRenderEngineStyle->Down){
-        m_bNeedUpdateMotionKeys = false;
+		m_Flags.set		(flUpdateMotionKeys,FALSE);
         if (m_RenderObject.UpdateVisual(m_pEditObject,false,true,false)){
             PlayMotion();
         }else{
@@ -135,11 +135,11 @@ void CActorTools::OnMotionKeysModified()
 
 void CActorTools::OnMotionDefsModified()
 {
-	m_bMotionModified = true;
+	m_bObjectModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
-    m_bNeedUpdateMotionDefs = true;
+	m_Flags.set			(flUpdateMotionDefs,TRUE);
     if (fraLeftBar->ebRenderEngineStyle->Down){
-        m_bNeedUpdateMotionDefs = false;
+		m_Flags.set		(flUpdateMotionDefs,FALSE);
         if (m_RenderObject.UpdateVisual(m_pEditObject,false,false,true)){
             PlayMotion();
         }else{
@@ -152,7 +152,7 @@ void CActorTools::OnMotionDefsModified()
 void CActorTools::OnGeometryModified()
 {
     if (fraLeftBar->ebRenderEngineStyle->Down){
-        m_bNeedUpdateGeometry = false;
+		m_Flags.set		(flUpdateGeometry,FALSE);
         if (m_RenderObject.UpdateVisual(m_pEditObject,true,false,false)){
             PlayMotion();
         }else{
@@ -163,10 +163,20 @@ void CActorTools::OnGeometryModified()
 }
 //---------------------------------------------------------------------------
 
-bool CActorTools::AppendMotion(LPCSTR name, LPCSTR fn)
+LPCSTR GenerateSMotionName(CEditableObject* object, AnsiString& nm)
+{
+	AnsiString base_name = nm;
+    u32 idx=0;
+    while(object->FindSMotionByName(nm.c_str()))
+    	nm.sprintf("%s_%d",base_name.c_str(),idx++);
+	return nm.c_str();
+}
+//---------------------------------------------------------------------------
+
+bool CActorTools::AppendMotion(AnsiString& name, LPCSTR fn)
 {
 	VERIFY(m_pEditObject);
-    if (m_pEditObject->AppendSMotion(name,fn)){
+    if (m_pEditObject->AppendSMotion(GenerateSMotionName(m_pEditObject,name),fn)){
 	    OnMotionKeysModified();
 		return true;
     }
@@ -209,97 +219,9 @@ void CActorTools::MakePreview()
         	m_RenderObject.DeleteVisual();
 	        fraLeftBar->SetRenderStyle(false);
         }
-		m_bNeedUpdateMotionKeys = false;
-        m_bNeedUpdateMotionDefs = false;
+		m_Flags.set		(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
     }else{
     	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
-    }
-}
-
-void CActorTools::MotionOnChange(PropValue* sender)
-{
-	Flag8Value* V = (Flag8Value*)sender;
-    if (V->GetValueEx()){
-	    m_pCycleNode->Hidden	= true;
-    	m_pFXNode->Hidden		= false;
-    }else{
-    	m_pFXNode->Hidden		= true;
-	    m_pCycleNode->Hidden	= false;
-    }
-}
-//------------------------------------------------------------------------------
-                        
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::BPOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
-    (*((DWORD*)edit_val))--;
-}
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::BPOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
-    (*((DWORD*)edit_val))++;
-}
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::BPOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
-    (*((DWORD*)draw_val))++;
-}
-//------------------------------------------------------------------------------
-void __fastcall CActorTools::OnMotionNameChange(PropValue* V)
-{
-    OnMotionKeysModified();
-}
-//------------------------------------------------------------------------------
-void CActorTools::FillMotionProperties()
-{
-	R_ASSERT(m_pEditObject);
-	CSMotion* SM = m_pEditObject->GetActiveSMotion();
-    if (SM){
-		PropItemVec items;
-        PropValue* P=0;
-        P=PHelper.CreateText	(items,"Name",		&SM->Name(), sizeof(SM->Name()));
-        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMotionNameChange);
-        P->Owner()->SetEvents	(FHelper.NameDraw);
-        P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); //VERIFY(P->Owner()->tag);
-        P=PHelper.CreateFloat	(items,"Speed",		&SM->fSpeed,  0.f,20.f,0.01f,2);
-        P=PHelper.CreateFloat	(items,"Accrue",	&SM->fAccrue, 0.f,20.f,0.01f,2);
-        P=PHelper.CreateFloat	(items,"Falloff", 	&SM->fFalloff,0.f,20.f,0.01f,2);
-
-        PropValue *C=0,*F=0,*TV=0;
-        TV = PHelper.CreateFlag8(items,"Type FX", &SM->m_Flags, esmFX);
-        TV->SetEvents			(0,0,MotionOnChange);
-        {
-            AStringVec lst;
-            lst.push_back("--none--");
-            for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-			C=PHelper.CreateToken2	(items,"Cycle\\Bone part",	(u32*)&SM->iBoneOrPart,	&lst);
-            C->SetEvents			(BPOnAfterEdit,BPOnBeforeEdit);
-            C->Owner()->SetEvents	(BPOnDraw);
-            P=PHelper.CreateFlag8	(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
-            P=PHelper.CreateFlag8	(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
-            P=PHelper.CreateFlag8	(items,"Cycle\\Sync part",		&SM->m_Flags,	esmSyncPart);
-        }
-        {
-            AStringVec lst;
-            for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            F=PHelper.CreateToken2	(items,"FX\\Start bone",		(u32*)&SM->iBoneOrPart,&lst);
-            P=PHelper.CreateFloat		(items,"FX\\Power",				&SM->fPower,   	0.f,20.f,0.01f,2);
-        }
-        // fill values
-        m_MotionProps->AssignItems(items,true);
-        // find cycle/fx root node
-	    R_ASSERT(C&&C->Owner()->Item()&&F&&F->Owner()->Item());
-        m_pCycleNode 	= C->Owner()->Item()->Parent; R_ASSERT(m_pCycleNode); 
-        m_pFXNode 		= F->Owner()->Item()->Parent; R_ASSERT(m_pFXNode); 
-		// first init node
-        MotionOnChange(TV);
-    }else{
-    	m_MotionProps->ClearProperties();	
-		m_pCycleNode=0;
-        m_pFXNode	=0;
     }
 }
 
@@ -308,9 +230,9 @@ void CActorTools::PlayMotion()
 	if (m_pEditObject)
     	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPlay();
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
-        	if (m_bNeedUpdateMotionKeys){ OnMotionKeysModified();	}
-        	if (m_bNeedUpdateMotionDefs){ OnMotionDefsModified(); 	}
-        	if (m_bNeedUpdateGeometry)	{ OnGeometryModified(); 	}
+        	if (m_Flags.is(flUpdateMotionKeys))	{ OnMotionKeysModified();	}
+        	if (m_Flags.is(flUpdateMotionDefs))	{ OnMotionDefsModified(); 	}
+        	if (m_Flags.is(flUpdateGeometry))	{ OnGeometryModified(); 	}
             m_RenderObject.PlayMotion(m_pEditObject->GetActiveSMotion());
         }
 }
@@ -345,4 +267,5 @@ bool CActorTools::RenameMotion(LPCSTR old_name, LPCSTR new_name)
     OnMotionKeysModified();
     return true;
 }
+
 

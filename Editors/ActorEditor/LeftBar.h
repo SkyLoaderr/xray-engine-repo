@@ -27,9 +27,6 @@ class TfraLeftBar : public TFrame
 __published:	// IDE-managed Components
     TPanel *paLeftBar;
 	TFormStorage *fsStorage;
-	TMxPopupMenu *pmMotionsFile;
-	TMenuItem *miLoadMotions;
-	TMenuItem *miSaveMotions;
 	TMxPopupMenu *pmSceneFile;
 	TMxPopupMenu *pmShaderList;
 	TMenuItem *ExpandAll1;
@@ -44,7 +41,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Import1;
 	TMenuItem *N2;
 	TMenuItem *miRecentFiles;
-	TSplitter *spProps;
 	TMxPopupMenu *pmPreviewObject;
 	TMenuItem *Custom1;
 	TMenuItem *N3;
@@ -52,35 +48,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Preferences1;
 	TMenuItem *Clear1;
 	TMenuItem *N4;
-	TPanel *paSkeletonPart;
-	TSplitter *Splitter1;
-	TPanel *paCurrentMotion;
-	TLabel *Label1;
-	TExtBtn *ExtBtn10;
-	TPanel *paPSList;
-	TBevel *Bevel1;
-	TPanel *Panel1;
-	TExtBtn *ebCurrentPlay;
-	TExtBtn *ebCurrentStop;
-	TMxLabel *lbCurFrames;
-	TMxLabel *lbCurFPS;
-	TMxLabel *RxLabel2;
-	TMxLabel *RxLabel1;
-	TExtBtn *ebCurrentPause;
-	TExtBtn *ebMixMotion;
-	TPanel *paMotionProps;
-	TPanel *paMotions;
-	TLabel *Label2;
-	TPanel *Panel4;
-	TBevel *Bevel3;
-	TBevel *Bevel4;
-	TElTree *tvMotions;
-	TPanel *Panel5;
-	TExtBtn *ebMotionsRemove;
-	TExtBtn *ebMotionsClear;
-	TExtBtn *ebMotionsFile;
-	TExtBtn *ebMotionsAppend;
-	TPanel *Panel6;
 	TMxPopupMenu *pmImages;
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
@@ -108,51 +75,38 @@ __published:	// IDE-managed Components
 	TMenuItem *N7;
 	TMenuItem *N8;
 	TMenuItem *N9;
-	TMxLabel *lbMotionCount;
-	TMxLabel *MxLabel2;
-	TExtBtn *ebRotateMotion;
-	TMenuItem *N10;
 	TMenuItem *N11;
+	TPanel *paCurrentMotion;
+	TLabel *Label1;
+	TExtBtn *ExtBtn10;
+	TPanel *paPSList;
+	TBevel *Bevel1;
+	TPanel *paItemProps;
+	TSplitter *Splitter1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebActorMotionsFileMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall tvMotionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall CreateFolder1Click(TObject *Sender);
-	void __fastcall ExpandAll1Click(TObject *Sender);
-	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall ebMotionsRemoveClick(TObject *Sender);
-	void __fastcall tvMotionsItemFocused(TObject *Sender);
-	void __fastcall tvMotionsKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall ebMotionsAppendClick(TObject *Sender);
 	void __fastcall tvMotionsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
 	void __fastcall tvMotionsDragOver(TObject *Sender, TObject *Source, int X,
           int Y, TDragState State, bool &Accept);
 	void __fastcall tvMotionsDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
-	void __fastcall ebCurrentPlayClick(TObject *Sender);
-	void __fastcall ebCurrentStopClick(TObject *Sender);
 	void __fastcall Import1Click(TObject *Sender);
 	void __fastcall Load1Click(TObject *Sender);
 	void __fastcall Save2Click(TObject *Sender);
 	void __fastcall SaevAs1Click(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
-	void __fastcall ebCurrentPauseClick(TObject *Sender);
 	void __fastcall miRecentFilesClick(TObject *Sender);
 	void __fastcall ebBonePartClick(TObject *Sender);
-	void __fastcall LoadClick(TObject *Sender);
-	void __fastcall miSaveMotionsClick(TObject *Sender);
-	void __fastcall ebMotionsClearClick(TObject *Sender);
 	void __fastcall miExportOGFClick(TObject *Sender);
 	void __fastcall ebMakePreviewClick(TObject *Sender);
 	void __fastcall ebRenderStyleClick(TObject *Sender);
@@ -167,7 +121,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSceneCommands1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
-	void __fastcall ebRotateMotionClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1);
@@ -175,14 +128,9 @@ public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
 	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
-	void 			ClearMotionList	();
-    void			UpdateMotionList();
-    void			UpdateProperties();
-    void			UpdateMotionProperties();
 	void 			AppendRecentFile(LPCSTR name);
     void			SetRenderStyle	(bool bEngineStyle);
     LPCSTR 			FirstRecentFile	();
-    void			SkeletonPartEnabled(bool bFlag);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

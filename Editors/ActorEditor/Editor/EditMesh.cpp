@@ -132,17 +132,21 @@ void CEditableMesh::GeneratePNormals()
 		Fvector& FN 	= m_FNormals[f_i];
         for (int k=0; k<3; k++){
 			Fvector& N 	= m_PNormals[f_i*3+k];
-			N.set		(0,0,0);
-            IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
-            VERIFY(a_lst.size());
-            for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
-//            	Fvector& TN = m_FNormals[*i_it];
-//	            float cosa 	= TN.dotproduct(FN);
-//    	        if (cosa<m_fSoftAngle) continue;
-				if (sg != m_SGs[*i_it]) continue;
-                N.add	(m_FNormals[*i_it]);
+            if (sg!=-1){
+                N.set		(0,0,0);
+                IntVec& a_lst=m_Adjs[m_Faces[f_i].pv[k].pindex];
+                VERIFY(a_lst.size());
+                for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++){
+    //            	Fvector& TN = m_FNormals[*i_it];
+    //	            float cosa 	= TN.dotproduct(FN);
+    //    	        if (cosa<m_fSoftAngle) continue;
+                    if (sg != m_SGs[*i_it]) continue;
+                    N.add	(m_FNormals[*i_it]);
+                }
+                N.normalize_safe();
+		    }else{
+                N.set		(FN);
             }
-            N.normalize_safe();
         }
     }
     m_LoadState.set(LS_PNORMALS,TRUE);

@@ -78,7 +78,7 @@ void __fastcall TfrmBonePart::tvPartStartDrag(TObject *Sender,
 void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	for (int k=0; k<FDragItems.size(); k++){
+	for (int k=0; k<(int)FDragItems.size(); k++){
 		FHelper.AppendObject(((TElTree*)Sender),AnsiString(FDragItems[k]->Text).c_str());
         if (ebMoveMode->Down) FDragItems[k]->Delete();
     }

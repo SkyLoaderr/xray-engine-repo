@@ -44,8 +44,10 @@ bool CParticleTools::OnCreate(){
 	// shader test locking
 	AnsiString fn; 
     FS.update_path(fn,_game_data_,"particles2.xr");
-	if (EFS.CheckLocking(0,fn.c_str(),false,true))
+	if (EFS.CheckLocking(0,fn.c_str(),false,true)){
+    	ELog.DlgMsg(mtInformation,"Particle Editor locked.");
     	return false;
+    }
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);

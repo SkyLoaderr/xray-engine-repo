@@ -98,11 +98,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     };
 
     bool				m_bObjectModified;
-    bool				m_bMotionModified;
     bool				m_bReady;
-    bool				m_bNeedUpdateGeometry;
-    bool				m_bNeedUpdateMotionKeys;
-    bool				m_bNeedUpdateMotionDefs;
 
     EAction				m_Action;
     bool				m_bHiddenMode;
@@ -117,26 +113,45 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     Fvector				m_RotateVector;
     float				m_fRotateSnapAngle;
 
-    TElTreeItem*		m_pCycleNode;
-    TElTreeItem*		m_pFXNode;
-	void __fastcall		MotionOnChange			(PropValue* sender);
+	void __fastcall		OnMotionTypeChange		(PropValue* sender);
 
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
 	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnMotionNameChange		(PropValue* sender);
+
+	void __fastcall 	OnMotionControlClick	(PropValue* sender);
+
+    void __fastcall 	OnObjectItemFocused		(TElTreeItem* item);
+
+	void __fastcall 	OnMotionsFileClick		(PropValue* sender);
+protected:
+	// flags
+    enum{
+    	flRefreshSubProps 	= (1<<0),
+    	flRefreshShaders 	= (1<<1),
+    	flUpdateGeometry 	= (1<<2),
+    	flUpdateMotionKeys 	= (1<<3),
+    	flUpdateMotionDefs	= (1<<4),
+    	flUpdateProperties 	= (1<<5),
+    };
+    Flags32				m_Flags;
+    
+    void				RefreshSubProperties	(){m_Flags.set(flRefreshSubProps,TRUE);}
+    void				RefreshShaders			(){m_Flags.set(flRefreshShaders,TRUE);}
+
+    void				RealUpdateProperties	();
+
+    void __fastcall 	PMMotionItemClick		(TObject *Sender);
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
 
     TProperties*		m_ObjectProps;
-    TProperties*		m_MotionProps;
+    TProperties*		m_ItemProps;
 
     TfrmKeyBar* 		m_KeyBar;
-
-    bool				m_bNeedRefreshShaders;
-    void				RefreshShaders		(){m_bNeedRefreshShaders=true;}
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
@@ -149,9 +164,8 @@ public:
     void				OnDestroy			();
 
     bool				IfModified			();
-    bool				IsModified			(){return m_bObjectModified||m_bMotionModified;}
+    bool				IsModified			(){return m_bObjectModified;}
     bool				IsObjectModified	(){return m_bObjectModified;}
-    bool				IsMotionModified	(){return m_bMotionModified;}
     void __fastcall		OnObjectModified	(void);
     void __fastcall		OnMotionDefsModified(void); 
     void 				OnMotionKeysModified(void); 
@@ -161,9 +175,10 @@ public:
 
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
-    CSMotion*			GetCurrentMotion	();
-    void				FillObjectProperties();
-	void				FillMotionProperties();
+    CSMotion*			GetCurrentMotion	();       
+	void				FillSurfaceProperties(PropItemVec& items, PropItem* sender);
+	void				FillMotionProperties(PropItemVec& items, PropItem* sender);
+    void				FillBoneProperties	(PropItemVec& items, PropItem* sender);
     void				PlayMotion			();
     void				StopMotion			();
     void				PauseMotion			();
@@ -185,7 +200,7 @@ public:
     bool				ExportOGF			(LPCSTR name);
     bool				LoadMotions			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name);
-    bool				AppendMotion		(LPCSTR name, LPCSTR fn);
+    bool				AppendMotion		(AnsiString& name, LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
     void				Reload				();
     void 				WorldMotionRotate	(const Fvector& R);
@@ -205,13 +220,15 @@ public:
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
-    bool				Pick				(){return false;}
+    bool				Pick				(TShiftState Shift);
 
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
 
+    void				SelectBoneProperies	(LPCSTR name);
+
     void				ShowProperties		(){;}
-    void				UpdateProperties	(){;}
+    void				UpdateProperties	(){m_Flags.set(flUpdateProperties,TRUE);}
     void				RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);

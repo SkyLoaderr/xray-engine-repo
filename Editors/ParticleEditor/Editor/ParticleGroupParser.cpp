@@ -169,6 +169,8 @@ public:
     DEFINE_VECTOR(Param,ParamVec,ParamIt);
     ParamVec			params;
 
+    void*				function;
+
     LPCSTR				src;
 public:    
 						PFunction	(){req_params=-1;parent=0;}
@@ -214,6 +216,7 @@ public:
             	break;
             }
         }
+        function = ;
         return bRes;
     }
     bool				Parse		(int l, LPCSTR line)
@@ -341,7 +344,12 @@ DEFINE_MAP_PRED(LPSTR,PFunction,PFuncMap,PFuncPairIt,str_pred);
 DEFINE_VECTOR(PFunction,PFuncVec,PFuncIt);
 
 static PFuncMap CommandTemplates;
-
+/*
+struct PFCommand{
+	LPCSTR	params;
+	void*	function;
+};
+*/
 static LPCSTR PStateCommands[]={
 	"pResetState();",
 	"pColor(float red, float green, float blue, float alpha = 1.0f);",

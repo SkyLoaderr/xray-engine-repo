@@ -384,7 +384,7 @@ void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::ExtBtn1Click(TObject *Sender)
 {
-	LockForm();
+/*	LockForm();
 	{
         string256 fn;
         FS_QueryPairIt it		= texture_map.begin();
@@ -424,6 +424,7 @@ void __fastcall TfrmImageLib::ExtBtn1Click(TObject *Sender)
     }
     
 	UnlockForm();
+*/
 }
 //---------------------------------------------------------------------------
 
