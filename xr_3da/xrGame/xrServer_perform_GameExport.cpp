@@ -20,4 +20,6 @@ void xrServer::Perform_game_export	()
 		SendTo							(ID,P,mode);
 	}
 	csPlayers.Leave		();
+
+	game->sv_force_sync	= FALSE;
 }
