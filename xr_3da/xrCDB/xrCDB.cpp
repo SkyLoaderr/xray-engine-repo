@@ -61,7 +61,7 @@ MODEL::MODEL()
 }
 MODEL::~MODEL()
 {
-	if (status!=S_INIT)	syncronize	();		// maybe model still in building
+	syncronize	();		// maybe model still in building
 	status		= S_INIT;
 	xr_delete	(tree);
 	xr_free		(tris);		tris_count = 0;
@@ -191,39 +191,3 @@ void COLLIDER::r_free	()
 	rd_count		= 0;
 	rd_size			= 0;
 }
-
-// C-style
-extern "C" {
-	void*		__cdecl		cdb_model_create	()
-	{
-		return new MODEL;
-	}
-	void		__cdecl		cdb_model_destroy	(void* P)
-	{
-		delete (MODEL*)P;
-	}
-	void		__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
-	{
-		m_def->build(V,Vcnt,T,Tcnt);
-	}
-	void*		__cdecl		cdb_collider_create	()
-	{
-		return new COLLIDER;
-	}
-	void		__cdecl		cdb_collider_destroy(void* P)
-	{
-		delete (COLLIDER*)P;
-	}
-	void		__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
-	{
-		((CDB::COLLIDER*)C)->ray_query(m_def,r_start,r_dir,r_range);
-	}
-	void		__cdecl		cdb_query_box		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
-	{
-		((CDB::COLLIDER*)C)->box_query(m_def,b_center,b_dim);
-	}
-	void		__cdecl		cdb_query_frustum	(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const CFrustum& F)
-	{
-		((CDB::COLLIDER*)C)->frustum_query(m_def,F);
-	}
-};

@@ -71,9 +71,8 @@ namespace CDB
 		IC TRI*					get_tris	()	{ return tris;	}
 		IC void					syncronize	()	const
 		{
-			if (S_READY==status)	return;
-			else				
-			{	// syncronize
+			if (S_READY!=status)
+			{
 				xrCriticalSection*	C	= (xrCriticalSection*) &cs;
 				C->Enter				();
 				C->Leave				();
@@ -107,9 +106,9 @@ namespace CDB
 	class XRCDB_API COLLIDER
 	{
 		// Ray data and methods
-		u32			ray_mode;
-		u32			box_mode;
-		u32			frustum_mode;
+		u32				ray_mode;
+		u32				box_mode;
+		u32				frustum_mode;
 
 		// Result management
 		RESULT*			rd_ptr;
@@ -194,18 +193,6 @@ namespace CDB
 		TRI*			getT()	{ return &*faces.begin();	}
 		size_t			getTS() { return faces.size();	}
 	};
-};
-
-extern "C"
-{
-	XRCDB_API	void*	__cdecl		cdb_model_create	();
-	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
-	XRCDB_API	void	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
-	XRCDB_API	void*	__cdecl		cdb_collider_create	();
-	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
-	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
-	XRCDB_API	void	__cdecl		cdb_query_box		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
-	XRCDB_API	void	__cdecl		cdb_query_frustum	(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const CFrustum& F);
 };
 
 #pragma pack(pop)
