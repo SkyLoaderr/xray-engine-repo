@@ -35,6 +35,7 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 		Server->Connect				(name);
 
 		// Analyze game and perform apropriate SERVER spawning
+		Server->SLS_Default			();
 
 		// Start client
 		bResult						= net_Start_client("localhost");
