@@ -42,7 +42,7 @@ void CAI_Biting::Think()
 	MotionMan.accel_deactivate			();
 	
 	START_PROFILE("AI/Base Monster/Think/FSM");
-	if (!MotionMan.Seq_Active()) {
+	if (!MotionMan.Seq_Active() && !MotionMan.JumpActive()) {
 		if (!UpdateStateManager()) {
 			StateSelector					();
 			CurrentState->Execute			(m_current_update);

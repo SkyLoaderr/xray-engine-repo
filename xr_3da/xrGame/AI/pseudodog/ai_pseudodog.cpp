@@ -167,9 +167,12 @@ void CAI_PseudoDog::Load(LPCSTR section)
 
 void CAI_PseudoDog::reload(LPCSTR section)
 {
-	inherited::reload(section);
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
-	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
+	inherited::reload	(section);
+	
+	CSoundPlayer::add	(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
+	
+	CJumping::AddState	(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_prepare_0"),	JT_CUSTOM,	true,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
+	CJumping::AddState	(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"),	JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 }
 
 
@@ -227,11 +230,11 @@ void CAI_PseudoDog::StateSelector()
 
 void CAI_PseudoDog::UpdateCL()
 {
-	inherited::UpdateCL();
-	CJumping::Update();
+	inherited::UpdateCL	();
+	CJumping::Update	();
 
-	float trace_dist = 1.0f;
-
+	float trace_dist = 1.5f;
+	
 	// Проверить на нанесение хита во время прыжка
 	if (CJumping::IsGlide()) {
 
@@ -260,33 +263,10 @@ void CAI_PseudoDog::UpdateCL()
 void CAI_PseudoDog::OnJumpStop()
 {
 	MotionMan.DeactivateJump();
-	MotionMan.Update();
 	strike_in_jump = false;
 }
 
 
-void CAI_PseudoDog::ProcessTurn()
-{
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
-
-}
 void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 {
 	if ((spec_params & ASP_PSI_ATTACK) == ASP_PSI_ATTACK) {
@@ -297,6 +277,12 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 		if (pA) {
 			pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
 			Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
+
+			if (pA->cam_Active()) {
+				pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(psy_effect_turn_angle)); 
+				pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(psy_effect_turn_angle)); 
+			}
+
 		}
 	}
 
@@ -314,10 +300,5 @@ void CAI_PseudoDog::play_effect_sound()
 	Fvector pos = pA->Position();
 	pos.y += 1.5f;
 	::Sound->play_at_pos(psy_effect_sound,pA,pos);
-
-	if (pA->cam_Active()) {
-		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(psy_effect_turn_angle)); 
-		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(psy_effect_turn_angle)); 
-	}
 }
 

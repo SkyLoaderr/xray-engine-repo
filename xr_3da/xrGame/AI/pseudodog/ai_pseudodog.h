@@ -37,8 +37,6 @@ public:
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
 	
-	virtual	void	ProcessTurn			();
-
 	virtual bool	ability_can_drag	() {return true;}
 	virtual bool	ability_psi_attack	() {return true;}
 	virtual bool	ability_can_jump	() {return true;}

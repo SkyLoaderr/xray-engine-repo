@@ -654,3 +654,9 @@ void CMotionManager::DeactivateJump()
 {
 	pJumping = 0;
 }
+
+bool CMotionManager::JumpActive()
+{
+	if (pJumping && pJumping->IsActive()) return true;
+	return false;
+}

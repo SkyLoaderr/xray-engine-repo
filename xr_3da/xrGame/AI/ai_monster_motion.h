@@ -236,6 +236,7 @@ public:
 		
 		void	ActivateJump			();
 		void	DeactivateJump			();
+		bool	JumpActive				();
 
 public:
 		
