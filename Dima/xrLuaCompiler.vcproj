@@ -4,6 +4,10 @@
 	Version="7.10"
 	Name="xrLuaCompiler"
 	ProjectGUID="{157F4EBF-5573-4AD0-B9C4-1C36949DCEE9}"
+	SccProjectName="SAK"
+	SccAuxPath="SAK"
+	SccLocalPath="SAK"
+	SccProvider="SAK"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
