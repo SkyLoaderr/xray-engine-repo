@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(41)
+#define SPAWN_VERSION	u16(42)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -56,6 +56,8 @@
 // 39 - CSE_ALifeAnomalousZone			appended with the start power property
 // 40 - CSE_ALifeObjectPhysic			appended with activate flag
 //		and CSE_ALifeItemWeapon			appended with weapon addons state flag
+// 41 - CSE_ALifeItemTorch				appended glow
+// 42 - CSE_ALifeItemTorch				appended guid_bone
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

@@ -16,6 +16,7 @@
 
 #ifdef _EDITOR
 	#include "clsid_game.h"
+    #include "skeletoncustom.h"
 #endif
 
 #include "xrServer_Objects_ALife_Items.h"
@@ -144,6 +145,7 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
     spot_brightness				= 1.f;
 	glow_texture[0]				= 0;
 	glow_radius					= 0.1f;
+    guid_bone					= u32(BI_NONE);
 	set_visual					("lights\\lights_torch");
 }
 
@@ -167,6 +169,9 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string		(glow_texture);
 		tNetPacket.r_float		(glow_radius);
 	}
+	if (m_wVersion > 41){
+		tNetPacket.r_u16		(guid_bone);
+	}
 }
 
 void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
@@ -180,6 +185,7 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(spot_brightness);
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
+    tNetPacket.w_u16			(guid_bone);
 }
 
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -204,6 +210,16 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
 	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
+    // bones
+    if (visual && PKinematics(visual))
+    {
+    	CKinematics::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
+        CKinematics::accel::iterator _I, _E;
+        AStringVec				vec;
+        for (_I	= ll_bones->begin(); _I!=ll_bones->end(); ++_I)	vec.push_back(*_I->first);
+        if (guid_bone>(u16)ll_bones->size()) guid_bone = BI_NONE;
+		PHelper.CreateToken2	(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		(u32*)&guid_bone,	&vec, sizeof(guid_bone));
+    }
 }
 #endif
 

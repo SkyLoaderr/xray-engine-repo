@@ -49,6 +49,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
     float							spot_brightness;
 	string64						glow_texture;
 	float							glow_radius;
+    u16								guid_bone;
 
 									CSE_ALifeItemTorch	(LPCSTR caSection);
     virtual							~CSE_ALifeItemTorch	();
