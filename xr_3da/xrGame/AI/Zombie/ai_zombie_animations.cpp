@@ -79,13 +79,9 @@ void CAI_Zombie::vfLoadAnimations()
 
 	m_tZombieAnimations.tNormal.tGlobal.tRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
 	
-//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
-//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
-//	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
-//
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up");
-	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
 
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft	 = tpVisualObject->ID_Cycle("norm_turn_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnRight  = tpVisualObject->ID_Cycle("norm_turn_rs");
@@ -102,7 +98,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (fHealth <= 0) {
-		for (int i=0 ;i<2; i++)
+		for (int i=0 ;i<SND_DEATH_COUNT; i++)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
@@ -111,7 +107,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaIdle[1])
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0];
 			else
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
+				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,SND_DEATH_COUNT)];
 		//tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
 	}
 	else
