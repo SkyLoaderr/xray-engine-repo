@@ -4,15 +4,19 @@
 #include "d3dutils.h"
 #include "ui_main.h"
 #include "PropertiesListHelper.h"
+#include "ParticleEffectActions.h"
 
 using namespace PAPI;
 
-PDomain::PDomain(EType et, PDomainEnum t,	float inA0,	float inA1,	float inA2,	
+PDomain::PDomain(EType et, BOOL ra, u32 color, PDomainEnum t,	
+										float inA0,	float inA1,	float inA2,	
 										float inA3,	float inA4,	float inA5,
 										float inA6,	float inA7,	float inA8	)
 {
+	flags.set(flRenderable,ra);
 	e_type = et;
 	type = t;
+    clr	 = color;
 	f[0] = inA0;
 	f[1] = inA1;
 	f[2] = inA2;    
@@ -27,7 +31,9 @@ PDomain::PDomain(EType et, PDomainEnum t,	float inA0,	float inA1,	float inA2,
 PDomain::PDomain(const PDomain& inDomain)
 {
 	e_type 	= inDomain.e_type;
+    flags	= inDomain.flags;
 	type 	= inDomain.type;
+    clr	 	= inDomain.clr;
 	f[0]	= inDomain.f[0];
 	f[1]	= inDomain.f[1];
 	f[2]	= inDomain.f[2];
@@ -43,6 +49,23 @@ PDomain::~PDomain()
 {
 }
 
+void PDomain::Load(IReader& F)
+{
+	type		= F.r_u32();
+	F.r_fvector3(v[0]);
+	F.r_fvector3(v[1]);
+	F.r_fvector3(v[2]);
+}
+
+void PDomain::Save(IWriter& F)
+{
+	F.w_u32		(type);
+	F.w_fvector3(v[0]);
+	F.w_fvector3(v[1]);
+	F.w_fvector3(v[2]);
+}
+
+/*
 void	PDomain::set(PAPI::PDomainEnum t, 		float inA0, float inA1, float inA2,
                                                 float inA3, float inA4, float inA5, 
                                                 float inA6, float inA7, float inA8	)
@@ -58,14 +81,15 @@ void	PDomain::set(PAPI::PDomainEnum t, 		float inA0, float inA1, float inA2,
 	f[7]	= inA7;
 	f[8]	= inA8;
 }
-
+*/
 
 //--------------------------------------------------------------------
-void 	PDomain::Render		(u32 clr)
+void 	PDomain::Render		(u32 clr, const Fmatrix& parent)
 {
+	if (!flags.is(flRenderable)) return;
 	u32 clr_s = subst_alpha	(clr,0x60);
 	u32 clr_w = subst_alpha	(clr,0xff);
-    RCache.set_xform_world	(Fidentity);
+    RCache.set_xform_world	(parent);
 	switch(type){
     case PDPoint: 	
 		Device.SetShader	(Device.m_WireShader);
@@ -91,50 +115,40 @@ void 	PDomain::Render		(u32 clr)
     	DU.DrawAABB			(v[0], v[1], clr_s, clr_w, true, true);
     break;
 	case PDSphere: 	
-		Device.SetShader	(Device.m_SelectionShader);
-    	DU.DrawSphere		(Fidentity, v[0], f[4], clr_s, clr_w, true, true);
-    	DU.DrawSphere		(Fidentity, v[0], f[3], clr_s, clr_w, true, true);
+    	DU.DrawSphere		(parent, v[0], f[4], clr_s, clr_w, true, true);
+    	DU.DrawSphere		(parent, v[0], f[3], clr_s, clr_w, true, true);
     break;                                      
-/*	case PDCylinder:{
-    	pVector c,d;
-        float h 			= p2.length	();
-        c 					= (p1+p1+p2)/2.f;
-        d 					= p2/h;
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, false, true);
+	case PDCylinder:{
+    	Fvector c,d;
+        float h 			= d.sub(v[1],v[0]).magnitude();
+        c.add 				(v[0],v[1]).div(2.f);
+        if (!fis_zero(h)){
+        	d.div			(h);
+			DU.DrawCylinder	(parent, c, d, h, f[6], clr_s, clr_w, true, true);
+			DU.DrawCylinder	(parent, c, d, h, f[7], clr_s, clr_w, true, true);
+        }
     }break;
 	case PDCone:{ 	
-    	pVector d;
-        float h = p2.length	();
-        d = p2/h;
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, true, false);
-		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, false, true);
-		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, false, true);
+    	Fvector d;
+        float h 			= d.sub(v[1],v[0]).magnitude();
+        if (!fis_zero(h)){
+            d.div			(h);
+            DU.DrawCone		(parent, v[0], d, h, f[6], clr_s, clr_w, true, true);
+            DU.DrawCone		(parent, v[0], d, h, f[7], clr_s, clr_w, true, true);
+        }
     }break;
 	case PDBlob: 	
 		Device.SetShader	(Device.m_WireShader);
-    	DU.DrawCross		(p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr);
+    	DU.DrawCross		(v[0], f[3],f[3],f[3], f[3],f[3],f[3], clr);
     break;
-	case PDDisc:{
-		Device.SetShader	(Device.m_SelectionShader);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, true, false);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, false, true);
-		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, false, true);
-    }break;
+	case PDDisc:
+        DU.DrawCylinder		(parent, v[0], v[1], 0.f, f[6], clr_s, clr_w, true, true);
+        DU.DrawCylinder		(parent, v[0], v[1], 0.f, f[7], clr_s, clr_w, true, true);
+    break;
 	case PDRectangle: 	
-		Device.SetShader	(Device.m_SelectionShader);
-        DU.DrawRectangle	(p1, u, v, clr, true, false);
-		Device.SetShader	(Device.m_WireShader);
-        DU.DrawRectangle	(p1, u, v, clr, false, true);
+        DU.DrawRectangle	(v[0], v[1], v[2], clr_s, clr_w, true, true);
     break;
-*/    }
+   }
 }
 
 xr_token					domain_token	[ ]={
@@ -184,34 +198,34 @@ void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
                 break;
             case PDBox:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Max"), 	 	&v[1],flt_min,flt_max,0.001f,3);
+                PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);
                 break;
             case PDSphere:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[3],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[4],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4],0,flt_max,0.001f,3);
                 break;
             case PDCylinder:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDCone:
-                PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Apex"),	 	&v[0],flt_min,flt_max,0.001f,3);
+                PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDBlob:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[3],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3],0,flt_max,0.001f,3);
                 break;
             case PDDisc:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDRectangle:
                 PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);
@@ -231,8 +245,8 @@ void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"), 		&v[0],flt_min,flt_max,0.001f,3);
                 break;
             case PDLine:
-                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 1"), 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 2"), 	&v[1],flt_min,flt_max,0.001f,3);
+                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 1"), 		&v[0],flt_min,flt_max,0.001f,3);
+                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 2"), 		&v[1],flt_min,flt_max,0.001f,3);
                 break;
             case PDTriangle:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);
@@ -245,34 +259,34 @@ void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
                 break;
             case PDBox:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Max"), 	 	&v[1],flt_min,flt_max,0.001f,3);
+                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);
                 break;
             case PDSphere:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[3],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[4],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4],0,flt_max,0.001f,3);
                 break;
             case PDCylinder:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDCone:
-                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Apex"),	 	&v[0],flt_min,flt_max,0.001f,3);
+                PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDBlob:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[3],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3],0,flt_max,0.001f,3);
                 break;
             case PDDisc:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6],0,flt_max,0.001f,3);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],0,flt_max,0.001f,3);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],0,flt_max,0.001f,3);
                 break;
             case PDRectangle:
                 PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);
@@ -292,8 +306,8 @@ void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"), 		&v[0]);
                 break;
             case PDLine:
-                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 1"), 	&v[0]);
-                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 2"), 	&v[1]);
+                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 1"), 		&v[0]);
+                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 2"), 		&v[1]);
                 break;
             case PDTriangle:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Vertex 1"), 	&v[0]);
@@ -306,34 +320,34 @@ void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
                 break;
             case PDBox:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0]);
-                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Max"), 	 	&v[1]);
+                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1]);
                 break;
             case PDSphere:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[3]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[4]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4]);
                 break;
             case PDCylinder:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0]);
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]);
                 break;
             case PDCone:
-                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Apex"),	 	&v[0]);
+                PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0]);
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]);
                 break;
             case PDBlob:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[3]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3]);
                 break;
             case PDDisc:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]);
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),&f[6]);
-                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),&f[7]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]);
+                PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]);
                 break;
             case PDRectangle:
                 PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0]);

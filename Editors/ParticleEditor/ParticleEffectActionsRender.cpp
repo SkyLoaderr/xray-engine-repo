@@ -7,7 +7,7 @@
 #include "ui_particletools.h"
 
 using namespace PAPI;
-
+/*
 void RenderDomain(pDomain d, u32 clr)
 {
 	u32 clr_s = subst_alpha	(clr,0x60);
@@ -124,12 +124,14 @@ void RenderAction(ParticleAction* pa)
     default: NODEFAULT;
     }
 }
-
-void PS::CPEDef::Render()
+*/
+void PS::CPEDef::Render(const Fmatrix& parent)
 {
-//.	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
-//.    	(*it)->Render();
-//.	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
-//.    	RenderAction(*it);
+	Fmatrix trans; trans.translate(parent.c);
+	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
+        if ((*it)->flags.is(EParticleAction::flDraw|EParticleAction::flEnabled)){
+        	PBool* ar = (*it)->_bool_safe("Allow Rotate");
+        	(*it)->Render((ar&&ar->val)?parent:trans);
+        }
 }
 

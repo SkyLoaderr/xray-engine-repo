@@ -197,13 +197,6 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
-{
-	PTools->ResetState();
-//.	PTools->m_EditPE->ApplyExplosion();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {

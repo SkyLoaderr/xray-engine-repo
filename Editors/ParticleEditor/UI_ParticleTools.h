@@ -13,7 +13,6 @@
 // refs
 class CEditableObject;
 class TfrmText;
-class CStatGraph;
 
 enum EEditMode{
 	emNone,
@@ -23,8 +22,6 @@ enum EEditMode{
 
 class CParticleTools: public CToolsCustom
 {
-	CStatGraph* stat_graph;
-
 	typedef CToolsCustom inherited;
 	friend class TfraLeftBar;
 
@@ -41,12 +38,6 @@ class CParticleTools: public CToolsCustom
 
     Fmatrix 			m_Transform;
 
-    void __fastcall		OnApplyClick		();
-    void __fastcall		OnCloseClick		(bool& can_close);
-	bool __fastcall 	OnCodeInsight		(const AnsiString& src_line, AnsiString& hint);
-
-    void __fastcall		OnPPMenuItemClick	(TObject* sender);
-
     void __fastcall		OnItemModified		(void); 
 
     void __fastcall 	OnParticleItemFocused	(ListItemsVec& items);
@@ -58,23 +49,19 @@ class CParticleTools: public CToolsCustom
 
     void				RealApplyParent		();
     void				ApplyParent			(bool bForce=false){m_Flags.set(flApplyParent,TRUE); if (bForce) RealApplyParent();}
+    void				RealCompileEffect	();
+    void				CompileEffect		(bool bForced=false){m_Flags.set(flCompileEffect,TRUE); if (bForced) RealCompileEffect();}
 public:
 	EEditMode			m_EditMode;
     
-    TfrmText*			m_EditText;
     TProperties*		m_ItemProps;
     TItemList*			m_PList;
-public:
-	void				EditActionList		();
-    void				ResetState			();
 public:
 	// flags
     enum{
     	flRefreshProps 		= (1<<0),
         flApplyParent		= (1<<1),
-
-        flDrawSolid			= (1<<29),
-        flDrawDomain		= (1<<30),
+        flCompileEffect		= (1<<2),
     };
     Flags32				m_Flags;
 public:

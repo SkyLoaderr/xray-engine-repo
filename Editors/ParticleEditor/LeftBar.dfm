@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 542
+  Height = 573
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 542
+    Height = 573
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,12 +32,12 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 339
+      Top = 369
       Width = 298
-      Height = 2
+      Height = 3
       Cursor = crVSplit
       Align = alBottom
-      Color = clBlack
+      Color = 4934475
       ParentColor = False
     end
     object paScene: TPanel
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 84
       Width = 298
-      Height = 255
+      Height = 285
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -225,20 +225,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 223
+        Height = 270
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
         ParentShowHint = False
         ShowHint = False
         TabOrder = 0
-        object Bevel2: TBevel
-          Left = 0
-          Top = 221
-          Width = 296
-          Height = 2
-          Align = alBottom
-        end
         object Bevel1: TBevel
           Left = 0
           Top = 34
@@ -366,47 +359,17 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 185
+          Height = 234
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
           TabOrder = 1
         end
       end
-      object paAction: TPanel
-        Left = 1
-        Top = 237
-        Width = 296
-        Height = 17
-        Align = alBottom
-        BevelOuter = bvNone
-        Color = 10528425
-        TabOrder = 1
-        object ebResetState: TExtBtn
-          Left = 2
-          Top = 1
-          Width = 96
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          HotTrack = True
-          HotColor = 15790320
-          CloseButton = False
-          Caption = 'Reset State'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Margin = 13
-          ParentFont = False
-          OnClick = ExtBtn3Click
-        end
-      end
     end
     object paProperties: TPanel
       Left = 1
-      Top = 341
+      Top = 372
       Width = 298
       Height = 200
       Align = alBottom

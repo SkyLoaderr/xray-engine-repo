@@ -28,7 +28,7 @@ BOOL PS::CPGDef::Equal(const CPGDef* pg)
 	return TRUE;
 }
 
-void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified)
+void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
@@ -47,7 +47,7 @@ void __fastcall PS::CPGDef::OnEffectTypeChange(PropValue* sender)
     OnParamsChange		(sender);
 }
 
-void __fastcall PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModified)
+void __fastcall PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
@@ -58,7 +58,7 @@ void __fastcall PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModifie
     bDataModified		= false;
 }
 
-void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModified)
+void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){

@@ -10,11 +10,13 @@
       Intermediate\UI_ParticleMain.obj Intermediate\UI_ParticleTools.obj 
       Intermediate\UI_ParticleToolsProps.obj Intermediate\PSLibraryEditor.obj 
       Intermediate\ParticleGroupEditor.obj Intermediate\ParticleEffectEditor.obj 
-      Intermediate\ParticleEffectParser.obj 
       Intermediate\ParticleEffectActionsRender.obj 
-      Intermediate\ParticleEffectActions.obj 
-      Intermediate\ParticleEffectActionsProps.obj Intermediate\pDomain.obj 
-      Intermediate\StatGraph.obj"/>
+      Intermediate\ParticleEffectActionsProps.obj Intermediate\StatGraph.obj 
+      Intermediate\particle_actions_collection.obj 
+      Intermediate\particle_effect.obj 
+      Intermediate\particle_actions_collection_io.obj 
+      Intermediate\particle_core.obj Intermediate\pDomain.obj 
+      Intermediate\ParticleEffectActions.obj Intermediate\noise.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -40,13 +42,13 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -Ir:\borland\components6\alexmx 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_PARTICLE_EDITOR -D_DEBUG 
+      -IC:\Rad\Borland\CBuilder6\Projects -Ir:\borland\components6\alexmx 
       -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrCDB 
       -IP:\xrSound -I..\ECore -I..\ECore\Editor -I..\ECore\Engine 
-      -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -src_suffix cpp 
-      -D_EDITOR -D_PARTICLE_EDITOR -D_DEBUG -no_tie -boa"/>
+      -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
       -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$Q -$O- -$A8 -v -JPHNE -M"/>
@@ -77,13 +79,17 @@
       <FILE FILENAME="PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEffectEditor.cpp" FORMNAME="" UNITNAME="ParticleEffectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ParticleEffectParser.cpp" FORMNAME="" UNITNAME="ParticleEffectParser.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEffectActionsRender.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsRender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ParticleEffectActionsProps.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsProps.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="StatGraph.cpp" FORMNAME="" UNITNAME="StatGraph" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_actions_collection.cpp" FORMNAME="" UNITNAME="particle_actions_collection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_effect.cpp" FORMNAME="" UNITNAME="particle_effect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_actions_collection_io.cpp" FORMNAME="" UNITNAME="particle_actions_collection_io" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="particle_core.cpp" FORMNAME="" UNITNAME="particle_core" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="noise.cpp" FORMNAME="" UNITNAME="noise" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -170,7 +176,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=
+HostApplication=x:\ParticleEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

@@ -24,9 +24,6 @@ void __fastcall CParticleTools::OnParticleItemFocused(ListItemsVec& items)
 	PropItemVec props;
 	m_EditMode	= emEffect;
 
-    // apply Effect Props if changed
-    if (m_LibPED&&m_EditText&&m_EditText->Modified()) m_EditText->ApplyEdit();
-
     // reset to default
     ResetCurrent	();
     
@@ -51,10 +48,8 @@ void __fastcall CParticleTools::OnParticleItemFocused(ListItemsVec& items)
             }
         }
     }
-	m_ItemProps->AssignItems(props,true);
+	m_ItemProps->AssignItems(props);
     UI->RedrawScene();
-
-	if (!m_LibPED&&m_EditText) TfrmText::DestroyForm(m_EditText);    
 }
 //------------------------------------------------------------------------------
 
