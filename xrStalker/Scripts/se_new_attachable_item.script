@@ -278,7 +278,7 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	// color
 	properties_helper():create_color(items,"script\\color\\0",self,"_color_0")
 	// time
-	properties_helper():create_time	(items,"script\\float\\0",self,"_time_0")
-	properties_helper():create_time	(items,"script\\float\\1",self,"_time_1",100)
-	properties_helper():create_time	(items,"script\\float\\2",self,"_time_2",0,100000.0)
+	properties_helper():create_time	(items,"script\\time\\0",self,"_time_0")
+	properties_helper():create_time	(items,"script\\time\\1",self,"_time_1",100)
+	properties_helper():create_time	(items,"script\\time\\2",self,"_time_2",0,100000.0)
 end
