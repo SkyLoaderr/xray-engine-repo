@@ -37,14 +37,15 @@ function main()
 	while true do
 
 		while monster:action() do 
-			//if (callback_var == 1) then
-			//	
-			//	callback_var	= 0
-			//	monster:script	( false,	script_name() )
-			//	monster:script	( true,	script_name() )
-			//	
-			//	action_one		(monster)
-			//end
+			
+			if (callback_var == 1) then
+				
+				callback_var	= 0
+				monster:script	( false,	script_name() )
+				monster:script	( true,		script_name() )
+				
+				action_one		(monster)
+			end
 
 			wait() 
 		end
