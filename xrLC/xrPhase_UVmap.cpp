@@ -3,6 +3,7 @@
 
 extern BOOL	hasImplicitLighting		(Face* F);
 
+int			affected	= 0;
 void Face::OA_Unwarp()
 {
 	if (pDeflector)					return;
@@ -10,8 +11,11 @@ void Face::OA_Unwarp()
 	
 	// now iterate on all our neigbours
 	for (int i=0; i<3; i++) 
-		for (vecFaceIt it=v[i]->adjacent.begin(); it!=v[i]->adjacent.end(); it++)
+		for (vecFaceIt it=v[i]->adjacent.begin(); it!=v[i]->adjacent.end(); it++) 
+		{
+			affected		+= 1;
 			(*it)->OA_Unwarp();
+		}
 }
 void Detach			(vecFace* S)
 {
@@ -80,6 +84,7 @@ void	CBuild::xrPhase_UVmap()
 				g_deflectors.push_back	(new CDeflector);
 				
 				// Start recursion from this face
+				affected				= 1;
 				Deflector->OA_SetNormal	(msF->N);
 				msF->OA_Unwarp			();
 				
@@ -88,7 +93,7 @@ void	CBuild::xrPhase_UVmap()
 				
 				// Detach affected faces
 				static vecFace faces_affected;
-				faces_affected.reserve	(1024);
+				faces_affected.reserve	(_MAX(256,affected));
 				for (int i=0; i<int(g_XSplit[SP]->size()); i++) {
 					Face *F = (*g_XSplit[SP])[i];
 					if ( F->pDeflector==Deflector ) {
