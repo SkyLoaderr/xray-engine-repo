@@ -313,7 +313,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 			// Find min and max positions for object bounding box
 
-			vec3 maxPosition( -flt_max, -flt_max, -flt_max  );
+			vec3 maxPosition( -flt_max,  -flt_max,   -flt_max  );
 			vec3 minPosition(  flt_max,   flt_max,    flt_max );
 
 			// there are 1/3 as many vectors as floats
@@ -343,7 +343,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			bool minz,miny,minx;
 			minx = miny = minz = false;
 
-			double deltaMajor;
+			nv_scalar deltaMajor;
 
 			if ( ( delta.x >= delta.y ) && ( delta.x >= delta.z ) )
 			{
@@ -449,7 +449,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 				// perform cylindrical mapping onto object, and remap from -pi,pi to -1,1
 
-				longitude = (( atan2( Minor, Other ) ) / 3.141592654);
+				longitude = (( atan2( Minor, Other ) ) / nv_scalar(3.141592654));
 
 				texCoords.x = 0.5f * longitude + 0.5f;
 				texCoords.y = (Major/deltaMajor) + 0.5f;
@@ -680,21 +680,19 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 		// for each face, calculate its S,T & SxT vector, & store its edges
 		for ( unsigned int f = 0; f < theSize; f += 3 )
 		{
-			vec3 edge0;
-			vec3 edge1;
+			vec3d edge0;
+			vec3d edge1;
 
-			vec3 s;
-			vec3 t;
-
-			// if (2064==f)	__asm int 3;
+			vec3d s;
+			vec3d t;
 
             // grap position & tex coords again in case they were reallocated
             pPositions	= (vec3*)	( &( positions[ 0 ] ) );
             tex			= (vec3*)	( &( output[ (*texIter).second ].floatVector_[ 0 ] ) );
 
-			nv_scalar	_eps	= type_epsilon	(nv_scalar);
-			nv_scalar	a,b,c;
-			vec3		sxt;
+			double		_eps	= type_epsilon	(double)*10;
+			double		a,b,c;
+			vec3d		sxt;
 
 			// create an edge(s) out of s and t
 			edge0.y		= tex[ indices[ f + 1 ] ].x - tex[ indices[ f ] ].x;
@@ -708,8 +706,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			sxt			= edge0 ^ edge1;
 
             a=sxt.x;b=sxt.y;c= sxt.z;
-            nv_scalar ds_dx = nv_zero;		if ( _abs( a ) > _eps )		ds_dx = - b / a;
-            nv_scalar dt_dx = nv_zero;		if ( _abs( a ) > _eps )		dt_dx = - c / a;
+            double ds_dx = nv_zero;		if ( _abs( a ) > _eps )		ds_dx = - b / a;
+            double dt_dx = nv_zero;		if ( _abs( a ) > _eps )		dt_dx = - c / a;
 
 			// create an edge out of y, s and t
 			edge0.x		= pPositions[ indices[ f + 1 ] ].y - pPositions[ indices[ f ] ].y;
@@ -717,8 +715,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			sxt			= edge0 ^ edge1;
 
             a=sxt.x;b=sxt.y;c= sxt.z;
-			nv_scalar ds_dy = nv_zero;		if ( _abs( a ) > _eps )		ds_dy = -b / a;
-			nv_scalar dt_dy = nv_zero;		if ( _abs( a ) > _eps )		dt_dy = -c / a;
+			double ds_dy = nv_zero;		if ( _abs( a ) > _eps )		ds_dy = -b / a;
+			double dt_dy = nv_zero;		if ( _abs( a ) > _eps )		dt_dy = -c / a;
 
 			// create an edge out of z, s and t
 			edge0.x		= pPositions[ indices[ f + 1 ] ].z - pPositions[ indices[ f ] ].z;
@@ -726,12 +724,12 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			sxt			= edge0 ^ edge1;
 
             a=sxt.x;b=sxt.y;c= sxt.z;
-			nv_scalar ds_dz = nv_zero;		if ( _abs( a ) > _eps )		ds_dz = -b / a;
-            nv_scalar dt_dz = nv_zero;		if ( _abs( a ) > _eps )		dt_dz = -c / a;
+			double ds_dz = nv_zero;		if ( _abs( a ) > _eps )		ds_dz = -b / a;
+            double dt_dz = nv_zero;		if ( _abs( a ) > _eps )		dt_dz = -c / a;
 
             // generate coordinate frame from the gradients
-            s				= vec3( ds_dx, ds_dy, ds_dz );
-            t				= vec3( dt_dx, dt_dy, dt_dz );
+            s				= vec3d( ds_dx, ds_dy, ds_dz );
+            t				= vec3d( dt_dx, dt_dy, dt_dz );
 
 			s.normalize		();
 			t.normalize		();
@@ -739,9 +737,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 			sxt.normalize	();
 
             // save vectors for this face
-            sVector.push_back( s );
-            tVector.push_back( t );
-            sxtVector.push_back( sxt );
+            sVector.push_back	( vec3(s)	);
+            tVector.push_back	( vec3(t)	);
+            sxtVector.push_back	( vec3(sxt) );
 
 			if ( _FixTangents == FixTangents )
 			{

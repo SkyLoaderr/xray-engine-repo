@@ -152,19 +152,6 @@ vec3 & add(vec3 & u, const vec3& v, const vec3& w)
     return u;
 }
 
-nv_scalar vec3::normalize()
-{
-	nv_scalar norm = _sqrt(x * x + y * y + z * z);
-	if (norm > nv_eps)
-		norm = nv_one / norm;
-	else
-		norm = nv_zero;
-	x *= norm;
-	y *= norm;
-	z *= norm;
-	return norm;
-}
-
 vec3 & scale(vec3& u, const nv_scalar s)
 {
     u.x *= s;

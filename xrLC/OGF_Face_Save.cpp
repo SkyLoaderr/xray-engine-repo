@@ -65,15 +65,15 @@ struct	r2v
 	r2v			(Fvector3 _P, Fvector _N, Fvector _T, Fvector _B, base_color _CC, Fvector2 tc_base)
 	{
 		base_color_c	_C;	_CC._get	(_C);
-		_N.normalize	();
-		_T.normalize	();
-		_B.normalize	();
-		P				= _P;
-		N				= u8_vec4		(_N,u8_clr(_C.hemi));
-		T				= u8_vec4		(_T);
-		B				= u8_vec4		(_B);
-		tc0x			= tc_base.x;
-		tc0y			= tc_base.y;
+		_N.normalize_safe	();
+		_T.normalize_safe	();
+		_B.normalize_safe	();
+		P					= _P;
+		N					= u8_vec4		(_N,u8_clr(_C.hemi));
+		T					= u8_vec4		(_T);
+		B					= u8_vec4		(_B);
+		tc0x				= tc_base.x;
+		tc0y				= tc_base.y;
 	}
 };
 struct  r1v_lmap	{

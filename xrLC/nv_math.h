@@ -42,12 +42,9 @@ typedef f32						nv_scalar;
 #define nv_big_eps				nv_scalar(10e-6)
 #define nv_small_eps			nv_scalar(10e-2)
 
+template<class _T>				struct vec3t;
 struct vec2;
-struct vec2t;
-struct vec3;
-struct vec3t;
 struct vec4;
-struct vec4t;
 
 #ifndef _nv_algebra_h_
 #include "nv_algebra.h"
