@@ -38,77 +38,66 @@ function main()
 			action(
 				guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				guard02,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				guard03,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				final_guard01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				final_guard02,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				final_guard03,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				final_guard04,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				final_guard05,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				guard_wait01,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				guard_wait02,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
 			action(
 				guard_wait03,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
