@@ -78,6 +78,13 @@ velocity_factor		     	= 0.5
 luminocity_factor			= 0.5;0 			; фактор освещения (только для Актёра)
 transparency_threshold	 	= 0.75
 
+[stalker_sound_perceive]
+	weapon					= 10.0
+	item					= 1.0
+	npc						= 1.0
+	anomaly					= 1.0
+	world					= 1.0
+
 [stalker_damage]
 default						= 1.0, -1, 1.0
 
@@ -235,6 +242,7 @@ self_sound_factor				= 0.1	;1.0
 self_decrease_quant				= 250	; in milliseconds
 self_decrease_factor			= 0.95	; fading factor 
 killer_clsids					= Z_MINCER,Z_GALANT
+sound_perceive_section			= stalker_sound_perceive
 
 ;---VISIBILITY--------------------------------------------------------
 vision_danger_section			= stalker_vision_danger
