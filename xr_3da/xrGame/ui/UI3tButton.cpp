@@ -24,11 +24,21 @@ CUI3tButton::~CUI3tButton(){
 }
 
 void CUI3tButton::Init(int x, int y, int width, int height){
+	m_eButtonState = BUTTON_NORMAL;
+	m_ePressMode = NORMAL_PRESS;
+	m_bButtonClicked = false;
+	m_bCursorOverWindow = false;
+
     CUIWindow::Init(x, y, width, height);
 }
 
 void CUI3tButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
+	m_eButtonState = BUTTON_NORMAL;
+	m_ePressMode = NORMAL_PRESS;
+	m_bButtonClicked = false;
+	m_bCursorOverWindow = false;
+
 	this->Init(x, y, width, height);
 	this->InitTexture(tex_name);
 }

@@ -8,24 +8,16 @@
 // Copyright: 2004 GSC Game World
 
 #pragma once
-#include "UIButton.h"
+#include "UI3tButton.h"
 #include "UIFrameWindow.h"
 
-class CUITabButton : public CUIButton {
-	typedef CUIButton inherited;
+class CUITabButton : public CUI3tButton {
+	typedef CUI3tButton inherited;
 public:
 	CUITabButton();
 	virtual ~CUITabButton();
-	// appearence
-	virtual void Init(int x, int y, int width, int height);
-	virtual void InitTexture(LPCSTR tex_name);
-	virtual void InitTexture(LPCSTR tex_norm, LPCSTR tex_press, LPCSTR tex_disable);	
-	virtual void SetColor(u32 color_norm, u32 color_press, u32 color_disable);	
-	virtual void SetTextColor(u32 color);
-
-	// behavior
-	virtual void Draw();
-	virtual void Update();
+	
+	// behavior	
 	virtual void AssociateWindow(CUIFrameWindow* pWindow);
 	virtual CUIFrameWindow* GetAssociatedWindow();
 	//virtual void Enable(bool bEnable);
@@ -33,17 +25,9 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 protected:
-	// textures
-	CUIStaticItem* m_psiCurrentState;
-	CUIStaticItem  m_siEnabledNormalState;
-	CUIStaticItem  m_siEnabledPressedState;
-	CUIStaticItem  m_siDisabledState;
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
-    // text color
-	bool m_bUseDisabledTextColor;
-	u32  m_dwEnabledTextColor;
-	u32  m_dwDisabledTextColor;
-
+protected:
 	// asociated window
 	CUIFrameWindow* m_pAssociatedWindow;
 };

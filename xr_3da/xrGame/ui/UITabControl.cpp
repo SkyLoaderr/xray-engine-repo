@@ -83,7 +83,21 @@ void CUITabControl::RemoveAll()
 // переключение закладок.
 void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if (BUTTON_CLICKED == msg)
+	if (TAB_SELECT == msg)
+	{
+		for (u32 i = 0; i < m_TabsArr.size(); ++i)
+		{
+			if (m_TabsArr[i] == pWnd)
+			{
+				int iPrevPushedIndex = m_iPushedIndex;
+				m_iPushedIndex = i;
+				GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
+				break;
+			}
+		}
+		inherited::SendMessage(pWnd, msg, pData);		
+	}
+	else if (BUTTON_CLICKED == msg)
 	{
 		// если нажали на активную кнопку, то ничего не делать.
 		TABS_VECTOR::value_type pushedItem = smart_cast<TABS_VECTOR::value_type>(pWnd);

@@ -31,11 +31,7 @@ void CUITabControl::script_register(lua_State *L)
 		.def("GetGlobalButtonColor",				&CUITabControl::GetGlobalButtonColor),
 
 		class_<CUITabButton, CUIButton>("CUITabButton")
-		.def(					constructor<>())
-		.def("InitTexture",         (void (CUITabButton::*)(LPCSTR))&CUITabButton::InitTexture)
-		.def("InitTexture",         (void (CUITabButton::*)(LPCSTR, LPCSTR, LPCSTR)) &CUITabButton::InitTexture)
-		.def("SetColor",            (void (CUITabButton::*)(int, int, int)) &CUITabButton::SetColor)
-		.def("SetTextColor",        &CUITabButton::SetTextColor)
+		.def(					constructor<>())		
 		.def("AssociateWindow",     &CUITabButton::AssociateWindow)
 		.def("GetAssociatedWindow", &CUITabButton::GetAssociatedWindow)
 		.def("ShowAssociatedWindow",&CUITabButton::ShowAssociatedWindow)
