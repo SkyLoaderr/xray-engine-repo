@@ -9,7 +9,7 @@
 class CWeaponAK74: public CWeaponMagazined
 {
 private:
-	typedef CWeapon inherited;
+	typedef CWeaponMagazined inherited;
 private:
 	// Media :: sounds
 	sound3D			sndFireLoop;
