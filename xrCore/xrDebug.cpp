@@ -74,7 +74,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	switch (res) 
 	{
 	case IDC_STOP:
-		abort	();
+		TerminateProcess(GetCurrentProcess(),3);
 		break;
 	case IDC_DEBUG:
 		__asm { int 3 };
