@@ -85,7 +85,7 @@ void CSE_ALifeAnomalousZone::on_spawn						()
 	inherited1::on_spawn	();
 
 	m_maxPower				= m_fStartPower = randF(m_min_start_power,m_max_start_power);
-	u32						jj = iFloor(m_maxPower/m_power_artefact_factor);
+	u32						jj = iFloor(randF(m_fBirthProbability)*m_maxPower/m_power_artefact_factor);
 
 	for (u32 ii=0; ii<jj; ++ii) {
 		float fProbability		= randF(1.f);
