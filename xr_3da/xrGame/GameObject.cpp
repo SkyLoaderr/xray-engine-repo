@@ -15,7 +15,7 @@
 
 CGameObject::CGameObject		()
 {
-	AI_NodeID		= 0;
+	AI_NodeID		= u32(-1);
 	AI_Node			= 0;
 	m_pPhysicsShell = NULL;
 	//////////////////////////////////////
@@ -193,13 +193,15 @@ void CGameObject::spatial_move		()
 		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find _new AI-Node
-		if ((AI_Node) && (Visual())) {
+//		if ((AI_Node) && (Visual())) {
+		if (Visual()) {
 			Fvector		Pos	= Visual()->vis.sphere.P;		  
 			Pos.add		(Position());
 			CAI_Space&	AI = getAI();
 
 //			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
-			AI.ref_dec  (AI_NodeID);
+			if ((int(AI_NodeID) > 0) && (getAI().Header().count))
+				AI.ref_dec			(AI_NodeID);
 //			Msg("Spatial move %s",cName());
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 
