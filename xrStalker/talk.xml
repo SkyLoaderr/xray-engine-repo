@@ -9,7 +9,7 @@
 	</static_icon>
 
 	<!-- BUTTONS -->
-	<button x="437" y="726" width="138" height="47">
+	<button x="437" y="726" width="138" height="47" hR="0" hB="0" hG="0">
 		<texture>ui\ui_button_01</texture>
 		<text align="c"	font="header" r="238" g="153" b="26">Trade</text>
 	</button>
