@@ -17,6 +17,8 @@ CEncyclopediaArticle::CEncyclopediaArticle()
 
 CEncyclopediaArticle::~CEncyclopediaArticle()
 {
+	if( data()->image.GetParent() )
+		data()->image.GetParent()->DetachChild( &(data()->image) );
 }
 
 void CEncyclopediaArticle::Load	(ARTICLE_STR_ID str_id)

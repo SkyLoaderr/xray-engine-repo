@@ -41,17 +41,19 @@ void CMainUI::Activate	(bool bActivate)
 		m_startDialog = smart_cast<CUIDialogWnd*>(dlg);
 		VERIFY(m_startDialog);
 
-		m_Flags.set			(flRestoreConsole,Console->bVisible);
-		m_Flags.set			(flRestorePause,Device.Pause());
+		m_Flags.set					(flRestoreConsole,Console->bVisible);
+		m_Flags.set					(flRestorePause,Device.Pause());
 		Console->Hide				();
-//		Console->Execute			("pause on");
+
+		if(!m_Flags.is(flRestorePause))
+			Device.Pause			(TRUE);
+
 		StartStopMenu				(m_startDialog,true);
 		if(g_pGameLevel){
 			Device.seqFrame.Remove	(g_pGameLevel);
 			Device.seqRender.Remove	(g_pGameLevel);
 		};
 		Device.seqRender.Add		(this);
-//		Device.seqFrame.Add			(this);
 	}else{
 		m_Flags.set					(flActive,FALSE);
 		m_Flags.set					(flNeedChangeCapture,TRUE);
@@ -76,11 +78,9 @@ void CMainUI::Activate	(bool bActivate)
 		if(m_Flags.is(flRestoreConsole))
 			Console->Show			();
 
-/*		if(m_bRestorePause)
-			Console->Execute		("pause on");
-		else
-			Console->Execute		("pause off");
-*/
+		if(!m_Flags.is(flRestorePause))
+			Device.Pause(FALSE);
+
 	}
 }
 bool CMainUI::IsActive	()
