@@ -21,8 +21,8 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_vec3			(o_Angle		);
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
-	if (bLocal)			P.w_u16(s_flags	| M_SPAWN_OBJECT_LOCAL );
-	else				P.w_u16(s_flags );
+	if (bLocal)			P.w_u16(u16(s_flags|M_SPAWN_OBJECT_LOCAL) );
+	else				P.w_u16(u16(s_flags));
 
 	// write specific data
 	u32	position		= P.w_tell		();

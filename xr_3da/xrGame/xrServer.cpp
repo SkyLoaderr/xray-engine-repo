@@ -51,7 +51,7 @@ void xrServer::Update	()
 		if (!HasBandwidth(Client))	continue;
 
 		// Send relevant entities to client
-		xrServerEntity*	Base	= Client->owner;
+		// xrServerEntity*	Base	= Client->owner;
 
 		Packet.w_begin	(M_UPDATE);
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
@@ -200,7 +200,7 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	// Destroy from the map and create message
 	NET_Packet			P;
 	P.w_begin			(M_DESTROY);
-	P.w_u16				(IDs.size());
+	P.w_u16				(u16(IDs.size()));
 	for (int i=0; i<int(IDs.size()); i++)
 	{
 		u16		ID			= IDs[i];
