@@ -477,6 +477,8 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	return 0;
 }
 
+extern u32		crc32_calc	(void* P, u32 len);
+
 void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load	(N, data, dwFlags);
@@ -504,6 +506,8 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 			TMP._keys			= xr_alloc<CKeyQ>(dwLen);
 			TMP._count			= dwLen;
 			MS->r				(TMP._keys,TMP._count*sizeof(CKeyQ));
+			u32 crc=crc32_calc	(TMP._keys,TMP._count*sizeof(CKeyQ));
+			Msg					("motion %-30s,bone[%2d] -> %x",mname,i,crc);
 			((CBoneDataAnimated*)(*bones)[i])->Motions.push_back(TMP);
 		}
 	}

@@ -884,6 +884,9 @@
 					Name="Skeleton"
 					Filter="">
 					<File
+						RelativePath=".\crc32.cpp">
+					</File>
+					<File
 						RelativePath=".\SkeletonAnimated.cpp">
 					</File>
 					<File
