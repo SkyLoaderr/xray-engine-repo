@@ -40,17 +40,32 @@ struct	ENGINE_API		SState			: public xr_resorce									{
 struct	ENGINE_API		STextureList	: public xr_resorce, public svector<CTexture*,8>	{
 	void				_release_		(STextureList * ptr);
 };
+typedef	resptr_core<STextureList,resptr_base<STextureList> >	
+	ref_texture_list;
+
+//
 struct	ENGINE_API		SMatrixList		: public xr_resorce, public svector<CMatrix*,8>		{
 	void				_release_		(SMatrixList * ptr);
 };
+typedef	resptr_core<SMatrixList,resptr_base<SMatrixList> >	
+	ref_matrix_list;
+
+// 
 struct	ENGINE_API		SConstantList	: public xr_resorce, public svector<CConstant*,8>	{
 	void				_release_		(SConstantList * ptr);
 };
+typedef	resptr_core<SConstantList,resptr_base<SConstantList> >	
+	ref_constant_list;
+
+//
 struct	ENGINE_API		SDeclaration	: public xr_resorce									{
 	IDirect3DVertexDeclaration9*		dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
 	xr_vector<D3DVERTEXELEMENT9>		dcl_code;
 	void				_release_		(SDeclaration * ptr);
 };
+typedef	resptr_core<SDeclaration,resptr_base<SDeclaration> >	
+	ref_declaration;
+
 struct	ENGINE_API		SGeometry		: public xr_resorce									{
 	IDirect3DVertexDeclaration9*		dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
 	IDirect3DVertexBuffer9*				vb;
@@ -58,6 +73,7 @@ struct	ENGINE_API		SGeometry		: public xr_resorce									{
 	u32									vb_stride;
 	void				_release_		(SGeometry * ptr);
 };
+
 struct	ENGINE_API		SPass			: public xr_resorce									{
 	IDirect3DStateBlock9*				state;		// Generic state, like Z-Buffering, samplers, etc
 	IDirect3DPixelShader9*				ps;			// may be NULL = FFP, in that case "state" must contain TSS setup
