@@ -90,14 +90,14 @@ private:
 	void							add_leafs_Dynamic			(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static			(IRender_Visual	*pVisual);					// if detected node's full visibility
 
-	ShaderElement*					rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
-	ShaderElement*					rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);
-
 	IRender_Sector*					rimp_detectSector			(Fvector& P, Fvector& D);
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_indirect				(light*			L	);
 	void							render_lights				(light_Package& LP	);
 public:
+	ShaderElement*					rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
+	ShaderElement*					rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);
+
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);

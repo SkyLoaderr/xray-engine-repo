@@ -75,9 +75,9 @@ private:
 	void								add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void								add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
 
+public:
 	ShaderElement*						rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*						rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq);
-public:
 	IRender_Portal*						getPortal				(int id);
 	IRender_Sector*						getSectorActive			();
 	IRender_Visual*						model_CreatePE			(LPCSTR			name);
