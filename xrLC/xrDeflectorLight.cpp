@@ -6,6 +6,10 @@
 #include "std_classes.h"
 #include "xrImage_Resampler.h"
 
+const	DWORD	rms_zero		= 8;
+const	DWORD	rms_shrink		= 16;
+const	DWORD	rms_discard		= 16;
+
 void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
 {
 	static UVpoint Jitter1[1] = {
@@ -369,10 +373,10 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(HASH& H, DWORD layer)
+VOID CDeflector::L_Calculate(HASH& H)
 {
-	b_texture&		lm = layers[layer].lm;
-
+	b_texture&		lm = layers.back().lm;
+	
 	// UV & HASH
 	RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
 	Fbox2			bounds;
@@ -384,14 +388,14 @@ VOID CDeflector::L_Calculate(HASH& H, DWORD layer)
 		Bounds		(fid,bounds);
 		H.add		(bounds,T);
 	}
-
+	
 	// Calculate
 	{
 		DWORD size = lm.dwWidth*lm.dwHeight*4;
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-	L_Direct		(H,layer);
+	L_Direct		(H);
 }
 
 VOID CDeflector::Light(HASH& H)
@@ -405,14 +409,14 @@ VOID CDeflector::Light(HASH& H)
 	}
 	bb.getsphere(Center,Radius);
 	
-	for (DWORD layer=0; layer<pBuild->lights_soften.size(); layer++)
+	// Iterate on layers
+	for (b_LightLayer* layer=pBuild->lights.begin(); layer!=pBuild->lights.end(); layer++)
 	{
 		// Convert lights to local form
-		vector<R_Light>&	layer_lights	= pBuild->lights_soften[layer];
 		{
 			LightsSelected.clear	();
-			R_Light*	L			= layer_lights.begin();
-			for (; L!=layer_lights.end(); L++)
+			R_Light*	L			= layer->lights.begin();
+			for (; L!=layer->lights.end(); L++)
 			{
 				if (L->type==LT_POINT) {
 					float dist = Center.distance_to(L->position);
@@ -421,22 +425,21 @@ VOID CDeflector::Light(HASH& H)
 				LightsSelected.push_back(*L);
 			}
 		}
-		if (layer && LightsSelected.empty())	continue;
+		if ((layer!=pBuild->lights.begin()) && LightsSelected.empty())	continue;
 
 		// Register new layer
-		layers.push_back(Layer());
+		layers.push_back	(Layer());
 		Layer&	layer_data	= layers.back();
-		layer_data.id		= layer;
+		layer_data.base		= layer->original;
 		b_texture& lm		= layer_data.lm;
 		lm.dwWidth			= dwWidth;
 		lm.dwHeight			= dwHeight;
 		
 		// Calculate and fill borders
-		L_Calculate	(H,layers.size()-1);
+		L_Calculate			(H);
 		for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 		
 		// Compression
-		const	DWORD rms		= 8;
 		DWORD	w,h;
 		if (compress_Zero(lm,rms))	return;		// already with borders
 		else if (compress_RMS(lm,rms*2,w,h))	
@@ -445,7 +448,7 @@ VOID CDeflector::Light(HASH& H)
 			lm.dwWidth	= w;
 			lm.dwHeight	= h;
 			_FREE		(lm.pSurface);
-			L_Calculate	(H,layers.size()-1);
+			L_Calculate	(H);
 		}
 		
 		// Expand with borders
@@ -522,16 +525,18 @@ VOID CDeflector::Light(HASH& H)
 
 		// Test if layer really needed 
 		{
-			if (0==layer)	continue;	// base, ambient layer - SKPI
-			BOOL			bSkip	= FALSE;
+			if (layer==pBuild->lights.begin())	continue;	// base, ambient layer - SKIP
+			BOOL			bSkip	= TRUE;
 			DWORD			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 			for (DWORD pix=0; pix<size; pix++)	{
-				DWORD pixel	= lm.pSurface	[y*lm.dwWidth+x];
-				if (RGBA_GETALPHA(pixel)>=254)	{
-					if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	return FALSE;
-					if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	return FALSE;
-					if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	return FALSE;
-				}
+				DWORD pixel	= lm.pSurface	[pix];
+				if (RGBA_GETRED(pixel)>rms_discard)			{ bSkip=FALSE; break; }
+				if (RGBA_GETGREEN(pixel)>rms_discard)		{ bSkip=FALSE; break; }
+				if (RGBA_GETBLUE(pixel)>rms_discard)		{ bSkip=FALSE; break; }
+			}
+			if (bSkip)		{
+				_FREE			(lm.pSurface);
+				layers.pop_back	();
 			}
 		}
 	}
