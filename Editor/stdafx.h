@@ -127,9 +127,9 @@ void __fastcall _verify(const char *expr, char *file, int line);
 
 // some user components
 #include "clsid.h"
-#include "engine/vector.h"
-#include "engine/FixedVector.h"
-#include "engine/xr_list.h"
+#include "vector.h"
+#include "FixedVector.h"
+#include "xr_list.h"
 #include "Log.h"
 
 extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
