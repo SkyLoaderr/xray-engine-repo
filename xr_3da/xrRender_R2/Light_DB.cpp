@@ -18,6 +18,9 @@ void CLight_DB::Load			(IReader *fs)
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
 
+		sun_dir.set		(0,	-1,	0);
+		sun_color.set	(1,	 1,	1);
+
 		u32 size		= F->length();
 		u32 element		= sizeof(Flight)+4;
 		u32 count		= size/element;
