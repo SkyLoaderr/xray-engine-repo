@@ -179,6 +179,7 @@ BOOL CCar::net_SaveRelevant()
 void CCar::SaveNetState(NET_Packet& P)
 {
 	CPHSkeleton::SaveNetState	   (P);
+	P.w_float(fEntityHealth);
 
 	{
 		xr_map<u16,SDoor>::iterator i,e;
@@ -203,8 +204,10 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
 	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPHSkeleton::RestoreNetState(po);
-	CDamagableItem::RestoreEffect();
+	
 	CSE_ALifeCar* co=smart_cast<CSE_ALifeCar*>(po);
+	fEntityHealth=co->health;
+	CDamagableItem::RestoreEffect();
 	{
 		xr_map<u16,SDoor>::iterator i,e;
 		xr_vector<CSE_ALifeCar::SDoorState>::iterator		ii=co->door_states.begin();

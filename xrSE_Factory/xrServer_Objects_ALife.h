@@ -356,6 +356,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual,CSE_PHSke
 	};
 	xr_vector<SDoorState>			door_states;
 	xr_vector<SWheelState>			wheel_states;
+	float							health;
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;

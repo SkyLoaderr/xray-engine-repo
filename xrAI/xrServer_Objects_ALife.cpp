@@ -1212,6 +1212,7 @@ void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
 	//inherited1::data_load(tNetPacket);
 	inherited2::data_load(tNetPacket);
 	//VERIFY(door_states.empty());
+	health=tNetPacket.r_float();
 	door_states.clear();
 	u16 doors_number=tNetPacket.r_u16();
 	for(u16 i=0;i<doors_number;++i)
@@ -1232,6 +1233,7 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 {
 	//inherited1::data_save(tNetPacket);
 	inherited2::data_save(tNetPacket);
+	tNetPacket.w_float(health);
 	{
 		tNetPacket.w_u16(u16(door_states.size()));
 		xr_vector<SDoorState>::iterator i=door_states.begin(),e=door_states.end();
