@@ -227,12 +227,12 @@ void __cdecl logThread(void *dummy)
 
 void __cdecl clMsg( const char *format, ...)
 {
-	va_list mark;
-	char buf	[256];
-	va_start( mark, format );
-	vsprintf( buf, format, mark );
+	va_list		mark;
+	char buf	[4*256];
+	va_start	( mark, format );
+	vsprintf	( buf, format, mark );
 
-	char _out_	[256];
+	char _out_	[4*256];
 	strconcat	(_out_,"    |    | ", buf );   
 	Log			(_out_);
 }
