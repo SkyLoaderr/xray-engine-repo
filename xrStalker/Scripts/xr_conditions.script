@@ -52,7 +52,7 @@ end
 
 function killed_by_actor(actor, npc)
 	local t = db.storage[npc:id()].death
-	local killed_by_actor = t ~= nil and t.killed == actor:id()
+	local killed_by_actor = t ~= nil and t.killer == actor:id()
 	printf("_bp: killed_by_actor: %s", if_then_else(killed_by_actor, "true", "false"))
 end
 
