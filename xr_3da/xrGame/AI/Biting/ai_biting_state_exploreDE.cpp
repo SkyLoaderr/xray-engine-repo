@@ -43,8 +43,8 @@ void CBitingExploreDE::Init()
 	dir.sub(m_tEnemy.position,pMonster->Position());
 	dir.getHP(yaw,pitch);
 
-	pMonster->r_torso_target.yaw = yaw;
-	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->r_torso_current.yaw)) / pMonster->_sd->m_fsTurnNormalAngular * 1000);
+	pMonster->m_body.target.yaw = yaw;
+	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->m_body.current.yaw)) / pMonster->_sd->m_fsTurnNormalAngular * 1000);
 
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
@@ -53,7 +53,7 @@ void CBitingExploreDE::Init()
 void CBitingExploreDE::Run()
 {
 	// определение состояния
-	if (m_tAction == ACTION_LOOK_AROUND && (m_dwStateStartedTime + m_dwTimeToTurn < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+	if (ACTION_LOOK_AROUND == m_tAction && (m_dwStateStartedTime + m_dwTimeToTurn < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
 
 	SoundElem se;
 	bool bDangerous;
@@ -64,11 +64,11 @@ void CBitingExploreDE::Run()
 		// look round here
 		break;
 	case ACTION_HIDE:
-		pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
-		pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
-		pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+		pMonster->m_tSelectorCover->m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover->m_fSearchRange;
+		pMonster->m_tSelectorCover->m_fOptEnemyDistance = pMonster->m_tSelectorCover->m_fMaxEnemyDistance;
+		pMonster->m_tSelectorCover->m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
 
-		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0,2000);
+		pMonster->vfChoosePointAndBuildPath(pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

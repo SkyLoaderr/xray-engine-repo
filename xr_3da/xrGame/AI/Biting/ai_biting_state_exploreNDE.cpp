@@ -38,7 +38,7 @@ void CBitingExploreNDE::Run()
 	switch (m_tAction) {
 	case ACTION_LOOK_DESTINATION:			// повернуться в сторону звука
 		DO_ONCE_BEGIN(flag_once_1);
-			pMonster->AI_Path.TravelPath.clear();
+			pMonster->enable_movement(false);
 			pMonster->LookPosition(m_tSound.position);
 		DO_ONCE_END();
 	
@@ -52,8 +52,8 @@ void CBitingExploreNDE::Run()
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		
 		// если монстр дошел до конца пути, перейти к следующему заданию
-		if ( !pMonster->AI_Path.TravelPath.empty() && 
-			((pMonster->AI_Path.TravelPath.size() - 1 ) <= pMonster->AI_Path.TravelStart)) m_tAction = ACTION_LOOK_AROUND; 
+		if ( !pMonster->CDetailPathManager::path().empty() && 
+			((pMonster->CDetailPathManager::path().size() - 1 ) <= pMonster->CDetailPathManager::curr_travel_point_index())) m_tAction = ACTION_LOOK_AROUND; 
 
 		break;
 	case ACTION_LOOK_AROUND:

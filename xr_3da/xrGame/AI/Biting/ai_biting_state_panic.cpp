@@ -2,8 +2,8 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "..\\bloodsucker\\ai_bloodsucker.h"
-#include "..\\..\\actor.h"
+#include "../bloodsucker/ai_bloodsucker.h"
+#include "../../actor.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingPanic class
@@ -51,11 +51,10 @@ void CBitingPanic::Run()
 	cur_pos = pMonster->Position();
 
 	// implementation of 'face the most open area'
-	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (m_dwStayTime != 0) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
+	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (0 != m_dwStayTime) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
 		bFacedOpenArea	= true;
-		pMonster->AI_Path.TravelPath.clear();
-
-		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
+		pMonster->enable_movement	(false);
+		pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
 	} 
 
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
@@ -79,7 +78,7 @@ void CBitingPanic::Run()
 	if (!cur_pos.similar(prev_pos)) {
 		bFacedOpenArea = false;
 		m_dwStayTime = 0;
-	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
+	} else if (0 == m_dwStayTime) m_dwStayTime = m_dwCurrentTime;
 
 	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30, 2000);
 	
@@ -87,12 +86,13 @@ void CBitingPanic::Run()
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
 		// try to rebuild path 
-		if (pMonster->AI_Path.TravelPath.size() > 5) {
-			pMonster->MotionMan.m_tAction = ACT_RUN;
-		} else {
-			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
-			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
-		}
+#pragma todo("Dima to Jim : Ypu do not have an access to the CMovementManager private members. Please decide here what to do")
+//		if (pMonster->CDetailPathManager::m_path.size() > 5) {
+//			pMonster->MotionMan.m_tAction = ACT_RUN;
+//		} else {
+//			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
+//			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
+//		}
 	}
 	
 	prev_pos = cur_pos;

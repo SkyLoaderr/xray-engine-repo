@@ -2,10 +2,10 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "..\\rat\\ai_rat.h"
+#include "../rat/ai_rat.h"
 
-#include "..\\..\\PhysicsShell.h"
-#include "..\\..\\phcapture.h"
+#include "../../PhysicsShell.h"
+#include "../../phcapture.h"
 
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
@@ -91,7 +91,7 @@ void CBitingEat::Run()
 
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
-		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->set_level_dest_vertex (pCorpse->level_vertex_id());
 		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
 		pMonster->MotionMan.m_tAction = ACT_RUN;
@@ -100,7 +100,7 @@ void CBitingEat::Run()
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
 
-		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
 		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
@@ -165,7 +165,7 @@ void CBitingEat::Run()
 
 	case ACTION_WALK:
 
-		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->set_level_dest_vertex	(pCorpse->level_vertex_id());
 		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0,500);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
@@ -201,7 +201,7 @@ void CBitingEat::Run()
 		pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 
 		// если не может тащить
-		if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_EAT; 
+		if (0 == pMonster->Movement.PHCapture()) m_tAction = ACTION_EAT; 
 
 		if (saved_dist > m_fDistToDrag) {
 			// бросить труп
@@ -224,6 +224,6 @@ void CBitingEat::Done()
 
 	// если тащит труп - бросить
 	if (bDragging) {
-		pMonster->Movement.PHReleaseObject();
+		pMonster->m_PhysicMovementControl.PHReleaseObject();
 	}
 }

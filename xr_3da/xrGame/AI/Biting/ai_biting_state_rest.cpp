@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "ai_biting_state.h"
+#include "../game_graph.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest implementation
@@ -33,7 +34,7 @@ void CBitingRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последстви€ преследовани€ врага)
-	if (!pMonster->AI_Path.TravelPath.empty()) {
+	if (!pMonster->path_completed()) {
 		m_bFollowPath = true;
 	} else m_bFollowPath = false;
 }
@@ -58,9 +59,9 @@ void CBitingRest::Replanning()
 			m_tAction = ACTION_WALK;
 
 			// ѕостроить путь обхода точек графа, поиск пищи
-			pMonster->AI_Path.TravelPath.clear();
+			pMonster->enable_movement(false);
 			pMonster->vfUpdateDetourPoint();	
-			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+			pMonster->set_level_dest_vertex(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin;  dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -81,9 +82,9 @@ void CBitingRest::Replanning()
 
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 
-			pMonster->AI_Path.TravelPath.clear();
+			pMonster->enable_movement(false);
 			pMonster->vfUpdateDetourPoint();	
-			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+			pMonster->set_level_dest_vertex	(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -96,7 +97,7 @@ void CBitingRest::Replanning()
 void CBitingRest::Run()
 {
 	if (m_bFollowPath) {
-		if ((pMonster->AI_Path.TravelPath.size() - 1) <= pMonster->AI_Path.TravelStart) m_bFollowPath = false;
+		if ((pMonster->CDetailPathManager::path().size() - 1) <= pMonster->CDetailPathManager::curr_travel_point_index()) m_bFollowPath = false;
 	}
 
 	if (m_bFollowPath) {

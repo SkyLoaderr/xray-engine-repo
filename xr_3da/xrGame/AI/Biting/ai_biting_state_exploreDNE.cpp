@@ -2,8 +2,8 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "..\\bloodsucker\\ai_bloodsucker.h"
-#include "..\\..\\actor.h"
+#include "../bloodsucker/ai_bloodsucker.h"
+#include "../../actor.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreDNE class
@@ -87,14 +87,14 @@ void CBitingExploreDNE::Run()
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
 		LOG_EX("DNE : [LOOK_BACK_POSITION]");
 		DO_ONCE_BEGIN(flag_once_1);
-			pMonster->AI_Path.TravelPath.clear();
+			pMonster->enable_movement(false);
 			pMonster->LookPosition(SavedPosition);
 		DO_ONCE_END();
 
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		
 		// если уже повернулся, перейти в след. состояние
-		if (getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw, PI_DIV_6/6)) m_tAction = ACTION_LOOK_AROUND;
+		if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
 		break;
 
 	case ACTION_LOOK_AROUND:
