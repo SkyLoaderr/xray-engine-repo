@@ -60,9 +60,14 @@ void CLight_DB::Load			(IReader *fs)
 			}
 			else
 			{
+				Fvector tmp_D,tmp_R;
+				tmp_D.set			(0,0,-1);	// forward
+				tmp_R.set			(1,0,0);	// right
+
 				// point
 				v_static.push_back	(L);
 				L->set_position		(Ldata.position		);
+				L->set_rotation		(tmp_D, tmp_R		);
 				L->set_range		(Ldata.range		);
 				L->set_color		(Ldata.diffuse		);
 				L->set_active		(true				);
