@@ -45,6 +45,7 @@ function fract:checkNpc(npc)
 	end
 	
 	if self.type == "gar_bandits" then
+		printf("COMM %s", npc:character_community())
 		return npc:character_community() == "bandit"
 	end
 	if self.type == "gar_stalkers" then
