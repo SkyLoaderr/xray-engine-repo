@@ -8,17 +8,38 @@
 
 #pragma once
 
+#include "object_broker.h"
+
 template <
 	typename _action_type,
 	typename _object_type,
 	typename _action_id_type
 >
 class CSetupManager {
+private:
+	typedef std::pair<_action_id_type,_action_type*>	setup_pair;
+	typedef xr_vector<setup_pair>						setup_actions;
+
+private:
+	struct setup_pred {
+		_action_id_type	m_action_id;
+
+		IC			setup_pred	(const _action_id_type &action_id)
+		{
+			m_action_id	= action_id;
+		}
+
+		IC	bool	operator()	(const setup_pair &pair) const
+		{
+			return	(pair.first == m_action_id);
+		}
+	};
+
 protected:
-	_object_type							*m_object;
-	xr_map<_action_id_type,_action_type*>	m_actions;
-	_action_id_type							m_current_action_id;
-	bool									m_actuality;
+	_object_type					*m_object;
+	setup_actions					m_actions;
+	_action_id_type					m_current_action_id;
+	bool							m_actuality;
 
 public:
 	IC								CSetupManager		(_object_type *object);

@@ -41,7 +41,7 @@ void CSSetupManager::reinit							()
 TEMPLATE_SPECIALIZATION
 IC	_action_type &CSSetupManager::action			(const _action_id_type &action_id) const
 {
-	xr_map<_action_id_type,_action_type*>::const_iterator	I = m_actions.find(action_id);
+	setup_actions::const_iterator	I = std::find_if(m_actions.begin(),m_actions.end(),setup_pred(action_id));
 	VERIFY					(I != m_actions.end());
 	return					(*(*I).second);
 }
@@ -62,12 +62,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSSetupManager::clear						()
 {
 	m_actuality				= false;
-	xr_map<_action_id_type,_action_type*>::iterator	I = m_actions.begin();
-	xr_map<_action_id_type,_action_type*>::iterator	E = m_actions.end();
-	for ( ; I != E; ++I)
-		xr_delete			((*I).second);
-
-	m_actions.clear			();
+	delete_data				(m_actions);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -75,11 +70,11 @@ IC	void CSSetupManager::add_action					(const _action_id_type &action_id, _actio
 {
 	m_actuality				= false;
 	VERIFY					(action);
-	VERIFY					(m_actions.find(action_id) == m_actions.end());
+	VERIFY					(std::find_if(m_actions.begin(),m_actions.end(),setup_pred(action_id)) == m_actions.end());
 	action->set_object		(m_object);
 	if (m_actions.empty())
 		m_current_action_id	= action_id;
-	m_actions.insert		(std::make_pair(action_id,action));
+	m_actions.push_back		(std::make_pair(action_id,action));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -103,8 +98,8 @@ IC	void CSSetupManager::select_action				()
 		}
 
 		float				m_total_weight = 0.f;
-		xr_map<_action_id_type,_action_type*>::const_iterator	I = m_actions.begin();
-		xr_map<_action_id_type,_action_type*>::const_iterator	E = m_actions.end();
+		setup_actions::const_iterator	I = m_actions.begin();
+		setup_actions::const_iterator	E = m_actions.end();
 		for ( ; I != E; ++I)
 			if (((*I).first != m_current_action_id) && (*I).second->applicable())
 				m_total_weight += (*I).second->weight();
@@ -119,7 +114,7 @@ IC	void CSSetupManager::select_action				()
 			else
 				continue;
 			if (m_total_weight > m_random) {
-				if (m_actions.find(m_current_action_id) != m_actions.end())
+				if (std::find_if(m_actions.begin(),m_actions.end(),setup_pred(m_current_action_id)) != m_actions.end())
 					current_action().finalize();
 				m_current_action_id = (*I).first;
 				(*I).second->initialize();
