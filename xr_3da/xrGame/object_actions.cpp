@@ -15,8 +15,8 @@
 // CObjectActionCommand
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, u32 command, LPCSTR action_name) :
-	inherited			(item,owner,action_name),
+CObjectActionCommand::CObjectActionCommand(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 command, LPCSTR action_name) :
+	inherited			(item,owner,storage,action_name),
 	m_command			(command)
 {
 }
@@ -31,8 +31,8 @@ void CObjectActionCommand::initialize	()
 // CObjectActionShow
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionShow::CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
-	inherited		(item,owner,action_name)
+CObjectActionShow::CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
 {
 }
 
@@ -48,8 +48,8 @@ void CObjectActionShow::initialize		()
 // CObjectActionHide
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
-	inherited		(item,owner,action_name)
+CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
 {
 }
 
@@ -64,8 +64,8 @@ void CObjectActionHide::initialize		()
 // CObjectActionReload
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
-	inherited		(item,owner,action_name),
+CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
 }
@@ -86,8 +86,8 @@ void CObjectActionReload::execute			()
 // CObjectActionFire
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
-	inherited		(item,owner,action_name),
+CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
 }
@@ -111,38 +111,11 @@ void CObjectActionFire::finalize		()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CObjectActionAim
-//////////////////////////////////////////////////////////////////////////
-
-CObjectActionAim::CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
-	inherited				(item,owner,action_name),
-	m_type					(type)
-{
-}
-
-void CObjectActionAim::initialize		()
-{
-	inherited::inherited::initialize	();
-#ifndef OLD_OBJECT_HANDLER
-	m_object->set_aimed		(m_type ? 0 : 1,false);
-#endif
-}
-
-void CObjectActionAim::execute			()
-{
-	inherited::execute		();
-#ifndef OLD_OBJECT_HANDLER
-	if (completed())
-		m_object->set_aimed	(m_type,true);
-#endif
-}
-
-//////////////////////////////////////////////////////////////////////////
 // CObjectActionStrapping
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
-	inherited		(item,owner,action_name)
+CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
 {
 }
 
@@ -165,8 +138,8 @@ void CObjectActionStrapping::finalize		()
 // CObjectActionUnstrapping
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
-	inherited		(item,owner,action_name)
+CObjectActionUnstrapping::CObjectActionUnstrapping	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
 {
 }
 
@@ -189,8 +162,8 @@ void CObjectActionUnstrapping::finalize		()
 // CObjectActionQueueWait
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
-	inherited				(item,owner,action_name),
+CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+	inherited				(item,owner,storage,action_name),
 	m_type					(type)
 {
 }
@@ -198,9 +171,7 @@ CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalke
 void CObjectActionQueueWait::initialize		()
 {
 	inherited::inherited::initialize	();
-#ifndef OLD_OBJECT_HANDLER
-	m_object->set_aimed		(m_type ? 0 : 1,false);
-#endif
+//	m_object->set_aimed		(m_type ? 0 : 1,FALSE);
 }
 
 void CObjectActionQueueWait::execute			()
@@ -217,8 +188,8 @@ void CObjectActionQueueWait::finalize		()
 // CObjectActionSwitch
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
-	inherited		(item,owner,action_name),
+CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, u32 type, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
 }
@@ -242,8 +213,8 @@ void CObjectActionSwitch::finalize		()
 // CObjectActionDrop
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
-	inherited		(item,owner,action_name)
+CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited		(item,owner,storage,action_name)
 {
 }
 
@@ -263,9 +234,8 @@ void CObjectActionDrop::initialize		()
 // CObjectActionThreaten
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, bool *value, LPCSTR action_name) :
-	inherited				(item,owner,action_name),
-	m_value					(value)
+CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *owner, CConditionStorage *storage, LPCSTR action_name) :
+	inherited				(item,owner,storage,action_name)
 {
 }
 
@@ -273,9 +243,7 @@ void CObjectActionThreaten::execute			()
 {
 	inherited::execute		();
 #ifndef OLD_OBJECT_HANDLER
-	if (completed()) {
-		*m_value			= false;
+	if (completed())
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
-	}
 #endif
 }

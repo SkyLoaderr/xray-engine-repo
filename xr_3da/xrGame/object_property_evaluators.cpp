@@ -31,22 +31,6 @@ CObjectPropertyEvaluatorState::_value_type CObjectPropertyEvaluatorState::evalua
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorMember
-//////////////////////////////////////////////////////////////////////////
-
-CObjectPropertyEvaluatorMember::CObjectPropertyEvaluatorMember	(CGameObject *item, CAI_Stalker *owner, bool *member, bool equality) :
-	inherited		(item,owner),
-	m_member		(member),
-	m_equality		(equality)
-{
-}
-
-CObjectPropertyEvaluatorMember::_value_type CObjectPropertyEvaluatorMember::evaluate	()
-{
-	return			(_value_type(*m_member == m_equality));
-}
-
-//////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorAmmo
 //////////////////////////////////////////////////////////////////////////
 

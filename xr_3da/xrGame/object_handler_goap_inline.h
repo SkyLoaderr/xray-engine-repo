@@ -8,8 +8,6 @@
 
 #pragma once
 
-//#include "object_action_base.h"
-
 IC	bool CObjectHandlerGOAP::firing		() const
 {
 	return					(m_bFiring);
@@ -64,25 +62,20 @@ IC	void CObjectHandlerGOAP::add_effect				(CActionBase<CAI_Stalker> *action, u16
 IC	CObjectHandlerGOAP::EWorldProperties CObjectHandlerGOAP::object_property(MonsterSpace::EObjectAction object_action) const
 {
 	switch (object_action) {
-		case eObjectActionSwitch1		: return(eWorldPropertySwitch1);
-		case eObjectActionSwitch2		: return(eWorldPropertySwitch2);
-		case eObjectActionAim1			: return(eWorldPropertyAiming1);
-		case eObjectActionAim2			: return(eWorldPropertyAiming2);
-		case eObjectActionFire1			: return(eWorldPropertyFiring1);
-		case eObjectActionFire2			: return(eWorldPropertyFiring2);
-		case eObjectActionIdle			: return(eWorldPropertyIdle);
-		case eObjectActionStrapped		: return(eWorldPropertyIdleStrap);
-		case eObjectActionDrop			: return(eWorldPropertyDropped);
-		case eObjectActionActivate		: return(eWorldPropertyIdle);
-		case eObjectActionDeactivate	: return(eWorldPropertyNoItemsIdle);
+		case MonsterSpace::eObjectActionSwitch1		: return(eWorldPropertySwitch1);
+		case MonsterSpace::eObjectActionSwitch2		: return(eWorldPropertySwitch2);
+		case MonsterSpace::eObjectActionAim1		: return(eWorldPropertyAiming1);
+		case MonsterSpace::eObjectActionAim2		: return(eWorldPropertyAiming2);
+		case MonsterSpace::eObjectActionFire1		: return(eWorldPropertyFiring1);
+		case MonsterSpace::eObjectActionFire2		: return(eWorldPropertyFiring2);
+		case MonsterSpace::eObjectActionIdle		: return(eWorldPropertyIdle);
+		case MonsterSpace::eObjectActionStrapped	: return(eWorldPropertyIdleStrap);
+		case MonsterSpace::eObjectActionDrop		: return(eWorldPropertyDropped);
+		case MonsterSpace::eObjectActionActivate	: return(eWorldPropertyIdle);
+		case MonsterSpace::eObjectActionDeactivate	: return(eWorldPropertyNoItemsIdle);
 		default							: NODEFAULT;
 	}
 #ifdef DEBUG
 	return	(eWorldPropertyDummy);
 #endif
-}
-
-IC	void CObjectHandlerGOAP::set_aimed	(u32 type, bool value)
-{
-	(type ? m_aimed2 : m_aimed1) = value;
 }

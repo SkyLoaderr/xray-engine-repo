@@ -9,10 +9,13 @@
 #pragma once
 
 #include "property_evaluator_const.h"
+#include "property_evaluator_member.h"
 
 class CAI_Stalker;
 class CWeapon;
 class CMissile;
+
+typedef CPropertyEvaluatorMember<CAI_Stalker> CObjectPropertyEvaluatorMember;
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorBase
@@ -43,21 +46,6 @@ protected:
 
 public:
 							CObjectPropertyEvaluatorState	(CWeapon *item, CAI_Stalker *owner, u32 state, bool equality = true);
-	virtual _value_type		evaluate						();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CObjectPropertyEvaluatorMember
-//////////////////////////////////////////////////////////////////////////
-
-class CObjectPropertyEvaluatorMember : public CSObjectPropertyEvaluatorBase {
-protected:
-	typedef CSObjectPropertyEvaluatorBase inherited;
-	bool					*m_member;
-	bool					m_equality;
-
-public:
-							CObjectPropertyEvaluatorMember	(CGameObject *item, CAI_Stalker *owner, bool *member, bool equality = true);
 	virtual _value_type		evaluate						();
 };
 

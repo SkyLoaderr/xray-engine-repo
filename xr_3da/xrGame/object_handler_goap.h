@@ -99,11 +99,10 @@ protected:
 	typedef CActionPlanner<CAI_Stalker>				inherited;
 	typedef CGraphEngine::_solver_value_type		_value_type;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
+	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 
 private:
-	bool						m_aimed1;
-	bool						m_aimed2;
-	bool						m_threaten;
+	CConditionStorage			m_storage;
 
 protected:
 	bool						m_bHammerIsClutched;
@@ -163,7 +162,6 @@ public:
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
 	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
 	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
-	IC		void			set_aimed				(u32 type, bool value);
 };
 
 #include "object_handler_goap_inline.h"
