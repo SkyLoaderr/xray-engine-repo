@@ -28,13 +28,9 @@ public:
 		RAPID::XRCollide		DB;
 		
 		// Setup variables
-		UVpoint		dim,guard,half;
+		UVpoint		dim,half;
 		dim.set		(float(defl.lm.dwWidth),float(defl.lm.dwHeight));
-		guard.set	(1.f/dim.u,1.f/dim.v);
 		half.set	(.5f/dim.u,.5f/dim.v);
-		
-		// Lighting itself
-		DB.RayMode	(0);
 		
 		// Jitter data
 		UVpoint		JS;
@@ -44,6 +40,9 @@ public:
 		UVpoint*	Jitter;
 		Jitter_Select(Jitter, Jcount);
 
+		// Lighting itself
+		DB.RayMode	(0);
+		
 		Fcolor		C[9];
 		for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
 		for (DWORD V=y_start; V<y_end; V++)

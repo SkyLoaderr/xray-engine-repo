@@ -333,9 +333,9 @@ void CBuild::ImplicitLighting()
 		defl.Allocate	();
 		
 		// Setup cache
-		Progress		(0);
+		Progress					(0);
 		Fbox2 bounds;
-		defl.Bounds_Summary	(bounds);
+		defl.Bounds_Summary			(bounds);
 		ImplicitHash.initialize		(bounds);
 		for (DWORD fid=0; fid<defl.faces.size(); fid++)
 		{
