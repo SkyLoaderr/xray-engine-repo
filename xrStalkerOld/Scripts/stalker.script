@@ -163,9 +163,8 @@ function process_task_changing(actor, info)
 	   info == "agroprom_military_case_have" or
 	   info == "agroprom_military_case_done" or
 
-	   info == "agroprom_gunslinger_band" or
-	   info == "agroprom_gunslinger_band_find" or
-	   info == "agroprom_gunslinger_band_done" or
+	   info == "agr_krot_band" or
+	   info == "agr_krot_band_done" or
 
 	   info == "agroprom_find_gunslinger_hide"
 	then
