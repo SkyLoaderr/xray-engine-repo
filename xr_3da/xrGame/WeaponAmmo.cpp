@@ -58,6 +58,7 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 	R_ASSERT(m_boxCurr <= m_boxSize);
 
 	setVisible(true);
+	setEnabled(true);
 	CKinematics* V = PKinematics(Visual());
 	if(V) V->PlayCycle("idle");
 
