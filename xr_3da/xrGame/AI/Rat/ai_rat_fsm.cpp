@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat.cpp
+//	Module 		: ai_rat_fsm.cpp
 //	Created 	: 25.04.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev

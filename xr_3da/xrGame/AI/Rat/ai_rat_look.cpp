@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_rat_misc.cpp
+//	Module 		: ai_rat_feel.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
