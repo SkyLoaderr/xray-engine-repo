@@ -49,12 +49,17 @@ void CStateAttackWeak::initialize		()
 void CStateAttackWeak::execute			()
 {
 	inherited::execute				();
-	VERIFY										(m_object->enemy());
+	
+	if (!m_object->enemy())
+		return;
+	
 	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
 	if (m_object->visible(m_object->enemy()))
 		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
 	else
-		m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+		if (m_object->best_weapon()->SUB_CLS_ID != CLSID_IITEM_BOLT)
+			m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+
 	m_object->CSightManager::update				(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
 	m_object->set_level_dest_vertex				(mem_object.m_object_params.m_level_vertex_id);
 	m_object->CStalkerMovementManager::update	(

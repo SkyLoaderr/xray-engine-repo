@@ -50,7 +50,8 @@ void CStateGatherItems::initialize		()
 
 void CStateGatherItems::execute			()
 {
-	VERIFY										(m_object->item());
+	if (!m_object->item())
+		return;
 	m_object->set_level_dest_vertex				(m_object->item()->level_vertex_id());
 	m_object->CStalkerMovementManager::update	(
 		0,
