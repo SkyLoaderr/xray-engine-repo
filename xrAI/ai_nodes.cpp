@@ -67,6 +67,19 @@ IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float 
 	return(LI_INTERSECT);
 }
 
+IC float ffGetY(NodeCompressed &tNode, float X, float Z)
+{
+	Fvector	DUP, vNorm, v, v1, P0;
+	DUP.set(0,1,0);
+	pvDecompress(vNorm,tNode.plane);
+	Fplane PL; 
+	UnpackPosition(P0,tNode.p0);
+	PL.build(P0,vNorm);
+	v.set(X,P0.y,Z);	
+	PL.intersectRayPoint(v,DUP,v1);	
+	return(v1.y);
+}
+
 IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
 {
 	Fvector tP0, tP1;
@@ -77,7 +90,8 @@ IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
 		(tCurrentPosition.x >= tP0.x - fHalfSubNodeSize - EPS) &&
 		(tCurrentPosition.z >= tP0.z - fHalfSubNodeSize - EPS) &&
 		(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
-		(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS)
+		(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS) &&
+		(fabsf(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f)
 	);
 }
 
@@ -219,19 +233,6 @@ IC void vfIntersectContours(SSegment &tSegment, SContour &tContour0, SContour &t
 	}
 	else
 		Log("! AI_PathNodes: Can't find intersection segment");
-}
-
-IC float ffGetY(NodeCompressed &tNode, float X, float Z)
-{
-	Fvector	DUP, vNorm, v, v1, P0;
-	DUP.set(0,1,0);
-	pvDecompress(vNorm,tNode.plane);
-	Fplane PL; 
-	UnpackPosition(P0,tNode.p0);
-	PL.build(P0,vNorm);
-	v.set(X,P0.y,Z);	
-	PL.intersectRayPoint(v,DUP,v1);	
-	return(v1.y);
 }
 
 void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector tStartPoint, Fvector tFinishPoint, Fvector &tPoint)

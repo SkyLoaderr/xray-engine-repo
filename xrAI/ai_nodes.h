@@ -186,7 +186,6 @@ public:
 			for (int j = (i + 1)*0 + 1*315; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
-					//Msg("{%3d,%3d}",i,j);
 					try {
 						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE)
