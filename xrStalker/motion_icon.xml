@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+	<!-- NORMAL -->
+	<normal x="0" y="0" width="150" height="200" align="rb">
+		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">normal</text>
+		<texture>ui\ui_mn_health</texture>
+	</normal>
+
+	<!-- CROUCH -->
+	<crouch x="0" y="0" width="150" height="200" align="rb">
+		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">crouch</text>
+		<texture>ui\ui_mn_health</texture>
+	</crouch>
+
+
+	<!-- NORMAL -->
+	<creep x="0" y="0" width="150" height="200" align="rb">
+		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">creep</text>
+		<texture>ui\ui_mn_health</texture>
+	</creep>
+
+	<!-- NORMAL -->
+	<climb x="0" y="0" width="150" height="200" align="rb">
+		<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">climb</text>
+		<texture>ui\ui_mn_health</texture>
+	</climb>
+</window>
