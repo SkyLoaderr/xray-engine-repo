@@ -219,11 +219,16 @@ function fract:add_restrictor(npc, r_out, r_in)
 		r_out	= ""
 	end
 	
-	printf		("RESTR HOLD: %s", npc:name())
-	printf		("RESTR HAVE: in:%s out:%s", npc:in_restrictions(), npc:out_restrictions())
-	printf		("RESTR NEED: in:%s out:%s", r_in, r_out)
+	printf		("RESTR HOLD       : %s", npc:name())
+	printf		("RESTR HAVE (IN)  : %s", npc:in_restrictions())
+	printf		("RESTR HAVE (OUT) : %s", npc:out_restrictions())
+	printf		("RESTR NEED (IN)  : %s", r_in)
+	printf		("RESTR NEED (OUT) : %s", r_out)
 	
 	npc:add_restrictions(r_out,r_in)
+
+	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
+	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
 end
 
 function fract:getJob(npc)
