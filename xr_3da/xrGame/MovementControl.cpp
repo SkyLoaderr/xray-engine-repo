@@ -267,11 +267,13 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		if (s_res<s_calc)	
 		{
 			float		dt_x	= dt*(s_res/s_calc);
-			Fvector		dummy;	dummy.set(0,0,0);
-			Integrate	(vOldVelocity,dummy,vAccel,dt_x,fOldFriction);
+			float		dummy_s = 0;
+			float		a		= vAccel.magnitude();
+			Integrate	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction);
+//			Integrate	(vOldVelocity,dummy,,dt_x,fOldFriction);
 
 			// now vOldVelocity - average velocity at contact time
-			float		contact_speed	= vOldVelocity.magnitude();
+			float		contact_speed	= fOldActVelocity;
 			if (contact_speed>fMinCrashSpeed/2) 
 			{
 				gcontact_Power	= contact_speed/fMaxCrashSpeed;
