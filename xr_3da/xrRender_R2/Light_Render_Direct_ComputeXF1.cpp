@@ -30,9 +30,10 @@ void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvecto
 	_F[5].mad			(camP, camD,		p_FAR);
 }
 
-void	CLight_Render_Direct::compute_xf_1	()
+void	CLight_Render_Direct::compute_xf_1	(u32 m_phase)
 {
 	float p_FOV				= Device.fFOV;
+	float p_DIST			= m_phase?DSM_distance_1:DSM_distance_2;
 
 	// Shadow-test
 	Fmatrix		mCam;		mCam.invert			(Device.mView);
@@ -44,7 +45,7 @@ void	CLight_Render_Direct::compute_xf_1	()
 	camN.set				(mCam.j);
 	camR.set				(mCam.i);
 	camP.set				(mCam.c);
-	ComputeFrustum			(_F,p_FOV,1.f,DSM_distance,camD,camN,camR,camP);
+	ComputeFrustum			(_F,p_FOV,1.f,p_DIST,camD,camN,camR,camP);
 
 	// Build L-view vectors
 	Fvector					L_dir,L_up,L_right,L_pos;
@@ -78,7 +79,7 @@ void	CLight_Render_Direct::compute_xf_1	()
 	bb.get_CD				(bbc,bbd);
 
 	// L_project
-	float				d	= 2*DSM_distance/cosf(p_FOV/2);	
+	float				d	= 2*p_DIST/cosf(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
 	L_project.build_projection_ortho(dx,dy,1.f,DSM_d_range+50);
@@ -87,6 +88,6 @@ void	CLight_Render_Direct::compute_xf_1	()
 	L_combine.mul			(L_project,L_view);
 }
 
-void CLight_Render_Direct::compute_xf_2()
+void CLight_Render_Direct::compute_xf_2(u32 m_phase)
 {
 }

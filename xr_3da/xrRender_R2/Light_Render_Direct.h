@@ -1,7 +1,8 @@
 #pragma once
 
 const u32							DSM_size		= 1024;
-const float							DSM_distance	= 10.f;
+const float							DSM_distance_1	= 10.f;
+const float							DSM_distance_2	= 100.f;
 const float							DSM_d_range		= 100.f;
 
 class CLight_Render_Direct
@@ -13,8 +14,8 @@ public:
 public:
 	void							Create			();
 	void							Destroy			();
-	void							compute_xf_1	();
-	void							compute_xf_2	();
+	void							compute_xf_1	(u32 m_phase);
+	void							compute_xf_2	(u32 m_phase);
 	void							render			();
 
 	CLight_Render_Direct			();
