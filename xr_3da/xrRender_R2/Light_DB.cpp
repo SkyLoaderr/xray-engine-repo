@@ -140,20 +140,20 @@ void			CLight_DB::add_light		(light* L)
 	if (L->flags.bShadow)			{
 		switch (L->flags.type)	{
 			case IRender_Light::POINT:
-				if (RImplementation.b_nv3x)	v_point.push_back	(L);
-				else						v_point_s.push_back	(L);
+				if (RImplementation.b_nv3x)	package.v_point.push_back	(L);
+				else						package.v_point_s.push_back	(L);
 				break;
 			case IRender_Light::SPOT:
-				v_spot_s.push_back			(L);
+				package.v_spot_s.push_back			(L);
 				break;
 		}
 	}	else	{
 		switch (L->flags.type)	{
 			case IRender_Light::POINT:
-				v_point.push_back	(L);
+				package.v_point.push_back	(L);
 				break;
 			case IRender_Light::SPOT:
-				v_spot.push_back	(L);
+				package.v_spot.push_back	(L);
 				break;
 		}
 	}
@@ -181,8 +181,5 @@ void			CLight_DB::Update			()
 	}
 
 	// Clear selection
-	v_point.clear	();
-	v_point_s.clear	();
-	v_spot.clear	();
-	v_spot_s.clear	();
+	package.clear	();
 }
