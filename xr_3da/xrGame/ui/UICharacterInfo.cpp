@@ -83,6 +83,15 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UIText.Show(false);
 		UIText.Enable(false);
 	}
+
+	AttachChild(&UIRelation);
+	if(uiXml.NavigateToNode("relation_static", 0))
+		xml_init.InitStatic(uiXml, "relation_static", 0, &UIRelation);
+	else
+	{
+		UIRelation.Show(false);
+		UIRelation.Enable(false);
+	}
 }
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
@@ -99,8 +108,6 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	sprintf(str, "community: %s", pInvOwner->CharacterInfo().Community());
 	UICommunity.SetText(str);
 
-	CEntity* pInvOwnerEntity = dynamic_cast<CEntity*>(pInvOwner);
-
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(
 					pInvOwner->CharacterInfo().TradeIconX()*ICON_GRID_WIDTH,
@@ -109,10 +116,35 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 					pInvOwner->CharacterInfo().TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
 }
 
+void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
+{
+	LPCSTR relation_str = NULL;
+
+	switch(relation) {
+	case ALife::eRelationTypeFriend:
+		relation_str = "%c0,200,0friend";
+		break;
+	case ALife::eRelationTypeNeutral:
+		relation_str = "%c192,192,192neutral";
+		break;
+	case ALife::eRelationTypeEnemy:
+		relation_str = "%c200,0,0enemy";
+		break;
+	default:
+		NODEFAULT;
+	}
+
+
+	string256 str;
+	sprintf(str, "relation: %s", relation_str);
+	UIRelation.SetText(str);
+}
+
 void CUICharacterInfo::ResetAllStrings()
 {
 	UIName.SetText("");
 	UIRank.SetText("");
 	UICommunity.SetText("");
 	UIText.SetText("");
+	UIRelation.SetText("");
 }

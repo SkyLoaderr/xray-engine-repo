@@ -161,6 +161,7 @@ public:
 	// miscellanious functions
 			void				DropItemSendMessage				(CObject *O);
 			bool				bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
+	virtual	ALife::ERelationType tfGetRelationType				(const CEntityAlive *tpEntityAlive) const;
 
 	// states
 			void				Death							();

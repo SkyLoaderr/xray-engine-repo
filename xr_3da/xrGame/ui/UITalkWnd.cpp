@@ -59,15 +59,23 @@ void CUITalkWnd::InitTalkDialog()
 
 
 	m_pOurInvOwner = dynamic_cast<CInventoryOwner*>(pActor);
-	m_pOthersInvOwner = dynamic_cast<CInventoryOwner*>(pActor->GetTalkPartner());
+	m_pOthersInvOwner = pActor->GetTalkPartner();
+
 
 	//имена собеседников
 	UITalkDialogWnd.UICharacterInfoLeft.InitCharacter(m_pOurInvOwner);
 	UITalkDialogWnd.UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
 	UITalkDialogWnd.UICharacterName.SetText(m_pOurInvOwner->CharacterInfo().Name());
+	
+	CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pOthersInvOwner);
+	UITalkDialogWnd.UICharacterInfoRight.SetRelation(ContactEA->tfGetRelationType(pActor));
 
 	
 	UpdateQuestions();
+
+	//очистить лог сообщений
+	UITalkDialogWnd.UIAnswersList.RemoveAll();
+
 
 	UITalkDialogWnd.Show();
 	UITradeWnd.Hide();
@@ -165,6 +173,9 @@ void CUITalkWnd::AskQuestion()
 	bool result = m_pOthersInvOwner->AskQuestion(*UITalkDialogWnd.m_pClickedQuestion,
 												 index_list);
 	CUIString str, SpeakerName;
+
+	//очистить лог сообщений
+	UITalkDialogWnd.UIAnswersList.RemoveAll();
 
 	SpeakerName.SetText(m_pOurInvOwner->CharacterInfo().Name());
 	AddAnswer(UITalkDialogWnd.m_pClickedQuestion->text, SpeakerName);

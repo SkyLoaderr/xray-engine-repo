@@ -11,16 +11,6 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-
-
-#define YES_MSG "Yes"
-#define NO_MSG "No"
-#define GETLOST_MSG "Get Lost!"
-#define TRADE_MSG "Trade?"
-#define HELP_MSG "Need Help!"
-#define GETOUT_MSG "Get Out Of Here!"
-#define IAMLEAVE_MSG "I'm leave now!"
-
 #define CONTACT_LOST	"The contact has been lost."
 #define WAIT_FOR_REPLY	"Waiting for reply."
 
@@ -143,48 +133,25 @@ void CUIPdaDialogWnd::AddOthersMessageToLog(EPdaMsg msg, CInventoryOwner* pInvOw
 void CUIPdaDialogWnd::AddMessageToLog(EPdaMsg msg, u32 color)
 {		
 	UILogListWnd.SetTextColor(color);
-
-	switch(msg)
-	{
-	case ePdaMsgAccept:
-		UILogListWnd.AddItem(YES_MSG);
-		break;
-	case ePdaMsgDecline:
-		UILogListWnd.AddItem(NO_MSG);
-		break;
-	case ePdaMsgDeclineRude:
-		UILogListWnd.AddItem(GETLOST_MSG);
-		break;
-	case ePdaMsgTrade:
-		UILogListWnd.AddItem(TRADE_MSG);
-		break;
-	case ePdaMsgNeedHelp:
-		UILogListWnd.AddItem(HELP_MSG);
-		break;
-	case ePdaMsgGoAway:
-		UILogListWnd.AddItem(GETOUT_MSG);
-		break;		
-	default:
-		UILogListWnd.AddItem("unknown message");
-	}
+	UILogListWnd.AddItem(CPda::m_PdaMsgStr[msg]);
 }
 
 void  CUIPdaDialogWnd::PhrasesAnswer()
 {	
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem(YES_MSG, NULL, ePdaMsgAccept);
-	UIPhrasesListWnd.AddItem(NO_MSG, NULL, ePdaMsgDecline);
-	UIPhrasesListWnd.AddItem(GETLOST_MSG, NULL, ePdaMsgDeclineRude);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgAccept], NULL, ePdaMsgAccept);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgDecline], NULL, ePdaMsgDecline);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgDeclineRude], NULL, ePdaMsgDeclineRude);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMsgMax);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL,ePdaMsgMax);
 	
 }
 void CUIPdaDialogWnd::PhrasesAsk()
 {
 	UIPhrasesListWnd.RemoveAll();
-	UIPhrasesListWnd.AddItem(TRADE_MSG, NULL, ePdaMsgTrade);
-	UIPhrasesListWnd.AddItem(HELP_MSG, NULL, ePdaMsgNeedHelp);
-	UIPhrasesListWnd.AddItem(GETOUT_MSG, NULL, ePdaMsgGoAway);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgTrade]	, NULL, ePdaMsgTrade);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgNeedHelp]	, NULL, ePdaMsgNeedHelp);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgGoAway]	, NULL, ePdaMsgGoAway);
 	//завершение диалога
-	UIPhrasesListWnd.AddItem(IAMLEAVE_MSG, NULL, ePdaMsgMax);
+	UIPhrasesListWnd.AddItem(CPda::m_PdaMsgStr[ePdaMsgILeave], NULL, ePdaMsgMax);
 }

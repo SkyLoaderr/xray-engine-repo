@@ -21,6 +21,8 @@ CMissile::CMissile(void)
 
 CMissile::~CMissile(void) 
 {
+	HUD_SOUND::DestroySound(sndPlaying);
+
 	xr_delete			(m_pHUD);
 }
 
@@ -102,8 +104,6 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 void CMissile::net_Destroy() 
 {
 	inherited::net_Destroy();
-
-	HUD_SOUND::DestroySound(sndPlaying);
 	m_fake_missile = 0;
 }
 

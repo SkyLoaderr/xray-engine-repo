@@ -28,6 +28,12 @@ public:
 	//загрузка профиля персонажа из xml файла,
 	//если профиль не найден - возвращаем false, иначе true
 	bool Load(LPCSTR name_id, LPCSTR xml_file = DEFAULT_CHARACTER_FILE);
+
+
+	ALife::ERelationType GetRelation	(u16 person_id);
+	void				 SetRelation	(u16 person_id, ALife::ERelationType new_relation);
+	void				 ClearRelations	();
+
 protected:
 	//////////////////////////////////////////////////////////////////////////
 	// игровое представление 
@@ -38,6 +44,11 @@ protected:
 	//временно...(пока нет RGP компонент)
 	ref_str m_sTeamName;
 	ref_str m_sRank;
+
+
+	//отношения которые мы имеем о других персонажей
+	DEFINE_MAP(u16, ALife::ERelationType, RELATION_MAP, RELATION_MAP_IT);
+	RELATION_MAP m_RelationMap;
 
 	//////////////////////////////////////////////////////////////////////////
 	// визуальное представление

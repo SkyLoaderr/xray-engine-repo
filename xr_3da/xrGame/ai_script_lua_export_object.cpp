@@ -204,6 +204,9 @@ void CScriptEngine::export_object()
 				value("help_pda_msg",			int(ePdaMsgNeedHelp)),
 				value("go_away_pda_msg",		int(ePdaMsgGoAway)),
 				value("info_pda_msg",			int(ePdaMsgInfo)),
+				value("accept_pda_msg",			int(ePdaMsgAccept)),
+				value("decline_pda_msg",		int(ePdaMsgDecline)),
+				value("i_leave_pda_msg",		int(ePdaMsgILeave)),
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
 

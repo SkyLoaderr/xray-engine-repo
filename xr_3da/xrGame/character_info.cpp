@@ -65,3 +65,21 @@ LPCSTR CCharacterInfo::Community()
 {
 	return	*m_sTeamName;
 }
+
+ALife::ERelationType  CCharacterInfo::GetRelation	(u16 person_id)
+{
+	RELATION_MAP_IT it = m_RelationMap.find(person_id);
+	if(m_RelationMap.end() != it)
+		return (*it).second;
+	else
+		return ALife::eRelationTypeDummy;
+}
+void CCharacterInfo::SetRelation	(u16 person_id, ALife::ERelationType new_relation)
+{
+	m_RelationMap[person_id] = new_relation;
+}
+
+void CCharacterInfo::ClearRelations	()
+{
+	m_RelationMap.clear();
+}

@@ -47,7 +47,7 @@ void CUIPdaMsgListItem::Init(int x, int y, int width, int height)
 		UIName.Show(false);
 		UIName.Enable(false);
 	}
-	
+
 	AttachChild(&UIMsgText);
 	xml_init.InitStatic(uiXml, "text_static", 0, &UIMsgText);
 }
@@ -68,8 +68,6 @@ void CUIPdaMsgListItem::InitCharacter(CInventoryOwner* pInvOwner)
 	string256 str;
 	sprintf(str, "name: %s", pInvOwner->CharacterInfo().Name());
 	UIName.SetText(str);
-
-	CEntity* pInvOwnerEntity = dynamic_cast<CEntity*>(pInvOwner);
 
 	UIIcon.SetShader(GetCharIconsShader());
 	UIIcon.GetUIStaticItem().SetOriginalRect(

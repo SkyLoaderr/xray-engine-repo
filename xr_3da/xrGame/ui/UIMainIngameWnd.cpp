@@ -23,6 +23,7 @@
 #include "../UIGameSP.h"
 #include "../ai_alife_registries.h"
 #include "../ai_alife.h"
+#include "../weaponmagazined.h"
 
 using namespace InventoryUtilities;
 
@@ -292,8 +293,10 @@ void CUIMainIngameWnd::Update()
 	{
 		CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pActor->inventory().m_slots[
 										m_pActor->inventory().GetActiveSlot()].m_pIItem); 
+
+		CWeaponMagazined* pWeaponMagazined = dynamic_cast<CWeaponMagazined*>(pWeapon);
 		
-		if(pWeapon)	
+		if(pWeapon)
 		{
 			// Remember last used ammo types, and if this type doesn't changed 
 			// then no need to update info
@@ -304,7 +307,8 @@ void CUIMainIngameWnd::Update()
 
 				m_pWeapon = pWeapon;
 
-				if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
+				//if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
+				if (pWeaponMagazined)
 				{
 					UIWeaponIcon.Show(true);
 				}

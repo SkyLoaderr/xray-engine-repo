@@ -15,6 +15,7 @@ class CInventoryItem;
 class CTrade;
 class CPda;
 class CCharacterInfo;
+class CEntityAlive;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:

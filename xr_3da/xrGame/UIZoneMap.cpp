@@ -300,7 +300,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	////////////////////////////////////////////
 	//добавить локации, имеющиес€ в пам€ти PDA
 	////////////////////////////////////////////
-	
+
 	CObject* pObject = NULL;
 	Fvector  world_pos;
 	Fvector  src;
@@ -309,55 +309,67 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	if (pActor->GetPDA())
 	{
 #pragma todo("Mad Max то ёра : € вставил здесь проверку, чтобы не вылетало если нет PDA надо разобратьс€..............")
-	for(KNOWN_INFO_PAIR_IT it = pActor->GetPDA()->m_mapKnownInfo.begin();
-		pActor->GetPDA()->m_mapKnownInfo.end() != it;
-		++it)
-	{
-		//подгрузить кусочек информации с которым мы работаем
-		CInfoPortion info_portion;
-		info_portion.Load((*it).first);
-
-		//цвет по умолчанию
-		u32 entity_color = COLOR_BASE;
-
-		//локации заданные в порцие информации	
-		for(int i=0; i<info_portion.GetLocationsNum(); i++)
+		for(KNOWN_INFO_PAIR_IT it = pActor->GetPDA()->m_mapKnownInfo.begin();
+			pActor->GetPDA()->m_mapKnownInfo.end() != it;
+			++it)
 		{
-			SMapLocation& map_location = info_portion.GetLocation(i);
-			if(map_location.attached_to_object)
-			{
-				pObject = Level().Objects.net_Find	(map_location.object_id);
-				
-				CEntity* pEntity = NULL;
-				if(pObject)
-					pEntity = dynamic_cast<CEntity*>(pObject);
+			//подгрузить кусочек информации с которым мы работаем
+			CInfoPortion info_portion;
+			info_portion.Load((*it).first);
 
-				if(pEntity)
+			//цвет по умолчанию
+			u32 entity_color = COLOR_BASE;
+
+			//локации заданные в порцие информации	
+			for(int i=0; i<info_portion.GetLocationsNum(); i++)
+			{
+				SMapLocation& map_location = info_portion.GetLocation(i);
+				if(map_location.attached_to_object)
 				{
-					if(pEntity->g_Team() == pActor->g_Team())
-						entity_color = COLOR_FRIEND;
-					else
-						entity_color = COLOR_ENEMY;
+					pObject = Level().Objects.net_Find	(map_location.object_id);
+
+					CEntity* pEntity = NULL;
+					if(pObject)
+						pEntity = dynamic_cast<CEntity*>(pObject);
+
+					if(pEntity)
+					{
+						if(pEntity->g_Team() == pActor->g_Team())
+							entity_color = COLOR_FRIEND;
+						else
+							entity_color = COLOR_ENEMY;
+					}
+
+					src.x = pObject->Position().x;
+					src.y = 0;
+					src.z = pObject->Position().z;
+				}
+				else
+				{
+					src.x = map_location.x;
+					src.y = 0;
+					src.z = map_location.y;
+
+					pObject = NULL;
+					world_pos.set(map_location.x,0.f,map_location.y);
 				}
 
-				src.x = pObject->Position().x;
-				src.y = 0;
-				src.z = pObject->Position().z;
+				ConvertToLocal(LM, src, P);
+				entity.Out(P.x,P.y,entity_color);
 			}
-			else
-			{
-				src.x = map_location.x;
-				src.y = 0;
-				src.z = map_location.y;
-
-				pObject = NULL;
-				world_pos.set(map_location.x,0.f,map_location.y);
-			}
-
-			ConvertToLocal(LM, src, P);
-			entity.Out(P.x,P.y,entity_color);
 		}
-	}
+
+
+
+		//добавить отметку ожидающего партнера по торговле
+		if(pActor->WaitingTradePartner())
+		{
+			src.x = pActor->WaitingTradePartner()->Position().x;
+			src.y = 0;
+			src.z = pActor->WaitingTradePartner()->Position().z;
+			ConvertToLocal(LM, src, P);
+			entity.Out(P.x,P.y,COLOR_BASE);
+		}
 	};
 
 

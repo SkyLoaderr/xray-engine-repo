@@ -19,6 +19,7 @@
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../../cover_evaluators.h"
+#include "../../character_info.h"
 
 #ifdef OLD_DECISION_BLOCK
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
@@ -359,6 +360,9 @@ void CAI_Stalker::UpdateCL(){
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	if(dynamic_cast<CInventoryOwner*>(who))
+		CInventoryOwner::CharacterInfo().SetRelation(who->ID(), ALife::eRelationTypeEnemy);
+
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 }
 

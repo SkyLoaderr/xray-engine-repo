@@ -11,15 +11,19 @@ enum EPdaMsg {
 	ePdaMsgTrade  = u32(0),		//торговать
 	ePdaMsgGoAway,				//убирайся с территории
 	ePdaMsgNeedHelp,			//просьба о помощи
-	
+
 	ePdaMsgAccept,				//принять предложение
 	ePdaMsgDecline,				//отказаться
 	ePdaMsgDeclineRude,			//грубо отказаться
+	ePdaMsgILeave,				//не могу ждать и ухожу
 
 	ePdaMsgInfo,				//сообщение передает некоторую информацию
 
 	ePdaMsgMax
 };
+
+
+
 
 
 //структура для описания сообщения PDA,

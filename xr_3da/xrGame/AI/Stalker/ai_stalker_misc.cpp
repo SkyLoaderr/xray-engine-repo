@@ -14,6 +14,7 @@
 #include "../../ai_script_actions.h"
 #include "../../ef_storage.h"
 #include "../../inventory.h"
+#include "../../character_info.h"
 
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
@@ -41,4 +42,15 @@ float CAI_Stalker::evaluate		(const CGameObject *object) const
 	float				distance = Position().distance_to_sqr(object->Position());
 	distance			= !fis_zero(distance) ? distance : EPS_L;
 	return				(distance);
+}
+
+
+
+ALife::ERelationType  CAI_Stalker::tfGetRelationType	(const CEntityAlive *tpEntityAlive) const
+{
+	ALife::ERelationType relation = CInventoryOwner::CharacterInfo().GetRelation(tpEntityAlive->ID());
+	if(ALife::eRelationTypeDummy != relation)
+		return relation;
+	else
+		return inherited::tfGetRelationType(tpEntityAlive);
 }

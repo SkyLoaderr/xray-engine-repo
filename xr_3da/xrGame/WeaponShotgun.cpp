@@ -11,14 +11,13 @@ CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 
 CWeaponShotgun::~CWeaponShotgun(void)
 {
+	// sounds
+	HUD_SOUND::DestroySound(sndShotBoth);
 }
 
 void CWeaponShotgun::net_Destroy()
 {
 	inherited::net_Destroy();
-
-	// sounds
-	HUD_SOUND::DestroySound(sndShotBoth);
 }
 
 void CWeaponShotgun::Load	(LPCSTR section)

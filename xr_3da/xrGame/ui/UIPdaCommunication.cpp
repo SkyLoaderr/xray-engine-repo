@@ -10,6 +10,7 @@
 #include "UIXmlInit.h"
 
 #include "../HUDManager.h"
+#include "../actor.h"
 
 #define PDA_XML "pda.xml"
 
@@ -141,10 +142,10 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					pda_msg = ePdaMsgTrade;
 					break;
 				case 1:
-					pda_msg = ePdaMsgNeedHelp;
+					pda_msg = ePdaMsgGoAway;					
 					break;
 				case 2:
-					pda_msg = ePdaMsgGoAway;
+					pda_msg = ePdaMsgNeedHelp;
 					break;
 				}
 			}
@@ -263,6 +264,12 @@ void CUIPdaCommunication::InitPdaDialog()
 	//инициализировать окошко с информацие о собеседнике
 	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
 
+	CActor* pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
+	if(pActor)
+	{
+		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pContactInvOwner);
+		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(pActor)));
+	}
 
 	UpdateMessageLog();
 	UpdateMsgButtons();

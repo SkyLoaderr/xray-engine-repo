@@ -6,6 +6,8 @@
 #include "stdafx.h"
 
 #include "UIPdaListItem.h"
+#include "../actor.h"
+#include "../level.h"
 
 
 #define PDA_CONTACT_CHAR "pda_character.xml"
@@ -39,4 +41,12 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
 	VERIFY(pInvOwner);
 	UICharacterInfo.InitCharacter(pInvOwner);
+	
+	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(pInvOwner);
+		UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(pActor));
+	}
+
 }

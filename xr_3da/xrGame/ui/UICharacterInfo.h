@@ -20,6 +20,7 @@ public:
 
 	void Init(int x, int y, int width, int height, const char* xml_name);
 	void InitCharacter(CInventoryOwner* pInvOwner);
+	void SetRelation(ALife::ERelationType relation);
 	
 	void ResetAllStrings();
 
@@ -28,4 +29,5 @@ public:
 	CUIStatic UIRank;
 	CUIStatic UICommunity;
 	CUIStatic UIText;
+	CUIStatic UIRelation;
 };

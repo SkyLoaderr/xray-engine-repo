@@ -40,18 +40,17 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 
 CWeaponMagazined::~CWeaponMagazined()
 {
-}
-
-void CWeaponMagazined::net_Destroy()
-{
-	inherited::net_Destroy();
-
 	// sounds
 	HUD_SOUND::DestroySound(sndShow);
 	HUD_SOUND::DestroySound(sndHide);
 	HUD_SOUND::DestroySound(sndShot);
 	HUD_SOUND::DestroySound(sndEmptyClick);
 	HUD_SOUND::DestroySound(sndReload);
+}
+
+void CWeaponMagazined::net_Destroy()
+{
+	inherited::net_Destroy();
 }
 
 

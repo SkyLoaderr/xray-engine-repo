@@ -19,8 +19,10 @@
 class CInventoryOwner;
 class CPda;
 
-DEF_LIST (PDA_LIST, CPda*);
 
+
+
+DEF_LIST (PDA_LIST, CPda*);
 DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
 
 class CPda :
@@ -98,7 +100,8 @@ public:
 	bool TransferInfoToID(u32 pda_ID, int info_index);
 	//событие получения новой порции информации
 	void OnReceiveInfo(int info_index);
-
+	//получить последнее сообщение из лога  (false - если лог пуст)
+	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 
 	//свединия об известной информации
 	KNOWN_INFO_MAP m_mapKnownInfo;
@@ -125,4 +128,7 @@ protected:
 	bool m_bPassiveMode;
 	//PDA выключено
 	bool m_bTurnedOff;
+
+public:
+	static LPCSTR m_PdaMsgStr[ePdaMsgMax];
 };

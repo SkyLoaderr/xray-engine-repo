@@ -13,8 +13,37 @@
 #include "xrServer_Objects_ALife_Items.h"
 
 
-CPda::CPda(void) 
-{
+#define YES_MSG				"Yes"
+#define NO_MSG				"No"
+#define GETLOST_MSG			"Get Lost!"
+#define TRADE_MSG			"Trade?"
+#define HELP_MSG			"Need Help!"
+#define GETOUT_MSG			"Get Out Of Here!"
+#define IAMLEAVE_MSG		"I'm leave now!"
+
+
+/*	ePdaMsgTrade  = u32(0),	
+	ePdaMsgGoAway,			
+	ePdaMsgNeedHelp,		
+
+	ePdaMsgAccept,			
+	ePdaMsgDecline,			
+	ePdaMsgDeclineRude,		
+	ePdaMsgILeave,			
+
+	ePdaMsgInfo,			
+
+	ePdaMsgMax
+*/
+LPCSTR CPda::m_PdaMsgStr[ePdaMsgMax] = {TRADE_MSG,
+										GETOUT_MSG,HELP_MSG,
+										YES_MSG,
+										NO_MSG,
+										GETLOST_MSG,
+										IAMLEAVE_MSG,""};
+										
+CPda::CPda(void)						
+{										
 	m_fRadius = 10.0f;
 
 	//специальный слот для PDA
@@ -296,6 +325,16 @@ void CPda::AddMessageToLog(u32 pda_ID, EPdaMsg msg, int info_index, bool receive
 	m_mapPdaLog[pda_ID].push_front(pda_message);
 }
 
+//получить последнее сообщение из лога 
+bool CPda::GetLastMessageFromLog(u32 pda_ID, SPdaMessage& pda_message)
+{
+	PDA_LOG_PAIR_IT it =  m_mapPdaLog.find(pda_ID);
+	if(m_mapPdaLog.end() == it)	return false;
+	
+	pda_message = (*it).second.front();
+
+	return true;
+}
 
 
 
@@ -316,9 +355,9 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			//отправить сообщение владельцу, только если мы включены
 			if(IsActive())
 			{
-				AddMessageToLog(id, (EPdaMsg)msg, info_index, true);
 				GetOriginalOwner()->ReceivePdaMessage(id, (EPdaMsg)msg, 
 														  info_index);
+				AddMessageToLog(id, (EPdaMsg)msg, info_index, true);
 			}
 		}
 		break;

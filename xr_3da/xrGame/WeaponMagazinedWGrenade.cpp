@@ -19,6 +19,10 @@ CWeaponMagazinedWGrenade::CWeaponMagazinedWGrenade(LPCSTR name,ESoundTypes eSoun
 
 CWeaponMagazinedWGrenade::~CWeaponMagazinedWGrenade(void)
 {
+	// sounds
+	HUD_SOUND::DestroySound(sndShotG);
+	HUD_SOUND::DestroySound(sndReloadG);
+	HUD_SOUND::DestroySound(sndSwitch);
 }
 
 void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
@@ -90,11 +94,6 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 void CWeaponMagazinedWGrenade::net_Destroy()
 {
 	inherited::net_Destroy();
-
-	// sounds
-	HUD_SOUND::DestroySound(sndShotG);
-	HUD_SOUND::DestroySound(sndReloadG);
-	HUD_SOUND::DestroySound(sndSwitch);
 }
 
 

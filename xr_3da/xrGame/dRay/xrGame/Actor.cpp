@@ -135,6 +135,8 @@ CActor::CActor() : CEntityAlive()
 	m_pPersonWeLookingAt	= NULL;
 	m_pVehicleWeLookingAt	= NULL;
 	m_pObjectWeLookingAt	= NULL;
+	m_pWaitingTradePartner	= NULL;
+	m_pWaitingTradePartnerInvOwner = NULL;
 	m_bPickupMode			= false;
 
 	////////////////////////////////////
@@ -809,6 +811,17 @@ void CActor::shedule_Update	(u32 DT)
 	// generic stuff
 	inherited::shedule_Update	(DT);
 
+
+/*	if(WaitingTradePartner() &&
+		!WaitingTradePartnerInvOwner()->IsTalkEnabled())
+	{
+		m_pWaitingTradePartner = NULL;
+		m_pWaitingTradePartnerInvOwner = NULL;
+	}*/
+		
+
+
+
 	//эффектор включаемый при ходьбе
 	if (!pCamBobbing)
 	{
@@ -1104,13 +1117,33 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
+
 	//визуализация в интерфейсе
-	
 	CObject* pPdaObject =  Level().Objects.net_Find(who);
-	R_ASSERT(pPdaObject);
+	VERIFY(pPdaObject);
 	CPda* pPda = dynamic_cast<CPda*>(pPdaObject);
-	R_ASSERT(pPda);
+	VERIFY(pPda);
 	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_index);
+
+	SPdaMessage last_pda_message;
+	bool prev_msg = GetPDA()->GetLastMessageFromLog(who, last_pda_message);
+	
+
+	//если сталкер согласился торговать, то дать возможность отметить
+	//его иконку на карте
+	if(!m_pWaitingTradePartner && prev_msg && last_pda_message.question && 
+		ePdaMsgTrade == last_pda_message.msg &&
+		ePdaMsgAccept == msg)
+	{
+		m_pWaitingTradePartnerInvOwner = pPda->GetOriginalOwner();
+		m_pWaitingTradePartner = dynamic_cast<CEntityAlive*>(pPda->GetOwnerObject());
+	}
+	else if (ePdaMsgILeave == msg && m_pWaitingTradePartner == dynamic_cast<CEntityAlive*>(pPda->GetOriginalOwner()))
+	{
+		m_pWaitingTradePartner = NULL;
+		m_pWaitingTradePartnerInvOwner = NULL;
+	}
+		
 
     CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 }
