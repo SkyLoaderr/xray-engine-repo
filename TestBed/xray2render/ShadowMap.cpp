@@ -1316,8 +1316,8 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Accumulator.ps);
-	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Accumulator.vs);
+	m_pd3dDevice->SetPixelShader			(s_Combine_Normal.ps);
+	m_pd3dDevice->SetVertexShader			(s_Combine_Normal.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	cc.flush								(m_pd3dDevice);
 
