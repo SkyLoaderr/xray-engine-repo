@@ -184,7 +184,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
     }else{
 		UI.OnAppDeactivate();
         UI.iRelease();
-    	paWindow->Color=0x00A0A6A9;
+    	paWindow->Color=0x00202020;//0x00A0A6A9;
     }
 }
 //---------------------------------------------------------------------------

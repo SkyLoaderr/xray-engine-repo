@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 762
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 762
+    Width = 443
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -19,7 +19,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 629
+      Width = 310
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -72,7 +72,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 405
+        Left = 86
         Top = 0
         Width = 130
         Height = 15
@@ -144,7 +144,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paUICursor: TPanel
-        Left = 535
+        Left = 216
         Top = 0
         Width = 94
         Height = 15
@@ -193,7 +193,7 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object paGridSquareSize: TPanel
-      Left = 703
+      Left = 384
       Top = 1
       Width = 58
       Height = 15
@@ -226,7 +226,6 @@ object fraBottomBar: TfraBottomBar
       'N50.Checked'
       'N75.Checked'
       'miDrawObjectBones.Checked'
-      'miObjectLoopedAnimation.Checked'
       'ebStat.Down'
       'miLightScene.Checked'
       'miRealTime.Checked'
@@ -381,10 +380,6 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       object miDrawObjectBones: TMenuItem
         Caption = 'Draw Bones'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miObjectLoopedAnimation: TMenuItem
-        Caption = 'Looped Animation'
         OnClick = ClickOptionsMenuItem
       end
     end

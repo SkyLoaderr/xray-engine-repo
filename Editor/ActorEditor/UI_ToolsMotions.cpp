@@ -12,6 +12,7 @@
 #include "motion.h"
 #include "bone.h"
 #include "BodyInstance.h"
+#include "fmesh.h"
 //---------------------------------------------------------------------------
 
 bool CActorTools::EngineModel::UpdateGeometryStream(CEditableObject* source)
@@ -37,7 +38,46 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
     CStream R(F.pointer(), F.size());
 	Device.Models.Delete(m_pVisual);
     m_pVisual = Device.Models.Create(&R);
+    m_pBlend = 0;
     return true;
+}
+//---------------------------------------------------------------------------
+
+void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
+{
+    // render visual
+    Device.SetTransform	(D3DTS_WORLD,mTransform);
+    switch (m_pVisual->Type)
+    {
+    case MT_SKELETON:{
+        CKinematics* pV					= (CKinematics*)m_pVisual;
+        vector<FBasicVisual*>::iterator I,E;
+        I = pV->chields.begin			();
+        E = pV->chields.end				();
+        for (; I!=E; I++)
+        {
+            FBasicVisual* V				= *I;
+            Device.Shader.set_Shader	(V->hShader);
+            V->Render					(m_fLOD);
+        }
+    }break;
+    case MT_HIERRARHY:{
+        FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
+        vector<FBasicVisual*>::iterator I,E;
+        I = pV->chields.begin			();
+        E = pV->chields.end				();
+        for (; I!=E; I++)
+        {
+            FBasicVisual* V				= *I;
+            Device.Shader.set_Shader	(V->hShader);
+            V->Render					(m_fLOD);
+        }
+    }break;
+    default:
+        Device.Shader.set_Shader		(m_pVisual->hShader);
+        m_pVisual->Render				(m_fLOD);
+        break;
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -156,25 +196,33 @@ void CActorTools::FillMotionProperties()
 
 void CActorTools::PlayMotion()
 {
-	if (m_pEditObject){
+	if (m_pEditObject)
     	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPlay();
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
             CSMotion* M=m_pEditObject->GetActiveSMotion();
             if (M&&m_RenderObject.IsRenderable())
-            	if (M->bFX) PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
-                else		PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
+            	if (M->bFX) m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());
+                else		m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayCycle(M->Name(),fraLeftBar->ebMixMotion->Down);
         }
-    }
 }
 
 void CActorTools::StopMotion()
 {
-	if (m_pEditObject&&fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonStop();
+	if (m_pEditObject)
+    	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonStop();
+        else if (fraLeftBar->ebRenderEngineStyle->Down&&m_RenderObject.m_pBlend) {
+        	m_RenderObject.m_pBlend->playing	 = false;
+        	m_RenderObject.m_pBlend->timeCurrent = 0;
+        }
 }
 
 void CActorTools::PauseMotion()
 {
-	if (m_pEditObject) m_pEditObject->SkeletonPause();
+	if (m_pEditObject)
+    	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPause();
+        else if (fraLeftBar->ebRenderEngineStyle->Down&&m_RenderObject.m_pBlend) {
+        	m_RenderObject.m_pBlend->playing=!m_RenderObject.m_pBlend->playing;
+        }
 }
 
 bool CActorTools::RenameMotion(LPCSTR old_name, LPCSTR new_name)

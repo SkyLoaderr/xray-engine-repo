@@ -8,6 +8,8 @@
 class TfrmProperties;
 class CEditableObject;
 class PropValue;
+class TfrmKeyBar;
+class CBlend;
 
 enum EAction{
     eaSelect=0,
@@ -40,8 +42,14 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         	pmScroll	= (1<<0),
         	force_dword = DWORD(-1)
         };
+        enum EScrollAxis{
+        	saZp,
+            saZn,
+            saforceDWORD=(-1)
+        };
+        EScrollAxis		m_ScrollAxis;
     public:
-        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;m_vPosition.set(0,0,0);}
+        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;m_vPosition.set(0,0,0);m_ScrollAxis=saZp;}
     	void			OnCreate			();
     	void			OnDestroy			();
     	void			Clear				();
@@ -60,15 +68,17 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	    bool			UpdateGeometryStream(CEditableObject* source);
     	bool			UpdateMotionsStream	(CEditableObject* source);
     public:
+    	float			m_fLOD;
 	    FBasicVisual*	m_pVisual;
+        CBlend*			m_pBlend;
     public:
-        				EngineModel			(){m_pVisual=0;}
-        void			DeleteVisual		(){Device.Models.Delete(m_pVisual);}
+        				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
+        void			DeleteVisual		(){Device.Models.Delete(m_pVisual);m_pBlend=0;}
         void			Clear				(){DeleteVisual(); m_GeometryStream.clear();m_MotionsStream.clear();}
         bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom=false, bool bUpdMotions=false);
         bool			IsRenderable		(){return !!m_pVisual;}
+        void			Render				(const Fmatrix& mTransform);
     };
-	EngineModel			m_RenderObject;
 
     bool				m_bObjectModified;
     bool				m_bMotionModified;
@@ -95,9 +105,13 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	FloatOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	FloatOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
+	EngineModel			m_RenderObject;
+    PreviewModel		m_PreviewObject;
+
     TfrmProperties*		m_ObjectProps;
     TfrmProperties*		m_MotionProps;
-    PreviewModel		m_PreviewObject;
+
+    TfrmKeyBar* 		m_KeyBar;
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
@@ -158,6 +172,8 @@ public:
 
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
+
+	void				GetStatTime			(float& a, float& b, float& c);
 };
 extern CActorTools	Tools;
 //---------------------------------------------------------------------------

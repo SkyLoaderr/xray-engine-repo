@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 722
+  Height = 727
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 722
+    Height = 727
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 480
+      Top = 485
       Width = 210
       Height = 2
       Cursor = crVSplit
@@ -52,7 +52,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentMotion: TPanel
       Left = 1
-      Top = 482
+      Top = 487
       Width = 210
       Height = 239
       Align = alBottom
@@ -627,7 +627,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 280
       Width = 210
-      Height = 200
+      Height = 205
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -649,13 +649,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 169
+        Height = 174
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel3: TBevel
           Left = 0
-          Top = 168
+          Top = 173
           Width = 208
           Height = 1
           Align = alBottom
@@ -673,7 +673,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 35
           Width = 208
-          Height = 133
+          Height = 138
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -867,7 +867,7 @@ object fraLeftBar: TfraLeftBar
       end
       object Panel6: TPanel
         Left = 1
-        Top = 183
+        Top = 188
         Width = 208
         Height = 16
         Align = alBottom
@@ -1181,12 +1181,12 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Custom...'
       OnClick = Custom1Click
     end
-    object N3: TMenuItem
-      Caption = '-'
-    end
     object none1: TMenuItem
       Caption = 'Clear'
       OnClick = none1Click
+    end
+    object N3: TMenuItem
+      Caption = '-'
     end
     object Preferences1: TMenuItem
       Caption = 'Preferences'

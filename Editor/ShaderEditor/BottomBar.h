@@ -42,7 +42,6 @@ __published:	// IDE-managed Components
 	TPanel *paButtons;
 	TExtBtn *ebLog;
 	TMenuItem *miDrawObjectBones;
-	TMenuItem *miObjectLoopedAnimation;
 	TMenuItem *Render1;
 	TMenuItem *FillMode1;
 	TMenuItem *miRenderFillSolid;

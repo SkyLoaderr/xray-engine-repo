@@ -11,7 +11,6 @@
 
 #ifdef _EDITOR
 #include "ui_main.h"
-#include "BottomBar.h"
 #endif
 //----------------------------------------------------
 class fBoneNameEQ {
@@ -27,18 +26,19 @@ public:
 	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
 };
 //----------------------------------------------------
-void st_AnimParam::Set(CCustomMotion* M){
+void st_AnimParam::Set(CCustomMotion* M, bool loop){
 	t=0;
     min_t=(float)M->FrameStart()/M->FPS();
     max_t=(float)M->FrameEnd()/M->FPS();
     bPlay=false;
+	bLooped=loop;
 }
 void st_AnimParam::Update(float dt){
 	if (!bPlay) return;
 	t+=dt;
     if (t>max_t){ 
 #ifdef _EDITOR
-		if (fraBottomBar->miObjectLoopedAnimation->Checked) t=min_t; 
+		if (bLooped) t=min_t;
 		else 
 #endif
 			t=max_t; 
@@ -93,7 +93,7 @@ void CEditableObject::ResetAnimation(){
 //----------------------------------------------------
 void CEditableObject::SetActiveOMotion(COMotion* mot, bool upd_t){
 	m_ActiveOMotion=mot;
-    if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion);
+    if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion,true);
 #ifdef _EDITOR
     UI.RedrawScene();
 #endif
@@ -216,7 +216,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot){
 	m_ActiveSMotion=mot;
-    if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion);
+    if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->bStopAtEnd);
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();

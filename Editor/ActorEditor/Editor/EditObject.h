@@ -79,10 +79,11 @@ struct st_AnimParam{
     float			min_t;
     float			max_t;
     bool			bPlay;
-    void			Set		(CCustomMotion* M);
+    bool 			bLooped;
+    void			Set		(CCustomMotion* M, bool loop);
     float			Frame	()			{ return t;}
     void			Update	(float dt);
-    void			Play	(){bPlay=true;}
+    void			Play	(){bPlay=true; t=min_t;}
     void			Stop	(){bPlay=false; t=min_t;}
     void			Pause	(){bPlay=!bPlay;}
 };
@@ -111,14 +112,14 @@ class CEditableObject{
 
 	OMotionVec		m_OMotions;
     COMotion*		m_ActiveOMotion;
-    st_AnimParam	m_OMParam;
 	// skeleton
 	BoneVec			m_Bones;
 	SMotionVec		m_SMotions;
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
+public:
+    st_AnimParam	m_OMParam;
     st_AnimParam	m_SMParam;
-
 public:
 	enum{
 		eoDynamic 	 	= (1<<0),

@@ -604,10 +604,9 @@ void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
 
 void TfraLeftBar::SetRenderStyle(bool bEngineStyle)
 {
-    if (Tools.IsVisualPresent()&&bEngineStyle){
-    	ebRenderEngineStyle->Down = true;
-        Tools.PlayMotion();
-    }else ebRenderEditorStyle->Down = true;
+    if (Tools.IsVisualPresent()&&bEngineStyle) 	ebRenderEngineStyle->Down = true;
+    else 										ebRenderEditorStyle->Down = true;
+	Tools.PlayMotion();
 }
 //---------------------------------------------------------------------------
 
