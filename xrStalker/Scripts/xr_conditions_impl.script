@@ -8,21 +8,21 @@ function gar_dm_nearest_bandit(actor, npc, which)
 	local dists = {}
 	local n = 1
 
-	local bandit1 = level.object("gar_dramscene_bandit1")
-	if bandit1 and bandit1:alive() then
-		dists[n] = { who = bandit1, dist = distance_between(actor, bandit1) }
+	local gar_dm_bandit1 = utils.obj_by_sid(301)
+	if gar_dm_bandit1 and gar_dm_bandit1:alive() then
+		dists[n] = { who = gar_dm_bandit1, dist = distance_between(actor, gar_dm_bandit1) }
 		n = n + 1
 	end
 
-	local bandit2 = level.object("gar_dramscene_bandit2")
-	if bandit2 and bandit2:alive() then
-		dists[n] = { who = bandit2, dist = distance_between(actor, bandit2) }
+	local gar_dm_bandit2 = utils.obj_by_sid(302)
+	if gar_dm_bandit2 and gar_dm_bandit2:alive() then
+		dists[n] = { who = gar_dm_bandit2, dist = distance_between(actor, gar_dm_bandit2) }
 		n = n + 1
 	end
 
-	local bandit3 = level.object("gar_dramscene_bandit3")
-	if bandit3 and bandit3:alive() then
-		dists[n] = { who = bandit3, dist = distance_between(actor, bandit3) }
+	local gar_dm_bandit3 = utils.obj_by_sid(303)
+	if gar_dm_bandit3 and gar_dm_bandit3:alive() then
+		dists[n] = { who = gar_dm_bandit3, dist = distance_between(actor, gar_dm_bandit3) }
 		n = n + 1
 	end
 
