@@ -671,7 +671,7 @@ function stalker_novice3_action:state_actor()
     	end
     end
 
-    if(self.object:animation_count < 1) then
+    if(self.object:animation_count() < 1) then
     	self.object:add_animation("torg_1", true)
         self.object:add_animation("torg_2", true)
         self.object:add_animation("torg_4", true)
