@@ -2,6 +2,7 @@
 #include "build.h"
 #include "xr_func.h"
 #include "tga.h"
+#include "xrThread.h"
 
 BOOL	hasImplicitLighting(Face* F)
 {
@@ -188,114 +189,106 @@ DEF_MAP(Implicit,DWORD,ImplicitDeflector);
 
 
 static hash2D <Face*,384,384>	ImplicitHash;
-struct ThreadParams
+
+class ImplicitThread : public CThread
 {
-	DWORD				ID;
 	ImplicitDeflector*	DATA;			// Data for this thread
 	DWORD				y_start,y_end;
-	float				progress;
-	BOOL				bCompleted;
 
-	ThreadParams()
+	ImplicitThread		(ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end)
 	{
-		DATA			= 0;
-		progress		= 0;
-		bCompleted		= FALSE;
+		DATA			= _DATA;
+		y_start			= _y_start;
+		y_end			= _y_end;
+	}
+	virtual void		Exectute()
+	{
+		R_ASSERT				(DATA);
+		ImplicitDeflector& defl = *DATA;
+		vector<R_Light>	Lights	= pBuild->lights_soften;
+		RAPID::XRCollide		DB;
+		
+		// Setup variables
+		UVpoint		dim,half;
+		dim.set		(float(defl.Width()),float(defl.Height()));
+		half.set	(.5f/dim.u,.5f/dim.v);
+		
+		// Jitter data
+		UVpoint		JS;
+		JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
+		DWORD		Jcount;
+		UVpoint*	Jitter;
+		Jitter_Select(Jitter, Jcount);
+		
+		// Lighting itself
+		DB.RayMode	(0);
+		Fcolor		C[9];
+		for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
+		for (DWORD V=y_start; V<y_end; V++)
+		{
+			for (DWORD U=0; U<defl.Width(); U++)
+			{
+				DWORD		Fcount	= 0;
+				
+				try {
+					for (J=0; J<Jcount; J++) 
+					{
+						// LUMEL space
+						UVpoint P;
+						P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
+						P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
+						vecFace&	space	= ImplicitHash.query(P.u,P.v);
+						
+						// World space
+						Fvector wP,wN,B;
+						C[J].set(0,0,0,0);
+						for (vecFaceIt it=space.begin(); it!=space.end(); it++)
+						{
+							Face	*F	= *it;
+							_TCF&	tc	= F->tc[0];
+							if (tc.isInside(P,B)) 
+							{
+								// We found triangle and have barycentric coords
+								Vertex	*V1 = F->v[0];
+								Vertex	*V2 = F->v[1];
+								Vertex	*V3 = F->v[2];
+								wP.from_bary(V1->P,V2->P,V3->P,B);
+								wN.from_bary(V1->N,V2->N,V3->N,B);
+								wN.normalize();
+								LightPoint	(&DB, C[J], wP, wN, Lights.begin(), Lights.end());
+								Fcount		++;
+							}
+						}
+					} 
+				} catch (...)
+				{
+					Msg("* THREAD #%d: Access violation. Possibly recovered.",THP->ID);
+				}
+				
+				FPU::m24r	();
+				if (Fcount) {
+					// Calculate lighting amount
+					Fcolor		Lumel,R;
+					float cnt	= float(Fcount);
+					R.r =		(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
+					R.g =		(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
+					R.b	=		(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
+					Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
+					Lumel.a		= 1.f;
+					
+					ImplicitLumel& L = defl.Lumel(U,V);
+					L.color.x	= R.r;
+					L.color.y	= R.g;
+					L.color.z	= R.b;
+					L.marker	= 255;
+				} else {
+					defl.Lumel	(U,V).marker=0;
+				}
+			}
+			fProgress	= float(V - y_start) / float(y_end-y_start);
+		}
 	}
 };
-
-void __cdecl ImplicitThread(void* P)
-{
-	ThreadParams* THP		= (ThreadParams*)P;
-	ImplicitDeflector& defl = *(THP->DATA);
-	vector<R_Light>	Lights	= pBuild->lights_soften;
-	R_ASSERT				(THP && THP->DATA);
-	RAPID::XRCollide		DB;
-
-	Msg("* THREAD #%d: Started.",THP->ID);
-
-	// Setup variables
-	UVpoint		dim,half;
-	dim.set		(float(defl.Width()),float(defl.Height()));
-	half.set	(.5f/dim.u,.5f/dim.v);
-	
-	// Jitter data
-	UVpoint		JS;
-	JS.set		(g_params.m_lm_jitter/dim.u, g_params.m_lm_jitter/dim.v);
-	DWORD		Jcount;
-	UVpoint*	Jitter;
-	Jitter_Select(Jitter, Jcount);
-	
-	// Lighting itself
-	DB.RayMode	(0);
-	Fcolor		C[9];
-	for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
-	for (DWORD V=THP->y_start; V<THP->y_end; V++)
-	{
-		for (DWORD U=0; U<defl.Width(); U++)
-		{
-			DWORD		Fcount	= 0;
-			
-			try {
-				for (J=0; J<Jcount; J++) 
-				{
-					// LUMEL space
-					UVpoint P;
-					P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
-					P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
-					vecFace&	space	= ImplicitHash.query(P.u,P.v);
-					
-					// World space
-					Fvector wP,wN,B;
-					C[J].set(0,0,0,0);
-					for (vecFaceIt it=space.begin(); it!=space.end(); it++)
-					{
-						Face	*F	= *it;
-						_TCF&	tc	= F->tc[0];
-						if (tc.isInside(P,B)) 
-						{
-							// We found triangle and have barycentric coords
-							Vertex	*V1 = F->v[0];
-							Vertex	*V2 = F->v[1];
-							Vertex	*V3 = F->v[2];
-							wP.from_bary(V1->P,V2->P,V3->P,B);
-							wN.from_bary(V1->N,V2->N,V3->N,B);
-							wN.normalize();
-							LightPoint	(&DB, C[J], wP, wN, Lights.begin(), Lights.end());
-							Fcount		++;
-						}
-					}
-				} 
-			} catch (...)
-			{
-				Msg("* THREAD #%d: Access violation. Possibly recovered.",THP->ID);
-			}
-			
-			FPU::m24r	();
-			if (Fcount) {
-				// Calculate lighting amount
-				Fcolor		Lumel,R;
-				float cnt	= float(Fcount);
-				R.r =		(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
-				R.g =		(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
-				R.b	=		(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
-				Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-				Lumel.a		= 1.f;
-				
-				ImplicitLumel& L = defl.Lumel(U,V);
-				L.color.x	= R.r;
-				L.color.y	= R.g;
-				L.color.z	= R.b;
-				L.marker	= 255;
-			} else {
-				defl.Lumel	(U,V).marker=0;
-			}
-		}
-		THP->progress	= float(V - THP->y_start) / float(THP->y_end-THP->y_start);
-	}
-	THP->bCompleted		= TRUE;
-	Msg("* THREAD #%d: Task Completed.",THP->ID);
-}
 
 //#pragma optimize( "g", off )
 

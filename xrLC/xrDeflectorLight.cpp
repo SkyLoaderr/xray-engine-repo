@@ -7,6 +7,38 @@
 #include "xrDXTC.h"
 #include "tga.h"
 
+void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
+{
+	static UVpoint Jitter1[1] = {
+		{0,0}
+	};
+	static UVpoint Jitter4[4] = {
+		{-1,-1}, {1,-1}, {1,1}, {-1,1}
+	};
+	static UVpoint Jitter9[9] = {
+		{-1,-1},	{0,-1},		{1,-1}, 
+		{-1,0},		{0,0},		{1,0},
+		{-1,1},		{0,1},		{1,1}
+	};
+
+	switch (g_params.m_lm_jitter_samples)
+	{
+		case 1:
+			Jcount	= 1;
+			Jitter	= Jitter1;
+			break;
+		case 9:
+			Jcount	= 9;
+			Jitter	= Jitter9;
+			break;
+		case 4:
+		default:
+			Jcount	= 4;
+			Jitter	= Jitter4;
+			break;
+	}
+}
+
 IC void GET(
 			b_texture &lm, 
 			int x, int y, DWORD ref, DWORD &count, 

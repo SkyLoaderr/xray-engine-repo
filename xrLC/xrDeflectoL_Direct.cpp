@@ -3,48 +3,16 @@
 #include "cl_defs.h"
 #include "std_classes.h"
 
-extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
-
-void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
-{
-	static UVpoint Jitter1[1] = {
-		{0,0}
-	};
-	static UVpoint Jitter4[4] = {
-		{-1,-1}, {1,-1}, {1,1}, {-1,1}
-	};
-	static UVpoint Jitter9[9] = {
-		{-1,-1},	{0,-1},		{1,-1}, 
-		{-1,0},		{0,0},		{1,0},
-		{-1,1},		{0,1},		{1,1}
-	};
-
-	switch (g_params.m_lm_jitter_samples)
-	{
-		case 1:
-			Jcount	= 1;
-			Jitter	= Jitter1;
-			break;
-		case 9:
-			Jcount	= 9;
-			Jitter	= Jitter9;
-			break;
-		case 4:
-		default:
-			Jcount	= 4;
-			Jitter	= Jitter4;
-			break;
-	}
-}
+extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
+extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
 void CDeflector::L_Direct(float progress)
 {
 	// Setup variables
-	UVpoint		dim,guard,half,scale;
+	UVpoint		dim,guard,half;
 	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
 	guard.set	(1.f/dim.u,1.f/dim.v);
 	half.set	(.5f/dim.u,.5f/dim.v);
-	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
 
 	// Lighting itself
 	XRC.RayMode	(0);
