@@ -440,8 +440,8 @@ namespace PAPI
 	struct PASource : public ParticleAction
 	{
 		enum{
-			flVertexB_tracks	= (1<<31),// True to get positionB from position.
-			flSilent			= (1<<30),
+			flVertexB_tracks	= (1ul<<31ul),// True to get positionB from position.
+			flSilent			= (1ul<<30ul),
 			fl_FORCEDWORD		= u32(-1)
 		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
