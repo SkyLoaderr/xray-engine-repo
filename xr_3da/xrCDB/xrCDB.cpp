@@ -87,6 +87,8 @@ void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc,
 	R_ASSERT					(S_INIT == status);
     R_ASSERT					((Vcnt>=4)&&(Tcnt>=2));
 
+	build_internal				(V,Vcnt,T,Tcnt,bc,bcp);
+/*
 #ifdef _EDITOR    
 	build_internal				(V,Vcnt,T,Tcnt,bc,bcp);
 #else
@@ -94,6 +96,7 @@ void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc,
 	R_ASSERT					(_beginthread(build_thread,0,&P) >= 0);
 	while						(S_INIT	== status)	Sleep	(5);
 #endif
+*/
 }
 
 void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc, void* bcp)

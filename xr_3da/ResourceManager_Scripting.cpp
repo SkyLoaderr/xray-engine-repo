@@ -11,6 +11,12 @@
 
 using namespace				luabind;
 
+#ifdef	DEBUG
+#define MDB	Memory.dbg_check()
+#else
+#define MDB
+#endif
+
 // wrapper
 class	adopt_sampler
 {
@@ -20,58 +26,61 @@ public:
 	adopt_sampler			(CBlender_Compile*	_C, u32 _stage)		: C(_C), stage(_stage)		{ 
 		Msg	("S-create: %x",this);
 		if (u32(-1)==stage) C=0;		
+		MDB;
 	}
 	adopt_sampler			(const adopt_sampler&	_C)				: C(_C.C), stage(_C.stage)	{ 
 		Msg	("S-copy:   %x (%x)",this, &_C);
 		if (u32(-1)==stage) C=0;		
+		MDB;	
 	}
 	~adopt_sampler			()										{ 
 		Msg	("S-delete: %x",this);
+		MDB;	
 	}
 
-	adopt_sampler&			_texture		(LPCSTR texture)		{ if (C) C->i_Texture	(stage,texture);											return *this;	}
-	adopt_sampler&			_projective		(bool _b)				{ if (C) C->i_Projective(stage,_b);													return *this;	}
-	adopt_sampler&			_clamp			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_CLAMP);									return *this;	}
-	adopt_sampler&			_wrap			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_WRAP);									return *this;	}
-	adopt_sampler&			_mirror			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_MIRROR);									return *this;	}
-	adopt_sampler&			_f_anisotropic	()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_ANISOTROPIC);	return *this;	}
-	adopt_sampler&			_f_trilinear	()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_LINEAR);		return *this;	}
-	adopt_sampler&			_f_bilinear		()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_POINT, D3DTEXF_LINEAR);		return *this;	}
-	adopt_sampler&			_f_linear		()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_NONE,  D3DTEXF_LINEAR);		return *this;	}
-	adopt_sampler&			_f_none			()						{ if (C) C->i_Filter	(stage,D3DTEXF_POINT, D3DTEXF_NONE,  D3DTEXF_POINT);		return *this;	}
-	adopt_sampler&			_fmin_none		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_NONE);										return *this;	}
-	adopt_sampler&			_fmin_point		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_POINT);										return *this;	}
-	adopt_sampler&			_fmin_linear	()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_LINEAR);										return *this;	}
-	adopt_sampler&			_fmin_aniso		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);								return *this;	}
-	adopt_sampler&			_fmip_none		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_NONE);										return *this;	}
-	adopt_sampler&			_fmip_point		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_POINT);										return *this;	}
-	adopt_sampler&			_fmip_linear	()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_LINEAR);										return *this;	}
-	adopt_sampler&			_fmag_none		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_NONE);										return *this;	}
-	adopt_sampler&			_fmag_point		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_POINT);										return *this;	}
-	adopt_sampler&			_fmag_linear	()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_LINEAR);										return *this;	}
-};
-
-// wrapper
-class	adopt_compiler
+	adopt_sampler&			_texture		(LPCSTR texture)		{ MDB;	if (C) C->i_Texture	(stage,texture);											MDB;return *this;	}
+	adopt_sampler&			_projective		(bool _b)				{ MDB;	if (C) C->i_Projective(stage,_b);												MDB;return *this;	}
+	adopt_sampler&			_clamp			()						{ MDB;	if (C) C->i_Address	(stage,D3DTADDRESS_CLAMP);									MDB;return *this;	}
+	adopt_sampler&			_wrap			()						{ MDB;	if (C) C->i_Address	(stage,D3DTADDRESS_WRAP);									MDB;return *this;	}
+	adopt_sampler&			_mirror			()						{ MDB;	if (C) C->i_Address	(stage,D3DTADDRESS_MIRROR);									MDB;return *this;	}
+	adopt_sampler&			_f_anisotropic	()						{ MDB;	if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_ANISOTROPIC);	MDB;return *this;	}
+	adopt_sampler&			_f_trilinear	()						{ MDB;	if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_LINEAR);		MDB;return *this;	}
+	adopt_sampler&			_f_bilinear		()						{ MDB;	if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_POINT, D3DTEXF_LINEAR);		MDB;return *this;	}
+	adopt_sampler&			_f_linear		()						{ MDB;	if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_NONE,  D3DTEXF_LINEAR);		MDB;return *this;	}
+	adopt_sampler&			_f_none			()						{ MDB;	if (C) C->i_Filter	(stage,D3DTEXF_POINT, D3DTEXF_NONE,  D3DTEXF_POINT);		MDB;return *this;	}
+	adopt_sampler&			_fmin_none		()						{ MDB;	if (C) C->i_Filter_Min(stage,D3DTEXF_NONE);										MDB;return *this;	}
+	adopt_sampler&			_fmin_point		()						{ MDB;	if (C) C->i_Filter_Min(stage,D3DTEXF_POINT);									MDB;return *this;	}
+	adopt_sampler&			_fmin_linear	()						{ MDB;	if (C) C->i_Filter_Min(stage,D3DTEXF_LINEAR);									MDB;return *this;	}
+	adopt_sampler&			_fmin_aniso		()						{ MDB;	if (C) C->i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);								MDB;return *this;	}
+	adopt_sampler&			_fmip_none		()						{ MDB;	if (C) C->i_Filter_Mip(stage,D3DTEXF_NONE);										MDB;return *this;	}
+	adopt_sampler&			_fmip_point		()						{ MDB;	if (C) C->i_Filter_Mip(stage,D3DTEXF_POINT);									MDB;return *this;	}
+	adopt_sampler&			_fmip_linear	()						{ MDB;	if (C) C->i_Filter_Mip(stage,D3DTEXF_LINEAR);									MDB;return *this;	}
+	adopt_sampler&			_fmag_none		()						{ MDB;	if (C) C->i_Filter_Mag(stage,D3DTEXF_NONE);										MDB;return *this;	}
+	adopt_sampler&			_fmag_point		()						{ MDB;	if (C) C->i_Filter_Mag(stage,D3DTEXF_POINT);									MDB;return *this;	}
+	adopt_sampler&			_fmag_linear	()						{ MDB;	if (C) C->i_Filter_Mag(stage,D3DTEXF_LINEAR);									MDB;return *this;	}
+};																																							
+																																							
+// wrapper																																					
+class	adopt_compiler																																		
 {
 	CBlender_Compile*		C;
 public:
 	adopt_compiler			(CBlender_Compile*	_C)	: C(_C)							{ 
-		Msg	("C-create: %x",this);
+		Msg	("C-create: %x",this);MDB;	
 	}
 	adopt_compiler			(const adopt_compiler&	_C)	: C(_C.C)					{ 
-		Msg	("C-copy:   %x (%x)",this, &_C);
+		Msg	("C-copy:   %x (%x)",this, &_C);MDB;	
 	}
 	~adopt_compiler			()														{ 
-		Msg	("C-delete: %x",this);
+		Msg	("C-delete: %x",this);MDB;	
 	}
 
-	adopt_compiler&			_pass			(LPCSTR	vs,		LPCSTR ps)				{	C->r_Pass			(vs,ps,true);			return	*this;	}
-	adopt_compiler&			_fog			(bool	_fog)							{	C->PassSET_LightFog	(FALSE,_fog);			return	*this;	}
-	adopt_compiler&			_ZB				(bool	_test,	bool _write)			{	C->PassSET_ZB		(_test,_write);			return	*this;	}
-	adopt_compiler&			_blend			(bool	_blend, u32 abSRC, u32 abDST)	{	C->PassSET_ablend_mode(_blend,abSRC,abDST);	return 	*this;	}
-	adopt_compiler&			_aref			(bool	_aref,  u32 aref)				{	C->PassSET_ablend_aref(_aref,aref);			return 	*this;	}
-	adopt_sampler			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
+	adopt_compiler&			_pass			(LPCSTR	vs,		LPCSTR ps)				{	MDB;	C->r_Pass			(vs,ps,true);			MDB;return	*this;		}
+	adopt_compiler&			_fog			(bool	_fog)							{	MDB;	C->PassSET_LightFog	(FALSE,_fog);			MDB;return	*this;		}
+	adopt_compiler&			_ZB				(bool	_test,	bool _write)			{	MDB;	C->PassSET_ZB		(_test,_write);			MDB;return	*this;		}
+	adopt_compiler&			_blend			(bool	_blend, u32 abSRC, u32 abDST)	{	MDB;	C->PassSET_ablend_mode(_blend,abSRC,abDST);	MDB;return 	*this;		}
+	adopt_compiler&			_aref			(bool	_aref,  u32 aref)				{	MDB;	C->PassSET_ablend_aref(_aref,aref);			MDB;return 	*this;		}
+	adopt_sampler			_sampler		(LPCSTR _name)							{	MDB;	u32 s = C->r_Sampler(_name,0);				MDB;return	adopt_sampler(C,s);	}
 };
 
 class	adopt_blend
@@ -81,6 +90,7 @@ public:
 
 void LuaLog(LPCSTR caMessage)
 {
+	MDB;	
 	Lua::LuaOut	(Lua::eLuaMessageTypeMessage,"%s",caMessage);
 }
 void LuaError(lua_State* L)
@@ -275,7 +285,9 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
 	adopt_compiler		ac		= adopt_compiler(this);
+	Memory.dbg_check	();
 	element						(ac,t_0,t_1,t_d);
+	Memory.dbg_check	();
 	r_End				();
 	lua_setgcthreshold	(LSVM,0);
 	Memory.dbg_check	();
