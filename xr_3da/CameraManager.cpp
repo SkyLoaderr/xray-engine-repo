@@ -60,22 +60,27 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	R.crossproduct			(vNormal,vDirection);
 	vNormal.crossproduct	(vDirection,R);
 
-	// Save un-affected matrix
-	mView.build_camera_dir	(vPosition,vDirection,vNormal);
+	// Save un-affected matrix and vectors
+	unaffected_mView.build_camera_dir	(vPosition,vDirection,vNormal);
+	unaffected_vPosition.set			(vPosition);
+	unaffected_vDirection.set			(vDirection);
+	unaffected_vNormal.set				(vNormal);
+	unaffected_vRight.crossproduct		(vNormal,vDirection);
 
+	// Effector
 	if (pEffector) 
 	{
 		pEffector->Process(vPosition,vDirection,vNormal);
 		if (pEffector->fLifeTime<=0) _DELETE(pEffector);
 		
 		// Normalize
-		Fvector					R;
 		vDirection.normalize	();
 		vNormal.normalize		();
 		R.crossproduct			(vNormal,vDirection);
 		vNormal.crossproduct	(vDirection,R);
 	}
 	
+	// Device params
 	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
 	
 	Device.vCameraPosition.set	( vPosition		);

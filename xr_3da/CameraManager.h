@@ -24,6 +24,7 @@ class ENGINE_API CCameraManager
 	Fvector					unaffected_vPosition;
 	Fvector					unaffected_vDirection;
 	Fvector					unaffected_vNormal;
+	Fvector					unaffected_vRight;
 public:
 	void					Dump				(void);
 	void					SetEffector			(CEffector *pe);
