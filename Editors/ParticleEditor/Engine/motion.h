@@ -96,13 +96,18 @@ public:
 class ENGINE_API CSMotion: public CCustomMotion{
 	BoneMotionVec	bone_mots;
 public:
+	enum EFlags{
+		eFX			= 1<<0,
+		eStopAtEnd	= 1<<1,
+		eNoMix		= 1<<2
+	};
+
     int				iBoneOrPart;
-    BOOL			bFX;
-	BOOL			bStopAtEnd;
     float			fSpeed;                      
     float			fAccrue;
     float			fFalloff;
     float			fPower;
+	DWORD			m_dwFlags;
 
     void			Clear			();
 public:
@@ -123,6 +128,9 @@ public:
 
 	virtual void	SaveMotion		(const char* buf);
 	virtual bool	LoadMotion		(const char* buf);
+
+	IC void			SetFlag			(EFlags flag, BOOL value){if (value) m_dwFlags|=flag; else m_dwFlags&=~flag; }
+	IC BOOL			IsFlag			(EFlags flag){return m_dwFlags&flag;}
 #ifdef _LW_EXPORT
 	void			ParseBoneMotion	(LWItemID bone);
 #endif

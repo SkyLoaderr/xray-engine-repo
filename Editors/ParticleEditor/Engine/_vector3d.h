@@ -59,7 +59,7 @@ public:
 	IC	void	max(const Self &v)						{ x = _max(x,v.x);	y = _max(y,v.y);	z = _max(z,v.z);	}
 
 	IC	void	abs(const Self &v)						{ x = _abs(v.x); y=_abs(v.y); z=_abs(v.z);	}
-	IC  BOOL	similar(const Self &v, T E=EPS_L)		{ return _abs(x-v.x)<E && _abs(y-v.y)<E && _abs(z-v.z)<E;};
+	IC  BOOL	similar(const Self &v, T E=EPS_L) const	{ return _abs(x-v.x)<E && _abs(y-v.y)<E && _abs(z-v.z)<E;};
 
 	IC	void	set_length(T l){
 		mul(l/magnitude());

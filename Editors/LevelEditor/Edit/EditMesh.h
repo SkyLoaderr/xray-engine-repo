@@ -15,6 +15,7 @@ class CSurface;
 struct SRayPickInfo;
 //struct CFrustum;
 struct FSChunkDef;
+class CExporter;
 
 #pragma pack( push,1 )
 enum EVMType{
@@ -129,6 +130,7 @@ class CEditableMesh {
     friend class CExportSkeleton;
     friend class CExportObjectOGF;
     friend class TfrmEditLibrary;
+	friend class CExporter;
 
 	string128		m_Name;
 
@@ -237,6 +239,7 @@ public:
 	bool			ExtractTexName			(char *dest, Texmap *map);
 	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
 	bool			Convert					(INode *node);
+	bool			Convert					(CExporter* exporter);
 #endif
 	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
 	void			RebuildVMaps			();

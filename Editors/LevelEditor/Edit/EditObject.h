@@ -15,6 +15,7 @@ class 	CCustomMotion;
 class	CBone;
 class	Shader;
 class	Mtl;
+class	CExporter;
 struct	FSChunkDef;
 struct	st_ObjectDB;
 
@@ -22,6 +23,7 @@ struct	st_ObjectDB;
 #include <lwobjimp.h>
 #include <lwsurf.h>
 #endif
+
 
 class CSurface
 {
@@ -36,7 +38,7 @@ public:
     DWORD			m_dwFVF;
 #ifdef _MAX_EXPORT
 	DWORD			mat_id;
-	Mtl*			pMtlMain;
+	LPVOID			mtl_id;
 #endif
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
@@ -50,7 +52,7 @@ public:
 		m_dwFVF		= 0;
 #ifdef _MAX_EXPORT
 		mat_id		= 0;
-		pMtlMain	= 0;
+		mtl_id		= 0;
 #endif
 #ifdef _LW_IMPORT
 		surf_id		= 0;
@@ -313,8 +315,9 @@ public:
     bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareOGF				(CFS_Base& F);
 #ifdef _MAX_EXPORT
-	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
-	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
+	CSurface*		CreateSurface			(LPVOID M, DWORD mat_id);
+	LPCSTR			GenerateSurfaceName		(LPCSTR base_name); 
+	bool			ImportMAXSkeleton		(CExporter* exporter);
 #endif
 #ifdef _LW_EXPORT
 	bool			Import_LWO				(st_ObjectDB *I);

@@ -15,7 +15,6 @@ class ENGINE_API CEngine
 	HMODULE				hPSGP;
 public:
 	CFileSystem			FS;
-    string256			Params;
 public:
 						CEngine		    ();
 						~CEngine	    ();

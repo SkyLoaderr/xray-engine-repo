@@ -52,11 +52,11 @@ public:
         return kCross;
     }
 
-	IC bool similar(Self &p, T eu, T ev) { 
+	IC bool similar(Self &p, T eu, T ev) const{ 
 		return _abs(x-p.x)<eu && _abs(y-p.y)<ev;
 	}
 	
-	IC bool similar(const Self &p, float E=EPS_L){ 
+	IC bool similar(const Self &p, float E=EPS_L) const{ 
 		return _abs(x-p.x)<E && _abs(y-p.y)<E;
 	};
 

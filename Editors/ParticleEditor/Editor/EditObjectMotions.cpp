@@ -125,7 +125,7 @@ void CEditableObject::CalculateAnimation(bool bGenInvMat){
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot){
 	m_ActiveSMotion=mot;
-    if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->bStopAtEnd);
+	if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion,!m_ActiveSMotion->IsFlag(CSMotion::eStopAtEnd));
     BoneVec& lst = m_Bones;
     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
 	CalculateAnimation();

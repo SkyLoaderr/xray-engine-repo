@@ -15,6 +15,9 @@
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
 #endif
+#ifdef _MAX_EXPORT
+	#include "NetDeviceLog.h"
+#endif
 //----------------------------------------------------
 
 bool g_ErrorMode=false;

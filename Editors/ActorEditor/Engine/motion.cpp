@@ -7,7 +7,7 @@
 #define EOBJ_OMOTION   			0x1100
 #define EOBJ_SMOTION   			0x1200
 #define EOBJ_OMOTION_VERSION   	0x0003
-#define EOBJ_SMOTION_VERSION   	0x0004
+#define EOBJ_SMOTION_VERSION   	0x0005
 
 #ifdef _LW_EXPORT
 	extern char* ReplaceSpace(char* s);               
@@ -116,12 +116,11 @@ bool COMotion::Load(CStream& F){
 CSMotion::CSMotion():CCustomMotion(){
 	mtype			=mtSkeleton;
     iBoneOrPart		=0;
-    bFX				=FALSE;
-	bStopAtEnd		=FALSE;
     fSpeed			=1.0f;
     fAccrue			=2.0f;
     fFalloff		=2.0f;
     fPower			=1.f;
+	m_dwFlags		=0;
 }
 
 CSMotion::CSMotion(CSMotion* source):CCustomMotion(source){
@@ -192,9 +191,8 @@ bool CSMotion::LoadMotion(const char* buf){
 void CSMotion::Save(CFS_Base& F){ 
 	CCustomMotion::Save(F);
 	F.Wword		(EOBJ_SMOTION_VERSION);
+	F.Wdword	(m_dwFlags);
     F.Wdword	(iBoneOrPart);
-    F.Wbyte		(bFX);
-    F.Wbyte		(bStopAtEnd);
     F.Wfloat	(fSpeed);
     F.Wfloat	(fAccrue);
     F.Wfloat	(fFalloff);
@@ -210,22 +208,39 @@ void CSMotion::Save(CFS_Base& F){
 bool CSMotion::Load(CStream& F){
 	CCustomMotion::Load(F);
 	WORD vers	= F.Rword();
-    if (vers!=EOBJ_SMOTION_VERSION) return false;
-    iBoneOrPart	= F.Rdword();
-    bFX			= F.Rbyte();
-    bStopAtEnd	= F.Rbyte();
-    fSpeed		= F.Rfloat();
-    fAccrue		= F.Rfloat();
-    fFalloff	= F.Rfloat();
-    fPower		= F.Rfloat();
-    bone_mots.resize(F.Rdword());
-    for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-        bm_it->flag = F.Rdword();
-        for (int ch=0; ch<ctMaxChannel; ch++){
-            bm_it->envs[ch] = new CEnvelope();
-            bm_it->envs[ch]->Load(F);
-        }
-    }
+	if (vers==0x0004){
+	    iBoneOrPart	= F.Rdword();
+		SetFlag		(eFX,F.Rbyte());
+		SetFlag		(eStopAtEnd,F.Rbyte());
+		fSpeed		= F.Rfloat();
+	    fAccrue		= F.Rfloat();
+		fFalloff	= F.Rfloat();
+	    fPower		= F.Rfloat();
+		bone_mots.resize(F.Rdword());
+		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+			bm_it->flag = F.Rdword();
+			for (int ch=0; ch<ctMaxChannel; ch++){
+				bm_it->envs[ch] = new CEnvelope();
+				bm_it->envs[ch]->Load(F);
+			}
+		}
+	}else{
+		if (vers!=EOBJ_SMOTION_VERSION) return false;
+		m_dwFlags	= F.Rdword();
+		iBoneOrPart	= F.Rdword();
+		fSpeed		= F.Rfloat();
+		fAccrue		= F.Rfloat();
+		fFalloff	= F.Rfloat();
+		fPower		= F.Rfloat();
+		bone_mots.resize(F.Rdword());
+		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+			bm_it->flag = F.Rdword();
+			for (int ch=0; ch<ctMaxChannel; ch++){
+				bm_it->envs[ch] = new CEnvelope();
+				bm_it->envs[ch]->Load(F);
+			}
+		}
+	}
 	return true;
 }
 
