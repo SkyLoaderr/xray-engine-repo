@@ -179,7 +179,7 @@ public:
 	IC void 		unlock				()          	{ m_Locked--; }
 	IC void 		waitlock			()        		{ while( locked() ) Sleep(0); }
 
-	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT)); return m_SceneTools[cat]; }
+	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ return ((cat>=0)&&(cat<OBJCLASS_COUNT))?m_SceneTools[cat]:0; }
 	IC ObjectList& 	ListObj    			(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT)); return m_Objects[cat]; }
 	IC ObjectIt 	FirstObj      		(EObjClass cat)	{ return ListObj(cat).begin(); }
 	IC ObjectIt 	LastObj       		(EObjClass cat)	{ return ListObj(cat).end(); }
