@@ -233,11 +233,19 @@ namespace PAPI
 		virtual void 	FillProp	(PropItemVec& items, LPCSTR pref)=0;
 #endif
 	};
-    
+
+#ifdef _PARTICLE_EDITOR    
+#define _METHODS	virtual void 	Load		(IReader& F);\
+                    virtual void 	Save		(IWriter& F);\
+                    virtual void 	Execute		(ParticleEffect *pe);\
+                    virtual void 	Transform	(const Fmatrix& m);\
+                    virtual void 	Render		();
+#else
 #define _METHODS	virtual void 	Load		(IReader& F);\
                     virtual void 	Save		(IWriter& F);\
                     virtual void 	Execute		(ParticleEffect *pe);\
                     virtual void 	Transform	(const Fmatrix& m);
+#endif
 
 	struct PARTICLEDLL_API PAAvoid : public ParticleAction
 	{
