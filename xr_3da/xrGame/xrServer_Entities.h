@@ -29,6 +29,26 @@ public:
 };
 #pragma pack(pop)
 
+//***** CFormed (Base)
+class xrSE_CFormed
+{
+public:
+	union shape_data
+	{
+		Fsphere		sphere;
+		Fmatrix		box;
+	};
+	struct shape_def
+	{
+		u8			type;
+		shape_data	data;
+	};
+	vector<shape_def>	shapes;
+public:
+	void					cform_read			(NET_Packet& P);
+	void					cform_write			(NET_Packet& P);
+};
+
 //
 class xrServerEntity
 {
@@ -324,6 +344,11 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 
 							xrSE_Dog();				// constructor for variable initialization
 xrSE_DECLARE_END
+
+////***** Zone
+////xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
+//class xrSE_Zone : public xrSE_CFormed, public xrServerEntity { typedef __B inherited; public:
+//xrSE_DECLARE_END
 
 // 
 #undef xrSE_EDITOR_METHODS

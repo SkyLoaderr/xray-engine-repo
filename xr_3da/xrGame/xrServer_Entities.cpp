@@ -471,53 +471,83 @@ void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
-//***** CFormed (Base)
-class xrSE_CFormed
+////***** CFormed (Base)
+//class xrSE_CFormed
+//{
+//public:
+//	union shape_data
+//	{
+//		Fsphere		sphere;
+//		Fmatrix		box;
+//	};
+//	struct shape_def
+//	{
+//		u8			type;
+//		shape_data	data;
+//	};
+//	vector<shape_def>	shapes;
+//public:
+//	void					cform_read			(NET_Packet& P)
+//	{
+//		shapes.clear();
+//		u8	count;	P.r_u8(count);
+//		while (count) {
+//			shape_def	S;
+//			P.r_u8	(S.type);
+//			switch	(S.type)
+//			{
+//			case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
+//			case 1:	P.r_matrix	(S.data.box);							break;
+//			}
+//			shapes.push_back	(S);
+//			count--;
+//		}
+//	}
+//	void					cform_write			(NET_Packet& P)
+//	{
+//		P.w_u8	(u8(shapes.size()));
+//		for (u32 i=0; i<shapes.size(); i++)
+//		{
+//			shape_def&	S	= shapes[i];
+//			P.w_u8	(S.type);
+//			switch (S.type)
+//			{
+//			case 0:	P.w			(&S.data.sphere,sizeof(S.data.sphere));	break;
+//			case 1:	P.w_matrix	(S.data.box);							break;
+//			}
+//		}
+//	}
+//};
+void					xrSE_CFormed::cform_read			(NET_Packet& P)
 {
-public:
-	union shape_data
-	{
-		Fsphere		sphere;
-		Fmatrix		box;
-	};
-	struct shape_def
-	{
-		u8			type;
-		shape_data	data;
-	};
-	vector<shape_def>	shapes;
-public:
-	void					cform_read			(NET_Packet& P)
-	{
-		shapes.clear();
-		u8	count;	P.r_u8(count);
-		while (count) {
-			shape_def	S;
-			P.r_u8	(S.type);
-			switch	(S.type)
-			{
-			case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
-			case 1:	P.r_matrix	(S.data.box);							break;
-			}
-			shapes.push_back	(S);
-			count--;
-		}
-	}
-	void					cform_write			(NET_Packet& P)
-	{
-		P.w_u8	(u8(shapes.size()));
-		for (u32 i=0; i<shapes.size(); i++)
+	shapes.clear();
+	u8	count;	P.r_u8(count);
+	while (count) {
+		shape_def	S;
+		P.r_u8	(S.type);
+		switch	(S.type)
 		{
-			shape_def&	S	= shapes[i];
-			P.w_u8	(S.type);
-			switch (S.type)
-			{
-			case 0:	P.w			(&S.data.sphere,sizeof(S.data.sphere));	break;
-			case 1:	P.w_matrix	(S.data.box);							break;
-			}
+		case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
+		case 1:	P.r_matrix	(S.data.box);							break;
+		}
+		shapes.push_back	(S);
+		count--;
+	}
+}
+void					xrSE_CFormed::cform_write			(NET_Packet& P)
+{
+	P.w_u8	(u8(shapes.size()));
+	for (u32 i=0; i<shapes.size(); i++)
+	{
+		shape_def&	S	= shapes[i];
+		P.w_u8	(S.type);
+		switch (S.type)
+		{
+		case 0:	P.w			(&S.data.sphere,sizeof(S.data.sphere));	break;
+		case 1:	P.w_matrix	(S.data.box);							break;
 		}
 	}
-};
+}
 
 class xrSE_Event : public xrSE_CFormed, public xrServerEntity
 {
@@ -965,6 +995,34 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Attack",		"Success probability" 	),&fAttackSuccessProbability,		0,100,1);
 }
 #endif
+
+//// Zone
+//void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{};
+//void xrSE_Zone::STATE_Write		(NET_Packet& P)				{};
+//void xrSE_Zone::UPDATE_Read		(NET_Packet& P)
+//{
+//	P.r_u32				(timestamp		);
+//	P.r_u8				(flags			);
+//	P.r_vec3			(o_Position		);
+//	P.r_angle8			(o_model		);
+//	P.r_angle8			(o_torso.yaw	);
+//	P.r_angle8			(o_torso.pitch	);
+//}
+//void xrSE_Zone::UPDATE_Write		(NET_Packet& P)
+//{
+//	P.w_u32				(timestamp		);
+//	P.w_u8				(flags			);
+//	P.w_vec3			(o_Position		);
+//	P.w_angle8			(o_model		);
+//	P.w_angle8			(o_torso.yaw	);
+//	P.w_angle8			(o_torso.pitch	);
+//}
+//#ifdef _EDITOR
+//void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
+//{
+//  	//inherited::FillProp(pref,items);
+//}
+//#endif
 
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
