@@ -155,6 +155,14 @@ BOOL CObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	return TRUE;
 }
 
+void CObject::net_Destroy	()
+{
+	net_Ready									= FALSE;
+	pCreator->Objects.net_Unregister			(this);
+	pCreator->ObjectSpace.Object_Unregister		(this);
+	if (pSector)		pSector->objectRemove	(this);
+}
+
 void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)				Render->model_Delete	(pVisual);
