@@ -26,15 +26,8 @@ function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
     if obj == nil or theme == nil then return end
     printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
-       local n1 = table.getn (themes[theme])
-       if n1 == 0 then
-          printf ("No subthemes in %s theme", theme)
-          return
-       elseif n1 == 1 then
-              sub_theme = 1
-       else
-          sub_theme = math.random (1, table.getn (themes[theme]))
-       end   
+       sub_theme = this.get_random_subtheme ()
+       if sub_theme == 0 then return end
     end
     printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
@@ -67,15 +60,8 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
     if obj == nil or theme == nil then return end
     printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
-       local n1 = table.getn (themes[theme])
-       if n1 == 0 then
-          printf ("No subthemes in %s theme", theme)
-          return
-       elseif n1 == 1 then
-              sub_theme = 1
-       else
-          sub_theme = math.random (1, table.getn (themes[theme]))
-       end   
+       sub_theme = this.get_random_subtheme ()
+       if sub_theme == 0 then return end
     end
     printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
@@ -120,6 +106,16 @@ end
 function get_num_subphrases (theme, sub_theme, phrases)
     if theme == nil or sub_theme == nil or phrases == nil then return 0 end
     return themes[theme][sub_theme][phrases + 1]
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function get_random_subtheme ()
+    local num = table.getn (themes[theme])
+    if num == 0 then
+       printf ("No subthemes in %s theme", theme)
+       return
+    end
+    if num == 1 then return 1 end
+    return math.random (1, num)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function create_sound_constructor (theme, sub_theme)
