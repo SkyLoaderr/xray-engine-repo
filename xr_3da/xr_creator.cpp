@@ -123,8 +123,8 @@ BOOL CCreator::Load(DWORD dwNum)
 	// Load Sounds
 	pApp->LoadTitle				("Loading sound and music...");
 	{
-		CInifile::Sect& S = pLevel->ReadSection("static_sounds");
-		Sounds.reserve	(S.size());
+		CInifile::Sect& S = pLevel->ReadSection		("static_sounds");
+		Sounds.reserve			(S.size());
 		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 			Fvector				pos;
 			string128			fname;
@@ -132,6 +132,18 @@ BOOL CCreator::Load(DWORD dwNum)
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
+		}
+	}
+	{
+		if (pLevel->SectionExists("random_sounds"))	
+		{
+			CInifile::Sect& S		= pLevel->ReadSection("random_sounds");
+			Sounds_Random.reserve	(S.size());
+			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
+				Sounds_Random.push_back	(sound3D());
+				pSounds->Create3D		(Sounds_Random.back(),I->second);
+			}
+			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}
 	}
 	Environment.Load_Music		(pLevel);
@@ -171,13 +183,24 @@ void CCreator::OnRender()
 
 void CCreator::OnFrame	( void ) 
 {
-	mmgrMessage("*** Frame");
+	mmgrMessage					("*** Frame");
 	if (fabsf(Device.fTimeDelta)<EPS_S) return;
 
-	// Verify all objects
+	// Update all objects
 	VERIFY						(bReady);
 	Environment.OnMove			( );
 	Objects.OnMove				( );
 	pHUD->OnMove				( );
-}
 
+	// Ambience
+	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
+	{
+		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(100,5000);
+		Fvector	pos;
+		pos.random_dir			();
+		pos.normalize			();
+		pos.mul					(::Random.randF(10,40));
+		pos.add					(Device.vCameraPosition);
+		pSounds->Play3DAtPos	(Sounds_Random[::Random.randI(Sounds_Random.size())],pos,false);
+	}
+}

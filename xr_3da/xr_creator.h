@@ -41,6 +41,8 @@ protected:
 
 	// Static sounds
 	vector<sound3D>				Sounds;
+	vector<sound3D>				Sounds_Random;
+	DWORD						Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
 	CEnvironment				Environment;
