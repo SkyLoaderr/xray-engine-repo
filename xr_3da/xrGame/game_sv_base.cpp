@@ -69,9 +69,11 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
 	else				return def;
 }
-string64			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR def)
+string64&			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR def)
 {
-	string64		op,ret;
+	static __declspec(thread) string64	ret;
+
+	string64		op;
 	strconcat		(op,"//",name,"=");
 	LPCSTR			start	= strstr(lst,op);
 	if (start)		
