@@ -135,7 +135,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	}
 
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
-	m_lightColor.mul_rgb(2.f);
+	m_lightColor.normalize_rgb(); m_lightColor.mul_rgb(3.f);
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
@@ -149,7 +149,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 }
 
 static const u32 EXPLODE_TIME	= 5000;
-static const u32 FLASH_TIME		= 1000;
+static const u32 FLASH_TIME		= 300;
 static const u32 ENGINE_TIME	= 3000;
 void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) 
 {
@@ -426,11 +426,11 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			m_pLight->set_active(false);
 		}else{
 			if(m_pLight->get_active()){
-				float scale			= float(m_flashTime)/float(FLASH_TIME);
+				float scale	= float(m_flashTime)/float(FLASH_TIME);
 				m_curColor.mul_rgb	(m_lightColor,scale);
 				m_pLight->set_color	(m_curColor);
-				m_flashTime		-= Device.dwTimeDelta;
 			}
+			m_flashTime		-= Device.dwTimeDelta;
 		}
 		break;
 	case stEngine:
