@@ -20,7 +20,7 @@ function evaluator_new:evaluate()
 	end
 
 	self.a.evn:calculate()
-	self.a.evn:print()
+--	self.a.evn:print()
 
 	return self.a.evn:isEvents()
 end
@@ -362,7 +362,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	for k,v in dt do
 		table.remove(self.hear, v)
 	end
-
+--[[
 	--' определ€ем что нам известно о слышимости объекта
 	local stable = self.npc:memory_sound_objects()
 	if   stable == nil then return false end
@@ -393,7 +393,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			self.arhive[so:id()].time		= game.time()
 		end
 	end
-
+]]
 	-- определ€ем что нам известно о видимости объекта
 	local vtable = self.npc:not_yet_visible_objects()
 	if vtable == nil then return false end
