@@ -117,7 +117,6 @@ private:
 	{		return				(!fis_zero(a) && (a < 0.f));	}
 
 protected:
-	float							m_velocity;
 	xr_map<u32,STravelParams>		m_movementParams;
 	xr_vector<SWayPoint>			m_keyTrajectory;
 	int								m_currKeyIdx;
@@ -142,7 +141,6 @@ protected:
 	//end smooth path
 	float	computeB(float angVel);
 	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
-	bool	getAttackPosition(u32 time, float fTimeDelta, const Fvector& enemy_pos, const Fvector& src, Fvector& pos, Fvector& dir);
 
 	void	addCurrentPosToTrajectory(u32 time = 0);
 
@@ -162,7 +160,6 @@ public:
 	virtual void OnRender();
 #endif
 
-	void		setKeyTrajectory(xr_vector<Fvector>& t, bool bFromCurrentPos, bool bClearOld);
 	void		createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
 	Fvector		makeIntermediateKey(Fvector& start, Fvector& dest, float k);
 

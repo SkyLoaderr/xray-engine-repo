@@ -2,7 +2,6 @@
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
 
-#define HELI_HUNT_RADIUS 20.0f
 
 void		
 CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
@@ -11,7 +10,8 @@ CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
 	
 	Fvector radius;
 	radius.set( enemyPos.z-curPoint.z, 0.0f, -(enemyPos.x-curPoint.x) ).normalize_safe();
-	radius.mul(HELI_HUNT_RADIUS);
+//	radius.mul(HELI_HUNT_RADIUS);
+	radius.mul(2.0f);
 
 	Fvector destPoint;
 	destPoint.add(enemyPos, radius);
@@ -25,11 +25,6 @@ CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
 	m_keyTrajectory.push_back( SWayPoint(destPoint, destDir) );
 
 	m_currKeyIdx = 0;
-//	build_smooth_path(0, true, true);
-	build_smooth_path(0, true, true);
+	build_smooth_path(0, true, false);
 
-
-//	if(!m_failed)
-//		helicopter()->setState(CHelicopter::eMovingToAttackTraj);
-		//m_curState = eMovingToEnemy;
 }

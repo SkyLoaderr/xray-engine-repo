@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "HelicopterMovementManager.h"
+#include "Helicopter.h"
 
 
-#define PITCH_K (-0.006f)
 
 bool is_negative_(float a)
 {
@@ -331,7 +331,7 @@ CHelicopterMovementManager::build_circle_trajectory(
 	if (position.radius*_abs(position.angle) <= min_dist) 
 	{
 		t.angularVelocity	= 0.0f;
-		t.velocity			= m_velocity;
+		t.velocity			= helicopter()->velocity();
 		t.position			= v3d(position.position);
 		path->push_back(t);
 		lastAddedPoint = t;
@@ -373,7 +373,7 @@ CHelicopterMovementManager::build_circle_trajectory(
 		
 
 
-		t.velocity			= m_velocity;
+		t.velocity			= helicopter()->velocity();
 
 
 		temp			= sin_apb(sinb,cosb,sini,cosi);
@@ -431,7 +431,7 @@ bool CHelicopterMovementManager::build_line_trajectory(
 		lastAddedPoint.position.add(v);
 		lastAddedPoint.angularVelocity	= 0.0f;
 		lastAddedPoint.clockwise		= true;
-		lastAddedPoint.velocity			= m_velocity;
+		lastAddedPoint.velocity			= helicopter()->velocity();
 
 		path->push_back(lastAddedPoint);
 	}
@@ -470,7 +470,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 	if (compute_path(start,dest,&m_path,m_startParams,finish_params,straight_line_index,straight_line_index_negative)) 
 	{
 		for(pathIt It = m_path.begin(); It!=m_path.end(); ++It)
-			(*It).position.y = 5.0f;
+			(*It).position.y = helicopter()->altitude();
 
 /*		float xz_dist	= start.position.distance_to(dest.position); 
 		float fullDist	= _sqrt( xz_dist*xz_dist+(destH-startH)*(destH-startH) );
@@ -505,13 +505,9 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 			Fvector& e_xyz = (*E).xyz;
 
 
-/*			//height
-			currDist = start.position.distance_to( v2d(b_p) );
-			b_p.y = startH+deltaH*currDist;
-*/
 			//time
 			float dist = b_p.distance_to( e_p );
-			u32 t = (*B).time + (dist/m_velocity)*1000;
+			u32 t = (*B).time + (dist/helicopter()->velocity())*1000;
 			(*E).time = t;
 
 			//direction in point
@@ -525,7 +521,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 				float h,p;
 				dir.getHP(h,p);
 				b_xyz.y =  angle_normalize_signed(h);
-				b_xyz.x =  m_velocity*PITCH_K ;
+				b_xyz.x =  helicopter()->velocity()*HELI_PITCH_K ;
 				b_xyz.z =  computeB((*B).angularVelocity) ;
 				if (!(*B).clockwise )
 					b_xyz.z = -b_xyz.z;
@@ -534,7 +530,6 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 			prev_xyz = b_xyz;
 
 		};
-//		(*B).position.y = destH;
 		(*B).xyz = prev_xyz;
 	}
 }
@@ -567,24 +562,18 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 	}else
 		idxP2 = startKeyIdx+1;
 
-//	m_movementParams.insert(std::make_pair(0, STravelParams(m_velocity, PI)));
-	m_movementParams.insert(std::make_pair(0, STravelParams(33.0f, PI)));
+	m_movementParams.insert(std::make_pair(0, STravelParams(helicopter()->velocity(), PI_DIV_2)));
+//	m_movementParams.insert(std::make_pair(0, STravelParams(33.0f, PI)));
 
 	
-//	m_movementParams.insert(std::make_pair(1, STravelParams(10.0f, PI_MUL_2)));
-//	m_movementParams.insert(std::make_pair(2, STravelParams(5.0f, PI_MUL_4)));
-
 	start.position						= v2d(m_keyTrajectory[idxP1].position);
 	startH								= m_keyTrajectory[idxP1].position.y;
-//	start.direction						= v2d(m_keyTrajectory[idxP1].direction);
-//	start.direction						= v2d(m_lastDir);
 
 	if(m_path.size())
 	{
 		start.direction		= v2d(m_path[m_path.size()-2].direction);
 	}else
 		start.direction		= v2d(m_lastXYZ);
-//		start.direction		= v2d(m_lastDir);
 	
 	
 
@@ -595,11 +584,6 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 
 	dest.direction						= v2d(m_keyTrajectory[idxP2].direction);
 
-/*	if (m_useDestOrientation)
-		dest.direction					= v2d(m_keyTrajectory[idxP2].direction);
-	else
-		dest.direction.set				(0.f,1.f);
-*/
 
 	validate_vertex_position			(dest);
 
@@ -670,13 +654,12 @@ CHelicopterMovementManager::build_attack_circle(	const Fvector& center_point,
 
 	for(int i=0; i<Cnt; ++i)
 	{
-		p.angularVelocity = PI_DIV_2;
+		p.angularVelocity = PI_DIV_6;
 		p.position.setHP(_ax, _ay);
 		p.position.mul(radius);
 		p.position.add(center_point);
 		Fvector().sub(center_point,p.position).normalize_safe().getHP(p.xyz.y, _ay);
-//		p.xyz.y =  -p.xyz.y ;
-		p.xyz.x =  m_velocity*PITCH_K ;
+		p.xyz.x =  helicopter()->velocity()*HELI_PITCH_K ;
 		p.xyz.z =  -computeB(p.angularVelocity) ;
 
 		p.position.y = start_point.y;

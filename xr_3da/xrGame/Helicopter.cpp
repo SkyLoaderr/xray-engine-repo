@@ -61,8 +61,15 @@ void
 CHelicopter::init()
 {
 	m_destEnemy = 0;
+	m_velocity = 5.0f;
+//	m_velocity = 33.0f;
+	m_altitude = 20.0f;
+	m_bone_x_angle = 0.0f;
+	m_bone_y_angle = 0.0f;
+	m_maxFireDist = 100.0f;
 	m_movementMngr.init(this);
-	setState(CHelicopter::eInitiatePatrolZone);
+//	setState(CHelicopter::eInitiatePatrolZone);
+	FireStart();
 }
 
 void		
@@ -126,11 +133,17 @@ CHelicopter::net_Spawn(LPVOID	DC)
 		}
 	}
 	
-	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
-	biX.set_callback		(BoneMGunCallbackX,this);
+/*	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
+	biX.set_callback		(BoneMGunCallbackX,this,TRUE);
+*/
 	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
 	biY.set_callback		(BoneMGunCallbackY,this);
 
+	xr_vector<Fmatrix> matrices;
+	K->LL_GetBindTransform (matrices);
+	m_bind_y_xform = matrices[m_rotate_y_bone];
+
+	
 	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
 	if (A) {
 		A->PlayCycle	(*heli->startup_animation);
@@ -191,14 +204,18 @@ CHelicopter::UpdateCL()
 
 	UpdateFire();
 
-	if(Device.dwFrame == 1000)
+	if( state()==CHelicopter::eMovingByAttackTraj	|| 
+		state()==CHelicopter::eInitiateHunt			||
+		state()==CHelicopter::eInitiateAttackTraj	||
+		state()==CHelicopter::eMovingToAttackTraj		)
 	{
+		if(!m_destEnemy || m_destEnemy->getDestroy() )
+		{
+			m_destEnemy = 0;
+			setState(CHelicopter::eInitiatePatrolZone);
+		};
 	}
 
-	if(Device.dwFrame == 10000)
-	{
-//		FireEnd();
-	}
 }
 
 void		
@@ -208,11 +225,24 @@ CHelicopter::shedule_Update(u32	time_delta)
 	inherited::shedule_Update	(time_delta);
 	
 	m_movementMngr.shedule_Update(time_delta);
+    
 
-	if(state()==CHelicopter::eMovingByAttackTraj)
-		FireStart();
-	else
+	updateMGunDir();
+
+/*	if(state()==CHelicopter::eMovingByAttackTraj)
+	{
+		updateMGunDir();
+		//начать стрельбу
+		float dist = XFORM().c.distance_to_xz(m_destEnemyPos);
+		if(dist <= m_maxFireDist)
+			FireStart();
+	}else
+	{
 		FireEnd();
+		m_bone_x_angle = 0.0f;
+		m_bone_y_angle = 0.0f;
+	}
+*/
 }
 
 void		
@@ -250,13 +280,15 @@ CHelicopter::Hit(	float P,
 void					
 CHelicopter::doHunt(CObject* dest)
 {
-	if( state()==CHelicopter::eInitiateHunt || 
+/*	if( state()==CHelicopter::eInitiateHunt || 
 		state()==CHelicopter::eMovingToAttackTraj ||
 		state()==CHelicopter::eMovingByAttackTraj)
 		return;
-
+*/
 	m_destEnemy = dest;
 	m_destEnemyPos = dest->XFORM().c;
-	setState(CHelicopter::eInitiateHunt);
-//	m_movementMngr.buildHuntPath(dest->XFORM().c);
+
+//	setState(CHelicopter::eInitiateHunt);
+//
+		m_movementMngr.buildHuntPath(dest->XFORM().c);
 }

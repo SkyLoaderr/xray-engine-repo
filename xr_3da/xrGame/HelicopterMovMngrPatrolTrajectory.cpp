@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "HelicopterMovementManager.h"
+#include "Helicopter.h"
 
 bool dice()
 {
@@ -35,7 +36,7 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 			keyPoint.x = ::Random.randF(level_box.min.x, level_box.max.x);
 		}
 
-		keyPoint.y = 25.0f;
+		keyPoint.y = helicopter()->altitude();
 /*		keyPoint.y = ::Random.randF(30.0f, 40.0f);
 		keyPoint.y = level_box.max.y;
 		Level().ObjectSpace.RayPick(keyPoint, down_dir, level_box.max.y-level_box.min.y+1.0f, Collide::rqtStatic, R);

@@ -4,15 +4,17 @@
 void __stdcall 
 CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
 {
-	Fmatrix rX;		rX.rotateX		(0.0f);
+	CHelicopter	* P = dynamic_cast<CHelicopter*> (static_cast<CObject*>(B->Callback_Param));
+	Fmatrix rX;		rX.rotateX		(P->m_bone_x_angle);
 	B->mTransform.mulB(rX);
 }
 
 void __stdcall 
 CHelicopter::BoneMGunCallbackY(CBoneInstance *B)
 {
-	Fmatrix rY;		rY.rotateY		(0.0f);
-	B->mTransform.mulB(rY);
+	CHelicopter	* P = dynamic_cast<CHelicopter*> (static_cast<CObject*>(B->Callback_Param));
+	Fmatrix rY;		rY.rotateY		(P->m_bone_y_angle);
+	B->mTransform.mul(P->m_bind_y_xform,rY);
 }
 
 
@@ -84,4 +86,35 @@ CHelicopter::FireEnd()
 {
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
+}
+
+void					
+CHelicopter::updateMGunDir()
+{
+	if(!m_destEnemy)
+		return;
+	//		повернуть пулемет
+	//		m_destEnemyPos
+	//		m_bone_x_angle = 0.03f;
+
+	CKinematics* K	= PKinematics(Visual());
+
+	Fmatrix M;//	= K->LL_GetTransform(m_rotate_x_bone);
+	M.mul(XFORM(), m_bind_y_xform);
+//	M.mulA(XFORM());
+
+	Fmatrix Mi;
+	Mi.invert(M);
+	Fvector A_;
+	A_.sub(m_destEnemyPos, M.c);
+	Mi.transform_tiny(A_);
+	A_.normalize();
+	Fvector B_ = M.k;
+	
+//	A_.y = 0; A_.normalize();
+//	B_.y = 0; B_.normalize();
+
+	m_bone_y_angle = acos( A_.dotproduct(B_) );
+	Log("-----m_bone_y_angle", m_bone_y_angle);
+
 }
