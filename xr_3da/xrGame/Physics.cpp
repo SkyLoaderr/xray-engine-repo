@@ -242,8 +242,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomCreateUserData(Geoms[7]);
 	dGeomCreateUserData(Geoms[0]);
 	dGeomCreateUserData(Geoms[6]);
-	dGeomGetUserData(Geoms[0])->material=GMLib.GetMaterialIdx("mtl_car_cabine");
-	dGeomGetUserData(Geoms[6])->material=GMLib.GetMaterialIdx("mtl_car_cabine");
+	dGeomGetUserData(Geoms[0])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
+	dGeomGetUserData(Geoms[6])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
 	//dGeomGetUserData(Geoms[5])->friction=500.f;
 	//dGeomGetUserData(Geoms[7])->friction=500.f;
 
@@ -275,7 +275,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		//Geoms[i] = dCreateSphere(0, wheelRadius);
 		Geoms[i] = dCreateCylinder(0, wheelRadius,0.19f);
 		dGeomCreateUserData(Geoms[i]);
-		dGeomGetUserData(Geoms[i])->material=GMLib.GetMaterialIdx("mtl_rubber");
+		dGeomGetUserData(Geoms[i])->material=GMLib.GetMaterialIdx("materials\\rubber");
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
@@ -838,7 +838,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomTransformSetInfo(trans,1);
 														//dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("mtl_box_default");
+														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														//dGeomGetUserData(trans)->friction=friction_table[1];
 															}
 														else{
@@ -857,7 +857,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("mtl_box_default");
+														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
 
 														
 														}
