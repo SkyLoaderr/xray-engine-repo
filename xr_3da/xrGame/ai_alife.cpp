@@ -358,8 +358,8 @@ void CAI_ALife::vfUpdateOnlineObject(CALifeObject *tpALifeObject)
 {
 	NET_Packet						P;
 	u16								ID;
-	_GRAPH_ID						tDummy;
-	float							fDummy;
+//	_GRAPH_ID						tDummy;
+//	float							fDummy;
 	P.w_begin						(M_UPDATE);
 	tpALifeObject->UPDATE_Write		(P);
 	CObject							*tpObject = tpObject = Level().Objects.net_Find(tpALifeObject->ID);
