@@ -476,7 +476,7 @@ xr_motivator.storage[self.object:id()].reactions = {
 
 --	action = manager:action (stalker_ids.action_puzzle_solver)	
 --	action:add_precondition			(world_property(properties["scripts"],		false))
-]]
+]]--
 
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
