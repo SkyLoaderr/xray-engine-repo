@@ -48,7 +48,8 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
 	void	createHuntPathTrajectory(float from_time, const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
 	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
-	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
+	void	createRocking			(const Fvector& fromPos, const Fvector& dir, xr_vector<Fvector>& keys );
+
 	void	fixateKeyPath			(float from_time);
 	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
@@ -61,7 +62,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	void	addHuntPath				(float from_time, const Fvector& enemyPos);
 	void	addHuntPath2			(float from_time, const Fvector& enemyPos);
 	void	addPathToStayPoint		(float from_time);
-	void	getPathAltitude			(Fvector& point);
+	void	getPathAltitude			(Fvector& point, float base_altitude);
 	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);
 
 	//patrol path
@@ -70,6 +71,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 	u16		getPlaneID				(const Fbox& box, const Fvector& point);
 	void	getReflectDir			(const Fvector& dir, const u16 planeID, Fvector& newDir);
 	void	selectSafeDir			(const Fvector& prevPoint,const Fbox& fbox, Fvector& newDir);
+
 public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();

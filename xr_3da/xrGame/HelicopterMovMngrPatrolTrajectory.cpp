@@ -4,18 +4,6 @@
 #include "level.h"
 
 
-Fvector CHelicopterMovManager::makeIntermediateKey(Fvector& start, 
-												   Fvector& dest, 
-												   float k)
-{
-	Fvector point;
-	point.lerp(start, dest, k);
-//	point.add( Fvector().random_dir().mul(m_intermediateKeyRandFactor) );
-	getPathAltitude(point);
-	return point;
-}
-
-
 
 void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, 
 														const Fvector& fromPos, 
@@ -91,7 +79,7 @@ void CHelicopterMovManager::makeNewPoint (const Fbox& fbox,
 	dir.y = 0.0f;
 	newPoint.add(point, dir.mul(resK) );
 
-	getPathAltitude(newPoint);
+	getPathAltitude(newPoint,m_baseAltitude);
 
 
 }
@@ -202,7 +190,7 @@ void CHelicopterMovManager::selectSafeDir(const Fvector& prevPoint,
 	newDir.y = 0.0f;
 }
 
-void CHelicopterMovManager::getPathAltitude (Fvector& point)
+void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude)
 {
 	Collide::rq_result		cR;
 	Fvector down_dir;
@@ -217,14 +205,14 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point)
 	point.y = point.y-cR.range;
 
 	if( point.y+m_baseAltitude < levelBox.max.y )
-		point.y += m_baseAltitude;
+		point.y += base_altitude;
 	else
 		point.y = levelBox.max.y-EPS_L;
 
 	VERIFY( levelBox.max.y > point.y );
 
 	float minY = levelBox.min.y+(levelBox.max.y-levelBox.min.y)*m_alt_korridor;
-	float maxY = levelBox.max.y+m_baseAltitude;
+	float maxY = levelBox.max.y+base_altitude;
 //	minY = maxY-EPS_L;
 	clamp (point.y,minY,maxY);
 	VERIFY( levelBox.max.y > point.y );
