@@ -169,6 +169,7 @@ void CObject::UpdateCL			()
 void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
+	Msg							("-SUB-:[%x][%s] CObject::shedule_Update",dynamic_cast<void*>(this),*cName());
 	ISheduled::shedule_Update	(T);
 
 	const	float eps_R	= 0.01f;

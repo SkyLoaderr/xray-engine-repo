@@ -146,13 +146,19 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
+		Msg							("------- %d:",Device.dwFrame);
 		eTimer.Start				();
+#ifdef DEBUG
+		T.Object->dbg_startframe	= Device.dwFrame;
+#endif
+
 		T.Object->shedule.b_locked	= TRUE;
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
 
 #ifdef DEBUG
-		VERIFY2						(T.Object->dbg_update_shedule == Device.dwFrame, "Broken sequence of calls to 'shedule_Update'");
+		void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
+		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", typeid(T.Object).name() );
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{

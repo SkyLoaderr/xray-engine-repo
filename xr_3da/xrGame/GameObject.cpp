@@ -556,5 +556,6 @@ void CGameObject::shedule_Update	(u32 dt)
 	if(NeedToDestroyObject())
 		DestroyObject();
 
+	Msg							("-SUB-:[%x][%s] CGameObject::shedule_Update",dynamic_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
 }
