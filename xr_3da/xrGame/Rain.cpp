@@ -238,7 +238,6 @@ void	CEffect_Rain::Render	()
 		if (one.fLifetime<0)	Born(one,b_radius,b_height);
 		one.P.mad		(one.D,one.fSpeed*dt);
 		
-//		float	height	=	HM.Query(one.P.x,one.P.z);
 		if (one.fHeight>one.P.y)	{
 			one.P.y		= one.fHeight;
 			Hit			(one.P);
@@ -280,7 +279,6 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
-	/*
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
 	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
@@ -310,5 +308,4 @@ void	CEffect_Rain::Render	()
 		
 		P = next;
 	}
-	*/
 }
