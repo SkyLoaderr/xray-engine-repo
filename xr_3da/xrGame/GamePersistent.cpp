@@ -13,6 +13,12 @@
 
 CGamePersistent::CGamePersistent(void)
 {
+	// 
+	dSetAllocHandler	(xr_malloc	);
+	dSetReallocHandler	(xr_realloc	);
+	dSetFreeHandler		(xr_free	);
+
+	// 
 	BOOL	bDemoMode	= (0!=strstr(Core.Params,"-demomode "));
 	if (bDemoMode)
 	{
