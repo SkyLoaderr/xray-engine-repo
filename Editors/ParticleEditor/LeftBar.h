@@ -19,7 +19,6 @@
 #include "ElPgCtl.hpp"
 #include "MXCtrls.hpp"
 
-#include "UI_Tools.h"
 #include <ImgList.hpp>
 
 //---------------------------------------------------------------------------
@@ -117,6 +116,7 @@ public:		// User declarations
 	void 			ClearParticleList();
     void 			MinimizeAllFrames();
     void 			MaximizeAllFrames();
+    void			RefreshBar		(){;}
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

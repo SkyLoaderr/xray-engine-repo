@@ -3,12 +3,11 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Tools.h"
+#include "UI_ParticleTools.h"
 #include "EditObject.h"
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
-#include "topbar.h"
 #include "PSLibrary.h"
 #include "ParticleSystem.h"
 #include "ItemList.h"
@@ -16,12 +15,12 @@
 #include "library.h"
 #include "Render.h"
 #include "folderlib.h"
-#include "ItemDialog.h"
+#include "itemdialog.h"
 
 #include "TextForm.h"
 #include "d3dutils.h"
 //------------------------------------------------------------------------------
-CParticleTools Tools;
+CParticleTools*&	PTools=(CParticleTools*)Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 static Fvector zero_vec={0.f,0.f,0.f};
@@ -56,24 +55,13 @@ bool CParticleTools::OnCreate()
 
     m_bReady = true;
 
-    Load();
+    Load(0,0);
 
-    ChangeAction(eaSelect);
+    SetAction(etaSelect);
 
 	// lock
-    EFS.LockFile(0,fn.c_str());
-/*    
-    AnsiString fn1;
-    FS.update_path(fn1,_game_data_,"a.txt");
-	HANDLE handle;
-    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
-    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
-    handle=CreateFile(fn1.c_str(),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,0,OPEN_EXISTING,0,0);
-    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
-    LPVOID lpMsgBuf;
-    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
-	LocalFree( lpMsgBuf );
-*/
+    EFS.LockFile	(0,fn.c_str());
+
     m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
     m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
@@ -109,7 +97,7 @@ bool CParticleTools::IfModified()
     if (m_bModified){
         int mr = ELog.DlgMsg(mtConfirmation, "The particles has been modified.\nDo you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
+        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
         case mrNo: m_bModified = FALSE; break;
         case mrCancel: return false;
         }
@@ -120,7 +108,7 @@ bool CParticleTools::IfModified()
 void CParticleTools::Modified()
 {
 	m_bModified = true;
-	UI.Command(COMMAND_UPDATE_CAPTION);
+	UI->Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -135,7 +123,7 @@ void CParticleTools::OnItemModified()
 	    m_LibPGD->m_ModifName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
     	m_LibPGD->m_ModifTime		= time(NULL);
     }
-	UI.Command(COMMAND_UPDATE_PROPERTIES);
+	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 
 
@@ -190,21 +178,21 @@ void CParticleTools::OnFrame()
     switch(m_EditMode){
     case emEffect:	
     	if (m_EditPE->IsPlaying())
-        	UI.SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPE->ParticlesCount()).c_str(),false); 
+        	UI->SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPE->ParticlesCount()).c_str(),false); 
         else 
-        	UI.SetStatus(" Stopped.",false); 
+        	UI->SetStatus(" Stopped.",false); 
     break;
     case emGroup:	
     	if (m_EditPG->IsPlaying())
-        	UI.SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPG->ParticlesCount()).c_str(),false); 
+        	UI->SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPG->ParticlesCount()).c_str(),false); 
         else 
-        	UI.SetStatus(" Stopped.",false); 
+        	UI->SetStatus(" Stopped.",false); 
     break;
     default: THROW;
     }
 }
 
-void CParticleTools::ZoomObject(BOOL bSelOnly)
+void CParticleTools::ZoomObject(bool bSelOnly)
 {
 	VERIFY(m_bReady);
     if (!bSelOnly&&m_EditObject){
@@ -268,22 +256,23 @@ void CParticleTools::SelectPreviewObject(int p){
     Lib.RemoveEditObject(m_EditObject);
     m_EditObject = fn?Lib.CreateEditObject(fn):0;
 //	ZoomObject(TRUE);
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 
 void CParticleTools::ResetPreviewObject()
 {
 	VERIFY(m_bReady);
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 
-void CParticleTools::Load()
+bool CParticleTools::Load(LPCSTR path, LPCSTR name)
 {
 	VERIFY(m_bReady);
     UpdateProperties();
+    return true;
 }
 
-void CParticleTools::Save()
+bool CParticleTools::Save(LPCSTR path, LPCSTR name, bool bInternal)
 {
 	VERIFY			(m_bReady);
 	m_bModified 	= false;
@@ -293,6 +282,7 @@ void CParticleTools::Save()
     EFS.UnlockFile	(_game_data_,PSLIB_FILENAME,false);
 	::Render->PSLibrary.Save();
     EFS.LockFile	(_game_data_,PSLIB_FILENAME,false);
+    return true;
 }
 
 void CParticleTools::Reload()
@@ -410,7 +400,7 @@ void CParticleTools::Merge()
 	        ELog.DlgMsg(mtInformation,"Merge result: [%d appended / %d replaced / %d renamed / %d skipped]",append_p,replace_p,rename_p,skip_p);
         	::Render->PSLibrary.OnDeviceDestroy();
         	::Render->PSLibrary.OnDeviceCreate();
-		    UI.Command	(COMMAND_UPDATE_PROPERTIES);
+		    UI->Command	(COMMAND_UPDATE_PROPERTIES);
             Modified	();
         }
 	    ps_new.OnDestroy();
@@ -553,92 +543,49 @@ void CParticleTools::OnShowHint(AStringVec& SS)
 {
 }
 
-void CParticleTools::ChangeAction(EAction action)
-{
-	switch(action){
-    case eaSelect: m_bHiddenMode=false; break;
-    case eaAdd:
-    case eaMove:
-    case eaRotate:
-    case eaScale:  m_bHiddenMode=true; break;
-    }
-    m_Action = action;
-    switch(m_Action){
-        case eaSelect:  UI.GetD3DWindow()->Cursor = crCross;     break;
-        case eaAdd:     UI.GetD3DWindow()->Cursor = crArrow;     break;
-        case eaMove:    UI.GetD3DWindow()->Cursor = crSizeAll;   break;
-        case eaRotate:  UI.GetD3DWindow()->Cursor = crSizeWE;    break;
-        case eaScale:   UI.GetD3DWindow()->Cursor = crVSplit;    break;
-        default:        UI.GetD3DWindow()->Cursor = crHelp;
-    }
-    UI.RedrawScene();
-    fraTopBar->ChangeAction(m_Action);
-}
-
 bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 {
+	inherited::MouseStart(Shift);
 	switch(m_Action){
-    case eaSelect: return false;
-    case eaAdd:{
+    case etaSelect: break;
+    case etaAdd:{
         if (m_EditObject){
             Fvector p;
-            float dist=UI.ZFar();
+            float dist=UI->ZFar();
             SRayPickInfo pinf;
-            if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
+            if (m_EditObject->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf)){
                 R_ASSERT(pinf.e_mesh);
 //.				m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
             }
         }
     }break;
-    case eaMove:{
+    case etaMove:{
         if (Shift.Contains(ssCtrl)){
         	if (m_EditObject){
                 float dist = flt_max;
                 SRayPickInfo pinf;
-                if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf))
+                if (m_EditObject->RayPick(dist,UI->m_CurrentRStart,UI->m_CurrentRNorm,Fidentity,&pinf))
                     m_Transform.c.set(pinf.pt);
             }else{
                 // pick grid
                 Fvector normal={0.f, 1.f, 0.f};
-                float clcheck = UI.m_CurrentRNorm.dotproduct( normal );
+                float clcheck = UI->m_CurrentRNorm.dotproduct( normal );
                 if( fis_zero( clcheck ) ) return false;
-                float alpha = - UI.m_CurrentRStart.dotproduct(normal) / clcheck;
+                float alpha = - UI->m_CurrentRStart.dotproduct(normal) / clcheck;
                 if( alpha <= 0 ) return false;
 
-                m_Transform.c.mad(UI.m_CurrentRStart,UI.m_CurrentRNorm,alpha);
+                m_Transform.c.mad(UI->m_CurrentRStart,UI->m_CurrentRNorm,alpha);
 
-                if (fraTopBar->ebGSnap->Down){
-                    m_Transform.c.x = snapto( m_Transform.c.x, UI.movesnap() );
-                    m_Transform.c.z = snapto( m_Transform.c.z, UI.movesnap() );
+                if (m_Settings.is(etfGSnap)){
+                    m_Transform.c.x = snapto( m_Transform.c.x, m_MoveSnap );
+                    m_Transform.c.z = snapto( m_Transform.c.z, m_MoveSnap );
                     m_Transform.c.y = 0.f;
                 }
             }
-        }else{
-            if (fraTopBar->ebAxisY->Down){
-                m_MovingXVector.set(0,0,0);
-                m_MovingYVector.set(0,1,0);
-            }else{
-                m_MovingXVector.set( Device.m_Camera.GetRight() );
-                m_MovingXVector.y = 0;
-                m_MovingYVector.set( Device.m_Camera.GetDirection() );
-                m_MovingYVector.y = 0;
-                m_MovingXVector.normalize_safe();
-                m_MovingYVector.normalize_safe();
-            }
-            m_MovingReminder.set(0,0,0);
         }
     }break;
-    case eaRotate:{
-        m_RotateCenter.set(0,0,0);
-        m_RotateVector.set(0,0,0);
-        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
-        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
-        else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
-        m_fRotateSnapAngle = 0;
-    }break;
-    case eaScale:{
-		m_ScaleCenter.set(0,0,0);
-    }break;
+    case etaRotate:	break;
+    case etaScale:  break;
     }
     ApplyParent		();
 	return m_bHiddenMode;
@@ -646,52 +593,23 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 
 bool __fastcall CParticleTools::MouseEnd(TShiftState Shift)
 {
+	inherited::MouseEnd(Shift);
 	return true;
 }
 
 void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 {
+	inherited::MouseMove(Shift);
 	switch(m_Action){
-    case eaSelect: return;
-    case eaAdd: break;
-    case eaMove:{
-    	Fvector amount;
-        amount.mul( m_MovingXVector, UI.m_MouseSM * UI.m_DeltaCpH.x );
-        amount.mad( amount, m_MovingYVector, -UI.m_MouseSM * UI.m_DeltaCpH.y );
-
-        if( fraTopBar->ebMSnap->Down ){
-        	CHECK_SNAP(m_MovingReminder.x,amount.x,UI.movesnap());
-        	CHECK_SNAP(m_MovingReminder.y,amount.y,UI.movesnap());
-        	CHECK_SNAP(m_MovingReminder.z,amount.z,UI.movesnap());
-        }
-
-        if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
-        if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
-        if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-
-		m_Transform.c.add(amount);
-    }break;
-    case eaRotate:{
-        float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
-        if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
-
+    case etaSelect: break;
+    case etaAdd: 	break;
+    case etaMove:	m_Transform.c.add(m_MoveAmount); break;
+    case etaRotate:{
         Fmatrix mR;
-        mR.rotation		(m_RotateVector,amount);
+        mR.rotation		(m_RotateVector,m_RotateAmount);
         m_Transform.mulB(mR);
     }break;
-    case eaScale:{
-        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
-        if (dy>1.f) dy=1.f; else if (dy<-1.f) dy=-1.f;
-
-        Fvector amount;
-        amount.set( dy, dy, dy );
-
-        if (fraTopBar->ebNonUniformScale->Down){
-            if (!fraTopBar->ebAxisX->Down && !fraTopBar->ebAxisZX->Down) amount.x = 0.f;
-            if (!fraTopBar->ebAxisZ->Down && !fraTopBar->ebAxisZX->Down) amount.z = 0.f;
-            if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-        }
-    }break;
+    case etaScale:	break;
     }
     ApplyParent		();
 }       
@@ -819,13 +737,6 @@ void __fastcall CParticleTools::ResetState()
 	PAPI::pResetState();
 }
 
-void CParticleTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
-{
-    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
-    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
-    fog_color 			= dwFogColor;
-}
-
 LPCSTR CParticleTools::GetInfo()
 {
 	return 0;
@@ -858,7 +769,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
     S->m_CreateTime		= time(NULL);
     S->m_ModifTime		= S->m_CreateTime;
 
-    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES,true);
     if (!new_name.IsEmpty()) SelectListItem(0,new_name.c_str(),true,false,true);
     return S;
 }
@@ -879,7 +790,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     S->m_CreateTime		= time(NULL);
     S->m_ModifTime		= S->m_CreateTime;
 
-    UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES,true);
     if (!new_name.IsEmpty()) SelectListItem(0,new_name.c_str(),true,false,true);
     return S;
 }

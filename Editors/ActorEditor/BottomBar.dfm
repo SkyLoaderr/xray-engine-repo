@@ -249,8 +249,6 @@ object fraBottomBar: TfraBottomBar
     RegistryRoot = prLocalMachine
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
-      'miDrawPortalSimpleModel.Checked'
-      'miDrawSectors.Checked'
       'N100.Checked'
       'N125.Checked'
       'N150.Checked'
@@ -265,9 +263,7 @@ object fraBottomBar: TfraBottomBar
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
-      'miDrawSectorSolid.Checked'
-      'miShowHint.Checked'
-      'miSpawnPointDrawText.Checked')
+      'miShowHint.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -403,37 +399,6 @@ object fraBottomBar: TfraBottomBar
       end
     end
     object N2: TMenuItem
-      Caption = '-'
-      GroupIndex = 4
-    end
-    object miDrawSectors: TMenuItem
-      Caption = 'Sectors'
-      GroupIndex = 4
-      object miDrawSectorSolid: TMenuItem
-        Caption = 'Draw Solid'
-        Checked = True
-        GroupIndex = 1
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object Portals1: TMenuItem
-      Caption = 'Portals'
-      GroupIndex = 4
-      object miDrawPortalSimpleModel: TMenuItem
-        Caption = 'Draw Simple Model'
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object SpawnPoint1: TMenuItem
-      Caption = 'Spawn Point'
-      GroupIndex = 4
-      object miSpawnPointDrawText: TMenuItem
-        Caption = 'Draw Text'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object N4: TMenuItem
       Caption = '-'
       GroupIndex = 4
     end

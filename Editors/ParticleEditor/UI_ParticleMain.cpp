@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Main.h"
-#include "UI_Tools.h"
+#include "UI_ParticleMain.h"
+#include "UI_ParticleTools.h"
 #include "topbar.h"
 #include "leftbar.h"
 #include "EditorPreferences.h"
@@ -13,38 +13,73 @@
 #include "main.h"
 #include "xr_input.h"
 
-bool TUI::CommandExt(int _Command, int p1, int p2)
+//---------------------------------------------------------------------------
+CParticleMain*&	PUI=(CParticleMain*)UI;
+//---------------------------------------------------------------------------
+
+CParticleMain::CParticleMain()
+{
+}
+//---------------------------------------------------------------------------
+
+CParticleMain::~CParticleMain()
+{
+}
+//---------------------------------------------------------------------------
+
+bool CParticleMain::CommandExt(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	string256 filebuffer;
 	switch (_Command){
     case COMMAND_SELECT_PREVIEW_OBJ:
-		Tools.SelectPreviewObject(p1);
+		PTools->SelectPreviewObject(p1);
     	break;
 	case COMMAND_SAVE:
-    	Tools.Save();
+    	PTools->Save(0,0);
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_SAVE_BACKUP:
 		Command(COMMAND_SAVE);
     break;
     case COMMAND_MERGE:
-    	Tools.Merge();
+    	PTools->Merge();
     break;
     case COMMAND_RELOAD:
-		if (!Tools.IfModified()) return false;
-		Tools.Reload();
+		if (!PTools->IfModified()) return false;
+		PTools->Reload();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
 		{
 			Device.m_Camera.Reset();
-            Tools.ResetPreviewObject();
+            PTools->ResetPreviewObject();
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;
     case COMMAND_PLAY_CURRENT:
-    	Tools.PlayCurrent();
+    	PTools->PlayCurrent();
+    	break;
+    case COMMAND_REFRESH_UI_BAR:
+        fraTopBar->RefreshBar	();
+        fraLeftBar->RefreshBar	();
+        fraBottomBar->RefreshBar();
+        break;
+    case COMMAND_RESTORE_UI_BAR:
+        fraTopBar->fsStorage->RestoreFormPlacement();
+        fraLeftBar->fsStorage->RestoreFormPlacement();
+        fraBottomBar->fsStorage->RestoreFormPlacement();
+        break;
+    case COMMAND_SAVE_UI_BAR:
+        fraTopBar->fsStorage->SaveFormPlacement();
+        fraLeftBar->fsStorage->SaveFormPlacement();
+        fraBottomBar->fsStorage->SaveFormPlacement();
+        break;
+	case COMMAND_UPDATE_TOOLBAR:
+    	fraLeftBar->UpdateBar();
+    	break;
+    case COMMAND_UPDATE_CAPTION:
+    	frmMain->UpdateCaption();
     	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
@@ -53,7 +88,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     return 	bRes;
 }
 
-char* TUI::GetCaption()
+char* CParticleMain::GetCaption()
 {
 	return "particles";
 }
@@ -61,14 +96,14 @@ char* TUI::GetCaption()
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
 
-bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CParticleMain::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     return bExec;
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
+bool __fastcall CParticleMain::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Empty()){
@@ -78,33 +113,120 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-void TUI::ShowContextMenu(int cls)
+void CParticleMain::RealUpdateScene()
 {
-/*	VERIFY(m_bReady);
-    POINT pt;
-    GetCursorPos(&pt);
-    fraLeftBar->miProperties->Enabled = false;
-    if (Scene.SelectionCount( true, (EObjClass)cls )) fraLeftBar->miProperties->Enabled = true;
-    RedrawScene(true);
-    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
-    fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
-*/
 }
 //---------------------------------------------------------------------------
 
-void TUI::RealUpdateScene()
+
+//---------------------------------------------------------------------------
+// Common
+//---------------------------------------------------------------------------
+void CParticleMain::ResetStatus()
 {
-/*	if (GetEState()==esEditScene){
-	    Scene.OnObjectsUpdate();
-    	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами
-	    RedrawScene();
+	VERIFY(m_bReady);
+    if (fraBottomBar->paStatus->Caption!=""){
+	    fraBottomBar->paStatus->Caption=""; fraBottomBar->paStatus->Repaint();
     }
-    m_Flags.set(flUpdateScene,FALSE);
-*/
+}
+void CParticleMain::SetStatus(LPSTR s, bool bOutLog)
+{
+	VERIFY(m_bReady);
+    if (fraBottomBar->paStatus->Caption!=s){
+	    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
+    	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
+    }
+}
+void CParticleMain::ProgressInfo(LPCSTR text, bool bWarn)
+{
+	if (text){
+		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
+    	fraBottomBar->paStatus->Repaint();
+	    ELog.Msg(bWarn?mtError:mtInformation,fraBottomBar->paStatus->Caption.c_str());
+    }
+}
+void CParticleMain::ProgressStart(float max_val, const char* text)
+{
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = text;
+	fraBottomBar->paStatus->Caption=text;
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->fMaxVal=max_val;
+	fraBottomBar->fStatusProgress=0;
+	fraBottomBar->cgProgress->Progress=0;
+	fraBottomBar->cgProgress->Visible=true;
+    ELog.Msg(mtInformation,text);
+}
+void CParticleMain::ProgressEnd()
+{
+	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = "";
+	fraBottomBar->paStatus->Caption="";
+    fraBottomBar->paStatus->Repaint();
+	fraBottomBar->cgProgress->Visible=false;
+}
+void CParticleMain::ProgressUpdate(float val)
+{
+	VERIFY(m_bReady);
+	fraBottomBar->fStatusProgress=val;
+    if (fraBottomBar->fMaxVal>=0){
+    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (new_val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+    	    fraBottomBar->cgProgress->Repaint();
+        }
+    }
+}
+void CParticleMain::ProgressInc(const char* info, bool bWarn)
+{
+	VERIFY(m_bReady);
+    ProgressInfo(info,bWarn);
+	fraBottomBar->fStatusProgress++;
+    if (fraBottomBar->fMaxVal>=0){
+    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=val;
+	        fraBottomBar->cgProgress->Repaint();
+        }
+    }
 }
 //---------------------------------------------------------------------------
-
-LPSTR GetNameByClassID(EObjClass cls_id){
-	return 0;
+void CParticleMain::OutCameraPos()
+{
+	VERIFY(m_bReady);
+    AnsiString s;
+	const Fvector& c 	= Device.m_Camera.GetPosition();
+	s.sprintf("C: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+//	const Fvector& hpb 	= Device.m_Camera.GetHPB();
+//	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
+    fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
 }
+//---------------------------------------------------------------------------
+void CParticleMain::OutUICursorPos()
+{
+	VERIFY(m_bReady);
+    AnsiString s; POINT pt;
+    GetCursorPos(&pt);
+    s.sprintf("Cur: %d, %d",pt.x,pt.y);
+    fraBottomBar->paUICursor->Caption=s; fraBottomBar->paUICursor->Repaint();
+}
+//---------------------------------------------------------------------------
+void CParticleMain::OutGridSize()
+{
+	VERIFY(m_bReady);
+    AnsiString s;
+    s.sprintf("Grid: %1.1f",EPrefs.grid_cell_size);
+    fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
+}
+//---------------------------------------------------------------------------
+void CParticleMain::OutInfo()
+{
+	fraBottomBar->paSel->Caption = Tools->GetInfo();
+}
+//---------------------------------------------------------------------------
+void CParticleMain::RealQuit()
+{
+	frmMain->Close();
+}
+//---------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
 #include "ParticleEffect.h"
 #include "ParticleEffectActions.h"
 #include "PropertiesListHelper.h"
-#include "ui_tools.h"
+#include "ui_particletools.h"
 #include "ui_main.h"
              
 BOOL PS::CPEDef::Equal(const CPEDef* pe)
@@ -54,7 +54,7 @@ void __fastcall PS::CPEDef::OnSourceTextEdit(PropValue* sender, bool& bDataModif
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
-    case 0: 			Tools.EditActionList();	break;
+    case 0: 			PTools->EditActionList();	break;
     }
     bDataModified		= false;
 }
@@ -63,9 +63,9 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
-    case 0: 			Tools.PlayCurrent();		break;
-    case 1: 			Tools.StopCurrent(false);	break;
-    case 2: 			Tools.StopCurrent(true);	break;
+    case 0: 			PTools->PlayCurrent();		break;
+    case 1: 			PTools->StopCurrent(false);	break;
+    case 2: 			PTools->StopCurrent(true);	break;
     }
     bDataModified		= false;
 }
@@ -76,15 +76,15 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
     switch (B->btn_num){
     case 0:
     	m_EActionList.push_back(pCreateEAction(PAPI::PASourceID));
-        UI.Command		(COMMAND_UPDATE_PROPERTIES);
+        UI->Command		(COMMAND_UPDATE_PROPERTIES);
     break;
     }
 }
 
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
-    PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Domain Draw"), 		&Tools.m_Flags, CParticleTools::flDrawDomain);
-    PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Domain Solid"),	  	&Tools.m_Flags, CParticleTools::flDrawSolid);
+    PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Domain Draw"), 		&PTools->m_Flags, CParticleTools::flDrawDomain);
+    PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Domain Solid"),	  	&PTools->m_Flags, CParticleTools::flDrawSolid);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),	*m_OwnerName);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modif Name"),	*m_ModifName);
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));

@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_Tools.h"
-#include "UI_Main.h"
+#include "UI_ParticleTools.h"
+#include "UI_ParticleMain.h"
 #include "TextForm.h"
 
 void __fastcall CParticleTools::OnParticleItemRename(LPCSTR old_name, LPCSTR new_name, EItemType type)
@@ -52,7 +52,7 @@ void __fastcall CParticleTools::OnParticleItemFocused(ListItemsVec& items)
         }
     }
 	m_ItemProps->AssignItems(props,true);
-    UI.RedrawScene();
+    UI->RedrawScene();
 
 	if (!m_LibPED&&m_EditText) TfrmText::DestroyForm(m_EditText);    
 }

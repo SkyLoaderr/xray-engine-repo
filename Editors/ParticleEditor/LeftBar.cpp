@@ -3,11 +3,11 @@
 
 #include "LeftBar.h"
 #include "BottomBar.h"
-#include "UI_Main.h"
+#include "UI_ParticleMain.h"
 #include "main.h"
 #include "xr_trims.h"
-#include "UI_Tools.h"
 #include "FolderLib.h"
+#include "UI_ParticleTools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -83,25 +83,25 @@ void TfraLeftBar::MaximizeAllFrames()
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI.Command( COMMAND_SAVE );
+	UI->Command( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 {
-	UI.Command( COMMAND_RELOAD );
+	UI->Command( COMMAND_RELOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Merge1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_MERGE );
+	UI->Command( COMMAND_MERGE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
-	UI.Command( COMMAND_REFRESH_TEXTURES );
+	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI.Command(COMMAND_EDITOR_PREF);
+	UI->Command(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
@@ -148,59 +148,59 @@ void __fastcall TfraLeftBar::ebSoundCommandsMouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 {
-	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
+	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 {
-	Tools.RemoveCurrent();
+	PTools->RemoveCurrent();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 {
-	Tools.CloneCurrent();
+	PTools->CloneCurrent();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPECreateClick(TObject *Sender)
 {
-    Tools.AppendPE(0);
-	Tools.Modified();
+    PTools->AppendPE(0);
+	PTools->Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPGCreateClick(TObject *Sender)
 {
-    Tools.AppendPG(0);
-	Tools.Modified();
+    PTools->AppendPG(0);
+	PTools->Modified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_IMAGE_EDITOR );
+	UI->Command( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_REFRESH_TEXTURES );
+	UI->Command( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
-	UI.Command( COMMAND_CHECK_TEXTURES );
+	UI->Command( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
 {
-	Tools.ResetState();
-//.	Tools.m_EditPE->ApplyExplosion();
+	PTools->ResetState();
+//.	PTools->m_EditPE->ApplyExplosion();
 }
 //---------------------------------------------------------------------------
 
@@ -220,25 +220,25 @@ void __fastcall TfraLeftBar::ebCreateMouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-    Tools.m_ItemProps->RestoreParams(fsStorage);
+    PTools->m_ItemProps->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-    Tools.m_ItemProps->SaveParams(fsStorage);
+    PTools->m_ItemProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
                                                   
 void __fastcall TfraLeftBar::MenuItem3Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SOUND_EDITOR );
+	UI->Command( COMMAND_SOUND_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
 {
-	UI.Command( COMMAND_SYNC_SOUNDS );
+	UI->Command( COMMAND_SYNC_SOUNDS );
 }
 //---------------------------------------------------------------------------
 

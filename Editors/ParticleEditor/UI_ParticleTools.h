@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef UI_ToolsH
-#define UI_ToolsH
+#ifndef UI_ParticleToolsH
+#define UI_ParticleToolsH
 
 #include "ParticleSystem.h"
 #include "ParticleEffect.h"
@@ -8,6 +8,7 @@
 #include "pure.h"
 #include "PropertiesList.h"
 #include "ItemList.h"
+#include "ui_toolscustom.h"
 
 // refs
 class CEditableObject;
@@ -20,24 +21,11 @@ enum EEditMode{
 
 class CParticleTools: public CToolsCustom
 {
+	typedef CToolsCustom inherited;
 	friend class TfraLeftBar;
 
 	CEditableObject*	m_EditObject;
     bool				m_bModified;
-    bool				m_bReady;
-
-    EAction				m_Action;
-    bool				m_bHiddenMode;
-	// move
-    Fvector				m_MovingXVector;
-    Fvector				m_MovingYVector;
-    Fvector				m_MovingReminder;
-	// scale
-    Fvector				m_ScaleCenter;
-    // rotate
-    Fvector				m_RotateCenter;
-    Fvector				m_RotateVector;
-    float				m_fRotateSnapAngle;
 
     // PE variables
     PS::CPEDef*			m_LibPED;
@@ -92,19 +80,42 @@ public:
 						CParticleTools		();
     virtual 			~CParticleTools		();
 
-    void				Render				();
-    void				RenderEnvironment	(){;}
-    void				OnFrame				();
+    virtual void		Render				();
+	virtual void		RenderEnvironment	(){;}
+    virtual void		OnFrame				();
 
-    bool				OnCreate			();
-    void				OnDestroy			();
+    virtual bool		OnCreate			();
+    virtual void		OnDestroy			();
 
-    bool				IfModified			();
-    bool				IsModified			(){return m_bModified;}
-    void				Modified			();
+    virtual bool		IfModified			();
+    virtual bool		IsModified			(){return m_bModified;}
+    virtual void		Modified			(); 
 
-    void				ZoomObject			(BOOL bObjectOnly);
-    void				ChangeAction		(EAction action);
+    virtual LPCSTR		GetInfo				();
+    
+    virtual void		ZoomObject			(bool bSelOnly);
+
+    virtual bool		Load				(LPCSTR path, LPCSTR name);
+    virtual bool		Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
+    virtual void		Reload				();
+    
+    virtual void		OnDeviceCreate		();
+    virtual void		OnDeviceDestroy		();
+
+    virtual void		Clear				(){;}
+
+    virtual void		OnShowHint			(AStringVec& SS);
+
+    virtual bool __fastcall 	MouseStart  		(TShiftState Shift);
+    virtual bool __fastcall 	MouseEnd    		(TShiftState Shift);
+    virtual void __fastcall 	MouseMove   		(TShiftState Shift);
+
+    virtual bool		Pick				(TShiftState Shift){return false;}
+	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n);
+
+    virtual void		ShowProperties		(){;}
+    virtual void		UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
+    virtual void		RefreshProperties	(){;}
 
     void				PlayCurrent			();
     void				StopCurrent			(bool bFinishPlaying);
@@ -128,44 +139,14 @@ public:
     PS::CPGDef*			AppendPG			(PS::CPGDef* src);
     void 				SetCurrentPG		(PS::CPGDef* P);
 
-    void				Load				();
-    void				Save				();
-    void				Reload				();
     void				Merge				();
-
-    virtual void		OnDeviceCreate		();
-    virtual void		OnDeviceDestroy		();
 
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
-
-    void				OnShowHint			(AStringVec& SS);
-
-    bool __fastcall 	MouseStart  		(TShiftState Shift);
-    bool __fastcall 	MouseEnd    		(TShiftState Shift);
-    void __fastcall 	MouseMove   		(TShiftState Shift);
-	bool __fastcall 	HiddenMode  		(){return m_bHiddenMode;}
-    bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
-    bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
-
-    bool				Pick				(TShiftState Shift){return false;}
-    bool				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0);
-
-    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
-    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
-    LPCSTR				GetInfo				();
-	void				SetNumPosition		(CCustomObject* p1){;}
-	void				SetNumRotation		(CCustomObject* p1){;}
-	void				SetNumScale			(CCustomObject* p1){;}
-
-    void				ShowProperties		(){;}
-    void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}
-    void				RefreshProperties	(){;}
 };
 #define SYSTEM_PREFIX 	"Systems"
 #define EFFECT_PREFIX 	"Effects"
 #define GROUP_PREFIX 	"Groups"
-extern CParticleTools	Tools;
+extern CParticleTools*&	PTools;
 //---------------------------------------------------------------------------
 #endif

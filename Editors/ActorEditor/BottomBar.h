@@ -30,10 +30,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N200;
     TMenuItem *N2;
     TMenuItem *miDrawGrid;
-    TMenuItem *N4;
-	TMenuItem *miDrawSectors;
-	TMenuItem *Portals1;
-	TMenuItem *miDrawPortalSimpleModel;
 	TMenuItem *Render1;
 	TMenuItem *FillMode1;
 	TMenuItem *miRenderFillSolid;
@@ -52,7 +48,6 @@ __published:	// IDE-managed Components
 	TMenuItem *miFog;
 	TMenuItem *miRealTime;
 	TMenuItem *N3;
-	TMenuItem *miDrawSectorSolid;
     TMenuItem *N1;
     TMenuItem *miShowHint;
 	TPanel *paBottomBar;
@@ -70,8 +65,6 @@ __published:	// IDE-managed Components
 	TPanel *paGridSquareSize;
 	TPanel *paUICursor;
 	TPanel *paCamera;
-	TMenuItem *SpawnPoint1;
-	TMenuItem *miSpawnPointDrawText;
 	TMenuItem *miDrawSafeRect;
 	TMenuItem *miMuteSounds;
 	TMenuItem *N5;

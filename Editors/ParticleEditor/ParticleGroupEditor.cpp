@@ -5,7 +5,7 @@
 #include "ParticleGroup.h"
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
-#include "ui_tools.h"
+#include "ui_particletools.h"
 
 BOOL PS::CPGDef::SEffect::Equal(const SEffect& src)
 {
@@ -34,7 +34,7 @@ void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataMod
     switch (B->btn_num){
     case 0:
         m_Effects.push_back(SEffect());
-        UI.Command		(COMMAND_UPDATE_PROPERTIES);
+        UI->Command		(COMMAND_UPDATE_PROPERTIES);
         OnParamsChange	(sender);
         bDataModified	= true;
     break;
@@ -43,7 +43,7 @@ void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataMod
 
 void __fastcall PS::CPGDef::OnEffectTypeChange(PropValue* sender)
 {
-    UI.Command			(COMMAND_UPDATE_PROPERTIES);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES);
     OnParamsChange		(sender);
 }
 
@@ -51,9 +51,9 @@ void __fastcall PS::CPGDef::OnControlClick(PropValue* sender, bool& bDataModifie
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
-    case 0: 			Tools.PlayCurrent();		break;
-    case 1: 			Tools.StopCurrent(false);	break;
-    case 2: 			Tools.StopCurrent(true);	break;
+    case 0: 			PTools->PlayCurrent();		break;
+    case 1: 			PTools->StopCurrent(false);	break;
+    case 2: 			PTools->StopCurrent(true);	break;
     }
     bDataModified		= false;
 }
@@ -65,7 +65,7 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
     case 0:
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes){
             m_Effects.erase	(m_Effects.begin()+B->Owner()->tag);
-            UI.Command		(COMMAND_UPDATE_PROPERTIES);
+            UI->Command		(COMMAND_UPDATE_PROPERTIES);
             OnParamsChange	(sender);
             bDataModified	= true;
         }else{
@@ -77,7 +77,7 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
 
 void __fastcall PS::CPGDef::OnParamsChange(PropValue* sender)
 {
-	Tools.SetCurrentPG	(this);
+	PTools->SetCurrentPG	(this);
 }
 
 xr_token			effect_token					[ ]={

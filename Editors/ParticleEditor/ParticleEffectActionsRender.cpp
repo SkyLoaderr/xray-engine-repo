@@ -4,7 +4,7 @@
 
 #include "ParticleEffectActions.h"
 #include "D3DUtils.h"
-#include "ui_tools.h"
+#include "ui_particletools.h"
 
 using namespace PAPI;
 
@@ -14,7 +14,7 @@ void RenderDomain(pDomain d, u32 clr)
 	u32 clr_w = subst_alpha	(clr,0xff);
     RCache.set_xform_world	(Fidentity);
     
-    Device.SetShader		(Tools.m_Flags.is(CParticleTools::flDrawSolid)?Device.m_WireShader:Device.m_SelectionShader);
+    Device.SetShader		(PTools->m_Flags.is(CParticleTools::flDrawSolid)?Device.m_WireShader:Device.m_SelectionShader);
     
 	switch(d.type){
     case PDPoint: 	
