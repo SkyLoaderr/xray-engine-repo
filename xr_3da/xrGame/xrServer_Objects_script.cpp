@@ -53,7 +53,11 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	typedef T inherited;
 	typedef CWrapperBase<T>	self_type;
 
-	virtual void STATE_Read(NET_Packet& p1)
+		IC			CWrapperBase(LPCSTR section) : T(section)
+		{
+		}
+
+		virtual void STATE_Read(NET_Packet& p1)
 		{
 			call<void>("STATE_Read",&p1);
 		}
