@@ -256,7 +256,7 @@ function loadStates(st, gname, type, calculateState)
 		    timeout = 1*60*60*1000 }
 		table.insert(st, t)			
 		calculateState = function(obj)
-			for k,v in obj
+			for k,v in obj do
 				enemy = v:best_enemy()
 				if enemy ~= nil then
 					enemy_type = get_clsid(enemy)
