@@ -13,6 +13,16 @@
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
 #include <stdio.h>
+#include <malloc.h>
+#include <windows.h>
+#include <math.h>
+
+#define ENGINE_API
+#define _FREE(a) if (a) { free(a); a=0; }
+#define R_ASSERT(a)
+#define IC __forceinline
+#include "image.h"
+
 
 // TODO: reference additional headers your program requires here
 
