@@ -46,6 +46,7 @@ void Help()
 char SYSTEM_LTX[256];
 char INI_FILE[256];
 
+extern  HWND logWindow;
 void Startup(LPSTR     lpCmdLine)
 {
 	char cmd[512],name[256];
@@ -60,7 +61,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Give a LOG-thread a chance to startup
 	InitCommonControls	();
 	_beginthread		(logThread,	0,0);
-	Sleep				(150);
+	while				(!logWindow)	Sleep		(150);
 	
 	// Load project
 	name[0]=0; 
