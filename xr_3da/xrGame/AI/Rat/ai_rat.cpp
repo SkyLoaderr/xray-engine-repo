@@ -28,7 +28,7 @@ CAI_Rat::CAI_Rat()
 	dwLostEnemyTime = 0;
 	//m_fSpin = 0.0;
 	//m_fMultiplier = sinf(m_fSpin);
-	AI_Path.m_bCollision = false;
+	//AI_Path.m_bCollision = false;
 	q_look.o_look_speed = _FB_look_speed;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
@@ -112,6 +112,8 @@ BOOL CAI_Rat::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 		eCurrentState = aiRatFreeHunting;
 	else
 		eCurrentState = aiRatFollowLeader;
+	
+	//eCurrentState = aiRatFreeHunting;
 	/**/
 	
 	return TRUE;

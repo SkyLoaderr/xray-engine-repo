@@ -99,7 +99,7 @@ void CCustomMonster::Exec_Look		( float dt )
 	a1 = u_lerp_angle(r_current.yaw,	r_target.yaw,	L->o_look_speed, dt);
 	a2 = u_lerp_angle(r_current.pitch,	r_target.pitch,	L->o_look_speed, dt);
 	
-	mRotate.setHPB(NET_Last.o_model,0,0);
+	mRotate.setHPB(-NET_Last.o_model,0,0);
 }
 
 void CCustomMonster::Exec_Action	( float dt )

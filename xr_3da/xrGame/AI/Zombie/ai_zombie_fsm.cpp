@@ -246,9 +246,9 @@ void CAI_Zombie::AttackRun()
 
 	INIT_SQUAD_AND_LEADER;
 	
+	/**
 	vfInitSelector(SelectorAttack,Squad,Leader);
 	
-	/**
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(&SelectorAttack);
 	else
