@@ -236,7 +236,7 @@ void CBurer::UpdateGraviObject()
 	}
 
 	float dt = float(Level().timeServer() - m_gravi_object.time_last_update);
-	float dist = dt * float(m_gravi_speed/1000);
+	float dist = dt * float(m_gravi_speed)/1000.f;
 		
 	if (dist < m_gravi_step) return;
 	
