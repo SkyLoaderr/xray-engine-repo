@@ -899,8 +899,8 @@ hit_small_particles			= hit_fx\hit_metal_02
 hit_big_particles			= anomaly2\gravity_damage_02_blood2
 idle_small_particles		= anomaly2\gravity_damage_01_smoke
 idle_big_particles			= anomaly2\gravity_damage_02_smoke
-entrance_small_particles	= anomaly2\gravity_blast_01
-entrance_big_particles		= hit_fx\hit_metal_02
+entrance_small_particles	= anomaly2\gravity_entrance_small
+entrance_big_particles		= anomaly2\gravity_entrance_big
 
 idle_sound			= anomaly\anomaly_gravy_idle
 blowout_sound		= anomaly\anomaly_gravy_blast; anomaly_gravy_blast01
@@ -942,8 +942,8 @@ hit_type		= burn
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zone\witches galantine"
 $prefetch 		= 16
-class			= Z_GALANT
-hit_impulse_scale	= .1
+class			= Z_MBALD
+hit_impulse_scale	= .03
 sound			= zone_mosquito_bald
 postprocess		= postprocess_anomaly
 hit_effect		= explosions\expl_02_sparks
@@ -951,7 +951,22 @@ effects			= anomaly\marevo2		;anomaly\marevo, anomaly\storm_01
 artefacts		= af_magnet,0.7
 BirthProbability = 0.9
 
-hit_type		= burn
+idle_particles		= anomaly2\electra_idle
+blowout_particles	= anomaly2\electra_blast_00
+
+hit_small_particles			= anomaly2\electra_damage_01_smoke
+hit_big_particles			= anomaly2\gravity_damage_02_blood2
+idle_small_particles		= anomaly2\electra_damage_01_smoke
+idle_big_particles			= anomaly2\electra_damage_02_smoke
+entrance_small_particles	= anomaly2\electra_entrance_small
+entrance_big_particles		= anomaly2\electra_entrance_big
+
+idle_sound			= anomaly\anomaly_gravy_idle
+blowout_sound		= anomaly\anomaly_gravy_blast; anomaly_gravy_blast01
+hit_sound			= anomaly\anomaly_gravy_hit
+entrance_sound		= anomaly\anomaly_gravy_hit
+
+hit_type		= wound
 
 [zone_burning_fuzz]
 GroupControlSection	= spawn_group_zone
