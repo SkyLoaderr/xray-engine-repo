@@ -454,7 +454,7 @@ function state_manager:__init(npc)
 
 	action = state_mgr_animstate.act_state_mgr_animstate_2idle("state_mgr_direction_stand_up", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
-	action:add_precondition		(world_property(self.properties["weapon_strapped"],		true))
+	action:add_precondition		(world_property(self.properties["weapon_strapped_now"],	true))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_effect 			(world_property(self.properties["animstate_idle_now"],	true))
 	self.planner:add_action(self.operators["direction_stand_up"], action)
