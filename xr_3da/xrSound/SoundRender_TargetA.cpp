@@ -35,8 +35,8 @@ void	CSoundRender_TargetA::_initialize		()
 void	CSoundRender_TargetA::_destroy		()
 {
 	// clean up target
-	alDeleteSources		(1, &pSource);
-	alDeleteBuffers		(sdef_target_count, pBuffers);
+	A_CHK(alDeleteSources	(1, &pSource));
+	A_CHK(alDeleteBuffers	(sdef_target_count, pBuffers));
 }
 
 void	CSoundRender_TargetA::start			(CSoundRender_Emitter* E)
@@ -53,8 +53,8 @@ void	CSoundRender_TargetA::render		()
 	for (u32 buf_idx=0; buf_idx<sdef_target_count; buf_idx++)
 		fill_block	(pBuffers[buf_idx]);
 
-	alSourceQueueBuffers(pSource, sdef_target_count, pBuffers);	VERIFY(alGetError()==AL_NO_ERROR);
-	alSourcePlay	(pSource);
+	A_CHK			(alSourceQueueBuffers	(pSource, sdef_target_count, pBuffers));	
+	A_CHK			(alSourcePlay			(pSource));
 
     inherited::render();
 }
@@ -63,8 +63,8 @@ void	CSoundRender_TargetA::stop			()
 {
 	if (rendering)
 	{
-		alSourceStop(pSource);
-        alSourcei	(pSource, AL_BUFFER,   NULL);
+		A_CHK		(alSourceStop(pSource));
+        A_CHK		(alSourcei	(pSource, AL_BUFFER,   NULL));
 		A_CHK		(alSourcei	(pSource, AL_SOURCE_RELATIVE,	FALSE));
 	}
     inherited::stop	();
@@ -73,10 +73,12 @@ void	CSoundRender_TargetA::stop			()
 void	CSoundRender_TargetA::rewind			()
 {
 	inherited::rewind();
-
-	CSoundRender_Emitter* tmp = pEmitter;
-    stop			();
-    start			(tmp);
+	A_CHK			(alSourceStop(pSource));
+	A_CHK			(alSourcei	(pSource, AL_BUFFER,   NULL));
+	for (u32 buf_idx=0; buf_idx<sdef_target_count; buf_idx++)
+		fill_block	(pBuffers[buf_idx]);
+	A_CHK			(alSourceQueueBuffers	(pSource, sdef_target_count, pBuffers));	
+	A_CHK			(alSourcePlay			(pSource));
 }
 
 void	CSoundRender_TargetA::update			()
@@ -85,7 +87,7 @@ void	CSoundRender_TargetA::update			()
 
 	ALint			processed;
     // Get status
-    alGetSourcei	(pSource, AL_BUFFERS_PROCESSED, &processed);
+    A_CHK			(alGetSourcei(pSource, AL_BUFFERS_PROCESSED, &processed));
 
     if (processed > 0){
         while (processed){
@@ -99,11 +101,11 @@ void	CSoundRender_TargetA::update			()
     	// processed == 0
         // check play status -- if stopped then queue is not being filled fast enough
         ALint state;
-	    alGetSourcei(pSource, AL_SOURCE_STATE, &state);
+	    A_CHK		(alGetSourcei(pSource, AL_SOURCE_STATE, &state));
         if (state != AL_PLAYING){
-            Log("Queuing underrun detected.");
-            alGetSourcei(pSource, AL_BUFFERS_PROCESSED, &processed);
-            alSourcePlay(pSource);
+            A_CHK	(alGetSourcei(pSource, AL_BUFFERS_PROCESSED, &processed));
+			Log		("Queuing underrun detected.",processed);
+			A_CHK	(alSourcePlay(pSource));
         }
     }
 }
@@ -115,7 +117,11 @@ void	CSoundRender_TargetA::fill_parameters()
     // 3D params
     A_CHK(alSourcef	(pSource, AL_REFERENCE_DISTANCE, 	pEmitter->p_source.min_distance));
     A_CHK(alSourcef	(pSource, AL_MAX_DISTANCE, 			pEmitter->p_source.max_distance));
-    A_CHK(alSourcefv(pSource, AL_POSITION,	 			&pEmitter->p_source.position.x));
+	if (pEmitter->b2D){
+		A_CHK(alSource3f(pSource, AL_POSITION,	 		0.f,0.f,0.f));
+	}else{
+		A_CHK(alSource3f(pSource, AL_POSITION,	 		pEmitter->p_source.position.x,pEmitter->p_source.position.y,-pEmitter->p_source.position.z));
+	}
     A_CHK(alSourcei	(pSource, AL_SOURCE_RELATIVE,		pEmitter->b2D));
     // 2D params
     A_CHK(alSourcef	(pSource, AL_ROLLOFF_FACTOR,		psSoundRolloff));
