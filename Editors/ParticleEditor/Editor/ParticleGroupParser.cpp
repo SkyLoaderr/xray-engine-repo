@@ -268,6 +268,7 @@ public:
 		if (0==strcmp(command,"pColor"))				pColor			(P4);
         else if (0==strcmp(command,"pColorD"))			pColorD			(P11);
         else if (0==strcmp(command,"pVelocity"))	 	pVelocity		(P3);
+		else if (0==strcmp(command,"pVelocityD"))		pVelocityD		(P10);
         else if (0==strcmp(command,"pVertexB"))			pVertexB		(P3);
         else if (0==strcmp(command,"pVertexBD"))	  	pVertexBD		(P10);
         else if (0==strcmp(command,"pVertexBTracks")) 	pVertexBTracks	(P1);
@@ -351,6 +352,7 @@ static LPCSTR PStateCommands[]={
 	"pStartingAge(float age, float sigma = 1.0f);",
 	"pTimeStep(float new_dt);",
 	"pVelocity(float x, float y, float z);",
+	"pVelocityD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertexB(float x, float y, float z);",
 	"pVertexBD(PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",
 	"pVertexBTracks(BOOL track_vertex = TRUE);",
@@ -440,11 +442,13 @@ const AnsiString GetFunctionTemplate(const AnsiString& command)
 	AnsiString text	= "";
     if (F){
         text.sprintf("%-16s(",F->command);
-        for (PFunction::ParamIt it=F->params.begin(); it!=F->params.end(); it++){
-        	text	+= it->s_data;
-            text	+= ", ";
+        if (!F->params.empty()){
+            for (PFunction::ParamIt it=F->params.begin(); it!=F->params.end(); it++){
+                text	+= it->s_data;
+                text	+= ", ";
+            }
+            text.Delete	(text.Length()-1,2);
         }
-        text.Delete	(text.Length()-1,2);
         text		+= ");";
     }
     return text;

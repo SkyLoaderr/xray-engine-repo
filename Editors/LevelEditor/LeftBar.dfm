@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 570
+  Height = 868
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -140,27 +140,6 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebSceneCompileMouseDown
       end
-      object ebLibraryEditor: TExtBtn
-        Left = 2
-        Top = 48
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        Caption = 'Library Editor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        OnClick = ebEditLibClick
-      end
       object ebObjectList: TExtBtn
         Left = 2
         Top = 114
@@ -181,37 +160,6 @@ object fraLeftBar: TfraLeftBar
         Margin = 13
         ParentFont = False
         OnClick = ebObjectListClick
-      end
-      object ebSceneCommands: TExtBtn
-        Left = 2
-        Top = 131
-        Width = 120
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        Caption = 'Commands'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          DE000000424DDE00000000000000360000002800000007000000070000000100
-          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-          000000000000000000000000FFFFFF0000000000000000000000000000000000
-          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-          0000}
-        Margin = 3
-        ParentFont = False
-        Spacing = 3
-        OnMouseDown = ebSceneCommandsMouseDown
       end
       object ebPreferences: TExtBtn
         Left = 2
@@ -316,6 +264,68 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         Spacing = 3
         OnMouseDown = ebSoundsMouseDown
+      end
+      object ExtBtn2: TExtBtn
+        Left = 2
+        Top = 47
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Objects'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ExtBtn2MouseDown
+      end
+      object ebGame: TExtBtn
+        Left = 2
+        Top = 131
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Game'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ebGameMouseDown
       end
     end
     object paEdit: TPanel
@@ -1537,7 +1547,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 7
+    Version = 8
     OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'
@@ -1679,37 +1689,6 @@ object fraLeftBar: TfraLeftBar
     object miSceneSummary: TMenuItem
       Caption = 'Summary Info'
       OnClick = miSceneSummaryClick
-    end
-  end
-  object pmSceneCommands: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 10921638
-    MarginEndColor = 2763306
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 85
-    Top = 138
-    object N14: TMenuItem
-      Caption = '-'
-    end
-    object ResetAniamation1: TMenuItem
-      Caption = 'Reset Animation'
-      OnClick = ebResetAnimationClick
-    end
-    object RefreshObjects1: TMenuItem
-      Caption = 'Reload Objects'
-      OnClick = RefreshObjects1Click
-    end
-    object RefreshLibrary1: TMenuItem
-      Caption = 'Refresh Library'
-      OnClick = RefreshLibrary1Click
     end
   end
   object pmToolsEdit: TMxPopupMenu
@@ -2020,6 +1999,44 @@ object fraLeftBar: TfraLeftBar
       OnClick = miPropertiesClick
     end
   end
+  object pmObjects: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 85
+    Top = 48
+    object MenuItem13: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem16: TMenuItem
+      Caption = 'Library Editor'
+      OnClick = ebEditLibClick
+    end
+    object MenuItem17: TMenuItem
+      Caption = '-'
+    end
+    object ResetAnimation1: TMenuItem
+      Caption = 'Reset Animation'
+      OnClick = ebResetAnimationClick
+    end
+    object ReloadObjects1: TMenuItem
+      Caption = 'Reload Objects'
+      OnClick = RefreshObjects1Click
+    end
+    object RefreshLibrary2: TMenuItem
+      Caption = 'Refresh Library'
+      OnClick = RefreshLibrary1Click
+    end
+  end
   object pmImages: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
@@ -2034,7 +2051,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 58
+    Top = 64
     object N11: TMenuItem
       Caption = '-'
     end
@@ -2093,6 +2110,33 @@ object fraLeftBar: TfraLeftBar
     object UpdateEnvironmentGeometry1: TMenuItem
       Caption = 'Refresh Environment Geometry'
       OnClick = UpdateEnvironmentGeometry1Click
+    end
+  end
+  object pmGame: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 85
+    Top = 137
+    object MenuItem18: TMenuItem
+      Caption = '-'
+    end
+    object miMakeAIPath: TMenuItem
+      Caption = 'Make AI Map Mask'
+      OnClick = miMakeAIPathClick
+    end
+    object miClearAIMask: TMenuItem
+      Caption = 'Clear AI Map Mask'
+      OnClick = miClearAIMaskClick
     end
   end
 end

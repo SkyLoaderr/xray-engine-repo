@@ -42,9 +42,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebTargetGroup;
 	TExtBtn *ebSceneFile;
 	TExtBtn *ebSceneCompile;
-	TExtBtn *ebLibraryEditor;
 	TExtBtn *ebObjectList;
-	TExtBtn *ebSceneCommands;
 	TExtBtn *ebPreferences;
 	TExtBtn *ExtBtn7;
 	TExtBtn *ExtBtn8;
@@ -61,8 +59,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Build;
 	TMenuItem *MakeGame;
 	TMenuItem *Validate1;
-	TMxPopupMenu *pmSceneCommands;
-	TMenuItem *ResetAniamation1;
 	TMxPopupMenu *pmToolsEdit;
 	TMxPopupMenu *pmToolsSelection;
 	TMxPopupMenu *pmToolsVisibility;
@@ -101,7 +97,6 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TMenuItem *miAddSelectedToList;
 	TExtBtn *ebTargetDO;
-	TMenuItem *RefreshObjects1;
 	TMenuItem *MakeDetails;
 	TMxPopupMenu *pmObjectContext;
 	TMenuItem *miVisibility;
@@ -128,7 +123,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Scale1;
 	TMenuItem *N4;
 	TMenuItem *miProperties;
-	TMenuItem *RefreshLibrary1;
 	TMenuItem *N3;
 	TMenuItem *miRecentFiles;
 	TMenuItem *N7;
@@ -137,19 +131,10 @@ __published:	// IDE-managed Components
 	TExtBtn *ebLightAnimationEditor;
 	TExtBtn *ebIgnoreMode;
 	TExtBtn *ebImages;
-	TMxPopupMenu *pmImages;
-	TMenuItem *ImageEditor1;
-	TMenuItem *MenuItem8;
-	TMenuItem *MenuItem9;
-	TMenuItem *MenuItem10;
 	TMenuItem *N8;
 	TMenuItem *N9;
-	TMenuItem *N10;
-	TMenuItem *UpdateSceneTextures1;
-	TMenuItem *N11;
 	TMenuItem *N12;
 	TMenuItem *N13;
-	TMenuItem *N14;
 	TMenuItem *N15;
 	TMenuItem *N16;
 	TMenuItem *N17;
@@ -167,12 +152,33 @@ __published:	// IDE-managed Components
 	TMenuItem *N23;
 	TMenuItem *miMakeSkyDome;
 	TExtBtn *ebSounds;
+	TExtBtn *ExtBtn2;
+	TMxPopupMenu *pmObjects;
+	TMenuItem *MenuItem13;
+	TMenuItem *MenuItem16;
+	TMenuItem *MenuItem17;
+	TMxPopupMenu *pmImages;
+	TMenuItem *N11;
+	TMenuItem *ImageEditor1;
+	TMenuItem *MenuItem8;
+	TMenuItem *UpdateSceneTextures1;
+	TMenuItem *N10;
+	TMenuItem *MenuItem9;
+	TMenuItem *MenuItem10;
 	TMxPopupMenu *pmSounds;
 	TMenuItem *MenuItem11;
 	TMenuItem *MenuItem12;
-	TMenuItem *MenuItem14;
 	TMenuItem *MenuItem15;
+	TMenuItem *MenuItem14;
 	TMenuItem *UpdateEnvironmentGeometry1;
+	TMenuItem *ResetAnimation1;
+	TMenuItem *ReloadObjects1;
+	TMenuItem *RefreshLibrary2;
+	TExtBtn *ebGame;
+	TMxPopupMenu *pmGame;
+	TMenuItem *MenuItem18;
+	TMenuItem *miMakeAIPath;
+	TMenuItem *miClearAIMask;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -212,8 +218,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCompileMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ExtBtn7MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
@@ -256,6 +260,12 @@ __published:	// IDE-managed Components
 	void __fastcall UpdateEnvironmentGeometry1Click(TObject *Sender);
 	void __fastcall MenuItem14Click(TObject *Sender);
 	void __fastcall ebSoundsMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall ExtBtn2MouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
+	void __fastcall miClearAIMaskClick(TObject *Sender);
+	void __fastcall miMakeAIPathClick(TObject *Sender);
+	void __fastcall ebGameMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 private:	// User declarations
 public:		// User declarations

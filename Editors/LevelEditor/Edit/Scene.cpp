@@ -640,11 +640,13 @@ void EScene::Modified(){
     UI.Command(COMMAND_UPDATE_CAPTION);
 }
 
-bool EScene::IsModified(){
+bool EScene::IsModified()
+{
     return (m_Modified && (ObjCount()||UI.GetEditFileName()[0]));
 }
 
-bool EScene::IfModified(){
+bool EScene::IfModified()
+{
     if (m_Modified && (ObjCount()||UI.GetEditFileName()[0])){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
@@ -656,10 +658,12 @@ bool EScene::IfModified(){
     return true;
 }
 
-void EScene::Unload(){
+void EScene::Unload()
+{
 	m_LastAvailObject = 0;
 	ClearObjects(true);
 	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
+	m_AIMask.Clear();
 }
 
 

@@ -112,7 +112,8 @@ void EDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
     }
 }
 
-bool EDetailManager::Initialize(LPCSTR tex_name){
+bool EDetailManager::Initialize(LPCSTR tex_name)
+{
 	if (!fraLeftBar->ebEnableSnapList->Down||Scene.m_SnapObjects.empty()){
     	ELog.DlgMsg(mtError,"Fill snap list and activate before generating slots!");
     	return false;
@@ -184,7 +185,7 @@ bool EDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
     	return false;
     }
-	m_Base.RecreateShader();
+	m_Base.CreateShader();
     m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
     return true;
 }

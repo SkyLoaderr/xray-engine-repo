@@ -54,6 +54,9 @@ enum {
     COMMAND_LOAD_FIRSTRECENT,
 
     COMMAND_MUTE_SOUND, // p0 - on/off
+
+    COMMAND_CLEAR_AI_MAP_MASK,
+    COMMAND_MAKE_AI_MAP_MASK,
 };
 //------------------------------------------------------------------------------
 

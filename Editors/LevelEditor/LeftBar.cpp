@@ -422,6 +422,13 @@ void __fastcall TfraLeftBar::ebSceneCompileMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExtBtn2MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmObjects,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebImagesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -436,10 +443,10 @@ void __fastcall TfraLeftBar::ebSoundsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebGameMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FHelper.ShowPPMenu(pmSceneCommands,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmGame,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -619,8 +626,17 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miClearAIMaskClick(TObject *Sender)
+{
+	UI.Command(COMMAND_CLEAR_AI_MAP_MASK);
+}
+//---------------------------------------------------------------------------
 
-
+void __fastcall TfraLeftBar::miMakeAIPathClick(TObject *Sender)
+{
+	UI.Command(COMMAND_MAKE_AI_MAP_MASK);
+}
+//---------------------------------------------------------------------------
 
 
 

@@ -10,6 +10,7 @@
 #include "Library.h"
 #include "customobject.h"
 #include "DetailManager.h"
+#include "Custom2DProjector.h"
 
 class CFrustum;
 class CEditableObject;
@@ -63,55 +64,9 @@ public:
     void				InvalidateCache			();
 // render part -----------------------------------------------------------------
 public:
-	class SBase{
-		Shader*			shader_blended;
-        Shader*			shader_overlap;
-        string128		name;
-        u32 			w;
-        u32 			h;
-		U32Vec			data;
-	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
-		TVertVec		mesh;
-	    SGeometry*		geom;
-    public:
-        				SBase				();
-        IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
-    	IC void			Clear				(){name[0]=0; w=0; h=0; geom=0; data.clear(); mesh.clear(); DestroyShader();}
-        void			CreateRMFromObjects	(const Fbox& box, ObjectList& lst);
-        void			Render				();
-        void			CreateShader		();
-        void			DestroyShader		();
-        void			RecreateShader		(){DestroyShader();CreateShader();}
-        bool			LoadImage			(LPCSTR nm);
-		IC LPCSTR 		GetName				(){ return name; }
-		IC bool 		GetColor			(u32& color, int U, int V){
-        	if (Valid()&&(U<(int)w)&&(V<(int)h)){
-    			color 	= data[V*w+U];
-    			return true;
-            }
-            return false;
-	    }
-        IC float 		GetUFromX			(float x, const Fbox& box){
-			R_ASSERT(Valid());
-			return 		(x-box.min.x)/(box.max.x-box.min.x);
-        }
-        IC int			GetPixelUFromX		(float x, const Fbox& box){
-        	int U		= iFloor(GetUFromX(x,box)*(w-1)+0.5f); if (U<0) U=0;
-			return U;
-        }
-        IC float 		GetVFromZ			(float z, const Fbox& box){
-			R_ASSERT(Valid());
-			return 		1.f-(z-box.min.z)/(box.max.z-box.min.z);
-        }
-        IC int			GetPixelVFromZ		(float z, const Fbox& box){
-			int V 		= iFloor(GetVFromZ(z,box)*(h-1)+0.5f); if (V<0) V=0;
-			return V;
-        }
-    };
-
     ColorIndexMap		m_ColorIndices;
 	U8Vec				m_Selected;
-    SBase				m_Base;
+    CCustom2DProjector	m_Base;
 
     float				m_fDensity;
 

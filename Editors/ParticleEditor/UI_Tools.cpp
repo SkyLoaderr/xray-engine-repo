@@ -43,7 +43,7 @@ CParticleTools::~CParticleTools()
 bool CParticleTools::OnCreate(){
 	// shader test locking
 	AnsiString fn; 
-    FS.update_path(fn,_game_data_,"particles.xr");
+    FS.update_path(fn,_game_data_,"particles2.xr");
 	if (EFS.CheckLocking(0,fn.c_str(),false,true))
     	return false;
 
@@ -73,7 +73,7 @@ void CParticleTools::OnDestroy(){
 	VERIFY(m_bReady);
     m_bReady			= false;
 	// unlock
-    EFS.UnlockFile		(_game_data_,"particles.xr");
+    EFS.UnlockFile		(_game_data_,"particles2.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
     xr_delete			(m_EditPG);
@@ -222,11 +222,11 @@ void CParticleTools::Save()
     ApplyChanges();
 	m_bModified = false;
 	// backup
-    EFS.BackupFile	(_game_data_,"particles.xr");
+    EFS.BackupFile	(_game_data_,"particles2.xr");
 	// save   
-    EFS.UnlockFile	(_game_data_,"particles.xr",false);
+    EFS.UnlockFile	(_game_data_,"particles2.xr",false);
 	PSLib.Save();
-    EFS.LockFile	(_game_data_,"particles.xr",false);
+    EFS.LockFile	(_game_data_,"particles2.xr",false);
 }
 
 void CParticleTools::Reload()
