@@ -4,11 +4,20 @@
 
 #include "UIGameCustom.h"
 
+
+#include "ui\\UIDialogWnd.h"
+#include "ui\\UIInventoryWnd.h"
+
+
 // refs 
 class CUIDMFragList;
 class CUIDMPlayerList;
 
-class CUIGameDM: public CUIGameCustom{
+class CUIGameDM: public CUIGameCustom
+{
+private:
+	typedef CUIGameCustom inherited;
+protected:
 	CUIDMFragList*		pFragList;
 	CUIDMPlayerList*	pPlayerList;
 public:
@@ -19,5 +28,8 @@ public:
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
+
+	/////////
+	CUIInventoryWnd		InventoryMenu;
 };
 #endif // __XR_UIGAMEDM_H__

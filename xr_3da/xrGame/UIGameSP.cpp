@@ -12,30 +12,10 @@ CUIGameSP::~CUIGameSP(void)
 {
 }
 
-void CUIGameSP::OnFrame() 
-{
-	if(m_pUserMenu)
-	{
-		m_pUserMenu->Update();
-	}
-}
-
-void CUIGameSP::Render()
-{
-	if(m_pUserMenu)
-	{
-		m_pUserMenu->Draw();
-	}
-}
-
 
 bool CUIGameSP::IR_OnKeyboardPress(int dik) 
 {
-	if(m_pUserMenu)
-	{
-		if(m_pUserMenu->IR_OnKeyboardPress(dik)) 
-			return true;
-	}
+	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
 
 	switch (dik)
@@ -86,44 +66,11 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 
 bool CUIGameSP::IR_OnKeyboardRelease(int dik) 
 {
-	if(m_pUserMenu)
-	{
-		if(m_pUserMenu->IR_OnKeyboardRelease(dik)) 
-			return true;
-	}
-
+	if(inherited::IR_OnKeyboardRelease(dik)) return true;
 	return false;
 }
 
-bool CUIGameSP::IR_OnMouseMove(int dx,int dy)
-{
-	if(m_pUserMenu)
-	{
-		if(m_pUserMenu->IR_OnMouseMove(dx, dy)) 
-			return true;
-	}
 
-	return false;
-}
-
-void CUIGameSP::StartStopMenu(CUIDialogWnd* pDialog)
-{
-	if(m_pUserMenu == NULL)
-	{
-		//show menu 
-		m_pUserMenu = pDialog;
-		m_pUserMenu->Show();
-	}
-	else
-	{
-        if(m_pUserMenu == pDialog)
-		{
-			//hide menu 
-            m_pUserMenu->Hide();
-			m_pUserMenu = NULL;
-		}
-	}
-}
 void CUIGameSP::StartTalk()
 {
 	StartStopMenu(&TalkMenu);

@@ -2,10 +2,16 @@
 #define __XR_UIGAMECUSTOM_H__
 #pragma once
 
+
+//класс абстрактного диалога
+#include "ui\\UIDialogWnd.h"
+
 // refs
 class CUI;
 
-class CUIGameCustom{
+
+class CUIGameCustom
+{
 protected:
 	u32					uFlags;
 	CUI*				m_Parent;
@@ -19,16 +25,22 @@ public:
 	void				InvertFlag			(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
 	BOOL				GetFlag				(u32 mask){return uFlags&mask;}
 public:
-						CUIGameCustom		(CUI* parent){uFlags=0;m_Parent=parent;}
+						CUIGameCustom		(CUI* parent){uFlags=0;m_Parent=parent;m_pUserMenu=NULL;}
 	virtual				~CUIGameCustom		(){}
-	virtual void		Render				()=0;
-	virtual void		OnFrame				()=0;
+	virtual void		Render				();
+	virtual void		OnFrame				();
 
-	virtual bool		IR_OnKeyboardPress		(int dik)=0;
-	virtual bool		IR_OnKeyboardRelease	(int dik)=0;
+	virtual bool		IR_OnKeyboardPress		(int dik);
+	virtual bool		IR_OnKeyboardRelease	(int dik);
+	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
-	//by Dandy 4.07.03
-	virtual bool		IR_OnMouseMove			(int /**dx/**/, int /**dy/**/) {return false;}
+
+	//для остановки и запуска дополнительных меню
+	virtual void StartStopMenu(CUIDialogWnd* pDialog);
+	
+	//текущее меню пользователя показанное на экране
+	//NULL если такого сейчас нет
+	CUIDialogWnd* m_pUserMenu;
 };
 
 //by Dandy
