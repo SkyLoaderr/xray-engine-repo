@@ -1,0 +1,133 @@
+
+[wpn_bm16]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn                   = "weapons\bm16"					; option for Level Editor
+$npc			 = on				; option for Level Editor
+$prefetch 		 = 8
+scheduled                = off              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_SHOTGN
+min_radius               = 0
+max_radius               = 50
+
+cost					 = 300	;1000
+
+ammo_limit		 = 60
+ammo_current		 = 10
+ammo_elapsed		 = 0
+
+ammo_mag_size		 = 2
+ammo_class		 = ammo_12x70_buck, ammo_12x76_dart, ammo_12x76_zhekan
+
+resource		= 6000
+
+;-----------------------------------------------------------------------------------
+;базовая дисперсия
+fire_dispersion_base		= 0.12  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+
+;отдача
+cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
+cam_dispersion          	= 4.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle				= 8		;максимальный угол отдачи
+cam_horz_prob				= 1		;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
+cam_horz_factor				= 2.5	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
+
+
+fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
+misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+;-----------------------------------------------------------------------------------
+
+hand_dependence 	 = 2
+
+slot 			= 2		; // secondary
+inv_name		= BM16
+inv_name_short	= TOZ34
+inv_weight		= .5
+
+inv_grid_width		= 6
+inv_grid_height		= 1
+inv_grid_x			= 12
+inv_grid_y			= 2
+
+
+direction                = 0, 0, 1
+shell_point				 = 0.05, 0.14, 0.07
+fire_point               = 0.0, 0.2, 0.83
+fire_point2              = 0.0, 0.17, 0.83
+
+flame_particles		   = weapons\generic_weapon05
+smoke_particles		   = weapons\generic_shoot_00
+rpm_empty_click 	   = 200
+; ttc
+
+hit_power        			= 75
+hit_impulse      			= 210
+hit_type 					= fire_wound
+
+fire_distance            	= 100
+bullet_speed			 	= 300			;начальная скорость пули
+rpm                      	= 150
+; end ttc
+
+hud                      = wpn_bm16_hud
+normal                   = 0, 1, 0
+position                 = -0.03, -0.08, 0.1
+orientation              = -2, -8.5, 0
+startup_ammo             = 10
+visual                   = weapon\toz34\wpn_toz34_ext.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+tracer_head_speed	 = 250
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 0
+tracer_width		 = 0.00
+light_color		 = 0.6,0.5,0.3
+light_range		 = 6.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 3
+;cost			 = 900
+
+;addons
+scope_status				= 0
+silencer_status				= 0
+grenade_launcher_status		= 0
+
+zoom_enabled				= true
+scope_zoom_factor	    	= 55
+
+;звуки
+snd_draw			= weapons\generic_draw
+snd_holster			= weapons\generic_holster
+snd_shoot			= weapons\toz34_shoot
+snd_empty			= weapons\generic_empty
+snd_reload			= weapons\toz34_reload
+snd_shoot_duplet	= weapons\toz34_shoot_both
+
+ 
+[wpn_b16_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.0, 0.06
+fire_point2              = 0.0, 0.0, 0.06
+fire_bone                = wpn_barrel_0
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapon\toz34\wpn_toz34_hud.ogf
+
+anim_idle		= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
+anim_shoot_both = shoot_both
+anim_idle_aim	= idle_aim
+
+;смещения HUD для режима приближения
+zoom_offset			= -0.126000,0.000000,0.000000
+zoom_rotate_x		= 0.004000
+zoom_rotate_y		= 0.017000
+
