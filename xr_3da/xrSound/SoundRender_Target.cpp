@@ -158,11 +158,22 @@ void	CSoundRender_Target::stop			()
 
 void	CSoundRender_Target::rewind			()
 {
-	R_ASSERT(rendering);
+	R_ASSERT		(rendering);
+
+	R_CHK			(pBuffer->Stop	());
+	pos_write		= 0;
+	fill_block		();
+	fill_block		();
+	R_CHK			(pBuffer->SetCurrentPosition	(0));
+	R_CHK			(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+
+	// .
+	/*
 	u32		pos_2_play	= pos_write%buf_size;
 	fill_parameters		();
 	fill_block			();
 	R_CHK	(pBuffer->SetCurrentPosition	(pos_2_play));
+	*/
 }
 
 u32		CSoundRender_Target::calc_interval	(u32 ptr)
