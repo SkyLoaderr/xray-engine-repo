@@ -58,7 +58,7 @@ void CPHObject::Collide()
 	}
 ///////////////////////////////
 	CollideStatic(dSpacedGeom(),this);
-	m_flags.set(st_dirty,TRUE);
+	m_flags.set(st_dirty,FALSE);
 }
 
 void CPHObject::FreezeContent()
