@@ -218,6 +218,7 @@ public:
 			void				update_best_item_info			();
 	virtual float				GetWeaponAccuracy				() const;
 	virtual	void				spawn_supplies					();
+			void				adjust_speed_to_animation		(const EMovementDirection movement_direction);
 	virtual bool				human_being						() const
 	{
 		return					(true);

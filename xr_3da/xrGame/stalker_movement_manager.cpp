@@ -29,7 +29,9 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 	inherited::Load					(section);
 	m_fCrouchFactor					= pSettings->r_float(section,"CrouchFactor");
 	m_fWalkFactor					= pSettings->r_float(section,"WalkFactor");
+	m_fWalkBackFactor				= pSettings->r_float(section,"WalkBackFactor");
 	m_fRunFactor					= pSettings->r_float(section,"RunFactor");
+	m_fRunBackFactor				= pSettings->r_float(section,"RunBackFactor");
 	m_fWalkFreeFactor				= pSettings->r_float(section,"WalkFreeFactor");
 	m_fRunFreeFactor				= pSettings->r_float(section,"RunFreeFactor");
 	m_fPanicFactor					= pSettings->r_float(section,"PanicFactor");

@@ -113,7 +113,9 @@ public:
 protected:
 	float								m_fCrouchFactor;
 	float								m_fWalkFactor;
+	float								m_fWalkBackFactor;
 	float								m_fRunFactor;
+	float								m_fRunBackFactor;
 	float								m_fWalkFreeFactor;
 	float								m_fRunFreeFactor;
 	float								m_fPanicFactor;

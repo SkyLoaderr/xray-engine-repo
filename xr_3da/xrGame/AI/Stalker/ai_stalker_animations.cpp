@@ -575,6 +575,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	MonsterSpace::SBoneRotation		body_orientation = m_object->body_orientation();
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	m_object->set_body_orientation	(body_orientation);
+	m_object->adjust_speed_to_animation(m_tMovementDirection);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw,m_object->head_orientation().target.yaw,m_object->head_orientation().current.yaw);
 }
 
@@ -739,3 +740,23 @@ void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCST
 	int										spin_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
 	PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,m_object);
 };
+
+void CAI_Stalker::adjust_speed_to_animation	(const EMovementDirection movement_direction)
+{
+	if (body_state() == eBodyStateStand) {
+		if (movement_direction != eMovementDirectionBack) {
+			if (movement_type() == eMovementTypeWalk)
+				set_desirable_speed(m_fCurSpeed = m_fWalkFactor);
+			else
+				if (movement_type() == eMovementTypeRun)
+					set_desirable_speed(m_fCurSpeed = m_fRunFactor);
+		}
+		else {
+			if (movement_type() == eMovementTypeWalk)
+				set_desirable_speed(m_fCurSpeed = m_fWalkBackFactor);
+			else
+				if (movement_type() == eMovementTypeRun)
+					set_desirable_speed(m_fCurSpeed = m_fRunBackFactor);
+		}
+	}
+}
