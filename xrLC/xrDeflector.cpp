@@ -88,8 +88,8 @@ VOID CDeflector::OA_Export()
 	from.add	(at,N );
 	y.set		(0,1,0);
 	if (fabsf(N.y)>.99f) y.set(1,0,0);
-	right.crossproduct(y,N);
-	up.crossproduct(N,right);
+	right.crossproduct(y,N);	right.normalize_safe();
+	up.crossproduct(N,right);	up.normalize_safe();
 	mView.build_camera(from,at,up);
 
 	for (it = tris.begin(); it!=tris.end(); it++)
@@ -118,7 +118,7 @@ VOID CDeflector::OA_Export()
 	// Setup variables
 	UVpoint		dim, guard, scale;
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
-	guard.set	(BORDER/dim.u,BORDER/dim.v);
+	guard.set	(BORDER/512.f,BORDER/512.f);
 	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
 
 	// *** Addressing 
