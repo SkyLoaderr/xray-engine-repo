@@ -289,10 +289,30 @@ public:
 };
 //////////////////////////////////////////////////////////////////////
 class CPHJoint: public CPhysicsJoint{
-vector<Fvector> axes;
-Fvector anchor;
+
+
 dJointID m_joint;
 
+struct SPHAxis {
+float high;
+float law;
+float erp;
+float cfm;
+Fvector direction;
+IC void set_limits(float h, float l) {high=h; law=l;}
+IC void set_direction(const Fvector& v){direction.set(v);}
+IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
+IC void set_param(const float e,const float c){erp=e;cfm=c;}	
+SPHAxis(){
+	high=0;
+	law=0;
+	erp=ERP(world_spring,world_damping);
+	cfm=CFM(world_spring,world_damping);
+	direction.set(0,0,1);
+	}
+};
+vector<SPHAxis> axes;
+Fvector anchor;
 
 void CreateBall();
 void CreateHinge();
@@ -323,7 +343,10 @@ void CreateUniversalHinge();
 	virtual void SetAxisVsSecondElement		(const float x,const float y,const float z,const int axis_num);
 public:
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
-	virtual ~CPHJoint(){axes.clear();};
+	virtual ~CPHJoint(){
+						axes.clear();
+
+						};
 	void Activate();
 	void Deactivate();
 };

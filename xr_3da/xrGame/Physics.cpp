@@ -979,7 +979,7 @@ dSpaceAdd(m_shell->GetSpace(),m_group);
 else
 dSpaceAdd(m_shell->GetSpace(),*m_geoms.begin());
 
-dBodyEnable(m_body);
+//dBodyEnable(m_body);
 }
 
 void CPHElement::			destroy	(){
@@ -1499,29 +1499,26 @@ void CPHElement::CallBack(CBoneInstance* B){
 		bActivating=true;
 		bActive=true;
 		m_start_time=Device.fTimeGlobal;
-		if(!m_parent_element){
-		
-		m_shell->CreateSpace();
-		}
+
+		if(!m_parent_element) m_shell->CreateSpace();
 		build(m_space);
+
+	
+		Fmatrix global_transform;
+		global_transform.set(m_shell->mXFORM);
+		global_transform.mulB(mXFORM);
+		SetTransform(global_transform);
+		m_body_interpolation.SetBody(m_body);
 		return;
 	}
 
 	if(bActivating){
 
+	if(!m_parent_element)m_shell->Activate();
+	if(!m_shell->bActive) return;
 	RunSimulation();
-	Fmatrix global_transform;
-	global_transform.set(m_shell->mXFORM);
 
-	if(m_parent_element){
-	//	global_transform.mulB(m_parent_element->mXFORM);
-	}
-	else
-		m_shell->Activate();
-	global_transform.mulB(mXFORM);
-	SetTransform(global_transform);
-
-
+	
 	//Fmatrix m,m1,m2;
 	//m1.set(mXFORM);
 	//m2.set(B->mTransform);
@@ -1548,7 +1545,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 	previous_r[0]=0.f;
 	dis_count_f=0;
 
-	m_body_interpolation.SetBody(m_body);
+
 	bActivating=false;
 	//previous_f[0]=dInfinity;
 	return;
@@ -1676,6 +1673,24 @@ void CPHJoint::CreateCarWeel()
 void CPHJoint::CreateHinge()
 {
 
+m_joint=dJointCreateHinge(phWorld,0);
+Fvector pos;
+Fmatrix location;
+Fvector axis;
+CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
+CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
+first->InterpolateGlobalTransform(&location);
+
+location.transform_tiny(pos,anchor);
+//location.transform_tiny(axis,axes[0].direction);
+location.transform_dir(axis,axes[0].direction);
+dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
+dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
+dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].law);
+dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
+
+dJointAttach(m_joint,first->get_body(),second->get_body());
+
 }
 
 
@@ -1734,7 +1749,27 @@ pFirst_element=first;
 pSecond_element=second; 
 eType=type;
 bActive=false;
+SPHAxis axis,axis2;
+axis2.set_direction(1,0,0);
 
+	switch(eType){
+	case ball:					;						break;
+	case hinge:					axes.push_back(axis);	
+														break;
+	case hinge2:
+	
+	
+	case universal_hinge:		
+														
+	case shoulder1:	
+														
+	case shoulder2:	
+														
+	case car_wheel:	
+								axes.push_back(axis);
+								axes.push_back(axis2);	
+														break;
+	}
 
 }
 
