@@ -343,7 +343,9 @@
 			ammo_12x70_buck = 1 \n
 		</supplies>
 				
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>
+		<actor_dialog>bar_ecolog_crush_professor_give_quest_dp</actor_dialog>
+		<actor_dialog>bar_ecolog_crush_professor_give_info_dp</actor_dialog>
 	</specific_character>
 
 	<specific_character id="bar_svoboda_attack_commander" team_default = "1">
@@ -369,7 +371,10 @@
 			ammo_5.56x45_ap = 1 \n
 		</supplies>
 			
-		<start_dialog>hello_dialog</start_dialog>
+		<start_dialog>bar_svoboda_volkodav_start</start_dialog>
+		<actor_dialog>bar_svoboda_volkodav_request_dp</actor_dialog>
+		<actor_dialog>bar_svoboda_volkodav_give_quest_dp</actor_dialog>
+		<actor_dialog>bar_svoboda_volkodav_info_dp</actor_dialog>
 	</specific_character>
 
 </xml>
