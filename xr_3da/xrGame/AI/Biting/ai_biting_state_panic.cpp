@@ -40,7 +40,7 @@ void CBitingPanic::Run()
 			target_vertex_id			= u32(-1);
 			last_time_cover_selected	= m_dwCurrentTime;
 		}
-		Msg("GetCoverFromEnemy = [%fs]", T.GetElapsed_sec());
+		//Msg("GetCoverFromEnemy = [%fs]", T.GetElapsed_sec());
 	}
 
 	switch (m_tAction) {
