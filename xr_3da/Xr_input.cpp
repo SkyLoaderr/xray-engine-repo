@@ -218,6 +218,10 @@ void CInput::MouseUpdate( )
 void CInput::iCapture(CController *p)
 {
 	VERIFY(p);
+	if (pMouse) 	MouseUpdate();
+    if (pKeyboard) 	KeyUpdate();
+
+    // change focus
 	if (!cbStack.empty())
 		cbStack.top()->OnInputDeactivate();
 	cbStack.push(p);
