@@ -152,5 +152,48 @@
 		<start_dialog>escape_lager_volk_hello</start_dialog>
 	</specific_character>
 
+	<specific_character id="stalker_bar_bandit_1" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
+
+		<class>stalker_bar_bandit</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
+		</supplies>
+					
+		<start_dialog>escape_lager_volk_hello</start_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_bar_killer_1" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер еще ничем себя проявить не успел.</bio>
+
+		<class>stalker_bar_killer</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
+		</supplies>
+					
+		<start_dialog>escape_lager_volk_hello</start_dialog>
+	</specific_character>	
 </xml>
 

@@ -262,6 +262,12 @@
 	<character id="bar_dolg">
 		<class>stalker_bar_dolg</class>
 	</character>
+	<character id="bar_bandit">
+		<class>stalker_bar_bandit</class>
+	</character>
+	<character id="bar_killer">
+		<class>stalker_bar_killer</class>
+	</character>
 	
 	
 </xml>
