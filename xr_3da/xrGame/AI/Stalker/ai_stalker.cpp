@@ -126,12 +126,7 @@ void CAI_Stalker::Die				()
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
-#ifndef NO_PHYSICS_IN_AI_MOVE
-//	Movement.GetDeathPosition(vPosition);
-//	vPosition.y+=3.;
-//	UpdateTransform();
-	Movement.DestroyCharacter();
-#endif
+
 	::Sound->play_at_pos			(m_tpSoundDie[Random.randI(STALKER_SND_DIE_COUNT)],this,vPosition);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
@@ -793,7 +788,15 @@ void CAI_Stalker::UpdateCL(){
 		clTransform.set(m_pPhysicsShell->mXFORM);
 	else
 		if (!g_Alive())
+		{
 			CreateSkeleton();
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	//	Movement.GetDeathPosition(vPosition);
+	//	vPosition.y+=3.;
+	//	UpdateTransform();
+		Movement.DestroyCharacter();
+#endif
+		}
 	if (Level().CurrentViewEntity() == this) {
 		Exec_Visibility();
 	}

@@ -8,9 +8,9 @@ struct Fcylinder;
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-///#include "..\ode\src\collision_kernel.h"
-//#include <..\ode\src\joint.h>
-//#include <..\ode\src\objects.h>
+#include "..\ode\src\collision_kernel.h"
+#include <..\ode\src\joint.h>
+#include <..\ode\src\objects.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -849,13 +849,24 @@ dContact contacts[N];
 		}
 
 		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
+		dReal cfm=1.f/(world_spring*contacts[i].surface.soft_cfm*fixed_step+world_damping*contacts[i].surface.soft_erp);
+		
+		
+		//contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
+		//								 world_damping*contacts[i].surface.soft_erp);
+		//contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
+		//								 world_damping*contacts[i].surface.soft_erp);
 
-		contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
-										 world_damping*contacts[i].surface.soft_erp);
-		contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
-										 world_damping*contacts[i].surface.soft_erp);
+
+
+			//dReal erp1=ERP(world_spring,world_damping);//0.54545456
+			//dReal cfm1=CFM(world_spring,world_damping);//1.1363636e-006
+
+		
+		contacts[i].surface.soft_erp=fixed_step*world_spring*contacts[i].surface.soft_cfm*cfm;
+		contacts[i].surface.soft_cfm=cfm;
 		contacts[i].surface.bounce_vel =1.5f;//0.005f;
-
+		
 
 		if(pushing_neg) 
 			contacts[i].surface.mu=dInfinity;
@@ -960,11 +971,22 @@ dContact contacts[N];
 		}
 
 		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
+		dReal cfm=1.f/(world_spring*contacts[i].surface.soft_cfm*fixed_step+world_damping*contacts[i].surface.soft_erp);
+		
+		
+		//contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
+		//								 world_damping*contacts[i].surface.soft_erp);
+		//contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
+		//								 world_damping*contacts[i].surface.soft_erp);
 
-		contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
-										 world_damping*contacts[i].surface.soft_erp);
-		contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
-										 world_damping*contacts[i].surface.soft_erp);
+
+
+		//dReal erp1=ERP(world_spring,world_damping);//0.54545456
+		//dReal cfm1=CFM(world_spring,world_damping);//1.1363636e-006
+
+
+		contacts[i].surface.soft_erp=fixed_step*world_spring*contacts[i].surface.soft_cfm*cfm;
+		contacts[i].surface.soft_cfm=cfm;
 		contacts[i].surface.bounce_vel =1.5f;//0.005f;
 
 

@@ -10,11 +10,16 @@
 const dReal fixed_step=0.02f;
 const int dis_frames=11;
 
-const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
-const dReal world_damping=400000.f;
-#define ERP(k_p,k_d)	((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
-#define CFM(k_p,k_d)	(1.f / (((fixed_step)*(k_p)) + (k_d)))
 
+#define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
+#define CFM(k_p,k_d)		(1.f / (((fixed_step)*(k_p)) + (k_d)))
+#define SPRING(cfm,erp)		((erp)/(cfm)/fixed_step)
+#define DAMPING(cfm,erp)	((1.f-(erp))/(cfm))
+
+//const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
+//const dReal world_damping=400000.f;
+const dReal world_spring=SPRING(1.1363636e-006f,0.54545456f);
+const dReal world_damping=DAMPING(1.1363636e-006f,0.54545456f);
 
 class CPHMesh {
 	dGeomID Geom;
