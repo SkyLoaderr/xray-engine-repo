@@ -55,7 +55,9 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 	vertex_position			(_node_position,position);
 	bool					inside_vertex = false;
 	float					min_dist = flt_max;
-	for (u32 i=0, selected = u32(-1); i<header().vertex_count(); ++i) {
+	u32						selected;
+	set_invalid_vertex		(selected);
+	for (u32 i=0; i<header().vertex_count(); ++i) {
 		CVertex				*_vertex = vertex(i);
 		if (inside			(_vertex,_node_position)) {
 			float			dist = _abs(vertex_plane_y(_vertex) - position.y);
@@ -68,8 +70,8 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 	}
 	
 	if (!valid_vertex_id(selected)) {
-		for (u32 i=0, selected = u32(-1); i<header().vertex_count(); ++i) {
-			float		dist =  distance(i,_node_position);
+		for (u32 i=0; i<header().vertex_count(); ++i) {
+			float		dist =  distance(i,position);
 			if (dist < min_dist) {
 				min_dist	= dist;
 				selected	= i;
