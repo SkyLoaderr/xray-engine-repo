@@ -69,13 +69,13 @@ public:
 	}
 
 	// NOTE: Unoptimized
-	IC void		transform(Fobb& src, Fmatrix& M)	
+	IC void		transform(const Fobb& src, const Fmatrix& M)	
 	{
 		Fmatrix	srcR,destR;
 
-		src.xform_get(srcR);
-		destR.mul_43(M,srcR);
-		xform_set(destR);
+		src.xform_get	(srcR);
+		destR.mul_43	(M,srcR);
+		xform_set		(destR);
 		m_halfsize.set	(src.m_halfsize);
 	}
 
