@@ -318,6 +318,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 9,
 			state = { 0, 1, 2},
+			group = 0,
 			running = false,
 			search_light = nil, --' "blockpost_search_light",
 			path_main = "blockpost_guard_light",
@@ -329,6 +330,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 10,
 			state = { 0, 1, 2},
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_center",
@@ -340,6 +342,7 @@ function fract:loadJob(name)
 			idle = 6*60*60*1000,
 			prior = 8,
 			state = { 0, 1, 2},
+			group = 1,
 			patrol_path = "blockpost_patrol_0",
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -349,6 +352,7 @@ function fract:loadJob(name)
 			idle = 6*60*60*1000,
 			prior = 7,
 			state = { 0, 1, 2},
+			group = 1,
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -358,6 +362,7 @@ function fract:loadJob(name)
 			idle = 6*60*60*1000,
 			prior = 7,
 			state = { 0, 1, 2},
+			group = 1,
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
@@ -367,6 +372,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_1"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -375,6 +381,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_2"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -383,6 +390,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_3"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -391,6 +399,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_4"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -399,6 +408,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_5"}
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
@@ -407,6 +417,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 1,
 			state = { 0, 1, 2},
+			group = 0,
 			path_main = "blockpost_sleep_6"}
 		table.insert(self.Job, t)			
 
@@ -416,6 +427,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 0, 2 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_left",
@@ -427,6 +439,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 0, 2 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_guard_right",
@@ -439,6 +452,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 1 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_left",
@@ -450,6 +464,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 1 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_right",
@@ -461,6 +476,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 1 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_house",
@@ -472,6 +488,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 5,
 			state = { 1 },
+			group = 0,
 			running = false,
 			search_light = nil,
 			path_main = "blockpost_alarm_center",
@@ -484,6 +501,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 2 },
+			group = 0,
 			running = true,
 			search_light = nil,
 			path_main = "blockpost_search1",
@@ -495,6 +513,7 @@ function fract:loadJob(name)
 			idle = 0,
 			prior = 6,
 			state = { 2 },
+			group = 0,
 			running = true,
 			search_light = nil,
 			path_main = "blockpost_search2",
@@ -533,6 +552,9 @@ function fract:setJob(npc, job)
 		    xr_follower.set_follower(npc, true, nn, job.escape_path)			
 		end
 	end
+	if job.group ~= nil then
+		self.object:change_team(self.object:team(), self.object:squad(), job.group)
+	end
 end
 function fract:getJobLabel()
 	local jj = {}
@@ -559,14 +581,12 @@ function fract:getJob(npc)
 	return nil
 end
 function fract:clearAllJob(npc)
-	-- изменения в списке заданий
 	for k,v in self.Job do
 		if v.object ~= nil and v.object:id() == npc:id() then	
 			v.object = nil
 		end
 	end
 
-	-- изменения в сторадже
 	for k,v in xr_motivator.storage[npc:id()] do
 		if k == "sleeper" or
 		   k == "camper" or
@@ -590,18 +610,17 @@ function fract:nameStalkerOnJob(job_name)
 	end
 	return nil
 end
-function fract:loadStates(name) -- загружает список заданий
+function fract:loadStates(name)
 	if name == "blockpost" then
-		local t = { id = 1,  -- состояние тревоги
+		local t = { id = 1,
 			    timeout = 1*60*60*1000 }
 		table.insert(self.States, t)			
-		t = { id = 2,  -- состояние тревоги (стырили ящик)
+		t = { id = 2,
 			    timeout = 1*60*60*1000 }
 		table.insert(self.States, t)			
 	end
 end
 function fract:setState(id)
-	-- проверка что это состояние возможно
 	for k,v in self.States do
 		if v.id == id then	
 			self.stateBegin = game.time()	
@@ -617,7 +636,6 @@ function fract:getState()
 	return	self.state
 end
 function fract:stalkerExsist(npc)
-	-- существует ли сталкер
 	if self.Object[npc:id()] ~= nil then	
 		return true
 	end
@@ -636,7 +654,6 @@ class "evaluator_alarm" (property_evaluator)
 function evaluator_alarm:__init() super()
 end
 function evaluator_alarm:evaluate()                                                                   
-	-- если мы сейчас патрульные - то не поднимать тревогу(возвращать что типа тревога уже поднята)
 	local f = xr_gulag.isUnderFraction(self.object)
 	if f ~= nil then
 		if f == "blockpost" then
@@ -725,8 +742,7 @@ function addMember(name, npc, char_ini)
 	xr_gulag.fraction[name]:addObject(npc)
 	xr_gulag.fraction[name]:calculate()
 
-	-- надо биндить все, чего нужно блокпосту
-        xr_gulag.add_to_binder(npc)
+    xr_gulag.add_to_binder(npc)
 	local jj = xr_gulag.fraction[name]:getJobLabel()
 	for k,v in jj do
 		if v == "sleeper" then
