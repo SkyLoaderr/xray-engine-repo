@@ -2,8 +2,11 @@ module("m_monster_ai")
 
 local sounds = {}
 
+local bobik_home = vector():set(-204, -37, -280)
+--local bobik_home = vector():set(10, 10, 10)
+
 function main()
-	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), vector():set(10, 10, 10) )
+	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), bobik_home )
 
     while(dog:execute()) do
     	wait()
@@ -24,6 +27,14 @@ function evaluator_bobik:__init() super ()
 end
 function evaluator_bobik:evaluate ()
 	-- слышим ли мы бобика
+
+	local pp = self.object:position()
+
+	if pp ~= nil and bobik_home ~= nil then
+		if bobik_home:distance_to(pp) > 50 then
+			return false
+		end
+	end
 
 	if this.alarm == true or this.die == true then
 		return true
