@@ -39,3 +39,20 @@ function transfer_flash (player, stalker)
        db.actor:set_task_state (task.completed, "mil_mad_job", 2)
     end        
 end
+
+function is_player_help (player, stalker)
+    if db.storage[db.actor:id ()] == nil then return false end
+    return db.storage[db.actor:id ()].mil_dolg["killed_by_actor"]
+end
+
+function no_player_help (stalker, player)
+    return not this.is_player_help (player, stalker)
+end
+
+function transfer_rg6 (stalker, player)
+    return
+end
+
+function set_freedom_enemy (player, stalker)
+    stalker:set_community_goodwill (-5000, db.actor)
+end

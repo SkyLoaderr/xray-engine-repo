@@ -426,44 +426,72 @@
     </dialog>
     <dialog id="mil_lukash_dialog">
         <phrase_list>
+            <phrase id="53">
+                <text>mil_lukash_dialog_53</text>
+            </phrase>
+            <phrase id="54">
+                <text>mil_lukash_dialog_54</text>
+                <precondition>dialogs_military.is_player_help</precondition>
+                <action>dialogs_military.transfer_rg6</action>
+            </phrase>
+            <phrase id="2">
+                <text>mil_lukash_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>mil_lukash_first_talk</dont_has_info>
+                <give_info>mil_lukash_first_talk</give_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="21">
+                <text>mil_lukash_dialog_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="2112">
+                <text>mil_lukash_dialog_2112</text>
+                <next>2113</next>
+            </phrase>
             <phrase id="211">
                 <text>mil_lukash_dialog_211</text>
                 <next>2111</next>
                 <next>2211</next>
             </phrase>
-            <phrase id="2111">
-                <text>mil_lukash_dialog_2111</text>
-                <next>2112</next>
-            </phrase>
-            <phrase id="2112">
-                <text>mil_lukash_dialog_2112</text>
-            </phrase>
-            <phrase id="2211">
-                <text>mil_lukash_dialog_2211</text>
-                <next>2212</next>
-            </phrase>
             <phrase id="2212">
                 <text>mil_lukash_dialog_2212</text>
-                <next>22121</next>
                 <next>22122</next>
             </phrase>
-            <phrase id="221212">
-                <text>mil_lukash_dialog_221212</text>
-                <next>221214</next>
+            <phrase id="33">
+                <text>mil_lukash_dialog_33</text>
             </phrase>
-            <phrase id="221214">
-                <text>mil_lukash_dialog_221214</text>
-            </phrase>
-            <phrase id="221213">
-                <text>mil_lukash_dialog_221213</text>
-                <next>221215</next>
+            <phrase id="31">
+                <text>mil_lukash_dialog_31</text>
+                <next>32</next>
             </phrase>
             <phrase id="221215">
                 <text>mil_lukash_dialog_221215</text>
             </phrase>
-            <phrase id="22121">
-                <text>mil_lukash_dialog_22121</text>
-                <dont_has_info>mil_dolg_first</dont_has_info>
+            <phrase id="4">
+                <text></text>
+                <has_info>mil_lukash_job_failed</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="2113">
+                <text>mil_lukash_dialog_2113</text>
+                <next>2114</next>
+            </phrase>
+            <phrase id="2211">
+                <text>mil_lukash_dialog_2211</text>
+                <has_info>mil_dolg_first</has_info>
+                <next>2212</next>
+            </phrase>
+            <phrase id="2111">
+                <text>mil_lukash_dialog_2111</text>
+                <next>2112</next>
+            </phrase>
+            <phrase id="22122">
+                <text>mil_lukash_dialog_22122</text>
+                <has_info>mil_dolg_first</has_info>
                 <next>221211</next>
             </phrase>
             <phrase id="221211">
@@ -471,37 +499,67 @@
                 <next>221212</next>
                 <next>221213</next>
             </phrase>
-            <phrase id="22122">
-                <text>mil_lukash_dialog_22122</text>
-                <has_info>mil_dolg_first</has_info>
-                <next>221211</next>
-            </phrase>
-            <phrase id="21">
-                <text>mil_lukash_dialog_21</text>
-                <next>211</next>
-            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
                 <next>3</next>
+                <next>4</next>
+                <next>5</next>
             </phrase>
-            <phrase id="31">
-                <text>mil_lukash_dialog_31</text>
+            <phrase id="2114">
+                <text>mil_lukash_dialog_2114</text>
+                <next>221212</next>
+                <next>221213</next>
             </phrase>
-            <phrase id="2">
-                <text>mil_lukash_dialog_2</text>
-                <next>21</next>
+            <phrase id="221213">
+                <text>mil_lukash_dialog_221213</text>
+                <give_info>mil_lukash_job_failed</give_info>
+                <next>221215</next>
             </phrase>
-            <phrase id="1">
-                <text>mil_lukash_dialog_1</text>
-                <dont_has_info>mil_lukash_first_talk</dont_has_info>
-                <give_info>mil_lukash_first_talk</give_info>
-                <next>2</next>
+            <phrase id="32">
+                <text>mil_lukash_dialog_32</text>
+                <next>33</next>
+            </phrase>
+            <phrase id="41">
+                <text>mil_lukash_dialog_41</text>
+                <next>42</next>
+            </phrase>
+            <phrase id="42">
+                <text>mil_lukash_dialog_42</text>
+                <action>dialogs.break_dialog</action>
+                <action>dialogs_military.set_freedom_enemy</action>
+            </phrase>
+            <phrase id="52">
+                <text>mil_lukash_dialog_52</text>
+                <next>53</next>
+                <next>54</next>
+            </phrase>
+            <phrase id="221214">
+                <text>mil_lukash_dialog_221214</text>
+            </phrase>
+            <phrase id="221212">
+                <text>mil_lukash_dialog_221212</text>
+                <give_info>mil_lukash_get_job</give_info>
+                <next>221214</next>
             </phrase>
             <phrase id="3">
-                <text>mil_lukash_dialog_3</text>
+                <text></text>
+                <disable_info>mil_lukash_get_job</disable_info>
+                <dont_has_info>mil_freedom_attack_complete</dont_has_info>
+                <give_info>mil_lukash_job_failed</give_info>
                 <has_info>mil_lukash_first_talk</has_info>
+                <has_info>mil_lukash_get_job</has_info>
                 <next>31</next>
+            </phrase>
+            <phrase id="5">
+                <text></text>
+                <has_info>mil_lukash_get_job</has_info>
+                <has_info>mil_freedom_attack_complete</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>mil_lukash_dialog_51</text>
+                <next>52</next>
             </phrase>
         </phrase_list>
     </dialog>

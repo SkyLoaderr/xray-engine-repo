@@ -10,11 +10,7 @@
 	<info_portion id="mil_sniper2_dead"></info_portion>
 	<info_portion id="mil_lukash_dead"></info_portion>
 	<info_portion id="mil_dolg_attack"></info_portion>
-	
-	
-	<!-- Атака Свободы -->
-	<info_portion id="mil_freedom_attack"></info_portion>
-	
+		
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
 	
@@ -30,7 +26,7 @@
 	<info_portion id="mil_sniper_job_complete"></info_portion>
 	
 	<!-- Диалог с охранником у ворот-->
-	<info_poriton id="mil_zoneguard_first"></info_poriton>
+	<info_portion id="mil_zoneguard_first"></info_portion>
 	<info_portion id="mil_zoneguard_talk"></info_portion>
 	
 	<!-- Диалог с Максом-->
@@ -41,7 +37,13 @@
 	<info_portion id="mil_max_job_complete"></info_portion>
 	
 	<!-- Диалог с Лукашем-->
-	<info_poriton id="mil_lukash_first_talk"></info_poriton>
-		
+	<info_portion id="mil_lukash_first_talk"></info_portion>
+	<info_portion id="mil_lukash_get_job"></info_portion>
+	<info_portion id="mil_lukash_job_failed"></info_portion>
+	
+	<!-- Атака Свободы -->
+	<info_portion id="mil_freedom_attack"></info_portion>
+	<info_portion id="mil_freedom_attack_complete"></info_portion>
+	
 	
 </game_information_portions>
