@@ -131,9 +131,7 @@ void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
 	for (xr_map<LPSTR,CMatrix*,str_pred>::iterator m=m_matrices.begin(); m!=m_matrices.end(); m++)
 	{
 		if (m->second->dwMode!=CMatrix::modeDetail)	
-        	if (1!=m->second->dwReference){
-            	int y=0;
-            }
+			R_ASSERT	(1==m->second->dwReference);
 		xr_delete		(m->second);
 	}
 	m_matrices.clear	();
@@ -177,7 +175,6 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 			fs->r_stringZ	(name);
 			CConstant*	C	= _CreateConstant	(name);
 			C->Load			(fs);
-            C->dwReference 	= 1;
 		}
 		fs->close();
 	}
@@ -189,7 +186,6 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 			fs->r_stringZ	(name);
 			CMatrix*	M	= _CreateMatrix	(name);
 			M->Load			(fs);
-            M->dwReference	= 1;
 		}
 		fs->close();
 	}

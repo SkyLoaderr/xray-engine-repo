@@ -58,6 +58,8 @@ void*	xrMemory::mem_alloc		(size_t size)
 
 void	xrMemory::mem_free		(void* P)
 {
+//	if (0x010838e0 == u32(P))	__asm int 3;
+
 	stat_calls++;
 	u32	pool					= get_header(P);
 	void* _real					= (void*)(((u8*)P)-1);

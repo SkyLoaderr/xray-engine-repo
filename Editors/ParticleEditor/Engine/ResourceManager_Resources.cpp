@@ -442,8 +442,6 @@ CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 	R_ASSERT(Name && Name[0]);
 	if (0==stricmp(Name,"$null"))	return NULL;
 
-    Log("Create M:",Name);
-
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,CMatrix*,str_pred>::iterator I = m_matrices.find	(N);
 	if (I!=m_matrices.end())	return I->second;
@@ -451,6 +449,7 @@ CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 	{
 		CMatrix* M			=	xr_new<CMatrix>();
 		M->dwFlags			|=	xr_resource::RF_REGISTERED;
+		M->dwReference		=	1;
 		m_matrices.insert	(mk_pair(M->set_name(Name),M));
 		return			M;
 	}
@@ -459,7 +458,6 @@ void	CResourceManager::_DeleteMatrix		(const CMatrix* M)
 {
 	if (0==(M->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N					= LPSTR		(M->cName);
-    Log("Delete M:",N);
 	map_Matrix::iterator I	= m_matrices.find	(N);
 	if (I!=m_matrices.end())	{
 		m_matrices.erase(I);
@@ -485,6 +483,7 @@ CConstant*	CResourceManager::_CreateConstant	(LPCSTR Name)
 	{
 		CConstant* C		=	xr_new<CConstant>();
 		C->dwFlags			|=	xr_resource::RF_REGISTERED;
+		C->dwReference		=	1;
 		m_constants.insert	(mk_pair(C->set_name(Name),C));
 		return	C;
 	}
