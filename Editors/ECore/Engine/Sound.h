@@ -74,6 +74,7 @@ class CSoundUserData : public xr_resource{
 public:
 	virtual							~CSoundUserData(){}
 	virtual void					accept(CSoundUserDataVisitor*)=0;
+	virtual void					invalidate()=0;
 };
 typedef resptr_core<CSoundUserData,resptr_base<CSoundUserData> >	CSoundUserDataPtr;
 
