@@ -119,11 +119,11 @@ function stalker_script:reinit		()
 	manager:add_motivation	(motivations["global"],		stalker.motivation_global(motivations))
 
 	goal:clear				()
-	goal:add_condition		(world_property(properties["dead"],	true))
+	goal:add_property		(world_property(properties["dead"],	true))
 	manager:add_motivation	(motivations["dead"],		motivation_action(goal))
 
 	goal:clear				()
-	goal:add_condition		(world_property(properties["solved"],true))
+	goal:add_property		(world_property(properties["solved"],true))
 	manager:add_motivation	(motivations["alive"],		motivation_action(goal))
 
 	manager:add_connection	(motivations["global"],		motivations["dead"])
@@ -136,14 +136,14 @@ function stalker_script:reinit		()
 
 	-- // operators/actions
 	local					action = stalker.action_base(self.object,"dead")
-	action:add_condition	(properties["alive"],		false)
-	action:add_condition	(properties["dead"],		false)
+	action:add_precondition	(properties["alive"],		false)
+	action:add_precondition	(properties["dead"],		false)
 	action:add_effect		(properties["dead"],		true)
 	manager:add_action		(operators["dead"],			action)
 
 	local					action = stalker.action.free(self.object,"free")
-	action:add_condition	(properties["alive"],		true)
-	action:add_condition	(properties["solved"],		false)
+	action:add_precondition	(properties["alive"],		true)
+	action:add_precondition	(properties["solved"],		false)
 	action:add_effect		(properties["solved"],		true)
 	manager:add_action		(operators["free"],			action)
 end
