@@ -16,7 +16,6 @@ class	ENGINE_API	CGammaControl;
 #include "xr_effgamma.h"
 #include "shader.h"
 #include "R_Backend.h"
-using namespace fastdelegate;
 
 #define VIEWPORT_NEAR 0.2f
 
@@ -68,14 +67,14 @@ public:
 #endif
 public:
 	// Registrators
-	CRegistrator	<pureRender			>	seqRender;
-	CRegistrator	<pureAppActivate	>	seqAppActivate;
-	CRegistrator	<pureAppDeactivate	>	seqAppDeactivate;
-	CRegistrator	<pureAppStart		>	seqAppStart;
-	CRegistrator	<pureAppEnd			>	seqAppEnd;
-	CRegistrator	<pureFrame			>	seqFrame;
-	CRegistrator	<pureFrame			>	seqFrameMT;
-	xr_vector		<FastDelegate0		>	seqParallel;
+	CRegistrator	<pureRender			>			seqRender;
+	CRegistrator	<pureAppActivate	>			seqAppActivate;
+	CRegistrator	<pureAppDeactivate	>			seqAppDeactivate;
+	CRegistrator	<pureAppStart		>			seqAppStart;
+	CRegistrator	<pureAppEnd			>			seqAppEnd;
+	CRegistrator	<pureFrame			>			seqFrame;
+	CRegistrator	<pureFrame			>			seqFrameMT;
+	xr_vector		<fastdelegate::FastDelegate0 >	seqParallel;
 
 	// Dependent classes
 	CResourceManager*						Resources;	  
