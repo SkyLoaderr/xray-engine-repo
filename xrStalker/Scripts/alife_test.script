@@ -10,6 +10,6 @@ function set_interactive(story_id,value)
 	alife():set_interactive(alife():story_object(story_id):id(),value)
 end
 
-function check_if_on_level(object_id)
-	return alife():object(object_id).online
+function object_online(object_id)
+	return (alife() == nil) or alife():object(object_id).online
 end
