@@ -81,8 +81,11 @@ void CSE_ALifeDynamicObject::on_spawn		()
 {
 }
 
-void CSE_ALifeCreatureAbstract::on_spawn		()
+void CSE_ALifeCreatureAbstract::on_spawn	()
 {
+	m_dynamic_out_restrictions.clear	();
+	m_dynamic_in_restrictions.clear		();
+
 	if (smart_cast<CSE_ALifeGroupAbstract*>(this))
 		return;
 
