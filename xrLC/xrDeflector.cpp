@@ -178,7 +178,7 @@ VOID CDeflector::Capture(CDeflector *D,UVpoint &fBase,UVpoint &fScale)
 
 		P.uv[0].set(T->uv[0]); P.uv[0].mul(fScale); P.uv[0].add(fBase); 
 		P.uv[1].set(T->uv[1]); P.uv[1].mul(fScale); P.uv[1].add(fBase); 
-		P.uv[2].set(T->uv[2]); P.uv[2].mul(fScale); P.uv[2].add(fBase);
+		P.uv[2].set(T->uv[2]); P.uv[2].mul(fScale); P.uv[2].add(fBase); 
 
 		P.owner = F;
 		F->pDeflector=this;
