@@ -43,12 +43,24 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			default : NODEFAULT;
 		}
 		switch (m_tMovementType) {
-			case eMovementTypeWalk : {
+			case eMovementTypeWalkDanger : {
 				m_fCurSpeed *= m_fWalkFactor;
 				break;
 			}
-			case eMovementTypeRun : {
+			case eMovementTypeRunDanger : {
 				m_fCurSpeed *= m_fRunFactor;
+				break;
+			}
+			case eMovementTypeWalkFree : {
+				m_fCurSpeed *= m_fWalkFreeFactor;
+				break;
+			}
+			case eMovementTypeRunFree : {
+				m_fCurSpeed *= m_fRunFreeFactor;
+				break;
+			}
+			case eMovementTypeRunPanic : {
+				m_fCurSpeed *= m_fPanicFactor;
 				break;
 			}
 			default : m_fCurSpeed = 0.f;

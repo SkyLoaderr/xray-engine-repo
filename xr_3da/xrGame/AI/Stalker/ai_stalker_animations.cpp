@@ -191,13 +191,20 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (g_Health() <= 0)
+	if (!g_Alive())
 		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[0];
+	else
+		switch (m_tMovementType) {
+			case eMovementTypeRunPanic : {
+				tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
+				break;
+			}
+		}
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
-	if (g_Health() <= 0)
+	if (!g_Alive())
 		return;
 	if (m_inventory.ActiveItem()) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
@@ -206,21 +213,24 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case CWeapon::eIdle : {
 					switch (m_inventory.m_activeSlot) {
 						case 0 : {
-							if (m_eCurrentState == eStalkerStateAccomplishingTask)
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6+m_tMovementType].A[0];
+							if (m_tMovementType == eMovementTypeWalkFree)
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6].A[1];
 							else
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[8].A[0];
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[6+m_tMovementType].A[0];
 							break;
 						}
 						case 1 : {
-							if (m_eCurrentState == eStalkerStateAccomplishingTask)
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6+m_tMovementType].A[0];
+							if (m_tMovementType == eMovementTypeWalkFree)
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6].A[1];
 							else
-								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[8].A[0];
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[6+m_tMovementType].A[0];
 							break;
 						}
 						case 2 : {
-							tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[8].A[0];
+							if (m_tMovementType == eMovementTypeWalkFree)
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6].A[1];
+							else
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[6+m_tMovementType].A[0];
 							break;
 						}
 					}
@@ -321,9 +331,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 
 void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
-	if (g_Health() <= 0)
+	if (!g_Alive())
 		return;
-	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStand)) {
+	if ((AI_Path.fSpeed < EPS_L) || (m_tMovementType == eMovementTypeStandDanger)) {
 		// standing
 		if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
 			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[0];
@@ -332,6 +342,16 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 			tpLegsAnimation		= m_tAnims.A[m_tBodyState].m_tInPlace.A[1];
 		}
 		return;
+	}
+	switch (m_tMovementType) {
+		case eMovementTypeWalkFree : {
+			tpLegsAnimation = m_tAnims.A[eBodyStateStand].m_tMoves.A[eMovementTypeWalkDanger].A[eMovementDirectionForward].A[1];
+			return;
+		}
+		case eMovementTypeRunFree : {
+			tpLegsAnimation = m_tAnims.A[eBodyStateStand].m_tMoves.A[eMovementTypeRunDanger].A[eMovementDirectionForward].A[1];
+			return;
+		}
 	}
 	// moving
 	float					yaw, pitch;
@@ -410,7 +430,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	}
 //	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 //	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
-	tpLegsAnimation			= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
+	tpLegsAnimation	= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
 	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 }
@@ -443,10 +463,8 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		
 		if (tpTorsoAnimation && tpLegsAnimation){
 			if ((tpTorsoAnimation->flags & esmSyncPart) && (tpLegsAnimation->flags & esmSyncPart))
-				if (m_tpCurrentTorsoBlend && m_tpCurrentLegsBlend) {
+				if (m_tpCurrentTorsoBlend && m_tpCurrentLegsBlend)
 					m_tpCurrentTorsoBlend->timeCurrent = m_tpCurrentLegsBlend->timeCurrent;
-					Log	("Sync part in action!");
-				}
 		}
 	}
 }

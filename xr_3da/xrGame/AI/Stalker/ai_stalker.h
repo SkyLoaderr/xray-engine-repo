@@ -18,7 +18,7 @@ private:
 	typedef CCustomMonster inherited;
 	
 	enum EStalkerStates {
-		eStalkerStateAccomplishingTask = 0,
+		//eStalkerStateAccomplishingTask = 0,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -182,6 +182,9 @@ private:
 	float					m_fCrouchFactor;
 	float					m_fWalkFactor;
 	float					m_fRunFactor;
+	float					m_fWalkFreeFactor;
+	float					m_fRunFreeFactor;
+	float					m_fPanicFactor;
 
 	u32						m_dwLastRangeSearch;
 
@@ -222,6 +225,8 @@ private:
 			void			ForwardDodge					();
 			void			ForwardStraight					();
 			void			Camp							();
+			void			Panic							();
+			void			Hide							();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

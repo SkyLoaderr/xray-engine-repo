@@ -123,6 +123,9 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fCrouchFactor					= pSettings->r_float(section,"CrouchFactor");
 	m_fWalkFactor					= pSettings->r_float(section,"WalkFactor");
 	m_fRunFactor					= pSettings->r_float(section,"RunFactor");
+	m_fWalkFreeFactor				= pSettings->r_float(section,"WalkFreeFactor");
+	m_fRunFreeFactor				= pSettings->r_float(section,"RunFreeFactor");
+	m_fPanicFactor					= pSettings->r_float(section,"PanicFactor");
 
 	//fire
 	m_dwFireRandomMin  				= pSettings->r_s32(section,"FireRandomMin");

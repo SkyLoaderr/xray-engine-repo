@@ -186,7 +186,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		
 		u32	dwMinQueueSize = 0, dwMaxQueueSize = 0;
 		switch (m_tMovementType) {
-			case eMovementTypeRun : {
+			case eMovementTypeRunDanger : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;
@@ -213,7 +213,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 				break;
 			}
-			case eMovementTypeWalk : {
+			case eMovementTypeWalkDanger : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;
@@ -240,7 +240,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 				break;
 			}
-			case eMovementTypeStand : {
+			case eMovementTypeStandDanger : {
 				switch (dwFuzzyDistance) {
 					case 0 : {
 						dwMinQueueSize	= 1;
@@ -267,9 +267,15 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				}
 				break;
 			}
-			default : NODEFAULT;
+			default : {
+				m_inventory.Action(kWPN_FIRE, CMD_STOP);
+				m_inventory.ActiveItem()->Deactivate();
+				dwMaxQueueSize			= 0;
+				break;
+			}
 		}
-		tpWeaponMagazined->SetQueueSize(::Random.randI(iFloor(float(dwMinQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize())),iFloor(float(dwMaxQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize()))));
+		if (dwMaxQueueSize)
+			tpWeaponMagazined->SetQueueSize(::Random.randI(iFloor(float(dwMinQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize())),iFloor(float(dwMaxQueueSize)/30*float(tpWeaponMagazined->GetAmmoMagSize()))));
 	}
 
 	if (tWeaponState == eWeaponStateIdle) {

@@ -36,7 +36,7 @@ void CAI_Stalker::BackDodge()
 {
 	WRITE_TO_LOG				("Back dodging");
 	
-	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorRetreat.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
 
@@ -48,7 +48,7 @@ void CAI_Stalker::BackDodge()
 		eWeaponStatePrimaryFire,
 		ePathTypeDodge,
 		eBodyStateStand,
-		eMovementTypeWalk,
+		eMovementTypeWalkDanger,
 		eLookTypeFirePoint,
 		tPoint);
 }
@@ -67,7 +67,7 @@ void CAI_Stalker::BackCover()
 		eWeaponStatePrimaryFire,
 		ePathTypeCriteria,
 		eBodyStateStand,
-		eMovementTypeRun,
+		eMovementTypeRunDanger,
 		eLookTypeFirePoint,
 		tPoint);
 }
@@ -91,8 +91,6 @@ void CAI_Stalker::ForwardCover()
 	}
 	switch (m_tActionState) {
 		case eActionStateRun : {
-//			Msg							("State RUN");
-			
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle) && (!tpWeapon->GetAmmoElapsed())) {
 				m_inventory.Action(kWPN_FIRE, CMD_START);
@@ -104,7 +102,7 @@ void CAI_Stalker::ForwardCover()
 				eWeaponStatePrimaryFire,
 				ePathTypeDodge,
 				eBodyStateStand,
-				eMovementTypeRun,
+				eMovementTypeRunDanger,
 				eLookTypeFirePoint,
 				tPoint);
 			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L))
@@ -112,8 +110,6 @@ void CAI_Stalker::ForwardCover()
 			break;
 		}
 		case eActionStateStand : {
-//			Msg							("State STAND");
-			
 			float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
 			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
 			m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
@@ -127,7 +123,7 @@ void CAI_Stalker::ForwardCover()
 				eWeaponStatePrimaryFire,
 				ePathTypeDodge,
 				eBodyStateCrouch,
-				eMovementTypeStand,
+				eMovementTypeStandDanger,
 				eLookTypeFirePoint,
 				tPoint);
 			
@@ -160,7 +156,7 @@ void CAI_Stalker::ForwardStraight()
 		eWeaponStatePrimaryFire,
 		ePathTypeStraight,
 		eBodyStateStand,
-		eMovementTypeRun,
+		eMovementTypeRunDanger,
 		eLookTypeFirePoint,
 		tPoint);
 }
@@ -186,7 +182,7 @@ void CAI_Stalker::ForwardDodge()
 		eWeaponStatePrimaryFire,
 		ePathTypeDodge,
 		eBodyStateStand,
-		eMovementTypeRun,
+		eMovementTypeRunDanger,
 		eLookTypeFirePoint,
 		tPoint);
 }
@@ -207,7 +203,7 @@ void CAI_Stalker::Camp()
 			eWeaponStateIdle,
 			ePathTypeStraight,
 			eBodyStateCrouch,
-			eMovementTypeWalk,
+			eMovementTypeWalkDanger,
 			eLookTypeFirePoint,
 			m_tpaDynamicObjects[iIndex].tSavedPosition);
 	}
@@ -225,6 +221,75 @@ void CAI_Stalker::Camp()
 				m_inventory.Action(kWPN_RELOAD,CMD_START);
 		}
 	}
+}
+
+void CAI_Stalker::Panic()
+{
+	WRITE_TO_LOG				("Panic");
+	
+	if (!m_tEnemy.Enemy) {
+		int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+		if (iIndex != -1) {
+			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + 3.f;
+		}
+		else {
+			m_tSelectorFreeHunting.m_fMaxEnemyDistance = 1000.f;
+			m_tSelectorFreeHunting.m_fOptEnemyDistance = 1000.f;
+			m_tSelectorFreeHunting.m_fMinEnemyDistance = 0.f;
+		}
+	}
+	else {
+		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
+	}
+
+	vfSetParameters				(
+		&m_tSelectorFreeHunting,
+		0,
+		eWeaponStateIdle,
+		ePathTypeStraight,
+		eBodyStateStand,
+		eMovementTypeRunPanic,
+		eLookTypeDirection);
+}
+
+void CAI_Stalker::Hide()
+{
+	WRITE_TO_LOG				("Hide");
+
+	if (!m_tEnemy.Enemy) {
+		int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+		if (iIndex != -1) {
+			m_tSelectorCover.m_fMaxEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + m_tSelectorCover.m_fSearchRange;
+			m_tSelectorCover.m_fOptEnemyDistance = m_tSelectorCover.m_fMaxEnemyDistance;
+			m_tSelectorCover.m_fMinEnemyDistance = m_tpaDynamicObjects[iIndex].tSavedPosition.distance_to(vPosition) + 3.f;
+		}
+		else {
+			m_tSelectorCover.m_fMaxEnemyDistance = 1000.f;
+			m_tSelectorCover.m_fOptEnemyDistance = 1000.f;
+			m_tSelectorCover.m_fMinEnemyDistance = 0.f;
+		}
+	}
+	else {
+		m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + m_tSelectorCover.m_fSearchRange;
+		m_tSelectorCover.m_fOptEnemyDistance = m_tSelectorCover.m_fMaxEnemyDistance;
+		m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
+	}
+
+	Fvector						tPoint;
+	m_tEnemy.Enemy->clCenter	(tPoint);
+	vfSetParameters				(
+		&m_tSelectorCover,
+		0,
+		eWeaponStateIdle,
+		ePathTypeStraight,
+		eBodyStateStand,
+		eMovementTypeWalkDanger,
+		eLookTypeFirePoint,
+		tPoint);
 }
 
 void CAI_Stalker::Think()
@@ -249,13 +314,13 @@ void CAI_Stalker::Think()
 		Death				();
 	else
 //	if (C && H && I) {
-//		ForwardStraight	();
+//		BackDodge		();
 //	} else
 //	if (C && H && !I) {
 //		ForwardStraight	();
 //	} else
 //	if (C && !H && I) {
-//		ForwardStraight	();
+//		BackDodge		();
 //	} else
 //	if (C && !H && !I) {
 //		ForwardStraight	();
@@ -338,33 +403,36 @@ void CAI_Stalker::Think()
 //	if (B && !K && H && L) {
 //		ForwardStraight	();
 //	} else
+	
 	if (K) {
 		if (m_tEnemy.Enemy) {
-			if (C) {
-				m_bStateChanged = C != _C;
-				Msg("Back dodge");
-				BackDodge();
-			} else
-			if (D) {
-				m_bStateChanged = D != _D;
-				Msg("Back cover");
-				BackCover();
-			} else
-			if (E) {
-				m_bStateChanged = E != _E;
-				Msg("Forward cover");
-				ForwardCover();
-			} else
-			if (F) {
-				m_bStateChanged = F != _F;
-				Msg("Forward dodge");
-				ForwardDodge();
-			} else
-			if (G) {
-				m_bStateChanged = G != _G;
-				Msg("Forward straight");
-				ForwardStraight();
-			}
+//			if (C) {
+//				m_bStateChanged = C != _C;
+//				Msg("Back dodge");
+//				BackDodge();
+//			} else
+//			if (D) {
+//				m_bStateChanged = D != _D;
+//				Msg("Back cover");
+//				BackCover();
+//			} else
+//			if (E) {
+//				m_bStateChanged = E != _E;
+//				Msg("Forward cover");
+//				ForwardCover();
+//			} else
+//			if (F) {
+//				m_bStateChanged = F != _F;
+//				Msg("Forward dodge");
+//				ForwardDodge();
+//			} else
+//			if (G) {
+//				m_bStateChanged = G != _G;
+//				Msg("Forward straight");
+//				ForwardStraight();
+//			}
+			Msg("Hide");
+			Hide();
 		} else {
 			C = _C;
 			E = _E;
@@ -372,57 +440,28 @@ void CAI_Stalker::Think()
 			F = _F;
 			G = _G;
 			Msg("Camping");
-			Camp();
+			Hide();
+//			Camp();
 		}
-//		switch (m_dwRandomState) {
-//			case 0 : {
-////				Msg("Back dodge");
-//				BackDodge();
-//				break;
-//			}
-//			case 1 : {
-////				Msg("Back cover");
-//				BackCover();
-//				break;
-//			}
-//			case 2 : {
-////				Msg("Forward cover");
-//				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-//					m_bStateChanged = true;
-//				ForwardCover();
-//				break;
-//			}
-//			case 3 : {
-////				Msg("Forward dodge");
-//				ForwardDodge();
-//				break;
-//			}
-//			case 4 : {
-////				Msg("Forward straight");
-//				ForwardStraight();
-//				break;
-//			}
-//			default : NODEFAULT;
-//		}
 
 	} else
 	if (A | B) {
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
-		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
+		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalkDanger,eLookTypePoint,tPoint);
 	} else
 	if (M) {
 		Fvector					tPoint;
 		m_tpItemToTake->svCenter(tPoint);
 		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
 		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
-		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tPoint);
+		vfSetParameters(0,&tPoint,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalkDanger,eLookTypePoint,tPoint);
 	} else
 	{
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		vfSetParameters(0,0,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
+		vfSetParameters(0,0,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalkFree,eLookTypeSearch);
 	}
 	
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;

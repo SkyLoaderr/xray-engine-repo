@@ -26,9 +26,12 @@ enum EBodyState {
 };
 
 enum EMovementType {
-	eMovementTypeWalk = 0,
-	eMovementTypeRun,
-	eMovementTypeStand,
+	eMovementTypeWalkDanger = 0,
+	eMovementTypeRunDanger,
+	eMovementTypeStandDanger,
+	eMovementTypeWalkFree,
+	eMovementTypeRunFree,
+	eMovementTypeRunPanic,
 };
 
 enum EMovementDirection {
