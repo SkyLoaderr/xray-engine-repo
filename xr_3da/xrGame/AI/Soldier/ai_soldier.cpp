@@ -150,18 +150,24 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	} 
 	else {
-		if (speed<0.2f)
-			if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
-				if (m_bCrouched)	
-					S = m_crouch_turn;
+		if (speed<0.2f) 
+			if ((!(AI_Path.TravelPath.size()) || (eCurrentState != aiSoldierPatrolDetour))) {
+				//Msg("standing...");
+				if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
+					if (m_bCrouched)	
+						S = m_crouch_turn;
+					else
+						S = m_turn;
 				else
-					S = m_turn;
+					if (m_bCrouched)	
+						S = m_crouch_idle;
+					else
+						S = m_idle;
+			}
 			else
-				if (m_bCrouched)	
-					S = m_crouch_idle;
-				else
-					S = m_idle;
+				S = m_current;
 		else {
+			//Msg("moving...");
 			Fvector view = _view; view.y=0; view.normalize_safe();
 			Fvector move = _move; move.y=0; move.normalize_safe();
 			float	dot  = view.dotproduct(move);
@@ -196,6 +202,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	}
 	if (S!=m_current) { 
+		//Msg("restarting animation...");
 		m_current = S;
 		if (S) PKinematics(pVisual)->PlayCycle(S);
 	}

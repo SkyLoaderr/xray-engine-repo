@@ -90,8 +90,8 @@ void CCustomMonster::Exec_Look		( float dt )
 	
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 
-	a1 = u_lerp_angle(r_torso_current.yaw,	r_torso_target.yaw,	0+1*r_torso_speed, dt);
-	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	0+1*r_torso_speed, dt);
+	a1 = u_lerp_angle(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
+	a2 = u_lerp_angle(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
 	
 	mRotate.setHPB(NET_Last.o_model,0,0);
 }
