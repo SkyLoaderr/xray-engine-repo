@@ -101,8 +101,8 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle)
 
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(u16	ID)
 {
-	CKinematics::accel::iterator _I, _E=motion_map->end();
-	for (_I	= bone_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
+	CKinematics::accel_map::iterator _I, _E=motion_map->end();
+	for (_I	= motion_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
 	return 0;
 }
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
@@ -123,7 +123,7 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 //////////////////////////////////////////////////////////////////////
 u16	CSkeletonAnimated::LL_MotionID	(LPCSTR B)
 {
-	accel::iterator I = motion_map->find(LPSTR(B));
+	accel_map::iterator I		= motion_map->find(LPSTR(B));
 	if (I==motion_map->end())	return BI_NONE;
 	else						return I->second;
 }
@@ -504,8 +504,8 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load	(N, data, dwFlags);
 
 	// Globals
-	motion_map		= xr_new<accel> ();
-	partition		= xr_new<CPartition> ();
+	motion_map		= xr_new<accel_map>		();
+	partition		= xr_new<CPartition>	();
 	blend_instances	= NULL;
 
 	// Load animation

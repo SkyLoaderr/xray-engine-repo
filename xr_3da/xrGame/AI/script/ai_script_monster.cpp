@@ -352,7 +352,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(ref_str caBoneName, const Fvector
 	l_tMatrix.c		= tPositionOffset;
 
 	if (xr_strlen(caBoneName)) {
-		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(*caBoneName));
+		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
 		l_tMatrix.mulA	(l_tBoneInstance.mTransform);
 		l_tMatrix.mulA	(XFORM());
 	}

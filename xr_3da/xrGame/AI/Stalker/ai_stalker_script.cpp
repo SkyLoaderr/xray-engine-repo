@@ -110,7 +110,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 			if (!xr_strlen(l_tWatchAction.m_bone_to_watch))
 				l_tWatchAction.m_tpObjectToWatch->Center(l_tWatchAction.m_tWatchVector);
 			else {
-				CBoneInstance	&l_tBoneInstance = PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_GetBoneInstance(PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_BoneID(*l_tWatchAction.m_bone_to_watch));
+				CBoneInstance	&l_tBoneInstance = PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_GetBoneInstance(PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_BoneID(l_tWatchAction.m_bone_to_watch));
 				Fmatrix			l_tMatrix;
 
 				l_tMatrix		= l_tBoneInstance.mTransform;

@@ -608,7 +608,7 @@ void CMotionManager::FX_ConvertMap()
 
 	// ѕреобразовать названи€ бон в их u16-индексы
 	for (FX_MAP_STRING_IT item_it = _sd->fx_map_string.begin(); item_it != _sd->fx_map_string.end(); ++item_it) {
-		u16 bone_id = PKinematics(pVisual)->LL_BoneID(*item_it->first);
+		u16 bone_id = PKinematics(pVisual)->LL_BoneID(item_it->first);
 		_sd->fx_map_u16.insert(mk_pair(bone_id,item_it->second)); 
 	}
 }

@@ -96,7 +96,7 @@ public:
 	CWeaponFakeGrenade* m_pGrenade;
 
 	//название косточки для гранаты подствольника в HUD
-	LPCSTR grenade_bone_name;
+	ref_str grenade_bone_name;
 
 	//скорость вылета гранаты из подствольника
 	float m_fGrenadeVel;

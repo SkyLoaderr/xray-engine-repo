@@ -296,12 +296,11 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 
 }
 
-CPhysicsElement* CPHShell::get_Element(LPCSTR bone_name)
+CPhysicsElement* CPHShell::get_Element		(ref_str bone_name)
 {
 	VERIFY(m_pKinematics);
 
-	
-	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(m_pKinematics->LL_BoneID(bone_name));
+	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance	(m_pKinematics->LL_BoneID(bone_name));
 
 	return (CPhysicsElement*) (instance.Callback_Param);
 }

@@ -46,8 +46,6 @@ public:
 class ENGINE_API		CBoneData
 {
 public:
-	typedef svector<int,128>	BoneDebug;
-public:
 	u16					SelfID;
 	vecBones			children;		// bones which are slaves to this
 	Fobb				obb;			
@@ -60,10 +58,11 @@ public:
     float				mass;
     Fvector				center_of_mass;
 public:    
-						CBoneData		(u16 ID):SelfID(ID){}
-	virtual				~CBoneData		(){;}
+						CBoneData		(u16 ID):SelfID(ID)	{}
+	virtual				~CBoneData		()					{}
 #ifdef DEBUG
-	void				DebugQuery		(BoneDebug& L);
+	typedef svector<int,128>	BoneDebug;
+	void						DebugQuery		(BoneDebug& L);
 #endif
 
 	// Calculation
@@ -81,6 +80,7 @@ protected:
 	};
 public:
 	typedef xr_vector<std::pair<ref_str,u32> >	accel;
+	typedef xr_map<ref_str,u16,str_pred>		accel_map;
 protected:
 	// Globals
     CInifile*					pUserData;

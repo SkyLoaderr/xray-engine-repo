@@ -140,7 +140,7 @@ bool	pred_sort_N(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& 
 	return xr_strcmp(A.first,B.first)<0;
 }
 bool	pred_sort_P(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& B)	{
-	return N.first._get() < B.first._get();
+	return A.first._get() < B.first._get();
 }
 
 void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
@@ -240,11 +240,12 @@ void CKinematics::Copy(IRender_Visual *P)
 	inherited::Copy	(P);
 
 	CKinematics* pFrom = (CKinematics*)P;
-    PCOPY(pUserData);
-	PCOPY(bones);
-	PCOPY(iRoot);
-	PCOPY(bone_map);
-    PCOPY(visimask);
+    PCOPY(pUserData	);
+	PCOPY(bones		);
+	PCOPY(iRoot		);
+	PCOPY(bone_map_N);
+	PCOPY(bone_map_P);
+    PCOPY(visimask	);
 
 	IBoneInstances_Create	();
 
@@ -296,9 +297,10 @@ void CKinematics::Release()
 	}
 
 	// destroy shared data
-    xr_delete(pUserData);
-	xr_delete(bones);
-	xr_delete(bone_map);
+    xr_delete(pUserData	);
+	xr_delete(bones		);
+	xr_delete(bone_map_N);
+	xr_delete(bone_map_P);
 
 	inherited::Release();
 }

@@ -158,7 +158,7 @@ public:
 //*** The visual itself ***************************************************************************
 class ENGINE_API	CSkeletonAnimated	: public CKinematics
 {
-	typedef CKinematics						inherited;
+	typedef CKinematics							inherited;
 	friend class								CBoneData;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
@@ -168,9 +168,9 @@ private:
 	CBlendInstance*								blend_instances;
 
 	// Fast search
-	accel*										motion_map;		// motion assotiations	(shared)
-	mdef*										m_cycle;		// motion data itself	(shared)
-	mdef*										m_fx;			// motion data itself	(shared)
+	accel_map*									motion_map;			// motion assotiations	(shared) - by name
+	mdef*										m_cycle;			// motion data itself	(shared)
+	mdef*										m_fx;				// motion data itself	(shared)
 
 	// Partition
 	CPartition*									partition;
@@ -195,7 +195,7 @@ public:
 	u16							LL_MotionID		(LPCSTR B);
 	u16							LL_PartID		(LPCSTR B);
 
-	accel*						LL_Motions		(){return motion_map;}
+	accel_map*					LL_Motions		(){return motion_map;}
 
 	CBlend*						LL_PlayFX		(u16 bone,		u16		motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
 	CBlend*						LL_PlayCycle	(u16 partition, u16		motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);

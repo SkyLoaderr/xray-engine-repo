@@ -140,7 +140,7 @@ virtual ~CPHShell				()
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);
 	virtual u16					get_ElementsNumber		  (){return (u16)elements.size();}
 	virtual CPHSynchronize*		get_ElementSync			  (u16 element);
-	virtual CPhysicsElement*	get_Element				  (LPCSTR bone_name);
+	virtual CPhysicsElement*	get_Element				  (ref_str bone_name);
 	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 	virtual void				Enable						();
 

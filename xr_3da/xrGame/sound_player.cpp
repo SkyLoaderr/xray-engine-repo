@@ -136,7 +136,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
-	sound_single.m_bone_id		= PKinematics(object->Visual())->LL_BoneID(*sound.m_bone_name);
+	sound_single.m_bone_id		= PKinematics(object->Visual())->LL_BoneID(sound.m_bone_name);
 	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? ::Random.randI(sound.m_sounds.size()) : id];
 	VERIFY						(sound_single.m_sound->handle);
 	VERIFY						(max_start_time >= min_start_time);
