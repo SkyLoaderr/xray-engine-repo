@@ -15,8 +15,6 @@
 
 void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 {
-	VERIFY(ai().level_graph().valid_vertex_position(position));
-
 	m_target.position	= position;
 	m_target.node		= node;
 }
@@ -24,19 +22,23 @@ void CMonsterMovement::set_target_point(const Fvector &position, u32 node)
 //////////////////////////////////////////////////////////////////////////
 // лимитировать по расстоянию
 // если на выходе функции m_intermediate.node != u32(-1) - нода найдена
-void CMonsterMovement::get_intermediate(const Fvector &position) 
+void CMonsterMovement::get_intermediate() 
 {
-	m_intermediate.node		= u32(-1);
-	m_intermediate.position = position;
+	m_intermediate.node		= m_target.node;
+	m_intermediate.position = m_target.position;
 
 	Fvector	dir;
-	dir.sub		(position, Position());
-	float dist	= Position().distance_to(position);
+	dir.sub		(m_target.position, Position());
+	dir.normalize();
+	float dist	= Position().distance_to(m_target.position);
 
 	// лимитировать по расстоянию
 	if (dist > MAX_PATH_DISTANCE) {
 		m_intermediate.position.mad	(Position(), dir, MAX_PATH_DISTANCE);
 		m_intermediate.node			= u32(-1);
+	} else {
+		// если задана нода то выходим
+		if (m_intermediate.node != u32(-1)) return;
 	}
 
 	// нода в прямой видимости ?
@@ -115,17 +117,19 @@ void CMonsterMovement::set_parameters()
 
 void CMonsterMovement::update_target_point() 
 {
+	if (!b_enable_movement) return;
+
 	// если время движения по пути не вышло - выйти
 	bool b_path_end = IsPathEnd(m_distance_to_path_end);
 
-	if (!b_path_end && (m_last_time_target_set + m_time < pMonster->m_current_update)) return;
+	if (!b_path_end && (m_last_time_target_set + m_time > pMonster->m_current_update)) return;
 	if (b_path_end && m_intermediate.position.similar(m_target.position, EPS)) {
 		m_path_end = true;
 		return;
 	}
 	
 	// получить промежуточные позицию и ноду
-	get_intermediate		(m_target.position);
+	get_intermediate		();
 	// установить параметры
 	set_parameters			();
 
@@ -139,3 +143,15 @@ void CMonsterMovement::update_target_point()
 	m_path_end				= false;
 }
 
+void CMonsterMovement::initialize_movement() 
+{
+	m_target.node				= u32(-1);
+	m_intermediate.node			= u32(-1);
+
+	m_time						= 0;
+	m_last_time_target_set		= 0;
+	m_distance_to_path_end		= 1.f;
+	m_path_end					= false;
+	m_failed					= false;
+	m_cover_info.use_covers		= false;
+}

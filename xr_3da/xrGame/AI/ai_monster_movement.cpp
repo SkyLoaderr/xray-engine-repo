@@ -53,12 +53,7 @@ void CMonsterMovement::reinit()
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular				= 0.f;
 
-	m_time							= 0;
-	m_last_time_target_set			= 0;
-	m_distance_to_path_end			= 1.f;
-	m_path_end						= false;
-	m_failed						= false;
-	m_cover_info.use_covers			= false;
+	initialize_movement				();
 }
 
 void CMonsterMovement::InitExternal(CAI_Biting *pM)

@@ -124,10 +124,13 @@ public:
 		CCoverEvaluatorCloseToEnemy			*m_cover_approach;
 		CAbstractVertexEvaluator			*m_selector_approach;
 
-		void		get_intermediate		(const Fvector &position);
+		void		get_intermediate		();
 		bool		position_in_direction	(const Fvector &target, u32 &node);
 		void		set_parameters			();
 		void		update_target_point		();
+
+		void		initialize_movement		();
+
 		
 };
 

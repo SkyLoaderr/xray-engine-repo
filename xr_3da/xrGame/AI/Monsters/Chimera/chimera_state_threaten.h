@@ -20,4 +20,18 @@ public:
 	virtual	void		execute					();
 };
 
+//////////////////////////////////////////////////////////////////////////
+
+template<typename _Object>
+class	CStateChimeraTest : public CState<_Object> {
+	typedef CState<_Object> inherited;
+
+public:
+						CStateChimeraTest	(_Object *obj) : inherited(obj){};
+	virtual				~CStateChimeraTest	() {}
+
+	virtual void		initialize			();
+	virtual	void		execute				();
+};
+
 #include "chimera_state_threaten_inline.h"
