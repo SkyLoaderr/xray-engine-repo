@@ -19,7 +19,6 @@
 //--------------------------------------------------------------------
 CUI::CUI(CHUDManager* p)
 {
-	HUD().pUI		= this;
 	UIZoneMap.Init	();
 	UIHealth.Init	();
 	UISquad.Init	();
