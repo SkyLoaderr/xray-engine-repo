@@ -558,7 +558,7 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 static dReal rest=0.f;
-const int dis_frames=5;
+const int dis_frames=11;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
@@ -1049,6 +1049,24 @@ void CPHShell::PhDataUpdate(dReal step){
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
+				{
+				const dReal* torqu=dBodyGetTorque(m_body);
+				const dReal* force=dBodyGetForce(m_body);
+				dReal t_m =sqrtf(	torqu[0]*torqu[0]+
+										torqu[1]*torqu[1]+
+										torqu[2]*torqu[2]);
+				dReal f_m=sqrtf(	force[0]*force[0]+
+										force[1]*force[1]+
+										force[2]*force[2]);
+				if(t_m+f_m>0.000000){
+					previous_p[0]=dInfinity;
+					previous_dev=0;
+					previous_v=0;
+					dis_count_f=1;
+					dis_count_f1=0;
+					return;
+				}
+				}
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
 					memcpy(previous_p,position,sizeof(dVector3));
@@ -1089,8 +1107,8 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					//if(mag_v<0.004* dis_frames && deviation<0.0001*dis_frames)
-					//	dBodyDisable(m_body);
+					if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
+						dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
 					{
@@ -1108,7 +1126,7 @@ void CPHShell::PhDataUpdate(dReal step){
 					}
 
 					{
-					//const dReal* current_p=dBodyGetPosition(m_body);
+					
 					dVector3 velocity={current_p[0]-previous_p1[0],
 									   current_p[1]-previous_p1[1],
 									   current_p[2]-previous_p1[2]};
@@ -1116,8 +1134,7 @@ void CPHShell::PhDataUpdate(dReal step){
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
-					//mag_v/=dis_count_f;
-					//const dReal* current_r=dBodyGetRotation(m_body);
+					mag_v/=dis_count_f;
 					dMatrix3 rotation_m;
 					dMULTIPLYOP1_333(rotation_m,=,previous_r1,current_r);
 			
@@ -1130,14 +1147,14 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[1]*deviation_v[1]+
 										   deviation_v[2]*deviation_v[2]);
 
-					//deviation/=dis_count_f;
+					deviation/=dis_count_f;
 					if(mag_v<0.04* dis_frames && deviation<0.01*dis_frames)
 						dis_count_f1++;
 					else{
 						memcpy(previous_p1,current_p,sizeof(dVector3));
 						memcpy(previous_r1,current_r,sizeof(dMatrix3));
 					}
-					if(dis_count_f1>4) dis_count_f*=10;
+					if(dis_count_f1>20) dis_count_f*=10;
 					}
 
 
