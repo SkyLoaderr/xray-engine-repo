@@ -3,6 +3,15 @@
 #include "shader_xrlc.h"
 #include "r_light.h"
 
+template<u32 range>
+struct fixed16
+{
+	s16			_value;
+
+	void		_w			(float a)	{ s32 _v=iFloor(a*32767.f/float(range));	clamp(_v,-32768,32767); _value=_v;	}
+	float		_r			()			{ return float((_value/32767.f)*float(range));	}
+};
+
 #pragma pack(push,4)
 class base_lighting
 {
