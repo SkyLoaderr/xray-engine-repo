@@ -135,7 +135,7 @@ void CLocatorAPI::Recurse		(const char* path)
 void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
-	DWORD	M1		= Engine.mem_Usage();
+	DWORD	M1		= Core.mem_Usage();
 	bNoRecurse		= TRUE;
 	Recurse			("");
 	bNoRecurse		= FALSE;
