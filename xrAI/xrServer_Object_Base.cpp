@@ -98,6 +98,8 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_spawn_control				= "";
 	m_spawn_count				= 0;
 	m_last_spawn_time			= 0;
+	m_min_spawn_interval		= 0;
+	m_max_spawn_interval		= 0;
 
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
@@ -164,6 +166,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 	tNetPacket.w_u32			(m_max_spawn_count);
 	tNetPacket.w_u32			(m_spawn_count);
 	tNetPacket.w_u64			(m_last_spawn_time);
+	tNetPacket.w_u64			(m_min_spawn_interval);
+	tNetPacket.w_u64			(m_max_spawn_interval);
 
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
@@ -239,6 +243,11 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 		tNetPacket.r_u32		(m_max_spawn_count);
 		tNetPacket.r_u32		(m_spawn_count);
 		tNetPacket.r_u64		(m_last_spawn_time);
+	}
+
+	if (m_wVersion > 84) {
+		tNetPacket.r_u64		(m_min_spawn_interval);
+		tNetPacket.r_u64		(m_max_spawn_interval);
 	}
 
 	u16							size;
@@ -327,6 +336,9 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 
 	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
 	PHelper().CreateChoose		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Group control"),				&m_spawn_control,		smSpawnItem,	0,	(void*)gcs,	16);
+
+//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Min spawn interval"),	&m_min_spawn_interval);
+//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Max spawn interval"),	&m_max_spawn_interval);
 }
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)

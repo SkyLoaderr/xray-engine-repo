@@ -396,8 +396,6 @@ void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
 
 CSE_SpawnGroup::CSE_SpawnGroup				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
-	m_min_spawn_interval		= 0;
-	m_max_spawn_interval		= 0;
 }
 
 CSE_SpawnGroup::~CSE_SpawnGroup				()
@@ -417,35 +415,29 @@ void CSE_SpawnGroup::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 			tNetPacket.r_stringZ(m_spawn_control);
 		}
 		else {
-			tNetPacket.r_u64	(m_min_spawn_interval);
-			tNetPacket.r_u64	(m_max_spawn_interval);
+			if (m_wVersion < 85) {
+				tNetPacket.r_u64		(m_min_spawn_interval);
+				tNetPacket.r_u64		(m_max_spawn_interval);
+			}
 		}
 	}
 }
 
 void CSE_SpawnGroup::STATE_Write			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_u64			(m_min_spawn_interval);
-	tNetPacket.w_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.r_u64			(m_min_spawn_interval);
-	tNetPacket.r_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_u64			(m_min_spawn_interval);
-	tNetPacket.w_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps		(pref,values);
-//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Min time spawn interval"),	&m_min_spawn_interval);
-//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Max time spawn interval"),	&m_max_spawn_interval);
 	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
 }
 
@@ -509,14 +501,14 @@ void CSE_PHSkeleton::load(NET_Packet &tNetPacket)
 void CSE_PHSkeleton::UPDATE_Write(NET_Packet &tNetPacket)
 {
 
-};
+}
 
 void CSE_PHSkeleton::UPDATE_Read(NET_Packet &tNetPacket)
 {
 
-};
+}
 
 void CSE_PHSkeleton::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 
-};
+}

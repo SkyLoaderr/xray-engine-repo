@@ -101,8 +101,9 @@
 // 82 - CSE_AlifeTraderAbstract			load/save m_iCharacterProfile on state read/write
 // 83 - CSE_AlifeObject					m_fProbability moved to CSE_Abstract, m_dwSpawnGroup is removed completely
 // 84 - CSE_SpawnGroup					appended with a property
+// 85 - CSE_SpawnGroup					all the properties moved to CSE_Abstract
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(84)
+#define SPAWN_VERSION	u16(85)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
@@ -192,9 +193,6 @@ add_to_type_list(CSE_Event)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 public:
-	u64								m_min_spawn_interval;
-	u64								m_max_spawn_interval;
-
 									CSE_SpawnGroup	(LPCSTR caSection);
 	virtual							~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END

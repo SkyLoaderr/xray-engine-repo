@@ -78,7 +78,8 @@ public:
 	u32								m_max_spawn_count;
 	u32								m_spawn_count;
 	u64								m_last_spawn_time;
-
+	u64								m_min_spawn_interval;
+	u64								m_max_spawn_interval;
 
 	//client object custom data serialization
 	xr_vector<u8>					client_data;

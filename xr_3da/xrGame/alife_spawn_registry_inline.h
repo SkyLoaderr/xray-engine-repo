@@ -36,3 +36,10 @@ IC	const ALife::ITEM_SET_MAP &CALifeSpawnRegistry::artefact_anomaly_map	() const
 {
 	return					(m_artefact_anomaly_map);
 }
+
+IC	void CALifeSpawnRegistry::process_spawns		(xr_vector<ALife::_SPAWN_ID> &spawns)
+{
+	std::sort								(spawns.begin(),spawns.end());
+	xr_vector<ALife::_SPAWN_ID>::iterator	I = unique(spawns.begin(),spawns.end());
+	spawns.erase							(I,spawns.end());
+}

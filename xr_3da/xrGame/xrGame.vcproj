@@ -1725,7 +1725,13 @@
 								RelativePath=".\alife_spawn_registry.h">
 							</File>
 							<File
+								RelativePath=".\alife_spawn_registry_destroy.cpp">
+							</File>
+							<File
 								RelativePath=".\alife_spawn_registry_inline.h">
+							</File>
+							<File
+								RelativePath=".\alife_spawn_registry_spawn.cpp">
 							</File>
 							<Filter
 								Name="header"

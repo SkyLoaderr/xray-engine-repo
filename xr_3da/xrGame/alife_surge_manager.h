@@ -22,12 +22,14 @@ protected:
 	ALife::ITEM_COUNT_MAP			m_tpTraderItems;
 	xr_vector<ALife::_OBJECT_ID>	m_temp_objects;
 	xr_vector<ALife::_SPAWN_ID>		m_temp_spawns;
+	xr_vector<ALife::_SPAWN_ID>		m_temp_spawned_objects;
 
 public:
 	DWORD_VECTOR					m_tpTempPath;
 
 private:
 	IC		bool			redundant					(CSE_ALifeDynamicObject *object);
+			void			fill_spawned_objects		();
 
 protected:
 			void			surge						();
