@@ -35,7 +35,6 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +FEATURE:	anisotropic
 +FEATURE:	range-fog
 +FEATURE:	particles/transparency
-+FEATURE:	particles/transparency
 +		:	light-sleeping logic
 +		:	faster bloom blur
 +		:	fading of bloom
