@@ -106,6 +106,7 @@ public:
 		bool		m_path_end;
 		bool		m_failed;
 		bool		m_actual;
+		bool		m_force_rebuild;
 
 		struct {
 			bool	use_covers;
@@ -139,7 +140,6 @@ public:
 		void		update_target_point		();
 
 		void		initialize_movement		();
-		void		validate_target			(Fvector &pos, u32 &node);		
 
 		bool		check_build_conditions	();
 
