@@ -709,7 +709,8 @@ function animation:weapon_slot()
    	   id == clsid.wpn_svu then
 		return 2
 	end
-	if id == clsid.wpn_shotgun then
+	if id == clsid.wpn_shotgun or
+	   id == clsid.wpn_bm16 then
 		return 3
 	end
     if id == clsid.wpn_rpg7 then
