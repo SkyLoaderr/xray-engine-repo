@@ -32,7 +32,7 @@ public:
 	virtual	void			LookPosition			(Fvector to_point, float angular_speed = PI_DIV_3);
 	virtual	void			PitchCorrection			() {}
 
-			void			ActivateEffector		(float life_time);
+			
 	
 	virtual	void			CheckSpecParams			(u32 spec_params);
 
@@ -40,6 +40,14 @@ public:
 	float					m_ftrPowerDown;					// коэффициент, на который падает сила монстра при активации невидимости 
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
 	float					m_fEffectDist;
+
+			
+	// PP Effector		
+	
+			void			LoadEffector			(LPCSTR section);	
+			void			ActivateEffector		(float life_time);
+			
+			SPPInfo			pp_effector;
 
 	// ---------------------------------------------------------------------------------
 

@@ -6,6 +6,7 @@
 #include "../../hudmanager.h"
 
 #include "../ai_monster_utils.h"
+#include "../ai_monster_effector.h"
 
 //#define AI_SQUAD_ENABLE
 
@@ -127,7 +128,27 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	//MotionMan.FX_LoadMap(section); 
 
 	END_LOAD_SHARED_MOTION_DATA();
+
+	LoadEffector(pSettings->r_string(section,"postprocess_new"));
 }
+
+
+void CAI_Bloodsucker::LoadEffector(LPCSTR section)
+{
+	pp_effector.duality.h			= pSettings->r_float(section,"duality_h");
+	pp_effector.duality.v			= pSettings->r_float(section,"duality_v");
+	pp_effector.gray				= pSettings->r_float(section,"gray");
+	pp_effector.blur				= pSettings->r_float(section,"blur");
+	pp_effector.noise.intensity		= pSettings->r_float(section,"noise_intensity");
+	pp_effector.noise.grain			= pSettings->r_float(section,"noise_grain");
+	pp_effector.noise.fps			= pSettings->r_float(section,"noise_fps");
+
+	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &pp_effector.color_base.r, &pp_effector.color_base.g, &pp_effector.color_base.b);
+	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_effector.color_gray.r, &pp_effector.color_gray.g, &pp_effector.color_gray.b);
+	sscanf(pSettings->r_string(section,"color_add"),	"%f,%f,%f", &pp_effector.color_add.r,  &pp_effector.color_add.g,  &pp_effector.color_add.b);
+}
+
+
 
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
@@ -199,7 +220,7 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 
 void CAI_Bloodsucker::ActivateEffector(float life_time)
 {
-	Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(life_time));
+	Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, 2.0f));
 }
 
 
@@ -283,6 +304,9 @@ void CAI_Bloodsucker::StateSelector()
 
 	SetState(pState);
 }
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
