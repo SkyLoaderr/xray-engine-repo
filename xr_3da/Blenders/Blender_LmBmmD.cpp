@@ -24,7 +24,7 @@ CBlender_LmBmmD::~CBlender_LmBmmD	()
 void	CBlender_LmBmmD::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
-	xrPWRITE_MARKER	(FS,"Detail texture");
+	xrPWRITE_MARKER	(FS,"Detail map");
 	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }

@@ -1,4 +1,4 @@
-// BlenderDefault.cpp: implementation of the CBlender_LmBmmD class.
+// BlenderDefault.cpp: implementation of the CBlender_LaEmB class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -11,24 +11,25 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_LmBmmD::CBlender_LmBmmD	()
+CBlender_LaEmB::CBlender_LaEmB	()
 {
-	description.CLS		= B_LmBmmD;
+	description.CLS		= B_LaEmB;
 }
 
-CBlender_LmBmmD::~CBlender_LmBmmD	()
+CBlender_LaEmB::~CBlender_LaEmB	()
 {
 	
 }
 
-void	CBlender_LmBmmD::Save(	CFS_Base& FS )
+void	CBlender_LaEmB::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
-	xrPWRITE_MARKER	(FS,"Detail texture");
+	xrPWRITE_MARKER	(FS,"Environment map");
 	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }
-void	CBlender_LmBmmD::Load(	CStream& FS )
+
+void	CBlender_LaEmB::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
 	xrPREAD_MARKER	(FS);
@@ -36,7 +37,7 @@ void	CBlender_LmBmmD::Load(	CStream& FS )
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	if (bEditor)	{
 		RS.PassBegin		();
@@ -46,26 +47,26 @@ void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_lis
 			RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
 			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 			
-			// Stage1 - Base texture
+			// Stage1 - Env texture
 			RS.StageBegin		();
 			{
 				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.Stage_Texture	(oT_Name,		L_textures		);
-				RS.Stage_Matrix		(oT_xform,		L_matrices,		0);
+				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+				RS.Stage_Texture	(oT2_Name,		L_textures		);
+				RS.Stage_Matrix		(oT2_xform,		L_matrices,		0);
 				RS.Stage_Constant	("$null",		L_constants		);
 			}
 			RS.StageEnd			();
 			
-			// Stage2 - Second texture
+			// Stage2 - Base texture
 			RS.StageBegin		();
 			{
 				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-				RS.Stage_Texture	(oT2_Name,		L_textures		);
-				RS.Stage_Matrix		(oT2_xform,		L_matrices,		0);
+				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+				RS.Stage_Texture	(oT_Name,		L_textures		);
+				RS.Stage_Matrix		(oT_xform,		L_matrices,		0);
 				RS.Stage_Constant	("$null",		L_constants		);
 			}
 			RS.StageEnd			();

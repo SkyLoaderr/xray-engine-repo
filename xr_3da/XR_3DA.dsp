@@ -738,6 +738,14 @@ SOURCE=.\Blenders\Blender_Editor_Wire.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blenders\Blender_LaEmB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blenders\Blender_LaEmB.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\blender_light.cpp
 # End Source File
 # Begin Source File
