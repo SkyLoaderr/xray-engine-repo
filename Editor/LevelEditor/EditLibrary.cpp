@@ -36,6 +36,8 @@
 TfrmEditLibrary* TfrmEditLibrary::form=0;
 AnsiString TfrmEditLibrary::m_LastSelection;
 FileMap TfrmEditLibrary::modif_map;
+bool TfrmEditLibrary::bFinalExit = false;
+bool TfrmEditLibrary::bExitResult= true;
 
 //---------------------------------------------------------------------------
 __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
@@ -52,11 +54,6 @@ void __fastcall TfrmEditLibrary::ShowEditor()
 		Scene.lock();
     }
     form->Show();
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::HideEditor()
-{
-	if (form) form->Close();
 }
 //---------------------------------------------------------------------------
 CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
@@ -133,6 +130,15 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
 {
+    if (!bFinalExit&&ebSave->Enabled){
+	    bFinalExit = false;
+        UI.SetStatus("Objects reloading...");
+        FilePairIt it=modif_map.begin();
+		FilePairIt _E=modif_map.end();
+        for (;it!=_E;it++)
+        	Lib.ReloadObject(it->first.c_str());
+        UI.SetStatus("");
+    }
 	Lib.RemoveEditObject(form->m_SelectedObject);
 	form = 0;
 	_DELETE(m_Thm);
@@ -140,7 +146,7 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 
     TfrmPropertiesObject::HideProperties();
 	Scene.unlock();
-//    Lib.ResetAnimation();
+
     UI.EndEState(esEditLibrary);
     UI.Command(COMMAND_CLEAR);
     // remove directional light
@@ -148,28 +154,23 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 	Device.LightEnable(1,false);
 }
 //---------------------------------------------------------------------------
-bool TfrmEditLibrary::CloseEditLibrary(bool bReload){
+void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender,
+      bool &CanClose)
+{
+    CanClose = true;
     if (ebSave->Enabled){
     	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
-		if (res==mrCancel) return false;
+		if (res==mrCancel) CanClose = false;
 		if (res==mrYes) ebSaveClick(0);
     }
-    if (bReload){
-        UI.SetStatus("Objects reloading...");
-        FilePairIt it=modif_map.begin();
-		FilePairIt _E=modif_map.end();
-        for (;it!=_E;it++)
-        	Lib.ReloadObject(it->first.c_str());
-//		UI.Command(COMMAND_RELOAD_OBJECTS);
-        UI.SetStatus("");
-    }
-    Close();
-    return true;
+    bExitResult = CanClose;
 }
 //---------------------------------------------------------------------------
 bool TfrmEditLibrary::FinalClose(){
 	if (!form) return true;
-	return form->CloseEditLibrary(false);
+    bFinalExit = true;
+    form->Close();
+    return bExitResult;
 }
 //---------------------------------------------------------------------------
 void TfrmEditLibrary::OnModified(){
@@ -287,7 +288,7 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::ebCancelClick(TObject *Sender)
 {
-    CloseEditLibrary(ebSave->Enabled);
+    Close();
 }
 //---------------------------------------------------------------------------
 
@@ -475,6 +476,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 
 
 

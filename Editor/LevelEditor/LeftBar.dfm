@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 646
+  Height = 786
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -33,7 +33,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 123
-      Height = 129
+      Height = 146
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -160,7 +160,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebObjectList: TExtBtn
         Left = 2
-        Top = 78
+        Top = 95
         Width = 120
         Height = 15
         Align = alNone
@@ -180,7 +180,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebSceneCommands: TExtBtn
         Left = 2
-        Top = 95
+        Top = 112
         Width = 120
         Height = 15
         Align = alNone
@@ -210,7 +210,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 112
+        Top = 129
         Width = 120
         Height = 15
         Align = alNone
@@ -248,10 +248,30 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = ebImageEditorClick
       end
+      object ebLightAnimationEditor: TExtBtn
+        Left = 2
+        Top = 78
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Caption = 'Light Animation Editor'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Margin = 13
+        ParentFont = False
+        OnClick = ebLightAnimationEditorClick
+      end
     end
     object paEdit: TPanel
       Left = 1
-      Top = 130
+      Top = 147
       Width = 123
       Height = 161
       Align = alTop
@@ -534,7 +554,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paTarget: TPanel
       Left = 1
-      Top = 291
+      Top = 308
       Width = 123
       Height = 199
       Align = alTop
@@ -1301,7 +1321,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 490
+      Top = 507
       Width = 123
       Height = 106
       Align = alTop
@@ -1437,7 +1457,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 4
+    Version = 5
     OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'

@@ -255,7 +255,6 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
         }break;
         case PROP_COLOR:{
 			Surface->Brush->Style = bsSolid;
-		    Surface->Brush->Color = TColor(0x00000000);
             Surface->FrameRect(R);
             R.Right	-=	1;
             R.Left 	+= 	1;

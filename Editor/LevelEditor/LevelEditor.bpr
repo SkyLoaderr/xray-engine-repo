@@ -96,7 +96,8 @@
       intermediate\SkeletonX.obj intermediate\xrBoneLerp.obj 
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
       intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\cpuid.obj 
-      intermediate\SH_RT.obj Intermediate\_math.obj"/>
+      intermediate\SH_RT.obj Intermediate\_math.obj 
+      intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -112,7 +113,7 @@
       FrameRPoint.dfm FrameAITPoint.dfm FrameDetObj.dfm FrameOccluder.dfm 
       PropertiesOccluder.dfm DOShuffle.dfm DOOneColor.dfm 
       PropertiesDetailObject.dfm PropertiesList.dfm PropertiesSceneObject.dfm 
-      EventOneAction.dfm"/>
+      EventOneAction.dfm EditLightAnim.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib"/>

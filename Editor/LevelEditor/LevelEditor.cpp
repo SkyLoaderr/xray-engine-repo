@@ -208,6 +208,8 @@ USELIB("lib\xrCDB.lib");
 USEOBJ("Intermediate\cpuid.obj");
 USEUNIT("Engine\SH_RT.cpp");
 USEOBJ("Intermediate\_math.obj");
+USEFORM("EditLightAnim.cpp", frmEditLightAnim);
+USEUNIT("edit\LightAnimLibrary.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

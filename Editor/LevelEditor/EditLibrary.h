@@ -61,14 +61,16 @@ __published:	// IDE-managed Components
 	void __fastcall ebExportDOClick(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
 	void __fastcall ebExportHOMClick(TObject *Sender);
+	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* m_Thm;
-    bool CloseEditLibrary(bool bReload);
 	static TfrmEditLibrary *form;
     CEditableObject* m_SelectedObject;
 	static AnsiString m_LastSelection;
     static FileMap modif_map;
+    static bool bFinalExit;
+    static bool bExitResult;
 public:		// User declarations
     __fastcall TfrmEditLibrary(TComponent* Owner);
     static bool FinalClose();
@@ -77,7 +79,6 @@ public:		// User declarations
     static void __fastcall OnModified();
 	static CEditableObject* __fastcall RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
     static void __fastcall ShowEditor();
-    static void __fastcall HideEditor();
     static void __fastcall ResetSelected();
     static void __fastcall RefreshSelected();
 };

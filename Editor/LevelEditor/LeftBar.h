@@ -145,6 +145,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N7;
 	TMenuItem *Quit1;
 	TExtBtn *ebProperties;
+	TExtBtn *ebLightAnimationEditor;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -221,6 +222,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
+	void __fastcall ebLightAnimationEditorClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

@@ -21,6 +21,7 @@ enum EEditorState{
     esEditScene,
     esEditLibrary,
     esEditImages,
+    esEditLightAnim,
     esBuildLevel
 };
 

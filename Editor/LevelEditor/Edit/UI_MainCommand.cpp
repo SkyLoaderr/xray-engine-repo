@@ -7,6 +7,8 @@
 #include "leftbar.h"
 #include "bottombar.h"
 #include "EditLibrary.h"
+#include "EditLightAnim.h"
+#include "LightAnimLibrary.h"
 #include "ObjectList.h"
 #include "EditorPref.h"
 #include "main.h"
@@ -43,6 +45,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			Scene.OnCreate	();
             PSLib.OnCreate	();
             Lib.OnCreate	();
+            LALib.OnCreate	();
 
 		    BeginEState		(esEditScene);
 
@@ -58,6 +61,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_DESTROY:
 		Command				(COMMAND_CLEAR);
 		Scene.OnDestroy		();
+        LALib.OnDestroy		();
     	PSLib.OnDestroy		();
 		Lib.OnDestroy		();
 		Tools.OnDestroy		();
@@ -78,9 +82,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_EXIT:{
 	    EEditorState est = GetEState();
     	switch(est){
-        case esEditLibrary: 	bRes = TfrmEditLibrary::FinalClose(); break;
-        case esEditImages:		bRes = TfrmImageLib::HideImageLib(); break;
-        case esEditScene:		bRes = Scene.IfModified(); break;
+        case esEditLightAnim: 	bRes = TfrmEditLightAnim::FinalClose(); break;
+        case esEditLibrary: 	bRes = TfrmEditLibrary::FinalClose(); 	break;
+        case esEditImages:		bRes = TfrmImageLib::HideImageLib(); 	break;
+        case esEditScene:		bRes = Scene.IfModified(); 				break;
         }
 		}break;
 	case COMMAND_SHOWPROPERTIES:
@@ -120,6 +125,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }else{
 			TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
         }
+    	break;
+    case COMMAND_LANIM_EDITOR:
+    	TfrmEditLightAnim::ShowEditor();
     	break;
 	case COMMAND_CHECK_TEXTURES:
     	if (GetEState()==esEditScene) TfrmImageLib::CheckImageLib();

@@ -461,6 +461,12 @@ void __fastcall TfraLeftBar::ebImageEditorClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebLightAnimationEditorClick(TObject *Sender)
+{
+	UI.Command(COMMAND_LANIM_EDITOR);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebClearSnapClick(TObject *Sender)
 {
 	UI.Command(COMMAND_CLEAR_SNAP_OBJECTS);
@@ -577,4 +583,5 @@ void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 	UI.Command(COMMAND_SHOWPROPERTIES);
 }
 //---------------------------------------------------------------------------
+
 

@@ -507,7 +507,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.scale	= r_scale.randF		(m_Objects[ID]->m_fMinScale,m_Objects[ID]->m_fMaxScale);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
-				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
+				Item.mRotY.rotateY(-r_yaw.randF	(0,PI_MUL_2));
                 Item.flag	= m_Objects[ID]->m_dwFlags;
 
 				// Color
