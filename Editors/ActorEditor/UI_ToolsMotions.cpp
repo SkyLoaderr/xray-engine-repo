@@ -76,8 +76,8 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
     case MT_SKELETON:{
         CKinematics* pV					= (CKinematics*)m_pVisual;
         vector<CVisual*>::iterator I,E;
-        I = pV->chields.begin			();
-        E = pV->chields.end				();
+        I = pV->children.begin			();
+        E = pV->children.end			();
         for (; I!=E; I++)
         {
             CVisual* V					= *I;
@@ -88,8 +88,8 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
     case MT_HIERRARHY:{
         FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
         vector<CVisual*>::iterator 		I,E;
-        I = pV->chields.begin			();
-        E = pV->chields.end				();
+        I = pV->children.begin			();
+        E = pV->children.end			();
         for (; I!=E; I++)
         {
             CVisual* V					= *I;
