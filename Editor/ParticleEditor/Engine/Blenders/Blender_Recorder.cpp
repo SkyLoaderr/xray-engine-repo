@@ -143,7 +143,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 		N = lst [id];
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
-	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
+//	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
 }
 void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {

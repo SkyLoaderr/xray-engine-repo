@@ -67,7 +67,6 @@ public:
 	DWORD					dwReference;
 	SFlags					Flags;
 	svector<CPass,8>		Passes;
-	svector<CTexture*,8>	userTex;
 	
 	IC BOOL					equal	(Shader& S)
 	{
