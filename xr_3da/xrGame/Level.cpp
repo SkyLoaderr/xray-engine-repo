@@ -51,7 +51,7 @@ CLevel::~CLevel()
 }
 
 // Game interface ////////////////////////////////////////////////////
-void CLevel::g_cl_Spawn		(LPCSTR name, int team, int squad, int group)
+void CLevel::g_cl_Spawn		(LPCSTR name, int int team, int squad, int group)
 {
 	NET_Packet	P;
 	P.w_begin	(M_CL_SPAWN);
