@@ -660,7 +660,7 @@ begin
 	 	endif;
 	endif;                                   
 	if (mdac_need_install=TRUE) then
-		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q /N\"", WAIT);
+		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
 		g_bNeedReboot 		= TRUE;
 	endif;
            
