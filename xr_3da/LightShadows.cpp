@@ -224,12 +224,10 @@ void CLightShadows::calculate	()
 			}
 			
 			// register shadow and increment slot
-			Fvector N; N.set	(0,1,0);
 			shadows.push_back	(shadow());
 			shadows.back().slot	=	slot_id;
 			shadows.back().M	=	mCombine;
 			shadows.back().L	=	L;
-			shadows.back().C	=	PLC_calc(C.C,N,L,L->diffuse.magnitude_rgb());
 			slot_id	++;
 		}
 	}
