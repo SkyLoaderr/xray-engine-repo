@@ -131,3 +131,26 @@ namespace AI_Biting {
 
 };
 
+enum EMotionAnim {
+	eMotionStandIdle = 0,
+	eMotionLieIdle,
+	eMotionStandTurnLeft,
+	eMotionWalkFwd,
+	eMotionWalkBkwd,
+	eMotionWalkTurnLeft,
+	eMotionWalkTurnRight,
+	eMotionRun,
+	eMotionRunTurnLeft,
+	eMotionRunTurnRight,
+	eMotionAttack,
+	eMotionAttackRat,
+	eMotionFastTurnLeft,
+	eMotionEat,
+	eMotionDamage,
+	eMotionScared,
+	eMotionDie,
+	eMotionLieDown,
+	eMotionStandUp,
+	eMotionCheckCorpse
+};
+

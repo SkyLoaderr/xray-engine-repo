@@ -596,29 +596,30 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 
-	// Обновление памяти монстра
-	UpdateMemory();
-
-
-	if (Motion.m_tSeq.Active())	{
-		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
-	} else {
-		
-		//- FSM 1-level 
-		VisionElem VE;
-		if (SelectEnemy(VE)) {
-			SetState(stateAttack);
-		} else {	
-			SetState(stateRest);
-		}
-		CurrentState->Execute(true);
-		//---
-	}
-	
-	Motion.SetFrameParams(this);
-
-	ControlAnimation();
-	
+//	// Обновление памяти монстра
+//	UpdateMemory();
+//
+//
+//	//		if (Motion.m_tSeq.Started) 
+//	//			CurrentState->FreezeState(); // сохранения времени
+//
+//	if (Motion.m_tSeq.Active())	{
+//		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
+//	}else {
+//		//- FSM 1-level 
+//		VisionElem VE;
+//		if (SelectEnemy(VE)) {
+//			SetState(stateAttack);
+//		} else {	
+//			SetState(stateRest);
+//		}
+//		//---
+//	}
+//	
+//	CurrentState->Execute(true);
+//	Motion.SetFrameParams(this);
+//
+//	ControlAnimation();
 //---------------------------------------------------------------------------------	
 	
 	return;

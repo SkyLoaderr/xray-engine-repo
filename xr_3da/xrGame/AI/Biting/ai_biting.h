@@ -15,6 +15,7 @@
 #include "ai_biting_mem.h"
 #include "ai_biting_state.h"
 
+
 class CAI_Biting : public CCustomMonster, 
 				   public CBitingAnimations,
 				   public CMonsterMemory
@@ -180,7 +181,6 @@ public:
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void			feel_touch_new					(CObject* O);
 
-	CAnim					AnimEx;
 	bool					m_bActionFinished;
 	bool					bPlayDeath;
 	bool					bStartPlayDeath;
@@ -314,13 +314,6 @@ private:
 	u32						m_dwLastTimeEat;
 	u32						m_dwEatInterval;
 
-	// Animation Parameters (current frame)
-	AI_Biting::EActionAnim		m_tActionAnim;
-	AI_Biting::EPostureAnim		m_tPostureAnim;
-	// Animation Parameters (previous frame)
-	AI_Biting::EActionAnim		m_tActionAnimPrevFrame;
-	AI_Biting::EPostureAnim		m_tPostureAnimPrevFrame;
-
 
 	_TCA					_CA;
 	_TCAction				_CAction;
@@ -369,5 +362,9 @@ private:
 
 	virtual BOOL			feel_vision_isRelevant	(CObject* O);
 
+	// Animations
+	EMotionAnim		m_tAnim;
+	EMotionAnim		m_tAnimPrevFrame;
+	void MotionToAnim(EMotionAnim motion, int &index1, int &index2);
 
 };

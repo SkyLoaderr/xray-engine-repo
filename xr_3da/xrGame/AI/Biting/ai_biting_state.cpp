@@ -13,15 +13,22 @@
 
 using namespace AI_Biting;
 
+
+//*********************************************************************************************************
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MOTION STATE MANAGMENT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*********************************************************************************************************
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMotionParams implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CMotionParams::SetParams(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m)
+void CMotionParams::SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m)
 {
 	mask =m;
-	posture = p;
-	action = a;
+	anim = a;
 	speed = s;
 	r_speed = r_s;
 	yaw = y;
@@ -30,11 +37,7 @@ void CMotionParams::SetParams(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim 
 
 void CMotionParams::ApplyData(CAI_Biting *pData)
 {
-	if ((mask & MASK_ANIM) == MASK_ANIM) {
-		pData->m_tPostureAnim = posture; 
-		pData->m_tActionAnim = action;
-	}
-
+	if ((mask & MASK_ANIM) == MASK_ANIM) pData->m_tAnim = anim; 
 	if ((mask & MASK_SPEED) == MASK_SPEED) pData->m_fCurSpeed = speed; 
 	if ((mask & MASK_R_SPEED) == MASK_R_SPEED) pData->r_torso_speed = r_speed; 
 	if ((mask & MASK_YAW) == MASK_YAW) pData->r_torso_target.yaw = yaw;
@@ -47,13 +50,11 @@ void CMotionParams::ApplyData(CAI_Biting *pData)
 // CMotionTurn implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CMotionTurn::Set(AI_Biting::EPostureAnim p_left, AI_Biting::EActionAnim a_left, 
-					  AI_Biting::EPostureAnim p_right, AI_Biting::EActionAnim a_right,
-					  float s, float r_s, float min_angle)
+void CMotionTurn::Set(EMotionAnim a_left, EMotionAnim a_right, float s, float r_s, float min_angle)
 {
 
-	TurnLeft.SetParams(p_left,a_left,s,r_s,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	TurnRight.SetParams(p_right,a_right,s,r_s,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	TurnLeft.SetParams(a_left,s,r_s,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	TurnRight.SetParams(a_right,s,r_s,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 
 	fMinAngle = min_angle;
 }
@@ -97,10 +98,10 @@ void CMotionSequence::Init()
 	Playing = Started = Finished = false;
 }
 
-void CMotionSequence::Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m)
+void CMotionSequence::Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m)
 {
 	CMotionParams tS;
-	tS.SetParams(p,a,s,r_s,y,t,m);
+	tS.SetParams(a,s,r_s,y,t,m);
 
 	States.push_back(tS);
 }
@@ -149,11 +150,9 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 		m_tParams.ApplyData(pData);
 		m_tTurn.CheckTurning(pData);
 
-
 		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
-		if ((pData->m_tActionAnimPrevFrame == eActionIdle) && (pData->m_tPostureAnimPrevFrame == ePostureLie) &&
-			((pData->m_tActionAnim != eActionIdle) || (pData->m_tPostureAnim != ePostureLie))) {
-				m_tSeq.Add(ePostureLie,eActionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		if ((pData->m_tAnimPrevFrame == eMotionLieIdle) && (pData->m_tAnim != eMotionLieIdle)){
+				m_tSeq.Add(eMotionStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 				m_tSeq.Switch();
 				m_tSeq.ApplyData(pData);
 			}
@@ -163,6 +162,12 @@ void CBitingMotion::SetFrameParams(CAI_Biting *pData)
 		m_tSeq.ApplyData(pData);
 	}
 }
+
+//*********************************************************************************************************
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// STATE MANAGMENT
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*********************************************************************************************************
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,6 +180,8 @@ IState::IState(CAI_Biting *p)
 
 void IState::Execute(bool bNothingChanged) 
 {
+	if (m_bFreezed) return;
+
 	m_dwCurrentTime = pData->m_dwCurrentUpdate;
 
 	switch (m_tState) {
@@ -196,7 +203,6 @@ void IState::Execute(bool bNothingChanged)
 
 void IState::Init()
 {
-	m_dwStartTime = m_dwCurrentTime;
 	m_dwNextThink = m_dwCurrentTime;
 	m_tState = STATE_RUN;
 }
@@ -212,13 +218,31 @@ void IState::Done()
 
 void IState::Reset()
 {
-	m_dwStartTime		= 0;
 	m_dwCurrentTime		= 0;
 	m_dwNextThink		= 0;
+	m_dwTimeFreezed		= 0;
 	m_tState			= STATE_NOT_ACTIVE;	
+
+	m_bFreezed			= false;
 }
 
+void IState::FreezeState()
+{
+	m_dwTimeFreezed = m_dwCurrentTime;
+	m_bFreezed		= true;
+}
 
+//Info: если в классах-потомках, используются дополнительные поля времени,
+//      метод RestoreState() должне быть переопределены 
+TTime IState::RestoreState(TTime cur_time)
+{
+	TTime dt = (m_dwCurrentTime = cur_time) - m_dwTimeFreezed;
+	
+	m_dwNextThink  += dt;
+	m_bFreezed		= false;
+
+	return dt;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CRest implementation
@@ -249,20 +273,19 @@ void CRest::Run()
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:
-			pData->Motion.m_tParams.SetParams(ePostureStand,eActionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pData->Motion.m_tTurn.Set(ePostureStand,eActionWalkTurnLeft,ePostureStand,eActionWalkTurnRight, 
-									  m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+			pData->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
 			break;
 		case ACTION_STAND:
-			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pData->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_LIE:
-			pData->Motion.m_tParams.SetParams(ePostureLie,eActionIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tParams.SetParams(eMotionLieIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pData->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_TURN:
-			pData->Motion.m_tParams.SetParams(ePostureStand,eActionIdleTurnLeft,0,m_cfStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pData->Motion.m_tTurn.Clear();
 			break;
 	}
@@ -295,7 +318,7 @@ void CRest::Replanning()
 
 	} else if (rand_val < 70) {	
 		m_tAction = ACTION_LIE;
-		pData->Motion.m_tSeq.Add(ePostureStand,eActionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pData->Motion.m_tSeq.Add(eMotionLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 		pData->Motion.m_tSeq.Switch();
 
 		dwMinRand = 5000;
@@ -312,6 +335,17 @@ void CRest::Replanning()
 	
 	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);
 	SetNextThink(dwMinRand);
+}
+
+
+TTime CRest::RestoreState(TTime cur_time)
+{
+	TTime dt = inherited::RestoreState(cur_time);
+
+	m_dwReplanTime		+= dt;
+	m_dwLastPlanTime	+= dt;
+
+	return dt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -381,9 +415,8 @@ void CAttack::Run()
 			pData->m_tPathType = ePathTypeStraight;
 			pData->vfChoosePointAndBuildPathAtOnce(0,&pEnemy->Position(), false, 0);
 
-			pData->Motion.m_tParams.SetParams(ePostureStand,eActionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pData->Motion.m_tTurn.Set(ePostureStand,eActionRunTurnLeft,ePostureStand,eActionRunTurnRight, 
-									  m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
+			pData->Motion.m_tParams.SetParams(eMotionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pData->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
 
 			SetNextThink(300);	// чем больше расстояние, тем больше SetNextThink
 
@@ -391,9 +424,9 @@ void CAttack::Run()
 		case ACTION_ATTACK_MELEE:
 			if (m_bAttackRat)
 
-				pData->Motion.m_tParams.SetParams(ePostureStand,eActionAttack2,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+				pData->Motion.m_tParams.SetParams(eMotionAttackRat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			else 
-				pData->Motion.m_tParams.SetParams(ePostureStand,eActionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
+				pData->Motion.m_tParams.SetParams(eMotionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
 				
 			pData->Motion.m_tTurn.Clear();
 			SetNextThink(400);
@@ -433,13 +466,13 @@ void CAI_Biting::ControlAnimation()
 	} 
 
 	if (!Motion.m_tSeq.Playing) {
-		if (m_tActionAnimPrevFrame != m_tActionAnim || m_tPostureAnimPrevFrame != m_tPostureAnim) {
+		if (m_tAnimPrevFrame != m_tAnim) {
 			FORCE_ANIMATION_SELECT();
 		}	
 	}
 	//--------------------------------------
 
 	// Сохранение предыдущей анимации
-	m_tActionAnimPrevFrame = m_tActionAnim;
-	m_tPostureAnimPrevFrame = m_tPostureAnim;
+	m_tAnimPrevFrame = m_tAnim;
 }
+

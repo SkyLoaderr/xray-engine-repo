@@ -46,8 +46,7 @@ const float m_cfRunAttackMinAngle	=   PI_DIV_6;
 
 class CMotionParams{
 public:
-	AI_Biting::EActionAnim		action;
-	AI_Biting::EPostureAnim		posture;
+	EMotionAnim					anim;
 
 	float						speed;
 	float						r_speed;
@@ -56,7 +55,7 @@ public:
 
 	u32							mask;
 public:	
-	void SetParams(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m);
+	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m);
 	void ApplyData(CAI_Biting *pData);
 };
 
@@ -72,9 +71,7 @@ class CMotionTurn {
 	float fMinAngle;
 	bool  bLeftSide;
 public:
-	void Set(AI_Biting::EPostureAnim p_left, AI_Biting::EActionAnim a_left, 
-			 AI_Biting::EPostureAnim p_right, AI_Biting::EActionAnim a_right,
-		 	 float s, float r_s, float min_angle);
+	void Set(EMotionAnim a_left, EMotionAnim a_right, float s, float r_s, float min_angle);
 
 	bool CheckTurning(CAI_Biting *pData);
 	void Clear() {
@@ -103,8 +100,8 @@ public:
 
 	// »нициализаци€ всех полей
 	void Init();
-	// добавить 
-	void Add(AI_Biting::EPostureAnim p, AI_Biting::EActionAnim a, float s, float r_s, float y, TTime t, u32 m);
+	// добавить состо€ние
+	void Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m);
 	// ѕерейти в следующее состо€ние, если такового не имеетс€ - завершить
 	void Switch();
 	// ¬ыполн€етс€ в каждом фрейме 
@@ -160,10 +157,11 @@ class IState {
 protected:
 	CAI_Biting		*pData;								
 
-
-	TTime			m_dwStartTime;						//!< врем€ перехода в это состо€ние
 	TTime			m_dwCurrentTime;					//!< текущее врем€
 	TTime			m_dwNextThink;						//!< врем€ следующего выполнени€ состо€ни€
+	TTime			m_dwTimeFreezed;					//!< текущее сохренЄнное врем€
+
+	bool			m_bFreezed;							//!< —осто€ние деактивировано
 
 public:
 						IState			(CAI_Biting *p);
@@ -181,6 +179,12 @@ public:
 		virtual void	Done			();									//!< —тади€ завершени€ выполнени€ состо€ни€
 
 				void	SetNextThink	(TTime next_think) {m_dwNextThink = next_think + m_dwCurrentTime;}
+		
+		 
+		/* сохранение и восстановление времени при активации критических состо€ний (kinda StandUp) */
+				void	FreezeState		();				
+		virtual	TTime	RestoreState	(TTime cur_time);					//!< возвращает dt=текущее врем€ - сохранЄнное
+				bool	IsFreezed		() {return m_bFreezed;}
 		
 };
 
@@ -201,13 +205,16 @@ class CRest : public IState {
 	TTime			m_dwReplanTime;						//!< врем€ через, которое делать планирование
 	TTime			m_dwLastPlanTime;					//!< последнее врем€ планировани€
 
+	typedef IState inherited;
+
 public:
 	CRest(CAI_Biting *p);
 
-	void Reset();
+	virtual void Reset();
 
+	virtual TTime RestoreState(TTime cur_time);
 private:
-	void Run();
+	virtual void Run();
 	void Replanning();
 };
 

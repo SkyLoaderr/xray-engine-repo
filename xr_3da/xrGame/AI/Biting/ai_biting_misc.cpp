@@ -72,9 +72,9 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 
 		return;
 	}
-	if (!caActive && (m_tActionAnim == eActionIdle) && (m_tPostureAnim == ePostureLie) && (m_tActionType!=eActionTypeLie)) {
-		_CA.Set(ePostureLie,eActionStandUp);
-	}
+//	if (!caActive && (m_tActionAnim == eActionIdle) && (m_tPostureAnim == ePostureLie) && (m_tActionType!=eActionTypeLie)) {
+//		_CA.Set(ePostureLie,eActionStandUp);
+//	}
 
 
 	// инициализация скоростей

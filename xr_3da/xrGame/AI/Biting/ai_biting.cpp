@@ -17,15 +17,15 @@ CAI_Biting::CAI_Biting()
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 
-	stateRest			= xr_new<CRest>(this);
-	stateAttack			= xr_new<CAttack>(this);
-	CurrentState		= stateRest;
+//	stateRest			= xr_new<CRest>(this);
+//	stateAttack			= xr_new<CAttack>(this);
+//	CurrentState		= stateRest;
 }
 
 CAI_Biting::~CAI_Biting()
 {
-	xr_delete(stateRest);
-	xr_delete(stateAttack);
+//	xr_delete(stateRest);
+//	xr_delete(stateAttack);
 
 }
 
@@ -46,8 +46,7 @@ void CAI_Biting::Init()
 									eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 
 	// Инициализация параметров анимации
-	m_tPostureAnim					= ePostureStand;
-	m_tActionAnim					= eActionIdle;
+	m_tAnim							= eMotionStandIdle;
 
 	m_tPathType						= ePathTypeStraight;
 
@@ -65,8 +64,6 @@ void CAI_Biting::Init()
 	m_dwActionStartTime				= 0;
 
 	_A=_B=_C=_D=_E=_F=_H=_I=_J=_K   = false;
-
-	AnimEx.Init						(ePostureStand,eActionIdle);
 	
 	m_dwAnimFrameDelay				= 100;
 	m_dwAnimLastSetTime				= 0;
@@ -103,11 +100,8 @@ void CAI_Biting::Init()
 	m_dwAttackMeleeTime				= 0;
 	m_dwAttackActorMeleeTime		= 0;
 
-///	m_tActionAnimPrevFrame	= m_tActionAnim;
-//	m_tPostureAnimPrevFrame	= m_tPostureAnim;
-
 	Motion.Init();
-	
+
 }
 
 void CAI_Biting::Die()
