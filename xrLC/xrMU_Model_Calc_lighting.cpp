@@ -305,8 +305,8 @@ void xrMU_Reference::calc_lighting	()
 		float*				_b=(float*)&c_bias;
 		for (u32 i=0; i<5; i++) {
 			for (u32 it=0; it<color.size(); it++) {
-				base_color&		__A		= model->color	[it];
-				base_color&		__B		= color			[it];
+				base_color_c		__A;	model->color	[it]._get(__A);
+				base_color_c		__B;	color			[it]._get(__B);
 				A[it]		= 	(__A.hemi);
 				B[it]		=	((float*)&__B)[i];
 			}
