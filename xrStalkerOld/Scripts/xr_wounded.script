@@ -343,6 +343,7 @@ function action_help:__init (name, storage) super (nil, name)
 				}
     self.send_time = 0
     self.actor = nil
+    self.first_sound = true
 end
 ------------
 function action_help:initialize ()
@@ -367,7 +368,7 @@ function action_help:initialize ()
           printf ("Additional theme %s added", self.a.theme)
        end   
     end
-    
+    self.first_sound = true
 end
 ------------
 function action_help:execute ()
@@ -384,7 +385,7 @@ function action_help:execute ()
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_ruka_0", true)
-       xr_sounds.play_sound (self.object, 1500, "wounded", 2)
+       --xr_sounds.play_sound (self.object, 1500, "wounded", 2)
     end
         
     if self.object:animation_count () < 2 then 
@@ -392,7 +393,12 @@ function action_help:execute ()
     end    
 
     if self.object:is_talking () == false then
-	   xr_sound.sound_update(self.object, self.sounds)		
+       if self.object:active_sound_count() == 0 and self.first_sound == true then 
+	      xr_sound.sound_update(self.object, self.sounds, true)
+	      self.first_sound = false
+	   else    
+	      xr_sound.sound_update(self.object, self.sounds)
+	   end   
 	end   
 	
     if device ():time_global () - self.send_time > 15000 then    
