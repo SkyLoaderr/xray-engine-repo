@@ -29,12 +29,7 @@ LPSTR r_stringZ(NET_Packet *self)
 	return			(xr_strdup(*temp));
 }
 
-u16	script_server_object_version	()
-{
-	if (!pSettings->section_exist(script_section) || !pSettings->line_exist(script_section,current_version))
-		return		(0);
-	return			(pSettings->r_u16(script_section,current_version));
-}
+extern u16	script_server_object_version	();
 
 void CScriptNetPacket::script_register(lua_State *L)
 {
