@@ -99,8 +99,8 @@ LPSTR GetClassNameByClassID(EObjClass cls_id)
     case OBJCLASS_SCENEOBJECT: 	return "Object";
     case OBJCLASS_LIGHT:    	return "Light";
     case OBJCLASS_SHAPE:		return "Shape";
-    case OBJCLASS_SOUND_SRC:   	return "SoundSource";
-    case OBJCLASS_SOUND_ENV:   	return "SoundEnvironment";
+    case OBJCLASS_SOUND_SRC:   	return "Sound Source";
+    case OBJCLASS_SOUND_ENV:   	return "Sound Environment";
     case OBJCLASS_GLOW:     	return "Glow";
     case OBJCLASS_SPAWNPOINT:   return "Spawn Point";
     case OBJCLASS_WAY:			return "Way";

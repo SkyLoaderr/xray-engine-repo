@@ -38,13 +38,25 @@ void CSoundManager::OnDestroy()
 
 void CSoundManager::OnFrame()
 {
-	::psSoundVEffects	= psDeviceFlags.is(rsMuteSounds)?0.f:1.f;
-	Sound->update		(Device.m_Camera.GetPosition(), Device.m_Camera.GetDirection(), Device.m_Camera.GetNormal(), Device.fTimeDelta);
+#ifdef _LEVEL_EDITOR
+	if (bNeedRefreshEnvGeom){
+    	bNeedRefreshEnvGeom = false;
+        RealRefreshEnvGeometry	();
+    }
+#endif
+	::psSoundVEffects		= psDeviceFlags.is(rsMuteSounds)?0.f:1.f;
+	Sound->update			(Device.m_Camera.GetPosition(), Device.m_Camera.GetDirection(), Device.m_Camera.GetNormal(), Device.fTimeDelta);
 }
 
 void CSoundManager::RefreshEnvLibrary()
 {
 	Sound->refresh_env_library();
-    SetEnvGeometry		();
+    RefreshEnvGeometry		();
+}
+
+void CSoundManager::MuteSounds(BOOL bVal)
+{
+	if (bVal) 	::psSoundVEffects = 0.f;
+    else		::psSoundVEffects = psDeviceFlags.is(rsMuteSounds)?0.f:1.f;
 }
 

@@ -51,8 +51,8 @@ BOOL SceneBuilder::Compile()
     	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal,true,true,true),"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource.");
             VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
+            VERIFY_COMPILE(EvictResource(),				"Failed to evict resource.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors.");
             VERIFY_COMPILE(CompileStatic(),				"Failed static remote build.");

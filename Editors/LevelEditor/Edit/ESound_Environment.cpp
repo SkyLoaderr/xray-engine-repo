@@ -4,6 +4,7 @@
 
 #include "ESound_Environment.h"
 #include "EShape.h"
+#include "ui_main.h"
 //----------------------------------------------------
 
 #define SOUND_SEL0_COLOR 	0x00A0A0A0
@@ -32,7 +33,8 @@ void ESoundEnvironment::Construct(LPVOID data)
     m_Shape					= xr_new<CEditShape>((LPVOID)NULL,"internal");
 	m_Shape->add_box		(Fidentity);
 	m_Shape->SetDrawColor	(0x205050FF, 0xFF202020);
-    m_EnvRef				= "";
+    m_EnvInner				= "";
+    m_EnvOuter				= "";
 }
 
 ESoundEnvironment::~ESoundEnvironment()
@@ -83,26 +85,44 @@ bool ESoundEnvironment::Load(IReader& F)
     }
 
     R_ASSERT(F.find_chunk(SOUND_CHUNK_ENV_REFS));
-    F.r_stringZ				(m_EnvRef);
+    F.r_stringZ				(m_EnvInner);
+    F.r_stringZ				(m_EnvOuter);
 
     return true;
 }
 
 void ESoundEnvironment::Save(IWriter& F)
 {
+	inherited::Save	(F);
+
+	F.open_chunk	(SOUND_CHUNK_VERSION);
+	F.w_u16			(SOUND_ENV_VERSION);
+	F.close_chunk	();
+
     F.open_chunk	(SOUND_CHUNK_ENV_SHAPE);
     m_Shape->Save	(F);
     F.close_chunk	();
+    
     F.open_chunk	(SOUND_CHUNK_ENV_REFS);
-    F.w_stringZ		(m_EnvRef.c_str());
+    F.w_stringZ		(m_EnvInner.c_str());
+    F.w_stringZ		(m_EnvOuter.c_str());
     F.close_chunk	();
 }
+//----------------------------------------------------
 
+void __fastcall ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
+{
+	UI.Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
+}
 //----------------------------------------------------
 
 void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 {
-    PHelper.CreateASoundEnv		(values, PHelper.PrepareKey(pref,"Evironment"),	&m_EnvRef);
+	PropValue* P;
+    P=PHelper.CreateASoundEnv		(values, PHelper.PrepareKey(pref,"Evironment Inner"),	&m_EnvInner);
+    P->SetEvents	(0,0,OnChangeEnvs);
+    P=PHelper.CreateASoundEnv		(values, PHelper.PrepareKey(pref,"Evironment Outer"),	&m_EnvOuter);
+    P->SetEvents	(0,0,OnChangeEnvs);
 }
 //----------------------------------------------------
 
@@ -119,5 +139,19 @@ void ESoundEnvironment::OnFrame()
 void ESoundEnvironment::Scale(Fvector& amount)
 {
 	m_Shape->Scale(amount);
+}
+
+const Fmatrix& ESoundEnvironment::get_box()
+{
+	xrSE_CFormed::shape_def& shape = m_Shape->get_shape(0);
+    R_ASSERT(shape.type==xrSE_CFormed::cfBox);
+    Fmatrix M			= shape.data.box;
+    M.mulA				(m_Shape->_Transform());
+}
+
+void ESoundEnvironment::OnSceneUpdate()
+{
+	inherited::OnSceneUpdate();
+	UI.Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
 }
 

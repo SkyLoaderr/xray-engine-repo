@@ -45,12 +45,12 @@ USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-    	Core._initialize			(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog			();
-
         frmSplash 					= xr_new<TfrmSplash>((TComponent*)0);
         frmSplash->Show				();
         frmSplash->Repaint			();
+
+    	Core._initialize			(_EDITOR_FILE_NAME_,ELogCallback);
+        TfrmLog::CreateLog			();
 
         frmSplash->SetStatus		("Initializing");
 

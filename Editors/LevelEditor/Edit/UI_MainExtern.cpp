@@ -23,6 +23,7 @@
 #include "folderLib.h"
 #include "sceneproperties.h"
 #include "builder.h"
+#include "SoundManager.h"
 
 bool TUI::CommandExt(int _Command, int p1, int p2)
 {
@@ -67,21 +68,21 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	                EFS.UnlockFile(0,filebuffer);
                 }
                 SetStatus("Level loading...");
-            	Command( COMMAND_CLEAR );
-				Scene.Load( filebuffer );
-				strcpy(m_LastFileName,filebuffer);
-                SetStatus("");
-              	Scene.UndoClear();
-				Scene.UndoSave();
-                Scene.m_Modified = false;
-			    Command(COMMAND_UPDATE_CAPTION);
-                Command(COMMAND_CHANGE_ACTION,eaSelect);
+            	Command			(COMMAND_CLEAR);
+				Scene.Load		(filebuffer);
+				strcpy			(m_LastFileName,filebuffer);
+                SetStatus		("");
+              	Scene.UndoClear	();
+				Scene.UndoSave	();
+                Scene.m_Modified= false;
+			    Command			(COMMAND_UPDATE_CAPTION);
+                Command			(COMMAND_CHANGE_ACTION,eaSelect);
                 // lock
-                EFS.LockFile(0,filebuffer);
+                EFS.LockFile	(0,filebuffer);
                 fraLeftBar->AppendRecentFile(filebuffer);
                 // update props
-		        Command(COMMAND_UPDATE_PROPERTIES);
-                RedrawScene();
+		        Command			(COMMAND_UPDATE_PROPERTIES);
+                RedrawScene		();
 			}
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -461,6 +462,16 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
+    	break;
+    case COMMAND_REFRESH_SOUND_ENVS:
+    	::Sound->refresh_env_library();
+//		::Sound->_restart();
+    	break;
+    case COMMAND_REFRESH_SOUND_ENV_GEOMETRY:
+    	SndLib.RefreshEnvGeometry();
+    	break;
+    case COMMAND_MUTE_SOUND:
+    	SndLib.MuteSounds(p1);
     	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );

@@ -166,6 +166,13 @@ __published:	// IDE-managed Components
 	TMenuItem *Make1;
 	TMenuItem *N23;
 	TMenuItem *miMakeSkyDome;
+	TExtBtn *ebSounds;
+	TMxPopupMenu *pmSounds;
+	TMenuItem *MenuItem11;
+	TMenuItem *MenuItem12;
+	TMenuItem *MenuItem14;
+	TMenuItem *MenuItem15;
+	TMenuItem *UpdateEnvironmentGeometry1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -246,6 +253,10 @@ __published:	// IDE-managed Components
 	void __fastcall miSceneSummaryClick(TObject *Sender);
 	void __fastcall MakeHOM1Click(TObject *Sender);
 	void __fastcall miMakeSkyDomeClick(TObject *Sender);
+	void __fastcall UpdateEnvironmentGeometry1Click(TObject *Sender);
+	void __fastcall MenuItem14Click(TObject *Sender);
+	void __fastcall ebSoundsMouseDown(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

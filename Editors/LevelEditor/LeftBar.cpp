@@ -234,6 +234,19 @@ void __fastcall TfraLeftBar::MenuItem9Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MenuItem14Click(TObject *Sender)
+{
+	UI.Command( COMMAND_REFRESH_SOUND_ENVS );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::UpdateEnvironmentGeometry1Click(
+      TObject *Sender)
+{
+	UI.Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebObjectListClick(TObject *Sender)
 {
 	UI.Command( COMMAND_SHOW_OBJECTLIST );
@@ -413,6 +426,13 @@ void __fastcall TfraLeftBar::ebImagesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	FHelper.ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebSoundsMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmSounds,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -598,6 +618,8 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
+
+
 
 
 

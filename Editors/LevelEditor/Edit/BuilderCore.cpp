@@ -21,43 +21,9 @@ bool SceneBuilder::PreparePath()
 }
 //------------------------------------------------------------------------------
 
-void SceneBuilder::PF_ProcessOne(_finddata_t& F, const char* path)
-{
-	string256	N;
-	strcpy		(N,path);
-	strcat		(N,F.name);
-
-	if (F.attrib&_A_SUBDIR) {
-		if (0==strcmp(F.name,"."))	return;
-		if (0==strcmp(F.name,"..")) return;
-		strcat(N,"\\");
-		PF_Recurse(N);
-        RmDir(N);
-	} else {
-    	unlink(N);
-	}
-}
-
-void SceneBuilder::PF_Recurse(const char* path)
-{
-    _finddata_t		sFile;
-    int				hFile;
-
-	string256		N;
-	string256		dst;
-
-    strcpy			(N,path);
-    strcat			(N,"*.*");
-    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-    PF_ProcessOne	(sFile,path);
-    while			( _findnext( hFile, &sFile ) == 0 )
-        PF_ProcessOne(sFile,path);
-    _findclose		( hFile );
-}
-
 bool SceneBuilder::PrepareFolders()
 {
-	PF_Recurse		(m_LevelPath.c_str());
+	FS.dir_delete	(m_LevelPath.c_str());
 	return true;
 }
 //------------------------------------------------------------------------------

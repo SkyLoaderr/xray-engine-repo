@@ -4,8 +4,10 @@
 
 #include "soundrender_environment.h"
 class CSoundManager{
+	bool		bNeedRefreshEnvGeom;
+    void		RealRefreshEnvGeometry();
 public:
-				CSoundManager		(){;}
+				CSoundManager		(){bNeedRefreshEnvGeom = false;}
 				~CSoundManager		(){;}
 	// texture routines
     int			GetSounds			(FS_QueryMap& files);
@@ -17,7 +19,13 @@ public:
     void 		OnFrame				();
 
     void		RefreshEnvLibrary	();
-    void		SetEnvGeometry		();
+    void		RefreshEnvGeometry	(){bNeedRefreshEnvGeom = true;}
+
+    bool 		MakeEnvGeometry		(CMemoryWriter& F, bool bErrMsg=false);
+
+    bool		Validate			();
+
+    void		MuteSounds			(BOOL bVal);
 };
 
 extern CSoundManager SndLib;

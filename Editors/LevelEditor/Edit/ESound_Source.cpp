@@ -20,6 +20,7 @@
 #define SOUND_CHUNK_TYPE				0x1002
 #define SOUND_CHUNK_SOURCE_NAME			0x1003
 #define SOUND_CHUNK_SOURCE_PARAMS		0x1004
+#define SOUND_CHUNK_SOURCE_FLAGS		0x1005
 //----------------------------------------------------
 
 ESoundSource::ESoundSource(LPVOID data, LPCSTR name)
@@ -39,6 +40,9 @@ void ESoundSource::Construct(LPVOID data)
     m_Params.freq			= 1.f;
     m_Params.min_distance   = 1.f;
     m_Params.max_distance   = 300.f;
+
+    m_Flags.set				(flLooped,TRUE);
+	m_Command				= stNothing; 
 }
 
 ESoundSource::~ESoundSource()
@@ -118,10 +122,13 @@ bool ESoundSource::Load(IReader& F)
     R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS));
     F.r				(&m_Params,sizeof(m_Params));
 
+    if(F.find_chunk(SOUND_CHUNK_SOURCE_FLAGS))
+		F.r			(&m_Flags,sizeof(m_Flags));
+    
     ResetSource		();
 
     switch (m_Type){
-    case stStaticSource: Play(TRUE); break;
+    case stStaticSource: if (m_Flags.is(flPlaying)) Play(); break;
     default: THROW;
     }
     return true;
@@ -140,6 +147,8 @@ void ESoundSource::Save(IWriter& F)
     F.open_chunk	(SOUND_CHUNK_SOURCE_NAME);
     F.w_stringZ		(m_WAVName.c_str());
     F.close_chunk	();
+
+    F.w_chunk		(SOUND_CHUNK_SOURCE_FLAGS,&m_Flags,sizeof(m_Flags));
     
     F.w_chunk		(SOUND_CHUNK_SOURCE_PARAMS,&m_Params,sizeof(m_Params));
 }
@@ -150,7 +159,7 @@ void __fastcall	ESoundSource::OnChangeWAV	(PropValue* prop)
 {
 	BOOL bPlay 		= !!m_Source.feedback;
 	ResetSource		();
-	if (bPlay) 		Play(TRUE);
+	if (bPlay) 		Play();
 }
 
 void __fastcall	ESoundSource::OnChangeSource	(PropValue* prop)
@@ -162,8 +171,8 @@ void __fastcall ESoundSource::OnControlClick(PropValue* sender)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
-    case 0: Play(TRUE);	break;
-    case 1: Stop();		break;
+    case 0: Play();	break;
+    case 1: Stop();	break;
 	}
 }
 
@@ -195,6 +204,21 @@ bool ESoundSource::GetSummaryInfo(SSceneSummary* inf)
 
 void ESoundSource::OnFrame()
 {
+	inherited::OnFrame();
+    switch (m_Command){
+    case stPlay: 	
+    	m_Source.play		(0,m_Flags.is(flLooped));
+		m_Source.set_params	(&m_Params);
+		m_Command			= stNothing; 
+    break;
+    case stStop: 
+		m_Source.stop		();
+        m_Command			= stNothing; 
+    break;
+    case stNothing:    		break;
+    default: THROW;
+    }
+	m_Flags.set(flPlaying,!!m_Source.feedback);
 }
 
 void ESoundSource::ResetSource()
@@ -208,17 +232,6 @@ void ESoundSource::SetSourceWAV(LPCSTR fname)
 {
     m_WAVName		= fname;
     ResetSource		();
-}
-
-void ESoundSource::Play(BOOL bLoop)
-{
-	m_Source.play		(0,bLoop);
-	m_Source.set_params	(&m_Params);
-}
-
-void ESoundSource::Stop()
-{
-	m_Source.stop();
 }
 
 bool ESoundSource::ExportGame(SExportStreams& F)

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 595
+  Height = 515
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -33,7 +33,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 123
-      Height = 146
+      Height = 164
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -163,7 +163,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebObjectList: TExtBtn
         Left = 2
-        Top = 95
+        Top = 114
         Width = 120
         Height = 15
         Align = alNone
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebSceneCommands: TExtBtn
         Left = 2
-        Top = 112
+        Top = 131
         Width = 120
         Height = 15
         Align = alNone
@@ -215,7 +215,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 129
+        Top = 148
         Width = 120
         Height = 15
         Align = alNone
@@ -236,7 +236,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebLightAnimationEditor: TExtBtn
         Left = 2
-        Top = 78
+        Top = 97
         Width = 120
         Height = 15
         Align = alNone
@@ -286,10 +286,41 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebImagesMouseDown
       end
+      object ebSounds: TExtBtn
+        Left = 2
+        Top = 80
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Sounds'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ebSoundsMouseDown
+      end
     end
     object paEdit: TPanel
       Left = 1
-      Top = 147
+      Top = 165
       Width = 123
       Height = 128
       Align = alTop
@@ -529,7 +560,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paTarget: TPanel
       Left = 1
-      Top = 275
+      Top = 293
       Width = 123
       Height = 213
       Align = alTop
@@ -1368,7 +1399,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 488
+      Top = 506
       Width = 123
       Height = 106
       Align = alTop
@@ -1664,7 +1695,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 114
+    Top = 138
     object N14: TMenuItem
       Caption = '-'
     end
@@ -1695,7 +1726,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 161
+    Top = 185
     object N19: TMenuItem
       Caption = '-'
     end
@@ -1742,7 +1773,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 177
+    Top = 201
     object N18: TMenuItem
       Caption = '-'
     end
@@ -1773,7 +1804,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 193
+    Top = 217
     object N17: TMenuItem
       Caption = '-'
     end
@@ -1811,7 +1842,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 209
+    Top = 233
     object N16: TMenuItem
       Caption = '-'
     end
@@ -2003,7 +2034,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 85
-    Top = 66
+    Top = 58
     object N11: TMenuItem
       Caption = '-'
     end
@@ -2028,6 +2059,40 @@ object fraLeftBar: TfraLeftBar
     object MenuItem10: TMenuItem
       Caption = 'Check New Textures'
       OnClick = Checknewtextures1Click
+    end
+  end
+  object pmSounds: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 85
+    Top = 82
+    object MenuItem11: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem12: TMenuItem
+      Caption = 'Sound Editor'
+      Enabled = False
+    end
+    object MenuItem15: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Refresh Environment Library'
+      OnClick = MenuItem14Click
+    end
+    object UpdateEnvironmentGeometry1: TMenuItem
+      Caption = 'Refresh Environment Geometry'
+      OnClick = UpdateEnvironmentGeometry1Click
     end
   end
 end

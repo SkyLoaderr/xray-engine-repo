@@ -19,6 +19,7 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "PropertiesList.h"
+#include "SoundManager.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
@@ -709,6 +710,10 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
             }
         }
     }
+    
+    if (!SndLib.Validate()) 
+    	return false;
+    
     if (bNeedOkMsg)
     	ELog.DlgMsg(mtInformation,"Validation OK!");
     return true;

@@ -15,6 +15,18 @@ class ESoundSource: public CCustomObject
     void __fastcall	OnChangeSource	(PropValue* prop);
 	void __fastcall OnControlClick	(PropValue* sender);
     void			ResetSource		();
+    enum{
+    	flLooped		= (1<<0),
+    	flPlaying		= (1<<1)
+    };
+    Flags32			m_Flags;
+    enum ECommand{
+    	stNothing,
+    	stPlay,
+        stStop,
+        stPause
+    };
+    ECommand		m_Command;
 public:
 	enum ESoundType{
     	stStaticSource = 0,
@@ -30,8 +42,8 @@ public:
 
     LPCSTR			GetSourceWAV	(){return m_WAVName.c_str();}
     void			SetSourceWAV	(LPCSTR fname);
-    void			Play			(BOOL bLoop=FALSE);
-    void			Stop			();
+    void			Play			(){m_Command=stPlay;}
+    void			Stop			(){m_Command=stStop;}
 
 	virtual void 	Render			(int priority, bool strictB2F);
 	virtual bool 	RayPick			(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);

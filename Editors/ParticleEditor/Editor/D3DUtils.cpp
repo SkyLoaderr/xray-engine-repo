@@ -290,7 +290,8 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
 
 //------------------------------------------------------------------------------
 
-void DrawRomboid(const Fvector& p, float r, u32 c){
+void DrawRomboid(const Fvector& p, float r, u32 c)
+{
 static const WORD IL[24]={0,2, 2,5, 0,5, 3,5, 3,0, 4,3, 4,0, 4,2, 1,2, 1,5, 1,3, 1,4};
 static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1};
 	u32			vBase,iBase;
@@ -300,9 +301,14 @@ static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1
     C.mul_rgb		(0.75);
     u32 c1 =		C.get();
 
-	// fill VB
+    int k;
+    FVF::L*	pv;
+    WORD* i;
 	_VertexStream*	Stream	= &RCache.Vertex;
-	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
+	_IndexStream*	StreamI	= &RCache.Index;
+
+	// fill VB
+	pv	 			= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
     pv->set			(p.x,	p.y+r,	p.z,	c1); pv++;
     pv->set			(p.x,	p.y-r,	p.z,	c1); pv++;
     pv->set			(p.x,	p.y,	p.z-r,	c1); pv++;
@@ -311,13 +317,12 @@ static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1
     pv->set			(p.x+r,	p.y,	p.z,	c1); pv++;
 	Stream->Unlock	(6,vs_L->vb_stride);
 
-	_IndexStream*	StreamI	= &RCache.Index;
-    WORD* i 		= StreamI->Lock(24,iBase);
-    for (int k=0; k<24; k++,i++) *i=IT[k];
+    i 				= StreamI->Lock(24,iBase);
+    for (k=0; k<24; k++,i++) *i=IT[k];
     StreamI->Unlock(24);
 
 	// and Render it as triangle list
-	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,0,vBase,6, iBase,12);
+	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,0,6, iBase,12);
 
     // draw lines
 	pv	 			= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
@@ -333,7 +338,7 @@ static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1
     for (k=0; k<24; k++,i++) *i=IL[k];
     StreamI->Unlock	(24);
 
-	Device.DIP		(D3DPT_LINELIST,vs_L,0,vBase,6, iBase,12);
+	Device.DIP		(D3DPT_LINELIST,vs_L,vBase,0,6, iBase,12);
 }
 //------------------------------------------------------------------------------
 
@@ -461,7 +466,8 @@ void DrawLine(const Fvector& p0, const Fvector& p1, u32 c){
 }
 
 //----------------------------------------------------
-void DrawSelectionBox(const Fvector& C, const Fvector& S, u32* c){
+void DrawSelectionBox(const Fvector& C, const Fvector& S, u32* c)
+{
     u32 cc=(c)?*c:boxcolor;
 
 	// fill VB
@@ -664,12 +670,12 @@ void DrawObjectAxis(const Fmatrix& T)
 
     u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
-	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
-	pv->p.set(d.x,d.y,0,1); pv->color=0xFF0000FF; pv++;
-	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
-	pv->p.set(r.x,r.y,0,1); pv->color=0xFFFF0000; pv++;
-	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
-	pv->p.set(n.x,n.y,0,1); pv->color=0xFF00FF00;
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
+	pv->set	(d.x,d.y,0,1, 0xFF0000FF, 0,0); pv++;
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
+	pv->set	(r.x,r.y,0,1, 0xFFFF0000, 0,0); pv++;
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
+	pv->set	(n.x,n.y,0,1, 0xFF00FF00, 0,0);
 	Stream->Unlock(6,vs_TL->vb_stride);
 
 	// Render it as line list
@@ -690,6 +696,7 @@ void DrawObjectAxis(const Fmatrix& T)
 
 void DrawSafeRect()
 {
+	THROW;
 	VERIFY( Device.bReady );
 	_VertexStream*	Stream	= &RCache.Vertex;
 	// fill VB
@@ -700,7 +707,7 @@ void DrawSafeRect()
     	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth-1,Device.m_RenderHeight_2+0.75f*float(Device.m_RenderWidth_2));
 
     u32 vBase;
-	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(7,vs_TL->vb_stride,vBase);
     pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
     pv->set(Device.dwWidth, 0, m_ColorSafeRect,0.f,0.f); 						pv++;
     pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
@@ -708,7 +715,7 @@ void DrawSafeRect()
     pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
     pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
     pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
-	Stream->Unlock(6,vs_TL->vb_stride);
+	Stream->Unlock(7,vs_TL->vb_stride);
 	// Render it as triangle list
 	Device.SetShader(Device.m_SelectionShader);
 }

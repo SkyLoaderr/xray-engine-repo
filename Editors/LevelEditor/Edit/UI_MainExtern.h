@@ -10,6 +10,9 @@ enum {
 
 	COMMAND_SHOW_OBJECTLIST,
 
+	COMMAND_REFRESH_SOUND_ENVS,
+    COMMAND_REFRESH_SOUND_ENV_GEOMETRY,
+    
     COMMAND_LIBRARY_EDITOR,
     COMMAND_LANIM_EDITOR,
     COMMAND_FILE_MENU,
@@ -49,6 +52,8 @@ enum {
     COMMAND_CLEAR_SNAP_OBJECTS,
 
     COMMAND_LOAD_FIRSTRECENT,
+
+    COMMAND_MUTE_SOUND, // p0 - on/off
 };
 //------------------------------------------------------------------------------
 
