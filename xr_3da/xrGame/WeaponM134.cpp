@@ -275,7 +275,7 @@ void CWeaponM134::Update	(u32 T)
 	case eM134Spinup:
 		fRotateSpeed += fRotateSpinupAccel*dt;
 		if (sndServo.feedback){
-			sndServo.feedback->SetPosition(vLastFP);
+			sndServo.set_position(vLastFP);
 			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
@@ -288,7 +288,7 @@ void CWeaponM134::Update	(u32 T)
 	case eM134Brake:  
 		fRotateSpeed -= fRotateBreakAccel*dt;
 		if (sndServo.feedback){
-			sndServo.feedback->SetPosition(vLastFP);
+			sndServo.set_position(vLastFP);
 			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
@@ -320,7 +320,7 @@ void CWeaponM134::Update	(u32 T)
 			}
 
 			// sound fire loop
-			if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
+			if (sndFireLoop.feedback) sndFireLoop.set_position(vLastFP);
 			if (0==iAmmoElapsed) st_target = eM134Brake;
 		}
 		break;

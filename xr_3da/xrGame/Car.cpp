@@ -34,7 +34,7 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
-	Sound->Delete		(snd_engine);
+	snd_engine.destroy	();
 	m_jeep.Destroy();
 
 }
@@ -155,7 +155,7 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 
-	Sound->Create					(snd_engine,TRUE,"car\\car1",TRUE);
+	snd_engine.create				(TRUE,"car\\car1");
 }
 
 BOOL	CCar::net_Spawn				(LPVOID DC)
@@ -231,8 +231,8 @@ void	CCar::UpdateCL				( )
 	float		velocity						= V.magnitude();
 	float		scale							= 1.5f + 1.f*(velocity/10.f);
 
-	snd_engine.feedback->SetPosition			(C);
-	snd_engine.feedback->SetFrequencyScale		(scale);
+	snd_engine.set_position			(C);
+	snd_engine.set_frequency		(scale);
 
 	// Camera
 	if (IsMyCamera())				cam_Update	(Device.fTimeDelta);

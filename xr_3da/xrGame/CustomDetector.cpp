@@ -98,19 +98,17 @@ void CCustomDetector::Update(u32 dt) {
 			} else l_time += dt;
 		}
 		if(l_buzzer) {
-			if(!m_buzzer.feedback) Sound->play_at_pos(m_buzzer, this, P, true);
-			if(m_buzzer.feedback) m_buzzer.feedback->SetPosition(P);
-		} else if(m_buzzer.feedback) m_buzzer.feedback->Stop();
+			if(!m_buzzer.feedback) m_buzzer.play_at_pos(this, P, true);
+			if(m_buzzer.feedback) m_buzzer.set_position(P);
+		} else m_buzzer.stop();
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->play_at_pos(m_noise, this, P, true);
 			if(m_noise.feedback) {
 				l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
-				m_noise.feedback->SetVolume(l_maxPow);
-
-				m_noise.feedback->SetPosition(P);
+				m_noise.set_volume	(l_maxPow);
+				m_noise.set_position(P);
 			}
-		} else if(m_noise.feedback) m_noise.feedback->Stop();
-		
+		} else if(m_noise.feedback) m_noise.stop();
 	}
 }
 
@@ -170,8 +168,8 @@ void CCustomDetector::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
 //	setVisible					(true);
 	setEnabled					(false);
-	if(m_buzzer.feedback) m_buzzer.feedback->Stop();
-	if(m_noise.feedback) m_noise.feedback->Stop();
+	m_buzzer.stop				();
+	m_noise.stop				();
 	//NET_Packet			P;
 	//u_EventGen			(P,GE_DESTROY,ID());
 	//u_EventSend			(P);

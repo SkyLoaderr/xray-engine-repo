@@ -125,7 +125,7 @@ IC void	sound::set_position			( const Fvector &pos)									{	if (feedback)	feed
 IC void	sound::set_frequency		( float freq)											{	if (feedback)	feedback->set_frequency(freq);			}
 IC void	sound::set_range			( float min, float max )								{	if (feedback)	feedback->set_range(min,max);			}
 IC void	sound::set_volume			( float vol )											{	if (feedback)	feedback->set_volume(vol);				}
-IC void	sound::stop					( )														{	if (feedback)	feedback->stop(vol);					}
+IC void	sound::stop					( )														{	if (feedback)	feedback->stop();						}
 IC void	sound::clone				( const sound& from, bool leave_type)		
 {
 	feedback	= 0;

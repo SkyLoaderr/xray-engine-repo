@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "UICustomMenu.h"
 #include "HUDManager.h"
-#include "..\xr_trims.h"
 #include "..\xr_ioconsole.h"
 
 void CUICustomMenuItem::Execute()			

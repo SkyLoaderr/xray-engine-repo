@@ -662,9 +662,9 @@ void CActor::ZoneEffect	(float z_amount)
 	if (0==sndZoneHeart.feedback)		::Sound->play_at_pos	(sndZoneHeart,		this,Position(),true);
 //	if (0==sndZoneDetector.feedback)	::Sound->play_at_pos	(sndZoneDetector,	this,Position(),true);
 	sndZoneHeart.feedback->SetVolume			(z_amount);
-	sndZoneHeart.feedback->SetPosition			(P);
+	sndZoneHeart.set_position			(P);
 //	sndZoneDetector.feedback->SetFrequencyScale	(.1f+z_amount);
-//	sndZoneDetector.feedback->SetPosition		(P);
+//	sndZoneDetector.set_position		(P);
 }
 
 void CActor::UpdateCL()
@@ -873,11 +873,11 @@ void CActor::Update	(u32 DT)
 	Fvector	s_pos		=	Position	();
 	s_pos.y				+=	.15f;
 	if (sndStep[0].feedback)		{
-		sndStep[0].feedback->SetPosition(s_pos);
+		sndStep[0].set_position(s_pos);
 		sndStep[0].feedback->SetVolume	(s_vol);
 	}
 	if (sndStep[1].feedback)		{
-		sndStep[1].feedback->SetPosition(s_pos);
+		sndStep[1].set_position(s_pos);
 		sndStep[1].feedback->SetVolume	(s_vol);
 	}
 

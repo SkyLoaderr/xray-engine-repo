@@ -152,7 +152,7 @@ void CDummyObject::UpdateCL		()
 	}
 	if (s_sound.feedback)
 	{
-		s_sound.feedback->SetPosition	(Position());
+		s_sound.set_position	(Position());
 		s_sound.feedback->SetMinMax		(10,1000);
 	}
 }

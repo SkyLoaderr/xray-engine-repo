@@ -127,7 +127,7 @@ void CCustomZone::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlF
 }
 
 void CCustomZone::SoundDestroy(sound& dest) {
-	Sound->Delete			(dest);
+	Sound->destroy		(dest);
 }
 
 //#ifdef DEBUG

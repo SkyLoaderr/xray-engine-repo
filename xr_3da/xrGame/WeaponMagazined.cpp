@@ -211,11 +211,11 @@ void CWeaponMagazined::UpdateSounds	()
 	if (sndShow.feedback || sndHide.feedback || sndShot.feedback || sndReload.feedback || sndEmptyClick.feedback)
 	{
 		UpdateFP					();
-		if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
-		if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
-		if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
-		if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
-		if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
+		if (sndShow.feedback)		sndShow.set_position		(vLastFP);
+		if (sndHide.feedback)		sndHide.set_position		(vLastFP);
+		if (sndShot.feedback)		sndShot.set_position		(vLastFP);
+		if (sndReload.feedback)		sndReload.set_position		(vLastFP);
+		if (sndEmptyClick.feedback)	sndEmptyClick.set_position	(vLastFP);
 	}
 }
 

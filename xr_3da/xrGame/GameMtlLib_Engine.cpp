@@ -3,7 +3,6 @@
 #pragma hdrstop
 
 #include "GameMtlLib.h"
-#include "../xr_trims.h"
 
 void DestroySounds(SoundSVec4& lst)
 {

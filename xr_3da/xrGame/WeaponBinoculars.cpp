@@ -141,11 +141,11 @@ void CWeaponBinoculars::UpdateCL	()
 	
 	// sound fire loop
 	UpdateFP					();
-	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
-	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
-	if (sndGyro.feedback)		sndGyro.feedback->SetPosition		(vLastFP);
-	if (sndZoomIn.feedback)		sndZoomIn.feedback->SetPosition		(vLastFP);
-	if (sndZoomOut.feedback)	sndZoomOut.feedback->SetPosition	(vLastFP);
+	sndShow.set_position		(vLastFP);
+	sndHide.set_position		(vLastFP);
+	sndGyro.set_position		(vLastFP);
+	sndZoomIn.set_position		(vLastFP);
+	sndZoomOut.set_position	(vLastFP);
 }
 
 void CWeaponBinoculars::Hide	()
@@ -203,7 +203,7 @@ void CWeaponBinoculars::state_Zooming	(float dt)
 {
 	fGyroSpeed += dt;
 	if (sndGyro.feedback){
-		sndGyro.feedback->SetPosition(vLastFP);
+		sndGyro.set_position(vLastFP);
 		float k = _sqrt(fGyroSpeed);
 		clamp(k,0.f,1.f); k = 0.6f*k+0.4f;
 		sndGyro.feedback->SetFrequencyScale(k);

@@ -183,7 +183,7 @@ void CWeaponProtecta::Update(float dt, BOOL bHUDView)
 			}
 
 			// sound fire loop
-			if (sndShoot.feedback) sndShoot.feedback->SetPosition(vLastFP);
+			if (sndShoot.feedback) sndShoot.set_position(vLastFP);
 		}
 		break;
 	}

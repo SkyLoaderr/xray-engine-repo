@@ -62,13 +62,13 @@ void	CSoundManager::play_at_pos			( sound& S, CObject* O, const Fvector &pos, BO
 	S.g_object		= O;
 	if (S.feedback)	S.feedback->Rewind	();
 	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
-	S.feedback->SetPosition				(pos);
+	S.set_position				(pos);
 }
 void	CSoundManager::PlayAtPos_Unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==soundUndefinedHandle) return;
 	pSoundRender->Play		(S.handle,0,bLoop,iLoopCnt);
-	S.feedback->SetPosition	(pos);
+	S.set_position	(pos);
 }
 void	CSoundManager::Delete				( sound& S )
 {
