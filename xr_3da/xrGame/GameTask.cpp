@@ -10,10 +10,7 @@
 #include "ai_space.h"
 #include "script_game_object.h"
 #include "script_space.h"
-
-#include "object_loader.h"
-#include "object_saver.h"
-
+#include "object_broker.h"
 #include "ui/xrXMLParser.h"
 
 TASK_DATA::TASK_DATA():index(NO_TASK),receive_time(0),finish_time(0)
