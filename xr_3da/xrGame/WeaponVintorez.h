@@ -15,5 +15,4 @@ public:
 	virtual void			Fire2End			();
 
 	virtual bool Action(s32 cmd, u32 flags);
-	virtual void			OnDrawFlame			(){}
 };

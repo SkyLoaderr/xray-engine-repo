@@ -20,7 +20,7 @@ void CWeaponPistol::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	SoundDestroy		(sndClose		);
+	sndClose.destroy();
 }
 
 void CWeaponPistol::OnH_B_Chield		()
@@ -67,7 +67,7 @@ void CWeaponPistol::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 
-	SoundCreate			(sndClose,		"close"  ,m_eSoundClose);
+	sndClose.create		(TRUE, pSettings->r_string(section, "snd_close"), m_eSoundClose);
 
 	animGet				(mhud_empty,	pSettings->r_string(*hud_sect, "anim_empty"));
 	animGet				(mhud_shot_l,	pSettings->r_string(*hud_sect, "anim_shot_last"));
@@ -92,9 +92,7 @@ void CWeaponPistol::OnShot		()
 	if(/*m_pAmmo->m_magCurr*/iAmmoElapsed > 1) m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
 	else { m_pHUD->animPlay			(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); m_opened = true; }
 	
-	// Flames
-	fFlameTime					= .1f;
-	
+
 	// Shell Drop
 	OnShellDrop					();
 

@@ -14,7 +14,7 @@ CGrenade::CGrenade(void)
 
 CGrenade::~CGrenade(void) 
 {
-	inherited::SoundDestroy(sndCheckout);
+	sndCheckout.destroy();
 }
 
 void CGrenade::Load(LPCSTR section) 
@@ -22,8 +22,7 @@ void CGrenade::Load(LPCSTR section)
 	inherited::Load(section);
 	CExplosive::Load(section);
 
-	ref_str snd_name = pSettings->r_string(section,"snd_checkout");
-	sndCheckout.create(TRUE,*snd_name, m_eSoundCheckout);
+	sndCheckout.create(TRUE,pSettings->r_string(section,"snd_checkout"), m_eSoundCheckout);
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 

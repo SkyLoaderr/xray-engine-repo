@@ -17,7 +17,6 @@ public:
 	virtual void	OnShotBoth			();
 	virtual void	switch2_Fire		();
 	virtual void	switch2_Fire2		();
-	virtual void	OnDrawFlame			();
 	virtual	void	renderable_Render	();
 
 	virtual void	UpdateSounds	();

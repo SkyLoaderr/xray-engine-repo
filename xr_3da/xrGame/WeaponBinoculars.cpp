@@ -10,15 +10,18 @@ CWeaponBinoculars::CWeaponBinoculars() : CWeapon("BINOCULARS")
 {
 	fMaxZoomFactor		= 40.f;
 	fGyroSpeed			= 0.f;
+
+	m_eSoundShow		= ESoundTypes(SOUND_TYPE_ITEM_TAKING | SOUND_TYPE_ITEM_USING);
+	m_eSoundHide		= ESoundTypes(SOUND_TYPE_ITEM_HIDING | SOUND_TYPE_ITEM_USING);
 }
 
 CWeaponBinoculars::~CWeaponBinoculars()
 {
-	SoundDestroy		(sndShow		);
-	SoundDestroy		(sndHide		);
-	SoundDestroy		(sndGyro		);
-	SoundDestroy		(sndZoomIn		);
-	SoundDestroy		(sndZoomOut		); 
+	sndShow.destroy();
+	sndHide.destroy();	
+	sndGyro.destroy();
+	sndZoomIn.destroy();
+	sndZoomOut.destroy();
 }
 
 void CWeaponBinoculars::Load	(LPCSTR section)
@@ -28,7 +31,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	//CGameObject::Load	(section);
 	CInventoryItem::Load	(section);
 
 	m_slot = pSettings->r_s32(section,"slot");
@@ -63,11 +65,11 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	setVisible			(FALSE);
 
 	// Sounds
-	SoundCreate			(sndShow,		"draw");
-	SoundCreate			(sndHide,		"holster");
-	SoundCreate			(sndGyro,		"gyro",0,TRUE);
-	SoundCreate			(sndZoomIn,		"zoomin");
-	SoundCreate			(sndZoomOut,	"zoomout");
+	sndShow.create(TRUE, pSettings->r_string(section,	"snd_draw"), m_eSoundShow);
+	sndHide.create(TRUE, pSettings->r_string(section,	"snd_holster"), m_eSoundHide);
+	sndGyro.create(TRUE, pSettings->r_string(section,	"snd_gyro"), st_SourceType);
+	sndZoomIn.create(TRUE, pSettings->r_string(section,	"snd_zoomin"), st_SourceType);
+	sndZoomOut.create(TRUE, pSettings->r_string(section,"snd_zoomout"), st_SourceType);
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);

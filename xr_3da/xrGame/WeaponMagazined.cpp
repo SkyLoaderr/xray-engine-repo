@@ -31,7 +31,6 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 
 CWeaponMagazined::~CWeaponMagazined()
 {
-	MediaUNLOAD		();
 }
 
 void CWeaponMagazined::net_Destroy()
@@ -39,11 +38,16 @@ void CWeaponMagazined::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	SoundDestroy		(sndShow		);
-	SoundDestroy		(sndHide		);
-	SoundDestroy		(sndShot		);
-	SoundDestroy		(sndEmptyClick	);
-	SoundDestroy		(sndReload		);
+	//SoundDestroy		(sndShow		);
+	//SoundDestroy		(sndHide		);
+	//SoundDestroy		(sndShot		);
+	//SoundDestroy		(sndEmptyClick	);
+	//SoundDestroy		(sndReload		);
+	sndShow.destroy();
+	sndHide.destroy();
+	sndShot.destroy();
+	sndEmptyClick.destroy();
+	sndReload.destroy();
 }
 
 
@@ -52,11 +56,12 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 	bFlame				= FALSE;
 	// Sounds
-	SoundCreate			(sndShow,		"draw"    ,m_eSoundShow);
-	SoundCreate			(sndHide,		"holster" ,m_eSoundHide);
-	SoundCreate			(sndShot,		"shoot"   ,m_eSoundShot);
-	SoundCreate			(sndEmptyClick,	"empty"   ,m_eSoundEmptyClick);
-	SoundCreate			(sndReload,		"reload"  ,m_eSoundReload);
+	sndShow.create(TRUE, pSettings->r_string(section,		"snd_draw"), m_eSoundShow);
+	sndHide.create(TRUE, pSettings->r_string(section,		"snd_holster"), m_eSoundHide);
+	sndShot.create(TRUE, pSettings->r_string(section,		"snd_shoot"), m_eSoundShot);
+	sndEmptyClick.create(TRUE, pSettings->r_string(section, "snd_empty"), m_eSoundEmptyClick);
+	sndReload.create(TRUE, pSettings->r_string(section,		"snd_reload"), m_eSoundReload);
+		
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
@@ -65,8 +70,6 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_show,		pSettings->r_string(*hud_sect, "anim_draw"));
 	animGet				(mhud_hide,		pSettings->r_string(*hud_sect, "anim_holster"));
 	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
-
-	MediaLOAD	();
 }
 
 void CWeaponMagazined::FireStart		()
@@ -430,12 +433,6 @@ void CWeaponMagazined::renderable_Render	()
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
 	}
-	
-	if (((eFire==STATE) || (eReload==STATE))&& bFlame) 
-	{
-		UpdateFP	();
-		OnDrawFlame	();
-	}
 }
 
 void CWeaponMagazined::SetDefaults	()
@@ -459,29 +456,6 @@ void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Co
 	inherited::FireShotmark		(vDir, vEnd, R, target_material);
 }
 
-void CWeaponMagazined::MediaLOAD		()
-{
-	if (hFlames.size())		return;
-
-/*	// flame textures
-	LPCSTR S		= pSettings->r_string	(cNameSect(),"flame");
-	u32 scnt		= _GetItemCount(S);
-	string256		name;
-	for (u32 i=0; i<scnt; ++i)
-	{
-		hFlames.push_back	(ref_shader());
-		ShaderCreate		(hFlames.back(),"effects\\flame",_GetItem(S,i,name));
-	}*/
-}
-
-void CWeaponMagazined::MediaUNLOAD	()
-{
-	for (u32 i=0; i<hFlames.size(); ++i)
-		ShaderDestroy(hFlames[i]);
-	hFlames.clear();
-}
-
-
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
@@ -499,9 +473,6 @@ void CWeaponMagazined::OnShot		()
 	// Animation
 	PlayAnimShoot();
 		
-	// Flames
-	fFlameTime					= .1f;
-	
 	// Shell Drop
 	OnShellDrop					();
 	

@@ -57,11 +57,6 @@ CWeapon::CWeapon(LPCSTR name)
 	vLastFD.set			(0,0,0);
 	vLastSP.set			(0,0,0);
 
-	iFlameDiv			= 0;
-	fFlameLength		= 0;
-	fFlameSize			= 0;
-	fFlameTime			= -1;
-
 	dispVelFactor		= 0.2f;
 	dispJumpFactor		= 4.f;
 	dispCrouchFactor	= 0.75f;
@@ -123,29 +118,6 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 		if (M)			lst.push_back(M);
 	}
 	R_ASSERT2(!lst.empty(),prefix);
-}
-
-void CWeapon::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/)
-{
-	string256	name,temp;
-	strconcat	(name,"weapons\\",GetName(),"_",s_name,".ogg");
-	if (FS.exist(temp,"$game_sounds$",name)) 
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
-	if (FS.exist(temp,"$game_sounds$",name))	
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'",name,GetName());
-}
-
-void CWeapon::SoundDestroy	(ref_sound& dest)
-{
-	dest.destroy			();
 }
 
 void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
@@ -429,10 +401,6 @@ void CWeapon::Load		(LPCSTR section)
 
 	
 	// flames
-	iFlameDiv			= pSettings->r_s32			(section,"flame_div"		);
-	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
-	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
-
 	if(pSettings->line_exist(section,"flame_particles"))
 		m_sFlameParticles	= pSettings->r_string		(section,"flame_particles" );
 

@@ -26,11 +26,8 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 	//// Sounds
-	//SoundCreate			(sndShow,		"draw"    ,m_eSoundShow);
-	//SoundCreate			(sndHide,		"holster" ,m_eSoundHide);
-	SoundCreate			(sndShotG,		"shoot"   ,m_eSoundShot);
-	//SoundCreate			(sndEmptyClick,	"empty"   ,m_eSoundEmptyClick);
-	SoundCreate			(sndReloadG,		"reload"  ,m_eSoundReload);
+	sndShotG.create(TRUE, pSettings->r_string(section,"snd_shoot_grenade"), m_eSoundShot);
+	sndReloadG.create(TRUE, pSettings->r_string(section,"snd_reload_grenade"), m_eSoundReload);
 	
 	m_sGrenadeFlameParticles = pSettings->r_string(section, "grenade_flame_particles");
 	
@@ -78,6 +75,16 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 
 	iMagazineSize2 = iMagazineSize;
 }
+
+void CWeaponMagazinedWGrenade::net_Destroy()
+{
+	inherited::net_Destroy();
+
+	// sounds
+	sndShotG.destroy();
+	sndReloadG.destroy();
+}
+
 
 BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) 
 {

@@ -39,7 +39,6 @@ private:
 	ref_sound				sndFireLoop;
 	ref_sound				sndServo;
 
-	xr_vector<ref_shader>	hFlames;
 
 	int						iWpnRotBone;
 	int						iHUDRotBone;
@@ -48,10 +47,6 @@ private:
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
 
-	int						iFlameDiv;
-	float					fFlameLength;
-	float					fFlameSize;
-	
 	BYTE					bRotAxisHUD;
 	BYTE					bRotAxisWpn;
 

@@ -19,6 +19,10 @@ protected:
 	ref_sound			sndShow;
 	ref_sound			sndHide;
 
+	ESoundTypes		m_eSoundShow;
+	ESoundTypes		m_eSoundHide;
+
+
 	// HUD :: Animations
 	MotionSVec		mhud_idle;
 	MotionSVec		mhud_hide;

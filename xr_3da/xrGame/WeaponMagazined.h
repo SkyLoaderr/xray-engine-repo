@@ -40,9 +40,6 @@ protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void	OnMagazineEmpty	();
 
-	virtual void	MediaLOAD		();
-	virtual void	MediaUNLOAD		();
-	
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Fire	();
 	virtual void	switch2_Fire2	(){}

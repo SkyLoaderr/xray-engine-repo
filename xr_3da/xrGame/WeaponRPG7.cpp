@@ -47,7 +47,8 @@ CWeaponRPG7Grenade::~CWeaponRPG7Grenade()
 {
 	::Render->light_destroy(m_pLight);
 	xr_delete	(m_pPhysicsShell);
-	SoundDestroy(sndExplode);
+	
+	sndExplode.destroy();
 }
 
 void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContact& c) 
@@ -139,7 +140,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
-	SoundCreate(sndExplode,		"explode", m_eSoundExplode);
+	sndExplode.create		(TRUE, pSettings->r_string(section, "snd_explode"), m_eSoundExplode);
 	m_state = stInactive;
 }
 
@@ -594,28 +595,6 @@ void CWeaponRPG7Grenade::UpdateCL()
 	}
 }
 
-void CWeaponRPG7Grenade::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
-{
-	string256	name,temp;
-	strconcat	(name,"weapons\\","rpg7","_",s_name,".ogg");
-	if (FS.exist(temp,"$game_sounds$",name)) 
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
-	if (FS.exist(temp,"$game_sounds$",name))	
-	{
-		dest.create		(TRUE,name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find ref_sound '%s' for weapon '%s'", name, "rpg_grenade");
-}
-
-void CWeaponRPG7Grenade::SoundDestroy(ref_sound& dest) 
-{
-	dest.destroy();
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //

@@ -7,7 +7,7 @@
 
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 {
-    m_eSoundShotBoth	= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING /*| eSoundType*/);
+    m_eSoundShotBoth	= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 	
 	m_pFlameParticles2 = NULL;
 }
@@ -21,72 +21,22 @@ void CWeaponShotgun::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	SoundDestroy		(sndShot		);
+	sndShot.destroy();
 }
 
 void CWeaponShotgun::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 
-	// Звук и анимация для дуплета
-	SoundCreate			(sndShotBoth,		"shoot_both"   ,m_eSoundShotBoth);
-	animGet				(mhud_shot_boths,	pSettings->r_string(*hud_sect,"anim_shoot_both"));
-}
-
-
-#define FLAME_TIME 0.05f
-void CWeaponShotgun::OnDrawFlame	()
-{
-	return;
-	if(eFire2 != STATE) inherited::OnDrawFlame();
-	else if (fFlameTime>0)	
-	{
-		// fire flash
-#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
-		/*
-		Fvector P = vLastFP;
-		float k=fFlameTime/FLAME_TIME;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; ++i)
-		{
-			f		*= 0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
-			P.add(D);
-		}
-		*/
-
-		std::swap(m_pHUD->vFirePoint, m_pHUD->vFirePoint2);
-		std::swap(vFirePoint, vFirePoint2);
-		UpdateFP();
-
-		// fire flash 2
-#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
-		/*
-		P = vLastFP;
-		k=fFlameTime/FLAME_TIME;
-		D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
-		f = fFlameSize;
-		for (int i=0; i<iFlameDiv; ++i)
-		{
-			f		*= 0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
-			P.add(D);
-		}
-		fFlameTime -= Device.fTimeDelta;
-		*/
-	}
+	// Звук и анимация для выстрела дуплетом
+	sndShotBoth.create(TRUE, pSettings->r_string(section, "snd_shoot_duplet"), m_eSoundShotBoth);
+	animGet	(mhud_shot_boths,	pSettings->r_string(*hud_sect,"anim_shoot_both"));
 }
 
 
 void CWeaponShotgun::renderable_Render	()
 {
 	inherited::renderable_Render();
-	if(STATE == eFire2) OnDrawFlame();
 }
 
 
@@ -170,9 +120,6 @@ void CWeaponShotgun::OnShotBoth()
 	
 	// анимация дуплета
 	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shot_boths.size())],FALSE,this);
-	
-	// Flames
-	fFlameTime					= .1f;
 	
 	// Shell Drop
 	OnShellDrop					();

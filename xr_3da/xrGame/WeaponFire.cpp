@@ -104,47 +104,6 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	return				bResult;
 }
 
-//нарисовать вспышку пламени из оружия
-void CWeapon::OnDrawFlame	()
-{
-	if (fFlameTime>0)	
-	{
-#pragma todo("Oles to Yura: replace '::Render->add_Patch' with particles")
-		/*
-		// fire flash
-		Fvector P = vLastFP;
-		float k=fFlameTime/FLAME_TIME;
-		Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength*k)/float(iFlameDiv));
-		float f = fFlameSize;
-		for (int i=0; i<iFlameDiv; ++i)
-		{
-			f		*= 0.9f;
-			float	S = f+f*::Random.randF	();
-			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
-			P.add(D);
-		}
-		*/
-
-		
-/*		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
-
-*/
-		/*if(m_pFlameParticles && m_pFlameParticles->PSI_alive())
-		{
-			UpdateFlameParticles();
-		}*/
-		
-		
-
-
-		fFlameTime -= Device.fTimeDelta;
-
-
-	}
-}
-
 void CWeapon::FireStart	()
 {
 	bWorking=true;	

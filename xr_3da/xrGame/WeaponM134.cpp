@@ -59,10 +59,6 @@ CWeaponM134::CWeaponM134() : CWeapon("M134")
 	bRotAxisHUD		= 0;
 	bRotAxisWpn		= 0;
 	
-	iFlameDiv		= 0;
-	fFlameLength	= 0;
-	fFlameSize		= 0;
-
 	dwServoMaxFreq	= 10000;
 	dwServoMinFreq	= 22050;
 	
@@ -101,10 +97,6 @@ void CWeaponM134::Load	(LPCSTR section)
 	bRotAxisHUD		= pSettings->ReadTOKEN(section,"rot_axis_hud",axis_token);
 	bRotAxisWpn		= pSettings->ReadTOKEN(section,"rot_axis_wpn",axis_token);
 	
-	iFlameDiv		= pSettings->r_s32	(section,"flame_div");
-	fFlameLength	= pSettings->r_float(section,"flame_length");
-	fFlameSize		= pSettings->r_float(section,"flame_size");
-	
 	dwServoMaxFreq	= pSettings->r_s32(section,"servo_max_freq");
 	dwServoMinFreq	= pSettings->r_s32(section,"servo_min_freq");
 	
@@ -119,25 +111,6 @@ void CWeaponM134::Load	(LPCSTR section)
 	FlameLOAD		();
 }
 
-void CWeaponM134::FlameLOAD()
-{
-	// flame textures
-	LPCSTR S		= pSettings->r_string	(cName(),"flame");
-	u32 scnt		= _GetItemCount(S);
-	char name		[255];
-	ref_shader		tmp;
-	for (u32 i=0; i<scnt; ++i)
-	{
-		tmp.create			("effects\\flame",_GetItem(S,i,name));
-		hFlames.push_back	(tmp);
-	}
-}
-void CWeaponM134::FlameUNLOAD()
-{
-	for (u32 i=0; i<hFlames.size(); ++i)
-		hFlames[i].destroy();
-	hFlames.clear();
-}
 
 void CWeaponM134::FireStart()
 {
@@ -349,7 +322,6 @@ void CWeaponM134::renderable_Render	()
 	if (st_current==eM134Fire) 
 	{
 		UpdateFP	();
-		OnDrawFlame	();
 	}
 }
 

@@ -11,9 +11,6 @@ public:
 	CWeaponRPG7Grenade(void);
 	virtual ~CWeaponRPG7Grenade(void);
 
-	void SoundCreate(ref_sound& dest, LPCSTR name, int iType, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(ref_sound& dest);
-
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();

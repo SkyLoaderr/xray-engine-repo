@@ -57,13 +57,6 @@ protected:
 	Fvector					vFirePoint;
 	Fvector					vFirePoint2;
 
-	// Media :: flames
-	svector<ref_shader,8>	hFlames;
-	int						iFlameDiv;
-	float					fFlameLength;
-	float					fFlameSize;
-	float					fFlameTime;
-
 	void					animGet					(MotionSVec& lst, LPCSTR prefix);
 protected:
 	//CPhysicsShell*			m_pPhysicsShell;
@@ -177,8 +170,6 @@ protected:
 	virtual void			UpdateXForm			();
 protected:
 	// Utilities
-	void					SoundCreate			(ref_sound&		dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
-	void					SoundDestroy		(ref_sound&		dest);
 	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
 	void					ShaderDestroy		(ref_shader&	dest);
 
@@ -214,7 +205,6 @@ public:
 	virtual bool			IsZoomed			()			{return m_bZoomMode;}
 	CUIStaticItem*			ZoomTexture			();
 
-	virtual void			OnDrawFlame			();
 	
 	//общие функции для работы с партиклами оружия
 	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);
