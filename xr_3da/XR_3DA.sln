@@ -110,6 +110,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "..\xrLC\xrLC.vcproj", "{A4ABD75E-825B-4D09-B3B2-2709682E40C8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EBF9B543-0830-4866-9B48-DC0740E87E8A} = {EBF9B543-0830-4866-9B48-DC0740E87E8A}
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33} = {65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27} = {F1836CE2-59EF-4189-8B9C-D103A511CB27}
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5} = {A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
@@ -132,9 +133,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrAI", "..\xrAI\xrAI.vcproj
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ETools", "..\ETools\ETools.vcproj", "{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 22
+		SccNumberOfProjects = 23
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -222,6 +228,10 @@ Global
 		SccProjectUniqueName21 = ..\\xrAI\\xrAI.vcproj
 		SccProjectName21 = \u0022$/xrAI\u0022,\u0020ULAAAAAA
 		SccLocalPath21 = ..\\xrAI
+		CanCheckoutShared = true
+		SccProjectUniqueName22 = ..\\ETools\\ETools.vcproj
+		SccProjectName22 = \u0022$/Editors/Tools/ETools\u0022,\u0020ADFAAAAA
+		SccLocalPath22 = ..\\ETools
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -385,6 +395,14 @@ Global
 		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Mixed.Build.0 = Mixed|Win32
 		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Release.ActiveCfg = Release|Win32
 		{EA5932F3-02FE-4AD3-89E8-7072DC465D25}.Release.Build.0 = Release|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Debug.ActiveCfg = Debug|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Debug.Build.0 = Debug|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.DebugNoExceptions.Build.0 = Debug|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Mixed.ActiveCfg = Mixed|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Mixed.Build.0 = Mixed|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.ActiveCfg = Release|Win32
+		{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection

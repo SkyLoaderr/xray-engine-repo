@@ -5186,6 +5186,9 @@
 							RelativePath=".\script_ini_file.h">
 						</File>
 						<File
+							RelativePath=".\script_ini_file_inline.h">
+						</File>
+						<File
 							RelativePath=".\script_ini_file_script.cpp">
 						</File>
 						<Filter
