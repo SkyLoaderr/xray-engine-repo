@@ -73,6 +73,18 @@
 		<text>Принести его ПДА пьяному долговцу</text>
 	</string>
 
+	<string id="bar_crazy_veterans_quest">
+		<text>Разобраться со свихнувшимися ветеранами</text>
+	</string>
+	<string id="bar_kill_veterans">
+		<text>Уничтожить лагерь сумасшедших ветеранов</text>
+	</string>
+	<string id="bar_kill_crazy_veterans">
+		<text>Убить ветеранов и взять ПДА их лидера</text>
+	</string>
+	<string id="bar_bring_pda_lucky">
+		<text>Принести этот ПДА бармену в качестве доказательства</text>
+	</string>
 
 
 </string_table>
