@@ -65,7 +65,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				Weapons->weapon_remove				(W);
 				Weapons->ActivateWeaponHistory		();
 				W->H_SetParent						(0);
-				feel_touch.push_back				(W);
 				return;
 			}
 
@@ -75,7 +74,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			{
 				// R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
 				A->H_SetParent						(0);
-				feel_touch.push_back				(A);
 				return;
 			}
 		}
