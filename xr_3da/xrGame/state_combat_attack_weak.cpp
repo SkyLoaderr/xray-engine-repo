@@ -44,7 +44,6 @@ void CStateAttackWeak::reload			(LPCSTR section)
 void CStateAttackWeak::initialize		()
 {
 	inherited::initialize			();
-	m_object->set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 }
 
 void CStateAttackWeak::execute			()
@@ -54,11 +53,10 @@ void CStateAttackWeak::execute			()
 	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
 	m_object->CSightManager::update				(eLookTypeFirePoint,&m_object->enemy()->Position());
 	m_object->set_level_dest_vertex				(m_object->enemy()->level_vertex_id());
-	Fvector										enemy_position = m_object->enemy()->Position();
 	m_object->CStalkerMovementManager::update	(
 		0,
 		0,
-		&enemy_position,
+		&m_object->enemy()->Position(),
 		0,
 		CMovementManager::ePathTypeLevelPath,
 		CMovementManager::eDetailPathTypeSmooth,

@@ -72,6 +72,13 @@ float CAbstractObjectManager::evaluate				(T *object) const
 TEMPLATE_SPECIALIZATION
 bool CAbstractObjectManager::useful					(T *object) const
 {
+	const ISpatial			*self = dynamic_cast<const ISpatial*>(object);
+	if (!self)
+		return				(false);
+
+	if ((self->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
+		return				(false);
+
 	return					(true);
 }
 

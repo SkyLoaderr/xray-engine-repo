@@ -78,7 +78,8 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 		sound_power			= 1.f;
 		CHitMemoryManager	*hit_memory_manager = dynamic_cast<CHitMemoryManager*>(this);
 		CEntityAlive		*entity_alive = dynamic_cast<CEntityAlive*>(object);
-		if (entity_alive && hit_memory_manager)
+		CObject				*object = dynamic_cast<CObject*>(this);
+		if (entity_alive && hit_memory_manager && (!object || (object->ID() != entity_alive->ID())))
 			hit_memory_manager->add_hit_object(entity_alive);
 	}
 	
@@ -95,11 +96,11 @@ void CSoundMemoryManager::add_sound_object(CObject *object, int sound_type, cons
 	VERIFY					(self_object);
 
 	// we do not want to save our own sounds
-	if (self_object == object)
+	if (object && (self_object->ID() == object->ID()))
 		return;
 
 	// we do not want to save the sounds which was from the items we own
-	if (object && (object->H_Parent() == self_object))
+	if (object && object->H_Parent() && (object->H_Parent()->ID() == self_object->ID()))
 		return;
 
 	// we do not want to save sounds from the non-alive objects (?!)

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "visual_memory_manager.h"
-#include "custommonster.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
@@ -175,22 +174,19 @@ void CVisualMemoryManager::update				()
 	}
 	
 	// verifying if object is online
-	xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflivePredicate());
+	xr_vector<CVisibleObject>::iterator		J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflivePredicate());
 	m_objects->erase						(J,m_objects->end());
 }
 
-bool CVisualMemoryManager::visible(u32 dwNodeID, float yaw) const
+bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fov) const
 {
-	const CCustomMonster	*const_object = dynamic_cast<const CCustomMonster*>(this);
-	CCustomMonster			*object = const_cast<CCustomMonster*>(const_object);
-	VERIFY					(object);
-	Fvector tDirection;
-	tDirection.sub(ai().level_graph().vertex_position(dwNodeID),object->Position());
-	tDirection.normalize_safe();
-	SRotation tRotation;
-	object->mk_rotation(tDirection,tRotation);
-	if (angle_difference(yaw,tRotation.yaw) <= object->eye_fov*PI/180.f/2.f)
-		return(ai().level_graph().check_vertex_in_direction(level_vertex_id(),object->Position(),dwNodeID));
+	Fvector					direction;
+	direction.sub			(ai().level_graph().vertex_position(_level_vertex_id),Position());
+	direction.normalize_safe();
+	float					y, p;
+	direction.getHP			(y,p);
+	if (angle_difference(yaw,y) <= eye_fov*PI/180.f/2.f)
+		return(ai().level_graph().check_vertex_in_direction(level_vertex_id(),Position(),_level_vertex_id));
 	else
 		return(false);
 }

@@ -52,8 +52,9 @@ void CStateGatherItems::execute			()
 {
 	VERIFY										(m_object->item());
 	Msg											("%6d : %s",Level().timeServer(),m_object->item()->cName());
-#ifndef NO_AI
-	m_object->play								(eStalkerSoundHumming,60000,10000);
+	if (m_object->item()->H_Parent()) {
+		m_object = m_object;
+	}
 	m_object->set_level_dest_vertex				(m_object->item()->level_vertex_id());
 	m_object->CStalkerMovementManager::update	(
 		0,
@@ -68,7 +69,6 @@ void CStateGatherItems::execute			()
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#endif
 }
 
 void CStateGatherItems::finalize		()

@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "state_free_no_alife.h"
 #include "ai/stalker/ai_stalker.h"
+#include "inventory_item.h"
 
 using namespace MonsterSpace;
 
@@ -50,7 +51,6 @@ void CStateFreeNoAlife::initialize		()
 
 void CStateFreeNoAlife::execute			()
 {
-#ifndef NO_AI
 	m_object->play								(eStalkerSoundHumming,60000,10000);
 	m_object->CStalkerMovementManager::update	(
 		0,
@@ -64,22 +64,8 @@ void CStateFreeNoAlife::execute			()
 		eMentalStateFree
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#endif
-//	m_object->set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id());
-//	m_object->CStalkerMovementManager::update	(
-//		0,
-//		0,
-//		&Level().CurrentEntity()->Position(),
-//		0,
-//		CMovementManager::ePathTypeLevelPath,
-//		CMovementManager::eDetailPathTypeSmooth,
-//		eBodyStateStand,
-//		eMovementTypeWalk,
-//		eMentalStateFree
-//	);
-//	m_object->CSightManager::update				(eLookTypePoint,&Level().CurrentEntity()->Position());
 //	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle,m_object->best_weapon());
 }
 
 void CStateFreeNoAlife::finalize		()

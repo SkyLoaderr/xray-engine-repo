@@ -56,5 +56,5 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool /**bIfRayPick/**/)
 {
-	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw));
+	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
 }

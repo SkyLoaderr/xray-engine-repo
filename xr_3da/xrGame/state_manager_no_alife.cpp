@@ -52,10 +52,10 @@ void CStateManagerNoALife::initialize		()
 
 void CStateManagerNoALife::execute			()
 {
-//	if (!m_object->item())
+	if (!m_object->item())
 		set_dest_state		(eNoALifeStateFree);
-//	else
-//		set_dest_state		(eNoALifeGatherItems);
+	else
+		set_dest_state		(eNoALifeGatherItems);
 
 	inherited::execute		();
 }
