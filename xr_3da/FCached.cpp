@@ -131,7 +131,7 @@ void FCached::Load(const char* N, CStream *data, DWORD dwFlags)
 	}
 	
 	// checking indices range
-
+	if (pVertices && pIndices)	R_ASSERT(ValidateIndices(vCount,iCount,pIndices));
 }
 
 #define PCOPY(a)	a = pFrom->a
