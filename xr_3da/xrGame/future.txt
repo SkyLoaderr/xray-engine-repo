@@ -16,19 +16,22 @@ renderer	engine
 	overal directions
 		focus on improving realism
 		focus on dynamic/physical content
-		focus on dynamic lighting
+		focus on dynamic lighting/shadowing
 		focus on deep postprocessing
 		focus on volumetric tech
 		focus on displacement mapping and deformations
 		focus on per-pixel materials
-		ab
-		
+	research directions
+		global illumination
+		photon mapping
+
+
 sound		engine
 	overal directions
-		focus on improving quality
-		5.1 content authoring / delivery
-		deep music content scripting
 		focus on material interactions and wave tracing
+		focus on improving quality
+		deep music content scripting
+		5.1 content authoring / delivery
 
 network		engine
 	overal directions
@@ -39,11 +42,10 @@ network		engine
 physical	engine		
 	overal directions
 		scalability
-		offload work to GPU
+		offload work to GPU	(sparse matrix solvers, etc)
 
 core		tech
 	overal directions
-	improving programming time
-	error protection on all levels
-	more scripting at all levels
-	
+		improving programming time
+		error protection on all levels
+		more scripting (safe) at all levels
