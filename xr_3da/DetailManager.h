@@ -17,8 +17,6 @@ const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
 const float		dm_fade			= float(2*dm_size)-.5f;
 
-DEFINE_SVECTOR(CDetail*,dm_max_objects,DetailVec,DetailIt);
-
 class ENGINE_API CDetailManager  
 {
 public:
@@ -54,18 +52,21 @@ public:
 		SlotPart			G[dm_obj_in_slot];
 	};
 
-	typedef svector<vector<SlotItem*>,dm_max_objects>	vis_list;
+	DEFINE_SVECTOR	(vector<SlotItem*>,dm_max_objects,vis_list,vis_it);
+	DEFINE_SVECTOR	(CDetail*,dm_max_objects,DetailVec,DetailIt);
 public:	
 	int						dither			[16][16];
 public:
-	CStream*				dtFS;
-	DetailHeader			dtH;
-	DetailSlot*				dtSlots;		// note: pointer into VFS
-	DetailSlot				DS_empty;
+	CStream*						dtFS;
+	DetailHeader					dtH;
+	DetailSlot*						dtSlots;		// note: pointer into VFS
+	DetailSlot						DS_empty;
+
 public:
-	DetailVec				objects;
-	svector<Slot,dm_cache_size>		cache;
-	vis_list						visible[3];	// 0=still, 1=Wave1, 2=Wave2
+	DetailVec						objects;
+	vis_list						visible	[3];	// 0=still, 1=Wave1, 2=Wave2
+	svector<Slot,dm_cache_size>		pool;
+
 public:
 #ifdef _EDITOR
 	virtual ObjectList*		GetSnapObjects	()=0;
@@ -93,7 +94,7 @@ public:
 	void					Decompress		(int sx, int sz, Slot& D);
 	Slot&					Query			(int sx, int sz);
 	DetailSlot&				QueryDB			(int sx, int sz);
-	void					UpdateCache		(int limit);
+	void					UpdateCache		(int sx, int sy, int limit);
 	
 	void					Load			();
 	void					Unload			();

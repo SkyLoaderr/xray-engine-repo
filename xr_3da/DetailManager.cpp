@@ -165,7 +165,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
-	UpdateCache					(4);
+	UpdateCache					(s_x,s_y,5);
 
 	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
 	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
