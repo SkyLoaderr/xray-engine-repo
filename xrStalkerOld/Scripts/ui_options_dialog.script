@@ -158,7 +158,7 @@ end
 
 function options_dialog:OnButton_video()
 	self:HideAllTabs()
-	self.tab_video.main_frame:Show(true)
+	self.tab_video:Show(true)
 end
 
 function options_dialog:OnButton_accept()
