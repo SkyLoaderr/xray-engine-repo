@@ -286,7 +286,7 @@ void ComputeEdgeCostAtVertex(P_Vertex *v) {
 	// only cache the cost of the least cost edge at this vertex
 	// (in member variable collapse) as well as the value of the 
 	// cost (in member variable objdist).
-	if(v->neighbor.num==0) {
+	if(v->neighbor.num()==0){
 		// v doesn't have neighbors so it costs nothing to collapse
 		v->collapse=NULL;
 		v->objdist=-0.01f;

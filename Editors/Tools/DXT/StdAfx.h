@@ -89,9 +89,11 @@ typedef unsigned __int64	CLASS_ID;
 #define	NO_XR_VERTEX
 
 #ifdef DEBUG
+#define R_ASSERT2	_ASSERT
 #define R_ASSERT	_ASSERT
 #define VERIFY		_ASSERT
 #else
+#define R_ASSERT2
 #define R_ASSERT
 #define VERIFY  
 #endif
@@ -101,6 +103,10 @@ typedef unsigned __int64	CLASS_ID;
 #define _DELETE(a)      {delete(a); (a)=NULL;}
 #define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
 #define _RELEASE(a)     { if (a){ a->Release(); a=NULL;}}
+
+#define xr_malloc	malloc
+#define xr_realloc	realloc
+#define xr_free		free
 
 #define Log //
 #define Msg //
@@ -143,43 +149,4 @@ IC void clamp( T& val, const T _low, const T _high ){
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
-
-
-
-
-/*
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
-// Third generation by Oles.
-
-#if !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
-#define AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_
-
-#pragma once
-#define WIN32_LEAN_AND_MEAN			// Exclude rarely-used stuff from Windows headers
-#define STRICT						// Enable strict syntax
-#define IDIRECTPLAY2_OR_GREATER
-
-#include <windows.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <io.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-
-#define ENGINE_API 
-#define R_ASSERT(a) if (!a) throw
-#define _FREE(a) if (a){ free(a); a=0;}
-#define IC __forceinline
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__A9DB83DB_A9FD_11D0_BFD1_444553540000__INCLUDED_)
-*/
+#endif
