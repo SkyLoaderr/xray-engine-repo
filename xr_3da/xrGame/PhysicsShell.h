@@ -211,7 +211,6 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
-	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;
 	virtual void				Update					()													= 0;
 
 	virtual void				setMass1				(float M)											= 0;

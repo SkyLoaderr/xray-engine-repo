@@ -569,7 +569,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		//		}
 	}
 	if(!b_jumping&&b_at_wall)//!is_control&&
-		dBodyAddForce(m_body,0.f,m.mass*9.8f*2.f,0.f);
+		dBodyAddForce(m_body,0.f,m.mass*world_gravity,0.f);
 
 	if(b_jumping)
 	{
@@ -832,6 +832,16 @@ void CPHSimpleCharacter::SetPosition(Fvector pos){
 	m_safe_position[1]=pos.y+m_radius;
 	m_safe_position[2]=pos.z;
 	b_death_pos=true;
+
+	dGeomGetUserData(m_wheel)->pushing_b_neg=false;
+	dGeomGetUserData(m_hat)->pushing_b_neg=false;
+	dGeomGetUserData(m_geom_shell)->pushing_b_neg=false;
+	dGeomGetUserData(m_hat)->pushing_b_neg=false;
+	dGeomGetUserData(m_wheel)->pushing_neg=false;
+	dGeomGetUserData(m_hat)->pushing_neg=false;
+	dGeomGetUserData(m_geom_shell)->pushing_neg=false;
+	dGeomGetUserData(m_hat)->pushing_neg=false;
+
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
 	m_body_interpolation.ResetPositions();
 }

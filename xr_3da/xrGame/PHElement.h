@@ -100,8 +100,8 @@ public:
 		k_w= angular;
 		k_l=linear;
 	}
-	void					CallBack						(CBoneInstance* B);																//called from updateCL visual influent
-	void					CallBack1						(CBoneInstance* B);																//called from updateCL visual influent
+	void					BonesCallBack					(CBoneInstance* B);																//called from updateCL visual influent
+																//called from updateCL visual influent
 	void					PhDataUpdate					(dReal step);																	//ph update
 	void					PhTune							(dReal step);																	//ph update
 	virtual void			Freeze							()				;

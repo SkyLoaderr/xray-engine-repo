@@ -305,7 +305,7 @@ void CCar::SDoor::ClosedToOpening()
 	CKinematics* pKinematics=PKinematics(pcar->Visual());
 //	CBoneData& bone_data= pKinematics->LL_GetData(u16(bone_id));
 	CBoneInstance& bone_instance=pKinematics->LL_GetBoneInstance(u16(bone_id));
-	bone_instance.set_callback(pcar->PPhysicsShell()->GetBonesCallback1(),joint->PSecond_element());
+	bone_instance.set_callback(pcar->PPhysicsShell()->GetBonesCallback(),joint->PSecond_element());
 	door_form.set(bone_instance.mTransform);
 	//door_form.mulB(pcar->XFORM());
 	joint->PSecond_element()->mXFORM.set(door_form);

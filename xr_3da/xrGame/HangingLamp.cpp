@@ -89,7 +89,7 @@ void CHangingLamp::UpdateCL	()
 	inherited::UpdateCL		();
 
 	if(m_pPhysicsShell)
-		renderable.xform.set	(m_pPhysicsShell->mXFORM);
+		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
 	if (Alive()&&light_render->get_active())
 	{

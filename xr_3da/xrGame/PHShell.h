@@ -49,9 +49,7 @@ virtual ~CPHShell				()
 
 	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
-	static void __stdcall	BonesCallback1				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
-	virtual	BoneCallbackFun* GetBonesCallback1		()	{return BonesCallback1 ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		CPHElement* ph_element=dynamic_cast<CPHElement*>(E);
 		ph_element->SetShell(this);

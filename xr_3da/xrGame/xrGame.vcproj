@@ -2333,16 +2333,6 @@
 									</File>
 								</Filter>
 								<Filter
-									Name="Silencer"
-									Filter="">
-									<File
-										RelativePath=".\Silencer.cpp">
-									</File>
-									<File
-										RelativePath=".\Silencer.h">
-									</File>
-								</Filter>
-								<Filter
 									Name="Weapon Generic"
 									Filter="">
 									<File
@@ -2370,6 +2360,16 @@
 									<File
 										RelativePath="WeaponAmmo.h">
 									</File>
+									<Filter
+										Name="Silencer"
+										Filter="">
+										<File
+											RelativePath=".\Silencer.cpp">
+										</File>
+										<File
+											RelativePath=".\Silencer.h">
+										</File>
+									</Filter>
 								</Filter>
 								<Filter
 									Name="HUD"
@@ -3866,6 +3866,9 @@
 						</File>
 						<File
 							RelativePath="PHShell.h">
+						</File>
+						<File
+							RelativePath=".\PHShellActivate.cpp">
 						</File>
 					</Filter>
 					<Filter
