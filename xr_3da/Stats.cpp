@@ -96,8 +96,8 @@ void CStats::Show()
 		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",fTPS);
-		F.OutNext	("VERT:        %d/%d",dwVert,dwVert/dwCalls);
-		F.OutNext	("POLY:        %d/%d",dwPoly,dwPoly/dwCalls);
+		F.OutNext	("VERT:        %d/%d",dwVert,dwCalls?dwVert/dwCalls:0);
+		F.OutNext	("POLY:        %d/%d",dwPoly,dwCalls?dwPoly/dwCalls:0);
 		F.OutNext	("DIP/DP:      %d",dwCalls);
 		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
 		F.OutNext	("xforms:      %d",dwXFORMs);

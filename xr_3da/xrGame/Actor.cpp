@@ -158,6 +158,9 @@ CActor::~CActor()
 	// sounds 3D
 	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
+
+	// Sheduler
+	Engine.Sheduler.UnregisterRT	(this);
 }
 
 void CActor::Load		(LPCSTR section )
