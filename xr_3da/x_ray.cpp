@@ -277,6 +277,7 @@ void	test_rtc	()
 	Msg				("* decompression: %5.2f M/s (%3.1f%%)",rD,100.f*rD/rMc);
 }
 */
+extern void	testbed	(void);
 
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
@@ -292,6 +293,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
+//#ifdef DEBUG
+//	testbed	();
+//#endif
 
 	InitEngine();
 	InitSettings();

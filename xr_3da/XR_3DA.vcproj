@@ -317,6 +317,9 @@
 				RelativePath=".\stdafx.h">
 			</File>
 			<File
+				RelativePath=".\testbed.cpp">
+			</File>
+			<File
 				RelativePath=".\x_ray.cpp">
 			</File>
 			<File
