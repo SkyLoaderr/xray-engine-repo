@@ -3,6 +3,7 @@
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
+	CCreator::net_Stop			();
 	IPureClient::Disconnect		();
 	if (Server)
 	{
