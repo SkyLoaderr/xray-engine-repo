@@ -47,9 +47,10 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_ARTEFACT:			return xr_new<CSE_ALifeItemArtefact>			(caSection);
 
 		// Zones
-		case CLSID_ZONE:				return xr_new<CSE_ALifeAnomalousZone>			(caSection);
-		case CLSID_Z_MBALD:				return xr_new<CSE_ALifeAnomalousZone>			(caSection);
-		case CLSID_Z_MINCER:			return xr_new<CSE_ALifeAnomalousZone>			(caSection);
+		case CLSID_ZONE:
+		case CLSID_Z_MBALD:
+		case CLSID_Z_MINCER:
+		case CLSID_LEVEL_CHANGER:		return xr_new<CSE_ALifeAnomalousZone>			(caSection);
 
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		return xr_new<CSE_ALifeItemDetector>			(caSection);

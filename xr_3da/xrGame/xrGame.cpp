@@ -808,6 +808,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "customzone.h"
 #include "mosquitobald.h"
 #include "mincer.h"
+#include "level_changer.h"
 
 #include "simpledetector.h"
 #include "physicobject.h"
@@ -882,6 +883,7 @@ extern "C" {
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
 		case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
 		case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
+		case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
 
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;

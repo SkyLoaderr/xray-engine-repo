@@ -95,7 +95,8 @@ void CCustomZone::Load(LPCSTR section) {
 void CCustomZone::net_Destroy() {
 	inherited::net_Destroy();
 	SoundDestroy(m_ambient);
-	while(m_effectsPSs.size()) { xr_delete(*(m_effectsPSs.begin())); m_effectsPSs.pop_front(); }
+#pragma todo("Dima to Oles', AlexMX and Vitya : why PGObjects cannot be delted properly?")
+	//while(m_effectsPSs.size()) { xr_delete(*(m_effectsPSs.begin())); m_effectsPSs.pop_front(); }
 }
 
 //void CCustomZone::Update(u32 dt) {

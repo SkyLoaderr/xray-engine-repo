@@ -104,6 +104,7 @@
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')
 #define CLSID_Z_MBALD				MK_CLSID('Z','_','M','B','A','L','D',' ')
 #define CLSID_Z_MINCER				MK_CLSID('Z','_','M','I','N','C','E','R')
+#define CLSID_LEVEL_CHANGER			MK_CLSID('L','V','L','_','C','H','N','G')
 
 // Detectors
 #define CLSID_DETECTOR_SIMPLE		MK_CLSID('D','_','S','I','M','D','E','T')

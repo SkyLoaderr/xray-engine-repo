@@ -1520,6 +1520,16 @@
 						Name="AcidFog"
 						Filter="">
 					</Filter>
+					<Filter
+						Name="LevelChanger"
+						Filter="">
+						<File
+							RelativePath=".\level_changer.cpp">
+						</File>
+						<File
+							RelativePath=".\level_changer.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_lamp"
