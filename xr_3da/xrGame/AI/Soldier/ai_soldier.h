@@ -343,8 +343,6 @@ class CAI_Soldier : public CCustomMonster
 		float				m_fDistanceWent;
 		char				m_cStep;
 
-		CWeaponList			*Weapons;
-
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 		static void	__stdcall LegsSpinCallback(CBoneInstance*);

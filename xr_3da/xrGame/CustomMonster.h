@@ -102,6 +102,8 @@ public:
 	float				m_fSoundPower;
 	float				m_fStartPower;
 	CLevel::SPath		*m_tpPath;
+	CWeaponList			*Weapons;
+
 
 	virtual void		Think() = 0;
 
