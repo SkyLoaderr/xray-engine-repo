@@ -97,8 +97,8 @@ typedef	resptr_core<ShaderElement,resptr_base<ShaderElement> >								ref_seleme
 //////////////////////////////////////////////////////////////////////////
 struct ENGINE_API		Shader			: public xr_resource									{
 public:
-	ref_selement		E		[5];	// R1 - 0=combi_lod0(det),	1=combi_lod1(normal),	2=L_point,		3=L_spot,	4=L_for_models,	
-										// R2 - 0=deffer,			1=dsm,					2=psm,			3=ssm		(or special usage)
+	ref_selement		E		[5];	// R1 - 0=norm_lod0(det),	1=norm_lod1(normal),	2=L_point,		3=L_spot,	4=L_for_models,	
+										// R2 - 0=deffer,			1=norm_lod1(normal),	2=psm,			3=ssm,		4=dsm
 						~Shader			();
 	BOOL				equal			(Shader& S);
 	BOOL				equal			(Shader* S);
@@ -111,13 +111,19 @@ struct ENGINE_API		resptrcode_shader	: public resptr_base<Shader>
 };
 typedef	resptr_core<Shader,resptrcode_shader>												ref_shader;
 
-enum	SE_R1
-{
+enum	SE_R1				{
 	SE_R1_NORMAL_HQ			= 0,	// high quality/detail
 	SE_R1_NORMAL_LQ			= 1,	// normal or low quality
 	SE_R1_LPOINT			= 2,	// add: point light
 	SE_R1_LSPOT				= 3,	// add:	spot light
 	SE_R1_LMODELS			= 4,	// lighting info for models
+};
+enum	SE_R2				{
+	SE_R2_NORMAL_HQ			= 0,	// high quality/detail
+	SE_R2_NORMAL_LQ			= 1,	// normal or low quality
+	SE_R2_LPOINT			= 2,	// add: point light
+	SE_R2_LSPOT				= 3,	// add:	spot light
+	SE_R2_LDIRECT			= 4,	// lighting info for models
 };
 
 #pragma pack(pop)

@@ -102,10 +102,6 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 
 ShaderElement* CResourceManager::_CreateElement(	CBlender_Compile& C)
 {
-	// Options + Shader def
-	ShaderElement		S;
-	C.Compile			(&S);
-
 	// Search equal in shaders array
 	for (u32 it=0; it<v_elements.size(); it++)
 		if (S.equal(*(v_elements[it])))	return v_elements[it];
@@ -122,61 +118,6 @@ void CResourceManager::_DeleteElement(const ShaderElement* S)
 	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
 	if (reclaim(v_elements,S))						return;
 	Msg	("! ERROR: Failed to find compiled 'shader-element'");
-}
-
-Shader*	CResourceManager::_cpp_Create	(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
-{
-	CBlender_Compile	C;
-	Shader				S;
-
-	// Access to template
-	C.BT				= _GetBlender	(s_shader?s_shader:"null");
-	C.bEditor			= FALSE;
-	C.bDetail			= FALSE;
-#ifdef _EDITOR
-	if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
-	C.bEditor			= TRUE;
-#endif
-
-	// Parse names
-	_ParseList			(C.L_textures,	s_textures	);
-	_ParseList			(C.L_constants,	s_constants	);
-	_ParseList			(C.L_matrices,	s_matrices	);
-
-	// Compile element	(LOD0 - HQ)
-	C.iElement			= 0;
-	C.bDetail			= TRUE;
-	S.E[0]				= _CreateElement	(C);
-
-	// Compile element	(LOD1)
-	C.iElement			= 1;
-	C.bDetail			= FALSE;
-	S.E[1]				= _CreateElement	(C);
-
-	// Compile element
-	C.iElement			= 2;
-	C.bDetail			= FALSE;
-	S.E[2]				= _CreateElement	(C);
-
-	// Compile element
-	C.iElement			= 3;
-	C.bDetail			= FALSE;
-	S.E[3]				= _CreateElement	(C);
-
-	// Compile element
-	C.iElement			= 4;
-	C.bDetail			= FALSE;
-	S.E[4]				= _CreateElement	(C);
-
-	// Search equal in shaders array
-	for (u32 it=0; it<v_shaders.size(); it++)
-		if (S.equal(v_shaders[it]))	return v_shaders[it];
-
-	// Create _new_ entry
-	Shader*		N			=	xr_new<Shader>(S);
-	N->dwFlags				|=	xr_resource::RF_REGISTERED;
-	v_shaders.push_back		(N);
-	return N;
 }
 
 Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
@@ -198,35 +139,65 @@ Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_te
 	_ParseList			(C.L_constants,	s_constants	);
 	_ParseList			(C.L_matrices,	s_matrices	);
 
-	// Compile element
-	C.iElement			= 0;
-	C.bDetail			= TRUE;
-	S.E[0]				= _CreateElement	(C);
+	// Compile element	(LOD0 - HQ)
+	{
+		C.iElement			= 0;
+		C.bDetail			= TRUE;
+		ShaderElement		S;
+		C._cpp_Compile		(&S);
+		S.E[0]				= _CreateElement	(S);
+	}
+
+	// Compile element	(LOD1)
+	{
+		C.iElement			= 1;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._cpp_Compile		(&S);
+		S.E[1]				= _CreateElement	(S);
+	}
 
 	// Compile element
-	C.iElement			= 1;
-	C.bDetail			= FALSE;
-	S.E[1]				= _CreateElement	(C);
+	{
+		C.iElement			= 2;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._cpp_Compile		(&S);
+		S.E[2]				= _CreateElement	(S);
+	}
 
 	// Compile element
-	C.iElement			= 2;
-	C.bDetail			= FALSE;
-	S.E[2]				= _CreateElement	(C);
+	{
+		C.iElement			= 3;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._cpp_Compile		(&S);
+		S.E[3]				= _CreateElement	(C);
+	}
 
 	// Compile element
-	C.iElement			= 3;
-	C.bDetail			= FALSE;
-	S.E[3]				= _CreateElement	(C);
+	{
+		C.iElement			= 4;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._cpp_Compile		(&S);
+		S.E[4]				= _CreateElement	(C);
+	}
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
 		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
-	Shader*		N		=	xr_new<Shader>	(S);
-	N->dwFlags			|=	xr_resource::RF_REGISTERED;
-	v_shaders.push_back	(N);
+	Shader*		N			=	xr_new<Shader>(S);
+	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	v_shaders.push_back		(N);
 	return N;
+}
+
+Shader*	CResourceManager::_cpp_Create	(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+{
+	return	_cpp_Create(_GetBlender(s_shader?s_shader:"null"),s_textures,s_constants,s_matrices);
 }
 
 Shader*		CResourceManager::Create	(IBlender*	B,		LPCSTR s_shader,	LPCSTR s_textures,	LPCSTR s_constants, LPCSTR s_matrices)

@@ -137,5 +137,112 @@ void	CResourceManager::LS_Unload			()
 
 BOOL	CResourceManager::_lua_HasShader	(LPCSTR s_shader)
 {
+#ifdef _EDITOR
+	return Script::bfIsObjectPresent(LSVM,s_shader,"editor",LUA_TFUNCTION);
+#else
 	return Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION);
+#endif
+}
+
+Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
+{
+	CBlender_Compile	C;
+	Shader				S;
+
+	// Access to template
+	C.BT				= NULL;
+	C.bEditor			= FALSE;
+	C.bDetail			= FALSE;
+
+	// Parse names
+	_ParseList			(C.L_textures,	s_textures	);
+	string256			fname;
+
+	// Compile element	(LOD0 - HQ)
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION))
+	{
+		C.iElement			= 0;
+		C.bDetail			= TRUE;
+		ShaderElement		S;
+		C._lua_Compile		(&S,strconcat(fname,s_shader,".normal"));
+		S.E[0]				= _CreateElement	(S);
+	}
+
+	// Compile element	(LOD1)
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION))
+	{
+		C.iElement			= 1;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._lua_Compile		(&S,strconcat(fname,s_shader,".normal"));
+		S.E[1]				= _CreateElement	(S);
+	}
+
+	// Compile element
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_point",LUA_TFUNCTION))
+	{
+		C.iElement			= 2;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_point"));
+		S.E[2]				= _CreateElement	(S);
+	}
+
+	// Compile element
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_spot",LUA_TFUNCTION))
+	{
+		C.iElement			= 3;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_spot"));
+		S.E[3]				= _CreateElement	(C);
+	}
+
+	// Compile element
+	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_special",LUA_TFUNCTION))
+	{
+		C.iElement			= 4;
+		C.bDetail			= FALSE;
+		ShaderElement		S;
+		C._lua_Compile		(&S,strconcat(fname,s_shader,".l_special"));
+		S.E[4]				= _CreateElement	(C);
+	}
+
+	// Search equal in shaders array
+	for (u32 it=0; it<v_shaders.size(); it++)
+		if (S.equal(v_shaders[it]))	return v_shaders[it];
+
+	// Create _new_ entry
+	Shader*		N			=	xr_new<Shader>(S);
+	N->dwFlags				|=	xr_resource::RF_REGISTERED;
+	v_shaders.push_back		(N);
+	return N;
+}
+
+void	CBlender_Compile::_lua_Compile	(ShaderElement* _SH, LPCSTR name)
+{
+	SH =			_SH;
+	RS.Invalidate	();
+
+	// Analyze possibility to detail this shader
+	detail_texture	= NULL;
+	detail_scaler	= NULL;
+	if (bDetail && BT->canBeDetailed())
+	{
+		// 
+		sh_list& lst=	L_textures;
+		int id		=	ParseName(BT->oT_Name);
+		LPCSTR N	=	BT->oT_Name;
+		if (id>=0)	{
+			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+			N = lst [id];
+		}
+		if (!Device.Resources->_GetDetailTexture(N,detail_texture,detail_scaler))	bDetail	= FALSE;
+	} else {
+		bDetail	= FALSE;
+	}
+
+	// Compile
+	adopt_compiler	ac(this);
+	luabind::call_function<void>	(ac);
 }

@@ -135,7 +135,7 @@ public:
 	SConstantList*					_CreateConstantList	(SConstantList& L);
 	void							_DeleteConstantList	(const SConstantList* L);
 
-	ShaderElement*					_CreateElement		(CBlender_Compile& C);
+	ShaderElement*					_CreateElement		(ShaderElement& L);
 	void							_DeleteElement		(const ShaderElement* L);
 
 	Shader*							_cpp_Create			(LPCSTR		s_shader,	LPCSTR s_textures=0,	LPCSTR s_constants=0,	LPCSTR s_matrices=0);

@@ -33,7 +33,7 @@ CBlender_Compile::CBlender_Compile		()
 CBlender_Compile::~CBlender_Compile		()
 {
 }
-void	CBlender_Compile::Compile		(ShaderElement* _SH)
+void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 {
 	SH =			_SH;
 	RS.Invalidate	();
