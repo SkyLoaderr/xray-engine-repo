@@ -18,7 +18,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 	string256					file_name;
 	FS.update_path				(file_name,"$game_data$",GRAPH_NAME);
 #endif	
-	m_tpGraphVFS				= FS.r_open(file_name);
+	m_tpGraphVFS					= FS.r_open(file_name);
 	m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();

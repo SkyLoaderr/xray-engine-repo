@@ -145,9 +145,11 @@ bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);
@@ -173,9 +175,11 @@ u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector 
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);
@@ -205,9 +209,11 @@ float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvecto
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);
@@ -251,9 +257,11 @@ float CLevelGraph::mark_nodes_in_direction(u32 start_vertex_id, const Fvector &s
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);
@@ -284,9 +292,11 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);
@@ -323,9 +333,11 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance		= start_point.distance_to_xz(temp_point);
@@ -397,10 +409,11 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 		begin				(dwCurNode,I,E);
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
-		for ( ; I != E; ++I)
-			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
-				if (ai().cross_table().vertex(iNextNode).game_vertex_id() == tGraphID)
-					choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		for ( ; I != E; ++I) {
+			iNextNode = value(dwCurNode,I);
+			if (valid_vertex_id(iNextNode) && (iPrevIndex == iNextNode) && (ai().cross_table().vertex(iNextNode).game_vertex_id() == tGraphID))
+				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+		}
 
 		if (saved_index > -1) {
 			fCurDistance	= start_point.distance_to_xz(temp_point);

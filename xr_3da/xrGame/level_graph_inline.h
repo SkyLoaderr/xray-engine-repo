@@ -15,7 +15,7 @@ IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 
 IC bool CLevelGraph::valid_vertex_id	(u32 id) const
 {
-	return				(id && (int(id) < (int)header().vertex_count()));
+	return				(id && (id < header().vertex_count()));
 }
 
 IC	CLevelGraph::CVertex	*CLevelGraph::vertex(u32 id) const
@@ -48,8 +48,8 @@ IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, fl
 {
 	int					_x,_z;
 	unpack_xz			(vertex_position,_x,_z);
-	x					= float(_x)*header().cell_size();
-	z 					= float(_z)*header().cell_size();
+	x					= float(_x)*header().cell_size() + header().box().min.x;
+	z 					= float(_z)*header().cell_size() + header().box().min.z;
 }
 
 template <typename T>
@@ -67,11 +67,8 @@ IC void CLevelGraph::unpack_xz(const CLevelGraph::CVertex *vertex, T &x, T &z) c
 IC const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &source_position) const
 {
 	Fvector				dest_position;
-	int					x,z;
-	unpack_xz			(source_position,x,z);
-	dest_position.x		= float(x)*header().cell_size();
+	unpack_xz			(source_position,dest_position.x,dest_position.z);
 	dest_position.y 	= (float(source_position.y)/65535)*header().factor_y() + header().box().min.y;
-	dest_position.z 	= float(z)*header().cell_size();
 	return				(dest_position);
 }
 
@@ -83,7 +80,7 @@ IC const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CL
 IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
 {
 	float				sp = 1/header().cell_size();
-	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_L + .5f)*m_row_length) + iFloor((source_position.z - header().box().min.z)*sp   + EPS_L + .5f);
+	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_L + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_L + .5f);
 	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_L);
 	clamp				(pxz,0,(1 << 24) - 1);
 	dest_position.xz	= u32(pxz);
@@ -283,8 +280,7 @@ IC	void CLevelGraph::set_level_id(u32 level_id)
 	m_level_id			= level_id;
 }
 
-//IC	void CLevelGraph::begin(const CVertex &vertex, const_iterator &begin, const_iterator &end) const
-IC	void CLevelGraph::begin(const CVertex &, const_iterator &begin, const_iterator &end) const
+IC	void CLevelGraph::begin(const CVertex &/**vertex/**/, const_iterator &begin, const_iterator &end) const
 {
 	begin				= 0;
 	end					= 4;

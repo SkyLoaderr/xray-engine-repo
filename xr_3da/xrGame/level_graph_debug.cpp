@@ -258,7 +258,7 @@ void CLevelGraph::render()
 
 	for (u32 Nid=0; Nid<header().vertex_count(); Nid++)
 	{
-		CLevelGraph::CVertex&	N	= *m_nodes_ptr[Nid];
+		CLevelGraph::CVertex&	N	= *vertex(Nid);
 		Fvector			PC,P0,P1;
 		PC				= vertex_position(N);
 

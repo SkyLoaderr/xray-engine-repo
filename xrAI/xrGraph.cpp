@@ -22,7 +22,7 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 
-#define THREAD_COUNT				6
+#define THREAD_COUNT				1
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - _sqrt((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
 
@@ -110,15 +110,15 @@ void vfRemoveDuplicateGraphPoints(u32 &dwVertexCount)
 bool bfCheckForGraphConnectivity(CLevelGraph *tpAI_Map)
 {
 	if (!tpaGraph.size())
-		return(true);
+		return				(true);
 
 	while (dwaStack.size())
-		dwaStack.pop();
-	dwaStack.push(0);
+		dwaStack.pop		();
+	dwaStack.push			(0);
 	tpAI_Map->q_mark_bit[0] = true;
 	while (!dwaStack.empty()) {
-		u32 dwCurrentVertex = dwaStack.top();
-		dwaStack.pop();
+		u32					dwCurrentVertex = dwaStack.top();
+		dwaStack.pop		();
 		SDynamicGraphVertex &tDynamicGraphVertex = tpaGraph[dwCurrentVertex];
 		for (int i=0; i<(int)tDynamicGraphVertex.tNeighbourCount; i++)
 			if (!tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges[i].vertex_id()]) {
@@ -129,11 +129,11 @@ bool bfCheckForGraphConnectivity(CLevelGraph *tpAI_Map)
 	for (int i=0; i<(int)tpaGraph.size(); i++)
 		if (!tpAI_Map->q_mark_bit[i]) {
 			tpAI_Map->q_mark_bit.assign(tpAI_Map->header().vertex_count(),false);
-			return(false);
+			return			(false);
 		}
 	
 	tpAI_Map->q_mark_bit.assign(tpAI_Map->header().vertex_count(),false);
-	return(true);
+	return					(true);
 }
 
 u32 dwfErasePoints()
@@ -346,7 +346,7 @@ void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;		// multithreading
 	xrCriticalSection	tCriticalSection;	// thread synchronization
-	CLevelGraph				*tpAI_Map;
+	CLevelGraph			*tpAI_Map;
 	//pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	Msg("Building Level %s",name);
@@ -372,6 +372,7 @@ void xrBuildGraph(LPCSTR name)
 	tThreadManager.wait();
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
+	FlushLog();
 
 	dwGraphPoints = tpaGraph.size();
 	Phase("Removing incoherent graph points");

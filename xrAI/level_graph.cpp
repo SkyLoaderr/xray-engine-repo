@@ -17,7 +17,7 @@
 #ifndef AI_COMPILER
 CLevelGraph::CLevelGraph					()
 #else
-CLevelGraph::CLevelGraph					(LPCSTR file_name)
+CLevelGraph::CLevelGraph					(LPCSTR filename)
 #endif
 {
 #ifndef AI_COMPILER
@@ -26,13 +26,16 @@ CLevelGraph::CLevelGraph					(LPCSTR file_name)
 #endif
 	string256					file_name;
 	FS.update_path				(file_name,"$level$","level.ai");
+#else
+	string256					file_name;
+	strconcat					(file_name,filename,"level.ai");
 #endif
 	m_reader					= FS.r_open	(file_name);
 
 	// m_header & data
 	m_reader->r					(&m_header,sizeof(m_header));
 	R_ASSERT					(header().version() == XRAI_CURRENT_VERSION);
-	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + .5f) + 1;
+	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + .5f);
 	m_palette_size				= m_reader->r_u32();
 	m_cover_palette				= (Cover*)m_reader->pointer();
 	m_reader->advance			(m_palette_size*sizeof(Cover));
@@ -47,6 +50,15 @@ CLevelGraph::CLevelGraph					(LPCSTR file_name)
 			m_reader->r			(&vertex,sizeof(vertex));
 		}
 	}
+
+	bool	b;
+	for (int i=1; i<(int)header().vertex_count(); ++i) {
+		b		= inside(i,vertex_position(i));
+		if (!b) {
+			b=b;
+		}
+	}
+
 }
 
 CLevelGraph::~CLevelGraph		()
@@ -59,10 +71,11 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 {
 	CLevelGraph::CPosition	_node_position;
 	vertex_position			(_node_position,position);
-	for (u32 i=0, selected = u32(-1), min_dist = u32(-1); i<header().vertex_count(); ++i) {
-		CVertex				*vertex = m_nodes_ptr[i];
-		if (inside			(vertex,_node_position)) {
-			u32				dist = iFloor(_abs(vertex_plane_y(vertex) - position.y) + .5f);
+	float					min_dist = flt_max;
+	for (u32 i=1, selected = u32(-1); i<header().vertex_count(); ++i) {
+		CVertex				*_vertex = vertex(i);
+		if (inside			(_vertex,_node_position)) {
+			float			dist = _abs(vertex_plane_y(_vertex) - position.y);
 			if (dist < min_dist) {
 				min_dist	= dist;
 				selected	= i;
@@ -70,6 +83,18 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 		}
 	}
 	
+	if (selected == u32(-1)) {
+		for (u32 i=1, selected = u32(-1); i<header().vertex_count(); ++i) {
+			CVertex				*_vertex = vertex(i);
+			if (inside			(_vertex,_node_position)) {
+				float			dist = _abs(vertex_plane_y(_vertex) - position.y);
+				if (dist < min_dist) {
+					min_dist	= dist;
+					selected	= i;
+				}
+			}
+		}
+	}
 	return					(selected);
 }
 
