@@ -101,6 +101,28 @@
 			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 	</game_task>
+
+
+	<game_task id="bar_dolg_borov_quest">
+		<title>bar_dolg_borov_quest</title>
+		<objective>
+			<text>bar_dolg_borov_quest</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_kill_borov</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_info_gain</text>
+			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_return_info</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
 	
 	<game_task id="bar_crazy_veterans_quest">
 		<title>bar_crazy_veterans_quest</title>
