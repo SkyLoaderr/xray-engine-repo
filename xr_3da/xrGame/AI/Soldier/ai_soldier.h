@@ -59,8 +59,6 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierSteal,
 		aiSoldierWaitForAnimation,
 		aiSoldierWaitForTime,
-		//aiSoldierStandingUp,
-		//aiSoldierLyingDown,
 		aiSoldierAttackAim,
 		aiSoldierPointAtSmth,
 		aiSoldierPatrolHurt,
