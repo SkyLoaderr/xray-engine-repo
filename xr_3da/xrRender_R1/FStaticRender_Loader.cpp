@@ -51,13 +51,12 @@ void CRender::level_Load(IReader* fs)
 	marker						= 0;
 
 	if	(!g_pGamePersistent->bDedicatedServer)	{
-		//Sliding window
-		pApp->LoadTitle				("Loading SWIs...");
-		LoadSWIs					(fs);
-
-		// VB
+		// VB,IB,SWI
 		pApp->LoadTitle				("Loading geometry...");
-		LoadBuffers					(fs);
+		IReader*	geom			= FS.r_open	("$level$","level.geom");
+		LoadBuffers					(geom);
+		LoadSWIs					(geom);
+		FS.r_close					(geom);
 
 		// Visuals
 		pApp->LoadTitle				("Loading spatial-DB...");
@@ -85,7 +84,7 @@ void CRender::level_Load(IReader* fs)
 	pApp->LoadEnd				();
 }
 
-void CRender::level_Unload()
+void CRender::level_Unload		()
 {
 	if (0==g_pGameLevel)		return;
 
@@ -93,7 +92,6 @@ void CRender::level_Unload()
 
 	// HOM
 	HOM.Unload					();
-
 
 	//*** Details
 	Details->Unload				();

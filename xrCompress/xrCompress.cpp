@@ -70,6 +70,7 @@ BOOL	testVFS			(LPCSTR path)
 	// if (0==stricmp(p_name,"level") && (0==stricmp(p_ext,".") || 0==p_ext[0]) )	return TRUE;	// level.
 	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".ai"))					return TRUE;
 	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".gct"))					return TRUE;
+	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".details"))				return TRUE;
 	if (0==stricmp(p_ext,".ogg"))												return TRUE;
 	if (0==stricmp(p_name,"game") && 0==stricmp(p_ext,".graph"))				return TRUE;
 	return FALSE;
