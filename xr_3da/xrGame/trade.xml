@@ -10,11 +10,11 @@
 
 
 	<!-- BUTTONS -->
-	<button x="330" y="705" width="138" height="30">
+	<button x="340" y="705" width="107" height="36">
 		<texture>ui\ui_button_05</texture>
 		<text font="graffiti22" r="238" g="153" b="26">Trade</text>
 	</button>
-	<button x="560" y="705" width="138" height="30">
+	<button x="570" y="705" width="107" height="36">
 		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26">Leave</text>
 	</button>
@@ -63,7 +63,7 @@
 
 
 	<!-- DESCRIPTION WINDOW -->
-	<desc_frame_window x="350" y="22" width="320" height="256">
+	<desc_frame_window x="350" y="22" width="320" height="230">
 		<base_texture>ui\ui_frame_03</base_texture>
 	</desc_frame_window>
 
