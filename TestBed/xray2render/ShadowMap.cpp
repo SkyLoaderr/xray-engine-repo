@@ -546,34 +546,31 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 HRESULT CreateRT(IDirect3DDevice9* D, DWORD w, DWORD h, D3DFORMAT f, LPDIRECT3DTEXTURE9* pT, LPDIRECT3DSURFACE9* pS)
 {
 	if (FAILED(D->CreateTexture(w,h, 1, D3DUSAGE_RENDERTARGET, f, D3DPOOL_DEFAULT, pT, NULL)))	return E_FAIL;
-	if (FAILED((*pT)->GetSurfaceLevel(0, pS)))														return E_FAIL;
+	if (FAILED((*pT)->GetSurfaceLevel(0, pS)))													return E_FAIL;
 	return S_OK;
 }
 
-HRESULT CreateNormalizationCubeMap(IDirect3DDevice9* pD3DDev, DWORD dwWidth, WORD dwMipmaps)
+HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DTEXTURE9* pT)
 {
 	HRESULT hr;
 
-	hr = D3DXCreateCubeTexture(pD3DDev, dwWidth, dwMipmaps, 0, D3DFMT_X8R8G8B8, D3DPOOL_MANAGED, &m_pCubeTexture);
+	hr = D3DXCreateCubeTexture(D, w, 1, 0, D3DFMT_A16B16G16R16F, D3DPOOL_MANAGED, pT);
 	if(FAILED(hr))
 	{
 		return hr;
 	}
-
-	m_dwWidth = dwWidth;
-	m_dwHeight = dwWidth;
-	m_d3dFormat = D3DFMT_X8R8G8B8;
+	LPDIRECT3DTEXTURE9 m_pCubeTexture	= *pT;
 
 	for (int i = 0; i < 6; i++)
 	{
-		D3DLOCKED_RECT Locked;
-		D3DXVECTOR3 Normal;
-		float w,h;
+		D3DLOCKED_RECT	Locked;
+		D3DXVECTOR3		Normal;
+		float			w,h;
 		D3DSURFACE_DESC ddsdDesc;
 
 		m_pCubeTexture->GetLevelDesc(0, &ddsdDesc);
 
-		m_pCubeTexture->LockRect((D3DCUBEMAP_FACES)i, 0, &Locked, NULL, 0);
+		m_pCubeTexture->LockRect	((D3DCUBEMAP_FACES)i, &Locked, 0, 0);
 
 		for (int y = 0; y < ddsdDesc.Height; y++)
 		{
@@ -587,8 +584,8 @@ HRESULT CreateNormalizationCubeMap(IDirect3DDevice9* pD3DDev, DWORD dwWidth, WOR
 				w *= 2.0f;
 				w -= 1.0f;
 
-				DWORD* pBits = (DWORD*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
-				pBits += x;
+				D3DXFLOAT16* pBits = (DWORD*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
+				pBits		+= 4*x;
 
 				switch((D3DCUBEMAP_FACES)i)
 				{
@@ -615,22 +612,14 @@ HRESULT CreateNormalizationCubeMap(IDirect3DDevice9* pD3DDev, DWORD dwWidth, WOR
 					break;
 				}
 
-				D3DXVec3Normalize(&Normal, &Normal);
-
-				// Scale to be a color from 0 to 255 (127 is 0)
-				Normal += D3DXVECTOR3(1.0f, 1.0f, 1.0f);
-				Normal *= 127.0f;
-
-				// Store the color
-				*pBits = (DWORD)(((DWORD)Normal.x << 16) | ((DWORD)Normal.y << 8) | ((DWORD)Normal.z << 0));
-
+				// Normalize and store
+				D3DXVec3Normalize	(&Normal, &Normal);
+				D3DXVECTOR4	data	= D3DXVECTOR4(Normal.x,Normal.y,Normal.z,0);
+				D3DXFloat32To16Array(pBits,&data.x,4);
 			}
 		}
 		m_pCubeTexture->UnlockRect((D3DCUBEMAP_FACES)i, 0);
 	}
-
-	if ((dwMipmaps == 0) || (dwMipmaps > 1))
-		D3DXFilterCubeTexture(m_pCubeTexture, NULL, 0, D3DX_FILTER_LINEAR);
 
 	return S_OK;
 }
