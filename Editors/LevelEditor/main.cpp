@@ -155,7 +155,6 @@ void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
 {
     fraLeftBar->fsStorage->RestoreFormPlacement();
@@ -173,18 +172,30 @@ void __fastcall TfrmMain::fsStorageSavePlacement(TObject *Sender)
 
 void __fastcall TfrmMain::paWindowResize(TObject *Sender)
 {
-	D3DWindow->Left  	= 1;
-	D3DWindow->Top  	= 1;
-	D3DWindow->Width 	= paWindow->Width-2;
-	D3DWindow->Height 	= paWindow->Height-2;
+	if (psDeviceFlags.is(rsDrawSafeRect)){
+    	int w=paWindow->Width,h=paWindow->Height,w_2=w/2,h_2=h/2;
+        Irect rect;
+        if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h); 
+        else                   			rect.set(0,h_2-0.75f*float(w_2),w,0.75f*w);
+        D3DWindow->Left  	= rect.x1;
+        D3DWindow->Top  	= rect.y1;
+        D3DWindow->Width 	= rect.x2;
+        D3DWindow->Height	= rect.y2;
+    }else{
+	    D3DWindow->Left  	= 0;
+	    D3DWindow->Top  	= 0;
+    	D3DWindow->Width 	= paWindow->Width;
+    	D3DWindow->Height	= paWindow->Height;
+    }
 }
 //---------------------------------------------------------------------------
+
 
 void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 {
 	if (!UI.m_bReady) return;
 	if (D3DWindow->Focused()){
-     	paWindow->Color=TColor(0x090FFFF);
+//     	paWindow->Color=TColor(0x090FFFF);
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
 //        if (UI.IsMouseInUse())
 //            UI.OnMouseRelease(0);
@@ -193,7 +204,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
     }else{
 		UI.OnAppDeactivate();
         UI.iRelease();
-    	paWindow->Color=(TColor)0x00202020;
+//    	paWindow->Color=(TColor)0x00202020;
     }
 }
 //---------------------------------------------------------------------------
@@ -232,5 +243,6 @@ void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
     UI.MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
+
 
 

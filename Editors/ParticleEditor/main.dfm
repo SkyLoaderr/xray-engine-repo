@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 275
-  Top = 247
+  Left = 265
+  Top = 199
   Width = 660
   Height = 446
   Color = clBtnFace
@@ -107,14 +107,16 @@ object frmMain: TfrmMain
       Height = 384
       Align = alClient
       BevelOuter = bvNone
-      Color = clGray
+      Color = 4868682
       TabOrder = 1
       OnResize = paWindowResize
       object D3DWindow: TD3DWindow
-        Left = 9
-        Top = 9
-        Width = 471
-        Height = 370
+        Left = 6
+        Top = 6
+        Width = 495
+        Height = 366
+        FocusedColor = 9502719
+        UnfocusedColor = 9211020
         OnChangeFocus = D3DWindowChangeFocus
         BorderStyle = bsNone
         Color = 5592405

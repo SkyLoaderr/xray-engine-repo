@@ -126,7 +126,7 @@ EObjClass GetClassIDByClassName	(LPCSTR name)
 	else if (0==strcmp(name,"Event")) 			return OBJCLASS_PORTAL; 	
 	else if (0==strcmp(name,"Particle System")) return OBJCLASS_EVENT; 	
 	else if (0==strcmp(name,"Group")) 			return OBJCLASS_PS;		
-    else THROW2("Unknown class name");
+    else THROW2("Unknown class name"); return OBJCLASS_DUMMY;
 }
 
 bool IsClassID(EObjClass cls_id){

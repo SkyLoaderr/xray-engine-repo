@@ -352,7 +352,7 @@ xrSE_DECLARE_END
 
 //***** Zone
 //xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
-class xrSE_Zone : public xrSE_CFormed, public xrServerEntity { typedef xrServerEntity inherited; public:
+class xrSE_Zone : public xrServerEntity, public xrSE_CFormed { typedef xrServerEntity inherited; public:
 xrSE_DECLARE_END
 
 // 

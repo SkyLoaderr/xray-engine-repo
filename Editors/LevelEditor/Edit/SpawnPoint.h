@@ -77,7 +77,7 @@ public:
     virtual void	OnDeviceCreate	();
     virtual void	OnDeviceDestroy	();
 
-    void			AttachObject	(CCustomObject* obj);
+    bool			AttachObject	(CCustomObject* obj);
     void			DetachObject	();
 };
 

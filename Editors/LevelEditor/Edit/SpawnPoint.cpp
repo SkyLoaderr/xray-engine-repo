@@ -12,6 +12,8 @@
 #include "gamefont.h"
 #include "bottombar.h"
 #include "scene.h"
+#include "xrServer_Entities.h"
+#include "eshape.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
@@ -83,6 +85,16 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     strcpy	  					(m_Data->s_name_replace,owner->Name);
     m_Data->o_Position.set		(owner->PPosition);
     m_Data->o_Angle.set			(owner->PRotation);
+
+    // export cform (if needed)
+    xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
+    if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
+		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attaced shape.",owner->Name);
+    	return false;
+    }
+    CEditShape* shape			= dynamic_cast<CEditShape*>(owner->m_AttachedObject);
+    cform->shapes 				= shape->GetShapes();
+    // end
     
     NET_Packet					Packet;
     m_Data->Spawn_Write			(Packet,TRUE);
@@ -145,14 +157,27 @@ void CSpawnPoint::SetScale(Fvector& scale)
     if (m_AttachedObject) m_AttachedObject->PScale = scale;
 }
 
-void CSpawnPoint::AttachObject(CCustomObject* obj)
+bool CSpawnPoint::AttachObject(CCustomObject* obj)
 {
-	DetachObject();
-    m_AttachedObject = obj;
-	m_AttachedObject->OnAttach(this);
-    PPosition 	= m_AttachedObject->PPosition;
-    PRotation 	= m_AttachedObject->PRotation;
-    PScale 		= m_AttachedObject->PScale;
+	bool bAllowed = false;
+    // большая проверялка
+    if (m_SpawnData.Valid()){
+    	switch(obj->ClassID){
+        case OBJCLASS_SHAPE: 
+	    	bAllowed = !!dynamic_cast<xrSE_CFormed*>(m_SpawnData.m_Data);
+        break;
+        }
+    }
+    // реальный атач
+	if (bAllowed){
+        DetachObject();
+        m_AttachedObject = obj;
+        m_AttachedObject->OnAttach(this);
+        PPosition 	= m_AttachedObject->PPosition;
+        PRotation 	= m_AttachedObject->PRotation;
+        PScale 		= m_AttachedObject->PScale;
+    }
+    return bAllowed;
 }
 
 void CSpawnPoint::DetachObject()
@@ -168,6 +193,7 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 	R_ASSERT(entity_ref&&entity_ref[0]);
     m_SpawnData.Destroy	();
     m_SpawnData.Create	(entity_ref);
+    if (m_SpawnData.Valid()) m_Type = ptSpawnPoint;
     return m_SpawnData.Valid();
 }
 //----------------------------------------------------
@@ -201,7 +227,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 		Fbox bb; GetBox(bb);
 		if (::Render->occ_visible(bb)){
             if (strictB2F){
-                Device.SetTransform(D3DTS_WORLD,_Transform());
+                Device.SetTransform(D3DTS_WORLD,_TransformRP());
                 if (m_SpawnData.Valid()){
                     // render icon
 				    Shader* s 			= GetIcon(m_SpawnData.m_Data->s_name);
@@ -246,12 +272,17 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 
 bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
 {
+    if (m_AttachedObject&&m_AttachedObject->FrustumPick(frustum)) return true;
     Fbox bb; GetBox(bb);
     DWORD mask=0xff;
     return (frustum.testAABB(bb.min,bb.max,mask));
 }
 
-bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+{
+	bool bPick = false;
+    if (m_AttachedObject) bPick = m_AttachedObject->RayPick(distance, start, direction, pinf);
+    
 	Fvector pos,ray2;
     pos.set(PPosition.x,PPosition.y+RPOINT_SIZE,PPosition.z);
 	ray2.sub( pos, start );
@@ -266,7 +297,8 @@ bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, S
             }
         }
     }
-	return false;
+
+	return bPick;
 }
 //----------------------------------------------------
 void CSpawnPoint::OnAppendObject(CCustomObject* object)

@@ -45,10 +45,13 @@ bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift)
             if (1!=cnt)	ELog.DlgMsg(mtError,"Select one shape.");
             else{
                 CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);
-                base->AttachObject(from);
-                if (!Shift.Contains(ssAlt)){ 
-                    F->ebAttachObject->Down	= false;
-                    ResetActionToSelect		();
+                if (base->AttachObject(from)){
+                    if (!Shift.Contains(ssAlt)){ 
+                        F->ebAttachObject->Down	= false;
+                        ResetActionToSelect		();
+                    }
+                }else{
+		        	ELog.DlgMsg(mtError,"Attach impossible.");
                 }
             }
         }else{

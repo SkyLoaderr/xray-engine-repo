@@ -43,15 +43,15 @@ void CEditShape::ComputeBounds()
 {
 	m_Box.invalidate	();
 
-	for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
+	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
-		case stSphere:{
+		case cfSphere:{
             Fsphere&	T		= it->data.sphere;
             Fvector		P;
             P.set		(T.P);	P.sub(T.R);	m_Box.modify(P);
             P.set		(T.P);	P.add(T.R);	m_Box.modify(P);
 		}break;
-		case stBox:{
+		case cfBox:{
             Fvector		P;
             Fmatrix&	T		= it->data.box;
 				
@@ -67,61 +67,80 @@ void CEditShape::ComputeBounds()
 	m_Box.getsphere(m_Sphere.P,m_Sphere.R);
 }
 
-void CEditShape::ScaleShapes(const Fvector& val)
-{
-	Fmatrix M;
-    M.scale(val);
-	for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
-		switch (it->type){
-		case stSphere:{
-            Fsphere&	T	= it->data.sphere;
-        	if (!fis_zero(val.x))		T.R *= val.x;
-        	else if (!fis_zero(val.y))	T.R *= val.y;
-        	else if (!fis_zero(val.z))	T.R *= val.z;
-            M.transform_tiny(T.P);
-		}break;
-		case stBox:{
-            Fmatrix& B		= it->data.box;
-            B.mulA			(M);
-		}break;
+void CEditShape::SetScale(Fvector& val)	
+{ 
+	if (shapes.size()==1){
+		switch (shapes[0].type){
+		case cfSphere:{
+        	Fvector a;  a.sub(val,FScale);
+            float v;
+        	if (_abs(a.x)>_abs(a.y)){ 	if (_abs(a.x)>_abs(a.z)) v = a.x; else v = a.z;
+            }else{		            	if (_abs(a.y)>_abs(a.z)) v = a.y; else v = a.z;}
+        	FScale.add(v);	
+        }break;
+		case cfBox:		FScale.set(val.x,val.y,val.z);	break;
         default: THROW;
 		}
+    }else{
+		FScale.set(val.x,val.x,val.x);
     }
+    UpdateTransform();
+}
+
+void CEditShape::ResetScale()
+{
+	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
+		switch (it->type){
+		case cfSphere:{
+            Fsphere&	T	= it->data.sphere;
+            FTransformS.transform_tiny(T.P);
+            T.R				*= PScale.x;
+		}break;
+		case cfBox:{
+            Fmatrix& B		= it->data.box;
+            B.mulA			(FTransformS);
+		}break;
+        }
+    }
+    FScale.set		(1.f,1.f,1.f);
+    UpdateTransform	(true);
     
-	ComputeBounds();
+    ComputeBounds	();
 }
 
 void CEditShape::add_sphere(const Fsphere& S)
 {
-	m_Shapes.push_back(shape_def());
-	m_Shapes.back().type	= stSphere;
-	m_Shapes.back().data.sphere.set(S);
+	shapes.push_back(shape_def());
+	shapes.back().type	= cfSphere;
+	shapes.back().data.sphere.set(S);
     
 	ComputeBounds();
 }
 
 void CEditShape::add_box(const Fmatrix& B)
 {
-	m_Shapes.push_back(shape_def());
-	m_Shapes.back().type	= stBox;
-	m_Shapes.back().data.box.set(B);
+	shapes.push_back(shape_def());
+	shapes.back().type	= cfBox;
+	shapes.back().data.box.set(B);
     
 	ComputeBounds();
 }
 
 void CEditShape::Attach(CEditShape* from)
 {
+	ResetScale				();
 	// transfer data
-	Fmatrix M = from->_Transform();
-    M.mulA(_ITransform());
-	for (ShapeIt it=from->m_Shapes.begin(); it!=from->m_Shapes.end(); it++){
+    from->ResetScale		();
+	Fmatrix M 				= from->_Transform();
+    M.mulA					(_ITransform());
+	for (ShapeIt it=from->shapes.begin(); it!=from->shapes.end(); it++){
 		switch (it->type){
-		case stSphere:{
-            Fsphere&	T	= it->data.sphere;
+		case cfSphere:{
+            Fsphere& T		= it->data.sphere;
             M.transform_tiny(T.P);
             add_sphere		(T);
 		}break;
-		case stBox:{
+		case cfBox:{
             Fmatrix B		= it->data.box;
             B.mulA			(M);
             add_box			(B);
@@ -130,32 +149,33 @@ void CEditShape::Attach(CEditShape* from)
 		}
     }
     // common 
-    Scene.RemoveObject(from,true);
-    _DELETE		(from);
+    Scene.RemoveObject		(from,true);
+    _DELETE					(from);
     
-	ComputeBounds();
+	ComputeBounds			();
 }
 
-void CEditShape::Dettach()
+void CEditShape::Detach()
 {
-	if (m_Shapes.size()>1){
+	if (shapes.size()>1){
     	Select			(true);
+        ResetScale		();
         // create scene shapes
         const Fmatrix& M = _Transform();
-        ShapeIt it=m_Shapes.begin(); it++;
-        for (; it!=m_Shapes.end(); it++){
+        ShapeIt it=shapes.begin(); it++;
+        for (; it!=shapes.end(); it++){
             string256 namebuffer;
             Scene.GenObjectName	(OBJCLASS_SHAPE, namebuffer, Name);
             CEditShape* shape 	= (CEditShape*)NewObjectFromClassID(OBJCLASS_SHAPE, 0, namebuffer);
             switch (it->type){
-            case stSphere:{
+            case cfSphere:{
                 Fsphere	T		= it->data.sphere;
                 M.transform_tiny(T.P);
                 shape->PPosition= T.P;
                 T.P.set			(0,0,0);
                 shape->add_sphere(T);
             }break;
-            case stBox:{
+            case cfBox:{
                 Fmatrix B		= it->data.box;
                 B.mulA			(M);
                 shape->PPosition= B.c;
@@ -168,8 +188,8 @@ void CEditShape::Dettach()
 	    	shape->Select		(true);
         }
         // erase shapes in base object 
-        it=m_Shapes.begin(); it++;
-        m_Shapes.erase(it,m_Shapes.end());
+        it=shapes.begin(); it++;
+        shapes.erase(it,shapes.end());
     
         ComputeBounds();
 
@@ -179,25 +199,29 @@ void CEditShape::Dettach()
 
 bool CEditShape::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
 {
-    Fvector S,D;
-    const Fmatrix& M	= _ITransform();
-    M.transform_tiny	(S,start);
-    M.transform_dir		(D,direction);
     bool bPick			= FALSE;
 	
-	for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
+	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
-		case stSphere:{
+		case cfSphere:{
+            Fvector S,D;
+            Fmatrix M;
+            M.invert			(FTransformR);
+            M.transform_dir		(D,direction);
+            FITransform.transform_tiny(S,start);
             Fsphere&	T		= it->data.sphere;
             if (T.intersect(S,D,distance)) bPick=TRUE;
 		}break;
-		case stBox:{
+		case cfBox:{
         	Fbox box;
             box.identity		();
-            Fmatrix& B			= it->data.box;
-		    Fvector S1,D1,P;
-		    B.transform_tiny	(S1,S);
-		    B.transform_dir		(D1,D);
+            Fmatrix B;
+            B.invert			(it->data.box);
+		    Fvector S,D,S1,D1,P;
+		    FITransform.transform_tiny	(S,start);
+		    FITransform.transform_dir	(D,direction);
+		    B.transform_tiny			(S1,S);
+		    B.transform_dir				(D1,D);
             if (box.Pick2		(S1,D1,P)){
 	            P.sub			(S);
     	        float dist		= P.magnitude();
@@ -218,14 +242,14 @@ bool CEditShape::FrustumPick(const CFrustum& frustum)
     Fvector 			C;
 	M.transform_tiny	(C,m_Sphere.P);
 	if (!frustum.testSphere_dirty(C,m_Sphere.R)) return false;
-	for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
+	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
-		case stSphere:{
+		case cfSphere:{
             Fsphere&	T	= it->data.sphere;
 		    M.transform_tiny(C,T.P);
         	if (frustum.testSphere_dirty(C,T.R)) return true;
 		}break;
-		case stBox:{
+		case cfBox:{
         	Fbox 			box;
             box.identity	();
             Fmatrix B		= it->data.box;
@@ -259,8 +283,8 @@ bool CEditShape::Load(CStream& F)
 	inherited::Load	(F);
 
 	R_ASSERT(F.FindChunk(SHAPE_CHUNK_SHAPES));
-    m_Shapes.resize	(F.Rdword());
-    F.Read			(m_Shapes.begin(),m_Shapes.size()*sizeof(shape_def));
+    shapes.resize	(F.Rdword());
+    F.Read			(shapes.begin(),shapes.size()*sizeof(shape_def));
 
 	ComputeBounds();
 	return true;
@@ -275,8 +299,8 @@ void CEditShape::Save(CFS_Base& F)
 	F.close_chunk	();
 
 	F.open_chunk	(SHAPE_CHUNK_SHAPES);
-    F.Wdword		(m_Shapes.size());
-    F.write			(m_Shapes.begin(),m_Shapes.size()*sizeof(shape_def));
+    F.Wdword		(shapes.size());
+    F.write			(shapes.begin(),shapes.size()*sizeof(shape_def));
 	F.close_chunk	();
 }
 
@@ -293,9 +317,9 @@ void CEditShape::Render(int priority, bool strictB2F)
 		if (::Render->occ_visible(bb)){
             if (strictB2F){
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-                for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
+                for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 					switch(it->type){
-                    case stSphere:{
+                    case cfSphere:{
 		                Device.SetTransform	(D3DTS_WORLD,_Transform());
                     	Fsphere& S			= it->data.sphere;
 		                Device.SetShader	(Device.m_WireShader);
@@ -303,7 +327,7 @@ void CEditShape::Render(int priority, bool strictB2F)
 		                Device.SetShader	(Device.m_SelectionShader);
                         DU::DrawSphere		(S.P,S.R,Selected()?SHAPE_COLOR_TRANSP_SEL:SHAPE_COLOR_TRANSP_NORM);
                     }break;
-                    case stBox:		
+                    case cfBox:		
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
 		                Device.SetTransform	(D3DTS_WORLD,B);

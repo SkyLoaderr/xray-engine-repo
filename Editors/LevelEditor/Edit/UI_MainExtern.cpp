@@ -165,7 +165,7 @@ void TUI::Redraw(){
     	Device.Statistic.RenderDUMP_RT.Begin();
         Device.Begin();
         Device.UpdateView();
-		Device.ResetMaterial();
+		Device.ResetMaterial();              
 /*	// safe rect
 		if (psDeviceFlags.is(rsDrawSafeRect)){ 
         	DU::DrawSafeRect();

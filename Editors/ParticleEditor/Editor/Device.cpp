@@ -265,7 +265,7 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,Fidentity);
 
-    UI.RedrawScene();
+    UI.RedrawScene	();
 }
 
 void CRenderDevice::Begin( ){

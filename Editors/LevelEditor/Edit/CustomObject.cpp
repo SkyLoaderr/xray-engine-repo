@@ -26,13 +26,12 @@ void CCustomObject::OnUpdateTransform()
 {
 	m_bUpdateTransform		= FALSE;
     // update transform matrix
-	Fmatrix	mScale,mTranslate,mRotate;
-	mRotate.setHPB			(PRotation.y, PRotation.x, PRotation.z);
+	FTransformR.setHPB		(PRotation.y, PRotation.x, PRotation.z);
 
-	mScale.scale			(PScale);
-	mTranslate.translate	(PPosition);
-	FTransformRP.mul		(mTranslate,mRotate);
-	FTransform.mul			(FTransformRP,mScale);
+	FTransformS.scale		(PScale);
+	FTransformP.translate	(PPosition);
+	FTransformRP.mul		(FTransformP,FTransformR);
+	FTransform.mul			(FTransformRP,FTransformS);
     FITransformRP.invert	(FTransformRP);
     FITransform.invert		(FTransform);
 }

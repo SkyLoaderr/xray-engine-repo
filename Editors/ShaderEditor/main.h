@@ -29,9 +29,9 @@ __published:	// IDE-managed Components
     TPanel *paMain;
     TPanel *paTopBar;
 	TPanel *paWindow;
-	TD3DWindow *D3DWindow;
 	TLabel *APHeadLabel2;
 	TExtBtn *sbToolsMin;
+	TD3DWindow *D3DWindow;
         void __fastcall FormCreate(TObject *Sender);
     void __fastcall D3DWindowResize(TObject *Sender);
     void __fastcall D3DWindowKeyDown(TObject *Sender, WORD &Key,

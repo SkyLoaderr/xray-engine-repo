@@ -43,6 +43,9 @@ public:
     Fvector 		FPosition;
     Fvector 		FScale;
     Fvector 		FRotation;
+    Fmatrix			FTransformP;
+    Fmatrix			FTransformR;
+    Fmatrix			FTransformS;
     Fmatrix			FTransformRP;
 	Fmatrix 		FTransform;
     Fmatrix			FITransformRP;

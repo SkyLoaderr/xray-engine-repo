@@ -9,6 +9,7 @@
 enum EPointType{
     ptRPoint=0,
     ptAIPoint,
+    ptSpawnPoint,
     ptMaxType,
     pt_force_dword=u32(-1)
 };

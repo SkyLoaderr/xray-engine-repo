@@ -114,9 +114,6 @@ public:
     { VERIFY(bReady); D3DVIEWPORT8 VP={x,y,width,height,minZ,maxZ}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
     IC void					ResetViewport	()
     { VERIFY(bReady); D3DVIEWPORT8 VP={0,0,dwWidth,dwHeight,0.f,1.f}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
-    IC void					SetGameViewport	()
-    { if ((0.75f*float(dwWidth))>float(dwHeight))	SetViewport(m_RenderWidth_2-1.33f*float(m_RenderHeight_2),0,1.33f*dwHeight,dwHeight); 
-      else											SetViewport(0,m_RenderHeight_2-0.75f*float(m_RenderWidth_2),dwWidth,0.75f*dwWidth);}
 
     IC void					SetTexture		(DWORD dwStage, IDirect3DTexture8* lpTexture)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetTexture( dwStage, lpTexture )); }

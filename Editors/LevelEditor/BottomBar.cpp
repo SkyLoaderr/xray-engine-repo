@@ -28,7 +28,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
         mi->Checked = !mi->Checked;
-        if (mi==miDrawGrid)     			psDeviceFlags.set(rsDrawGrid,mi->Checked);
+        if (mi==miDrawGrid)     			UI.Command(COMMAND_TOGGLE_GRID);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
         else if (mi==miRenderLinearFilter)	psDeviceFlags.set(rsFilterLinear,mi->Checked);
@@ -36,7 +36,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miFog)					psDeviceFlags.set(rsFog,mi->Checked);
         else if (mi==miRealTime)			psDeviceFlags.set(rsRenderRealTime,mi->Checked);
         else if (mi==miDODrawObjects)		psDeviceFlags.set(rsDetails,mi->Checked);
-        else if (mi==miDrawSafeRect)		psDeviceFlags.set(rsDrawSafeRect,mi->Checked);
+        else if (mi==miDrawSafeRect)		UI.Command(COMMAND_TOGGLE_SAFE_RECT);
         else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
         else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;

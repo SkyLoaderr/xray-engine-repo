@@ -2,39 +2,24 @@
 
 #ifndef EShapeH
 #define EShapeH
+
+#include "xrServer_Entities.h"
 //---------------------------------------------------------------------------
-class CEditShape: public CCustomObject{
+class CEditShape: public CCustomObject, xrSE_CFormed{
 	typedef CCustomObject inherited;
 private:
-	enum EType{
-    	stSphere=0,
-        stBox,
-        st_force_dword=u32(-1)
-    };
-	union shape_data
-	{
-		Fsphere		sphere;
-		Fmatrix		box;
-	};
-	struct shape_def
-	{
-		EType		type;
-		shape_data	data;
-	};
-    DEFINE_VECTOR	(shape_def,ShapeVec,ShapeIt);
-    ShapeVec		m_Shapes;
-    
 // bounds
 	Fbox			m_Box;
 	Fsphere			m_Sphere;
 	void			ComputeBounds	( );
 
-    void			ScaleShapes		(const Fvector& val);
+//    void			ScaleShapes		(const Fvector& val);
 public:
+	void			ResetScale		();
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);
 protected:                 
-    virtual void 	SetScale		(Fvector& val)	{ ScaleShapes(val); UpdateTransform();}
+	virtual void 	SetScale		(Fvector& val);
     virtual void	OnUpdateTransform();
 public:
 					CEditShape 	(LPVOID data, LPCSTR name);
@@ -62,7 +47,9 @@ public:
 
     // tools
     void			Attach		(CEditShape* from);
-    void			Dettach		();
+    void			Detach		();
+    
+    ShapeVec&		GetShapes	(){return shapes;}
     
     // events
     virtual void    OnShowHint  (AStringVec& dest);

@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "ui_tools.h"
+#include "ui_main.h"
 #include "FrameRPoint.h"
 #include "Scene.h"
 #include "ChoseForm.h"
@@ -44,22 +45,7 @@ void __fastcall TfraSpawnPoint::ebCurObjClick(TObject *Sender)
 
 void __fastcall TfraSpawnPoint::ebAttachObjectClick(TObject *Sender)
 {
-/*
-    ObjectList lst;
-    int cnt 		= Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
-    if (1!=cnt)		ELog.DlgMsg(mtError,"Select one spawn point.");
-    else{
-        CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);
-        LPCSTR dest;
-        CCustomObject* from = 0;
-        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smSceneObject, dest)){
-        	string64 cls_name, obj_name;
-            EObjClass cls_id = GetClassIDByClassName(_GetItem(dest));
-        	from 	= Scene.FindObjectByName(dest,base);
-            if (from) base->AttachObject(from);
-        }
-    }
-*/
+	if (ebAttachObject->Down) UI.Command(COMMAND_CHANGE_ACTION, eaAdd);
 }
 //---------------------------------------------------------------------------
 
