@@ -408,10 +408,10 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create targets
 	DWORD				w = m_d3dsdBackBuffer.Width, h = m_d3dsdBackBuffer.Height;
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Position,&d_Position_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Normal,&d_Normal_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,&d_Color,&d_Color_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,&d_Accumulator,&d_Accumulator_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Position,&d_Position_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Normal,&d_Normal_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Color,&d_Color_S);
+	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
 	s_Scene2fat.compile			(m_pd3dDevice,"shaders\\D\\fat_base.s");
