@@ -104,11 +104,11 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 
 	float								distance = (1.f - (fov - alpha)/fov)*(max_view_distance - min_view_distance) + min_view_distance;
 	if (distance < object_distance) {
-		Msg								("Object %s IS NOT visible",*game_object->cName());
+//		Msg								("Object %s IS NOT visible",*game_object->cName());
 		return							(false);
 	}
 	
-	Msg									("Object %s IS visible",*game_object->cName());
+//	Msg									("Object %s IS visible",*game_object->cName());
 	return								(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);
