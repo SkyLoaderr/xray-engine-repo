@@ -16,7 +16,7 @@
 
 CAI_Soldier::CAI_Soldier()
 {
-	dwHitTime = 0;
+	dwHitTime = DWORD(-1);
 	tHitDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
