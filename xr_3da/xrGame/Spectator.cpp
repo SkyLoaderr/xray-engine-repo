@@ -38,7 +38,7 @@ void CSpectator::UpdateCL()
 		if (eacFreeFly!=cam_active){
 			int idx			= 0;
 			game_cl_GameState::Player* P = Game().local_player;
-			if ((P->team>=0)&&(P->team<(int)Level().Teams.size())){
+			if (P&&(P->team>=0)&&(P->team<(int)Level().Teams.size())){
 				CTeam& T		= Level().Teams[P->team];
 				for (u32 i=0; i<T.Squads.size(); i++){
 					CSquad& S = T.Squads[i];
