@@ -113,9 +113,14 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVM)
 	xr_delete		(l_tpIniFile);
 }
 
+void LuaError(lua_State* L)
+{
+	Debug.fatal("LUA error: %s",lua_tostring(L,-1));
+}
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
 {
-	luabind::open	(tpLuaVM);
+	luabind::open					(tpLuaVM);
+	luabind::set_error_callback		(LuaError);
 
 	lua_atpanic		(tpLuaVM,Script::LuaPanic);
 

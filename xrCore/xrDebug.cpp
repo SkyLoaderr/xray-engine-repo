@@ -165,6 +165,10 @@ int __cdecl _out_of_memory	(size_t size)
 	Debug.fatal				("Out of memory. Memory request: %d K",size/1024);
 	return					1;
 }
+void __cdecl _terminate		()
+{
+	Debug.fatal				("Unexpected application termination");
+}
 
 // based on dbghelp.h
 typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
@@ -305,6 +309,8 @@ namespace std{
     {
         _set_new_mode					(1);					// gen exception if can't allocate memory
         _set_new_handler				(_out_of_memory	);		// exception-handler for 'out of memory' condition
+		set_terminate					(_terminate);
+		set_unexpected					(_terminate);
         ::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
     }
 #endif

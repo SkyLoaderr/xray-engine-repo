@@ -12,11 +12,11 @@ CBloodsuckerEffector::CBloodsuckerEffector(float time)
 	max_power.duality.h     = 0.0f;
 	max_power.duality.v     = 0.0f;
 	max_power.noise.grain	= 1.f;
-	max_power.noise.color.r = 255;
-	max_power.noise.color.g = 255;
-	max_power.noise.color.b = 255;
-	max_power.noise.color.a = 255;
 	max_power.noise.intensity = 0.5f;
+	max_power.noise.fps		= 30;
+	max_power.color_base.r	= 255;
+	max_power.color_base.g	= 255;
+	max_power.color_base.b	= 255;
 	max_power.gray			= 0.7f;
 	max_power.blur			= 1.0f;
 }
@@ -49,10 +49,9 @@ BOOL CBloodsuckerEffector::Process(SPPInfo& pp)
 	pp.duality.h		= max_power.duality.h * d;
 	pp.duality.v		= max_power.duality.v * d;
 	pp.noise.grain		= max_power.noise.grain * d;
-	pp.noise.color.r	= max_power.noise.color.r * d;
-	pp.noise.color.g	= max_power.noise.color.g * d;
-	pp.noise.color.b	= max_power.noise.color.b * d; 
-	pp.noise.color.a	= max_power.noise.color.a * d; 
+	pp.color_base.r		= max_power.color_base.r * d;
+	pp.color_base.g		= max_power.color_base.g * d;
+	pp.color_base.b		= max_power.color_base.b * d; 
 	pp.gray				= max_power.gray * d; 
 	pp.blur				= max_power.blur * d; 
 	pp.noise.intensity  = max_power.noise.intensity *d;

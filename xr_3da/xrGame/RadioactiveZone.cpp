@@ -114,7 +114,7 @@ void CRadioactiveZone::UpdateCL()
 		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
 		//T->set_noise			(m_pp.noise);
 		T->set_noise_scale		(m_pp.noise_scale);
-		T->set_noise_color		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
+		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
 		T->set_noise_fps		(10.f);
 		m_pp_time += dt;
 	} 
@@ -132,7 +132,7 @@ void CRadioactiveZone::UpdateCL()
 		T->set_noise			(m_pp_time < g_pp_fade ? m_pp.noise * ((f32)m_pp_time / g_pp_fade) : m_pp.noise);
 		//T->set_noise			(m_pp.noise);
 		T->set_noise_scale		(m_pp.noise_scale);
-		T->set_noise_color		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
+		T->set_color_base		(color_rgba(m_pp.r,m_pp.g,m_pp.b,m_pp.a));
 		T->set_noise_fps		(10.f);
 	}
 	inherited::UpdateCL();

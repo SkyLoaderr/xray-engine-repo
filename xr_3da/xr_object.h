@@ -81,8 +81,8 @@ public:
 	// Parentness
 	IC CObject*							H_Parent			()					{ return Parent;						}
 	IC const CObject*					H_Parent			()			const	{ return Parent;						}
-	IC CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
-	IC const CObject*					H_Root				()			const	{ return Parent?Parent->H_Root():this;	}
+	CObject*							H_Root				()					{ return Parent?Parent->H_Root():this;	}
+	const CObject*						H_Root				()			const	{ return Parent?Parent->H_Root():this;	}
 	virtual CObject*					H_SetParent			(CObject* O);
 	// virtual void						H_ChildAdd			(CObject* O)		{};
 	// virtual void						H_ChildRemove		(CObject* O)		{};
