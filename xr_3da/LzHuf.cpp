@@ -67,7 +67,7 @@ public:
 	}
 	IC void		_putb(int c) {
 		if (out_iterator==out_end) {
-			int	out_size= out_end-out_start;
+			u32	out_size= u32(out_end-out_start);
 			out_start	= (u8*) xr_realloc(out_start,out_size+1024);
 			out_iterator= out_start+out_size;
 			out_end		= out_iterator+1024;
@@ -95,13 +95,13 @@ public:
 		out_end		= out_start + _rsize;
 		out_iterator= out_start;
 	}
-	IC int		InputSize	() {
-		return in_end-in_start;
+	IC u32		InputSize	() {
+		return u32(in_end-in_start);
 	}
-	IC int		OutSize		() {
-		return out_iterator-out_start;
+	IC u32		OutSize		() {
+		return u32(out_iterator-out_start);
 	}
-	IC u8*	OutPointer	() {
+	IC u8*		OutPointer	() {
 		return out_start;
 	}
 	IC void		OutRelease	() {
