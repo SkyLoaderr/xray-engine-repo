@@ -12,19 +12,25 @@ class ENGINE_API	CObject;
 
 class ENGINE_API	CLightShadows  
 {
+	friend class pred_casters;
 private:
+	//
 	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
 	struct	caster
 	{
 		CObject*			O;
+		float				D;
 		svector<NODE*,32>	nodes;
 	};
 private:
-	CObject*		current;
-	vector<caster>	casters;
+	CObject*				current;
+	vector<caster>			casters;
+	vector<int>				id;
 public:
-	void			set_object	(CObject*	O);
-	void			add_element	(NODE*		N);
+	void					set_object	(CObject*	O);
+	void					add_element	(NODE*		N);
+	void					calculate	();
+	void					render		();
 
 	CLightShadows			();
 	~CLightShadows			();
