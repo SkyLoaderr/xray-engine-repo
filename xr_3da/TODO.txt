@@ -1,5 +1,5 @@
 ***[OLES]*** Done:
-------------------------
+-------------------------
 		*	PS for everything even for R1			(?)
 		*	one pass detail textures
 		*	d-lighting
