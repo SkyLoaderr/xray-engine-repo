@@ -65,7 +65,8 @@ enum {
 	rsOverdrawView		= (1ul<<7ul),
 	rsOcclusion			= (1ul<<8ul),
 	rsDepthEnhance		= (1ul<<9ul),
-	rsStatistic			= (1ul<<10ul),
+	rsAnisotropic		= (1ul<<10ul),
+	rsStatistic			= (1ul<<11ul),
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)
 };
