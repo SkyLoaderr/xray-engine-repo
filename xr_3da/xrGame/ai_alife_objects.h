@@ -92,6 +92,7 @@ public:
 	_SPAWN_ID						m_tSpawnID;
 	_GRAPH_ID						m_tGraphID;
 	u16								m_wCount;
+	bool							m_bOnline;
 	
 	virtual	void					Save(CFS_Memory	&tMemoryStream)
 	{
@@ -100,6 +101,7 @@ public:
 		tMemoryStream.write			(&m_tSpawnID,	sizeof(m_tSpawnID));
 		tMemoryStream.write			(&m_tGraphID,	sizeof(m_tGraphID));
 		tMemoryStream.write			(&m_wCount,		sizeof(m_wCount));
+		tMemoryStream.write			(&m_bOnline,	sizeof(m_bOnline));
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -109,6 +111,7 @@ public:
 		tFileStream.Read			(&m_tSpawnID,	sizeof(m_tSpawnID));
 		tFileStream.Read			(&m_tGraphID,	sizeof(m_tGraphID));
 		tFileStream.Read			(&m_wCount,		sizeof(m_wCount));
+		tFileStream.Read			(&m_bOnline,	sizeof(m_bOnline));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -118,6 +121,7 @@ public:
 		m_tGraphID					= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
 		m_tSpawnID					= tSpawnID;
 		m_wCount					= tpSpawnPoints[tSpawnID].wCount;
+		m_bOnline					= false;
 	};
 };
 
@@ -216,9 +220,9 @@ public:
 	
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
-	float							m_fCurSpeed;
 	float							m_fMinSpeed;
 	float							m_fMaxSpeed;
+	float							m_fCurSpeed;
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
 	
@@ -486,6 +490,7 @@ public:
 		m_baVisitedVertices.clear	();
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 		m_tTaskState				= eTaskStateNoTask;
+		memset						(&m_tCurTask,0,sizeof(m_tCurTask));
 		m_tCurTask.tTaskID			= u32(-1);
 		m_dwCurNode					= u32(-1);
 		m_dwCurTaskLocation			= u32(-1);

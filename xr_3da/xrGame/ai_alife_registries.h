@@ -20,6 +20,7 @@ public:
 	CALifeObjectRegistry()
 	{
 		m_tObjectID					= 0;
+		m_tppMap.clear				();
 	};
 
 	virtual							~CALifeObjectRegistry()
@@ -128,6 +129,7 @@ public:
 	CALifeEventRegistry()
 	{
 		m_tEventID					= 0;
+		m_tpMap.clear				();
 	};
 
 	virtual							~CALifeEventRegistry()
@@ -190,6 +192,7 @@ public:
 	CALifeTaskRegistry()
 	{
 		m_tTaskID					= 0;
+		m_tpMap.clear				();
 	};
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)

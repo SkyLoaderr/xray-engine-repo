@@ -177,7 +177,7 @@ public:
 
 	IC void vfCreateNewDynamicObject(SPAWN_IT I, bool bUpdateDynamicData = false)
 	{
-		CALifeDynamicObject	*tpALifeDynamicObject;
+		CALifeDynamicObject	*tpALifeDynamicObject = 0;
 		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled")) {
 			if (pSettings->LineExists((*I).caModel, "human") && pSettings->ReadBOOL((*I).caModel, "human"))
 				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
@@ -193,6 +193,10 @@ public:
 				else
 					if (pSettings->LineExists((*I).caModel, "zone") && pSettings->ReadBOOL((*I).caModel, "zone"))
 						tpALifeDynamicObject	= new CALifeAnomalousZone;
+					else {
+						Msg("!Unspecified ALife monster type!");
+						R_ASSERT(false);
+					}
 		}
 		else
 			tpALifeDynamicObject			= new CALifeItem;

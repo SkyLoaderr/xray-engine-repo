@@ -162,6 +162,7 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 			break;
 		}
 		case eTaskStateSearching : {
+			
 			break;
 		}
 		default : NODEFAULT;
