@@ -79,27 +79,27 @@ void CRender::InsertSG_Static(IVisual *pVisual)
 				SPass&									pass	= *(sh->Passes[pass_id]);
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
 				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
-				SceneGraph::mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-				SceneGraph::mapNormalVS::TNode*			Nvs		= Ntex->val.insert	(pass.vs);
-				SceneGraph::mapNormalVB::TNode*			Nvb		= Nvs->val.insert	(pVisual->hGeom->vb);
+				SceneGraph::mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs);
+				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nvs->val.insert	(pass.constants);
+				SceneGraph::mapNormalTextures::TNode*	Ntex	= Nconst->val.insert(pass.T);
+				SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
 				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M);
-				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.constants);
-				SceneGraph::mapNormalItems&				item	= Nconst->val;
+				SceneGraph::mapNormalItems&				item	= Nmat->val;
 				if (pass_id)	{
 					// No need to sort - ZB already setted up
 					item.unsorted.push_back	(pVisual);
 				} else {
 					// Need to sort for HZB efficient use
-					if (SSA>Nconst->val.ssa) {
-						Nconst->val.ssa = SSA;
-						if (SSA>Nmat->val.ssa) {
-							Nmat->val.ssa = SSA;
-							if (SSA>Nvs->val.ssa) {
-								Nvs->val.ssa = SSA;
-								if (SSA>Nvb->val.ssa) {
-									Nvb->val.ssa = SSA;
-									if (SSA>Ntex->val.ssa)	{
-										Ntex->val.ssa = SSA; 
+					if (SSA>Nmat->val.ssa) {
+						Nmat->val.ssa = SSA;
+						if (SSA>Nvb->val.ssa) {
+							Nvb->val.ssa = SSA;
+							if (SSA>Ntex->val.ssa) {
+								Ntex->val.ssa = SSA;
+								if (SSA>Nconst->val.ssa) {
+									Nconst->val.ssa = SSA;
+									if (SSA>Nvs->val.ssa)	{
+										Nvs->val.ssa = SSA; 
 										if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
 									}
 								}

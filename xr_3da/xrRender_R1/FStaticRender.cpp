@@ -557,20 +557,21 @@ void	CRender::Render		()
 	{
 		if (0==mapNormal[pr][0].size())	continue;
 
-		for (u32 pass_id=0; pass_id<8; pass_id++)	{
+		for (u32 pass_id=0; pass_id<8; pass_id++)	
+		{
 			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
-			if (0==codes.size())	break;
-			BOOL sort	= (pass_id==0);
+			if (0==codes.size())			break;
+			BOOL sort						= (pass_id==0);
 				
 			codes.getANY_P		(lstCodes);
 			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
 			for (u32 code_id=0; code_id<lstCodes.size(); code_id++)
 			{
 				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
-				SceneGraph::mapNormalTextures&	textures	= Ncode->val;
-				RCache.set_States		(Ncode->key);
+				SceneGraph::mapNormalVS&	textures		= Ncode->val;
+				RCache.set_States			(Ncode->key);
 
-				sort_tlist				(lstTextures, lstTexturesTemp, textures, sort); 
+				sort_tlist					(lstTextures, lstTexturesTemp, textures, sort); 
 				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];

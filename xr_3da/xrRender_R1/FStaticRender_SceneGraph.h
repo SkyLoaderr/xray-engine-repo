@@ -33,13 +33,13 @@ namespace SceneGraph
 		FixedMAP<float,IVisual*>			sorted;
 		std::vector<IVisual*>				unsorted;
 	};
-	struct mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
-	struct mapNormalConstants	: public	FixedMAP<R_constant_table*,mapNormalItems>			{	float	ssa;	};
-	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalConstants>			{	float	ssa;	};
-	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalMatrices>	{	float	ssa;	};
-	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalVB>		{	float	ssa;	};
-	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVS>					{	float	ssa;	};
-	struct mapNormalCodes		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalTextures>	{ };
+	struct mapNormalItems		: public	mapNormalDirect											{	float	ssa;	};
+	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalItems>					{	float	ssa;	};
+	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalMatrices>		{	float	ssa;	};
+	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVB>						{	float	ssa;	};
+	struct mapNormalConstants	: public	FixedMAP<R_constant_table*,mapNormalTextures>			{	float	ssa;	};
+	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalConstants>	{	float	ssa;	};
+	struct mapNormalCodes		: public	FixedMAP<IDirect3DStateBlock9*,mapNormalVS>				{ };
 
 	// Higher level - MATRIX
 	typedef FixedMAP<float,_MatrixItem>				mapMatrixItem;
