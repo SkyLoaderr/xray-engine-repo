@@ -1,8 +1,38 @@
---function main()
---	log	("script don't want to work!")
---	local stalker1	= get_level_object("m_stalker_e0001")
-	
---	local fsm1 = fsm.FSM(stalker1)
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+function if_see_actor(npc, fsm)
+	if npc:see(actor) == true then
+		log("saw a fucking actor")
+		return true
+	end
 
---	wait()
---end
+	return false
+end
+
+function dont_see_actor(npc, fsm)
+	if npc:see(actor) == false then
+		log("i lost a trace of this fucking actor")
+		fsm:stop()
+		return true
+	end
+
+	return false
+end
+
+
+function main()
+	log	("script don't want to work!")
+
+
+	stalker00	= get_level_object("m_stalker_e0000")
+	actor = get_actor()
+
+	local fsm_stalker = FSM(this.script_name(), stalker00)
+
+	fsm_stalker:set_transition(0, 1, fsm.if_see_actor)
+	fsm_stalker:set_transition(1, 0, fsm.dont_see_actor)
+
+	fsm_stalker:run_loop()
+
+
+end
