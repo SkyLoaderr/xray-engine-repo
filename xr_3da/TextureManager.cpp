@@ -242,7 +242,7 @@ void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 	}
 }
 
-Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	// Parse names
 	sh_list				L_textures,L_constants,L_matrices;
@@ -256,21 +256,25 @@ Shader	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_const
 	CBlender_Recorder	Recorder		(&S);
 	B->Compile			(Recorder, L_textures, L_constants, L_matrices);
 
-	// Ok
-	return S;
+	// Search equal in shaders array
+	for (DWORD it=0; it<shaders.size(); it++)
+		if (S.equal(shaders[it]))	{
+			shaders[it]->dwReference	++;
+			return shaders[it];
+		}
+
+	// Create new entry
+	Shader*		N		= new Shader(S);
+	N->dwReference		= 1;
+	shaders.push_back	(N);
+	return N;
 }
 
-void CShaderManager::Delete(Shader &S) 
+void CShaderManager::Delete(Shader* &S) 
 {
-	for (DWORD p=0; p<S.Passes.size(); p++)
-	{
-		CPass& P = S.Passes[p];
-		_DeleteCode			(P.dwStateBlock);
-		_DeleteTextureList	(P.T);
-		_DeleteMatrixList	(P.M);
-		_DeleteConstantList	(P.C);
-	}
-	ZeroMemory(&S,sizeof(S));
+	R_ASSERT		(S);
+	S->dwReference	--;
+	S				= 0;
 }
 
 void	CShaderManager::OnDeviceDestroy(void) 
@@ -280,16 +284,42 @@ void	CShaderManager::OnDeviceDestroy(void)
 	if (Device.bReady) return;
 
 	//************************************************************************************
+	// Shaders
+	for (it=0; it!=shaders.size(); it++)	
+	{
+		Shader& S = *(shaders[it]);
+		R_ASSERT(0==S.dwReference);
+		for (DWORD p=0; p<S.Passes.size(); p++)
+		{
+			CPass& P = S.Passes[p];
+			_DeleteCode			(P.dwStateBlock);
+			_DeleteTextureList	(P.T);
+			_DeleteMatrixList	(P.M);
+			_DeleteConstantList	(P.C);
+		}
+		_DELETE(shaders[it]);
+	}
+	
+	//************************************************************************************
 	// Texture List
-	for (it=0; it<lst_textures.size(); it++)	R_ASSERT(0==lst_textures[it]->dwReference);
+	for (it=0; it<lst_textures.size(); it++)	{
+		R_ASSERT(0==lst_textures[it]->dwReference);
+		_DELETE (lst_textures[it]);
+	}
 	lst_textures.clear	();
 
 	// Matrix List
-	for (it=0; it<lst_matrices.size(); it++)	R_ASSERT(0==lst_matrices[it]->dwReference);
+	for (it=0; it<lst_matrices.size(); it++)	{
+		R_ASSERT(0==lst_matrices[it]->dwReference);
+		_DELETE (lst_matrices[it]);
+	}
 	lst_matrices.clear	();
 
 	// Constant List
-	for (it=0; it<lst_constants.size(); it++)	R_ASSERT(0==lst_constants[it]->dwReference);
+	for (it=0; it<lst_constants.size(); it++)	{
+		R_ASSERT(0==lst_constants[it]->dwReference);
+		_DELETE (lst_constants[it]);
+	}
 	lst_constants.clear	();
 	
 	// Codes
