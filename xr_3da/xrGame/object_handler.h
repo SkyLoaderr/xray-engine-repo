@@ -45,7 +45,6 @@ private:
 	float						m_fMaxMissFactor;
 	MonsterSpace::EObjectAction	m_tWeaponState;
 
-
 public:
 					CObjectHandler			();
 	virtual			~CObjectHandler			();

@@ -346,7 +346,6 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CEntity,		g_Accuracy,			float,							-1);
-	BIND_FUNCTION10	(m_tpGameObject,	Alive,				CEntity,		g_Alive,			BOOL,							FALSE);
 	BIND_FUNCTION10	(m_tpGameObject,	Team,				CEntity,		g_Team,				int,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	Squad,				CEntity,		g_Squad,			int,							-1);
 	BIND_FUNCTION10	(m_tpGameObject,	Group,				CEntity,		g_Group,			int,							-1);
@@ -367,6 +366,16 @@ public:
 	BIND_FUNCTION01	(m_tpGameObject,	SetRadiation,		CEntityAlive,	ChangeRadiation,	float,							float);
 	BIND_FUNCTION01	(m_tpGameObject,	SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,							float);
 	BIND_FUNCTION01	(m_tpGameObject,	SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,							float);
+
+	IC		bool			Alive	() const
+	{
+		CEntityAlive		*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(m_tpGameObject);
+		if (!l_tpEntityAlive) {
+			LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Alive!");
+			return			(false);
+		}
+		return				(!!l_tpEntityAlive->g_Alive());
+	}
 
 	IC		void			GetRelationType		(CLuaGameObject* who)
 	{

@@ -23,8 +23,8 @@
 #include "enemy_manager.h"
 #include "custommonster.h"
 #include "weaponmagazined.h"
-#include "ai/stalker/ai_stalker.h"
 #include "ef_storage.h"
+#include "ai/stalker/ai_stalker.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -637,8 +637,6 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch2,id),	0);
 		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionMisfire1,id),	0);
 		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionEmpty1,id),	0);
-//		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionMisfire1,id),	0);
-//		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionEmpty1,id),	0);
 
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
@@ -689,7 +687,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionFire1,id),		1);
 		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
 
-		state(uid(eObjectActionSwitch1,id)).set_inertia_time(500);
+		state(uid(eObjectActionSwitch1,id)).set_inertia_time(100);
 		state(uid(eObjectActionFire1,id)).set_inertia_time(1000);
 	}
 

@@ -20,6 +20,7 @@ public:
 
 	virtual	void		finalize			()
 	{
+
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 	}
 };
