@@ -123,7 +123,7 @@ public:
 		fs.w_float			(fBirthProbability);
 		fs.w_float			(fIncreaseCoefficient);
 		fs.w_float			(fAnomalyDeathProbability);
-		fs.w_string			(caRouteGraphPoints);
+		fs.w_string			(*caRouteGraphPoints);
 		fs.close_chunk		();
 	}
 
@@ -144,7 +144,9 @@ public:
 		fBirthProbability			= fs.r_float();
 		fIncreaseCoefficient		= fs.r_float();
 		fAnomalyDeathProbability	= fs.r_float();
-		fs.r_string					(caRouteGraphPoints);
+		string512					tmp_caRouteGraphPoints;
+		fs.r_string					(tmp_caRouteGraphPoints);
+		caRouteGraphPoints			= tmp_caRouteGraphPoints;
 	}
 #ifdef _EDITOR
 	virtual void FillProp	(LPCSTR pref, PropItemVec& values);
