@@ -15,7 +15,7 @@
 #include "script_space.h"
 #include "script_callback.h"
 #include "script_game_object.h"
-
+#include "CharacterPhysicsSupport.h"
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
 
@@ -637,8 +637,20 @@ void CEntityAlive::PHGetLinearVell(Fvector& velocity)
 {
 	if(character_physics_support())
 	{
+		character_physics_support()->PHGetLinearVell(velocity);
 	}
 	else
 		inherited::PHGetLinearVell(velocity);
 
+}
+CPHSoundPlayer* CEntityAlive::ph_sound_player()
+{
+	if(character_physics_support())
+	{
+		return character_physics_support()->ph_sound_player();
+	}
+	else
+	{
+		return NULL;
+	}
 }

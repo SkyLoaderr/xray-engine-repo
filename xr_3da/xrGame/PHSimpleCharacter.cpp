@@ -196,6 +196,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	{
 		SetObjectContactCallback(m_object_contact_callback);
 	}
+	SetStaticContactCallBack(ContactShotMark);
 	CPHObject::activate();
 	spatial_register();
 	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
@@ -981,6 +982,15 @@ void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* call
 	dGeomUserDataSetObjectContactCallback(m_hat,callback);
 	dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
 	dGeomUserDataSetObjectContactCallback(m_wheel,callback);
+}
+
+void CPHSimpleCharacter::SetStaticContactCallBack(ContactCallbackFun* callback)
+{
+	if(!b_exist) return;
+
+	dGeomUserDataSetContactCallback(m_hat,callback);
+	dGeomUserDataSetContactCallback(m_geom_shell,callback);
+	dGeomUserDataSetContactCallback(m_wheel,callback);
 }
 
 ObjectContactCallbackFun* CPHSimpleCharacter::ObjectContactCallBack()

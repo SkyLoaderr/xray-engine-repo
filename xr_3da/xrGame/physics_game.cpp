@@ -123,13 +123,15 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 
 				
 				//SGameMtl* mtl1 = NULL;
-				if(vel_cret>vel_cret_sound)
+				SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
+				if(!static_mtl->Flags.test(SGameMtl::flPassable))
 				{
-					SGameMtl* static_mtl =  GMLib.GetMaterialByIdx(T->material);
-				//	mtl  =
-				//	mtl1 = GMLib.GetMaterialByID(mtl_pair->GetMtl1());
-					if(!static_mtl->Flags.test(SGameMtl::flPassable))
+					if(vel_cret>vel_cret_sound)
 					{
+			
+					//	mtl  =
+					//	mtl1 = GMLib.GetMaterialByID(mtl_pair->GetMtl1());
+
 						if(!mtl_pair->CollideSounds.empty())
 						{
 							ref_sound& sound= SELECT_RANDOM1(mtl_pair->CollideSounds);
@@ -139,15 +141,16 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 								);
 							sound.set_volume(volume);
 						}
+		
 					}
-					else
+				}
+				else
+				{
+					if(data->ph_ref_object)
 					{
-						if(data->ph_ref_object)
-						{
-							CPHSoundPlayer* sp=NULL;
-							sp=data->ph_ref_object->ph_sound_player();
-							if(sp) sp->Play(mtl_pair,*(Fvector*)c->pos);
-						}
+						CPHSoundPlayer* sp=NULL;
+						sp=data->ph_ref_object->ph_sound_player();
+						if(sp) sp->Play(mtl_pair,*(Fvector*)c->pos);
 					}
 				}
 

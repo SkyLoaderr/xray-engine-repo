@@ -6,7 +6,7 @@
 #include "PHSkeleton.h"
 #include "Entity_Alive.h"
 #include "PHDestroyable.h"
-
+#include "PHSoundPlayer.h"
 class CPhysicsShell;
 class CPHMovementControl;
 class CCharacterPhysicsSupport :
@@ -37,6 +37,7 @@ private:
 	CPhysicsShell						*&m_pPhysicsShell																																	;
 	CPhysicsShell						*m_physics_skeleton																																	;
 	CPHMovementControl					&m_PhysicMovementControl																															;
+	CPHSoundPlayer						m_ph_sound_player;
 //skeleton
 	float								skel_airr_lin_factor																																;
 	float								skel_airr_ang_factor																																;
@@ -79,9 +80,10 @@ IC	bool isAlive()
 protected:
 virtual void							SpawnInitPhysics				(CSE_Abstract	*D)																									;
 virtual CPhysicsShellHolder*			PPhysicsShellHolder				()	{return m_EntityAlife.PhysicsShellHolder();}	
+
 virtual bool							CanRemoveObject					();
 public:
-
+		CPHSoundPlayer					*ph_sound_player				()	{return &m_ph_sound_player;}
 		void							SetRemoved						();
 		bool							IsRemoved						(){return m_eState==esRemoved;}
 

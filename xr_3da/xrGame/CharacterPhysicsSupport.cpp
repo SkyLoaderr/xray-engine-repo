@@ -16,7 +16,8 @@ CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aen
 : m_PhysicMovementControl(*aentity->PMovement()), 
   m_pPhysicsShell(aentity->PPhysicsShell()),
   m_EntityAlife(*aentity),
-  mXFORM(aentity->XFORM())
+  mXFORM(aentity->XFORM()),
+  m_ph_sound_player(aentity)
 {
 	//R_ASSERT2(aentity->PMovement()->CharacterExist()!=
 	//			((!!aentity->PPhysicsShell())

@@ -86,6 +86,7 @@ IC	CPHMovementControl* PMovement()
 	virtual void							PHGetLinearVell				(Fvector& velocity)		;
 	virtual	CCharacterPhysicsSupport*		character_physics_support	()						{return NULL;}
 	virtual	CCharacterPhysicsSupport*		character_physics_support	() const				{return NULL;}
+	virtual CPHSoundPlayer*					ph_sound_player				()						;
 ///////////////////////////////////////////////////////////////////////
 
 protected:

@@ -120,6 +120,7 @@ public:
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
+	void					SetStaticContactCallBack			(ContactCallbackFun* calback);
 	virtual		void		SetAcceleration						(Fvector accel)		;
 	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
 	virtual     void		SetCamDir							(const Fvector& cam_dir);
