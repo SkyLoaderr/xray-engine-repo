@@ -42,7 +42,7 @@ function save_dialog:InitControls()
    local txt_list   = CUIFrameWindow()  --background for ListView
    txt_list:SetAutoDelete(true)
    txt_list:Init("ui\\ui_pda_frame",50,100,154,148)
-   txt_list:ClipperOn()
+   -- txt_list:ClipperOn()
    main_static:AttachChild(txt_list) 
 
     local list_wnd = CUIListWnd()
