@@ -88,7 +88,7 @@ void CUIEncyclopediaWnd::Init()
 
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
 	UIInfoList.ActivateList(false);
-
+	UIInfoList.EnableScrollBar(true);
 	// mask
 	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
 	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
@@ -281,6 +281,7 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 			// Отображаем новые
 			CUIString str;
 			str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
+			CUIStatic::PreprocessText(str.m_str, UIInfoList.GetItemWidth() - 5, UIInfoList.GetFont());
 			UIInfoList.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
 			UIInfoList.GetItem(UIInfoList.GetSize() - 1)->SetNewRenderMethod(true);
 			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);

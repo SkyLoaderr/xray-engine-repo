@@ -453,7 +453,7 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 
 	const char	delimSpace		= ' ';
 	const char	delimTab		= '\t';
-	STRING_IT	it				= str.begin(), wordBegin = str.begin();
+	STRING_IT	it				= str.begin();
 	float		lineWidth		= 0;
 
 	bool		delimiterBegin	= false;
@@ -477,7 +477,6 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 				if (delimiterBegin)
 				{
 					delimiterBegin = false;
-					wordBegin = it;
 				}
 			}
 
@@ -491,12 +490,12 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 		}
 		else
 		{
-			lineWidth = 0;
 			processedStr.push_back('\\');
 			processedStr.push_back('n');
 
 			// Remove leading spaces
 			tmp.clear();
+
 			STRING_IT it = word.begin();
 			for (; it != word.end(); ++it)
 			{
@@ -506,6 +505,9 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 
 			tmp.assign(++it, word.end());
 			word.swap(tmp);
+			word.push_back(0);
+			lineWidth = pFont->SizeOf(&word.front());
+			word.pop_back();
 		}
 	}
 	processedStr.insert(processedStr.end(), word.begin(), word.end());
