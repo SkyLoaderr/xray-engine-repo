@@ -1860,7 +1860,7 @@ void CUIBuyWeaponWnd::ClearSlots()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet)
+void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresentationSet, bool withMoneyCalculation)
 {
 	for (int i = 0; i < m_iUsedItems; ++i)
 	{
@@ -1873,6 +1873,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
+					DDItemMP.m_bAlreadyPaid = !withMoneyCalculation;
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 				}
 			}
@@ -1882,7 +1883,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet)
+void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet, bool withMoneyCalculation)
 {
 	// Получаем оружие
 
@@ -1902,6 +1903,7 @@ void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bReal
 				if (UITopList[DDItemMP.GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == DDItemMP.GetSlot())
 				{
 					DDItemMP.m_bHasRealRepresentation = bRealRepresentationSet;
+					DDItemMP.m_bAlreadyPaid = !withMoneyCalculation;
 					SendMessage(&DDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
 					// Проверяем индекс на наличие флагов аддонов, и если они есть, то 
 					// аттачим аддоны к мувнутому оружию

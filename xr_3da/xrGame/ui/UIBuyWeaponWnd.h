@@ -441,9 +441,9 @@ public:
 	//									  Возможны установленные флаги аддонов.
 	//			bRealRepresentationSet	- флаг, который указывает на наличие у вещи реального 
 	//									  представления
-	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet);
+	void		SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet,  bool withMoneyCalculation = false);
 	// Params:	sectionName				- имя конфигурационной секции оружия
-	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet);
+	void		SectionToSlot(const char *sectionName, bool bRealRepresentationSet,  bool withMoneyCalculation = false);
 
 	// Функция перемещения всех вещей из слотов обратно в секции
 	void		ClearSlots();
