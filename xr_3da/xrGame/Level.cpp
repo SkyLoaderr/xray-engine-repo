@@ -330,7 +330,7 @@ void CLevel::ClientSend	()
 void CLevel::OnFrame	()
 {
 	mmgrMessage("**** Generating memory leak");
-
+	
 	// Client-message parsing
 	Device.Statistic.netClient.Begin();
 	ClientReceive		();

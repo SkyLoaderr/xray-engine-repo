@@ -1164,26 +1164,6 @@ SOURCE=.\LzHuf.cpp
 SOURCE=.\lzhuf.h
 # End Source File
 # End Group
-# Begin Group "Memory manager"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\FMemoryManager.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\FMemoryManager.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LocalAllocator.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\LocalAllocator.h
-# End Source File
-# End Group
 # Begin Group "Font output"
 
 # PROP Default_Filter ""
@@ -1251,6 +1231,26 @@ SOURCE=.\XR_IOConsole.h
 # Begin Group "Core"
 
 # PROP Default_Filter ""
+# Begin Group "Memory manager"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FMemoryManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FMemoryManager.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LocalAllocator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LocalAllocator.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\clsid.cpp

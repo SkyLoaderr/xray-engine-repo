@@ -2,11 +2,11 @@
 #define _MMGR_H_
 
 // memory manager
-void mmgrInitialize			(int dbgLevel);
-void mmgrDone				(void);
-void mmgrMessage			(const char *logMSG, const char *dop = NULL);
+ENGINE_API void		mmgrInitialize	(int dbgLevel);
+ENGINE_API void		mmgrDone		(void);
+ENGINE_API void		mmgrMessage		(const char *logMSG, const char *dop = NULL);
 
-ENGINE_API LPSTR	_STRDUP	(LPCSTR string);
+ENGINE_API LPSTR	_STRDUP			(LPCSTR string);
 
 #ifdef DEBUG
 // rewritten routines for debugging
