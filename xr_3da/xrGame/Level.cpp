@@ -298,8 +298,8 @@ void CLevel::OnFrame	()
 
 	//просчитать полет пуль
 	Device.Statistic.TEST0.Begin();
-	BulletManager().Update	();
-	Device.Statistic.TEST0.End();
+	BulletManager().Update		();
+	Device.Statistic.TEST0.End	();
 }
 
 void CLevel::OnRender()
