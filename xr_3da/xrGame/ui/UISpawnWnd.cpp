@@ -15,7 +15,7 @@ CUISpawnWnd::CUISpawnWnd()
 	  m_iResult(-1),
 	  pCallbackFunc(NULL)
 {
-	Init("-= Red Team =-", "-= Green Team =-", true);
+	Init("-= Red Team =-", "-= Blue Team =-", true);
 
 	SetFont(HUD().pFontMedium);
 }
