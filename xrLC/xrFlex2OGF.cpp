@@ -5,6 +5,8 @@
 #include "std_classes.h"
 #include "lightmap.h"
 
+#define	TRY(a) try { a; } catch (...) { Msg("* E: %s", #a); }
+
 void CBuild::Flex2OGF()
 {
 	float p_total	= 0;
@@ -31,9 +33,9 @@ void CBuild::Flex2OGF()
 			pOGF->shader		= M->shader;
 			pOGF->shader_xrlc	= &F->Shader();
 			
-			strcpy					(T.name,textures[M->surfidx].name);
-			T.pSurface				= &(textures[M->surfidx]);
-			pOGF->textures.push_back(T);
+			TRY(strcpy(T.name,textures[M->surfidx].name));
+			TRY(T.pSurface = &(textures[M->surfidx]));
+			TRY(pOGF->textures.push_back(T));
 			for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
 			{
 				// If lightmaps persist
