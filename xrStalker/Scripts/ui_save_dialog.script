@@ -11,6 +11,9 @@ function save_dialog:__finilize()
 
 end
 
+function save_dialog:SetClGame  (game_cl)
+   self.m_game_cl = game_cl
+end
 function save_dialog:InitControls()
 	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
