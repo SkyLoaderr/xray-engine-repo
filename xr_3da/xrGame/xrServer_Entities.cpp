@@ -493,23 +493,23 @@ xrSE_Rat::xrSE_Rat()
 void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
+	P.r_u32(u32ActionRefreshRate);
 }
 
 void xrSE_Rat::STATE_Write(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
+	P.w_u32(u32ActionRefreshRate);
 }
 
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
-	P.r_u32(u32ActionRefreshRate);
 }
 
 void xrSE_Rat::UPDATE_Write(NET_Packet& P)
 {
 	inherited::UPDATE_Write(P);
-	P.w_u32(u32ActionRefreshRate);
 }
 
 #ifdef _EDITOR
