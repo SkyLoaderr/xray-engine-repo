@@ -13,13 +13,13 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case 0:
-		C.r2_Pass				("null",		"r2_accum_direct_1",FALSE,FALSE);
+		C.r2_Pass				("null",		"r2_accum_direct_1",FALSE,FALSE,TRUE,	D3DBLEND_INVSRCALPHA,	D3DBLEND_ZERO);
 		C.r2_Sampler			("s_position",	r2_RT_P);
 		C.r2_Sampler			("s_smap",		r2_RT_smap_d);
 		C.r2_End				();
 		break;
 	case 1:
-		C.r2_Pass				("null",		"r2_accum_direct_2",FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r2_Pass				("null",		"r2_accum_direct_2",FALSE,FALSE,TRUE,	D3DBLEND_SRCALPHA,		D3DBLEND_ONE);
 		C.r2_Sampler			("s_position",	r2_RT_P);
 		C.r2_Sampler			("s_smap",		r2_RT_smap_d);
 		C.r2_End				();
