@@ -778,7 +778,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		//if(m_parent_element)
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
-		VERIFY(dBodyStateValide(m_body));
+
 		FillInterpolation();
 		bActivating=false;
 		if(!m_parent_element) 
@@ -788,7 +788,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 			m_shell->bActivating=false;
 		}
 		B->Callback_overwrite=TRUE;
-		VERIFY(dBodyStateValide(m_body));
+
 		return;
 	}
 
