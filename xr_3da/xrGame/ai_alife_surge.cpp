@@ -28,9 +28,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->m_tSpawnID				= tSpawnID;
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-	vfUpdateDynamicData			(i);
+	//vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
-	//m_tpServer->entity_Destroy	(tpSE_Abstract);
+	m_tpServer->entity_Destroy	(tpSE_Abstract);
 
 	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
@@ -62,8 +62,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bDirectControl			= false;
 			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
-			vfUpdateDynamicData			(k);
-			//m_tpServer->entity_Destroy	(l_tpAbstract);
+			//vfUpdateDynamicData			(k);
+			m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
 }
@@ -157,11 +157,11 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(i);
 				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
 
-				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - 0*i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
+				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
 				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				vfUpdateDynamicData(i);
-				//m_tpServer->entity_Destroy	(l_tpSE_Abstract);
+				//vfUpdateDynamicData(i);
+				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
 		I++;
@@ -285,7 +285,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
 						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 
-						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
+						//vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						i--;
 						N--;
 					}
@@ -662,7 +662,7 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				l_tpALifeItem->ID_Parent	= tTrader.ID;
 				l_tpALifeItem->m_bALifeControl = true;
 				m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-				vfUpdateDynamicData			(i);
+				//vfUpdateDynamicData			(i);
 				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
@@ -719,6 +719,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 
 void CSE_ALifeSimulator::vfPerformSurge()
 {
+	seed							(s32(CPU::GetCycleCount() & 0xffffffff));
 	vfGenerateAnomalousZones		();
 	vfGenerateAnomalyMap			();
 	vfKillCreatures					();
@@ -742,6 +743,5 @@ void CSE_ALifeSimulator::vfPerformSurge()
 	vfUpdateTasks					();
 	
 	// updating dynamic data
-	vfSetupScheduledObjects			();
-	//vfUpdateDynamicData			();
+	vfUpdateDynamicData			();
 }
