@@ -36,6 +36,8 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptN
 	else
 		Msg				("* Script %s freed object %s from its control",caSciptName,cName());
 #endif
+	if (!bScriptControl)
+		ResetScriptData(this);
 }
 
 bool CScriptMonster::GetScriptControl() const
@@ -95,7 +97,6 @@ void CScriptMonster::ProcessScripts()
 
 	if (m_tpActionQueue.empty()) {
 		Msg			("* Object %s has an empty script queue!",cName());
-		ResetScriptData();
 		return;
 	}
 

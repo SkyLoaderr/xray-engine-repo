@@ -137,24 +137,6 @@ void	CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
 
-//////////////////////////////////////////////////////////////////////////
-// scripts
-//////////////////////////////////////////////////////////////////////////
-#pragma todo("Dima to Oles : I put script update on UpdateCL in the Car for the precise action computation, is this correct?!")
-	if (GetScriptControl())
-		ProcessScripts();
-	else {
-		if (!m_tpActionQueue.empty())
-			ResetScriptData				(false);
-		while (!m_tpActionQueue.empty()) {
-			xr_delete	(*m_tpActionQueue.begin());
-			m_tpActionQueue.erase(m_tpActionQueue.begin());
-		}
-	}
-//////////////////////////////////////////////////////////////////////////
-// end of scripts
-//////////////////////////////////////////////////////////////////////////
-
 //#ifdef DEBUG
 	if(m_pPhysicsShell&&m_owner)
 	{
@@ -1083,4 +1065,10 @@ void CCar::ResetScriptData(void	*P)
 	bfAssignMovement(l_tpEntityAction);
 	m_max_rpm		= m_fSaveMaxRPM;
 
+}
+
+void CCar::PhDataUpdate(dReal step)
+{
+	if (GetScriptControl())
+		ProcessScripts();
 }
