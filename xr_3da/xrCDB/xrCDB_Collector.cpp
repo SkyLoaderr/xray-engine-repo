@@ -20,9 +20,9 @@ namespace CDB
 		)
 	{
 		TRI T;
-		T.IDverts()	[0] = verts.size();
-		T.IDverts()	[1] = verts.size()+1;
-		T.IDverts()	[2] = verts.size()+2;
+		T.verts		[0] = verts.size();
+		T.verts		[1] = verts.size()+1;
+		T.verts		[2] = verts.size()+2;
 		T.dummy			= dummy;
 
 		verts.push_back(v0);
@@ -34,9 +34,9 @@ namespace CDB
 	void	Collector::add_face		(	const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector )
 	{
 		TRI			T;
-		T.IDverts()	[0] = verts.size();
-		T.IDverts()	[1] = verts.size()+1;
-		T.IDverts()	[2] = verts.size()+2;
+		T.verts	[0]		= verts.size();
+		T.verts	[1]		= verts.size()+1;
+		T.verts	[2]		= verts.size()+2;
 		T.material		= material;
 		T.sector		= sector;
 
@@ -53,9 +53,9 @@ namespace CDB
 		)
 	{
 		TRI T;
-		T.IDverts()	[0] = VPack(v0,eps);
-		T.IDverts()	[1] = VPack(v1,eps);
-		T.IDverts()	[2] = VPack(v2,eps);
+		T.verts	[0]		= VPack(v0,eps);
+		T.verts	[1]		= VPack(v1,eps);
+		T.verts	[2]		= VPack(v2,eps);
 		T.material		= material;
 		T.sector		= sector;
 		faces.push_back(T);
@@ -67,9 +67,9 @@ namespace CDB
 		)
 	{
 		TRI T;
-		T.IDverts()	[0] = VPack(v0,eps);
-		T.IDverts()	[1] = VPack(v1,eps);
-		T.IDverts()	[2] = VPack(v2,eps);
+		T.verts	[0] = VPack(v0,eps);
+		T.verts	[1] = VPack(v1,eps);
+		T.verts	[2] = VPack(v2,eps);
 		T.dummy			= dummy;
 		faces.push_back(T);
 	}
@@ -86,14 +86,14 @@ namespace CDB
 
 				for (u32 f_e=0; f_e<3; f_e++)
 				{
-					u32 f1	= faces[f].IDverts()[(f_e+0)%3];
-					u32 f2	= faces[f].IDverts()[(f_e+1)%3];
+					u32 f1	= faces[f].verts[(f_e+0)%3];
+					u32 f2	= faces[f].verts[(f_e+1)%3];
 					if (f1>f2)	std::swap(f1,f2);
 
 					for (u32 t_e=0; t_e<3; t_e++)
 					{
-						u32 t1	= faces[t].IDverts()[(t_e+0)%3];
-						u32 t2	= faces[t].IDverts()[(t_e+1)%3];
+						u32 t1	= faces[t].verts[(t_e+0)%3];
+						u32 t2	= faces[t].verts[(t_e+1)%3];
 						if (t1>t2)	std::swap(t1,t2);
 
 						if (f1==t1 && f2==t2)
@@ -136,9 +136,9 @@ namespace CDB
 		)
 	{
 		TRI T;
-		T.IDverts()	[0] = VPack(v0);
-		T.IDverts()	[1] = VPack(v1);
-		T.IDverts()	[2] = VPack(v2);
+		T.verts	[0] = VPack(v0);
+		T.verts	[1] = VPack(v1);
+		T.verts	[2] = VPack(v2);
 		T.material		= material;
 		T.sector		= sector;
 		faces.push_back(T);
@@ -150,9 +150,9 @@ namespace CDB
 		)
 	{
 		TRI T;
-		T.IDverts()	[0] = VPack(v0);
-		T.IDverts()	[1] = VPack(v1);
-		T.IDverts()	[2] = VPack(v2);
+		T.verts	[0] = VPack(v0);
+		T.verts	[1] = VPack(v1);
+		T.verts	[2] = VPack(v2);
 		T.dummy			= dummy;
 		faces.push_back(T);
 	}
