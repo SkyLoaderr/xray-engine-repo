@@ -252,28 +252,6 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 			
 				
 				if (contains||isPC||isLC){ 
-/*
-					for (Index = 0; Index < OutTriCount; Index++){
-
-						dContactGeom* RefContact = CONTACT(Contacts, Index * Stride);
-
-						const dcVector3& RefNormal = (dcVector3&)RefContact->normal;
-
-
-
-						if (TriPlane.Normal.DotProduct(RefNormal) > 0.9999f){	// Coplanitary test//?????//@slipch I set 0.9999 instead 0.9 I not completely understand when this works.
-
-							RefContact->depth = dcMAX((float)RefContact->depth, ContactDepth);
-
-							break;
-
-						}
-
-					}
-
-*/
-
-					//if (Index == OutTriCount||isPC||isLC){
 
 						dContactGeom* Contact = CONTACT(Contacts, OutTriCount * Stride);
 
@@ -287,76 +265,16 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 						//////////////////////////////////
 						OutTriCount++;
 
-					//}
+	
 
 				}
-				//if(isPC) break;
-
+		
 			}
 
 		}
 		return OutTriCount;
-		if (OutTriCount != 0){
-
-			dcVector3 OutNormal(0, 0, 0);
-
-		
-
-			/* Combining contacts */
-
-			for (int i = 0; i < OutTriCount; i++){
-
-				dContactGeom* Contact = CONTACT(Contacts, i * Stride);
 
 
-
-				OutNormal += ((dcVector3&)Contact->normal) * Contact->depth;
-
-			}
-
-
-
-			const float DepthSq = OutNormal.MagnitudeSq();
-
-
-
-			/* Generating final contact */
-
-			if (DepthSq > 0.0f){
-
-				const float Depth = sqrtf(DepthSq);
-
-
-
-				OutNormal /= Depth;	// Normalizing
-
-			
-				dContactGeom& OutContact = *Contacts;
-
-				((dcVector3&)OutContact.pos) = SphereCenter - OutNormal * SphereRadius;
-
-				((dcVector3&)OutContact.normal) =OutNormal * -1;
-
-				OutContact.depth = Depth;
-
-
-
-				OutContact.g1 = Geometry;
-
-				OutContact.g2 = Sphere;
-
-
-
-
-				return 1;
-
-			}
-
-			else return 0;
-
-		}
-
-		else return 0;
 
 	}
 

@@ -493,7 +493,7 @@ void CPHJeep::NeutralDrive(){
 }
 //////////////////////////////////////////////////////////
 void CPHJeep::Revert(){
-dBodyAddForce(Bodies[0], 0, 33600, 0);
+dBodyAddForce(Bodies[0], 0, 2*33600, 0);
 dBodyAddRelTorque(Bodies[0], 700, 0, 0);
 }
 ////////////////////////////////////////////////////////////////////////////
@@ -509,7 +509,7 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	Jeep.Create(Space,phWorld);
 	Gun.Create(Space);
-	dReal k_p=500000.f;
+	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
 	dReal h=0.02222f;
 	dWorldSetERP(phWorld,  h*k_p / (h*k_p + k_d));
@@ -539,7 +539,7 @@ void CPHWorld::Step(dReal step){
 	if(step<=0.02f){
 			
 
-			const dReal k_p=500000.f;
+			const dReal k_p=1000000.f;
 			const dReal k_d=2000.f;
 		
 			dWorldSetERP(phWorld,  step*k_p / (step*k_p + k_d));
@@ -572,7 +572,7 @@ void CPHWorld::Step(dReal step){
 		UINT n=(UINT)(step/0.02f)+1;
 		for(int i=0; i<n;i++)
 		{
-			const dReal k_p=500000.f;
+			const dReal k_p=1000000.f;
 			const dReal k_d=2000.f;
 		
 			dWorldSetERP(phWorld,  step*k_p/n / (step*k_p/n + k_d));
