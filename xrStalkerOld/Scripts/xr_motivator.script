@@ -18,6 +18,8 @@ end
 function motivator_binder:reinit()
     object_binder.reinit(self)
     printf ("ReInit called")
+    self.object:set_hear_callback(hear_callback)
+        
     local char_ini = self.object:spawn_ini()
 
     --' Bind other scripts
@@ -147,7 +149,6 @@ function motivator_binder:reload (section)
     object_binder.reload(self, section)
     printf ("ReLoad called")
     self.object:set_pda_callback(pda_callback)
-    self.object:set_hear_callback(hear_callback)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
