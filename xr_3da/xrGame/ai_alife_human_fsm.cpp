@@ -13,10 +13,7 @@
 
 void CSE_ALifeHumanAbstract::Update			()
 {
-	if (ID == 106) {
-		ID = ID;
-	}
-	if (fHealth <= 0)
+	if (!bfActive())
 		return;
 #ifdef OLD_BEHAVIOUR
 	inherited2::Update	(m_tpALife);

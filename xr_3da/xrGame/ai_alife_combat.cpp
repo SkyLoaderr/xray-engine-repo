@@ -324,7 +324,9 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 					vfAssignDeathPosition						(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 					l_tpALifeMonsterAbstract->vfDetachAll		(l_tpALifeMonsterAbstract->m_tGraphID);
 					R_ASSERT									(l_tpALifeMonsterAbstract->children.empty());
+					Fvector										l_tPosition = l_tpALifeMonsterAbstract->o_Position;
 					vfUpdateDynamicData							(l_tpALifeMonsterAbstract);
+					l_tpALifeMonsterAbstract->o_Position		= l_tPosition;
 					l_tpALifeAbstractGroup->m_wCount--;
 					I--;
 					N--;
@@ -340,8 +342,11 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				vfAssignDeathPosition							(l_tpALifeMonsterAbstract, l_tGraphID, m_tpaCombatObjects[i ^ 1]);
 				l_tpALifeMonsterAbstract->vfDetachAll			(l_tpALifeMonsterAbstract->m_tGraphID);
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());
-				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1)
+				Fvector											l_tPosition = l_tpALifeMonsterAbstract->o_Position;
+				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1) {
 					vfChangeObjectGraphPoint					(l_tpALifeMonsterAbstract,l_tGraphID1,l_tpALifeMonsterAbstract->m_tGraphID);
+					l_tpALifeMonsterAbstract->o_Position		= l_tPosition;
+				}
 			}
 		}
 	}
