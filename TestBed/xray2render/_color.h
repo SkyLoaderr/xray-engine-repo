@@ -3,7 +3,16 @@
 
 // maps unsigned 8 bits/channel to D3DCOLOR
 IC u32	color_argb	(u32 a, u32 r, u32 g, u32 b)	{	return ((a&0xff)<<24)|((r&0xff)<<16)|((g&0xff)<<8)|(b&0xff);	}
+IC u32	color_argb_f(f32 a, f32 r, f32 g, f32 b)	
+{
+	s32	 _r = iFloor(r*255.f); clamp(_r,0,255);
+	s32	 _g = iFloor(g*255.f); clamp(_g,0,255);
+	s32	 _b = iFloor(b*255.f); clamp(_b,0,255);
+	s32	 _a = iFloor(a*255.f); clamp(_a,0,255);
+	return color_argb(_a,_r,_g,_b);
+}
 IC u32	color_rgba	(u32 r, u32 g, u32 b, u32 a)	{	return color_argb(a,r,g,b);		}
+IC u32	color_rgba_f(f32 r, f32 g, f32 b, f32 a)	{	return color_argb_f(a,r,g,b);	}
 IC u32	color_xrgb	(u32 r, u32 g, u32 b)			{	return color_argb(0xff,r,g,b);	}
 IC u32	color_get_R	(u32 rgba)						{	return (((rgba) >> 16) & 0xff);	}
 IC u32	color_get_G	(u32 rgba)						{	return (((rgba) >> 8) & 0xff);	}
