@@ -577,6 +577,7 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 						  ++it)
 	{	
 		CUIDragDropItem* pDragDropItem = *it;
+		pDragDropItem->SetColor(0xffffffff);//un-colorize
 		pTrade->SellItem((PIItem)pDragDropItem->GetData());
 			
 		//заносим в список того, кто покупает товар
@@ -610,6 +611,8 @@ void CUITradeWnd::UpdateLists()
 	std::sort					(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//Наш рюкзак
+	FillList(ruck_list, UIOurBagList, true);
+/*
 	TIItemContainer::iterator it;
 	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
@@ -648,17 +651,18 @@ void CUITradeWnd::UpdateLists()
 //			++m_iUsedItems;
 		}
 	}
-
+*/
 	ruck_list.clear					();
 	m_pOthersInv->AddAvailableItems	(ruck_list, true);
 	std::sort						(ruck_list.begin(),ruck_list.end(),GreaterRoomInRuck);
 
 	//Чужой рюкзак
-	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
+	FillList(ruck_list, UIOthersBagList, false);
+
+/*	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 		if((*it)) 
 		{
-			//CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
 			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 				
@@ -685,12 +689,60 @@ void CUITradeWnd::UpdateLists()
 			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 			//установить коэффициент масштабирования
-//.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
 			UIDragDropItem.SetStretchTexture(true);
 			UIOthersBagList.AttachChild(&UIDragDropItem);
-//			++m_iUsedItems;
 		}
 	}
+*/
+}
+
+void CUITradeWnd::FillList	(TIItemContainer& cont, CUIDragDropList& dragDropList, bool do_colorize)
+{
+	TIItemContainer::iterator it;
+	for(it =  cont.begin(); cont.end() != it; ++it) 
+	{
+		if((*it)) 
+		{
+			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
+
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
+
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+
+			UIDragDropItem.SetData((*it));
+
+			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomDraw(AmmoDrawProc);
+
+			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
+
+			UIDragDropItem.SetStretchTexture(true);
+
+			if(do_colorize){
+				switch((*it)->m_eItemPlace){
+				case eItemPlaceSlot:
+					UIDragDropItem.SetColor(0xff7cffff);
+					break;
+				case eItemPlaceBelt:
+					UIDragDropItem.SetColor(0xffff7cff);
+					break;
+				};
+			}
+			dragDropList.AttachChild(&UIDragDropItem);
+		}
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////

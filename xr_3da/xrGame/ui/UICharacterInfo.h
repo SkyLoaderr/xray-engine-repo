@@ -27,8 +27,10 @@ public:
 	
 	void		ResetAllStrings();
 
-	CUIStatic	UIIcon;
+	virtual void	Update				();
 
+	CUIStatic	UIIcon;
+	CInventoryOwner* pInvOwner;
 	CUIStatic	UIName;
 	CUIStatic	UIRank, UIRankCaption;
 	CUIStatic	UICommunity, UICommunityCaption;

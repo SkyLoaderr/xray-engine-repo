@@ -976,3 +976,12 @@ ALife::_TIME_ID	 CInventoryItem::TimePassedAfterIndependant()	const
 	else
 		return 0;
 }
+
+bool	CInventoryItem::CanTrade() const 
+{
+	bool res = true;
+	if(m_pInventory){
+		res = m_pInventory->GetOwner()->AllowItemToTrade(this,m_eItemPlace);
+	}
+	return (res&&m_bCanTrade);
+}

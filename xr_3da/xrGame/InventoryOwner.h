@@ -74,6 +74,7 @@ public:
 	////////////////////////////////////
 	//торговля и общение с персонажем
 
+	virtual bool	AllowItemToTrade 	(CInventoryItem const * item, EItemPlace place) const {return true;};
 
 	//инициализация объекта торговли
 	CTrade* GetTrade();

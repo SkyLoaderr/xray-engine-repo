@@ -1049,15 +1049,23 @@ void  CInventory::AddAvailableItems(TIItemContainer& items_container, bool for_t
 		if(m_slots[KNIFE_SLOT].m_pIItem)
 			if(!for_trade || m_slots[KNIFE_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[KNIFE_SLOT].m_pIItem);
+
+		if(m_slots[PISTOL_SLOT].m_pIItem)
+			if(!for_trade || m_slots[PISTOL_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[PISTOL_SLOT].m_pIItem);
+
 		if(m_slots[RIFLE_SLOT].m_pIItem)
 			if(!for_trade || m_slots[RIFLE_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[RIFLE_SLOT].m_pIItem);
+
 		if(m_slots[GRENADE_SLOT].m_pIItem)
 			if(!for_trade || m_slots[GRENADE_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[GRENADE_SLOT].m_pIItem);
+
 		if(m_slots[APPARATUS_SLOT].m_pIItem)
 			if(!for_trade || m_slots[APPARATUS_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[APPARATUS_SLOT].m_pIItem);
+
 		if(m_slots[OUTFIT_SLOT].m_pIItem)
 			if(!for_trade || m_slots[OUTFIT_SLOT].m_pIItem->CanTrade())
 				items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);

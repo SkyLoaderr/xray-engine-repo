@@ -142,7 +142,7 @@ public:
 			bool	RuckDefault			() {return m_bRuckDefault;}
 			
 	virtual bool	CanTake				() const {return m_bCanTake;}
-	virtual bool	CanTrade			() const {return m_bCanTrade;}
+			bool	CanTrade			() const;
 	virtual bool 	IsNecessaryItem	    (CInventoryItem* item)   {return false;};
 protected:
 

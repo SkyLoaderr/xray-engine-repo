@@ -109,6 +109,7 @@ protected:
 	void UpdatePrices();
 	void UpdateLists();
 
+	void FillList	(TIItemContainer& cont, CUIDragDropList& list, bool do_colorize);
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
 	// сообщения о результатах сделки

@@ -20,7 +20,8 @@ using namespace InventoryUtilities;
 //////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::CUICharacterInfo()
-	:	m_bInfoAutoAdjust		(true)
+	:	m_bInfoAutoAdjust		(true),
+	pInvOwner(NULL)
 {
 }
 
@@ -256,9 +257,10 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
+void CUICharacterInfo::InitCharacter(CInventoryOwner* pOwner)
 {
-	VERIFY(pInvOwner);
+	VERIFY(pOwner);
+	pInvOwner = pOwner;
 	InitCharacter(&pInvOwner->CharacterInfo());
 
 	CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
@@ -324,4 +326,27 @@ void CUICharacterInfo::ResetAllStrings()
 	UICommunity.SetText("");
 	UIRelation.SetText("");
 	UIReputation.SetText("");
+}
+
+void CUICharacterInfo::Update()
+{
+	inherited::Update();
+	if( pInvOwner&&(smart_cast<CObject*>(pInvOwner))->getDestroy() )
+		pInvOwner = NULL;
+
+	if(pInvOwner&&Device.dwFrame%30){
+		CActor *m_pActor = smart_cast<CActor *>(pInvOwner);
+		if (m_pActor)
+		{
+			UIRelationCaption.Show(false);
+			UIRelation.Show(false);
+		}
+		else
+		{
+			CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
+			if(pActor)
+				SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)),
+							RELATION_REGISTRY().GetAttitude(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
+		}
+	}
 }
