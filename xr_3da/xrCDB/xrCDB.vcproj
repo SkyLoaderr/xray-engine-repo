@@ -357,6 +357,12 @@
 						Name="VCCLCompilerTool"
 						AssemblerOutput="4"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="4"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

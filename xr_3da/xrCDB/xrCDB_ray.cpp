@@ -6,8 +6,8 @@
 using namespace CDB;
 using namespace Opcode;
 
-IC u32& IR		(float &x) { return (u32&)x; }
-IC BOOL Pick2	(const Fvector& origin, const Fvector& dir, Fvector& coord)
+IC u32& uf		(float &x) { return (u32&)x; }
+BOOL	Pick2	(const Fvector& min, const Fvector& max, const Fvector& origin, const Fvector& dir, Fvector& coord)
 {
 	Fvector				MaxT;
 	MaxT.x=MaxT.y=MaxT.z=-1.0f;
@@ -17,29 +17,29 @@ IC BOOL Pick2	(const Fvector& origin, const Fvector& dir, Fvector& coord)
 	if(origin[0] < min[0]) {
 		coord[0]	= min[0];
 		Inside		= FALSE;
-		if(IR(dir[0]))	MaxT[0] = (min[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+		if(uf(dir[0]))	MaxT[0] = (min[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
 	} else if(origin[0] > max[0]) {
 		coord[0]	= max[0];
 		Inside		= FALSE;
-		if(IR(dir[0]))	MaxT[0] = (max[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
+		if(uf(dir[0]))	MaxT[0] = (max[0] - origin[0]) / dir[0]; // Calculate T distances to candidate planes
 	}
 	if(origin[1] < min[1]) {
 		coord[1]	= min[1];
 		Inside		= FALSE;
-		if(IR(dir[1]))	MaxT[1] = (min[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+		if(uf(dir[1]))	MaxT[1] = (min[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
 	} else if(origin[1] > max[1]) {
 		coord[1]	= max[1];
 		Inside		= FALSE;
-		if(IR(dir[1]))	MaxT[1] = (max[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
+		if(uf(dir[1]))	MaxT[1] = (max[1] - origin[1]) / dir[1]; // Calculate T distances to candidate planes
 	}
 	if(origin[2] < min[2]) {
 		coord[2]	= min[2];
 		Inside		= FALSE;
-		if(IR(dir[2]))	MaxT[2] = (min[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+		if(uf(dir[2]))	MaxT[2] = (min[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
 	} else if(origin[2] > max[2]) {
 		coord[2]	= max[2];
 		Inside		= FALSE;
-		if(IR(dir[2]))	MaxT[2] = (max[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
+		if(uf(dir[2]))	MaxT[2] = (max[2] - origin[2]) / dir[2]; // Calculate T distances to candidate planes
 	}
 
 	// Ray origin inside bounding box
@@ -54,7 +54,7 @@ IC BOOL Pick2	(const Fvector& origin, const Fvector& dir, Fvector& coord)
 	if	(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
 
 	// Check final candidate actually inside box
-	if(IR(MaxT[WhichPlane])&0x80000000) return false;
+	if(uf(MaxT[WhichPlane])&0x80000000) return false;
 
 	if  (0==WhichPlane)	{
 		// 1 & 2
