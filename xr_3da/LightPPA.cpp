@@ -22,6 +22,17 @@ CLightPPA::~CLightPPA()
 
 }
 
+CLightPPA::set_mode	(mode _M)
+{
+	if (M == _M)										return;
+	if (M==LIGHT_ENABLED && _M==LIGHT_ENABLED_SHADOWED)	return;
+	if (_M==LIGHT_ENABLED && M==LIGHT_ENABLED_SHADOWED)	return;
+
+	M	= _M;
+	if (LIGHT_DISABLED == M)	Render_Implementation.L_Dynamic.Deactivate	(this);
+	else						Render_Implementation.L_Dynamic.Activate	(this);
+}
+
 IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
 	D.P.set	(P);
@@ -91,25 +102,31 @@ void CLightPPA_Manager::Initialize	()
 
 void CLightPPA_Manager::Destroy		()
 {
+	active.clear				();
+	inactive.clear				();
 	Device.Shader.DeleteGeom	(hGeom);
 	Device.Shader.Delete		(hShader);
 }
 
 void CLightPPA_Manager::Render()
 {
+	const float	clip	= 4.f / 255.f;
+
 	// Projection
 	float _43			 = Device.mProject._43;
 	Device.mProject._43 -= 0.001f; 
 	RCache.set_xform_project	(Device.mProject);
 
 	RCache.set_Shader	(hShader);
-	for (u32 L=0; L<active.size(); L++)
+	for (set<CLightPPA*>::iterator it=active.begin(); it!=active.end(); it++)
 	{
-		CLightPPA&	PPL = *container[L];
-		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
+		CLightPPA&	PPL = *(*it);
 
 		// Culling
-		if (alpha>=1)		continue;
+		if (PPL.sphere.R<0.05f)													continue;
+		if (PPL.color.magnitude_sqr_rgb()<EPS)									continue;
+		float	alpha		= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
+		if (alpha>=1)															continue;
 		if (!::Render->ViewBase.testSphere_dirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Calculations and rendering
@@ -120,9 +137,6 @@ void CLightPPA_Manager::Render()
 		PPL.Render			(hGeom);
 		Device.Statistic.RenderDUMP_Lights.End	();
 	}
-
-	// Clean up
-	container.clear		();
 
 	// Projection
 	Device.mProject._43 = _43;
@@ -160,4 +174,21 @@ void			CLightPPA_Manager::Destroy			(CLightPPA* L)
 	// ???
 	xr_delete	(L);
 	Msg			("! xrRENDER: unregistered light destroyed");
+}
+
+void	CLightPPA_Manager::Activate		(CLightPPA* L)
+{
+	set<CLightPPA*>::iterator	it		= inactive.find	(L);
+	R_ASSERT							(it!=inactive.end());
+	inactive.erase				(it);
+
+	active.insert				(L);
+}
+void	CLightPPA_Manager::Deactivate	(CLightPPA* L)
+{
+	set<CLightPPA*>::iterator	it		= active.find	(L);
+	R_ASSERT							(it!=active.end());
+	active.erase				(it);
+
+	inactive.insert				(L);
 }

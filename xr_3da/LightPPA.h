@@ -17,16 +17,18 @@ struct	CLightPPA_Vertex
 class	CLightPPA	:	public IRender_Light
 {
 public:
+	mode			M;
 	Fsphere			sphere;
 	Fcolor			color;
 public:
 	CLightPPA		();
 	~CLightPPA		();
 
-	IC void			SetPosition		(const Fvector& P)				{ sphere.P.set(P);	}
-	IC void			SetRange		(float R)						{ sphere.R = R;		}
-	IC void			SetColor		(const Fcolor& C)				{ color.set(C);		}
-	IC void			SetColor		(float r, float g, float b)		{ color.set(r,g,b,1); }
+	virtual void	set_mode		(mode M);
+	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);	}
+	virtual void	set_range		(float R)						{ sphere.R = R;		}
+	virtual void	set_color		(const Fcolor& C)				{ color.set(C);		}
+	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1); }
 
 	void			Render			(SGeometry* hGeom);
 };
@@ -45,17 +47,8 @@ public:
 	CLightPPA*		Create			();
 	void			Destroy			(CLightPPA*);
 
-	/*
-	IC void			Add				(CLightPPA* L)	
-	{ 
-		const float	clip	= 8.f / 255.f;
-		if (L->sphere.R<0.1f)		return;
-		if (L->color.r<clip)		return;
-		if (L->color.g<clip)		return;
-		if (L->color.b<clip)		return;
-		container.push_back	(L);	
-	}
-	*/
+	void			Activate		(CLightPPA* L);
+	void			Deactivate		(CLightPPA* L);
 
 	void			Render			();
 };
