@@ -78,6 +78,15 @@ class CMonsterSquad {
 	MEMBER_ENEMY_VEC	vect_copy;
 	MEMBER_ENEMY_VEC	general_enemy;		
 
+
+	struct _elem {
+		CEntity *pE;
+		Fvector p_from;
+		float	yaw;
+	};
+
+	xr_vector<_elem>	lines;
+
 public:
 				CMonsterSquad(u8 i) : id(i), leader(0) {}
 				~CMonsterSquad() {}

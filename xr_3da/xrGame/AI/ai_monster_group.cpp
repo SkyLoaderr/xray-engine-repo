@@ -439,13 +439,6 @@ struct _line {
 	bool	b_changed;
 };
 
-struct _elem {
-	CEntity *pE;
-	Fvector p_from;
-	float	yaw;
-};
-
-
 #define MIN_ANGLE						PI_DIV_6
 #define MAX_DIST_THRESHOLD				10.f
 #define CHANGE_DIR_ANGLE				PI_DIV_4
@@ -454,11 +447,10 @@ struct _elem {
 
 void CMonsterSquad::SetupMemeberPositions_TargetDir(MEMBER_ENEMY_VEC &members, CEntity *enemy)
 {
-	xr_vector<_elem>		lines;
 	_elem					first;
 	_elem					last;
 
-	lines.reserve(members.size());
+	lines.clear();
 
 	// сортировать по убыванию расстояния от npc до врага 
 	std::sort(members.begin(), members.end(), sort_predicate(enemy));
