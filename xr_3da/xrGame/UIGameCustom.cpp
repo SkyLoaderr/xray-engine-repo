@@ -44,10 +44,12 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 		}
     }
 	m_dialogsToErase.clear();
+
 }
 
 void CUIGameCustom::OnFrame() 
-{}
+{
+}
 
 void CUIGameCustom::Render()
 {
