@@ -48,7 +48,6 @@ extern float		ps_r2_ls_bloom_threshold;	// r2-only
 extern float		ps_r2_ls_dsm_kernel;		// r2-only
 extern float		ps_r2_ls_psm_kernel;		// r2-only
 extern float		ps_r2_ls_ssm_kernel;		// r2-only
-extern float		ps_r2_ls_spower;			// r2-only
 extern Fvector		ps_r2_aa_barier;			// r2-only
 extern Fvector		ps_r2_aa_weight;			// r2-only
 extern float		ps_r2_aa_kernel;			// r2-only
