@@ -92,8 +92,8 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	m_ZB.clear			();
 
-	h_Geom				= Device.Shader.CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
-	h_Shader			= Device.Shader.Create		("zfill"	);
+	h_Geom					= Device.Shader.CreateGeom	(FVF::F_L, RCache.Vertex.Buffer(), NULL	);
+	h_Shader				= Device.Shader.Create		("zfill"	);
 	
 	// Debug
 	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&dbg_surf,NULL);
@@ -161,9 +161,9 @@ void CHOM::Render_DB	(CFrustum& base)
 	float			dim		= occ_dim_0/2;
 
 	// Build frustum with near plane only
-	CFrustum	clip;
+	CFrustum		clip;
 	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
-	sPoly		src,dst;
+	sPoly			src,dst;
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
