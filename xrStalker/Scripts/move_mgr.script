@@ -237,7 +237,7 @@ function move_mgr:update()
 			self:update_sound()
 		end
 
-		if self.object:animation_count() <= 0 then
+		--if self.object:animation_count() <= 0 then
 			if not self.shall_shoot then
 				-- ”же когда прибыли, повернулись и начали играть анимацию - только тогда помечаем
 				-- в синхронизаторе, что прибыли на данную точку
@@ -260,7 +260,7 @@ function move_mgr:update()
 			else
 				self.state = state_before_anim_playing
 			end
-		end
+		--end
 	end
 
 	-- ∆дать синхронизации, а только затем включить счетчик анимации
@@ -457,6 +457,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 	end
 	if pt_chosen_idx then
+		printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
 		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
 			suggested_snd = self.path_look_info[index]["snd"]
 			if suggested_snd then
