@@ -9,6 +9,7 @@ function main()
     action				(
 		stalker,
 		look			(look.fire_point,actor),
+		anim			(anim.danger),
 		cond			(cond.time_end,10000000)
     )
     
