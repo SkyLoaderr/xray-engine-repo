@@ -130,8 +130,9 @@ void xrMergeGraphs()
 	SGraphHeader					tGraphHeader;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
 	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
-	tGraphHeader.dwVertexCount		= (dwOffset *= sizeof(SCompressedGraphVertex));
+	tGraphHeader.dwVertexCount		= dwOffset;
 	F.write							(&tGraphHeader,sizeof(tGraphHeader));
+	dwOffset						*= sizeof(SCompressedGraphVertex);
 	{
 		GRAPH_P_IT					I = tpGraphs.begin();
 		GRAPH_P_IT					E = tpGraphs.end();
