@@ -66,7 +66,6 @@ void CScriptProcess::update()
 {
 #ifdef DBG_DISABLE_SCRIPTS
 	m_scripts_to_run.clear();
-	m_strings_to_run.clear();
 	return;
 #endif
 
