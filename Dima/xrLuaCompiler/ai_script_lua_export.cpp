@@ -308,8 +308,8 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.enum_("sound_play_type")
 			[
 				value("looped",					sm_Looped),
-				value("2d",						sm_2D),
-				value("3d",						0)
+				value("s2d",					sm_2D),
+				value("s3d",					0)
 			]
 			.property("frequency",				&CLuaSound::GetFrequency,	&CLuaSound::SetFrequency)
 			.property("min_distance",			&CLuaSound::GetMinDistance,	&CLuaSound::SetMinDistance)
