@@ -125,9 +125,9 @@ BOOL CAI_Rat::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 
 	/**/
 	if (Leader == this)
-		eCurrentState = aiRatFreeHunting;
+		tStateStack.push(eCurrentState = aiRatFreeHunting);
 	else
-		eCurrentState = aiRatFollowLeader;
+		tStateStack.push(eCurrentState = aiRatFollowLeader);
 	
 	//eCurrentState = aiRatFreeHunting;
 	/**/

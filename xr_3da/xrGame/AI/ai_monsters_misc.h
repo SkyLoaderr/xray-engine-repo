@@ -36,18 +36,18 @@
 	#endif
 
 	#define GO_TO_NEW_STATE(a) {\
-		eCurrentState = a;\
+		tStateStack.top() = eCurrentState = a;\
 		return;\
 	}
 
 	#define GO_TO_PREV_STATE {\
-		eCurrentState = tStateStack.top();\
 		tStateStack.pop();\
+		eCurrentState = tStateStack.top();\
 		return;\
 	}
 
 	#define SWITCH_TO_NEW_STATE(a) {\
-		tStateStack.push(eCurrentState);\
+		tStateStack.push(a);\
 		GO_TO_NEW_STATE(a);\
 	}
 
@@ -68,8 +68,8 @@
 	
 	//////////////////////////////////////////////////////////////////////////
 	#define SWITCH_TO_NEW_STATE_AND_UPDATE(a) {\
-		tStateStack.push(eCurrentState);\
-		vfAddStateToList(eCurrentState);\
+		tStateStack.push(a);\
+		vfAddStateToList(a);\
 		GO_TO_NEW_STATE(a);\
 	}
 
@@ -80,19 +80,16 @@
 	//////////////////////////////////////////////////////////////////////////
 	#define GO_TO_NEW_STATE_THIS_UPDATE(a) {\
 		bStopThinking = false;\
-		eCurrentState = a;\
-		return;\
+		GO_TO_NEW_STATE(a);\
 	}
 
 	#define GO_TO_PREV_STATE_THIS_UPDATE {\
 		bStopThinking = false;\
-		eCurrentState = tStateStack.top();\
-		tStateStack.pop();\
-		return;\
+		GO_TO_PREV_STATE;\
 	}
 
 	#define SWITCH_TO_NEW_STATE_THIS_UPDATE(a) {\
-		tStateStack.push(eCurrentState);\
+		tStateStack.push(eCurrentState = a);\
 		GO_TO_NEW_STATE_THIS_UPDATE(a);\
 	}
 
@@ -112,8 +109,8 @@
 	
 	//////////////////////////////////////////////////////////////////////////
 	#define SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(a) {\
-		tStateStack.push(eCurrentState);\
-		vfAddStateToList(eCurrentState);\
+		tStateStack.push(a);\
+		vfAddStateToList(a);\
 		GO_TO_NEW_STATE_THIS_UPDATE(a);\
 	}
 

@@ -122,7 +122,7 @@ void CAI_Zombie::Load(LPCSTR section)
 BOOL CAI_Zombie::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	eCurrentState = aiZombieFreeHunting;
+	tStateStack.push(eCurrentState = aiZombieFreeHunting);
 	return TRUE;
 }
 

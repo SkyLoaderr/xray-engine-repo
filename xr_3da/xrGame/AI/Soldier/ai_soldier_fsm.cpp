@@ -137,7 +137,7 @@ void CAI_Soldier::OnHurtAlone()
 {
 	WRITE_TO_LOG("hurt alone");
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfAmIDead());
 
 	m_dwLastRangeSearch = dwHitTime;
 
@@ -155,24 +155,24 @@ void CAI_Soldier::OnHurtAlone()
 		
 	r_torso_speed = 1*PI_DIV_2;
 	
-	if (m_cBodyState != BODY_STATE_LIE) {
-		if (m_cBodyState == BODY_STATE_STAND)
-			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
-		else
-			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
-		Lie();
-		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierWaitForAnimation);
+	if ((tStateList.size() > 1) && (tStateList[tStateList.size() - 2].eState != aiSoldierRetreatAloneFire)) {
+		if (m_cBodyState != BODY_STATE_LIE) {
+			if (m_cBodyState == BODY_STATE_STAND)
+				m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
+			else
+				m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
+			Lie();
+			SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierWaitForAnimation);
+		}
+		
+		r_torso_speed = TORSO_START_SPEED;
+		r_torso_target.yaw = r_torso_current.yaw;
+
+		if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
+			return;
+
+		vfSetMovementType(WALK_NO);
 	}
-	
-	r_torso_speed = TORSO_START_SPEED;
-	r_torso_target.yaw = r_torso_current.yaw;
-
-	vfSetMovementType(WALK_FORWARD_1);
-	
-	SelectEnemy(Enemy);
-
-	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
-		return;
 
 	dwHitTime = DWORD(-1);
 	GO_TO_PREV_STATE

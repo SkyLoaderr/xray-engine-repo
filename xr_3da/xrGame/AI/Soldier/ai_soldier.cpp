@@ -161,7 +161,8 @@ BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	tSavedEnemyPosition = vPosition;
-	eCurrentState = aiSoldierLookingOver;
+	tStateStack.push(eCurrentState = aiSoldierLookingOver);
+	vfAddStateToList(eCurrentState);
 	return TRUE;
 }
 
