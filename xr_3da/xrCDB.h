@@ -39,7 +39,7 @@ namespace CDB
 		WORD		material;		// 2b			(26b)
 		WORD		sector;			// 2b			(28b)
 		DWORD		dummy;			// 4b			(32b)
-		
+
 	public:		
 		IC Fvector&	V(int id)		{ return *(verts[id]); }
 		
