@@ -509,6 +509,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
 						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
+						R_ASSERT2(int(m_tpaDynamicSounds[j].dwNodeID) > 0, "Invalid sound object node!");
 						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Position))
 							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
 					}
@@ -532,6 +533,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
 							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 							m_tpaDynamicSounds[dwIndex].dwMyNodeID			= AI_NodeID;
+							R_ASSERT2(int(m_tpaDynamicSounds[dwIndex].dwNodeID) > 0, "Invalid sound object node!");
 							if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[dwIndex].dwNodeID),Fvector(Position)))
 								m_tpaDynamicSounds[dwIndex].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[dwIndex].dwNodeID);
 						}
@@ -549,6 +551,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						tDynamicSound.tpEntity			= tpEntity;
 						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : AI_NodeID;
 						tDynamicSound.dwMyNodeID		= AI_NodeID;
+						R_ASSERT2(int(tDynamicSound.dwNodeID) > 0, "Invalid sound object node!");
 						if (tpEntity && !getAI().bfInsideNode(getAI().Node(tDynamicSound.dwNodeID),Fvector(Position)))
 							tDynamicSound.tSavedPosition	= getAI().tfGetNodeCenter(tDynamicSound.dwNodeID);
 						m_tpaDynamicSounds.push_back	(tDynamicSound);

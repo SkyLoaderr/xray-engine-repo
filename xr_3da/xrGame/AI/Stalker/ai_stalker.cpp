@@ -320,6 +320,10 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	// export last known packet
 	R_ASSERT						(!NET.empty());
 	net_update& N					= NET.back();
+	P.w_float						(m_inventory.TotalWeight());
+	P.w_u32							(0);
+	P.w_u32							(0);
+
 	P.w_float_q16					(fHealth,-1000,1000);
 
 	P.w_u32							(N.dwTimeStamp);
@@ -328,10 +332,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_model);
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
-
-	P.w_float						(m_inventory.TotalWeight());
-	P.w_u32							(0);
-	P.w_u32							(0);
 
 	P.w								(&m_tNextGP,				sizeof(m_tNextGP));
 	P.w								(&m_tCurGP,					sizeof(m_tCurGP));
