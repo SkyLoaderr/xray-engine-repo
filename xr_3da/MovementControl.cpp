@@ -357,6 +357,7 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 	int cp_cnt=pCreator->ObjectSpace.q_result.tris.size();
 	eOldEnvironment	= eEnvironment;
 	eEnvironment	= peInAir;
+
 	if (cp_cnt)
 	{
 		Fmatrix33	A; A.set(pObject->Rotation());
@@ -367,7 +368,7 @@ void CMovementControl::CheckEnvironment(const Fvector& newpos)
 		for(int i=0; i<cp_cnt; i++)
 		{
 			clQueryTri& T=pCreator->ObjectSpace.q_result.tris[i];
-			// все что ниже пояса
+			// тестируем положение ног
 			if (CDB::TestBBoxTri(A,C,vFootExt,&T.p[0],false))
 			{
 				Fvector N; 
