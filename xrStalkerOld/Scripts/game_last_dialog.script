@@ -3,7 +3,10 @@ class "uiDialog" (CUIScriptWnd)
 
 function main()
 	local dlg = game_last_dialog.uiDialog()
-	level.start_stop_menu(dlg, true)
+	level.start_stop_menu(dlg, true)	
+	do
+		wait(2000)
+	while true
 end
 
 function uiDialog:__init() super()
