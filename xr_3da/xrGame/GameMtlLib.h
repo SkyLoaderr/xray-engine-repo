@@ -91,6 +91,7 @@ DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);
 
 struct SGameMtlPair{
 	friend class CGameMtlLibrary;
+    CGameMtlLibrary*	m_Owner;
 private:
 	int					mtl0;
 	int					mtl1;
@@ -127,13 +128,14 @@ public:
     void __fastcall 	OnFlagChange	(PropValue* sender);
 #endif
 public:
-	SGameMtlPair		()
+	SGameMtlPair		(CGameMtlLibrary* owner)
     {
 		ZeroMemory		(this,sizeof(*this));
     	mtl0			= -1;
     	mtl1			= -1;
         ID				= -1;
         ID_parent		= -1;
+        m_Owner			= owner;
         OwnProps.one	();
 	}
 	~SGameMtlPair		();
@@ -171,7 +173,9 @@ public:
     }
 	~CGameMtlLibrary	()
 	{
-		Unload			();
+    	R_ASSERT		(0==material_pairs_rt.size());
+    	R_ASSERT		(0==material_pairs.size());
+    	R_ASSERT		(0==materials.size());
     }
 	IC void				Unload			()
 	{
