@@ -143,6 +143,7 @@
 	</dialog>
 
 	<dialog id="trader_talk_about">
+	    <has_info>actor_start</has_info>
 		<phrase_list>
 			<phrase id="0">
 				<text>Расскажи мне о...</text>
@@ -189,7 +190,8 @@
 
 
 	<dialog id="job_box">
-                <precondition>trader_job.is_box_present</precondition>
+        <precondition>trader_job.is_box_present</precondition>
+ 
 		<phrase_list>
 			<phrase id="0">
 				<text>Я выполнил работу! Принес ящик с блокпоста.</text>
