@@ -2474,7 +2474,7 @@
             </phrase>
             <phrase id="0">
                 <text>bar_dolg_ivancov_test_finish_0</text>
-                <action>bar_dialogs.have_dolg_arhive_document</action>
+                <action>bar_dialogs.give_dolg_arhive_document</action>
                 <give_info>bar_dolg_community_leader</give_info>
                 <next>1</next>
             </phrase>
