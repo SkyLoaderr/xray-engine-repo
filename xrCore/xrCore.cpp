@@ -25,7 +25,7 @@ BOOL APIENTRY	DllMain(	HANDLE hModule,
     return TRUE;
 }
 
-void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
+void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_path)
 {
 	static BOOL				bInitialized	= FALSE;
 
@@ -48,7 +48,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 
 	Debug._initialize		();
 	Memory._initialize		();
-	FS._initialize			(0!=strstr(Params,"-build"));
+	FS._initialize			(0!=strstr(Params,"-build"),root_path);
 	CreateLog				(cb);
 
 	bInitialized			= TRUE;
