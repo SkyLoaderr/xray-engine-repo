@@ -659,7 +659,7 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
-	PHelper.CreateFloat			(values,FHelper.PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
+	PHelper.CreateFloat			(values,FHelper.PrepareKey(pref,s_name,"ALife/Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
 
 #endif

@@ -12,7 +12,7 @@
 #ifdef AI_COMPILER
 	#include "xrLevel.h"
 #else
-	#include "..\\xrLevel.h"
+	#include "../xrLevel.h"
 #endif
 
 void CSE_ALifeGraph::Load				(LPCSTR fName)

@@ -59,14 +59,14 @@ public:
 		m_dwLevelID				= dwLevelID;
 		string256				fName;
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
-		strcat					(fName,"\\");
+		strcat					(fName,"/");
 		m_tpAI_Map				= xr_new<CLevelGraph>(fName);
 		// loading cross table
 		strcat					(fName,CROSS_TABLE_NAME);
 		m_tpCrossTable			= xr_new<CGameLevelCrossTable>(fName);
 		// loading spawn points
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
-		strcat					(fName,"\\level.spawn");
+		strcat					(fName,"/level.spawn");
 		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
 		NET_Packet				P;
@@ -414,7 +414,7 @@ void xrMergeSpawns(LPCSTR name)
 	FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
 	tMemoryStream.save_to		(l_caFileName);
 
-	Phase						("Freeing resources being allocated");
+	/Phase						("Freeing resources being allocated");
 	xr_delete					(tpGraph);
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		xr_delete				(tpLevels[i]);

@@ -18,9 +18,9 @@
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
-#pragma comment(lib,"x:\\xrcdb.LIB")
-#pragma comment(lib,"x:\\MagicFM.LIB")
-#pragma comment(lib,"x:\\xrCore.LIB")
+#pragma comment(lib,"x:/xrcdb.LIB")
+#pragma comment(lib,"x:/MagicFM.LIB")
+#pragma comment(lib,"x:/xrCore.LIB")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
@@ -29,9 +29,9 @@ extern volatile BOOL bClose;
 static const char* h_str = 
 	"The following keys are supported / required:\n"
 	"-? or -h   == this help\n"
-	"-f<NAME>   == compile level in gamedata\\levels\\<NAME>\\\n"
+	"-f<NAME>   == compile level in gamedata/levels/<NAME>/\n"
 	"-o         == modify build options\n"
-	"-g<NAME>   == build off-line AI graph and cross-table to ai-map in gamedata\\levels\\<NAME>\\\n"
+	"-g<NAME>   == build off-line AI graph and cross-table to ai-map in gamedata/levels/<NAME>/\n"
 	"-m         == merge level graphs\n"
 	"-s         == build game spawn data\n"
 	"\n"
@@ -74,7 +74,7 @@ void Startup(LPSTR     lpCmdLine)
 					sscanf	(strstr(cmd,"-t")+2,"%s",name);
 
 	if (xr_strlen(name))
-		strcat			(name,"\\");
+		strcat			(name,"/");
 	char				prjName[256];
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);

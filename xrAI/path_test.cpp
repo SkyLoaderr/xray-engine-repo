@@ -13,8 +13,8 @@
 #include "data_storage_priority_queue.h"
 #include "data_storage_heap.h"
 #include "data_storage_list.h"
-#include "boost\\f_heap.hpp"
-#include "boost\\p_heap.hpp"
+#include "boost/f_heap.hpp"
+#include "boost/p_heap.hpp"
 #include "path_manager.h"
 #include "a_star.h"
 #include "path_test.h"
@@ -251,7 +251,7 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	xr_delete				(graph);
 }
 
-#define TEST_COUNT 1000
+/#define TEST_COUNT 1000
 
 void path_test				(LPCSTR caLevelName)
 {

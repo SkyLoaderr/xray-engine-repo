@@ -191,7 +191,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	PHelper.CreateU32			(items, FHelper.PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
 
 	AnsiString					S;
-    AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
+    AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife/Supplies");
 
     supplies_count				= m_tpSupplies.size();
 	PropValue					*V = PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
@@ -357,9 +357,9 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
 	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
-	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
-	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
+		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife/Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
 }
 #endif
 
@@ -558,7 +558,7 @@ void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
+	set_visual					("actors/Different_stalkers/stalker_hood_multiplayer.ogf");
 }
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
@@ -669,7 +669,7 @@ void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("monsters\\rat\\rat_1");
+	set_visual					("monsters/rat/rat_1");
 	// personal charactersitics
 	fEyeFov						= 120;
 	fEyeRange					= 10;
@@ -812,7 +812,7 @@ bool CSE_ALifeMonsterRat::bfUseful		()
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("monsters\\zombie\\zombie_1");
+	set_visual					("monsters/zombie/zombie_1");
 	// personal charactersitics
 	fEyeFov						= 120;
 	fEyeRange					= 30;
@@ -1039,7 +1039,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
-	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	m_caKnownCustomers,  sizeof(m_caKnownCustomers), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
+	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife/Known traders"),	m_caKnownCustomers,  sizeof(m_caKnownCustomers), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
 	V->Owner()->subitem			= 8;
 }
 #endif
