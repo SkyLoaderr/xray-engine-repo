@@ -52,10 +52,6 @@ public:
 void CBuild::Light()
 {
 	// Randomize deflectors
-	Status("Caching faces opacity...");
-	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
-
-	// Randomize deflectors
 	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
 	for (u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 

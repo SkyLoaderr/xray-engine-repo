@@ -63,7 +63,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Load project
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
 	string prjName			= "gamedata\\levels\\"+string(name)+"\\build.prj";
-	Phase					("Reading project...");
+	Phase					(("Reading project ["+string(name)+"]...").c_str());
 
 	string32	ID			= BUILD_PROJECT_MARK;
 	string32	id;
@@ -115,6 +115,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	DWORD	dwEndTime		= timeGetTime();
 	sprintf					(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
+	Msg						("Build succesful!\n%s",stats);
 	MessageBox				(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	// Close log

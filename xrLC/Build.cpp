@@ -313,7 +313,12 @@ void CBuild::Run	(string& P)
 	mem_Compact		();
 	xrPhase_Subdivide();
 	IsolateVertices	();
-	
+
+	// Caching opacity
+	Status("Caching faces opacity...");
+	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
+
+	// Implicit
 	FPU::m64r		();
 	Phase			("Implicit lighting...");
 	mem_Compact		();
