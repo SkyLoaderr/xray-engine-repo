@@ -83,13 +83,11 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		0.0f,				0.0f,				1.0f,			0.0f,
 		0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
 	};
-	Fmatrix			m_TexGen;
-	m_TexGen.mul	(m_TexelAdjust,Device.mFullTransform);
 
 	// Constants
 	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
 	RCache.set_c					("light_color",		L_clr.r,L_clr.g,L_clr.b,.15f*L_clr.magnitude_rgb());
-	RCache.set_c					("m_tex",			m_TexGen);
+	RCache.set_c					("m_tex",			m_TexelAdjust);
 	R_constant* _C					= RCache.get_c		("jitter");
 	if (_C)
 	{
@@ -104,14 +102,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		J.set(-1,+1,+1); J.mul(scale); RCache.set_ca	(_C,6,J);
 		J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
 	}
-
-	//
-	Fvector		test;
-	Fvector4	res;
-	test.set(-1,-1,0); m_TexelAdjust.transform(res,test);
-	test.set( 1,-1,0); m_TexelAdjust.transform(res,test);
-	test.set(-1, 1,0); m_TexelAdjust.transform(res,test);
-	test.set( 1, 1,0); m_TexelAdjust.transform(res,test);
 
 	// Render if (stencil >= light_id && z-pass)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
