@@ -290,12 +290,14 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
+	Log("------------");
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
 	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
 	while (P)	{
 		Particle*	next	= P->next;
 
+		Log("1");
 		// Update
 		if (dwTime>=P->dwNextUpdate)
 		{
@@ -303,10 +305,12 @@ void	CEffect_Rain::Render	()
 			P->dwNextUpdate		= dwTime+particles_update;
 		}
 		
+		Log("2");
 		// Render
 		if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
 			P->visual->Render	(1.f);
 
+		Log("3");
 		// Stop if needed
 		if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
 		{
