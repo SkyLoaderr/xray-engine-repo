@@ -873,9 +873,8 @@ void CAI_Soldier::OnPatrolReturn()
 		}
 	}
 
+	StandUp();
 	vfSetLookAndFireMovement(false, Leader != this ? RUN_FORWARD_1 : WALK_FORWARD_3,1.0f,Group,dwCurTime);
-	
-	SetDirectionLook();
 }
 
 void CAI_Soldier::OnFollowLeaderPatrol()
@@ -1042,6 +1041,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	tTemp0.sub(Leader->Position(),Position());
 	tTemp0.normalize();
 	tWatchDirection.normalize();
+	StandUp();
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
 		if (fDistance >= m_fMaxPatrolDistance) {
@@ -1058,8 +1058,6 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	else {
 		vfSetLookAndFireMovement(false, WALK_FORWARD_3,0.9f,Group,dwCurTime);
 	}
-
-	SetDirectionLook();
 }
 
 void CAI_Soldier::OnPatrol()
@@ -1156,6 +1154,7 @@ void CAI_Soldier::OnPatrol()
 		}
 	}
 	
+	StandUp();
 	vfSetLookAndFireMovement(false, WALK_FORWARD_4,1.0f,Group,dwCurTime);
 
 	//SetDirectionLook();
@@ -1179,8 +1178,8 @@ void CAI_Soldier::OnAttackFireAlone()
 		vfSetFire(false,getGroup());
 		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
 		dwLostEnemyTime = Level().timeServer();
-		//GO_TO_NEW_STATE(aiSoldierPursuit);
-		GO_TO_PREV_STATE;
+		GO_TO_NEW_STATE(aiSoldierPursuitAlone);
+		//GO_TO_PREV_STATE;
 	}
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierFindEnemy)

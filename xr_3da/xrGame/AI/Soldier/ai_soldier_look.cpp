@@ -402,7 +402,7 @@ void CAI_Soldier::SelectSound(int &iIndex)
 	iIndex = -1;
 	float fMaxPower = 0.f;
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
-		if (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team())
+		if ((!tpaDynamicSounds[i].tpEntity) || (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 			if ((tpaDynamicSounds[i].dwTime > m_dwLastUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = tpaDynamicSounds[i].fPower;
 				iIndex = i;
