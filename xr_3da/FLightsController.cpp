@@ -97,7 +97,7 @@ void CLightDB_Static::Load			(CStream *fs)
 
 		F->Close		();
 	}
-	Msg	("* Layers/Lights : %d / %d",Layers.size(),count);
+	Msg	("* Layers/Lights : %d / %d",Layers.size(),Lights.size());
 }
 
 void CLightDB_Static::Unload		(void)
