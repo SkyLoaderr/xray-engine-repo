@@ -41,10 +41,12 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	pos							= ini->ReadVECTOR(section,"position");
 	ypr							= ini->ReadVECTOR(section,"orientation");
 	ypr.mul						(PI/180.f);
-
+/*
 	Fquaternion					Q;
 	Q.rotationYawPitchRoll		(ypr.y,ypr.x,ypr.z);
 	m_Offset.rotation			(Q);
+*/
+	m_Offset.setHPB				(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over		(pos);
 
 	// Visual

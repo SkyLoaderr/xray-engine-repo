@@ -21,7 +21,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponGroza::CWeaponGroza() : CWeapon()
 {
-	m_WpnName = "EMS Rifle";
+	m_WpnName = "Groza";
 
 	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
