@@ -30,8 +30,9 @@ void CAgentMemberManager::add					(CEntity *member)
 	VERIFY						(I == m_members.end());
 	m_members.push_back			(xr_new<CMemberOrder>(stalker));
 
-	//. temporary until full strength stealth mode is not ready
+#ifdef OLD_AGENT_MANAGER_BEHAVIOUR
 	register_in_combat			(stalker);
+#endif
 }
 
 void CAgentMemberManager::remove				(CEntity *member)

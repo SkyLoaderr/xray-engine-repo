@@ -167,7 +167,9 @@ void CStalkerCombatPlanner::finalize			()
 	if (!object().g_Alive())
 		return;
 
-//	object().agent_manager().member().unregister_in_combat	(m_object);
+#ifdef OLD_AGENT_MANAGER_BEHAVIOUR
+	object().agent_manager().member().unregister_in_combat	(m_object);
+#endif
 	object().sound().remove_active_sounds					(u32(-1));
 }
 
