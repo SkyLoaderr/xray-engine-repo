@@ -61,6 +61,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 			if (W) 
 			{
+				if(BE(Local(),W->Local())) Log("ERROR: BE(Local(),W->Local()))");
 				R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
 				Weapons->weapon_remove				(W);
 				Weapons->ActivateWeaponHistory		();
