@@ -107,6 +107,33 @@ namespace CDB
 			}
 		}
 	}
+    IC BOOL similar(TRI& T1, TRI& T2)
+    {
+        if ((T1.verts[0]==T2.verts[0]) && (T1.verts[1]==T2.verts[1]) && (T1.verts[2]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        if ((T1.verts[0]==T2.verts[0]) && (T1.verts[2]==T2.verts[1]) && (T1.verts[1]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        if ((T1.verts[2]==T2.verts[0]) && (T1.verts[0]==T2.verts[1]) && (T1.verts[1]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        if ((T1.verts[2]==T2.verts[0]) && (T1.verts[1]==T2.verts[1]) && (T1.verts[0]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        if ((T1.verts[1]==T2.verts[0]) && (T1.verts[0]==T2.verts[1]) && (T1.verts[2]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        if ((T1.verts[1]==T2.verts[0]) && (T1.verts[2]==T2.verts[1]) && (T1.verts[0]==T2.verts[2]) && (T1.dummy==T2.dummy)) return TRUE;
+        return FALSE;
+    }
+    void Collector::remove_duplicate_T( )
+    {
+		for (u32 f=0; f<faces.size(); f++)
+		{
+			for (u32 t=f+1; t<faces.size();)
+			{
+				if (t==f)	continue;
+                TRI& T1	= faces[f];
+                TRI& T2	= faces[t];
+                if (similar(T1,T2)){
+                	faces[t] = faces.back();
+                }else{
+                	t++;
+                }
+            }
+        }
+    }
 
 	CollectorPacked::CollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 	{
