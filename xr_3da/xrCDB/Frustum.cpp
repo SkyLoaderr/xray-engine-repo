@@ -161,9 +161,9 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 	for (int i=0; i<p_count; i++)
 	{
 		// cache plane and swap lists
-		Fplane &P = planes[i];
-		std::swap	(src,dest);
-		dest->clear	();
+		const Fplane &P = planes[i];
+		std::swap		(src,dest);
+		dest->clear		();
 
 		// classify all points relative to plane #i
 		float	cls	[FRUSTUM_SAFE];
