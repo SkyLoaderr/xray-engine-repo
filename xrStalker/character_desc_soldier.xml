@@ -4,7 +4,7 @@
 <!---------------------------SOLDIER PRIVATE----------------------->
 	<specific_character id="soldier_regular_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="10" y="2"></icon>
+		<icon x="12" y="2"></icon>
 		<map_icon x="0" y="2"></map_icon>
 		<bio>Рядовой представитель вооруженных сил.</bio>
 
@@ -41,7 +41,7 @@
 <!---------------------------SOLDIER SPECNAZ---------------------->
 	<specific_character id="soldier_specnaz_default" team_default = "1">
 		<name>Неизвестный солдат</name>
-		<icon x="6" y="4"></icon>
+		<icon x="14" y="2"></icon>
 		<map_icon x="2" y="2"></map_icon>
 		<bio>Представитель элитного армейского подразделения.</bio>
 
