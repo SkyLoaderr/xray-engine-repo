@@ -409,7 +409,8 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	else							   is_control=false;
 
 	b_pure_climb=b_pure_climb&&b_any_contacts&&(!b_lose_control);
-	if(b_pure_climb) b_at_wall=true;
+	if(b_pure_climb) 
+			b_at_wall=true;
 
 	if(b_lose_control || (!b_climb&&is_contact)||
 		(!b_pure_climb&&b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2)
@@ -1040,7 +1041,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
 	b_climb=b_climb || bClimable;
-	b_pure_climb=b_pure_climb && bClimable;
+	b_pure_climb=b_pure_climb && (bClimable||c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform);
 	if(tri_material->Flags.is(SGameMtl::flPassable))return;
 
 	dReal spring_rate=def_spring_rate;
