@@ -317,8 +317,10 @@ void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
 					m_cMovementType = cMovementType;
 					if (cMovementType == WALK_FORWARD_0)
 						m_fCurSpeed = 0.6f;
-					else
+					else {
 						m_fCurSpeed = 0.4f;
+						m_cMovementType = WALK_FORWARD_1;
+					}
 				}
 				else 
 					if ((dot <= 0.7f) && (dot >= -0.7f))

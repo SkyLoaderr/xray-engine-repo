@@ -1131,11 +1131,11 @@ void CAI_Soldier::OnPatrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
-		//CHECK_IF_SWITCH_TO_NEW_STATE(AI_NodeID != m_dwStartPatrolNode,aiSoldierPatrolReturnToRoute)
+		CHECK_IF_SWITCH_TO_NEW_STATE(vPosition.distance_to(m_tpaPatrolPoints[0]) > 5.f,aiSoldierPatrolReturnToRoute)
 		
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,true);
 		
-			m_dwCreatePathAttempts++;
+		m_dwCreatePathAttempts++;
 		Msg("paths : %d",m_dwCreatePathAttempts);
 		// invert path if needed
 		if (AI_Path.TravelPath.size()) {
@@ -1195,7 +1195,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	if (!m_bFiring)
 		vfAimAtEnemy();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiSoldierTurnOver)
 	
 	AI_Path.TravelPath.clear();
 	
@@ -1228,8 +1228,6 @@ void CAI_Soldier::OnSteal()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),aiSoldierLyingDown)
-	
 	if (!(Enemy.Enemy)) {
 		vfSetFire(false,getGroup());
 		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
@@ -1249,7 +1247,8 @@ void CAI_Soldier::OnSteal()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	CHECK_IF_GO_TO_PREV_STATE(bfCheckForEntityVisibility(Enemy.Enemy) || (vPosition.distance_to(Enemy.Enemy->Position()) <= 5.f));
+	//CHECK_IF_GO_TO_PREV_STATE(bfCheckForEntityVisibility(Enemy.Enemy) || (vPosition.distance_to(Enemy.Enemy->Position()) <= 5.f));
+	CHECK_IF_GO_TO_NEW_STATE(bfCheckForEntityVisibility(Enemy.Enemy) || (vPosition.distance_to(Enemy.Enemy->Position()) <= 5.f),aiSoldierAttackFireAlone);
 
 	vfSaveEnemy();
 

@@ -411,12 +411,14 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	float fDistance = tDirection.magnitude();
 	if (fDistance > fEyeRange + EPS_L)
 		return(false);
+		//return(true);
 	tDirection.normalize_safe();
 	float fAlpha = tDirection.dotproduct(tMonsterDirection);
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
 	bool bVisible = fAlpha <= fEyeFov/180.f/2.f*PI + EPS_L;
 	return(bVisible);
+	//return(!bVisible);
 }
 /**/
 
