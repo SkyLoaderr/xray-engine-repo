@@ -286,8 +286,11 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_u32		(m_flags.flags);
 	}
 	
-	if (m_wVersion > 57)
+	if (m_wVersion > 57) {
+		if (m_ini_file)
+			xr_delete			(m_ini_file);
 		tNetPacket.r_stringZ	(m_ini_string);
+	}
 
 	if (m_wVersion > 61)
 		tNetPacket.r			(&m_story_id,sizeof(m_story_id));
