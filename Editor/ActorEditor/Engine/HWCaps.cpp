@@ -16,6 +16,7 @@ void CHWCaps::Update()
 	vertex.bNPatches	= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
 	vertex.bMPS			= (caps.VertexProcessingCaps&D3DVTXPCAPS_NO_VSDT_UBYTE4)!=0;
 	vertex.dwRegisters	= (caps.MaxVertexShaderConst);
+	Device.Shader.VSC.init(caps.MaxVertexShaderConst);
 
 	// ***************** PIXEL processing
 	pixel.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);

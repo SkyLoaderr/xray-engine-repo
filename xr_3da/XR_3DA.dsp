@@ -940,6 +940,10 @@ SOURCE=.\Shader_xrLC.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\VS_Constants.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\WaveForm.h
 # End Source File
 # End Group

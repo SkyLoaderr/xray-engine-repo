@@ -8,6 +8,7 @@
 
 #include "shader.h"
 #include "tss_def.h"
+#include "vs_constants.h"
 
 class ENGINE_API CShaderManager
 {
@@ -59,6 +60,8 @@ private:
 
 	// misc
 	BOOL							bDeferredLoad;
+public:
+	CVS_Constants					VSC;
 public:
 	// Miscelaneous
 	void							_ParseList			(sh_list& dest, LPCSTR names);
