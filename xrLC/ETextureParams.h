@@ -70,7 +70,7 @@ struct ECORE_API STextureParams{
 		flFadeToAlpha		= (1<<7),
 		flDitherColor		= (1<<8),
 		flDitherEachMIPLevel= (1<<9),
-		flGreyScale			= (1<<10),
+//		flGreyScale			= (1<<10),	// obsolette
 
 		flDiffuseDetail		= (1<<23),
 		flImplicitLighted	= (1<<24),
