@@ -98,6 +98,14 @@ void xrServer::Update	()
 		// xrServerEntity*	Base	= Client->owner;
 
 		Packet.w_begin	(M_UPDATE);
+
+		// GameUpdate
+		Client->game_replicate_id	++;
+		u32		g_it				= (Client->game_replicate_id % client_Count());
+		u32		g_id				= net_Players[g_it]->ID;
+		game->net_Export_Update		(Packet,g_id);
+
+		// Entities
 		xrS_entities::iterator	I=entities.begin(),E=entities.end();
 		for (; I!=E; I++)
 		{

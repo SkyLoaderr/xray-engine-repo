@@ -21,6 +21,7 @@ public:
 	BOOL					net_Ready;
 
 	game_PlayerState		ps;
+	u32						game_replicate_id;
 
 	xrClientData	()
 	{

@@ -32,7 +32,8 @@ BOOL xrServer::Connect(LPCSTR session_name)
 		strcpy					(type,options);
 		if (strchr(type,'/'))	*strchr(type,'/') = 0;
 		game					= NULL;
-		switch (_ParseItem(type,game_type_token))
+		u32 type_id				= _ParseItem(type,game_type_token);
+		switch (type_id)
 		{
 		case GAME_SINGLE:	
 			game				= new game_sv_Single();
@@ -50,6 +51,7 @@ BOOL xrServer::Connect(LPCSTR session_name)
 
 		// Options
 		if (0==game)				return FALSE;
+		game->type					= type_id;
 		game->Create				(options);
 	}
 	return	bResult;
