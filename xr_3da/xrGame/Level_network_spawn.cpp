@@ -10,7 +10,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_u8		((rp>=0)?u8(rp):0xff);
 	P.w_vec3	(dummyPos);
 	P.w_vec3	(dummyAngle);
-	P.w_u16		(0);		// srv-id	| by server
+	P.w_u16		(0xffff);	// srv-id	| by server
 	P.w_u16		(0xffff);
 	P.w_u16		(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);
 	P.w_u16		(3);		// data size
