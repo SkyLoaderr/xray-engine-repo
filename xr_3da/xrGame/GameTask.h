@@ -34,6 +34,8 @@ struct SGameTaskData : CSharedResource
 
 	DEFINE_VECTOR(SGameTaskObjective, OBJECTIVE_VECTOR, OBJECTIVE_VECTOR_IT);
 	OBJECTIVE_VECTOR m_Objectives;
+	//название задания
+	ref_str title;
 };
 
 
@@ -63,6 +65,7 @@ public:
 public:
 	virtual u32			ObjectivesNum	();
 	virtual ref_str		ObjectiveDesc	(u32 index);
+	virtual ref_str		ObjectiveTitle	() {return data()->title;}
 	virtual ETaskState	ObjectiveState  (u32 index);
 	//инициализируется значениями из реестра актера
 	TASK_STATE_VECTOR	m_ObjectiveStates;

@@ -82,6 +82,8 @@ void CGameTask::load_shared	(LPCSTR)
 	data()->m_Objectives.clear		();
 	data()->m_Objectives.reserve	(tag_num);
 
+	data()->title = uiXml.Read(task_node, "title", i, NULL);
+
 	SGameTaskObjective objective;
 	for(int i=0; i<tag_num; i++)
 	{
