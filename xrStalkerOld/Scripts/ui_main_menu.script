@@ -12,6 +12,7 @@ module("ui_multiplayer_dialog")
 module("ui_main_base_tab")
 module("ui_main_main_tab")
 module("ui_main_new_tab")
+module("ui_main_multi_tab")
 
 
 
@@ -68,7 +69,7 @@ function main_menu:InitControls()
 					  width = 256, 
 					  height = 33 }
 	self.tab_rect =  {x = 657, 
-					  y = 92, 
+					  y = 124, 
 					  width = 256, 
 					  height = 33 }
 
@@ -77,7 +78,7 @@ function main_menu:InitControls()
 	self.button_font  = GetFontLetterica25()
 	
 	-- profile button
-	local btn_prof_rect   = {x = 640, y = 40, width = 200, height = 30}
+	local btn_prof_rect   = {x = 640, y = 68, width = 200, height = 30}
 	
 --[[
 	-- menu buttons	
@@ -174,6 +175,10 @@ function main_menu:InitControls()
 	self.new_tab = ui_main_new_tab.main_new_tab()
 	self.new_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.new_tab)
+	
+	self.multi_tab = ui_main_multi_tab.main_multi_tab()
+	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
+	self.main_frame:AttachChild(self.multi_tab)
 	
 --[[
 	----- CODE -------
@@ -281,6 +286,7 @@ function main_menu:InitCallBacks()
 	self:AddCallback("btn_multiplayer", ui_events.BUTTON_CLICKED,				self,"OnButton_multiplayer_clicked")
 	self:AddCallback("btn_quit",		ui_events.BUTTON_CLICKED,				self,"OnButton_quit_clicked")
 	self:AddCallback("btn_new_back",	ui_events.BUTTON_CLICKED,				self,"OnButton_back")
+	self:AddCallback("btn_multy_back",	ui_events.BUTTON_CLICKED,				self,"OnButton_back")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_OK_CLICKED,		self,"OnMsgOk")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self,"OnMsgCancel")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_YES_CLICKED,		self,"OnMsgYes")
@@ -290,6 +296,7 @@ end
 function main_menu:HideAllTabs()
 	self.main_tab:Show(false)
 	self.new_tab:Show(false)
+	self.multi_tab:Show(false)
 end
 
 function main_menu:OnButton_back()
@@ -299,7 +306,7 @@ end
 
 function main_menu:OnButton_new_game_clicked()
 	self:HideAllTabs()
-	self:new_tab:Show(true)
+	self.new_tab:Show(true)
 end
 
 function main_menu:OnButton_options_clicked()
@@ -313,8 +320,8 @@ function main_menu:OnButton_load_clicked()
 end
 
 function main_menu:OnButton_multiplayer_clicked()
-	local dlg = ui_multiplayer_dialog.multiplayer_dialog()
-	level.start_stop_menu(dlg, true)
+	self:HideAllTabs()
+	self.multi_tab:Show(true)
 end
 
 function main_menu:OnButton_quit_clicked()	

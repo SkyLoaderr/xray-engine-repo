@@ -7,15 +7,15 @@
 -- Copyright 2004 GSC Game World
 --
 
-class "ui_main_new_tab" (ui_main_base_tab.main_base_tab)
+class "main_new_tab" (ui_main_base_tab.main_base_tab)
 
-function ui_main_new_tab:__init() super()
+function main_new_tab:__init() super()
 end
 
-function ui_main_new_tab:__finalize()
+function main_new_tab:__finalize()
 end
 
-function UI_main_new_tab:InitControls(x, y, handler)
+function main_new_tab:InitControls(x, y, handler)
 	ui_main_base_tab.main_base_tab.InitControls(self, x, y)
 	
 	local btn_easy_rect   = {x = self.btn.x,
@@ -24,7 +24,7 @@ function UI_main_new_tab:InitControls(x, y, handler)
 							 height = self.btn.height}
 							 
 	local btn_normal_rect = {x = self.btn.x,
-							 y = btn_easy_rect.y + btn_easy_rect.height ,
+							 y = btn_easy_rect.y + btn_easy_rect.height,
 							 width = self.btn.width,
 							 height = self.btn.height}
 							 
@@ -37,19 +37,20 @@ function UI_main_new_tab:InitControls(x, y, handler)
 							 y = self.main_rect.height - self.btn.height,
 							 width = self.btn.width,
 							 height = self.btn.height}
-							 
+						
+	------->> EASY
  	btn = CUI3tButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_easy")
 	btn:Init("ui\\ui_btn_main_menu", btn_easy_rect.x, btn_easy_rect.y, btn_easy_rect.width, btn_easy_rect.height)
-	btn:SetText("New game")
+	btn:SetText("Easy")
 	btn:SetFont(self.btn.font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
 		
-	--------->> LOAD Game	
+	--------->> NORMAL
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_normal")
@@ -61,7 +62,7 @@ function UI_main_new_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)	
 		
-	--------->> MULTIPLAYER
+	--------->> HARDCORE
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_hard")
@@ -71,18 +72,7 @@ function UI_main_new_tab:InitControls(x, y, handler)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
-	self:AttachChild(btn)
-	
-	btn = CUI3tButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_hard")
-	btn:Init("ui\\ui_btn_main_menu", btn_hard_rect.x, btn_hard_rect.y, btn_hard_rect.width, btn_hard_rect.height)
-	btn:SetText("Hardcore")
-	btn:SetFont(self.btn.font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.btn.indent)
-	handler:Register(btn)
-	self:AttachChild(btn)
+	self:AttachChild(btn)	
 	
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)

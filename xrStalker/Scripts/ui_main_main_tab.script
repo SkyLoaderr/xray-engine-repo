@@ -40,13 +40,13 @@ function main_main_tab:InitControls(x, y, handler)
 							 width = self.btn.width,
 							 height = self.btn.height}
 
-	local btn_quit_rect   = {x = self.btn.x,
-							 y = btn_opt_rect.y + btn_opt_rect.height ,
+	local btn_bonus_rect  = {x = self.btn.x,
+							 y = btn_opt_rect.y + btn_opt_rect.height,
 							 width = self.btn.width,
 							 height = self.btn.height}
 							 
-	local btn_bonus_rect  = {x = self.btn.x,
-							 y = btn_quit_rect.y + btn_quit_rect.height ,
+	local btn_quit_rect   = {x = self.btn.x,
+							 y = self.main_rect.height - self.btn.height,
 							 width = self.btn.width,
 							 height = self.btn.height}
 							 
