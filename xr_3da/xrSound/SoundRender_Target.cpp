@@ -120,7 +120,6 @@ void	CSoundRender_Target::start			(CSoundRender_Emitter* E)
 
 void	CSoundRender_Target::render			()
 {
-	fill_parameters	();
 	fill_block		();
 	fill_block		();
 
@@ -131,10 +130,13 @@ void	CSoundRender_Target::render			()
 
 void	CSoundRender_Target::stop			()
 {
+	if (rendering)
+	{
+		R_CHK			(pBuffer->Stop());
+		R_CHK			(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
+	}
 	pEmitter		= NULL;
 	rendering		= FALSE;
-	R_CHK	(pBuffer->Stop());
-	R_CHK	(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
 }
 
 void	CSoundRender_Target::rewind			()
