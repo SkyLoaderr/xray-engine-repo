@@ -171,7 +171,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 					}
 					else {
 						//if (dwCurNode != AI_Path.DestNode)
-						if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition)) {
+						if (getAI().bfInsideNode(getAI().Node(dwCurNode),*tpDestinationPosition)) {
 							tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
 							m_tpaPointNodes.push_back(AI_Path.DestNode);
 							m_tpaPoints.push_back(*tpDestinationPosition);
