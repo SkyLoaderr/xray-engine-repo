@@ -50,11 +50,12 @@ void main(int argc, char* argv[])
 		for (DWORD x=0; x<tex.dwWidth; x++)
 		{
 			DWORD c		= tex.GetPixel(x,y);
-			int val		= c&255;
+			DWORD new_c;
 
+			int val		= c&255;
 		    int row		= y % 16; 
 			int col		= x % 16;
- 			int new_c	= val > magic[col][row] ? 255 : 0;
+ 			new_c		= val > magic[col][row] ? 255 : 0;
 			
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 		}
