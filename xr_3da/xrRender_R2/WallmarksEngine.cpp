@@ -230,25 +230,28 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		bb.getsphere					(W->bounds.P,W->bounds.R);
 	}
 
-	// search if similar wallmark exists
-	wm_slot* slot			= FindSlot	(hShader);
-	if (slot){
-		StaticWMVecIt it	= slot->static_items.begin	();
-		StaticWMVecIt end	= slot->static_items.end	();
-		for (; it!=end; it++){
-			static_wallmark* wm	= *it;
-			if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
-				static_wm_destroy	(wm);
-				*it					= W;
-				return;
+	if (W->bounds.R < 2.f)	
+	{
+		// search if similar wallmark exists
+		wm_slot* slot			= FindSlot	(hShader);
+		if (slot){
+			StaticWMVecIt it	= slot->static_items.begin	();
+			StaticWMVecIt end	= slot->static_items.end	();
+			for (; it!=end; it++){
+				static_wallmark* wm	= *it;
+				if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
+					static_wm_destroy	(wm);
+					*it					= W;
+					return;
+				}
 			}
+		} else {
+			slot		= AppendSlot(hShader);
 		}
-	}else{
-		slot		= AppendSlot(hShader);
-	}
 
-	// no similar - register _new_
-	if (W->bounds.R < 2.f)	slot->static_items.push_back(W);
+		// no similar - register _new_
+		slot->static_items.push_back(W);
+	}
 }
 
 void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
