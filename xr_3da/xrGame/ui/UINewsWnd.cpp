@@ -101,5 +101,7 @@ void CUINewsWnd::Show(bool status)
 {
 	if (status)
 		AddNews();
+	else
+		InventoryUtilities::SendInfoToActor("ui_pda_news_hide");
 	inherited::Show(status);
 }

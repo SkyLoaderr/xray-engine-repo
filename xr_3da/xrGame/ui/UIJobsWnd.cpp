@@ -183,7 +183,27 @@ void CUIJobsWnd::ReloadJobs()
 void CUIJobsWnd::Show(bool status)
 {
 	if (status)
+	{
 		ReloadJobs();
+
+		InventoryUtilities::SendInfoToActor("ui_pda_jobs");
+
+		switch (filter)
+		{
+		case eTaskStateCompleted:
+			InventoryUtilities::SendInfoToActor("ui_pda_jobs_accomplished");
+			break;
+		case eTaskStateInProgress:
+			InventoryUtilities::SendInfoToActor("ui_pda_jobs_current");
+			break;
+		case eTaskStateFail:
+			InventoryUtilities::SendInfoToActor("ui_pda_jobs_failed");
+			break;
+		}
+	}
+	else
+		InventoryUtilities::SendInfoToActor("ui_pda_jobs_hide");
+
 	inherited::Show(status);
 }
 

@@ -190,25 +190,20 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIJobsWnd.SetFilter(eTaskStateFail);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
-				InventoryUtilities::SendInfoToActor("ui_pda_jobs_failed");
 				break;
 			case idJobsAccomplished:
 				UIJobsWnd.SetFilter(eTaskStateCompleted);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
-				InventoryUtilities::SendInfoToActor("ui_pda_jobs_accomplished");
 				break;
 			case idJobsCurrent:
-
 				//сбростить флажок необходимости прочтения PDA
 				HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, false);
 
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
-				InventoryUtilities::SendInfoToActor("ui_pda_jobs_current");
 				break;
-
 			case idContracts:
 				VERIFY(m_pLeftHorisontalLine);
 				r = m_pLeftHorisontalLine->GetWndRect();
@@ -388,6 +383,8 @@ void CUIDiaryWnd::Show(bool status)
 	{
 		InitDiary();
 	}
+	else
+		InventoryUtilities::SendInfoToActor("ui_pda_diary_hide");
 
 	if (m_pActiveSubdialog) m_pActiveSubdialog->Show(status);
 }

@@ -200,6 +200,8 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 void CUIPdaWnd::Show()
 {
+	InventoryUtilities::SendInfoToActor("ui_pda");
+
 	inherited::Show();
 	m_pActiveDialog->Show(true);
 }
@@ -210,6 +212,8 @@ void CUIPdaWnd::Hide()
 {
 	inherited::Hide();
 	m_pActiveDialog->Show(false);
+
+	InventoryUtilities::SendInfoToActor("ui_pda_hide");
 }
 
 //////////////////////////////////////////////////////////////////////////

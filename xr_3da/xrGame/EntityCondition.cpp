@@ -398,7 +398,7 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 	{
 	case ALife::eHitTypeTelepatic:
 		hit_power *= m_HitTypeK[hit_type];
-		m_fDeltaPower -= hit_power;
+		m_fDeltaHealth -= hit_power;
 		return NULL;
 		break;
 	case ALife::eHitTypeBurn:
