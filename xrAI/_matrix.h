@@ -484,7 +484,7 @@ public:
 	IC	void	setXYZ	(T x, T y, T z)	{setHPB(y,x,z);}
 	IC	void	setXYZ	(Tvector& xyz)	{setHPB(xyz.y,xyz.x,xyz.z);}
 	//
-	IC	void	getHPB	(T& h, T& p, T& b)
+	IC	void	getHPB	(T& h, T& p, T& b) const
 	{
         T cy = _sqrt(j.y*j.y + i.y*i.y);
         if (cy > 16.0f*FLT_EPSILON) {
@@ -497,9 +497,9 @@ public:
             b = 0;
         }
     }
-	IC	void	getXYZ	(T& x, T& y, T& z){getHPB(y,x,z);}
-	IC	void	getHPB	(Tvector& hpb){getHPB(hpb.x,hpb.y,hpb.z);}
-	IC	void	getXYZ	(Tvector& xyz){getXYZ(xyz.x,xyz.y,xyz.z);}
+	IC	void	getXYZ	(T& x, T& y, T& z) const{getHPB(y,x,z);}
+	IC	void	getHPB	(Tvector& hpb) const{getHPB(hpb.x,hpb.y,hpb.z);}
+	IC	void	getXYZ	(Tvector& xyz) const{getXYZ(xyz.x,xyz.y,xyz.z);}
     // remove
 	IC	void	setHPB_old	(T h, T p, T b)
 	{
