@@ -40,7 +40,8 @@
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"/>
+				CallingConvention="2"
+				ShowIncludes="TRUE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool

@@ -109,7 +109,8 @@
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"/>
+				DebugInformationFormat="4"
+				ShowIncludes="TRUE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
