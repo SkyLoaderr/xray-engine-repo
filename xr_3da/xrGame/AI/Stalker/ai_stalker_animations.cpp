@@ -666,12 +666,12 @@ void CAI_Stalker::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /*
 			vfAssignLegsAnimation	(tpLegsAnimation);
 			vfAssignHeadAnimation	(tpHeadAnimation);
 
-			Msg("stalker %s, visual %s, torso %s, legs %s, head %s", 
+/*			Msg("stalker %s, visual %s, torso %s, legs %s, head %s", 
 					cName(), cNameVisual(),
 					tVisualObject.LL_MotionDefName_dbg(tpTorsoAnimation),
 					tVisualObject.LL_MotionDefName_dbg(tpLegsAnimation),
 					tVisualObject.LL_MotionDefName_dbg(tpHeadAnimation));
-			
+*/			
 
 			if (tpHeadAnimation && (m_tpCurrentHeadAnimation != tpHeadAnimation))
 				m_tpCurrentHeadBlend	= tVisualObject.PlayCycle(m_tpCurrentHeadAnimation = tpHeadAnimation,TRUE,HeadPlayCallback,this);

@@ -747,6 +747,10 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 		info_portion.Load(info_index);
 		pItem->UIMsgText.SetText(info_portion.GetText());
 	}
+	else
+	{
+		pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
+	}
 
 	m_dwMsgShowingTime = m_dwMaxShowTime;
 }

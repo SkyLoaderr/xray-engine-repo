@@ -58,6 +58,9 @@ void CInventoryOwner::reinit				()
 
 	inventory().Clear			();
 	inventory().m_pOwner		= this;
+	inventory().SetSlotsUseful (true);
+
+
 	m_trade_storage->m_pOwner	= this;
 
 	m_dwMoney					= 0;

@@ -221,7 +221,16 @@ void CInventory::ClearAll()
 //положить вещь в слот
 bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
-	if(!m_bSlotsUseful) return false;
+	VERIFY(pIItem);
+	Msg("put item %s in inventory slot %d", pIItem->cName(), pIItem->GetSlot());
+
+	if(!m_bSlotsUseful)
+	{
+#ifdef _DEBUG
+		Msg("slot not useful");
+#endif
+		return false;
+	}
 
 	if(pIItem->GetSlot() < m_slots.size() && 
 		!m_slots[pIItem->GetSlot()].m_pIItem) 
@@ -238,9 +247,17 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 			Activate(pIItem->GetSlot());
 
 		return true;
-	} 
-
-	return false;
+	}
+	else
+	{
+#ifdef _DEBUG
+		if(pIItem->GetSlot() == NO_ACTIVE_SLOT)
+			Msg("item has not slot to put in");
+		else
+			Msg("item %s already in slot ",m_slots[pIItem->GetSlot()].m_pIItem->cName());
+#endif
+		return false;
+	}
 }
 
 bool CInventory::Belt(PIItem pIItem) 
@@ -308,14 +325,33 @@ bool CInventory::Activate(u32 slot)
 {	
 	R_ASSERT2(slot == NO_ACTIVE_SLOT || slot<m_slots.size(), "wrong slot number");
 
-	if(slot != NO_ACTIVE_SLOT && 
-		!m_slots[slot].m_bCanBeActivated) return false;
+
+#ifdef _DEBUG
+	Msg("slot: %d active slot: %d next_active: %d", slot, m_iActiveSlot, m_iNextActiveSlot);
+	if(slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem)
+		Msg("activating %s item", m_slots[slot].m_pIItem->cName());
+#endif
+
+	if(slot != NO_ACTIVE_SLOT && !m_slots[slot].m_bCanBeActivated) 
+	{
+#ifdef _DEBUG
+		Msg("slot %d, cant be activaterd", slot);
+#endif
+		return false;
+	}
 	
+
 	if(m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&
 		m_iActiveSlot != NO_ACTIVE_SLOT &&
 		m_slots[m_iActiveSlot].m_pIItem &&
 		m_slots[m_iActiveSlot].m_pIItem->IsHiding()))
+	{
+#ifdef _DEBUG
+		Msg("m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&	m_iActiveSlot != NO_ACTIVE_SLOT &&	m_slots[m_iActiveSlot].m_pIItem &&	m_slots[m_iActiveSlot].m_pIItem->IsHiding())");
+#endif
+
 		return false;
+	}
 
 	//активный слот не выбран
 	if(m_iActiveSlot == NO_ACTIVE_SLOT)
@@ -326,7 +362,12 @@ bool CInventory::Activate(u32 slot)
 			return true;
 		}
 		else 
+		{
+#ifdef _DEBUG
+			Msg("m_slots[slot].m_pIItem == NULL");
+#endif
 			return false;
+		}
 	}
 	//активный слот задействован
 	else if(slot == NO_ACTIVE_SLOT || m_slots[slot].m_pIItem)
@@ -337,6 +378,10 @@ bool CInventory::Activate(u32 slot)
 	
 		return true;
 	}
+
+#ifdef _DEBUG
+	Msg("Why where are here???");
+#endif
 
 	return false;
 }
