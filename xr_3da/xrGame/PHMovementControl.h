@@ -13,6 +13,7 @@ class CPHMovementControl
 {
 static const path_few_point=10;
 public:
+void			PHCaptureObject(CGameObject* object);
 bool			b_exect_position;
 public:
 

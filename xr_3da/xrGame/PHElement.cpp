@@ -1064,6 +1064,11 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 }
 
+void CPHElement::GetGlobalPositionDynamic(Fvector* v)
+{
+	v->sub(*((Fvector*)dBodyGetRotation(m_body)),m_inverse_local_transform.c);
+}
+
 void CPHElement::DynamicAttach(CPHElement* E)
 {
 	dVector3 p1;

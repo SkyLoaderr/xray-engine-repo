@@ -26,6 +26,8 @@ const dReal default_w_scale=1.01f;
 const dReal default_disw=0.00005f;
 const dReal default_disl=0.005f;
 
+const dReal	world_gravity=2.f*9.81f;
+
 int			phFPS			= 50;
 int			phIterations	= 18;
 
@@ -79,7 +81,7 @@ void CPHWorld::Create()
 	dWorldSetAutoEnableDepth(phWorld, 3);
 #endif
 	ContactGroup = dJointGroupCreate(0);		
-	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
+	dWorldSetGravity(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);

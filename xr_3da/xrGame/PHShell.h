@@ -11,9 +11,9 @@ class CPHShell;
 class CPHShell: public CPhysicsShell,public CPHObject {
 	xr_vector<CPHElement*> elements;
 	xr_vector<CPHJoint*>	joints;
-	dSpaceID			m_space;
+	dSpaceID			    m_space;
+	
 
-	xr_list<CPHObject*>::iterator m_ident;
 
 
 public:
@@ -134,6 +134,7 @@ virtual ~CPHShell				()
 	virtual void				InterpolateGlobalTransform	(Fmatrix* m);
 	virtual void				InterpolateGlobalPosition	(Fvector* v);
 	virtual void				GetGlobalTransformDynamic	(Fmatrix* m);
+	virtual void				GetGlobalPositionDynamic	(Fvector* v);
 
 	dSpaceID GetSpace()
 	{

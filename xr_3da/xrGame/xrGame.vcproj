@@ -2455,6 +2455,9 @@
 				RelativePath="PHJoint.h">
 			</File>
 			<File
+				RelativePath=".\PHObject.cpp">
+			</File>
+			<File
 				RelativePath="PHObject.h">
 			</File>
 			<File
@@ -2541,6 +2544,12 @@
 				</File>
 				<File
 					RelativePath="PHAICharacter.h">
+				</File>
+				<File
+					RelativePath=".\PHCapture.cpp">
+				</File>
+				<File
+					RelativePath=".\PHCapture.h">
 				</File>
 				<File
 					RelativePath="PHCharacter.cpp">

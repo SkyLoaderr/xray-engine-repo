@@ -7,6 +7,7 @@ void CCar::SDoor::Init()
 	update=false;
 	joint=bone_map.find(bone_id)->second.joint;
 	if(!joint) return;
+	R_ASSERT2(dJointGetType(joint->GetDJoint())==dJointTypeHinge,"Wrong door joint!!! Only simple joint valid for a door and only one axis can be active, check other axes are zerro limited !!!");
 	Fvector door_position,door_axis;
 	dJointGetHingeAnchor (joint->GetDJoint(),(float*) &door_position);
 	dJointGetHingeAxis (joint->GetDJoint(), (float*) &door_axis);

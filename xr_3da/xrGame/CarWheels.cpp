@@ -5,9 +5,13 @@
 void CCar::SWheel::Init()
 {
 	if(inited) return;
-	(bone_map.find(bone_id))->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
-	radius=(bone_map.find(bone_id))->second.element->getRadius();
-	joint=(bone_map.find(bone_id))->second.joint->GetDJoint();
+	const  xr_map<int,physicsBone>::iterator bone=bone_map.find(bone_id);
+	R_ASSERT2(bone->second.element,"No Element was created for wheel-check collision is set");
+	bone->second.element->set_DynamicLimits(default_l_limit,default_w_limit*100.f);
+	radius=bone->second.element->getRadius();
+	R_ASSERT2(bone->second.joint,"No wheel joint was set for a wheel");
+	joint=bone->second.joint->GetDJoint();
+	R_ASSERT2(dJointGetType(joint)==dJointTypeHinge2,"No wheel join was set for a wheel, only wheel-joint valid!!!");
 	dJointSetHinge2Param(joint, dParamFMax2,0.f);//car->m_axle_friction
 	dJointSetHinge2Param(joint, dParamVel2, 0.f);
 	inited=true;

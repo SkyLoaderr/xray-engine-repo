@@ -17,7 +17,7 @@ class CPHCharacter : public CPHObject
 {
 protected:
 ////////////////////////// dynamic
-xr_list<CPHObject*>::iterator m_ident;
+
 CPHInterpolation m_body_interpolation;
 dBodyID m_body;
 CPhysicsRefObject* m_phys_ref_object;
@@ -48,6 +48,7 @@ public:
 
 	void Enable											(){dBodyEnable(m_body);}
 	bool IsEnabled										(){ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
+	dBodyID GetBody										(){return m_body;}
 	bool b_exist;
 
 public:

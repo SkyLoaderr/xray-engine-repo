@@ -129,6 +129,7 @@ public:
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
 	virtual void			InterpolateGlobalPosition		(Fvector* v);
 	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);
+	virtual void			GetGlobalPositionDynamic		(Fvector* v);
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);
 

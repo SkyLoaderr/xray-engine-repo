@@ -18,7 +18,7 @@ extern const dReal	default_disw;
 extern const dReal	default_disl;
 extern const dReal	fixed_step;
 extern const u32	dis_frames;
-
+extern const dReal	world_gravity;
 
 void BodyCutForce	(dBodyID body,float l_limit,float w_limit);
 void SaveContacts	(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);

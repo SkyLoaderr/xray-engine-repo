@@ -51,6 +51,7 @@ public:
 	virtual void			InterpolateGlobalTransform(Fmatrix* m)											= 0;
 	virtual void			GetGlobalTransformDynamic(Fmatrix* m)											= 0;
 	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
+	virtual void			GetGlobalPositionDynamic (Fvector* v)											= 0;
 
 	virtual void			Deactivate				()														= 0;
 	virtual void			Enable					()														= 0;

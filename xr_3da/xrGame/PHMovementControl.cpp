@@ -661,6 +661,11 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	m_character->SetPosition(vPosition);
 }
 
+void	CPHMovementControl::PHCaptureObject(CGameObject* object)
+{
+
+}
+
 void	CPHMovementControl::DeleteCharacterObject()
 {
 	xr_delete(m_character);

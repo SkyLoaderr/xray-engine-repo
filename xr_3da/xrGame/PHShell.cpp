@@ -62,7 +62,7 @@ float CPHShell::getMass()
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)
 		return;
-	m_ident=ph_world->AddObject(this);
+	CPHObject::Activate();
 
 	xr_vector<CPHElement*>::iterator i;
 
@@ -83,7 +83,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 	if(bActive)
 		return;
-	m_ident=ph_world->AddObject(this);
+	CPHObject::Activate();
 
 	xr_vector<CPHElement*>::iterator i;
 
@@ -115,7 +115,7 @@ void CPHShell::Deactivate(){
 	for(j=joints.begin();j!=joints.end();j++)
 		(*j)->Deactivate();
 
-	ph_world->RemoveObject(m_ident);
+	CPHObject::Deactivate();
 	if(m_space) {
 		dSpaceDestroy(m_space);
 		m_space=NULL;
@@ -195,8 +195,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 { 
 	if(bActive)
 		return;
-		
-		m_ident=ph_world->AddObject(this);
+		CPHObject::Activate();
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 
 		{		
@@ -755,4 +754,9 @@ void CPHShell::InterpolateGlobalPosition(Fvector* v)
 {
 	(*elements.begin())->InterpolateGlobalPosition(v);
 	v->add(m_object_in_root.c);
+}
+
+void CPHShell::GetGlobalPositionDynamic(Fvector* v)
+{
+(*elements.begin())->GetGlobalPositionDynamic(v);
 }

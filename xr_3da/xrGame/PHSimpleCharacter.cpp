@@ -123,8 +123,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	m_radius=_min(sizes[0],sizes[2])/2.f;
 	m_cyl_hight=sizes[1]-2.f*m_radius;
 	if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
-
-	m_ident=ph_world->AddObject(this);
+	CPHObject::Activate();
 	b_exist=true;
 	const dReal k=1.20f;
 	dReal doun=m_radius*_sqrt(1.f-1.f/k/k)/2.f;
@@ -210,7 +209,7 @@ void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
 	//if(ph_world)
-	ph_world->RemoveObject(m_ident);
+	CPHObject::Deactivate();
 
 
 
