@@ -19,6 +19,9 @@
 		<dialog>escape_trader_talk_level</dialog>
 		<dialog>actor_break_dialog</dialog>
 		<dialog>general_pda_talk</dialog>		
+		<dialog>trader_job1</dialog>		
+		<dialog>trader_job2</dialog>		
+		<dialog>trader_job3</dialog>		
 		<task>storyline_eliminate_gunslinger</task>
 	</info_portion>
 
