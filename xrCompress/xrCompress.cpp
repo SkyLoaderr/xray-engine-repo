@@ -8,7 +8,7 @@ CFS_File*				fs=0;
 CFS_Memory				fs_desc;
 
 DWORD					bytesSRC=0,bytesDST=0;
-DWORD					filesSKIP=0,filesVFS=0;
+DWORD					filesTOTAL=0,filesSKIP=0,filesVFS=0;
 
 BOOL	testSKIP		(LPCSTR path)
 {
@@ -32,6 +32,8 @@ BOOL	testVFS			(LPCSTR path)
 
 void Compress			(LPCSTR path)
 {
+	filesTOTAL			++;
+
 	printf				("\n%-80s   ",path);
 	if (testSKIP(path))	{
 		filesSKIP	++;
@@ -134,7 +136,8 @@ int main			(int argc, char* argv[])
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		DWORD			dwTimeEnd	= timeGetTime();
-		printf			("\n\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
+		printf			("\n\nFiles total/skipped/VFS: %d/%d/%d\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
+			filesTOTAL,filesSKIP,filesVFS,
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60
