@@ -23,7 +23,8 @@ void FLOD::Load			(LPCSTR N, CStream *data, DWORD dwFlags)
 		facets[f].N.normalize	(N);
 	}
 
-	// 
+	// VS
+	hVS					= Device.Shader._CreateVS	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
 }
 void FLOD::Copy			(CVisual *pFrom	)
 {
