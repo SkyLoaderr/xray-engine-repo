@@ -14,6 +14,9 @@ light::light(void)
 	cone			= deg2rad(60.f);
 	color.set		(1,1,1,1);
 
+	frame_render	= 0;
+	frame_sleep		= 0;
+
 #if RENDER==R_R2
 	s_spot			= NULL;
 	s_point			= NULL;

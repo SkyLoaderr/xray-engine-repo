@@ -4,8 +4,9 @@
 #include "xrRender_console.h"
 
 // Common
-int			ps_r__Supersample		= 1;
-int			ps_r__Anisotropic		= 4;
+int			ps_r__Supersample			= 1;
+int			ps_r__Anisotropic			= 4;
+int			ps_r__LightSleepFrames		= 10;
 
 float		ps_r__Detail_w_rot1			= 30.f;
 float		ps_r__Detail_w_rot2			= 1.f;
@@ -15,46 +16,46 @@ float		ps_r__Detail_l_aniso		= 0.25f;
 float		ps_r__Detail_density		= 0.15f;
 float		ps_r__Detail_rainbow_hemi	= 0.75f;
 
-float		ps_r__Tree_w_rot		= 10.0f;
-float		ps_r__Tree_w_speed		= 1.00f;
-float		ps_r__Tree_w_amp		= 0.01f;
-Fvector		ps_r__Tree_Wave			= {.1f, .01f, .11f};
+float		ps_r__Tree_w_rot			= 10.0f;
+float		ps_r__Tree_w_speed			= 1.00f;
+float		ps_r__Tree_w_amp			= 0.01f;
+Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 
 // R1
-float		ps_r1_ssaDISCARD		= 4.f;
-float		ps_r1_ssaDONTSORT		= 32.f;
-float		ps_r1_ssaLOD_A			= 64.f;
-float		ps_r1_ssaLOD_B			= 48.f;
-float		ps_r1_ssaHZBvsTEX		= 256.f;
+float		ps_r1_ssaDISCARD			= 4.f;
+float		ps_r1_ssaDONTSORT			= 32.f;
+float		ps_r1_ssaLOD_A				= 64.f;
+float		ps_r1_ssaLOD_B				= 48.f;
+float		ps_r1_ssaHZBvsTEX			= 256.f;
 
 // R1-specific
-int			ps_r1_GlowsPerFrame		= 16;	// r1-only
-int			ps_r1_SH_Blur			= 0;	// r1-only
+int			ps_r1_GlowsPerFrame			= 16;	// r1-only
+int			ps_r1_SH_Blur				= 0;	// r1-only
 
 // R2
-float		ps_r2_ssaDISCARD		= 4.f;
-float		ps_r2_ssaDONTSORT		= 32.f;
-float		ps_r2_ssaLOD_A			= 64.f;
-float		ps_r2_ssaLOD_B			= 48.f;
-float		ps_r2_ssaHZBvsTEX		= 256.f;
+float		ps_r2_ssaDISCARD			= 4.f;
+float		ps_r2_ssaDONTSORT			= 32.f;
+float		ps_r2_ssaLOD_A				= 64.f;
+float		ps_r2_ssaLOD_B				= 48.f;
+float		ps_r2_ssaHZBvsTEX			= 256.f;
 
 // R2-specific
-Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY };	// r2-only
-float		ps_r2_df_parallaxh		= 0.02f;
-float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
-float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
-float		ps_r2_ls_dsm_kernel		= .7f;	// r2-only
-float		ps_r2_ls_psm_kernel		= .7f;	// r2-only
-float		ps_r2_ls_ssm_kernel		= .7f;	// r2-only
-float		ps_r2_ls_bloom_threshold= .3f;	// r2-only
-float		ps_r2_ls_spower			= 64.f;
-Fvector		ps_r2_aa_barier			= { .8f, .1f, 0};	// r2-only
-Fvector		ps_r2_aa_weight			= { .25f,.25f,0};	// r2-only
-float		ps_r2_aa_kernel			= .9f;				// r2-only
-int			ps_r2_GI_depth			= 1;				// 1..5
-int			ps_r2_GI_photons		= 16;				// 8..64
-float		ps_r2_GI_clip			= EPS_L;			// EPS
-float		ps_r2_GI_refl			= .9f;				// .9f
+Flags32		ps_r2_ls_flags				= { R2FLAG_SUN | R2FLAG_SKY };	// r2-only
+float		ps_r2_df_parallaxh			= 0.02f;
+float		ps_r2_ls_dynamic_range		= 2.f;	// r2-only
+float		ps_r2_ls_bloom_kernel		= 3.3f;	// r2-only
+float		ps_r2_ls_dsm_kernel			= .7f;	// r2-only
+float		ps_r2_ls_psm_kernel			= .7f;	// r2-only
+float		ps_r2_ls_ssm_kernel			= .7f;	// r2-only
+float		ps_r2_ls_bloom_threshold	= .3f;	// r2-only
+float		ps_r2_ls_spower				= 64.f;
+Fvector		ps_r2_aa_barier				= { .8f, .1f, 0};	// r2-only
+Fvector		ps_r2_aa_weight				= { .25f,.25f,0};	// r2-only
+float		ps_r2_aa_kernel				= .9f;				// r2-only
+int			ps_r2_GI_depth				= 1;				// 1..5
+int			ps_r2_GI_photons			= 16;				// 8..64
+float		ps_r2_GI_clip				= EPS_L;			// EPS
+float		ps_r2_GI_refl				= .9f;				// .9f
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
