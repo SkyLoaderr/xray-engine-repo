@@ -291,7 +291,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k		= contrib[i].n++;
-				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
 				contrib[i].p[k].weight	= weight;
 			}
 		}
@@ -315,7 +315,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k		= contrib[i].n++;
-				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].pixel	= (n<src.xsize)?n:(src.xsize-1);
 				contrib[i].p[k].weight	= weight;
 			}
 		}
@@ -372,7 +372,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k = contrib[i].n++;
-				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
 				contrib[i].p[k].weight	= weight;
 			}
 		}
@@ -395,7 +395,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					n = j;
 				}
 				k = contrib[i].n++;
-				contrib[i].p[k].pixel	= n;
+				contrib[i].p[k].pixel	= (n<tmp->ysize)?n:(tmp->ysize-1);
 				contrib[i].p[k].weight	= weight;
 			}
 		}
