@@ -111,6 +111,24 @@
     <string id="rad_find_stalkers_dialog_15">
         <text>Да подходит! Хорошо, я найду для тебя твоих ребят!</text>
     </string>
+    <string id="rad_find_stalkers_dialog_1_0">
+        <text>Кто ты Сталкер? Как сюда попал?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_1_100">
+        <text>Я Леха-Челюсть! Так меня прозвали! Я и моя группа идем на Припять!\nА кто ты такой? Я тебе раньше не видел? \n</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_1_1000">
+        <text>Я обычный сталкер тоже иду на Припять! Не думаю что мы раньше встречались.\nЧто слышно? Что там за обстановка на Припяти? </text>
+    </string>
+    <string id="rad_find_stalkers_dialog_1_1001">
+        <text>Меня зовут Меченый! Сожет слыхал, но не думаю что мы раньше встречались, у меня хорошая память на лица. Совпадение я тоже иду на Припять! Что слышно? Что происходит на Припяти? </text>
+    </string>
+    <string id="rad_find_stalkers_dialog_1_1002">
+        <text>Меня зовут Колька! Так гуляю по Зоне ищу артефакты! Услышал что эта зона больше не облучена и вот я здесь! А что там на Припяти? Там опасно?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_1_1003">
+        <text>Тебе назачем знать как меня зовут! Ты меня никогда не видел! Мы никогда не разговаривали! Не твое дело куда и зачем я иду!</text>
+    </string>
     <string id="rad_find_stalkers_dialog_20">
         <text>Спасибо брателло я найду для тебя Бревно и Лома!</text>
     </string>
@@ -129,11 +147,17 @@
     <string id="rad_find_stalkers_dialog_2150">
         <text>Нет это все денги которые на мне!</text>
     </string>
+    <string id="rad_find_stalkers_dialog_2_0">
+        <text>default text</text>
+    </string>
     <string id="rad_find_stalkers_dialog_30">
         <text>Нет, у меня мало времени, есть ли другой вариант?</text>
     </string>
     <string id="rad_find_stalkers_dialog_35">
         <text>Нет, я не буду бегать как твой ручной пес за потерянными сучками, ищи их сам, у меня есть дела по важнее.</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_3_0">
+        <text>default text</text>
     </string>
     <string id="rad_found_stalkers_dialog_0">
         <text>Я нашёл твоих ребят</text>
@@ -170,23 +194,5 @@
     </string>
     <string id="rad_found_stalkers_dialog_215">
         <text>text in default</text>
-    </string>
-    <string id="rad_test1_0">
-        <text>Sup</text>
-    </string>
-    <string id="rad_test1_1">
-        <text>mo man</text>
-    </string>
-    <string id="rad_test2_0">
-        <text>Hows u?</text>
-    </string>
-    <string id="rad_test2_1">
-        <text>aint bad u?</text>
-    </string>
-    <string id="rad_test_0">
-        <text>Yo</text>
-    </string>
-    <string id="rad_test_1">
-        <text>hey</text>
     </string>
 </string_table>

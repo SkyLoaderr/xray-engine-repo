@@ -597,7 +597,9 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog</actor_dialog>
-		<actor_dialog>rad_test</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default2" team_default = "1">
@@ -626,8 +628,10 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
-		<actor_dialog>rad_test</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default3" team_default = "1">
@@ -657,7 +661,9 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog</actor_dialog>
-		<actor_dialog>rad_test</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default4" team_default = "1">
@@ -687,7 +693,9 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog</actor_dialog>
-		<actor_dialog>rad_test</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_veteran_default5" team_default = "1">
@@ -717,7 +725,9 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>rad_find_stalkers_dialog</actor_dialog>
-		<actor_dialog>rad_test</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_1</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_2</actor_dialog>
+		<actor_dialog>rad_find_stalkers_dialog_3</actor_dialog>
 	</specific_character>
 
 <!---------------------------STALKER MASTER----------------------->
