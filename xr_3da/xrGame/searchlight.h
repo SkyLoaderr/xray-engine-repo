@@ -15,8 +15,8 @@ class CSearchlight: public CScriptMonster {
 	IRender_Glow*	glow_render;
 	Fvector			m_focus;
 
-	CBoneInstance		*bone;
-	u16					guid_bone;
+	u16				rot_bone;
+	u16				guid_bone;
 
 	struct SRot {
 		float yaw;

@@ -68,14 +68,15 @@ BOOL CSearchlight::net_Spawn(LPVOID DC)
 
 	lanim					= LALib.FindItem(slight->animator);
 
-	guid_bone				= slight->guid_bone; VERIFY(guid_bone!=BI_NONE);
+	guid_bone				= slight->guid_bone;		VERIFY(guid_bone!=BI_NONE);
+	rot_bone				= slight->rotation_bone;	VERIFY(rot_bone!=BI_NONE);
 
 	setVisible(true);
 	setEnabled(true);
 
 	//////////////////////////////////////////////////////////////////////////
-	bone = &PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bone_z"));
-	bone->set_callback(BoneCallback,this);
+	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(rot_bone);	
+	BI.set_callback(BoneCallback,this);
 	
 	Fvector dir = Direction();
 	dir.invert().getHP(_start.yaw,_start.pitch);
@@ -186,13 +187,15 @@ void CSearchlight::UpdateBones()
 	delta_pitch = angle_difference(_start.pitch,_cur.pitch);
 	if (angle_normalize_signed(_start.pitch - _cur.pitch) > 0) delta_pitch = -delta_pitch;
 
-	Fvector c					= bone->mTransform.c;
+	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(rot_bone);
+	
+	Fvector c					= BI.mTransform.c;
 	Fmatrix						spin;
 
 	spin.setXYZi				(delta_pitch, delta_yaw, 0);
 	VERIFY						(_valid(spin));
-	bone->mTransform.mulA_43	(spin);
-	bone->mTransform.c			= c;
+	BI.mTransform.mulA_43	(spin);
+	BI.mTransform.c			= c;
 }
 
 
