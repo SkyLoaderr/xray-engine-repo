@@ -706,7 +706,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 	//SetFriction	(af,wf,gf);
 
 	// BOX activate
-	ActivateBox	(0);
+//	ActivateBox	(0);
 }
 
 void CPHMovementControl::CheckEnvironment(const Fvector &/**V/**/){

@@ -277,7 +277,7 @@ void CActor::Load	(LPCSTR section )
 
 
 	// BOX activate
-	m_PhysicMovementControl->ActivateBox	(0);
+///	m_PhysicMovementControl->ActivateBox	(0);
 
 	m_PhysicMovementControl->Load(section);
 	m_PhysicMovementControl->SetParent(this);
