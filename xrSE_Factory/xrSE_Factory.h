@@ -13,7 +13,7 @@
 #include "import_export.h"
 
 extern "C" {
-	DLL_API CSE_Abstract	*create_object	(const CLASS_ID &clsid, LPCSTR section);
+	DLL_API CSE_Abstract	*create_object	(LPCSTR section);
 	DLL_API void			destroy_object	(CSE_Abstract *&abstract);
 };
 
