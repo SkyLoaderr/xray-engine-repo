@@ -12,6 +12,8 @@
 ; -K - from Koan
 
 To OLES : 
+-K	трасеры не рисуютс€
+-A	актер закрывает собой флары (выключить Enable CFModel у јктера)
 -S	assertion failed  в stl_extensions.cpp 
 	stack: 	
 	xrCore.dll!xrDebug::backend(const char * reason=0x0012f400, const char * file=0x0160a880, int line=57)  Line 93	C++
@@ -39,9 +41,7 @@ To OLES :
 +O	no particles
 +J	актер не видим дл€ сталкеров и монстров
 + 	старые партиклы тоже не рисуютс€
--K	трасеры не рисуютс€
 +S	после взрыва ручной гранаты обьекты (в том числе актер) станов€тс€ невидимыми при FLAGS::bVisible=1
--A	актер закрывает собой флары (выключить Enable CFModel у јктера)
 +J  освещение монстров (химера, плоть) (level - практически на любом (e.g. labaratory_1)) 
 
 To AlexMX:
