@@ -1050,7 +1050,7 @@ void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner
 		owner->get_bone_xform	(*light_main_bone,main_xform);
 		main_xform.mulA			(parent);
 		if(flags.is(flPointAmbient) ){
-			owner->get_bone_xform	(*light_ambient_bone,main_xform);
+			owner->get_bone_xform	(*light_ambient_bone,ambient_xform);
 			ambient_xform.mulA		(parent);
 		}
 		if (bSelected){
