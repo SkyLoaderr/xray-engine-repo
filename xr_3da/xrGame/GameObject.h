@@ -52,6 +52,7 @@ public:
 	virtual ~CGameObject();
 
 	virtual f32 ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, list<s16> &elements, list<Fvector> &bs_positions);
+	virtual f32 GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 
 #ifdef DEBUG
 	virtual void			OnRender			();
