@@ -272,10 +272,13 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_luminance.create			(b_luminance,				"r2\\luminance");
 		f_luminance_adapt			= 0.5f;
 
+		t_LUM_src.create			(r2_RT_luminance_src);
+		t_LUM_dest.create			(r2_RT_luminance_cur);
+
 		// create pool
 		for (u32 it=0; it<4; it++)	{
 			string256					name;
-			sprintf						(name,"%s_%d",r2_RT_luminance_pool,it	);
+			sprintf						(name,"%s_%d",	r2_RT_luminance_pool,it	);
 			rt_LUM_pool[it].create		(name,	1,	1,	D3DFMT_R32F				);
 			u_setrt						(rt_LUM_pool[it],	0,	0,	0			);
 			CHK_DX						(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0x0,	1.0f, 0L));
