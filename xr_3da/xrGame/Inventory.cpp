@@ -154,7 +154,8 @@ bool CInventory::Drop(CGameObject *pObj, bool call_drop)
 	
 	if(pIItem && (m_all.find(pIItem) != m_all.end())) 
 	{
-		if (pIItem->GetSlot() == m_iActiveSlot) 
+		if (pIItem->GetSlot() == m_iActiveSlot && 
+			m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
 		{
 			m_iNextActiveSlot = m_iActiveSlot = NO_ACTIVE_SLOT;
 		}
@@ -267,13 +268,16 @@ bool CInventory::Ruck(PIItem pIItem)
 	//גושü בûכא ג סכמעו
 	if((pIItem->GetSlot() < m_slots.size()) && (m_slots[pIItem->GetSlot()].m_pIItem == pIItem)) 
 	{
-		if(m_iActiveSlot == pIItem->GetSlot()) Activate(NO_ACTIVE_SLOT);
+		if(m_iActiveSlot == pIItem->GetSlot())
+			Activate(NO_ACTIVE_SLOT);
 		m_slots[pIItem->GetSlot()].m_pIItem = NULL;
 	}
-
-	//גושü בûכא םא ןמÿסו
-	PPIItem it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
-	if(m_belt.end() != it) m_belt.erase(it);
+	else
+	{
+		//גושü בûכא םא ןמÿסו
+		PPIItem it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
+		if(m_belt.end() != it) m_belt.erase(it);
+	}
 	
 	m_ruck.insert(m_ruck.end(), pIItem); 
 	return true;
@@ -428,6 +432,8 @@ void CInventory::Update()
 	{
 		bActiveSlotVisible = true;
 	}
+
+
 
 	if(m_iNextActiveSlot != m_iActiveSlot && !bActiveSlotVisible)
 	{

@@ -160,9 +160,6 @@ void CHudItem::OnAnimationEnd()
 
 void CHudItem::SwitchState(u32 S)
 {
-	//!!!
-	Msg("SwitchState(%d)",S);
-
 	if (Local()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
@@ -193,7 +190,6 @@ void CHudItem::OnEvent		(NET_Packet& P, u16 type)
 void CHudItem::OnStateSwitch	(u32 S)
 {
 	m_dwStateTime = 0;
-	
 	STATE = S;
 	if(Remote()) NEXT_STATE = S;
 }
@@ -201,6 +197,9 @@ void CHudItem::OnStateSwitch	(u32 S)
 
 bool CHudItem::Activate() 
 {
+	if(m_pHUD) 
+		m_pHUD->Init();
+
 	Show();
 	return true;
 }

@@ -304,7 +304,10 @@ void CMissile::OnAnimationEnd()
 		} break;
 	case MS_THREATEN:
 		{
-			if(m_throw) SwitchState(MS_THROW); else OnStateSwitch(MS_READY);
+			if(m_throw) 
+				SwitchState(MS_THROW); 
+			else 
+				OnStateSwitch(MS_READY);
 		} break;
 	case MS_THROW:
 		{

@@ -130,7 +130,10 @@ void CGrenade::OnAnimationEnd()
 
 			//выкинуть гранату из инвентаря
 			if (m_pInventory)
-				m_pInventory->Ruck(this); 
+			{
+				m_pInventory->Ruck(this);
+				m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
+			}
 		
 			if(dynamic_cast<CActor*>(H_Parent()))
 			{
@@ -145,9 +148,8 @@ void CGrenade::OnAnimationEnd()
 				{ 
 					Msg("grenade activate next slot");
 
-					m_pInventory->Slot(pNext, false);
-					m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
-					m_pInventory->Activate(pNext->m_slot); 
+					m_pInventory->Slot(pNext);
+					//m_pInventory->Activate(pNext->m_slot); 
 
 					Msg("grenade next slot activated");
 				}
@@ -177,54 +179,29 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 
 	switch(cmd) 
 	{
+	//переключение типа гранаты
 	case kWPN_NEXT:
 		{
             if(flags&CMD_START) 
 			{
 				if(m_pInventory)
 				{
-
-					//ищем на поясе такую же гранату
+					//перебираем все предметы на поясе 
+					//пока не встретим гарнату другого типа
 					PPIItem it = m_pInventory->m_belt.begin();
-					while(m_pInventory->m_belt.end() != it && 
-						  xr_strcmp((*it)->cNameSect(), cNameSect())) ++it;
-					
-					if(m_pInventory->m_belt.end() != it) 
+					while(m_pInventory->m_belt.end() != it) 
 					{
-						while(m_pInventory->m_belt.end() != it) 
-						{
-							CGrenade *pGrenade = dynamic_cast<CGrenade*>(*it);
-							if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
-							{
-								m_pInventory->Ruck(this); 
-								m_pInventory->Slot(pGrenade); 
-								m_pInventory->Belt(this); 
-								m_pInventory->Activate(pGrenade->m_slot);
-								return true;
-							}
-							++it;
-						}
-
-						
-						it = m_pInventory->m_belt.begin();
 						CGrenade *pGrenade = dynamic_cast<CGrenade*>(*it);
-
-						while(this != pGrenade) 
+						if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
 						{
-							if(pGrenade && xr_strcmp(pGrenade->cNameSect(), cNameSect())) 
-							{
-								m_pInventory->Ruck(this); 
-								m_pInventory->Slot(pGrenade); 
-								m_pInventory->Belt(this); 
-								m_pInventory->Activate(pGrenade->m_slot);
-								return true;
-							}
-							++it;
-							if(it == m_pInventory->m_belt.end()) break;
-							
-							pGrenade = dynamic_cast<CGrenade*>(*it);
+							m_pInventory->Ruck(this);
+							m_pInventory->Belt(this);
+							m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
+							m_pInventory->Slot(pGrenade);
+							//m_pInventory->Activate(pGrenade->m_slot);
+							return true;
 						}
-						
+						++it;
 					}
 					return true;
 				}

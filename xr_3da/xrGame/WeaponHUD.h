@@ -78,6 +78,7 @@ public:
 	// misc
 	virtual void		Load			(LPCSTR section);
 	void				net_DestroyHud	();
+	void				Init			();
 
 	IC IRender_Visual*	Visual			()	{ return m_pSharedHudInfo->pVisual; }
 	IC Fmatrix&			Transform		()	{ return m_pSharedHudInfo->mTransform; }

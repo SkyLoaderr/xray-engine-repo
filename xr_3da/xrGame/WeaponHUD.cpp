@@ -103,6 +103,12 @@ void CWeaponHUD::Load			(LPCSTR section)
 	m_pSharedHudInfo = GetHudInfo(m_sHudSectionName, m_pParentWeapon);
 }
 
+void  CWeaponHUD::Init	()
+{
+	m_bStopAtEndAnimIsRunning = false;
+	m_pCallbackItem = NULL;
+}
+
 
 void  CWeaponHUD::net_DestroyHud	()
 {
