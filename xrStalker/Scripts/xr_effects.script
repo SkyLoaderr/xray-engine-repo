@@ -326,6 +326,17 @@ function notify_back_off(actor, npc)
 	end	
 end
 
+function bar_freedom_spam(actor, npc)
+	local t = math.random(1,4)
+	news_manager.send_tip(actor, "bar_freedom_spam_"..t, nil, "freedom")
+end
+function bar_ecolog_spam(actor, npc)
+	local t = math.random(1,4)
+	news_manager.send_tip(actor, "bar_ecolog_spam_"..t, nil, "ecolog")
+end
+
+
+
 function military_max_dead (actor, npc)
     if db.actor:has_info ("mil_max_job") then
        level_tasks.set_task_state (task.fail, "mil_mad_job", 0)
