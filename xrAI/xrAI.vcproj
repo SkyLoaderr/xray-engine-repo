@@ -1273,13 +1273,25 @@
 					RelativePath="NET_utils.h">
 				</File>
 				<File
-					RelativePath=".\object_broker.cpp">
-				</File>
-				<File
 					RelativePath=".\object_broker.h">
 				</File>
 				<File
-					RelativePath=".\object_broker_inline.h">
+					RelativePath=".\object_destroyer.h">
+				</File>
+				<File
+					RelativePath=".\object_destroyer_inline.h">
+				</File>
+				<File
+					RelativePath=".\object_loader.h">
+				</File>
+				<File
+					RelativePath=".\object_loader_inline.h">
+				</File>
+				<File
+					RelativePath=".\object_saver.h">
+				</File>
+				<File
+					RelativePath=".\object_saver_inline.h">
 				</File>
 				<File
 					RelativePath=".\PHNetState.cpp">

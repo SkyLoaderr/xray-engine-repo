@@ -291,7 +291,7 @@ public:
 		xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
 		xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
 		for (u32 i=0, n=m_level_changers->size(); i<n; ++i) {
-			if (dwfGetIDByLevelName(m_ini,(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
+			if (dwfGetIDByLevelName(m_ini,*(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
 				continue;
 
 			bool found = false;
