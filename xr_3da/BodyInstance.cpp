@@ -122,6 +122,12 @@ CMotionDef*	CKinematics::ID_Cycle	(LPCSTR  N)
 	R_ASSERT(I!=m_cycle->end());
 	return &I->second;
 }
+CMotionDef*	CKinematics::ID_Cycle_Safe(LPCSTR  N)
+{
+	mdef::iterator I = m_cycle->find(LPSTR(N));
+	if(I==m_cycle->end()) return 0;
+	return &I->second;
+}
 CBlend*	CKinematics::PlayCycle		(LPCSTR  N)
 {
 	mdef::iterator I = m_cycle->find(LPSTR(N));
@@ -137,6 +143,12 @@ CMotionDef*	CKinematics::ID_FX			(LPCSTR  N)
 {
 	mdef::iterator I = m_fx->find(LPSTR(N));
 	R_ASSERT(I!=m_fx->end());
+	return &I->second;
+}
+CMotionDef*	CKinematics::ID_FX_Safe		(LPCSTR  N)
+{
+	mdef::iterator I = m_fx->find(LPSTR(N));
+	if(I==m_fx->end()) return 0;
 	return &I->second;
 }
 CBlend*	CKinematics::PlayFX			(LPCSTR  N)

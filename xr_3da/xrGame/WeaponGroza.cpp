@@ -4,6 +4,7 @@
 #include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
 #include "..\3DSound.h"
+#include "..\PSObject.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
@@ -19,10 +20,8 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponGroza::CWeaponGroza() : CWeapon()
+CWeaponGroza::CWeaponGroza() : CWeapon("Groza")
 {
-	m_WpnName = "Groza";
-
 	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
@@ -36,8 +35,6 @@ CWeaponGroza::CWeaponGroza() : CWeapon()
 		sprintf(name,"m134\\ShotFlame%d",i+1);
 		hFlame[i] = Device.Shader.Create("fire_trail",name,false);
 	}
-	iWpnFireBone	= -1;
-	iHUDFireBone	= -1; 
 	
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
@@ -62,27 +59,19 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	
-	LPCSTR fire_bone= ini->ReadSTRING	(section,"fire_bone");
-	iWpnFireBone	= PKinematics(Visual())->LL_BoneID(fire_bone);
-	iHUDFireBone	= PKinematics(m_pHUD->Visual())->LL_BoneID(fire_bone);
-	
-	vWpnFirePoint	= ini->ReadVECTOR(section,"fire_point_wpn");
-	vHUDFirePoint	= ini->ReadVECTOR(section,"fire_point_hud");
+	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	
 	iFlameDiv		= ini->ReadINT	(section,"flame_div");
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
-
-	PKinematics(pVisual)->PlayCycle("idle");
-	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
 }
 
 void CWeaponGroza::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
-		m_pHUD->FireStart();
-		st_target = eFire;
+		st_target	= eFire;
+		fTime		= 0;
 	}
 }
 
@@ -120,11 +109,11 @@ void CWeaponGroza::UpdateXForm(BOOL bHUDView)
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
 			
 			Fvector			R,D,N;
-			D.sub	(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct(mR.j,D);	R.normalize_safe();
-			N.crossproduct(D,R);	N.normalize_safe();
-			mRes.set	(R,N,D,mR.c);
-			mRes.mul2	(m_pParent->clTransform);
+			D.sub			(mL.c,mR.c);	D.normalize_safe();
+			R.crossproduct	(mR.j,D);	R.normalize_safe();
+			N.crossproduct	(D,R);	N.normalize_safe();
+			mRes.set		(R,N,D,mR.c);
+			mRes.mul2		(m_pParent->clTransform);
 			UpdatePosition	(mRes);
 		}
 	}
@@ -137,14 +126,14 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 		dwFP_Frame = Device.dwFrame;
 
 		// update animation
-		PKinematics V	= bHUDView?PKinematics(m_pHUD->Visual()):PKinematics(Visual());
-		V->Calculate	();
+		PKinematics V			= bHUDView?PKinematics(m_pHUD->Visual()):0;
+		if (V) V->Calculate		();
 
 		// fire point&direction
 		UpdateXForm				(bHUDView);
-		Fmatrix& fire_mat		= V->LL_GetTransform(bHUDView?iHUDFireBone:iWpnFireBone);
+		Fmatrix& fire_mat		= bHUDView?V->LL_GetTransform(m_pHUD->iFireBone):precalc_identity;
 		Fmatrix& parent			= bHUDView?m_pHUD->Transform():clTransform;
-		Fvector& fp				= bHUDView?vHUDFirePoint:vWpnFirePoint;
+		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
 		parent.transform_tiny	(vLastFP);
 		vLastFD.set				(0.f,0.f,1.f);
@@ -203,6 +192,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				}
 				
 		 		if (iAmmoElapsed==0) { m_pParent->g_fireEnd(); break; }
+				m_pHUD->Shoot();
 			}
 
 			// sound fire loop
@@ -265,4 +255,23 @@ void CWeaponGroza::AddShotmark(const Fvector &vDir, const Fvector &vEnd, Collide
 {
 	inherited::AddShotmark(vDir, vEnd, R);
 	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+	
+	// particles
+	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
+	Fvector N,D;
+	N.mknormal(pTri->V(0),pTri->V(1),pTri->V(2));
+	D.reflect(vDir,N);
+
+	CSector* S			= ::Render.getSector(pTri->sector);
+// stones
+	CPSObject* PS		= new CPSObject("stones",S);
+	// update emitter & run
+	PS->m_Emitter.m_ConeDirection.set(D);
+	PS->PlayAtPos		(vEnd);
+
+// smoke
+	PS					= new CPSObject("smokepuffs_1",S);
+	// update emitter & run
+	PS->m_Emitter.m_ConeDirection.set(D);
+	PS->PlayAtPos		(vEnd);
 }

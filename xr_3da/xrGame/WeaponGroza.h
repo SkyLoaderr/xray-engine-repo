@@ -28,11 +28,7 @@ private:
 	Shader*			hTrail;
 	Shader*			hFlame[5];
 
-	int				iWpnFireBone;
-	int				iHUDFireBone;
-
-	Fvector			vWpnFirePoint;
-	Fvector			vHUDFirePoint;
+	Fvector			vFirePoint;
 
 	Fvector			vLastFP, vLastFD;
 	DWORD			dwFP_Frame;

@@ -14,7 +14,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CWeapon::CWeapon()
+CWeapon::CWeapon(LPCSTR name)
 {
 	fTimeToFire	= 0;
 	iHitPower	= 0;
@@ -22,14 +22,15 @@ CWeapon::CWeapon()
 	bVisible	= true;
 	SetDefaults	();
 	m_pHUD		= new CWeaponHUD();
-	m_WpnName	= 0;
+	m_WpnName	= strupr(strdup(name));
 	m_pContainer= 0;
 }
 
 CWeapon::~CWeapon()
 {
-	_DELETE(pVisual);
-	_DELETE(m_pHUD);
+	_FREE		(m_WpnName);
+	_DELETE		(pVisual);
+	_DELETE		(m_pHUD);
 }
 
 void CWeapon::SetParent(CEntity* parent, CWeaponList* container)

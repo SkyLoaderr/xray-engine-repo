@@ -18,10 +18,18 @@ class CWeaponHUD :
 
 	enum EHUDState{
 		hsIdle = 0,
-		hsFire
+		hsFireCycle,
+		hsShoot
 	};
 
 	EHUDState		new_mstate, cur_mstate;
+
+	CMotionDef*		mIdle;
+	CMotionDef*		mFireCycled;
+	vector<CMotionDef*>mShoots;
+public:	
+	int				iFireBone;
+	Fvector			vFirePoint;
 public:
 					CWeaponHUD		();
 	virtual			~CWeaponHUD		();
@@ -33,7 +41,8 @@ public:
 	IC Fmatrix&		Transform		()	{ return mTransform; }
 
 	// logic & effects
-	void			FireStart		()	{ new_mstate = hsFire;	}
+	void			Shoot			();
+	void			FireCycleStart	()	{ new_mstate = hsFireCycle;	}
 	void			FireEnd			()	{ new_mstate = hsIdle;	}
 
 	void			UpdatePosition	(const Fmatrix& transform);

@@ -17,7 +17,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CWeaponRail::CWeaponRail() : CWeapon()
+CWeaponRail::CWeaponRail() : CWeapon("rail")
 {
 	pTrail			= NULL;
 	pSounds->Create3D(sndFire,"weapons\\rail_fire.wav");

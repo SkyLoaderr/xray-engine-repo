@@ -19,10 +19,8 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponEMSRifle::CWeaponEMSRifle() : CWeapon()
+CWeaponEMSRifle::CWeaponEMSRifle() : CWeapon("EMS Rifle")
 {
-	m_WpnName = "EMS Rifle";
-
 	pSounds->Create3D(sndFireLoop,	"weapons\\EMSRifle_fire_loop");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
@@ -81,7 +79,7 @@ void CWeaponEMSRifle::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
-		m_pHUD->FireStart();
+		m_pHUD->FireCycleStart();
 		st_target = eFire;
 	}
 }

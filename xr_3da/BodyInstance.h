@@ -283,12 +283,14 @@ public:
 
 	// cycles
 	CMotionDef*					ID_Cycle		(LPCSTR  N);
+	CMotionDef*					ID_Cycle_Safe	(LPCSTR  N);
 	CBlend*						PlayCycle		(LPCSTR  N);
 	CBlend*						PlayCycle		(CMotionDef* M)
 	{	VERIFY(M); return M->PlayCycle(this);	}
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);
+	CMotionDef*					ID_FX_Safe		(LPCSTR  N);
 	CBlend*						PlayFX			(LPCSTR  N);
 	CBlend*						PlayFX			(CMotionDef* M)
 	{	VERIFY(M); return M->PlayFX(this);	}

@@ -23,7 +23,8 @@ void CUIWeapon::Init(){
 	Level().HUD()->ClientToScreen(694.f, 525.f, position, alRight|alBottom);
 	back.Init	("ui\\hud_weapon_back","font",694.f,525.f,128,64,alRight|alBottom);
 	back.SetRect(0,0,90,61);
-	weapons["M134"]	= new CUIWeaponItem("ui\\hud_kulemet");
+	weapons["M134"]		= new CUIWeaponItem("ui\\hud_wpn_m134");
+	weapons["GROZA"]	= new CUIWeaponItem("ui\\hud_wpn_groza");
 	current		= weapons["M134"];
 }
 //--------------------------------------------------------------------
@@ -43,7 +44,9 @@ void CUIWeapon::Render()
 //--------------------------------------------------------------------
 
 void CUIWeapon::Out(LPCSTR wpn_name, int ammo1, int ammo1_total, int ammo2, int ammo2_total){
-	current		= weapons[wpn_name];
+	WItmIt it	= weapons.find(wpn_name);
+	R_ASSERT	(it!=weapons.end()); // не найдена иконка оружия
+	current		= it->second;
 	float sc	= Level().HUD()->GetScale();
 	CFontHUD* H	= Level().HUD()->pHUDFont;
 	H->Color	(0xffffffff);

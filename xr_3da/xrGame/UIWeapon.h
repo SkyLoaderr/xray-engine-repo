@@ -10,7 +10,13 @@ public:
 	virtual			~CUIWeaponItem	();
 };
 
-DEFINE_MAP(LPCSTR,CUIWeaponItem*,WItmMap,WItmIt);
+struct str_pred : public binary_function<char*, char*, bool> 
+{	
+	IC bool operator()(const char* x, const char* y) const
+	{	return strcmp(x,y)<0;	}
+};
+
+DEFINE_MAP_PRED(LPCSTR,CUIWeaponItem*,WItmMap,WItmIt,str_pred);
 
 class CUIWeapon
 {

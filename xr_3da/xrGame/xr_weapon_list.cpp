@@ -9,6 +9,7 @@
 // Factory
 #include "WeaponM134.h"
 #include "WeaponEMSRifle.h"
+#include "WeaponGroza.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -117,6 +118,10 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	case CLSID_OBJECT_W_EMSRIFLE:
 		pWeapon = new CWeaponEMSRifle(); 
 		strcpy(sect_name,"EMSRifle");
+	break;
+	case CLSID_OBJECT_W_GROZA:
+		pWeapon = new CWeaponGroza(); 
+		strcpy(sect_name,"wpn_groza");
 	break;
 	case CLSID_OBJECT_W_RAIL:		break;
 	case CLSID_OBJECT_W_MGUN:		break;

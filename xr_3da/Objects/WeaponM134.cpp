@@ -53,10 +53,8 @@ void __stdcall CWeaponM134::RotateCallback_hud(CBoneInstance* B)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponM134::CWeaponM134() : CWeapon()
+CWeaponM134::CWeaponM134() : CWeapon("M134")
 {
-	m_WpnName = "M134";
-
 	pSounds->Create3D(sndFireStart,	"weapons\\m134_fire_start");
 	pSounds->Create3D(sndFireLoop,	"weapons\\m134_fire_loop");
 	pSounds->Create3D(sndFireEnd,	"weapons\\m134_fire_end");
@@ -78,8 +76,7 @@ CWeaponM134::CWeaponM134() : CWeapon()
 	st_current=st_target=eM134Idle;
 	iWpnRotBone		= -1;
 	iHUDRotBone		= -1;
-	iWpnFireBone	= -1;
-	iHUDFireBone	= -1; 
+	iFireBone		= -1;
 	
 	bRotAxisHUD		= 0;
 	bRotAxisWpn		= 0;
@@ -123,11 +120,9 @@ void CWeaponM134::Load(CInifile* ini, const char* section){
 	fRotateBreakAccel	= ini->ReadFLOAT	(section,"rot_break_accel");
 	
 	LPCSTR fire_bone= ini->ReadSTRING	(section,"fire_bone");
-	iWpnFireBone	= PKinematics(Visual())->LL_BoneID(fire_bone);
-	iHUDFireBone	= PKinematics(m_pHUD->Visual())->LL_BoneID(fire_bone);
+	iFireBone		= PKinematics(Visual())->LL_BoneID(fire_bone);
 	
-	vWpnFirePoint	= ini->ReadVECTOR(section,"fire_point_wpn");
-	vHUDFirePoint	= ini->ReadVECTOR(section,"fire_point_hud");
+	vFirePoint		= ini->ReadVECTOR(section,"fire_point");
 	
 	bRotAxisHUD		= ini->ReadTOKEN(section,"rot_axis_hud",axis_token);
 	bRotAxisWpn		= ini->ReadTOKEN(section,"rot_axis_wpn",axis_token);
@@ -150,7 +145,7 @@ void CWeaponM134::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
-		m_pHUD->FireStart();
+		m_pHUD->FireCycleStart();
 		st_target = eM134Spinup;
 	}
 }
@@ -211,9 +206,9 @@ void CWeaponM134::UpdateFP(BOOL bHUDView)
 
 		// fire point&direction
 		UpdateXForm				(bHUDView);
-		Fmatrix& fire_mat		= V->LL_GetTransform(bHUDView?iHUDFireBone:iWpnFireBone);
+		Fmatrix& fire_mat		= V->LL_GetTransform(bHUDView?m_pHUD->iFireBone:iFireBone);
 		Fmatrix& parent			= bHUDView?m_pHUD->Transform():svTransform;
-		Fvector& fp				= bHUDView?vHUDFirePoint:vWpnFirePoint;
+		Fvector& fp				= bHUDView?m_pHUD->vFirePoint:vFirePoint;
 		fire_mat.transform_tiny	(vLastFP,fp);
 		parent.transform_tiny	(vLastFP);
 		vLastFD.set				(0.f,0.f,1.f);
@@ -390,6 +385,9 @@ void CWeaponM134::AddShotmark(const Fvector& vDir, const Fvector &vEnd, Collide:
 {
 	inherited::AddShotmark(vDir, vEnd, R);
 	pSounds->Play3DAtPos(sndRicochet[Random.randI(SND_RIC_COUNT)], vEnd,false);
+
+
+	// particles
 	RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+R.element;
 	Fvector N,D;
 	N.mknormal(pTri->V(0),pTri->V(1),pTri->V(2));

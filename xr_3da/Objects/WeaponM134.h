@@ -45,11 +45,9 @@ private:
 
 	int				iWpnRotBone;
 	int				iHUDRotBone;
-	int				iWpnFireBone;
-	int				iHUDFireBone;
+	int				iFireBone;
 
-	Fvector			vWpnFirePoint;
-	Fvector			vHUDFirePoint;
+	Fvector			vFirePoint;
 
 	Fvector			vLastFP, vLastFD;
 	DWORD			dwFP_Frame;

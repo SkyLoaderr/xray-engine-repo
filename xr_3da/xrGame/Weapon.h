@@ -16,9 +16,8 @@ class CWeapon : public CObject
 {
 	friend class	CWeaponList;
 	BOOL			bWorking;
-protected:
 	char*			m_WpnName;
-
+protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
 	CWeaponHUD*		m_pHUD;
@@ -40,7 +39,7 @@ protected:
 
 	virtual void	AddShotmark		(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
-					CWeapon			();
+					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();
 
 	// misc
