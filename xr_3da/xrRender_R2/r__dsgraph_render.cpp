@@ -563,9 +563,9 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 			break;
 		case MT_LOD:
 			{
-				FLOD		* pV	= (FLOD*) V;
-				I = pV->children.begin	();
-				E = pV->children.end	();
+				FLOD		* pV		=	(FLOD*) V;
+				I = pV->children.begin		();
+				E = pV->children.end		();
 				for (; I!=E; I++)		{
 					IRender_Visual* T				= *I;
 					if (BB.intersect(T->vis.box))	lstVisuals.push_back(T);
