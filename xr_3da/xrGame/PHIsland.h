@@ -1,8 +1,6 @@
 #ifndef	PH_ISLAND_H
 #define PH_ISLAND_H
 
-#include "ode_include.h"
-
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
 #include <../ode/src/objects.h>

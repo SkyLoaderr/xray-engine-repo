@@ -28,6 +28,7 @@
 #include "../SkeletonAnimated.h"
 #include "../SkeletonRigid.h"
 
-//#include "ode_include.h"
+#pragma todo("Oles to Kostya/Slipch: following header(ode_include) should'nt be in 'stdafx.h' !!!")
+#include "ode_include.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
