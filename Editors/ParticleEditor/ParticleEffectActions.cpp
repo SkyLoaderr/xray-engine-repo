@@ -363,7 +363,7 @@ void pOrbitLine(IWriter& F, const Fvector& p, const Fvector& axis,
 	S.pL			= pVector(p.x, p.y, p.z);
 	S.p			= S.pL;
 	S.axisL		= pVector(axis.x, axis.y, axis.z);
-	S.axisL.normalize();
+	S.axisL.normalize_safe();
 	S.axis			= S.axisL;
 	S.magnitude	= magnitude;
 	S.epsilon		= epsilon;
