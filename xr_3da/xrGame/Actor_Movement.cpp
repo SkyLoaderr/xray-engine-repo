@@ -412,9 +412,9 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 
 	if (mstate_rl&mcLookout)
 		tgt_roll		=	(mstate_rl&mcLLookout)?-ACTOR_LOOKOUT_ANGLE:ACTOR_LOOKOUT_ANGLE;
-	if (!fsimilar(tgt_roll,r_torso.roll,EPS)){
-		angle_lerp		(r_torso.roll,tgt_roll,PI_MUL_2,dt);
-		r_torso.roll	= angle_normalize_signed(r_torso.roll);
+	if (!fsimilar(tgt_roll,r_torso_tgt_roll,EPS)){
+		angle_lerp		(r_torso_tgt_roll,tgt_roll,PI_MUL_2,dt);
+		r_torso_tgt_roll= angle_normalize_signed(r_torso_tgt_roll);
 	}
 
 	// если есть движение - выровнять модель по камере

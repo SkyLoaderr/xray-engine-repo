@@ -12,9 +12,6 @@
 #include "level.h"
 #include "../cl_intersect.h"
 
-#include "d3dx9math.h"
-#pragma comment (lib,"d3dx.lib")
-
 void CActor::cam_Set	(EActorCameras style)
 {
 	CCameraBase* old_cam = cam_Active();
@@ -48,46 +45,34 @@ float CActor::CameraHeight()
 
 IC float viewport_near(float& w, float& h)
 {
-	float a = Device.fFOV;
 	w = 2.f*VIEWPORT_NEAR*tan(deg2rad(Device.fFOV)/2.f);
 	h = w*Device.fASPECT;
 	float	c	= _sqrt					(w*w + h*h);
 	return	_max(_max(VIEWPORT_NEAR,_max(w,h)),c);
 }
-/*
-float	a0	= deg2rad(Device.fFOV*Device.fASPECT/2.f);
-float	a1	= deg2rad(Device.fFOV/2.f);
-h			= VIEWPORT_NEAR/_cos	(a0);
-w			= VIEWPORT_NEAR/_cos	(a1);
-float	c	= _sqrt					(w*w + h*h);
-return	_max(_max(VIEWPORT_NEAR,_max(w,h)),c);
-*/
-struct SPassableParams{
-	BOOL	solid;
-	float	range;
-	SPassableParams():solid(FALSE),range(0.f){}
-};
-IC BOOL __stdcall passable_callback(Collide::rq_result& result, LPVOID params)
-{
-	SPassableParams* V = (SPassableParams*)params;
-	CDB::TRI* T	= g_pGameLevel->ObjectSpace.GetStaticTris()+result.element;
-	if (!GMLib.GetMaterialByIdx(T->material)->Flags.is(SGameMtl::flPassable)){ 
-		V->solid	= TRUE;
-		V->range	= result.range;
-		return FALSE;
-	}
-	return TRUE;
-}
 
-IC void calc_point(Fvector& pt, float radius, float depth, float alpha)
+ICF void calc_point(Fvector& pt, float radius, float depth, float alpha)
 {
 	pt.x	= radius*_sin(alpha);
 	pt.y	= radius+radius*_cos(alpha);
 	pt.z	= depth;
 }
 
-Fmatrix s_mat;
-Fvector s_ext;
+ICF BOOL test_point(const Fmatrix& xform, const Fmatrix33& mat, const Fvector& ext, float radius, float angle)
+{
+	Fvector				pt;
+	calc_point			(pt,radius,VIEWPORT_NEAR/2,angle);
+	xform.transform_tiny(pt);
+	u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
+	for (u32 i_t=0; i_t<tri_count; i_t++){
+		clQueryTri&	O	= g_pGameLevel->ObjectSpace.q_result.tris[i_t];
+		if (GMLib.GetMaterialByIdx(O.T->material)->Flags.is(SGameMtl::flPassable)) continue;
+		if (CDB::TestBBoxTri(mat,pt,ext,O.p,FALSE))
+			return		TRUE;
+	}
+	return FALSE;
+}
+
 void CActor::cam_Update(float dt, float fFOV)
 {
 	if(m_holder)
@@ -110,112 +95,64 @@ void CActor::cam_Update(float dt, float fFOV)
 	Fmatrix xform,xformR;
 	xform.setXYZ		(0,r_torso.yaw,0);
 	xform.translate_over(XFORM().c);
-/*
-	Fvector c[4];
-	{
-		Fmatrix	ex_project, ex_full, ex_full_inverse;
-		{
-			D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&Device.mFullTransform);
-			static Fvector3		corners [4]			= {
-				{ -1, -1,  0 },		{ -1, +1,  0},
-				{ +1, +1,  0},		{ +1, -1,  0}
-			};
-			for(int p=0; p<4; p++)	{
-				ex_full_inverse.transform(c[p],corners[p]);
-			}
-		}
-		float w,h;
-		viewport_near(w,h);
-		Fvector v;
-		float y0 = v.sub(c[3],c[0]).magnitude();
-		float y1 = v.sub(c[2],c[3]).magnitude();
-		int y=0;
-	}
-*/
-
-
-
-
-
 
 	// lookout
 	if (!fis_zero(r_torso_tgt_roll)){
-//		if (_abs(r_torso_tgt_roll)>_abs(r_torso.roll))
-		{
-			// up
-			Fvector src_pt,tgt_pt;
-			float radius		= point.y*0.5f;
-			float alpha			= r_torso_tgt_roll/2.f;
-			float dZ			= ((PI_DIV_2-((PI+alpha)/2)));
-			calc_point			(tgt_pt,radius,0,alpha);
-			src_pt.set			(0,tgt_pt.y,0);
-			// init valid angle
-			float valid_angle	= alpha;
-			// xform with roll
-			xformR.setXYZ		(-r_torso.pitch,r_torso.yaw,-dZ);
-//			xformZ.mulA_43		(xform);
-			Fmatrix33			mat; 
-			mat.i				= xformR.i;
-			mat.j				= xformR.j;
-			mat.k				= xformR.k;
-			s_mat				= xformR;
-			// get viewport params
-			float w,h;
-			float c				= viewport_near(w,h); w/=2.f;h/=2.f;
-			// find tris
-			Fbox box;
-			box.invalidate		();
-			box.modify			(src_pt);
-			box.modify			(tgt_pt);
-			box.grow			(c);
-			g_pGameLevel->ObjectSpace.BoxQuery(box,xform,clGET_TRIS|clQUERY_STATIC);
-			u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
-			if (tri_count){
-				// test 
-				Fvector			trans,ext;
-				ext.set			(w,h,VIEWPORT_NEAR/2);  
-				s_ext			= ext;
-
-				float da		= PI/1000.f;
+		Fvector src_pt,tgt_pt;
+		float radius		= point.y*0.5f;
+		float alpha			= r_torso_tgt_roll/2.f;
+		float dZ			= ((PI_DIV_2-((PI+alpha)/2)));
+		calc_point			(tgt_pt,radius,0,alpha);
+		src_pt.set			(0,tgt_pt.y,0);
+		// init valid angle
+		float valid_angle	= alpha;
+		// xform with roll
+		xformR.setXYZ		(-r_torso.pitch,r_torso.yaw,-dZ);
+		Fmatrix33			mat; 
+		mat.i				= xformR.i;
+		mat.j				= xformR.j;
+		mat.k				= xformR.k;
+		// get viewport params
+		float w,h;
+		float c				= viewport_near(w,h); w/=2.f;h/=2.f;
+		// find tris
+		Fbox box;
+		box.invalidate		();
+		box.modify			(src_pt);
+		box.modify			(tgt_pt);
+		box.grow			(c);
+		g_pGameLevel->ObjectSpace.BoxQuery(box,xform,clGET_TRIS|clQUERY_STATIC);
+		u32 tri_count		= g_pGameLevel->ObjectSpace.q_result.tris.size();	
+		if (tri_count){
+			float da		= 0.f;
+			BOOL bIntersect	= FALSE;
+			Fvector	ext		= {w,h,VIEWPORT_NEAR/2};
+			if (test_point(xform,mat,ext,radius,alpha)){
+				da			= PI/1000.f;
 				if (!fis_zero(r_torso.roll))
-					da			*= r_torso.roll/_abs(r_torso.roll);
-
-				BOOL bIntersect	= FALSE;
-				for (float angle=da; _abs(angle)<_abs(alpha); angle+=da){
-					calc_point		(tgt_pt,radius,VIEWPORT_NEAR/2,angle);
-					xform.transform_tiny(tgt_pt);
-					s_mat.c			= tgt_pt;
-					for (u32 i_t=0; i_t<tri_count; i_t++){
-						clQueryTri&	O	= g_pGameLevel->ObjectSpace.q_result.tris[i_t];
-						if (CDB::TestBBoxTri(mat,tgt_pt,ext,O.p,FALSE)){
-							bIntersect	= TRUE;
-							valid_angle = angle;
-							break;
-						}
-					}
-					if (bIntersect) break;
-				}
-			}
-			r_torso.roll		= valid_angle*2.f;
+					da		*= r_torso.roll/_abs(r_torso.roll);
+				for (float angle=0.f; _abs(angle)<_abs(alpha); angle+=da)
+					if (test_point(xform,mat,ext,radius,angle)){ bIntersect=TRUE; break; } 
+				valid_angle	= bIntersect?angle:alpha;
+			} 
 		}
-		r_torso_tgt_roll		= r_torso.roll;
-		float radius			= point.y*0.5f;
-		float alpha				= r_torso.roll/2.f;
-		point.x					= radius*_sin(alpha);
-		point.y					= radius+radius*_cos(alpha);
-		dangle.z				= (PI_DIV_2-((PI+alpha)/2));
+		r_torso.roll		= valid_angle*2.f;
+		r_torso_tgt_roll	= r_torso.roll;
+		calc_point			(point,radius,0,valid_angle);
+		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
 	}
 
 	// soft crouch
-	float dS					= point.y-fPrevCamPos;
+	float dS				= point.y-fPrevCamPos;
 	if (_abs(dS)>EPS_L){
-		point.y					= 0.7f*fPrevCamPos+0.3f*point.y;
+		point.y				= 0.7f*fPrevCamPos+0.3f*point.y;
 	}
+	
 	// save previous position of camera
-	fPrevCamPos					= point.y;
+	fPrevCamPos				= point.y;
 
-	xform.transform_tiny		(point);
-
+	// calc point
+	xform.transform_tiny	(point);
 
 	CCameraBase* C			= cam_Active();
 	C->Update				(point,dangle);
@@ -243,8 +180,6 @@ extern	Flags32	dbg_net_Draw_Flags;
 
 void CActor::OnRender	()
 {
-	RCache.dbg_DrawOBB	(s_mat,s_ext,0xFFFFFFFF);
-
 	/*
 	u32			dwOffset = 0,dwCount = 0;
 	FVF::LIT* pv_start				= (FVF::LIT*)RCache.Vertex.Lock(4,hFriendlyIndicator->vb_stride,dwOffset);

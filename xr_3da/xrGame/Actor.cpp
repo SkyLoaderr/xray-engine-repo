@@ -117,6 +117,8 @@ CActor::CActor() : CEntityAlive()
 
 	r_torso.yaw				= 0;
 	r_torso.pitch			= 0;
+	r_torso.roll			= 0;
+	r_torso_tgt_roll		= 0;
 	r_model_yaw				= 0;
 	r_model_yaw_delta		= 0;
 	r_model_yaw_dest		= 0;
@@ -1136,43 +1138,6 @@ void CActor::ForceTransform(const Fmatrix& m)
 	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->EnableCharacter	();
 	m_PhysicMovementControl->SetPosition		(m.c);
 }
-
-#ifdef DEBUG
-void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
-extern	Flags32	dbg_net_Draw_Flags;
-
-void CActor::OnRender	()
-{
-	/*
-	u32			dwOffset = 0,dwCount = 0;
-	FVF::LIT* pv_start				= (FVF::LIT*)RCache.Vertex.Lock(4,hFriendlyIndicator->vb_stride,dwOffset);
-	FVF::LIT* pv						= pv_start;
-	// base rect
-	Fvector2 		lt,rb;
-	lt.x = - 1.f; lt.y = + 1.f;
-	rb.x = + 1.f; rb.y = - 1.f;
-	pv->set					(lt.x,rb.y,0.f, 0xffffffff, 0.f, 1.f); pv++;	// 0
-	pv->set					(lt.x,lt.y,0.f, 0xffffffff, 0.f, 0.f); pv++; 	// 1
-	pv->set					(rb.x,rb.y,0.f, 0xffffffff, 1.f, 1.f); pv++;	// 2
-	pv->set					(rb.x,lt.y,0.f, 0xffffffff, 1.f, 0.f); pv++;	// 3
-	// render	
-	dwCount 				= u32(pv-pv_start);
-	RCache.Vertex.Unlock	(dwCount,hFriendlyIndicator->vb_stride);
-
-	RCache.set_xform_world		(Fidentity);
-	RCache.set_Shader			(hIndicatorShader);
-	RCache.set_Geometry			(hFriendlyIndicator);
-	RCache.Render	   			(D3DPT_TRIANGLESTRIP,dwOffset,0, dwCount, 0, 2);
-	//*/
-
-	if (!bDebug)				return;
-
-	if ((dbg_net_Draw_Flags.is_any((1<<5))))
-		m_PhysicMovementControl->dbg_Draw	();
-
-	OnRender_Network();
-}
-#endif
 
 ENGINE_API extern float		psHUD_FOV;
 float CActor::Radius()const

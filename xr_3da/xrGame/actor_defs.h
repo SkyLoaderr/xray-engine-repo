@@ -47,7 +47,7 @@ enum EMoveCommand
 	mcLLookout	= (1ul<<13ul),
 	mcRLookout	= (1ul<<14ul),
 	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe),
-	mcAnyAction = (mcAnyMove|mcTurn|mcJump|mcFall|mcLanding|mcLanding2),
+	mcAnyAction = (mcAnyMove|mcJump|mcFall|mcLanding|mcLanding2), //mcTurn|
 	mcAnyState	= (mcCrouch|mcAccel|mcClimb|mcSprint),
 	mcLookout	= (mcLLookout|mcRLookout),
 };

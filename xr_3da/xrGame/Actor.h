@@ -257,6 +257,7 @@ protected:
 
 	// Rotation
 	SRotation				r_torso;
+	float					r_torso_tgt_roll;
 	//положение торса без воздействия эффекта отдачи оружия
 	SRotation				unaffected_r_torso;
 
