@@ -35,10 +35,10 @@ class CUIBuyWeaponWnd: public CUIDialogWnd
 private:
 	typedef CUIDialogWnd inherited;
 public:
-	CUIBuyWeaponWnd(char *strSectionName);
+	CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection);
 	virtual ~CUIBuyWeaponWnd();
 
-	virtual void Init(char *strSectionName);
+	virtual void Init(LPCSTR strSectionName);
 
 	void InitInventory();
 
@@ -283,6 +283,7 @@ protected:
 
 	// Имя секции из которой читать данные
 	ref_str		m_StrSectionName;
+	ref_str		m_StrPricesSection;
 
 	// массив в котором хратнятся названия секций для оружия 
 	DEF_VECTOR(WPN_SECT_NAMES, std::string);
@@ -415,7 +416,7 @@ public:
 	// Получить размер пояса в элементах
 	const u8	GetBeltSize();
 	// Перезагрузка предметов
-	void		ReInitItems	(char *strSectionName);
+	void		ReInitItems	(LPCSTR strSectionName);
 
 	// Процедуры принудительного перемещения оружия (эмуляция даблклика).
 	// Params:	grpNum			- номер группы секций

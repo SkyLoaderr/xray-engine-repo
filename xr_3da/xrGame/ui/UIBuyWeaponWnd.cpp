@@ -42,10 +42,11 @@ int			g_iOkAccelerator, g_iCancelAccelerator;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
+CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 {
-	m_StrSectionName = NULL;
-	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
+	m_StrSectionName		= NULL;
+	m_StrPricesSection		= strPricesSection;
+	m_iCurrentActiveSlot	= NO_ACTIVE_SLOT;
 	Hide();
 
 //	SetCurrentItem(NULL);
@@ -72,7 +73,7 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 {
 }
 
-void CUIBuyWeaponWnd::Init(char *strSectionName)
+void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 {
 	m_StrSectionName = strSectionName;
 
@@ -293,7 +294,7 @@ void CUIBuyWeaponWnd::InitBackgroundStatics()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
+void CUIBuyWeaponWnd::ReInitItems	(LPCSTR strSectionName)
 {
 	// «аполн€ем массив со списком оружи€
 	m_StrSectionName = strSectionName;
@@ -1122,8 +1123,17 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 		// „итаем стоимость оружи€
-		if(pSettings->line_exist(wpnSectStorage[slotNum][j].c_str(), "cost"))
-			UIDragDropItem.SetCost(pSettings->r_u32(wpnSectStorage[slotNum][j].c_str(), "cost"));
+		if (pSettings->line_exist(m_StrSectionName, static_cast<std::string>(wpnSectStorage[slotNum][j] + "_cost").c_str()))
+			UIDragDropItem.SetCost(pSettings->r_u32(m_StrSectionName, static_cast<std::string>(wpnSectStorage[slotNum][j] + "_cost").c_str()));
+		else if (pSettings->line_exist(m_StrPricesSection, wpnSectStorage[slotNum][j].c_str()))
+			UIDragDropItem.SetCost(pSettings->r_u32(m_StrPricesSection, wpnSectStorage[slotNum][j].c_str()));
+		else
+		{
+			string256	buf;
+			sprintf(buf, "Cannot find price for an item %s in sections: %s, %s",
+					wpnSectStorage[slotNum][j].c_str(), *m_StrSectionName, *m_StrPricesSection);
+			R_ASSERT2(false, buf);
+		}
 
 		// ƒл€ арморов читаем дополнительно координаты на текстуре с иконками персонажей дл€ арморов
 		if (OUTFIT_SLOT == m_slot)
