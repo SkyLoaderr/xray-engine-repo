@@ -117,10 +117,10 @@ void			CLight_DB::Destroy	(light* L)
 	}
 
 	// 
-	it = v_dynamic_active.find	(L);
-	if (it!=v_dynamic_active.end())	
+	it = v_dynamic_inactive.find	(L);
+	if (it!=v_dynamic_inactive.end())	
 	{
-		v_dynamic_active.erase(it);
+		v_dynamic_inactive.erase(it);
 		xr_delete	(L);
 		return;
 	}
