@@ -18,8 +18,6 @@ void CRender::render_main	()
 	phase									= PHASE_NORMAL;
 
 	// Calculate sector(s) and their objects
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))	set_Recorder	(&main_coarse_structure);
-	else									set_Recorder	(NULL);
 	if (pLastSector)
 	{
 
@@ -110,8 +108,6 @@ void CRender::render_main	()
 		set_Object											(0);
 		g_pGameLevel->pHUD->Render_Last						();	
 	}
-	set_Recorder			(NULL);
-//	Msg						("---end");
 }
 
 void CRender::Render		()
@@ -119,7 +115,10 @@ void CRender::Render		()
 	VERIFY					(0==mapDistort.size());
 	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
+	// Configure
 	RImplementation.o.distortion				= FALSE;		// disable distorion
+	Fcolor					sun_color			= Lights.sun_adapted->color;
+	BOOL					bSUN				= ps_r2_ls_flags.test(R2FLAG_SUN) && (u_diffuse2s(sun_color.r,sun_color.g,sun_color.b)>EPS);
 
 	//******* Main calc - DEFERRER RENDERER
 	Device.Statistic.RenderCALC.Begin			();
@@ -131,7 +130,10 @@ void CRender::Render		()
 
 	// Main calc
 	r_pmask										(true,false);	// enable priority "0"
+	if (bSUN)									set_Recorder	(&main_coarse_structure);
+	else										set_Recorder	(NULL);
 	render_main									();
+	set_Recorder								(NULL);
 	r_pmask										(true,false);	// disable priority "1"
 	Device.Statistic.RenderCALC.End				();
 
@@ -200,7 +202,7 @@ void CRender::Render		()
 	}
 
 	// Directional light - fucking sun
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))	{
+	if (bSUN)	{
 //		Lights_LastFrame.push_back			(Lights.sun_adapted);
 		RImplementation.stats.l_visible		++;
 		render_sun_near						();
