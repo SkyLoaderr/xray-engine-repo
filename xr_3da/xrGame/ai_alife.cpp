@@ -377,6 +377,7 @@ void CAI_ALife::Load()
 	tpStream = Engine.FS.Open	(caFileName);
 	
 	CALifeHeader::Load			(*tpStream);
+	CALifeGameTime::Load		(*tpStream);
 	CALifeObjectRegistry::Load	(*tpStream);
 	CALifeEventRegistry::Load	(*tpStream);
 	CALifeTaskRegistry::Load	(*tpStream);
@@ -393,6 +394,7 @@ void CAI_ALife::Save()
 	CFS_Memory					tStream;
 	m_tGameTime					= tfGetGameTime();
 	CALifeHeader::Save			(tStream);
+	CALifeGameTime::Save		(tStream);
 	CALifeObjectRegistry::Save	(tStream);
 	CALifeEventRegistry::Save	(tStream);
 	CALifeTaskRegistry::Save	(tStream);

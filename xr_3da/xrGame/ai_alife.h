@@ -16,6 +16,7 @@
 
 class CAI_ALife : 
 	public CALifeHeader, 
+	public CALifeGameTime,
 	public CALifeSpawnRegistry, 
 	public CALifeObjectRegistry, 
 	public CALifeEventRegistry, 
@@ -23,7 +24,6 @@ class CAI_ALife :
 	public CALifeGraphRegistry,
 	public CALifeOwnerRegistry,
 	public CALifeTraderRegistry,
-	public CALifeGameTime,
 	public CSheduled,
 	public CRandom 
 {
