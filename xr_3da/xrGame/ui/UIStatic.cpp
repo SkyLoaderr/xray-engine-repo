@@ -104,7 +104,7 @@ void CUIStatic::Update()
 	space_width = (int)GetFont()->SizeOf(" ");
 	
 
-	for(u32 i = 0; i<str_len+1; i++)
+	for(u32 i = 0; i<str_len+1; ++i)
 	{
 		char cur_char;
 
@@ -149,7 +149,7 @@ void CUIStatic::Update()
 					AddLetter('\\');
 				}
 			}
-			i++;
+			++i;
 			break;
 		case '%':
 			if(i+1<str_len)
@@ -159,7 +159,7 @@ void CUIStatic::Update()
 					int r,g,b;
 					u32 offset = ReadColor(i+2, r,g,b);
 					
-					//i++;
+					//++i;
 					i+= offset;
 					
 					
@@ -172,7 +172,7 @@ void CUIStatic::Update()
 					AddLetter('%');				
 				}
 			}
-			i++;
+			++i;
 			break;
 		default:
 			AddLetter(m_str[i]);
@@ -225,7 +225,7 @@ void CUIStatic::AddLetter(char letter)
 	}
 	else
 	{
-		word_length++;
+		++word_length;
 		buf_str[word_length-1] = letter;
 	}
 }
@@ -242,7 +242,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 		symbols_to_copy = (u32)xr_strlen(m_str)-pos;
 
 	
-	for(u32 i=0; i<symbols_to_copy; i++)
+	for(u32 i=0; i<symbols_to_copy; ++i)
 	{
 		buf[i] = m_str[i+pos];
 	}
@@ -256,29 +256,29 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 
     token = strtok(buf, seps );
 
-	if(token!=NULL)
+	if(NULL != token)
 	{
 		r = atoi(token);
 		str_offset += (u32)xr_strlen(token);
-		str_offset++;
+		++str_offset;
 	}
 	else
 		return 0;
     
 	token = strtok( NULL, seps );
 
-	if(token!=NULL)
+	if(NULL != token)
 	{
 		g = atoi(token);
 		str_offset += (u32)xr_strlen(token);
-		str_offset++;
+		++str_offset;
 	}
 	else
 		return 0;
 
 	token = strtok( NULL, seps );
 
-	if(token!=NULL)
+	if(NULL != token)
 	{
 		b = atoi(token);
 		if(b>99)
@@ -307,7 +307,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	int space_length = (int)GetFont()->SizeOf(" ");
 
     token = strtok( buf_str, seps );
-    while( token != NULL )
+    while( NULL != token )
     {
 	   token_length=(int)GetFont()->SizeOf(token);
 
@@ -476,7 +476,7 @@ void CUIStatic::SetText(LPSTR str)
 		return;
 	}
 
-	for(u32 i=0; i<xr_strlen(str); i++)
+	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
 		m_sEdit.push_back(str[i]);
 	m_sEdit.push_back(0);
 
