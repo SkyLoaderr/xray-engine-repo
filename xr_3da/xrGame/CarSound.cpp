@@ -58,11 +58,13 @@ void CCar::SCarSound::Update()
 void CCar::SCarSound::SwitchOn()
 {
 	snd_engine.play_at_pos			(pcar,pcar->Position(),TRUE);
+	pcar->processing_activate();
 }
 void CCar::SCarSound::Destroy()
 {
 	SwitchOff();
 	snd_engine.destroy	();
+	pcar->processing_deactivate();
 }
 
 void CCar::SCarSound::SwitchOff()
