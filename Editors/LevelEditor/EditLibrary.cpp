@@ -379,13 +379,13 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
     	} if (FHelper.IsFolder(node)){
 	        if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
                 int iLODcnt = 0;
-                SPBItem* pb = UI->PBStart(node->ChildrenCount,"Making LOD");
+                SPBItem* pb = UI->ProgressStart(node->ChildrenCount,"Making LOD");
                 for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
-                    UI->PBInc(pb);
+                	pb->Inc();
 		        	if (GenerateLOD(item)) iLODcnt++;
 					if (UI->NeedAbort()) break;
                 }
-                UI->PBEnd(pb);
+                UI->ProgressEnd(pb);
                 Msg ("'%d' LOD's succesfully created.",iLODcnt);
             }
         }

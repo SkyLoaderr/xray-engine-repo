@@ -37,9 +37,9 @@ bool ESceneLightTools::Load(IReader& F)
     if (F.find_chunk(CHUNK_HEMI)){
      	m_HemiQuality		= F.r_u8();
     }
-    if (F.find_chunk(CHUNK_HEMI2)){
-		m_HemiControl		= F.r_u32();
-    }
+//.	if (F.find_chunk(CHUNK_HEMI2)){
+//.		m_HemiControl		= F.r_u32();
+//.	}
 
     if (F.find_chunk(CHUNK_SUN_SHADOW)){
      	m_SunShadowQuality	= F.r_u8();
@@ -78,9 +78,9 @@ void ESceneLightTools::Save(IWriter& F)
     F.w_u8			(m_HemiQuality);
     F.close_chunk	();
 
-	F.open_chunk	(CHUNK_HEMI2);
-	F.w_u32			(m_HemiControl);
-    F.close_chunk	();
+//.	F.open_chunk	(CHUNK_HEMI2);
+//.	F.w_u32			(m_HemiControl);
+//.	F.close_chunk	();
 
 	F.open_chunk	(CHUNK_SUN_SHADOW);
     F.w_u8			(m_SunShadowQuality);

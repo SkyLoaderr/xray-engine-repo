@@ -72,9 +72,9 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     UI->SetStatus	("Export breakable objects...");
 	// collect verts&&faces
     {
-	    SPBItem* pb = UI->PBStart(m_Objects.size(),"Prepare geometry...");
+	    SPBItem* pb = UI->ProgressStart(m_Objects.size(),"Prepare geometry...");
         for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-            UI->PBInc(pb);
+	        pb->Inc();
             CSceneObject* obj 		= dynamic_cast<CSceneObject*>(*it); VERIFY(obj);
             if (obj->IsStatic()){
                 CEditableObject *O 	= obj->GetReference();
@@ -83,15 +83,15 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     if (!build_mesh	(T,*M,extractor,SGameMtl::flBreakable)){bResult=false;break;}
             }
         }
-	    UI->PBEnd(pb);
+	    UI->ProgressEnd(pb);
     }
     if (!extractor->Process())		bResult = false;
     // export parts
     if (bResult){
     	SBPartVec& parts			= extractor->GetParts();
-	    SPBItem* pb = UI->PBStart(parts.size(),"Export Parts...");
+	    SPBItem* pb = UI->ProgressStart(parts.size(),"Export Parts...");
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
-            UI->PBInc(pb);
+	        pb->Inc();
             SBPart*	P				= *p_it;
         	if (P->Valid()){
                 // export visual
@@ -128,7 +128,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
             	ELog.Msg(mtError,"Can't export invalid part #%d",p_it-parts.begin());
             }
         }
-	    UI->PBEnd(pb);
+	    UI->ProgressEnd(pb);
     }
     // clean up
     xr_delete(extractor);
@@ -151,9 +151,9 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
     UI->SetStatus	("Export climable objects...");
 	// collect verts&&faces
     {
-	    SPBItem* pb = UI->PBStart(m_Objects.size(),"Prepare geometry...");
+	    SPBItem* pb = UI->ProgressStart(m_Objects.size(),"Prepare geometry...");
         for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-            UI->PBInc(pb);
+	        pb->Inc();
             CSceneObject* obj 		= dynamic_cast<CSceneObject*>(*it); VERIFY(obj);
             if (obj->IsStatic()){
                 CEditableObject *O 	= obj->GetReference();
@@ -162,15 +162,15 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     if (!build_mesh	(T,*M,extractor,SGameMtl::flClimable)){bResult=false;break;}
             }
         }
-	    UI->PBEnd(pb);
+	    UI->ProgressEnd(pb);
     }
     if (!extractor->Process())		bResult = false;
     // export parts
     if (bResult){
     	SBPartVec& parts			= extractor->GetParts();
-	    SPBItem* pb = UI->PBStart(parts.size(),"Export Parts...");
+	    SPBItem* pb = UI->ProgressStart(parts.size(),"Export Parts...");
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
-            UI->PBInc(pb);
+	        pb->Inc();
             SBPart*	P				= *p_it;
         	if (P->Valid()){
                 // export visual
@@ -218,7 +218,7 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
             	ELog.Msg(mtError,"Can't export invalid part #%d",p_it-parts.begin());
             }
         }
-	    UI->PBEnd(pb);
+	    UI->ProgressEnd(pb);
     }
     // clean up
     xr_delete(extractor);

@@ -385,10 +385,10 @@ bool EDetailManager::Export(LPCSTR path)
     AnsiString fn		= AnsiString(path)+"build.details";
     bool bRes=true;
 
-    SPBItem* pb = UI->PBStart(5,"Making details...");
+    SPBItem* pb = UI->ProgressStart(5,"Making details...");
 	CMemoryWriter F;
 
-	UI->PBInc(pb,"merge textures");
+    pb->Inc				("merge textures");
     Fvector2Vec			offsets;
     Fvector2Vec			scales;
     boolVec				rotated;
@@ -418,7 +418,7 @@ bool EDetailManager::Export(LPCSTR path)
     int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated,remap);
     if (1!=res)			bRes=FALSE;
 
-	UI->PBInc(pb,"export geometry");
+    pb->Inc				("export geometry");
     // objects
     int object_idx		= 0;
     if (bRes){
@@ -445,7 +445,7 @@ bool EDetailManager::Export(LPCSTR path)
         F.close_chunk		();
     }
     
-	UI->PBInc(pb,"export slots");
+    pb->Inc	("export slots");
     // slots
     if (bRes){
     	xr_vector<DetailSlot> dt_slots(slot_cnt); dt_slots.assign(dtSlots,dtSlots+slot_cnt);
@@ -459,7 +459,7 @@ bool EDetailManager::Export(LPCSTR path)
 		F.open_chunk	(DETMGR_CHUNK_SLOTS);
 		F.w				(dt_slots.begin(),dtH.size_x*dtH.size_z*sizeof(DetailSlot));
 	    F.close_chunk	();
-		UI->PBInc(pb);
+        pb->Inc();
 
         // write header
         dtH.version		= DETAIL_VERSION;
@@ -470,8 +470,8 @@ bool EDetailManager::Export(LPCSTR path)
     	F.save_to(fn.c_str());
     }
 
-    UI->PBInc(pb);
-    UI->PBEnd(pb);
+    pb->Inc();
+    UI->ProgressEnd(pb);
     return bRes;
 }
 

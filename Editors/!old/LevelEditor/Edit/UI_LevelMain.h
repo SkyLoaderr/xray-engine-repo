@@ -81,7 +81,7 @@ public:
 
     virtual void 	ResetStatus				();
     virtual void 	SetStatus				(LPSTR s, bool bOutLog=true);
-    virtual void	PBDraw					();
+    virtual void	ProgressDraw			();
     virtual void 	OutCameraPos			();
     virtual void 	OutUICursorPos			();
     virtual void 	OutGridSize				();

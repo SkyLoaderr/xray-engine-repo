@@ -294,9 +294,9 @@ void CSector::CaptureAllUnusedMeshes()
     CSceneObject *obj=NULL;
     ObjectList& lst=Scene->ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
-    SPBItem* pb = UI->PBStart(lst.size(),"Capturing unused face...");
+    SPBItem* pb = UI->ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-		UI->PBInc(pb);
+        pb->Inc();
         obj = (CSceneObject*)(*_F);
         if (!(obj->IsStatic()||obj->IsMUStatic())) continue;
         EditMeshVec* M = obj->Meshes();
@@ -304,7 +304,7 @@ void CSector::CaptureAllUnusedMeshes()
         for(EditMeshIt m_def = M->begin(); m_def!=M->end();m_def++)
         	AddMesh(obj,*m_def);
     }
-    UI->PBEnd(pb);
+    UI->ProgressEnd(pb);
     UI->RedrawScene();
 }
 

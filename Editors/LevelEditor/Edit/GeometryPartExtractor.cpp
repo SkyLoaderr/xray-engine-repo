@@ -295,6 +295,15 @@ bool SBPart::Export	(IWriter& F)
         F.w_fvector3(bone.offset);
         F.w_float   (bone.area);	// mass (для Кости посчитал площадь)
         F.w_fvector3(shape.box.m_translate);	// center of mass        
+        if ((shape.box.m_translate.x<-100.f)||(shape.box.m_translate.x>100.f)){
+        	int y=0;
+        }
+        if ((shape.box.m_translate.y<-100.f)||(shape.box.m_translate.y>100.f)){
+        	int y=0;
+        }
+        if ((shape.box.m_translate.z<-100.f)||(shape.box.m_translate.z>100.f)){
+        	int y=0; 
+        }
     }
     F.close_chunk();
 
@@ -361,9 +370,9 @@ BOOL CGeomPartExtractor::Process()
     }
     // extract parts
     {
-        SPBItem* pb = UI->PBStart(m_Faces.size(),"Extract Parts...");
+        SPBItem* pb = UI->ProgressStart(m_Faces.size(),"Extract Parts...");
         for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-            UI->PBInc(pb);
+	        pb->Inc();
             SBFace* F	= *f_it;
             if (!F->marked){
                 SBPart* P 		= xr_new<SBPart>();
@@ -371,16 +380,16 @@ BOOL CGeomPartExtractor::Process()
                 m_Parts.push_back	(P);
             }
         }
-        UI->PBEnd(pb);
+        UI->ProgressEnd(pb);
     }
     // simplify parts
     {
-	    SPBItem* pb = UI->PBStart(m_Parts.size(),"Simplify Parts...");
+	    SPBItem* pb = UI->ProgressStart(m_Parts.size(),"Simplify Parts...");
         for (SBPartVecIt p_it=m_Parts.begin(); p_it!=m_Parts.end(); p_it++){	
-            UI->PBInc(pb);
+	        pb->Inc();
         	(*p_it)->prepare	(m_Adjs,m_PerBoneFaceCountMin);
         }
-	    UI->PBEnd(pb);
+	    UI->ProgressEnd(pb);
     }
     return TRUE;
 }

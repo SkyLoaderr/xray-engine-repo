@@ -199,7 +199,7 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append, SPBI
             else						bRes = false;
             O->close();
             O = OBJ->open_chunk(count);
-			UI->PBInc(pb);
+            pb->Inc();
         }
         OBJ->close();
     }
@@ -258,9 +258,9 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
         if (F->find_chunk(CHUNK_OBJECT_COUNT))
         	obj_cnt = F->r_u32();
 
-        SPBItem* pb = UI->PBStart(obj_cnt,"Loading objects...");
+        SPBItem* pb = UI->ProgressStart(obj_cnt,"Loading objects...");
         ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject,pb);
-        UI->PBEnd(pb);
+        UI->ProgressEnd(pb);
 
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
