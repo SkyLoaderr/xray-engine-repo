@@ -9,17 +9,6 @@
 class CPhysicsShell;
 #include "PhysicsRefObject.h"
 
-//different types of hit that can affect gamesobjects
-/*enum EHitType {
-		eHitTypeBurn = u32(0),
-		eHitTypeShock,
-		eHitTypeStrike,
-		eHitTypeWound,
-		eHitTypeRadiation,
-		eHitTypeTelepatic,
-		eHitTypeMax
-};*/
-
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject

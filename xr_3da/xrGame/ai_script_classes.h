@@ -10,6 +10,7 @@
 
 #include "GameObject.h"
 #include "Entity.h"
+#include "Inventory.h"
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\
@@ -96,30 +97,6 @@ public:
 	{
 	}
 
-//	IC		Fvector			Position			() const
-//	{
-//		return			(m_tpGameObject->Position());
-//	}
-//	
-//	IC		LPCSTR			Name				() const
-//	{
-//		return			(m_tpGameObject->cName());
-//	}
-//
-//	IC		LPCSTR			Section				() const
-//	{
-//		return			(m_tpGameObject->cNameSect());
-//	}
-//			
-//	IC		float			Mass				() const
-//	{
-//		return			(m_tpGameObject->GetMass());
-//	}
-//	IC		CLASS_ID		ClassID				() const
-//	{
-//		return			(m_tpGameObject->CLS_ID);
-//	}
-
 	IC		CLuaGameObject	*Parent				() const
 	{
 		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(m_tpGameObject->H_Parent());
@@ -129,7 +106,7 @@ public:
 			return		(0);
 	}
 
-			void			Hit					(float percent, Fvector &dir,	CLuaGameObject* who, s16 element, Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
+			void			Hit					(float power, Fvector &dir, CLuaGameObject *who, s16 element, Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
 
 
 							operator CObject*() const
@@ -143,6 +120,10 @@ public:
 	BIND_FUNCTION10	(Section,	CGameObject,	cNameSect,		LPCSTR,				"");
 	BIND_FUNCTION10	(Mass,		CGameObject,	GetMass,		float,				float(-1));
 	BIND_FUNCTION10	(ID,		CGameObject,	ID,				u32,				u32(-1));
+	BIND_FUNCTION10	(getVisible,CGameObject,	getVisible,		BOOL,				FALSE);
+	BIND_FUNCTION01	(setVisible,CGameObject,	setVisible,		BOOL);
+	BIND_FUNCTION10	(getEnabled,CGameObject,	getEnabled,		BOOL,				FALSE);
+	BIND_FUNCTION01	(setEnabled,CGameObject,	setEnabled,		BOOL);
 
 	BIND_MEMBER		(DeathTime,	CEntity,		m_dwDeathTime,	_TIME_ID,			_TIME_ID(-1));
 	BIND_FUNCTION10	(Armor,		CEntity,		g_Armor,		float,				-1);
@@ -155,56 +136,6 @@ public:
 	BIND_FUNCTION10	(Group,		CEntity,		g_Group,		int,				-1);
 //	BIND_FUNCTION01	(Kill,		CEntity,		KillEntity,		CLuaGameObject*);
 	
-//	IC		float			Armor				() const
-//	{
-//		CEntity			*l_tpEntity = dynamic_cast<CEntity*>(m_tpGameObject);
-//		if (!l_tpEntity) {
-//			Log			("* [LUA] %s cannot access class member Armor!",m_tpGameObject->cName());
-//			return
-//		}
-//		return			(l_tpEntity->g_Armor());
-//	}
-//
-//	IC		float			Health				() const
-//	{
-//		return			(m_tpGameObject->g_Health());
-//	}
-//
-//	IC		float			MaxHealth			() const
-//	{
-//		return			(m_tpGameObject->g_MaxHealth());
-//	}
-//	
-//	IC		float			Accuracy			() const
-//	{
-//		return			(m_tpGameObject->g_Accuracy());
-//	}
-//	
-//	IC		BOOL			Alive				() const
-//	{
-//		return			(m_tpGameObject->g_Alive());
-//	}
-//	
-//	IC		int				Team				() const
-//	{
-//		return			(m_tpGameObject->g_Team());
-//	}
-//	
-//	IC		int				Squad				() const
-//	{
-//		return			(m_tpGameObject->g_Squad());
-//	}
-//	
-//	IC		int				Group				() const
-//	{
-//		return			(m_tpGameObject->g_Group());
-//	}
-//
-//	IC		_TIME_ID		DeathTime			() const
-//	{
-//		return			(m_tpGameObject->m_dwDeathTime);
-//	}
-//
 	IC		void			Kill				(CLuaGameObject* who)
 	{
 		CEntity				*l_tpEntity = dynamic_cast<CEntity*>(m_tpGameObject);
@@ -215,13 +146,13 @@ public:
 		l_tpEntity->KillEntity					((CObject*)who);
 	}
 	
+	BIND_FUNCTION10	(Cost,		CInventoryItem,	Cost,			u32,				u32(-1));
 	
 	
 //			.def("Enabled",						&CLuaGameObject::Enabled)
 //			.def("Visible",						&CLuaGameObject::Visible),
 //
 //		class_<CLuaGameItem,"CGameObject">("CGameItem")
-//			.def("Cost",						&CLuaGameItem::Cost)
 //			.def("HealthValue",					&CLuaGameItem::HealthValue)
 //			.def("FoodValue",					&CLuaGameItem::FoodValue)
 //class CItemObject {

@@ -201,23 +201,33 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("Stop",						&CParticlesObject::Stop),
 
 		class_<CLuaGameObject>("CGameObject")
-			.def(constructor<LPCSTR>())
-			.def(constructor<const CLuaGameObject *>())
+			.def(								constructor<LPCSTR>())
+			.def(								constructor<const CLuaGameObject *>())
+			.property("Visible",				(BOOL (CLuaGameObject::*)() const)(CLuaGameObject::getVisible), (void (CLuaGameObject::*)(BOOL))(CLuaGameObject::setVisible))
+			.property("Enabled",				(BOOL (CLuaGameObject::*)() const)(CLuaGameObject::getEnabled), (void (CLuaGameObject::*)(BOOL))(CLuaGameObject::setEnabled))
 			.def("Position",					&CLuaGameObject::Position)
-//			.def("ClassID",						&CLuaGameObject::ClassID)
+			.def("ClassID",						&CLuaGameObject::ClassID)
+			.def("ID",							&CLuaGameObject::ID)
 			.def("Section",						&CLuaGameObject::Section)
 			.def("Name",						&CLuaGameObject::Name)
 			.def("Parent",						&CLuaGameObject::Parent)
-//			.def("Enabled",						&CLuaGameObject::Enabled)
-//			.def("Visible",						&CLuaGameObject::Visible),
-//
-//		class_<CLuaGameItem,"CGameObject">("CGameItem")
-//			.def("Mass",						&CLuaGameItem::Mass)
-//			.def("Cost",						&CLuaGameItem::Cost)
-//			.def("HealthValue",					&CLuaGameItem::HealthValue)
-//			.def("FoodValue",					&CLuaGameItem::FoodValue)
+			.def("Mass",						&CLuaGameObject::Mass)
+			.def("Cost",						&CLuaGameObject::Cost)
+			.def("DeathTime",					&CLuaGameObject::DeathTime)
+			.def("Armor",						&CLuaGameObject::Armor)
+			.def("Health",						&CLuaGameObject::Health)
+			.def("MaxHealth",					&CLuaGameObject::DeathTime)
+			.def("Accuracy",					&CLuaGameObject::Accuracy)
+			.def("Alive",						&CLuaGameObject::Alive)
+			.def("Team",						&CLuaGameObject::Team)
+			.def("Squad",						&CLuaGameObject::Squad)
+			.def("Group",						&CLuaGameObject::Group)
+			.def("Kill",						&CLuaGameObject::Kill)
+//			.def("Hit",							&CLuaGameObject::Hit)
+//			.def("HealthValue",					&CLuaGameObject::HealthValue)
+//			.def("FoodValue",					&CLuaGameObject::FoodValue)
 	];
-	
+
 	module(tpLuaVirtualMachine,"Game")
 	[
 		// declarations
