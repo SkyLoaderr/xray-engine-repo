@@ -87,6 +87,8 @@ private:	// User declarations
     static bool 		bFormLocked;
     static void 		LockForm			(){ bFormLocked = true;	form->paProperties->Enabled = false; 	form->paItems->Enabled = false; }
     static void 		UnlockForm			(){ bFormLocked = false;form->paProperties->Enabled = true; 	form->paItems->Enabled = true; 	}
+
+    void __stdcall		OnTypeChange		(PropValue* prop);
 public:		// User declarations
     __fastcall 			TfrmImageLib		(TComponent* Owner);
 // static function

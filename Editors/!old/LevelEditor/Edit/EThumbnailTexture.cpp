@@ -136,10 +136,10 @@ void ETextureThumbnail::FillProp(PropItemVec& items, PropValue::TOnChange on_typ
 //------------------------------------------------------------------------------
 
 void ETextureThumbnail::FillInfo(PropItemVec& items)
-{            
+{                                                                         
 	STextureParams& F			= m_TexParams;
-    PHelper().CreateCaption		(items, "Format",					tfmt_token[F.fmt].name	);
-    PHelper().CreateCaption		(items, "Type",						ttype_token[F.type].name);
+    PHelper().CreateCaption		(items, "Format",					get_token_name(tfmt_token,F.fmt));
+    PHelper().CreateCaption		(items, "Type",						get_token_name(ttype_token,F.type));
     PHelper().CreateCaption		(items, "Width",					ref_str().sprintf("%d",_Width()));
     PHelper().CreateCaption		(items, "Height",					ref_str().sprintf("%d",_Height()));
     PHelper().CreateCaption		(items, "Alpha",					_Alpha()?"on":"off");
@@ -148,13 +148,22 @@ void ETextureThumbnail::FillInfo(PropItemVec& items)
 
 LPCSTR ETextureThumbnail::FormatString()
 {
-	LPCSTR c_fmt = 0;
-    for(int i=0; tfmt_token[i].name; i++)
-        if (tfmt_token[i].id==(int)m_TexParams.fmt){
-            c_fmt=tfmt_token[i].name;
-            break;
-        }
-    return c_fmt;
+    return get_token_name(tfmt_token,m_TexParams.fmt);
 }
 //------------------------------------------------------------------------------
+
+void ETextureThumbnail::Draw(HDC hdc, const Irect& R)
+{
+	if (Valid()){
+        Irect r;
+        r.x1 = R.x1+1; 
+        r.y1 = R.y1+1;
+        r.x2 = R.x2-1; 
+        r.y2 = R.y2-1;
+        if (_Width()!=_Height())	FHelper.FillRect(hdc,r,0x00000000);
+        if (_Width()>_Height())	{   r.y2 -= r.height()-iFloor(r.height()*float(_Height())/float(_Width()));}
+        else					{	r.x2 -= r.width()-iFloor(r.width()*float(_Width())/float(_Height()));}
+        inherited::Draw(hdc,r);
+    }
+}
 

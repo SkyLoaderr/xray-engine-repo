@@ -281,6 +281,11 @@ void TfrmImageLib::DestroyUsedTHM()
     m_THM_Used.clear();
 }
 
+void TfrmImageLib::OnTypeChange(PropValue* prop)
+{
+	UpdateProperties();
+}
+
 void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
 {
 	PropItemVec props;
@@ -307,7 +312,7 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
                     if (!thm) m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key()));
                 }
                 m_THM_Current.push_back	(thm);
-                thm->FillProp			(props);
+                thm->FillProp			(props,PropValue::TOnChange().bind(this,&TfrmImageLib::OnTypeChange));
             }
         }
     }

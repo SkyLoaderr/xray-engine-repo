@@ -78,7 +78,7 @@ CSMotion* CEditableObject::ResetSAnimation(bool bGotoBindPose)
 //----------------------------------------------------
 // Skeletal motion
 //----------------------------------------------------
-static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRest)
+static void CalculateAnim(CBone* bone, CSMotion* motion)
 {
     Flags8 flags; flags.zero();
     if (motion) flags = motion->GetMotionFlags(bone->index);
@@ -86,7 +86,7 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
     CBone* parent_bone = bone->Parent();
 
     if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
-	    Calculate(parent_bone,motion,bCalcInv,bCalcRest); 
+	    CalculateAnim(parent_bone,motion); 
 
     Fmatrix& M 		= bone->_MTransform();
     Fmatrix& L 		= bone->_LTransform();
@@ -106,23 +106,47 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
         M.c.set		(bone->_Offset());
         L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
     }
-	if (bCalcInv) bone->_LITransform().invert(L);
+	bone->_LITransform().invert(bone->_LTransform());
+
+    bone->flags.set(CBone::flCalculate,TRUE);
+}
+static void CalculateRest(CBone* bone)
+{
+    CBone* parent_bone = bone->Parent();
+
+    if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
+	    CalculateRest(parent_bone); 
+
+    Fmatrix& R	= bone->_RTransform();
+    R.setXYZi	(bone->_RestRotate());
+    R.c.set		(bone->_RestOffset());
+    if (parent_bone) R.mulA(parent_bone->_RTransform());
+    bone->_RITransform().invert(bone->_RTransform());
+
     bone->flags.set(CBone::flCalculate,TRUE);
 }
 
-void CEditableObject::CalculateAnimation(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRest)
+void CEditableObject::CalculateAnimation(CBone* bone, CSMotion* motion)
 {
-	Calculate(bone,motion,bCalcInv,bCalcRest);
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
 		(*b_it)->flags.set(CBone::flCalculate,FALSE);
+	CalculateAnim(bone,motion);
 }
 
-void CEditableObject::CalculateAnimation(CSMotion* motion, bool bCalcInv, bool bCalcRest)
+void CEditableObject::CalculateAnimation(CSMotion* motion)
 {
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		if (!(*b_it)->flags.is(CBone::flCalculate)) Calculate(*b_it,motion,bCalcInv,bCalcRest);
-    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
 		(*b_it)->flags.set(CBone::flCalculate,FALSE);
+    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		if (!(*b_it)->flags.is(CBone::flCalculate)) CalculateAnim(*b_it,motion);
+}
+
+void CEditableObject::CalculateBindPose()
+{
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		(*b_it)->flags.set(CBone::flCalculate,FALSE);
+    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+		if (!(*b_it)->flags.is(CBone::flCalculate)) CalculateRest(*b_it);
 }
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot)
@@ -298,7 +322,7 @@ void CEditableObject::PrepareBones()
         BoneIt parent		= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
         (*b_it)->parent 	= (parent==m_Bones.end())?0:*parent;
     }
-    CalculateAnimation		(0,false,true);
+    CalculateBindPose		();
 }
 
 BoneIt CEditableObject::FindBoneByNameIt(const char* name)

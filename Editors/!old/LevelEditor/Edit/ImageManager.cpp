@@ -347,7 +347,6 @@ void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const 
         AnsiString 			bm;
         AnsiString 			det;
         switch(fmt.bump_mode){
-        case STextureParams::tbmAutogen: 	bm="autogen"; 	det.sprintf(":%1.3f",fmt.bump_virtual_height); 		break;
         case STextureParams::tbmNone: 		bm="none"; 		det=""; 											break;
         case STextureParams::tbmUse: 		bm="use"; 		det.sprintf(":%s",*fmt.bump_name?*fmt.bump_name:"");break;
         default: NODEFAULT;

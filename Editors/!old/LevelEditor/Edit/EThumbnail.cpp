@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "EThumbnail.h"
+#include "folderlib.h"
 #include "xrImage_Resampler.h"
 #pragma package(smart_init)
 //------------------------------------------------------------------------------
@@ -87,47 +88,10 @@ void EImageThumbnail::CreatePixels(u32* p, u32 w, u32 h)
 	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
 }
 
-void EImageThumbnail::Draw(void* _pCanvas, const Irect& _R, u32 w, u32 h, bool bUseAlpha)
+void EImageThumbnail::Draw(HDC hdc, const Irect& r)
 {
-	if (Valid()){
-		TCanvas* pCanvas= (TCanvas*)_pCanvas;
-        const TRect& R	= *((TRect*)&_R);
-    	switch (m_Type){
-        case ETTexture:{
-            TRect r = R; r.left += 1; r.top += 1;
-            if (w!=h)	pCanvas->FillRect(R);
-            if (w>h){   r.right = R.left + R.Width()-1; 	r.bottom = R.top + float(h)/float(w)*R.Height()-1;
-            }else{      r.right = R.left + float(w)/float(h)*R.Width()-1; r.bottom = R.top + R.Height()-1;}
-            DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
-        }break;
-        case ETObject:{
-            TRect r = R; r.left += 1; r.top += 1;
-            r.right -= 1; r.bottom -= 1;
-            DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
-        }break;
-        }
-    }
-}
-
-void EImageThumbnail::Draw(TMxPanel* panel, u32 w, u32 h, bool bUseAlpha)
-{
-	if (Valid()){
-    	switch (m_Type){
-        case ETTexture:{
-            TRect r;
-            r.left = 1; r.top = 1;
-            if (w!=h)	panel->Canvas->FillRect(panel->BoundsRect);
-            if (w>h){   r.right = panel->Width-1; r.bottom = float(h)/float(w)*panel->Height-1;
-            }else{      r.right = float(w)/float(h)*panel->Width-1; r.bottom = panel->Height-1;}
-            DrawThumbnail(panel->Canvas,r,m_Pixels,bUseAlpha);
-        }break;
-        case ETObject:{
-            TRect r;	r.left = 1; r.top = 1;
-            r.right 	= panel->Width-1; r.bottom = panel->Height-1;
-            DrawThumbnail(panel->Canvas,r,m_Pixels,bUseAlpha);
-        }break;
-        }
-    }
+	if (Valid())
+    	FHelper.DrawThumbnail(hdc,r,Pixels(),THUMB_WIDTH,THUMB_HEIGHT);
 }
 
 EImageThumbnail* CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad)
@@ -137,7 +101,7 @@ EImageThumbnail* CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type
     case ECustomThumbnail::ETTexture:	return xr_new<ETextureThumbnail>(src_name,bLoad);
     default: NODEFAULT;
     }
-    return 0;
+    return 0;              
 }
 
 

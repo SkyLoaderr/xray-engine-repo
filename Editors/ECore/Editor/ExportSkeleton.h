@@ -16,6 +16,8 @@ class CInifile;
 struct ECORE_API SSkelVert{
 	Fvector		O;
 	Fvector		N;
+    Fvector		T;
+    Fvector		B;
     Fvector2	UV;
 	u16			B0;
 	u16			B1;
@@ -24,11 +26,13 @@ struct ECORE_API SSkelVert{
         UV.set	(0.f,0.f);
         O.set	(0,0,0);
 		N.set	(0,1,0);
+        T.set	(1,0,0);
+		B.set	(0,0,1);
 		B0		= BI_NONE;
 		B1		= BI_NONE;
         w		= 0;
 	}
-    void set(const Fvector& o, const Fvector& n, Fvector2& uv, float _w, u16 b0, u16 b1=BI_NONE)
+    void set(const Fvector& o, const Fvector& n, const Fvector2& uv, float _w, u16 b0, u16 b1=BI_NONE)
     {
         O.set   (o);
         N.set	(n);
@@ -119,17 +123,19 @@ protected:
         int				V_Minimal;
         xr_vector<Vsplit>	pmap_vsplit;
         xr_vector<WORD>		pmap_faces;
-
-        void 			Save	(IWriter& F, BOOL b2Link);
-
-		void 			MakeProgressive();
+    public:
         SSplit			(CSurface* surf, const Fbox& bb);
+
         bool			valid()
         {
         	if (m_Verts.empty()) return false;
         	if (m_Faces.empty()) return false;
             return true;
         }
+		void 			MakeProgressive	();
+		void 			CalculateTB		();
+
+        void 			Save			(IWriter& F, BOOL b2Link);
     };
 	DEFINE_VECTOR		(SSplit,SplitVec,SplitIt);
 	SplitVec			m_Splits;

@@ -14,15 +14,16 @@
 #include "MgcCont3DMinBox.h"         
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
+#include "nvMeshMender.h"
 
 u32 CSkeletonCollectorPacked::VPack(SSkelVert& V)
 {
     u32 P 	= 0xffffffff;
 
     u32 ix,iy,iz;
-    ix = iFloor(float(V.P.x-m_VMmin.x)/m_VMscale.x*clpSMX);
-    iy = iFloor(float(V.P.y-m_VMmin.y)/m_VMscale.y*clpSMY);
-    iz = iFloor(float(V.P.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
+    ix = iFloor(float(V.O.x-m_VMmin.x)/m_VMscale.x*clpSMX);
+    iy = iFloor(float(V.O.y-m_VMmin.y)/m_VMscale.y*clpSMY);
+    iz = iFloor(float(V.O.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
     R_ASSERT(ix<=clpSMX && iy<=clpSMY && iz<=clpSMZ);
 
 	int similar_pos=-1;
@@ -41,16 +42,16 @@ u32 CSkeletonCollectorPacked::VPack(SSkelVert& V)
     }
     if (0xffffffff==P)
     {
-    	if (similar_pos>=0) V.P.set(m_Verts[similar_pos].P);
+    	if (similar_pos>=0) V.O.set(m_Verts[similar_pos].O);
         P = m_Verts.size();
         m_Verts.push_back(V);
 
         m_VM[ix][iy][iz].push_back(P);
 
         u32 ixE,iyE,izE;
-        ixE = iFloor(float(V.P.x+m_VMeps.x-m_VMmin.x)/m_VMscale.x*clpSMX);
-        iyE = iFloor(float(V.P.y+m_VMeps.y-m_VMmin.y)/m_VMscale.y*clpSMY);
-        izE = iFloor(float(V.P.z+m_VMeps.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
+        ixE = iFloor(float(V.O.x+m_VMeps.x-m_VMmin.x)/m_VMscale.x*clpSMX);
+        iyE = iFloor(float(V.O.y+m_VMeps.y-m_VMmin.y)/m_VMscale.y*clpSMY);
+        izE = iFloor(float(V.O.z+m_VMeps.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
 
         R_ASSERT(ixE<=clpSMX && iyE<=clpSMY && izE<=clpSMZ);
 
@@ -116,40 +117,42 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
 
     // Vertices
     m_Box.invalidate	();
-    F.open_chunk		(OGF_VERTICES);
-    F.w_u32			(b2Link?2*0x12071980:1*0x12071980);
-    F.w_u32			(m_Verts.size());
+    F.open_chunk		(OGF_VERTICES2);
+    F.w_u32				(b2Link);
+    F.w_u32				(m_Verts.size());
     if (b2Link){
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
-            m_Box.modify(pV.P);
+            m_Box.modify(pV.O);
 			// write vertex
-            F.w_u16(pV.B0);
-            F.w_u16(pV.B1);
-            F.w(&(pV.O0),sizeof(Fvector));		// position (offset)
-            F.w(&(pV.N0),sizeof(Fvector));		// normal
-            F.w(&(pV.O1),sizeof(Fvector));		// position (offset)
-            F.w(&(pV.N1),sizeof(Fvector));		// normal
-            F.w_float(pV.w);
-            F.w_float(pV.UV.x); F.w_float(pV.UV.y);	// tu,tv
+            F.w_u16		(pV.B0);
+            F.w_u16		(pV.B1);
+            F.w			(&(pV.O),sizeof(Fvector));		// position (offset)
+            F.w			(&(pV.N),sizeof(Fvector));		// normal
+            F.w			(&(pV.O),sizeof(Fvector));		// T        //.
+            F.w			(&(pV.N),sizeof(Fvector));		// B        //.
+            F.w_float	(pV.w);
+            F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
         }
     }else{
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
-            m_Box.modify(pV.P);
-            F. w(&(pV.O0),sizeof(float)*3);		// position (offset)
-            F.w(&(pV.N0),sizeof(float)*3);		// normal
-            F.w_float(pV.UV.x); F.w_float(pV.UV.y);		// tu,tv
-            F.w_u32(pV.B0);
+            m_Box.modify(pV.O);
+            F.w			(&pV.O,sizeof(Fvector));		// position (offset)
+            F.w			(&pV.N,sizeof(Fvector));		// normal
+            F.w			(&(pV.O),sizeof(Fvector));		// T        //.
+            F.w			(&(pV.N),sizeof(Fvector));		// B        //.
+            F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
+            F.w_u32		(pV.B0);
         }
     }
-    F.close_chunk();
+    F.close_chunk		();
 
     // Faces
-    F.open_chunk(OGF_INDICES);
-    F.w_u32(m_Faces.size()*3);
-    F.w(m_Faces.begin(),m_Faces.size()*3*sizeof(WORD));
-    F.close_chunk();
+    F.open_chunk		(OGF_INDICES);
+    F.w_u32				(m_Faces.size()*3);
+    F.w					(m_Faces.begin(),m_Faces.size()*3*sizeof(WORD));
+    F.close_chunk		();
 
     // PMap
     if (I_Current>=0) {
@@ -180,7 +183,127 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     F.close_chunk();
 }
 
-void CExportSkeleton::SSplit::MakeProgressive(){
+void CExportSkeleton::SSplit::CalculateTB()
+{
+	u32 v_count_reserve			= 3*iFloor(float(m_Verts.size())*1.33f);
+	u32 i_count_reserve			= 3*m_Faces.size();
+
+	// Declare inputs
+	xr_vector<NVMeshMender::VertexAttribute> 			input;
+	input.push_back	(NVMeshMender::VertexAttribute());	// pos
+	input.push_back	(NVMeshMender::VertexAttribute());	// norm
+	input.push_back	(NVMeshMender::VertexAttribute());	// tex0
+	input.push_back	(NVMeshMender::VertexAttribute());	// w_b0_b1                
+	input.push_back	(NVMeshMender::VertexAttribute());	// *** faces
+
+	input[0].Name_= "position";	xr_vector<float>&	i_position	= input[0].floatVector_;	i_position.reserve	(v_count_reserve);
+	input[1].Name_= "normal";	xr_vector<float>&	i_normal	= input[1].floatVector_;	i_normal.reserve	(v_count_reserve);
+	input[2].Name_= "tex0";		xr_vector<float>&	i_tc		= input[2].floatVector_;	i_tc.reserve		(v_count_reserve);
+	input[3].Name_= "w_b0_b1";	xr_vector<float>&	i_w_b0_b1	= input[3].floatVector_;	i_w_b0_b1.reserve	(v_count_reserve);
+	input[4].Name_= "indices";	xr_vector<int>&		i_indices	= input[4].intVector_;		i_indices.reserve	(i_count_reserve);
+
+	// Declare outputs
+	xr_vector<NVMeshMender::VertexAttribute> 			output;
+	output.push_back(NVMeshMender::VertexAttribute());	// position, needed for mender
+	output.push_back(NVMeshMender::VertexAttribute());	// normal
+	output.push_back(NVMeshMender::VertexAttribute());	// tangent
+	output.push_back(NVMeshMender::VertexAttribute());	// binormal
+	output.push_back(NVMeshMender::VertexAttribute());	// tex0
+	output.push_back(NVMeshMender::VertexAttribute());	// w_b0_b1
+	output.push_back(NVMeshMender::VertexAttribute());	// *** faces
+
+	output[0].Name_= "position";
+	output[1].Name_= "normal";
+	output[2].Name_= "tangent";	
+	output[3].Name_= "binormal";
+	output[4].Name_= "tex0";	
+	output[5].Name_= "w_b0_b1";	
+	output[6].Name_= "indices";	
+
+    // fill inputs (verts&indices)
+    for (SkelVertIt vert_it=m_Verts.begin(); vert_it!=m_Verts.end(); vert_it++){
+        SSkelVert	&iV = *vert_it;
+        i_position.push_back(iV.O.x);	i_position.push_back(iV.O.y);	i_position.push_back(iV.O.z);
+        i_normal.push_back	(iV.N.x);  	i_normal.push_back	(iV.N.y);	i_normal.push_back	(iV.N.z);
+        i_tc.push_back		(iV.UV.x);	i_tc.push_back		(iV.UV.y);	i_tc.push_back		(0);
+        i_w_b0_b1.push_back	(iV.w);		i_w_b0_b1.push_back	(iV.B0);	i_w_b0_b1.push_back	(iV.B1);
+    }
+    for (SkelFaceIt face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
+        SSkelFace	&iF = *face_it;
+		i_indices.push_back	(iF.v[0]);
+		i_indices.push_back	(iF.v[1]);
+		i_indices.push_back	(iF.v[2]);
+    }
+    
+	// Perform munge
+	NVMeshMender mender;
+	if (!mender.Munge(
+		input,										// input attributes
+		output,										// outputs attributes
+		deg2rad(75.f),								// tangent space smooth angle
+		0,											// no texture matrix applied to my texture coordinates
+		NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
+		NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
+		NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
+		))
+	{
+		Debug.fatal	("NVMeshMender failed (%s)",mender.GetLastError().c_str());
+	}
+
+	// Bind declarators
+	// bind
+	output[0].Name_= "position";
+	output[1].Name_= "normal";
+	output[2].Name_= "tangent";	
+	output[3].Name_= "binormal";
+	output[4].Name_= "tex0";	
+	output[5].Name_= "w_b0_b1";	
+	output[6].Name_= "indices";	
+
+	xr_vector<float>&	o_position	= output[0].floatVector_;	R_ASSERT(output[0].Name_=="position");
+	xr_vector<float>&	o_normal	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="normal");
+	xr_vector<float>&	o_tangent	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="tangent");
+	xr_vector<float>&	o_binormal	= output[3].floatVector_;	R_ASSERT(output[3].Name_=="binormal");
+	xr_vector<float>&	o_tc		= output[4].floatVector_;	R_ASSERT(output[4].Name_=="tex0");
+	xr_vector<float>&	o_w_b0_b1	= output[5].floatVector_;	R_ASSERT(output[5].Name_=="w_b0_b1");
+	xr_vector<int>&		o_indices	= output[6].intVector_;		R_ASSERT(output[6].Name_=="indices");
+
+	// verify
+	R_ASSERT		(3*m_Faces.size()	== o_indices.size());
+    u32 v_cnt		= o_position.size();
+    R_ASSERT		(0==v_cnt%3);
+    R_ASSERT		(v_cnt == o_normal.size());
+    R_ASSERT		(v_cnt == o_tangent.size());
+    R_ASSERT		(v_cnt == o_binormal.size());
+    R_ASSERT		(v_cnt == o_tc.size());
+    R_ASSERT		(v_cnt == o_w_b0_b1.size());
+    v_cnt			/= 3;
+
+    // retriving data
+    u32 o_idx		= 0;
+    for (face_it=m_Faces.begin(); face_it!=m_Faces.end(); face_it++){
+        SSkelFace	&iF = *face_it;
+        iF.v[0]		= o_indices[o_idx++];
+        iF.v[1]		= o_indices[o_idx++];
+        iF.v[2]		= o_indices[o_idx++];
+    }
+    m_Verts.clear	(); m_Verts.resize(v_cnt);
+    for (u32 v_idx=0; v_idx!=v_cnt; v_idx++){
+        SSkelVert	&iV = m_Verts[v_idx];
+        iV.O.set	(o_position[v_idx*3+0],	o_position[v_idx*3+1],	o_position[v_idx*3+2]);
+        iV.N.set	(o_normal[v_idx*3+0],	o_normal[v_idx*3+1],	o_normal[v_idx*3+2]);
+        iV.T.set	(o_tangent[v_idx*3+0],	o_tangent[v_idx*3+1],	o_tangent[v_idx*3+2]);
+        iV.B.set	(o_binormal[v_idx*3+0],	o_binormal[v_idx*3+1],	o_binormal[v_idx*3+2]);
+        iV.UV.set	(o_tc[v_idx*3+0],		o_tc[v_idx*3+1]);
+        iV.w		= o_w_b0_b1[v_idx*3+0];
+        iV.B0		= iFloor(o_w_b0_b1[v_idx*3+1]+EPS_L);
+        iV.B1		= iFloor(o_w_b0_b1[v_idx*3+2]+EPS_L);
+    }
+}
+
+void CExportSkeleton::SSplit::MakeProgressive()
+{
+/*
     I_Current=V_Minimal=-1;
     if (m_Faces.size()>1) {
         // Options
@@ -219,6 +342,7 @@ void CExportSkeleton::SSplit::MakeProgressive(){
             V_Minimal = R.minVertices;
         }
     }
+*/
 }
 
 CExportSkeleton::CExportSkeleton(CEditableObject* object)
@@ -280,6 +404,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
+	    if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) 	MESH->GeneratePNormals();
 	    UI->ProgressInc();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
@@ -301,20 +426,17 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     for (int k=0; k<3; k++){
                         st_FaceVert& 	fv = face.pv[k];
                         st_SVert& 		sv = MESH->m_SVertices[f_idx*3+k];
-                        v[k].set(MESH->m_Points[fv.pindex],sv.uv,sv.w);
-                        v[k].set0(sv.offs0,sv.norm0,sv.bone0);
                         if (sv.bone1!=-1){
                         	b2Link = TRUE;
-        	                v[k].set1(sv.offs1,sv.norm1,sv.bone1);
+	                        v[k].set	(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],sv.uv,sv.w,sv.bone0,sv.bone1);
                         }else{
-        	                v[k].set1(sv.offs0,sv.norm0,sv.bone0);
+	                        v[k].set	(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],sv.uv,sv.w,sv.bone0,sv.bone0);
                         }
                     }
                     split.add_face(v[0], v[1], v[2]);
 			        if (surf->m_Flags.is(CSurface::sf2Sided)){
-                    	v[0].N0.invert(); v[1].N0.invert(); v[2].N0.invert();
-                    	v[0].N1.invert(); v[1].N1.invert(); v[2].N1.invert();
-                    	split.add_face(v[0], v[2], v[1]);
+                    	v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
+                    	split.add_face	(v[0], v[2], v[1]);
                     }
                 }
             }
@@ -325,6 +447,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         }
         // mesh fin
         MESH->UnloadSVertices();
+        MESH->UnloadPNormals();
         MESH->UnloadFNormals();
 	    UI->ProgressInc();
     }
@@ -333,9 +456,10 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
-		    bone_points[sv_it->B0].push_back(sv_it->O0);
+		    bone_points[sv_it->B0].push_back(sv_it->O);
         }
-        if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
+//.		if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
+		split_it->CalculateTB();
 		UI->ProgressInc();
     }
 	UI->ProgressInc();
@@ -464,7 +588,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 Fquaternion q;
                 motion->_Evaluate	(bone_id,t,T,R);
                 B->_Update			(T,R);
-                m_Source->CalculateAnimation(B,motion,true);
+                m_Source->CalculateAnimation(B,motion);
                 Fmatrix mat			= B->_MTransform();
                 if (flags.is(st_BoneMotion::flWorldOrient)){
                     Fmatrix 	parent;

@@ -45,14 +45,13 @@ protected:
     U32Vec 			m_Pixels;
 protected:
 	void 			CreatePixels	(u32* p, u32 w, u32 h);
-	void 			Draw			(void* pCanvas, const Irect& R, u32 w, u32 h, bool bUseAlpha=false);
-	void 			Draw			(TMxPanel* panel, u32 w, u32 h, bool bUseAlpha=false);
     void			VFlip			();
 public:
 					EImageThumbnail	(LPCSTR src_name, THMType type):ECustomThumbnail(src_name, type){};
 	virtual			~EImageThumbnail();
-	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false)=0;
-	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false)=0;
+	virtual void 	Draw			(HDC hdc, const Irect& r)=0;
+	virtual void 	Draw			(TMxPanel* panel)=0;
+    u32*			Pixels			(){return &*m_Pixels.begin();}
     virtual	int		MemoryUsage		()=0;
 };
 
@@ -77,8 +76,9 @@ public:
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values, PropValue::TOnChange on_type_change);
 	virtual void	FillInfo		(PropItemVec& values);
-	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
-	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,_Width(),_Height(),bUseAlpha);}
+
+	virtual void 	Draw			(HDC hdc, const Irect& r);
+	virtual void 	Draw			(TMxPanel* panel){Irect r; r.set(1,1,1+panel->Width,1+panel->Height); Draw(panel->Canvas->Handle,r);}
 
     virtual int		MemoryUsage		();
     LPCSTR			FormatString	();
@@ -106,8 +106,9 @@ public:
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void	FillInfo		(PropItemVec& values);
-	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,0,0,false);}
-	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,0,0,false);}
+
+	virtual void 	Draw			(HDC hdc, const Irect& r){inherited::Draw(hdc,r);}
+	virtual void 	Draw			(TMxPanel* panel){Irect r; r.set(1,1,1+panel->Width,1+panel->Height); Draw(panel->Canvas->Handle,r);}
 
     virtual int		MemoryUsage		(){return 0;}
 };

@@ -159,6 +159,9 @@ class ECORE_API CBone
 
     Fmatrix			    mot_transform;
 
+    Fmatrix			    rest_transform;
+    Fmatrix			    rest_i_transform;
+
     Fmatrix			    last_transform;
     Fmatrix			    last_i_transform;
 public:
@@ -197,6 +200,8 @@ public:
     const Fvector&      _Offset			(){return mot_offset;}
     const Fvector&      _Rotate			(){return mot_rotate;}
     float			    _Length			(){return mot_length;}
+    IC Fmatrix&		    _RTransform		(){return rest_transform;}
+    IC Fmatrix&		    _RITransform	(){return rest_i_transform;}
     IC Fmatrix&		    _MTransform		(){return mot_transform;}
     IC Fmatrix&		    _LTransform		(){return last_transform;}
     IC Fmatrix&		    _LITransform	(){return last_i_transform;} 
