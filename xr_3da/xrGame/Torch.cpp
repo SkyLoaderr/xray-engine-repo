@@ -149,16 +149,16 @@ void CTorch::UpdateCL()
 	
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
-	M.mul(XFORM(),BI.mTransform);
 
 	if (H_Parent()) {
+		M.mul(XFORM(),BI.mTransform);
 		light_render->set_direction	(M.k);
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
 	}else if(getVisible() && m_pPhysicsShell) {
 		m_pPhysicsShell->Update	();
 		XFORM().set				(m_pPhysicsShell->mXFORM);
-		Position().set			(M.c);
+		M.mul(XFORM(),BI.mTransform);
 
 		if (light_render->get_active()){
 			light_render->set_direction	(M.k);
