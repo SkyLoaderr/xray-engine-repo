@@ -129,7 +129,7 @@ void CBaseMonsterControlled::ExecuteFollow()
 		pMonster->MotionMan.m_tAction = ((dist > 10.0f) ? ACT_WALK_FWD : ACT_STAND_IDLE);
 
 	if (pMonster->MotionMan.m_tAction == ACT_WALK_FWD){
-		pMonster->MoveToTarget(random_position(enemy->Position(), 10.f));
+		pMonster->CMonsterMovement::set_target_point	(random_position(enemy->Position(), 10.f));	
 	}
 
 }
