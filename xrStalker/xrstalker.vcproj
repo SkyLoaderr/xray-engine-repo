@@ -501,10 +501,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
@@ -691,6 +691,9 @@
 				RelativePath=".\scripts\_.script">
 			</File>
 			<File
+				RelativePath=".\scripts\______.script">
+			</File>
+			<File
 				RelativePath=".\scripts\_test.script">
 			</File>
 			<File
@@ -733,6 +736,9 @@
 				RelativePath=".\scripts\barman.script">
 			</File>
 			<File
+				RelativePath=".\scripts\bind_escape.script">
+			</File>
+			<File
 				RelativePath=".\scripts\blood_sucker.script">
 			</File>
 			<File
@@ -743,6 +749,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\bloodsucker.script">
+			</File>
+			<File
+				RelativePath=".\scripts\bug7.script">
 			</File>
 			<File
 				RelativePath=".\scripts\bug_test.script">
@@ -844,7 +853,7 @@
 				RelativePath=".\scripts\escape_dogs1.script">
 			</File>
 			<File
-				RelativePath=".\Scripts\escape_factory.script">
+				RelativePath=".\scripts\escape_factory.script">
 			</File>
 			<File
 				RelativePath=".\scripts\escape_factory_bandits.script">
@@ -1033,6 +1042,9 @@
 				RelativePath=".\scripts\monster_bind.script">
 			</File>
 			<File
+				RelativePath=".\scripts\monster_gameplay.script">
+			</File>
+			<File
 				RelativePath=".\scripts\monster_script.script">
 			</File>
 			<File
@@ -1207,13 +1219,22 @@
 				RelativePath=".\scripts\ui_new_game_dialog.script">
 			</File>
 			<File
+				RelativePath=".\scripts\ui_options_base_tab.script">
+			</File>
+			<File
 				RelativePath=".\scripts\ui_options_dialog.script">
+			</File>
+			<File
+				RelativePath=".\scripts\ui_options_video_tab.script">
 			</File>
 			<File
 				RelativePath=".\scripts\ui_registrator.script">
 			</File>
 			<File
 				RelativePath=".\scripts\ui_save_dialog.script">
+			</File>
+			<File
+				RelativePath=".\scripts\ui_tab_test.script">
 			</File>
 			<File
 				RelativePath=".\scripts\utils.script">
@@ -1316,6 +1337,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\xr_punch.script">
+			</File>
+			<File
+				RelativePath=".\scripts\xr_radar.script">
 			</File>
 			<File
 				RelativePath=".\scripts\xr_reactions.script">
