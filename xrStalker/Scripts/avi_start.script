@@ -68,7 +68,7 @@ function main()
 	
 	snd:play_at_pos(actor,snd_pos)
 	
-	wait(14000)
+	wait(13000)
 	level.remove_dialog_to_render(dlg)
 	
 end
