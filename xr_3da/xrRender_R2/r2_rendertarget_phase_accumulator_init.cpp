@@ -44,7 +44,7 @@ void CRenderTarget::phase_accumulator_init()
 		// 3. nv3x - ZEnable doesn't help
 		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);				// No need for ZBuffer at all
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,			FALSE				));
-		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+		RCache.set_CullMode					(CULL_NONE);
 		RCache.set_Stencil					(FALSE);
 
 		// Assuming next usage will be for directional light

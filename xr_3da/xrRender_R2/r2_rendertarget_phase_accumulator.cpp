@@ -7,9 +7,7 @@ void	CRenderTarget::phase_accumulator()
 
 	// Stencil	- draw only where stencil >= 0x1
 	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
-
-	// Misc		- draw everything (no culling)
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+	RCache.set_CullMode					(CULL_NONE);
 
 	// Clear and mask	- only once per frame
 	// Assuming next usage will be for directional light - apply mask 

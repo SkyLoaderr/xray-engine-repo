@@ -9,7 +9,7 @@ void	CRenderTarget::phase_combine	()
 	{
 	*/
 		u_setrt								( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+		RCache.set_CullMode					( CULL_NONE );
 		RCache.set_Stencil					( FALSE );
 
 		// Draw full-screen quad textured with our SKYBOX
@@ -72,7 +72,7 @@ void	CRenderTarget::phase_combine	()
 		// Targets
 		u_setrt								(rt_Generic,NULL,NULL,HW.pBaseZB);
 		// Misc		- draw everything (no culling)
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+		RCache.set_CullMode					( CULL_NONE );
 		RCache.set_Stencil					( FALSE );
 
 		// Draw full-screen quad textured with our SKYBOX

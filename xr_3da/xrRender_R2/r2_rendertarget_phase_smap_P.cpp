@@ -12,5 +12,5 @@ void	CRenderTarget::phase_smap_point(u32 pls_phase)
 	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only front faces
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			)); 	
+	RCache.set_CullMode					( CULL_CCW );
 }

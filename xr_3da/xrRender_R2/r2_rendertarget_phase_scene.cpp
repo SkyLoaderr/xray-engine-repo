@@ -14,5 +14,5 @@ void	CRenderTarget::phase_scene		()
 
 	// Misc		- draw only front-faces
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_TWOSIDEDSTENCILMODE,FALSE				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	RCache.set_CullMode					( CULL_CCW );
 }

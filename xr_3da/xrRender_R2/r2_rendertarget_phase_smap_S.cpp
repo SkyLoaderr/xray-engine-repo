@@ -14,6 +14,6 @@ void	CRenderTarget::phase_smap_spot	()
 	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only front-faces //back-faces
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			)); 	
+	RCache.set_CullMode					( CULL_CCW );
 	if (RImplementation.b_nv3x)			RCache.set_ColorWriteEnable	(FALSE);
 }
