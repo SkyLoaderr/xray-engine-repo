@@ -189,7 +189,7 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)
 void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
 {
 	Fvector		Ldir,Pnew;
-	Pnew.direct(P,N,0.1f);
+	Pnew.direct(P,N,0.01f);
 	
 	R_Light	*L = begin, *E=end;
 	for (;L!=E; L++)
