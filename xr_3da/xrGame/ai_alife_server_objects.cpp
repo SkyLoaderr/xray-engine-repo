@@ -36,6 +36,7 @@ void CALifeObject::UPDATE_Read(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
+#include "PropertiesListHelper.h"
 void CALifeObject::FillProp	(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
