@@ -10,6 +10,9 @@ function main()
 	printf("file[%d]=%s",it,file)
 	local pth = f:update_path("$screenshots$", file) 
 	printf("full path=%s",pth)
+	
+	printf("file age is [%s]",f:get_file_age_str(pth))
+	
 	local file_struct = f:exist("$screenshots$", file)
 	if file_struct~=nil then
 	printf("name=%s;modif=%d",file_struct.name,file_struct.modif)
