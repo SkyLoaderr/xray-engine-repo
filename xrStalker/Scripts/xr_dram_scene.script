@@ -4,12 +4,14 @@ local state_hunt = 2
 local state_end = 3
 
 function main()
+	printf("xr_dram_scene: main()")
 	local actor = get_actor()
 	local zone = get_level_object("dram_moment_zone")
 	local assassin1 = get_level_object("assassin1")
 	local assassin2 = get_level_object("assassin2")
 	local assassin3 = get_level_object("assassin3")
 	local avict = get_level_object("avict")
+	printf("xr_dram_scene: got all targets")
 	
 	xr_walker.set_walker(assassin1, true, "assassin1_walk", "assassin1_look", nil)
 	xr_walker.set_walker(assassin2, true, "assassin2_walk", "assassin2_look", nil)
