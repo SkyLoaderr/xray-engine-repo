@@ -409,6 +409,13 @@
 		<actor_dialog>mil_cook_common4</actor_dialog>
 		<actor_dialog>mil_cook_common5</actor_dialog>
 		<actor_dialog>mil_cook_common6</actor_dialog>
+ 		<actor_dialog>mil_cook_drink_for_rg6_1<actor_dialog>
+        <actor_dialog>mil_cook_drink_for_rg6_2<actor_dialog>
+        <actor_dialog>mil_cook_drink_for_rg6_3<actor_dialog>
+        <actor_dialog>mil_cook_drink_question_about_rg6_1<actor_dialog>
+        <actor_dialog>mil_cook_drink_question_about_rg6_2<actor_dialog>
+        <actor_dialog>mil_cook_drink_question_about_rg6_3<actor_dialog>
+
 	</specific_character>
 
 
