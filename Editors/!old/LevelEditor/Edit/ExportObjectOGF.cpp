@@ -616,27 +616,27 @@ bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
             OGFVertVec& VERTS	= part->getV_Verts();
             OGFVertIt 			v_it;
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"v %f %f %f",v_it->P.x,v_it->P.y,v_it->P.z); 	F.w_string	(tmp);
+                sprintf			(tmp,"v %f %f %f",v_it->P.x,v_it->P.y,-v_it->P.z); 		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
                 sprintf			(tmp,"vt %f %f",v_it->UV.x,_abs(1.f-v_it->UV.y));		F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vn %f %f %f",v_it->N.x,v_it->N.y,v_it->N.z);	F.w_string	(tmp);
+                sprintf			(tmp,"vn %f %f %f",-v_it->N.x,-v_it->N.y,-v_it->N.z);	F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vg %f %f %f",v_it->T.x,v_it->T.y,v_it->T.z);	F.w_string	(tmp);
+                sprintf			(tmp,"vg %f %f %f",-v_it->T.x,-v_it->T.y,-v_it->T.z);	F.w_string	(tmp);
             }
             for (v_it=VERTS.begin(); v_it!=VERTS.end(); v_it++){
-                sprintf			(tmp,"vb %f %f %f",v_it->B.x,v_it->B.y,v_it->B.z);	F.w_string	(tmp);
+                sprintf			(tmp,"vb %f %f %f",-v_it->B.x,-v_it->B.y,-v_it->B.z);	F.w_string	(tmp);
             }
             // faces
             OGFFaceVec& FACES	= part->getV_Faces();
             OGFFaceIt 			f_it;
             for (f_it=FACES.begin(); f_it!=FACES.end(); f_it++){
-                sprintf			(tmp,"f %d/%d/%d %d/%d/%d %d/%d/%d",f_it->v[0]+1,f_it->v[0]+1,f_it->v[0]+1,
+                sprintf			(tmp,"f %d/%d/%d %d/%d/%d %d/%d/%d",f_it->v[2]+1,f_it->v[2]+1,f_it->v[2]+1,
                                                                     f_it->v[1]+1,f_it->v[1]+1,f_it->v[1]+1,
-                                                                    f_it->v[2]+1,f_it->v[2]+1,f_it->v[2]+1); 	F.w_string	(tmp);
+                                                                    f_it->v[0]+1,f_it->v[0]+1,f_it->v[0]+1); 	F.w_string	(tmp);
             }
         }
     }
