@@ -43,7 +43,7 @@ CSoundRender_Core::~CSoundRender_Core()
 {
 }
 
-void CSoundRender_Core::_initialize	(u32 window)
+void CSoundRender_Core::_initialize	(u64 window)
 {
 	bPresent		= FALSE;
 
@@ -120,7 +120,7 @@ void CSoundRender_Core::_initialize	(u32 window)
 		s_targets.push_back			(T);
 	}
 
-	cache.initialize			(psSoundCacheSizeMB*1024,(sdef_target_block/2)*wfx.nAvgBytesPerSec/1000)
+	cache.initialize			(psSoundCacheSizeMB*1024,(sdef_target_block/2)*wfm.nAvgBytesPerSec/1000)
 }
 
 void CSoundRender_Core::_destroy	()
