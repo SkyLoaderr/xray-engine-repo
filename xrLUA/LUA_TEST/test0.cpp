@@ -46,6 +46,9 @@ extern lua_State	*L;
 lua_Debug	stack_levels[64];
 int			curr_stack_level = 0;
 
+void print_local_table(lua_State *L, LPCSTR S, bool bRecursive);
+
+
 #define LEVELS1	12	/* size of the first part of the stack */
 #define LEVELS2	10	/* size of the second part of the stack */
 
@@ -132,6 +135,8 @@ void lua_bind_error(lua_State *L)
 	curr_stack_level = 0;
 }
 
+void print_local_variables(lua_State *);
+
 void hook(lua_State *L, lua_Debug *ar)
 {
 //	for (curr_stack_level=0; curr_stack_level<64; ++curr_stack_level) {
@@ -144,9 +149,10 @@ void hook(lua_State *L, lua_Debug *ar)
 		case LUA_HOOKCALL : {
 			if (!lua_getstack(L,0,&stack_levels[curr_stack_level]))
 				break;
-			lua_getinfo	(L,"nSlu",&stack_levels[curr_stack_level]);
+			lua_getinfo	(L,"nSluf",&stack_levels[curr_stack_level]);
 			if (curr_stack_level && lua_getstack(L,1,&stack_levels[curr_stack_level - 1]))
-				lua_getinfo	(L,"nSlu",&stack_levels[curr_stack_level - 1]);
+				lua_getinfo	(L,"nSluf",&stack_levels[curr_stack_level - 1]);
+			print_local_variables(L);
 			++curr_stack_level;
 			break;
 		}
@@ -157,6 +163,7 @@ void hook(lua_State *L, lua_Debug *ar)
 		case LUA_HOOKLINE : {
 			lua_getinfo	(L,"l",ar);
 			stack_levels[curr_stack_level].currentline = ar->currentline;
+			print_local_variables(L);
 			break;
 		}
 		case LUA_HOOKTAILRET : {
@@ -902,6 +909,93 @@ void register_classB(lua_State *L)
 	];
 }
 
+void print_local_variables(lua_State *L)
+{
+	return;
+//	lua_Debug ar = stack_levels[curr_stack_level];
+//	int i;
+//	const char *name;
+//	i = 1;
+//	while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
+//		printf("local %d %s\n", i-1, name);
+//		lua_pop(L, 1);  /* remove variable value */
+//	}
+////	lua_getinfo(L, "f", &ar);  /* retrieves function */
+//	i = 1;
+//	while ((name = lua_getupvalue(L, -1, i++)) != NULL) {
+//		printf("upvalue %d %s\n", i-1, name);
+//		lua_pop(L, 1);  /* remove upvalue value */
+//	}
+	if (!curr_stack_level)
+		return;
+	lua_Debug ar;
+	int i;
+	const char *name;
+	if (lua_getstack(L, curr_stack_level-1, &ar) == 0)
+		return ;  /* failure: no such level in the stack */
+	i = 1;
+	while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
+		printf("local %d %s\n", i-1, name);
+		if (lua_istable(L,-1))
+			print_local_table(L,"",true);
+		lua_pop(L, 1);  /* remove variable value */
+	}
+	lua_getinfo(L, "f", &ar);  /* retrieves function */
+	i = 1;
+	while ((name = lua_getupvalue(L, -1, i++)) != NULL) {
+		printf("upvalue %d %s\n", i-1, name);
+		lua_pop(L, 1);  /* remove upvalue value */
+	}
+}
+
+struct CInternal {
+	IC		CInternal	()
+	{
+		printf	("Internal constructor is called!\n");
+	}
+
+	virtual ~CInternal()
+	{
+		printf	("Internal destructor is called!\n");
+	}
+};
+
+struct CExternal : public CInternal {
+	IC		CExternal	()
+	{
+		printf	("External constructor is called!\n");
+	}
+
+	virtual ~CExternal()
+	{
+		printf	("External destructor is called!\n");
+	}
+};
+
+struct CInternalStorage {
+	typedef CExternal _type;
+	xr_map<u32,_type*>	m_objects;
+
+	void	add			(_type *object, u32 id)
+	{
+		m_objects.insert	(std::make_pair(id,object));
+	}
+
+	_type *get	(u32 id)
+	{
+		xr_map<u32,_type*>::iterator	I = m_objects.find(id);
+		if (I != m_objects.end())
+			return	((*I).second);
+		return		(0);
+	}
+};
+
+CInternalStorage *get_internals()
+{
+	static CInternalStorage storage;
+	return					(&storage);
+}
+
 void test1()
 {
 	string4096		SSS;
@@ -925,17 +1019,29 @@ void test1()
 	register_smth0	(game_engine);
 	register_smth1	(game_engine);
 
-//	module(L)
-//	[
+	module(L)
+	[
 //		class_<A1>("A1"),
 //		class_<A2,bases<A1> >("A2")
-//	];
+		class_<CInternal>("internal"),
 
-	registrator().add	(register_classB);
-	registrator().add	(register_classA);
-	registrator().script_register(L);
+		class_<CExternal,CInternal>("external")
+			.def(		constructor<>()),
 
-	lua_dofile		(L,"x:\\split_test.script");
+		class_<CInternalStorage>("internal_storage")
+			.def("add",	&CInternalStorage::add)
+			.def("get",	&CInternalStorage::get),
+
+		def("get_internals",	&get_internals)
+	];
+
+//	registrator().add	(register_classB);
+//	registrator().add	(register_classA);
+//	registrator().script_register(L);
+
+	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
+//	lua_dofile		(L,"x:\\split_test.script");
+	lua_dofile		(L,"x:\\heritage_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");

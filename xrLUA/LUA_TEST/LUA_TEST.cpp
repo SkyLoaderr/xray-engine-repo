@@ -41,6 +41,9 @@ namespace boost {
 
 using namespace luabind;
 
+void print_stack(lua_State *L);
+
+
 ////void Log(LPCSTR S)
 ////{
 ////	printf("%s",S);
@@ -410,33 +413,90 @@ using namespace luabind;
 //////		lua_settable(L,-6);
 ////}
 ////
-//void vfPrintTable(lua_State *L, LPCSTR S, bool bRecursive = false)
-//{
-//	int t			= -2;
-//	lua_pushstring	(L, S);
-//	lua_gettable	(L, LUA_GLOBALSINDEX);  /* check whether lib already exists */
-//	
-//	if (!lua_istable(L,-1))
-//		lua_error	(L);
-//	
-//	printf			("\nContent of the table \"%s\" :\n",S);
-//	
-//	lua_pushnil		(L);  /* first key */
-//	while (lua_next(L, t) != 0) {
-//		printf		("%16s - %s\n", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
-//		lua_pop		(L, 1);  /* removes `value'; keeps `key' for next iteration */
-//	}
-//	
-//	if (!bRecursive)
-//		return;
-//
-//	lua_pushnil		(L);
-//	while (lua_next(L, t) != 0) {
-//		if (lua_istable(L, lua_type(L, -1)))
-//			vfPrintTable(L,lua_tostring(L, -2),false);
-//		lua_pop		(L, 1);
-//	}
-//}
+void vfPrintTable(lua_State *L, LPCSTR S, bool bRecursive = false)
+{
+	int t			= -2;
+	print_stack		(L);
+		
+	lua_pushstring	(L, S);
+	lua_gettable	(L, LUA_GLOBALSINDEX);  /* check whether lib already exists */
+	
+	print_stack		(L);
+
+	if (!lua_istable(L,-1))
+		lua_error	(L);
+	
+	print_stack		(L);
+	
+	printf			("\nContent of the table \"%s\" :\n",S);
+	
+	lua_pushnil		(L);  /* first key */
+	while (lua_next(L, t) != 0) {
+		printf		("%16s - %s\n", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
+		
+		print_stack		(L);
+		
+		lua_pop		(L, 1);  /* removes `value'; keeps `key' for next iteration */
+	}
+	
+	print_stack		(L);
+	
+	if (!bRecursive) {
+		lua_pop		(L,1);
+		return;
+	}
+
+	lua_pushnil		(L);
+	while (lua_next(L, t) != 0) {
+		print_stack	(L);
+		if (lua_istable(L, -1) && xr_strcmp("_G",lua_tostring(L, -2))) {
+			vfPrintTable(L,lua_tostring(L, -2),true);
+		}
+		lua_pop		(L, 1);
+	}
+	
+	lua_pop			(L,1);
+}
+
+void print_local_table(lua_State *L, LPCSTR S, bool bRecursive = false)
+{
+	print_stack		(L);
+
+	if (!lua_istable(L,-1))
+		lua_error	(L);
+
+	print_stack		(L);
+
+	printf			("\nContent of the table \"%s\" :\n",S);
+
+	lua_pushnil		(L);  /* first key */
+	while (lua_next(L, -2) != 0) {
+		printf		("%16s - %s\n", lua_tostring(L, -2), lua_typename(L, lua_type(L, -1)));
+
+		print_stack		(L);
+
+		lua_pop		(L, 1);  /* removes `value'; keeps `key' for next iteration */
+	}
+
+	print_stack		(L);
+
+	if (!bRecursive) {
+		lua_pop		(L,1);
+		return;
+	}
+
+	lua_pushnil		(L);
+	while (lua_next(L, -2) != 0) {
+		print_stack	(L);
+		if (lua_istable(L, -1) && xr_strcmp("_G",lua_tostring(L, -2))) {
+			vfPrintTable(L,lua_tostring(L, -2),true);
+		}
+		lua_pop		(L, 1);
+	}
+
+	lua_pop			(L,1);
+}
+
 //
 ////static void set(lua_State *L, int table_index, const char *key) {
 ////	lua_pushstring	(L, key);
@@ -1441,10 +1501,10 @@ int __cdecl main(int argc, char* argv[])
 //	test0();
 	return 0;
 	printf	("xrLuaCompiler v0.1\n");
-	if (argc < 2) {
-		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
-		return 0;
-	}
+//	if (argc < 2) {
+//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+//		return 0;
+//	}
 
 	string4096		SSS;
 	strcpy			(SSS,"");
@@ -1463,10 +1523,18 @@ int __cdecl main(int argc, char* argv[])
 
 	lua_settop		(L,0);
 
+	lua_pushstring	(L,"_0");
+	lua_pushstring	(L,"_1");
+	lua_pushstring	(L,"_2");
+	lua_pushstring	(L,"_3");
+	lua_pushstring	(L,"_4");
+
 	open			(L);
+	
+	printf			("Stack level %d",lua_gettop(L));
 
+	vfPrintTable	(L,"_G",true);
 //	function		(L,"this",lua_this);
-
 //	for (int i=1; i<argc; i++) {
 //		string256	l_caScriptName;
 //		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
@@ -1482,6 +1550,16 @@ int __cdecl main(int argc, char* argv[])
 //			if (b)
 //				printf	("0 syntax errors\n");
 //	}
+
+	printf			("Stack level %d\n",lua_gettop(L));
+	
+	print_stack		(L);
+	
+	printf			("%s\n",lua_tostring(L,1));
+	printf			("%s\n",lua_tostring(L,2));
+	printf			("%s\n",lua_tostring(L,3));
+	printf			("%s\n",lua_tostring(L,4));
+	printf			("%s\n",lua_tostring(L,5));
 
 	lua_close		(L);
 
