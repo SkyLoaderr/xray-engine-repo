@@ -350,6 +350,9 @@
 				RelativePath="shaders\D\fat_bump.s">
 			</File>
 			<File
+				RelativePath="shaders\D\filter_bloom.s">
+			</File>
+			<File
 				RelativePath="shaders\D\light_direct.s">
 			</File>
 			<File

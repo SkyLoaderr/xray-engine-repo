@@ -675,21 +675,24 @@ void	CalcGauss	(
 					 vector<D3DXVECTOR4>&	V,	// vertical offsets
 					 int	n=7,				// kernel size
 					 float	r=3.3f,				// gaussian radius
-					 float	tw=1.f,				// grid/texture width
-					 float	th=1.f,				// grid/texture height
 					 float	bs=1.2f				// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
+					 float	s_out=1.f,			// resulting magnitude
+					 float	tw=1.f,				// grid/texture width
+					 float	th=1.f				// grid/texture height
 					 )
 {
 	D3DXVECTOR4		scale	= D3DXVECTOR4(1/tw,1/th,0,0);
-	D3DXVECTOR4		shift	= D3DXVECTOR4(.5f,.5f,0,0)*scale;
 	for (int i=-n; i<=n; i++)
 	{
 		w.push_back	(expf(-float(i*i)/(2*r*r)));	// weight
 
 		float offset	= bs*float(i); 
-		H.push_back		(shift+scale*D3DXVECTOR4(offset,0,0,0));
-		V.push_back		(shift+scale*D3DXVECTOR4(0,offset,0,0));
+		H.push_back		(scale*D3DXVECTOR4(offset,0,0,0));
+		V.push_back		(scale*D3DXVECTOR4(0,offset,0,0));
 	}
+	float mag				= 0;
+	for (i=0; i<w.size(); i++)	mag		+= w[i];
+	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
 }
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
