@@ -590,14 +590,6 @@ SOURCE=.\Shader.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Shader_TSS.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Shader_TSS.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\WaveForm.h
 # End Source File
 # End Group
