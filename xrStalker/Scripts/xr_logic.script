@@ -583,7 +583,7 @@ function try_switch_to_another_section(npc, st, actor)
 		-- FIXME: не дублировать тут имена, оставить один on_info, но добавл€ть несколько его экземпл€ров в список
 		elseif c.name == "on_info" or c.name == "on_info2" or c.name == "on_info3" then
 			switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-		elseif c.name == "on_timer" then
+		elseif c.name == "on_timer" or c.name == "on_timer2" then
 			--printf("_bp: on_timer: %d >= %d", device():time_global(),
 			--	xr_motivator.storage[npc_id].activation_time + c.v1)
 			if device():time_global() >= xr_motivator.storage[npc_id].activation_time + c.v1 then
@@ -807,6 +807,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info2",               npc))
 	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info3",               npc))
 	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer",               npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_timer2",              npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_in_zone",       npc))
 	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_actor_not_in_zone",   npc))
 

@@ -4,6 +4,7 @@ function dist_less(a1, a2)
 end
 
 function gar_dm_nearest_bandit(actor, npc, which)
+	--printf("_bp: gar_dm_nearest_bandit: npc='%s', which=%d", npc:name(), which)
 	local dists = {}
 	local n = 1
 
@@ -25,7 +26,16 @@ function gar_dm_nearest_bandit(actor, npc, which)
 		n = n + 1
 	end
 
+	if n <= which then
+		--printf("_bp: gar_dm_nearest_bandit: n (%d) <= which (%d): return false", n, which)
+		return false
+	end
+
 	table.sort(dists, dist_less)
 
-	return dists[which].who:id() == npc:id()
+	local i_am_the_one = dists[which].who:id() == npc:id()
+	--printf("_bp: gar_dm_nearest_bandit: dist[which].who='%s', npc='%s': return %s", dists[which].who:name(), npc:name(),
+	--	if_then_else(i_am_the_one, "true", "false"))
+
+	return i_am_the_one
 end

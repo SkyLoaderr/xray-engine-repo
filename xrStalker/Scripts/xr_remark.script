@@ -81,6 +81,8 @@ function action_remark_activity:activate_sound()
 	if self.snd_scheduled then
 		return
 	end
+	printf("_bp: %s: action_remark_activity:activate_sound(): activating sound", self.object:name())
+
 	self.snd_start_time = device():time_global()
 	self.snd_scheduled = true
 
@@ -151,10 +153,6 @@ function action_remark_activity:step()
 		self.object:set_item(object.idle, self.object:best_weapon())
 	end
 
-	if distance_between(self.object, self.target) < 3 then
-		self:signal_arrival()
-	end
-	
 	-- Начальное состояние
 	if self.state == state_initial then
 		xr_state.anim_update(nil, self.object)
@@ -171,6 +169,7 @@ function action_remark_activity:step()
 			if self.st.no_rotate then
 				-- Можно включать и звук и анимацию
 				if self.st.snd then
+					printf("_bp: action_remark_activity:step(): calling activate_sound from state_initial")
 					self:activate_sound()
 				end
 				self:update_anim()
@@ -198,15 +197,18 @@ function action_remark_activity:step()
 
 	if self.state == state_going_to_plr then
 		utils.stalker_look_at_stalker(self.object, self.target)
-
+	
 		-- Пробовать включать звук, когда мы близко, или долго не можем добраться до игрока:
 		if self.st.snd and
-		   (self.st.snd_dist < distance_between(self.object, self.target) or -- FIXME
-		    self.st.snd_timeout <= device():time_global() - self.reset_time) then
+		   (distance_between(self.object, self.target) <= self.st.snd_dist or
+		    device():time_global() - self.reset_time >= self.st.snd_timeout) then
+			printf("_bp: action_remark_activity:step(): calling activate_sound from state_going_to_plr")
 			self:activate_sound()
 		end
 
-		if self.st.arrival_timeout <= device():time_global() - self.reset_time then
+
+		if distance_between(self.object, self.target) < 3 or
+		   self.st.arrival_timeout <= device():time_global() - self.reset_time then
 			self.object:set_movement_type(move.stand)
 			self.st.no_move = true -- Не получается пробежать к актеру - больше и не пытаться
 			self:signal_arrival()
@@ -227,6 +229,7 @@ function action_remark_activity:step()
 		utils.stalker_look_at_stalker(self.object, self.target)
 		if not self.st.no_move or not self.st.anim then
 			if self.st.snd then
+				printf("_bp: action_remark_activity:step(): calling activate_sound from state_rotating")
 				self:activate_sound()
 			end
 			self:if_actor_far_go_to_actor()
@@ -236,6 +239,7 @@ function action_remark_activity:step()
 			-- Повернулись в сторону игрока - включить анимацию и звук
 			self:update_anim()
 			if self.st.snd then
+				printf("_bp: action_remark_activity:step(): calling activate_sound from state_rotating2")
 				self:activate_sound()
 			end
 			self.state = state_standing
@@ -245,6 +249,7 @@ function action_remark_activity:step()
 
 	if self.state == state_standing then
 		if self.st.snd then
+			printf("_bp: action_remark_activity:step(): calling activate_sound from state_standing")
 			self:activate_sound()
 		end
 		self:update_anim()
