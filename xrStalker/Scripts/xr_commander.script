@@ -176,7 +176,7 @@ function action_commander:finalize()
     local enemy = self.object:best_enemy()
 
     if enemy and is_object_online( enemy:id() ) then
-        xr_gulag.setFractionState( self.a.fraction, 1 )
+--        xr_gulag.setFractionState( self.a.fraction, 1 )
 
         if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
             --self.object:play_sound( snd_enemy_stalker, 1, 0 )
@@ -472,7 +472,7 @@ function action_commander:exec_alarm_look_after()
                     xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_lost_box )
                 end
 
-                xr_gulag.setFractionState( self.a.fraction, 2 )
+--                xr_gulag.setFractionState( self.a.fraction, 2 )
 
                 self.sub_act = true
             end
