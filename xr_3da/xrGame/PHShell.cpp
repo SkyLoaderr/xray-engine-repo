@@ -143,24 +143,6 @@ void CPHShell::Update(){
 	mXFORM.set((*elements.begin())->mXFORM);
 }
 
-void CPHElement::Update(){
-	if(!bActive) return;
-	if( !dBodyIsEnabled(m_body)) return;
-
-	//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
-	//					  dBodyGetPosition(m_body),
-	//					  mXFORM);
-
-	m_body_interpolation.InterpolateRotation(mXFORM);	
-	m_body_interpolation.InterpolatePosition(mXFORM.c);
-
-
-	mXFORM.mulB(m_inverse_local_transform);
-
-	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
-
-}
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;

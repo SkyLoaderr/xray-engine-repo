@@ -650,6 +650,25 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	bActive=true;
 }
 
+void CPHElement::Update(){
+	if(!bActive) return;
+	if( !dBodyIsEnabled(m_body)) return;
+
+	//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
+	//					  dBodyGetPosition(m_body),
+	//					  mXFORM);
+
+	m_body_interpolation.InterpolateRotation(mXFORM);	
+	m_body_interpolation.InterpolatePosition(mXFORM.c);
+
+
+	mXFORM.mulB(m_inverse_local_transform);
+
+	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+
+}
+
 
 void CPHElement::PhDataUpdate(dReal step){
 	//m_body_interpolation.UpdatePositions();
