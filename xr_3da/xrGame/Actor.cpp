@@ -108,6 +108,9 @@ CActor::CActor() : CEntityAlive()
 #endif
 
 	m_trade = xr_new<CTrade>(this);
+
+	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
+	if (self)	self->spatial.type	|=	STYPE_VISIBLEFORAI;
 }
 
 CActor::~CActor()
