@@ -117,16 +117,7 @@ neutral
 		}
 		~SExhaust();
 	};
-	struct SDoor;
-	struct SDoor 
-	{
-		bone_id=-1;
-		pcar=acar;
-		p_pgobject=NULL;
-		pelement=NULL;
-	}
-	~SExhaust();
-};
+
 struct SDoor;
 struct SDoor 
 {
