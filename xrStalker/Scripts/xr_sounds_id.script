@@ -41,7 +41,7 @@ commander_enemy_monster = chugai_sounds + 24
 commander_radio_talk    = chugai_sounds + 25
 
 -- Jon
-jon_sounds              = chugai_sounds + 1000
+jon_sounds              = global_sounds + 5000
 
 zombe_walk_speak	    = jon_sounds + 0
 zombe_stand_speak       = jon_sounds + 1
