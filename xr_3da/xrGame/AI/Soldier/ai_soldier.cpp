@@ -430,12 +430,12 @@ void CAI_Soldier::Attack()
 						}
 					
 				if (!bCanKillMember)
-					q_action.setup(AI::AIC_Action::AttackBegin);
+					q_action.setup(AI::AIC_Action::FireBegin);
 				else
 					q_action.setup(AI::AIC_Action::FireEnd);
 				/**/
 				// checking flag to stop processing more states
-				//q_action.setup(AI::AIC_Action::AttackBegin);
+				//q_action.setup(AI::AIC_Action::FireBegin);
 				m_fCurSpeed = m_fMaxSpeed;
 				bStopThinking = true;
 				return;
@@ -622,34 +622,34 @@ void CAI_Soldier::FollowMe()
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiSoldierAttack;
-			m_dwLastRangeSearch = Level().timeServer();
+			m_dwLastRangeSearch = 0;
 			return;
 		}
 		else {
 			// checking if I am under fire
 			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
+			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiSoldierUnderFire;
-				m_dwLastRangeSearch = dwCurTime;
+				m_dwLastRangeSearch = 0;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierSenseSomething;
-					m_dwLastRangeSearch = dwCurTime;
+					m_dwLastRangeSearch = 0;
 					return;
 				}
 				else {
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					CGroup& Group = Squad.Groups[g_Group()];
-					if (dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+					if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
 						tHitDir = Group.m_tLastHitDirection;
 						dwHitTime = Group.m_dwLastHitTime;
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiSoldierUnderFire;
-						m_dwLastRangeSearch = Level().timeServer();
+						m_dwLastRangeSearch = 0;
 						return;
 					}
 					else {
@@ -778,29 +778,29 @@ void CAI_Soldier::FreeHunting()
 			return;
 		}
 		else {
-			// checking if I am under fire
-			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
+			DWORD dwCurTime = Level().timeServer();
+			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiSoldierUnderFire;
-				m_dwLastRangeSearch = Level().timeServer();
+				m_dwLastRangeSearch = 0;
 				return;
 			}
 			else {
-				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
+				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierSenseSomething;
-					m_dwLastRangeSearch = Level().timeServer();
+					m_dwLastRangeSearch = 0;
 					return;
 				}
 				else {
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					CGroup& Group = Squad.Groups[g_Group()];
-					if (Level().timeServer() - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+					if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
 						tHitDir = Group.m_tLastHitDirection;
 						dwHitTime = Group.m_dwLastHitTime;
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiSoldierUnderFire;
-						m_dwLastRangeSearch = Level().timeServer();
+						m_dwLastRangeSearch = 0;
 						return;
 					}
 					else {
@@ -934,31 +934,30 @@ void CAI_Soldier::Pursuit()
 			return;
 		}
 		else {
-			DWORD dwCurrentTime = Level().timeServer();
-			if (dwCurrentTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
-				// checking if I am under fire
-				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
+			DWORD dwCurTime = Level().timeServer();
+			if (dwCurTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
+				if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierUnderFire;
-					m_dwLastRangeSearch = Level().timeServer();
+					m_dwLastRangeSearch = 0;
 					return;
 				}
-				else
-					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
+				else {
+					if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiSoldierSenseSomething;
-						m_dwLastRangeSearch = Level().timeServer();
+						m_dwLastRangeSearch = 0;
 						return;
 					}
 					else {
 						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 						CGroup& Group = Squad.Groups[g_Group()];
-						if (dwCurrentTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) {
+						if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
 							tHitDir = Group.m_tLastHitDirection;
 							dwHitTime = Group.m_dwLastHitTime;
 							tStateStack.push(eCurrentState);
 							eCurrentState = aiSoldierUnderFire;
-							m_dwLastRangeSearch = Level().timeServer();
+							m_dwLastRangeSearch = 0;
 							return;
 						}
 						else {
@@ -1052,6 +1051,7 @@ void CAI_Soldier::Pursuit()
 						}
 					}
 				}
+			}
 			else {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
@@ -1233,7 +1233,7 @@ void CAI_Soldier::UnderFire()
 								}
 							
 						if (!bCanKillMember)
-							q_action.setup(AI::AIC_Action::AttackBegin);
+							q_action.setup(AI::AIC_Action::FireBegin);
 						else
 							q_action.setup(AI::AIC_Action::FireEnd);
 						m_fCurSpeed = m_fMaxSpeed;
@@ -1331,8 +1331,8 @@ void CAI_Soldier::Think()
 
 void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	R_ASSERT(fsimilar(_view.magnitude(),1));
-	R_ASSERT(fsimilar(_move.magnitude(),1));
+	//R_ASSERT(fsimilar(_view.magnitude(),1));
+	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
 

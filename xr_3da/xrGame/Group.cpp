@@ -14,6 +14,8 @@ CGroup::CGroup()
 	vCentroid.set		(0,0,0);
 	m_bLeaderViewsEnemy = false;
 	m_dwLeaderChangeCount = 0;
+	m_tLastHitDirection.set(1,0,0);
+	m_dwLastHitTime = 0;
 }
 
 const Fvector& CGroup::GetCentroid()
