@@ -4,7 +4,7 @@
 #include "ai_space.h"
 #include "ai\ai_selector_template.h"
 #include "ParticlesObject.h"
-#include "ai_script.h"
+#include "ai_script_processor.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {

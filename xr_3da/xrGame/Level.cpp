@@ -21,7 +21,7 @@
 
 //fog over the map
 #include "LevelFogOfWar.h"
-#include "ai_script.h"
+#include "ai_script_processor.h"
 
 CPHWorld*	ph_world = 0;
 

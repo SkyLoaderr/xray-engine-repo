@@ -8,8 +8,7 @@
 
 #pragma once
 
-struct lua_State;
-typedef lua_State CLuaVirtualMachine;
+#include "ai_script_space.h"
 
 DEFINE_VECTOR(CLuaVirtualMachine*,LUA_VM_VECTOR,LUA_VM_IT);
 
@@ -20,18 +19,5 @@ public:
 
 						CScript						(LPCSTR				caFileName);
 	virtual				~CScript					();
-			void		vfExportToLua				();
-			void		Update						();
-			void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode);
-};
-
-DEFINE_VECTOR(CScript*,SCRIPT_VECTOR,SCRIPT_IT);
-
-class CScriptProcessor {
-public:
-	SCRIPT_VECTOR		m_tpScripts;
-
-						CScriptProcessor			(LPCSTR				caFilePath);
-	virtual				~CScriptProcessor			();
 			void		Update						();
 };

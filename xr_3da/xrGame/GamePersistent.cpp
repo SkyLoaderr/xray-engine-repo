@@ -3,7 +3,7 @@
 
 #include "gamepersistent.h"
 #include "..\xr_ioconsole.h"
-#include "ai_script.h"
+#include "ai_script_processor.h"
 
 CGamePersistent::CGamePersistent(void)
 {
