@@ -49,10 +49,10 @@ void CMovementManager::reinit		()
 
 	enable_movement							(true);
 	CGameLocationSelector::reinit			(&ai().game_graph());
-	CLevelLocationSelector::reinit			(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CLevelLocationSelector::reinit			(ai().get_level_graph());
 	CDetailPathManager::reinit				();
 	CGamePathManager::reinit				(&ai().game_graph());
-	CLevelPathManager::reinit				(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CLevelPathManager::reinit				(ai().get_level_graph());
 	CPatrolPathManager::reinit				();
 	CEnemyLocationPredictor::reinit			();
 
@@ -80,8 +80,6 @@ void CMovementManager::update_path()
 		CLevelPathManager::set_evaluator(m_base_level_selector);
 
 	if (!actual()) {
-
-		//Msg("* Path :: CMovementManager :: [!actual] make everything inactual");
 
 		CGamePathManager::make_inactual();
 		CLevelPathManager::make_inactual();

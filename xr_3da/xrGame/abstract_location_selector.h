@@ -43,7 +43,7 @@ public:
 	IC			bool			used						() const;
 	IC			void			select_location				(const _vertex_id_type start_vertex_id, bool path_completed);
 	
-	// При поиске ноды сохранить найденный путь(кратчайший) и найденную ноду
+	// При поиске ноды сохранить найденный _кратчайший_ путь и найденную ноду
 	IC			void			set_dest_path				(xr_vector<_vertex_id_type> &path);
 	IC			void			set_dest_vertex				(_vertex_id_type &vertex_id);
 };

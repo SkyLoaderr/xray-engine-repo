@@ -18,11 +18,8 @@ bool CItemManager::useful			(const CGameObject  *object) const
 	if (object->getDestroy())
 		return				(false);
 
-	const ISpatial			*self = dynamic_cast<const ISpatial*>(object);
-	if (!self)
-		return				(false);
-
-	if ((self->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
+	// we do not want to keep in memory attached objects
+	if (object->H_Parent())
 		return				(false);
 
 	return					(true);

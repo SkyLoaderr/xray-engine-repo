@@ -103,7 +103,6 @@ IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_i
 		perform_search		(start_vertex_id);
 		if (!failed() && dest_vertex_id) 
 			*dest_vertex_id	= m_selected_vertex_id;
-		//Msg("Select Location inside...");
 	}
 	else m_failed			= false;
 }
@@ -114,8 +113,6 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 	VERIFY						(m_evaluator && m_graph);
 	m_last_query_time			= Level().timeServer();
 	
-	//Msg("Selector perform search");
-		
 	m_evaluator->m_path			= m_path;
 	ai().graph_engine().search	(*m_graph,vertex_id,vertex_id,0,*m_evaluator);
 	m_failed	= 
