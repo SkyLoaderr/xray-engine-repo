@@ -94,8 +94,7 @@
 	<info_portion id="location_test2">
 		<task>task1</task>
 		<task>task2</task>
-		
-		<dialog>general_pda_trade</dialog>
+
 		<dialog>escape_trader_talk_flame</dialog>
 		
 		<article>three</article>
