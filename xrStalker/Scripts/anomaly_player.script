@@ -21,8 +21,8 @@ function main()
 		{"script_object0018","idle"},
 		{"script_object0019","idle"},
 		{"script_object0020","idle"},
-		{"script_object0021","idle"},
-		{"script_object", "idle"}
+		{"script_object0021","idle"}
+	--	{"script_object", "idle"}
 	}
 	local	object_table = {}
 	for a=1,table.getn(script_table),1 do
