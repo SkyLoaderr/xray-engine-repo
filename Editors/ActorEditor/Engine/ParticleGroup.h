@@ -113,7 +113,11 @@ class ENGINE_API CParticleGroup: public IVisual
 protected:
 	CPGDef*				m_Def;
 
-    BOOL				m_bPlaying;
+    enum{
+    	flPlaying		= (1<<0),
+        flDefferedStop	= (1<<1)
+    };
+    Flags32				m_Flags;
     s32					m_ElapsedLimit;
 
 	int					m_HandleGroup;
@@ -145,9 +149,8 @@ public:
 
 	CPGDef*				GetDefinition		(){return m_Def;}
 
-	void				Play				(){m_bPlaying=TRUE;}
-    void				Pause				(){m_bPlaying=!m_bPlaying;}
-    void				Stop				();
+	void				Play				();
+    void				Stop				(bool bFinishPlaying=true);
 };
 DEFINE_VECTOR			(PS::CPGDef*,PGVec,PGIt);
 }

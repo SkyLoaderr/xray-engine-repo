@@ -351,7 +351,6 @@ void __fastcall TfraLeftBar::ebCurrentPSStopClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_IMAGE_EDITOR );

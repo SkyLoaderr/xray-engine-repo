@@ -180,7 +180,7 @@ CParticleGroup::CParticleGroup():IVisual()
 {
 	m_HandleGroup 		= pGenParticleGroups(1, 1);
     m_HandleActionList	= pGenActionLists();
-    m_bPlaying			= FALSE;
+    m_Flags.zero		();
     m_Def				= 0;
     m_ElapsedLimit		= 0;
 	m_MemDT				= 0;
@@ -201,10 +201,20 @@ void CParticleGroup::OnDeviceDestroy()
 {
 	Device.Shader.DeleteGeom(hGeom);
 }
-void CParticleGroup::Stop()
+
+void CParticleGroup::Play()
 {
-	m_bPlaying=FALSE;
-	ResetParticles();   
+	m_Flags.set			(flPlaying,TRUE);
+   	pStartPlaying		(m_HandleActionList);
+}
+void CParticleGroup::Stop(bool bFinishPlaying)
+{
+	if (bFinishPlaying){
+    	pStopPlaying	(m_HandleActionList);
+    }else{
+    	m_Flags.set		(flPlaying,FALSE);
+		ResetParticles	();
+    }
 }
 void CParticleGroup::RefreshShader()
 {
@@ -226,16 +236,14 @@ static const u32	uDT_STEP = 33;
 static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 void CParticleGroup::OnFrame(u32 frame_dt)
 {
-	if (m_Def&&m_bPlaying){
+	if (m_Def&&m_Flags.is(flPlaying)){
 		m_MemDT			+= frame_dt;
 		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
     		if (m_Def->m_Flags.is(CPGDef::dfTimeLimit)){ 
         		m_ElapsedLimit 	-= uDT_STEP;
 				if (m_ElapsedLimit<0){
             		m_ElapsedLimit 	= m_Def->m_TimeLimit;
-		    		// reset old particles
-					m_bPlaying		= FALSE;
-					ResetParticles	();
+                    Stop		(false);
 					return;
 				}
 			}

@@ -166,23 +166,23 @@ void CPSObject::Render(int priority, bool strictB2F){
             u32 C = 0xFFFFEBAA;
             switch (m_Emitter.m_EmitterType){
             case PS::SEmitter::emPoint:
-                DU::DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
+                DU.DrawLineSphere(m_Emitter.m_Position, PSOBJECT_SIZE/10, C, true);
                 break;
             case PS::SEmitter::emCone:
-                DU::DrawFaceNormal(m_Emitter.m_Position, m_Emitter.m_ConeDirection, 1, C);
+                DU.DrawFaceNormal(m_Emitter.m_Position, m_Emitter.m_ConeDirection, 1, C);
                 break;
             case PS::SEmitter::emSphere:
-                DU::DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
+                DU.DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
                 break;
             case PS::SEmitter::emBox:
-                DU::DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
+                DU.DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
                 break;
             default: THROW;
             }
             if( Selected() ){
                 Fbox bb; GetBox(bb);
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU::DrawSelectionBox(bb,&clr);
+                DU.DrawSelectionBox(bb,&clr);
             }
         }else{
             Fbox bb; GetBox(bb);
