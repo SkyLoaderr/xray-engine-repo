@@ -4,6 +4,10 @@ end
 
 class "test_callback"
 
+function test_callback:__init()
+	self.a = 0
+end
+
 function test_callback:callback(obj,action_type,index)
 	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
 end
