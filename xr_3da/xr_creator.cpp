@@ -16,7 +16,7 @@ CCreator::CCreator( )
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	LL_Stream					= NULL;
-	Sounds_Ambience				= NULL;
+	Sounds_Ambience				= -1;
 
 	pHUD						= (CCustomHUD*)NEW_INSTANCE(CLSID_HUDMANAGER);
 }
@@ -33,6 +33,8 @@ CCreator::~CCreator	( )
 
 	bReady						= false;
 	_DELETE						( pLevel );
+
+	if (Sounds_Ambience>=0)		pSounds->Delete2D(Sounds_Ambience);
 
 	// Render-level unload
 	Render.OnDeviceDestroy		( );
