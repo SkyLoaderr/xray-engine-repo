@@ -528,6 +528,9 @@
 				RelativePath="LocatorAPI.h">
 			</File>
 			<File
+				RelativePath=".\LocatorAPI_auth.cpp">
+			</File>
+			<File
 				RelativePath=".\LocatorAPI_Notifications.cpp">
 			</File>
 			<File

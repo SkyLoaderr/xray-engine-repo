@@ -322,6 +322,17 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
+	// auth
+	{
+		xr_vector<xr_string>	ignore, test	;
+		ignore.push_back		(xr_string("user"));
+		test.push_back			(xr_string(".ltx"));
+		//test.push_back		(xr_string(".exe"));
+		//test.push_back		(xr_string(".dll"));
+		FS.auth_generate		(ignore,test)	;
+	}
+	// auth end 
+
 //#ifdef DEBUG
 //	testbed	();
 //#endif

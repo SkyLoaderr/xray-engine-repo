@@ -945,7 +945,10 @@ void CRender::render_sun_near	()
 		float	c1					= _D/_cos(a1);
 		float	k0					= 2.f*c0*_sin(a0);
 		float	k1					= 2.f*c1*_sin(a1);
-		float	spherical_range		= ps_r2_sun_near_border * _max(_max(c0,c1), _max(k0,k1)*1.414213562373f );
+		float	borderalpha			= (Device.fFOV-10) / (90-10);
+									
+		float	nearborder			= 1*borderalpha + 1.136363636364f*(1-borderalpha);
+		float	spherical_range		= ps_r2_sun_near_border * nearborder * _max(_max(c0,c1), _max(k0,k1)*1.414213562373f );
 		Fbox	frustum_bb;			frustum_bb.invalidate	();
 		hull.points.push_back		(Device.vCameraPosition);
 		for (int it=0; it<9; it++)	{

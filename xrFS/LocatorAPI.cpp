@@ -455,8 +455,8 @@ xr_vector<char*>* CLocatorAPI::file_list_open			(const char* _path, u32 flags)
 	check_pathes	();
 
 	xr_string		N;
-	if (path_exist(_path))	update_path(N,_path,"");
-	else						N=_path;
+	if (path_exist(_path))	update_path	(N,_path,"");
+	else					N=_path		;
 
 	file			desc;
 	desc.name		= N.c_str();

@@ -66,7 +66,7 @@ DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
 
 class XRCORE_API CLocatorAPI  
 {
-public:
+private:
 	struct	file
 	{
 		LPCSTR					name;			// low-case name
@@ -104,15 +104,18 @@ public:
 		flCacheFiles			= (1<<6),
 		flScanAppRoot			= (1<<7),
     };    
-    Flags32						m_Flags;
-    int							m_iLockRescan;
+    Flags32						m_Flags			;
+    int							m_iLockRescan	;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
     void						rescan_pathes	();
     void						check_pathes	();
-private:
-	files_set					files;
-    archives_vec				archives;
-	BOOL						bNoRecurse;
+
+	files_set					files			;
+    archives_vec				archives		;
+	BOOL						bNoRecurse		;
+
+	xrCriticalSection			m_auth_lock		;
+	u64							m_auth_code		;
 
 	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
@@ -149,34 +152,40 @@ public:
     BOOL						can_modify_file	(LPCSTR fname);
     BOOL						can_modify_file	(LPCSTR path, LPCSTR name);
 
-    BOOL 						dir_delete		(LPCSTR path,LPCSTR nm,BOOL remove_files);
-    BOOL 						dir_delete		(LPCSTR full_path,BOOL remove_files){return dir_delete(0,full_path,remove_files);}
-    void 						file_delete		(LPCSTR path,LPCSTR nm);
-    void 						file_delete		(LPCSTR full_path){file_delete(0,full_path);}
-	void 						file_copy		(LPCSTR src, LPCSTR dest);
-	void 						file_rename		(LPCSTR src, LPCSTR dest,bool bOwerwrite=true);
-    int							file_length		(LPCSTR src);
+    BOOL 						dir_delete			(LPCSTR path,LPCSTR nm,BOOL remove_files);
+    BOOL 						dir_delete			(LPCSTR full_path,BOOL remove_files){return dir_delete(0,full_path,remove_files);}
+    void 						file_delete			(LPCSTR path,LPCSTR nm);
+    void 						file_delete			(LPCSTR full_path){file_delete(0,full_path);}
+	void 						file_copy			(LPCSTR src, LPCSTR dest);
+	void 						file_rename			(LPCSTR src, LPCSTR dest,bool bOwerwrite=true);
+    int							file_length			(LPCSTR src);
 
-    u32  						get_file_age	(LPCSTR nm);
-    void 						set_file_age	(LPCSTR nm, u32 age);
+    u32  						get_file_age		(LPCSTR nm);
+    void 						set_file_age		(LPCSTR nm, u32 age);
 
-	xr_vector<LPSTR>*			file_list_open	(LPCSTR initial, LPCSTR folder,	u32 flags=FS_ListFiles);
-	xr_vector<LPSTR>*			file_list_open	(LPCSTR path,					u32 flags=FS_ListFiles);
-	void						file_list_close	(xr_vector<LPSTR>* &lst);
+	xr_vector<LPSTR>*			file_list_open		(LPCSTR initial, LPCSTR folder,	u32 flags=FS_ListFiles);
+	xr_vector<LPSTR>*			file_list_open		(LPCSTR path,					u32 flags=FS_ListFiles);
+	void						file_list_close		(xr_vector<LPSTR>* &lst);
                                                      
-    bool						path_exist		(LPCSTR path);
-    FS_Path*					get_path		(LPCSTR path);
-    FS_Path*					append_path		(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
-    LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
+    bool						path_exist			(LPCSTR path);
+    FS_Path*					get_path			(LPCSTR path);
+    FS_Path*					append_path			(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
+    LPCSTR						update_path			(LPSTR dest, LPCSTR initial, LPCSTR src);
 
-    // editor functions
-	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
-	bool						file_find		(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
-    void						update_path		(xr_string& dest, LPCSTR initial, LPCSTR src);
-	void						lock_rescan		();
-	void						unlock_rescan	();
+	int							file_list			(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
+	bool						file_find			(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
+    void						update_path			(xr_string& dest, LPCSTR initial, LPCSTR src);
 
-	void						register_archieve(LPCSTR path);
+	// 
+	void						register_archieve	(LPCSTR path);
+	void						auth_generate		(xr_vector<xr_string>&	ignore, xr_vector<xr_string>&	important);
+	u64							auth_get			();
+	void						auth_runtime		(void*);
+
+	// editor functions
+	void						lock_rescan			();
+	void						unlock_rescan		();
+
 };
 
 extern XRCORE_API	CLocatorAPI*			xr_FS;
