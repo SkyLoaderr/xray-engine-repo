@@ -182,6 +182,9 @@ public:
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);
 	virtual void			HitSignal			(int HitAmount, Fvector& vLocalDir, CEntity* who);
 
+	virtual	float			ffGetFov			()			{ return 90.f;		}	
+	virtual	float			ffGetRange			()			{ return 500.f;		}
+
 	// Fire control
 	virtual void			g_fireParams		(Fvector& P, Fvector& D);
 	virtual void			g_cl_fireStart		( );
