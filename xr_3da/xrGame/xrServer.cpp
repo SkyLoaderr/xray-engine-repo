@@ -202,7 +202,7 @@ void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 	R_ASSERT					(P);
 	entities.erase				(P->ID);
 	m_tID_Generator.vfFreeID	(P->ID,Device.TimerAsync());
-	if (!P->m_bALifeControl)	
+	if (!ai().get_alife() || !P->m_bALifeControl)	
 		F_entity_Destroy		(P);
 }
 
