@@ -1,6 +1,6 @@
 #pragma once
 
-const	int						lmap_size	= 512;
+const	int						lmap_size	= 1024;
 
 #include "xrFace.h"
 #include "cl_rapid.h"
