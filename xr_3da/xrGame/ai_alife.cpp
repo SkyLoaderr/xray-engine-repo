@@ -433,7 +433,7 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 	OBJECT_IT E  = m_tpGraphObjects[tpALifeHuman->m_tGraphID].end();
 	for( ; it != E; it++) {
 		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*it);
-		VERIFY(iz != m_tObjectRegistry.m_tppMap.end());
+		VERIFY(it != m_tObjectRegistry.m_tppMap.end());
 		CALifeItem *tpALifeItem = (*i).second;
 		VERIFY(tpALifeItem);
 		CALifeCorp *tpALifeCorp = dynamic_cast<CALifeCorp *>(tpALifeItem);
