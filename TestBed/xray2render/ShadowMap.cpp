@@ -894,7 +894,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
 
 	// Light direction
-	dv_LightDir					= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
+	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0f);
 	D3DXVec3Normalize			(&dv_LightDir, &dv_LightDir);
 
 	// Setup shadow map transform
