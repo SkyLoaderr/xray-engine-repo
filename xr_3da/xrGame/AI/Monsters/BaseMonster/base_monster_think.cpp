@@ -3,7 +3,6 @@
 #include "../ai_monster_debug.h"
 #include "../ai_monster_squad.h"
 #include "../ai_monster_squad_manager.h"
-#include "../../../profiler.h"
 
 void CBaseMonster::Think()
 {

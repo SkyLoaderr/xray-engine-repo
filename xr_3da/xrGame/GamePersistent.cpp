@@ -8,7 +8,6 @@
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
-#	include "profiler.h"
 #endif
 
 static	void *	ode_alloc	(size_t size)								{ return xr_malloc(size);			}

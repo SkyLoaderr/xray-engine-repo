@@ -32,6 +32,8 @@ IC	bool CLevelManagerTemplate::actual() const
 TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path)
 {
+	START_PROFILE("AI/Build Path/Level Path");
+	
 	if (use_selector_path) { 
 		m_failed				= false;
 		m_actuality				= true;
@@ -47,6 +49,8 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 		Msg						("! Cannot build path from \n[%d][%f][%f][%f]\nto\n[%d][%f][%f][%f]",start_vertex_id,VPUSH(ai().level_graph().vertex_position(start_vertex_id)),dest_vertex_id,VPUSH(ai().level_graph().vertex_position(dest_vertex_id)));
 	}
 #endif
+
+	STOP_PROFILE;
 }
 
 TEMPLATE_SPECIALIZATION

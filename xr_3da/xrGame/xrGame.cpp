@@ -12,7 +12,6 @@
 #include "xr_level_controller.h"
 #include "ai_space.h"
 #include "script_engine.h"
-#include "profiler.h"
 
 #pragma comment(lib,"ode.lib" )
 

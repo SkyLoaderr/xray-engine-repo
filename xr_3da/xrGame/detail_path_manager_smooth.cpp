@@ -731,6 +731,30 @@ void CDetailPathManager::postprocess_key_points(
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
 		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1],false);
 		STravelPoint		key_point1 = compute_better_key_point(m_key_points[i+1],m_key_points[i],m_key_points[i-1],true);
+		{
+			u32				vertex_id = ai().level_graph().check_position_in_direction(m_key_points[i-1].vertex_id,m_key_points[i-1].position,key_point0.position);
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				vertex_id	= vertex_id;
+			}
+		}
+		{
+			u32				vertex_id = ai().level_graph().check_position_in_direction(m_key_points[i-1].vertex_id,m_key_points[i-1].position,key_point1.position);
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				vertex_id	= vertex_id;
+			}
+		}
+		{
+			u32				vertex_id = ai().level_graph().check_position_in_direction(key_point0.vertex_id,key_point0.position,m_key_points[i+1].position);
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				vertex_id	= vertex_id;
+			}
+		}
+		{
+			u32				vertex_id = ai().level_graph().check_position_in_direction(key_point1.vertex_id,key_point1.position,m_key_points[i+1].position);
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				vertex_id	= vertex_id;
+			}
+		}
 		if (better_key_point(m_key_points[i-1],m_key_points[i+1],key_point0,key_point1))
 			m_key_points[i]	= key_point0;
 		else
@@ -773,15 +797,10 @@ void CDetailPathManager::build_smooth_path		(
 )
 {
 	Device.Statistic.AI_Range.Begin		();
+	START_PROFILE("AI/Build Path/Detail Path");
 	
 	m_failed							= true;
 	
-	if (level_path.size() == 1) {
-		m_path.clear					();
-		Device.Statistic.AI_Range.End	();
-		return;
-	}
-
 	u32									straight_line_index, straight_line_index_negative;
 	STrajectoryPoint					start,dest;
 
@@ -815,5 +834,6 @@ void CDetailPathManager::build_smooth_path		(
 	if (m_restricted_object)
 		m_restricted_object->remove_border();
 
+	STOP_PROFILE;
 	Device.Statistic.AI_Range.End		();
 }

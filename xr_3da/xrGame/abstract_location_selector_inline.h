@@ -111,6 +111,8 @@ IC	void CSelectorTemplate::select_location	(const _vertex_id_type start_vertex_i
 TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
+	START_PROFILE("AI/Build Path/Selector Path");
+	
 	VERIFY						(m_evaluator && m_graph);
 
 	_vertex_id_type				start_vertex_id = vertex_id;
@@ -128,6 +130,8 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
 
 	after_search				();
+
+	STOP_PROFILE;
 }
 
 TEMPLATE_SPECIALIZATION

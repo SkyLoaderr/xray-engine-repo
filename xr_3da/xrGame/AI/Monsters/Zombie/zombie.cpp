@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "zombie.h"
 #include "zombie_state_manager.h"
-#include "../../../profiler.h"
 #include "../ai_monster_debug.h"
 
 CZombie::CZombie()
@@ -95,42 +94,25 @@ void CZombie::reload(LPCSTR section)
 	inherited::reload(section);
 
 	// Load triple death animations
-	CMotionDef *def1, *def2, *def3;
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_0");
-	VERIFY(def1);
-
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1");
-	VERIFY(def2);
-
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2");
-	VERIFY(def3);
-
+	CMotionDef			*def1, *def2, *def3;
+	CSkeletonAnimated	*pSkel = smart_cast<CSkeletonAnimated*>(Visual());
+	
+	def1 = pSkel->ID_Cycle_Safe("fake_death_0_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("fake_death_0_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("fake_death_0_2");	VERIFY(def3);
 	anim_triple_death[0].init_external	(def1, def2, def3);
 
 
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_0");
-	VERIFY(def1);
-
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_1");
-	VERIFY(def2);
-
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_1_2");
-	VERIFY(def3);
-
+	def1 = pSkel->ID_Cycle_Safe("fake_death_1_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("fake_death_1_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("fake_death_1_2");	VERIFY(def3);
 	anim_triple_death[1].init_external	(def1, def2, def3);
 
 
-	def1 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_0");
-	VERIFY(def1);
-
-	def2 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_1");
-	VERIFY(def2);
-
-	def3 = smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle_Safe("fake_death_2_2");
-	VERIFY(def3);
-
+	def1 = pSkel->ID_Cycle_Safe("fake_death_2_0");	VERIFY(def1);
+	def2 = pSkel->ID_Cycle_Safe("fake_death_2_1");	VERIFY(def2);
+	def3 = pSkel->ID_Cycle_Safe("fake_death_2_2");	VERIFY(def3);
 	anim_triple_death[2].init_external	(def1, def2, def3);
-
 }
 
 

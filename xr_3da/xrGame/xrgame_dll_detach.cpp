@@ -5,7 +5,6 @@
 #include "string_table.h"
 
 #include "entity_alive.h"
-#include "profiler.h"
 #include "ui/UIInventoryUtilities.h"
 #include "UI/UIXmlInit.h"
 
