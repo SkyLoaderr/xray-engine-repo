@@ -805,6 +805,7 @@ function add_to_binder(object, char_ini)
 	properties["clan"]		= xr_evaluators_id.stohe_meet_base + 4
 	properties["clan_zone"]		= xr_evaluators_id.stohe_meet_base + 5
 	properties["talk"]		= xr_evaluators_id.stohe_meet_base + 6
+	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
 	operators["wait_buyer"] 	= xr_actions_id.stohe_tradeseller_base + 2
 	operators["wait_trade"]		= xr_actions_id.stohe_meet_base + 1
@@ -838,6 +839,7 @@ function add_to_binder(object, char_ini)
 	action = this.action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["need_punch"],	false))	
 	action:add_precondition		(world_property(properties["talk"], 		true))
 	action:add_effect 		(world_property(properties["talk"], 		false))
 	manager:add_action (operators["talk"], action)
