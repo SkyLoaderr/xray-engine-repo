@@ -78,6 +78,12 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._time_2				= 0.2
 	// text
 	self._text_0				= "text"
+	// token8
+	self.tokens8				= token_list()
+	self.tokens8:add			("enemy",	0)
+	self.tokens8:add			("neutral",	1)
+	self.tokens8:add			("friend",	2)
+	self._token8_0				= self.tokens8:id("enemy")
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -157,6 +163,8 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_float				(self._time_2)
 	// text
 	packet:w_stringZ			(self._text_0)
+	// token8
+	packet:w_u8					(self._token8_0)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -232,6 +240,8 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._time_2				= packet:r_float()
 	// text
 	self._text_0				= packet:r_stringZ()
+	// token8
+	self._token8_0				= packet:r_u8()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -313,4 +323,6 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_time	(items,"script\\time\\2",self,"_time_2",0,100000.0)
 	// text
 	properties_helper():create_text	(items,"script\\text\\0",self,"_text_0")
+	// token8
+	properties_helper():create_token8(items,"script\\token8\\0",self,"_token8_0",self.tokens8)
 end
