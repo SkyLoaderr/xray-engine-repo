@@ -72,11 +72,9 @@ end
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
     --' вызов апдейта у управления группировками
-    printf("Update managment scheme")
     local nn = xr_gulag.isUnderFraction(self.object)
 
     if nn ~= nil then
-        printf("%s", nn)
         xr_gulag.fraction[nn]:calculate()
     end
 
