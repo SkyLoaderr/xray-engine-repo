@@ -227,26 +227,26 @@ function stalker_novice_action:execute ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:state_walk( param )
-  if( param ) then                        --Init state walk
-        self.a.curState = walk
-    self.a.time = device():time_global()
-      self.speak_time = self.a.time + (math.random()+0.5) * novice_speak    --Когда произнесу некоторую фразу
+	if( param ) then                        --Init state walk
+  		self.a.curState = walk
+    	self.a.time = device():time_global()
+    	self.speak_time = self.a.time + (math.random()+0.5) * novice_speak    --Когда произнесу некоторую фразу
 
-        if( xr_motivator.storage[self.object:id()].state.body_state ~= 0 ) then
-            xr_state.change_state( self.object, 0 )
+    	if( xr_motivator.storage[self.object:id()].state.body_state ~= 0 ) then
+    		xr_state.change_state( self.object, 0 )
             return
         end
 
         self.object:clear_animations()
-    self.object:set_desired_direction()
-        self.object:set_detail_path_type ( move.line )
-      self.object:set_movement_type    ( move.walk )
-      self.object:set_body_state       ( move.standing )
-      self.object:set_mental_state     ( anim.free )
-      self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
-      self.object:set_path_type        ( game_object.patrol_path )
-      self.object:set_sight            ( look.search, false, false )
-      self.object:set_item             ( object.idle, self.object:best_weapon() )
+		self.object:set_desired_direction()
+      	self.object:set_detail_path_type ( move.line )
+      	self.object:set_movement_type    ( move.walk )
+      	self.object:set_body_state       ( move.standing )
+      	self.object:set_mental_state     ( anim.free )
+      	self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
+      	self.object:set_path_type        ( game_object.patrol_path )
+      	self.object:set_sight            ( look.search, false, false )
+      	self.object:set_item             ( object.idle, self.object:best_weapon() )
 
         return
     end
@@ -259,20 +259,20 @@ function stalker_novice_action:state_walk( param )
         self.object:set_sight       ( look.search, nil, 0 )
     end
 
-  if( device():time_global() > self.speak_time ) then
+	if( device():time_global() > self.speak_time ) then
     --Произносим фразу
     xr_sounds.play_sound(self.object, 0, "trivial", 2, 2)
         self.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
-  end
+  	end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice_action:state_sit_down( param )
   if( param )  then                        --Init state sit
         self.a.curState  = sit_down
         self.object:set_dest_level_vertex_id( self.a.rest_w:level_vertex_id( self.a.index ) )
-        self.object:set_path_type       ( game_object.level_path )
-    self.object:set_desired_direction  ( self.a.rest_w:point( 0 ):sub( self.a.rest_w:point( self.a.index ) ) )   --Отдыхаем в направлении нулевой точкки
-        self.object:set_sight        ( look.danger, nil, 0 )
+        self.object:set_path_type       	( game_object.level_path )
+    	self.object:set_desired_direction  	( self.a.rest_w:point( 0 ):sub( self.a.rest_w:point( self.a.index ) ) )   --Отдыхаем в направлении нулевой точкки
+        self.object:set_sight        		( look.danger, nil, 0 )
     end
 
     if( xr_motivator.storage[self.object:id()].state.body_state == 1 ) then           --Уже сидим
@@ -836,36 +836,94 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "action_security_stand" (action_base)
 function action_security_stand:__init (name, storage) super (nil, name)
-    self.a = storage
+    self.a 				= storage
+    self.stand_point_id = self.a.path:level_vertex_id(0)
+    self.animation		= nil
+    self.time           = 0
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:initialize ()
     action_base.initialize (self)
+	self.animation		= xr_state.anims(self.object)
 
---    self.object:set_detail_path_type( move.line )
+    self.object:set_body_state      (move.standing)
+    self.object:set_sight           (look.point, self.a.path:point(1), 0)
+    self.object:set_item          	(object.activate, self.object:best_weapon () )
 
-    self.object:set_body_state      ( move.standing )
-    self.object:set_mental_state  ( anim.free )
+	self.object:enable_talk			()
+	self.object:set_start_dialog	("bar_security_dialog")
 
-    self.object:set_path_type    ( game_object.patrol_path )
-    self.object:set_sight           (look.path_dir, nil, 0)
---    self.object:set_item          (object.idle, self.object:best_weapon () )
-    self.object:set_movement_type (move.walk)
-    self.object:set_patrol_path   (self.a.path, patrol.nearest, patrol.continue, true)
-
+--    xr_position.setPosition         (self.object, self.stand_point)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:execute ()
-    action_base.execute (self)
+
+	if(self.object:level_vertex_id() == self.stand_point_id) then
+    	self:on_position()
+    else
+    	self.object:set_movement_type		(move.walk)
+        self.object:set_mental_state		(anim.free)
+        self.object:set_path_type			(game_object.level_path)
+        self.object:set_dest_level_vertex_id(self.stand_point_id)
+        self.time = 0
+        --Нужно для того, чтоб указать, что мы переходили на другую позицию
+    end
+
+    self.object:set_item            (object.idle, self.object:best_weapon () )
+--	if(device():time_global() < self.time + 1000) then return end
+
+--	if(self.object:is_body_turning() == false) then
+--    	return
+--    end
+
+--	self.animation:update("idle")
+--    if(level.actor() and distance_between(level.actor(), self.object) < 5) then
+--        local pos = level.actor():position()
+--        pos.y     = pos.y + 1.4
+--        self.object:set_sight               (look.point, pos, 0)
+--    else
+--        self.object:set_sight                   (look.point, self.a.path:point(1), 0)
+--    end
+
+--    self.object:set_movement_type           (move.stand)
+--    self.object:set_mental_state    (anim.free)
+--    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:on_position()
+	--Когда пришли в указанную позицию, две секунды не проигруем анимацию, врдуг разворачиваемся
+	if(self.time == 0) then self.time = device():time_global() + 2000 end
+
+    if(device():time_global() > self.time) then
+		if(level.actor() and distance_between(level.actor(), self.object) > 5) then
+			self.animation:update("idle")
+			self.object:set_sight               (look.point, self.a.path:point(1), 0)
+        else
+	        local pos = level.actor():position()
+	        pos.y     = pos.y + 1.4
+	        self.object:set_sight               (look.point, pos, 0)
+		end
+    else
+		self.object:set_sight               (look.point, self.a.path:point(1), 0)
+    end
+
+
+
+    --	self.object:set_sight				(look.point, self.a.path:point(1), 0)
+--        local pos = level.actor():position()
+--        pos.y     = pos.y + 1.4
+--        self.object:set_sight               (look.point, pos, 0)
+
+    self.object:set_movement_type		(move.stand)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:finalize ()
-    action_base.finalize (self)
-
-    --self.object:clear_animations ()
+    action_base.finalize 		(self)
+	self.animation				= nil
+	self.object:disable_talk	()
+    self.object:set_start_dialog    ("bar_security")
+    self.object:clear_animations()
 end
-
-
 ----------------------------------------------------------------------------------------------------------------------
 --scientist binder
 ----------------------------------------------------------------------------------------------------------------------
@@ -875,6 +933,7 @@ function add_security(obj)
     local properties    = {}
 
     properties["enabled"]            = xr_evaluators_id.jon_security
+--    properties["position"]           = xr_evaluators_id.position
 
     operators["security"]            = xr_actions_id.jon_security
 
@@ -885,8 +944,9 @@ function add_security(obj)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,  true))
     action:add_precondition         (world_property (stalker_ids.property_enemy,  false))
-    action:add_precondition         (world_property (properties["enabled"],        true))
-    action:add_effect               (world_property (properties["enabled"],        false))
+--    action:add_precondition         (world_property (properties["position"],      true))
+    action:add_precondition         (world_property (properties["enabled"],       true))
+    action:add_effect               (world_property (properties["enabled"],       false))
     manager:add_action              (operators["security"], action)
 
     action = manager:action         (stalker_ids.action_puzzle_solver)
