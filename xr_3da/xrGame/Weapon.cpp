@@ -259,8 +259,6 @@ void CWeapon::Show		()
 {
 	OnShow				();
 	bVisible		= TRUE;
-	// add shot effector
-	Level().Cameras.AddEffector	(new CEffectorShot(camMaxAngle,camRelaxSpeed));
 }
 
 void CWeapon::SetDefaults()

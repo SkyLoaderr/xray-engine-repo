@@ -157,6 +157,7 @@ void CWeaponMagazined::FireStart		()
 	{
 		if (st_current==eReload)			return;
 		if (st_current==eShowing)			return;
+		if (st_current==eHiding)			return;
 		if (!iAmmoElapsed && iAmmoCurrent)	
 		{
 			CWeapon::FireStart	();
@@ -402,7 +403,9 @@ void CWeaponMagazined::OnShot(BOOL bHUD)
 	// Camera
 	if (bHUD)	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot)); 
-		if (S)	S->Shot			(camDispersion);
+		if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(new CEffectorShot(camMaxAngle,camRelaxSpeed));
+		R_ASSERT(S);
+		S->Shot					(camDispersion);
 	}
 	// Animation
 	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
