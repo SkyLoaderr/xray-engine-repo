@@ -438,7 +438,8 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	l_pF->SetColor(0xffffffff);
 	string256 buf;
 	sprintf(buf, "%dx", int(m_fScale));
-	l_pF->Out(float(BASE_LEFT + 12),205.0f*UI()->GetScaleY(), buf); 
+	if (GameID() == GAME_SINGLE)
+		l_pF->Out(float(BASE_LEFT + 12),205.0f*UI()->GetScaleY(), buf); 
 //		float(map_center.y + map_radius - l_pF->CurrentHeight()),  buf);
 }
 //--------------------------------------------------------------------

@@ -6,6 +6,7 @@
 #include "game_cl_base.h"
 #include "net_queue.h"
 #include "Physics.h"
+#include "xrServer.h"
 
 void CLevel::ClientReceive()
 {
@@ -40,6 +41,8 @@ void CLevel::ClientReceive()
 			break;
 		case M_UPDATE:
 			{
+//				if (m_dwPingLastSendTime == 0) m_dwPingLastSendTime = timeServer_Async();
+
 				game->net_import_update	(*P);
 				Objects.net_Import		(P);
 
@@ -87,6 +90,23 @@ void CLevel::ClientReceive()
 				if (0 == O)		break;
 				O->net_ImportInput(*P);
 			}break;
+		//---------------------------------------------------
+		case M_CL_PING_CHALLENGE:
+			{
+				NET_Packet NewP;
+				NewP.w_begin(m_type+1);//M_CL_PING_CHALLENGE_RESPOND);
+				NewP.w_u32(P->r_u32());
+				NewP.w_u32(P->r_u32());
+				NewP.w_u32(P->r_u32());
+				Send(NewP, net_flags(TRUE, TRUE));
+			}break;
+		case M_CL_PING_CHALLENGE_RESPOND:
+			{
+				u32 Time = P->r_u32();
+				u32 Ping = timeServer_Async() - Time;
+				m_dwRealPing = (m_dwRealPing*9+Ping)/10;
+			}break;
+		//---------------------------------------------------
 		case 	M_SV_CONFIG_NEW_CLIENT:
 			InitializeClientGame(*P);
 			break;

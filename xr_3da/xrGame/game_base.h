@@ -31,7 +31,8 @@ struct	game_PlayerState
 	s16			money_for_round;
 	u16			flags;
 
-	u16			ping;
+	u16			ping;		//Ping from DirectX
+	u16			Rping;		//Ping from message
 
 	u16			GameID;
 

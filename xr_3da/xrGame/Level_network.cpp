@@ -27,6 +27,7 @@ void CLevel::ClientSend	()
 	{
 		if (!net_HasBandwidth()) return;
 	};
+	SendPingMessage();
 
 	NET_Packet				P;
 	u32						start	= 0;
@@ -49,13 +50,13 @@ void CLevel::ClientSend	()
 		return;
 	};
 	//-------------------------------------------------
-
 	while (1)				{
 		P.w_begin						(M_UPDATE);
 		start	= Objects.net_Export	(&P, start, 48);
 		if (P.B.count>2)				Send	(P, net_flags(FALSE));
 		else							break	;
 	}
+	//-------------------------------------------------
 }
 
 u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 count)
@@ -170,4 +171,17 @@ void			CLevel::OnConnectResult				(NET_Packet* P)
 	P->r_stringZ(ResultStr);
 
 	Msg("Client : Connect %s - <%s>", m_bConnectResult ? "accepted" : "rejected", ResultStr);
+};
+
+void			CLevel::SendPingMessage				()
+{
+	u32 CurTime = timeServer_Async();
+	if (CurTime < (m_dwCL_PingLastSendTime + m_dwCL_PingDeltaSend)) return;
+	u32 m_dwCL_PingLastSendTime = CurTime;
+	NET_Packet P;
+	P.w_begin		(M_CL_PING_CHALLENGE);
+	P.w_u32			(m_dwCL_PingLastSendTime);
+	P.w_u32			(m_dwCL_PingLastSendTime);
+	P.w_u32			(m_dwRealPing);
+	Send	(P, net_flags(FALSE));
 };

@@ -406,15 +406,18 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
-	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+	if (GameID() == GAME_SINGLE)
 	{
-		sprintf(text_str, "%d", m_pActor->GetPDA()->ActiveContactsNum());
-		UIPdaOnline.SetText(text_str);
-	}
-	else
-	{
-		UIPdaOnline.SetText("");
-	}
+		if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+		{
+			sprintf(text_str, "%d", m_pActor->GetPDA()->ActiveContactsNum());
+			UIPdaOnline.SetText(text_str);
+		}
+		else
+		{
+			UIPdaOnline.SetText("");
+		}
+	};
 
 	// Armor indicator stuff
 	PIItem	pItem = m_pActor->inventory().ItemFormSlot(OUTFIT_SLOT);

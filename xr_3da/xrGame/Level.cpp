@@ -122,6 +122,10 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 #ifdef DEBUG
 	m_level_debug	= xr_new<CLevelDebug>();
 #endif
+	//---------------------------------------------------------
+	m_dwCL_PingLastSendTime = 0;
+	m_dwCL_PingDeltaSend = 1000;
+	m_dwRealPing = 0;
 }
 
 extern CAI_Space *g_ai_space;

@@ -257,6 +257,15 @@ public:
 			bool			IsServer					();
 			bool			IsClient					();
 			CSE_Abstract	*spawn_item					(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item = false);
+			
+protected:
+	u32		m_dwCL_PingDeltaSend;
+	u32		m_dwCL_PingLastSendTime;
+	u32		m_dwRealPing;
+	virtual	void			SendPingMessage();
+public:
+	virtual	u32				GetRealPing() { return m_dwRealPing; };
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CLevel)

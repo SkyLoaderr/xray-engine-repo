@@ -391,7 +391,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	if (GameID() != GAME_SINGLE)
 	{
 		game_PlayerState* ps = Game().GetPlayerByGameID(ID());
-		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE) && Device.dwFrame != last_hit_frame)
+		if (ps && ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE) && Device.dwFrame != last_hit_frame &&
+			element != -1)
 		{		
 			// вычислить позицию и направленность партикла
 			Fmatrix pos; 

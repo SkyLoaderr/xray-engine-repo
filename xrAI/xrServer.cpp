@@ -226,6 +226,25 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
 			VERIFY					(verify_entities());
 		}break;
+	//-------------------------------------------------------------------
+	case M_CL_PING_CHALLENGE:
+		{
+			P.r_u32();
+			u32 id = sender.value();
+			P.w_seek( P.r_tell(), &(id), 4);
+			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(FALSE));
+		}break;
+	case M_CL_PING_CHALLENGE_RESPOND:
+		{
+			P.r_u32();
+			u32 id = P.r_u32();
+			ClientID clientID; clientID.set(id);
+			u32 clLastPing = P.r_u32();
+			xrClientData* pCL = ID_to_client(clientID);
+			pCL->ps->Rping = clLastPing;
+			SendTo	(clientID, P, net_flags(FALSE));
+		}break;
+		//-------------------------------------------------------------------
 	case M_CL_INPUT:
 		{
 			xrClientData* CL		= ID_to_client	(sender);

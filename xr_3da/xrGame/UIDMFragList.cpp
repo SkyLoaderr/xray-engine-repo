@@ -58,7 +58,11 @@ bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
 	pItem->FieldsVector[0]->SetText(P->name);
 	sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);
 	sprintf(Text, "%d", P->deaths); pItem->FieldsVector[2]->SetText(Text);
-	sprintf(Text, "%d", P->ping); pItem->FieldsVector[3]->SetText(Text);
+	if (P == Game().local_player)
+		sprintf(Text, "%d/%d", P->ping, Level().GetRealPing()); 
+	else
+		sprintf(Text, "%d/%d", P->ping, P->Rping); 
+	pItem->FieldsVector[3]->SetText(Text);
 
 	return true;
 };

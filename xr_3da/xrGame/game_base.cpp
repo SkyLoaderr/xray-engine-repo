@@ -32,6 +32,8 @@ game_PlayerState::game_PlayerState()
 	m_s16LastSRoint = -1;
 	DeathTime = 0;
 	RespawnTime = 0;
+	//--------------------------------
+	Rping = 0;
 }
 
 void game_PlayerState::clear()
@@ -84,6 +86,7 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 	P.w_s16			(	money_for_round	);
 	P.w_u16			(	flags	);
 	P.w_u16			(	ping	);
+	P.w_u16			(	Rping	);
 
 	P.w_u16			(	GameID	);
 	P.w_u8			(	skin	);
@@ -103,6 +106,7 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	P.r_s16			(	money_for_round	);
 	P.r_u16			(	flags	);
 	P.r_u16			(	ping	);
+	P.r_u16			(	Rping	);
 
 	P.r_u16			(	GameID	);
 	P.r_u8			(	skin	);

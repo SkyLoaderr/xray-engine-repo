@@ -45,6 +45,9 @@ enum {
 	M_CHAT_MESSAGE,
 	M_CHANGE_LEVEL_GAME,
 	//-----------------------------------------------------
+	M_CL_PING_CHALLENGE,
+	M_CL_PING_CHALLENGE_RESPOND,
+
 	MSG_FORCEDWORD				= u32(-1)
 };
 
