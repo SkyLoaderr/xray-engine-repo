@@ -65,6 +65,7 @@
 
 	<info_portion id="trader_start2">
 		<dialog>job_box</dialog>
+	
 		<location >
 			<level>0</level>
 			<object>quest_case_01</object>
@@ -90,26 +91,9 @@
 	</info_portion>
 
 	
-	<info_portion id="test_info">
 	
+	<info_portion id="test_info">
 		<!-- задание -->
-		<task>
-			<!-- 1й objective является главным и показывает
-			     выполнено ли задание  -->
-			<objective>
-				<text>test task primary</text>
-				<script_condition>info_test1.test_task1</script_condition>
-			</objective>
-			<!-- 2й objective является впомогательным  -->
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task2</script_condition>
-			</objective>
-			<objective>
-				<text>test task secondary 01</text>
-				<script_condition>info_test1.test_task3</script_condition>
-			</objective>
-		</task>
 	</info_portion>
 
 
