@@ -50,9 +50,10 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			// cache polygon
 			CDB::RESULT*	R	= XRC.r_begin();
 			CDB::TRI&		T	= Static.get_tris() [ R->id ];
-			cache->verts[0].set	(*T.verts[0]);
-			cache->verts[1].set	(*T.verts[1]);
-			cache->verts[2].set	(*T.verts[2]);
+			Fvector*		V	= Static.get_verts();
+			cache->verts[0].set	(V[T.verts[0]]);
+			cache->verts[1].set	(V[T.verts[1]]);
+			cache->verts[2].set	(V[T.verts[2]]);
 			return TRUE;
 		}
 	} else {

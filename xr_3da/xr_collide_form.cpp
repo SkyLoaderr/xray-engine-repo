@@ -137,13 +137,13 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 			clQueryCollision& Q = g_pGameLevel->ObjectSpace.q_result;
 			if (flags&clQUERY_ONLYFIRST) 
 			{
-				Q.AddTri(T,&model.get_tris()[XRC.r_begin()->id]);
+				Q.AddTri(T,&model.get_tris()[XRC.r_begin()->id],model.get_verts());
 				return;
 			} else {
 				CDB::RESULT* it	=XRC.r_begin();
 				CDB::RESULT* end=XRC.r_end	();
 				for (; it!=end; it++)
-					Q.AddTri(T,&model.get_tris() [it->id]);
+					Q.AddTri(T,&model.get_tris() [it->id], model.get_verts());
 			}
 		}
 	}

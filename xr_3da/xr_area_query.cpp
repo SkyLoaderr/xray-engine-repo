@@ -27,7 +27,7 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 			CDB::RESULT* it	=XRC.r_begin();
 			CDB::RESULT* end=XRC.r_end	();
 			for (; it!=end; it++)
-				q_result.AddTri(&Static.get_tris() [it->id]);
+				q_result.AddTri(&Static.get_tris() [it->id],Static.get_verts());
 		}
 	};
 

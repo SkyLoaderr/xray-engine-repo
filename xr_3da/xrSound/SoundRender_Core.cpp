@@ -317,8 +317,9 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 			{
 				CDB::RESULT*		r	= geom_DB.r_begin();
 				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
+				Fvector*			V	= geom_ENV->get_verts();
 				Fvector tri_norm;
-				tri_norm.mknormal		(*T->verts[0],*T->verts[1],*T->verts[2]);
+				tri_norm.mknormal		(V[T->verts[0]],V[T->verts[1]],V[T->verts[2]]);
 				float	dot				= dir.dotproduct(tri_norm);
 				if (dot<0)
 				{

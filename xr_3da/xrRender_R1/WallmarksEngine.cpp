@@ -81,14 +81,14 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 }
 
 //--------------------------------------------------------------------------------
-void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
+void AddTri	(CDB::TRI* pTri, Fvector* verts, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 {
 	Fvector				UV;
 	FVF::LIT			V;
 	for (int i=0; i<3; i++)
 	{
-		mView.transform_tiny	(UV, *pTri->verts[i]);
-		V.p.set					(*pTri->verts[i]);
+		mView.transform_tiny	(UV, verts[pTri->verts[i]]);
+		V.p.set					(verts[pTri->verts[i]]);
 		V.t.set					(UV.x,UV.y);
 		W.verts.push_back		(V);
 	}
