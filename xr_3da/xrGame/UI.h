@@ -75,8 +75,17 @@ public:
 	bool				OnKeyboardRelease	(int dik);
 	bool				OnMouseMove			(int dx, int dy);
 
-	void				OutHealth			(int health, int armor);
+	void				OutHealth			(float health, float armor);
 	void				OutWeapon			(CWeapon* wpn);
+
+	// --- depends on game type
+	// frag		(g_fraglimit)
+	// time		(g_timelimit)
+	// frag-list.....
+	// --- 
+	// OutHealth - CurrentView entity
+	// SetHeading - Camera
+
 	void				SetHeading			(float heading);
 	void				SetHeading			(const Fvector& direction);
 	void				AddMessage			(LPCSTR S, LPCSTR M, DWORD C=0xffffffff, float life_time=LIFE_TIME);

@@ -225,7 +225,7 @@ void CUI::Deactivate(){
 }
 //--------------------------------------------------------------------
 
-void CUI::OutHealth(int health, int armor){
+void CUI::OutHealth(float health, float armor){
 	UIHealth.Out(health, armor);
 }
 //--------------------------------------------------------------------
