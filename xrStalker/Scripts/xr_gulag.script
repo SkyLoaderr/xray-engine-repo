@@ -30,7 +30,7 @@ function fract:__init(name, char_ini)
 
 	-- инициализация территории
         if char_ini:line_exist("fraction", "zone") == true then
-	        self.territory = get_level_object(char_ini:r_string("fraction", "zone"))
+	        self.territory = level.object(char_ini:r_string("fraction", "zone"))
         end
 
 	if self.territory ~= nil then
