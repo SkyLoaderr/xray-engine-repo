@@ -77,15 +77,25 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 	m_graph->begin				(start_vertex_id,i,e);
 	int							iPointCount	= (int)m_location_manager->vertex_types().size();
 	int							iBranches	= 0;
-	for ( ; i != e; ++i)
-		for (int j=0; j<iPointCount; ++j)
-			if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(m_location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
-				if (!accessible((*i).vertex_id()))
-					continue;
+	for ( ; i != e; ++i) {
+		for (int j=0; j<iPointCount; ++j) {
+
+			// * вершина на текущем уровне?
+			// * подходит по маске
+			// * не соответствует предыдещей вершине
+			// * accessible 
+			if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && 
+				m_graph->mask(m_location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && 
+				((*i).vertex_id() != m_previous_vertex_id) && accessible((*i).vertex_id())) {
+				
 				++iBranches;
+				
 				if (k < 0)
 					k = j;
 			}
+		}
+	}
+
 	if (!iBranches) {
 		dest_vertex_id			= m_previous_vertex_id;
 		if (m_graph->valid_vertex_id(m_previous_vertex_id) && (m_previous_vertex_id != start_vertex_id)) {
