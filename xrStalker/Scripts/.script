@@ -9,7 +9,7 @@ module ("xr_storyline")
 
 module ("debug_info")
 module ("utils")
-module ("move_mgr_impl")
+module ("move_mgr")
 
 module ("gramofon")
 module ("escape_bobik")
