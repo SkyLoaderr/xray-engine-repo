@@ -10,7 +10,7 @@
 
 #include "ai_alife_registries.h"
 
-#pragma todo("Dima to Dima : Be attentive with this speed optimization - it doesn't suit to the OOP paradigm!")
+// #pragma todo("Dima to Dima : Be attentive with this speed optimization - it doesn't suit to the OOP paradigm!")
 #define FAST_OWNERSHIP
 
 class CSE_ALifeSimulator : 
