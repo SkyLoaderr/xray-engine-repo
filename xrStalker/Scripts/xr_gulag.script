@@ -380,6 +380,21 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		end
 	end
 end
+function fract:getJobLabel()
+	local jj = {}
+	for k,v in self.Job do
+		exist = false
+		for kk,vv in jj do
+			if v.name == vv then
+				exist = true
+			end
+		end
+		if exist == false then
+			table.insert(jj, v.name)
+		end
+	end
+	return jj
+end
 function fract:getJob(npc)
 	for k,v in self.Job do
 		if v.object == npc:id() then	
@@ -553,6 +568,22 @@ function addMember(name, npc)
 	end
 	xr_gulag.fraction[name]:addObject(npc)
 	xr_gulag.fraction[name]:calculate()
+
+	-- надо биндить все, чего нужно блокпосту
+        xr_gulag.add_to_binder(npc)
+	local jj = xr_gulag.fraction[name]:getJobLabel()
+	for k,v in jj do
+		printf("%s", v)
+		if v == "sleeper" then
+		        xr_sleeper.add_to_binder (npc, nil)
+		elseif v == "guard" then
+		        xr_guard.add_to_binder   (npc, nil)
+		elseif v == "patrol" then
+		        xr_patrol.add_to_binder  (npc, nil)
+		elseif v == "follower" then
+		        xr_follower.add_to_binder(npc, nil)
+		end
+	end
 end
 function setFractionState(name, id)
 	if xr_gulag.fraction[name] ~= nil then
