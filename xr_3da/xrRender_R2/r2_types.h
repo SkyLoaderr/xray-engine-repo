@@ -9,3 +9,4 @@
 #define	r2_RT_bloom2	"$user$bloom2"			// ---
 #define	r2_RT_smap_d	"$user$smap_d"			// ---
 #define	r2_RT_smap_p	"$user$smap_p"			// ---
+#define r2_material		"$user$material"		// ---
