@@ -1,26 +1,25 @@
-class "stalker_script"
+class "stalker_script" (object_binder)
 
-function stalker_script:__init(object)
-	self.object			= object
+function stalker_script:__init		(object) super(object)
 end
 
---function stalker_script:reinit()
+--function stalker_script:reinit		()
 --end
 
-function stalker_script:reload(section)
+function stalker_script:reload		(section)
 end
 
-function stalker_script:net_spawn(server_object)
+function stalker_script:net_spawn	(server_object)
 	return			true
 end
 
-function stalker_script:net_destroy()
+function stalker_script:net_destroy	()
 end
 
-function stalker_script:net_export(packet)
+function stalker_script:net_export	(packet)
 end
 
-function stalker_script:net_import(packet)
+function stalker_script:net_import	(packet)
 end
 
 function init		(obj)
