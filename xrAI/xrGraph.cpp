@@ -14,7 +14,7 @@
 #include "ai_a_star.h"
 #include "xrGraph.h"
 
-#define MAX_DISTANCE_TO_CONNECT		100.f
+#define MAX_DISTANCE_TO_CONNECT		200.f
 
 typedef struct tagRPoint {
 	Fvector	P;
@@ -129,11 +129,13 @@ u32 dwfFindCorrespondingNode(Fvector &tPoint)
 
 u32 dwfInitNodes()
 {
-	u32 dwPointsWONodes = 0;
+	u32 dwPointsWONodes = 0, dwTemp = 0;
 	Progress(0.0f);
 	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
-		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1))
-			dwPointsWONodes++;
+		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1)) {
+			Msg("Point %d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
+			tpaGraph.erase(tpaGraph.begin() + i--);
+		}
 	Progress(1.0f);
 	return(dwPointsWONodes);
 }
@@ -160,32 +162,6 @@ void vfSaveGraph(LPCSTR name)
 	Progress(1.0f);
 	tGraph.SaveTo(fName,0);
 	Msg("%d bytes saved",int(tGraph.tell()));
-}
-
-void vfBuildGraph()
-{
-	float fDistance;
-	u32 N = tpaGraph.size() - 1, M = N + 1, NM = N*M;
-	Progress(0.0f);
-	for (int i=0; i<(int)N; Progress(float(++i)/N)) {
-		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-		for (int j = i + 1; j<(int)M; Progress((float(i)*N + ++j)/NM)) {
-			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
-			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
-				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance);
-				if (fDistance < MAX_DISTANCE_TO_CONNECT) {
-					tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
-					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
-					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
-					
-					tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
-					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
-					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
-				}
-			}
-		}
-	}
-	Progress(1.0f);
 }
 
 bool bfCheckForGraphConnectivity()
@@ -215,6 +191,32 @@ bool bfCheckForGraphConnectivity()
 	
 	q_mark_bit.assign(m_header.count,false);
 	return(true);
+}
+
+void vfBuildGraph()
+{
+	float fDistance;
+	u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
+	Progress(0.0f);
+	for (int i=0; i<(int)N; i++) {
+		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
+		for (int j = i + 1; j<(int)M; Progress((float(M)*i - i*(i + 1)/2 + ++j - i - 1)/K)) {
+			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
+			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
+				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance);
+				if (fDistance < MAX_DISTANCE_TO_CONNECT) {
+					tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
+					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+					
+					tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
+					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+				}
+			}
+		}
+	}
+	Progress(1.0f);
 }
 
 void xrBuildGraph(LPCSTR name)
