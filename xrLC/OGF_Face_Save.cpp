@@ -8,7 +8,33 @@
 extern int	RegisterString		(LPCSTR T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
-D3DVERTEXELEMENT9		r2_decl[] =	// 36
+u32						u8_vec4			(Fvector N)
+{
+	N.add				(1.f);
+	N.mul				(.5f*255.f);
+	s32 nx				= iFloor(N.x);	clamp(nx,0,255);
+	s32 ny				= iFloor(N.y);	clamp(ny,0,255);
+	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
+	return				color_rgba(nx,ny,nz,0);
+}
+s16						s16_tc_base		(float uv)		// [-32 .. +32]
+{
+	const u32	max_tile	=	32;
+	const s32	quant		=	32768/max_tile;
+
+	s32			t			=	iFloor	(uv*float(quant)); clamp(t,-32768,32767);
+	return	s16	(t);
+}
+s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
+{
+	const u32	max_tile	=	1;
+	const s32	quant		=	32768/max_tile;
+
+	s32			t			=	iFloor	(uv*float(quant)); clamp(t,-32768,32767);
+	return	s16	(t);
+}
+
+D3DVERTEXELEMENT9		r2_decl			[] =	// 36
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
@@ -18,16 +44,59 @@ D3DVERTEXELEMENT9		r2_decl[] =	// 36
 	{0, 28, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
-
-u32						r2_vec	(Fvector N)
+D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 28
 {
-	N.add				(1.f);
-	N.mul				(.5f*255.f);
-	s32 nx				= iFloor(N.x);	clamp(nx,0,255);
-	s32 ny				= iFloor(N.y);	clamp(ny,0,255);
-	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
-	return				color_rgba(nx,ny,nz,0);
-}
+	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
+	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
+	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
+	{0, 20, D3DDECLTYPE_SHORT4,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
+D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 24
+{
+	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
+	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
+	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
+	{0, 20, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
+#pragma pack(push,1)
+struct  r1v_lmap	{
+	Fvector3	P;
+	u32			N;
+	u32			C;
+	u16			tc0x,tc0y;
+	u16			tc1x,tc1y;
+
+	r1v_lmap	(Fvector3 _P, Fvector _N, u32 _C, Fvector2 tc_base, Fvector2 tc_lmap )
+	{
+		_N.normalize	();
+		P				= _P;
+		N				= u8_vec4		(_N);
+		C				= _C;
+		tc0x			= s16_tc_base	(tc_base.x);
+		tc0y			= s16_tc_base	(tc_base.y);
+		tc1x			= s16_tc_lmap	(tc_lmap.x);
+		tc1y			= s16_tc_lmap	(tc_lmap.y);
+	}
+};
+struct  r1v_vert	{
+	Fvector3	P;
+	u32			N;
+	u32			C;
+	u16			tc0x,tc0y;
+
+	r1v_vert	(Fvector3 _P, Fvector _N, u32 _C, Fvector2 tc_base)
+	{
+		_N.normalize	();
+		P				= _P;
+		N				= u8_vec4		(_N);
+		C				= _C;
+		tc0x			= s16_tc_base	(tc_base.x);
+		tc0y			= s16_tc_base	(tc_base.y);
+	}
+};
+#pragma pack(pop)
 
 void OGF::Save			(IWriter &fs)
 {
@@ -59,36 +128,31 @@ void OGF::Save			(IWriter &fs)
 	// Vertices
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
-	bool bNeedNormals	=	(SH->flags.bSaveNormals);
-	u32	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
-							(bVertexColors?D3DFVF_DIFFUSE:0) |
-							(bNeedNormals?D3DFVF_NORMAL:0);
 	
 	switch (H.type) 
 	{
 	case MT_CACHED:			
-		Save_Cached		(fs,H,FVF,bVertexColors,bNeedNormals);		
+		Save_Cached		(fs,H,bVertexColors);		
 		break;
-	case MT_NORMAL:			
+	case MT_NORMAL:
 	case MT_PROGRESSIVE:
-		Save_Normal_PM	(fs,H,FVF,bVertexColors,bNeedNormals);		
+		Save_Normal_PM	(fs,H,bVertexColors);		
 		break;
 	case MT_PROGRESSIVE_STRIPS:
-		Save_Progressive(fs,H,FVF,bVertexColors,bNeedNormals);		
+		Save_Progressive(fs,H,bVertexColors);		
 		break;
 	}
 
 	// Header
-	fs.open_chunk		(OGF_HEADER);
-	fs.w				(&H,sizeof(H));
-	fs.close_chunk		();
+	fs.open_chunk			(OGF_HEADER);
+	fs.w					(&H,sizeof(H));
+	fs.close_chunk			();
 }
 
 void OGF_Reference::Save	(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
-	// clMsg			("* %d faces",faces.size());
 	// geom_batch_average	(vertices.size(),faces.size());	// don't use reference(s) as batch estimate
 
 	// Create header
@@ -127,9 +191,9 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// Special
 	fs.open_chunk		(OGF_TREEDEF);
-	fs.w				(&xform,sizeof(xform));
-	fs.w				(&c_scale,sizeof(c_scale));
-	fs.w				(&c_bias,sizeof(c_bias));
+	fs.w				(&xform,	sizeof(xform));
+	fs.w				(&c_scale,	sizeof(c_scale));
+	fs.w				(&c_bias,	sizeof(c_bias));
 	fs.close_chunk		();
 
 	// Header
@@ -138,18 +202,18 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.close_chunk		();
 }
 
-void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 {
 //	clMsg			("- saving: cached");
 	R_ASSERT		(0);
+
 	fs.open_chunk	(OGF_VERTICES);
-	fs.w_u32		(FVF);
+	fs.w_u32		(0);
 	fs.w_u32		((u32)vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bNeedNormals)	fs.w(&*V,6*sizeof(float));	// Position & normal
-		else				fs.w(&*V,3*sizeof(float));	// Position only
-		if (bColors)		fs.w(&(V->Color),4);
+						fs.w(&*V,6*sizeof(float));	// Position & normal
+		if (bVertexColored)	fs.w(&(V->Color),4);
 		for (u32 uv=0; uv<dwRelevantUV; uv++)
 			fs.w(&*V->UV.begin()+uv,2*sizeof(float));
 	}
@@ -162,7 +226,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL 
 	fs.close_chunk	();
 }
 
-void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 {
 //	clMsg			("- saving: normal or clod");
 
@@ -178,24 +242,39 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 		{
 			g_VB.Add			(&(V->P),3*sizeof(float));		// Position
-			t=r2_vec(V->N);		g_VB.Add(&t,4);					// Normal
-			t=r2_vec(V->T);		g_VB.Add(&t,4);					// Tangent
-			t=r2_vec(V->B);		g_VB.Add(&t,4);					// Binormal
+			t=u8_vec4(V->N);	g_VB.Add(&t,4);					// Normal
+			t=u8_vec4(V->T);	g_VB.Add(&t,4);					// Tangent
+			t=u8_vec4(V->B);	g_VB.Add(&t,4);					// Binormal
 			t=V->Color;			g_VB.Add(&t,4);					// Color
 			g_VB.Add			(V->UV.begin(),2*sizeof(float));// TC
 		}
 		g_VB.End		(&ID,&Start);
 	} else {
-		g_VB.Begin		(FVF);
-		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+		VDeclarator		D;
+		if	(bVertexColored)	
 		{
-			if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
-			else				g_VB.Add(&*V,3*sizeof(float));	// Position only
-			if (bColors)		g_VB.Add(&(V->Color),4);
-			for (u32 uv=0; uv<dwRelevantUV; uv++)
-				g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
+			// vertex-colored
+			D.set			(r1_decl_vert);
+			g_VB.Begin		(D);
+			for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+			{
+				r1v_vert	v	(V->P,V->N,V->Color,V->UV[0]);
+				g_VB.Add		(&v,sizeof(v));
+			}
+			g_VB.End		(&ID,&Start);
 		}
-		g_VB.End		(&ID,&Start);
+		else
+		{
+			// lmap-colored
+			D.set			(r1_decl_lmap);
+			g_VB.Begin		(D);
+			for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
+			{
+				r1v_lmap	v	(V->P,V->N,V->Color,V->UV[0],V->UV[1]);
+				g_VB.Add		(&v,sizeof(v));
+			}
+			g_VB.End		(&ID,&Start);
+		}
 	}
 	
 	fs.open_chunk	(OGF_VCONTAINER);
@@ -213,7 +292,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 	fs.close_chunk	();
 	
 	// PMap
-	if (I_Current>=0) 
+	if (I_Current>=0)
 	{
 		fs.open_chunk(OGF_P_MAP);
 		{
@@ -239,7 +318,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 
 extern	void xrStripify(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
-void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 {
 //	clMsg				("- saving: progressive");
 
@@ -263,7 +342,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, B
 		vertices			= vertices_saved;
 		faces				= faces_saved;
 		Stripify			();
-		Save_Normal_PM		(fs,H,FVF,bColors,bNeedNormals);
+		Save_Normal_PM		(fs,H,bVertexColored);
 		return;
 	}
 
@@ -348,12 +427,11 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, B
 			try {
 				// Fill container
 				u32 ID,Start;
-				g_VB.Begin(FVF);
+				g_VB.Begin(0);
 				for (itOGF_V V=strip_verts.begin(); V!=strip_verts.end(); V++)
 				{
-					if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
-					else				g_VB.Add(&*V,3*sizeof(float));	// Position only
-					if (bColors)		g_VB.Add(&(V->Color),4);
+					g_VB.Add(&*V,6*sizeof(float));	// Position & normal
+					if (bVertexColored)		g_VB.Add(&(V->Color),4);
 					for (u32 uv=0; uv<dwRelevantUV; uv++)
 						g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
 				}

@@ -12,7 +12,6 @@ public:
 		flLIGHT_Vertex		= 1<<3,
 		flLIGHT_CastShadow	= 1<<4,
 		flLIGHT_Sharp		= 1<<5,
-		flSaveNormals		= 1<<6
 	};
 	struct Flags {
 		u32 bCollision				: 1;
@@ -21,7 +20,6 @@ public:
 		u32 bLIGHT_Vertex			: 1;
 		u32 bLIGHT_CastShadow		: 1;
 		u32 bLIGHT_Sharp			: 1;
-		u32 bSaveNormals			: 1;
 	};
 public:
 	char		Name		[128];
@@ -42,7 +40,6 @@ public:
 		flags.bLIGHT_Vertex		= FALSE;
 		flags.bLIGHT_CastShadow = TRUE;
 		flags.bLIGHT_Sharp		= TRUE;
-		flags.bSaveNormals		= FALSE;
 		vert_translucency		= .5f;
 		vert_ambient			= .0f;
 		lm_density				= 1.f;

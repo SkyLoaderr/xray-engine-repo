@@ -12,7 +12,7 @@ struct OGF_Texture
 	// for build only
 	b_texture*		pSurface;
 };
-typedef xr_vector<OGF_Texture>		vecOGF_T;
+typedef xr_vector<OGF_Texture>	vecOGF_T;
 typedef vecOGF_T::iterator		itOGF_T;
 
 typedef xr_vector<WORD>			vecUnroll;
@@ -22,21 +22,21 @@ struct OGF;
 struct OGF_Vertex
 {
 	Fvector				P;
-	Fvector				N;	// normal
-	Fvector				T;	// tangent
-	Fvector				B;	// binormal
+	Fvector				N;		// normal
+	Fvector				T;		// tangent
+	Fvector				B;		// binormal
 	u32				Color;
 	svector<Fvector2,4>	UV;
 
 	BOOL		similar	(OGF* p, OGF_Vertex&	other);
 };
-typedef xr_vector<OGF_Vertex>		vecOGF_V;
+typedef xr_vector<OGF_Vertex>	vecOGF_V;
 typedef vecOGF_V::iterator		itOGF_V;
 
 #pragma pack(push,1)
 struct OGF_Face
 {
-	WORD				v[3];
+	WORD			v[3];
 
 	IC void			safe_replace(int what, int to)
 	{
@@ -124,9 +124,9 @@ struct OGF : public OGF_Base
 
 	virtual void		Save			(IWriter &fs);
 
-	void				Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Progressive(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Cached		(IWriter &fs, ogf_header& H, BOOL bColors);
+	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, BOOL bColors);
+	void				Save_Progressive(IWriter &fs, ogf_header& H, BOOL bColors);
 
 	virtual void		GetGeometry		(xr_vector<Fvector> &R)
 	{

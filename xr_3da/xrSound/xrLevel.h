@@ -31,7 +31,6 @@ enum fsSLS_Chunks {
 struct hdrLEVEL
 {
 	u32		XRLC_version;
-	char	name[124];
 };
 struct hdrCFORM
 {
@@ -71,8 +70,9 @@ struct NodeCompressed
 };									// 2+6+6+1+4+1 = 20b + links
 #pragma pack	(pop)
 
-const u32 XRCL_CURRENT_VERSION		=	14;
-const u32 XRCL_PRODUCTION_VERSION	=	10;
+const u32 XRCL_CURRENT_VERSION		=	14;	// input
+const u32 XRCL_PRODUCTION_VERSION	=	11;	// output
 const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
+
 #endif // xrLevelH
