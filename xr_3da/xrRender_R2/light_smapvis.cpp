@@ -6,7 +6,7 @@
 	invalidate				();
 	frame_sleep				= 0;
 }
-void	smapvis::invalidate	(light* L)
+void	smapvis::invalidate	()
 {
 	state		=	state_counting;
 	frame_sleep	=	Device.dwFrame + ps_r__LightSleepFrames;

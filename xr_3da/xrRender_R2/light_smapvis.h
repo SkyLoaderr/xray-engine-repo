@@ -20,7 +20,7 @@ public:
 	smapvis			();
 	~smapvis		();
 
-	void			invalidate	(light* L);
+	void			invalidate	();
 	void			begin		(light* L);	// should be called before 'marker++' and before graph-build
 	void			end			(light* L);
 	void			mark		(light* L);
