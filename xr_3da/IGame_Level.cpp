@@ -157,7 +157,7 @@ void	IGame_Level::OnFrame		( )
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_dwNextTime))
 	{
-		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(1000,10000);
+		Sounds_dwNextTime		= Device.dwTimeGlobal + ::Random.randI	(10000,20000);
 		Fvector	pos;
 		pos.random_dir().normalize().mul(::Random.randF(10,50)).add		(Device.vCameraPosition);
 		int		id				= ::Random.randI(Sounds_Random.size());
