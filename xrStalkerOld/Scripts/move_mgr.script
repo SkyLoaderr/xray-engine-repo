@@ -680,7 +680,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 	local search_for = 0 -- значение флагов точки, которую будем искать
 	for f = 0, 31 do
-		if self.patrol_walk:flag(index, f) then
+		if self.path_walk_info[index].flags:test(f) then
 			search_for = search_for + (2 ^ f)
 		end
 	end
@@ -697,7 +697,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	for look_idx = 0, self.patrol_look:count() - 1 do
 		this_val = 0
 		for f = 0, 31 do
-			if self.patrol_look:flag(look_idx, f) then
+			if self.path_look_info[look_idx].flags:test(f) then
 				this_val = this_val + (2 ^ f)
 			end
 		end

@@ -1,4 +1,14 @@
+----------------------------------------------------------------------------------------------------
+-- Sleeper
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Руслан Диденко (Stohe)
+----------------------------------------------------------------------------------------------------
+-- 27.12.2004 - [Zmey] Перевел схему на использование move manager.
+
 local sounds = {}
+
+local state_walking = 0
+local state_sleeping = 1
 
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
@@ -6,10 +16,11 @@ local sounds = {}
 -- Константа
 class "evaluator_need_sleeper" (property_evaluator)
 function evaluator_need_sleeper:__init(storage) super ()
-  self.a = storage
+	self.st = storage
 end
+
 function evaluator_need_sleeper:evaluate ()
-      return xr_logic.is_active(self.object, self.a)
+	return xr_logic.is_active(self.object, self.st)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -17,76 +28,103 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Обычное поведение
 class "action_sleeper_activity" (action_base)
-function action_sleeper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-    self.a = storage
-	self.timer = {begin = nil,
-			idle = nil,
-			maxidle = 10,
-			sumidle = 20,
-			random = 50 }
-	self.ptr = nil
-	self.ptrname = nil
-	self.points = {}	
-	self.state = 0 --' счетчик FSM
+function action_sleeper_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+	self.st = storage
+	--
+	--self.timer = {  begin = nil,
+	--		idle = nil,
+	--		maxidle = 10,
+	--		sumidle = 20,
+	--		random = 50 }
+	--self.ptr = nil
+	--self.ptrname = nil
+	--self.points = {}	
+	--self.state = 0 --' счетчик FSM
+
+	--self.sound_w = { rnd = 60,
+	--			   maxidle = 10, 
+	--			   sumidle = 10,
+	--			   themes = { "weather", "state" } }	
+	--self.sound_s = { rnd = 100,
+	--			   maxidle = 1, 
+	--			   sumidle = 0,
+	--			   themes = { "sleep" } }
+
+	self.move_mgr = move_mgr.move_mgr(storage.npc)
+end
+
+function action_sleeper_activity:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()        
+	--self.state = 0
+
+	self.move_mgr:initialize()
+
+	self:reset_scheme()
+end
+
+function action_sleeper_activity:reset_scheme()
+	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
+
+	self.timer = { begin = nil,
+	               idle = nil,
+                       maxidle = 10,
+                       sumidle = 20,
+                       random = 50 }
 
 	self.sound_w = { rnd = 60,
-				   maxidle = 10, 
-				   sumidle = 10,
-				   themes = { "weather", "state" } }	
+	                 maxidle = 10, 
+	                 sumidle = 10,
+	                 themes = { "weather", "state" } }	
 	self.sound_s = { rnd = 100,
-				   maxidle = 1, 
-				   sumidle = 0,
-				   themes = { "sleep" } }
+	                 maxidle = 1, 
+	                 sumidle = 0,
+	                 themes = { "sleep" } }
+
+	self.st.signals = {}
+
+	self.state = state_walking
+	
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints_from_arglist(self.st.path_main,
+			2, { 1, "wp00" }, { 0, "wp01" } )
+	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints_from_arglist(self.st.path_main,
+			2, { 0, "wp00" }, { 1, "wp01|ret=1" } )
+	end
+
+	self.move_mgr:reset(self.st.path_main, self.st.path_walk_info, self.st.path_main, self.st.path_look_info,
+		nil, nil, { obj = self, func = self.callback } )
+end	
+
+function action_sleeper_activity:callback(mode, number)
+	--self.object:set_movement_type(move.stand)
+	self.state = state_sleeping
+	return true
 end
-function action_sleeper_activity:initialize()
-    action_base.initialize(self)
-    self.object:set_node_evaluator()
-    self.object:set_path_evaluator()
-    self.object:set_desired_position()
-    self.object:set_desired_direction()        
-    self.state = 0
-end
+	
 function action_sleeper_activity:execute()
 	action_base.execute(self)
-	
-	self.object:set_item(object.deactivate, self.object:best_weapon())	
+
 	if xr_state.finish_state(self.object) ~= true then	
 		return
 	end
 	
-	if self.ptrname ~= self.a.path_main then
-		self.state = 0
-	end
-	
-	if self.state == 0 then	--' инициализация
-		self.ptr = patrol (self.a.path_main)
-		self.ptrname = self.a.path_main
-		
-		xr_state.change_state(self.object, xr_state.stand)
-		self.state = 1			
-	end
-
-	if self.object:position():distance_to_sqr(level.vertex_position(self.ptr:level_vertex_id(0))) < 1 then
-		self.state = 3
-	end
-	
-	if self.state == 1 then	--' приход на точку
-		self.object:set_body_state(move.standing)
-		self.object:set_mental_state(anim.free)
-		self.object:set_sight(look.path_dir, nil, 0)
-		self.object:set_movement_type(move.walk)
-		self.object:set_path_type(game_object.level_path)
-		self.object:set_dest_level_vertex_id(self.ptr:level_vertex_id(0))
-		self.object:set_desired_direction()
-		self.state = 2		
-	end
-
-	if self.state == 3 then	--' спим
-		if self.ptr:count() > 1 then
-			self.object:set_sight(look.point, level.vertex_position(self.ptr:level_vertex_id(1)), 0)
+	if self.state == state_walking then
+		self.move_mgr:update()
+		if self.move_mgr:arrived_to_first_waypoint() then
+			xr_logic.try_switch_to_another_section(self.object, self.st)
 		end
+		return
+	end
 
-		if self.a.wakeable ~= nil and self.a.wakeable == true then
+	if self.state == state_sleeping then
+		self.object:set_item(object.deactivate, self.object:best_weapon())	
+		if self.st.wakeable then
 			xr_state.change_state(self.object, xr_state.sit)
 			xr_sound.sound_update(self.object, self.sound_w)
 		else		
@@ -107,12 +145,13 @@ function action_sleeper_activity:execute()
 			end
 			xr_sound.sound_update(self.object, self.sound_s)
 		end
-		
-		xr_logic.try_switch_to_another_section(self.object, self.a)		
+		xr_logic.try_switch_to_another_section(self.object, self.st)
 	end
 end
+
 function action_sleeper_activity:finalize()
 	xr_state.change_state(self.object, xr_state.stand)
+	self.move_mgr:finalize()
    	action_base.finalize(self)
 end
 
@@ -143,13 +182,22 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	xr_motivator.addCommonPrecondition(action)
  	action:add_effect(world_property(properties["need_sleeper"], false))
   	manager:add_action(operators["action_sleeper"], action)
+	
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, action)
 
   	action = manager:action(xr_actions_id.alife)
   	action:add_precondition(world_property(properties["need_sleeper"], false))
 end
+
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
 	st.path_main = utils.cfg_get_string(ini, section, "path_main", npc, true,  gulag_name)
 	st.wakeable	 = utils.cfg_get_bool(ini, section, "wakeable", npc, false)
+
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_look_info = nil -- не загружены.
 end
+
+

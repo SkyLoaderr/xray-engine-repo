@@ -262,17 +262,19 @@ end
 
 --При попытке поюзать незапертую дверь она просто силой открывается до максимально допустимого состояния.
 
-function parse_waypoint_data(pathname, wpname)
+function parse_waypoint_data(pathname, wpflags, wpname)
+	local rslt = {}
+
+	rslt.flags = wpflags
+
 	if string.find(wpname, "|", at, true) == nil then
-		return {}
+		return rslt
 	end
 
 	local par_num
 	local fld_num
 	local fld
 	local val
-
-	local rslt = {}
 
 	par_num = 1
 	for param in string.gfind(wpname, "([%w_\\%=%-%,]+)|*") do
@@ -325,7 +327,7 @@ function path_parse_waypoints(pathname)
 
 	for pt = 0, cnt - 1 do
 		--printf("_bp: %s", ptr:name(pt))
-		rslt[pt] = parse_waypoint_data(pathname, ptr:name(pt))
+		rslt[pt] = parse_waypoint_data(pathname, ptr:flags(pt), ptr:name(pt))
 		if not rslt[pt] then
 			utils.abort("error while parsing point %d of path '%s'", pt, pathname)
 		end
@@ -344,18 +346,23 @@ function path_parse_waypoints_from_arglist(pathname, num_points, ...)
 	local cnt = ptr:count()
 
 	if cnt ~= num_points then
-		utils.abort("path '%s' has %d points, but %d points were expected", cnt, num_points)
+		utils.abort("path '%s' has %d points, but %d points were expected", pathname, cnt, num_points)
 	end
 
 	local rslt = {}
 
-	for pt = 0, cnt - 1 do
-		if not arg[pt] then
-			utils.abort("script error while processing point %d of path '%s'", pt, pathname)
+	local cur_arg
+	local fl
+	for pt = 0, cnt-1 do
+		cur_arg = arg[pt + 1]
+		if not cur_arg then
+			utils.abort("script error [1] while processing point %d of path '%s'", pt, pathname)
 		end
-		rslt[pt] = parse_waypoint_data(pathname, arg[pt])
+		fl = flags32()
+		fl:assign(cur_arg[1])
+		rslt[pt] = parse_waypoint_data(pathname, fl, cur_arg[2])
 		if not rslt[pt] then
-			utils.abort("script error while processing point %d of path '%s'", pt, pathname)
+			utils.abort("script error [2] while processing point %d of path '%s'", pt, pathname)
 		end
 	end
 

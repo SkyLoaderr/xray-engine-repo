@@ -1,5 +1,3 @@
-~ lua_help
- 
 List of the classes exported to LUA
 
 C++ class entity_memory_object : memory_object {
@@ -457,7 +455,7 @@ C++ class hit_memory_object : entity_memory_object {
 
 C++ class clsid {
     const actor = 73;
-    const ameba_zone = 119;
+    const ameba_zone = 118;
     const art_bast_artefact = 0;
     const art_black_drops = 1;
     const art_dummy = 3;
@@ -500,15 +498,15 @@ C++ class clsid {
     const game_cl_deathmatch = 42;
     const game_cl_single = 44;
     const game_cl_team_deathmatch = 45;
-    const game_sv_LastStanding = 90;
-    const game_sv_artefact_hunt = 88;
-    const game_sv_deathmatch = 89;
-    const game_sv_single = 91;
-    const game_sv_team_deathmatch = 92;
-    const game_ui_artefact_hunt = 93;
-    const game_ui_deathmatch = 94;
-    const game_ui_single = 95;
-    const game_ui_team_deathmatch = 96;
+    const game_sv_LastStanding = 89;
+    const game_sv_artefact_hunt = 87;
+    const game_sv_deathmatch = 88;
+    const game_sv_single = 90;
+    const game_sv_team_deathmatch = 91;
+    const game_ui_artefact_hunt = 92;
+    const game_ui_deathmatch = 93;
+    const game_ui_single = 94;
+    const game_ui_team_deathmatch = 95;
     const graph_point = 25;
     const hanging_lamp = 76;
     const helicopter = 46;
@@ -525,67 +523,66 @@ C++ class clsid {
     const obj_explosive = 69;
     const obj_food = 70;
     const obj_medkit = 71;
-    const obj_phskeleton = 81;
-    const obj_phys_destroyable = 80;
+    const obj_phskeleton = 80;
+    const obj_phys_destroyable = 79;
     const obj_physic = 77;
     const poltergeist = 27;
     const projector = 78;
     const pseudo_gigant = 24;
     const rat = 28;
     const rat_group = 29;
-    const script_object = 83;
-    const script_zone = 82;
-    const smart_terrain = 84;
-    const smart_zone = 85;
+    const script_object = 82;
+    const script_zone = 81;
+    const smart_terrain = 83;
+    const smart_zone = 84;
     const snork = 30;
     const soldier = 31;
-    const space_restrictor = 86;
+    const space_restrictor = 85;
     const spawn_group = 32;
-    const spectator = 87;
+    const spectator = 86;
     const stalker = 33;
-    const team_base_zone = 127;
-    const torrid_zone = 128;
+    const team_base_zone = 126;
+    const torrid_zone = 127;
     const trader = 34;
-    const trigger = 79;
-    const wpn_ak74 = 97;
+    const wpn_ak74 = 96;
     const wpn_ammo = 36;
     const wpn_ammo_m209 = 38;
     const wpn_ammo_og7b = 39;
     const wpn_ammo_vog25 = 40;
-    const wpn_binocular = 98;
-    const wpn_fn2000 = 99;
-    const wpn_fort = 100;
+    const wpn_binocular = 97;
+    const wpn_fn2000 = 98;
+    const wpn_fort = 99;
     const wpn_grenade_f1 = 57;
     const wpn_grenade_fake = 58;
-    const wpn_grenade_launcher = 101;
+    const wpn_grenade_launcher = 100;
     const wpn_grenade_rgd5 = 61;
     const wpn_grenade_rpg7 = 62;
-    const wpn_groza = 102;
-    const wpn_hpsa = 103;
-    const wpn_knife = 104;
-    const wpn_lr300 = 105;
-    const wpn_mounted = 106;
-    const wpn_pm = 107;
-    const wpn_rpg7 = 108;
-    const wpn_scope = 109;
-    const wpn_shotgun = 110;
-    const wpn_silencer = 111;
-    const wpn_svd = 112;
-    const wpn_svu = 113;
-    const wpn_usp45 = 114;
-    const wpn_val = 115;
-    const wpn_vintorez = 116;
-    const wpn_walther = 117;
+    const wpn_groza = 101;
+    const wpn_hpsa = 102;
+    const wpn_knife = 103;
+    const wpn_lr300 = 104;
+    const wpn_mounted = 105;
+    const wpn_pm = 106;
+    const wpn_rpg7 = 107;
+    const wpn_scope = 108;
+    const wpn_shotgun = 109;
+    const wpn_silencer = 110;
+    const wpn_svd = 111;
+    const wpn_svu = 112;
+    const wpn_usp45 = 113;
+    const wpn_val = 114;
+    const wpn_vintorez = 115;
+    const wpn_walther = 116;
     const zombie = 35;
-    const zone = 129;
-    const zone_acid_fog = 118;
-    const zone_bfuzz = 120;
-    const zone_dead = 121;
-    const zone_galantine = 122;
-    const zone_mincer = 124;
-    const zone_mosquito_bald = 123;
-    const zone_radioactive = 125;
-    const zone_rusty_hair = 126;
+    const zone = 128;
+    const zone_acid_fog = 117;
+    const zone_bfuzz = 119;
+    const zone_dead = 120;
+    const zone_galantine = 121;
+    const zone_mincer = 123;
+    const zone_mosquito_bald = 122;
+    const zone_radioactive = 124;
+    const zone_rusty_hair = 125;
     
 };
 
@@ -1128,6 +1125,7 @@ C++ class ZoneMapEntities {
 
 C++ class alife_simulator {
     function object(const alife_simulator*, number);
+    function object(const alife_simulator*, number, boolean);
     function story_object(const alife_simulator*, number);
     function set_interactive(number, boolean);
     function set_switch_online(number, boolean);
@@ -1150,6 +1148,9 @@ C++ class artifact_merger {
     function get_gravi_num();
     function destroy_mercury_ball(number);
     function destroy_black_drops(number);
+};
+
+C++ class CBlend {
 };
 
 C++ class client_spawn_manager {
@@ -1193,6 +1194,21 @@ C++ class CGameFont {
     
 };
 
+C++ class CGameObject : CObject {
+    CGameObject ();
+    
+    function Visual();
+    function _construct();
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function getEnabled() const;
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
 C++ class hanging_lamp {
     function turn_off();
     function turn_on();
@@ -1226,6 +1242,7 @@ C++ class CHelicopter {
     function GoPatrolByPatrolPath(string, number);
     function SetDestPosition(vector*);
     function isVisible(game_object*);
+    function PrepareDie();
     function TurnLighting(boolean);
     function GetState();
     function SetfHealth(number);
@@ -1233,7 +1250,7 @@ C++ class CHelicopter {
     function GetCurrAltitude();
     function GetDistanceToDestPosition();
     function GetRealAltitude();
-    function PrepareDie();
+    function TurnEngineSound(boolean);
     function Die();
     function GoByRoundPath(vector, number, boolean);
     function SetEnemy(game_object*);
@@ -1283,7 +1300,7 @@ C++ class stalker_ids {
     const action_alife_dialog_planner = 30;
     const action_alife_planner = 29;
     const action_already_dead = 0;
-    const action_anomaly_planner = 31;
+    const action_anomaly_planner = 32;
     const action_combat_planner = 31;
     const action_communicate_with_customer = 8;
     const action_dead = 1;
@@ -1371,6 +1388,13 @@ C++ class stalker_ids {
     
 };
 
+C++ class CObject : DLL_Pure,ISpatial,ISheduled,ICollidable,IRenderable {
+    CObject ();
+    
+    function Visual();
+    function _construct();
+};
+
 C++ class object_factory {
     function register(string, string, string, string);
     function register(string, string, string);
@@ -1408,12 +1432,13 @@ C++ class patrol {
     patrol (string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean, number);
     
     function level_vertex_id(number) const;
+    function index(string) const;
+    function flag(number, number) const;
+    function get_nearest(const vector&) const;
+    function flags(number) const;
+    function name(number) const;
     function point(number) const;
     function count() const;
-    function flag(number, number) const;
-    function index(string) const;
-    function name(number) const;
-    function get_nearest(const vector&) const;
 };
 
 C++ class physics_element {
@@ -1751,8 +1776,8 @@ C++ class cse_alife_graph_point : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_alife_group_abstract {
@@ -2505,8 +2530,8 @@ C++ class cse_alife_object_climable : cse_shape,cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_alife_object_hanging_lamp : cse_alife_dynamic_object_visual,cse_ph_skeleton {
@@ -2815,10 +2840,35 @@ C++ class cse_abstract : cpure_server_object {
     property parent_id;
     property position;
     
-    function name(const cse_abstract*);
-    function clsid() const;
+    function STATE_Write(net_packet&);
     function spawn_ini(cse_abstract*);
     function section_name(const cse_abstract*);
+    function UPDATE_Read(net_packet&);
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function clsid() const;
+    function UPDATE_Write(net_packet&);
+};
+
+C++ class CSE_AbstractVisual : cse_visual,cse_abstract {
+    property id;
+    property parent_id;
+    property position;
+    
+    CSE_AbstractVisual (string);
+    
+    function STATE_Write(net_packet&);
+    function init();
+    function spawn_ini(cse_abstract*);
+    function section_name(const cse_abstract*);
+    function UPDATE_Read(net_packet&);
+    function STATE_Read(net_packet&, number);
+    function name(const cse_abstract*);
+    function getStartupAnimation();
+    function OnEvent(net_packet&, number, number, ClientID);
+    function clsid() const;
+    function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_event : cse_shape,cse_abstract {
@@ -2837,8 +2887,8 @@ C++ class cse_event : cse_shape,cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_motion {
@@ -2866,8 +2916,8 @@ C++ class cse_event : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_spectator : cse_abstract {
@@ -2886,8 +2936,8 @@ C++ class cse_spectator : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_target : cse_abstract {
@@ -2906,8 +2956,8 @@ C++ class cse_target : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_target_assault : cse_abstract {
@@ -2926,8 +2976,8 @@ C++ class cse_target_assault : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_target_cs : cse_abstract {
@@ -2946,8 +2996,8 @@ C++ class cse_target_cs : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_target_cs_base : cse_abstract {
@@ -2966,8 +3016,8 @@ C++ class cse_target_cs_base : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_target_cs_cask : cse_abstract {
@@ -2986,8 +3036,8 @@ C++ class cse_target_cs_cask : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_temporary : cse_abstract {
@@ -3006,8 +3056,8 @@ C++ class cse_temporary : cse_abstract {
     function name(const cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
     function clsid() const;
-    function UPDATE_Write(net_packet&);
     function FillProps(string, class xr_vector<class PropItem *>&);
+    function UPDATE_Write(net_packet&);
 };
 
 C++ class cse_visual {
@@ -3111,18 +3161,17 @@ C++ class game_object {
     const dialog_pda_msg = 0;
     const dummy = -1;
     const enemy = 2;
-    const enemy_search = 2;
     const friend = 0;
     const game_path = 0;
     const info_pda_msg = 1;
     const level_path = 1;
     const movement = 0;
     const neutral = 1;
-    const no_path = 4;
+    const no_path = 3;
     const no_pda_msg = 2;
     const object = 5;
     const particle = 4;
-    const patrol_path = 3;
+    const patrol_path = 2;
     const relation_attack = 1;
     const relation_fight_help_human = 2;
     const relation_fight_help_monster = 4;
@@ -3170,7 +3219,7 @@ C++ class game_object {
     function section() const;
     function best_sound() const;
     function get_current_point_index();
-    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
+    function accuracy() const;
     function best_weapon();
     function who_hit_section_name();
     function change_team(number, number, number);
@@ -3229,120 +3278,126 @@ C++ class game_object {
     function set_sound_mask(number);
     function community_goodwill(game_object*);
     function vision_enabled() const;
+    function inside(const vector&, number) const;
+    function inside(const vector&) const;
     function safe_cover(const vector&, number, number);
     function path_completed() const;
     function clear_info_callback();
-    function attachable_item_enabled() const;
     function active_zone_contact(number);
+    function attachable_item_enabled() const;
     function set_nonscript_usable(boolean);
-    function level_vertex_id() const;
     function set_tip_text_default();
-    function switch_to_trade();
+    function transfer_money(number, game_object*);
     function clear_use_callback();
-    function set_start_point(number);
+    function level_vertex_id() const;
     function get_physics_shell() const;
-    function set_goodwill(number, game_object*);
+    function get_hanging_lamp();
+    function get_helicopter();
+    function set_start_point(number);
+    function disable_anomaly();
+    function set_trade_callback(const function<void>&);
+    function set_trade_callback(object, string);
     function stop_talk();
     function profile_name();
-    function get_helicopter();
+    function get_character_pda_info();
     function set_path_type(enum MovementManager::EPathType);
     function weapon_strapped() const;
     function get_ammo_total() const;
     function give_game_news(string, string, number, number, number, number);
-    function disable_anomaly();
-    function set_trade_callback(const function<void>&);
-    function set_trade_callback(object, string);
-    function get_character_pda_info();
     function set_character_pda_info(string);
-    function enable_memory_object(game_object*, boolean);
-    function set_manual_invisibility(boolean);
-    function hit(hit*);
-    function clsid() const;
-    function see(const game_object*);
-    function see(string);
-    function get_sound_info();
-    function change_community_goodwill(number, game_object*);
-    function out_restrictions();
-    function give_info_portion_via_pda(string, game_object*);
-    function enable_attachable_item(boolean);
-    function character_reputation();
-    function set_character_rank(number);
-    function character_rank();
-    function reset_action_queue();
-    function set_relation(enum ALife::ERelationType, game_object*);
-    function memory_sound_objects() const;
-    function clear_pda_callback();
-    function give_info_portion(string);
-    function general_goodwill(game_object*);
-    function change_goodwill(number, game_object*);
-    function get_hanging_lamp();
-    function use(const game_object*);
-    function restore_default_start_dialog();
-    function set_callback(const function<void>&, boolean);
-    function set_callback(object, string, boolean);
-    function set_callback(object, string, enum ScriptEntity::EActionType);
-    function set_callback(const function<void>&, enum ScriptEntity::EActionType);
-    function get_corpse() const;
-    function set_start_dialog(string);
-    function run_talk_dialog(game_object*);
-    function switch_to_talk();
-    function set_tip_text(string);
-    function rank();
-    function transfer_money(number, game_object*);
-    function transfer_item(game_object*, game_object*);
-    function is_talk_enabled();
-    function disable_talk();
-    function parent() const;
-    function get_ammo_in_magazine();
-    function is_talking();
-    function best_enemy();
-    function death_time() const;
-    function set_dest_level_vertex_id(number);
-    function send_pda_message(enum EPdaMsg, game_object*);
-    function best_cover(const vector&, const vector&, number, number, number);
-    function eat(game_object*);
-    function best_hit() const;
-    function set_task_state(enum ETaskState, string, number);
-    function get_task_state(string, number);
-    function get_script_name() const;
-    function get_info_time(string);
-    function explode(number);
-    function set_character_reputation(number);
-    function get_script() const;
-    function accessible(const vector&);
-    function accessible(number);
-    function spawn_ini() const;
-    function not_yet_visible_objects() const;
-    function binded_object();
-    function get_manual_invisibility();
-    function clear_hit_callback(boolean);
-    function position() const;
-    function set_pda_callback(const function<void>&);
-    function set_pda_callback(object, string);
-    function limping() const;
-    function accessible_nearest(const vector&, vector&);
-    function get_enemy() const;
-    function in_restrictions();
-    function set_body_state(enum MonsterSpace::EBodyState);
-    function animation_count() const;
-    function character_community();
-    function action_by_index(number);
-    function mass() const;
-    function set_invisible(boolean);
-    function restore_sound_threshold();
     function motivation_action_manager(game_object*);
-    function accuracy() const;
-    function active_sound_count();
-    function active_sound_count(boolean);
-    function goodwill(game_object*);
-    function has_info(string);
-    function armor() const;
+    function clsid() const;
     function play_sound(number);
     function play_sound(number, number);
     function play_sound(number, number, number);
     function play_sound(number, number, number, number);
     function play_sound(number, number, number, number, number);
     function play_sound(number, number, number, number, number, number);
+    function enable_memory_object(game_object*, boolean);
+    function rank();
+    function eat(game_object*);
+    function character_reputation();
+    function set_character_rank(number);
+    function animation_count() const;
+    function change_community_goodwill(number, game_object*);
+    function out_restrictions();
+    function character_rank();
+    function enable_attachable_item(boolean);
+    function reset_action_queue();
+    function set_relation(enum ALife::ERelationType, game_object*);
+    function general_goodwill(game_object*);
+    function change_goodwill(number, game_object*);
+    function set_goodwill(number, game_object*);
+    function memory_sound_objects() const;
+    function clear_pda_callback();
+    function give_info_portion(string);
+    function set_movement_type(enum MonsterSpace::EMovementType);
+    function restore_default_start_dialog();
+    function clear_death_callback(boolean);
+    function set_start_dialog(string);
+    function run_talk_dialog(game_object*);
+    function set_callback(const function<void>&, boolean);
+    function set_callback(object, string, boolean);
+    function set_callback(object, string, enum ScriptEntity::EActionType);
+    function set_callback(const function<void>&, enum ScriptEntity::EActionType);
+    function get_corpse() const;
+    function switch_to_talk();
+    function switch_to_trade();
+    function set_news_show_time(string, number);
+    function set_tip_text(string);
+    function use(const game_object*);
+    function transfer_item(game_object*, game_object*);
+    function is_talk_enabled();
+    function disable_talk();
+    function is_talking();
+    function parent() const;
+    function get_ammo_in_magazine();
+    function send_pda_message(enum EPdaMsg, game_object*);
+    function best_enemy();
+    function death_time() const;
+    function set_dest_level_vertex_id(number);
+    function set_task_state(enum ETaskState, string, number);
+    function best_cover(const vector&, const vector&, number, number, number);
+    function armor() const;
+    function set_manual_invisibility(boolean);
+    function get_task_state(string, number);
+    function get_info_time(string);
+    function get_script_name() const;
+    function active_sound_count();
+    function active_sound_count(boolean);
+    function give_info_portion_via_pda(string, game_object*);
+    function set_character_reputation(number);
+    function set_pda_callback(const function<void>&);
+    function set_pda_callback(object, string);
+    function accessible(const vector&);
+    function accessible(number);
+    function spawn_ini() const;
+    function binded_object();
+    function get_script() const;
+    function get_manual_invisibility();
+    function clear_hit_callback(boolean);
+    function hit(hit*);
+    function limping() const;
+    function accessible_nearest(const vector&, vector&);
+    function in_restrictions();
+    function position() const;
+    function get_enemy() const;
+    function set_body_state(enum MonsterSpace::EBodyState);
+    function set_patrol_path(string, enum PatrolPathManager::EPatrolStartType, enum PatrolPathManager::EPatrolRouteType, boolean);
+    function character_community();
+    function action_by_index(number);
+    function restore_sound_threshold();
+    function set_invisible(boolean);
+    function get_sound_info();
+    function mass() const;
+    function not_yet_visible_objects() const;
+    function see(const game_object*);
+    function see(string);
+    function goodwill(game_object*);
+    function has_info(string);
+    function explode(number);
+    function set_death_callback(object, string);
+    function set_death_callback(const function<void>&);
     function set_desired_direction();
     function set_desired_direction(const vector*);
     function set_character_community(string);
@@ -3355,8 +3410,8 @@ C++ class game_object {
     function set_desired_position(const vector*);
     function set_sound_threshold(number);
     function bone_position(string) const;
+    function best_hit() const;
     function memory(const game_object&);
-    function set_movement_type(enum MonsterSpace::EMovementType);
     function object(string);
     function object(number);
     function fov() const;
@@ -3691,9 +3746,14 @@ C++ class look {
     function direct(const vector&);
 };
 
-C++ class ce_script_zone : dll_pure {
+C++ class ce_script_zone : DLL_Pure {
     ce_script_zone ();
     
+    function _construct();
+};
+
+C++ class CSkeletonAnimated {
+    function PlayCycle(CSkeletonAnimated*, string);
 };
 
 C++ class sound_params {
@@ -4769,7 +4829,10 @@ C++ class ClientID {
     function set(number);
 };
 
-C++ class dll_pure {
+C++ class DLL_Pure {
+    DLL_Pure ();
+    
+    function _construct();
 };
 
 C++ class FS_Path {
@@ -4791,6 +4854,11 @@ C++ class FS_file_list_ex {
     function Sort(number);
     function GetAt(number);
     function Size();
+};
+
+C++ class ICollidable {
+    ICollidable ();
+    
 };
 
 C++ class ipure_schedulable_object {
@@ -4832,6 +4900,25 @@ C++ class reader {
     function r_u32(number&);
     function r_u32();
     function r_angle8();
+};
+
+C++ class IRender_Visual {
+    IRender_Visual ();
+    
+    function dcast_PSkeletonAnimated();
+};
+
+C++ class IRenderable {
+};
+
+C++ class ISheduled {
+    ISheduled ();
+    
+};
+
+C++ class ISpatial {
+    ISpatial ();
+    
 };
 
 C++ class net_packet {
@@ -4926,6 +5013,7 @@ C++ class CUIScriptWnd : CUIDialogWnd {
     function Show(boolean);
     function GetHeight();
     function SetWidth(number);
+    function GetListWndEx(string);
     function IsEnabled();
     function GetPropertiesBox(string);
     function GetFont();
@@ -4956,7 +5044,7 @@ C++ class CUIScriptWnd : CUIDialogWnd {
     function IsAutoDelete();
 };
 
-C++ class game_GameState : dll_pure {
+C++ class game_GameState : DLL_Pure {
     property round;
     property start_time;
     property type;
@@ -4964,6 +5052,7 @@ C++ class game_GameState : dll_pure {
     game_GameState ();
     
     function Type() const;
+    function _construct();
     function Phase() const;
     function Round() const;
     function StartTime() const;
@@ -4977,6 +5066,7 @@ C++ class game_cl_GameState : game_GameState {
     property type;
     
     function Type() const;
+    function _construct();
     function Phase() const;
     function Round() const;
     function StartTime() const;
@@ -4990,6 +5080,7 @@ C++ class game_cl_mp : game_cl_GameState {
     property type;
     
     function Type() const;
+    function _construct();
     function Phase() const;
     function Round() const;
     function StartTime() const;
@@ -5004,6 +5095,7 @@ C++ class game_cl_mp_script : game_cl_mp {
     
     game_cl_mp_script ();
     
+    function _construct();
     function EventSend(net_packet*);
     function shedule_Update(number);
     function GetPlayerByOrderID(number);
@@ -5041,6 +5133,7 @@ C++ class game_sv_Deathmatch : game_sv_GameState {
     game_sv_Deathmatch ();
     
     function get_id(ClientID);
+    function _construct();
     function get_id_2_eid(ClientID);
     function GetTeamData(number);
     function getRPcount(number);
@@ -5069,6 +5162,7 @@ C++ class game_sv_GameState : game_GameState {
     property type;
     
     function get_id(ClientID);
+    function _construct();
     function get_id_2_eid(ClientID);
     function getRPcount(number);
     function get_players_count();
@@ -5097,6 +5191,7 @@ C++ class game_sv_mp : game_sv_GameState {
     game_sv_mp ();
     
     function get_id(ClientID);
+    function _construct();
     function get_id_2_eid(ClientID);
     function KillPlayer(ClientID, number);
     function getRPcount(number);
@@ -5129,6 +5224,7 @@ C++ class game_sv_mp_script : game_sv_mp {
     game_sv_mp_script ();
     
     function get_id(ClientID);
+    function _construct();
     function switch_Phase(number);
     function getRPcount(number);
     function get_players_count();
@@ -5209,37 +5305,37 @@ namespace  {
     function alife();
     function GetFontGraffiti32Russian();
     function bit_or(number, number);
-    function GetFontArialN21Russian();
-    function GetFontDI();
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
     function system_ini();
+    function GetFontArialN21Russian();
     function module(string);
     function GetFontHeaderRussian();
-    function cast_alife_object_to_creature(cse_alife_object*);
-    function dik_to_bind(number);
     function ef_storage();
+    function dik_to_bind(number);
     function cast_planner_to_action(action_planner*);
     function GetFontGraffiti19Russian();
     function GetFontLetterica25();
-    function bit_not(number);
     function GetFontMedium();
+    function log(string);
     function GetFontSmall();
+    function flush();
     function user_name();
     function GetFontGraffiti22Russian();
     function GetFontLetterica18Russian();
+    function cast_alife_object_to_creature(cse_alife_object*);
     function GetFontBigDigit();
     function cast_action_to_planner(action_base*);
     function verify_if_thread_is_running();
-    function script_server_object_version();
-    function getFS();
-    function flush();
-    function device();
     function GetFontGraffiti50Russian();
     function GetFontLetterica16Russian();
-    function GetFontHeaderEurope();
-    function editor();
+    function getFS();
+    function device();
+    function GetFontDI();
     function GetARGB(number, number, number, number);
-    function log(string);
+    function bit_not(number);
+    function editor();
+    function GetFontHeaderEurope();
+    function script_server_object_version();
     function get_console();
     function bit_xor(number, number);
  
@@ -5272,4 +5368,3 @@ namespace  {
     };
 };
 End of list of the namespaces exported to LUA
-
