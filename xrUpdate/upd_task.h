@@ -43,8 +43,8 @@ public:
 	void			remove_sub_task		(CTask* t);
 	BOOL			is_enabled			()										{return m_enabled;}
 	void			set_enabled			(BOOL b);
-	virtual BOOL	load				(CInifile& ini);
-	virtual BOOL	save				(CInifile& ini);
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	virtual void	run					();
 	CTask*			copy				();
 	BOOL			section_exist		(LPCSTR s);
@@ -56,10 +56,10 @@ class CTaskCopyFiles :public CTask
 	CFileNamesArray m_file_names;
 	virtual void	copy_to				(CTask*);
 public:
-					CTaskCopyFiles		(LPCSTR section)						{m_type=eTaskCopyFiles;};
+					CTaskCopyFiles		()										{m_type=eTaskCopyFiles;};
 	virtual			~CTaskCopyFiles		()										{};
-	virtual BOOL	load				(CInifile& ini);
-	virtual BOOL	save				(CInifile& ini);
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	LPCSTR			target_folder		()										{return *m_target_folder;}
 	void			set_target_folder	(LPCSTR s)								{m_target_folder = s;}
 	CFileNamesArray* file_list			()										{return &m_file_names;}
@@ -72,10 +72,10 @@ class CTaskCopyFolder :public CTask
 	shared_str		m_target_folder;
 	virtual void	copy_to				(CTask*);
 public:
-					CTaskCopyFolder		(LPCSTR section)						{m_type=eTaskCopyFolder;};
-	virtual			~CTaskCopyFolder		()									{};
-	virtual BOOL	load				(CInifile& ini);
-	virtual BOOL	save				(CInifile& ini);
+					CTaskCopyFolder		()										{m_type=eTaskCopyFolder;};
+	virtual			~CTaskCopyFolder	()										{};
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	LPCSTR			target_folder		()										{return *m_target_folder;}
 	LPCSTR			source_folder		()										{return *m_source_folder;}
 	void			set_target_folder	(LPCSTR s)								{m_target_folder = s;}
@@ -87,9 +87,9 @@ public:
 class CTaskDelete :public CTask
 {
 public:
-					CTaskDelete			(LPCSTR section)						{m_type=eTaskDelete;};
+					CTaskDelete			()										{m_type=eTaskDelete;};
 	virtual			~CTaskDelete		()										{};
-	virtual BOOL	load				(CInifile& ini)							{return TRUE;};
+	virtual BOOL	load				(CInifile& ini, LPCSTR section)			{return TRUE;};
 	virtual void	run					(){};
 };
 
@@ -100,10 +100,10 @@ class CTaskExecute :public CTask
 	shared_str		m_working_folder;
 	virtual void	copy_to				(CTask*);
 public:
-					CTaskExecute		(LPCSTR section)						{m_type=eTaskRunExecutable;};
+					CTaskExecute		()										{m_type=eTaskRunExecutable;};
 	virtual			~CTaskExecute		()										{};
-	virtual BOOL	load				(CInifile& ini);
-	virtual BOOL	save				(CInifile& ini);
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	virtual void	run					();
 	LPCSTR			get_app_name		()										{return *m_app_name;}
 	void			set_app_name		(LPCSTR n)								{m_app_name=n;}
@@ -123,10 +123,10 @@ class CTaskBatchExecute :public CTask
 	virtual void	copy_to				(CTask*);
 
 public:
-					CTaskBatchExecute	(LPCSTR section)						{m_type=eTaskBatchExecute;};
+					CTaskBatchExecute	()										{m_type=eTaskBatchExecute;};
 	virtual			~CTaskBatchExecute	()										{};
-	virtual BOOL	load				(CInifile& ini);
-	virtual BOOL	save				(CInifile& ini);
+	virtual BOOL	load				(CInifile& ini, LPCSTR section);
+	virtual BOOL	save				(CInifile& ini, LPCSTR section);
 	virtual void	run					();
 	CFileNamesArray* file_list			()										{return &m_file_names;}
 //	LPCSTR			get_app_name		()										{return *m_app_name;}
@@ -142,7 +142,7 @@ public:
 class CTaskFacrory
 {
 public:
-	static CTask*	create_task			(CInifile& ini);
+	static CTask*	create_task			(CInifile& ini, LPCSTR section);
 	static CTask*	create_task			(ETaskType eTaskCopyFiles);
 };
 

@@ -2,6 +2,14 @@
 #include "upd_task.h"
 #include "FileOperations.h"
 
+void SaveStringWithBrackets(CInifile& ini, LPCSTR section, LPCSTR name, shared_str& str)
+{
+	string1024 buff;
+	if(!xr_strlen(str)) str="";
+	strconcat(buff,"\"",*str,"\"");
+	ini.w_string(section, name, buff);
+}
+
 ETaskType strToType(LPCSTR str)
 {
 	string32 s;
@@ -92,7 +100,7 @@ void CTask::copy_to	(CTask* t)
 {
 	t->m_type		= m_type;
 	t->m_enabled	= m_enabled;
-	//name already tuned
+	//name&section already tuned
 	CTaskArray::iterator sub_task_it =	m_sub_tasks.begin();
 	for(;sub_task_it !=m_sub_tasks.end();++sub_task_it){
 		CTask* t_sub = (*sub_task_it)->copy();
@@ -109,22 +117,21 @@ void CTask::sort_sub_tasks()
 	std::sort(m_sub_tasks.begin(),m_sub_tasks.end(),task_sorter);
 }
 
-BOOL CTask::load(CInifile& ini)
+BOOL CTask::load(CInifile& ini, LPCSTR section)
 {
-	m_type				= strToType(ini.r_string(m_section_name,	"type") );
-	m_name				= ini.r_string(m_section_name,	"task_name");
-	m_enabled			= ini.r_bool(m_section_name,	"enabled");
-	m_priority			= ini.r_u32(m_section_name,		"priority");
+	m_type				= strToType(ini.r_string(section,	"type") );
+	m_name				= ini.r_string_wb(section,				"task_name");
+	m_enabled			= ini.r_bool(section,				"enabled");
+	m_priority			= ini.r_u32(section,				"priority");
 
-	if(ini.line_exist(m_section_name,"sub_tasks") ){
-		shared_str sub_tasks = ini.r_string(m_section_name,"sub_tasks");
-
-		string256						I;
-		for (u32 i=0, n=_GetItemCount(*sub_tasks); i<n; ++i){
-			shared_str sub_task = _GetItem(*sub_tasks,i,I);
-			CTask* new_task = CTaskFacrory::create_task(ini,*sub_task);
+	if(ini.line_exist(section,"sub_task_count") ){
+		u32 cnt = ini.r_u32(section,				"sub_task_count");
+		string512 sname;
+		for (u32 i=0; i<cnt; ++i){
+			sprintf(sname,"%s.%04d",section,i);
+			CTask* new_task = CTaskFacrory::create_task(ini, sname);
 			add_sub_task(new_task);
-			BOOL res = new_task->load(ini);//recurse
+			BOOL res = new_task->load(ini, sname);//recurse
 			if(!res)
 				return FALSE;
 			sort_sub_tasks();
@@ -133,24 +140,23 @@ BOOL CTask::load(CInifile& ini)
 	return TRUE;
 }
 
-BOOL CTask::save(CInifile& ini)
+BOOL CTask::save(CInifile& ini, LPCSTR section)
 {
-	ini.w_string(*m_section_name,"type", *(typeToStr(m_type)) );
-	ini.w_string(*m_section_name,"task_name",*m_name);
-	ini.w_bool(*m_section_name,"enabled",is_enabled());
-	ini.w_u32(*m_section_name,"priority",m_priority);
+	ini.w_string(section,"type", *(typeToStr(m_type)) );
+	ini.w_string(section,"task_name",*m_name);
+	
+	SaveStringWithBrackets(ini, section, "task_name", m_name);
+	
+	ini.w_bool(section,"enabled",is_enabled());
+	ini.w_u32(section,"priority",m_priority);
 
-	string2048 sub_tasks;sub_tasks[0]=0;
-	if( sub_task_count() ){
-		for(u32 idx=0; idx<sub_task_count();++idx){
-			strconcat(sub_tasks,sub_tasks,get_sub_task(idx)->section_name());
-			if(idx!=sub_task_count()-1)
-				strconcat(sub_tasks,sub_tasks,",");
-		}
-		ini.w_string(*m_section_name,"sub_tasks",sub_tasks);
-
-		for(u32 idx=0; idx<sub_task_count();++idx){
-			get_sub_task(idx)->save(ini);
+	u32 sub_cnt = m_sub_tasks.size();
+	if(sub_cnt){
+		ini.w_u32(section,"sub_task_count",sub_cnt);
+		string512 sname;
+		for(u32 idx=0; idx<sub_cnt;++idx){
+			sprintf(sname,"%s.%04d",section,idx);
+			get_sub_task(idx)->save(ini,sname);
 		}
 	}
 	return TRUE;
@@ -174,53 +180,38 @@ void CTask::run()
 
 }
 
-BOOL CTask::section_exist		(LPCSTR s)
+
+BOOL CTaskCopyFiles::load				(CInifile& ini, LPCSTR section)
 {
-	if(0==strcmp(*m_section_name,s))
-		return FALSE;
+	CTask::load(ini, section);
 
-	CTaskArray::iterator sub_task_it =	m_sub_tasks.begin();
-	for(;sub_task_it !=m_sub_tasks.end();++sub_task_it){
-		BOOL res = (*sub_task_it)->section_exist(s);
-		if(FALSE==res)
-			return FALSE;
-	}
-	
-	return TRUE;
-}
+	m_target_folder		= ini.r_string_wb(section,	"target_folder");
 
-
-BOOL CTaskCopyFiles::load				(CInifile& ini)
-{
-	CTask::load(ini);
-
-	m_target_folder		= ini.r_string(m_section_name,	"target_folder");
-
-	u32 file_count		= ini.r_u32(m_section_name,		"file_count");
+	u32 file_count		= ini.r_u32(section,		"file_count");
 	for(u32 i=0; i<file_count; ++i){
 		string_path s;
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		if(ini.line_exist(m_section_name,s) )
-			m_file_names.push_back(ini.r_string(m_section_name,s));
+		if(ini.line_exist(section,s) )
+			m_file_names.push_back(ini.r_string(section,s));
 	}
 	return TRUE;
 }
 
-BOOL CTaskCopyFiles::save				(CInifile& ini)
+BOOL CTaskCopyFiles::save				(CInifile& ini, LPCSTR section)
 {
-	CTask::save(ini);
+	CTask::save(ini, section);
 
-	ini.w_string(*m_section_name,	"target_folder", *m_target_folder);
+	SaveStringWithBrackets(ini, section, "target_folder", m_target_folder);
 
-	ini.w_u32(*m_section_name,"file_count",m_file_names.size());
+	ini.w_u32(section,"file_count",m_file_names.size());
 	for(u32 i=0; i<m_file_names.size(); ++i){
 		string_path s;
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		ini.w_string(*m_section_name,s,*m_file_names[i]);
+		ini.w_string(section,s,*m_file_names[i]);
 	}
 	return TRUE;
 }
@@ -268,22 +259,22 @@ void CTaskCopyFiles::copy_to(CTask*t)
 }
 
 
-BOOL CTaskCopyFolder::load				(CInifile& ini)
+BOOL CTaskCopyFolder::load				(CInifile& ini, LPCSTR section)
 {
-	CTask::load(ini);
+	CTask::load(ini, section);
 
-	m_target_folder		= ini.r_string(m_section_name,	"target_folder");
-	m_source_folder		= ini.r_string(m_section_name,	"source_folder");
+	m_target_folder		= ini.r_string_wb(section,	"target_folder");
+	m_source_folder		= ini.r_string_wb(section,	"source_folder");
 
 	return TRUE;
 }
 
-BOOL CTaskCopyFolder::save				(CInifile& ini)
+BOOL CTaskCopyFolder::save				(CInifile& ini, LPCSTR section)
 {
-	CTask::save(ini);
+	CTask::save(ini, section);
 
-	ini.w_string(*m_section_name,	"source_folder", *m_source_folder);
-	ini.w_string(*m_section_name,	"target_folder", *m_target_folder);
+	SaveStringWithBrackets(ini, section, "source_folder", m_source_folder);
+	SaveStringWithBrackets(ini, section, "target_folder", m_target_folder);
 
 	return TRUE;
 }
@@ -316,23 +307,23 @@ void CTaskCopyFolder::copy_to(CTask*t)
 	tt->m_target_folder		= m_target_folder;
 }
 
-BOOL CTaskExecute::load				(CInifile& ini)
+BOOL CTaskExecute::load				(CInifile& ini, LPCSTR section)
 {
-	CTask::load(ini);
+	CTask::load(ini, section);
 
-	m_app_name		= ini.r_string(m_section_name,	"app_name");
-	m_params		= ini.r_string(m_section_name,	"params");
-	m_working_folder		= ini.r_string(m_section_name,	"working_folder");
+	m_app_name			= ini.r_string_wb(section,	"app_name");
+	m_params			= ini.r_string_wb(section,	"params");
+	m_working_folder	= ini.r_string_wb(section,	"working_folder");
 
 	return TRUE;
 }
-BOOL CTaskExecute::save				(CInifile& ini)
+BOOL CTaskExecute::save				(CInifile& ini, LPCSTR section)
 {
-	CTask::save(ini);
+	CTask::save(ini, section);
 
-	ini.w_string(*m_section_name,	"app_name", *m_app_name);
-	ini.w_string(*m_section_name,	"params", *m_params);
-	ini.w_string(*m_section_name,	"working_folder", *m_working_folder);
+	SaveStringWithBrackets(ini,section,"app_name",m_app_name);
+	SaveStringWithBrackets(ini,section,"params",m_params);
+	SaveStringWithBrackets(ini,section,"working_folder",m_working_folder);
 
 	return TRUE;
 }
@@ -361,43 +352,41 @@ void CTaskExecute::copy_to(CTask*t)
 	tt->m_working_folder		= m_working_folder;
 }
 
-BOOL CTaskBatchExecute::load				(CInifile& ini)
+BOOL CTaskBatchExecute::load				(CInifile& ini, LPCSTR section)
 {
-	CTask::load(ini);
+	CTask::load(ini, section);
 
-//	m_app_name		= ini.r_string(m_section_name,	"app_name");
-	m_params		= ini.r_string_wb(m_section_name,	"params");
-//	m_working_folder		= ini.r_string(m_section_name,	"working_folder");
+//	m_app_name		= ini.r_string(section,	"app_name");
+	m_params		= ini.r_string_wb(section,	"params");
+//	m_working_folder		= ini.r_string(section,	"working_folder");
 
-	u32 file_count		= ini.r_u32(m_section_name,		"file_count");
+	u32 file_count		= ini.r_u32(section,		"file_count");
 	for(u32 i=0; i<file_count; ++i){
 		string_path s;
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		if(ini.line_exist(m_section_name,s) )
-			m_file_names.push_back(ini.r_string(m_section_name,s));
+		if(ini.line_exist(section,s) )
+			m_file_names.push_back(ini.r_string(section,s));
 	}
 	return TRUE;
 }
 
-BOOL CTaskBatchExecute::save				(CInifile& ini)
+BOOL CTaskBatchExecute::save				(CInifile& ini, LPCSTR section)
 {
-	CTask::save(ini);
+	CTask::save(ini, section);
 
-//	ini.w_string(*m_section_name,	"app_name", *m_app_name);
-	string1024 p;
-	strconcat(p,"\"",*m_params,"\"");
-	ini.w_string(*m_section_name,	"params", p);
-//	ini.w_string(*m_section_name,	"working_folder", *m_working_folder);
+//	ini.w_string(section,	"app_name", *m_app_name);
+//	ini.w_string(section,	"working_folder", *m_working_folder);
+	SaveStringWithBrackets(ini,section,"params",m_params);
 
-	ini.w_u32(*m_section_name,"file_count",m_file_names.size());
+	ini.w_u32(section,"file_count",m_file_names.size());
 	for(u32 i=0; i<m_file_names.size(); ++i){
 		string_path s;
 		string16 idx;
 		itoa(i,idx,10);
 		strconcat(s,"file",idx);
-		ini.w_string(*m_section_name,s,*m_file_names[i]);
+		ini.w_string(section,s,*m_file_names[i]);
 	}
 	return TRUE;
 }
@@ -487,23 +476,23 @@ CString parseParams(LPCSTR fn, LPCSTR params)
 }
 
 
-CTask*	CTaskFacrory::create_task(ETaskType t, LPCSTR section)
+CTask*	CTaskFacrory::create_task(ETaskType t)
 {
 	switch (t){
 		case eTaskCopyFiles:{
-			return xr_new<CTaskCopyFiles>(section);
+			return xr_new<CTaskCopyFiles>();
 		}break;
 		case eTaskCopyFolder:{
-			return xr_new<CTaskCopyFolder>(section);
+			return xr_new<CTaskCopyFolder>();
 		}break;
 		case eTaskDelete:{
-			return xr_new<CTaskDelete>(section);
+			return xr_new<CTaskDelete>();
 		}break;
 		case eTaskRunExecutable:{
-			return xr_new<CTaskExecute>(section);
+			return xr_new<CTaskExecute>();
 		}break;
 		case eTaskBatchExecute:{
-			return xr_new<CTaskBatchExecute>(section);
+			return xr_new<CTaskBatchExecute>();
 		}break;
 		case eTaskUnknown:{
 			R_ASSERT("unknown task type");
@@ -515,7 +504,7 @@ CTask*	CTaskFacrory::create_task(ETaskType t, LPCSTR section)
 CTask*	CTaskFacrory::create_task(CInifile& ini, LPCSTR section)
 {
 	ETaskType t		= strToType(ini.r_string(section,	"type") );
-	return create_task(t, section);
+	return create_task(t);
 }
 
 /*

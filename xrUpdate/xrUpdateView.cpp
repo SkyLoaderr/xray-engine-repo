@@ -44,7 +44,6 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 
 
 	ON_EN_CHANGE(IDC_EDIT_TASK_NAME, OnEnChangeEditTaskName)
-	ON_EN_CHANGE(IDC_EDIT_TASK_SECTION, OnEnChangeEditTaskSection)
 	ON_NOTIFY(NM_CLICK, IDC_TREE1, OnNMClickTree1)
 	ON_BN_CLICKED(IDC_BUTTON3, OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON4, OnBnClickedButtonCopyTask)
@@ -57,7 +56,6 @@ END_MESSAGE_MAP()
 CxrUpdateView::CxrUpdateView()
 	: CFormView(CxrUpdateView::IDD)
 	, m_task_name(_T(""))
-	, m_task_section(_T(""))
 	, m_task_proirity(_T(""))
 	, m_task_type_static(_T(""))
 {
@@ -82,9 +80,7 @@ void CxrUpdateView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE1, m_tree_ctrl);
 	DDX_Control(pDX, IDC_BUTTON2, m_fake_btn);
 	DDX_Text(pDX, IDC_EDIT_TASK_NAME, m_task_name);
-	DDX_Text(pDX, IDC_EDIT_TASK_SECTION, m_task_section);
 	DDX_Control(pDX, IDC_EDIT_TASK_NAME, m_task_name_edt);
-	DDX_Control(pDX, IDC_EDIT_TASK_SECTION, m_task_section_edt);
 	DDX_Text(pDX, IDC_STATIC_TASK_PRIORITY, m_task_proirity);
 	DDX_Text(pDX, IDC_STATIC_TASK_TYPE2, m_task_type_static);
 }
@@ -122,7 +118,6 @@ void CxrUpdateView::OnInitialUpdate()
 		m_batch_process_dlg->Create(MAKEINTRESOURCE(IDD_BATCH_TASK),this);
 
 		m_task_name_edt.EnableWindow(FALSE);
-		m_task_section_edt.EnableWindow(FALSE);
 	}
 	g_tree_ctrl = &m_tree_ctrl;
 	b_initialized = TRUE;
@@ -171,7 +166,7 @@ void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pH
 }
 
 
-void CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
+HTREEITEM CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 {
 	TV_INSERTSTRUCT itm;
 	itm.hParent = parent;
@@ -192,7 +187,8 @@ void CxrUpdateView::FillTaskTree(CTask* t, HTREEITEM parent)
 		FillTaskTree(t->get_sub_task(idx),tree_itm);
 	}
 
-	SortItems();
+	SortItems(tree_itm);
+	return tree_itm;
 }
 
 
@@ -217,7 +213,6 @@ void CxrUpdateView::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
 void CxrUpdateView::ShowPropDlg(CTask* t)
 {
 	m_task_name_edt.EnableWindow(TRUE);
-	m_task_section_edt.EnableWindow(TRUE);
 	m_task_name=t->name();
 	m_task_type_static = *typeToStr(t->type());
 	m_task_proirity.Format("Task proirity: %d",t->m_priority);
@@ -358,7 +353,8 @@ void CxrUpdateView::TryAddNewTask(int t)
 
 		task_new->set_name(dlg.m_task_name.GetBuffer());
 		t_parent->add_sub_task(task_new);
-		FillTaskTree(task_new, hItem);
+		HTREEITEM itm = FillTaskTree(task_new, hItem);
+		m_tree_ctrl.SelectItem(itm);
 	}
 }
 
@@ -503,7 +499,7 @@ void CxrUpdateView::moveItem(BOOL b) //true==Up
 		t->m_priority++; //down
 
 	t->parent()->sort_sub_tasks();
-	SortItems();
+	SortItems(t->parent()->m_tree_itm);
 	ShowPropDlg(t);
 }
 
@@ -521,14 +517,14 @@ MyCompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	   return 1;
 }
 
-void CxrUpdateView::SortItems()
+void CxrUpdateView::SortItems(HTREEITEM itm)
 {
 	TVSORTCB tvs;
 	CTask* t = GetDocument()->m_task;
 	if(!t)
 		return;
-   tvs.hParent = t->m_tree_itm;
- 
+//   tvs.hParent = t->m_tree_itm;
+	tvs.hParent = itm;
 //   tvs.hParent = TVI_ROOT;
    tvs.lpfnCompare = MyCompareProc;
    tvs.lParam = (LPARAM)&m_tree_ctrl;

@@ -97,6 +97,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scriptDbgIde", "xrScriptDbgIde\xrScriptDebudIde.vcproj", "{2024BB4B-9C57-4EA7-B355-1FFF6FD5CE12}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0D43EDC2-A071-4407-9E54-4D136FB854CB} = {0D43EDC2-A071-4407-9E54-4D136FB854CB}
+		{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F} = {17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CJ60Lib", "..\cjLib\CJ60Lib.vcproj", "{17C3FFE4-A323-4A8F-B759-336D6D5EEF5F}"
@@ -107,9 +108,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "..\scintilla\Sc
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrUpdate", "..\xrUpdate\xrUpdate.vcproj", "{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLauncher", "..\xrLauncher\xrLauncher.vcproj", "{1C86CAB0-0F44-4D47-B8E1-333492359CCC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 19
+		SccNumberOfProjects = 21
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -185,6 +194,14 @@ Global
 		SccProjectUniqueName18 = ..\\scintilla\\SciLexer.vcproj
 		SccProjectName18 = \u0022$/SciLexer\u0022,\u0020NHWAAAAA
 		SccLocalPath18 = ..\\scintilla
+		CanCheckoutShared = true
+		SccProjectUniqueName19 = ..\\xrLauncher\\xrLauncher.vcproj
+		SccProjectName19 = \u0022$/xrLauncher\u0022,\u0020RHXAAAAA
+		SccLocalPath19 = ..\\xrLauncher
+		CanCheckoutShared = true
+		SccProjectUniqueName20 = ..\\xrUpdate\\xrUpdate.vcproj
+		SccProjectName20 = \u0022$/xrUpdate\u0022,\u0020QUYAAAAA
+		SccLocalPath20 = ..\\xrUpdate
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -301,6 +318,18 @@ Global
 		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Mixed.Build.0 = Release|Win32
 		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Release.ActiveCfg = Release|Win32
 		{0D43EDC2-A071-4407-9E54-4D136FB854CB}.Release.Build.0 = Release|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Debug.ActiveCfg = Debug|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Debug.Build.0 = Debug|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Mixed.ActiveCfg = Release|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Mixed.Build.0 = Release|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Release.ActiveCfg = Release|Win32
+		{EB640632-D0F6-47F3-BCA0-F5E74AE4E0DD}.Release.Build.0 = Release|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Debug.ActiveCfg = Debug|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Debug.Build.0 = Debug|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Mixed.ActiveCfg = Release|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Mixed.Build.0 = Release|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Release.ActiveCfg = Release|Win32
+		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection

@@ -88,8 +88,8 @@ BOOL CxrUpdateDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		return FALSE;
 
 	CInifile Ini(lpszPathName,TRUE,TRUE,FALSE);
-	m_task = CTaskFacrory::create_task(Ini, "main");
-	m_task->load(Ini);
+	m_task = CTaskFacrory::create_task(Ini,"main");
+	m_task->load(Ini,"main");
 
 	return TRUE;
 }
@@ -99,7 +99,7 @@ BOOL CxrUpdateDoc::OnSaveDocument(LPCTSTR lpszPathName)
 	CDocument::OnSaveDocument(lpszPathName);
 
 	CInifile Ini(lpszPathName,FALSE,FALSE,TRUE);
-	m_task->save(Ini);
+	m_task->save(Ini,"main");
 	return TRUE;
 }
 

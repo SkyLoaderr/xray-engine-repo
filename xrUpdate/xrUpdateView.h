@@ -32,7 +32,7 @@ public:
 	public:
 virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
-			void SortItems();
+			void SortItems(HTREEITEM itm);
 			void moveItem(BOOL b);
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual void OnInitialUpdate(); // called first time after construct
@@ -55,7 +55,7 @@ protected:
 	CBatchTaskDlgProp*		m_batch_process_dlg;
 
 void CreateRoot();
-void FillTaskTree(CTask*, HTREEITEM parent=NULL);
+HTREEITEM FillTaskTree(CTask*, HTREEITEM parent=NULL);
 void ShowPropDlg(CTask*);
 void CheckChildren(HTREEITEM itm, BOOL b);
 // Generated message map functions
@@ -78,11 +78,8 @@ public:
 	CButton m_fake_btn;
 	afx_msg void OnBnClickedBtnRun();
 	afx_msg void OnEnChangeEditTaskName();
-	afx_msg void OnEnChangeEditTaskSection();
 	CString m_task_name;
-	CString m_task_section;
 	CEdit m_task_name_edt;
-	CEdit m_task_section_edt;
 	afx_msg void OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonRemove();
 	afx_msg void OnBnClickedButtonCopyTask();
