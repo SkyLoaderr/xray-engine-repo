@@ -64,6 +64,12 @@ void CAI_Rat::Death()
 	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
+void CAI_Rat::OnDeviceCreate()
+{
+	inherited::OnDeviceCreate();
+	vfLoadAnimations();
+}
+
 void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -75,7 +81,6 @@ void CAI_Rat::Load(LPCSTR section)
 	P.z				+= ::Random.randF();
 	
 	vfLoadSounds();
-	vfLoadAnimations();
 	
 	// sounds
 	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceIinterval");

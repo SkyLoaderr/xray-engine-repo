@@ -80,6 +80,12 @@ void CAI_Zombie::vfLoadSelectors(LPCSTR section)
 	SelectorFreeHunting.Load(section);
 }
 
+void CAI_Zombie::OnDeviceCreate()
+{ 
+	inherited::OnDeviceCreate();
+	vfLoadAnimations();
+}
+
 void CAI_Zombie::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -91,7 +97,6 @@ void CAI_Zombie::Load(LPCSTR section)
 	P.z				+= ::Random.randF();
 	
 	vfLoadSounds();
-	vfLoadAnimations();
 	vfLoadSelectors(section);
 	
 	// visibility

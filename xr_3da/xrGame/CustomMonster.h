@@ -242,6 +242,7 @@ public:
 	virtual	float			ffGetRange			(){return eye_range;}
 	virtual	void			feel_touch_new		(CObject* O);
 	virtual	void			OnEvent				(NET_Packet& P, u16 type);
+	virtual void			OnDeviceCreate		();
 };
 
 namespace AI{

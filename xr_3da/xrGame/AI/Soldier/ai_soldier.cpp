@@ -114,6 +114,13 @@ void CAI_Soldier::vfLoadSelectors(LPCSTR section)
 	SelectorUnderFireLine.Load(section);
 }
 
+void CAI_Soldier::OnDeviceCreate()
+{ 
+	inherited::OnDeviceCreate();
+	vfAssignBones(pSettings,cNameSect());
+	vfLoadAnimations();
+}
+
 void CAI_Soldier::Load	(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -125,9 +132,7 @@ void CAI_Soldier::Load	(LPCSTR section)
 	P.z				+= ::Random.randF();
 	
 	vfLoadSounds();
-	vfLoadAnimations();
 	vfLoadSelectors(section);
-	vfAssignBones(pSettings,section);
 	
 	// visibility
 	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
@@ -158,10 +163,6 @@ void CAI_Soldier::Load	(LPCSTR section)
 	
 	m_dwMaxDynamicObjectsCount = _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount = _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
-
-	Weapons = GetItemList();
-	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
-	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");
 }
 
 BOOL CAI_Soldier::net_Spawn	(LPVOID DC)

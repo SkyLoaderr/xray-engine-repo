@@ -234,6 +234,7 @@ class CAI_Zombie : public CCustomMonster
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);
+		virtual void  OnDeviceCreate();
 };
 		
 #endif

@@ -63,6 +63,34 @@ CCustomMonster::~CCustomMonster	()
 #endif
 }
 
+void CCustomMonster::OnDeviceCreate()
+{
+	inherited::OnDeviceCreate();
+	R_ASSERT					(pVisual->Type==MT_SKELETON);
+	
+	// Eyes
+	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
+	eye_fov					= pSettings->ReadFLOAT(cNameSect(),"eye_fov");
+	eye_range				= pSettings->ReadFLOAT(cNameSect(),"eye_range");
+
+	// movement
+	m_fJumpSpeed			= pSettings->ReadFLOAT(cNameSect(),"jump_speed");
+	//
+	m_fMinSpeed				= pSettings->ReadFLOAT(cNameSect(),"min_speed");
+	m_fMaxSpeed				= pSettings->ReadFLOAT(cNameSect(),"max_speed");
+	m_fCurSpeed				= m_fMaxSpeed;
+
+	// Motions
+	CKinematics* skeleton	= PKinematics(pVisual);
+	m_current				= 0;
+
+	// take index spine bone
+	//"torso1"
+	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
+	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
+
+}
+
 void CCustomMonster::Load		(LPCSTR section)
 {
 	Msg("Loading AI entity: %s",section);
@@ -71,29 +99,11 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	vPosition.y += EPS_L;
 	
-	R_ASSERT					(pVisual->Type==MT_SKELETON);
-	
 	Movement.SetPosition		(vPosition);
 	
 	// Health & Armor
 	fArmor					= 0;
 	
-	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(section,"bone_head"));
-	eye_fov					= pSettings->ReadFLOAT(section,"eye_fov");
-	eye_range				= pSettings->ReadFLOAT(section,"eye_range");
-
-	// movement
-	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
-	//
-	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
-	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
-	m_fCurSpeed				= m_fMaxSpeed;
-
-	// Motions
-	CKinematics* skeleton	= PKinematics(pVisual);
-	m_current				= 0;
-
 	// weapons
 	if (pSettings->ReadINT(section,"weapon_usage")) {
 		Weapons					= new CWeaponList(this);
@@ -101,11 +111,6 @@ void CCustomMonster::Load		(LPCSTR section)
 		Weapons->Init			(S1,S2);
 		// Weapons->TakeItem	(CLSID_OBJECT_W_AK74, 0);
 	}
-
-	// take index spine bone
-	//"torso1"
-	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(section,"bone_torso"));
-	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
 
 	//
 	m_iHealth = pSettings->ReadINT(section,"health");
