@@ -17,6 +17,7 @@ public:
     float	        attenuation2;     /* Quadratic attenuation */
     float	        theta;            /* Inner angle of spotlight cone */
     float	        phi;              /* Outer angle of spotlight cone */
+	DWORD			dwFrame;
 	
 	IC	D3DLIGHT8	*d3d() { return (D3DLIGHT8 *)this; };
 	IC	void	set(DWORD ltType, float x, float y, float z) {
