@@ -80,7 +80,7 @@ void CBuild::BuildSectors()
 
 void CBuild::SaveSectors(IWriter& fs)
 {
-	CFS_Memory MFS;
+	CMemoryWriter MFS;
 	Status("Processing...");
 
 	// validate & save

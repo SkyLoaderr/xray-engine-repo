@@ -38,7 +38,7 @@ void	geom_batch_average	(u32 verts, u32 faces)
 
 void CBuild::SaveTREE(IWriter &fs)
 {
-	CFS_Memory			MFS;
+	CMemoryWriter		MFS;
 
 	Status				("Visuals...");
 	mem_Compact			();

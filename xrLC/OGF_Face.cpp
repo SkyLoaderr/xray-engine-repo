@@ -174,13 +174,13 @@ void OGF_Base::Save	(IWriter &fs)
 {
 	// BBox (already computed)
 	fs.open_chunk		(OGF_BBOX);
-	fs.write			(&bbox,sizeof(Fvector)*2);
+	fs.w			(&bbox,sizeof(Fvector)*2);
 	fs.close_chunk		();
 
 	// Sphere (already computed)
 	fs.open_chunk		(OGF_BSPHERE);
-	fs.write			(&C,sizeof(Fvector));
-	fs.write			(&R,sizeof(float));
+	fs.w			(&C,sizeof(Fvector));
+	fs.w			(&R,sizeof(float));
 	fs.close_chunk		();
 }
 
@@ -195,13 +195,13 @@ void OGF_Node::Save	(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_HIERRARHY;
 	H.flags				= 0;
-	fs.write			(&H,sizeof(H));
+	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w				(chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 }
 
@@ -217,18 +217,18 @@ void OGF_LOD::Save	(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_LOD;
 	H.flags				= 0;
-	fs.write			(&H,sizeof(H));
+	fs.w			(&H,sizeof(H));
 	fs.close_chunk		();
 
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w			(chields.begin(),chields.size()*sizeof(DWORD));
 	fs.close_chunk		();
 
 	// Lod-def
 	fs.open_chunk		(OGF_LODDEF);
-	fs.write			(lod_faces,sizeof(lod_faces));
+	fs.w			(lod_faces,sizeof(lod_faces));
 	fs.close_chunk		();
 
 	// Texture & shader
