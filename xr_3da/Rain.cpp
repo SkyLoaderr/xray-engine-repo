@@ -242,7 +242,7 @@ void	CEffect_Rain::Render	()
 	snd_Ambient.set_position	(sndP);
 
 	// 
-	Fvector3&	f_rain_color	= g_pGamePersistent->Environment.CurrentEnv.rain_color;
+	Fvector3&	f_rain_color;	f_rain_color.set(1,1,1);//	= g_pGamePersistent->Environment.CurrentEnv.rain_color;
 	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,1);
 
 	// Born _new_ if needed
