@@ -102,7 +102,6 @@ function action_wait:initialize()
 		 	anims = { "prisluh_8_2",
 				  "prisluh_8_3",
 				  "prisluh_8_4",
-				  "prisluh_8_5",
 				  "prisluh_8_6" }}
 
 	xr_state.change_state(self.object, 0)
