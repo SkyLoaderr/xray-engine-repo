@@ -23,7 +23,7 @@ local state_standing = 2
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_bodyguard" (property_evaluator)
 
-function evaluator_need_bodyguard:__init(storage) super()
+function evaluator_need_bodyguard:__init(storage, name) super(nil, name)
 	self.st = storage
 end
 
@@ -245,7 +245,7 @@ function add_to_binder(npc, char_ini)
 		operators["action_bodyguard"]  = xr_actions_id.zmey_bodyguard_base + 1
 
 		-- // evaluators
-		manager:add_evaluator (properties["need_bodyguard"], this.evaluator_need_bodyguard(xr_motivator.storage[npc:id()].bodyguard))
+		manager:add_evaluator (properties["need_bodyguard"], this.evaluator_need_bodyguard(xr_motivator.storage[npc:id()].bodyguard, "bodyguard_need_bodyguard"))
 
 		local new_action = this.action_bodyguard_activity(npc, "action_bodyguard_activity", xr_motivator.storage[npc:id()].bodyguard)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
