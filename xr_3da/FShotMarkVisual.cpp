@@ -8,7 +8,7 @@
 #define TIME_TO_HIDE_TOTAL	.8f
 #define TIME_TO_HIDE		.4f
 
-FBasicVisual*	FShotMarkVisual::CreateInstance(void)
+CVisual*	FShotMarkVisual::CreateInstance(void)
 {	return new FShotMarkVisual;	}
 
 //////////////////////////////////////////////////////////////////////

@@ -5,7 +5,7 @@
 
 #define MAX_PARTICLES	1024
 
-class ENGINE_API CPSVisual: public FBasicVisual
+class ENGINE_API CPSVisual: public CVisual
 {
 protected:
 	CVertexStream*		m_Stream;
@@ -20,7 +20,7 @@ public:
 	// Visual
 	DWORD				RenderTO		(FVF::TL* V);
 	virtual void		Render			(float LOD);
-	virtual void		Copy			(FBasicVisual* pFrom);
+	virtual void		Copy			(CVisual* pFrom);
 
 	// Functionality
 	void				Update			(DWORD dt);

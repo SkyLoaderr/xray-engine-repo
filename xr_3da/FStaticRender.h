@@ -88,12 +88,14 @@ public:
 	virtual int						getVisualsCount			();
 	virtual CPortal*				getPortal				(int id);
 	virtual CSector*				getSector				(int id);
+	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 
 	virtual void					set_Object				(CObject*	O	);
 	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf (no culling performed at all)
+	virtual void					add_Geometry			(CVisual*	V	);			// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);

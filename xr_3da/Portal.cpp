@@ -65,10 +65,10 @@ void CSector::Render(CFrustum &F)
 	// Render everything
 	{
 		Fvector	Tpos;
-		::Render.set_Frustum	(&F);
-		::Render.add_Glows		(Glows);
-		::Render.add_Lights		(Lights);
-		::Render.add_Static		(pRoot,F.getMask());
+		::Render->set_Frustum	(&F);
+		::Render->add_Glows		(Glows);
+		::Render->add_Lights	(Lights);
+		::Render->add_Geometry	(pRoot);
 		
 		// Persistant models
 		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
@@ -80,8 +80,8 @@ void CSector::Render(CFrustum &F)
 				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
 				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
 				{
-					::Render.set_Object	(O);
-					O->OnVisible		();
+					::Render->set_Object	(O);
+					O->OnVisible			();
 				}
 			}
 		}
@@ -96,7 +96,7 @@ void CSector::Render(CFrustum &F)
 					DWORD planes	=	F.getMask();
 					CVisual* V	=	pV->Visual();
 					if (F.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
-						::Render.add_leafs_Static(pV->Visual());
+						::Render->add_Geometry	(pV->Visual());
 				}
 				else
 				{
@@ -112,6 +112,7 @@ void CSector::Render(CFrustum &F)
 	}
 
 	// Search visible portals and go through them
+	CSector*	pLastSector		= ::Render->getSectorActive();
 	for (DWORD I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
@@ -123,8 +124,8 @@ void CSector::Render(CFrustum &F)
 				pSector = PORTAL->getSector(this);
 			} else {
 				pSector = PORTAL->getSectorBack(Device.vCameraPosition);
-				if (pSector==this) continue;
-				if (pSector==::Render.pLastSector) continue;
+				if (pSector==this)			continue;
+				if (pSector==pLastSector)	continue;
 			}
 			vector<Fvector> &POLY = PORTAL->getPoly();
 			S.assign(POLY.begin(),POLY.size()); D.clear();

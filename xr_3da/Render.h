@@ -30,6 +30,7 @@ public:
 	virtual int						getVisualsCount			();
 	virtual CPortal*				getPortal				(int id);
 	virtual CSector*				getSector				(int id);
+	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
 	virtual DWORD					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
@@ -40,7 +41,8 @@ public:
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	pTransform = M;		}
 	IC		void					set_LightLevel			(int		L	)			{ iLightLevel = L;					}
 	virtual void					set_Object				(CObject*	O	);
-	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf (no culling performed at all)
+	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf	(no culling performed at all)
+	virtual void					add_Geometry			(CVisual*	V	);			// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);

@@ -18,7 +18,7 @@ struct DPatch {
 };
 #pragma pack(pop)
 
-class FDetailPatch : public FBasicVisual  
+class FDetailPatch : public CVisual  
 {
 	CVertexStream*	Stream;
 	vector<DPatch>	patches;
