@@ -202,7 +202,7 @@ void CStalkerMovementManager::setup_movement_params	()
 		CDetailPathManager::set_dest_position			(desired_position());
 	}
 	else
-		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath))
+		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath)  && (path_type() != ePathTypeNoPath))
 			CDetailPathManager::set_dest_position		(ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id()));
 
 	if (use_desired_direction()) {
