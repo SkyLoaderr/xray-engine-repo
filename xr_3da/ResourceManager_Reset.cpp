@@ -36,6 +36,17 @@ void	CResourceManager::reset_end				()
 	RCache.Index.reset_end		();
 	RCache.CreateQuadIB			();
 
+	// remark geom's which point to dynamic VB/IB
+	{
+		for (u32 _it=0; _it<v_geoms.size(); _it++)
+		{
+			SGeometry*	_G = v_geoms[_it];
+			if			(_G->vb == RCache.Vertex.old_pVB)	_G->vb = RCache.Vertex.Buffer	();
+			if			(_G->ib == RCache.Index.old_pIB)	_G->ib = RCache.Index.Buffer	();
+			if			(_G->ib == RCache.old_QuadIB)		_G->ib = RCache.QuadIB;
+		}
+	}
+
 	// create everything, renderer may use
 	::Render->reset_end			();
 
@@ -59,16 +70,5 @@ void	CResourceManager::reset_end				()
 	{
 		for (u32 _it=0; _it<v_states.size(); _it++)
 			v_states[_it]->state = v_states[_it]->state_code.record();
-	}
-
-	// remark geom's which point to dynamic VB/IB
-	{
-		for (u32 _it=0; _it<v_geoms.size(); _it++)
-		{
-			SGeometry*	_G = v_geoms[_it];
-			if			(_G->vb == RCache.Vertex.old_pVB)	_G->vb = RCache.Vertex.Buffer	();
-			if			(_G->ib == RCache.Index.old_pIB)	_G->ib = RCache.Index.Buffer	();
-			if			(_G->ib == RCache.old_QuadIB)		_G->ib = RCache.QuadIB;
-		}
 	}
 }
