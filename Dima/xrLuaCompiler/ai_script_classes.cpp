@@ -680,6 +680,15 @@ void CLuaGameObject::set_previous_point	(int point_index)
 		movement_manager->set_previous_point(point_index);
 }
 
+void CLuaGameObject::set_start_point	(int point_index)
+{
+	CMovementManager	*movement_manager = dynamic_cast<CMovementManager*>(m_tpGameObject);
+	if (!movement_manager)
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_start_point!");
+	else
+		movement_manager->set_start_point(point_index);
+}
+
 void CLuaGameObject::enable_memory_object	(CLuaGameObject *object, bool enable)
 {
 	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);

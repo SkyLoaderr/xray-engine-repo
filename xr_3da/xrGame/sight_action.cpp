@@ -53,7 +53,7 @@ void CSightAction::execute		()
 				m_object->SetLessCoverLook(m_object->level_vertex(),PI,m_path);
 			else
 				m_object->SetLessCoverLook(m_object->level_vertex(),m_path);
-			m_object->m_head.target.pitch	= -PI_DIV_4;
+			m_object->m_head.target.pitch	= PI_DIV_4;
 			break;
 		}
 		default	: NODEFAULT;

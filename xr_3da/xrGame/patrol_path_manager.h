@@ -19,6 +19,7 @@ public:
 		ePatrolStartTypeFirst = u32(0),
 		ePatrolStartTypeLast,
 		ePatrolStartTypeNearest,
+		ePatrolStartTypePoint,
 		ePatrolStartTypeDummy = u32(-1),
 	};
 	enum EPatrolRouteType {
@@ -37,6 +38,7 @@ private:
 	bool					m_random;
 	u32						m_curr_point_index;
 	u32						m_prev_point_index;
+	u32						m_start_point_index;
 	Fvector					m_dest_position;
 	CScriptCallback			*m_callback;
 protected:
@@ -62,6 +64,7 @@ public:
 	IC			void	set_random					(bool random);
 	IC			ref_str	path_name					() const;
 	IC			void	set_previous_point			(int point_index);
+	IC			void	set_start_point				(int point_index);
 };
 
 #include "patrol_path_manager_inline.h"

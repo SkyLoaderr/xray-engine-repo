@@ -128,3 +128,10 @@ IC	void CPatrolPathManager::set_previous_point	(int point_index)
 	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
 	m_prev_point_index		= point_index;
 }
+
+IC	void CPatrolPathManager::set_start_point	(int point_index)
+{
+	VERIFY					(m_path);
+	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
+	m_start_point_index		= point_index;
+}

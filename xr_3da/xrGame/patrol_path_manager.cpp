@@ -35,6 +35,10 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 				}
 				break;
 			}
+			case ePatrolStartTypePoint : {
+				temp		= m_start_point_index;
+				break;
+			}
 			default			: NODEFAULT;
 		}
 		VERIFY				(temp < m_path->tpaWayPoints.size());
