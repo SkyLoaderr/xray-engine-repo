@@ -9,6 +9,8 @@
 
 #include "general.h"
 
+namespace PAPI{
+
 extern void _pAddActionToList(ParticleAction *S, int size);
 extern void _pCallActionList(ParticleAction *pa, int num_actions,
 							 ParticleGroup *pg);
@@ -474,4 +476,5 @@ PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float cen
 	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
 	
 	_pSendAction(&S, PAVortexID, sizeof(PAVortex));
+}
 }

@@ -7,8 +7,6 @@
 
 #include "general.h"
 
-// using namespace std;
-
 // For Windows DLL.
 #ifdef WIN32
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -30,6 +28,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 #endif
 
+namespace PAPI{
 float ParticleAction::dt;
 
 ParticleGroup **_ParticleState::group_list;
@@ -1017,4 +1016,5 @@ PARTICLEDLL_API int __stdcall pGetGroupCount()
 		return 0; // ERROR
 
 	return _ps.pgrp->p_count;
+}
 }
