@@ -65,7 +65,7 @@ void CRenderTarget::End		()
 {
 	Device.Shader.set_RT		(HW.pBaseRT,HW.pBaseZB);
 	
-	// if (!Available() || !NeedPostProcess())	return;
+	if (!Available() || !NeedPostProcess())	return;
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
@@ -112,18 +112,15 @@ void CRenderTarget::End		()
 		}
 	} else {
 		// Draw COLOR
+/*
 		Device.Shader.set_Shader	(pShaderSet);
 		Device.Primitive.Draw		(pStream,4,2,Offset+4,Device.Streams_QuadIB);
+*/
 		
-		/*
-		extern	DWORD						dwDebugSB;
-		static	float	c0[]				= {0.30f, 0.59f, 0.11f, 1.0f};
-		HW.pDevice->ApplyStateBlock			(dwDebugSB);
+		Device.Shader.set_Shader			(pShaderSet);
 		HW.pDevice->SetPixelShader			(hPS->dwHandle);
-		HW.pDevice->SetPixelShaderConstant	(0,c0,1);
 		hTex->Apply							(1);
 		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-		*/
-
+		HW.pDevice->SetPixelShader			(0);
 	}
 }

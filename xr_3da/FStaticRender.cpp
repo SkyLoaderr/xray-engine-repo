@@ -400,6 +400,7 @@ void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 
+	Target.set_blur	(1.f);
 	Target.Begin	();
 
 	// Environment render

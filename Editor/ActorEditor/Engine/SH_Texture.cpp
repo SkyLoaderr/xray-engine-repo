@@ -171,7 +171,7 @@ void CTexture::Load(LPCSTR cName)
 		pSurface = TWLoader2D
 			(
 			cName,
-			tpfCompressed,
+			tpf32,
 			tmBOX4,
 			psTextureLOD,
 			0.5f,
