@@ -24,7 +24,7 @@ end
 function on_enter_2(zone,object)
 	is_creature_entered_2 = true
 	printf("Object %s entered zone %s",object:name(),zone:name())
-	if event_zone_id == zone:id() and actor_id == object:id() then 
+	if event_zone_id_2 == zone:id() and actor_id == object:id() then 
 		printf("actor entering in our zone")
 		is_actor_entered_2 = true
 	end
