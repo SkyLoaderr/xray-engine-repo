@@ -147,6 +147,31 @@ typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hF
 										 CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam
 										 );
 
+
+void	timestamp	(string64& dest)
+{
+	string64	temp;
+
+	/* Set time zone from TZ environment variable. If TZ is not set,
+	* the operating system is queried to obtain the default value 
+	* for the variable. 
+	*/
+	_tzset		();
+	int			it;
+
+	// date
+	_strdate	( temp );
+	for (it=0; it<strlen(temp); it++)
+		if ('/'==temp[it]) temp[it]='-';
+	strconcat	( dest, temp, "__" );
+
+	// time
+	_strtime	( temp );
+	for (it=0; it<strlen(temp); it++)
+		if (':'==temp[it]) temp[it]='-';
+	strcat		( dest, temp);
+}
+
 LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 {
 	LONG retval		= EXCEPTION_CONTINUE_SEARCH;
@@ -180,13 +205,17 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)::GetProcAddress( hDll, "MiniDumpWriteDump" );
 		if (pDump)
 		{
-			char szDumpPath[_MAX_PATH];
-			char szScratch [_MAX_PATH];
+			char		szDumpPath	[_MAX_PATH];
+			char		szScratch	[_MAX_PATH];
+			string64	t_stemp;
 
 			// work out a good place for the dump file
-			strcpy	( szDumpPath, "logs\\"				);
-			strcat	( szDumpPath, Core.ApplicationName	);
-			strcat	( szDumpPath, ".crash"				);
+			timestamp	(t_stemp);
+			strcpy		( szDumpPath, "logs\\"				);
+			strcat		( szDumpPath, Core.ApplicationName	);
+			strcat		( szDumpPath, "_"					);
+			strcat		( szDumpPath, t_stemp				);
+			strcat		( szDumpPath, ".crash"				);
 
 			// ask the user if they want to save a dump file
 			if (::MessageBox( NULL, "Would you like to save a crash-report file?", Core.ApplicationName, MB_YESNO )==IDYES)
