@@ -241,5 +241,28 @@
 		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>	
 
+	<specific_character id="bar_dolg_ivancov" team_default = "1">
+		<name>Капитан Иванцов</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Правая рука лидера Долга, руководитель всех карательных операций и операций по зачистке гнезд мутантов.</bio>
+
+		<class>stalker_bar_ivancov</class>
+		<community>dolg</community>
+		
+		<rank>50</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
+		</supplies>
+		
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+	</specific_character>	
+
+
 </xml>
 
