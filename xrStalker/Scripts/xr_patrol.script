@@ -62,8 +62,7 @@ end
 function evaluator_complete:evaluate ()
     if self.a.enabled == true then printf ("PATROL_ENABLED")
     else printf ("PATROL_DISABLED") end
---	return not (self.a.enabled == true)
-	return self.a.enabled == true
+	return not (self.a.enabled == true)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
