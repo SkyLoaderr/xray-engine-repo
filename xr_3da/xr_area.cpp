@@ -82,14 +82,16 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	return q_nearest.size();
 }
 //----------------------------------------------------------------------
-IC int   CObjectSpace::GetNearest( ICollisionForm* obj, float range ){
-	obj->Enable 		( false ); // self exclude from test
-	Fvector				P;
-	obj->Owner()->XFORM().transform_tiny(P,obj->getSphere().P);
-	int res				= GetNearest( P, range + obj->getRadius() );
-	obj->EnableRollback	( );
+IC int   CObjectSpace::GetNearest( ICollisionForm* obj, float range )
+{
+	CObject*	O		= obj->Owner	();
+	BOOL		E		= O->getEnabled	();
+	O->setEnabled		(FALSE);
+	int res				= GetNearest( O->spatial.center, range + O->spatial.radius );
+	O->setEnabled		(E);
 	return				res;
 }
+
 //----------------------------------------------------------------------
 static void __stdcall	build_callback	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt, void* params)
 {

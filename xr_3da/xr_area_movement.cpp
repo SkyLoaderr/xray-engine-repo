@@ -183,10 +183,10 @@ BOOL CObjectSpace::EllipsoidCollide( ICollisionForm *object, const Fmatrix& T, c
 	Fvector vRadius;
 	bounding_box.getradius(vRadius);
 
-	object->Enable			(false);
+	object->owner->setEnabled(false);
 	BoxQuery				(bounding_box,T,
 		clGET_TRIS|clGET_BOXES|clQUERY_TOPLEVEL|clQUERY_STATIC|clQUERY_DYNAMIC);
-	object->EnableRollback	();
+	object->owner->setEnabled(true);
 
 	Fvector scaledPosition;	 
 	Fvector inv_radius;

@@ -115,7 +115,7 @@ public:
 	void								cNameVisual_set		(LPCSTR N);
 	
 	// Properties
-	void								setVisible			(BOOL _visible)		{ FLAGS.bVisible = _visible?1:0;	}
+	void								setVisible			(BOOL _visible);
 	IC BOOL								getVisible			()					{ return FLAGS.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
 	IC BOOL								getEnabled			()					{ return FLAGS.bEnabled;			}

@@ -20,7 +20,6 @@ ICollisionForm::ICollisionForm( CObject* _owner )
 	owner				= _owner;
 	bv_sphere.identity	( );
 	rect_last.null		( );
-	enabled_prev=enabled= true;
 }
 
 ICollisionForm::~ICollisionForm( )

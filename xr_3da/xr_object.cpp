@@ -51,7 +51,7 @@ void CObject::setEnabled		(BOOL _enabled)
 	if (_enabled)
 	{
 		FLAGS.bEnabled							=	1;	
-		if (spatial.model)		spatial.type	|=	STYPE_COLLIDEABLE;
+		if (collidable.model)	spatial.type	|=	STYPE_COLLIDEABLE;
 	}
 	else
 	{
