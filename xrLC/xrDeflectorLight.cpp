@@ -302,6 +302,10 @@ VOID CDeflector::Light()
 				}
 			}
 		}
+		if (0==_count)	{
+			Msg("* ERROR: Lightmap not calculated");
+			return;
+		}
 		_r	/= _count;	_g	/= _count;	_b	/= _count;
 		
 		// Test for equality
