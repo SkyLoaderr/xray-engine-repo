@@ -128,97 +128,96 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 {
 	Device.Statistic.TEST1.Begin();
 
-	if (m_tPathType == ePathTypeCriteria) {
-		AI_Path.BuildTravelLine	(Position());
-		m_tPathState			= ePathStateSearchNode;
-		AI_Path.TravelStart		= 0;
-	}
-	else {
-		m_tpaPoints.clear			();
-		m_tpaTravelPath.clear		();
-		m_tpaPointNodes.clear		();
+	m_tpaPoints.clear			();
+	m_tpaTravelPath.clear		();
+	m_tpaPointNodes.clear		();
 
-		u32							N = (u32)AI_Path.Nodes.size();
-		if (!N) {
-			Msg("! Node list is empty!");
-			AI_Path.Nodes.clear();
-			AI_Path.TravelPath.clear();
-			m_tPathState = ePathStateSearchNode;
-			Device.Statistic.TEST1.End();
-			return;
-		}
-		Fvector						tStartPosition = Position();
-		u32							dwCurNode = AI_NodeID;
-		m_tpaPoints.push_back		(Position());
-		m_tpaPointNodes.push_back	(dwCurNode);
-
-		for (u32 i=1; i<=N; i++)
-			if (i<N) {
-				if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i])) {
-					if (dwCurNode != AI_Path.Nodes[i - 1])
-						m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
-					else
-						m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
-					m_tpaPointNodes.push_back(dwCurNode);
-				}
-			}
-			else
-				if (tpDestinationPosition)
-					if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
-						//VERIFY(false);
-						if (dwCurNode != AI_Path.DestNode)
-							m_tpaPointNodes.push_back(AI_Path.DestNode);
-						tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(dwCurNode),tpDestinationPosition->x,tpDestinationPosition->z);
-						m_tpaPoints.push_back(*tpDestinationPosition);
-					}
-					else {
-						//if (dwCurNode != AI_Path.DestNode)
-						//if (getAI().bfInsideNode(getAI().Node(dwCurNode),*tpDestinationPosition)) {
-							tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
-							m_tpaPointNodes.push_back(AI_Path.DestNode);
-							m_tpaPoints.push_back(*tpDestinationPosition);
-						//}
-					}
-
-		if (!tpDestinationPosition && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
-			m_tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
-			m_tpaPointNodes.push_back(AI_Path.Nodes[N - 1]);
-		}
-
-		//m_tpaDeviations.resize	(N = m_tpaPoints.size());
-		N = (u32)m_tpaPoints.size();
-
+	u32							N = (u32)AI_Path.Nodes.size();
+	if (!N) {
+		Msg("! Node list is empty!");
+		AI_Path.Nodes.clear();
 		AI_Path.TravelPath.clear();
-		AI_Path.Nodes.clear		();
-
-		AI::CTravelNode	T;
-		T.floating		= false;
-		T.P.set			(0,0,0);
-		for (i=1; i<N; i++) {
-			m_tpaLine.clear();
-			m_tpaLine.push_back(m_tpaPoints[i-1]);
-			m_tpaLine.push_back(m_tpaPoints[i]);
-			getAI().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
-			u32 n = (u32)m_tpaTravelPath.size();
-			for (u32 j= 0; j<n; j++) {
-				T.P = m_tpaTravelPath[j];
-				AI_Path.TravelPath.push_back(T);
-				AI_Path.Nodes.push_back(m_tpaNodes[j]);
-			}
-		}
-		
-		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
-		
-		if ((N > 1) && tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
-			if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {
-				T.P = *tpDestinationPosition;
-				AI_Path.TravelPath.push_back(T);
-			}
-		}
-
-		AI_Path.TravelStart = 0;
-		m_tPathState		= ePathStateSearchNode;
+		m_tPathState = ePathStateSearchNode;
+		Device.Statistic.TEST1.End();
+		return;
 	}
+	Fvector						tStartPosition = Position();
+//	if (!getAI().bfInsideNode(AI_Node,tStartPosition)) {
+//		getAI().ref_dec			(AI_NodeID);
+//		AI_NodeID				= getAI().q_Node(AI_NodeID,tStartPosition,false);
+//		getAI().ref_add			(AI_NodeID);
+//		AI_Node					= getAI().Node(AI_NodeID);
+//		AI_Path.Nodes[0]		= AI_NodeID;
+//		VERIFY					(getAI().bfInsideNode(AI_Node,tStartPosition));
+//	}
+
+	u32							dwCurNode = AI_NodeID;
+	m_tpaPoints.push_back		(Position());
+	m_tpaPointNodes.push_back	(dwCurNode);
+
+	for (u32 i=1; i<=N; i++)
+		if (i<N) {
+			if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i])) {
+				if (dwCurNode != AI_Path.Nodes[i - 1])
+					m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
+				else
+					m_tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+				m_tpaPointNodes.push_back(dwCurNode);
+			}
+		}
+		else
+			if (tpDestinationPosition)
+				if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
+					//VERIFY(false);
+					if (dwCurNode != AI_Path.DestNode)
+						m_tpaPointNodes.push_back(AI_Path.DestNode);
+					tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(dwCurNode),tpDestinationPosition->x,tpDestinationPosition->z);
+					m_tpaPoints.push_back(*tpDestinationPosition);
+				}
+				else {
+						tpDestinationPosition->y = getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tpDestinationPosition->x,tpDestinationPosition->z);
+						m_tpaPointNodes.push_back(AI_Path.DestNode);
+						m_tpaPoints.push_back(*tpDestinationPosition);
+				}
+
+	if (!tpDestinationPosition && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)) {
+		m_tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
+		m_tpaPointNodes.push_back(AI_Path.Nodes[N - 1]);
+	}
+
+	//m_tpaDeviations.resize	(N = m_tpaPoints.size());
+	N = (u32)m_tpaPoints.size();
+
+	AI_Path.TravelPath.clear();
+	AI_Path.Nodes.clear		();
+
+	AI::CTravelNode	T;
+	T.floating		= false;
+	T.P.set			(0,0,0);
+	for (i=1; i<N; i++) {
+		m_tpaLine.clear();
+		m_tpaLine.push_back(m_tpaPoints[i-1]);
+		m_tpaLine.push_back(m_tpaPoints[i]);
+		getAI().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
+		u32 n = (u32)m_tpaTravelPath.size();
+		for (u32 j= 0; j<n; j++) {
+			T.P = m_tpaTravelPath[j];
+			AI_Path.TravelPath.push_back(T);
+			AI_Path.Nodes.push_back(m_tpaNodes[j]);
+		}
+	}
+	
+	AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+	
+	if ((N > 1) && tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {
+			T.P = *tpDestinationPosition;
+			AI_Path.TravelPath.push_back(T);
+		}
+	}
+
+	AI_Path.TravelStart = 0;
+	m_tPathState		= ePathStateSearchNode;
 
 	Device.Statistic.TEST1.End();
 }
@@ -227,105 +226,49 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 // ¬ыбор точки, построение пути, построение TravelLine
 void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
 {
+	if (m_tPathState == ePathStateBuilt) {
+		m_tPathState = ePathStateSearchNode;
+	}
+
 	INIT_SQUAD_AND_LEADER;
 
-	if (m_tPrevPathType != m_tPathType) {	// если изменен тип пути, то необходимо перестроить путь
-		m_tPrevPathType		= m_tPathType;
-		m_tPathState		= ePathStateSearchNode;
-		AI_Path.Nodes.clear	();
-	}
 	if (tpNodeEvaluator)
 		vfInitSelector			(*tpNodeEvaluator,Squad);
-
-	
-	EPathType tPathType = m_tPathType;		// сохран€ем текущий тип пути
-
-	if (m_tPathType == ePathTypeStraightCriteria) {
-		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
-													  		 m_tPathType = ePathTypeCriteria ;
-	}
-
-//	do {
-		
 
 		switch (m_tPathState) {
-			case ePathStateSearchNode : {
-				if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
-					vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
-				else
-					if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-						m_tPathState = ePathStateBuildNodePath;	// 
-				break;
-										}
-			case ePathStateBuildNodePath : {
-				if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
-					vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
-				else
-					if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
-						AI_Path.Nodes.clear();
-						AI_Path.Nodes.push_back(AI_NodeID);
-						m_tPathState = ePathStateBuildTravelLine;
-					}
-					else
-						if (bSearchForNode && tpNodeEvaluator)
-							m_tPathState = ePathStateSearchNode;
-						else
-							if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-								m_tPathState = ePathStateBuildTravelLine;
-				break;
-										}
-			case ePathStateBuildTravelLine : {
-				vfBuildTravelLine(tpDestinationPosition);
-				m_tPathState = ePathStateSearchNode;
-				break;
-											}
+			case ePathStateSearchNode : 
+							if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
+								vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
+							else
+								if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+									m_tPathState = ePathStateBuildNodePath;	// 
+							break;
+										
+			case ePathStateBuildNodePath : 
+							if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
+								vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
+							else
+								if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
+									AI_Path.Nodes.clear();
+									AI_Path.Nodes.push_back(AI_NodeID);
+									m_tPathState = ePathStateBuildTravelLine;
+								}
+								else
+									if (bSearchForNode && tpNodeEvaluator)
+										m_tPathState = ePathStateSearchNode;
+									else
+										if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+											m_tPathState = ePathStateBuildTravelLine;
+							break;
+										
+			case ePathStateBuildTravelLine : 
+							vfBuildTravelLine(tpDestinationPosition);
+							m_tPathState = ePathStateBuilt;
+							break;
+											
 		}	
-//	} while (m_tPathState != ePathStateBuilt);
-
-	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-// ¬ыбор точки, построение пути, построение TravelLine
-void CAI_Biting::vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
-{
-	INIT_SQUAD_AND_LEADER;
-
-	if (m_tPrevPathType != m_tPathType) {	// если изменен тип пути, то необходимо перестроить путь
-		m_tPrevPathType		= m_tPathType;
-		m_tPathState		= ePathStateSearchNode;
-		AI_Path.Nodes.clear	();
-	}
-	if (tpNodeEvaluator)
-		vfInitSelector			(*tpNodeEvaluator,Squad);
-
-
-	EPathType tPathType = m_tPathType;		// сохран€ем текущий тип пути
-
-	if (m_tPathType == ePathTypeStraightCriteria) {
-		(::Random.randI(0,100) < (int)m_dwPathTypeRandomFactor) ? m_tPathType = ePathTypeStraight :
-		m_tPathType = ePathTypeCriteria ;
-	}
-
-	if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
-		vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
-	
-	if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))  {
-		if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
-			vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
-	
-		if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
-				AI_Path.Nodes.clear();
-				AI_Path.Nodes.push_back(AI_NodeID);
-		} else if (bSearchForNode && tpNodeEvaluator) return;
-		 
-		vfBuildTravelLine(tpDestinationPosition);
-	}
-//		if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-			
-	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // ¬ыбор следующей точки графа

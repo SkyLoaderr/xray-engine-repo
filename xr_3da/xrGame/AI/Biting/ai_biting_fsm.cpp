@@ -617,6 +617,8 @@ void CAI_Biting::Think()
 	// K - C | D | E | F 
 
 
+
+
 	if (Motion.m_tSeq.Active())	{
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
@@ -642,7 +644,8 @@ void CAI_Biting::Think()
 		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
 		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpseFromMem(ve,Position()))	SetState(stateEat);
+		else if (GetCorpseFromMem(ve,Position()))	
+									SetState(stateEat);
 		else						SetState(stateRest); 
 		//---
 		
@@ -653,6 +656,7 @@ void CAI_Biting::Think()
 	}
 	
 	Motion.SetFrameParams(this);
+
 
 	ControlAnimation();
 }

@@ -185,13 +185,17 @@ void CGameObject::spatial_move		()
 //			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 			AI.ref_dec  (AI_NodeID);
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
-			
+
 			if (!AI_NodeID)
 				Msg("! GameObject::spatial_move : Corresponding node hasn't been found for monster %s",cName());
 
 //			Msg						("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 			AI.ref_add				(AI_NodeID);
 			AI_Node					= AI.Node(AI_NodeID);
+//			if (!getAI().bfInsideNode(AI_Node,Position())) {
+//				AI_NodeID	= AI_NodeID;
+//			}
+
 		}
 
 		// Perform sector detection

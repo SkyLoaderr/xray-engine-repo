@@ -249,8 +249,6 @@ private:
 	u32						m_AttackLastTime;			// последнее время аттаки
 	u32						m_AttackInterval;
 	Fvector					m_AttackLastPosition;		// последняя позиция врага во время аттаки
-
-	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
 	
 	// Fire bone indexes
 	u32		m_iLeftFireBone;

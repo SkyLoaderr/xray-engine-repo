@@ -55,6 +55,7 @@ void CAI_Biting::Init()
 	m_tAnim							= DEFAULT_ANIM;
 
 	m_tPathType						= ePathTypeStraight;
+	m_tPathState					= ePathStateSearchNode;
 
 	m_fAttackSuccessProbability0	= .8f;
 	m_fAttackSuccessProbability1	= .6f;

@@ -11,7 +11,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 	NodePosition	QueryPos;
 	PackPosition	(QueryPos,BasePos);
 
-	if (PrevNode < m_header.size) {
+	if (PrevNode < m_header.count) {
 		if (u_InsideNode(*m_nodes_ptr[PrevNode],QueryPos)) {
 		//if (bfInsideNode(BasePos,m_nodes_ptr[PrevNode])) {
 			Device.Statistic.AI_Node.End();
@@ -25,7 +25,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 		tSearch.m_tStartPosition = BasePos;
 		tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
 	//	q_Range_Bit(PrevNode,BasePos,m_header.size*3,&QueryPos,BestNode,BestCost);
-		if (tSearch.m_fBestCost <= 3*m_header.size)	{
+		if (tSearch.m_fBestCost <= 3*m_header.size*m_header.size)	{
 			// small distance from node
 			Device.Statistic.AI_Node.End();
 			return tSearch.m_dwBestNode;
@@ -34,7 +34,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 		tSearch.m_fSearchRange = m_header.size*30;
 		tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
 	//	q_Range_Bit(PrevNode,BasePos,m_header.size*30,&QueryPos,BestNode,BestCost);
-		if (tSearch.m_fBestCost <= 30*m_header.size)	{
+		if (tSearch.m_fBestCost <= 30*m_header.size*m_header.size)	{
 			// small distance from node
 			Device.Statistic.AI_Node.End();
 			return tSearch.m_dwBestNode;

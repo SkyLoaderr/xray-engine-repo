@@ -75,6 +75,12 @@ void CBitingRest::Run()
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:
+			// Построить путь обхода точек графа
+			pMonster->vfUpdateDetourPoint();	
+			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+			
+			pMonster->vfChoosePointAndBuildPath(0,0, false, 0);
+
 			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 			break;
@@ -104,13 +110,6 @@ void CBitingRest::Replanning()
 
 	if (rand_val < 50) {	
 		m_tAction = ACTION_WALK;
-
-		// Построить путь обхода точек графа
-		pMonster->vfUpdateDetourPoint();	
-		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
-		pMonster->m_tPathType = ePathTypeStraight;
-		
-		pMonster->vfChoosePointAndBuildPathAtOnce(0,0, false, 0);
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
@@ -223,8 +222,7 @@ void CBitingAttack::Run()
 	switch (m_tAction) {
 		case ACTION_RUN:		// бежать на врага
 			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
-			pMonster->m_tPathType = ePathTypeStraight;
-			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), true, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
@@ -312,10 +310,12 @@ void CBitingEat::Run()
 	// Выполнение состояния
 	switch (m_tAction) {
 		case ACTION_RUN:
-			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->m_tPathType = ePathTypeStraight;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), false, 0);
 
+			if (pMonster->m_tPathState != ePathStateBuilt) {
+				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+`				pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+			}
+			
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
 
@@ -337,7 +337,10 @@ void CBitingEat::Run()
 bool CBitingEat::CheckCompletion() 
 {
 	// если труп съеден || монстр достаточно сыт
-	if ((pCorpse->m_fFood <= 0.f) || (!IsInertia())) return true;
+	if (pCorpse && (pCorpse->m_fFood <= 0.f) || (!IsInertia())) {
+		Msg("--Eating complete! -- ");
+		return true;
+	}
 	return false;
 }	
 

@@ -15,18 +15,18 @@ class CAI_Biting;
 
 const float m_cfBitingStandTurnRSpeed	=	PI_DIV_3;
 
-const float m_cfBitingWalkSpeed		 =	1.7f;
-const float m_cfBitingWalkTurningSpeed =	1.0f;
+const float m_cfBitingWalkSpeed			=	1.7f;
+const float m_cfBitingWalkTurningSpeed	=	1.0f;
 const float m_cfBitingWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
 const float m_cfBitingWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
-const float m_cfBitingWalkMinAngle	=   PI_DIV_6;
+const float m_cfBitingWalkMinAngle		=   PI_DIV_6;
 
 
 const float m_cfBitingRunAttackSpeed		=	5.0f;
 const float m_cfBitingRunAttackTurnSpeed	=	3.5f;
 const float m_cfBitingRunAttackTurnRSpeed	=	5* PI_DIV_6;
-const float m_cfBitingRunRSpeed			=	PI_DIV_2;
-const float m_cfBitingRunAttackMinAngle	=   PI_DIV_6;
+const float m_cfBitingRunRSpeed				=	PI_DIV_2;
+const float m_cfBitingRunAttackMinAngle		=   PI_DIV_6;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class

@@ -71,7 +71,7 @@ namespace AI_Biting {
 		ePathStateSearchNode = 0,
 		ePathStateBuildNodePath,
 		ePathStateBuildTravelLine,
-//		ePathStateBuilt
+		ePathStateBuilt
 	};
 
 	enum EPathType {

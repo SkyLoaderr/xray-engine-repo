@@ -76,12 +76,23 @@ bool CMotionTurn::CheckTurning(CCustomMonster *pData)
 	return false;
 }
 
+#define R2D(x) (angle_normalize(x)*180.f/PI)
+
 bool CMotionTurn::NeedToTurn(CCustomMonster *pData)
 {
+	Msg("--------------------------------------------------------------------------------");
+	Msg("BEFOR:: time = [%i]  current = [%f]  target = [%f]", pData->m_dwCurrentUpdate, 
+		R2D(pData->r_torso_current.yaw), R2D(pData->r_torso_target.yaw));
+
 	// Если путь построен выполнить SetDirectionLook 
 	if (!pData->AI_Path.TravelPath.empty() && (pData->AI_Path.TravelPath.size() > 1)) {
 		pData->SetDirectionLook();
 	} 
+
+	Msg("AFTER:: time = [%i]  current = [%f]  target = [%f]", pData->m_dwCurrentUpdate, 
+		R2D(pData->r_torso_current.yaw), R2D(pData->r_torso_target.yaw));
+
+
 
 	if (!getAI().bfTooSmallAngle(pData->r_torso_target.yaw,pData->r_torso_current.yaw, fMinAngle)) { // если угол не маленький то...
 		if (angle_normalize_signed(pData->r_torso_target.yaw - pData->r_torso_current.yaw) > 0) bLeftSide = false;

@@ -256,8 +256,12 @@ public:
 
 	IC		void vfAddIfInsideNode						()
 			{
-				if (!getAI().bfInsideNode(m_tpCurrentNode,m_tStartPosition) && (_abs(m_tStartPosition.y - getAI().ffGetY(*m_tpCurrentNode,m_tStartPosition.x,m_tStartPosition.z) < .3f)))
+				if (!getAI().bfInsideNode(m_tpCurrentNode,m_tStartPosition) && (_abs(m_tStartPosition.y - getAI().ffGetY(*m_tpCurrentNode,m_tStartPosition.x,m_tStartPosition.z) < 1.f)))
 					m_fResult = m_fDistance;
+				else {
+					m_fResult = -1.f;
+					m_bStopSearch = true;
+				}
 			}
 
 	IC		void vfAddTravelCost						()
@@ -576,7 +580,7 @@ public:
 				m_dwBestNode				= m_dwStartNode;
 				m_fBestCost					= MAX_NODE_ESTIMATION_COST;
 				m_tpCurrentNode				= tpStartNode;;
-				m_fDistance					= m_tStartPosition.distance_to(getAI().tfGetNodeCenter(tpStartNode));
+				m_fDistance					= m_tStartPosition.distance_to_sqr(getAI().tfGetNodeCenter(tpStartNode));
 				m_fBestCost					= Evaluate();
 
 				// Cycle
@@ -634,7 +638,7 @@ public:
 				m_dwBestNode				= m_dwStartNode;
 				m_fBestCost					= MAX_NODE_ESTIMATION_COST;
 				m_tpCurrentNode				= tpStartNode;;
-				m_fDistance					= m_tStartPosition.distance_to(getAI().tfGetNodeCenter(tpStartNode));
+				m_fDistance					= m_tStartPosition.distance_to_sqr(getAI().tfGetNodeCenter(tpStartNode));
 				m_fBestCost					= Evaluate();
 
 				// Cycle
