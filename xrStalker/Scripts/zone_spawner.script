@@ -71,13 +71,13 @@ function zone_spawner:__init (zone, ini)
     if ini:line_exist ("zone_spawner", "infoportion") == true then
        local infos = ini:r_string ("zone_spawner", "infoportion")
        if infos ~= nil then 
-          --printf ("Zone has infoportions - %s", infos)
+          printf ("Zone has infoportions - %s", infos)
           self.infoportions = utils.parse_params (infos)
        end
     end   
     
     table.insert (zones, self)
-    --printf ("Zone %s is added to binder", zone:name ())
+    printf ("Zone %s is added to binder", zone:name ())
     self.members = {}
     for a = 1, table.getn (temporary_store), 1 do
         if temporary_store[a].id_spawner == self.id then
