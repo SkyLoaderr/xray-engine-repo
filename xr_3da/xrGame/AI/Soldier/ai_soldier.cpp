@@ -143,11 +143,12 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 	}
 }
 
-void CAI_Soldier::OnVisible()
+float CAI_Soldier::OnVisible()
 {
 	inherited::OnVisible();
 
 	Weapons->OnRender(FALSE);
+	return(0);
 }
 
 // when someone hit soldier
@@ -1308,8 +1309,10 @@ void CAI_Soldier::UnderFire()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+		if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
+			vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
 
+	
 	mk_rotation(tHitDir,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
