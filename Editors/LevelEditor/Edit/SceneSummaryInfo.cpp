@@ -244,7 +244,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     total_mem->ApplyValue	(shared_str().sprintf("%d Kb",	iFloor(total_mem_usage/1024)));
 	// sound
     PHelper().CreateCaption	(items,"Sounds\\Occluder\\Faces",		shared_str().sprintf("%d",snd_occ_face_cnt));
-    PHelper().CreateCaption	(items,"Sounds\\Occluder\\Vertices",		shared_str().sprintf("%d",snd_occ_vert_cnt));
+    PHelper().CreateCaption	(items,"Sounds\\Occluder\\Vertices",	shared_str().sprintf("%d",snd_occ_vert_cnt));
     PHelper().CreateCaption	(items,"Sounds\\Sources",				shared_str().sprintf("%d",sound_source_cnt));
     PHelper().CreateCaption	(items,"Sounds\\Waves\\Count",			shared_str().sprintf("%d",waves.size()));
     for (RStringSetIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
