@@ -267,6 +267,7 @@ protected:
 	void					create_Skeleton			();
 public:
 	SActorMotions			m_anims;
+	SActorVehicleAnims		m_vehicle_anims;
 
 	CBlend*					m_current_legs_blend;
 	CBlend*					m_current_torso_blend;

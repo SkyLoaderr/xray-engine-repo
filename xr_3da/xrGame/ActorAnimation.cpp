@@ -7,7 +7,7 @@
 #include "inventory.h"
 #include "missile.h"
 #include "level.h"
-
+#include "Car.h"
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
 static const float y_head_factor		= 0.2f;
@@ -153,10 +153,10 @@ void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR
 
 void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 {
-	m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
-	m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
-	m_steering_torso_idle	= V->ID_Cycle_Safe("steering_torso_idle");
-	m_steering_legs_idle	= V->ID_Cycle_Safe("steering_legs_idle");
+	//m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
+	//m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
+	//m_steering_torso_idle	= V->ID_Cycle_Safe("steering_torso_idle");
+	//m_steering_legs_idle	= V->ID_Cycle_Safe("steering_legs_idle");
 	m_dead_stop				= V->ID_Cycle("norm_dead_stop_0");
 
 	m_normal.Create	(V,"norm");
@@ -164,12 +164,48 @@ void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 	//m_climb.Create	(V,"cr");
 	m_climb.CreateClimb(V);
 }
+
+ACTOR_DEFS::SActorVehicleAnims::SActorVehicleAnims()
+{
+	
+}
+void ACTOR_DEFS::SActorVehicleAnims::Create(CSkeletonAnimated* V)
+{
+	for(u16 i=0;TYPES_NUMBER>i;++i) m_vehicles_type_collections[i].Create(V,i);
+}
+
+ACTOR_DEFS::SActorVehicleAnims::SOneTypeCollection::SOneTypeCollection()
+{
+	for(u16 i=0;MAX_IDLES>i;++i) idles[i]			=	0		;
+	idles_num										=	0		;
+	steer_left										= NULL		;
+	steer_right										= NULL		;
+}
+
+void ACTOR_DEFS::SActorVehicleAnims::SOneTypeCollection::Create(CSkeletonAnimated* V,u16 num)
+{
+	string128 buff,buff1,buff2;
+	strconcat(buff1,itoa(num,buff,10),"_");
+	steer_left=	V->ID_Cycle(strconcat(buff,"steering_idle_",buff1,"ls"));
+	steer_right=V->ID_Cycle(strconcat(buff,"steering_idle_",buff1,"rs"));
+
+	for(int i=0;MAX_IDLES>i;++i)
+	{
+			idles[i]=V->ID_Cycle_Safe(strconcat(buff,"steering_idle_",buff1,itoa(i,buff2,10)));
+			if(idles[i]) idles_num++;
+			else break;
+	}
+}
+
 void CActor::steer_Vehicle(float angle)	
 {
 	if(!m_holder)		return;
-	if(angle==0.f) 		smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
-	else if(angle>0.f)	smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
-	else				smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
+	CCar*	car			= smart_cast<CCar*>(m_holder);
+	u16 anim_type       = car->DriverAnimationType();
+	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims.m_vehicles_type_collections[anim_type];
+	if(angle==0.f) 		smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(anims.idles[0]);
+	else if(angle>0.f)	smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(anims.steer_right);
+	else				smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(anims.steer_left);
 }
 
 void CActor::g_SetAnimation( u32 mstate_rl )

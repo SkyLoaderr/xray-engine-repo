@@ -785,7 +785,8 @@ void	CActor::OnChangeVisual()
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
 
-	m_anims.Create			(V);
+	m_anims.			Create			(V);
+	m_vehicle_anims.	Create			(V);
 	//-------------------------------------------------------------------------------
 	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
 	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");

@@ -63,6 +63,7 @@ public:
 	float m_fuel;
 	float m_fuel_tank;
 	float m_fuel_consumption;
+	u16	  m_driver_anim_type;
 	struct SWheel 
 	{
 		u16 bone_id;
@@ -393,6 +394,7 @@ public:
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
 	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+	u16						DriverAnimationType ();
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );

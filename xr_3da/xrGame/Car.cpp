@@ -20,6 +20,7 @@ CCar::CCar(void)
 
 {
 
+	m_driver_anim_type = 0;
 	m_bone_steer	= BI_NONE;
 	active_camera	= 0;
 	camera[ectFirst]= xr_new<CCameraFirstEye>	(this, pSettings, "car_firsteye_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid); 
@@ -485,6 +486,14 @@ void CCar::ParseDefinitions()
 	///////////////////////////////lights///////////////////////////////////////////////////
 	m_lights.Init(this);
 	m_lights.ParseDefinitions();
+
+
+	
+	if(ini->section_exist("animations"))
+	{
+		m_driver_anim_type=ini->r_u16("animations","driver_animation_type");
+	}
+
 }
 
 void CCar::CreateSkeleton()
@@ -1248,6 +1257,10 @@ BOOL CCar::UsedAI_Locations()
 	return					(TRUE);
 }
 
+u16 CCar::DriverAnimationType()
+{
+	return m_driver_anim_type;
+}
 //void CCar::object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 //{
 //

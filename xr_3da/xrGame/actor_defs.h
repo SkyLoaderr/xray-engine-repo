@@ -101,10 +101,12 @@ struct					SActorMotions
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 		void			CreateClimb(CSkeletonAnimated* K);
 	};
-	CMotionDef*			m_steering_torso_left;
-	CMotionDef*			m_steering_torso_right;
-	CMotionDef*			m_steering_torso_idle;
-	CMotionDef*			m_steering_legs_idle;
+	//CMotionDef*			m_steering_torso_left;
+	//CMotionDef*			m_steering_torso_right;
+	//CMotionDef*			m_steering_torso_idle;
+	//CMotionDef*			m_steering_legs_idle;
+	
+
 	CMotionDef*			m_dead_stop;
 
 	SActorState			m_normal;
@@ -112,6 +114,26 @@ struct					SActorMotions
 	SActorState			m_climb;
 	void				Create(CSkeletonAnimated* K);
 };
+
+//
+struct SActorVehicleAnims
+{
+			static const TYPES_NUMBER=2;
+			struct	SOneTypeCollection
+				{
+						static const u16		MAX_IDLES = 3				;
+									 u16		idles_num					;
+							CMotionDef*			idles[MAX_IDLES]	;
+							CMotionDef*			steer_left					;
+							CMotionDef*			steer_right					;
+							SOneTypeCollection	()							;
+					void	Create				(CSkeletonAnimated* K,u16 num);
+				};
+			SOneTypeCollection m_vehicles_type_collections[TYPES_NUMBER]	;
+			SActorVehicleAnims	()											;
+	void	Create				(CSkeletonAnimated* K)						;
+};
+
 //---------------------------------------------
 // ввод с клавиатуры и мыши
 struct					net_input

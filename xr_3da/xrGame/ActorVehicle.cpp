@@ -6,7 +6,7 @@
 
 #include "ActorEffector.h"
 #include "holder_custom.h"
-
+#include "Car.h"
 void CActor::attach_Vehicle(CHolderCustom* vehicle)
 {
 	if(!vehicle) return;
@@ -22,8 +22,11 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 		return;
 	}
 	// temp play animation
-	V->PlayCycle(m_anims.m_steering_legs_idle);
-	V->PlayCycle(m_anims.m_steering_torso_idle);
+	CCar*	car			= smart_cast<CCar*>(m_holder);
+	u16 anim_type       = car->DriverAnimationType();
+	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims.m_vehicles_type_collections[anim_type];
+	V->PlayCycle(anims.idles[0]);
+
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
