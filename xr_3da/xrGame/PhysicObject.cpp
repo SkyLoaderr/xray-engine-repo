@@ -488,7 +488,7 @@ void CPhysicObject::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-	//m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
+	m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
 }
 //////////////////////////////////////////////////////////////////////////
 /*
