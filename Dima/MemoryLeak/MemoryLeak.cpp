@@ -369,8 +369,10 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	printf				("Time : %f seconds\n",CPU::cycles2seconds*s64(l_qwFinishTime - l_qwStartTime));
 	
 	printf				("Saving image...");
-	string256			S;
-	image.SaveTGA		(strconcat(S,argv[1],".tga"));
+	string256			drive,dir,name,ext;
+	_splitpath			(argv[1],drive,dir,name,ext);
+	strconcat			(drive,dir,name,".tga");
+	image.SaveTGA		(drive);
 	printf				("completed!\n");
 	
 	printf				("Finalizing...");
