@@ -464,7 +464,10 @@ void CActor::Die	( )
 	for ( ; I != E; ++I)
 	{
 		if ((I - B) == (int)inventory().GetActiveSlot()) 
-			(*I).m_pIItem->Drop();
+		{
+			if((*I).m_pIItem)
+				(*I).m_pIItem->Drop();
+		}
 		else
 			if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 	};

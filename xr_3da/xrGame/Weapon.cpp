@@ -246,6 +246,10 @@ void CWeapon::Load		(LPCSTR section)
 	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
 	camDispersion		= deg2rad					(camDispersion);
 
+	camHorzProb			= pSettings->r_float		(section,"cam_horz_prob"	); 
+	camHorzFactor		= pSettings->r_float		(section,"cam_horz_factor"	); 
+
+
 
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 

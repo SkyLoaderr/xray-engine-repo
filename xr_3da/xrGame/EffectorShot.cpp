@@ -10,14 +10,15 @@
 //////////////////////////////////////////////////////////////////////
 
 CEffectorShot::CEffectorShot	(float max_angle, float relax_speed, 
-								 float disp_prob) : CCameraEffector(eCEShot,100000.f,TRUE)
+								 float disp_prob, float horz_factor) : CCameraEffector(eCEShot,100000.f,TRUE)
 {
 	fRelaxSpeed		= _abs(relax_speed);
 	fAngleCurrent	= -EPS_S;
 	fMaxAngle		= _abs(max_angle);
 	bActive			= FALSE;
 
-	fDispProbability = disp_prob;
+	fDispProbability = 1.f - disp_prob;
+	fHorzDispFactor	 = horz_factor;
 }
 
 CEffectorShot::~CEffectorShot	()
@@ -29,7 +30,7 @@ void CEffectorShot::Shot		(float angle)
 {
 	fAngleCurrent	+= (angle*.75f+::Random.randF(-1,1)*angle*.25f);
 	clamp			(fAngleCurrent,-fMaxAngle,fMaxAngle);
-	float r			= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*::Random.randF(-1,1):0.f;
+	float r			= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*fHorzDispFactor*::Random.randF(-1,1):0.f;
 	vDispersionDir.set(r,1.f,r); 
 	vDispersionDir.normalize_safe();
 	bActive			= TRUE;

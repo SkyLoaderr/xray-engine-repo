@@ -48,7 +48,7 @@ void CWeapon::AddShotEffector		()
 	if(pActor)
 	{
 		CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
+		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camHorzProb, camHorzFactor));
 		R_ASSERT				(S);
 		S->Shot					(camDispersion);
 	}

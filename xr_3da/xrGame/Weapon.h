@@ -316,6 +316,10 @@ protected:
 	float					camMaxAngle;
 	float					camRelaxSpeed;
 	float					camDispersion;
+	//вероятность отклонения по горизонтали эффектора во время стрельбы
+	float					camHorzProb;
+	//коэффициент отклонения
+	float					camHorzFactor;
 
 protected:
 	//для отдачи оружия

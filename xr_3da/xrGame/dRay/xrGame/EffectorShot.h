@@ -14,8 +14,9 @@ class CEffectorShot : public CCameraEffector
 	float	fMaxAngle;
 	BOOL	bActive;
 	float	fDispProbability;
+	float	fHorzDispFactor;
 public:
-	CEffectorShot					(float max_angle, float relax_time ,float disp_prob = 0.75f);
+	CEffectorShot					(float max_angle, float relax_time ,float disp_prob = 0.75f, float horz_factor = 1.f);
 	virtual ~CEffectorShot			();
 	
 	virtual	BOOL	Process				(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);
