@@ -870,6 +870,13 @@ void CUIBuyWeaponWnd::Hide()
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	}
 
+	// For test purposes
+//	const u8 a = GetWeaponIndex(KNIFE_SLOT);
+//	const u8 b = GetWeaponIndex(PISTOL_SLOT);
+//	const u8 c = GetWeaponIndex(RIFLE_SLOT);
+//	const u8 d = GetWeaponIndex(GRENADE_SLOT);
+//	const u8 e = GetWeaponIndex(APPARATUS_SLOT);
+
 	inherited::Hide();
 }
 
@@ -1290,6 +1297,21 @@ const char * CUIBuyWeaponWnd::GetWeaponName(u32 slotNum)
 {
 	R_ASSERT(slotNum < 6);
 	if (UITopList[slotNum].GetDragDropItemsList().empty()) return NULL;
-//	return reinterpret_cast<std::string*>((*UITopList[slotNum].GetDragDropItemsList().begin())->GetData())->c_str();
 	return dynamic_cast<CUIDragDropItemMP*>(*UITopList[slotNum].GetDragDropItemsList().begin())->GetSectionName();
+}
+
+const u8 CUIBuyWeaponWnd::GetWeaponIndex(u32 slotNum)
+{
+	// У нас всего 5 слотов
+	R_ASSERT(slotNum < 6);
+	if (UITopList[slotNum].GetDragDropItemsList().empty()) return static_cast<u8>(-1);
+	for (WPN_LISTS::const_iterator it = wpnSectStorage.begin(); it != wpnSectStorage.end(); ++it)
+	{
+		CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*UITopList[slotNum].GetDragDropItemsList().begin());
+
+		WPN_SECT_NAMES::difference_type diff = std::distance((*it).begin(),
+			std::find((*it).begin(), (*it).end(), pDDItemMP->GetSectionName()));
+		if (diff < static_cast<WPN_SECT_NAMES::difference_type>((*it).size())) return static_cast<u8>(diff);
+	}
+	return static_cast<u8>(-1);
 }

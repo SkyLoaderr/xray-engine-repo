@@ -246,4 +246,7 @@ public:
 	void SetCallbackFunc(ButtonClickCallback pFunc) { pCallbackFunc = pFunc; }
 	// ѕолучить им€ секции в weapon.ltx соответствующий оружию в слоте
 	const char *GetWeaponName(u32 slotNum);
+	// ѕолучить индекс оружи€ в массиве доступных, из заданного слота.
+	// ѕервое оружие имеет индекс 0. ≈сли в слоте нет ничего, то возвращаем -1
+	const u8 GetWeaponIndex(u32 slotNum);
 };
