@@ -723,3 +723,13 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 
 	HUD->pHUDFont->Out(400,320,buf);
 }
+
+void CActor::wpn_Set(DWORD id)
+{
+	switch (id)
+	{
+	case 1: Weapons->ActivateWeapon(CLSID_OBJECT_W_M134);		break; 
+	case 2: Weapons->ActivateWeapon(CLSID_OBJECT_W_GROZA);		break; 
+	case 3: Weapons->ActivateWeapon(CLSID_OBJECT_W_PROTECTA);	break; 
+	}
+}

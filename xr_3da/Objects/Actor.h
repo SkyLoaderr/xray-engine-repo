@@ -155,7 +155,7 @@ private:
 	void				cam_Set					(EActorCameras style);
 	void				cam_Update				(float dt);
 
-	void				wpn_Set					(int id);
+	void				wpn_Set					(DWORD id);
 
 	bool				HUDview					( ) { return IsFocused()&&(cam_active==eacFirstEye); }
 public:

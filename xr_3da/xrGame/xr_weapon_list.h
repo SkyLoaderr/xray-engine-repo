@@ -34,6 +34,7 @@ public:
 
 	void			Init				();
 
+	bool			ActivateWeaponPrev	(bool ignore_empty_weapon=true);
 	bool			ActivateWeaponNext	(bool ignore_empty_weapon=true);
 	bool			ActivateWeapon		(CLASS_ID cls);
 
@@ -50,7 +51,7 @@ public:
 	void			Update				(float dt, bool bHUDView);
 	void			OnRender			(bool bHUDView);
 
-	const char*		ActiveWeaponName	();
+	const char*		ActiveWeaponName		();
 	int				ActiveWeaponAmmoElapsed	();
 	int				ActiveWeaponAmmoLimit	();
 };
