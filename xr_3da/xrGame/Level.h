@@ -43,7 +43,7 @@ public:
 	objVisible					KnownEnemys;
 };
 
-class CLevel : public CCreator, public IPureClient
+class CLevel : public CCreator, public xrClient
 {
 protected:
 	typedef CCreator inherited;

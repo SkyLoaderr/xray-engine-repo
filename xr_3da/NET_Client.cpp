@@ -55,6 +55,7 @@ BOOL IPureClient::Connect(LPCSTR server_name)
 
 	net_Connected	= FALSE;
 	net_Syncronised	= FALSE;
+	net_Disconnected= FALSE;
 
     // Create the IDirectPlay8Client object.
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET));
@@ -259,17 +260,6 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 		}
 		break;
 
-		/*
-	case DPN_MSGID_TERMINATE_SESSION:
-		{
-			PDPNMSG_TERMINATE_SESSION   pTermSessionMsg;
-
-			pTermSessionMsg = (PDPNMSG_TERMINATE_SESSION) pMessage;
-
-			printf("\nThe Session has been terminated!\n");
-		}
-		break;
-		*/
 	case DPN_MSGID_RECEIVE:
 		{
 			DWORD			time	= Device.TimerAsync();
@@ -309,6 +299,9 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 				P->timeReceive	= time;
 			}
 		}
+		break;
+	case DPN_MSGID_TERMINATE_SESSION:
+		Engine.Event.Defer	("kernel:disconnect");
 		break;
 	default:
 		{

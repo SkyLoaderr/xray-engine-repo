@@ -71,23 +71,23 @@ protected:
 public:
 	IPureClient				();
 	virtual ~IPureClient	();
-	HRESULT					net_Handler		(DWORD dwMessageType, PVOID pMessage);
+	HRESULT					net_Handler				(DWORD dwMessageType, PVOID pMessage);
 	
-	BOOL	Connect			(LPCSTR server_name);
-	void	Syncronize		();
-	void	Disconnect		();
+	BOOL					net_Connect				(LPCSTR server_name);
+	void					net_Syncronize			();
+	void					net_Disconnect			();
 
-	BOOL	isCompleted_Connect	()	{ return net_Connected;		}
-	BOOL	isCompleted_Sync	()	{ return net_Syncronised;	}
+	BOOL					net_isCompleted_Connect	()	{ return net_Connected;		}
+	BOOL					net_isCompleted_Sync	()	{ return net_Syncronised;	}
 	
-	LPCSTR	SessionName		()	{ return net_Hosts.front().dpSessionName; }
+	LPCSTR					net_SessionName			()	{ return net_Hosts.front().dpSessionName; }
 
 	// receive
-	IC NET_Packet*	Retreive() { return net_Queue.Retreive(); }
+	IC NET_Packet*			net_Retreive			()	{ return net_Queue.Retreive(); }
 
 	// send
-	void	Send			(NET_Packet& P, DWORD dwFlags=DPNSEND_GUARANTEED, DWORD dwTimeout=0);
-	BOOL	HasBandwidth	();
+	void					Send					(NET_Packet& P, DWORD dwFlags=DPNSEND_GUARANTEED, DWORD dwTimeout=0);
+	BOOL					net_HasBandwidth		();
 	
 	// time management
 	IC DWORD	timeServer			() { return Device.dwTimeGlobal + net_TimeDelta; }

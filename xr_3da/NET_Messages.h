@@ -26,18 +26,6 @@ struct	MSYS_PING
 	DWORD			dwTime_ClientReceive;
 };
 
-enum	MESSAGES	// generic(system) messages
-{
-	_CL_CONNECT=0,	
-	_SV_ACCEPT,	
-	_SV_DECLINE,
-	_SV_SPAWN,
-	_CL_PING,
-	_SV_PING,
-
-	_FORCEDWORD	=DWORD(-1)
-};
-
 /*
 CL_PING
 {

@@ -141,9 +141,8 @@ int	CLevel::get_RPID(LPCSTR name)
 
 void CLevel::OnFrame	()
 {
-	// Client-message parsing
 	Device.Statistic.netClient.Begin();
-	ClientReceive		();
+	ClientReceive					();
 	Device.Statistic.netClient.End	();
 
 	// Inherited update
