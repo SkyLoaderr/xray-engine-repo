@@ -961,7 +961,7 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 	if (index >= 0)
 	{
         CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(index));
-        item->SetDelay(iDelay*10000);
+        item->SetDelay(iDelay);
 
 		index = UIPdaMsgListWnd2.FindItemWithValue(iValue);
 
@@ -969,7 +969,7 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 		R_ASSERT2(index >= 0, "Item exist only in first list");
 #endif
 		item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd2.GetItem(index));
-        item->SetDelay(iDelay*10000);
+        item->SetDelay(iDelay);
 
 		return true;
 	}
@@ -979,61 +979,52 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 
 //////////////////////////////////////////////////////////////////////////
 
-CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
-{
+CUIPdaMsgListItem* CUIMainIngameWnd::AddMessageToList(LPCSTR message, CUIListWnd* pListWnd, int iId, int iDelay){
 	CUIPdaMsgListItem* pItem = NULL;
-	CUIPdaMsgListItem* pItem2 = NULL;
-
 	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
-	pItem2 = xr_new<CUIPdaMsgListItem>(iDelay);
-
-	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
-	UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem2, 0); 
-
-	UIPdaMsgListWnd.ScrollToBegin();
-	UIPdaMsgListWnd2.ScrollToBegin();
-
+	pListWnd->AddItem<CUIListItem>(pItem, 0); 
+	pListWnd->ScrollToBegin();
+	// create animation
 	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-	CUIColorAnimatorWrapper *p2 = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
-
 	R_ASSERT(p);
-	R_ASSERT(p2);
-
+	// no loop animation
 	p->Cyclic(false);
-	p2->Cyclic(false);
-
-//	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
+	// set animation wrapper as Item Data
 	pItem->SetData(p);
-	pItem2->SetData(p2);
-
+	// set id to item. With this we can find item in list and for some manipulation
 	pItem->SetValue(iId);
-	pItem2->SetValue(iId);
-
-	pItem->UIMsgText.MoveWindow(0, 0);
-	pItem2->UIMsgText.MoveWindow(0, 0);
-
-	pItem->UIMsgText.SetText(message);
-	pItem2->UIMsgText.SetText(message);
+	pItem->UIMsgText.MoveWindow(0, 0);	
+	pItem->UIMsgText.SetText(message);	
 
 	return pItem;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR TextMessage, int iId, int iDelay)
+void CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
 {
-	CUIPdaMsgListItem *pItem = AddGameMessage(TextMessage, iId, iDelay);
-	if (pItem)
-	{
+	AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
+	AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR message, int iId, int iDelay)
+{
+	CUIPdaMsgListItem *pItem = AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
+	if (pItem)	
 		pItem->InitCharacter(pSender);
-	}
+
+	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
+	//if (pItem)	
+	//	pItem->InitCharacter(pSender);	
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRect, LPCSTR message, int iId, int iDelay)
 {
-	CUIPdaMsgListItem* pItem = AddGameMessage(message, iId, iDelay);
+	CUIPdaMsgListItem* pItem = AddMessageToList(message, &UIPdaMsgListWnd, iId, iDelay);
 
 	if (pItem)
 	{
@@ -1041,6 +1032,15 @@ void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRec
 		pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
 		pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
 	}
+
+	pItem = AddMessageToList(message, &UIPdaMsgListWnd2, iId, iDelay);
+
+	//if (pItem)
+	//{
+	//	pItem->UIIcon.InitTexture(textureName);
+	//	pItem->UIIcon.SetOriginalRect(originalRect.left, originalRect.top, originalRect.right, originalRect.bottom);
+	//	pItem->UIMsgText.MoveWindow(originalRect.right, 0/*originalRect.bottom*/);
+	//}
 }
 
 //////////////////////////////////////////////////////////////////////////
