@@ -22,6 +22,7 @@
 	<character id="veteran">
 		<rank>70</rank>
 	</character>
+	
 	<character id="monolith">
 		<name>Unknown Stalker</name>
 		<icon x="4" y="9"></icon>
