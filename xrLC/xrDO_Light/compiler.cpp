@@ -232,8 +232,13 @@ void xrLoad(LPCSTR name)
 				strlwr			(N);
 				IReader* THM	= FS.r_open("$game_textures$",N);
 
+				// version
+				u32 version = 0;
+				R_ASSERT(THM->r_chunk(THM_CHUNK_VERSION,&version));
+				if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
+
 				// analyze thumbnail information
-				R_ASSERT				(THM->r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
 				THM->r                  (&BT.THM.fmt,sizeof(STextureParams::ETFormat));
 				BT.THM.flags.set		(THM->r_u32());
 				BT.THM.border_color		= THM->r_u32();
