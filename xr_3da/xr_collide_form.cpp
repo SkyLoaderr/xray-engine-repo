@@ -72,7 +72,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	s_box.set			(H.aabb);
 
 	Fvector*	verts	= (Fvector*)f->Pointer();
-	RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
+	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	model.BuildModel	( verts, H.vertcount, tris, H.facecount );
 	Msg("* CFORM memory usage: %dK",model.MemoryUsage()/1024);
 	Engine.FS.Close		(f);

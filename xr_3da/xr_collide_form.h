@@ -1,10 +1,6 @@
 #ifndef __XR_COLLIDE_FORM_H__
 #define __XR_COLLIDE_FORM_H__
 
-#include "collide\cl_rapid.h"
-#include "collide\cl_defs.h"
-#include "xr_list.h"
-
 // refs
 class ENGINE_API	CObject;
 class ENGINE_API	CInifile;
@@ -22,15 +18,15 @@ const DWORD	clCOARSE			= (1<<7);	// coarse test (triangles vs obb)
 struct clQueryTri
 {
 	Fvector				p[3];
-	const RAPID::tri	*T;
+	const CDB::TRI		*T;
 };
 
 struct clQueryCollision
 {
-	CList<CObject*>		objects;		// affected objects
-	CList<clQueryTri>	tris;			// triangles		(if queried)
-	CList<Fobb>			boxes;			// boxes/ellipsoids	(if queried)
-	CList<Fvector4>		spheres;		// spheres			(if queried)
+	vector<CObject*>	objects;		// affected objects
+	vector<clQueryTri>	tris;			// triangles		(if queried)
+	vector<Fobb>		boxes;			// boxes/ellipsoids	(if queried)
+	vector<Fvector4>	spheres;		// spheres			(if queried)
 	
 	IC void				Clear	()
 	{
@@ -39,7 +35,7 @@ struct clQueryCollision
 		boxes.clear		();
 		spheres.clear	();
 	}
-	IC void				AddTri( const Fmatrix& m, const RAPID::tri* one ) 
+	IC void				AddTri( const Fmatrix& m, const CDB::TRI* one ) 
 	{
 		clQueryTri	T;
 		m.transform_tiny	(T.p[0],*one->verts[0]);
@@ -48,7 +44,7 @@ struct clQueryCollision
 		T.T = one;
 		tris.push_back		(T);
 	}
-	IC void				AddTri(const RAPID::tri* one ) 
+	IC void				AddTri(const CDB::TRI* one ) 
 	{
 		clQueryTri	T;
 		T.p[0]	= *one->verts[0];
@@ -122,7 +118,7 @@ public:
 class ENGINE_API	CCF_Polygonal : public CCFModel
 {
 private:
-	RAPID::Model	model;
+	CDB::MODEL		model;
 public:
 					CCF_Polygonal	( CObject* _owner );
 
@@ -131,8 +127,8 @@ public:
 	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, DWORD flags);
 
 	BOOL			LoadModel		( CInifile* ini, const char *section );
-	RAPID::tri*		GetTris			() { return model.GetTris();  }
-	RAPID::Model*	GetModel		() { return &model; }
+	CDB::TRI*		GetTris			() { return model.tris;  }
+	CDB::MODEL*		GetModel		() { return &model; }
 };
 
 class ENGINE_API	CCF_Skeleton : public CCFModel

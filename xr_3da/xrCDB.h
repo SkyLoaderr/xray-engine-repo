@@ -56,7 +56,7 @@ namespace CDB
 	class XRCDB_API MODEL
 	{
 		friend class COLLIDER;	
-	private:
+	public:
 		Opcode::OPCODE_Model*	tree;
 
 		// tris
