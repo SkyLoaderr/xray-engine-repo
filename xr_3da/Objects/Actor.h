@@ -169,7 +169,6 @@ private:
 	void					g_Orientate				(DWORD mstate_rl, float dt);
 	void					g_Physics				(Fvector& accel, float jump, float dt);
 	void					g_SetAnimation			(DWORD mstate_rl);
-	void					g_ProcessEvents			();
 
 	virtual void			feel_touch_new			(CObject* O);
 	virtual void			feel_touch_delete		(CObject* O);
@@ -232,6 +231,7 @@ public:
 
 	virtual void			Update				( DWORD T ); 
 	virtual void			OnVisible			( );
+	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	void					ZoneEffect			(float z_amount);
 

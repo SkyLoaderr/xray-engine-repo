@@ -92,20 +92,20 @@ BOOL CEntity::Hit			(float perc, Fvector &dir, CEntity* who)
 	// Calc HitAmount
 	if (Local()) 
 	{
-		float iHitAmount, iOldHealth=iHealth;
-		if (iArmor)
+		float fHitAmount, fOldHealth=fHealth;
+		if (fArmor)
 		{
-			iHealth		-=	(iMAX_Armor-iArmor)/iMAX_Armor*perc;
-			iHitAmount	=	(perc*9)/10;
-			iArmor		-=	iHitAmount;
+			fHealth		-=	(fMAX_Armor-fArmor)/fMAX_Armor*perc;
+			fHitAmount	=	(perc*9)/10;
+			fArmor		-=	fHitAmount;
 		} else {
-			iHitAmount	=	perc;
-			iHealth		-=	iHitAmount;
+			fHitAmount	=	perc;
+			fHealth		-=	fHitAmount;
 		}
 	}
 	
 	// Update state and play sounds, etc
-	if (iHealth<=0 && iOldHealth>0)
+	if (fHealth<=0 && fOldHealth>0)
 	{ 
 		if (who!=this)	Level().HUD()->outMessage(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 		else			Level().HUD()->outMessage(0xffffffff,cName(),"Crashed...");
@@ -114,7 +114,7 @@ BOOL CEntity::Hit			(float perc, Fvector &dir, CEntity* who)
 	}
 	else
 	{
-		HitSignal		(iHitAmount,vLocalDir,who);
+		HitSignal		(fHitAmount,vLocalDir,who);
 		return FALSE;
 	}
 }
@@ -125,7 +125,7 @@ void CEntity::Load		(LPCSTR section)
 
 	setVisible			(FALSE);
 	CLS_ID				= CLSID_ENTITY;
-	iHealth				= iArmor = 100;
+	fHealth				= fArmor = 100;
 
 	// Team params
 	id_Team = -1; if (pSettings->LineExists(section,"team"))	id_Team		= pSettings->ReadINT	(section,"team");
@@ -153,8 +153,8 @@ BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	id_Team				= s_team;
 	id_Squad			= s_squad;
 	id_Group			= s_group;
-	iHealth				= 100;
-	iArmor				= 0;
+	fHealth				= 100;
+	fArmor				= 0;
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);

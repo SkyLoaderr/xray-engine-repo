@@ -10,17 +10,12 @@ IC BOOL BE	(BOOL A, BOOL B)
 	return a==b;
 }
 
-
-void CActor::g_ProcessEvents()
+void CActor::OnEvent		(NET_Packet& P, u16 type)
 {
-	NET_Packet		P;
-	DWORD svT		= Level().timeServer()-NET_Latency;
-	while (net_Events.available(svT))
+	inherited::OnEvent		(P,type);
+
+	switch (type)
 	{
-		u16	type	= net_Events.get(P);
-		u16 id		= 0;
-		switch (type)
-		{
 		case GE_OWNERSHIP_TAKE:
 			{
 				P.r_u16		(id);
@@ -76,6 +71,5 @@ void CActor::g_ProcessEvents()
 				}
 			}
 			break;
-		}
 	}
 }

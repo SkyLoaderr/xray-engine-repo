@@ -98,8 +98,8 @@ public:
 	bool					IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
 	bool					IsMyCamera			()	{ return (pCreator->CurrentViewEntity()==this);	}
 
-	int						g_Armor				()	{ return iArmor;	}
-	int						g_Health			()	{ return iHealth;	}
+	float					g_Armor				()	{ return fArmor;	}
+	float					g_Health			()	{ return fHealth;	}
 	float					g_Accuracy			()	{ return fAccuracy;	}
 	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}
 
