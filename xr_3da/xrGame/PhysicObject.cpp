@@ -4,10 +4,14 @@
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
 
+u32 CPhysicObject::remove_time=5000;
+
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;
 	b_recalculate=false;
+	m_unsplit_time = u32(-1);
+	b_removing=false;
 }
 
 CPhysicObject::~CPhysicObject(void)
@@ -38,7 +42,8 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		default: NODEFAULT; 
 	}
 
-	CreateBody				(po);
+	if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy)) 
+													CreateBody				(po);
 
 	CSkeletonAnimated* pSkeletonAnimated=NULL;
 	switch(m_type) {
@@ -63,6 +68,11 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	return TRUE;
 }
 
+void CPhysicObject::Load(LPCSTR section)
+{
+	inherited::Load(section);
+	remove_time= pSettings->r_u32(section,"remove_time")*1000;
+}
 void CPhysicObject::UpdateCL	()
 {
 	inherited::UpdateCL		();
@@ -117,9 +127,30 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	}
 }
 
-
+static bool removable;//for RecursiveBonesCheck
+void CPhysicObject::RecursiveBonesCheck(u16 id)
+{
+	if(!removable) return;
+	CKinematics* K		= PKinematics(Visual());
+	CBoneData& BD		= K->LL_GetData(u16(id));
+	//////////////////////////////////////////
+	Flags64 mask;
+	mask.set(K->LL_GetBonesVisible());
+	///////////////////////////////////////////
+	if(
+		mask.is(1ui64<<(u64)id)&& 
+		!(BD.shape.flags.is(SBoneShape::sfRemoveAfterBreak))
+	) {
+		removable = false;
+		return;
+	}
+	///////////////////////////////////////////////
+	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
+		RecursiveBonesCheck		((*it)->SelfID);
+	}
+}
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
-	if(po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))return;
+	
 	if(m_pPhysicsShell) return;
 	m_pPhysicsShell		= P_create_Shell();
 	switch(m_type) {
@@ -229,12 +260,14 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 
 void CPhysicObject::net_Export(NET_Packet& P)
 {
+	inherited::net_Export(P);
 	R_ASSERT						(Local());
 	//m_pPhysicsShell->net_Export(P);
 }
 
 void CPhysicObject::net_Import(NET_Packet& P)
 {
+	inherited::net_Import(P);
 	//m_pPhysicsShell->net_Import(P);
 	R_ASSERT						(Remote());
 }
@@ -246,6 +279,14 @@ void CPhysicObject::shedule_Update(u32 dt)
 	if(m_pPhysicsShell && m_pPhysicsShell->isFractured()) 
 	{
 		PHSplit();
+	}
+	if(b_removing&&Device.dwTimeGlobal-m_unsplit_time>remove_time) 
+	{
+		NET_Packet			P;
+		u_EventGen			(P,GE_DESTROY,ID());
+		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+		if (Local()) u_EventSend			(P);
+		b_removing=false;
 	}
 }
 
@@ -358,10 +399,13 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	newKinematics->Calculate();
-	NET_Packet P;
-	O->u_EventGen(P, GE_OWNERSHIP_REJECT,ID());
-	P.w_u16(u16(O->ID()));
-	O->u_EventSend(P);
+	NET_Packet				P;
+	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+	P.w_u16					(u16(O->ID()));
+	u_EventSend				(P);
+
+
+	static_cast<CPhysicObject*>(O)->CopySpawnInit();
 }
 
 BOOL CPhysicObject::UsedAI_Locations()
@@ -371,7 +415,27 @@ BOOL CPhysicObject::UsedAI_Locations()
 
 void CPhysicObject::OnH_A_Independent()
 {
+	inherited::OnH_A_Independent();
 	PKinematics(Visual())->Calculate();
+	//CopySpawnInit();
+}
+
+void CPhysicObject::CopySpawnInit()
+{
+	if(ReadyForRemove()) SetAutoRemove();
+}
+
+bool CPhysicObject::ReadyForRemove()
+{
+	removable=true;
+	RecursiveBonesCheck(PKinematics(Visual())->LL_GetBoneRoot());
+	return removable;
+}
+void CPhysicObject::SetAutoRemove()
+{
+	b_removing=true;
+	m_unsplit_time=Device.dwTimeGlobal;
+
 }
 //////////////////////////////////////////////////////////////////////////
 /*
