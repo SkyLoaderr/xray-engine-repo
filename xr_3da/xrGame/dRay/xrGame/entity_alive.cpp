@@ -388,5 +388,5 @@ ALife::ERelationType CEntityAlive::tfGetRelationType	(const CEntityAlive *tpEnti
 	if (tpEntityAlive->g_Team() != g_Team())
 		return(ALife::eRelationTypeEnemy);
 	else
-		return(ALife::eRelationTypeFriend);
+		return(ALife::eRelationTypeNeutral);
 };
