@@ -262,6 +262,8 @@ __published:	// IDE-managed Components
 	void __fastcall MakeAIMap1Click(TObject *Sender);
 	void __fastcall ebCompileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

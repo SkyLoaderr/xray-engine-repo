@@ -77,6 +77,9 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
     Tools.m_ItemProps->SaveParams(fsStorage);
     Tools.m_PreviewObject.SaveParams(fsStorage);
     Tools.m_RenderObject.SaveParams(fsStorage);
+	// save recent files
+	for (int i = 0; i < miRecentFiles->Count; i++)
+		fsStorage->WriteString(AnsiString("RecentFiles")+AnsiString(i),miRecentFiles->Items[i]->Caption);
 }
 //---------------------------------------------------------------------------
 
@@ -86,6 +89,11 @@ void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
     Tools.m_ItemProps->RestoreParams(fsStorage);
     Tools.m_PreviewObject.RestoreParams(fsStorage);
     Tools.m_RenderObject.RestoreParams(fsStorage);
+	// read recent list    
+    for (int i=frmEditPrefs->seRecentFilesCount->Value; i>=0; i--){
+		AnsiString recent_fn= frmMain->fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");
+        if (!recent_fn.IsEmpty()) UI.AppendRecentFile(recent_fn.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 
