@@ -14,7 +14,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -23,9 +23,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32,_DEBUG,_WINDOWS,DEBUG"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/xrAI.pch"
@@ -35,7 +37,7 @@
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -47,7 +49,8 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="x:/xrAI.pdb"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -73,7 +76,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="s:\"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -96,6 +99,7 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Release/xrAI.pch"
@@ -104,6 +108,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -114,6 +119,9 @@
 				OutputFile="x:\xrAI.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -139,7 +147,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="Mixed"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="1"
 			UseOfMFC="0"
@@ -172,6 +180,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="FALSE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -182,6 +191,9 @@
 				OutputFile="x:\xrAI.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				SubSystem="2"/>
 			<Tool
 				Name="VCMIDLTool"

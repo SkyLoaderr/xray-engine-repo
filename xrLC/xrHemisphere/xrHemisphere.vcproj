@@ -15,7 +15,7 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="x:"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -41,6 +41,7 @@
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -51,7 +52,9 @@
 				OutputFile="x:/xrHemisphere.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile="x:/xrHemisphere.pdb"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				ImportLibrary="x:/xrHemisphere.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -77,7 +80,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -86,9 +89,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRHEMISPHERE_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/xrHemisphere.pch"
@@ -97,7 +102,7 @@
 				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -109,7 +114,8 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="x:/xrHemisphere.pdb"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				ImportLibrary="x:/xrHemisphere.lib"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -135,7 +141,7 @@
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
-			OutputDirectory="Mixed"
+			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -167,6 +173,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="FALSE"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -177,7 +184,9 @@
 				OutputFile="x:/xrHemisphere.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				ProgramDatabaseFile="x:/xrHemisphere.pdb"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="x:\$(ProjectName).pdb"
+				GenerateMapFile="TRUE"
 				ImportLibrary="x:/xrHemisphere.lib"/>
 			<Tool
 				Name="VCMIDLTool"
