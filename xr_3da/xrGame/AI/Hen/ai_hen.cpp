@@ -73,6 +73,7 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	dwHitTime = Level().timeServer();
 	tHitDir.set(D);
 	tHitDir.normalize();
+	Msg("i am hit");
 
 	// Play hit-sound
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
@@ -169,7 +170,7 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/20);
+	return(fAlpha < PI/10);
 	//return(false);
 }
 
@@ -361,10 +362,14 @@ void CAI_Hen::Attack()
 						break;
 					}
 					
-				if (!bCanKillMember)
+				if (!bCanKillMember) {
 					q_action.setup(AI::AIC_Action::FireBegin);
-				else
+					Msg("I am firing");
+				}
+				else {
 					q_action.setup(AI::AIC_Action::FireEnd);
+					Msg("no fire");
+				}
 				/**/
 				// checking flag to stop processing more states
 				//q_action.setup(AI::AIC_Action::FireBegin);
@@ -445,6 +450,7 @@ void CAI_Hen::Attack()
 				q_look.o_look_speed=_FB_look_speed;
 				
 				q_action.setup(AI::AIC_Action::FireEnd);
+				Msg("no fire");
 
 				// checking flag to stop processing more states
 				m_fCurSpeed = m_fMaxSpeed;
@@ -865,7 +871,14 @@ void CAI_Hen::Pursuit()
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-						SetLessCoverLook(tNode);
+						//SetLessCoverLook(tNode);
+						Fvector tWatchDirection;
+						tWatchDirection.sub(tSavedEnemyPosition,S.m_tMyPosition);
+						//if ((tWatchDirection.x == tWatchDirection.y) && (tWatchDirection.y == tWatchDirection.z) && (tWatchDirection.z == 0.f))
+							SetLessCoverLook(tNode);
+						//else 
+						//	q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &tWatchDirection,	1000);
+						q_look.o_look_speed=_FB_look_speed;
 						// checking flag to stop processing more states
 						q_action.setup(AI::AIC_Action::FireEnd);
 						bStopThinking = true;

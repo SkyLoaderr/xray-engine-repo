@@ -169,7 +169,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/20);
+	return(fAlpha < PI/10);
 	//return(false);
 }
 

@@ -87,7 +87,7 @@ void CAISelectorBase::vfInit()
 	Level().AI.UnpackPosition(tTemp1,m_tpCurrentNode->p1);
 	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
 	m_iAliveMemberCount = taMemberPositions.size();
-	m_fFireDispersionAngle = PI/20;
+	m_fFireDispersionAngle = PI/10;
 }
 
 void CAISelectorBase::vfAddDistanceToEnemyCost()

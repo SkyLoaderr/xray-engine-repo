@@ -35,20 +35,19 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	CHECK_RESULT;
 	vfAddEnemyLookCost();
 	CHECK_RESULT;
-	if (m_tLeader)
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfComputeSurroundEnemy();
-					vfAddCoverFromMemberCost();
-					vfAddDeviationFromMemberViewCost();
-				}
-				vfAddSurroundEnemyCost();
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfComputeSurroundEnemy();
+				vfAddCoverFromMemberCost();
+				vfAddDeviationFromMemberViewCost();
 			}
+			vfAddSurroundEnemyCost();
 		}
+	}
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value
@@ -157,18 +156,16 @@ float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	CHECK_RESULT;
 	vfAddCoverFromEnemyCost();
 	CHECK_RESULT;
-	if (m_tLeader) {
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfComputeSurroundEnemy();
-					vfAddCoverFromMemberCost();
-				}
-				vfAddSurroundEnemyCost();
+	if (taMemberPositions.size()) {
+		if (m_iAliveMemberCount) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				vfAssignMemberPositionAndNode();
+				vfComputeMemberDirection();
+				vfAddDistanceToMemberCost();
+				vfComputeSurroundEnemy();
+				vfAddCoverFromMemberCost();
 			}
+			vfAddSurroundEnemyCost();
 		}
 	}
 	// checking for epsilon
