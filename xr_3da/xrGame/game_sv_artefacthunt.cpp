@@ -17,6 +17,8 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	m_eAState = NONE;
 	//---------------------------------------------------
 	// loading respawn points for artefacts
+	m_LastRespawnPointID = 0;
+	ArtefactsRPoints_ID.clear();
 	Artefact_rpoints.clear();
 
 	string256	fn_game;
@@ -476,7 +478,7 @@ void	game_sv_ArtefactHunt::Update			()
 }
 bool	game_sv_ArtefactHunt::ArtefactSpawn_Allowed		()	
 {
-//	return true;
+	return true;
 	// Check if all players ready
 	u32		cnt		= get_count	();
 	
@@ -512,9 +514,24 @@ void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
 void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 {
 	xr_vector<RPoint>&	rp	= Artefact_rpoints;
+	xr_vector<u8>&	rpID	= ArtefactsRPoints_ID;
 	xr_deque<RPointData>	pRPDist;
 	RPoint				r;
 
+	if (rpID.empty())
+	{
+		for (u8 i=0; i<rp.size(); i++)
+		{
+			if (m_LastRespawnPointID == i) continue;
+			rpID.push_back(i);
+		}
+	};
+
+	u8 ID = u8(::Random.randI((int)rpID.size()));
+	m_LastRespawnPointID = rpID[ID];
+	r	= rp[m_LastRespawnPointID];
+	rpID.erase(rpID.begin()+ID);
+/*
 	xr_vector <u32>					pEnemies;
 
 	u32		cnt = get_count();
@@ -555,7 +572,7 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 		std::sort(pRPDist.begin(), pRPDist.end());
 		r	= rp[(pRPDist.back()).PointID];
 	}
-
+*/
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 };
@@ -621,12 +638,14 @@ bool				game_sv_ArtefactHunt::Artefact_NeedToSpawn	()
 bool				game_sv_ArtefactHunt::Artefact_NeedToRemove	()
 {
 	if (m_eAState == IN_POSESSION) return false;
+	if (m_eAState == NOARTEFACT) return false;
+
 
 	if (m_dwArtefactStayTime == 0) return false;
 
 	if (m_dwArtefactRemoveTime < Device.dwTimeGlobal)
 	{
-		VERIFY (m_eAState == ON_FIELD);
+//		VERIFY (m_eAState == ON_FIELD);
 		RemoveArtefact();
 		return true;
 	};
