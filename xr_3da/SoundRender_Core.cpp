@@ -10,10 +10,11 @@ float	psSoundCull				= 0.07f;
 float	psSoundRolloff			= 0.3f;
 float	psSoundDoppler			= 0.3f;
 
-CSoundRender_Core::CSoundRender_Core(void)
+CSoundRender_Core::CSoundRender_Core	()
 {
 	pListener					= NULL;
 	pExtensions					= NULL;
+	bPresent					= FALSE;
 
 	// Get listener interface.
 	SoundRender.pBuffer->QueryInterface( IID_IDirectSound3DListener8, (VOID**)&pListener );

@@ -11,13 +11,6 @@ class CSound;
 class CSoundManager					:	public CSound_manager_interface
 {
 public:	
-	BOOL							bPresent;
-	
-	// Saves
-	float							fMasterVolume;
-	float							fMusicVolume;
-	u32								dwFreq;
-	u32								dwModel;
 	
 	// Children
 	CCDA*							pCDA;

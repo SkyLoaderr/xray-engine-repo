@@ -1941,6 +1941,9 @@
 					RelativePath="SoundRender_Core.h">
 				</File>
 				<File
+					RelativePath="SoundRender_Core_Initialize.cpp">
+				</File>
+				<File
 					RelativePath="SoundRender_Core_Processor.cpp">
 				</File>
 				<File

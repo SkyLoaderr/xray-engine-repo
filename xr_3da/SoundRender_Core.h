@@ -17,6 +17,8 @@ private:
 		float			fDopplerFactor;
 	};
 public:
+	BOOL								bPresent;
+	
 	// DSound interface
 	IDirectSound8*						pDevice;				// The device itself
 	IDirectSoundBuffer*					pBuffer;				// The primary buffer (mixer destination)
