@@ -199,21 +199,26 @@ function se_smart_terrain:STATE_Write( packet )
 	w_CTime( packet, self.duration_end )
 	w_CTime( packet, self.idle_end )
 
+	-- список сталкеров
 	n = 0
-	for id, v in self.stalkers do
-		n = n + 1
-	end
+	if self.stalkers then
+		for id, v in self.stalkers do
+			n = n + 1
+		end
 
-	packet:w_u8( n )
+		packet:w_u8( n )
 
-	for id, v in self.stalkers do
-		packet:w_u16  ( id )
-		packet:w_u8   ( v.group )
-		packet:w_u8   ( v.squad )
-		packet:w_bool ( v.move_offline )
-		packet:w_bool ( v.switch_offline )
---		packet:w_u32  ( v.stay_end )
-		w_CTime( packet, stay_end )
+		for id, v in self.stalkers do
+			packet:w_u16  ( id )
+			packet:w_u8   ( v.group )
+			packet:w_u8   ( v.squad )
+			packet:w_bool ( v.move_offline )
+			packet:w_bool ( v.switch_offline )
+--			packet:w_u32  ( v.stay_end )
+			w_CTime( packet, stay_end )
+		end
+	else
+		packet:w_u8( n )
 	end
 end
 
