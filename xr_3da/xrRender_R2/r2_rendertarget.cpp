@@ -81,15 +81,13 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
-		s_decompress.create			(b_decompress,	"r2\\met_decompress");
 	}
 	else
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
-		s_decompress				= NULL;
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
 	}
 
 	// NORMAL-part2
@@ -97,6 +95,19 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8);
 		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8);
+	}
+
+	// DECOMPRESSION
+	if (RImplementation.b_nv3x)
+	{
+		s_decompress.create			(b_decompress,	"r2\\met_decompress");
+		g_decompress.create			(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+	}
+	else
+	{
+		u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
+		s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
+		g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// DIRECT

@@ -59,7 +59,8 @@ public:
 	ref_texture					t_ds2fade;
 private:
 	// Decompress
-	ref_shader					s_decompress;	// 0=pos,1=norm,2=color
+	ref_geom					g_decompress;
+	ref_shader					s_decompress;	// 0=pos,1=norm
 
 	// Accum
 	ref_shader					s_accum_mask;
