@@ -7,7 +7,7 @@ local time_walk   = 100000
 local time_rest   = 30000         --Сколько времени сидим
 local novice_speak  = 15000     --Через какое время примерно новичок произносит фразы
 
-local novice_speak3 = 12000
+local novice_speak3 = 10000
 
 local time_to_speak = 12000     --Через какое время примерно зомби произносит фразы
 
