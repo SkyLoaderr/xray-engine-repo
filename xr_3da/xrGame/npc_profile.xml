@@ -106,6 +106,9 @@
 	<character id="monolit_master">
 		<class>Monolit_master</class>
 	</character>
+	<character id="monolit_rpg">
+		<class>Monolit_rpg</class>
+	</character>
 
 	<!-- Zombied -->
 	<character id="zombied">

@@ -245,8 +245,8 @@
       [spawn] \n
       wpn_colt1911 \n
       ammo_11.43x23_fmj = 1 \n
-      wpn_fn2000 \n
-      ammo_5.56x45_ss190 = 1 \n
+      wpn_l85\n
+      ammo_5.56x45_ap = 1 \n
       ammo_m209 = 2 \n
     </supplies>
 					
@@ -302,7 +302,7 @@
       [spawn] \n
       wpn_walther \n
       ammo_9x19_fmj = 1 \n
-      wpn_fn2000 \n
+      wpn_sig550\n
       ammo_5.56x45_ap = 1 \n
     </supplies>
  					
@@ -370,4 +370,62 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
   </specific_character>
+
+<!---------------------------MONOLIT REGULAR with RPG----------------------->
+	<specific_character id="monolit_rpg_default1" team_default = "1">
+		<name>Сталкер группировки "Монолит"</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+		<team>Monolit_rpg</team>
+
+		<class>Monolit_rpg</class>
+		<community>monolith</community>
+
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\monolit\stalker_mo_head1</visual>
+		<supplies>
+			[spawn] \n
+			wpn_fort \n
+			ammo_9x18_fmj = 1 \n
+			wpn_rpg7 \n
+			ammo_og-7b = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="monolit_rpg_default2" team_default = "1">
+		<name>Сталкер группировки "Монолит"</name>
+		<icon x="4" y="2"></icon>
+		<map_icon x="3" y="0"></map_icon>
+		<bio>Сталкер группировки "Монолит". Детальная информация отсутствует.</bio>
+
+		<team>Monolit_rpg</team>
+
+		<class>Monolit_rpg</class>
+		<community>monolith</community>
+
+		<rank>40</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\monolit\stalker_mo_head2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pb \n
+			ammo_9x18_pmm = 1 \n
+			wpn_rpg7 \n
+			ammo_og-7b = 1 \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 </xml>
