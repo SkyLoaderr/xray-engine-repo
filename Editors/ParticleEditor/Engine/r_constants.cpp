@@ -193,7 +193,7 @@ void R_constant_table::clear	()
 	table.clear();
 }
 
-void R_constant_table::equal(R_constant_table& C)
+BOOL R_constant_table::equal(R_constant_table& C)
 {
 	if (table.size() != C.table.size())	return FALSE;
 	u32 size			= table.size();

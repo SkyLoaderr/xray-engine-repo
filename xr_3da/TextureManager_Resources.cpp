@@ -232,7 +232,7 @@ void	CShaderManager::_DeletePS			(SPS* ps)
 		m_vs.erase(I);
 		return;
 	}
-	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",vs->cName);
+	Msg	("! ERROR: Failed to find compiled pixel-shader '%s'",ps->cName);
 }
 
 R_constant_table*	CShaderManager::_CreateConstantTable	(R_constant_table& C)

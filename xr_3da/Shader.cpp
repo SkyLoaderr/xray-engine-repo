@@ -79,9 +79,9 @@ BOOL ShaderElement::equal	(ShaderElement* S)
 BOOL Shader::equal	(Shader& S)
 {
 	return
-		E[0]->equal(S.E[0]) &&
-		E[1]->equal(S.E[1]) &&
-		E[2]->equal(S.E[2]);
+		E[0]->equal(*S.E[0]) &&
+		E[1]->equal(*S.E[1]) &&
+		E[2]->equal(*S.E[2]);
 }
 BOOL Shader::equal	(Shader* S)
 {	return	equal(*S);	}
