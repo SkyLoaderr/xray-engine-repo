@@ -4,8 +4,8 @@
 <!---------------------------MONOLIT NOVICE----------------------->
 	<specific_character id="monolit_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="4" y="2"></icon>
+		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_novice</team>
@@ -23,8 +23,8 @@
 <!---------------------------MONOLIT GENERAL---------------------->
 	<specific_character id="monolit_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="4" y="2"></icon>
+		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_general</team>
@@ -41,8 +41,8 @@
 <!---------------------------MONOLIT VETERAN---------------------->
 	<specific_character id="monolit_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="29" y="8"></icon>
+		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_veteran</team>
@@ -53,14 +53,14 @@
 		<rank>70</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\monolit\stalker_mo_hood_9</visual>
+		<visual>actors\monolit\stalker_mo_exo</visual>
 	</specific_character>
 
 <!---------------------------MONOLIT MASTER----------------------->
 	<specific_character id="monolit_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
+		<icon x="27" y="8"></icon>
+		<map_icon x="3" y="0"></map_icon>
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_master</team>
