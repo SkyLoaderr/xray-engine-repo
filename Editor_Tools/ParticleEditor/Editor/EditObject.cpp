@@ -6,14 +6,7 @@
 #pragma hdrstop
 
 #include "EditObject.h"
-//#include "UI_Main.h"
 #include "EditMesh.h"
-//#include "D3DUtils.h"
-//#include "bottombar.h"
-//#include "motion.h"
-//#include "bone.h"
-//#include "Library.h"
-//#include "xr_trims.h"
 
 // mimimal bounding box size
 float g_MinBoxSize 	= 0.05f;

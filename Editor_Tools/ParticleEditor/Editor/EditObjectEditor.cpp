@@ -2,6 +2,11 @@
 #pragma hdrstop
 
 #include "EditObject.h"
+#include "EditMesh.h"
+#include "bottombar.h"
+#include "motion.h"
+#include "D3DUtils.h"
+#include "bone.h"
 
 bool CEditableObject::Reload()
 {

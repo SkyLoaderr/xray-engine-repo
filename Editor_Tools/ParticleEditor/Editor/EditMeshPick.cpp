@@ -10,6 +10,7 @@
 #include "frustum.h"
 #include "EditorPref.h"
 #include "bottombar.h"
+#include "cl_collector.h"
 
 /*
 void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){

@@ -4,6 +4,7 @@
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
 
+#include "SceneClassList.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditableMesh;
@@ -224,7 +225,7 @@ public:
     // load/save methods
 	void 			LoadMeshDef				(FSChunkDef *chunk);
 	bool 			Reload					();
-//	bool 			Load					(const char* fname);
+	bool 			Load					(const char* fname);
 	bool 			LoadObject				(const char* fname);
 	void 			SaveObject				(const char* fname);
     CSMotion*		LoadSMotion				(const char* fname);

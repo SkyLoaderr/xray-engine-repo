@@ -6,8 +6,9 @@
 
 //----------------------------------------------------
 #ifdef _EDITOR
-	#include "cl_rapid.h"
+//	#include "cl_rapid.h"
 #endif
+#include "SceneClassList.h"
 
 // refs
 class CSurface;

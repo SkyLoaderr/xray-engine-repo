@@ -50,7 +50,7 @@ public:
 	void            Construct   ();
     void            SetPlane    (int p_num);
 
-    bool            Valid       (){return (m_Points.size()>=MIN_OCCLUDER_POINTS)&&(m_Points.size()<=MAX_OCCLUDER_POINTS);}
+    BOOL            Valid       (){return (m_Points.size()>=MIN_OCCLUDER_POINTS)&&(m_Points.size()<=MAX_OCCLUDER_POINTS);}
 
     void 			UpdatePoints3D();
     bool			ResizePoints(int new_size);
