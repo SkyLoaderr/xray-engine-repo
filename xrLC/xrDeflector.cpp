@@ -135,6 +135,7 @@ BOOL CDeflector::OA_Place	(Face *owner)
 void CDeflector::OA_Place	(vecFace& lst)
 {
 	UVpolys.clear	();
+	UVpolys.reserve	(lst.size());
 	for (DWORD I=0; I<lst.size(); I++)
 	{
 		UVtri T;
