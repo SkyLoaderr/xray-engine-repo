@@ -45,13 +45,14 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG 
+      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; 
       -I$(BCB)\include -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore 
       -IR:\SDK\ogg\ogg\include -IR:\SDK\ogg\vorbis\include 
       -IR:\SDK\eax20\Include -IR:\SDK\OpenAL\include -IR:\SDK\OpenAL\include\AL 
-      -src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
+      -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
       -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -215,11 +216,11 @@ Item4=!run
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=
+RunParams=-dsound
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

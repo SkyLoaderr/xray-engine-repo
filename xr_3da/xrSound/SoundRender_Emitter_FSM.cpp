@@ -130,17 +130,20 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 
 	// Calc attenuated volume
 	float att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
-	if (att*p_source.volume*psSoundVEffects<psSoundCull)				{ smooth_volume = 0; return FALSE; }
-
+    float scale			= 1.f;
+    float occ_scale		= psSoundOcclusionScale;
+	if (att*p_source.volume*psSoundVEffects<psSoundCull)				{ scale = -1.0f; occ_scale = 0.f;/*return FALSE;*/ }
+    
 	// Update occlusion
-	float occ			=	(SoundRender->get_occlusion	(p_source.position,.2f,occluder))?-1.f:1.f;
-	occluder_volume		+=	dt*2*occ;
+	float occ			=	_min(scale, (SoundRender->get_occlusion	(p_source.position,.2f,occluder))?-1.f:1.f);
+	occluder_volume		+=	dt*2.f*occ;
 	clamp				(occluder_volume,0.f,1.f);
 
 	// Update smoothing
-	float vol_occ		=	occluder_volume*(1.f-psSoundOcclusionScale)+psSoundOcclusionScale;
+	float vol_occ		=	occluder_volume*(1.f-occ_scale)+occ_scale;
 	smooth_volume		=	.9f*smooth_volume + .1f*(p_source.volume*psSoundVEffects*vol_occ);
-	if (smooth_volume*att<psSoundCull)									return FALSE;	// allow volume to go up
+
+	if (smooth_volume<psSoundCull)									return FALSE;	// allow volume to go up
 
 	// Here we has enought "PRIORITY" to be soundable
 	// If we are playing already, return OK
