@@ -22,12 +22,12 @@ function snd_source:reset_scheme()
 	   utils.abort ("Invalid sound theme for object %s", self.object:name ())
 	   return
 	end
-	--printf ("Load theme %s", self.st.theme)
+	printf ("Load theme %s", self.st.theme)
 	for a = 1, table.getn (xr_sound.ph_snd_themes[self.st.theme]), 1 do
 	    local snd = sound_object (xr_sound.ph_snd_themes[self.st.theme][a])
 	    if snd ~= nil then
 	       table.insert (self.sound_list, snd)
-	       --printf ("Loaded sound %s", xr_sound.ph_snd_themes[self.st.theme][a])
+	       printf ("Loaded sound %s", xr_sound.ph_snd_themes[self.st.theme][a])
 	    end   
     end	    
     if table.getn (self.sound_list) > 1 then
