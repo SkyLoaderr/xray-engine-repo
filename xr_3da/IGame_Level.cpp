@@ -149,7 +149,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}
 	}
-	Environment->Load_Music		(pLevel);
 
 	// Done
 	pApp->LoadTitle				("Syncronizing...");

@@ -18,6 +18,11 @@ enum {
 class ENGINE_API	CEnvDescriptor
 {
 public:
+	ref_texture		sky_0;			// C
+	ref_texture		sky_1;			// C
+	float			sky_factor;		// C
+
+	ref_texture		sky_texture;
 	Fvector3		sky_color;
 
 	float			far_plane;
@@ -48,18 +53,13 @@ public:
 	// Environments
 	CEnvDescriptor				Current;
 	xr_vector<CEnvDescriptor>	Palette;
-
-	// Skydome
-	IRender_Visual*				pSkydome;
+	ref_shader					sh_2sky;
+	ref_geom					sh_2geom;
 public:
 					CEnvironment		();
 					~CEnvironment		();
 
-
-	void			Music_Play			(int id);
-	void			set_EnvMode			(int id, float s)		{ /*CurrentID=id; CurrentSpeed=s;*/ }
 	void			Load				(CInifile *pIni, char* section);
-	void			Load_Music			(CInifile* INI);
 
 	void			OnFrame				();
 
