@@ -37,11 +37,11 @@ public:
 			LPBYTE ptr 		= (LPBYTE)_ptr;
 			for (int req_size = count; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
 				size_t W = fwrite(ptr,mb_sz,1,hf);
-				R_ASSERT2(W==1,"Can't write mem block to file.");
+				R_ASSERT2(W==1,"Can't write mem block to file. Disk maybe full.");
 			}
 			if (req_size)	{
 				size_t W = fwrite(ptr,req_size,1,hf); 
-				R_ASSERT2(W==1,"Can't write mem block to file.");
+				R_ASSERT2(W==1,"Can't write mem block to file. Disk maybe full.");
 			}
 		}
     };
