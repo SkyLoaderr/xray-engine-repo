@@ -12,6 +12,7 @@
 int		psSoundRelaxTime		= 3;
 DWORD	psSoundFlags			= ssWaveTrace;
 float	psSoundOcclusionScale	= 0.7f;
+float	psSoundCull				= 0.1f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
