@@ -13,6 +13,7 @@ public:
 	virtual		game_PlayerState*	get_id					(DWORD id);								// DPNID
 	virtual		string64*			get_name_it				(DWORD it);
 	virtual		string64*			get_name_id				(DWORD id);								// DPNID
+	virtual		u32					get_it_2_id				(DWORD it);
 	virtual		u32					get_count				();
 
 	// Utilities

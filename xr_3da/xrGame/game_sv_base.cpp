@@ -57,6 +57,32 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 // Network
 void game_sv_GameState::net_Export_State						(NET_Packet& P)
 {
+	// Generic
+	P.w_s32			(type);
+	P.w_s32			(round);
+	P.w_s32			(fraglimit);
+	P.w_s32			(timelimit);
+
+	// Teams
+	P.w_u16			(u16(teams.size()));
+	for (u32 t_it=0; t_it<teams.size(); t_it++)
+	{
+		P.w				(&teams[t_it],sizeof(game_TeamState));
+	}
+
+	// Players
+	Lock			();
+	u32	p_count		= get_count();
+	P.w_u16			(u16(p_count));
+	for (u32 p_it=0; p_it<p_count; p_it++)
+	{
+		string64*	p_name	=	get_name_it		(p_it);
+		P.w_u32					(get_it_2_id	(p_it));
+		P.w_string				(*p_name);
+		game_PlayerState* A	=	get_it			(p_it);
+		P.w						(A,sizeof(*A));
+	}
+	Unlock			();
 }
 
 void game_sv_GameState::net_Export_Update						(NET_Packet& P, DWORD id)
