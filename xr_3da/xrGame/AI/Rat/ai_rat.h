@@ -331,6 +331,11 @@ public:
 		virtual void				setup_physic_shell	();
 		virtual void				activate_physic_shell();
 		virtual	Feel::Sound*		dcast_FeelSound		()			{ return this;	}
+
+		//serialization
+		virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
+		virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
+		virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
 };
 
 #include "ai_rat_inline.h"
