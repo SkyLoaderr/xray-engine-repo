@@ -870,8 +870,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             }
         }
 
-        Mapping::iterator tangent = outmap.find( "tangent" );
-        Mapping::iterator binormal = outmap.find( "binormal" );
+        Mapping::iterator tangent	= outmap.find( "tangent" );
+        Mapping::iterator binormal	= outmap.find( "binormal" );
 
         // now renormalize
         for ( unsigned int b = 0; b < positions.size(); b += 3 ) 
