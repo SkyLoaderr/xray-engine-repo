@@ -29,7 +29,6 @@ CUITreeViewItem::CUITreeViewItem()
 
 CUITreeViewItem::~CUITreeViewItem()
 {
-	Close();
 	DeleteAllSubItems();
 }
 
@@ -196,6 +195,7 @@ void CUITreeViewItem::DeleteAllSubItems()
 		xr_delete(*it);
 		(*it) = NULL;
 	}
+
 	vSubItems.clear();
 }
 
