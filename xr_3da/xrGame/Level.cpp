@@ -384,6 +384,12 @@ void CLevel::ClientReceive()
 		case M_SPAWN:
 			g_sv_Spawn(P);
 			break;
+		case M_DESTROY:
+			{
+				P->r_u16				(ID);
+				Objects.DestroyObject	(u32(ID));
+			}
+			break;
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;

@@ -31,6 +31,7 @@ public:
 	CObject*					LoadOne				( LPCSTR	name	);
 
 	void						DestroyObject		( CObject*	O		);
+	void						DestroyObject		( u32		ID		);
 
 	void						OnMove				( );
 

@@ -61,7 +61,7 @@ CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 	else					return NULL;
 }
 
-VOID CObjectList::DestroyObject	( CObject *pObject )
+void CObjectList::DestroyObject	( CObject *pObject )
 {
 	if (0==pObject)			return;
 	net_Unregister			(pObject);
@@ -69,8 +69,11 @@ VOID CObjectList::DestroyObject	( CObject *pObject )
 	if (it!=objects.end())	objects.erase(it);
 	DEL_INSTANCE			(pObject);
 }
-
-VOID CObjectList::OnMove	( )
+void CObjectList::DestroyObject	( u32 ID )
+{
+	DestroyObject(net_Find(ID));
+}
+void CObjectList::OnMove		()
 {
 	// Sheduled
 	Device.Statistic.UpdateSheduled.Begin	();
@@ -84,17 +87,17 @@ VOID CObjectList::OnMove	( )
 	Device.Statistic.UpdateClient.End		();
 }
 
-VOID CObjectList::net_Register	(CObject* O)
+void CObjectList::net_Register	(CObject* O)
 {
 	map_NETID.insert(make_pair(O->ID(),O));
 }
-VOID CObjectList::net_Unregister(CObject* O)
+void CObjectList::net_Unregister(CObject* O)
 {
 	map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());
 	if ((it!=map_NETID.end()) && (it->second == O))	map_NETID.erase(it);
 }
 
-VOID CObjectList::net_Export	(NET_Packet* Packet)
+void CObjectList::net_Export	(NET_Packet* Packet)
 {
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 	{
@@ -106,7 +109,7 @@ VOID CObjectList::net_Export	(NET_Packet* Packet)
 	}
 }
 
-VOID CObjectList::net_Import	(NET_Packet* Packet)
+void CObjectList::net_Import	(NET_Packet* Packet)
 {
 	while (!Packet->r_eof())
 	{
