@@ -83,7 +83,7 @@ class CNodeRenumberer {
 		}
 
 
-		IC	bool	operator()			(u32 vertex_id0, const u32 vertex_id1) const
+		IC	bool	operator()			(u32 vertex_id0, u32 vertex_id1) const
 		{
 			return		(compressed_nodes[vertex_id0].p.xz() < compressed_nodes[vertex_id1].p.xz());
 		}
@@ -104,8 +104,8 @@ public:
 		for (u32 i=0; i<(int)m_nodes.size(); ++i) {
 			for (u32 j=0; j<4; ++j) {
 				xr_vector<u32>::iterator I = std::lower_bound(m_sorted.begin(),m_sorted.end(),m_nodes[i].link(j));
-				VERIFY		(m_sorted.end() != I);
-				m_nodes[i].link(j,u32(I - m_sorted.begin()));
+				if (m_sorted.end() != I)
+					m_nodes[i].link(j,u32(I - m_sorted.begin()));
 			}
 		}
 
