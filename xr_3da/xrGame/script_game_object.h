@@ -237,10 +237,12 @@ public:
 			void				AnswerPda			();
 
 
+			LPCSTR				ProfileName			();
 			LPCSTR				CharacterName		();
 			LPCSTR				CharacterCommunity	();
 			int					CharacterRank		();
 			int					CharacterReputation	();
+
 
 			void SetCharacterRank			(int);
 			void ChangeCharacterRank		(int);

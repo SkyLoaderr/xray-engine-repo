@@ -270,6 +270,18 @@ void CScriptGameObject::AnswerPda			()
 }
 
 
+LPCSTR CScriptGameObject::ProfileName			()
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	
+	PROFILE_INDEX profile_index =  pInventoryOwner->CharacterInfo().Profile();
+	if(NO_PROFILE == profile_index)
+		return NULL;
+	else
+		return *CCharacterInfo::IndexToId(profile_index);
+}
+
 
 LPCSTR CScriptGameObject::CharacterName			()
 {
