@@ -103,6 +103,7 @@ void CPda::feel_touch_new(CObject* O)
 		m_PDAList.push_back(pInvOwner->GetPDA());
 
 		m_NewPDAList.push_back(pInvOwner->GetPDA());
+		GetOriginalOwner()->NewPdaContact(pInvOwner);
 	}
 }
 
@@ -120,6 +121,7 @@ void CPda::feel_touch_delete(CObject* O)
 										m_PDAList.end(), 
 										pInvOwner->GetPDA()));
 			m_DeletedPDAList.push_back(pInvOwner->GetPDA());
+			GetOriginalOwner()->LostPdaContact(pInvOwner);
 		}
 		//для случая перехода PDA в offline
 		else

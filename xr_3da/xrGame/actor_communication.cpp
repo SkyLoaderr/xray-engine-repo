@@ -279,3 +279,11 @@ void CActor::UpdateContact		(u16 contact_id)
 		(*it).time = Level().GetGameTime();
 	}
 }
+
+void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
+{
+	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
+}
+void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
+{
+}

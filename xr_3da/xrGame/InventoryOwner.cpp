@@ -382,3 +382,11 @@ void CInventoryOwner::FoundZone	(CCustomZone*)
 void CInventoryOwner::LostZone	(CCustomZone*)
 {
 }
+
+
+void CInventoryOwner::NewPdaContact		(CInventoryOwner* pInvOwner)
+{
+}
+void CInventoryOwner::LostPdaContact	(CInventoryOwner* pInvOwner)
+{
+}

@@ -81,6 +81,8 @@ public:
 	virtual bool IsTalkEnabled	()		{ return m_bAllowTalk;}
 
 	CInventoryOwner* GetTalkPartner()	{return m_pTalkPartner;}
+	virtual void	 NewPdaContact		(CInventoryOwner*);
+	virtual void	 LostPdaContact		(CInventoryOwner*);
 
 	//игровое имя 
 	virtual LPCSTR	Name        () const;

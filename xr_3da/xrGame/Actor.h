@@ -91,6 +91,10 @@ public:
 	virtual void OnReceiveInfo		(INFO_INDEX info_index);
 	virtual void OnDisableInfo		(INFO_INDEX info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_INDEX info_index);
+
+	virtual void	 NewPdaContact		(CInventoryOwner*);
+	virtual void	 LostPdaContact		(CInventoryOwner*);
+
 protected:
 	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
 	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion);
