@@ -8,7 +8,7 @@
 
 #include	"FVisual.h"
 #include	"FProgressive.h"
-#include	"SkeletonX.h"
+#include	"..\SkeletonX.h"
 
 class		CSkeletonX_ext	: public CSkeletonX	// shared code for SkeletonX derivates
 {

@@ -68,7 +68,7 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// Geom
-	hGeom.create		(vFormat,pVertices,pIndices);
+	geom.create			(vFormat,pVertices,pIndices);
 
 	// Get constants
 	m_xform				= "m_xform";
