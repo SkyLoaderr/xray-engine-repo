@@ -50,4 +50,16 @@ void FLOD::Render		(float LOD		)
 	dot	= Ldir.dotproduct	(facets[5].N); if (dot>best_dot) { best_id=5; best_dot=dot; }
 	dot	= Ldir.dotproduct	(facets[6].N); if (dot>best_dot) { best_id=6; best_dot=dot; }
 	dot	= Ldir.dotproduct	(facets[7].N); if (dot>best_dot) { best_id=7; best_dot=dot; }
+
+	// Fill VB
+	_face&		F			= facets[best_id];
+	DWORD		vOffset		= 0;
+	_vertex*	V			=	(_vertex*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
+	CopyMemory	(V,F.v,4*sizeof(_vertex));
+	Device.Streams.Vertex.Unlock(4,hVS->dwStride);
+
+	// Draw IT
+	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 }

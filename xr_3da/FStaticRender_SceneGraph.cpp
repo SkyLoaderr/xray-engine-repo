@@ -17,7 +17,8 @@ float ssaLIMIT_SS		= 16.f;
 float ssaDONTSORT_SS	= 25.f*25.f;
 float ssaLIMIT;
 float ssaDONTSORT;
-const float ssaLOD		= (64*64)/(800*600);
+const float ssLOD		= 128.f;
+const float ssaLOD		= (ssLOD*ssLOD)/(800*600);
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
@@ -237,8 +238,14 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_leafs_Static	(pV->children.back());
-			else										add_leafs_Static	(pV->children.front());
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	InsertSG_Static		(pVisual);
+			else										
+			{
+				// Add all children, doesn't perform any tests
+				I = pV->children.begin	();
+				E = pV->children.end	();
+				for (; I!=E; I++)	add_leafs_Static (*I);
+			}
 		}
 		break;
 	default:
@@ -347,8 +354,18 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->children.back(),	planes);
-			else										add_Static	(pV->children.front(),	planes);
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	InsertSG_Static		(pVisual);
+			else										
+			{
+				// Add all children, perform tests
+				I = pV->children.begin	();
+				E = pV->children.end	();
+				if (fcvPartial==VIS) {
+					for (; I!=E; I++)	add_Static			(*I,planes);
+				} else {
+					for (; I!=E; I++)	add_leafs_Static	(*I);
+				}
+			}
 		}
 		break;
 	case MT_CACHED:
