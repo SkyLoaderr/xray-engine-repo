@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void	CRenderTarget::phase_smap_point(u32 pls_phase)
+void	CRenderTarget::phase_smap_point	(light* L, u32 pls_phase)
 {
 	// Targets
 	u_setrt								(PSM_size,PSM_size,rt_smap_p->pRT[pls_phase], NULL, NULL, rt_smap_p_ZB);

@@ -93,13 +93,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	// Update listener
 	if (pListener)
 	{
-		//static	Fvector		last_pos		= {0,0,0};
 		clamp								(dt,EPS_S,1.f/10.f);
 		Listener.vVelocity.sub				(P, Listener.vPosition );
 		Listener.vVelocity.div				(dt);
-//.		
-		Listener.vVelocity.set				(0,0,0);
-
         if (!Listener.vPosition.similar(P)){
 			Listener.vPosition.set			(P);
             bListenerMoved					= TRUE;

@@ -67,9 +67,9 @@ void CRenderTarget::accum_spot	(light* L)
 	Fmatrix			m_Shadow,m_Lmap;
 	{
 		float			fTexelOffs			= (.5f / DSM_size);
-		float			view_dim			= float(RImplementation.LR.S_size)/float(DSM_size);
-		float			view_sx				= float(RImplementation.LR.S_posX)/float(DSM_size);
-		float			view_sy				= float(RImplementation.LR.S_posY)/float(DSM_size);
+		float			view_dim			= float(L->X.S.size)/float(DSM_size);
+		float			view_sx				= float(L->X.S.posX)/float(DSM_size);
+		float			view_sy				= float(L->X.S.posY)/float(DSM_size);
 		float			fRange				= float(1.f);
 		float			fBias				= -0.0002f*fRange;
 		Fmatrix			m_TexelAdjust		= {
@@ -81,8 +81,8 @@ void CRenderTarget::accum_spot	(light* L)
 
 		// compute xforms
 		Fmatrix			xf_world;		xf_world.invert	(Device.mView);
-		Fmatrix			xf_view			= RImplementation.LR.S_view;
-		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,RImplementation.LR.S_project);
+		Fmatrix			xf_view			= L->X.S.view;
+		Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,L->X.S.project);
 		m_Shadow.mul					(xf_view, xf_world);
 		m_Shadow.mulA					(xf_project	);
 
@@ -98,7 +98,7 @@ void CRenderTarget::accum_spot	(light* L)
 		};
 
 		// compute xforms
-		xf_project.mul		(m_TexelAdjust2,RImplementation.LR.S_project);
+		xf_project.mul		(m_TexelAdjust2,L->X.S.project);
 		m_Lmap.mul			(xf_view, xf_world);
 		m_Lmap.mulA			(xf_project	);
 	}
@@ -134,7 +134,7 @@ void CRenderTarget::accum_spot	(light* L)
 
 /*
 		// Shader + constants
-		float circle				= ps_r2_ls_ssm_kernel / RImplementation.LR.S_size;
+		float circle				= ps_r2_ls_ssm_kernel / L->X.S.size;
 		Fvector4 J; float scale		= circle/11.f;
 		R_constant* _C				= RCache.get_c			("J_spot");
 		if (_C)		{

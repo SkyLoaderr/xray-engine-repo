@@ -32,9 +32,8 @@ public:
 	// kernel
 	virtual void	w			(const void* _ptr, u32 count) 
     { 
-		//.    	fwrite(ptr,count,1,hf);
 		if (0!=count){
-			static const u32 mb_sz = 0x1000000;
+			const u32 mb_sz = 0x1000000;
 			LPBYTE ptr 		= (LPBYTE)_ptr;
 			for (int req_size = count; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
 				size_t W = fwrite(ptr,mb_sz,1,hf);

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void CRenderTarget::shadow_direct	(u32 dls_phase)
+void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 {
 	RImplementation.stats.l_visible	++;
 
@@ -20,8 +20,8 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 
 	// compute xforms
 	Fmatrix			xf_world;		xf_world.invert	(Device.mView);
-	Fmatrix&		xf_view			= RImplementation.LR.D_view;
-	Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,RImplementation.LR.D_project);
+	Fmatrix&		xf_view			= L->X.D.view;
+	Fmatrix			xf_project;		xf_project.mul	(m_TexelAdjust,L->X.D.project);
 	RCache.set_xform_world			(xf_world	);
 	RCache.set_xform_view			(xf_view	);
 	RCache.set_xform_project		(xf_project	);

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void	CRenderTarget::phase_smap_direct()
+void	CRenderTarget::phase_smap_direct(light* L)
 {
 	// Targets
 	if (RImplementation.b_HW_smap)		u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_depth->pRT);

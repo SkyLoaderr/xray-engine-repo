@@ -121,12 +121,12 @@ public:
 	void						phase_scene				();
 	void						phase_decompress		();
 	void						phase_occq				();
-	void						phase_smap_direct		();
-	void						phase_smap_point		(u32 pls_phase);
-	void						phase_smap_spot			();
+	void						phase_smap_direct		(light* L);
+	void						phase_smap_point		(light* L, u32 pls_phase);
+	void						phase_smap_spot			(light* L);
 	void						phase_accumulator		();
 	void						phase_accumulator_init	();
-	void						shadow_direct			(u32 dls_phase);
+	void						shadow_direct			(light* L, u32 dls_phase);
 	BOOL						enable_scissor			(light* L);		// true if intersects near plane
 	void						draw_volume				(light* L);
 	void						accum_direct			();

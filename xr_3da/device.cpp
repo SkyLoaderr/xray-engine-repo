@@ -115,8 +115,6 @@ void __cdecl	mt_Thread	(void *ptr)	{
 void CRenderDevice::PreCache	(u32 amount)
 {
 	if (HW.Caps.bForceGPU_REF)	amount=0;
-	//.
-	amount			= 0;
 	// Msg			("* PCACHE: start for %d...",amount);
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }

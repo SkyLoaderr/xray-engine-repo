@@ -434,9 +434,6 @@ CTexture* CResourceManager::_CreateTexture	(LPCSTR Name)
 	if (0==xr_strcmp(Name,"null"))	return 0;
 	R_ASSERT(Name && Name[0]);
 
-	//.
-	//if (0!=strstr(Name,"hud_group_back"))	__asm int 3;
-
 	// ***** first pass - search already loaded texture
 	LPSTR N			= LPSTR(Name);
 	map_TextureIt I = m_textures.find	(N);

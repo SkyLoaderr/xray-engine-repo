@@ -82,10 +82,10 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 	//float				d	= 2*p_DIST/_cos(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
-	D_project.build_projection_ortho(dx,dy,1.f,2*DSM_d_range);
+	L->X.D.project.build_projection_ortho(dx,dy,1.f,2*DSM_d_range);
 
 	// 
-	D_combine.mul			(D_project,L->X.D.view);
+	L->X.D.combine.mul		(L->X.D.project,L->X.D.view);
 }
 
 void CLight_Render_Direct::compute_xfd_2(u32 m_phase, light* L)
