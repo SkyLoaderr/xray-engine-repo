@@ -403,7 +403,7 @@ function NPC:talk_dialogue(to_whom)
 	printf("NPC:talk_dialogue")
 	if self.dlg_fsm ~= nil then
 		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
-		local snd, animat, len, delay = self.dlg_fsm:next_phrase()
+		local snd, animat, len, delay, delay_animat = self.dlg_fsm:next_phrase()
 		if animat == nil then
 			printf("NPC:talk_dialogue:animat returned by next_phrase() is nil")
 		else
@@ -420,7 +420,11 @@ function NPC:talk_dialogue(to_whom)
 		if self.look_at_target_when_talking then
 			act:set_action( look(look.fire_point, to_whom) )
 		end
-		act:set_action( anim(self.default_anim) )
+		if delay_animat ~= nil then
+			act:set_action( anim(delay_animat) )
+		else
+			act:set_action( anim(self.default_anim) )
+		end
 		act:set_action( cond(cond.time_end, delay) )
 		self.npc:command(act, false)
 		printf("_bp: talk_dialogue: delay=%d", delay)
@@ -443,7 +447,9 @@ function DialogueFSM:__init ()
 	self.last_pos_chosen = -1
 end
 
-function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat)
+-- Adds a phrase to the FSM.
+-- Args: is_repeatable, from_state, to_state, sound, {delay_range_from, [delay_range_to]}, [animation], [idling_animation])
+function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat, delay_animat)
 	printf("DialogueFSM:set: snd=\"%s\"", if_then_else(snd, snd, "<nil>"))
 	local snd_obj = sound_object(snd)
 	if snd_obj ~= nil then
@@ -460,7 +466,8 @@ function DialogueFSM:set(repeatable, from, to, snd, delay_after_snd, animat)
 		use_anim = animat
 	end
 	--]]
-	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, animat=animat, len=len, delay_after_snd=delay_after_snd})
+	table.insert(self.trans_tbl, {repeatable=repeatable, from=from, to=to, snd=snd, animat=animat, len=len,
+		delay_after_snd=delay_after_snd, delay_animat=delay_animat})
 end
 
 function DialogueFSM:clear()
@@ -519,7 +526,8 @@ function DialogueFSM:next_phrase()
 				delay_num_members)
 		end
 	end
-	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].len, delay
+	return self.trans_tbl[pos_chosen].snd, self.trans_tbl[pos_chosen].animat, self.trans_tbl[pos_chosen].len, delay,
+		self.trans_tbl[pos_chosen].delay_animat
 end
 
 ----------------------------------------------------------------------------------------------------

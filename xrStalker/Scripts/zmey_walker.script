@@ -19,7 +19,7 @@ function main ()
 	       --move(move.standing, move.run, move.line, patrol("way_attack_point")),
 	       object(wpn, object.fire1),
 	       --cond(cond.move_end),
-	       move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
+	       --move(move.standing, move.stand, move.line, actor), -- бага, с этой строкой крутится нормально!
 	       cond(cond.time_end, time_infinite)
 	)
 	--

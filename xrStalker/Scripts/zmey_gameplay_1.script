@@ -14,6 +14,8 @@ function main ()
 
 	-- 1) Подойди 2) Подойди ближе 3) Кашляет 4) Да подойди же ближе! 5) Ты должен выслушать меня 6) Стонет и кашляет
 	dlg_podoidi = classes.DialogueFSM()
+	-- Args: is_repeatable, from_state, to_state, sound, {delay_range_from, [delay_range_to]}, [animation], [idling_animation])
+	--dlg_podoidi:set(false, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1", anim.danger) -- подойди
 	dlg_podoidi:set(false, 0, 1, snd_prefix .. "wounded-01", {3000}, "govor_1") -- подойди
 	dlg_podoidi:set(false, 1, 2, snd_prefix .. "wounded-02", {2000}, "zavet") -- подойжи ближе
 	dlg_podoidi:set(false, 2, 3, snd_prefix .. "wounded-16-1", {2000}, "kashel_1") -- кашель1
@@ -142,14 +144,17 @@ function main ()
 		action_first(c_stalker_wounded.npc, anim("smert_end"), cond(cond.anim_end, time_infinite))
 	end
 	debug_log(zmey_gameplay_1.script_name(), "_bp: Waiting for final death animation to finish")
-	while c_stalker_wounded.npc:action() do
-		wait()
-	end
+
+	-- Раскомментарить для отключения смерти от хита (будет лежать живым и играть анимацию мертвого)
+	--while c_stalker_wounded.npc:action() do
+	--	wait()
+	--end
+
 	debug_log(zmey_gameplay_1.script_name(), "_bp: Final death animation has finished")
 
 	if c_stalker_wounded.npc:alive() then
 		local h = hit ()
-		h.power = 5
+		h.power = 200
 		h.direction = vector ():set(0, 0, 1)
 		h:bone("bip01_head")
 		h.draftsman = get_actor()

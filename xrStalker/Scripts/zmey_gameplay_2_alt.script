@@ -8,18 +8,153 @@
 
 -- Имена звуковых файлов
 local snd_prefix =                    [[scripts\Rolik\stalker_hound\]]
+local free_mode_activated = false
+
+class "AgroCamper"
+-- Тип монстра с поведением "кемпер", который после обнаружения игрока отпускается из под скрипта.
+-- Maintained by: Zmey
+
+function AgroCamper:__init(script_name, c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+	printf("AgroCamper: __init: creating")
+	
+	self.script_name = script_name
+	self.c_npc = c_npc
+	self.c_enemy = c_enemy
+	
+	self.dlg_nothing_happened_yet = dlg_nothing_happened_yet
+	self.dlg_see_enemy = dlg_see_enemy
+	self.dlg_not_see_enemy = dlg_not_see_enemy
+	
+	self.dlg_nothing_happened_yet:reset()
+	self.c_npc:set_dialogue(self.dlg_nothing_happened_yet)
+	
+	-- FINITE STATE MACHINE:
+	self.state = self.nothing_happened_yet 
+
+	-- Сразу взять монстра под скрипт:
+	if not self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(true, self.script_name)
+	end
+end
+
+function AgroCamper:nothing_happened_yet()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("AgroCamper: nothing_happened_yet: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) then
+		printf("AgroCamper: nothing_happened_yet: npc sees enemy")
+		interrupt_action(self.c_npc.npc, self.script_name)
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		return
+	end
+
+	if distance_between(self.c_npc.npc, self.c_enemy.npc) <= 15 then
+		if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+			printf("_bp: nothing_happened_yet: Distance OK, not talking, not shooting: %d", game.time())
+			self.c_npc:talk_dialogue(self.c_enemy.npc)
+		end
+	end
+end
+
+function AgroCamper:see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	if not self.c_enemy.npc:alive() and self.c_npc:is_shooting() then
+			reset_action(self.c_npc.npc, self.script_name)
+			self.state = nil
+			return
+	end
+
+	--printf("AgroCamper: see_enemy: %d", game.time())
+	if not self.c_npc.npc:see(self.c_enemy.npc) then
+		-- Если стреляет - хватит, он уже потерял его из виду:
+		if self.c_npc:is_shooting() then
+			interrupt_action(self.c_npc.npc, self.script_name)
+		end
+		self.dlg_not_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_not_see_enemy)
+		self.state = self.not_see_enemy
+		return
+	end
+
+	if not self.c_npc:is_shooting() and
+	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 10 or self.c_npc.npc.health < 0.99) then
+		if self.c_npc:is_talking() or self.c_npc:is_looking() then
+			interrupt_action(self.c_npc.npc, self.script_name)
+		end
+		--self.c_npc:shoot(self.c_enemy.npc)
+		self.state = nil
+		free_mode_activated = true
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		self.c_npc:talk_dialogue(self.c_enemy.npc)
+	end
+end
+
+function AgroCamper:not_see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
+	--printf("AgroCamper: not_see_enemy: %d", game.time())
+	if self.c_npc.npc:see(self.c_enemy.npc) then
+		interrupt_action(self.c_npc.npc, self.script_name)
+		self.dlg_see_enemy:reset()
+		self.c_npc:set_dialogue(self.dlg_see_enemy)
+		self.state = self.see_enemy
+		return
+	end
+
+	if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
+		self.c_npc:talk_dialogue(self.c_enemy.npc)
+	end
+end
+
+function AgroCamper:set_nothing_happened_yet_handler(new_handler)
+	if self.state == self.nothing_happened_yet then
+		self.state = new_handler
+	end
+	self.nothing_happened_yet = new_handler
+end
+
+-- "Мотор" всего класса, должна вызываться периодически
+-- Возвращает:
+-- 	true, если сценарий все еще выполняется
+-- 	false, в случае завершения
+function AgroCamper:heartbeat()
+	if self.state ~= nil then
+		self:state()
+		return true
+	end
+
+	if self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(false, self.script_name)
+	end
+	return false
+end
 
 ----------------------------------------------------------------------------------------------------
 -- MAIN
 ----------------------------------------------------------------------------------------------------
 
 --function nothing_happened_yet(mob)
---	debug_log(zmey_gameplay_2.script_name(), "MY OWN HANDLER ... " .. game.time())
+--	debug_log(zmey_gameplay_2_alt.script_name(), "MY OWN HANDLER ... " .. game.time())
 --end
 
 function main ()
-	debug_script_name = zmey_gameplay_2.script_name()
-	debug_log(zmey_gameplay_2.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_2")
+	debug_script_name = zmey_gameplay_2_alt.script_name()
+	debug_log(zmey_gameplay_2_alt.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_2_alt")
 
 	-- 1) Кашель
 	-- 1) Скоты трусливые! 2) Падлы!
@@ -35,7 +170,7 @@ function main ()
 	dlg_nothing_happened_yet:set(false, 1, 0, snd_prefix .. "hound-03", {3000, 7000}) -- падлы! (assholes)
 	dlg_nothing_happened_yet:set(false, 0, 2, snd_prefix .. "hound-04", {1000, 2000}) -- надо пересидеть и валить по склонам
 	dlg_nothing_happened_yet:set(false, 2, 0, snd_prefix .. "hound-05", {5000, 10000}) -- наши подберут
-	debug_log(zmey_gameplay_2.script_name(), "_bp: dlg_nothing_happened_yet created")
+	debug_log(zmey_gameplay_2_alt.script_name(), "_bp: dlg_nothing_happened_yet created")
 	
 	-- 1) Только сунься - я тебе кишки выпущу
 	-- 1) Давай давай!
@@ -62,24 +197,36 @@ function main ()
 	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-1", {2000, 5000}) -- хриплый смех
 	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
 
-	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs are about to be created")
-	local c_stalker_pes = classes.NPC(zmey_gameplay_2.script_name(), get_level_object("m_stalker_pes"), get_level_object("wpn_pes"))
+	debug_log(zmey_gameplay_2_alt.script_name(), "_bp: npcs are about to be created")
+	local c_stalker_pes = classes.NPC(zmey_gameplay_2_alt.script_name(), get_level_object("m_stalker_pes"), get_level_object("wpn_pes"))
 	c_stalker_pes.default_anim = anim.danger -- анимация при ничего-не-деланьи
 	c_stalker_pes.look_at_target_when_talking = false -- не крутить головой в сторону жертвы при разговоре!
-	local c_actor = classes.NPC(zmey_gameplay_2.script_name(), get_actor())
-	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs created")
+	local c_actor = classes.NPC(zmey_gameplay_2_alt.script_name(), get_actor())
+	debug_log(zmey_gameplay_2_alt.script_name(), "_bp: npcs created")
 
-	local walker = classes.Camper(zmey_gameplay_2.script_name(),
+	local walker = zmey_gameplay_2_alt.AgroCamper(zmey_gameplay_2_alt.script_name(),
 		c_stalker_pes, c_actor, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
-	--walker:set_nothing_happened_yet_handler(zmey_gameplay_2.nothing_happened_yet)
+	--walker:set_nothing_happened_yet_handler(zmey_gameplay_2_alt.nothing_happened_yet)
 	
-	debug_log(zmey_gameplay_2.script_name(), "_bp: entering main loop")
+	debug_log(zmey_gameplay_2_alt.script_name(), "_bp: entering main loop")
 
 	while walker:heartbeat() do
 		wait()
 	end
 
-	debug_log(zmey_gameplay_2.script_name(), "SCRIPT STOPPED: zmey_gameplay_2")
+
+	if free_mode_activated then
+		if c_stalker_pes.npc:get_script() then
+			c_stalker_pes.npc:script(false, self.script_name)
+		end
+		while c_stalker_pes.npc:alive() and not c_stalker_pes.npc:see(c_actor.npc) do
+			local snd_obj = sound_object(snd_prefix .. "hound-12")
+			snd_obj:play_at_pos(c_stalker_pes.npc, c_stalker_pes.npc:position(), 0.0);
+			wait(5000)
+		end
+	end
+	
+	debug_log(zmey_gameplay_2_alt.script_name(), "SCRIPT STOPPED: zmey_gameplay_2_alt")
 end
 
 ----------------------------------------------------------------------------------------------------
