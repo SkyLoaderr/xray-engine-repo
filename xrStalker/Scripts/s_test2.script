@@ -56,6 +56,104 @@ function Monster:process ()
 	printf ("%s if freed from our control", self.npc:name ())	
 end	
 
+function Monster:validate ()
+    if self.npc ~= nil and self.npc:alive () == true then return true end
+    return false
+end
+
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Класс защитника
+-------------------------------------------------------------------------------------------------------------------------------------
+class "Defender"
+
+local on_ready = 0
+local on_move = 1
+local on_free = 2
+
+function Defender:__init (npc, script, way, monsters, freed)
+	self.npc = npc
+	self.script = script
+	self.way = way
+	self.monsters = monsters
+	self.state = on_ready
+	self.has_freed = has_freed
+	self.freed = false
+	
+	self.npc:script (true, self.script)
+	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))
+end
+
+function Defender:initialize ()
+
+    reset_action (self.npc, self.script)
+     
+    if self.way == nil then
+	   action (self.npc, move (move.crouch, move.stand, move.line, self.npc:position ()), anim (anim.danger), 
+	   		   cond (cond.time_end, time_infinite))	
+	   self.state = on_ready		   
+	else
+	   action (self.npc, move (move.standing, move.run, move.line, self.way), anim (anim.danger), cond (cond.move_end))
+	   action (self.npc, move (move.crouch, move.stand, move.line, self.way), anim (anim.danger), 
+	   		   cond (cond.time_end, time_infinite))	
+	   self.state = on_move		   		   
+	end	   		   
+	
+	
+end
+
+function Defender:process ()
+	if self.npc == nil or self.npc:alive () == false or self.freed == true then return end
+	--если еще идем, то вперед
+	if self.state == on_move then
+	   if self.npc:action () then 
+	   	  return
+	   else 
+	      self.state = on_ready 
+	   end
+	end   
+	--если сталкер должен быть отпущен, то отпускаем
+	if self.has_freed == true then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   return
+	end
+	--если таблица монстров не задана или в ней нет элементов, то отпускаем нпц       
+    if self.monsters == nil or table.getn (self.monsters) == 0 then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   return
+	end
+	--найдем врага
+	local dist = 10000000
+	local enemy = nil
+	for a = 1, table.getn (self.monsters), 1 do
+	    local monster = self.monsters[a]
+	    if monster:alive () == true then
+	       local tdist = distance_between (monster.npc, self.npc)
+	       if tdist < dist and self.npc:see (monster.npc) == true then
+	          dist = tdist
+	          enemy = monster
+	       end
+	    end      
+	end    
+	
+	--если нет врагов, то отпускаем мужика
+    if enemy == nil then
+	   self.npc:script (false, self.script)
+	   self.freed = true
+	   return
+    end	   
+	
+	--целимся во врага
+	update_action (self.npc, self.script, look (look.fire_point, enemy.npc))
+	
+	--если дистанция более 30 метров, то ничего не делаем
+	if tdist > 30 then return end
+	
+	--стреляем
+    update_action (self.npc, self.script, object (self.npc:get_active_item (), object.fire1))
+	
+end
 
 
 local entered = false
@@ -67,12 +165,14 @@ end
 
 function main ()
 	local monster = s_test2.Monster (get_level_object ("boar_attack"), patrol ("attack_way"), s_test2.script_name ())
-	local stalker = get_level_object ("stalker_defend")
+--	local stalker = get_level_object ("stalker_defend")
 	monster:initialize ()
-	stalker:script (true, s_test2.script_name ())
-	action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
+--	stalker:script (true, s_test2.script_name ())
+--	action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test2.zone_callback, true)
+
+    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, true)
 	
 	wait (10000)		
 	
@@ -81,15 +181,23 @@ function main ()
 		  wait ()
 	end
 	
-	reset_action (stalker, s_test2.script_name ())
-	action (stalker, move (move.standing, move.run, move.line, patrol ("defend_way")), anim (anim.danger), cond (cond.move_end))
+	defender:initialize ()
 	
-	while stalker:action () do 
-		  if stalker:see (monster.npc) == true then printf ("Stalker see monster") end	
-		  wait () 
+	while true do 
+	      monster:process ()
+	      defender:process ()
+	      wait ()
     end
 	
-	stalker:script (false, s_test2.script_name())
+--	reset_action (stalker, s_test2.script_name ())
+--	action (stalker, move (move.standing, move.run, move.line, patrol ("defend_way")), anim (anim.danger), cond (cond.move_end))
+	
+--	while stalker:action () do 
+--		  if stalker:see (monster.npc) == true then printf ("Stalker see monster") end	
+--		  wait () 
+--    end
+	
+--	stalker:script (false, s_test2.script_name())
 			  
 end
 
