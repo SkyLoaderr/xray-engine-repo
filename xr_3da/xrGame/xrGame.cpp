@@ -8,8 +8,8 @@
 #include "ai_console.h"
 #include "Actor_Flags.h"
 #include "ai\\hen\\ai_hen.h"
-  
-extern int					psPhysicsFPS;
+    
+extern int	 				psPhysicsFPS;
 extern float				psSqueezeVelocity;
 ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
