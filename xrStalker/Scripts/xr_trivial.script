@@ -31,7 +31,7 @@ function stalker_zombe_action:initialize ()
     self.a.time      = device():time_global() + time_to_speak
     self.a.stand     = false                     --Стоим или идем, служит для того, чтоб запомнить, что стоим и говорим.
 
-	self.objcet:clear_animations	()    
+	self.object:clear_animations	()    
 	self.object:set_detail_path_type( move.line )
     self.object:set_movement_type   ( move.walk )
     self.object:set_body_state      ( move.standing )
