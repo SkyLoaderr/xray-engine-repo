@@ -70,5 +70,5 @@ void xrMU_Model::calc_normals()
 	for (it = m_faces.begin(); it!=m_faces.end(); it++)
 		(*it)->bSplitted = FALSE;
 
-	Msg("%5s %d vertices duplicated"," ",m_vertices.size()-Vcount);
+	Msg("%5s %d vertices duplicated","-",m_vertices.size()-Vcount);
 }
