@@ -11,9 +11,17 @@
 #include "..\\..\\a_star.h"
 #include "..\\ai_monsters_misc.h"
 
-void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStraighten)
+void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
 	// building a path from and to
+	if (AI_Path.DestNode == AI_NodeID && !tpDestinationPosition) {
+		AI_Path.Nodes.clear();
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
+		m_fCurSpeed = 0;
+		return;
+	}
+
 	if (S)
 		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
 	else
@@ -24,6 +32,17 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 		// if path is long enough then build travel line
 		if (!bCanStraighten) {
 			AI_Path.BuildTravelLine(Position());
+			if (tpDestinationPosition) {
+				VERIFY(!AI_Path.TravelPath.empty());
+				if (AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) < AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P.distance_to(*tpDestinationPosition)) {
+					AI::CPathNodes::CTravelNode T;
+					T.P = *tpDestinationPosition;
+					AI_Path.TravelPath.push_back(T);
+				}
+				else {
+					AI_Path.TravelPath[AI_Path.TravelPath.size() - 2].P = *tpDestinationPosition;
+				}
+			}
 		}
 		else {
 			vector<Fvector>		tpaPoints(0);
@@ -34,16 +53,23 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 			Fvector			tStartPosition = vPosition;
 			u32				dwCurNode = AI_NodeID;
 
-			for (u32 i=1; i<N; i++) {
-				VERIFY(dwCurNode < getAI().Header().count);
-				if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i]))
-					if (dwCurNode != AI_Path.Nodes[i - 1])
-						tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
-					else
-						tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
-			}
+			for (u32 i=1; i<=N; i++)
+				if (i<N) {
+					if (!getAI().bfCheckNodeInDirection(dwCurNode,tStartPosition,AI_Path.Nodes[i]))
+						if (dwCurNode != AI_Path.Nodes[i - 1])
+							tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
+						else
+							tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[i]));
+				}
+				else
+					if (tpDestinationPosition)
+						if (getAI().dwfCheckPositionInDirection(dwCurNode,tStartPosition,*tpDestinationPosition) == u32(-1)) {
+							if (dwCurNode != AI_Path.Nodes[i - 1])
+								tpaPoints.push_back(tStartPosition = getAI().tfGetNodeCenter(dwCurNode = AI_Path.Nodes[--i]));
+							tpaPoints.push_back(tStartPosition = *tpDestinationPosition);
+						}
 			
-			if (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size)
+			if ((!tpDestinationPosition) && (tStartPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1])) > getAI().Header().size))
 				tpaPoints.push_back(getAI().tfGetNodeCenter(AI_Path.Nodes[N - 1]));
 			
 			tpaDeviations.resize(N = tpaPoints.size());
@@ -207,73 +233,6 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 	vfSetMovementType(tBodyState,tMovementType,tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
-{
-	m_tBodyState	= tBodyState;
-	m_tMovementType = tMovementType;
-	m_tLookType		= tLookType;
-	
-	m_fCurSpeed		= 1.f;
-
-	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 2) > AI_Path.TravelStart)) {
-		switch (m_tBodyState) {
-			case eBodyStateCrouch : {
-				m_fCurSpeed *= m_fCrouchFactor;
-				break;
-			}
-			case eBodyStateStand : {
-				break;
-			}
-			default : NODEFAULT;
-		}
-		switch (m_tMovementType) {
-			case eMovementTypeWalk : {
-				m_fCurSpeed *= m_fWalkFactor;
-				break;
-			}
-			case eMovementTypeRun : {
-				m_fCurSpeed *= m_fRunFactor;
-				break;
-			}
-			default : m_fCurSpeed = 0.f;
-		}
-	}
-	else
-		m_fCurSpeed = 0.f;
-	
-	switch (m_tLookType) {
-		case eLookTypePatrol : {
-			SetDirectionLook();
-			break;
-		}
-		case eLookTypeSearch : {
-			SetLessCoverLook();
-			break;
-		}
-		case eLookTypeDanger : {
-			SetLessCoverLook(AI_Node,PI);
-			break;
-		}
-		case eLookTypePoint : {
-			Fvector tTemp;
-			tTemp.sub	(tPointToLook,vPosition);
-			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			r_target.yaw *= -1;
-			r_target.pitch *= -1;
-			break;
-		}
-		case eLookTypeFirePoint : {
-			Fvector tTemp;
-			tTemp.sub	(tPointToLook,vPosition);
-			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			r_target.yaw *= -1;
-			r_target.pitch *= -1;
-			break;
-		}
-		default : NODEFAULT;
-	}
-}
-
 void CAI_Stalker::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID			tGraphID		= m_tNextGP;
@@ -387,4 +346,71 @@ void CAI_Stalker::vfStopFire()
 		m_dwNoFireTime = m_dwCurrentUpdate;
 	}
 	m_bFiring = false;
+}
+
+void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+{
+	m_tBodyState	= tBodyState;
+	m_tMovementType = tMovementType;
+	m_tLookType		= tLookType;
+	
+	m_fCurSpeed		= 1.f;
+
+	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)) {
+		switch (m_tBodyState) {
+			case eBodyStateCrouch : {
+				m_fCurSpeed *= m_fCrouchFactor;
+				break;
+			}
+			case eBodyStateStand : {
+				break;
+			}
+			default : NODEFAULT;
+		}
+		switch (m_tMovementType) {
+			case eMovementTypeWalk : {
+				m_fCurSpeed *= m_fWalkFactor;
+				break;
+			}
+			case eMovementTypeRun : {
+				m_fCurSpeed *= m_fRunFactor;
+				break;
+			}
+			default : m_fCurSpeed = 0.f;
+		}
+	}
+	else
+		m_fCurSpeed = 0.f;
+	
+	switch (m_tLookType) {
+		case eLookTypePatrol : {
+			SetDirectionLook();
+			break;
+		}
+		case eLookTypeSearch : {
+			SetLessCoverLook();
+			break;
+		}
+		case eLookTypeDanger : {
+			SetLessCoverLook(AI_Node,PI);
+			break;
+		}
+		case eLookTypePoint : {
+			Fvector tTemp;
+			tTemp.sub	(tPointToLook,vPosition);
+			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			r_target.yaw *= -1;
+			r_target.pitch *= 1;
+			break;
+		}
+		case eLookTypeFirePoint : {
+			Fvector tTemp;
+			tTemp.sub	(tPointToLook,vPosition);
+			tTemp.getHP	(r_target.yaw,r_target.pitch);
+			r_target.yaw *= -1;
+			r_target.pitch *= 1;
+			break;
+		}
+		default : NODEFAULT;
+	}
 }

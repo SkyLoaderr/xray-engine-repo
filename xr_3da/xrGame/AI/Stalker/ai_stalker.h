@@ -33,7 +33,11 @@ private:
 		eStalkerStatePursuitKnown,
 		eStalkerStatePursuitUnknown,
 		eStalkerStateSearchCorp,
+		
 		eStalkerStateRecharge,
+		eStalkerStateHolsterItem,
+		eStalkerStateTakeItem,
+		eStalkerStateDropItem,
 	};
 
 	enum EBodyState {
@@ -96,7 +100,7 @@ private:
 	u32						m_dwLostEnemyTime;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
-		
+	CWeapon*				m_tpWeaponToTake;
 	//HIT PHYS
 	float					m_saved_impulse;
 	Fvector					m_saved_hit_position;
@@ -174,10 +178,14 @@ private:
 			void			PursuitKnown					();
 			void			PursuitUnknown					();
 			void			SearchCorp						();
+
 			void			Recharge						();
+			void			HolsterItem						();
+			void			TakeItem						();
+			void			DropItem						();
 
 			// selectors
-			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten);
+			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);
 			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 			void			vfInitSelector					(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector, bool bCanStraighten = false);
@@ -209,7 +217,8 @@ private:
 			void			vfStopFire						();
 			
 			// miscellanious
-			void			DropItem						();
+			void			DropItemSendMessage				();
+			void			HolsterItemSendMessage			();
 			void			vfUpdateSearchPosition			();
 			void			vfChooseNextGraphPoint			();
 			// physics

@@ -102,6 +102,35 @@ void CAI_Stalker::vfUpdateSearchPosition()
 	}
 }
 
+void CAI_Stalker::HolsterItem()
+{
+	WRITE_TO_LOG("Holstering item");
+
+	if (m_bStateChanged) {
+		VERIFY(Weapons->ActiveWeapon());
+		Weapons->ActiveWeapon()->Hide();
+	}
+
+	CHECK_IF_GO_TO_PREV_STATE(Weapons->ActiveWeapon()->STATE != CWeapon::eHiding);
+}
+
+void CAI_Stalker::TakeItem()
+{
+	WRITE_TO_LOG("Taking item");
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon());
+}
+
+void CAI_Stalker::DropItem()
+{
+	WRITE_TO_LOG("Dropping item");
+
+	if (m_bStateChanged)
+		DropItemSendMessage();
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!Weapons->ActiveWeapon());
+}
+
 void CAI_Stalker::Recharge()
 {
 	WRITE_TO_LOG("Pursuiting known");
@@ -111,7 +140,9 @@ void CAI_Stalker::Recharge()
 	SelectEnemy(m_tEnemy);
 
 	VERIFY(Weapons->ActiveWeapon());
+	
 	Weapons->ActiveWeapon()->Reload();
+	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 
 	if (m_tEnemy.Enemy) {
@@ -188,16 +219,43 @@ void CAI_Stalker::SearchCorp()
 	// I see enemy
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
 
-	if (AI_NodeID == m_dwSavedEnemyNodeID) {
+	m_tpWeaponToTake = 0;
+	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	for (u32 i=0; i<Known.size(); i++) {
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(Known[i].key);
+		if (tpWeapon && Weapons->isSlotEmpty(tpWeapon->GetSlot())) {
+			m_tpWeaponToTake = tpWeapon;
+			break;
+		}
+	}
+	
+	if (m_tpWeaponToTake) {
+		AI_Path.DestNode = m_tpWeaponToTake->AI_NodeID;
+		if (AI_Path.TravelPath.empty() || AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(m_tpWeaponToTake->Position()) > EPS_L)
+			vfBuildPathToDestinationPoint(0,false,&(m_tpWeaponToTake->Position()));
+	}
+	else
+		if (AI_Path.DestNode != m_dwSavedEnemyNodeID) {
+			AI_Path.DestNode = m_dwSavedEnemyNodeID;
+			vfBuildPathToDestinationPoint(0,false,&m_tSavedEnemyPosition);
+		}
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake && (m_tpWeaponToTake->AI_NodeID == AI_NodeID) && Weapons->ActiveWeapon(),eStalkerStateHolsterItem);
+	
+//	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake && (m_tpWeaponToTake->AI_NodeID == AI_NodeID) && !Weapons->ActiveWeapon(),eStalkerStateTakeItem);
+	
+
+	if ((!m_tpWeaponToTake) && (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))) {
 		m_tSavedEnemy = 0;
 		GO_TO_PREV_STATE_THIS_UPDATE;
 	}
 	
-	AI_Path.DestNode = m_dwSavedEnemyNodeID;
-	
-	vfBuildPathToDestinationPoint		(0,true);
-
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
+	Fvector						tTemp;
+	if (!m_tpWeaponToTake)
+		m_tSavedEnemy->svCenter		(tTemp);
+	else
+		tTemp = m_tpWeaponToTake->Position();
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypePoint,tTemp);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -205,7 +263,7 @@ void CAI_Stalker::SearchCorp()
 
 void CAI_Stalker::Think()
 {
-	vfUpdateSearchPosition();
+	vfUpdateSearchPosition	();
 	m_dwUpdateCount++;
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
@@ -251,6 +309,18 @@ void CAI_Stalker::Think()
 			}
 			case eStalkerStateRecharge : {
 				Recharge();
+				break;
+			}
+			case eStalkerStateHolsterItem : {
+				HolsterItem();
+				break;
+			}
+			case eStalkerStateTakeItem : {
+				TakeItem();
+				break;
+			}
+			case eStalkerStateDropItem : {
+				DropItem();
 				break;
 			}
 		}

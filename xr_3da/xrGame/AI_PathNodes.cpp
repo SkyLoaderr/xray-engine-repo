@@ -414,17 +414,11 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	{
 		p_dest.set	(target);
 
-		if ((TravelStart+2) >= TravelPath.size()) 
-		{
-			fSpeed			= 0;
-			return;
-		} else {
-			dist			-= mdist;
-			TravelStart		++;
-			target.set		(TravelPath[TravelStart+1].P);
-			mdir.sub		(target, p_dest);
-			mdist			= mdir.magnitude();
-		}
+		dist			-= mdist;
+		TravelStart		++;
+		target.set		(TravelPath[TravelStart+1].P);
+		mdir.sub		(target, p_dest);
+		mdist			= mdir.magnitude();
 	}
 
 	// move last quantity

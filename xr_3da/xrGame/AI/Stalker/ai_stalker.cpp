@@ -40,6 +40,8 @@ CAI_Stalker::CAI_Stalker			()
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
+
+	m_tpWeaponToTake				= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()

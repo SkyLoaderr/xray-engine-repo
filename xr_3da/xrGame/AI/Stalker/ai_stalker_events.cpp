@@ -114,6 +114,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	if (Remote())		return;
 
 	// Now, test for game specific logical objects to minimize traffic
+	Msg("Taking weapon!");
 	CWeapon*		W	= dynamic_cast<CWeapon*>		(O);
 
 	if (W) {
@@ -124,10 +125,12 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	}
 }
 
-void CAI_Stalker::DropItem()
+void CAI_Stalker::DropItemSendMessage()
 {
-	CObject*		O		= Weapons->ActiveWeapon();
-	if (0==O)				return;
+	CObject*				O = Weapons->ActiveWeapon();
+	
+	if (!O)
+		return;
 
 	// We doesn't have similar weapon - pick up it
 	NET_Packet				P;
