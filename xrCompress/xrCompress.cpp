@@ -6,11 +6,29 @@
 typedef set<char*,pred_str>	set_cstr;
 typedef set_cstr::iterator	set_cstr_it;
 	
-set_cstr			files;
+set_cstr				files;
+CFS_File*				fs=0;
+CFS_Memory				fs_desc;
 
-extern void Recurse		(const char* path);
-extern void Compress	(const char* path);
+void Compress			(const char* path)
+{
+	printf				("%s\n",path);
 
+	// Compress into BaseFS
+	CVirtualFileStream	src(path);
+	DWORD	c_ptr		= fs->tell();
+	BYTE*	c_data		= 0;
+	DWORD	c_size		= 0;
+	_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
+	fs->write			(c_data,c_size);
+
+	// Write description
+	fs_desc.WstringZ	(path);
+	fs_desc.Wdword		(c_ptr);
+	fs_desc.Wdword		(c_size);
+}
+
+void Recurse		(const char* path);
 void ProcessOne		(_finddata_t& F, const char* path)
 {
 	string256		N;
@@ -25,7 +43,6 @@ void ProcessOne		(_finddata_t& F, const char* path)
 		Recurse		(N);
 	} else {
 		char*	ins	= strlwr(strdup(N));
-		printf		("%s\n",ins);
 		files.insert(ins); 
 	}
 }
@@ -60,7 +77,14 @@ int main			(int argc, char* argv[])
 	printf			("Scanning files...");
 	if (0==chdir(argv[1]))
 	{
+		string256		fname;
+		strconcat		(fname,"..\\",argv[1],".xr");
+		fs				= new CFS_File(fname);
+		fs->open_chunk	(0);
 		Recurse			("");
+		fs->close_chunk	();
+		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
+		//
 	} else {
 		printf("ERROR: folder not found.\n");
 		return 3;
