@@ -44,11 +44,11 @@ public:
 	xr_vector<R_dsgraph::_LodItem>								lstLODs;
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
+	xr_vector<IRender_Visual*>									lstVisuals;
 public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
-
 public:
 	virtual		ShaderElement*			rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
 	virtual		ShaderElement*			rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
@@ -61,4 +61,5 @@ public:
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	);
+	void		r_dsgraph_render_R1_box							();
 };
