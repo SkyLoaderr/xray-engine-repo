@@ -13,6 +13,7 @@ u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
 struct	ALIAS
 {
 	LPCSTR			path;
+	u32				size;
 	u32				c_mode;
 	u32				c_ptr;
 	u32				c_size;
@@ -101,6 +102,8 @@ void Compress			(LPCSTR path)
 		c_ptr				= A->c_ptr;
 		c_size				= A->c_size;
 		c_mode				= A->c_mode;
+		bytesSRC			+= A->size;
+		bytesDST			+= 0;
 	} else {
 		if (testVFS(path))	{
 			filesVFS			++;
@@ -138,10 +141,11 @@ void Compress			(LPCSTR path)
 		// Register for future aliasing
 		ALIAS			R;
 		R.path			= strdup	(path);
+		R.size			= src.Length();
 		R.c_mode		= c_mode;
 		R.c_ptr			= c_ptr;
 		R.c_size		= c_size;
-		aliases.insert	(make_pair(u32(src.Length()),R));
+		aliases.insert	(make_pair(R.size,R));
 	}
 }
 
@@ -205,8 +209,8 @@ int __cdecl main	(int argc, char* argv[])
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		u32			dwTimeEnd	= timeGetTime();
-		printf			("\n\nFiles total/skipped/VFS: %d/%d/%d\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
-			filesTOTAL,filesSKIP,filesVFS,
+		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
+			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60
