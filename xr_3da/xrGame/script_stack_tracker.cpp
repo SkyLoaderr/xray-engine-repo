@@ -73,17 +73,15 @@ void CScriptStackTracker::print_stack	(lua_State *L)
 {
 	VERIFY					(L && (m_virtual_machine == L));
 
-#ifdef XRGAME_EXPORTS
 	for (int j=m_current_stack_level - 1, k=0; j>=0; --j, ++k) {
 		lua_Debug			l_tDebugInfo = *m_stack[j];
 		if (!l_tDebugInfo.name)
-			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] C source code : %s",k,l_tDebugInfo.short_src);
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] %s(%d) : %s",k,"C source code",l_tDebugInfo.currentline,l_tDebugInfo.short_src);
 		else
 			if (!xr_strcmp(l_tDebugInfo.what,"C"))
-				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] C source code : %s",k,l_tDebugInfo.name);
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] %s(%d) : %s",k,"C source code",l_tDebugInfo.currentline,l_tDebugInfo.name);
 			else
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
 	}
-#endif
 	m_current_stack_level	= 0;
 }

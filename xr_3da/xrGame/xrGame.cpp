@@ -10,8 +10,6 @@
 #include "object_factory.h"
 #include "ui/xrXMLParser.h"
 #include "xr_level_controller.h"
-#include "ai_space.h"
-#include "script_engine.h"
 #include "profiler.h"
 
 #pragma comment(lib,"ode.lib" )
@@ -44,7 +42,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			// xml parser options
 			XML_DisableStringCaching	();
 			// script registration
-			ai().script_engine().script_export	();
 			g_profiler			= xr_new<CProfiler>();
 			break;
 		}

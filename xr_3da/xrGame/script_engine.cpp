@@ -222,6 +222,7 @@ void CScriptEngine::load_class_registrators		()
 
 bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object)
 {
+	VERIFY(luabind::get_error_callback() == CScriptEngine::lua_error);
 	if (!xr_strlen(function_to_call))
 		return				(false);
 

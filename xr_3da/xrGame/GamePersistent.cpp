@@ -7,6 +7,8 @@
 #include "gamemtllib.h"
 #include "../skeletoncustom.h"
 #include "profiler.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -77,6 +79,7 @@ void CGamePersistent::OnAppCycleStart()
 {
 	// load game materials
 	GMLib.Load					();
+	ai().script_engine().script_export	();
 
 	__super::OnAppCycleStart	();
 }
