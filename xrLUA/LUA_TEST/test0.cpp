@@ -850,36 +850,60 @@ void register_smth1	(module_ &module_ref)
 struct A1 {};
 struct A2 : virtual public A1 {};
 
-struct B1{
-	virtual void unique(){}
-	virtual void unique(const B1&){}
+class CRegistrator {
+public:
+	typedef void (*REGISTER_FUNCTION)(lua_State*);
+	typedef xr_vector<REGISTER_FUNCTION>	REGISTRY;
+	typedef REGISTRY::iterator				iterator;
+	typedef REGISTRY::const_iterator		const_iterator;
+
+protected:
+	REGISTRY	m_registry;
+
+public:
+	IC	void	add				(REGISTER_FUNCTION function)
+	{
+		m_registry.push_back	(function);
+	}
+
+	IC	void	script_register	(lua_State *L)
+	{
+		iterator	I = m_registry.begin();
+		iterator	E = m_registry.end();
+		for ( ; I != E; ++I)
+			(*I)(L);
+	}
 };
 
-struct B2 : public B1 {
-	using B1::unique;
-	virtual void unique(const B2 &){}
-};
+IC	CRegistrator &registrator()
+{
+	static CRegistrator object;
+	return				(object);
+}
 
-struct B3 : public B2 {
-	using B2::unique;
-	virtual void unique(const B3 &){}
-};
+struct CUniqueA{};
+struct CUniqueB : public CUniqueA {};
+
+void register_classA(lua_State *L)
+{
+	module(L)
+	[
+		class_<CUniqueA>("A")
+			.def(	constructor<>())
+	];
+}
+
+void register_classB(lua_State *L)
+{
+	module(L)
+	[
+		class_<CUniqueB,CUniqueA>("B")
+//			.def(	constructor<>())
+	];
+}
 
 void test1()
 {
-	B1  b1;
-	B2	b2;
-	B3	b3;
-	
-	b2.unique		();
-	b2.unique		(b1);
-	b2.unique		(b2);
-	
-	b3.unique		();
-	b3.unique		(b1);
-	b3.unique		(b2);
-	b3.unique		(b3);
-
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -901,11 +925,15 @@ void test1()
 	register_smth0	(game_engine);
 	register_smth1	(game_engine);
 
-	module(L)
-	[
-		class_<A1>("A1"),
-		class_<A2,bases<A1> >("A2")
-	];
+//	module(L)
+//	[
+//		class_<A1>("A1"),
+//		class_<A2,bases<A1> >("A2")
+//	];
+
+	registrator().add	(register_classB);
+	registrator().add	(register_classA);
+	registrator().script_register(L);
 
 	lua_dofile		(L,"x:\\split_test.script");
 	if (xr_strlen(SSS)) {
