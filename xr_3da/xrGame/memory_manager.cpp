@@ -227,9 +227,12 @@ u32 CMemoryManager::memory_time(const CObject *object) const
 
 void CMemoryManager::remove_links	(CObject *object)
 {
-	visual().remove_links	(object);
-	sound().remove_links	(object);
-	hit().remove_links		(object);
-	danger().remove_links	(object);
-	enemy().remove_links	(object);
+	if (m_object->g_Alive()) {
+		visual().remove_links	(object);
+		sound().remove_links	(object);
+		hit().remove_links		(object);
+	}
+
+	danger().remove_links		(object);
+	enemy().remove_links		(object);
 }
