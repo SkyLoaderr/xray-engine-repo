@@ -56,8 +56,8 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
 		blit	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
-		DWORD real_H	= (D->lm.dwHeight	+ 2*BORDER);
-		DWORD real_W	= (D->lm.dwWidth	+ 2*BORDER);
+		DWORD real_H	= (L->lm.dwHeight	+ 2*BORDER);
+		DWORD real_W	= (L->lm.dwWidth	+ 2*BORDER);
 		blit_r	(lm.pSurface,512,512,L->lm.pSurface,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }
