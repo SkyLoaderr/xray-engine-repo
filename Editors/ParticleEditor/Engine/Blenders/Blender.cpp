@@ -46,31 +46,31 @@ CBlender::~CBlender()
 
 }
 
-void	CBlender::Save(IWriter& FS )
+void	CBlender::Save(IWriter& fs )
 {
-	FS.w			(&description,sizeof(description));
-	xrPWRITE_MARKER (FS,"General");
-	xrPWRITE_PROP	(FS,"Priority",			xrPID_INTEGER,	oPriority);
-	xrPWRITE_PROP	(FS,"Strict sorting",	xrPID_BOOL,		oStrictSorting);
-	xrPWRITE_MARKER	(FS,"Base Texture");
-	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
-	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
+	fs.w			(&description,sizeof(description));
+	xrPWRITE_MARKER (fs,"General");
+	xrPWRITE_PROP	(fs,"Priority",			xrPID_INTEGER,	oPriority);
+	xrPWRITE_PROP	(fs,"Strict sorting",	xrPID_BOOL,		oStrictSorting);
+	xrPWRITE_MARKER	(fs,"Base Texture");
+	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT_Name);
+	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender::Load(	IReader& FS, WORD version )
+void	CBlender::Load(	IReader& fs, WORD version )
 {
 	// Read desc and doesn't change version
 	WORD	V		= description.version;
-	FS.r			(&description,sizeof(description));
+	fs.r			(&description,sizeof(description));
 	description.version	= V;
 
 	// Properties
-	xrPREAD_MARKER	(FS);
-	xrPREAD_PROP	(FS,xrPID_INTEGER,	oPriority);
-	xrPREAD_PROP	(FS,xrPID_BOOL,		oStrictSorting);
-	xrPREAD_MARKER	(FS);
-	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT_Name);
-	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
+	xrPREAD_MARKER	(fs);
+	xrPREAD_PROP	(fs,xrPID_INTEGER,	oPriority);
+	xrPREAD_PROP	(fs,xrPID_BOOL,		oStrictSorting);
+	xrPREAD_MARKER	(fs);
+	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT_Name);
+	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT_xform);
 }
 
 void	CBlender::Compile(CBlender_Compile& C)

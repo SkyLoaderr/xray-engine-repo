@@ -31,62 +31,62 @@ CBlender_Screen_SET::~CBlender_Screen_SET()
 	
 }
 
-void	CBlender_Screen_SET::Save	( IWriter& FS	)
+void	CBlender_Screen_SET::Save	( IWriter& fs	)
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 
 	// Blend mode
 	xrP_TOKEN::Item	I;
-	xrPWRITE_PROP		(FS,"Blending",	xrPID_TOKEN,     oBlend);
-	I.ID = 0; strcpy(I.str,"SET");			FS.w		(&I,sizeof(I));
-	I.ID = 1; strcpy(I.str,"BLEND");		FS.w		(&I,sizeof(I));
-	I.ID = 2; strcpy(I.str,"ADD");			FS.w		(&I,sizeof(I));
-	I.ID = 3; strcpy(I.str,"MUL");			FS.w		(&I,sizeof(I));
-	I.ID = 4; strcpy(I.str,"MUL_2X");		FS.w		(&I,sizeof(I));
-	I.ID = 5; strcpy(I.str,"ALPHA-ADD");	FS.w		(&I,sizeof(I));
-	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");	FS.w		(&I,sizeof(I));
-	I.ID = 7; strcpy(I.str,"SET (2r)");		FS.w		(&I,sizeof(I));
-	I.ID = 8; strcpy(I.str,"BLEND (2r)");	FS.w		(&I,sizeof(I));
+	xrPWRITE_PROP		(fs,"Blending",	xrPID_TOKEN,     oBlend);
+	I.ID = 0; strcpy(I.str,"SET");			fs.w		(&I,sizeof(I));
+	I.ID = 1; strcpy(I.str,"BLEND");		fs.w		(&I,sizeof(I));
+	I.ID = 2; strcpy(I.str,"ADD");			fs.w		(&I,sizeof(I));
+	I.ID = 3; strcpy(I.str,"MUL");			fs.w		(&I,sizeof(I));
+	I.ID = 4; strcpy(I.str,"MUL_2X");		fs.w		(&I,sizeof(I));
+	I.ID = 5; strcpy(I.str,"ALPHA-ADD");	fs.w		(&I,sizeof(I));
+	I.ID = 6; strcpy(I.str,"MUL_2X (B^D)");	fs.w		(&I,sizeof(I));
+	I.ID = 7; strcpy(I.str,"SET (2r)");		fs.w		(&I,sizeof(I));
+	I.ID = 8; strcpy(I.str,"BLEND (2r)");	fs.w		(&I,sizeof(I));
 	
 	// Params
-	xrPWRITE_PROP		(FS,"Texture clamp",xrPID_BOOL,		oClamp);
-	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
-	xrPWRITE_PROP		(FS,"Z-test",		xrPID_BOOL,		oZTest);
-	xrPWRITE_PROP		(FS,"Z-write",		xrPID_BOOL,		oZWrite);
-	xrPWRITE_PROP		(FS,"Lighting",		xrPID_BOOL,		oLighting);
-	xrPWRITE_PROP		(FS,"Fog",			xrPID_BOOL,		oFog);
+	xrPWRITE_PROP		(fs,"Texture clamp",xrPID_BOOL,		oClamp);
+	xrPWRITE_PROP		(fs,"Alpha ref",	xrPID_INTEGER,	oAREF);
+	xrPWRITE_PROP		(fs,"Z-test",		xrPID_BOOL,		oZTest);
+	xrPWRITE_PROP		(fs,"Z-write",		xrPID_BOOL,		oZWrite);
+	xrPWRITE_PROP		(fs,"Lighting",		xrPID_BOOL,		oLighting);
+	xrPWRITE_PROP		(fs,"Fog",			xrPID_BOOL,		oFog);
 }
 
-void	CBlender_Screen_SET::Load	( IReader& FS, WORD version)
+void	CBlender_Screen_SET::Load	( IReader& fs, WORD version)
 {
-	CBlender::Load		(FS,version);
+	CBlender::Load		(fs,version);
 
 	switch (version)	{
 	case 2:
-		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
-		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oFog);
 		break;
 	case 3:
-		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
-		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oClamp);
+		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oFog);
 		break;
 	default:
-		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
-		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
-		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
+		xrPREAD_PROP		(fs,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oClamp);
+		xrPREAD_PROP		(fs,xrPID_INTEGER,		oAREF);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZTest);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oZWrite);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oLighting);
+		xrPREAD_PROP		(fs,xrPID_BOOL,			oFog);
 		break;
 	}
 }

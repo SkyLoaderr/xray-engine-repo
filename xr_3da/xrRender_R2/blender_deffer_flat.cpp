@@ -6,13 +6,13 @@
 CBlender_deffer_flat::CBlender_deffer_flat	()	{	description.CLS		= B_DEFAULT;	}
 CBlender_deffer_flat::~CBlender_deffer_flat	()	{	}
 
-void	CBlender_deffer_flat::Save	(	IWriter& FS )
+void	CBlender_deffer_flat::Save	(	IWriter& fs )
 {
-	CBlender::Save	(FS);
+	CBlender::Save	(fs);
 }
-void	CBlender_deffer_flat::Load	(	IReader& FS, WORD version )
+void	CBlender_deffer_flat::Load	(	IReader& fs, WORD version )
 {
-	CBlender::Load	(FS,version);
+	CBlender::Load	(fs,version);
 }
 
 void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
@@ -27,7 +27,7 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 			char				fname	[_MAX_PATH];
 			strcpy				(fname,C.L_textures[0]); if (strext(fname)) *strext(fname)=0;
 			strcat				(fname,"_bump.dds");
-			if (FS.exist("$game_textures$",	fname))
+			if (fs.exist("$game_textures$",	fname))
 			{
 				// bump found
 				C.r2_Pass			(r2v("r2_deffer_base_bump"),r2p("r2_deffer_base_bump"));
