@@ -34,10 +34,10 @@ end
 --	action_base.finalize	(self)
 --end
 
-class "custom_planner" 		(action_planner)
+--class "custom_planner" 		(action_planner)
 
-function custom_planner:__init	() super()
-end
+--function custom_planner:__init	() super()
+--end
 
 --function custom_planner:reinit	(obj, clear_all)
 --	action_planner.reinit	(self, obj, clear_all)
@@ -82,7 +82,7 @@ function main()
 	action3:add_effect		(world_property(property_id3,true))
 	
 	-- define planner
-	local planner			= stalker_test.custom_planner()
+	local planner			= action_planner()
 	planner:reinit			(get_actor(),false)
 	
 	-- add evaluators
