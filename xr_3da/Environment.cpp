@@ -466,8 +466,8 @@ void CEnvironment::OnFrame()
 	spL.max_distance		= 100.f;
 	spL.volume				= psSoundVMusic;
 	spR						= spL;
-	spL.position.add(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,-1.f).mad(Device.vCameraTop,.1f);
-	spR.position.add(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,+1.f).mad(Device.vCameraTop,.1f);
+	spL.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,-.5f).mad(Device.vCameraTop,.1f);
+	spR.position.mad(Device.vCameraPosition,Device.vCameraDirection,.3f).mad(Device.vCameraRight,+.5f).mad(Device.vCameraTop,.1f);
 
 	music*	_m				= playlist.front	();
 	_m->left.set_params		(&spL);
