@@ -201,12 +201,6 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 			case idActorDiary:
 				m_pActiveSubdialog = &UIActorDiaryWnd;
-				caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) +
-						  m_pActorDiaryRoot->GetHierarchyAsText() +
-						  *UIActorDiaryWnd.m_pCore->SetCurrentArtice(pTVItem);
-				UIFrameWndHeader.UITitleText.SetText(caption.c_str());
-				caption.erase(0, caption.find_last_of("/") + 1);
-				ArticleCaption(caption.c_str());
 				break;
 			default:
 				NODEFAULT;
@@ -216,6 +210,16 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
 				m_pActiveSubdialog->Show(true);
+
+				if (idActorDiary == id)
+				{
+					caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) +
+						m_pActorDiaryRoot->GetHierarchyAsText() +
+						*UIActorDiaryWnd.m_pCore->SetCurrentArtice(pTVItem);
+					UIFrameWndHeader.UITitleText.SetText(caption.c_str());
+					caption.erase(0, caption.find_last_of("/") + 1);
+					ArticleCaption(caption.c_str());
+				}
 			}
 		}
 	}

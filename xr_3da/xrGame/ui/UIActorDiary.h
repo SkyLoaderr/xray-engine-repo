@@ -27,15 +27,16 @@ class CUIActorDiaryWnd: public CUIWindow
 public:
 	CUIActorDiaryWnd();
 	~CUIActorDiaryWnd();
-	void	Init(CUIListWnd *idxList);
+	void			Init(CUIListWnd *idxList);
 
-	void	AddArticle(ARTICLE_INDEX idx)			{ m_pCore->AddArticle(idx); }
-	void	DeleteArticles(CUITreeViewItem *pRoot);
-	void	ShowArticle(CUITreeViewItem *pItem);
+	void			AddArticle(ARTICLE_INDEX idx)			{ m_pCore->AddArticle(idx); }
+	void			DeleteArticles(CUITreeViewItem *pRoot);
+	void			ShowArticle(CUITreeViewItem *pItem);
+	virtual void	Show(bool status);
 
 	CUIEncyclopediaCore *m_pCore;
 private:
-	CUIListWnd			UIInfoList;
+	CUIListWnd		UIInfoList;
 };
 
 //////////////////////////////////////////////////////////////////////////

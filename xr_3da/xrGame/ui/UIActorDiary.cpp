@@ -52,6 +52,7 @@ void CUIActorDiaryWnd::Init(CUIListWnd *idxList)
 	UIInfoList.EnableScrollBar(true);
 	UIInfoList.EnableActiveBackground(false);
 	UIInfoList.SetNewRenderMethod(true);
+	UIInfoList.SetMessageTarget(m_pCore);
 
 	m_pCore->Init(&UIInfoList, idxList);
 }
@@ -72,4 +73,13 @@ void CUIActorDiaryWnd::DeleteArticles(CUITreeViewItem *pRoot)
 	m_pCore->DeleteArticles();
 	UIInfoList.RemoveAll();
 	pRoot->DeleteAllSubItems();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIActorDiaryWnd::Show(bool status)
+{
+	inherited::Show(status);
+	UIInfoList.Show(status);
+	m_pCore->Show(status);
 }

@@ -41,6 +41,7 @@ public:
 	void			AddArticle(ARTICLE_INDEX);
 	void			DeleteArticles();
 	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
+	virtual void	Show(bool status);
 
 
 	// Хранилище статей

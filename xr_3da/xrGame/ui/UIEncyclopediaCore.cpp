@@ -53,8 +53,6 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 
 	// mask
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIImgMask);
-//	pInfoList->AttachChild(&UIImgMask);
-	UIImgMask.SetClipper(true, pInfoList->GetAbsoluteRect());
 	m_iCurrentInfoListPos = 0;
 }
 
@@ -64,22 +62,26 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 {
 	R_ASSERT(pTVItem);
 
+	pInfoList->ScrollToBegin();
 	pInfoList->RemoveAll();
+	m_iCurrentInfoListPos = 0;
+	// Удаляем текущую картинку
+	if (m_pCurrArticle && m_pCurrArticle->data())
+	{
+		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
+//		m_pCurrArticle->data()->image.MoveWindow(0, 0);
+	}
 
 	// для начала проверим, что нажатый элемент не рутовый
 	if (!pTVItem->IsRoot())
 	{
-		// Удаляем текущую картинку и текст
-		if (m_pCurrArticle)
-		{
-			pInfoList->DetachChild(&m_pCurrArticle->data()->image);
-		}
-		pInfoList->ScrollToBegin();
-		pInfoList->RemoveAll();
-
 		// Image
 		CUIStatic &img = m_ArticlesDB[pTVItem->GetValue()]->data()->image;
-		img.SetClipRect(pInfoList->GetAbsoluteRect());
+		img.MoveWindow(0, 0);
+		RECT r = pInfoList->GetAbsoluteRect();
+
+		img.SetClipRect(r);
+		UIImgMask.SetClipper(true, r);
 		img.SetMask(&UIImgMask);
 		AdjustImagePos(img);
 
@@ -114,6 +116,7 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		// Запоминаем текущий эдемент
 		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 	}
+
 	return pTVItem->GetHierarchyAsText().c_str();
 }
 
@@ -187,4 +190,19 @@ void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 //			r.top + (m_iCurrentInfoListPos - pInfoList->GetListPosition()) * pInfoList->GetItemHeight());
 //		m_iCurrentInfoListPos = pInfoList->GetListPosition();
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaCore::Show(bool status)
+{
+	if (!status && m_pCurrArticle)
+	{
+		pInfoList->DetachChild(&m_pCurrArticle->data()->image);
+		m_pCurrArticle->data()->image.MoveWindow(0, 0);
+
+		m_pCurrArticle = NULL;
+	}
+
+	m_iCurrentInfoListPos = 0;
 }

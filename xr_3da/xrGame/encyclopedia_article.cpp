@@ -8,7 +8,6 @@
 #include "ui/xrXMLParser.h"
 #include "ui/UIXmlInit.h"
 
-
 CEncyclopediaArticle::CEncyclopediaArticle()
 {
 }
@@ -73,6 +72,9 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 		xml_init.InitTexture(uiXml, "", 0, &data()->image);
 		uiXml.SetLocalRoot(uiXml.GetRoot());
 	}
+
+	Irect r = data()->image.GetUIStaticItem().GetOriginalRect();
+	data()->image.SetWndRect(0, 0, r.width(), r.height());
 
 	// Тип статьи
 	if (uiXml.ReadAttribInt(pNode, "article_type", 0))
