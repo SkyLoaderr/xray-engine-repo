@@ -155,10 +155,8 @@ void __fastcall normal_L2(FixedMAP<float,FBasicVisual*>::TNode *N)
 }
 
 extern void __fastcall render_Cached(CList<FCached*>& cache);
-void __fastcall normal_L1(SceneGraph::mapNormal_Node *N)
+void __fastcall mapNormal_Render	(mapNormalItems& N)
 {
-	Device.Shader.Set		(N->key);
-
 	// *** DIRECT ***
 	{
 		// DIRECT:SORTED
@@ -326,10 +324,11 @@ void	CRender::rmNormal	()
 	CHK_DX(HW.pDevice->SetViewport(&VP));
 }
 
-IC	bool	cmp_nodes(SceneGraph::mapNormal_Node* N1, SceneGraph::mapNormal_Node* N2)
+IC	bool	cmp_nodes		(SceneGraph::mapNormal_Node* N1, SceneGraph::mapNormal_Node* N2)
 {
 	return (N1->val.ssa > N2->val.ssa);
 }
+
 void	CRender::Render()
 {
 	Device.Statistic.RenderDUMP.Begin();
@@ -338,41 +337,76 @@ void	CRender::Render()
 	Details.Render			(Device.vCameraPosition);
 	
 	// NORMAL			*** mostly the main level
-	// Perform sorting based on "shader" minimal distance
+	// Perform sorting based on ScreenSpaceArea
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 
-	// Sorting first pass by SSA
+	// Sorting by SSA
 	for (DWORD pr=0; pr<4; pr++)
 	{
 		if (0==mapNormal[pr][0].size())	continue;
 
+		for (DWORD pass_id=0; pass_id<8; pass_id++)	{
+			mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
+			if (0==codes.size())	break;
+			BOOL sort	= (pass_id==0);
+				
+			codes.getANY_P		(lstCodes);
+			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
+			for (DWORD code_id=0; code_id<lstCodes.size(); code_id++)
+			{
+				mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
+				mapNormalTextures&	textures	= Ncode->val;
+				Device.Shader.set_Code	(Ncode->key);
 
-	}
+				textures.getANY_P	(lstTextures);
+				if (sort) std::sort	(lstTextures.begin(),lstTextures.end(), cmp_textures);
+				for (DWORD texture_id=0; texture_id<lstTextures.size(); texture_id++)
+				{
+					mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
+					mapNormalMatrices& matrices				= Ntexture->val;
+					Device.Shader.set_Textures	(Ntexture->key);
 
+					matrices.getANY_P	(lstMatrices);
+					if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
+					for (DWORD matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
+					{
+						mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
+						mapNormalConstants& constants			= Nmatrix->val;
+						Device.Shader.set_Matrices	(Nmatrix->key);
 
-
-
-	for (DWORD pr=0; pr<4; pr++)	
-	{
-		if (0==mapNormal[pr][0].size())	continue;
-
-		mapNormal[pr].getANY_P	(vecNormalNodes);
-		std::sort				(vecNormalNodes.begin(),vecNormalNodes.end(),cmp_nodes);
-		for (DWORD I=0; I<vecNormalNodes.size(); I++)	{
-			SceneGraph::mapNormal_Node*	N = vecNormalNodes[I];
-			normal_L1				(N);
-			N->val.ssa_valid		= FALSE;
+						constants.getANY_P	(lstConstants);
+						if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
+						for (DWORD constant_id=0; constant_id<lstConstants.size(); constant_id++)
+						{
+							mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
+							mapNormalItems&	items					= Nconstant->val;
+							Device.Shader.set_Constants	(Nconstant->key);
+							mapNormal_Render			(Nconstant->val);
+							items.ssa					= 0;
+						}
+						lstConstants.clear	();
+						constants.clear		();
+						constants.ssa		= 0;
+					}
+					lstMatrices.clear	();
+					matrices.clear		();
+					matrices.ssa		= 0;
+				}
+				lstTextures.clear	();
+				textures.clear		();
+				textures.ssa		= 0;
+			}
+			lstCodes.clear		();
+			codes.clear			();
 		}
-		vecNormalNodes.clear	();
-		mapNormal[pr].clear		();
 
 		if (1==pr)			{
-			// NORMAL-matrix	*** actors and dyn. objects
+			// NORMAL-matrix		*** actors and dyn. objects
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
 			Lights.BeginStatic		();
 			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-
+			
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
 			Lights_Dynamic.Render	();		// Lights has priority the same as normal geom
 		}

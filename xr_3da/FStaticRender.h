@@ -52,7 +52,11 @@ public:
 public:
 //	CList<FCached*>						vecCached;
 //	CList<SceneGraph::mapNormal_Node*>	vecNormalNodes;
-
+	CList<mapNormalCodes::TNode*>		lstCodes;
+	CList<mapNormalTextures::TNode*>	lstTextures;
+	CList<mapNormalMatrices::TNode*>	lstMatrices;
+	CList<mapNormalConstants::TNode*>	lstConstants;
+	
 	// Global vertex-buffer container
 	vector<DWORD>					FVF;
 	vector<IDirect3DVertexBuffer8*>	VB;
