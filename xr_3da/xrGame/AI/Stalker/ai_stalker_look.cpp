@@ -224,13 +224,8 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
-	float					yaw, pitch;
-	GetDirectionAngles		(yaw,pitch);
-	yaw						= angle_normalize_signed(-yaw);
-	float x = r_torso_target.yaw, y = r_target.yaw;
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
-	//Msg						("%6d[%f] : [%6.1f][%6.1f(%6.1f)][%6.1f] - [%6.1f][%6.1f(%6.1f)][%6.1f] (trying %s, moving %s)",Level().timeServer(),R2D(yaw),R2D(r_torso_current.yaw),R2D(x),R2D(r_torso_target.yaw),R2D(r_current.yaw), R2D(r_current.yaw),R2D(y),R2D(r_target.yaw),R2D(r_torso_current.yaw),caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 
 	// updating torso angles
 	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
