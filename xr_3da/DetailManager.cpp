@@ -167,7 +167,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
 	Device.Statistic.RenderDUMP_DT_Cache.Begin	();
-	cache_Update				(s_x,s_z,EYE,5);
+	cache_Update				(s_x,s_z,EYE,7);
 	Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
