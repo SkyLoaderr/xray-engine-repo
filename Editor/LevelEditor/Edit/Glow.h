@@ -16,7 +16,9 @@ public:
     AnsiString		m_ShaderName;
     AnsiString		m_TexName;
     float           m_Range;
-    Fvector         m_Position;
+protected:
+    virtual Fvector& GetScale		()	{ FScale.set(m_Range,m_Range,m_Range); return FScale; 	}
+	virtual void 	SetScale		(Fvector& sc){float v=m_Range; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_Range=v; UpdateTransform();}
 public:
 	                CGlow       ();
 	                CGlow       ( char *name );
@@ -29,8 +31,6 @@ public:
 	virtual bool    RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
 		                          SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	( const CFrustum& frustum );
-	virtual void    Move        ( Fvector& amount );
-	virtual void 	Rotate		(Fvector& center, Fvector& axis, float angle);
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
 	virtual bool    GetBox      ( Fbox& box );

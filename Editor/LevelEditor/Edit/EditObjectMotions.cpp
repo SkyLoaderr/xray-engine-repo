@@ -46,7 +46,7 @@ void st_AnimParam::Update(float dt){
 }
 
 #ifdef _EDITOR
-void CEditableObject::RTL_Update( float dT ){
+void CEditableObject::OnFrame(){
     if (IsOMotionActive()){
 /*
 ///    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");

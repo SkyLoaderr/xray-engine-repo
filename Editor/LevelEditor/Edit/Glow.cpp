@@ -13,7 +13,7 @@
 #include "Scene.h"
 #include "xr_trims.h"
 
-#define GLOW_VERSION	   				0x0011
+#define GLOW_VERSION	   				0x0012
 //----------------------------------------------------
 #define GLOW_CHUNK_VERSION				0xC411
 #define GLOW_CHUNK_PARAMS				0xC413
@@ -34,7 +34,6 @@ void CGlow::Construct(){
 	ClassID		= OBJCLASS_GLOW;
     m_GShader   = 0;
     m_Range     = 0.5f;
-	m_Position.set(0,0,0);
 }
 
 CGlow::~CGlow(){
@@ -47,7 +46,7 @@ void CGlow::Compile(){
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box ){
-	box.set( m_Position, m_Position );
+	box.set( PPosition, PPosition );
 	box.min.sub(m_Range);
 	box.max.add(m_Range);
 	return true;
@@ -58,17 +57,17 @@ void CGlow::Render(int priority, bool strictB2F){
     	// определяем параметры для RayPick
     	Fvector D;
         SRayPickInfo pinf;
-        D.sub(Device.m_Camera.GetPosition(),m_Position);
+        D.sub(Device.m_Camera.GetPosition(),PPosition);
         pinf.inf.range = D.magnitude();
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		Device.SetTransform(D3DTS_WORLD,precalc_identity);
-        if (Device.m_Frustum.testSphere(m_Position,m_Range)){
+        if (Device.m_Frustum.testSphere(PPosition,m_Range)){
         	// рендерим Glow
 //        	if (!Scene.RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
-                m_RenderSprite.Render(m_Position,m_Range);
+                m_RenderSprite.Render(PPosition,m_Range);
 //			}else{
                 // рендерим bounding sphere
 //				Fcolor clr; clr.set(0,0.85f,0,0);
@@ -86,12 +85,12 @@ void CGlow::Render(int priority, bool strictB2F){
 }
 
 bool CGlow::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(m_Position,m_Range))?true:false;
+    return (frustum.testSphere(PPosition,m_Range))?true:false;
 }
 
 bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( m_Position, start );
+	ray2.sub( PPosition, start );
 
     float d = ray2.dotproduct(direction);
     if( d > 0  ){
@@ -106,30 +105,13 @@ bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPic
 	return false;
 }
 
-void CGlow::Move( Fvector& amount ){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-	m_Position.add( amount );
-}
-//----------------------------------------------------
-
-void CGlow::Rotate( Fvector& center, Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, -angle);
-	m_Position.sub		(center);
-	m.transform_tiny	(m_Position);
-	m_Position.add		(center);
-    UI.UpdateScene		();
-}
-
 bool CGlow::Load(CStream& F){
 	DWORD version = 0;
     char sh_name[64]="";
     char tex_name[128]="";
 
     R_ASSERT(F.ReadChunk(GLOW_CHUNK_VERSION,&version));
-    if( version!=GLOW_VERSION ){
+    if((version!=0x0011)&&(version!=GLOW_VERSION)){
         ELog.DlgMsg( mtError, "CGlow: Unsupported version.");
         return false;
     }
@@ -143,7 +125,11 @@ bool CGlow::Load(CStream& F){
 
     R_ASSERT(F.FindChunk(GLOW_CHUNK_PARAMS));
 	m_Range  		= F.Rfloat();
-	F.Rvector		(m_Position);
+	if (version==0x0011){
+		F.Rvector	(FPosition);
+        UpdateTransform();
+    }
+
 
     m_ShaderName	= sh_name;
     Compile			();
@@ -159,7 +145,6 @@ void CGlow::Save(CFS_Base& F){
 
 	F.open_chunk	(GLOW_CHUNK_PARAMS);
 	F.Wfloat   		(m_Range);
-	F.Wvector 		(m_Position);
 	F.close_chunk	();
 
     if (!m_ShaderName.IsEmpty()){

@@ -421,7 +421,7 @@ void EScene::RenderSky(const Fmatrix& camera)
 	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
         st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
         m_SkyDome->PPosition = camera.c;
-        m_SkyDome->UpdateTransform();
+        m_SkyDome->UpdateTransform(true);
 		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
     	m_SkyDome->RenderSingle();
 	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);

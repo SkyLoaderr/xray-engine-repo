@@ -25,7 +25,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebTargetObject;
 	TExtBtn *ebTargetLight;
 	TExtBtn *ebTargetSound;
-    TExtBtn *ebTargetOccluder;
+	TExtBtn *ebTargetEvent;
     TPanel *paFrames;
 	TFormStorage *fsStorage;
     TExtBtn *ebTargetGlow;
@@ -39,7 +39,7 @@ __published:	// IDE-managed Components
 	TLabel *lbEditMode;
 	TExtBtn *sbEditMin;
 	TExtBtn *sbTargetMin;
-	TExtBtn *ebTargetEvent;
+	TExtBtn *ebTargetOccluder;
 	TExtBtn *ebSceneFile;
 	TExtBtn *ebSceneCompile;
 	TExtBtn *ebLibraryEditor;
@@ -222,13 +222,13 @@ __published:	// IDE-managed Components
 	void __fastcall Quit1Click(TObject *Sender);
 	void __fastcall ebPropertiesClick(TObject *Sender);
 private:	// User declarations
-	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
 	void ChangeTarget(int tgt);
     void UpdateBar();
     void UpdateSnapList();
     void AppendRecentFile(LPCSTR name);
+	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

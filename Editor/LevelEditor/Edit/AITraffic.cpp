@@ -10,7 +10,7 @@
 #include "D3DUtils.h"
 #include "Scene.h"
 
-#define AITPOINT_VERSION				0x0010
+#define AITPOINT_VERSION				0x0011
 //----------------------------------------------------
 #define AITPOINT_CHUNK_VERSION			0xE501
 #define AITPOINT_CHUNK_POINT			0xE502
@@ -118,39 +118,23 @@ bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* p
 }
 //----------------------------------------------------
 
-void CAITPoint::Move( Fvector& amount ){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-	m_Position.add( amount );
-}
-//----------------------------------------------------
-
-void CAITPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, -angle);
-	m_Position.sub		(center);
-	m.transform_tiny	(m_Position);
-	m_Position.add		(center);
-    UI.UpdateScene		();
-}
-//----------------------------------------------------
-
-
 bool CAITPoint::Load(CStream& F){
 	DWORD version = 0;
 	char buf[1024];
 
     R_ASSERT(F.ReadChunk(AITPOINT_CHUNK_VERSION,&version));
-    if( version!=AITPOINT_VERSION ){
+    if((version!=0x0010)&&(version!=AITPOINT_VERSION)){
         ELog.DlgMsg( mtError, "CAITPoint: Unsupported version.");
         return false;
     }
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
-    F.Rvector		(m_Position);
+    if (version==0x0010){
+	    R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));
+    	F.Rvector	(m_Position);
+        UpdateTransform();
+    }
 
     R_ASSERT(F.FindChunk(AITPOINT_CHUNK_LINKS));
     m_NameLinks.resize(F.Rdword());

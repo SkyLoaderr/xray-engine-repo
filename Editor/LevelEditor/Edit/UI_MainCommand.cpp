@@ -130,6 +130,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CHANGE_SNAP:
         ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
         break;
+    case COMMAND_FILE_MENU:
+		fraLeftBar->ShowPPMenu(fraLeftBar->pmSceneFile,0);
+    	break;
 	case COMMAND_LOAD:
 		if( !Scene.locked() ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
@@ -623,15 +626,16 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         else if (Key=='N')   	Command(COMMAND_CLEAR);
         else if (Key=='S'){ 	if (Shift.Contains(ssAlt))  Command(COMMAND_SAVEAS);
 					            else                        Command(COMMAND_SAVE);}
-       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etEvent);
+       	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etOccluder);
 		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
     }else{
         if (Shift.Contains(ssAlt)){
+        	if (Key=='F')   	Command(COMMAND_FILE_MENU);
         }else{
             if (Key=='1')     	Command(COMMAND_CHANGE_TARGET, etObject);
         	else if (Key=='2')  Command(COMMAND_CHANGE_TARGET, etLight);
         	else if (Key=='3')  Command(COMMAND_CHANGE_TARGET, etSound);
-        	else if (Key=='4')  Command(COMMAND_CHANGE_TARGET, etOccluder);
+        	else if (Key=='4')  Command(COMMAND_CHANGE_TARGET, etEvent);
         	else if (Key=='5')  Command(COMMAND_CHANGE_TARGET, etGlow);
         	else if (Key=='6')  Command(COMMAND_CHANGE_TARGET, etDO);
         	else if (Key=='7')  Command(COMMAND_CHANGE_TARGET, etRPoint);

@@ -318,6 +318,9 @@ void COccluder::LocalScale( Fvector& amount ){
 //----------------------------------------------------
 
 bool COccluder::Load(CStream& F){
+	ELog.Msg(mtError,"Occluder obsolete");
+	return false;
+
 	DWORD version = 0;
 
     R_ASSERT(F.ReadChunk(OCCLUDER_CHUNK_VERSION,&version));

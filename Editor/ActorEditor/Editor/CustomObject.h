@@ -15,11 +15,6 @@ class CStream;
 class CFS_Base;
 
 class CCustomObject {
-    // orientation
-    Fvector 		FPosition;
-    Fvector 		FScale;
-    Fvector 		FRotate;
-	Fmatrix 		FTransform;
 	EObjClass 		FClassID;
 	string64		FName;
 
@@ -32,6 +27,12 @@ class CCustomObject {
 
 	LPSTR			GetName			(){return FName; }
 	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
+protected:
+    // orientation
+    Fvector 		FPosition;
+    Fvector 		FScale;
+    Fvector 		FRotate;
+	Fmatrix 		FTransform;
 protected:
     virtual Fvector& GetPosition	()	{ return FPosition; 	}
     virtual Fvector& GetRotate		()	{ return FRotate; 	}
@@ -70,11 +71,12 @@ public:
     virtual void 	ResetAnimation	(bool upd_t=true){;}
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
 
-	virtual void 	Move			(Fvector& amount){};
-	virtual void 	Rotate			(Fvector& center, Fvector& axis, float angle ){};
-	virtual void 	Scale			(Fvector& center, Fvector& amount ){};
-	virtual void 	LocalRotate		(Fvector& axis, float angle ){};
-	virtual void 	LocalScale		(Fvector& amount){};
+    // change position/orientation methods
+	virtual void 	Move			(Fvector& amount);
+	virtual void 	Rotate			(Fvector& center, Fvector& axis, float angle );
+	virtual void 	Scale			(Fvector& center, Fvector& amount );
+	virtual void 	LocalRotate		(Fvector& axis, float angle );
+	virtual void 	LocalScale		(Fvector& amount);
 
 	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);

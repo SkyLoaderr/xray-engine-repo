@@ -151,77 +151,20 @@ bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
 	return m_pRefs->BoxPick(this, box, _Transform(), pinf);
 }
 
-void CSceneObject::Move(Fvector& amount){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-    Fvector v=PPosition; v.add(amount);	PPosition = v;
-}
-
-void CSceneObject::Rotate(Fvector& center, Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-
-	Fmatrix m;
-	m.rotation(axis, -angle);
-
-    Fvector p	= PPosition;
-    Fvector r	= PRotate;
-
-	p.sub		(center);
-    m.transform_tiny(p);
-	p.add		(center);
-
-    r.mad		(axis,axis.z?-angle:angle);
-	PPosition 	= p;
-    PRotate		= r;
-}
-void CSceneObject::LocalRotate(Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-    Fvector r	= PRotate;
-    r.mad		(axis,angle);
-    PRotate		= r;
-}
-
 void CSceneObject::Scale( Fvector& center, Fvector& amount ){
-	R_ASSERT(!Locked());
     if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
-    UI.UpdateScene();
-    Fvector p	= PPosition;
-    Fvector s	= PScale;
-	s.add(amount);
-	if (s.x<EPS) s.x=EPS;
-	if (s.y<EPS) s.y=EPS;
-	if (s.z<EPS) s.z=EPS;
-
-	Fmatrix m;
-    Fvector S;
-    S.add(amount,1.f);
-	m.scale( S );
-	p.sub( center );
-	m.transform_tiny(p);
-	p.add( center );
-
-    PPosition	= p;
-    PScale		= s;
+	inherited::Scale(center,amount);
 }
 
 void CSceneObject::LocalScale( Fvector& amount ){
-	R_ASSERT(!Locked());
     if (IsDynamic()){
     	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", Name);
         return;
     }
-    UI.UpdateScene();
-    Fvector s	= PScale;
-	s.add(amount);
-    if (s.x<EPS) s.x=EPS;
-    if (s.y<EPS) s.y=EPS;
-    if (s.z<EPS) s.z=EPS;
-    PScale		= s;
+	inherited::LocalScale(amount);
 }
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){
@@ -233,6 +176,8 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
 }
 
 void CSceneObject::OnFrame(){
+	inherited::OnFrame();
+	if (m_pRefs) m_pRefs->OnFrame();
 }
 
 CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)

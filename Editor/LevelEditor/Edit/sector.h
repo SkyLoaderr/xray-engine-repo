@@ -76,7 +76,7 @@ public:
     void			UpdateVolume();
 
 	bool			AddMesh		(CSceneObject* O, CEditableMesh* M); // возвращает добавлен ли объект
-	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если обект удален
+	bool	  		DelMesh		(CSceneObject* O, CEditableMesh* M); // возвращает false если объект удален
 
     bool			IsDefault	(){return m_bDefault;}
     bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}

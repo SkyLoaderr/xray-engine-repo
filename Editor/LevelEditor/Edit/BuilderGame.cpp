@@ -23,16 +23,13 @@ bool SceneBuilder::BuildGame()
         AnsiString temp;
         for(;i!=last;i++){
             CEvent *E = (CEvent*)(*i);
-            Fbox B;				E->GetBox(B);
-			Fvector center;		B.getcenter(center);
-            Fmatrix e_matrix; 	e_matrix.translate(center); e_matrix.invert();
 
             NET_Packet Packet;
             Packet.w_begin		(M_SPAWN);
             Packet.w_string		("g_event");
             Packet.w_string		(E->Name);
             Packet.w_u8 		(0xFE);
-            Packet.w_vec3		(center);		// возможно нужно будет юзать локальную СК
+            Packet.w_vec3		(E->PPosition);
             Fvector a; a.set	(0,0,0);
             Packet.w_vec3		(a);
             Packet.w_u16		(0);
@@ -50,7 +47,7 @@ bool SceneBuilder::BuildGame()
 	            Packet.w_u8 	(u8(f_it->m_eType));
             	switch (f_it->m_eType){
                 case CEvent::efSphere:	{ Fsphere S; S.set(f_it->vPosition,f_it->vSize.magnitude());Packet.w_vec3(S.P);Packet.w_float(S.R); }break;
-                case CEvent::efBox:		{ Fmatrix T; f_it->GetTransform(T); T.mul2(e_matrix); Packet.w_matrix(T); }break;
+                case CEvent::efBox:		{ Fmatrix T; f_it->GetTransform(T); Packet.w_matrix(T); }break;
                 }
             }
             // action's
@@ -87,8 +84,8 @@ bool SceneBuilder::BuildGame()
 				Packet.w_string		(rpt->m_EntityRefs);
 				Packet.w_string		(rpt->Name);
    				Packet.w_u8 		(0xFE);
-                Packet.w_vec3		(rpt->m_Position);
-                Fvector a; a.set	(0,rpt->m_fHeading,0);
+                Packet.w_vec3		(rpt->PPosition);
+                Fvector a; a.set	(0,rpt->PRotate.y,0);
                 Packet.w_vec3		(a);
                 Packet.w_u16		(0);
                 WORD fl 			= (rpt->m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;

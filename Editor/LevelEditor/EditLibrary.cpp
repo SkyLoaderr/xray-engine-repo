@@ -73,7 +73,7 @@ CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const
 void __fastcall TfrmEditLibrary::OnRender(){
 	if (!form) return;
 	if (form->m_SelectedObject&&form->cbPreview->Checked){
-        form->m_SelectedObject->RTL_Update(Device.fTimeDelta);
+        form->m_SelectedObject->OnFrame();
         // update transform matrix
         Fmatrix	mTransform,mScale,mTranslate,mRotate;
         mRotate.setHPB			(form->m_SelectedObject->t_vRotate.y, form->m_SelectedObject->t_vRotate.x, form->m_SelectedObject->t_vRotate.z);

@@ -39,8 +39,9 @@ void CEvent::SForm::GetTransform(Fmatrix& M){
 	M.mul			(mScale);
 }
 
-void CEvent::SForm::RenderBox(bool bAlpha){
+void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 	Fmatrix T; GetTransform(T);
+    T.mul2(parent);
 	// render
 	FVF::L v;
 	FLvertexVec V;
@@ -62,10 +63,10 @@ void CEvent::SForm::RenderBox(bool bAlpha){
     }
 }
 
-void CEvent::SForm::Render(bool bAlpha)
+void CEvent::SForm::Render(const Fmatrix& parent, bool bAlpha)
 {
 	switch(m_eType){
-    case efBox: RenderBox(bAlpha); break;
+    case efBox: RenderBox(parent,bAlpha); break;
     };
 }
 
@@ -120,26 +121,6 @@ bool CEvent::SForm::FrustumPick( const CFrustum& frustum )
 void CEvent::SForm::Move( Fvector& amount )
 {
 	vPosition.add(amount);
-}
-
-void CEvent::SForm::Rotate( Fvector& center, Fvector& axis, float angle )
-{
-	Fmatrix m;
-	m.rotation( axis, angle );
-
-	vPosition.sub( center );
-    m.transform_tiny(vPosition);
-	vPosition.add( center );
-
-    vRotate.direct(vRotate,axis,angle);
-}
-
-void CEvent::SForm::Scale( Fvector& center, Fvector& amount )
-{
-	vSize.add(amount);
-    if (vSize.x<EPS) vSize.x=EPS;
-    if (vSize.y<EPS) vSize.y=EPS;
-    if (vSize.z<EPS) vSize.z=EPS;
 }
 
 void CEvent::SForm::LocalRotate( Fvector& axis, float angle )
@@ -226,12 +207,12 @@ bool CEvent::GetBox( Fbox& box ){
 
 void CEvent::Render( int priority, bool strictB2F ){
 	if (priority==1){
-        for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render(strictB2F);
+        for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Render(FTransform,strictB2F);
         if(Selected()&&(false==strictB2F)){
             Fbox bb;
             GetBox(bb);
 			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-			Device.SetTransform(D3DTS_WORLD,precalc_identity);
+			Device.SetTransform(D3DTS_WORLD,FTransform);
 			DU::DrawSelectionBox(bb,&clr);
         }
     }
@@ -252,33 +233,34 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 
 void CEvent::Move(Fvector& amount){
 	R_ASSERT(!Locked());
-    //S
-	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Move(amount);
+	inherited::Move(amount);
+//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->Move(amount);
     UI.UpdateScene();
 }
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
 	R_ASSERT(!Locked());
-    //S
-	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Rotate(center, axis, angle);
+	inherited::Rotate(center,axis,angle);
     UI.UpdateScene();
 }
 
 void CEvent::LocalRotate(Fvector& axis, float angle){
 	R_ASSERT(!Locked());
-	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalRotate(axis, angle);
+	inherited::LocalRotate(axis,angle);
+//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalRotate(axis, angle);
     UI.UpdateScene();
 }
 
 void CEvent::Scale( Fvector& center, Fvector& amount ){
 	R_ASSERT(!Locked());
-	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Scale(center, amount);
+	inherited::Scale(center,amount);
     UI.UpdateScene();
 }
 
 void CEvent::LocalScale( Fvector& amount ){
 	R_ASSERT(!Locked());
-	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->LocalScale(amount);
+	inherited::LocalScale(amount);
+//	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) if (it->m_Selected) it->LocalScale(amount);
     UI.UpdateScene();
 }
 //----------------------------------------------------

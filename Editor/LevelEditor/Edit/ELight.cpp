@@ -12,14 +12,14 @@
 #include "D3DUtils.h"
 #include "BottomBar.h"
 
-#define LIGHT_VERSION   				0x0010
+#define LIGHT_VERSION   				0x0011
 //----------------------------------------------------
 #define LIGHT_CHUNK_VERSION				0xB411
 #define LIGHT_CHUNK_FLAG				0xB413
 #define LIGHT_CHUNK_BRIGHTNESS			0xB425
 #define LIGHT_CHUNK_D3D_PARAMS         	0xB435
 #define LIGHT_CHUNK_USE_IN_D3D			0xB436
-#define LIGHT_CHUNK_HPB_ROTATION		0xB437
+#define LIGHT_CHUNK_ROTATE				0xB437
 //----------------------------------------------------
 //----------------------------------------------------
 #define FLARE_CHUNK_FLAG				0x1002
@@ -62,9 +62,6 @@ void CLight::Construct(){
 	m_D3DIndex 		= -1;
     m_Enabled 		= TRUE;
 
-    Fvector temp; 	temp.set(0.f,0.f,0.f);
-    SetRotate		(temp);
-
     m_Flags.bAffectStatic 	= TRUE;
     m_Flags.bAffectDynamic 	= FALSE;
     m_Flags.bProcedural 	= FALSE;
@@ -73,9 +70,12 @@ void CLight::Construct(){
 CLight::~CLight(){
 }
 
-void CLight::UpdateTransform(){
-	m_D3D.direction.direct(vRotate.y,vRotate.x);
+void CLight::OnUpdateTransform(){
+	inherited::OnUpdateTransform();
+	m_D3D.direction.direct(PRotate.y,PRotate.x);
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Update(m_D3D.direction, m_D3D.diffuse);
+	if (D3DLIGHT_POINT==m_D3D.type)
+        m_D3D.range=PScale.x;
 }
 
 void CLight::CopyFrom(CLight* src){
@@ -164,38 +164,10 @@ bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
     }
 	return false;
 }
-
-void CLight::Move( Fvector& amount ){
-	R_ASSERT(!Locked());
-	m_D3D.position.add(amount);
-    UpdateTransform();
-    UI.UpdateScene();
-}
-
-void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, -angle);
-
-	m_D3D.position.sub	(center);
-    m.transform_tiny	(m_D3D.position);
-	m_D3D.position.add	(center);
-
-    vRotate.direct		(vRotate,axis,angle);
-
-    UpdateTransform		();
-    UI.UpdateScene		();
-}
-//----------------------------------------------------
-void CLight::LocalRotate(Fvector& axis, float angle){
-	R_ASSERT(!Locked());
-    vRotate.direct		(vRotate,axis,angle);
-    UpdateTransform		();
-    UI.UpdateScene		();
-}
 //----------------------------------------------------
 
-void CLight::RTL_Update	(float dT){
+void CLight::OnFrame	(){
+	inherited::OnFrame	();
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnMove();
 }
 //----------------------------------------------------
@@ -234,35 +206,40 @@ bool CLight::Load(CStream& F){
 
     char buf[1024];
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_VERSION,&version));
-    if( version!=LIGHT_VERSION ){
+    if((version!=0x0010)&&(version!=LIGHT_VERSION)){
         ELog.DlgMsg( mtError, "CLight: Unsupported version.");
         return false;
     }
 
 	CCustomObject::Load(F);
-
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness));
     R_ASSERT(F.FindChunk(LIGHT_CHUNK_D3D_PARAMS));
     F.Read(&m_D3D,sizeof(m_D3D));
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D));
-    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_Flags,sizeof(DWORD));
-
-    if (F.FindChunk(LIGHT_CHUNK_HPB_ROTATION)){
-    	F.Rvector	(vRotate);
-    }else{
-    	// generate from direction
-        Fvector& dir= m_D3D.direction;
-        // parse heading
-        Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
-        if (DYaw.x<0)	vRotate.x = acosf(DYaw.z);
-        else			vRotate.x = 2*PI-acosf(DYaw.z);
-        // parse pitch
-        dir.normalize_safe	();
-        vRotate.y		= asinf(dir.y);
+    if(version==0x0010){
+    	if (F.FindChunk(LIGHT_CHUNK_ROTATE)){
+        	F.Rvector(FRotate);
+        }else{
+	    	if (D3DLIGHT_DIRECTIONAL==m_D3D.type){
+		    	// generate from direction
+        	    Fvector& dir= m_D3D.direction;
+	            // parse heading
+    	        Fvector DYaw; DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
+        	    if (DYaw.x<0)	FRotate.x = acosf(DYaw.z);
+	            else			FRotate.x = 2*PI-acosf(DYaw.z);
+    	        // parse pitch
+        	    dir.normalize_safe	();
+            	FRotate.y		= asinf(dir.y);
+            }else{
+	        	FRotate.set(0,0,0);
+            }           
+        }
     }
 
+    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_Flags,sizeof(DWORD));
+
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
-    
+
 	UpdateTransform	();
 
     return true;
@@ -281,7 +258,6 @@ void CLight::Save(CFS_Base& F){
 	F.write_chunk	(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
-	F.write_chunk	(LIGHT_CHUNK_HPB_ROTATION,&vRotate,sizeof(vRotate));
     F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(DWORD));
 }
 //----------------------------------------------------

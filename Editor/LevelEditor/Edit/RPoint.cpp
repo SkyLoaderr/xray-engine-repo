@@ -12,7 +12,7 @@
 #include "Frustum.h"
 #include "D3DUtils.h"
 
-#define RPOINT_VERSION   				0x0010
+#define RPOINT_VERSION   				0x0011
 //----------------------------------------------------
 #define RPOINT_CHUNK_VERSION			0xE411
 #define RPOINT_CHUNK_POSITION			0xE412
@@ -38,11 +38,9 @@ CRPoint::CRPoint():CCustomObject(){
 
 void CRPoint::Construct(){
 	ClassID		= OBJCLASS_RPOINT;
-	m_Position.set(0,0,0);
     m_dwTeamID	= 0;
     m_dwSquadID	= 0;
     m_dwGroupID	= 0;
-    m_fHeading	= 0;
     m_Type		= etPlayer;
     ZeroMemory(&m_Flags,sizeof(Flags));
     m_EntityRefs[0]=0;
@@ -53,7 +51,7 @@ CRPoint::~CRPoint(){
 
 //----------------------------------------------------
 bool CRPoint::GetBox( Fbox& box ){
-	box.set( m_Position, m_Position );
+	box.set( PPosition, PPosition );
 	box.min.x -= RPOINT_SIZE;
 	box.min.y -= 0;
 	box.min.z -= RPOINT_SIZE;
@@ -67,8 +65,8 @@ bool CRPoint::GetBox( Fbox& box ){
 
 void CRPoint::Render( int priority, bool strictB2F ){
     if ((1==priority)&&(false==strictB2F)){
-        if (Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
-		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
+        if (Device.m_Frustum.testSphere(PPosition,RPOINT_SIZE)){
+		    DU::DrawFlag(PPosition,PRotate.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],etEntity==m_Type);
             if( Selected() ){
                 Fbox bb; GetBox(bb);
 	            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -79,12 +77,12 @@ void CRPoint::Render( int priority, bool strictB2F ){
 }
 
 bool CRPoint::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(m_Position,RPOINT_SIZE))?true:false;
+    return (frustum.testSphere(PPosition,RPOINT_SIZE))?true:false;
 }
 
 bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector pos,ray2;
-    pos.set(m_Position.x,m_Position.y+RPOINT_SIZE,m_Position.z);
+    pos.set(PPosition.x,PPosition.y+RPOINT_SIZE,PPosition.z);
 	ray2.sub( pos, start );
 
     float d = ray2.dotproduct(direction);
@@ -99,55 +97,33 @@ bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayP
     }
 	return false;
 }
-
-void CRPoint::Move( Fvector& amount ){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-	m_Position.add( amount );
-}
-//----------------------------------------------------
-
-void CRPoint::LocalRotate( Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-    m_fHeading			-= axis.y*angle;
-    UI.UpdateScene		();
-}
-//----------------------------------------------------
-
-void CRPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, -angle);
-	m_Position.sub		(center);
-	m.transform_tiny	(m_Position);
-	m_Position.add		(center);
-    m_fHeading			-= axis.y*angle;
-    UI.UpdateScene		();
-}
 //----------------------------------------------------
 
 bool CRPoint::Load(CStream& F){
 	DWORD version = 0;
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_VERSION,&version));
-    if( version!=RPOINT_VERSION ){
+    if( (version!=0x0010)&&(version!=RPOINT_VERSION) ){
         ELog.DlgMsg( mtError, "RPOINT: Unsupported version.");
         return false;
     }
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.ReadChunk(RPOINT_CHUNK_POSITION,&m_Position));
+    if (version==0x0010){
+	    R_ASSERT(F.ReadChunk(RPOINT_CHUNK_POSITION,&FPosition));
+	    if (F.FindChunk(RPOINT_CHUNK_DIRECTION))FRotate.x = F.Rfloat();
+        UpdateTransform();
+    }
 
     if (F.FindChunk(RPOINT_CHUNK_TEAMID)) 	m_dwTeamID = F.Rdword();
-    if (F.FindChunk(RPOINT_CHUNK_DIRECTION))m_fHeading = F.Rfloat();
 
     // new generation
     if (F.FindChunk(RPOINT_CHUNK_SQUADID))  	m_dwSquadID = F.Rdword();
     if (F.FindChunk(RPOINT_CHUNK_GROUPID))  	m_dwGroupID = F.Rdword();
     if (F.FindChunk(RPOINT_CHUNK_TYPE))     	m_Type 		= F.Rdword();
-    if (F.FindChunk(RPOINT_CHUNK_FLAGS))    	F.Read		(&m_Flags,sizeof(DWORD));     
-    if (F.FindChunk(RPOINT_CHUNK_ENTITYREFS))	F.RstringZ	(m_EntityRefs); 
+    if (F.FindChunk(RPOINT_CHUNK_FLAGS))    	F.Read		(&m_Flags,sizeof(DWORD));
+    if (F.FindChunk(RPOINT_CHUNK_ENTITYREFS))	F.RstringZ	(m_EntityRefs);
     return true;
 }
 
@@ -158,11 +134,7 @@ void CRPoint::Save(CFS_Base& F){
 	F.Wword			(RPOINT_VERSION);
 	F.close_chunk	();
 
-    F.write_chunk	(RPOINT_CHUNK_POSITION,&m_Position,sizeof(m_Position));
     F.write_chunk	(RPOINT_CHUNK_TEAMID,&m_dwTeamID,sizeof(DWORD));
-    F.write_chunk	(RPOINT_CHUNK_DIRECTION,&m_fHeading,sizeof(float));
-
-    // new generation
     F.write_chunk	(RPOINT_CHUNK_SQUADID,&m_dwSquadID,sizeof(DWORD));
     F.write_chunk	(RPOINT_CHUNK_GROUPID,&m_dwGroupID,sizeof(DWORD));
     F.write_chunk	(RPOINT_CHUNK_TYPE,&m_Type,sizeof(DWORD));

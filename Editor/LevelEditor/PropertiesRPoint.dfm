@@ -302,7 +302,8 @@ object frmPropertiesRPoint: TfrmPropertiesRPoint
       ButtonKind = bkLightWave
       Decimal = 1
       Increment = 0.1
-      MaxValue = 360
+      MaxValue = 10000
+      MinValue = -10000
       ValueType = vtFloat
       AutoSize = False
       Color = 10526880

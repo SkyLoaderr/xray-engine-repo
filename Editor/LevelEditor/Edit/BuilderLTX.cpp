@@ -97,7 +97,7 @@ bool SceneBuilder::BuildLTX(){
                 bResult=false;
                 goto end_ltx_build;
             }
-            AnsiString ln; ln.sprintf("%s,%f,%f,%f",s->m_fName,s->m_Position.x,s->m_Position.y,s->m_Position.z);
+            AnsiString ln; ln.sprintf("%s,%f,%f,%f",s->m_fName,s->PPosition.x,s->PPosition.y,s->PPosition.z);
             pIni->WriteString("static_sounds",s->Name,ln.c_str());
 		}
 	}
@@ -147,7 +147,7 @@ bool SceneBuilder::BuildLTX(){
         for(;i!=_E;i++){
             CRPoint *rpt = (CRPoint *)(*i);
             if (CRPoint::etPlayer==rpt->m_Type){
-	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->m_Position.x,rpt->m_Position.y,rpt->m_Position.z,rpt->m_dwTeamID,rpt->m_fHeading);
+	            temp.sprintf("%.3f,%.3f,%.3f,%d,%.3f", rpt->PPosition.x,rpt->PPosition.y,rpt->PPosition.z,rpt->m_dwTeamID,rpt->PRotate.x);
     	        pIni->WriteString("respawn_point",rpt->Name,temp.c_str());
             }
 		}
@@ -160,7 +160,7 @@ bool SceneBuilder::BuildLTX(){
         AnsiString temp;
         for(;i!=_E;i++){
         	CAITPoint* P = (CAITPoint*)(*i);
-            temp.sprintf("%.3f,%.3f,%.3f", P->m_Position.x,P->m_Position.y,P->m_Position.z);
+            temp.sprintf("%.3f,%.3f,%.3f", P->PPosition.x,P->PPosition.y,P->PPosition.z);
             for (ObjectIt it=P->m_Links.begin(); it!=P->m_Links.end(); it++)
 	            temp += AnsiString(", ") + AnsiString((*it)->Name);
             pIni->WriteString("ai_traffic",P->Name,temp.c_str());
@@ -172,7 +172,7 @@ bool SceneBuilder::BuildLTX(){
         AnsiString t;
         for(;i!=_E;){
         	CAITPoint* P = (CAITPoint*)(*i);
-            t.sprintf("%3.2f,%3.2f,%3.2f", P->m_Position.x,P->m_Position.y,P->m_Position.z);
+            t.sprintf("%3.2f,%3.2f,%3.2f", P->PPosition.x,P->PPosition.y,P->PPosition.z);
         	temp += t;
             i++;
             if (i!=_E) temp+=", ";

@@ -15,9 +15,10 @@ class CSound : public CCustomObject
 	friend class TfrmPropertiesSound;
 	friend class SceneBuilder;
 protected:
-	Fvector m_Position;
 	float	m_Range;
 	char	m_fName[128];
+    virtual Fvector& GetScale		()	{ FScale.set(m_Range,m_Range,m_Range); return FScale; 	}
+	virtual void 	SetScale		(Fvector& sc){float v=m_Range; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_Range=v; UpdateTransform();}
 public:
 	void	SetFName(const char *N)	{
 		strcpy(m_fName,N);
@@ -33,9 +34,6 @@ public:
 		SRayPickInfo* pinf = NULL );
 
     virtual bool 	FrustumPick	( const CFrustum& frustum );
-	virtual void 	Move( Fvector& amount );
-	virtual void 	Rotate( Fvector& center, Fvector& axis, float angle );
-	virtual void 	LocalRotate( Fvector& axis, float angle );
 
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);

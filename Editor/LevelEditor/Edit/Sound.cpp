@@ -18,10 +18,11 @@
 #define SOUND_NORM_COLOR 	0x000000FF
 #define SOUND_LOCK_COLOR 	0x00FF0000
 
-#define SOUND_VERSION   				0x0010
+#define SOUND_VERSION   				0x0011
 //----------------------------------------------------
 #define SOUND_CHUNK_VERSION				0x0211
 #define SOUND_CHUNK_PARAMS				0x0212
+#define SOUND_CHUNK_PARAMS2				0x0213
 //----------------------------------------------------
 CSound::CSound( char *name )
 	:CCustomObject()
@@ -39,7 +40,6 @@ CSound::CSound()
 void CSound::Construct(){
 	ClassID=OBJCLASS_SOUND;
 
-	m_Position.set(0,0,0);
 	m_Range = 8.f;
 	m_fName[0] = 0;
 }
@@ -50,7 +50,7 @@ CSound::~CSound(){
 //----------------------------------------------------
 
 bool CSound::GetBox( Fbox& box ){
-	box.set( m_Position, m_Position );
+	box.set( PPosition, PPosition );
 	box.min.sub(m_Range);
 	box.max.add(m_Range);
 	return true;
@@ -59,18 +59,18 @@ bool CSound::GetBox( Fbox& box ){
 void CSound::Render(int priority, bool strictB2F){
     if((1==priority)&&(false==strictB2F)){
         DWORD clr=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL_COLOR:SOUND_NORM_COLOR);
-        if (Selected()) DU::DrawLineSphere( m_Position, m_Range, clr, true );
-        DU::DrawSound(m_Position,VIS_RADIUS, clr);
+        if (Selected()) DU::DrawLineSphere( PPosition, m_Range, clr, true );
+        DU::DrawSound(PPosition,VIS_RADIUS, clr);
     }
 }
 
 bool CSound::FrustumPick(const CFrustum& frustum){
-    return (frustum.testSphere(m_Position,VIS_RADIUS))?true:false;
+    return (frustum.testSphere(PPosition,VIS_RADIUS))?true:false;
 }
 
 bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
-	ray2.sub( m_Position, start );
+	ray2.sub( PPosition, start );
 
 	float d = ray2.dotproduct(direction);
 	if( d > 0  ){
@@ -85,45 +85,31 @@ bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 
 	return false;
 }
-
-void CSound::Move( Fvector& amount ){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-	m_Position.add( amount );
-}
-
-void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-	Fmatrix m;
-	m.rotation			(axis, -angle);
-	m_Position.sub		(center);
-	m.transform_tiny	(m_Position);
-	m_Position.add		(center);
-    UI.UpdateScene		();
-}
-
-void CSound::LocalRotate( Fvector& axis, float angle ){
-	R_ASSERT(!Locked());
-    UI.UpdateScene();
-}
-
 //----------------------------------------------------
 
 bool CSound::Load(CStream& F){
 	DWORD version = 0;
 
     R_ASSERT(F.ReadChunk(SOUND_CHUNK_VERSION,&version));
-    if( version!=SOUND_VERSION ){
+    if((version!=0x0010)&&(version!=SOUND_VERSION)){
         ELog.DlgMsg( mtError, "CSound: Unsupported version.");
         return false;
     }
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS));
-	F.RstringZ		(m_fName);
-	F.Rvector		(m_Position);
-	m_Range 		= F.Rfloat();
+    if (version==0x0010){
+	    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS));
+		F.RstringZ	(m_fName);
+		F.Rvector	(FPosition);
+		m_Range 	= F.Rfloat();
+    }else{
+	    R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS2));
+		F.RstringZ	(m_fName);
+		m_Range 	= F.Rfloat();
+    }
+
+    UpdateTransform();
 
     return true;
 }
@@ -135,9 +121,8 @@ void CSound::Save(CFS_Base& F){
 	F.Wword			(SOUND_VERSION);
 	F.close_chunk	();
 
-	F.open_chunk	(SOUND_CHUNK_PARAMS);
+	F.open_chunk	(SOUND_CHUNK_PARAMS2);
 	F.WstringZ		(m_fName);
-	F.Wvector		(m_Position);
 	F.Wfloat		(m_Range);
 	F.close_chunk	();
 }

@@ -251,7 +251,7 @@ public:
 	void 			RenderSkeletonSingle	(Fmatrix& parent);
 
     // update methods
-	void 			RTL_Update				(float dT);
+	void 			OnFrame					();
 	void 			UpdateBox				();
 	void		    LightenObject			();
 

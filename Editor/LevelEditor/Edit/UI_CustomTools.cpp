@@ -139,8 +139,8 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
         {
             V.set(rad2deg(V.x),rad2deg(V.y),rad2deg(V.z));
             Fvector RV; RV.set(0,0,0);
-            Fvector MN; MN.set(-360,-360,-360);
-            Fvector MX; MX.set( 360, 360, 360);
+            Fvector MN; MN.set(-10000,-10000,-10000);
+            Fvector MX; MX.set( 10000, 10000, 10000);
             if (mrOk==NumericVectorRun("Rotation",&V,1,&RV,&MN,&MX)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
 	            V.set(deg2rad(V.x),deg2rad(V.y),deg2rad(V.z));

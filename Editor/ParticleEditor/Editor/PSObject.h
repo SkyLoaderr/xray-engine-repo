@@ -25,7 +25,8 @@ class CPSObject: public CCustomObject{
     Fbox				m_BBox;
 
     void 				DrawPS		();
-
+protected:
+	typedef CCustomObject inherited;
 public:
     PS::SEmitter		m_Emitter;
 public:
@@ -47,8 +48,8 @@ public:
 
   	virtual bool 		Load		(CStream&);
 	virtual void 		Save		(CFS_Base&);
-	virtual bool    	GetBox      ( Fbox& box );
-	virtual void 		RTL_Update	(float dT);
+	virtual bool    	GetBox      (Fbox& box);
+	virtual void 		OnFrame		();
     IC bool				RefCompare	(PS::SParams* to){VERIFY(to); return stricmp(to->m_Name,m_Definition->m_Name);}
 
     bool				Compile		(PS::SDef* source);

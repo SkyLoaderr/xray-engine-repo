@@ -64,7 +64,8 @@ bool CPSObject::GetBox( Fbox& box ){
 //////////////////////////////////////////////////
 // - доделать рождение/умирание без удаления и добавления в массив
 //
-void CPSObject::RTL_Update(float dT){
+void CPSObject::OnFrame(){
+	inherited::OnFrame();
 	float fTime = Device.fTimeGlobal;
 
 	// update all particles that we own
@@ -77,11 +78,11 @@ void CPSObject::RTL_Update(float dT){
     }
 
 	// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
-	int iParticlesCreated = m_Emitter.CalculateBirth(m_Particles.size(),fTime,dT);
+	int iParticlesCreated = m_Emitter.CalculateBirth(m_Particles.size(),fTime,Device.fTimeDelta);
 
     if (iParticlesCreated){
-        float TM	 	= fTime-dT;
-        float dT_delta 	= dT/iParticlesCreated;
+        float TM	 	= fTime-Device.fTimeDelta;
+        float dT_delta 	= Device.fTimeDelta/iParticlesCreated;
         // see if actually have any to create
         for (i=0; i<iParticlesCreated; i++, TM+=dT_delta){
             m_Particles.push_back(SParticle());

@@ -22,8 +22,8 @@ class CLight : public CCustomObject{
 	// d3d's light parameters (internal use)
 	int 			m_D3DIndex;
     BOOL 			m_Enabled;
-    Fvector			vRotate; // HPB rotate
-    void			UpdateTransform();
+protected:
+	typedef CCustomObject inherited;
 public:
 	struct {
 		DWORD		bAffectStatic	: 1;
@@ -39,7 +39,12 @@ public:
     // flares
     CEditFlare		m_LensFlare;
 
-    const Fvector&	_Rotate		(){return vRotate;}
+    void			OnUpdateTransform();
+protected:
+    virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
+    virtual Fvector& GetScale		()	{ FScale.set(m_D3D.range,m_D3D.range,m_D3D.range); return FScale; 	}
+    virtual void 	SetPosition		(Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
+	virtual void 	SetScale		(Fvector& sc)	{float v=m_D3D.range; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_D3D.range=v; UpdateTransform();}
 public:
 					CLight		();
 					CLight		(char *name);
@@ -54,15 +59,6 @@ public:
 
     // placement functions
 	virtual bool 	GetBox		(Fbox& box);
-	virtual void 	Move		(Fvector& amount);
-	virtual void 	Rotate		(Fvector& center, Fvector& axis, float angle);
-	virtual void 	LocalRotate	(Fvector& axis, float angle);
-
-    virtual bool 	GetPosition	(Fvector& pos){pos.set(m_D3D.position); return true; }
-    virtual bool 	GetRotate	(Fvector& rot){if (m_D3D.type==D3DLIGHT_POINT) return false; rot.set(vRotate); return true;}
-
-    virtual void 	SetPosition	(Fvector& pos){m_D3D.position.set(pos);}
-    virtual void 	SetRotate	(Fvector& rot){vRotate.set(rot.x,rot.y,0); UpdateTransform();}
 
     // file system function
   	virtual bool 	Load		(CStream&);
@@ -75,7 +71,7 @@ public:
     void 			AffectD3D	(BOOL flag);
 
 	virtual void 	Render		(int priority, bool strictB2F);
-	virtual void 	RTL_Update	(float dT);
+	virtual void 	OnFrame		();
     void 			Update		();
 
     // events

@@ -391,7 +391,11 @@ void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);
 	M->Popup(pt.x,pt.y);
-    TExtBtn* btn = dynamic_cast<TExtBtn*>(B); VERIFY(btn); btn->MouseManualUp();
+    if (B){
+	    TExtBtn* btn = dynamic_cast<TExtBtn*>(B);
+        VERIFY(btn);
+        btn->MouseManualUp();
+    }
 }
 //---------------------------------------------------------------------------
 

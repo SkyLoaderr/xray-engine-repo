@@ -101,3 +101,73 @@ void CCustomObject::OnFrame()
 {
 	if (m_bUpdateTransform) OnUpdateTransform();
 }
+
+void CCustomObject::Move(Fvector& amount){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+    Fvector v=PPosition;
+    v.add(amount);
+    PPosition = v;
+}
+
+void CCustomObject::Rotate(Fvector& center, Fvector& axis, float angle){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+
+	Fmatrix m;
+	m.rotation(axis, -angle);
+
+    Fvector p	= PPosition;
+    Fvector r	= PRotate;
+
+	p.sub		(center);
+    m.transform_tiny(p);
+	p.add		(center);
+
+    r.mad		(axis,axis.z?-angle:angle);
+	PPosition 	= p;
+    PRotate		= r;
+}
+
+void CCustomObject::LocalRotate(Fvector& axis, float angle){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+    Fvector r	= PRotate;
+    r.mad		(axis,angle);
+    PRotate		= r;
+}
+
+void CCustomObject::Scale( Fvector& center, Fvector& amount ){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+    Fvector p	= PPosition;
+    Fvector s	= PScale;
+	s.add(amount);
+	if (s.x<EPS) s.x=EPS;
+	if (s.y<EPS) s.y=EPS;
+	if (s.z<EPS) s.z=EPS;
+
+	Fmatrix m;
+    Fvector S;
+    S.add(amount,1.f);
+	m.scale( S );
+	p.sub( center );
+	m.transform_tiny(p);
+	p.add( center );
+
+    PPosition	= p;
+    PScale		= s;
+}
+
+void CCustomObject::LocalScale( Fvector& amount ){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+    Fvector s	= PScale;
+	s.add(amount);
+    if (s.x<EPS) s.x=EPS;
+    if (s.y<EPS) s.y=EPS;
+    if (s.z<EPS) s.z=EPS;
+    PScale		= s;
+}
+
+

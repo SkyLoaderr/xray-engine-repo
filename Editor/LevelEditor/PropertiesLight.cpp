@@ -7,7 +7,7 @@
 #include "SceneClassList.h"
 #include "ui_main.h"
 //#include "ColorPicker.h"
-#include "Scene.h"
+#include "Scene.h"                              
 #include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)

@@ -12,7 +12,6 @@ class CFrustum;
 class CAITPoint: public CCustomObject {
 	friend class 	SceneBuilder;
 
-    Fvector         m_Position;
     ObjectList		m_Links;
     // temporary storage (load only)
     AStringVec		m_NameLinks;
@@ -31,8 +30,6 @@ public:
 	virtual void    Render      	(int priority, bool strictB2F);
 	virtual bool    RayPick	    	(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
-	virtual void    Move        	(Fvector& amount);
-	virtual void 	Rotate			(Fvector& center, Fvector& axis, float angle);
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
 	virtual bool    GetBox      	(Fbox& box);

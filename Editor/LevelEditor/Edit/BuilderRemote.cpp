@@ -301,7 +301,7 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
     mtl.shader_xrlc	= -1;
 	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());
-    mtl.sector		= CalculateSector	(e->m_Position,e->m_Range);
+    mtl.sector		= CalculateSector	(e->PPosition,e->m_Range);
 
     mtl_idx = FindInMaterials(&mtl);
     if (mtl_idx<0){
@@ -310,7 +310,7 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
     }
 
 // fill params
-	b->P.set        (e->m_Position);
+	b->P.set        (e->PPosition);
     b->size         = e->m_Range;
 	b->dwMaterial   = mtl_idx;
 }

@@ -169,13 +169,15 @@ bool __fastcall TUI_CustomControl::DefaultMovingProcess(TShiftState Shift, Fvect
         	CHECK_SNAP(m_MovingReminder.y,amount.y,UI.movesnap());
         	CHECK_SNAP(m_MovingReminder.z,amount.z,UI.movesnap());
         }
-/*	    if (fraTopBar->ebOSnap->Down){
-    		Fvector s,d;
-
+/*
+	    if (fraTopBar->ebMoveToSnap->Down){
 	        SRayPickInfo pinf;
-    		if (Scene.RayPick( s, d, OBJCLASS_SCENEOBJECT, &pinf, false, true)&&pinf.inf.range///seSnapMoveTo){
+    		if (Scene.RayPick( s, d, OBJCLASS_SCENEOBJECT, &pinf, false, true)){
+            	float limit=frmEditorPreferences->seSnapMoveTo->Value;
+                if (pinf.inf.range<=limit){
+					//
+                }
 	        }
-			vPosition.add( amount );
 	    }
 */
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;

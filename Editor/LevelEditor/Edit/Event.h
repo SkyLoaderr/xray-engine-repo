@@ -14,6 +14,8 @@ class CFrustum;
 
 class CEvent: public CCustomObject {
     void			RenderBox	(bool bAlpha);
+protected:
+	typedef CCustomObject inherited;
 public:
 	enum EFormType{
         efSphere=0,
@@ -27,15 +29,13 @@ public:
         Fvector 	vRotate;
         Fvector 	vPosition;
         DWORD		m_Selected;
-        void		RenderBox		(bool bAlpha);
-        void		Render			(bool bAlpha);
+        void		RenderBox		(const Fmatrix& parent, bool bAlpha);
+        void		Render			(const Fmatrix& parent, bool bAlpha);
         void 		GetBox			(Fbox& bb);
         void		GetTransform	(Fmatrix& M);
 	    bool 		FrustumPick		( const CFrustum& frustum );
         bool		Pick			( float& distance, Fvector& start, Fvector& direction );
 		void 		Move			( Fvector& amount );
-		void 		Rotate			( Fvector& center, Fvector& axis, float angle );
-		void 		Scale			( Fvector& center, Fvector& amount );
 		void 		LocalRotate		( Fvector& axis, float angle );
 		void 		LocalScale		( Fvector& amount );
     };
@@ -63,22 +63,6 @@ public:
 					CEvent		( char *name );
 	virtual 		~CEvent		();
 	void 			Construct	();
-
-//    IC const Fmatrix& GetTransform 	(){return mTransform;}
-//    IC const Fvector& GetPosition  	(){return vPosition;}
-//    IC const Fvector& GetRotate	   	(){return vRotate;}
-//    IC const Fvector& GetScale	   	(){return vScale;}
-//    IC Fvector& 	Position	   	(){return vPosition;}
-//    IC Fvector& 	Rotate		   	(){return vRotate;}
-//    IC Fvector& 	Scale		   	(){return vScale;}
-
-//    virtual bool 	GetPosition		(Fvector& pos){pos.set(vPosition); return true; }
-//    virtual bool 	GetRotate		(Fvector& rot){rot.set(vRotate); return true; }
-//    virtual bool 	GetScale		(Fvector& scale){scale.set(vScale); return true; }
-
-//    virtual void 	SetPosition		(Fvector& pos){vPosition.set(pos);}
-//    virtual void 	SetRotate		(Fvector& rot){vRotate.set(rot);}
-//    virtual void 	SetScale		(Fvector& scale){vScale.set(scale);}
 
 	virtual void 	Render			( int priority, bool strictB2F );
 	virtual bool 	RayPick 		( float& distance, Fvector& start,
