@@ -133,7 +133,7 @@ function evaluator_need_talker:evaluate ()
 		local vo = o:object()
 		local vo_id = vo:id()
 		if is_object_online(vo_id) and vo:alive() then
-			local otype = vo:clsid()
+			local otype = get_clsid(vo)
 			if otype == clsid.soldier or otype == clsid.stalker then
 				if o.value >= self.object:visibility_threshold() then
 					local distance = vo:position():distance_to(self.object:position())
@@ -195,7 +195,7 @@ function action_talker_activity:say(what)
 end
 
 function action_talker_activity:is_weapon(active_item)
-	return active_item and isWeapon(active_item:clsid())
+	return active_item and isWeapon(get_clsid(active_item))
 end
 
 function action_talker_activity:execute()
