@@ -17,8 +17,8 @@
 #include "../ai_monster_share.h"
 #include "../../path_manager_level_selector.h"
 
-#include "..\\ai_monster_debug.h"
-#include "..\\ai_monster_motion_stats.h"
+#include "../ai_monster_debug.h"
+#include "../ai_monster_motion_stats.h"
 
 
 // flags
