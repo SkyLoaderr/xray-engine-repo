@@ -37,7 +37,6 @@ using namespace luabind::detail;
 
 
 #ifndef LUABIND_NO_ERROR_CHECKING
-
 	std::string luabind::detail::get_overload_signatures_candidates(lua_State* L, std::vector<const overload_rep_base*>::iterator start, std::vector<const overload_rep_base*>::iterator end, std::string name)
 	{
 		std::string s;
