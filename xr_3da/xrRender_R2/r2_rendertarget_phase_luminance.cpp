@@ -111,12 +111,17 @@ void	CRenderTarget::phase_luminance()
 		pv->p.set	(float(_ts+eps),eps,			eps,1.f);	for (int t=0; t<8; t++)	pv->uv[t].set(b[t].x,a[t].y, a[t+8].y,b[t+8].x);	// xy/yx	- right+up
 		pv++;
 		RCache.Vertex.Unlock		(4,g_bloom_filter->vb_stride);
-		float	mgray				= ps_r2_tonemap_middlegray;
+
 		f_luminance_adapt			= .9f*f_luminance_adapt + .1f*Device.fTimeDelta*ps_r2_tonemap_adaptation;
-		RCache.set_Element			(s_luminance->E[2]	);
-		RCache.set_Geometry			(g_bloom_filter		);
-		if (ps_r2_ls_flags.test(R2FLAG_TONEMAP))	RCache.set_c("MiddleGray",ps_r2_tonemap_bias_lum,mgray,ps_r2_tonemap_low_lum,f_luminance_adapt	);
-		else										RCache.set_c("MiddleGray",1.f,0.f,ps_r2_tonemap_low_lum,f_luminance_adapt						);
+		float		amount			= ps_r2_ls_flags.test(R2FLAG_TONEMAP)?ps_r2_tonemap_amount:0;
+		Fvector3	_none, _full, _result;
+				_none.set			(1,							0,		1						);
+				_full.set			(ps_r2_tonemap_middlegray,	1.f,	ps_r2_tonemap_low_lum	);
+				_result.lerp		(_none, _full, amount	);
+
+		RCache.set_Element			(s_luminance->E[2]		);
+		RCache.set_Geometry			(g_bloom_filter			);
+		RCache.set_c("MiddleGray",	_result.x,_result.y,_result.z,f_luminance_adapt	);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
