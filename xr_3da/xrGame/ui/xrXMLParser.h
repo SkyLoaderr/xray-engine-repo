@@ -93,6 +93,8 @@ public:
 	XML_NODE* NavigateToNode(const char* path, int node_index = 0);
 	XML_NODE* NavigateToNode(XML_NODE* start_node, 
 							 const char* path, int node_index = 0);
+	XML_NODE* NavigateToNodeWithAttribute(const char *tag_name,
+										  const char *attrib_name, const char *attrib_value);
 
 	void		SetLocalRoot(XML_NODE* pLocalRoot)			{m_pLocalRoot = pLocalRoot;}
 	XML_NODE*	GetLocalRoot()								{return m_pLocalRoot;}

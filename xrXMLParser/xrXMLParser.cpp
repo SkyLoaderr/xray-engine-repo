@@ -101,6 +101,22 @@ XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 	return NavigateToNode(GetLocalRoot()?GetLocalRoot():GetRoot(), path, node_index);
 }
 
+XML_NODE* CUIXml::NavigateToNodeWithAttribute(const char *tag_name, const char *attrib_name, const char *attrib_value)
+{
+
+	XML_NODE	*root		= GetLocalRoot() ? GetLocalRoot() : GetRoot();
+	int			tabsCount	= GetNodesNum(root, tag_name);
+
+	for (int i = 0; i < tabsCount; ++i)
+	{
+		if (std::strcmp(ReadAttrib(root, attrib_name, ""), attrib_value) == 0)
+		{
+			return NavigateToNode(root, tag_name, i);
+		}
+	}
+
+	return NULL;
+}
 
 
 char* CUIXml::Read(const char *path, int index, const char*  default_str_val)
