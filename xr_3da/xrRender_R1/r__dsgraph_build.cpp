@@ -190,10 +190,13 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 	case MT_PARTICLE_GROUP:
 		{
 			// Add all children, doesn't perform any tests
-			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
-			I = pV->children.begin	();
-			E = pV->children.end	();
-			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
+			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				xr_vector<IRender_Visual*>	visuals;
+				i_it->GetVisuals			(visuals);
+				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
+					add_leafs_Dynamic		(*it);
+			}
 		}
 		return;
 	case MT_HIERRARHY:
@@ -239,10 +242,13 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 	case MT_PARTICLE_GROUP:
 		{
 			// Add all children, doesn't perform any tests
-			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
-			I = pV->children.begin	();
-			E = pV->children.end	();
-			for (; I!=E; I++)	add_leafs_Static	(*I);
+			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
+			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				xr_vector<IRender_Visual*>	visuals;
+				i_it->GetVisuals			(visuals);
+				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++)
+					add_leafs_Dynamic		(*it);
+			}
 		}
 		return;
 	case MT_HIERRARHY:
@@ -314,13 +320,17 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 	case MT_PARTICLE_GROUP:
 		{
 			// Add all children, doesn't perform any tests
-			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
-			I = pV->children.begin	();
-			E = pV->children.end	();
-			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Dynamic			(*I,planes);
-			} else {
-				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
+			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				xr_vector<IRender_Visual*>	visuals;
+				i_it->GetVisuals			(visuals);
+				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
+					if (fcvPartial==VIS) {
+						for (; I!=E; I++)	add_Dynamic			(*it,planes);
+					} else {
+						for (; I!=E; I++)	add_leafs_Dynamic	(*it);
+					}
+				}
 			}
 		}
 		break;
@@ -378,13 +388,17 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	case MT_PARTICLE_GROUP:
 		{
 			// Add all children, doesn't perform any tests
-			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
-			I = pV->children.begin	();
-			E = pV->children.end		();
-			if (fcvPartial==VIS) {
-				for (; I!=E; I++)	add_Static			(*I,planes);
-			} else {
-				for (; I!=E; I++)	add_leafs_Static	(*I);
+			PS::CParticleGroup* pG = (PS::CParticleGroup*)pVisual;
+			for (PS::CParticleGroup::SItemVecIt i_it=pG->items.begin(); i_it!=pG->items.end(); i_it++){
+				xr_vector<IRender_Visual*>	visuals;
+				i_it->GetVisuals			(visuals);
+				for (xr_vector<IRender_Visual*>::iterator it=visuals.begin(); it!=visuals.end(); it++){
+					if (fcvPartial==VIS) {
+						for (; I!=E; I++)	add_Static			(*I,planes);
+					} else {
+						for (; I!=E; I++)	add_leafs_Static	(*I);
+					}
+				}
 			}
 		}
 		break;
