@@ -163,8 +163,8 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 		OBJECT_TASK_MAP::const_iterator	J = ai().alife().tasks().cross().find(*I);
 		R_ASSERT2		(ai().alife().tasks().cross().end() != J,"Can't find a specified customer in the Task registry!\nPossibly, there is no traders at all or there is no anomalous zones.");
 		
-		u32						l_dwMinTryCount = u32(-1);
-		_TASK_ID			l_tBestTaskID = _TASK_ID(-1);
+		u32				l_dwMinTryCount = u32(-1);
+		_TASK_ID		l_tBestTaskID = _TASK_ID(-1);
 		TASK_SET::const_iterator	i = (*J).second.begin();
 		TASK_SET::const_iterator	e = (*J).second.end();
 		for ( ; i != e; ++i) {

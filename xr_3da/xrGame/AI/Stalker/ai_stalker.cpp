@@ -42,7 +42,7 @@ void CAI_Stalker::init()
 {
 	shedule.t_min					= 200;
 	shedule.t_max					= 1;
-	m_dwParticularState				= u32(-1);
+	m_demo_mode						= false;
 }
 
 void CAI_Stalker::reinit			()
@@ -57,8 +57,6 @@ void CAI_Stalker::reinit			()
 
 	m_pPhysics_support->in_Init		();
 	
-	m_tTaskState					= ALife::eTaskStateChooseTask;
-
 	m_r_hand						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
 	m_l_finger1						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
@@ -161,7 +159,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_pPhysics_support->in_Load		(section);
 	
 	if (pSettings->line_exist(section,"State"))
-		m_dwParticularState			= pSettings->r_u32(section,"State");
+		m_demo_mode					= pSettings->r_u32(section,"State") != u32(-1);
 }
 
 BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
@@ -187,8 +185,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	if (ai().game_graph().valid_vertex_id(tpHuman->m_tNextGraphID) && accessible(ai().game_graph().vertex(tpHuman->m_tNextGraphID)->level_point()))
 		set_game_dest_vertex		(tpHuman->m_tNextGraphID);
 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if (u32(-1) == m_dwParticularState) {
+	m_current_alife_task			= 0;
+
+	if (!m_demo_mode) {
 		R_ASSERT2					(
 			ai().get_game_graph() && 
 			ai().get_level_graph() && 
@@ -196,11 +195,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 			(ai().level_graph().level_id() != u32(-1)),
 			"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!"
 		);
-//		set_game_vertex				(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
-//		set_game_dest_vertex		(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 	}
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 	setEnabled						(true);
 
@@ -420,7 +415,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		if (GetScriptControl())
 			ProcessScripts				();
 		else
-			if ((-1 == m_dwParticularState))
+			if (!m_demo_mode)
 				Think					();
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();

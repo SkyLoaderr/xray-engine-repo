@@ -12,6 +12,7 @@
 #include "inventory_item.h"
 #include "script_game_object.h"
 #include "inventory.h"
+#include "alife_task.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
@@ -251,7 +252,7 @@ void CStalkerActionReachTaskLocation::finalize	()
 void CStalkerActionReachTaskLocation::execute		()
 {
 	inherited::execute				();
-	m_object->set_game_dest_vertex	(76);
+	m_object->set_game_dest_vertex	(m_object->current_alife_task().m_tGraphID);
 }
 
 //////////////////////////////////////////////////////////////////////////
