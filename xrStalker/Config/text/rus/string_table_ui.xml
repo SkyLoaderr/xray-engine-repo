@@ -17,7 +17,7 @@
     <!-- Надпись на физической двери. Не стирать. Джон. -->
   <string id="doors_sign">
     <text>press 'E' to open the door</text>
-    <text ln="rus">нажмите 'E' и отбегай подальше, вдуг взорвется</text>
+    <text ln="rus">нажмите 'E' для того, чтоб открыть дверь</text>
   </string>
 
 </string_table>
