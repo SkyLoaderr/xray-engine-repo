@@ -22,4 +22,5 @@ protected:
 public:
 						CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name = "");
 	virtual void		initialize			();
+	virtual void		execute				();
 };

@@ -20,6 +20,12 @@ CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *own
 void CObjectActionReload::initialize		()
 {
 	inherited::initialize		();
-	m_object->inventory().Action(kWPN_FIRE,		CMD_STOP);
 	m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
 }
+
+void CObjectActionReload::execute			()
+{
+	inherited::execute();
+	m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
+}
+
