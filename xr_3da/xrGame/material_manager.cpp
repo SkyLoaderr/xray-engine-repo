@@ -50,9 +50,9 @@ void CMaterialManager::reload		(LPCSTR section)
 void CMaterialManager::update		(float time_delta, float volume, float step_time, bool standing)
 {
 	VERIFY					(GAMEMTL_NONE != m_my_material_id);
-	R_ASSERT				(GAMEMTL_NONE != m_last_material_id);
+	VERIFY					(GAMEMTL_NONE != m_last_material_id);
 	SGameMtlPair			*mtl_pair = GMLib.GetMaterialPair(m_my_material_id,m_last_material_id);
-	R_ASSERT3				(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterialByIdx(m_last_material_id)->m_Name);
+	VERIFY3					(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterialByIdx(m_last_material_id)->m_Name);
 	CObject					*object = dynamic_cast<CObject*>(this);
 	VERIFY					(object);
 	Fvector					position = object->Position();
