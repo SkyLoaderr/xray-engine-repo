@@ -13,7 +13,7 @@ local run_min_time = 2000
 local keep_state_min_time = 1500 -- переключившись в состояние (бег, ходьба, спринт), не переключаться в другое N ms
 
 local default_wait_time = 5000
-local default_state_standing = "guard"
+local default_state_standing = "wait"
 local default_state_moving = "patrol"
 --local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
 --local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
@@ -559,7 +559,16 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
 		if suggested_wait_time then
-			self.pt_wait_time = tonumber(suggested_wait_time)
+			if suggested_wait_time == '*' then
+				self.pt_wait_time = nil -- -1
+			else
+				local tm = tonumber(suggested_wait_time)
+				if tm < 1000 or tm > 30000 then
+					utils.abort("object '%s': path_look '%s': flag 't': incorrect time specified (* or number expected)",
+						self.object:name(), self.path_look)
+				end
+				self.pt_wait_time = tm
+			end
 		else
 			self.pt_wait_time = default_wait_time
 		end
