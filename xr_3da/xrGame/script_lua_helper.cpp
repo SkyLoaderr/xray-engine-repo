@@ -454,10 +454,16 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 		strcpy(var.szValue, value );
 		break;
 
+	case LUA_TBOOLEAN:
+		sprintf(value, "%s", lua_toboolean(L, -1) ? "true" : "false");
+		strcpy(var.szValue, value );
+		break;
+
 	case LUA_TSTRING:
 		sprintf(value, "%.63s", lua_tostring(l, -1));
 		strcpy(var.szValue, value );
 		break;
+
 
 	case LUA_TTABLE:
 			var.szValue[0]=0;
@@ -466,6 +472,7 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 				DrawTable(l, name);
 			return;
 		break;
+
 
 /*	case LUA_TUSERDATA:{
 			luabind::detail::object_rep* obj = static_cast<luabind::detail::object_rep*>(lua_touserdata(L, -1));
