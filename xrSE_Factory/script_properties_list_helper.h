@@ -23,14 +23,14 @@ struct CScriptPropertiesListHelper {
 public:
 			void 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val, bool& accepted);
 			void 				FvectorRDOnBeforeEdit(PropValue* sender, Fvector& edit_val);
-			void 				FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
+//			void 				FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
 			void 				floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted);
 			void 				floatRDOnBeforeEdit	(PropValue* sender,  float&	 edit_val);
-			void 				floatRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
+//			void 				floatRDOnDraw		(PropValue* sender,  LPCSTR& draw_val);
 // name edit
 			void 				NameAfterEdit		(PropValue* sender,  LPCSTR& edit_val, bool& accepted);
 			void				NameBeforeEdit		(PropValue* sender,  LPCSTR& edit_val);
-			void 				NameDraw			(PropValue* sender,  LPCSTR& draw_val);
+//			void 				NameDraw			(PropValue* sender,  LPCSTR& draw_val);
 public:
 			CaptionValue*  		CreateCaption	    (PropItemVec* items, LPCSTR key, LPCSTR val);
 			CanvasValue*		CreateCanvas	    (PropItemVec* items, LPCSTR key, LPCSTR val, int height);

@@ -70,12 +70,14 @@ void CScriptPropertiesListHelper::FvectorRDOnBeforeEdit	(PropValue* sender, Fvec
 	PHelper().FvectorRDOnBeforeEdit(sender,edit_val);
 }
 
-void CScriptPropertiesListHelper::FvectorRDOnDraw		(PropValue* sender,  LPCSTR& draw_val)
+/*
+void CScriptPropertiesListHelper::FvectorRDOnDraw		(PropValue* sender)
 {
 	shared_str		temp;
 	PHelper().FvectorRDOnDraw(sender,temp);
 	draw_val	= *temp;
 }
+*/
 
 void CScriptPropertiesListHelper::floatRDOnAfterEdit	(PropValue* sender,  float&	 edit_val, bool& accepted)
 {
@@ -87,12 +89,14 @@ void CScriptPropertiesListHelper::floatRDOnBeforeEdit	(PropValue* sender,  float
 	PHelper().floatRDOnBeforeEdit(sender,edit_val);
 }
 
+/*
 void CScriptPropertiesListHelper::floatRDOnDraw			(PropValue* sender,  LPCSTR& draw_val)
 {
 	shared_str		temp;
 	PHelper().floatRDOnDraw(sender,temp);
 	draw_val	= *temp;
 }
+*/
 
 void CScriptPropertiesListHelper::NameAfterEdit			(PropValue* sender,  LPCSTR& edit_val, bool& accepted)
 {
@@ -108,12 +112,14 @@ void CScriptPropertiesListHelper::NameBeforeEdit		(PropValue* sender,  LPCSTR& e
 	edit_val	= *temp;
 }
 
+/*
 void CScriptPropertiesListHelper::NameDraw				(PropValue* sender,  LPCSTR& draw_val)
 {
 	shared_str		temp;
 	PHelper().NameDraw(sender,temp);
 	draw_val	= *temp;
 }
+*/
 
 CaptionValue*	CScriptPropertiesListHelper::CreateCaption	(PropItemVec* items, LPCSTR key, LPCSTR val)
 {
