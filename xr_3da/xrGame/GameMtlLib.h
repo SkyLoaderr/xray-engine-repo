@@ -27,15 +27,16 @@
 
 #define GAMEMTL_SUBITEM_COUNT			4
 
+#define GAMEMTL_NONE	u32(-1)
+
 #ifdef _EDITOR
  #define SoundSVec4 	AnsiString
  #define PSSVec4 		AnsiString
  #define ShaderSVec4 	AnsiString
 #else
- class CSound;
  class CPS;
 
- DEFINE_SVECTOR(CSound*,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
+ DEFINE_SVECTOR(sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
  DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
  DEFINE_SVECTOR(Shader*,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
 #endif
@@ -85,7 +86,6 @@ DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);
 
 struct SGameMtlPair{
 	friend class CGameMtlLibrary;
-	CGameMtlLibrary*	m_Owner;
 private:
 	int					mtl0;
 	int					mtl1;
@@ -122,16 +122,16 @@ public:
     void __fastcall 	OnFlagChange	(PropValue* sender);
 #endif
 public:
-	SGameMtlPair		(CGameMtlLibrary* owner)
+	SGameMtlPair		()
     {
 		ZeroMemory		(this,sizeof(*this));
     	mtl0			= -1;
     	mtl1			= -1;
         ID				= -1;
         ID_parent		= -1;
-        m_Owner			= owner;
         OwnProps.one	();
 	}
+	~SGameMtlPair		();
     IC int				GetMtl0			(){return mtl0;}
     IC int				GetMtl1			(){return mtl1;}
     IC int				GetID			(){return ID;}
@@ -166,11 +166,17 @@ public:
     }
 	~CGameMtlLibrary	()
 	{
+		Unload			();
+    }
+	IC void				Unload			()
+	{
+		material_count	= 0;
+		material_pairs_rt.clear();
 		for (GameMtlIt m_it=materials.begin(); m_it!=materials.end(); m_it++)
 			_DELETE	(*m_it);
 		for (GameMtlPairIt p_it=material_pairs.begin(); p_it!=material_pairs.end(); p_it++)
 			_DELETE	(*p_it);
-    }
+	}
     // material routine
     IC GameMtlIt 		GetMaterialIt	(LPCSTR name)
     {
@@ -223,7 +229,8 @@ public:
 
 	IC GameMtlPairIt	FirstMaterialPair	(){return material_pairs.begin();}
 	IC GameMtlPairIt	LastMaterialPair	(){return material_pairs.end();}
-    // IO routines
+
+	// IO routines
 	void				Load				(LPCSTR name);
 	void				Save				(LPCSTR name);
 };
