@@ -9,11 +9,13 @@
 #pragma once
 
 #include "problem_solver.h"
+#include "action_base.h"
+#include "property_evaluator.h"
 
 template <
 	typename _object_type,
-	typename _world_operator,
-	typename _condition_evaluator
+	typename _world_operator = CActionBase<_object_type>,
+	typename _condition_evaluator = CPropertyEvaluator<_object_type>
 >
 class CActionPlanner : 
 	public CProblemSolver<

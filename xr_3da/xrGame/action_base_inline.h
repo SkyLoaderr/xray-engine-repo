@@ -27,7 +27,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::init			(LPCSTR action_name)
 {
 	m_object			= 0;
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	m_action_name		= action_name;
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateConstructed);
@@ -37,7 +37,7 @@ void CBaseAction::init			(LPCSTR action_name)
 TEMPLATE_SPECIALIZATION
 void CBaseAction::Load			(LPCSTR section)
 {
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateLoaded);
 #endif
@@ -49,7 +49,7 @@ void CBaseAction::reinit		(_object_type *object, bool clear_all)
 	VERIFY				(object);
 	m_object			= object;
 	m_inertia_time		= 0;
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateReinitialized);
 #endif
@@ -58,7 +58,7 @@ void CBaseAction::reinit		(_object_type *object, bool clear_all)
 TEMPLATE_SPECIALIZATION
 void CBaseAction::reload			(LPCSTR section)
 {
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateReloaded);
 #endif
@@ -67,7 +67,7 @@ void CBaseAction::reload			(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CBaseAction::initialize		()
 {
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateInitialized);
 #endif
@@ -78,7 +78,7 @@ void CBaseAction::initialize		()
 TEMPLATE_SPECIALIZATION
 void CBaseAction::execute		()
 {
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateExecuted);
 #endif
@@ -87,7 +87,7 @@ void CBaseAction::execute		()
 TEMPLATE_SPECIALIZATION
 void CBaseAction::finalize		()
 {
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	if (xr_strlen(m_action_name))
 		debug_log		(eActionStateFinalized);
 #endif
@@ -130,7 +130,7 @@ IC	u32	CBaseAction::priority			() const
 	return				(m_priority);
 }
 
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 TEMPLATE_SPECIALIZATION
 IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 {

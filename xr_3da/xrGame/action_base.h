@@ -38,7 +38,7 @@ protected:
 	LPCSTR					m_action_name;
 
 protected:
-#ifdef LOG_STATE
+#ifdef LOG_ACTION
 	virtual void			debug_log			(const EActionStates state_state) const;
 #endif
 

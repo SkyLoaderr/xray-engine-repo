@@ -59,13 +59,23 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 		OPERATOR_VECTOR::iterator	I = m_operators.begin();
 		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
-			(*I).get_operator()->reinit(object,clear_all);
+			if (!clear_all)
+				(*I).get_operator()->reinit(object,clear_all);
+			else
+				xr_delete	((*I).m_operator);
+		if (clear_all)
+			m_operators.clear	();
 	}
 	{
 		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
 		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
-			(*I).second->reinit		(object);
+			if (!clear_all)
+				(*I).second->reinit	(object);
+			else
+				xr_delete	((*I).second);
+		if (clear_all)
+			m_evaluators.clear	();
 	}
 	m_actuality				= true;
 	m_initialized			= false;
@@ -92,20 +102,20 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::update				(u32 time_delta)
 {
 	solve						();
-
-	VERIFY						(!solution().empty());
-
-	if (initialized() && (current_action_id() != solution().front())) {
-		current_action().finalize();
-		set_current_action		(solution().front());
-	}
-
-	current_action().initialize	();
-	current_action().execute	();
-
-	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
-	if (action_planner)
-		action_planner->update	(time_delta);
+//
+//	VERIFY						(!solution().empty());
+//
+//	if (initialized() && (current_action_id() != solution().front())) {
+//		current_action().finalize();
+//		set_current_action		(solution().front());
+//	}
+//
+//	current_action().initialize	();
+//	current_action().execute	();
+//
+//	CPlanner					*action_planner = dynamic_cast<CPlanner*>(&current_action());
+//	if (action_planner)
+//		action_planner->update	(time_delta);
 
 	m_initialized				= true;
 }

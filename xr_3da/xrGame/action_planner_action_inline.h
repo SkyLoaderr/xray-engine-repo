@@ -9,7 +9,7 @@
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template <typename _object_type>
-#define CPlanner			CActionPlannerAction<_object_type>
+#define CPlanner				CActionPlannerAction<_object_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::CActionPlannerAction	()

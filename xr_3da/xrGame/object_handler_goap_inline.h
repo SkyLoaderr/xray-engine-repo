@@ -24,17 +24,17 @@ IC	bool CObjectHandlerGOAP::object_action	(u32 action_id, CObject *object)
 	return				((action_id & 0xffff) == object->ID());
 }
 
-IC	u32	CObjectHandlerGOAP::current_object_action_id	() const
+IC	u32	CObjectHandlerGOAP::current_action_object_id	() const
 {
-	return				(0);//current_action_id() & 0xffff);
+	return				(current_action_id() & 0xffff);
 }
 
-IC	u32	CObjectHandlerGOAP::current_object_state_id	() const
+IC	u32	CObjectHandlerGOAP::current_action_state_id	() const
 {
-	return				(0);//(current_action_id() >> 16);
+	return				(current_action_id() >> 16);
 }
 
 IC	bool CObjectHandlerGOAP::goal_reached			() const
 {
-	return				(false);//solution().size() < 2);
+	return				(solution().size() < 2);
 }

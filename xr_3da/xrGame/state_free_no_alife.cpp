@@ -55,7 +55,9 @@ void CStateFreeNoAlife::initialize		()
 void CStateFreeNoAlife::execute			()
 {
 	m_object->play								(eStalkerSoundHumming,60000,10000);
-	m_object->CStalkerMovementManager::update	(
+	CStalkerMovementManager		*cast = dynamic_cast<CStalkerMovementManager*>(m_object);
+	VERIFY						(cast);
+	cast->update	(
 		0,
 		0,
 		0,

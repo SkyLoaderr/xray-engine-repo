@@ -37,16 +37,16 @@ extern FILE	*ST_VF;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
-#ifdef OLD_OBJECT_HANDLER
-	public CObjectHandler,
-#else
-	public CObjectHandlerGOAP,
-#endif
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 	public CStateManagerStalker,
-	public CStateInternal<CAI_Stalker>
+	public CStateInternal<CAI_Stalker>,
+#ifdef OLD_OBJECT_HANDLER
+	public CObjectHandler
+#else
+	public CObjectHandlerGOAP
+#endif
 {
 private:
 	typedef CCustomMonster inherited;
