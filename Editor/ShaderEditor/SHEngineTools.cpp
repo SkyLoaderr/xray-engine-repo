@@ -132,7 +132,9 @@ void CSHEngineTools::UpdateDeviceShaders()
     // save to temp file
     SaveForRender		();
     // reset device shaders from temp file
-    Device.Reset		(SHADER_FILENAME_TEMP,TRUE);
+	AnsiString sh		= SHADER_FILENAME_TEMP;
+    FS.m_Temp.Update	(sh);
+    Device.Reset		(sh.c_str(),TRUE);
 	// restore current shader
 	SetCurrentBlender	(name,false);
 	// enable props vis update
@@ -218,7 +220,7 @@ void CSHEngineTools::Load(){
                 LPSTR blender_name = strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
                 R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
-                fraLeftBar->AddBlender(desc.cName);
+                fraLeftBar->AddBlender(desc.cName,true);
                 chunk->Close	();
                 chunk_id++;
             }
@@ -428,17 +430,14 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
 	pair<BlenderPairIt, bool> I = m_Blenders.insert(make_pair(strdup(name),B));
 	R_ASSERT2 (I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
-	fraLeftBar->AddBlender(name);
+	fraLeftBar->AddBlender(name,false);
 
     return B;
 }
 
 CBlender* CSHEngineTools::CloneBlender(LPCSTR name){
-	CBlender* parent 	= FindBlender(name); R_ASSERT(parent);
-	CBlender* B 		= AppendBlender(parent->getDescription().CLS,0,parent);
-    ApplyChanges		(true);
-    SetCurrentBlender	(B);
-    return B;
+	CBlender* B = FindBlender(name); R_ASSERT(B);
+	return AppendBlender(B->getDescription().CLS,0,B);
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
@@ -562,7 +561,6 @@ void CSHEngineTools::SetCurrentBlender(CBlender* B, bool bApply){
         UpdateStreamFromObject();
         // apply this shader to non custom object
         Tools.UpdateObjectShader();
-		fraLeftBar->SetCurrent(m_CurrentBlender?m_CurrentBlender->getName():0);
     }
 }
 

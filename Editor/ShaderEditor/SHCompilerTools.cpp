@@ -104,7 +104,7 @@ void CSHCompilerTools::Load(){
 
         Shader_xrLCVec lst = m_Library.Library();
         for (Shader_xrLCIt it=lst.begin(); it!=lst.end(); it++)
-			fraLeftBar->AddCShader(it->Name);
+			fraLeftBar->AddCShader(it->Name,true);
 
         ResetCurrentShader		();
     }else{
@@ -161,9 +161,8 @@ Shader_xrLC* CSHCompilerTools::AppendShader(LPCSTR folder_name, Shader_xrLC* par
     if (folder_name) strcpy(new_name,folder_name);
     GenerateShaderName(new_name,parent?old_name:0);
     strcpy(S->Name,new_name);
-	fraLeftBar->AddCShader(S->Name);
-	fraLeftBar->SetCurrent(S->Name);
-    return S;
+	fraLeftBar->AddCShader(S->Name,false);
+    return S;              
 }
 
 Shader_xrLC* CSHCompilerTools::CloneShader(LPCSTR name){
