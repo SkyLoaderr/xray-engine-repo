@@ -1146,7 +1146,7 @@ void CCustomZone::BornArtefact()
 	m_SpawnedArtefacts.pop_back			();
 
 	if (Local())	{
-		if (pArtefact->H_Parent()->ID() == this->ID())	//. todo: need to remove on actual message parsing
+		if (pArtefact->H_Parent() && (pArtefact->H_Parent()->ID() == this->ID())  )	//. todo: need to remove on actual message parsing
 		{
 			NET_Packet						P;
 			u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
