@@ -2,6 +2,8 @@
 
 void CRenderTarget::accum_point_shadow	(light* L)
 {
+	RCache.set_Shader			(s_accum_point);
+
 	Fvector2					p0,p1;
 	float	_w					= float(Device.dwWidth);
 	float	_h					= float(Device.dwHeight);
@@ -13,7 +15,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fvector		L_pos;
 	float		L_R				= 10; //1/L->sphere.R;
 	Fcolor		L_clr			= L->color;
-	float		np				= .2f;
+	float		np				= 1.f;
 	float		scale			= 1.f/50.f;
 	Device.mView.transform_tiny	(L_pos,L->sphere.P);
 	RCache.set_c				("light_position",	L_pos.x,L_pos.y,L_pos.z,L_R);
@@ -33,9 +35,15 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	}
 
 	// Xforms
+	Fmatrix mW;
+	mW.scale					(L_R,L_R,L_R);
+	mW.translate_over			(L->sphere.P);
+	RCache.set_xform_world		(mW);
+	RCache.set_xform_view		(Device.mView);
+	RCache.set_xform_project	(Device.mProject);
 
 	// Render if stencil >= 0x1
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 	RCache.set_Geometry			(g_accum_point);
-	RCache.set_Shader			(s_accum_point);
 	RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 }
