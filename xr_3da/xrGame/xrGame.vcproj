@@ -2046,12 +2046,6 @@
 					<Filter
 						Name="Items &amp; Weapons"
 						Filter="">
-						<File
-							RelativePath="ItemHealth.cpp">
-						</File>
-						<File
-							RelativePath="ItemHealth.h">
-						</File>
 						<Filter
 							Name="Weapons"
 							Filter="">
@@ -2768,6 +2762,12 @@
 							</File>
 							<File
 								RelativePath=".\bread.h">
+							</File>
+							<File
+								RelativePath="ItemHealth.cpp">
+							</File>
+							<File
+								RelativePath="ItemHealth.h">
 							</File>
 							<File
 								RelativePath=".\medkit.cpp">
