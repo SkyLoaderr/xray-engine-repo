@@ -121,7 +121,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
 
-	self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
+	self.path_cyclic, self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
 	self.team = team
 	if self.team then
 		local s = sync[self.team]
@@ -193,26 +193,41 @@ function move_mgr:get_lowest_highest_sync_val()
 	local v
 	local lowest = 100000000
 	local highest = -1
+	local highest_idx = nil
 	for i = 0, num_points - 1 do
 		v = self.path_walk_info[i]["n"]
 		if v then
 			v = tonumber(v)
 			if v > highest then
 				highest = v
+				highest_idx = i
 			end
 			if v < lowest then
 				lowest = v
 			end
 		end
 	end
-	return lowest, highest
+
+	local path_cyclic = false
+	if highest_idx then
+		v = self.path_walk_info[highest_idx]["loop"]
+		if v == "true" then
+			path_cyclic = true
+		else
+			path_cyclic = false
+		end
+	end
+	
+	return path_cyclic, lowest, highest
 end
 
 -- Сравнивает порядок двух вейпоинтов, считая, что последний вейпоинт меньше первого (для зацикленных маршрутов с
 -- синхронизацией)
 function move_mgr:wayp_lesser(arg1, arg2)
-	local ptr = patrol(self.path_walk)
-	local num_points = ptr:count()
+	if not self.path_cyclic then
+		return arg1 < arg2
+	end
+
 	if arg1 == self.highest_sync_val and arg2 == self.lowest_sync_val then
 		return true
 	elseif arg1 == self.lowest_sync_val and arg2 == self.highest_sync_val then
