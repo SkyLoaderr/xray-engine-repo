@@ -34,9 +34,9 @@
 	</game_task>
 
 	<game_task id="esc_trader_need_electra_artefact">
-		<title>Найти и принести артефакт аномалии "Электра".</title>
+		<title>Найти и принести артефакт из грави-аномалии.</title>
 		<objective>
-			<text>Торговцу нужен любой артефакт из аномалии "Электра".</text>
+			<text>Торговцу нужен любой артефакт из грави-аномалии.</text>
 			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>

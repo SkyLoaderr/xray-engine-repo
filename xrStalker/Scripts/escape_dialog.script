@@ -51,7 +51,7 @@ function give_blockpost_case(first_speaker, second_speaker)
 end
 
 --' Escape trader artefact
-function have_artefact_nightstar(first_speaker, second_speaker)
+function have_artefact_from_fleshes(first_speaker, second_speaker)
 	local actor = level.actor()
 	if actor ~= nil and
 	   (actor:object("af_vyvert") ~= nil or
@@ -62,7 +62,18 @@ function have_artefact_nightstar(first_speaker, second_speaker)
 	end
   	return false
 end
-function give_artefact_nightstar(first_speaker, second_speaker)
+function give_artefact_from_fleshes(first_speaker, second_speaker)
+	local artefact = first_speaker:object("af_vyvert")
+	if artefact == nil then
+		artefact = first_speaker:object("af_gravi")
+	end
+	if artefact == nil then
+		artefact = first_speaker:object("af_gold_fish")
+	end
+	first_speaker:transfer_item (artefact, second_speaker)
+	second_speaker:transfer_money (1500, first_speaker)
+	first_speaker:set_task_state(task.completed, "esc_trader_need_electra_artefact", 2)		
+	first_speaker:set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
 function trader_need_artefact(first_speaker, second_speaker)
 	local actor = level.actor()

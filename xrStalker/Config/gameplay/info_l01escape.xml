@@ -102,14 +102,12 @@
 			<icon name="Аномалия" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
 			<text>Скопление аномалий</text>
 		</location>	
-		
 		<task>esc_trader_need_electra_artefact</task>
 	</info_portion>
-
 	<info_portion id="escape_artefact_gain">
 		<disable>escape_artefact_start</disable>
+		<dialog>escape_trader_done_artefact</dialog>
 	</info_portion>
-
 	<info_portion id="escape_artefact_done">
 		<disable>escape_artefact_start</disable>
 	</info_portion>

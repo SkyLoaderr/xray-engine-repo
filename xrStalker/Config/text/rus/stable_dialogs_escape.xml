@@ -366,4 +366,13 @@
     <string id="tutorial_wounded_11">
         <text>Спасибо, брат! Обратись к Волку в лагере около торговца, ты можешь быть ему полезен.</text>
     </string>        
+    <string id="escape_trader_done_artefact_0">
+        <text>Вот твой артефакт!</text>
+    </string>        
+    <string id="escape_trader_done_artefact_2">
+        <text>Ну, спасибо за сотрудничество.</text>
+    </string>        
+    
+
+    
 </string_table>
