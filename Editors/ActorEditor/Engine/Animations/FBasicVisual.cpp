@@ -43,6 +43,7 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	{
 		R_ASSERT(hdr.format_version==xrOGF_FormatVersion);
 		Type	= hdr.type;
+		hShader	= ::Render->getShader(hdr.shader_id);
 	} else {
 		Debug.fatal	("Invalid visual");
 	}
