@@ -85,7 +85,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// render friend
 	BOOL	bRender = FALSE;
-	switch (GAME)
+	switch (Game())
 	{
 	case GAME_SINGLE:		bRender = TRUE; break;
 	case GAME_DEATHMATCH:	break;

@@ -28,14 +28,14 @@ void CUIFragList::Render()
 
 void CUIFragList::OnFrame()
 {
-	map<DWORD,CPlayers::Item>::iterator I=Level().Players.items.begin();
-	map<DWORD,CPlayers::Item>::iterator E=Level().Players.items.end();
+	map<DWORD,game_cl_GameState::Player>::iterator I=Level().Game.players.begin();
+	map<DWORD,game_cl_GameState::Player>::iterator E=Level().Game.players.end();
 
 	CGameFont* H		= Level().HUD()->pHUDFont;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	H->Color			(0xb0a0a0a0);
 	int k=1;
 	for (;I!=E;I++,k++)
-		H->OutNext		("%3d: %-20s %-5d",k,I->second.name,I->second.score);
+		H->OutNext		("%3d: %-20s %-5d",k,I->second.name,I->second.kills);
 }
 //--------------------------------------------------------------------
