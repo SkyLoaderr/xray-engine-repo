@@ -23,26 +23,6 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-	<specific_character id="stalker_novice_1">
-		<name>11111</name>
-		<icon x="20" y="2"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>22222</bio>
-
-		<team>Stalker_novice</team>
-		
-		<class>Stalker_novice</class>
-		<community>stalker</community>
-		
-		<rank>30</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\novice\green_stalker_2</visual>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
-	</specific_character>
 <!---------------------------STALKER GENERAL---------------------->
 	<specific_character id="stalker_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
