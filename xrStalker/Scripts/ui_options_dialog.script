@@ -7,7 +7,7 @@
 
 
 function main()
-	local dlg = ui_main_menu.main_menu()
+	local dlg = ui_options_dialog.options_dialog()
 	level.start_stop_menu(dlg,true)
 		while true do
 		wait(3000)
@@ -15,24 +15,24 @@ function main()
 end
 
 
-class "main_menu" (CUIScriptWnd)
+class "options_dialog" (CUIScriptWnd)
 
-function main_menu:__init() super()
+function options_dialog:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
    
    self:InitControls()
    self:InitCallBacks()
 end
 
-function main_menu:__finalize()
+function options_dialog:__finalize()
 
 end
 
-function main_menu:SetClGame(game_cl)
+function options_dialog:SetClGame(game_cl)
    self.m_game_cl = game_cl
 end
 
-function main_menu:InitControls()
+function options_dialog:InitControls()
 
 	----- DATA ----
 	local indent          = 35
@@ -51,7 +51,7 @@ function main_menu:InitControls()
 							 height = 0}
 	     --->> BUTTONS
 	local btn_rect = {x = 0, y = 0, width = 135, height = 40}
-		  btn_rect.x = (main_rect.width - btn_rect.width)/2
+		  btn_rect.x = indent --(main_rect.width - btn_rect.width)/2
 	local btn_new_rect    = {x = btn_rect.x,
 							 y = caption_rect.y + caption_rect.height + indent,
 							 width = btn_rect.width,
@@ -106,7 +106,7 @@ function main_menu:InitControls()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")
 	txt_caption:SetFont(GetFontLetterica25())
-	txt_caption:SetText("MAIN_MENU")
+	txt_caption:SetText("options_dialog")
 
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
@@ -199,7 +199,7 @@ function main_menu:InitControls()
 	message_box:AutoCenter()
 end
 
-function main_menu:InitCallBacks()
+function options_dialog:InitCallBacks()
 	self:AddCallback("btn_new_game",  ui_events.BUTTON_CLICKED,             self,"OnButton_new_game_clicked")
 	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
@@ -208,33 +208,33 @@ function main_menu:InitCallBacks()
 	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
 end
 
-function main_menu:OnButton_new_game_clicked()
+function options_dialog:OnButton_new_game_clicked()
 	local dlg = ui_new_game_dialog.new_game_dlg()
 	level.start_stop_menu(dlg, true)
 end
 
-function main_menu:OnMsgOk()
+function options_dialog:OnMsgOk()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function main_menu:OnMsgCancel()
+function options_dialog:OnMsgCancel()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function main_menu:OnMsgYes()
+function options_dialog:OnMsgYes()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function main_menu:OnMsgNo()
+function options_dialog:OnMsgNo()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
 
-function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
+function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
      
    DIK_RETURN = 28
