@@ -32,7 +32,7 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	
 	pItem = xr_new<CUIPdaMsgListItem>(-1);	
 
-	UILogList.AddItem(pItem, -1); 
+	UILogList.AddItem(pItem, 0); 
 	CUIListItem	*item = UILogList.GetItem(UILogList.GetSize() - 1);
 	VERIFY(item);
 
@@ -58,7 +58,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	pItem = xr_new<CUIPdaKillMessage>(-1);
 
 	pItem->SetFont(GetFont());
-	UILogList.AddItem(pItem, -1); 
+	UILogList.AddItem(pItem, 0); 
 	
 	pItem->Init(msg);	
 	pItem->SetData(animation);
@@ -84,6 +84,7 @@ void CUIGameLog::Init()
 	// Chat log
 	AttachChild(&UILogList);
 	xml_init.InitListWnd(uiXml, "game_log_list", 0, &UILogList);
+	UILogList.SetVertFlip(true);
 	UILogList.EnableScrollBar(false);
 }
 
