@@ -412,10 +412,12 @@ void CAI_Stalker::UpdateCL()
 				Msg						("! Expression \"%s\"",message.c_str());
 				throw;
 			}
+#ifdef DEBUG
 			catch (luabind::cast_failed &message) {
 				Msg						("! Expression \"%s\" from luabind::object to %s",message.what(),message.info()->name());
 				throw;
 			}
+#endif
 			catch (std::exception &message) {
 				Msg						("! Expression \"%s\"",message.what());
 				throw;

@@ -13,7 +13,7 @@ extern float		r_ssaHZBvsTEX;
 extern float		g_fLOD, g_fFarSq;
 extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 
-IC float calcLOD	(float ssa/*fDistSq*/, float R)
+ICF float calcLOD	(float ssa/*fDistSq*/, float R)
 {
 	return			_sqrt(clampr((g_fLOD*ssa - r_ssaGLOD_end)/(r_ssaGLOD_start-r_ssaGLOD_end),0.f,1.f));
 }
