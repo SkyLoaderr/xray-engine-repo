@@ -57,7 +57,8 @@ int			ps_r2_GI_depth				= 1;				// 1..5
 int			ps_r2_GI_photons			= 16;				// 8..64
 float		ps_r2_GI_clip				= EPS_L;			// EPS
 float		ps_r2_GI_refl				= .9f;				// .9f
-float		ps_r2_depthscale			= 1.0f;				// 1.00f
+float		ps_r2_ls_depth_scale		= 1.0f;				// 1.00f
+float		ps_r2_ls_depth_bias			= -0.0001f;			// 1.00f
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -138,7 +139,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Integer,	"r2_gi_photons",		&ps_r2_GI_photons,			8,		256		);
 	CMD4(CCC_Float,		"r2_gi_refl",			&ps_r2_GI_refl,				EPS_L,	0.99f	);
 
-	CMD4(CCC_Float,		"r2_ls_depthscale",		&ps_r2_depthscale,			0.5,	1.5		);
+	CMD4(CCC_Float,		"r2_ls_depth_scale",	&ps_r2_ls_depth_scale,		0.5,	1.5		);
+	CMD4(CCC_Float,		"r2_ls_depth_bias",		&ps_r2_ls_depth_bias,		-0.5,	+0.5	);
 
 	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallaxh,		.0f,	.5f		);
