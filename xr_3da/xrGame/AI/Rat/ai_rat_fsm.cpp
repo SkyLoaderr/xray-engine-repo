@@ -71,12 +71,14 @@ void CAI_Rat::FreeHunting()
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size(),aiSoldierPatrolRoute)
 
-	if ((r_torso_target.yaw*r_torso_current.yaw >= 0) || (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI)) {
+	/**/
+	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI) {
 		CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA,aiRatTurn)
 	}
 	else {
 		CHECK_IF_SWITCH_TO_NEW_STATE(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA,aiRatTurn)
 	}
+	/**/
 
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
@@ -277,7 +279,8 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
-	CHECK_IF_GO_TO_PREV_STATE((!m_bStateChanged) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnLeft) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnRight))
+	//CHECK_IF_GO_TO_PREV_STATE((!m_bStateChanged) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnLeft) && (m_tpCurrentGlobalAnimation != tRatAnimations.tNormal.tGlobal.tpTurnRight))
+	CHECK_IF_GO_TO_PREV_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) < TORSO_ANGLE_DELTA)
 	
 	INIT_SQUAD_AND_LEADER
 	
@@ -285,6 +288,8 @@ void CAI_Rat::Turn()
 
 	vfSetFire(false,Group);
 
+	float fTurnAngle = min(fabsf(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw));
+	r_torso_speed = 3*fTurnAngle;
 	//AI_Path.TravelPath.clear();
 
 	vfSetMovementType(BODY_STATE_STAND,0);

@@ -195,6 +195,7 @@ class CAI_Rat : public CCustomMonster
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfLoadAnimations();
+		void vfAssignBones(CInifile *ini, const char *section);
 		bool bfCheckPath(AI::Path &Path);
 		//void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetDirectionLook();

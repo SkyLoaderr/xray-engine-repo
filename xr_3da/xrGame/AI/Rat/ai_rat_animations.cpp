@@ -11,6 +11,36 @@
 
 #define TORSO_ANGLE_DELTA				(PI/30.f)
 
+// bones
+/**
+void CAI_Rat::vfAssignBones(CInifile *ini, const char *section)
+{
+	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	
+	int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
+}
+
+void __stdcall CAI_Rat::HeadSpinCallback(CBoneInstance* B)
+{
+	CAI_Rat*		A = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
+	
+	Fmatrix				spin;
+	spin.setXYZ			(A->r_current.yaw - A->r_torso_current.yaw, A->r_current.pitch, 0);
+	B->mTransform.mulB_43(spin);
+}
+
+void __stdcall CAI_Rat::SpineSpinCallback(CBoneInstance* B)
+{
+	CAI_Rat*		A = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
+	
+	Fmatrix				spin;
+	spin.setXYZ			(A->r_spine_current.yaw - A->r_torso_current.yaw, A->r_spine_current.pitch, 0);
+	B->mTransform.mulB_43(spin);
+}
+/**/
+
 // sounds
 void CAI_Rat::vfLoadSounds()
 {
@@ -82,7 +112,8 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[0];
 		}
 		else
-			if ((r_torso_target.yaw*r_torso_current.yaw >= 0) || (fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI))
+			/**/
+			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 						tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpTurnRight;
@@ -110,6 +141,15 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			/**
+			if (speed < 0.2f)
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+			else
+				if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
+					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
+				else
+					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

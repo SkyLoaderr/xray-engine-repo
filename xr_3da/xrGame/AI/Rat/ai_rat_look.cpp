@@ -73,14 +73,16 @@ void CAI_Rat::SetDirectionLook()
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.square_magnitude() > EPS_L) {
+		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-			ADJUST_BONE_ANGLES
-			//NET_Last.o_model = r_torso_target.yaw;
+			//ADJUST_BONE_ANGLES
+			//r_spine_target.yaw = r_torso_target.yaw;
 			//r_spine_target.yaw = r_target.yaw = 0;
 			//q_look.o_look_speed=PI_DIV_4;
 		}
+		else
+			r_torso_target.pitch = 0;
 	}
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;

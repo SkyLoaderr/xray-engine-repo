@@ -14,11 +14,11 @@
 #include "..\\Entity.h"
 		   
 	// Fuzzy State Machine
-	#define WRITE_LOG
+	//#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
-			Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
+			Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_target.yaw,r_spine_current.yaw,r_spine_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
 			vfUpdateDynamicObjects();\
 			bStopThinking = true;\
 		}
@@ -107,10 +107,10 @@
 		R_ASSERT (Leader);
 	
 	#define ADJUST_ANGLE(A) \
-		if (A >= PI - EPS_L)\
+		if (A >= PI_MUL_2 - EPS_L)\
 			A -= PI_MUL_2;\
 		else\
-			if (A <= -PI + EPS_L)\
+			if (A <= -EPS_L)\
 				A += PI_MUL_2;
 			
 	#define ADJUST_BONE(A) \
