@@ -3,8 +3,6 @@ function main()
     stalker				= get_level_object ("m_stalker_e0000")
     f1					= get_level_object ("grenade_f0000")
     
-    f1:explode			(device():time_global() + 10000)
-    
     stalker:script		(true,stalker_test:script_name());
     
     wait				(1000)
@@ -34,6 +32,8 @@ function main()
 	while stalker:action() do
 		wait			()
     end
+    
+    f1:explode			(device():time_global() + 10000)
     
 	if (stalker:get_script()) then
 		printf			("stalker is under script control")
