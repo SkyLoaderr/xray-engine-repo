@@ -48,7 +48,6 @@ protected:
 	CKinematics*			Parent;			// setted up by parent
 	ref_smem<vertBoned1W>	Vertices1W;		// shared
 	ref_smem<vertBoned2W>	Vertices2W;		// shared
-	ref_str					sbones_array;
 
 	// soft-skinning only
 	u32						cache_DiscardID;
