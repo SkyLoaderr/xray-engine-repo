@@ -342,7 +342,7 @@ void	CRenderTarget::OnDeviceCreate	()
 								}	break;
 						case 2:	{ // looks like Phong
 							fd	= ld;					// 1.0
-							fs	= powf(ls*1.5f,128.f);
+							fs	= powf(ls*1.01f,128.f	);
 								}	break;
 						case 3:	{ // looks like Metal
 							float	s0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
