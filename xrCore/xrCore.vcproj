@@ -540,7 +540,7 @@
 				RelativePath="lzhuf.h">
 			</File>
 			<File
-				RelativePath=".\r2_compressor.cpp">
+				RelativePath=".\rt_compressor.cpp">
 			</File>
 			<File
 				RelativePath=".\rt_compressor.h">
