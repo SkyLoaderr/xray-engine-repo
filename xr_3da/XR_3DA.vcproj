@@ -139,7 +139,8 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"
-				CompileAs="2"/>
+				CompileAs="2"
+				ShowIncludes="TRUE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
