@@ -101,18 +101,28 @@ void CAI_Space::Load(LPCSTR name)
 //	Sleep				(1);
 //	u64 t1x = CPU::GetCycleCount();
 //	AI::Path	Path;
-//	for (int i=0; i<(int)6; i++)
-//		for (int j = i + 1; j<(int)m_header.count; j++)
-//			m_tpAStar->ffFindMinimalPath(i,j,Path);
-////	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++)
-////		for (int j=0; j<(int)m_tGraphHeader.dwVertexCount; j++)
-////			if (j != i)
-////				m_tpAStar->ffFindMinimalPath(i,j);
+//	for (int i=1; i<(int)700; i++)
+//		for (int j = 1; j<(int)m_header.count; j++)
+//			if ((i != j) && (ffGetDistanceBetweenNodeCenters(i,j) <= 40.f))
+////			if (i != j)
+//				m_tpAStar->ffFindMinimalPath(i,j,Path);
+//	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++)
+//		for (int j=0; j<(int)m_tGraphHeader.dwVertexCount; j++)
+//			if (j != i)
+//				m_tpAStar->ffFindMinimalPath(i,j);
+//	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
+//		AI::SGraphEdge *I = (AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset);
+//		AI::SGraphEdge *E = I + m_tpaGraph[i].dwNeighbourCount;
+//		u32 j = m_tpaGraph[i].dwNodeID;
+//		for ( ; I != E; I++)
+//			m_tpAStar->ffFindMinimalPath(j,m_tpaGraph[I->dwVertexNumber].dwNodeID,Path);
+//	}
 //	u64 t2x = CPU::GetCycleCount();
 //	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 //	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 //	t2x -= t1x;
 //	Msg("A star time %11I64u",t2x);
+//	Msg("%d %d %d",m_tpAStar->m_tpMapPath->m_dwExtractMinimum,m_tpAStar->m_tpMapPath->m_dwDecreaseValue,m_tpAStar->m_tpMapPath->m_dwInsert);
 //	AI::Path	Path;
 //	Msg("* %7.2f",m_tpAStar->ffFindMinimalPath(1,m_header.count - 1,Path));
 //	for (int i=0; i<(int)Path.Nodes.size(); i++)

@@ -33,7 +33,7 @@ public:
 	
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		m_iHealth					= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
+		m_iHealth					= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "health");
 	};
 };
 
@@ -233,8 +233,8 @@ public:
 		inherited::Init		(tSpawnID,tpSpawnPoints);
 		m_tNextGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
 		m_tPrevGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_fMinSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MinSpeed");
-		m_fMaxSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MaxSpeed");
+		m_fMinSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "minSpeed");
+		m_fMaxSpeed			= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "maxSpeed");
 		m_fCurSpeed			= 0.0f;
 		m_fDistanceFromPoint= 0.0f;
 		m_fDistanceToPoint	= 0.0f;
@@ -380,7 +380,7 @@ public:
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear			();
 		m_tpTaskIDs.clear			();
-		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "MaxItemMass");
+		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 	};
 };
 
