@@ -88,7 +88,7 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 		xform.transform_tiny	(P[1],T->v[1]->P);
 		xform.transform_tiny	(P[2],T->v[2]->P);
 
-		CL.add_face				( P[0], P[1], P[2], sector, T->dwMaterialGame );
+		CL.add_face				( P[0], P[1], P[2], T->dwMaterialGame, sector);
 	}
 
 	xr_delete		(cfFaces);
