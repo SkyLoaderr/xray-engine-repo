@@ -12,7 +12,7 @@ function FSM:__init(npc_obj)
 	self.npc = npc_obj
 	-- матрица, задающая граф переходов состояний
 	-- реализуется как двумерная таблица
-	transition_matrix = {}
+	transition_matrix = {[0] = {[0] = nil}}
 	-- номер текущего состояния
 	self.current_state = 0
 
@@ -26,9 +26,9 @@ function FSM:add_transition(from_state_num, to_state_num, cond_func)
 
 	printf("in add transition %d, %d", from_state_num, to_state_num)
 
-	local transition_vector
+	local transition_vector = self.transition_matrix[from_state_num]
 	
-	if self.transition_matrix[from_state_num] == nil then
+	if transition_vector == nil then
 		transition_vector = {[to_state_num] = cond_func}
 	else
 		transition_vector[to_state_num] = cond_func
