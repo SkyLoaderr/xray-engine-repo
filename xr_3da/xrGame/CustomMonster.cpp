@@ -24,6 +24,7 @@
 #include "enemy_manager.h"
 #include "item_manager.h"
 #include "greeting_manager.h"
+#include "danger_manager.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
 #include "game_graph.h"
@@ -150,8 +151,8 @@ void CCustomMonster::Load		(LPCSTR section)
 	fArmor					= 0;
 
 	// Sheduler
-	shedule.t_min			= 50;
-	shedule.t_max			= 500; // 30 * NET_Latency / 4;
+	shedule.t_min			= 25;
+	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
 
 	// Msg				("! cmonster size: %d",sizeof(*this));
 }
@@ -905,29 +906,44 @@ void CCustomMonster::feel_sound_new	(CObject* who, int type, CSoundUserDataPtr u
 	memory().sound().feel_sound_new(who,type,user_data,position,power);
 }
 
-bool CCustomMonster::useful			(const CGameObject *object) const
+bool CCustomMonster::useful			(const CItemManager *manager, const CGameObject *object) const
 {
 	return	(memory().item().useful(object));
 }
 
-float CCustomMonster::evaluate		(const CGameObject *object) const
+float CCustomMonster::evaluate		(const CItemManager *manager, const CGameObject *object) const
 {
 	return	(memory().item().evaluate(object));
 }
 
-bool CCustomMonster::useful			(const CEntityAlive *object) const
+bool CCustomMonster::useful			(const CEnemyManager *manager, const CEntityAlive *object) const
 {
 	return	(memory().enemy().useful(object));
 }
 
-float CCustomMonster::evaluate		(const CEntityAlive *object) const
+float CCustomMonster::evaluate		(const CEnemyManager *manager, const CEntityAlive *object) const
 {
 	return	(memory().enemy().evaluate(object));
 }
 
-bool CCustomMonster::useful			(const CAI_Stalker *object) const
+bool CCustomMonster::useful			(const CGreetingManager *manager, const CAI_Stalker *object) const
 {
 	return	(memory().greeting().useful(object));
+}
+
+float CCustomMonster::evaluate		(const CGreetingManager *manager, const CAI_Stalker *object) const
+{
+	return	(memory().greeting().evaluate(object));
+}
+
+bool CCustomMonster::useful			(const CDangerManager *manager, const CDangerObject &object) const
+{
+	return	(memory().danger().useful(object));
+}
+
+float CCustomMonster::evaluate		(const CDangerManager *manager, const CDangerObject &object) const
+{
+	return	(memory().danger().evaluate(object));
 }
 
 CMovementManager *CCustomMonster::create_movement_manager	()

@@ -42,6 +42,12 @@ void CSightManager::reinit			()
 	m_turning_in_place			= false;
 }
 
+void CSightManager::reload			(LPCSTR section)
+{
+	m_max_left_angle			= deg2rad(READ_IF_EXISTS(pSettings,r_float,section,"max_left_torso_angle",90.f));
+	m_max_right_angle			= deg2rad(READ_IF_EXISTS(pSettings,r_float,section,"max_right_torso_angle",60.f));
+}
+
 void CSightManager::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch, const CGameObject *object)
 {
 	Fvector			tTemp;
@@ -250,7 +256,7 @@ void CSightManager::update			()
 	if (enabled()) {
 		if (fis_zero(object().movement().speed())) {
 			if (!m_turning_in_place) {
-				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > (left_angle(-object().movement().m_head.current.yaw,-object().movement().m_body.current.yaw) ? PI_DIV_2 : PI_DIV_3)) {
+				if (angle_difference(object().movement().m_body.current.yaw,object().movement().m_head.current.yaw) > (left_angle(-object().movement().m_head.current.yaw,-object().movement().m_body.current.yaw) ? m_max_left_angle : m_max_right_angle)) {
 					m_turning_in_place	= true;
 					object().movement().m_body.target.yaw	= object().movement().m_head.current.yaw;
 				}

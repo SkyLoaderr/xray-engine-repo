@@ -67,7 +67,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 		sound().play		(eRatSoundInjuring);
 }
 
-bool CAI_Rat::useful		(const CGameObject *object) const
+bool CAI_Rat::useful		(const CItemManager *manager, const CGameObject *object) const
 {
 	if (!memory().item().useful(object))
 		return			(false);
@@ -79,7 +79,7 @@ bool CAI_Rat::useful		(const CGameObject *object) const
 	return				(true);
 }
 
-float CAI_Rat::evaluate		(const CGameObject *object) const
+float CAI_Rat::evaluate		(const CItemManager *manager, const CGameObject *object) const
 {
 	const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);
 	VERIFY				(entity_alive);

@@ -734,6 +734,32 @@
 							</File>
 						</Filter>
 						<Filter
+							Name="DangerManager"
+							Filter="">
+							<File
+								RelativePath=".\danger_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\danger_manager.h">
+							</File>
+							<File
+								RelativePath=".\danger_manager_inline.h">
+							</File>
+							<Filter
+								Name="danger_object"
+								Filter="">
+								<File
+									RelativePath=".\danger_object.cpp">
+								</File>
+								<File
+									RelativePath=".\danger_object.h">
+								</File>
+								<File
+									RelativePath=".\danger_object_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
 							Name="EnemyManager"
 							Filter="">
 							<File
@@ -832,6 +858,9 @@
 					</File>
 					<File
 						RelativePath=".\movement_manager_game.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_impl.h">
 					</File>
 					<File
 						RelativePath=".\movement_manager_inline.h">
@@ -3938,9 +3967,6 @@
 										<File
 											RelativePath=".\stalker_combat_actions.h">
 										</File>
-										<File
-											RelativePath=".\stalker_movement_restriction.h">
-										</File>
 									</Filter>
 								</Filter>
 								<Filter
@@ -3960,6 +3986,32 @@
 										</File>
 										<File
 											RelativePath=".\stalker_death_actions.h">
+										</File>
+									</Filter>
+								</Filter>
+								<Filter
+									Name="guard"
+									Filter="">
+									<File
+										RelativePath=".\stalker_guard_planner.cpp">
+									</File>
+									<File
+										RelativePath=".\stalker_guard_planner.h">
+									</File>
+									<File
+										RelativePath=".\stalker_guard_planner_inline.h">
+									</File>
+									<Filter
+										Name="actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_guard_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_guard_actions.h">
+										</File>
+										<File
+											RelativePath=".\stalker_guard_actions_inline.h">
 										</File>
 									</Filter>
 								</Filter>
@@ -4104,6 +4156,16 @@
 							<File
 								RelativePath=".\stalker_movement_manager_space.h">
 							</File>
+							<Filter
+								Name="movement_restriction"
+								Filter="">
+								<File
+									RelativePath=".\stalker_movement_restriction.h">
+								</File>
+								<File
+									RelativePath=".\stalker_movement_restriction_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="Miscellanious"

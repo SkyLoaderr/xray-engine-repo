@@ -16,7 +16,7 @@
 class CEnemyManager : public CObjectManager<const CEntityAlive> {
 public:
 	typedef CObjectManager<const CEntityAlive>	inherited;
-	typedef xr_vector<const CEntityAlive*>		ENEMIES;
+	typedef OBJECTS								ENEMIES;
 	typedef CScriptCallbackEx<bool>				USEFULE_CALLBACK;
 
 private:

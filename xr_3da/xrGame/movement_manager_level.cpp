@@ -19,9 +19,6 @@ void CMovementManager::process_level_path()
 {
 	START_PROFILE("AI/Build Path/Process Level Path");
 
-//	if (!detail().actual() && (m_path_state > ePathStateBuildDetailPath))
-//		m_path_state		= ePathStateBuildDetailPath;
-
 	if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
@@ -32,9 +29,10 @@ void CMovementManager::process_level_path()
 				break;
 
 			m_path_state		= ePathStateBuildLevelPath;
+			
 			if (time_over())	
 				break;
-										   }
+		}
 		case ePathStateBuildLevelPath : {
 			if (!level_selector().used() || !m_selector_path_usage)
 				level_path().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
@@ -45,13 +43,18 @@ void CMovementManager::process_level_path()
 				break;
 
 			m_path_state		= ePathStateContinueLevelPath;
-			if (time_over()) break;
-										}
+
+			if (time_over())
+				break;
+		}
 		case ePathStateContinueLevelPath : {
 			level_path().select_intermediate_vertex();
+			
 			m_path_state		= ePathStateBuildDetailPath;
-			if (time_over()) break;
-										   }
+
+			if (time_over())
+				break;
+		}
 		case ePathStateBuildDetailPath : {
 			detail().set_state_patrol_path(extrapolate_path());
 			detail().set_start_position(object().Position());
@@ -60,7 +63,7 @@ void CMovementManager::process_level_path()
 			detail().build_path(
 				level_path().path(),
 				level_path().intermediate_index()
-				);
+			);
 
 			if (detail().failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
@@ -71,7 +74,7 @@ void CMovementManager::process_level_path()
 
 			if (time_over())
 				break;
-										 }
+		}
 		case ePathStatePathVerification : {
 			if (!level_selector().actual(object().ai_location().level_vertex_id(),path_completed()))
 				m_path_state	= ePathStateBuildLevelPath;
@@ -103,13 +106,9 @@ void CMovementManager::process_level_path()
 				else
 					if (!detail().actual())
 						m_path_state = ePathStateBuildLevelPath;
-#pragma todo("Jim to Dima: Detail_Path_Manager cannot be the only one inactual!!!")
-						//m_path_state = ePathStateBuildDetailPath;
-						
 			break;
 		}
 		default : NODEFAULT;
 	}
-
 	STOP_PROFILE;
 }

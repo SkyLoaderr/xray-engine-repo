@@ -112,7 +112,7 @@ CMovementManager::EPathType CMovementManager::path_type() const
 	return					(m_path_type);
 }
 
-void CMovementManager::set_game_dest_vertex	(const GameGraph::_GRAPH_ID game_vertex_id)
+void CMovementManager::set_game_dest_vertex	(const GameGraph::_GRAPH_ID &game_vertex_id)
 {
 	game_path().set_dest_vertex(game_vertex_id);
 	m_path_actuality		= m_path_actuality && game_path().actual();
@@ -142,7 +142,7 @@ const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() 
 
 void CMovementManager::update_path	()
 {
-	if (!enabled() || ((/**actual_all() || /**/(m_last_update > Device.dwTimeGlobal)) && !path_completed()))
+	if (!enabled() || ((m_last_update > Device.dwTimeGlobal) && !path_completed()))
 		return;
 
 	m_last_update			= Device.dwTimeGlobal + m_refresh_rate;

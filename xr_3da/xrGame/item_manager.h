@@ -16,7 +16,7 @@ class CCustomMonster;
 class CItemManager : public CObjectManager<const CGameObject > {
 public:
 	typedef CObjectManager<const CGameObject >	inherited;
-	typedef xr_vector<const CGameObject*>		ITEMS;
+	typedef OBJECTS								ITEMS;
 
 private:
 	CCustomMonster		*m_object;

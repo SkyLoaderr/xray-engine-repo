@@ -152,7 +152,11 @@ IC	CCoverEvaluatorFarFromEnemy::CCoverEvaluatorFarFromEnemy	(CRestrictedObject *
 {
 }
 
-IC	CCoverEvaluatorBest::CCoverEvaluatorBest	(CRestrictedObject *object) : inherited(object)
+IC	CCoverEvaluatorBest::CCoverEvaluatorBest					(CRestrictedObject *object) : inherited(object)
+{
+}
+
+IC	CCoverEvaluatorBestByTime::CCoverEvaluatorBestByTime		(CRestrictedObject *object) : inherited(object)
 {
 }
 

@@ -8,10 +8,16 @@
 
 #pragma once
 
-#include "physicsshellholder.h"
 #include "ai_monster_space.h"
 #include "graph_engine_space.h"
 #include "game_graph_space.h"
+
+//	TODO:
+//		1. use GOAP for path processing
+//		2. a possiblity to specify custom path types
+//		3. use navigation hierachy for level path building
+//		4. dynamic obstacles avoiding
+//		5. fast location inaccessability detection
 
 namespace MovementManager {
 	enum EPathType;
@@ -66,11 +72,10 @@ namespace DetailPathManager {
 	struct STravelPathPoint;
 };
 
-class CMovementManager {
-	friend class CScriptEntity;
-	friend class CGroup;
-	friend class CPoltergeist;
+class CLevelPathBuilder;
+class CDetaillPathBuilder;
 
+class CMovementManager {
 protected:
 	typedef MonsterSpace::SBoneRotation			CBoneRotation;
 	typedef MovementManager::EPathType			EPathType;
@@ -123,9 +128,11 @@ private:
 
 		ePathStateSelectLevelVertex,
 		ePathStateBuildLevelPath,
+		ePathStateComputeLevelPath,
 		ePathStateContinueLevelPath,
 
 		ePathStateBuildDetailPath,
+		ePathStateComputeDetailPath,
 		
 		ePathStatePathVerification,
 		
@@ -155,6 +162,8 @@ private:
 	u32						m_last_update;
 	bool					m_extrapolate_path;
 	bool					m_build_at_once;
+//	CLevelPathBuilder		*m_level_path_builder;
+//	CDetailPathBuilder		*m_detail_path_builder;
 
 public:
 	CBaseParameters			*m_base_game_selector;
@@ -193,7 +202,7 @@ public:
 	IC		bool	actual					() const;
 			bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);
-			void	set_game_dest_vertex	(const GameGraph::_GRAPH_ID game_vertex_id);
+			void	set_game_dest_vertex	(const GameGraph::_GRAPH_ID &game_vertex_id);
 			void	set_level_dest_vertex	(const u32 level_vertex_id);
 	IC		void	set_build_path_at_once	();
 	IC		void	enable_movement			(bool enabled);

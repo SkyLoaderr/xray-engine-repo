@@ -16,9 +16,6 @@
 
 void CMovementManager::process_patrol_path()
 {
-//	if (!detail().actual() && (m_path_state > ePathStateBuildDetailPath))
-//		m_path_state		= ePathStateBuildDetailPath;
-
 	if (!level_path().actual() && (m_path_state > ePathStateBuildLevelPath))
 		m_path_state		= ePathStateBuildLevelPath;
 
@@ -39,20 +36,26 @@ void CMovementManager::process_patrol_path()
 				}
 
 				m_path_state		= ePathStateBuildLevelPath;
+				
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildLevelPath : {
 				level_path().build_path(object().ai_location().level_vertex_id(),level_dest_vertex_id());
+				
 				if (level_path().failed())
 					break;
+				
 				m_path_state		= ePathStateContinueLevelPath;
+				
 				if (time_over())
 					break;
 			}
 			case ePathStateContinueLevelPath : {
 				level_path().select_intermediate_vertex();
+				
 				m_path_state		= ePathStateBuildDetailPath;
+				
 				if (time_over())
 					break;
 			}
@@ -80,20 +83,20 @@ void CMovementManager::process_patrol_path()
 				if (!patrol().actual())
 					m_path_state	= ePathStateSelectPatrolPoint;
 				else
-				if (!level_path().actual())
-					m_path_state	= ePathStateBuildLevelPath;
-				else
-				if (!detail().actual())
-					m_path_state	= ePathStateBuildLevelPath;
-				else
-					if (detail().completed(object().Position(),!detail().state_patrol_path())) {
-						m_path_state	= ePathStateContinueLevelPath;
-						if (level_path().completed()) {
-							m_path_state	= ePathStateSelectPatrolPoint;
-							if (patrol().completed()) 
-								m_path_state	= ePathStatePathCompleted;
-						}
-					}
+					if (!level_path().actual())
+						m_path_state	= ePathStateBuildLevelPath;
+					else
+						if (!detail().actual())
+							m_path_state	= ePathStateBuildLevelPath;
+						else
+							if (detail().completed(object().Position(),!detail().state_patrol_path())) {
+								m_path_state	= ePathStateContinueLevelPath;
+								if (level_path().completed()) {
+									m_path_state	= ePathStateSelectPatrolPoint;
+									if (patrol().completed()) 
+										m_path_state	= ePathStatePathCompleted;
+								}
+							}
 				break;
 			}
 			case ePathStatePathCompleted : {

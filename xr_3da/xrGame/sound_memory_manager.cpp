@@ -171,12 +171,8 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 		return;
 #endif
 
-#ifndef SILENCE
-	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*m_object->cName(),sound_type,object ? *object->cName() : "world",Device.dwTimeGlobal,position.x,position.y,position.z,sound_power);
-#endif
-
 	const CGameObject		*game_object = smart_cast<const CGameObject*>(object);
-	if (!game_object)
+	if (!game_object && object)
 		return;
 
 	const CGameObject		*self = m_object;
@@ -186,6 +182,8 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 		CSoundObject			sound_object;
 
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? squad_mask_type(-1) : m_stalker->agent_manager().member().mask(m_stalker));
+		if (!game_object)
+			sound_object.m_object_params.m_position = position;
 		sound_object.m_first_level_time	= Device.dwTimeGlobal;
 		sound_object.m_first_game_time	= Level().GetGameTime();
 
@@ -198,15 +196,20 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 		else
 			m_sounds->push_back	(sound_object);
 	}
-	else
+	else {
 		(*J).fill				(game_object,self,ESoundTypes(sound_type),sound_power,!m_stalker ? (*J).m_squad_mask.get() : (*J).m_squad_mask.get() | m_stalker->agent_manager().member().mask(m_stalker));
+		if (!game_object)
+			(*J).m_object_params.m_position = position;
+	}
 }
 
 struct CRemoveOfflinePredicate {
 	bool		operator()						(const CSoundObject &object) const
 	{
-		VERIFY	(object.m_object);
-		return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+		if (!object.m_object)
+			return	(false);
+
+		return		(!!object.m_object->getDestroy() || object.m_object->H_Parent());
 	}
 };
 
@@ -235,7 +238,7 @@ struct CSoundObjectPredicate {
 	const CObject *m_object;
 
 				CSoundObjectPredicate	(const CObject *object) :
-	m_object		(object)
+					m_object		(object)
 	{
 	}
 
@@ -243,8 +246,10 @@ struct CSoundObjectPredicate {
 	{
 		if (!m_object)
 			return			(!sound_object.m_object);
+
 		if (!sound_object.m_object)
 			return			(false);
+
 		return				(m_object->ID() == sound_object.m_object->ID());
 	}
 };

@@ -45,27 +45,27 @@ void CAbstractObjectManager::reload					(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CAbstractObjectManager::update					()
 {
-	float						result = flt_max;
-	m_selected					= 0;
-	xr_vector<const T*>::const_iterator	I = m_objects.begin();
-	xr_vector<const T*>::const_iterator	E = m_objects.end();
+	float					result = flt_max;
+	m_selected				= 0;
+	OBJECTS::const_iterator	I = m_objects.begin();
+	OBJECTS::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {
-		float					value = do_evaluate(*I);
+		float				value = do_evaluate(*I);
 		if (result > value) {
-			result				= value;
-			m_selected			= *I;
+			result			= value;
+			m_selected		= *I;
 		}
 	}
 }
 
 TEMPLATE_SPECIALIZATION
-float CAbstractObjectManager::do_evaluate			(const T *object) const
+float CAbstractObjectManager::do_evaluate			(T *object) const
 {
 	return					(0.f);
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractObjectManager::is_useful				(const T *object) const
+bool CAbstractObjectManager::is_useful				(T *object) const
 {
 	const ISpatial			*self = (const ISpatial*)(object);
 	if (!self)
@@ -78,12 +78,12 @@ bool CAbstractObjectManager::is_useful				(const T *object) const
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractObjectManager::add					(const T *object)
+bool CAbstractObjectManager::add					(T *object)
 {
 	if (!is_useful(object))
 		return				(false);
 
-	xr_vector<const T*>::const_iterator	I = std::find(m_objects.begin(),m_objects.end(),object);
+	OBJECTS::const_iterator	I = std::find(m_objects.begin(),m_objects.end(),object);
 	if (m_objects.end() == I) {
 		m_objects.push_back	(object);
 		return				(true);
@@ -92,7 +92,7 @@ bool CAbstractObjectManager::add					(const T *object)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const T *CAbstractObjectManager::selected		() const
+IC	T *CAbstractObjectManager::selected		() const
 {
 	return					(m_selected);
 }
@@ -104,7 +104,7 @@ void CAbstractObjectManager::reset					()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const xr_vector<const T*> &CAbstractObjectManager::objects() const
+IC	const typename CAbstractObjectManager::OBJECTS &CAbstractObjectManager::objects() const
 {
 	return					(m_objects);
 }

@@ -11,6 +11,7 @@
 #include "memory_space.h"
 #include "gameobject.h"
 #include "level.h"
+#include "ai_space.h"
 
 template <typename T>
 IC	SRotation CObjectParams<T>::orientation	(const T *object) const
@@ -23,14 +24,19 @@ IC	SRotation CObjectParams<T>::orientation	(const T *object) const
 template <typename T>
 IC	void CObjectParams<T>::fill				(const T *game_object)
 {
-	m_orientation			= orientation(game_object);
-	m_level_vertex_id		= game_object->ai_location().level_vertex_id();
-	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(m_level_vertex_id) && !ai().level_graph().inside(m_level_vertex_id,game_object->Position())) {
+	m_orientation			= game_object ? orientation(game_object) : SRotation(0.f,0.f,0.f);
+	m_level_vertex_id		= game_object ? game_object->ai_location().level_vertex_id() : u32(-1);
+	if (game_object && ai().get_level_graph() && ai().level_graph().valid_vertex_id(m_level_vertex_id) && !ai().level_graph().inside(m_level_vertex_id,game_object->Position())) {
 		m_position			= ai().level_graph().vertex_position(m_level_vertex_id);
 		return;
 	}
-	game_object->Center		(m_position);
-	m_position.set			(game_object->Position().x,m_position.y,game_object->Position().z);
+	if (game_object) {
+		game_object->Center	(m_position);
+		m_position.set		(game_object->Position().x,m_position.y,game_object->Position().z);
+	}
+	else {
+		m_position			= Fvector().set(0.f,0.f,0.f);
+	}
 }
 
 template <typename T>
@@ -40,9 +46,10 @@ IC	CMemoryObject<T>::CMemoryObject			()
 }
 
 template <typename T>
-IC	bool CMemoryObject<T>::operator==		(u32 id) const
+IC	bool CMemoryObject<T>::operator==		(u16 id) const
 {
-	VERIFY					(m_object);
+	if (!m_object)
+		return				(id == u16(-1));
 	return					(object_id(m_object) == id);
 }
 

@@ -14,6 +14,7 @@
 #include "enemy_manager.h"
 #include "item_manager.h"
 #include "greeting_manager.h"
+#include "danger_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ai/stalker/ai_stalker_impl.h"
 #include "agent_manager.h"
@@ -34,6 +35,7 @@ CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSoundUserDataVisitor 
 	m_enemy				= xr_new<CEnemyManager>			(monster);
 	m_item				= xr_new<CItemManager>			(monster);
 	m_greeting			= xr_new<CGreetingManager>		(monster);
+	m_danger			= xr_new<CDangerManager>		(monster);
 }
 
 CMemoryManager::~CMemoryManager		()
@@ -44,6 +46,7 @@ CMemoryManager::~CMemoryManager		()
 	xr_delete			(m_enemy);
 	xr_delete			(m_item);
 	xr_delete			(m_greeting);
+	xr_delete			(m_danger);
 }
 
 void CMemoryManager::Load			(LPCSTR section)
@@ -54,6 +57,7 @@ void CMemoryManager::Load			(LPCSTR section)
 	enemy().Load		(section);
 	item().Load			(section);
 	greeting().Load		(section);
+	danger().Load		(section);
 }
 
 void CMemoryManager::reinit			()
@@ -64,6 +68,7 @@ void CMemoryManager::reinit			()
 	enemy().reinit		();
 	item().reinit		();
 	greeting().reinit	();
+	danger().reinit		();
 }
 
 void CMemoryManager::reload			(LPCSTR section)
@@ -74,6 +79,7 @@ void CMemoryManager::reload			(LPCSTR section)
 	enemy().reload		(section);
 	item().reload		(section);
 	greeting().reload	(section);
+	danger().reload		(section);
 }
 
 void CMemoryManager::update			(float time_delta)
@@ -86,6 +92,7 @@ void CMemoryManager::update			(float time_delta)
 	enemy().reset		();
 	item().reset		();
 	greeting().reset	();
+//	danger().reset		();
 
 	if (visual().enabled())
 		update			(visual().objects());
@@ -96,6 +103,7 @@ void CMemoryManager::update			(float time_delta)
 	enemy().update		();
 	item().update		();
 	greeting().update	();
+	danger().update		();
 }
 
 void CMemoryManager::enable			(const CObject *object, bool enable)
@@ -116,6 +124,8 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		
 		if (m_stalker && !(*I).m_squad_mask.test(m_stalker->agent_manager().member().mask(m_stalker)))
 			continue;
+
+		danger().add				(*I);
 		
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
 		if (entity_alive && enemy().add(entity_alive))
@@ -125,7 +135,8 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		if (m_stalker && stalker && greeting().add(stalker))
 			continue;
 
-		item().add					((*I).m_object);
+		if ((*I).m_object)
+			item().add				((*I).m_object);
 	}
 }
 
@@ -179,4 +190,5 @@ void CMemoryManager::remove_links	(CObject *object)
 	visual().remove_links	(object);
 	sound().remove_links	(object);
 	hit().remove_links		(object);
+	danger().remove_links	(object);
 }

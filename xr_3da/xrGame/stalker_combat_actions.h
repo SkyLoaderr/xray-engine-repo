@@ -152,6 +152,21 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetDistance
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetDistance : public CStalkerActionCombatBase {
+protected:
+	typedef CStalkerActionCombatBase inherited;
+
+public:
+						CStalkerActionGetDistance	(CCoverPoint **last_cover, CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
 // CStalkerActionDetourEnemy
 //////////////////////////////////////////////////////////////////////////
 

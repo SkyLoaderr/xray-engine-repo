@@ -11,6 +11,7 @@
 #include "wrapper_abstract.h"
 #include "property_evaluator_const.h"
 #include "property_evaluator_member.h"
+#include "danger_object.h"
 
 class CAI_Stalker;
 
@@ -282,6 +283,37 @@ public:
 class CStalkerPropertyEvaluatorHumanToDialog : public CStalkerPropertyEvaluator {
 protected:
 	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorDangers
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorDangers : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+private:
+	CDangerObject::EDangerType m_type;
+
+public:
+						CStalkerPropertyEvaluatorDangers	(CAI_Stalker *object = 0, LPCSTR evaluator_name = "", const CDangerObject::EDangerType &type = CDangerObject::eDangerTypeDummy);
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyCanBeSeen
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorEnemyCanBeSeen : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+private:
+	CDangerObject::EDangerType m_type;
 
 public:
 	virtual _value_type	evaluate							();

@@ -17,6 +17,7 @@
 #include "stalker_anomaly_planner.h"
 #include "stalker_combat_planner.h"
 #include "stalker_death_planner.h"
+#include "stalker_guard_planner.h"
 #include "stalker_squad_action.h"
 
 //#define GOAP_DEBUG
@@ -157,6 +158,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false,"is_squad_action_assigned"));
 	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				(m_object,"is_alive"));
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			(m_object,"is_there_enemies",CStalkerCombatPlanner::POST_COMBAT_WAIT_INTERVAL));
+	add_evaluator			(eWorldPropertyDanger			,xr_new<CStalkerPropertyEvaluatorDangers>			(m_object,"is_there_danger"));
 	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			(m_object,"is_there_anomalies"));
 }
 
@@ -175,6 +177,7 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(planner,eWorldPropertyAlive,			true);
 	add_condition			(planner,eWorldPropertyEnemy,			false);
 	add_condition			(planner,eWorldPropertyAnomaly,			false);
+//	add_condition			(planner,eWorldPropertyDanger,			false);
 	add_condition			(planner,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(planner,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorALifePlanner,planner);
@@ -185,6 +188,14 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(planner,eWorldPropertyEnemy,			true);
 	add_effect				(planner,eWorldPropertyEnemy,			false);
 	add_operator			(eWorldOperatorCombatPlanner,planner);
+
+	planner					= xr_new<CStalkerGuardPlanner>(m_object,"guard_planner");
+	add_condition			(planner,eWorldPropertyAlive,			true);
+	add_condition			(planner,eWorldPropertyEnemy,			false);
+	add_condition			(planner,eWorldPropertyAnomaly,			false);
+	add_condition			(planner,eWorldPropertyDanger,			true);
+	add_effect				(planner,eWorldPropertyDanger,			false);
+	add_operator			(eWorldOperatorGuardPlanner,planner);
 
 	planner					= xr_new<CStalkerAnomalyPlanner>(m_object,"anomaly_planner");
 	add_condition			(planner,eWorldPropertyAlive,		true);

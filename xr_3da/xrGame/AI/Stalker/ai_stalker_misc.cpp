@@ -19,7 +19,7 @@
 #include "../../agent_manager.h"
 #include "../../agent_explosive_manager.h"
 
-bool CAI_Stalker::useful		(const CGameObject *object) const
+bool CAI_Stalker::useful		(const CItemManager *manager, const CGameObject *object) const
 {
 	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
 	if (explosive && (explosive->CurrentParentID() != 0xffff))
@@ -44,7 +44,7 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 	return				(true);
 }
 
-float CAI_Stalker::evaluate		(const CGameObject *object) const
+float CAI_Stalker::evaluate		(const CItemManager *manager, const CGameObject *object) const
 {
 	float				distance = Position().distance_to_sqr(object->Position());
 	distance			= !fis_zero(distance) ? distance : EPS_L;

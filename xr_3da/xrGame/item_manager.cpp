@@ -14,10 +14,11 @@
 #include "level_graph.h"
 #include "restricted_object.h"
 #include "movement_manager.h"
+#include "ai_space.h"
 
 bool CItemManager::is_useful		(const CGameObject *object) const
 {
-	return					(m_object->useful(object));
+	return					(m_object->useful(this,object));
 }
 
 bool CItemManager::useful			(const CGameObject *object) const
@@ -47,7 +48,7 @@ bool CItemManager::useful			(const CGameObject *object) const
 
 float CItemManager::do_evaluate		(const CGameObject *object) const
 {
-	return					(m_object->evaluate(object));
+	return					(m_object->evaluate(this,object));
 }
 
 float CItemManager::evaluate		(const CGameObject *object) const

@@ -35,14 +35,19 @@ void CGreetingManager::reload		(LPCSTR section)
 	m_old_greetings.clear		();
 }
 
+bool CGreetingManager::is_useful	(const CAI_Stalker *object) const
+{
+	return						(m_object->useful(this,object));
+}
+
 bool CGreetingManager::useful		(const CAI_Stalker *object) const
 {
 	return						(object->g_Alive() && !old_greeting(object));
 }
 
-bool CGreetingManager::is_useful	(const CAI_Stalker *object) const
+float CGreetingManager::do_evaluate	(const CAI_Stalker *object) const
 {
-	return						(m_object->useful(object));
+	return					(m_object->evaluate(this,object));
 }
 
 float CGreetingManager::evaluate	(const CAI_Stalker *object) const

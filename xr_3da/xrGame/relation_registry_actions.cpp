@@ -23,6 +23,11 @@
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
 
+//#ifndef _DEBUG
+#	define DEFAULT_HIT_BEHAVIOUR
+#	define DEFAULT_KILL_BEHAVIOUR
+//#endif
+
 //////////////////////////////////////////////////////////////////////////
 
 void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationAction action)
@@ -125,8 +130,8 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				//сталкер при нападении на членов своей же группировки отношени€ не мен€ют
 				//(считаетс€, что такое нападение всегда случайно)
 				bool stalker_attack_team_mate = stalker_from && (stalker_from->Community() == stalker->Community());
-				if(delta_goodwill && !stalker_attack_team_mate)
-				{
+				if (delta_goodwill && !stalker_attack_team_mate) {
+#ifdef DEFAULT_HIT_BEHAVIOUR
 					//изменить отношение ко всем членам атакованой группы (если така€ есть)
 					//как к тому кого атаковали
 					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
@@ -135,6 +140,9 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 						
 					ChangeCommunityGoodwill(stalker->Community(), from->ID(), 
 						(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*(float)delta_goodwill));
+#else
+					ChangeGoodwill(stalker->ID(), from->ID(), delta_goodwill);
+#endif
 				}
 				if(delta_reputation)
 					inv_owner_from->ChangeReputation(delta_reputation);
@@ -174,7 +182,10 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 					delta_reputation = friend_kill_reputation;
 				}
 
-				CHARACTER_GOODWILL community_goodwill = (CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
+#ifdef DEFAULT_KILL_BEHAVIOUR
+				CHARACTER_GOODWILL community_goodwill = 
+#endif
+					(CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
 					(float)(delta_goodwill+community_member_kill_goodwill));
 
 				//сталкер при нападении на членов своей же группировки отношени€ не мен€ют
@@ -185,15 +196,15 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				{
 					//изменить отношение ко всем членам группы (если така€ есть)
 					//убитого, кроме него самого
+#ifdef DEFAULT_KILL_BEHAVIOUR
 					CGroupHierarchyHolder& group = Level().seniority_holder().team(stalker->g_Team()).squad(stalker->g_Squad()).group(stalker->g_Group());
 					for(std::size_t i = 0;  i < group.members().size(); i++)
 						if(stalker->ID() != group.members()[i]->ID())
 							ChangeGoodwill(group.members()[i]->ID(), from->ID(), delta_goodwill);
-				}
 
-				if(community_goodwill)
-				{
-					ChangeCommunityGoodwill(stalker->Community(), from->ID(), community_goodwill);
+					if (community_goodwill)
+						ChangeCommunityGoodwill(stalker->Community(), from->ID(), community_goodwill);
+#endif
 				}
 
 				if(delta_reputation)

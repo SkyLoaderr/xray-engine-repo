@@ -19,10 +19,10 @@
 #include "visual_memory_manager.h"
 #include "item_manager.h"
 #include "enemy_manager.h"
+#include "danger_manager.h"
+#include "ai_space.h"
 
 using namespace StalkerDecisionSpace;
-
-//#define NO_ALIFE_ACTIONS
 
 typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
@@ -32,11 +32,7 @@ typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
 _value_type CStalkerPropertyEvaluatorALife::evaluate	()
 {
-#ifdef NO_ALIFE_ACTIONS
-	return			(false);
-#else
 	return			(!!ai().get_alife());
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -268,3 +264,35 @@ _value_type CStalkerPropertyEvaluatorHumanToDialog::evaluate	()
 {
 	return				(false);//true);//false);//true);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorDangers
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorDangers::CStalkerPropertyEvaluatorDangers	(CAI_Stalker *object, LPCSTR evaluator_name, const CDangerObject::EDangerType &type) :
+	inherited		(object ? object->lua_game_object() : 0,evaluator_name),
+	m_type			(type)
+{
+}
+
+_value_type CStalkerPropertyEvaluatorDangers::evaluate	()
+{
+	if (!m_object->memory().danger().selected())
+		return			(false);
+	return				(m_type == CDangerObject::eDangerTypeDummy ? true : (m_type == m_object->memory().danger().selected()->type()));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemyCanBeSeen
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorEnemyCanBeSeen::evaluate	()
+{
+	if (!m_object->memory().enemy().selected())
+		return			(false);
+	
+	CMemoryInfo			mem_object = m_object->memory().memory(m_object->memory().enemy().selected());
+	float				range = m_object->ffGetRange();
+	return				(range*range >= mem_object.m_object_params.m_position.distance_to_sqr(m_object->Position()));
+}
+

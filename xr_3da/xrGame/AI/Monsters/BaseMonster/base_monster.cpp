@@ -164,7 +164,7 @@ CBoneInstance *CBaseMonster::GetEatBone()
 	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 
-bool CBaseMonster::useful(const CGameObject *object) const
+bool CBaseMonster::useful(const CItemManager *manager, const CGameObject *object) const
 {
 	const CEntityAlive *pCorpse = smart_cast<const CEntityAlive *>(object); 
 	if (!pCorpse) return false;
@@ -173,7 +173,7 @@ bool CBaseMonster::useful(const CGameObject *object) const
 	return false;
 }
 
-float CBaseMonster::evaluate(const CGameObject *object) const
+float CBaseMonster::evaluate(const CItemManager *manager, const CGameObject *object) const
 {
 	return (0.f);
 }

@@ -47,6 +47,9 @@
 #include "../../script_space.h"
 #include "../../stalker_sound_data.h"
 #include "../../stalker_sound_data_visitor.h"
+#include "ai_stalker_space.h"
+
+using namespace StalkerSpace;
 
 extern int g_AI_inactive_time;
 
@@ -54,8 +57,6 @@ CAI_Stalker::CAI_Stalker			()
 {
 	m_sound_user_data_visitor		= 0;
 	m_movement_manager				= 0;
-	shedule.t_min					= 1;
-	shedule.t_max					= 200;
 	m_demo_mode						= false;
 	m_group_behaviour				= true;
 }
@@ -87,6 +88,7 @@ void CAI_Stalker::reinit			()
 	m_best_found_item_to_kill		= 0;
 	m_best_found_ammo				= 0;
 	m_item_actuality				= false;
+
 	m_ce_close						= xr_new<CCoverEvaluatorCloseToEnemy>(&movement().restrictions());
 	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>(&movement().restrictions());
 	m_ce_best						= xr_new<CCoverEvaluatorBest>(&movement().restrictions());
@@ -94,6 +96,8 @@ void CAI_Stalker::reinit			()
 	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(&movement().restrictions());
 	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(&movement().restrictions());
 	m_ce_ambush						= xr_new<CCoverEvaluatorAmbush>(&movement().restrictions());
+	m_ce_best_by_time				= xr_new<CCoverEvaluatorBestByTime>(&movement().restrictions());
+	
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
@@ -101,6 +105,7 @@ void CAI_Stalker::reinit			()
 	m_ce_safe->set_inertia			(1000);
 	m_ce_random_game->set_inertia	(3000);
 	m_ce_ambush->set_inertia		(3000);
+	m_ce_best_by_time->set_inertia	(1000);
 
 	m_not_enough_food				= false;
 	m_can_buy_food					= false;
@@ -143,7 +148,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CObjectHandler::reload			(section);
 	inventory().m_slots[OUTFIT_SLOT].m_bUsable = false;
 
-//	sight().reload					(section);
+	sight().reload					(section);
 	movement().reload				(section);
 
 	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
@@ -295,8 +300,8 @@ void CAI_Stalker::net_Destroy()
 	xr_delete							(m_ce_angle);
 	xr_delete							(m_ce_safe);
 	xr_delete							(m_ce_ambush);
+	xr_delete							(m_ce_best_by_time);
 }
-
 
 void CAI_Stalker::net_Save			(NET_Packet& P)
 {
@@ -410,10 +415,6 @@ void CAI_Stalker::UpdateCL()
 		try {
 			try {
 				CObjectHandler::update	();
-			}
-			catch (xr_string &message) {
-				Msg						("! Expression \"%s\"",message.c_str());
-				throw;
 			}
 #ifdef DEBUG
 			catch (luabind::cast_failed &message) {
@@ -685,10 +686,6 @@ void CAI_Stalker::Think			()
 	try {
 		try {
 			brain().update			(update_delta);
-		}
-		catch (xr_string &message) {
-			Msg						("! Expression \"%s\"",message.c_str());
-			throw;
 		}
 #ifdef DEBUG
 		catch (luabind::cast_failed &message) {

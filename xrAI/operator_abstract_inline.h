@@ -18,16 +18,9 @@
 TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	()
 {
-	m_actual			= true;
+	m_actuality			= 0;
 	m_weight_actual		= true;
 	m_min_weight		= 0;
-}
-
-TEMPLATE_SPECIALIZATION
-IC	CAbstractOperator::COperatorAbstract	(const COperatorAbstract &self)
-{
-	*this				= self;
-	m_actual			= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -35,7 +28,7 @@ IC	CAbstractOperator::COperatorAbstract	(const CSConditionState &conditions, con
 {
 	m_conditions		= conditions;
 	m_effects			= effects;
-	m_actual			= false;
+	m_actuality			= 0;
 	m_weight_actual		= false;
 	m_min_weight		= 0;
 }
@@ -51,8 +44,20 @@ void CAbstractOperator::Load						(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractOperator::setup						()
+void CAbstractOperator::setup						(bool *actuality)
 {
+	VERIFY				(actuality);
+	m_actuality			= actuality;
+	*m_actuality		= false;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractOperator::actual					(bool value)
+{
+	if (!m_actuality)
+		return;
+
+	*m_actuality		= *m_actuality && value;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -70,28 +75,28 @@ IC	const typename CAbstractOperator::CSConditionState	&CAbstractOperator::effect
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_condition	(const COperatorCondition &condition)
 {
-	m_actual			= false;
+	actual						(false);
 	m_conditions.add_condition	(condition);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::remove_condition(const typename COperatorCondition::_condition_type &condition)
 {
-	m_actual			= false;
+	actual						(false);
 	m_conditions.remove_condition(condition);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 {
-	m_actual			= false;
+	actual						(false);
 	m_effects.add_condition		(effect);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::remove_effect	(const typename COperatorCondition::_condition_type &effect)
 {
-	m_actual			= false;
+	actual						(false);
 	m_effects.remove_condition	(effect);
 }
 
@@ -406,18 +411,6 @@ IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::min_weight	()
 
 	m_weight_actual			= true;
 	return					(m_min_weight);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::actual	() const
-{
-	return					(m_actual);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::actual	(bool value)
-{
-	m_actual				= value;
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -16,6 +16,8 @@
 #include "script_game_object.h"
 #include "gameobject.h"
 
+#define DBG_DISABLE_SCRIPTS
+
 CScriptBinder::CScriptBinder		()
 {
 	init					();
@@ -60,9 +62,7 @@ void CScriptBinder::Load			(LPCSTR section)
 
 void CScriptBinder::reload			(LPCSTR section)
 {
-#ifdef DBG_DISABLE_SCRIPTS
-	return;
-#endif
+#ifndef DBG_DISABLE_SCRIPTS
 	VERIFY					(!m_object);
 	if (!pSettings->line_exist(section,"script_binding"))
 		return;
@@ -91,6 +91,7 @@ void CScriptBinder::reload			(LPCSTR section)
 			clear			();
 		}
 	}
+#endif
 }
 
 BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)

@@ -316,8 +316,8 @@ public:
 #ifdef DEBUG
 	virtual void				OnRender				();
 #endif
-	virtual bool				useful					(const CGameObject *object) const;
-	virtual	float				evaluate				(const CGameObject *object) const;
+	virtual bool				useful					(const CItemManager *manager, const CGameObject *object) const;
+	virtual	float				evaluate				(const CItemManager *manager, const CGameObject *object) const;
 	virtual	void				reinit					();
 	virtual void				reload					(LPCSTR	section);
 	virtual const SRotation		Orientation				() const

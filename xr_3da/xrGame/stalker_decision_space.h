@@ -51,6 +51,7 @@ namespace StalkerDecisionSpace {
 
 		eWorldPropertyItems,
 		eWorldPropertyEnemy,
+		eWorldPropertyDanger,
 		
 		eWorldPropertyItemToKill,
 		eWorldPropertyFoundItemToKill,
@@ -62,8 +63,16 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyInCover,
 		eWorldPropertyLookedOut,
 		eWorldPropertyPositionHolded,
+		eWorldPropertyEnemyCanBeSeen,
 		eWorldPropertyEnemyDetoured,
 		eWorldPropertyPureEnemy,
+
+		eWorldPropertyDangerRicochet,
+		eWorldPropertyDangerShot,
+		eWorldPropertyDangerHit,
+		eWorldPropertyDangerDeath,
+		eWorldPropertyDangerAttack,
+		eWorldPropertyDangerCorpse,
 
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
@@ -113,8 +122,17 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorTakeCover,
 		eWorldOperatorLookOut,
 		eWorldOperatorHoldPosition,
+		eWorldOperatorGetDistance,
 		eWorldOperatorDetourEnemy,
 		eWorldOperatorSearchEnemy,
+
+// guard
+		eWorldOperatorDangerRicochet,
+		eWorldOperatorDangerShot,
+		eWorldOperatorDangerHit,
+		eWorldOperatorDangerDeath,
+		eWorldOperatorDangerAttack,
+		eWorldOperatorDangerCorpse,
 
 // global
 		eWorldOperatorPostCombatWait,
@@ -124,6 +142,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorALifeDialogPlanner,
 		eWorldOperatorCombatPlanner,
 		eWorldOperatorAnomalyPlanner,
+		eWorldOperatorGuardPlanner,
 
 // script
 		eWorldOperatorScript,

@@ -19,12 +19,13 @@
 #include "level_graph.h"
 #include "level.h"
 #include "script_game_object.h"
+#include "ai_space.h"
 
 #define USE_EVALUATOR
 
 bool CEnemyManager::is_useful				(const CEntityAlive *entity_alive) const
 {
-	return					(m_object->useful(entity_alive));
+	return					(m_object->useful(this,entity_alive));
 }
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
@@ -55,7 +56,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 
 float CEnemyManager::do_evaluate			(const CEntityAlive *object) const
 {
-	return					(m_object->evaluate(object));
+	return					(m_object->evaluate(this,object));
 }
 
 float CEnemyManager::evaluate				(const CEntityAlive *object) const

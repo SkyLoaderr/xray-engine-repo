@@ -115,6 +115,40 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point, float weight)
 }
 
 //////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorBestByTime
+//////////////////////////////////////////////////////////////////////////
+
+void CCoverEvaluatorBestByTime::evaluate		(CCoverPoint *cover_point, float weight)
+{
+	if (fis_zero(weight))
+		return;
+
+	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
+	float					value = 0.f;
+
+	if (enemy_distance <= m_min_distance)
+		value				+= 100 + m_min_distance - enemy_distance;
+
+	if (enemy_distance >= m_max_distance)
+		value				+= 100.f + enemy_distance - m_max_distance;
+
+	Fvector					direction;
+//	float					y,p;
+	direction.sub			(m_enemy_position,cover_point->position());
+
+	if (ai().level_graph().neighbour_in_direction(direction,cover_point->level_vertex_id()))
+		value				+= 10.f;
+
+	value					/= weight;
+
+	if (value >= m_best_value)
+		return;
+
+	m_selected				= cover_point;
+	m_best_value			= value;
+}
+
+//////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorAngle
 //////////////////////////////////////////////////////////////////////////
 

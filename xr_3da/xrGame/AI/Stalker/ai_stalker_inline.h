@@ -47,7 +47,7 @@ IC	float CAI_Stalker::panic_threshold				() const
 	return	(m_panic_threshold);
 }
 
-IC	void CAI_Stalker::body_action					(const EBodyAction &body_action)
+IC	void CAI_Stalker::body_action					(const StalkerSpace::EBodyAction &body_action)
 {
 	m_body_action	= body_action;
 }

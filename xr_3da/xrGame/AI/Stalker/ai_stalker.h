@@ -13,9 +13,14 @@
 #include "../../AI_PhraseDialogManager.h"
 #include "../../step_manager.h"
 #include "../../script_export_space.h"
-#include "ai_stalker_space.h"
 
-using namespace StalkerSpace;
+namespace MonsterSpace {
+	enum EMovementDirection;
+};
+
+namespace StalkerSpace {
+	enum EBodyAction;
+};
 
 class CALifeSimulator;
 class CCharacterPhysicsSupport;
@@ -28,6 +33,7 @@ class CCoverEvaluatorAngle;
 class CCoverEvaluatorSafe;
 class CCoverEvaluatorRandomGame;
 class CCoverEvaluatorAmbush;
+class CCoverEvaluatorBestByTime;
 class CAgentManager;
 class CALifeTask;
 class CMotionDef;
@@ -55,6 +61,10 @@ class CAI_Stalker :
 {
 private:
 	typedef CCustomMonster								inherited;
+
+public:
+	using inherited::useful;
+	using inherited::evaluate;
 	
 public:
 	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
@@ -67,7 +77,7 @@ private:
 	CStalkerMovementManager			*m_movement_manager;
 
 private:
-	EBodyAction						m_body_action;
+	StalkerSpace::EBodyAction		m_body_action;
 
 private:
 	bool							m_demo_mode;
@@ -112,6 +122,7 @@ public:
 	CCoverEvaluatorSafe				*m_ce_safe;
 	CCoverEvaluatorRandomGame		*m_ce_random_game;
 	CCoverEvaluatorAmbush			*m_ce_ambush;
+	CCoverEvaluatorBestByTime		*m_ce_best_by_time;
 
 	// physics support
 public:
@@ -179,8 +190,8 @@ public:
 	virtual void						OnRender							();
 #endif
 
-	virtual bool						useful								(const CGameObject *object) const;
-	virtual	float						evaluate							(const CGameObject *object) const;
+	virtual bool						useful								(const CItemManager *manager, const CGameObject *object) const;
+	virtual	float						evaluate							(const CItemManager *manager, const CGameObject *object) const;
 	
 	// PDA && Dialogs
 	virtual void						ReceivePdaMessage					(u16 who, EPdaMsg msg, INFO_INDEX info_index);
@@ -198,7 +209,7 @@ public:
 	virtual	void						ResetScriptData			(void					*P = 0);
 	virtual	bool						bfAssignObject			(CScriptEntityAction			*tpEntityAction);
 	virtual	bool						bfAssignAnimation		(CScriptEntityAction			*tpEntityAction);
-			void						adjust_speed_to_animation(const EMovementDirection &movement_direction);
+			void						adjust_speed_to_animation(const MonsterSpace::EMovementDirection &movement_direction);
 	
 	// physics
 	virtual u16							PHGetSyncItemsNumber	()			{return inherited ::PHGetSyncItemsNumber();}
@@ -330,8 +341,8 @@ public:
 	IC	CSightManager					&sight							() const;
 	IC	CSSetupManager					&setup							() const;
 	IC		float						panic_threshold					() const;
-	IC		void						body_action						(const EBodyAction &body_action);
-	IC		const EBodyAction			&body_action					() const;
+	IC		void						body_action						(const StalkerSpace::EBodyAction &body_action);
+	IC		const StalkerSpace::EBodyAction	&body_action				() const;
 
 private:
 	CStalkerSoundDataVisitor			*m_sound_user_data_visitor;

@@ -254,13 +254,6 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
-	if(EA && EA->g_Alive() && EA->ID() != ID())
-	{
-		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
-		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
-	}
-		
 	CDamageManager::HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит
@@ -278,6 +271,15 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 	BloodyWallmarks (P, dir, element, position_in_object_space);
 
 	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
+
+	if (g_Alive()) {
+		CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
+		if(EA && EA->g_Alive() && EA->ID() != ID())
+		{
+			RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
+			RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
+		}
+	}
 }
 
 void CEntityAlive::Die	(CObject* who)

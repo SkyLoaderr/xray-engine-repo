@@ -130,8 +130,8 @@ public:
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 	virtual BOOL			feel_touch_on_contact			(CObject* O);
 
-	virtual bool			useful							(const CGameObject *object) const;
-	virtual float			evaluate						(const CGameObject *object) const;
+	virtual bool			useful							(const CItemManager *manager, const CGameObject *object) const;
+	virtual float			evaluate						(const CItemManager *manager, const CGameObject *object) const;
 
 	virtual void			OnHUDDraw						(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
 	virtual void			OnEvent							(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}

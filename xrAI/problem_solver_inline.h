@@ -74,10 +74,20 @@ void CProblemSolverAbstract::setup				()
 TEMPLATE_SPECIALIZATION
 IC	bool CProblemSolverAbstract::actual			() const
 {
-	return				(m_actuality);
+	if (!m_actuality)
+		return				(false);
+
+	xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
+	for ( ; I != E; ++I) {
+		EVALUATOR_MAP::const_iterator J = evaluators().find((*I).condition());
+		VERIFY				(evaluators().end() != J);
+		if ((*J).second->evaluate() != (*I).value())
+			return			(false);
+	}
+	return					(true);
 }
 
-// operators
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_operator			(const _edge_type &operator_id, _operator_ptr _operator)
 {
@@ -343,50 +353,42 @@ IC	void CProblemSolverAbstract::solve			()
 {
 #ifndef AI_COMPILER
 	m_solution_changed			= false;
-	if (m_actuality) {
-		bool					actual = true;
-		xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
-		xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
-		for ( ; I != E; ++I) {
-			EVALUATOR_MAP::const_iterator J = evaluators().find((*I).condition());
-			VERIFY				(evaluators().end() != J);
-			if ((*J).second->evaluate() != (*I).value()) {
-				actual			= false;
-				break;
-			}
-		}
 
-		if (actual) {
-			{
-				OPERATOR_VECTOR::const_iterator	I = operators().begin();
-				OPERATOR_VECTOR::const_iterator	E = operators().end();
-				for ( ; I != E; ++I)
-					if (!(*I).get_operator()->actual()) {
-						actual		= false;
-						break;
-					}
-			}
-			if (!actual) {
-				OPERATOR_VECTOR::const_iterator	I = operators().begin();
-				OPERATOR_VECTOR::const_iterator	E = operators().end();
-				for ( ; I != E; ++I)
-					(*I).get_operator()->actual(true);
-			}
-		}
-
-		if (actual)
-			return;
-	}
+	if (actual())
+		return;
 
 	m_actuality					= true;
 	m_solution_changed			= true;
 	m_current_state.clear		();
-	bool						successful = 
-		!reverse_search ? 
-		ai().graph_engine().search(*this,current_state(),target_state(),&m_solution,GraphEngineSpace::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000))
-		:
-		ai().graph_engine().search(*this,target_state(),current_state(),&m_solution,GraphEngineSpace::CSolverBaseParameters(GraphEngineSpace::_solver_dist_type(-1),GraphEngineSpace::_solver_condition_type(-1),8000));
-	m_failed					= !successful;
+	
+	if (reverse_search) {
+		m_failed				= !
+			ai().graph_engine().search(
+				*this,
+				target_state(),
+				current_state(),
+				&m_solution,
+				GraphEngineSpace::CSolverBaseParameters(
+					GraphEngineSpace::_solver_dist_type(-1),
+					GraphEngineSpace::_solver_condition_type(-1),
+					8000
+				)
+			);
+	}
+	else {
+		m_failed				= !
+			ai().graph_engine().search(
+				*this,
+				current_state(),
+				target_state(),
+				&m_solution,
+				GraphEngineSpace::CSolverBaseParameters(
+					GraphEngineSpace::_solver_dist_type(-1),
+					GraphEngineSpace::_solver_condition_type(-1),
+					8000
+				)
+			);
+	}
 #endif
 }
 

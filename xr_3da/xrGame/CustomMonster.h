@@ -4,26 +4,29 @@
 
 #pragma once
 
+#include "entity_alive.h"
+#include "script_entity.h"
 #include "../feel_vision.h"
 #include "../feel_sound.h"
 #include "../feel_touch.h"
 
-#include "ai_space.h"
-#include "ai_monster_space.h"
-
-#include "entity_alive.h"
-#include "script_entity.h"
-
-using namespace MonsterSpace;
+namespace MonsterSpace {
+	struct SBoneRotation;
+};
 
 class CAI_Rat;
 class CMotionDef;
 class CSkeletonAnimated;
 class CMemoryManager;
+class CItemManager;
+class CEnemyManager;
+class CGreetingManager;
+class CDangerManager;
 class CMovementManager;
 class CSoundPlayer;
 class CMaterialManager;
 class CAI_Stalker;
+class CDangerObject;
 
 class CCustomMonster : 
 	public CEntityAlive, 
@@ -215,11 +218,15 @@ public:
 	IC		CMemoryManager		&memory					() const;
 	virtual float				feel_vision_mtl_transp	(u32 element);
 	virtual	void				feel_sound_new			(CObject* who, int type, CSoundUserDataPtr user_data, const Fvector &Position, float power);
-	virtual bool				useful					(const CGameObject *object) const;
-	virtual float				evaluate				(const CGameObject *object) const;
-	virtual bool				useful					(const CEntityAlive *object) const;
-	virtual float				evaluate				(const CEntityAlive *object) const;
-	virtual bool				useful					(const CAI_Stalker *object) const;
+
+	virtual bool				useful					(const CItemManager *manager, const CGameObject *object) const;
+	virtual float				evaluate				(const CItemManager *manager, const CGameObject *object) const;
+	virtual bool				useful					(const CEnemyManager *manager, const CEntityAlive *object) const;
+	virtual float				evaluate				(const CEnemyManager *manager, const CEntityAlive *object) const;
+	virtual bool				useful					(const CGreetingManager *manager, const CAI_Stalker *object) const;
+	virtual float				evaluate				(const CGreetingManager *manager, const CAI_Stalker *object) const;
+	virtual bool				useful					(const CDangerManager *manager, const CDangerObject &object) const;
+	virtual float				evaluate				(const CDangerManager *manager, const CDangerObject &object) const;
 
 private:
 	CSoundUserDataVisitor			*m_sound_user_data_visitor;

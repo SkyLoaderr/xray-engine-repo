@@ -26,17 +26,19 @@ protected:
 protected:
 	CSConditionState				m_conditions;
 	CSConditionState				m_effects;
-	mutable bool					m_actual;
+	bool							*m_actuality;
 	mutable bool					m_weight_actual;
 	mutable _edge_value_type		m_min_weight;
 
+protected:
+	IC		void					actual				(bool value);
+
 public:
 	IC								COperatorAbstract	();
-	IC								COperatorAbstract	(const COperatorAbstract &self);
 	IC								COperatorAbstract	(const CSConditionState &conditions, const CSConditionState &effects);
 	virtual							~COperatorAbstract	();
 	virtual	void					Load				(LPCSTR section);
-	virtual void					setup				();
+	virtual void					setup				(bool *actuality);
 	IC		const CSConditionState	&conditions			() const;
 	IC		const CSConditionState	&effects			() const;
 	IC		void					add_condition		(const COperatorCondition &condition);
@@ -56,8 +58,6 @@ public:
 	
 	virtual bool					apply_reverse		(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result, const CSConditionState &self_condition) const;
 	virtual _edge_value_type		weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
-	IC		bool					actual				() const;
-	IC		void					actual				(bool value);
 };
 
 #include "operator_abstract_inline.h"
