@@ -19,8 +19,6 @@
 #include <luabind/luabind.hpp>
 #include <luabind/object.hpp>
 
-__declspec(dllimport) LPSTR g_ca_stdout;
-
 #pragma warning(default:4244)
 #pragma warning(default:4995)
 #pragma warning(default:4267)

@@ -22,7 +22,6 @@
 	#include "lua.h"
 	#include "lualib.h"
 	#include "lauxlib.h"
-	__declspec(dllimport) LPSTR g_ca_stdout;
 //}
 
 // Lua-bind
