@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "ui3dstatic.h"
 #include "../gameobject.h"
-
+#include "../HUDManager.h"
+#include "../Level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -54,6 +55,11 @@ void  CUI3dStatic::Draw()
 	if(m_pCurrentItem)
 	{
 		RECT rect = GetAbsoluteRect();
+		// Apply scale
+		rect.top	= static_cast<int>(rect.top * HUD().GetScale());
+		rect.left	= static_cast<int>(rect.left * HUD().GetScale());
+		rect.bottom	= static_cast<int>(rect.bottom * HUD().GetScale());
+		rect.right	= static_cast<int>(rect.right * HUD().GetScale());
 
 		Fmatrix translate_matrix;
 		Fmatrix scale_matrix;
@@ -113,12 +119,14 @@ void  CUI3dStatic::Draw()
 		
 		///////////////////////////////	
 		
-		FromScreenToItem(rect.left + GetWidth()/2,
-						 rect.top + GetHeight()/2, 
+		FromScreenToItem(rect.left + iFloor(GetWidth()/2 * HUD().GetScale()),
+						 rect.top + iFloor(GetHeight()/2 * HUD().GetScale()), 
 						 right_item_offset, up_item_offset);
 
 		translate_matrix.identity();
-		translate_matrix.translate( right_item_offset, up_item_offset,DIST);
+		translate_matrix.translate(right_item_offset,
+								   up_item_offset,
+								   DIST);
 
 		matrix.mulA(translate_matrix);
 
