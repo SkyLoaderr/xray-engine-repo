@@ -40,7 +40,7 @@ public:
 						CObjectAnimator	();
 	virtual				~CObjectAnimator();
 
-	void				Load			(CInifile* ini, LPCSTR section);
+	// void				Load			(CInifile* ini, LPCSTR section);
 	void				Load			(LPCSTR name);
 
 	COMotion*			PlayMotion		(LPCSTR name, bool bLoop);

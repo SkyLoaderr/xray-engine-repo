@@ -13,14 +13,19 @@
 
 CDummyObject::CDummyObject	()
 {
-	animator				= NULL;
 	style					= 0;
+	s_animator				= NULL;
+	s_model					= NULL;
+	s_particles				= NULL;
+	s_sound					= NULL;
 }
 
 CDummyObject::~CDummyObject	()
 {
-	_DELETE					(animator);
-	pSounds->Delete			(sndDummy);
+	pSounds->Delete			(s_sound);
+	::Render->model_Delete	(s_particles);
+	::Render->model_Delete	(s_model);
+	_DELETE					(s_animator);
 }
 
 void CDummyObject::Load		(LPCSTR section)
@@ -30,10 +35,6 @@ void CDummyObject::Load		(LPCSTR section)
 
 	if (pSettings->LineExists(section,"motions")){
 		style			|= esAnimated;
-		animator		= new CObjectAnimator();
-		animator->Load	(section);
-		animator->PlayMotion("idle",true);
-		start_position.set(vPosition);
 	}
 	if (pVisual->Type==MT_SKELETON){
 		style			|= esSkeleton;
@@ -49,30 +50,85 @@ void CDummyObject::Load		(LPCSTR section)
 	*/
 }
 
-void CDummyObject::Update	(DWORD dt)
+void CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	/*
-	if (style&esAnimated){
-		animator->OnMove();
-		mRotate.set		(animator->GetRotate());
-		vPosition.set	(animator->GetPosition());
-		vPosition.add	(start_position);
-		UpdateTransform	();
+	inherited::Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
+
+	UpdateTransform			();
+	relation.set			(svTransform);
+
+	P.r_u8					(style);
+	if (style&esAnimated)		{
+		// Load animator
+		string256				fn;
+		P.r_string				(fn);
+		s_animator				= new CObjectAnimator		();
+		s_animator->Load		(fn);
+		s_animator->PlayMotion	("idle",true);
 	}
-
-	Fsphere& S = CFORM()->GetSphere();
-	if (sndDummy.feedback)	sndDummy.feedback->SetPosition(S.P);
-	*/
+	if (style&esModel)			{
+		// Load model
+		string256				fn;
+		P.r_string				(fn);
+		s_model					= ::Render->model_Create	(fn);
+		CKinematics* V			= PKinematics(s_model);
+		if (V)					V->PlayCycle("idle");
+	}
+	if (style&esParticles)		{
+		// Load model
+		string256				fn;
+		P.r_string				(fn);
+		s_particles				= ::Render->model_CreatePS	(fn);
+		CPSVisual* V			= dynamic_cast<CPSVisual*>	(s_particles);
+		if (V)					{
+			s_emitter.m_Position.set	(Position());
+			V->Play						();
+		}
+	}
+	if (style&esSound)			{
+		// Load model
+		string256				fn;
+		P.r_string				(fn);
+		pSounds->Create			(s_sound,TRUE,fn);
+		pSounds->PlayAtPos		(s_sound,0,Position(),true);
+	}
 }
-/*
-void CDummyObject::Spawn()
 
-void CDummyObject::PlayDemo		(LPCSTR N)
+void CDummyObject::Update		(DWORD dt)
 {
-	animator->StopMotion();
-	animator->PlayMotion(N,false);
-	animator->OnMove	();
-	pSounds->PlayAtPos(sndDummy,this,vPosition,true);
-	if (sndDummy.feedback) sndDummy.feedback->SetMinMax(1,100);
+	inherited::Update	(dt);
+
+	if (s_particles)	dynamic_cast<CPSVisual*>(s_particles)->Update(dt);
 }
-*/
+
+void CDummyObject::UpdateCL		()
+{
+	if (s_animator)
+	{
+		s_animator->OnMove		();
+		mRotate.set				(s_animator->GetRotate());
+		vPosition.set			(s_animator->GetPosition());
+		UpdateTransform			();
+		if (style&esAnimated)	svTransform.mulB_43	(relation);
+	}
+	clTransform.set				(svTransform);
+
+	if (s_model)
+	{
+	}
+	if (s_particles)			
+	{
+		s_emitter.m_Position.set		(Position());
+	}
+	if (s_sound.feedback)
+	{
+		s_sound.feedback->SetPosition	(Position());
+	}
+}
+
+void CDummyObject::OnVisible	()
+{
+	::Render->set_Transform		(&clTransform);
+	if (s_model)		::Render->add_Visual(s_model);
+	if (s_particles)	::Render->add_Visual(s_particles);
+}

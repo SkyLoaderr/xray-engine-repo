@@ -9,25 +9,30 @@
 #include "gameobject.h"
 
 // refs
-class ENGINE_API CObjectAnimator;
+class ENGINE_API		CObjectAnimator;
 
+// t-defs
 class CDummyObject		: public CGameObject
 {
 	typedef	CGameObject		inherited;
 
 private:
 	enum SStyle{
-		esAnimated	=1<<0,	
-		esSkeleton	=1<<1, 
-		esParticles	=1<<2, 
-		esSound		=1<<3
+		esAnimated			=1<<0,	
+		esModel				=1<<1, 
+		esParticles			=1<<2, 
+		esSound				=1<<3,
+		esRelativePosition	=1<<4
 	};
-	DWORD								style;
+	u8									style;
 private:
-	CObjectAnimator*					animator;
-	Fvector								start_position;
-	sound								sndDummy;
+	CObjectAnimator*					s_animator;
+	CVisual*							s_model;
+	CVisual*							s_particles;
+	sound								s_sound;
+	PS::SEmitter						s_emitter;
 
+	Fmatrix								relation;
 public:
 	virtual void						Load			( LPCSTR section);
 	virtual BOOL						Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);

@@ -64,11 +64,13 @@ void CObjectAnimator::LoadMotions(const char* fname)
 	Engine.FS.Close		(F);
 }
 
+/*
 void CObjectAnimator::Load(CInifile* ini, const char * section)
 {
 	LPCSTR temp			= ini->ReadSTRING(section,"motions");
 	Load				(temp);
 }
+*/
 
 void CObjectAnimator::Load(const char * name)
 {
