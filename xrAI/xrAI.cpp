@@ -94,7 +94,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	u32				dwStartupTime	= timeGetTime();
 	
-	FS.update_path		(INI_FILE,"$game_data$","game.ltx");
+	FS.update_path		(INI_FILE,"$game_config$","game.ltx");
 	
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));

@@ -362,7 +362,7 @@ public:
 			CGameGraph::LEVEL_PAIR_IT	I = game_header.tpLevels.begin();
 			CGameGraph::LEVEL_PAIR_IT	E = game_header.tpLevels.end();
 			for ( ; I != E; I++) {
-				fs->w_stringZ		((*I).second.name());
+				fs->w_stringZ		(*(*I).second.name());
 				fs->w_fvector3		((*I).second.offset());
 				fs->w_u32			((*I).second.id());
 			}

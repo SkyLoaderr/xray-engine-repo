@@ -225,7 +225,7 @@ public:
 			VERTEX_MAP::const_iterator				I = m_tVertexMap.begin();
 			VERTEX_MAP::const_iterator				E = m_tVertexMap.end();
 			for ( ; I != E; ++I) {
-				R_ASSERT3	(!xr_strlen((*I).second.caConnectName) || ((*I).second.tGraphID < m_tpVertices.size()),"Rebuild graph for the level",m_tLevel.name());
+				R_ASSERT3	(!xr_strlen((*I).second.caConnectName) || ((*I).second.tGraphID < m_tpVertices.size()),"Rebuild graph for the level",*m_tLevel.name());
 			}
 
 //			VERIFY3									(i == m_tpGraph->header().vertex_count(), "Rebuild graph for the level ",m_tLevel.name());
@@ -491,8 +491,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 						R_ASSERT				(M != (*K).second->m_tVertexMap.end());
 					}
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
-					VERIFY3						(tConnectionVertex.tGraphID < (*I).second->m_tpVertices.size(),"Rebuild graph for the level",(*I).second->m_tLevel.name());
-					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",(*K).second->m_tLevel.name());
+					VERIFY3						(tConnectionVertex.tGraphID < (*I).second->m_tpVertices.size(),"Rebuild graph for the level",*(*I).second->m_tLevel.name());
+					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",*(*K).second->m_tLevel.name());
 					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
 //					tGraphEdge.dwVertexNumber	= (*i).second.tGraphID + (*I).second->m_dwOffset;
@@ -529,7 +529,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
 		CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			F.w_stringZ	((*I).second.name());
+			F.w_stringZ	(*(*I).second.name());
 			F.w_fvector3((*I).second.offset());
 			F.w_u32		((*I).second.id());
 			F.w_stringZ	(*(*I).second.section());

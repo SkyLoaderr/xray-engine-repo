@@ -39,7 +39,7 @@ IC	shared_str CGameSpawnConstructor::actor_level_name()
 	return							(
 		strconcat(
 			temp,
-			game_graph().header().level(
+			*game_graph().header().level(
 				game_graph().vertex(
 					m_actor->m_tGraphID
 				)->level_id()).name(),
