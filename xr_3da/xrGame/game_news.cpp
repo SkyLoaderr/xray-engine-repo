@@ -120,7 +120,7 @@ LPCSTR GAME_NEWS_DATA::FullText()
 	// Calc current time
 	u32 years, months, days, hours, minutes, seconds, milliseconds;
 	split_time		(receive_time, years, months, days, hours, minutes, seconds, milliseconds);
-	sprintf(time, "%02i:%02i\\n", hours, minutes);
+	sprintf(time, "%02i:%02i \\n", hours, minutes);
 	strconcat(result, locationName, time, newsPhrase);
 
 	full_news_text = result;
