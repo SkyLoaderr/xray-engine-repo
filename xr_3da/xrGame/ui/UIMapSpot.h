@@ -18,6 +18,7 @@ public:
 	virtual ~CUIMapSpot();
 
 	virtual void Draw();
+	virtual void Update();
 
 	//указатель на объект, который показывается
 	//на карте,

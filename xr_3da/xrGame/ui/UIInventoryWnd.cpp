@@ -19,6 +19,8 @@
 using namespace InventoryUtilities;
 
 
+#include "..\\InfoPortion.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -42,9 +44,22 @@ CUIInventoryWnd::~CUIInventoryWnd()
 
 void CUIInventoryWnd::Init()
 {
+
+	/*CInfoPortion info;
+	info.Load(1);
+
+	char* s = info.GetText();*/
+
+
 	CUIXml uiXml;
-	//uiXml.Init("x:\\inventory.xml");
 	uiXml.Init("$game_data$","inventory.xml");
+
+	/*XML_NODE* pNode = uiXml.SearchForAttribute(uiXml.GetRoot(),
+											 "test",
+											 "index",
+											 "12");
+	char* str =  uiXml.Read(pNode, "no val");*/
+	
 	
 	CUIXmlInit xml_init;
 
@@ -574,10 +589,6 @@ void CUIInventoryWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(mouse_action == RBUTTON_DOWN)
 	{
 		if(UIPropertiesBox.IsShown())
-		/*{
-			UIPropertiesBox.Show(x,y);
-		}
-		else*/
 		{
 			UIPropertiesBox.Hide();
 		}
@@ -603,14 +614,14 @@ void CUIInventoryWnd::Draw()
 void CUIInventoryWnd::Update()
 {
 	//CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
-	CEntityAlive *l_pA = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
+	CEntityAlive *pEntityAlive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 
-	if(l_pA) 
+	if(pEntityAlive) 
 	{
-		UIProgressBarHealth.SetProgressPos(s16(l_pA->GetHealth()*1000));
-		UIProgressBarSatiety.SetProgressPos(s16(l_pA->GetSatiety()*1000));
-		UIProgressBarPower.SetProgressPos(s16(l_pA->GetPower()*1000));
-		UIProgressBarRadiation.SetProgressPos(s16(l_pA->GetRadiation()*1000));
+		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->GetHealth()*1000));
+		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->GetSatiety()*1000));
+		UIProgressBarPower.SetProgressPos(s16(pEntityAlive->GetPower()*1000));
+		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->GetRadiation()*1000));
 
 		
 		//убрать объект drag&drop для уже использованной вещи

@@ -31,9 +31,10 @@ public:
 	virtual void SetWidth(int width);
 	virtual void SetHeight(int height);
 
+	virtual void Reset();
+
 	//скролинг
-	void SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
-										UpdateScrollBar();}
+	void SetRange(s16 iMin, s16 iMax);
 	void GetRange(s16& iMin, s16& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
 
 	void SetPageSize(u16 iPage) { m_iPageSize = iPage; UpdateScrollBar();}

@@ -480,3 +480,40 @@ void CSE_ALifeItemPDA::FillProp		(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemDocument
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	m_wDocIndex					= u16(-1);
+}
+
+void CSE_ALifeItemDocument::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_u16			(m_wDocIndex);
+}
+
+void CSE_ALifeItemDocument::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_u16			(m_wDocIndex);
+}
+
+void CSE_ALifeItemDocument::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeItemDocument::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemDocument::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+	PHelper.CreateInt			(items, FHelper.PrepareKey(pref, s_name, "Document index :"), &m_wDocIndex, 0, 65535);
+}
+#endif

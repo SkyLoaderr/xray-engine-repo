@@ -27,10 +27,11 @@ public:
 
 	virtual void Init(int x, int y, int width, int height);
 
+	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+
 	//сообщени€, отправл€емые родительскому окну
 	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
-
-				 
+			 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	

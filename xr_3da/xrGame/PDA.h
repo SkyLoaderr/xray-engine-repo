@@ -1,6 +1,9 @@
 ///////////////////////////////////////////////////////////////
 // PDA.h
 // PDA - пейджер сталкеров и солдат
+// используется для общения, идентификации на карте 
+// и как хранилище всей важной "сюжетной" информации для
+// всех персонажей игры
 ///////////////////////////////////////////////////////////////
 
 
@@ -8,6 +11,7 @@
 
 #include "..\feel_touch.h"
 #include "inventory.h"
+#include "InfoPortion.h"
 
 
 class CInventoryOwner;
@@ -97,6 +101,27 @@ public:
 	DEF_LIST (PDA_MESSAGE_LIST, SPdaMessage);
 	DEFINE_MAP (u32, PDA_MESSAGE_LIST, PDA_LOG_MAP, PDA_LOG_PAIR_IT);
 	PDA_LOG_MAP m_mapPdaLog;
+
+	
+	///////////////////////////////////////
+	// сохранение и передача информации при
+	// помощи PDA
+
+	//знаем ли о инф-ции с заданным номером
+	bool IsKnowAbout(int info_index);
+	//передача информации другому PDA
+	bool TransferInfoToID(u32 pda_ID, int info_index);
+	//событие получения новой порции информации
+	void OnReceiveInfo(int info_index);
+
+
+	//свединия об известной информации
+	DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
+	KNOWN_INFO_MAP m_mapKnownInfo;
+
+	//все вопросы доступные в этот момент
+	INFO_QUESTIONS_LIST m_ActiveQuestionsList;
+	void UpdateQuestions();
 
 protected:
 	//поступление нового сообщения на PDA

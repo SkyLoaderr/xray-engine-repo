@@ -95,4 +95,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 									CSE_ALifeItemPDA(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
+	u16								m_wDocIndex;
+									CSE_ALifeItemDocument(LPCSTR caSection);
+SERVER_ENTITY_DECLARE_END
 #endif

@@ -23,10 +23,10 @@ CUIPropertiesBox::~CUIPropertiesBox()
 
 void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int height)
 {
-	CUIFrameWindow::Init(base_name, x,y, width, height);
+	inherited::Init(base_name, x,y, width, height);
 
 	AttachChild(&m_UIListWnd);
-	m_UIListWnd.Init(x,y, width, height);
+	m_UIListWnd.Init(0,0, width, height);
 
 	m_iClickedElement = -1;
 }
@@ -37,16 +37,16 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &m_UIListWnd)
 	{
-			if(msg == CUIListWnd::LIST_ITEM_CLICKED)
-			{
-				GetParent()->SendMessage(this, PROPERTY_CLICKED);
-				m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
+		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
+		{
+			GetParent()->SendMessage(this, PROPERTY_CLICKED);
+			m_iClickedElement = ((CUIListItem*)pData)->GetIndex();
 
-				Hide();
-			}
+			Hide();
+		}
 	}
 
-	CUIFrameWindow::SendMessage(pWnd, msg, pData);
+	inherited::SendMessage(pWnd, msg, pData);
 }
 
 bool CUIPropertiesBox::AddItem(char*  str, void* pData, int value)
@@ -67,6 +67,8 @@ void CUIPropertiesBox::Show(int x, int y)
 {
 	int x_pos, y_pos;
 
+
+	//выбрать позицию, чтобы окношко полностью влазило в экран
 	if(x+GetWidth()<(int)Device.dwWidth)
 		x_pos = x;
 	else
@@ -79,8 +81,10 @@ void CUIPropertiesBox::Show(int x, int y)
 		
 	MoveWindow(x_pos,y_pos);
 
-	CUIWindow::Show(true);
-	CUIWindow::Enable(true);
+	inherited::Show(true);
+	inherited::Enable(true);
+
+	ResetAll();
 
 	//сразу захватываем ввод мыши
 	GetParent()->SetCapture(this, true);
@@ -97,12 +101,14 @@ void CUIPropertiesBox::Hide()
 	CUIWindow::Show(false);
 	CUIWindow::Enable(false);
 
+	m_pMouseCapturer = NULL;
 	GetParent()->SetCapture(this, false);
 }
 
 void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
 	bool cursor_on_box;
+
 
 	if(x>=0 && x<GetWidth() && y>=0 && y<GetHeight())
 		cursor_on_box = true;
@@ -126,7 +132,7 @@ void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUIPropertiesBox::AutoUpdateHeight()
 {
-	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize());
+	//SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize());
 }
 
 int CUIPropertiesBox::GetClickedIndex() 

@@ -491,7 +491,10 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u16					(u16(0/*iAmmoCurrent*/));
 	P.w_u16					(u16(0/*iAmmoElapsed*/));
 
-	P.w_vec3				(XFORM().c);
+	//////
+	Fvector debug_vector = XFORM().c;
+	P.w_vec3				(debug_vector);
+	//P.w_vec3				(XFORM().c);
 
 	float					_x,_y,_z;
 	XFORM().getHPB			(_y,_x,_z);

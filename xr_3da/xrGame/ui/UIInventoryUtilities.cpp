@@ -52,6 +52,8 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
    	return false;
 }
 
+//static bool ruck_room[1000];
+
 bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 {
 	//bool* ruck_room = (BOOL*)xr_malloc(width*height*sizeof(BOOL));
@@ -69,7 +71,12 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 			ruck_room[i*width + j] = false;
 
 
-	ruck_list = item_list;
+	ruck_list.clear();
+	ruck_list.insert(ruck_list.begin(),
+					 item_list.begin(),
+					 item_list.end());
+					
+	//ruck_list = item_list;
 	
 	ruck_list.sort(GreaterRoomInRuck);
 	
@@ -83,7 +90,7 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		//проверяем последовательно каждую клеточку
 		found_place = false;
 	
-		for(i=0; (i<height - pItem->m_iGridHeight+1) && !found_place; i++)
+		for(i=0; (i<height - pItem->m_iGridHeight +1) && !found_place; i++)
 		{
 			for(j=0; (j<width - pItem->m_iGridWidth +1) && !found_place; j++)
 			{

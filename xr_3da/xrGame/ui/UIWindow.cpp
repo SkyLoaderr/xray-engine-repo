@@ -334,6 +334,20 @@ void CUIWindow::BringAllToTop()
 	}
 }
 
+//дл€ перевода окна и потомков в исходное состо€ние
+void CUIWindow::Reset()
+{
+	m_pOrignMouseCapturer = m_pMouseCapturer = NULL;
+}
+void CUIWindow::ResetAll()
+{
+	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	{
+		(*it)->Reset();
+	}
+}
+
+
 /*
 void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 {

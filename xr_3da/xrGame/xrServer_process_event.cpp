@@ -50,6 +50,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 		}
 		break;
+	case GE_INFO_TRANSFER:
+		SendBroadcast			(0xffffffff,P,MODE);
+		break;
 	case GE_PDA:
 		SendBroadcast			(0xffffffff,P,MODE);
 		break;

@@ -32,6 +32,8 @@ public:
 	void Show();
 	void Hide();
 
+	virtual void Update();
+
 	void ContactLoss();
 	void ContactRestore();
 	void ContactWaitForReply();

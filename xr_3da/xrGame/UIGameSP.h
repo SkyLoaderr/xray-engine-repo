@@ -7,6 +7,7 @@
 #include "ui\\UIPdaWnd.h"
 #include "ui\\UIMapWnd.h"
 #include "ui\\UIDiaryWnd.h"
+#include "ui\\UITalkWnd.h"
 
 class CUIGameSP :
 	public CUIGameCustom
@@ -24,16 +25,17 @@ public:
 	//by Dandy 4.07.03
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
-	void StartTrade();
+	void StartTalk();
 	void StartStopMenu(CUIDialogWnd* pDialog);
-protected:
 
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
 	CUIPdaWnd			PdaMenu;
 	CUIMapWnd			MapMenu;
 	CUIDiaryWnd			DiaryMenu;
-	
+	CUITalkWnd			TalkMenu;
+
+protected:
 	//текущее меню пользователя показанное на экране
 	//NULL если такого сейчас нет
 	CUIDialogWnd* m_pUserMenu;

@@ -238,7 +238,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		return						(FALSE);
 
 	//проспавнить PDA у InventoryOwner
-//	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
@@ -551,7 +551,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		}
 	}
 	VERIFY				(_valid(Position()));
-	m_inventory.Update(DT);
+//	m_inventory.Update(DT);
+	UpdateInventoryOwner(DT);
 	VERIFY				(_valid(Position()));
 
 	m_pPhysics_support->in_shedule_Update(DT);

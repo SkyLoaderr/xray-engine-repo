@@ -631,7 +631,6 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 		
 		SortRuckAndBelt(this);
 		
-		TIItemList l_subs; 
 		l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		
 		while(l_subs.size())
@@ -915,7 +914,7 @@ void CInventory::Update(u32 deltaT)
 		else m_activeSlot = m_nextActiveSlot = 0xffffffff;
 	}
 	
-	// Смотрим, что тут можно подобрать
+	/*// Смотрим, что тут можно подобрать
 	CActor *l_pA = dynamic_cast<CActor*>(m_pOwner);
 	if(l_pA) 
 	{
@@ -927,6 +926,7 @@ void CInventory::Update(u32 deltaT)
 			m_pTarget = NULL;
 		l_pA->setEnabled(true);
 	}
+	*/
 	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
 	for(int i = 0; i < 2; i++) 
@@ -1035,10 +1035,11 @@ PIItem CInventory::Get(const u32 id, bool bSearchRuck)
 
 f32 CInventory::TotalWeight() 
 {
-	f32 l_weight = 0;
-	for(PSPIItem l_it = m_all.begin(); l_it != m_all.end(); l_it++) 
-					l_weight += (*l_it)->m_weight;
-	return l_weight;
+	f32 weight = 0;
+	for(PSPIItem it = m_all.begin(); it != m_all.end(); it++) 
+					weight += (*it)->m_weight;
+	
+	return weight;
 }
 
 void CInventory::Clear()

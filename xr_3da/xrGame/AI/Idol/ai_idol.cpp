@@ -168,7 +168,8 @@ void CAI_Idol::DropItemSendMessage(CObject *O)
 void CAI_Idol::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
-	m_inventory.Update		(dt);
+	//m_inventory.Update		(dt);
+	UpdateInventoryOwner(dt);
 }
 
 void CAI_Idol::g_WeaponBones	(int &L, int &R1, int &R2)

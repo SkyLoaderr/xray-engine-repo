@@ -209,7 +209,7 @@ void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)
 	tpItemToTake = m_tpItemsToTake[0];
 	float fDistSqr = Position().distance_to_sqr(tpItemToTake->Position());
 	for (int i=1, n = (int)m_tpItemsToTake.size(); i<n; i++)
-		if (!m_tpItemsToTake[i]->H_Parent() && (Position().distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr) && (getAI().bfInsideNode(m_tpItemsToTake[i]->AI_Node,m_tpItemsToTake[i]->Position()))) {
+		if (!m_tpItemsToTake[i]->H_Parent() && (Position().distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr) && m_tpItemsToTake[i]->AI_Node && (getAI().bfInsideNode(m_tpItemsToTake[i]->AI_Node,m_tpItemsToTake[i]->Position()))) {
 			fDistSqr = Position().distance_to_sqr(m_tpItemsToTake[i]->Position());
 			tpItemToTake = m_tpItemsToTake[i];
 		}

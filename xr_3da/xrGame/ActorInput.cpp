@@ -25,10 +25,26 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		return;
 	}
 
-	if (!g_Alive())												return;
+	if (!g_Alive()) return;
 
-	if (cmd == kUSE) {
-		if (!GetTrade()->IsInTradeState()) {
+	if (cmd == kUSE) 
+	{
+		if(!IsTalking())
+		{
+			//предложить поговорить с нами
+			if(m_pPersonWeLookingAt && m_pPersonWeLookingAt->OfferTalk(this))
+			{	
+				StartTalk(m_pPersonWeLookingAt);
+
+				//только если находимся в режиме single
+				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				if(pGameSP)pGameSP->StartTalk();
+			}
+
+		}
+		
+		/*if (!GetTrade()->IsInTradeState()) 
+		{
 			if (GetTrade()->CanTrade()) {
 				GetTrade()->Communicate();		
 				//если предложение начать торговлю принято, запустить окно торговли
@@ -40,7 +56,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 				}
 				return;
 			}
-		}
+		}*/
 	}
 
 	if(m_vehicle && cmd!= kUSE)

@@ -24,11 +24,15 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 
 	// Определяем потомка этого экземпляра класса
 	pTrader = dynamic_cast<CAI_Trader *>(p_io);
-	if (pTrader) pThis.Set(TT_TRADER, pTrader, p_io);
-	else {
+	if (pTrader) 
+		pThis.Set(TT_TRADER, pTrader, p_io);
+	else 
+	{
 		pActor = dynamic_cast<CActor *>(p_io);
-		if (pActor) pThis.Set(TT_ACTOR, pActor, p_io);
-		else {
+		if (pActor) 
+			pThis.Set(TT_ACTOR, pActor, p_io);
+		else 
+		{
 			pStalker = dynamic_cast<CAI_Stalker *>(p_io);
 			if (pStalker) pThis.Set(TT_STALKER, pStalker, p_io);
 			else Msg("Incorrect Inventory owner!");
@@ -36,15 +40,16 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 	}
 	
 	// Загрузка коэффициентов торговли
-	if (!m_tTradeFactors.Loaded) {
-			m_tTradeFactors.TraderBuyPriceFactor			= pSettings->r_float("trade","trader_buy_price_factor");
-			m_tTradeFactors.TraderSellPriceFactor			= pSettings->r_float("trade","trader_sell_price_factor");
-			m_tTradeFactors.StalkerNeutralBuyPriceFactor	= pSettings->r_float("trade","stalker_neutral_buy_price_factor");
-			m_tTradeFactors.StalkerNeutralSellPriceFactor	= pSettings->r_float("trade","stalker_neutral_sell_price_factor");
-			m_tTradeFactors.StalkerFriendBuyPriceFactor		= pSettings->r_float("trade","stalker_friend_buy_price_factor");
-			m_tTradeFactors.StalkerFriendSellPriceFactor	= pSettings->r_float("trade","stalker_friend_sell_price_factor");
-			m_tTradeFactors.Loaded = true;
-		}
+	if (!m_tTradeFactors.Loaded) 
+	{
+		m_tTradeFactors.TraderBuyPriceFactor			= pSettings->r_float("trade","trader_buy_price_factor");
+		m_tTradeFactors.TraderSellPriceFactor			= pSettings->r_float("trade","trader_sell_price_factor");
+		m_tTradeFactors.StalkerNeutralBuyPriceFactor	= pSettings->r_float("trade","stalker_neutral_buy_price_factor");
+		m_tTradeFactors.StalkerNeutralSellPriceFactor	= pSettings->r_float("trade","stalker_neutral_sell_price_factor");
+		m_tTradeFactors.StalkerFriendBuyPriceFactor		= pSettings->r_float("trade","stalker_friend_buy_price_factor");
+		m_tTradeFactors.StalkerFriendSellPriceFactor	= pSettings->r_float("trade","stalker_friend_sell_price_factor");
+		m_tTradeFactors.Loaded = true;
+	}
 }
 
 CTrade::~CTrade()
@@ -57,8 +62,10 @@ bool CTrade::CanTrade()
 	CEntity *pEntity;
 
 	Level().ObjectSpace.GetNearest(pThis.base->Position(),2.f);
-	if (!Level().ObjectSpace.q_nearest.empty()) {
-		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) {
+	if (!Level().ObjectSpace.q_nearest.empty()) 
+	{
+		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) 
+		{
 			// Может ли объект торговать
 			pEntity = dynamic_cast<CEntity *>(Level().ObjectSpace.q_nearest[i]);
 			if (pEntity && !pEntity->g_Alive()) return false;
@@ -70,7 +77,8 @@ bool CTrade::CanTrade()
 
 	// Объект рядом
 	float dist = pPartner.base->Position().distance_to(pThis.base->Position());
-	if (dist < 0.5f || dist > 1.5f)  {
+	if (dist < 0.5f || dist > 1.5f)  
+	{
 		RemovePartner();
 		return false;
 	}
@@ -84,8 +92,10 @@ bool CTrade::CanTrade()
 	yaw = angle_normalize(yaw);
 	yaw2 = angle_normalize(yaw2);
 
-	float Res = R2D(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : PI_MUL_2 - _abs(yaw - yaw2));
-	if (Res < 165.f || Res > 195.f) {
+	float Res = R2D(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : 
+								 PI_MUL_2 - _abs(yaw - yaw2));
+	if (Res < 165.f || Res > 195.f) 
+	{
 		RemovePartner();
 		return false;
 	}
@@ -120,18 +130,22 @@ bool CTrade::SetPartner(CEntity *p)
 	CAI_Stalker *pStalker;
 
 	pTrader = dynamic_cast<CAI_Trader *>(p);
-	if (pTrader && (pTrader != pThis.base))  pPartner.Set(TT_TRADER, pTrader, pTrader);
-	else {
+	if (pTrader && (pTrader != pThis.base))  
+		pPartner.Set(TT_TRADER, pTrader, pTrader);
+	else 
+	{
 		pActor = dynamic_cast<CActor *>(p);
-		if (pActor && (pActor != pThis.base)) pPartner.Set(TT_ACTOR, pActor, pActor);
-		else {
+		if (pActor && (pActor != pThis.base)) 
+			pPartner.Set(TT_ACTOR, pActor, pActor);
+		else 
+		{
 			pStalker = dynamic_cast<CAI_Stalker *>(p);
-			if (pStalker && (pStalker != pThis.base)) pPartner.Set(TT_STALKER, pStalker, pStalker);
+			if (pStalker && (pStalker != pThis.base)) 
+				pPartner.Set(TT_STALKER, pStalker, pStalker);
 			else return false;
 		}
 	}
 	return true;
-
 }
 
 
@@ -147,7 +161,8 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 	Msg("--TRADE:: [%s]: a. Your name is %s", pThis.base->cName(),pPartner.base->cName());
 	
 	string64	s;
-	switch (pPartner.type) {
+	switch (pPartner.type) 
+	{
 		case TT_TRADER: strcpy(s, "trader"); break;
 		case TT_STALKER: 
 		case TT_ACTOR: strcpy(s, "stalker"); break;
@@ -155,7 +170,8 @@ bool CTrade::OfferTrade(SInventoryOwner man)
 	
 	Msg("--TRADE:: [%s]: b. You are a %s", pThis.base->cName(),s);
 	
-	switch (pPartner.inv_owner->m_tRank) {
+	switch (pPartner.inv_owner->m_tRank) 
+	{
 		case eStalkerRankNone: strcpy(s,"NO_RANK"); break;
 		case eStalkerRankNovice: strcpy(s,"NOVICE"); break;
 		case eStalkerRankExperienced: strcpy(s,"EXPERIENCED"); break;
@@ -180,6 +196,12 @@ void CTrade::StartTrade()
 	m_dwLastTradeTime =  Level().timeServer();
 }
 
+void CTrade::StartTrade(CInventoryOwner* pInvOwner)
+{
+	SetPartner(dynamic_cast<CEntity*>(pInvOwner));
+	StartTrade();
+}
+
 void CTrade::StopTrade()
 {
 	TradeState = false;
@@ -190,12 +212,16 @@ void CTrade::StopTrade()
 
 void CTrade::UpdateTrade()
 {
-	if (TradeState) {
+	/*if (TradeState) 
+	{
 		u32 cur_time = Level().timeServer();
-		if (m_dwLastTradeTime + 20000 < cur_time) { // если через 10 сек нет команды - прервать
+		
+		// если через 10 сек нет команды - прервать
+		if (m_dwLastTradeTime + 20000 < cur_time) 
+		{ 
 			StopTrade();
 		}
-	}
+	}*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +263,9 @@ void CTrade::ShowItems()
 	for ( ; I != E; I++) {
 		if (strcmp(CurName, (*I)->Name()) != 0) {
 			if (num != 0) {
-				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
+				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
+					pThis.base->cName(),++i,
+					CurName,l_dwCost, num);
 			} 
 			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
 			num = 1;
@@ -266,7 +294,8 @@ void CTrade::ShowArtifactPrices()
 	if (TradeState) m_dwLastTradeTime = Level().timeServer();
 	else { Msg("I'm not ready to trade"); return;}
 
-	if (pThis.type == TT_TRADER) {
+	if (pThis.type == TT_TRADER) 
+	{
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
 		Msg							("--TRADE:: [%s]: I need the following artefacts :",pThis.base->cName());
@@ -397,7 +426,7 @@ CTrade*	CTrade::GetPartnerTrade()
 }
 CInventory*	CTrade::GetPartnerInventory()
 {
-	return &pPartner.inv_owner->m_inventory;
+	return &GetTradeInv(pPartner);
 }
 
 CInventoryOwner* CTrade::GetPartner()

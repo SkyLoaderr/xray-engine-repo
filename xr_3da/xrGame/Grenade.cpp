@@ -198,6 +198,8 @@ void CGrenade::Destroy()
 
 void CGrenade::Explode() 
 {
+#pragma todo("Yura to Yura: adjust explosion effect to objects")
+
 	setVisible(false);
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
 	Fvector l_dir; f32 l_dst;
@@ -218,6 +220,8 @@ void CGrenade::Explode()
 		l_dst = l_dir.magnitude(); 
 		l_dir.div(l_dst); l_dir.y += .2f;
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
+		
+		//взрывная волна
 		if(l_pGO->Visual()) 
 		{
 			const Fbox &l_b1 = l_pGO->BoundingBox(); 
@@ -272,6 +276,8 @@ void CGrenade::Explode()
 	Collide::ray_query RQ;
 	setEnabled(false);
 	
+	
+	//осколки
 	for(s32 i = 0; i < m_frags; i++) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), 
@@ -304,6 +310,7 @@ void CGrenade::Explode()
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
+	
 	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 
 	for(s32 i = 0; i < l_c; i++) 

@@ -35,6 +35,8 @@ void CUIButton::Reset()
 	m_eButtonState = BUTTON_NORMAL;
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
+
+	inherited::Reset();
 }
 
 

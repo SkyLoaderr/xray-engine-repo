@@ -123,7 +123,7 @@ void CUIMapBackground::Update()
 	UpdateMapSpots();
 
 
-	//ignore CUIButton update
+	//ignore CUIButton update, call CUIWindow not inherited::Update()
 	CUIWindow::Update();
 }
 

@@ -817,6 +817,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "medkit.h"
 #include "antirad.h"
 #include "bread.h"
+#include "infodocument.h"
 
 #include "ScientificOutfit.h"
 #include "StalkerOutfit.h"
@@ -906,6 +907,8 @@ extern "C" {
 		case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
 		case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
 		case CLSID_IITEM_BREAD:			P = xr_new<CBread>();				break;
+		//Info Document
+		case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
 
 		//Equipment outfit
 		case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;

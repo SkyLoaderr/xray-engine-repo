@@ -41,6 +41,9 @@ void CUIPdaContactsWnd::Init(int x, int y, int width, int height)
 
 void CUIPdaContactsWnd::Update()
 {
+	RECT rect = GetAbsoluteRect();
+	GetFont()->Out((float)rect.left+10, (float)rect.top+10,  "PDA");
+
 	inherited::Update();
 }
 

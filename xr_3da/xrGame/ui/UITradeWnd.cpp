@@ -78,6 +78,10 @@ void CUITradeWnd::Init()
 	AttachChild(&UIOthersItemsPrice);
 	UIOthersItemsPrice.Init(360,515,150,30);
 
+	AttachChild(&UIItemDescription);
+	UIItemDescription.Init(350,55,250,40);
+
+
 
 
 
@@ -127,24 +131,22 @@ void CUITradeWnd::Init()
 	AttachChild(&UIPerformTradeButton);
 	xml_init.InitButton(uiXml, "button", 0, &UIPerformTradeButton);
 
+	AttachChild(&UIToTalkButton);
+	xml_init.InitButton(uiXml, "button", 1, &UIToTalkButton);
+
 
 }
 
-void CUITradeWnd::InitTrade()
+void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 {
-	CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
-	if (!pActor || !pActor->GetTrade()->IsInTradeState()) return;
-
-	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
-	if(!m_pInvOwner) return;
-
-	m_pOthersInvOwner = pActor->GetTrade()->GetPartner();
+	m_pInvOwner = pOur;
+	m_pOthersInvOwner = pOthers;
 	
 	m_pInv = &m_pInvOwner->m_inventory;
-	m_pOthersInv = pActor->GetTrade()->GetPartnerInventory();
+	m_pOthersInv = pOur->GetTrade()->GetPartnerInventory();
 	
-	m_pTrade = pActor->GetTrade();
-	m_pOthersTrade = pActor->GetTrade()->GetPartnerTrade();
+	m_pTrade = pOur->GetTrade();
+	m_pOthersTrade = pOur->GetTrade()->GetPartnerTrade();
 	
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
@@ -162,7 +164,11 @@ void CUITradeWnd::InitTrade()
 //как только подняли элемент, сделать его текущим
 void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
+	if(pWnd == &UIToTalkButton && msg == CUIButton::BUTTON_CLICKED)
+	{
+		GetParent()->SendMessage(this, TRADE_WND_CLOSED);
+	}
+	else if(pWnd == &UIMessageBox && msg == CUIMessageBox::OK_CLICKED)
 	{
 		GetTop()->SetCapture(&UIMessageBox, false);
 		UIMessageBox.Hide();
@@ -178,6 +184,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		m_pCurrentItem = pInvItem;
 //		UIStaticText.SetText(pInvItem->NameComplex());
+		UIItemDescription.SetText((LPSTR)m_pCurrentItem->cName());
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -185,6 +192,7 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		m_pCurrentItem = pInvItem;
 		//UIStaticText.SetText(pInvItem->NameComplex());
+		UIItemDescription.SetText((LPSTR)m_pCurrentItem->cName());
 
 		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList)
 			ToOurTrade();
@@ -219,34 +227,52 @@ void CUITradeWnd::Draw()
 void CUITradeWnd::Update()
 {
 	//остановить торговлю, если нужно
-	CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+	/*CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
 
 	if (pActor && !pActor->GetTrade()->IsInTradeState())
 	{
 		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if(pGameSP)pGameSP->StartStopMenu(this);
+	}*/
+	//убрать объект drag&drop для уже использованной вещи
+	for(int i = 0; i <m_iUsedItems; i++) 
+	{
+		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
+		if(pItem && !pItem->Useful())
+		{
+			m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
+			m_vDragDropItems[i].SetData(NULL);
+
+			UpdatePrices();
+
+		}
 	}
+
 
 	inherited::Update();
 }
 
 void CUITradeWnd::Show()
 {
-	InitTrade();
-	inherited::Show();
+	inherited::Show(true);
+	inherited::Enable(true);
+
+	ResetAll();
 }
 
 void CUITradeWnd::Hide()
 {
-	inherited::Hide();
+	inherited::Show(false);
+	inherited::Enable(false);
 
-	CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
+
+	/*CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
 	if(!pActor) return;
 
 	if (pActor->GetTrade()->IsInTradeState())
 	{
 		pActor->GetTrade()->StopTrade();
-	}
+	}*/
 }
 
 
@@ -568,8 +594,20 @@ void CUITradeWnd::UpdateLists()
 	}
 
 
-	ruck_list = m_pOthersInv->m_ruck;
+	//ruck_list = m_pOthersInv->m_ruck;
+	ruck_list.clear();
+	ruck_list.insert(ruck_list.begin(),
+					 m_pOthersInv->m_ruck.begin(),
+					 m_pOthersInv->m_ruck.end());
+	ruck_list.insert(ruck_list.end(),
+					 m_pOthersInv->m_belt.begin(),
+					 m_pOthersInv->m_belt.end());
+
+					 /*m_pOthersInv->m_ruck.begin(),
+					 m_pOthersInv->m_ruck.end());*/
+
 	ruck_list.sort(GreaterRoomInRuck);
+
 
 
 	//Чужой рюкзак

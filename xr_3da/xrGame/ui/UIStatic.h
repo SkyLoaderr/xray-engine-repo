@@ -9,12 +9,13 @@
 
 
 #include "uiwindow.h"
+#include "uistring.h"
 
 
 #include "..\uistaticitem.h"
 
 
-DEFINE_VECTOR	(char, STRING, STRING_IT);
+
 
 
 class CUIStatic : public CUIWindow  
@@ -88,7 +89,10 @@ protected:
 	//выводимый текст
 	int outX;
 	int outY;
-	char* buf_str;	
+
+	//буфер в который записывается уже отформатированная строка
+	xr_vector<char> buf_str;
+	u32 str_len;
 
 	bool new_word;
 	int word_length;

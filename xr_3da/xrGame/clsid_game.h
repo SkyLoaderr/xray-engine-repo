@@ -123,6 +123,7 @@
 // PDA
 #define CLSID_DEVICE_PDA			MK_CLSID('D','_','P','D','A',' ',' ',' ')
 
+
 // Devices
 #define CLSID_DEVICE_TORCH			MK_CLSID('D','_','T','O','R','C','H',' ')
 
@@ -132,6 +133,10 @@
 #define CLSID_IITEM_MEDKIT			MK_CLSID('I','I','_','M','E','D','K','I')
 #define CLSID_IITEM_BREAD			MK_CLSID('I','I','_','B','R','E','A','D')
 #define CLSID_IITEM_ANTIRAD			MK_CLSID('I','I','_','A','N','T','I','R')
+
+// Info Document
+#define CLSID_IITEM_DOCUMENT		MK_CLSID('I','I','_','D','O','C',' ',' ')
+
 
 
 // Grenades

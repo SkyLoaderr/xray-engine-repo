@@ -33,15 +33,17 @@ void CUIListWnd::Init(int x, int y, int width, int height)
 	m_iFirstShownIndex = 0;
 	m_iRowNum = height/m_iItemHeight;
 
+
+	UpdateList();
+
+
+	//добавить полосу прокрутки
 	AttachChild(&m_ScrollBar);
 	m_ScrollBar.Init(width-CUIScrollBar::SCROLLBAR_WIDTH,
 						0,height, false);
 
-	UpdateList();
-
-	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(m_iRowNum));
+	m_ScrollBar.SetRange(0,0);
+	m_ScrollBar.SetPageSize(s16(0));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 }
 
@@ -70,7 +72,8 @@ bool CUIListWnd::AddItem(char*  str, void* pData, int value)
 
 	//обновить полосу прокрутки
 	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(m_iRowNum));
+	m_ScrollBar.SetPageSize(s16(
+							(u32)m_iRowNum<m_ItemList.size()?m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 
 
@@ -97,8 +100,9 @@ void CUIListWnd::RemoveItem(int index)
 	UpdateList();
 
 	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(m_iRowNum));
+	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1>0?m_ItemList.size()-1:0));
+	m_ScrollBar.SetPageSize(s16((u32)m_iRowNum<m_ItemList.size()?
+									 m_iRowNum:m_ItemList.size()));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 }
 
@@ -141,8 +145,8 @@ void CUIListWnd::RemoveAll()
 	Reset();
 
 	//обновить полосу прокрутки
-	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
-	m_ScrollBar.SetPageSize(s16(m_iRowNum));
+	m_ScrollBar.SetRange(0,0);
+	m_ScrollBar.SetPageSize(0);
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
 }
 
@@ -237,6 +241,10 @@ void CUIListWnd::Reset()
 	{
 		(*it)->Reset();
 	}
+
+	ResetAll();
+
+	inherited::Reset();
 }
 
 //находит первый элемент с заданной pData, иначе -1
@@ -249,3 +257,14 @@ int CUIListWnd::FindItem(void* pData)
 	}
 	return -1;
 }
+
+void CUIListWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+{
+	if(mouse_action == LBUTTON_DB_CLICK) 
+	{
+		mouse_action = CUIWindow::LBUTTON_DOWN;
+	}
+	inherited::OnMouse(x, y, mouse_action);
+}
+
+//|| mouse_action == LBUTTON_DB_CLICK

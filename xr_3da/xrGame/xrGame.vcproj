@@ -868,19 +868,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="_actor_demo"
-					Filter="">
-					<File
-						RelativePath=".\DemoActor.cpp">
-					</File>
-					<File
-						RelativePath=".\DemoActor.h">
-					</File>
-					<File
-						RelativePath=".\DemoActorCameras.cpp">
-					</File>
-				</Filter>
-				<Filter
 					Name="Basic"
 					Filter="">
 					<File
@@ -1452,8 +1439,14 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="PDA"
+						Name="PDA &amp; information"
 						Filter="">
+						<File
+							RelativePath=".\InfoPortion.cpp">
+						</File>
+						<File
+							RelativePath=".\InfoPortion.h">
+						</File>
 						<File
 							RelativePath=".\PDA.cpp">
 						</File>
@@ -1515,6 +1508,16 @@
 						</File>
 						<File
 							RelativePath=".\StalkerOutfit.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Documents"
+						Filter="">
+						<File
+							RelativePath=".\InfoDocument.cpp">
+						</File>
+						<File
+							RelativePath=".\InfoDocument.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -1689,6 +1692,19 @@
 					</File>
 					<File
 						RelativePath="HangingLamp.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="_actor_demo"
+					Filter="">
+					<File
+						RelativePath=".\DemoActor.cpp">
+					</File>
+					<File
+						RelativePath=".\DemoActor.h">
+					</File>
+					<File
+						RelativePath=".\DemoActorCameras.cpp">
 					</File>
 				</Filter>
 			</Filter>
@@ -2011,6 +2027,22 @@
 							RelativePath=".\ui\UIDiaryWnd.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="TalkWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UITalkDialogWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UITalkDialogWnd.h">
+						</File>
+						<File
+							RelativePath=".\ui\UITalkWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UITalkWnd.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Single"
@@ -2199,6 +2231,16 @@
 						</File>
 						<File
 							RelativePath=".\ui\UIProgressBar.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="String"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIString.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIString.h">
 						</File>
 					</Filter>
 				</Filter>

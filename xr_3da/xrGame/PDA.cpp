@@ -10,6 +10,9 @@
 #include "PhysicsShell.h"
 #include "Entity.h"
 
+#include "actor.h"
+
+
 CPda::CPda(void) 
 {
 	m_fRadius = 10.0f;
@@ -339,6 +342,17 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 			}
 		}
 		break;
+	case GE_INFO_TRANSFER:
+		{
+			u16				id;
+			s32				info_index;
+	
+			P.r_u16			(id);				//отправитель
+			P.r_s32			(info_index);		//номер полученной информации
+
+			OnReceiveInfo(info_index);
+		}
+		break;
 	}
 
 	inherited::OnEvent(P,type);
@@ -371,3 +385,85 @@ bool CPda::WaitForReply(u32 pda_ID)
 
 }
 
+
+///////////////////////////////////////
+// сохранение и передача информации при
+// помощи PDA
+
+//знаем ли о инф-ции с заданным номером
+bool CPda::IsKnowAbout(int info_index)
+{
+	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
+
+	//нам уже известна эта информация
+	if(it!=m_mapKnownInfo.end()) return true;
+
+	return false;
+}
+
+//передача информации другому PDA
+bool CPda::TransferInfoToID(u32 pda_ID, int info_index)
+{
+	if(!IsKnowAbout(info_index)) return false;
+
+	//создать и отправить пакет
+	NET_Packet		P;
+	u_EventGen		(P,GE_INFO_TRANSFER,pda_ID);
+	P.w_u16			(u16(ID()));				//отправитель
+	P.w_s32			(info_index);				//сообщение
+	u_EventSend		(P);
+
+	return true;
+}
+
+//получение новой порции информации
+void CPda::OnReceiveInfo(int info_index)
+{
+	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
+
+	//нам уже известна эта информация
+	if(it!=m_mapKnownInfo.end()) return;
+
+	//что означает FALSE пока не известно....
+	//главное что элемент есть и мы об этом знаем
+	m_mapKnownInfo[info_index] = FALSE;
+
+	//оповестить владельца PDA
+	GetOriginalOwner()->OnReceiveInfo(info_index);
+}
+
+//создать список всех возможных вопросов
+void CPda::UpdateQuestions()
+{
+	m_ActiveQuestionsList.clear();
+
+
+	for(KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.begin();
+		it != m_mapKnownInfo.end(); it++)
+	{
+		//подгрузить кусочек информации с которым мы работаем
+		CInfoPortion info_portion;
+		info_portion.Load((*it).first);
+		
+		for(INFO_QUESTIONS_LIST_it it1 = info_portion.m_QuestionsList.begin();
+								   it1 != info_portion.m_QuestionsList.end();
+								   it1++)
+		{
+			//проверить осталась ли еще неизвестная нам информация
+			//которую мы можем получить в ответ на вопрос
+			SInfoQuestion question = *it1;
+
+			INFO_INDEX_LIST_it it2;
+			for(it2 = question.IndexList.begin();
+				it2 != question.IndexList.end();
+				it2++)
+			{
+				if(!IsKnowAbout(*it2))
+				{
+					m_ActiveQuestionsList.push_back(question);
+					break;
+				}
+			}
+		}
+	}
+}

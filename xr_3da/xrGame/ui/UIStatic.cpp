@@ -88,7 +88,6 @@ void CUIStatic::Update()
 	//форматированный вывод текста
 	/////////////////////////////////////
 
-	
 	//положение пишущей каретки
 	curretX = 0;
 	curretY = 0;
@@ -96,9 +95,8 @@ void CUIStatic::Update()
 	outX = 0;
 	outY = 0;
 
-	u32 str_len = (u32)strlen(m_str);
-
-	buf_str = (char*)xr_malloc(str_len);
+	//u32 str_len = (u32)strlen(m_str);
+	//buf_str = (char*)xr_malloc(str_len*sizeof(char));
 	
 	new_word = false;
 	word_length = 0;
@@ -181,7 +179,7 @@ void CUIStatic::Update()
 		}
 	}
 
-	xr_free(buf_str);
+	//xr_free(buf_str);
 }
 
 void CUIStatic::WordOut()
@@ -192,7 +190,7 @@ void CUIStatic::WordOut()
 	if(new_word)
 	{
 		buf_str[word_length] = 0;
-		word_width = (int)GetFont()->SizeOf(buf_str);
+		word_width = (int)GetFont()->SizeOf(&buf_str.front());
 
 		if(curretX+word_width<GetWidth())
 		{
@@ -210,7 +208,7 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		GetFont()->Out((float)rect.left+outX, (float)rect.top+outY,  buf_str);
+		GetFont()->Out((float)rect.left+outX, (float)rect.top+outY,  &buf_str.front());
 
 		word_length = 0;
 		new_word = false;
@@ -458,4 +456,9 @@ void CUIStatic::SetText(LPSTR str)
 	m_sEdit.push_back(0);
 
 	m_str = &m_sEdit.front();
+	
+	buf_str.clear();
+	str_len = m_sEdit.size();
+	buf_str.resize(str_len+1);
+	
 }

@@ -53,6 +53,7 @@ public:
 
 	bool		CanTrade();								// Проверяет, может ли данный объект торговать и устанавливает pPartner
 	
+	void		StartTrade(CInventoryOwner* pInvOwner);
 	void		StartTrade();
 	void		StopTrade();
 	bool		IsInTradeState() {return TradeState;}

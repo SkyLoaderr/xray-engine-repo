@@ -13,6 +13,8 @@
 #include "hudmanager.h"
 #include "Actor_Flags.h"
 #include "UI.h"
+#include "PDA.h"
+#include "UIGameSP.h"
 
 // breakpoints
 #include "..\xr_input.h"
@@ -114,6 +116,8 @@ CActor::CActor() : CEntityAlive()
 
 	//разрешить использование пояса в inventory
 	m_inventory.m_bBeltUseful = true;
+
+	m_pPersonWeLookingAt = NULL;
 
 }
 
@@ -332,7 +336,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
-
 	
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
@@ -1048,8 +1051,30 @@ void CActor::shedule_Update	(u32 DT)
 		sndLanding.feedback->set_volume(.2f);
 	}
 
-	m_inventory.Update(DT);
-	GetTrade()->UpdateTrade();
+
+
+	// Кто-то или что-то, на что мы смотрим
+	setEnabled(false);
+	Collide::ray_query l_rq;
+	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
+										 Device.vCameraDirection, 
+									 	 m_inventory.m_takeDist,  l_rq)) 
+	{
+		m_inventory.m_pTarget = dynamic_cast<PIItem>(l_rq.O);
+		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(l_rq.O);
+	}
+	else 
+	{
+		m_inventory.m_pTarget = NULL;
+		m_pPersonWeLookingAt = NULL;
+	}
+	setEnabled(true);
+
+
+	//обновление инвентаря и торговли
+	//m_inventory.Update(DT);
+	//GetTrade()->UpdateTrade();
+	UpdateInventoryOwner(DT);
 
 	//update actor health condition
 	//m_actorCondition.Update();
@@ -1474,4 +1499,22 @@ void CActor::UpdateCondition()
 	}
 	
 	CActorCondition::UpdateCondition();
+}
+
+//information receive
+void CActor::OnReceiveInfo(int info_index)
+{
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(!pGameSP) return;
+
+	if(pGameSP->TalkMenu.IsShown())
+	{
+		if(pGameSP->TalkMenu.IsShown())
+		{
+			pGameSP->TalkMenu.UpdateQuestions();
+		}
+	}
+
+	CInventoryOwner::OnReceiveInfo(info_index);
 }

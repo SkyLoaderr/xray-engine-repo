@@ -268,7 +268,10 @@ void CGameObject::renderable_Render	()
 
 float CGameObject::renderable_Ambient	()
 {
-	return AI_Node?float(AI_Node->light):255;
+	#pragma todo("by Dandy: temporary change, to prevent error")
+//	return AI_Node?float(AI_Node->light):255;
+	return 255;
+
 }
 
 CObject::SavedPosition CGameObject::ps_Element(u32 ID)

@@ -35,8 +35,8 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 	{
 		CUIWindow::Init(x,y, SCROLLBAR_WIDTH, length);
 		m_DecButton.Init("ui\\ui_scb_rigth_arrow",0, 0,	SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init("ui\\ui_scb_left_arrow", 0, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, 
-													 length);
+		m_IncButton.Init("ui\\ui_scb_left_arrow", 0, length-SCROLLBAR_HEIGHT, 
+						  SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 		
 
 		m_ScrollBox.Init(0, SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, length/2, m_bIsHorizontal);
@@ -52,6 +52,8 @@ void CUIScrollBar::Init(int x, int y, int length, bool bIsHorizontal)
 	UpdateScrollBar();
 }
 
+
+//корректировка размеров скроллера
 void CUIScrollBar::SetWidth(int width)
 {
 	if(width<=0) width = 1;
@@ -79,6 +81,12 @@ void CUIScrollBar::UpdateScrollBar()
 									(GetWidth()-2*SCROLLBAR_WIDTH)
 									*scrollbar_unit*(m_iScrollPos-m_iMinPos)),  
 							          m_ScrollBox.GetWndRect().top);
+		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
+		{
+			m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
+											m_ScrollBox.GetWidth(), 
+											m_ScrollBox.GetWndRect().top);
+		}
 	}
 	else
 	{
@@ -89,6 +97,14 @@ void CUIScrollBar::UpdateScrollBar()
 								(int)( SCROLLBAR_HEIGHT+
 								(GetHeight()-2*SCROLLBAR_HEIGHT)*
 								scrollbar_unit*(m_iScrollPos-m_iMinPos)));
+
+		//в крайней позиции подправить положение scrollbox
+		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
+		{
+			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
+									GetHeight() - SCROLLBAR_HEIGHT - 
+									m_ScrollBox.GetHeight());
+		}
 	}
 }
 
@@ -160,11 +176,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 							(m_iMaxPos-m_iMinPos+1)/
 							((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos;
 
-				if(m_iScrollPos+m_iPageSize>m_iMaxPos) 
-					m_iScrollPos = m_iMaxPos - m_iPageSize+1;
+				if(m_iScrollPos+m_iPageSize>m_iMaxPos)
+							m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
 				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
-
-
 
 				GetParent()->SendMessage(this, VSCROLL);
 			}
@@ -232,4 +246,21 @@ bool CUIScrollBar::ScrollInc()
 	}
 
 	return false;	
+}
+
+void CUIScrollBar::SetRange(s16 iMin, s16 iMax) 
+{
+	m_iMinPos = iMin;  
+	m_iMaxPos = iMax;
+
+	R_ASSERT(iMax>=iMin);
+	
+	UpdateScrollBar();
+}
+
+void CUIScrollBar::Reset()
+{
+	ResetAll();
+
+	inherited::Reset();
 }

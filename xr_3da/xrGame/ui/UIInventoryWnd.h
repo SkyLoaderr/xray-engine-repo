@@ -78,10 +78,10 @@ protected:
 	CUIDragDropList		UIBeltList;
 
 
-	CUIProgressBar UIProgressBarHealth;
-	CUIProgressBar UIProgressBarSatiety;
-	CUIProgressBar UIProgressBarPower;
-	CUIProgressBar UIProgressBarRadiation;
+	CUIProgressBar		UIProgressBarHealth;
+	CUIProgressBar		UIProgressBarSatiety;
+	CUIProgressBar		UIProgressBarPower;
+	CUIProgressBar		UIProgressBarRadiation;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;

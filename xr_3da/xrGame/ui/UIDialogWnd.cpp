@@ -28,6 +28,8 @@ void CUIDialogWnd::Show()
 
 	m_bCrosshair = true;
 	if(m_bCrosshair) Console->Execute("hud_crosshair 0");
+
+	ResetAll();
 }
 
 

@@ -44,10 +44,10 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-/*	case DIK_T:
-		StartStopMenu(&TradeMenu);
+	case DIK_T:
+		StartStopMenu(&TalkMenu);
 		return true;
-		break;*/
+		break;
 	case DIK_P:
 		StartStopMenu(&PdaMenu);
 		return true;
@@ -128,7 +128,7 @@ void CUIGameSP::StartStopMenu(CUIDialogWnd* pDialog)
 		}
 	}
 }
-void CUIGameSP::StartTrade()
+void CUIGameSP::StartTalk()
 {
-	StartStopMenu(&TradeMenu);
+	StartStopMenu(&TalkMenu);
 }

@@ -50,6 +50,10 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	cNameVisual_set					(l_tpTrader->get_visual());
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
+
+	//проспавнить PDA у InventoryOwner
+	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+
 	
 	//r_torso_current.yaw			= r_torso_target.yaw	= -tpTrader->o_Angle.y;
 	//r_torso_current.pitch			= r_torso_target.pitch	= 0;
@@ -174,8 +178,9 @@ void CAI_Trader::DropItemSendMessage(CObject *O)
 void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
-	m_inventory.Update			(dt);
-	GetTrade()->UpdateTrade		();
+	//m_inventory.Update			(dt);
+	//GetTrade()->UpdateTrade		();
+	UpdateInventoryOwner(dt);
 
 	Think();
 }

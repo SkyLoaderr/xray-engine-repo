@@ -57,34 +57,34 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	if(pWnd == &UIBackButton)
 	{
-			if(msg == CUIButton::BUTTON_CLICKED)
-			{
-				GetTop()->SendMessage(this, BACK_BUTTON_CLICKED);
-			}
+		if(msg == CUIButton::BUTTON_CLICKED)
+		{
+			GetTop()->SendMessage(this, BACK_BUTTON_CLICKED);
+		}
 	}
 	else if(pWnd == &UIMsgButton1)
 	{
-			if(msg == CUIButton::BUTTON_CLICKED)
-			{
-				m_iMsgNum = 0;
-				GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
-			}
+		if(msg == CUIButton::BUTTON_CLICKED)
+		{
+			m_iMsgNum = 0;
+			GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
+		}
 	}
 	else if(pWnd == &UIMsgButton2)
 	{
-			if(msg == CUIButton::BUTTON_CLICKED)
-			{
-				m_iMsgNum = 1;
-				GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
-			}
+		if(msg == CUIButton::BUTTON_CLICKED)
+		{
+			m_iMsgNum = 1;
+			GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
+		}
 	}
 	else if(pWnd == &UIMsgButton3)
 	{
-			if(msg == CUIButton::BUTTON_CLICKED)
-			{
-				m_iMsgNum = 2;
-				GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
-			}
+		if(msg == CUIButton::BUTTON_CLICKED)
+		{
+			m_iMsgNum = 2;
+			GetTop()->SendMessage(this, MESSAGE_BUTTON_CLICKED);
+		}
 	}
 
 
@@ -150,4 +150,12 @@ void CUIPdaDialogWnd::ContactWaitForReply()
 	UIMsgButton3.Enable(false);
 
 
+}
+
+void CUIPdaDialogWnd::Update()
+{
+	RECT rect = GetAbsoluteRect();
+	GetFont()->Out((float)rect.left+10, (float)rect.top+10,  "PDA");
+
+	inherited::Update();
 }

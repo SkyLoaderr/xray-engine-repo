@@ -20,18 +20,20 @@
 #include "UIMessageBox.h"
 
 
-class CUITradeWnd: public CUIDialogWnd
+class CUITradeWnd: public CUIWindow
 {
 private:
-	typedef CUIDialogWnd inherited;
+	typedef CUIWindow inherited;
 public:
 	CUITradeWnd();
 	virtual ~CUITradeWnd();
 
 	virtual void Init();
+
+	typedef enum{TRADE_WND_CLOSED} E_MESSAGE;
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	void InitTrade();
+	void InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers);
 	
 	virtual void Draw();
 	virtual void Update();
@@ -55,6 +57,8 @@ protected:
 	CUIStatic			UIOthersMoney;
 	CUIStatic			UIOurItemsPrice;
 	CUIStatic			UIOthersItemsPrice;
+	
+	CUIStatic			UIItemDescription;
 
 	CUIFrameWindow		UIOurBagWnd;
 	CUIFrameWindow		UIOthersBagWnd;
@@ -68,6 +72,7 @@ protected:
 
 	//кнопки
 	CUIButton			UIPerformTradeButton;
+	CUIButton			UIToTalkButton;
 
 	
 	//функции, выполн€ющие согласование отображаемых окошек

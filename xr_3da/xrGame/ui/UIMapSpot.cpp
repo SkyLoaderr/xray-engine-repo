@@ -75,3 +75,8 @@ void CUIMapSpot::Draw()
 
 	m_UIStaticItem.Render();
 }
+
+void CUIMapSpot::Update()
+{
+	inherited::Update();
+}

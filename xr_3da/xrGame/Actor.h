@@ -222,6 +222,10 @@ private:
 	float					cam_shift;				// for zone-effects
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
+
+	// Person we're looking at
+	CInventoryOwner*		m_pPersonWeLookingAt;
+
 	
 	//------------------------------
 	struct				net_update 		
@@ -365,6 +369,10 @@ public:
 	//Actor condition
 	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();
+
+	//information receive
+	virtual void OnReceiveInfo(int info_index);
+
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

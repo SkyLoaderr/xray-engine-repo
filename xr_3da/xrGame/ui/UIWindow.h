@@ -6,6 +6,10 @@
 #pragma once
 
 
+#define SHOW_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(true); (UI_WINDOW).Enable(true);
+#define HIDE_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(false); (UI_WINDOW).Enable(false);
+
+
 class CUIWindow  
 {
 public:
@@ -123,6 +127,11 @@ public:
 	virtual void Draw();
 	//обновление окна передпрорисовкой
 	virtual void Update();
+
+
+	//для перевода окна и потомков в исходное состояние
+	virtual void Reset();
+	virtual void ResetAll();
 
 
 	//временно!!!!
