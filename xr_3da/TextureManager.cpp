@@ -344,7 +344,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 	// Texture List
 	for (it=0; it<lst_textures.size(); it++)	{
 		if (0!=lst_textures[it]->dwReference)
-			Device.Fatal("Texture still referenced: %s",DBG_GetTextureName(lst_textures[it]));
+			Device.Fatal("Texture list still referenced: %s",DBG_GetTextureName(lst_textures[it]->front()));
 		_DELETE (lst_textures[it]);
 	}
 	lst_textures.clear	();
@@ -352,7 +352,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 	// Matrix List
 	for (it=0; it<lst_matrices.size(); it++)	{
 		if (0!=lst_matrices[it]->dwReference)
-			Device.Fatal("Matrix still referenced: %s",DBG_GetMatrixName(lst_matrices[it]));
+			Device.Fatal("Matrix list still referenced: %s",DBG_GetMatrixName(lst_matrices[it]->front()));
 		_DELETE (lst_matrices[it]);
 	}
 	lst_matrices.clear	();
@@ -360,7 +360,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 	// Constant List
 	for (it=0; it<lst_constants.size(); it++)	{
 		if (0!=lst_constants[it]->dwReference)
-			Device.Fatal("Constant still referenced: %s",DBG_GetConstantName(lst_constants[it]));
+			Device.Fatal("Constant list still referenced: %s",DBG_GetConstantName(lst_constants[it]->front()));
 		_DELETE (lst_constants[it]);
 	}
 	lst_constants.clear	();
