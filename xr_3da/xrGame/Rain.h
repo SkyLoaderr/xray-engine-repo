@@ -41,12 +41,14 @@ private:
 	C2DSound*		snd_Ambient_control;
 	float			snd_Ambient_volume;
 
-	void			Born		(Item& dest, float radius, float height);
-	void			Hit			(Fvector& pos);
+	void			Born			(Item& dest, float radius, float height);
+	void			Hit				(Fvector& pos);
 public:
-	virtual void	OnEvent		(EVENT E, DWORD P1, DWORD P2);
+	virtual void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
+	virtual void	OnEvent			(EVENT E, DWORD P1, DWORD P2);
 
-	void			Render		();
+	void			Render			();
 
 	CEffect_Rain	();
 	~CEffect_Rain	();

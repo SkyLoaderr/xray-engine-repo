@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include "Rain.h"
+#include "..\2dsound.h"
+#include "..\fstaticrender.h"
 
 const float snd_fade		= 0.1f;
 const int	desired_items	= 1000;
@@ -125,7 +127,7 @@ void	CEffect_Rain::Render	()
 		if (height>one.P.y)	{
 			one.P.y		= height;
 			Hit			(one.P);
-			Born		(one);
+			Born		(one,b_radius,b_height);
 		}
 		Fvector&	pos_head	= one.P;
 		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.P,-drop_length);
