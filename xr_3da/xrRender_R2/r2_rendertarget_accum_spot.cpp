@@ -141,7 +141,7 @@ void CRenderTarget::accum_spot	(light* L)
 	*/
 
 	// Draw volume with projective texgen
-	CHK_DX	(Q->Issue(D3DISSUE_BEGIN));
+	// CHK_DX	(Q->Issue(D3DISSUE_BEGIN));
 	{
 		// Lighting
 		RCache.set_Element			(shader->E[ L->flags.bShadow ? 1:2 ]);
@@ -170,9 +170,9 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_Geometry			(g_accum_spot);
 		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 	}
-	CHK_DX	(Q->Issue	(D3DISSUE_END));
-	DWORD	pixels	= 0;
-	CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
+	// CHK_DX	(Q->Issue	(D3DISSUE_END));
+	// DWORD	pixels	= 0;
+	// CHK_DX	(Q->GetData	(&pixels,sizeof(pixels),D3DGETDATA_FLUSH));
 	//Msg		("%8X : fragments(%d), size(%d)",u32(L),pixels,RImplementation.LR.S_size);
 
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
