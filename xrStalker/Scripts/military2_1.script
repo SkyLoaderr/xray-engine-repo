@@ -10,13 +10,6 @@ function Checker:callback (obj, action_type, index)
 
     local ptr = patrol (obj:patrol ())
 
-    printf ("Callback called. Way : %s, index : %d", obj:patrol (), index);
-
-    local pos = obj:position ()
-    printf ("Player position : %f, %f, %f", pos.x, pos.y, pos.z)
-    pos = ptr:point (index)
-    printf ("Node position : %f, %f, %f", pos.x, pos.y, pos.z)
-
     --обработаем развилку
     if ptr:flag (index, 1) then
        action_first (obj, move (move.standing, move.stand, move.line, ptr),
@@ -26,12 +19,19 @@ function Checker:callback (obj, action_type, index)
        end
     --обработаем конечную точку
     if ptr:flag (index, 2) then
+       action_first (obj,
+                     move (move.standing, move.stand, move.line, ptr),
+                     anim (anim.free),
+                     sound ("scripts\\Rolik\\Stalker3_2", self.npc:position (), vector ():set (0,0,0), false),
+                     cond (cond.sound_end + cond.time_end, 2000))
        action_first (obj, move (move.standing, move.stand, move.line, ptr),
                      anim ("proverka_dver"), cond (cond.anim_end))
-       printf ("node 2")
-       self.finish = true
        return
        end
+
+    if ptr:flag (index, 3) then
+       self.finish = true
+     end
 
 end
 
@@ -41,9 +41,13 @@ function Checker:process ()
     self.npc:set_callback (self, "callback", game_object.movement)
 
     action (self.npc, move (move.standing, move.walk, move.line, patrol ("way_test")),
-            look (look.search), anim (anim.danger), cond (cond.move_end))
-    printf ("Wait for end")
+            look (look.search), anim (anim.free), cond (cond.move_end))
+
     while self.finish == false do wait () end
+    self.npc:clear_callback (game_object.movement)
+
+--    while self.npc:action () do wait () end
+
 
 end
 
@@ -137,6 +141,41 @@ function main ()
     local checker = military2_1.Checker (stalker3, military2_1.script_name ())
     reset_action (stalker3, military2_1.script_name ())
     checker:process ()
+
+    reset_action (stalker1, military2_1.script_name ())
+    reset_action (stalker2, military2_1.script_name ())
+--    reset_action (stalker3, military2_1.script_name ())
+
+    action (stalker1, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_2_up"), cond (cond.anim_end))
+    action (stalker2, move (move.standing, move.stand, move.line, way),
+            anim ("stalker_1_up"), cond (cond.anim_end))
+    action (stalker1, move (move.standing, move.walk, move.line, patrol ("way_out")),
+            anim (anim.free), look (look.search), cond (cond.move_end))
+    action (stalker2, move (move.standing, move.walk, move.line, patrol ("way_out")),
+            anim (anim.free), look (look.search), cond (cond.move_end))
+    --action (stalker3, move (move.standing, move.walk, move.line, way),
+      --      anim (anim.free), look (look.search), object (weapon, object.deactivate),cond (cond.move_end))
+
+    printf ("Move from saray")
+
+    while stalker1:action () and stalker2:action () do wait () end
+
+    printf ("Move from saray 2")
+
+    reset_action (stalker1, military2_1.script_name ())
+    reset_action (stalker2, military2_1.script_name ())
+    reset_action (stalker3, military2_1.script_name ())
+
+    action (stalker1, move (move.standing, move.run, move.line, patrol ("way_base")),
+            anim (anim.danger), look (look.search), cond (cond.move_end))
+    action (stalker2, move (move.standing, move.run, move.line, patrol ("way_base")),
+            anim (anim.danger), look (look.search), cond (cond.move_end))
+    action (stalker3, move (move.standing, move.run, move.line, patrol ("way_base")),
+            anim (anim.danger), look (look.search), cond (cond.move_end))
+
+    printf ("Run !")
+    while stalker1:action () do wait () end
 
     stalker1:script (false, military2_1.script_name ())
     stalker2:script (false, military2_1.script_name ())
