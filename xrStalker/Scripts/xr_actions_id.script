@@ -51,3 +51,5 @@ zmey_guard_base     = zmey_actions + 0
 
 -- Æåíÿ 
 jon_actions = zmey_actions + 1024
+
+jon_stalker_zombe_ac    = jon_actions + 0
