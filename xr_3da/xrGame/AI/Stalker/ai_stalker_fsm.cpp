@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
+#include "..\\..\\bolt.h"
 
 #define AI_BEST
 /**
@@ -919,10 +920,18 @@ void CAI_Stalker::TakeItems()
 		AI_Path.TravelPath.clear();
 	}
 	Fvector					tPoint;
-	m_tpItemToTake->svCenter(tPoint);
-	AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
+
+	CInventoryItem *tpItemToTake = 0;
+	
+	vfSelectItemToTake(tpItemToTake);
+	
+	if (!tpItemToTake)
+		return;
+
+	tpItemToTake->svCenter(tPoint);
+	AI_Path.DestNode		= tpItemToTake->AI_NodeID;
 	if (!AI_Path.DestNode) {
-		Msg("! Invalid item node %s",m_tpItemToTake->cName());
+		Msg("! Invalid item node %s",tpItemToTake->cName());
 	}
 	if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
 		tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
@@ -957,7 +966,11 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	VERIFY(getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex == m_tNextGP);
+	if (getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex != m_tNextGP) {
+		string4096 S;
+		sprintf(S,"Graph doesn't correspond to the cross table (graph vertex %d != Cross[Graph[%d].Node(%d)].Vertex(%d)",m_tNextGP,m_tNextGP,getAI().m_tpaGraph[m_tNextGP].tNodeID,getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex);
+		R_ASSERT2(false,S);
+	}
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
 		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
@@ -1001,6 +1014,17 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 void CAI_Stalker::Think()
 {
+	if (!m_dwLastUpdate) {
+		Level().ObjectSpace.GetNearest(vPosition,3.f);
+		if (Level().ObjectSpace.q_nearest.size()) {
+			for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) {
+				CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>(Level().ObjectSpace.q_nearest[i]);
+				CBolt			*tpBolt				= dynamic_cast<CBolt*>(Level().ObjectSpace.q_nearest[i]);
+				if (tpInventoryItem && !tpBolt)
+					m_tpItemsToTake.push_back(tpInventoryItem);
+			}
+		}
+	}
 	m_dwLastUpdate			= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 	m_bStopThinking			= false;

@@ -315,7 +315,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 		for ( ; I != E; I++)
 			if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 				best_slot = I - B;
-		if (best_slot > m_inventory.m_activeSlot)
+		if (best_slot > (int)m_inventory.m_activeSlot)
 			m_inventory.Activate(best_slot);
 	}
 	else

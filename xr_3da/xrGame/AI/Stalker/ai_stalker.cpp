@@ -40,7 +40,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLostEnemyTime				= 0;
 	m_tpSavedEnemyNode				= 0;
 	m_dwSavedEnemyNodeID			= u32(-1);
-	m_tpItemToTake					= 0;
+	m_tpItemsToTake.clear			();
+	m_dwItemToTakeIndex				= -1;
 	m_bActionStarted				= false;
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
@@ -94,6 +95,8 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_tpCurrentSound				= 0;
 	m_bPlayHumming					= false;
+
+	m_dwLastUpdate					= 0;
 
 //#ifdef LOG_PARAMETERS
 //	if (ST_VF)
@@ -284,6 +287,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	fHealth							= tpHuman->fHealth;
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
+	m_dwBornTime					= Level().timeServer();
 	
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (m_dwParticularState == u32(-1))

@@ -55,6 +55,7 @@ private:
 	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 	u32						m_dwLookChangedTime;
+	u32						m_dwBornTime;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -139,7 +140,8 @@ private:
 	u32						m_dwLostEnemyTime;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
-	CInventoryItem*			m_tpItemToTake;
+	vector<CInventoryItem*>	m_tpItemsToTake;
+	u32						m_dwItemToTakeIndex;
 	
 	// pursuiting
 	int						m_iCurrentSuspiciousNodeIndex;
@@ -314,6 +316,7 @@ private:
 			void			LoadSounds						(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount);
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			bool			bfIfHuman						(CEntity *tpEntity = 0);
+			void			vfSelectItemToTake				(CInventoryItem *&tpItemToTake);
 
 			// physics
 			void			CreateSkeleton					();

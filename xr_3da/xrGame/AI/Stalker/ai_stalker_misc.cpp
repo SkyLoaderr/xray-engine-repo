@@ -198,24 +198,33 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	vfSetWeaponState(tWeaponState);
 }
 
+
+void CAI_Stalker::vfSelectItemToTake(CInventoryItem *&tpItemToTake)
+{
+	tpItemToTake = 0;
+	if (m_tpItemsToTake.empty())
+		return;
+	tpItemToTake = m_tpItemsToTake[0];
+	float fDistSqr = vPosition.distance_to_sqr(tpItemToTake->Position());
+	for (int i=1, n = m_tpItemsToTake.size(); i<n; i++)
+		if (!m_tpItemsToTake[i]->H_Parent() && (vPosition.distance_to_sqr(m_tpItemsToTake[i]->Position()) < fDistSqr)) {
+			fDistSqr = vPosition.distance_to_sqr(m_tpItemsToTake[i]->Position());
+			tpItemToTake = m_tpItemsToTake[i];
+		}
+}
+
 void CAI_Stalker::vfCheckForItems()
 {
-	float fDistance = ffGetRange();
-	CInventoryItem *tpSavedItem = m_tpItemToTake;
-	m_tpItemToTake = 0;
 	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
 		CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>	(m_tpaVisibleObjects[i]);
 		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
 #pragma todo("Check if rukzak is not full!!")
-		if (tpInventoryItem && !tpBolt && (tpInventoryItem->Position().distance_to(vPosition) < fDistance) && getAI().bfInsideNode(tpInventoryItem->AI_Node,tpInventoryItem->Position())) {
-			if (_abs(getAI().ffGetY(*tpInventoryItem->AI_Node,  tpInventoryItem->Position().x, tpInventoryItem->Position().z) - tpInventoryItem->Position().y) < .5f) {
-				fDistance		= tpInventoryItem->Position().distance_to(vPosition);
-				m_tpItemToTake	= tpInventoryItem;
-			}
-		}
+		if (tpInventoryItem && !tpBolt)
+			m_tpItemsToTake.push_back(tpInventoryItem);
 	}
-	if (!m_tpItemToTake && tpSavedItem && !tpSavedItem->H_Parent())
-		m_tpItemToTake = tpSavedItem;
+	for (int i=0; i<m_tpItemsToTake.size(); i++)
+		if (m_tpItemsToTake[i]->H_Parent())
+			m_tpItemsToTake.erase(m_tpItemsToTake.begin() + i--);
 }
 
 void CAI_Stalker::vfUpdateSearchPosition()
@@ -360,7 +369,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	if (m_dwParticularState != 7)
 		vfCheckForItems();
 	
-	M = !!m_tpItemToTake;
+	M = !!m_tpItemsToTake.size();
 }
 
 void CAI_Stalker::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
