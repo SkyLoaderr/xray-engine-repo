@@ -220,15 +220,19 @@ void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sector
 	Msg							("Fill time %f",CPU::cycles2seconds*float(f - s));
 
 	u32							group_id = 0;
-	for (u32 i=min_z; i<=max_z; ++i) {
-		for (u32 j=min_x; j<=max_x; ++j) {
-			if (!table[i][j].empty()) {
-				xr_vector<CCellVertex>::iterator	I = table[i][j].begin();
-				xr_vector<CCellVertex>::iterator	E = table[i][j].end();
-				for ( ; I != E; ++I) {
-					if ((*I).m_mark)
+	{
+		VERTEX_VECTOR2::iterator	I = table.begin() + min_z, B = table.begin();
+		VERTEX_VECTOR2::iterator	E = table.end();
+		for ( ; I != E; ++I) {
+			VERTEX_VECTOR1::iterator	i = (*I).begin() + min_x, b = (*I).begin();
+			VERTEX_VECTOR1::iterator	e = (*I).end();
+			for ( ; i != e; ++i) {
+				VERTEX_VECTOR::iterator	II = (*i).begin();
+				VERTEX_VECTOR::iterator	EE = (*i).end();
+				for ( ; II != EE; ++II) {
+					if ((*II).m_mark)
 						continue;
-					fill_mark		(level_graph,sector_graph,table,i,j,*I,group_id,min_z,max_z,min_x,max_x);
+					fill_mark		(level_graph,sector_graph,table,u32(I - B),u32(i - b),*II,group_id,min_z,max_z,min_x,max_x);
 				}
 			}
 		}
@@ -299,10 +303,8 @@ void test_hierarchy		(LPCSTR name)
 	CLevelGraph					*level_graph = xr_new<CLevelGraph>(name);
 	CSectorGraph				*sector_graph = xr_new<CSectorGraph>();
 	u64							s,f;
-#ifndef _DEBUG
 	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-#endif
 	Sleep						(1);
 	
 	s							= CPU::GetCycleCount();
