@@ -68,6 +68,8 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
+	
+	btn:Enable(not level.present())
 		
 	--------->> LOAD Game	
 	btn = CUI3tButton()
@@ -95,7 +97,7 @@ function main_main_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)	
 	
-	btn:Enable(level.present())
+--	btn:Enable(level.present())
 	
 		
 	--------->> MULTIPLAYER
