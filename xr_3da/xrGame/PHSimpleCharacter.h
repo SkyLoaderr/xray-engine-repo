@@ -103,6 +103,7 @@ public:
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		void		SetAcceleration						(Fvector accel)		;
+	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
 
 	virtual		void		SetPosition							(Fvector pos)		;
 	virtual		void		GetVelocity							(Fvector& vvel)		;
@@ -116,6 +117,7 @@ public:
 	virtual		void		ApplyForce							(const Fvector& dir,float force);
 	virtual		void		ApplyForce							(float x,float y, float z);
 	virtual		void		SetMaximumVelocity					(dReal vel)			{m_max_velocity=vel;}
+	virtual		dReal		GetMaximumVelocity					()					{ return m_max_velocity;}
 	virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity;}
 	virtual		bool		JumpState							()					{
 																					return b_jumping||b_jump;
@@ -127,6 +129,10 @@ public:
 	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
 	virtual		void		CapturedSetPosition					(const dReal* position);
 	virtual		void		doCaptureExist						(bool&	do_exist);
+
+	virtual		void		get_State							(		SPHNetState&	state)								;
+	virtual		void		set_State							(const	SPHNetState&	state)								;
+
 private:
 	void		CheckCaptureJoint					()					;
 	void		ApplyAcceleration					()					;

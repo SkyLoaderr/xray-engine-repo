@@ -399,7 +399,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 	if(!dBodyIsEnabled(m_body)) 
 	{	
-		b_lose_control=false;
+		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
 
@@ -1251,4 +1251,15 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 u16 CPHSimpleCharacter::ContactBone()
 {
 	return RetriveContactBone();
+}
+
+void CPHSimpleCharacter::get_State(SPHNetState& state)
+{
+	CPHCharacter::get_State(state);
+	
+	state.previous_position.y-=m_radius;
+}
+void CPHSimpleCharacter::set_State(const SPHNetState& state)
+{
+	CPHCharacter::set_State (state);
 }
