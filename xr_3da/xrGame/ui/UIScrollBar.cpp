@@ -226,7 +226,11 @@ void CUIScrollBar::TryScrollDec()
 bool CUIScrollBar::ScrollDec()
 {
 	if(m_iScrollPos>m_iMinPos){
-		SetScrollPos	(m_iScrollPos-m_iStepSize);
+		if(m_iScrollPos>m_iStepSize)
+			SetScrollPos	(m_iScrollPos-m_iStepSize);
+		else
+			SetScrollPos	(0);
+
 		return true;
 	}
 
