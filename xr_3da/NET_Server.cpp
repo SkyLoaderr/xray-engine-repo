@@ -79,7 +79,7 @@ void IPureServer::config_Load()
 	
 	// traffic in
 	IReader*		F	= FS.r_open(nameTraffic);
-	if (F) {
+	if (F && F->length()) {
 		F->r	(&traffic_in,sizeof(traffic_in));
 		F->r	(&traffic_out,sizeof(traffic_out));
 		F->close();
