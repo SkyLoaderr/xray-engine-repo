@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
 #include "fcached.h"
+#include "fmesh.h"
 
 const DWORD	v_limit			= 2048;
 
