@@ -183,21 +183,4 @@ IC	const CObjectFactory &object_factory()
 	return	(object_factory);
 }
 
-#ifndef NO_XR_GAME
-
-#ifdef STATIC_CHECK
-#	undef STATIC_CHECK
-#endif
-
-#define STATIC_CHECK(expr, msg) \
-{ \
-        CompileTimeError<((expr) != 0)> ERROR_##msg; \
-        (void)ERROR_##msg; \
-}
-#endif
-
 #include "object_factory_inline.h"
-
-#ifndef NO_XR_GAME
-#	undef STATIC_CHECK
-#endif
