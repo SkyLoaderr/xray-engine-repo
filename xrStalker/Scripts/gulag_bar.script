@@ -289,6 +289,45 @@ function load_job(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+	-- Ученные, защищающие инфу от Свободы
+	if type == "bar_ecolog_crush" then
+		t = { section = "logic@bar_ecolog_crush_sniper_1", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_2", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_3", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_4", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_5", 
+			idle = 0,
+			prior = 6, state = {0}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_ecolog_crush_sniper_6", 
+			idle = 0,
+			prior = 6, state = {0}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 
 
 end
@@ -385,6 +424,11 @@ function load_states(gname, type)
 			return 0
 		end
 	end
+	if type == "bar_ecolog_crush" then        
+		return function (gulag)
+			return 0
+		end
+	end
 
 end
 
@@ -403,6 +447,9 @@ function checkStalker(npc_community, gulag_type)
 	end
 	if gulag_type == "bar_freedom_attack" then
 		return npc_community == "freedom"
+	end
+	if gulag_type == "bar_ecolog_crush" then
+		return npc_community == "ecolog"
 	end
 	
 	return false

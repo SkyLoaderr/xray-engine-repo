@@ -300,7 +300,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true, gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, gulag_name)
 	st.radius = utils.cfg_get_number(ini, section, "radius", npc, false)
-	st.big_radius = utils.cfg_get_number(ini, section, "big_radius", npc, false)
 	st.suggested_state = {}
 	st.suggested_state.moving = utils.cfg_get_string(ini, section, "def_state_moving", npc, false, "")
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
@@ -311,8 +310,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	if st.radius == nil then
 		st.radius = 20
-	end
-	if st.big_radius == nil then
-		st.big_radius = st.radius + 10
 	end
 end
