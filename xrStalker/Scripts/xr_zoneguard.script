@@ -54,6 +54,7 @@ function action_zoneguard_activity:reset_scheme()
 
 	self:reset_trigger()
 
+	xr_state.anim_update(nil, self.object)
 	self.object:clear_animations()
 	
 	if self.st.path_walk_info == nil then
@@ -156,6 +157,7 @@ function action_zoneguard_activity:execute()
 		   (not self.st.ignore_friends or self.object:relation(actor) ~= game_object.friend)
 		then
 			xr_state.anim_update(nil, self.object)
+			self.object:clear_animations()
 			local mental_state
 			if self.st.no_danger or self.object:relation(actor) == game_object.friend then
 				mental_state = anim.free
@@ -175,6 +177,10 @@ function action_zoneguard_activity:execute()
 				self.object:set_movement_type(move.stand)
 				self.object:set_body_state(move.standing) -- тут обязательно standing, т.к. mental_state может быть danger
 				self.object:set_mental_state(mental_state)
+				if self.st.anim then
+					printf("_bp: anim_update: %s", self.st.anim)
+					xr_state.anim_update(self.st.anim, self.object)
+				end
 				self.state = state_standing
 			end
 			utils.stalker_look_at_stalker(self.object, actor)
@@ -216,15 +222,24 @@ function action_zoneguard_activity:execute()
 	if self.state == state_standing then
 		if not self.st.no_move then
 			if distance_between(self.object, actor) >= 4 then
+				if self.st.anim then
+					xr_state.anim_update(nil, self.object)
+					self.object:clear_animations()
+				end
 				self.object:set_movement_type(move.run)
 				self.object:set_desired_direction(actor:direction())
 				self.object:set_dest_level_vertex_id(actor:level_vertex_id())
 				self.state = state_going_to_plr
+				return
 			end
 		else
 			if distance_between(self.object, actor) < 3 then
 				self:talk_with_plr(actor)
 			end
+		end
+		if self.st.anim then
+			printf("_bp: anim_update: %s", self.st.anim)
+			xr_state.anim_update(self.st.anim, self.object)
 		end
 		return
 	end
@@ -248,7 +263,10 @@ function action_zoneguard_activity:finalize()
 
 	self:reset_trigger()
 	self.move_mgr:finalize()
+	
+	xr_state.anim_update(nil, self.object)
 	self.object:clear_animations()
+
 	action_base.finalize(self)
 end
 
@@ -298,6 +316,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.ignore_friends = utils.cfg_get_bool     (ini, section, "ignore_friends", npc, false)
 	st.ignore_cond = xr_logic.cfg_get_condlist (ini, section, "ignore_cond",    npc)
 	st.no_danger = utils.cfg_get_bool          (ini, section, "no_danger",      npc, false)
+	st.anim = utils.cfg_get_string             (ini, section, "anim",           npc, false, "")
+	printf("_bp: st.anim == %s", st.anim)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
