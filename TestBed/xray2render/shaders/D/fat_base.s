@@ -42,7 +42,7 @@ v2p_out v_main	( a2v  	IN )
 
   // Write output registers.
   v2p_out 	OUT;
-  OUT.HPos 		= mul	(m_model2view2projection,IN.Position	);
+  OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
   OUT.Pe 		= float4(Pe.x,Pe.y,Pe.z,0);
   OUT.Ne 		= float4(Ne.x,Ne.y,Ne.z,0);
   OUT.Tex0 		= IN.TexCoords;
