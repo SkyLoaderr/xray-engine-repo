@@ -16,7 +16,7 @@
 
 IC float ffGetDistance(Fvector P1, Fvector P2)
 {
-	return(float(sqrt(float(_sqr(P2.x - P1.x) + _sqr(P2.z - P1.z) + _sqr(P2.y - P1.y)))));
+	return(float(_sqrt(float(_sqr(P2.x - P1.x) + _sqr(P2.z - P1.z) + _sqr(P2.y - P1.y)))));
 }
 
 IC void vfNormalizeSafe(Fvector& Vector)

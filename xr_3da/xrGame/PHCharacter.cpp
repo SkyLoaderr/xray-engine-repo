@@ -116,7 +116,7 @@ if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
 m_ident=ph_world->AddObject(this);
 b_exist=true;
 const dReal k=1.20f;
-dReal doun=m_radius*sqrtf(1.f-1.f/k/k)/2.f;
+dReal doun=m_radius*_sqrt(1.f-1.f/k/k)/2.f;
 m_geom_shell=dCreateCylinder(0,m_radius/k,m_cyl_hight+doun);
 m_cap=dCreateSphere(0,m_radius+m_radius/30.f);
 m_wheel=dCreateSphere(0,m_radius);
@@ -284,7 +284,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 
 		dReal mag;
 		const dReal* vel = dBodyGetLinearVel(m_body);
-		mag=sqrtf(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
+		mag=_sqrt(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
 		if(mag>l_limit){
 						dReal f=mag/l_limit;
 						dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
@@ -441,7 +441,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 		dVector3 dif={current_pos[0]-m_jump_depart_position[0],
 					current_pos[1]-m_jump_depart_position[1],
 					current_pos[2]-m_jump_depart_position[2]};
-		dReal amag =sqrtf(m_jump_accel.x*m_jump_accel.x+m_jump_accel.z*m_jump_accel.z);
+		dReal amag =_sqrt(m_jump_accel.x*m_jump_accel.x+m_jump_accel.z*m_jump_accel.z);
 		if(amag>0.f)
 		if(dif[0]*m_jump_accel.x/amag+dif[2]*m_jump_accel.z/amag<0.3f)
 		{
@@ -981,10 +981,10 @@ void	CPHCharacter::Disable(){
 				{
 				const dReal* torqu=dBodyGetTorque(m_body);
 				const dReal* force=dBodyGetForce(m_body);
-				dReal t_m =sqrtf(	torqu[0]*torqu[0]+
+				dReal t_m =_sqrt(	torqu[0]*torqu[0]+
 										torqu[1]*torqu[1]+
 										torqu[2]*torqu[2]);
-				dReal f_m=sqrtf(	force[0]*force[0]+
+				dReal f_m=_sqrt(	force[0]*force[0]+
 										force[1]*force[1]+
 										force[2]*force[2]);
 				if(t_m+f_m>0.000000){
@@ -1011,7 +1011,7 @@ void	CPHCharacter::Disable(){
 					dVector3 velocity={current_p[0]-previous_p[0],
 									   current_p[1]-previous_p[1],
 									   current_p[2]-previous_p[2]};
-					dReal mag_v=sqrtf(
+					dReal mag_v=_sqrt(
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
@@ -1036,7 +1036,7 @@ void	CPHCharacter::Disable(){
 					dVector3 velocity={current_p[0]-previous_p1[0],
 									   current_p[1]-previous_p1[1],
 									   current_p[2]-previous_p1[2]};
-					dReal mag_v=sqrtf(
+					dReal mag_v=_sqrt(
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);

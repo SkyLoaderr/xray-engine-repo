@@ -17,7 +17,7 @@ using namespace AI;
 extern void	UnpackContour		(CPathNodes::PContour& C, u32 ID);
 extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
-#define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
+#define COMPUTE_DISTANCE_2D(t,p) (_sqrt(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
 #define	LI_NONE				0
 #define LI_COLLINEAR        0

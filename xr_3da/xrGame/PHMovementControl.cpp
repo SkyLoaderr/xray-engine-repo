@@ -71,7 +71,7 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 			if (fContactSpeed>fMinCrashSpeed) 
 			{
 				//float k=10000.f/(B-A);
-				//float dh=sqrtf((dv-A)*k);
+				//float dh=_sqrt((dv-A)*k);
 				gcontact_HealthLost = 
 					(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 			}

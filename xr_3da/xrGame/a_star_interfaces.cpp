@@ -220,7 +220,7 @@ float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterato
 
 		float fLight = (float)(tNode1.light)/255.f;
 		
-		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
 	}
 	else {
 		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
@@ -233,7 +233,7 @@ float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterato
 
 		float fLight = (float)(tNode1.light)/255.f;
 		
-		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
 	}
 }
 
@@ -245,12 +245,12 @@ float CAIMapEnemyPathNode::ffAnticipate(u32 dwStartNode)
 	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
 	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
 	
-	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+	return(m_fSum + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }		   
 		   
 float CAIMapEnemyPathNode::ffAnticipate()
 {		   
-	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+	return(m_fSum + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -308,7 +308,7 @@ float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode,
 
 		float fLight = (float)(tNode1.light)/255.f;
 		
-		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
 	}
 	else {
 		NodeCompressed &tNode1 = *tData.tpAI_Space->Node(dwFinishNode);
@@ -321,7 +321,7 @@ float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode,
 
 		float fLight = (float)(tNode1.light)/255.f;
 		
-		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
+		return(tData.fEnemyView*(_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x4 - x1) + _sqr(z4 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y4 - y1))) - tData.fEnemyDistance) + fLight*tData.fLight + fCover*tData.fCover + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y1))));
 	}
 }
 
@@ -333,12 +333,12 @@ float CAIMapEnemyPositionPathNode::ffAnticipate(u32 dwStartNode)
 	y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
 	z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
 	
-	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+	return(m_fSum + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }		   
 		   
 float CAIMapEnemyPositionPathNode::ffAnticipate()
 {		   
-	return(m_fSum + tData.fDistance*(float)sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
+	return(m_fSum + tData.fDistance*(float)_sqrt((float)(tData.tpAI_Space->m_fSize2*(_sqr(x2 - x3) + _sqr(z2 - z3)) + tData.tpAI_Space->m_fYSize2*_sqr(y2 - y3))));
 }
 
 //////////////////////////////////////////////////////////////////////////

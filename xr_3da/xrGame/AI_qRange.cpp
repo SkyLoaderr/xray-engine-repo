@@ -185,7 +185,7 @@ void CAI_Space::q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::
 
 			// estimate
 			float cost = Estimator.Estimate(T,distance_sqr,bStop);
-			cost += (float)(dwTimeDifference*1/sqrtf(distance_sqr)*COEFFICIENT);
+			cost += (float)(dwTimeDifference*1/_sqrt(distance_sqr)*COEFFICIENT);
 			
 			if (cost<Estimator.BestCost) {
 				Estimator.BestCost	= cost;

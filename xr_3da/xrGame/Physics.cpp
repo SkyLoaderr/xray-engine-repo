@@ -341,7 +341,7 @@ const	dReal k_d=1000.f;//1000.f;
 	}
 	static const dReal w_limit = M_PI/16.f/0.02f;
 	const dReal* rot = dBodyGetAngularVel(Bodies[0]);
-	dReal mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
+	dReal mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
 				if(mag>w_limit){
 					dReal f=mag/w_limit;
 					dBodySetAngularVel(Bodies[0],rot[0]/f,rot[1]/f,rot[2]/f);
@@ -1213,7 +1213,7 @@ void CPHShell::PhDataUpdate(dReal step){
 
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				dReal mag;
-				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
+				mag=_sqrt(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
 				if(!(mag>-dInfinity && mag<dInfinity)){
 					dBodySetLinearVel(m_body,0.f,0.f,0.f);
 					mag=0.f;
@@ -1238,7 +1238,7 @@ void CPHShell::PhDataUpdate(dReal step){
 				//dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);
 				//dBodyAddForce(m_body, u * pos[0]*mag, u * pos[1]*mag, u * pos[2]*mag);
 				const dReal* rot = dBodyGetAngularVel(m_body);
-				dReal w_mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
+				dReal w_mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
 				if(!(w_mag>-dInfinity && w_mag<dInfinity)) 
 					dBodySetAngularVel(m_body,0.f,0.f,0.f);
 				else if(w_mag>w_limit){
@@ -1275,10 +1275,10 @@ void	CPHShell::Disable(){
 				{
 				const dReal* torqu=dBodyGetTorque(m_body);
 				const dReal* force=dBodyGetForce(m_body);
-				dReal t_m =sqrtf(	torqu[0]*torqu[0]+
+				dReal t_m =_sqrt(	torqu[0]*torqu[0]+
 										torqu[1]*torqu[1]+
 										torqu[2]*torqu[2]);
-				dReal f_m=sqrtf(	force[0]*force[0]+
+				dReal f_m=_sqrt(	force[0]*force[0]+
 										force[1]*force[1]+
 										force[2]*force[2]);
 				if(t_m+f_m>0.000000){
@@ -1310,7 +1310,7 @@ void	CPHShell::Disable(){
 					dVector3 velocity={current_p[0]-previous_p[0],
 									   current_p[1]-previous_p[1],
 									   current_p[2]-previous_p[2]};
-					dReal mag_v=sqrtf(
+					dReal mag_v=_sqrt(
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
@@ -1325,7 +1325,7 @@ void	CPHShell::Disable(){
 										  rotation_m[10]-1.f
 					};
 
-					dReal deviation =sqrtf(deviation_v[0]*deviation_v[0]+
+					dReal deviation =_sqrt(deviation_v[0]*deviation_v[0]+
 										   deviation_v[1]*deviation_v[1]+
 										   deviation_v[2]*deviation_v[2]);
 
@@ -1353,7 +1353,7 @@ void	CPHShell::Disable(){
 					dVector3 velocity={current_p[0]-previous_p1[0],
 									   current_p[1]-previous_p1[1],
 									   current_p[2]-previous_p1[2]};
-					dReal mag_v=sqrtf(
+					dReal mag_v=_sqrt(
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
@@ -1366,7 +1366,7 @@ void	CPHShell::Disable(){
 										  rotation_m[10]-1.f
 					};
 
-					dReal deviation =sqrtf(deviation_v[0]*deviation_v[0]+
+					dReal deviation =_sqrt(deviation_v[0]*deviation_v[0]+
 										   deviation_v[1]*deviation_v[1]+
 										   deviation_v[2]*deviation_v[2]);
 

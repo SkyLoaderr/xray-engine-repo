@@ -136,7 +136,7 @@ IC float PLC_energy	(Fvector& P, Fvector& N, Flight* L, float E)
 		if( D <=0 )						return 0;
 		
 		// Trace Light
-		float R		= sqrtf(sqD);
+		float R		= _sqrt	(sqD);
 		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		return A;
 	}

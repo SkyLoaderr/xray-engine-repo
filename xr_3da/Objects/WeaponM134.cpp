@@ -284,7 +284,7 @@ void CWeaponM134::Update	(u32 T)
 		fRotateSpeed += fRotateSpinupAccel*dt;
 		if (sndServo.feedback){
 			sndServo.feedback->SetPosition(vLastFP);
-			float k = sqrtf(fRotateSpeed/fRotateMaxSpeed);
+			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
 		}
@@ -297,7 +297,7 @@ void CWeaponM134::Update	(u32 T)
 		fRotateSpeed -= fRotateBreakAccel*dt;
 		if (sndServo.feedback){
 			sndServo.feedback->SetPosition(vLastFP);
-			float k = sqrtf(fRotateSpeed/fRotateMaxSpeed);
+			float k = _sqrt(fRotateSpeed/fRotateMaxSpeed);
 			u32 freq=iFloor((dwServoMaxFreq-dwServoMinFreq)*k+dwServoMinFreq);
 			sndServo.feedback->SetFrequency(freq);
 		}

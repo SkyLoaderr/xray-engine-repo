@@ -207,7 +207,7 @@ class CBaseFunction;
 	#define RIGHT_NODE(Index)					((Index + 5) & 3)
 	#define NEXT_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
 	#define PREV_POINT(m_iCurrentPoint)			(m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
-	#define COMPUTE_DISTANCE_2D(t,p)			(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
+	#define COMPUTE_DISTANCE_2D(t,p)			(_sqrt(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
 	#define DELETE_SOUNDS(a,b) {\
 		for (int i=0; i<(a); i++)\

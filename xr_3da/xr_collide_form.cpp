@@ -180,7 +180,7 @@ IC BOOL RAYvsOBB(CCF_Skeleton::xOBB &B, Fvector &S, Fvector &D, float &R)
 	{
 		float d = PL.distance_to_sqr(SL);
 		if (d<R*R) {
-			R = sqrtf(d);
+			R = _sqrt(d);
 			return true;
 		}
 	}

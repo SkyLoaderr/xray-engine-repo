@@ -152,7 +152,7 @@ void CAI_Space::Render()
 			//T.y+= 1.5f;
 			T.y+= 1.5f/10.f;
 			Device.mFullTransform.transform (S,T);
-			F->SetSize	(0.05f/sqrtf(_abs(S.w)));
+			F->SetSize	(0.05f/_sqrt(_abs(S.w)));
 			F->SetColor(0xffffffff);
 			F->Out(S.x,-S.y,"%d",i);
 		}
@@ -335,7 +335,7 @@ void CAI_Space::Render()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
-				F->SetSize	(0.05f/sqrtf(_abs(S.w)));
+				F->SetSize	(0.05f/_sqrt(_abs(S.w)));
 				F->SetColor(0xffffffff);
 				F->Out		(S.x,-S.y,"~%d",Nid);
 			}

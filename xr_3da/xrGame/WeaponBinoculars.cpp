@@ -204,7 +204,7 @@ void CWeaponBinoculars::state_Zooming	(float dt)
 	fGyroSpeed += dt;
 	if (sndGyro.feedback){
 		sndGyro.feedback->SetPosition(vLastFP);
-		float k = sqrtf(fGyroSpeed);
+		float k = _sqrt(fGyroSpeed);
 		clamp(k,0.f,1.f); k = 0.6f*k+0.4f;
 		sndGyro.feedback->SetFrequencyScale(k);
 	}
