@@ -81,7 +81,6 @@ void	MODEL::build_thread		(void *params)
 {
 	BTHREAD_params	P			= *( (BTHREAD_params*)params );
 	P.M->cs.Enter				();
-	P.M->status					= S_BUILD;
 	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt);
 	P.M->status					= S_READY;
 	P.M->cs.Leave				();
@@ -100,17 +99,15 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	// verts
 	verts_count	= Vcnt;
 	verts		= xr_alloc<Fvector>	(verts_count);
-	if (0==verts)	return;
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
 	tris		= xr_alloc<TRI>		(tris_count);
-	if (0==tris)	{
-		xr_free		(verts);
-		return;
-	}
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
+
+	// Release data pointers
+	status		= S_BUILD;
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
 	DWORD*		temp_tris	= xr_alloc<DWORD>	(tris_count*3);
