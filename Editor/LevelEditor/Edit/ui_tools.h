@@ -97,6 +97,8 @@ public:
     bool __fastcall KeyUp       	(WORD Key, TShiftState Shift);
     bool __fastcall KeyPress    	(WORD Key, TShiftState Shift);
     EObjClass 		CurrentClassID();
+
+    bool			Pick			();
 };
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();

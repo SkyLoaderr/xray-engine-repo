@@ -142,16 +142,21 @@ void TUI::Redraw(){
         Device.SetRS(D3DRS_FILLMODE, Device.dwFillMode);
 		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
+        // draw sky
+	    EEditorState est = GetEState();
+        switch(est){
+        case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
+        }
+
     // draw grid
     	if (psDeviceFlags&rsDrawGrid){
 	        DU::DrawGrid();
     	    DU::DrawPivot(m_Pivot);
         }
 
-	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
-        case esEditScene:		Scene.Render(&precalc_identity); break;
+        case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
         }
 
     // draw selection rect

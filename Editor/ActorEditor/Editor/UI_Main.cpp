@@ -124,7 +124,6 @@ bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
 	if (!m_bReady) return false;
 	m_ShiftState = Shift;
-    if (m_ShiftState.Contains(ssLeft)) Log("LB press.");
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
     return Tools.KeyDown(Key, Shift);
 }
@@ -161,6 +160,7 @@ void TUI::OnMousePress(int btn){
 
     // camera activate
     if(!Device.m_Camera.MoveStart(m_ShiftState)){
+    	if (Tools.Pick()) return;
         if( !m_MouseCaptured ){
             if( Tools.HiddenMode() ){
 				iGetMousePosScreen(m_StartCpH);

@@ -37,6 +37,7 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_
 	R_ASSERT(src_name.Length());
 	AnsiString base_name 	= src_name;
 	FS.m_Textures.Update	(base_name);
+    if (!FS.Exist(base_name.c_str(),true)) return;
     FIBITMAP* bm=Surface_Load(base_name.c_str()); R_ASSERT(bm);
     MakeThumbnail(THM,bm);
 	THM->m_Age = FS.GetFileAge(base_name);

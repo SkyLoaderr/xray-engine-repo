@@ -25,7 +25,7 @@
 #define FLARE_CHUNK_FLAG				0x1002
 #define FLARE_CHUNK_SOURCE				0x1010
 #define FLARE_CHUNK_GRADIENT			0x1011
-#define FLARE_CHUNK_FLARES				0x1012
+#define FLARE_CHUNK_FLARES2				0x1013
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -270,6 +270,8 @@ bool CLight::Load(CStream& F){
     }
 
     m_LensFlare.Load(F);
+	UpdateTransform	();
+
     return true;
 }
 //----------------------------------------------------
@@ -343,12 +345,13 @@ void CEditFlare::Load(CStream& F){
     m_fGradientDensity = F.Rfloat();
 
     // flares
-    DeleteShaders();
-    R_ASSERT(F.FindChunk(FLARE_CHUNK_FLARES));
-    DWORD deFCnt	= F.Rdword(); VERIFY(deFCnt==6);
-    F.Read			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader=0;
-    CreateShaders();
+    if (F.FindChunk(FLARE_CHUNK_FLARES2)){
+	    DeleteShaders();
+	    DWORD deFCnt	= F.Rdword(); VERIFY(deFCnt==6);
+	   	F.Read			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
+    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader=0;
+    	CreateShaders();
+    }
 }
 //----------------------------------------------------
 
@@ -367,7 +370,7 @@ void CEditFlare::Save(CFS_Base& F)
     F.Wfloat		(m_fGradientDensity);
 	F.close_chunk	();
 
-	F.open_chunk	(FLARE_CHUNK_FLARES);
+	F.open_chunk	(FLARE_CHUNK_FLARES2);
     F.Wdword		(m_Flares.size());
     F.write			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
 	F.close_chunk	();

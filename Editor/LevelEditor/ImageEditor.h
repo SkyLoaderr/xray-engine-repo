@@ -28,7 +28,7 @@ class TfrmProperties;
 class TfrmImageLib : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
+	TPanel *paRight;
 	TFormStorage *fsStorage;
 	TPanel *Panel2;
 	TExtBtn *ebClose;
@@ -45,6 +45,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel5;
 	TPanel *paTextureCount;
 	TElTree *tvItems;
+	TSplitter *Splitter1;
     void __fastcall ebCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);

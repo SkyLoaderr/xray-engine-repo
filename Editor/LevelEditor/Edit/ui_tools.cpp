@@ -23,6 +23,8 @@
 #include "UI_PSTools.h"
 #include "UI_DOTools.h"
 
+#include "editlibrary.h"
+
 #define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
 #define ATTACH_FRAME(a,b) if (a){ (a)->Parent = (b);}
 
@@ -260,4 +262,18 @@ void TUI_Tools::OnShowHint(AStringVec& ss){
 	Scene.OnShowHint(ss);
 }
 //---------------------------------------------------------------------------
+
+bool TUI_Tools::Pick()
+{
+    if( Scene.locked() && (esEditLibrary==UI.GetEState())){
+        UI.iGetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);
+        UI.m_StartCp = UI.m_CurrentCp;
+        Device.m_Camera.MouseRayFromPoint(UI.m_StartRStart, UI.m_StartRNorm, UI.m_StartCp );
+        Device.m_Camera.MouseRayFromPoint(UI.m_CurrentRStart, UI.m_CurrentRNorm, UI.m_CurrentCp );
+        SRayPickInfo pinf;
+        TfrmEditLibrary::RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,&pinf);
+        return true;
+    }
+    return false;
+}
 

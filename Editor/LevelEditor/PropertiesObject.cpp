@@ -143,6 +143,7 @@ void TfrmPropertiesObject::ApplyObjectsInfo(){
         // apply surfaces
         SetSurfacesToObject				();
 	}
+    UI.RedrawScene();
 }
 
 //---------------------------------------------------------------------------

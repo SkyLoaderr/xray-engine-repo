@@ -170,6 +170,8 @@ void ELibrary::Save()
             FS.m_Objects.Update(nm);
         	O->second->SaveObject(nm.c_str());
         }
+    m_Objects.clear();
+    FS.GetFiles(FS.m_Objects.m_Path,m_Objects,true,true,"*.object");
 }
 //---------------------------------------------------------------------------
 

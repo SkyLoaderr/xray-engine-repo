@@ -411,22 +411,27 @@ void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N-
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
 
-void EScene::Render( Fmatrix *_Camera ){
+void EScene::RenderSky(const Fmatrix& camera)
+{
+	if( !valid() )	return;
+//	draw sky
+	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
+        st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
+        m_SkyDome->Position().set(camera.c);
+        m_SkyDome->UpdateTransform();
+		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
+    	m_SkyDome->RenderSingle();
+    }
+}
+
+void EScene::Render( const Fmatrix& camera )
+{
 	if( !valid() )	return;
 //	if( locked() )	return;
 
 	SetLights();
 
     ObjectIt _F,_E;
-
-//	draw sky
-	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
-    	Fmatrix mat;
-        st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
-        mat.translate(Device.m_Camera.GetPosition());
-		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
-    	m_SkyDome->RenderSingle();
-    }
 
 	// sort objects
     const Fvector& cam_pos=Device.m_Camera.GetPosition();

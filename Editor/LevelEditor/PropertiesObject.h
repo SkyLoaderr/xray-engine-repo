@@ -272,7 +272,7 @@ public:		// User declarations
     static bool __fastcall 	Visible(){return !!form;}
     static void	SetCurrent	(CEditableObject* object);
     static void	Reset		(){m_LibObject=0;}
-    static bool	IsModified	(){return form?form->ebOk->Enabled:false;}
+    static bool	IsModified	(){return form?form->ebApply->Enabled:false;}
     static void	OnPick		(const SRayPickInfo& pinf);
 };
 //---------------------------------------------------------------------------

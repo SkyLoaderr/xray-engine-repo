@@ -51,7 +51,8 @@ public:
     SFlare			m_Source;
     // gradient
     float			m_fGradientDensity;
-    Shader*			CreateShader(const char* tex_name);
+    Shader*			CreateSourceShader(const char* tex_name);
+    Shader*			CreateFlareShader(const char* tex_name);
 public:
 					CLensFlare	();
 					~CLensFlare	( );

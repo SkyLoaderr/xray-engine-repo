@@ -58,6 +58,7 @@ public:
     void			ViewTop		(){m_HPB.set(0.f,-PI_DIV_2,0.f); BuildCamera();}
     void			ViewBottom 	(){m_HPB.set(0.f,PI_DIV_2,0.f); BuildCamera();}
 
+    const Fmatrix&	GetTransform() const {return m_CamMat;}
     void			GetView		(Fmatrix& V) const {return V.invert(m_CamMat);}
     const Fvector&	GetHPB		() const {return m_HPB;}
     const Fvector&	GetPosition	() const {return m_Position;}

@@ -295,6 +295,8 @@ void CUI_Camera::ArcBall(TShiftState Shift, float dx, float dy){
     Fvector D;
     D.direct		(m_HPB.x,m_HPB.y);
 
+    Fvector new_pos;
+
     m_Position.mul	(D,-dist);
     m_Position.add	(m_Target);
 

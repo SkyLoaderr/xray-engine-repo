@@ -32,8 +32,8 @@ public:
 #ifdef _EDITOR
 					~CSurface		(){DeleteShader();}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
-    IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
-    IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
+    IC int			_Priority		()const {return m_Shader?m_Shader->Flags.iPriority:1;}
+    IC bool			_StrictB2F		()const {return m_Shader?m_Shader->Flags.bStrictB2F:false;}
 #endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC Shader*		_Shader			()const {return m_Shader;}

@@ -45,12 +45,17 @@ void CEditableObject::SaveObject(const char* fname){
 	if (IsModified()){
         // update transform matrix
         Fmatrix	mTransform,mScale,mTranslate,mRotate;
-        mRotate.setHPB			(t_vRotate.y, t_vRotate.x, t_vRotate.z);
-        mScale.scale			(t_vScale);
-        mTranslate.translate	(t_vPosition);
-        mTransform.mul			(mTranslate,mRotate);
-        mTransform.mul			(mScale);
-        TranslateToWorld		(mTransform);
+        bool a = !fsimilar(t_vRotate.magnitude(),0);
+        bool b = !fsimilar(t_vScale.magnitude(),1.73205f);
+        bool c = !fsimilar(t_vPosition.magnitude(),0);
+        if (!fsimilar(t_vRotate.magnitude(),0)||!fsimilar(t_vScale.magnitude(),1.f)||!fsimilar(t_vPosition.magnitude(),0)){
+            mRotate.setHPB			(t_vRotate.y, t_vRotate.x, t_vRotate.z);
+            mScale.scale			(t_vScale);
+            mTranslate.translate	(t_vPosition);
+            mTransform.mul			(mTranslate,mRotate);
+            mTransform.mul			(mScale);
+	        TranslateToWorld		(mTransform);
+        }
     }
 
     CFS_Memory F;
@@ -58,14 +63,11 @@ void CEditableObject::SaveObject(const char* fname){
     Save(F);
     F.close_chunk();
 
-    FS.VerifyPath(fname);
+	AnsiString save_nm = ChangeFileExt(fname,".object");
+    FS.VerifyPath(save_nm.c_str());
 
-    F.SaveTo(fname,0);
-	m_LoadName = fname;
-//    UI.ProgressStart(2,"Compressing...");
-//    UI.ProgressUpdate(1);
-//    F.SaveTo(fname,"OBJECT");
-//    UI.ProgressEnd();
+    F.SaveTo(save_nm.c_str(),0);
+	m_LoadName = save_nm;
 }
 
 
@@ -203,7 +205,7 @@ void CEditableObject::Save(CFS_Base& F){
 	F.WstringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
 
-    F.write_chunk	(EOBJ_CHUNK_FLAG,&m_DynamicObject,1);
+    F.write_chunk	(EOBJ_CHUNK_FLAG,&m_DynamicObject,sizeof(m_DynamicObject));
 
     // object version
     F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());

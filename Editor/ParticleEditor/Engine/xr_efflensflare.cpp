@@ -93,8 +93,8 @@ void CLensFlare::OnDeviceCreate()
 	P.VB_Create(FVF_FlareVertex, MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
 	P.IB_Create(0, MAX_Flares*2*3, D3DUSAGE_WRITEONLY, Indices);
 	// shaders
-	m_Source.hShader = CreateShader(m_Source.texture);
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateShader(it->texture);
+	m_Source.hShader = CreateSourceShader(m_Source.texture);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
 }
 
 void CLensFlare::OnDeviceDestroy()
@@ -106,15 +106,20 @@ void CLensFlare::OnDeviceDestroy()
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader){ Device.Shader.Delete(it->hShader); it->hShader=0; }
 }
 
-Shader* CLensFlare::CreateShader(const char* tex_name)
+Shader* CLensFlare::CreateSourceShader(const char* tex_name)
 {
-	return (tex_name&&tex_name[0])?Device.Shader.Create("particles\\add",tex_name):0;
+	return (tex_name&&tex_name[0])?Device.Shader.Create("effects\\sun",tex_name):0;
+}
+
+Shader* CLensFlare::CreateFlareShader(const char* tex_name)
+{
+	return (tex_name&&tex_name[0])?Device.Shader.Create("effects\\flare",tex_name):0;
 }
 
 void CLensFlare::SetSource(float fRadius, const char* tex_name)
 {
 	m_Source.fRadius	= fRadius;
-	m_Source.hShader	= CreateShader(tex_name);
+	m_Source.hShader	= CreateSourceShader(tex_name);
     strcpy(m_Source.texture,tex_name);
 }
 
@@ -124,7 +129,7 @@ void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const 
 	F.fRadius	= fRadius;
 	F.fOpacity	= fOpacity;
     F.fPosition	= fPosition;
-	F.hShader	= CreateShader(tex_name);
+	F.hShader	= CreateFlareShader(tex_name);
     strcpy(F.texture,tex_name);
 	m_Flares.push_back(F);
 }

@@ -38,7 +38,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         form->m_Thm = 0;
         form->m_SelectedName = "";
 
-        form->paTextureCount->Caption = AnsiString(" Images in library: ")+AnsiString(texture_map.size());
+        form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
 
         // scene locking
         Scene.lock();
@@ -71,7 +71,7 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
 	ImageProps = TfrmProperties::CreateProperties(paProperties,alClient);
     ImageProps->tvProperties->HeaderSections->Item[0]->Width = 101;
-    ImageProps->tvProperties->HeaderSections->Item[1]->Width = 65;
+    ImageProps->tvProperties->HeaderSections->Item[1]->Width = 55;
 
     InitItemsList();
     UI.BeginEState(esEditImages);

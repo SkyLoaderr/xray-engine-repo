@@ -110,37 +110,38 @@ protected:
     GroupMap	m_Groups;
 
 protected:
-	CCustomObject* ReadObject(CStream*);
+	CCustomObject* ReadObject		(CStream*);
 
 public:
     bool m_Modified;
 
 public:
-	bool Load(char *_FileName);
-	void Save(char *_FileName, bool bUndo);
-	bool LoadSelection(const char *_FileName);
-	bool LoadSelection(const char *_FileName,ObjectList& lst);
-	void SaveSelection(int classfilter, char *_FileName);
-	void Unload();
-	void ClearObjects(bool bDestroy);
+	bool Load						(char *_FileName);
+	void Save						(char *_FileName, bool bUndo);
+	bool LoadSelection				(const char *_FileName);
+	bool LoadSelection				(const char *_FileName,ObjectList& lst);
+	void SaveSelection				(int classfilter, char *_FileName);
+	void Unload						();
+	void ClearObjects				(bool bDestroy);
 
-	IC bool valid()           { return m_Valid; }
+	IC bool valid					()           	{ return m_Valid; }
 
-	IC bool locked()          { return m_Locked!=0; }
-	IC void lock()            { m_Locked++; }
-	IC void unlock()          { m_Locked--; }
-	IC void waitlock()        { while( locked() ) Sleep(0); }
+	IC bool locked					()          	{ return m_Locked!=0; }
+	IC void lock					()            	{ m_Locked++; }
+	IC void unlock					()          	{ m_Locked--; }
+	IC void waitlock				()        		{ while( locked() ) Sleep(0); }
 
-	IC ObjectList& ListObj    (EObjClass cat){ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT));
-                                        return m_Objects[cat]; }
-	IC ObjectIt FirstObj      (EObjClass cat){ return ListObj(cat).begin(); }
-	IC ObjectIt LastObj       (EObjClass cat){ return ListObj(cat).end(); }
-	IC ObjectPairIt FirstClass(){ return m_Objects.begin(); }
-	IC ObjectPairIt LastClass (){ return m_Objects.end(); }
-	IC int ObjCount           (EObjClass cat){ return ListObj(cat).size(); }
+	IC ObjectList& ListObj    		(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT));
+                                        			return m_Objects[cat]; }
+	IC ObjectIt FirstObj      		(EObjClass cat)	{ return ListObj(cat).begin(); }
+	IC ObjectIt LastObj       		(EObjClass cat)	{ return ListObj(cat).end(); }
+	IC ObjectPairIt FirstClass		()				{ return m_Objects.begin(); }
+	IC ObjectPairIt LastClass 		()				{ return m_Objects.end(); }
+	IC int ObjCount           		(EObjClass cat)	{ return ListObj(cat).size(); }
 	int ObjCount 			        ();
 
-	void Render                     (Fmatrix *_Camera);
+	void RenderSky					(const Fmatrix& camera);
+	void Render                     (const Fmatrix& camera);
 	void Update                     (float dT);
 
 	int AddToSnapList				();

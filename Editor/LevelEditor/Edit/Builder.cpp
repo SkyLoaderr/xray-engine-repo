@@ -81,6 +81,13 @@ bool SceneBuilder::MakeLTX( ){
         return false;
     }
 
+    // build sky dome
+    if( !BuildSkyModel() ){
+        ELog.DlgMsg( mtError, "Failed to build sky model....");
+		UI.Command(COMMAND_RELOAD);
+        return false;
+    }
+
     // build
 	m_InProgress = true;
 	//---------------
