@@ -22,6 +22,9 @@ public:
 	void						Load		(LPCSTR Name);
 	void						Unload		(void);
 	void						Apply		(DWORD dwStage);
+	
+	void						surface_set	(IDirect3DTexture8* surf);
+	IDirect3DTexture8*			surface_get ();
 
 	CTexture					();
 	~CTexture					();

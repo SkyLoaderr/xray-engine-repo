@@ -25,6 +25,19 @@ CTexture::~CTexture() {
 	R_ASSERT(dwReference==0);
 }
 
+void				CTexture::surface_set	(IDirect3DTexture8* surf)
+{
+	surf->AddRef		();
+	pSurface->Release	();
+	pSurface			= surf;
+}
+
+IDirect3DTexture8*	CTexture::surface_get	()
+{
+	pSurface->AddRef	();
+	return pSurface;
+}
+
 void CTexture::Apply(DWORD dwStage)
 {
 	if (pAVI && pAVI->NeedUpdate())
@@ -161,7 +174,6 @@ void CTexture::Load(LPCSTR cName)
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			pSurface->SetPriority	(PRIORITY_NORMAL);
-///			pSurface->PreLoad		();
 			dwMemoryUsage			=	Calculate_MemUsage(pSurface);
 		}
 	}
