@@ -348,7 +348,7 @@ void xrMergeSpawns(LPCSTR name)
 			R_ASSERT2			(Ini->section_exist(N),S);
 		}
 		V						= Ini->r_string(N,"name");
-		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
+		Memory.mem_copy			(tLevel.caLevelName,V,(u32)strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>(name,tLevel,id,&dwGroupOffset));

@@ -275,7 +275,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	CSE_ALifeGraph::SLevel			tLevel;
 	tLevel.tOffset.set			(0,0,0);
 	tLevel.dwLevelID			= 0;
-	Memory.mem_copy(tLevel.caLevelName,name,strlen(name) + 1);
+	Memory.mem_copy				(tLevel.caLevelName,name,(u32)strlen(name) + 1);
 	tGraphHeader.tpLevels.push_back(tLevel);
 	tGraph.w_u32				(tGraphHeader.dwVersion);
 	tGraph.w_u32				(tGraphHeader.dwVertexCount);
@@ -318,7 +318,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
 		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
-		tGraphVertex.dwEdgeOffset		= k + j*sizeof(CSE_ALifeGraph::SGraphEdge);
+		tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CSE_ALifeGraph::SGraphEdge);
 		tGraph.w						(&tGraphVertex,	sizeof(CSE_ALifeGraph::SGraphVertex));
 	}
 	tGraph.save_to(fName);

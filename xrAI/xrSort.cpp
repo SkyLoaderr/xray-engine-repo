@@ -94,13 +94,13 @@ void vfQuickSortEdges(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, i
 			if (d < a)
 				break;
 			int rr;
-			rr = _min(a - uiaArray,b - a);
+			rr = _min(int(a - uiaArray),int(b - a));
 			vfSwapVectors(uiaArray,b - rr,rr);
-			rr = _min(d - c,n - (d - uiaArray) - 1);
+			rr = _min(int(d - c),int(n - (d - uiaArray) - 1));
 			vfSwapVectors(b,uiaArray + n - rr,rr);
-			rr = b - a;
+			rr = int(b - a);
 			QPUSH(iStartI,rr);
-			rr = d - c;
+			rr = int(d - c);
 			iStartI += n - rr;
 			n = rr;
 		}

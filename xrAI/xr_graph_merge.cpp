@@ -149,8 +149,8 @@ public:
 						T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
 						T.dwLevelID						= tpGraphPoint->m_tLevelID;
 						T.tGraphID						= i;
-						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,strlen(tpGraphPoint->s_name_replace) + 1);
-						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,strlen(tpGraphPoint->m_caConnectionPointName) + 1);
+						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)strlen(tpGraphPoint->s_name_replace) + 1);
+						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,(u32)strlen(tpGraphPoint->m_caConnectionPointName) + 1);
 						m_tVertexMap.insert				(mk_pair(S,T));
 						i++;
 					}
@@ -232,8 +232,8 @@ void xrMergeGraphs(LPCSTR name)
 		R_ASSERT					(Ini->section_exist(N));
 		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
 		V							= Ini->r_string(N,"name");
-		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
-		Memory.mem_copy				(S1,V,strlen(V) + 1);
+		Memory.mem_copy				(tLevel.caLevelName,V,(u32)strlen(V) + 1);
+		Memory.mem_copy				(S1,V,(u32)strlen(V) + 1);
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.dwLevelID			= Ini->r_s32(N,"id");

@@ -160,7 +160,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 			for ( ; I != E; I++)
 				if ((*I)[i] < tCrossTableCell.fDistance) {
 					tCrossTableCell.fDistance	= (*I)[i];
-					tCrossTableCell.tGraphIndex = I - B;
+					tCrossTableCell.tGraphIndex = _GRAPH_ID(I - B);
 				}
 			
 			for (int j=0; j<iVertexCount; j++)
