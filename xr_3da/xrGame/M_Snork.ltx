@@ -47,6 +47,7 @@ stand_drag_0		=	  1,	0.2,    1,	     0.25,    0.7,    0.7,    1.0,     0.7,   1.
 
 [m_snork_e]
 GroupControlSection		= spawn_group
+SpaceRestrictionSection = space_restrictor,zone_mosquito_bald
 $spawn					= "monsters\snork"					 ; option for Level Editor
 $npc					= on								 ; option for Level Editor
 $prefetch 				= 16
@@ -104,6 +105,7 @@ Velocity_Jump_Stand		= 0,		2.4,			2.4,		1,		1
 Velocity_Jump_Forward	= 9.0,		0.00001,		0.00001,	0.4,	1
 
 
+
 ; acceleration
 Accel_Generic			= 1.5
 Accel_Calm				= 2.5
@@ -143,7 +145,7 @@ terrain					 = 255,255,255,255,30,40
 ;entity condition
 
 ; entity condition
-satiety_v 				= 0.01				;0.01			;скорость уменьшения сытости со временем
+satiety_v 				= 0.00001				;0.01			;скорость уменьшения сытости со временем
 radiation_v 			= 0.00001		;0.004				;скорость уменьшения радиации
 satiety_power_v 		= 0.005		;0.01					;увеличение силы при уменьшении сытости 
 satiety_health_v 		= 0.001	;0.03						;увеличение здоровья при уменьшении сытости 
@@ -192,7 +194,7 @@ MoraleFearQuant				= -0.002
 MoraleRestoreQuant			= 0.001
 MoraleBroadcastDistance		= 10.0
 
-;Sounds
+; Sounds
 sound_idle				= monsters\biting\def_			; idle_
 sound_eat				= monsters\biting\def_			; eat_
 sound_attack			= monsters\biting\def_			; attack_
@@ -214,7 +216,6 @@ attack_sound_delay		= 4000
 material				= creatures\hoof
 DynamicObjectsCount		= 32
 
-squad_attack_algorithm	= 1
 attack_effector			= m_snork_attack_effector
 
 attack_params			= m_snork_attack_params
