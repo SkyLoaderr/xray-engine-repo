@@ -394,7 +394,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:move_callback (obj, action_type, index)
 
-    printf ("MOVE_CALLBACK called for object %s, index %d", obj:name (), index)
+    --printf ("MOVE_CALLBACK called for object %s, index %d", obj:name (), index)
 
     if index == -1 then return end
     
