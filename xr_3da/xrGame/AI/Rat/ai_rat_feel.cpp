@@ -54,7 +54,7 @@ objQualifier* CAI_Rat::GetQualifier	()
 	return(&RatQualifier);
 }
 
-void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
+void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	if (!g_Alive())
 		return;

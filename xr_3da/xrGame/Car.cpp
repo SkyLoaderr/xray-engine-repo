@@ -462,5 +462,5 @@ void CCar::ActivateJeep()
 
 void CCar::ActivateShell()
 {
-//CPhysicsShell* m_phShell;
+
 }

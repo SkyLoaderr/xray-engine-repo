@@ -30,8 +30,7 @@ struct Triangle
 
 };
 
-typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
+typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 
 struct dxGeomUserData
 {
@@ -42,7 +41,6 @@ struct dxGeomUserData
 	u32			material;
 	u32			tri_material;
 	ContactCallbackFun* callback;
-	ObjectContactCallbackFun* object_callback;
 //	struct ContactsParameters
 //	{
 //	dReal damping;
@@ -67,7 +65,6 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	((dxGeomUserData*)dGeomGetData(geom))->material=0;
 	((dxGeomUserData*)dGeomGetData(geom))->tri_material=0;
 	((dxGeomUserData*)dGeomGetData(geom))->callback=NULL;
-	((dxGeomUserData*)dGeomGetData(geom))->object_callback=NULL;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;
@@ -97,10 +94,5 @@ IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 IC void dGeomUserDataSetContactCallback(dxGeom* geom,ContactCallbackFun* callback)
 {
 	((dxGeomUserData*)dGeomGetData(geom))->callback=callback;
-}
-
-IC void dGeomUserDataSetObjectContactCallback(dxGeom* geom,ObjectContactCallbackFun* obj_callback)
-{
-	((dxGeomUserData*)dGeomGetData(geom))->object_callback=obj_callback;
 }
 #endif

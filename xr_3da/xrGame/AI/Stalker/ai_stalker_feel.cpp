@@ -367,7 +367,7 @@ void CAI_Stalker::SelectSound(int &iIndex)
 			}
 }
 
-void CAI_Stalker::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)
+void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	#ifdef WRITE_LOG
 //		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
@@ -381,7 +381,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 	power *= ffGetStartVolume(ESoundTypes(eType));
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
-
+	power = 0;
 	u32 dwTime = m_dwCurrentUpdate;
 	
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {

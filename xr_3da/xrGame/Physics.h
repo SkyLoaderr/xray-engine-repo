@@ -272,25 +272,20 @@ public:
 	virtual	void			add_Box					(const Fobb&		V);
 
 	virtual	void			add_Cylinder			(const Fcylinder&	V);
-
+	
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback);
+	void			SetShell		(CPHShell* p){m_shell=p;}
+	void			InterpolateGlobalTransform(Fmatrix* m);
+	void			build(dSpaceID space);
+	void			destroy();
+	Fvector			get_mc_data();
+	Fvector			get_mc_geoms();
+	void			Start();
+	void			RunSimulation();
 
-	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
-
-	void			SetShell						(CPHShell* p){m_shell=p;}
-	void			SetPhObjectInGeomData			(CPHObject* O);
-
-	void			InterpolateGlobalTransform		(Fmatrix* m);
-	void			build							(dSpaceID space);
-	void			destroy							();
-	Fvector			get_mc_data						();
-	Fvector			get_mc_geoms					();
-	void			Start							();
-	void			RunSimulation					();
-
-	dBodyID			get_body						(){return m_body;};
-	float			get_volume						(){get_mc_data();return m_volume;};
-	void			SetTransform					(const Fmatrix& m0);
+	dBodyID			get_body(){return m_body;};
+	float			get_volume(){get_mc_data();return m_volume;};
+	void			SetTransform(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void			SetMaterial				(u32 m){ul_material=m;}
@@ -301,7 +296,7 @@ public:
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
 	virtual void			applyForce				(const Fvector& dir, float val){
-		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+																					if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 																					dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
 																					};
 	virtual void			applyImpulse			(const Fvector& dir, float val){
@@ -464,7 +459,7 @@ public:
 	};
 	virtual void remove_Element(CPhysicsElement* E){
 	}
-	void					SetPhObjectInElements	();
+
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f){
 														vector<CPHElement*>::iterator i;
 														for(i=elements.begin();i!=elements.end();i++)
@@ -501,7 +496,6 @@ public:
 															(*i)->SetForceAndVelocity(force);
 														}
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				;
-		virtual void		set_ObjectContactCallback(ObjectContactCallbackFun* callback);
 	virtual void			Enable					();
 
 	virtual	void PhDataUpdate(dReal step);
