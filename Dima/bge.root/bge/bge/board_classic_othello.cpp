@@ -98,7 +98,7 @@ IC	void CBoardClassicOthello::try_flip_direction(cell_type *start_cell, int &dif
                 *current_cell	= _color_to_move;
 				*(m_current_flip++) = current_cell;
                 current_cell	-= increment;
-                difference		+= 2;
+				difference		+= _color_to_move == BLACK ? 2 : -2;
             }
 			while (current_cell != start_cell);
         }
@@ -111,7 +111,8 @@ IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
 	const cell_type color_to_move	= _color_to_move;
 	const cell_type	opponent_color	= (color_to_move == BLACK ? WHITE : BLACK);
 	int				difference		= this->difference();
-	cell_type	*	start_cell		= m_board + index;
+	cell_type		**m_start_flip	= m_current_flip;
+	cell_type		*start_cell		= m_board + index;
 
 	switch (flipping_directions[index]) {
 		case 1 : {
@@ -183,10 +184,11 @@ IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
 		}
 	}
 
-	if (difference != this->difference()) {
+	if (m_current_flip != m_start_flip) {
 		*start_cell			= color_to_move;
 		*(m_current_flip++) = start_cell;
-		*(m_current_flip++) = reinterpret_cast<cell_type*>((size_t)((this->difference() - difference) >> 1));
+		*(m_current_flip)	= reinterpret_cast<cell_type*>((size_t)(m_current_flip - m_start_flip - 1));
+		++m_current_flip;
 		m_difference		= difference + 1;
 		m_color_to_move		= opponent_color;
 		return				(true);

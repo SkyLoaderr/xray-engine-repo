@@ -72,8 +72,10 @@ IC	void CBoardClassicOthello::undo_move		()
 	for ( ; flip_count; ) {
 		--flip_count;
         **(--m_current_flip)		= opponent_color;
-		VERIFY						(m_current_flip > m_flip_stack);
+		VERIFY						(m_current_flip >= m_flip_stack);
     }
+
+	m_color_to_move					= opponent_color == BLACK ? WHITE : BLACK;
 }
 
 IC	void CBoardClassicOthello::undo_move		()
