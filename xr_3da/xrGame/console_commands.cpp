@@ -649,11 +649,11 @@ public:
 		
 		start					= CPU::GetCycleCount();
 		if (!xr_strlen(S)) {
+			strconcat			(S,Core.UserName,"_","quick_save");
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
-			net_packet.w_stringZ("quick_save");
+			net_packet.w_stringZ(S);
 			net_packet.w_u8		(0);
-			strcpy				(S,"quick_save");
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
 		else {
