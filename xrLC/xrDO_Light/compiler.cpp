@@ -23,7 +23,6 @@ struct R_Light
     float	        attenuation0;		// Constant attenuation		
     float	        attenuation1;		// Linear attenuation		
     float	        attenuation2;		// Quadratic attenuation	
-	float			energy;
 	
 	Fvector			tri[3];				// Cached triangle for ray-testing
 };
@@ -48,7 +47,7 @@ struct		hemi_data
 void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
 {
 	hemi_data*	H		= (hemi_data*)P;
-	H->T.energy			= E;
+	H->T.amount			= E;
 	H->T.direction.set	(x,y,z);
 	H->dest->push_back	(H->T);
 }
@@ -112,7 +111,6 @@ void xrLoad(LPCSTR name)
 				RL.attenuation0			=	L->attenuation0;
 				RL.attenuation1			=	L->attenuation1;
 				RL.attenuation2			=	L->attenuation2;
-				RL.energy				=	L->diffuse.magnitude_rgb();
 				RL.tri[0].set			(0,0,0);
 				RL.tri[1].set			(0,0,0);
 				RL.tri[2].set			(0,0,0);
@@ -130,7 +128,7 @@ void xrLoad(LPCSTR name)
 					v_right.normalize	();
 					
 					// Build jittered light
-					T.energy			= RL.energy/14.f;
+					T.amount			= L->diffuse.magnitude_rgb()/14.f;
 					float angle			= deg2rad(Header.params.area_dispersion);
 					{
 						//*** center
