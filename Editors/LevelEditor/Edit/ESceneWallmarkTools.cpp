@@ -34,7 +34,7 @@ ESceneWallmarkTools::ESceneWallmarkTools():ESceneCustomMTools(OBJCLASS_WM)
 	m_MarkHeight	= 1.f;
     m_MarkRotate	= 0.f;
     m_Flags.assign	(flDrawWallmark);
-    m_ShName		= "effects\\wallmarkset";
+    m_ShName		= "effects\\wallmarkblend";
     m_TxName		= "";
 }
 
