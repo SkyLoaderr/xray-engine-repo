@@ -413,8 +413,7 @@ void CMissile::setup_throw_params()
 
 void CMissile::Throw() 
 {
-	CEntity								*entity = dynamic_cast<CEntity*>(H_Parent());
-	VERIFY								(entity);
+	VERIFY								(dynamic_cast<CEntity*>(H_Parent()));
 	
 	//Fvector								throw_point, throw_direction;
 	//entity->g_fireParams				(throw_point,throw_direction);

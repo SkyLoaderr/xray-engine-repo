@@ -59,14 +59,9 @@ void CGameObject::Load(LPCSTR section)
 
 	inherited::Load			(section);
 	CPrefetchManager::Load	(section);
-	//////////////////////////////////////
-	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
-	// Надо что-то придумать, чтобы флаги правильно 
-	// выставлялись в конструкторе
-	//////////////////////////////////////
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)	{
-		#pragma todo("to Dima: All objects are visible for AI ???")
+		// #pragma todo("to Dima: All objects are visible for AI ???")
 		// self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 		self->spatial.type	&= ~STYPE_REACTTOSOUND;
 	}

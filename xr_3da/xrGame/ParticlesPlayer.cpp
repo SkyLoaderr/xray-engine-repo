@@ -72,8 +72,7 @@ void CParticlesPlayer::Load(CKinematics* K)
 //уничтожение партиклов на net_Destroy
 void	CParticlesPlayer::net_DestroyParticles	()
 {
-	CObject* object			= dynamic_cast<CObject*>(this);
-	VERIFY(object);
+	VERIFY(dynamic_cast<CObject*>(this));
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
 	{

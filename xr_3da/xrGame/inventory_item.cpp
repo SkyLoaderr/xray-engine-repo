@@ -63,7 +63,7 @@ void CInventoryItem::Load(LPCSTR section)
 	if (!frame_check(m_dwFrameLoad))
 		return;
 
-	inherited::Load(section);
+	inherited::Load	(section);
 
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
 	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
