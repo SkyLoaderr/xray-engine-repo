@@ -5,23 +5,38 @@
 	<icon_static x="7" y="30" width="130" height="108"></icon_static>
 
 	<!-- NAME -->
-	<static x="7" y="7" width="130" height="22">
+	<name_static x="7" y="7" width="130" height="22">
 		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
-	</static>
+	</name_static>
 
 	<!-- RANK -->
-	<static x="15" y="140" width="125" height="16">
-		<text x="0" y="0" font="letterica16" r="240" g="217" b="182">Rank</text>
-	</static>
+	<rank_static x="15" y="140" width="125" height="16">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
+	</rank_static>
+	
+	<!-- RANK CAPTION -->
+	<rank_caption x="50" y="140" width="125" height="16">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182">rank</text>
+	</rank_caption>
 
 	<!-- COMMUNITY -->
-	<static x="15" y="153" width="125" height="16">
+	<community_static x="15" y="153" width="125" height="16">
 		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
-	</static>
+	</community_static>
+
+	<!-- COMMUNITY CAPTION -->
+	<community_caption x="50" y="153" width="125" height="16">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182">community</text>
+	</community_caption>
 
 	<!-- RELATION -->
-	<relation_static x="170" y="177" width="125" height="16">
+	<relation_static x="15" y="177" width="125" height="16">
 		<text x="0" y="0" font="letterica16" r="240" g="217" b="182"></text>
+	</relation_static>
+
+	<!-- RELATION CAPTION -->
+	<relation_static x="50" y="177" width="125" height="16">
+		<text x="0" y="0" font="letterica16" r="240" g="217" b="182">relation</text>
 	</relation_static>
 </window>
 
