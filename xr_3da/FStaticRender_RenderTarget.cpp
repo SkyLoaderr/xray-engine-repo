@@ -62,6 +62,7 @@ BOOL CRenderTarget::Create	()
 	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
+	pShaderBlend= Device.Shader.Create			("effects\\screen_blend",	RTname);
 	pTexture->surface_set	(pSurface);
 	return	TRUE;
 }
@@ -74,6 +75,7 @@ void CRenderTarget::OnDeviceCreate	()
 
 void CRenderTarget::OnDeviceDestroy	()
 {
+	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteTexture(pTexture);
