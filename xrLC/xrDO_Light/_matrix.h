@@ -127,28 +127,27 @@ public:
 		m[3][3] = 1;
 		return *this;
 	}
-	IC	SelfRef	mulA		( const Self &A )	// mul after 
+	IC	SelfRef	mulA		( const Self &A )			// mul after 
 	{
     	Self B; B.set( *this ); 	mul		( A, B );
 		return *this;
     };
-	IC	SelfRef	mulB		( const Self &B )	// mul before
+	IC	SelfRef	mulB		( const Self &B )			// mul before
 	{
 		Self A; A.set( *this ); 	mul		( A, B );
 		return *this;
 	};
-	IC	SelfRef	mulA_43		( const Self &A )	// mul after (no projection)
+	IC	SelfRef	mulA_43		( const Self &A )			// mul after (no projection)
 	{
     	Self B; B.set( *this ); 	mul_43	( A, B );
 		return *this;
     };
-	IC	SelfRef	mulB_43		( const Self &B )	// mul before (no projection)
+	IC	SelfRef	mulB_43		( const Self &B )			// mul before (no projection)
 	{
 		Self A; A.set( *this ); 	mul_43	( A, B );
 		return *this;
 	};
-	IC	SelfRef	invert		( const Self &a )
-	{	
+	IC	SelfRef	invert		( const Self &a )	{		// important: this is 4x3 invert, not the 4x4 one
 		// faster than self-invert
 		T fDetInv = ( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -
 			a._12 * ( a._21 * a._33 - a._23 * a._31 ) +
@@ -261,11 +260,9 @@ public:
 		return *this;
 	}
 
-	IC	SelfRef	rotation	( const Tvector &vdir, const Tvector &vnorm )
-	{
+	IC	SelfRef	rotation	( const Tvector &vdir, const Tvector &vnorm )	{
 		Tvector vright;
-		vright.crossproduct	(vnorm,vdir);
-		vright.normalize	();
+		vright.crossproduct	(vnorm,vdir).normalize();
 		m[0][0] = vright.x;	m[0][1] = vright.y;	m[0][2] = vright.z; m[0][3]=0;
 		m[1][0] = vnorm.x;	m[1][1] = vnorm.y;	m[1][2] = vnorm.z;	m[1][3]=0;
 		m[2][0] = vdir.x;	m[2][1] = vdir.y;	m[2][2] = vdir.z;	m[2][3]=0;
@@ -279,9 +276,8 @@ public:
 	IC	SelfRef	mapYZX		()	{i.set(0, 1, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
 	IC	SelfRef	mapZXY		()	{i.set(0, 0, 1);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
 	IC	SelfRef	mapZYX		()	{i.set(0, 0, 1);_14=0;j.set(0, 1, 0);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
-	
-	IC	SelfRef	rotation	( const Tvector &axis, T Angle )
-	{
+
+	IC	SelfRef	rotation	( const Tvector &axis, T Angle )	{
 		T Cosine	= _cos(Angle);
 		T Sine		= _sin(Angle);
 		m [0][0] 	= axis.x * axis.x + ( 1 - axis.x * axis.x) * Cosine;
@@ -301,85 +297,70 @@ public:
 	}
 
 	// mirror X
-	IC	SelfRef	mirrorX ()
-	{	
+	IC	SelfRef	mirrorX ()			{	
 		identity();	m[0][0] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorX_over ()
-	{	
+	IC	SelfRef	mirrorX_over ()		{	
 		m[0][0] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorX_add ()
-	{	
+	IC	SelfRef	mirrorX_add ()		{	
 		m[0][0] *= -1;	
 		return *this; 
 	}
 
 	// mirror Y
-	IC	SelfRef	mirrorY ()
-	{	
+	IC	SelfRef	mirrorY ()			{	
 		identity();	m [1][1] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorY_over ()
-	{	
+	IC	SelfRef	mirrorY_over ()		{	
 		m[1][1] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorY_add ()
-	{	
+	IC	SelfRef	mirrorY_add ()		{	
 		m[1][1] *= -1;	
 		return *this; 
 	}
 
 	// mirror Z
-	IC	SelfRef	mirrorZ ()
-	{	
+	IC	SelfRef	mirrorZ ()			{	
 		identity();		m [2][2] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorZ_over ()
-	{	
+	IC	SelfRef	mirrorZ_over ()		{	
 		m[2][2] = -1;	
 		return *this; 
 	}
-	IC	SelfRef	mirrorZ_add ()
-	{	
+	IC	SelfRef	mirrorZ_add ()		{	
 		m[2][2] *= -1;	
 		return *this; 
 	}
-
-	IC	SelfRef	mul( const Self &A, T v )
-	{
+	IC	SelfRef	mul( const Self &A, T v )	{
 		m[0][0] = A.m [0][0] * v;	m[0][1] = A.m [0][1] * v;	m[0][2] = A.m [0][2] * v;	m[0][3] = A.m [0][3] * v;
 		m[1][0] = A.m [1][0] * v;	m[1][1] = A.m [1][1] * v;	m[1][2] = A.m [1][2] * v;	m[1][3] = A.m [1][3] * v;
 		m[2][0] = A.m [2][0] * v;	m[2][1] = A.m [2][1] * v;	m[2][2] = A.m [2][2] * v;	m[2][3] = A.m [2][3] * v;
 		m[3][0] = A.m [3][0] * v;	m[3][1] = A.m [3][1] * v;	m[3][2] = A.m [3][2] * v;	m[3][3] = A.m [3][3] * v;
 		return *this; 
 	}
-	IC	SelfRef	mul( T v )
-	{
+	IC	SelfRef	mul( T v )	{
 		m[0][0] *= v;		m[0][1] *= v;		m[0][2] *= v;		m[0][3] *= v;
 		m[1][0] *= v;		m[1][1] *= v;		m[1][2] *= v;		m[1][3] *= v;
 		m[2][0] *= v;		m[2][1] *= v;		m[2][2] *= v;		m[2][3] *= v;
 		m[3][0] *= v;		m[3][1] *= v;		m[3][2] *= v;		m[3][3] *= v;
 		return *this; 
 	}
-	IC	SelfRef	div( const Self &A, T v ) 
-	{
+	IC	SelfRef	div( const Self &A, T v )	{
 		VERIFY(_abs(v)>0.000001f);
 		return mul(A,1.0f/v);
 	}
-	IC	SelfRef	div( T v ) 
-	{
+	IC	SelfRef	div( T v )					{
 		VERIFY(_abs(v)>0.000001f);
 		return mul(1.0f/v);
 	}
 	// fov
-	IC	SelfRef	build_projection		(T fFOV, T fAspect, T fNearPlane, T fFarPlane) 
-	{
+	IC	SelfRef	build_projection		(T fFOV, T fAspect, T fNearPlane, T fFarPlane)	{
 		return build_projection_HAT		(tanf(fFOV/2.f),fAspect,fNearPlane,fFarPlane);
 	}
 	// half_fov-angle-tangent
@@ -388,17 +369,15 @@ public:
 		VERIFY( _abs(fFarPlane-fNearPlane) > EPS_S );
 		VERIFY( _abs(HAT) > EPS_S );
 		
-		T cot	= 1/HAT;
+		T cot	= T(1)/HAT;
 		T w		= fAspect * cot;
-		T h		= 1.0f    * cot;
+		T h		= T(1)    * cot;
 		T Q		= fFarPlane / ( fFarPlane - fNearPlane );
 		
-		ZeroMemory	(this,sizeof(*this));
-		_11			= w;
-		_22			= h;
-		_33			= Q;
-		_34			= 1.0f;
-		_43			= -Q*fNearPlane;
+		_11		= w;	_12 = 0;	_13 = 0;			_14 = 0;
+		_21		= 0;	_22	= h;	_23 = 0;			_24 = 0;
+		_31		= 0;	_32 = 0;	_33 = Q;			_34 = 1.0f;
+		_41		= 0;	_42 = 0;	_43	= -Q*fNearPlane;_44 = 0;
 		return *this; 
 	}
 	IC	SelfRef	build_projection_ortho	(T w, T h, T zn, T zf)
@@ -414,17 +393,14 @@ public:
 		// Get the z basis vector3, which points straight ahead. This is the
 		// difference from the eyepoint to the lookat point.
 		Tvector vView;
-		vView.sub(vAt,vFrom);
-		vView.normalize();
+		vView.sub		(vAt,vFrom).normalize();
 
 		// Get the dot product, and calculate the projection of the z basis
 		// vector3 onto the up vector3. The projection is the y basis vector3.
 		T fDotProduct = vWorldUp.dotproduct( vView );
 
 		Tvector vUp;
-		vUp.mul(vView, -fDotProduct);
-		vUp.add(vWorldUp);
-		vUp.normalize();
+		vUp.mul	(vView, -fDotProduct).add(vWorldUp).normalize();
 
 		// The x basis vector3 is found simply with the cross product of the y
 		// and z basis vectors
@@ -451,9 +427,7 @@ public:
 		T fDotProduct = vWorldUp.dotproduct( vView );
 
 		Tvector vUp;
-		vUp.mul(vView, -fDotProduct);
-		vUp.add(vWorldUp);
-		vUp.normalize();
+		vUp.mul	(vView, -fDotProduct).add(vWorldUp).normalize();
 
 		// The x basis vector3 is found simply with the cross product of the y
 		// and z basis vectors
