@@ -172,6 +172,7 @@ void __cdecl logThread(void *dummy)
 			for (; LogSize<LogFile.size(); LogSize++)
 			{
 				const char *S = *LogFile[LogSize];
+				if (0==S)	S = "";
 				SendMessage	( hwLog, LB_ADDSTRING, 0, (LPARAM) S);
 			}
 			SendMessage		( hwLog, LB_SETTOPINDEX, LogSize-1, 0);
