@@ -5,7 +5,10 @@
 
 const u32 XR_MAX_PORTAL_VERTS	= 6;
 
-#define HEMILIGHTS_CONTROL_NAME "$hemi"
+#define LCONTROL_HEMI	"$hemi"				// hemisphere
+#define LCONTROL_DIR0	"$dir0"				// sun1
+#define LCONTROL_DIR1	"$dir1"				// sun2
+#define LCONTROL_STATIC "$static"			// all other static lights
 
 // All types to interact with xrLC
 typedef Fvector			b_vertex;
