@@ -52,13 +52,13 @@ function options_dialog:InitControls()
 	     --->> BUTTONS
 	local btn_rect = {x = 0, y = 0, width = 135, height = 40}
 		  btn_rect.x = indent --(main_rect.width - btn_rect.width)/2
-	local btn_new_rect    = {x = btn_rect.x,
+	local btn_video_rect    = {x = btn_rect.x,
 							 y = caption_rect.y + caption_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
 	local btn_load_rect   = {x = btn_rect.x,
-							 y = btn_new_rect.y + btn_new_rect.height + indent,
+							 y = btn_video_rect.y + btn_video_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
@@ -84,7 +84,7 @@ function options_dialog:InitControls()
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
 	
-	-- MAIN FRAME WINDOW		
+	-- MAIN FRAME WINDOW
 	local main_frame = CUIFrameWindow()
 	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
 	main_frame:SetWindowName("main_frame")
@@ -112,9 +112,9 @@ function options_dialog:InitControls()
 	--------->> NEW GAME
     local btn = CUIButton()
 	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_new_game")
-	btn:Init("ui\\ui_button_01", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
-	btn:SetText("New game")
+	btn:SetWindowName("btn_video_game")
+	btn:Init("ui\\ui_button_01", btn_video_rect.x, btn_video_rect.y, btn_video_rect.width, btn_video_rect.height)
+	btn:SetText("Video")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(button_indent)
