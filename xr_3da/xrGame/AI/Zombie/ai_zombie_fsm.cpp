@@ -545,10 +545,10 @@ void CAI_Zombie::Resurrect()
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		m_tpSoundBeingPlayed = &(m_tpaSoundResurrect[Random.randI(SND_RESURRECT_COUNT)]);
 
-		//if (!m_tpSoundBeingPlayed->feedback)
+		if (!m_tpSoundBeingPlayed->feedback)
 			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-		//else
-		//	m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
+		else
+			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 	}
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
