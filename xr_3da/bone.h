@@ -16,12 +16,7 @@ enum EJointType
     jtRigid,
 	jtCloth,
 	jtJoint,
-    jtWheelXZ,
-    jtWheelXY,
-    jtWheelYX,
-    jtWheelYZ,
-    jtWheelZX,
-    jtWheelZY,
+    jtWheel,
     jtForceU32 = u32(-1)
 };
 
@@ -116,7 +111,6 @@ class CBone
 	Fvector			    mot_rotate;		// XYZ format (Game format)
 	float			    mot_length;
 
-    Fmatrix			    rest_transform; 
     Fmatrix			    mot_transform;
 
     Fmatrix			    last_transform;
@@ -157,11 +151,10 @@ public:
     const Fvector&      _Offset			(){return mot_offset;}
     const Fvector&      _Rotate			(){return mot_rotate;}
     float			    _Length			(){return mot_length;}
-//    IC Fmatrix&			_RTransform		(){return rest_transform;}
     IC Fmatrix&		    _MTransform		(){return mot_transform;}
     IC Fmatrix&		    _LTransform		(){return last_transform;}
     IC Fmatrix&		    _LITransform	(){return last_i_transform;} 
-	IC const Fvector&	_RestOffset		(){return rest_offset;}
+	IC Fvector&			_RestOffset		(){return rest_offset;}
 	IC Fvector&		    _RestRotate		(){return rest_rotate;}
     
 	void			    _Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
@@ -185,6 +178,8 @@ public:
 	void			    ShapeScale		(const Fvector& amount);
 	void			    ShapeRotate		(const Fvector& amount);
 	void			    ShapeMove		(const Fvector& amount);
+	void			    BindRotate		(const Fvector& amount);
+	void			    BindMove		(const Fvector& amount);
 
 	void			    BoneRotate		(const Fvector& axis, float angle);
 

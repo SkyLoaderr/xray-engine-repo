@@ -178,7 +178,8 @@ class ENGINE_API CClip{
 public:
 	ref_str			name;
     ref_str			cycles[4];
-    RStrVec			fxs;
+    ref_str			fx;
+    float			fx_power;
     float			length;
 public:
 	virtual void	Save	(IWriter& F);
