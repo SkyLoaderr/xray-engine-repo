@@ -173,6 +173,12 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         Command(COMMAND_UPDATE_PROPERTIES);
 		break;
 
+    case COMMAND_LOAD_FIRSTRECENT:
+    	if (fraLeftBar->FirstRecentFile()){
+        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
+        }
+    	break;
+
     case COMMAND_IMPORT_COMPILER_ERROR:{
     	AnsiString fn;
     	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
@@ -502,6 +508,7 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
         else if (Key=='X')    			{Command(COMMAND_CUT);                  bExec=true;}
         else if (Key=='Z')    			{Command(COMMAND_UNDO);                 bExec=true;}
         else if (Key=='Y')    			{Command(COMMAND_REDO);                 bExec=true;}
+		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
     }
     return bExec;
 }

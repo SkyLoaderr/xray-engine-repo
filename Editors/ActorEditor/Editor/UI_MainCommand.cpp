@@ -134,11 +134,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	NeedBreak();
 		ELog.DlgMsg(mtInformation,"Execution canceled.");
     	break;
-    case COMMAND_LOAD_FIRSTRECENT:
-    	if (fraLeftBar->FirstRecentFile()){
-        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
-        }
-    	break;
 	case COMMAND_UPDATE_TOOLBAR:
     	fraLeftBar->UpdateBar();
     	break;
@@ -231,7 +226,6 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
         else if (Key=='N')   			{Command(COMMAND_CLEAR);                bExec=true;}
         else if (Key=='G')   			{Command(COMMAND_TOGGLE_GRID);          bExec=true;}
         else if (Key=='F')				{Command(COMMAND_TOGGLE_SAFE_RECT);     bExec=true;}
-		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
     }
     if ((Key==VK_OEM_3)||(Key==VK_SHIFT)){Command(COMMAND_RENDER_FOCUS);        bExec=true;}
     return bExec;

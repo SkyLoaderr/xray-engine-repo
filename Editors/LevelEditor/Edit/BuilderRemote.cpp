@@ -364,7 +364,7 @@ void SceneBuilder::BuildHemiLights()
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
         xrHemisphereBuild(P.area_quality,FALSE,0.5f,P.area_energy_summary,hemi_callback,&h_data);
-        int control_ID	= BuildLightControl(HEMILIGHTS_CONTROL_NAME);
+        int control_ID	= BuildLightControl(LCONTROL_HEMI);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
             b_light_static& sl	= l_light_static.back();
