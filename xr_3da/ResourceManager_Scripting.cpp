@@ -21,26 +21,26 @@ public:
 	adopt_sampler			(const adopt_sampler&	_C)				: C(_C.C), stage(_C.stage)	{ if (u32(-1)==stage) C=0;		}
 	~adopt_sampler			()										{ }
 
-	adopt_sampler			_texture		(LPCSTR texture)		{ if (C) C->i_Texture	(stage,texture);			return *this;	}
-	adopt_sampler			_projective		(bool _b)				{ if (C) C->i_Projective(stage,_b);					return *this;	}
-	adopt_sampler			_clamp			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_CLAMP);	return *this;	}
-	adopt_sampler			_wrap			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_WRAP);	return *this;	}
-	adopt_sampler			_mirror			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_MIRROR);	return *this;	}
+	adopt_sampler			_texture		(LPCSTR texture)		{ if (C) C->i_Texture	(stage,texture);											return *this;	}
+	adopt_sampler			_projective		(bool _b)				{ if (C) C->i_Projective(stage,_b);													return *this;	}
+	adopt_sampler			_clamp			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_CLAMP);									return *this;	}
+	adopt_sampler			_wrap			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_WRAP);									return *this;	}
+	adopt_sampler			_mirror			()						{ if (C) C->i_Address	(stage,D3DTADDRESS_MIRROR);									return *this;	}
 	adopt_sampler			_f_anisotropic	()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_ANISOTROPIC);	return *this;	}
 	adopt_sampler			_f_trilinear	()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_LINEAR,D3DTEXF_LINEAR);		return *this;	}
 	adopt_sampler			_f_bilinear		()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_POINT, D3DTEXF_LINEAR);		return *this;	}
 	adopt_sampler			_f_linear		()						{ if (C) C->i_Filter	(stage,D3DTEXF_LINEAR,D3DTEXF_NONE,  D3DTEXF_LINEAR);		return *this;	}
 	adopt_sampler			_f_none			()						{ if (C) C->i_Filter	(stage,D3DTEXF_POINT, D3DTEXF_NONE,  D3DTEXF_POINT);		return *this;	}
-	adopt_sampler			_fmin_none		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_NONE);		return *this;	}
-	adopt_sampler			_fmin_point		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_POINT);		return *this;	}
-	adopt_sampler			_fmin_linear	()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_LINEAR);		return *this;	}
-	adopt_sampler			_fmin_aniso		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);return *this;	}
-	adopt_sampler			_fmip_none		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_NONE);		return *this;	}
-	adopt_sampler			_fmip_point		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_POINT);		return *this;	}
-	adopt_sampler			_fmip_linear	()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_LINEAR);		return *this;	}
-	adopt_sampler			_fmag_none		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_NONE);		return *this;	}
-	adopt_sampler			_fmag_point		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_POINT);		return *this;	}
-	adopt_sampler			_fmag_linear	()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_LINEAR);		return *this;	}
+	adopt_sampler			_fmin_none		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_NONE);										return *this;	}
+	adopt_sampler			_fmin_point		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_POINT);										return *this;	}
+	adopt_sampler			_fmin_linear	()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_LINEAR);										return *this;	}
+	adopt_sampler			_fmin_aniso		()						{ if (C) C->i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);								return *this;	}
+	adopt_sampler			_fmip_none		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_NONE);										return *this;	}
+	adopt_sampler			_fmip_point		()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_POINT);										return *this;	}
+	adopt_sampler			_fmip_linear	()						{ if (C) C->i_Filter_Mip(stage,D3DTEXF_LINEAR);										return *this;	}
+	adopt_sampler			_fmag_none		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_NONE);										return *this;	}
+	adopt_sampler			_fmag_point		()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_POINT);										return *this;	}
+	adopt_sampler			_fmag_linear	()						{ if (C) C->i_Filter_Mag(stage,D3DTEXF_LINEAR);										return *this;	}
 };
 
 // wrapper
@@ -259,8 +259,10 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	lua_State*			LSVM	= Device.Resources->LSVM;
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
-	element						(adopt_compiler(this),t_0,t_1,t_d);
-	r_End						();
+	adopt_compiler*		ac		= xr_new<adopt_compiler>(this);
+	element						(ac,t_0,t_1,t_d);
+	xr_delete			(ac);
+	r_End				();
 	lua_setgcthreshold	(LSVM,0);
 
 	return				Device.Resources->_CreateElement(E);
