@@ -9,7 +9,7 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
-const	int		P_o_size	= 512;
+const	int		P_o_size	= 32;
 const	int		P_o_line	= P_rt_size/P_o_size;
 const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
@@ -128,13 +128,13 @@ void CLightProjector::calculate	()
 	Device.set_xform_world		(Fidentity);
 
 	Fmatrix	mInvView,mXform2UV,mTemp;
+	float	t_s					= float(P_o_size)/float(P_rt_size);
 	mInvView.invert				(Device.mView);
-	mXform2UV.translate			(+1,   -1,	0);
-	mTemp.scale					(.5f, -.5f,	0);
+	mXform2UV.translate			(+1,		-1,			0);
+	mTemp.scale					(.5f*t_s,	-.5f*t_s,	0);
 	mXform2UV.mulA_43			(mTemp);
 	
 	// iterate on objects
-	int	slot_id		= 0;
 	for (u32 o_it=0; o_it<receivers.size(); o_it++)
 	{
 		recv&	C	= receivers	[o_it];
@@ -158,19 +158,21 @@ void CLightProjector::calculate	()
 		mView.build_camera		(v_C,C.C,v_N);
 		Device.set_xform_view	(mView);
 
-		// calculate uv-gen matrix
-		C.UVgen.mul_43			(mView,mInvView);
-		C.UVgen.mulA_43			(mXform2UV);
-		
 		// combine and build frustum
 		Fmatrix		mCombine;
 		mCombine.mul			(mProject,mView);
 		
 		// Select slot, set viewport
-		int		s_x			=	slot_id%P_o_line;
-		int		s_y			=	slot_id/P_o_line;
+		int		s_x			=	o_it%P_o_line;
+		int		s_y			=	o_it/P_o_line;
 		D3DVIEWPORT8 VP		=	{s_x*P_o_size,s_y*P_o_size,P_o_size,P_o_size,0,1 };
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
+
+		// calculate uv-gen matrix
+		C.UVgen.mul_43			(mView,mInvView);
+		C.UVgen.mulA_43			(mXform2UV);
+		mTemp.translate			(float(s_x)/float(P_rt_size), float(s_y)/float(P_rt_size), 0);
+		C.UVgen.mulA_43			(mTemp);
 
 		// Clear color to ambience
 		float	c_a			=	C.O->Lights()->ambient;
@@ -184,16 +186,6 @@ void CLightProjector::calculate	()
 		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set					(min,max);
 		::Render->RenderBox		(C.O->Sector(),BB,2);
-		
-		// register shadow and increment slot
-/*
-		shadows.push_back	(shadow());
-		shadows.back().slot	=	slot_id;
-		shadows.back().C	=	C.C;
-		shadows.back().M	=	mCombine;
-		shadows.back().L	=	&L.L;
-		slot_id	++;
-*/
 	}
 	
 	// Blur
