@@ -72,7 +72,7 @@
 <!---------------------------DOLG MASTER----------------------->
 	<specific_character id="dolg_master_default" team_default = "1">
 		<name>Неизвестный сталкер "Долга"</name>
-		<icon x="2" y="6"></icon>
+		<icon x="2" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
