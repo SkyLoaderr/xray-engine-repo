@@ -42,6 +42,7 @@ sidor_sos                           =   sidor_evaluator + 110
 sidor_ptr                           =   sidor_evaluator + 120
 sidor_yantar                        =   sidor_evaluator + 200
 sidor_secret_lab                    =   sidor_evaluator + 220
+sidor_military_radio                =   sidor_evaluator + 230
 
 -- эвалуаторы Чугай
 chugai_evaluators                   = stalker_ids.property_script + 3000
