@@ -23,7 +23,7 @@ template <
 		typename _1,
 		typename _2
 	>
-	class	 _base_allocator_constructor = CConstructorBaseAllocator,
+	class	 _builder_allocator_constructor = CBuilderAllocatorConstructor,
 	template <
 		typename _1, 
 		typename _2,
@@ -34,18 +34,18 @@ template <
 		>
 		class	 _4
 	>
-	class	 _index_base_allocator_constructor = CConstructorVertex,
+	class	 _manager_builder_allocator_constructor = CManagerBuilderAllocatorConstructor,
 	template <
 		typename _algorithm, 
-		typename _index, 
-		typename _base, 
+		typename _manager, 
+		typename _builder, 
 		typename _allocator,
 		template <typename _T> class _vertex,
 		template <
 			typename _1,
 			typename _2
 		>
-		class	 _base_allocator_constructor = CConstructorBaseAllocator,
+		class	 _builder_allocator_constructor = CBuilderAllocatorConstructor,
 		template <
 			typename _1, 
 			typename _2,
@@ -56,7 +56,7 @@ template <
 			>
 			class	 _4
 		>
-		class	 _index_base_allocator_constructor = CConstructorVertex
+		class	 _manager_builder_allocator_constructor = CManagerBuilderAllocatorConstructor
 	>
 	class _data_storage_constructor = CDataStorageConstructor,
 	typename _iteration_type = u32
@@ -93,8 +93,8 @@ public:
 		_data_storage_base,
 		_vertex_allocator,
 		_Vertex,
-		_base_allocator_constructor,
-		_index_base_allocator_constructor
+		_builder_allocator_constructor,
+		_manager_builder_allocator_constructor
 	>											CDataStorage;
 
 protected:

@@ -21,7 +21,7 @@
 			typename _1,\
 			typename _2\
 		>\
-		class	 _base_allocator_constructor,\
+		class	 _builder_allocator_constructor,\
 		template <\
 			typename _1,\
 			typename _2,\
@@ -32,18 +32,18 @@
 			>\
 			class	 _4\
 		>\
-		class	 _index_base_allocator_constructor,\
+		class	 _manager_builder_allocator_constructor,\
 		template <\
 			typename _algorithm,\
-			typename _index,\
-			typename _base,\
+			typename _manager,\
+			typename _builder,\
 			typename _allocator,\
 			template <typename _T> class _vertex,\
 			template <\
 				typename _1,\
 				typename _2\
 			>\
-			class	 _base_allocator_constructor,\
+			class	 _builder_allocator_constructor,\
 			template <\
 				typename _1,\
 				typename _2,\
@@ -54,7 +54,7 @@
 				>\
 				class	 _4\
 			>\
-			class	 _index_base_allocator_constructor\
+			class	 _manager_builder_allocator_constructor\
 		>\
 		class _data_storage_constructor,\
 		typename _iteration_type\
@@ -68,8 +68,8 @@
 	euclidian_heuristics,\
 	_data_storage_base,\
 	_vertex,\
-	_base_allocator_constructor,\
-	_index_base_allocator_constructor,\
+	_builder_allocator_constructor,\
+	_manager_builder_allocator_constructor,\
 	_data_storage_constructor,\
 	_iteration_type\
 >

@@ -8,22 +8,22 @@
 
 #pragma once
 
-template <typename T> class CEmptyClassTemplate {};
-template <typename T1, typename T2> class CEmptyClassTemplate2 {};
+template <typename T>				class CEmptyClassTemplate	{};
+template <typename T1, typename T2> class CEmptyClassTemplate2	{};
 
-#include "data_storage_index_base_allocator_constructor.h"
+#include "manager_builder_allocator_constructor.h"
 
 template <
 	typename _algorithm, 
-	typename _index, 
-	typename _base, 
+	typename _manager, 
+	typename _builder, 
 	typename _allocator,
 	template <typename _T> class _vertex = CEmptyClassTemplate,
 	template <
 		typename _1,
 		typename _2
 	>
-	class	 _base_allocator_constructor = CConstructorBaseAllocator,
+	class	 _builder_allocator_constructor = CBuilderAllocatorConstructor,
 	template <
 		typename _1, 
 		typename _2,
@@ -34,25 +34,25 @@ template <
 		>
 		class	 _4
 	>
-	class	 _index_base_allocator_constructor = CConstructorVertex
+	class	 _manager_builder_allocator_constructor = CManagerBuilderAllocatorConstructor
 >
 struct CDataStorageConstructor : 
 	public _algorithm::CDataStorage<
-		_index_base_allocator_constructor<
-			_index,
-			_base,
+		_manager_builder_allocator_constructor<
+			_manager,
+			_builder,
 			_allocator,
-			_base_allocator_constructor
+			_builder_allocator_constructor
 		>,
 		_vertex
 	>
 {
 	typedef typename _algorithm::CDataStorage<
-		_index_base_allocator_constructor<
-			_index,
-			_base,
+		_manager_builder_allocator_constructor<
+			_manager,
+			_builder,
 			_allocator,
-			_base_allocator_constructor
+			_builder_allocator_constructor
 		>,
 		_vertex
 	> inherited; 

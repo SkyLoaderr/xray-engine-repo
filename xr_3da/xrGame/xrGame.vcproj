@@ -1689,53 +1689,29 @@
 						Name="DataStorages"
 						Filter="">
 						<Filter
-							Name="vertex_allocators"
-							Filter="">
-							<Filter
-								Name="generic"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_allocator.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_allocator_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="fixed"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_fixed_allocator.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_fixed_allocator_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
 							Name="constructors"
 							Filter="">
 							<File
 								RelativePath=".\data_storage_constructor.h">
 							</File>
 							<Filter
-								Name="base_allocator"
+								Name="builder_allocator"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_base_allocator_constructor.h">
+									RelativePath=".\builder_allocator_constructor.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_base_allocator_constructor_inline.h">
+									RelativePath=".\builder_allocator_constructor_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="index_base_allocator"
+								Name="manager_builder_allocator"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_index_base_allocator_constructor.h">
+									RelativePath=".\manager_builder_allocator_constructor.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_index_base_allocator_constructor_inline.h">
+									RelativePath=".\manager_builder_allocator_constructor_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -1746,20 +1722,136 @@
 								Name="vertex_path"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_path.h">
+									RelativePath=".\vertex_path.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_path_inline.h">
+									RelativePath=".\vertex_path_inline.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="edge_path"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_edge_path.h">
+									RelativePath=".\edge_path.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_edge_path_inline.h">
+									RelativePath=".\edge_path_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="priority_queues"
+							Filter="">
+							<Filter
+								Name="boost"
+								Filter="">
+								<File
+									RelativePath=".\data_storage_priority_queue.h">
+								</File>
+								<File
+									RelativePath=".\data_storage_priority_queue_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="heaps"
+								Filter="">
+								<Filter
+									Name="binary_heap"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_binary_heap.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_binary_heap_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="binary_heap_list"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_binary_heap_list.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_binary_heap_list_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="multi_binary_heap"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_multi_binary_heap.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_multi_binary_heap_inline.h">
+									</File>
+								</Filter>
+							</Filter>
+							<Filter
+								Name="lists"
+								Filter="">
+								<Filter
+									Name="bucket_list"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_bucket_list.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_bucket_list_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="cheap_list"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_cheap_list.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_cheap_list_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="double_linked_list"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_double_linked_list.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_double_linked_list_inline.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="single_linked_list"
+									Filter="">
+									<File
+										RelativePath=".\data_storage_single_linked_list.h">
+									</File>
+									<File
+										RelativePath=".\data_storage_single_linked_list_inline.h">
+									</File>
+								</Filter>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="vertex_allocators"
+							Filter="">
+							<Filter
+								Name="generic"
+								Filter="">
+								<File
+									RelativePath=".\vertex_allocator_generic.h">
+								</File>
+								<File
+									RelativePath=".\vertex_allocator_generic_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="fixed"
+								Filter="">
+								<File
+									RelativePath=".\vertex_allocator_fixed.h">
+								</File>
+								<File
+									RelativePath=".\vertex_allocator_fixed_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -1770,104 +1862,20 @@
 								Name="generic"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_vertex_manager.h">
+									RelativePath=".\vertex_manager_generic.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_vertex_manager_inline.h">
+									RelativePath=".\vertex_manager_generic_inline.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="fixed"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_fixed_vertex_manager.h">
+									RelativePath=".\vertex_manager_fixed.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_fixed_vertex_manager_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="priority_queues"
-							Filter="">
-							<Filter
-								Name="single_linked_list"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_single_linked_list.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_single_linked_list_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="double_linked_list"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_double_linked_list.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_double_linked_list_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="cheap_list"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_cheap_list.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_cheap_list_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="bucket_list"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_bucket_list.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_bucket_list_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="binary_heap"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_binary_heap.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_binary_heap_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="binery_heap_list"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_binary_heap_list.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_binary_heap_list_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="multi_binary_heap"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_multi_binary_heap.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_multi_binary_heap_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="boost_priority_queue"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_priority_queue.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_priority_queue_inline.h">
+									RelativePath=".\vertex_manager_fixed_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -1888,78 +1896,116 @@
 						<File
 							RelativePath=".\path_manager.h">
 						</File>
-						<File
-							RelativePath=".\path_manager_game.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_game_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_game_vertex_type.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_game_vertex_type_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_generic.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_generic_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_evaluator.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_evaluator_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_flooder.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_flooder_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles_light_cover.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles_light_cover_enemy.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles_light_cover_enemy_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_obstacles_light_cover_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_position.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_position_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_straight_line.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_level_straight_line_inline.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_solver.h">
-						</File>
-						<File
-							RelativePath=".\path_manager_solver_inline.h">
-						</File>
+						<Filter
+							Name="path_manager_game"
+							Filter="">
+							<File
+								RelativePath=".\path_manager_game.h">
+							</File>
+							<File
+								RelativePath=".\path_manager_game_inline.h">
+							</File>
+							<Filter
+								Name="vertex_type"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_game_vertex_type.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_game_vertex_type_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="path_manager_generic"
+							Filter="">
+							<File
+								RelativePath=".\path_manager_generic.h">
+							</File>
+							<File
+								RelativePath=".\path_manager_generic_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="path_manager_level"
+							Filter="">
+							<File
+								RelativePath=".\path_manager_level.h">
+							</File>
+							<File
+								RelativePath=".\path_manager_level_inline.h">
+							</File>
+							<Filter
+								Name="evaluator"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_evaluator.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_evaluator_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="flooder"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_flooder.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_flooder_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="obstacles"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_obstacles.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_obstacles_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="obstacles_light_cover"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_obstacles_light_cover.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_obstacles_light_cover_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="obstacles_light_cover_enemy"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_obstacles_light_cover_enemy.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_obstacles_light_cover_enemy_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="position"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_position.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_position_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="straight_line"
+								Filter="">
+								<File
+									RelativePath=".\path_manager_level_straight_line.h">
+								</File>
+								<File
+									RelativePath=".\path_manager_level_straight_line_inline.h">
+								</File>
+							</Filter>
+						</Filter>
 						<Filter
 							Name="path_manager_params"
 							Filter="">
@@ -1989,6 +2035,16 @@
 							</File>
 							<File
 								RelativePath=".\path_manager_params_straight_line.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="path_manager_solver"
+							Filter="">
+							<File
+								RelativePath=".\path_manager_solver.h">
+							</File>
+							<File
+								RelativePath=".\path_manager_solver_inline.h">
 							</File>
 						</Filter>
 					</Filter>

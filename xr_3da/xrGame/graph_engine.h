@@ -12,11 +12,11 @@
 #include "a_star.h"
 #include "dijkstra.h"
 //		vertex managers
-#include "data_storage_vertex_manager.h"
-#include "data_storage_fixed_vertex_manager.h"
+#include "vertex_manager_generic.h"
+#include "vertex_manager_fixed.h"
 //		allocators
-#include "data_storage_allocator.h"
-#include "data_storage_fixed_allocator.h"
+#include "vertex_allocator_generic.h"
+#include "vertex_allocator_fixed.h"
 //		priority queues
 #include "data_storage_bucket_list.h"
 #include "data_storage_cheap_list.h"
@@ -53,35 +53,35 @@ public:
 	typedef SStraightLineParams<_dist_type,_index_type,_iteration_type>			CStraightLineParams;
 
 protected:
-//	typedef CDataStorageSingleLinkedList<false>					CPriorityQueue;
-//	typedef CDataStorageSingleLinkedList<true>					CPriorityQueue;
-//	typedef CDataStorageDoubleLinkedList<false>					CPriorityQueue;
-//	typedef CDataStorageDoubleLinkedList<true>					CPriorityQueue;
-	typedef CDataStorageCheapList<32,true,true>					CSolverPriorityQueue;
-	typedef CDataStorageBucketList<u32,u32,8*1024,false>		CPriorityQueue;
-//	typedef CDataStorageBinaryHeap								CPriorityQueue;
-//	typedef CDataStorageBinaryHeapList<4>						CPriorityQueue;
-//	typedef CDataStorageMultiBinaryHeap<4>						CPriorityQueue;
-//	typedef CPriorityQueue<boost::fibonacci_heap>				CPriorityQueue;
-//	typedef CPriorityQueue<boost::pairing_heap>					CPriorityQueue;
+//	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;
+//	typedef CDataStorageSingleLinkedList<true>				CPriorityQueue;
+//	typedef CDataStorageDoubleLinkedList<false>				CPriorityQueue;
+//	typedef CDataStorageDoubleLinkedList<true>				CPriorityQueue;
+	typedef CDataStorageCheapList<32,true,true>				CSolverPriorityQueue;
+	typedef CDataStorageBucketList<u32,u32,8*1024,false>	CPriorityQueue;
+//	typedef CDataStorageBinaryHeap							CPriorityQueue;
+//	typedef CDataStorageBinaryHeapList<4>					CPriorityQueue;
+//	typedef CDataStorageMultiBinaryHeap<4>					CPriorityQueue;
+//	typedef CPriorityQueue<boost::fibonacci_heap>			CPriorityQueue;
+//	typedef CPriorityQueue<boost::pairing_heap>				CPriorityQueue;
 	
-	typedef CFixedVertexManager<u32,u32,8>						CVertexManager;
-	typedef CDataStorageVertexManager<u32,_solver_index_type>	CSolverVertexManager;
-	typedef CFixedAllocator<65536>								CVertexAllocator;
-	typedef CFixedAllocator<4096>								CSolverVertexAllocator;
+	typedef CVertexManagerFixed<u32,u32,8>					CVertexManager;
+	typedef CVertexManagerGeneric<u32,_solver_index_type>	CSolverVertexManager;
+	typedef CVertexAllocatorFixed<65536>					CVertexAllocator;
+	typedef CVertexAllocatorFixed<4096>						CSolverVertexAllocator;
 
 //	typedef CDijkstra<
 //		_dist_type,
 //		CPriorityQueue,
 //		CVertexManager,
 //		CVertexAllocator
-//	>															CAlgorithm;
+//	>														CAlgorithm;
 	typedef CAStar<
 		_dist_type,
 		CPriorityQueue,
 		CVertexManager,
 		CVertexAllocator
-	>															CAlgorithm;
+	>														CAlgorithm;
 	typedef CAStar<
 		_dist_type,
 		CSolverPriorityQueue,
@@ -92,7 +92,7 @@ protected:
 			_solver_edge_type,
 			true
 		>
-	>															CSolverAlgorithm;
+	>														CSolverAlgorithm;
 
 	CAlgorithm				*m_algorithm;
 	CSolverAlgorithm		*m_solver_algorithm;
