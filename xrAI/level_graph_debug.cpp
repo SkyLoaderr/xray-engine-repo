@@ -601,22 +601,29 @@ IC	bool compute_tangent(
 		direction		= start.direction;
 
 	start_yaw			= direction.getH();
+	float				f1,f2;
+	v3d(direction).getHP(f1,f2);
+	VERIFY				(fsimilar(start_yaw,f1));
 	VERIFY				(fsimilar(angle_normalize(start_yaw),start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2));
 	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
-	start_cp			= start.direction.cross_product(direction);
+	start_cp			= direction.cross_product(start.direction);
 	
 	// computing 2D cross product for dest point
 	direction.sub		(dest.position,dest_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
 	dest_yaw			= direction.getH();
+	v3d(direction).getHP(f1,f2);
+	VERIFY				(fsimilar(dest_yaw,f1));
 	VERIFY				(fsimilar(angle_normalize(dest_yaw),dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2));
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
-	dest_cp				= dest.direction.cross_product(direction);
+	dest_cp				= direction.cross_product(dest.direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
 	yaw1				= direction.getH();
+	v3d(direction).getHP(f1,f2);
+	VERIFY				(fsimilar(yaw1,f1));
 	VERIFY				(fsimilar(angle_normalize(yaw1),yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2));
 	yaw1 = yaw2			= yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2;
 
@@ -691,7 +698,7 @@ IC	bool compute_tangent(
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = direction.cross_product(temp);
+	float				tangent_cp = temp.cross_product(direction);
 	if (start_cp*tangent_cp >= 0) {
 		VERIFY			(fsimilar(angle_normalize(yaw1 + alpha),yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2));
 		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
@@ -835,21 +842,21 @@ IC	bool build_trajectory(
 	TIMER_START(BuildTrajectory2)
 	u32					vertex_id;
 	if (!build_circle_trajectory(level_graph,start,path,&vertex_id)) {
-//		Msg				("FALSE : Circle 0");
+		Msg				("FALSE : Circle 0");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_line_trajectory(level_graph,start,dest,vertex_id,path)) {
-//		Msg				("FALSE : Line");
+		Msg				("FALSE : Line");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_circle_trajectory(level_graph,dest,path,0)) {
-//		Msg				("FALSE : Circle 1");
+		Msg				("FALSE : Circle 1");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
-//	Msg					("TRUE");
+	Msg					("TRUE");
 	TIMER_STOP(BuildTrajectory2)
 	return				(true);
 }
@@ -1012,13 +1019,13 @@ void fill_params(
 	start.linear_velocity	= 2.15f;
 	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 4.5f;
+//	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 6.f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_DIV_4;
+//	start.linear_velocity	= 6.f;
+//	start_set.push_back		(start);
 
 //	dest.angular_velocity	= PI_DIV_2;
 //	dest.linear_velocity	= 0.f;
@@ -1028,13 +1035,13 @@ void fill_params(
 	dest.linear_velocity	= 2.15f;
 	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 4.5f;
+//	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 6.f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_DIV_4;
+//	dest.linear_velocity	= 6.f;
+//	dest_set.push_back		(dest);
 }
 
 void CLevelGraph::build_detail_path(

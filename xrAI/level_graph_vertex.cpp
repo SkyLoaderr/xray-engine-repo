@@ -366,39 +366,9 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
+	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
 
-	{
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if (!valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.pick_exact(start,dir)) {
-				
-				if (
-					(box.max.x < _min(start.x,dest.x)) ||
-					(box.min.x > _max(start.x,dest.x)) ||
-					(box.max.y < _min(start.y,dest.y)) ||
-					(box.min.y > _max(start.y,dest.y)))
-				{
-					prev_vertex_id	= next_vertex_id;
-				}
-				else {
-					if (box.contains(dest)) {
-						TIMER_STOP(CheckPositionInDirection)
-						return(next_vertex_id);
-					}
-				}
-			}
-		}
-	}
-
+	float					cur_sqr = _sqr(start.x - dest.x) + _sqr(start.y - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);
@@ -413,8 +383,15 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 			if (box.pick_exact(start,dir)) {
 				if (box.contains(dest)) {
 					TIMER_STOP(CheckPositionInDirection)
-					return		(next_vertex_id);
+					return	(next_vertex_id);
 				}
+				Fvector2		temp;
+				temp.add		(box.min,box.max);
+				temp.mul		(.5f);
+				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+				if (dist > cur_sqr)
+					continue;
+				cur_sqr			= dist;
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;
@@ -445,38 +422,9 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 	start					= start_position;
 	dest.set				(finish_position.x,finish_position.z);
 	dir.sub					(dest,start);
-	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
+	Fvector					temp = vertex_position(cur_vertex_id);//, t = temp;
 
-	{
-		const_iterator		I,E;
-		begin				(cur_vertex_id,I,E);
-		bool				found = false;
-		for ( ; I != E; ++I) {
-			u32				next_vertex_id = value(cur_vertex_id,I);
-			if (!valid_vertex_id(next_vertex_id))
-				continue;
-			temp			= vertex_position(next_vertex_id);
-			box.min			= box.max = Fvector2().set(temp.x,temp.z);
-			box.grow		(identity);
-			if (box.pick_exact(start,dir)) {
-				if (
-					(box.max.x < _min(start.x,dest.x)) ||
-					(box.min.x > _max(start.x,dest.x)) ||
-					(box.max.y < _min(start.y,dest.y)) ||
-					(box.min.y > _max(start.y,dest.y)))
-				{
-					prev_vertex_id	= next_vertex_id;
-				}
-				else {
-					if (next_vertex_id == finish_vertex_id) {
-						TIMER_STOP(CheckVertexInDirection)
-						return(true);
-					}
-				}
-			}
-		}
-	}
-
+	float					cur_sqr = _sqr(start.x - dest.x) + _sqr(start.y - dest.y);
 	for (;;) {
 		const_iterator		I,E;
 		begin				(cur_vertex_id,I,E);
@@ -493,6 +441,13 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 					TIMER_STOP(CheckVertexInDirection)
 					return		(true);
 				}
+				Fvector2		temp;
+				temp.add		(box.min,box.max);
+				temp.mul		(.5f);
+				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+				if (dist > cur_sqr)
+					continue;
+				cur_sqr			= dist;
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
 				cur_vertex_id	= next_vertex_id;
