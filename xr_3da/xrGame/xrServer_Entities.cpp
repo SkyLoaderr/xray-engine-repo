@@ -305,6 +305,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	switch (cls)
 	{
 	case CLSID_OBJECT_ACTOR:	return new	xrSE_Actor;
+	case CLSID_OBJECT_DUMMY:	return new  xrSE_Dummy;
 	case CLSID_AI_HEN:			return new	xrSE_Enemy;
 	case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	case CLSID_AI_SOLDIER:		return new	xrSE_Enemy;
