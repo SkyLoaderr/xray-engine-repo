@@ -380,6 +380,15 @@
 				RelativePath="FTimer.h">
 			</File>
 			<File
+				RelativePath="FileSystem.cpp">
+			</File>
+			<File
+				RelativePath="FileSystem.h">
+			</File>
+			<File
+				RelativePath="FileSystem_borland.cpp">
+			</File>
+			<File
 				RelativePath="LocatorAPI.cpp">
 			</File>
 			<File

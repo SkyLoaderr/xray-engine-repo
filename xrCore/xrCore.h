@@ -186,6 +186,7 @@ using namespace std;
 #include "xr_trims.h"
 #include "xr_ini.h"
 #include "LocatorAPI.h"
+#include "FileSystem.h"
 #include "FTimer.h"
 
 template <class T>
