@@ -18,6 +18,7 @@
 #include "fstaticrender_types.h"
 #include "detailmanager.h"
 #include "fstaticrender_rendertarget.h"
+#include "hom.h"
 
 // refs
 class ENGINE_API CStream;
@@ -70,6 +71,7 @@ public:
 	CRenderTarget					Target;			// Render-target
 	CFrustum						ViewBase;
 	COccluderSystem*				View;
+	CHOM							HOM;
 
 	// Loading / Unloading
 	void	level_Load				();

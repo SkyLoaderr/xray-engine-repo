@@ -45,6 +45,9 @@ void CRender::level_Load()
 	// Streams
 	vsPatches = Device.Streams.Create(FVF::F_TL,max_patches*4);
 	
+	// HOM
+	HOM.Load		();
+	
 	// End
 	pApp->LoadEnd	();
 }
@@ -54,6 +57,9 @@ void CRender::level_Unload()
 	if (0==pCreator)	return;
 
 	DWORD I;
+
+	// HOM
+	HOM.Unload		();
 
 	//*** Streams
 	vsPatches			= 0;
