@@ -103,22 +103,22 @@ public:
 class xrMU_Reference
 {
 public:
-	xrMU_Model*			model;
-    Fmatrix				xform;
-    Flags32				flags;
-	u16					sector;
+	xrMU_Model*				model;
+    Fmatrix					xform;
+    Flags32					flags;
+	u16						sector;
 
-	xr_vector<Fcolor>		color;
+	xr_vector<base_color>	color;
 
-	Fvector4			c_scale;
-	Fvector4			c_bias;
+	base_color				c_scale;
+	base_color				c_bias;
 public:
-	void				Load				(IReader& fs);
-	void				calc_lighting		();
+	void					Load				(IReader& fs);
+	void					calc_lighting		();
 
-	void				export_cform_game	(CDB::CollectorPacked& CL);
-	void				export_cform_rcast	(CDB::CollectorPacked& CL);
-	void				export_ogf			();
+	void					export_cform_game	(CDB::CollectorPacked& CL);
+	void					export_cform_rcast	(CDB::CollectorPacked& CL);
+	void					export_ogf			();
 };
 
 extern	poolSS<xrMU_Model::_vertex,8*1024>	mu_vertices;

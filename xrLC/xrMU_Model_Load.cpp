@@ -10,8 +10,12 @@ void xrMU_Reference::Load(IReader& F)
 	flags				= R.flags;
 	sector				= R.sector;
 
-	c_scale.set			(1,1,1,1);
-	c_bias.set			(0,0,0,0);
+	c_scale.rgb.set		(1,1,1);
+	c_scale.hemi		= 1;
+	c_scale.sun			= 1;
+	c_bias.rgb.set		(0,0,0);
+	c_bias.hemi			= 0;
+	c_bias.sun			= 0;
 }
 
 void xrMU_Model::Load	(IReader& F)

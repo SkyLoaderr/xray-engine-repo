@@ -230,7 +230,7 @@ void OGF_LOD::Save		(IWriter &fs)
 	fs.close_chunk		();
 
 	// Lod-def
-	fs.open_chunk		(OGF_LODDEF);
+	fs.open_chunk		(OGF_LODDEF2);
 	fs.w				(lod_faces,sizeof(lod_faces));
 	fs.close_chunk		();
 

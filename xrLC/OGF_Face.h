@@ -25,7 +25,7 @@ struct OGF_Vertex
 	Fvector				N;		// normal
 	Fvector				T;		// tangent
 	Fvector				B;		// binormal
-	u32					Color;
+	base_color			Color;
 	svector<Fvector2,2>	UV;
 
 	BOOL				similar	(OGF* p, OGF_Vertex&	other);
@@ -148,8 +148,8 @@ struct OGF_Reference : public OGF_Base
 	u32					ib_start;
 
 	Fmatrix				xform;
-	Fvector4			c_scale;
-	Fvector4			c_bias;
+	base_color			c_scale;
+	base_color			c_bias;
 
 	OGF_Reference() : OGF_Base(0) 
 					{
@@ -196,17 +196,18 @@ struct	OGF_LOD		: public OGF_Node
 
 	struct _vertex
 	{
-		Fvector		v;
-		Fvector2	t;
-		u32		c;
+		Fvector			v;
+		Fvector2		t;
+		u32				c;			// rgb,hemi
+		u8				dir;
 	};
 	struct _face
 	{
-		_vertex		v[4];
+		_vertex			v			[4];
 	};
 
-	_face			lod_faces	[8];
-	u32			lod_Material;
+	_face				lod_faces	[8];
+	u32					lod_Material;
 
 	virtual void		Save		(IWriter &fs);
 };

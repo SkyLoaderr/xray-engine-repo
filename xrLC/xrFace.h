@@ -23,13 +23,10 @@ public:
 	float					_tmp_;		// ???
 	base_color()			{ rgb.set(0,0,0); hemi=0; sun=0; _tmp_=0;	}
 
-	void					scale		(int samples)	
-	{
-		float	s			=	1.f/float(samples);
-		rgb.mul				(s);
-		hemi				*=	s;
-		sun					*=	s;
-	};
+	void					mul			(float s)		{	rgb.mul(s);	hemi*=s; sun*=s;				};
+	void					add			(float s)		{	rgb.add(s);	hemi+=s; sun+=s;				};
+	void					add			(base_color& s)	{	rgb.add(s.rgb);	hemi+=s.hemi; sun+=s.sun;	};
+	void					scale		(int samples)	{	mul	(1.f/float(samples));					};
 };
 class base_Vertex
 {

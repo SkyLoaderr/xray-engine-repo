@@ -50,9 +50,9 @@ void xrMU_Model::calc_ogf()
 					V2.N			= _V2->N;
 
 					// Geometry - COLOR
-					V0.Color		= color[id0].get();
-					V1.Color		= color[id1].get();
-					V2.Color		= color[id2].get();
+					V0.Color		= color[id0];
+					V1.Color		= color[id1];
+					V2.Color		= color[id2];
 
 					// Geometry - UV
 					V0.UV.push_back	(FF->tc[0]);

@@ -85,7 +85,7 @@ enum OGF_Chuncks {
 	OGF_SMPARAMS	= 18,	// * For skeletons only
 	OGF_ICONTAINER	= 19,
 	OGF_SMPARAMS2	= 20,	// * For skeletons only
-	OGF_LODDEF		= 21,
+	OGF_LODDEF2		= 21,
 	OGF_TREEDEF		= 22,
 	OGF_IKDATA		= 23,	// * For skeletons only
 	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
