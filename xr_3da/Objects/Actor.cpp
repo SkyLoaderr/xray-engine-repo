@@ -260,7 +260,8 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	// *** movement state - respawn
 	mstate_wishful		= 0;
 	mstate_real			= 0;
-	m_bJumping			= false;
+	m_bJumpKeyPressed	= FALSE;
+	m_bJumpInProgress	= FALSE;
 	
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
@@ -737,7 +738,7 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	if (mstate_real&mcRStrafe)	strcat(buf,"RStrafe ");
 	if (mstate_real&mcJump)		strcat(buf,"Jump ");
 	if (mstate_real&mcTurn)		strcat(buf,"Turn ");
-	if (m_bJumping)				strcat(buf,"+Jumping ");
+	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
 
 	HUD->pHUDFont->Out(400,320,buf);
 }
