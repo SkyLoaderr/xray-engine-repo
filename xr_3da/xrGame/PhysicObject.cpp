@@ -279,6 +279,7 @@ void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
 		}
 	}
 }
+void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
 void CPhysicObject::UnsplitSingle(CGameObject* O)
 {
@@ -304,7 +305,7 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newKinematics->LL_SetBoneRoot		(m_unsplited_shels.back().second);
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
 	
-
+	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
 
 	NET_Packet P;
