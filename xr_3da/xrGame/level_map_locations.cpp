@@ -57,7 +57,10 @@ public:
 	bool operator() (SMapLocation* map_location)
 	{
 		if(map_location->info_portion_id == info_portion_id)
+		{
+			xr_delete(map_location);
 			return true;
+		}
 		else
 			return false;
 	}
