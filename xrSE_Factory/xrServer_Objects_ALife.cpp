@@ -1579,25 +1579,25 @@ CSE_Trigger::~CSE_Trigger()
 
 void CSE_Trigger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	visual_read				(tNetPacket);
-	m_state = tNetPacket.r_u32();
+	visual_read					(tNetPacket);
+	tNetPacket.r_stringZ			(startup_animation);
+	m_state = tNetPacket.r_u32	();
 }
 
 void CSE_Trigger::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	visual_write				(tNetPacket);
-	tNetPacket.w_u32(m_state);
+	tNetPacket.w_stringZ		(startup_animation);
+	tNetPacket.w_u32			(m_state);
 }
 
 void CSE_Trigger::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-//	inherited2::UPDATE_Read		(tNetPacket);
 	m_state = tNetPacket.r_u32();
 }
 
 void CSE_Trigger::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-//	inherited2::UPDATE_Write	(tNetPacket);
 	tNetPacket.w_u32(m_state);
 }
 

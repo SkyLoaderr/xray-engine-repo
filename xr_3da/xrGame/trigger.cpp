@@ -2,6 +2,7 @@
 #include "trigger.h"
 #include "net_utils.h"
 #include "xrServer_Objects_Alife.h"
+#include "../skeletonanimated.h"
 
 CTrigger::CTrigger()
 {
@@ -35,7 +36,6 @@ BOOL CTrigger::net_Spawn			( LPVOID DC )
 	CSE_Trigger			*cse_trigger	= smart_cast<CSE_Trigger*>(abstract);
 	SetState(cse_trigger->m_state);
 
-	return TRUE;
 
 
 /*
@@ -49,10 +49,17 @@ BOOL CTrigger::net_Spawn			( LPVOID DC )
 
 	CShootingObject::Light_Create();
 */
+	CSkeletonAnimated	*A	= smart_cast<CSkeletonAnimated*>(Visual());
+	if (A) {
+		A->PlayCycle		(*cse_trigger->startup_animation);
+		A->CalculateBones	();
+	}
 
 	setVisible			(true);
 	setEnabled			(true);
+	return TRUE;
 }
+
 void CTrigger::net_Destroy			()
 {
 	inherited::net_Destroy			();
