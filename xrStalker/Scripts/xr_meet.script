@@ -156,8 +156,8 @@ function action_wait_for_buyer:execute ()
 	if self.object:see(self.a.Buyer) == true then
 		-- смотрим на клиента
 		local pos = self.a.Buyer:position()
-      		pos.y = pos.y + 1
-      		self.object:set_sight(look.point, pos, 0)
+   		pos.y = pos.y + 1
+   		self.object:set_sight(look.point, pos, 0)
 
 		-- секция анимации
 		xr_state.anim_update("idle", self.object)
@@ -170,8 +170,7 @@ function action_wait_for_buyer:execute ()
 			self.anim_s.begin = device():time_global()/1000
 			self.anim_s.idle = math.random(self.anim_s.maxidle) + self.anim_s.sumidle
 		end
-		
-		                            
+		                           
 		-- секция озвучки
 		if self.object:active_sound_count() == 0 then
 			xr_sound.sound_update(self.object, self.sound_s)		
@@ -220,7 +219,6 @@ function action_meet_wait:__init (npc_name,action_name, storage) super (nil, act
 				   maxidle = 5, 
 				   sumidle = 2,
 				   themes = { "weather", "state", "wait" } }
-
 end
 function action_meet_wait:initialize()
 	action_base.initialize(self)
@@ -233,10 +231,14 @@ function action_meet_wait:initialize()
 	self.object:set_movement_type(move.stand)
 	self.object:set_mental_state(anim.free)
 
-   	self.object:set_item(object.deactivate, self.object:best_weapon())
-	self.object:enable_talk()
+	xr_state.change_state(self.object,xr_state.stand)
+   	self.object:set_item(object.deactivate, self.object:best_weapon())	
 end
 function action_meet_wait:execute ()
+	if xr_state.finish_state(self.object) == true then
+		self.object:enable_talk()
+	end
+	
 	-- нужно остановиться и посмотреть в сторону актора
 	local dir = self.a.actor:position():sub(self.object:position())
 
@@ -600,6 +602,7 @@ function add_to_binder(object, char_ini)
 	properties["clan_zone"]		= xr_evaluators_id.stohe_meet_base + 5
 	properties["talk"]			= xr_evaluators_id.stohe_meet_base + 6
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
+	properties["state_end"]		= xr_evaluators_id.state_change
 
 	operators["wait_buyer"] 		= xr_actions_id.stohe_tradeseller_base + 2
 	operators["wait_trade"]			= xr_actions_id.stohe_meet_base + 1
@@ -622,17 +625,19 @@ function add_to_binder(object, char_ini)
 	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["afraid"], 		false))
 	action:add_precondition		(world_property(properties["weapon"], 		false))
 	action:add_precondition		(world_property(properties["clan"], 		true))
 	action:add_precondition		(world_property(properties["talk"], 		false))
-	action:add_effect 		(world_property(properties["contact"], 			false))
+	action:add_effect 			(world_property(properties["contact"], 		false))
 	manager:add_action (operators["wait_trade"], action)
 
 	action = action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["need_punch"],	false))	
 	action:add_precondition		(world_property(properties["talk"], 		true))
 	action:add_effect 		(world_property(properties["talk"], 			false))
