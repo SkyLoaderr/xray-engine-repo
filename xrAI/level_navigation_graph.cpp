@@ -313,6 +313,9 @@ CLevelNavigationGraph::CLevelNavigationGraph	(
 #endif
 	m_marks.clear	();
 	m_cross.clear	();
+#ifdef DEBUG
+	Msg				("* Navigation info : %d nodes, %d sectors, %d edges",header().vertex_count(),sectors().vertex_count(),sectors().edge_count());
+#endif
 }
 
 CLevelNavigationGraph::~CLevelNavigationGraph	()
