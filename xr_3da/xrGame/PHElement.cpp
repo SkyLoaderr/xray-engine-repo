@@ -1305,5 +1305,9 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 {
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	m_shell->EnableObject();
-	ApplyGravityAccel(m_body,(const dReal*)(&accel));
+	Fvector val;
+	val.set(accel);
+	val.mul(m_mass.mass);
+	//ApplyGravityAccel(m_body,(const dReal*)(&accel));
+	applyForce(val.x,val.y,val.z);
 }
