@@ -68,6 +68,7 @@ function action_patrol:initialize()
 	self:reset_scheme()
 end
 function action_patrol:reset_scheme()
+	state_mgr.set_state(self.object, "patrol")
 	self.move_mgr:initialize()
 	self.move_mgr:reset(self.a.path_walk, 
 		utils.path_parse_waypoints(self.a.path_walk),
@@ -90,6 +91,7 @@ function action_patrol:process_point(mode, number)
 end
 function action_patrol:finalize()
 	self.move_mgr:finalize()
+	state_mgr.set_state(self.object, "idle")
 	action_base.finalize (self)
 end
 
@@ -130,11 +132,11 @@ function action_kill:execute ()
 		if self.object:see(self.enemy) == true then
 			printf("_bp: YES")
 			state_mgr.set_state(self.object, "threat", nil, nil, {look_object = self.enemy})
-			self.object:set_item(object.fire1, self.object:best_weapon())
+--			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
 			printf("_bp: NO")
 			state_mgr.set_state(self.object, "hide")
-			self.object:set_item(object.activate, self.object:best_weapon())
+--			self.object:set_item(object.activate, self.object:best_weapon())
 		end
 	end
 end
@@ -181,6 +183,7 @@ function action_retreat:execute()
 	
 end
 function action_retreat:finalize()
+	state_mgr.set_state(self.object, "idle")
     action_base.finalize(self)
 end
 ----------------------------------------------------------------------------------------------------------------------

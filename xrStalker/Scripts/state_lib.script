@@ -118,6 +118,13 @@ states = {
 				animstate = "sit",
 				animation = nil
 			},
+	eating = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sit",
+				animation = "eating"
+			},
 
 
 	-- Раненый

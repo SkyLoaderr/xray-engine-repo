@@ -61,7 +61,10 @@ class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)
 function eva_state_mgr_weapon_unstrapped_now:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_unstrapped_now:evaluate()
-	return self.object:weapon_unstrapped()
+	return 	self.object:weapon_unstrapped() and		
+			self.object:active_item() ~= nil and		
+			self.object:best_weapon() ~= nil and
+			self.object:active_item():id() == self.object:best_weapon():id()
 end
 
 --' Необходимо ли стрелять из оружия
