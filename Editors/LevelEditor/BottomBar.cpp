@@ -39,7 +39,6 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miRenderEdgedFaces)	psDeviceFlags.set(rsEdgedFaces,mi->Checked);
         else if (mi==miFog)					psDeviceFlags.set(rsFog,mi->Checked);
         else if (mi==miRealTime)			psDeviceFlags.set(rsRenderRealTime,mi->Checked);
-        else if (mi==miDODrawObjects)		psDeviceFlags.set(rsDetails,mi->Checked);
         else if (mi==miDrawSafeRect)		UI.Command(COMMAND_TOGGLE_SAFE_RECT);
         else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
         else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
@@ -168,7 +167,6 @@ void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
     miFog->Checked					= psDeviceFlags.is(rsFog);
     miDrawGrid->Checked				= psDeviceFlags.is(rsDrawGrid);
     miDrawSafeRect->Checked			= psDeviceFlags.is(rsDrawSafeRect);
-    miDODrawObjects->Checked		= psDeviceFlags.is(rsDetails);
 }
 //---------------------------------------------------------------------------
 

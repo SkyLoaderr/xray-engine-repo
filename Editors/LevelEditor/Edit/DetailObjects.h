@@ -40,6 +40,13 @@ class EDetailManager:
 	friend class TfrmDOShuffle;
 	typedef ESceneCustomMTools inherited;
 
+	enum{
+    	flBaseTextureDraw		= (1<<31),
+        flBaseTextureBlended	= (1<<30),
+        flSlotBoxesDraw			= (1<<29),
+        flObjectsDraw			= (1<<28),
+    };
+
     ObjectList			m_SnapObjects;
 
     Fbox				m_BBox;
@@ -105,7 +112,7 @@ public:
     IC int				RenderPriority			(){return 10;}
 
     // validation
-    virtual bool		Valid					(){return dtSlots||objects.size();}
+    virtual bool		Valid					(){return dtSlots||objects.size()||m_Base.Valid()||m_SnapObjects.size();}
     virtual bool		Validate				(){return true;}
 
     // events
@@ -133,10 +140,9 @@ public:
     // other
     bool				UpdateHeader			();
     bool				UpdateSlots  			();
-    bool				UpdateBaseTexture		(LPCSTR tex_name=0);
     bool				UpdateSlotObjects		(int x, int z);
     bool				UpdateObjects			(bool bUpdateTex, bool bUpdateSelectedOnly);
-    bool				Initialize				(LPCSTR tex_name);
+    bool				Initialize				();
     bool				Reinitialize			();
     void				InvalidateSlots			();
 

@@ -15,14 +15,14 @@
 
 CCustom2DProjector::CCustom2DProjector()
 {
-	name[0]			= 0;
+	name			= "";
 	shader_overlap	= 0;
     shader_blended	= 0;
 }
 
 bool CCustom2DProjector::LoadImage(LPCSTR nm)
 {
-	strcpy(name,nm);
+	name			= nm;
     ImageLib.LoadTextureData(nm,data,w,h);
     return Valid();
 }
@@ -52,12 +52,12 @@ void CCustom2DProjector::CreateRMFromObjects(const Fbox& box, ObjectList& lst)
 	geom.create(FVF::F_V,RCache.Vertex.Buffer(),0);
 }
 
-void CCustom2DProjector::Render()
+void CCustom2DProjector::Render(bool blended)
 {
 	if (!Valid()) return;
     Device.RenderNearer(0.001f);
 	RCache.set_xform_world(Fidentity);
-    Device.SetShader	(shader_blended);//((fraBottomBar->miDrawDOBlended->Checked)?shader_blended:shader_overlap);
+    Device.SetShader	(blended?shader_blended:shader_overlap);
     div_t cnt 			= div(mesh.size(),MAX_BUF_SIZE);
     u32 vBase;
     _VertexStream* Stream = &RCache.Vertex;
@@ -80,8 +80,8 @@ void CCustom2DProjector::CreateShader()
 {
 	DestroyShader		();
 	if (Valid()){
-		shader_blended.create	("editor\\do_base",name);
-		shader_overlap.create	("default",name);
+		shader_blended.create	("editor\\do_base",name.c_str());
+		shader_overlap.create	("default",name.c_str());
 		geom.create				(FVF::F_V,RCache.Vertex.Buffer(),0);
 	}
 }
@@ -92,3 +92,18 @@ void CCustom2DProjector::DestroyShader()
 	shader_blended.destroy();
 	shader_overlap.destroy();
 }
+
+void __fastcall	CCustom2DProjector::OnTextureChange	(PropValue* prop)
+{
+	LoadImage				(name.c_str());
+	DestroyShader			();
+    CreateShader			();
+}
+
+void CCustom2DProjector::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	PropValue* P;
+    P=PHelper.CreateATexture(items, FHelper.PrepareKey(pref,"Base Texture"),	&name);
+    P->OnChangeEvent		= OnTextureChange;
+}
+

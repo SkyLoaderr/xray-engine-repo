@@ -74,6 +74,12 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 		data->r_stringZ	(fnS);
 		hShader.create	(fnS,fnT);
 	}
+
+    // desc
+#ifdef _EDITOR
+    if (data->find_chunk(OGF_DESC)) 
+	    desc.Load		(*data);
+#endif
 }
 
 #define PCOPY(a)	a = pFrom->a

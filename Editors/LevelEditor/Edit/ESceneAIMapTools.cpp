@@ -190,6 +190,8 @@ void ESceneAIMapTools::DenumerateNodes()
 
 bool ESceneAIMapTools::Load(IReader& F)
 {
+	if (!inherited::Load(F)) return false;
+
 	u32 version = 0;
 
     R_ASSERT(F.r_chunk(AIMAP_CHUNK_VERSION,&version));
@@ -242,6 +244,7 @@ bool ESceneAIMapTools::Load(IReader& F)
 
 bool ESceneAIMapTools::LoadSelection(IReader& F)
 {
+	if (!inherited::LoadSelection(F)) return false;
 	Clear();
 	return Load(F);
 }
@@ -253,6 +256,8 @@ void ESceneAIMapTools::OnSynchronize()
 
 void ESceneAIMapTools::Save(IWriter& F)
 {
+	inherited::Save(F);
+    
 	F.open_chunk	(AIMAP_CHUNK_VERSION);
 	F.w_u16			(AIMAP_VERSION);
 	F.close_chunk	();
@@ -291,6 +296,7 @@ void ESceneAIMapTools::Save(IWriter& F)
 
 void ESceneAIMapTools::SaveSelection(IWriter& F)
 {
+	inherited::SaveSelection(F);
 	Save(F);
 }
 

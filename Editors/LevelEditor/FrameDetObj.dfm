@@ -21,7 +21,7 @@ object fraDetailObject: TfraDetailObject
     Left = 0
     Top = 0
     Width = 198
-    Height = 157
+    Height = 154
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -57,7 +57,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn1: TExtBtn
       Left = 2
-      Top = 17
+      Top = 16
       Width = 194
       Height = 15
       Align = alNone
@@ -78,7 +78,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn6: TExtBtn
       Left = 2
-      Top = 32
+      Top = 31
       Width = 194
       Height = 15
       Align = alNone
@@ -99,7 +99,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn4: TExtBtn
       Left = 2
-      Top = 47
+      Top = 46
       Width = 194
       Height = 15
       Align = alNone
@@ -120,7 +120,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ebResetSlots: TExtBtn
       Left = 2
-      Top = 103
+      Top = 102
       Width = 194
       Height = 15
       Align = alNone
@@ -141,7 +141,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn7: TExtBtn
       Left = 2
-      Top = 83
+      Top = 82
       Width = 194
       Height = 15
       Align = alNone
@@ -162,7 +162,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ebClearDetails: TExtBtn
       Left = 2
-      Top = 118
+      Top = 117
       Width = 194
       Height = 15
       Align = alNone
@@ -183,19 +183,19 @@ object fraDetailObject: TfraDetailObject
     end
     object Bevel3: TBevel
       Left = 1
-      Top = 99
+      Top = 98
       Width = 196
       Height = 2
     end
     object Bevel4: TBevel
       Left = 1
-      Top = 79
+      Top = 78
       Width = 196
       Height = 2
     end
     object ExtBtn5: TExtBtn
       Left = 2
-      Top = 138
+      Top = 137
       Width = 194
       Height = 15
       Align = alNone
@@ -216,13 +216,13 @@ object fraDetailObject: TfraDetailObject
     end
     object Bevel1: TBevel
       Left = 1
-      Top = 134
+      Top = 133
       Width = 196
       Height = 2
     end
     object ebReinitializeSlotObjects: TExtBtn
       Left = 2
-      Top = 62
+      Top = 61
       Width = 194
       Height = 15
       Align = alNone
@@ -245,7 +245,7 @@ object fraDetailObject: TfraDetailObject
   object fsStorage: TFormStorage
     IniSection = 'FrameDO'
     Options = []
-    Version = 14
+    Version = 15
     StoredProps.Strings = (
       'paCommand.Height'
       'paCommand.Tag')

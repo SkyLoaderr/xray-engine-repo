@@ -32,6 +32,7 @@
 #pragma link "MXCtrls"
 #pragma link "mxPlacemnt"
 #pragma link "ElXPThemedControl"
+#pragma link "Gradient"
 #pragma resource "*.dfm"
 TfrmChoseItem *TfrmChoseItem::form=0;
 AnsiString TfrmChoseItem::select_item="";
@@ -253,6 +254,7 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     tvItems->ShowCheckboxes = false;
 	DEFINE_INI(fsStorage);
     bIgnoreExt = false;
+    grdFon->Caption = "";
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
@@ -464,56 +466,92 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	if (Item&&FHelper.IsObject(Item)){
     	switch (Mode){
         case smTexture:{
-	        AnsiString nm;
-        	FHelper.MakeName		(Item,0,nm,false);
-            if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
-	        if (!m_Thm||!m_Thm->Valid()) paImage->Repaint();
-            else	 				paImage->Repaint();
-	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
-    	    lbFileName->Caption 	= "\""+Item->Text+"\"";
-            AnsiString temp; 		
-            if (m_Thm) temp.sprintf	("%d x %d x %s",((ETextureThumbnail*)m_Thm)->_Width(),((ETextureThumbnail*)m_Thm)->_Height(),((ETextureThumbnail*)m_Thm)->_Alpha()?"32b":"24b");
-            lbInfo->Caption			= temp;
+            if (ebExt->Down){
+                AnsiString nm;
+                FHelper.MakeName		(Item,0,nm,false);
+                if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
+                if (!m_Thm||!m_Thm->Valid()) paImage->Repaint();
+                else	 				paImage->Repaint();
+                lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
+                lbFileName->Caption 	= "\""+Item->Text+"\"";
+                AnsiString temp; 		
+                if (m_Thm) temp.sprintf	("          %d x %d x %s",((ETextureThumbnail*)m_Thm)->_Width(),((ETextureThumbnail*)m_Thm)->_Height(),((ETextureThumbnail*)m_Thm)->_Alpha()?"32b":"24b");
+                lbInfo->Caption			= temp;
+            }else{
+	            lbInfo->Caption			= "";
+            }
         }break;
         case smObject:{
-	        AnsiString nm,fn;
-        	FHelper.MakeName		(Item,0,nm,false);
-            fn						= ChangeFileExt(nm,".thm");
-		    FS.update_path			(_objects_,fn);
-            if (FS.exist(fn.c_str())){
-	    	    m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
+            if (ebExt->Down){
+                AnsiString nm,fn;
+                FHelper.MakeName		(Item,0,nm,false);
+                fn						= ChangeFileExt(nm,".thm");
+                FS.update_path			(_objects_,fn);
+                if (FS.exist(fn.c_str())){
+                    m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
+                }
+                paImage->Repaint		();
+	            lbInfo->Caption			= "          -";
+            }else{
+				lbInfo->Caption		= "";
             }
-            paImage->Repaint		();
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
-            lbInfo->Caption			= "-";
         }break;
         case smSoundSource:{
+            if (ebExt->Down){
+                AnsiString fn;
+                FHelper.MakeName		(Item,0,fn,false);
+                fn						= ChangeFileExt(fn,".ogg");
+                const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
+                if (file){
+                    m_Snd.create		(TRUE,fn.c_str());
+                    m_Snd.play			(0,FALSE);
+                    m_Snd.set_position	(Device.m_Camera.GetPosition());
+                    AnsiString temp; 		
+                    CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
+                    if (src) temp.sprintf	("          Size: %.2f Kb\nTime: %.2f sec",float(file->size_real)/1024.f,float(src->dwTimeTotal)/1000.f);
+                    lbInfo->Caption			= temp;
+                }else						paImage->Repaint();
+            }else{
+				lbInfo->Caption		= "";
+            }
+			lbItemName->Caption 	= "\""+Item->Text+"\"";
+			lbFileName->Caption		= "\""+Item->Text+".ogf\"";
+        }break;
+        case smGameObject:{
 	        AnsiString fn;
         	FHelper.MakeName		(Item,0,fn,false);
-            fn						= ChangeFileExt(fn,".ogg");
-            const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
-            if (file){
-            	m_Snd.create		(TRUE,fn.c_str());
-                m_Snd.play			(0,FALSE);
-                m_Snd.set_position	(Device.m_Camera.GetPosition());
-                AnsiString temp; 		
-                CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
-                if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size_real)/1024.f,float(src->dwTimeTotal)/1000.f);
-                lbInfo->Caption			= temp;
-            }else						paImage->Repaint();
+            fn						= ChangeFileExt(fn,".ogf");
+            if (ebExt->Down){
+                IRender_Visual* visual	= ::Render->model_Create(fn.c_str());
+                if (visual){
+                    AnsiString temp; 		
+                    temp.sprintf	("          Source: '%s'\nCreator: '%s' - '%s'\nModif: '%s' - '%s'\nBuild: '%s' - '%s'",
+                                    *visual->desc.source_file?*visual->desc.source_file:"unknown",
+                                    *visual->desc.create_name?*visual->desc.create_name:"unknown",Trim(AnsiString(ctime(&visual->desc.create_time))).c_str(),
+                                    *visual->desc.modif_name ?*visual->desc.modif_name :"unknown",Trim(AnsiString(ctime(&visual->desc.modif_time))).c_str(),
+                                    *visual->desc.build_name ?*visual->desc.build_name :"unknown",Trim(AnsiString(ctime(&visual->desc.build_time))).c_str()
+                                    );
+                    lbInfo->Caption	= temp;
+                    lbInfo->Hint	= temp;
+                }else				paImage->Repaint();
+                ::Render->model_Delete(visual);
+            }else{
+				lbInfo->Caption		= "";
+            }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".ogg\"";
         }break;
         default:
 			lbItemName->Caption = "\""+Item->Text+"\"";
 			lbFileName->Caption	= "-";
-            lbInfo->Caption		= "-";
+            lbInfo->Caption		= "";
         }
     }else{
 		lbItemName->Caption = "-";
 		lbFileName->Caption	= "-";
-		lbInfo->Caption		= "-";
+		lbInfo->Caption		= "";
     }
 }
 //---------------------------------------------------------------------------
@@ -521,6 +559,12 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
 {
 	if (m_Thm) m_Thm->Draw(paImage,false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::ebExtClick(TObject *Sender)
+{
+	tvItemsItemFocused(0);
 }
 //---------------------------------------------------------------------------
 

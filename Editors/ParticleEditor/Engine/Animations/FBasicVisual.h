@@ -16,6 +16,10 @@
 class ENGINE_API			IRender_Visual
 {
 public:
+#ifdef _EDITOR
+    ogf_desc				desc;
+#endif
+public:
 	u32						Type;					// visual's type
 	vis_data				vis;
 

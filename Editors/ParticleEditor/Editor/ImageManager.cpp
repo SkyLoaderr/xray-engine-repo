@@ -176,7 +176,7 @@ void CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u3
 bool CImageManager::LoadTextureData(const AnsiString& src_name, U32Vec& data, u32& w, u32& h)
 {
 	AnsiString fn;
-	FS.update_path			(fn,_textures_,src_name.c_str());
+	FS.update_path			(fn,_textures_,ChangeFileExt(src_name,".tga").c_str());
     u32 a;
     if (!Surface_Load(fn.c_str(),data,w,h,a)) return false;
     return true;

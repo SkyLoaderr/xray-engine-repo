@@ -100,43 +100,40 @@ void EDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best)
     }
 }
 
-bool EDetailManager::Initialize(LPCSTR tex_name)
+bool EDetailManager::Initialize()
 {
 	if (m_SnapObjects.empty()){
-    	ELog.DlgMsg(mtError,"Fill snap list before generating slots!");
+    	ELog.DlgMsg(mtError,"Snap list empty!");
     	return false;
     }
-
-    if (objects.empty()){
-    	ELog.DlgMsg(mtError,"Fill object list before generating slots!");
+	if (!m_Base.Valid()){
+    	ELog.DlgMsg(mtError,"Base texture empty!");
     	return false;
-    }
-
+    }				
     if (!UpdateHeader())                return false;
-	if (!UpdateBaseTexture(tex_name))	return false;
+    m_Base.CreateRMFromObjects			(m_BBox,m_SnapObjects);
     if (!UpdateSlots()) 		   		return false;
-    if (!UpdateObjects(false,false))	return false;
+    if (!objects.empty()&&!UpdateObjects(false,false))	return false;
 	return true;
 }
 
 bool EDetailManager::Reinitialize()
 {
 	if (m_SnapObjects.empty()){
-    	ELog.DlgMsg(mtError,"Snap list empty! Initialize at first.");
+    	ELog.DlgMsg(mtError,"Snap list empty!");
     	return false;
     }
-
-    if (objects.empty()){
-    	ELog.DlgMsg(mtError,"Fill object list before reinitialize!");
+	if (!m_Base.Valid()){
+    	ELog.DlgMsg(mtError,"Base texture empty!");
     	return false;
-    }
-
+    }				
     InvalidateCache();
 
     if (!UpdateHeader())            return false;
-    if (!UpdateBaseTexture(0))		return false;
+    m_Base.CreateRMFromObjects		(m_BBox,m_SnapObjects);
+//.    if (!UpdateBaseTexture(0))		return false;
     if (!UpdateSlots()) 			return false;
-    if (!UpdateObjects(false,false))return false;
+    if (!objects.empty()&&!UpdateObjects(false,false))return false;
 
 	return true;
 }
@@ -154,25 +151,6 @@ bool EDetailManager::UpdateHeader(){
     dtH.offs_z 	= -mn_z;
 	dtH.size_x 	= mx_x-mn_x;
 	dtH.size_z 	= mx_z-mn_z;
-    return true;
-}
-
-bool EDetailManager::UpdateBaseTexture(LPCSTR tex_name){
-    // create base texture
-    if (!tex_name&&!m_Base.Valid()){
-    	ELog.DlgMsg(mtError,"Initialize at first!");
-    	return false;
-    }
-    AnsiString fn = tex_name?tex_name:m_Base.GetName();
-    m_Base.Clear();
-    m_Base.LoadImage(fn.c_str());
-    if (!m_Base.Valid()){
-	    m_Base.Clear();
-    	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
-    	return false;
-    }
-	m_Base.CreateShader();
-    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
     return true;
 }
 
@@ -215,6 +193,10 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot)
                         if (H<y_min) y_min = H-0.03f;
                     }
                     slot.w_y	(y_min,y_max-y_min);
+                    slot.w_id(0,DetailSlot::ID_Empty);
+                    slot.w_id(1,DetailSlot::ID_Empty);
+                    slot.w_id(2,DetailSlot::ID_Empty);
+                    slot.w_id(3,DetailSlot::ID_Empty);
                 }
             }
 	    }
@@ -422,9 +404,18 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
     return true;
 }
 
-bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
+bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly)
+{
+	if (!m_Base.Valid()){ 
+    	ELog.DlgMsg(mtError,"Base texture empty!");
+    	return false;
+    }
+	if (objects.empty()){
+    	ELog.DlgMsg(mtError,"Object list empty!");
+     	return false;
+    }
     // reload base texture
-    if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
+//.    if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
     // update objects
     UI.ProgressStart	(dtH.size_x*dtH.size_z,"Updating objects...");
     for (u32 z=0; z<dtH.size_z; z++)

@@ -270,11 +270,7 @@ object fraBottomBar: TfraBottomBar
       'miRenderWithTextures.Checked'
       'miDrawSectorSolid.Checked'
       'miShowHint.Checked'
-      'miDrawDOSlotBoxes.Checked'
-      'miDODrawObjects.Checked'
       'miDrawObjectsPivot.Checked'
-      'miDrawDOBaseTexture.Checked'
-      'miDrawDOBlended.Checked'
       'miSpawnPointDrawText.Checked'
       'miDrawObjectLOD.Checked')
     StoredValues = <>
@@ -452,30 +448,6 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       object miDrawPortalSimpleModel: TMenuItem
         Caption = 'Draw Simple Model'
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object DetailObjects1: TMenuItem
-      Caption = 'Detail Objects'
-      GroupIndex = 4
-      object miDOBase: TMenuItem
-        Caption = 'Base Texture'
-        object miDrawDOBaseTexture: TMenuItem
-          Caption = 'Draw'
-          OnClick = ClickOptionsMenuItem
-        end
-        object miDrawDOBlended: TMenuItem
-          Caption = 'Blended'
-          OnClick = ClickOptionsMenuItem
-        end
-      end
-      object miDrawDOSlotBoxes: TMenuItem
-        Caption = 'Draw Slot Boxes'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDODrawObjects: TMenuItem
-        Caption = 'Draw Objects'
-        Checked = True
         OnClick = ClickOptionsMenuItem
       end
     end

@@ -14,7 +14,7 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
 {
 // box selected only
 
-	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
+	if (!m_Flags.is(flSlotBoxesDraw)) return 0;
 
 	float			fx,fz;
     Fbox			bbox;
@@ -52,7 +52,7 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
 {
 // box selected only
 
-	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
+	if (!m_Flags.is(flSlotBoxesDraw)) return 0;
 
     int count=0;
 
@@ -86,8 +86,9 @@ int EDetailManager::SelectObjects(bool flag){
     return m_Selected.size();
 }
 
-int EDetailManager::InvertSelection(){
-	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
+int EDetailManager::InvertSelection()
+{
+	if (!m_Flags.is(flSlotBoxesDraw)) return 0;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = m_Selected[i];
 	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
@@ -95,8 +96,9 @@ int EDetailManager::InvertSelection(){
     return m_Selected.size();
 }
 
-int EDetailManager::SelectionCount(bool testflag){
-	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
+int EDetailManager::SelectionCount(bool testflag)
+{
+	if (!m_Flags.is(flSlotBoxesDraw)) return 0;
 	int count = 0;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	if (m_Selected[i]==testflag) count++;

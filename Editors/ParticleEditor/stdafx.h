@@ -84,6 +84,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include <dsound.h>
 
 // some user components
+#include "fmesh.h"
 #include "engine\_d3d_extensions.h"
 
 #include "D3DX_Wrapper.h"

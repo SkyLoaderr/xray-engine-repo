@@ -35,11 +35,7 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-	LPCSTR N;
-    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,N,1,(DM->m_Base.Valid())?DM->m_Base.GetName():0)){
-		DM->Initialize(N);
-    	Scene.UndoSave();
-    }
+    if (DM->Initialize()) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -97,4 +93,5 @@ void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
+
 

@@ -155,8 +155,8 @@ void CDetailManager::Render		()
 {
 #ifndef _EDITOR
 	if (0==dtFS)						return;
-#endif
 	if (!psDeviceFlags.is(rsDetails))	return;
+#endif
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 

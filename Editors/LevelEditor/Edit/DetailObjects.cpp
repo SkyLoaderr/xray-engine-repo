@@ -109,7 +109,7 @@ void EDetailManager::OnRender(int priority, bool strictB2F)
 	if (dtSlots){
     	if (1==priority){
         	if (false==strictB2F){
-            	if (fraBottomBar->miDrawDOSlotBoxes->Checked){
+            	if (m_Flags.is(flSlotBoxesDraw)){
                     RCache.set_xform_world(Fidentity);
                     Device.SetShader	(Device.m_WireShader);
 
@@ -136,10 +136,9 @@ void EDetailManager::OnRender(int priority, bool strictB2F)
                     }
                 }
             }else{
-				RCache.set_xform_world(Fidentity);
-                if (fraBottomBar->miDrawDOBaseTexture->Checked)	m_Base.Render();
-                Fvector EYE = Device.m_Camera.GetPosition();
-                if (fraBottomBar->miDODrawObjects->Checked) CDetailManager::Render();
+				RCache.set_xform_world				(Fidentity);
+                if (m_Flags.is(flBaseTextureDraw))	m_Base.Render			(m_Flags.is(flBaseTextureBlended));
+				if (m_Flags.is(flObjectsDraw))		CDetailManager::Render	();
             }
         }
     }
@@ -258,7 +257,10 @@ bool EDetailManager::LoadColorIndices(IReader& F)
     return bRes;
 }
 
-bool EDetailManager::Load(IReader& F){
+bool EDetailManager::Load(IReader& F)
+{
+	if (!inherited::Load(F)) return false;
+
     string256 buf;
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
 	u32 version			= F.r_u32();
@@ -324,11 +326,14 @@ bool EDetailManager::Load(IReader& F){
 
 bool EDetailManager::LoadSelection(IReader& F)
 {
+	if (!inherited::LoadSelection(F)) return false;
 	Clear();
-	return Load(F);
+	return Load			(F);
 }
 
-void EDetailManager::Save(IWriter& F){
+void EDetailManager::Save(IWriter& F)
+{
+	inherited::Save		(F);
 	// version
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
     F.w_u32				(DETMGR_VERSION);
@@ -367,6 +372,7 @@ void EDetailManager::Save(IWriter& F){
 
 void EDetailManager::SaveSelection(IWriter& F)
 {
+	inherited::SaveSelection(F);
 	Save(F);
 }
 
@@ -478,6 +484,11 @@ void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
 	PropValue* P;
     P=PHelper.CreateFloat	(values, FHelper.PrepareKey(pref,"Objects per square"),	&psDetailDensity);
     P->OnChangeEvent		= OnDensityChange;
+    m_Base.FillProp			(pref,values);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw objects"),			&m_Flags,	flObjectsDraw);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw base texture"),	&m_Flags,	flBaseTextureDraw);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw slot boxes"),		&m_Flags,	flSlotBoxesDraw);
 }
 
 bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)

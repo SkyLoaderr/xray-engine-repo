@@ -19,6 +19,7 @@
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
 #include "ElXPThemedControl.hpp"
+#include "Gradient.hpp"
 //---------------------------------------------------------------------------
 // refs
 class EImageThumbnail;
@@ -37,17 +38,18 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TExtBtn *sbSelect;
 	TExtBtn *sbCancel;
-	TPanel *Panel3;
-	TLabel *lbItemName;
-	TLabel *lbFileName;
-	TLabel *mxLabel1;
-	TLabel *mxLabel2;
-	TLabel *mxLabel3;
-	TLabel *lbInfo;
 	TPanel *Panel4;
 	TElTree *tvItems;
 	TPanel *paItemsCount;
+	TGradient *grdFon;
+	TLabel *lbInfo;
+	TLabel *mxLabel2;
+	TLabel *lbFileName;
+	TLabel *lbItemName;
+	TLabel *mxLabel1;
 	TMxPanel *paImage;
+	TLabel *Label1;
+	TExtBtn *ebExt;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -70,6 +72,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebMultiClearClick(TObject *Sender);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall paImagePaint(TObject *Sender);
+	void __fastcall ebExtClick(TObject *Sender);
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;

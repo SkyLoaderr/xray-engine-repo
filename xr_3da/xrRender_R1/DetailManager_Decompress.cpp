@@ -140,7 +140,7 @@ Device.Statistic.TEST0.End		();
 					if (CDB::TestRayTri(Item_P,dir,verts,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{
-							float y_test	= Item.P.y - r_range;
+							float y_test	= Item_P.y - r_range;
 							if (y_test>y)	y = y_test;
 						}
 					}

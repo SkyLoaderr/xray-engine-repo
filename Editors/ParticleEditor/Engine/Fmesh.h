@@ -63,8 +63,9 @@ struct ogf_desc{
     time_t	create_time;
     ref_str	modif_name;
     time_t	modif_time;
-    void Load	(IReader& F);
-    void Save	(IWriter& F);
+    		ogf_desc():build_time(0),create_time(0),modif_time(0){}
+    void 	Load	(IReader& F);
+    void 	Save	(IWriter& F);
 };
 
 // OGF_HEADER

@@ -6,7 +6,6 @@
 #include "ui_main.h"
 
 // chunks
-static const u16 TOOLS_VERSION  		= 0x0000;
 //----------------------------------------------------
 static const u32 CHUNK_VERSION			= 0x0001;
 static const u32 CHUNK_OBJECT_COUNT		= 0x0002;
@@ -34,13 +33,7 @@ bool ESceneCustomOTools::OnLoadAppendObject(CCustomObject* O)
 
 bool ESceneCustomOTools::LoadSelection(IReader& F)
 {
-	u16 version 	= 0;
-
-    R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
-        return false;
-    }
+	if (!inherited::LoadSelection(F)) return false;
 
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
@@ -55,7 +48,7 @@ bool ESceneCustomOTools::LoadSelection(IReader& F)
 
 void ESceneCustomOTools::SaveSelection(IWriter& F)
 {
-	F.w_chunk		(CHUNK_VERSION,(u16*)&TOOLS_VERSION,sizeof(TOOLS_VERSION));
+	inherited::SaveSelection(F);
 
 	F.open_chunk	(CHUNK_OBJECTS);
     int count		= 0;
@@ -74,16 +67,7 @@ void ESceneCustomOTools::SaveSelection(IWriter& F)
 
 bool ESceneCustomOTools::Load(IReader& F)
 {
-	u16 version 	= 0;
-
-    R_ASSERT(F.r_chunk(CHUNK_VERSION,&version));
-    if( version!=TOOLS_VERSION ){
-        ELog.DlgMsg( mtError, "%s tools: Unsupported version.",ClassDesc());
-        return false;
-    }
-
-    if (F.find_chunk(CHUNK_FLAGS))
-    	m_Flags.set	(F.r_u32());
+	if (!inherited::Load(F)) return false;
 
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
@@ -98,11 +82,7 @@ bool ESceneCustomOTools::Load(IReader& F)
 
 void ESceneCustomOTools::Save(IWriter& F)
 {
-	F.w_chunk		(CHUNK_VERSION,(u16*)&TOOLS_VERSION,sizeof(TOOLS_VERSION));
-
-	F.open_chunk	(CHUNK_FLAGS);
-    F.w_u32			(m_Flags.get());
-	F.close_chunk	();
+	inherited::Save	(F);
 
     int count		= m_Objects.size();
 	F.w_chunk		(CHUNK_OBJECT_COUNT,&count,sizeof(count));

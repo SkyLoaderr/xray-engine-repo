@@ -59,13 +59,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawSectorSolid;
     TMenuItem *N1;
     TMenuItem *miShowHint;
-	TMenuItem *DetailObjects1;
-	TMenuItem *miDrawDOSlotBoxes;
-	TMenuItem *miDOBase;
-	TMenuItem *miDODrawObjects;
 	TMenuItem *miDrawObjectsPivot;
-	TMenuItem *miDrawDOBaseTexture;
-	TMenuItem *miDrawDOBlended;
 	TPanel *paBottomBar;
 	TPanel *paInfo;
 	TPanel *paStatusBar;
