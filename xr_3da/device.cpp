@@ -99,16 +99,16 @@ void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvecto
 	sPts[1].mul			(camR,wL);		T.mad(Offset,camN,wT);	sPts[1].add(T);
 	sPts[2].mul			(camR,wL);		T.mad(Offset,camN,wB);	sPts[2].add(T);
 	sPts[3].mul			(camR,wR);		T.mad(Offset,camN,wB);	sPts[3].add(T);
-	ProjDirs[0].sub		(sPts[0],camP);	//ProjDirs[0].normalize();
-	ProjDirs[1].sub		(sPts[1],camP);	//ProjDirs[1].normalize();
-	ProjDirs[2].sub		(sPts[2],camP);	//ProjDirs[2].normalize();
-	ProjDirs[3].sub		(sPts[3],camP);	//ProjDirs[3].normalize();
+	ProjDirs[0].sub		(sPts[0],camP);	
+	ProjDirs[1].sub		(sPts[1],camP);	
+	ProjDirs[2].sub		(sPts[2],camP);	
+	ProjDirs[3].sub		(sPts[3],camP);	
 	_F[0].mad			(camP, ProjDirs[0], p_FAR);
 	_F[1].mad			(camP, ProjDirs[1], p_FAR);
 	_F[2].mad			(camP, ProjDirs[2], p_FAR);
 	_F[3].mad			(camP, ProjDirs[3], p_FAR);
-	_F[4].mad			(camP, camD,		p_FAR);
-	_F[5].set			(camP);
+	_F[4].set			(camP);
+	_F[5].mad			(camP, camD,		p_FAR);
 }
 
 void CRenderDevice::Run			()
@@ -187,35 +187,66 @@ void CRenderDevice::Run			()
 					Fmatrix				L_project;
 					float				p_FOV				= fFOV;
 					float				p_A					= fASPECT;
-					float				p_FAR				= 30.f;
+					float				p_FAR				= 230.f;
 					Fvector				camD,camN,camR,camP;
+					Fvector				_F	[12];
+
+					// 1
 					camD.set			(mCam.k);
 					camN.set			(mCam.j);
 					camR.set			(mCam.i);
 					camP.set			(mCam.c);
+					ComputeFrustum		(_F+0,p_FOV,1.f,p_FAR,camD,camN,camR,camP);
 
 					{
-						// Calc center of "sphere"
-						float	_alpha			= deg2rad		(p_FOV/2.f);
-						float	_a				= p_FAR;
-						float	_b				= _a/_cos		(_alpha);
-						float	_x				= (_b/2)/_cos	(_alpha);
-
-						Fvector	sC;				sC.mad			(camP,camD,_x);
-						float	sR				= _x;
- 
 						// Build L-view vectors
 						Fvector					L_dir,L_up,L_right,L_pos;
-						float					cs 	= 1000;
+						float					cs	= 200;
+						
 						L_dir.set				(-0.071f, -0.574f, -0.816f);	L_dir.normalize		();
 						L_up.set				(0,0,-1);						L_up.normalize		();
 						L_right.crossproduct	(L_up,L_dir);					L_right.normalize	();
 						L_up.crossproduct		(L_dir,L_right);				L_up.normalize		();
-						L_pos.mad				(sC,L_dir,-cs);
+						L_pos.set				(0,0,0);
 						L_view.build_camera_dir	(L_pos,L_dir,L_up);
 
+						//
+						Fbox bb;
+						Fvector bbc,bbd;
+
+						// L-view corner points and box
+						Fvector	T;
+						bb.invalidate			();
+						for (int i=0; i<5; i++)
+						{
+							L_view.transform_tiny	(T,_F[i]);
+							bb.modify				(T);
+						}
+						bb.get_CD				(bbc,bbd);
+
+						// Back project center
+						Fmatrix inv;
+						inv.invert				(L_view);
+						inv.transform_tiny		(L_pos,bbc);
+
+						// L-view matrix
+						L_pos.mad				(L_dir, -cs);
+						L_view.build_camera_dir	(L_pos,L_dir,L_up);
+
+						// L-view corner points and box
+						bb.invalidate			();
+						for (int i=0; i<5; i++)
+						{
+							L_view.transform_tiny	(T,_F[i]);
+							bb.modify				(T);
+						}
+						bb.get_CD				(bbc,bbd);
+
 						// L_project
-						D3DXMatrixOrthoLH		((D3DXMATRIX*)&L_project,2*sR,2*sR,cs-50.f,cs+50.f);
+						float				d	= 2*p_FAR/cosf(p_FOV/2);	
+						float				dx	= 2*bbd.x;
+						float				dy	= 2*bbd.y;
+						D3DXMatrixOrthoLH		((D3DXMATRIX*)&L_project,dx,dy,cs-250.f,cs+250.f);
 					}
 
 					mView	= L_view;

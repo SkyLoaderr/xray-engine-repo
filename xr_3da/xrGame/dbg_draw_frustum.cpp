@@ -51,8 +51,8 @@ void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector
 void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U)
 {
 	//if (!bDebug)		return;
-
-	float YFov	= deg2rad(FOV*(0.75f));
+ 
+	float YFov	= deg2rad(FOV*A);
 	float XFov	= deg2rad(FOV);
 
 	// calc window extents in camera coords
@@ -83,10 +83,10 @@ void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 
 	// find projector direction vectors (from cop through silhouette pts)
 	Fvector ProjDirs[4];
-	ProjDirs[0].sub(sPts[0],COP);		// ProjDirs[0].normalize	();
-	ProjDirs[1].sub(sPts[1],COP);		// ProjDirs[1].normalize	();
-	ProjDirs[2].sub(sPts[2],COP);		// ProjDirs[2].normalize	();
-	ProjDirs[3].sub(sPts[3],COP);		// ProjDirs[3].normalize	();
+	ProjDirs[0].sub(sPts[0],COP);
+	ProjDirs[1].sub(sPts[1],COP);
+	ProjDirs[2].sub(sPts[2],COP);
+	ProjDirs[3].sub(sPts[3],COP);
 
     CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_NONE		));
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,		0xffffffff			));

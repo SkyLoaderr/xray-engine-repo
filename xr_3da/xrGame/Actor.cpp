@@ -95,10 +95,16 @@ CActor::CActor() : CEntityAlive()
 	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
+#ifdef DEBUG
+	Device.seqRender.Add(this,REG_PRIORITY_LOW);
+#endif
 }
 
 CActor::~CActor()
 {
+#ifdef DEBUG
+	Device.seqRender.Remove(this);
+#endif
 	//xr_delete(Weapons);
 	for (int i=0; i<eacMaxCam; i++) xr_delete(cameras[i]);
 
@@ -1852,6 +1858,6 @@ void CActor::OnRender	()
 	//if(g_Alive()>0)
 	ph_Movement.dbg_Draw();
 	CCameraBase* C				= cameras	[cam_active];
-	dbg_draw_frustum			(C->f_fov, 20.f, C->f_aspect, C->vPosition, C->vDirection, C->vNormal);
+	dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->vPosition, C->vDirection, C->vNormal);
 }
 #endif
