@@ -9,7 +9,7 @@
 #include "ftimer.h"
 #include "Etextureparams.h"
 
-#define NUM_THREADS		3
+#define NUM_THREADS		1
 
 float	color_intensity	(Fcolor& c)
 {
@@ -249,13 +249,15 @@ void xrLoad(LPCSTR name)
 				BT.dwWidth	= BT.THM.width;
 				BT.dwHeight	= BT.THM.height;
 				BT.bHasAlpha= BT.THM.HasAlphaChannel();
+				BT.pSurface	= 0;
 				if (!bLOD) 
 				{
 					if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
 					{
 						clMsg		("- loading: %s",N);
 						u32			w=0, h=0;
-						BT.pSurface = Surface_Load(N,w,h);
+						BT.pSurface = Surface_Load(N,w,h); 
+						R_ASSERT2	(BT.pSurface,"Can't load surface");
 						BT.Vflip	();
 					} else {
 						// Free surface memory
@@ -266,28 +268,6 @@ void xrLoad(LPCSTR name)
 				g_textures.push_back	(BT);
 			}
 		}
-/*
-		// post-process materials
-		Status	("Post-process materials...");
-		for (u32 m=0; m<g_materials.size(); m++)
-		{
-			b_material &M	= g_materials[m];
-
-			if (65535==M.shader_xrlc)	{
-				// No compiler shader
-				M.reserved	= WORD(-1);
-				clMsg	(" *  %20s",g_shader_render[M.shader].name);
-			} else {
-				clMsg	(" *  %20s / %-20s",g_shader_render[M.shader].name, g_shader_compile[M.shader_xrlc].name);
-				int id = g_shaders_xrlc.GetID(g_shader_compile[M.shader_xrlc].name);
-				if (id<0) {
-					clMsg	("ERROR: Shader '%s' not found in library",g_shader_compile[M.shader].name);
-					R_ASSERT(id>=0);
-				}
-				M.reserved = WORD(id);
-			}
-		}
-*/
 	}
 }
 
@@ -322,7 +302,7 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 
 float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 {
-	u32	tris_count  = DB->r_count();
+	u32	tris_count		= DB->r_count();
 	float	scale		= 1.f;
 	Fvector B;
 
@@ -331,20 +311,18 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 		for (u32 I=0; I<tris_count; I++)
 		{
 			CDB::RESULT& rpinf = DB->r_begin()[I];
-
 			// Access to texture
 			CDB::TRI& clT								= RCAST_Model.get_tris()[rpinf.id];
 			b_rc_face& F								= g_rc_faces[clT.dummy];
 //			if (0==F)									continue;
 //			if (skip==F)								continue;
 
-			//N			b_material& M	= pBuild->materials			[F->dwMaterial];
 			b_material& M	= g_materials				[F.dwMaterial];
 			b_texture&	T	= g_textures				[M.surfidx];
 			Shader_xrLC& SH	= *g_shaders_xrlc.Get		(M.shader_xrlc);
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
 
-			if (F.bOpaque)		
+			if (T.bHasAlpha)		
 			{
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
@@ -352,6 +330,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 				L.tri[2].set	(*clT.verts[2]);
 				return 0;
 			}
+			R_ASSERT2(T.pSurface,"Empty surface.");
 
 			// barycentric coords
 			// note: W,U,V order
