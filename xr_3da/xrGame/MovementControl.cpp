@@ -163,8 +163,10 @@ void CMovementControl::CalcMaximumVelocity(Fvector& v, Fvector& a, float frictio
 
 void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, float dt, bool bLight)
 {
-	Fvector motion,vAccel,vOldVelocity;
-	float	fOldFriction=fFriction;
+	Fvector motion,vAccel;
+	Fvector vOldVelocity	= vVelocity;
+	float	fOldFriction	= fFriction;
+	float	fOldActVelocity	= fActualVelocity;
 
 	vExternalImpulse.div(dt);
 	vAccel.add			(vExternalImpulse,_Accel);
@@ -206,7 +208,6 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		vAccel.y	= vAccel.y+psGravity+jump/dt;
 		fFriction	= fAirFriction;
 	}
-	vOldVelocity	= vVelocity;
 	Integrate		(vVelocity,motion,vAccel,dt,fFriction);
 
 	// Calculate collisions
