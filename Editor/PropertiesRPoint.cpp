@@ -69,6 +69,7 @@ void __fastcall TfrmPropertiesRPoint::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
+    if (Key==VK_RETURN) ebOk->Click();
 }
 
 //----------------------------------------------------

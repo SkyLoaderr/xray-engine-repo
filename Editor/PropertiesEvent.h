@@ -19,6 +19,7 @@
 #include "ElHeader.hpp"
 #include <Grids.hpp>
 #include "ElTree.hpp"
+#include "multi_check.hpp"
 
 class TfrmPropertiesEvent : public TForm
 {
@@ -35,6 +36,8 @@ __published:	// IDE-managed Components
 	TRxLabel *RxLabel2;
 	TEdit *edOnExit;
 	TEdit *edOnEnter;
+	TRxLabel *RxLabel3;
+	TMultiObjCheck *cbExecuteOnce;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

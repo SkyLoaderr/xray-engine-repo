@@ -110,6 +110,7 @@ bool SceneBuilder::BuildLTX(){
             pIni->WriteVector(obj->GetName(),"direction",mRotate.k);
             pIni->WriteVector(obj->GetName(),"normal",mRotate.j);
             pIni->WriteVector(obj->GetName(),"scale",obj->GetScale());
+            pIni->WriteString(obj->GetName(),"execute_once",obj->bExecuteOnce?"on":"off");
         }
 	}
 

@@ -19,6 +19,7 @@
 #define EVENT_CHUNK_TYPE					0x0311
 #define EVENT_PARAMS                        0x0312
 #define EVENT_CHUNK_BOX						0x0313
+#define EVENT_CHUNK_EXECUTE_ONCE			0x0314
 //----------------------------------------------------
 
 CEvent::CEvent( char *name ):SceneObject(){
@@ -36,11 +37,13 @@ CEvent::~CEvent(){
 void CEvent::Construct(){
 	m_ClassID = OBJCLASS_EVENT;
     eEventType= eetBox;
-    
+
 	mTransform.identity();
     vScale.set(1,1,1);
     vRotate.set(0,0,0);
     vPosition.set(0,0,0);
+
+    bExecuteOnce = true;
 }
 //------------------------------------------------------------------------------------------------
 void CEvent::UpdateTransform(){
@@ -237,7 +240,10 @@ bool CEvent::Load(CStream& F){
     F.RstringZ		(buf); sTargetClass = buf;
     F.RstringZ		(buf); sOnEnter 	= buf;
     F.RstringZ		(buf); sOnExit 		= buf;
-    
+
+    if(F.FindChunk(EVENT_CHUNK_EXECUTE_ONCE))
+		bExecuteOnce = F.Rdword();
+
     UpdateTransform();
     return true;
 }
@@ -265,6 +271,10 @@ void CEvent::Save(CFS_Base& F){
     F.WstringZ		(sTargetClass.c_str());
     F.WstringZ		(sOnEnter.c_str());
     F.WstringZ		(sOnExit.c_str());
+	F.close_chunk	();
+
+	F.open_chunk	(EVENT_CHUNK_EXECUTE_ONCE);
+    F.Wdword		(bExecuteOnce);
 	F.close_chunk	();
 }
 //----------------------------------------------------

@@ -33,6 +33,7 @@ public:
     AnsiString		sTargetClass;
     AnsiString		sOnEnter;
     AnsiString		sOnExit;
+    BOOL			bExecuteOnce;
 public:
 					CEvent		();
 					CEvent		( char *name );

@@ -12,6 +12,7 @@
 #pragma link "CloseBtn"
 #pragma link "ElHeader"
 #pragma link "ElTree"
+#pragma link "multi_check"
 #pragma resource "*.dfm"
 TfrmPropertiesEvent *frmPropertiesEvent=0;
 //---------------------------------------------------------------------------
@@ -37,11 +38,13 @@ void TfrmPropertiesEvent::GetObjectsInfo(){
 	CEvent *_E = (CEvent*)(*_F);
 
     if (m_Objects->size()>1) gbEventParams->Hide();
-    else{ 
+    else{
     	gbEventParams->Show();
 		cbTargetClass->ItemIndex = cbTargetClass->Items->IndexOf(_E->sTargetClass);
         edOnEnter->Text 	= _E->sOnEnter;
         edOnExit->Text 		= _E->sOnExit;
+        edOnExit->Text 		= _E->sOnExit;
+        cbExecuteOnce->Checked = _E->bExecuteOnce;
     }
 /*
 	_F++;
@@ -60,6 +63,7 @@ bool TfrmPropertiesEvent::ApplyObjectsInfo(){
         _E->sTargetClass    = cbTargetClass->Text;
         _E->sOnEnter	    = edOnEnter->Text;
         _E->sOnExit		    = edOnExit->Text;
+        _E->bExecuteOnce	= cbExecuteOnce->Checked;
     }
     return true;
 }
@@ -69,6 +73,7 @@ void __fastcall TfrmPropertiesEvent::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
+    if (Key==VK_RETURN) ebOk->Click();
 }
 
 //----------------------------------------------------
