@@ -70,7 +70,7 @@ protected:
 
 	CScriptDeduggerIDE					m_ide_wrapper;
 	CDbgLuaHelper						m_lua;
-	CScriptCallStack
+	CScriptCallStack					m_callStack;
 //	HWND m_hWndMainFrame;
 //	CEvent m_event;
 	xr_event							m_mutex;

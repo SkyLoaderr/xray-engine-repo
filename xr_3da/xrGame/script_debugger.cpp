@@ -43,15 +43,21 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 //		m_wndCallStack.Clear();
 		break;
 	case DMSG_ADD_STACKTRACE:
+		m_callStack.Add(((StackTrace*)wParam)->szDesc, 
+			((StackTrace*)wParam)->szFile, 
+			((StackTrace*)wParam)->nLine);
+
 /*		m_wndCallStack.Add(((StackTrace*)wParam)->szDesc, 
 			((StackTrace*)wParam)->szFile, 
 			((StackTrace*)wParam)->nLine);*/
 		break;
 	case DMSG_GOTO_STACKTRACE_LEVEL:
 //		m_wndCallStack.GotoStackTraceLevel(wParam);
+		m_callStack.GotoStackTraceLevel((int)wParam);
 		break;
 	case DMSG_GET_STACKTRACE_LEVEL:
 //		return m_wndCallStack.GetLevel();
+		return m_callStack.GetLevel();
 		break;
 	case DMSG_CLEAR_LOCALVARIABLES:
 //		m_wndLocals.RemoveAll();
