@@ -1,7 +1,7 @@
 #ifndef ParticleSystemH
 #define ParticleSystemH
 
-#include "WaveForm.h"
+#include "..\WaveForm.h"
 #include "Particle.h"
 
 namespace PS
