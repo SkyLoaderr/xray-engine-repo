@@ -24,12 +24,12 @@ goodwill_friend = 100
 communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 1, dolg, 1, freedom, 1, bandit, 1, zombied, 23
 
 
-;	отношения персонажа к персонажу вычисляется по формуле
-;	attitude = presonal_goodwill +				//личное отношение персонажа к другому персонажу
-;			   community_goodwill +				//отношение группировка лично к персонажу
-;			   community_to_community			//отношение между группировками из [communities_relations]
-;              reputation_goodwill +			//отношение между репутациями из [reputation_relations]
-;			   rank_goodwill +					//отношение между рангами из [rank_relations]
+;	отношения персонажа к актеру (или другому NPC) вычисляется по формуле
+;	attitude = personal_goodwill +				//личное отношение персонажа к актеру (если раньше не встречались, то 0)
+;			   community_goodwill +				//отношение группировки персонажа лично к актеру (если раньше контактов не было, то 0)
+;			   community_to_community +			//отношение группировки персонажа к группировке актера из [communities_relations]
+;              reputation_goodwill +			//отношение репутации персонажа к репутации актера из [reputation_relations]
+;			   rank_goodwill					//отношение ранга персонажа к рангу актера из [rank_relations]
 
 
 
