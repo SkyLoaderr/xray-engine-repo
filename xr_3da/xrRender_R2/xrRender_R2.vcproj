@@ -185,6 +185,18 @@
 				RelativePath="common_binders.h">
 			</File>
 			<File
+				RelativePath=".\Particle.h">
+			</File>
+			<File
+				RelativePath=".\ParticleSystem.h">
+			</File>
+			<File
+				RelativePath=".\PSLibrary.cpp">
+			</File>
+			<File
+				RelativePath=".\PSLibrary.h">
+			</File>
+			<File
 				RelativePath="r2.cpp">
 			</File>
 			<File
@@ -486,6 +498,24 @@
 				</File>
 				<File
 					RelativePath="FTreeVisual.h">
+				</File>
+				<File
+					RelativePath=".\ParticleEffect.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleEffect.h">
+				</File>
+				<File
+					RelativePath=".\ParticleGroup.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleGroup.h">
+				</File>
+				<File
+					RelativePath=".\psvisual.cpp">
+				</File>
+				<File
+					RelativePath=".\psvisual.h">
 				</File>
 			</Filter>
 		</Filter>
