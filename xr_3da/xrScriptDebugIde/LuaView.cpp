@@ -170,13 +170,6 @@ BOOL CLuaView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	NMHDR *lpnmhdr = (LPNMHDR) lParam; 
 	if (lpnmhdr->hwndFrom == m_editor.m_hWnd)
 	{
-/*		if(lpnmhdr->code == SCN_CHARADDED ){
-			SCNotification* n = (SCNotification*)lParam;
-			if(n->ch==13){
-				GetEditor()->SetBreakPointsIn(m_pf);
-			}
-		}
-*/
 		*pResult = OnSci((SCNotification*)lParam);
 		return TRUE;
 	}
@@ -208,6 +201,13 @@ int CLuaView::OnSci(SCNotification* pNotify)
 		case SCN_SAVEPOINTLEFT:
 			GetDocument()->SetModifiedFlag(TRUE);
 		break;
+
+		case SCN_CHARADDED:
+		{
+			if(pNotify->ch==13){
+				GetEditor()->AdjustCurrTabIndent();
+			}
+		}break;
 
 	}
 

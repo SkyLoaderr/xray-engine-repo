@@ -96,9 +96,8 @@ public:
 	void	StyleSetSize(int style, int sizePoints, BOOL bDirect = TRUE);
 	void	StyleSetFont(int style, const char* fontName, BOOL bDirect = TRUE);
 	void	setupLexer_ex();
-// thread safe functions
-	//void tsAddText(const char *szMsg) {	AddText(szMsg); };
-	//void tsSetReadOnly(BOOL bReadOnly) { SetReadOnly(bReadOnly); };
+
+	void	AdjustCurrTabIndent();
 
 	void Print(bool showDialog);
 	CharacterRange GetSelection();

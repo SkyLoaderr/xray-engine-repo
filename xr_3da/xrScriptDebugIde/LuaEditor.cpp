@@ -620,27 +620,17 @@ void CLuaEditor::setupLexer_ex()
    Sci(SCI_SETTABINDENTS,7,0);
    Sci(SCI_SETINDENT,4,0);
 
-   
-   
+}
 
-   
-
-
-
-
-/*  SetAStyle(SCE_C_DEFAULT, RGB(0, 0, 0));
-  SetAStyle(SCE_C_COMMENT, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_COMMENTLINE, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_COMMENTDOC, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_COMMENTLINEDOC, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_COMMENTDOCKEYWORD, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, RGB(0, 0x80, 0));
-  SetAStyle(SCE_C_NUMBER, RGB(0, 0x80, 0x80));
-  SetAStyle(SCE_C_WORD, RGB(0, 0, 0x80));
-  StyleSetBold(SCE_C_WORD, 1);
-  SetAStyle(SCE_C_STRING, RGB(0x80, 0, 0x80));
-  SetAStyle(SCE_C_IDENTIFIER, RGB(0, 0, 0));
-  SetAStyle(SCE_C_PREPROCESSOR, RGB(0x80, 0, 0));
-  SetAStyle(SCE_C_OPERATOR, RGB(0x80, 0x80, 0));
-*/
+void	CLuaEditor::AdjustCurrTabIndent()
+{
+	int pos			=   Sci(SCI_GETCURRENTPOS);
+	
+	int line		= 	Sci(SCI_LINEFROMPOSITION,pos);
+	int prev_indent	=	Sci(SCI_GETLINEINDENTATION,line-1);
+	Sci(SCI_SETLINEINDENTATION,line,prev_indent);
+	int l_lenght	=	Sci(SCI_GETLINEENDPOSITION,line);
+	Sci(SCI_SETCURRENTPOS,l_lenght);
+	Sci(SCI_SETSELECTIONSTART,l_lenght);
+	Sci(SCI_SETSELECTIONEND,l_lenght);
 }
