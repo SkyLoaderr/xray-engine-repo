@@ -148,10 +148,10 @@ nominal_hit			= 20	;величина номинального хита
 
 
 [entity_fire_particles]
-fire_particles = explosions\group_items\campfire_03_smoke
+fire_particles = damage_fx\burn_creatures00
 
-start_burn_size	= 0.3		;размер ожега после которого начать играть партиклы огня
-stop_burn_size	= 0.1		;остановить партиклы
+start_burn_size	= 0.03		;размер ожега после которого начать играть партиклы огня
+stop_burn_size	= 0.01		;остановить партиклы
 min_burn_time	= 10000		;минимальное время отыгрыша партиклов (даже если рана уже зажила)
 
 [hud_cursor]
@@ -1296,7 +1296,7 @@ entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
 hit_type		= burn
 
 disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= 5000	;время отключения idle партиклов
+disable_idle_time	= 50000	;время отключения idle партиклов
 
 ignore_nonalive		= true
 ignore_small		= false
