@@ -141,7 +141,6 @@ void			ISpatial_DB::initialize(Fbox& BB)
 	rt_insert_object		= NULL;
 	if (0==m_root)	m_root	= _node_create();
 	m_root->_init			(NULL);
-	lock					= FALSE;
 }
 ISpatial_NODE*	ISpatial_DB::_node_create		()
 {
@@ -214,9 +213,7 @@ BOOL			f_valid					(float f)		{	return _finite(f) && !_isnan(f);	}
 
 void			ISpatial_DB::insert		(ISpatial* S)
 {
-	VERIFY		(!lock);
-	lock		= TRUE;
-
+	cs.Enter			();
 	stat_insert.Begin	();
 
 #ifdef DEBUG
@@ -247,8 +244,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 		S->spatial.node_radius		=	m_bounds;
 	}
 	stat_insert.End		();
-
-	lock		= FALSE;
+	cs.Leave			();
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
@@ -275,9 +271,7 @@ void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
 
 void			ISpatial_DB::remove		(ISpatial* S)
 {
-	VERIFY		(!lock);
-	lock		= TRUE;
-
+	cs.Enter			();
 	stat_remove.Begin	();
 	ISpatial_NODE* N	= S->spatial.node_ptr;
 	N->_remove			(S);
@@ -285,12 +279,15 @@ void			ISpatial_DB::remove		(ISpatial* S)
 	// Recurse
 	if (N->_empty())					_remove(N->parent,N);
 	stat_remove.End		();
-
-	lock		= FALSE;
+	cs.Leave			();
 }
 
 void			ISpatial_DB::update		(u32 nodes/* =8 */)
 {
+#ifdef DEBUG
 	if (0==m_root)	return;
+	cs.Enter		();
 	VERIFY			(verify());
+	cs.Leave		();
+#endif
 }

@@ -103,6 +103,7 @@ public:
 class ENGINE_API					ISpatial_DB
 {
 private:
+	xrCriticalSection				cs;
 	poolSS<ISpatial_NODE,128>		allocator;
 	xr_vector<ISpatial_NODE*>		allocator_pool;
 	ISpatial*						rt_insert_object;
@@ -115,7 +116,6 @@ public:
 	u32								stat_objects;
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
-	BOOL							lock;
 private:
 	IC u32							_octant			(u32 x, u32 y, u32 z)			{	return z*4 + y*2 + x;	}
 	IC u32							_octant			(Fvector& base, Fvector& rel)
