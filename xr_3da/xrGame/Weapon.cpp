@@ -336,14 +336,14 @@ void CWeapon::net_Destroy	()
 
 void CWeapon::net_Export	(NET_Packet& P)
 {
-	u8 flags				=	(IsUpdating()? M_UPDATE_WEAPON_wfVisible:0);
-	flags					|=	(IsWorking() ? M_UPDATE_WEAPON_wfWorking:0);
+	u8 flags				=	u8(IsUpdating()? M_UPDATE_WEAPON_wfVisible:0);
+	flags					|=	u8(IsWorking() ? M_UPDATE_WEAPON_wfWorking:0);
 
 	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
 
-	P.w_u16					(iAmmoCurrent);
-	P.w_u16					(iAmmoElapsed);
+	P.w_u16					(u16(iAmmoCurrent));
+	P.w_u16					(u16(iAmmoElapsed));
 
 	P.w_vec3				(svTransform.c);
 
