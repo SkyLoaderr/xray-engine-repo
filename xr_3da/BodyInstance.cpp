@@ -635,19 +635,12 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 			MP->Read			(PART.bones.begin(),PART.bones.size()*sizeof(WORD));
 		}
 
-		// cycles
-		WORD cycle_count		= MP->Rword();
-		for (WORD cycle_i=0; cycle_i<cycle_count; cycle_i++){
+		// motion defs (cycle&fx)
+		WORD mot_count			= MP->Rword();
+		for (WORD mot_i=0; mot_i<mot_count; mot_i++){
 			MP->RstringZ(buf);
-			CMotionDef	D;		D.Load(this,MP,true);
-			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
-		}
-
-		// FXes
-		WORD fx_count			= MP->Rword();
-		for (WORD fx_i=0; fx_i<fx_count; fx_i++){
-			MP->RstringZ(buf);
-			CMotionDef	D;		D.Load(this,MP,false);
+			BYTE bCycle			= MP->Rbyte();
+			CMotionDef	D;		D.Load(this,MP,bCycle);
 			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
 		}
 	}else{
