@@ -289,12 +289,7 @@ void CBuild::MergeLM()
 					}
 
 					// Merge
-					UVpoint				fBase,fInplaceScale;
-
-					fInplaceScale.set	(float(Place.SizeX())/512.f,float(Place.SizeY())/512.f);
-					fBase.set			(float(Offset.x)/512.f, float(Offset.y)/512.f);
-
-					pDEFL->Capture		(SEL[iRealIndex],Offset.x,Offset.y,Place.SizeX(),Place.SizeY());
+					pDEFL->Capture		(SEL[iRealIndex],Offset.x,Offset.y,Place.SizeX(),Place.SizeY(),bRotated);
 
 					// Destroy old deflector
 					vecDeflIt	OLD = find(g_deflectors.begin(),g_deflectors.end(),SEL[iRealIndex]);

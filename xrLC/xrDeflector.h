@@ -51,7 +51,7 @@ public:
 	VOID	OA_SetNormal(Fvector &_N )	{ N.set(_N); N.normalize(); }
 	BOOL	OA_Place	(Face *owner);
 	VOID	OA_Export	();
-	VOID	Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v);
+	VOID	Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate);
 
 	VOID	GetRect		(UVpoint &min, UVpoint &max);
 
