@@ -24,7 +24,8 @@ CUIGameCS::~CUIGameCS()
 
 BOOL CUIGameCS::CanBuy()
 {
-	return (Level().timeServer()-Game().start_time)<Game().buy_time;
+	game_cl_GameState::Player* P = Game().local_player;
+	return (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&((Level().timeServer()-Game().start_time)<Game().buy_time);
 }
 //--------------------------------------------------------------------
 
@@ -81,17 +82,11 @@ void CUIGameCS::Render()
 		break;
 	case GAME_PHASE_INPROGRESS:
 		if (uFlags&flShowFragList) FragList.Render		();
-		map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
-		map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
-		for (;I!=E;I++){
-			game_cl_GameState::Player* P = (game_cl_GameState::Player*)&I->second;
-			if (P->flags&GAME_PLAYER_FLAG_LOCAL){
-				if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
-				else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
-				if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
-				if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.Render();
-			}
-		}
+		game_cl_GameState::Player* P = Game().local_player;
+		if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
+		else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
+		if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
+		if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.Render();
 		break;
 	}
 }
