@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../movement_manager.h"
-#include "../movement_manager_space.h"
+#include "../../movement_manager.h"
+#include "../../movement_manager_space.h"
 #include "ai_monster_defs.h"
 #include "ai_monster_motion_stats.h"
 
