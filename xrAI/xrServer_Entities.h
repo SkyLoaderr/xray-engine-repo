@@ -180,6 +180,7 @@ xrSE_DECLARE_BEGIN(xrSE_Actor,xrSE_Teamed)
 	float					fHealth;
 	float					fArmor;
 	u8						weapon;
+	string64				caModel;
 xrSE_DECLARE_END
 
 //***** Enemy

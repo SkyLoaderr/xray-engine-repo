@@ -342,8 +342,25 @@ void xrSE_Spectator::FillProp		(LPCSTR pref, PropItemVec& items)
 #endif
 
 //***** Actor
-void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
-void xrSE_Actor::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);		};
+xrSE_Actor::xrSE_Actor			()
+{
+	caModel[0]						= 0;
+	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_multiplayer.ogf");
+}
+
+void xrSE_Actor::STATE_Read			(NET_Packet& P, u16 size)
+{
+	inherited::STATE_Read(P,size);
+	if (m_wVersion >= 3)
+		P.r_string(caModel);
+};
+
+void xrSE_Actor::STATE_Write		(NET_Packet& P)
+{
+	inherited::STATE_Write(P);
+	P.w_string(caModel);
+};
+
 void xrSE_Actor::UPDATE_Read		(NET_Packet& P)
 {
 	inherited::UPDATE_Read(P);
@@ -379,7 +396,9 @@ void xrSE_Actor::UPDATE_Write		(NET_Packet& P)
 #ifdef _EDITOR
 void	xrSE_Actor::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp(pref,items);
+  	inherited::FillProp					(pref,items);
+	// model
+    PHelper.CreateGameObject			(items, PHelper.PrepareKey(pref,s_name,"Model"),caModel,sizeof(caModel));
 }
 #endif
 
