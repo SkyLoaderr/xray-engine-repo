@@ -2,6 +2,7 @@
 
 #include "xrLauncher_about_dlg.h"
 #include "xrLauncher_benchmark_frm.h"
+#include "xrLauncherControl.h"
 #include "xrLauncher_utils.h"
 
 using namespace System;
@@ -31,6 +32,7 @@ namespace xrLauncher
 		{
 			m_about_dlg			= 0;
 			m_benchmark_dlg		= 0;
+			m_settings_dlg		= 0;
 			m_mod_info			= new MOD_INFO();
 			InitializeComponent();
 		}
@@ -54,6 +56,8 @@ namespace xrLauncher
 	private : MOD_INFO*	m_mod_info;
 	private : xrLauncher_about_dlg* m_about_dlg;
 	private : xrLauncher_benchmark_frm* m_benchmark_dlg;
+	private : xrLauncherControl*		m_settings_dlg;
+
 	private: System::Windows::Forms::Panel *  panel1;
 	private: System::Windows::Forms::PictureBox *  pictureBox1;
 	private: System::Windows::Forms::Button *  playBtn;
@@ -185,6 +189,7 @@ namespace xrLauncher
 			this->settingsBtn->Size = System::Drawing::Size(86, 26);
 			this->settingsBtn->TabIndex = 1;
 			this->settingsBtn->Text = S"Settings";
+			this->settingsBtn->Click += new System::EventHandler(this, settingsBtn_Click);
 			// 
 			// playBtn
 			// 
@@ -304,6 +309,8 @@ private: System::Void xrLauncher_main_frm_KeyDown(System::Object *  sender, Syst
 /*			 if(e->Alt&&e->KeyCode == System::Windows::Forms::Keys::F4)
 				_Close(0);*/
 		 }
+
+private: System::Void settingsBtn_Click(System::Object *  sender, System::EventArgs *  e);
 
 };
 }

@@ -3,11 +3,36 @@
 
 using namespace xrLauncher;
 
+
+void xrLauncherControl::_Close(int res)
+{
+	m_modal_result = res;
+	Close();
+}
+
+int	 xrLauncherControl::_Show(int initial_state)
+{
+	m_init_state = initial_state;
+	Init();
+	ShowDialog();
+	return m_modal_result;
+}
+
+bool xrLauncherControl::isChanged()
+{
+	return SoundChanged();
+}
+
+void xrLauncherControl::ApplyChanges()
+{
+	ApplySoundPage();
+}
+
 void xrLauncherControl::Init()
 {
 	InitSoundPage();
-	InitModPage();
 }
+
 
 #define SND_VOLUME_EFFECT		"snd_volume_eff"
 #define SND_VOLUME_MUSIC		"snd_volume_music"
@@ -39,9 +64,9 @@ void xrLauncherControl::InitSoundPage()
 	this->sndEfxCheck->set_Checked(!!bval);
 
 	con->GetInteger( SND_TARGETS, ival, imin, imax);
-	this->sndVolMusicTrack->set_Minimum(imin);
-	this->sndVolMusicTrack->set_Maximum(imax);
 	this->sndTargetsUpDown->set_Value(ival);
+	this->sndTargetsUpDown->set_Minimum(imin);
+	this->sndTargetsUpDown->set_Maximum(imax);
 
 }
 
@@ -75,121 +100,53 @@ void xrLauncherControl::ApplySoundPage()
 
 }
 
-void xrLauncherControl::InitModPage()
+bool xrLauncherControl::SoundChanged()
 {
-	m_mod_info->clear();
-	this->modList->Items->Clear();
-	this->modCreditsList->Items->Clear();
-
-	
-	FS_Path* pth = FS.get_path("$mod_dir$");
-	LPCSTR mod_dir = pth->m_Path;
-
-	xr_vector<LPSTR>* dirs =	FS.file_list_open("$mod_dir$",FS_ListFolders);
-
-	xr_vector<LPSTR>::const_iterator it = dirs->begin();
-	string_path s;
-    for (;it!=dirs->end();++it) {
-		LPCSTR cur = (*it);
-		const CLocatorAPI::file* fn = FS.exist(s,"$mod_dir$",cur,"mod.inf");
-		if(!fn )
-			continue;
-
-		CInifile ini(fn->name);
-		if(!ini.section_exist("general"))
-			continue;
-
-		LPCSTR pStr = 0;
-		m_mod_info->push_back( SmodInfo() );
-		SmodInfo& info = m_mod_info->back();
-
-		if(ini.line_exist("general","name")){
-			info.m_mod_name = ini.r_string("general","name");
-			this->modList->Items->Add(new String(*info.m_mod_name) );
-		};
-		if(ini.line_exist("general","description_short")){
-			info.m_descr_short = ini.r_string("general","description_short");
-		};
-		if(ini.line_exist("general","description_long")){
-			info.m_descr_long = ini.r_string("general","description_long");
-		};
-
-		if(ini.line_exist("general","version")){
-			info.m_version = ini.r_string("general","version");
-		};
-
-		if(ini.line_exist("general","www")){
-			info.m_www = ini.r_string("general","www");
-		};
-
-		if(ini.line_exist("general","command_line")){
-			info.m_cmd_line = ini.r_string("general","command_line");
-		};
-
-		info.m_credits->clear();
-		if(ini.section_exist("creator")){
-		int lc = ini.line_count("creator");
-		
-		info.m_credits->resize(lc+1);
-
-		LPCSTR name;
-		LPCSTR value;
-		for (int i=0 ;i<lc; ++i){
-			ini.r_line( "creator", i, &name, &value);
-			if(0==i)
-				info.m_credits->at(i) = "Credits:";
-			info.m_credits->at(i+1) = value;
-		}
-	}
-
-    };
-
-	FS.file_list_close(dirs);
-	modList_SelectedIndexChanged(0,0);
-}
-
-
-System::Void xrLauncherControl::modList_SelectedIndexChanged(System::Object *  sender, System::EventArgs *  e)
-{
-	modShortDescrLbl->Text	= S"Short description: ";
-	modLongDescrLbl->Text	= S"Long description: ";
-	modLinkLbl->Text		= S"Website: ";
-	modVersionLbl->Text		= S"Version: ";
-	modCreditsList->Items->Clear();
-	int index = modList->SelectedIndex;
-	if (-1 == index){
-		modRunBtn->Enabled = false;
-		return;
-	}
-
-    SmodInfo& info = m_mod_info->at(index);
-	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(*info.m_descr_short) );
-	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(*info.m_descr_long) );
-	modLinkLbl->Text = String::Concat(modLinkLbl->Text, new String(*info.m_www) );
-	modVersionLbl->Text = String::Concat(modVersionLbl->Text, new String(*info.m_version) );
-
-	for(u32 i=0; i<info.m_credits->size();++i)
-		modCreditsList->Items->Add(new String(*(info.m_credits->at(i))) );
-
-	modRunBtn->Enabled = xr_strlen(info.m_cmd_line)>0;
-}
-
-System::Void xrLauncherControl::modRunBtn_Click(System::Object *  sender, System::EventArgs *  e)
-{
-	int index = modList->SelectedIndex;
-	  if (-1 == index)
-		  return;
-
-    SmodInfo& info = m_mod_info->at(index);
+	int  ival=0, imin=0, imax=0;
+	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  bval=false;
 	CConsole* con = ::Console;
-	con->Execute(*info.m_cmd_line);
-	Close();
+
+	con->GetFloat( SND_VOLUME_EFFECT, fval, fmin, fmax);
+	if( fabs(fval-sndVolEffectTrack->get_Value()/100.0f)>0.1)
+		return true;
+
+	con->GetFloat( SND_VOLUME_MUSIC, fval, fmin, fmax);
+	if( fabs(fval-sndVolMusicTrack->get_Value()/100.0f)>0.1)
+		return true;
+
+	con->GetBool( SND_ACCEL, bval);
+	if(!!sndAccelCheck->get_Checked()!=bval)
+		return true;
+
+	con->GetBool( SND_EFX, bval);
+	if(!!sndEfxCheck->get_Checked()!=bval)
+		return true;
+
+	con->GetInteger( SND_TARGETS, ival, imin, imax);
+	if(ival != sndTargetsUpDown->get_Value())
+		return true;
+
+	return false;
 }
 
-
-System::Void xrLauncherControl::runStalker_Click(System::Object *  sender, System::EventArgs *  e)
+System::Void xrLauncherControl::ApplyButton_Click(System::Object *  sender, System::EventArgs *  e)
 {
-	CConsole* con = ::Console;
-	con->Execute("start server(andy_test/single) client(localhost)");
-	Close();
+	if(isChanged())
+		ApplyChanges();
+}
+
+System::Void xrLauncherControl::OkButton_Click(System::Object *  sender, System::EventArgs *  e)
+{
+#undef MessageBox
+	if(isChanged())	{
+		if(MessageBox::Show(S"Settings was changed. Apply changes now?", S"Request",
+          MessageBoxButtons::YesNo, MessageBoxIcon::Question )==DialogResult::Yes )
+			ApplyChanges();
+		else
+			return;
+
+		_Close(0);
+	}else
+		_Close(0);
 }

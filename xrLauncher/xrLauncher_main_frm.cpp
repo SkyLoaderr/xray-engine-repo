@@ -201,3 +201,10 @@ int	 xrLauncher_main_frm::_Show(int initial_state)
 	return m_modal_result;
 }
 
+System::Void xrLauncher_main_frm::settingsBtn_Click(System::Object *  sender, System::EventArgs *  e)
+{
+	if(!m_settings_dlg)
+		m_settings_dlg = new xrLauncherControl();
+
+	int res = m_settings_dlg->_Show(0);
+}
