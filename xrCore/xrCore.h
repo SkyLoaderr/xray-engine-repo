@@ -95,11 +95,11 @@
 	#endif
 #endif
 
+#include <time.h>
 // work-around dumb borland compiler
 #ifdef __BORLANDC__
 	#define ALIGN(a)
 
-	#include <time.h>
 	#include <assert.h>
 	#include <utime.h>
 	#define _utimbuf utimbuf

@@ -92,6 +92,7 @@ IC int	xr_strcmp		(const ref_str & a, const ref_str & b)		{
 	if (a.equal(b))		return 0;
 	else				return xr_strcmp(*a,*b);
 }
+IC void	xr_strlwr		(std::string& src)							{ for(std::string::iterator it=src.begin(); it!=src.end(); it++) *it=std::string::value_type(tolower(*it));}
 
 #pragma pack(pop)
 

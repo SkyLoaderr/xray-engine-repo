@@ -882,8 +882,13 @@
 				>
 			</File>
 			<File
-				RelativePath="log.cpp"
-				>
+				RelativePath=".\LocatorAPI_Notifications.cpp">
+			</File>
+			<File
+				RelativePath=".\LocatorAPI_Notifications.h">
+			</File>
+			<File
+				RelativePath="log.cpp">
 			</File>
 			<File
 				RelativePath="log.h"

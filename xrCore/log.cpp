@@ -17,7 +17,7 @@ void FlushLog			()
 {
 	if (!no_log){
 		logCS.Enter			();
-        IWriter *f			= FS.w_open(logFName);
+		IWriter *f			= FS.w_open(logFName);
         if (f) {
             for (u32 it=0; it<LogFile.size(); it++)	{
 				LPCSTR		s	= *(LogFile[it]);
@@ -167,8 +167,7 @@ void CreateLog			(LogCallback cb, BOOL nl)
 	LogCB				= cb;
     no_log				= nl;
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
-    FS.update_path		(logFName,"$logs$",logFName);
-
+	FS.update_path		(logFName,"$logs$",logFName);
 	if (!no_log){
         IWriter *f		= FS.w_open	(logFName);
         if (f==NULL)	abort();

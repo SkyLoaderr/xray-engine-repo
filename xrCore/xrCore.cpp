@@ -56,13 +56,18 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
 	else								Memory._initialize		(FALSE);
 	InitMath				();
-	rtc_initialize			();
 	Debug._initialize		();
+
+	rtc_initialize			();
 	xr_FS					= xr_new<CLocatorAPI>	();
+	xr_EFS					= xr_new<EFS_Utils>		();
 	u32 flags				= 0;
 	if (0!=strstr(Params,"-build"))	flags |= CLocatorAPI::flBuildCopy;
 	if (0!=strstr(Params,"-ebuild"))flags |= CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy;
+
 	FS._initialize			(flags);
+	EFS._initialize			();
+    
 	CreateLog				(cb,0!=strstr(Params,"-nolog"));
 
 	bInitialized			= TRUE;
@@ -72,6 +77,8 @@ void xrCore::_destroy		()
 {
 	CloseLog				();
 	FS._destroy				();
+	EFS._destroy			();
+	xr_delete				(xr_EFS);
 	xr_delete				(xr_FS);
 	Memory._destroy			();
 }
