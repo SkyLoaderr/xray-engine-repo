@@ -17,11 +17,11 @@ ENGINE_API	CRender				Render_Implementation;
 ENGINE_API	CRender_interface*	Render = &Render_Implementation;
 
 // Implementation
-CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	{ return Models.CreatePS(name,E);	}
-CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);		}
-CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data);		}
-CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);}
-void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);					}
+CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	{ return Models.CreatePS(name,E);		}
+CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);			}
+CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data);			}
+CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
+void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);						}
 
 int			CRender::getVisualsCount	()					{ return Visuals.size();							}
 CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<Portals.size());	return &Portals[id];}
@@ -33,6 +33,8 @@ IDirect3DVertexBuffer8*	CRender::getVB	(int id)			{ VERIFY(id<VB.size());			retu
 void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);						}
 void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
+
+void		CRender::flush				()					{ flush_Models();									}
 
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
@@ -98,9 +100,6 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 		else			Render->rmNormal();
 	}
 }
-
-// Textures
-// static Fmatrix		matTrans;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -262,14 +261,14 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	gm_SetNearer		(N->val.nearer);
 	V->Render			(calcLOD(N->key,V->bv_Radius));
 }
-/*
-void CRender::flush_Models()
+
+void CRender::flush_Models	()
 {
 	mapMatrix.traverseANY	(matrix_L1);
 	mapMatrix.clear			();
 }
-*/
-void CRender::flush_Patches()
+
+void CRender::flush_Patches	()
 {
 	// *** Fill VB
 	DWORD						vOffset;

@@ -91,7 +91,7 @@ void CLightShadows::calculate	()
 		
 		// Select lights and calc importance
 		lights.clear			();
-		::Render->getLights		(C.C,C.O->Radius(),lights);
+		::Render->L_select		(C.C,C.O->Radius(),lights);
 		
 		// iterate on lights
 		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)

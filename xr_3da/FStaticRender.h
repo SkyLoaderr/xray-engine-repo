@@ -81,6 +81,7 @@ private:
 	void							InsertSG_Cached			(CVisual	*pVisual);
 
 	void							flush_Patches			();
+	void							flush_Models			();
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();
@@ -97,6 +98,7 @@ public:
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 
+	virtual void					flush					();
 	virtual void					set_Object				(CObject*	O	);
 	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf (no culling performed at all)
 	virtual void					add_Geometry			(CVisual*	V	);			// add visual(s)	(all culling performed)
