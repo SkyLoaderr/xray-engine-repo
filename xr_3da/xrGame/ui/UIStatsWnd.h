@@ -54,6 +54,8 @@ public:
 	void HighlightItem(const u32 uItem);
 	// Получить номер подсвеченого эл-та
 	u32	GetHighlightedItem() { return m_uHighlightedItem; }
+	
+	RECT GetFrameRect () { return UIFrameWnd.GetWndRect();};
 protected:
 	CUIButton			UIBtn;
 	// Фрейм - оболочка

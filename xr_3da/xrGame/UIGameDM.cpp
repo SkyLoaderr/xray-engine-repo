@@ -13,6 +13,21 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	pPlayerList	= xr_new<CUIDMPlayerList>	();
 	pFragList->Init							();
 	pPlayerList->Init						();
+
+	int ScreenW = Device.dwWidth;
+	int ScreenH = Device.dwHeight;
+	//-----------------------------------------------------------
+	RECT FrameRect = pFragList->GetFrameRect ();
+	int FrameW	= FrameRect.right - FrameRect.left;
+	int FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pFragList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
+	//-----------------------------------------------------------
+	FrameRect = pPlayerList->GetFrameRect ();
+	FrameW	= FrameRect.right - FrameRect.left;
+	FrameH	= FrameRect.bottom - FrameRect.top;
+
+	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 }
 //--------------------------------------------------------------------
 
@@ -29,9 +44,15 @@ void CUIGameDM::OnFrame()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerList->OnFrame();
+		pPlayerList->Update();
+		if (!pPlayerList->IsShown()) 
+		{
+			pPlayerList->Show();
+		};
+//		pPlayerList->OnFrame();
 	break;
 	case GAME_PHASE_INPROGRESS:
+		if (pPlayerList->IsShown()) pPlayerList->Hide();
 //		if (uFlags&flShowFragList) pFragList->OnFrame	();
 	break;
 	}
@@ -44,7 +65,8 @@ void CUIGameDM::Render()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerList->Render();
+		pPlayerList->Draw();
+//		pPlayerList->Render();
 		break;
 	case GAME_PHASE_INPROGRESS:
 //		if (uFlags&flShowFragList) pFragList->Render		();

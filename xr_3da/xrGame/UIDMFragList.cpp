@@ -54,6 +54,7 @@ void	CUIDMFragList::Update()
 
 	char Text[1024];
 	int ItemIDX = 0;
+	HighlightItem(0xffffffff);
 	for (ItemIt mI=items.begin(); items.end() != mI; ++mI)
 	{
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
@@ -64,8 +65,6 @@ void	CUIDMFragList::Update()
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	HighlightItem(ItemIDX);
 		CUIStatsListItem *pItem = GetItem(ItemIDX++);
 		if (!pItem) continue;
-
-		
 
 		pItem->FieldsVector[0]->SetText(P->name);
 		sprintf(Text, "%d", P->kills); pItem->FieldsVector[1]->SetText(Text);

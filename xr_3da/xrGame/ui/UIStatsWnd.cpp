@@ -10,7 +10,7 @@
 const char * const STATS_XML = "stats.xml";
 
 CUIStatsWnd::CUIStatsWnd()
-	: m_uHighlightedItem(0)
+	: m_uHighlightedItem(0xffffffff)
 {
 	///Init();
 }
@@ -129,8 +129,10 @@ void CUIStatsWnd::HighlightItem(const u32 uItem)
 	R_ASSERT(static_cast<int>(uItem) < UIStatsList.GetSize());
 	if (m_uHighlightedItem != uItem)
 	{
-		dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(m_uHighlightedItem))->Highlight(false);
-		dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(uItem))->Highlight(true);
+		if (m_uHighlightedItem != 0xffffffff)
+			dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(m_uHighlightedItem))->Highlight(false);
+		if (uItem != 0xffffffff)
+			dynamic_cast<CUIStatsListItem*>(UIStatsList.GetItem(uItem))->Highlight(true);
 		m_uHighlightedItem = uItem;
 	}
 }

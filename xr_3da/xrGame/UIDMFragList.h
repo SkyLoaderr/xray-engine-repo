@@ -22,6 +22,7 @@ public:
 
 	virtual u32						GetItemCount	()	{return UIStatsList.GetSize();};
 	virtual	CUIStatsListItem*		GetItem			(int index);
+
 //	void			Init			();
 //	virtual void	OnFrame			();
 };
