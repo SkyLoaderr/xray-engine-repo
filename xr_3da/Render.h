@@ -56,7 +56,10 @@ public:
 	virtual void					set_active			(bool)								= 0;
 	virtual void					set_shadow			(bool)								= 0;
 	virtual void					set_position		(const Fvector& P)					= 0;
+	virtual void					set_direction		(const Fvector& P)					= 0;
+	virtual void					set_cone			(float angle)						= 0;
 	virtual void					set_range			(float R)							= 0;
+	virtual void					set_texture			(LPCSTR name)						= 0;
 	virtual void					set_color			(const Fcolor& C)					= 0;
 	virtual void					set_color			(float r, float g, float b)			= 0;
 	virtual ~IRender_Light()		{};

@@ -332,6 +332,9 @@
 				RelativePath="Light_Render_Direct_ComputeXFP.cpp">
 			</File>
 			<File
+				RelativePath="Light_Render_Direct_ComputeXFS.cpp">
+			</File>
+			<File
 				RelativePath="light.cpp">
 			</File>
 			<File
