@@ -18,7 +18,7 @@ function main ()
 
 	while true do
 		  if hero:action () == nil then	
-  		     if device():time_global() - t > 10000 then break end
+  		     if device():time_global() - t > 60000 then break end
 		     reset_action (hero, military2_4.script_name ())
 		     action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 		  end
@@ -28,7 +28,7 @@ function main ()
 	reset_action (hero, military2_4.script_name ())
 	action (hero, anim ("raciya_0"), cond (cond.anim_end))
 	action (hero, anim ("raciya_1"), cond (cond.anim_end))
-	action (hero, anim ("raciya_2"), sound ("scripts\\Rolik\\they_got_the_artifact", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
+	action (hero, anim ("raciya_2"), sound ("scripts\\Rolik\\assistance_needed", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false), cond (cond.anim_end))
 	action (hero, anim ("raciya_3"), cond (cond.anim_end))
 	
 	while hero:action () do wait () end
