@@ -151,6 +151,9 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 #endif
 
 	const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
+	if (!game_object)
+		return;
+
 	const CGameObject		*self = dynamic_cast<const CGameObject*>(this);
 
 	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
