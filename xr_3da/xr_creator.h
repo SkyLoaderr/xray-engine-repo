@@ -3,13 +3,13 @@
 
 #include "fcontroller.h"
 #include "xr_object_list.h"
-#include "environment.h"
 #include "cameramanager.h"
 #include "xr_area.h"
 
 // refs
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
+class ENGINE_API CEnvironment;
 
 //-----------------------------------------------------------------------------------------------------------
 //World Container
@@ -38,7 +38,7 @@ protected:
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
-	CEnvironment				Environment;
+	CEnvironment*				Environment;
 	CCameraManager				Cameras;
 	CObjectSpace				ObjectSpace;
 
