@@ -189,9 +189,6 @@ public:
 				float fStraightDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
 				if (fStraightDistance < m_fMaxDistance) {
 					try {
-						if ((i == 13) && (j == 33)) {
-							i=i;
-						}
 						if (fStraightDistance < 200.f)
 							fDistance = m_tpAI_Map->ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
 						else
