@@ -58,7 +58,7 @@ function options_dialog:InitControls()
 							 height = self.btn_rect.height}
 							 
 	local btn_profiles_rect={x = self.left_align_x,
-							 y = btn_controls_rect.y + btn_controls_rect.height + self.indent,
+							 y = btn_control_rect.y + btn_control_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 		----- Bottom right align --->>>
