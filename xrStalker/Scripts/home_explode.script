@@ -1,3 +1,7 @@
+-- Скриптовая зона - explode_zone
+-- бочка - bochka_push
+-- Источник звука - патрульный пути из одного вейпоинта "soundw"
+-- Источник штукатурки - патрульный пути из одного вейпоинта "particlew"
 
 local entered = false
 local this = home_explode
