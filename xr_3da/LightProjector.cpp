@@ -9,7 +9,7 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
-const	int		P_o_size	= 32;
+const	int		P_o_size	= 64;
 const	int		P_o_line	= P_rt_size/P_o_size;
 const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
@@ -125,6 +125,7 @@ void CLightProjector::calculate	()
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,HW.pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
+	Device.set_xform_world		(Fidentity);
 	
 	// sort by distance
 	std::sort	(id.begin(),id.end(),pred_sorter(this));
@@ -134,7 +135,7 @@ void CLightProjector::calculate	()
 	for (u32 o_it=0; o_it<id.size(); o_it++)
 	{
 		recv&	C	= receivers	[id[o_it]];
-		if (C.nodes.empty())	continue;
+		// if (C.nodes.empty())	continue;
 
 		// calculate projection-matrix
 		Fmatrix		mProject;
@@ -216,6 +217,7 @@ void CLightProjector::calculate	()
 		Device.Shader.set_Shader	(sh_BlurTR	);
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		
+/*
 		for (int it=0; it<1; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
@@ -228,6 +230,7 @@ void CLightProjector::calculate	()
 			Device.Shader.set_Shader	(sh_BlurTR	);
 			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		}
+*/
 	}
 	
 	// Finita la comedia

@@ -24,7 +24,7 @@ struct	vertHW
 short QC (float v)
 {
 	int t=iFloor(v*float(quant));// clamp(t,-quant,quant);
-	return short(t);
+	return short(t&0xffff);
 }
 
 void CDetailManager::VS_Load()

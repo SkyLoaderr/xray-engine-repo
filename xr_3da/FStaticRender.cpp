@@ -57,9 +57,10 @@ void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
-	val_pObject			= O;
-	L_Shadows.set_object(O);
-	L_DB.Track			(O);
+	val_pObject				= O;
+	L_Shadows.set_object	(O);
+	L_Projector.set_object	(O);
+	L_DB.Track				(O);
 }
 
 
@@ -208,6 +209,7 @@ void CRender::Calculate()
 	set_Object						(0);
 	if (0!=pLastSector) pLastSector->Render(ViewBase);
 	L_Shadows.calculate				();
+	L_Projector.calculate			();
 	
 	Device.Statistic.RenderCALC.End	();
 }
@@ -511,6 +513,7 @@ void	CRender::Render		()
 	// Postprocess
 	Target.End				();
 	HOM.Debug				();
+	L_Projector.render		();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
@@ -530,6 +533,7 @@ void CRender::OnDeviceCreate()
 	rmNormal					();
 	L_Dynamic.Initialize		();
 	L_Shadows.OnDeviceCreate	();
+	L_Projector.OnDeviceCreate	();
 }
 
 void CRender::OnDeviceDestroy()
@@ -539,4 +543,5 @@ void CRender::OnDeviceDestroy()
 	Target.OnDeviceDestroy		();
 	L_Dynamic.Destroy			();
 	L_Shadows.OnDeviceDestroy	();
+	L_Projector.OnDeviceDestroy	();
 }
