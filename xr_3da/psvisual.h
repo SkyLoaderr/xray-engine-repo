@@ -24,6 +24,7 @@ public:
 	void				Update			(DWORD dt);
     void				Compile			(LPCSTR name, PS::SEmitter* E);
 	IC int				ParticleCount	(){return m_Particles.size();}
+	IC void				Stop			(){m_Particles.clear();}
 };
 #endif /*_INCDEF_PSVisual_H_*/
 
