@@ -208,7 +208,8 @@ public:
 
 			// 
 			if (bVertexLight)	{
-				base_color_c		vC, old = V->C;
+				base_color_c		vC, old;
+				V->C._get			(old);
 				LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_hemi, 0);
 				vC._tmp_			= v_trans;
 				vC.mul				(.5f);
