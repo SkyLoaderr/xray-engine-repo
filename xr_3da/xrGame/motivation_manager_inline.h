@@ -222,8 +222,7 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	m_edges.resize		(vertex->edges().size());
 	xr_vector<float>::iterator	J = m_edges.begin();
 	for ( ; I != E; ++I, ++J) {
-		u32				vertex_id = graph().vertex((*I).vertex_id())->vertex_id();
-		*J				= vertex->data()->evaluate(vertex_id);
+		*J				= vertex->data()->evaluate((*I).vertex_id());
 		total_value		+= *J;
 	}
 
@@ -235,7 +234,7 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	J					= m_edges.begin();
 	for (I = B; I != E; ++I, ++J)
 		if (!fis_zero((*J)*total_value))
-			propagate	(graph().vertex((*I).vertex_index())->vertex_id(),(*J)*total_value);
+			propagate	((*I).vertex_id(),(*J)*total_value);
 }
 
 TEMPLATE_SPECIALIZATION
