@@ -7,18 +7,21 @@
 
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
+static BOOL 				no_log			= FALSE;
 static xrCriticalSection	logCS;
 xr_vector <LPCSTR>			LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()
 {
-	IWriter *f			= FS.w_open(logFName);
-	if (f) {
-		for (u32 it=0; it<LogFile.size(); it++)
-			f->w_string	(LogFile[it]);
-		FS.w_close		(f);
-	}
+	if (!no_log){
+        IWriter *f			= FS.w_open(logFName);
+        if (f) {
+            for (u32 it=0; it<LogFile.size(); it++)
+                f->w_string	(LogFile[it]);
+            FS.w_close		(f);
+        }
+    }
 }
 
 void AddOne				(const char *split) 
@@ -40,6 +43,7 @@ void AddOne				(const char *split)
 
 void Log(const char *s) 
 {
+	if 		(no_log) return;
 	int		i,j;
 	char	split[1024];
 
@@ -118,15 +122,18 @@ static char *month[12] = {
 };
 static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-void CreateLog(LogCallback cb)
+void CreateLog(LogCallback cb, BOOL nl)
 {
 	LogCB				= cb;
+    no_log				= nl;
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
     FS.update_path		(logFName,"$logs$",logFName);
 
-	IWriter *f			= FS.w_open	(logFName);
-	if (f==NULL)		abort();
-	FS.w_close			(f);
+	if (!no_log){
+        IWriter *f		= FS.w_open	(logFName);
+        if (f==NULL)	abort();
+        FS.w_close		(f);
+    }
 
 	// Calculating build
 	long Time;
