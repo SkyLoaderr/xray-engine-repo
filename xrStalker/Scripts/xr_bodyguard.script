@@ -1,4 +1,3 @@
-
 -- Разговор. Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
 
 -- Настройка:
@@ -242,34 +241,33 @@ end
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	printf("_bp: add_to_binder (bodyguard)")
-	local operators    = {}
-	local properties  = {}
+	if char_ini == nil or char_ini:section_exist ("bodyguard") == true then
+	printf("_bp: Bodyguard add to binder for %s", npc:name())
+		local operators    = {}
+		local properties  = {}
 
-	-- FIXME: тут будет bodyguard
-	--npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
-	--		20, snd_type.talk, 2, 1, xr_sounds_id.zmey_bodyguard_base)
-	npc:add_sound ("Scripts\\trader\\pryach_orujie",           20, snd_type.talk, 2, 1, xr_sounds_id.zmey_bodyguard_base)
+		npc:add_sound ("Scripts\\trader\\pryach_orujie",           20, snd_type.talk, 2, 1, xr_sounds_id.zmey_bodyguard_base)
 
-	local manager = npc:motivation_action_manager()
+		local manager = npc:motivation_action_manager()
 
-	properties["need_bodyguard"]   = xr_evaluators_id.zmey_bodyguard_base + 1
-	operators["action_bodyguard"]   = xr_actions_id.zmey_bodyguard_base + 1
+		properties["need_bodyguard"]   = xr_evaluators_id.zmey_bodyguard_base + 1
+		operators["action_bodyguard"]   = xr_actions_id.zmey_bodyguard_base + 1
 
-	-- // evaluators
-	manager:add_evaluator (properties["need_bodyguard"],   this.evaluator_need_bodyguard  (xr_motivator.storage[npc:id()].bodyguard))
+		-- // evaluators
+		manager:add_evaluator (properties["need_bodyguard"],   this.evaluator_need_bodyguard  (xr_motivator.storage[npc:id()].bodyguard))
 
-	local new_action = this.action_bodyguard_activity(npc, "action_bodyguard_activity", xr_motivator.storage[npc:id()].bodyguard)
-	new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
-	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
-	new_action:add_precondition    (world_property(properties["need_bodyguard"],   true))
-	new_action:add_effect(world_property(properties["need_bodyguard"], false))
-	manager:add_action(operators["action_bodyguard"], new_action)
+		local new_action = this.action_bodyguard_activity(npc, "action_bodyguard_activity", xr_motivator.storage[npc:id()].bodyguard)
+		new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
+		new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
+		new_action:add_precondition    (world_property(properties["need_bodyguard"],   true))
+		new_action:add_effect(world_property(properties["need_bodyguard"], false))
+		manager:add_action(operators["action_bodyguard"], new_action)
 
-	new_action = manager:action(stalker_ids.action_puzzle_solver)
-	new_action:add_precondition(world_property(properties["need_bodyguard"], false))
-
-	if char_ini ~= nil then xr_bodyguard.set_bodyguard(npc) end
+		new_action = manager:action(stalker_ids.action_puzzle_solver)
+		new_action:add_precondition(world_property(properties["need_bodyguard"], false))
+	
+		if char_ini ~= nil then xr_bodyguard.set_bodyguard(npc) end
+	end
 end
 
 -- функции
@@ -281,11 +279,10 @@ function vector_copy_by_val(vec)
 	return newvec
 end
 
-function set_bodyguard(object, enable, path_main, path_side, path_guard, path_guard_radius)
+function set_bodyguard(object, enable, path_main, path_side, path_guard, path_guard_radius, path_center)
 	-- enable - будет ли работать схема в принципе
 	-- path_main - где телохранитель обычно стоит
 	-- path_side - куда телохранитель отходит
-	printf("_bp: set_bodyguard called")
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].bodyguard
 	if enable == nil then
