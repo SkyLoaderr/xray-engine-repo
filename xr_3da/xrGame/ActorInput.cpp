@@ -6,7 +6,8 @@
 #include "..\xr_creator.h"
 #include "..\CameraBase.h"
 
-void CActor::OnKeyboardPress(int cmd){
+void CActor::OnKeyboardPress(int cmd)
+{
 	if (Remote() || !bAlive)	return;
 
 	switch(cmd){

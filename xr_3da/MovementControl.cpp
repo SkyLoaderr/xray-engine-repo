@@ -245,7 +245,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	
 	// Environment
 	if (fLastMotionMag>EPS_S)
-		CheckEnvironment();
+		CheckEnvironment	();
  
 	// Set movement friction
 	switch(eEnvironment)
@@ -260,8 +260,8 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// определим возможное повреждение
 	gcontact_Was		= FALSE;
 	if (
-		((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround))||
-		((fabsf(jump)>EPS) && (eOldEnvironment==peOnGround) && (eEnvironment==peOnGround))
+		((eOldEnvironment==peInAir || eOldEnvironment==peAtWall) && (eEnvironment==peOnGround)) // ||
+//		((fabsf(jump)>EPS) && (eOldEnvironment==peOnGround) && (eEnvironment==peOnGround))
 		)
 	{
 		gcontact_Was		= TRUE;
