@@ -662,7 +662,7 @@ public:
 		}
 
 		FS.update_path			(S1,"$game_saves$",S);
-		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S);
+		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
 	}
 };
 
