@@ -11,7 +11,7 @@ void	game_sv_CS::Create			(LPCSTR options)
 	R_ASSERT2						(rpoints[2].size(), "No respawn point for artifacts");
 
 	teams.resize					(2); // @@@ WT
-	timelimit	= get_option_i		(options,"timelimit",0)*10000;	// in (ms)
+	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 	switch_Phase					(GAME_PHASE_PENDING);
 }
 
