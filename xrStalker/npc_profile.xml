@@ -7,9 +7,13 @@
 	<character id="default">
 		<team>Stalker</team>
 	</character>
+
+	<character id="soldier">
+		<team>Soldier</team>
+	</character>
 	
-	<character id="trader">
-		<specific_character>trader</specific_character>
+	<character id="escape_trader">
+		<specific_character>escape_trader</specific_character>
 	</character>
 		
 	<character id="actor">

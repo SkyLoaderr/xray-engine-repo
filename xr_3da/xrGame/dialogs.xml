@@ -108,6 +108,14 @@
     </dialog>
 
 <!-- FINAL DIALOGS -->
+    <dialog id="actor_break_dialog">
+	<phrase_list>
+	    <phrase id="0">
+			<text>До встречи.</text>
+			<action>dialogs.break_dialog</action>
+	    </phrase>                                                                                               
+	</phrase_list>
+    </dialog>
     
 	<dialog id="general_pda_talk" pda="1">
 	<precondition>dialogs.is_bad_relation</precondition>

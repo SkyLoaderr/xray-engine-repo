@@ -120,10 +120,16 @@
 				RelativePath=".\dialogs.xml">
 			</File>
 			<File
+				RelativePath=".\dialogs_agroprom.xml">
+			</File>
+			<File
 				RelativePath=".\dialogs_bar.xml">
 			</File>
 			<File
 				RelativePath=".\dialogs_escape.xml">
+			</File>
+			<File
+				RelativePath=".\dialogs_garbage.xml">
 			</File>
 			<File
 				RelativePath=".\dialogs_yantar.xml">

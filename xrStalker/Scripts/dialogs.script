@@ -13,6 +13,21 @@ function get_money_then_leave(first_speaker, second_speaker)
 end
 
 -----------------------------------------------------------------------------------
+-- LEVELS
+-----------------------------------------------------------------------------------
+function level_escape(first_speaker, second_speaker)
+	return level.name() == "escape"
+end
+
+function level_garbage(first_speaker, second_speaker)
+	return level.name() == "garbage"
+end
+
+function level_agroprom(first_speaker, second_speaker)
+	return level.name() == "agroprom"
+end
+
+-----------------------------------------------------------------------------------
 -- TRADE
 -----------------------------------------------------------------------------------
 --' Инициализация торговли

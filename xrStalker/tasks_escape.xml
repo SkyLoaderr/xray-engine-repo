@@ -2,18 +2,21 @@
 
 <game_tasks_data>
 	<game_task id="escape_blockpost_case">
+		<title>Украсть ящик с блокпоста</title>
 		<objective>
 			<text>escape_steal_blockpost_case</text>
 		</objective>
 	</game_task>
 
 	<game_task id="escape_novice_need_weapon">
+		<title>Помочь новичку с оружием</title>
 		<objective>
 			<text>Help novice find weapon</text>
 		</objective>
 	</game_task>
 
 	<game_task id="storyline_eliminate_gunslinger">
+		<title>Убить Стрелка</title>
 		<objective>
 			<text>Eliminate Gunslinger</text>
 		</objective>

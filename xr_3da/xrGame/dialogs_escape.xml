@@ -1,15 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_dialogs>
-    <dialog id="actor_break_dialog">
-	<phrase_list>
-	    	<phrase id="0">
-			<text>До встречи.</text>
-			<action>dialogs.break_dialog</action>
-	    	</phrase>                                                                                               
-	</phrase_list>
-    </dialog>
-
     <dialog id="escape_trader_start_dialog">
 	<phrase_list>
 	    	<phrase id="0">
@@ -46,7 +37,7 @@
 			<next>7</next>
 		</phrase>
 		<phrase id="6">
-			<text>Хорошо, я постараюсь сделать все незаметно.</text>
+			<text>Хорошо, я постараюсь сделать все незаметно.[Задание]</text>
 	        <give_info>escape_need_blockpost_case</give_info>
 			<next>8</next>
 		</phrase>
@@ -264,8 +255,6 @@
 	</phrase_list>
 	</dialog>
 
-
-
     <dialog id="loser_hello_dialog">
         <phrase_list>
             <phrase id="0">
@@ -315,4 +304,35 @@
             </phrase>
         </phrase_list>
     </dialog>
+    
+	<dialog id="escape_talk_about_escape">
+	<precondition>dialogs.level_escape</precondition>
+	<phrase_list>
+	   	<phrase id="0">
+			<text>Расскажи мне об этом месте.</text>
+			<next>1</next>
+		</phrase>                                                                                               
+	   	<phrase id="10">
+			<text>Спасибо.</text>
+		</phrase>	
+	   	<phrase id="1">
+			<text>Это дорога в Зону. В погребе за деревеньке возле
+			армейского блокпоста найдешь торговца. Соваться на блокпост и попадаться на
+			глаза солдатам не советую, у них приказ стрелять без предупреждения… Убивать
+			солдат нельзя, только в крайнем случае, за каждого убитого торговцу приходится
+			расплачиваться и он не будет доволен таким раскладом. На равнинах крупные стаи
+			слепых псов, соваться к ним новичкам опасно. Иногда сюда забегают мутанты.</text>
+			<next>2</next>
+			<next>10</next>
+		</phrase>
+	   	<phrase id="2">
+			<text>А что там дальше, по дороге на север?</text>
+			<next>21</next>
+		</phrase>                                                                                               
+	   	<phrase id="21">
+			<text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
+		</phrase>                                                                                               		
+	</phrase_list>
+	</dialog>
+    
 </game_dialogs>

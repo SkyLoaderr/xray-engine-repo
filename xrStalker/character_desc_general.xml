@@ -4,10 +4,10 @@
 
 <xml>
 	<specific_character id="stalker_default" team_default = "1">
-		<name>Unknown stalker</name>
+		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Prosto horoshiy paren'</bio>
+		<bio>Ничем себя проявить еще не успел.</bio>
 
 		<team>Stalker</team>
 		<rank>50</rank>
@@ -15,6 +15,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_demon">
@@ -33,6 +34,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_leshiy">
@@ -50,6 +52,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_steck">
@@ -68,6 +71,7 @@
 				
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_chuchelo">
@@ -87,6 +91,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_upir">
@@ -103,6 +108,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_sokol">
@@ -121,6 +127,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_diodor">
@@ -139,6 +146,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_zob">
@@ -159,6 +167,7 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_neumeha">
@@ -178,12 +187,80 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-	<specific_character id="trader" team_default = "1">
-		<name>Agent Mr. Smith</name>
+	<specific_character id="stalker_kocherga">
+		<name>Кочерга</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Свиреп, зол, груб,
+		эгоистичен, жесток, бесчувственен, холоден. Никто не знает, когда и как он попал
+		в Зону. Его боятся и недолюбливают. В Зоне просто живёт, у него нет ни
+		будущего, ни прошлого. После одной из своих многочисленных вылазок в Зону
+		потерял память и очень многое забыл. Не помнит, откуда он, не помнит своё
+		настоящее имя, часты провалы в памяти. Например, может забыть нового знакомого
+		через час после знакомства, и, восприняв его как врага, убить.</bio>
+		
+		<team>Stalker</team>
+		<rank>70</rank>
+		<reputation>10</reputation>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_barin">
+		<name>Барин</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Хам, подхалим, лицемер, трус. Жизненным
+		кредо Барина можно было бы назвать фразу после нас - хоть потоп. Из
+		всего старается извлечь выгоду. При всём при этом очень честолюбив и обидчив. В
+		Зону приехал, как бы это банально не звучало, за деньгами. И вот уже второй год
+		в Зоне занимается добычей материальных ценностей любыми способами.</bio>
+		
+		<team>Stalker</team>
+		<rank>60</rank>
+		<reputation>20</reputation>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="stalker_vorobey">
+		<name>Воробей</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Воробью 27 лет. Хитёр,
+		дальновиден, но иногда совершает грубейшие ошибки. Временами подл. В целом,
+		оставляет о себе двойственное впечатление. Худ и бледен. В Зону пришёл из
+		любопытства и сам себе дал обещание - два месяца в Зоне - и домой. Но так здесь
+		и остался. В первой своей вылазке в Зону умудрился пройти без приборов по полю,
+		сплошь усыпанному аномалиями, не зная о них. Когда ему сообщили об этом, он
+		долго не мог прийти в себя. С тех пор отмечает тот день (9 октября), как свой
+		второй день рождения.</bio>
+		
+		<team>Stalker</team>
+		<rank>50</rank>
+		<reputation>20</reputation>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="escape_trader" team_default = "1">
+		<name>Сидорович</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
+		<bio>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
+		В школе торговал жевательной резинкой.
+		В институте промышлял продажей легкой наркоты. С появлением Зоны смекнул, что на
+		этом можно хорошо заработать. Славится тем, что способен наладить хорошие торговые
+		отношения с самыми разношерстными клиентами.</bio>
 
 		<team>Trader</team>
 		<rank>50</rank>
@@ -196,8 +273,19 @@
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 	</specific_character>
 
+	<specific_character id="soldier_default" team_default = "1">
+		<name>Неизвестный военный.</name>
+		<icon x="0" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<bio>Один из бесчисленного количества военных, отправленных охранять Зону.</bio>
+
+		<team>Soldier</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+	</specific_character>
+
 	<specific_character id="actor" team_default = "1">
-		<name>Gunner</name>
+		<name>Меченый</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
 
