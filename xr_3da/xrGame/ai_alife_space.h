@@ -50,7 +50,7 @@ namespace ALife {
 	typedef u16	_TERRAIN_ID;								// Terrain ID
 	typedef u8	_LOCATION_ID;								// Location ID
 	typedef u8  _LEVEL_ID;									// Level ID
-	typedef u8	_ORGANIZATION_ID;							// Organization ID
+	typedef u32	_ORGANIZATION_ID;							// Organization ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 

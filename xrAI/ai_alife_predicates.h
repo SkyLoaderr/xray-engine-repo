@@ -6,6 +6,8 @@
 //	Description : A-Life predicates
 ////////////////////////////////////////////////////////////////////////////
 
+#ifndef AI_ALIFE_PREDICATESH
+#define AI_ALIFE_PREDICATESH
 #pragma once
 
 class CArtefactOrderPredicate {
@@ -79,3 +81,5 @@ public:
 		return						(float(tpItem1->m_dwCost)/tpItem1->m_fMass > float(tpItem2->m_dwCost)/tpItem2->m_fMass);
 	};
 };
+
+#endif
