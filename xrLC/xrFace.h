@@ -66,7 +66,7 @@ public:
 	Fvector					P;
 	Fvector					N;
 	base_color				C;			// all_lighting info
-	u32						handle;		// used in mesh-processing/optimization/conversion
+	int						handle;		// used in mesh-processing/optimization/conversion
 public:
 	base_Vertex()			{ }
 	virtual ~base_Vertex()	= 0; 
@@ -81,11 +81,11 @@ public:
 	u16						dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
 
 	struct					{
-		u8					bSplitted			:		1;
-		u8					bProcessed			:		1;
-		u8					bDisableShadowCast	:		1;
-		u8					bOpaque				:		1;	// For ray-tracing speedup
-		u8					bLocked				:		1;	// For tesselation
+		u16					bSplitted			:		1;
+		u16					bProcessed			:		1;
+		u16					bDisableShadowCast	:		1;
+		u16					bOpaque				:		1;	// For ray-tracing speedup
+		u16					bLocked				:		1;	// For tesselation
 	}						flags;
 
 	virtual	Shader_xrLC&	Shader				( );

@@ -169,7 +169,3 @@ void CBuild::BuildCForm	()
 	FS.w_close		(MFS);
 }
 
-void CBuild::BuildPortals(IWriter& fs)
-{
-	fs.w_chunk		(fsL_PORTALS,&*portals.begin(),portals.size()*sizeof(b_portal));
-}
