@@ -1,5 +1,5 @@
 module ("stalker")
---module ("xr_patrol")
+module ("xr_patrol")
 module ("globals")
 
 function printf(fmt,...)
