@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "state_manager_no_alife.h"
+#include "state_free_no_alife.h"
 
 CStateManagerNoALife::CStateManagerNoALife	()
 {
@@ -20,6 +21,7 @@ CStateManagerNoALife::~CStateManagerNoALife	()
 
 void CStateManagerNoALife::Init				()
 {
+	add						(xr_new<CStateFreeNoAlife>(),	eNoALifeStateFree,		10);
 }
 
 void CStateManagerNoALife::Load				(LPCSTR section)
@@ -29,7 +31,7 @@ void CStateManagerNoALife::Load				(LPCSTR section)
 
 void CStateManagerNoALife::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit		(object);
+	inherited::reinit		(object,eNoALifeStateFree);
 }
 
 void CStateManagerNoALife::reload			(LPCSTR section)
@@ -44,6 +46,7 @@ void CStateManagerNoALife::initialize		()
 
 void CStateManagerNoALife::execute			()
 {
+	set_dest_vertex_id		(eNoALifeStateFree);
 	inherited::execute		();
 }
 

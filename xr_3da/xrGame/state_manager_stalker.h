@@ -28,8 +28,7 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(CAI_Stalker *object);
 	virtual	void		reload					(LPCSTR section);
-
-protected:
+	virtual	void		execute					();
 	virtual	void		update					(u32 time_delta);
 };
 

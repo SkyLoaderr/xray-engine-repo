@@ -29,7 +29,7 @@ void CStateManagerALife::Load			(LPCSTR section)
 
 void CStateManagerALife::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit		(object);
+	inherited::reinit		(object,u32(-1));
 }
 
 void CStateManagerALife::reload			(LPCSTR section)

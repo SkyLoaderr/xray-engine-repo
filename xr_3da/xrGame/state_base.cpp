@@ -53,3 +53,8 @@ void CStateBase::finalize		()
 {
 	m_inertia_time		= 0;
 }
+
+bool CStateBase::completed		() const
+{
+	return				(true);
+}

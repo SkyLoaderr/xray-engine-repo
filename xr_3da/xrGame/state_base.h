@@ -26,6 +26,7 @@ public:
 	virtual	void			initialize			();
 	virtual	void			execute				();
 	virtual	void			finalize			();
+			bool			completed			() const;
 	IC		u32				start_level_time	() const;
 	IC		ALife::_TIME_ID	start_game_time		() const;
 	IC		u32				inertia_time		() const;

@@ -97,8 +97,11 @@ void CSoundPlayer::update			(float time_delta)
 
 void CSoundPlayer::remove_inappropriate_sounds(u32 sound_mask)
 {
-	xr_vector<CSoundSingle>::iterator	I = remove_if(m_playing_sounds.begin(),m_playing_sounds.end(),CInappropriateSoundPredicate(sound_mask));
-	m_playing_sounds.erase				(I,m_playing_sounds.end());
+	xr_vector<CSoundSingle>::iterator	I = remove_if(m_playing_sounds.begin(),m_playing_sounds.end(),CInappropriateSoundPredicate(sound_mask)), B = I;
+	xr_vector<CSoundSingle>::iterator	E = m_playing_sounds.end();
+	for ( ; I != E; ++I)
+		(*I).destroy					();
+	m_playing_sounds.erase				(B,m_playing_sounds.end());
 }
 
 void CSoundPlayer::update_playing_sounds()
@@ -123,25 +126,23 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 		return;
 	
 	xr_map<u32,CSoundCollection>::const_iterator	I = m_sounds.find(internal_type);
-	VERIFY							(m_sounds.end() != I);
-	const CSoundCollection			&sound = (*I).second;
+	VERIFY						(m_sounds.end() != I);
+	const CSoundCollection		&sound = (*I).second;
 
-	remove_inappropriate_sounds		(sound.m_synchro_mask);
+	remove_inappropriate_sounds	(sound.m_synchro_mask);
 
-	{
-		CSoundSingle				sound_single;
-		(CSoundParams&)sound_single	= (CSoundParams&)sound;
-		sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? ::Random.randI(sound.m_sounds.size()) : id];
-		VERIFY						(sound_single.m_sound->handle);
-		VERIFY						(max_start_time >= min_start_time);
-		VERIFY						(max_stop_time >= min_stop_time);
-		sound_single.m_start_time	= Level().timeServer() + (max_start_time ? ::Random.randI(min_start_time,max_start_time) : max_start_time);
-		sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + (max_stop_time ? ::Random.randI(min_stop_time,max_stop_time) : max_stop_time);
-		m_playing_sounds.push_back	(sound_single);
-	}
+	CSoundSingle				sound_single;
+	(CSoundParams&)sound_single	= (CSoundParams&)sound;
+	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? ::Random.randI(sound.m_sounds.size()) : id];
+	VERIFY						(sound_single.m_sound->handle);
+	VERIFY						(max_start_time >= min_start_time);
+	VERIFY						(max_stop_time >= min_stop_time);
+	sound_single.m_start_time	= Level().timeServer() + (max_start_time ? ::Random.randI(min_start_time,max_start_time) : max_start_time);
+	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + (max_stop_time ? ::Random.randI(min_stop_time,max_stop_time) : max_stop_time);
+	m_playing_sounds.push_back	(sound_single);
 	
-	CObject							*object = dynamic_cast<CObject*>(this);
-	VERIFY							(object);
+	CObject						*object = dynamic_cast<CObject*>(this);
+	VERIFY						(object);
 
 	if (Level().timeServer() >= m_playing_sounds.back().m_start_time)
 		m_playing_sounds.back().m_sound->play_at_pos(object,compute_sound_point(m_playing_sounds.back()));

@@ -13,6 +13,10 @@
 class CStateManagerNoALife : public CStateManagerState {
 protected:
 	typedef CStateManagerState inherited;
+	enum ENoALifeStates {
+		eNoALifeStateFree = u32(0),
+		eNoALifeStateDummy = u32(-1),
+	};
 
 public:
 						CStateManagerNoALife	();
@@ -24,8 +28,6 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
-
-protected:
 	virtual	void		update					(u32 time_delta);
 };
 

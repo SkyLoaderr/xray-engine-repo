@@ -73,7 +73,7 @@ public:
 	IC		_dist_type	estimate		(const _index_type vertex_id) const
 	{
 		VERIFY					(graph);
-		return					(graph->get_edge_weight(vertex_id,goal_node_index));
+		return					(_dist_type(0));
 	}
 
 	IC		void		create_path		()

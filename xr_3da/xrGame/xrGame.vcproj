@@ -1077,9 +1077,6 @@
 								Name="StateManagerAbstract"
 								Filter="">
 								<File
-									RelativePath=".\state_manager_abstract.cpp">
-								</File>
-								<File
 									RelativePath=".\state_manager_abstract.h">
 								</File>
 								<File
@@ -1140,6 +1137,32 @@
 									<File
 										RelativePath=".\state_manager_death_inline.h">
 									</File>
+									<Filter
+										Name="StateRecentlyDead"
+										Filter="">
+										<File
+											RelativePath=".\state_death_recently_dead.cpp">
+										</File>
+										<File
+											RelativePath=".\state_death_recently_dead.h">
+										</File>
+										<File
+											RelativePath=".\state_death_recently_dead_inline.h">
+										</File>
+									</Filter>
+									<Filter
+										Name="StateAlreadyDead"
+										Filter="">
+										<File
+											RelativePath=".\state_death_already_dead.cpp">
+										</File>
+										<File
+											RelativePath=".\state_death_already_dead.h">
+										</File>
+										<File
+											RelativePath=".\state_death_already_dead_inline.h">
+										</File>
+									</Filter>
 								</Filter>
 								<Filter
 									Name="StateManagerNoALife"
@@ -1319,6 +1342,26 @@
 					</File>
 				</Filter>
 				<Filter
+					Name="GameGraph"
+					Filter="">
+					<File
+						RelativePath=".\game_graph.h">
+					</File>
+					<File
+						RelativePath=".\game_graph_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="GameLevelCrossTable"
+					Filter="">
+					<File
+						RelativePath=".\game_level_cross_table.h">
+					</File>
+					<File
+						RelativePath=".\game_level_cross_table_inline.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="GraphAbstract"
 					Filter="">
 					<File
@@ -1339,23 +1382,13 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="GameGraph"
+					Name="GraphManager"
 					Filter="">
 					<File
-						RelativePath=".\game_graph.h">
+						RelativePath=".\graph_manager.h">
 					</File>
 					<File
-						RelativePath=".\game_graph_inline.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="GameLevelCrossTable"
-					Filter="">
-					<File
-						RelativePath=".\game_level_cross_table.h">
-					</File>
-					<File
-						RelativePath=".\game_level_cross_table_inline.h">
+						RelativePath=".\graph_manager_inline.h">
 					</File>
 				</Filter>
 				<Filter

@@ -37,7 +37,7 @@ public:
 		u32										m_start_time;
 		u32										m_stop_time;
 
-						~CSoundSingle			()
+				void	destroy					()
 		{
 			VERIFY								(m_sound);
 			if (m_sound->feedback)

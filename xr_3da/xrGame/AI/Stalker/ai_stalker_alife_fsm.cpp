@@ -17,7 +17,7 @@ void CAI_Stalker::vfContinueWithALifeGoals(PathManagers::CAbstractVertexEvaluato
 
 	// going via graph nodes
 	//WRITE_TO_LOG			("Accomplishing task");
-	if (m_bStateChanged || path().empty() || (!CMovementManager::actual())) {
+	if (m_bStateChanged || CMovementManager::path().empty() || (!CMovementManager::actual())) {
 		m_tActionState = !::Random.randI(1) ? eActionStateWatch : eActionStateDontWatch;
 		m_dwActionStartTime = Level().timeServer() + ::Random.randI(30000,50000);
 	}
