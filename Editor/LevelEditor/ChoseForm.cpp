@@ -142,11 +142,12 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     form->tvItems->Items->Clear	();
     // fill
     FileMap lst;
-    FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   // check without extension
-    if (ImageManager.GetTextures(lst))
+    if (ImageManager.GetTextures(lst)){
+	    FilePairIt it=lst.begin();
+    	FilePairIt _E=lst.end();   // check without extension
 	    for (; it!=_E; it++)
         	FOLDER::AppendObject(form->tvItems,it->first.c_str());
+    }
     // redraw
 	form->tvItems->IsUpdating		= false;
 

@@ -16,7 +16,7 @@
 //----------------------------------------------------
 
 void SceneBuilder::AddUniqueTexName( const char *nm ){
-	VERIFY( nm&&nm[0] );
+	R_ASSERT2( nm&&nm[0], "Empty texture name. Build failed." );
     char name[255];
     strcpy(name,nm);
     strlwr(name);

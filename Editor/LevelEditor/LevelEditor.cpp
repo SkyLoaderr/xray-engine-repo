@@ -193,7 +193,6 @@ USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
 USEUNIT("edit\EStats.cpp");
 USEUNIT("edit\UI_MainExtern.cpp");
-USEUNIT("PropertiesListExtern.cpp");
 USEUNIT("Engine\xr_efflensflare.cpp");
 USELIB("lib\ETools.lib");
 USEFORM("PropertiesSceneObject.cpp", frmPropertiesSceneObject);

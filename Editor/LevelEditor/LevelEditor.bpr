@@ -90,9 +90,8 @@
       intermediate\TextureManager.obj intermediate\PropertiesList.obj 
       intermediate\ETextureParams.obj intermediate\blender_light.obj 
       intermediate\FolderLib.obj intermediate\EStats.obj 
-      intermediate\UI_MainExtern.obj intermediate\PropertiesListExtern.obj 
-      intermediate\xr_efflensflare.obj intermediate\PropertiesSceneObject.obj 
-      intermediate\EditObjectEditor.obj"/>
+      intermediate\UI_MainExtern.obj intermediate\xr_efflensflare.obj 
+      intermediate\PropertiesSceneObject.obj intermediate\EditObjectEditor.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -158,8 +157,8 @@ IncludeVerInfo=1
 AutoIncBuild=1
 MajorVer=1
 MinorVer=0
-Release=0
-Build=40
+Release=1
+Build=405
 Debug=1
 PreRelease=0
 Special=0
@@ -171,7 +170,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.0.40
+FileVersion=1.0.1.405
 InternalName=
 LegalCopyright=
 LegalTrademarks=
