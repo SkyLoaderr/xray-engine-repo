@@ -434,7 +434,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	mProject.build_projection	(deg2rad(eye_fov),1,0.1f,eye_range);
 	mFull.mul					(mProject,mView);
 
-	Frustum.CreateFromViewMatrix(mFull);
+	Frustum.CreateFromMatrix	(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	
 	// 3. Detection itself
 	Device.Statistic.AI_Vis_Query.Begin	();
