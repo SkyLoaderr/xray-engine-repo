@@ -36,11 +36,9 @@ CAI_Soldier::CAI_Soldier()
 	q_look.o_look_speed = _FB_look_speed;
 	m_tpCurrentGlobalAnimation = 
 	m_tpCurrentTorsoAnimation = 
-	m_tpCurrentHandsAnimation = 
 	m_tpCurrentLegsAnimation = 0;
 	m_tpCurrentGlobalBlend = 
 	m_tpCurrentTorsoBlend = 
-	m_tpCurrentHandsBlend = 
 	m_tpCurrentLegsBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;

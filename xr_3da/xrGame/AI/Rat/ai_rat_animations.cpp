@@ -112,7 +112,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[0];
 		}
 		else
-			/**/
 			if (fabsf(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 				if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= TORSO_ANGLE_DELTA)
 					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
@@ -141,15 +140,6 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			/**
-			if (speed < 0.2f)
-				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[0];
-			else
-				if (fabsf(m_fCurSpeed - m_fMaxSpeed) < EPS_L) 
-					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tRun.fwd;
-				else
-					tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

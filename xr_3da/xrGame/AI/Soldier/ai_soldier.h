@@ -69,43 +69,48 @@ class CAI_Soldier : public CCustomMonster
 		// normal animations
 		////////////////////////////////////////////////////////////////////////////
 
+/************************************************************************
+/**/
+
+/************************************************************************/
+		
 		// global animations
 		typedef struct tagSNormalGlobalAnimations{
-			CMotionDef* tpaDeath[2];
-			CMotionDef* tpJumpBegin;
-			CMotionDef* tpJumpIdle;
+			CMotionDef* tpaDeath[5];
+			CMotionDef* tpaRunForward[4];
+			CMotionDef* tpaWalkForward[3];
+			CMotionDef* tpaWalkBack[3];
+			CMotionDef* tpWalkLeft;
+			CMotionDef* tpWalkRight;
+			CMotionDef* tpLieDown;
+			CMotionDef* tpPointSign; // !
+			CMotionDef* tpIdle;
+			CMotionDef* tpTurnLeft;
+			CMotionDef* tpTurnRight;
 		}SNormalGlobalAnimations;
 
 		// torso animations
 		typedef struct tagSNormalTorsoAnimations{
-			CMotionDef* tpaIdle[2];
-			CMotionDef* tpaAim[2];
-			CMotionDef* tpaAttack[2];
+			CMotionDef* tpAim;
+			CMotionDef* tpAttack;
 			CMotionDef* tpDamageLeft;
 			CMotionDef* tpDamageRight;
 			CMotionDef* tpReload;
+			CMotionDef* tpRaiseHandSign;
+			CMotionDef* tpGoAheadSign;
 		}SNormalTorsoAnimations;
 
 		// legs animations
 		typedef struct tagSNormalLegsAnimations{
-			SAnimState  tRun;
-			SAnimState  tWalk;
-			CMotionDef* tpTurn;
-			CMotionDef* tpIdle;
+			CMotionDef* tpJumpBegin;
+			CMotionDef* tpJumpIdle;
 		}SNormalLegsAnimations;
-
-		// hands animations
-		typedef struct tagSNormalHandsAnimations{
-			CMotionDef* tpPointGesture;
-			CMotionDef* tpSmokeGesture;
-		}SNormalHandsAnimations;
 
 		// normal animations
 		typedef struct tagSNormalAnimations{
 			SNormalGlobalAnimations tGlobal;
 			SNormalTorsoAnimations  tTorso;
 			SNormalLegsAnimations	tLegs;
-			SNormalHandsAnimations	tHands;
 		}SNormalAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
@@ -115,34 +120,39 @@ class CAI_Soldier : public CCustomMonster
 		// global animations
 		typedef struct tagSCrouchGlobalAnimations{
 			CMotionDef* tpDeath;
-			CMotionDef* tpJumpBegin;
-			CMotionDef* tpJumpIdle;
+			CMotionDef* tpTurnLeft;
+			CMotionDef* tpTurnRight;
+			CMotionDef* tpIdle;
+			CMotionDef* tpLieDown;
+			CMotionDef* tpaWalkForward[2];
+			CMotionDef* tpaWalkBack[2];
+			CMotionDef* tpWalkLeft;
+			CMotionDef* tpWalkRight;
+			CMotionDef* tpPointSign;
 		}SCrouchGlobalAnimations;
 
 		// torso animations
 		typedef struct tagSCrouchTorsoAnimations{
 			CMotionDef* tpAim;
+			CMotionDef* tpAttack;
+			CMotionDef* tpReload;
+			CMotionDef* tpDamageLeft;
+			CMotionDef* tpDamageRight;
+			CMotionDef* tpRaiseHandSign;
+			CMotionDef* tpGoAheadSign;
 		}SCrouchTorsoAnimations;
 
 		// legs animations
 		typedef struct tagSCrouchLegsAnimations{
-			SAnimState  tRun;
-			SAnimState  tWalk;
-			CMotionDef* tpTurn;
-			CMotionDef* tpIdle;
+			CMotionDef* tpJumpBegin;
+			CMotionDef* tpJumpIdle;
 		}SCrouchLegsAnimations;
-
-		// hands animations
-		typedef struct tagSCrouchHandsAnimations{
-			CMotionDef* tpPointGesture;
-		}SCrouchHandsAnimations;
 
 		// crouch animations
 		typedef struct tagSCrouchAnimations{
 			SCrouchGlobalAnimations	tGlobal;
 			SCrouchTorsoAnimations  tTorso;
 			SCrouchLegsAnimations	tLegs;
-			SCrouchHandsAnimations	tHands;
 		}SCrouchAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
@@ -152,31 +162,25 @@ class CAI_Soldier : public CCustomMonster
 		// global animations
 		typedef struct tagSLieGlobalAnimations{
 			CMotionDef* tpDeath;
-			CMotionDef* tpLieDown;
-		}SLieGlobalAnimations;
-
-		// torso animations
-		typedef struct tagSLieTorsoAnimations{
+			CMotionDef* tpStandUp;
 			CMotionDef* tpIdle;
 			CMotionDef* tpReload;
-		}SLieTorsoAnimations;
-
-		// legs animations
-		typedef struct tagSLieLegsAnimations{
-			SAnimState  tWalk;
-		}SLieLegsAnimations;
-
-		// hands animations
-		typedef struct tagSLieHandsAnimations{
-			CMotionDef* tpPointGesture;
-		}SLieHandsAnimations;
+			CMotionDef* tpAttack;
+			CMotionDef* tpDamage;
+			CMotionDef* tpTurnLeft;
+			CMotionDef* tpTurnRight;
+			CMotionDef* tpWalkForward;
+			CMotionDef* tpWalkBack;
+			CMotionDef* tpWalkLeft;
+			CMotionDef* tpWalkRight;
+			CMotionDef* tpRaiseHandSign;
+			CMotionDef* tpGoAheadSign;
+			CMotionDef* tpPointSign;
+		}SLieGlobalAnimations;
 
 		// lie animations
 		typedef struct tagSLieAnimations{
 			SLieGlobalAnimations	tGlobal;
-			SLieTorsoAnimations		tTorso;
-			SLieLegsAnimations		tLegs;
-			SLieHandsAnimations		tHands;
 		}SLieAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
@@ -192,11 +196,9 @@ class CAI_Soldier : public CCustomMonster
 		SSoldierAnimations	tSoldierAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CMotionDef*			m_tpCurrentTorsoAnimation;
-		CMotionDef*			m_tpCurrentHandsAnimation;
 		CMotionDef*			m_tpCurrentLegsAnimation;
 		CBlend*				m_tpCurrentGlobalBlend;
 		CBlend*				m_tpCurrentTorsoBlend;
-		CBlend*				m_tpCurrentHandsBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		
 		// head turns
