@@ -450,7 +450,8 @@ protected:
 	float								m_fDispAccelFactor;
 	//если актер сидит
 	float								m_fDispCrouchFactor;
-
+	//crouch+no acceleration
+	float								m_fDispCrouchNoAccelFactor;
 	//смещение firepoint относительно default firepoint для бросания болтов и гранат
 	Fvector								m_vMissileOffset;
 public:

@@ -22,16 +22,20 @@ float CActor::GetWeaponAccuracy() const
 	CEntity::SEntityState state;
 	if (g_State(state))
 	{
-
-
-		if(isAccelerated(mstate_real))
+	
+		bool bAccelerated = isAccelerated(mstate_real);
+		if( bAccelerated )
 			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*
 			m_fDispVelFactor*(1.f + m_fDispAccelFactor));
 		else
 			dispersion *= (1.f + (state.fVelocity/VEL_MAX)*m_fDispVelFactor);
 
-		if (state.bCrouch)	
+		if (state.bCrouch){	
 			dispersion *= (1.f + m_fDispCrouchFactor);
+
+			if(!bAccelerated )
+				dispersion *= (1.f + m_fDispCrouchNoAccelFactor);
+		}
 	}
 
 	return dispersion;

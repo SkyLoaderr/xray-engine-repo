@@ -349,11 +349,12 @@ void CActor::Load	(LPCSTR section )
 	shedule.t_min				= shedule.t_max = 1;
 
 	// настройки дисперсии стрельбы
-	m_fDispBase				= pSettings->r_float		(section,"disp_base"		 );
-	m_fDispBase				= deg2rad(m_fDispBase);
-	m_fDispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	 );
-	m_fDispAccelFactor		= pSettings->r_float		(section,"disp_accel_factor" );
-	m_fDispCrouchFactor		= pSettings->r_float		(section,"disp_crouch_factor");
+	m_fDispBase					= pSettings->r_float		(section,"disp_base"		 );
+	m_fDispBase					= deg2rad(m_fDispBase);
+	m_fDispVelFactor			= pSettings->r_float		(section,"disp_vel_factor"	 );
+	m_fDispAccelFactor			= pSettings->r_float		(section,"disp_accel_factor" );
+	m_fDispCrouchFactor			= pSettings->r_float		(section,"disp_crouch_factor");
+	m_fDispCrouchNoAccelFactor	= pSettings->r_float		(section,"disp_crouch_no_acc_factor");
 
 	LPCSTR							default_outfit = READ_IF_EXISTS(pSettings,r_string,section,"default_outfit",0);
 	SetDefaultVisualOutfit			(default_outfit);
