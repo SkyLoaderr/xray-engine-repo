@@ -50,6 +50,7 @@ public:
 
 		u32		distortion			: 1;
 		u32		distortion_enabled	: 1;
+		u32		mblur				: 1;
 
 		u32		sunfilter			: 1;
 		u32		sjitter				: 1;

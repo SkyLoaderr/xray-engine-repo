@@ -93,6 +93,7 @@ void					CRender::create					()
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
 	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE	:FALSE	;
 	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE	:TRUE	;
+	o.mblur				= (strstr(Core.Params,"-mblur"))?		TRUE	:FALSE	;
 	o.distortion_enabled= (strstr(Core.Params,"-nodistort"))?	FALSE	:TRUE	;
 	o.distortion		= o.distortion_enabled;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
@@ -327,6 +328,11 @@ HRESULT	CRender::shader_compile			(
 	}
 	if (o.Tshadows)			{
 		defines[def_it].Name		=	"USE_TSHADOWS";
+		defines[def_it].Definition	=	"1";
+		def_it						++	;
+	}
+	if (o.mblur)			{
+		defines[def_it].Name		=	"USE_MBLUR";
 		defines[def_it].Definition	=	"1";
 		def_it						++	;
 	}
