@@ -789,7 +789,7 @@ void PAExplosion::Execute(ParticleGroup *group)
 }
 void PAExplosion::Transform(const Fmatrix& m)
 {
-	m.transform_tiny(center.xr(),centerL.xr());
+	m.transform_tiny(center,centerL);
 }
 //-------------------------------------------------------------------------------------------------
 
