@@ -72,9 +72,9 @@ public:
 		_31=0; _32=0; _33=1; _34=0;
 		_41=0; _42=0; _43=0; _44=1;
 	}
-	IC	void	get_rapid	(_matrix33& R) const;
 	IC	void	rotation	(const _quaternion &Q);
 	IC	void	mk_xform	(const _quaternion &Q, const Tvector &V);
+
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
 	IC	void	mul			(const Self &A,const Self &B)
 	{

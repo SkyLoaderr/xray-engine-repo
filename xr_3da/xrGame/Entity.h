@@ -15,7 +15,7 @@ class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
 class CWeaponList;
 
-#define MAX_FUNCTION_COUNT 128
+#define AI_MAX_EVALUATION_FUNCTION_COUNT 128
 
 class	CBaseFunction;
 class	CPatternFunction;
@@ -47,58 +47,11 @@ protected:
 	float				fHealth,	fMAX_Health;
 	float				fArmor,		fMAX_Armor;
 	float				fAccuracy;
-protected:	
-	// EVENT: health lost 
-	EVENT				eHealthLost_Begin;
-	EVENT				eHealthLost_End;
-	BOOL				eHealthLost_Enabled;
-	float				eHealthLost_speed;
-	float				eHealthLost_granularity;
-	float				eHealthLost_cumulative;
 public:
 	// Team params
 	int					id_Team;
 	int					id_Squad;
 	int					id_Group;
-
-	// Frags
-	int					iFrags;
-	
-	// Utilities
-	static IC bool		u_lerp_angle	(float& c, float t, float s, float dt)
-	{
-		float diff	= t - c;
-		if (diff>0) {
-			if (diff>PI)	
-				diff	-= PI_MUL_2;
-		} else {
-			if (diff<-PI)	
-				diff	+= PI_MUL_2;
-		}
-		float diff_a	= fabsf(diff);
-		
-		if (diff_a<EPS_S)	
-			return true;
-		
-		float mot		= s*dt;
-		if (mot>diff_a) mot=diff_a;
-		c				+= (diff/diff_a)*mot;
-	
-		if (c<0)				
-			c+=PI_MUL_2;
-		else if (c>PI_MUL_2)	
-			c-=PI_MUL_2;
-		
-		return false;
-	}
-	static IC float		u_lerp_angle	(float A, float B, float f)
-	{
-		float diff		= B - A;
-		if (diff>PI)		diff	-= PI_MUL_2;
-		else if (diff<-PI)	diff	+= PI_MUL_2;
-		
-		return			A + diff*f;
-	}
 
 	struct SEntityState
 	{
@@ -132,7 +85,7 @@ public:
 	int						g_Group				()	{ return id_Group;	}
 
 	// misc
-	virtual CWeaponList*	GetItemList			(){return 0;}
+	virtual CWeaponList*	GetItemList			()	{ return 0;			}
 
 	// Health calculations
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
@@ -146,7 +99,6 @@ public:
 	virtual void			g_fireEnd			( )					{;}
 
 	// Events
-	virtual void			OnEvent				( EVENT E, DWORD P1, DWORD P2	);
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForAI		()	{return g_Alive();	}
@@ -162,10 +114,6 @@ public:
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
-
-protected:
-	CWeaponList*			Weapons;
-
 public:
 	// General
 	CEntityAlive			();
@@ -182,13 +130,14 @@ public:
 	virtual void			GetVisible				(objVisible& R)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
-			CWeaponList		*tpfGetWeapons			()	{return Weapons;}
 
-			CEntityAlive					*m_tpCurrentEnemy;
+	static	CEntityAlive					*m_tpCurrentEnemy;
+
 	// Data driven design properties
 	static	bool							bPatternFunctionLoaded;
+
 	// primary functions
-	static  CBaseFunction					*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+	static  CBaseFunction					*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
 	static	CDistanceFunction				pfDistance;
 

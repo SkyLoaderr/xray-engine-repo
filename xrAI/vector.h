@@ -40,41 +40,41 @@
 
 // Constants
 #ifdef M_VISUAL
-    const	float		EPS_S		= 0.0000001f;
-    const	float		EPS			= 0.0000100f;
-    const	float		EPS_L		= 0.0010000f;
+const	float		EPS_S		= 0.0000001f;
+const	float		EPS			= 0.0000100f;
+const	float		EPS_L		= 0.0010000f;
 
-    const	float		M_PI		= 3.1415926535897932384626433832795f;
-    const	float		PI			= M_PI;
-    const	float		PI_MUL_2	= 6.2831853071795864769252867665590f;
-	const	float		PI_MUL_3	= 9.4247779607693797153879301498385f;
-    const	float		PI_MUL_4	= 12.566370614359172953850573533118f;
-    const	float		PI_MUL_6	= 18.849555921538759430775860299677f;
-    const	float		PI_MUL_8	= 25.132741228718345907701147066236f;
-    const	float		PI_DIV_2	= 1.5707963267948966192313216916398f;
-    const	float		PI_DIV_3	= 1.0471975511965977461542144610932f;
-    const	float		PI_DIV_4	= 0.7853981633974483096156608458199f;
-    const	float		PI_DIV_6	= 0.5235987755982988730771072305466f;
-	const	float		PI_DIV_8	= 0.3926990816987241548078304229099f;
+const	float		M_PI		= 3.1415926535897932384626433832795f;
+const	float		PI			= M_PI;
+const	float		PI_MUL_2	= 6.2831853071795864769252867665590f;
+const	float		PI_MUL_3	= 9.4247779607693797153879301498385f;
+const	float		PI_MUL_4	= 12.566370614359172953850573533118f;
+const	float		PI_MUL_6	= 18.849555921538759430775860299677f;
+const	float		PI_MUL_8	= 25.132741228718345907701147066236f;
+const	float		PI_DIV_2	= 1.5707963267948966192313216916398f;
+const	float		PI_DIV_3	= 1.0471975511965977461542144610932f;
+const	float		PI_DIV_4	= 0.7853981633974483096156608458199f;
+const	float		PI_DIV_6	= 0.5235987755982988730771072305466f;
+const	float		PI_DIV_8	= 0.3926990816987241548078304229099f;
 #endif
 #ifdef M_BORLAND
-    #define				EPS_S		0.0000001f
-    #define				EPS			0.0000100f
-    #define				EPS_L		0.0010000f
+#define				EPS_S		0.0000001f
+#define				EPS			0.0000100f
+#define				EPS_L		0.0010000f
 
-    #define				M_PI		3.1415926535897932384626433832795f
-    #define				PI			M_PI
-    #define				PI_MUL_2	6.2831853071795864769252867665590f
-	#define				PI_MUL_3	9.4247779607693797153879301498385f
-    #define				PI_MUL_4	12.566370614359172953850573533118f
-	#define				PI_DIV_3	1.0471975511965977461542144610932f
-    #define				PI_MUL_6	18.849555921538759430775860299677f
-    #define				PI_MUL_8	25.132741228718345907701147066236f
-    #define				PI_MUL_2	6.2831853071795864769252867665590f
-    #define				PI_DIV_2	1.5707963267948966192313216916398f
-    #define				PI_DIV_4	0.7853981633974483096156608458199f
-    #define				PI_DIV_6	0.5235987755982988730771072305466f
-    #define				PI_DIV_8	0.3926990816987241548078304229099f
+#define				M_PI		3.1415926535897932384626433832795f
+#define				PI			M_PI
+#define				PI_MUL_2	6.2831853071795864769252867665590f
+#define				PI_MUL_3	9.4247779607693797153879301498385f
+#define				PI_MUL_4	12.566370614359172953850573533118f
+#define				PI_DIV_3	1.0471975511965977461542144610932f
+#define				PI_MUL_6	18.849555921538759430775860299677f
+#define				PI_MUL_8	25.132741228718345907701147066236f
+#define				PI_MUL_2	6.2831853071795864769252867665590f
+#define				PI_DIV_2	1.5707963267948966192313216916398f
+#define				PI_DIV_4	0.7853981633974483096156608458199f
+#define				PI_DIV_6	0.5235987755982988730771072305466f
+#define				PI_DIV_8	0.3926990816987241548078304229099f
 #endif
 
 // comparisions
@@ -101,10 +101,10 @@ IC T	rad2deg			( T val )	{ return (val*T(180)/T(M_PI)); };
 // clamping/snapping
 template <class T>
 IC void clamp( T& val, const T _low, const T _high ){
-    if( val<_low ) val = _low; else if( val>_high ) val = _high;
+	if( val<_low ) val = _low; else if( val>_high ) val = _high;
 };
 IC float snapto( float value, float snap ){
-    if( snap<=0.f ) return value;
+	if( snap<=0.f ) return value;
 	return floorf((value+(snap*0.5f)) / snap ) * snap;
 };
 
@@ -160,7 +160,7 @@ struct _color;		// floating point based color definition
 #pragma pack(pop)
 
 
-// normalize angle
+// normalize angle (0..2PI)
 IC float		angle_normalize(float a)
 {
 	float		div	 =	a/PI_MUL_2;
@@ -169,12 +169,16 @@ IC float		angle_normalize(float a)
 	if (frac<0)	frac +=	1.f;
 	return		frac *	PI_MUL_2;
 }
+
+// -PI .. +PI
 IC float		angle_normalize_signed(float a)
 {
 	float angle = angle_normalize(a);
 	if (angle>PI) angle-=PI_MUL_2;
 	return angle;
 }
+
+// 0..PI
 IC float		angle_difference(float a, float b)
 {
 	float diff	= angle_normalize(a) - angle_normalize(b);
@@ -188,34 +192,65 @@ IC float		angle_difference(float a, float b)
 	return _abs	(diff);
 }
 
-template <class T>
-IC void _matrix<T>::get_rapid(_matrix33& R)const{
-	R.m[0][0]	=  m[0][0]; R.m[0][1] =  m[1][0]; R.m[0][2] = m[2][0];
-	R.m[1][0]	=  m[0][1]; R.m[1][1] =  m[1][1]; R.m[1][2] = m[2][1];
-	R.m[2][0]	=  m[0][2]; R.m[2][1] =  m[1][2]; R.m[2][2] = m[2][2];
+// c=current, t=target, s=speed, dt=dt
+IC bool			angle_lerp		(float& c, float t, float s, float dt)
+{
+	float diff	= t - c;
+	if (diff>0) {
+		if (diff>PI)	
+			diff	-= PI_MUL_2;
+	} else {
+		if (diff<-PI)	
+			diff	+= PI_MUL_2;
+	}
+	float diff_a	= _abs(diff);
+
+	if (diff_a<EPS_S)	
+		return true;
+
+	float mot		= s*dt;
+	if (mot>diff_a) mot=diff_a;
+	c				+= (diff/diff_a)*mot;
+
+	if (c<0)				
+		c+=PI_MUL_2;
+	else if (c>PI_MUL_2)	
+		c-=PI_MUL_2;
+
+	return false;
+}
+
+// Just lerp :)	expects normalized angles in range [0..2PI)
+IC float		angle_lerp		(float A, float B, float f)
+{
+	float diff		= B - A;
+	if (diff>PI)		diff	-= PI_MUL_2;
+	else if (diff<-PI)	diff	+= PI_MUL_2;
+
+	return			A + diff*f;
 }
 
 template <class T>
 IC void _matrix<T>::rotation	(const _quaternion &Q) {
-    T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
-    T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
-    T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
+	T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
+	T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
+	T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
 
-    _11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
-    _21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
-    _31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
-    _41 = 0;					_42 = 0;					_43 = 0;					_44 = 1;
+	_11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
+	_21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
+	_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
+	_41 = 0;					_42 = 0;					_43 = 0;					_44 = 1;
 }
 
 template <class T>
 IC void _matrix<T>::mk_xform	(const _quaternion &Q, const Tvector &V) {
-    T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
-    T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
-    T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
+	T xx = Q.x*Q.x; T yy = Q.y*Q.y; T zz = Q.z*Q.z;
+	T xy = Q.x*Q.y; T xz = Q.x*Q.z; T yz = Q.y*Q.z;
+	T wx = Q.w*Q.x; T wy = Q.w*Q.y; T wz = Q.w*Q.z;
 
-    _11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
-    _21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
-    _31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
-    _41 = V.x;					_42 = V.y;					_43 = V.z;					_44 = 1;
+	_11 = 1 - 2 * ( yy + zz );	_12 =     2 * ( xy - wz );	_13 =     2 * ( xz + wy );	_14 = 0;
+	_21 =     2 * ( xy + wz );	_22 = 1 - 2 * ( xx + zz );	_23 =     2 * ( yz - wx );	_24 = 0;
+	_31 =     2 * ( xz - wy );	_32 =     2 * ( yz + wx );	_33 = 1 - 2 * ( xx + yy );	_34 = 0;
+	_41 = V.x;					_42 = V.y;					_43 = V.z;					_44 = 1;
 }
 #endif

@@ -44,37 +44,12 @@ CEntity::CEntity()
 	fAccuracy			= 1.f;
 	fMAX_Health			= MAX_HEALTH;
 	fMAX_Armor			= MAX_ARMOR;
-	eHealthLost_Enabled = FALSE;
-	
-	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
-	eHealthLost_End		= Engine.Event.Handler_Attach	("level.entity.healthlost.end",		this);
 }
 
 CEntity::~CEntity()
 {
 	Engine.Event.Handler_Detach	(eHealthLost_Begin,	this);
 	Engine.Event.Handler_Detach	(eHealthLost_End,	this);
-}
-
-void CEntity::OnEvent		(EVENT E, DWORD P1, DWORD P2)
-{
-	if (E==eHealthLost_Begin)	
-	{
-		if (0==P2 || DWORD(this)==P2)	
-		{
-			eHealthLost_Enabled		= TRUE;
-			LPCSTR	param			= LPCSTR(P1);
-			sscanf					(param,"%f,%f",&eHealthLost_speed,&eHealthLost_granularity);
-			eHealthLost_cumulative	= 0;
-		}
-	} else
-	if (E==eHealthLost_End)
-	{
-		if (0==P2 || DWORD(this)==P2)	
-		{
-			eHealthLost_Enabled		= FALSE;
-		}
-	}
 }
 
 void CEntity::OnEvent		(NET_Packet& P, u16 type)
