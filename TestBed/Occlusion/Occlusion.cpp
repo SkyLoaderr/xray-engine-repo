@@ -74,7 +74,7 @@ float rad(float a) { return a*3.14159265358f / 180.f; }
 const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
-const float p_a		= .1f;
+const float p_a		= 1.0f;
 
 void edges(occTri& T)
 {
@@ -95,8 +95,8 @@ int __cdecl main	(int argc, char* argv[])
 	InitMath		();
 	printf			("\n");
 	occ.clear		();
-	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	for (int test=0; test<=3600; test++)
+	// SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	for (int test=0; test<=360; test++)
 	{
 		float		a0	= rad(test*p_a);
 		float		a1	= rad(test*p_a + 60.f);
@@ -129,19 +129,21 @@ int __cdecl main	(int argc, char* argv[])
 		T2.raster[2].z	= 0.99f;
 		
 		// draw tri
-		TM.Start		();
+		// TM.Start		();
 		//for (int t=0; t<100; t++)
 		//{
 			occ.rasterize	(&T1);
 			occ.rasterize	(&T2);
 		//}
-		total += TM.GetElapsed();
-		count += 2; //*100;
+		//total += TM.GetElapsed();
+		// count += 2; //*100;
 	}
+	/*
 	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
 	DWORD tpms				= DWORD(u64(u64(CPU::cycles_per_second) / u64(cycles_per_tri)));
 	Msg("Cycles: %d\nTpMS:   %d\n",cycles_per_tri,tpms/1000);
+	*/
 	
 	// Propagade
 	occ.propagade	();
