@@ -23,9 +23,12 @@ void CAI_Biting::Think()
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
 
 	// pre-update path parameters
+	//CMonsterMovement::Frame_Init();
 	enable_movement							(true);
-	b_try_min_time							= true;
 	CLevelLocationSelector::set_evaluator	(0);
+	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
+	b_try_min_time							= true;		
+
 
 	// fix off-line displacement
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
@@ -42,19 +45,18 @@ void CAI_Biting::Think()
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
-
-	// update path
-	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
-	CDetailPathManager::set_try_min_time	(b_try_min_time); 
 	
+	//CMonsterMovement::Frame_Update			();
+	CDetailPathManager::set_try_min_time	(b_try_min_time); 
 	update_path								();
 
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
 
+	//CMonsterMovement::Frame_Finalize		();
 	SetVelocity								();
 	set_desirable_speed						(m_fCurSpeed);
-	
+
 	// process sound
 	ControlSound							(m_current_update);
 

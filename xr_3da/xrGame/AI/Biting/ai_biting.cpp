@@ -52,9 +52,6 @@ void CAI_Biting::Init()
 	m_fGoingSpeed					= 0.f;
 	m_dwTimeToChange				= 0;
 	
-	m_previous_query_time				= 0;
-
-	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
 	m_fAttackSuccessProbability[0]	= .8f;
 	m_fAttackSuccessProbability[1]	= .6f;
@@ -63,8 +60,6 @@ void CAI_Biting::Init()
 
 	InitMemory						(20000,20000);
 
-	m_dwPathBuiltLastTime			= 0;
-	
 	CDetailPathManager::Init();
 
 	m_pPhysics_support				->in_Init();

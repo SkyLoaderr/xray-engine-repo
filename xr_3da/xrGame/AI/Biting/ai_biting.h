@@ -48,90 +48,11 @@
 class CCharacterPhysicsSupport;
 class PathManagers::CAbstractVertexEvaluator;
 
-// Paths
-enum EBitingPathState {
-	PATH_STATE_SEARCH_NODE = 0,
-	PATH_STATE_BUILD_NODE_PATH,
-	PATH_STATE_BUILD_TRAVEL_LINE,
-	PATH_STATE_PATH_BUILT
-};
 
 typedef VisionElem SEnemy;
 
-//////////////////////////////////////////////////////////////////////////
-// StepSounds
-struct SStepSound {
-	float	vol;
-	float	freq;
-};
-DEFINE_MAP(EMotionAnim, SStepSound, STEP_SOUND_MAP, STEP_SOUND_MAP_IT);
-//////////////////////////////////////////////////////////////////////////
+#include "ai_biting_shared.h"
 
-
-
-class _biting_shared : public CSharedResource {
-public:
-	// float speed factors
-	float					m_fsTurnNormalAngular;
-	float					m_fsWalkFwdNormal;
-	float					m_fsWalkFwdDamaged;
-	float					m_fsWalkBkwdNormal;
-	float 					m_fsWalkAngular;
-	float 					m_fsRunFwdNormal;
-	float 					m_fsRunFwdDamaged;
-	float 					m_fsRunAngular;
-	float					m_fsDrag;
-	float					m_fsSteal;
-
-	u32						m_dwProbRestWalkFree;
-	u32						m_dwProbRestStandIdle;
-	u32						m_dwProbRestLieIdle;
-	u32						m_dwProbRestTurnLeft;
-
-	float					m_fImpulseMin;
-	float					m_fImpulseMax;
-
-	float					m_fDistToCorpse;
-	float					m_fMinAttackDist;
-	float					m_fMaxAttackDist;
-
-	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged
-
-	// -------------------------------------------------------
-
-	TTime					m_dwIdleSndDelay;
-	TTime					m_dwEatSndDelay;
-	TTime					m_dwAttackSndDelay;
-
-	// -------------------------------------------------------
-
-	// Мораль 
-	float					m_fMoraleSuccessAttackQuant;		// увеличение морали при успешной атаке
-	float					m_fMoraleDeathQuant;				// уменьшение морали при смерти монстра из одной команды
-	float					m_fMoraleFearQuant;					// уменьшение морали в панике
-	float					m_fMoraleRestoreQuant;				// квант восстановления морали ? 
-	float					m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
-
-	// ----------------------------------------------------------- 
-
-	u32						m_dwDayTimeBegin;
-	u32						m_dwDayTimeEnd;
-	float					m_fMinSatiety;
-	float					m_fMaxSatiety;
-	// ----------------------------------------------------------- 
-
-	float					m_fSoundThreshold;
-	float					m_fHitPower;
-
-	float					m_fEatFreq;
-	float					m_fEatSlice;
-	float					m_fEatSliceWeight;
-
-	STEP_SOUND_MAP			step_sounds;
-
-	u8						m_bUsedSquadAttackAlg;
-
-};
 
 #define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
 #define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
@@ -151,13 +72,11 @@ class CAI_Biting : public CCustomMonster,
 	typedef CSharedClass<_biting_shared>	_sd_biting;
 	typedef CMovementManager				MoveMan;
 
-public:
-
 	enum EMovementParameters {
 		eVelocityParameterStand			= u32(1) <<  4,
 		eVelocityParameterWalkNormal	= u32(1) <<  3,
 		eVelocityParameterRunNormal		= u32(1) <<  2,
-		
+
 		eVelocityParameterWalkDamaged	= u32(1) <<  5,
 		eVelocityParameterRunDamaged	= u32(1) <<  6,
 		eVelocityParameterSteal			= u32(1) <<  7,
@@ -169,6 +88,7 @@ public:
 		eVelocityParamsAttackDamaged	= eVelocityParameterStand | eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
 		eVelocityParamsSteal			= eVelocityParameterStand | eVelocityParameterSteal,
 	};
+
 
 public:
 	
@@ -200,21 +120,6 @@ public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
-
-	// path routines
-			void			InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
-			void			Path_GetAwayFromPoint			(Fvector position, float dist);
-			void			Path_ApproachPoint				(Fvector position);
-			
-			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
-			void			SetSelectorPathParams			();
-			
-			void			SetVelocity						();
-			void			PreprocessAction				();
-
-			bool			IsObstacle						(TTime time);
-			void			SetupVelocityMasks				(bool force_real_speed);
-
 
 	// Other
 			void			vfUpdateParameters				();
@@ -273,6 +178,22 @@ public:
 
 	virtual bool			useful							(const CGameObject *object) const;
 
+
+	// Path
+			void			InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
+			void			Path_GetAwayFromPoint			(Fvector position, float dist);
+			void			Path_ApproachPoint				(Fvector position);
+
+			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
+			void			SetSelectorPathParams			();
+
+			void			SetVelocity						();
+			void			PreprocessAction				();
+
+			bool			IsObstacle						(TTime time);
+			void			SetupVelocityMasks				(bool force_real_speed);
+
+
 	
 // members
 public:
@@ -285,20 +206,11 @@ public:
 	_GRAPH_ID				m_tNextGP;
 	Fvector					m_tNextGraphPoint;
 	
-	// search and path parameters
-	u32						m_previous_query_time;		//!< время последнего поиска узла
-	xr_vector<Fvector>		m_tpaPoints;
-	xr_vector<Fvector>		m_tpaTravelPath;
-	xr_vector<u32>			m_tpaPointNodes;
-	xr_vector<u32>			m_tpaNodes;
 
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
 
 
-	EBitingPathState		m_tPathState;
-	u32						m_dwPathBuiltLastTime;
-	
 	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
 
