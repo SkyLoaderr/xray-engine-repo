@@ -113,7 +113,8 @@ function garbage_monster_death (actor, npc)
        end   
     end
     if counter > 3 then
-       xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, act)
+       actor:give_info_portion ("gar_dolg_help_kill_rush")
+       actor:give_info_portion ("gar_dolg_access_rostok")
     end    
     
 end
