@@ -6,7 +6,8 @@
 //	Description : A-Life server objects
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef XRAY_AI_ALIFE_SERVER_OBJECTS
+#define XRAY_AI_ALIFE_SERVER_OBJECTS
 
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
@@ -1002,3 +1003,4 @@ public:
 		init_vector					(m_tpMembers,caSection);
 	};
 };
+#endif

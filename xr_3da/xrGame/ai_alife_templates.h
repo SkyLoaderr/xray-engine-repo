@@ -6,7 +6,8 @@
 //	Description : A-Life templates
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef XRAY_AI_ALIFE_TEMPLATES
+#define XRAY_AI_ALIFE_TEMPLATES
 
 #include "ai_alife_space.h"
 using namespace ALife;
@@ -255,3 +256,4 @@ void load_map(map<T1,T2 *> &tpMap, NET_Packet &tNetPacket, T1 tfGetKey(const T2 
 		tpMap.insert			(make_pair(tfGetKey(T),T));
 	}
 };
+#endif

@@ -204,6 +204,7 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 
 	u8	flags;
 	u16	tmp;
+	P.r_advance			(sizeof(float) + sizeof(u16));
 	P.r_u32				(N.dwTimeStamp	);
 	P.r_u8				(flags			);
 	P.r_vec3			(N.p_pos		);

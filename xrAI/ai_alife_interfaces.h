@@ -6,7 +6,8 @@
 //	Description : A-Life interfaces
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef XRAY_AI_ALIFE_INTERFACES
+#define XRAY_AI_ALIFE_INTERFACES
 
 #include "ai_alife_space.h"
 using namespace ALife;
@@ -53,3 +54,4 @@ public:
 	virtual void					Spawn_Write	(NET_Packet &tNetPacket, BOOL bLocal)	= 0;
 	virtual void					Spawn_Read	(NET_Packet &tNetPacket)				= 0;
 };
+#endif

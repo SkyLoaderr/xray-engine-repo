@@ -369,8 +369,8 @@ void CAI_ALife::vfUpdateOnlineObject(CALifeObject *tpALifeObject)
 		tpObject = tpObject;
 	}
 	P.r_begin						(ID);
-	P.r								(&tDummy,sizeof(tDummy));
-	P.r_float						(fDummy);
+//	P.r								(&tDummy,sizeof(tDummy));
+//	P.r_float						(fDummy);
 	tpObject->net_Import			(P);
 }
 

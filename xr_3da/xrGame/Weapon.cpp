@@ -382,6 +382,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 {
 	net_update				N;
 
+	P.r_advance				(sizeof(float) + sizeof(u16));
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(N.flags);
 
