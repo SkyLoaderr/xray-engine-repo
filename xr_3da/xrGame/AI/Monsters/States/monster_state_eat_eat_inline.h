@@ -21,6 +21,12 @@ void CStateMonsterEatingAbstract::initialize()
 	inherited::initialize();
 	cur_state = prev_state = eStateWalkCloser;
 	time_last_eat = 0;
+
+#ifdef DEBUG
+	if (psAI_Flags.test(aiMonsterDebug)) {
+		object->HDebug->M_Clear();
+	}
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -62,6 +68,10 @@ void CStateMonsterEatingAbstract::execute()
 #ifdef DEBUG
 		if (psAI_Flags.test(aiMonsterDebug)) {
 			object->HDebug->M_Add(0,"Eat :: Eating", D3DCOLOR_XRGB(255,0,0));
+			
+			string64 s;
+			sprintf(s,"Food[%f] Satiety[%f]", object->GetSatiety(), corpse->m_fFood);
+			object->HDebug->M_Add(1, s, D3DCOLOR_XRGB(255,0,0));
 		}
 #endif
 

@@ -252,9 +252,6 @@ public:
 
 	float						m_fCurMinAttackDist;		// according to attack stops
 
-	
-	SCurrentAnim				cur_anim;
-
 
 	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
 	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;

@@ -364,16 +364,29 @@ struct SStepParam {
 	u8			cycles;
 };
 
-DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
-
-struct SCurrentAnim {
+struct SCurrentAnimationInfo {
 	ref_str		name;
-	
-	EMotionAnim	anim;
+
+	EMotionAnim	motion_type;
 	u8			index;
 
-	TTime		started;
+	TTime		time_started;
+
+	struct {
+		float	current;
+		float	target;
+	} speed;
+
+	float		speed_change_vel;
+	CBlend		*blend;
+
 };
+
+
+
+
+
+DEFINE_MAP(ref_str,	SStepParam, STEPS_MAP, STEPS_MAP_IT);
 
 struct SStepInfo {
 	struct {

@@ -69,8 +69,14 @@ void CMotionManager::reinit()
 
 	pJumping				= 0;
 
-	anim_speed				= -1.f;
-	cur_blend				= 0;
+	m_cur_anim.motion_type		= eAnimStandIdle;
+	m_cur_anim.index			= 0;
+	m_cur_anim.time_started		= 0;
+	m_cur_anim.speed.current	= -1.f;
+	m_cur_anim.speed.target		= -1.f;
+	m_cur_anim.blend			= 0;
+	m_cur_anim.speed_change_vel	= 1.f;
+
 }
 
 
@@ -88,6 +94,7 @@ bool CMotionManager::PrepareAnimation()
 
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
 	
+	// :: TODO :: 
 	//CheckAnimWithPath();
 
 	if (0 != m_tpCurAnim) return false;
@@ -114,12 +121,13 @@ bool CMotionManager::PrepareAnimation()
 	m_tpCurAnim = get_motion_def(anim_it,index);
 
 	// Заполнить текущую анимацию
+	
 	string64 st;
 	sprintf(st, "%s%d", *anim_it->second.target_name, index);
-	pMonster->cur_anim.name		= st; 
-	pMonster->cur_anim.anim		= cur_anim;
-	pMonster->cur_anim.index	= u8(index);
-	pMonster->cur_anim.started	= Level().timeServer();
+	m_cur_anim.name				= st; 
+	m_cur_anim.motion_type		= cur_anim;
+	m_cur_anim.index			= u8(index);
+	m_cur_anim.time_started		= Level().timeServer();
 
 	// инициализировать информацию о текущей анимации шагания
 	STEPS_Initialize();
@@ -245,6 +253,7 @@ void CMotionManager::Seq_Switch()
 	// установить параметры
 	cur_anim	= *seq_it;
 	ApplyParams ();
+
 	ForceAnimSelect();
 }
 
@@ -277,11 +286,11 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 	if (aa_time_last_attack + TIME_DELTA > cur_time) return false;
 
 	// искать текущую анимацию в AA_MAP
-	AA_MAP_IT it = get_sd()->aa_map.find(pMonster->cur_anim.name);
+	AA_MAP_IT it = get_sd()->aa_map.find(m_cur_anim.name);
 	if (it == get_sd()->aa_map.end()) return false;
 	
 	// вычислить смещённое время хита в соответствии с параметрами анимации атаки
-	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetCurAnimTime() * it->second.time);
+	TTime offset_time = m_cur_anim.time_started + u32(1000 * GetCurAnimTime() * it->second.time);
 
 	if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 		params = it->second;
@@ -346,10 +355,9 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 
 float CMotionManager::GetCurAnimTime()
 {
-	//if (!cur_blend) return 9999.0f;
-	VERIFY(cur_blend);
+	VERIFY(m_cur_anim.blend);
 
-	return cur_blend->timeTotal;
+	return m_cur_anim.blend->timeTotal;
 }
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
@@ -477,19 +485,29 @@ void CMotionManager::SelectVelocities()
 	if (pMonster->state_invisible) pMonster->m_velocity_linear.target	= _abs(path_vel.linear);
 
 	// финальная корректировка анимации по физической скорости
-	Fvector temp_vec;
-	pMonster->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+	//if (b_moving) {
+	//	Fvector temp_vec;
+	//	pMonster->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+
+	//	float  real_speed = temp_vec.magnitude();
+	//	EMotionAnim new_anim;
+	//	float		a_speed;
+
+	//	if (accel_chain_get(real_speed, cur_anim,new_anim, a_speed)) {
+	//		cur_anim = new_anim;
+	//		cur_anim_info().speed.target = a_speed;
+	//	} else cur_anim_info().speed.target = -1.f;
+	//} else cur_anim_info().speed.target = -1.f;
 	
-	float  real_speed = temp_vec.magnitude();
+	float  real_speed = pMonster->m_velocity_linear.target;
 	EMotionAnim new_anim;
 	float		a_speed;
-
+	
 	if (accel_chain_get(real_speed, cur_anim,new_anim, a_speed)) {
 		cur_anim = new_anim;
-		SetAnimSpeed(a_speed);
-	} else SetAnimSpeed(-1.f);
+	} else cur_anim_info().speed.target = -1.f;
 
-	SetAnimSpeed(-1.f);
+	
 
 	// установка угловой скорости
 	if (!b_forced_velocity) {
@@ -584,7 +602,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 		if (step_info.activity[i].handled && (step_info.activity[i].cycle == step_info.cur_cycle)) continue;
 		
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
-		TTime offset_time = pMonster->cur_anim.started + u32(1000 * (cycle_anim_time * (step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
+		TTime offset_time = m_cur_anim.time_started + u32(1000 * (cycle_anim_time * (step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
 
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 			
@@ -630,7 +648,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	}
 
 	// определить текущий цикл
-	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = 1 + u8(float(cur_time - pMonster->cur_anim.started) / (1000.f*cycle_anim_time));
+	if (step_info.cur_cycle < step.cycles) step_info.cur_cycle = 1 + u8(float(cur_time - m_cur_anim.time_started) / (1000.f*cycle_anim_time));
 
 	// позиционировать играемые звуки
 	for (i=0; i<legs_num; i++) {
@@ -646,7 +664,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 void CMotionManager::STEPS_Initialize() 
 {
 	// искать текущую анимацию в STEPS_MAP
-	STEPS_MAP_IT it = get_sd()->steps_map.find(pMonster->cur_anim.name);
+	STEPS_MAP_IT it = get_sd()->steps_map.find(m_cur_anim.name);
 	if (it == get_sd()->steps_map.end()) {
 		step_info.disable = true;
 		return;
@@ -678,12 +696,14 @@ void CMotionManager::TA_Activate(CAnimTriple *p_triple)
 void CMotionManager::TA_Deactivate()
 {
 	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->deactivate();
+	
 	ForceAnimSelect				();
 }
 
 void CMotionManager::TA_PointBreak()
 {
 	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->pointbreak();
+	
 	ForceAnimSelect();
 }
 
@@ -804,3 +824,13 @@ void CMotionManager::DeactivateJump()
 	pJumping = 0;
 }
 
+#define ANIM_CHANGE_SPEED_VELOCITY 10.f
+
+void CMotionManager::FrameUpdate()
+{
+	// update animation speed 
+	if (m_cur_anim.speed.target > 0) {
+		if (m_cur_anim.speed.current < 0) m_cur_anim.speed.current = 0.f;
+		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
+	} else m_cur_anim.speed.current = -1.f;
+}

@@ -109,6 +109,8 @@ public:
 
 	// -------------------------------------- 	
 
+	void		FrameUpdate				();
+
 	// подготовить текущую анимацию на запрос из SelectAnimation
 	bool		PrepareAnimation		();
 
@@ -235,9 +237,9 @@ public:
 		void	DeactivateJump			();
 
 public:
-		float	anim_speed;
-		CBlend	*cur_blend;
 		
-		void	SetAnimSpeed			(float val) {anim_speed = val;}
+		// информация о текущей анимации
+		SCurrentAnimationInfo	m_cur_anim;
+		SCurrentAnimationInfo	&cur_anim_info() {return m_cur_anim;}
 };
 

@@ -94,10 +94,6 @@ void CAI_Biting::reinit()
 	m_bDamaged						= false;
 	m_bAngry						= false;
 
-	cur_anim.anim					= eAnimStandIdle;
-	cur_anim.index					= 0;
-	cur_anim.started				= 0;
-
 	state_invisible					= false;
 
 	bone_part						= PSkeletonAnimated(Visual())->LL_PartID("default");
@@ -365,7 +361,8 @@ void CAI_Biting::UpdateCL()
 		return;
 
 	inherited::UpdateCL();
-	
+	MotionMan.FrameUpdate();
+
 	// Проверка состояния анимации (атака)
 	if (g_Alive()) {
 		AA_CheckHit();
