@@ -234,10 +234,11 @@ void CScriptMonster::vfFinishAction(CEntityAction *tpEntityAction)
 void CScriptMonster::ProcessScripts()
 {
 	CEntityAction	*l_tpEntityAction = 0;
+	bool			empty_queue = m_tpActionQueue.empty();
 	while (!m_tpActionQueue.empty()) {
 		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
-//		Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+		Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 		
 		if (m_tpCurrentEntityAction != l_tpEntityAction)
 			l_tpEntityAction->initialize	();
@@ -247,7 +248,7 @@ void CScriptMonster::ProcessScripts()
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
 
-//		Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+		Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 
 		vfFinishAction(l_tpEntityAction);
 
@@ -257,9 +258,9 @@ void CScriptMonster::ProcessScripts()
 
 	if (m_tpActionQueue.empty()) {
 #ifdef DEBUG
-		LuaOut		(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",cName());
+		if (empty_queue)
+			LuaOut	(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",cName());
 #endif
-//		SetScriptControl(false,m_caScriptName);
 		return;
 	}
 
