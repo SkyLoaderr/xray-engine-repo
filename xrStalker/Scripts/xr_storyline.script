@@ -18,22 +18,17 @@ function set_storyline(object, char_ini)
                             enabled  = false
                             }
     if( char_ini:section_exist ("novice3") == true ) then
-        xr_motivator.storage[object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
         if( char_ini:line_exist("novice3", "path") == true ) then
             xr_motivator.storage[object:id()].novice3.path   = char_ini:r_string("novice3", "path")
         end
         if( char_ini:line_exist("novice3", "enemy_path") == true ) then
             xr_motivator.storage[object:id()].novice3.enemy_path  = patrol(char_ini:r_string("novice3", "enemy_path") )
         end
+
+        xr_motivator.storage[object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
+	    object:set_start_dialog("loser_hello_dialog")
+	    xr_trivial.add_novice3    (object)
     end
-    if xr_motivator.storage[object:id()].novice3.enabled == true then
-	object:set_start_dialog("loser_hello_dialog")
-    end
-    xr_trivial.add_novice3    (object)
-
-
-
-
 
 xr_motivator.storage[object:id()].robber = {
         enabled = false,
@@ -80,6 +75,7 @@ xr_motivator.storage[object:id()].novice = {
         if( char_ini:line_exist("novice", "rest") == true ) then
             xr_motivator.storage[object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
         end
+	    xr_trivial.add_novice     (object)
     end
 --Настройка схемы реакции новичка2 - новичок возле аномалии
 xr_motivator.storage[object:id()].novice2 = {
@@ -104,8 +100,10 @@ xr_motivator.storage[object:id()].novice2 = {
             xr_motivator.storage[object:id()].novice2.zone     = char_ini:r_string("novice2", "zone")
         end
         if( char_ini:line_exist("novice2", "radius") == true ) then
-            xr_motivator.storage[object:id()].novice2.radius   = char_ini:r_float("novice2", "radius")
+            local way = patrol(char_ini:r_string("novice2", "radius") )
+            xr_motivator.storage[object:id()].novice2.radius   = way:point(0):distance_to(way:point(1))
         end
+        xr_trivial.add_novice2    (object)
     end
 -- Настройка бандитов на заводе (escape)
 xr_motivator.storage[object:id()].escape_factory_bandit = {
@@ -133,8 +131,6 @@ xr_motivator.storage[object:id()].zombie =
 	end
 
     xr_robbers.add_to_binder  (object)
-    xr_trivial.add_novice     (object)
-    xr_trivial.add_novice2    (object)
     escape_factory_bandits.add_to_binder(object)
 
 end
