@@ -10,7 +10,9 @@ function stalker_script:reload		(section)
 end
 
 function stalker_script:net_spawn	(server_object)
-	return	object_binder.net_spawn	(server_object)
+	if (object_binder.net_spawn	(server_object) == false)
+		return		false
+	return			true
 end
 
 function stalker_script:net_destroy	()
