@@ -274,9 +274,10 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	strconcat		(l_caLuaFileName,"@",caScriptName);
 	
 	if (!load_buffer(lua(),static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName,caNameSpaceName)) {
-		VERIFY		(lua_gettop(lua()) >= 4);
-		lua_pop		(lua(),4);
-		VERIFY		(lua_gettop(lua()) == start - 3);
+//		VERIFY		(lua_gettop(lua()) >= 4);
+//		lua_pop		(lua(),4);
+//		VERIFY		(lua_gettop(lua()) == start - 3);
+		lua_settop	(lua(),start);
 		FS.r_close	(l_tpFileReader);
 		return		(false);
 	}
