@@ -11,7 +11,7 @@ function main()
 	guard01	= get_level_object("guard01")
 	guard02	= get_level_object("guard02")
 
-	actor   	= get_actor()
+	actor   = get_actor()
 
 			wait(1000)			
 
@@ -81,111 +81,6 @@ function main()
 	    wait	()
 	end
 
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and distance_between(chert,siviy) <= 3 then
-			rainbow_privet:play_at_pos						(siviy,siviy:position(),0);
-			wait(2000)			
-			prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
-			wait(4000)			
-			i_see_chert = 1
-		break
-		end
-	    wait	()
-	end
-
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and i_see_chert == 1 and distance_between(chert,siviy) <= 3 then
-			rainbow_ti_sledish_za_mnoy:play_at_pos						(siviy,siviy:position(),0);
-			wait(2000)			
-			prof_otvali:play_at_pos		(chert,chert:position(),0);
-			wait(4000)			
-			i_see_chert = 2
-		break
-		end
-	    wait	()
-	end
-
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and i_see_chert == 2 and distance_between(chert,siviy) <= 3 then
-			wait(1000)			
-			rainbow_chto_za_chert:play_at_pos		(siviy,siviy:position(),0);
-			wait(2000)			
-			prof_opyat_ti:play_at_pos						(chert,chert:position(),0);
-			wait(4000)			
-			i_see_chert = 3
-		break
-		end
-	    wait	()
-	end
-
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and i_see_chert == 3 then
-			rainbow_o_net:play_at_pos						(siviy,siviy:position(),0);
-			wait(2000)			
-			rainbow_ti_dostal:play_at_pos						(siviy,siviy:position(),0);
-			wait(2000)			
-			prof_ne_hami:play_at_pos		(chert,chert:position(),0);
-			wait(4000)			
-			i_see_chert = 4
-		break
-		end
-	    wait	()
-	end
-
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and i_see_chert == 4 then
-			rainbow_chto_za_chert:play_at_pos							(siviy,siviy:position(),0);
-			wait(1000)			
-			rainbow_ti_sledish_za_mnoy:play_at_pos						(siviy,siviy:position(),0);
-			wait(2000)			
-			prof_dermo:play_at_pos		(chert,chert:position(),0);
-			wait(1000)			
-			prof_ti_dostal:play_at_pos		(chert,chert:position(),0);
-			wait(1000)
-			rainbow_ya_bi_pomalkival:play_at_pos						(siviy,siviy:position(),0);
-			wait(4000)			
-			i_see_chert = 5
-		break
-		end
-	    wait	()
-	end
-
-	while siviy:action() and chert:action() do
-		if siviy:see(chert) and i_see_chert == 5 then
-			rainbow_blin:play_at_pos						(siviy,siviy:position(),0);
-			wait(1000)			
-			rainbow_ti_chto_gluhoy:play_at_pos						(siviy,siviy:position(),0);
-			wait(1000)			
-			prof_sam_naprosilsya:play_at_pos		(chert,chert:position(),0);
-			wait(1000)			
-			rainbow_k_bou:play_at_pos						(siviy,siviy:position(),0);
-			siviy:script	(false,  angry_stalkers.script_name())
-			chert:script	(false,  angry_stalkers.script_name())
-			i_see_chert = 6
-		break
-		end
-	    wait	()
-	end
-
-	while true do
-		if chert.health <= 0  then
-		wait(2000)			
-			prof_ti_ubil_sivogo:play_at_pos		(ecolog,ecolog:position(),0);
-			ecolog:script						(false,  angry_stalkers.script_name())
-		break
-		end
-		wait()			
-	end
-
-	while true do
-		if siviy.health <= 0 then
-		wait(2000)			
-			rainbow_suka_ti_cherta_ubil:play_at_pos		(stalker,stalker:position(),0);
-			stalker:script								(false,  angry_stalkers.script_name())
-		break
-		end
-		wait()			
-	end
 
 	while true do
 	    wait()
