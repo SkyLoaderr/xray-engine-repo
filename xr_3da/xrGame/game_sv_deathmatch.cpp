@@ -9,7 +9,17 @@ void	game_sv_Deathmatch::Create					(LPCSTR options)
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
-	phase		= 
+	phase		= GAME_PHASE_INPROGRESS;
+
+	// clear "ready" flag
+	Lock	();
+	u32		cnt		= get_count	();
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		ps				=	get_it	(it);
+		ps->flags		&=	~GAME_PLAYER_FLAG_READY;
+	}
+	Unlock	();
 }
 
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)

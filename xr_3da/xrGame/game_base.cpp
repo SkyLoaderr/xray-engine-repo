@@ -8,6 +8,7 @@ game_PlayerState::game_PlayerState()
 	deaths				=	0;
 	money_total			=	0;
 	money_for_round		=	0;
+	flags				=	0;
 }
 
 game_TeamState::game_TeamState()
