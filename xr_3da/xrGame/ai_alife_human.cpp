@@ -42,7 +42,7 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 	return			(false);
 }
 
-bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted	()
+bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted()
 {
 	OBJECT_IT					I;
 	return						(bfCheckIfTaskCompleted(I));
@@ -56,30 +56,26 @@ void CSE_ALifeHumanAbstract::vfSetCurrentTask(_TASK_ID &tTaskID)
 bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 {
 	bool			bContinue = false;
-	if (m_tTaskState != eTaskStateSearchItem) {
-		if (m_tNextGraphID != m_tGraphID) {
-			_TIME_ID				tCurTime = m_tpALife->tfGetGameTime();
-			m_fDistanceFromPoint	+= float(tCurTime - m_tTimeID)/1000.f*m_fCurSpeed;
-			if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
-				bContinue			= true;
-				if ((m_fDistanceFromPoint - m_fDistanceToPoint > EPS_L) && (m_fCurSpeed > EPS_L))
-					m_tTimeID		= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
-				m_fDistanceToPoint	= m_fDistanceFromPoint	= 0.0f;
-				m_tPrevGraphID		= m_tGraphID;
-				m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
-			}
-		}
-		else {
-			if (++m_dwCurNode < m_tpPath.size()) {
-				m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
-				m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
-				bContinue			= true;
-			}
-			else
-				m_fCurSpeed	= 0.f;
+	if (m_tNextGraphID != m_tGraphID) {
+		_TIME_ID				tCurTime = m_tpALife->tfGetGameTime();
+		m_fDistanceFromPoint	+= float(tCurTime - m_tTimeID)/1000.f*m_fCurSpeed;
+		if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
+			bContinue			= true;
+			if ((m_fDistanceFromPoint - m_fDistanceToPoint > EPS_L) && (m_fCurSpeed > EPS_L))
+				m_tTimeID		= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
+			m_fDistanceToPoint	= m_fDistanceFromPoint	= 0.0f;
+			m_tPrevGraphID		= m_tGraphID;
+			m_tpALife->vfChangeObjectGraphPoint(this,m_tGraphID,m_tNextGraphID);
 		}
 	}
 	else {
+		if (++m_dwCurNode < m_tpPath.size()) {
+			m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
+			m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
+			bContinue			= true;
+		}
+		else
+			m_fCurSpeed	= 0.f;
 	}
 	return			(bContinue);
 }
@@ -386,8 +382,18 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 	D_OBJECT_PAIR_IT	E = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>((*I).second);
-		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
-			m_tpALife->m_tpItemVector.push_back(l_tpALifeInventoryItem);
+		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline)
+			if ((m_tpALife->randF(1.0f) < m_fProbability)) {
+				m_tpALife->m_tpItemVector.push_back(l_tpALifeInventoryItem);
+#ifdef ALIFE_LOG
+				Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+#endif
+			}
+			else {
+#ifdef ALIFE_LOG
+				Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+#endif
+			}
 	}
 	if (!m_tpALife->m_tpItemVector.empty())
 		vfAttachItems();

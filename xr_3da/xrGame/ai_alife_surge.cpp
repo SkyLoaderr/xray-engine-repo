@@ -774,6 +774,9 @@ void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 
 void CSE_ALifeSimulator::vfPerformSurge()
 {
+#ifdef ALIFE_LOG
+	Msg								("[LSS] Surge started");
+#endif
 	seed							(s32(CPU::GetCycleCount() & 0xffffffff));
 	vfGenerateAnomalousZones		();
 	vfGenerateAnomalyMap			();

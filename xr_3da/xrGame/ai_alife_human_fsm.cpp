@@ -27,39 +27,39 @@ void CSE_ALifeHumanAbstract::Update			()
 			case eTaskStateChooseTask : {
 				vfChooseTask();
 				break;
-										}
+			}
 			case eTaskStateHealthCare : {
 				vfHealthCare();
 				break;
-										}
+			}
 			case eTaskStateBuySupplies : {
 				vfBuySupplies();
 				break;
-										 }
+			}
 			case eTaskStateGoToCustomer : {
 				vfGoToCustomer();
 				break;
-										  }
+			}
 			case eTaskStateBringToCustomer : {
 				vfBringToCustomer();
 				break;
-											 }
+			}
 			case eTaskStateGoToSOS : {
 				vfGoToSOS();
 				break;
-									 }
+			}
 			case eTaskStateSendSOS : {
 				vfSendSOS();
 				break;
-									 }
+			}
 			case eTaskStateAccomplishTask : {
 				vfAccomplishTask();
 				break;
-											}
+			}
 			case eTaskStateSearchItem : {
 				vfSearchObject	();
 				break;
-										}
+			}
 			default				: NODEFAULT;
 		}
 		bOk						= bfChooseNextRoutePoint();
@@ -183,11 +183,12 @@ void CSE_ALifeHumanAbstract::vfSendSOS()
 void CSE_ALifeHumanAbstract::vfAccomplishTask()
 {
 	// build path and wait until we go to the end of it
+	m_fCurSpeed		= m_fGoingSpeed;
+	m_fProbability	= m_fGoingSuccessProbability; 
 	if (m_tpPath.empty()) {
 		m_tpALife->ffFindMinimalPath(m_tGraphID,m_tDestGraphPointIndex,m_tpPath);
 		m_dwCurNode				= 0;
 		m_tNextGraphID			= m_tGraphID;
-		m_fCurSpeed				= m_fGoingSpeed;
 	}
 	if ((m_dwCurNode + 1 >= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
 		if (bfCheckIfTaskCompleted()) {
@@ -203,13 +204,6 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 						l_tpALifeTask->m_dwTryCount++;
 						m_tTaskState = eTaskStateChooseTask;
 					}
-					else
-						if (m_tNextGraphID == l_tpALifeTask->m_tGraphID) {
-							m_tTaskState	= eTaskStateSearchItem;
-							m_fCurSpeed		= m_fSearchSpeed;
-							m_fProbability	= m_fSearchSuccessProbability; 
-							break;
-						}
 					break;
 				}
 				case eTaskTypeSearchForItemCL :
@@ -230,33 +224,28 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 			}
 		}
 	}
+	else
+		if (m_tNextGraphID == m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tGraphID)
+			m_tTaskState	= eTaskStateSearchItem;
 }
 
 void CSE_ALifeHumanAbstract::vfSearchObject()
 {
-	if (bfCheckIfTaskCompleted()) {
-		m_tpPath.clear		();
-		m_tTaskState		= eTaskStateBringToCustomer;
-	}
-	else {
-		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
-		switch (l_tpALifeTask->m_tTaskType) {
-			case eTaskTypeSearchForItemCG :
-			case eTaskTypeSearchForItemOG : {
-				if (m_tNextGraphID != l_tpALifeTask->m_tGraphID) {
-					m_tTaskState	= eTaskStateAccomplishTask;
-					m_fCurSpeed		= m_fGoingSpeed;
-					m_fProbability	= m_fGoingSuccessProbability; 
-					break;
-				}
-				break;
-			}
-			case eTaskTypeSearchForItemCL :
-			case eTaskTypeSearchForItemOL : {
-				m_tTaskState	= eTaskStateChooseTask;
-				break;
-			}
-			default :				NODEFAULT;
+	m_fCurSpeed		= m_fSearchSpeed;
+	m_fProbability	= m_fSearchSuccessProbability; 
+	CSE_ALifeTask	*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+	switch (l_tpALifeTask->m_tTaskType) {
+		case eTaskTypeSearchForItemCG :
+		case eTaskTypeSearchForItemOG : {
+			if ((m_tNextGraphID != l_tpALifeTask->m_tGraphID) || (m_tGraphID == m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tGraphID))
+				m_tTaskState	= eTaskStateAccomplishTask;
+			break;
 		}
+		case eTaskTypeSearchForItemCL :
+		case eTaskTypeSearchForItemOL : {
+			m_tTaskState	= eTaskStateChooseTask;
+			break;
+		}
+		default :				NODEFAULT;
 	}
 }

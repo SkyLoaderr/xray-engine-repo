@@ -124,7 +124,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 	R_ASSERT						(!tpALifeDynamicObject->m_bOnline);
 
 #ifdef ALIFE_LOG
-	Msg								("[LSS] : Going online [%d][%s][%d] on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
+	Msg								("[LSS] : Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
 #endif
 	
 	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
@@ -161,7 +161,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 {
 	R_ASSERT						(tpALifeDynamicObject->m_bOnline);
 #ifdef ALIFE_LOG
-	Msg								("[LSS] : Going offline [%d][%s][%d], on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
+	Msg								("[LSS] : Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
 #endif
 	
 	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
