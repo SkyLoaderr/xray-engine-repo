@@ -49,11 +49,7 @@ template <
 	typename _vertex_id_type
 >
 class 
-	CBaseLocationSelector<
-		typename _Graph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
-	> :
+	CBaseLocationSelector :
 	public CAbstractLocationSelector <
 		typename _Graph,
 		typename _VertexEvaluator,
