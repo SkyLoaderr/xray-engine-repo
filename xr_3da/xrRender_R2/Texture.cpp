@@ -304,7 +304,7 @@ _BUMP:
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 		
 #if RENDER==R_R2		
-		if (ps_r2_ls_flags&R2FLAG_PARALLAX)
+		if (ps_r2_ls_flags.test(R2FLAG_PARALLAX))
 		{
 			// Decompress (back)
 			fmt								= D3DFMT_A8R8G8B8;
