@@ -258,7 +258,7 @@ CHelicopter::UpdateCL()
 	}
 	else
 	{
-		PPhysicsShell()->se
+//		PPhysicsShell()->se
 	}
 
 
