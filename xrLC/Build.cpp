@@ -153,7 +153,7 @@ void CBuild::Run	(LPCSTR P)
 
 	//****************************************** GLOBAL-RayCast model
 	FPU::m64r					();
-	Phase						("Building global-RayCast model...");
+	Phase						("Building rcast-CFORM model...");
 	mem_Compact					();
 	Light_prepare				();
 	BuildRapid					(TRUE);
