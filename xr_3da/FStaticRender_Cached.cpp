@@ -105,17 +105,14 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		is->Unlock		(V.iCount);
 
 		// Render
-		Fsphere	S;		V.bv_BBox.getsphere	(S.P,S.R);
-		::Render.Lights.Select				(S.P,S.R);
+		DWORD dwNumPrimitives			= V.iCount/3;
+		Device.Shader.SetupPass			(0);
+		Device.Primitive.Reset			();
+		HW.pDevice->SetVertexShader		(vs->getFVF());
+		HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride());
+		HW.pDevice->SetIndices			(is->getBuffer(),vBase);
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
 
-		Device.Primitive.setVertices	(vs->getFVF(),Stride,vs->getBuffer());
-		Device.Primitive.setIndicesUC	(vBase, is->getBuffer());
-		DWORD	dwNumPrimitives			= V.iCount/3;
-		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
-		{
-			Device.Shader.SetupPass		(dwPass);
-			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
-		}
 		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
 	}
 }
