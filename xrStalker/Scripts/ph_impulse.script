@@ -10,19 +10,24 @@ class "action_impulse"
 -- Constructor
 ----------------------------------------------------------------------------------------------------
 function action_impulse:__init(obj, storage)
-	self.object = obj
-	self.st = storage
+	self.object     = obj
+	self.st         = storage
+	self.start_time = 0
 end
 
 function action_impulse:reset_scheme()
 	printf("_hr: action_impulse:reset_scheme: self.object:name()='%s'", self.object:name())
 	
 	local joint	= self.object:get_physics_shell():get_joint_by_bone_name(self.st.bone)
-	local pt = utils.vector_copy_by_val(patrol(self.st.dir_path):point(0)):sub(self.object:position())
+	local p1 = patrol(self.st.dir_path):point(0)
+	local p2 = self.object:position()
+	local pt = utils.vector_copy_by_val(p1):sub(p2)
 	pt:normalize()
-	self.joint:set_max_force_and_velocity(self.st.force, pt.x * self.st.velocity, 0)
-	self.joint:set_max_force_and_velocity(self.st.force, pt.y * self.st.velocity, 1)
-	self.joint:set_max_force_and_velocity(self.st.force, pt.z * self.st.velocity, 2)
+	joint:set_max_force_and_velocity(self.st.force, pt.x * self.st.velocity, 0)
+	joint:set_max_force_and_velocity(self.st.force, pt.y * self.st.velocity, 1)
+	joint:set_max_force_and_velocity(self.st.force, pt.z * self.st.velocity, 2)
+	
+	self.start_time = device():time_global()
 end
 
 function action_impulse:update(delta)
@@ -41,6 +46,11 @@ function action_impulse:update(delta)
 		return
 	end
 	
+	if device():time_global() > self.start_time + self.st.duration then
+		joint:set_max_force_and_velocity(0, 0, 0)
+		joint:set_max_force_and_velocity(0, 0, 1)
+		joint:set_max_force_and_velocity(0, 0, 2)
+	end
 end
 
 --[[
@@ -79,6 +89,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.force     = utils.cfg_get_number(ini, section, "force", npc, false, 100)
 	st.velocity  = utils.cfg_get_number(ini, section, "velocity", npc, false, 100)
+	st.duration  = utils.cfg_get_number(ini, section, "duration", npc, false, 100)
 	st.bone      = utils.cfg_get_string(ini, section, "bone", npc, true, "")
 	st.dir_path  = utils.cfg_get_string(ini, section, "dir_path", npc, true, "")
 end
