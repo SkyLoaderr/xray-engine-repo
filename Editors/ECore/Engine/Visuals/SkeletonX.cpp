@@ -459,10 +459,10 @@ void CSkeletonX::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 			vertBoned2W* vertices	= *Vertices2W;
 			for (u32 idx=0; idx<iCount; idx++){
 				vertBoned2W& v	= vertices[V->vBase+indices[idx]];
-				CBoneData& BD	= Parent->LL_GetData((u16)v.matrix0);
-				BD.AppendFace	(ChildIDX,(u16)idx/3);
-				BD				= Parent->LL_GetData((u16)v.matrix1);
-				BD.AppendFace	(ChildIDX,(u16)idx/3);
+				CBoneData& BD0	= Parent->LL_GetData((u16)v.matrix0);
+				BD0.AppendFace	(ChildIDX,(u16)idx/3);
+				CBoneData& BD1	= Parent->LL_GetData((u16)v.matrix1);
+				BD1.AppendFace	(ChildIDX,(u16)idx/3);
 			}
 		}
 	}break;
