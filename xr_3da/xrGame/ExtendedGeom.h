@@ -76,19 +76,18 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::bonce_vel=0.f;
 }
 
-IC void dGeomDestroyUserData(dxGeom* geom)
-{
-	if(!geom) return;
-	if(dGeomGetData(geom)) xr_delete( dGeomGetUserData(geom));
-	dGeomSetData(geom,0);
-}
-
 IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
 {
 	return (dxGeomUserData*) dGeomGetData(geom);
 }
 
-
+IC void dGeomDestroyUserData(dxGeom* geom)
+{
+	if(!geom)			return;
+	dxGeomUserData*	P	= dGeomGetUserData(geom);
+	xr_delete			(P);
+	dGeomSetData		(geom,0);
+}
 
 IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 {
