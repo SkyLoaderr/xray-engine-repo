@@ -260,13 +260,9 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		clMsg	("*lighting*: HEMI:   %d lights",L_static.hemi.size());
 		clMsg	("*lighting*: SUN:	  %d lights",L_static.sun.size());
 		clMsg	("*lighting*: STATIC: %d lights",L_static.rgb.size());
-
-		// ***Hack*** to merge all layers into one
-		/*
-		for (u32 H=1; H<L_layers.size(); H++)
-			L_layers[0].lights.insert(L_layers[0].lights.end(),L_layers[H].lights.begin(),L_layers[H].lights.end());
-		L_layers.erase	(L_layers.begin()+1,L_layers.end());
-		*/
+		R_ASSERT(L_static.hemi.size());
+		R_ASSERT(L_static.sun.size());
+		R_ASSERT(L_static.rgb.size());
 
 		// Dynamic
 		transfer("d-lights",	L_dynamic,			fs,		EB_Light_dynamic);
