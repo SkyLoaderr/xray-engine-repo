@@ -9,6 +9,7 @@ function fe(item, parent)
 end
 
 function main()
+	local news_id = "general_new_task"
     db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
     db.actor:set_news_show_time(news_id, 0)
     db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
