@@ -125,7 +125,6 @@ void CBuild::PreOptimize()
 	g_bUnregister = true;
 	for (it = 0; it<int(g_vertices.size()); it++)
 	{
-		Status("%d",it);
 		R_ASSERT(it>=0 && it<(int)g_vertices.size());
 		if (g_vertices[it]->adjacent.empty()) {
 			// isolated
