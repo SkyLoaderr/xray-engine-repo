@@ -42,5 +42,6 @@ function main ()
     printf ("Step 2")
     cl2:print ()
     printf ("Step 3")
+    cl2:print ()
     
 end
