@@ -10,14 +10,10 @@
 
 #include "../../CustomMonster.h"
 #include "../../object_handler.h"
-#include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
-#include "../../seniority_hierarchy_holder.h"
-#include "../../team_hierarchy_holder.h"
-#include "../../squad_hierarchy_holder.h"
-#include "../../group_hierarchy_holder.h"
 #include "../../step_manager.h"
 #include "../../script_export_space.h"
+#include "ai_stalker_space.h"
 
 using namespace StalkerSpace;
 
