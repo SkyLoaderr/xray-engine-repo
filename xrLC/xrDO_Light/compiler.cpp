@@ -176,12 +176,20 @@ void xrLoad(LPCSTR name)
 	
 	// Load .details
 	{
+		// copy
+		IReader*	R		= FS.r_open	("$level$","build.details");
+		IWriter*	W		= FS.w_open	("$level$","level.details");
+		W->w				(R->pointer(),R->length());
+		FS.w_close			(W);
+		FS.r_close			(R);
+
+		// re-open
 		FS.update_path		(N,"$level$","level.details");
 		dtFS				= xr_new<CVirtualFileRW> (N);
 		dtFS->r_chunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
 
-		dtFS->find_chunk		(2);
+		dtFS->find_chunk	(2);
 		dtS					= (DetailSlot*)dtFS->pointer();
 	}
 
