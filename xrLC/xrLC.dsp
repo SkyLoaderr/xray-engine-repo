@@ -692,6 +692,10 @@ SOURCE=.\xrMergeLM.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrPhase_ResolveMaterials.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrPreOptimize.cpp
 # End Source File
 # Begin Source File
