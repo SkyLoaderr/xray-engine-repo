@@ -220,7 +220,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 			if( D <=0 ) continue;
 			
 			// Trace Light
-			float R		= sqrtf(sqD);
+			float R		= _sqrt(sqD);
 			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R,skip);
 			float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 			

@@ -96,13 +96,13 @@ __forceinline int lines_intersect(
     if ( r1*r2 > 0 )		return ( LI_NONE );
 	
 	// Check for equality
-	if ( fabsf(r1*r2)<EPS_S && fabsf(r3*r4)<EPS_S ) return LI_NONE;
+	if ( _abs(r1*r2)<EPS_S && _abs(r3*r4)<EPS_S ) return LI_NONE;
 
     /* Line segments intersect: compute intersection point. 
 	*/
 	
     denom = a1 * b2 - a2 * b1;
-    if ( fabsf(denom) < EPS ) return ( LI_COLLINEAR );
+    if ( _abs(denom) < EPS ) return ( LI_COLLINEAR );
 	
     num = b1 * c2 - b2 * c1;
     *x = num / denom;

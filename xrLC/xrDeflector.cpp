@@ -90,7 +90,7 @@ VOID CDeflector::OA_Export()
 	at.set		(0,0,0);
 	from.add	(at,N );
 	y.set		(0,1,0);
-	if (fabsf(N.y)>.99f) y.set(1,0,0);
+	if (_abs(N.y)>.99f) y.set(1,0,0);
 	right.crossproduct(y,N);	right.normalize_safe();
 	up.crossproduct(N,right);	up.normalize_safe();
 	mView.build_camera(from,at,up);

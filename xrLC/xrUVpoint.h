@@ -15,11 +15,11 @@ struct UVpoint {
 	IC void mul(UVpoint &p)					{ u*=p.u; v*=p.v;				}
 	IC void rot90(void)						{ float t=-u; u=v; v=t;			}
 	IC float dot(UVpoint &p)				{ return u*p.u + v*p.v;			}
-	IC void norm(void)						{ float m=sqrtf(u*u+v*v); u/=m; v/=m; }
-	IC float dist(UVpoint &p)				{ return sqrtf((u-p.u)*(u-p.u) + (v-p.v)*(v-p.v)); }
+	IC void norm(void)						{ float m=_sqrt(u*u+v*v); u/=m; v/=m; }
+	IC float dist(UVpoint &p)				{ return _sqrt((u-p.u)*(u-p.u) + (v-p.v)*(v-p.v)); }
 
 	IC BOOL similar(UVpoint &p, float eu, float ev) { 
-		return fabsf(u-p.u)<eu && fabsf(v-p.v)<ev;
+		return _abs(u-p.u)<eu && _abs(v-p.v)<ev;
 	}
 
 	// average arithmetic
@@ -29,8 +29,8 @@ struct UVpoint {
 	}
 	// average geometric
 	IC void averageG(UVpoint &p1, UVpoint &p2) {
-		u = sqrtf(p1.u*p2.u);
-		v = sqrtf(p1.v*p2.v);
+		u = _sqrt(p1.u*p2.u);
+		v = _sqrt(p1.v*p2.v);
 	}
 	
 	IC Fvector2& conv()	{ return *( (Fvector2*)this ); };

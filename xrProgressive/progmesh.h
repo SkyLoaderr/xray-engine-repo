@@ -24,7 +24,7 @@ class PM_API P_UV {
 public:
 	float u,v;
 
-	IC float dist(P_UV &p)	{ return sqrtf((u-p.u)*(u-p.u) + (v-p.v)*(v-p.v)); }
+	IC float dist(P_UV &p)	{ return _sqrt((u-p.u)*(u-p.u) + (v-p.v)*(v-p.v)); }
 
 };
 #pragma pack(pop)

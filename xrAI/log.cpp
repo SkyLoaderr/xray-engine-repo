@@ -216,7 +216,7 @@ void __cdecl logThread(void *dummy)
 			fflush			( F );
 			SendMessage		( hwLog, LB_SETTOPINDEX, LogSize-1, 0);
 		}
-		if (fabsf(PrSave-progress)>EPS_L) {
+		if (_abs(PrSave-progress)>EPS_L) {
 			bWasChanges = TRUE;
 			PrSave = progress;
 			SendMessage		( hwProgress, PBM_SETPOS, DWORD(progress*1000.f), 0);

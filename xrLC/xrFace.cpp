@@ -161,7 +161,7 @@ float Face::CalcArea()
 	float	e3 = v[1]->P.distance_to(v[2]->P);
 
 	float	p  = (e1+e2+e3)/2.f;
-	return	sqrtf( p*(p-e1)*(p-e2)*(p-e3) );
+	return	_sqrt( p*(p-e1)*(p-e2)*(p-e3) );
 }
 float Face::CalcMaxEdge()
 {
