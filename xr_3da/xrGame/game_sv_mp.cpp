@@ -115,6 +115,9 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	}
 	//-------------------------------------------------------
 	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
+	//-------------------------------------------------------
+	SendPlayerKilledMessage(PlayerID, 0, PlayerID, 0, 0);
+	//-------------------------------------------------------
 	// Kill Player on all clients
 	NET_Packet			P;
 	u_EventGen(P, GE_DIE, PlayerID);

@@ -515,9 +515,11 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					}
 				};
 
-				KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
-				KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
-
+				if (pKiller)
+				{
+					KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
+					KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
+				};
 			};
 			//-------------------------------------------
 			string512 SpecialKillText = "";
