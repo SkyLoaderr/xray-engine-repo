@@ -266,6 +266,9 @@
 			Name="general"
 			Filter="">
 			<File
+				RelativePath=".\move_mgr.script">
+			</File>
+			<File
 				RelativePath=".\xr_events.script">
 			</File>
 			<File
@@ -634,9 +637,6 @@
 			</File>
 			<File
 				RelativePath=".\MonsterAi.script">
-			</File>
-			<File
-				RelativePath=".\move_mgr.script">
 			</File>
 			<File
 				RelativePath=".\mtest.script">
