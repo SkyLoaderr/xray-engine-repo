@@ -15,9 +15,9 @@
     <text ln="rus">слишком истощен, чтобы идти</text>
   </string>
     <!-- Надпись на физической двери. Не стирать. Джон. -->
-  <string id="doors_sign">
-    <text>press 'E' to open the door</text>
-    <text ln="rus">нажмите 'E' для того, чтоб открыть дверь</text>
+  <string id="door_sign">
+    <text>Press 'E' to open the door</text>
+    <text ln="rus">Нажмите 'E' для того, чтобы открыть дверь</text>
   </string>
 
 </string_table>
