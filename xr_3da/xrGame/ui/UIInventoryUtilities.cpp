@@ -27,10 +27,11 @@ static CUIStatic*	GetUIStatic();
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
 	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
-	RECT rect = pItem->GetAbsoluteRect();
+	int left	= pItem->GetUIStaticItem().GetPosX() + 5;
+	int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
 	
-	HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
-						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
+	HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
+						float(bottom - pItem->GetFont()->CurrentHeight()),
 						"%d",	pAmmoItem->m_boxCurr);
 	pItem->GetFont()->OnRender();
 }

@@ -87,11 +87,12 @@ protected:
 		// Игровая стоимость вещи
 		int				cost;
 	public:
-		CUIDragDropItemMP(): slotNum			(0),
-							 sectionNum			(0),
-							 bAddonsAvailable	(false),
-							 cost				(0),
-							 m_bAlreadyPaid		(false)
+		CUIDragDropItemMP(): slotNum					(0),
+							 sectionNum					(0),
+							 bAddonsAvailable			(false),
+							 cost						(0),
+							 m_bAlreadyPaid				(false),
+							 m_bHasRealRepresentation	(false)
 		{
 			std::strcpy(m_strAddonTypeNames[0], "Silencer");
 			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
@@ -159,8 +160,11 @@ protected:
 		// Работа с деньгами
 		void				SetCost(const int c)	{ cost = c; }
 		int					GetCost()	const		{ return cost; }
-		// Поднимаем флаг, если уже заплачено. Нужно для беспроблемного перемещения между слотами и поясом
+		// Поднимаем флаг, если уже заплачено. Нужно для правильного подсчета денег при 
+		// перемещени между слотами и поясом
 		bool				m_bAlreadyPaid;
+		// Флаг для обозначения, что данная drag drop вещь уже имеет раельную игровую репрезентацию
+		bool				m_bHasRealRepresentation;
 
 		// Массив дополнительных полей которые могут быть специфичны для определенных типов вещей,
 		// например для арморов храним координаты иконки в общей текстуре его представляющей
@@ -358,7 +362,7 @@ protected:
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
 	// проверяем только в листах с доступным оружием
 	void		CheckBuyAvailabilityInShop();
-	// Теперь проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
+	// Проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
 	// возможности купить предыдущее оружие установленное в слотах, если нет денег.
 	void		CheckBuyAvailabilityInSlots();
 
@@ -419,9 +423,16 @@ public:
 	void		ReInitItems	(LPCSTR strSectionName);
 
 	// Процедуры принудительного перемещения оружия (эмуляция даблклика).
-	// Params:	grpNum			- номер группы секций
-	//			uIndexInSlot	- порядковый уровень оружия в списке группы секций
-	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot);
+	// Params:	grpNum					- номер группы секций
+	//			uIndexInSlot			- порядковый уровень оружия в списке группы секций
+	//			bRealRepresentationSet	- новое флага , который указывает на наличие у вещи реального 
+	//									  предсьавления
+	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot, bool bRealRepresentationSet);
 	// Params:	sectionName		- имя конфигурационной секции оружия
-	void		MoveWeapon(const char *sectionName);
+	void		MoveWeapon(const char *sectionName, bool bRealRepresentationSet);
+
+	// Функция перемещения всех вещей из слотов обратно в секции
+	void		ClearSlots();
+	// Функция сброса флага реальной репрезентации вещи для всех вещей в слотах
+	void		ClearRealRepresentationFlags();
 };

@@ -41,6 +41,11 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_bInFloat = false;
 
 	m_bMoveOnNextDrop = false;
+
+	m_previousPos.x = 0;
+	m_previousPos.y = 0;
+
+	m_bNeedOldMousePosRecalc = false;
 }
 
 CUIDragDropItem::~ CUIDragDropItem()
@@ -122,7 +127,10 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			GetParent()->SetCapture(this, true);
 
 			ClipperOff();
+			m_bNeedOldMousePosRecalc = true;
 
+//			deltaX = GetWndRect().left - m_previousPos.x;
+//			deltaY = GetWndRect().top - m_previousPos.y;
 
 			m_previousPos.x = GetWndRect().left;
 			m_previousPos.y = GetWndRect().top;
@@ -156,7 +164,14 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			{
 				deltaX = x - m_iOldMouseX;
 				deltaY = y - m_iOldMouseY;
-
+				if (m_bNeedOldMousePosRecalc)
+				{
+//					deltaX = clampr(deltaX, -1, 1);
+//					deltaY = clampr(deltaY, -1, 1);
+					deltaX = 0;
+					deltaY = 0;
+					m_bNeedOldMousePosRecalc = false;
+				}
 				
 				MoveWindow(GetWndRect().left+deltaX,  GetWndRect().top+deltaY);
 

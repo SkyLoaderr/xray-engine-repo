@@ -119,6 +119,9 @@ protected:
 	// Признак перемещения вещи в другой слот, при следующей посылке ITEM_DROP сообщения.
 	// см. функцию MoveOnNextDrop()
 	bool m_bMoveOnNextDrop;
+
+	// Необходимость пересчитать предыдущее положение мышки, для корректного перемещения иконки
+	bool m_bNeedOldMousePosRecalc;
 };
 
 #endif // _UI_DRAG_DROP_ITEM_H_

@@ -82,7 +82,6 @@ void  CUIStatic::Draw()
 
 	// draw mask rect
 	if (m_pMask) m_pMask->Draw();
-	inherited::Draw();
 
 	// Вывод текста
 
@@ -184,6 +183,8 @@ void  CUIStatic::Draw()
 		}
 	}
 	GetFont()->OnRender();
+
+	inherited::Draw();
 }
 
 
