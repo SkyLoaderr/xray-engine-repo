@@ -65,7 +65,7 @@ function save_dialog:InitControls()
     txt_list:SetAutoDelete(true)
     txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     -- txt_list:ClipperOn()
-    main_static:AttachChild(txt_list) 
+    main_frame:AttachChild(txt_list) 
 
     local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
@@ -73,7 +73,7 @@ function save_dialog:InitControls()
     list_wnd:Init(0,0,154,148)
     list_wnd:SetItemHeight(15)
     list_wnd:EnableScrollBar(true)
-    main_static:AttachChild(list_wnd)
+    main_frame:AttachChild(list_wnd)
 
 --------------------------------------- 
     local btn   = CUIButton()
@@ -86,7 +86,7 @@ function save_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
 	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
 	self:Register(btn) --for event-handling
-	main_static:AttachChild(btn)
+	main_frame:AttachChild(btn)
 --------------------------------------
     btn   = CUIButton()
     btn:SetAutoDelete(true)
@@ -97,7 +97,7 @@ function save_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(20)
 	self:Register(btn)
-	main_static:AttachChild(btn)
+	main_frame:AttachChild(btn)
 end
 
 function save_dialog:InitCallBacks()
