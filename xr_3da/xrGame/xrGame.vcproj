@@ -2087,7 +2087,7 @@
 					Name="monsters"
 					Filter="">
 					<Filter
-						Name="ai_biting"
+						Name="Base Monster"
 						Filter="">
 						<File
 							RelativePath="AI\Biting\ai_biting.cpp">
@@ -2191,7 +2191,7 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="ai_bloodsucker"
+						Name="Bloodsucker"
 						Filter="">
 						<File
 							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.cpp">
@@ -2207,7 +2207,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_boar"
+						Name="Boar"
 						Filter="">
 						<File
 							RelativePath=".\ai\boar\ai_boar.cpp">
@@ -2217,7 +2217,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_crow"
+						Name="Crow"
 						Filter="">
 						<File
 							RelativePath=".\AI\Crow\ai_crow.cpp">
@@ -2227,7 +2227,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_dog"
+						Name="Dog"
 						Filter="">
 						<File
 							RelativePath=".\Ai\Dog\ai_dog.cpp">
@@ -2237,7 +2237,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_flesh"
+						Name="Flesh"
 						Filter="">
 						<File
 							RelativePath=".\Ai\Flesh\ai_flesh.cpp">
@@ -2247,7 +2247,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_idol"
+						Name="Idol"
 						Filter="">
 						<File
 							RelativePath="AI\Idol\ai_idol.cpp">
@@ -2257,7 +2257,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_rat"
+						Name="Rat"
 						Filter="">
 						<File
 							RelativePath="AI\Rat\ai_rat.cpp">
@@ -2285,7 +2285,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_pseudodog"
+						Name="PseudoDog"
 						Filter="">
 						<File
 							RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
@@ -2319,7 +2319,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_zombie"
+						Name="Zombie"
 						Filter="">
 						<File
 							RelativePath="AI\Zombie\ai_zombie.cpp">
