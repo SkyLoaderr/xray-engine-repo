@@ -247,7 +247,6 @@ void CActor::Load(CInifile* ini, const char* section )
 
 BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvector4& o_pos )
 {
-	if (bLocal==FALSE)	Msg("**** spawn");
 	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos))	return FALSE;
 	r_model_yaw			= o_pos.w;
 	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation
@@ -262,6 +261,9 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	mstate_real			= 0;
 	m_bJumpKeyPressed	= FALSE;
 	m_bJumpInProgress	= FALSE;
+
+	// *** weapons
+	if (Local()) 		Weapons->ActivateWeaponID	(0);
 	
 	NET_SavedAccel.set	(0,0,0);
 	NET_WasInterpolating= TRUE;
