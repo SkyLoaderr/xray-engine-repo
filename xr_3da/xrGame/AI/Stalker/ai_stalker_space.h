@@ -73,3 +73,8 @@ enum EWeaponState {
 	eWeaponStatePrimaryFire,
 	eWeaponStateSecondaryFire,
 };
+
+enum EActionState {
+	eActionStateRun = 0,
+	eActionStateStand,
+};

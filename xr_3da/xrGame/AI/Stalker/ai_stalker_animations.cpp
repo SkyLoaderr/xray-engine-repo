@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
+#include "..\..\..\motion.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -455,25 +456,34 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics				&tVisualObject		=	*(PKinematics(pVisual));
-	CMotionDef				*tpGlobalAnimation	=	0;
 
 	if (m_tAnims.A.empty())
 		return;
 
+	CMotionDef				*tpGlobalAnimation	=	0;
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
 
 	if (tpGlobalAnimation) {
 		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
-			tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 	}
 	else {
 		CMotionDef				*tpTorsoAnimation	=	0;
 		CMotionDef				*tpLegsAnimation	=	0;
+		m_tpCurrentGlobalBlend	= 0;
 		vfAssignTorsoAnimation	(tpTorsoAnimation);
 		vfAssignLegsAnimation	(tpLegsAnimation);
-		if ((tpTorsoAnimation) && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
-			tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
+		if ((tpTorsoAnimation) && ((m_tpCurrentTorsoAnimation != tpTorsoAnimation) || (m_tpCurrentTorsoBlend && !m_tpCurrentTorsoBlend->playing)))
+			m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
 		if ((tpLegsAnimation) && (m_tpCurrentLegsAnimation != tpLegsAnimation))
-			tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
+			m_tpCurrentLegsBlend	= tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
+		
+		if (tpTorsoAnimation && tpLegsAnimation){
+			if ((tpTorsoAnimation->flags & esmSyncPart) && (tpLegsAnimation->flags & esmSyncPart))
+				if (m_tpCurrentTorsoBlend && m_tpCurrentLegsBlend) {
+					m_tpCurrentTorsoBlend->timeCurrent = m_tpCurrentLegsBlend->timeCurrent;
+					Log	("Sync part in action!");
+				}
+		}
 	}
 }

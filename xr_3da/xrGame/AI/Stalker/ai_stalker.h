@@ -54,6 +54,9 @@ private:
 	EPathType				m_tPathType;
 	EPathType				m_tPrevPathType;
 	EWeaponState			m_tWeaponState;
+	EActionState			m_tActionState;
+	u32						m_dwActionStartTime;
+	u32						m_dwActionEndTime;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -252,7 +255,7 @@ private:
 			void			vfCheckForItems					();
 			
 			// miscellanious
-			void			DropItemSendMessage				();
+			void			DropItemSendMessage				(CObject *O);
 			void			HolsterItemSendMessage			();
 			void			vfUpdateSearchPosition			();
 			void			vfChooseNextGraphPoint			();

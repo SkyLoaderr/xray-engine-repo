@@ -46,6 +46,11 @@ CAI_Stalker::CAI_Stalker			()
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
 
+	m_tActionState					= eActionStateStand;
+	u32						m_dwActionStartTime;
+	u32						m_dwActionEndTime;
+
+
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
 	
@@ -789,13 +794,21 @@ void CAI_Stalker::Update	( u32 DT )
 		}
 	}
 	
+	// inventory update
+	if (!g_Alive() && (m_inventory.TotalWeight() > 0)) {
+		vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+		vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+		for ( ; I != E; I++)
+			m_inventory.Ruck((*I).m_pIItem);
+		TIItemList &l_list = m_inventory.m_ruck;
+		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
+			(**l_it).Drop();
+	}
 	m_inventory.Update(DT);
 
 	// *** general stuff
 	inherited::inherited::Update	(DT);
 	
-//	inherited::Update	(DT);
-
 	if(m_pPhysicsShell){
 
 	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)

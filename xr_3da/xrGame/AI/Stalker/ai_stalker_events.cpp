@@ -33,7 +33,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 			Log("CStalker::OnEvent - TAKE - ", O->cName());
-			if(m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
+			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
 				////if(m_inventory.m_activeSlot == 0xffffffff) {
 				////	if(PIItem(O)->m_slot < 0xffffffff) {
@@ -165,11 +165,9 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	}
 }
 
-void CAI_Stalker::DropItemSendMessage()
+void CAI_Stalker::DropItemSendMessage(CObject *O)
 {
-	CObject*				O = m_inventory.ActiveItem();//Weapons->ActiveWeapon();
-	
-	if (!O)
+	if (!O || !O->H_Parent() || (O->H_Parent() != this))
 		return;
 
 	// We doesn't have similar weapon - pick up it
