@@ -17,13 +17,6 @@ using namespace AgentManager;
 
 #define SECTION "agent_manager"
 
-struct CDeadMemberPredicate {
-	IC	bool operator()	(const CMemberOrder &order) const
-	{
-		return					(!order.object()->g_Alive());
-	}
-};
-
 CAgentManager::CAgentManager		()
 {
 	reload						(SECTION);
@@ -43,14 +36,9 @@ float CAgentManager::shedule_Scale	()
 
 void CAgentManager::shedule_Update	(u32 time_delta)
 {
-	ISheduled::shedule_Update			(time_delta);
-
-	xr_vector<CMemberOrder>::iterator	I = remove_if(m_members.begin(),m_members.end(),CDeadMemberPredicate());
-	m_members.erase						(I,m_members.end());
-
-	reset_memory_masks					();
-
-	inherited::update					();
+	ISheduled::shedule_Update	(time_delta);
+	reset_memory_masks			();
+	inherited::update			();
 }
 
 BOOL CAgentManager::shedule_Ready	()
