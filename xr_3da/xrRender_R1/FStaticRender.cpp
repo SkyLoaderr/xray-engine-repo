@@ -59,6 +59,7 @@ void					CRender::create					()
 	else										b_distortion = FALSE;
 	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
 	Msg				("* distortion: %s, dev(%d),need(%d)",b_distortion?"used":"unavailable",v_dev,v_need);
+	m_skinning					= 0;
 
 	//
 	Models						= xr_new<CModelPool>		();
