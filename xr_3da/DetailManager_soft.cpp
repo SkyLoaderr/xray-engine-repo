@@ -88,19 +88,15 @@ void CDetailManager::soft_Render	()
 					CDetail::fvfVertexOut	*dstIt = vDest;
 
 					//
-					float	tm			= Device.fTimeGlobal; 
+					float	tm			= Device.fTimeGlobal*2.f; 
+					float	tm_rot		= PI_MUL_2*Device.fTimeGlobal/30;
 					float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 					float	cx			= 1.f/5.f;
 					float	cy			= 1.f/7.f;
 					float	cz			= 1.f/3.f;
 					Fvector&	B		= mXform.c;
 					Fvector dir2D;
-					dir2D.set			(0,0,1);
-					/*
-					dir2D.x				= sinf(B.x*cx)+cosf(B.z*cz)+2*cosf(B.y*cy);
-					dir2D.y				= 0;
-					dir2D.z				= cosf(B.x*cx)+sinf(B.z*cz)+2*sinf(B.y*cy);
-					*/
+					dir2D.set			(sinf(tm_rot),0,cosf(tm_rot));
 					dir2D.normalize		();
 
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
@@ -111,7 +107,7 @@ void CDetailManager::soft_Render	()
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
-						float	frac		= src.y/height;								// fraction of model height
+						float	frac		= .1f*src.y/height;							// fraction of model height
 						float	inten		= H * sinf	(tm + pos.x*cx+pos.y*cy+pos.z*cz);
 
 						//
