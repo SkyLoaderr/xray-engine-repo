@@ -10,7 +10,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include "..\\debug_str.h"
 
 
 /* This file uses only the official API of Lua.
@@ -90,7 +89,6 @@ LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...) {
   va_start(argp, fmt);
   luaL_where(L, 1);
   lua_pushvfstring(L, fmt, argp);
-  xr_print(stderr,fmt,argp);
   va_end(argp);
   lua_concat(L, 2);
   return lua_error(L);
@@ -559,7 +557,7 @@ static void callalert (lua_State *L, int status) {
       lua_call(L, 1, 0);
     }
     else {  /* no _ALERT function; print it on stderr */
-      xr_print(stderr, "%s\n", lua_tostring(L, -2));
+      fprintf(stderr, "%s\n", lua_tostring(L, -2));
       lua_pop(L, 2);  /* remove error message and _ALERT */
     }
   }

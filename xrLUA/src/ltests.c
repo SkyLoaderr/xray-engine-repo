@@ -27,7 +27,6 @@
 #include "lstring.h"
 #include "ltable.h"
 #include "lualib.h"
-#include "debug_str.h"
 
 
 
@@ -182,9 +181,9 @@ void luaI_printcode (Proto *pt, int size) {
   int pc;
   for (pc=0; pc<size; pc++) {
     char buff[100];
-    xr_print(stdout,"%s\n", buildop(pt, pc, buff));
+    printf("%s\n", buildop(pt, pc, buff));
   }
-  xr_print(stdout,"-------\n");
+  printf("-------\n");
 }
 #endif
 
@@ -826,7 +825,7 @@ static void fim (void) {
 
 static int l_panic (lua_State *L) {
   UNUSED(L);
-  xr_print(stderr, "unable to recover; exiting\n");
+  fprintf(stderr, "unable to recover; exiting\n");
   return 0;
 }
 
