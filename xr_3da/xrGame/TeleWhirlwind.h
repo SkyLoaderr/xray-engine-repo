@@ -17,6 +17,7 @@ public:
 	virtual							~CTeleWhirlwindObject	(){};
 									CTeleWhirlwindObject	();
 	virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
+				void				set_throw_power			(float throw_power);
 	virtual		bool				can_activate			(CPhysicsShellHolder *obj);
 	virtual		void				raise					(float step);
 	virtual		void				raise_update			();

@@ -24,11 +24,14 @@ void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual
 	VERIFY						(D);
 	CSE_Visual					*V  =smart_cast<CSE_Visual*>(D);
 	V->set_visual				(*visual_name);
+	CSE_PHSkeleton				*l_tpPHSkeleton = smart_cast<CSE_PHSkeleton*>(D);
+	VERIFY						(l_tpPHSkeleton);
+	l_tpPHSkeleton->source_id	= ref_id;
 	//init
 	InitServerObject			(D);
 	// Send
 	D->s_name			= section;//*cNameSect()
-	D->ID_Parent		= ref_id;
+	D->ID_Parent		= u16(-1);
 	NET_Packet			P;
 	D->Spawn_Write		(P,TRUE);
 	Level().Send		(P,net_flags(TRUE));
@@ -41,14 +44,12 @@ void CPHDestroyable::InitServerObject(CSE_Abstract* D)
 	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
 	CSE_ALifeDynamicObjectVisual	*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObjectVisual*>(D);
 	VERIFY							(l_tpALifeDynamicObject);
-	CSE_PHSkeleton					*l_tpPHSkeleton = smart_cast<CSE_PHSkeleton*>(D);
-	VERIFY							(l_tpPHSkeleton);
+	
 
 	l_tpALifeDynamicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
 	l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
 
 
-	l_tpPHSkeleton->source_id	= u16(-1);
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 	
 	D->set_name_replace	("");
@@ -70,8 +71,19 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 {
 	
 	if(!CanDestroy())return ;
+
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
+
+
+	//	
+	obj->PPhysicsShell()->Deactivate();
+	xr_vector<shared_str>::iterator i=m_destroyed_obj_visual_names.begin(),e=m_destroyed_obj_visual_names.end();
+	for(;e!=i;i++)
+		GenSpawnReplace(source_id,section,*i);
+
+
+
 	CActor				*A		=smart_cast<CActor*>(obj)	;
 	if(A)
 	{
@@ -86,10 +98,10 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (obj->Local()) obj->u_EventSend			(P);
 	}
-	xr_vector<shared_str>::iterator i=m_destroyed_obj_visual_names.begin(),e=m_destroyed_obj_visual_names.end();
-	for(;e!=i;i++)
-		GenSpawnReplace(source_id,section,*i);
+
 ///////////////////////////////////////////////////////////////////////////
+
+
 	m_flags.set(fl_destroyed,TRUE);
 	return;
 }

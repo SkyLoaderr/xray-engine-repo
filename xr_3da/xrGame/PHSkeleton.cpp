@@ -98,6 +98,7 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 		}
 		SpawnInitPhysics(D);
 		RestoreNetState(po);
+		CPHDestroyableNotificate::spawn_notificate(D);
 
 		if(K)
 		{

@@ -79,7 +79,7 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 }
 void CDestroyablePhysicsObject::Destroy()
 {
-	CPHDestroyable::Destroy(u16(-1),"physic_destroyable_object");
+	CPHDestroyable::Destroy(ID(),"physic_destroyable_object");
 	if(m_destroy_sound.handle)
 	{
 		m_destroy_sound.play_at_pos(this,Position());

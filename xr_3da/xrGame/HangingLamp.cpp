@@ -340,17 +340,20 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	guid_physic_bone=smart_cast<CPHElement*>(g_i->second.element);
 	bone_map.erase(g_i);
 ////////////////////////////////////////////////////////////////////////////
-	if(!lanim)
-	{
-		pKinematics->CalculateBones_Invalidate();
-		pKinematics->CalculateBones();
-	}
+	//if(!lanim)
+	//{
+	//	pKinematics->CalculateBones_Invalidate();
+	//	pKinematics->CalculateBones();
+	//}
 //. Kostya!!!
 	if (guid_physic_bone){
+		static xr_vector<Fmatrix> binds;
+		binds.clear();
+		pKinematics->LL_GetBindTransform(binds);
 		Fmatrix InvET;
-		InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
+		InvET.set(binds[guid_physic_bone->m_SelfID]);
 		InvET.invert();
-		m_guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
+		m_guid_bone_offset.mul(InvET,binds[guid_bone]);
 	}
 /////////////////////////////////////////////////////////////////////////////
 	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();

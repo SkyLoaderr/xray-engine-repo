@@ -2,13 +2,14 @@
 #define PH_SKELETON_H
 
 #include "PHDefs.h"
+#include "PHDestroyableNotificate.h"
 class CPhysicsShellHolder;
 class CSE_ALifePHSkeletonObject;
 class CSE_Abstract;
 class CSE_PHSkeleton;
 class NET_Packet;
-
-class CPHSkeleton
+class CPHSkeleton :
+ public CPHDestroyableNotificate
 {
 	bool				b_removing;
 	static u32			remove_time;
@@ -17,6 +18,7 @@ class CPHSkeleton
 
 	shared_str			m_startup_anim;
 	flags8				m_flags;
+
 private:
 	//Creating
 

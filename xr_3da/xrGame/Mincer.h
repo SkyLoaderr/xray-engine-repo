@@ -10,7 +10,9 @@
 #include "gravizone.h"
 #include "telewhirlwind.h"
 
-class CMincer :	public CBaseGraviZone
+class CMincer :	
+	public CBaseGraviZone,
+	public CPHDestroyableNotificator
 {
 private:
 	typedef CBaseGraviZone inherited;
@@ -38,5 +40,5 @@ public:
 	virtual void net_Destroy				();
 	virtual void Center						(Fvector& C) const;
 	virtual void OnOwnershipTake			(u16 id);
-
+	virtual	void NotificateDestroy			(CPHDestroyableNotificate *dn);
 };

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "PHDestroyable.h"
 #include "mincer.h"
 #include "hudmanager.h"
 #include "xrmessages.h"
@@ -113,18 +114,23 @@ void CMincer ::Center	(Fvector& C) const
 
 void CMincer::OnOwnershipTake(u16 id)
 {
-	Fvector dir;
-	float impulse;
-	//if(!m_telekinetics.has_impacts()) return;
-
-	CObject* obj=Level().Objects.net_Find(id);
-
-	if(obj->CLS_ID ==CLSID_ARTEFACT)
+	
+	//if(obj->CLS_ID ==CLSID_ARTEFACT)
 	{
 		inherited::OnOwnershipTake(id);
 		return;
 	}
 
+
+}
+void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
+{
+	Fvector dir;
+	float impulse;
+	//if(!m_telekinetics.has_impacts()) return;
+
+	//CObject* obj=Level().Objects.net_Find(id);
+	CPhysicsShellHolder* obj=dn->PPhysicsShellHolder();
 	m_telekinetics.draw_out_impact(dir,impulse);
 	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
 	if(PP)
@@ -135,7 +141,7 @@ void CMincer::OnOwnershipTake(u16 id)
 	if (OnServer())
 	{
 		NET_Packet	l_P;
-		u_EventGen	(l_P,GE_HIT, id);
+		u_EventGen	(l_P,GE_HIT, obj->ID());
 		l_P.w_u16	(ID());
 		l_P.w_u16	(ID());
 		l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
@@ -147,12 +153,10 @@ void CMincer::OnOwnershipTake(u16 id)
 		l_P.w_u16	(ALife::eHitTypeExplosion);
 		u_EventSend	(l_P);
 		/////////////////////////////////////////////////////////
-		obj->H_SetParent(NULL);
+	//	obj->H_SetParent(NULL);
 		return;
 	};
 }
-
-
 void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
 {
 	float power=Power(dist);

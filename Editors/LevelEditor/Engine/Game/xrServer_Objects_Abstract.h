@@ -45,7 +45,6 @@ public:
 
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
-
 	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 
 	virtual CSE_Visual* __stdcall	visual			() = 0;
