@@ -16,7 +16,7 @@ end
 
 class "options_sound_tab" (ui_options_base_tab.options_base_tab)
 
-function options_sound_tab:__init()
+function options_sound_tab:__init() super()
 end
 
 function options_sound_tab:__finalize()
