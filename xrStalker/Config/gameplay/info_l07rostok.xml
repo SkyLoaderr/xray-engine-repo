@@ -124,7 +124,6 @@
 	</info_portion>
 	<info_portion id="val_kill_borov_killed"></info_portion>
 	<info_portion id="val_borov_info_gain"></info_portion>
-	<info_portion id="bar_kill_borov_voronin"></info_portion>
 	<info_portion id="bar_kill_borov_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_ambush_start">
@@ -132,7 +131,6 @@
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
-	<info_portion id="bar_kill_svoboda_ambush_voronin"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_leader_start">
@@ -140,7 +138,6 @@
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="mil_kill_svoboda_leader_killed"></info_portion>
-	<info_portion id="bar_kill_svoboda_leader_voronin"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_done"></info_portion>
 
     <info_portion id="rostok_heli_start">
