@@ -1052,8 +1052,9 @@ bool CSE_ALifeSchedulable::need_update		(CSE_ALifeDynamicObject *object)
 
 CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion() 
 {
-	m_flags.set					(flUseSwitches,FALSE);
-	m_flags.set					(flSwitchOffline,FALSE);
+	m_flags.set					(flUseSwitches,		FALSE);
+	m_flags.set					(flSwitchOffline,	FALSE);
+	m_flags.set					(flInteractive,		FALSE);
 }
 
 CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
@@ -1125,16 +1126,6 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 #endif
 
 bool CSE_ALifeHelicopter::used_ai_locations	() const
-{
-	return						(false);
-}
-
-bool CSE_ALifeHelicopter::can_switch_offline() const
-{
-	return						(false);
-}
-
-bool CSE_ALifeHelicopter::interactive() const
 {
 	return						(false);
 }
