@@ -7,12 +7,12 @@
 #pragma once
 
 #include "xrServer.h"
+#include "game_cl_base.h"
 #include "group.h"
 #include "tracer.h"
 #include "rain.h"
 #include "ai_space.h"
 #include "ai_sounds.h"
-#include "playerlist.h"
 
 class CAI_DDD;
 class CHUDManager;
@@ -52,14 +52,11 @@ protected:
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
 	EVENT						eChangeTrack;
-	EVENT						eDoorOpen;
-	EVENT						eDoorClose;
-	EVENT						eDA_PlayMotion;
-	EVENT						eDA_StopMotion;
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
-
 public:
+	game_cl_GameState			Game;
+
 	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;
 
@@ -67,7 +64,6 @@ public:
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
-	CPlayers					Players;
 
 	// waypoints
 	typedef struct tagSWayPoint{

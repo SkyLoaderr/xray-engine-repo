@@ -2,17 +2,18 @@
 
 #include "game_base.h"
 
-class	game_sv_GameState
+class	game_sv_GameState	: public game_GameState
 {
-	u32								round;
-	vector<game_TeamState>			teams;
+protected:
 public:
 	// Main
-	virtual		void				Lock					()								= 0;
-	virtual		void				Unlock					()								= 0;
-	virtual		game_PlayerState*	get_it					(DWORD it)						= 0;
-	virtual		game_PlayerState*	get_id					(DWORD id)						= 0;	// DPNID
-	virtual		u32					get_count				()								= 0;
+	virtual		void				Lock					();
+	virtual		void				Unlock					();
+	virtual		game_PlayerState*	get_it					(DWORD it);
+	virtual		game_PlayerState*	get_id					(DWORD id);								// DPNID
+	virtual		string64*			get_name_it				(DWORD it);
+	virtual		string64*			get_name_id				(DWORD id);								// DPNID
+	virtual		u32					get_count				();
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);

@@ -7,6 +7,7 @@
 #pragma once
 
 #include "xrServer_Entities.h"
+#include "game_base.h"
 
 const u32	NET_Latency		= 100;		// time in (ms)
 
@@ -19,17 +20,12 @@ public:
 	xrServerEntity*			owner;
 	BOOL					net_Ready;
 
-	s16						g_kills;
-	s16						g_deaths;
-	s32						g_money;
-	
+	game_PlayerState		ps;
+
 	xrClientData	()
 	{
 		owner		= NULL;
 		net_Ready	= FALSE;
-		g_kills		= 0;
-		g_deaths	= 0;
-		g_money		= 0;
 	}
 };
 
@@ -78,6 +74,9 @@ public:
 	// utilities
 	xrServerEntity*			entity_Create		(LPCSTR name);
 	void					entity_Destroy		(xrServerEntity* P);
+
+	IC void					clients_Lock		()			{	csPlayers.Enter();	}
+	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
 
 	IC xrClientData*		ID_to_client		(DPNID ID)
 	{

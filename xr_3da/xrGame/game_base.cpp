@@ -1,19 +1,17 @@
 #include "stdafx.h"
 #include "game_base.h"
 
-
-void game_sv_GameState::net_Export_State	(NET_Packet& P)
+game_PlayerState::game_PlayerState()
 {
+	team				=	-1;
+	kills				=	0;
+	deaths				=	0;
+	money_total			=	0;
+	money_for_round		=	0;
 }
 
-void game_sv_GameState::net_Export_Update	(NET_Packet& P, DWORD id)
+game_TeamState::game_TeamState()
 {
-	Lock		();
-	game_PlayerState* A		= get_id		(id);
-	if (A)
-	{
-		P->w_u32	(id);
-		P->w		(A,sizeof(*A));
-	}
-	Unlock		();
+	score				=	0;
+	num_targets			=	0;
 }
