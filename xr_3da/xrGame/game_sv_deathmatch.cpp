@@ -133,7 +133,7 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 	}
 
 	// We don't know what the hell is it, so disallow ownership just for safety 
-	return FALSE;
+	return TRUE;
 }
 
 BOOL	game_sv_Deathmatch::OnDetach		(u16 eid_who, u16 eid_what)
