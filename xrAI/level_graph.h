@@ -66,6 +66,7 @@ public:
 	typedef u32 const_iterator;
 	typedef u32 const_spawn_iterator;
 	typedef u32 const_death_iterator;
+	typedef const CVertex* const_vertex_iterator;
 
 #ifndef AI_COMPILER
 					CLevelGraph					();
@@ -73,6 +74,8 @@ public:
 					CLevelGraph					(LPCSTR file_name, u32 current_version = XRAI_CURRENT_VERSION);
 #endif
 	virtual			~CLevelGraph				();
+	IC		const_vertex_iterator begin			() const;
+	IC		const_vertex_iterator end			() const;
 	IC		void	set_mask					(const xr_vector<u32> &mask);
 	IC		void	set_mask					(u32 vertex_id);
 	IC		void	clear_mask					(const xr_vector<u32> &mask);

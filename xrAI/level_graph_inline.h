@@ -19,6 +19,16 @@
 	#define TIMER_STOP(a)
 #endif
 
+IC	CLevelGraph::const_vertex_iterator CLevelGraph::begin	() const
+{
+	return		(m_nodes);
+}
+
+IC	CLevelGraph::const_vertex_iterator CLevelGraph::end		() const
+{
+	return		(m_nodes + header().vertex_count());
+}
+
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 {
 	return				(*m_header);

@@ -132,8 +132,8 @@ void Startup(LPSTR     lpCmdLine)
 					if (strstr(cmd,"-t")) {
 //						path_test			(prjName);
 //						test_smooth_path	(prjName);
-//						test_hierarchy		(prjName);
-						test_goap			();
+						test_hierarchy		(prjName);
+//						test_goap			();
 //						smart_cover			(prjName);
 					}
 					else

@@ -152,33 +152,22 @@ IC	void fill_mark(
 
 	bool						ok = true;
 
+	VERTEX_VECTOR1::iterator	_j2, j1, j1_1, i1_1_j1;
 	VERTEX_VECTOR2::iterator	i1 = table.begin() + i + 1, i1_1 = i1 - 1;
 	VERTEX_VECTOR2::iterator	e = table.end();
 	for ( ; i1 != e; ++i1, ++i1_1) {
 		VERTEX_VECTOR			&table_i1_j = (*i1)[j];
-		if (table_i1_j.empty()) {
-			VERTEX_VECTOR1::iterator	j1 = (*i1_1).begin() + j;
-			VERTEX_VECTOR1::iterator	_j2 = (*i1_1).begin() + j2;
-			for ( ; j1 != _j2 ;++j1) {
-				v				= get_vertex_by_group_id(*j1,group_id);
-				cross[v.m_vertex_id].m_use = true;
-			}
-			break;
-		}
+		if (table_i1_j.empty())
+			goto enough;
 
 		v1						= get_vertex_by_group_id((*i1_1)[j],group_id);
-		if (!connect(level_graph,v1,table_i1_j,group_id,1,cross,true)) {
-			VERTEX_VECTOR1::iterator	j1 = (*i1_1).begin() + j;
-			VERTEX_VECTOR1::iterator	_j2 = (*i1_1).begin() + j2;
-			for ( ; j1 != _j2 ;++j1) {
-				v				= get_vertex_by_group_id(*j1,group_id);
-				cross[v.m_vertex_id].m_use = true;
-			}
-			break;
-		}
+		if (!connect(level_graph,v1,table_i1_j,group_id,1,cross,true))
+			goto enough;
 		
-		VERTEX_VECTOR1::iterator	j1 = (*i1).begin() + j + 1, j1_1 = j1 - 1, i1_1_j1 = (*i1_1).begin() + j + 1;
-		VERTEX_VECTOR1::iterator	_j2 = (*i1).begin() + j2;
+		j1						= (*i1).begin() + j + 1;
+		j1_1					= j1 - 1;
+		i1_1_j1					= (*i1_1).begin() + j + 1;
+		_j2						= (*i1).begin() + j2;
 		for ( ; j1 != _j2; ++j1, ++j1_1, ++i1_1_j1) {
 			v					= get_vertex_by_group_id(*j1_1,group_id);
 			v1					= get_vertex_by_group_id(*i1_1_j1,group_id);
@@ -192,19 +181,21 @@ IC	void fill_mark(
 			}
 		}
 
-		if (!ok) {
-			VERTEX_VECTOR1::iterator	j1 = (*i1_1).begin() + j;
-			VERTEX_VECTOR1::iterator	_j2 = (*i1_1).begin() + j2;
-			for ( ; j1 != _j2 ;++j1) {
-				v				= get_vertex_by_group_id(*j1,group_id);
+		if (ok) {
+			v							= get_vertex_by_group_id(*j1_1,group_id);
+			cross[v.m_vertex_id].m_use	= true;
+			continue;
+		}
+
+enough:
+		{
+			VERTEX_VECTOR1::iterator		j1 = (*i1_1).begin() + j;
+			VERTEX_VECTOR1::iterator		_j2 = (*i1_1).begin() + j2;
+			for ( ; j1 != _j2; ++j1) {
+				v							= get_vertex_by_group_id(*j1,group_id);
 				cross[v.m_vertex_id].m_use = true;
 			}
-
 			break;
-		}
-		else {
-			v						= get_vertex_by_group_id(*j1_1,group_id);
-			cross[v.m_vertex_id].m_use = true;
 		}
 	}
 	
@@ -339,9 +330,8 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 			level_graph.begin			(j,I,E);
 			for ( ; I != E; ++I) {
 				u32						vertex_id = level_graph.value(j,I);
-				if (!level_graph.valid_vertex_id(vertex_id)) {
+				if (!level_graph.valid_vertex_id(vertex_id))
 					continue;
-				}
 
 				CCellVertex				*cell = cross[vertex_id].m_cell; VERIFY(cell);
 				u32						mark = cell->m_mark - 1;
@@ -422,5 +412,10 @@ void test_hierarchy		(LPCSTR name)
 #endif
 	
 	xr_delete					(level_graph);
+	f							= CPU::GetCycleCount();
+	Msg							("Destroy level graph time %f",CPU::cycles2seconds*float(f - s));
+	
 	xr_delete					(sector_graph);
+	f							= CPU::GetCycleCount();
+	Msg							("Destroy sector graph time %f",CPU::cycles2seconds*float(f - s));
 }
