@@ -287,7 +287,7 @@ LPCSTR property2string(const u32 id)
 		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyItemID		: {strcat(S,"NoItems");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyItemID		: {S[strlen(S) - 1] = 0;	break;}
 		default							: NODEFAULT;
 	}
 	return		(S);
