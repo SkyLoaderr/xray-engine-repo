@@ -63,12 +63,13 @@
 #pragma comment( lib, "dxguid.lib"		)
 
 #ifndef DEBUG
-#define LUABIND_NO_ERROR_CHECKING
+	// release: no error checking, no exceptions
+	#define LUABIND_NO_ERROR_CHECKING
+	#define LUABIND_NO_EXCEPTIONS
+	#define BOOST_THROW_EXCEPTION_HPP_INCLUDED
+	namespace boost {	ENGINE_API	void __stdcall throw_exception(const std::exception &A);	};
 #endif
-#define LUABIND_NO_EXCEPTIONS
 #define LUABIND_DONT_COPY_STRINGS
-#define BOOST_THROW_EXCEPTION_HPP_INCLUDED
-namespace boost {	ENGINE_API	void __stdcall throw_exception(const std::exception &A);	};
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
