@@ -81,10 +81,13 @@ IC void CBackend::set_Textures			(STextureList* _T)
 				}
 			}
 		}
+
+		// clear 
 		u32 last				= T->size();
-		if (textures[last]) {
-			textures[last]	= 0;
+		while (last<8 && textures[last])	{
+			textures[last]		= 0;
 			CHK_DX				(HW.pDevice->SetTexture(last,NULL));
+			last				++;
 		}
 	}
 }
