@@ -293,6 +293,10 @@ void CUIInventoryWnd::Show()
 void CUIInventoryWnd::Hide()
 {
 	inherited::Hide();
+
+	SendInfoToActor("ui_inventory_hide");
+
+
 	//достать вещь в активный слот
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
