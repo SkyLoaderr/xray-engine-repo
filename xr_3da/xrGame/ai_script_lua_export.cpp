@@ -685,7 +685,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("see",							&CLuaGameObject::CheckTypeVisibility)
 
 			.def("who_hit_name",				&CLuaGameObject::WhoHitName)
-			.def("who_hit_section_name",		&CLuaGameObject::WhoHitNameSection)
+			.def("who_hit_section_name",		&CLuaGameObject::WhoHitSectionName)
 			
 			.def("use",							&CLuaGameObject::UseObject)				// time
 			.def("rank",						&CLuaGameObject::GetRank)

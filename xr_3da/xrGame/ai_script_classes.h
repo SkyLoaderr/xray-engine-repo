@@ -350,7 +350,7 @@ public:
 	IC	const char* WhoHitName()
 	{
 		CEntityCondition *pEntityCondition = 
-						  dynamic_cast<CEntityCondotion*>(m_tpGameObject);
+						  dynamic_cast<CEntityCondition*>(m_tpGameObject);
 		
 		if (pEntityCondition)
 			return			(pEntityCondition->GetWhoHitLastTime()->cName());
@@ -364,7 +364,7 @@ public:
 	IC	const char* WhoHitSectionName()
 	{
 		CEntityCondition *pEntityCondition = 
-						  dynamic_cast<CEntityCondotion*>(m_tpGameObject);
+						  dynamic_cast<CEntityCondition*>(m_tpGameObject);
 		
 		if (pEntityCondition)
 			return			(pEntityCondition->GetWhoHitLastTime()->cNameSect());
