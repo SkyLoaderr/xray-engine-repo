@@ -39,7 +39,7 @@ function SPatrol:process ()
     
     --sounds
     if table.getn (self.sounds) ~= 0 then
-       if self.snd_len > 0 and ctime >= self.snd_len then 
+       if self.snd_len ~= 0 and ctime >= self.snd_len then 
           self.snd_len = 0
           self.snd_time = ctime
        else
@@ -52,6 +52,8 @@ function SPatrol:process ()
           end
        end   
     end   
+    
+    
 end
 
 
