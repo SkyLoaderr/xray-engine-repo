@@ -811,7 +811,8 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-
+	
+	m_pPhysicsShell->set_PhysicsRefObject(this);
 }
 
 void CAI_Stalker::UpdateCL(){
@@ -820,10 +821,7 @@ void CAI_Stalker::UpdateCL(){
 	if(m_pPhysicsShell)
 	{
 		clTransform.set(m_pPhysicsShell->mXFORM);
-	//	if(Device.dwTimeGlobal-m_dwDeathTime>5000)
-	//	{
-	//			m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
-	//	}
+
 	}
 	else
 		if (!g_Alive())
@@ -831,9 +829,7 @@ void CAI_Stalker::UpdateCL(){
 
 			CreateSkeleton();
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	//	Movement.GetDeathPosition(vPosition);
-	//	vPosition.y+=3.;
-		//	UpdateTransform();
+
 		Movement.DestroyCharacter();
 		PHSetPushOut();
 #endif
@@ -1024,7 +1020,7 @@ void CAI_Stalker::Update	( u32 DT )
 		}
 		//if(skel_ddelay==-10)
 		//{
-		//	m_pPhysicsShell->set_JointResistance(0.f);//5.f*hinge_force_factor1
+			//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
 			//m_pPhysicsShell->SetAirResistance()
 
 		//}

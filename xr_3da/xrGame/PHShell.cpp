@@ -280,12 +280,12 @@ void CPHShell::get_LinearVel(Fvector& velocity)
 	(*elements.begin())->get_LinearVel(velocity);
 }
 
-void CPHShell::set_PushOut(u32 time)
+void CPHShell::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
 	xr_vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
-		(*i)->set_PushOut(time);
+		(*i)->set_PushOut(time,push_out);
 	}
 }
 

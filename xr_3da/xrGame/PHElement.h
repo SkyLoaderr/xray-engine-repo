@@ -9,6 +9,7 @@ class CPHElement;
 class CPHShell;
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 void __stdcall			ContactShotMark(CDB::TRI* T,dContactGeom* c)   ;
+typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
 
 class CPHElement:  public CPhysicsElement {
 
@@ -101,7 +102,7 @@ public:
 
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
-	virtual void			set_PushOut				 (u32 time);
+	virtual void			set_PushOut				 (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void			get_LinearVel			 (Fvector& velocity);
 	virtual	void			set_BoxMass				 (const Fobb& box, float mass);
 

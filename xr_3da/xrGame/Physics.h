@@ -111,6 +111,8 @@ class CPHElement;
 class CPHShell;
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 void __stdcall			ContactShotMark(CDB::TRI* T,dContactGeom* c)   ;
-
+typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
+void __stdcall PushOutCallback(bool& do_colide,dContact& c);
+void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #endif PHYSICS_H

@@ -3,8 +3,11 @@
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
+typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
 
 void __stdcall PushOutCallback(bool& do_colide,dContact& c);
+void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
+
 struct Fcylinder;
 class CPhysicsRefObject
 {
@@ -25,25 +28,25 @@ public:
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)	= 0;
 	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)																			= 0;
 
-	virtual void			Deactivate				()											= 0;
-	virtual void			Enable					()											= 0;
+	virtual void			Deactivate				()														= 0;
+	virtual void			Enable					()														= 0;
 	
-	virtual void			setMass					(float M)									= 0;
+	virtual void			setMass					(float M)												= 0;
 
-	virtual void			setDensity				(float M)									= 0;
-	virtual float			getMass					()											= 0;
+	virtual void			setDensity				(float M)												= 0;
+	virtual float			getMass					()														= 0;
 
 	
-	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
-	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
-	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) = 0;
-	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				= 0;
-	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)		= 0;
-	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)				= 0;
-	virtual void			get_LinearVel			(Fvector& velocity)							= 0;
-	virtual void			set_PushOut				(u32 time)									= 0;
-	virtual void			SetMaterial				(u32 m)										= 0;
-	virtual void			SetMaterial				(LPCSTR m)									= 0;
+	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
+	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
+	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)				= 0;
+	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
+	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
+	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)							= 0;
+	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
+	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
+	virtual void			SetMaterial				(u32 m)													= 0;
+	virtual void			SetMaterial				(LPCSTR m)												= 0;
 	
 	virtual ~CPhysicsBase	()																	{};
 };

@@ -264,7 +264,7 @@ void CGameObject::OnH_B_Chield()
 void CGameObject::PHSetPushOut()
 {
 	if(m_pPhysicsShell)
-		m_pPhysicsShell->set_PushOut(5000);
+		m_pPhysicsShell->set_PushOut(5000,PushOutCallback1);
 }
 ///void CGameObject::OnH_A_Independent()
 //{

@@ -1298,11 +1298,11 @@ void CPHElement::get_LinearVel(Fvector& velocity)
 
 
 
-void CPHElement::set_PushOut(u32 time)
+void CPHElement::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
 	temp_for_push_out=object_contact_callback;
 
-	set_ObjectContactCallback(PushOutCallback);
+	set_ObjectContactCallback(push_out);
 	if(bActive) push_untill=Device.dwTimeGlobal+time;
 	else		push_untill=time;
 
