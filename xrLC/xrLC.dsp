@@ -510,6 +510,10 @@ SOURCE=.\NV_Library\VertexCache.h
 # End Group
 # Begin Source File
 
+SOURCE=.\ETextureParams.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\FreeImage.h
 # End Source File
 # Begin Source File
@@ -519,10 +523,6 @@ SOURCE=.\progmesh.h
 # Begin Source File
 
 SOURCE=.\std_classes.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\TextureParams.h
 # End Source File
 # Begin Source File
 
