@@ -19,18 +19,8 @@ IC	CALifeAnomalyRegistry::CALifeAnomalyRegistry	(LPCSTR section)
 
 IC	void CALifeAnomalyRegistry::clear				()
 {
-	{
-		ALife::ANOMALY_P_VECTOR_IT	I = m_anomalies.begin();
-		ALife::ANOMALY_P_VECTOR_IT	E = m_anomalies.end();
-		for ( ; I != E; ++I)
-			delete_data				(*I);
-	}
-	{
-		ALife::ANOMALY_P_VECTOR_SIT	I = m_anomaly_cross_table.begin();
-		ALife::ANOMALY_P_VECTOR_SIT	E = m_anomaly_cross_table.end();
-		for ( ; I != E; ++I)
-			(*I).clear				();
-	}
+	delete_data						(m_anomalies);
+	delete_data						(m_anomaly_cross_table);
 }
 
 IC	void CALifeAnomalyRegistry::add					(CALifeKnownAnomaly *anomaly)
