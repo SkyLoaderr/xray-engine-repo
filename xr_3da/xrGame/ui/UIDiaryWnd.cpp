@@ -277,7 +277,7 @@ void CUIDiaryWnd::SetContractTrader()
 	if(pTrader)
 	{
 		CCharacterInfo character_info;
-		if(xr_strlen( pTrader->character_profile()) )
+		if(xr_strlen( *pTrader->character_profile()) )
 		{				
 			character_info.Load(pTrader->character_profile());
 			character_info.InitSpecificCharacter(pTrader->specific_character());

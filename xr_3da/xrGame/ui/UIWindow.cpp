@@ -412,6 +412,7 @@ Irect CUIWindow::GetWndRect()
 		default:
 			NODEFAULT;
 	};
+	return Irect().null();
 }
 
 void CUIWindow::SetWndRect(int x, int y, int width, int height)
