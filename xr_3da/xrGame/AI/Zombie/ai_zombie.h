@@ -43,19 +43,24 @@ class CAI_Zombie : public CCustomMonster
 		typedef	CCustomMonster inherited;
 
 		typedef struct tagSNormalGlobalAnimations{
-			CMotionDef *tpaDeath[2];
+			CMotionDef *tpaDeath[3];
 			CMotionDef *tpaAttack[3];
 			CMotionDef *tpaIdle[2];
 			SAnimState  tWalk;
-			SAnimState  tRun;
-			CMotionDef *tRunAttack;
+			CMotionDef *tWalkForwardCSIP;
 			CMotionDef *tpTurnLeft;
 			CMotionDef *tpTurnRight;
 		}SNormalGlobalAnimations;
 
+		typedef struct tagSNormalTorsoAnimations{
+			CMotionDef *tpDamageLeft;
+			CMotionDef *tpDamageRight;
+		}SNormalTorsoAnimations;
+
 		// normal animations
 		typedef struct tagSNormalAnimations{
 			SNormalGlobalAnimations tGlobal;
+			SNormalTorsoAnimations tTorso;
 		}SNormalAnimations;
 
 		typedef struct tagSZombieAnimations{
