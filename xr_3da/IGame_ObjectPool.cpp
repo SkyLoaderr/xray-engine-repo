@@ -16,7 +16,19 @@ void IGame_ObjectPool::load	()
 {
 	R_ASSERT			(map_POOL.empty());
 	if (strstr(Core.Params,"-noprefetch"))	return;
+/*
+	[prefetch_single]
+	<class> = <count>
+	...
+	[prefetch_deathmatch]
+	<class> = <count>
 
+	[stalker_mp]
+	$prefetch					= 32
+	$prefetch_deathmatch		= 32
+	...
+	$prefetch_teamdeathmatch	= 32
+*/
 	u32	mem_0			= Memory.mem_usage();
 	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 
@@ -28,7 +40,7 @@ void IGame_ObjectPool::load	()
 	{
 		if (pSettings->line_exist(*S->Name,"$prefetch"))
 		{
-			Msg					("* prefetching: %s",	*S->Name);
+			Msg					("* prefetching: %s",	*S->Name); 
 			int		count		=	pSettings->r_s32	(*S->Name,"$prefetch");
 			R_ASSERT2			((count>0) && (count<=128), "Too many objects for prefetching");
 					count		/=	4;

@@ -50,6 +50,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,l
 		m_vR.set(0,0,0);
 		m_bMakeCubeMap		= FALSE;
 		m_bMakeScreenshot	= FALSE;
+		m_bMakeLevelMap		= FALSE;
 
 		m_fSpeed0		= pSettings->r_float("demo_record","speed0");
 		m_fSpeed1		= pSettings->r_float("demo_record","speed1");
@@ -62,6 +63,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,l
 	} else {
 		fLifeTime = -1;
 	}
+	m_bOverlapped		= FALSE;
 }
 
 CDemoRecord::~CDemoRecord()
@@ -77,11 +79,11 @@ static Fvector cmNorm[6]	= {{0.f,1.f,0.f}, {0.f,1.f,0.f}, {0.f,0.f,-1.f},{0.f,0.
 static Fvector cmDir[6]		= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.f,0.f},{0.f,0.f,1.f}, {0.f,0.f,-1.f}};
 
 static Flags32	s_hud_flag	= {0};
-static u32		s_idx;
+static Flags32	s_dev_flags	= {0};
 
 void CDemoRecord::MakeScreenshotFace()
 {
-	switch (s_idx){
+	switch (m_Stage){
 	case 0:
 		s_hud_flag.assign	(psHUD_Flags);
 		psHUD_Flags.assign	(0);
@@ -92,37 +94,78 @@ void CDemoRecord::MakeScreenshotFace()
 		m_bMakeScreenshot= FALSE;
 	break;
 	}
-	s_idx++;
+	m_Stage++;
+}
+
+void CDemoRecord::MakeLevelMapProcess()
+{
+	switch (m_Stage){
+	case 0: 
+		s_dev_flags			= psDeviceFlags;
+		psDeviceFlags.zero	();
+		psDeviceFlags.set	(rsClearBB|rsFullscreen,TRUE);
+		if (!psDeviceFlags.equal(s_dev_flags,rsFullscreen))Device.Reset();
+		break;
+	case DEVICE_RESET_PRECACHE_FRAME_COUNT+1:{
+		m_bOverlapped		= TRUE;
+		s_hud_flag.assign	(psHUD_Flags);
+		psHUD_Flags.assign	(0);
+
+		Fbox bb								= g_pGameLevel->ObjectSpace.GetBoundingVolume();
+
+		// build camera matrix
+		bb.getcenter						(Device.vCameraPosition);
+		Device.vCameraDirection.set			( 0.f,-1.f,0.f	);
+		Device.vCameraTop.set				( 0.f,0.f,1.f	);
+		Device.vCameraRight.set				( 1.f,0.f,0.f	);
+		Device.mView.build_camera_dir		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop);
+
+		bb.xform							(Device.mView);
+
+		// build project matrix
+		Device.mProject.build_projection_ortho(bb.max.x-bb.min.x,bb.max.y-bb.min.y,bb.min.z,bb.max.z);
+		}break;
+	case DEVICE_RESET_PRECACHE_FRAME_COUNT+2:{
+		m_bOverlapped				= FALSE;
+		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,*g_pGameLevel->name());
+		psHUD_Flags.assign			(s_hud_flag);
+		BOOL bDevReset				= !psDeviceFlags.equal(s_dev_flags,rsFullscreen);
+		psDeviceFlags				= s_dev_flags;
+		if (bDevReset)				Device.Reset();
+		m_bMakeLevelMap				= FALSE;
+		}break;
+	}
+	m_Stage++;
 }
 
 void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 {
 	string32 buf;
-	switch (s_idx){
+	switch (m_Stage){
 	case 0:
-		N.set		(cmNorm[s_idx]);
-		D.set		(cmDir[s_idx]);
+		N.set		(cmNorm[m_Stage]);
+		D.set		(cmDir[m_Stage]);
 		s_hud_flag.assign(psHUD_Flags);
 		psHUD_Flags.assign	(0);
 	break;
-	case 1: 
+	case 1:
 	case 2:
 	case 3:
 	case 4:
 	case 5:
-		N.set		(cmNorm[s_idx]);
-		D.set		(cmDir[s_idx]);
-		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(s_idx,buf,10));
+		N.set		(cmNorm[m_Stage]);
+		D.set		(cmDir[m_Stage]);
+		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(m_Stage,buf,10));
 	break;
 	case 6:
-		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(s_idx,buf,10));
+		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(m_Stage,buf,10));
 		N.set		(m_Camera.j);
 		D.set		(m_Camera.k);
 		psHUD_Flags.assign(s_hud_flag);
 		m_bMakeCubeMap = FALSE;
 	break;
 	}
-	s_idx++;
+	m_Stage++;
 }
 
 BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& fFar, float& fAspect)
@@ -135,6 +178,8 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		N.set(m_Camera.j);
 		D.set(m_Camera.k);
 		P.set(m_Camera.c);
+	}else if (m_bMakeLevelMap){
+		MakeLevelMapProcess();
 	}else if (m_bMakeCubeMap){
 		MakeCubeMapFace(D,N);
 		P.set(m_Camera.c);
@@ -143,12 +188,17 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		if (psHUD_Flags.test(HUD_DRAW)){
 			if ((Device.dwTimeGlobal/500)%2==0) {
 				pApp->pFontSystem->SetSize	(0.02f);
-				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
+//.				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
 				pApp->pFontSystem->SetColor	(color_rgba(255,0,0,255));
-				pApp->pFontSystem->OutSet	(0,+.05f);
+				pApp->pFontSystem->OutSet	(0,+.035f);
 				pApp->pFontSystem->OutNext	("%s","RECORDING");
 				pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
-				pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, F12=ScreenShot, ESC=Quit)");
+				pApp->pFontSystem->OutSkip	();
+				pApp->pFontSystem->OutNext	("SPACE = Append Key");
+				pApp->pFontSystem->OutNext	("BACK  = Cube Map");
+				pApp->pFontSystem->OutNext	("ESC   = Quit");
+				pApp->pFontSystem->OutNext	("F11   = Level Map ScreenShot");
+				pApp->pFontSystem->OutNext	("F12   = ScreenShot");
 			}
 		}
 
@@ -204,6 +254,7 @@ void CDemoRecord::IR_OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
 	if (dik == DIK_BACK)	MakeCubemap();
+	if (dik == DIK_F11)		MakeLevelMapScreenshot();
 	if (dik == DIK_F12)		MakeScreenshot();
 	if (dik == DIK_ESCAPE)	fLifeTime = -1; //g_pGameLevel->Cameras.RemoveEffector(cefDemo);
 	if (dik == DIK_RETURN){	
@@ -267,11 +318,17 @@ void CDemoRecord::RecordKey			()
 void CDemoRecord::MakeCubemap		()
 {
 	m_bMakeCubeMap	= TRUE;
-	s_idx			= 0;
+	m_Stage			= 0;
 }
 
 void CDemoRecord::MakeScreenshot	()
 {
 	m_bMakeScreenshot = TRUE;
-	s_idx = 0;
+	m_Stage = 0;
+}
+
+void CDemoRecord::MakeLevelMapScreenshot()
+{
+	m_bMakeLevelMap	= TRUE;
+	m_Stage = 0;
 }

@@ -20,6 +20,7 @@ private:
 	Fvector		m_HPB;
 	Fvector		m_Position;
 	Fmatrix		m_Camera;
+	u32			m_Stage;
 
 	Fvector		m_vT;
     Fvector		m_vR;
@@ -28,6 +29,8 @@ private:
 
 	BOOL		m_bMakeCubeMap;
 	BOOL		m_bMakeScreenshot;
+	BOOL		m_bMakeLevelMap;
+	BOOL		m_bOverlapped;
 
 	float		m_fSpeed0;
 	float		m_fSpeed1;
@@ -39,19 +42,22 @@ private:
 	float		m_fAngSpeed3;
 
 	void		MakeCubeMapFace			(Fvector &D, Fvector &N);
+	void		MakeLevelMapProcess		();
 	void		MakeScreenshotFace		();
 	void		RecordKey				();
 	void		MakeCubemap				();
 	void		MakeScreenshot			();
+	void		MakeLevelMapScreenshot	();
 public:
 				CDemoRecord				(const char *name, float life_time=60*60*1000);
 	virtual		~CDemoRecord();
 
 	virtual void IR_OnKeyboardPress		(int dik);
-	virtual void IR_OnKeyboardHold			(int dik);
+	virtual void IR_OnKeyboardHold		(int dik);
 	virtual void IR_OnMouseMove			(int dx, int dy);
 	virtual void IR_OnMouseHold			(int btn);
 	
+	virtual BOOL Overlapped				(){return m_bOverlapped;}
 	virtual	BOOL Process				(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect);
 };
 

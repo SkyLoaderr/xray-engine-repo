@@ -168,14 +168,15 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	fAspect						= fAspect*dst	+ (fASPECT_Dest*aspect)*src;
 
 	// Effector
+	BOOL bOverlapped			= FALSE;
 	if (m_Effectors.size()){
 		for (int i=m_Effectors.size()-1; i>=0; i--){
-			CEffector* eff = m_Effectors[i];
+			CEffector* eff		= m_Effectors[i];
 			Fvector sp=vPosition;
 			Fvector sd=vDirection;
 			Fvector sn=vNormal;
-			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect))
-			{
+			if ((eff->fLifeTime>0)&&eff->Process(vPosition,vDirection,vNormal,fFov,fFar,fAspect)){
+				bOverlapped		|= eff->Overlapped();
 				if (eff->Affected()){
 					sp.sub(vPosition,sp);	sd.sub(vDirection,sd);	sn.sub(vNormal,sn);
 					affected_vPosition.add	(sp);
@@ -220,18 +221,20 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		pp_affected				=	pp_identity;
 	}
 	
-	// Device params
-	Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
-	
-	Device.vCameraPosition.set	( vPosition		);
-	Device.vCameraDirection.set	( vDirection	);
-	Device.vCameraTop.set		( vNormal		);
-	Device.vCameraRight.set		( vRight		);
-	
-	// projection
-	Device.fFOV					= fFov;
-	Device.fASPECT				= fAspect;
-	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
+	if (FALSE==bOverlapped){
+		// Device params
+		Device.mView.build_camera_dir(vPosition,vDirection,vNormal);
+
+		Device.vCameraPosition.set	( vPosition		);
+		Device.vCameraDirection.set	( vDirection	);
+		Device.vCameraTop.set		( vNormal		);
+		Device.vCameraRight.set		( vRight		);
+
+		// projection
+		Device.fFOV					= fFov;
+		Device.fASPECT				= fAspect;
+		Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
+	}
 
 	// postprocess
 	IRender_Target*		T	= ::Render->getTarget();

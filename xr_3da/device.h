@@ -18,6 +18,7 @@ class	ENGINE_API	CGammaControl;
 #include "R_Backend.h"
 
 #define VIEWPORT_NEAR 0.2f
+#define DEVICE_RESET_PRECACHE_FRAME_COUNT 10
 
 // refs
 class ENGINE_API CRenderDevice 

@@ -47,7 +47,7 @@ void CRenderDevice::Reset		()
 	fHeight_2				= float(dwHeight/2);
 	Resources->reset_end	();
 	_SetupStates			();
-	PreCache				(10);
+	PreCache				(DEVICE_RESET_PRECACHE_FRAME_COUNT);
 	u32 tm_end				= TimerAsync();
 	Msg						("*** RESET [%d ms]",tm_end-tm_start);
 	ShowCursor				(FALSE);
