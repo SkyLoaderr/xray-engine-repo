@@ -136,6 +136,31 @@ void CBreakableObject::DestroyUnbroken()
 	xr_delete(m_pUnbrokenObject);
 }
 
+//void CBreakableObject::CreateBroken()
+//{
+	//CPhysicsShell* shell=P_create_splited_Shell();
+	//shell->preBuild_FromKinematics(PKinematics(Visual()));
+	//shell->mXFORM.set(XFORM());
+	//shell->set_PhysicsRefObject(this);
+	////m_Shell->Build();
+	//shell->setDensity(1000.f);
+	//dMass m;
+	//dMassSetBox(&m,m_Shell->getMass()/100.f,1.f,1.f,1.f);
+	//shell->addEquelInertiaToEls(m);
+	//shell->SmoothElementsInertia(0.3f);
+	////shell->SetAirResistance(0.002f*skel_airr_lin_factor,
+	////	0.3f*skel_airr_ang_factor);
+	//ELEMENT_STORAGE& elements = pshell->Elements();
+	//ELEMENT_I i=elements.begin(),e=elements.end();
+	//for(;e!=i;i++)
+	//{
+	//	m_Shells.push_back(P_create_splited_Shell());
+	//	m_Shells.back()->mXFORM.set(XFORM());
+	//	m_Shells.back()->add_Element	(*i);
+	//	m_Shells.back()->Build();
+	//}
+
+//}
 void CBreakableObject::CreateBroken()
 {
 	m_Shell=P_create_splited_Shell();
@@ -150,6 +175,9 @@ void CBreakableObject::CreateBroken()
 	dMassSetBox(&m,m_Shell->getMass()/100.f,1.f,1.f,1.f);
 	m_Shell->addEquelInertiaToEls(m);
 	m_Shell->SmoothElementsInertia(0.3f);
+	Fobb b;
+	Visual()->vis.box.getradius(b.m_halfsize);
+	m_Shell->SetMaxAABBRadius(_max(_max(b.m_halfsize.x,b.m_halfsize.y),b.m_halfsize.z)*2.f);//+2.f
 }
 
 void CBreakableObject::ActivateBroken()
@@ -197,7 +225,7 @@ void CBreakableObject::Break()
 		pos.set(Random.randF(-0.3f,0.3f),Random.randF(-0.3f,0.3f),Random.randF(-0.3f,0.3f));
 		dir.set(Random.randF(-0.3f,0.3f),Random.randF(-0.3f,0.3f),Random.randF(-0.3f,0.3f));
 		dir.normalize();
-		m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,Random.randF(1.f,10.f),0);
+		m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,Random.randF(0.5f,3.f),0);
 	}
 	m_break_time=Device.dwTimeGlobal;
 }
@@ -271,14 +299,11 @@ void CBreakableObject::CheckHitBreak(float power,ALife::EHitType hit_type)
 
 void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)
 {
-	
 	if(!m_pPhysicsShell) return;
-	
-		Fvector pos;pos.set(0.f,0.f,0.f);
-		u16 el_num=m_pPhysicsShell->get_ElementsNumber();
-		for(u16 i=0;i<el_num;i++)	
-			m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,impulse/el_num,0);
-	
+	Fvector pos;pos.set(0.f,0.f,0.f);
+	u16 el_num=m_pPhysicsShell->get_ElementsNumber();
+	for(u16 i=0;i<el_num;i++)	
+		m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,impulse/el_num,0);
 }
 
 void CBreakableObject::Init()
@@ -288,7 +313,7 @@ void CBreakableObject::Init()
 	m_Shell					= NULL;
 	bRemoved				= false;
 	m_max_frame_damage		= 0.f;
-	b_resived_damage		=false;
+	b_resived_damage		= false;
 	//m_damage_threshold		=5.f;
 	//m_health_threshhold		=0.f
 }

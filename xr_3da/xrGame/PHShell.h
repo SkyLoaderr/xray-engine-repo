@@ -16,8 +16,9 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
-	dSpaceID			    m_space;
 	CPHShellSplitterHolder* m_spliter_holder;
+protected:
+	dSpaceID			    m_space;
 public:
 	Fmatrix					m_object_in_root;
 	CPHShell								();							
@@ -63,9 +64,9 @@ public:
 	virtual	void			RunSimulation			(bool place_current_forms=true);
 	virtual	void			net_Import				(NET_Packet& P);
 	virtual	void			net_Export				(NET_Packet& P);
-	void			PresetActive			();
-	void			AfterSetActive			();
-	void			PureActivate			();
+			void			PresetActive			();
+			void			AfterSetActive			();
+			void			PureActivate			();
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
@@ -122,6 +123,7 @@ public:
 	virtual void				set_ApplyByGravity		  (bool flag);
 	virtual void				SetMaterial				  (u16 m);
 	virtual void				SetMaterial				  (LPCSTR m);
+	virtual ELEMENT_STORAGE&	Elements				  (){return elements;}
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);
 	virtual u16					get_ElementsNumber		  (){return (u16)elements.size();}
