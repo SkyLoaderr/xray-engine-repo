@@ -110,9 +110,11 @@ void CProjector::shedule_Update	(u32 dt)
 
 void CProjector::TurnOn()
 {
+	if (light_render->get_active()) return;
+
 	light_render->set_active(true);
 	glow_render->set_active (true);
-	
+
 	CKinematics *visual = smart_cast<CKinematics*>(Visual());
 
 	visual->LL_SetBoneVisible			(guid_bone, TRUE, TRUE);
@@ -122,6 +124,8 @@ void CProjector::TurnOn()
 
 void CProjector::TurnOff()
 {
+	if (!light_render->get_active()) return;
+	
 	light_render->set_active(false);
 	glow_render->set_active (false);
 	
@@ -181,7 +185,7 @@ bool CProjector::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 		return		(false);
 	
 	CScriptWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
-	
+
 	(!l_tWatchAction.m_tpObjectToWatch) ?	SetTarget(l_tWatchAction.m_tTargetPoint) : 
 											SetTarget(l_tWatchAction.m_tpObjectToWatch->Position());
 
