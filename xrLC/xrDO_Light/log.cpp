@@ -307,7 +307,7 @@ void Log(const char *msg, const char *dop) {
 	LOut(buf);
 }
 
-void Log(const char *msg, DWORD dop) {
+void Log(const char *msg, u32 dop) {
 	char buf[256];
 
 	sprintf(buf,"%s %d",msg,dop);
