@@ -276,6 +276,18 @@ void xrSE_Target::FillProp			(LPCSTR pref, PropValueVec& values)
 }
 #endif
 
+//***** Target Assault
+void xrSE_Target::STATE_Read		(NET_Packet& P, u16 size)	{};
+void xrSE_Target::STATE_Write		(NET_Packet& P)				{};
+void xrSE_Target::UPDATE_Read		(NET_Packet& P)				{};
+void xrSE_Target::UPDATE_Write		(NET_Packet& P)				{};
+#ifdef _EDITOR
+void xrSE_Target::FillProp			(LPCSTR pref, PropValueVec& values)
+{
+	inherited::FillProp(pref,values);
+}
+#endif
+
 //***** Health
 void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
 void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
@@ -498,7 +510,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_W_FORT:		return new	xrSE_Weapon;
 	case CLSID_OBJECT_W_BINOCULAR:	return new	xrSE_Weapon;
 	case CLSID_OBJECT_HEALTH:		return new	xrSE_Health;
-	case CLSID_TARGET:				return new	xrSE_Target;
+	case CLSID_TARGET_ASSAULT:		return new	xrSE_Target_Assault;
 	}
 	return 0;
 }
