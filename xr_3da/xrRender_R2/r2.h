@@ -90,6 +90,8 @@ public:
 	light_Package												LP_normal;
 	light_Package												LP_pending;
 
+	xr_vector<Fbox3>											main_coarse_structure;
+
 	ref_str														c_sbase;
 	ref_str														c_lmaterial;
 

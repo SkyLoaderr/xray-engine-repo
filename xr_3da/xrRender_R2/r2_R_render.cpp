@@ -17,8 +17,10 @@ void CRender::render_main	()
 	phase									= PHASE_NORMAL;
 
 	// Calculate sector(s) and their objects
+	set_Recorder	(&main_coarse_structure);
 	if (pLastSector)
 	{
+
 		// Traverse sector/portal structure
 		PortalTraverser.traverse	
 			(
@@ -107,6 +109,7 @@ void CRender::render_main	()
 		g_pGameLevel->pHUD->Render_First					();	
 		g_pGameLevel->pHUD->Render_Last						();	
 	}
+	set_Recorder			(NULL);
 }
 
 void CRender::Render		()

@@ -124,6 +124,15 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 	} } } } } }
+
+#if RENDER==R_R2
+	if (val_recorder)			{
+		Fbox3		temp		;
+		Fmatrix&	xf			= *RI.val_pTransform;
+		temp.xform	(pVisual->vis.box,xf);
+		val_recorder->push_back	(temp);
+	}
+#endif
 }
 
 void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
@@ -202,6 +211,12 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 	} } } } } }
+
+#if RENDER==R_R2
+	if (val_recorder)			{
+		val_recorder->push_back	(pVisual->vis.box	);
+	}
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

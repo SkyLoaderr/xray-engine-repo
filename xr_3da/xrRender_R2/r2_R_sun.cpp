@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "..\irenderable.h"
 
+const	float	tweak_COP_initial_offs			= - 100000.f;
+const	float	tweak_ortho_xform_initial_offs	= - 1000.f	;
+
 //////////////////////////////////////////////////////////////////////////
 // OLES: naive builder of infinite volume expanded from base frustum towards 
 //		 light source. really slow, but it works for our simple usage :)
@@ -135,16 +138,21 @@ void CRender::render_sun				()
 
 	// Lets begin from base frustum
 	DumbConvexVolume		hull;
-	hull.points.reserve		(8);
-	for						(int p=0; p<8; p++)	{
-		Fvector3				xf;
-		fullxform_inv.transform	(xf,corners[p]);
-		hull.points.push_back	(xf);
-	}
-	for (int plane=0; plane<6; plane++)	{
-		hull.polys.push_back(DumbConvexVolume::_poly());
-		for (int pt=0; pt<4; pt++)	
-			hull.polys.back().points.push_back(facetable[plane][pt]);
+	D3DXVECTOR3				frustumPnts	[8];		// in EYE space
+	{
+		hull.points.reserve		(8);
+		for						(int p=0; p<8; p++)	{
+			Fvector3				xf;
+			fullxform_inv.transform	(xf,corners[p]);
+			hull.points.push_back	(xf);
+			Device.mView.transform	(xf);			// move into EYE space
+			frustumPnts[p]			= D3DXVECTOR3	(xf.x, xf.y, xf.z);
+		}
+		for (int plane=0; plane<6; plane++)	{
+			hull.polys.push_back(DumbConvexVolume::_poly());
+			for (int pt=0; pt<4; pt++)	
+				hull.polys.back().points.push_back(facetable[plane][pt]);
+		}
 	}
 
 	// Compute volume(s) - something like a frustum for infinite directional light
@@ -173,7 +181,7 @@ void CRender::render_sun				()
 		cull_sector	= largest_sector;
 
 		// COP - 100 km away
-		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, - 100000.f);
+		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, tweak_COP_initial_offs	);
 
 		// Create frustum for query
 		for (int p=0; p<cull_planes.size(); p++)
@@ -181,8 +189,42 @@ void CRender::render_sun				()
 	}
 
 	// Compute approximate ortho transform for light-source
+	D3DXMATRIX	lightSpaceBasis	;  
+	D3DXMATRIX	lightSpaceOrtho	;
+	D3DXMATRIX	m_LightViewProj	;
+	Fbox3		frustumBox		;
 	{
-		//. ?????????????????????????????????
+		//	Prepare to interact with D3DX code
+		D3DXVECTOR3			m_lightDir	= D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
+		const D3DXMATRIX&	m_View		= *((D3DXMATRIX*)(&Device.mView));
+
+		//  we need to transform the eye into the light's post-projective space.
+		//  however, the sun is a directional light, so we first need to find an appropriate
+		//  rotate/translate matrix, before constructing an ortho projection.
+		//  this matrix is a variant of "light space" from LSPSMs, with the Y and Z axes permuted
+		D3DXVECTOR3				leftVector, upVector, viewVector;
+		const D3DXVECTOR3		eyeVector	( 0.f, 0.f, -1.f );			//  eye is always -Z in eye space
+
+		//  code copied straight from BuildLSPSMProjectionMatrix
+		D3DXVec3TransformNormal	( &upVector,	&m_lightDir, &m_View );	// lightDir is defined in eye space, so xform it
+		D3DXVec3Cross			( &leftVector,	&upVector,	&eyeVector	);
+		D3DXVec3Normalize		( &leftVector,	&leftVector );
+		D3DXVec3Cross			( &viewVector,	&upVector,	&leftVector );
+
+		lightSpaceBasis._11 = leftVector.x; lightSpaceBasis._12 = viewVector.x; lightSpaceBasis._13 = -upVector.x; lightSpaceBasis._14 = 0.f;
+		lightSpaceBasis._21 = leftVector.y; lightSpaceBasis._22 = viewVector.y; lightSpaceBasis._23 = -upVector.y; lightSpaceBasis._24 = 0.f;
+		lightSpaceBasis._31 = leftVector.z; lightSpaceBasis._32 = viewVector.z; lightSpaceBasis._33 = -upVector.z; lightSpaceBasis._34 = 0.f;
+		lightSpaceBasis._41 = 0.f;          lightSpaceBasis._42 = 0.f;          lightSpaceBasis._43 = 0.f;        lightSpaceBasis._44 = 1.f;
+
+		// rotate the view frustum into light space, find AABB
+		D3DXVec3TransformCoordArray	( frustumPnts, sizeof(D3DXVECTOR3), frustumPnts, sizeof(D3DXVECTOR3), &lightSpaceBasis, sizeof(frustumPnts)/sizeof(D3DXVECTOR3) );
+		frustumBox.invalidate		();
+		for (int p=0; p<8; p++)	frustumBox.modify	(frustumPnts[p].x, frustumPnts[p].y, frustumPnts[p].z);
+
+		// build initial ortho-xform
+		D3DXMatrixOrthoOffCenterLH	( &lightSpaceOrtho, frustumBox.min.x, frustumBox.max.x, frustumBox.min.y, frustumBox.max.y, frustumBox.min.z-tweak_ortho_xform_initial_offs, frustumBox.max.z);
+		D3DXMatrixMultiply			( &m_LightViewProj, &lightSpaceBasis,	&lightSpaceOrtho);
+		D3DXMatrixMultiply			( &m_LightViewProj, &m_View,			&m_LightViewProj);	//.?
 	}
 
 	// Begin SMAP-render
@@ -195,11 +237,44 @@ void CRender::render_sun				()
 	}
 
 	// Fill the database
-	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, fuckingsun->X.S.combine, cull_COP, TRUE);
+	xr_vector<Fbox3>&		s_receivers			= main_coarse_structure;
+	xr_vector<Fbox3>		s_casters;			s_casters.reserve	(s_receivers.size());
+	set_Recorder								(&s_casters);
+	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, *((Fmatrix*)&m_LightViewProj), cull_COP, TRUE);
+	set_Recorder								(NULL);
 
 	// Compute REAL sheared xform based on receivers/casters information
 	{
-		//. ?????????????????????????????????
+		//  transform the shadow caster bounding boxes into light projective space.  
+		//  we want to translate along the Z axis so that all shadow casters are 
+		//	in front of the near plane.
+		float		min_z = 1e32f,	max_z=-1e32f;
+		Fmatrix&	minmax_xform	= *((Fmatrix*)&m_LightViewProj);
+		for		(int c=0; c<s_casters.size(); c++)
+		{
+			Fvector3				pt;
+			minmax_xform.transform	(pt,s_casters[c].min);
+			min_z	= _min			( min_z, pt.z );
+			max_z	= _max			( max_z, pt.z );
+			minmax_xform.transform	(pt,s_casters[c].max);
+			min_z	= _min			( min_z, pt.z );
+			max_z	= _max			( max_z, pt.z );
+		}
+		min_z	= _min	( min_z, frustumBox.min.z );
+		max_z	= _max	( max_z, frustumBox.max.z );
+		if ( min_z <= 1.f )
+		{
+			D3DXMATRIX				lightSpaceTranslate;
+			D3DXMatrixTranslation	( &lightSpaceTranslate, 0.f, 0.f, -min_z + 1.f );
+			max_z					= -min_z + max_z + 1.f;
+			min_z					= 1.f;
+			D3DXMatrixMultiply			( &lightSpaceBasis, &lightSpaceBasis, &lightSpaceTranslate );
+
+			// update view frustum, find AABB
+			D3DXVec3TransformCoordArray	( frustumPnts, sizeof(D3DXVECTOR3), frustumPnts, sizeof(D3DXVECTOR3), &lightSpaceTranslate, sizeof(frustumPnts)/sizeof(D3DXVECTOR3) );
+			frustumBox.invalidate		();
+			for (int p=0; p<8; p++)		frustumBox.modify	(frustumPnts[p].x, frustumPnts[p].y, frustumPnts[p].z);
+		}
 	}
 
 	// Render shadow-map
@@ -209,7 +284,7 @@ void CRender::render_sun				()
 		if ( bNormal || bSpecial)	{
 			Target.phase_smap_direct			(fuckingsun		);
 			RCache.set_xform_world				(Fidentity		);
-			RCache.set_xform_view				(fuckingsun->X.D.view		);
+			RCache.set_xform_view				(Fidentity		);
 			RCache.set_xform_project			(fuckingsun->X.D.project	);
 			r_dsgraph_render_graph				(0);
 			fuckingsun->X.D.transluent			= FALSE;

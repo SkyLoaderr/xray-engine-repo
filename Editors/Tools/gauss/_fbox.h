@@ -53,6 +53,7 @@ public:
 	IC	BOOL	similar		(SelfCRef b)		const		{ return min.similar(b.min) && max.similar(b.max); };
 	
 	IC	SelfRef	modify		(const Tvector &p)				{ min.min(p); max.max(p);				return *this;	}
+	IC	SelfRef	modify		(T x, T y, T z)					{ _vector3<T> tmp = {x,y,z}; return		modify(tmp);	}
 	IC	SelfRef	merge		(SelfCRef b)					{ modify(b.min); modify(b.max);			return *this;	};
 	IC	SelfRef	merge		(SelfCRef b1, SelfCRef b2)		{ invalidate(); merge(b1); merge(b2);	return *this;	}
 	IC	SelfRef	xform		(SelfCRef B, const Tmatrix &m)
