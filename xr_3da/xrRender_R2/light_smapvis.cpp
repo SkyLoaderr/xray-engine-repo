@@ -39,11 +39,17 @@ void	smapvis::begin		()
 }
 void	smapvis::end		()
 {
+	// Gather stats
+	u32	ts,td;
+	RImplementation.get_Counters	(ts,td);
+	RImplementation.stats.ic_total	+=	ts;
+	RImplementation.set_Feedback	(0,0);
+
 	switch	(state)			{
 	case state_counting:
 		// switch to 'working'
 		if (sleep())		{
-			RImplementation.get_Counters	(test_count,test_current);	// test_current - dummy
+			test_count						= ts;
 			test_current					= 0;
 			state							= state_working;
 		}
@@ -65,8 +71,6 @@ void	smapvis::end		()
 		// nothing to do
 		break;
 	}
-
-	RImplementation.set_Feedback	(0,0);
 }
 
 void	smapvis::flushoccq	()
@@ -92,6 +96,7 @@ void	smapvis::flushoccq	()
 
 void	smapvis::mark				()
 {
+	RImplementation.stats.ic_culled	+= invisible.size	();
 	u32		marker			= RImplementation.marker + 1;	// we are called befor marker increment
 	for		(u32 it=0; it<invisible.size(); it++)
 		invisible[it]->vis.frame	= marker;				// this effectively disables processing
