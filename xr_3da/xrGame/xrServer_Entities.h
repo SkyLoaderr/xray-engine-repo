@@ -168,7 +168,7 @@ xrSE_DECLARE_END
 
 //***** Car
 xrSE_DECLARE_BEGIN(xrSE_Car,xrServerEntity)
-									xrSE_Car		(LPCSTR caSection)
+									xrSE_Car		(LPCSTR caSection) : xrServerEntity(caSection)
 	{
 	};
 xrSE_DECLARE_END
