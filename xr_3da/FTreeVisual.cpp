@@ -95,8 +95,10 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);															// view-projection
 
 	// render
+	RCache.set_Shader		(hShader);
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+	RCache.set_VS			(0);
 }
 
 #define PCOPY(a)	a = pFrom->a
