@@ -14,8 +14,11 @@
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 class CSE_ALifeSimulator;
-class CSE_ALifeItemWeapon;
 #endif
+#endif
+
+#ifdef _EDITOR
+class CSE_ALifeItemWeapon;
 #endif
 
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
