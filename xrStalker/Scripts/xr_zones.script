@@ -3,7 +3,6 @@
 Чугай Саша
 
 Сделать:
-	- free stalker
 	- если нету такого типа
 	- fraction types->gulag
 
@@ -264,11 +263,11 @@ function zone_fractions:__init( zone, ini )
 
 		if ini:line_exist( sect, "type" ) then
 			ffi.type                            = ini:r_string( sect, "type" )
-			ffi.idle_min, ffi.idle_max          = r_nums( ini, sect, "idle",       12, 24 )
-			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   48, 72 )
-			ffi.prefix                          = r_str ( ini, sect, "prefix", self.zone:name() )
-			ffi.capacity                        = r_num ( ini, sect, "capacity",  100 )
-			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24, 48 )
+			ffi.idle_min, ffi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
+			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
+			ffi.prefix                          = r_str ( ini, sect, "prefix",     self.zone:name() )
+			ffi.capacity                        = r_num ( ini, sect, "capacity",   100 )
+			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24,     48 )
 			ffi.squad                           = r_num ( ini, sect, "squad" )
 			ffi.group                           = r_num ( ini, sect, "group" )
 		else
@@ -307,26 +306,9 @@ end
 
 -- отпустить сталкера
 function zone_fractions:free_stalker( obj )
-	local id = obj:id()
+	self.fraction:removeObject( obj )
 
-	self.fraction.Object[id] = nil
-
-	for k, v in xr_motivator.storage[id] do
-		if k == "sleeper" or
-		   k == "camper" or
-		   k == "scout" or
-		   k == "follower" or
-		   k == "patrol" or
-		   k == "guard" or
-		   k == "bodyguard" or
-		   k == "search" or
-		   k == "walker"
-		then
-			v.enabled = false
-		end
-	end
-
-	local backup = self.stalkers[id]
+	local backup = self.stalkers[obj:id()]
 	obj:change_team( obj:team(), backup.squad, backup.group )
 
 	printf( "[zone %s] removing %s from fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
@@ -363,7 +345,7 @@ function zone_fractions:remove_fraction()
 		self:free_stalker( obj )
 	end
 
-	self.fraction  = nil
+	self.fraction = nil
 	self.idle_end = math.random( self.fraction_params.idle_min, self.fraction_params.idle_max ) * h2ms + game.time()
 
 	printf( "[zone %s] removing zonal fraction type=%s", self.zone:name(), self.fraction_type )
