@@ -17,6 +17,7 @@ public:
 	CUITabButton();
 	virtual ~CUITabButton();
 	// appearence
+	virtual void Init(int x, int y, int width, int height);
 	virtual void InitTexture(LPCSTR tex_name);
 	virtual void InitTexture(LPCSTR tex_norm, LPCSTR tex_press, LPCSTR tex_disable);	
 	virtual void SetColor(u32 color_norm, u32 color_press, u32 color_disable);	
@@ -24,6 +25,7 @@ public:
 
 	// behavior
 	virtual void Draw();
+	virtual void Update();
 	virtual void AssociateWindow(CUIFrameWindow* pWindow);
 	virtual CUIFrameWindow* GetAssociatedWindow();
 	//virtual void Enable(bool bEnable);

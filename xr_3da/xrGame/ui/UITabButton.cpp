@@ -1,7 +1,7 @@
 // File:        UITabButton.cpp
 // Description: 
 // Created:     19.11.2004
-// Last Change: 19.11.2004
+// Last Change: 27.11.2004
 // Author:      Serhiy Vynnychenko
 // Mail:        narrator@gsc-game.kiev.ua
 //
@@ -16,7 +16,7 @@ CUITabButton::CUITabButton(){
 	this->m_psiCurrentState = NULL;
 	this->m_bUseDisabledTextColor = false;
 	this->m_pAssociatedWindow = NULL;
-	this->m_bTextureEnable = true;
+	this->m_bTextureEnable = false;
 	this->m_dwEnabledTextColor = 0xFFFFFFFF;
 }
 
@@ -24,11 +24,19 @@ CUITabButton::~CUITabButton(){
 
 }
 
+void CUITabButton::Init(int x, int y, int width, int height){
+	CUIWindow::Init(x, y, width, height);
+}
+
 
 void CUITabButton::InitTexture(LPCSTR tex_norm, LPCSTR tex_press, LPCSTR tex_disable){
-	this->m_siEnabledNormalState.Init (tex_norm,    "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
-	this->m_siEnabledPressedState.Init(tex_press,   "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
-	this->m_siDisabledState.Init      (tex_disable, "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
+	RECT rect = this->GetAbsoluteRect();
+	this->m_siEnabledNormalState.Init (tex_norm,    "hud\\default", rect.left, rect.top, alNone);
+	this->m_siEnabledPressedState.Init(tex_press,   "hud\\default", rect.left, rect.top, alNone);
+	this->m_siDisabledState.Init      (tex_disable, "hud\\default", rect.left, rect.top, alNone);
+
+	this->m_psiCurrentState = &this->m_siEnabledNormalState;
+	this->m_bTextureEnable = true;
 }
 
 void CUITabButton::InitTexture(LPCSTR tex_name){
@@ -52,6 +60,9 @@ void CUITabButton::InitTexture(LPCSTR tex_name){
 	this->m_siEnabledNormalState.Init (tex_norm,    "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
 	this->m_siEnabledPressedState.Init(tex_press,   "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
 	this->m_siDisabledState.Init      (tex_disable, "hud\\default", m_WndRect.left, m_WndRect.top, alNone);
+
+	this->m_psiCurrentState = &this->m_siEnabledNormalState;
+	this->m_bTextureEnable = true;
 }
 
 void CUITabButton::SetColor(u32 color_norm, u32 color_press, u32 color_disable){
@@ -87,14 +98,13 @@ void CUITabButton::SetTextColor(u32 color){
 }
 
 void CUITabButton::Draw(){
-	RECT rect = GetAbsoluteRect();
+	RECT rect = GetAbsoluteRect();	
 
-	if(this->m_psiCurrentState && m_bTextureEnable)//m_bAvailableTexture && m_bTextureEnable)
+	if(m_psiCurrentState && m_bTextureEnable)//m_bAvailableTexture && m_bTextureEnable)
 	{		
 		if (this->m_psiCurrentState->GetShader())
-		{			
+		{
 			if(m_bStretchTexture)
-				//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
 				m_psiCurrentState->Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
 			else
 				m_psiCurrentState->Render();
@@ -165,6 +175,9 @@ void CUITabButton::Draw(){
 			inherited::DrawString(rect);
 		
 	}
+}
+
+void CUITabButton::Update(){
 }
 
 void CUITabButton::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
