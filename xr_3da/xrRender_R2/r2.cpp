@@ -7,6 +7,22 @@
 CRender										RImplementation;
 
 //////////////////////////////////////////////////////////////////////////
+class CGlow				: public IRender_Glow
+{
+public:
+	BOOL				bActive;
+public:
+	virtual void					set_active			(bool)						{ bActive=TRUE;		}
+	virtual bool					get_active			()							{ return bActive;	}
+	virtual void					set_position		(const Fvector& P)			{ }
+	virtual void					set_radius			(float R)					{ }
+	virtual void					set_texture			(LPCSTR name)				{ }
+	virtual void					set_color			(const Fcolor& C)			{ }
+	virtual void					set_color			(float r, float g, float b)	{ }
+	virtual void					spatial_move		();
+};
+
+//////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)
 {
 	return pVisual->hShader->E[RImplementation.phase]._get();
