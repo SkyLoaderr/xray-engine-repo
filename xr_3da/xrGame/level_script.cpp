@@ -17,6 +17,7 @@
 #include "../igame_persistent.h"
 #include "game_cl_base.h"
 #include "ui/UIDialogWnd.h"
+#include "date_time.h"
 
 using namespace luabind;
 
@@ -72,11 +73,38 @@ void set_time_factor(float time_factor)
 
 	Level().Server->game->SetGameTimeFactor(time_factor);
 }
-
 float get_time_factor()
 {
 	return			(Level().GetGameTimeFactor());
 }
+
+
+//////////////////////////////////////////////////////////////////////////
+
+u32 get_time_days()
+{
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	return			day;
+}
+
+u32 get_time_hours()
+{
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	return			hours;
+}
+
+u32 get_time_minutes()
+{
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	return			mins;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+
 
 float cover_in_direction(u32 level_vertex_id, const Fvector &direction)
 {
@@ -145,8 +173,14 @@ void CLevel::script_register(lua_State *L)
 		//def("set_artifact_merge",				SetArtefactMergeFunctor),
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
+		
 		def("set_time_factor",					set_time_factor),
 		def("get_time_factor",					get_time_factor),
+		
+		def("get_time_days",					get_time_days),
+		def("get_time_hours",					get_time_hours),
+		def("get_time_minutes",					get_time_minutes),
+
 		def("cover_in_direction",				cover_in_direction),
 		def("vertex_in_direction",				vertex_in_direction),
 		def("rain_factor",						rain_factor),
