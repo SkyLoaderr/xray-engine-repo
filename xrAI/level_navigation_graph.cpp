@@ -483,6 +483,8 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 		m_temp.erase		(m_temp.find(cell));
 		cell->m_dirs[index]	= (u16)i;
 		m_temp.insert		(cell);
+		if (!link)
+			cell->m_down_left = _min(cell->m_down,cell->m_down_left);
 		current_vertex_id	= vertex_id;
 	}
 }
@@ -511,23 +513,22 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		down				= v->m_down;
 	}
 
-	for	(u32 right_id = vertex(vertex_id(v))->link(1), i=2, min_side = v->m_down; i<=v->m_right; right_id = vertex(right_id)->link(1), ++i) {
+	for	(u32 current_down = v->m_down, right_id = vertex(vertex_id(v))->link(1), i=2; i<=v->m_right; right_id = vertex(right_id)->link(1), ++i) {
 //#ifdef _DEBUG
 //		VERIFY				(valid_vertex_id(right_id));
 //		VERIFY				(!m_cross[right_id].m_mark);
 //#endif
 
-		u32					current_down = _min(min_side,_min(m_cross[right_id].m_down_left,m_cross[right_id].m_down));
-		min_side			= current_down;
+		current_down		= _min(current_down,m_cross[right_id].m_down_left);
+
 		if (current_down*v->m_right <= max_square)
 			break;
 
-		if (i*current_down <= max_square)
-			continue;
-
-		max_square			= i*current_down;
-		right				= i;
-		down				= current_down;
+		if (i*current_down > max_square) {
+			max_square		= i*current_down;
+			right			= i;
+			down			= current_down;
+		}
 	}
 }
 
