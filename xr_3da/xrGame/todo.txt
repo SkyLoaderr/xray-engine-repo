@@ -17,23 +17,23 @@
 	+ TODO: NET: Ownership
 	+ TODO: Disable VS on Ge4 MX
 	+ TODO: Weapons take
+    + TODO: Merge shadows from weapon and entity
+	+ TODO: HUD rendering
 	. TODO: Weapons ammo eject
 	. TODO: Weapons drop
-	. TODO: NET: Weapons drop/take
    ?. TODO: NET: Weapons
    ?. TODO: Save/Load
    ?+ TODO: NET: Save/Load
 	. TODO: NET: Demo Record/Replay
-    + TODO: Merge shadows from weapon and entity
 	. TODO: NET: Actor camera
-	+ TODO: HUD rendering
-	. TODO: Usage list
 	+ TODO: Single VB/IB
 	+ TODO: Native vertex-shaders
 	+ TODO: xrLC: merge IB
 	. TODO: xrLC: aligned split-plane heuristics
 	
 	. TODO: Detail texturing
+	. TODO: Fog-pass
+	. TODO: Usage list
 
 
 --------------------------------------------------------
