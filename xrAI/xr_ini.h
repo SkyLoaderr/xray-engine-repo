@@ -69,7 +69,7 @@ public:
 
 	Sect&		ReadSection		( LPCSTR S );
 	BOOL		LineExists		( LPCSTR S, LPCSTR L );
-	u32		LineCount		( LPCSTR S );
+	u32			LineCount		( LPCSTR S );
 	BOOL		SectionExists	( LPCSTR S );
 	Root&		Sections		( ){return DATA;}
 
@@ -77,7 +77,7 @@ public:
 	LPCSTR 		ReadSTRING		( LPCSTR S, LPCSTR L );
 	int 		ReadINT			( LPCSTR S, LPCSTR L );
 	float		ReadFLOAT		( LPCSTR S, LPCSTR L );
-	u32		ReadCOLOR		( LPCSTR S, LPCSTR L );
+	u32			ReadCOLOR		( LPCSTR S, LPCSTR L );
 	Fvector		ReadVECTOR		( LPCSTR S, LPCSTR L );
 	Fvector2	ReadVECTOR2		( LPCSTR S, LPCSTR L );
 	Fvector4	ReadVECTOR4		( LPCSTR S, LPCSTR L );

@@ -10,7 +10,7 @@ class ENGINE_API CCameraLook	: public CCameraBase
 	Fvector2		lim_zoom;
 	float			dist, prev_d;
 public:
-					CCameraLook		( CObject* p, CInifile* ini, LPSTR section, BOOL rlink );
+					CCameraLook		( CObject* p, CInifile* ini, LPCSTR section, BOOL rlink );
 	virtual			~CCameraLook	( );
 
 	virtual void	Move			( int cmd, float val=0 );

@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPSTR section, BOOL rlink ) : CCameraBase(p, rlink)
+CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPCSTR section, BOOL rlink ) : CCameraBase(p, rlink)
 {
 	style				= csFirstEye;
 
