@@ -1,28 +1,6 @@
-[m_boar_attack_params]
-
-;---------------------------------------------------------------------------------------------------------------------------------------------
-;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
-;---------------------------------------------------------------------------------------------------------------------------------------------
-stand_attack_0 =	  	0.45,		30,	      200,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-stand_attack_1 =	  	0.45,		30,	      200,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-stand_attack_2 =	  	0.45,		30,	      300,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-
-[m_boar_step_params]			   
-;-------------------------------------------------------------------------------------------------------------
-;	anim			| Cycles | time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
-;-------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0 	=	  6,	   0.01,     1,	     0.25,    0.7,    0.5,    1.0,     0.75,   1.0
-stand_walk_fwd_dmg_0	=   	  1,	    0.2,     1,	     0.25,    0.7,    0.5,    1.0,     0.7,    1.0
-stand_run_fwd_0	 	=  	  1,	   0.01,     1,	     0.25,    0.6,    0.5,    1.0,     0.75,   0.2
-stand_run_dmg_0		=	  1,	    0.2,     1,	     0.25,    0.7,    0.7,    1.0,     0.7,    1.0
-stand_steal_0		=	  1,	    0.2,     1,	     0.25,    0.7,    0.7,    1.0,     0.7,    1.0
-stand_drag_0		=	  1,	    0.2,     1,	     0.25,    0.7,    0.7,    1.0,     0.7,    1.0
-
-
-
-[m_boar_e]
+[m_zombie_e]
 GroupControlSection	= spawn_group
-$spawn               = "monsters\boar"				; option for Level Editor
+$spawn               = "monsters\zombie"				; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -32,12 +10,12 @@ MinSpeed		     = 1.0						; option for ALife Simulator
 MaxSpeed		     = 5.0						; option for ALife Simulator
 going_speed          = 4.5                      ; option for ALife Simulator
 search_speed         = 1.5                       ; option for ALife Simulator
-visual				 = monsters\mutantboar\mutantboar
-MaxHealthValue		     = 200			; range [0..200]
+visual				 = monsters\zombie\zombie
+MaxHealthValue		 = 200			; range [0..200]
 DynamicObjectsCount	 = 32
 
 cform                = skeleton					; collision class
-class                = AI_BOAR					; AI class
+class                = AI_ZOM					; AI class
 
 bone_torso			 = bip01_spine1 			; bone name
 bone_head			 = bip01_head				; bone name
@@ -60,7 +38,7 @@ ph_skeleton_hinger_factor1			=1
 ph_skeleton_ddelay	     			=20
 ph_skel_fatal_impulse_factor		=3.0
 ph_after_death_velocity_factor		=1.35
-ph_skel_shot_up_factor					=.8f
+ph_skel_shot_up_factor				=.8f
 
 SoundThreshold		 = 0.06             ; range [0..1]
 
@@ -73,13 +51,12 @@ hit_power			 = 50.0;
 ImpulseMin			 = 500.0
 ImpulseMax			 = 550.0 
 
-
 ; speed factors			linear angular min		max
 Velocity_Stand			= 0,	1.4,	1,		1
-Velocity_WalkFwdNormal		= 1.85,	2.5,	0.02,		2.0	
-Velocity_RunFwdNormal		= 7.0,	3.5,	0.4,		1	
-Velocity_WalkFwdDamaged		= 1.7,	3.0,	0.2,		2.0	
-Velocity_RunFwdDamaged		= 5.0,  3.0,	0.2,		1
+Velocity_WalkFwdNormal	= 1.85,	2.5,	0.02,		2.0	
+Velocity_RunFwdNormal	= 7.0,	3.5,	0.4,		1	
+Velocity_WalkFwdDamaged	= 1.7,	3.0,	0.2,		2.0	
+Velocity_RunFwdDamaged	= 5.0,  3.0,	0.2,		1
 Velocity_Drag			= 1.0,	3.0,	1,		1
 Velocity_Steal			= 1.5,	3.0,	1,		1
 
@@ -162,17 +139,16 @@ MoraleFearQuant				= -0.002
 MoraleRestoreQuant			= 0.001
 MoraleBroadcastDistance		= 10.0
 
-sound_idle				= monsters\boar\boar_idle_        ; idle_
-sound_eat				= monsters\boar\boar_eat_         ; eat_
-sound_attack			= monsters\boar\boar_aggressive_   ; attack_
-sound_attack_hit		= monsters\boar\attack_hit_
-sound_take_damage		= monsters\boar\boar_pain_        ; hit_
-sound_die				= monsters\boar\boar_death_       ; die_
-sound_bkgnd				= monsters\biting\def_
-sound_threaten			= monsters\boar\boar_aggressive_   ; threaten_
-sound_landing			= monsters\boar\landing_
+sound_idle				= monsters\biting\def_      ; idle_
+sound_eat				= monsters\biting\def_      ; eat_
+sound_attack			= monsters\biting\def_		; attack_
+sound_attack_hit		= monsters\biting\def_
+sound_take_damage		= monsters\biting\def_      ; hit_
+sound_die				= monsters\biting\def_		; die_
+sound_threaten			= monsters\biting\def_		; threaten_
+sound_landing			= monsters\biting\def_
 sound_steal				= monsters\biting\def_
-sound_panic				= monsters\boar\boar_panic_       ; hit_
+sound_panic				= monsters\biting\def_
 sound_growling			= monsters\biting\def_
 
 idle_sound_delay		= 15000
@@ -187,7 +163,7 @@ jump_max_angle			= 1.5
 
 DamagedThreshold		= 0.5
 
-material				= creatures\hoof
+material				= creatures\medium
 DynamicObjectsCount		= 32
 
 step_snd_walk			= 1.0, 1.0
@@ -201,7 +177,4 @@ step_snd_drag			= 1.0, 2.0
 squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
 
-attack_params			= m_boar_attack_params
-step_params				= m_boar_step_params
-
-LegsCount				= 4
+LegsCount				= 2
