@@ -58,5 +58,54 @@
 	<info_portion id="job_box02_finished">
 	<disable>trader_start4</disable>
 	</info_portion>
+	
+	
+	<info_portion id="location_test1">
+		<location >
+			<level>agroprom</level>
+			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest1 at agroprom</text>
+		</location>
+		<location >
+			<level>agroprom</level>
+			<icon name="Quest2" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest2 at agroprom</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest3" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest3 at escape</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest4" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest4 at escape</text>
+		</location>
+	</info_portion>
+
+	<info_portion id="location_test2">
+		<location >
+			<level>agroprom</level>
+			<icon name="Quest11" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest11 at agroprom</text>
+		</location>
+		<location >
+			<level>agroprom</level>
+			<icon name="Quest22" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest22 at agroprom</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest33" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest33 at escape</text>
+		</location>
+		<location >
+			<level>escape</level>
+			<icon name="Quest44" x="2" y="8" width="1" height="1"></icon>
+			<text>Quest44 at escape</text>
+		</location>
+		
+	</info_portion>
+	
 
 </game_information_portions>
