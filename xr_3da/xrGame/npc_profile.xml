@@ -3,13 +3,7 @@
 <xml>
 	<!-- destroy name ID after next update  -->
 	<!-- PERSON INFORMATION  -->
-	
-	<character id="first_default_profile">
-		<!--<rank>none</rank>
-		<team>none</team>
-		-->
-	</character>
-	
+
 	<character id="default">
 		<!--<name>Undefined Character</name>
 		<icon x="0" y="0"></icon>
@@ -21,7 +15,7 @@
 	</character>
 	
 	
-	<character name_id="novice" id="novice">
+	<character id="novice">
 		<name>Unknown Stalker</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -29,8 +23,10 @@
 		<rank>Novice</rank>
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="veteran" id="veteran">
+	<character id="veteran">
 		<name>Unknown Stalker</name>
 		<icon x="2" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -38,8 +34,10 @@
 		<rank>veteran</rank>
 		<team>Lonewolf</team>
 		<start_dialog>stalker_talk_about</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="monolith" id="monolith">
+	<character id="monolith">
 		<name>Unknown Stalker</name>
 		<icon x="4" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -47,8 +45,10 @@
 		<rank>veteran</rank>
 		<team>clan Monolith</team>
 		<start_dialog>stalker_talk_about</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="dolg" id="dolg">
+	<character id="dolg">
 		<name>Dolg</name>
 		<icon x="10" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -56,8 +56,10 @@
 		<rank>veteran</rank>
 		<team>clan Dolg</team>
 		<start_dialog>dolg_talk_about</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="freedom" id="freedom">
+	<character id="freedom">
 		<name>Freedom</name>
 		<icon x="8" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -65,8 +67,10 @@
 		<rank>veteran</rank>
 		<team>clan Freedom</team>
 		<start_dialog>stalker_talk_about</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="trader" id="trader">
+	<character id="trader">
 		<name>Trader</name>
 		<icon x="3" y="1"></icon>
 		<map_icon x="0" y="4"></map_icon>
@@ -74,13 +78,17 @@
 		<rank>veteran</rank>
 		<team>trader</team>
 		<start_dialog>escape_trader_start_dialog</start_dialog>
+		
+		<specific_character>default</specific_character>
 	</character>
-	<character name_id="actor" id="actor">
+	<character id="actor">
 		<name>Gunner</name>
 		<icon x="0" y="9"></icon>
 		<map_icon x="0" y="4"></map_icon>
 		<visual>string_name2</visual>
 		<rank>novice</rank>
 		<team>Lonewolf</team>
+		
+		<specific_character>default</specific_character>
 	</character>
 </xml>
