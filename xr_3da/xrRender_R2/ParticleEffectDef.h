@@ -137,7 +137,7 @@ namespace PS
 		void 				Render				(const Fmatrix& parent);
 		void 				Compile				();
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
-		void __stdcall  	FillActionList		(ChooseItemVec& items);
+		void __stdcall  	FillActionList		(ChooseItemVec& items, void* param);
 #endif
 	};
 };
