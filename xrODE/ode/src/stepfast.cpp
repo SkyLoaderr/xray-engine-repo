@@ -1,33 +1,33 @@
 /*************************************************************************
- *                                                                       *
- * Open Dynamics Engine, Copyright (C) 2001,2002 Russell L. Smith.       *
- * All rights reserved.  Email: russ@q12.org   Web: www.q12.org          *
- *                                                                       *
- * Fast iterative solver, David Whittaker. Email: david@csworkbench.com  *
- *                                                                       *
- * This library is free software; you can redistribute it and/or         *
- * modify it under the terms of EITHER:                                  *
- *   (1) The GNU Lesser General Public License as published by the Free  *
- *       Software Foundation; either version 2.1 of the License, or (at  *
- *       your option) any later version. The text of the GNU Lesser      *
- *       General Public License is included with this library in the     *
- *       file LICENSE.TXT.                                               *
- *   (2) The BSD-style license that is included with this library in     *
- *       the file LICENSE-BSD.TXT.                                       *
- *                                                                       *
- * This library is distributed in the hope that it will be useful,       *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the files    *
- * LICENSE.TXT and LICENSE-BSD.TXT for more details.                     *
- *                                                                       *
- *************************************************************************/
+*                                                                       *
+* Open Dynamics Engine, Copyright (C) 2001,2002 Russell L. Smith.       *
+* All rights reserved.  Email: russ@q12.org   Web: www.q12.org          *
+*                                                                       *
+* Fast iterative solver, David Whittaker. Email: david@csworkbench.com  *
+*                                                                       *
+* This library is free software; you can redistribute it and/or         *
+* modify it under the terms of EITHER:                                  *
+*   (1) The GNU Lesser General Public License as published by the Free  *
+*       Software Foundation; either version 2.1 of the License, or (at  *
+*       your option) any later version. The text of the GNU Lesser      *
+*       General Public License is included with this library in the     *
+*       file LICENSE.TXT.                                               *
+*   (2) The BSD-style license that is included with this library in     *
+*       the file LICENSE-BSD.TXT.                                       *
+*                                                                       *
+* This library is distributed in the hope that it will be useful,       *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the files    *
+* LICENSE.TXT and LICENSE-BSD.TXT for more details.                     *
+*                                                                       *
+*************************************************************************/
 
 // This is the StepFast code by David Whittaker. This code is faster, but
 // sometimes less stable than, the original "big matrix" code.
 // Refer to the user's manual for more information.
 // Note that this source file duplicates a lot of stuff from step.cpp,
 // eventually we should move the common code to a third file.
- 
+
 #include "objects.h"
 #include "joint.h"
 #include <ode/config.h>
@@ -702,60 +702,60 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 
 	if (m)
 	{
-	// create a constraint equation right hand side vector `c', a constraint
-	// force mixing vector `cfm', and LCP low and high bound vectors, and an
-	// 'findex' vector.
+		// create a constraint equation right hand side vector `c', a constraint
+		// force mixing vector `cfm', and LCP low and high bound vectors, and an
+		// 'findex' vector.
 		c = (dReal *) ALLOCA (m * sizeof (dReal));
 		cfm = (dReal *) ALLOCA (m * sizeof (dReal));
 		lo = (dReal *) ALLOCA (m * sizeof (dReal));
 		hi = (dReal *) ALLOCA (m * sizeof (dReal));
 		findex = (int *) ALLOCA (m * sizeof (int));
-	dSetZero (c, m);
-	dSetValue (cfm, m, world->global_cfm);
-	dSetValue (lo, m, -dInfinity);
-	dSetValue (hi, m, dInfinity);
-	for (i = 0; i < m; i++)
-		findex[i] = -1;
+		dSetZero (c, m);
+		dSetValue (cfm, m, world->global_cfm);
+		dSetValue (lo, m, -dInfinity);
+		dSetValue (hi, m, dInfinity);
+		for (i = 0; i < m; i++)
+			findex[i] = -1;
 
-	// get jacobian data from constraints. a (2*m)x8 matrix will be created
-	// to store the two jacobian blocks from each constraint. it has this
-	// format:
-	//
-	//   l l l 0 a a a 0  \    .
-	//   l l l 0 a a a 0   }-- jacobian body 1 block for joint 0 (3 rows)
-	//   l l l 0 a a a 0  /
-	//   l l l 0 a a a 0  \    .
-	//   l l l 0 a a a 0   }-- jacobian body 2 block for joint 0 (3 rows)
-	//   l l l 0 a a a 0  /
-	//   l l l 0 a a a 0  }--- jacobian body 1 block for joint 1 (1 row)
-	//   l l l 0 a a a 0  }--- jacobian body 2 block for joint 1 (1 row)
-	//   etc...
-	//
-	//   (lll) = linear jacobian data
-	//   (aaa) = angular jacobian data
-	//
+		// get jacobian data from constraints. a (2*m)x8 matrix will be created
+		// to store the two jacobian blocks from each constraint. it has this
+		// format:
+		//
+		//   l l l 0 a a a 0  \    .
+		//   l l l 0 a a a 0   }-- jacobian body 1 block for joint 0 (3 rows)
+		//   l l l 0 a a a 0  /
+		//   l l l 0 a a a 0  \    .
+		//   l l l 0 a a a 0   }-- jacobian body 2 block for joint 0 (3 rows)
+		//   l l l 0 a a a 0  /
+		//   l l l 0 a a a 0  }--- jacobian body 1 block for joint 1 (1 row)
+		//   l l l 0 a a a 0  }--- jacobian body 2 block for joint 1 (1 row)
+		//   etc...
+		//
+		//   (lll) = linear jacobian data
+		//   (aaa) = angular jacobian data
+		//
 #   ifdef TIMING
-	dTimerNow ("create J");
+		dTimerNow ("create J");
 #   endif
 		J = (dReal *) ALLOCA (2 * m * 8 * sizeof (dReal));
 		dSetZero (J, 2 * m * 8);
 		Jinfo = (dxJoint::Info2 *) ALLOCA (nj * sizeof (dxJoint::Info2));
-	for (i = 0; i < nj; i++)
-	{
-		Jinfo[i].rowskip = 8;
-		Jinfo[i].fps = dRecip (stepsize);
-		Jinfo[i].erp = world->global_erp;
-		Jinfo[i].J1l = J + 2 * 8 * ofs[i];
-		Jinfo[i].J1a = Jinfo[i].J1l + 4;
-		Jinfo[i].J2l = Jinfo[i].J1l + 8 * info[i].m;
-		Jinfo[i].J2a = Jinfo[i].J2l + 4;
-		Jinfo[i].c = c + ofs[i];
-		Jinfo[i].cfm = cfm + ofs[i];
-		Jinfo[i].lo = lo + ofs[i];
-		Jinfo[i].hi = hi + ofs[i];
-		Jinfo[i].findex = findex + ofs[i];
-		//joints[i]->vtable->getInfo2 (joints[i], Jinfo+i);
-	}
+		for (i = 0; i < nj; i++)
+		{
+			Jinfo[i].rowskip = 8;
+			Jinfo[i].fps = dRecip (stepsize);
+			Jinfo[i].erp = world->global_erp;
+			Jinfo[i].J1l = J + 2 * 8 * ofs[i];
+			Jinfo[i].J1a = Jinfo[i].J1l + 4;
+			Jinfo[i].J2l = Jinfo[i].J1l + 8 * info[i].m;
+			Jinfo[i].J2a = Jinfo[i].J2l + 4;
+			Jinfo[i].c = c + ofs[i];
+			Jinfo[i].cfm = cfm + ofs[i];
+			Jinfo[i].lo = lo + ofs[i];
+			Jinfo[i].hi = hi + ofs[i];
+			Jinfo[i].findex = findex + ofs[i];
+			//joints[i]->vtable->getInfo2 (joints[i], Jinfo+i);
+		}
 
 	}
 
@@ -848,11 +848,11 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 				bodyPair[0] = 0;
 			if (bodyPair[1] && (bodyPair[1]->flags & dxBodyDisabled))
 				bodyPair[1] = 0;
-			
+
 			//if this joint is not connected to any enabled bodies, skip it.
 			if (!bodyPair[0] && !bodyPair[1])
 				continue;
-			
+
 			if (bodyPair[0])
 			{
 				GIPair[0] = globalI + bodyPair[0]->tag * 12;
@@ -871,7 +871,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)
 			{
-			dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep);
+				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep);
 			}		
 		}
 		//  }
@@ -977,7 +977,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 	int jcount = 0;				// number of joints in `joint'
 	int tbcount = 0;
 	int tjcount = 0;
-	
+
 	// set all body/joint tags to 0
 	for (b = world->firstbody; b; b = (dxBody *) b->next)
 		b->tag = 0;
@@ -1015,7 +1015,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 			b = stack[--stacksize];	// pop body off stack
 			autoDepth = autostack[stacksize];
 			body[bcount++] = b;	// put body on body list
-		  quickstart:
+quickstart:
 
 			// traverse and tag all body's joints, add untagged connected bodies
 			// to stack
@@ -1058,11 +1058,11 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 		}
 		for (i = 0; i < jcount; i++)
 			joint[i]->tag = 1;
-		
+
 		tbcount += bcount;
 		tjcount += jcount;
 	}
-	
+
 #ifdef TIMING
 	dMessage(0, "Total joints processed: %i, bodies: %i", tjcount, tbcount);
 #endif
