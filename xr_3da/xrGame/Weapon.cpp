@@ -151,7 +151,7 @@ void CWeapon::ShaderDestroy	(Shader* &dest)
 	Device.Shader.Delete	(dest);
 }
 
-float CWeapon::GetPrecision()
+float CWeapon::GetPrecision	()
 {
 	CEntity* E	=	dynamic_cast<CEntity*>(H_Parent());
 	VERIFY			(E);
