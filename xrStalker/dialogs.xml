@@ -121,44 +121,52 @@
 	<precondition>dialogs.is_bad_relation</precondition>
 	<phrase_list>
 	   	<phrase id="0">
-			<text>Свинья, это дятел, как слышно? Прием.</text>
+			<text>Привет. Есть свободная минутка?</text>
 			<next>1</next>
+			<next>11</next>
 		</phrase>                                                                                               
 	   	<phrase id="1">
-			<text>Здорова дятел, это свинья, слышимость отличная.</text>
+			<text>Да. Чем могу помочь?</text>
 			<next>2</next>			
 			<next>3</next>
 			<next>10</next>
 		</phrase>
+	   	<phrase id="11">
+			<text>Занят. Не мешай.</text>
+		</phrase>
 	   	<phrase id="10">
-			<text>Отбой.</text>
+			<text>Я отключаюсь. Пока.</text>
 		</phrase>
 	   	<phrase id="2">
-			<text>Чай, кофе, поторгуем?</text>
+			<text>Есть дело, давай встретимся?</text>
 			<next>21</next>
 			<next>22</next>
 		</phrase>
 	   	<phrase id="21">
 	   		<precondition>dialogs.want_trade</precondition>
-			<text>Оки доки Босс.</text>
+			<text>Согласен. Жду тебя здесь. Координаты у тебя на PDA.</text>
 			<action>dialogs.trade_init</action>
 			<next>10</next>
 		</phrase>
 	   	<phrase id="22">
 	   		<precondition>dialogs.dont_want_trade</precondition>
-			<text>Не, чего-то неохота.</text>
+			<text>Нет. Не сегодня.</text>
 			<next>10</next>
 		</phrase>
 	   	<phrase id="3">
-			<text>Данила, ай нид хелп!</text>
+			<text>Помоги мне!</text>
 			<next>31</next>
+			<next>32</next>
 		</phrase>
 	   	<phrase id="31">
-			<text>Спасатели, Вперед!</text>
+			<text>Уже иду.</text>
 			<action>dialogs.helper_init</action>
 			<next>10</next>
 		</phrase>
-		
+	   	<phrase id="32">
+			<text>Не могу. Своих дел выше крыши.</text>
+			<next>10</next>
+		</phrase>	
 	</phrase_list>
 	</dialog>
 
@@ -166,7 +174,7 @@
     <dialog id="stalker_helper">
         <phrase_list>
             <phrase id="0">
-                <text>Ну, я тут, чего звал?</text>
+                <text>Что случилось?</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -191,7 +199,7 @@
             </phrase>
             <phrase id="12">
                 <precondition>dialogs.is_health_good</precondition>
-                <text>Да ты и так неплохо выглядишь.</text>
+                <text>Слушай, по-моему у тебя все в порядке со здоровьем.</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -199,7 +207,7 @@
             </phrase>
             <phrase id="13">
                 <precondition>dialogs.is_medikit_no_present</precondition>
-                <text>Извини, нету.</text>
+                <text>Нет у меня аптечки, извини.</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
@@ -207,12 +215,12 @@
             </phrase>
             <phrase id="14">
                 <precondition>dialogs.is_bad_relation</precondition>
-                <text>Только за деньги. За 300 монет.</text>
+                <text>Только за деньги. 300 монет - и аптечка твоя.</text>
                 <next>141</next>
                 <next>142</next>
             </phrase>
             <phrase id="141">
-                <text>На твои деньги, барыга. Давай аптечку.</text>
+                <text>Держи деньги, барыга. Давай аптечку.</text>
                 <next>1411</next>
             </phrase>
             <phrase id="1411">
@@ -224,24 +232,24 @@
                 <next>10</next>
             </phrase>
             <phrase id="142">
-                <text>Не, не могу.</text>
+                <text>Нет у меня таких денег.</text>
                 <next>1412</next>
             </phrase>
             <phrase id="1412">
-                <text>Ну как хочешь.</text>
+                <text>Ну, я тебе не "Красный крест".</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
                 <next>10</next>
             </phrase>
             <phrase id="2">
-                <text>Нужно оружие, а то без него хреново как-то.</text>
+                <text>Нужно оружие, выручи, а?</text>
                 <next>21</next>
                 <next>22</next>
             </phrase>
             <phrase id="21">
                 <precondition>dialogs.have_extra_weapon</precondition>
-                <text>Посмотри сам что есть.</text>
+                <text>Без проблем, выбирай. Отдам по себестоимости.</text>
                 <action>dialogs.trade_help</action>
                 <next>1</next>
                 <next>2</next>
@@ -256,7 +264,7 @@
                 <next>10</next>
             </phrase>
             <phrase id="3">
-                <text>Помоги прорваться, боюсь один не справлюсь.</text>
+                <text>Нужна огневая поддержка. Поможешь?</text>
                 <next>31</next>
                 <next>32</next>
             </phrase>
@@ -271,7 +279,7 @@
             </phrase>
             <phrase id="32">
                 <precondition>dialogs.is_bad_relation</precondition>
-                <text>Что-то как-то мне лениво. Разбирайся сам.</text>
+                <text>Не, давай как-нибудь сам, без меня.</text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
