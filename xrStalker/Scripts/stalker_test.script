@@ -23,7 +23,7 @@ function test_callback:callback(obj,action_type,index)
 end
 
 function main ()
-    stalker_test.object_idle	("script_object0000",anim("norm_walk_fwd"))
+    stalker_test.object_idle	("script_object0000",anim("norm_walk_fwd"),cond(cond.anim_end))
     
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
