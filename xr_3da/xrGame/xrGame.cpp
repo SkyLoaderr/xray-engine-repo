@@ -61,9 +61,12 @@ class CCC_Team : public CConsoleCommand {
 public:
 	CCC_Team(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
+		u32 l_team = 2;
+		sscanf(args, "%d", &l_team);
 		CObject *l_pObj = Level().CurrentEntity();
 		CActor *l_pActor = dynamic_cast<CActor*>(l_pObj);
 		if(l_pActor) {
+			if(l_pActor->g_Team() == s32(l_team)) return;
 			Fvector l_dir; l_dir.set(0, -1.f, 0);
 			NET_Packet		P;
 			l_pActor->u_EventGen		(P,GE_HIT,l_pActor->ID());
@@ -80,8 +83,6 @@ public:
 		}
 		CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 		if(l_pPlayer) {
-			u32 l_team = 2;
-			sscanf(args, "%d", &l_team);
 			NET_Packet		P;
 			l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
 			P.w_u16			(u16(l_pPlayer->ID())	);
