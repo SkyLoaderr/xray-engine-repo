@@ -17,7 +17,7 @@
 #include "ai_a_star.h"
 #include "xrSort.h"
 
-#define MAX_DISTANCE_TO_CONNECT		64.f
+#define MAX_DISTANCE_TO_CONNECT		512.f
 #define THREAD_COUNT				6
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - sqrtf((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
