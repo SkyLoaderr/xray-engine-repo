@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(21)
+#define SPAWN_VERSION	u16(22)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -33,6 +33,7 @@
 // 19 - xrSE_Teamed		  didn't save health parameter
 // 20 - CSE_ALife...		  saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
 // 21 - Global class hierarchy update
+// 22 - CSE_AnomalousZone append artefact spawns
 //------------------------------------------------------------------------------
 
 class xrClientData;

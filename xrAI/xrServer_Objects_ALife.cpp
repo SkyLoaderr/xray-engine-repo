@@ -455,19 +455,27 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_attn						= 1.f;
 	m_period					= 1000;
 	m_fRadius					= 30.f;
-	m_fGlobalProbability		= pSettings->r_float(caSection,"GlobalProbability");
-	
-	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
-	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
-	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
-	m_wItemCount				>>= 1;
-	
-	m_dwaWeights				= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
-	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
-	string512					l_caBuffer;
-	for (u16 i=0; i<m_wItemCount; i++) {
-		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
-		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
+	if (m_wVersion > 21) {
+		m_fGlobalProbability	= pSettings->r_float(caSection,"GlobalProbability");
+		
+		LPCSTR					l_caParameters = pSettings->r_string(caSection,"artefacts");
+		m_wItemCount			= (u16)_GetItemCount(l_caParameters);
+		R_ASSERT2				(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
+		m_wItemCount			>>= 1;
+		
+		m_dwaWeights			= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
+		m_cppArtefactSections	= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
+		string512				l_caBuffer;
+		for (u16 i=0; i<m_wItemCount; i++) {
+			m_dwaWeights[i]		= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
+			strcpy				(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
+		}
+	}
+	else {
+		m_fGlobalProbability	= 0.f;
+		m_wItemCount			= 0;
+		m_dwaWeights			= 0;
+		m_cppArtefactSections	= 0;
 	}
 }
 
@@ -491,25 +499,27 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(m_fRadius);
 	tNetPacket.r_float			(m_fGlobalProbability);
 	
-	u16							l_wItemCount;
-	tNetPacket.r_u16			(l_wItemCount);
-	u32							*l_dwaWeights			= (u32*)xr_malloc(l_wItemCount*sizeof(u32));
-	string64					*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
+	if (m_wVersion > 21) {
+		u16						l_wItemCount;
+		tNetPacket.r_u16		(l_wItemCount);
+		u32						*l_dwaWeights			= (u32*)xr_malloc(l_wItemCount*sizeof(u32));
+		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
 
-	for (u16 i=0; i<l_wItemCount; i++) {
-		tNetPacket.r_string		(l_cppArtefactSections[i]);
-		tNetPacket.r_u32		(l_dwaWeights[i]);
+		for (u16 i=0; i<l_wItemCount; i++) {
+			tNetPacket.r_string	(l_cppArtefactSections[i]);
+			tNetPacket.r_u32	(l_dwaWeights[i]);
+		}
+
+		for ( i=0; i<l_wItemCount; i++)
+			for (u16 j=0; j<m_wItemCount; j++)
+				if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
+					m_dwaWeights[j] = l_dwaWeights[i];
+					break;
+				}
+
+		xr_free					(l_dwaWeights);
+		xr_free					(l_cppArtefactSections);
 	}
-
-	for ( i=0; i<l_wItemCount; i++)
-		for (u16 j=0; j<m_wItemCount; j++)
-			if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
-				m_dwaWeights[j] = l_dwaWeights[i];
-				break;
-			}
-
-	xr_free						(l_dwaWeights);
-	xr_free						(l_cppArtefactSections);
 }
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
