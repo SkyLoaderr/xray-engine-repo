@@ -16,16 +16,15 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 
 	// Compute approximate screen area (treating it as an point light) - R*R/dist_sq
 	S_size						= DSM_size;
-	/*
 	float	dist				= Device.vCameraPosition.distance_to(L->position)-L->range;
-	float	ssa					= L->range*L->range / (dist<=EPS)?EPS:dist*dist;
+	float	ssa					= 0.5f * L->range*L->range / ((dist<=EPS)?EPS:dist*dist);
 	if		(ssa >= 1)			S_size	= DSM_size;
 	else	{
 		// ssa is quadratic
 		S_size					= _sqrt(ssa) * DSM_size;
 		if (S_size<16)	S_size	= 16;
 	}
-	*/
+	//Msg		("%8X : ssa(%f), size(%d)",u32(L),ssa,S_size);
 }
 
 void CLight_Render_Direct::compute_xfs_2	(u32 m_phase, light* L)
