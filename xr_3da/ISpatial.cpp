@@ -28,6 +28,10 @@ ISpatial::~ISpatial(void)
 {
 }
 
+void	ISpatial::spatial_move	()
+{
+}
+
 //////////////////////////////////////////////////////////////////////////
 void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)				
 {
