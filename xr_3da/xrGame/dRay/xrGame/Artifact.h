@@ -20,8 +20,9 @@ public:
 	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);	
 	
-	virtual void renderable_Render	();
-	
+	virtual void			renderable_Render				();
+	virtual BOOL			renderable_ShadowGenerate		()		{ return FALSE;	}
+	virtual BOOL			renderable_ShadowReceive		()		{ return TRUE;	}
 
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);

@@ -105,8 +105,8 @@ public:
 	Fvector&						lastEnemyPos(){return m_destEnemyPos;};
 	void							startRocket(u16 idx);
 	//CAI_ObjectLocation
-	void				init();
-	virtual	void		reinit();
+	void					init();
+	virtual	void			reinit();
 
 
 	//CGameObject
@@ -118,7 +118,9 @@ public:
 	virtual void			net_Export			(NET_Packet &P);
 	virtual void			net_Import			(NET_Packet &P);
 
-	virtual void			renderable_Render	();
+	virtual void			renderable_Render				();
+	virtual BOOL			renderable_ShadowGenerate		()	{ return FALSE;	}
+	virtual BOOL			renderable_ShadowReceive		()	{ return TRUE;	}
 
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();

@@ -37,7 +37,6 @@ public:
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	
-	
 	// Update
 	virtual void			shedule_Update		( u32 dt );
 
