@@ -151,13 +151,16 @@ void CBuild::SoftenLights()
 		// select destination container
 		vector<R_Light>* dest	=	0;
 		if (L->flags.bProcedural)	{
-			lights_soften.push_back( vector<R_Light> () );
-			dest = &(lights_soften.back());		// one of the procedural lights
+			// one of the procedural lights
+			lights.push_back		( b_LightLayer() );
+			lights.back().original	= L;
+			dest					= &(lights.back().lights);		
 			RL.diffuse.set			(1,1,1,1);
 			RL.energy				= RL.diffuse.magnitude_rgb();
 			RL.diffuse.normalize_rgb();
 		} else {
-			dest = &(lights_soften[0]);			// ambient (fully-static)
+			// ambient (fully-static)
+			dest					= &(lights.front().lights);
 		}
 
 		if (L->type==D3DLIGHT_DIRECTIONAL) 
@@ -300,7 +303,7 @@ void CBuild::SoftenLights()
 			}
 		}
 	}
-	Msg("* Total lights: %d",lights_soften.size());
+	Msg("* Total light-layers: %d",lights.size());
 
 	Status("Caching faces opacity...");
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();

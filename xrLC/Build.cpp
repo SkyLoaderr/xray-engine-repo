@@ -95,21 +95,20 @@ CBuild::CBuild(b_transfer * L)
 	transfer("glows",		glows,		L->glows,		L->glow_count);
 	transfer("occluders",	occluders,	L->occluders,	L->occluder_count);
 	transfer("portals",		portals,	L->portals,		L->portal_count);
-	transfer("light_keys",	lights_keys,L->light_keys,	L->light_keys_count);
 
-	Status	("Post-process lights...");
 	// post-process lights
+	Status	("Post-process lights...");
 	for (DWORD l=0; l<L->light_count; l++) {
 		b_light R = L->lights[l];
 		R.direction.normalize_safe();
 		if (R.flags.bAffectStatic)	lights_lmaps.push_back	(R);
 		if (R.flags.bAffectDynamic) lights_dynamic.push_back(R);
 	}
-	lights_soften.resize(1);
+	lights.resize	(1);
 
 	// process textures
-	Status		("Processing textures...");
-	Surface_Init();
+	Status			("Processing textures...");
+	Surface_Init	();
 	for (DWORD t=0; t<L->tex_count; t++)
 	{
 		Progress(float(t)/float(L->tex_count));

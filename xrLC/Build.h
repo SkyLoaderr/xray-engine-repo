@@ -39,10 +39,20 @@ struct b_BuildTexture : public b_texture
 		}
 	}
 };
+struct b_LightLayer
+{
+	b_light*				original;
+	vector<R_Light>			lights;
+	
+	b_LightLayer()			{ original=0; }
+};
+
 
 class CBuild  
 {
 public:
+	Fbox					scene_bb;
+	
 	vector<b_material>		materials;
 	vector<b_shader>		shader_names;
 	vector<b_BuildTexture>	textures;
@@ -53,11 +63,7 @@ public:
 
 	vector<b_light>			lights_dynamic;
 	vector<b_light>			lights_lmaps;
-	vector<Flight>			lights_keys;
-
-	vector<vector<R_Light> >lights_soften;
-
-	Fbox					scene_bb;
+	vector<b_LightLayer>	lights;
 
 	Shader_xrLC_LIB			shaders;
 public:
