@@ -85,18 +85,26 @@ void occRasterizer::propagade	()
 			// Y-connect
 			int	pos		= oy*occ_dim+ox;
 			int	pos_up	= pos-occ_dim;
+			int	pos_up2	= pos_up-occ_dim;
 			int	pos_down= pos+occ_dim;
 			
-			occTri**	pFrame	= get_frame();
-			float*		pDepth	= get_depth();
-			occTri* T1	= pFrame[pos_up		];
-			occTri* T2	= pFrame[pos_down	];
-			if (T1 && shared(T1,T2))	
-			{
-				float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
-				if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
+			occTri**	pFrame	= get_frame	();
+			float*		pDepth	= get_depth	();
+			occTri* Td1			= pFrame	[pos_down];
+			if (Td1) {
+				// We has pixel 1scan down
+				if (shared(Td1,pFrame[pos_up]))
+				{
+					// We has pixel 1scan up
+					float ZR			= (pDepth[pos_down]+pDepth[pos_up])/2;
+					if (ZR<pDepth[pos])	{ pFrame[pos] = Td1; pDepth[pos] = ZR; }
+				} else if (shared(Td1,pFrame[pos_up2])) 
+				{
+					// We has pixel 2scan up
+					float ZR			= (pDepth[pos_down]+pDepth[pos_up2])/2;
+					if (ZR<pDepth[pos])	{ pFrame[pos] = Td1; pDepth[pos] = ZR; }
+				}
 			}
-			
 
 			//
 			float d				= pDepth[pos];
